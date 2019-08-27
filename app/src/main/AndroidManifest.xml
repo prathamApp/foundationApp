@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.foundationapp">
+    package="com.pratham.foundation">
 
     <application
-        android:name=".ApplicationClass_"
+        android:name="com.pratham.foundation.ApplicationClass_"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
@@ -11,22 +11,22 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".utility.BaseActivity_"
+            android:name="com.pratham.foundation.utility.BaseActivity_"
             android:screenOrientation="portrait"></activity>
         <activity
-            android:name=".keywordMapping.KeywordMapping"
+            android:name="com.pratham.foundation.ui.keywordMapping.KeywordMapping"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".writingParagraph.WritingParagraph"
+            android:name="com.pratham.foundation.ui.writingParagraph.WritingParagraph"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".factRetrial.FactRetrial_"
+            android:name="com.pratham.foundation.ui.factRetrial.FactRetrial_"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".identifyKeywords.IdentifyKeywordsActivity"
+            android:name="com.pratham.foundation.ui.identifyKeywords.IdentifyKeywordsActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".MainActivity"
+            android:name="com.pratham.foundation.MainActivity"
             android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

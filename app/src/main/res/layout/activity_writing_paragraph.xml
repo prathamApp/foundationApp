@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".writingParagraph.WritingParagraph">
+    tools:context=".ui.writingParagraph.WritingParagraph">
 
     <ScrollView
         android:id="@+id/scrollView"

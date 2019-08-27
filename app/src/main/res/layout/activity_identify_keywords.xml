@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".identifyKeywords.IdentifyKeywordsActivity">
+    tools:context=".ui.identifyKeywords.IdentifyKeywordsActivity">
 
     <TextView
         android:layout_width="match_parent"
@@ -23,7 +23,7 @@
         android:background="@drawable/border"
         android:padding="10dp">
 
-        <com.example.foundationapp.custumView.FlowLayout
+        <com.pratham.foundation.custumView.FlowLayout
             android:id="@+id/paragraph"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -40,7 +40,7 @@
         android:background="@drawable/border"
         android:padding="10dp">
 
-        <com.example.foundationapp.custumView.FlowLayout
+        <com.pratham.foundation.custumView.FlowLayout
             android:id="@+id/keywords"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
