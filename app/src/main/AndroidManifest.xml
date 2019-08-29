@@ -3,7 +3,7 @@
     package="com.pratham.foundation">
 
     <application
-        android:name="com.pratham.foundation.ApplicationClass_"
+        android:name="com.pratham.foundation.ApplicationClass"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
@@ -11,7 +11,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name="com.pratham.foundation.utility.BaseActivity_"
+            android:name="com.pratham.foundation.utility.BaseActivity"
             android:screenOrientation="portrait"></activity>
         <activity
             android:name="com.pratham.foundation.ui.keywordMapping.KeywordMapping"

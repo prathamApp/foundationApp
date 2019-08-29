@@ -21,7 +21,6 @@ import java.util.concurrent.TimeUnit;
 
 import okhttp3.OkHttpClient;
 
-@EApplication
 public class ApplicationClass extends Application {
 
     public static String uploadDataUrl = "http://prodigi.openiscool.org/api/cosv2/pushdata";

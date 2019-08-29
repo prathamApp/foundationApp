@@ -1,5 +1,6 @@
 package com.pratham.foundation.database.domain;
 
+import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.Ignore;
 import android.arch.persistence.room.PrimaryKey;
 import android.support.annotation.NonNull;
@@ -8,6 +9,7 @@ import com.google.gson.annotations.SerializedName;
 
 import java.util.List;
 
+@Entity
 public class ContentTable {
 
     @NonNull
@@ -42,9 +44,10 @@ public class ContentTable {
     public String contentType;
     public String contentLanguage;
     public String nodeKeywords;
+    private boolean onSDCard = false;
     @Ignore
     public String nodePercentage;
-    private boolean onSDCard = false;
+    @Ignore
     private List<ContentTable> nodelist = null;
 
     public String getVersion() {
