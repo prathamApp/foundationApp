@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">foundation App</string>
+    <string name="app_name">Foundation App</string>
     <string name="title_activity_fact_retrial">Sign in</string>
     <string name="prompt_email">Email</string>
     <string name="prompt_password">Password</string>

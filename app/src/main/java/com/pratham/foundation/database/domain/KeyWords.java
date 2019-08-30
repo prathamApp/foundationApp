@@ -1,6 +1,7 @@
 package com.pratham.foundation.database.domain;
 
 import android.arch.persistence.room.Entity;
+import android.arch.persistence.room.Ignore;
 import android.arch.persistence.room.PrimaryKey;
 import android.support.annotation.NonNull;
 
@@ -16,11 +17,11 @@ import java.io.Serializable;
 public class KeyWords implements Serializable {
     @NonNull
     @PrimaryKey(autoGenerate = true)
-    private int learntWordId;
+    private int keyWordId;
     @SerializedName("studentId")
     private String studentId;
+    @Ignore
     private String sessionId;
-    private String synId;
     @SerializedName("resourceId")
     private String resourceId;
     @SerializedName("keyWord")
@@ -29,12 +30,12 @@ public class KeyWords implements Serializable {
     private String wordType;
     private int sentFlag;
 
-    public int getLearntWordId() {
-        return learntWordId;
+    public int getKeyWordId() {
+        return keyWordId;
     }
 
-    public void setLearntWordId(int learntWordId) {
-        this.learntWordId = learntWordId;
+    public void setKeyWordId(int keyWordId) {
+        this.keyWordId = keyWordId;
     }
 
     public String getStudentId() {
@@ -51,14 +52,6 @@ public class KeyWords implements Serializable {
 
     public void setSessionId(String sessionId) {
         this.sessionId = sessionId;
-    }
-
-    public String getSynId() {
-        return synId;
-    }
-
-    public void setSynId(String synId) {
-        this.synId = synId;
     }
 
     public String getResourceId() {
