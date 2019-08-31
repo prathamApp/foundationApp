@@ -13,17 +13,17 @@
         <activity
             android:name="com.pratham.foundation.utility.BaseActivity"
             android:screenOrientation="portrait"></activity>
-        <activity
+        <!--<activity
             android:name="com.pratham.foundation.ui.keywordMapping.KeywordMapping"
+            android:screenOrientation="portrait" />-->
+        <activity
+            android:name="com.pratham.foundation.ui.writingParagraph.WritingParagraph_"
             android:screenOrientation="portrait" />
         <activity
-            android:name="com.pratham.foundation.ui.writingParagraph.WritingParagraph"
+            android:name=".ui.factRetrial.FactRetrial_"
             android:screenOrientation="portrait" />
         <activity
-            android:name="com.pratham.foundation.ui.factRetrial.FactRetrial_"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name="com.pratham.foundation.ui.identifyKeywords.IdentifyKeywordsActivity"
+            android:name="com.pratham.foundation.ui.identifyKeywords.IdentifyKeywordsActivity_"
             android:screenOrientation="portrait" />
         <activity
             android:name="com.pratham.foundation.MainActivity"

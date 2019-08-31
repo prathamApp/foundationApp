@@ -32,12 +32,14 @@ public class FactRetrial extends BaseActivity implements FactRetrialController.V
     private QuestionModel questionModel;
     private String answer;
 
-    /*@Override
+    /*
+    @Override
      protected void onCreate(Bundle savedInstanceState) {
          super.onCreate(savedInstanceState);
          //setContentView(R.layout.activity_fact_retrial);
          //  ButterKnife.bind(this);
      } */
+
     @AfterViews
     public void initiate() {
         presenter.getData();

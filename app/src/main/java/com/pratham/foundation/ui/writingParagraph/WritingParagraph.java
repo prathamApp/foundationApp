@@ -16,26 +16,30 @@ import android.widget.ScrollView;
 import com.pratham.foundation.R;
 import com.pratham.foundation.ui.identifyKeywords.QuestionModel;
 
+import org.androidannotations.annotations.AfterViews;
+import org.androidannotations.annotations.EActivity;
+import org.androidannotations.annotations.ViewById;
+
 import java.util.Arrays;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-
+@EActivity(R.layout.activity_writing_paragraph)
 public class WritingParagraph extends AppCompatActivity implements WritingParagraphController.View {
     private WritingParagraphController.Presenter presenter;
     private Context context;
     private int index = 0;
 
-    @BindView(R.id.paragraph)
+    @ViewById(R.id.paragraph)
     RecyclerView paragraph;
-    @BindView(R.id.scrollView)
+    @ViewById(R.id.scrollView)
     ScrollView scrollView;
-    @BindView(R.id.previous)
+    @ViewById(R.id.previous)
     Button previous;
-    @BindView(R.id.capture)
+    @ViewById(R.id.capture)
     Button capture;
-    @BindView(R.id.next)
+    @ViewById(R.id.next)
     Button next;
 
     private String[] paragraphWords;
@@ -43,11 +47,12 @@ public class WritingParagraph extends AppCompatActivity implements WritingParagr
     private LinearLayoutManager layoutManager;
     private RecyclerView.SmoothScroller smoothScroller;
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_writing_paragraph);
-        ButterKnife.bind(this);
+
+    @AfterViews
+    protected void initiate() {
+       // super.onCreate(savedInstanceState);
+       // setContentView(R.layout.activity_writing_paragraph);
+       // ButterKnife.bind(this);
         context = WritingParagraph.this;
         presenter = new WritingParagraphPresenter(this);
         viewParam = new RelativeLayout.LayoutParams(
@@ -78,10 +83,6 @@ public class WritingParagraph extends AppCompatActivity implements WritingParagr
         paragraph.setLayoutManager(layoutManager);
         //layoutManager.smoothScrollToPosition(paragraph,0,4);
         layoutManager.scrollToPositionWithOffset(4, 20);
-
-
-
-
 
 
        /*  for (int i = 0; i < paragraphWords.length; i++) {

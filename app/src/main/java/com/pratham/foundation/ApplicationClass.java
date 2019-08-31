@@ -9,7 +9,6 @@ import com.pratham.foundation.custom.shared_preferences.FastSave;
 import com.pratham.foundation.utility.Utils;
 import com.isupatches.wisefy.WiseFy;
 
-import org.androidannotations.annotations.EApplication;
 
 import java.io.File;
 import java.text.DateFormat;

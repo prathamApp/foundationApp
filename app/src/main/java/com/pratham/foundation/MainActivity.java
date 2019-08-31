@@ -3,8 +3,11 @@ package com.pratham.foundation;
 import android.content.Intent;
 import android.os.Bundle;
 
+
 import com.pratham.foundation.ui.factRetrial.FactRetrial_;
 import com.pratham.foundation.ui.identifyKeywords.IdentifyKeywordsActivity;
+import com.pratham.foundation.ui.identifyKeywords.IdentifyKeywordsActivity_;
+import com.pratham.foundation.ui.writingParagraph.WritingParagraph_;
 import com.pratham.foundation.utility.BaseActivity;
 import com.pratham.foundation.ui.writingParagraph.WritingParagraph;
 
@@ -22,7 +25,7 @@ public class MainActivity extends BaseActivity {
 
     @OnClick(R.id.writingParagraph)
     public void writingParagraphTemp() {
-        Intent intent = new Intent(this, WritingParagraph.class);
+        Intent intent = new Intent(this, WritingParagraph_.class);
         startActivity(intent);
     }
 
@@ -34,7 +37,7 @@ public class MainActivity extends BaseActivity {
 
     @OnClick(R.id.identify_keyword)
     public void identify_keyword() {
-        Intent intent = new Intent(this, IdentifyKeywordsActivity.class);
+        Intent intent = new Intent(this, IdentifyKeywordsActivity_.class);
         startActivity(intent);
     }
 }

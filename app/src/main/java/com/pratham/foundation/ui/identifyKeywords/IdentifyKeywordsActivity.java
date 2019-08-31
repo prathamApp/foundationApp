@@ -13,6 +13,10 @@ import android.widget.Toast;
 import com.pratham.foundation.R;
 import com.pratham.foundation.custumView.FlowLayout;
 
+import org.androidannotations.annotations.AfterViews;
+import org.androidannotations.annotations.EActivity;
+import org.androidannotations.annotations.ViewById;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -20,27 +24,46 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-
+@EActivity(R.layout.activity_identify_keywords)
 public class IdentifyKeywordsActivity extends AppCompatActivity implements IdentifyKeywordsActivityController.View {
     private IdentifyKeywordsActivityPresenter identifyKeywordsActivityPresenter;
     private Context context;
 
     private List<String> selectedKeywords;
 
-    @BindView(R.id.paragraph)
+    @ViewById(R.id.paragraph)
     FlowLayout paraghaph;
 
-    @BindView(R.id.keywords)
+    @ViewById(R.id.keywords)
     FlowLayout keywords;
 
     RelativeLayout.LayoutParams viewParam;
     HashMap<String, List<Integer>> positionMap;
 
-    @Override
+   /* @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_identify_keywords);
-        ButterKnife.bind(this);
+        // setContentView(R.layout.activity_identify_keywords);
+        // ButterKnife.bind(this);
+        context = IdentifyKeywordsActivity.this;
+        selectedKeywords = new ArrayList<>();
+        identifyKeywordsActivityPresenter = new IdentifyKeywordsActivityPresenter(context);
+        positionMap = new HashMap<>();
+
+        viewParam = new RelativeLayout.LayoutParams(
+                RelativeLayout.LayoutParams.WRAP_CONTENT,
+                RelativeLayout.LayoutParams.WRAP_CONTENT);
+
+        RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(
+                RelativeLayout.LayoutParams.WRAP_CONTENT,
+                RelativeLayout.LayoutParams.WRAP_CONTENT);
+        lp.setMargins(10, 5, 10, 5);
+
+        identifyKeywordsActivityPresenter.getData();
+    }*/
+
+    @AfterViews
+    public void initiate() {
         context = IdentifyKeywordsActivity.this;
         selectedKeywords = new ArrayList<>();
         identifyKeywordsActivityPresenter = new IdentifyKeywordsActivityPresenter(context);
