@@ -96,4 +96,13 @@ dependencies {
     implementation 'com.an.customfontview:customfont:0.1.0'
     // S D P
     implementation 'com.intuit.sdp:sdp-android:1.0.6'
+    //JSOUP
+    implementation 'org.jsoup:jsoup:1.8.3'
+    //barcodescanner
+    implementation 'me.dm7.barcodescanner:zxing:1.9.8'
+    implementation 'com.google.zxing:core:3.3.0'
+    implementation 'com.journeyapps:zxing-android-embedded:3.3.0@aar'
+    // Timer library
+    implementation 'com.github.anastr:flattimelib:1.0.3'
+    implementation 'com.github.bumptech.glide:glide:4.2.0'
 }

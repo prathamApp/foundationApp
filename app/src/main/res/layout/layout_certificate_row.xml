@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/certi_root"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/ripple_rectangle_card"
+    android:layout_margin="@dimen/_12sdp"
+    android:padding="@dimen/_12sdp">
+
+    <RelativeLayout
+        android:id="@+id/rl_assess"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_toLeftOf="@+id/tv_view">
+
+        <com.pratham.foundation.custumView.SansTextView
+            android:id="@+id/tv_assessment"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="word"
+            android:textColor="@color/colorBtnOrangeDark"
+            android:textSize="@dimen/_15sdp" />
+
+        <com.pratham.foundation.custumView.SansTextView
+            android:id="@+id/tv_timestamp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tv_assessment"
+            android:text="timestamp"
+            android:textColor="@color/colorBtnRedLight"
+            android:textSize="@dimen/_8sdp" />
+    </RelativeLayout>
+
+    <com.pratham.foundation.custumView.SansTextView
+        android:id="@+id/tv_view"
+        android:layout_width="@dimen/_60sdp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:background="@drawable/green_button"
+        android:elevation="@dimen/_2sdp"
+        android:gravity="center"
+        android:paddingVertical="@dimen/_3sdp"
+        android:text="View"
+        android:textColor="@color/white"
+        android:textSize="@dimen/_12sdp" />
+
+</RelativeLayout>

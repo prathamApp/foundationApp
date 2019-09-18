@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:custom="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/splash_root"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/bg_anim_fourth_layer"
+    tools:context="com.pratham.foundation.ui.splash_activity.SplashActivity">
+
+    <ImageView
+        android:id="@+id/iv_pratham_logo"
+        android:layout_width="@dimen/_50sdp"
+        android:layout_height="@dimen/_40sdp"
+        android:layout_alignParentTop="true"
+        android:scaleType="fitCenter"
+        android:src="@drawable/pratham_logo" />
+
+    <ImageView
+        android:id="@+id/gifcomplete"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:padding="@dimen/_20sdp"
+        android:layout_below="@+id/iv_pratham_logo"
+        android:layout_centerHorizontal="true"
+        android:src="@drawable/ras_gif_end"
+        android:scaleType="fitCenter"/>
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/_100sdp"
+        android:layout_alignParentBottom="true"
+        android:scaleType="fitXY"
+        android:src="@drawable/splash_bottom_bg"/>
+
+    <ImageView
+        android:id="@+id/iv_splash"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/_130sdp"
+        android:layout_marginBottom="@dimen/_10sdp"
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentBottom="true"
+        android:src="@drawable/splash_group"/>
+
+</RelativeLayout>

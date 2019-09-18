@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/group_card"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/rounded_rectangle_stroke_bg"
+    android:layout_gravity="center">
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+        android:layout_centerInParent="true">
+
+        <ImageView
+            android:id="@+id/iv_grp"
+            android:layout_width="@dimen/_80sdp"
+            android:layout_height="@dimen/_80sdp"
+            android:layout_centerHorizontal="true"
+            android:gravity="center"
+            android:src="@drawable/ic_grp_btn" />
+
+        <com.pratham.foundation.custumView.SansTextView
+            android:id="@+id/group_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/iv_grp"
+            android:layout_marginTop="5dp"
+            android:layout_centerHorizontal="true"
+            android:gravity="center"
+            android:text="asanksjdnaks"
+            android:textColor="@android:color/black"
+            android:textSize="@dimen/_13sdp" />
+
+    </RelativeLayout>
+
+</RelativeLayout>

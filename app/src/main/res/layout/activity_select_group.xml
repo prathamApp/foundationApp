@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main_layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.admin_panel.group_selection.SelectGroupActivity">
+
+   <!-- <com.pratham.foundation.custumView.SansTextView
+        android:id="@+id/title"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:background="@color/red"
+        android:gravity="center_vertical"
+        android:textColor="@color/white"
+        android:paddingLeft="20dp"
+        android:text="Choose Group"
+        android:textSize="25sp" />
+
+    <RelativeLayout
+        android:id="@+id/buttons_rl"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_below="@id/title"
+        android:layout_centerHorizontal="true"
+        android:gravity="center">
+
+        <android.support.design.card.MaterialCardView
+            android:id="@+id/below_7"
+            android:layout_centerHorizontal="true"
+            android:layout_width="@dimen/_250sdp"
+            android:layout_height="@dimen/_200sdp"
+            android:layout_marginBottom="@dimen/_5sdp"
+            app:cardCornerRadius="@dimen/_15sdp">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_above="@+id/tv_card1"
+                    android:layout_margin="@dimen/_10sdp"
+                    android:scaleType="fitCenter"
+                    android:src="@drawable/storytelling" />
+
+                <com.pratham.foundation.custumView.SansTextView
+                    android:id="@id/tv_card1"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentBottom="true"
+                    android:layout_marginVertical="10dp"
+                    android:gravity="center"
+                    android:text="@string/age_3_to_6"
+                    android:textColor="@color/black_20"
+                    android:textSize="20sp" />
+            </RelativeLayout>
+        </android.support.design.card.MaterialCardView>
+
+        <android.support.design.card.MaterialCardView
+            android:id="@+id/above_7"
+            android:layout_centerHorizontal="true"
+            android:layout_width="@dimen/_250sdp"
+            android:layout_height="@dimen/_200sdp"
+            android:layout_below="@id/below_7"
+            android:layout_marginTop="@dimen/_5sdp"
+            app:cardCornerRadius="@dimen/_15sdp">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_above="@+id/tv_card2"
+                    android:layout_margin="@dimen/_10sdp"
+                    android:scaleType="fitCenter"
+                    android:src="@drawable/gitl_reading" />
+
+                <com.pratham.foundation.custumView.SansTextView
+                    android:id="@id/tv_card2"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentBottom="true"
+                    android:layout_marginVertical="10dp"
+                    android:gravity="center"
+                    android:text="@string/age_8_to_14"
+                    android:textColor="@color/black_20"
+                    android:textSize="20sp" />
+            </RelativeLayout>
+
+        </android.support.design.card.MaterialCardView>
+    </RelativeLayout>
+
+    <FrameLayout
+        android:id="@+id/frame_group"
+        android:visibility="gone"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />-->
+    <FrameLayout
+        android:id="@+id/frame_group"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+</RelativeLayout>

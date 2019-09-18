@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/group_card"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center"
+    android:layout_margin="@dimen/_20sdp"
+    android:background="@drawable/rounded_rectangle_stroke_bg">
+
+    <RelativeLayout
+        android:layout_width="@dimen/_100sdp"
+        android:layout_height="@dimen/_100sdp"
+        android:layout_centerInParent="true"
+        android:layout_margin="8dp">
+
+        <com.pratham.foundation.custumView.SansTextView
+            android:id="@+id/keywordname"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:layout_marginTop="5dp"
+            android:gravity="center"
+            android:text="asanksjdnaks"
+            android:textColor="@android:color/black"
+            android:textSize="@dimen/_26sdp" />
+    </RelativeLayout>
+
+</RelativeLayout>

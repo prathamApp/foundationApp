@@ -1,11 +1,15 @@
 package com.pratham.foundation.utility;
 
+import android.annotation.SuppressLint;
+import android.content.Context;
 import android.media.AudioManager;
+import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.WindowManager;
 
+import com.pratham.foundation.database.AppDatabase;
 import com.pratham.foundation.database.BackupDatabase;
 import com.pratham.foundation.services.TTSService;
 
@@ -71,6 +75,30 @@ public class BaseActivity extends AppCompatActivity {
 //        ActivityResumed();
         BackupDatabase.backup(this);
     }
-
+    @SuppressLint("StaticFieldLeak")
+    public void endSession(Context context) {
+        try {
+            new AsyncTask<Object, Void, Object>() {
+                @Override
+                protected Object doInBackground(Object[] objects) {
+                    try {
+                        String curSession = AppDatabase.appDatabase.getStatusDao().getValue("CurrentSession");
+                        String toDateTemp = AppDatabase.appDatabase.getSessionDao().getToDate(curSession);
+                        if (toDateTemp.equalsIgnoreCase("na")) {
+                            AppDatabase.appDatabase.getSessionDao().UpdateToDate(curSession, Utils.getCurrentDateTime());
+                        }
+                        BackupDatabase.backup(context);
+                    } catch (Exception e) {
+                        String curSession = AppDatabase.appDatabase.getStatusDao().getValue("CurrentSession");
+                        AppDatabase.appDatabase.getSessionDao().UpdateToDate(curSession, Utils.getCurrentDateTime());
+                        e.printStackTrace();
+                    }
+                    return null;
+                }
+            }.execute();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 
 }

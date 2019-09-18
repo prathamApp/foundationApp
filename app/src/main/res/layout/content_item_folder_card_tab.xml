@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="@dimen/_105sdp"
+    android:layout_height="@dimen/_120sdp"
+    android:layout_marginHorizontal="5dp">
+
+    <RelativeLayout
+        android:id="@+id/rl_root"
+        android:layout_width="@dimen/_105sdp"
+        android:layout_height="@dimen/_120sdp"
+        android:layout_alignParentTop="true"
+        android:layout_marginHorizontal="@dimen/_5sdp"
+        android:layout_marginBottom="@dimen/_10sdp"
+        android:layout_marginTop="1dp"
+        android:background="@drawable/ripple_rectangle_card"
+        android:elevation="@dimen/_3sdp"
+        android:outlineSpotShadowColor="@color/colorBlack"
+        android:outlineAmbientShadowColor="@color/colorBlack"
+        android:padding="@dimen/_2sdp">
+
+        <ImageButton
+            android:id="@+id/ib_action_btn"
+            android:layout_width="@dimen/_1sdp"
+            android:layout_height="@dimen/_1sdp"
+            android:layout_marginTop="@dimen/_5sdp"
+            android:scaleType="fitCenter"
+            android:visibility="gone" />
+
+        <com.pratham.foundation.custumView.CircularImageView
+            android:id="@+id/itemImage"
+            android:layout_width="@dimen/_50sdp"
+            android:layout_height="@dimen/_50sdp"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="@dimen/_1sdp"
+            android:scaleType="fitCenter"
+            app:border="true"
+            app:border_color="@color/red"
+            app:border_width="@dimen/_2sdp"
+            app:shadow="true" />
+        <!--            android:layout_marginLeft="10dp"
+                    android:layout_marginTop="4dp"/>-->
+
+        <com.pratham.foundation.custumView.SansTextViewBold
+            android:id="@+id/tvTitle"
+            android:layout_width="@dimen/_90sdp"
+            android:layout_height="match_parent"
+            android:layout_above="@id/card_progressLayout"
+            android:layout_below="@id/itemImage"
+            android:layout_marginTop="@dimen/_2sdp"
+            android:gravity="center"
+            android:maxLines="2"
+            android:text="City Of Stories City Of Stories"
+            android:textColor="@color/colorPrimary"
+            android:textSize="@dimen/_12sdp" />
+
+        <com.pratham.foundation.custumView.progress_layout.ProgressLayout
+            android:id="@+id/card_progressLayout"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_8sdp"
+            android:layout_alignParentBottom="true"
+            android:layout_marginHorizontal="@dimen/_2sdp"
+            android:layout_marginVertical="@dimen/_3sdp"
+            android:maxHeight="@dimen/_15sdp"
+            android:minHeight="@dimen/_15sdp"
+            app:c_progress="0"
+            app:c_borderWidth="@dimen/_1sdp"
+            app:c_progressColor="@color/colorProgress"
+            app:c_progressRadius="@dimen/_4sdp" />
+
+    </RelativeLayout>
+
+</RelativeLayout>

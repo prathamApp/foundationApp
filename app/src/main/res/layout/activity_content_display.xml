@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/home_root_layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="2dp">
+
+    <RelativeLayout
+        android:id="@+id/header_rl"
+        android:layout_width="match_parent"
+        android:layout_height="110dp"
+        android:layout_alignParentTop="true"
+        android:layout_marginBottom="@dimen/_5sdp"
+        android:background="@drawable/home_header_1_bg"
+        android:elevation="@dimen/_3sdp">
+
+        <com.pratham.foundation.custumView.CircularImageView
+            android:id="@+id/profileImage"
+            android:layout_width="90dp"
+            android:layout_height="90dp"
+            android:layout_centerVertical="true"
+            android:scaleType="fitCenter"
+            android:src="@drawable/b2"
+            app:border="true"
+            app:border_color="@color/colorAccent"
+            app:border_width="2dp"
+            app:shadow="true" />
+
+        <com.pratham.foundation.custumView.SansTextView
+            android:id="@+id/tv_title"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_above="@+id/full_level_progressLayout"
+            android:layout_marginHorizontal="@dimen/_20sdp"
+            android:layout_toRightOf="@+id/profileImage"
+            android:gravity="center_vertical"
+            android:lines="2"
+            android:textAllCaps="true"
+            android:textColor="@color/white"
+            android:textSize="@dimen/_15sdp" />
+
+        <com.pratham.foundation.custumView.progress_layout.ProgressLayout
+            android:id="@+id/full_level_progressLayout"
+            android:layout_width="match_parent"
+            android:layout_height="15dp"
+            android:layout_alignParentBottom="true"
+            android:layout_marginHorizontal="@dimen/_20sdp"
+            android:layout_marginBottom="8dp"
+            android:layout_toRightOf="@+id/profileImage"
+            android:elevation="15dp"
+            android:maxHeight="15dp"
+            android:minHeight="15dp"
+            app:c_borderWidth="2dp"
+            app:c_progress="0"
+            app:c_progressColor="@color/white"
+            app:c_progressRadius="7dp" />
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/ll_mid"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/header_rl"
+        android:layout_centerInParent="true"
+        android:paddingHorizontal="10dp">
+
+        <include layout="@layout/content_recycler" />
+
+    </RelativeLayout>
+
+</RelativeLayout>

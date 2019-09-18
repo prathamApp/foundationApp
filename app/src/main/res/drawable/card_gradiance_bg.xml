@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="rectangle">
+    <corners android:radius="@dimen/_5sdp" />
+    <stroke
+        android:width="@dimen/_2sdp"
+        android:color="@color/contentCardColor" />
+    <gradient
+        android:angle="45"
+        android:endColor="@color/transparent_white_dark"
+        android:startColor="@color/transparent_white_dark"
+        android:type="linear" />
+    <!--
+        android:endColor="@color/gradianceCardEndColor"
+        android:startColor="@color/gradianceCardStartColor"-->
+</shape>

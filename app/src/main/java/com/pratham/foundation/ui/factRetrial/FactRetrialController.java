@@ -1,14 +1,18 @@
 package com.pratham.foundation.ui.factRetrial;
 
-import com.pratham.foundation.ui.identifyKeywords.QuestionModel;
+import com.pratham.foundation.database.domain.QuetionAns;
+
+import java.util.List;
 
 public interface FactRetrialController {
     public interface View {
-        public void showParagraph(QuestionModel questionModel);
+        public void showParagraph(String para, List<QuetionAns> list);
     }
 
     public interface Presenter {
-        public void getData();
+        void getData();
+        void setView(String contentTitle, String resId);
+        void getDataList();
     }
 
 }

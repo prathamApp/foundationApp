@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:id="@+id/test_student_card"
+    android:layout_marginHorizontal="@dimen/_10sdp"
+    android:layout_gravity="center"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <android.support.v7.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:layout_margin="10dp"
+        app:cardCornerRadius="8dp"
+        app:cardElevation="5dp">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <ImageView
+                android:id="@+id/test_student_img"
+                android:layout_width="90dp"
+                android:layout_height="90dp"
+                android:layout_margin="5dp"
+                android:layout_centerVertical="true"
+                android:layout_alignParentLeft="true"
+                android:layout_gravity="center"
+                android:src="@drawable/b1" />
+
+            <com.pratham.foundation.custumView.SansTextView
+                android:id="@+id/tv_studentName"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_centerVertical="true"
+                android:gravity="center"
+                android:layout_toRightOf="@+id/test_student_img"
+                android:background="@color/full_transparent"
+                android:text="ABC DEF"
+                android:textColor="@color/colorBlack"
+                android:layout_gravity="center"
+                android:layout_margin="5dp"
+                android:textSize="20sp" />
+
+        </RelativeLayout>
+
+    </android.support.v7.widget.CardView>
+
+</RelativeLayout>

@@ -1,15 +1,19 @@
 package com.pratham.foundation.ui.writingParagraph;
 
 import android.content.Context;
+import android.content.Intent;
+import android.graphics.Bitmap;
 import android.os.Build;
-import android.os.Bundle;
 import android.os.Handler;
+import android.provider.MediaStore;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 
@@ -17,14 +21,14 @@ import com.pratham.foundation.R;
 import com.pratham.foundation.ui.identifyKeywords.QuestionModel;
 
 import org.androidannotations.annotations.AfterViews;
+import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.ViewById;
 
 import java.util.Arrays;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
 import butterknife.OnClick;
+
 @EActivity(R.layout.activity_writing_paragraph)
 public class WritingParagraph extends AppCompatActivity implements WritingParagraphController.View {
     private WritingParagraphController.Presenter presenter;
@@ -41,18 +45,20 @@ public class WritingParagraph extends AppCompatActivity implements WritingParagr
     Button capture;
     @ViewById(R.id.next)
     Button next;
+    /*@ViewById(R.id.preview)
+    ImageView preview;*/
 
     private String[] paragraphWords;
     private RelativeLayout.LayoutParams viewParam;
     private LinearLayoutManager layoutManager;
     private RecyclerView.SmoothScroller smoothScroller;
-
+    private static final int CAMERA_REQUEST = 1;
 
     @AfterViews
     protected void initiate() {
-       // super.onCreate(savedInstanceState);
-       // setContentView(R.layout.activity_writing_paragraph);
-       // ButterKnife.bind(this);
+        // super.onCreate(savedInstanceState);
+        // setContentView(R.layout.activity_writing_paragraph);
+        // ButterKnife.bind(this);
         context = WritingParagraph.this;
         presenter = new WritingParagraphPresenter(this);
         viewParam = new RelativeLayout.LayoutParams(
@@ -136,5 +142,28 @@ public class WritingParagraph extends AppCompatActivity implements WritingParagr
         View view = paragraph.getChildAt(index);
         paragraph.getLayoutManager().scrollToPosition(index + 1);
         view.setBackground(ContextCompat.getDrawable(context, R.drawable.rounded_border_yellow));
+    }
+
+    @Click(R.id.capture)
+    public void captureClick() {
+        Intent takePicture = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        startActivityForResult(takePicture, CAMERA_REQUEST);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        Log.d("codes", String.valueOf(requestCode) + resultCode);
+        try {
+            String imageName="iamge1";
+            if (requestCode == CAMERA_REQUEST) {
+                Bitmap photo = (Bitmap) data.getExtras().get("data");
+               /* preview.setVisibility(View.VISIBLE);
+                preview.setImageBitmap(photo);
+                preview.setScaleType(ImageView.ScaleType.FIT_XY);*/
+                presenter.createDirectoryAndSaveFile(photo, imageName);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }

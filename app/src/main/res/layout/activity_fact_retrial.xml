@@ -27,6 +27,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:scrollbars="vertical"
+            android:layout_gravity="center"
             android:textSize="25sp"
             android:textStyle="bold" />
     </ScrollView>
@@ -52,11 +53,24 @@
         android:layout_height="0dp"
         android:layout_weight="1"
         android:orientation="horizontal">
-
         <Button
+            android:id="@+id/previous"
+            android:layout_width="100dp"
+            android:layout_height="50dp"
+            android:layout_centerVertical="true"
+            android:text="previous" />
+        <Button
+            android:id="@+id/submitBtn"
             android:layout_width="100dp"
             android:layout_height="50dp"
             android:layout_centerInParent="true"
             android:text="Submit" />
+        <Button
+            android:id="@+id/next"
+            android:layout_width="100dp"
+            android:layout_height="50dp"
+            android:layout_centerVertical="true"
+            android:layout_alignParentEnd="true"
+            android:text="next" />
     </RelativeLayout>
 </LinearLayout>

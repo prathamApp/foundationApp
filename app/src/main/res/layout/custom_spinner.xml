@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<com.pratham.foundation.custumView.SansTextView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:textSize="@dimen/_15sdp"
+    android:gravity="left|center_vertical"
+    android:text="@string/app_name"
+    android:textColor="#000000"
+    android:paddingLeft="@dimen/_10sdp"
+    android:paddingVertical="@dimen/_3sdp"/>

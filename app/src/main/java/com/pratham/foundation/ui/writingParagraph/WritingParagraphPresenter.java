@@ -1,6 +1,8 @@
 package com.pratham.foundation.ui.writingParagraph;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.os.Environment;
 
 import com.pratham.foundation.ui.identifyKeywords.QuestionModel;
 import com.pratham.foundation.utility.Utils;
@@ -9,6 +11,8 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.File;
+import java.io.FileOutputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -47,5 +51,28 @@ public class WritingParagraphPresenter implements WritingParagraphController.Pre
         questionModel.setParagraph("Firstly, This activity implements the MainActivityPresenter.View Interface through which it’s overridden method will be called. Secondly, we have to create the MainActivityPresenter object with view as a constructor. We use this presenter object to listen the user input and update the data as well as view. I think that's better to leverage the xml shape drawable resource power if that fits your needs. With a from scratch project (for android-8), define res/layout/main.xml");
         questionModel.setKeywords(new ArrayList(Arrays.asList(instrumentNames)));*/
         view.showParagraph(questionModel);
+    }
+
+
+
+    public void createDirectoryAndSaveFile(Bitmap imageToSave, String fileName) {
+        try {
+
+            File direct = new File(Environment.getExternalStorageDirectory().toString() + "/.EngGameInternal");
+            if (!direct.exists()) direct.mkdir();
+            direct = new File(Environment.getExternalStorageDirectory().toString() + "/.EngGameInternal/WritingParagraph/");
+            if (!direct.exists()) direct.mkdir();
+
+            File file = new File(direct, fileName);
+
+            FileOutputStream out = new FileOutputStream(file);
+            imageToSave.compress(Bitmap.CompressFormat.JPEG, 100, out);
+           // isPhotoSaved = true;
+            out.flush();
+            out.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
     }
 }

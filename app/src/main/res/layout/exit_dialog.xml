@@ -1,0 +1,61 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="@dimen/_250sdp"
+    android:layout_height="@dimen/_150sdp"
+    android:layout_gravity="center"
+    android:background="@drawable/dialog_bg">
+
+    <com.pratham.foundation.custumView.SansTextView
+        android:id="@+id/dia_title"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/_70sdp"
+        android:layout_alignParentTop="true"
+        android:layout_marginHorizontal="@dimen/_12sdp"
+        android:layout_marginTop="@dimen/_15sdp"
+        android:textColor="@color/colorRed"
+        android:background="@drawable/rounded_rectangle_stroke_bg"
+        android:fontFamily="sans-serif"
+        android:gravity="center"
+        android:paddingHorizontal="@dimen/_7sdp"
+        android:text="What do you want to do?"
+        android:textSize="@dimen/_20sdp"
+        android:textStyle="bold|italic" />
+
+    <com.pratham.foundation.custumView.SansButton
+        android:id="@+id/dia_btn_exit"
+        android:layout_width="@dimen/_80sdp"
+        android:layout_height="@dimen/_40sdp"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginRight="@dimen/_12sdp"
+        android:background="@drawable/ripple_effect"
+        android:layout_marginBottom="@dimen/_15sdp"
+        android:elevation="5dp"
+        android:text="Exit"
+        android:textSize="@dimen/_12sdp" />
+
+    <com.pratham.foundation.custumView.SansButton
+        android:id="@+id/dia_btn_restart"
+        android:layout_width="@dimen/_80sdp"
+        android:layout_height="@dimen/_40sdp"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="@dimen/_15sdp"
+        android:layout_marginLeft="@dimen/_12sdp"
+        android:background="@drawable/ripple_effect"
+        android:elevation="5dp"
+        android:text="Restart"
+        android:textSize="@dimen/_12sdp" />
+
+    <ImageButton
+        android:id="@+id/exit_ib"
+        android:layout_width="@dimen/_30sdp"
+        android:layout_height="@dimen/_30sdp"
+        android:layout_alignParentRight="true"
+        android:background="@color/full_transparent"
+        android:padding="@dimen/_3sdp"
+        android:scaleType="fitCenter"
+        android:src="@drawable/credits_icon"
+        android:visibility="gone" />
+
+
+</RelativeLayout>

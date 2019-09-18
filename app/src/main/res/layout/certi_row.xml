@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:id="@+id/certificate_card_view"
+    android:layout_marginHorizontal="@dimen/_10sdp"
+    android:background="@drawable/ripple_rectangle_card"
+    android:layout_margin="@dimen/_5sdp">
+
+    <com.pratham.foundation.custumView.SansTextView
+        android:id="@+id/assess_data"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:layout_alignParentTop="true"
+        android:padding="@dimen/_7sdp"
+        android:text="Student Knows "
+        android:textColor="@color/colorBlack"
+        android:textSize="@dimen/_13sdp"
+        android:textStyle="bold" />
+
+    <RatingBar
+        android:id="@+id/ratingStars"
+        android:theme="@style/Widget.AppCompat.RatingBar"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/_40sdp"
+        android:layout_below="@id/assess_data"
+        android:visibility="visible"
+        android:layout_centerHorizontal="true"
+        android:numStars="5"
+        android:stepSize="1"
+        android:isIndicator="true"
+        android:progressTint="@color/ratingFilled" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginTop="@dimen/_2sdp"
+        android:layout_alignParentBottom="true"
+        android:background="@color/colorBlack"
+        android:visibility="gone"
+        android:alpha="0.3"/>
+</RelativeLayout>

@@ -1,0 +1,57 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/bg_anim_fourth_layer"
+    tools:context=".ui.admin_panel.fragment_admin_panel.PushOrAssign.PushOrAssignFragment">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:gravity="center">
+
+        <com.pratham.foundation.custumView.SansButton
+            android:id="@+id/btn_download_all_data"
+            android:layout_width="@dimen/_150sdp"
+            android:layout_height="@dimen/_50sdp"
+            android:layout_marginVertical="@dimen/_10sdp"
+            android:background="@drawable/red_button"
+            android:text="Download all data"
+            android:textColor="@color/white"
+            android:textSize="@dimen/_12sdp" />
+
+        <com.pratham.foundation.custumView.SansButton
+            android:id="@+id/btn_assign"
+            android:layout_width="@dimen/_150sdp"
+            android:textColor="@color/white"
+            android:layout_below="@+id/btn_download_all_data"
+            android:layout_height="@dimen/_50sdp"
+            android:layout_marginVertical="@dimen/_10sdp"
+            android:background="@drawable/red_button"
+            android:text="Assign Groups"
+            android:textSize="@dimen/_12sdp" />
+
+        <com.pratham.foundation.custumView.SansButton
+            android:id="@+id/btn_push"
+            android:layout_width="@dimen/_150sdp"
+            android:layout_height="@dimen/_50sdp"
+            android:layout_marginVertical="@dimen/_10sdp"
+            android:layout_below="@id/btn_assign"
+            android:textColor="@color/white"
+            android:background="@drawable/red_button"
+            android:text="Push Data"
+            android:textSize="@dimen/_12sdp" />
+
+        <com.pratham.foundation.custumView.SansButton
+            android:id="@+id/btn_progress"
+            android:layout_width="@dimen/_150sdp"
+            android:layout_height="@dimen/_50sdp"
+            android:layout_marginVertical="@dimen/_10sdp"
+            android:layout_below="@id/btn_push"
+            android:textColor="@color/white"
+            android:background="@drawable/red_button"
+            android:text="Get Progress"
+            android:textSize="@dimen/_12sdp" />
+    </RelativeLayout>
+</FrameLayout>

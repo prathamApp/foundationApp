@@ -1,39 +1,132 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="com.pratham.foundation">
 
     <application
-        android:name="com.pratham.foundation.ApplicationClass"
+        android:name=".ApplicationClass"
         android:allowBackup="true"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@drawable/app_logo"
         android:label="@string/app_name"
-        android:roundIcon="@mipmap/ic_launcher_round"
+        android:roundIcon="@drawable/app_logo_r"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <activity android:name=".ui.selectSubject.SelectSubject_"
+            android:screenOrientation="portrait"/>
         <activity
-            android:name="com.pratham.foundation.utility.BaseActivity"
-            android:screenOrientation="portrait"></activity>
-        <!--<activity
+            android:name=".ui.keywordMapping.KeywordMapping_"
+            android:label="@string/title_activity_keyword_mapping"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".utility.BaseActivity"
+            android:screenOrientation="portrait" />
+        <!--
+<activity
             android:name="com.pratham.foundation.ui.keywordMapping.KeywordMapping"
-            android:screenOrientation="portrait" />-->
+            android:screenOrientation="portrait" />
+        -->
         <activity
-            android:name="com.pratham.foundation.ui.writingParagraph.WritingParagraph_"
+            android:name=".ui.writingParagraph.WritingParagraph_"
             android:screenOrientation="portrait" />
         <activity
             android:name=".ui.factRetrial.FactRetrial_"
             android:screenOrientation="portrait" />
         <activity
-            android:name="com.pratham.foundation.ui.identifyKeywords.IdentifyKeywordsActivity_"
+            android:name=".ui.identifyKeywords.IdentifyKeywordsActivity_"
             android:screenOrientation="portrait" />
+        <!--
+  <activity
+              android:name=".MainActivity"
+              android:screenOrientation="portrait">
+              <intent-filter>
+                  <action android:name="android.intent.action.MAIN" />
+
+                  <category android:name="android.intent.category.LAUNCHER" />
+              </intent-filter>
+          </activity>
+        -->
         <activity
-            android:name="com.pratham.foundation.MainActivity"
-            android:screenOrientation="portrait">
+            android:name=".ui.splash_activity.SplashActivity_"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustNothing">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".ui.admin_panel.AdminControlsActivity_"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.bottom_fragment.add_student.MenuActivity_"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.qr_scan.QRScanActivity_"
+            android:screenOrientation="portrait" />
+        <!--
+   <activity
+               android:name=".ui.profile.ProfileActivity"
+               android:screenOrientation="portrait" />
+        -->
+        <activity
+            android:name=".ui.admin_panel.assign_groups.Activity_AssignGroups_"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.admin_panel.group_selection.SelectGroupActivity_"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.app_home.HomeActivity_"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.display_content.ContentDisplay_"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.admin_panel.fragment_admin_panel.PushOrAssign.PushDataActivity_"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.test.supervisor.SupervisedAssessmentActivity"
+            android:screenOrientation="sensorPortrait"
+            android:theme="@style/Theme.AppCompat.Light.Dialog.MinWidth" />
+        <activity
+            android:name=".ui.student_profile.Student_profile_activity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".contentPlayer.WebViewActivity"
+            android:screenOrientation="portrait" />
+
+        <service
+            android:name=".services.AppExitService"
+            android:enabled="true"
+            android:stopWithTask="false" />
     </application>
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
+    <uses-permission android:name="android.permission.CHANGE_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.RECORD_AUDIO" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.BLUETOOTH" />
+    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <uses-permission android:name="android.permission.EXPAND_STATUS_BAR" />
+    <uses-permission
+        android:name="android.permission.CHANGE_CONFIGURATION"
+        tools:ignore="ProtectedPermissions" />
+    <uses-permission android:name="android.permission.CHANGE_WIFI_MULTICAST_STATE" />
+    <uses-permission
+        android:name="android.permission.WRITE_SETTINGS"
+        tools:ignore="ProtectedPermissions" />
+
+    <uses-permission
+        android:name="android.permission.WRITE_SECURE_SETTINGS"
+        tools:ignore="ProtectedPermissions" />
 
 </manifest>

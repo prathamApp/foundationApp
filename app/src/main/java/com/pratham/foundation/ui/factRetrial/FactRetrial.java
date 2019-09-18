@@ -1,5 +1,6 @@
 package com.pratham.foundation.ui.factRetrial;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.text.SpannableString;
 import android.text.style.BackgroundColorSpan;
@@ -10,13 +11,19 @@ import android.view.MenuItem;
 import android.widget.TextView;
 
 import com.pratham.foundation.R;
-import com.pratham.foundation.ui.identifyKeywords.QuestionModel;
+import com.pratham.foundation.database.domain.QuetionAns;
+import com.pratham.foundation.ui.keywordMapping.KeywordMapping;
+import com.pratham.foundation.ui.keywordMapping.KeywordMapping_;
 import com.pratham.foundation.utility.BaseActivity;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Bean;
+import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EActivity;
+import org.androidannotations.annotations.UiThread;
 import org.androidannotations.annotations.ViewById;
+
+import java.util.List;
 
 @EActivity(R.layout.activity_fact_retrial)
 public class FactRetrial extends BaseActivity implements FactRetrialController.View {
@@ -29,9 +36,11 @@ public class FactRetrial extends BaseActivity implements FactRetrialController.V
     @ViewById(R.id.quetion)
     TextView quetion;
 
-    private QuestionModel questionModel;
-    private String answer;
-
+    private String answer, para;
+    private String contentPath, contentTitle, StudentID, resId;
+    boolean onSdCard;
+    private List<QuetionAns> selectedQuetion;
+    private int index = 0;
     /*
     @Override
      protected void onCreate(Bundle savedInstanceState) {
@@ -42,14 +51,21 @@ public class FactRetrial extends BaseActivity implements FactRetrialController.V
 
     @AfterViews
     public void initiate() {
+        Intent intent = getIntent();
+        contentPath = intent.getStringExtra("contentPath");
+        StudentID = intent.getStringExtra("StudentID");
+        resId = intent.getStringExtra("resId");
+        contentTitle = intent.getStringExtra("contentName");
+        onSdCard = getIntent().getBooleanExtra("onSdCard", false);
+
         presenter.getData();
     }
 
     @Override
-    public void showParagraph(final QuestionModel questionModel) {
-        this.questionModel = questionModel;
-        paragraph.setText(questionModel.getParagraph());
-        quetion.setText(questionModel.getKeywords().get(0));
+    public void showParagraph(String para, List<QuetionAns> selectedQuetionTemp) {
+        this.para = para;
+        this.selectedQuetion = selectedQuetionTemp;
+        showQuetion();
         final int SETANSWER = 0;
         final int CLEAR_ANSWER = 1;
         paragraph.setCustomSelectionActionModeCallback(new ActionMode.Callback() {
@@ -81,15 +97,23 @@ public class FactRetrial extends BaseActivity implements FactRetrialController.V
                     case SETANSWER:
                         int start = paragraph.getSelectionStart();
                         int end = paragraph.getSelectionEnd();
-                        SpannableString str = new SpannableString(questionModel.getParagraph());
+                        SpannableString str = new SpannableString(para);
                         str.setSpan(new BackgroundColorSpan(Color.YELLOW), start, end, 0);
-                        answer = questionModel.getParagraph().substring(start, end);
+                        answer = para.substring(start, end).trim();
+                        if (!answer.isEmpty()) {
+                            selectedQuetion.get(index).setStart(start);
+                            selectedQuetion.get(index).setEnd(end);
+                            selectedQuetion.get(index).setUserAns(answer);
+                        }
                         Log.d("tag :::", answer);
                         paragraph.setText(str);
                         break;
                     case CLEAR_ANSWER:
-                        paragraph.setText(questionModel.getParagraph());
+                        paragraph.setText(para);
                         answer = "";
+                        selectedQuetion.get(index).setUserAns(answer);
+                        selectedQuetion.get(index).setStart(0);
+                        selectedQuetion.get(index).setEnd(0);
                 }
                 return false;
             }
@@ -99,5 +123,42 @@ public class FactRetrial extends BaseActivity implements FactRetrialController.V
 
             }
         });
+    }
+
+    @UiThread
+    public void showQuetion() {
+        try {
+            SpannableString str = new SpannableString(para);
+            if (selectedQuetion.get(index).getUserAns() != null && !selectedQuetion.get(index).getUserAns().isEmpty()) {
+                str.setSpan(new BackgroundColorSpan(Color.YELLOW), selectedQuetion.get(index).getStart(), selectedQuetion.get(index).getEnd(), 0);
+            }
+            quetion.setText(selectedQuetion.get(index).getQuetion());
+            paragraph.setText(str);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    @Click(R.id.previous)
+    public void onPreviousClick() {
+        if (index > 0) {
+            index--;
+            showQuetion();
+        }
+    }
+
+    @Click(R.id.next)
+    public void onNextClick() {
+        if (index < 4) {
+            index++;
+            showQuetion();
+        }
+    }
+
+    @Click(R.id.submitBtn)
+    public void onsubmitBtnClick() {
+        Intent intent = new Intent(this, KeywordMapping_.class);
+        startActivity(intent);
     }
 }

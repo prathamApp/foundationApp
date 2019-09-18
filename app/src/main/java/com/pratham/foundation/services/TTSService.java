@@ -253,7 +253,7 @@ public class TTSService implements TextToSpeech.OnInitListener {
         if (muted) {
             return;
         }
-        Log.d(TAG, "Playing: \"" + text + "\"");
+        Log.d(TAG, "Playing:  " + text + " ");
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             textToSpeech.setLanguage(new Locale("en", "IN"));
             textToSpeech.speak(text, queueMode, null, utteranceId);

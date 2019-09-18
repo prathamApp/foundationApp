@@ -20,8 +20,8 @@ public class KeyWords implements Serializable {
     private int keyWordId;
     @SerializedName("studentId")
     private String studentId;
-    @Ignore
-    private String sessionId;
+    /* @Ignore
+     private String sessionId;*/
     @SerializedName("resourceId")
     private String resourceId;
     @SerializedName("keyWord")
@@ -29,6 +29,7 @@ public class KeyWords implements Serializable {
     @SerializedName("keyWordType")
     private String wordType;
     private int sentFlag;
+    private String topic;
 
     public int getKeyWordId() {
         return keyWordId;
@@ -46,13 +47,13 @@ public class KeyWords implements Serializable {
         this.studentId = studentId;
     }
 
-    public String getSessionId() {
+   /* public String getSessionId() {
         return sessionId;
     }
 
     public void setSessionId(String sessionId) {
         this.sessionId = sessionId;
-    }
+    }*/
 
     public String getResourceId() {
         return resourceId;
@@ -84,5 +85,13 @@ public class KeyWords implements Serializable {
 
     public void setSentFlag(int sentFlag) {
         this.sentFlag = sentFlag;
+    }
+
+    public String getTopic() {
+        return topic;
+    }
+
+    public void setTopic(String topic) {
+        this.topic = topic;
     }
 }

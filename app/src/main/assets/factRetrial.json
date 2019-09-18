@@ -1,10 +1,49 @@
 [
   {
     "id": 1,
-    "paragraph": "Light and sound is found everywhere. Light and sound waves travel from place to place and can be seen and heard. Light is visible to the human eye and is responsible for the sense of sight. It is a form of energy we can see when it is reflected off the surface of an object. Sound is a mechanical vibration that can pass through solids, liquids, and gases and can usually be identified by the sense of hearing.",
+    "title": "Light",
+    "paragraph": " 1 Light and sound is found everywhere. Light and sound waves travel from place to place and can be seen and heard. Light is visible to the human eye and is responsible for the sense of sight. It is a form of energy we can see when it is reflected off the surface of an object. Sound is a mechanical vibration that can pass through solids, liquids, and gases and can usually be identified by the sense of hearing.",
     "keywords": [
-      "when object is visible?",
-      "which mediams sound can pass through?"
+      {
+        "que": "when object is visible?",
+        "ans": "when object is visible?"
+      },
+      {
+        "que": "which mediams sound can pass through?",
+        "ans": "which mediams sound can pass through?"
+      },
+      {
+        "que": "where Light and sound?,",
+        "ans": "where Light and sound?,"
+      },
+      {
+        "que": "what is your name",
+        "ans": "what is your name,"
+      },
+      {
+        "que": "Which of the following occurs when light waves bounce off a surface?",
+        "ans": "Which of the following occurs when light waves bounce off a surface?"
+      },
+      {
+        "que": "What happens when light travels through a prism?",
+        "ans": "What happens when light travels through a prism?"
+      },
+      {
+        "que": " The bending or turning of light as it changes its path is which of the following?",
+        "ans": " The bending or turning of light as it changes its path is which of the following?"
+      },
+      {
+        "que": "Which of the following is an example of a non-transparent object?",
+        "ans": "Which of the following is an example of a non-transparent object?"
+      },
+      {
+        "que": "Is light a particle or a wave?",
+        "ans": "Is light a particle or a wave?"
+      },
+      {
+        "que": "How light behaves",
+        "ans": "Which of the following is an example of a non-transparent object?"
+      }
     ]
   }
 ]

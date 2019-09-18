@@ -140,13 +140,13 @@ public class FC_Constants {
     public static final String INTERNET_DOWNLOAD_NEW_API = "http://prodigi.openiscool.org/api/POSV2/Get2LevelChild?id=";
     public static final String INTERNET_DOWNLOAD_RESOURCE_API = "http://prodigi.openiscool.org/api/posv2/DownloadResourceCOS?resid=";
     public static final String STUDENT_PROGRESS_API = "http://prodigi.openiscool.org/api/cosv2/GetProgress?id=";
-    public static final String LEARNT_WORDS_API = "http://prodigi.openiscool.org/api/cosv2/GetLearntWords?id=";
+    public static final String LEARNT_WORDS_API = "http://prodigi.openiscool.org/api/cosv2/GetKeyWords?id=";
 
     //AZURE http://api.pradigi.org/api/POSV2/get?id=
 //    public static final String INTERNET_DOWNLOAD_NEW_API = "http://api.pradigi.org/api/POSV2/Get2LevelChild?id=";
 //    public static final String INTERNET_DOWNLOAD_RESOURCE_API = "http://api.pradigi.org/api/posv2/DownloadResourceCOS?resid=";
 //    public static final String STUDENT_PROGRESS_API= "http://api.pradigi.org/api/cosv2/GetProgress?id=";
-//    public static final String LEARNT_WORDS_API= "http://api.pradigi.org/api/cosv2/GetLearntWords?id=";
+//    public static final String LEARNT_WORDS_API= "http://api.pradigi.org/api/cosv2/GetKeyWords?id=";
 
 
     public static final String GROUPID = "groupid";
@@ -196,7 +196,7 @@ public class FC_Constants {
     public static final String FILE_DOWNLOAD_UPDATE= "file_download_update";
     public static String currentStudentName="";
     public static String CERTIFICATE_LBL = "certificate_lbl";
-    public static final String PREFS_VERSION = "com.pratham.cityofstories";
+    public static final String PREFS_VERSION = "com.pratham.foundation.database";
     public static final String CURRENT_VERSION = "App Version";
     public static String FULL_DOWNLOAD = "FullDownload";
     public static String SINGLE_RES_DOWNLOAD = "SingleResDownload";

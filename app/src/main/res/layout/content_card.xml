@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/content_card_view"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:elevation="3dp"
+    android:background="@drawable/ripple_rectangle_card"
+    android:padding="5dp">
+
+    <RelativeLayout
+        android:id="@+id/rl_card"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <android.support.v7.widget.CardView
+            android:id="@+id/card_img"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_85sdp"
+            android:layout_margin="5dp"
+            android:layout_centerHorizontal="true"
+            app:cardCornerRadius="13dp">
+
+            <ImageView
+                android:id="@+id/content_thumbnail"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_alignStart="@+id/card_img"
+                android:layout_alignTop="@+id/card_img"
+                android:foregroundGravity="center"
+                android:scaleType="fitXY"
+                android:src="@drawable/pratham_logo" />
+        </android.support.v7.widget.CardView>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@id/card_img"
+            android:layout_marginTop="4dp">
+
+            <ImageView
+                android:id="@+id/ib_action_btn"
+                android:layout_width="@dimen/_25sdp"
+                android:layout_height="@dimen/_25sdp"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:scaleType="fitCenter"
+                android:src="@drawable/ic_download"
+                android:visibility="visible" />
+
+            <com.pratham.foundation.custumView.SansTextViewBold
+                android:id="@+id/content_title"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_toLeftOf="@+id/ib_action_btn"
+                android:gravity="center"
+                android:padding="2dp"
+                android:text="@string/app_name"
+                android:textColor="@color/colorPrimary"
+                android:textSize="@dimen/_15sdp" />
+
+        </RelativeLayout>
+
+    </RelativeLayout>
+
+</RelativeLayout>

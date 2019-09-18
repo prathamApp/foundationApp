@@ -1,0 +1,15 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="@dimen/_120sdp"
+    android:layout_height="@dimen/_120sdp"
+    android:layout_gravity="center"
+    android:background="@color/full_transparent">
+
+    <com.pratham.foundation.custumView.fancy_loaders_library.FancyLoader
+        android:id="@+id/loading_sharingan"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:loader_color="@color/red"
+        app:loader_type="Sharingan" />
+
+</RelativeLayout>

@@ -6,6 +6,7 @@ import android.arch.persistence.room.OnConflictStrategy;
 import android.arch.persistence.room.Query;
 
 import com.pratham.foundation.database.domain.ContentTable;
+
 import java.util.List;
 
 /**
