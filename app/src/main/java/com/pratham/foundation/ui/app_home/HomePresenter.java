@@ -10,7 +10,7 @@ import com.google.gson.stream.JsonReader;
 import com.pratham.foundation.ApplicationClass;
 import com.pratham.foundation.asynk.API_Content;
 import com.pratham.foundation.asynk.ZipDownloader;
-import com.pratham.foundation.contentPlayer.WebViewActivity;
+import com.pratham.foundation.ui.contentPlayer.web_view.WebViewActivity;
 import com.pratham.foundation.database.AppDatabase;
 import com.pratham.foundation.database.BackupDatabase;
 import com.pratham.foundation.database.domain.Assessment;
@@ -25,8 +25,6 @@ import com.pratham.foundation.modalclasses.Modal_DownloadAssessment;
 import com.pratham.foundation.modalclasses.Modal_DownloadContent;
 import com.pratham.foundation.utility.FC_Constants;
 import com.pratham.foundation.utility.FC_Utility;
-import com.pratham.foundation.utility.Utils;
-
 import org.androidannotations.annotations.Background;
 import org.androidannotations.annotations.Bean;
 import org.androidannotations.annotations.EBean;
@@ -46,6 +44,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
+import static com.pratham.foundation.ui.app_home.HomeActivity.sub_nodeId;
 import static com.pratham.foundation.utility.FC_Constants.GROUP_LOGIN;
 import static com.pratham.foundation.utility.FC_Constants.assessmentSession;
 import static com.pratham.foundation.utility.FC_Constants.currentGroup;
@@ -147,7 +146,8 @@ public class HomePresenter implements HomeContract.HomePresenter, API_Content_Re
         this.currentLevelNo = currentLevelNo;
         this.cosSection = cosSection;
         String botID;
-        String rootID = FC_Utility.getRootNode(FC_Constants.currentSelectedLanguage);
+//        String rootID = FC_Utility.getRootNode(FC_Constants.currentSelectedLanguage);
+        String rootID = sub_nodeId;
         botID = AppDatabase.appDatabase.getContentTableDao().getContentDataByTitle("" + rootID, cosSection);
         if (botID != null && !FC_Utility.isDataConnectionAvailable(mContext)) {
             homeView.setBotNodeId(botID);
@@ -1062,7 +1062,7 @@ public class HomePresenter implements HomeContract.HomePresenter, API_Content_Re
             else
                 assessment.setStartDateTimea("na");
 
-            assessment.setEndDateTime(Utils.getCurrentDateTime());
+            assessment.setEndDateTime(FC_Utility.getCurrentDateTime());
             if (FC_Constants.supervisedAssessment)
                 assessment.setDeviceIDa("" + FC_Constants.currentsupervisorID);
             else
@@ -1083,7 +1083,7 @@ public class HomePresenter implements HomeContract.HomePresenter, API_Content_Re
         try {
             Session startSesion = new Session();
             startSesion.setSessionID("" + assessmentSession);
-            startSesion.setFromDate("" + Utils.getCurrentDateTime());
+            startSesion.setFromDate("" + FC_Utility.getCurrentDateTime());
             startSesion.setToDate("NA");
             startSesion.setSentFlag(0);
             AppDatabase.appDatabase.getSessionDao().insert(startSesion);
@@ -1100,7 +1100,7 @@ public class HomePresenter implements HomeContract.HomePresenter, API_Content_Re
             Session startSesion = new Session();
             String toDateTemp = AppDatabase.appDatabase.getSessionDao().getToDate(assessmentSession);
             if (toDateTemp != null && toDateTemp.equalsIgnoreCase("na")) {
-                AppDatabase.appDatabase.getSessionDao().UpdateToDate(assessmentSession, Utils.getCurrentDateTime());
+                AppDatabase.appDatabase.getSessionDao().UpdateToDate(assessmentSession, FC_Utility.getCurrentDateTime());
             }
             BackupDatabase.backup(mContext);
             AppDatabase.appDatabase.getSessionDao().insert(startSesion);

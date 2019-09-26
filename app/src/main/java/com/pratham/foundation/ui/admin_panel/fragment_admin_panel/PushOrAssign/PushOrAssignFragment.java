@@ -54,8 +54,6 @@ import com.pratham.foundation.services.LocationService;
 import com.pratham.foundation.ui.admin_panel.assign_groups.Activity_AssignGroups_;
 import com.pratham.foundation.utility.FC_Constants;
 import com.pratham.foundation.utility.FC_Utility;
-import com.pratham.foundation.utility.Utils;
-
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Bean;
@@ -552,7 +550,7 @@ public class PushOrAssignFragment extends Fragment {
             @Override
             protected Object doInBackground(Object[] objects) {
                 try {
-                    String appStartTime = Utils.getCurrentDateTime();
+                    String appStartTime = FC_Utility.getCurrentDateTime();
                     StatusDao statusDao = appDatabase.getStatusDao();
                     statusDao.updateValue("AppStartDateTime", appStartTime);
                     BackupDatabase.backup(getActivity());

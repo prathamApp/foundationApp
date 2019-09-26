@@ -14,7 +14,7 @@ import android.widget.Toast;
 import com.pratham.foundation.ApplicationClass;
 import com.pratham.foundation.R;
 import com.pratham.foundation.ui.admin_panel.AdminControlsActivity_;
-import com.pratham.foundation.utility.BaseActivity;
+import com.pratham.foundation.BaseActivity;
 import com.pratham.foundation.utility.FC_Constants;
 import com.pratham.foundation.utility.FC_Utility;
 

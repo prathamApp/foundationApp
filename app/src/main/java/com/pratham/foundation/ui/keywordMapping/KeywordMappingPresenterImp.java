@@ -12,7 +12,7 @@ import com.pratham.foundation.database.domain.Score;
 import com.pratham.foundation.modalclasses.ModalReadingVocabulary;
 import com.pratham.foundation.modalclasses.keywordmapping;
 import com.pratham.foundation.utility.FC_Constants;
-import com.pratham.foundation.utility.Utils;
+import com.pratham.foundation.utility.FC_Utility;
 
 import org.androidannotations.annotations.Background;
 import org.androidannotations.annotations.EBean;
@@ -43,7 +43,7 @@ public class KeywordMappingPresenterImp implements KeywordMappingContract.Presen
     @Override
     public void getData() {
         //get data
-        String text = Utils.loadJSONFromAsset(context, "keywordmapping.json");
+        String text = FC_Utility.loadJSONFromAsset(context, "keywordmapping.json");
         // List instrumentNames = new ArrayList<>();
         Gson gson = new Gson();
         Type type = new TypeToken<List<keywordmapping>>() {
@@ -145,7 +145,7 @@ public class KeywordMappingPresenterImp implements KeywordMappingContract.Presen
             score.setStudentID(FC_Constants.currentStudentID);
             score.setStartDateTime(resStartTime);
             score.setDeviceID(deviceId.equals(null) ? "0000" : deviceId);
-            score.setEndDateTime(Utils.getCurrentDateTime());
+            score.setEndDateTime(FC_Utility.getCurrentDateTime());
             score.setLevel(4);
             score.setLabel(Word + " - " + Label);
             score.setSentFlag(0);
@@ -162,7 +162,7 @@ public class KeywordMappingPresenterImp implements KeywordMappingContract.Presen
                 assessment.setStudentIDa(FC_Constants.currentAssessmentStudentID);
                 assessment.setStartDateTimea(resStartTime);
                 assessment.setDeviceIDa(deviceId.equals(null) ? "0000" : deviceId);
-                assessment.setEndDateTime(Utils.getCurrentDateTime());
+                assessment.setEndDateTime(FC_Utility.getCurrentDateTime());
                 assessment.setLevela(FC_Constants.currentLevel);
                 assessment.setLabel("test: " + Label);
                 assessment.setSentFlag(0);

@@ -24,10 +24,10 @@ import android.widget.TextView;
 
 import com.pratham.foundation.ApplicationClass;
 import com.pratham.foundation.R;
-import com.pratham.foundation.contentPlayer.WebViewActivity;
+import com.pratham.foundation.ui.contentPlayer.web_view.WebViewActivity;
 import com.pratham.foundation.database.domain.Assessment;
 import com.pratham.foundation.modalclasses.CertificateModelClass;
-import com.pratham.foundation.utility.BaseActivity;
+import com.pratham.foundation.BaseActivity;
 import com.pratham.foundation.utility.FC_Constants;
 
 import org.json.JSONArray;
@@ -42,7 +42,7 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-import static com.pratham.foundation.contentPlayer.WebViewActivity.gameLevel;
+import static com.pratham.foundation.ui.contentPlayer.web_view.WebViewActivity.gameLevel;
 
 
 public class CertificateActivity extends BaseActivity implements CertificateContract.CertificateView, CertificateClicked, AdapterView.OnItemSelectedListener {

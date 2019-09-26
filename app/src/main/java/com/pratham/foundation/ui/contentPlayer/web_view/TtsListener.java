@@ -1,15 +1,13 @@
-package com.pratham.foundation.contentPlayer;
+package com.pratham.foundation.ui.contentPlayer.web_view;
 
 import android.annotation.TargetApi;
 import android.os.Build;
 import android.speech.tts.TextToSpeech;
 import android.widget.Toast;
 
-import com.pratham.foundation.contentPlayer.TextToSpeechCustom;
-
 import java.util.Locale;
 
-import static com.pratham.foundation.contentPlayer.TextToSpeechCustom.textToSpeech;
+import static com.pratham.foundation.ui.contentPlayer.web_view.TextToSpeechCustom.textToSpeech;
 
 
 public class TtsListener implements TextToSpeech.OnInitListener {

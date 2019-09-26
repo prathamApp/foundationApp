@@ -37,12 +37,8 @@ import com.pratham.foundation.ui.selectSubject.SelectSubject;
 import com.pratham.foundation.ui.selectSubject.SelectSubject_;
 import com.pratham.foundation.utility.FC_Constants;
 import com.pratham.foundation.utility.FC_Utility;
-import com.pratham.foundation.utility.Utils;
-
-
 import java.util.ArrayList;
 import java.util.UUID;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -184,7 +180,7 @@ public class FragmentChildAttendance extends Fragment implements ContractChildAt
 
                     Session startSesion = new Session();
                     startSesion.setSessionID("" + currentSession);
-                    String timerTime = Utils.getCurrentDateTime();
+                    String timerTime = FC_Utility.getCurrentDateTime();
 
                     Log.d("doInBackground", "--------------------------------------------doInBackground : " + timerTime);
                     startSesion.setFromDate(timerTime);
@@ -198,7 +194,7 @@ public class FragmentChildAttendance extends Fragment implements ContractChildAt
                     for (int i = 0; i < stud.size(); i++) {
                         attendance.setSessionID("" + currentSession);
                         attendance.setStudentID("" + stud.get(i).getStudentID());
-                        attendance.setDate(Utils.getCurrentDateTime());
+                        attendance.setDate(FC_Utility.getCurrentDateTime());
                         attendance.setGroupID(groupID);
                         attendance.setSentFlag(0);
                         AppDatabase.getDatabaseInstance(getContext()).getAttendanceDao().insert(attendance);
@@ -224,7 +220,7 @@ public class FragmentChildAttendance extends Fragment implements ContractChildAt
             Attendance attendance = new Attendance();
             attendance.setSessionID(FastSave.getInstance().getString(FC_Constants.SESSIONID, ""));
             attendance.setStudentID(stu.getStudentID());
-            attendance.setDate(Utils.getCurrentDateTime());
+            attendance.setDate(FC_Utility.getCurrentDateTime());
             attendance.GroupID = groupID;
             attendance.setSentFlag(0);
             FastSave.getInstance().saveString(FC_Constants.GROUPID, groupID);
@@ -235,7 +231,7 @@ public class FragmentChildAttendance extends Fragment implements ContractChildAt
         AppDatabase.getDatabaseInstance(getActivity()).getAttendanceDao().insertAll(attendances);
         Session s = new Session();
         s.setSessionID(FastSave.getInstance().getString(FC_Constants.SESSIONID, ""));
-        s.setFromDate(Utils.getCurrentDateTime());
+        s.setFromDate(FC_Utility.getCurrentDateTime());
         s.setToDate("NA");
         AppDatabase.getDatabaseInstance(getActivity()).getSessionDao().insert(s);
     }

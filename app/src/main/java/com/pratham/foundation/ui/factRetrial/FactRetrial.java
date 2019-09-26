@@ -12,9 +12,8 @@ import android.widget.TextView;
 
 import com.pratham.foundation.R;
 import com.pratham.foundation.database.domain.QuetionAns;
-import com.pratham.foundation.ui.keywordMapping.KeywordMapping;
 import com.pratham.foundation.ui.keywordMapping.KeywordMapping_;
-import com.pratham.foundation.utility.BaseActivity;
+import com.pratham.foundation.BaseActivity;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Bean;

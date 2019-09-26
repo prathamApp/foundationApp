@@ -1,4 +1,4 @@
-package com.pratham.foundation.contentPlayer;
+package com.pratham.foundation.ui.contentPlayer.web_view;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
@@ -27,10 +27,10 @@ import com.pratham.foundation.database.domain.ContentProgress;
 import com.pratham.foundation.database.domain.KeyWords;
 import com.pratham.foundation.interfaces.WebViewInterface;
 import com.pratham.foundation.modalclasses.CertificateModelClass;
-import com.pratham.foundation.utility.BaseActivity;
+import com.pratham.foundation.BaseActivity;
 import com.pratham.foundation.utility.FC_Constants;
 import com.pratham.foundation.utility.FC_Utility;
-import com.pratham.foundation.utility.Utils;
+
 
 import java.util.ArrayList;
 import java.util.List;
@@ -74,7 +74,7 @@ public class WebViewActivity extends BaseActivity implements WebViewInterface {
 
         tts = new TextToSpeechCustom(this, 0.6f);
         gameCounter = 0;
-        resStartTime = Utils.getCurrentDateTime();
+        resStartTime = FC_Utility.getCurrentDateTime();
 
         if (mode.equalsIgnoreCase("assessment")) {
             createWebView(gameTestWebViewList.get(gameCounter).getResourcePath());

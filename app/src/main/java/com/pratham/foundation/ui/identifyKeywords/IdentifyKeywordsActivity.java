@@ -1,5 +1,6 @@
 package com.pratham.foundation.ui.identifyKeywords;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
@@ -10,9 +11,8 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.nex3z.flowlayout.FlowLayout;
 import com.pratham.foundation.R;
-import com.pratham.foundation.custumView.FlowLayout;
-
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.ViewById;
@@ -45,9 +45,9 @@ public class IdentifyKeywordsActivity extends AppCompatActivity implements Ident
         super.onCreate(savedInstanceState);
         // setContentView(R.layout.activity_identify_keywords);
         // ButterKnife.bind(this);
-        context = IdentifyKeywordsActivity.this;
+        context = KeywordsIdentificationFragment.this;
         selectedKeywords = new ArrayList<>();
-        identifyKeywordsActivityPresenter = new IdentifyKeywordsActivityPresenter(context);
+        identifyKeywordsActivityPresenter = new KeywordsIdentificationPresenter(context);
         positionMap = new HashMap<>();
 
         viewParam = new RelativeLayout.LayoutParams(
@@ -99,6 +99,7 @@ public class IdentifyKeywordsActivity extends AppCompatActivity implements Ident
             textView.setPadding(5, 5, 5, 5);
             textView.setText(paragraphWords[i] + " ");
             textView.setOnClickListener(new View.OnClickListener() {
+                @SuppressLint("ResourceType")
                 @Override
                 public void onClick(View v) {
                     if (!selectedKeywords.contains(textView.getText().toString())) {

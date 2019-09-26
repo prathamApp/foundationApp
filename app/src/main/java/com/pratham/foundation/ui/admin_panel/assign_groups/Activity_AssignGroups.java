@@ -23,7 +23,7 @@ import com.pratham.foundation.custumView.SansCheckBox;
 import com.pratham.foundation.database.domain.Groups;
 import com.pratham.foundation.database.domain.Village;
 import com.pratham.foundation.ui.admin_panel.AdminControlsActivity_;
-import com.pratham.foundation.utility.BaseActivity;
+import com.pratham.foundation.BaseActivity;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Bean;

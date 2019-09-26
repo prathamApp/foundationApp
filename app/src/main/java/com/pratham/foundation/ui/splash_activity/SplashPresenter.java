@@ -19,7 +19,7 @@ import android.util.Log;
 
 
 import com.pratham.foundation.ApplicationClass;
-import com.pratham.foundation.FileUtils;
+import com.pratham.foundation.utility.FileUtils;
 import com.pratham.foundation.asynk.GetLatestVersion;
 import com.pratham.foundation.asynk.PushDataToServer;
 import com.pratham.foundation.custom.shared_preferences.FastSave;
@@ -39,8 +39,6 @@ import com.pratham.foundation.services.LocationService;
 import com.pratham.foundation.utility.FC_Constants;
 import com.pratham.foundation.utility.FC_Utility;
 import com.pratham.foundation.utility.SDCardUtil;
-import com.pratham.foundation.utility.Utils;
-
 import net.lingala.zip4j.core.ZipFile;
 import net.lingala.zip4j.exception.ZipException;
 
@@ -827,7 +825,7 @@ public class SplashPresenter implements SplashContract.SplashPresenter {
             @Override
             protected Object doInBackground(Object[] objects) {
                 try {
-                    String appStartTime = Utils.getCurrentDateTime();
+                    String appStartTime = FC_Utility.getCurrentDateTime();
                     StatusDao statusDao = AppDatabase.appDatabase.getStatusDao();
                     statusDao.updateValue("AppStartDateTime", appStartTime);
                     BackupDatabase.backup(context);

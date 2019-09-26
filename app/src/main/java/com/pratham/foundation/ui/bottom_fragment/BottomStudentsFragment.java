@@ -65,8 +65,6 @@ import com.pratham.foundation.ui.selectSubject.SelectSubject_;
 import com.pratham.foundation.ui.splash_activity.SplashActivity;
 import com.pratham.foundation.utility.FC_Constants;
 import com.pratham.foundation.utility.FC_Utility;
-import com.pratham.foundation.utility.Utils;
-
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Background;
@@ -534,7 +532,7 @@ public class BottomStudentsFragment extends BottomSheetDialogFragment
     @Background
     public void addStartTime() {
         try {
-            String appStartTime = Utils.getCurrentDateTime();
+            String appStartTime = FC_Utility.getCurrentDateTime();
             StatusDao statusDao = AppDatabase.appDatabase.getStatusDao();
             statusDao.updateValue("AppStartDateTime", appStartTime);
             BackupDatabase.backup(getActivity());
@@ -639,7 +637,7 @@ public class BottomStudentsFragment extends BottomSheetDialogFragment
             Attendance attendance = new Attendance();
             attendance.setSessionID(currentSession);
             attendance.setStudentID(studentId);
-            attendance.setDate(Utils.getCurrentDateTime());
+            attendance.setDate(FC_Utility.getCurrentDateTime());
             attendance.setGroupID("PS");
             attendance.setSentFlag(0);
 
@@ -650,7 +648,7 @@ public class BottomStudentsFragment extends BottomSheetDialogFragment
 
             Session startSesion = new Session();
             startSesion.setSessionID("" + currentSession);
-            startSesion.setFromDate("" + Utils.getCurrentDateTime());
+            startSesion.setFromDate("" + FC_Utility.getCurrentDateTime());
             startSesion.setToDate("NA");
             startSesion.setSentFlag(0);
             AppDatabase.getDatabaseInstance(getActivity()).getSessionDao().insert(startSesion);

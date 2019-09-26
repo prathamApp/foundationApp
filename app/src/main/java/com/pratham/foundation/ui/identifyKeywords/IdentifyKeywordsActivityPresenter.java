@@ -2,7 +2,7 @@ package com.pratham.foundation.ui.identifyKeywords;
 
 import android.content.Context;
 
-import com.pratham.foundation.utility.Utils;
+import com.pratham.foundation.utility.FC_Utility;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -24,7 +24,7 @@ public class IdentifyKeywordsActivityPresenter implements IdentifyKeywordsActivi
     @Override
     public void getData() {
         questionModel = new QuestionModel();
-        String text = Utils.loadJSONFromAsset(context, "identifyKeywords.json");
+        String text = FC_Utility.loadJSONFromAsset(context, "identifyKeywords.json");
         List instrumentNames = new ArrayList<>();
         try {
             JSONArray jsonArray = new JSONArray(text);

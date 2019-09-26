@@ -54,6 +54,7 @@ import android.widget.Toast;
 import com.google.gson.Gson;
 import com.pratham.foundation.ApplicationClass;
 import com.pratham.foundation.R;
+import com.pratham.foundation.ui.contentPlayer.ContentPlayerActivity;
 import com.pratham.foundation.ui.admin_panel.AdminControlsActivity_;
 import com.pratham.foundation.ui.admin_panel.group_selection.SelectGroupActivity_;
 import com.pratham.foundation.ui.splash_activity.SplashActivity;
@@ -95,6 +96,22 @@ import javax.crypto.spec.SecretKeySpec;
 
 
 public class FC_Utility {
+
+    public static String loadJSONFromAsset(Context context, String fileName) {
+        String json = null;
+        try {
+            InputStream is = context.getAssets().open(fileName);
+            int size = is.available();
+            byte[] buffer = new byte[size];
+            is.read(buffer);
+            is.close();
+            json = new String(buffer, "UTF-8");
+        } catch (IOException ex) {
+            ex.printStackTrace();
+            return null;
+        }
+        return json;
+    }
 
     public static String getPhoneModel() {
         String str1 = Build.BRAND;
@@ -549,6 +566,12 @@ public class FC_Utility {
                     .commit();
         } else if (mActivity instanceof SplashActivity) {
             ((SplashActivity) mActivity).getSupportFragmentManager()
+                    .beginTransaction()
+                    .replace(frame, mFragment, TAG)
+                    .addToBackStack(TAG)
+                    .commit();
+        }else if (mActivity instanceof ContentPlayerActivity) {
+            ((ContentPlayerActivity) mActivity).getSupportFragmentManager()
                     .beginTransaction()
                     .replace(frame, mFragment, TAG)
                     .addToBackStack(TAG)

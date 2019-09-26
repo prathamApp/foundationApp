@@ -6,7 +6,7 @@ import android.util.Log;
 
 import com.androidnetworking.AndroidNetworking;
 import com.pratham.foundation.custom.shared_preferences.FastSave;
-import com.pratham.foundation.utility.Utils;
+import com.pratham.foundation.utility.FC_Utility;
 import com.isupatches.wisefy.WiseFy;
 
 
@@ -44,7 +44,7 @@ public class ApplicationClass extends Application {
         }
         FastSave.init(getApplicationContext());
 
-        foundationPath = Utils.getInternalPath(this);
+        foundationPath = FC_Utility.getInternalPath(this);
         if (foundationPath != null) {
             File mydir = null;
             mydir = new File(applicationClass.foundationPath + "/.foundation");

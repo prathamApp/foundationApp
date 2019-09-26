@@ -1,4 +1,4 @@
-package com.pratham.foundation.ui.display_content;
+package com.pratham.foundation.ui.app_home.display_content;
 
 import android.content.Context;
 import android.util.Log;
@@ -17,9 +17,6 @@ import com.pratham.foundation.interfaces.API_Content_Result;
 import com.pratham.foundation.modalclasses.Modal_DownloadContent;
 import com.pratham.foundation.utility.FC_Constants;
 import com.pratham.foundation.utility.FC_Utility;
-import com.pratham.foundation.utility.Utils;
-
-
 import org.androidannotations.annotations.Background;
 import org.androidannotations.annotations.Bean;
 import org.androidannotations.annotations.EBean;
@@ -316,9 +313,9 @@ public class ContentPresenter implements ContentContract.ContentPresenter, API_C
             score.setScoredMarks(0);
             score.setTotalMarks(0);
             score.setStudentID(FC_Constants.currentStudentID);
-            score.setStartDateTime(Utils.getCurrentDateTime());
+            score.setStartDateTime(FC_Utility.getCurrentDateTime());
             score.setDeviceID(deviceId.equals(null) ? "0000" : deviceId);
-            score.setEndDateTime(Utils.getCurrentDateTime());
+            score.setEndDateTime(FC_Utility.getCurrentDateTime());
             score.setLevel(0);
             score.setLabel(Label);
             score.setSentFlag(0);

@@ -58,6 +58,9 @@ public class FC_Constants {
     public static final String VOCAB_ANDROID = "vocabAndroid";
     public static final String FOLDER = "folder";
     public static final String OPPOSITE_WORDS = "oppositeWords";
+    public static final String IDENTIFY_KEYWORDS= "identifyKeywords";
+    public static final String FACT_RETRIVAL= "factRetrival";
+    public static final String KEY_WORD_MAPPING= "keyWordMapping";
     public static final String MATCH_THE_PAIR = "matchThePair";
     public static final String COMIC_CONVO_RESOURCE = "comicConvo";
     public static final String RHYMING_WORD_ANDROID = "rhymingWordAndroid";

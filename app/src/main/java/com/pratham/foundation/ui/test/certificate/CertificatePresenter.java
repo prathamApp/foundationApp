@@ -5,8 +5,7 @@ import android.os.AsyncTask;
 import android.os.Environment;
 import android.util.Log;
 
-import com.pratham.foundation.ApplicationClass;
-import com.pratham.foundation.contentPlayer.WebViewActivity;
+import com.pratham.foundation.ui.contentPlayer.web_view.WebViewActivity;
 import com.pratham.foundation.database.AppDatabase;
 import com.pratham.foundation.database.BackupDatabase;
 import com.pratham.foundation.database.domain.Assessment;
@@ -15,7 +14,7 @@ import com.pratham.foundation.database.domain.Student;
 import com.pratham.foundation.database.domain.SupervisorData;
 import com.pratham.foundation.modalclasses.CertificateModelClass;
 import com.pratham.foundation.utility.FC_Constants;
-import com.pratham.foundation.utility.Utils;
+import com.pratham.foundation.utility.FC_Utility;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -314,7 +313,7 @@ public class CertificatePresenter implements CertificateContract.CertificatePres
                         assessment.setStartDateTimea(FC_Constants.currentAssessmentStudentID + "_" + certiTitle);
                     else
                         assessment.setStartDateTimea("" + certiTitle);
-                    assessment.setEndDateTime(Utils.getCurrentDateTime());
+                    assessment.setEndDateTime(FC_Utility.getCurrentDateTime());
                     if (FC_Constants.supervisedAssessment)
                         assessment.setDeviceIDa("" + FC_Constants.currentsupervisorID);
                     else

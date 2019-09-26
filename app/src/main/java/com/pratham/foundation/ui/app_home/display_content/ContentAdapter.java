@@ -1,4 +1,4 @@
-package com.pratham.foundation.ui.display_content;
+package com.pratham.foundation.ui.app_home.display_content;
 
 import android.content.Context;
 import android.os.Handler;

@@ -1,4 +1,4 @@
-package com.pratham.foundation.ui.display_content;
+package com.pratham.foundation.ui.app_home.display_content;
 
 import android.annotation.SuppressLint;
 import android.app.Dialog;
@@ -26,18 +26,16 @@ import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import com.pratham.foundation.ApplicationClass;
 import com.pratham.foundation.R;
-import com.pratham.foundation.contentPlayer.WebViewActivity;
+import com.pratham.foundation.ui.contentPlayer.ContentPlayerActivity;
+import com.pratham.foundation.ui.contentPlayer.web_view.WebViewActivity;
 import com.pratham.foundation.custumView.progress_layout.ProgressLayout;
 import com.pratham.foundation.database.domain.ContentTable;
 import com.pratham.foundation.modalclasses.EventMessage;
 import com.pratham.foundation.modalclasses.Modal_FileDownloading;
-import com.pratham.foundation.ui.factRetrial.FactRetrial;
-import com.pratham.foundation.ui.factRetrial.FactRetrial_;
 import com.pratham.foundation.ui.student_profile.Student_profile_activity;
-import com.pratham.foundation.utility.BaseActivity;
+import com.pratham.foundation.BaseActivity;
 import com.pratham.foundation.utility.FC_Constants;
 import com.pratham.foundation.utility.FC_Utility;
-
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Bean;
@@ -315,7 +313,7 @@ public class ContentDisplay extends BaseActivity implements ContentContract.Cont
             }
 /*        } else if (ContentTableList.get(position).getResourceType().equalsIgnoreCase(FC_Constants.RC_RESOURCE)) {
 //            presenter.enterRCData(contentList);*/
-        } else if (ContentTableList.get(position).getResourceType().equalsIgnoreCase(FC_Constants.OPPOSITE_WORDS)) {
+        } else {/* (ContentTableList.get(position).getResourceType().equalsIgnoreCase(FC_Constants.IDENTIFY_KEYWORDS)) {
             Intent mainNew = new Intent(ContentDisplay.this, FactRetrial_.class);
             mainNew.putExtra("resId", ContentTableList.get(position).getResourceId());
             mainNew.putExtra("StudentID", FC_Constants.currentStudentID);
@@ -323,12 +321,23 @@ public class ContentDisplay extends BaseActivity implements ContentContract.Cont
             mainNew.putExtra("onSdCard", ContentTableList.get(position).isOnSDCard());
             mainNew.putExtra("contentPath", ContentTableList.get(position).getResourcePath());
             startActivity(mainNew);
+        } else if (ContentTableList.get(position).getResourceType().equalsIgnoreCase(FC_Constants.FACT_RETRIVAL)) {
+            Intent mainNew = new Intent(ContentDisplay.this, FactRetrial_.class);
+            mainNew.putExtra("resId", ContentTableList.get(position).getResourceId());
+            mainNew.putExtra("StudentID", FC_Constants.currentStudentID);
+            mainNew.putExtra("contentName", ContentTableList.get(position).getNodeTitle());
+            mainNew.putExtra("onSdCard", ContentTableList.get(position).isOnSDCard());
+            mainNew.putExtra("contentPath", ContentTableList.get(position).getResourcePath());
+            startActivity(mainNew);
+        } else if (ContentTableList.get(position).getResourceType().equalsIgnoreCase(FC_Constants.KEY_WORD_MAPPING)) {
+            */Intent mainNew = new Intent(ContentDisplay.this, ContentPlayerActivity.class);
+            mainNew.putExtra("resId", ContentTableList.get(position).getResourceId());
+            mainNew.putExtra("StudentID", FC_Constants.currentStudentID);
+            mainNew.putExtra("contentName", ContentTableList.get(position).getNodeTitle());
+            mainNew.putExtra("onSdCard", ContentTableList.get(position).isOnSDCard());
+            mainNew.putExtra("contentPath", ContentTableList.get(position).getResourcePath());
+            startActivity(mainNew);
         }
-
-
-
-
-
 
         /* else if (ContentTableList.get(position).getResourceType().equalsIgnoreCase(FC_Constants.CONVO_RESOURCE)) {
             Intent mainNew = new Intent(ContentDisplay.this, ConversationActivity_.class);

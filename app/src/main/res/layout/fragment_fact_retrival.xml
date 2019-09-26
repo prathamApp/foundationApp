@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/bg_anim_fourth_layer"
+    android:orientation="vertical">
+
+    <com.pratham.foundation.custumView.SansTextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Fact Retrival"
+        android:background="@color/red"
+        android:padding="@dimen/_5sdp"
+        android:textColor="@color/white"
+        android:textAlignment="center"
+        android:textSize="30sp" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_margin="20dp"
+        android:layout_weight="1"
+        android:elevation="5dp"
+        android:background="@drawable/dialog_bg"
+        android:padding="10dp">
+
+        <com.pratham.foundation.custumView.SansTextViewBold
+            android:id="@+id/quetion"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:scrollbars="vertical"
+            android:gravity="center"
+            android:layout_gravity="center"
+            android:textSize="25sp"/>
+    </ScrollView>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_margin="20dp"
+        android:layout_weight="3"
+        android:background="@drawable/dialog_bg"
+        android:elevation="5dp"
+        android:padding="10dp">
+
+        <com.pratham.foundation.custumView.SansTextView
+            android:id="@+id/paragraph"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textIsSelectable="true"
+            android:textSize="25sp" />
+    </ScrollView>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:layout_marginHorizontal="20dp"
+        android:orientation="horizontal">
+
+        <com.pratham.foundation.custumView.SansButton
+            android:id="@+id/previous"
+            android:layout_width="100dp"
+            android:layout_height="50dp"
+            android:layout_centerVertical="true"
+            android:textColor="@color/white"
+            android:background="@drawable/red_button"
+            android:text="previous" />
+
+        <com.pratham.foundation.custumView.SansButton
+            android:id="@+id/submitBtn"
+            android:layout_width="100dp"
+            android:layout_height="50dp"
+            android:textColor="@color/white"
+            android:background="@drawable/green_button"
+            android:layout_centerInParent="true"
+            android:text="Submit" />
+
+        <com.pratham.foundation.custumView.SansButton
+            android:id="@+id/next"
+            android:layout_width="100dp"
+            android:layout_height="50dp"
+            android:textColor="@color/white"
+            android:background="@drawable/yellow_button"
+            android:layout_centerVertical="true"
+            android:layout_alignParentEnd="true"
+            android:text="next" />
+
+    </RelativeLayout>
+
+</LinearLayout>

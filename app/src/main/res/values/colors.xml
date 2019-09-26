@@ -1,28 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#008577</color>
-    <color name="colorPrimaryDark">#00574B</color>
-    <color name="colorAccent">#D81B60</color>
-    <color name="white">#ffffff</color>
-    <color name="yellow">#FFFFFF00</color>
-
-
-
-
-    <color name="hahaColor">#ff26b4e9</color>
-
-
-
-
-
-
-
-
-
-<!--
     <color name="colorPrimary">#344955</color>
     <color name="colorPrimaryDark">#232F34</color>
-    <color name="colorAccent">#FFBE00</color>-->
+    <color name="colorAccent">#FFBE00</color>
+
+    <color name="white">#ffffff</color>
+    <color name="yellow">#FFFFFF00</color>
+    <color name="hahaColor">#ff26b4e9</color>
     <color name="colorAccentDark">#FFB300</color>
     <color name="colorGreen">#AED581</color>
     <color name="colorBtnGreenDark">#43a047</color>
@@ -31,6 +15,8 @@
     <color name="colorBtnOrangeLight">#ffd54f</color>
     <color name="colorBtnRedDark">#e53935</color>
     <color name="colorBtnRedLight">#e57373</color>
+    <color name="colorBtnPurpleDark">#8e24aa</color>
+    <color name="colorBtnPurpleLight">#ba68c8</color>
     <color name="contentCardColor">#ba68c8</color>
     <color name="gradianceEndColor">#ba68c8</color>
     <color name="goodColor">#FF334499</color>

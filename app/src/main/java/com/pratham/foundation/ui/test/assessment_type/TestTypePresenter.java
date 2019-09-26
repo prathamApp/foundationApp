@@ -17,7 +17,7 @@ import com.pratham.foundation.database.domain.Session;
 import com.pratham.foundation.database.domain.Student;
 import com.pratham.foundation.database.domain.SupervisorData;
 import com.pratham.foundation.utility.FC_Constants;
-import com.pratham.foundation.utility.Utils;
+import com.pratham.foundation.utility.FC_Utility;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -62,7 +62,7 @@ public class TestTypePresenter implements TestTypeContract.TestTypePresenter {
                     String AppStartDateTime = AppDatabase.appDatabase.getStatusDao().getValue("AppStartDateTime");
                     Session startSesion = new Session();
                     startSesion.setSessionID("" + assessmentSession);
-                    String timerTime = Utils.getCurrentDateTime();
+                    String timerTime = FC_Utility.getCurrentDateTime();
                     Log.d("doInBackground", "--------------------------------------------doInBackground : " + timerTime);
                     startSesion.setFromDate(timerTime);
                     startSesion.setToDate("NA");

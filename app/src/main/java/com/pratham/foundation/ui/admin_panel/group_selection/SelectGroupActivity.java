@@ -5,7 +5,7 @@ import android.widget.RelativeLayout;
 
 
 import com.pratham.foundation.R;
-import com.pratham.foundation.utility.BaseActivity;
+import com.pratham.foundation.BaseActivity;
 import com.pratham.foundation.utility.FC_Utility;
 
 import org.androidannotations.annotations.AfterViews;

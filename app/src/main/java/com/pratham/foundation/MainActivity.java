@@ -7,7 +7,6 @@ import android.os.Bundle;
 import com.pratham.foundation.ui.factRetrial.FactRetrial_;
 import com.pratham.foundation.ui.identifyKeywords.IdentifyKeywordsActivity_;
 import com.pratham.foundation.ui.writingParagraph.WritingParagraph_;
-import com.pratham.foundation.utility.BaseActivity;
 
 import butterknife.ButterKnife;
 import butterknife.OnClick;

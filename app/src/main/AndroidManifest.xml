@@ -10,7 +10,8 @@
         android:label="@string/app_name"
         android:roundIcon="@drawable/app_logo_r"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme">
+        android:theme="@style/AppTheme"
+        tools:ignore="GoogleAppIndexingWarning">
         <activity android:name=".ui.selectSubject.SelectSubject_"
             android:screenOrientation="portrait"/>
         <activity
@@ -18,11 +19,11 @@
             android:label="@string/title_activity_keyword_mapping"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".utility.BaseActivity"
+            android:name=".BaseActivity"
             android:screenOrientation="portrait" />
         <!--
 <activity
-            android:name="com.pratham.foundation.ui.keywordMapping.KeywordMapping"
+            android:name="com.pratham.foundation.ui.keywordMapping.KeywordMappingFragment"
             android:screenOrientation="portrait" />
         -->
         <activity
@@ -79,10 +80,13 @@
             android:name=".ui.app_home.HomeActivity_"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".ui.display_content.ContentDisplay_"
+            android:name=".ui.app_home.display_content.ContentDisplay_"
             android:screenOrientation="portrait" />
         <activity
             android:name=".ui.admin_panel.fragment_admin_panel.PushOrAssign.PushDataActivity_"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.contentPlayer.ContentPlayerActivity"
             android:screenOrientation="portrait" />
         <activity
             android:name=".ui.test.supervisor.SupervisedAssessmentActivity"
@@ -92,9 +96,8 @@
             android:name=".ui.student_profile.Student_profile_activity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".contentPlayer.WebViewActivity"
+            android:name=".ui.contentPlayer.web_view.WebViewActivity"
             android:screenOrientation="portrait" />
-
         <service
             android:name=".services.AppExitService"
             android:enabled="true"

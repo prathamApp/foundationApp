@@ -71,7 +71,7 @@ public class SplashActivity extends SplashSupportActivity implements SplashContr
     @ViewById(R.id.iv_splash)
     ImageView iv_splash;
     @ViewById(R.id.gifcomplete)
-    ImageView gifcomplete;
+    TextView gifcomplete;
     static String fpath, appname;
     public static MediaPlayer bgMusic;
     public ProgressDialog progressDialog;
@@ -127,7 +127,7 @@ public class SplashActivity extends SplashSupportActivity implements SplashContr
         }, 1500);
     }
 
-    public void ImageViewAnimatedChange(Context c, final ImageView iv_logo) {
+    public void ImageViewAnimatedChange(Context c, final TextView iv_logo) {
         final Animation anim_in = AnimationUtils.loadAnimation(c, R.anim.zoom_in_new);
         anim_in.setAnimationListener(new Animation.AnimationListener() {
             @Override
@@ -145,7 +145,7 @@ public class SplashActivity extends SplashSupportActivity implements SplashContr
         iv_logo.setAnimation(anim_in);
     }
 
-    public void ImageViewAnimatedChangeSecond(Context c, final ImageView iv_logo) {
+    public void ImageViewAnimatedChangeSecond(Context c, final TextView iv_logo) {
         final Animation anim_out = AnimationUtils.loadAnimation(c, R.anim.zoom_out_new);
         iv_logo.setAnimation(anim_out);
         anim_out.setAnimationListener(new Animation.AnimationListener() {

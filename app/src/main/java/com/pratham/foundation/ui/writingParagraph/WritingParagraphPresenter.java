@@ -5,7 +5,7 @@ import android.graphics.Bitmap;
 import android.os.Environment;
 
 import com.pratham.foundation.ui.identifyKeywords.QuestionModel;
-import com.pratham.foundation.utility.Utils;
+import com.pratham.foundation.utility.FC_Utility;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -30,7 +30,7 @@ public class WritingParagraphPresenter implements WritingParagraphController.Pre
     public void getData() {
 
         questionModel = new QuestionModel();
-        String text = Utils.loadJSONFromAsset(context, "factRetrial.json");
+        String text = FC_Utility.loadJSONFromAsset(context, "factRetrial.json");
         List instrumentNames = new ArrayList<>();
         try {
             JSONArray jsonArray = new JSONArray(text);
@@ -60,7 +60,7 @@ public class WritingParagraphPresenter implements WritingParagraphController.Pre
 
             File direct = new File(Environment.getExternalStorageDirectory().toString() + "/.EngGameInternal");
             if (!direct.exists()) direct.mkdir();
-            direct = new File(Environment.getExternalStorageDirectory().toString() + "/.EngGameInternal/WritingParagraph/");
+            direct = new File(Environment.getExternalStorageDirectory().toString() + "/.EngGameInternal/ParagraphWritingFragment/");
             if (!direct.exists()) direct.mkdir();
 
             File file = new File(direct, fileName);

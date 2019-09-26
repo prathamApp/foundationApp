@@ -28,7 +28,7 @@ import com.pratham.foundation.ApplicationClass;
 import com.pratham.foundation.R;
 import com.pratham.foundation.database.domain.Student;
 import com.pratham.foundation.ui.test.certificate.CertificateActivity;
-import com.pratham.foundation.utility.BaseActivity;
+import com.pratham.foundation.BaseActivity;
 import com.pratham.foundation.utility.FC_Constants;
 
 import java.util.ArrayList;

@@ -1,4 +1,4 @@
-package com.pratham.foundation.contentPlayer;
+package com.pratham.foundation.ui.contentPlayer.web_view;
 
 import android.annotation.TargetApi;
 import android.content.Context;

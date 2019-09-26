@@ -16,15 +16,18 @@
         android:scaleType="fitCenter"
         android:src="@drawable/pratham_logo" />
 
-    <ImageView
+    <com.pratham.foundation.custumView.SansTextViewBold
         android:id="@+id/gifcomplete"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:padding="@dimen/_20sdp"
-        android:layout_below="@+id/iv_pratham_logo"
+        android:text="Foundation\nCourse"
+        android:layout_marginTop="@dimen/_100sdp"
         android:layout_centerHorizontal="true"
-        android:src="@drawable/ras_gif_end"
+        android:gravity="center"
+        android:textAllCaps="true"
+        android:textColor="@color/gradianceStartColor"
+        android:textSize="@dimen/_25sdp"
+        android:padding="@dimen/_20sdp"
         android:scaleType="fitCenter"/>
 
     <ImageView

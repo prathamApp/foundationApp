@@ -1,4 +1,4 @@
-package com.pratham.foundation.contentPlayer;
+package com.pratham.foundation.ui.contentPlayer.web_view;
 
 import android.media.MediaRecorder;
 import android.os.Environment;

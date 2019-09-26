@@ -1,4 +1,4 @@
-package com.pratham.foundation.utility;
+package com.pratham.foundation;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -12,6 +12,7 @@ import android.view.WindowManager;
 import com.pratham.foundation.database.AppDatabase;
 import com.pratham.foundation.database.BackupDatabase;
 import com.pratham.foundation.services.TTSService;
+import com.pratham.foundation.utility.FC_Utility;
 
 import java.util.Locale;
 
@@ -85,12 +86,12 @@ public class BaseActivity extends AppCompatActivity {
                         String curSession = AppDatabase.appDatabase.getStatusDao().getValue("CurrentSession");
                         String toDateTemp = AppDatabase.appDatabase.getSessionDao().getToDate(curSession);
                         if (toDateTemp.equalsIgnoreCase("na")) {
-                            AppDatabase.appDatabase.getSessionDao().UpdateToDate(curSession, Utils.getCurrentDateTime());
+                            AppDatabase.appDatabase.getSessionDao().UpdateToDate(curSession, FC_Utility.getCurrentDateTime());
                         }
                         BackupDatabase.backup(context);
                     } catch (Exception e) {
                         String curSession = AppDatabase.appDatabase.getStatusDao().getValue("CurrentSession");
-                        AppDatabase.appDatabase.getSessionDao().UpdateToDate(curSession, Utils.getCurrentDateTime());
+                        AppDatabase.appDatabase.getSessionDao().UpdateToDate(curSession, FC_Utility.getCurrentDateTime());
                         e.printStackTrace();
                     }
                     return null;

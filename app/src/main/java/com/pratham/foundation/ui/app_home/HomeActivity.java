@@ -35,7 +35,8 @@ import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import com.pratham.foundation.ApplicationClass;
 import com.pratham.foundation.R;
-import com.pratham.foundation.contentPlayer.WebViewActivity;
+import com.pratham.foundation.ui.contentPlayer.ContentPlayerActivity;
+import com.pratham.foundation.ui.contentPlayer.web_view.WebViewActivity;
 import com.pratham.foundation.custom.shared_preferences.FastSave;
 import com.pratham.foundation.custumView.CircularImageView;
 import com.pratham.foundation.custumView.discrete_view.DSVOrientation;
@@ -48,16 +49,14 @@ import com.pratham.foundation.database.domain.ContentTableNew;
 import com.pratham.foundation.modalclasses.CertificateModelClass;
 import com.pratham.foundation.modalclasses.EventMessage;
 import com.pratham.foundation.modalclasses.Modal_FileDownloading;
-import com.pratham.foundation.ui.bottom_fragment.add_student.MenuActivity_;
-import com.pratham.foundation.ui.display_content.ContentDisplay_;
-import com.pratham.foundation.ui.factRetrial.FactRetrial;
+import com.pratham.foundation.ui.app_home.display_content.ContentDisplay_;
 import com.pratham.foundation.ui.factRetrial.FactRetrial_;
-import com.pratham.foundation.ui.splash_activity.SplashActivity_;
+import com.pratham.foundation.ui.selectSubject.SelectSubject_;
 import com.pratham.foundation.ui.student_profile.Student_profile_activity;
 import com.pratham.foundation.ui.test.assessment_type.TestTypeActivity;
 import com.pratham.foundation.ui.test.certificate.CertificateClicked;
 import com.pratham.foundation.ui.test.supervisor.SupervisedAssessmentActivity;
-import com.pratham.foundation.utility.BaseActivity;
+import com.pratham.foundation.BaseActivity;
 import com.pratham.foundation.utility.FC_Constants;
 import com.pratham.foundation.utility.FC_Utility;
 
@@ -141,11 +140,7 @@ public class HomeActivity extends BaseActivity implements /*BottomNavigationView
     // --Commented out by Inspection (24-Jul-19 11:05 AM):API_Content api_content;
     private LevelAdapter levelAdapter;
     private RecyclerViewDataAdapter adapterParent;
-    private String downloadNodeId;
-    private String resName;
-    private String resServerImageName;
-    private String bottomNavNodeId;
-    private String downloadType;
+    private String downloadNodeId,resName,resServerImageName,bottomNavNodeId,downloadType;
     private int currentLevelNo = 0;
     private int childPos = 0;
     private int parentPos = 0;
@@ -155,9 +150,8 @@ public class HomeActivity extends BaseActivity implements /*BottomNavigationView
     private TextView dialog_file_name;
     private List<CertificateModelClass> testList;
     private TestAdapter testAdapter;
-    private String language = "English";
-    private String bottomSection = "Learning";
-    private String certi_Code = "";
+    private String language = "English",bottomSection = "Learning",certi_Code = "";
+    public static String sub_nodeId="";
     public static boolean languageChanged = false;
 
     @AfterViews
@@ -173,6 +167,7 @@ public class HomeActivity extends BaseActivity implements /*BottomNavigationView
         presenter.setView(HomeActivity.this);
         gameTestWebViewList = new ArrayList<>();
         resumeCntr = 0;
+        sub_nodeId = getIntent().getStringExtra("nodeId");
         FC_Constants.currentSelectedLanguage = FastSave.getInstance().getString(FC_Constants.LANGUAGE, "");
         contentParentList = new ArrayList<>();
         levelList = new ArrayList<>();
@@ -694,17 +689,19 @@ public class HomeActivity extends BaseActivity implements /*BottomNavigationView
                 resPath = ApplicationClass.foundationPath + "/.LLA/English/Game/" + contentList.getResourcePath();
             File file = new File(resPath);
             Uri path = Uri.fromFile(file);
-            Intent intent = new Intent(HomeActivity.this, WebViewActivity.class);
-            intent.putExtra("resPath", path.toString());
-            intent.putExtra("resId", gameID);
-            intent.putExtra("mode", "normal");
-            intent.putExtra("gameLevel", "" + contentList.getNodeDesc());
-            intent.putExtra("gameType", "" + contentList.getResourceType());
-            intent.putExtra("certiCode", contentList.getNodeDesc());
-            intent.putExtra("gameCategory", "" + contentList.getNodeKeywords());
-            startActivity(intent);
-        }else if (contentList.getResourceType().equalsIgnoreCase(FC_Constants.OPPOSITE_WORDS)) {
-            Intent mainNew = new Intent(HomeActivity.this, FactRetrial_.class);
+                Intent intent = new Intent(HomeActivity.this, WebViewActivity.class);
+                intent.putExtra("resPath", path.toString());
+                intent.putExtra("resId", gameID);
+                intent.putExtra("mode", "normal");
+                intent.putExtra("gameLevel", "" + contentList.getNodeDesc());
+                intent.putExtra("gameType", "" + contentList.getResourceType());
+                intent.putExtra("certiCode", contentList.getNodeDesc());
+                intent.putExtra("gameCategory", "" + contentList.getNodeKeywords());
+                startActivity(intent);
+        }else if (contentList.getResourceType().equalsIgnoreCase(FC_Constants.IDENTIFY_KEYWORDS) ||
+                contentList.getResourceType().equalsIgnoreCase(FC_Constants.FACT_RETRIVAL) ||
+                contentList.getResourceType().equalsIgnoreCase(FC_Constants.KEY_WORD_MAPPING)) {
+            Intent mainNew = new Intent(HomeActivity.this, ContentPlayerActivity.class);
             mainNew.putExtra("resId", contentList.getResourceId());
             mainNew.putExtra("StudentID", FC_Constants.currentStudentID);
             mainNew.putExtra("contentName", contentList.getNodeTitle());
@@ -1096,9 +1093,9 @@ public class HomeActivity extends BaseActivity implements /*BottomNavigationView
         next_btn.setOnClickListener(v -> {
             endSession(HomeActivity.this);
             if (!ApplicationClass.isTablet) {
-                startActivity(new Intent(HomeActivity.this, SplashActivity_.class));
+                startActivity(new Intent(HomeActivity.this, SelectSubject_.class));
             } else {
-                startActivity(new Intent(HomeActivity.this, MenuActivity_.class));
+                startActivity(new Intent(HomeActivity.this, SelectSubject_.class));
             }
             presenter.clearNodeIds();
             finish();

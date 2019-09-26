@@ -7,7 +7,7 @@ import android.util.Log;
 
 
 import com.pratham.foundation.ApplicationClass;
-import com.pratham.foundation.FileUtils;
+import com.pratham.foundation.utility.FileUtils;
 import com.pratham.foundation.custom.shared_preferences.FastSave;
 import com.pratham.foundation.database.domain.ContentTable;
 import com.pratham.foundation.modalclasses.Modal_Download;

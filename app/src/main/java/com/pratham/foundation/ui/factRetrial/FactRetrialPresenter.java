@@ -12,7 +12,7 @@ import com.pratham.foundation.database.domain.Score;
 import com.pratham.foundation.modalclasses.ModalReadingVocabulary;
 import com.pratham.foundation.ui.identifyKeywords.QuestionModel;
 import com.pratham.foundation.utility.FC_Constants;
-import com.pratham.foundation.utility.Utils;
+import com.pratham.foundation.utility.FC_Utility;
 
 import org.androidannotations.annotations.Background;
 import org.androidannotations.annotations.EBean;
@@ -50,7 +50,7 @@ public class FactRetrialPresenter implements FactRetrialController.Presenter {
     @Override
     public void getData() {
         //get data
-        String text = Utils.loadJSONFromAsset(context, "factRetrial.json");
+        String text = FC_Utility.loadJSONFromAsset(context, "factRetrial.json");
        // List instrumentNames = new ArrayList<>();
         Gson gson = new Gson();
         Type type = new TypeToken<List<QuestionModel>>() {
@@ -161,7 +161,7 @@ public class FactRetrialPresenter implements FactRetrialController.Presenter {
             score.setStudentID(FC_Constants.currentStudentID);
             score.setStartDateTime(resStartTime);
             score.setDeviceID(deviceId.equals(null) ? "0000" : deviceId);
-            score.setEndDateTime(Utils.getCurrentDateTime());
+            score.setEndDateTime(FC_Utility.getCurrentDateTime());
             score.setLevel(4);
             score.setLabel(Word + " - " + Label);
             score.setSentFlag(0);
@@ -178,7 +178,7 @@ public class FactRetrialPresenter implements FactRetrialController.Presenter {
                 assessment.setStudentIDa(FC_Constants.currentAssessmentStudentID);
                 assessment.setStartDateTimea(resStartTime);
                 assessment.setDeviceIDa(deviceId.equals(null) ? "0000" : deviceId);
-                assessment.setEndDateTime(Utils.getCurrentDateTime());
+                assessment.setEndDateTime(FC_Utility.getCurrentDateTime());
                 assessment.setLevela(FC_Constants.currentLevel);
                 assessment.setLabel("test: " + Label);
                 assessment.setSentFlag(0);

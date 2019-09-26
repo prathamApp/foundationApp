@@ -1,4 +1,4 @@
-package com.pratham.foundation;
+package com.pratham.foundation.utility;
 
 import android.annotation.SuppressLint;
 import android.content.ContentUris;

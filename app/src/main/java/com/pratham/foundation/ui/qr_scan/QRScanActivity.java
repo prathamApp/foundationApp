@@ -32,14 +32,10 @@ import com.pratham.foundation.database.domain.KeyWords;
 import com.pratham.foundation.database.domain.Session;
 import com.pratham.foundation.database.domain.Student;
 import com.pratham.foundation.modalclasses.PlayerModal;
-import com.pratham.foundation.ui.app_home.HomeActivity_;
-import com.pratham.foundation.ui.selectSubject.SelectSubject;
 import com.pratham.foundation.ui.selectSubject.SelectSubject_;
-import com.pratham.foundation.utility.BaseActivity;
+import com.pratham.foundation.BaseActivity;
 import com.pratham.foundation.utility.FC_Constants;
 import com.pratham.foundation.utility.FC_Utility;
-import com.pratham.foundation.utility.Utils;
-
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Background;
@@ -384,7 +380,7 @@ public class QRScanActivity extends BaseActivity implements
 
             Session startSesion = new Session();
             startSesion.setSessionID("" + currentSession);
-            String timerTime = Utils.getCurrentDateTime();
+            String timerTime = FC_Utility.getCurrentDateTime();
 
             Log.d("doInBackground", "--------------------------------------------doInBackground : " + timerTime);
             startSesion.setFromDate(timerTime);

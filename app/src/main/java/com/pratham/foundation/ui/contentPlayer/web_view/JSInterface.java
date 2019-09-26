@@ -1,4 +1,4 @@
-package com.pratham.foundation.contentPlayer;
+package com.pratham.foundation.ui.contentPlayer.web_view;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -25,12 +25,12 @@ import com.pratham.foundation.database.domain.KeyWords;
 import com.pratham.foundation.database.domain.Score;
 import com.pratham.foundation.interfaces.WebViewInterface;
 import com.pratham.foundation.utility.FC_Constants;
-import com.pratham.foundation.utility.Utils;
+import com.pratham.foundation.utility.FC_Utility;
 
 import java.util.ArrayList;
 
-import static com.pratham.foundation.contentPlayer.WebViewActivity.gameCategory;
-import static com.pratham.foundation.contentPlayer.WebViewActivity.webResId;
+import static com.pratham.foundation.ui.contentPlayer.web_view.WebViewActivity.gameCategory;
+import static com.pratham.foundation.ui.contentPlayer.web_view.WebViewActivity.webResId;
 import static com.pratham.foundation.utility.FC_Constants.assessmentSession;
 
 
@@ -273,7 +273,7 @@ public class JSInterface implements RecognitionListener {
                     score.setStartDateTime(customDate + " " + customTime);
 
                     score.setDeviceID(deviceId.equals(null) ? "0000" : deviceId);
-                    score.setEndDateTime(Utils.getCurrentDateTime());
+                    score.setEndDateTime(FC_Utility.getCurrentDateTime());
                     score.setLevel(level);
                     score.setLabel("");
                     score.setSentFlag(0);
@@ -291,7 +291,7 @@ public class JSInterface implements RecognitionListener {
                         assessment.setStudentIDa(FC_Constants.currentAssessmentStudentID);
                         assessment.setStartDateTimea(customDate + " " + customTime);
                         assessment.setDeviceIDa(deviceId.equals(null) ? "0000" : deviceId);
-                        assessment.setEndDateTime(Utils.getCurrentDateTime());
+                        assessment.setEndDateTime(FC_Utility.getCurrentDateTime());
                         assessment.setLevela(level);
                         assessment.setLabel("");
                         assessment.setSentFlag(0);
@@ -386,7 +386,7 @@ public class JSInterface implements RecognitionListener {
                     score.setStartDateTime(customDate + " " + customTime);
 
                     score.setDeviceID(deviceId.equals(null) ? "0000" : deviceId);
-                    score.setEndDateTime(Utils.getCurrentDateTime());
+                    score.setEndDateTime(FC_Utility.getCurrentDateTime());
                     score.setLevel(level);
                     score.setLabel(Label);
                     score.setSentFlag(0);
@@ -405,7 +405,7 @@ public class JSInterface implements RecognitionListener {
                         assessment.setStudentIDa(FC_Constants.currentAssessmentStudentID);
                         assessment.setStartDateTimea(customDate + " " + customTime);
                         assessment.setDeviceIDa(deviceId.equals(null) ? "0000" : deviceId);
-                        assessment.setEndDateTime(Utils.getCurrentDateTime());
+                        assessment.setEndDateTime(FC_Utility.getCurrentDateTime());
                         assessment.setLevela(level);
                         assessment.setLabel("test: " + Label);
                         assessment.setSentFlag(0);

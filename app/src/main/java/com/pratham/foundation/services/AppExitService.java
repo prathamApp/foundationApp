@@ -11,7 +11,7 @@ import android.util.Log;
 import com.pratham.foundation.database.BackupDatabase;
 import com.pratham.foundation.ui.splash_activity.SplashActivity;
 import com.pratham.foundation.utility.FC_Constants;
-import com.pratham.foundation.utility.Utils;
+import com.pratham.foundation.utility.FC_Utility;
 
 import static com.pratham.foundation.database.AppDatabase.appDatabase;
 import static com.pratham.foundation.utility.FC_Constants.isTest;
@@ -39,7 +39,7 @@ public class AppExitService extends Service {
                         Log.d("AppExitService:  ", "3]  toDateTemp : "+toDateTemp);
                         if (toDateTemp.equalsIgnoreCase("na")) {
                             Log.d("AppExitService:  ", "4]  toDateTemp If NA: "+toDateTemp);
-                            appDatabase.getSessionDao().UpdateToDate(FC_Constants.currentSession, Utils.getCurrentDateTime());
+                            appDatabase.getSessionDao().UpdateToDate(FC_Constants.currentSession, FC_Utility.getCurrentDateTime());
                         }
                         if(FC_Constants.assessmentFlag || isTest) {
                             Log.d("AppExitService:  ", "5]  Assessment Flg: ");
@@ -47,7 +47,7 @@ public class AppExitService extends Service {
                             Log.d("AppExitService:  ", "6]  Assessment toDate: "+toDateAssessment);
                             if (toDateAssessment.equalsIgnoreCase("na")) {
                                 Log.d("AppExitService:  ", "7]  Assessment toDate If Na: "+toDateAssessment);
-                                appDatabase.getSessionDao().UpdateToDate(FC_Constants.assessmentSession, Utils.getCurrentDateTime());
+                                appDatabase.getSessionDao().UpdateToDate(FC_Constants.assessmentSession, FC_Utility.getCurrentDateTime());
                             }
                         }
                         Log.d("AppExitService:  ", "8]  Outside : ");

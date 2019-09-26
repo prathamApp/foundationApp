@@ -8,6 +8,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.pratham.foundation.R;
 import com.pratham.foundation.custumView.SansTextView;
@@ -31,7 +32,7 @@ public class SelectSubjectAdapter extends RecyclerView.Adapter<SelectSubjectAdap
     @NonNull
     @Override
     public Myviewholder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
-        View view = LayoutInflater.from(context).inflate(R.layout.item_keyword, viewGroup, false);
+        View view = LayoutInflater.from(context).inflate(R.layout.item_subject, viewGroup, false);
         return new Myviewholder(view);
     }
 
@@ -41,7 +42,10 @@ public class SelectSubjectAdapter extends RecyclerView.Adapter<SelectSubjectAdap
         myviewholder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                context.startActivity(new Intent(context, HomeActivity_.class));
+
+                Intent intent = new Intent(context, HomeActivity_.class);
+                intent.putExtra("nodeId", datalist.get(i).getNodeId());
+                context.startActivity(intent);
             }
         });
     }
@@ -52,11 +56,11 @@ public class SelectSubjectAdapter extends RecyclerView.Adapter<SelectSubjectAdap
     }
 
     class Myviewholder extends RecyclerView.ViewHolder {
-        SansTextView textView;
+        TextView textView;
 
         public Myviewholder(@NonNull View itemView) {
             super(itemView);
-            textView = itemView.findViewById(R.id.keywordname);
+            textView = itemView.findViewById(R.id.content_title);
         }
     }
 
