@@ -12,18 +12,13 @@ import com.pratham.foundation.asynk.API_Content;
 import com.pratham.foundation.asynk.ZipDownloader;
 import com.pratham.foundation.database.AppDatabase;
 import com.pratham.foundation.database.BackupDatabase;
-import com.pratham.foundation.database.domain.Assessment;
 import com.pratham.foundation.database.domain.ContentProgress;
 import com.pratham.foundation.database.domain.ContentTable;
 import com.pratham.foundation.database.domain.ContentTableNew;
-import com.pratham.foundation.database.domain.Session;
 import com.pratham.foundation.database.domain.WordEnglish;
 import com.pratham.foundation.interfaces.API_Content_Result;
-import com.pratham.foundation.modalclasses.CertificateModelClass;
 import com.pratham.foundation.modalclasses.Modal_DownloadAssessment;
 import com.pratham.foundation.modalclasses.Modal_DownloadContent;
-import com.pratham.foundation.ui.contentPlayer.web_view.WebViewActivity;
-import com.pratham.foundation.ui.home_temp.TempHomeContract;
 import com.pratham.foundation.utility.FC_Constants;
 import com.pratham.foundation.utility.FC_Utility;
 
@@ -47,16 +42,9 @@ import java.util.Comparator;
 import java.util.List;
 
 import static com.pratham.foundation.ui.home_temp.TempHomeActivity.sub_nodeId;
-import static com.pratham.foundation.utility.FC_Constants.GROUP_LOGIN;
-import static com.pratham.foundation.utility.FC_Constants.assessmentSession;
-import static com.pratham.foundation.utility.FC_Constants.currentGroup;
-import static com.pratham.foundation.utility.FC_Constants.currentLevel;
-import static com.pratham.foundation.utility.FC_Constants.isTest;
-import static com.pratham.foundation.utility.FC_Constants.testSessionEnded;
-import static com.pratham.foundation.utility.FC_Constants.testSessionEntered;
 
 @EBean
-public class LearningPresenter implements LearningContract.LearningPresenter , API_Content_Result {
+public class LearningPresenter implements LearningContract.LearningPresenter, API_Content_Result {
 
     Context mContext;
     LearningContract.LearningView learningView;
@@ -76,6 +64,7 @@ public class LearningPresenter implements LearningContract.LearningPresenter , A
     @Bean(ZipDownloader.class)
     ZipDownloader zipDownloader;
     private String cosSection;
+
     public LearningPresenter(Context mContext) {
         this.mContext = mContext;
     }
@@ -153,7 +142,7 @@ public class LearningPresenter implements LearningContract.LearningPresenter , A
         botID = AppDatabase.appDatabase.getContentTableDao().getContentDataByTitle("" + rootID, cosSection);
         if (botID != null && !FC_Utility.isDataConnectionAvailable(mContext))
             getLevelDataForList(currentLevelNo, botID);
-            else
+        else
             getRootData(rootID);
 
 //        learningView.setBotNodeId(botID);
@@ -274,144 +263,142 @@ public class LearningPresenter implements LearningContract.LearningPresenter , A
     @Override
     @Background
     public void getDataForList() {
-        if (!isTest) {
-            learningView.showLoader();
+        learningView.showLoader();
+        try {
+            ContentTableNew resContentTable = new ContentTableNew();
+            List<ContentTableNew> resourceList;
+            List<ContentTableNew> tempList2;
+            tempList2 = new ArrayList<>();
+
+            resourceList = new ArrayList<>();
+            resContentTable.setNodeTitle("Direct Play");
+            resContentTable.setNodeType("resList");
+
+            ContentTableNew contentTableRes = new ContentTableNew();
+            contentTableRes.setNodeId("0");
+            contentTableRes.setNodeType("Header");
+            tempList2.add(contentTableRes);
+            resContentTable.setNodelist(tempList2);
+            resourceList.add(contentTableRes);
+
+            dwParentList = AppDatabase.appDatabase.getContentTableDao().getContentData("" + nodeIds.get(nodeIds.size() - 1));
+            sortContentList(dwParentList);
+            contentParentList.clear();
+            contentParentList.add(contentTableRes);
             try {
-                ContentTableNew resContentTable = new ContentTableNew();
-                List<ContentTableNew> resourceList;
-                List<ContentTableNew> tempList2;
-                tempList2 = new ArrayList<>();
+                for (int j = 0; j < dwParentList.size(); j++) {
+                    if (dwParentList.get(j).getNodeType().equalsIgnoreCase("Resource")) {
+                        contentTableRes = new ContentTableNew();
+                        tempList2 = new ArrayList<>();
+                        contentTableRes.setNodeId("" + dwParentList.get(j).getNodeId());
+                        contentTableRes.setNodeType("" + dwParentList.get(j).getNodeType());
+                        contentTableRes.setNodeTitle("" + dwParentList.get(j).getNodeTitle());
+                        contentTableRes.setNodeKeywords("" + dwParentList.get(j).getNodeKeywords());
+                        contentTableRes.setNodeAge("" + dwParentList.get(j).getNodeAge());
+                        contentTableRes.setNodeDesc("" + dwParentList.get(j).getNodeDesc());
+                        contentTableRes.setNodeServerImage("" + dwParentList.get(j).getNodeServerImage());
+                        contentTableRes.setNodeImage("" + dwParentList.get(j).getNodeImage());
+                        contentTableRes.setResourceId("" + dwParentList.get(j).getResourceId());
+                        contentTableRes.setResourceType("" + dwParentList.get(j).getResourceType());
+                        contentTableRes.setResourcePath("" + dwParentList.get(j).getResourcePath());
+                        contentTableRes.setParentId("" + dwParentList.get(j).getParentId());
+                        contentTableRes.setLevel("" + dwParentList.get(j).getLevel());
+                        contentTableRes.setContentType("" + dwParentList.get(j).getContentType());
+                        contentTableRes.setIsDownloaded("" + dwParentList.get(j).getIsDownloaded());
+                        contentTableRes.setOnSDCard(dwParentList.get(j).isOnSDCard());
+                        contentTableRes.setNodelist(tempList2);
+                        resourceList.add(contentTableRes);
+                    } else {
+                        List<ContentTableNew> tempList;
+                        ContentTableNew contentTable = new ContentTableNew();
+                        tempList = new ArrayList<>();
+                        childDwContentList = AppDatabase.appDatabase.getContentTableDao().getContentData("" + dwParentList.get(j).getNodeId());
+                        sortContentList(childDwContentList);
+                        contentTable.setNodeId("" + dwParentList.get(j).getNodeId());
+                        contentTable.setNodeType("" + dwParentList.get(j).getNodeType());
+                        contentTable.setNodeTitle("" + dwParentList.get(j).getNodeTitle());
+                        contentTable.setNodeKeywords("" + dwParentList.get(j).getNodeKeywords());
+                        contentTable.setNodeAge("" + dwParentList.get(j).getNodeAge());
+                        contentTable.setNodeDesc("" + dwParentList.get(j).getNodeDesc());
+                        contentTable.setNodeServerImage("" + dwParentList.get(j).getNodeServerImage());
+                        contentTable.setNodeImage("" + dwParentList.get(j).getNodeImage());
+                        contentTable.setResourceId("" + dwParentList.get(j).getResourceId());
+                        contentTable.setResourceType("" + dwParentList.get(j).getResourceType());
+                        contentTable.setResourcePath("" + dwParentList.get(j).getResourcePath());
+                        contentTable.setParentId("" + dwParentList.get(j).getParentId());
+                        contentTable.setLevel("" + dwParentList.get(j).getLevel());
+                        contentTable.setContentType(dwParentList.get(j).getContentType());
+                        contentTable.setIsDownloaded("" + dwParentList.get(j).getIsDownloaded());
+                        contentTable.setOnSDCard(dwParentList.get(j).isOnSDCard());
 
-                resourceList = new ArrayList<>();
-                resContentTable.setNodeTitle("Direct Play");
-                resContentTable.setNodeType("resList");
-
-                ContentTableNew contentTableRes = new ContentTableNew();
-                contentTableRes.setNodeId("0");
-                contentTableRes.setNodeType("Header");
-                tempList2.add(contentTableRes);
-                resContentTable.setNodelist(tempList2);
-                resourceList.add(contentTableRes);
-
-                dwParentList = AppDatabase.appDatabase.getContentTableDao().getContentData("" + nodeIds.get(nodeIds.size() - 1));
-                sortContentList(dwParentList);
-                contentParentList.clear();
-                contentParentList.add(contentTableRes);
-                try {
-                    for (int j = 0; j < dwParentList.size(); j++) {
-                        if (dwParentList.get(j).getNodeType().equalsIgnoreCase("Resource")) {
-                            contentTableRes = new ContentTableNew();
-                            tempList2 = new ArrayList<>();
-                            contentTableRes.setNodeId("" + dwParentList.get(j).getNodeId());
-                            contentTableRes.setNodeType("" + dwParentList.get(j).getNodeType());
-                            contentTableRes.setNodeTitle("" + dwParentList.get(j).getNodeTitle());
-                            contentTableRes.setNodeKeywords("" + dwParentList.get(j).getNodeKeywords());
-                            contentTableRes.setNodeAge("" + dwParentList.get(j).getNodeAge());
-                            contentTableRes.setNodeDesc("" + dwParentList.get(j).getNodeDesc());
-                            contentTableRes.setNodeServerImage("" + dwParentList.get(j).getNodeServerImage());
-                            contentTableRes.setNodeImage("" + dwParentList.get(j).getNodeImage());
-                            contentTableRes.setResourceId("" + dwParentList.get(j).getResourceId());
-                            contentTableRes.setResourceType("" + dwParentList.get(j).getResourceType());
-                            contentTableRes.setResourcePath("" + dwParentList.get(j).getResourcePath());
-                            contentTableRes.setParentId("" + dwParentList.get(j).getParentId());
-                            contentTableRes.setLevel("" + dwParentList.get(j).getLevel());
-                            contentTableRes.setContentType("" + dwParentList.get(j).getContentType());
-                            contentTableRes.setIsDownloaded("" + dwParentList.get(j).getIsDownloaded());
-                            contentTableRes.setOnSDCard(dwParentList.get(j).isOnSDCard());
-                            contentTableRes.setNodelist(tempList2);
-                            resourceList.add(contentTableRes);
-                        } else {
-                            List<ContentTableNew> tempList;
-                            ContentTableNew contentTable = new ContentTableNew();
-                            tempList = new ArrayList<>();
-                            childDwContentList = AppDatabase.appDatabase.getContentTableDao().getContentData("" + dwParentList.get(j).getNodeId());
-                            sortContentList(childDwContentList);
-                            contentTable.setNodeId("" + dwParentList.get(j).getNodeId());
-                            contentTable.setNodeType("" + dwParentList.get(j).getNodeType());
-                            contentTable.setNodeTitle("" + dwParentList.get(j).getNodeTitle());
-                            contentTable.setNodeKeywords("" + dwParentList.get(j).getNodeKeywords());
-                            contentTable.setNodeAge("" + dwParentList.get(j).getNodeAge());
-                            contentTable.setNodeDesc("" + dwParentList.get(j).getNodeDesc());
-                            contentTable.setNodeServerImage("" + dwParentList.get(j).getNodeServerImage());
-                            contentTable.setNodeImage("" + dwParentList.get(j).getNodeImage());
-                            contentTable.setResourceId("" + dwParentList.get(j).getResourceId());
-                            contentTable.setResourceType("" + dwParentList.get(j).getResourceType());
-                            contentTable.setResourcePath("" + dwParentList.get(j).getResourcePath());
-                            contentTable.setParentId("" + dwParentList.get(j).getParentId());
-                            contentTable.setLevel("" + dwParentList.get(j).getLevel());
-                            contentTable.setContentType(dwParentList.get(j).getContentType());
-                            contentTable.setIsDownloaded("" + dwParentList.get(j).getIsDownloaded());
-                            contentTable.setOnSDCard(dwParentList.get(j).isOnSDCard());
-
-                            int childListSize = childDwContentList.size();
-                            if (childDwContentList.size() > 0) {
-                                ContentTableNew contentChild = new ContentTableNew();
-                                contentChild.setNodeId("0");
-                                contentChild.setNodeType("Header");
-                                tempList.add(contentChild);
-                                for (int i = 0; i < childListSize; i++) {
-                                    contentChild = new ContentTableNew();
-                                    contentChild.setNodeId("" + childDwContentList.get(i).getNodeId());
-                                    contentChild.setNodeType("" + childDwContentList.get(i).getNodeType());
-                                    contentChild.setNodeTitle("" + childDwContentList.get(i).getNodeTitle());
-                                    contentChild.setNodeKeywords("" + childDwContentList.get(i).getNodeKeywords());
-                                    contentChild.setNodeAge("" + childDwContentList.get(i).getNodeAge());
-                                    contentChild.setNodeDesc("" + childDwContentList.get(i).getNodeDesc());
-                                    contentChild.setNodeServerImage("" + childDwContentList.get(i).getNodeServerImage());
-                                    contentChild.setNodeImage("" + childDwContentList.get(i).getNodeImage());
-                                    contentChild.setResourceId("" + childDwContentList.get(i).getResourceId());
-                                    contentChild.setResourceType("" + childDwContentList.get(i).getResourceType());
-                                    contentChild.setResourcePath("" + childDwContentList.get(i).getResourcePath());
-                                    contentChild.setParentId("" + childDwContentList.get(i).getParentId());
-                                    contentChild.setLevel("" + childDwContentList.get(i).getLevel());
-                                    contentChild.setContentType(childDwContentList.get(i).getContentType());
-                                    contentChild.setIsDownloaded("" + childDwContentList.get(i).getIsDownloaded());
-                                    contentChild.setOnSDCard(childDwContentList.get(i).isOnSDCard());
-                                    contentChild.setNodelist(null);
-                                    maxScoreChild = new ArrayList();
-                                    findMaxScoreNew(childDwContentList.get(i).getNodeId());
-                                    double totalScore = 0;
-                                    for (int q = 0; maxScoreChild.size() > q; q++) {
-                                        totalScore = totalScore + Double.parseDouble(maxScoreChild.get(q).toString());
-                                    }
-                                    if (maxScoreChild.size() > 0) {
-                                        int percent = (int) (totalScore / maxScoreChild.size());
-                                        contentChild.setNodePercentage("" + percent);
-                                    } else {
-                                        contentChild.setNodePercentage("0");
-                                    }
-                                    tempList.add(contentChild);
-                                }
+                        int childListSize = childDwContentList.size();
+                        if (childDwContentList.size() > 0) {
+                            ContentTableNew contentChild = new ContentTableNew();
+                            contentChild.setNodeId("0");
+                            contentChild.setNodeType("Header");
+                            tempList.add(contentChild);
+                            for (int i = 0; i < childListSize; i++) {
                                 contentChild = new ContentTableNew();
-                                contentChild.setNodeId("999999");
-                                contentChild.setNodeType("Header");
+                                contentChild.setNodeId("" + childDwContentList.get(i).getNodeId());
+                                contentChild.setNodeType("" + childDwContentList.get(i).getNodeType());
+                                contentChild.setNodeTitle("" + childDwContentList.get(i).getNodeTitle());
+                                contentChild.setNodeKeywords("" + childDwContentList.get(i).getNodeKeywords());
+                                contentChild.setNodeAge("" + childDwContentList.get(i).getNodeAge());
+                                contentChild.setNodeDesc("" + childDwContentList.get(i).getNodeDesc());
+                                contentChild.setNodeServerImage("" + childDwContentList.get(i).getNodeServerImage());
+                                contentChild.setNodeImage("" + childDwContentList.get(i).getNodeImage());
+                                contentChild.setResourceId("" + childDwContentList.get(i).getResourceId());
+                                contentChild.setResourceType("" + childDwContentList.get(i).getResourceType());
+                                contentChild.setResourcePath("" + childDwContentList.get(i).getResourcePath());
+                                contentChild.setParentId("" + childDwContentList.get(i).getParentId());
+                                contentChild.setLevel("" + childDwContentList.get(i).getLevel());
+                                contentChild.setContentType(childDwContentList.get(i).getContentType());
+                                contentChild.setIsDownloaded("" + childDwContentList.get(i).getIsDownloaded());
+                                contentChild.setOnSDCard(childDwContentList.get(i).isOnSDCard());
+                                contentChild.setNodelist(null);
+                                maxScoreChild = new ArrayList();
+                                findMaxScoreNew(childDwContentList.get(i).getNodeId());
+                                double totalScore = 0;
+                                for (int q = 0; maxScoreChild.size() > q; q++) {
+                                    totalScore = totalScore + Double.parseDouble(maxScoreChild.get(q).toString());
+                                }
+                                if (maxScoreChild.size() > 0) {
+                                    int percent = (int) (totalScore / maxScoreChild.size());
+                                    contentChild.setNodePercentage("" + percent);
+                                } else {
+                                    contentChild.setNodePercentage("0");
+                                }
                                 tempList.add(contentChild);
                             }
-                            sortAllList(tempList);
-                            contentTable.setNodelist(tempList);
-                            contentParentList.add(contentTable);
+                            contentChild = new ContentTableNew();
+                            contentChild.setNodeId("999999");
+                            contentChild.setNodeType("Header");
+                            tempList.add(contentChild);
                         }
+                        sortAllList(tempList);
+                        contentTable.setNodelist(tempList);
+                        contentParentList.add(contentTable);
                     }
-                    if (resourceList.size() > 1) {
-                        contentTableRes = new ContentTableNew();
-                        contentTableRes.setNodeId("999999");
-                        contentTableRes.setNodeType("Header");
-                        tempList2.add(contentTableRes);
-                        resContentTable.setNodelist(tempList2);
-                        resourceList.add(contentTableRes);
+                }
+                if (resourceList.size() > 1) {
+                    contentTableRes = new ContentTableNew();
+                    contentTableRes.setNodeId("999999");
+                    contentTableRes.setNodeType("Header");
+                    tempList2.add(contentTableRes);
+                    resContentTable.setNodelist(tempList2);
+                    resourceList.add(contentTableRes);
 
-                        resContentTable.setNodelist(resourceList);
-                        contentParentList.add(resContentTable);
+                    resContentTable.setNodelist(resourceList);
+                    contentParentList.add(resContentTable);
 
-                    }
-                } catch (Exception e) {
-                    e.printStackTrace();
                 }
             } catch (Exception e) {
                 e.printStackTrace();
             }
-            updateUI();
+        } catch (Exception e) {
+            e.printStackTrace();
         }
+        updateUI();
     }
 
     @UiThread
@@ -839,7 +826,8 @@ public class LearningPresenter implements LearningContract.LearningPresenter , A
             learningView.setSelectedLevel(rootLevelList);
         } else if (header.equalsIgnoreCase(FC_Constants.BOTTOM_NODE)) {
             try {
-                Type listType = new TypeToken<ArrayList<ContentTableNew>>(){}.getType();
+                Type listType = new TypeToken<ArrayList<ContentTableNew>>() {
+                }.getType();
                 List<ContentTableNew> serverContentList = gson.fromJson(response, listType);
                 String botNodeId = serverContentList.get(0).getNodeId();
                 for (int i = 0; i < serverContentList.size(); i++)
