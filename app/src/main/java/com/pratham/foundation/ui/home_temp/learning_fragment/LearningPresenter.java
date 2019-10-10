@@ -265,7 +265,7 @@ public class LearningPresenter implements LearningContract.LearningPresenter , A
             } else {
                 learningView.setLevelprogress(0);
             }
-        } catch (NumberFormatException e) {
+        } catch (Exception e) {
             e.printStackTrace();
             learningView.setLevelprogress(0);
         }

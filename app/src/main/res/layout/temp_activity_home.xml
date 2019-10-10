@@ -157,8 +157,9 @@
         android:layout_margin="@dimen/_5sdp"
         android:elevation="10dp"
         android:background="@drawable/home_header_1_bg"
-        app:tabIndicatorColor="@color/red"
-        app:tabSelectedTextColor="@color/red"
+        app:tabIndicatorHeight="@dimen/_3sdp"
+        app:tabIndicatorFullWidth="true"
+        app:tabIndicatorColor="@color/trans_card_text"
         app:tabGravity="fill"
         app:tabMode="fixed" />
 </RelativeLayout>

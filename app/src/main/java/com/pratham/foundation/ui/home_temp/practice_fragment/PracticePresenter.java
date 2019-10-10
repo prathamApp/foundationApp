@@ -246,15 +246,20 @@ public class PracticePresenter implements PracticeContract.PracticePresenter, AP
         double totalScore = 0;
         try {
             for (int j = 0; maxScore.size() > j; j++) {
-                totalScore = totalScore + Double.parseDouble(maxScore.get(j).toString());
+                try {
+                    Double aDouble = Double.parseDouble(maxScore.get(j).toString());
+                    totalScore = totalScore + aDouble;
+                }catch (Exception e){e.printStackTrace();
+                totalScore=0;
+                }
             }
-            if (maxScore.size() > 0) {
+            if (maxScore.size() > 0 && totalScore > 0) {
                 int percent = (int) (totalScore / maxScore.size());
                 PracticeView.setLevelprogress(percent);
             } else {
                 PracticeView.setLevelprogress(0);
             }
-        } catch (NumberFormatException e) {
+        } catch (Exception e) {
             e.printStackTrace();
             PracticeView.setLevelprogress(0);
         }
