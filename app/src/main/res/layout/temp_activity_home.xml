@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/home_root_layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:id="@+id/header_rl"
+        android:layout_width="match_parent"
+        android:layout_margin="@dimen/_5sdp"
+        android:background="@drawable/home_header_1_bg"
+        android:elevation="10dp"
+        android:layout_height="140dp">
+
+<!--
+        <LinearLayout
+            android:id="@+id/header_layout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginStart="0dp"
+            android:gravity="top"
+            android:orientation="horizontal">
+-->
+
+            <RelativeLayout
+                android:id="@+id/leftCol"
+                android:layout_width="@dimen/_50sdp"
+                android:layout_height="130dp"
+                android:layout_marginStart="@dimen/_5sdp"
+                android:layout_alignParentTop="true">
+
+                <ImageButton
+                    android:id="@+id/btn_back"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:layout_alignParentTop="true"
+                    android:background="?android:selectableItemBackground"
+                    android:padding="@dimen/_5sdp"
+                    android:src="@drawable/ic_left_arrow" />
+
+                <ImageView
+                    android:id="@+id/iv_level"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_below="@id/btn_back"
+                    android:layout_alignParentBottom="true"
+                    android:src="@drawable/level_1"
+                    android:elevation="20dp"
+                    android:scaleType="fitCenter"/>
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/header_title"
+                android:layout_width="match_parent"
+                android:layout_height="130dp"
+                android:layout_toEndOf="@+id/leftCol"
+                android:layout_toStartOf="@+id/profile_header"
+                android:layout_marginStart="@dimen/_10sdp"
+                android:layout_marginEnd="@dimen/_5sdp"
+                android:layout_weight="3.5">
+
+                <com.pratham.foundation.custumView.SansTextView
+                    android:id="@+id/tv_studentName"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_5sdp"
+                    android:layout_marginRight="@dimen/_8sdp"
+                    android:gravity="left"
+                    android:text="@string/app_name"
+                    android:textSize="@dimen/_16sdp" />
+
+                <com.pratham.foundation.custumView.SansTextView
+                    android:id="@+id/tv_level"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/tv_studentName"
+                    android:layout_marginTop="@dimen/_5sdp"
+                    android:layout_marginRight="@dimen/_8sdp"
+                    android:gravity="left"
+                    android:text="@string/app_name"
+                    android:textSize="@dimen/_14sdp" />
+
+            </RelativeLayout>
+
+            <LinearLayout
+                android:id="@+id/profile_header"
+                android:layout_width="@dimen/_60sdp"
+                android:layout_height="130dp"
+                android:layout_alignParentEnd="true"
+                android:gravity="center"
+                android:layout_gravity="center_horizontal"
+                android:orientation="vertical">
+
+                <com.pratham.foundation.custumView.CircularImageView
+                    android:id="@+id/profileImage"
+                    android:layout_width="@dimen/_45sdp"
+                    android:layout_height="@dimen/_45sdp"
+                    android:scaleType="centerInside"
+                    android:src="@drawable/b2"
+                    android:layout_gravity="center_horizontal"
+                    app:border="true"
+                    app:border_color="@color/colorAccent"
+                    app:border_width="2dp"
+                    app:shadow="true" />
+
+                <com.pratham.foundation.custumView.SansTextViewBold
+                    android:id="@+id/tv_progress"
+                    android:layout_width="wrap_content"
+                    android:layout_height="30dp"
+                    android:layout_marginTop="@dimen/_5sdp"
+                    android:gravity="center_horizontal"
+                    android:text="Progress"
+                    android:textSize="@dimen/_9sdp" />
+
+            </LinearLayout>
+<!--        </LinearLayout>-->
+    </RelativeLayout>
+
+    <android.support.v4.view.ViewPager
+        android:id="@+id/viewpager"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:elevation="2dp"
+        android:layout_marginBottom="?attr/actionBarSize"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior" />
+
+    <com.pratham.foundation.custumView.submarine_view.SubmarineView
+        android:id="@+id/submarine"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:alpha="0.9"
+        android:layout_marginTop="150dp"
+        android:layout_marginStart="@dimen/_10sdp"
+        android:animateLayoutChanges="true"
+        android:elevation="10dp"
+        app:submarine_autoDip="true"
+        app:submarine_animation="scale"
+        app:submarine_borderColor="@color/red"
+        app:submarine_borderSize="@dimen/_1sdp"
+        app:submarine_circleAnchor="top"
+        app:submarine_circleDrawable="@drawable/ic_close_red"
+        app:submarine_circleSize="@dimen/_30sdp"
+        app:submarine_color="@color/colorText"
+        app:submarine_duration="400"
+        app:submarine_orientation="vertical" />
+
+    <android.support.design.widget.TabLayout
+        android:id="@+id/tabs"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:layout_alignParentBottom="true"
+        android:layout_margin="@dimen/_5sdp"
+        android:elevation="10dp"
+        android:background="@drawable/home_header_1_bg"
+        app:tabIndicatorColor="@color/red"
+        app:tabSelectedTextColor="@color/red"
+        app:tabGravity="fill"
+        app:tabMode="fixed" />
+</RelativeLayout>

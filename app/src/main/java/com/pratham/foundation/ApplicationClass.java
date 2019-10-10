@@ -5,6 +5,7 @@ import android.content.Context;
 import android.util.Log;
 
 import com.androidnetworking.AndroidNetworking;
+import com.facebook.drawee.backends.pipeline.Fresco;
 import com.pratham.foundation.custom.shared_preferences.FastSave;
 import com.pratham.foundation.utility.FC_Utility;
 import com.isupatches.wisefy.WiseFy;
@@ -38,7 +39,7 @@ public class ApplicationClass extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
-
+        Fresco.initialize(this);
         if (applicationClass == null) {
             applicationClass = this;
         }

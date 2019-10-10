@@ -77,10 +77,13 @@
             android:name=".ui.admin_panel.group_selection.SelectGroupActivity_"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".ui.app_home.HomeActivity_"
+            android:name=".ui.old_home.HomeActivity_"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".ui.app_home.display_content.ContentDisplay_"
+            android:name=".ui.home_temp.TempHomeActivity_"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.home_temp.display_content.ContentDisplay_"
             android:screenOrientation="portrait" />
         <activity
             android:name=".ui.admin_panel.fragment_admin_panel.PushOrAssign.PushDataActivity_"

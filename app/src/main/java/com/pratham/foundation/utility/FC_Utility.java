@@ -113,6 +113,15 @@ public class FC_Utility {
         return json;
     }
 
+    private static int[] gradiant_bg = new int[]{
+            R.drawable.gradient_one, R.drawable.gradient_two, R.drawable.gradient_three,
+            R.drawable.gradient_four,R.drawable.gradient_five};
+
+    public static int getRandomDrawableGradiant(){
+        int bg_grad = gradiant_bg[new Random().nextInt(gradiant_bg.length)];
+        return bg_grad;
+    }
+
     public static String getPhoneModel() {
         String str1 = Build.BRAND;
         String str2 = Build.MODEL;

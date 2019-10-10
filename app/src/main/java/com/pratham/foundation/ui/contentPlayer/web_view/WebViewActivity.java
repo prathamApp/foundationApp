@@ -38,7 +38,7 @@ import java.util.List;
 import butterknife.ButterKnife;
 
 import static com.pratham.foundation.database.AppDatabase.appDatabase;
-import static com.pratham.foundation.ui.app_home.HomeActivity.gameTestWebViewList;
+import static com.pratham.foundation.ui.old_home.HomeActivity.gameTestWebViewList;
 import static com.pratham.foundation.utility.FC_Constants.dialog_btn_cancel;
 
 

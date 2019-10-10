@@ -58,9 +58,7 @@ import com.pratham.foundation.interfaces.SplashInterface;
 import com.pratham.foundation.modalclasses.EventMessage;
 import com.pratham.foundation.services.AppExitService;
 import com.pratham.foundation.services.LocationService;
-import com.pratham.foundation.ui.app_home.HomeActivity_;
 import com.pratham.foundation.ui.bottom_fragment.add_student.AddStudentFragment;
-import com.pratham.foundation.ui.selectSubject.SelectSubject;
 import com.pratham.foundation.ui.selectSubject.SelectSubject_;
 import com.pratham.foundation.ui.splash_activity.SplashActivity;
 import com.pratham.foundation.utility.FC_Constants;
@@ -667,15 +665,17 @@ public class BottomStudentsFragment extends BottomSheetDialogFragment
         } catch (Exception e) {
             e.printStackTrace();
         }
-        updateUI();
+        updateUI(studentName);
     }
 
     @UiThread
-    public void updateUI() {
+    public void updateUI(String studName) {
         dismissProgressDialog();
        //todo remove#
         // startActivity(new Intent(getActivity(), HomeActivity_.class));
-        startActivity(new Intent(getActivity(), SelectSubject_.class));
+        Intent intent = new Intent(getActivity(), SelectSubject_.class);
+        intent.putExtra("studName", studName);
+        startActivity(intent);
         getActivity().finish();
     }
 
@@ -708,7 +708,7 @@ public class BottomStudentsFragment extends BottomSheetDialogFragment
     }
 
     private void receivedError() {
-//        startActivity(new Intent(getActivity(), HomeActivity.class));
+//        startActivity(new Intent(getActivity(), TempHomeActivity.class));
 //        getActivity().finish();
     }
 
@@ -769,7 +769,7 @@ public class BottomStudentsFragment extends BottomSheetDialogFragment
 //                @Override
 //                protected void onPostExecute(Object o) {
 //                    super.onPostExecute(o);
-//                    startActivity(new Intent(getActivity(), HomeActivity.class));
+//                    startActivity(new Intent(getActivity(), TempHomeActivity.class));
 //                    getActivity().finish();
 //                }
 //            }.execute();

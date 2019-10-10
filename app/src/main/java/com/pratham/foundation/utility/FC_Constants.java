@@ -44,6 +44,9 @@ public class FC_Constants {
     public static final String FOLDER_NAME = "folder_name";
     public static final String FILE_DOWNLOAD_ERROR= "file_download_error";
     public static final String FILE_DOWNLOAD_COMPLETE = "file_download_complete";
+    public static final String LEVEL_CHANGED= "level_changed";
+    public static final String BACK_PRESSED= "back_pressed";
+    public static final String FRAGMENT_BACK_PRESSED= "fragment_back_pressed";
     public static final String DOWNLOAD_COMPLETE = "download_complete";
     public static final String API_PARENT = "api_parent";
     public static final String API_CHILD = "api_child";

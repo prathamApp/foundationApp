@@ -1,11 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.pratham.foundation.custumView.SansTextViewBold xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/itemTitle"
+<View xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/outerItemHeader"
     android:layout_width="match_parent"
-    android:layout_height="@dimen/_80sdp"
-    android:gravity="center"
-    android:minHeight="@dimen/_80sdp"
-    android:text="@string/app_name"
-    android:background="@android:color/transparent"
-    android:textColor="@color/white"
-    android:textSize="@dimen/_21sdp" />
+    android:layout_height="140dp"
+    android:minHeight="140dp"
+    android:background="@android:color/transparent"/>

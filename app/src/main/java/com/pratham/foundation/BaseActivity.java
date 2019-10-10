@@ -6,7 +6,10 @@ import android.media.AudioManager;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
+import android.view.View;
+import android.view.Window;
 import android.view.WindowManager;
 
 import com.pratham.foundation.database.AppDatabase;
@@ -16,24 +19,48 @@ import com.pratham.foundation.utility.FC_Utility;
 
 import java.util.Locale;
 
+import static android.view.View.SYSTEM_UI_FLAG_HIDE_NAVIGATION;
+
 
 public class BaseActivity extends AppCompatActivity {
 
     public static boolean muteFlg = false;
     public static TTSService ttsService;
     private static AudioManager audioManager;
-
+    View mDecorView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        getWindow().setFlags(
+                WindowManager.LayoutParams.FLAG_HARDWARE_ACCELERATED,
+                WindowManager.LayoutParams.FLAG_HARDWARE_ACCELERATED);
+        requestWindowFeature(Window.FEATURE_NO_TITLE);
+        hideSystemUI();
         super.onCreate(savedInstanceState);
-        getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
-
+        mDecorView = getWindow().getDecorView();
         audioManager = (AudioManager) getSystemService(this.AUDIO_SERVICE);
         startSTT();
         muteFlg = false;
+    }
 
+    @Override
+    public void onWindowFocusChanged(boolean hasFocus) {
+        super.onWindowFocusChanged(hasFocus);
+        hideSystemUI();
+    }
+
+    private void hideSystemUI() {
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
+                WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        getWindow().getDecorView().setSystemUiVisibility(
+                View.SYSTEM_UI_FLAG_FULLSCREEN
+                        | View.SYSTEM_UI_FLAG_LOW_PROFILE
+                        | View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+                        | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY
+                        | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
+                        | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
+        );
     }
 
     private void startSTT() {

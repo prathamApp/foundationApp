@@ -1,8 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+<!--
     <color name="colorPrimary">#344955</color>
     <color name="colorPrimaryDark">#232F34</color>
     <color name="colorAccent">#FFBE00</color>
+-->
+    <color name="colorPrimaryDark">#98CEA7</color>
+    <color name="colorPrimary">#B8DFC4</color>
+    <color name="colorAccent">#FFA001</color>
+    <color name="colorParent">#E7F2E9</color>
+    <color name="colorText">#232F34</color>
 
     <color name="white">#ffffff</color>
     <color name="yellow">#FFFFFF00</color>
@@ -160,10 +167,7 @@
 
     <color name="header_bg">#febb65</color>
     <color name="grayIconTint">#727272</color>
-
-
-
-
+    <color name="submarine_white">#f4f4f4</color>
 
 
 </resources>

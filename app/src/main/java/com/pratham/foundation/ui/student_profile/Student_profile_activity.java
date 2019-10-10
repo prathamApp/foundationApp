@@ -30,7 +30,7 @@ import com.pratham.foundation.custumView.CircularImageView;
 import com.pratham.foundation.database.AppDatabase;
 import com.pratham.foundation.database.domain.ContentProgress;
 import com.pratham.foundation.database.domain.ContentTable;
-import com.pratham.foundation.ui.app_home.HomeActivity;
+import com.pratham.foundation.ui.old_home.HomeActivity;
 import com.pratham.foundation.ui.student_profile.discription_adapter.DiscriptionAdapter;
 import com.pratham.foundation.BaseActivity;
 import com.pratham.foundation.utility.FC_Constants;

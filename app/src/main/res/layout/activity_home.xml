@@ -4,6 +4,7 @@
     android:id="@+id/home_root_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/colorParent"
     android:orientation="vertical">
 
     <RelativeLayout
@@ -27,7 +28,7 @@
             android:minHeight="15dp"
             app:c_borderWidth="2dp"
             app:c_progress="0"
-            app:c_progressColor="@color/white"
+            app:c_progressColor="@color/colorPrimaryDark"
             app:c_progressRadius="7dp" />
 
 
@@ -75,7 +76,7 @@
                     android:lines="2"
                     android:text=""
                     android:textAllCaps="true"
-                    android:textColor="@color/white"
+                    android:textColor="@color/colorText"
                     android:textSize="@dimen/_18sdp" />
 
                 <com.pratham.foundation.custumView.SansTextView
@@ -87,7 +88,7 @@
                     android:layout_toRightOf="@+id/profileImage"
                     android:gravity="center_vertical"
                     android:text=""
-                    android:textColor="@color/white"
+                    android:textColor="@color/colorText"
                     android:textSize="@dimen/_15sdp" />
 
             </RelativeLayout>

@@ -4,11 +4,5 @@
     xmlns:android="http://schemas.android.com/apk/res/android">
     <solid android:color="@color/level_1_color" />
     <corners
-        android:bottomLeftRadius="@dimen/_30sdp"
-        android:bottomRightRadius="@dimen/_30sdp" />
-    <padding
-        android:bottom="3dp"
-        android:left="10dp"
-        android:right="3dp"
-        android:top="1dp" />
+        android:radius="@dimen/_10sdp"/>
 </shape>

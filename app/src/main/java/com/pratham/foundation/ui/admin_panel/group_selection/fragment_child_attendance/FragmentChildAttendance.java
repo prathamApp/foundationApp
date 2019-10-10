@@ -32,8 +32,6 @@ import com.pratham.foundation.database.dao.StatusDao;
 import com.pratham.foundation.database.domain.Attendance;
 import com.pratham.foundation.database.domain.Session;
 import com.pratham.foundation.database.domain.Student;
-import com.pratham.foundation.ui.app_home.HomeActivity_;
-import com.pratham.foundation.ui.selectSubject.SelectSubject;
 import com.pratham.foundation.ui.selectSubject.SelectSubject_;
 import com.pratham.foundation.utility.FC_Constants;
 import com.pratham.foundation.utility.FC_Utility;

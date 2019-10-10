@@ -3,18 +3,15 @@ package com.pratham.foundation.ui.selectSubject;
 import android.content.Context;
 import android.content.Intent;
 import android.support.annotation.NonNull;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
+import android.widget.ImageView;
 
 import com.pratham.foundation.R;
-import com.pratham.foundation.custumView.SansTextView;
 import com.pratham.foundation.database.domain.ContentTable;
-import com.pratham.foundation.modalclasses.OptionKeyMap;
-import com.pratham.foundation.ui.app_home.HomeActivity_;
+import com.pratham.foundation.ui.home_temp.TempHomeActivity_;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -38,12 +35,21 @@ public class SelectSubjectAdapter extends RecyclerView.Adapter<SelectSubjectAdap
 
     @Override
     public void onBindViewHolder(@NonNull Myviewholder myviewholder, int i) {
-        myviewholder.textView.setText(datalist.get(i).getNodeTitle());
-        myviewholder.itemView.setOnClickListener(new View.OnClickListener() {
+        if(datalist.get(i).getNodeTitle().equals("Science"))
+            myviewholder.content_thumbnail.setImageResource(R.drawable.ic_cos_science);
+        else if(datalist.get(i).getNodeTitle().equals("Maths"))
+            myviewholder.content_thumbnail.setImageResource(R.drawable.ic_cos_math);
+        else if(datalist.get(i).getNodeTitle().equals("English"))
+            myviewholder.content_thumbnail.setImageResource(R.drawable.ic_cos_english);
+        else if(datalist.get(i).getNodeTitle().equals("H Science"))
+            myviewholder.content_thumbnail.setImageResource(R.drawable.ic_cos_h_science);
+        else
+            myviewholder.content_thumbnail.setImageResource(R.drawable.ic_cos_lang);
+
+        myviewholder.content_thumbnail.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                Intent intent = new Intent(context, HomeActivity_.class);
+                Intent intent = new Intent(context, TempHomeActivity_.class);
                 intent.putExtra("nodeId", datalist.get(i).getNodeId());
                 context.startActivity(intent);
             }
@@ -56,11 +62,11 @@ public class SelectSubjectAdapter extends RecyclerView.Adapter<SelectSubjectAdap
     }
 
     class Myviewholder extends RecyclerView.ViewHolder {
-        TextView textView;
+        ImageView content_thumbnail;
 
         public Myviewholder(@NonNull View itemView) {
             super(itemView);
-            textView = itemView.findViewById(R.id.content_title);
+            content_thumbnail = itemView.findViewById(R.id.content_thumbnail);
         }
     }
 

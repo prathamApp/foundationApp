@@ -1,0 +1,484 @@
+package com.pratham.foundation.ui.home_temp;
+
+import android.annotation.SuppressLint;
+import android.app.Activity;
+import android.app.Dialog;
+import android.content.Intent;
+import android.content.res.Configuration;
+import android.content.res.Resources;
+import android.graphics.Color;
+import android.graphics.Rect;
+import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.Drawable;
+import android.support.design.widget.TabLayout;
+import android.support.v4.view.ViewPager;
+import android.support.v7.widget.RecyclerView;
+import android.util.TypedValue;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.Window;
+import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
+import android.widget.Toast;
+
+import com.pratham.foundation.ApplicationClass;
+import com.pratham.foundation.BaseActivity;
+import com.pratham.foundation.R;
+import com.pratham.foundation.custom.shared_preferences.FastSave;
+import com.pratham.foundation.custumView.submarine_view.SubmarineItem;
+import com.pratham.foundation.custumView.submarine_view.SubmarineView;
+import com.pratham.foundation.database.AppDatabase;
+import com.pratham.foundation.modalclasses.EventMessage;
+import com.pratham.foundation.ui.home_temp.learning_fragment.LearningFragment_;
+import com.pratham.foundation.ui.home_temp.practice_fragment.PracticeFragment_;
+import com.pratham.foundation.ui.home_temp.test_fragment.TestFragment_;
+import com.pratham.foundation.ui.selectSubject.SelectSubject_;
+import com.pratham.foundation.ui.test.supervisor.SupervisedAssessmentActivity;
+import com.pratham.foundation.utility.FC_Constants;
+
+import org.androidannotations.annotations.AfterViews;
+import org.androidannotations.annotations.Background;
+import org.androidannotations.annotations.Click;
+import org.androidannotations.annotations.EActivity;
+import org.androidannotations.annotations.UiThread;
+import org.androidannotations.annotations.ViewById;
+import org.androidannotations.annotations.res.DrawableRes;
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
+import org.jetbrains.annotations.NotNull;
+
+import java.util.Objects;
+
+import static com.pratham.foundation.utility.FC_Constants.BACK_PRESSED;
+import static com.pratham.foundation.utility.FC_Constants.GROUP_LOGIN;
+import static com.pratham.foundation.utility.FC_Constants.LEVEL_CHANGED;
+import static com.pratham.foundation.utility.FC_Constants.dialog_btn_cancel;
+import static com.pratham.foundation.utility.FC_Constants.dialog_btn_exit;
+import static com.pratham.foundation.utility.FC_Constants.dialog_btn_restart;
+
+@EActivity(R.layout.temp_activity_home)
+public class TempHomeActivity extends BaseActivity /*BottomNavigationView.OnNavigationItemSelectedListener,*/ {
+
+    public static String sub_nodeId = "";
+    @ViewById(R.id.viewpager)
+    ViewPager viewpager;
+    @ViewById(R.id.tv_studentName)
+    TextView tv_studentName;
+    @ViewById(R.id.tv_level)
+    TextView tv_level;
+    @ViewById(R.id.tabs)
+    TabLayout tabLayout;
+    @ViewById(R.id.header_rl)
+    public static RelativeLayout header_rl;
+    @ViewById(R.id.submarine)
+    SubmarineView submarine;
+    @ViewById(R.id.iv_level)
+    ImageView iv_level;
+    @ViewById(R.id.profileImage)
+    ImageView profileImage;
+    public static int currentLevelNo;
+    @DrawableRes(R.drawable.home_header_1_bg)
+    Drawable homeHeader1;
+    @DrawableRes(R.drawable.home_header_2_bg)
+    Drawable homeHeader2;
+    @DrawableRes(R.drawable.home_header_3_bg)
+    Drawable homeHeader3;
+    @DrawableRes(R.drawable.home_header_4_bg)
+    Drawable homeHeader4;
+
+    @DrawableRes(R.drawable.home_header_1_bg)
+    Drawable homeTab1;
+    @DrawableRes(R.drawable.home_header_2_bg)
+    Drawable homeTab2;
+    @DrawableRes(R.drawable.home_header_3_bg)
+    Drawable homeTab3;
+    @DrawableRes(R.drawable.home_header_4_bg)
+    Drawable homeTab4;
+
+
+    @AfterViews
+    public void initialize() {
+        Configuration config = getResources().getConfiguration();
+        FC_Constants.TAB_LAYOUT = config.smallestScreenWidthDp > 425;
+        sub_nodeId = getIntent().getStringExtra("nodeId");
+        FC_Constants.currentSelectedLanguage = FastSave.getInstance().getString(FC_Constants.LANGUAGE, "");
+        setupViewPager(viewpager);
+        tabLayout.setupWithViewPager(viewpager);
+        setupTabIcons();
+        tv_level.setText("Level 1");
+/*        IconForm iconForm = new IconForm.Builder(this)
+                .setIconSize(45)
+                .setIconTint(ContextCompat.getColor(this, R.color.colorPrimary))
+                .setIconScaleType(ImageView.ScaleType.CENTER)
+                .build();*/
+        setLevel();
+        displayProfileName();
+        displayProfileImage();
+    }
+
+    @Background
+    public void displayProfileImage() {
+        String sImage;
+        if (!GROUP_LOGIN)
+            sImage = AppDatabase.getDatabaseInstance(this).getStudentDao().getStudentAvatar(FC_Constants.currentStudentID);
+        else
+            sImage = "group_icon";
+        setStudentProfileImage(sImage);
+    }
+
+    @UiThread
+    public void setStudentProfileImage(String sImage) {
+        if (sImage != null) {
+            if (sImage.equalsIgnoreCase("group_icon"))
+                profileImage.setImageResource(R.drawable.ic_grp_btn);
+            else {
+                profileImage.setImageResource(R.drawable.b2);
+                switch (sImage) {
+                    case "b1.png":
+                        profileImage.setImageResource(R.drawable.b1);
+                        break;
+                    case "b2.png":
+                        profileImage.setImageResource(R.drawable.b2);
+                        break;
+                    case "b3.png":
+                        profileImage.setImageResource(R.drawable.b3);
+                        break;
+                    case "g1.png":
+                        profileImage.setImageResource(R.drawable.g1);
+                        break;
+                    case "g2.png":
+                        profileImage.setImageResource(R.drawable.g2);
+                        break;
+                    case "g3.png":
+                        profileImage.setImageResource(R.drawable.g3);
+                        break;
+                }
+            }
+        }
+    }
+
+    @Background
+    public void displayProfileName() {
+        String profileName;
+        if (!GROUP_LOGIN)
+            profileName = AppDatabase.getDatabaseInstance(this).getStudentDao().getFullName(FC_Constants.currentStudentID);
+        else
+            profileName = AppDatabase.getDatabaseInstance(this).getGroupsDao().getGroupNameByGrpID(FC_Constants.currentStudentID);
+
+        setProfileName(profileName);
+    }
+
+    @UiThread
+    public void setProfileName(String profileName) {
+        tv_studentName.setText(profileName);
+    }
+
+    public void setLevel() {
+        SubmarineItem item = new SubmarineItem(getDrawable(R.drawable.level_1), null);
+        SubmarineItem item2 = new SubmarineItem(getDrawable(R.drawable.level_2), null);
+        SubmarineItem item3 = new SubmarineItem(getDrawable(R.drawable.level_3), null);
+        SubmarineItem item4 = new SubmarineItem(getDrawable(R.drawable.level_4), null);
+
+        submarine.setSubmarineItemClickListener((position, submarineItem) -> {
+            currentLevelNo = position;
+            switch (position) {
+                case 0:
+                    iv_level.setImageResource(R.drawable.level_1);
+                    tv_level.setText("Level 1");
+                break;
+                case 1:
+                    iv_level.setImageResource(R.drawable.level_2);
+                    tv_level.setText("Level 2");
+                    break;
+                case 2:
+                    iv_level.setImageResource(R.drawable.level_3);
+                    tv_level.setText("Level 3");
+                    break;
+                case 3:
+                    iv_level.setImageResource(R.drawable.level_4);
+                    tv_level.setText("Level 4");
+                    break;
+            }
+            EventMessage eventMessage = new EventMessage();
+            eventMessage.setMessage(LEVEL_CHANGED);
+            EventBus.getDefault().post(eventMessage);
+            changeBGNew(currentLevelNo);
+            submarine.dip();
+        });
+
+        submarine.setSubmarineCircleClickListener(() -> {
+            submarine.dip();
+        });
+        submarine.addSubmarineItem(item);
+        submarine.addSubmarineItem(item2);
+        submarine.addSubmarineItem(item3);
+        submarine.addSubmarineItem(item4);
+    }
+
+    private void changeBGNew(int currentLevelNo) {
+        switch (currentLevelNo) {
+            case 0:
+                header_rl.setBackground(homeHeader1);
+                tabLayout.setBackground(homeTab1);
+                break;
+            case 1:
+                header_rl.setBackground(homeHeader2);
+                tabLayout.setBackground(homeTab2);
+                break;
+            case 2:
+                header_rl.setBackground(homeHeader3);
+                tabLayout.setBackground(homeTab3);
+                break;
+            case 3:
+                header_rl.setBackground(homeHeader4);
+                tabLayout.setBackground(homeTab4);
+                break;
+        }
+    }
+
+    private void setupTabIcons() {
+        TextView tabOne = (TextView) LayoutInflater.from(this).inflate(R.layout.custom_tab_text, null);
+        tabOne.setText("Learning");
+        tabOne.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.ic_learning, 0, 0);
+        tabLayout.getTabAt(0).setCustomView(tabOne);
+
+        TextView tabTwo = (TextView) LayoutInflater.from(this).inflate(R.layout.custom_tab_text, null);
+        tabTwo.setText("Practice");
+        tabTwo.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.ic_practice, 0, 0);
+        tabLayout.getTabAt(1).setCustomView(tabTwo);
+
+/*        TextView tabThree = (TextView) LayoutInflater.from(this).inflate(R.layout.custom_tab_text, null);
+        tabTwo.setText("Test");
+        tabTwo.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.ic_test, 0, 0);
+        tabLayout.getTabAt(2).setCustomView(tabThree);*/
+
+        tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+            @Override
+            public void onTabSelected(TabLayout.Tab tab) {
+                if(tab.getPosition()== 2){
+                    //TODO Test Dialog
+                }
+            }
+
+            @Override
+            public void onTabUnselected(TabLayout.Tab tab) {
+            }
+
+            @Override
+            public void onTabReselected(TabLayout.Tab tab) {
+                if(tab.getPosition()== 2){
+                    //TODO Test Dialog
+                }
+            }
+        });
+    }
+
+    @SuppressLint("SetTextI18n")
+    private void showTestTypeSelectionDialog() {
+        final Dialog dialog = new Dialog(this);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        Objects.requireNonNull(dialog.getWindow()).setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        dialog.setContentView(R.layout.test_type_dialog);
+        dialog.setCancelable(false);
+        dialog.setCanceledOnTouchOutside(false);
+
+        Button dia_btn_green = dialog.findViewById(R.id.dia_btn_green);
+        Button dia_btn_yellow = dialog.findViewById(R.id.dia_btn_yellow);
+        Button dia_btn_red = dialog.findViewById(R.id.dia_btn_red);
+
+        dia_btn_red.setText("unsupervised");
+        dia_btn_green.setText("" + dialog_btn_cancel);
+        dia_btn_yellow.setText("supervised");
+        dialog.show();
+
+        dia_btn_red.setOnClickListener(v -> {
+            dialog.dismiss();
+            Intent intent = new Intent(TempHomeActivity.this, SupervisedAssessmentActivity.class);
+            intent.putExtra("testMode", "unsupervised");
+            startActivityForResult(intent, 10);
+        });
+
+        dia_btn_yellow.setOnClickListener(v -> {
+            dialog.dismiss();
+            Intent intent = new Intent(TempHomeActivity.this, SupervisedAssessmentActivity.class);
+            intent.putExtra("testMode", "supervised");
+            startActivityForResult(intent, 10);
+        });
+
+        dia_btn_green.setOnClickListener(v -> {
+            dialog.dismiss();
+            //TODO Goto Learning
+        });
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == 1) {
+/*            if (resultCode == Activity.RESULT_OK) {
+                String cCode = data.getStringExtra("cCode");
+                int tMarks = data.getIntExtra("tMarks", 0);
+                int sMarks = data.getIntExtra("sMarks", 0);
+                try {
+                    if (cCode.equalsIgnoreCase(certi_Code)) {
+                        testList.get(clicked_Pos).setAsessmentGiven(true);
+                        testList.get(clicked_Pos).setTotalMarks(tMarks);
+                        testList.get(clicked_Pos).setScoredMarks(sMarks);
+                        float perc = ((float) sMarks / (float) tMarks) * 100;
+                        testList.get(clicked_Pos).setStudentPercentage("" + perc);
+                        testList.get(clicked_Pos).setCertificateRating(presenter.getStarRating(perc));
+                        testAdapter.notifyItemChanged(clicked_Pos, testList.get(clicked_Pos));
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+            checkAllAssessmentsDone();*/
+        } else if (requestCode == 10) {
+            if (resultCode == Activity.RESULT_OK) {
+//                EventMessage eventMessage = new EventMessage();
+//                eventMessage.setMessage(LEVEL_CHANGED);
+//                EventBus.getDefault().post(eventMessage);
+
+/*                presenter.clearNodeIds();
+                navChanged = true;
+                levelList.clear();
+                test_lang_spinner.setVisibility(View.VISIBLE);
+                my_recycler_view.setVisibility(View.GONE);
+                test_recycler_view.setVisibility(View.VISIBLE);
+                bottomSection = "Test";
+                presenter.getBottomNavId(currentLevelNo, bottomSection);*/
+            } else if (resultCode == Activity.RESULT_CANCELED) {
+                try {
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
+        @Click(R.id.iv_level)
+    public void levelChange() {
+        submarine.show();
+    }
+
+    private void setupViewPager(ViewPager viewpager) {
+        ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
+        adapter.addFrag(new LearningFragment_(), "Learning");
+        adapter.addFrag(new PracticeFragment_(), "Practice");
+//        adapter.addFrag(new TestFragment_(), "Test");
+        viewpager.setAdapter(adapter);
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        EventBus.getDefault().register(this);
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        EventBus.getDefault().unregister(this);
+    }
+
+    @SuppressLint("SetTextI18n")
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void messageReceived(EventMessage message) {
+        if (message != null) {
+            if (message.getMessage().equalsIgnoreCase(FC_Constants.LEVEL_CHANGED)){}
+        }
+    }
+
+    @Click(R.id.btn_back)
+    public void backBtnPressed() {
+        EventMessage eventMessage = new EventMessage();
+        eventMessage.setMessage(BACK_PRESSED);
+        EventBus.getDefault().post(eventMessage);
+    }
+
+    @Override
+    public void onBackPressed() {
+        exitDialog();
+    }
+
+    @SuppressLint("SetTextI18n")
+    private void exitDialog() {
+        Dialog dialog = new Dialog(TempHomeActivity.this);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setContentView(R.layout.fc_custom_dialog);
+/*        Bitmap map=FC_Utility.takeScreenShot(TempHomeActivity.this);
+        Bitmap fast=FC_Utility.fastblur(map, 20);
+        final Drawable draw=new BitmapDrawable(getResources(),fast);
+        dialog.getWindow().setBackgroundDrawable(draw);*/
+        Objects.requireNonNull(dialog.getWindow()).setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        dialog.setCancelable(false);
+        dialog.setCanceledOnTouchOutside(false);
+        dialog.show();
+
+        Button next_btn = dialog.findViewById(R.id.dia_btn_green);
+        Button test_btn = dialog.findViewById(R.id.dia_btn_yellow);
+        Button revise_btn = dialog.findViewById(R.id.dia_btn_red);
+
+        revise_btn.setText("" + dialog_btn_exit);
+        test_btn.setText("" + dialog_btn_cancel);
+        next_btn.setText("" + dialog_btn_restart);
+
+        next_btn.setOnClickListener(v -> {
+            endSession(TempHomeActivity.this);
+            if (!ApplicationClass.isTablet) {
+                startActivity(new Intent(TempHomeActivity.this, SelectSubject_.class));
+            } else {
+                startActivity(new Intent(TempHomeActivity.this, SelectSubject_.class));
+            }
+            finish();
+            dialog.dismiss();
+        });
+
+        revise_btn.setOnClickListener(v -> {
+            endSession(TempHomeActivity.this);
+            finishAffinity();
+            dialog.dismiss();
+        });
+
+        test_btn.setOnClickListener(v -> dialog.dismiss());
+    }
+
+    public static class GridSpacingItemDecoration extends RecyclerView.ItemDecoration {
+        private final int spanCount;
+        private final int spacing;
+        private final boolean includeEdge;
+
+        public GridSpacingItemDecoration(int spacing) {
+            this.spanCount = 1;
+            this.spacing = spacing;
+            this.includeEdge = true;
+        }
+
+        @Override
+        public void getItemOffsets(@NotNull Rect outRect, @NotNull View view, @NotNull RecyclerView parent, @NotNull RecyclerView.State state) {
+            int position = parent.getChildAdapterPosition(view); // item position
+            int column = position % spanCount; // item column
+            if (includeEdge) {
+                outRect.left = spacing - column * spacing / spanCount; // spacing - column * ((1f / spanCount) * spacing)
+                outRect.right = (column + 1) * spacing / spanCount; // (column + avatar) * ((1f / spanCount) * spacing)
+                if (position < spanCount) { // top edge
+                    outRect.top = spacing;
+                }
+                outRect.bottom = spacing; // item bottom
+            } else {
+                outRect.left = column * spacing / spanCount; // column * ((1f / spanCount) * spacing)
+                outRect.right = spacing - (column + 1) * spacing / spanCount; // spacing - (column + avatar) * ((1f /    spanCount) * spacing)
+                if (position >= spanCount) {
+                    outRect.top = spacing; // item top
+                }
+            }
+        }
+    }
+
+    private int dpToPx() {
+        Resources r = getResources();
+        return Math.round(TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 1, r.getDisplayMetrics()));
+    }
+}
