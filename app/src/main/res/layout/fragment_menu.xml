@@ -8,7 +8,7 @@
     android:background="@color/splash_background"
     tools:context=".ui.admin_panel.group_selection.SelectGroupActivity">
 
-    <com.pratham.foundation.custumView.SansTextView
+    <com.pratham.foundation.customView.SansTextView
         android:id="@+id/title"
         android:layout_width="match_parent"
         android:layout_height="60dp"
@@ -48,7 +48,7 @@
                     android:scaleType="fitCenter"
                     android:src="@drawable/img_3_6_yrs" />
 
-                <com.pratham.foundation.custumView.SansTextView
+                <com.pratham.foundation.customView.SansTextView
                     android:id="@id/tv_card1"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -85,7 +85,7 @@
                     android:scaleType="fitCenter"
                     android:src="@drawable/img_8_14_yrs" />
 
-                <com.pratham.foundation.custumView.SansTextView
+                <com.pratham.foundation.customView.SansTextView
                     android:id="@id/tv_card2"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"

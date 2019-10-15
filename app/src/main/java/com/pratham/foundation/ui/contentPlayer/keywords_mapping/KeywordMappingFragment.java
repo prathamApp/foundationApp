@@ -1,34 +1,27 @@
 package com.pratham.foundation.ui.contentPlayer.keywords_mapping;
 
 import android.app.Dialog;
-import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.DisplayMetrics;
-import android.util.Log;
 import android.view.Window;
 import android.widget.TextView;
 
 import com.pratham.foundation.ApplicationClass;
 import com.pratham.foundation.R;
-import com.pratham.foundation.custumView.SansButton;
-import com.pratham.foundation.custumView.SansTextViewBold;
+import com.pratham.foundation.customView.SansButton;
+import com.pratham.foundation.customView.SansTextViewBold;
 import com.pratham.foundation.modalclasses.OptionKeyMap;
 import com.pratham.foundation.modalclasses.keywordmapping;
 import com.pratham.foundation.ui.contentPlayer.GameConstatnts;
 import com.pratham.foundation.ui.contentPlayer.paragraph_writing.ParagraphWritingFragment_;
-import com.pratham.foundation.ui.writingParagraph.WritingParagraph_;
 import com.pratham.foundation.utility.FC_Constants;
 import com.pratham.foundation.utility.FC_Utility;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Bean;
 import org.androidannotations.annotations.Click;
-import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.EFragment;
 import org.androidannotations.annotations.UiThread;
 import org.androidannotations.annotations.ViewById;

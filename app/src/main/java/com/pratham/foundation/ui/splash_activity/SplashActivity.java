@@ -17,7 +17,6 @@ import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Environment;
 import android.os.Handler;
-import android.support.v4.content.PermissionChecker;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
@@ -36,7 +35,7 @@ import android.widget.TextView;
 
 import com.pratham.foundation.ApplicationClass;
 import com.pratham.foundation.R;
-import com.pratham.foundation.custom.shared_preferences.FastSave;
+import com.pratham.foundation.services.shared_preferences.FastSave;
 import com.pratham.foundation.database.AppDatabase;
 import com.pratham.foundation.interfaces.Interface_copying;
 import com.pratham.foundation.interfaces.PermissionResult;
@@ -56,7 +55,6 @@ import org.androidannotations.annotations.ViewById;
 import org.greenrobot.eventbus.EventBus;
 
 import java.io.File;
-import java.lang.annotation.Annotation;
 
 import static com.pratham.foundation.utility.FC_Constants.dialog_btn_cancel;
 import static com.pratham.foundation.utility.FC_Constants.dialog_btn_exit;
@@ -107,7 +105,6 @@ public class SplashActivity extends SplashSupportActivity implements SplashContr
     }
 
     public void initiateApp() {
-
 
         String[] permissionArray = new String[]{PermissionUtils.Manifest_CAMERA,
                 PermissionUtils.Manifest_WRITE_EXTERNAL_STORAGE,

@@ -5,7 +5,7 @@
     android:background="@drawable/bg_anim_fourth_layer"
     android:orientation="vertical">
 
-    <com.pratham.foundation.custumView.SansTextView
+    <com.pratham.foundation.customView.SansTextView
         android:id="@+id/title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -49,7 +49,7 @@
             android:layout_height="wrap_content"
             android:gravity="center"
             android:weightSum="3">
-            <com.pratham.foundation.custumView.fonts.SansButton
+            <com.pratham.foundation.customView.fonts.SansButton
                 android:id="@+id/capture"
                 android:layout_width="0dp"
                 android:layout_height="50dp"
@@ -58,7 +58,7 @@
                 android:background="@drawable/purple_button"
                 android:layout_marginHorizontal="@dimen/_5sdp"
                 android:text="capture" />
-            <com.pratham.foundation.custumView.fonts.SansButton
+            <com.pratham.foundation.customView.fonts.SansButton
                 android:id="@+id/preview"
                 android:layout_width="0dp"
                 android:layout_height="50dp"
@@ -75,7 +75,7 @@
             android:layout_marginTop="@dimen/_5sdp"
             android:layout_height="wrap_content">
 
-            <com.pratham.foundation.custumView.fonts.SansButton
+            <com.pratham.foundation.customView.fonts.SansButton
                 android:id="@+id/previous"
                 android:layout_width="0dp"
                 android:layout_height="50dp"
@@ -86,7 +86,7 @@
                 android:layout_weight="1"
                 android:text="Previous" />
 
-            <com.pratham.foundation.custumView.fonts.SansButton
+            <com.pratham.foundation.customView.fonts.SansButton
                 android:id="@+id/submit"
                 android:layout_width="0dp"
                 android:layout_height="50dp"
@@ -96,7 +96,7 @@
                 android:layout_weight="1"
                 android:text="submit" />
 
-            <com.pratham.foundation.custumView.fonts.SansButton
+            <com.pratham.foundation.customView.fonts.SansButton
                 android:id="@+id/next"
                 android:visibility="gone"
                 android:layout_width="0dp"

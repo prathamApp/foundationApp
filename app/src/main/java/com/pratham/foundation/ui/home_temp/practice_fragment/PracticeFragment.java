@@ -23,8 +23,9 @@ import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import com.pratham.foundation.ApplicationClass;
 import com.pratham.foundation.R;
-import com.pratham.foundation.custumView.collapsingView.RetractableToolbarUtil;
-import com.pratham.foundation.custumView.progress_layout.ProgressLayout;
+import com.pratham.foundation.customView.GridSpacingItemDecoration;
+import com.pratham.foundation.customView.collapsingView.RetractableToolbarUtil;
+import com.pratham.foundation.customView.progress_layout.ProgressLayout;
 import com.pratham.foundation.database.domain.ContentTable;
 import com.pratham.foundation.database.domain.ContentTableNew;
 import com.pratham.foundation.modalclasses.EventMessage;
@@ -33,9 +34,6 @@ import com.pratham.foundation.ui.contentPlayer.ContentPlayerActivity;
 import com.pratham.foundation.ui.contentPlayer.web_view.WebViewActivity;
 import com.pratham.foundation.ui.home_temp.TempHomeActivity;
 import com.pratham.foundation.ui.home_temp.display_content.ContentDisplay_;
-import com.pratham.foundation.ui.home_temp.learning_fragment.LearningContract;
-import com.pratham.foundation.ui.home_temp.learning_fragment.LearningPresenter;
-import com.pratham.foundation.ui.home_temp.learning_fragment.LearningOuterDataAdapter;
 import com.pratham.foundation.utility.FC_Constants;
 import com.pratham.foundation.utility.FC_Utility;
 
@@ -57,6 +55,7 @@ import java.util.List;
 import java.util.Objects;
 
 import static com.pratham.foundation.ui.home_temp.TempHomeActivity.header_rl;
+import static com.pratham.foundation.utility.FC_Utility.dpToPx;
 import static com.pratham.foundation.utility.SplashSupportActivity.ButtonClickSound;
 
 @EFragment(R.layout.fragment_tab_one)
@@ -85,12 +84,7 @@ public class PracticeFragment extends Fragment implements PracticeContract.Pract
         RetractableToolbarUtil.ShowHideToolbarOnScrollingListener showHideToolbarListener;
         my_recycler_view.addOnScrollListener(showHideToolbarListener =
                 new RetractableToolbarUtil.ShowHideToolbarOnScrollingListener(header_rl));
-        presenter.getBottomNavId(TempHomeActivity.currentLevelNo, "Practice");
-    }
-
-    private int dpToPx() {
-        Resources r = getResources();
-        return Math.round(TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 1, r.getDisplayMetrics()));
+        presenter.getBottomNavId(TempHomeActivity.currentLevelNo, "Fun");
     }
 
     @UiThread
@@ -100,7 +94,7 @@ public class PracticeFragment extends Fragment implements PracticeContract.Pract
             adapterParent = new PracticeOuterDataAdapter(getActivity(), contentParentList, (PracticeContract.PracticeItemClicked) this);
             RecyclerView.LayoutManager mLayoutManager = new GridLayoutManager(getActivity(), 1);
             my_recycler_view.setLayoutManager(mLayoutManager);
-            my_recycler_view.addItemDecoration(new TempHomeActivity.GridSpacingItemDecoration(dpToPx()));
+            my_recycler_view.addItemDecoration(new GridSpacingItemDecoration(1,dpToPx(getActivity()),true));
             my_recycler_view.setItemAnimator(new DefaultItemAnimator());
             my_recycler_view.setAdapter(adapterParent);
         } else

@@ -9,7 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.pratham.foundation.R;
-import com.pratham.foundation.custumView.SansTextView;
+import com.pratham.foundation.customView.SansTextView;
 import com.pratham.foundation.modalclasses.OptionKeyMap;
 
 import java.util.ArrayList;

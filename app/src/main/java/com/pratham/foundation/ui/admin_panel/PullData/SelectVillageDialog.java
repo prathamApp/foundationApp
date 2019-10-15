@@ -11,7 +11,7 @@ import android.widget.TextView;
 
 
 import com.pratham.foundation.R;
-import com.pratham.foundation.custumView.SansCheckBox;
+import com.pratham.foundation.customView.SansCheckBox;
 import com.pratham.foundation.database.domain.Village;
 
 import java.util.ArrayList;

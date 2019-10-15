@@ -26,7 +26,7 @@
         android:textSize="@dimen/_14sdp"
         android:textStyle="bold" />
 
-    <com.pratham.foundation.custumView.SansButton
+    <com.pratham.foundation.customView.SansButton
         android:id="@+id/dia_btn_yellow"
         android:layout_width="@dimen/_70sdp"
         android:layout_height="@dimen/_30sdp"

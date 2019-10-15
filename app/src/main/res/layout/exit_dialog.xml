@@ -4,7 +4,7 @@
     android:layout_gravity="center"
     android:background="@drawable/dialog_bg">
 
-    <com.pratham.foundation.custumView.SansTextView
+    <com.pratham.foundation.customView.SansTextView
         android:id="@+id/dia_title"
         android:layout_width="match_parent"
         android:layout_height="@dimen/_70sdp"
@@ -20,7 +20,7 @@
         android:textSize="@dimen/_20sdp"
         android:textStyle="bold|italic" />
 
-    <com.pratham.foundation.custumView.SansButton
+    <com.pratham.foundation.customView.SansButton
         android:id="@+id/dia_btn_exit"
         android:layout_width="@dimen/_80sdp"
         android:layout_height="@dimen/_40sdp"
@@ -33,7 +33,7 @@
         android:text="Exit"
         android:textSize="@dimen/_12sdp" />
 
-    <com.pratham.foundation.custumView.SansButton
+    <com.pratham.foundation.customView.SansButton
         android:id="@+id/dia_btn_restart"
         android:layout_width="@dimen/_80sdp"
         android:layout_height="@dimen/_40sdp"

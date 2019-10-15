@@ -28,7 +28,7 @@
             android:layout_height="match_parent"
             android:layout_below="@id/content_thumbnail">
 
-            <com.pratham.foundation.custumView.SansTextView
+            <com.pratham.foundation.customView.SansTextView
                 android:id="@+id/content_title"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"

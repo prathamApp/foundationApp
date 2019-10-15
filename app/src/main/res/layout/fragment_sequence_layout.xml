@@ -17,7 +17,7 @@
             android:layout_height="match_parent" />
 
 
-        <com.pratham.foundation.custumView.SansButton
+        <com.pratham.foundation.customView.SansButton
             android:id="@+id/playFromStart"
             android:layout_width="wrap_content"
             android:layout_height="@dimen/_40sdp"

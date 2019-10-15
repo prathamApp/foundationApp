@@ -34,7 +34,7 @@
             android:layout_below="@id/keyword"
             android:layout_centerInParent="true" />
 
-        <com.pratham.foundation.custumView.SansTextView
+        <com.pratham.foundation.customView.SansTextView
             android:id="@+id/keyword"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -47,7 +47,7 @@
             android:textSize="@dimen/_30sdp" />
     </RelativeLayout>
 
-    <com.pratham.foundation.custumView.SansTextView
+    <com.pratham.foundation.customView.SansTextView
         android:id="@+id/title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

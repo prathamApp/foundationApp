@@ -12,7 +12,7 @@
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true" />
 
-    <com.pratham.foundation.custumView.SansButton
+    <com.pratham.foundation.customView.SansButton
         android:id="@+id/btn_attendance_next"
         android:layout_width="@dimen/_120sdp"
         android:layout_height="@dimen/_40sdp"

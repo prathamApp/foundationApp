@@ -20,9 +20,9 @@ import android.util.Log;
 
 import com.pratham.foundation.ApplicationClass;
 import com.pratham.foundation.utility.FileUtils;
-import com.pratham.foundation.asynk.GetLatestVersion;
-import com.pratham.foundation.asynk.PushDataToServer;
-import com.pratham.foundation.custom.shared_preferences.FastSave;
+import com.pratham.foundation.async.GetLatestVersion;
+import com.pratham.foundation.async.PushDataToServer;
+import com.pratham.foundation.services.shared_preferences.FastSave;
 import com.pratham.foundation.database.AppDatabase;
 import com.pratham.foundation.database.BackupDatabase;
 import com.pratham.foundation.database.dao.StatusDao;

@@ -21,19 +21,17 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.pratham.foundation.ApplicationClass;
 import com.pratham.foundation.BaseActivity;
 import com.pratham.foundation.R;
-import com.pratham.foundation.custom.shared_preferences.FastSave;
-import com.pratham.foundation.custumView.submarine_view.SubmarineItem;
-import com.pratham.foundation.custumView.submarine_view.SubmarineView;
+import com.pratham.foundation.services.shared_preferences.FastSave;
+import com.pratham.foundation.customView.submarine_view.SubmarineItem;
+import com.pratham.foundation.customView.submarine_view.SubmarineView;
 import com.pratham.foundation.database.AppDatabase;
 import com.pratham.foundation.modalclasses.EventMessage;
 import com.pratham.foundation.ui.home_temp.learning_fragment.LearningFragment_;
 import com.pratham.foundation.ui.home_temp.practice_fragment.PracticeFragment_;
-import com.pratham.foundation.ui.home_temp.test_fragment.TestFragment_;
 import com.pratham.foundation.ui.selectSubject.SelectSubject_;
 import com.pratham.foundation.ui.test.supervisor.SupervisedAssessmentActivity;
 import com.pratham.foundation.utility.FC_Constants;
@@ -443,42 +441,5 @@ public class TempHomeActivity extends BaseActivity /*BottomNavigationView.OnNavi
         });
 
         test_btn.setOnClickListener(v -> dialog.dismiss());
-    }
-
-    public static class GridSpacingItemDecoration extends RecyclerView.ItemDecoration {
-        private final int spanCount;
-        private final int spacing;
-        private final boolean includeEdge;
-
-        public GridSpacingItemDecoration(int spacing) {
-            this.spanCount = 1;
-            this.spacing = spacing;
-            this.includeEdge = true;
-        }
-
-        @Override
-        public void getItemOffsets(@NotNull Rect outRect, @NotNull View view, @NotNull RecyclerView parent, @NotNull RecyclerView.State state) {
-            int position = parent.getChildAdapterPosition(view); // item position
-            int column = position % spanCount; // item column
-            if (includeEdge) {
-                outRect.left = spacing - column * spacing / spanCount; // spacing - column * ((1f / spanCount) * spacing)
-                outRect.right = (column + 1) * spacing / spanCount; // (column + avatar) * ((1f / spanCount) * spacing)
-                if (position < spanCount) { // top edge
-                    outRect.top = spacing;
-                }
-                outRect.bottom = spacing; // item bottom
-            } else {
-                outRect.left = column * spacing / spanCount; // column * ((1f / spanCount) * spacing)
-                outRect.right = spacing - (column + 1) * spacing / spanCount; // spacing - (column + avatar) * ((1f /    spanCount) * spacing)
-                if (position >= spanCount) {
-                    outRect.top = spacing; // item top
-                }
-            }
-        }
-    }
-
-    private int dpToPx() {
-        Resources r = getResources();
-        return Math.round(TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 1, r.getDisplayMetrics()));
     }
 }

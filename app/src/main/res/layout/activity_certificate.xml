@@ -84,7 +84,7 @@
                     android:scaleType="centerInside"
                     android:src="@drawable/pratham_logo" />
 
-                <com.pratham.foundation.custumView.SansTextView
+                <com.pratham.foundation.customView.SansTextView
                     android:id="@+id/tv_level"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/_20sdp"
@@ -95,7 +95,7 @@
                     android:textSize="@dimen/_12sdp"
                     android:textStyle="bold" />
 
-                <com.pratham.foundation.custumView.SansTextView
+                <com.pratham.foundation.customView.SansTextView
                     android:id="@+id/tv_studentName"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/_30sdp"
@@ -159,7 +159,7 @@
                         android:layout_toRightOf="@id/iv_photo"
                         android:gravity="center">
 
-                        <com.pratham.foundation.custumView.SansTextView
+                        <com.pratham.foundation.customView.SansTextView
                             android:id="@+id/tv_sup"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
@@ -168,7 +168,7 @@
                             android:textColor="@color/colorBlack"
                             android:textSize="@dimen/_13sdp" />
 
-                        <com.pratham.foundation.custumView.SansTextView
+                        <com.pratham.foundation.customView.SansTextView
                             android:id="@+id/tv_supervisor_name"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"

@@ -92,7 +92,7 @@
                     android:textColor="@color/colorLightBlack"
                     android:textSize="@dimen/_15sdp" />
 
-                <com.pratham.foundation.custumView.SansButton
+                <com.pratham.foundation.customView.SansButton
                     android:id="@+id/btn_submit"
                     android:layout_width="@dimen/_115sdp"
                     android:layout_height="@dimen/_40sdp"

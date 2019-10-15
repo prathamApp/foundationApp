@@ -24,7 +24,8 @@ import android.widget.Toast;
 
 import com.pratham.foundation.ApplicationClass;
 import com.pratham.foundation.R;
-import com.pratham.foundation.custom.shared_preferences.FastSave;
+import com.pratham.foundation.customView.GridSpacingItemDecoration;
+import com.pratham.foundation.services.shared_preferences.FastSave;
 import com.pratham.foundation.database.AppDatabase;
 import com.pratham.foundation.database.BackupDatabase;
 import com.pratham.foundation.database.dao.StatusDao;
@@ -40,6 +41,8 @@ import java.util.UUID;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+
+import static com.pratham.foundation.utility.FC_Utility.dpToPx;
 
 public class FragmentChildAttendance extends Fragment implements ContractChildAttendance.attendanceView {
 
@@ -106,7 +109,7 @@ public class FragmentChildAttendance extends Fragment implements ContractChildAt
             rv_child.setHasFixedSize(true);
             RecyclerView.LayoutManager mLayoutManager = new GridLayoutManager(getActivity(), 2);
             rv_child.setLayoutManager(mLayoutManager);
-            rv_child.addItemDecoration(new GridSpacingItemDecoration(2, dpToPx(15), true));
+            rv_child.addItemDecoration(new GridSpacingItemDecoration(2, dpToPx(getActivity(),15), true));
             rv_child.setItemAnimator(new DefaultItemAnimator());
             // rv_child.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false));
             rv_child.setAdapter(childAdapter);
@@ -232,46 +235,6 @@ public class FragmentChildAttendance extends Fragment implements ContractChildAt
         s.setFromDate(FC_Utility.getCurrentDateTime());
         s.setToDate("NA");
         AppDatabase.getDatabaseInstance(getActivity()).getSessionDao().insert(s);
-    }
-
-    private int dpToPx(int dp) {
-        Resources r = getResources();
-        return Math.round(TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp, r.getDisplayMetrics()));
-    }
-
-    public class GridSpacingItemDecoration extends RecyclerView.ItemDecoration {
-
-        private int spanCount;
-        private int spacing;
-        private boolean includeEdge;
-
-        public GridSpacingItemDecoration(int spanCount, int spacing, boolean includeEdge) {
-            this.spanCount = spanCount;
-            this.spacing = spacing;
-            this.includeEdge = includeEdge;
-        }
-
-        @Override
-        public void getItemOffsets(Rect outRect, View view, RecyclerView parent, RecyclerView.State state) {
-            int position = parent.getChildAdapterPosition(view); // item position
-            int column = position % spanCount; // item column
-
-            if (includeEdge) {
-                outRect.left = spacing - column * spacing / spanCount; // spacing - column * ((1f / spanCount) * spacing)
-                outRect.right = (column + 1) * spacing / spanCount; // (column + avatar) * ((1f / spanCount) * spacing)
-
-                if (position < spanCount) { // top edge
-                    outRect.top = spacing;
-                }
-                outRect.bottom = spacing; // item bottom
-            } else {
-                outRect.left = column * spacing / spanCount; // column * ((1f / spanCount) * spacing)
-                outRect.right = spacing - (column + 1) * spacing / spanCount; // spacing - (column + avatar) * ((1f /    spanCount) * spacing)
-                if (position >= spanCount) {
-                    outRect.top = spacing; // item top
-                }
-            }
-        }
     }
 
 }

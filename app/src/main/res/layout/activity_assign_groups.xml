@@ -4,7 +4,7 @@
     android:layout_height="match_parent"
     android:background="@drawable/bg_anim_fourth_layer">
 
-    <com.pratham.foundation.custumView.SansTextView
+    <com.pratham.foundation.customView.SansTextView
         android:id="@+id/title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -86,7 +86,7 @@
 
             </LinearLayout>
 
-            <com.pratham.foundation.custumView.SansButton
+            <com.pratham.foundation.customView.SansButton
                 android:id="@+id/allocateGroups"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

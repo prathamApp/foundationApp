@@ -14,6 +14,7 @@ import android.widget.Toast;
 
 
 import com.pratham.foundation.R;
+import com.pratham.foundation.customView.GridSpacingItemDecoration;
 import com.pratham.foundation.database.AppDatabase;
 import com.pratham.foundation.database.domain.Groups;
 import com.pratham.foundation.database.domain.Student;
@@ -28,6 +29,8 @@ import org.androidannotations.annotations.EFragment;
 import org.androidannotations.annotations.ViewById;
 
 import java.util.ArrayList;
+
+import static com.pratham.foundation.utility.FC_Utility.dpToPx;
 
 
 @EFragment(R.layout.fragment_select_group)
@@ -118,7 +121,7 @@ public class FragmentSelectGroup extends Fragment implements ContractGroup {
             // rv_group.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false));
             RecyclerView.LayoutManager mLayoutManager = new GridLayoutManager(getActivity(), 2);
             rv_group.setLayoutManager(mLayoutManager);
-            rv_group.addItemDecoration(new GridSpacingItemDecoration(2, dpToPx(10), true));
+            rv_group.addItemDecoration(new GridSpacingItemDecoration(2, dpToPx(getActivity(),10), true));
             rv_group.setItemAnimator(new DefaultItemAnimator());
             //recyclerView.setAdapter(adapter);
 
@@ -126,11 +129,6 @@ public class FragmentSelectGroup extends Fragment implements ContractGroup {
         } else {
             groupAdapter.updateGroupItems(groups);
         }
-    }
-
-    private int dpToPx(int dp) {
-        Resources r = getResources();
-        return Math.round(TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp, r.getDisplayMetrics()));
     }
 
     @Click(R.id.btn_group_next)
@@ -169,38 +167,4 @@ public class FragmentSelectGroup extends Fragment implements ContractGroup {
 //        intent.putExtra(ActivityMain.EXTRA_CIRCULAR_REVEAL_Y, revealY);
 //        ActivityCompat.startActivity(getActivity(), intent, options.toBundle());
 //    }
-    public class GridSpacingItemDecoration extends RecyclerView.ItemDecoration {
-
-        private int spanCount;
-        private int spacing;
-        private boolean includeEdge;
-
-        public GridSpacingItemDecoration(int spanCount, int spacing, boolean includeEdge) {
-            this.spanCount = spanCount;
-            this.spacing = spacing;
-            this.includeEdge = includeEdge;
-        }
-
-        @Override
-        public void getItemOffsets(Rect outRect, View view, RecyclerView parent, RecyclerView.State state) {
-            int position = parent.getChildAdapterPosition(view); // item position
-            int column = position % spanCount; // item column
-
-            if (includeEdge) {
-                outRect.left = spacing - column * spacing / spanCount; // spacing - column * ((1f / spanCount) * spacing)
-                outRect.right = (column + 1) * spacing / spanCount; // (column + avatar) * ((1f / spanCount) * spacing)
-
-                if (position < spanCount) { // top edge
-                    outRect.top = spacing;
-                }
-                outRect.bottom = spacing; // item bottom
-            } else {
-                outRect.left = column * spacing / spanCount; // column * ((1f / spanCount) * spacing)
-                outRect.right = spacing - (column + 1) * spacing / spanCount; // spacing - (column + avatar) * ((1f /    spanCount) * spacing)
-                if (position >= spanCount) {
-                    outRect.top = spacing; // item top
-                }
-            }
-        }
-    }
 }

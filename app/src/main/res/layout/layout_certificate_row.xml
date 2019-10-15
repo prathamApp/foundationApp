@@ -13,7 +13,7 @@
         android:layout_height="wrap_content"
         android:layout_toLeftOf="@+id/tv_view">
 
-        <com.pratham.foundation.custumView.SansTextView
+        <com.pratham.foundation.customView.SansTextView
             android:id="@+id/tv_assessment"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -21,7 +21,7 @@
             android:textColor="@color/colorBtnOrangeDark"
             android:textSize="@dimen/_15sdp" />
 
-        <com.pratham.foundation.custumView.SansTextView
+        <com.pratham.foundation.customView.SansTextView
             android:id="@+id/tv_timestamp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -31,7 +31,7 @@
             android:textSize="@dimen/_8sdp" />
     </RelativeLayout>
 
-    <com.pratham.foundation.custumView.SansTextView
+    <com.pratham.foundation.customView.SansTextView
         android:id="@+id/tv_view"
         android:layout_width="@dimen/_60sdp"
         android:layout_height="wrap_content"

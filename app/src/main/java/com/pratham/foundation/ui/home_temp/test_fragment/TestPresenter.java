@@ -8,8 +8,8 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 import com.google.gson.stream.JsonReader;
 import com.pratham.foundation.ApplicationClass;
-import com.pratham.foundation.asynk.API_Content;
-import com.pratham.foundation.asynk.ZipDownloader;
+import com.pratham.foundation.async.API_Content;
+import com.pratham.foundation.async.ZipDownloader;
 import com.pratham.foundation.database.AppDatabase;
 import com.pratham.foundation.database.BackupDatabase;
 import com.pratham.foundation.database.domain.ContentProgress;
@@ -21,7 +21,6 @@ import com.pratham.foundation.modalclasses.CertificateModelClass;
 import com.pratham.foundation.modalclasses.Modal_DownloadAssessment;
 import com.pratham.foundation.modalclasses.Modal_DownloadContent;
 import com.pratham.foundation.ui.contentPlayer.web_view.WebViewActivity;
-import com.pratham.foundation.ui.home_temp.practice_fragment.PracticeContract;
 import com.pratham.foundation.utility.FC_Constants;
 import com.pratham.foundation.utility.FC_Utility;
 

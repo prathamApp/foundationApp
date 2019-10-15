@@ -26,21 +26,16 @@ import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import com.pratham.foundation.ApplicationClass;
 import com.pratham.foundation.R;
-import com.pratham.foundation.custumView.collapsingView.RetractableToolbarUtil;
-import com.pratham.foundation.custumView.progress_layout.ProgressLayout;
+import com.pratham.foundation.customView.collapsingView.RetractableToolbarUtil;
+import com.pratham.foundation.customView.progress_layout.ProgressLayout;
 import com.pratham.foundation.database.domain.ContentTable;
 import com.pratham.foundation.database.domain.ContentTableNew;
 import com.pratham.foundation.modalclasses.CertificateModelClass;
 import com.pratham.foundation.modalclasses.EventMessage;
 import com.pratham.foundation.modalclasses.Modal_FileDownloading;
-import com.pratham.foundation.ui.contentPlayer.ContentPlayerActivity;
 import com.pratham.foundation.ui.contentPlayer.web_view.WebViewActivity;
 import com.pratham.foundation.ui.factRetrial.FactRetrial_;
 import com.pratham.foundation.ui.home_temp.TempHomeActivity;
-import com.pratham.foundation.ui.home_temp.display_content.ContentDisplay_;
-import com.pratham.foundation.ui.home_temp.learning_fragment.LearningContract;
-import com.pratham.foundation.ui.home_temp.learning_fragment.LearningOuterDataAdapter;
-import com.pratham.foundation.ui.home_temp.learning_fragment.LearningPresenter;
 import com.pratham.foundation.ui.test.certificate.CertificateClicked;
 import com.pratham.foundation.utility.FC_Constants;
 import com.pratham.foundation.utility.FC_Utility;
@@ -66,7 +61,6 @@ import java.util.Objects;
 
 import static com.pratham.foundation.ui.home_temp.TempHomeActivity.header_rl;
 import static com.pratham.foundation.utility.FC_Constants.testSessionEntered;
-import static com.pratham.foundation.utility.SplashSupportActivity.ButtonClickSound;
 
 @EFragment(R.layout.fragment_test)
 public class TestFragment extends Fragment implements TestContract.TestView,

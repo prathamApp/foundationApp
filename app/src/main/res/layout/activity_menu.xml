@@ -14,7 +14,7 @@
         android:layout_alignParentTop="true"
         android:background="@color/colorBtnRedDark">
 
-        <com.pratham.foundation.custumView.SansTextView
+        <com.pratham.foundation.customView.SansTextView
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_centerInParent="true"

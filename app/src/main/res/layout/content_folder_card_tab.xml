@@ -16,7 +16,7 @@
         android:layout_alignParentTop="true"
         android:layout_marginTop="5dp">
 
-        <com.pratham.foundation.custumView.FrederickaButton
+        <com.pratham.foundation.customView.FrederickaButton
             android:id="@+id/btnMore"
             android:layout_width="@dimen/_70sdp"
             android:layout_height="@dimen/_20sdp"
@@ -30,7 +30,7 @@
             android:textSize="@dimen/_8sdp"
             android:visibility="visible" />
 
-        <com.pratham.foundation.custumView.SansButton
+        <com.pratham.foundation.customView.SansButton
             android:id="@+id/ib_action_btn"
             android:layout_width="wrap_content"
             android:layout_height="@dimen/_20sdp"
@@ -47,7 +47,7 @@
             android:textSize="@dimen/_8sdp"
             android:visibility="gone" />
 
-        <com.pratham.foundation.custumView.FrederickaTextView
+        <com.pratham.foundation.customView.FrederickaTextView
             android:id="@+id/itemTitle"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
@@ -69,7 +69,7 @@
     <android.support.v7.widget.RecyclerView
         android:id="@+id/recycler_view_list"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="@dimen/_110sdp"
         android:layout_below="@+id/topPanel" />
 
 </RelativeLayout>

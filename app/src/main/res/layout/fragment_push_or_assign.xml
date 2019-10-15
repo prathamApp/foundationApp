@@ -11,7 +11,7 @@
         android:layout_gravity="center"
         android:gravity="center">
 
-        <com.pratham.foundation.custumView.SansButton
+        <com.pratham.foundation.customView.SansButton
             android:id="@+id/btn_download_all_data"
             android:layout_width="@dimen/_150sdp"
             android:layout_height="@dimen/_50sdp"
@@ -21,7 +21,7 @@
             android:textColor="@color/white"
             android:textSize="@dimen/_12sdp" />
 
-        <com.pratham.foundation.custumView.SansButton
+        <com.pratham.foundation.customView.SansButton
             android:id="@+id/btn_assign"
             android:layout_width="@dimen/_150sdp"
             android:textColor="@color/white"
@@ -32,7 +32,7 @@
             android:text="Assign Groups"
             android:textSize="@dimen/_12sdp" />
 
-        <com.pratham.foundation.custumView.SansButton
+        <com.pratham.foundation.customView.SansButton
             android:id="@+id/btn_push"
             android:layout_width="@dimen/_150sdp"
             android:layout_height="@dimen/_50sdp"
@@ -43,7 +43,7 @@
             android:text="Push Data"
             android:textSize="@dimen/_12sdp" />
 
-        <com.pratham.foundation.custumView.SansButton
+        <com.pratham.foundation.customView.SansButton
             android:id="@+id/btn_progress"
             android:layout_width="@dimen/_150sdp"
             android:layout_height="@dimen/_50sdp"

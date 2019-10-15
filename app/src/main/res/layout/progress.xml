@@ -11,7 +11,7 @@
     android:orientation="vertical"
     android:padding="@dimen/_12sdp">
 
-    <com.pratham.foundation.custumView.SansTextView
+    <com.pratham.foundation.customView.SansTextView
         android:id="@+id/title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -20,7 +20,7 @@
         android:textColor="@color/dark_yellow"
         android:textSize="@dimen/_20sdp" />
 
-    <com.pratham.foundation.custumView.progress_layout.ProgressLayout
+    <com.pratham.foundation.customView.progress_layout.ProgressLayout
         android:id="@+id/progress"
         android:layout_width="match_parent"
         android:layout_height="15dp"

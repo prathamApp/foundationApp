@@ -23,7 +23,7 @@
         android:background="@drawable/border"
         android:padding="10dp">
 
-        <com.pratham.foundation.custumView.FlowLayout
+        <com.pratham.foundation.customView.FlowLayout
             android:id="@+id/paragraph"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -40,7 +40,7 @@
         android:background="@drawable/border"
         android:padding="10dp">
 
-        <com.pratham.foundation.custumView.FlowLayout
+        <com.pratham.foundation.customView.FlowLayout
             android:id="@+id/keywords"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

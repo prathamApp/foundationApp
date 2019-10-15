@@ -7,7 +7,7 @@ import android.widget.TextView;
 
 
 import com.pratham.foundation.R;
-import com.pratham.foundation.custumView.progress_layout.ProgressLayout;
+import com.pratham.foundation.customView.progress_layout.ProgressLayout;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;

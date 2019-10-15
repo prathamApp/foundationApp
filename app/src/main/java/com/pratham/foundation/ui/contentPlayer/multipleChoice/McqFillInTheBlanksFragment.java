@@ -8,7 +8,6 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.text.method.ScrollingMovementMethod;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,7 +16,6 @@ import android.widget.GridLayout;
 import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
-import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
@@ -25,10 +23,10 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.pratham.foundation.ApplicationClass;
 import com.pratham.foundation.R;
-import com.pratham.foundation.custumView.GifView;
-import com.pratham.foundation.custumView.SansButton;
-import com.pratham.foundation.custumView.SansTextView;
-import com.pratham.foundation.custumView.SansTextViewBold;
+import com.pratham.foundation.customView.GifView;
+import com.pratham.foundation.customView.SansButton;
+import com.pratham.foundation.customView.SansTextView;
+import com.pratham.foundation.customView.SansTextViewBold;
 import com.pratham.foundation.database.BackupDatabase;
 import com.pratham.foundation.database.domain.Assessment;
 import com.pratham.foundation.database.domain.KeyWords;
@@ -39,7 +37,6 @@ import com.pratham.foundation.ui.contentPlayer.fillInTheBlanks.FillInTheBlanksFr
 import com.pratham.foundation.utility.FC_Constants;
 import com.pratham.foundation.utility.FC_Utility;
 
-import org.androidannotations.annotations.Click;
 import org.json.JSONArray;
 import org.json.JSONException;
 

@@ -41,25 +41,18 @@ public class PracticeOuterDataAdapter extends RecyclerView.Adapter {
         this.tempItemClicked = tempItemClicked;
     }
 
-    public class EmptyHolder extends RecyclerView.ViewHolder {
-        public EmptyHolder(View view) {
-            super(view);
-        }
-
-    }
-
     @NonNull
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int viewtype) {
         View view;
         switch (viewtype) {
             case 0:
-            case 2:
+            case 3:
                 LayoutInflater header = LayoutInflater.from(viewGroup.getContext());
                 view = header.inflate(R.layout.list_header, viewGroup, false);
                 return new EmptyHolder(view);
             case 1:
-            case 3:
+            case 2:
                 LayoutInflater folder = LayoutInflater.from(viewGroup.getContext());
                 view = folder.inflate(R.layout.content_folder_card_tab, viewGroup, false);
                 return new FolderHolder(view);
@@ -75,7 +68,7 @@ public class PracticeOuterDataAdapter extends RecyclerView.Adapter {
 
         switch (viewHolder.getItemViewType()) {
             case 1:
-            case 3:
+            case 2:
                 FolderHolder itemRowHolder = (FolderHolder) viewHolder;
                 contentTable = dataList.get(i);
                 sublistList = new ArrayList<>();
@@ -161,6 +154,12 @@ public class PracticeOuterDataAdapter extends RecyclerView.Adapter {
         return (null != dataList ? dataList.size() : 0);
     }
 
+    public class EmptyHolder extends RecyclerView.ViewHolder {
+        public EmptyHolder(View view) {
+            super(view);
+        }
+
+    }
     public class FolderHolder extends RecyclerView.ViewHolder {
         TextView itemTitle;
         RecyclerView recycler_view_list;

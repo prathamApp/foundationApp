@@ -13,7 +13,7 @@ import android.widget.TextView;
 
 import com.pratham.foundation.ApplicationClass;
 import com.pratham.foundation.R;
-import com.pratham.foundation.custumView.SansButton;
+import com.pratham.foundation.customView.SansButton;
 import com.pratham.foundation.database.domain.QuetionAns;
 import com.pratham.foundation.ui.contentPlayer.GameConstatnts;
 import com.pratham.foundation.ui.contentPlayer.keywords_identification.KeywordsIdentificationFragment_;

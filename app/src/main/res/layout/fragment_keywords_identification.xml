@@ -6,7 +6,7 @@
     android:background="@drawable/bg_anim_fourth_layer"
     android:orientation="vertical">
 
-    <com.pratham.foundation.custumView.SansTextView
+    <com.pratham.foundation.customView.SansTextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Identifiy Keywords"
@@ -40,7 +40,7 @@
                 app:flChildSpacing="10dp" />
         </ScrollView>
 
-        <com.pratham.foundation.custumView.SansTextView
+        <com.pratham.foundation.customView.SansTextView
             android:id="@+id/para_tv"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -72,7 +72,7 @@
                 app:flRowSpacing="2dp" />
         </ScrollView>
 
-        <com.pratham.foundation.custumView.SansTextView
+        <com.pratham.foundation.customView.SansTextView
             android:id="@+id/keywords_tv"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -90,7 +90,7 @@
         android:layout_weight=".5"
         android:layout_margin="@dimen/_10sdp"
         android:orientation="horizontal">
-        <com.pratham.foundation.custumView.fonts.SansButton
+        <com.pratham.foundation.customView.fonts.SansButton
             android:id="@+id/show_me_keywords"
             android:layout_width="wrap_content"
             android:layout_height="50dp"
@@ -100,7 +100,7 @@
             android:textColor="@color/white"
             android:layout_centerVertical="true"
             android:textSize="@dimen/_15sdp" />
-        <com.pratham.foundation.custumView.fonts.SansButton
+        <com.pratham.foundation.customView.fonts.SansButton
             android:id="@+id/btn_submit"
             android:layout_width="wrap_content"
             android:layout_height="50dp"

@@ -29,7 +29,7 @@
             android:layout_marginTop="@dimen/_45sdp"
             android:background="@drawable/dialog_bg">
 
-            <com.pratham.foundation.custumView.SansTextViewBold
+            <com.pratham.foundation.customView.SansTextViewBold
                 android:id="@+id/dialog_file_name"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/_70sdp"
@@ -42,7 +42,7 @@
                 android:textColor="@color/red"
                 android:textSize="@dimen/_15sdp" />
 
-            <com.pratham.foundation.custumView.fonts.SansButton
+            <com.pratham.foundation.customView.fonts.SansButton
                 android:id="@+id/dialog_error_btn"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/_35sdp"
@@ -91,7 +91,7 @@
             android:layout_height="match_parent"
             android:layout_below="@+id/iv_file_trans">
 
-            <com.pratham.foundation.custumView.SansTextViewBold
+            <customView.SansTextViewBold
                 android:id="@+id/dialog_file_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

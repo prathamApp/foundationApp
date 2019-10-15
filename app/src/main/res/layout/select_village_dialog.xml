@@ -8,7 +8,7 @@
     android:weightSum="3">
 
 
-    <com.pratham.foundation.custumView.SansTextView
+    <com.pratham.foundation.customView.SansTextView
         android:id="@+id/txt_message"
         android:layout_width="match_parent"
         android:layout_height="60dp"
@@ -79,7 +79,7 @@
         android:layout_alignParentBottom="true"
         android:orientation="horizontal">
 
-        <com.pratham.foundation.custumView.SansTextView
+        <com.pratham.foundation.customView.SansTextView
             android:id="@+id/txt_clear_changes"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -92,7 +92,7 @@
             android:textColor="@color/white"
             android:textSize="20sp" />
 
-        <com.pratham.foundation.custumView.SansTextView
+        <com.pratham.foundation.customView.SansTextView
             android:id="@+id/txt_ok"
             android:layout_width="0dp"
             android:layout_height="wrap_content"

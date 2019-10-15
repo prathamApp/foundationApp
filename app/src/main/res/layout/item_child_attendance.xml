@@ -14,7 +14,7 @@
         android:layout_centerHorizontal="true"
         android:src="@drawable/g1" />
 
-    <com.pratham.foundation.custumView.SansTextView
+    <com.pratham.foundation.customView.SansTextView
         android:id="@+id/child_name"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

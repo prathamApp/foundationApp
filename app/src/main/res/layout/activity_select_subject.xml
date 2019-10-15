@@ -7,7 +7,7 @@
     android:background="@color/colorParent"
     tools:context=".ui.selectSubject.SelectSubject">
 
-    <com.pratham.foundation.custumView.SansTextViewBold
+    <com.pratham.foundation.customView.SansTextViewBold
         android:id="@+id/name"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -17,7 +17,7 @@
         android:text="Welcome"
         android:textColor="@color/text_color"
         android:textSize="@dimen/_20sdp" />
-    <com.pratham.foundation.custumView.SansTextView
+    <com.pratham.foundation.customView.SansTextView
         android:id="@+id/subject"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

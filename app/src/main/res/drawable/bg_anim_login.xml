@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<animation-list xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:drawable="@drawable/grad_layer_two"
+        android:duration="4500" />
+    <item
+        android:drawable="@drawable/grad_layer_one"
+        android:duration="4500" />
+
+</animation-list>

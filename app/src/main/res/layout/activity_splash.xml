@@ -16,7 +16,7 @@
         android:scaleType="fitCenter"
         android:src="@drawable/pratham_logo" />
 
-    <com.pratham.foundation.custumView.SansTextViewBold
+    <com.pratham.foundation.customView.SansTextViewBold
         android:id="@+id/gifcomplete"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

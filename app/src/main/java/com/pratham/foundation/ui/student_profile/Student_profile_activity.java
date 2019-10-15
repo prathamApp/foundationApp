@@ -25,8 +25,8 @@ import android.widget.TextView;
 
 import com.pratham.foundation.ApplicationClass;
 import com.pratham.foundation.R;
-import com.pratham.foundation.custom.shared_preferences.FastSave;
-import com.pratham.foundation.custumView.CircularImageView;
+import com.pratham.foundation.services.shared_preferences.FastSave;
+import com.pratham.foundation.customView.CircularImageView;
 import com.pratham.foundation.database.AppDatabase;
 import com.pratham.foundation.database.domain.ContentProgress;
 import com.pratham.foundation.database.domain.ContentTable;

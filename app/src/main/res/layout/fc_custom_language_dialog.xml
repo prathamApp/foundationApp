@@ -41,7 +41,7 @@
             android:layout_marginBottom="@dimen/_35sdp"
             android:background="@drawable/dialog_bg">
 
-            <com.pratham.foundation.custumView.SansTextViewBold
+            <com.pratham.foundation.customView.SansTextViewBold
                 android:id="@+id/dia_title"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -77,7 +77,7 @@
             android:gravity="center"
             android:elevation="5dp">
 
-            <com.pratham.foundation.custumView.SansButton
+            <com.pratham.foundation.customView.SansButton
                 android:id="@+id/dia_btn_yellow"
                 android:layout_width="@dimen/_70sdp"
                 android:layout_height="@dimen/_40sdp"
@@ -91,7 +91,7 @@
                 android:textColor="@color/white"
                 android:textSize="@dimen/_10sdp" />
 
-            <com.pratham.foundation.custumView.SansButton
+            <com.pratham.foundation.customView.SansButton
                 android:id="@+id/dia_btn_green"
                 android:layout_width="@dimen/_70sdp"
                 android:layout_height="@dimen/_40sdp"
@@ -104,7 +104,7 @@
                 android:textColor="@color/white"
                 android:textSize="@dimen/_10sdp" />
 
-            <com.pratham.foundation.custumView.SansButton
+            <com.pratham.foundation.customView.SansButton
                 android:id="@+id/dia_btn_red"
                 android:layout_width="@dimen/_70sdp"
                 android:layout_height="@dimen/_40sdp"

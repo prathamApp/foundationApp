@@ -11,14 +11,13 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import com.pratham.foundation.R;
-import com.pratham.foundation.custumView.SansButton;
-import com.pratham.foundation.custumView.SansTextView;
+import com.pratham.foundation.customView.SansButton;
+import com.pratham.foundation.customView.SansTextView;
 import com.pratham.foundation.database.domain.ContentTable;
 import com.pratham.foundation.ui.contentPlayer.fact_retrival_fragment.FactRetrival_;
 import com.pratham.foundation.ui.contentPlayer.fillInTheBlanks.FillInTheBlanksFragment;
 import com.pratham.foundation.ui.contentPlayer.keywords_identification.KeywordsIdentificationFragment_;
 import com.pratham.foundation.ui.contentPlayer.keywords_mapping.KeywordMappingFragment_;
-import com.pratham.foundation.ui.contentPlayer.listenAndWritting.ListeningAndWritting;
 import com.pratham.foundation.ui.contentPlayer.listenAndWritting.ListeningAndWritting_;
 import com.pratham.foundation.ui.contentPlayer.multipleChoice.McqFillInTheBlanksFragment;
 import com.pratham.foundation.ui.contentPlayer.paragraph_writing.ParagraphWritingFragment_;

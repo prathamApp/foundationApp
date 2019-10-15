@@ -5,7 +5,7 @@
     android:layout_gravity="center"
     android:background="@color/full_transparent">
 
-    <com.pratham.foundation.custumView.fancy_loaders_library.FancyLoader
+    <com.pratham.foundation.customView.fancy_loaders_library.FancyLoader
         android:id="@+id/loading_sharingan"
         android:layout_width="match_parent"
         android:layout_height="match_parent"

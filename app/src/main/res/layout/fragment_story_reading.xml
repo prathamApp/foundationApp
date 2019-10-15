@@ -1,0 +1,305 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:ripple="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/story_ll"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/bg_anim_login">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <RelativeLayout
+            android:id="@+id/silence_outer"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/black_20"
+            android:visibility="gone"
+            android:elevation="50dp">
+
+            <RelativeLayout
+                android:id="@+id/silence_main_layout"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_150sdp"
+                android:layout_marginHorizontal="@dimen/_30sdp"
+                android:layout_centerInParent="true"
+                android:padding="@dimen/_10sdp">
+
+                <ImageView
+                    android:id="@+id/silence_iv"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/_90sdp"
+                    android:layout_alignParentTop="true"
+                    android:elevation="@dimen/_20sdp"
+                    android:layout_centerHorizontal="true"
+                    android:src="@drawable/stt_listener"/>
+
+                <RelativeLayout
+                    android:layout_width="@dimen/_150sdp"
+                    android:layout_height="@dimen/_60sdp"
+                    android:layout_marginTop="@dimen/_80sdp"
+                    android:layout_centerHorizontal="true"
+                    android:background="@drawable/ripple_rectangle_card">
+
+                    <com.pratham.cityofstories.custom.customFont.SansTextViewBold
+                        android:id="@+id/silence_tv"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:gravity="center"
+                        android:layout_alignParentBottom="true"
+                        android:layout_centerHorizontal="true"
+                        android:textColor="@color/red"
+                        android:textSize="@dimen/_15sdp"
+                        android:text="I am listening..."/>
+
+                </RelativeLayout>
+            </RelativeLayout>
+        </RelativeLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:weightSum="10">
+            <android.support.design.card.MaterialCardView
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_marginHorizontal="@dimen/_10sdp"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:layout_weight="4"
+                ripple:cardCornerRadius="@dimen/_5sdp"
+                ripple:cardElevation="@dimen/_5sdp">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <ImageView
+                        android:id="@+id/iv_image"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center_horizontal|top"
+                        android:layout_weight="5"
+                        android:background="@color/colorBlack"
+                        android:scaleType="fitCenter"
+                        android:src="@drawable/pratham_logo" />
+
+                    <com.pratham.foundation.customView.RipplePulseLayout
+                        android:id="@+id/layout_ripplepulse_left"
+                        android:layout_width="@dimen/_100sdp"
+                        android:layout_height="@dimen/_100sdp"
+                        android:layout_alignParentLeft="true"
+                        android:layout_alignParentBottom="true"
+                        android:clipChildren="false"
+                        ripple:duration="2000"
+                        ripple:endRadius="@dimen/_40sdp"
+                        ripple:rippleColor="@color/colorBlack"
+                        ripple:rippleType="fill"
+                        ripple:startRadius="2dp"
+                        ripple:strokeWidth="2dp">
+
+                        <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent">
+
+                            <ImageButton
+                                android:id="@+id/btn_prev"
+                                android:layout_width="@dimen/_40sdp"
+                                android:layout_height="@dimen/_40sdp"
+                                android:layout_centerInParent="true"
+                                android:background="@drawable/ripple_round"
+                                android:elevation="5dp"
+                                android:scaleType="centerInside"
+                                android:src="@drawable/ic_navigate_before_black_24dp" />
+                        </RelativeLayout>
+
+                    </com.pratham.foundation.customView.RipplePulseLayout>
+
+                    <com.pratham.foundation.customView.RipplePulseLayout
+                        android:id="@+id/layout_ripplepulse_right"
+                        android:layout_width="@dimen/_100sdp"
+                        android:layout_height="@dimen/_100sdp"
+                        android:layout_alignParentRight="true"
+                        android:layout_alignParentBottom="true"
+                        android:clipChildren="false"
+                        ripple:duration="2000"
+                        ripple:endRadius="@dimen/_40sdp"
+                        ripple:rippleColor="@color/colorBlack"
+                        ripple:rippleType="fill"
+                        ripple:startRadius="2dp"
+                        ripple:strokeWidth="2dp">
+
+                        <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent">
+
+                            <ImageButton
+                                android:id="@+id/btn_next"
+                                android:layout_width="@dimen/_40sdp"
+                                android:layout_height="@dimen/_40sdp"
+                                android:layout_centerInParent="true"
+                                android:background="@drawable/ripple_round"
+                                android:elevation="5dp"
+                                android:scaleType="centerInside"
+                                android:src="@drawable/ic_navigate_next_black_24dp" />
+                        </RelativeLayout>
+
+                    </com.pratham.foundation.customView.RipplePulseLayout>
+
+
+                </RelativeLayout>
+            </android.support.design.card.MaterialCardView>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_marginHorizontal="@dimen/_10sdp"
+                android:layout_marginTop="10dp"
+                android:layout_weight="5.2"
+                android:orientation="vertical"
+                android:weightSum="10">
+
+                <android.support.design.card.MaterialCardView
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="2"
+                    ripple:cardCornerRadius="@dimen/_5sdp"
+                    ripple:cardElevation="@dimen/_5sdp">
+
+                    <com.pratham.foundation.customView.FredokaOneTextView
+                        android:id="@+id/tv_story_title"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginTop="2dp"
+                        android:layout_weight="2"
+                        android:background="@drawable/dialog_bg"
+                        android:elevation="5dp"
+                        android:gravity="center"
+                        android:text="The Moon And The Cap"
+                        android:textColor="@color/red"
+                        android:textSize="@dimen/_20sdp"
+                        android:textStyle="bold" />
+                </android.support.design.card.MaterialCardView>
+
+                <android.support.design.card.MaterialCardView
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="10dp"
+                    android:layout_weight="8"
+                    android:gravity="center"
+                    android:orientation="horizontal"
+                    ripple:cardCornerRadius="@dimen/_5sdp"
+                    ripple:cardElevation="@dimen/_5sdp">
+
+                    <ScrollView
+                        android:id="@+id/myScrollView"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginHorizontal="@dimen/_12sdp"
+                        android:layout_marginVertical="10dp">
+
+                        <com.nex3z.flowlayout.FlowLayout xmlns:app="http://schemas.android.com/apk/res-auto"
+                            android:id="@+id/myflowlayout"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:paddingHorizontal="10dp"
+                            app:flChildSpacing="10dp" />
+
+                    </ScrollView>
+
+                </android.support.design.card.MaterialCardView>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_gravity="bottom|center_horizontal"
+                android:layout_marginHorizontal="@dimen/_10sdp"
+                android:layout_marginTop="@dimen/_5sdp"
+                android:layout_weight="0.8"
+                android:gravity="bottom|center_horizontal"
+                android:orientation="horizontal"
+                android:weightSum="2">
+
+                <LinearLayout
+                    android:id="@+id/ll_btn_submit"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginRight="@dimen/_5sdp"
+                    android:visibility="gone"
+                    android:layout_weight="1">
+
+                    <com.pratham.cityofstories.talkbot.custom.fonts.SansButton
+                        android:id="@+id/btn_submit"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginHorizontal="@dimen/_30sdp"
+                        android:layout_marginBottom="@dimen/_8sdp"
+                        android:background="@drawable/ripple_effect"
+                        android:elevation="5dp"
+                        android:textSize="@dimen/_15sdp"
+                        android:text="submit"/>
+
+                </LinearLayout>
+
+
+                <LinearLayout
+                    android:id="@+id/ll_btn_play"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginRight="@dimen/_5sdp"
+                    android:layout_weight="1">
+
+                    <ImageButton
+                        android:id="@+id/btn_play"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginHorizontal="@dimen/_30sdp"
+                        android:layout_marginBottom="@dimen/_5sdp"
+                        android:background="@drawable/yellow_button"
+                        android:elevation="@dimen/_3sdp"
+                        android:padding="@dimen/_8sdp"
+                        android:scaleType="centerInside"
+                        android:src="@drawable/ic_play_arrow"
+                        />
+                </LinearLayout>
+
+                <com.pratham.foundation.customView.RipplePulseLayout
+                    android:id="@+id/layout_mic_ripple"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="@dimen/_5sdp"
+                    android:layout_weight="1"
+                    android:clipChildren="false"
+                    ripple:duration="2000"
+                    ripple:endRadius="@dimen/_80sdp"
+                    ripple:rippleColor="@color/colorBlack"
+                    ripple:rippleType="fill"
+                    ripple:startRadius="2dp"
+                    ripple:strokeWidth="2dp">
+
+                    <ImageButton
+                        android:id="@+id/btn_read_mic"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginHorizontal="@dimen/_30sdp"
+                        android:layout_marginBottom="@dimen/_5sdp"
+                        android:background="@drawable/yellow_button"
+                        android:elevation="@dimen/_3sdp"
+                        android:padding="@dimen/_6sdp"
+                        android:scaleType="centerInside"
+                        android:src="@drawable/ic_mic_black_24dp"
+                        />
+
+                </com.pratham.foundation.customView.RipplePulseLayout>
+
+            </LinearLayout>
+
+        </LinearLayout>
+    </RelativeLayout>
+
+</LinearLayout>

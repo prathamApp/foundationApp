@@ -12,7 +12,7 @@
         android:layout_margin="@dimen/_2sdp"
         android:orientation="vertical">
 
-        <com.pratham.foundation.custumView.SansTextView
+        <com.pratham.foundation.customView.SansTextView
             android:id="@+id/tv_question"
             android:layout_height="0dp"
             android:layout_width="match_parent"
@@ -26,13 +26,13 @@
             android:id="@+id/iv_question_image"
             style="@style/CustomQuestionImageStyle" />
 
-        <com.pratham.foundation.custumView.GifView
+        <com.pratham.foundation.customView.GifView
             android:id="@+id/iv_question_gif"
             style="@style/CustomQuestionImageStyle"
             android:layout_gravity="center_horizontal"
             android:layout_weight="0.5" />
 
-        <com.pratham.foundation.custumView.SansTextView
+        <com.pratham.foundation.customView.SansTextView
             android:id="@+id/et_answer"
             android:layout_width="match_parent"
             android:layout_height="0dp"
@@ -55,7 +55,7 @@
             android:scaleType="fitXY"
             android:src="@drawable/ic_mic_24dp" />
 
-        <com.pratham.foundation.custumView.SansButton
+        <com.pratham.foundation.customView.SansButton
             android:id="@+id/submit"
             android:layout_width="wrap_content"
             android:layout_height="@dimen/_40sdp"

@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     tools:context=".ui.qr_scan.QRScanActivity">
 
-    <com.pratham.foundation.custumView.SansTextView
+    <com.pratham.foundation.customView.SansTextView
         android:id="@+id/tv_title"
         android:layout_width="match_parent"
         android:layout_height="@dimen/_40sdp"
@@ -68,7 +68,7 @@
                         android:background="@drawable/certi_separator"
                         android:elevation="10dp"/>
 
-                    <com.pratham.foundation.custumView.SansTextView
+                    <com.pratham.foundation.customView.SansTextView
                         android:id="@+id/tv_stud_one"
                         android:layout_width="match_parent"
                         android:layout_height="@dimen/_60sdp"
@@ -94,7 +94,7 @@
                         android:visibility="gone"
                         android:layout_marginBottom="@dimen/_2sdp" >
 
-                        <com.pratham.foundation.custumView.SansButton
+                        <com.pratham.foundation.customView.SansButton
                             android:id="@+id/btn_reset_btn"
                             android:layout_width="@dimen/_90sdp"
                             android:layout_height="@dimen/_60sdp"
@@ -106,7 +106,7 @@
                             android:background="@drawable/red_button"
                             android:text="Scan New"/>
 
-                        <com.pratham.foundation.custumView.SansButton
+                        <com.pratham.foundation.customView.SansButton
                             android:id="@+id/btn_get_progress"
                             android:layout_width="@dimen/_95sdp"
                             android:layout_height="@dimen/_60sdp"
@@ -120,7 +120,7 @@
                             android:background="@drawable/yellow_button"
                             android:text="Get Progress"/>
 
-                        <com.pratham.foundation.custumView.SansButton
+                        <com.pratham.foundation.customView.SansButton
                             android:id="@+id/btn_start_game"
                             android:layout_width="@dimen/_90sdp"
                             android:layout_height="@dimen/_60sdp"

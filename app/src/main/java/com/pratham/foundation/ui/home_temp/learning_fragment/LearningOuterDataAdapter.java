@@ -51,12 +51,12 @@ public class LearningOuterDataAdapter extends RecyclerView.Adapter {
         View view;
         switch (viewtype) {
             case 0:
-            case 2:
+            case 3:
                 LayoutInflater header = LayoutInflater.from(viewGroup.getContext());
                 view = header.inflate(R.layout.list_header, viewGroup, false);
                 return new EmptyHolder(view);
             case 1:
-            case 3:
+            case 2:
                 LayoutInflater folder = LayoutInflater.from(viewGroup.getContext());
                 view = folder.inflate(R.layout.content_folder_card_tab, viewGroup, false);
                 return new FolderHolder(view);
@@ -72,7 +72,7 @@ public class LearningOuterDataAdapter extends RecyclerView.Adapter {
 
         switch (viewHolder.getItemViewType()) {
             case 1:
-            case 3:
+            case 2:
                 FolderHolder itemRowHolder = (FolderHolder) viewHolder;
                 contentTable = dataList.get(i);
                 sublistList = new ArrayList<>();

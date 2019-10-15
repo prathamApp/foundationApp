@@ -6,7 +6,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@drawable/dialog_top">
 
-    <com.pratham.foundation.custumView.SansButton
+    <com.pratham.foundation.customView.SansButton
         android:id="@+id/btn_download_all_data"
         android:layout_width="match_parent"
         android:layout_height="60dp"
@@ -38,7 +38,7 @@
                 android:layout_marginHorizontal="@dimen/_10sdp"
                 android:padding="@dimen/_5sdp" />
 
-            <com.pratham.foundation.custumView.SansButton
+            <com.pratham.foundation.customView.SansButton
                 android:id="@+id/add_student"
                 android:layout_width="match_parent"
                 android:layout_height="60dp"

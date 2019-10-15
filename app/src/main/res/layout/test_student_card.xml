@@ -29,7 +29,7 @@
                 android:layout_gravity="center"
                 android:src="@drawable/b1" />
 
-            <com.pratham.foundation.custumView.SansTextView
+            <com.pratham.foundation.customView.SansTextView
                 android:id="@+id/tv_studentName"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"

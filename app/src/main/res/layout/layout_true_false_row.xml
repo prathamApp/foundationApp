@@ -22,7 +22,7 @@
             android:id="@+id/iv_question_image"
             style="@style/CustomQuestionImageStyle" />
 
-        <com.pratham.foundation.custumView.GifView
+        <com.pratham.foundation.customView.GifView
             android:id="@+id/iv_question_gif"
             style="@style/CustomQuestionImageStyle"
             android:layout_gravity="center_horizontal"
@@ -65,7 +65,7 @@
             android:layout_marginHorizontal="20dp"
             android:orientation="horizontal">
 
-            <com.pratham.foundation.custumView.SansButton
+            <com.pratham.foundation.customView.SansButton
                 android:id="@+id/previous"
                 android:layout_width="100dp"
                 android:layout_height="50dp"
@@ -74,7 +74,7 @@
                 android:background="@drawable/red_button"
                 android:text="previous" />
 
-            <com.pratham.foundation.custumView.SansButton
+            <com.pratham.foundation.customView.SansButton
                 android:id="@+id/submitBtn"
                 android:layout_width="100dp"
                 android:layout_height="50dp"
@@ -83,7 +83,7 @@
                 android:layout_centerInParent="true"
                 android:text="Submit" />
 
-            <com.pratham.foundation.custumView.SansButton
+            <com.pratham.foundation.customView.SansButton
                 android:id="@+id/next"
                 android:layout_width="100dp"
                 android:layout_height="50dp"

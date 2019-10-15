@@ -36,7 +36,7 @@
             android:layout_marginTop="@dimen/_45sdp"
             android:background="@drawable/dialog_bg">
 
-            <com.pratham.foundation.custumView.SansTextViewBold
+            <com.pratham.foundation.customView.SansTextViewBold
                 android:id="@+id/dialog_file_name"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/_70sdp"
@@ -61,7 +61,7 @@
                 android:elevation="@dimen/_5sdp"
                 android:layout_gravity="center" />
 
-            <com.pratham.foundation.custumView.progress_layout.ProgressLayout
+            <com.pratham.foundation.customView.progress_layout.ProgressLayout
                 android:id="@+id/dialog_progressLayout"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/_15sdp"
@@ -114,7 +114,7 @@
             android:layout_height="match_parent"
             android:layout_below="@+id/iv_file_trans">
 
-            <com.pratham.foundation.custumView.SansTextView
+            <customView.SansTextView
                 android:id="@+id/dialog_file_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

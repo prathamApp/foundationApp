@@ -23,8 +23,9 @@ import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import com.pratham.foundation.ApplicationClass;
 import com.pratham.foundation.R;
-import com.pratham.foundation.custumView.collapsingView.RetractableToolbarUtil;
-import com.pratham.foundation.custumView.progress_layout.ProgressLayout;
+import com.pratham.foundation.customView.GridSpacingItemDecoration;
+import com.pratham.foundation.customView.collapsingView.RetractableToolbarUtil;
+import com.pratham.foundation.customView.progress_layout.ProgressLayout;
 import com.pratham.foundation.database.domain.ContentTable;
 import com.pratham.foundation.database.domain.ContentTableNew;
 import com.pratham.foundation.modalclasses.EventMessage;
@@ -54,6 +55,7 @@ import java.util.List;
 import java.util.Objects;
 
 import static com.pratham.foundation.ui.home_temp.TempHomeActivity.header_rl;
+import static com.pratham.foundation.utility.FC_Utility.dpToPx;
 import static com.pratham.foundation.utility.SplashSupportActivity.ButtonClickSound;
 
 @EFragment(R.layout.fragment_tab_one)
@@ -85,11 +87,6 @@ public class LearningFragment extends Fragment implements LearningContract.Learn
         presenter.getBottomNavId(TempHomeActivity.currentLevelNo, "Learning");
     }
 
-    private int dpToPx() {
-        Resources r = getResources();
-        return Math.round(TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 1, r.getDisplayMetrics()));
-    }
-
     @UiThread
     public void notifyAdapter() {
         sortAllList(contentParentList);
@@ -97,7 +94,7 @@ public class LearningFragment extends Fragment implements LearningContract.Learn
             adapterParent = new LearningOuterDataAdapter(getActivity(), contentParentList, (LearningContract.LearningItemClicked) this);
             RecyclerView.LayoutManager mLayoutManager = new GridLayoutManager(getActivity(), 1);
             my_recycler_view.setLayoutManager(mLayoutManager);
-            my_recycler_view.addItemDecoration(new TempHomeActivity.GridSpacingItemDecoration(dpToPx()));
+            my_recycler_view.addItemDecoration(new GridSpacingItemDecoration(1,dpToPx(getActivity()),true));
             my_recycler_view.setItemAnimator(new DefaultItemAnimator());
             my_recycler_view.setAdapter(adapterParent);
         } else

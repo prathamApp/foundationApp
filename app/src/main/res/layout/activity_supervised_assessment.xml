@@ -53,7 +53,7 @@
             android:scaleType="centerInside"
             android:src="@drawable/camera_btn_icon" />
 
-        <com.pratham.foundation.custumView.SansEditText
+        <com.pratham.foundation.customView.SansEditText
             android:id="@+id/supervisor_name"
             android:layout_width="match_parent"
             android:layout_height="@dimen/_60sdp"

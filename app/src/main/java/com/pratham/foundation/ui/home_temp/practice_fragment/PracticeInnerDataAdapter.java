@@ -19,9 +19,8 @@ import com.facebook.imagepipeline.request.ImageRequest;
 import com.facebook.imagepipeline.request.ImageRequestBuilder;
 import com.pratham.foundation.ApplicationClass;
 import com.pratham.foundation.R;
-import com.pratham.foundation.custumView.progress_layout.ProgressLayout;
+import com.pratham.foundation.customView.progress_layout.ProgressLayout;
 import com.pratham.foundation.database.domain.ContentTableNew;
-import com.pratham.foundation.ui.home_temp.learning_fragment.LearningContract;
 import com.pratham.foundation.utility.FC_Constants;
 
 import java.io.File;

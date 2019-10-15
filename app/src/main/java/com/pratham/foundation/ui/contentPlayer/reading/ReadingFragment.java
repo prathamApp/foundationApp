@@ -26,9 +26,9 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.pratham.foundation.ApplicationClass;
 import com.pratham.foundation.R;
-import com.pratham.foundation.custumView.GifView;
-import com.pratham.foundation.custumView.SansButton;
-import com.pratham.foundation.custumView.SansTextView;
+import com.pratham.foundation.customView.GifView;
+import com.pratham.foundation.customView.SansButton;
+import com.pratham.foundation.customView.SansTextView;
 import com.pratham.foundation.database.BackupDatabase;
 import com.pratham.foundation.database.domain.Assessment;
 import com.pratham.foundation.database.domain.KeyWords;
@@ -99,7 +99,7 @@ public class ReadingFragment extends Fragment implements STT_Result {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
             context = getActivity();
-            speechService = new ContinuousSpeechService(context, this);
+            speechService = new ContinuousSpeechService(context, ReadingFragment.this);
             speechService.resetSpeechRecognizer();
             contentPath = getArguments().getString("contentPath");
             StudentID = getArguments().getString("StudentID");

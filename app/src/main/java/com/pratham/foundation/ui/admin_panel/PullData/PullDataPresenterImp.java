@@ -11,7 +11,7 @@ import com.google.gson.reflect.TypeToken;
 
 import com.pratham.foundation.ApplicationClass;
 import com.pratham.foundation.R;
-import com.pratham.foundation.asynk.API_Content;
+import com.pratham.foundation.async.API_Content;
 import com.pratham.foundation.database.AppDatabase;
 import com.pratham.foundation.database.BackupDatabase;
 import com.pratham.foundation.database.domain.Crl;

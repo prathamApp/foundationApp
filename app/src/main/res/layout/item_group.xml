@@ -20,7 +20,7 @@
             android:gravity="center"
             android:src="@drawable/ic_grp_btn" />
 
-        <com.pratham.foundation.custumView.SansTextView
+        <com.pratham.foundation.customView.SansTextView
             android:id="@+id/group_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

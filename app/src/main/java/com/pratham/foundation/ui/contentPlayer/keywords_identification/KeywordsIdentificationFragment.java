@@ -15,9 +15,9 @@ import android.widget.Toast;
 
 import com.pratham.foundation.R;
 import com.nex3z.flowlayout.FlowLayout;
-import com.pratham.foundation.custumView.SansButton;
-import com.pratham.foundation.custumView.SansTextView;
-import com.pratham.foundation.custumView.SansTextViewBold;
+import com.pratham.foundation.customView.SansButton;
+import com.pratham.foundation.customView.SansTextView;
+import com.pratham.foundation.customView.SansTextViewBold;
 import com.pratham.foundation.ui.contentPlayer.GameConstatnts;
 import com.pratham.foundation.ui.contentPlayer.keywords_mapping.KeywordMappingFragment_;
 import com.pratham.foundation.utility.FC_Utility;
@@ -45,7 +45,7 @@ public class KeywordsIdentificationFragment extends Fragment implements Keywords
     @ViewById(R.id.keyword_selected)
     RelativeLayout keyword_selected;
     @ViewById(R.id.show_me_keywords)
-    com.pratham.foundation.custumView.fonts.SansButton show_me_keywords;
+    com.pratham.foundation.customView.fonts.SansButton show_me_keywords;
 
     RelativeLayout.LayoutParams viewParam;
     private HashMap<String, List<Integer>> positionMap;

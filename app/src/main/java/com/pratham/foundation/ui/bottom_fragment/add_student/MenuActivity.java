@@ -15,7 +15,7 @@ import android.widget.TextView;
 
 
 import com.pratham.foundation.R;
-import com.pratham.foundation.custom.shared_preferences.FastSave;
+import com.pratham.foundation.services.shared_preferences.FastSave;
 import com.pratham.foundation.ui.admin_panel.AdminControlsActivity_;
 import com.pratham.foundation.ui.admin_panel.group_selection.SelectGroupActivity_;
 import com.pratham.foundation.ui.qr_scan.QRScanActivity_;

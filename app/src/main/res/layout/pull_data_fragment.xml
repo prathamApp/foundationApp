@@ -127,7 +127,7 @@
             android:background="@drawable/gradient_spinner" />
     </LinearLayout>
 
-    <com.pratham.foundation.custumView.SansButton
+    <com.pratham.foundation.customView.SansButton
         android:id="@+id/save_button"
         android:layout_width="249dp"
         android:layout_height="wrap_content"

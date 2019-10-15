@@ -35,15 +35,16 @@ import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import com.pratham.foundation.ApplicationClass;
 import com.pratham.foundation.R;
+import com.pratham.foundation.customView.GridSpacingItemDecoration;
 import com.pratham.foundation.ui.contentPlayer.ContentPlayerActivity;
 import com.pratham.foundation.ui.contentPlayer.web_view.WebViewActivity;
-import com.pratham.foundation.custom.shared_preferences.FastSave;
-import com.pratham.foundation.custumView.CircularImageView;
-import com.pratham.foundation.custumView.discrete_view.DSVOrientation;
-import com.pratham.foundation.custumView.discrete_view.DiscreteScrollItemTransformer;
-import com.pratham.foundation.custumView.discrete_view.DiscreteScrollView;
-import com.pratham.foundation.custumView.discrete_view.ScaleTransformer;
-import com.pratham.foundation.custumView.progress_layout.ProgressLayout;
+import com.pratham.foundation.services.shared_preferences.FastSave;
+import com.pratham.foundation.customView.CircularImageView;
+import com.pratham.foundation.customView.discrete_view.DSVOrientation;
+import com.pratham.foundation.customView.discrete_view.DiscreteScrollItemTransformer;
+import com.pratham.foundation.customView.discrete_view.DiscreteScrollView;
+import com.pratham.foundation.customView.discrete_view.ScaleTransformer;
+import com.pratham.foundation.customView.progress_layout.ProgressLayout;
 import com.pratham.foundation.database.domain.ContentTable;
 import com.pratham.foundation.database.domain.ContentTableNew;
 import com.pratham.foundation.modalclasses.CertificateModelClass;
@@ -87,6 +88,7 @@ import static com.pratham.foundation.utility.FC_Constants.dialog_btn_restart;
 import static com.pratham.foundation.utility.FC_Constants.isTest;
 import static com.pratham.foundation.utility.FC_Constants.testSessionEnded;
 import static com.pratham.foundation.utility.FC_Constants.testSessionEntered;
+import static com.pratham.foundation.utility.FC_Utility.dpToPx;
 import static com.pratham.foundation.utility.SplashSupportActivity.ButtonClickSound;
 
 @EActivity(R.layout.activity_home)
@@ -628,7 +630,7 @@ public class HomeActivity extends BaseActivity implements /*BottomNavigationView
             adapterParent = new RecyclerViewDataAdapter(this, contentParentList, this);
             RecyclerView.LayoutManager mLayoutManager = new GridLayoutManager(this, 1);
             my_recycler_view.setLayoutManager(mLayoutManager);
-            my_recycler_view.addItemDecoration(new GridSpacingItemDecoration(dpToPx()));
+            my_recycler_view.addItemDecoration(new GridSpacingItemDecoration(1,dpToPx(this),true));
             my_recycler_view.setItemAnimator(new DefaultItemAnimator());
             my_recycler_view.setAdapter(adapterParent);
         } else
@@ -1426,43 +1428,6 @@ public class HomeActivity extends BaseActivity implements /*BottomNavigationView
         dialog.show();
 
         next_btn.setOnClickListener(v -> dialog.dismiss());
-    }
-
-    class GridSpacingItemDecoration extends RecyclerView.ItemDecoration {
-        private final int spanCount;
-        private final int spacing;
-        private final boolean includeEdge;
-
-        GridSpacingItemDecoration(int spacing) {
-            this.spanCount = 1;
-            this.spacing = spacing;
-            this.includeEdge = true;
-        }
-
-        @Override
-        public void getItemOffsets(@NotNull Rect outRect, @NotNull View view, @NotNull RecyclerView parent, @NotNull RecyclerView.State state) {
-            int position = parent.getChildAdapterPosition(view); // item position
-            int column = position % spanCount; // item column
-            if (includeEdge) {
-                outRect.left = spacing - column * spacing / spanCount; // spacing - column * ((1f / spanCount) * spacing)
-                outRect.right = (column + 1) * spacing / spanCount; // (column + avatar) * ((1f / spanCount) * spacing)
-                if (position < spanCount) { // top edge
-                    outRect.top = spacing;
-                }
-                outRect.bottom = spacing; // item bottom
-            } else {
-                outRect.left = column * spacing / spanCount; // column * ((1f / spanCount) * spacing)
-                outRect.right = spacing - (column + 1) * spacing / spanCount; // spacing - (column + avatar) * ((1f /    spanCount) * spacing)
-                if (position >= spanCount) {
-                    outRect.top = spacing; // item top
-                }
-            }
-        }
-    }
-
-    private int dpToPx() {
-        Resources r = getResources();
-        return Math.round(TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 1, r.getDisplayMetrics()));
     }
 
     @Click(R.id.profileImage)
