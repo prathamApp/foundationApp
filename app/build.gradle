@@ -87,6 +87,7 @@ dependencies {
     implementation 'commons-net:commons-net:3.6'
     implementation 'com.squareup.picasso:picasso:2.71828'
     implementation 'org.jbundle.util.osgi.wrapped:org.jbundle.util.osgi.wrapped.org.apache.http.client:4.1.2'
+    implementation 'com.airbnb.android:lottie:2.7.0'
     //eventbus
     implementation 'org.greenrobot:eventbus:3.1.1'
     implementation 'io.github.storix:rxdiffutil:0.3.2'

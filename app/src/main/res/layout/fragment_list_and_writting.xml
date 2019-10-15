@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/bg_anim_fourth_layer">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/title">
+
+        <LinearLayout
+            android:id="@+id/controls_top"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_margin="@dimen/_10sdp"
+            android:orientation="vertical">
+
+            <LinearLayout
+
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_margin="@dimen/_10sdp"
+                android:gravity="center"
+                android:weightSum="3">
+
+                <com.pratham.foundation.custumView.fonts.SansButton
+                    android:id="@+id/capture"
+                    android:layout_width="0dp"
+                    android:layout_height="50dp"
+                    android:layout_marginHorizontal="@dimen/_5sdp"
+                    android:layout_weight="1"
+                    android:background="@drawable/purple_button"
+                    android:text="capture"
+                    android:textColor="@color/white" />
+
+                <com.pratham.foundation.custumView.fonts.SansButton
+                    android:id="@+id/preview"
+                    android:layout_width="0dp"
+                    android:layout_height="50dp"
+                    android:layout_marginHorizontal="@dimen/_5sdp"
+                    android:layout_weight="1"
+                    android:background="@drawable/purple_button"
+                    android:text="preview"
+                    android:textColor="@color/white" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/controls_bot"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/controls_top"
+                android:layout_marginTop="@dimen/_5sdp">
+
+                <com.pratham.foundation.custumView.fonts.SansButton
+                    android:id="@+id/previous"
+                    android:layout_width="0dp"
+                    android:layout_height="50dp"
+                    android:layout_marginHorizontal="@dimen/_5sdp"
+                    android:layout_weight="1"
+                    android:background="@drawable/red_button"
+                    android:text="Previous"
+                    android:textColor="@color/white"
+                    android:visibility="gone" />
+
+                <com.pratham.foundation.custumView.fonts.SansButton
+                    android:id="@+id/submit"
+                    android:layout_width="0dp"
+                    android:layout_height="50dp"
+                    android:layout_marginHorizontal="@dimen/_5sdp"
+                    android:layout_weight="1"
+                    android:background="@drawable/yellow_button"
+                    android:text="submit"
+                    android:textColor="@color/white" />
+
+                <com.pratham.foundation.custumView.fonts.SansButton
+                    android:id="@+id/next"
+                    android:layout_width="0dp"
+                    android:layout_height="50dp"
+                    android:layout_marginHorizontal="@dimen/_5sdp"
+                    android:layout_weight="1"
+                    android:background="@drawable/green_button"
+                    android:text="Next"
+                    android:textColor="@color/white"
+                    android:visibility="gone" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <RelativeLayout
+            android:id="@+id/media"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_above="@+id/controls_top">
+
+            <ImageButton
+                android:id="@+id/play_button"
+                android:layout_width="@dimen/_100sdp"
+                android:layout_height="@dimen/_100sdp"
+                android:layout_centerInParent="true"
+                android:scaleType="fitXY"
+                android:src="@drawable/ic_play_arrow" />
+
+            <RadioGroup
+                android:id="@+id/radiogroup"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/play_button"
+                android:layout_margin="@dimen/_10sdp"
+                android:checkedButton="@+id/normal"
+                android:layout_centerHorizontal="true">
+
+                <RadioButton
+                    android:id="@+id/slow"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="slow" />
+
+                <RadioButton
+                    android:id="@+id/normal"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="normal" />
+
+                <RadioButton
+                    android:id="@+id/fast"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="fast" />
+
+
+            </RadioGroup>
+        </RelativeLayout>
+    </RelativeLayout>
+
+    <com.pratham.foundation.custumView.SansTextView
+        android:id="@+id/title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/red"
+        android:padding="@dimen/_5sdp"
+        android:text="Listen And Write"
+        android:textAlignment="center"
+        android:textColor="@color/white"
+        android:textSize="25sp" />
+
+</RelativeLayout>

@@ -10,7 +10,7 @@ import com.google.gson.annotations.SerializedName;
 import java.io.Serializable;
 
 /**
- * Created by Anki on 10/8/2018.
+ * Created by Tankita on 10/8/2018.
  */
 
 @Entity

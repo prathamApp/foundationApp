@@ -60,6 +60,9 @@ public interface KeyWordDao {
     @Query("select count() from KeyWords WHERE studentId=:stdID AND wordType='word' AND resourceId=:resId")
     int checkWordCount(String stdID, String resId);
 
+    @Query("select count() from KeyWords WHERE studentId=:stdID AND wordType='word' AND resourceId=:resId")
+    int checkWordCountWithSession(String stdID, String resId);
+
     @Query("select count() from KeyWords WHERE studentId=:stdID AND resourceId=:resId")
     int checkWebWordCount(String stdID, String resId);
 

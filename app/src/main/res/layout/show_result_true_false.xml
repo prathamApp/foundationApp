@@ -1,0 +1,132 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_gravity="center">
+
+    <LinearLayout
+        android:layout_width="@dimen/_240sdp"
+        android:layout_height="@dimen/_440sdp"
+        android:layout_centerInParent="true"
+        android:background="@color/full_transparent"
+        android:minHeight="@dimen/_190sdp"
+        android:orientation="vertical">
+
+
+        <ImageView
+            android:layout_width="@dimen/_70sdp"
+            android:layout_height="@dimen/_70sdp"
+            android:layout_gravity="center"
+            android:background="@drawable/dialog_image_bg"
+            android:elevation="5dp"
+            android:padding="5dp"
+            android:layout_margin="@dimen/_10sdp"
+            android:src="@drawable/b1" />
+
+        <RelativeLayout
+            android:id="@+id/content"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:layout_marginBottom="@dimen/_35sdp"
+            android:background="@drawable/dialog_bg"
+            android:gravity="center">
+
+            <com.pratham.foundation.custumView.SansTextViewBold
+                android:id="@+id/dia_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_45sdp"
+                android:lines="1"
+                android:paddingHorizontal="@dimen/_7sdp"
+                android:text="Correct Words:"
+                android:textColor="@color/colorProgress"
+                android:textSize="@dimen/_15sdp" />
+
+            <com.pratham.foundation.custumView.SansTextViewBold
+                android:id="@+id/correct_keywords"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_70sdp"
+                android:layout_below="@+id/dia_title"
+                android:paddingHorizontal="@dimen/_20sdp"
+                android:scrollbars="vertical"
+                android:textSize="@dimen/_15sdp" />
+
+            <com.pratham.foundation.custumView.SansTextViewBold
+                android:id="@+id/dia_title_wrong"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/correct_keywords"
+                android:layout_marginVertical="@dimen/_10sdp"
+                android:lines="1"
+                android:paddingHorizontal="@dimen/_7sdp"
+                android:text="Wrong Words:"
+                android:textColor="@color/colorRedDark"
+                android:textSize="@dimen/_15sdp" />
+
+            <com.pratham.foundation.custumView.SansTextViewBold
+                android:id="@+id/wrong_keywords"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_70sdp"
+                android:scrollbars="vertical"
+                android:layout_below="@+id/dia_title_wrong"
+                android:paddingHorizontal="@dimen/_20sdp"
+                android:textSize="@dimen/_15sdp" />
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_50sdp"
+            android:layout_below="@id/content"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="@dimen/_5sdp"
+            android:elevation="5dp"
+            android:gravity="center">
+
+
+            <com.pratham.foundation.custumView.SansButton
+                android:id="@+id/dia_btn_yellow"
+                android:layout_width="@dimen/_70sdp"
+                android:layout_height="@dimen/_40sdp"
+                android:layout_centerHorizontal="true"
+                android:layout_marginBottom="@dimen/_15sdp"
+                android:background="@drawable/yellow_button"
+                android:elevation="5dp"
+                android:text="yellow"
+                android:textColor="@color/white"
+                android:textSize="@dimen/_10sdp"
+                android:visibility="visible" />
+            <!--
+                        <com.pratham.foundation.custumView.SansButton
+                            android:id="@+id/dia_btn_green"
+                            android:layout_width="@dimen/_70sdp"
+                            android:layout_height="@dimen/_40sdp"
+                            android:layout_centerHorizontal="true"
+                            android:layout_marginHorizontal="@dimen/_10sdp"
+                            android:layout_marginBottom="@dimen/_15sdp"
+                            android:background="@drawable/green_button"
+                            android:elevation="5dp"
+                            android:text="green"
+                            android:textColor="@color/white"
+                            android:textSize="@dimen/_10sdp" />-->
+
+            <!-- <com.pratham.foundation.custumView.SansButton
+                 android:id="@+id/dia_btn_red"
+                 android:layout_width="@dimen/_70sdp"
+                 android:layout_height="@dimen/_40sdp"
+                 android:layout_marginBottom="@dimen/_15sdp"
+                 android:layout_toRightOf="@id/dia_btn_green"
+                 android:background="@drawable/red_button"
+                 android:elevation="5dp"
+                 android:text="red"
+                 android:textColor="@color/white"
+                 android:textSize="@dimen/_10sdp" />-->
+
+
+        </RelativeLayout>
+
+
+    </LinearLayout>
+
+</RelativeLayout>

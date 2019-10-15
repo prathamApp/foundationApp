@@ -30,6 +30,8 @@
             android:layout_height="wrap_content"
             android:scrollbars="vertical"
             android:gravity="center"
+            android:paddingTop="@dimen/_10sdp"
+            android:paddingBottom="@dimen/_10sdp"
             android:layout_gravity="center"
             android:textSize="25sp"/>
     </ScrollView>

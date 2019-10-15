@@ -1,48 +1,33 @@
 [
   {
-    "id": 1,
-    "title": "Light",
-    "paragraph": " 1 Light and sound is found everywhere. Light and sound waves travel from place to place and can be seen and heard. Light is visible to the human eye and is responsible for the sense of sight. It is a form of energy we can see when it is reflected off the surface of an object. Sound is a mechanical vibration that can pass through solids, liquids, and gases and can usually be identified by the sense of hearing.",
+    "id": 11,
+    "title": "Circulatory System",
+    "paragraph": "अक्सर जब कोई बहुत ज्यादा बीमार होता है, तो डॉक्टर उसे खून की जांच करवाने की सलाह देते हैं. जांच के लिए खून लेना एक बहुत साधारण सी प्रक्रिया है और इसमें सुई चुभाने से ज्यादा दर्द नहीं होता है. लिए रक्त को जांच के लिए एक परखनली में रखा जाता है और इसे सेंट्रीफ्यूग मशीन में रखते हैं. यह मशीन परखनली को काफी तेजी से घुमाती है, जिससे रक्त के सभी अवयव अलग-अलग हो जाते हैं.परखनली में सबसे ऊपर हल्के पीले रंग का द्रव होता है, जो प्लाज्मा कहलाता है. इसमें मुख्यतः पानी होता है. लेकिन इसमें अलग-अलग तरह के प्रोटीन, शर्करा, लवण और हमारे शरीर के लिए आवश्यक अन्य पोषक पदार्थ भी घुले रहते हैं. फिर छोटे सफ़ेद भाग में श्वेत यानी सफ़ेद रक्त कणिकाएं और प्लेटलेट्स होते हैं. श्वेत रक्त कणिकाएं एक सिपाही की तरह काम करती हैं और हमारे शरीर में आकर हमें बीमार करने वाले बाहरी अवयवों से लड़ती हैं. खून का बहाव रोकने के लिए प्लेटलेट्स खून के थक्के जमा देती हैं. सबसे नीचे लाल रक्त कणिकाओं से भरा लाल भाग होता है. लाल रक्त कणिकाओं में हीमोग्लोबिन पाया जाता है. हीमोग्लोबिन में आयरन या लौह होता है. फेफड़ों से खून के बहने के दौरान हीमोग्लोबिन ऑक्सीजन को सोख लेता है और शरीर के सभी भागों तक पहुंचाता है.रक्त चार मुख्य अवयवों - प्लाज्मा, प्लेटलेट, श्वेत यानी सफ़ेद रक्त कणिकाएं और लाल रक्त कणिकाओं से मिलकर बना होता है.",
     "keywords": [
       {
-        "que": "when object is visible?",
-        "ans": "when object is visible?"
+        "id": 1,
+        "que": "श्वेत रक्त कणिकाएं किस तरह काम करती हैं?",
+        "ans": "श्वेत रक्त कणिकाएं एक सिपाही की तरह काम करती हैं"
       },
       {
-        "que": "which mediams sound can pass through?",
-        "ans": "which mediams sound can pass through?"
+        "id": 2,
+        "que": "हीमोग्लोबिन कहाँ पाया जाता है?",
+        "ans": "लाल रक्त कणिकाओं में हीमोग्लोबिन पाया जाता है."
       },
       {
-        "que": "where Light and sound?,",
-        "ans": "where Light and sound?,"
+        "id": 3,
+        "que": "हीमोग्लोबिन में क्या होता है?",
+        "ans": "हीमोग्लोबिन में आयरन या लौह होता है."
       },
       {
-        "que": "what is your name",
-        "ans": "what is your name,"
+        "id": 5,
+        "que": "फेफड़ों से खून के बहने के दौरान हीमोग्लोबिन किसे सोख लेता है? ",
+        "ans": "फेफड़ों से खून के बहने के दौरान हीमोग्लोबिन ऑक्सीजन को सोख लेता है."
       },
       {
-        "que": "Which of the following occurs when light waves bounce off a surface?",
-        "ans": "Which of the following occurs when light waves bounce off a surface?"
-      },
-      {
-        "que": "What happens when light travels through a prism?",
-        "ans": "What happens when light travels through a prism?"
-      },
-      {
-        "que": " The bending or turning of light as it changes its path is which of the following?",
-        "ans": " The bending or turning of light as it changes its path is which of the following?"
-      },
-      {
-        "que": "Which of the following is an example of a non-transparent object?",
-        "ans": "Which of the following is an example of a non-transparent object?"
-      },
-      {
-        "que": "Is light a particle or a wave?",
-        "ans": "Is light a particle or a wave?"
-      },
-      {
-        "que": "How light behaves",
-        "ans": "Which of the following is an example of a non-transparent object?"
+        "id": 4,
+        "que": "रक्त किन चार मुख्य अवयवों से मिलकर बना होता है? / रक्त के चार मुख्य अवयव कौनसे है?",
+        "ans": "रक्त चार मुख्य अवयवों - प्लाज्मा, प्लेटलेट, श्वेत यानी सफ़ेद रक्त कणिकाएं और लाल रक्त कणिकाओं से मिलकर बना होता है"
       }
     ]
   }

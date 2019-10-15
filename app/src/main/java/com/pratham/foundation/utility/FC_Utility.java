@@ -61,6 +61,9 @@ import com.pratham.foundation.ui.splash_activity.SplashActivity;
 import com.pratham.foundation.ui.student_profile.Student_profile_activity;
 
 
+import org.json.JSONArray;
+import org.json.JSONException;
+
 import java.io.BufferedReader;
 import java.io.ByteArrayOutputStream;
 import java.io.DataInputStream;
@@ -112,7 +115,28 @@ public class FC_Utility {
         }
         return json;
     }
+    public static String loadJSONFromStorage(String readingContentPath, String fileName) {
+        JSONArray jsonObj = null;
+        try {
+            InputStream is = null;
+            is = new FileInputStream(readingContentPath + fileName);
+            int size = is.available();
+            byte[] buffer = new byte[size];
+            is.read(buffer);
+            is.close();
+            String jsonStr = new String(buffer);
+            jsonObj = new JSONArray(jsonStr);
+        } catch (IOException e) {
+            e.printStackTrace();
+            return null;
+        } catch (JSONException e) {
+            e.printStackTrace();
+            return null;
+        }
 
+
+        return jsonObj.toString();
+    }
     private static int[] gradiant_bg = new int[]{
             R.drawable.gradient_one, R.drawable.gradient_two, R.drawable.gradient_three,
             R.drawable.gradient_four,R.drawable.gradient_five};

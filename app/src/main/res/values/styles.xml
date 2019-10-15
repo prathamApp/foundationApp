@@ -165,5 +165,21 @@
         <attr name="donut_suffix_text" format="string" />
         <attr name="donut_background_color" format="color" />
     </declare-styleable>
-
+    <style name="CustomQuestionImageStyle">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">0dp</item>
+        <item name="android:layout_weight">0.5</item>
+        <item name="android:adjustViewBounds">true</item>
+        <item name="android:src">@drawable/ic_warning</item>
+        <item name="android:gravity">center</item>
+        <item name="android:visibility">gone</item>
+    </style>
+    <style name="CustomQuestionStyle">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:text">Question</item>
+        <item name="android:layout_height">0dp</item>
+        <item name="android:textSize">@dimen/_20sdp</item>
+        <item name="android:gravity">center</item>
+        <item name="android:textColor">@color/white</item>
+    </style>
 </resources>

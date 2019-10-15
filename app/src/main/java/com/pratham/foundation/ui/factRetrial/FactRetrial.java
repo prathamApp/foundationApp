@@ -104,7 +104,7 @@ public class FactRetrial extends BaseActivity implements FactRetrialController.V
                             selectedQuetion.get(index).setEnd(end);
                             selectedQuetion.get(index).setUserAns(answer);
                         }
-                        Log.d("tag :::", answer);
+                      // Log.d("tag :::", answer);
                         paragraph.setText(str);
                         break;
                     case CLEAR_ANSWER:

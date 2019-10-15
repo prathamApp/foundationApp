@@ -9,11 +9,11 @@ import java.util.List;
 
 public class QuestionModel {
     @SerializedName("id")
-    private String resourceId;
+    private int resourceId;
     private String paragraph;
     @Embedded
     private List<QuetionAns> keywords;
-    @SerializedName("topic")
+    @SerializedName("title")
     private String title;
 
     public String getParagraph() {
@@ -32,19 +32,19 @@ public class QuestionModel {
         this.keywords = keywords;
     }
 
-    public String getResourceId() {
-        return resourceId;
-    }
-
-    public void setResourceId(String resourceId) {
-        this.resourceId = resourceId;
-    }
-
     public String getTitle() {
         return title;
     }
 
     public void setTitle(String title) {
         this.title = title;
+    }
+
+    public int getResourceId() {
+        return resourceId;
+    }
+
+    public void setResourceId(int resourceId) {
+        this.resourceId = resourceId;
     }
 }

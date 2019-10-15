@@ -1,6 +1,7 @@
 package com.pratham.foundation.ui.contentPlayer.fact_retrival_fragment;
 
 import android.content.Context;
+import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -31,10 +32,10 @@ public class FactRetrivalPresenter implements FactRetrivalContract.FactRetrivalP
     private Context context;
     private String gameName, resId, contentTitle;
     private float perc;
-    private List<QuetionAns> quetionAnsList;
+    //private List<QuetionAns> quetionAnsList;
     private List<QuestionModel> quetionModelList;
     private int totalWordCount, learntWordCount;
-    private List<QuetionAns> selectedFive;
+    //private List<QuetionAns> selectedFive;
 
     public FactRetrivalPresenter(Context context) {
         this.context = context;
@@ -48,25 +49,20 @@ public class FactRetrivalPresenter implements FactRetrivalContract.FactRetrivalP
     }
 
     @Override
-    public void getData() {
+    public void getData(String readingContentPath) {
         //get data
-        String text = FC_Utility.loadJSONFromAsset(context, "factRetrial.json");
-       // List instrumentNames = new ArrayList<>();
-        Gson gson = new Gson();
-        Type type = new TypeToken<List<QuestionModel>>() {
-        }.getType();
-        quetionModelList = gson.fromJson(text, type);
-        quetionAnsList = quetionModelList.get(0).getKeywords();
-        getDataList();
-
-           /* JSONArray jsonArray = new JSONArray(text);
-            JSONObject jsonObject = (JSONObject) jsonArray.get(0);
-            questionModel.setParagraph((String) jsonObject.get("paragraph"));
-            JSONArray array = (JSONArray) jsonObject.get("keywords");
-            for (int i = 0; i < array.length(); i++) {
-                instrumentNames.add(array.getString(i));
-            }
-            questionModel.setKeywords(instrumentNames);*/
+        String text = FC_Utility.loadJSONFromStorage(readingContentPath, "factRetrial.json");
+        // List instrumentNames = new ArrayList<>();
+        if (text != null) {
+            Gson gson = new Gson();
+            Type type = new TypeToken<List<QuestionModel>>() {
+            }.getType();
+            quetionModelList = gson.fromJson(text, type);
+            //  quetionAnsList = quetionModelList.get(0).getKeywords();
+            getDataList();
+        } else {
+            Toast.makeText(context, "Data not found", Toast.LENGTH_LONG).show();
+        }
 
     }
 
@@ -74,22 +70,22 @@ public class FactRetrivalPresenter implements FactRetrivalContract.FactRetrivalP
     @Override
     public void getDataList() {
         try {
-            selectedFive=new ArrayList<QuetionAns>();
             perc = getPercentage();
-            Collections.shuffle(quetionAnsList);
-            for (int i = 0; i < quetionAnsList.size(); i++) {
+            Collections.shuffle(quetionModelList);
+            for (int i = 0; i < quetionModelList.size(); i++) {
                 if (perc < 95) {
-                    if (!checkWord("" + quetionAnsList.get(i).getQuetion()))
-                        selectedFive.add(quetionAnsList.get(i));
+                    if (!checkWord("" + quetionModelList.get(i).getTitle())) {
+                        questionModel = quetionModelList.get(i);
+                        break;
+                    }
                 } else {
-                    selectedFive.add(quetionAnsList.get(i));
-                }
-                if (selectedFive.size() >= 5) {
+                    questionModel = quetionModelList.get(i);
                     break;
                 }
             }
-            Collections.shuffle(selectedFive);
-            view.showParagraph(quetionModelList.get(0).getParagraph(),selectedFive);
+           // selectedFive = questionModel.getKeywords();
+           // Collections.shuffle(selectedFive);
+            view.showParagraph(questionModel);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -99,7 +95,7 @@ public class FactRetrivalPresenter implements FactRetrivalContract.FactRetrivalP
     public float getPercentage() {
         float perc = 0f;
         try {
-            totalWordCount = quetionAnsList.size();
+            totalWordCount = quetionModelList.size();
             learntWordCount = getLearntWordsCount();
             if (learntWordCount > 0) {
                 perc = ((float) learntWordCount / (float) totalWordCount) * 100;
@@ -131,16 +127,27 @@ public class FactRetrivalPresenter implements FactRetrivalContract.FactRetrivalP
         }
     }
 
-    private void addLearntWords(ModalReadingVocabulary modalReadingVocabulary) {
-        KeyWords learntWords = new KeyWords();
-        learntWords.setResourceId(resId);
-        learntWords.setSentFlag(0);
-        learntWords.setStudentId(FC_Constants.currentStudentID);
-        //  learntWords.setSessionId(FC_Constants.currentSession);
-        learntWords.setKeyWord(modalReadingVocabulary.getConvoTitle());
-        learntWords.setWordType("word");
-        //  learntWords.setSynId(gameName);
-        appDatabase.getKeyWordDao().insert(learntWords);
+    public void addLearntWords(List<QuetionAns> selectedAnsList) {
+        List<KeyWords> learntWords = new ArrayList<>();
+        int scoredMarks;
+        KeyWords keyWords = new KeyWords();
+        keyWords.setResourceId(resId);
+        keyWords.setSentFlag(0);
+        keyWords.setStudentId(FC_Constants.currentStudentID);
+        keyWords.setKeyWord(questionModel.getTitle());
+        keyWords.setWordType("word");
+        learntWords.add(keyWords);
+        for (int i = 0; i < selectedAnsList.size(); i++) {
+            if (selectedAnsList.get(i).getUserAns() != null && !selectedAnsList.get(i).getUserAns().isEmpty()) {
+                if (checkAnswer(selectedAnsList.get(i)) > 70) {
+                    scoredMarks = 10;
+                } else {
+                    scoredMarks = 0;
+                }
+                addScore(0,questionModel.getTitle(), scoredMarks, 10, FC_Utility.getCurrentDateTime(), selectedAnsList.get(i).toString());
+            }
+        }
+        appDatabase.getKeyWordDao().insertAllWord(learntWords);
         BackupDatabase.backup(context);
     }
 
@@ -185,4 +192,36 @@ public class FactRetrivalPresenter implements FactRetrivalContract.FactRetrivalP
         }
     }
 
+    public float checkAnswer(QuetionAns selectedAnsList) {
+        boolean[] correctArr;
+        float perc;
+        String originalAns = selectedAnsList.getAnswer();
+        String regex = "[\\-+.\"^?!@#%&*,:]";
+        String quesFinal = originalAns.replaceAll(regex, "");
+
+        String[] originalAnsArr = quesFinal.split(" ");
+        String[] userAnsArr = selectedAnsList.getUserAns().replaceAll(regex, "").split(" ");
+
+        if (originalAnsArr.length < userAnsArr.length)
+            correctArr = new boolean[userAnsArr.length];
+        else correctArr = new boolean[originalAnsArr.length];
+
+
+        for (int j = 0; j < userAnsArr.length; j++) {
+            for (int i = 0; i < originalAnsArr.length; i++) {
+                if (userAnsArr[j].equalsIgnoreCase(originalAnsArr[i])) {
+                    correctArr[i] = true;
+                    break;
+                }
+            }
+        }
+
+        int correctCnt = 0;
+        for (int x = 0; x < correctArr.length; x++) {
+            if (correctArr[x])
+                correctCnt++;
+        }
+        perc = ((float) correctCnt / (float) correctArr.length) * 100;
+        return perc;
+    }
 }

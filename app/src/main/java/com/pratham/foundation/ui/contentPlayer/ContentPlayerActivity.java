@@ -14,6 +14,7 @@ import android.widget.TextView;
 import com.pratham.foundation.R;
 import com.pratham.foundation.BaseActivity;
 import com.pratham.foundation.ui.contentPlayer.fact_retrival_fragment.FactRetrival_;
+import com.pratham.foundation.ui.contentPlayer.sequenceLayout.SequenceLayout_;
 import com.pratham.foundation.utility.FC_Utility;
 import static com.pratham.foundation.utility.FC_Constants.dialog_btn_cancel;
 
@@ -45,8 +46,8 @@ public class ContentPlayerActivity extends BaseActivity{
         bundle.putString("resId", resId);
         bundle.putString("contentName", contentTitle);
         bundle.putBoolean("onSdCard", onSdCard);
-        FC_Utility.showFragment(ContentPlayerActivity.this, new FactRetrival_(), R.id.RL_CPA,
-                bundle, FactRetrival_.class.getSimpleName());
+        FC_Utility.showFragment(ContentPlayerActivity.this, new SequenceLayout_(), R.id.RL_CPA,
+                bundle, SequenceLayout_.class.getSimpleName());
     }
 
 

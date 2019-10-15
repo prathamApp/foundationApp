@@ -10,6 +10,7 @@ import com.pratham.foundation.database.domain.KeyWords;
 import com.pratham.foundation.database.domain.Score;
 import com.pratham.foundation.modalclasses.ModalReadingVocabulary;
 import com.pratham.foundation.modalclasses.keywordmapping;
+import com.pratham.foundation.ui.contentPlayer.GameConstatnts;
 import com.pratham.foundation.utility.FC_Constants;
 import com.pratham.foundation.utility.FC_Utility;
 
@@ -26,18 +27,23 @@ import static com.pratham.foundation.database.AppDatabase.appDatabase;
 @EBean
 public class KeywordMappingPresenterImp implements KeywordMappingContract.KeywordMappingPresenter {
     private Context context;
-   // private List<QuetionAns> quetionAnsList;
+    // private List<QuetionAns> quetionAnsList;
     private List<keywordmapping> quetionModelList;
     private int totalWordCount, learntWordCount;
     private List<keywordmapping> selectedFive;
     private float perc;
     private KeywordMappingContract.KeywordMappingView view;
     private String gameName, resId, contentTitle;
+    private List<String> correctWordList, wrongWordList;
+    private boolean isTest = false;
 
-    public KeywordMappingPresenterImp(Context context) { this.context = context; }
+    public KeywordMappingPresenterImp(Context context) {
+        this.context = context;
+    }
 
     @Override
-    public void setView(KeywordMappingContract.KeywordMappingView view) {
+    public void setView(KeywordMappingContract.KeywordMappingView view,String resId) {
+        this.resId = resId;
         this.view = view;
     }
 
@@ -51,14 +57,13 @@ public class KeywordMappingPresenterImp implements KeywordMappingContract.Keywor
         }.getType();
         quetionModelList = gson.fromJson(text, type);
         getDataList();
-
     }
 
-    @Override
+  /*  @Override
     public void setView(String contentTitle, String resId) {
         this.resId = resId;
         this.contentTitle = contentTitle;
-    }
+    }*/
 
     @Background
     @Override
@@ -121,16 +126,29 @@ public class KeywordMappingPresenterImp implements KeywordMappingContract.Keywor
         }
     }
 
-    private void addLearntWords(ModalReadingVocabulary modalReadingVocabulary) {
-        KeyWords learntWords = new KeyWords();
-        learntWords.setResourceId(resId);
-        learntWords.setSentFlag(0);
-        learntWords.setStudentId(FC_Constants.currentStudentID);
-        //  learntWords.setSessionId(FC_Constants.currentSession);
-        learntWords.setKeyWord(modalReadingVocabulary.getConvoTitle());
-        learntWords.setWordType("word");
-        //  learntWords.setSynId(gameName);
-        appDatabase.getKeyWordDao().insert(learntWords);
+    public void addLearntWords(keywordmapping keywordmapping, List selectedAnsList) {
+        correctWordList = new ArrayList<>();
+        wrongWordList = new ArrayList<>();
+        int scoredMarks = (int) checkAnswer(keywordmapping.getKeywordAnsSet(), selectedAnsList);
+        if (selectedAnsList != null && !selectedAnsList.isEmpty()) {
+            for (int i = 0; i < selectedAnsList.size(); i++) {
+                if (keywordmapping.getKeywordAnsSet().contains(selectedAnsList.get(i))) {
+                    KeyWords keyWords = new KeyWords();
+                    keyWords.setResourceId(resId);
+                    keyWords.setSentFlag(0);
+                    keyWords.setStudentId(FC_Constants.currentStudentID);
+                    String key=selectedAnsList.get(i).toString();
+                    keyWords.setKeyWord(key);
+                    keyWords.setWordType("word");
+                    appDatabase.getKeyWordDao().insert(keyWords);
+                }
+            }
+            addScore(keywordmapping.getId(), GameConstatnts.KEYWORD_MAPPING, scoredMarks, 10, FC_Utility.getCurrentDateTime(), selectedAnsList.toString());
+
+            if (!isTest) {
+                view.showResult(correctWordList, wrongWordList);
+            }
+        }
         BackupDatabase.backup(context);
     }
 
@@ -173,5 +191,18 @@ public class KeywordMappingPresenterImp implements KeywordMappingContract.Keywor
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    public float checkAnswer(List ansSet, List<String> selectedAnsList) {
+        int correctCnt = 0;
+        for (int i = 0; i < selectedAnsList.size(); i++) {
+            if (ansSet.contains(selectedAnsList.get(i))) {
+                correctCnt++;
+                correctWordList.add(selectedAnsList.get(i));
+            } else {
+                wrongWordList.add(selectedAnsList.get(i));
+            }
+        }
+        return 10 * correctCnt / ansSet.size();
     }
 }

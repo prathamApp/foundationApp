@@ -9,10 +9,10 @@ import java.util.List;
 
 public class QuestionModel {
     @SerializedName("id")
-    private String resourceId;
+    private int resourceId;
     private String paragraph;
     @Embedded
-    private List<QuetionAns> keywords;
+    private List keywords;
     @SerializedName("topic")
     private String title;
 
@@ -24,19 +24,20 @@ public class QuestionModel {
         this.paragraph = paragraph;
     }
 
-    public List<QuetionAns> getKeywords() {
+    public List getKeywords() {
         return keywords;
     }
 
-    public void setKeywords(List<QuetionAns> keywords) {
+    public void setKeywords(List keywords) {
         this.keywords = keywords;
     }
 
-    public String getResourceId() {
+
+    public int getResourceId() {
         return resourceId;
     }
 
-    public void setResourceId(String resourceId) {
+    public void setResourceId(int resourceId) {
         this.resourceId = resourceId;
     }
 

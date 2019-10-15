@@ -1,10 +1,12 @@
 package com.pratham.foundation.database.domain;
 
 import android.arch.persistence.room.Ignore;
+import android.support.annotation.NonNull;
 
 import com.google.gson.annotations.SerializedName;
 
 public class QuetionAns {
+    int id;
     @SerializedName("que")
     private String quetion;
     @SerializedName("ans")
@@ -15,6 +17,12 @@ public class QuetionAns {
     private int start;
     @Ignore
     private int end;
+
+    @NonNull
+    @Override
+    public String toString() {
+        return "{ quetion : "+quetion+", answer: "+answer+"}";
+    }
 
     public String getQuetion() {
         return quetion;
@@ -54,5 +62,13 @@ public class QuetionAns {
 
     public void setEnd(int end) {
         this.end = end;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 }

@@ -8,6 +8,7 @@ import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Build;
+import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.v4.app.Fragment;
@@ -25,7 +26,10 @@ import android.widget.ScrollView;
 
 import com.pratham.foundation.ApplicationClass;
 import com.pratham.foundation.R;
+import com.pratham.foundation.ui.contentPlayer.GameConstatnts;
+import com.pratham.foundation.ui.contentPlayer.listenAndWritting.ListeningAndWritting_;
 import com.pratham.foundation.ui.identifyKeywords.QuestionModel;
+import com.pratham.foundation.utility.FC_Utility;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Bean;
@@ -65,16 +69,28 @@ public class ParagraphWritingFragment extends Fragment
     private LinearLayoutManager layoutManager;
     private RecyclerView.SmoothScroller smoothScroller;
     private static final int CAMERA_REQUEST = 1;
-    String imageName, imagePath;
+    private String imageName = null, imagePath;
+    private String contentPath, contentTitle, StudentID, resId;
+    private boolean onSdCard;
+    private QuestionModel questionModel;
 
     @AfterViews
     protected void initiate() {
-        presenter.setView(ParagraphWritingFragment.this);
+        Bundle bundle = getArguments();
+        if (bundle != null) {
+            contentPath = bundle.getString("contentPath");
+            StudentID = bundle.getString("StudentID");
+            resId = bundle.getString("resId");
+            contentTitle = bundle.getString("contentName");
+            onSdCard = bundle.getBoolean("onSdCard", false);
+        }
+        presenter.setView(ParagraphWritingFragment.this, resId);
         presenter.getData();
     }
 
     @Override
     public void showParagraph(QuestionModel questionModel) {
+        this.questionModel = questionModel;
         paragraphWords = questionModel.getParagraph().trim().split("(?<=\\.\\s)|(?<=[?!]\\s)");
         SentenceAdapter arrayAdapter = new SentenceAdapter(Arrays.asList(paragraphWords), getActivity());
         paragraph.setAdapter(arrayAdapter);
@@ -146,10 +162,26 @@ public class ParagraphWritingFragment extends Fragment
 
     @Click(R.id.preview)
     public void previewClick() {
-        File filePath= new File(Environment.getExternalStorageDirectory().toString() + "/.FC/Internal/photos/"+imageName);
+        File filePath = new File(Environment.getExternalStorageDirectory().toString() + "/.FC/Internal/photos/" + imageName);
         if (filePath.exists())
             ShowPreviewDialog(filePath);
     }
+
+    @Click(R.id.submit)
+    public void submitClick() {
+        File filePath = new File(Environment.getExternalStorageDirectory().toString() + "/.FC/Internal/photos/" + imageName);
+        if (filePath.exists()) {
+            presenter.addLearntWords(questionModel, imageName);
+            imageName = null;
+        }
+        Bundle bundle = GameConstatnts.findGameData("105");
+        if (bundle != null) {
+            FC_Utility.showFragment(getActivity(), new ListeningAndWritting_(), R.id.RL_CPA,
+                    bundle, ListeningAndWritting_.class.getSimpleName());
+        }
+
+    }
+
 
     private void ShowPreviewDialog(File path) {
         final Dialog dialog = new Dialog(getActivity());

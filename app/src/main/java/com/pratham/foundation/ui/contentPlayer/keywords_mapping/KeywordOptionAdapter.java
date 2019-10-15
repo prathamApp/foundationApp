@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.pratham.foundation.R;
 import com.pratham.foundation.custumView.SansTextView;
@@ -22,10 +23,12 @@ public class KeywordOptionAdapter extends RecyclerView.Adapter<KeywordOptionAdap
     Context context;
     List<OptionKeyMap> datalist;
     List selectedOption = new ArrayList();
+    int maxSelect;
 
-    public KeywordOptionAdapter(Context context, List<OptionKeyMap> datalist) {
+    public KeywordOptionAdapter(Context context, List<OptionKeyMap> datalist, int maxSelect) {
         this.context = context;
         this.datalist = datalist;
+        this.maxSelect = maxSelect;
     }
 
     @NonNull
@@ -46,6 +49,7 @@ public class KeywordOptionAdapter extends RecyclerView.Adapter<KeywordOptionAdap
         myviewholder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 if (datalist.get(myviewholder.getAdapterPosition()).isIsclicked()) {
                     if (selectedOption.contains(datalist.get(myviewholder.getAdapterPosition()).getOption())) {
                         selectedOption.remove(datalist.get(myviewholder.getAdapterPosition()).getOption());
@@ -53,11 +57,15 @@ public class KeywordOptionAdapter extends RecyclerView.Adapter<KeywordOptionAdap
                     datalist.get(myviewholder.getAdapterPosition()).setIsclicked(false);
                     myviewholder.itemView.setBackground(ContextCompat.getDrawable(context, R.drawable.dialog_bg));
                 } else {
-                    if (!selectedOption.contains(datalist.get(myviewholder.getAdapterPosition()).getOption())) {
-                        selectedOption.add(datalist.get(myviewholder.getAdapterPosition()).getOption());
+                    if (maxSelect >selectedOption.size()) {
+                        if (!selectedOption.contains(datalist.get(myviewholder.getAdapterPosition()).getOption())) {
+                            selectedOption.add(datalist.get(myviewholder.getAdapterPosition()).getOption());
+                        }
+                        datalist.get(myviewholder.getAdapterPosition()).setIsclicked(true);
+                        myviewholder.itemView.setBackground(ContextCompat.getDrawable(context, R.drawable.correct_bg));
+                    }else {
+                        Toast.makeText(context,"you can not select more than "+maxSelect+" items",Toast.LENGTH_LONG).show();
                     }
-                    datalist.get(myviewholder.getAdapterPosition()).setIsclicked(true);
-                    myviewholder.itemView.setBackground(ContextCompat.getDrawable(context, R.drawable.correct_bg));
                 }
             }
         });

@@ -3,6 +3,7 @@ package com.pratham.foundation.modalclasses;
 import java.util.List;
 
 public class keywordmapping {
+    private int id;
     private String keyword;
     private List<String> keywordOptionSet;
     private List<String> keywordAnsSet;
@@ -29,5 +30,13 @@ public class keywordmapping {
 
     public void setKeywordAnsSet(List keywordAnsSet) {
         this.keywordAnsSet = keywordAnsSet;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 }

@@ -1,17 +1,25 @@
 package com.pratham.foundation.ui.contentPlayer.keywords_mapping;
 
+import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.DisplayMetrics;
+import android.util.Log;
+import android.view.Window;
 import android.widget.TextView;
 
+import com.pratham.foundation.ApplicationClass;
 import com.pratham.foundation.R;
+import com.pratham.foundation.custumView.SansButton;
+import com.pratham.foundation.custumView.SansTextViewBold;
 import com.pratham.foundation.modalclasses.OptionKeyMap;
 import com.pratham.foundation.modalclasses.keywordmapping;
+import com.pratham.foundation.ui.contentPlayer.GameConstatnts;
 import com.pratham.foundation.ui.contentPlayer.paragraph_writing.ParagraphWritingFragment_;
 import com.pratham.foundation.ui.writingParagraph.WritingParagraph_;
 import com.pratham.foundation.utility.FC_Constants;
@@ -41,24 +49,38 @@ public class KeywordMappingFragment extends Fragment implements KeywordMappingCo
     @ViewById(R.id.recycler_view)
     RecyclerView recycler_view;
 
-    private String contentPath, contentTitle, StudentID, resId;
+    private String contentPath, contentTitle, StudentID, resId, readingContentPath;
     private boolean onSdCard;
     private int index = 0;
     private List<OptionKeyMap> optionList;
     private KeywordOptionAdapter keywordOptionAdapter;
+    private keywordmapping keywordmapping;
 
     @AfterViews
     protected void initiate() {
         // super.onCreate(savedInstanceState);
         // setContentView(R.layout.activity_keyword_mapping2);
-        presenter.setView(KeywordMappingFragment.this);
+        Bundle bundle = getArguments();
+        if (bundle != null) {
+            contentPath = bundle.getString("contentPath");
+            StudentID = bundle.getString("StudentID");
+            resId = bundle.getString("resId");
+            contentTitle = bundle.getString("contentName");
+            onSdCard = bundle.getBoolean("onSdCard", false);
+            if (onSdCard)
+                readingContentPath = ApplicationClass.contentSDPath + "/.LLA/English/Game/" + contentPath + "/";
+            else
+                readingContentPath = ApplicationClass.foundationPath + "/.LLA/English/Game/" + contentPath + "/";
+
+        }
+        presenter.setView(KeywordMappingFragment.this, resId);
         presenter.getData();
     }
 
     @UiThread
     @Override
     public void loadUI(List<keywordmapping> list) {
-
+        keywordmapping = list.get(index);
         keyword.setText(list.get(index).getKeyword());
         final GridLayoutManager gridLayoutManager;
 
@@ -75,23 +97,35 @@ public class KeywordMappingFragment extends Fragment implements KeywordMappingCo
             optionList.add(new OptionKeyMap(temp.get(i).toString(), false));
         }
         recycler_view.setLayoutManager(gridLayoutManager);
-        keywordOptionAdapter = new KeywordOptionAdapter(getActivity(), optionList);
+        keywordOptionAdapter = new KeywordOptionAdapter(getActivity(), optionList, keywordmapping.getKeywordAnsSet().size());
         recycler_view.setAdapter(keywordOptionAdapter);
     }
 
-//    private int getScreenWidthDp() {
-//        DisplayMetrics displayMetrics = getResources().getDisplayMetrics();
-//        return (int) (displayMetrics.widthPixels / displayMetrics.density);
-//    }
+    @Override
+    public void showResult(List correctWord, List wrongWord) {
+        final Dialog dialog = new Dialog(getActivity());
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setContentView(R.layout.show_result);
+        dialog.setCancelable(false);
+        dialog.setCanceledOnTouchOutside(false);
+        SansTextViewBold correct_keywords = dialog.findViewById(R.id.correct_keywords);
+        SansTextViewBold wrong_keywords = dialog.findViewById(R.id.wrong_keywords);
+        SansButton dia_btn_yellow = dialog.findViewById(R.id.dia_btn_yellow);
+        correct_keywords.setText(correctWord.toString().substring(1, correctWord.toString().length() - 1));
+        wrong_keywords.setText(wrongWord.toString().substring(1, wrongWord.toString().length() - 1));
+        dia_btn_yellow.setOnClickListener(v -> dialog.dismiss());
+        dialog.show();
+    }
 
     @Click(R.id.submit)
     public void submitClick() {
-        FC_Utility.showFragment(getActivity(), new ParagraphWritingFragment_(), R.id.RL_CPA,
-                null, ParagraphWritingFragment_.class.getSimpleName());
+        List selectedoptionList = keywordOptionAdapter.getSelectedOptionList();
+        presenter.addLearntWords(keywordmapping, selectedoptionList);
+        Bundle bundle = GameConstatnts.findGameData("104");
+        if (bundle != null) {
+            FC_Utility.showFragment(getActivity(), new ParagraphWritingFragment_(), R.id.RL_CPA,
+                    bundle, ParagraphWritingFragment_.class.getSimpleName());
 
-       /* List selectedoptionList = keywordOptionAdapter.getSelectedOptionList();
-        Log.d("tag", selectedoptionList.toString());*/
-/*        Intent intent = new Intent(getActivity(), WritingParagraph_.class);
-        startActivity(intent);*/
+        }
     }
 }

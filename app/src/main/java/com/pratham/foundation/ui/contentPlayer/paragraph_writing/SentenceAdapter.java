@@ -17,7 +17,7 @@ import java.util.List;
 public class SentenceAdapter extends RecyclerView.Adapter<SentenceAdapter.MyviewHolder> {
     List<String> datalist;
     Context context;
-
+    int row_index=-1;
     public SentenceAdapter(List datalist, Context context) {
         this.datalist = datalist;
         this.context = context;
@@ -31,17 +31,27 @@ public class SentenceAdapter extends RecyclerView.Adapter<SentenceAdapter.Myview
     }
 
     @Override
-    public void onBindViewHolder(@NonNull MyviewHolder myviewHolder, int i) {
-        myviewHolder.textView.setText(datalist.get(i));
+    public void onBindViewHolder(@NonNull MyviewHolder myviewHolder, int position) {
+        myviewHolder.textView.setText(datalist.get(position));
 
         myviewHolder.rl_main.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                row_index=myviewHolder.getAdapterPosition();
+                notifyDataSetChanged();
                 myviewHolder.rl_main.setBackground(ContextCompat
                         .getDrawable(context, R.drawable.rounded_border_yellow));
+
             }
         });
-
+        if(row_index==position){
+            myviewHolder.rl_main.setBackground(ContextCompat
+                    .getDrawable(context, R.drawable.rounded_border_yellow));
+        }
+        else
+        {
+            myviewHolder.rl_main.setBackgroundResource(R.color.white);
+        }
     }
 
     @Override

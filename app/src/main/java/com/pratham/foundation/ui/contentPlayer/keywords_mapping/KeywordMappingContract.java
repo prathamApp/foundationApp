@@ -6,14 +6,19 @@ import java.util.List;
 
 public interface KeywordMappingContract {
     public interface KeywordMappingView {
-       void loadUI(List<keywordmapping> list);
+        void loadUI(List<keywordmapping> list);
+        public void showResult(List correctWord, List wrongWord);
     }
 
     public interface KeywordMappingPresenter {
         void getData();
-        void setView(String contentTitle, String resId);
+
+        //void setView(String contentTitle, String resId);
+
         void getDataList();
 
-        void setView(KeywordMappingContract.KeywordMappingView keywordMappingView);
+        void addLearntWords(keywordmapping keywordmapping, List selectedOption);
+
+        void setView(KeywordMappingContract.KeywordMappingView keywordMappingView, String resId);
     }
 }

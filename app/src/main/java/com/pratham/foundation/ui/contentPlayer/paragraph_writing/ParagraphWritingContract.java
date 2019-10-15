@@ -12,7 +12,7 @@ public interface ParagraphWritingContract {
     public interface ParagraphWritingPresenter {
         public void getData();
         public void createDirectoryAndSaveFile(Bitmap imageToSave, String fileName);
-
-        void setView(ParagraphWritingContract.ParagraphWritingView paragraphWritingView);
+        public void addLearntWords(QuestionModel questionModel,String imageName);
+        void setView(ParagraphWritingContract.ParagraphWritingView paragraphWritingView,String imageName);
     }
 }
