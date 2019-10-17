@@ -1,4 +1,4 @@
-package com.pratham.foundation.ui.home_temp.test_fragment;
+package com.pratham.foundation.ui.home_screen.test_fragment;
 
 import android.annotation.SuppressLint;
 import android.app.Dialog;
@@ -15,11 +15,8 @@ import android.support.v7.widget.RecyclerView;
 import android.util.TypedValue;
 import android.view.View;
 import android.view.Window;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -35,7 +32,7 @@ import com.pratham.foundation.modalclasses.EventMessage;
 import com.pratham.foundation.modalclasses.Modal_FileDownloading;
 import com.pratham.foundation.ui.contentPlayer.web_view.WebViewActivity;
 import com.pratham.foundation.ui.factRetrial.FactRetrial_;
-import com.pratham.foundation.ui.home_temp.TempHomeActivity;
+import com.pratham.foundation.ui.home_screen.TempHomeActivity;
 import com.pratham.foundation.ui.test.certificate.CertificateClicked;
 import com.pratham.foundation.utility.FC_Constants;
 import com.pratham.foundation.utility.FC_Utility;
@@ -58,7 +55,7 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
 
-import static com.pratham.foundation.ui.home_temp.TempHomeActivity.header_rl;
+import static com.pratham.foundation.ui.home_screen.TempHomeActivity.header_rl;
 import static com.pratham.foundation.utility.FC_Constants.isTest;
 import static com.pratham.foundation.utility.FC_Constants.testSessionEntered;
 

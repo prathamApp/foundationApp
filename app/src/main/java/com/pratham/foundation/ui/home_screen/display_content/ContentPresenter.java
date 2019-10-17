@@ -1,4 +1,4 @@
-package com.pratham.foundation.ui.home_temp.display_content;
+package com.pratham.foundation.ui.home_screen.display_content;
 
 import android.content.Context;
 import android.util.Log;

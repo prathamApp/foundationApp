@@ -270,36 +270,29 @@ public class BottomStudentsFragment extends BottomSheetDialogFragment
     @Background
     @Override
     public void onStudentClick(String studentName, String studentId) {
-        try {
-            showProgressDialog();
-            FC_Constants.currentStudentID = studentId;
-            FC_Constants.currentStudentName = studentName;
-            FC_Constants.currentSession = "" + UUID.randomUUID().toString();
-
-            try {
-                if (bgMusic != null && bgMusic.isPlaying()) {
-                    bgMusic.stop();
-                    bgMusic.setLooping(false);
-                    bgMusic.release();
-                }
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-            presenter.updateStudentData();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+//        showProgressDialog();
+        FC_Constants.currentStudentID = studentId;
+        FC_Constants.currentStudentName = studentName;
+        FC_Constants.currentSession = "" + UUID.randomUUID().toString();
+        presenter.updateStudentData();
         updateUI(studentName);
     }
 
     @UiThread
     public void updateUI(String studName) {
-        dismissProgressDialog();
-        //todo remove#
-        // startActivity(new Intent(getActivity(), HomeActivity_.class));
+//        dismissProgressDialog();
         Intent intent = new Intent(getActivity(), SelectSubject_.class);
         intent.putExtra("studName", studName);
         startActivity(intent);
+        try {
+            if (bgMusic != null && bgMusic.isPlaying()) {
+                bgMusic.stop();
+                bgMusic.setLooping(false);
+                bgMusic.release();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         getActivity().finish();
     }
 

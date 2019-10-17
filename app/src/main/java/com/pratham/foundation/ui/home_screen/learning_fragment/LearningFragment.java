@@ -1,9 +1,8 @@
-package com.pratham.foundation.ui.home_temp.learning_fragment;
+package com.pratham.foundation.ui.home_screen.learning_fragment;
 
 import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.content.Intent;
-import android.content.res.Resources;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
@@ -12,7 +11,6 @@ import android.support.v4.app.Fragment;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.TypedValue;
 import android.view.View;
 import android.view.Window;
 import android.widget.Button;
@@ -30,10 +28,11 @@ import com.pratham.foundation.database.domain.ContentTable;
 import com.pratham.foundation.database.domain.ContentTableNew;
 import com.pratham.foundation.modalclasses.EventMessage;
 import com.pratham.foundation.modalclasses.Modal_FileDownloading;
-import com.pratham.foundation.ui.home_temp.display_content.ContentDisplay_;
+import com.pratham.foundation.ui.contentPlayer.ContentPlayerActivity_;
+import com.pratham.foundation.ui.home_screen.display_content.ContentDisplay_;
 import com.pratham.foundation.ui.contentPlayer.ContentPlayerActivity;
 import com.pratham.foundation.ui.contentPlayer.web_view.WebViewActivity;
-import com.pratham.foundation.ui.home_temp.TempHomeActivity;
+import com.pratham.foundation.ui.home_screen.TempHomeActivity;
 import com.pratham.foundation.utility.FC_Constants;
 import com.pratham.foundation.utility.FC_Utility;
 
@@ -54,7 +53,7 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
 
-import static com.pratham.foundation.ui.home_temp.TempHomeActivity.header_rl;
+import static com.pratham.foundation.ui.home_screen.TempHomeActivity.header_rl;
 import static com.pratham.foundation.utility.FC_Utility.dpToPx;
 import static com.pratham.foundation.utility.SplashSupportActivity.ButtonClickSound;
 
@@ -344,7 +343,7 @@ public class LearningFragment extends Fragment implements LearningContract.Learn
         } else if (contentList.getResourceType().equalsIgnoreCase(FC_Constants.IDENTIFY_KEYWORDS) ||
                 contentList.getResourceType().equalsIgnoreCase(FC_Constants.FACT_RETRIVAL) ||
                 contentList.getResourceType().equalsIgnoreCase(FC_Constants.KEY_WORD_MAPPING)) {
-            Intent mainNew = new Intent(getActivity(), ContentPlayerActivity.class);
+            Intent mainNew = new Intent(getActivity(), ContentPlayerActivity_.class);
             mainNew.putExtra("resId", contentList.getResourceId());
             mainNew.putExtra("StudentID", FC_Constants.currentStudentID);
             mainNew.putExtra("contentName", contentList.getNodeTitle());

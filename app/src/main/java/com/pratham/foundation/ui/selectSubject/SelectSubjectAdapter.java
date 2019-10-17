@@ -1,7 +1,6 @@
 package com.pratham.foundation.ui.selectSubject;
 
 import android.content.Context;
-import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -11,7 +10,6 @@ import android.widget.ImageView;
 
 import com.pratham.foundation.R;
 import com.pratham.foundation.database.domain.ContentTable;
-import com.pratham.foundation.ui.home_temp.TempHomeActivity_;
 
 import java.util.ArrayList;
 import java.util.List;

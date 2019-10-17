@@ -1,4 +1,4 @@
-package com.pratham.foundation.ui.home_temp.learning_fragment;
+package com.pratham.foundation.ui.home_screen.learning_fragment;
 
 import android.content.Context;
 import android.net.Uri;

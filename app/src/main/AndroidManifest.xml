@@ -80,16 +80,16 @@
             android:name=".ui.old_home.HomeActivity_"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".ui.home_temp.TempHomeActivity_"
+            android:name=".ui.home_screen.TempHomeActivity_"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".ui.home_temp.display_content.ContentDisplay_"
+            android:name=".ui.home_screen.display_content.ContentDisplay_"
             android:screenOrientation="portrait" />
         <activity
             android:name=".ui.admin_panel.fragment_admin_panel.PushOrAssign.PushDataActivity_"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".ui.contentPlayer.ContentPlayerActivity"
+            android:name=".ui.contentPlayer.ContentPlayerActivity_"
             android:screenOrientation="portrait" />
         <activity
             android:name=".ui.test.supervisor.SupervisedAssessmentActivity"

@@ -1,4 +1,4 @@
-package com.pratham.foundation.ui.home_temp;
+package com.pratham.foundation.ui.home_screen;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;

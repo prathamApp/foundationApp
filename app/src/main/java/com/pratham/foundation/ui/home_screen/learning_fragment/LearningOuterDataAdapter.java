@@ -1,4 +1,4 @@
-package com.pratham.foundation.ui.home_temp.practice_fragment;
+package com.pratham.foundation.ui.home_screen.learning_fragment;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -13,15 +13,13 @@ import android.widget.TextView;
 
 import com.pratham.foundation.R;
 import com.pratham.foundation.database.domain.ContentTableNew;
-import com.pratham.foundation.ui.home_temp.learning_fragment.LearningContract;
-import com.pratham.foundation.ui.home_temp.learning_fragment.LearningInnerDataAdapter;
 import com.pratham.foundation.utility.FC_Constants;
 
 import java.util.ArrayList;
 import java.util.List;
 
 
-public class PracticeOuterDataAdapter extends RecyclerView.Adapter {
+public class LearningOuterDataAdapter extends RecyclerView.Adapter {
 
     private static final String TYPE_HEADER = "Header";
     private static final String TYPE_ITEM = "Resource";
@@ -32,13 +30,19 @@ public class PracticeOuterDataAdapter extends RecyclerView.Adapter {
     private ContentTableNew contentTable;
     private Context mContext;
     public int childCounter = 0;
-    PracticeContract.PracticeItemClicked tempItemClicked;
+    LearningContract.LearningItemClicked tempItemClicked;
 
-    public PracticeOuterDataAdapter(Context context, List<ContentTableNew> dataList,
-                                    PracticeContract.PracticeItemClicked tempItemClicked) {
+    public LearningOuterDataAdapter(Context context, List<ContentTableNew> dataList, LearningContract.LearningItemClicked tempItemClicked) {
         this.dataList = dataList;
         this.mContext = context;
         this.tempItemClicked = tempItemClicked;
+    }
+
+    public class EmptyHolder extends RecyclerView.ViewHolder {
+        public EmptyHolder(View view) {
+            super(view);
+        }
+
     }
 
     @NonNull
@@ -111,11 +115,9 @@ public class PracticeOuterDataAdapter extends RecyclerView.Adapter {
 
                 try {
                     itemRowHolder.itemTitle.setText(sectionName);
-                    PracticeInnerDataAdapter PracticeInnerDataAdapter = new PracticeInnerDataAdapter(mContext,
-                            sublistList, tempItemClicked, i);
-                    itemRowHolder.recycler_view_list.setLayoutManager(new LinearLayoutManager(mContext,
-                            LinearLayoutManager.HORIZONTAL, false));
-                    itemRowHolder.recycler_view_list.setAdapter(PracticeInnerDataAdapter);
+                    LearningInnerDataAdapter learningInnerDataAdapter = new LearningInnerDataAdapter(mContext, sublistList, tempItemClicked, i);
+                    itemRowHolder.recycler_view_list.setLayoutManager(new LinearLayoutManager(mContext, LinearLayoutManager.HORIZONTAL, false));
+                    itemRowHolder.recycler_view_list.setAdapter(learningInnerDataAdapter);
                     childCounter += 1;
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -133,6 +135,7 @@ public class PracticeOuterDataAdapter extends RecyclerView.Adapter {
 
     @Override
     public int getItemViewType(int position) {
+
         if (dataList.get(position).getNodeType() != null) {
             switch (dataList.get(position).getNodeType()) {
                 case TYPE_HEADER:
@@ -153,12 +156,6 @@ public class PracticeOuterDataAdapter extends RecyclerView.Adapter {
         return (null != dataList ? dataList.size() : 0);
     }
 
-    public class EmptyHolder extends RecyclerView.ViewHolder {
-        public EmptyHolder(View view) {
-            super(view);
-        }
-
-    }
     public class FolderHolder extends RecyclerView.ViewHolder {
         TextView itemTitle;
         RecyclerView recycler_view_list;

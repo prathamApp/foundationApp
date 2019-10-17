@@ -1,21 +1,16 @@
-package com.pratham.foundation.ui.home_temp;
+package com.pratham.foundation.ui.home_screen;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.Intent;
 import android.content.res.Configuration;
-import android.content.res.Resources;
 import android.graphics.Color;
-import android.graphics.Rect;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
-import android.support.v7.widget.RecyclerView;
-import android.util.TypedValue;
 import android.view.LayoutInflater;
-import android.view.View;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -25,14 +20,14 @@ import android.widget.TextView;
 import com.pratham.foundation.ApplicationClass;
 import com.pratham.foundation.BaseActivity;
 import com.pratham.foundation.R;
-import com.pratham.foundation.services.shared_preferences.FastSave;
 import com.pratham.foundation.customView.submarine_view.SubmarineItem;
 import com.pratham.foundation.customView.submarine_view.SubmarineView;
 import com.pratham.foundation.database.AppDatabase;
 import com.pratham.foundation.modalclasses.EventMessage;
-import com.pratham.foundation.ui.home_temp.learning_fragment.LearningFragment_;
-import com.pratham.foundation.ui.home_temp.practice_fragment.PracticeFragment_;
-import com.pratham.foundation.ui.home_temp.test_fragment.TestFragment_;
+import com.pratham.foundation.services.shared_preferences.FastSave;
+import com.pratham.foundation.ui.home_screen.learning_fragment.LearningFragment_;
+import com.pratham.foundation.ui.home_screen.practice_fragment.PracticeFragment_;
+import com.pratham.foundation.ui.home_screen.test_fragment.TestFragment_;
 import com.pratham.foundation.ui.selectSubject.SelectSubject_;
 import com.pratham.foundation.ui.test.supervisor.SupervisedAssessmentActivity;
 import com.pratham.foundation.utility.FC_Constants;
@@ -47,7 +42,6 @@ import org.androidannotations.annotations.res.DrawableRes;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.Objects;
 
@@ -187,7 +181,7 @@ public class TempHomeActivity extends BaseActivity /*BottomNavigationView.OnNavi
                 case 0:
                     iv_level.setImageResource(R.drawable.level_1);
                     tv_level.setText("Level 1");
-                break;
+                    break;
                 case 1:
                     iv_level.setImageResource(R.drawable.level_2);
                     tv_level.setText("Level 2");
@@ -357,13 +351,15 @@ public class TempHomeActivity extends BaseActivity /*BottomNavigationView.OnNavi
             }
         }
     }
-        @Click(R.id.iv_level)
+
+    @Click(R.id.iv_level)
     public void levelChange() {
         submarine.show();
     }
 
     private void setupViewPager(ViewPager viewpager) {
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
+        viewpager.setOffscreenPageLimit(3);
         adapter.addFrag(new LearningFragment_(), "Learning");
         adapter.addFrag(new PracticeFragment_(), "Practice");
         adapter.addFrag(new TestFragment_(), "Test");
@@ -386,7 +382,8 @@ public class TempHomeActivity extends BaseActivity /*BottomNavigationView.OnNavi
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void messageReceived(EventMessage message) {
         if (message != null) {
-            if (message.getMessage().equalsIgnoreCase(FC_Constants.LEVEL_CHANGED)){}
+            if (message.getMessage().equalsIgnoreCase(FC_Constants.LEVEL_CHANGED)) {
+            }
         }
     }
 

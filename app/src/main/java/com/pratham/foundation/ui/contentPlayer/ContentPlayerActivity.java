@@ -11,33 +11,62 @@ import android.view.Window;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.pratham.foundation.R;
 import com.pratham.foundation.BaseActivity;
+import com.pratham.foundation.database.AppDatabase;
+import com.pratham.foundation.database.BackupDatabase;
+import com.pratham.foundation.database.domain.ContentTable;
 import com.pratham.foundation.ui.contentPlayer.fact_retrival_fragment.FactRetrival_;
 import com.pratham.foundation.ui.contentPlayer.sequenceLayout.SequenceLayout_;
 import com.pratham.foundation.utility.FC_Utility;
+
+import org.androidannotations.annotations.AfterViews;
+import org.androidannotations.annotations.Background;
+import org.androidannotations.annotations.EActivity;
+
+import java.lang.reflect.Type;
+import java.util.ArrayList;
+import java.util.List;
+
 import static com.pratham.foundation.utility.FC_Constants.dialog_btn_cancel;
 
 
+@EActivity(R.layout.activity_content_player)
 public class ContentPlayerActivity extends BaseActivity{
 
     private String contentPath, contentTitle, StudentID, resId;
     boolean onSdCard;
+    List<ContentTable> contentTableList;
+    Gson gson;
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_content_player);
-        Log.d("Content_Player", "ContentPlayerActivity");
-
+    @AfterViews
+    public void initialize() {
+        gson = new Gson();
         Intent intent = getIntent();
+        contentPath = intent.getStringExtra("nodeID");
+        getListResData(contentPath);
+/*
         contentPath = intent.getStringExtra("contentPath");
         StudentID = intent.getStringExtra("StudentID");
         resId = intent.getStringExtra("resId");
         contentTitle = intent.getStringExtra("contentName");
         onSdCard = getIntent().getBooleanExtra("onSdCard", false);
+*/
         loadFragment();
     }
+
+    @Background
+    public void getListResData(String nodeId) {
+        try {
+            contentTableList = new ArrayList<>();
+            contentTableList = AppDatabase.appDatabase.getContentTableDao().getContentData("" + nodeId);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
 
     public void loadFragment() {
         Bundle bundle = new Bundle();

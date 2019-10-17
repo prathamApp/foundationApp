@@ -1,4 +1,4 @@
-package com.pratham.foundation.ui.home_temp.practice_fragment;
+package com.pratham.foundation.ui.home_screen.learning_fragment;
 
 
 
@@ -8,9 +8,9 @@ import com.pratham.foundation.database.domain.ContentTableNew;
 
 import java.util.List;
 
-public interface PracticeContract {
+public interface LearningContract {
 
-    interface PracticeItemClicked {
+    interface LearningItemClicked {
 
         void onContentClicked(ContentTableNew singleItem);
 
@@ -23,7 +23,7 @@ public interface PracticeContract {
         void seeMore(String nodeId, String nodeTitle);
     }
 
-    interface PracticeView {
+    interface LearningView {
 
         void notifyAdapter();
 
@@ -44,7 +44,7 @@ public interface PracticeContract {
 //        void setBotNodeId(String botID);
     }
 
-    interface PracticePresenter {
+    interface LearningPresenter {
 
         void getDataForList();
 
@@ -70,8 +70,9 @@ public interface PracticeContract {
 
         String getcurrentNodeID();
 
-        void setView(PracticeContract.PracticeView PracticeView);
+        void setView(LearningContract.LearningView learningView);
 
         void getBottomNavId(int currentLevelNo, String cosSection);
+
     }
 }

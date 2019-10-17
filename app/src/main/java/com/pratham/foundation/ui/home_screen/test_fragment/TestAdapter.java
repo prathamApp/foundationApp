@@ -1,4 +1,4 @@
-package com.pratham.foundation.ui.home_temp.test_fragment;
+package com.pratham.foundation.ui.home_screen.test_fragment;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -20,7 +20,7 @@ import android.widget.TextView;
 
 import com.pratham.foundation.R;
 import com.pratham.foundation.modalclasses.CertificateModelClass;
-import com.pratham.foundation.ui.home_temp.TempHomeActivity;
+import com.pratham.foundation.ui.home_screen.TempHomeActivity;
 import com.pratham.foundation.ui.test.certificate.CertificateClicked;
 
 import org.json.JSONArray;

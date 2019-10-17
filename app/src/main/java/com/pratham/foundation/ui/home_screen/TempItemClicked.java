@@ -1,4 +1,4 @@
-package com.pratham.foundation.ui.home_temp;
+package com.pratham.foundation.ui.home_screen;
 
 
 import com.pratham.foundation.database.domain.ContentTableNew;

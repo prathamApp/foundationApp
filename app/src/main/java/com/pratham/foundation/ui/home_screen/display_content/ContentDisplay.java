@@ -1,20 +1,19 @@
-package com.pratham.foundation.ui.home_temp.display_content;
+package com.pratham.foundation.ui.home_screen.display_content;
 
 import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.content.Intent;
-import android.content.res.Resources;
 import android.graphics.Color;
-import android.graphics.Rect;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
+import android.os.Bundle;
 import android.os.Handler;
+import android.os.Parcelable;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
-import android.util.TypedValue;
 import android.view.View;
 import android.view.Window;
 import android.widget.Button;
@@ -29,6 +28,7 @@ import com.pratham.foundation.ApplicationClass;
 import com.pratham.foundation.R;
 import com.pratham.foundation.customView.GridSpacingItemDecoration;
 import com.pratham.foundation.ui.contentPlayer.ContentPlayerActivity;
+import com.pratham.foundation.ui.contentPlayer.ContentPlayerActivity_;
 import com.pratham.foundation.ui.contentPlayer.web_view.WebViewActivity;
 import com.pratham.foundation.customView.progress_layout.ProgressLayout;
 import com.pratham.foundation.database.domain.ContentTable;
@@ -291,6 +291,15 @@ public class ContentDisplay extends BaseActivity implements ContentContract.Cont
         presenter.getListData();
     }
 
+    @UiThread
+    @Override
+    public void onPreResOpenClicked(int position, String nId) {
+        ButtonClickSound.start();
+        Intent mainNew = new Intent(ContentDisplay.this, ContentPlayerActivity_.class);
+        mainNew.putExtra("nodeID", nId);
+        startActivity(mainNew);
+    }
+
     @Override
     public void onContentOpenClicked(int position, String nodeId) {
         //todo remove#
@@ -344,7 +353,8 @@ public class ContentDisplay extends BaseActivity implements ContentContract.Cont
             mainNew.putExtra("contentPath", ContentTableList.get(position).getResourcePath());
             startActivity(mainNew);
         } else if (ContentTableList.get(position).getResourceType().equalsIgnoreCase(FC_Constants.KEY_WORD_MAPPING)) {
-            */Intent mainNew = new Intent(ContentDisplay.this, ContentPlayerActivity.class);
+            */
+            Intent mainNew = new Intent(ContentDisplay.this, ContentPlayerActivity_.class);
             mainNew.putExtra("resId", ContentTableList.get(position).getResourceId());
             mainNew.putExtra("StudentID", FC_Constants.currentStudentID);
             mainNew.putExtra("contentName", ContentTableList.get(position).getNodeTitle());

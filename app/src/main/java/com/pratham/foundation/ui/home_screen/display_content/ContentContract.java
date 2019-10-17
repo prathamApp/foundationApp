@@ -1,4 +1,4 @@
-package com.pratham.foundation.ui.home_temp.display_content;
+package com.pratham.foundation.ui.home_screen.display_content;
 
 
 import com.pratham.foundation.database.domain.ContentTable;
@@ -49,6 +49,7 @@ public interface ContentContract {
         void findMaxScore(String nodeId);
 
         void setView(ContentContract.ContentView contentView);
+
     }
 
 }

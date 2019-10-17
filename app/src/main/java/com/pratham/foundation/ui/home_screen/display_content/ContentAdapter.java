@@ -1,4 +1,4 @@
-package com.pratham.foundation.ui.home_temp.display_content;
+package com.pratham.foundation.ui.home_screen.display_content;
 
 import android.content.Context;
 import android.os.Handler;
@@ -126,6 +126,11 @@ public class ContentAdapter extends RecyclerView.Adapter<ContentAdapter.MyViewHo
                     if (contentList.getNodeType().equalsIgnoreCase("Resource"))
                         if (contentList.getIsDownloaded().equalsIgnoreCase("true")) {
                             contentClicked.onContentOpenClicked(position, contentList.getNodeId());
+                        } else if (contentList.getIsDownloaded().equalsIgnoreCase("false"))
+                            contentClicked.onContentDownloadClicked(position, contentList.nodeId);
+                    if (contentList.getNodeType().equalsIgnoreCase("PreResource"))
+                        if (contentList.getIsDownloaded().equalsIgnoreCase("true")) {
+                            contentClicked.onPreResOpenClicked(position, contentList.getNodeId());
                         } else if (contentList.getIsDownloaded().equalsIgnoreCase("false"))
                             contentClicked.onContentDownloadClicked(position, contentList.nodeId);
                 } else

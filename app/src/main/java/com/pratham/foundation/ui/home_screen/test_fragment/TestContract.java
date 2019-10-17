@@ -1,4 +1,4 @@
-package com.pratham.foundation.ui.home_temp.test_fragment;
+package com.pratham.foundation.ui.home_screen.test_fragment;
 
 
 

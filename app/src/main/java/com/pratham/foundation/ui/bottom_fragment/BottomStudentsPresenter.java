@@ -102,15 +102,13 @@ public class BottomStudentsPresenter implements BottomStudentsContract.BottomStu
     @Background
     @Override
     public void updateStudentData() {
-
         AppDatabase.appDatabase.getStatusDao().updateValue("CurrentSession", "" + FC_Constants.currentSession);
         Attendance attendance = new Attendance();
         attendance.setSessionID(FC_Constants.currentSession);
         attendance.setStudentID(currentStudentID);
         attendance.setDate(FC_Utility.getCurrentDateTime());
-        attendance.setGroupID("PS");
+        attendance.setGroupID("SP");
         attendance.setSentFlag(0);
-
         AppDatabase.appDatabase.getAttendanceDao().insert(attendance);
 
         Session startSesion = new Session();
@@ -119,7 +117,9 @@ public class BottomStudentsPresenter implements BottomStudentsContract.BottomStu
         startSesion.setToDate("NA");
         startSesion.setSentFlag(0);
         AppDatabase.appDatabase.getSessionDao().insert(startSesion);
-        getStudentData(FC_Constants.STUDENT_PROGRESS_INTERNET, FC_Constants.STUDENT_PROGRESS_API, currentStudentID);
+
+        if (FC_Utility.isDataConnectionAvailable(context))
+            getStudentData(FC_Constants.STUDENT_PROGRESS_INTERNET, FC_Constants.STUDENT_PROGRESS_API, currentStudentID);
 
     }
 

@@ -1,20 +1,16 @@
-package com.pratham.foundation.ui.home_temp.learning_fragment;
+package com.pratham.foundation.ui.home_screen.practice_fragment;
 
 
 
 
 import com.pratham.foundation.database.domain.ContentTable;
 import com.pratham.foundation.database.domain.ContentTableNew;
-import com.pratham.foundation.modalclasses.CertificateModelClass;
-
-import org.json.JSONArray;
-import org.json.JSONObject;
 
 import java.util.List;
 
-public interface LearningContract {
+public interface PracticeContract {
 
-    interface LearningItemClicked {
+    interface PracticeItemClicked {
 
         void onContentClicked(ContentTableNew singleItem);
 
@@ -27,7 +23,7 @@ public interface LearningContract {
         void seeMore(String nodeId, String nodeTitle);
     }
 
-    interface LearningView {
+    interface PracticeView {
 
         void notifyAdapter();
 
@@ -48,7 +44,7 @@ public interface LearningContract {
 //        void setBotNodeId(String botID);
     }
 
-    interface LearningPresenter {
+    interface PracticePresenter {
 
         void getDataForList();
 
@@ -74,9 +70,8 @@ public interface LearningContract {
 
         String getcurrentNodeID();
 
-        void setView(LearningContract.LearningView learningView);
+        void setView(PracticeContract.PracticeView PracticeView);
 
         void getBottomNavId(int currentLevelNo, String cosSection);
-
     }
 }

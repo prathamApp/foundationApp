@@ -1,4 +1,4 @@
-package com.pratham.foundation.ui.home_temp.display_content;
+package com.pratham.foundation.ui.home_screen.display_content;
 
 
 import com.pratham.foundation.database.domain.ContentTable;
@@ -10,6 +10,8 @@ import com.pratham.foundation.database.domain.ContentTable;
 public interface ContentClicked {
 
     void onContentClicked(int position, String nId);
+
+    void onPreResOpenClicked(int position, String nId);
 
     void onContentOpenClicked(int position, String nId);
 

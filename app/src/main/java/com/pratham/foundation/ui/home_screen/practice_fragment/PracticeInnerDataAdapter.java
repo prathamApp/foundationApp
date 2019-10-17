@@ -1,4 +1,4 @@
-package com.pratham.foundation.ui.home_temp.practice_fragment;
+package com.pratham.foundation.ui.home_screen.practice_fragment;
 
 import android.content.Context;
 import android.net.Uri;

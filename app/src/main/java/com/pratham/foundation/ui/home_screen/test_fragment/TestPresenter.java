@@ -1,4 +1,4 @@
-package com.pratham.foundation.ui.home_temp;
+package com.pratham.foundation.ui.home_screen.test_fragment;
 
 import android.content.Context;
 import android.util.Log;
@@ -12,11 +12,9 @@ import com.pratham.foundation.async.API_Content;
 import com.pratham.foundation.async.ZipDownloader;
 import com.pratham.foundation.database.AppDatabase;
 import com.pratham.foundation.database.BackupDatabase;
-import com.pratham.foundation.database.domain.Assessment;
 import com.pratham.foundation.database.domain.ContentProgress;
 import com.pratham.foundation.database.domain.ContentTable;
 import com.pratham.foundation.database.domain.ContentTableNew;
-import com.pratham.foundation.database.domain.Session;
 import com.pratham.foundation.database.domain.WordEnglish;
 import com.pratham.foundation.interfaces.API_Content_Result;
 import com.pratham.foundation.modalclasses.CertificateModelClass;
@@ -45,20 +43,13 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
-import static com.pratham.foundation.ui.old_home.HomeActivity.sub_nodeId;
-import static com.pratham.foundation.utility.FC_Constants.GROUP_LOGIN;
-import static com.pratham.foundation.utility.FC_Constants.assessmentSession;
-import static com.pratham.foundation.utility.FC_Constants.currentGroup;
-import static com.pratham.foundation.utility.FC_Constants.currentLevel;
-import static com.pratham.foundation.utility.FC_Constants.isTest;
-import static com.pratham.foundation.utility.FC_Constants.testSessionEnded;
-import static com.pratham.foundation.utility.FC_Constants.testSessionEntered;
+import static com.pratham.foundation.ui.home_screen.TempHomeActivity.sub_nodeId;
 
 @EBean
-public class TempHomePresenter implements TempHomeContract.HomePresenter, API_Content_Result {
+public class TestPresenter implements TestContract.TestPresenter, API_Content_Result {
 
     Context mContext;
-    TempHomeContract.HomeView homeView;
+    TestContract.TestView myView;
     public List<ContentTable> rootList, rootLevelList, dwParentList, childDwContentList;
     public List<ContentTableNew> contentParentList, contentDBList, contentApiList, childContentList;
     ArrayList<String> nodeIds;
@@ -75,13 +66,14 @@ public class TempHomePresenter implements TempHomeContract.HomePresenter, API_Co
     @Bean(ZipDownloader.class)
     ZipDownloader zipDownloader;
     private String cosSection;
-    public TempHomePresenter(Context mContext) {
+
+    public TestPresenter(Context mContext) {
         this.mContext = mContext;
     }
 
     @Override
-    public void setView(TempHomeContract.HomeView homeView) {
-        this.homeView = homeView;
+    public void setView(TestContract.TestView myView) {
+        this.myView = myView;
         nodeIds = new ArrayList<>();
         contentParentList = new ArrayList<>();
         contentDBList = new ArrayList<>();
@@ -91,10 +83,10 @@ public class TempHomePresenter implements TempHomeContract.HomePresenter, API_Co
         maxScore = new ArrayList();
         maxScoreChild = new ArrayList();
         gson = new Gson();
-        api_content = new API_Content(mContext, TempHomePresenter.this);
+        api_content = new API_Content(mContext, TestPresenter.this);
     }
 
-    @Background
+/*    @Background
     @Override
     public void displayProfileName() {
         String profileName;
@@ -103,7 +95,7 @@ public class TempHomePresenter implements TempHomeContract.HomePresenter, API_Co
         else
             profileName = AppDatabase.getDatabaseInstance(mContext).getGroupsDao().getGroupNameByGrpID(FC_Constants.currentStudentID);
 
-        homeView.setProfileName(profileName);
+        myView.setProfileName(profileName);
     }
 
     @Background
@@ -114,8 +106,8 @@ public class TempHomePresenter implements TempHomeContract.HomePresenter, API_Co
             sImage = AppDatabase.getDatabaseInstance(mContext).getStudentDao().getStudentAvatar(FC_Constants.currentStudentID);
         else
             sImage = "group_icon";
-        homeView.setStudentProfileImage(sImage);
-    }
+        myView.setStudentProfileImage(sImage);
+    }*/
 
     @Override
     public void insertNodeId(String nodeId) {
@@ -134,7 +126,7 @@ public class TempHomePresenter implements TempHomeContract.HomePresenter, API_Co
 
     @Override
     public boolean removeLastNodeId() {
-        if (nodeIds.size() > 1) {
+        if (nodeIds.size() > 2) {
             nodeIds.remove(nodeIds.size() - 1);
             return true;
         } else
@@ -150,20 +142,20 @@ public class TempHomePresenter implements TempHomeContract.HomePresenter, API_Co
 //        String rootID = FC_Utility.getRootNode(FC_Constants.currentSelectedLanguage);
         String rootID = sub_nodeId;
         botID = AppDatabase.appDatabase.getContentTableDao().getContentDataByTitle("" + rootID, cosSection);
-        if (botID != null && !FC_Utility.isDataConnectionAvailable(mContext)) {
-            homeView.setBotNodeId(botID);
+        if (botID != null && !FC_Utility.isDataConnectionAvailable(mContext))
             getLevelDataForList(currentLevelNo, botID);
-        } else
+        else
             getRootData(rootID);
 
+//        myView.setBotNodeId(botID);
 /*      if (FC_Utility.isDataConnectionAvailable(mContext)) {
             api_content.getAPIContent(FC_Constants.INTERNET_DOWNLOAD, FC_Constants.INTERNET_DOWNLOAD_NEW_API, rootID);
         } else {
             if (contentParentList.size() == 0 && !FC_Utility.isDataConnectionAvailable(mContext)) {
-                homeView.showNoDataDownloadedDialog();
+                myView.showNoDataDownloadedDialog();
             } else {
-                homeView.addContentToViewList(contentParentList);
-                homeView.notifyAdapter();
+                myView.addContentToViewList(contentParentList);
+                myView.notifyAdapter();
             }
         }*/
 
@@ -171,7 +163,7 @@ public class TempHomePresenter implements TempHomeContract.HomePresenter, API_Co
             botID = AppDatabase.appDatabase.getContentTableDao().getBottomNavigationId("English", cosSection);
         else
             botID = AppDatabase.appDatabase.getContentTableDao().getBottomNavigationId(FC_Constants.currentSelectedLanguage, cosSection);
-        homeView.setBotNodeId(botID);
+        myView.setBotNodeId(botID);
         getLevelDataForList(currentLevelNo, botID);*/
     }
 
@@ -181,6 +173,135 @@ public class TempHomePresenter implements TempHomeContract.HomePresenter, API_Co
             api_content.getAPIContent(FC_Constants.BOTTOM_NODE, FC_Constants.INTERNET_DOWNLOAD_NEW_API, rootID);
     }
 
+    private void sortTestList(List<ContentTable> contentParentList) {
+        Collections.sort(contentParentList, (o1, o2) -> o1.getNodeId().compareTo(o2.getNodeId()));
+    }
+
+    @Background
+    @Override
+    public void generateTestData(JSONArray testData, String bottomNavNodeId) {
+        myView.showLoader();
+        testList = AppDatabase.appDatabase.getContentTableDao().getContentData(bottomNavNodeId);
+        sortTestList(testList);
+
+        if (testList.size() > 0)
+            WebViewActivity.gameLevel = testList.get(0).getNodeAge();
+        BackupDatabase.backup(mContext);
+        codesText = new ArrayList<>();
+        codesText.clear();
+
+        CertificateModelClass contentTableHeader = new CertificateModelClass();
+        contentTableHeader.setNodeId("0");
+        contentTableHeader.setResourceId("0");
+        contentTableHeader.setResourcePath("path");
+        contentTableHeader.setContentType("Header");
+        myView.addContentToViewTestList(contentTableHeader);
+
+        contentTableHeader = new CertificateModelClass();
+        contentTableHeader.setNodeId("1");
+        contentTableHeader.setResourceId("1");
+        contentTableHeader.setResourcePath("path");
+        contentTableHeader.setContentType("Spinner");
+        myView.addContentToViewTestList(contentTableHeader);
+
+        try {
+            for (int j = 0; j < testList.size(); j++) {
+
+                codesText.add(testList.get(j).getNodeDesc());
+
+                CertificateModelClass contentTable = new CertificateModelClass();
+                contentTable.setCodeCount(Collections.frequency(codesText, testList.get(j).getNodeDesc()));
+
+                contentTable.setNodeId("" + testList.get(j).getNodeId());
+                contentTable.setCertiCode("" + testList.get(j).getNodeDesc());
+                contentTable.setNodeAge("" + testList.get(j).getNodeAge());
+                contentTable.setResourceId("" + testList.get(j).getResourceId());
+                contentTable.setResourcePath("" + testList.get(j).getResourcePath());
+                contentTable.setAsessmentGiven(false);
+                contentTable.setStudentId(FC_Constants.currentStudentID);
+                contentTable.setScoredMarks(0);
+                contentTable.setTotalMarks(0);
+                contentTable.setCertificateRating(0.0f);
+                contentTable.setStudentPercentage("");
+                contentTable.setContentType(testList.get(j).getContentType());
+                contentTable.setIsDownloaded(testList.get(j).getIsDownloaded());
+
+                for (int i = 0; i < testData.length(); i++) {
+                    String lang = testData.getJSONObject(i).getString("lang");
+                    String questionList = testData.getJSONObject(i).getJSONObject("questionList").getString("" + testList.get(j).getNodeDesc());
+                    String answerList = testData.getJSONObject(i).getJSONObject("answerList").getString("" + testList.get(j).getNodeDesc());
+                    if (lang.equalsIgnoreCase("english")) {
+                        contentTable.setEnglishQues("" + questionList);
+                        contentTable.setEnglishAnsw("" + answerList);
+                    } else if (lang.equalsIgnoreCase("hindi")) {
+                        contentTable.setHindiQues("" + questionList);
+                        contentTable.setHindiAnsw("" + answerList);
+                    } else if (lang.equalsIgnoreCase("marathi")) {
+                        contentTable.setMarathiQues("" + questionList);
+                        contentTable.setMarathiAnsw("" + answerList);
+                    } else if (lang.equalsIgnoreCase("Gujarati")) {
+                        contentTable.setGujaratiQues("" + questionList);
+                        contentTable.setGujaratiAnsw("" + answerList);
+                    } else if (lang.equalsIgnoreCase("Kannada")) {
+                        contentTable.setKannadaQues("" + questionList);
+                        contentTable.setKannadaAnsw("" + answerList);
+                    } else if (lang.equalsIgnoreCase("Bengali")) {
+                        contentTable.setBengaliQues("" + questionList);
+                        contentTable.setBengaliAnsw("" + answerList);
+                    } else if (lang.equalsIgnoreCase("Assamese")) {
+                        contentTable.setAssameseQues("" + questionList);
+                        contentTable.setAssameseAnsw("" + answerList);
+                    } else if (lang.equalsIgnoreCase("Telugu")) {
+                        contentTable.setTeluguQues("" + questionList);
+                        contentTable.setTeluguAnsw("" + answerList);
+                    } else if (lang.equalsIgnoreCase("Tamil")) {
+                        contentTable.setTamilQues("" + questionList);
+                        contentTable.setTamilAnsw("" + answerList);
+                    } else if (lang.equalsIgnoreCase("Odia")) {
+                        contentTable.setOdiaQues("" + questionList);
+                        contentTable.setOdiaAnsw("" + answerList);
+                    } else if (lang.equalsIgnoreCase("Malayalam")) {
+                        contentTable.setUrduQues("" + questionList);
+                        contentTable.setUrduAnsw("" + answerList);
+                    } else if (lang.equalsIgnoreCase("Punjabi")) {
+                        contentTable.setPunjabiQues("" + questionList);
+                        contentTable.setPunjabiAnsw("" + answerList);
+                    }
+
+                }
+                myView.addContentToViewTestList(contentTable);
+            }
+
+            myView.doubleQuestionCheck();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        if (testList.size() > 0)
+            myView.hideTestDownloadBtn();
+        myView.initializeTheIndex();
+    }
+
+    @Override
+    public JSONArray getTestData(String jsonName) {
+        JSONArray returnCodeList = null;
+        try {
+            InputStream is = mContext.getAssets().open(jsonName);
+//            InputStream is = new FileInputStream(ApplicationClass.pradigiPath + "/.FCA/"+FC_Constants.currentSelectedLanguage+"/Game/CertificateData.json");
+            int size = is.available();
+            byte[] buffer = new byte[size];
+            is.read(buffer);
+            is.close();
+            String jsonStr = new String(buffer);
+            JSONObject jsonObj = new JSONObject(jsonStr);
+            returnCodeList = jsonObj.getJSONArray("CodeList");
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+        return returnCodeList;
+    }
+
     @Background
     @Override
     public void getLevelDataForList(int currentLevelNo, String bottomNavNodeId) {
@@ -188,7 +309,7 @@ public class TempHomePresenter implements TempHomeContract.HomePresenter, API_Co
         if (FC_Utility.isDataConnectionAvailable(mContext))
             getLevelDataFromApi(currentLevelNo, bottomNavNodeId);
         else
-            homeView.setSelectedLevel(rootList);
+            myView.setSelectedLevel(rootList);
     }
 
     public void getLevelDataFromApi(int currentLevelNo, String botNodeId) {
@@ -254,157 +375,162 @@ public class TempHomePresenter implements TempHomeContract.HomePresenter, API_Co
     @UiThread
     public void getWholePercentage(List maxScore) {
         double totalScore = 0;
-        for (int j = 0; maxScore.size() > j; j++) {
-            totalScore = totalScore + Double.parseDouble(maxScore.get(j).toString());
-        }
-        if (maxScore.size() > 0) {
-            int percent = (int) (totalScore / maxScore.size());
-            homeView.setLevelprogress(percent);
-        } else {
-            homeView.setLevelprogress(0);
+        try {
+            for (int j = 0; maxScore.size() > j; j++) {
+                totalScore = totalScore + Double.parseDouble(maxScore.get(j).toString());
+            }
+            if (maxScore.size() > 0) {
+                int percent = (int) (totalScore / maxScore.size());
+                myView.setLevelprogress(percent);
+            } else {
+                myView.setLevelprogress(0);
+            }
+        } catch (NumberFormatException e) {
+            e.printStackTrace();
+            myView.setLevelprogress(0);
         }
     }
 
     @Override
     @Background
     public void getDataForList() {
-        if (!isTest) {
-            homeView.showLoader();
+        myView.showLoader();
+        try {
+            ContentTableNew resContentTable = new ContentTableNew();
+            List<ContentTableNew> resourceList;
+            List<ContentTableNew> tempList2;
+            tempList2 = new ArrayList<>();
+
+            resourceList = new ArrayList<>();
+            resContentTable.setNodeTitle("Direct Play");
+            resContentTable.setNodeType("resList");
+
+            ContentTableNew contentTableRes = new ContentTableNew();
+            contentTableRes.setNodeId("0");
+            contentTableRes.setNodeType("Header");
+            tempList2.add(contentTableRes);
+            resContentTable.setNodelist(tempList2);
+            resourceList.add(contentTableRes);
+            resourceList.add(contentTableRes);
+
+            dwParentList = AppDatabase.appDatabase.getContentTableDao().getContentData("" + nodeIds.get(nodeIds.size() - 1));
+            sortContentList(dwParentList);
+            contentParentList.clear();
+            contentParentList.add(contentTableRes);
             try {
-                ContentTableNew resContentTable = new ContentTableNew();
-                List<ContentTableNew> resourceList;
-                List<ContentTableNew> tempList2;
-                tempList2 = new ArrayList<>();
+                for (int j = 0; j < dwParentList.size(); j++) {
+                    if (dwParentList.get(j).getNodeType().equalsIgnoreCase("Resource")) {
+                        contentTableRes = new ContentTableNew();
+                        tempList2 = new ArrayList<>();
+                        contentTableRes.setNodeId("" + dwParentList.get(j).getNodeId());
+                        contentTableRes.setNodeType("" + dwParentList.get(j).getNodeType());
+                        contentTableRes.setNodeTitle("" + dwParentList.get(j).getNodeTitle());
+                        contentTableRes.setNodeKeywords("" + dwParentList.get(j).getNodeKeywords());
+                        contentTableRes.setNodeAge("" + dwParentList.get(j).getNodeAge());
+                        contentTableRes.setNodeDesc("" + dwParentList.get(j).getNodeDesc());
+                        contentTableRes.setNodeServerImage("" + dwParentList.get(j).getNodeServerImage());
+                        contentTableRes.setNodeImage("" + dwParentList.get(j).getNodeImage());
+                        contentTableRes.setResourceId("" + dwParentList.get(j).getResourceId());
+                        contentTableRes.setResourceType("" + dwParentList.get(j).getResourceType());
+                        contentTableRes.setResourcePath("" + dwParentList.get(j).getResourcePath());
+                        contentTableRes.setParentId("" + dwParentList.get(j).getParentId());
+                        contentTableRes.setLevel("" + dwParentList.get(j).getLevel());
+                        contentTableRes.setContentType("" + dwParentList.get(j).getContentType());
+                        contentTableRes.setIsDownloaded("" + dwParentList.get(j).getIsDownloaded());
+                        contentTableRes.setOnSDCard(dwParentList.get(j).isOnSDCard());
+                        contentTableRes.setNodelist(tempList2);
+                        resourceList.add(contentTableRes);
+                    } else {
+                        List<ContentTableNew> tempList;
+                        ContentTableNew contentTable = new ContentTableNew();
+                        tempList = new ArrayList<>();
+                        childDwContentList = AppDatabase.appDatabase.getContentTableDao().getContentData("" + dwParentList.get(j).getNodeId());
+                        sortContentList(childDwContentList);
+                        contentTable.setNodeId("" + dwParentList.get(j).getNodeId());
+                        contentTable.setNodeType("" + dwParentList.get(j).getNodeType());
+                        contentTable.setNodeTitle("" + dwParentList.get(j).getNodeTitle());
+                        contentTable.setNodeKeywords("" + dwParentList.get(j).getNodeKeywords());
+                        contentTable.setNodeAge("" + dwParentList.get(j).getNodeAge());
+                        contentTable.setNodeDesc("" + dwParentList.get(j).getNodeDesc());
+                        contentTable.setNodeServerImage("" + dwParentList.get(j).getNodeServerImage());
+                        contentTable.setNodeImage("" + dwParentList.get(j).getNodeImage());
+                        contentTable.setResourceId("" + dwParentList.get(j).getResourceId());
+                        contentTable.setResourceType("" + dwParentList.get(j).getResourceType());
+                        contentTable.setResourcePath("" + dwParentList.get(j).getResourcePath());
+                        contentTable.setParentId("" + dwParentList.get(j).getParentId());
+                        contentTable.setLevel("" + dwParentList.get(j).getLevel());
+                        contentTable.setContentType(dwParentList.get(j).getContentType());
+                        contentTable.setIsDownloaded("" + dwParentList.get(j).getIsDownloaded());
+                        contentTable.setOnSDCard(dwParentList.get(j).isOnSDCard());
 
-                resourceList = new ArrayList<>();
-                resContentTable.setNodeTitle("Direct Play");
-                resContentTable.setNodeType("resList");
-
-                ContentTableNew contentTableRes = new ContentTableNew();
-                contentTableRes.setNodeId("0");
-                contentTableRes.setNodeType("Header");
-                tempList2.add(contentTableRes);
-                resContentTable.setNodelist(tempList2);
-                resourceList.add(contentTableRes);
-
-                dwParentList = AppDatabase.appDatabase.getContentTableDao().getContentData("" + nodeIds.get(nodeIds.size() - 1));
-                sortContentList(dwParentList);
-                contentParentList.clear();
-                try {
-                    for (int j = 0; j < dwParentList.size(); j++) {
-                        if (dwParentList.get(j).getNodeType().equalsIgnoreCase("Resource")) {
-                            contentTableRes = new ContentTableNew();
-                            tempList2 = new ArrayList<>();
-                            contentTableRes.setNodeId("" + dwParentList.get(j).getNodeId());
-                            contentTableRes.setNodeType("" + dwParentList.get(j).getNodeType());
-                            contentTableRes.setNodeTitle("" + dwParentList.get(j).getNodeTitle());
-                            contentTableRes.setNodeKeywords("" + dwParentList.get(j).getNodeKeywords());
-                            contentTableRes.setNodeAge("" + dwParentList.get(j).getNodeAge());
-                            contentTableRes.setNodeDesc("" + dwParentList.get(j).getNodeDesc());
-                            contentTableRes.setNodeServerImage("" + dwParentList.get(j).getNodeServerImage());
-                            contentTableRes.setNodeImage("" + dwParentList.get(j).getNodeImage());
-                            contentTableRes.setResourceId("" + dwParentList.get(j).getResourceId());
-                            contentTableRes.setResourceType("" + dwParentList.get(j).getResourceType());
-                            contentTableRes.setResourcePath("" + dwParentList.get(j).getResourcePath());
-                            contentTableRes.setParentId("" + dwParentList.get(j).getParentId());
-                            contentTableRes.setLevel("" + dwParentList.get(j).getLevel());
-                            contentTableRes.setContentType("" + dwParentList.get(j).getContentType());
-                            contentTableRes.setIsDownloaded("" + dwParentList.get(j).getIsDownloaded());
-                            contentTableRes.setOnSDCard(dwParentList.get(j).isOnSDCard());
-                            contentTableRes.setNodelist(tempList2);
-                            resourceList.add(contentTableRes);
-                        } else {
-                            List<ContentTableNew> tempList;
-                            ContentTableNew contentTable = new ContentTableNew();
-                            tempList = new ArrayList<>();
-                            childDwContentList = AppDatabase.appDatabase.getContentTableDao().getContentData("" + dwParentList.get(j).getNodeId());
-                            sortContentList(childDwContentList);
-                            contentTable.setNodeId("" + dwParentList.get(j).getNodeId());
-                            contentTable.setNodeType("" + dwParentList.get(j).getNodeType());
-                            contentTable.setNodeTitle("" + dwParentList.get(j).getNodeTitle());
-                            contentTable.setNodeKeywords("" + dwParentList.get(j).getNodeKeywords());
-                            contentTable.setNodeAge("" + dwParentList.get(j).getNodeAge());
-                            contentTable.setNodeDesc("" + dwParentList.get(j).getNodeDesc());
-                            contentTable.setNodeServerImage("" + dwParentList.get(j).getNodeServerImage());
-                            contentTable.setNodeImage("" + dwParentList.get(j).getNodeImage());
-                            contentTable.setResourceId("" + dwParentList.get(j).getResourceId());
-                            contentTable.setResourceType("" + dwParentList.get(j).getResourceType());
-                            contentTable.setResourcePath("" + dwParentList.get(j).getResourcePath());
-                            contentTable.setParentId("" + dwParentList.get(j).getParentId());
-                            contentTable.setLevel("" + dwParentList.get(j).getLevel());
-                            contentTable.setContentType(dwParentList.get(j).getContentType());
-                            contentTable.setIsDownloaded("" + dwParentList.get(j).getIsDownloaded());
-                            contentTable.setOnSDCard(dwParentList.get(j).isOnSDCard());
-
-                            int childListSize = childDwContentList.size();
-                            if (childDwContentList.size() > 0) {
-                                ContentTableNew contentChild = new ContentTableNew();
-                                contentChild.setNodeId("0");
-                                contentChild.setNodeType("Header");
-                                tempList.add(contentChild);
-                                for (int i = 0; i < childListSize; i++) {
-                                    contentChild = new ContentTableNew();
-                                    contentChild.setNodeId("" + childDwContentList.get(i).getNodeId());
-                                    contentChild.setNodeType("" + childDwContentList.get(i).getNodeType());
-                                    contentChild.setNodeTitle("" + childDwContentList.get(i).getNodeTitle());
-                                    contentChild.setNodeKeywords("" + childDwContentList.get(i).getNodeKeywords());
-                                    contentChild.setNodeAge("" + childDwContentList.get(i).getNodeAge());
-                                    contentChild.setNodeDesc("" + childDwContentList.get(i).getNodeDesc());
-                                    contentChild.setNodeServerImage("" + childDwContentList.get(i).getNodeServerImage());
-                                    contentChild.setNodeImage("" + childDwContentList.get(i).getNodeImage());
-                                    contentChild.setResourceId("" + childDwContentList.get(i).getResourceId());
-                                    contentChild.setResourceType("" + childDwContentList.get(i).getResourceType());
-                                    contentChild.setResourcePath("" + childDwContentList.get(i).getResourcePath());
-                                    contentChild.setParentId("" + childDwContentList.get(i).getParentId());
-                                    contentChild.setLevel("" + childDwContentList.get(i).getLevel());
-                                    contentChild.setContentType(childDwContentList.get(i).getContentType());
-                                    contentChild.setIsDownloaded("" + childDwContentList.get(i).getIsDownloaded());
-                                    contentChild.setOnSDCard(childDwContentList.get(i).isOnSDCard());
-                                    contentChild.setNodelist(null);
-                                    maxScoreChild = new ArrayList();
-                                    findMaxScoreNew(childDwContentList.get(i).getNodeId());
-                                    double totalScore = 0;
-                                    for (int q = 0; maxScoreChild.size() > q; q++) {
-                                        totalScore = totalScore + Double.parseDouble(maxScoreChild.get(q).toString());
-                                    }
-                                    if (maxScoreChild.size() > 0) {
-                                        int percent = (int) (totalScore / maxScoreChild.size());
-                                        contentChild.setNodePercentage("" + percent);
-                                    } else {
-                                        contentChild.setNodePercentage("0");
-                                    }
-                                    tempList.add(contentChild);
-                                }
+                        int childListSize = childDwContentList.size();
+                        if (childDwContentList.size() > 0) {
+                            ContentTableNew contentChild = new ContentTableNew();
+                            contentChild.setNodeId("0");
+                            contentChild.setNodeType("Header");
+                            tempList.add(contentChild);
+                            for (int i = 0; i < childListSize; i++) {
                                 contentChild = new ContentTableNew();
-                                contentChild.setNodeId("999999");
-                                contentChild.setNodeType("Header");
+                                contentChild.setNodeId("" + childDwContentList.get(i).getNodeId());
+                                contentChild.setNodeType("" + childDwContentList.get(i).getNodeType());
+                                contentChild.setNodeTitle("" + childDwContentList.get(i).getNodeTitle());
+                                contentChild.setNodeKeywords("" + childDwContentList.get(i).getNodeKeywords());
+                                contentChild.setNodeAge("" + childDwContentList.get(i).getNodeAge());
+                                contentChild.setNodeDesc("" + childDwContentList.get(i).getNodeDesc());
+                                contentChild.setNodeServerImage("" + childDwContentList.get(i).getNodeServerImage());
+                                contentChild.setNodeImage("" + childDwContentList.get(i).getNodeImage());
+                                contentChild.setResourceId("" + childDwContentList.get(i).getResourceId());
+                                contentChild.setResourceType("" + childDwContentList.get(i).getResourceType());
+                                contentChild.setResourcePath("" + childDwContentList.get(i).getResourcePath());
+                                contentChild.setParentId("" + childDwContentList.get(i).getParentId());
+                                contentChild.setLevel("" + childDwContentList.get(i).getLevel());
+                                contentChild.setContentType(childDwContentList.get(i).getContentType());
+                                contentChild.setIsDownloaded("" + childDwContentList.get(i).getIsDownloaded());
+                                contentChild.setOnSDCard(childDwContentList.get(i).isOnSDCard());
+                                contentChild.setNodelist(null);
+                                maxScoreChild = new ArrayList();
+                                findMaxScoreNew(childDwContentList.get(i).getNodeId());
+                                double totalScore = 0;
+                                for (int q = 0; maxScoreChild.size() > q; q++) {
+                                    totalScore = totalScore + Double.parseDouble(maxScoreChild.get(q).toString());
+                                }
+                                if (maxScoreChild.size() > 0) {
+                                    int percent = (int) (totalScore / maxScoreChild.size());
+                                    contentChild.setNodePercentage("" + percent);
+                                } else {
+                                    contentChild.setNodePercentage("0");
+                                }
                                 tempList.add(contentChild);
                             }
-                            sortAllList(tempList);
-                            contentTable.setNodelist(tempList);
-                            contentParentList.add(contentTable);
+                            contentChild = new ContentTableNew();
+                            contentChild.setNodeId("999999");
+                            contentChild.setNodeType("Header");
+                            tempList.add(contentChild);
                         }
+                        sortAllList(tempList);
+                        contentTable.setNodelist(tempList);
+                        contentParentList.add(contentTable);
                     }
-                    if (resourceList.size() > 1) {
-                        contentTableRes = new ContentTableNew();
-                        contentTableRes.setNodeId("999999");
-                        contentTableRes.setNodeType("Header");
-                        tempList2.add(contentTableRes);
-                        resContentTable.setNodelist(tempList2);
-                        resourceList.add(contentTableRes);
+                }
+                if (resourceList.size() > 1) {
+                    contentTableRes = new ContentTableNew();
+                    contentTableRes.setNodeId("999999");
+                    contentTableRes.setNodeType("Header");
+                    tempList2.add(contentTableRes);
+                    resContentTable.setNodelist(tempList2);
+                    resourceList.add(contentTableRes);
 
-                        resContentTable.setNodelist(resourceList);
-                        contentParentList.add(resContentTable);
+                    resContentTable.setNodelist(resourceList);
+                    contentParentList.add(resContentTable);
 
-                    }
-                } catch (Exception e) {
-                    e.printStackTrace();
                 }
             } catch (Exception e) {
                 e.printStackTrace();
             }
-            updateUI();
+        } catch (Exception e) {
+            e.printStackTrace();
         }
+        updateUI();
     }
 
     @UiThread
@@ -419,10 +545,10 @@ public class TempHomePresenter implements TempHomeContract.HomePresenter, API_Co
             api_content.getAPIContent(FC_Constants.INTERNET_DOWNLOAD, FC_Constants.INTERNET_DOWNLOAD_NEW_API, nodeIds.get(nodeIds.size() - 1));
         } else {
             if (contentParentList.size() == 0 && !FC_Utility.isDataConnectionAvailable(mContext)) {
-                homeView.showNoDataDownloadedDialog();
+                myView.showNoDataDownloadedDialog();
             } else {
-                homeView.addContentToViewList(contentParentList);
-                homeView.notifyAdapter();
+                myView.addContentToViewList(contentParentList);
+                myView.notifyAdapter();
             }
         }
     }
@@ -434,50 +560,6 @@ public class TempHomePresenter implements TempHomeContract.HomePresenter, API_Co
                 return o1.getNodeId().compareTo(o2.getNodeId());
             }
         });
-    }
-
-    @Background
-    @Override
-    public void getTempData(String nodeId) {
-        testData = AppDatabase.appDatabase.getContentTableDao().getContent("" + nodeId);
-        test_Open_Data();
-    }
-
-    @UiThread
-    public void test_Open_Data() {
-        homeView.testOpenData(testData);
-    }
-
-    @Override
-    public ContentTable getRandomData(String resourceType, String nodeId) {
-        List<ContentTable> List = AppDatabase.getDatabaseInstance(mContext).getContentTableDao().getContentData(nodeId);
-        if (List.size() > 0) {
-            int random = FC_Utility.generateRandomNum(List.size());
-            ContentTable contentTable = List.get(random);
-            return contentTable;
-        } else
-            return null;
-    }
-
-    @Background
-    @Override
-    public void enterRCData(ContentTableNew contentList) {
-        int count;
-        List<WordEnglish> wordGameDataEnglish;
-        count = AppDatabase.appDatabase.getEnglishWordDao().getWordCount();
-        if (count <= 0) {
-            wordGameDataEnglish = fetchWords("EnglishWords.json");
-            if (wordGameDataEnglish.size() > 0) {
-                insertEnglishWords(wordGameDataEnglish);
-            }
-
-            JSONArray jsonArray = fetchSentences("EnglishSentences.json");
-            if (jsonArray != null)
-                if (jsonArray.length() > 0) {
-                    insertEnglishSentences(jsonArray);
-                }
-        }
-        homeView.openRCGame(contentList);
     }
 
     private void insertEnglishWords(List<WordEnglish> wordGameDataEnglish) {
@@ -570,7 +652,7 @@ public class TempHomePresenter implements TempHomeContract.HomePresenter, API_Co
         if (FC_Utility.isDataConnectionAvailable(mContext)) {
             api_content.getAPIContent(FC_Constants.INTERNET_DOWNLOAD_RESOURCE, FC_Constants.INTERNET_DOWNLOAD_RESOURCE_API, downloadNodeId);
         } else {
-            homeView.showNoDataDownloadedDialog();
+            myView.showNoDataDownloadedDialog();
         }
 //        getAPIContent(FC_Constants.INTERNET_DOWNLOAD_RESOURCE, FC_Constants.INTERNET_DOWNLOAD_RESOURCE_API);
     }
@@ -600,9 +682,16 @@ public class TempHomePresenter implements TempHomeContract.HomePresenter, API_Co
             e.printStackTrace();
         }
         BackupDatabase.backup(mContext);
-        homeView.dismissDownloadDialog();
-        homeView.hideTestDownloadBtn();
-        homeView.displayCurrentDownloadedTest();
+        myView.dismissDownloadDialog();
+        myView.hideTestDownloadBtn();
+        myView.displayCurrentDownloadedTest();
+    }
+
+    @Background
+    @Override
+    public void getTempData(String nodeId) {
+        testData = AppDatabase.appDatabase.getContentTableDao().getContent("" + nodeId);
+        myView.testOpenData(testData);
     }
 
     @Background
@@ -634,123 +723,8 @@ public class TempHomePresenter implements TempHomeContract.HomePresenter, API_Co
         }
     }
 
-    @Override
-    public JSONArray getTestData(String jsonName) {
-        JSONArray returnCodeList = null;
-        try {
-            InputStream is = mContext.getAssets().open(jsonName);
-//            InputStream is = new FileInputStream(ApplicationClass.pradigiPath + "/.FCA/"+FC_Constants.currentSelectedLanguage+"/Game/CertificateData.json");
-            int size = is.available();
-            byte[] buffer = new byte[size];
-            is.read(buffer);
-            is.close();
-            String jsonStr = new String(buffer);
-            JSONObject jsonObj = new JSONObject(jsonStr);
-            returnCodeList = jsonObj.getJSONArray("CodeList");
-        } catch (Exception e) {
-            e.printStackTrace();
-            return null;
-        }
-        return returnCodeList;
-    }
-
     private void sortContentList(List<ContentTable> contentParentList) {
         Collections.sort(contentParentList, (o1, o2) -> o1.getNodeId().compareTo(o2.getNodeId()));
-    }
-
-    private void sortTestList(List<ContentTable> contentParentList) {
-        Collections.sort(contentParentList, (o1, o2) -> o1.getNodeId().compareTo(o2.getNodeId()));
-    }
-
-    @Background
-    @Override
-    public void generateTestData(JSONArray testData, String bottomNavNodeId) {
-        homeView.showLoader();
-        testList = AppDatabase.appDatabase.getContentTableDao().getContentData(bottomNavNodeId);
-        sortTestList(testList);
-        if (testList.size() > 0)
-            WebViewActivity.gameLevel = testList.get(0).getNodeAge();
-        BackupDatabase.backup(mContext);
-        codesText = new ArrayList<>();
-        codesText.clear();
-
-        try {
-            for (int j = 0; j < testList.size(); j++) {
-
-                codesText.add(testList.get(j).getNodeDesc());
-
-                CertificateModelClass contentTable = new CertificateModelClass();
-
-                contentTable.setCodeCount(Collections.frequency(codesText, testList.get(j).getNodeDesc()));
-
-                contentTable.setNodeId("" + testList.get(j).getNodeId());
-                contentTable.setCertiCode("" + testList.get(j).getNodeDesc());
-                contentTable.setNodeAge("" + testList.get(j).getNodeAge());
-                contentTable.setResourceId("" + testList.get(j).getResourceId());
-                contentTable.setResourcePath("" + testList.get(j).getResourcePath());
-                contentTable.setAsessmentGiven(false);
-                contentTable.setStudentId(FC_Constants.currentStudentID);
-                contentTable.setScoredMarks(0);
-                contentTable.setTotalMarks(0);
-                contentTable.setCertificateRating(0.0f);
-                contentTable.setStudentPercentage("");
-                contentTable.setContentType(testList.get(j).getContentType());
-                contentTable.setIsDownloaded(testList.get(j).getIsDownloaded());
-
-                for (int i = 0; i < testData.length(); i++) {
-                    String lang = testData.getJSONObject(i).getString("lang");
-                    String questionList = testData.getJSONObject(i).getJSONObject("questionList").getString("" + testList.get(j).getNodeDesc());
-                    String answerList = testData.getJSONObject(i).getJSONObject("answerList").getString("" + testList.get(j).getNodeDesc());
-                    if (lang.equalsIgnoreCase("english")) {
-                        contentTable.setEnglishQues("" + questionList);
-                        contentTable.setEnglishAnsw("" + answerList);
-                    } else if (lang.equalsIgnoreCase("hindi")) {
-                        contentTable.setHindiQues("" + questionList);
-                        contentTable.setHindiAnsw("" + answerList);
-                    } else if (lang.equalsIgnoreCase("marathi")) {
-                        contentTable.setMarathiQues("" + questionList);
-                        contentTable.setMarathiAnsw("" + answerList);
-                    } else if (lang.equalsIgnoreCase("Gujarati")) {
-                        contentTable.setGujaratiQues("" + questionList);
-                        contentTable.setGujaratiAnsw("" + answerList);
-                    } else if (lang.equalsIgnoreCase("Kannada")) {
-                        contentTable.setKannadaQues("" + questionList);
-                        contentTable.setKannadaAnsw("" + answerList);
-                    } else if (lang.equalsIgnoreCase("Bengali")) {
-                        contentTable.setBengaliQues("" + questionList);
-                        contentTable.setBengaliAnsw("" + answerList);
-                    } else if (lang.equalsIgnoreCase("Assamese")) {
-                        contentTable.setAssameseQues("" + questionList);
-                        contentTable.setAssameseAnsw("" + answerList);
-                    } else if (lang.equalsIgnoreCase("Telugu")) {
-                        contentTable.setTeluguQues("" + questionList);
-                        contentTable.setTeluguAnsw("" + answerList);
-                    } else if (lang.equalsIgnoreCase("Tamil")) {
-                        contentTable.setTamilQues("" + questionList);
-                        contentTable.setTamilAnsw("" + answerList);
-                    } else if (lang.equalsIgnoreCase("Odia")) {
-                        contentTable.setOdiaQues("" + questionList);
-                        contentTable.setOdiaAnsw("" + answerList);
-                    } else if (lang.equalsIgnoreCase("Malayalam")) {
-                        contentTable.setUrduQues("" + questionList);
-                        contentTable.setUrduAnsw("" + answerList);
-                    } else if (lang.equalsIgnoreCase("Punjabi")) {
-                        contentTable.setPunjabiQues("" + questionList);
-                        contentTable.setPunjabiAnsw("" + answerList);
-                    }
-
-                }
-                homeView.addContentToViewTestList(contentTable);
-            }
-
-            homeView.doubleQuestionCheck();
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        if (testList.size() > 0)
-            homeView.hideTestDownloadBtn();
-        homeView.initializeTheIndex();
     }
 
     @Background
@@ -918,13 +892,13 @@ public class TempHomePresenter implements TempHomeContract.HomePresenter, API_Co
                         }
                     }
                 }
-                //homeView.addContentToViewList(contentParentList);
+                //myView.addContentToViewList(contentParentList);
             } catch (Exception e) {
                 e.printStackTrace();
             }
 //            contentParentList = contentDBList;
-            homeView.addContentToViewList(contentDBList);
-            homeView.notifyAdapter();
+            myView.addContentToViewList(contentDBList);
+            myView.notifyAdapter();
 
         } else if (header.equalsIgnoreCase(FC_Constants.INTERNET_DOWNLOAD_RESOURCE)) {
             try {
@@ -988,16 +962,17 @@ public class TempHomePresenter implements TempHomeContract.HomePresenter, API_Co
                 e.printStackTrace();
             }
             sortContentList(rootLevelList);
-            homeView.setSelectedLevel(rootLevelList);
+            myView.setSelectedLevel(rootLevelList);
         } else if (header.equalsIgnoreCase(FC_Constants.BOTTOM_NODE)) {
             try {
-                Type listType = new TypeToken<ArrayList<ContentTableNew>>(){}.getType();
+                Type listType = new TypeToken<ArrayList<ContentTableNew>>() {
+                }.getType();
                 List<ContentTableNew> serverContentList = gson.fromJson(response, listType);
                 String botNodeId = serverContentList.get(0).getNodeId();
                 for (int i = 0; i < serverContentList.size(); i++)
                     if (serverContentList.get(i).getNodeTitle().equalsIgnoreCase(cosSection))
                         botNodeId = serverContentList.get(i).getNodeId();
-                homeView.setBotNodeId(botNodeId);
+//                myView.setBotNodeId(botNodeId);
                 getLevelDataFromApi(currentLevelNo, botNodeId);
             } catch (Exception e) {
                 e.printStackTrace();
@@ -1022,92 +997,10 @@ public class TempHomePresenter implements TempHomeContract.HomePresenter, API_Co
     @Override
     public void receivedError(String header) {
         if (header.equalsIgnoreCase(FC_Constants.INTERNET_LEVEL)) {
-            homeView.setSelectedLevel(rootList);
+            myView.setSelectedLevel(rootList);
         } else if (header.equalsIgnoreCase(FC_Constants.INTERNET_DOWNLOAD)) {
-            homeView.addContentToViewList(contentParentList);
-            homeView.notifyAdapter();
-        }
-    }
-
-    @Override
-    public float getStarRating(float perc) {
-        float ratings = 5;
-        if (perc < 21)
-            ratings = (float) 1;
-        else if (perc >= 21 && perc < 41)
-            ratings = (float) 2;
-        else if (perc >= 41 && perc < 61)
-            ratings = (float) 3;
-        else if (perc >= 61 && perc < 81)
-            ratings = (float) 4;
-        else if (perc >= 81)
-            ratings = (float) 5;
-
-        return ratings;
-    }
-
-    @Background
-    @Override
-    public void recordTestData(JSONObject jsonObjectAssessment, String certiTitle) {
-        try {
-            Assessment assessment = new Assessment();
-            assessment.setResourceIDa(jsonObjectAssessment.toString());
-            assessment.setSessionIDa(assessmentSession);
-            assessment.setSessionIDm(FC_Constants.currentSession);
-            assessment.setQuestionIda(0);
-            assessment.setScoredMarksa(0);
-            assessment.setTotalMarksa(0);
-            assessment.setStudentIDa(FC_Constants.currentAssessmentStudentID);
-            if (GROUP_LOGIN)
-                assessment.setStartDateTimea("" + currentGroup);
-            else
-                assessment.setStartDateTimea("na");
-
-            assessment.setEndDateTime(FC_Utility.getCurrentDateTime());
-            if (FC_Constants.supervisedAssessment)
-                assessment.setDeviceIDa("" + FC_Constants.currentsupervisorID);
-            else
-                assessment.setDeviceIDa("na");
-            assessment.setLevela(currentLevel);
-            assessment.setLabel("" + FC_Constants.CERTIFICATE_LBL);
-            assessment.setSentFlag(0);
-            AppDatabase.appDatabase.getAssessmentDao().insert(assessment);
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-    @Background
-    @Override
-    public void insertTestSession() {
-        try {
-            Session startSesion = new Session();
-            startSesion.setSessionID("" + assessmentSession);
-            startSesion.setFromDate("" + FC_Utility.getCurrentDateTime());
-            startSesion.setToDate("NA");
-            startSesion.setSentFlag(0);
-            AppDatabase.appDatabase.getSessionDao().insert(startSesion);
-            testSessionEntered = true;
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-    @Background
-    @Override
-    public void endTestSession() {
-        try {
-            Session startSesion = new Session();
-            String toDateTemp = AppDatabase.appDatabase.getSessionDao().getToDate(assessmentSession);
-            if (toDateTemp != null && toDateTemp.equalsIgnoreCase("na")) {
-                AppDatabase.appDatabase.getSessionDao().UpdateToDate(assessmentSession, FC_Utility.getCurrentDateTime());
-            }
-            BackupDatabase.backup(mContext);
-            AppDatabase.appDatabase.getSessionDao().insert(startSesion);
-            testSessionEnded = true;
-        } catch (Exception e) {
-            e.printStackTrace();
+            myView.addContentToViewList(contentParentList);
+            myView.notifyAdapter();
         }
     }
 }
