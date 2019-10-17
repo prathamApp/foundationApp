@@ -215,7 +215,6 @@ public class ReadingFragment extends Fragment implements STT_Result {
 
     public void setFillInTheBlanksQuestion() {
 
-
         question.setText(scienceQuestion.getQname());
         if (!scienceQuestion.getPhotourl().equalsIgnoreCase("")) {
             questionImage.setVisibility(View.VISIBLE);

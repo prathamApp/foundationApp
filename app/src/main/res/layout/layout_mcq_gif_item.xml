@@ -18,7 +18,7 @@
         android:background="@color/float_transparent"
         app:cardElevation="0dp">
 
-      <!--  <com.pratham.assessment.custom.gif_viewer.GifView
+        <com.pratham.assessment.custom.gif_viewer.GifView
             android:id="@+id/mcq_gif"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -27,8 +27,7 @@
             android:maxWidth="@dimen/_100sdp"
             android:maxHeight="@dimen/_150sdp"
             android:layout_gravity="center"
-            android:src="@drawable/tpgif"
-            android:textColor="@color/white" />-->
+            android:textColor="@color/white" />
         <ImageView
             android:id="@+id/iv_tick"
             android:layout_width="@dimen/_35sdp"

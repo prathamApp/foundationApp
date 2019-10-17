@@ -18,6 +18,7 @@ import com.nex3z.flowlayout.FlowLayout;
 import com.pratham.foundation.customView.SansButton;
 import com.pratham.foundation.customView.SansTextView;
 import com.pratham.foundation.customView.SansTextViewBold;
+import com.pratham.foundation.ui.contentPlayer.ContentPlayerActivity;
 import com.pratham.foundation.ui.contentPlayer.GameConstatnts;
 import com.pratham.foundation.ui.contentPlayer.keywords_mapping.KeywordMappingFragment_;
 import com.pratham.foundation.utility.FC_Utility;
@@ -183,7 +184,7 @@ public class KeywordsIdentificationFragment extends Fragment implements Keywords
                 Toast.makeText(getActivity(), "Upper limit reached", Toast.LENGTH_SHORT).show();
             }
         } else {
-
+            ((ContentPlayerActivity)getActivity()).ttsService.play(paraText);
         }
     }
 

@@ -55,6 +55,7 @@ import android.widget.Toast;
 import com.google.gson.Gson;
 import com.pratham.foundation.ApplicationClass;
 import com.pratham.foundation.R;
+import com.pratham.foundation.custumView.ZoomImageDialog;
 import com.pratham.foundation.ui.contentPlayer.ContentPlayerActivity;
 import com.pratham.foundation.ui.admin_panel.AdminControlsActivity_;
 import com.pratham.foundation.ui.admin_panel.group_selection.SelectGroupActivity_;
@@ -1808,5 +1809,9 @@ public class FC_Utility {
         Calendar cal = Calendar.getInstance();
         DateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss", Locale.ENGLISH);
         return dateFormat.format(cal.getTime());
+    }
+    public static void showZoomDialog(Context context,String path, String localPath) {
+        ZoomImageDialog zoomImageDialog = new ZoomImageDialog(context, path, localPath);
+        zoomImageDialog.show();
     }
 }

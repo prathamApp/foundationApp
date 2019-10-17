@@ -21,6 +21,7 @@ import com.pratham.foundation.ui.contentPlayer.keywords_mapping.KeywordMappingFr
 import com.pratham.foundation.ui.contentPlayer.listenAndWritting.ListeningAndWritting_;
 import com.pratham.foundation.ui.contentPlayer.multipleChoice.McqFillInTheBlanksFragment;
 import com.pratham.foundation.ui.contentPlayer.paragraph_writing.ParagraphWritingFragment_;
+import com.pratham.foundation.ui.contentPlayer.pictionary.pictionaryFragment;
 import com.pratham.foundation.ui.contentPlayer.reading.ReadingFragment;
 import com.pratham.foundation.ui.contentPlayer.trueFalse.TrueFalseFragment;
 import com.pratham.foundation.utility.FC_Constants;
@@ -97,6 +98,10 @@ public class SequenceGameAdapter extends RecyclerView.Adapter<SequenceGameAdapte
                     case "110":
                         FC_Utility.showFragment((Activity) context, new FillInTheBlanksFragment(), R.id.RL_CPA,
                                 bundle, FillInTheBlanksFragment.class.getSimpleName());
+                        break;
+                    case "111":
+                        FC_Utility.showFragment((Activity) context, new pictionaryFragment(), R.id.RL_CPA,
+                                bundle, pictionaryFragment.class.getSimpleName());
                         break;
 
                 }

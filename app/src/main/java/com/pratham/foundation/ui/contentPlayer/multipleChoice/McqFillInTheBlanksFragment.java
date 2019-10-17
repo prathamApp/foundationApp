@@ -434,6 +434,5 @@ public class McqFillInTheBlanksFragment extends Fragment {
             e.printStackTrace();
         }
     }
-
 }
 
