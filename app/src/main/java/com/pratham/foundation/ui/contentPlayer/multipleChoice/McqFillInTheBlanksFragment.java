@@ -102,9 +102,9 @@ public class McqFillInTheBlanksFragment extends Fragment {
             contentTitle = getArguments().getString("contentName");
             onSdCard = getArguments().getBoolean("onSdCard", false);
             if (onSdCard)
-                readingContentPath = ApplicationClass.contentSDPath + "/.LLA/English/Game/" + contentPath + "/";
+                readingContentPath = ApplicationClass.contentSDPath + "/.FCA/English/Game/" + contentPath + "/";
             else
-                readingContentPath = ApplicationClass.foundationPath + "/.LLA/English/Game/" + contentPath + "/";
+                readingContentPath = ApplicationClass.foundationPath + "/.FCA/English/Game/" + contentPath + "/";
 
             getData();
         }

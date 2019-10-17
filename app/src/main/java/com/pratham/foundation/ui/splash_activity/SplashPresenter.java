@@ -533,10 +533,10 @@ public class SplashPresenter implements SplashContract.SplashPresenter {
                 try {
                     if (!FastSave.getInstance().getBoolean(FC_Constants.KEY_ASSET_COPIED, false)) {
                         File mydir = null;
-                        mydir = new File(ApplicationClass.foundationPath + "/.LLA");
+                        mydir = new File(ApplicationClass.foundationPath + "/.FCA");
                         if (!mydir.exists()) mydir.mkdirs();
 
-                        String path = ApplicationClass.foundationPath + "/.LLA/";
+                        String path = ApplicationClass.foundationPath + "/.FCA/";
                         copyFile(context, path);
 
                         FastSave.getInstance().saveBoolean(FC_Constants.KEY_ASSET_COPIED, true);
@@ -584,7 +584,7 @@ public class SplashPresenter implements SplashContract.SplashPresenter {
                 out.write(buffer, 0, read);
                 read = in.read(buffer);
             }
-            unzipFile(ApplicationClass.foundationPath + "/.LLA/English.zip", ApplicationClass.foundationPath + "/.LLA");
+            unzipFile(ApplicationClass.foundationPath + "/.FCA/English.zip", ApplicationClass.foundationPath + "/.FCA");
         } catch (Exception e) {
             e.getMessage();
         }
@@ -594,7 +594,7 @@ public class SplashPresenter implements SplashContract.SplashPresenter {
         try {
             File direct = new File(Environment.getExternalStorageDirectory().toString() + "/.EngGameInternal");
             if (!direct.exists()) direct.mkdir();
-            InputStream in = new FileInputStream(ApplicationClass.contentSDPath + "/.LLA/English/" + AppDatabase.DB_NAME);
+            InputStream in = new FileInputStream(ApplicationClass.contentSDPath + "/.FCA/English/" + AppDatabase.DB_NAME);
             OutputStream out = new FileOutputStream(Environment.getExternalStorageDirectory().toString() + "/.EngGameInternal/" + AppDatabase.DB_NAME);
             byte[] buffer = new byte[1024];
             int read = in.read(buffer);
@@ -687,7 +687,7 @@ public class SplashPresenter implements SplashContract.SplashPresenter {
                 if (ApplicationClass.isTablet) {
                     folder_file = new File(ApplicationClass.contentSDPath);
                 } else
-                    folder_file = new File(ApplicationClass.foundationPath + "/.LLA/English/");
+                    folder_file = new File(ApplicationClass.foundationPath + "/.FCA/English/");
                 if (folder_file.exists()) {
                     Log.d("-CT-", "doInBackground ApplicationClass.contentSDPath: " + ApplicationClass.contentSDPath);
                     db_file = new File(folder_file + "/" + AppDatabase.DB_NAME);
@@ -882,7 +882,7 @@ public class SplashPresenter implements SplashContract.SplashPresenter {
 
         File file;
         if (ApplicationClass.isTablet) {
-            file = new File(fpath + "/.LLA/English/foundation_db");
+            file = new File(fpath + "/.FCA/English/foundation_db");
 
             if (file.exists()) {
                 ApplicationClass.contentSDPath = fpath;
@@ -915,7 +915,7 @@ public class SplashPresenter implements SplashContract.SplashPresenter {
             }
 
             File folder_file, db_file;
-            folder_file = new File(ApplicationClass.foundationPath + "/.LLA");
+            folder_file = new File(ApplicationClass.foundationPath + "/.FCA");
             if (folder_file.exists()) {
                 Log.d("-CT-", "doInBackground ApplicationClass.contentSDPath: " + ApplicationClass.contentSDPath);
                 db_file = new File(folder_file + "/" + AppDatabase.DB_NAME);

@@ -103,13 +103,13 @@ public class PracticeInnerDataAdapter extends RecyclerView.Adapter {
                         itemsList.get(i).getIsDownloaded().equalsIgnoreCase("true")) {
                     if (itemsList.get(i).isOnSDCard()) {
                         f = new File(ApplicationClass.contentSDPath +
-                                "/.LLA/English/LLA_Thumbs/" + itemsList.get(i).getNodeImage());
+                                "/.FCA/English/LLA_Thumbs/" + itemsList.get(i).getNodeImage());
                         if (f.exists()) {
                             folderHolder.itemImage.setImageURI(Uri.fromFile(f));
                         }
                     } else {
                         f = new File(ApplicationClass.foundationPath +
-                                "/.LLA/English/LLA_Thumbs/" + itemsList.get(i).getNodeImage());
+                                "/.FCA/English/LLA_Thumbs/" + itemsList.get(i).getNodeImage());
                         if (f.exists()) {
                             folderHolder.itemImage.setImageURI(Uri.fromFile(f));
                         }
@@ -155,13 +155,13 @@ public class PracticeInnerDataAdapter extends RecyclerView.Adapter {
 
                     if (itemsList.get(i).isOnSDCard()) {
                         file = new File(ApplicationClass.contentSDPath +
-                                "/.LLA/English/LLA_Thumbs/" + itemsList.get(i).getNodeImage());
+                                "/.FCA/English/LLA_Thumbs/" + itemsList.get(i).getNodeImage());
                         if (file.exists()) {
                             fileHolder.itemImage.setImageURI(Uri.fromFile(file));
                         }
                     } else {
                         file = new File(ApplicationClass.foundationPath +
-                                "/.LLA/English/LLA_Thumbs/" + itemsList.get(i).getNodeImage());
+                                "/.FCA/English/LLA_Thumbs/" + itemsList.get(i).getNodeImage());
                         if (file.exists()) {
                             fileHolder.itemImage.setImageURI(Uri.fromFile(file));
                         }

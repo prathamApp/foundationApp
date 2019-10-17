@@ -357,7 +357,7 @@ public class CertificatePresenter implements CertificateContract.CertificatePres
 
             is = context.getAssets().open("" + jsonName);
 //            InputStream is = context.getAssets().open("CertificateData.json");
-//            InputStream is = new FileInputStream(ApplicationClass.pradigiPath + "/.LLA/"+
+//            InputStream is = new FileInputStream(ApplicationClass.pradigiPath + "/.FCA/"+
 //            FC_Constants.currentSelectedLanguage+"/Game/CertificateData.json");
             int size = is.available();
             byte[] buffer = new byte[size];
@@ -402,7 +402,7 @@ public class CertificatePresenter implements CertificateContract.CertificatePres
 
     public void fetchAssessments() {
         try {
-//            InputStream is = new FileInputStream(ApplicationClass.pradigiPath + "/.LLA/"+FC_Constants.currentSelectedLanguage+"/Game/CertificateData.json");
+//            InputStream is = new FileInputStream(ApplicationClass.pradigiPath + "/.FCA/"+FC_Constants.currentSelectedLanguage+"/Game/CertificateData.json");
             InputStream is = context.getAssets().open("CertificateData.json");
             int size = is.available();
             byte[] buffer = new byte[size];

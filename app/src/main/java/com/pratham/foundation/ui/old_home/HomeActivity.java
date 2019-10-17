@@ -686,9 +686,9 @@ public class HomeActivity extends BaseActivity implements /*BottomNavigationView
             String resPath;
             String gameID = contentList.getResourceId();
             if (contentList.isOnSDCard())
-                resPath = ApplicationClass.contentSDPath + "/.LLA/English/Game/" + contentList.getResourcePath();
+                resPath = ApplicationClass.contentSDPath + "/.FCA/English/Game/" + contentList.getResourcePath();
             else
-                resPath = ApplicationClass.foundationPath + "/.LLA/English/Game/" + contentList.getResourcePath();
+                resPath = ApplicationClass.foundationPath + "/.FCA/English/Game/" + contentList.getResourcePath();
             File file = new File(resPath);
             Uri path = Uri.fromFile(file);
                 Intent intent = new Intent(HomeActivity.this, WebViewActivity.class);
@@ -1194,9 +1194,9 @@ public class HomeActivity extends BaseActivity implements /*BottomNavigationView
                 String resPath;
                 String gameID = testData.getResourceId();
                 if (testData.isOnSDCard())
-                    resPath = ApplicationClass.contentSDPath + "/.LLA/English/Game/" + testDataSplit.getResourcePath();
+                    resPath = ApplicationClass.contentSDPath + "/.FCA/English/Game/" + testDataSplit.getResourcePath();
                 else
-                    resPath = ApplicationClass.foundationPath + "/.LLA/English/Game/" + testDataSplit.getResourcePath();
+                    resPath = ApplicationClass.foundationPath + "/.FCA/English/Game/" + testDataSplit.getResourcePath();
                 File file = new File(resPath);
                 if (file.exists()) {
                     Uri path = Uri.fromFile(file);

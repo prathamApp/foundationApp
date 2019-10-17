@@ -327,9 +327,9 @@ public class PracticeFragment extends Fragment implements PracticeContract.Pract
             String resPath;
             String gameID = contentList.getResourceId();
             if (contentList.isOnSDCard())
-                resPath = ApplicationClass.contentSDPath + "/.LLA/English/Game/" + contentList.getResourcePath();
+                resPath = ApplicationClass.contentSDPath + "/.FCA/English/Game/" + contentList.getResourcePath();
             else
-                resPath = ApplicationClass.foundationPath + "/.LLA/English/Game/" + contentList.getResourcePath();
+                resPath = ApplicationClass.foundationPath + "/.FCA/English/Game/" + contentList.getResourcePath();
             File file = new File(resPath);
             Uri path = Uri.fromFile(file);
             Intent intent = new Intent(getActivity(), WebViewActivity.class);

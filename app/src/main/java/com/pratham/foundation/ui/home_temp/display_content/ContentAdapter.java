@@ -68,7 +68,7 @@ public class ContentAdapter extends RecyclerView.Adapter<ContentAdapter.MyViewHo
         if (!ApplicationClass.isTablet) {
             if (contentList.getIsDownloaded().equalsIgnoreCase("true") || contentList.getIsDownloaded().equalsIgnoreCase("1"))
                 Glide.with(mContext).setDefaultRequestOptions(requestOptions)
-                        .load(ApplicationClass.foundationPath + "/.LLA/English/LLA_Thumbs/" + contentList.getNodeImage())
+                        .load(ApplicationClass.foundationPath + "/.FCA/English/LLA_Thumbs/" + contentList.getNodeImage())
                         .into(holder.thumbnail);
             else
                 Glide.with(mContext).setDefaultRequestOptions(requestOptions)
@@ -78,19 +78,19 @@ public class ContentAdapter extends RecyclerView.Adapter<ContentAdapter.MyViewHo
         } else {
             if (contentList.isOnSDCard())
                 Glide.with(mContext).setDefaultRequestOptions(requestOptions)
-                        .load(ApplicationClass.contentSDPath + "/.LLA/English/LLA_Thumbs/" + contentList.getNodeImage())
+                        .load(ApplicationClass.contentSDPath + "/.FCA/English/LLA_Thumbs/" + contentList.getNodeImage())
                         .into(holder.thumbnail);
             else if ( (contentList.isOnSDCard() )&&
                     (contentList.getIsDownloaded().equalsIgnoreCase("true")
                             || contentList.getIsDownloaded().equalsIgnoreCase("1")))
                 Glide.with(mContext).setDefaultRequestOptions(requestOptions)
-                        .load(ApplicationClass.contentSDPath + "/.LLA/English/LLA_Thumbs/" + contentList.getNodeImage())
+                        .load(ApplicationClass.contentSDPath + "/.FCA/English/LLA_Thumbs/" + contentList.getNodeImage())
                         .into(holder.thumbnail);
             else if ( (!contentList.isOnSDCard() )&&
                     (contentList.getIsDownloaded().equalsIgnoreCase("true")
                             || contentList.getIsDownloaded().equalsIgnoreCase("1")))
                 Glide.with(mContext).setDefaultRequestOptions(requestOptions)
-                        .load(ApplicationClass.foundationPath+ "/.LLA/English/LLA_Thumbs/" + contentList.getNodeImage())
+                        .load(ApplicationClass.foundationPath+ "/.FCA/English/LLA_Thumbs/" + contentList.getNodeImage())
                         .into(holder.thumbnail);
             else
                 Glide.with(mContext).setDefaultRequestOptions(requestOptions)

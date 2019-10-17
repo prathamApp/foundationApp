@@ -106,23 +106,23 @@ public class SectionListDataAdapter extends RecyclerView.Adapter<SectionListData
                         File f;
                         if (singleItem.isOnSDCard()) {
                             f = new File(ApplicationClass.contentSDPath +
-                                    "/.LLA/English/LLA_Thumbs/"+ singleItem.getNodeImage());
+                                    "/.FCA/English/LLA_Thumbs/"+ singleItem.getNodeImage());
                             if (f.exists()) {
                                 Bitmap bmImg = BitmapFactory.decodeFile(ApplicationClass.contentSDPath +
-                                        "/.LLA/English/LLA_Thumbs/" + singleItem.getNodeImage());
+                                        "/.FCA/English/LLA_Thumbs/" + singleItem.getNodeImage());
                                 BitmapFactory.decodeStream(new FileInputStream(ApplicationClass.contentSDPath +
-                                        "/.LLA/English/LLA_Thumbs/" + singleItem.getNodeImage()));
+                                        "/.FCA/English/LLA_Thumbs/" + singleItem.getNodeImage()));
                                 holder.itemImage.setImageBitmap(bmImg);
                             } else
                                 holder.itemImage.setImageResource(R.drawable.place_holder_temp);
                         } else {
                             f = new File(ApplicationClass.foundationPath +
-                                    "/.LLA/English/LLA_Thumbs/" + singleItem.getNodeImage());
+                                    "/.FCA/English/LLA_Thumbs/" + singleItem.getNodeImage());
                             if (f.exists()) {
                                 Bitmap bmImg = BitmapFactory.decodeFile(ApplicationClass.foundationPath +
-                                        "/.LLA/English/LLA_Thumbs/" + singleItem.getNodeImage());
+                                        "/.FCA/English/LLA_Thumbs/" + singleItem.getNodeImage());
                                 BitmapFactory.decodeStream(new FileInputStream(ApplicationClass.foundationPath +
-                                        "/.LLA/English/LLA_Thumbs/" + singleItem.getNodeImage()));
+                                        "/.FCA/English/LLA_Thumbs/" + singleItem.getNodeImage()));
                                 holder.itemImage.setImageBitmap(bmImg);
                             } else
                                 holder.itemImage.setImageResource(R.drawable.place_holder_temp);
@@ -161,23 +161,23 @@ public class SectionListDataAdapter extends RecyclerView.Adapter<SectionListData
                         File f;
                         if (singleItem.isOnSDCard()) {
                             f = new File(ApplicationClass.contentSDPath +
-                                    "/.LLA/English/LLA_Thumbs/" + singleItem.getNodeImage());
+                                    "/.FCA/English/LLA_Thumbs/" + singleItem.getNodeImage());
                             if (f.exists()) {
                                 Bitmap bmImg = BitmapFactory.decodeFile(ApplicationClass.contentSDPath +
-                                        "/.LLA/English/LLA_Thumbs/" + singleItem.getNodeImage());
+                                        "/.FCA/English/LLA_Thumbs/" + singleItem.getNodeImage());
                                 BitmapFactory.decodeStream(new FileInputStream(ApplicationClass.contentSDPath +
-                                        "/.LLA/English/LLA_Thumbs/" + singleItem.getNodeImage()));
+                                        "/.FCA/English/LLA_Thumbs/" + singleItem.getNodeImage()));
                                 holder.itemImage.setImageBitmap(bmImg);
                             } else
                                 holder.itemImage.setImageResource(R.drawable.place_holder_temp);
                         } else {
                             f = new File(ApplicationClass.foundationPath +
-                                    "/.LLA/English/LLA_Thumbs/" + singleItem.getNodeImage());
+                                    "/.FCA/English/LLA_Thumbs/" + singleItem.getNodeImage());
                             if (f.exists()) {
                                 Bitmap bmImg = BitmapFactory.decodeFile(ApplicationClass.foundationPath +
-                                        "/.LLA/English/LLA_Thumbs/" + singleItem.getNodeImage());
+                                        "/.FCA/English/LLA_Thumbs/" + singleItem.getNodeImage());
                                 BitmapFactory.decodeStream(new FileInputStream(ApplicationClass.foundationPath +
-                                        "/.LLA/English/LLA_Thumbs/" + singleItem.getNodeImage()));
+                                        "/.FCA/English/LLA_Thumbs/" + singleItem.getNodeImage()));
                                 holder.itemImage.setImageBitmap(bmImg);
                             } else
                                 holder.itemImage.setImageResource(R.drawable.place_holder_temp);

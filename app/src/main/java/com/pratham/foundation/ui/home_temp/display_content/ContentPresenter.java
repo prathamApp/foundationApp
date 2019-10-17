@@ -283,10 +283,10 @@ public class ContentPresenter implements ContentContract.ContentPresenter, API_C
 
         String foldername = contentItem.getResourcePath()/*.split("/")[0]*/;
         FC_Utility.deleteRecursive(new File(ApplicationClass.foundationPath
-                + "/.LLA/English/Game/" + foldername));
+                + "/.FCA/English/Game/" + foldername));
 
         FC_Utility.deleteRecursive(new File(ApplicationClass.foundationPath
-                + "/.LLA/English/LLA_Thumbs/" + contentItem.getNodeImage()));
+                + "/.FCA/English/LLA_Thumbs/" + contentItem.getNodeImage()));
         contentView.notifyAdapterItem(deletePos);
     }
 

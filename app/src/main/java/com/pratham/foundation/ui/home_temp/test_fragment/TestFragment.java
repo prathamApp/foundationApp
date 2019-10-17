@@ -290,9 +290,9 @@ public class TestFragment extends Fragment implements TestContract.TestView,
                 String resPath;
                 String gameID = testData.getResourceId();
                 if (testData.isOnSDCard())
-                    resPath = ApplicationClass.contentSDPath + "/.LLA/English/Game/" + testDataSplit.getResourcePath();
+                    resPath = ApplicationClass.contentSDPath + "/.FCA/English/Game/" + testDataSplit.getResourcePath();
                 else
-                    resPath = ApplicationClass.foundationPath + "/.LLA/English/Game/" + testDataSplit.getResourcePath();
+                    resPath = ApplicationClass.foundationPath + "/.FCA/English/Game/" + testDataSplit.getResourcePath();
                 File file = new File(resPath);
                 if (file.exists()) {
                     Uri path = Uri.fromFile(file);

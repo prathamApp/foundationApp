@@ -397,7 +397,7 @@ public class AddStudentFragment extends DialogFragment implements AvatarClickLis
             avatarList.get(i).setClickFlag(false);
         avatarList.get(position).setClickFlag(true);
         avatarAdapter.notifyDataSetChanged();
-//        avatarName = ApplicationClass.pradigiPath + "/.LLA/English/LLA_Thumbs/" + StudentName;
+//        avatarName = ApplicationClass.pradigiPath + "/.FCA/English/LLA_Thumbs/" + StudentName;
 
     }
 }

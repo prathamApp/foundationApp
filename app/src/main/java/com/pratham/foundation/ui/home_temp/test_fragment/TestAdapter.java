@@ -269,7 +269,7 @@ public class TestAdapter extends RecyclerView.Adapter {
         JSONArray returnCodeList = null;
         try {
             InputStream is = mContext.getAssets().open(jsonName);
-//            InputStream is = new FileInputStream(ApplicationClass.pradigiPath + "/.LLA/"+FC_Constants.currentSelectedLanguage+"/Game/CertificateData.json");
+//            InputStream is = new FileInputStream(ApplicationClass.pradigiPath + "/.FCA/"+FC_Constants.currentSelectedLanguage+"/Game/CertificateData.json");
             int size = is.available();
             byte[] buffer = new byte[size];
             is.read(buffer);

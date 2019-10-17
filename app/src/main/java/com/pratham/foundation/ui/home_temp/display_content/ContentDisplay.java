@@ -305,10 +305,10 @@ public class ContentDisplay extends BaseActivity implements ContentContract.Cont
             String resPath = null;
             String gameID = ContentTableList.get(position).getResourceId();
             if (ContentTableList.get(position).isOnSDCard())
-                resPath = ApplicationClass.contentSDPath + "/.LLA/English/Game/" +
+                resPath = ApplicationClass.contentSDPath + "/.FCA/English/Game/" +
                         ContentTableList.get(position).getResourcePath();
             else
-                resPath = ApplicationClass.foundationPath + "/.LLA/English/Game/" +
+                resPath = ApplicationClass.foundationPath + "/.FCA/English/Game/" +
                         ContentTableList.get(position).getResourcePath();
             File file = new File(resPath);
             if (file.exists()) {

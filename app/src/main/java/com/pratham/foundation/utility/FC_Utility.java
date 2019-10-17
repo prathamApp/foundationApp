@@ -519,7 +519,7 @@ public class FC_Utility {
         File[] intDir = context.getExternalFilesDirs("");
         File mydir = null;
 
-        mydir = new File(intDir[0].getAbsolutePath() + "/.LLA/English/Game");
+        mydir = new File(intDir[0].getAbsolutePath() + "/.FCA/English/Game");
         if (mydir.exists())
             return intDir[0].getAbsolutePath();
         else if (intDir.length > 1) {

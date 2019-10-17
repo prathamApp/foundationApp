@@ -172,9 +172,9 @@ public class StoryReadingFragment extends Fragment implements
 
         presenter.addScore(0, "", 0, 0, startTime, contentType + " start");
         if (onSdCard)
-            readingContentPath = ApplicationClass.contentSDPath + "/.LLA/English/Game/" + storyPath + "/";
+            readingContentPath = ApplicationClass.contentSDPath + "/.FCA/English/Game/" + storyPath + "/";
         else
-            readingContentPath = ApplicationClass.foundationPath + "/.LLA/English/Game/" + storyPath + "/";
+            readingContentPath = ApplicationClass.foundationPath + "/.FCA/English/Game/" + storyPath + "/";
 
         continuousSpeechService.resetSpeechRecognizer();
 

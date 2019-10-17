@@ -256,7 +256,7 @@ public class PushOrAssignFragment extends Fragment {
     public void populateMenu() {
         try {
             File folder_file, db_file;
-            folder_file = new File(ApplicationClass.foundationPath + "/.LLA/English/");
+            folder_file = new File(ApplicationClass.foundationPath + "/.FCA/English/");
             if (folder_file.exists()) {
                 Log.d("-CT-", "doInBackground ApplicationClass.contentSDPath: " + ApplicationClass.contentSDPath);
                 db_file = new File(folder_file + "/" + AppDatabase.DB_NAME);

@@ -58,15 +58,15 @@ public class TestStudentAdapter extends RecyclerView.Adapter<TestStudentAdapter.
         holder.title.setText(studentList.getFullName());
         if (studentList.getGender() != null) {
             if (studentList.getGender().equalsIgnoreCase("male"))
-                Glide.with(mContext).load(R.drawable.b2/* ApplicationClass.contentSDPath + "/.LLA/"+
+                Glide.with(mContext).load(R.drawable.b2/* ApplicationClass.contentSDPath + "/.FCA/"+
                         FC_Constants.currentSelectedLanguage+"/LLA_Thumbs/b2.png"*/)
                         .into(holder.thumbnail);
             else
-                Glide.with(mContext).load(R.drawable.g1/*2ApplicationClass.contentSDPath + "/.LLA/"+
+                Glide.with(mContext).load(R.drawable.g1/*2ApplicationClass.contentSDPath + "/.FCA/"+
                         FC_Constants.currentSelectedLanguage+"/LLA_Thumbs/g1.png"*/)
                         .into(holder.thumbnail);
         } else
-            Glide.with(mContext).load(R.drawable.g1/*ApplicationClass.contentSDPath + "/.LLA/"+
+            Glide.with(mContext).load(R.drawable.g1/*ApplicationClass.contentSDPath + "/.FCA/"+
                     FC_Constants.currentSelectedLanguage+"/LLA_Thumbs/g1.png"*/)
                     .into(holder.thumbnail);
         holder.content_card_view.setOnClickListener(new View.OnClickListener() {

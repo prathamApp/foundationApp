@@ -175,7 +175,7 @@ public class Student_profile_activity extends BaseActivity implements Student_pr
                                 profileImage.setImageResource(R.drawable.g3);
                                 break;
                         }
-/*                        Glide.with(context).load(ApplicationClass.pradigiPath + "/.LLA/" +
+/*                        Glide.with(context).load(ApplicationClass.pradigiPath + "/.FCA/" +
                                 FC_Constants.currentSelectedLanguage + "/LLA_Thumbs/" + sImage).into(profileImage);*/
                     }
                 } else

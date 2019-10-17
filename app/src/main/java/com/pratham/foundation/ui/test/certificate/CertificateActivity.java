@@ -256,10 +256,10 @@ public class CertificateActivity extends BaseActivity implements CertificateCont
         String gameID = ContentTableList.get(position).getResourceId();
         gameLevel = ContentTableList.get(position).getNodeAge();
         if (!ApplicationClass.isTablet)
-            resPath = ApplicationClass.foundationPath + "/.LLA/English/Game/" +
+            resPath = ApplicationClass.foundationPath + "/.FCA/English/Game/" +
                     ContentTableList.get(position).getResourcePath();
         else
-            resPath = ApplicationClass.contentSDPath + "/.LLA/English/Game/" +
+            resPath = ApplicationClass.contentSDPath + "/.FCA/English/Game/" +
                     ContentTableList.get(position).getResourcePath();
         File file = new File(resPath);
         Uri path = Uri.fromFile(file);

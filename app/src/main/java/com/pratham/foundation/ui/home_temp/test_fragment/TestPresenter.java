@@ -287,7 +287,7 @@ public class TestPresenter implements TestContract.TestPresenter, API_Content_Re
         JSONArray returnCodeList = null;
         try {
             InputStream is = mContext.getAssets().open(jsonName);
-//            InputStream is = new FileInputStream(ApplicationClass.pradigiPath + "/.LLA/"+FC_Constants.currentSelectedLanguage+"/Game/CertificateData.json");
+//            InputStream is = new FileInputStream(ApplicationClass.pradigiPath + "/.FCA/"+FC_Constants.currentSelectedLanguage+"/Game/CertificateData.json");
             int size = is.available();
             byte[] buffer = new byte[size];
             is.read(buffer);
@@ -604,7 +604,7 @@ public class TestPresenter implements TestContract.TestPresenter, API_Content_Re
     private List<WordEnglish> fetchWords(String jasonName) {
         ArrayList<WordEnglish> arrayList = new ArrayList<>();
         try {
-            //InputStream is = new FileInputStream(ApplicationClass.pradigiPath + "/.LLA/"+FC_Constants.currentSelectedLanguage+"/RC/" + jasonName);
+            //InputStream is = new FileInputStream(ApplicationClass.pradigiPath + "/.FCA/"+FC_Constants.currentSelectedLanguage+"/RC/" + jasonName);
             InputStream is = mContext.getAssets().open("" + jasonName);
             JsonReader reader = new JsonReader(new InputStreamReader(is, "UTF-8"));
             Gson gson = new GsonBuilder().create();
@@ -631,7 +631,7 @@ public class TestPresenter implements TestContract.TestPresenter, API_Content_Re
     public JSONArray fetchSentences(String jasonName) {
         JSONArray jsonArr = null;
         try {
-            //InputStream is = new FileInputStream(ApplicationClass.pradigiPath + "/.LLA/"+FC_Constants.currentSelectedLanguage+"/RC/" + jasonName);
+            //InputStream is = new FileInputStream(ApplicationClass.pradigiPath + "/.FCA/"+FC_Constants.currentSelectedLanguage+"/RC/" + jasonName);
             InputStream is = mContext.getAssets().open("" + jasonName);
             int size = is.available();
             byte[] buffer = new byte[size];
@@ -660,7 +660,7 @@ public class TestPresenter implements TestContract.TestPresenter, API_Content_Re
     @Background
     @Override
     public void updateDownloadJson(String folderPath) {
-        String path = ApplicationClass.foundationPath + "/.LLA/English/Game" + folderPath;
+        String path = ApplicationClass.foundationPath + "/.FCA/English/Game" + folderPath;
         try {
             InputStream is = new FileInputStream(path + "/gameinfo.json");
             int size = is.available();

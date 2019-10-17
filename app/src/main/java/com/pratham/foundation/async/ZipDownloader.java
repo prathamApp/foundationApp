@@ -47,13 +47,13 @@ public class ZipDownloader {
                                               Context context,
                                               ArrayList<ContentTable> levelContents) {
         File mydir = null;
-        mydir = new File(ApplicationClass.foundationPath + "/.LLA");
+        mydir = new File(ApplicationClass.foundationPath + "/.FCA");
         if (!mydir.exists()) mydir.mkdirs();
-        mydir = new File(ApplicationClass.foundationPath + "/.LLA/English");
+        mydir = new File(ApplicationClass.foundationPath + "/.FCA/English");
         if (!mydir.exists()) mydir.mkdirs();
-        mydir = new File(ApplicationClass.foundationPath + "/.LLA/English/LLA_Thumbs");
+        mydir = new File(ApplicationClass.foundationPath + "/.FCA/English/LLA_Thumbs");
         if (!mydir.exists()) mydir.mkdirs();
-        mydir = new File(ApplicationClass.foundationPath + "/.LLA/English/Game/" );
+        mydir = new File(ApplicationClass.foundationPath + "/.FCA/English/Game/" );
         if (!mydir.exists()) mydir.mkdirs();
 
         if (ApplicationClass.wiseF.isDeviceConnectedToSSID(FC_Constants.PRATHAM_KOLIBRI_HOTSPOT)) {
@@ -84,10 +84,10 @@ public class ZipDownloader {
         if (path.isEmpty())
             return;
         DocumentFile documentFile = DocumentFile.fromFile(new File(path));
-        if (documentFile.findFile("/.LLA/English/" + foldername) != null)
-            documentFile = documentFile.findFile("/.LLA/English/"+ foldername);
+        if (documentFile.findFile("/.FCA/English/" + foldername) != null)
+            documentFile = documentFile.findFile("/.FCA/English/"+ foldername);
         else
-            documentFile = documentFile.createDirectory("/.LLA/English/" + foldername);
+            documentFile = documentFile.createDirectory("/.FCA/English/" + foldername);
         if (ApplicationClass.wiseF.isDeviceConnectedToSSID(FC_Constants.PRATHAM_KOLIBRI_HOTSPOT)) {
             if (foldername.equalsIgnoreCase(FC_Constants.GAME)) {
                 f_name = f_name.substring(0, f_name.lastIndexOf("."));

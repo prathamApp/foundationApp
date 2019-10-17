@@ -67,9 +67,9 @@ public class ListeningAndWritting extends Fragment implements ListeningAndWritti
             onSdCard = bundle.getBoolean("onSdCard", false);
         }
         if (onSdCard)
-            readingContentPath = ApplicationClass.contentSDPath + "/.LLA/English/Game/" + contentPath + "/";
+            readingContentPath = ApplicationClass.contentSDPath + "/.FCA/English/Game/" + contentPath + "/";
         else
-            readingContentPath = ApplicationClass.foundationPath + "/.LLA/English/Game/" + contentPath + "/";
+            readingContentPath = ApplicationClass.foundationPath + "/.FCA/English/Game/" + contentPath + "/";
         presenter.setView(ListeningAndWritting.this, contentTitle, resId);
         mediaPlayerUtil = new MediaPlayerUtil(getActivity());
         presenter.fetchJsonData(readingContentPath);
