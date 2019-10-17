@@ -592,10 +592,10 @@ public class SplashPresenter implements SplashContract.SplashPresenter {
 
     private void copyDBFile() {
         try {
-            File direct = new File(Environment.getExternalStorageDirectory().toString() + "/.EngGameInternal");
+            File direct = new File(Environment.getExternalStorageDirectory().toString() + "/.FCAInternal");
             if (!direct.exists()) direct.mkdir();
             InputStream in = new FileInputStream(ApplicationClass.contentSDPath + "/.FCA/English/" + AppDatabase.DB_NAME);
-            OutputStream out = new FileOutputStream(Environment.getExternalStorageDirectory().toString() + "/.EngGameInternal/" + AppDatabase.DB_NAME);
+            OutputStream out = new FileOutputStream(Environment.getExternalStorageDirectory().toString() + "/.FCAInternal/" + AppDatabase.DB_NAME);
             byte[] buffer = new byte[1024];
             int read = in.read(buffer);
             while (read != -1) {
@@ -618,7 +618,7 @@ public class SplashPresenter implements SplashContract.SplashPresenter {
                     copyDBFile();
                     try {
                         File db_file;
-                        db_file = new File(Environment.getExternalStorageDirectory().toString() + "/.EngGameInternal/" + AppDatabase.DB_NAME);
+                        db_file = new File(Environment.getExternalStorageDirectory().toString() + "/.FCAInternal/" + AppDatabase.DB_NAME);
                         if (db_file.exists()) {
                             SQLiteDatabase db = SQLiteDatabase.openDatabase(db_file.getAbsolutePath(), null, SQLiteDatabase.OPEN_READONLY);
                             if (db != null) {

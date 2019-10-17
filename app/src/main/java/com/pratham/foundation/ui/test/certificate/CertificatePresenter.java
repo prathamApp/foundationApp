@@ -387,7 +387,7 @@ public class CertificatePresenter implements CertificateContract.CertificatePres
                         supervisorData = AppDatabase.appDatabase.getSupervisorDataDao().getSupervisorById("" + assessmentProfile.getDeviceIDa());
 
                     certificateView.setSupervisorData("" + supervisorData.getSupervisorName(), "" +
-                            Environment.getExternalStorageDirectory().toString() + "/.EngGameInternal/supervisorImages/" +
+                            Environment.getExternalStorageDirectory().toString() + "/.FCAInternal/supervisorImages/" +
                             supervisorData.getSupervisorPhoto());
 
                     return null;

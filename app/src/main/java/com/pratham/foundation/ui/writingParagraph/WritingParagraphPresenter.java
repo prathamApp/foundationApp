@@ -58,9 +58,9 @@ public class WritingParagraphPresenter implements WritingParagraphController.Pre
     public void createDirectoryAndSaveFile(Bitmap imageToSave, String fileName) {
         try {
 
-            File direct = new File(Environment.getExternalStorageDirectory().toString() + "/.EngGameInternal");
+            File direct = new File(Environment.getExternalStorageDirectory().toString() + "/.FCAInternal");
             if (!direct.exists()) direct.mkdir();
-            direct = new File(Environment.getExternalStorageDirectory().toString() + "/.EngGameInternal/ParagraphWritingFragment/");
+            direct = new File(Environment.getExternalStorageDirectory().toString() + "/.FCAInternal/ParagraphWritingFragment/");
             if (!direct.exists()) direct.mkdir();
 
             File file = new File(direct, fileName);

@@ -135,9 +135,9 @@ public class TestTypePresenter implements TestTypeContract.TestTypePresenter {
     public void createDirectoryAndSaveFile(Bitmap imageToSave, String fileName) {
         try {
 
-            File direct = new File(Environment.getExternalStorageDirectory().toString() + "/.EngGameInternal");
+            File direct = new File(Environment.getExternalStorageDirectory().toString() + "/.FCAInternal");
             if (!direct.exists()) direct.mkdir();
-            direct = new File(Environment.getExternalStorageDirectory().toString() + "/.EngGameInternal/supervisorImages");
+            direct = new File(Environment.getExternalStorageDirectory().toString() + "/.FCAInternal/supervisorImages");
             if (!direct.exists()) direct.mkdir();
 
             File file = new File(direct, fileName);
