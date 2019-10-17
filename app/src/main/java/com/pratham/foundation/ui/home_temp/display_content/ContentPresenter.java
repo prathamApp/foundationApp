@@ -286,7 +286,7 @@ public class ContentPresenter implements ContentContract.ContentPresenter, API_C
                 + "/.FCA/English/Game/" + foldername));
 
         FC_Utility.deleteRecursive(new File(ApplicationClass.foundationPath
-                + "/.FCA/English/LLA_Thumbs/" + contentItem.getNodeImage()));
+                + "/.FCA/English/App_Thumbs/" + contentItem.getNodeImage()));
         contentView.notifyAdapterItem(deletePos);
     }
 

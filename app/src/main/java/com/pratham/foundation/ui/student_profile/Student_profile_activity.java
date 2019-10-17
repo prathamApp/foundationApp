@@ -176,7 +176,7 @@ public class Student_profile_activity extends BaseActivity implements Student_pr
                                 break;
                         }
 /*                        Glide.with(context).load(ApplicationClass.pradigiPath + "/.FCA/" +
-                                FC_Constants.currentSelectedLanguage + "/LLA_Thumbs/" + sImage).into(profileImage);*/
+                                FC_Constants.currentSelectedLanguage + "/App_Thumbs/" + sImage).into(profileImage);*/
                     }
                 } else
                     profileImage.setImageResource(R.drawable.b2);

@@ -51,7 +51,7 @@ public class ZipDownloader {
         if (!mydir.exists()) mydir.mkdirs();
         mydir = new File(ApplicationClass.foundationPath + "/.FCA/English");
         if (!mydir.exists()) mydir.mkdirs();
-        mydir = new File(ApplicationClass.foundationPath + "/.FCA/English/LLA_Thumbs");
+        mydir = new File(ApplicationClass.foundationPath + "/.FCA/English/App_Thumbs");
         if (!mydir.exists()) mydir.mkdirs();
         mydir = new File(ApplicationClass.foundationPath + "/.FCA/English/Game/" );
         if (!mydir.exists()) mydir.mkdirs();
