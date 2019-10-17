@@ -24,7 +24,7 @@ import java.util.List;
 public class StudentsAdapter extends RecyclerView.Adapter<StudentsAdapter.MyViewHolder> {
     List<Student> studentAvatarList;
     ArrayList avatarList;
-    StudentClickListener studentClickListener;
+    BottomStudentsContract.StudentClickListener studentClickListener;
     Context mContext;
 
 
@@ -44,7 +44,7 @@ public class StudentsAdapter extends RecyclerView.Adapter<StudentsAdapter.MyView
     public StudentsAdapter(Context c, Fragment context, List<Student> studentAvatars, ArrayList avatarList) {
         this.studentAvatarList = studentAvatars;
         this.avatarList = avatarList;
-        this.studentClickListener = (StudentClickListener) context;
+        this.studentClickListener = (BottomStudentsContract.StudentClickListener) context;
         this.mContext = c;
     }
 

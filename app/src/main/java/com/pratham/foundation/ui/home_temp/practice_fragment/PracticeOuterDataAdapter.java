@@ -133,7 +133,6 @@ public class PracticeOuterDataAdapter extends RecyclerView.Adapter {
 
     @Override
     public int getItemViewType(int position) {
-
         if (dataList.get(position).getNodeType() != null) {
             switch (dataList.get(position).getNodeType()) {
                 case TYPE_HEADER:

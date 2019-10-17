@@ -39,7 +39,6 @@ import com.pratham.foundation.ui.home_temp.TempHomeActivity;
 import com.pratham.foundation.ui.test.certificate.CertificateClicked;
 import com.pratham.foundation.utility.FC_Constants;
 import com.pratham.foundation.utility.FC_Utility;
-import static com.pratham.foundation.utility.FC_Constants.isTest;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Bean;
@@ -60,11 +59,12 @@ import java.util.List;
 import java.util.Objects;
 
 import static com.pratham.foundation.ui.home_temp.TempHomeActivity.header_rl;
+import static com.pratham.foundation.utility.FC_Constants.isTest;
 import static com.pratham.foundation.utility.FC_Constants.testSessionEntered;
 
 @EFragment(R.layout.fragment_test)
 public class TestFragment extends Fragment implements TestContract.TestView,
-        CertificateClicked {
+        CertificateClicked , TestContract.LanguageSpinnerListner{
 
     @Bean(TestPresenter.class)
     TestContract.TestPresenter presenter;
@@ -72,8 +72,6 @@ public class TestFragment extends Fragment implements TestContract.TestView,
 
     @ViewById(R.id.my_recycler_view)
     RecyclerView my_recycler_view;
-    @ViewById(R.id.test_lang_spinner)
-    Spinner test_lang_spinner;
     @ViewById(R.id.btn_test_dw)
     Button btn_test_dw;
 
@@ -81,8 +79,9 @@ public class TestFragment extends Fragment implements TestContract.TestView,
     private int clicked_Pos = 0;
     public List<ContentTable> rootList, rootLevelList, dwParentList, childDwContentList;
     public List<ContentTableNew> contentParentList, contentDBList, contentApiList, childContentList;
-    private String language = "English",downloadNodeId, resName, resServerImageName, downloadType,certi_Code = "";
+    private String  downloadNodeId, resName, resServerImageName, downloadType, certi_Code = "";
     private int childPos = 0, parentPos = 0, resumeCntr = 0;
+    public static  String language = "English";
 
     @AfterViews
     public void initialize() {
@@ -91,6 +90,7 @@ public class TestFragment extends Fragment implements TestContract.TestView,
         dwParentList = new ArrayList<>();
         childDwContentList = new ArrayList<>();
         contentParentList = new ArrayList<>();
+        testList = new ArrayList<>();
         presenter.setView(TestFragment.this);
         RetractableToolbarUtil.ShowHideToolbarOnScrollingListener showHideToolbarListener;
         my_recycler_view.addOnScrollListener(showHideToolbarListener =
@@ -107,7 +107,7 @@ public class TestFragment extends Fragment implements TestContract.TestView,
     public void notifyAdapter() {
         sortAllList(contentParentList);
         if (testAdapter == null) {
-            testAdapter = new TestAdapter(getActivity(), testList, language);
+            testAdapter = new TestAdapter(getActivity(), testList,TestFragment.this,TestFragment.this);
             RecyclerView.LayoutManager myLayoutManager = new GridLayoutManager(getActivity(), 1);
             my_recycler_view.setLayoutManager(myLayoutManager);
             my_recycler_view.setItemAnimator(new DefaultItemAnimator());
@@ -194,36 +194,15 @@ public class TestFragment extends Fragment implements TestContract.TestView,
         }
     }
 
+    @UiThread
     @Override
     public void setSelectedLevel(List<ContentTable> contentTable) {
         rootLevelList = contentTable;
         presenter.insertNodeId(contentTable.get(TempHomeActivity.currentLevelNo).getNodeId());
 
-        ArrayAdapter<String> dataAdapter = new ArrayAdapter<>(getActivity(),
-                R.layout.custom_spinner, getResources().getStringArray(R.array.certificate_Languages));
-        dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        test_lang_spinner.setAdapter(dataAdapter);
         String jsonName = getLevelWiseJson();
         JSONArray testData = presenter.getTestData(jsonName);
-        hideTestDownloadBtnOnComplete();
         presenter.generateTestData(testData, rootLevelList.get(TempHomeActivity.currentLevelNo).getNodeId());
-//        presenter.getDataForList();
-        test_lang_spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                language = test_lang_spinner.getSelectedItem().toString();
-                testAdapter = new TestAdapter(getActivity(), testList, language);
-                RecyclerView.LayoutManager myLayoutManager = new GridLayoutManager(getActivity(), 1);
-                my_recycler_view.setLayoutManager(myLayoutManager);
-                my_recycler_view.setItemAnimator(new DefaultItemAnimator());
-                my_recycler_view.setAdapter(testAdapter);
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-            }
-        });
-
     }
 
     public void onLevelChanged() {
@@ -461,12 +440,19 @@ public class TestFragment extends Fragment implements TestContract.TestView,
     @Override
     public void initializeTheIndex() {
         my_recycler_view.removeAllViews();
-        dismissLoadingDialog();
         if (testList.size() > 0) {
-            testAdapter.notifyDataSetChanged();
+            if (testAdapter == null) {
+                testAdapter = new TestAdapter(getActivity(), testList, TestFragment.this, TestFragment.this);
+                RecyclerView.LayoutManager myLayoutManager = new GridLayoutManager(getActivity(), 1);
+                my_recycler_view.setLayoutManager(myLayoutManager);
+                my_recycler_view.setItemAnimator(new DefaultItemAnimator());
+                my_recycler_view.setAdapter(testAdapter);
+            } else
+                testAdapter.notifyDataSetChanged();
         } else
             btn_test_dw.setVisibility(View.VISIBLE);
-//        testAdapter.initializeIndex();
+        dismissLoadingDialog();
+        //        testAdapter.initializeIndex();
     }
 
     private void hideTestDownloadBtnOnComplete() {
@@ -613,4 +599,16 @@ public class TestFragment extends Fragment implements TestContract.TestView,
         }
     }
 
+    @Override
+    public void onSpinnerLanguageChanged(String selectedLanguage) {
+        this.language = selectedLanguage;
+        if(testAdapter == null) {
+            testAdapter = new TestAdapter(getActivity(), testList, TestFragment.this, TestFragment.this);
+            RecyclerView.LayoutManager myLayoutManager = new GridLayoutManager(getActivity(), 1);
+            my_recycler_view.setLayoutManager(myLayoutManager);
+            my_recycler_view.setItemAnimator(new DefaultItemAnimator());
+            my_recycler_view.setAdapter(testAdapter);
+        }else
+            testAdapter.notifyDataSetChanged();
+    }
 }

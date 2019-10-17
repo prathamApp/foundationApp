@@ -20,10 +20,13 @@ public class SelectSubjectAdapter extends RecyclerView.Adapter<SelectSubjectAdap
     Context context;
     List<ContentTable> datalist;
     List selectedOption = new ArrayList();
+    SelectSubjectContract.itemClicked itemClicked;
+
 
     public SelectSubjectAdapter(Context context, List<ContentTable> datalist) {
         this.context = context;
         this.datalist = datalist;
+        itemClicked = (SelectSubjectContract.itemClicked) context;
     }
 
     @NonNull
@@ -46,13 +49,8 @@ public class SelectSubjectAdapter extends RecyclerView.Adapter<SelectSubjectAdap
         else
             myviewholder.content_thumbnail.setImageResource(R.drawable.ic_cos_lang);
 
-        myviewholder.content_thumbnail.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(context, TempHomeActivity_.class);
-                intent.putExtra("nodeId", datalist.get(i).getNodeId());
-                context.startActivity(intent);
-            }
+        myviewholder.content_thumbnail.setOnClickListener(v -> {
+            itemClicked.onItemClicked(datalist.get(i));
         });
     }
 

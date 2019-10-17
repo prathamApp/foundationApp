@@ -84,7 +84,7 @@ public class PracticeFragment extends Fragment implements PracticeContract.Pract
         RetractableToolbarUtil.ShowHideToolbarOnScrollingListener showHideToolbarListener;
         my_recycler_view.addOnScrollListener(showHideToolbarListener =
                 new RetractableToolbarUtil.ShowHideToolbarOnScrollingListener(header_rl));
-        presenter.getBottomNavId(TempHomeActivity.currentLevelNo, "Fun");
+        presenter.getBottomNavId(TempHomeActivity.currentLevelNo, "Practice");
     }
 
     @UiThread

@@ -32,14 +32,14 @@ import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 
-
 import com.pratham.foundation.ApplicationClass;
 import com.pratham.foundation.R;
-import com.pratham.foundation.services.shared_preferences.FastSave;
 import com.pratham.foundation.database.AppDatabase;
 import com.pratham.foundation.interfaces.Interface_copying;
 import com.pratham.foundation.interfaces.PermissionResult;
+import com.pratham.foundation.modalclasses.EventMessage;
 import com.pratham.foundation.services.AppExitService;
+import com.pratham.foundation.services.shared_preferences.FastSave;
 import com.pratham.foundation.ui.bottom_fragment.BottomStudentsFragment;
 import com.pratham.foundation.ui.bottom_fragment.BottomStudentsFragment_;
 import com.pratham.foundation.ui.bottom_fragment.add_student.MenuActivity_;
@@ -62,7 +62,8 @@ import static com.pratham.foundation.utility.FC_Constants.dialog_btn_restart;
 
 
 @EActivity(R.layout.activity_splash)
-public class SplashActivity extends SplashSupportActivity implements SplashContract.SplashView, PermissionResult, Interface_copying {
+public class SplashActivity extends SplashSupportActivity implements SplashContract.SplashView,
+        PermissionResult, Interface_copying {
 
     @ViewById(R.id.splash_root)
     RelativeLayout splash_root;
@@ -100,7 +101,7 @@ public class SplashActivity extends SplashSupportActivity implements SplashContr
             String myString = b.getString("KEY_DATA");
             Toast.makeText(this, "" + myString, Toast.LENGTH_SHORT).show();
         }*/
-        ImageViewAnimatedChange(this,gifcomplete);
+        ImageViewAnimatedChange(this, gifcomplete);
 //        initiateApp();
     }
 
@@ -121,7 +122,7 @@ public class SplashActivity extends SplashSupportActivity implements SplashContr
                     startApp();
             } else
                 startApp();
-        }, 1500);
+        }, 500);
     }
 
     public void ImageViewAnimatedChange(Context c, final TextView iv_logo) {
@@ -130,9 +131,11 @@ public class SplashActivity extends SplashSupportActivity implements SplashContr
             @Override
             public void onAnimationStart(Animation animation) {
             }
+
             @Override
             public void onAnimationRepeat(Animation animation) {
             }
+
             @Override
             public void onAnimationEnd(Animation animation) {
                 ImageViewAnimatedChangeSecond(c, iv_logo);
@@ -149,9 +152,11 @@ public class SplashActivity extends SplashSupportActivity implements SplashContr
             @Override
             public void onAnimationStart(Animation animation) {
             }
+
             @Override
             public void onAnimationRepeat(Animation animation) {
             }
+
             @Override
             public void onAnimationEnd(Animation animation) {
                 initiateApp();
@@ -266,7 +271,7 @@ public class SplashActivity extends SplashSupportActivity implements SplashContr
         dia_btn_green.setText("OK");
         dialog.show();
 
-        dia_title.setText("Current Language : "+FastSave.getInstance().getString(FC_Constants.LANGUAGE,"Hindi"));
+        dia_title.setText("Current Language : " + FastSave.getInstance().getString(FC_Constants.LANGUAGE, "Hindi"));
         ArrayAdapter<String> dataAdapter = new ArrayAdapter<>(this, R.layout.custom_spinner,
                 getResources().getStringArray(R.array.app_Language));
         dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -278,6 +283,7 @@ public class SplashActivity extends SplashSupportActivity implements SplashContr
                 FC_Constants.currentSelectedLanguage = lang_spinner.getSelectedItem().toString();
                 FastSave.getInstance().saveString(FC_Constants.LANGUAGE, FC_Constants.currentSelectedLanguage);
             }
+
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
             }
@@ -424,7 +430,7 @@ public class SplashActivity extends SplashSupportActivity implements SplashContr
                     protected Void doInBackground(Void... voids) {
                         try {
                             AppDatabase.getDatabaseInstance(SplashActivity.this);
-                           //todo remove#
+                            //todo remove#
                             // ApplicationClass.contentProgressDao = AppDatabase.appDatabase.getContentProgressDao();
                             if (new File(Environment.getExternalStorageDirectory().getAbsolutePath() + "/foundation_db").exists()) {
                                 try {
@@ -453,7 +459,7 @@ public class SplashActivity extends SplashSupportActivity implements SplashContr
             } else {
                 AppDatabase.getDatabaseInstance(SplashActivity.this);
                 //todo remove#
-               // ApplicationClass.contentProgressDao = AppDatabase.appDatabase.getContentProgressDao();
+                // ApplicationClass.contentProgressDao = AppDatabase.appDatabase.getContentProgressDao();
                 splashPresenter.getSdCardPath();
                 new Handler().postDelayed(() -> showButton(), 2000);
             }
@@ -480,6 +486,7 @@ public class SplashActivity extends SplashSupportActivity implements SplashContr
             splashPresenter.doInitialEntries(AppDatabase.appDatabase);
 //        if(FastSave.getInstance().getBoolean(FC_Constants.newDataLanguageInserted, false))
 //            splashPresenter.insertNewData();
+        splashPresenter.updateVersionApp();
         if (!ApplicationClass.isTablet) {
             splashPresenter.pushData();
             dismissProgressDialog();
@@ -582,7 +589,9 @@ public class SplashActivity extends SplashSupportActivity implements SplashContr
             }
         } catch (Exception e) {
         }
-        EventBus.getDefault().post("reload");
+        EventMessage message = new EventMessage();
+        message.setMessage("reload");
+        EventBus.getDefault().post(message);
     }
 
     @Override

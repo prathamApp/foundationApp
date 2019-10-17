@@ -1,6 +1,7 @@
 package com.pratham.foundation.ui.selectSubject;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.graphics.Rect;
@@ -17,6 +18,7 @@ import com.pratham.foundation.BaseActivity;
 import com.pratham.foundation.R;
 import com.pratham.foundation.customView.GridSpacingItemDecoration;
 import com.pratham.foundation.database.domain.ContentTable;
+import com.pratham.foundation.ui.home_temp.TempHomeActivity_;
 import com.pratham.foundation.utility.FC_Constants;
 
 import org.androidannotations.annotations.AfterViews;
@@ -29,7 +31,8 @@ import java.util.List;
 import static com.pratham.foundation.utility.FC_Utility.dpToPx;
 
 @EActivity(R.layout.activity_select_subject)
-public class SelectSubject extends BaseActivity implements SelectSubjectContract.View {
+public class SelectSubject extends BaseActivity implements
+        SelectSubjectContract.View, SelectSubjectContract.itemClicked {
 
     @Bean(SelectSubjectPresenter.class)
     SelectSubjectContract.Presenter presenter;
@@ -60,11 +63,9 @@ public class SelectSubject extends BaseActivity implements SelectSubjectContract
         int dp = 12;
         if (FC_Constants.TAB_LAYOUT)
             dp = 20;
-
         subject_recycler.addItemDecoration(new GridSpacingItemDecoration(2, dpToPx(this,dp), true));
         subject_recycler.setItemAnimator(new DefaultItemAnimator());
         subject_recycler.setAdapter(subjectAdapter);
-
     }
 
     private int getScreenWidthDp() {
@@ -72,4 +73,10 @@ public class SelectSubject extends BaseActivity implements SelectSubjectContract
         return (int) (displayMetrics.widthPixels / displayMetrics.density);
     }
 
+    @Override
+    public void onItemClicked(ContentTable contentTableObj) {
+        Intent intent = new Intent(context, TempHomeActivity_.class);
+        intent.putExtra("nodeId", contentTableObj.getNodeId());
+        context.startActivity(intent);
+    }
 }

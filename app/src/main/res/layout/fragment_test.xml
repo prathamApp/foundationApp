@@ -7,19 +7,11 @@
     android:background="@color/full_transparent"
     android:orientation="vertical">
 
-    <Spinner
-        android:id="@+id/test_lang_spinner"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="@dimen/_5sdp"
-        android:background="@drawable/gradient_spinner"
-        android:popupBackground="@drawable/choose_level_bg"
-        android:visibility="visible" />
-
     <android.support.v7.widget.RecyclerView
         android:id="@+id/my_recycler_view"
         android:elevation="1dp"
         android:layout_below="@+id/test_lang_spinner"
+        android:layout_marginBottom="2dp"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 
@@ -32,13 +24,12 @@
         android:drawablePadding="5dp"
         android:layout_centerHorizontal="true"
         android:layout_alignParentBottom="true"
-        android:elevation="5dp"
+        android:elevation="15dp"
         android:paddingHorizontal="15dp"
         android:text="Download"
-        android:layout_marginBottom="@dimen/_60sdp"
+        android:layout_marginBottom="@dimen/_80sdp"
         android:textColor="@color/white"
         android:textSize="15sp"
         android:visibility="visible" />
-
 
 </RelativeLayout>

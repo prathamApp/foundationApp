@@ -32,6 +32,7 @@ import com.pratham.foundation.database.AppDatabase;
 import com.pratham.foundation.modalclasses.EventMessage;
 import com.pratham.foundation.ui.home_temp.learning_fragment.LearningFragment_;
 import com.pratham.foundation.ui.home_temp.practice_fragment.PracticeFragment_;
+import com.pratham.foundation.ui.home_temp.test_fragment.TestFragment_;
 import com.pratham.foundation.ui.selectSubject.SelectSubject_;
 import com.pratham.foundation.ui.test.supervisor.SupervisedAssessmentActivity;
 import com.pratham.foundation.utility.FC_Constants;
@@ -248,17 +249,17 @@ public class TempHomeActivity extends BaseActivity /*BottomNavigationView.OnNavi
         tabTwo.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.ic_practice, 0, 0);
         tabLayout.getTabAt(1).setCustomView(tabTwo);
 
-/*        TextView tabThree = (TextView) LayoutInflater.from(this).inflate(R.layout.custom_tab_text, null);
-        tabTwo.setText("Test");
-        tabTwo.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.ic_test, 0, 0);
-        tabLayout.getTabAt(2).setCustomView(tabThree);*/
+        TextView tabThree = (TextView) LayoutInflater.from(this).inflate(R.layout.custom_tab_text, null);
+        tabThree.setText("Test");
+        tabThree.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.ic_test, 0, 0);
+        tabLayout.getTabAt(2).setCustomView(tabThree);
 
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
-                if(tab.getPosition()== 2){
-                    //TODO Test Dialog
-                }
+//                if(tab.getPosition()== 2){
+//                    //TODO Test Dialog
+//                }
             }
 
             @Override
@@ -267,9 +268,9 @@ public class TempHomeActivity extends BaseActivity /*BottomNavigationView.OnNavi
 
             @Override
             public void onTabReselected(TabLayout.Tab tab) {
-                if(tab.getPosition()== 2){
-                    //TODO Test Dialog
-                }
+//                if(tab.getPosition()== 2){
+//                    //TODO Test Dialog
+//                }
             }
         });
     }
@@ -365,7 +366,7 @@ public class TempHomeActivity extends BaseActivity /*BottomNavigationView.OnNavi
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
         adapter.addFrag(new LearningFragment_(), "Learning");
         adapter.addFrag(new PracticeFragment_(), "Practice");
-//        adapter.addFrag(new TestFragment_(), "Test");
+        adapter.addFrag(new TestFragment_(), "Test");
         viewpager.setAdapter(adapter);
     }
 

@@ -13,6 +13,10 @@ import java.util.List;
 
 public interface TestContract {
     
+    interface LanguageSpinnerListner{
+        void onSpinnerLanguageChanged(String language);
+    }
+
     interface TestView {
 
         void notifyAdapter();

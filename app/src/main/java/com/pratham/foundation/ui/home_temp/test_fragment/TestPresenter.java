@@ -49,7 +49,7 @@ import static com.pratham.foundation.ui.home_temp.TempHomeActivity.sub_nodeId;
 public class TestPresenter implements TestContract.TestPresenter, API_Content_Result {
 
     Context mContext;
-    TestContract.TestView PracticeView;
+    TestContract.TestView myView;
     public List<ContentTable> rootList, rootLevelList, dwParentList, childDwContentList;
     public List<ContentTableNew> contentParentList, contentDBList, contentApiList, childContentList;
     ArrayList<String> nodeIds;
@@ -72,8 +72,8 @@ public class TestPresenter implements TestContract.TestPresenter, API_Content_Re
     }
 
     @Override
-    public void setView(TestContract.TestView PracticeView) {
-        this.PracticeView = PracticeView;
+    public void setView(TestContract.TestView myView) {
+        this.myView = myView;
         nodeIds = new ArrayList<>();
         contentParentList = new ArrayList<>();
         contentDBList = new ArrayList<>();
@@ -95,7 +95,7 @@ public class TestPresenter implements TestContract.TestPresenter, API_Content_Re
         else
             profileName = AppDatabase.getDatabaseInstance(mContext).getGroupsDao().getGroupNameByGrpID(FC_Constants.currentStudentID);
 
-        PracticeView.setProfileName(profileName);
+        myView.setProfileName(profileName);
     }
 
     @Background
@@ -106,7 +106,7 @@ public class TestPresenter implements TestContract.TestPresenter, API_Content_Re
             sImage = AppDatabase.getDatabaseInstance(mContext).getStudentDao().getStudentAvatar(FC_Constants.currentStudentID);
         else
             sImage = "group_icon";
-        PracticeView.setStudentProfileImage(sImage);
+        myView.setStudentProfileImage(sImage);
     }*/
 
     @Override
@@ -147,15 +147,15 @@ public class TestPresenter implements TestContract.TestPresenter, API_Content_Re
         else
             getRootData(rootID);
 
-//        PracticeView.setBotNodeId(botID);
+//        myView.setBotNodeId(botID);
 /*      if (FC_Utility.isDataConnectionAvailable(mContext)) {
             api_content.getAPIContent(FC_Constants.INTERNET_DOWNLOAD, FC_Constants.INTERNET_DOWNLOAD_NEW_API, rootID);
         } else {
             if (contentParentList.size() == 0 && !FC_Utility.isDataConnectionAvailable(mContext)) {
-                PracticeView.showNoDataDownloadedDialog();
+                myView.showNoDataDownloadedDialog();
             } else {
-                PracticeView.addContentToViewList(contentParentList);
-                PracticeView.notifyAdapter();
+                myView.addContentToViewList(contentParentList);
+                myView.notifyAdapter();
             }
         }*/
 
@@ -163,7 +163,7 @@ public class TestPresenter implements TestContract.TestPresenter, API_Content_Re
             botID = AppDatabase.appDatabase.getContentTableDao().getBottomNavigationId("English", cosSection);
         else
             botID = AppDatabase.appDatabase.getContentTableDao().getBottomNavigationId(FC_Constants.currentSelectedLanguage, cosSection);
-        PracticeView.setBotNodeId(botID);
+        myView.setBotNodeId(botID);
         getLevelDataForList(currentLevelNo, botID);*/
     }
 
@@ -180,14 +180,29 @@ public class TestPresenter implements TestContract.TestPresenter, API_Content_Re
     @Background
     @Override
     public void generateTestData(JSONArray testData, String bottomNavNodeId) {
-        PracticeView.showLoader();
+        myView.showLoader();
         testList = AppDatabase.appDatabase.getContentTableDao().getContentData(bottomNavNodeId);
         sortTestList(testList);
+
         if (testList.size() > 0)
             WebViewActivity.gameLevel = testList.get(0).getNodeAge();
         BackupDatabase.backup(mContext);
         codesText = new ArrayList<>();
         codesText.clear();
+
+        CertificateModelClass contentTableHeader = new CertificateModelClass();
+        contentTableHeader.setNodeId("0");
+        contentTableHeader.setResourceId("0");
+        contentTableHeader.setResourcePath("path");
+        contentTableHeader.setContentType("Header");
+        myView.addContentToViewTestList(contentTableHeader);
+
+        contentTableHeader = new CertificateModelClass();
+        contentTableHeader.setNodeId("1");
+        contentTableHeader.setResourceId("1");
+        contentTableHeader.setResourcePath("path");
+        contentTableHeader.setContentType("Spinner");
+        myView.addContentToViewTestList(contentTableHeader);
 
         try {
             for (int j = 0; j < testList.size(); j++) {
@@ -195,7 +210,6 @@ public class TestPresenter implements TestContract.TestPresenter, API_Content_Re
                 codesText.add(testList.get(j).getNodeDesc());
 
                 CertificateModelClass contentTable = new CertificateModelClass();
-
                 contentTable.setCodeCount(Collections.frequency(codesText, testList.get(j).getNodeDesc()));
 
                 contentTable.setNodeId("" + testList.get(j).getNodeId());
@@ -255,17 +269,17 @@ public class TestPresenter implements TestContract.TestPresenter, API_Content_Re
                     }
 
                 }
-                PracticeView.addContentToViewTestList(contentTable);
+                myView.addContentToViewTestList(contentTable);
             }
 
-            PracticeView.doubleQuestionCheck();
+            myView.doubleQuestionCheck();
 
         } catch (Exception e) {
             e.printStackTrace();
         }
         if (testList.size() > 0)
-            PracticeView.hideTestDownloadBtn();
-        PracticeView.initializeTheIndex();
+            myView.hideTestDownloadBtn();
+        myView.initializeTheIndex();
     }
 
     @Override
@@ -295,7 +309,7 @@ public class TestPresenter implements TestContract.TestPresenter, API_Content_Re
         if (FC_Utility.isDataConnectionAvailable(mContext))
             getLevelDataFromApi(currentLevelNo, bottomNavNodeId);
         else
-            PracticeView.setSelectedLevel(rootList);
+            myView.setSelectedLevel(rootList);
     }
 
     public void getLevelDataFromApi(int currentLevelNo, String botNodeId) {
@@ -367,20 +381,20 @@ public class TestPresenter implements TestContract.TestPresenter, API_Content_Re
             }
             if (maxScore.size() > 0) {
                 int percent = (int) (totalScore / maxScore.size());
-                PracticeView.setLevelprogress(percent);
+                myView.setLevelprogress(percent);
             } else {
-                PracticeView.setLevelprogress(0);
+                myView.setLevelprogress(0);
             }
         } catch (NumberFormatException e) {
             e.printStackTrace();
-            PracticeView.setLevelprogress(0);
+            myView.setLevelprogress(0);
         }
     }
 
     @Override
     @Background
     public void getDataForList() {
-        PracticeView.showLoader();
+        myView.showLoader();
         try {
             ContentTableNew resContentTable = new ContentTableNew();
             List<ContentTableNew> resourceList;
@@ -396,6 +410,7 @@ public class TestPresenter implements TestContract.TestPresenter, API_Content_Re
             contentTableRes.setNodeType("Header");
             tempList2.add(contentTableRes);
             resContentTable.setNodelist(tempList2);
+            resourceList.add(contentTableRes);
             resourceList.add(contentTableRes);
 
             dwParentList = AppDatabase.appDatabase.getContentTableDao().getContentData("" + nodeIds.get(nodeIds.size() - 1));
@@ -530,10 +545,10 @@ public class TestPresenter implements TestContract.TestPresenter, API_Content_Re
             api_content.getAPIContent(FC_Constants.INTERNET_DOWNLOAD, FC_Constants.INTERNET_DOWNLOAD_NEW_API, nodeIds.get(nodeIds.size() - 1));
         } else {
             if (contentParentList.size() == 0 && !FC_Utility.isDataConnectionAvailable(mContext)) {
-                PracticeView.showNoDataDownloadedDialog();
+                myView.showNoDataDownloadedDialog();
             } else {
-                PracticeView.addContentToViewList(contentParentList);
-                PracticeView.notifyAdapter();
+                myView.addContentToViewList(contentParentList);
+                myView.notifyAdapter();
             }
         }
     }
@@ -637,7 +652,7 @@ public class TestPresenter implements TestContract.TestPresenter, API_Content_Re
         if (FC_Utility.isDataConnectionAvailable(mContext)) {
             api_content.getAPIContent(FC_Constants.INTERNET_DOWNLOAD_RESOURCE, FC_Constants.INTERNET_DOWNLOAD_RESOURCE_API, downloadNodeId);
         } else {
-            PracticeView.showNoDataDownloadedDialog();
+            myView.showNoDataDownloadedDialog();
         }
 //        getAPIContent(FC_Constants.INTERNET_DOWNLOAD_RESOURCE, FC_Constants.INTERNET_DOWNLOAD_RESOURCE_API);
     }
@@ -667,16 +682,16 @@ public class TestPresenter implements TestContract.TestPresenter, API_Content_Re
             e.printStackTrace();
         }
         BackupDatabase.backup(mContext);
-        PracticeView.dismissDownloadDialog();
-        PracticeView.hideTestDownloadBtn();
-        PracticeView.displayCurrentDownloadedTest();
+        myView.dismissDownloadDialog();
+        myView.hideTestDownloadBtn();
+        myView.displayCurrentDownloadedTest();
     }
 
     @Background
     @Override
     public void getTempData(String nodeId) {
         testData = AppDatabase.appDatabase.getContentTableDao().getContent("" + nodeId);
-        PracticeView.testOpenData(testData);
+        myView.testOpenData(testData);
     }
 
     @Background
@@ -877,13 +892,13 @@ public class TestPresenter implements TestContract.TestPresenter, API_Content_Re
                         }
                     }
                 }
-                //PracticeView.addContentToViewList(contentParentList);
+                //myView.addContentToViewList(contentParentList);
             } catch (Exception e) {
                 e.printStackTrace();
             }
 //            contentParentList = contentDBList;
-            PracticeView.addContentToViewList(contentDBList);
-            PracticeView.notifyAdapter();
+            myView.addContentToViewList(contentDBList);
+            myView.notifyAdapter();
 
         } else if (header.equalsIgnoreCase(FC_Constants.INTERNET_DOWNLOAD_RESOURCE)) {
             try {
@@ -947,7 +962,7 @@ public class TestPresenter implements TestContract.TestPresenter, API_Content_Re
                 e.printStackTrace();
             }
             sortContentList(rootLevelList);
-            PracticeView.setSelectedLevel(rootLevelList);
+            myView.setSelectedLevel(rootLevelList);
         } else if (header.equalsIgnoreCase(FC_Constants.BOTTOM_NODE)) {
             try {
                 Type listType = new TypeToken<ArrayList<ContentTableNew>>() {
@@ -957,7 +972,7 @@ public class TestPresenter implements TestContract.TestPresenter, API_Content_Re
                 for (int i = 0; i < serverContentList.size(); i++)
                     if (serverContentList.get(i).getNodeTitle().equalsIgnoreCase(cosSection))
                         botNodeId = serverContentList.get(i).getNodeId();
-//                PracticeView.setBotNodeId(botNodeId);
+//                myView.setBotNodeId(botNodeId);
                 getLevelDataFromApi(currentLevelNo, botNodeId);
             } catch (Exception e) {
                 e.printStackTrace();
@@ -982,10 +997,10 @@ public class TestPresenter implements TestContract.TestPresenter, API_Content_Re
     @Override
     public void receivedError(String header) {
         if (header.equalsIgnoreCase(FC_Constants.INTERNET_LEVEL)) {
-            PracticeView.setSelectedLevel(rootList);
+            myView.setSelectedLevel(rootList);
         } else if (header.equalsIgnoreCase(FC_Constants.INTERNET_DOWNLOAD)) {
-            PracticeView.addContentToViewList(contentParentList);
-            PracticeView.notifyAdapter();
+            myView.addContentToViewList(contentParentList);
+            myView.notifyAdapter();
         }
     }
 }

@@ -44,6 +44,7 @@ public class CertificateModelClass {
     Float certificateRating;
     int codeCount = 0;
     String isDownloaded;
+    String ContentType;
 
 
     public String getContentType() {
@@ -53,9 +54,7 @@ public class CertificateModelClass {
     public void setContentType(String contentType) {
         ContentType = contentType;
     }
-
-    String ContentType;
-
+    
     public int getScoredMarks() {
         return scoredMarks;
     }

@@ -29,7 +29,7 @@ public final class RetractableToolbarUtil {
         @TargetApi(Build.VERSION_CODES.LOLLIPOP)
         private void toolbarSetElevation(float elevation) {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                toolbar.setElevation(elevation == 0 ? 0 : TOOLBAR_ELEVATION);
+                toolbar.setElevation(/*elevation == 0 ? TOOLBAR_ELEVATION : */TOOLBAR_ELEVATION);
             }
         }
 
