@@ -15,6 +15,8 @@ import com.pratham.foundation.customView.SansButton;
 import com.pratham.foundation.customView.SansTextView;
 import com.pratham.foundation.database.domain.ContentTable;
 import com.pratham.foundation.ui.contentPlayer.fact_retrival_fragment.FactRetrival_;
+import com.pratham.foundation.ui.contentPlayer.fact_retrival_selection.Fact_retrival_Fragment;
+import com.pratham.foundation.ui.contentPlayer.fact_retrival_selection.Fact_retrival_Fragment_;
 import com.pratham.foundation.ui.contentPlayer.fillInTheBlanks.FillInTheBlanksFragment;
 import com.pratham.foundation.ui.contentPlayer.keywords_identification.KeywordsIdentificationFragment_;
 import com.pratham.foundation.ui.contentPlayer.keywords_mapping.KeywordMappingFragment_;
@@ -102,6 +104,10 @@ public class SequenceGameAdapter extends RecyclerView.Adapter<SequenceGameAdapte
                     case "111":
                         FC_Utility.showFragment((Activity) context, new pictionaryFragment(), R.id.RL_CPA,
                                 bundle, pictionaryFragment.class.getSimpleName());
+                        break;
+                    case "112":
+                        FC_Utility.showFragment((Activity) context, new Fact_retrival_Fragment_(), R.id.RL_CPA,
+                                bundle, Fact_retrival_Fragment.class.getSimpleName());
                         break;
 
                 }

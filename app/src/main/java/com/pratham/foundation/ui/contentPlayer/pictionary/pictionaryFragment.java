@@ -1,7 +1,6 @@
 package com.pratham.foundation.ui.contentPlayer.pictionary;
 
 import android.app.Dialog;
-import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -29,12 +28,10 @@ import com.pratham.foundation.ApplicationClass;
 import com.pratham.foundation.R;
 import com.pratham.foundation.customView.GifView;
 import com.pratham.foundation.customView.SansButton;
-import com.pratham.foundation.customView.SansTextViewBold;
 import com.pratham.foundation.database.BackupDatabase;
 import com.pratham.foundation.database.domain.Assessment;
 import com.pratham.foundation.database.domain.KeyWords;
 import com.pratham.foundation.database.domain.Score;
-import com.pratham.foundation.modalclasses.ScienceQuestion;
 import com.pratham.foundation.modalclasses.ScienceQuestionChoice;
 import com.pratham.foundation.ui.contentPlayer.GameConstatnts;
 import com.pratham.foundation.utility.FC_Constants;
@@ -637,7 +634,7 @@ public class pictionaryFragment extends Fragment {
 
     @OnClick(R.id.next)
     public void onNextClick() {
-        if (index < (selectedFive.size()-1)) {
+        if (index < (selectedFive.size() - 1)) {
             index++;
             setMcqsQuestion();
         }
@@ -676,7 +673,7 @@ public class pictionaryFragment extends Fragment {
                     for (int k = 0; k < tempOptionList.size(); k++) {
                         if (tempOptionList.get(k).getQcid().equalsIgnoreCase(selectedAnsList.get(i).getUserAnswer())) {
                             correctWordList.add(tempOptionList.get(k));
-                                                                                       }
+                        }
                     }
 
                     addScore(selectedAnsList.get(i).getQid(), GameConstatnts.PICTIONARYFRAGMENT, 10, 10, FC_Utility.getCurrentDateTime(), selectedAnsList.get(i).getUserAnswer());
@@ -706,20 +703,20 @@ public class pictionaryFragment extends Fragment {
         dialog.setContentView(R.layout.show_result_pictionary);
         dialog.setCancelable(false);
         dialog.setCanceledOnTouchOutside(false);
-        resultAdapter resultAdapter=new resultAdapter(correctWord,getContext(),readingContentPath);
-        LinearLayoutManager linearLayoutManager=new LinearLayoutManager(getContext(),LinearLayoutManager.HORIZONTAL,false);
+        resultAdapter resultAdapter = new resultAdapter(correctWord, getContext(), readingContentPath);
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false);
         RecyclerView correct_keywords = dialog.findViewById(R.id.correct_keywords);
         correct_keywords.setLayoutManager(linearLayoutManager);
         correct_keywords.setAdapter(resultAdapter);
-        LinearLayoutManager wrongLayoutManager=new LinearLayoutManager(getContext(),LinearLayoutManager.HORIZONTAL,false);
-        resultAdapter wrongResultAdapter=new resultAdapter(wrongWord,getContext(),readingContentPath);
+        LinearLayoutManager wrongLayoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false);
+        resultAdapter wrongResultAdapter = new resultAdapter(wrongWord, getContext(), readingContentPath);
         RecyclerView wrong_keywords = dialog.findViewById(R.id.wrong_keywords);
         wrong_keywords.setLayoutManager(wrongLayoutManager);
         wrong_keywords.setAdapter(wrongResultAdapter);
         SansButton dia_btn_yellow = dialog.findViewById(R.id.dia_btn_yellow);
 
-       // correct_keywords.setText(correctWord.toString().substring(1, correctWord.toString().length() - 1));
-       // wrong_keywords.setText(wrongWord.toString().substring(1, wrongWord.toString().length() - 1));
+        // correct_keywords.setText(correctWord.toString().substring(1, correctWord.toString().length() - 1));
+        // wrong_keywords.setText(wrongWord.toString().substring(1, wrongWord.toString().length() - 1));
         dia_btn_yellow.setText("OK");
         dia_btn_yellow.setOnClickListener(v -> dialog.dismiss());
         dialog.show();

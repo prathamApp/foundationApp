@@ -23,7 +23,10 @@ public class ScienceQuestionChoice implements Serializable {
     private String choiceurl;
     @Ignore
     private String myIscorrect = "false";
-
+    @Ignore
+    private String userAns ="";
+    @Ignore
+    private int position =-1;
     public String getMyIscorrect() {
         return myIscorrect;
     }
@@ -92,4 +95,19 @@ public class ScienceQuestionChoice implements Serializable {
         this.matchingname = matchingname;
     }
 
+    public String getUserAns() {
+        return userAns;
+    }
+
+    public void setUserAns(String userAns) {
+        this.userAns = userAns;
+    }
+
+    public int getPosition() {
+        return position;
+    }
+
+    public void setPosition(int position) {
+        this.position = position;
+    }
 }

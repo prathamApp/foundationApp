@@ -180,7 +180,7 @@ public class FactRetrival extends Fragment implements FactRetrivalContract.FactR
 
     @Click(R.id.next)
     public void onNextClick() {
-        if (index < 4) {
+        if (index < (selectedQuetion.size()-1)) {
             index++;
             showQuetion();
         }
