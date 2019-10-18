@@ -75,5 +75,13 @@
     "nodetitle": "Pictionary game",
     "resourceid": 111,
     "resourcepath": "pictionaryFragment"
+  },
+  {
+    "nodeid": 1100,
+    "level": 4,
+    "nodeimage": "http://www.prodigi.openiscool.org/repository/Images/KhelBadi.png",
+    "nodetitle": "fact retrial selection",
+    "resourceid": 112,
+    "resourcepath": "fact_retrial_selection"
   }
 ]
