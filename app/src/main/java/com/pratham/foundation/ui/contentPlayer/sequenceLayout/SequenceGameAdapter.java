@@ -14,9 +14,9 @@ import com.pratham.foundation.R;
 import com.pratham.foundation.customView.SansButton;
 import com.pratham.foundation.customView.SansTextView;
 import com.pratham.foundation.database.domain.ContentTable;
-import com.pratham.foundation.ui.contentPlayer.fact_retrival_fragment.FactRetrival_;
-import com.pratham.foundation.ui.contentPlayer.fact_retrival_selection.Fact_retrival_Fragment;
-import com.pratham.foundation.ui.contentPlayer.fact_retrival_selection.Fact_retrival_Fragment_;
+import com.pratham.foundation.ui.contentPlayer.fact_retrieval_fragment.FactRetrieval_;
+import com.pratham.foundation.ui.contentPlayer.fact_retrival_selection.Fact_Retrieval_Fragment;
+import com.pratham.foundation.ui.contentPlayer.fact_retrival_selection.Fact_Retrieval_Fragment_;
 import com.pratham.foundation.ui.contentPlayer.fillInTheBlanks.FillInTheBlanksFragment;
 import com.pratham.foundation.ui.contentPlayer.keywords_identification.KeywordsIdentificationFragment_;
 import com.pratham.foundation.ui.contentPlayer.keywords_mapping.KeywordMappingFragment_;
@@ -65,8 +65,8 @@ public class SequenceGameAdapter extends RecyclerView.Adapter<SequenceGameAdapte
                 bundle.putBoolean("onSdCard", true);
                 switch (contentTable1.getResourceId()) {
                     case "101":
-                        FC_Utility.showFragment((Activity) context, new FactRetrival_(), R.id.RL_CPA,
-                                bundle, FactRetrival_.class.getSimpleName());
+                        FC_Utility.showFragment((Activity) context, new FactRetrieval_(), R.id.RL_CPA,
+                                bundle, FactRetrieval_.class.getSimpleName());
                         break;
                     case "102":
                         FC_Utility.showFragment((Activity) context, new KeywordsIdentificationFragment_(), R.id.RL_CPA,
@@ -106,8 +106,8 @@ public class SequenceGameAdapter extends RecyclerView.Adapter<SequenceGameAdapte
                                 bundle, pictionaryFragment.class.getSimpleName());
                         break;
                     case "112":
-                        FC_Utility.showFragment((Activity) context, new Fact_retrival_Fragment_(), R.id.RL_CPA,
-                                bundle, Fact_retrival_Fragment.class.getSimpleName());
+                        FC_Utility.showFragment((Activity) context, new Fact_Retrieval_Fragment_(), R.id.RL_CPA,
+                                bundle, Fact_Retrieval_Fragment.class.getSimpleName());
                         break;
 
                 }

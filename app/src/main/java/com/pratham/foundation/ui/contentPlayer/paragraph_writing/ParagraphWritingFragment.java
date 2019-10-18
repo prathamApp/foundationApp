@@ -27,8 +27,8 @@ import android.widget.ScrollView;
 import com.pratham.foundation.ApplicationClass;
 import com.pratham.foundation.R;
 import com.pratham.foundation.ui.contentPlayer.GameConstatnts;
+import com.pratham.foundation.ui.contentPlayer.keywords_identification.QuestionModel;
 import com.pratham.foundation.ui.contentPlayer.listenAndWritting.ListeningAndWritting_;
-import com.pratham.foundation.ui.identifyKeywords.QuestionModel;
 import com.pratham.foundation.utility.FC_Utility;
 
 import org.androidannotations.annotations.AfterViews;

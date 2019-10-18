@@ -11,22 +11,16 @@ import com.pratham.foundation.database.BackupDatabase;
 import com.pratham.foundation.database.domain.Assessment;
 import com.pratham.foundation.database.domain.KeyWords;
 import com.pratham.foundation.database.domain.Score;
-import com.pratham.foundation.modalclasses.keywordmapping;
 import com.pratham.foundation.ui.contentPlayer.GameConstatnts;
-import com.pratham.foundation.ui.contentPlayer.fact_retrival_fragment.FactRetrivalContract;
-import com.pratham.foundation.ui.identifyKeywords.QuestionModel;
+import com.pratham.foundation.ui.contentPlayer.keywords_identification.QuestionModel;
 import com.pratham.foundation.utility.FC_Constants;
 import com.pratham.foundation.utility.FC_Utility;
 
 import org.androidannotations.annotations.EBean;
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.io.File;
 import java.io.FileOutputStream;
 import java.lang.reflect.Type;
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 

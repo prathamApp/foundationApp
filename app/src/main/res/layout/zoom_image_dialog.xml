@@ -13,7 +13,7 @@
         android:layout_height="match_parent"
         android:background="@drawable/main_card_bg">-->
 
-    <com.pratham.foundation.custumView.ZoomageView
+    <com.pratham.foundation.customView.ZoomageView
         android:id="@+id/iv_zoom_img"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -30,7 +30,7 @@
         android:layout_height="match_parent"
         android:layout_centerInParent="true">
 
-        <com.pratham.foundation.custumView.GifViewZoom
+        <com.pratham.foundation.customView.GifViewZoom
             android:id="@+id/iv_img"
             android:layout_width="match_parent"
             android:layout_height="match_parent"

@@ -337,7 +337,7 @@ public class ContentDisplay extends BaseActivity implements ContentContract.Cont
 /*        } else if (ContentTableList.get(position).getResourceType().equalsIgnoreCase(FC_Constants.RC_RESOURCE)) {
 //            presenter.enterRCData(contentList);*/
         } else {/* (ContentTableList.get(position).getResourceType().equalsIgnoreCase(FC_Constants.IDENTIFY_KEYWORDS)) {
-            Intent mainNew = new Intent(ContentDisplay.this, FactRetrial_.class);
+            Intent mainNew = new Intent(ContentDisplay.this, FactRetrieval_.class);
             mainNew.putExtra("resId", ContentTableList.get(position).getResourceId());
             mainNew.putExtra("StudentID", FC_Constants.currentStudentID);
             mainNew.putExtra("contentName", ContentTableList.get(position).getNodeTitle());
@@ -345,7 +345,7 @@ public class ContentDisplay extends BaseActivity implements ContentContract.Cont
             mainNew.putExtra("contentPath", ContentTableList.get(position).getResourcePath());
             startActivity(mainNew);
         } else if (ContentTableList.get(position).getResourceType().equalsIgnoreCase(FC_Constants.FACT_RETRIVAL)) {
-            Intent mainNew = new Intent(ContentDisplay.this, FactRetrial_.class);
+            Intent mainNew = new Intent(ContentDisplay.this, FactRetrieval_.class);
             mainNew.putExtra("resId", ContentTableList.get(position).getResourceId());
             mainNew.putExtra("StudentID", FC_Constants.currentStudentID);
             mainNew.putExtra("contentName", ContentTableList.get(position).getNodeTitle());

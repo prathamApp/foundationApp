@@ -1,4 +1,4 @@
-package com.pratham.foundation.custumView;
+package com.pratham.foundation.customView;
 
 import android.app.Dialog;
 import android.content.Context;

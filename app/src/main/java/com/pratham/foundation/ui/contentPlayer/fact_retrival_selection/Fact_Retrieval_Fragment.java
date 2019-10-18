@@ -27,10 +27,10 @@ import java.util.Collections;
 import java.util.List;
 
 @EFragment(R.layout.fact_retrival_selection)
-public class Fact_retrival_Fragment extends Fragment implements Fact_retrival_Contract.Fact_retrival_View {
+public class Fact_Retrieval_Fragment extends Fragment implements Fact_Retrieval_Contract.Fact_retrival_View {
 
-    @Bean(Fact_retrival_Presenter.class)
-    Fact_retrival_Contract.Fact_retrival_Presenter presenter;
+    @Bean(Fact_Retrieval_Presenter.class)
+    Fact_Retrieval_Contract.Fact_retrival_Presenter presenter;
 
     @ViewById(R.id.paragraph)
     FlowLayout paraghaph;
@@ -65,7 +65,7 @@ public class Fact_retrival_Fragment extends Fragment implements Fact_retrival_Co
             else
                 readingContentPath = ApplicationClass.foundationPath + "/.FCA/English/Game/" + contentPath + "/";
         }
-        presenter.setView(Fact_retrival_Fragment.this, resId, readingContentPath);
+        presenter.setView(Fact_Retrieval_Fragment.this, resId, readingContentPath);
         selectedQuetion = new ArrayList<>();
         //positionMap = new HashMap<>();
 

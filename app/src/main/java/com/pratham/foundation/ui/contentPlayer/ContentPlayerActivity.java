@@ -5,30 +5,18 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.TextView;
 
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 import com.pratham.foundation.R;
 import com.pratham.foundation.BaseActivity;
-import com.pratham.foundation.database.AppDatabase;
-import com.pratham.foundation.database.BackupDatabase;
-import com.pratham.foundation.database.domain.ContentTable;
-import com.pratham.foundation.ui.contentPlayer.fact_retrival_fragment.FactRetrival_;
 import com.pratham.foundation.ui.contentPlayer.sequenceLayout.SequenceLayout_;
 import com.pratham.foundation.utility.FC_Utility;
 
 import org.androidannotations.annotations.AfterViews;
-import org.androidannotations.annotations.Background;
 import org.androidannotations.annotations.EActivity;
-
-import java.lang.reflect.Type;
-import java.util.ArrayList;
-import java.util.List;
 
 import static com.pratham.foundation.utility.FC_Constants.dialog_btn_cancel;
 

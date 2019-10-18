@@ -10,7 +10,6 @@ import com.pratham.foundation.R;
 import com.pratham.foundation.database.AppDatabase;
 import com.pratham.foundation.database.domain.ContentTable;
 import com.pratham.foundation.ui.contentPlayer.GameConstatnts;
-import com.pratham.foundation.ui.contentPlayer.fact_retrival_fragment.FactRetrival_;
 import com.pratham.foundation.ui.contentPlayer.multipleChoice.McqFillInTheBlanksFragment;
 import com.pratham.foundation.utility.FC_Utility;
 

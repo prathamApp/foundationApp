@@ -37,7 +37,7 @@ import com.pratham.foundation.modalclasses.ScienceQuestion;
 import com.pratham.foundation.services.stt.ContinuousSpeechService;
 import com.pratham.foundation.services.stt.STT_Result;
 import com.pratham.foundation.ui.contentPlayer.GameConstatnts;
-import com.pratham.foundation.ui.contentPlayer.fact_retrival_fragment.FactRetrival_;
+import com.pratham.foundation.ui.contentPlayer.fact_retrieval_fragment.FactRetrieval_;
 import com.pratham.foundation.utility.FC_Constants;
 import com.pratham.foundation.utility.FC_Utility;
 
@@ -408,8 +408,8 @@ public class ReadingFragment extends Fragment implements STT_Result {
         addLearntWords();
         Bundle bundle = GameConstatnts.findGameData("101");
         if (bundle != null) {
-            FC_Utility.showFragment(getActivity(), new FactRetrival_(), R.id.RL_CPA,
-                    bundle, FactRetrival_.class.getSimpleName());
+            FC_Utility.showFragment(getActivity(), new FactRetrieval_(), R.id.RL_CPA,
+                    bundle, FactRetrieval_.class.getSimpleName());
         }
     }
 

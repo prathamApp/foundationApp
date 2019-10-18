@@ -15,10 +15,6 @@
         <activity android:name=".ui.selectSubject.SelectSubject_"
             android:screenOrientation="portrait"/>
         <activity
-            android:name=".ui.keywordMapping.KeywordMapping_"
-            android:label="@string/title_activity_keyword_mapping"
-            android:theme="@style/AppTheme.NoActionBar" />
-        <activity
             android:name=".BaseActivity"
             android:screenOrientation="portrait" />
         <!--
@@ -26,15 +22,6 @@
             android:name="com.pratham.foundation.ui.keywordMapping.KeywordMappingFragment"
             android:screenOrientation="portrait" />
         -->
-        <activity
-            android:name=".ui.writingParagraph.WritingParagraph_"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name=".ui.factRetrial.FactRetrial_"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name=".ui.identifyKeywords.IdentifyKeywordsActivity_"
-            android:screenOrientation="portrait" />
         <!--
   <activity
               android:name=".MainActivity"

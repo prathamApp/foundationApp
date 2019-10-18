@@ -1,23 +1,25 @@
-package com.pratham.foundation.ui.contentPlayer.fact_retrival_fragment;
+package com.pratham.foundation.ui.contentPlayer.fact_retrival_selection;
 
 import android.content.Context;
-import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.pratham.foundation.database.BackupDatabase;
 import com.pratham.foundation.database.domain.Assessment;
 import com.pratham.foundation.database.domain.KeyWords;
-import com.pratham.foundation.database.domain.QuetionAns;
 import com.pratham.foundation.database.domain.Score;
-import com.pratham.foundation.modalclasses.ModalReadingVocabulary;
-import com.pratham.foundation.ui.identifyKeywords.QuestionModel;
+import com.pratham.foundation.modalclasses.ScienceQuestionChoice;
+import com.pratham.foundation.ui.contentPlayer.GameConstatnts;
 import com.pratham.foundation.utility.FC_Constants;
 import com.pratham.foundation.utility.FC_Utility;
 
-import org.androidannotations.annotations.Background;
 import org.androidannotations.annotations.EBean;
+import org.json.JSONArray;
+import org.json.JSONException;
 
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -26,55 +28,64 @@ import java.util.List;
 import static com.pratham.foundation.database.AppDatabase.appDatabase;
 
 @EBean
-public class FactRetrivalPresenter implements FactRetrivalContract.FactRetrivalPresenter {
-    private QuestionModel questionModel;
-    private FactRetrivalContract.FactRetrivalView view;
+public class Fact_Retrieval_Presenter implements Fact_Retrieval_Contract.Fact_retrival_Presenter {
+    private ScienceQuestion questionModel;
+    private Fact_Retrieval_Contract.Fact_retrival_View viewKeywords;
     private Context context;
-    private String gameName, resId, contentTitle;
     private float perc;
-    //private List<QuetionAns> quetionAnsList;
-    private List<QuestionModel> quetionModelList;
+    private List<ScienceQuestion> quetionModelList;
     private int totalWordCount, learntWordCount;
-    //private List<QuetionAns> selectedFive;
+    private String gameName, resId, readingContentPath, contentTitle;
+    private List<String> correctWordList, wrongWordList;
+    private boolean isTest = false;
 
-    public FactRetrivalPresenter(Context context) {
+    public Fact_Retrieval_Presenter(Context context) {
         this.context = context;
     }
 
     @Override
-    public void setView(FactRetrivalContract.FactRetrivalView factRetrivalView, String contentTitle, String resId) {
-        this.view = factRetrivalView;
+    public void setView(Fact_Retrieval_Contract.Fact_retrival_View viewKeywords, String resId, String readingContentPath) {
+        this.viewKeywords = viewKeywords;
         this.resId = resId;
-        this.contentTitle = contentTitle;
+        this.readingContentPath = readingContentPath;
     }
 
+
     @Override
-    public void getData(String readingContentPath) {
-        //get data
-        String text = FC_Utility.loadJSONFromStorage(readingContentPath, "factRetrial.json");
-        // List instrumentNames = new ArrayList<>();
-        if (text != null) {
+    public void getData() {
+
+        //String text = FC_Utility.loadJSONFromAsset(context, "fact_retrial_selection.json");
+
+
+        try {
+            InputStream is = new FileInputStream(readingContentPath + "fact_retrial_selection.json");
+            int size = is.available();
+            byte[] buffer = new byte[size];
+            is.read(buffer);
+            is.close();
+            String jsonStr = new String(buffer);
+            JSONArray jsonObj = new JSONArray(jsonStr);
             Gson gson = new Gson();
-            Type type = new TypeToken<List<QuestionModel>>() {
+            Type type = new TypeToken<List<ScienceQuestion>>() {
             }.getType();
-            quetionModelList = gson.fromJson(text, type);
-            //  quetionAnsList = quetionModelList.get(0).getKeywords();
+            quetionModelList = gson.fromJson(jsonObj.toString(), type);
             getDataList();
-        } else {
-            Toast.makeText(context, "Data not found", Toast.LENGTH_LONG).show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (JSONException e) {
+            e.printStackTrace();
         }
 
+
     }
 
-    @Background
-    @Override
     public void getDataList() {
         try {
             perc = getPercentage();
             Collections.shuffle(quetionModelList);
             for (int i = 0; i < quetionModelList.size(); i++) {
                 if (perc < 95) {
-                    if (!checkWord("" + quetionModelList.get(i).getTitle())) {
+                    if (!checkWord("" + quetionModelList.get(i).getTopicid())) {
                         questionModel = quetionModelList.get(i);
                         break;
                     }
@@ -82,15 +93,13 @@ public class FactRetrivalPresenter implements FactRetrivalContract.FactRetrivalP
                     questionModel = quetionModelList.get(i);
                     break;
                 }
+
             }
-           // selectedFive = questionModel.getKeywords();
-           // Collections.shuffle(selectedFive);
-            view.showParagraph(questionModel);
+            viewKeywords.showParagraph(questionModel);
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
-
 
     public float getPercentage() {
         float perc = 0f;
@@ -127,28 +136,30 @@ public class FactRetrivalPresenter implements FactRetrivalContract.FactRetrivalP
         }
     }
 
-    public void addLearntWords(List<QuetionAns> selectedAnsList) {
-        List<KeyWords> learntWords = new ArrayList<>();
-        int scoredMarks;
-        KeyWords keyWords = new KeyWords();
-        keyWords.setResourceId(resId);
-        keyWords.setSentFlag(0);
-        keyWords.setStudentId(FC_Constants.currentStudentID);
-        keyWords.setKeyWord(questionModel.getTitle());
-        keyWords.setWordType("word");
-        learntWords.add(keyWords);
-        for (int i = 0; i < selectedAnsList.size(); i++) {
-            if (selectedAnsList.get(i).getUserAns() != null && !selectedAnsList.get(i).getUserAns().isEmpty()) {
-                if (checkAnswer(selectedAnsList.get(i)) > 70) {
-                    scoredMarks = 10;
-                } else {
-                    scoredMarks = 0;
+    public void addLearntWords(List<ScienceQuestionChoice> selectedAnsList) {
+        correctWordList = new ArrayList<>();
+        wrongWordList = new ArrayList<>();
+        int correctCnt = 0;
+        /* int scoredMarks = (int) checkAnswer(selectedAnsList);*/
+        if (selectedAnsList != null && !selectedAnsList.isEmpty()) {
+            for (int i = 0; i < selectedAnsList.size(); i++) {
+                if (selectedAnsList.get(i).getCorrect().equalsIgnoreCase(selectedAnsList.get(i).getUserAns())) {
+                    correctCnt++;
+                    KeyWords keyWords = new KeyWords();
+                    keyWords.setResourceId(resId);
+                    keyWords.setSentFlag(0);
+                    keyWords.setStudentId(FC_Constants.currentStudentID);
+                    String key = selectedAnsList.get(i).getCorrect();
+                    keyWords.setKeyWord(key);
+                    keyWords.setWordType("word");
+                    appDatabase.getKeyWordDao().insert(keyWords);
                 }
-                addScore(0,questionModel.getTitle(), scoredMarks, 10, FC_Utility.getCurrentDateTime(), selectedAnsList.get(i).toString());
             }
+            int scoredMarks = correctCnt * 2;
+            addScore(Integer.parseInt(questionModel.getQid()), GameConstatnts.FACT_RETRIAL_SELECTION, scoredMarks, 10, FC_Utility.getCurrentDateTime(), selectedAnsList.toString());
         }
-        appDatabase.getKeyWordDao().insertAllWord(learntWords);
         BackupDatabase.backup(context);
+
     }
 
     public void addScore(int wID, String Word, int scoredMarks, int totalMarks, String resStartTime, String Label) {
@@ -192,36 +203,18 @@ public class FactRetrivalPresenter implements FactRetrivalContract.FactRetrivalP
         }
     }
 
-    public float checkAnswer(QuetionAns selectedAnsList) {
-        boolean[] correctArr;
-        float perc;
-        String originalAns = selectedAnsList.getAnswer();
-        String regex = "[\\-+.\"^?!@#%&*,:]";
-        String quesFinal = originalAns.replaceAll(regex, "");
-
-        String[] originalAnsArr = quesFinal.split(" ");
-        String[] userAnsArr = selectedAnsList.getUserAns().replaceAll(regex, "").split(" ");
-
-        if (originalAnsArr.length < userAnsArr.length)
-            correctArr = new boolean[userAnsArr.length];
-        else correctArr = new boolean[originalAnsArr.length];
-
-
-        for (int j = 0; j < userAnsArr.length; j++) {
-            for (int i = 0; i < originalAnsArr.length; i++) {
-                if (userAnsArr[j].equalsIgnoreCase(originalAnsArr[i])) {
-                    correctArr[i] = true;
-                    break;
-                }
+   /* public float checkAnswer(List<String> selectedAnsList) {
+        int correctCnt = 0;
+        for (int i = 0; i < selectedAnsList.size(); i++) {
+            if (questionModel.getKeywords().contains(selectedAnsList.get(i))) {
+                correctCnt++;
+                correctWordList.add(selectedAnsList.get(i));
+            } else {
+                wrongWordList.add(selectedAnsList.get(i));
             }
         }
+        return 10 * correctCnt / questionModel.getKeywords().size();
+    }*/
 
-        int correctCnt = 0;
-        for (int x = 0; x < correctArr.length; x++) {
-            if (correctArr[x])
-                correctCnt++;
-        }
-        perc = ((float) correctCnt / (float) correctArr.length) * 100;
-        return perc;
-    }
 }
+

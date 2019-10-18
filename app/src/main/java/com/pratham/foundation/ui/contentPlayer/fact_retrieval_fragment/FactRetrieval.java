@@ -1,4 +1,4 @@
-package com.pratham.foundation.ui.contentPlayer.fact_retrival_fragment;
+package com.pratham.foundation.ui.contentPlayer.fact_retrieval_fragment;
 
 import android.app.Dialog;
 import android.os.Bundle;
@@ -17,7 +17,7 @@ import com.pratham.foundation.customView.SansButton;
 import com.pratham.foundation.database.domain.QuetionAns;
 import com.pratham.foundation.ui.contentPlayer.GameConstatnts;
 import com.pratham.foundation.ui.contentPlayer.keywords_identification.KeywordsIdentificationFragment_;
-import com.pratham.foundation.ui.identifyKeywords.QuestionModel;
+import com.pratham.foundation.ui.contentPlayer.keywords_identification.QuestionModel;
 import com.pratham.foundation.utility.FC_Utility;
 
 import org.androidannotations.annotations.AfterViews;
@@ -31,10 +31,10 @@ import java.util.Collections;
 import java.util.List;
 
 @EFragment(R.layout.fragment_fact_retrival)
-public class FactRetrival extends Fragment implements FactRetrivalContract.FactRetrivalView {
+public class FactRetrieval extends Fragment implements FactRetrievalContract.FactRetrievalView {
 
-    @Bean(FactRetrivalPresenter.class)
-    FactRetrivalContract.FactRetrivalPresenter presenter;
+    @Bean(FactRetrievalPresenter.class)
+    FactRetrievalContract.FactRetrievalPresenter presenter;
     @ViewById(R.id.paragraph)
     TextView paragraph;
     @ViewById(R.id.quetion)
@@ -64,7 +64,7 @@ public class FactRetrival extends Fragment implements FactRetrivalContract.FactR
 
         }
 
-        presenter.setView(FactRetrival.this, contentTitle, resId);
+        presenter.setView(FactRetrieval.this, contentTitle, resId);
         presenter.getData(readingContentPath);
     }
 

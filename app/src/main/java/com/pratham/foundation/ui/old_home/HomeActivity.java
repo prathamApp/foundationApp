@@ -33,8 +33,8 @@ import com.bumptech.glide.Glide;
 import com.pratham.foundation.ApplicationClass;
 import com.pratham.foundation.R;
 import com.pratham.foundation.customView.GridSpacingItemDecoration;
-import com.pratham.foundation.ui.contentPlayer.ContentPlayerActivity;
 import com.pratham.foundation.ui.contentPlayer.ContentPlayerActivity_;
+import com.pratham.foundation.ui.contentPlayer.fact_retrieval_fragment.FactRetrieval_;
 import com.pratham.foundation.ui.contentPlayer.web_view.WebViewActivity;
 import com.pratham.foundation.services.shared_preferences.FastSave;
 import com.pratham.foundation.customView.CircularImageView;
@@ -49,7 +49,6 @@ import com.pratham.foundation.modalclasses.CertificateModelClass;
 import com.pratham.foundation.modalclasses.EventMessage;
 import com.pratham.foundation.modalclasses.Modal_FileDownloading;
 import com.pratham.foundation.ui.home_screen.display_content.ContentDisplay_;
-import com.pratham.foundation.ui.factRetrial.FactRetrial_;
 import com.pratham.foundation.ui.selectSubject.SelectSubject_;
 import com.pratham.foundation.ui.student_profile.Student_profile_activity;
 import com.pratham.foundation.ui.test.assessment_type.TestTypeActivity;
@@ -1210,7 +1209,7 @@ public class HomeActivity extends BaseActivity implements /*BottomNavigationView
                     Toast.makeText(this, "Game not found", Toast.LENGTH_SHORT).show();
                 }
             } else if (testData.getResourceType().equalsIgnoreCase(FC_Constants.OPPOSITE_WORDS)) {
-                Intent mainNew = new Intent(HomeActivity.this, FactRetrial_.class);
+                Intent mainNew = new Intent(HomeActivity.this, FactRetrieval_.class);
                 mainNew.putExtra("resId", testData.getResourceId());
                 mainNew.putExtra("StudentID", FC_Constants.currentStudentID);
                 mainNew.putExtra("contentName", testData.getNodeTitle());

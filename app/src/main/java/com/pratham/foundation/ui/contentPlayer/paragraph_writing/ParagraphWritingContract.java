@@ -2,7 +2,8 @@ package com.pratham.foundation.ui.contentPlayer.paragraph_writing;
 
 import android.graphics.Bitmap;
 
-import com.pratham.foundation.ui.identifyKeywords.QuestionModel;
+import com.pratham.foundation.ui.contentPlayer.keywords_identification.QuestionModel;
+
 
 public interface ParagraphWritingContract {
     public interface ParagraphWritingView {

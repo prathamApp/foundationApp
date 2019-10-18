@@ -30,8 +30,8 @@ import com.pratham.foundation.database.domain.ContentTableNew;
 import com.pratham.foundation.modalclasses.CertificateModelClass;
 import com.pratham.foundation.modalclasses.EventMessage;
 import com.pratham.foundation.modalclasses.Modal_FileDownloading;
+import com.pratham.foundation.ui.contentPlayer.fact_retrieval_fragment.FactRetrieval_;
 import com.pratham.foundation.ui.contentPlayer.web_view.WebViewActivity;
-import com.pratham.foundation.ui.factRetrial.FactRetrial_;
 import com.pratham.foundation.ui.home_screen.TempHomeActivity;
 import com.pratham.foundation.ui.test.certificate.CertificateClicked;
 import com.pratham.foundation.utility.FC_Constants;
@@ -306,7 +306,7 @@ public class TestFragment extends Fragment implements TestContract.TestView,
                     Toast.makeText(getActivity(), "Game not found", Toast.LENGTH_SHORT).show();
                 }
             } else if (testData.getResourceType().equalsIgnoreCase(FC_Constants.OPPOSITE_WORDS)) {
-                Intent mainNew = new Intent(getActivity(), FactRetrial_.class);
+                Intent mainNew = new Intent(getActivity(), FactRetrieval_.class);
                 mainNew.putExtra("resId", testData.getResourceId());
                 mainNew.putExtra("StudentID", FC_Constants.currentStudentID);
                 mainNew.putExtra("contentName", testData.getNodeTitle());
