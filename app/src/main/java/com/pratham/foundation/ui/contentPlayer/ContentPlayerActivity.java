@@ -36,17 +36,15 @@ import static com.pratham.foundation.utility.FC_Constants.dialog_btn_cancel;
 @EActivity(R.layout.activity_content_player)
 public class ContentPlayerActivity extends BaseActivity{
 
-    private String contentPath, contentTitle, StudentID, resId;
+    private String nodeID;
     boolean onSdCard;
-    List<ContentTable> contentTableList;
     Gson gson;
 
     @AfterViews
     public void initialize() {
         gson = new Gson();
         Intent intent = getIntent();
-        contentPath = intent.getStringExtra("nodeID");
-        getListResData(contentPath);
+        nodeID = intent.getStringExtra("nodeID");
 /*
         contentPath = intent.getStringExtra("contentPath");
         StudentID = intent.getStringExtra("StudentID");
@@ -57,24 +55,9 @@ public class ContentPlayerActivity extends BaseActivity{
         loadFragment();
     }
 
-    @Background
-    public void getListResData(String nodeId) {
-        try {
-            contentTableList = new ArrayList<>();
-            contentTableList = AppDatabase.appDatabase.getContentTableDao().getContentData("" + nodeId);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-
     public void loadFragment() {
         Bundle bundle = new Bundle();
-        bundle.putString("contentPath", contentPath);
-        bundle.putString("StudentID", StudentID);
-        bundle.putString("resId", resId);
-        bundle.putString("contentName", contentTitle);
-        bundle.putBoolean("onSdCard", onSdCard);
+        bundle.putString("nodeID", nodeID);
         FC_Utility.showFragment(ContentPlayerActivity.this, new SequenceLayout_(), R.id.RL_CPA,
                 bundle, SequenceLayout_.class.getSimpleName());
     }

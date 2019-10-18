@@ -7,6 +7,7 @@ import android.support.v7.widget.RecyclerView;
 import android.widget.Toast;
 
 import com.pratham.foundation.R;
+import com.pratham.foundation.database.AppDatabase;
 import com.pratham.foundation.database.domain.ContentTable;
 import com.pratham.foundation.ui.contentPlayer.GameConstatnts;
 import com.pratham.foundation.ui.contentPlayer.fact_retrival_fragment.FactRetrival_;
@@ -14,11 +15,13 @@ import com.pratham.foundation.ui.contentPlayer.multipleChoice.McqFillInTheBlanks
 import com.pratham.foundation.utility.FC_Utility;
 
 import org.androidannotations.annotations.AfterViews;
+import org.androidannotations.annotations.Background;
 import org.androidannotations.annotations.Bean;
 import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EFragment;
 import org.androidannotations.annotations.ViewById;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @EFragment(R.layout.fragment_sequence_layout)
@@ -31,8 +34,9 @@ public class SequenceLayout extends Fragment implements SequeanceLayoutContract.
     RecyclerView recyclerView;
 
 
-    private String contentPath, contentTitle, StudentID, resId;
+    private String nodeID;
     private boolean onSdCard;
+    List<ContentTable> contentTableList;
 
     public SequenceLayout() {
         // Required empty public constructor
@@ -42,15 +46,23 @@ public class SequenceLayout extends Fragment implements SequeanceLayoutContract.
     public void initiate() {
         Bundle bundle = getArguments();
         if (bundle != null) {
-            contentPath = bundle.getString("contentPath");
-            StudentID = bundle.getString("StudentID");
-            resId = bundle.getString("resId");
-            contentTitle = bundle.getString("contentName");
-            onSdCard = bundle.getBoolean("onSdCard", false);
+            nodeID = bundle.getString("nodeID");
+            getListResData(nodeID);
             sequenceLayoutPresenter.setView(this);
             sequenceLayoutPresenter.getData();
         }
     }
+
+    @Background
+    public void getListResData(String nodeId) {
+        try {
+            contentTableList = new ArrayList<>();
+            contentTableList = AppDatabase.appDatabase.getContentTableDao().getContentData("" + nodeId);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
 
     @Override
     public void loadUI(List<ContentTable> list) {
