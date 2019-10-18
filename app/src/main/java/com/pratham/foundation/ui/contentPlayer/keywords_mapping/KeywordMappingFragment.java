@@ -35,8 +35,8 @@ public class KeywordMappingFragment extends Fragment implements KeywordMappingCo
     @Bean(KeywordMappingPresenterImp.class)
     KeywordMappingContract.KeywordMappingPresenter presenter;
 
-    @ViewById(R.id.tittle)
-    TextView tittle;
+  /*  @ViewById(R.id.tittle)
+    TextView tittle;*/
     @ViewById(R.id.keyword)
     TextView keyword;
     @ViewById(R.id.recycler_view)
