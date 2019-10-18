@@ -20,6 +20,8 @@ public interface BottomStudentsContract {
         void dismissProgressDialog();
 
         void dismissProgressDialog2();
+
+        void gotoNext();
     }
 
     public interface BottomStudentsPresenter {

@@ -48,6 +48,7 @@ import java.util.List;
 import java.util.UUID;
 
 import static com.pratham.foundation.ui.splash_activity.SplashActivity.bgMusic;
+import static com.pratham.foundation.utility.FC_Constants.currentStudentName;
 
 
 @EFragment(R.layout.student_list_fragment)
@@ -272,17 +273,17 @@ public class BottomStudentsFragment extends BottomSheetDialogFragment
     public void onStudentClick(String studentName, String studentId) {
 //        showProgressDialog();
         FC_Constants.currentStudentID = studentId;
-        FC_Constants.currentStudentName = studentName;
+        currentStudentName = studentName;
         FC_Constants.currentSession = "" + UUID.randomUUID().toString();
         presenter.updateStudentData();
-        updateUI(studentName);
     }
 
     @UiThread
-    public void updateUI(String studName) {
+    @Override
+    public void gotoNext() {
 //        dismissProgressDialog();
         Intent intent = new Intent(getActivity(), SelectSubject_.class);
-        intent.putExtra("studName", studName);
+        intent.putExtra("studName", currentStudentName);
         startActivity(intent);
         try {
             if (bgMusic != null && bgMusic.isPlaying()) {
