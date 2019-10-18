@@ -168,37 +168,20 @@ public class BottomStudentsFragment extends BottomSheetDialogFragment
             } else if (message.getMessage().equalsIgnoreCase(FC_Constants.UNZIPPING_DATA_FILE)) {
                 if (progress != null) {
                     dialog_file_name.setText("Unzipping please wait..");
-/*                    getActivity().runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            roundProgress.setVisibility(View.VISIBLE);
-                            progressLayout.setVisibility(View.GONE);
-                        }
-                    });*/
                 }
             } else if (message.getMessage().equalsIgnoreCase(FC_Constants.DATA_ZIP_COMPLETE)) {
-//                wl.release();
                 Log.d("pushorassign", "Zipping Completed.. ");
                 if (progress != null)
                     dialog_file_name.setText("Zipping Completed..");
-                new Handler().postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        dialog_file_name.setText("Loading Data..");
-                        Log.d("pushorassign", "Loading Data..");
-                        presenter.populateDB();
-                    }
+                new Handler().postDelayed(() -> {
+                    dialog_file_name.setText("Loading Data..");
+                    Log.d("pushorassign", "Loading Data..");
+                    presenter.populateDB();
                 }, 1000);
             } else if (message.getMessage().equalsIgnoreCase(FC_Constants.DATA_DOWNLOAD_ERROR)) {
-//                wl.release();
                 if (progress != null)
                     dialog_file_name.setText("Download Error..");
-                new Handler().postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        progress.dismiss();
-                    }
-                }, 1000);
+                new Handler().postDelayed(() -> progress.dismiss(), 1000);
             }
         }
     }
@@ -271,7 +254,7 @@ public class BottomStudentsFragment extends BottomSheetDialogFragment
     @Background
     @Override
     public void onStudentClick(String studentName, String studentId) {
-//        showProgressDialog();
+        showProgressDialog();
         FC_Constants.currentStudentID = studentId;
         currentStudentName = studentName;
         FC_Constants.currentSession = "" + UUID.randomUUID().toString();
@@ -281,7 +264,7 @@ public class BottomStudentsFragment extends BottomSheetDialogFragment
     @UiThread
     @Override
     public void gotoNext() {
-//        dismissProgressDialog();
+        dismissProgressDialog();
         Intent intent = new Intent(getActivity(), SelectSubject_.class);
         intent.putExtra("studName", currentStudentName);
         startActivity(intent);

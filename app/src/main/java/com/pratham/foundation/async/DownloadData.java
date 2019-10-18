@@ -36,8 +36,8 @@ public class DownloadData {
 
     public String doInBackground() {
         try {
-            AndroidNetworking.download("http://192.168.4.1/data/LLA.zip", ApplicationClass.foundationPath,
-                    "LLA.zip")
+            AndroidNetworking.download("http://192.168.4.1/data/FCA.zip", ApplicationClass.foundationPath,
+                    "FCA.zip")
                     .setExecutor(Executors.newSingleThreadExecutor())
                     .setPriority(Priority.HIGH)
                     .build()
@@ -59,7 +59,7 @@ public class DownloadData {
                                     EventMessage message=new EventMessage();
                                     message.setMessage(FC_Constants.UNZIPPING_DATA_FILE);
                                     EventBus.getDefault().post(message);
-                                    unzipFile(ApplicationClass.foundationPath + "/LLA.zip", ApplicationClass.foundationPath);
+                                    unzipFile(ApplicationClass.foundationPath + "/FCA.zip", ApplicationClass.foundationPath);
                                     return null;
                                 }
 
