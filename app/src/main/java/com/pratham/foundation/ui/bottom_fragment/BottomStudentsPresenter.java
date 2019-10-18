@@ -118,8 +118,8 @@ public class BottomStudentsPresenter implements BottomStudentsContract.BottomStu
         startSesion.setSentFlag(0);
         AppDatabase.appDatabase.getSessionDao().insert(startSesion);
 
-        if (FC_Utility.isDataConnectionAvailable(context))
-            getStudentData(FC_Constants.STUDENT_PROGRESS_INTERNET, FC_Constants.STUDENT_PROGRESS_API, currentStudentID);
+//        if (FC_Utility.isDataConnectionAvailable(context))
+//            getStudentData(FC_Constants.STUDENT_PROGRESS_INTERNET, FC_Constants.STUDENT_PROGRESS_API, currentStudentID);
 
     }
 
