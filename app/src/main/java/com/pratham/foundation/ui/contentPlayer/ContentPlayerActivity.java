@@ -37,12 +37,9 @@ import static com.pratham.foundation.utility.FC_Constants.dialog_btn_cancel;
 public class ContentPlayerActivity extends BaseActivity{
 
     private String nodeID;
-    boolean onSdCard;
-    Gson gson;
 
     @AfterViews
     public void initialize() {
-        gson = new Gson();
         Intent intent = getIntent();
         nodeID = intent.getStringExtra("nodeID");
 /*

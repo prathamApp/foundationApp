@@ -33,7 +33,6 @@ public class SequenceLayout extends Fragment implements SequeanceLayoutContract.
     @ViewById(R.id.recycler_view)
     RecyclerView recyclerView;
 
-
     private String nodeID;
     private boolean onSdCard;
     List<ContentTable> contentTableList;
@@ -62,7 +61,6 @@ public class SequenceLayout extends Fragment implements SequeanceLayoutContract.
             e.printStackTrace();
         }
     }
-
 
     @Override
     public void loadUI(List<ContentTable> list) {
