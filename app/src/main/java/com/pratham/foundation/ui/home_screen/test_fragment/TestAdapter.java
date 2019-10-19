@@ -20,7 +20,7 @@ import android.widget.TextView;
 
 import com.pratham.foundation.R;
 import com.pratham.foundation.modalclasses.CertificateModelClass;
-import com.pratham.foundation.ui.home_screen.TempHomeActivity;
+import com.pratham.foundation.ui.home_screen.HomeActivity;
 import com.pratham.foundation.ui.test.certificate.CertificateClicked;
 
 import org.json.JSONArray;
@@ -286,7 +286,7 @@ public class TestAdapter extends RecyclerView.Adapter {
 
     private String getLevelWiseJson() {
         String jsonName = "TestBeginnerJson.json";
-        switch (TempHomeActivity.currentLevelNo) {
+        switch (HomeActivity.currentLevelNo) {
             case 0:
                 jsonName = "TestBeginnerJson.json";
                 break;

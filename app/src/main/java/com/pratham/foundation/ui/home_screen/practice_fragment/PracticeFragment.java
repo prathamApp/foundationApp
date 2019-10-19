@@ -28,10 +28,9 @@ import com.pratham.foundation.database.domain.ContentTable;
 import com.pratham.foundation.database.domain.ContentTableNew;
 import com.pratham.foundation.modalclasses.EventMessage;
 import com.pratham.foundation.modalclasses.Modal_FileDownloading;
-import com.pratham.foundation.ui.contentPlayer.ContentPlayerActivity;
 import com.pratham.foundation.ui.contentPlayer.ContentPlayerActivity_;
 import com.pratham.foundation.ui.contentPlayer.web_view.WebViewActivity;
-import com.pratham.foundation.ui.home_screen.TempHomeActivity;
+import com.pratham.foundation.ui.home_screen.HomeActivity;
 import com.pratham.foundation.ui.home_screen.display_content.ContentDisplay_;
 import com.pratham.foundation.utility.FC_Constants;
 import com.pratham.foundation.utility.FC_Utility;
@@ -53,7 +52,7 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
 
-import static com.pratham.foundation.ui.home_screen.TempHomeActivity.header_rl;
+import static com.pratham.foundation.ui.home_screen.HomeActivity.header_rl;
 import static com.pratham.foundation.utility.FC_Utility.dpToPx;
 import static com.pratham.foundation.utility.SplashSupportActivity.ButtonClickSound;
 
@@ -83,7 +82,7 @@ public class PracticeFragment extends Fragment implements PracticeContract.Pract
         RetractableToolbarUtil.ShowHideToolbarOnScrollingListener showHideToolbarListener;
         my_recycler_view.addOnScrollListener(showHideToolbarListener =
                 new RetractableToolbarUtil.ShowHideToolbarOnScrollingListener(header_rl));
-        presenter.getBottomNavId(TempHomeActivity.currentLevelNo, "Practice");
+        presenter.getBottomNavId(HomeActivity.currentLevelNo, "Practice");
     }
 
     @UiThread
@@ -200,14 +199,14 @@ public class PracticeFragment extends Fragment implements PracticeContract.Pract
     @Override
     public void setSelectedLevel(List<ContentTable> contentTable) {
         rootLevelList = contentTable;
-        presenter.insertNodeId(contentTable.get(TempHomeActivity.currentLevelNo).getNodeId());
+        presenter.insertNodeId(contentTable.get(HomeActivity.currentLevelNo).getNodeId());
         presenter.getDataForList();
     }
 
     public void onLevelChanged() {
         contentParentList.clear();
         presenter.removeLastNodeId();
-        presenter.insertNodeId(rootLevelList.get(TempHomeActivity.currentLevelNo).getNodeId());
+        presenter.insertNodeId(rootLevelList.get(HomeActivity.currentLevelNo).getNodeId());
         presenter.getDataForList();
     }
 
@@ -305,7 +304,7 @@ public class PracticeFragment extends Fragment implements PracticeContract.Pract
             Intent intent = new Intent(getActivity(), ContentDisplay_.class);
             intent.putExtra("nodeId", singleItem.getNodeId());
             intent.putExtra("contentTitle", singleItem.getNodeTitle());
-            intent.putExtra("level", "" + TempHomeActivity.currentLevelNo);
+            intent.putExtra("level", "" + HomeActivity.currentLevelNo);
             startActivity(intent);
         } else {
             contentParentList.clear();
@@ -357,7 +356,7 @@ public class PracticeFragment extends Fragment implements PracticeContract.Pract
       /*  else if (contentList.getResourceType().equalsIgnoreCase(FC_Constants.RC_RESOURCE)) {
             presenter.enterRCData(contentList);
         } else if (contentList.getResourceType().equalsIgnoreCase(FC_Constants.CONVO_RESOURCE)) {
-            Intent mainNew = new Intent(TempHomeActivity.this, ConversationActivity_.class);
+            Intent mainNew = new Intent(HomeActivity.this, ConversationActivity_.class);
             mainNew.putExtra("storyId", contentList.getResourceId());
             mainNew.putExtra("StudentID", FC_Constants.currentStudentID);
             mainNew.putExtra("contentName", contentList.getNodeTitle());
@@ -366,7 +365,7 @@ public class PracticeFragment extends Fragment implements PracticeContract.Pract
             mainNew.putExtra("contentPath", contentList.getResourcePath());
             startActivity(mainNew);
         } else if (contentList.getResourceType().equalsIgnoreCase(FC_Constants.COMIC_CONVO_RESOURCE)) {
-            Intent mainNew = new Intent(TempHomeActivity.this, ReadingCardsActivity_.class);
+            Intent mainNew = new Intent(HomeActivity.this, ReadingCardsActivity_.class);
             mainNew.putExtra("storyId", contentList.getResourceId());
             mainNew.putExtra("StudentID", FC_Constants.currentStudentID);
             mainNew.putExtra("contentName", contentList.getNodeTitle());
@@ -374,7 +373,7 @@ public class PracticeFragment extends Fragment implements PracticeContract.Pract
             mainNew.putExtra("contentPath", contentList.getResourcePath());
             startActivity(mainNew);
         } else if (contentList.getResourceType().equalsIgnoreCase(FC_Constants.RHYME_RESOURCE) || contentList.getResourceType().equalsIgnoreCase(FC_Constants.STORY_RESOURCE)) {
-            Intent mainNew = new Intent(TempHomeActivity.this, ReadingStoryActivity_.class);
+            Intent mainNew = new Intent(HomeActivity.this, ReadingStoryActivity_.class);
             mainNew.putExtra("storyId", contentList.getResourceId());
             mainNew.putExtra("StudentID", FC_Constants.currentStudentID);
             mainNew.putExtra("storyPath", contentList.getResourcePath());
@@ -383,7 +382,7 @@ public class PracticeFragment extends Fragment implements PracticeContract.Pract
             mainNew.putExtra("contentType", contentList.getResourceType());
             startActivity(mainNew);
         } else if (contentList.getResourceType().equalsIgnoreCase(FC_Constants.WORD_ANDROID)) {
-            Intent mainNew = new Intent(TempHomeActivity.this, ReadingWordScreenActivity.class);
+            Intent mainNew = new Intent(HomeActivity.this, ReadingWordScreenActivity.class);
             mainNew.putExtra("resId", contentList.getResourceId());
             mainNew.putExtra("StudentID", FC_Constants.currentStudentID);
             mainNew.putExtra("contentPath", contentList.getResourcePath());
@@ -391,7 +390,7 @@ public class PracticeFragment extends Fragment implements PracticeContract.Pract
             mainNew.putExtra("contentTitle", contentList.getNodeTitle());
             startActivity(mainNew);
         } else if (contentList.getResourceType().equalsIgnoreCase(FC_Constants.PARA_ANDROID)) {
-            Intent mainNew = new Intent(TempHomeActivity.this, ReadingParagraphsActivity_.class);
+            Intent mainNew = new Intent(HomeActivity.this, ReadingParagraphsActivity_.class);
             mainNew.putExtra("resId", contentList.getResourceId());
             mainNew.putExtra("StudentID", FC_Constants.currentStudentID);
             mainNew.putExtra("contentPath", contentList.getResourcePath());
@@ -399,7 +398,7 @@ public class PracticeFragment extends Fragment implements PracticeContract.Pract
             mainNew.putExtra("contentTitle", contentList.getNodeTitle());
             startActivity(mainNew);
         } else if (contentList.getResourceType().equalsIgnoreCase(FC_Constants.VOCAB_ANDROID)) {
-            Intent mainNew = new Intent(TempHomeActivity.this, ReadingVocabularyActivity_.class);
+            Intent mainNew = new Intent(HomeActivity.this, ReadingVocabularyActivity_.class);
             mainNew.putExtra("resId", contentList.getResourceId());
             mainNew.putExtra("StudentID", FC_Constants.currentStudentID);
             mainNew.putExtra("contentPath", contentList.getResourcePath());
@@ -409,7 +408,7 @@ public class PracticeFragment extends Fragment implements PracticeContract.Pract
             mainNew.putExtra("vocabCategory", contentList.getNodeKeywords());
             startActivity(mainNew);
         } else if (contentList.getResourceType().equalsIgnoreCase(FC_Constants.RHYMING_WORD_ANDROID)) {
-            Intent mainNew = new Intent(TempHomeActivity.this, ReadingRhymesActivity_.class);
+            Intent mainNew = new Intent(HomeActivity.this, ReadingRhymesActivity_.class);
             mainNew.putExtra("resId", contentList.getResourceId());
             mainNew.putExtra("StudentID", FC_Constants.currentStudentID);
             mainNew.putExtra("contentPath", contentList.getResourcePath());
@@ -418,7 +417,7 @@ public class PracticeFragment extends Fragment implements PracticeContract.Pract
             mainNew.putExtra("rhymeLevel", contentList.getNodeDesc());
             startActivity(mainNew);
         } else if (contentList.getResourceType().equalsIgnoreCase(FC_Constants.OPPOSITE_WORDS)) {
-            Intent mainNew = new Intent(TempHomeActivity.this, OppositesActivity_.class);
+            Intent mainNew = new Intent(HomeActivity.this, OppositesActivity_.class);
             mainNew.putExtra("resId", contentList.getResourceId());
             mainNew.putExtra("StudentID", FC_Constants.currentStudentID);
             mainNew.putExtra("contentName", contentList.getNodeTitle());
@@ -426,7 +425,7 @@ public class PracticeFragment extends Fragment implements PracticeContract.Pract
             mainNew.putExtra("contentPath", contentList.getResourcePath());
             startActivity(mainNew);
         } else if (contentList.getResourceType().equalsIgnoreCase(FC_Constants.MATCH_THE_PAIR)) {
-            Intent mainNew = new Intent(TempHomeActivity.this, MatchThePairGameActivity.class);
+            Intent mainNew = new Intent(HomeActivity.this, MatchThePairGameActivity.class);
             mainNew.putExtra("resId", contentList.getResourceId());
             mainNew.putExtra("StudentID", FC_Constants.currentStudentID);
             mainNew.putExtra("contentName", contentList.getNodeTitle());
@@ -434,7 +433,7 @@ public class PracticeFragment extends Fragment implements PracticeContract.Pract
             mainNew.putExtra("contentPath", contentList.getResourcePath());
             startActivity(mainNew);
         } else if (contentList.getResourceType().equalsIgnoreCase(FC_Constants.CHATBOT_ANDROID)) {
-            Intent talkbot = new Intent(this, com.pratham.cityofstories.talkbot.feature.TempHomeActivity.class);
+            Intent talkbot = new Intent(this, com.pratham.cityofstories.talkbot.feature.HomeActivity.class);
             startActivity(talkbot);
         }*/
         resServerImageName = contentList.getNodeServerImage();

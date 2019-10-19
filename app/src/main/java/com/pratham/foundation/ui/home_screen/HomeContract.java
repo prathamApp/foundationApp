@@ -12,7 +12,7 @@ import org.json.JSONObject;
 
 import java.util.List;
 
-public interface TempHomeContract {
+public interface HomeContract {
 
     interface HomeView {
 
@@ -103,7 +103,7 @@ public interface TempHomeContract {
 
         String getcurrentNodeID();
 
-        void setView(TempHomeContract.HomeView homeView);
+        void setView(HomeContract.HomeView homeView);
 
         void getBottomNavId(int currentLevelNo, String cosSection);
     }

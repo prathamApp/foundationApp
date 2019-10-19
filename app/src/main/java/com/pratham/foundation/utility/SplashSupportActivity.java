@@ -175,7 +175,6 @@ public class SplashSupportActivity extends AppCompatActivity implements MediaPla
     }
 
     public void openSettingsApp(Context context) {
-
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.GINGERBREAD) {
             Intent intent = new Intent(android.provider.Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
             intent.setData(Uri.parse("package:" + context.getPackageName()));
@@ -184,7 +183,6 @@ public class SplashSupportActivity extends AppCompatActivity implements MediaPla
 
 
     }
-
 
     @Override
     protected void onPause() {

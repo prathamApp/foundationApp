@@ -41,7 +41,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
-import static com.pratham.foundation.ui.home_screen.TempHomeActivity.sub_nodeId;
+import static com.pratham.foundation.ui.home_screen.HomeActivity.sub_nodeId;
 
 @EBean
 public class PracticePresenter implements PracticeContract.PracticePresenter, API_Content_Result {

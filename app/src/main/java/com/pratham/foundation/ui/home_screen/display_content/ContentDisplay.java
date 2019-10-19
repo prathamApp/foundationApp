@@ -55,7 +55,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import static com.pratham.foundation.ui.old_home.HomeActivity.languageChanged;
+import static com.pratham.foundation.ui.home_screen.HomeActivity.languageChanged;
 import static com.pratham.foundation.utility.FC_Utility.dpToPx;
 import static com.pratham.foundation.utility.SplashSupportActivity.ButtonClickSound;
 
@@ -257,7 +257,7 @@ public class ContentDisplay extends BaseActivity implements ContentContract.Cont
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         dialog.setCanceledOnTouchOutside(false);
         dialog.setContentView(R.layout.fc_custom_dialog);
-/*        Bitmap map=FC_Utility.takeScreenShot(TempHomeActivity.this);
+/*        Bitmap map=FC_Utility.takeScreenShot(HomeActivity.this);
         Bitmap fast=FC_Utility.fastblur(map, 20);
         final Drawable draw=new BitmapDrawable(getResources(),fast);
         dialog.getWindow().setBackgroundDrawable(draw);*/
@@ -451,7 +451,7 @@ public class ContentDisplay extends BaseActivity implements ContentContract.Cont
             mainNew.putExtra("rhymeLevel", ContentTableList.get(position).getNodeDesc());
             startActivity(mainNew);
         } else if (ContentTableList.get(position).getResourceType().equalsIgnoreCase(FC_Constants.CHATBOT_ANDROID)) {
-            Intent talkbot = new Intent(this, com.pratham.cityofstories.talkbot.feature.TempHomeActivity.class);
+            Intent talkbot = new Intent(this, com.pratham.cityofstories.talkbot.feature.HomeActivity.class);
             startActivity(talkbot);
         }*/
         resServerImageName = ContentTableList.get(position).getNodeServerImage();

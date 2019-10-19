@@ -52,7 +52,6 @@
             android:windowSoftInputMode="adjustNothing">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
@@ -72,10 +71,7 @@
             android:name=".ui.admin_panel.group_selection.SelectGroupActivity_"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".ui.old_home.HomeActivity_"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name=".ui.home_screen.TempHomeActivity_"
+            android:name=".ui.home_screen.HomeActivity_"
             android:screenOrientation="portrait" />
         <activity
             android:name=".ui.home_screen.display_content.ContentDisplay_"

@@ -52,16 +52,14 @@ import static com.pratham.foundation.utility.FC_Constants.dialog_btn_cancel;
 import static com.pratham.foundation.utility.FC_Constants.dialog_btn_exit;
 import static com.pratham.foundation.utility.FC_Constants.dialog_btn_restart;
 
-@EActivity(R.layout.temp_activity_home)
-public class TempHomeActivity extends BaseActivity /*BottomNavigationView.OnNavigationItemSelectedListener,*/ {
+@EActivity(R.layout.activity_home)
+public class HomeActivity extends BaseActivity{
 
     public static String sub_nodeId = "";
     @ViewById(R.id.viewpager)
     ViewPager viewpager;
     @ViewById(R.id.tv_studentName)
     TextView tv_studentName;
-    @ViewById(R.id.tv_level)
-    TextView tv_level;
     @ViewById(R.id.tabs)
     TabLayout tabLayout;
     @ViewById(R.id.header_rl)
@@ -90,7 +88,7 @@ public class TempHomeActivity extends BaseActivity /*BottomNavigationView.OnNavi
     Drawable homeTab3;
     @DrawableRes(R.drawable.home_header_4_bg)
     Drawable homeTab4;
-
+public static boolean languageChanged = false;
 
     @AfterViews
     public void initialize() {
@@ -101,7 +99,6 @@ public class TempHomeActivity extends BaseActivity /*BottomNavigationView.OnNavi
         setupViewPager(viewpager);
         tabLayout.setupWithViewPager(viewpager);
         setupTabIcons();
-        tv_level.setText("Level 1");
 /*        IconForm iconForm = new IconForm.Builder(this)
                 .setIconSize(45)
                 .setIconTint(ContextCompat.getColor(this, R.color.colorPrimary))
@@ -180,19 +177,15 @@ public class TempHomeActivity extends BaseActivity /*BottomNavigationView.OnNavi
             switch (position) {
                 case 0:
                     iv_level.setImageResource(R.drawable.level_1);
-                    tv_level.setText("Level 1");
                     break;
                 case 1:
                     iv_level.setImageResource(R.drawable.level_2);
-                    tv_level.setText("Level 2");
                     break;
                 case 2:
                     iv_level.setImageResource(R.drawable.level_3);
-                    tv_level.setText("Level 3");
                     break;
                 case 3:
                     iv_level.setImageResource(R.drawable.level_4);
-                    tv_level.setText("Level 4");
                     break;
             }
             EventMessage eventMessage = new EventMessage();
@@ -289,14 +282,14 @@ public class TempHomeActivity extends BaseActivity /*BottomNavigationView.OnNavi
 
         dia_btn_red.setOnClickListener(v -> {
             dialog.dismiss();
-            Intent intent = new Intent(TempHomeActivity.this, SupervisedAssessmentActivity.class);
+            Intent intent = new Intent(HomeActivity.this, SupervisedAssessmentActivity.class);
             intent.putExtra("testMode", "unsupervised");
             startActivityForResult(intent, 10);
         });
 
         dia_btn_yellow.setOnClickListener(v -> {
             dialog.dismiss();
-            Intent intent = new Intent(TempHomeActivity.this, SupervisedAssessmentActivity.class);
+            Intent intent = new Intent(HomeActivity.this, SupervisedAssessmentActivity.class);
             intent.putExtra("testMode", "supervised");
             startActivityForResult(intent, 10);
         });
@@ -401,10 +394,10 @@ public class TempHomeActivity extends BaseActivity /*BottomNavigationView.OnNavi
 
     @SuppressLint("SetTextI18n")
     private void exitDialog() {
-        Dialog dialog = new Dialog(TempHomeActivity.this);
+        Dialog dialog = new Dialog(HomeActivity.this);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setContentView(R.layout.fc_custom_dialog);
-/*        Bitmap map=FC_Utility.takeScreenShot(TempHomeActivity.this);
+/*        Bitmap map=FC_Utility.takeScreenShot(HomeActivity.this);
         Bitmap fast=FC_Utility.fastblur(map, 20);
         final Drawable draw=new BitmapDrawable(getResources(),fast);
         dialog.getWindow().setBackgroundDrawable(draw);*/
@@ -422,18 +415,18 @@ public class TempHomeActivity extends BaseActivity /*BottomNavigationView.OnNavi
         next_btn.setText("" + dialog_btn_restart);
 
         next_btn.setOnClickListener(v -> {
-            endSession(TempHomeActivity.this);
+            endSession(HomeActivity.this);
             if (!ApplicationClass.isTablet) {
-                startActivity(new Intent(TempHomeActivity.this, SelectSubject_.class));
+                startActivity(new Intent(HomeActivity.this, SelectSubject_.class));
             } else {
-                startActivity(new Intent(TempHomeActivity.this, SelectSubject_.class));
+                startActivity(new Intent(HomeActivity.this, SelectSubject_.class));
             }
             finish();
             dialog.dismiss();
         });
 
         revise_btn.setOnClickListener(v -> {
-            endSession(TempHomeActivity.this);
+            endSession(HomeActivity.this);
             finishAffinity();
             dialog.dismiss();
         });

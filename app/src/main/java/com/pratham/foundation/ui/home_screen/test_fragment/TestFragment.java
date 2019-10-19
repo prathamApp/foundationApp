@@ -32,7 +32,7 @@ import com.pratham.foundation.modalclasses.EventMessage;
 import com.pratham.foundation.modalclasses.Modal_FileDownloading;
 import com.pratham.foundation.ui.contentPlayer.fact_retrieval_fragment.FactRetrieval_;
 import com.pratham.foundation.ui.contentPlayer.web_view.WebViewActivity;
-import com.pratham.foundation.ui.home_screen.TempHomeActivity;
+import com.pratham.foundation.ui.home_screen.HomeActivity;
 import com.pratham.foundation.ui.test.certificate.CertificateClicked;
 import com.pratham.foundation.utility.FC_Constants;
 import com.pratham.foundation.utility.FC_Utility;
@@ -55,7 +55,7 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
 
-import static com.pratham.foundation.ui.home_screen.TempHomeActivity.header_rl;
+import static com.pratham.foundation.ui.home_screen.HomeActivity.header_rl;
 import static com.pratham.foundation.utility.FC_Constants.isTest;
 import static com.pratham.foundation.utility.FC_Constants.testSessionEntered;
 
@@ -92,7 +92,7 @@ public class TestFragment extends Fragment implements TestContract.TestView,
         RetractableToolbarUtil.ShowHideToolbarOnScrollingListener showHideToolbarListener;
         my_recycler_view.addOnScrollListener(showHideToolbarListener =
                 new RetractableToolbarUtil.ShowHideToolbarOnScrollingListener(header_rl));
-        presenter.getBottomNavId(TempHomeActivity.currentLevelNo, "Test");
+        presenter.getBottomNavId(HomeActivity.currentLevelNo, "Test");
     }
 
     private int dpToPx() {
@@ -195,17 +195,17 @@ public class TestFragment extends Fragment implements TestContract.TestView,
     @Override
     public void setSelectedLevel(List<ContentTable> contentTable) {
         rootLevelList = contentTable;
-        presenter.insertNodeId(contentTable.get(TempHomeActivity.currentLevelNo).getNodeId());
+        presenter.insertNodeId(contentTable.get(HomeActivity.currentLevelNo).getNodeId());
 
         String jsonName = getLevelWiseJson();
         JSONArray testData = presenter.getTestData(jsonName);
-        presenter.generateTestData(testData, rootLevelList.get(TempHomeActivity.currentLevelNo).getNodeId());
+        presenter.generateTestData(testData, rootLevelList.get(HomeActivity.currentLevelNo).getNodeId());
     }
 
     public void onLevelChanged() {
         contentParentList.clear();
         presenter.removeLastNodeId();
-        presenter.insertNodeId(rootLevelList.get(TempHomeActivity.currentLevelNo).getNodeId());
+        presenter.insertNodeId(rootLevelList.get(HomeActivity.currentLevelNo).getNodeId());
 //        presenter.getDataForList();
     }
 
@@ -253,10 +253,10 @@ public class TestFragment extends Fragment implements TestContract.TestView,
 
     @Click(R.id.btn_test_dw)
     void onDownLoadClick() {
-        resName = rootLevelList.get(TempHomeActivity.currentLevelNo).getNodeTitle();
-        resServerImageName = rootLevelList.get(TempHomeActivity.currentLevelNo).getNodeServerImage();
+        resName = rootLevelList.get(HomeActivity.currentLevelNo).getNodeTitle();
+        resServerImageName = rootLevelList.get(HomeActivity.currentLevelNo).getNodeServerImage();
         downloadType = FC_Constants.TEST_DOWNLOAD;
-        presenter.downloadResource(rootLevelList.get(TempHomeActivity.currentLevelNo).getNodeId());
+        presenter.downloadResource(rootLevelList.get(HomeActivity.currentLevelNo).getNodeId());
     }
 
     @Override
@@ -319,7 +319,7 @@ public class TestFragment extends Fragment implements TestContract.TestView,
 
          /*   else if (testData.getResourceType().equalsIgnoreCase(FC_Constants.CONVO_RESOURCE)) {
                 ContentTable randomTestData = presenter.getRandomData(testData.getResourceType(), testData.getNodeKeywords());
-                Intent mainNew = new Intent(TempHomeActivity.this, ConversationActivity_.class);
+                Intent mainNew = new Intent(HomeActivity.this, ConversationActivity_.class);
                 mainNew.putExtra("storyId", randomTestData.getResourceId());
                 mainNew.putExtra("StudentID", FC_Constants.currentStudentID);
                 mainNew.putExtra("contentName", randomTestData.getNodeTitle());
@@ -329,7 +329,7 @@ public class TestFragment extends Fragment implements TestContract.TestView,
                 startActivityForResult(mainNew, 1);
             } else if (testData.getResourceType().equalsIgnoreCase(FC_Constants.COMIC_CONVO_RESOURCE)) {
                 ContentTable randomTestData = presenter.getRandomData(testData.getResourceType(), testData.getNodeKeywords());
-                Intent mainNew = new Intent(TempHomeActivity.this, ReadingCardsActivity_.class);
+                Intent mainNew = new Intent(HomeActivity.this, ReadingCardsActivity_.class);
                 mainNew.putExtra("storyId", randomTestData.getResourceId());
                 mainNew.putExtra("StudentID", FC_Constants.currentStudentID);
                 mainNew.putExtra("contentName", randomTestData.getNodeTitle());
@@ -338,7 +338,7 @@ public class TestFragment extends Fragment implements TestContract.TestView,
                 mainNew.putExtra("contentPath", randomTestData.getResourcePath());
                 startActivityForResult(mainNew, 1);
             } else if (testData.getResourceType().equalsIgnoreCase(FC_Constants.OPPOSITE_WORDS)) {
-                Intent mainNew = new Intent(TempHomeActivity.this, OppositesActivity_.class);
+                Intent mainNew = new Intent(HomeActivity.this, OppositesActivity_.class);
                 mainNew.putExtra("resId", testData.getResourceId());
                 mainNew.putExtra("StudentID", FC_Constants.currentStudentID);
                 mainNew.putExtra("contentName", testData.getNodeTitle());
@@ -348,7 +348,7 @@ public class TestFragment extends Fragment implements TestContract.TestView,
                 startActivityForResult(mainNew, 1);
             } else if (testData.getResourceType().equalsIgnoreCase(FC_Constants.RHYME_RESOURCE) || testData.getResourceType().equalsIgnoreCase(FC_Constants.STORY_RESOURCE)) {
                 ContentTable randomTestData = presenter.getRandomData(testData.getResourceType(), testData.getNodeKeywords());
-                Intent mainNew = new Intent(TempHomeActivity.this, ReadingStoryActivity_.class);
+                Intent mainNew = new Intent(HomeActivity.this, ReadingStoryActivity_.class);
                 mainNew.putExtra("storyId", randomTestData.getResourceId());
                 mainNew.putExtra("StudentID", FC_Constants.currentStudentID);
                 mainNew.putExtra("storyPath", randomTestData.getResourcePath());
@@ -358,7 +358,7 @@ public class TestFragment extends Fragment implements TestContract.TestView,
                 mainNew.putExtra("contentType", randomTestData.getResourceType());
                 startActivityForResult(mainNew, 1);
             } else if (testData.getResourceType().equalsIgnoreCase(FC_Constants.WORD_ANDROID)) {
-                Intent mainNew = new Intent(TempHomeActivity.this, ReadingWordScreenActivity.class);
+                Intent mainNew = new Intent(HomeActivity.this, ReadingWordScreenActivity.class);
                 mainNew.putExtra("resId", testData.getResourceId());
                 mainNew.putExtra("StudentID", FC_Constants.currentStudentID);
                 mainNew.putExtra("contentPath", testData.getResourcePath());
@@ -368,7 +368,7 @@ public class TestFragment extends Fragment implements TestContract.TestView,
                 startActivityForResult(mainNew, 1);
             } else if (testData.getResourceType().equalsIgnoreCase(FC_Constants.PARA_ANDROID)) {
                 ContentTable randomTestData = presenter.getRandomData(testData.getResourceType(), testData.getNodeKeywords());
-                Intent mainNew = new Intent(TempHomeActivity.this, ReadingParagraphsActivity_.class);
+                Intent mainNew = new Intent(HomeActivity.this, ReadingParagraphsActivity_.class);
                 mainNew.putExtra("resId", randomTestData.getResourceId());
                 mainNew.putExtra("StudentID", FC_Constants.currentStudentID);
                 mainNew.putExtra("contentPath", randomTestData.getResourcePath());
@@ -379,7 +379,7 @@ public class TestFragment extends Fragment implements TestContract.TestView,
                 startActivityForResult(mainNew, 1);
             } else if (testData.getResourceType().equalsIgnoreCase(FC_Constants.PARA_VOCAB_ANDROID)) {
                 ContentTable randomTestData = presenter.getRandomData(testData.getResourceType(), testData.getNodeKeywords());
-                Intent mainNew = new Intent(TempHomeActivity.this, ReadingParagraphsActivity_.class);
+                Intent mainNew = new Intent(HomeActivity.this, ReadingParagraphsActivity_.class);
                 mainNew.putExtra("resId", randomTestData.getResourceId());
                 mainNew.putExtra("StudentID", FC_Constants.currentStudentID);
                 mainNew.putExtra("contentPath", randomTestData.getResourcePath());
@@ -389,7 +389,7 @@ public class TestFragment extends Fragment implements TestContract.TestView,
                 mainNew.putExtra("contentTitle", randomTestData.getNodeTitle());
                 startActivityForResult(mainNew, 1);
             } else if (testData.getResourceType().equalsIgnoreCase(FC_Constants.VOCAB_ANDROID)) {
-                Intent mainNew = new Intent(TempHomeActivity.this, ReadingVocabularyActivity_.class);
+                Intent mainNew = new Intent(HomeActivity.this, ReadingVocabularyActivity_.class);
                 mainNew.putExtra("resId", testData.getResourceId());
                 mainNew.putExtra("StudentID", FC_Constants.currentStudentID);
                 mainNew.putExtra("contentPath", testData.getResourcePath());
@@ -401,7 +401,7 @@ public class TestFragment extends Fragment implements TestContract.TestView,
                 startActivityForResult(mainNew, 1);
             } else if (testData.getResourceType().equalsIgnoreCase(FC_Constants.RHYMING_WORD_ANDROID)) {
                 ContentTable randomTestData = presenter.getRandomData(testData.getResourceType(), testData.getNodeKeywords());
-                Intent mainNew = new Intent(TempHomeActivity.this, ReadingRhymesActivity_.class);
+                Intent mainNew = new Intent(HomeActivity.this, ReadingRhymesActivity_.class);
                 mainNew.putExtra("resId", randomTestData.getResourceId());
                 mainNew.putExtra("StudentID", FC_Constants.currentStudentID);
                 mainNew.putExtra("contentPath", randomTestData.getResourcePath());
@@ -411,7 +411,7 @@ public class TestFragment extends Fragment implements TestContract.TestView,
                 mainNew.putExtra("rhymeLevel", randomTestData.getNodeDesc());
                 startActivityForResult(mainNew, 1);
             } else if (testData.getResourceType().equalsIgnoreCase(FC_Constants.MATCH_THE_PAIR)) {
-                Intent mainNew = new Intent(TempHomeActivity.this, MatchThePairGameActivity.class);
+                Intent mainNew = new Intent(HomeActivity.this, MatchThePairGameActivity.class);
                 mainNew.putExtra("resId", testData.getResourceId());
                 mainNew.putExtra("StudentID", FC_Constants.currentStudentID);
                 mainNew.putExtra("contentPath", testData.getResourcePath());
@@ -453,7 +453,7 @@ public class TestFragment extends Fragment implements TestContract.TestView,
     }
 
     private void hideTestDownloadBtnOnComplete() {
-        if (rootLevelList.get(TempHomeActivity.currentLevelNo).isDownloaded.equalsIgnoreCase("true"))
+        if (rootLevelList.get(HomeActivity.currentLevelNo).isDownloaded.equalsIgnoreCase("true"))
             btn_test_dw.setVisibility(View.GONE);
         else
             btn_test_dw.setVisibility(View.VISIBLE);
@@ -464,12 +464,12 @@ public class TestFragment extends Fragment implements TestContract.TestView,
     public void displayCurrentDownloadedTest() {
         String jsonName = getLevelWiseJson();
         JSONArray testData = presenter.getTestData(jsonName);
-        presenter.generateTestData(testData, rootLevelList.get(TempHomeActivity.currentLevelNo).getNodeId());
+        presenter.generateTestData(testData, rootLevelList.get(HomeActivity.currentLevelNo).getNodeId());
     }
 
     private String getLevelWiseJson() {
         String jsonName = "TestBeginnerJson.json";
-        switch (TempHomeActivity.currentLevelNo) {
+        switch (HomeActivity.currentLevelNo) {
             case 0:
                 jsonName = "TestBeginnerJson.json";
                 break;

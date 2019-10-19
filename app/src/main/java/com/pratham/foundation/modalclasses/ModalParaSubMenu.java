@@ -23,6 +23,10 @@ public class ModalParaSubMenu implements Serializable {
     @Expose
     private String pageText;
 
+    @SerializedName("pageTitle")
+    @Expose
+    private String pageTitle;
+
     @SerializedName("readPageAudio")
     @Expose
     private String readPageAudio;
@@ -57,6 +61,14 @@ public class ModalParaSubMenu implements Serializable {
 
     public void setPageText(String paraText) {
         this.pageText = paraText;
+    }
+
+    public String getPageTitle() {
+        return pageTitle;
+    }
+
+    public void setPageTitle(String pageTitle) {
+        this.pageTitle = pageTitle;
     }
 
     public String getReadPageAudio() {

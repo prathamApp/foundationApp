@@ -19,8 +19,6 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.Button;
 import android.widget.TextView;
-
-
 import com.pratham.foundation.R;
 import com.pratham.foundation.database.BackupDatabase;
 import com.pratham.foundation.database.domain.ContentProgress;
@@ -30,17 +28,11 @@ import com.pratham.foundation.modalclasses.CertificateModelClass;
 import com.pratham.foundation.BaseActivity;
 import com.pratham.foundation.utility.FC_Constants;
 import com.pratham.foundation.utility.FC_Utility;
-
-
 import java.util.ArrayList;
 import java.util.List;
-
 import butterknife.ButterKnife;
-
 import static com.pratham.foundation.database.AppDatabase.appDatabase;
-import static com.pratham.foundation.ui.old_home.HomeActivity.gameTestWebViewList;
 import static com.pratham.foundation.utility.FC_Constants.dialog_btn_cancel;
-
 
 public class WebViewActivity extends BaseActivity implements WebViewInterface {
 
@@ -75,13 +67,7 @@ public class WebViewActivity extends BaseActivity implements WebViewInterface {
         tts = new TextToSpeechCustom(this, 0.6f);
         gameCounter = 0;
         resStartTime = FC_Utility.getCurrentDateTime();
-
-        if (mode.equalsIgnoreCase("assessment")) {
-            createWebView(gameTestWebViewList.get(gameCounter).getResourcePath());
-            arraySize = gameTestWebViewList.size();
-            webResId = gameTestWebViewList.get(gameCounter).getResourceId();
-        } else
-            createWebView(gamePath);
+        createWebView(gamePath);
 
         learntWordsList = new ArrayList<>();
         certificateModelClassList = new ArrayList<>();
@@ -109,7 +95,6 @@ public class WebViewActivity extends BaseActivity implements WebViewInterface {
         certificateModelClassList.add(certificateModelClass);
 */
         //startActivity(new Intent(this,CertificateActivity.class));
-
     }
 
     @SuppressLint("JavascriptInterface")
@@ -120,7 +105,6 @@ public class WebViewActivity extends BaseActivity implements WebViewInterface {
         webView.getSettings().setJavaScriptEnabled(true);
         webView.getSettings().setMediaPlaybackRequiresUserGesture(false);
         webView.addJavascriptInterface(new JSInterface(this, webView, tts, this, WebViewActivity.this), "Android");
-
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
             if (0 != (getApplicationInfo().flags & ApplicationInfo.FLAG_DEBUGGABLE)) {

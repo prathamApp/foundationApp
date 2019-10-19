@@ -361,7 +361,6 @@ public class JSInterface implements RecognitionListener {
             @Override
             protected Object doInBackground(Object[] objects) {
                 try {
-
                     String[] splited;
                     String[] splitedDate;
                     String[] splitedTime;

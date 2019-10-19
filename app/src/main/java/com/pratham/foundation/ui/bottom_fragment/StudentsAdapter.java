@@ -27,7 +27,6 @@ public class StudentsAdapter extends RecyclerView.Adapter<StudentsAdapter.MyView
     BottomStudentsContract.StudentClickListener studentClickListener;
     Context mContext;
 
-
     public class MyViewHolder extends RecyclerView.ViewHolder {
         TextView studentName;
         ImageView avatar;
@@ -84,7 +83,6 @@ public class StudentsAdapter extends RecyclerView.Adapter<StudentsAdapter.MyView
             holder.avatar.setImageResource(R.drawable.b2);
 
         holder.rl_card.setOnClickListener(view -> {
-            studentAvatarList.get(position).getStudentID();
             studentClickListener.onStudentClick(studentAvatarList.get(position).getFullName(), studentAvatarList.get(position).getStudentID());
         });
     }
@@ -93,6 +91,4 @@ public class StudentsAdapter extends RecyclerView.Adapter<StudentsAdapter.MyView
     public int getItemCount() {
         return studentAvatarList.size();
     }
-
-
 }

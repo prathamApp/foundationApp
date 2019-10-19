@@ -1,4 +1,4 @@
-package com.pratham.foundation.ui.old_home;
+package com.pratham.foundation.ui.home_screen;
 
 import android.content.Context;
 import android.util.Log;
@@ -10,7 +10,6 @@ import com.google.gson.stream.JsonReader;
 import com.pratham.foundation.ApplicationClass;
 import com.pratham.foundation.async.API_Content;
 import com.pratham.foundation.async.ZipDownloader;
-import com.pratham.foundation.ui.contentPlayer.web_view.WebViewActivity;
 import com.pratham.foundation.database.AppDatabase;
 import com.pratham.foundation.database.BackupDatabase;
 import com.pratham.foundation.database.domain.Assessment;
@@ -23,8 +22,10 @@ import com.pratham.foundation.interfaces.API_Content_Result;
 import com.pratham.foundation.modalclasses.CertificateModelClass;
 import com.pratham.foundation.modalclasses.Modal_DownloadAssessment;
 import com.pratham.foundation.modalclasses.Modal_DownloadContent;
+import com.pratham.foundation.ui.contentPlayer.web_view.WebViewActivity;
 import com.pratham.foundation.utility.FC_Constants;
 import com.pratham.foundation.utility.FC_Utility;
+
 import org.androidannotations.annotations.Background;
 import org.androidannotations.annotations.Bean;
 import org.androidannotations.annotations.EBean;
@@ -44,15 +45,15 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
-import static com.pratham.foundation.ui.old_home.HomeActivity.sub_nodeId;
+import static com.pratham.foundation.ui.home_screen.HomeActivity.sub_nodeId;
 import static com.pratham.foundation.utility.FC_Constants.GROUP_LOGIN;
 import static com.pratham.foundation.utility.FC_Constants.assessmentSession;
 import static com.pratham.foundation.utility.FC_Constants.currentGroup;
 import static com.pratham.foundation.utility.FC_Constants.currentLevel;
 import static com.pratham.foundation.utility.FC_Constants.isTest;
-
 import static com.pratham.foundation.utility.FC_Constants.testSessionEnded;
 import static com.pratham.foundation.utility.FC_Constants.testSessionEntered;
+
 @EBean
 public class HomePresenter implements HomeContract.HomePresenter, API_Content_Result {
 

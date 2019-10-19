@@ -13,7 +13,7 @@ import com.pratham.foundation.BaseActivity;
 import com.pratham.foundation.R;
 import com.pratham.foundation.customView.GridSpacingItemDecoration;
 import com.pratham.foundation.database.domain.ContentTable;
-import com.pratham.foundation.ui.home_screen.TempHomeActivity_;
+import com.pratham.foundation.ui.home_screen.HomeActivity_;
 import com.pratham.foundation.utility.FC_Constants;
 
 import org.androidannotations.annotations.AfterViews;
@@ -70,7 +70,7 @@ public class SelectSubject extends BaseActivity implements
 
     @Override
     public void onItemClicked(ContentTable contentTableObj) {
-        Intent intent = new Intent(context, TempHomeActivity_.class);
+        Intent intent = new Intent(context, HomeActivity_.class);
         intent.putExtra("nodeId", contentTableObj.getNodeId());
         context.startActivity(intent);
     }

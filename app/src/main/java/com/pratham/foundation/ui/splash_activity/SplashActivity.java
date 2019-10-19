@@ -504,7 +504,7 @@ public class SplashActivity extends SplashSupportActivity implements SplashContr
         Dialog dialog = new Dialog(this);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setContentView(R.layout.fc_custom_dialog);
-/*        Bitmap map=FC_Utility.takeScreenShot(TempHomeActivity.this);
+/*        Bitmap map=FC_Utility.takeScreenShot(HomeActivity.this);
         Bitmap fast=FC_Utility.fastblur(map, 20);
         final Drawable draw=new BitmapDrawable(getResources(),fast);
         dialog.getWindow().setBackgroundDrawable(draw);*/

@@ -84,18 +84,12 @@ public class StoryReadingFragment extends Fragment implements
     ImageButton btn_Mic;
     @ViewById(R.id.myScrollView)
     ScrollView myScrollView;
-    @ViewById(R.id.layout_ripplepulse_right)
-    RipplePulseLayout layout_ripplepulse_right;
-    @ViewById(R.id.layout_ripplepulse_left)
-    RipplePulseLayout layout_ripplepulse_left;
-    @ViewById(R.id.layout_mic_ripple)
-    RipplePulseLayout layout_mic_ripple;
-    @ViewById(R.id.ll_btn_play)
-    LinearLayout ll_btn_play;
-    @ViewById(R.id.ll_btn_submit)
-    LinearLayout ll_btn_submit;
     @ViewById(R.id.btn_submit)
     Button btn_submit;
+//    @ViewById(R.id.ll_btn_next)
+//    LinearLayout ll_btn_next;
+//    @ViewById(R.id.ll_btn_prev)
+//    LinearLayout ll_btn_prev;
 
     ContinuousSpeechService_New continuousSpeechService;
 
@@ -105,7 +99,7 @@ public class StoryReadingFragment extends Fragment implements
 
     List<ModalParaSubMenu> modalPagesList;
 
-    String contentType, storyPath, storyData, storyName, storyAudio, certiCode, storyBg;
+    String contentType, storyPath, storyData, storyName, storyAudio, certiCode, storyBg, pageTitle;
     static int currentPage, lineBreakCounter = 0;
 
     public Handler handler, audioHandler, soundStopHandler, colorChangeHandler,
@@ -133,32 +127,23 @@ public class StoryReadingFragment extends Fragment implements
         silence_outer_layout.setVisibility(View.GONE);
         Bundle bundle = getArguments();
         contentType = bundle.getString("contentType");
-        storyData = bundle.getString("storyData");
         storyPath = bundle.getString("storyPath");
         storyId = bundle.getString("storyId");
-        StudentID = bundle.getString("StudentID");
         storyName = bundle.getString("storyTitle");
         certiCode = bundle.getString("certiCode");
         onSdCard = bundle.getBoolean("onSdCard", false);
         ttsService = BaseActivity.ttsService;
         contentType = "story";
 
+        storyPath = "storyFolder";
         context = getActivity();
         presenter.setView(StoryReadingFragment.this);
         showLoader();
         modalPagesList = new ArrayList<>();
 
-        continuousSpeechService = new ContinuousSpeechService_New(context, StoryReadingFragment.this);
-
-        ViewGroup.MarginLayoutParams params = (ViewGroup.MarginLayoutParams) layout_ripplepulse_right.getLayoutParams();
-        params.rightMargin = -(int) getResources().getDimension(R.dimen._25sdp);
-        params.bottomMargin = -(int) getResources().getDimension(R.dimen._25sdp);
-        params = (ViewGroup.MarginLayoutParams) layout_ripplepulse_left.getLayoutParams();
-        params.leftMargin = -(int) getResources().getDimension(R.dimen._25sdp);
-        params.bottomMargin = -(int) getResources().getDimension(R.dimen._25sdp);
-
+        continuousSpeechService = new ContinuousSpeechService_New(context, StoryReadingFragment.this, FC_Constants.currentSelectedLanguage);
         if (contentType.equalsIgnoreCase(FC_Constants.RHYME_RESOURCE))
-            layout_mic_ripple.setVisibility(View.GONE);
+            btn_Mic.setVisibility(View.GONE);
 
         readSounds.add(R.raw.tap_the_mic);
         readSounds.add(R.raw.your_turn_to_read);
@@ -233,29 +218,35 @@ public class StoryReadingFragment extends Fragment implements
         currentPage = pageNo;
         if (currentPage == totalPages - 1) {
             lastPgFlag = true;
-            layout_ripplepulse_right.setVisibility(View.GONE);
+            btn_nextpage.setVisibility(View.GONE);
         }
         if (currentPage == 0) {
             lastPgFlag = false;
-            layout_ripplepulse_left.setVisibility(View.GONE);
+            btn_previouspage.setVisibility(View.GONE);
         }
         if (currentPage < totalPages - 1 && currentPage > 0) {
             lastPgFlag = false;
-            layout_ripplepulse_left.setVisibility(View.VISIBLE);
-            layout_ripplepulse_right.setVisibility(View.VISIBLE);
+            btn_previouspage.setVisibility(View.VISIBLE);
+            btn_nextpage.setVisibility(View.VISIBLE);
         }
 
         wordFlowLayout.removeAllViews();
         storyAudio = modalPagesList.get(currentPage).getReadPageAudio();
         storyBg = modalPagesList.get(currentPage).getPageImage();
+        pageTitle = modalPagesList.get(currentPage).getPageTitle();
+        if(pageTitle != null && !pageTitle.equalsIgnoreCase(""))
+            story_title.setText(pageTitle);
+        story_title.setTextSize(35);
 
         try {
             File f = new File(readingContentPath + storyBg);
             if (f.exists()) {
+                pageImage.setVisibility(View.VISIBLE);
                 Bitmap bmImg = BitmapFactory.decodeFile(readingContentPath + storyBg);
                 BitmapFactory.decodeStream(new FileInputStream(readingContentPath + storyBg));
                 pageImage.setImageBitmap(bmImg);
-            }
+            }else
+                pageImage.setVisibility(View.GONE);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -285,8 +276,8 @@ public class StoryReadingFragment extends Fragment implements
                 btn_Play.performClick();
             else {
                 btn_Mic.performClick();
-                ll_btn_play.setVisibility(View.GONE);
-                ll_btn_submit.setVisibility(View.VISIBLE);
+                btn_Play.setVisibility(View.GONE);
+                btn_submit.setVisibility(View.VISIBLE);
             }
         }, 200);
     }
@@ -322,8 +313,8 @@ public class StoryReadingFragment extends Fragment implements
                 final SansTextView myTextView = new SansTextView(context);
                 myTextView.setText(splitWords.get(i));
                 myTextView.setId(i);
-                myTextView.setTextSize(35);
-                myTextView.setTextColor(getResources().getColor(R.color.colorPrimary));
+                myTextView.setTextSize(30);
+                myTextView.setTextColor(getResources().getColor(R.color.colorText));
                 final int finalI = i;
                 myTextView.setOnClickListener(v -> {
                     if ((!playFlg || pauseFlg) && !voiceStart) {
@@ -332,7 +323,7 @@ public class StoryReadingFragment extends Fragment implements
                         Animation animation = AnimationUtils.loadAnimation(context, R.anim.reading_zoom_in);
                         myTextView.startAnimation(animation);
                         colorChangeHandler.postDelayed(() -> {
-                            myTextView.setTextColor(getResources().getColor(R.color.colorPrimary));
+                            myTextView.setTextColor(getResources().getColor(R.color.colorText));
                             Animation animation1 = AnimationUtils.loadAnimation(context, R.anim.reading_zoom_out);
                             myTextView.startAnimation(animation1);
                         }, 350);
@@ -365,7 +356,7 @@ public class StoryReadingFragment extends Fragment implements
                 endhandler.postDelayed(() -> {
                     clickMP.stop();
                     final SansTextView myView = (SansTextView) wordFlowLayout.getChildAt(id);
-                    myView.setTextColor(getResources().getColor(R.color.colorPrimary));
+                    myView.setTextColor(getResources().getColor(R.color.colorText));
                     clickFlag = false;
                 }, (long) end);
             }
@@ -406,7 +397,7 @@ public class StoryReadingFragment extends Fragment implements
             myView.startAnimation(animation);
 //            wordPopUp(this, myView);
             colorChangeHandler.postDelayed(() -> {
-                myView.setTextColor(getResources().getColor(R.color.colorPrimary));
+                myView.setTextColor(getResources().getColor(R.color.colorText));
 //                    wordPopDown(ReadingStoryActivity.this, myView);
                 Animation animation1 = AnimationUtils.loadAnimation(context, R.anim.reading_zoom_out);
                 myView.startAnimation(animation1);
@@ -418,7 +409,7 @@ public class StoryReadingFragment extends Fragment implements
                             playFlg = false;
                             pauseFlg = true;
                             if (!contentType.equalsIgnoreCase(FC_Constants.RHYME_RESOURCE)) {
-                                layout_mic_ripple.setVisibility(View.VISIBLE);
+                                btn_Mic.setVisibility(View.VISIBLE);
                                 quesReadHandler = new Handler();
                                 quesReadHandler.postDelayed(() -> {
                                     Collections.shuffle(readSounds);
@@ -429,8 +420,8 @@ public class StoryReadingFragment extends Fragment implements
                             if (mp != null && mp.isPlaying())
                                 mp.stop();
                             btn_Play.setImageResource(R.drawable.ic_play_arrow);
-                            layout_mic_ripple.startRippleAnimation();
-                            layout_ripplepulse_right.startRippleAnimation();
+//                            layout_mic_ripple.startRippleAnimation();
+//                            layout_ripplepulse_right.startRippleAnimation();
                         } catch (Exception e) {
                             e.printStackTrace();
                         }
@@ -452,7 +443,7 @@ public class StoryReadingFragment extends Fragment implements
                 for (int i = 0; i < wordsDurationList.size(); i++) {
                     SansTextView myView = (SansTextView) wordFlowLayout.getChildAt(i);
                     myView.setBackgroundColor(Color.TRANSPARENT);
-                    myView.setTextColor(getResources().getColor(R.color.colorPrimary));
+                    myView.setTextColor(getResources().getColor(R.color.colorText));
                 }
                 wordCounter = 0;
             }
@@ -490,9 +481,9 @@ public class StoryReadingFragment extends Fragment implements
             voiceStart = true;
             flgPerMarked = false;
             btn_Mic.setImageResource(R.drawable.ic_stop_black_24dp);
-            layout_mic_ripple.stopRippleAnimation();
-            ll_btn_play.setVisibility(View.GONE);
-            layout_ripplepulse_right.stopRippleAnimation();
+//            layout_mic_ripple.stopRippleAnimation();
+            btn_Play.setVisibility(View.GONE);
+//            layout_ripplepulse_right.stopRippleAnimation();
             try {
                 if (quesReadHandler != null) {
                     quesReadHandler.removeCallbacksAndMessages(null);
@@ -513,10 +504,10 @@ public class StoryReadingFragment extends Fragment implements
         } else {
             voiceStart = false;
             if (!FC_Constants.isTest)
-                ll_btn_play.setVisibility(View.VISIBLE);
+                btn_Play.setVisibility(View.VISIBLE);
             btn_Mic.setImageResource(R.drawable.ic_mic_black_24dp);
-            layout_mic_ripple.startRippleAnimation();
-            layout_ripplepulse_right.startRippleAnimation();
+//            layout_mic_ripple.startRippleAnimation();
+//            layout_ripplepulse_right.startRippleAnimation();
             continuousSpeechService.stopSpeechInput();
         }
     }
@@ -524,7 +515,7 @@ public class StoryReadingFragment extends Fragment implements
     @Click(R.id.btn_play)
     void playReading() {
         if (!playFlg || pauseFlg) {
-            layout_mic_ripple.setVisibility(View.GONE);
+            btn_Mic.setVisibility(View.GONE);
             playFlg = true;
             pauseFlg = false;
             try {
@@ -568,16 +559,16 @@ public class StoryReadingFragment extends Fragment implements
             if (soundStopHandler != null)
                 soundStopHandler.removeCallbacksAndMessages(null);
             wordCounter = 0;
-            layout_ripplepulse_right.stopRippleAnimation();
+//            layout_ripplepulse_right.stopRippleAnimation();
             setMute(0);
             startAudioReading();
         } else {
             btn_Play.setImageResource(R.drawable.ic_play_arrow);
-            layout_mic_ripple.startRippleAnimation();
-            layout_ripplepulse_right.startRippleAnimation();
+//            layout_mic_ripple.startRippleAnimation();
+//            layout_ripplepulse_right.startRippleAnimation();
 //            btn_Play.setText("Read");
             if (!contentType.equalsIgnoreCase(FC_Constants.RHYME_RESOURCE))
-                layout_mic_ripple.setVisibility(View.VISIBLE);
+                btn_Mic.setVisibility(View.VISIBLE);
             wordCounter = 0;
             try {
                 playFlg = false;
@@ -666,7 +657,7 @@ public class StoryReadingFragment extends Fragment implements
             if (voiceStart) {
                 voiceStart = false;
                 if (!FC_Constants.isTest)
-                    ll_btn_play.setVisibility(View.VISIBLE);
+                    btn_Play.setVisibility(View.VISIBLE);
                 btn_Mic.setImageResource(R.drawable.ic_mic_black_24dp);
                 continuousSpeechService.stopSpeechInput();
                 setMute(0);
@@ -710,7 +701,7 @@ public class StoryReadingFragment extends Fragment implements
     @Click(R.id.btn_next)
     void gotoNextPage() {
         if (currentPage < totalPages - 1) {
-            layout_ripplepulse_right.startRippleAnimation();
+//            layout_ripplepulse_right.startRippleAnimation();
             wordCounter = 0;
             setMute(0);
             try {
@@ -742,7 +733,7 @@ public class StoryReadingFragment extends Fragment implements
             if (voiceStart) {
                 voiceStart = false;
                 if (!FC_Constants.isTest)
-                    ll_btn_play.setVisibility(View.VISIBLE);
+                    btn_Play.setVisibility(View.VISIBLE);
                 btn_Mic.setImageResource(R.drawable.ic_mic_black_24dp);
                 continuousSpeechService.stopSpeechInput();
                 setMute(0);
@@ -983,7 +974,7 @@ public class StoryReadingFragment extends Fragment implements
             btn_Mic.performClick();
             voiceStart = false;
             if (!FC_Constants.isTest)
-                ll_btn_play.setVisibility(View.VISIBLE);
+                btn_Play.setVisibility(View.VISIBLE);
             setMute(0);
         }
         try {

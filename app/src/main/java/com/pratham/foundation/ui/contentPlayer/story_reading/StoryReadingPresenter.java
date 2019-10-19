@@ -87,7 +87,7 @@ public class StoryReadingPresenter implements StoryReadingContract.StoryReadingP
     @Override
     public void fetchJsonData(String contentPath) {
         try {
-            InputStream is = new FileInputStream(contentPath + "/Data.json");
+            InputStream is = new FileInputStream(contentPath + "/StoryReadingData.json");
             int size = is.available();
             byte[] buffer = new byte[size];
             is.read(buffer);

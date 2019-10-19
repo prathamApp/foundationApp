@@ -222,14 +222,17 @@ public class BottomStudentsFragment extends BottomSheetDialogFragment
 
     @UiThread
     public void showProgressDialog() {
-        progressDialog = new ProgressDialog(getActivity());
-        progressDialog.setCanceledOnTouchOutside(false);
-        progressDialog.setMessage("Loading... Please wait...");
-        progressDialog.setCancelable(false);
+        if(progressDialog == null) {
+            progressDialog = new ProgressDialog(getActivity());
+            progressDialog.setCanceledOnTouchOutside(false);
+            progressDialog.setMessage("Loading... Please wait...");
+            progressDialog.setCancelable(false);
+        }
         progressDialog.show();
+
     }
 
-    @Background
+    @UiThread
     @Override
     public void dismissProgressDialog() {
         try {
@@ -240,7 +243,7 @@ public class BottomStudentsFragment extends BottomSheetDialogFragment
         }
     }
 
-    @Background
+    @UiThread
     @Override
     public void dismissProgressDialog2() {
         try {
@@ -251,7 +254,7 @@ public class BottomStudentsFragment extends BottomSheetDialogFragment
         }
     }
 
-    @Background
+    @UiThread
     @Override
     public void onStudentClick(String studentName, String studentId) {
         showProgressDialog();
@@ -268,7 +271,7 @@ public class BottomStudentsFragment extends BottomSheetDialogFragment
         Intent intent = new Intent(getActivity(), SelectSubject_.class);
         intent.putExtra("studName", currentStudentName);
         startActivity(intent);
-        try {
+/*        try {
             if (bgMusic != null && bgMusic.isPlaying()) {
                 bgMusic.stop();
                 bgMusic.setLooping(false);
@@ -276,7 +279,7 @@ public class BottomStudentsFragment extends BottomSheetDialogFragment
             }
         } catch (Exception e) {
             e.printStackTrace();
-        }
+        }*/
         getActivity().finish();
     }
 

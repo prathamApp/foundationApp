@@ -33,21 +33,25 @@ public class ContinuousSpeechService_New implements RecognitionListener, STT_Res
     boolean voiceStart = false, silenceDetectionFlg = false, resetFlg = false;
     STT_Result_New.sttView stt_result;
     Handler silenceHandler;
-    String LOG_TAG = "ContinuousSpeechService : ", sttResult;
+    String LOG_TAG = "ContinuousSpeechService : ", sttResult,language, myLocal = "en-IN";
 
-    public ContinuousSpeechService_New(Context context, STT_Result_New.sttView stt_result) {
+    public ContinuousSpeechService_New(Context context, STT_Result_New.sttView stt_result, String language) {
         this.context = context;
         this.stt_result = stt_result;
         resetSpeechRecognizer();
         resetFlg = false;
-
+        this.language = language;
+        if(language.equalsIgnoreCase("english"))
+            myLocal = "en-IN";
+        else if(language.equalsIgnoreCase("hindi"))
+            myLocal = "hi-IN";
     }
 
     public void setRecogniserIntent() {
+
         recognizerIntent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
-        recognizerIntent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_PREFERENCE,
-                "en");
-        recognizerIntent.putExtra(RecognizerIntent.EXTRA_LANGUAGE, "en-IN");
+        recognizerIntent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_PREFERENCE, myLocal);
+        recognizerIntent.putExtra(RecognizerIntent.EXTRA_LANGUAGE, myLocal);
         recognizerIntent.putExtra(RecognizerIntent.EXTRA_SPEECH_INPUT_POSSIBLY_COMPLETE_SILENCE_LENGTH_MILLIS, 10000);
         recognizerIntent.putExtra(RecognizerIntent.EXTRA_SPEECH_INPUT_COMPLETE_SILENCE_LENGTH_MILLIS, 20000);
         recognizerIntent.putExtra(RecognizerIntent.EXTRA_PARTIAL_RESULTS, true);

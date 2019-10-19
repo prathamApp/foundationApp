@@ -119,9 +119,8 @@ public class BottomStudentsPresenter implements BottomStudentsContract.BottomStu
         AppDatabase.appDatabase.getSessionDao().insert(startSesion);
 
         myView.gotoNext();
-
-//        if (FC_Utility.isDataConnectionAvailable(context))
-//            getStudentData(FC_Constants.STUDENT_PROGRESS_INTERNET, FC_Constants.STUDENT_PROGRESS_API, currentStudentID);
+        if (FC_Utility.isDataConnectionAvailable(context))
+            getStudentData(FC_Constants.STUDENT_PROGRESS_INTERNET, FC_Constants.STUDENT_PROGRESS_API, currentStudentID);
 
     }
 
@@ -154,7 +153,7 @@ public class BottomStudentsPresenter implements BottomStudentsContract.BottomStu
     }
 
     private void receivedError() {
-//        startActivity(new Intent(getActivity(), TempHomeActivity.class));
+//        startActivity(new Intent(getActivity(), HomeActivity.class));
 //        getActivity().finish();
     }
 
@@ -215,7 +214,7 @@ public class BottomStudentsPresenter implements BottomStudentsContract.BottomStu
 //                @Override
 //                protected void onPostExecute(Object o) {
 //                    super.onPostExecute(o);
-//                    startActivity(new Intent(getActivity(), TempHomeActivity.class));
+//                    startActivity(new Intent(getActivity(), HomeActivity.class));
 //                    getActivity().finish();
 //                }
 //            }.execute();
