@@ -15,7 +15,9 @@ import com.pratham.foundation.ApplicationClass;
 import com.pratham.foundation.R;
 import com.pratham.foundation.customView.SansButton;
 import com.pratham.foundation.database.domain.QuetionAns;
+import com.pratham.foundation.modalclasses.ScienceQuestionChoice;
 import com.pratham.foundation.ui.contentPlayer.GameConstatnts;
+import com.pratham.foundation.ui.contentPlayer.fact_retrival_selection.ScienceQuestion;
 import com.pratham.foundation.ui.contentPlayer.keywords_identification.KeywordsIdentificationFragment_;
 import com.pratham.foundation.ui.contentPlayer.keywords_identification.QuestionModel;
 import com.pratham.foundation.utility.FC_Utility;
@@ -43,7 +45,7 @@ public class FactRetrieval extends Fragment implements FactRetrievalContract.Fac
     private String answer, para;
     private String contentPath, contentTitle, StudentID, resId, readingContentPath;
     boolean onSdCard;
-    private List<QuetionAns> selectedQuetion;
+    private List<ScienceQuestionChoice> selectedQuetion;
     private int index = 0;
     private boolean isTest = false;
 
@@ -69,9 +71,9 @@ public class FactRetrieval extends Fragment implements FactRetrievalContract.Fac
     }
 
     @Override
-    public void showParagraph(QuestionModel questionModel) {
-        this.para = questionModel.getParagraph();
-        this.selectedQuetion = questionModel.getKeywords();
+    public void showParagraph(ScienceQuestion questionModel) {
+        this.para = questionModel.getQuestion();
+        this.selectedQuetion = questionModel.getLstquestionchoice();
         Collections.shuffle(selectedQuetion);
         showQuetion();
         final int SETANSWER = 0;
@@ -163,7 +165,7 @@ public class FactRetrieval extends Fragment implements FactRetrievalContract.Fac
             if (selectedQuetion.get(index).getUserAns() != null && !selectedQuetion.get(index).getUserAns().isEmpty()) {
                 str.setSpan(new BackgroundColorSpan(getResources().getColor(R.color.colorBtnOrangeLight)), selectedQuetion.get(index).getStart(), selectedQuetion.get(index).getEnd(), 0);
             }
-            quetion.setText(selectedQuetion.get(index).getQuetion());
+            quetion.setText(selectedQuetion.get(index).getSubQues());
             paragraph.setText(str);
         } catch (Exception e) {
             e.printStackTrace();
@@ -189,7 +191,7 @@ public class FactRetrieval extends Fragment implements FactRetrievalContract.Fac
     @Click(R.id.submitBtn)
     public void onsubmitBtnClick() {
         presenter.addLearntWords(selectedQuetion);
-        Bundle bundle = GameConstatnts.findGameData("102");
+        Bundle bundle = GameConstatnts.findGameData(resId);
         if (bundle != null) {
             FC_Utility.showFragment(getActivity(), new KeywordsIdentificationFragment_(), R.id.RL_CPA,
                     bundle, KeywordsIdentificationFragment_.class.getSimpleName());

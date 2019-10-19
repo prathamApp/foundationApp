@@ -1,21 +1,25 @@
 package com.pratham.foundation.ui.contentPlayer.fact_retrieval_fragment;
 
-import com.pratham.foundation.database.domain.QuetionAns;
-import com.pratham.foundation.ui.contentPlayer.keywords_identification.QuestionModel;
+import com.pratham.foundation.modalclasses.ScienceQuestionChoice;
+import com.pratham.foundation.ui.contentPlayer.fact_retrival_selection.ScienceQuestion;
 
 import java.util.List;
 
 public interface FactRetrievalContract {
     public interface FactRetrievalView {
-        public void showParagraph(QuestionModel questionModel);
+        public void showParagraph(ScienceQuestion questionModel);
     }
 
     public interface FactRetrievalPresenter {
         void getData(String readingContentPath);
+
         void setView(FactRetrievalContract.FactRetrievalView factRetrievalView, String contentTitle, String resId);
+
         void getDataList();
-        void addLearntWords(List<QuetionAns> selectedQuetion);
-        float checkAnswer(QuetionAns selectedAnsList);
+
+        void addLearntWords(List<ScienceQuestionChoice> selectedQuetion);
+
+        float checkAnswer(ScienceQuestionChoice selectedAnsList);
     }
 
 }

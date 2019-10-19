@@ -34,6 +34,7 @@ import com.pratham.foundation.database.domain.KeyWords;
 import com.pratham.foundation.database.domain.Score;
 import com.pratham.foundation.modalclasses.ScienceQuestionChoice;
 import com.pratham.foundation.ui.contentPlayer.GameConstatnts;
+import com.pratham.foundation.ui.contentPlayer.fact_retrival_selection.ScienceQuestion;
 import com.pratham.foundation.utility.FC_Constants;
 import com.pratham.foundation.utility.FC_Utility;
 
@@ -73,13 +74,13 @@ public class pictionaryFragment extends Fragment {
     private String readingContentPath, contentPath, contentTitle, StudentID, resId;
     private int totalWordCount, learntWordCount;
     List<ScienceQuestionChoice> options;
-    private List<ScienceQuestionPictionary> selectedFive;
-    private List<ScienceQuestionPictionary> dataList;
+    private List<ScienceQuestion> selectedFive;
+    private List<ScienceQuestion> dataList;
     private static final String POS = "pos";
     private static final String SCIENCE_QUESTION = "scienceQuestion";
 
     private int imgCnt = 0, textCnt = 0, index = 0;
-    private ScienceQuestionPictionary scienceQuestion;
+    private ScienceQuestion scienceQuestion;
     private boolean onSdCard, isTest = false;
     private float perc;
     private List<ScienceQuestionChoice> correctWordList, wrongWordList;
@@ -110,7 +111,7 @@ public class pictionaryFragment extends Fragment {
 
     private void getData() {
         try {
-            InputStream is = new FileInputStream(readingContentPath + "data.json");
+            InputStream is = new FileInputStream(readingContentPath + "pictionary.json");
             int size = is.available();
             byte[] buffer = new byte[size];
             is.read(buffer);
@@ -120,7 +121,7 @@ public class pictionaryFragment extends Fragment {
 
             // List instrumentNames = new ArrayList<>();
             Gson gson = new Gson();
-            Type type = new TypeToken<List<ScienceQuestionPictionary>>() {
+            Type type = new TypeToken<List<ScienceQuestion>>() {
             }.getType();
             dataList = gson.fromJson(jsonObj.toString(), type);
             getDataList();
@@ -133,7 +134,7 @@ public class pictionaryFragment extends Fragment {
 
     private void getDataList() {
         try {
-            selectedFive = new ArrayList<ScienceQuestionPictionary>();
+            selectedFive = new ArrayList<ScienceQuestion>();
             perc = getPercentage();
             Collections.shuffle(dataList);
             for (int i = 0; i < dataList.size(); i++) {
@@ -203,7 +204,7 @@ public class pictionaryFragment extends Fragment {
 
     public void setMcqsQuestion() {
         options = new ArrayList<>();
-        question.setText(selectedFive.get(index).getQname());
+        question.setText(selectedFive.get(index).getQuestion());
         if (!selectedFive.get(index).getPhotourl().equalsIgnoreCase("")) {
             questionImage.setVisibility(View.VISIBLE);
 //            if (AssessmentApplication.wiseF.isDeviceConnectedToMobileOrWifiNetwork()) {
@@ -285,10 +286,10 @@ public class pictionaryFragment extends Fragment {
             gridMcq.removeAllViews();
 
             for (int r = 0; r < options.size(); r++) {
-                if (!options.get(r).getChoiceurl().equalsIgnoreCase("")) {
+                if (!options.get(r).getSubUrl().equalsIgnoreCase("")) {
                     imgCnt++;
                 }
-                if (!options.get(r).getChoicename().equalsIgnoreCase("")) {
+                if (!options.get(r).getSubQues().equalsIgnoreCase("")) {
                     textCnt++;
                 }
 
@@ -301,7 +302,7 @@ public class pictionaryFragment extends Fragment {
                 String ansId = selectedFive.get(index).getUserAnswer();
 
                 if (textCnt == options.size()) {
-                    if (options.get(r).getChoiceurl().equalsIgnoreCase("")) {
+                    if (options.get(r).getSubUrl().equalsIgnoreCase("")) {
                         radioGroupMcq.setVisibility(View.VISIBLE);
                         gridMcq.setVisibility(View.GONE);
 
@@ -330,7 +331,7 @@ public class pictionaryFragment extends Fragment {
                                 radioButton.setTextColor(Color.WHITE);
                             }
                         } else {*/
-                        radioButton.setText(options.get(r).getChoicename());
+                        radioButton.setText(options.get(r).getSubQues());
                         if (selectedFive.get(index).getUserAnswer().equalsIgnoreCase(options.get(r).getQcid())) {
                             radioButton.setChecked(true);
                             // radioButton.setTextColor(Assessment_Utility.selectedColor);
@@ -339,7 +340,7 @@ public class pictionaryFragment extends Fragment {
                             // radioButton.setTextColor(Color.WHITE);
                         }
                         radioGroupMcq.addView(radioButton);
-                        if (ans.equals(options.get(r).getChoicename())) {
+                        if (ans.equals(options.get(r).getSubQues())) {
                             radioButton.setChecked(true);
                         } else {
                             radioButton.setChecked(false);
@@ -349,11 +350,11 @@ public class pictionaryFragment extends Fragment {
                 } else if (imgCnt == options.size()) {
                     radioGroupMcq.setVisibility(View.GONE);
                     gridMcq.setVisibility(View.VISIBLE);
-                    String fileName = options.get(r).getChoiceurl();
+                    String fileName = options.get(r).getSubUrl();
 //                String localPath = Environment.getExternalStorageDirectory() + Assessment_Constants.STORE_DOWNLOADED_MEDIA_PATH + "/" + fileName;
                     String localPath = readingContentPath + "/images/" + fileName;
 
-                    String path = options.get(r).getChoiceurl();
+                    String path = options.get(r).getSubUrl();
 
                     String[] imgPath = path.split("\\.");
                     int len;
@@ -363,7 +364,7 @@ public class pictionaryFragment extends Fragment {
                   /*  final GifView gifView;
                     ImageView imageView = null;*/
 
-                    final String imageUrl = options.get(r).getChoiceurl();
+                    final String imageUrl = options.get(r).getSubUrl();
                     final View view;
                     final RelativeLayout rl_mcq;
                     View viewRoot;
@@ -403,12 +404,12 @@ public class pictionaryFragment extends Fragment {
                             }
                             rl_mcq.setBackground(getActivity().getResources().getDrawable(R.drawable.custom_edit_text));
                             tick.setVisibility(View.VISIBLE);
-                            String fileName = options.get(finalR).getChoiceurl();
+                            String fileName = options.get(finalR).getSubUrl();
                             String localPath = readingContentPath + "/images/" + fileName;
 
 
 //                            if (AssessmentApplication.wiseF.isDeviceConnectedToMobileOrWifiNetwork()) {
-                            showZoomDialog(getActivity(), options.get(finalR).getChoiceurl(), localPath);
+                            showZoomDialog(getActivity(), options.get(finalR).getSubUrl(), localPath);
                             /*} else {
                                  showZoomDialog(localPath);
                             }*/
@@ -434,7 +435,7 @@ public class pictionaryFragment extends Fragment {
                 } else {
                     gridMcq.setColumnCount(2);
                     final int finalR1 = r;
-                    if (!options.get(r).getChoiceurl().equalsIgnoreCase("")) {
+                    if (!options.get(r).getSubUrl().equalsIgnoreCase("")) {
 
 //                        final String imageUrl = options.get(r).getChoiceurl();
                         final View view;
@@ -442,7 +443,7 @@ public class pictionaryFragment extends Fragment {
                         View viewRoot;
                         final ImageView tick;
 
-                        String path = options.get(r).getChoiceurl();
+                        String path = options.get(r).getSubUrl();
 
                         String[] imgPath = path.split("\\.");
                         int len;
@@ -478,13 +479,13 @@ public class pictionaryFragment extends Fragment {
 
 //                        final View view = LayoutInflater.from(getActivity()).inflate(R.layout.layout_mcq_image_item, gridMcq, false);
 
-                        String fileName = options.get(r).getChoiceurl();
+                        String fileName = options.get(r).getSubUrl();
 //                String localPath = Environment.getExternalStorageDirectory() + Assessment_Constants.STORE_DOWNLOADED_MEDIA_PATH + "/" + fileName;
                         String localPath = readingContentPath + "/images/" + fileName;
 
 //                        final ImageView imageView = (ImageView) view;
 //                        if (AssessmentApplication.wiseF.isDeviceConnectedToMobileOrWifiNetwork()) {
-                        final String imageUrl = options.get(r).getChoiceurl();
+                        final String imageUrl = options.get(r).getSubUrl();
                         setImage(view, imageUrl, localPath);
 
                         gridMcq.addView(viewRoot);
@@ -502,13 +503,13 @@ public class pictionaryFragment extends Fragment {
                             @Override
                             public void onClick(View v) {
                                 setOnclickOnItem(v, options.get(finalR1));
-                                String fileName = options.get(finalR1).getChoiceurl();
+                                String fileName = options.get(finalR1).getSubUrl();
                                 String localPath = readingContentPath + "/images/" + fileName;
                                 tick.setVisibility(View.VISIBLE);
 
                                 rl_mcq.setBackground(getActivity().getResources().getDrawable(R.drawable.custom_edit_text));
 //                                if (AssessmentApplication.wiseF.isDeviceConnectedToMobileOrWifiNetwork()) {
-                                showZoomDialog(getActivity(), options.get(finalR1).getChoiceurl(), localPath);
+                                showZoomDialog(getActivity(), options.get(finalR1).getSubUrl(), localPath);
 
                                /* } else {
                                     showZoomDialog(localPath);
@@ -519,7 +520,7 @@ public class pictionaryFragment extends Fragment {
                         final View view = LayoutInflater.from(getActivity()).inflate(R.layout.layout_mcq_single_text_item, gridMcq, false);
                         final TextView textView = (TextView) view;
                         textView.setElevation(3);
-                        textView.setText(options.get(r).getChoicename());
+                        textView.setText(options.get(r).getSubQues());
                         gridMcq.addView(textView);
                         if (selectedFive.get(index).getUserAnswer().equalsIgnoreCase(options.get(r).getQcid())) {
                             // textView.setTextColor(Assessment_Utility.selectedColor);
@@ -653,13 +654,13 @@ public class pictionaryFragment extends Fragment {
 
     }
 
-    public void addLearntWords(List<ScienceQuestionPictionary> selectedAnsList) {
+    public void addLearntWords(List<ScienceQuestion> selectedAnsList) {
         int correctCnt = 0;
         correctWordList = new ArrayList<>();
         wrongWordList = new ArrayList<>();
         if (selectedAnsList != null && !selectedAnsList.isEmpty()) {
             for (int i = 0; i < selectedAnsList.size(); i++) {
-                if (selectedAnsList.get(i).getAnswer().equalsIgnoreCase(selectedAnsList.get(i).getUserAnswer())) {
+                if (checkAnswer(selectedAnsList.get(i))){
                     correctCnt++;
                     KeyWords keyWords = new KeyWords();
                     keyWords.setResourceId(resId);
@@ -676,8 +677,8 @@ public class pictionaryFragment extends Fragment {
                         }
                     }
 
-                    addScore(selectedAnsList.get(i).getQid(), GameConstatnts.PICTIONARYFRAGMENT, 10, 10, FC_Utility.getCurrentDateTime(), selectedAnsList.get(i).getUserAnswer());
-                } else {
+                    addScore(GameConstatnts.getInt(selectedAnsList.get(i).getQid().trim()), GameConstatnts.PICTIONARYFRAGMENT, 10, 10, FC_Utility.getCurrentDateTime(), selectedAnsList.get(i).getUserAnswer());
+                } else{
                     if (selectedAnsList.get(i).getUserAnswer() != null && !selectedAnsList.get(i).getUserAnswer().trim().equalsIgnoreCase("")) {
                         List<ScienceQuestionChoice> tempOptionList = selectedAnsList.get(i).getLstquestionchoice();
                         for (int k = 0; k < tempOptionList.size(); k++) {
@@ -685,7 +686,7 @@ public class pictionaryFragment extends Fragment {
                                 wrongWordList.add(tempOptionList.get(k));
                             }
                         }
-                        addScore(selectedAnsList.get(i).getQid(), GameConstatnts.PICTIONARYFRAGMENT, 0, 10, FC_Utility.getCurrentDateTime(), selectedAnsList.get(i).getUserAnswer());
+                        addScore(GameConstatnts.getInt(selectedAnsList.get(i).getQid().trim()), GameConstatnts.PICTIONARYFRAGMENT, 0, 10, FC_Utility.getCurrentDateTime(), selectedAnsList.get(i).getUserAnswer());
                     }
                 }
             }
@@ -694,6 +695,16 @@ public class pictionaryFragment extends Fragment {
             }
         }
         BackupDatabase.backup(getActivity());
+    }
+
+    private boolean checkAnswer(ScienceQuestion scienceQuestion) {
+        List<ScienceQuestionChoice> optionListlist = scienceQuestion.getLstquestionchoice();
+        for (int i = 0; i < optionListlist.size(); i++) {
+            if (optionListlist.get(i).getQcid().equalsIgnoreCase(scienceQuestion.getUserAnswer())&&optionListlist.get(i).getCorrectAnswer().equalsIgnoreCase("true")) {
+                return true;
+            }
+        }
+        return false;
     }
 
 

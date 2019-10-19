@@ -8,9 +8,9 @@ import com.google.gson.reflect.TypeToken;
 import com.pratham.foundation.database.BackupDatabase;
 import com.pratham.foundation.database.domain.Assessment;
 import com.pratham.foundation.database.domain.KeyWords;
-import com.pratham.foundation.database.domain.QuetionAns;
 import com.pratham.foundation.database.domain.Score;
-import com.pratham.foundation.ui.contentPlayer.keywords_identification.QuestionModel;
+import com.pratham.foundation.modalclasses.ScienceQuestionChoice;
+import com.pratham.foundation.ui.contentPlayer.fact_retrival_selection.ScienceQuestion;
 import com.pratham.foundation.utility.FC_Constants;
 import com.pratham.foundation.utility.FC_Utility;
 
@@ -26,13 +26,13 @@ import static com.pratham.foundation.database.AppDatabase.appDatabase;
 
 @EBean
 public class FactRetrievalPresenter implements FactRetrievalContract.FactRetrievalPresenter {
-    private QuestionModel questionModel;
+    private ScienceQuestion questionModel;
     private FactRetrievalContract.FactRetrievalView view;
     private Context context;
     private String gameName, resId, contentTitle;
     private float perc;
     //private List<QuetionAns> quetionAnsList;
-    private List<QuestionModel> quetionModelList;
+    private List<ScienceQuestion> quetionModelList;
     private int totalWordCount, learntWordCount;
     //private List<QuetionAns> selectedFive;
 
@@ -50,11 +50,11 @@ public class FactRetrievalPresenter implements FactRetrievalContract.FactRetriev
     @Override
     public void getData(String readingContentPath) {
         //get data
-        String text = FC_Utility.loadJSONFromStorage(readingContentPath, "factRetrial.json");
+        String text = FC_Utility.loadJSONFromStorage(readingContentPath, "factRetrival.json");
         // List instrumentNames = new ArrayList<>();
         if (text != null) {
             Gson gson = new Gson();
-            Type type = new TypeToken<List<QuestionModel>>() {
+            Type type = new TypeToken<List<ScienceQuestion>>() {
             }.getType();
             quetionModelList = gson.fromJson(text, type);
             //  quetionAnsList = quetionModelList.get(0).getKeywords();
@@ -126,7 +126,7 @@ public class FactRetrievalPresenter implements FactRetrievalContract.FactRetriev
         }
     }
 
-    public void addLearntWords(List<QuetionAns> selectedAnsList) {
+    public void addLearntWords(List<ScienceQuestionChoice> selectedAnsList) {
         List<KeyWords> learntWords = new ArrayList<>();
         int scoredMarks;
         KeyWords keyWords = new KeyWords();
@@ -191,10 +191,10 @@ public class FactRetrievalPresenter implements FactRetrievalContract.FactRetriev
         }
     }
 
-    public float checkAnswer(QuetionAns selectedAnsList) {
+    public float checkAnswer(ScienceQuestionChoice selectedAnsList) {
         boolean[] correctArr;
         float perc;
-        String originalAns = selectedAnsList.getAnswer();
+        String originalAns = selectedAnsList.getCorrectAnswer();
         String regex = "[\\-+.\"^?!@#%&*,:]";
         String quesFinal = originalAns.replaceAll(regex, "");
 

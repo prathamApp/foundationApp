@@ -50,11 +50,12 @@ public class ScienceQuestion implements Serializable {
 
     private String topicid;
 
+
     private String answer;
 
     private String outofmarks;
 
-    private String qname;
+    private String question;
 
     private String hint;
 
@@ -75,10 +76,19 @@ public class ScienceQuestion implements Serializable {
     private String userAnswerId = "";
 
     private String userAnswer = "";
+    private String title = "";
 
     private boolean isAttempted;
 
     private boolean isCorrect;
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
 
     public String getUserAnswer() {
         if (userAnswer == null)
@@ -273,12 +283,12 @@ public class ScienceQuestion implements Serializable {
         this.outofmarks = outofmarks;
     }
 
-    public String getQname() {
-        return qname;
+    public String getQuestion() {
+        return question;
     }
 
-    public void setQname(String qname) {
-        this.qname = qname;
+    public void setQuestion(String question) {
+        this.question = question;
     }
 
     public String getHint() {

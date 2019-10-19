@@ -27,6 +27,7 @@ import android.widget.ScrollView;
 import com.pratham.foundation.ApplicationClass;
 import com.pratham.foundation.R;
 import com.pratham.foundation.ui.contentPlayer.GameConstatnts;
+import com.pratham.foundation.ui.contentPlayer.fact_retrival_selection.ScienceQuestion;
 import com.pratham.foundation.ui.contentPlayer.keywords_identification.QuestionModel;
 import com.pratham.foundation.ui.contentPlayer.listenAndWritting.ListeningAndWritting_;
 import com.pratham.foundation.utility.FC_Utility;
@@ -70,9 +71,9 @@ public class ParagraphWritingFragment extends Fragment
     private RecyclerView.SmoothScroller smoothScroller;
     private static final int CAMERA_REQUEST = 1;
     private String imageName = null, imagePath;
-    private String contentPath, contentTitle, StudentID, resId;
+    private String contentPath, contentTitle, StudentID, resId,readingContentPath;
     private boolean onSdCard;
-    private QuestionModel questionModel;
+    private ScienceQuestion questionModel;
 
     @AfterViews
     protected void initiate() {
@@ -83,15 +84,19 @@ public class ParagraphWritingFragment extends Fragment
             resId = bundle.getString("resId");
             contentTitle = bundle.getString("contentName");
             onSdCard = bundle.getBoolean("onSdCard", false);
+            if (onSdCard)
+                readingContentPath = ApplicationClass.contentSDPath + "/.FCA/English/Game/" + contentPath + "/";
+            else
+                readingContentPath = ApplicationClass.foundationPath + "/.FCA/English/Game/" + contentPath + "/";
         }
-        presenter.setView(ParagraphWritingFragment.this, resId);
+        presenter.setView(ParagraphWritingFragment.this, resId,readingContentPath);
         presenter.getData();
     }
 
     @Override
-    public void showParagraph(QuestionModel questionModel) {
+    public void showParagraph(ScienceQuestion questionModel) {
         this.questionModel = questionModel;
-        paragraphWords = questionModel.getParagraph().trim().split("(?<=\\.\\s)|(?<=[?!]\\s)");
+        paragraphWords = questionModel.getQuestion().trim().split("(?<=\\.\\s)|(?<=[?!]\\s)");
         SentenceAdapter arrayAdapter = new SentenceAdapter(Arrays.asList(paragraphWords), getActivity());
         paragraph.setAdapter(arrayAdapter);
         LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());

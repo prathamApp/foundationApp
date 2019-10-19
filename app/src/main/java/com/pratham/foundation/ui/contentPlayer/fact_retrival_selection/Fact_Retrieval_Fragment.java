@@ -93,7 +93,7 @@ public class Fact_Retrieval_Fragment extends Fragment implements Fact_Retrieval_
             this.selectedQuetion = questionModel.getLstquestionchoice();
             Collections.shuffle(selectedQuetion);
             paraghaph.removeAllViews();
-            String[] paragraphWords = questionModel.getQname().split(" ");
+            String[] paragraphWords = questionModel.getQuestion().split(" ");
             for (int i = 0; i < paragraphWords.length; i++) {
 
                 final SansTextView textView = new SansTextView(getActivity());
@@ -121,7 +121,7 @@ public class Fact_Retrieval_Fragment extends Fragment implements Fact_Retrieval_
                     tv.setBackgroundColor(ContextCompat.getColor(getActivity(), R.color.colorGreenCorrect));
                 }
             }
-            quetion.setText(selectedQuetion.get(index).getChoicename());
+            quetion.setText(selectedQuetion.get(index).getSubQues());
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -138,7 +138,7 @@ public class Fact_Retrieval_Fragment extends Fragment implements Fact_Retrieval_
         selectedQuetion.get(index).setUserAns(ans);
         selectedQuetion.get(index).setPosition(position);
         paraText.setBackgroundColor(ContextCompat.getColor(getActivity(), R.color.colorGreenCorrect));
-        if (selectedQuetion.get(index).getCorrect().equalsIgnoreCase(ans)) {
+        if (selectedQuetion.get(index).getCorrectAnswer().equalsIgnoreCase(ans)) {
             final Dialog dialog = new Dialog(getActivity());
             dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
             dialog.setContentView(R.layout.app_success_dialog);

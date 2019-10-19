@@ -16,67 +16,44 @@ public class ScienceQuestionChoice implements Serializable {
     private String qcid;
 
     private String qid;
-    private String matchingname;
-    private String choicename;
-    private String correct;
-    private String matchingurl;
-    private String choiceurl;
-    @Ignore
-    private String myIscorrect = "false";
+    private String subQues;
+    private String correctAnswer;
+    private String subUrl;
+
     @Ignore
     private String userAns ="";
     @Ignore
     private int position =-1;
-    public String getMyIscorrect() {
-        return myIscorrect;
+    @Ignore
+    private int start;
+    @Ignore
+    private int end;
+    @Ignore
+    private boolean isclicked=false;;
+
+    public int getStart() {
+        return start;
     }
 
-    public void setMyIscorrect(String myIscorrect) {
-        if (myIscorrect == null) {
-            this.myIscorrect = "false";
-        } else
-            this.myIscorrect = myIscorrect;
+    public void setStart(int start) {
+        this.start = start;
     }
 
-
-    public String getMatchingurl() {
-        return matchingurl;
+    public int getEnd() {
+        return end;
     }
 
-    public void setMatchingurl(String matchingurl) {
-        this.matchingurl = matchingurl;
+    public void setEnd(int end) {
+        this.end = end;
     }
 
-    public String getChoiceurl() {
-        return choiceurl;
-    }
-
-    public void setChoiceurl(String choiceurl) {
-        this.choiceurl = choiceurl;
-    }
-
-    public String getCorrect() {
-        return correct;
-    }
-
-    public void setCorrect(String correct) {
-        this.correct = correct;
-    }
-
+    @NonNull
     public String getQcid() {
         return qcid;
     }
 
-    public void setQcid(String qcid) {
+    public void setQcid(@NonNull String qcid) {
         this.qcid = qcid;
-    }
-
-    public String getChoicename() {
-        return choicename;
-    }
-
-    public void setChoicename(String choicename) {
-        this.choicename = choicename;
     }
 
     public String getQid() {
@@ -87,12 +64,28 @@ public class ScienceQuestionChoice implements Serializable {
         this.qid = qid;
     }
 
-    public String getMatchingname() {
-        return matchingname;
+    public String getSubQues() {
+        return subQues;
     }
 
-    public void setMatchingname(String matchingname) {
-        this.matchingname = matchingname;
+    public void setSubQues(String subQues) {
+        this.subQues = subQues;
+    }
+
+    public String getCorrectAnswer() {
+        return correctAnswer;
+    }
+
+    public void setCorrectAnswer(String correctAnswer) {
+        this.correctAnswer = correctAnswer;
+    }
+
+    public String getSubUrl() {
+        return subUrl;
+    }
+
+    public void setSubUrl(String subUrl) {
+        this.subUrl = subUrl;
     }
 
     public String getUserAns() {
@@ -109,5 +102,13 @@ public class ScienceQuestionChoice implements Serializable {
 
     public void setPosition(int position) {
         this.position = position;
+    }
+
+    public boolean isIsclicked() {
+        return isclicked;
+    }
+
+    public void setIsclicked(boolean isclicked) {
+        this.isclicked = isclicked;
     }
 }

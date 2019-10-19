@@ -9,8 +9,10 @@ import com.pratham.foundation.database.domain.Assessment;
 import com.pratham.foundation.database.domain.KeyWords;
 import com.pratham.foundation.database.domain.Score;
 import com.pratham.foundation.modalclasses.ModalReadingVocabulary;
+import com.pratham.foundation.modalclasses.ScienceQuestionChoice;
 import com.pratham.foundation.modalclasses.keywordmapping;
 import com.pratham.foundation.ui.contentPlayer.GameConstatnts;
+import com.pratham.foundation.ui.contentPlayer.fact_retrival_selection.ScienceQuestion;
 import com.pratham.foundation.utility.FC_Constants;
 import com.pratham.foundation.utility.FC_Utility;
 
@@ -28,32 +30,34 @@ import static com.pratham.foundation.database.AppDatabase.appDatabase;
 public class KeywordMappingPresenterImp implements KeywordMappingContract.KeywordMappingPresenter {
     private Context context;
     // private List<QuetionAns> quetionAnsList;
-    private List<keywordmapping> quetionModelList;
+    private List<ScienceQuestion> quetionModelList;
     private int totalWordCount, learntWordCount;
-    private List<keywordmapping> selectedFive;
+    private List<ScienceQuestion> selectedFive;
     private float perc;
     private KeywordMappingContract.KeywordMappingView view;
-    private String gameName, resId, contentTitle;
+    private String gameName, resId, contentTitle, readingContentPath;
     private List<String> correctWordList, wrongWordList;
     private boolean isTest = false;
+
 
     public KeywordMappingPresenterImp(Context context) {
         this.context = context;
     }
 
     @Override
-    public void setView(KeywordMappingContract.KeywordMappingView view,String resId) {
+    public void setView(KeywordMappingContract.KeywordMappingView view, String resId, String readingContentPath) {
         this.resId = resId;
         this.view = view;
+        this.readingContentPath = readingContentPath;
     }
 
     @Override
     public void getData() {
         //get data
-        String text = FC_Utility.loadJSONFromAsset(context, "keywordmapping.json");
+        String text = FC_Utility.loadJSONFromStorage(readingContentPath, "chKeywords.json");
         // List instrumentNames = new ArrayList<>();
         Gson gson = new Gson();
-        Type type = new TypeToken<List<keywordmapping>>() {
+        Type type = new TypeToken<List<ScienceQuestion>>() {
         }.getType();
         quetionModelList = gson.fromJson(text, type);
         getDataList();
@@ -69,12 +73,12 @@ public class KeywordMappingPresenterImp implements KeywordMappingContract.Keywor
     @Override
     public void getDataList() {
         try {
-            selectedFive = new ArrayList<keywordmapping>();
+            selectedFive = new ArrayList<ScienceQuestion>();
             perc = getPercentage();
             Collections.shuffle(quetionModelList);
             for (int i = 0; i < quetionModelList.size(); i++) {
                 if (perc < 95) {
-                    if (!checkWord("" + quetionModelList.get(i).getKeyword()))
+                    if (!checkWord("" + quetionModelList.get(i).getQuestion()))
                         selectedFive.add(quetionModelList.get(i));
                 } else {
                     selectedFive.add(quetionModelList.get(i));
@@ -126,24 +130,24 @@ public class KeywordMappingPresenterImp implements KeywordMappingContract.Keywor
         }
     }
 
-    public void addLearntWords(keywordmapping keywordmapping, List selectedAnsList) {
+    public void addLearntWords(ScienceQuestion keywordmapping, List selectedAnsList) {
         correctWordList = new ArrayList<>();
         wrongWordList = new ArrayList<>();
-        int scoredMarks = (int) checkAnswer(keywordmapping.getKeywordAnsSet(), selectedAnsList);
+        int scoredMarks = (int) checkAnswer(keywordmapping.getLstquestionchoice(), selectedAnsList);
         if (selectedAnsList != null && !selectedAnsList.isEmpty()) {
             for (int i = 0; i < selectedAnsList.size(); i++) {
-                if (keywordmapping.getKeywordAnsSet().contains(selectedAnsList.get(i))) {
+                if ( checkAnswerNew( keywordmapping.getLstquestionchoice(),selectedAnsList.get(i).toString())){
                     KeyWords keyWords = new KeyWords();
                     keyWords.setResourceId(resId);
                     keyWords.setSentFlag(0);
                     keyWords.setStudentId(FC_Constants.currentStudentID);
-                    String key=selectedAnsList.get(i).toString();
+                    String key = selectedAnsList.get(i).toString();
                     keyWords.setKeyWord(key);
                     keyWords.setWordType("word");
                     appDatabase.getKeyWordDao().insert(keyWords);
                 }
             }
-            addScore(keywordmapping.getId(), GameConstatnts.KEYWORD_MAPPING, scoredMarks, 10, FC_Utility.getCurrentDateTime(), selectedAnsList.toString());
+            addScore(GameConstatnts.getInt(keywordmapping.getQid()), GameConstatnts.KEYWORD_MAPPING, scoredMarks, 10, FC_Utility.getCurrentDateTime(), selectedAnsList.toString());
 
             if (!isTest) {
                 view.showResult(correctWordList, wrongWordList);
@@ -193,10 +197,21 @@ public class KeywordMappingPresenterImp implements KeywordMappingContract.Keywor
         }
     }
 
-    public float checkAnswer(List ansSet, List<String> selectedAnsList) {
+    private boolean checkAnswerNew(List<ScienceQuestionChoice> optionListlist, String word) {
+        for (int i = 0; i < optionListlist.size(); i++) {
+            if (optionListlist.get(i).getSubQues().equalsIgnoreCase(word)&&(optionListlist.get(i).getCorrectAnswer().equalsIgnoreCase("true"))) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+
+
+    public float checkAnswer(List<ScienceQuestionChoice> ansSet,List<String> selectedAnsList) {
         int correctCnt = 0;
         for (int i = 0; i < selectedAnsList.size(); i++) {
-            if (ansSet.contains(selectedAnsList.get(i))) {
+            if (checkAnswerNew(ansSet, selectedAnsList.get(i).toString())) {
                 correctCnt++;
                 correctWordList.add(selectedAnsList.get(i));
             } else {

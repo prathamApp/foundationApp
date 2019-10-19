@@ -12,9 +12,9 @@ import com.pratham.foundation.ApplicationClass;
 import com.pratham.foundation.R;
 import com.pratham.foundation.customView.SansButton;
 import com.pratham.foundation.customView.SansTextViewBold;
-import com.pratham.foundation.modalclasses.OptionKeyMap;
-import com.pratham.foundation.modalclasses.keywordmapping;
+import com.pratham.foundation.modalclasses.ScienceQuestionChoice;
 import com.pratham.foundation.ui.contentPlayer.GameConstatnts;
+import com.pratham.foundation.ui.contentPlayer.fact_retrival_selection.ScienceQuestion;
 import com.pratham.foundation.ui.contentPlayer.paragraph_writing.ParagraphWritingFragment_;
 import com.pratham.foundation.utility.FC_Constants;
 import com.pratham.foundation.utility.FC_Utility;
@@ -26,7 +26,6 @@ import org.androidannotations.annotations.EFragment;
 import org.androidannotations.annotations.UiThread;
 import org.androidannotations.annotations.ViewById;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @EFragment(R.layout.fragment_keyword_mapping)
@@ -35,8 +34,8 @@ public class KeywordMappingFragment extends Fragment implements KeywordMappingCo
     @Bean(KeywordMappingPresenterImp.class)
     KeywordMappingContract.KeywordMappingPresenter presenter;
 
-  /*  @ViewById(R.id.tittle)
-    TextView tittle;*/
+    /*  @ViewById(R.id.tittle)
+      TextView tittle;*/
     @ViewById(R.id.keyword)
     TextView keyword;
     @ViewById(R.id.recycler_view)
@@ -45,9 +44,9 @@ public class KeywordMappingFragment extends Fragment implements KeywordMappingCo
     private String contentPath, contentTitle, StudentID, resId, readingContentPath;
     private boolean onSdCard;
     private int index = 0;
-    private List<OptionKeyMap> optionList;
+    private List<ScienceQuestionChoice> optionList;
     private KeywordOptionAdapter keywordOptionAdapter;
-    private keywordmapping keywordmapping;
+    private ScienceQuestion keywordmapping;
 
     @AfterViews
     protected void initiate() {
@@ -66,15 +65,15 @@ public class KeywordMappingFragment extends Fragment implements KeywordMappingCo
                 readingContentPath = ApplicationClass.foundationPath + "/.FCA/English/Game/" + contentPath + "/";
 
         }
-        presenter.setView(KeywordMappingFragment.this, resId);
+        presenter.setView(KeywordMappingFragment.this, resId, readingContentPath);
         presenter.getData();
     }
 
     @UiThread
     @Override
-    public void loadUI(List<keywordmapping> list) {
+    public void loadUI(List<ScienceQuestion> list) {
         keywordmapping = list.get(index);
-        keyword.setText(list.get(index).getKeyword());
+        keyword.setText(list.get(index).getQuestion());
         final GridLayoutManager gridLayoutManager;
 
         /* RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());*/
@@ -84,13 +83,13 @@ public class KeywordMappingFragment extends Fragment implements KeywordMappingCo
             gridLayoutManager = new GridLayoutManager(getActivity(), 2);
         }
 
-        optionList = new ArrayList<>();
-        List temp = list.get(index).getKeywordOptionSet();
-        for (int i = 0; i < temp.size(); i++) {
+        optionList = list.get(index).getLstquestionchoice();
+        //  List temp =
+       /* for (int i = 0; i < temp.size(); i++) {
             optionList.add(new OptionKeyMap(temp.get(i).toString(), false));
-        }
+        }*/
         recycler_view.setLayoutManager(gridLayoutManager);
-        keywordOptionAdapter = new KeywordOptionAdapter(getActivity(), optionList, keywordmapping.getKeywordAnsSet().size());
+        keywordOptionAdapter = new KeywordOptionAdapter(getActivity(), optionList, 5);
         recycler_view.setAdapter(keywordOptionAdapter);
     }
 

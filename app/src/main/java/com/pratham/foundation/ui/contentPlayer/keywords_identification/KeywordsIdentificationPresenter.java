@@ -1,6 +1,7 @@
 package com.pratham.foundation.ui.contentPlayer.keywords_identification;
 
 import android.content.Context;
+import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -8,7 +9,9 @@ import com.pratham.foundation.database.BackupDatabase;
 import com.pratham.foundation.database.domain.Assessment;
 import com.pratham.foundation.database.domain.KeyWords;
 import com.pratham.foundation.database.domain.Score;
+import com.pratham.foundation.modalclasses.ScienceQuestionChoice;
 import com.pratham.foundation.ui.contentPlayer.GameConstatnts;
+import com.pratham.foundation.ui.contentPlayer.fact_retrival_selection.ScienceQuestion;
 import com.pratham.foundation.utility.FC_Constants;
 import com.pratham.foundation.utility.FC_Utility;
 
@@ -23,13 +26,13 @@ import static com.pratham.foundation.database.AppDatabase.appDatabase;
 
 @EBean
 public class KeywordsIdentificationPresenter implements KeywordsIdentificationContract.KeywordsPresenter {
-    private QuestionModel questionModel;
+    private ScienceQuestion questionModel;
     private KeywordsIdentificationContract.KeywordsView viewKeywords;
     private Context context;
     private float perc;
-    private List<QuestionModel> quetionModelList;
+    private List<ScienceQuestion> quetionModelList;
     private int totalWordCount, learntWordCount;
-    private String gameName, resId, contentTitle;
+    private String gameName, resId, contentTitle, readingContentPath;
     private List<String> correctWordList, wrongWordList;
     private boolean isTest = false;
 
@@ -38,20 +41,25 @@ public class KeywordsIdentificationPresenter implements KeywordsIdentificationCo
     }
 
     @Override
-    public void setView(KeywordsIdentificationContract.KeywordsView viewKeywords, String resId) {
+    public void setView(KeywordsIdentificationContract.KeywordsView viewKeywords, String resId, String readingContentPath) {
         this.viewKeywords = viewKeywords;
         this.resId = resId;
+        this.readingContentPath = readingContentPath;
     }
 
     @Override
     public void getData() {
 
-        String text = FC_Utility.loadJSONFromAsset(context, "identifyKeywords.json");
-        Gson gson = new Gson();
-        Type type = new TypeToken<List<QuestionModel>>() {
-        }.getType();
-        quetionModelList = gson.fromJson(text, type);
-        getDataList();
+        String text = FC_Utility.loadJSONFromStorage(readingContentPath, "IKWAndroid.json");
+        if (text != null) {
+            Gson gson = new Gson();
+            Type type = new TypeToken<List<ScienceQuestion>>() {
+            }.getType();
+            quetionModelList = gson.fromJson(text, type);
+            getDataList();
+        } else {
+            Toast.makeText(context, "No data found", Toast.LENGTH_SHORT).show();
+        }
     }
 
     public void getDataList() {
@@ -117,24 +125,33 @@ public class KeywordsIdentificationPresenter implements KeywordsIdentificationCo
         int scoredMarks = (int) checkAnswer(selectedAnsList);
         if (selectedAnsList != null && !selectedAnsList.isEmpty()) {
             for (int i = 0; i < selectedAnsList.size(); i++) {
-                if (questionModel.getKeywords().contains(selectedAnsList.get(i))) {
+                if (checkAnswerNew(questionModel.getLstquestionchoice(), selectedAnsList.get(i).toString())) {
                     KeyWords keyWords = new KeyWords();
                     keyWords.setResourceId(resId);
                     keyWords.setSentFlag(0);
                     keyWords.setStudentId(FC_Constants.currentStudentID);
-                    String key=selectedAnsList.get(i).toString();
+                    String key = selectedAnsList.get(i).toString();
                     keyWords.setKeyWord(key);
                     keyWords.setWordType("word");
                     appDatabase.getKeyWordDao().insert(keyWords);
                 }
             }
-            addScore(questionModel.getResourceId(), GameConstatnts.KEYWORD_IDENTIFICATION, scoredMarks, 10, FC_Utility.getCurrentDateTime(), selectedAnsList.toString());
+            addScore(GameConstatnts.getInt(questionModel.getQid()), GameConstatnts.KEYWORD_IDENTIFICATION, scoredMarks, 10, FC_Utility.getCurrentDateTime(), selectedAnsList.toString());
             if (!isTest) {
                 viewKeywords.showResult(correctWordList, wrongWordList);
             }
         }
         BackupDatabase.backup(context);
 
+    }
+
+    private boolean checkAnswerNew(List<ScienceQuestionChoice> optionListlist, String word) {
+        for (int i = 0; i < optionListlist.size(); i++) {
+            if (optionListlist.get(i).getSubQues().equalsIgnoreCase(word)) {
+                return true;
+            }
+        }
+        return false;
     }
 
     public void addScore(int wID, String Word, int scoredMarks, int totalMarks, String resStartTime, String Label) {
@@ -181,14 +198,14 @@ public class KeywordsIdentificationPresenter implements KeywordsIdentificationCo
     public float checkAnswer(List<String> selectedAnsList) {
         int correctCnt = 0;
         for (int i = 0; i < selectedAnsList.size(); i++) {
-            if (questionModel.getKeywords().contains(selectedAnsList.get(i))) {
+            if (checkAnswerNew(questionModel.getLstquestionchoice(), selectedAnsList.get(i).toString())) {
                 correctCnt++;
                 correctWordList.add(selectedAnsList.get(i));
             } else {
                 wrongWordList.add(selectedAnsList.get(i));
             }
         }
-        return 10 * correctCnt / questionModel.getKeywords().size();
+        return 10 * correctCnt / questionModel.getLstquestionchoice().size();
     }
 
 }

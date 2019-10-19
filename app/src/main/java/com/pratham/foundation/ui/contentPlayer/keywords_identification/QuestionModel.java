@@ -3,7 +3,6 @@ package com.pratham.foundation.ui.contentPlayer.keywords_identification;
 import android.arch.persistence.room.Embedded;
 
 import com.google.gson.annotations.SerializedName;
-import com.pratham.foundation.database.domain.QuetionAns;
 
 import java.util.List;
 

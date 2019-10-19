@@ -143,13 +143,13 @@ public class Fact_Retrieval_Presenter implements Fact_Retrieval_Contract.Fact_re
         /* int scoredMarks = (int) checkAnswer(selectedAnsList);*/
         if (selectedAnsList != null && !selectedAnsList.isEmpty()) {
             for (int i = 0; i < selectedAnsList.size(); i++) {
-                if (selectedAnsList.get(i).getCorrect().equalsIgnoreCase(selectedAnsList.get(i).getUserAns())) {
+                if (selectedAnsList.get(i).getCorrectAnswer().equalsIgnoreCase(selectedAnsList.get(i).getUserAns())) {
                     correctCnt++;
                     KeyWords keyWords = new KeyWords();
                     keyWords.setResourceId(resId);
                     keyWords.setSentFlag(0);
                     keyWords.setStudentId(FC_Constants.currentStudentID);
-                    String key = selectedAnsList.get(i).getCorrect();
+                    String key = selectedAnsList.get(i).getCorrectAnswer();
                     keyWords.setKeyWord(key);
                     keyWords.setWordType("word");
                     appDatabase.getKeyWordDao().insert(keyWords);

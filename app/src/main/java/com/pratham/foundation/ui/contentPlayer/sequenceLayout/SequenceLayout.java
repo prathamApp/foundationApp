@@ -64,7 +64,7 @@ public class SequenceLayout extends Fragment implements SequeanceLayoutContract.
     @Override
     public void loadUI(List<ContentTable> list) {
         GameConstatnts.gameList = list;
-        SequenceGameAdapter sequenceGameAdapter = new SequenceGameAdapter(getActivity(), list);
+        SequenceGameAdapter sequenceGameAdapter = new SequenceGameAdapter(getActivity(), contentTableList);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
         recyclerView.setAdapter(sequenceGameAdapter);
     }

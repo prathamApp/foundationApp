@@ -1,12 +1,13 @@
 package com.pratham.foundation.ui.contentPlayer.keywords_mapping;
 
 import com.pratham.foundation.modalclasses.keywordmapping;
+import com.pratham.foundation.ui.contentPlayer.fact_retrival_selection.ScienceQuestion;
 
 import java.util.List;
 
 public interface KeywordMappingContract {
     public interface KeywordMappingView {
-        void loadUI(List<keywordmapping> list);
+        void loadUI(List<ScienceQuestion> list);
         public void showResult(List correctWord, List wrongWord);
     }
 
@@ -17,8 +18,8 @@ public interface KeywordMappingContract {
 
         void getDataList();
 
-        void addLearntWords(keywordmapping keywordmapping, List selectedOption);
+        void addLearntWords(ScienceQuestion keywordmapping, List selectedOption);
 
-        void setView(KeywordMappingContract.KeywordMappingView keywordMappingView, String resId);
+        void setView(KeywordMappingContract.KeywordMappingView keywordMappingView, String resId,String readingContentPath);
     }
 }

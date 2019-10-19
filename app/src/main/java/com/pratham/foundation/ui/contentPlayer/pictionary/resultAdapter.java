@@ -37,7 +37,7 @@ public class resultAdapter extends RecyclerView.Adapter {
 
     @Override
     public int getItemViewType(int position) {
-        if (optionList.get(position).getChoiceurl().trim().equalsIgnoreCase("")) {
+        if (optionList.get(position).getSubUrl().trim().equalsIgnoreCase("")) {
             return TEXT;
         } else {
             return IMAGE;
@@ -59,12 +59,12 @@ public class resultAdapter extends RecyclerView.Adapter {
 
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder viewHolder, int position) {
-        if (optionList.get(position).getChoiceurl().trim().equalsIgnoreCase("")) {
+        if (optionList.get(position).getSubUrl().trim().equalsIgnoreCase("")) {
             MyviewHolderText textViewHolder = (MyviewHolderText) viewHolder;
-            textViewHolder.textView.setText(optionList.get(position).getChoicename());
+            textViewHolder.textView.setText(optionList.get(position).getSubQues());
         } else {
             MyviewHolderImage imageViewHolder = (MyviewHolderImage) viewHolder;
-            setImage(imageViewHolder.imageView,optionList.get(position).getChoiceurl(),path+ "/images/" + optionList.get(position).getChoiceurl());
+            setImage(imageViewHolder.imageView,optionList.get(position).getSubUrl(),path+ "/images/" + optionList.get(position).getSubUrl());
         }
 
     }

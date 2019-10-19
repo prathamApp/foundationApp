@@ -14,6 +14,7 @@ import com.pratham.foundation.R;
 import com.pratham.foundation.customView.SansButton;
 import com.pratham.foundation.customView.SansTextView;
 import com.pratham.foundation.database.domain.ContentTable;
+import com.pratham.foundation.ui.contentPlayer.GameConstatnts;
 import com.pratham.foundation.ui.contentPlayer.fact_retrieval_fragment.FactRetrieval_;
 import com.pratham.foundation.ui.contentPlayer.fact_retrival_selection.Fact_Retrieval_Fragment;
 import com.pratham.foundation.ui.contentPlayer.fact_retrival_selection.Fact_Retrieval_Fragment_;
@@ -63,7 +64,7 @@ public class SequenceGameAdapter extends RecyclerView.Adapter<SequenceGameAdapte
                 bundle.putString("resId", contentTable1.getResourceId());
                 bundle.putString("contentName", contentTable1.getNodeTitle());
                 bundle.putBoolean("onSdCard", true);
-                switch (contentTable1.getResourceId()) {
+                /*switch (contentTable1.getResourceId()) {
                     case "101":
                         FC_Utility.showFragment((Activity) context, new FactRetrieval_(), R.id.RL_CPA,
                                 bundle, FactRetrieval_.class.getSimpleName());
@@ -102,6 +103,54 @@ public class SequenceGameAdapter extends RecyclerView.Adapter<SequenceGameAdapte
                                 bundle, FillInTheBlanksFragment.class.getSimpleName());
                         break;
                     case "111":
+                        FC_Utility.showFragment((Activity) context, new pictionaryFragment(), R.id.RL_CPA,
+                                bundle, pictionaryFragment.class.getSimpleName());
+                        break;
+                    case "112":
+                        FC_Utility.showFragment((Activity) context, new Fact_Retrieval_Fragment_(), R.id.RL_CPA,
+                                bundle, Fact_Retrieval_Fragment.class.getSimpleName());
+                        break;
+
+                }*/
+                switch (contentTable1.getResourceType()) {
+                    case GameConstatnts.FACTRETRIEVAL:
+                        FC_Utility.showFragment((Activity) context, new FactRetrieval_(), R.id.RL_CPA,
+                                bundle, FactRetrieval_.class.getSimpleName());
+                        break;
+                    case GameConstatnts.KEYWORD_IDENTIFICATION:
+                        FC_Utility.showFragment((Activity) context, new KeywordsIdentificationFragment_(), R.id.RL_CPA,
+                                bundle, KeywordsIdentificationFragment_.class.getSimpleName());
+                        break;
+
+                    case GameConstatnts.KEYWORD_MAPPING:
+                        FC_Utility.showFragment((Activity) context, new KeywordMappingFragment_(), R.id.RL_CPA,
+                                bundle, KeywordMappingFragment_.class.getSimpleName());
+                        break;
+                    case GameConstatnts.PARAGRAPH_WRITING:
+                        FC_Utility.showFragment((Activity) context, new ParagraphWritingFragment_(), R.id.RL_CPA,
+                                bundle, ParagraphWritingFragment_.class.getSimpleName());
+                        break;
+                    case "105":
+                        FC_Utility.showFragment((Activity) context, new ListeningAndWritting_(), R.id.RL_CPA,
+                                bundle, ListeningAndWritting_.class.getSimpleName());
+                        break;
+                    case "106":
+                        FC_Utility.showFragment((Activity) context, new ReadingFragment(), R.id.RL_CPA,
+                                bundle, ReadingFragment.class.getSimpleName());
+                        break;
+                    case "108":
+                        FC_Utility.showFragment((Activity) context, new McqFillInTheBlanksFragment(), R.id.RL_CPA,
+                                bundle, McqFillInTheBlanksFragment.class.getSimpleName());
+                        break;
+                    case "109":
+                        FC_Utility.showFragment((Activity) context, new TrueFalseFragment(), R.id.RL_CPA,
+                                bundle, TrueFalseFragment.class.getSimpleName());
+                        break;
+                    case "110":
+                        FC_Utility.showFragment((Activity) context, new FillInTheBlanksFragment(), R.id.RL_CPA,
+                                bundle, FillInTheBlanksFragment.class.getSimpleName());
+                        break;
+                    case GameConstatnts.PICTIONARYFRAGMENT:
                         FC_Utility.showFragment((Activity) context, new pictionaryFragment(), R.id.RL_CPA,
                                 bundle, pictionaryFragment.class.getSimpleName());
                         break;

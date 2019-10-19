@@ -12,6 +12,7 @@ import com.pratham.foundation.database.domain.Assessment;
 import com.pratham.foundation.database.domain.KeyWords;
 import com.pratham.foundation.database.domain.Score;
 import com.pratham.foundation.ui.contentPlayer.GameConstatnts;
+import com.pratham.foundation.ui.contentPlayer.fact_retrival_selection.ScienceQuestion;
 import com.pratham.foundation.ui.contentPlayer.keywords_identification.QuestionModel;
 import com.pratham.foundation.utility.FC_Constants;
 import com.pratham.foundation.utility.FC_Utility;
@@ -28,31 +29,32 @@ import static com.pratham.foundation.database.AppDatabase.appDatabase;
 
 @EBean
 public class ParagraphWritingPresenter implements ParagraphWritingContract.ParagraphWritingPresenter {
-    private QuestionModel questionModel;
+    private ScienceQuestion questionModel;
     private ParagraphWritingContract.ParagraphWritingView view;
     private Context context;
-    private List<QuestionModel> quetionModelList;
+    private List<ScienceQuestion> quetionModelList;
     private float perc;
     private int totalWordCount, learntWordCount;
-    private String gameName, resId, contentTitle;
+    private String gameName, resId, contentTitle, readingContentPath;
 
 
     public ParagraphWritingPresenter(Context context) {
         this.context = context;
+
     }
 
-    public void setView(ParagraphWritingContract.ParagraphWritingView view, String resId) {
+    public void setView(ParagraphWritingContract.ParagraphWritingView view, String resId, String readingContentPath) {
         this.view = view;
         this.resId = resId;
-        this.contentTitle = contentTitle;
+        this.readingContentPath = readingContentPath;
     }
 
     @Override
     public void getData() {
-        questionModel = new QuestionModel();
-        String text = FC_Utility.loadJSONFromAsset(context, "factRetrial.json");
+        questionModel = new ScienceQuestion();
+        String text = FC_Utility.loadJSONFromStorage(readingContentPath, "CWiritng.json");
         Gson gson = new Gson();
-        Type type = new TypeToken<List<QuestionModel>>() {
+        Type type = new TypeToken<List<ScienceQuestion>>() {
         }.getType();
         quetionModelList = gson.fromJson(text, type);
         getDataList();
@@ -157,7 +159,7 @@ public class ParagraphWritingPresenter implements ParagraphWritingContract.Parag
 
     }
 
-    public void addLearntWords(QuestionModel questionModel, String imageName) {
+    public void addLearntWords(ScienceQuestion questionModel, String imageName) {
         if (imageName != null && !imageName.isEmpty()) {
             KeyWords keyWords = new KeyWords();
             keyWords.setResourceId(resId);
@@ -165,7 +167,7 @@ public class ParagraphWritingPresenter implements ParagraphWritingContract.Parag
             keyWords.setStudentId(FC_Constants.currentStudentID);
             keyWords.setKeyWord(questionModel.getTitle());
             keyWords.setWordType("word");
-            addScore(questionModel.getResourceId(), GameConstatnts.PARAGRAPH_WRITING, 0, 0, FC_Utility.getCurrentDateTime(), imageName);
+            addScore(GameConstatnts.getInt(questionModel.getQid()), GameConstatnts.PARAGRAPH_WRITING, 0, 0, FC_Utility.getCurrentDateTime(), imageName);
             appDatabase.getKeyWordDao().insert(keyWords);
             Toast.makeText(context, "inserted succussfully", Toast.LENGTH_LONG).show();
         }
@@ -186,7 +188,7 @@ public class ParagraphWritingPresenter implements ParagraphWritingContract.Parag
             score.setDeviceID(deviceId.equals(null) ? "0000" : deviceId);
             score.setEndDateTime(FC_Utility.getCurrentDateTime());
             score.setLevel(4);
-            score.setLabel(Word +"___"  + Label);
+            score.setLabel(Word + "___" + Label);
             score.setSentFlag(0);
             appDatabase.getScoreDao().insert(score);
 
@@ -212,5 +214,4 @@ public class ParagraphWritingPresenter implements ParagraphWritingContract.Parag
             e.printStackTrace();
         }
     }
-
 }

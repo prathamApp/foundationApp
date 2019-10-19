@@ -12,17 +12,18 @@ import android.widget.Toast;
 
 import com.pratham.foundation.R;
 import com.pratham.foundation.modalclasses.OptionKeyMap;
+import com.pratham.foundation.modalclasses.ScienceQuestionChoice;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class KeywordOptionAdapter extends RecyclerView.Adapter<KeywordOptionAdapter.Myviewholder> {
     Context context;
-    List<OptionKeyMap> datalist;
+    List<ScienceQuestionChoice> datalist;
     List selectedOption = new ArrayList();
     int maxSelect;
 
-    public KeywordOptionAdapter(Context context, List<OptionKeyMap> datalist, int maxSelect) {
+    public KeywordOptionAdapter(Context context, List<ScienceQuestionChoice> datalist, int maxSelect) {
         this.context = context;
         this.datalist = datalist;
         this.maxSelect = maxSelect;
@@ -37,7 +38,7 @@ public class KeywordOptionAdapter extends RecyclerView.Adapter<KeywordOptionAdap
 
     @Override
     public void onBindViewHolder(@NonNull Myviewholder myviewholder, int i) {
-        myviewholder.textView.setText(datalist.get(i).getOption());
+        myviewholder.textView.setText(datalist.get(i).getSubQues());
         if (datalist.get(myviewholder.getAdapterPosition()).isIsclicked()) {
             myviewholder.itemView.setBackground(ContextCompat.getDrawable(context, R.drawable.correct_bg));
         } else {
@@ -48,15 +49,15 @@ public class KeywordOptionAdapter extends RecyclerView.Adapter<KeywordOptionAdap
             public void onClick(View v) {
 
                 if (datalist.get(myviewholder.getAdapterPosition()).isIsclicked()) {
-                    if (selectedOption.contains(datalist.get(myviewholder.getAdapterPosition()).getOption())) {
-                        selectedOption.remove(datalist.get(myviewholder.getAdapterPosition()).getOption());
+                    if (selectedOption.contains(datalist.get(myviewholder.getAdapterPosition()).getSubQues())) {
+                        selectedOption.remove(datalist.get(myviewholder.getAdapterPosition()).getSubQues());
                     }
                     datalist.get(myviewholder.getAdapterPosition()).setIsclicked(false);
                     myviewholder.itemView.setBackground(ContextCompat.getDrawable(context, R.drawable.dialog_bg));
                 } else {
                     if (maxSelect >selectedOption.size()) {
-                        if (!selectedOption.contains(datalist.get(myviewholder.getAdapterPosition()).getOption())) {
-                            selectedOption.add(datalist.get(myviewholder.getAdapterPosition()).getOption());
+                        if (!selectedOption.contains(datalist.get(myviewholder.getAdapterPosition()).getSubQues())) {
+                            selectedOption.add(datalist.get(myviewholder.getAdapterPosition()).getSubQues());
                         }
                         datalist.get(myviewholder.getAdapterPosition()).setIsclicked(true);
                         myviewholder.itemView.setBackground(ContextCompat.getDrawable(context, R.drawable.correct_bg));

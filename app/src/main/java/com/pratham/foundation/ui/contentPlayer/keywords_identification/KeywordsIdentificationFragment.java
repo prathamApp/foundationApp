@@ -13,13 +13,16 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.pratham.foundation.ApplicationClass;
 import com.pratham.foundation.R;
 import com.nex3z.flowlayout.FlowLayout;
 import com.pratham.foundation.customView.SansButton;
 import com.pratham.foundation.customView.SansTextView;
 import com.pratham.foundation.customView.SansTextViewBold;
+import com.pratham.foundation.modalclasses.ScienceQuestionChoice;
 import com.pratham.foundation.ui.contentPlayer.ContentPlayerActivity;
 import com.pratham.foundation.ui.contentPlayer.GameConstatnts;
+import com.pratham.foundation.ui.contentPlayer.fact_retrival_selection.ScienceQuestion;
 import com.pratham.foundation.ui.contentPlayer.keywords_mapping.KeywordMappingFragment_;
 import com.pratham.foundation.utility.FC_Utility;
 
@@ -51,10 +54,11 @@ public class KeywordsIdentificationFragment extends Fragment implements Keywords
     RelativeLayout.LayoutParams viewParam;
     private HashMap<String, List<Integer>> positionMap;
     private List<String> selectedKeywords;
-    private String contentPath, contentTitle, StudentID, resId;
+    private String contentPath, contentTitle, StudentID, resId,readingContentPath;
     private boolean onSdCard;
-    private QuestionModel questionModel;
+    private ScienceQuestion questionModel;
     private boolean isKeyWordShowing = false;
+
 
     @AfterViews
     public void initiate() {
@@ -65,8 +69,12 @@ public class KeywordsIdentificationFragment extends Fragment implements Keywords
             resId = bundle.getString("resId");
             contentTitle = bundle.getString("contentName");
             onSdCard = bundle.getBoolean("onSdCard", false);
+            if (onSdCard)
+                readingContentPath = ApplicationClass.contentSDPath + "/.FCA/English/Game/" + contentPath + "/";
+            else
+                readingContentPath = ApplicationClass.foundationPath + "/.FCA/English/Game/" + contentPath + "/";
         }
-        presenter.setView(KeywordsIdentificationFragment.this, resId);
+        presenter.setView(KeywordsIdentificationFragment.this, resId,readingContentPath);
         selectedKeywords = new ArrayList<>();
         positionMap = new HashMap<>();
 
@@ -83,9 +91,9 @@ public class KeywordsIdentificationFragment extends Fragment implements Keywords
     }
 
     @Override
-    public void showParagraph(QuestionModel questionModel) {
+    public void showParagraph(ScienceQuestion questionModel) {
         this.questionModel = questionModel;
-        String[] paragraphWords = questionModel.getParagraph().split(" ");
+        String[] paragraphWords = questionModel.getQuestion().split(" ");
         for (int i = 0; i < paragraphWords.length; i++) {
             if (positionMap.containsKey(paragraphWords[i].replaceAll("[^a-zA-Z0-9]", ""))) {
                 List temp = positionMap.get(paragraphWords[i]);
@@ -124,7 +132,8 @@ public class KeywordsIdentificationFragment extends Fragment implements Keywords
 
     private void paragraphWordClicked(String paraText, int pos) {
         if (!isKeyWordShowing) {
-            if (selectedKeywords.size() <= questionModel.getKeywords().size()) {
+           int correctCnt= getCorrectCnt(questionModel.getLstquestionchoice());
+            if (selectedKeywords.size() <= correctCnt) {
                 if (!selectedKeywords.contains(paraText)) {
                     List positions = positionMap.get(paraText.trim());
                     if (positions != null)
@@ -184,8 +193,19 @@ public class KeywordsIdentificationFragment extends Fragment implements Keywords
                 Toast.makeText(getActivity(), "Upper limit reached", Toast.LENGTH_SHORT).show();
             }
         } else {
-            ((ContentPlayerActivity)getActivity()).ttsService.play(paraText);
+            ((ContentPlayerActivity) getActivity()).ttsService.play(paraText);
         }
+    }
+
+    private int getCorrectCnt(ArrayList<ScienceQuestionChoice> lstquestionchoice) {
+        /*int correctCnt = 0;
+        for (int i = 0; i < lstquestionchoice.size(); i++) {
+            if (lstquestionchoice.get(i).getCorrectAnswer().equalsIgnoreCase("true")) {
+                correctCnt++;
+            }
+        }
+        return correctCnt;*/
+        return lstquestionchoice.size();
     }
 
     @Click(R.id.btn_submit)
@@ -200,7 +220,7 @@ public class KeywordsIdentificationFragment extends Fragment implements Keywords
 
     @Click(R.id.show_me_keywords)
     public void show_me_keywords() {
-        List<String> keywordList = questionModel.getKeywords();
+        List<ScienceQuestionChoice> keywordList = questionModel.getLstquestionchoice();
         positionMap.clear();
         selectedKeywords.clear();
         paraghaph.removeAllViews();
@@ -210,7 +230,7 @@ public class KeywordsIdentificationFragment extends Fragment implements Keywords
             isKeyWordShowing = true;
             show_me_keywords.setText("hide keywords");
             for (int keywordIndex = 0; keywordIndex < keywordList.size(); keywordIndex++) {
-                List positions = positionMap.get(keywordList.get(keywordIndex).trim());
+                List positions = positionMap.get(keywordList.get(keywordIndex).getSubQues().trim());
                 if (positions != null)
                     for (int i = 0; i < positions.size(); i++) {
                         SansTextView textViewTemp = (SansTextView) paraghaph.getChildAt((int) positions.get(i));
@@ -221,7 +241,7 @@ public class KeywordsIdentificationFragment extends Fragment implements Keywords
             isKeyWordShowing = false;
             show_me_keywords.setText("show keywords");
             for (int keywordIndex = 0; keywordIndex < keywordList.size(); keywordIndex++) {
-                List positions = positionMap.get(keywordList.get(keywordIndex).trim());
+                List positions = positionMap.get(keywordList.get(keywordIndex).getSubQues().trim());
                 if (positions != null)
                     for (int i = 0; i < positions.size(); i++) {
                         SansTextView textViewTemp = (SansTextView) paraghaph.getChildAt((int) positions.get(i));
