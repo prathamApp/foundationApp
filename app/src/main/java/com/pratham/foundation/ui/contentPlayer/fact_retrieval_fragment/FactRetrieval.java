@@ -174,23 +174,27 @@ public class FactRetrieval extends Fragment implements FactRetrievalContract.Fac
 
     @Click(R.id.previous)
     public void onPreviousClick() {
-        if (index > 0) {
-            index--;
-            showQuetion();
-        }
+        if (selectedQuetion != null)
+            if (index > 0) {
+                index--;
+                showQuetion();
+            }
     }
 
     @Click(R.id.next)
     public void onNextClick() {
-        if (index < (selectedQuetion.size()-1)) {
-            index++;
-            showQuetion();
-        }
+        if (selectedQuetion != null)
+            if (index < (selectedQuetion.size() - 1)) {
+                index++;
+                showQuetion();
+            }
     }
 
     @Click(R.id.submitBtn)
     public void onsubmitBtnClick() {
-        presenter.addLearntWords(selectedQuetion);
+        if (selectedQuetion != null)
+            presenter.addLearntWords(selectedQuetion);
+
         Bundle bundle = GameConstatnts.findGameData(resId);
         if (bundle != null) {
             FC_Utility.showFragment(getActivity(), new KeywordsIdentificationFragment_(), R.id.RL_CPA,
