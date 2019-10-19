@@ -26,6 +26,7 @@ import com.pratham.foundation.ui.contentPlayer.multipleChoice.McqFillInTheBlanks
 import com.pratham.foundation.ui.contentPlayer.paragraph_writing.ParagraphWritingFragment_;
 import com.pratham.foundation.ui.contentPlayer.pictionary.pictionaryFragment;
 import com.pratham.foundation.ui.contentPlayer.reading.ReadingFragment;
+import com.pratham.foundation.ui.contentPlayer.story_reading.StoryReadingFragment;
 import com.pratham.foundation.ui.contentPlayer.trueFalse.TrueFalseFragment;
 import com.pratham.foundation.utility.FC_Constants;
 import com.pratham.foundation.utility.FC_Utility;
@@ -150,7 +151,7 @@ public class SequenceGameAdapter extends RecyclerView.Adapter<SequenceGameAdapte
                         FC_Utility.showFragment((Activity) context, new FillInTheBlanksFragment(), R.id.RL_CPA,
                                 bundle, FillInTheBlanksFragment.class.getSimpleName());
                         break;
-                    case GameConstatnts.PICTIONARYFRAGMENT:
+                    case GameConstatnts.READINGGAME:
                         FC_Utility.showFragment((Activity) context, new pictionaryFragment(), R.id.RL_CPA,
                                 bundle, pictionaryFragment.class.getSimpleName());
                         break;
@@ -158,7 +159,10 @@ public class SequenceGameAdapter extends RecyclerView.Adapter<SequenceGameAdapte
                         FC_Utility.showFragment((Activity) context, new Fact_Retrieval_Fragment_(), R.id.RL_CPA,
                                 bundle, Fact_Retrieval_Fragment.class.getSimpleName());
                         break;
-
+                    case GameConstatnts.PICTIONARYFRAGMENT:
+                        FC_Utility.showFragment((Activity) context, new StoryReadingFragment(), R.id.RL_CPA,
+                                bundle, StoryReadingFragment.class.getSimpleName());
+                        break;
                 }
             }
         });
