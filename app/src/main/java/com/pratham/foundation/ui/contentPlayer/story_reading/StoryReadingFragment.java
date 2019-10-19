@@ -32,6 +32,7 @@ import com.nex3z.flowlayout.FlowLayout;
 import com.pratham.foundation.ApplicationClass;
 import com.pratham.foundation.BaseActivity;
 import com.pratham.foundation.R;
+import com.pratham.foundation.customView.GifView;
 import com.pratham.foundation.customView.RipplePulseLayout;
 import com.pratham.foundation.customView.SansTextView;
 import com.pratham.foundation.modalclasses.ModalParaSubMenu;
@@ -86,6 +87,8 @@ public class StoryReadingFragment extends Fragment implements
     ScrollView myScrollView;
     @ViewById(R.id.btn_submit)
     Button btn_submit;
+    @ViewById(R.id.gif_view)
+    GifView gif_view;
 //    @ViewById(R.id.ll_btn_next)
 //    LinearLayout ll_btn_next;
 //    @ViewById(R.id.ll_btn_prev)
@@ -120,6 +123,18 @@ public class StoryReadingFragment extends Fragment implements
     boolean voiceStart = false, flgPerMarked = false, onSdCard;
     static boolean[] correctArr;
     static boolean[] testCorrectArr;
+
+/*
+        bundle.putString("nodeID", nodeID);
+        bundle.putString("contentType","s");
+        bundle.putString("storyPath","s");
+        bundle.putString("storyId","s");
+        bundle.putString("storyTitle","s");
+        bundle.putString("certiCode","s");
+        bundle.putBoolean("onSdCard", false);
+        FC_Utility.showFragment(ContentPlayerActivity.this, new StoryReadingFragment_(), R.id.RL_CPA,
+    bundle, StoryReadingFragment_.class.getSimpleName());
+*/
 
 
     @AfterViews
@@ -241,12 +256,22 @@ public class StoryReadingFragment extends Fragment implements
         try {
             File f = new File(readingContentPath + storyBg);
             if (f.exists()) {
-                pageImage.setVisibility(View.VISIBLE);
-                Bitmap bmImg = BitmapFactory.decodeFile(readingContentPath + storyBg);
-                BitmapFactory.decodeStream(new FileInputStream(readingContentPath + storyBg));
-                pageImage.setImageBitmap(bmImg);
-            }else
+                if(storyBg.contains(".gif")){
+                    pageImage.setVisibility(View.GONE);
+                    gif_view.setVisibility(View.VISIBLE);
+                    gif_view.setGifResource(new FileInputStream(readingContentPath + storyBg));
+                    gif_view.play();
+                }else {
+                    gif_view.setVisibility(View.GONE);
+                    pageImage.setVisibility(View.VISIBLE);
+                    Bitmap bmImg = BitmapFactory.decodeFile(readingContentPath + storyBg);
+                    BitmapFactory.decodeStream(new FileInputStream(readingContentPath + storyBg));
+                    pageImage.setImageBitmap(bmImg);
+                }
+            }else {
+                gif_view.setVisibility(View.GONE);
                 pageImage.setVisibility(View.GONE);
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }

@@ -93,7 +93,7 @@
                 <com.pratham.foundation.customView.SansTextViewBold
                     android:id="@+id/tv_progress"
                     android:layout_width="match_parent"
-                    android:layout_height="25dp"
+                    android:layout_height="30dp"
                     android:gravity="center_horizontal"
                     android:layout_marginTop="@dimen/_5sdp"
                     android:text="Progress"

@@ -59,6 +59,15 @@
             android:layout_above="@+id/bottom_bar"
             android:orientation="vertical">
 
+            <com.pratham.foundation.customView.GifView
+                android:id="@+id/gif_view"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_220sdp"
+                android:layout_gravity="center_horizontal|top"
+                android:background="@color/full_transparent"
+                android:visibility="visible"
+                android:scaleType="fitCenter"/>
+
             <ImageView
                 android:id="@+id/iv_image"
                 android:layout_width="match_parent"
@@ -66,6 +75,7 @@
                 android:layout_gravity="center_horizontal|top"
                 android:background="@color/colorBlack"
                 android:scaleType="fitCenter"
+                android:visibility="gone"
                 android:src="@drawable/pratham_logo" />
 
             <RelativeLayout

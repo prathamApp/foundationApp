@@ -136,7 +136,7 @@ public class StoryReadingPresenter implements StoryReadingContract.StoryReadingP
             addSttResultDB(sttResult.get(j));
 
         for (int j = 0; j < splitRes.length; j++) {
-            String regex = "[\\-+.\"^?!@#%&*,:]";
+            String regex = "[\\-+.\"^?!@#%&*,:()]";
             splitRes[j] = splitRes[j].replaceAll(regex, "");
             for (int i = 0; i < splitWordsPunct.size(); i++) {
                 if ((splitRes[j].equalsIgnoreCase(splitWordsPunct.get(i))) && !correctArr[i]) {
