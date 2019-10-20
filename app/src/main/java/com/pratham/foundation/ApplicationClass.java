@@ -24,7 +24,7 @@ import okhttp3.OkHttpClient;
 public class ApplicationClass extends Application {
 
     public static String uploadDataUrl = "http://prodigi.openiscool.org/api/cosv2/pushdata";
-    public static final boolean isTablet = false;
+    public static final boolean isTablet = true;
     public static boolean contentExistOnSD = false, LocationFlg = false;
     public static String contentSDPath = "";
     public static String foundationPath = "";
