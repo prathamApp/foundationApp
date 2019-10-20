@@ -18,6 +18,7 @@ public class GameConstatnts {
     public static final String PICTIONARYFRAGMENT = "PictAndroid";
     public static final String FACT_RETRIAL_SELECTION = "fact_retrial_selection";
     public static final String FACTRETRIEVAL = "factRetrival";
+    public static final String READINGGAME = "ShowMeAndroid";
 
     public static List<ContentTable> gameList;
 

@@ -19,6 +19,7 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
@@ -203,6 +204,7 @@ public class pictionaryFragment extends Fragment {
     }
 
     public void setMcqsQuestion() {
+        if(selectedFive!=null){
         options = new ArrayList<>();
         question.setText(selectedFive.get(index).getQuestion());
         if (!selectedFive.get(index).getPhotourl().equalsIgnoreCase("")) {
@@ -569,7 +571,9 @@ public class pictionaryFragment extends Fragment {
                     }
                 }
             }
-        });
+        });}else{
+            Toast.makeText(getActivity(), "No data found", Toast.LENGTH_SHORT).show();
+    }
     }
 
 
@@ -627,6 +631,7 @@ public class pictionaryFragment extends Fragment {
 
     @OnClick(R.id.previous)
     public void onPreviousClick() {
+        if(selectedFive!=null)
         if (index > 0) {
             index--;
             setMcqsQuestion();
@@ -635,6 +640,7 @@ public class pictionaryFragment extends Fragment {
 
     @OnClick(R.id.next)
     public void onNextClick() {
+        if(selectedFive!=null)
         if (index < (selectedFive.size() - 1)) {
             index++;
             setMcqsQuestion();
@@ -643,8 +649,7 @@ public class pictionaryFragment extends Fragment {
 
     @OnClick(R.id.submitBtn)
     public void onsubmitBtnClick() {
-        selectedFive.toString();
-        //   Log.d("tt", "aa");
+        if(selectedFive!=null)
         addLearntWords(selectedFive);
         /*Bundle bundle = GameConstatnts.findGameData("110");
         if (bundle != null) {

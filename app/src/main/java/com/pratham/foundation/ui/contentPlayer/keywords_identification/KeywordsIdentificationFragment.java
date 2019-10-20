@@ -54,7 +54,7 @@ public class KeywordsIdentificationFragment extends Fragment implements Keywords
     RelativeLayout.LayoutParams viewParam;
     private HashMap<String, List<Integer>> positionMap;
     private List<String> selectedKeywords;
-    private String contentPath, contentTitle, StudentID, resId,readingContentPath;
+    private String contentPath, contentTitle, StudentID, resId, readingContentPath;
     private boolean onSdCard;
     private ScienceQuestion questionModel;
     private boolean isKeyWordShowing = false;
@@ -74,7 +74,7 @@ public class KeywordsIdentificationFragment extends Fragment implements Keywords
             else
                 readingContentPath = ApplicationClass.foundationPath + "/.FCA/English/Game/" + contentPath + "/";
         }
-        presenter.setView(KeywordsIdentificationFragment.this, resId,readingContentPath);
+        presenter.setView(KeywordsIdentificationFragment.this, resId, readingContentPath);
         selectedKeywords = new ArrayList<>();
         positionMap = new HashMap<>();
 
@@ -95,20 +95,21 @@ public class KeywordsIdentificationFragment extends Fragment implements Keywords
         this.questionModel = questionModel;
         String[] paragraphWords = questionModel.getQuestion().split(" ");
         for (int i = 0; i < paragraphWords.length; i++) {
-            if (positionMap.containsKey(paragraphWords[i].replaceAll("[^a-zA-Z0-9]", ""))) {
+            if (positionMap.containsKey(paragraphWords[i].replaceAll("[\\-\\+\\.\\^\\?\\'\\!:,]", ""))) {
                 List temp = positionMap.get(paragraphWords[i]);
-                temp.add(i);
+                if (temp != null)
+                    temp.add(i);
             } else {
                 List<Integer> temp = new ArrayList<>();
                 temp.add(i);
-                positionMap.put(paragraphWords[i].replaceAll("[^a-zA-Z0-9]", ""), temp);
+                positionMap.put(paragraphWords[i].replaceAll("[\\-\\+\\.\\^\\?\\'\\!:,]", ""), temp);
             }
 
             final SansTextView textView = new SansTextView(getActivity());
             textView.setTextSize(30);
             textView.setText(paragraphWords[i]);
             final int temp_i = i;
-            textView.setOnClickListener(v -> paragraphWordClicked("" + textView.getText().toString().replaceAll("[^a-zA-Z0-9]", ""), temp_i));
+            textView.setOnClickListener(v -> paragraphWordClicked("" + textView.getText().toString().replaceAll("[\\-\\+\\.\\^\\?\\'\\!:,]", ""), temp_i));
             paraghaph.addView(textView);
         }
 
@@ -132,7 +133,7 @@ public class KeywordsIdentificationFragment extends Fragment implements Keywords
 
     private void paragraphWordClicked(String paraText, int pos) {
         if (!isKeyWordShowing) {
-           int correctCnt= getCorrectCnt(questionModel.getLstquestionchoice());
+            int correctCnt = getCorrectCnt(questionModel.getLstquestionchoice());
             if (selectedKeywords.size() <= correctCnt) {
                 if (!selectedKeywords.contains(paraText)) {
                     List positions = positionMap.get(paraText.trim());
@@ -210,7 +211,9 @@ public class KeywordsIdentificationFragment extends Fragment implements Keywords
 
     @Click(R.id.btn_submit)
     public void submitClicked() {
-        presenter.addLearntWords(selectedKeywords);
+        if (selectedKeywords != null)
+            presenter.addLearntWords(selectedKeywords);
+
         Bundle bundle = GameConstatnts.findGameData("103");
         if (bundle != null) {
             FC_Utility.showFragment(getActivity(), new KeywordMappingFragment_(), R.id.RL_CPA,
@@ -220,44 +223,46 @@ public class KeywordsIdentificationFragment extends Fragment implements Keywords
 
     @Click(R.id.show_me_keywords)
     public void show_me_keywords() {
-        List<ScienceQuestionChoice> keywordList = questionModel.getLstquestionchoice();
-        positionMap.clear();
-        selectedKeywords.clear();
-        paraghaph.removeAllViews();
-        keywords.removeAllViews();
-        showParagraph(questionModel);
-        if (!isKeyWordShowing) {
-            isKeyWordShowing = true;
-            show_me_keywords.setText("hide keywords");
-            for (int keywordIndex = 0; keywordIndex < keywordList.size(); keywordIndex++) {
-                List positions = positionMap.get(keywordList.get(keywordIndex).getSubQues().trim());
-                if (positions != null)
-                    for (int i = 0; i < positions.size(); i++) {
-                        SansTextView textViewTemp = (SansTextView) paraghaph.getChildAt((int) positions.get(i));
-                        textViewTemp.setBackgroundColor(ContextCompat.getColor(getActivity(), R.color.colorGreenCorrect));
-                    }
+        if (questionModel != null) {
+            List<ScienceQuestionChoice> keywordList = questionModel.getLstquestionchoice();
+            positionMap.clear();
+            selectedKeywords.clear();
+            paraghaph.removeAllViews();
+            keywords.removeAllViews();
+            showParagraph(questionModel);
+            if (!isKeyWordShowing) {
+                isKeyWordShowing = true;
+                show_me_keywords.setText("hide keywords");
+                for (int keywordIndex = 0; keywordIndex < keywordList.size(); keywordIndex++) {
+                    List positions = positionMap.get(keywordList.get(keywordIndex).getSubQues().trim());
+                    if (positions != null)
+                        for (int i = 0; i < positions.size(); i++) {
+                            SansTextView textViewTemp = (SansTextView) paraghaph.getChildAt((int) positions.get(i));
+                            textViewTemp.setBackgroundColor(ContextCompat.getColor(getActivity(), R.color.colorGreenCorrect));
+                        }
+                }
+            } else {
+                isKeyWordShowing = false;
+                show_me_keywords.setText("show keywords");
+                for (int keywordIndex = 0; keywordIndex < keywordList.size(); keywordIndex++) {
+                    List positions = positionMap.get(keywordList.get(keywordIndex).getSubQues().trim());
+                    if (positions != null)
+                        for (int i = 0; i < positions.size(); i++) {
+                            SansTextView textViewTemp = (SansTextView) paraghaph.getChildAt((int) positions.get(i));
+                            textViewTemp.setBackgroundColor(ContextCompat.getColor(getActivity(), R.color.white));
+                        }
+                }
+                final Dialog dialog = new Dialog(getActivity());
+                dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+                dialog.setContentView(R.layout.app_success_dialog);
+                dialog.setCancelable(false);
+                dialog.setCanceledOnTouchOutside(false);
+                SansButton dia_btn_yellow = dialog.findViewById(R.id.dia_btn_yellow);
+                TextView message = dialog.findViewById(R.id.message);
+                message.setText("Now its your turn to select keyword");
+                dia_btn_yellow.setOnClickListener(v -> dialog.dismiss());
+                dialog.show();
             }
-        } else {
-            isKeyWordShowing = false;
-            show_me_keywords.setText("show keywords");
-            for (int keywordIndex = 0; keywordIndex < keywordList.size(); keywordIndex++) {
-                List positions = positionMap.get(keywordList.get(keywordIndex).getSubQues().trim());
-                if (positions != null)
-                    for (int i = 0; i < positions.size(); i++) {
-                        SansTextView textViewTemp = (SansTextView) paraghaph.getChildAt((int) positions.get(i));
-                        textViewTemp.setBackgroundColor(ContextCompat.getColor(getActivity(), R.color.white));
-                    }
-            }
-            final Dialog dialog = new Dialog(getActivity());
-            dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-            dialog.setContentView(R.layout.app_success_dialog);
-            dialog.setCancelable(false);
-            dialog.setCanceledOnTouchOutside(false);
-            SansButton dia_btn_yellow = dialog.findViewById(R.id.dia_btn_yellow);
-            TextView message = dialog.findViewById(R.id.message);
-            message.setText("Now its your turn to select keyword");
-            dia_btn_yellow.setOnClickListener(v -> dialog.dismiss());
-            dialog.show();
         }
     }
 }

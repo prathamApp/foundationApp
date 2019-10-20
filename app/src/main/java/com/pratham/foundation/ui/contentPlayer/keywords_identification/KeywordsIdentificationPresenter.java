@@ -196,17 +196,19 @@ public class KeywordsIdentificationPresenter implements KeywordsIdentificationCo
     }
 
     public float checkAnswer(List<String> selectedAnsList) {
-        int correctCnt = 0;
-        for (int i = 0; i < selectedAnsList.size(); i++) {
-            if (checkAnswerNew(questionModel.getLstquestionchoice(), selectedAnsList.get(i).toString())) {
-                correctCnt++;
-                correctWordList.add(selectedAnsList.get(i));
-            } else {
-                wrongWordList.add(selectedAnsList.get(i));
+        if (questionModel != null) {
+            int correctCnt = 0;
+            for (int i = 0; i < selectedAnsList.size(); i++) {
+                if (checkAnswerNew(questionModel.getLstquestionchoice(), selectedAnsList.get(i).toString())) {
+                    correctCnt++;
+                    correctWordList.add(selectedAnsList.get(i));
+                } else {
+                    wrongWordList.add(selectedAnsList.get(i));
+                }
             }
+            return 10 * correctCnt / questionModel.getLstquestionchoice().size();
         }
-        return 10 * correctCnt / questionModel.getLstquestionchoice().size();
+        return 0;
     }
-
 }
 

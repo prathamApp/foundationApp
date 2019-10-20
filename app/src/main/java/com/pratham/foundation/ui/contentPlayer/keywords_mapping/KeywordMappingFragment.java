@@ -26,6 +26,7 @@ import org.androidannotations.annotations.EFragment;
 import org.androidannotations.annotations.UiThread;
 import org.androidannotations.annotations.ViewById;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @EFragment(R.layout.fragment_keyword_mapping)
@@ -89,10 +90,19 @@ public class KeywordMappingFragment extends Fragment implements KeywordMappingCo
             optionList.add(new OptionKeyMap(temp.get(i).toString(), false));
         }*/
         recycler_view.setLayoutManager(gridLayoutManager);
-        keywordOptionAdapter = new KeywordOptionAdapter(getActivity(), optionList, 5);
+        keywordOptionAdapter = new KeywordOptionAdapter(getActivity(), optionList, getCorrectCnt(optionList));
         recycler_view.setAdapter(keywordOptionAdapter);
     }
 
+    private int getCorrectCnt(List<ScienceQuestionChoice> lstquestionchoice) {
+        int correctCnt = 0;
+        for (int i = 0; i < lstquestionchoice.size(); i++) {
+            if (lstquestionchoice.get(i).getCorrectAnswer().equalsIgnoreCase("true")) {
+                correctCnt++;
+            }
+        }
+        return correctCnt;
+    }
     @Override
     public void showResult(List correctWord, List wrongWord) {
         final Dialog dialog = new Dialog(getActivity());
@@ -111,8 +121,10 @@ public class KeywordMappingFragment extends Fragment implements KeywordMappingCo
 
     @Click(R.id.submit)
     public void submitClick() {
-        List selectedoptionList = keywordOptionAdapter.getSelectedOptionList();
-        presenter.addLearntWords(keywordmapping, selectedoptionList);
+        if (keywordOptionAdapter != null && keywordmapping != null) {
+            List selectedoptionList = keywordOptionAdapter.getSelectedOptionList();
+            presenter.addLearntWords(keywordmapping, selectedoptionList);
+        }
         Bundle bundle = GameConstatnts.findGameData("104");
         if (bundle != null) {
             FC_Utility.showFragment(getActivity(), new ParagraphWritingFragment_(), R.id.RL_CPA,
