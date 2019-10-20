@@ -49,7 +49,6 @@ public class PushDataToServer {
     JSONArray studentData;
     JSONArray crlData;
     JSONArray sessionData;
-    JSONArray learntWords;
     JSONArray supervisorData;
     JSONArray groupsData;
     JSONArray assessmentData;
@@ -65,7 +64,6 @@ public class PushDataToServer {
         attendanceData = new JSONArray();
         crlData = new JSONArray();
         sessionData = new JSONArray();
-        learntWords = new JSONArray();
         supervisorData = new JSONArray();
         groupsData = new JSONArray();
         logsData = new JSONArray();
@@ -95,8 +93,6 @@ public class PushDataToServer {
             crlData = fillCrlData(crlList);
             List<Session> sessionList = AppDatabase.getDatabaseInstance(context).getSessionDao().getAllNewSessions();
             sessionData = fillSessionData(sessionList);
-            List<KeyWords> learntWordsList = AppDatabase.getDatabaseInstance(context).getKeyWordDao().getAllData();
-            learntWords = fillKeyWordsData(learntWordsList);
             List<SupervisorData> supervisorDataList = AppDatabase.getDatabaseInstance(context).getSupervisorDataDao().getAllSupervisorData();
             supervisorData = fillSupervisorData(supervisorDataList);
             List<Modal_Log> logsList = AppDatabase.getDatabaseInstance(context).getLogsDao().getPushAllLogs();
@@ -108,10 +104,10 @@ public class PushDataToServer {
             List<ContentProgress> contentProgressList = AppDatabase.getDatabaseInstance(context).getContentProgressDao().getAllContentNodeProgress();
             contentProgress = fillProgressData(contentProgressList);
             List<KeyWords> keyWordsList = AppDatabase.getDatabaseInstance(context).getKeyWordDao().getAllData();
-            keyWordsData = fillKeyWordsData(keyWordsList);
+            keyWordsData = fillkeyWordsData(keyWordsList);
 
             JSONObject rootJson = new JSONObject();
-            String requestString = generateRequestString(scoreData, attendanceData, sessionData, learntWords, supervisorData, logsData, assessmentData, studentData, contentProgress, keyWordsData);
+            String requestString = generateRequestString(scoreData, attendanceData, sessionData, supervisorData, logsData, assessmentData, studentData, contentProgress, keyWordsData);
             pushSuccessfull = false;
             Gson gson = new Gson();
             //iterate through all new sessions
@@ -233,7 +229,7 @@ public class PushDataToServer {
         }
     }
 
-    private String generateRequestString(JSONArray scoreData, JSONArray attendanceData, JSONArray sessionData, JSONArray learntWordsData, JSONArray supervisorData, JSONArray logsData, JSONArray assessmentData, JSONArray studentData, JSONArray contentProgress, JSONArray keyWordsData) {
+    private String generateRequestString(JSONArray scoreData, JSONArray attendanceData, JSONArray sessionData, JSONArray supervisorData, JSONArray logsData, JSONArray assessmentData, JSONArray studentData, JSONArray contentProgress, JSONArray keyWordsData) {
         String requestString = "";
         try {
             JSONObject sessionObj = new JSONObject();
@@ -271,12 +267,11 @@ public class PushDataToServer {
                 sessionObj.put("studentData", studentData);
             sessionObj.put("attendanceData", attendanceData);
             sessionObj.put("sessionsData", sessionData);
-            sessionObj.put("learntWordsData", learntWordsData);
+            sessionObj.put("keyWords", keyWordsData);
             sessionObj.put("contentProgressData", contentProgress);
             sessionObj.put("logsData", logsData);
             sessionObj.put("assessmentData", assessmentData);
             sessionObj.put("supervisor", supervisorData);
-            sessionObj.put("keyWords", keyWordsData);
 
             requestString = "{ \"session\": " + sessionObj +
                     ", \"metadata\": " + metaDataObj +
@@ -303,27 +298,6 @@ public class PushDataToServer {
             return null;
         }
         return newSessionsData;
-    }
-
-    private JSONArray fillKeyWordsData(List<KeyWords> learntWordsList) {
-        JSONArray newKeyWords = new JSONArray();
-        JSONObject _learntWordsObj;
-        try {
-            for (int i = 0; i < learntWordsList.size(); i++) {
-                _learntWordsObj = new JSONObject();
-                _learntWordsObj.put("studentId", learntWordsList.get(i).getStudentId());
-              //  _learntWordsObj.put("sessionId", learntWordsList.get(i).getSessionId());
-              //  _learntWordsObj.put("synId", learntWordsList.get(i).getSynId());
-                _learntWordsObj.put("wordUUId", learntWordsList.get(i).getResourceId());
-                _learntWordsObj.put("word", learntWordsList.get(i).getKeyWord());
-                _learntWordsObj.put("wordType", learntWordsList.get(i).getWordType());
-                newKeyWords.put(_learntWordsObj);
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-            return null;
-        }
-        return newKeyWords;
     }
 
     private JSONArray fillCrlData(List<Crl> crlsList) {
