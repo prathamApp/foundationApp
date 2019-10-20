@@ -14,7 +14,6 @@
         android:background="@drawable/home_header_1_bg"
         android:elevation="@dimen/_10sdp"
         android:layout_height="110dp">
-
 <!--
         <LinearLayout
             android:id="@+id/header_layout"
@@ -24,7 +23,6 @@
             android:gravity="top"
             android:orientation="horizontal">
 -->
-
             <RelativeLayout
                 android:id="@+id/leftCol"
                 android:layout_width="match_parent"
