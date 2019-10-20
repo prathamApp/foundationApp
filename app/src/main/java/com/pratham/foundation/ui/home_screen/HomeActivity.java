@@ -29,6 +29,7 @@ import com.pratham.foundation.ui.home_screen.learning_fragment.LearningFragment_
 import com.pratham.foundation.ui.home_screen.practice_fragment.PracticeFragment_;
 import com.pratham.foundation.ui.home_screen.test_fragment.TestFragment_;
 import com.pratham.foundation.ui.selectSubject.SelectSubject_;
+import com.pratham.foundation.ui.student_profile.Student_profile_activity;
 import com.pratham.foundation.ui.test.supervisor.SupervisedAssessmentActivity;
 import com.pratham.foundation.utility.FC_Constants;
 
@@ -111,6 +112,11 @@ public class HomeActivity extends BaseActivity{
         else
             sImage = "group_icon";
         setStudentProfileImage(sImage);
+    }
+
+    @Click(R.id.profileImage)
+    public void loadProfile() {
+        startActivity(new Intent(this, Student_profile_activity.class));
     }
 
     @UiThread
