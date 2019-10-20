@@ -18,10 +18,13 @@ import org.androidannotations.annotations.Background;
 import org.androidannotations.annotations.Bean;
 import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EFragment;
+import org.androidannotations.annotations.UiThread;
 import org.androidannotations.annotations.ViewById;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static com.pratham.foundation.ui.contentPlayer.GameConstatnts.currentGameAdapterposition;
 
 @EFragment(R.layout.fragment_sequence_layout)
 public class SequenceLayout extends Fragment implements SequeanceLayoutContract.SequenceLayoutView {
@@ -47,7 +50,7 @@ public class SequenceLayout extends Fragment implements SequeanceLayoutContract.
             nodeID = bundle.getString("nodeID");
             getListResData(nodeID);
             sequenceLayoutPresenter.setView(this);
-            sequenceLayoutPresenter.getData();
+            //sequenceLayoutPresenter.getData();
         }
     }
 
@@ -56,14 +59,16 @@ public class SequenceLayout extends Fragment implements SequeanceLayoutContract.
         try {
             contentTableList = new ArrayList<>();
             contentTableList = AppDatabase.appDatabase.getContentTableDao().getContentData("" + nodeId);
+            loadUI();
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
     @Override
-    public void loadUI(List<ContentTable> list) {
-        GameConstatnts.gameList = list;
+    @UiThread
+    public void loadUI() {
+        GameConstatnts.gameList = contentTableList;
         SequenceGameAdapter sequenceGameAdapter = new SequenceGameAdapter(getActivity(), contentTableList);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
         recyclerView.setAdapter(sequenceGameAdapter);
@@ -71,12 +76,7 @@ public class SequenceLayout extends Fragment implements SequeanceLayoutContract.
 
     @Click(R.id.playFromStart)
     public void playFromStartClick() {
-        Bundle bundle = GameConstatnts.findGameData("108");
-        if (bundle != null) {
-            FC_Utility.showFragment(getActivity(), new McqFillInTheBlanksFragment(), R.id.RL_CPA,
-                    bundle, McqFillInTheBlanksFragment.class.getSimpleName());
-        } else {
-            Toast.makeText(getActivity(), "resource not found", Toast.LENGTH_SHORT).show();
-        }
+        currentGameAdapterposition=-1;
+        GameConstatnts.playGameNext(getActivity());
     }
 }

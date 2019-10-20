@@ -333,14 +333,16 @@ public class McqFillInTheBlanksFragment extends Fragment {
 
     @OnClick(R.id.submitBtn)
     public void onsubmitBtnClick() {
-        selectedFive.toString();
+        // selectedFive.toString();
         //   Log.d("tt", "aa");
-        addLearntWords(selectedFive);
-        Bundle bundle = GameConstatnts.findGameData("110");
+        if (selectedFive != null)
+            addLearntWords(selectedFive);
+        GameConstatnts.playGameNext(getActivity());
+        /*Bundle bundle = GameConstatnts.findGameData("110");
         if (bundle != null) {
             FC_Utility.showFragment(getActivity(), new FillInTheBlanksFragment(), R.id.RL_CPA,
                     bundle, FillInTheBlanksFragment.class.getSimpleName());
-        }
+        }*/
 
     }
 

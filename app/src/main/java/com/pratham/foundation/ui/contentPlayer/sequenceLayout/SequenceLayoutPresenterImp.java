@@ -26,13 +26,13 @@ public class SequenceLayoutPresenterImp implements SequeanceLayoutContract.Seque
 
     @Override
     public void getData() {
-        //get data
+      /*  //get data
         String text = FC_Utility.loadJSONFromAsset(context, "contentPlayer.json");
         Gson gson = new Gson();
         Type type = new TypeToken<List<ContentTable>>() {
         }.getType();
-        gamesList = gson.fromJson(text, type);
-        view.loadUI(gamesList);
+        gamesList = gson.fromJson(text, type);*/
+       // view.loadUI();
     }
 
 

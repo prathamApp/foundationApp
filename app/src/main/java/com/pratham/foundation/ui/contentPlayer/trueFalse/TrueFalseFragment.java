@@ -79,7 +79,7 @@ public class TrueFalseFragment extends Fragment {
     private List<ScienceQuestion> dataList;
     private List<ScienceQuestion> selectedFive;
     private List<String> correctWordList, wrongWordList;
-    private boolean isTest=false;
+    private boolean isTest = false;
 
     public TrueFalseFragment() {
         // Required empty public constructor
@@ -366,12 +366,14 @@ public class TrueFalseFragment extends Fragment {
 
     @OnClick(R.id.submitBtn)
     public void onsubmitBtnClick() {
-        addLearntWords(selectedFive);
-        Bundle bundle = GameConstatnts.findGameData("106");
+        if (selectedFive != null)
+            addLearntWords(selectedFive);
+        GameConstatnts.playGameNext(getActivity());
+        /*Bundle bundle = GameConstatnts.findGameData("106");
         if (bundle != null) {
             FC_Utility.showFragment(getActivity(), new ReadingFragment(), R.id.RL_CPA,
                     bundle, ReadingFragment.class.getSimpleName());
-        }
+        }*/
 
     }
 
@@ -389,12 +391,12 @@ public class TrueFalseFragment extends Fragment {
                     keyWords.setKeyWord(key);
                     keyWords.setWordType("word");
                     appDatabase.getKeyWordDao().insert(keyWords);
-                    correctWordList.add("\n\n"+selectedAnsList.get(i).getQname());
+                    correctWordList.add("\n\n" + selectedAnsList.get(i).getQname());
                     addScore(selectedAnsList.get(i).getQid(), GameConstatnts.TRUE_FALSE, 10, 10, FC_Utility.getCurrentDateTime(), selectedAnsList.get(i).getUserAnswer());
 
                 } else {
                     if (selectedAnsList.get(i).getUserAnswer() != null && !selectedAnsList.get(i).getUserAnswer().trim().equalsIgnoreCase("")) {
-                        wrongWordList.add("\n\n"+selectedAnsList.get(i).getQname());
+                        wrongWordList.add("\n\n" + selectedAnsList.get(i).getQname());
                         addScore(selectedAnsList.get(i).getQid(), GameConstatnts.TRUE_FALSE, 0, 10, FC_Utility.getCurrentDateTime(), selectedAnsList.get(i).getUserAnswer());
                     }
                 }
@@ -464,7 +466,6 @@ public class TrueFalseFragment extends Fragment {
         wrong_keywords.setText(wrongWord.toString().substring(1, wrongWord.toString().length() - 1));
         correct_keywords.setMovementMethod(new ScrollingMovementMethod());
         wrong_keywords.setMovementMethod(new ScrollingMovementMethod());
-
 
 
         dia_btn_yellow.setText("OK");

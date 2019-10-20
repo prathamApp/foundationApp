@@ -27,6 +27,7 @@ import com.pratham.foundation.ui.contentPlayer.paragraph_writing.ParagraphWritin
 import com.pratham.foundation.ui.contentPlayer.pictionary.pictionaryFragment;
 import com.pratham.foundation.ui.contentPlayer.reading.ReadingFragment;
 import com.pratham.foundation.ui.contentPlayer.story_reading.StoryReadingFragment;
+import com.pratham.foundation.ui.contentPlayer.story_reading.StoryReadingFragment_;
 import com.pratham.foundation.ui.contentPlayer.trueFalse.TrueFalseFragment;
 import com.pratham.foundation.utility.FC_Constants;
 import com.pratham.foundation.utility.FC_Utility;
@@ -58,6 +59,7 @@ public class SequenceGameAdapter extends RecyclerView.Adapter<SequenceGameAdapte
         myViewHolder.play.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                GameConstatnts.currentGameAdapterposition=myViewHolder.getAdapterPosition();
                 ContentTable contentTable1 = gamesList.get(myViewHolder.getAdapterPosition());
                 Bundle bundle = new Bundle();
                 bundle.putString("contentPath", contentTable1.getResourcePath());
@@ -65,54 +67,7 @@ public class SequenceGameAdapter extends RecyclerView.Adapter<SequenceGameAdapte
                 bundle.putString("resId", contentTable1.getResourceId());
                 bundle.putString("contentName", contentTable1.getNodeTitle());
                 bundle.putBoolean("onSdCard", true);
-                /*switch (contentTable1.getResourceId()) {
-                    case "101":
-                        FC_Utility.showFragment((Activity) context, new FactRetrieval_(), R.id.RL_CPA,
-                                bundle, FactRetrieval_.class.getSimpleName());
-                        break;
-                    case "102":
-                        FC_Utility.showFragment((Activity) context, new KeywordsIdentificationFragment_(), R.id.RL_CPA,
-                                bundle, KeywordsIdentificationFragment_.class.getSimpleName());
-                        break;
 
-                    case "103":
-                        FC_Utility.showFragment((Activity) context, new KeywordMappingFragment_(), R.id.RL_CPA,
-                                bundle, KeywordMappingFragment_.class.getSimpleName());
-                        break;
-                    case "104":
-                        FC_Utility.showFragment((Activity) context, new ParagraphWritingFragment_(), R.id.RL_CPA,
-                                bundle, ParagraphWritingFragment_.class.getSimpleName());
-                        break;
-                    case "105":
-                        FC_Utility.showFragment((Activity) context, new ListeningAndWritting_(), R.id.RL_CPA,
-                                bundle, ListeningAndWritting_.class.getSimpleName());
-                        break;
-                    case "106":
-                        FC_Utility.showFragment((Activity) context, new ReadingFragment(), R.id.RL_CPA,
-                                bundle, ReadingFragment.class.getSimpleName());
-                        break;
-                    case "108":
-                        FC_Utility.showFragment((Activity) context, new McqFillInTheBlanksFragment(), R.id.RL_CPA,
-                                bundle, McqFillInTheBlanksFragment.class.getSimpleName());
-                        break;
-                    case "109":
-                        FC_Utility.showFragment((Activity) context, new TrueFalseFragment(), R.id.RL_CPA,
-                                bundle, TrueFalseFragment.class.getSimpleName());
-                        break;
-                    case "110":
-                        FC_Utility.showFragment((Activity) context, new FillInTheBlanksFragment(), R.id.RL_CPA,
-                                bundle, FillInTheBlanksFragment.class.getSimpleName());
-                        break;
-                    case "111":
-                        FC_Utility.showFragment((Activity) context, new pictionaryFragment(), R.id.RL_CPA,
-                                bundle, pictionaryFragment.class.getSimpleName());
-                        break;
-                    case "112":
-                        FC_Utility.showFragment((Activity) context, new Fact_Retrieval_Fragment_(), R.id.RL_CPA,
-                                bundle, Fact_Retrieval_Fragment.class.getSimpleName());
-                        break;
-
-                }*/
                 switch (contentTable1.getResourceType()) {
                     case GameConstatnts.FACTRETRIEVAL:
                         FC_Utility.showFragment((Activity) context, new FactRetrieval_(), R.id.RL_CPA,
@@ -131,7 +86,7 @@ public class SequenceGameAdapter extends RecyclerView.Adapter<SequenceGameAdapte
                         FC_Utility.showFragment((Activity) context, new ParagraphWritingFragment_(), R.id.RL_CPA,
                                 bundle, ParagraphWritingFragment_.class.getSimpleName());
                         break;
-                    case "105":
+                    case GameConstatnts.LISTNING_AND_WRITTING:
                         FC_Utility.showFragment((Activity) context, new ListeningAndWritting_(), R.id.RL_CPA,
                                 bundle, ListeningAndWritting_.class.getSimpleName());
                         break;
@@ -157,11 +112,11 @@ public class SequenceGameAdapter extends RecyclerView.Adapter<SequenceGameAdapte
                         break;
                     case "112":
                         FC_Utility.showFragment((Activity) context, new Fact_Retrieval_Fragment_(), R.id.RL_CPA,
-                                bundle, Fact_Retrieval_Fragment.class.getSimpleName());
+                                bundle, Fact_Retrieval_Fragment_.class.getSimpleName());
                         break;
                     case GameConstatnts.PICTIONARYFRAGMENT:
-                        FC_Utility.showFragment((Activity) context, new StoryReadingFragment(), R.id.RL_CPA,
-                                bundle, StoryReadingFragment.class.getSimpleName());
+                        FC_Utility.showFragment((Activity) context, new StoryReadingFragment_(), R.id.RL_CPA,
+                                bundle, StoryReadingFragment_.class.getSimpleName());
                         break;
                 }
             }

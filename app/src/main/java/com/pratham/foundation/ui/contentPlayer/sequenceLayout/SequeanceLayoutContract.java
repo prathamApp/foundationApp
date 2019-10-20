@@ -6,7 +6,7 @@ import java.util.List;
 
 public interface SequeanceLayoutContract {
     public interface SequenceLayoutView {
-        void loadUI(List<ContentTable> list);
+        void loadUI();
     }
 
     public interface SequenceLayoutPresenter {

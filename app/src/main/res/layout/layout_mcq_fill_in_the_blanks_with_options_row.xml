@@ -81,6 +81,7 @@
                 android:id="@+id/submitBtn"
                 android:layout_width="100dp"
                 android:layout_height="50dp"
+                android:visibility="invisible"
                 android:textColor="@color/white"
                 android:background="@drawable/green_button"
                 android:layout_centerInParent="true"

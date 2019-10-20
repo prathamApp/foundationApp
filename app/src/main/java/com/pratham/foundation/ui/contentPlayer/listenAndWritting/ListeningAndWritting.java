@@ -20,6 +20,7 @@ import android.widget.RadioGroup;
 
 import com.pratham.foundation.ApplicationClass;
 import com.pratham.foundation.R;
+import com.pratham.foundation.ui.contentPlayer.GameConstatnts;
 import com.pratham.foundation.utility.MediaPlayerUtil;
 
 import org.androidannotations.annotations.AfterViews;
@@ -181,5 +182,6 @@ public class ListeningAndWritting extends Fragment implements ListeningAndWritti
             presenter.addLearntWords(listenAndWrittingModal, imageName);
             imageName = null;
         }
+        GameConstatnts.playGameNext(getActivity());
     }
 }

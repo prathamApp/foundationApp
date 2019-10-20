@@ -4,6 +4,7 @@ import android.app.Dialog;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
+import android.view.View;
 import android.view.Window;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -14,6 +15,7 @@ import com.pratham.foundation.R;
 import com.pratham.foundation.customView.SansButton;
 import com.pratham.foundation.customView.SansTextView;
 import com.pratham.foundation.modalclasses.ScienceQuestionChoice;
+import com.pratham.foundation.ui.contentPlayer.GameConstatnts;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Bean;
@@ -40,6 +42,14 @@ public class Fact_Retrieval_Fragment extends Fragment implements Fact_Retrieval_
     RelativeLayout keyword_selected;
     @ViewById(R.id.quetion)
     TextView quetion;
+
+
+    @ViewById(R.id.previous)
+    SansButton previous;
+    @ViewById(R.id.submitBtn)
+    TextView submitBtn;
+    @ViewById(R.id.next)
+    TextView next;
 
     RelativeLayout.LayoutParams viewParam;
     //  private HashMap<String, List<Integer>> positionMap;
@@ -112,7 +122,7 @@ public class Fact_Retrieval_Fragment extends Fragment implements Fact_Retrieval_
     @UiThread
     public void showQuetion() {
         try {
-            for(int i=0;i<paraghaph.getChildCount();i++){
+            for (int i = 0; i < paraghaph.getChildCount(); i++) {
                 paraghaph.getChildAt(i).setBackgroundColor(ContextCompat.getColor(getActivity(), R.color.white));
             }
             if (selectedQuetion.get(index).getUserAns() != null && !selectedQuetion.get(index).getUserAns().isEmpty()) {
@@ -122,7 +132,18 @@ public class Fact_Retrieval_Fragment extends Fragment implements Fact_Retrieval_
                 }
             }
             quetion.setText(selectedQuetion.get(index).getSubQues());
-
+            if (index == 0) {
+                previous.setVisibility(View.INVISIBLE);
+            } else {
+                previous.setVisibility(View.VISIBLE);
+            }
+            if (index == (selectedQuetion.size() - 1)) {
+                submitBtn.setVisibility(View.VISIBLE);
+                next.setVisibility(View.INVISIBLE);
+            } else {
+                submitBtn.setVisibility(View.INVISIBLE);
+                next.setVisibility(View.VISIBLE);
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -161,7 +182,9 @@ public class Fact_Retrieval_Fragment extends Fragment implements Fact_Retrieval_
 
     @Click(R.id.submitBtn)
     public void submitClicked() {
-        presenter.addLearntWords(selectedQuetion);
+        if (selectedQuetion != null)
+            presenter.addLearntWords(selectedQuetion);
+        GameConstatnts.playGameNext(getActivity());
        /* Bundle bundle = GameConstatnts.findGameData("103");
         if (bundle != null) {
             FC_Utility.showFragment(getActivity(), new KeywordMappingFragment_(), R.id.RL_CPA,

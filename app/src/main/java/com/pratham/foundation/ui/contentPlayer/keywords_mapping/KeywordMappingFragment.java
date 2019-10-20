@@ -125,11 +125,12 @@ public class KeywordMappingFragment extends Fragment implements KeywordMappingCo
             List selectedoptionList = keywordOptionAdapter.getSelectedOptionList();
             presenter.addLearntWords(keywordmapping, selectedoptionList);
         }
-        Bundle bundle = GameConstatnts.findGameData("104");
+        GameConstatnts.playGameNext(getActivity());
+       /* Bundle bundle = GameConstatnts.findGameData("104");
         if (bundle != null) {
             FC_Utility.showFragment(getActivity(), new ParagraphWritingFragment_(), R.id.RL_CPA,
                     bundle, ParagraphWritingFragment_.class.getSimpleName());
 
-        }
+        }*/
     }
 }

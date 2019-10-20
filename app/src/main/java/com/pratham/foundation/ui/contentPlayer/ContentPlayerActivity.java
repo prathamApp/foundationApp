@@ -5,6 +5,8 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.view.View;
 import android.view.Window;
 import android.widget.Button;
@@ -22,7 +24,7 @@ import static com.pratham.foundation.utility.FC_Constants.dialog_btn_cancel;
 
 
 @EActivity(R.layout.activity_content_player)
-public class ContentPlayerActivity extends BaseActivity{
+public class ContentPlayerActivity extends BaseActivity {
 
     private String nodeID;
 
@@ -64,9 +66,9 @@ public class ContentPlayerActivity extends BaseActivity{
         Button dia_btn_green = dialog.findViewById(R.id.dia_btn_green);
         Button dia_btn_red = dialog.findViewById(R.id.dia_btn_red);
 
-        dia_btn_green.setText ("Yes");
-        dia_btn_red.setText   ("No");
-        dia_btn_yellow.setText(""+dialog_btn_cancel);
+        dia_btn_green.setText("Yes");
+        dia_btn_red.setText("No");
+        dia_btn_yellow.setText("" + dialog_btn_cancel);
         dia_title.setText("Exit the game?");
         dialog.show();
 
@@ -82,8 +84,18 @@ public class ContentPlayerActivity extends BaseActivity{
 //                    returnIntent.putExtra("sMarks", sMarks);
 //                    setResult(Activity.RESULT_OK, returnIntent);
 //                }
-                finish();
+                //finish();
+
                 dialog.dismiss();
+
+                //if backpress when game list is shown then finish activity othewise popbackstack all fragmets Exclusive (sequence fdragment)
+                Fragment fragment = getSupportFragmentManager().findFragmentByTag(SequenceLayout_.class.getSimpleName());
+                if (fragment != null && fragment.isVisible()) {
+                    finish();
+                } else {
+                    getSupportFragmentManager().popBackStack(SequenceLayout_.class.getSimpleName(), 0);
+                }
+
             }
         });
 

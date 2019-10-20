@@ -8,18 +8,17 @@ import android.text.style.BackgroundColorSpan;
 import android.view.ActionMode;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.view.Window;
 import android.widget.TextView;
 
 import com.pratham.foundation.ApplicationClass;
 import com.pratham.foundation.R;
 import com.pratham.foundation.customView.SansButton;
-import com.pratham.foundation.database.domain.QuetionAns;
 import com.pratham.foundation.modalclasses.ScienceQuestionChoice;
 import com.pratham.foundation.ui.contentPlayer.GameConstatnts;
 import com.pratham.foundation.ui.contentPlayer.fact_retrival_selection.ScienceQuestion;
 import com.pratham.foundation.ui.contentPlayer.keywords_identification.KeywordsIdentificationFragment_;
-import com.pratham.foundation.ui.contentPlayer.keywords_identification.QuestionModel;
 import com.pratham.foundation.utility.FC_Utility;
 
 import org.androidannotations.annotations.AfterViews;
@@ -41,6 +40,13 @@ public class FactRetrieval extends Fragment implements FactRetrievalContract.Fac
     TextView paragraph;
     @ViewById(R.id.quetion)
     TextView quetion;
+
+    @ViewById(R.id.previous)
+    SansButton previous;
+    @ViewById(R.id.submitBtn)
+    TextView submitBtn;
+    @ViewById(R.id.next)
+    TextView next;
 
     private String answer, para;
     private String contentPath, contentTitle, StudentID, resId, readingContentPath;
@@ -167,6 +173,19 @@ public class FactRetrieval extends Fragment implements FactRetrievalContract.Fac
             }
             quetion.setText(selectedQuetion.get(index).getSubQues());
             paragraph.setText(str);
+            if (index == 0) {
+                previous.setVisibility(View.INVISIBLE);
+            } else {
+                previous.setVisibility(View.VISIBLE);
+            }
+            if (index == (selectedQuetion.size() - 1)) {
+                submitBtn.setVisibility(View.VISIBLE);
+                next.setVisibility(View.INVISIBLE);
+            } else {
+                submitBtn.setVisibility(View.INVISIBLE);
+                next.setVisibility(View.VISIBLE);
+            }
+
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -195,11 +214,14 @@ public class FactRetrieval extends Fragment implements FactRetrievalContract.Fac
         if (selectedQuetion != null)
             presenter.addLearntWords(selectedQuetion);
 
-        Bundle bundle = GameConstatnts.findGameData(resId);
+        GameConstatnts.playGameNext(getActivity());
+
+
+        /* Bundle bundle = GameConstatnts.findGameData(resId);
         if (bundle != null) {
             FC_Utility.showFragment(getActivity(), new KeywordsIdentificationFragment_(), R.id.RL_CPA,
                     bundle, KeywordsIdentificationFragment_.class.getSimpleName());
-        }
+        }*/
 
     }
 }

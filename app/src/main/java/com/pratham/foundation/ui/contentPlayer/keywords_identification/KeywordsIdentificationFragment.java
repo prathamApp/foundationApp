@@ -214,11 +214,8 @@ public class KeywordsIdentificationFragment extends Fragment implements Keywords
         if (selectedKeywords != null)
             presenter.addLearntWords(selectedKeywords);
 
-        Bundle bundle = GameConstatnts.findGameData("103");
-        if (bundle != null) {
-            FC_Utility.showFragment(getActivity(), new KeywordMappingFragment_(), R.id.RL_CPA,
-                    bundle, KeywordMappingFragment_.class.getSimpleName());
-        }
+        GameConstatnts.playGameNext(getActivity());
+
     }
 
     @Click(R.id.show_me_keywords)
