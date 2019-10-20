@@ -287,7 +287,6 @@ public class PushDataToServer {
         }
         return requestString;
     }
-
     private JSONArray fillSessionData(List<Session> sessionList) {
         JSONArray newSessionsData = new JSONArray();
         JSONObject _sessionObj;
