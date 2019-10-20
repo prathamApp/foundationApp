@@ -86,6 +86,7 @@ public class SequenceGameAdapter extends RecyclerView.Adapter<SequenceGameAdapte
                         FC_Utility.showFragment((Activity) context, new ParagraphWritingFragment_(), R.id.RL_CPA,
                                 bundle, ParagraphWritingFragment_.class.getSimpleName());
                         break;
+
                     case GameConstatnts.LISTNING_AND_WRITTING:
                         FC_Utility.showFragment((Activity) context, new ListeningAndWritting_(), R.id.RL_CPA,
                                 bundle, ListeningAndWritting_.class.getSimpleName());
