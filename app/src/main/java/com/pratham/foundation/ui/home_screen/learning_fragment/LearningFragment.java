@@ -53,6 +53,7 @@ import java.util.List;
 import java.util.Objects;
 
 import static com.pratham.foundation.ui.home_screen.HomeActivity.header_rl;
+import static com.pratham.foundation.ui.home_screen.HomeActivity.tv_progress;
 import static com.pratham.foundation.utility.FC_Utility.dpToPx;
 import static com.pratham.foundation.utility.SplashSupportActivity.ButtonClickSound;
 
@@ -268,6 +269,7 @@ public class LearningFragment extends Fragment implements LearningContract.Learn
 
     @Override
     public void setLevelprogress(int percent) {
+        tv_progress.setText(percent+"%");
 //        level_progress.setCurProgress(percent);
     }
 

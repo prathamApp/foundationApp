@@ -60,6 +60,8 @@ public class HomeActivity extends BaseActivity{
     ViewPager viewpager;
     @ViewById(R.id.tv_studentName)
     TextView tv_studentName;
+    @ViewById(R.id.tv_progress)
+    public static TextView tv_progress;
     @ViewById(R.id.tabs)
     TabLayout tabLayout;
     @ViewById(R.id.header_rl)
@@ -79,16 +81,7 @@ public class HomeActivity extends BaseActivity{
     Drawable homeHeader3;
     @DrawableRes(R.drawable.home_header_4_bg)
     Drawable homeHeader4;
-
-    @DrawableRes(R.drawable.home_header_1_bg)
-    Drawable homeTab1;
-    @DrawableRes(R.drawable.home_header_2_bg)
-    Drawable homeTab2;
-    @DrawableRes(R.drawable.home_header_3_bg)
-    Drawable homeTab3;
-    @DrawableRes(R.drawable.home_header_4_bg)
-    Drawable homeTab4;
-public static boolean languageChanged = false;
+    public static boolean languageChanged = false;
 
     @AfterViews
     public void initialize() {
@@ -97,6 +90,7 @@ public static boolean languageChanged = false;
         sub_nodeId = getIntent().getStringExtra("nodeId");
         FC_Constants.currentSelectedLanguage = FastSave.getInstance().getString(FC_Constants.LANGUAGE, "");
         setupViewPager(viewpager);
+        tv_progress.setText("0%");
         tabLayout.setupWithViewPager(viewpager);
         setupTabIcons();
 /*        IconForm iconForm = new IconForm.Builder(this)
@@ -158,6 +152,7 @@ public static boolean languageChanged = false;
         else
             profileName = AppDatabase.getDatabaseInstance(this).getGroupsDao().getGroupNameByGrpID(FC_Constants.currentStudentID);
 
+        profileName = profileName.split(" ")[0];
         setProfileName(profileName);
     }
 
@@ -208,19 +203,19 @@ public static boolean languageChanged = false;
         switch (currentLevelNo) {
             case 0:
                 header_rl.setBackground(homeHeader1);
-                tabLayout.setBackground(homeTab1);
+                tabLayout.setBackgroundColor(getResources().getColor(R.color.level_1_color));
                 break;
             case 1:
                 header_rl.setBackground(homeHeader2);
-                tabLayout.setBackground(homeTab2);
+                tabLayout.setBackgroundColor(getResources().getColor(R.color.level_2_color));
                 break;
             case 2:
                 header_rl.setBackground(homeHeader3);
-                tabLayout.setBackground(homeTab3);
+                tabLayout.setBackgroundColor(getResources().getColor(R.color.level_3_color));
                 break;
             case 3:
                 header_rl.setBackground(homeHeader4);
-                tabLayout.setBackground(homeTab4);
+                tabLayout.setBackgroundColor(getResources().getColor(R.color.level_4_color));
                 break;
         }
     }
@@ -236,10 +231,10 @@ public static boolean languageChanged = false;
         tabTwo.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.ic_practice, 0, 0);
         tabLayout.getTabAt(1).setCustomView(tabTwo);
 
-        TextView tabThree = (TextView) LayoutInflater.from(this).inflate(R.layout.custom_tab_text, null);
+/*        TextView tabThree = (TextView) LayoutInflater.from(this).inflate(R.layout.custom_tab_text, null);
         tabThree.setText("Test");
         tabThree.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.ic_test, 0, 0);
-        tabLayout.getTabAt(2).setCustomView(tabThree);
+        tabLayout.getTabAt(2).setCustomView(tabThree);*/
 
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
@@ -355,7 +350,7 @@ public static boolean languageChanged = false;
         viewpager.setOffscreenPageLimit(3);
         adapter.addFrag(new LearningFragment_(), "Learning");
         adapter.addFrag(new PracticeFragment_(), "Practice");
-        adapter.addFrag(new TestFragment_(), "Test");
+//        adapter.addFrag(new TestFragment_(), "Test");
         viewpager.setAdapter(adapter);
     }
 
