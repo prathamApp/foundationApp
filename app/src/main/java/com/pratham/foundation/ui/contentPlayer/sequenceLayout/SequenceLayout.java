@@ -1,5 +1,6 @@
 package com.pratham.foundation.ui.contentPlayer.sequenceLayout;
 
+import android.app.Activity;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
@@ -11,6 +12,7 @@ import com.pratham.foundation.database.AppDatabase;
 import com.pratham.foundation.database.domain.ContentTable;
 import com.pratham.foundation.ui.contentPlayer.GameConstatnts;
 import com.pratham.foundation.ui.contentPlayer.multipleChoice.McqFillInTheBlanksFragment;
+import com.pratham.foundation.ui.contentPlayer.reading.ReadingFragment;
 import com.pratham.foundation.utility.FC_Utility;
 
 import org.androidannotations.annotations.AfterViews;
@@ -76,6 +78,10 @@ public class SequenceLayout extends Fragment implements SequeanceLayoutContract.
 
     @Click(R.id.playFromStart)
     public void playFromStartClick() {
+       /* Bundle bundle = new Bundle();
+        bundle.putString("dd","");
+        FC_Utility.showFragment((Activity) getActivity(), new McqFillInTheBlanksFragment(), R.id.RL_CPA,
+                bundle, McqFillInTheBlanksFragment.class.getSimpleName());*/
         currentGameAdapterposition=-1;
         GameConstatnts.playGameNext(getActivity());
     }
