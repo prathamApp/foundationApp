@@ -154,7 +154,6 @@ public class FC_Constants {
 //    public static final String STUDENT_PROGRESS_API= "http://api.pradigi.org/api/cosv2/GetProgress?id=";
 //    public static final String LEARNT_WORDS_API= "http://api.pradigi.org/api/cosv2/GetKeyWords?id=";
 
-
     public static final String GROUPID = "groupid";
     public static final String GROUPID1 = "group1";
     public static final String GROUPID2 = "group2";
