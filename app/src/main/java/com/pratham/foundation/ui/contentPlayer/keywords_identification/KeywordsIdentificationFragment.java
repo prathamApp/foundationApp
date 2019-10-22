@@ -152,7 +152,7 @@ public class KeywordsIdentificationFragment extends Fragment implements Keywords
 
                     SansTextView textViewkey = new SansTextView(getActivity());
                     textViewkey.setText(paraText);
-                    textViewkey.setTextColor(ContextCompat.getColor(getActivity(), R.color.colorPrimary));
+                    textViewkey.setTextColor(ContextCompat.getColor(getActivity(), R.color.text_color));
                     textViewkey.setId(pos);
                     textViewkey.setPadding(10, 5, 5, 5);
                     textViewkey.setTextSize(25);
@@ -185,7 +185,7 @@ public class KeywordsIdentificationFragment extends Fragment implements Keywords
                                 keywords.removeView(view);
 
                             } else {
-                                Toast.makeText(getActivity(), "Somthing went wrong", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(getActivity(), "Something went wrong", Toast.LENGTH_SHORT).show();
                             }
                         }
                     });
