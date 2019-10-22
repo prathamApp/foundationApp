@@ -268,9 +268,7 @@ public class BottomStudentsFragment extends BottomSheetDialogFragment
     @Override
     public void gotoNext() {
         dismissProgressDialog();
-        Intent intent = new Intent(getActivity(), SelectSubject_.class);
-        intent.putExtra("studName", currentStudentName);
-        startActivity(intent);
+        startActivity(new Intent(getActivity(), SelectSubject_.class));
 /*        try {
             if (bgMusic != null && bgMusic.isPlaying()) {
                 bgMusic.stop();

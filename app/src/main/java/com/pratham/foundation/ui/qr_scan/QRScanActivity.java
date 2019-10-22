@@ -52,6 +52,7 @@ import java.util.UUID;
 import me.dm7.barcodescanner.zxing.ZXingScannerView;
 
 import static com.pratham.foundation.database.AppDatabase.appDatabase;
+import static com.pratham.foundation.utility.FC_Constants.currentStudentName;
 import static com.pratham.foundation.utility.SplashSupportActivity.ButtonClickSound;
 
 
@@ -310,6 +311,7 @@ public class QRScanActivity extends BaseActivity implements
     public void gotoGame() {
         mScannerView.stopCamera();
         enterStudentData(stdId, stdFirstName);
+        currentStudentName = stdFirstName;
         startSession();
         FC_Constants.currentStudentID = stdId;
         ButtonClickSound.start();

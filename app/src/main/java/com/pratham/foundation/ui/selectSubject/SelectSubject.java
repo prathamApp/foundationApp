@@ -23,6 +23,7 @@ import org.androidannotations.annotations.ViewById;
 
 import java.util.List;
 
+import static com.pratham.foundation.utility.FC_Constants.currentStudentName;
 import static com.pratham.foundation.utility.FC_Utility.dpToPx;
 
 @EActivity(R.layout.activity_select_subject)
@@ -44,11 +45,15 @@ public class SelectSubject extends BaseActivity implements
     protected void initiate() {
         // super.onCreate(savedInstanceState);
         //setContentView();
-        studName = getIntent().getStringExtra("studName");
         context = SelectSubject.this;
         Configuration config = getResources().getConfiguration();
         FC_Constants.TAB_LAYOUT = config.smallestScreenWidthDp > 425;
         List<ContentTable> subjectList = presenter.getSubjectList();
+
+        if(FC_Constants.GROUP_LOGIN)
+            studName = currentStudentName;
+        else
+            studName = currentStudentName.split(" ")[0];
 
         name.setText("Welcome "+studName+".");
 

@@ -140,29 +140,11 @@ public class LearningPresenter implements LearningContract.LearningPresenter, AP
 //        String rootID = FC_Utility.getRootNode(FC_Constants.currentSelectedLanguage);
         String rootID = sub_nodeId;
         botID = AppDatabase.appDatabase.getContentTableDao().getContentDataByTitle("" + rootID, cosSection);
-        if (botID != null && !FC_Utility.isDataConnectionAvailable(mContext))
+//        if (botID != null && !FC_Utility.isDataConnectionAvailable(mContext))
             getLevelDataForList(currentLevelNo, botID);
-        else
-            getRootData(rootID);
+//        else
+//            getRootData(rootID);
 
-//        learningView.setBotNodeId(botID);
-/*      if (FC_Utility.isDataConnectionAvailable(mContext)) {
-            api_content.getAPIContent(FC_Constants.INTERNET_DOWNLOAD, FC_Constants.INTERNET_DOWNLOAD_NEW_API, rootID);
-        } else {
-            if (contentParentList.size() == 0 && !FC_Utility.isDataConnectionAvailable(mContext)) {
-                learningView.showNoDataDownloadedDialog();
-            } else {
-                learningView.addContentToViewList(contentParentList);
-                learningView.notifyAdapter();
-            }
-        }*/
-
-/*      if (FC_Constants.currentSelectedLanguage.equalsIgnoreCase("Hindi"))
-            botID = AppDatabase.appDatabase.getContentTableDao().getBottomNavigationId("English", cosSection);
-        else
-            botID = AppDatabase.appDatabase.getContentTableDao().getBottomNavigationId(FC_Constants.currentSelectedLanguage, cosSection);
-        learningView.setBotNodeId(botID);
-        getLevelDataForList(currentLevelNo, botID);*/
     }
 
     @Background
@@ -175,9 +157,9 @@ public class LearningPresenter implements LearningContract.LearningPresenter, AP
     @Override
     public void getLevelDataForList(int currentLevelNo, String bottomNavNodeId) {
         rootList = AppDatabase.appDatabase.getContentTableDao().getContentData("" + bottomNavNodeId);
-        if (FC_Utility.isDataConnectionAvailable(mContext))
-            getLevelDataFromApi(currentLevelNo, bottomNavNodeId);
-        else
+//        if (FC_Utility.isDataConnectionAvailable(mContext))
+//            getLevelDataFromApi(currentLevelNo, bottomNavNodeId);
+//        else
             learningView.setSelectedLevel(rootList);
     }
 
@@ -412,16 +394,16 @@ public class LearningPresenter implements LearningContract.LearningPresenter, AP
         } catch (Exception e) {
             e.printStackTrace();
         }
-        if (FC_Utility.isDataConnectionAvailable(mContext)) {
-            api_content.getAPIContent(FC_Constants.INTERNET_DOWNLOAD, FC_Constants.INTERNET_DOWNLOAD_NEW_API, nodeIds.get(nodeIds.size() - 1));
-        } else {
+//        if (FC_Utility.isDataConnectionAvailable(mContext)) {
+//            api_content.getAPIContent(FC_Constants.INTERNET_DOWNLOAD, FC_Constants.INTERNET_DOWNLOAD_NEW_API, nodeIds.get(nodeIds.size() - 1));
+//        } else {
             if (contentParentList.size() == 0 && !FC_Utility.isDataConnectionAvailable(mContext)) {
                 learningView.showNoDataDownloadedDialog();
             } else {
                 learningView.addContentToViewList(contentParentList);
                 learningView.notifyAdapter();
             }
-        }
+//        }
     }
 
     public void sortAllList(List<ContentTableNew> contentParentList) {

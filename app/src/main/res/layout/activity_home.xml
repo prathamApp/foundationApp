@@ -43,7 +43,7 @@
 
                 <com.pratham.foundation.customView.SansTextView
                     android:id="@+id/tv_studentName"
-                    android:layout_width="218dp"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
                     android:layout_marginStart="@dimen/_10sdp"

@@ -23,8 +23,9 @@ import okhttp3.OkHttpClient;
 
 public class ApplicationClass extends Application {
 
-    public static String uploadDataUrl = "http://prodigi.openiscool.org/api/cosv2/pushdata";
-    public static final boolean isTablet = false;
+//    public static String uploadDataUrl = "http://prodigi.openiscool.org/api/cosv2/pushdata";
+    public static String uploadDataUrl = "http://devprodigi.openiscool.org/api/Foundation/PushData";
+    public static final boolean isTablet = true;
     public static boolean contentExistOnSD = false, LocationFlg = false;
     public static String contentSDPath = "";
     public static String foundationPath = "";
@@ -48,13 +49,13 @@ public class ApplicationClass extends Application {
         foundationPath = FC_Utility.getInternalPath(this);
         if (foundationPath != null) {
             File mydir = null;
-            mydir = new File(applicationClass.foundationPath + "/.foundation");
+            mydir = new File(applicationClass.foundationPath + "/.FCA");
             if (!mydir.exists())
                 mydir.mkdirs();
-            mydir = new File(applicationClass.foundationPath + "/.foundation/English");
+            mydir = new File(applicationClass.foundationPath + "/.FCA/English");
             if (!mydir.exists())
                 mydir.mkdirs();
-            mydir = new File(applicationClass.foundationPath + "/.foundation/English/Game");
+            mydir = new File(applicationClass.foundationPath + "/.FCA/English/Game");
             if (!mydir.exists())
                 mydir.mkdirs();
         }

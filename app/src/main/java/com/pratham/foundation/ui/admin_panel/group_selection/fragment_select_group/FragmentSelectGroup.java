@@ -30,6 +30,7 @@ import org.androidannotations.annotations.ViewById;
 
 import java.util.ArrayList;
 
+import static com.pratham.foundation.utility.FC_Constants.currentStudentName;
 import static com.pratham.foundation.utility.FC_Utility.dpToPx;
 
 
@@ -137,6 +138,7 @@ public class FragmentSelectGroup extends Fragment implements ContractGroup {
             //todo remove comment
           //  ApplicationClass.bubble_mp.start();
             ArrayList<Student> students = new ArrayList<>();
+            currentStudentName = groupSelected.GroupName;
             students.addAll(AppDatabase.appDatabase.getStudentDao().getGroupwiseStudents(groupSelected.getGroupId()));
             Bundle bundle = new Bundle();
             bundle.putParcelableArrayList(FC_Constants.STUDENT_LIST, students);

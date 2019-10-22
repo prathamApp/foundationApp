@@ -158,7 +158,9 @@ public class HomeActivity extends BaseActivity{
         else
             profileName = AppDatabase.getDatabaseInstance(this).getGroupsDao().getGroupNameByGrpID(FC_Constants.currentStudentID);
 
-        profileName = profileName.split(" ")[0];
+        if(!FC_Constants.GROUP_LOGIN)
+            profileName = profileName.split(" ")[0];
+
         setProfileName(profileName);
     }
 

@@ -251,9 +251,11 @@ public class SplashActivity extends SplashSupportActivity implements SplashContr
 
     @Override
     public void startApp() {
-        if (!FastSave.getInstance().getBoolean(FC_Constants.LANGUAGE_SPLASH_DIALOG, false))
-            showLanguageSelectionDialog();
-        else
+        FC_Constants.currentSelectedLanguage = FC_Constants.HINDI;
+        FastSave.getInstance().saveString(FC_Constants.LANGUAGE, FC_Constants.currentSelectedLanguage);
+//        if (!FastSave.getInstance().getBoolean(FC_Constants.LANGUAGE_SPLASH_DIALOG, false))
+//            showLanguageSelectionDialog();
+//        else
             createDataBase();
     }
 

@@ -75,6 +75,7 @@ public class Student_profile_activity extends BaseActivity implements Student_pr
         student_profile_presenter = new Student_profile_presenterImpl(this);
         displayStudentProfileNameAndImage();
         HomeActivity.languageChanged = false;
+        ib_langChange.setVisibility(View.GONE);
         // student_profile_presenter.calculateStudentProgress();
         loadRecycler();
     }
