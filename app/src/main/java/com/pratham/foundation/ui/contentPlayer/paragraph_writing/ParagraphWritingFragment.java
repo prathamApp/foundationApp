@@ -6,14 +6,12 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
-import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
-import android.support.v4.content.FileProvider;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -28,9 +26,6 @@ import com.pratham.foundation.ApplicationClass;
 import com.pratham.foundation.R;
 import com.pratham.foundation.ui.contentPlayer.GameConstatnts;
 import com.pratham.foundation.ui.contentPlayer.fact_retrival_selection.ScienceQuestion;
-import com.pratham.foundation.ui.contentPlayer.keywords_identification.QuestionModel;
-import com.pratham.foundation.ui.contentPlayer.listenAndWritting.ListeningAndWritting_;
-import com.pratham.foundation.utility.FC_Utility;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Bean;
@@ -71,7 +66,7 @@ public class ParagraphWritingFragment extends Fragment
     private RecyclerView.SmoothScroller smoothScroller;
     private static final int CAMERA_REQUEST = 1;
     private String imageName = null, imagePath;
-    private String contentPath, contentTitle, StudentID, resId,readingContentPath;
+    private String contentPath, contentTitle, StudentID, resId, readingContentPath;
     private boolean onSdCard;
     private ScienceQuestion questionModel;
 
@@ -89,7 +84,7 @@ public class ParagraphWritingFragment extends Fragment
             else
                 readingContentPath = ApplicationClass.foundationPath + "/.FCA/English/Game/" + contentPath + "/";
         }
-        presenter.setView(ParagraphWritingFragment.this, resId,readingContentPath);
+        presenter.setView(ParagraphWritingFragment.this, resId, readingContentPath);
         presenter.getData();
     }
 

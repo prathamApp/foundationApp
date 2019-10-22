@@ -111,11 +111,11 @@ public class McqFillInTheBlanksFragment extends Fragment {
             resId = getArguments().getString("resId");
             contentTitle = getArguments().getString("contentName");
             onSdCard = getArguments().getBoolean("onSdCard", false);
-            contentPath = "multiple_choice_que";
+           /* contentPath = "multiple_choice_que";
             resId = "1212";
             StudentID = FC_Constants.currentStudentID;
             contentTitle = "b";
-            onSdCard = true;
+            onSdCard = true;*/
             if (onSdCard)
                 readingContentPath = ApplicationClass.contentSDPath + "/.FCA/English/Game/" + contentPath + "/";
             else

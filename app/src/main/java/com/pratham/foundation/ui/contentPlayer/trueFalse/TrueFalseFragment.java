@@ -108,6 +108,9 @@ public class TrueFalseFragment extends Fragment {
                 resId = getArguments().getString("resId");
                 contentTitle = getArguments().getString("contentName");
                 onSdCard = getArguments().getBoolean("onSdCard", false);
+
+
+
                 if (onSdCard)
                     readingContentPath = ApplicationClass.contentSDPath + "/.FCA/English/Game/" + contentPath + "/";
                 else

@@ -35,10 +35,10 @@ import com.pratham.foundation.database.BackupDatabase;
 import com.pratham.foundation.database.domain.Assessment;
 import com.pratham.foundation.database.domain.KeyWords;
 import com.pratham.foundation.database.domain.Score;
-import com.pratham.foundation.modalclasses.ScienceQuestion;
 import com.pratham.foundation.services.stt.ContinuousSpeechService;
 import com.pratham.foundation.services.stt.STT_Result;
 import com.pratham.foundation.ui.contentPlayer.GameConstatnts;
+import com.pratham.foundation.ui.contentPlayer.fact_retrival_selection.ScienceQuestion;
 import com.pratham.foundation.ui.contentPlayer.trueFalse.TrueFalseFragment;
 import com.pratham.foundation.utility.FC_Constants;
 import com.pratham.foundation.utility.FC_Utility;
@@ -109,6 +109,14 @@ public class FillInTheBlanksFragment extends Fragment implements STT_Result {
             resId = getArguments().getString("resId");
             contentTitle = getArguments().getString("contentName");
             onSdCard = getArguments().getBoolean("onSdCard", false);
+
+            contentPath = "fill_in_the_blanks";
+            resId = "1212";
+            StudentID = FC_Constants.currentStudentID;
+            contentTitle = "b";
+            onSdCard = true;
+
+
             if (onSdCard)
                 readingContentPath = ApplicationClass.contentSDPath + "/.FCA/English/Game/" + contentPath + "/";
             else
@@ -148,7 +156,7 @@ public class FillInTheBlanksFragment extends Fragment implements STT_Result {
             Collections.shuffle(dataList);
             for (int i = 0; i < dataList.size(); i++) {
                 if (perc < 95) {
-                    if (!checkWord("" + dataList.get(i).getQname()))
+                    if (!checkWord("" + dataList.get(i).getQuestion()))
                         selectedFive.add(dataList.get(i));
                 } else {
                     selectedFive.add(dataList.get(i));
@@ -219,7 +227,7 @@ public class FillInTheBlanksFragment extends Fragment implements STT_Result {
     public void setFillInTheBlanksQuestion() {
 
 
-        question.setText(selectedFive.get(index).getQname());
+        question.setText(selectedFive.get(index).getQuestion());
         etAnswer.setText(selectedFive.get(index).getUserAnswer());
         if (!selectedFive.get(index).getPhotourl().equalsIgnoreCase("")) {
             questionImage.setVisibility(View.VISIBLE);
@@ -425,12 +433,12 @@ public class FillInTheBlanksFragment extends Fragment implements STT_Result {
                     keyWords.setWordType("word");
                     appDatabase.getKeyWordDao().insert(keyWords);
                     correctWordList.add(selectedAnsList.get(i).getUserAnswer());
-                    addScore(selectedAnsList.get(i).getQid(), GameConstatnts.FILL_IN_THE_BLANKS, 10, 10, FC_Utility.getCurrentDateTime(), selectedAnsList.get(i).getUserAnswer());
+                    addScore(GameConstatnts.getInt(selectedAnsList.get(i).getQid()), GameConstatnts.FILL_IN_THE_BLANKS, 10, 10, FC_Utility.getCurrentDateTime(), selectedAnsList.get(i).getUserAnswer());
 
                 } else {
                     if (selectedAnsList.get(i).getUserAnswer() != null && !selectedAnsList.get(i).getUserAnswer().trim().equalsIgnoreCase("")) {
                         wrongWordList.add(selectedAnsList.get(i).getUserAnswer());
-                        addScore(selectedAnsList.get(i).getQid(), GameConstatnts.FILL_IN_THE_BLANKS, 0, 10, FC_Utility.getCurrentDateTime(), selectedAnsList.get(i).getUserAnswer());
+                        addScore(GameConstatnts.getInt(selectedAnsList.get(i).getQid()), GameConstatnts.FILL_IN_THE_BLANKS, 0, 10, FC_Utility.getCurrentDateTime(), selectedAnsList.get(i).getUserAnswer());
                     }
                 }
             }
@@ -518,12 +526,14 @@ public class FillInTheBlanksFragment extends Fragment implements STT_Result {
 
     @OnClick(R.id.submitBtn)
     public void onsubmitBtnClick() {
-        addLearntWords(selectedFive);
-        Bundle bundle = GameConstatnts.findGameData("109");
+        if (selectedFive != null)
+            addLearntWords(selectedFive);
+        GameConstatnts.playGameNext(getActivity());
+       /* Bundle bundle = GameConstatnts.findGameData("109");
         if (bundle != null) {
             FC_Utility.showFragment(getActivity(), new TrueFalseFragment(), R.id.RL_CPA,
                     bundle, TrueFalseFragment.class.getSimpleName());
 
-        }
+        }*/
     }
 }

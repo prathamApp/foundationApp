@@ -44,6 +44,7 @@ public class GameConstatnts {
     public static final String FILL_IN_THE_BLANKS = "fill_in_the_blanks";
     public static final String TRUE_FALSE = "true_false";
     public static final String PICTIONARYFRAGMENT = "PictAndroid";
+    public static final String DOING = "doing_act";
     public static final String FACT_RETRIAL_SELECTION = "fact_retrial_selection";
     public static final String FACTRETRIEVAL = "factRetrival";
     public static final String READINGGAME = "ShowMeAndroid";

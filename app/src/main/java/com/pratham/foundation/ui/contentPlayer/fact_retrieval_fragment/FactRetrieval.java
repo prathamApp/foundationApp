@@ -18,8 +18,6 @@ import com.pratham.foundation.customView.SansButton;
 import com.pratham.foundation.modalclasses.ScienceQuestionChoice;
 import com.pratham.foundation.ui.contentPlayer.GameConstatnts;
 import com.pratham.foundation.ui.contentPlayer.fact_retrival_selection.ScienceQuestion;
-import com.pratham.foundation.ui.contentPlayer.keywords_identification.KeywordsIdentificationFragment_;
-import com.pratham.foundation.utility.FC_Utility;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Bean;
