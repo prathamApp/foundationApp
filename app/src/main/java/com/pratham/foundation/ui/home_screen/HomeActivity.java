@@ -238,12 +238,10 @@ public class HomeActivity extends BaseActivity{
         tabTwo.setText("Practice");
         tabTwo.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.ic_practice, 0, 0);
         tabLayout.getTabAt(1).setCustomView(tabTwo);
-
 /*        TextView tabThree = (TextView) LayoutInflater.from(this).inflate(R.layout.custom_tab_text, null);
         tabThree.setText("Test");
         tabThree.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.ic_test, 0, 0);
         tabLayout.getTabAt(2).setCustomView(tabThree);*/
-
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
