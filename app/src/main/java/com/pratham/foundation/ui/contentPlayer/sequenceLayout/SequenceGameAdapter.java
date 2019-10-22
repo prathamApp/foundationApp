@@ -15,6 +15,7 @@ import com.pratham.foundation.customView.SansButton;
 import com.pratham.foundation.customView.SansTextView;
 import com.pratham.foundation.database.domain.ContentTable;
 import com.pratham.foundation.ui.contentPlayer.GameConstatnts;
+import com.pratham.foundation.ui.contentPlayer.doing.DoingFragment;
 import com.pratham.foundation.ui.contentPlayer.fact_retrieval_fragment.FactRetrieval_;
 import com.pratham.foundation.ui.contentPlayer.fact_retrival_selection.Fact_Retrieval_Fragment;
 import com.pratham.foundation.ui.contentPlayer.fact_retrival_selection.Fact_Retrieval_Fragment_;
@@ -118,6 +119,10 @@ public class SequenceGameAdapter extends RecyclerView.Adapter<SequenceGameAdapte
                     case GameConstatnts.PICTIONARYFRAGMENT:
                         FC_Utility.showFragment((Activity) context, new StoryReadingFragment_(), R.id.RL_CPA,
                                 bundle, StoryReadingFragment_.class.getSimpleName());
+                        break;
+                    case GameConstatnts.DOING:
+                        FC_Utility.showFragment((Activity) context, new DoingFragment(), R.id.RL_CPA,
+                                bundle, DoingFragment.class.getSimpleName());
                         break;
                 }
             }

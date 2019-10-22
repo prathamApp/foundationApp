@@ -11,6 +11,7 @@ import com.pratham.foundation.R;
 import com.pratham.foundation.database.AppDatabase;
 import com.pratham.foundation.database.domain.ContentTable;
 import com.pratham.foundation.ui.contentPlayer.GameConstatnts;
+import com.pratham.foundation.ui.contentPlayer.fillInTheBlanks.FillInTheBlanksFragment;
 import com.pratham.foundation.ui.contentPlayer.multipleChoice.McqFillInTheBlanksFragment;
 import com.pratham.foundation.ui.contentPlayer.reading.ReadingFragment;
 import com.pratham.foundation.utility.FC_Utility;
@@ -78,11 +79,11 @@ public class SequenceLayout extends Fragment implements SequeanceLayoutContract.
 
     @Click(R.id.playFromStart)
     public void playFromStartClick() {
-       /* Bundle bundle = new Bundle();
+        Bundle bundle = new Bundle();
         bundle.putString("dd","");
-        FC_Utility.showFragment((Activity) getActivity(), new McqFillInTheBlanksFragment(), R.id.RL_CPA,
-                bundle, McqFillInTheBlanksFragment.class.getSimpleName());*/
-        currentGameAdapterposition=-1;
-        GameConstatnts.playGameNext(getActivity());
+        FC_Utility.showFragment((Activity) getActivity(), new FillInTheBlanksFragment(), R.id.RL_CPA,
+                bundle, FillInTheBlanksFragment.class.getSimpleName());
+        /*currentGameAdapterposition=-1;
+        GameConstatnts.playGameNext(getActivity());*/
     }
 }
