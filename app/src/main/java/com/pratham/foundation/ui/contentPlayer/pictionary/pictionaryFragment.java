@@ -9,6 +9,7 @@ import android.support.v4.app.Fragment;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -343,7 +344,9 @@ public class pictionaryFragment extends Fragment {
                             }
                         } else {*/
                             radioButton.setText(options.get(r).getSubQues());
-                            if (selectedFive.get(index).getUserAnswer().equalsIgnoreCase(options.get(r).getQcid())) {
+                            Log.d("tag111","a"+selectedFive.get(index).getUserAnswer()+"  B"+options.get(r).getQid());
+                            if (selectedFive.get(index).getUserAnswer().equalsIgnoreCase(options.get(r).getQid())) {
+
                                 radioButton.setChecked(true);
                                 // radioButton.setTextColor(Assessment_Utility.selectedColor);
                             } else {
@@ -427,11 +430,11 @@ public class pictionaryFragment extends Fragment {
                                 List<ScienceQuestionChoice> ans = new ArrayList<>();
                                 ans.add(options.get(finalR));
                                 //todo
-                                selectedFive.get(index).setUserAnswer(options.get(finalR).getQcid());
+                                selectedFive.get(index).setUserAnswer(options.get(finalR).getQid());
                             }
                         });
 
-                        if (selectedFive.get(index).getUserAnswer().equalsIgnoreCase(options.get(r).getQcid())) {
+                        if (selectedFive.get(index).getUserAnswer().equalsIgnoreCase(options.get(r).getQid())) {
                             rl_mcq.setBackground(getActivity().getResources().getDrawable(R.drawable.custom_edit_text));
                             tick.setVisibility(View.VISIBLE);
 
@@ -501,7 +504,7 @@ public class pictionaryFragment extends Fragment {
 
                             gridMcq.addView(viewRoot);
 
-                            if (selectedFive.get(index).getUserAnswer().equalsIgnoreCase(options.get(r).getQcid())) {
+                            if (selectedFive.get(index).getUserAnswer().equalsIgnoreCase(options.get(r).getQid())) {
                                 rl_mcq.setBackground(getActivity().getResources().getDrawable(R.drawable.custom_edit_text));
                                 tick.setVisibility(View.VISIBLE);
 
@@ -533,7 +536,7 @@ public class pictionaryFragment extends Fragment {
                             textView.setElevation(3);
                             textView.setText(options.get(r).getSubQues());
                             gridMcq.addView(textView);
-                            if (selectedFive.get(index).getUserAnswer().equalsIgnoreCase(options.get(r).getQcid())) {
+                            if (selectedFive.get(index).getUserAnswer().equalsIgnoreCase(options.get(r).getQid())) {
                                 // textView.setTextColor(Assessment_Utility.selectedColor);
                                 textView.setBackground(getActivity().getResources().getDrawable(R.drawable.gradient_selector));
                             } else {
@@ -574,7 +577,7 @@ public class pictionaryFragment extends Fragment {
                             List<ScienceQuestionChoice> ans = new ArrayList<>();
                             ans.add(options.get(i));
                             //todo
-                            selectedFive.get(index).setUserAnswer(options.get(i).getQcid());
+                            selectedFive.get(index).setUserAnswer(options.get(i).getQid());
                         } else {
                             // ((RadioButton) group.getChildAt(i)).setTextColor(getActivity().getResources().getColor(R.color.white));
                         }
@@ -615,7 +618,7 @@ public class pictionaryFragment extends Fragment {
         List<ScienceQuestionChoice> ans = new ArrayList<>();
         ans.add(scienceQuestionChoice);
         //todo
-        selectedFive.get(index).setUserAnswer(scienceQuestionChoice.getQcid());
+        selectedFive.get(index).setUserAnswer(scienceQuestionChoice.getQid());
 
     }
 
@@ -705,7 +708,7 @@ public class pictionaryFragment extends Fragment {
                     appDatabase.getKeyWordDao().insert(keyWords);
                     List<ScienceQuestionChoice> tempOptionList = selectedAnsList.get(i).getLstquestionchoice();
                     for (int k = 0; k < tempOptionList.size(); k++) {
-                        if (tempOptionList.get(k).getQcid().equalsIgnoreCase(selectedAnsList.get(i).getUserAnswer())) {
+                        if (tempOptionList.get(k).getQid().equalsIgnoreCase(selectedAnsList.get(i).getUserAnswer())) {
                             correctWordList.add(tempOptionList.get(k));
                         }
                     }
@@ -715,7 +718,7 @@ public class pictionaryFragment extends Fragment {
                     if (selectedAnsList.get(i).getUserAnswer() != null && !selectedAnsList.get(i).getUserAnswer().trim().equalsIgnoreCase("")) {
                         List<ScienceQuestionChoice> tempOptionList = selectedAnsList.get(i).getLstquestionchoice();
                         for (int k = 0; k < tempOptionList.size(); k++) {
-                            if (tempOptionList.get(k).getQcid().equalsIgnoreCase(selectedAnsList.get(i).getUserAnswer())) {
+                            if (tempOptionList.get(k).getQid().equalsIgnoreCase(selectedAnsList.get(i).getUserAnswer())) {
                                 wrongWordList.add(tempOptionList.get(k));
                             }
                         }
@@ -733,7 +736,7 @@ public class pictionaryFragment extends Fragment {
     private boolean checkAnswer(ScienceQuestion scienceQuestion) {
         List<ScienceQuestionChoice> optionListlist = scienceQuestion.getLstquestionchoice();
         for (int i = 0; i < optionListlist.size(); i++) {
-            if (optionListlist.get(i).getQcid().equalsIgnoreCase(scienceQuestion.getUserAnswer()) && optionListlist.get(i).getCorrectAnswer().equalsIgnoreCase("true")) {
+            if (optionListlist.get(i).getQid().equalsIgnoreCase(scienceQuestion.getUserAnswer()) && optionListlist.get(i).getCorrectAnswer().equalsIgnoreCase("true")) {
                 return true;
             }
         }

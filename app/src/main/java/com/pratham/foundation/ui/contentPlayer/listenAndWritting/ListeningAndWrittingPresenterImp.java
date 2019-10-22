@@ -11,9 +11,8 @@ import com.pratham.foundation.database.BackupDatabase;
 import com.pratham.foundation.database.domain.Assessment;
 import com.pratham.foundation.database.domain.KeyWords;
 import com.pratham.foundation.database.domain.Score;
-import com.pratham.foundation.modalclasses.keywordmapping;
-import com.pratham.foundation.ui.contentPlayer.keywords_mapping.KeywordMappingContract;
-import com.pratham.foundation.utility.AndroidBmpUtil;
+import com.pratham.foundation.ui.contentPlayer.GameConstatnts;
+import com.pratham.foundation.ui.contentPlayer.fact_retrival_selection.ScienceQuestion;
 import com.pratham.foundation.utility.FC_Constants;
 import com.pratham.foundation.utility.FC_Utility;
 
@@ -26,7 +25,6 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.lang.reflect.Type;
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -42,8 +40,8 @@ public class ListeningAndWrittingPresenterImp implements ListeningAndWrittingCon
     private String gameName, resId, contentTitle;
     private List<String> correctWordList, wrongWordList;
     private boolean isTest = false;
-    private List<ListenAndWrittingModal> dataList;
-    private ListenAndWrittingModal listenAndWrittingModal;
+    private List<ScienceQuestion> dataList;
+    private ScienceQuestion listenAndWrittingModal;
 
     public ListeningAndWrittingPresenterImp(Context context) {
         this.context = context;
@@ -54,7 +52,7 @@ public class ListeningAndWrittingPresenterImp implements ListeningAndWrittingCon
     @Override
     public void fetchJsonData(String contentPath) {
         try {
-            InputStream is = new FileInputStream(contentPath + "listenAndWrite.json");
+            InputStream is = new FileInputStream(contentPath + "Dict.json");
             int size = is.available();
             byte[] buffer = new byte[size];
             is.read(buffer);
@@ -62,7 +60,7 @@ public class ListeningAndWrittingPresenterImp implements ListeningAndWrittingCon
             String jsonStr = new String(buffer);
             JSONArray jsonObj = new JSONArray(jsonStr);
             Gson gson = new Gson();
-            Type type = new TypeToken<List<ListenAndWrittingModal>>() {
+            Type type = new TypeToken<List<ScienceQuestion>>() {
             }.getType();
 
             dataList = gson.fromJson(jsonObj.toString(), type);
@@ -75,7 +73,6 @@ public class ListeningAndWrittingPresenterImp implements ListeningAndWrittingCon
     @Override
     public void setView(ListeningAndWrittingContract.ListeningAndWrittingView listeningAndWrittingView, String contentTitle, String resId) {
         view = listeningAndWrittingView;
-
         this.resId = resId;
         this.contentTitle = contentTitle;
     }
@@ -88,7 +85,7 @@ public class ListeningAndWrittingPresenterImp implements ListeningAndWrittingCon
             Collections.shuffle(dataList);
             for (int i = 0; i < dataList.size(); i++) {
                 if (perc < 95) {
-                    if (!checkWord("" + dataList.get(i).getTittle()))
+                    if (!checkWord("" + dataList.get(i).getTitle()))
                         listenAndWrittingModal = dataList.get(i);
                     break;
                 } else {
@@ -103,15 +100,15 @@ public class ListeningAndWrittingPresenterImp implements ListeningAndWrittingCon
     }
 
     @Override
-    public void addLearntWords(ListenAndWrittingModal listenAndWrittingModal, String imageName) {
+    public void addLearntWords(ScienceQuestion listenAndWrittingModal, String imageName) {
         if (imageName != null && !imageName.isEmpty()) {
             KeyWords keyWords = new KeyWords();
             keyWords.setResourceId(resId);
             keyWords.setSentFlag(0);
             keyWords.setStudentId(FC_Constants.currentStudentID);
-            keyWords.setKeyWord(listenAndWrittingModal.getTittle());
+            keyWords.setKeyWord(listenAndWrittingModal.getTitle());
             keyWords.setWordType("word");
-            addScore(listenAndWrittingModal.getId(), listenAndWrittingModal.getTittle(), 0, 0, FC_Utility.getCurrentDateTime(), imageName);
+            addScore(GameConstatnts.getInt(listenAndWrittingModal.getQid()), listenAndWrittingModal.getTitle(), 0, 0, FC_Utility.getCurrentDateTime(), imageName);
             appDatabase.getKeyWordDao().insert(keyWords);
             Toast.makeText(context, "inserted succussfully", Toast.LENGTH_LONG).show();
         }
@@ -131,7 +128,7 @@ public class ListeningAndWrittingPresenterImp implements ListeningAndWrittingCon
             File file = new File(direct, fileName);
 
             FileOutputStream out = new FileOutputStream(file);
-            String path=file.getAbsolutePath();
+            String path = file.getAbsolutePath();
             //new AndroidBmpUtil().save(imageToSave,path );
             imageToSave.compress(Bitmap.CompressFormat.JPEG, 100, out);
             // isPhotoSaved = true;
@@ -178,8 +175,6 @@ public class ListeningAndWrittingPresenterImp implements ListeningAndWrittingCon
             return false;
         }
     }
-
-
 
 
     public void addScore(int wID, String Word, int scoredMarks, int totalMarks, String resStartTime, String Label) {

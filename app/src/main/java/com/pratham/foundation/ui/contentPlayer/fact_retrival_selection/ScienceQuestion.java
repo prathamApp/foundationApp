@@ -6,6 +6,7 @@ import android.arch.persistence.room.Ignore;
 import android.arch.persistence.room.PrimaryKey;
 import android.support.annotation.NonNull;
 
+import com.google.gson.annotations.SerializedName;
 import com.pratham.foundation.modalclasses.ScienceQuestionChoice;
 
 import java.io.Serializable;
@@ -44,6 +45,7 @@ public class ScienceQuestion implements Serializable {
 
     private String updatedtime;
 
+    @SerializedName("resourceUrl")
     private String photourl;
 
     private String examtime;
@@ -244,6 +246,8 @@ public class ScienceQuestion implements Serializable {
     }
 
     public String getPhotourl() {
+        if(photourl==null)
+            return "";
         return photourl;
     }
 

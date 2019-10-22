@@ -21,6 +21,7 @@ import android.widget.RadioGroup;
 import com.pratham.foundation.ApplicationClass;
 import com.pratham.foundation.R;
 import com.pratham.foundation.ui.contentPlayer.GameConstatnts;
+import com.pratham.foundation.ui.contentPlayer.fact_retrival_selection.ScienceQuestion;
 import com.pratham.foundation.utility.MediaPlayerUtil;
 
 import org.androidannotations.annotations.AfterViews;
@@ -45,7 +46,7 @@ public class ListeningAndWritting extends Fragment implements ListeningAndWritti
 
     private String readingContentPath, contentPath, contentTitle, StudentID, resId;
     private boolean onSdCard, isPlaying;
-    private ListenAndWrittingModal listenAndWrittingModal;
+    private ScienceQuestion listenAndWrittingModal;
     private MediaPlayerUtil mediaPlayerUtil;
     private String imageName = null;
     private static final int CAMERA_REQUEST = 1;
@@ -99,7 +100,7 @@ public class ListeningAndWritting extends Fragment implements ListeningAndWritti
     }
 
     @Override
-    public void loadUI(ListenAndWrittingModal listenAndWrittingModal) {
+    public void loadUI(ScienceQuestion listenAndWrittingModal) {
         this.listenAndWrittingModal = listenAndWrittingModal;
     }
 
@@ -111,7 +112,7 @@ public class ListeningAndWritting extends Fragment implements ListeningAndWritti
 
             sp.setRate(sID,rate);
 
-            int id = sp.load(readingContentPath + "/" + listenAndWrittingModal.getSound(), 1);
+            int id = sp.load(readingContentPath + "/Sounds/" + listenAndWrittingModal.getPhotourl(), 1);
             sp.setOnLoadCompleteListener(new SoundPool.OnLoadCompleteListener() {
                 @Override
                 public void onLoadComplete(SoundPool soundPool, int sampleId, int status) {
