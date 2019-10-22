@@ -1245,6 +1245,25 @@ public class FC_Utility {
         return rootNodeId;
     }
 
+    public static long getTimeDifference(String start, String end) {
+        try {
+            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss", Locale.ENGLISH);
+            Date date1 = simpleDateFormat.parse(start);
+            Date date2 = simpleDateFormat.parse(end);
+
+            long difference = date2.getTime() - date1.getTime();
+//        days = (int) (difference / (1000 * 60 * 60 * 24));
+//        hours = (int) ((difference - (1000 * 60 * 60 * 24 * days)) / (1000 * 60 * 60));
+//        min = (int) (difference - (1000 * 60 * 60 * 24 * days) - (1000 * 60 * 60 * hours)) / (1000 * 60);
+//        hours = (hours < 0 ? -hours : hours);
+            Log.i("time_diff", " :: " + difference);
+            return difference;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return 0;
+        }
+    }
+
 /*    public static void setLanguage() {
         if(FastSave.getInstance().getString(FC_Constants.LANGUAGE, FC_Constants.HINDI)
                 .equalsIgnoreCase("English") ||

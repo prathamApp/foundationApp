@@ -265,6 +265,11 @@ public class LearningPresenter implements LearningContract.LearningPresenter, AP
     public void getDataForList() {
         learningView.showLoader();
         try {
+
+            dwParentList = AppDatabase.appDatabase.getContentTableDao().getContentData("" + nodeIds.get(nodeIds.size() - 1));
+            sortContentList(dwParentList);
+            contentParentList.clear();
+
             ContentTableNew resContentTable = new ContentTableNew();
             List<ContentTableNew> resourceList;
             List<ContentTableNew> tempList2;
@@ -281,10 +286,8 @@ public class LearningPresenter implements LearningContract.LearningPresenter, AP
             resContentTable.setNodelist(tempList2);
             resourceList.add(contentTableRes);
 
-            dwParentList = AppDatabase.appDatabase.getContentTableDao().getContentData("" + nodeIds.get(nodeIds.size() - 1));
-            sortContentList(dwParentList);
-            contentParentList.clear();
             contentParentList.add(contentTableRes);
+
             try {
                 for (int j = 0; j < dwParentList.size(); j++) {
                     if (dwParentList.get(j).getNodeType().equalsIgnoreCase("Resource")) {
