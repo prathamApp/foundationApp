@@ -9,6 +9,7 @@ import android.widget.VideoView;
 
 import com.pratham.foundation.ApplicationClass;
 import com.pratham.foundation.R;
+import com.pratham.foundation.customView.media_controller.PlayerControlView;
 import com.pratham.foundation.database.domain.Score;
 import com.pratham.foundation.utility.FC_Constants;
 import com.pratham.foundation.utility.FC_Utility;
@@ -25,6 +26,8 @@ public class FragmentVideoView extends Fragment {
 
     @ViewById(R.id.videoView)
     VideoView videoView;
+    @ViewById(R.id.player_control_view)
+    PlayerControlView player_control_view;
 
     String videoPath,startTime,resId;
     boolean onSdCard;
@@ -48,19 +51,21 @@ public class FragmentVideoView extends Fragment {
     }
 
     private void initializePlayer(String videoPath) {
-        MediaController mediaController= new MediaController(getActivity());
-        mediaController.setAnchorView(videoView);
-        videoView.setMediaController(mediaController);
+//        MediaController mediaController= new MediaController(getActivity());
+//        mediaController.setAnchorView(videoView);
+        videoView.setMediaController(player_control_view.getMediaControllerWrapper());
         videoView.setVideoPath(videoPath);
+        videoView.start();
         videoView.setOnPreparedListener(mp -> {
             startTime = FC_Utility.getCurrentDateTime();
+            player_control_view.show();
             videoDuration = videoView.getDuration();
         });
         videoView.setOnCompletionListener(mp -> {
             //TODO back press)
         });
 
-        new Handler().postDelayed(() -> videoView.start(),500);
+//        new Handler().postDelayed(() -> videoView.start(),500);
     }
 
     @Background

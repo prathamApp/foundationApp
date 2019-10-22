@@ -19,20 +19,6 @@
             android:background="@drawable/dialog_image_bg"
             android:src="@drawable/b1" />
 
-        <ImageButton
-            android:id="@+id/dia_btn_cross"
-            android:layout_width="@dimen/_30sdp"
-            android:layout_height="@dimen/_30sdp"
-            android:layout_alignParentTop="true"
-            android:layout_alignParentRight="true"
-            android:elevation="5dp"
-            android:layout_marginTop="@dimen/_30sdp"
-            android:padding="5dp"
-            android:visibility="gone"
-            android:background="@drawable/red_button"
-            android:scaleType="fitCenter"
-            android:src="@drawable/ic_close_red" />
-
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"

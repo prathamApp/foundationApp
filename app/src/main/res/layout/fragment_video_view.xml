@@ -2,6 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@color/colorBlack"
     android:screenOrientation="sensorLandscape">
 
@@ -10,5 +11,14 @@
         android:layout_centerInParent="true"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
+
+    <com.pratham.foundation.customView.media_controller.PlayerControlView
+        android:id="@+id/player_control_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        app:pcv_fast_forward_ms="1000"
+        app:pcv_fast_rewind_ms="500"
+        app:pcv_show_timeout_ms="5000" />
 
 </RelativeLayout>

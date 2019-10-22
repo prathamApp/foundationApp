@@ -140,29 +140,12 @@ public class PracticePresenter implements PracticeContract.PracticePresenter, AP
 //        String rootID = FC_Utility.getRootNode(FC_Constants.currentSelectedLanguage);
         String rootID = sub_nodeId;
         botID = AppDatabase.appDatabase.getContentTableDao().getContentDataByTitle("" + rootID, cosSection);
-        if (botID != null && !FC_Utility.isDataConnectionAvailable(mContext))
+//        if (botID != null && !FC_Utility.isDataConnectionAvailable(mContext))
+        if (botID != null )
             getLevelDataForList(currentLevelNo, botID);
-        else
-            getRootData(rootID);
+//        else
+//            getRootData(rootID);
 
-//        PracticeView.setBotNodeId(botID);
-/*      if (FC_Utility.isDataConnectionAvailable(mContext)) {
-            api_content.getAPIContent(FC_Constants.INTERNET_DOWNLOAD, FC_Constants.INTERNET_DOWNLOAD_NEW_API, rootID);
-        } else {
-            if (contentParentList.size() == 0 && !FC_Utility.isDataConnectionAvailable(mContext)) {
-                PracticeView.showNoDataDownloadedDialog();
-            } else {
-                PracticeView.addContentToViewList(contentParentList);
-                PracticeView.notifyAdapter();
-            }
-        }*/
-
-/*      if (FC_Constants.currentSelectedLanguage.equalsIgnoreCase("Hindi"))
-            botID = AppDatabase.appDatabase.getContentTableDao().getBottomNavigationId("English", cosSection);
-        else
-            botID = AppDatabase.appDatabase.getContentTableDao().getBottomNavigationId(FC_Constants.currentSelectedLanguage, cosSection);
-        PracticeView.setBotNodeId(botID);
-        getLevelDataForList(currentLevelNo, botID);*/
     }
 
     @Background
@@ -175,9 +158,9 @@ public class PracticePresenter implements PracticeContract.PracticePresenter, AP
     @Override
     public void getLevelDataForList(int currentLevelNo, String bottomNavNodeId) {
         rootList = AppDatabase.appDatabase.getContentTableDao().getContentData("" + bottomNavNodeId);
-        if (FC_Utility.isDataConnectionAvailable(mContext))
-            getLevelDataFromApi(currentLevelNo, bottomNavNodeId);
-        else
+//        if (FC_Utility.isDataConnectionAvailable(mContext))
+//            getLevelDataFromApi(currentLevelNo, bottomNavNodeId);
+//        else
             PracticeView.setSelectedLevel(rootList);
     }
 
@@ -414,16 +397,17 @@ public class PracticePresenter implements PracticeContract.PracticePresenter, AP
         } catch (Exception e) {
             e.printStackTrace();
         }
-        if (FC_Utility.isDataConnectionAvailable(mContext)) {
-            api_content.getAPIContent(FC_Constants.INTERNET_DOWNLOAD, FC_Constants.INTERNET_DOWNLOAD_NEW_API, nodeIds.get(nodeIds.size() - 1));
-        } else {
-            if (contentParentList.size() == 0 && !FC_Utility.isDataConnectionAvailable(mContext)) {
+//        if (FC_Utility.isDataConnectionAvailable(mContext)) {
+//            api_content.getAPIContent(FC_Constants.INTERNET_DOWNLOAD, FC_Constants.INTERNET_DOWNLOAD_NEW_API, nodeIds.get(nodeIds.size() - 1));
+//        } else {
+//            if (contentParentList.size() == 0 && !FC_Utility.isDataConnectionAvailable(mContext)) {
+            if (contentParentList.size() == 0) {
                 PracticeView.showNoDataDownloadedDialog();
             } else {
                 PracticeView.addContentToViewList(contentParentList);
                 PracticeView.notifyAdapter();
             }
-        }
+//        }
     }
 
     public void sortAllList(List<ContentTableNew> contentParentList) {

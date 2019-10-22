@@ -17,8 +17,12 @@ import android.content.res.Resources;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.graphics.Matrix;
+import android.graphics.PorterDuff;
 import android.graphics.Rect;
+import android.graphics.drawable.Drawable;
+import android.graphics.drawable.StateListDrawable;
 import android.location.Address;
 import android.location.Geocoder;
 import android.net.ConnectivityManager;
@@ -28,6 +32,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.provider.Settings;
+import android.support.annotation.ColorInt;
 import android.support.annotation.IntRange;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.animation.FastOutLinearInInterpolator;
@@ -146,6 +151,49 @@ public class FC_Utility {
     public static int getRandomDrawableGradiant(){
         int bg_grad = gradiant_bg[new Random().nextInt(gradiant_bg.length)];
         return bg_grad;
+    }
+
+    public static StateListDrawable createStateListDrawable(Drawable drawable, @ColorInt int drawableColor) {
+        StateListDrawable stateListDrawable = new StateListDrawable();
+
+        int[] defaultStateSet = {-android.R.attr.state_pressed, -android.R.attr.state_focused, android.R.attr.state_enabled};
+        stateListDrawable.addState(defaultStateSet, drawable);
+
+        int[] focusedStateSet = {-android.R.attr.state_pressed, android.R.attr.state_focused};
+        Drawable focusedDrawable = darkenDrawable(drawable, drawableColor, 0.7f);
+        stateListDrawable.addState(focusedStateSet, focusedDrawable);
+
+        int[] pressedStateSet = {android.R.attr.state_pressed};
+        Drawable pressedDrawable = darkenDrawable(drawable, drawableColor, 0.6f);
+        stateListDrawable.addState(pressedStateSet, pressedDrawable);
+
+        int[] disableStateSet = {-android.R.attr.state_enabled};
+        Drawable disableDrawable = darkenDrawable(drawable, drawableColor, 0.4f);
+        stateListDrawable.addState(disableStateSet, disableDrawable);
+
+        return stateListDrawable;
+    }
+
+    private static Drawable darkenDrawable(Drawable drawable, @ColorInt int drawableColor, float factor) {
+        int color = darkenColor(drawableColor, factor);
+        Drawable d = drawable.getConstantState().newDrawable().mutate();
+        d.setColorFilter(color, PorterDuff.Mode.SRC_ATOP);
+        return d;
+    }
+
+    @ColorInt
+    private static int darkenColor(@ColorInt int color, float factor) {
+        if (factor < 0 || factor > 1) {
+            return color;
+        }
+        int alpha = Color.alpha(color);
+        int red = Color.red(color);
+        int green = Color.green(color);
+        int blue = Color.blue(color);
+        return Color.argb(alpha,
+                Math.max((int) (red * factor), 0),
+                Math.max((int) (green * factor), 0),
+                Math.max((int) (blue * factor), 0));
     }
 
     public static String getPhoneModel() {

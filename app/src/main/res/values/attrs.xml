@@ -26,6 +26,13 @@
         <attr name="gifViewStyle" format="reference" />
     </declare-styleable>
 
+    <declare-styleable name="PlayerControlView">
+    <attr name="pcv_show_timeout_ms" format="integer" />
+    <attr name="pcv_fast_rewind_ms" format="integer" />
+    <attr name="pcv_fast_forward_ms" format="integer" />
+    <attr name="pcv_always_show" format="boolean" />
+    </declare-styleable>
+
     <declare-styleable name="RipplePulseLayout">
         <attr name="rippleColor" format="color"></attr>
         <attr name="rippleType" format="enum">

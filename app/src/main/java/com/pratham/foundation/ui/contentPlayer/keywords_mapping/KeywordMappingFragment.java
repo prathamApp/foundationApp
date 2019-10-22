@@ -1,6 +1,8 @@
 package com.pratham.foundation.ui.contentPlayer.keywords_mapping;
 
 import android.app.Dialog;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
@@ -28,6 +30,7 @@ import org.androidannotations.annotations.ViewById;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @EFragment(R.layout.fragment_keyword_mapping)
 public class KeywordMappingFragment extends Fragment implements KeywordMappingContract.KeywordMappingView {
@@ -110,11 +113,14 @@ public class KeywordMappingFragment extends Fragment implements KeywordMappingCo
         dialog.setContentView(R.layout.show_result);
         dialog.setCancelable(false);
         dialog.setCanceledOnTouchOutside(false);
+        Objects.requireNonNull(dialog.getWindow()).setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+
         SansTextViewBold correct_keywords = dialog.findViewById(R.id.correct_keywords);
         SansTextViewBold wrong_keywords = dialog.findViewById(R.id.wrong_keywords);
         SansButton dia_btn_yellow = dialog.findViewById(R.id.dia_btn_yellow);
         correct_keywords.setText(correctWord.toString().substring(1, correctWord.toString().length() - 1));
         wrong_keywords.setText(wrongWord.toString().substring(1, wrongWord.toString().length() - 1));
+        dia_btn_yellow.setText("OK");
         dia_btn_yellow.setOnClickListener(v -> dialog.dismiss());
         dialog.show();
     }

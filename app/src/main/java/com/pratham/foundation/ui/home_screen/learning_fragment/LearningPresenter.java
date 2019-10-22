@@ -141,6 +141,7 @@ public class LearningPresenter implements LearningContract.LearningPresenter, AP
         String rootID = sub_nodeId;
         botID = AppDatabase.appDatabase.getContentTableDao().getContentDataByTitle("" + rootID, cosSection);
 //        if (botID != null && !FC_Utility.isDataConnectionAvailable(mContext))
+        if (botID != null )
             getLevelDataForList(currentLevelNo, botID);
 //        else
 //            getRootData(rootID);
@@ -397,7 +398,8 @@ public class LearningPresenter implements LearningContract.LearningPresenter, AP
 //        if (FC_Utility.isDataConnectionAvailable(mContext)) {
 //            api_content.getAPIContent(FC_Constants.INTERNET_DOWNLOAD, FC_Constants.INTERNET_DOWNLOAD_NEW_API, nodeIds.get(nodeIds.size() - 1));
 //        } else {
-            if (contentParentList.size() == 0 && !FC_Utility.isDataConnectionAvailable(mContext)) {
+//            if (contentParentList.size() == 0 && !FC_Utility.isDataConnectionAvailable(mContext)) {
+            if (contentParentList.size() == 0) {
                 learningView.showNoDataDownloadedDialog();
             } else {
                 learningView.addContentToViewList(contentParentList);

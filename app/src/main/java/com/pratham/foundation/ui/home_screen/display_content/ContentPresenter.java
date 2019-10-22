@@ -181,17 +181,18 @@ public class ContentPresenter implements ContentContract.ContentPresenter, API_C
     @UiThread
     public void updateUI() {
         try {
-            if (FC_Utility.isDataConnectionAvailable(context))
-                api_content.getAPIContent(FC_Constants.INTERNET_DOWNLOAD, FC_Constants.INTERNET_DOWNLOAD_NEW_API, nodeIds.get(nodeIds.size() - 1));
-            else {
-                if (downloadedContentTableList.size() == 0 && !FC_Utility.isDataConnectionAvailable(context)) {
+//            if (FC_Utility.isDataConnectionAvailable(context))
+//                api_content.getAPIContent(FC_Constants.INTERNET_DOWNLOAD, FC_Constants.INTERNET_DOWNLOAD_NEW_API, nodeIds.get(nodeIds.size() - 1));
+//            else {
+//                if (downloadedContentTableList.size() == 0 && !FC_Utility.isDataConnectionAvailable(context)) {
+                if (downloadedContentTableList.size() == 0 ) {
                     contentView.showNoDataDownloadedDialog();
                 } else {
                     contentView.addContentToViewList(ListForContentTable1);
                     contentView.notifyAdapter();
                     contentView.dismissLoadingDialog();
                 }
-            }
+//            }
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -200,7 +201,7 @@ public class ContentPresenter implements ContentContract.ContentPresenter, API_C
     @Override
     public void downloadResource(String downloadId) {
         downloadNodeId = downloadId;
-        api_content.getAPIContent(FC_Constants.INTERNET_DOWNLOAD_RESOURCE, FC_Constants.INTERNET_DOWNLOAD_RESOURCE_API, downloadNodeId);
+//        api_content.getAPIContent(FC_Constants.INTERNET_DOWNLOAD_RESOURCE, FC_Constants.INTERNET_DOWNLOAD_RESOURCE_API, downloadNodeId);
     }
 
     @Override
