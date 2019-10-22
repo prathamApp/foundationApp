@@ -10,6 +10,7 @@ public interface ParagraphWritingContract {
         public void showParagraph(ScienceQuestion questionModel);
     }
 
+
     public interface ParagraphWritingPresenter {
         public void getData();
 
