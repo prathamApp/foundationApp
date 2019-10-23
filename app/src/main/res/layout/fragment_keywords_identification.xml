@@ -99,7 +99,7 @@
             android:text="show keywords"
             android:textColor="@color/white"
             android:layout_centerVertical="true"
-            android:textSize="@dimen/_15sdp" />
+            android:textSize="@dimen/_10sdp" />
         <com.pratham.foundation.customView.fonts.SansButton
             android:id="@+id/btn_submit"
             android:layout_width="wrap_content"
@@ -110,7 +110,7 @@
             android:text="Submit"
             android:layout_alignParentEnd="true"
             android:textColor="@color/white"
-            android:textSize="@dimen/_15sdp" />
+            android:textSize="@dimen/_10sdp" />
 
     </RelativeLayout>
 

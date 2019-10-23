@@ -1,6 +1,8 @@
 package com.pratham.foundation.ui.contentPlayer.keywords_identification;
 
 import android.app.Dialog;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
@@ -19,6 +21,7 @@ import com.nex3z.flowlayout.FlowLayout;
 import com.pratham.foundation.customView.SansButton;
 import com.pratham.foundation.customView.SansTextView;
 import com.pratham.foundation.customView.SansTextViewBold;
+import com.pratham.foundation.interfaces.OnGameClose;
 import com.pratham.foundation.modalclasses.ScienceQuestionChoice;
 import com.pratham.foundation.ui.contentPlayer.ContentPlayerActivity;
 import com.pratham.foundation.ui.contentPlayer.GameConstatnts;
@@ -35,9 +38,10 @@ import org.androidannotations.annotations.ViewById;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Objects;
 
 @EFragment(R.layout.fragment_keywords_identification)
-public class KeywordsIdentificationFragment extends Fragment implements KeywordsIdentificationContract.KeywordsView {
+public class KeywordsIdentificationFragment extends Fragment implements KeywordsIdentificationContract.KeywordsView, OnGameClose {
 
     @Bean(KeywordsIdentificationPresenter.class)
     KeywordsIdentificationContract.KeywordsPresenter presenter;
@@ -54,7 +58,7 @@ public class KeywordsIdentificationFragment extends Fragment implements Keywords
     RelativeLayout.LayoutParams viewParam;
     private HashMap<String, List<Integer>> positionMap;
     private List<String> selectedKeywords;
-    private String contentPath, contentTitle, StudentID, resId, readingContentPath;
+    private String contentPath, contentTitle, StudentID, resId, readingContentPath, resStartTime;
     private boolean onSdCard;
     private ScienceQuestion questionModel;
     private boolean isKeyWordShowing = false;
@@ -77,6 +81,9 @@ public class KeywordsIdentificationFragment extends Fragment implements Keywords
         presenter.setView(KeywordsIdentificationFragment.this, resId, readingContentPath);
         selectedKeywords = new ArrayList<>();
         positionMap = new HashMap<>();
+
+        resStartTime = FC_Utility.getCurrentDateTime();
+        presenter.addScore(0, "", 0, 0, resStartTime, GameConstatnts.KEYWORD_IDENTIFICATION + " " + GameConstatnts.START);
 
         viewParam = new RelativeLayout.LayoutParams(
                 RelativeLayout.LayoutParams.WRAP_CONTENT,
@@ -117,18 +124,28 @@ public class KeywordsIdentificationFragment extends Fragment implements Keywords
 
     @Override
     public void showResult(List correctWord, List wrongWord) {
-        final Dialog dialog = new Dialog(getActivity());
-        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        dialog.setContentView(R.layout.show_result);
-        dialog.setCancelable(false);
-        dialog.setCanceledOnTouchOutside(false);
-        SansTextViewBold correct_keywords = dialog.findViewById(R.id.correct_keywords);
-        SansTextViewBold wrong_keywords = dialog.findViewById(R.id.wrong_keywords);
-        SansButton dia_btn_yellow = dialog.findViewById(R.id.dia_btn_yellow);
-        correct_keywords.setText(correctWord.toString().substring(1, correctWord.toString().length() - 1));
-        wrong_keywords.setText(wrongWord.toString().substring(1, wrongWord.toString().length() - 1));
-        dia_btn_yellow.setOnClickListener(v -> dialog.dismiss());
-        dialog.show();
+        if ((correctWord != null && !correctWord.isEmpty()) || (wrongWord != null && !wrongWord.isEmpty())) {
+            final Dialog dialog = new Dialog(getActivity());
+            dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+            dialog.setContentView(R.layout.show_result);
+            dialog.setCancelable(false);
+            dialog.setCanceledOnTouchOutside(false);
+            Objects.requireNonNull(dialog.getWindow()).setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+            SansTextViewBold correct_keywords = dialog.findViewById(R.id.correct_keywords);
+            SansTextViewBold wrong_keywords = dialog.findViewById(R.id.wrong_keywords);
+            SansButton dia_btn_yellow = dialog.findViewById(R.id.dia_btn_yellow);
+            dia_btn_yellow.setText("OK");
+            correct_keywords.setText(correctWord.toString().substring(1, correctWord.toString().length() - 1));
+            wrong_keywords.setText(wrongWord.toString().substring(1, wrongWord.toString().length() - 1));
+            dia_btn_yellow.setOnClickListener(v -> {
+                        dialog.dismiss();
+                        GameConstatnts.playGameNext(getActivity(), GameConstatnts.FALSE,this);
+                    }
+            );
+            dialog.show();
+        } else {
+            GameConstatnts.playGameNext(getActivity(), GameConstatnts.TRUE,this);
+        }
     }
 
     private void paragraphWordClicked(String paraText, int pos) {
@@ -213,9 +230,6 @@ public class KeywordsIdentificationFragment extends Fragment implements Keywords
     public void submitClicked() {
         if (selectedKeywords != null)
             presenter.addLearntWords(selectedKeywords);
-
-        GameConstatnts.playGameNext(getActivity());
-
     }
 
     @Click(R.id.show_me_keywords)
@@ -261,5 +275,13 @@ public class KeywordsIdentificationFragment extends Fragment implements Keywords
                 dialog.show();
             }
         }
+    }
+
+
+
+    @Override
+    public void gameClose() {
+        presenter.addScore(0, "", 0, 0, resStartTime, GameConstatnts.KEYWORD_IDENTIFICATION + " " + GameConstatnts.END);
+
     }
 }

@@ -184,7 +184,7 @@ public class Fact_Retrieval_Fragment extends Fragment implements Fact_Retrieval_
     public void submitClicked() {
         if (selectedQuetion != null)
             presenter.addLearntWords(selectedQuetion);
-        GameConstatnts.playGameNext(getActivity());
+        //GameConstatnts.playGameNext(getActivity());
        /* Bundle bundle = GameConstatnts.findGameData("103");
         if (bundle != null) {
             FC_Utility.showFragment(getActivity(), new KeywordMappingFragment_(), R.id.RL_CPA,

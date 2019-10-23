@@ -15,11 +15,8 @@ import com.pratham.foundation.R;
 import com.pratham.foundation.customView.SansButton;
 import com.pratham.foundation.customView.SansTextViewBold;
 import com.pratham.foundation.modalclasses.ScienceQuestionChoice;
-import com.pratham.foundation.ui.contentPlayer.GameConstatnts;
 import com.pratham.foundation.ui.contentPlayer.fact_retrival_selection.ScienceQuestion;
-import com.pratham.foundation.ui.contentPlayer.paragraph_writing.ParagraphWritingFragment_;
 import com.pratham.foundation.utility.FC_Constants;
-import com.pratham.foundation.utility.FC_Utility;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Bean;
@@ -28,7 +25,6 @@ import org.androidannotations.annotations.EFragment;
 import org.androidannotations.annotations.UiThread;
 import org.androidannotations.annotations.ViewById;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -69,6 +65,9 @@ public class KeywordMappingFragment extends Fragment implements KeywordMappingCo
                 readingContentPath = ApplicationClass.foundationPath + "/.FCA/English/Game/" + contentPath + "/";
 
         }
+
+
+
         presenter.setView(KeywordMappingFragment.this, resId, readingContentPath);
         presenter.getData();
     }
@@ -106,6 +105,7 @@ public class KeywordMappingFragment extends Fragment implements KeywordMappingCo
         }
         return correctCnt;
     }
+
     @Override
     public void showResult(List correctWord, List wrongWord) {
         final Dialog dialog = new Dialog(getActivity());
@@ -131,7 +131,7 @@ public class KeywordMappingFragment extends Fragment implements KeywordMappingCo
             List selectedoptionList = keywordOptionAdapter.getSelectedOptionList();
             presenter.addLearntWords(keywordmapping, selectedoptionList);
         }
-        GameConstatnts.playGameNext(getActivity());
+        // GameConstatnts.playGameNext(getActivity());
        /* Bundle bundle = GameConstatnts.findGameData("104");
         if (bundle != null) {
             FC_Utility.showFragment(getActivity(), new ParagraphWritingFragment_(), R.id.RL_CPA,

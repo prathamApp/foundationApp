@@ -367,7 +367,7 @@ public class McqFillInTheBlanksFragment extends Fragment {
         //   Log.d("tt", "aa");
         if (selectedFive != null)
             addLearntWords(selectedFive);
-        GameConstatnts.playGameNext(getActivity());
+       // GameConstatnts.playGameNext(getActivity());
         /*Bundle bundle = GameConstatnts.findGameData("110");
         if (bundle != null) {
             FC_Utility.showFragment(getActivity(), new FillInTheBlanksFragment(), R.id.RL_CPA,

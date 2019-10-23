@@ -183,6 +183,6 @@ public class ListeningAndWritting extends Fragment implements ListeningAndWritti
             presenter.addLearntWords(listenAndWrittingModal, imageName);
             imageName = null;
         }
-        GameConstatnts.playGameNext(getActivity());
+        //GameConstatnts.playGameNext(getActivity());
     }
 }

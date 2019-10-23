@@ -9,7 +9,9 @@ import com.pratham.foundation.database.BackupDatabase;
 import com.pratham.foundation.database.domain.Assessment;
 import com.pratham.foundation.database.domain.KeyWords;
 import com.pratham.foundation.database.domain.Score;
+import com.pratham.foundation.interfaces.OnGameClose;
 import com.pratham.foundation.modalclasses.ScienceQuestionChoice;
+import com.pratham.foundation.ui.contentPlayer.GameConstatnts;
 import com.pratham.foundation.ui.contentPlayer.fact_retrival_selection.ScienceQuestion;
 import com.pratham.foundation.utility.FC_Constants;
 import com.pratham.foundation.utility.FC_Utility;
@@ -25,7 +27,7 @@ import java.util.List;
 import static com.pratham.foundation.database.AppDatabase.appDatabase;
 
 @EBean
-public class FactRetrievalPresenter implements FactRetrievalContract.FactRetrievalPresenter {
+public class FactRetrievalPresenter implements FactRetrievalContract.FactRetrievalPresenter,OnGameClose {
     private ScienceQuestion questionModel;
     private FactRetrievalContract.FactRetrievalView view;
     private Context context;
@@ -82,8 +84,7 @@ public class FactRetrievalPresenter implements FactRetrievalContract.FactRetriev
                     break;
                 }
             }
-           // selectedFive = questionModel.getKeywords();
-           // Collections.shuffle(selectedFive);
+
             view.showParagraph(questionModel);
         } catch (Exception e) {
             e.printStackTrace();
@@ -127,26 +128,31 @@ public class FactRetrievalPresenter implements FactRetrievalContract.FactRetriev
     }
 
     public void addLearntWords(List<ScienceQuestionChoice> selectedAnsList) {
-        List<KeyWords> learntWords = new ArrayList<>();
-        int scoredMarks;
-        KeyWords keyWords = new KeyWords();
-        keyWords.setResourceId(resId);
-        keyWords.setSentFlag(0);
-        keyWords.setStudentId(FC_Constants.currentStudentID);
-        keyWords.setKeyWord(questionModel.getTitle());
-        keyWords.setWordType("word");
-        learntWords.add(keyWords);
-        for (int i = 0; i < selectedAnsList.size(); i++) {
-            if (selectedAnsList.get(i).getUserAns() != null && !selectedAnsList.get(i).getUserAns().isEmpty()) {
-                if (checkAnswer(selectedAnsList.get(i)) > 70) {
-                    scoredMarks = 10;
-                } else {
-                    scoredMarks = 0;
+        if (selectedAnsList != null && !selectedAnsList.isEmpty()) {
+            List<KeyWords> learntWords = new ArrayList<>();
+            int scoredMarks;
+            KeyWords keyWords = new KeyWords();
+            keyWords.setResourceId(resId);
+            keyWords.setSentFlag(0);
+            keyWords.setStudentId(FC_Constants.currentStudentID);
+            keyWords.setKeyWord(questionModel.getTitle());
+            keyWords.setWordType("word");
+            learntWords.add(keyWords);
+            for (int i = 0; i < selectedAnsList.size(); i++) {
+                if (selectedAnsList.get(i).getUserAns() != null && !selectedAnsList.get(i).getUserAns().isEmpty()) {
+                    if (checkAnswer(selectedAnsList.get(i)) > 75) {
+                        scoredMarks = 10;
+                    } else {
+                        scoredMarks = 0;
+                    }
+                    addScore(0, GameConstatnts.FACTRETRIEVAL, scoredMarks, 10, FC_Utility.getCurrentDateTime(), selectedAnsList.get(i).toString());
                 }
-                addScore(0,questionModel.getTitle(), scoredMarks, 10, FC_Utility.getCurrentDateTime(), selectedAnsList.get(i).toString());
             }
+            appDatabase.getKeyWordDao().insertAllWord(learntWords);
+            GameConstatnts.playGameNext(context, GameConstatnts.FALSE, (OnGameClose) view);
+        } else {
+            GameConstatnts.playGameNext(context, GameConstatnts.TRUE, (OnGameClose) view);
         }
-        appDatabase.getKeyWordDao().insertAllWord(learntWords);
         BackupDatabase.backup(context);
     }
 
@@ -163,7 +169,7 @@ public class FactRetrievalPresenter implements FactRetrievalContract.FactRetriev
             score.setStartDateTime(resStartTime);
             score.setDeviceID(deviceId.equals(null) ? "0000" : deviceId);
             score.setEndDateTime(FC_Utility.getCurrentDateTime());
-            score.setLevel(4);
+            score.setLevel(FC_Constants.currentLevel);
             score.setLabel(Word + " - " + Label);
             score.setSentFlag(0);
             appDatabase.getScoreDao().insert(score);
@@ -222,5 +228,10 @@ public class FactRetrievalPresenter implements FactRetrievalContract.FactRetriev
         }
         perc = ((float) correctCnt / (float) correctArr.length) * 100;
         return perc;
+    }
+
+    @Override
+    public void gameClose() {
+
     }
 }

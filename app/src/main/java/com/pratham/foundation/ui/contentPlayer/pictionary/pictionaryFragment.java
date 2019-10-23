@@ -1,6 +1,8 @@
 package com.pratham.foundation.ui.contentPlayer.pictionary;
 
 import android.app.Dialog;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -34,6 +36,7 @@ import com.pratham.foundation.database.BackupDatabase;
 import com.pratham.foundation.database.domain.Assessment;
 import com.pratham.foundation.database.domain.KeyWords;
 import com.pratham.foundation.database.domain.Score;
+import com.pratham.foundation.interfaces.OnGameClose;
 import com.pratham.foundation.modalclasses.ScienceQuestionChoice;
 import com.pratham.foundation.ui.contentPlayer.GameConstatnts;
 import com.pratham.foundation.ui.contentPlayer.fact_retrival_selection.ScienceQuestion;
@@ -52,6 +55,7 @@ import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -61,7 +65,7 @@ import static com.pratham.foundation.database.AppDatabase.appDatabase;
 import static com.pratham.foundation.utility.FC_Utility.showZoomDialog;
 
 
-public class pictionaryFragment extends Fragment {
+public class pictionaryFragment extends Fragment implements OnGameClose {
 
     @BindView(R.id.tv_question)
     TextView question;
@@ -82,7 +86,7 @@ public class pictionaryFragment extends Fragment {
     @BindView(R.id.next)
     TextView next;
 
-    private String readingContentPath, contentPath, contentTitle, StudentID, resId;
+    private String readingContentPath, contentPath, contentTitle, StudentID, resId,resStartTime;
     private int totalWordCount, learntWordCount;
     List<ScienceQuestionChoice> options;
     private List<ScienceQuestion> selectedFive;
@@ -115,6 +119,10 @@ public class pictionaryFragment extends Fragment {
                 readingContentPath = ApplicationClass.contentSDPath + "/.FCA/English/Game/" + contentPath + "/";
             else
                 readingContentPath = ApplicationClass.foundationPath + "/.FCA/English/Game/" + contentPath + "/";
+
+            resStartTime = FC_Utility.getCurrentDateTime();
+            addScore(0, "", 0, 0, resStartTime, GameConstatnts.PICTIONARYFRAGMENT + " " + GameConstatnts.START);
+
 
             getData();
         }
@@ -344,7 +352,7 @@ public class pictionaryFragment extends Fragment {
                             }
                         } else {*/
                             radioButton.setText(options.get(r).getSubQues());
-                            Log.d("tag111","a"+selectedFive.get(index).getUserAnswer()+"  B"+options.get(r).getQid());
+                            Log.d("tag111", "a" + selectedFive.get(index).getUserAnswer() + "  B" + options.get(r).getQid());
                             if (selectedFive.get(index).getUserAnswer().equalsIgnoreCase(options.get(r).getQid())) {
 
                                 radioButton.setChecked(true);
@@ -419,7 +427,7 @@ public class pictionaryFragment extends Fragment {
                                 rl_mcq.setBackground(getActivity().getResources().getDrawable(R.drawable.custom_edit_text));
                                 tick.setVisibility(View.VISIBLE);
                                 String fileName = options.get(finalR).getSubUrl();
-                                String localPath = readingContentPath + "/images/" + fileName;
+                                String localPath = readingContentPath + "/Images/" + fileName;
 
 
 //                            if (AssessmentApplication.wiseF.isDeviceConnectedToMobileOrWifiNetwork()) {
@@ -598,7 +606,6 @@ public class pictionaryFragment extends Fragment {
             }
 
 
-
         } else {
             Toast.makeText(getActivity(), "No data found", Toast.LENGTH_SHORT).show();
         }
@@ -681,7 +688,7 @@ public class pictionaryFragment extends Fragment {
     public void onsubmitBtnClick() {
         if (selectedFive != null)
             addLearntWords(selectedFive);
-        GameConstatnts.playGameNext(getActivity());
+        //  GameConstatnts.playGameNext(getActivity());
         /*Bundle bundle = GameConstatnts.findGameData("110");
         if (bundle != null) {
             FC_Utility.showFragment(getActivity(), new FillInTheBlanksFragment(), R.id.RL_CPA,
@@ -726,9 +733,11 @@ public class pictionaryFragment extends Fragment {
                     }
                 }
             }
-            if (!isTest) {
+            if (!FC_Constants.isTest) {
                 showResult(correctWordList, wrongWordList);
             }
+        }else {
+            GameConstatnts.playGameNext(getActivity(), GameConstatnts.TRUE, (OnGameClose) this);
         }
         BackupDatabase.backup(getActivity());
     }
@@ -745,28 +754,37 @@ public class pictionaryFragment extends Fragment {
 
 
     private void showResult(List<ScienceQuestionChoice> correctWord, List<ScienceQuestionChoice> wrongWord) {
-        final Dialog dialog = new Dialog(getActivity());
-        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        dialog.setContentView(R.layout.show_result_pictionary);
-        dialog.setCancelable(false);
-        dialog.setCanceledOnTouchOutside(false);
-        resultAdapter resultAdapter = new resultAdapter(correctWord, getContext(), readingContentPath);
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false);
-        RecyclerView correct_keywords = dialog.findViewById(R.id.correct_keywords);
-        correct_keywords.setLayoutManager(linearLayoutManager);
-        correct_keywords.setAdapter(resultAdapter);
-        LinearLayoutManager wrongLayoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false);
-        resultAdapter wrongResultAdapter = new resultAdapter(wrongWord, getContext(), readingContentPath);
-        RecyclerView wrong_keywords = dialog.findViewById(R.id.wrong_keywords);
-        wrong_keywords.setLayoutManager(wrongLayoutManager);
-        wrong_keywords.setAdapter(wrongResultAdapter);
-        SansButton dia_btn_yellow = dialog.findViewById(R.id.dia_btn_yellow);
+        if ((correctWord != null && !correctWord.isEmpty()) || (wrongWord != null && !wrongWord.isEmpty())) {
 
-        // correct_keywords.setText(correctWord.toString().substring(1, correctWord.toString().length() - 1));
-        // wrong_keywords.setText(wrongWord.toString().substring(1, wrongWord.toString().length() - 1));
-        dia_btn_yellow.setText("OK");
-        dia_btn_yellow.setOnClickListener(v -> dialog.dismiss());
-        dialog.show();
+            final Dialog dialog = new Dialog(getActivity());
+            dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+            dialog.setContentView(R.layout.show_result_pictionary);
+            dialog.setCancelable(false);
+            dialog.setCanceledOnTouchOutside(false);
+            Objects.requireNonNull(dialog.getWindow()).setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+            resultAdapter resultAdapter = new resultAdapter(correctWord, getContext(), readingContentPath);
+            LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false);
+            RecyclerView correct_keywords = dialog.findViewById(R.id.correct_keywords);
+            correct_keywords.setLayoutManager(linearLayoutManager);
+            correct_keywords.setAdapter(resultAdapter);
+            LinearLayoutManager wrongLayoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false);
+            resultAdapter wrongResultAdapter = new resultAdapter(wrongWord, getContext(), readingContentPath);
+            RecyclerView wrong_keywords = dialog.findViewById(R.id.wrong_keywords);
+            wrong_keywords.setLayoutManager(wrongLayoutManager);
+            wrong_keywords.setAdapter(wrongResultAdapter);
+            SansButton dia_btn_yellow = dialog.findViewById(R.id.dia_btn_yellow);
+
+            // correct_keywords.setText(correctWord.toString().substring(1, correctWord.toString().length() - 1));
+            // wrong_keywords.setText(wrongWord.toString().substring(1, wrongWord.toString().length() - 1));
+            dia_btn_yellow.setText("OK");
+            dia_btn_yellow.setOnClickListener(v -> {
+                dialog.dismiss();
+                GameConstatnts.playGameNext(getActivity(), GameConstatnts.FALSE,this);
+            });
+            dialog.show();
+        } else {
+            GameConstatnts.playGameNext(getActivity(), GameConstatnts.TRUE, this);
+        }
     }
 
     public void addScore(int wID, String Word, int scoredMarks, int totalMarks, String resStartTime, String Label) {
@@ -782,7 +800,7 @@ public class pictionaryFragment extends Fragment {
             score.setStartDateTime(resStartTime);
             score.setDeviceID(deviceId.equals(null) ? "0000" : deviceId);
             score.setEndDateTime(FC_Utility.getCurrentDateTime());
-            score.setLevel(4);
+            score.setLevel(FC_Constants.currentLevel);
             score.setLabel(Word + " - " + Label);
             score.setSentFlag(0);
             appDatabase.getScoreDao().insert(score);
@@ -808,6 +826,11 @@ public class pictionaryFragment extends Fragment {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    @Override
+    public void gameClose() {
+        addScore(0, "", 0, 0, resStartTime, GameConstatnts.PICTIONARYFRAGMENT + " " + GameConstatnts.END);
     }
 }
 

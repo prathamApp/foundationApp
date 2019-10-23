@@ -14,6 +14,7 @@ import android.widget.TextView;
 
 import com.pratham.foundation.R;
 import com.pratham.foundation.BaseActivity;
+import com.pratham.foundation.interfaces.OnGameClose;
 import com.pratham.foundation.ui.contentPlayer.sequenceLayout.SequenceLayout_;
 import com.pratham.foundation.utility.FC_Utility;
 
@@ -93,6 +94,10 @@ public class ContentPlayerActivity extends BaseActivity {
                 if (fragment != null && fragment.isVisible()) {
                     finish();
                 } else {
+                    Fragment f = getSupportFragmentManager().findFragmentById(R.id.RL_CPA);
+                    if (f instanceof OnGameClose) {
+                        ((OnGameClose) f).gameClose();
+                    }
                     getSupportFragmentManager().popBackStack(SequenceLayout_.class.getSimpleName(), 0);
                 }
 

@@ -21,15 +21,16 @@ public class ScienceQuestionChoice implements Serializable {
     private String subUrl;
 
     @Ignore
-    private String userAns ="";
+    private String userAns = "";
     @Ignore
-    private int position =-1;
+    private int position = -1;
     @Ignore
     private int start;
     @Ignore
     private int end;
     @Ignore
-    private boolean isclicked=false;;
+    private boolean isclicked = false;
+    ;
 
     public int getStart() {
         return start;
@@ -110,5 +111,11 @@ public class ScienceQuestionChoice implements Serializable {
 
     public void setIsclicked(boolean isclicked) {
         this.isclicked = isclicked;
+    }
+
+    @NonNull
+    @Override
+    public String toString() {
+        return "{ que :" + subQues + ", ans :" + userAns + " }";
     }
 }

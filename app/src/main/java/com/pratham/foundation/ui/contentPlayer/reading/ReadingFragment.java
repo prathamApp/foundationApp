@@ -393,9 +393,7 @@ public class ReadingFragment extends Fragment implements STT_Result {
             }
 
 //            scrollView.setBackgroundResource(R.drawable.convo_correct_bg);
-
         }
-
 
         etAnswer.setText(sttResult);
         voiceStart = false;

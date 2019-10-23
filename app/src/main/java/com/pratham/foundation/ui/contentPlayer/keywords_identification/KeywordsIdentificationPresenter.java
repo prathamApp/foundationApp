@@ -9,6 +9,7 @@ import com.pratham.foundation.database.BackupDatabase;
 import com.pratham.foundation.database.domain.Assessment;
 import com.pratham.foundation.database.domain.KeyWords;
 import com.pratham.foundation.database.domain.Score;
+import com.pratham.foundation.interfaces.OnGameClose;
 import com.pratham.foundation.modalclasses.ScienceQuestionChoice;
 import com.pratham.foundation.ui.contentPlayer.GameConstatnts;
 import com.pratham.foundation.ui.contentPlayer.fact_retrival_selection.ScienceQuestion;
@@ -32,7 +33,7 @@ public class KeywordsIdentificationPresenter implements KeywordsIdentificationCo
     private float perc;
     private List<ScienceQuestion> quetionModelList;
     private int totalWordCount, learntWordCount;
-    private String gameName, resId, contentTitle, readingContentPath;
+    private String gameName, resId, contentTitle, readingContentPath, resStartTime;
     private List<String> correctWordList, wrongWordList;
     private boolean isTest = false;
 
@@ -49,7 +50,6 @@ public class KeywordsIdentificationPresenter implements KeywordsIdentificationCo
 
     @Override
     public void getData() {
-
         String text = FC_Utility.loadJSONFromStorage(readingContentPath, "IKWAndroid.json");
         if (text != null) {
             Gson gson = new Gson();
@@ -137,9 +137,12 @@ public class KeywordsIdentificationPresenter implements KeywordsIdentificationCo
                 }
             }
             addScore(GameConstatnts.getInt(questionModel.getQid()), GameConstatnts.KEYWORD_IDENTIFICATION, scoredMarks, 10, FC_Utility.getCurrentDateTime(), selectedAnsList.toString());
-            if (!isTest) {
+
+            if (!FC_Constants.isTest) {
                 viewKeywords.showResult(correctWordList, wrongWordList);
             }
+        } else {
+            GameConstatnts.playGameNext(context, GameConstatnts.TRUE, (OnGameClose) viewKeywords);
         }
         BackupDatabase.backup(context);
 
@@ -167,7 +170,7 @@ public class KeywordsIdentificationPresenter implements KeywordsIdentificationCo
             score.setStartDateTime(resStartTime);
             score.setDeviceID(deviceId.equals(null) ? "0000" : deviceId);
             score.setEndDateTime(FC_Utility.getCurrentDateTime());
-            score.setLevel(4);
+            score.setLevel(FC_Constants.currentLevel);
             score.setLabel(Word + " - " + Label);
             score.setSentFlag(0);
             appDatabase.getScoreDao().insert(score);

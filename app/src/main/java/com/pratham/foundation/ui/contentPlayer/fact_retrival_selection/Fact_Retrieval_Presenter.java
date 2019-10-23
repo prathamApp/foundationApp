@@ -156,7 +156,7 @@ public class Fact_Retrieval_Presenter implements Fact_Retrieval_Contract.Fact_re
                 }
             }
             int scoredMarks = correctCnt * 2;
-            addScore(Integer.parseInt(questionModel.getQid()), GameConstatnts.FACT_RETRIAL_SELECTION, scoredMarks, 10, FC_Utility.getCurrentDateTime(), selectedAnsList.toString());
+            addScore(Integer.parseInt(questionModel.getQid()), GameConstatnts.FACT_RETRIAL_CLICK, scoredMarks, 10, FC_Utility.getCurrentDateTime(), selectedAnsList.toString());
         }
         BackupDatabase.backup(context);
 

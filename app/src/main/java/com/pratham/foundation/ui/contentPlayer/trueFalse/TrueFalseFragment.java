@@ -371,7 +371,7 @@ public class TrueFalseFragment extends Fragment {
     public void onsubmitBtnClick() {
         if (selectedFive != null)
             addLearntWords(selectedFive);
-        GameConstatnts.playGameNext(getActivity());
+        //GameConstatnts.playGameNext(getActivity());
         /*Bundle bundle = GameConstatnts.findGameData("106");
         if (bundle != null) {
             FC_Utility.showFragment(getActivity(), new ReadingFragment(), R.id.RL_CPA,

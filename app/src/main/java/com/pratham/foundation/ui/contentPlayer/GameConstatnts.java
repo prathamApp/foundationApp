@@ -14,6 +14,7 @@ import android.widget.TextView;
 
 import com.pratham.foundation.R;
 import com.pratham.foundation.database.domain.ContentTable;
+import com.pratham.foundation.interfaces.OnGameClose;
 import com.pratham.foundation.ui.contentPlayer.fact_retrieval_fragment.FactRetrieval_;
 import com.pratham.foundation.ui.contentPlayer.fact_retrival_selection.Fact_Retrieval_Fragment_;
 import com.pratham.foundation.ui.contentPlayer.fillInTheBlanks.FillInTheBlanksFragment;
@@ -45,9 +46,13 @@ public class GameConstatnts {
     public static final String TRUE_FALSE = "true_false";
     public static final String PICTIONARYFRAGMENT = "PictAndroid";
     public static final String DOING = "doing_act";
-    public static final String FACT_RETRIAL_SELECTION = "fact_retrial_selection";
-    public static final String FACTRETRIEVAL = "factRetrival";
+    public static final String FACT_RETRIAL_CLICK = "fact_retrial_click";
+    public static final String FACTRETRIEVAL = "factRetrieval";
     public static final String READINGGAME = "ShowMeAndroid";
+    public static final boolean TRUE = true;
+    public static final boolean FALSE = false;
+    public static final String START = "start";
+    public static final String END = "end";
 
     public static List<ContentTable> gameList;
     public static int currentGameAdapterposition;
@@ -91,13 +96,14 @@ public class GameConstatnts {
         return Integer.parseInt(resourceID);
     }
 
-    public static void playGameNext(Context context) {
+    public static void playGameNext(Context context, boolean flag, OnGameClose onGameClose) {
 
         final Dialog dialog = new Dialog(context);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         dialog.setContentView(R.layout.fc_custom_dialog);
         dialog.setCanceledOnTouchOutside(false);
+        dialog.setCancelable(false);
         TextView dia_title = dialog.findViewById(R.id.dia_title);
         Button dia_btn_yellow = dialog.findViewById(R.id.dia_btn_yellow);
         Button dia_btn_green = dialog.findViewById(R.id.dia_btn_green);
@@ -106,12 +112,17 @@ public class GameConstatnts {
         dia_btn_green.setText("Yes");
         dia_btn_red.setText("Exit Game");
         dia_btn_yellow.setText("" + dialog_btn_cancel);
+        if (!flag) {
+            dia_btn_yellow.setVisibility(View.GONE);
+        }
         dia_title.setText("Play next Game?");
         dialog.show();
 
         dia_btn_green.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+               //play next game
+                onGameClose.gameClose();
                 plaGame(context);
                 dialog.dismiss();
             }
@@ -120,6 +131,8 @@ public class GameConstatnts {
         dia_btn_red.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                //Exit game
+                onGameClose.gameClose();
                 ((ContentPlayerActivity) context).getSupportFragmentManager().popBackStack(SequenceLayout_.class.getSimpleName(), 0);
                 dialog.dismiss();
             }
@@ -202,7 +215,7 @@ public class GameConstatnts {
                                 bundle, StoryReadingFragment_.class.getSimpleName());
                         break;
                 }
-      }else {
+        } else {
             ((ContentPlayerActivity) context).getSupportFragmentManager().popBackStack(SequenceLayout_.class.getSimpleName(), 0);
         }
     }

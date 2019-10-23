@@ -174,7 +174,7 @@ public class ParagraphWritingFragment extends Fragment
             presenter.addLearntWords(questionModel, imageName);
             imageName = null;
         }
-        GameConstatnts.playGameNext(getActivity());
+      //  GameConstatnts.playGameNext(getActivity());
        /* Bundle bundle = GameConstatnts.findGameData("105");
         if (bundle != null) {
             FC_Utility.showFragment(getActivity(), new ListeningAndWritting_(), R.id.RL_CPA,

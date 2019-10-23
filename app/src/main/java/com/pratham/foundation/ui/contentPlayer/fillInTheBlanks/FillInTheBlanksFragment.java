@@ -528,7 +528,7 @@ public class FillInTheBlanksFragment extends Fragment implements STT_Result {
     public void onsubmitBtnClick() {
         if (selectedFive != null)
             addLearntWords(selectedFive);
-        GameConstatnts.playGameNext(getActivity());
+      //  GameConstatnts.playGameNext(getActivity());
        /* Bundle bundle = GameConstatnts.findGameData("109");
         if (bundle != null) {
             FC_Utility.showFragment(getActivity(), new TrueFalseFragment(), R.id.RL_CPA,

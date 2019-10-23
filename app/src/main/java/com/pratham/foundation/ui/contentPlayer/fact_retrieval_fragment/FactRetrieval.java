@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.text.SpannableString;
 import android.text.style.BackgroundColorSpan;
+import android.util.Log;
 import android.view.ActionMode;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -15,9 +16,12 @@ import android.widget.TextView;
 import com.pratham.foundation.ApplicationClass;
 import com.pratham.foundation.R;
 import com.pratham.foundation.customView.SansButton;
+import com.pratham.foundation.interfaces.OnGameClose;
 import com.pratham.foundation.modalclasses.ScienceQuestionChoice;
 import com.pratham.foundation.ui.contentPlayer.GameConstatnts;
 import com.pratham.foundation.ui.contentPlayer.fact_retrival_selection.ScienceQuestion;
+import com.pratham.foundation.utility.FC_Constants;
+import com.pratham.foundation.utility.FC_Utility;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Bean;
@@ -30,7 +34,7 @@ import java.util.Collections;
 import java.util.List;
 
 @EFragment(R.layout.fragment_fact_retrival)
-public class FactRetrieval extends Fragment implements FactRetrievalContract.FactRetrievalView {
+public class FactRetrieval extends Fragment implements FactRetrievalContract.FactRetrievalView, OnGameClose {
 
     @Bean(FactRetrievalPresenter.class)
     FactRetrievalContract.FactRetrievalPresenter presenter;
@@ -42,12 +46,12 @@ public class FactRetrieval extends Fragment implements FactRetrievalContract.Fac
     @ViewById(R.id.previous)
     SansButton previous;
     @ViewById(R.id.submitBtn)
-    TextView submitBtn;
+    SansButton submitBtn;
     @ViewById(R.id.next)
-    TextView next;
+    SansButton next;
 
     private String answer, para;
-    private String contentPath, contentTitle, StudentID, resId, readingContentPath;
+    private String contentPath, contentTitle, StudentID, resId, readingContentPath, resStartTime;
     boolean onSdCard;
     private List<ScienceQuestionChoice> selectedQuetion;
     private int index = 0;
@@ -69,6 +73,8 @@ public class FactRetrieval extends Fragment implements FactRetrievalContract.Fac
                 readingContentPath = ApplicationClass.foundationPath + "/.FCA/English/Game/" + contentPath + "/";
 
         }
+        resStartTime = FC_Utility.getCurrentDateTime();
+        presenter.addScore(0, "", 0, 0, resStartTime, GameConstatnts.FACTRETRIEVAL + " " + GameConstatnts.START);
 
         presenter.setView(FactRetrieval.this, contentTitle, resId);
         presenter.getData(readingContentPath);
@@ -120,7 +126,7 @@ public class FactRetrieval extends Fragment implements FactRetrievalContract.Fac
                             selectedQuetion.get(index).setUserAns(answer);
                         }
                         // Log.d("tag :::", answer);
-                        if (!isTest) {
+                        if (!FC_Constants.isTest) {
                             float pertc = presenter.checkAnswer(selectedQuetion.get(index));
                             if (pertc > 75) {
                                 final Dialog dialog = new Dialog(getActivity());
@@ -186,6 +192,7 @@ public class FactRetrieval extends Fragment implements FactRetrievalContract.Fac
 
         } catch (Exception e) {
             e.printStackTrace();
+
         }
     }
 
@@ -212,14 +219,17 @@ public class FactRetrieval extends Fragment implements FactRetrievalContract.Fac
         if (selectedQuetion != null)
             presenter.addLearntWords(selectedQuetion);
 
-        GameConstatnts.playGameNext(getActivity());
-
-
+        //  GameConstatnts.playGameNext(getActivity());
         /* Bundle bundle = GameConstatnts.findGameData(resId);
         if (bundle != null) {
             FC_Utility.showFragment(getActivity(), new KeywordsIdentificationFragment_(), R.id.RL_CPA,
                     bundle, KeywordsIdentificationFragment_.class.getSimpleName());
         }*/
 
+    }
+
+    @Override
+    public void gameClose() {
+        presenter.addScore(0, "", 0, 0, resStartTime, GameConstatnts.FACTRETRIEVAL + " " + GameConstatnts.END);
     }
 }
