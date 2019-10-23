@@ -3,10 +3,10 @@ package com.pratham.foundation.ui.contentPlayer;
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.view.View;
 import android.view.Window;
 import android.widget.Button;
@@ -28,8 +28,8 @@ import com.pratham.foundation.ui.contentPlayer.reading.ReadingFragment;
 import com.pratham.foundation.ui.contentPlayer.sequenceLayout.SequenceLayout_;
 import com.pratham.foundation.ui.contentPlayer.story_reading.StoryReadingFragment_;
 import com.pratham.foundation.ui.contentPlayer.trueFalse.TrueFalseFragment;
-import com.pratham.foundation.ui.contentPlayer.video_view.FragmentVideoView;
-import com.pratham.foundation.ui.contentPlayer.video_view.FragmentVideoView_;
+import com.pratham.foundation.ui.contentPlayer.video_view.ActivityVideoView;
+import com.pratham.foundation.ui.contentPlayer.video_view.ActivityVideoView_;
 import com.pratham.foundation.utility.FC_Constants;
 import com.pratham.foundation.utility.FC_Utility;
 
@@ -219,10 +219,15 @@ public class GameConstatnts {
                                 bundle, StoryReadingFragment_.class.getSimpleName());
                         break;
                     case GameConstatnts.VIDEO:
-//                getActivity().setRequestedOrientation(
-//                        ActivityInfo.SCREEN_ORIENTATION_SENSOR_LANDSCAPE);
-                        FC_Utility.showFragment((Activity) context, new FragmentVideoView_(), R.id.RL_CPA,
-                                bundle, FragmentVideoView.class.getSimpleName());
+                        Intent intent = new Intent(context, ActivityVideoView_.class);
+                        intent.putExtra("contentPath", contentTable1.getResourcePath());
+                        intent.putExtra("StudentID", FC_Constants.currentStudentID);
+                        intent.putExtra("resId", contentTable1.getResourceId());
+                        intent.putExtra("contentName", contentTable1.getNodeTitle());
+                        intent.putExtra("onSdCard", true);
+                        context.startActivity(intent);
+//                        FC_Utility.showFragment((Activity) context, new ActivityVideoView_(), R.id.RL_CPA,
+//                                bundle, ActivityVideoView.class.getSimpleName());
                         break;
                 }
         } else {

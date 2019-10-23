@@ -1,35 +1,33 @@
 package com.pratham.foundation.ui.contentPlayer.video_view;
 
-import android.content.pm.ActivityInfo;
+import android.content.Intent;
 import android.os.Bundle;
-import android.os.Handler;
-import android.support.v4.app.Fragment;
-import android.widget.MediaController;
 import android.widget.VideoView;
 
 import com.pratham.foundation.ApplicationClass;
+import com.pratham.foundation.BaseActivity;
 import com.pratham.foundation.R;
 import com.pratham.foundation.customView.media_controller.PlayerControlView;
+import com.pratham.foundation.database.BackupDatabase;
 import com.pratham.foundation.database.domain.Score;
 import com.pratham.foundation.utility.FC_Constants;
 import com.pratham.foundation.utility.FC_Utility;
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Background;
-import org.androidannotations.annotations.EFragment;
+import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.ViewById;
-import java.util.Objects;
 import static com.pratham.foundation.database.AppDatabase.appDatabase;
 
 
-@EFragment(R.layout.fragment_video_view)
-public class FragmentVideoView extends Fragment {
+@EActivity(R.layout.fragment_video_view)
+public class ActivityVideoView extends BaseActivity {
 
     @ViewById(R.id.videoView)
     VideoView videoView;
     @ViewById(R.id.player_control_view)
     PlayerControlView player_control_view;
 
-    String videoPath,startTime,resId;
+    String videoPath,startTime,resId,contentName;
     boolean onSdCard;
     long videoDuration = 0;
 
@@ -37,10 +35,11 @@ public class FragmentVideoView extends Fragment {
     public void initialize() {
 //        getActivity().setRequestedOrientation(
 //                ActivityInfo.SCREEN_ORIENTATION_SENSOR_LANDSCAPE);
-        Bundle bundle = getArguments();
-        videoPath = bundle.getString("contentPath");
-        resId = bundle.getString("resId");
-        onSdCard = bundle.getBoolean("onSdCard", false);
+        Intent intent = getIntent();
+        videoPath = intent.getStringExtra("contentPath");
+        resId = intent.getStringExtra("resId");
+        contentName = intent.getStringExtra("contentName");
+        onSdCard = intent.getBooleanExtra("onSdCard", false);
 
         if (onSdCard)
             videoPath = ApplicationClass.contentSDPath + "/.FCA/English/Game/" + videoPath;
@@ -62,10 +61,17 @@ public class FragmentVideoView extends Fragment {
             videoDuration = videoView.getDuration();
         });
         videoView.setOnCompletionListener(mp -> {
-            //TODO back press)
+            onBackPressed();
         });
 
 //        new Handler().postDelayed(() -> videoView.start(),500);
+    }
+
+    @Override
+    public void onBackPressed() {
+        addScore();
+        BackupDatabase.backup(this);
+        super.onBackPressed();
     }
 
     @Background

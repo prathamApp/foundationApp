@@ -2,12 +2,11 @@ package com.pratham.foundation.ui.contentPlayer.sequenceLayout;
 
 import android.app.Activity;
 import android.content.Context;
-import android.content.pm.ActivityInfo;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.widget.Toast;
 
 import com.pratham.foundation.R;
 import com.pratham.foundation.database.AppDatabase;
@@ -26,8 +25,8 @@ import com.pratham.foundation.ui.contentPlayer.pictionary.pictionaryFragment;
 import com.pratham.foundation.ui.contentPlayer.reading.ReadingFragment;
 import com.pratham.foundation.ui.contentPlayer.story_reading.StoryReadingFragment_;
 import com.pratham.foundation.ui.contentPlayer.trueFalse.TrueFalseFragment;
-import com.pratham.foundation.ui.contentPlayer.video_view.FragmentVideoView;
-import com.pratham.foundation.ui.contentPlayer.video_view.FragmentVideoView_;
+import com.pratham.foundation.ui.contentPlayer.video_view.ActivityVideoView;
+import com.pratham.foundation.ui.contentPlayer.video_view.ActivityVideoView_;
 import com.pratham.foundation.utility.FC_Constants;
 import com.pratham.foundation.utility.FC_Utility;
 
@@ -41,8 +40,6 @@ import org.androidannotations.annotations.ViewById;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import static com.pratham.foundation.ui.contentPlayer.GameConstatnts.currentGameAdapterposition;
 
 @EFragment(R.layout.fragment_sequence_layout)
 public class SequenceLayout extends Fragment implements SequeanceLayoutContract.SequenceLayoutView,
@@ -176,10 +173,15 @@ public class SequenceLayout extends Fragment implements SequeanceLayoutContract.
                         bundle, DoingFragment.class.getSimpleName());
                 break;
             case GameConstatnts.VIDEO:
-//                getActivity().setRequestedOrientation(
-//                        ActivityInfo.SCREEN_ORIENTATION_SENSOR_LANDSCAPE);
-                FC_Utility.showFragment((Activity) context, new FragmentVideoView_(), R.id.RL_CPA,
-                        bundle, FragmentVideoView.class.getSimpleName());
+                Intent intent = new Intent(context, ActivityVideoView_.class);
+                intent.putExtra("contentPath", contentTable.getResourcePath());
+                intent.putExtra("StudentID", FC_Constants.currentStudentID);
+                intent.putExtra("resId", contentTable.getResourceId());
+                intent.putExtra("contentName", contentTable.getNodeTitle());
+                intent.putExtra("onSdCard", true);
+                context.startActivity(intent);
+//                FC_Utility.showFragment((Activity) context, new ActivityVideoView_(), R.id.RL_CPA,
+//                        bundle, ActivityVideoView.class.getSimpleName());
                 break;
         }
 

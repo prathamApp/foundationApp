@@ -1,8 +1,6 @@
 package com.pratham.foundation.ui.contentPlayer.sequenceLayout;
 
-import android.app.Activity;
 import android.content.Context;
-import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -15,25 +13,6 @@ import com.pratham.foundation.customView.SansButton;
 import com.pratham.foundation.customView.SansTextView;
 import com.pratham.foundation.database.domain.ContentTable;
 import com.pratham.foundation.ui.contentPlayer.GameConstatnts;
-import com.pratham.foundation.ui.contentPlayer.doing.DoingFragment;
-import com.pratham.foundation.ui.contentPlayer.fact_retrieval_fragment.FactRetrieval_;
-import com.pratham.foundation.ui.contentPlayer.fact_retrival_selection.Fact_Retrieval_Fragment;
-import com.pratham.foundation.ui.contentPlayer.fact_retrival_selection.Fact_Retrieval_Fragment_;
-import com.pratham.foundation.ui.contentPlayer.fillInTheBlanks.FillInTheBlanksFragment;
-import com.pratham.foundation.ui.contentPlayer.keywords_identification.KeywordsIdentificationFragment_;
-import com.pratham.foundation.ui.contentPlayer.keywords_mapping.KeywordMappingFragment_;
-import com.pratham.foundation.ui.contentPlayer.listenAndWritting.ListeningAndWritting_;
-import com.pratham.foundation.ui.contentPlayer.multipleChoice.McqFillInTheBlanksFragment;
-import com.pratham.foundation.ui.contentPlayer.paragraph_writing.ParagraphWritingFragment_;
-import com.pratham.foundation.ui.contentPlayer.pictionary.pictionaryFragment;
-import com.pratham.foundation.ui.contentPlayer.reading.ReadingFragment;
-import com.pratham.foundation.ui.contentPlayer.story_reading.StoryReadingFragment;
-import com.pratham.foundation.ui.contentPlayer.story_reading.StoryReadingFragment_;
-import com.pratham.foundation.ui.contentPlayer.trueFalse.TrueFalseFragment;
-import com.pratham.foundation.ui.contentPlayer.video_view.FragmentVideoView;
-import com.pratham.foundation.ui.contentPlayer.video_view.FragmentVideoView_;
-import com.pratham.foundation.utility.FC_Constants;
-import com.pratham.foundation.utility.FC_Utility;
 
 import java.util.List;
 

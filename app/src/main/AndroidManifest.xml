@@ -92,6 +92,9 @@
         <activity
             android:name=".ui.contentPlayer.web_view.WebViewActivity"
             android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.contentPlayer.video_view.ActivityVideoView_"
+            android:screenOrientation="sensorLandscape" />
         <service
             android:name=".services.AppExitService"
             android:enabled="true"
