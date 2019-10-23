@@ -50,6 +50,7 @@
                     android:layout_marginTop="@dimen/_5sdp"
                     android:layout_toEndOf="@id/btn_back"
                     android:gravity="left"
+                    android:textColor="@color/colorText"
                     android:text="@string/app_name"
                     android:textSize="@dimen/_17sdp" />
             </RelativeLayout>
@@ -68,7 +69,7 @@
         <LinearLayout
             android:id="@+id/profile_header"
             android:layout_width="wrap_content"
-            android:layout_height="105dp"
+            android:layout_height="125dp"
             android:paddingStart="@dimen/_5sdp"
             android:paddingEnd="@dimen/_5sdp"
             android:layout_alignParentEnd="true"
@@ -96,6 +97,7 @@
                 android:layout_marginTop="@dimen/_5sdp"
                 android:gravity="center_horizontal"
                 android:text="Progress"
+                android:textColor="@color/colorText"
                 android:textSize="@dimen/_9sdp" />
         </LinearLayout>
 

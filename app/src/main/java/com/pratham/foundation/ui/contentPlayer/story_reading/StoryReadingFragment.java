@@ -102,7 +102,7 @@ public class StoryReadingFragment extends Fragment implements
 
     List<ModalParaSubMenu> modalPagesList;
 
-    String contentType, storyPath, storyData, storyName, storyAudio, certiCode, storyBg, pageTitle;
+    String contentType, storyPath, storyName, storyAudio, certiCode, storyBg, pageTitle;
     static int currentPage, lineBreakCounter = 0;
 
     public Handler handler, audioHandler, soundStopHandler, colorChangeHandler,
@@ -114,7 +114,7 @@ public class StoryReadingFragment extends Fragment implements
     List<String> wordsResIdList = new ArrayList<String>();
 
     boolean fragFlg = false, lastPgFlag = false;
-    boolean playFlg = false, mediaPauseFlag = false, pauseFlg = false;
+    boolean playFlg = false, mediaPauseFlag = false, pauseFlg = false, playHideFlg = false;
     int wordCounter = 0, totalPages = 0, correctAnswerCount, pageNo = 1, quesNo = 0, quesPgNo = 0;
     float stopPlayBack = 0f, startPlayBack = 0f;
     List<Integer> readSounds = new ArrayList<>();
@@ -142,15 +142,14 @@ public class StoryReadingFragment extends Fragment implements
         silence_outer_layout.setVisibility(View.GONE);
         Bundle bundle = getArguments();
         contentType = bundle.getString("contentType");
-        storyPath = bundle.getString("storyPath");
-        storyId = bundle.getString("storyId");
-        storyName = bundle.getString("storyTitle");
+        storyPath = bundle.getString("contentPath");
+        storyId = bundle.getString("resId");
+        storyName = bundle.getString("contentName");
         certiCode = bundle.getString("certiCode");
         onSdCard = bundle.getBoolean("onSdCard", false);
         ttsService = BaseActivity.ttsService;
         contentType = "story";
 
-        storyPath = "storyFolder";
         context = getActivity();
         presenter.setView(StoryReadingFragment.this);
         showLoader();
@@ -253,6 +252,11 @@ public class StoryReadingFragment extends Fragment implements
             story_title.setText(pageTitle);
         story_title.setTextSize(35);
 
+        if(storyAudio.equalsIgnoreCase("NA"))
+            playHideFlg = true;
+        else
+            playHideFlg = false;
+
         try {
             File f = new File(readingContentPath + storyBg);
             if (f.exists()) {
@@ -295,6 +299,8 @@ public class StoryReadingFragment extends Fragment implements
         }
         startPlayBack = Float.parseFloat(modalPagesList.get(currentPage).getReadList().get(0).getWordFrom());
         setWordsToLayout();
+         if(playHideFlg)
+            btn_Play.setVisibility(View.GONE);
         startTime = FC_Utility.getCurrentDateTime();
         new Handler().postDelayed(() -> {
             if (!FC_Constants.isTest)
@@ -347,12 +353,15 @@ public class StoryReadingFragment extends Fragment implements
                         myTextView.setTextColor(getResources().getColor(R.color.colorRedDark));
                         Animation animation = AnimationUtils.loadAnimation(context, R.anim.reading_zoom_in);
                         myTextView.startAnimation(animation);
+                        if(colorChangeHandler == null)
+                            colorChangeHandler = new Handler();
                         colorChangeHandler.postDelayed(() -> {
                             myTextView.setTextColor(getResources().getColor(R.color.colorText));
                             Animation animation1 = AnimationUtils.loadAnimation(context, R.anim.reading_zoom_out);
                             myTextView.startAnimation(animation1);
                         }, 350);
-                        playClickedWord(finalI);
+                        if(!storyAudio.equalsIgnoreCase("NA"))
+                            playClickedWord(finalI);
 //                        ttsService.play("" + linesStringList[finalI]);
                     }
                 });
@@ -528,7 +537,7 @@ public class StoryReadingFragment extends Fragment implements
             continuousSpeechService.startSpeechInput();
         } else {
             voiceStart = false;
-            if (!FC_Constants.isTest)
+            if (!FC_Constants.isTest && !playHideFlg)
                 btn_Play.setVisibility(View.VISIBLE);
             btn_Mic.setImageResource(R.drawable.ic_mic_black_24dp);
 //            layout_mic_ripple.startRippleAnimation();
@@ -539,7 +548,7 @@ public class StoryReadingFragment extends Fragment implements
 
     @Click(R.id.btn_play)
     void playReading() {
-        if (!playFlg || pauseFlg) {
+        if ((!playFlg || pauseFlg) && !storyAudio.equalsIgnoreCase("NA")) {
             btn_Mic.setVisibility(View.GONE);
             playFlg = true;
             pauseFlg = false;
@@ -681,7 +690,7 @@ public class StoryReadingFragment extends Fragment implements
 
             if (voiceStart) {
                 voiceStart = false;
-                if (!FC_Constants.isTest)
+                if (!FC_Constants.isTest && !playHideFlg)
                     btn_Play.setVisibility(View.VISIBLE);
                 btn_Mic.setImageResource(R.drawable.ic_mic_black_24dp);
                 continuousSpeechService.stopSpeechInput();
@@ -757,7 +766,7 @@ public class StoryReadingFragment extends Fragment implements
             }
             if (voiceStart) {
                 voiceStart = false;
-                if (!FC_Constants.isTest)
+                if (!FC_Constants.isTest && !playHideFlg)
                     btn_Play.setVisibility(View.VISIBLE);
                 btn_Mic.setImageResource(R.drawable.ic_mic_black_24dp);
                 continuousSpeechService.stopSpeechInput();
@@ -998,7 +1007,7 @@ public class StoryReadingFragment extends Fragment implements
         if (voiceStart) {
             btn_Mic.performClick();
             voiceStart = false;
-            if (!FC_Constants.isTest)
+            if (!FC_Constants.isTest && !playHideFlg)
                 btn_Play.setVisibility(View.VISIBLE);
             setMute(0);
         }

@@ -55,6 +55,7 @@
                     android:layout_marginTop="@dimen/_8sdp"
                     android:layout_marginRight="@dimen/_8sdp"
                     android:gravity="left"
+                    android:textColor="@color/colorText"
                     android:text="@string/app_name"
                     android:textSize="@dimen/_16sdp" />
 
@@ -66,6 +67,7 @@
                     android:layout_centerVertical="true"
                     android:layout_marginRight="@dimen/_8sdp"
                     android:gravity="left"
+                    android:textColor="@color/colorText"
                     android:text="@string/app_name"
                     android:textSize="@dimen/_13sdp" />
             </RelativeLayout>
@@ -96,6 +98,7 @@
                     android:layout_height="30dp"
                     android:gravity="center_horizontal"
                     android:layout_marginTop="@dimen/_5sdp"
+                    android:textColor="@color/colorText"
                     android:text="Progress"
                     android:textSize="@dimen/_9sdp" />
 
