@@ -54,6 +54,7 @@ public class GameConstatnts {
     public static final String START = "start";
     public static final String END = "end";
 
+
     public static List<ContentTable> gameList;
     public static int currentGameAdapterposition;
 
