@@ -28,6 +28,8 @@ import com.pratham.foundation.ui.contentPlayer.reading.ReadingFragment;
 import com.pratham.foundation.ui.contentPlayer.sequenceLayout.SequenceLayout_;
 import com.pratham.foundation.ui.contentPlayer.story_reading.StoryReadingFragment_;
 import com.pratham.foundation.ui.contentPlayer.trueFalse.TrueFalseFragment;
+import com.pratham.foundation.ui.contentPlayer.video_view.FragmentVideoView;
+import com.pratham.foundation.ui.contentPlayer.video_view.FragmentVideoView_;
 import com.pratham.foundation.utility.FC_Constants;
 import com.pratham.foundation.utility.FC_Utility;
 
@@ -53,6 +55,7 @@ public class GameConstatnts {
     public static final boolean FALSE = false;
     public static final String START = "start";
     public static final String END = "end";
+    public static final String VIDEO = "Video";
 
 
     public static List<ContentTable> gameList;
@@ -122,7 +125,7 @@ public class GameConstatnts {
         dia_btn_green.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-               //play next game
+                //play next game
                 onGameClose.gameClose();
                 plaGame(context);
                 dialog.dismiss();
@@ -215,10 +218,15 @@ public class GameConstatnts {
                         FC_Utility.showFragment((Activity) context, new StoryReadingFragment_(), R.id.RL_CPA,
                                 bundle, StoryReadingFragment_.class.getSimpleName());
                         break;
+                    case GameConstatnts.VIDEO:
+//                getActivity().setRequestedOrientation(
+//                        ActivityInfo.SCREEN_ORIENTATION_SENSOR_LANDSCAPE);
+                        FC_Utility.showFragment((Activity) context, new FragmentVideoView_(), R.id.RL_CPA,
+                                bundle, FragmentVideoView.class.getSimpleName());
+                        break;
                 }
         } else {
             ((ContentPlayerActivity) context).getSupportFragmentManager().popBackStack(SequenceLayout_.class.getSimpleName(), 0);
         }
     }
 }
-

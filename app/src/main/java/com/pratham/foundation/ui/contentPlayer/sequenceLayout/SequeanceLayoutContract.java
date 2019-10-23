@@ -14,4 +14,8 @@ public interface SequeanceLayoutContract {
 
         void setView(SequeanceLayoutContract.SequenceLayoutView sequenceLayoutView);
     }
+
+    interface clickListner{
+        void contentClicked(ContentTable contentTable);
+    }
 }

@@ -1,6 +1,8 @@
 package com.pratham.foundation.ui.contentPlayer.sequenceLayout;
 
 import android.app.Activity;
+import android.content.Context;
+import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
@@ -11,9 +13,22 @@ import com.pratham.foundation.R;
 import com.pratham.foundation.database.AppDatabase;
 import com.pratham.foundation.database.domain.ContentTable;
 import com.pratham.foundation.ui.contentPlayer.GameConstatnts;
+import com.pratham.foundation.ui.contentPlayer.doing.DoingFragment;
+import com.pratham.foundation.ui.contentPlayer.fact_retrieval_fragment.FactRetrieval_;
+import com.pratham.foundation.ui.contentPlayer.fact_retrival_selection.Fact_Retrieval_Fragment_;
 import com.pratham.foundation.ui.contentPlayer.fillInTheBlanks.FillInTheBlanksFragment;
+import com.pratham.foundation.ui.contentPlayer.keywords_identification.KeywordsIdentificationFragment_;
+import com.pratham.foundation.ui.contentPlayer.keywords_mapping.KeywordMappingFragment_;
+import com.pratham.foundation.ui.contentPlayer.listenAndWritting.ListeningAndWritting_;
 import com.pratham.foundation.ui.contentPlayer.multipleChoice.McqFillInTheBlanksFragment;
+import com.pratham.foundation.ui.contentPlayer.paragraph_writing.ParagraphWritingFragment_;
+import com.pratham.foundation.ui.contentPlayer.pictionary.pictionaryFragment;
 import com.pratham.foundation.ui.contentPlayer.reading.ReadingFragment;
+import com.pratham.foundation.ui.contentPlayer.story_reading.StoryReadingFragment_;
+import com.pratham.foundation.ui.contentPlayer.trueFalse.TrueFalseFragment;
+import com.pratham.foundation.ui.contentPlayer.video_view.FragmentVideoView;
+import com.pratham.foundation.ui.contentPlayer.video_view.FragmentVideoView_;
+import com.pratham.foundation.utility.FC_Constants;
 import com.pratham.foundation.utility.FC_Utility;
 
 import org.androidannotations.annotations.AfterViews;
@@ -30,7 +45,9 @@ import java.util.List;
 import static com.pratham.foundation.ui.contentPlayer.GameConstatnts.currentGameAdapterposition;
 
 @EFragment(R.layout.fragment_sequence_layout)
-public class SequenceLayout extends Fragment implements SequeanceLayoutContract.SequenceLayoutView {
+public class SequenceLayout extends Fragment implements SequeanceLayoutContract.SequenceLayoutView,
+        SequeanceLayoutContract.clickListner
+{
 
     @Bean(SequenceLayoutPresenterImp.class)
     SequeanceLayoutContract.SequenceLayoutPresenter sequenceLayoutPresenter;
@@ -40,6 +57,7 @@ public class SequenceLayout extends Fragment implements SequeanceLayoutContract.
 
     private String nodeID;
     private boolean onSdCard;
+    Context context;
     List<ContentTable> contentTableList;
 
     public SequenceLayout() {
@@ -48,6 +66,7 @@ public class SequenceLayout extends Fragment implements SequeanceLayoutContract.
 
     @AfterViews
     public void initiate() {
+        context = getActivity();
         Bundle bundle = getArguments();
         if (bundle != null) {
             nodeID = bundle.getString("nodeID");
@@ -72,7 +91,7 @@ public class SequenceLayout extends Fragment implements SequeanceLayoutContract.
     @UiThread
     public void loadUI() {
         GameConstatnts.gameList = contentTableList;
-        SequenceGameAdapter sequenceGameAdapter = new SequenceGameAdapter(getActivity(), contentTableList);
+        SequenceGameAdapter sequenceGameAdapter = new SequenceGameAdapter(getActivity(), contentTableList, SequenceLayout.this);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
         recyclerView.setAdapter(sequenceGameAdapter);
     }
@@ -85,5 +104,84 @@ public class SequenceLayout extends Fragment implements SequeanceLayoutContract.
                 bundle, FillInTheBlanksFragment.class.getSimpleName());
         /*currentGameAdapterposition=-1;
         GameConstatnts.playGameNext(getActivity());*/
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+    }
+
+    @Override
+    public void contentClicked(ContentTable contentTable) {
+        Bundle bundle = new Bundle();
+        bundle.putString("contentPath", contentTable.getResourcePath());
+        bundle.putString("StudentID", FC_Constants.currentStudentID);
+        bundle.putString("resId", contentTable.getResourceId());
+        bundle.putString("contentName", contentTable.getNodeTitle());
+        bundle.putBoolean("onSdCard", true);
+
+        switch (contentTable.getResourceType()) {
+            case GameConstatnts.FACTRETRIEVAL:
+                FC_Utility.showFragment((Activity) context, new FactRetrieval_(), R.id.RL_CPA,
+                        bundle, FactRetrieval_.class.getSimpleName());
+                break;
+            case GameConstatnts.KEYWORD_IDENTIFICATION:
+                FC_Utility.showFragment((Activity) context, new KeywordsIdentificationFragment_(), R.id.RL_CPA,
+                        bundle, KeywordsIdentificationFragment_.class.getSimpleName());
+                break;
+
+            case GameConstatnts.KEYWORD_MAPPING:
+                FC_Utility.showFragment((Activity) context, new KeywordMappingFragment_(), R.id.RL_CPA,
+                        bundle, KeywordMappingFragment_.class.getSimpleName());
+                break;
+            case GameConstatnts.PARAGRAPH_WRITING:
+                FC_Utility.showFragment((Activity) context, new ParagraphWritingFragment_(), R.id.RL_CPA,
+                        bundle, ParagraphWritingFragment_.class.getSimpleName());
+                break;
+
+            case GameConstatnts.LISTNING_AND_WRITTING:
+                FC_Utility.showFragment((Activity) context, new ListeningAndWritting_(), R.id.RL_CPA,
+                        bundle, ListeningAndWritting_.class.getSimpleName());
+                break;
+            case "106":
+                FC_Utility.showFragment((Activity) context, new ReadingFragment(), R.id.RL_CPA,
+                        bundle, ReadingFragment.class.getSimpleName());
+                break;
+            case "108":
+                FC_Utility.showFragment((Activity) context, new McqFillInTheBlanksFragment(), R.id.RL_CPA,
+                        bundle, McqFillInTheBlanksFragment.class.getSimpleName());
+                break;
+            case "109":
+                FC_Utility.showFragment((Activity) context, new TrueFalseFragment(), R.id.RL_CPA,
+                        bundle, TrueFalseFragment.class.getSimpleName());
+                break;
+            case "110":
+                FC_Utility.showFragment((Activity) context, new FillInTheBlanksFragment(), R.id.RL_CPA,
+                        bundle, FillInTheBlanksFragment.class.getSimpleName());
+                break;
+            case GameConstatnts.READINGGAME:
+                FC_Utility.showFragment((Activity) context, new pictionaryFragment(), R.id.RL_CPA,
+                        bundle, pictionaryFragment.class.getSimpleName());
+                break;
+            case "112":
+                FC_Utility.showFragment((Activity) context, new Fact_Retrieval_Fragment_(), R.id.RL_CPA,
+                        bundle, Fact_Retrieval_Fragment_.class.getSimpleName());
+                break;
+            case GameConstatnts.PICTIONARYFRAGMENT:
+                FC_Utility.showFragment((Activity) context, new StoryReadingFragment_(), R.id.RL_CPA,
+                        bundle, StoryReadingFragment_.class.getSimpleName());
+                break;
+            case GameConstatnts.DOING:
+                FC_Utility.showFragment((Activity) context, new DoingFragment(), R.id.RL_CPA,
+                        bundle, DoingFragment.class.getSimpleName());
+                break;
+            case GameConstatnts.VIDEO:
+//                getActivity().setRequestedOrientation(
+//                        ActivityInfo.SCREEN_ORIENTATION_SENSOR_LANDSCAPE);
+                FC_Utility.showFragment((Activity) context, new FragmentVideoView_(), R.id.RL_CPA,
+                        bundle, FragmentVideoView.class.getSimpleName());
+                break;
+        }
+
     }
 }

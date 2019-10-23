@@ -19,7 +19,7 @@ public class SelectSubjectPresenter implements SelectSubjectContract.Presenter {
 
     @Override
     public List getSubjectList() {
-        List<ContentTable> subjectList = AppDatabase.getDatabaseInstance(context).getContentTableDao().getChildsOfParent("4029");
+        List<ContentTable> subjectList = AppDatabase.getDatabaseInstance(context).getContentTableDao().getChildsOfParent("50001");
         return subjectList;
     }
 }

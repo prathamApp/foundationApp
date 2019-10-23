@@ -254,13 +254,8 @@ public class LearningPresenter implements LearningContract.LearningPresenter, AP
             contentParentList.clear();
 
             ContentTableNew resContentTable = new ContentTableNew();
-            List<ContentTableNew> resourceList;
-            List<ContentTableNew> tempList2;
-            tempList2 = new ArrayList<>();
-
-            resourceList = new ArrayList<>();
-            resContentTable.setNodeTitle("Direct Play");
-            resContentTable.setNodeType("resList");
+            List<ContentTableNew> resourceList= new ArrayList<>();
+            List<ContentTableNew> tempList2 = new ArrayList<>();
 
             ContentTableNew contentTableRes = new ContentTableNew();
             contentTableRes.setNodeId("0");

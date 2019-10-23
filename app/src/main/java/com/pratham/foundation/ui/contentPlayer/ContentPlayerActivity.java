@@ -2,6 +2,7 @@ package com.pratham.foundation.ui.contentPlayer;
 
 import android.app.Dialog;
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
@@ -49,7 +50,6 @@ public class ContentPlayerActivity extends BaseActivity {
         FC_Utility.showFragment(ContentPlayerActivity.this, new SequenceLayout_(), R.id.RL_CPA,
                 bundle, SequenceLayout_.class.getSimpleName());
     }
-
 
     @Override
     public void onBackPressed() {
