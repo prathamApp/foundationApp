@@ -2,6 +2,7 @@ package com.pratham.foundation.ui.contentPlayer.video_view;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.widget.VideoView;
 
 import com.pratham.foundation.ApplicationClass;
@@ -61,9 +62,9 @@ public class ActivityVideoView extends BaseActivity {
             videoDuration = videoView.getDuration();
         });
         videoView.setOnCompletionListener(mp -> {
-            onBackPressed();
+        new Handler().postDelayed(() ->
+                onBackPressed(),1500);
         });
-
 //        new Handler().postDelayed(() -> videoView.start(),500);
     }
 
