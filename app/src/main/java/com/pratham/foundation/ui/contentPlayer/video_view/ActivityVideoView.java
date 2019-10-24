@@ -43,9 +43,9 @@ public class ActivityVideoView extends BaseActivity {
         onSdCard = intent.getBooleanExtra("onSdCard", false);
 
         if (onSdCard)
-            videoPath = ApplicationClass.contentSDPath + "/.FCA/English/Game/" + videoPath;
+            videoPath = ApplicationClass.contentSDPath + "/.FCA/English/Game/Videos/" + videoPath;
         else
-            videoPath = ApplicationClass.foundationPath + "/.FCA/English/Game/" + videoPath;
+            videoPath = ApplicationClass.foundationPath + "/.FCA/English/Game/Videos/" + videoPath;
 
         initializePlayer(videoPath);
     }

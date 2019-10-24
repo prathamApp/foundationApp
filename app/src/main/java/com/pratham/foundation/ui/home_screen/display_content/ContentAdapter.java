@@ -123,16 +123,17 @@ public class ContentAdapter extends RecyclerView.Adapter<ContentAdapter.MyViewHo
                 if (contentList.getNodeType() != null) {
 /*                    contentClicked.onContentDownloadClicked(position, contentList.nodeId);
                 }*/
-                    if (contentList.getNodeType().equalsIgnoreCase("Resource"))
+                    if (contentList.getNodeType().equalsIgnoreCase("Resource")) {
                         if (contentList.getIsDownloaded().equalsIgnoreCase("true")) {
                             contentClicked.onContentOpenClicked(position, contentList.getNodeId());
                         } else if (contentList.getIsDownloaded().equalsIgnoreCase("false"))
                             contentClicked.onContentDownloadClicked(position, contentList.nodeId);
-                    else if (contentList.getNodeType().equalsIgnoreCase("PreResource"))
+                    }else if (contentList.getNodeType().equalsIgnoreCase("PreResource")) {
                         if (contentList.getIsDownloaded().equalsIgnoreCase("true")) {
                             contentClicked.onPreResOpenClicked(position, contentList.getNodeId());
                         } else if (contentList.getIsDownloaded().equalsIgnoreCase("false"))
                             contentClicked.onContentDownloadClicked(position, contentList.nodeId);
+                    }
                 } else
                     contentClicked.onContentClicked(position, contentList.nodeId);
             }
