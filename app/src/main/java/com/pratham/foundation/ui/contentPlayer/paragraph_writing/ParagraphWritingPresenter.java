@@ -57,6 +57,7 @@ public class ParagraphWritingPresenter implements ParagraphWritingContract.Parag
         Gson gson = new Gson();
         Type type = new TypeToken<List<ScienceQuestion>>() {
         }.getType();
+
         quetionModelList = gson.fromJson(text, type);
         getDataList();
        /* getDataList();
