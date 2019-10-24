@@ -16,12 +16,12 @@ import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
-import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.MediaController;
@@ -37,17 +37,17 @@ import com.google.gson.reflect.TypeToken;
 import com.pratham.foundation.ApplicationClass;
 import com.pratham.foundation.R;
 import com.pratham.foundation.customView.GifView;
+import com.pratham.foundation.customView.SansTextView;
 import com.pratham.foundation.database.BackupDatabase;
 import com.pratham.foundation.database.domain.Assessment;
 import com.pratham.foundation.database.domain.KeyWords;
 import com.pratham.foundation.database.domain.Score;
+import com.pratham.foundation.interfaces.OnGameClose;
 import com.pratham.foundation.ui.contentPlayer.GameConstatnts;
 import com.pratham.foundation.ui.contentPlayer.fact_retrival_selection.ScienceQuestion;
 import com.pratham.foundation.utility.FC_Constants;
 import com.pratham.foundation.utility.FC_Utility;
 
-import org.androidannotations.annotations.Click;
-import org.androidannotations.annotations.ViewById;
 import org.json.JSONArray;
 import org.json.JSONException;
 
@@ -68,7 +68,7 @@ import butterknife.OnClick;
 import static com.pratham.foundation.database.AppDatabase.appDatabase;
 
 
-public class DoingFragment extends Fragment {
+public class DoingFragment extends Fragment implements OnGameClose {
 
     @BindView(R.id.tv_question)
     TextView question;
@@ -80,21 +80,26 @@ public class DoingFragment extends Fragment {
     @BindView(R.id.vv_question)
     VideoView vv_question;
 
+    @BindView(R.id.tittle)
+    SansTextView tittle;
+
     @BindView(R.id.RelativeLayout)
     RelativeLayout RelativeLayout;
 
     String fileName;
     String questionPath;
     private Context context;
+    private String resourcePath;
     private static final int CAMERA_REQUEST = 1;
 
 
-    private String readingContentPath, contentPath, contentTitle, StudentID, resId,imageName;
+    private String readingContentPath, contentPath, contentTitle, StudentID, resId, imageName, resStartTime;
     private int totalWordCount, learntWordCount;
     private ScienceQuestion scienceQuestion;
     private float perc;
     private boolean onSdCard;
     private List<ScienceQuestion> dataList;
+    private String jsonName;
 
     public DoingFragment() {
         // Required empty public constructor
@@ -110,19 +115,21 @@ public class DoingFragment extends Fragment {
         StudentID = getArguments().getString("StudentID");
         resId = getArguments().getString("resId");
         contentTitle = getArguments().getString("contentName");
+        jsonName = getArguments().getString("jsonName");
         if (getArguments().getBoolean("onSdCard", false)) onSdCard = true;
         else onSdCard = false;
         if (onSdCard)
             readingContentPath = ApplicationClass.contentSDPath + "/.FCA/English/Game/" + contentPath + "/";
         else
             readingContentPath = ApplicationClass.foundationPath + "/.FCA/English/Game/" + contentPath + "/";
-
+        resStartTime = FC_Utility.getCurrentDateTime();
+        addScore(0, "", 0, 0, resStartTime, jsonName + " " + GameConstatnts.START);
         getData();
     }
 
     private void getData() {
         try {
-            InputStream is = new FileInputStream(readingContentPath + "doing.json");
+            InputStream is = new FileInputStream(readingContentPath + jsonName + ".json");
             int size = is.available();
             byte[] buffer = new byte[size];
             is.read(buffer);
@@ -221,11 +228,14 @@ public class DoingFragment extends Fragment {
 //        questionPath = Environment.getExternalStorageDirectory().toString() + "/.Assessment/Content/Downloaded" + "/" + fileName;
             questionImage.setVisibility(View.GONE);
             questionGif.setVisibility(View.GONE);
-
+            question.setText(scienceQuestion.getQuestion());
+            question.setMovementMethod(new ScrollingMovementMethod());
+            if (!scienceQuestion.getInstruction().isEmpty())
+                tittle.setText(scienceQuestion.getInstruction());
             if (fileName != null && !fileName.isEmpty()) {
                 RelativeLayout.setVisibility(View.VISIBLE);
                 if (fileName.toLowerCase().endsWith(".jpeg") || fileName.toLowerCase().endsWith(".jpg") || fileName.toLowerCase().endsWith(".png")) {
-                    questionPath = readingContentPath + "Images/" + fileName;
+                    questionPath = readingContentPath  + fileName;
                     Glide.with(getActivity())
                             .load(questionPath)
                             .apply(new RequestOptions()
@@ -233,7 +243,7 @@ public class DoingFragment extends Fragment {
                             .into(questionImage);
                     questionImage.setVisibility(View.VISIBLE);
                 } else if (fileName.toLowerCase().endsWith(".gif")) {
-                    questionPath = readingContentPath + "Images/" + fileName;
+                    questionPath = readingContentPath  + fileName;
                     InputStream gif;
                     try {
                         gif = new FileInputStream(questionPath);
@@ -244,7 +254,7 @@ public class DoingFragment extends Fragment {
                     }
 
                 } else {
-                    questionPath = readingContentPath + "Videos/" + fileName;
+                    questionPath = readingContentPath  + fileName;
                     if (scienceQuestion.getQuestion().equalsIgnoreCase(""))
                         question.setText("Watch the video");
                     else question.setText(scienceQuestion.getQuestion());
@@ -257,7 +267,7 @@ public class DoingFragment extends Fragment {
                     questionImage.setBackgroundDrawable(ob);
                     questionImage.setVisibility(View.VISIBLE);
                 }
-            }else {
+            } else {
                 RelativeLayout.setVisibility(View.INVISIBLE);
             }
 
@@ -290,6 +300,7 @@ public class DoingFragment extends Fragment {
         super.onPause();
         vv_question.pause();
     }
+
     @OnClick(R.id.capture)
     public void captureClick() {
         imageName = "" + ApplicationClass.getUniqueID();
@@ -311,7 +322,7 @@ public class DoingFragment extends Fragment {
             addLearntWords(scienceQuestion, imageName);
             imageName = null;
         }
-       // GameConstatnts.playGameNext(getActivity());
+        // GameConstatnts.playGameNext(getActivity());
        /* Bundle bundle = GameConstatnts.findGameData("105");
         if (bundle != null) {
             FC_Utility.showFragment(getActivity(), new ListeningAndWritting_(), R.id.RL_CPA,
@@ -328,9 +339,12 @@ public class DoingFragment extends Fragment {
             keyWords.setStudentId(FC_Constants.currentStudentID);
             keyWords.setKeyWord(questionModel.getTitle());
             keyWords.setWordType("word");
-            addScore(GameConstatnts.getInt(questionModel.getQid()), GameConstatnts.DOING, 0, 0, FC_Utility.getCurrentDateTime(), imageName);
+            addScore(GameConstatnts.getInt(questionModel.getQid()), jsonName, 0, 0, FC_Utility.getCurrentDateTime(), imageName);
             appDatabase.getKeyWordDao().insert(keyWords);
             Toast.makeText(context, "inserted succussfully", Toast.LENGTH_LONG).show();
+            GameConstatnts.playGameNext(context, GameConstatnts.FALSE, (OnGameClose) this);
+        } else {
+            GameConstatnts.playGameNext(context, GameConstatnts.TRUE, (OnGameClose) this);
         }
         BackupDatabase.backup(context);
     }
@@ -399,6 +413,7 @@ public class DoingFragment extends Fragment {
             dialog.dismiss();
         });
     }
+
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         Log.d("codes", String.valueOf(requestCode) + resultCode);
@@ -414,6 +429,7 @@ public class DoingFragment extends Fragment {
             e.printStackTrace();
         }
     }
+
     public void createDirectoryAndSaveFile(Bitmap imageToSave, String fileName) {
         try {
 
@@ -436,5 +452,10 @@ public class DoingFragment extends Fragment {
             e.printStackTrace();
         }
 
+    }
+
+    @Override
+    public void gameClose() {
+        addScore(0, "", 0, 0, resStartTime, jsonName + " " + GameConstatnts.END);
     }
 }

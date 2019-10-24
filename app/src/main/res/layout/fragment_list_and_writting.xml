@@ -95,13 +95,15 @@
             android:layout_height="match_parent"
             android:layout_above="@+id/controls_top">
 
-            <ImageButton
+            <ImageView
                 android:id="@+id/play_button"
                 android:layout_width="@dimen/_100sdp"
                 android:layout_height="@dimen/_100sdp"
                 android:layout_centerInParent="true"
                 android:scaleType="fitXY"
-                android:src="@drawable/ic_play_arrow" />
+                android:padding="@dimen/_10sdp"
+                android:background="@color/ghost_white"
+                android:src="@drawable/play_button" />
 
             <RadioGroup
                 android:id="@+id/radiogroup"
@@ -109,7 +111,9 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@id/play_button"
                 android:layout_margin="@dimen/_10sdp"
+                android:padding="@dimen/_10sdp"
                 android:checkedButton="@+id/normal"
+                android:background="@color/ghost_white"
                 android:layout_centerHorizontal="true">
 
                 <RadioButton

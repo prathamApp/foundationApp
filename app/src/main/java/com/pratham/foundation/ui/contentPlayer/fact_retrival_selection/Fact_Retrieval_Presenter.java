@@ -8,6 +8,7 @@ import com.pratham.foundation.database.BackupDatabase;
 import com.pratham.foundation.database.domain.Assessment;
 import com.pratham.foundation.database.domain.KeyWords;
 import com.pratham.foundation.database.domain.Score;
+import com.pratham.foundation.interfaces.OnGameClose;
 import com.pratham.foundation.modalclasses.ScienceQuestionChoice;
 import com.pratham.foundation.ui.contentPlayer.GameConstatnts;
 import com.pratham.foundation.utility.FC_Constants;
@@ -58,7 +59,7 @@ public class Fact_Retrieval_Presenter implements Fact_Retrieval_Contract.Fact_re
 
 
         try {
-            InputStream is = new FileInputStream(readingContentPath + "fact_retrial_selection.json");
+            InputStream is = new FileInputStream(readingContentPath + "fact_retrial_word.json");
             int size = is.available();
             byte[] buffer = new byte[size];
             is.read(buffer);
@@ -153,10 +154,13 @@ public class Fact_Retrieval_Presenter implements Fact_Retrieval_Contract.Fact_re
                     keyWords.setKeyWord(key);
                     keyWords.setWordType("word");
                     appDatabase.getKeyWordDao().insert(keyWords);
+                    GameConstatnts.playGameNext(context, GameConstatnts.FALSE, (OnGameClose) viewKeywords);
                 }
             }
             int scoredMarks = correctCnt * 2;
             addScore(Integer.parseInt(questionModel.getQid()), GameConstatnts.FACT_RETRIAL_CLICK, scoredMarks, 10, FC_Utility.getCurrentDateTime(), selectedAnsList.toString());
+        } else {
+            GameConstatnts.playGameNext(context, GameConstatnts.TRUE, (OnGameClose) viewKeywords);
         }
         BackupDatabase.backup(context);
 
@@ -175,7 +179,7 @@ public class Fact_Retrieval_Presenter implements Fact_Retrieval_Contract.Fact_re
             score.setStartDateTime(resStartTime);
             score.setDeviceID(deviceId.equals(null) ? "0000" : deviceId);
             score.setEndDateTime(FC_Utility.getCurrentDateTime());
-            score.setLevel(4);
+            score.setLevel(FC_Constants.currentLevel);
             score.setLabel(Word + " - " + Label);
             score.setSentFlag(0);
             appDatabase.getScoreDao().insert(score);

@@ -100,6 +100,7 @@ public class KeywordsIdentificationFragment extends Fragment implements Keywords
     @Override
     public void showParagraph(ScienceQuestion questionModel) {
         this.questionModel = questionModel;
+        this.questionModel.setQuestion(questionModel.getQuestion().replace("\n"," "));
         String[] paragraphWords = questionModel.getQuestion().split(" ");
         for (int i = 0; i < paragraphWords.length; i++) {
             if (positionMap.containsKey(paragraphWords[i].replaceAll("[\\-\\+\\.\\^\\?\\'\\!:,]", ""))) {

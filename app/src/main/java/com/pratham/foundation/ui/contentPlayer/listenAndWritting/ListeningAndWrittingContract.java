@@ -22,7 +22,7 @@ public interface ListeningAndWrittingContract {
         void getDataList();
 
         void addLearntWords(ScienceQuestion listenAndWrittingModal, String imageName);
-
+        void addScore(int wID, String Word, int scoredMarks, int totalMarks, String resStartTime, String Label);
         void createDirectoryAndSaveFile(Bitmap imageToSave, String fileName);
         //   void setView(ListeningAndWrittingContract.ListeningAndWrittingView listeningAndWrittingView);
     }

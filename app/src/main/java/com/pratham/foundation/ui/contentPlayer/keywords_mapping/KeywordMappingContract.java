@@ -21,5 +21,6 @@ public interface KeywordMappingContract {
         void addLearntWords(ScienceQuestion keywordmapping, List selectedOption);
 
         void setView(KeywordMappingContract.KeywordMappingView keywordMappingView, String resId,String readingContentPath);
+        void addScore(int wID, String Word, int scoredMarks, int totalMarks, String resStartTime, String Label);
     }
 }

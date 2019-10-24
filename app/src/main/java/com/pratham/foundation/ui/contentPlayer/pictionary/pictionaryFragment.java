@@ -130,7 +130,7 @@ public class pictionaryFragment extends Fragment implements OnGameClose {
 
     private void getData() {
         try {
-            InputStream is = new FileInputStream(readingContentPath + "pictionary.json");
+            InputStream is = new FileInputStream(readingContentPath + "ShowMeAndroid.json");
             int size = is.available();
             byte[] buffer = new byte[size];
             is.read(buffer);
@@ -230,7 +230,7 @@ public class pictionaryFragment extends Fragment implements OnGameClose {
 //            if (AssessmentApplication.wiseF.isDeviceConnectedToMobileOrWifiNetwork()) {
 
                 String fileName = selectedFive.get(index).getPhotourl();
-                final String localPath = readingContentPath + "/images/" + fileName;
+                final String localPath = readingContentPath + "/" + fileName;
 
 
                 String path = selectedFive.get(index).getPhotourl();
@@ -374,7 +374,7 @@ public class pictionaryFragment extends Fragment implements OnGameClose {
                         gridMcq.setVisibility(View.VISIBLE);
                         String fileName = options.get(r).getSubUrl();
 //                String localPath = Environment.getExternalStorageDirectory() + Assessment_Constants.STORE_DOWNLOADED_MEDIA_PATH + "/" + fileName;
-                        String localPath = readingContentPath + "/images/" + fileName;
+                        String localPath = readingContentPath  + fileName;
 
                         String path = options.get(r).getSubUrl();
 
@@ -629,9 +629,10 @@ public class pictionaryFragment extends Fragment implements OnGameClose {
 
     }
 
-    private void setImage(View view, final String choiceurl, String placeholder) {
+    private void setImage(View view, final String choiceurl, String placeholderTemp) {
 //        if (AssessmentApplication.wiseF.isDeviceConnectedToMobileOrWifiNetwork()) {
-        String path = choiceurl;
+        String path = choiceurl.replace(" ","");
+        String placeholder = placeholderTemp.replace(" ","");
         String[] imgPath = path.split("\\.");
         int len;
         if (imgPath.length > 0)

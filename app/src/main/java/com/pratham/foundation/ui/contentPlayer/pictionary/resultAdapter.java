@@ -64,7 +64,7 @@ public class resultAdapter extends RecyclerView.Adapter {
             textViewHolder.textView.setText(optionList.get(position).getSubQues());
         } else {
             MyviewHolderImage imageViewHolder = (MyviewHolderImage) viewHolder;
-            setImage(imageViewHolder.imageView,optionList.get(position).getSubUrl(),path+ "/images/" + optionList.get(position).getSubUrl());
+            setImage(imageViewHolder.imageView,optionList.get(position).getSubUrl(),path + optionList.get(position).getSubUrl());
         }
 
     }
@@ -90,9 +90,10 @@ public class resultAdapter extends RecyclerView.Adapter {
             textView = itemView.findViewById(R.id.text);
         }
     }
-    private void setImage(View view, final String choiceurl, String placeholder) {
+    private void setImage(View view, final String choiceurl, String placeholderTemp) {
 //        if (AssessmentApplication.wiseF.isDeviceConnectedToMobileOrWifiNetwork()) {
-        String path = choiceurl;
+        String path = choiceurl.replace(" ","");
+        String placeholder = placeholderTemp.replace(" ","");
         String[] imgPath = path.split("\\.");
         int len;
         if (imgPath.length > 0)

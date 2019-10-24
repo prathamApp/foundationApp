@@ -11,10 +11,24 @@
         android:layout_height="match_parent"
         android:layout_margin="@dimen/_2sdp"
         android:orientation="vertical">
-
+        <com.pratham.foundation.customView.SansTextView
+            android:id="@+id/tittle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="doing"
+            android:background="@color/red"
+            android:padding="@dimen/_5sdp"
+            android:textColor="@color/white"
+            android:textAlignment="center"
+            android:textSize="30sp" />
         <TextView
+            android:scrollbars="vertical"
             android:id="@+id/tv_question"
-            style="@style/CustomQuestionStyle"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:textSize="@dimen/_20sdp"
+            android:gravity="center"
+            android:background="@drawable/main_card_bg"
             android:layout_margin="@dimen/_5sdp"
             android:layout_weight="0.1" />
 
@@ -23,8 +37,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
+
             android:layout_margin="@dimen/_5sdp"
-            android:background="@drawable/main_card_bg"
             android:padding="@dimen/_5sdp">
 
             <ImageView

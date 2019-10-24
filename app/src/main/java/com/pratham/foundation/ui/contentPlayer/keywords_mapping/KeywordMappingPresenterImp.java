@@ -8,6 +8,7 @@ import com.pratham.foundation.database.BackupDatabase;
 import com.pratham.foundation.database.domain.Assessment;
 import com.pratham.foundation.database.domain.KeyWords;
 import com.pratham.foundation.database.domain.Score;
+import com.pratham.foundation.interfaces.OnGameClose;
 import com.pratham.foundation.modalclasses.ModalReadingVocabulary;
 import com.pratham.foundation.modalclasses.ScienceQuestionChoice;
 import com.pratham.foundation.modalclasses.keywordmapping;
@@ -149,9 +150,11 @@ public class KeywordMappingPresenterImp implements KeywordMappingContract.Keywor
             }
             addScore(GameConstatnts.getInt(keywordmapping.getQid()), GameConstatnts.KEYWORD_MAPPING, scoredMarks, 10, FC_Utility.getCurrentDateTime(), selectedAnsList.toString());
 
-            if (!isTest) {
+            if (!FC_Constants.isTest) {
                 view.showResult(correctWordList, wrongWordList);
             }
+        } else {
+            GameConstatnts.playGameNext(context, GameConstatnts.TRUE, (OnGameClose) view);
         }
         BackupDatabase.backup(context);
     }
@@ -169,7 +172,7 @@ public class KeywordMappingPresenterImp implements KeywordMappingContract.Keywor
             score.setStartDateTime(resStartTime);
             score.setDeviceID(deviceId.equals(null) ? "0000" : deviceId);
             score.setEndDateTime(FC_Utility.getCurrentDateTime());
-            score.setLevel(4);
+            score.setLevel(FC_Constants.currentLevel);
             score.setLabel(Word + " - " + Label);
             score.setSentFlag(0);
             appDatabase.getScoreDao().insert(score);
@@ -218,6 +221,16 @@ public class KeywordMappingPresenterImp implements KeywordMappingContract.Keywor
                 wrongWordList.add(selectedAnsList.get(i));
             }
         }
-        return 10 * correctCnt / ansSet.size();
+        return 10 * correctCnt / getCorrectCnt(ansSet);
+    }
+
+    private int getCorrectCnt(List<ScienceQuestionChoice> lstquestionchoice) {
+        int correctCnt = 0;
+        for (int i = 0; i < lstquestionchoice.size(); i++) {
+            if (lstquestionchoice.get(i).getCorrectAnswer().equalsIgnoreCase("true")) {
+                correctCnt++;
+            }
+        }
+        return correctCnt;
     }
 }
