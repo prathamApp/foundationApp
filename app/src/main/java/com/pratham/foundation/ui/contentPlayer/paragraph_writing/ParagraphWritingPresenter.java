@@ -11,6 +11,7 @@ import com.pratham.foundation.database.BackupDatabase;
 import com.pratham.foundation.database.domain.Assessment;
 import com.pratham.foundation.database.domain.KeyWords;
 import com.pratham.foundation.database.domain.Score;
+import com.pratham.foundation.interfaces.OnGameClose;
 import com.pratham.foundation.ui.contentPlayer.GameConstatnts;
 import com.pratham.foundation.ui.contentPlayer.fact_retrival_selection.ScienceQuestion;
 import com.pratham.foundation.ui.contentPlayer.keywords_identification.QuestionModel;
@@ -56,6 +57,7 @@ public class ParagraphWritingPresenter implements ParagraphWritingContract.Parag
         Gson gson = new Gson();
         Type type = new TypeToken<List<ScienceQuestion>>() {
         }.getType();
+
         quetionModelList = gson.fromJson(text, type);
         getDataList();
        /* getDataList();
@@ -170,6 +172,11 @@ public class ParagraphWritingPresenter implements ParagraphWritingContract.Parag
             addScore(GameConstatnts.getInt(questionModel.getQid()), GameConstatnts.PARAGRAPH_WRITING, 0, 0, FC_Utility.getCurrentDateTime(), imageName);
             appDatabase.getKeyWordDao().insert(keyWords);
             Toast.makeText(context, "inserted succussfully", Toast.LENGTH_LONG).show();
+            GameConstatnts.playGameNext(context, GameConstatnts.FALSE, (OnGameClose) view);
+
+        } else {
+            GameConstatnts.playGameNext(context, GameConstatnts.TRUE, (OnGameClose) view);
+
         }
         BackupDatabase.backup(context);
     }

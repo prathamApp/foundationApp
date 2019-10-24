@@ -14,9 +14,12 @@ import com.pratham.foundation.ApplicationClass;
 import com.pratham.foundation.R;
 import com.pratham.foundation.customView.SansButton;
 import com.pratham.foundation.customView.SansTextViewBold;
+import com.pratham.foundation.interfaces.OnGameClose;
 import com.pratham.foundation.modalclasses.ScienceQuestionChoice;
+import com.pratham.foundation.ui.contentPlayer.GameConstatnts;
 import com.pratham.foundation.ui.contentPlayer.fact_retrival_selection.ScienceQuestion;
 import com.pratham.foundation.utility.FC_Constants;
+import com.pratham.foundation.utility.FC_Utility;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Bean;
@@ -25,11 +28,12 @@ import org.androidannotations.annotations.EFragment;
 import org.androidannotations.annotations.UiThread;
 import org.androidannotations.annotations.ViewById;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
 @EFragment(R.layout.fragment_keyword_mapping)
-public class KeywordMappingFragment extends Fragment implements KeywordMappingContract.KeywordMappingView {
+public class KeywordMappingFragment extends Fragment implements KeywordMappingContract.KeywordMappingView, OnGameClose {
 
     @Bean(KeywordMappingPresenterImp.class)
     KeywordMappingContract.KeywordMappingPresenter presenter;
@@ -41,7 +45,7 @@ public class KeywordMappingFragment extends Fragment implements KeywordMappingCo
     @ViewById(R.id.recycler_view)
     RecyclerView recycler_view;
 
-    private String contentPath, contentTitle, StudentID, resId, readingContentPath;
+    private String contentPath, contentTitle, StudentID, resId, readingContentPath, resStartTime;
     private boolean onSdCard;
     private int index = 0;
     private List<ScienceQuestionChoice> optionList;
@@ -66,10 +70,11 @@ public class KeywordMappingFragment extends Fragment implements KeywordMappingCo
 
         }
 
-
-
         presenter.setView(KeywordMappingFragment.this, resId, readingContentPath);
         presenter.getData();
+        resStartTime = FC_Utility.getCurrentDateTime();
+        presenter.addScore(0, "", 0, 0, resStartTime, GameConstatnts.KEYWORD_MAPPING + " " + GameConstatnts.START);
+
     }
 
     @UiThread
@@ -87,6 +92,7 @@ public class KeywordMappingFragment extends Fragment implements KeywordMappingCo
         }
 
         optionList = list.get(index).getLstquestionchoice();
+        Collections.shuffle(optionList);
         //  List temp =
        /* for (int i = 0; i < temp.size(); i++) {
             optionList.add(new OptionKeyMap(temp.get(i).toString(), false));
@@ -108,21 +114,28 @@ public class KeywordMappingFragment extends Fragment implements KeywordMappingCo
 
     @Override
     public void showResult(List correctWord, List wrongWord) {
-        final Dialog dialog = new Dialog(getActivity());
-        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        dialog.setContentView(R.layout.show_result);
-        dialog.setCancelable(false);
-        dialog.setCanceledOnTouchOutside(false);
-        Objects.requireNonNull(dialog.getWindow()).setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        if ((correctWord != null && !correctWord.isEmpty()) || (wrongWord != null && !wrongWord.isEmpty())) {
+            final Dialog dialog = new Dialog(getActivity());
+            dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+            dialog.setContentView(R.layout.show_result);
+            dialog.setCancelable(false);
+            dialog.setCanceledOnTouchOutside(false);
+            Objects.requireNonNull(dialog.getWindow()).setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
 
-        SansTextViewBold correct_keywords = dialog.findViewById(R.id.correct_keywords);
-        SansTextViewBold wrong_keywords = dialog.findViewById(R.id.wrong_keywords);
-        SansButton dia_btn_yellow = dialog.findViewById(R.id.dia_btn_yellow);
-        correct_keywords.setText(correctWord.toString().substring(1, correctWord.toString().length() - 1));
-        wrong_keywords.setText(wrongWord.toString().substring(1, wrongWord.toString().length() - 1));
-        dia_btn_yellow.setText("OK");
-        dia_btn_yellow.setOnClickListener(v -> dialog.dismiss());
-        dialog.show();
+            SansTextViewBold correct_keywords = dialog.findViewById(R.id.correct_keywords);
+            SansTextViewBold wrong_keywords = dialog.findViewById(R.id.wrong_keywords);
+            SansButton dia_btn_yellow = dialog.findViewById(R.id.dia_btn_yellow);
+            correct_keywords.setText(correctWord.toString().substring(1, correctWord.toString().length() - 1));
+            wrong_keywords.setText(wrongWord.toString().substring(1, wrongWord.toString().length() - 1));
+            dia_btn_yellow.setText("OK");
+            dia_btn_yellow.setOnClickListener(v -> {
+                dialog.dismiss();
+                GameConstatnts.playGameNext(getActivity(), GameConstatnts.FALSE, this);
+            });
+            dialog.show();
+        } else {
+            GameConstatnts.playGameNext(getActivity(), GameConstatnts.TRUE, this);
+        }
     }
 
     @Click(R.id.submit)
@@ -138,5 +151,10 @@ public class KeywordMappingFragment extends Fragment implements KeywordMappingCo
                     bundle, ParagraphWritingFragment_.class.getSimpleName());
 
         }*/
+    }
+
+    @Override
+    public void gameClose() {
+        presenter.addScore(0, "", 0, 0, resStartTime, GameConstatnts.KEYWORD_MAPPING + " " + GameConstatnts.END);
     }
 }

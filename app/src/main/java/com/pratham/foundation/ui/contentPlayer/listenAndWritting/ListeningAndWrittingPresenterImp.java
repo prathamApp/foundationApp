@@ -11,6 +11,7 @@ import com.pratham.foundation.database.BackupDatabase;
 import com.pratham.foundation.database.domain.Assessment;
 import com.pratham.foundation.database.domain.KeyWords;
 import com.pratham.foundation.database.domain.Score;
+import com.pratham.foundation.interfaces.OnGameClose;
 import com.pratham.foundation.ui.contentPlayer.GameConstatnts;
 import com.pratham.foundation.ui.contentPlayer.fact_retrival_selection.ScienceQuestion;
 import com.pratham.foundation.utility.FC_Constants;
@@ -111,6 +112,9 @@ public class ListeningAndWrittingPresenterImp implements ListeningAndWrittingCon
             addScore(GameConstatnts.getInt(listenAndWrittingModal.getQid()), listenAndWrittingModal.getTitle(), 0, 0, FC_Utility.getCurrentDateTime(), imageName);
             appDatabase.getKeyWordDao().insert(keyWords);
             Toast.makeText(context, "inserted succussfully", Toast.LENGTH_LONG).show();
+            GameConstatnts.playGameNext(context, GameConstatnts.FALSE, (OnGameClose) view);
+        } else {
+            GameConstatnts.playGameNext(context, GameConstatnts.TRUE, (OnGameClose) view);
         }
         BackupDatabase.backup(context);
     }
@@ -190,7 +194,7 @@ public class ListeningAndWrittingPresenterImp implements ListeningAndWrittingCon
             score.setStartDateTime(resStartTime);
             score.setDeviceID(deviceId.equals(null) ? "0000" : deviceId);
             score.setEndDateTime(FC_Utility.getCurrentDateTime());
-            score.setLevel(4);
+            score.setLevel(FC_Constants.currentLevel);
             score.setLabel(Word + "___" + Label);
             score.setSentFlag(0);
             appDatabase.getScoreDao().insert(score);

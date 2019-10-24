@@ -43,8 +43,7 @@ import java.util.List;
 
 @EFragment(R.layout.fragment_sequence_layout)
 public class SequenceLayout extends Fragment implements SequeanceLayoutContract.SequenceLayoutView,
-        SequeanceLayoutContract.clickListner
-{
+        SequeanceLayoutContract.clickListner {
 
     @Bean(SequenceLayoutPresenterImp.class)
     SequeanceLayoutContract.SequenceLayoutPresenter sequenceLayoutPresenter;
@@ -96,7 +95,7 @@ public class SequenceLayout extends Fragment implements SequeanceLayoutContract.
     @Click(R.id.playFromStart)
     public void playFromStartClick() {
         Bundle bundle = new Bundle();
-        bundle.putString("dd","");
+        bundle.putString("dd", "");
         FC_Utility.showFragment((Activity) getActivity(), new FillInTheBlanksFragment(), R.id.RL_CPA,
                 bundle, FillInTheBlanksFragment.class.getSimpleName());
         /*currentGameAdapterposition=-1;
@@ -116,12 +115,14 @@ public class SequenceLayout extends Fragment implements SequeanceLayoutContract.
         bundle.putString("resId", contentTable.getResourceId());
         bundle.putString("contentName", contentTable.getNodeTitle());
         bundle.putBoolean("onSdCard", true);
+        bundle.putString("jsonName", contentTable.getResourceType());
 
         switch (contentTable.getResourceType()) {
             case GameConstatnts.FACTRETRIEVAL:
                 FC_Utility.showFragment((Activity) context, new FactRetrieval_(), R.id.RL_CPA,
                         bundle, FactRetrieval_.class.getSimpleName());
                 break;
+
             case GameConstatnts.KEYWORD_IDENTIFICATION:
                 FC_Utility.showFragment((Activity) context, new KeywordsIdentificationFragment_(), R.id.RL_CPA,
                         bundle, KeywordsIdentificationFragment_.class.getSimpleName());
@@ -168,10 +169,13 @@ public class SequenceLayout extends Fragment implements SequeanceLayoutContract.
                 FC_Utility.showFragment((Activity) context, new StoryReadingFragment_(), R.id.RL_CPA,
                         bundle, StoryReadingFragment_.class.getSimpleName());
                 break;
-            case GameConstatnts.DOING:
+            case GameConstatnts.THINKANDWRITE:
+            case GameConstatnts.DOING_ACT_READ:
+            case GameConstatnts.DOING_ACT_VIDEO:
                 FC_Utility.showFragment((Activity) context, new DoingFragment(), R.id.RL_CPA,
                         bundle, DoingFragment.class.getSimpleName());
                 break;
+
             case GameConstatnts.VIDEO:
                 Intent intent = new Intent(context, ActivityVideoView_.class);
                 intent.putExtra("contentPath", contentTable.getResourcePath());

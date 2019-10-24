@@ -27,6 +27,7 @@ public class ScienceQuestion implements Serializable {
     private String languageid;
 
     private String active;
+    private String instruction;
 
     private String lessonid;
     @Embedded
@@ -246,7 +247,7 @@ public class ScienceQuestion implements Serializable {
     }
 
     public String getPhotourl() {
-        if(photourl==null)
+        if (photourl == null)
             return "";
         return photourl;
     }
@@ -357,5 +358,16 @@ public class ScienceQuestion implements Serializable {
 
     public void setMediaDownloaded(boolean mediaDownloaded) {
         isMediaDownloaded = mediaDownloaded;
+    }
+
+    public String getInstruction() {
+        if (instruction != null)
+            return instruction;
+        else
+            return "";
+    }
+
+    public void setInstruction(String instruction) {
+        this.instruction = instruction;
     }
 }

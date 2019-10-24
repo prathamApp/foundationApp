@@ -51,6 +51,9 @@ public class GameConstatnts {
     public static final String FACT_RETRIAL_CLICK = "fact_retrial_click";
     public static final String FACTRETRIEVAL = "factRetrieval";
     public static final String READINGGAME = "ShowMeAndroid";
+    public static final String THINKANDWRITE = "TAW";
+    public static final String DOING_ACT_READ = "doing_act_read";
+    public static final String DOING_ACT_VIDEO = "doing_act_video";
     public static final boolean TRUE = true;
     public static final boolean FALSE = false;
     public static final String START = "start";

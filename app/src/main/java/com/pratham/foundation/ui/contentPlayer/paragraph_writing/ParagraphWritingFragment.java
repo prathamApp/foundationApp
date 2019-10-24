@@ -24,8 +24,11 @@ import android.widget.ScrollView;
 
 import com.pratham.foundation.ApplicationClass;
 import com.pratham.foundation.R;
+import com.pratham.foundation.customView.SansTextView;
+import com.pratham.foundation.interfaces.OnGameClose;
 import com.pratham.foundation.ui.contentPlayer.GameConstatnts;
 import com.pratham.foundation.ui.contentPlayer.fact_retrival_selection.ScienceQuestion;
+import com.pratham.foundation.utility.FC_Utility;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Bean;
@@ -41,7 +44,7 @@ import butterknife.OnClick;
 
 @EFragment(R.layout.fragment_paragraph_writing)
 public class ParagraphWritingFragment extends Fragment
-        implements ParagraphWritingContract.ParagraphWritingView {
+        implements ParagraphWritingContract.ParagraphWritingView, OnGameClose {
 
     @Bean(ParagraphWritingPresenter.class)
     ParagraphWritingContract.ParagraphWritingPresenter presenter;
@@ -57,8 +60,8 @@ public class ParagraphWritingFragment extends Fragment
     Button capture;
     @ViewById(R.id.next)
     Button next;
-    /*@ViewById(R.id.preview)
-    ImageView preview;*/
+    @ViewById(R.id.title)
+    SansTextView title;
 
     private String[] paragraphWords;
     //    private RelativeLayout.LayoutParams viewParam;
@@ -66,7 +69,7 @@ public class ParagraphWritingFragment extends Fragment
     private RecyclerView.SmoothScroller smoothScroller;
     private static final int CAMERA_REQUEST = 1;
     private String imageName = null, imagePath;
-    private String contentPath, contentTitle, StudentID, resId, readingContentPath;
+    private String contentPath, contentTitle, StudentID, resId, readingContentPath, resStartTime;
     private boolean onSdCard;
     private ScienceQuestion questionModel;
 
@@ -86,36 +89,20 @@ public class ParagraphWritingFragment extends Fragment
         }
         presenter.setView(ParagraphWritingFragment.this, resId, readingContentPath);
         presenter.getData();
+        resStartTime = FC_Utility.getCurrentDateTime();
+        presenter.addScore(0, "", 0, 0, resStartTime, GameConstatnts.PARAGRAPH_WRITING + " " + GameConstatnts.START);
     }
 
     @Override
     public void showParagraph(ScienceQuestion questionModel) {
         this.questionModel = questionModel;
+        title.setText(questionModel.getInstruction());
         paragraphWords = questionModel.getQuestion().trim().split("(?<=\\.\\s)|(?<=[?!]\\s)");
         SentenceAdapter arrayAdapter = new SentenceAdapter(Arrays.asList(paragraphWords), getActivity());
         paragraph.setAdapter(arrayAdapter);
         LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
         paragraph.setLayoutManager(layoutManager);
-        //layoutManager.smoothScrollToPosition(paragraph,0,4);
-//        layoutManager.scrollToPositionWithOffset(4, 20);
 
-
-       /*  for (int i = 0; i < paragraphWords.length; i++) {
-            final TextView textView = new TextView(context);
-            textView.setTextSize(30);
-            textView.setPadding(5, 5, 5, 5);
-            textView.setText(paragraphWords[i] + " ");
-           // textView.setLayoutParams(viewParam);
-            paragraph.addView(textView);
-        }*/
-
-/*        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                View view = paragraph.getChildAt(index);
-                view.setBackground(ContextCompat.getDrawable(getActivity(), R.drawable.rounded_border_yellow));
-            }
-        }, 300);*/
     }
 
     @OnClick(R.id.previous)
@@ -174,7 +161,7 @@ public class ParagraphWritingFragment extends Fragment
             presenter.addLearntWords(questionModel, imageName);
             imageName = null;
         }
-      //  GameConstatnts.playGameNext(getActivity());
+        //  GameConstatnts.playGameNext(getActivity());
        /* Bundle bundle = GameConstatnts.findGameData("105");
         if (bundle != null) {
             FC_Utility.showFragment(getActivity(), new ListeningAndWritting_(), R.id.RL_CPA,
@@ -221,5 +208,10 @@ public class ParagraphWritingFragment extends Fragment
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    @Override
+    public void gameClose() {
+        presenter.addScore(0, "", 0, 0, resStartTime, GameConstatnts.PARAGRAPH_WRITING + " " + GameConstatnts.END);
     }
 }

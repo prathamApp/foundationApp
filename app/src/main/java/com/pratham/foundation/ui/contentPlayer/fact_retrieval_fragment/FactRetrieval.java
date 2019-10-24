@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.text.SpannableString;
 import android.text.style.BackgroundColorSpan;
-import android.util.Log;
 import android.view.ActionMode;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -73,11 +72,12 @@ public class FactRetrieval extends Fragment implements FactRetrievalContract.Fac
                 readingContentPath = ApplicationClass.foundationPath + "/.FCA/English/Game/" + contentPath + "/";
 
         }
-        resStartTime = FC_Utility.getCurrentDateTime();
-        presenter.addScore(0, "", 0, 0, resStartTime, GameConstatnts.FACTRETRIEVAL + " " + GameConstatnts.START);
 
         presenter.setView(FactRetrieval.this, contentTitle, resId);
         presenter.getData(readingContentPath);
+        resStartTime = FC_Utility.getCurrentDateTime();
+        presenter.addScore(0, "", 0, 0, resStartTime, GameConstatnts.FACTRETRIEVAL + " " + GameConstatnts.START);
+
     }
 
     @Override

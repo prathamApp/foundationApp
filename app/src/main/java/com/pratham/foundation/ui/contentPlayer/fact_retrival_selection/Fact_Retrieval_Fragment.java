@@ -14,8 +14,10 @@ import com.pratham.foundation.ApplicationClass;
 import com.pratham.foundation.R;
 import com.pratham.foundation.customView.SansButton;
 import com.pratham.foundation.customView.SansTextView;
+import com.pratham.foundation.interfaces.OnGameClose;
 import com.pratham.foundation.modalclasses.ScienceQuestionChoice;
 import com.pratham.foundation.ui.contentPlayer.GameConstatnts;
+import com.pratham.foundation.utility.FC_Utility;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Bean;
@@ -29,7 +31,7 @@ import java.util.Collections;
 import java.util.List;
 
 @EFragment(R.layout.fact_retrival_selection)
-public class Fact_Retrieval_Fragment extends Fragment implements Fact_Retrieval_Contract.Fact_retrival_View {
+public class Fact_Retrieval_Fragment extends Fragment implements Fact_Retrieval_Contract.Fact_retrival_View, OnGameClose {
 
     @Bean(Fact_Retrieval_Presenter.class)
     Fact_Retrieval_Contract.Fact_retrival_Presenter presenter;
@@ -54,7 +56,7 @@ public class Fact_Retrieval_Fragment extends Fragment implements Fact_Retrieval_
     RelativeLayout.LayoutParams viewParam;
     //  private HashMap<String, List<Integer>> positionMap;
     private List<ScienceQuestionChoice> selectedQuetion;
-    private String contentPath, contentTitle, StudentID, resId, readingContentPath;
+    private String contentPath, contentTitle, StudentID, resId, readingContentPath, resStartTime;
     private boolean onSdCard;
     private ScienceQuestion questionModel;
     private boolean isKeyWordShowing = false;
@@ -89,6 +91,9 @@ public class Fact_Retrieval_Fragment extends Fragment implements Fact_Retrieval_
         lp.setMargins(10, 5, 10, 5);
 
         presenter.getData();
+        resStartTime = FC_Utility.getCurrentDateTime();
+        presenter.addScore(0, "", 0, 0, resStartTime, GameConstatnts.FACT_RETRIAL_CLICK + " " + GameConstatnts.START);
+
     }
 
     @Override
@@ -100,6 +105,7 @@ public class Fact_Retrieval_Fragment extends Fragment implements Fact_Retrieval_
 
     private void addParagraph() {
         try {
+            questionModel.setQuestion(questionModel.getQuestion().replace("\n"," "));
             this.selectedQuetion = questionModel.getLstquestionchoice();
             Collections.shuffle(selectedQuetion);
             paraghaph.removeAllViews();
@@ -207,5 +213,10 @@ public class Fact_Retrieval_Fragment extends Fragment implements Fact_Retrieval_
             index++;
             showQuetion();
         }
+    }
+
+    @Override
+    public void gameClose() {
+        presenter.addScore(0, "", 0, 0, resStartTime, GameConstatnts.FACT_RETRIAL_CLICK + " " + GameConstatnts.END);
     }
 }
