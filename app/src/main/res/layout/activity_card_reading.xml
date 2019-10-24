@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:ripple="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/story_ll"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/bg_anim_login">
+
+    <com.pratham.foundation.customView.SansTextView
+        android:id="@+id/cat_title"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/_30sdp"
+        android:layout_weight="1"
+        android:background="@color/red"
+        android:elevation="2dp"
+        android:paddingLeft="@dimen/_10sdp"
+        android:gravity="center_vertical"
+        android:text="Paragraph Reading"
+        android:textAllCaps="true"
+        android:textColor="@color/white"
+        android:textSize="@dimen/_18sdp" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/cat_title"
+        android:layout_marginHorizontal="@dimen/_10sdp"
+        android:layout_marginVertical="@dimen/_10sdp"
+        android:gravity="center">
+
+        <android.support.design.card.MaterialCardView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginBottom="@dimen/_25sdp"
+            ripple:cardCornerRadius="@dimen/_5sdp">
+
+            <ScrollView
+                android:id="@+id/intro_scroll"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginHorizontal="@dimen/_40sdp"
+                android:layout_marginVertical="@dimen/_10sdp">
+
+                <com.pratham.foundation.customView.SansTextView
+                    android:id="@+id/text_intro"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/_20sdp"
+                    android:gravity="center"
+                    android:textColor="@color/colorBlack" />
+
+            </ScrollView>
+
+            <ImageView
+                android:id="@+id/iv_image"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="center_horizontal"
+                android:visibility="gone"
+                android:scaleType="fitCenter"
+                android:src="@drawable/pratham_logo" />
+        </android.support.design.card.MaterialCardView>
+
+        <ImageButton
+            android:id="@+id/btn_prev"
+            android:layout_width="@dimen/_40sdp"
+            android:layout_height="@dimen/_40sdp"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginLeft="@dimen/_10sdp"
+            android:visibility="gone"
+            android:layout_marginBottom="6dp"
+            android:background="@drawable/gragiance_ripple_round"
+            android:elevation="5dp"
+            android:scaleType="centerInside"
+            android:src="@drawable/ic_navigate_before_black_24dp" />
+
+        <ImageButton
+            android:id="@+id/btn_play"
+            android:layout_width="@dimen/_40sdp"
+            android:layout_height="@dimen/_40sdp"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginLeft="@dimen/_10sdp"
+            android:layout_marginBottom="6dp"
+            android:background="@drawable/gragiance_ripple_round"
+            android:elevation="5dp"
+            android:padding="@dimen/_8sdp"
+            android:scaleType="centerInside"
+            android:src="@drawable/ic_play_arrow" />
+
+        <ImageButton
+            android:id="@+id/btn_next"
+            android:layout_width="@dimen/_40sdp"
+            android:layout_height="@dimen/_40sdp"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginRight="@dimen/_10sdp"
+            android:layout_marginBottom="6dp"
+            android:background="@drawable/gragiance_ripple_round"
+            android:visibility="gone"
+            android:elevation="5dp"
+            android:scaleType="centerInside"
+            android:src="@drawable/ic_navigate_next_black_24dp" />
+
+    </RelativeLayout>
+
+</RelativeLayout>

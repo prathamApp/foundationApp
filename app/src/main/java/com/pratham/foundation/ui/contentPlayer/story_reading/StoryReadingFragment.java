@@ -1115,12 +1115,4 @@ public class StoryReadingFragment extends Fragment implements
             continuousSpeechService.resetHandler(false);
         }, 10);
     }
-
-/*    public void loadFragment() {
-        Bundle bundle = new Bundle();
-        bundle.putString("contentType", contentType);
-        FC_Utility.showFragment(ReadingStoryActivity.this, new fragment_acknowledge(), R.id.story_ll,
-                bundle, fragment_acknowledge.class.getSimpleName());
-    }*/
-
 }

@@ -75,6 +75,7 @@ public class SelectSubject extends BaseActivity implements
 
     @Override
     public void onItemClicked(ContentTable contentTableObj) {
+        FC_Constants.currentSubject = contentTableObj.getNodeTitle();
         Intent intent = new Intent(context, HomeActivity_.class);
         intent.putExtra("nodeId", contentTableObj.getNodeId());
         context.startActivity(intent);

@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:ripple="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/story_ll"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/grad_layer_two">
+
+    <com.pratham.foundation.customView.SansTextView
+        android:id="@+id/cat_title"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/_40sdp"
+        android:layout_weight="1"
+        android:background="@color/red"
+        android:elevation="2dp"
+        android:gravity="center_vertical"
+        android:paddingLeft="@dimen/_10sdp"
+        android:textAllCaps="true"
+        android:textColor="@color/white"
+        android:textSize="@dimen/_18sdp" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/cat_title"
+        android:layout_marginHorizontal="@dimen/_10sdp"
+        android:layout_marginBottom="@dimen/_10sdp"
+        android:gravity="center">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginBottom="@dimen/_25sdp"
+            android:orientation="vertical">
+
+            <android.support.v7.widget.CardView
+                android:id="@+id/topContainer"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_margin="@dimen/_20sdp"
+                android:layout_weight="1"
+                android:foreground="?android:attr/selectableItemBackground"
+                android:clickable="true"
+                ripple:cardCornerRadius="@dimen/_10sdp"
+                ripple:cardElevation="@dimen/_6sdp">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <ImageView
+                        android:id="@+id/imagetop"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_above="@+id/text" />
+
+                    <FrameLayout
+                        android:id="@+id/text"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentBottom="true"
+                        android:background="@color/dark_yellow">
+
+                        <TextView
+                            android:id="@+id/texttop"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:padding="@dimen/_6sdp"
+                            android:text="hey boy"
+                            android:textAlignment="center"
+                            android:textColor="@color/white"
+                            android:textSize="@dimen/_20sdp" />
+                    </FrameLayout>
+
+                </RelativeLayout>
+            </android.support.v7.widget.CardView>
+
+            <android.support.v7.widget.CardView
+                android:id="@+id/bottomContainer"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_margin="@dimen/_20sdp"
+                android:foreground="?android:attr/selectableItemBackground"
+                android:clickable="true"
+                android:layout_weight="1"
+                android:elevation="@dimen/_6sdp"
+                ripple:cardCornerRadius="@dimen/_10sdp">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <ImageView
+                        android:id="@+id/imagebottom"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_above="@+id/frameBottom" />
+
+                    <FrameLayout
+                        android:id="@+id/frameBottom"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentBottom="true"
+                        android:background="@color/dark_yellow">
+
+                        <TextView
+                            android:id="@+id/textbottom"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="bottom"
+                            android:padding="@dimen/_6sdp"
+                            android:text="hey boy"
+                            android:textAlignment="center"
+                            android:textColor="@color/white"
+                            android:textSize="@dimen/_20sdp" />
+                    </FrameLayout>
+
+                </RelativeLayout>
+            </android.support.v7.widget.CardView>
+        </LinearLayout>
+
+        <ImageButton
+            android:id="@+id/btn_prev"
+            android:layout_width="@dimen/_40sdp"
+            android:layout_height="@dimen/_40sdp"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="6dp"
+            android:background="@drawable/gragiance_ripple_round"
+            android:elevation="5dp"
+            android:scaleType="centerInside"
+            android:src="@drawable/ic_navigate_before_black_24dp" />
+
+        <ImageButton
+            android:id="@+id/btn_next"
+            android:layout_width="@dimen/_40sdp"
+            android:layout_height="@dimen/_40sdp"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="6dp"
+            android:background="@drawable/gragiance_ripple_round"
+            android:elevation="5dp"
+            android:scaleType="centerInside"
+            android:src="@drawable/ic_navigate_next_black_24dp" />
+
+    </RelativeLayout>
+
+</RelativeLayout>

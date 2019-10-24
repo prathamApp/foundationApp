@@ -25,6 +25,7 @@ import com.pratham.foundation.customView.submarine_view.SubmarineView;
 import com.pratham.foundation.database.AppDatabase;
 import com.pratham.foundation.modalclasses.EventMessage;
 import com.pratham.foundation.services.shared_preferences.FastSave;
+import com.pratham.foundation.ui.home_screen.fun.FunFragment_;
 import com.pratham.foundation.ui.home_screen.learning_fragment.LearningFragment_;
 import com.pratham.foundation.ui.home_screen.practice_fragment.PracticeFragment_;
 import com.pratham.foundation.ui.home_screen.test_fragment.TestFragment_;
@@ -49,12 +50,13 @@ import java.util.Objects;
 import static com.pratham.foundation.utility.FC_Constants.BACK_PRESSED;
 import static com.pratham.foundation.utility.FC_Constants.GROUP_LOGIN;
 import static com.pratham.foundation.utility.FC_Constants.LEVEL_CHANGED;
+import static com.pratham.foundation.utility.FC_Constants.currentSubject;
 import static com.pratham.foundation.utility.FC_Constants.dialog_btn_cancel;
 import static com.pratham.foundation.utility.FC_Constants.dialog_btn_exit;
 import static com.pratham.foundation.utility.FC_Constants.dialog_btn_restart;
 
 @EActivity(R.layout.activity_home)
-public class HomeActivity extends BaseActivity{
+public class HomeActivity extends BaseActivity {
 
     public static String sub_nodeId = "";
     @ViewById(R.id.viewpager)
@@ -158,7 +160,7 @@ public class HomeActivity extends BaseActivity{
         else
             profileName = AppDatabase.getDatabaseInstance(this).getGroupsDao().getGroupNameByGrpID(FC_Constants.currentStudentID);
 
-        if(!FC_Constants.GROUP_LOGIN)
+        if (!FC_Constants.GROUP_LOGIN)
             profileName = profileName.split(" ")[0];
 
         setProfileName(profileName);
@@ -238,10 +240,18 @@ public class HomeActivity extends BaseActivity{
         tabTwo.setText("Practice");
         tabTwo.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.ic_practice, 0, 0);
         tabLayout.getTabAt(1).setCustomView(tabTwo);
-/*        TextView tabThree = (TextView) LayoutInflater.from(this).inflate(R.layout.custom_tab_text, null);
-        tabThree.setText("Test");
-        tabThree.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.ic_test, 0, 0);
-        tabLayout.getTabAt(2).setCustomView(tabThree);*/
+
+        if (currentSubject.equalsIgnoreCase("english")) {
+//            TextView tabThree = (TextView) LayoutInflater.from(this).inflate(R.layout.custom_tab_text, null);
+//            tabThree.setText("Test");
+//            tabThree.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.ic_test, 0, 0);
+//            tabLayout.getTabAt(2).setCustomView(tabThree);
+            TextView tabFour = (TextView) LayoutInflater.from(this).inflate(R.layout.custom_tab_text, null);
+            tabFour.setText("Fun");
+            tabFour.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.ic_fun, 0, 0);
+            tabLayout.getTabAt(2).setCustomView(tabFour);
+        }
+
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
@@ -353,10 +363,13 @@ public class HomeActivity extends BaseActivity{
 
     private void setupViewPager(ViewPager viewpager) {
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
-        viewpager.setOffscreenPageLimit(3);
+        viewpager.setOffscreenPageLimit(4);
         adapter.addFrag(new LearningFragment_(), "Learning");
         adapter.addFrag(new PracticeFragment_(), "Practice");
-//        adapter.addFrag(new TestFragment_(), "Test");
+        if (currentSubject.equalsIgnoreCase("english")) {
+//            adapter.addFrag(new TestFragment_(), "Test");
+            adapter.addFrag(new FunFragment_(), "Fun");
+        }
         viewpager.setAdapter(adapter);
     }
 
