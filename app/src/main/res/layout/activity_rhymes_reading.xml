@@ -1,0 +1,185 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:ripple="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/story_ll"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/grad_layer_two"
+    android:orientation="vertical"
+    android:weightSum="10">
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:layout_marginHorizontal="@dimen/_10sdp"
+        android:layout_marginTop="15dp"
+        android:layout_marginBottom="@dimen/_10sdp"
+        android:layout_weight="9.1"
+        android:elevation="@dimen/_2sdp">
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <RelativeLayout
+                    android:id="@+id/rl_card1"
+                    android:layout_width="@dimen/_130sdp"
+                    android:layout_height="@dimen/_130sdp"
+                    android:layout_marginLeft="@dimen/_5sdp"
+                    android:background="@drawable/gragiance_ripple_round"
+                    android:elevation="2dp"
+                    android:visibility="gone">
+
+                    <com.pratham.foundation.customView.SansTextView
+                        android:id="@+id/rhyming_card_word1"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_margin="@dimen/_6sdp"
+                        android:gravity="center"
+                        android:text="@string/app_name"
+                        android:textAllCaps="true"
+                        android:textColor="@color/colorBlack"
+                        android:textSize="@dimen/_18sdp" />
+
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:id="@+id/rl_card2"
+                    android:layout_width="@dimen/_130sdp"
+                    android:layout_height="@dimen/_130sdp"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginTop="@dimen/_70sdp"
+                    android:layout_marginRight="@dimen/_5sdp"
+                    android:background="@drawable/gragiance_ripple_round"
+                    android:elevation="2dp"
+                    android:visibility="gone">
+
+                    <com.pratham.foundation.customView.SansTextView
+                        android:id="@+id/rhyming_card_word2"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_margin="@dimen/_6sdp"
+                        android:gravity="center"
+                        android:text="@string/app_name"
+                        android:textAllCaps="true"
+                        android:textColor="@color/colorBlack"
+                        android:textSize="@dimen/_18sdp" />
+
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:id="@+id/rl_card3"
+                    android:layout_width="@dimen/_130sdp"
+                    android:layout_height="@dimen/_130sdp"
+                    android:layout_below="@id/rl_card1"
+                    android:layout_marginLeft="@dimen/_5sdp"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:background="@drawable/gragiance_ripple_round"
+                    android:elevation="2dp"
+                    android:visibility="gone">
+
+                    <com.pratham.foundation.customView.SansTextView
+                        android:id="@+id/rhyming_card_word3"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_margin="@dimen/_6sdp"
+                        android:gravity="center"
+                        android:text="@string/app_name"
+                        android:textAllCaps="true"
+                        android:textColor="@color/colorBlack"
+                        android:textSize="@dimen/_18sdp" />
+
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:id="@+id/rl_card4"
+                    android:layout_width="@dimen/_130sdp"
+                    android:layout_height="@dimen/_130sdp"
+                    android:layout_below="@+id/rl_card2"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:layout_marginRight="@dimen/_5sdp"
+                    android:background="@drawable/gragiance_ripple_round"
+                    android:elevation="2dp"
+                    android:visibility="gone">
+
+                    <com.pratham.foundation.customView.SansTextView
+                        android:id="@+id/rhyming_card_word4"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_margin="@dimen/_6sdp"
+                        android:gravity="center"
+                        android:text="@string/app_name"
+                        android:textAllCaps="true"
+                        android:textColor="@color/colorBlack"
+                        android:textSize="@dimen/_18sdp" />
+
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:id="@+id/rl_card5"
+                    android:layout_width="@dimen/_130sdp"
+                    android:layout_height="@dimen/_130sdp"
+                    android:layout_below="@id/rl_card3"
+                    android:layout_marginLeft="@dimen/_5sdp"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:background="@drawable/gragiance_ripple_round"
+                    android:elevation="2dp"
+                    android:visibility="gone">
+
+                    <com.pratham.foundation.customView.SansTextView
+                        android:id="@+id/rhyming_card_word5"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_margin="@dimen/_6sdp"
+                        android:gravity="center"
+                        android:text="@string/app_name"
+                        android:textAllCaps="true"
+                        android:textColor="@color/colorBlack"
+                        android:textSize="@dimen/_18sdp" />
+
+                </RelativeLayout>
+
+            </RelativeLayout>
+        </ScrollView>
+
+        <!--
+                    <android.support.v7.widget.RecyclerView
+                        android:id="@+id/rhyming_recycler"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_centerInParent="true"
+                        android:clipToPadding="false"
+                        android:gravity="center"
+                        android:layoutAnimation="@anim/layout_fall_down"
+                        android:scrollbars="vertical" />
+        -->
+    </RelativeLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_gravity="bottom|center_horizontal"
+        android:layout_marginHorizontal="@dimen/_10sdp"
+        android:layout_weight="0.8"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:weightSum="2">
+
+                <ImageButton
+                    android:id="@+id/btn_next"
+                    android:layout_width="@dimen/_100sdp"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/green_button"
+                    android:elevation="@dimen/_2sdp"
+                    android:scaleType="centerInside"
+                    android:layout_marginBottom="@dimen/_3sdp"
+                    android:src="@drawable/ic_navigate_next_black_24dp" />
+    </LinearLayout>
+
+
+</LinearLayout>

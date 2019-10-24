@@ -1,0 +1,267 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:ripple="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/ll_convo_main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/bg_anim_login"
+    android:elevation="@dimen/_5sdp"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:id="@+id/silence_outer"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/black_20"
+        android:visibility="gone"
+        android:elevation="50dp">
+
+        <RelativeLayout
+            android:id="@+id/silence_main_layout"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_150sdp"
+            android:layout_marginHorizontal="@dimen/_30sdp"
+            android:layout_centerInParent="true"
+            android:padding="@dimen/_10sdp">
+
+            <ImageView
+                android:id="@+id/silence_iv"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_90sdp"
+                android:layout_alignParentTop="true"
+                android:elevation="@dimen/_20sdp"
+                android:layout_centerHorizontal="true"
+                android:src="@drawable/stt_listener"/>
+
+            <RelativeLayout
+                android:layout_width="@dimen/_150sdp"
+                android:layout_height="@dimen/_60sdp"
+                android:layout_marginTop="@dimen/_80sdp"
+                android:layout_centerHorizontal="true"
+                android:background="@drawable/ripple_rectangle_card">
+
+                <com.pratham.foundation.customView.SansTextViewBold
+                    android:id="@+id/silence_tv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:layout_alignParentBottom="true"
+                    android:layout_centerHorizontal="true"
+                    android:textColor="@color/red"
+                    android:textSize="@dimen/_15sdp"
+                    android:text="I am listening..."/>
+
+            </RelativeLayout>
+        </RelativeLayout>
+    </RelativeLayout>
+
+
+    <com.pratham.foundation.customView.SansTextView
+        android:id="@+id/tv_title"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/_40sdp"
+        android:background="@color/red"
+        android:elevation="3dp"
+        android:gravity="center_vertical"
+        android:paddingLeft="@dimen/_20sdp"
+        android:text="Vocabulary"
+        android:textColor="@color/colorBlack"
+        android:textSize="@dimen/_20sdp" />
+
+    <RelativeLayout
+        android:id="@+id/rl_img"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/_180sdp"
+        android:layout_below="@id/tv_title"
+        android:layout_marginHorizontal="@dimen/_10sdp"
+        android:layout_marginTop="@dimen/_10sdp"
+        android:layout_weight="3.5"
+        android:background="@drawable/dialog_bg"
+        android:elevation="@dimen/_2sdp">
+
+        <ImageView
+            android:id="@+id/content_image"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scaleType="fitCenter" />
+
+        <ImageView
+            android:id="@+id/this_image"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:scaleType="fitCenter"
+            android:src="@drawable/what_is_this"
+            android:visibility="gone" />
+
+        <ImageView
+            android:id="@+id/that_image"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentBottom="true"
+            android:scaleType="fitCenter"
+            android:src="@drawable/what_is_that"
+            android:visibility="gone" />
+    </RelativeLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/rl_img"
+        android:orientation="vertical"
+        android:weightSum="10">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_marginTop="@dimen/_8sdp"
+            android:layout_marginHorizontal="@dimen/_10sdp"
+            android:layout_weight="7.5">
+
+            <com.pratham.foundation.customView.RipplePulseLayout
+                android:id="@+id/layout_ripplepulse_left"
+                android:layout_width="@dimen/_60sdp"
+                android:layout_height="@dimen/_60sdp"
+                android:layout_alignParentLeft="true"
+                android:clipChildren="false"
+                ripple:duration="2000"
+                ripple:endRadius="@dimen/_30sdp"
+                ripple:rippleColor="@color/colorBlack"
+                ripple:rippleType="fill"
+                android:elevation="20dp"
+                ripple:startRadius="2dp"
+                ripple:strokeWidth="2dp">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <ImageButton
+                        android:id="@+id/btn_prev"
+                        android:layout_width="@dimen/_40sdp"
+                        android:layout_height="@dimen/_40sdp"
+                        android:layout_centerInParent="true"
+                        android:background="@drawable/ripple_round"
+                        android:elevation="5dp"
+                        android:scaleType="centerInside"
+                        android:src="@drawable/ic_navigate_before_black_24dp" />
+                </RelativeLayout>
+
+            </com.pratham.foundation.customView.RipplePulseLayout>
+
+            <com.pratham.foundation.customView.RipplePulseLayout
+                android:id="@+id/layout_ripplepulse_right"
+                android:layout_width="@dimen/_60sdp"
+                android:layout_height="@dimen/_60sdp"
+                android:layout_alignParentRight="true"
+                android:clipChildren="false"
+                ripple:duration="2000"
+                ripple:endRadius="@dimen/_30sdp"
+                ripple:rippleColor="@color/colorBlack"
+                android:elevation="20dp"
+                ripple:rippleType="fill"
+                ripple:startRadius="2dp"
+                ripple:strokeWidth="2dp">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <ImageButton
+                        android:id="@+id/btn_next"
+                        android:layout_width="@dimen/_40sdp"
+                        android:layout_height="@dimen/_40sdp"
+                        android:layout_centerInParent="true"
+                        android:background="@drawable/ripple_round"
+                        android:elevation="5dp"
+                        android:scaleType="centerInside"
+                        android:src="@drawable/ic_navigate_next_black_24dp" />
+                </RelativeLayout>
+
+            </com.pratham.foundation.customView.RipplePulseLayout>
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/recyclerView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@null"
+                android:clipToPadding="false"
+                android:paddingTop="10dp"
+                android:paddingBottom="60dp" />
+        </RelativeLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_marginHorizontal="10dp"
+            android:layout_marginVertical="10dp"
+            android:layout_weight="2.5"
+            android:orientation="horizontal"
+            android:weightSum="10">
+
+            <ImageButton
+                android:id="@+id/btn_reading"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1.5"
+                android:background="@drawable/ripple_effect"
+                android:elevation="2dp"
+                android:padding="2dp"
+                android:scaleType="centerInside"
+                android:src="@drawable/ic_mic_black_24dp" />
+
+            <LinearLayout
+                android:id="@+id/lin_layout"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:layout_marginHorizontal="@dimen/_5sdp"
+                android:layout_weight="7"
+                android:background="@drawable/choose_level_bg"
+                android:elevation="2dp"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <ScrollView
+                    android:id="@+id/scroll_ll"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginHorizontal="@dimen/_5sdp">
+
+                    <com.nex3z.flowlayout.FlowLayout xmlns:app="http://schemas.android.com/apk/res-auto"
+                        android:id="@+id/vocabChatFlow"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        app:flChildSpacing="10dp" />
+                </ScrollView>
+            </LinearLayout>
+
+            <ImageButton
+                android:id="@+id/btn_imgsend"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1.5"
+                android:background="@drawable/ripple_effect"
+                android:elevation="2dp"
+                android:padding="@dimen/_5sdp"
+                android:visibility="gone"
+                android:scaleType="fitCenter"
+                android:src="@drawable/ic_send_black_24dp" />
+
+            <ImageButton
+                android:id="@+id/btn_speaker"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1.5"
+                android:background="@drawable/ripple_effect"
+                android:elevation="2dp"
+                android:padding="@dimen/_5sdp"
+                android:scaleType="fitCenter"
+                android:src="@drawable/ic_volume" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+</RelativeLayout>

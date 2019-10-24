@@ -7,9 +7,7 @@ import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
-import android.os.Bundle;
 import android.os.Handler;
-import android.os.Parcelable;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -27,8 +25,15 @@ import com.bumptech.glide.Glide;
 import com.pratham.foundation.ApplicationClass;
 import com.pratham.foundation.R;
 import com.pratham.foundation.customView.GridSpacingItemDecoration;
-import com.pratham.foundation.ui.contentPlayer.ContentPlayerActivity;
+import com.pratham.foundation.ui.contentPlayer.matchingPairGame.MatchThePairGameActivity;
+import com.pratham.foundation.ui.contentPlayer.old_cos.reading_cards.ReadingCardsActivity_;
 import com.pratham.foundation.ui.contentPlayer.ContentPlayerActivity_;
+import com.pratham.foundation.ui.contentPlayer.old_cos.conversation.ConversationActivity_;
+import com.pratham.foundation.ui.contentPlayer.opposites.OppositesActivity_;
+import com.pratham.foundation.ui.contentPlayer.reading_activity.ReadingStoryActivity_;
+import com.pratham.foundation.ui.contentPlayer.reading_paragraphs.ReadingParagraphsActivity_;
+import com.pratham.foundation.ui.contentPlayer.reading_rhyming.ReadingRhymesActivity_;
+import com.pratham.foundation.ui.contentPlayer.vocabulary_qa.ReadingVocabularyActivity_;
 import com.pratham.foundation.ui.contentPlayer.web_view.WebViewActivity;
 import com.pratham.foundation.customView.progress_layout.ProgressLayout;
 import com.pratham.foundation.database.domain.ContentTable;
@@ -309,94 +314,77 @@ public class ContentDisplay extends BaseActivity implements ContentContract.Cont
             e.printStackTrace();
         }
         resName = ContentTableList.get(position).getNodeTitle();
-        if (ContentTableList.get(position).getResourceType().toLowerCase()
-                .contains(FC_Constants.HTML_GAME_RESOURCE)) {
-            String resPath = null;
-            String gameID = ContentTableList.get(position).getResourceId();
-            if (ContentTableList.get(position).isOnSDCard())
-                resPath = ApplicationClass.contentSDPath + "/.FCA/English/Game/" +
-                        ContentTableList.get(position).getResourcePath();
-            else
-                resPath = ApplicationClass.foundationPath + "/.FCA/English/Game/" +
-                        ContentTableList.get(position).getResourcePath();
-            File file = new File(resPath);
-            if (file.exists()) {
-                Uri path = Uri.fromFile(file);
-                Intent mainNew = new Intent(ContentDisplay.this, WebViewActivity.class);
-                mainNew.putExtra("resPath", path.toString());
-                mainNew.putExtra("resId", gameID);
-                mainNew.putExtra("mode", "normal");
-                mainNew.putExtra("gameLevel", "" + ContentTableList.get(position).getNodeDesc());
-                mainNew.putExtra("gameName", "" + ContentTableList.get(position).getNodeTitle());
-                mainNew.putExtra("gameType", "" + ContentTableList.get(position).getResourceType());
-                mainNew.putExtra("gameCategory", "" + ContentTableList.get(position).getNodeKeywords());
+        if(ContentTableList.get(position).getNodeType().equalsIgnoreCase("PreResource")||
+                ContentTableList.get(position).getResourceType().equalsIgnoreCase("PreResource")){
+                Intent mainNew = new Intent(ContentDisplay.this, ContentPlayerActivity_.class);
+                mainNew.putExtra("resId", ContentTableList.get(position).getResourceId());
+                mainNew.putExtra("StudentID", FC_Constants.currentStudentID);
+                mainNew.putExtra("contentName", ContentTableList.get(position).getNodeTitle());
+                mainNew.putExtra("onSdCard", ContentTableList.get(position).isOnSDCard());
+                mainNew.putExtra("contentPath", ContentTableList.get(position).getResourcePath());
                 startActivity(mainNew);
-            } else {
-                Toast.makeText(this, "Game not found", Toast.LENGTH_SHORT).show();
-            }
+        }else {
+            if (ContentTableList.get(position).getResourceType().toLowerCase()
+                    .contains(FC_Constants.HTML_GAME_RESOURCE)) {
+                String resPath = null;
+                String gameID = ContentTableList.get(position).getResourceId();
+                if (ContentTableList.get(position).isOnSDCard())
+                    resPath = ApplicationClass.contentSDPath + "/.FCA/English/Game/" +
+                            ContentTableList.get(position).getResourcePath();
+                else
+                    resPath = ApplicationClass.foundationPath + "/.FCA/English/Game/" +
+                            ContentTableList.get(position).getResourcePath();
+                File file = new File(resPath);
+                if (file.exists()) {
+                    Uri path = Uri.fromFile(file);
+                    Intent mainNew = new Intent(ContentDisplay.this, WebViewActivity.class);
+                    mainNew.putExtra("resPath", path.toString());
+                    mainNew.putExtra("resId", gameID);
+                    mainNew.putExtra("mode", "normal");
+                    mainNew.putExtra("gameLevel", "" + ContentTableList.get(position).getNodeDesc());
+                    mainNew.putExtra("gameName", "" + ContentTableList.get(position).getNodeTitle());
+                    mainNew.putExtra("gameType", "" + ContentTableList.get(position).getResourceType());
+                    mainNew.putExtra("gameCategory", "" + ContentTableList.get(position).getNodeKeywords());
+                    startActivity(mainNew);
+                } else {
+                    Toast.makeText(this, "Game not found", Toast.LENGTH_SHORT).show();
+                }
 /*        } else if (ContentTableList.get(position).getResourceType().equalsIgnoreCase(FC_Constants.RC_RESOURCE)) {
 //            presenter.enterRCData(contentList);*/
-        } else {/* (ContentTableList.get(position).getResourceType().equalsIgnoreCase(FC_Constants.IDENTIFY_KEYWORDS)) {
-            Intent mainNew = new Intent(ContentDisplay.this, FactRetrieval_.class);
-            mainNew.putExtra("resId", ContentTableList.get(position).getResourceId());
-            mainNew.putExtra("StudentID", FC_Constants.currentStudentID);
-            mainNew.putExtra("contentName", ContentTableList.get(position).getNodeTitle());
-            mainNew.putExtra("onSdCard", ContentTableList.get(position).isOnSDCard());
-            mainNew.putExtra("contentPath", ContentTableList.get(position).getResourcePath());
-            startActivity(mainNew);
-        } else if (ContentTableList.get(position).getResourceType().equalsIgnoreCase(FC_Constants.FACT_RETRIVAL)) {
-            Intent mainNew = new Intent(ContentDisplay.this, FactRetrieval_.class);
-            mainNew.putExtra("resId", ContentTableList.get(position).getResourceId());
-            mainNew.putExtra("StudentID", FC_Constants.currentStudentID);
-            mainNew.putExtra("contentName", ContentTableList.get(position).getNodeTitle());
-            mainNew.putExtra("onSdCard", ContentTableList.get(position).isOnSDCard());
-            mainNew.putExtra("contentPath", ContentTableList.get(position).getResourcePath());
-            startActivity(mainNew);
-        } else if (ContentTableList.get(position).getResourceType().equalsIgnoreCase(FC_Constants.KEY_WORD_MAPPING)) {
-            */
-            Intent mainNew = new Intent(ContentDisplay.this, ContentPlayerActivity_.class);
-            mainNew.putExtra("resId", ContentTableList.get(position).getResourceId());
-            mainNew.putExtra("StudentID", FC_Constants.currentStudentID);
-            mainNew.putExtra("contentName", ContentTableList.get(position).getNodeTitle());
-            mainNew.putExtra("onSdCard", ContentTableList.get(position).isOnSDCard());
-            mainNew.putExtra("contentPath", ContentTableList.get(position).getResourcePath());
-            startActivity(mainNew);
-        }
-
-        /* else if (ContentTableList.get(position).getResourceType().equalsIgnoreCase(FC_Constants.CONVO_RESOURCE)) {
-            Intent mainNew = new Intent(ContentDisplay.this, ConversationActivity_.class);
-            mainNew.putExtra("storyId", ContentTableList.get(position).getResourceId());
-            mainNew.putExtra("StudentID", FC_Constants.currentStudentID);
-            mainNew.putExtra("contentName", ContentTableList.get(position).getNodeTitle());
-            mainNew.putExtra("onSdCard", ContentTableList.get(position).isOnSDCard());
-            mainNew.putExtra("contentPath", ContentTableList.get(position).getResourcePath());
-            startActivity(mainNew);
-        } else if (ContentTableList.get(position).getResourceType().equalsIgnoreCase(FC_Constants.COMIC_CONVO_RESOURCE)) {
-            Intent mainNew = new Intent(ContentDisplay.this, ReadingCardsActivity_.class);
-            mainNew.putExtra("resId", ContentTableList.get(position).getResourceId());
-            mainNew.putExtra("StudentID", FC_Constants.currentStudentID);
-            mainNew.putExtra("contentName", ContentTableList.get(position).getNodeTitle());
-            mainNew.putExtra("onSdCard", ContentTableList.get(position).isOnSDCard());
-            mainNew.putExtra("contentPath", ContentTableList.get(position).getResourcePath());
-            startActivity(mainNew);
-        } else if (ContentTableList.get(position).getResourceType().equalsIgnoreCase(FC_Constants.OPPOSITE_WORDS)) {
-            Intent mainNew = new Intent(ContentDisplay.this, OppositesActivity_.class);
-            mainNew.putExtra("resId", ContentTableList.get(position).getResourceId());
-            mainNew.putExtra("StudentID", FC_Constants.currentStudentID);
-            mainNew.putExtra("contentName", ContentTableList.get(position).getNodeTitle());
-            mainNew.putExtra("onSdCard", ContentTableList.get(position).isOnSDCard());
-            mainNew.putExtra("contentPath", ContentTableList.get(position).getResourcePath());
-            startActivity(mainNew);
-        } else if (ContentTableList.get(position).getResourceType().equalsIgnoreCase(FC_Constants.RHYME_RESOURCE) || ContentTableList.get(position).getResourceType().equalsIgnoreCase(FC_Constants.STORY_RESOURCE)) {
-            Intent mainNew = new Intent(ContentDisplay.this, ReadingStoryActivity_.class);
-            mainNew.putExtra("storyId", ContentTableList.get(position).getResourceId());
-            mainNew.putExtra("StudentID", FC_Constants.currentStudentID);
-            mainNew.putExtra("storyPath", ContentTableList.get(position).getResourcePath());
-            mainNew.putExtra("storyTitle", ContentTableList.get(position).getNodeTitle());
-            mainNew.putExtra("onSdCard", ContentTableList.get(position).isOnSDCard());
-            mainNew.putExtra("contentType", ContentTableList.get(position).getResourceType());
-            startActivity(mainNew);
-        } else if (ContentTableList.get(position).getResourceType().equalsIgnoreCase(FC_Constants.WORD_ANDROID)) {
+            } else if (ContentTableList.get(position).getResourceType().equalsIgnoreCase(FC_Constants.CONVO_RESOURCE)) {
+                Intent mainNew = new Intent(ContentDisplay.this, ConversationActivity_.class);
+                mainNew.putExtra("storyId", ContentTableList.get(position).getResourceId());
+                mainNew.putExtra("StudentID", FC_Constants.currentStudentID);
+                mainNew.putExtra("contentName", ContentTableList.get(position).getNodeTitle());
+                mainNew.putExtra("onSdCard", ContentTableList.get(position).isOnSDCard());
+                mainNew.putExtra("contentPath", ContentTableList.get(position).getResourcePath());
+                startActivity(mainNew);
+            } else if (ContentTableList.get(position).getResourceType().equalsIgnoreCase(FC_Constants.COMIC_CONVO_RESOURCE)) {
+                Intent mainNew = new Intent(ContentDisplay.this, ReadingCardsActivity_.class);
+                mainNew.putExtra("resId", ContentTableList.get(position).getResourceId());
+                mainNew.putExtra("StudentID", FC_Constants.currentStudentID);
+                mainNew.putExtra("contentName", ContentTableList.get(position).getNodeTitle());
+                mainNew.putExtra("onSdCard", ContentTableList.get(position).isOnSDCard());
+                mainNew.putExtra("contentPath", ContentTableList.get(position).getResourcePath());
+                startActivity(mainNew);
+            } else if (ContentTableList.get(position).getResourceType().equalsIgnoreCase(FC_Constants.OPPOSITE_WORDS)) {
+                Intent mainNew = new Intent(ContentDisplay.this, OppositesActivity_.class);
+                mainNew.putExtra("resId", ContentTableList.get(position).getResourceId());
+                mainNew.putExtra("StudentID", FC_Constants.currentStudentID);
+                mainNew.putExtra("contentName", ContentTableList.get(position).getNodeTitle());
+                mainNew.putExtra("onSdCard", ContentTableList.get(position).isOnSDCard());
+                mainNew.putExtra("contentPath", ContentTableList.get(position).getResourcePath());
+                startActivity(mainNew);
+            } else if (ContentTableList.get(position).getResourceType().equalsIgnoreCase(FC_Constants.RHYME_RESOURCE) || ContentTableList.get(position).getResourceType().equalsIgnoreCase(FC_Constants.STORY_RESOURCE)) {
+                Intent mainNew = new Intent(ContentDisplay.this, ReadingStoryActivity_.class);
+                mainNew.putExtra("storyId", ContentTableList.get(position).getResourceId());
+                mainNew.putExtra("StudentID", FC_Constants.currentStudentID);
+                mainNew.putExtra("storyPath", ContentTableList.get(position).getResourcePath());
+                mainNew.putExtra("storyTitle", ContentTableList.get(position).getNodeTitle());
+                mainNew.putExtra("onSdCard", ContentTableList.get(position).isOnSDCard());
+                mainNew.putExtra("contentType", ContentTableList.get(position).getResourceType());
+                startActivity(mainNew);
+            } /*else if (ContentTableList.get(position).getResourceType().equalsIgnoreCase(FC_Constants.WORD_ANDROID)) {
             Intent mainNew = new Intent(ContentDisplay.this, ReadingWordScreenActivity.class);
             mainNew.putExtra("resId", ContentTableList.get(position).getResourceId());
             mainNew.putExtra("StudentID", FC_Constants.currentStudentID);
@@ -404,56 +392,57 @@ public class ContentDisplay extends BaseActivity implements ContentContract.Cont
             mainNew.putExtra("onSdCard", ContentTableList.get(position).isOnSDCard());
             mainNew.putExtra("contentTitle", ContentTableList.get(position).getNodeTitle());
             startActivity(mainNew);
-        } else if (ContentTableList.get(position).getResourceType().equalsIgnoreCase(FC_Constants.PARA_ANDROID)) {
-            Intent mainNew = new Intent(ContentDisplay.this, ReadingParagraphsActivity_.class);
-            mainNew.putExtra("resId", ContentTableList.get(position).getResourceId());
-            mainNew.putExtra("StudentID", FC_Constants.currentStudentID);
-            mainNew.putExtra("contentPath", ContentTableList.get(position).getResourcePath());
-            mainNew.putExtra("onSdCard", ContentTableList.get(position).isOnSDCard());
-            mainNew.putExtra("resType", ContentTableList.get(position).getResourceType());
-            mainNew.putExtra("contentTitle", ContentTableList.get(position).getNodeTitle());
-            startActivity(mainNew);
-        } else if (ContentTableList.get(position).getResourceType().equalsIgnoreCase(FC_Constants.PARA_VOCAB_ANDROID)) {
-            Intent mainNew = new Intent(ContentDisplay.this, ReadingParagraphsActivity_.class);
-            mainNew.putExtra("resId", ContentTableList.get(position).getResourceId());
-            mainNew.putExtra("StudentID", FC_Constants.currentStudentID);
-            mainNew.putExtra("contentPath", ContentTableList.get(position).getResourcePath());
-            mainNew.putExtra("onSdCard", ContentTableList.get(position).isOnSDCard());
-            mainNew.putExtra("resType", ContentTableList.get(position).getResourceType());
-            mainNew.putExtra("contentTitle", ContentTableList.get(position).getNodeTitle());
-            startActivity(mainNew);
-        } else if (ContentTableList.get(position).getResourceType().equalsIgnoreCase(FC_Constants.VOCAB_ANDROID)) {
-            Intent mainNew = new Intent(ContentDisplay.this, ReadingVocabularyActivity_.class);
-            mainNew.putExtra("resId", ContentTableList.get(position).getResourceId());
-            mainNew.putExtra("StudentID", FC_Constants.currentStudentID);
-            mainNew.putExtra("contentPath", ContentTableList.get(position).getResourcePath());
-            mainNew.putExtra("contentTitle", ContentTableList.get(position).getNodeTitle());
-            mainNew.putExtra("vocabLevel", ContentTableList.get(position).getNodeDesc());
-            mainNew.putExtra("onSdCard", ContentTableList.get(position).isOnSDCard());
-            mainNew.putExtra("vocabCategory", ContentTableList.get(position).getNodeKeywords());
-            startActivity(mainNew);
-        } else if (ContentTableList.get(position).getResourceType().equalsIgnoreCase(FC_Constants.RHYMING_WORD_ANDROID)) {
-            Intent mainNew = new Intent(ContentDisplay.this, ReadingRhymesActivity_.class);
-            mainNew.putExtra("resId", ContentTableList.get(position).getResourceId());
-            mainNew.putExtra("StudentID", FC_Constants.currentStudentID);
-            mainNew.putExtra("contentPath", ContentTableList.get(position).getResourcePath());
-            mainNew.putExtra("contentTitle", ContentTableList.get(position).getNodeTitle());
-            mainNew.putExtra("onSdCard", ContentTableList.get(position).isOnSDCard());
-            mainNew.putExtra("rhymeLevel", ContentTableList.get(position).getNodeDesc());
-            startActivity(mainNew);
-        } else if (ContentTableList.get(position).getResourceType().equalsIgnoreCase(FC_Constants.MATCH_THE_PAIR)) {
-            Intent mainNew = new Intent(ContentDisplay.this, MatchThePairGameActivity.class);
-            mainNew.putExtra("resId", ContentTableList.get(position).getResourceId());
-            mainNew.putExtra("StudentID", FC_Constants.currentStudentID);
-            mainNew.putExtra("contentPath", ContentTableList.get(position).getResourcePath());
-            mainNew.putExtra("contentTitle", ContentTableList.get(position).getNodeTitle());
-            mainNew.putExtra("onSdCard", ContentTableList.get(position).isOnSDCard());
-            mainNew.putExtra("rhymeLevel", ContentTableList.get(position).getNodeDesc());
-            startActivity(mainNew);
-        } else if (ContentTableList.get(position).getResourceType().equalsIgnoreCase(FC_Constants.CHATBOT_ANDROID)) {
+        } */ else if (ContentTableList.get(position).getResourceType().equalsIgnoreCase(FC_Constants.PARA_ANDROID)) {
+                Intent mainNew = new Intent(ContentDisplay.this, ReadingParagraphsActivity_.class);
+                mainNew.putExtra("resId", ContentTableList.get(position).getResourceId());
+                mainNew.putExtra("StudentID", FC_Constants.currentStudentID);
+                mainNew.putExtra("contentPath", ContentTableList.get(position).getResourcePath());
+                mainNew.putExtra("onSdCard", ContentTableList.get(position).isOnSDCard());
+                mainNew.putExtra("resType", ContentTableList.get(position).getResourceType());
+                mainNew.putExtra("contentTitle", ContentTableList.get(position).getNodeTitle());
+                startActivity(mainNew);
+            } else if (ContentTableList.get(position).getResourceType().equalsIgnoreCase(FC_Constants.PARA_VOCAB_ANDROID)) {
+                Intent mainNew = new Intent(ContentDisplay.this, ReadingParagraphsActivity_.class);
+                mainNew.putExtra("resId", ContentTableList.get(position).getResourceId());
+                mainNew.putExtra("StudentID", FC_Constants.currentStudentID);
+                mainNew.putExtra("contentPath", ContentTableList.get(position).getResourcePath());
+                mainNew.putExtra("onSdCard", ContentTableList.get(position).isOnSDCard());
+                mainNew.putExtra("resType", ContentTableList.get(position).getResourceType());
+                mainNew.putExtra("contentTitle", ContentTableList.get(position).getNodeTitle());
+                startActivity(mainNew);
+            } else if (ContentTableList.get(position).getResourceType().equalsIgnoreCase(FC_Constants.VOCAB_ANDROID)) {
+                Intent mainNew = new Intent(ContentDisplay.this, ReadingVocabularyActivity_.class);
+                mainNew.putExtra("resId", ContentTableList.get(position).getResourceId());
+                mainNew.putExtra("StudentID", FC_Constants.currentStudentID);
+                mainNew.putExtra("contentPath", ContentTableList.get(position).getResourcePath());
+                mainNew.putExtra("contentTitle", ContentTableList.get(position).getNodeTitle());
+                mainNew.putExtra("vocabLevel", ContentTableList.get(position).getNodeDesc());
+                mainNew.putExtra("onSdCard", ContentTableList.get(position).isOnSDCard());
+                mainNew.putExtra("vocabCategory", ContentTableList.get(position).getNodeKeywords());
+                startActivity(mainNew);
+            } else if (ContentTableList.get(position).getResourceType().equalsIgnoreCase(FC_Constants.RHYMING_WORD_ANDROID)) {
+                Intent mainNew = new Intent(ContentDisplay.this, ReadingRhymesActivity_.class);
+                mainNew.putExtra("resId", ContentTableList.get(position).getResourceId());
+                mainNew.putExtra("StudentID", FC_Constants.currentStudentID);
+                mainNew.putExtra("contentPath", ContentTableList.get(position).getResourcePath());
+                mainNew.putExtra("contentTitle", ContentTableList.get(position).getNodeTitle());
+                mainNew.putExtra("onSdCard", ContentTableList.get(position).isOnSDCard());
+                mainNew.putExtra("rhymeLevel", ContentTableList.get(position).getNodeDesc());
+                startActivity(mainNew);
+            } else if (ContentTableList.get(position).getResourceType().equalsIgnoreCase(FC_Constants.MATCH_THE_PAIR)) {
+                Intent mainNew = new Intent(ContentDisplay.this, MatchThePairGameActivity.class);
+                mainNew.putExtra("resId", ContentTableList.get(position).getResourceId());
+                mainNew.putExtra("StudentID", FC_Constants.currentStudentID);
+                mainNew.putExtra("contentPath", ContentTableList.get(position).getResourcePath());
+                mainNew.putExtra("contentTitle", ContentTableList.get(position).getNodeTitle());
+                mainNew.putExtra("onSdCard", ContentTableList.get(position).isOnSDCard());
+                mainNew.putExtra("rhymeLevel", ContentTableList.get(position).getNodeDesc());
+                startActivity(mainNew);
+            } /*else if (ContentTableList.get(position).getResourceType().equalsIgnoreCase(FC_Constants.CHATBOT_ANDROID)) {
             Intent talkbot = new Intent(this, com.pratham.cityofstories.talkbot.feature.HomeActivity.class);
             startActivity(talkbot);
         }*/
+        }
         resServerImageName = ContentTableList.get(position).getNodeServerImage();
     }
 

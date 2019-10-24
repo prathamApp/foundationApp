@@ -46,6 +46,7 @@
         <activity
             android:name=".BaseActivity"
             android:screenOrientation="portrait" />
+
         <activity
             android:name=".ui.splash_activity.SplashActivity_"
             android:screenOrientation="portrait"
@@ -55,6 +56,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
         <activity
             android:name=".ui.admin_panel.AdminControlsActivity_"
             android:screenOrientation="portrait" />
@@ -83,6 +85,9 @@
             android:name=".ui.contentPlayer.ContentPlayerActivity_"
             android:screenOrientation="portrait" />
         <activity
+            android:name=".ui.contentPlayer.old_cos.reading_cards.ReadingCardsActivity_"
+            android:screenOrientation="sensorLandscape" />
+        <activity
             android:name=".ui.test.supervisor.SupervisedAssessmentActivity"
             android:screenOrientation="sensorPortrait"
             android:theme="@style/Theme.AppCompat.Light.Dialog.MinWidth" />
@@ -91,6 +96,27 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".ui.contentPlayer.web_view.WebViewActivity"
+            android:screenOrientation="sensorLandscape" />
+        <activity
+            android:name=".ui.contentPlayer.old_cos.conversation.ConversationActivity_"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.contentPlayer.reading_activity.ReadingStoryActivity_"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.contentPlayer.reading_paragraphs.ReadingParagraphsActivity_"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.contentPlayer.vocabulary_qa.ReadingVocabularyActivity_"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.contentPlayer.reading_rhyming.ReadingRhymesActivity_"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.contentPlayer.opposites.OppositesActivity_"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.contentPlayer.matchingPairGame.MatchThePairGameActivity"
             android:screenOrientation="portrait" />
         <activity
             android:name=".ui.contentPlayer.video_view.ActivityVideoView_"

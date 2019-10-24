@@ -138,8 +138,6 @@ public class PracticeInnerDataAdapter extends RecyclerView.Adapter {
             case 2:
                 //file
                 FileHolder fileHolder = (FileHolder) viewHolder;
-                int randomNoo = getRandomDrawableGradiant();
-                fileHolder.rl_root.setBackground(mContext.getResources().getDrawable(randomNoo));
                 fileHolder.tvTitle.setText(itemsList.get(i).getNodeTitle());
                 File file;
                 if (itemsList.get(i).getIsDownloaded().equalsIgnoreCase("1") ||

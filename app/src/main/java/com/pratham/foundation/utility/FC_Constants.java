@@ -216,6 +216,7 @@ public class FC_Constants {
     public static String currentGroup;
     public static String currentSelectedLanguage;
     public static String newDataLanguageInserted = "newDataLanguageInserted";
+    public static String currentSubject = "";
 
     public static enum URL {
         BROWSE_BY_ID(BASE_URL + "get?id="),

@@ -214,7 +214,7 @@ public class SplashActivity extends SplashSupportActivity implements SplashContr
                 splashPresenter.copyZipAndPopulateMenu();
             } else {
                 ApplicationClass.foundationPath = FC_Utility.getInternalPath(SplashActivity.this);
-                Log.d("COS.pradigiPath", "COS.pradigiPath: " + ApplicationClass.foundationPath);
+                Log.d("old_cos.pradigiPath", "old_cos.pradigiPath: " + ApplicationClass.foundationPath);
                 if (splashPresenter.getSdCardPath()) {
                     ApplicationClass.contentExistOnSD = true;
                     splashPresenter.populateSDCardMenu();

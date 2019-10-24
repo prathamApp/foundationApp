@@ -15,6 +15,7 @@ import com.pratham.foundation.database.dao.EnglishWordDao;
 import com.pratham.foundation.database.dao.GroupDao;
 import com.pratham.foundation.database.dao.KeyWordDao;
 import com.pratham.foundation.database.dao.LogDao;
+import com.pratham.foundation.database.dao.MatchThePairDao;
 import com.pratham.foundation.database.dao.ScoreDao;
 import com.pratham.foundation.database.dao.SessionDao;
 import com.pratham.foundation.database.dao.StatusDao;
@@ -36,12 +37,13 @@ import com.pratham.foundation.database.domain.Student;
 import com.pratham.foundation.database.domain.SupervisorData;
 import com.pratham.foundation.database.domain.Village;
 import com.pratham.foundation.database.domain.WordEnglish;
+import com.pratham.foundation.modalclasses.MatchThePair;
 
 
 @Database(entities = {Crl.class, Student.class, Score.class, Session.class,
         Attendance.class, Status.class, Village.class, Groups.class,
         SupervisorData.class, Assessment.class, Modal_Log.class, ContentTable.class,
-        ContentProgress.class, KeyWords.class, WordEnglish.class }, version = 1, exportSchema = false)
+        ContentProgress.class, KeyWords.class, WordEnglish.class, MatchThePair.class }, version = 1, exportSchema = false)
 
 public abstract class AppDatabase extends RoomDatabase {
     public static AppDatabase appDatabase;
@@ -75,7 +77,10 @@ public abstract class AppDatabase extends RoomDatabase {
     public abstract ContentProgressDao getContentProgressDao();
 
     public abstract KeyWordDao getKeyWordDao();
+
     public abstract EnglishWordDao getEnglishWordDao();
+
+    public abstract MatchThePairDao getMatchThePairDao();
 
 
     public static AppDatabase getDatabaseInstance(Context context) {

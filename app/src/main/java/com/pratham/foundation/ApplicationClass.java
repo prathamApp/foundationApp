@@ -59,7 +59,7 @@ public class ApplicationClass extends Application {
             if (!mydir.exists())
                 mydir.mkdirs();
         }
-        Log.d("COS.foundationPath", "COS.foundationPath: " + foundationPath);
+        Log.d("old_cos.foundationPath", "old_cos.foundationPath: " + foundationPath);
 
         wiseF = new WiseFy.Brains(getApplicationContext()).logging(true).getSmarts();
         okHttpClient = new OkHttpClient().newBuilder()
