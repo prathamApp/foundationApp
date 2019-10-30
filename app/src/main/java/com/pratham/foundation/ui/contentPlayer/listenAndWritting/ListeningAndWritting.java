@@ -22,6 +22,7 @@ import android.widget.RadioGroup;
 import com.bumptech.glide.Glide;
 import com.pratham.foundation.ApplicationClass;
 import com.pratham.foundation.R;
+import com.pratham.foundation.customView.SansTextView;
 import com.pratham.foundation.interfaces.OnGameClose;
 import com.pratham.foundation.ui.contentPlayer.GameConstatnts;
 import com.pratham.foundation.ui.contentPlayer.fact_retrival_selection.ScienceQuestion;
@@ -47,6 +48,9 @@ public class ListeningAndWritting extends Fragment implements ListeningAndWritti
     ImageView play;
     @ViewById(R.id.radiogroup)
     RadioGroup radiogroup;
+
+    @ViewById(R.id.title)
+    SansTextView title;
 
 
     private String readingContentPath, contentPath, contentTitle, StudentID, resId, resStartTime;
@@ -111,6 +115,7 @@ public class ListeningAndWritting extends Fragment implements ListeningAndWritti
     @Override
     public void loadUI(ScienceQuestion listenAndWrittingModal) {
         this.listenAndWrittingModal = listenAndWrittingModal;
+        title.setText(listenAndWrittingModal.getInstruction());
     }
 
     @Click(R.id.play_button)

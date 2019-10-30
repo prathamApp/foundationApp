@@ -352,7 +352,7 @@ public class pictionaryFragment extends Fragment implements OnGameClose {
                             }
                         } else {*/
                             radioButton.setText(options.get(r).getSubQues());
-                            Log.d("tag111", "a" + selectedFive.get(index).getUserAnswer() + "  B" + options.get(r).getQid());
+                         //   Log.d("tag111", "a" + selectedFive.get(index).getUserAnswer() + "  B" + options.get(r).getQid());
                             if (selectedFive.get(index).getUserAnswer().equalsIgnoreCase(options.get(r).getQid())) {
 
                                 radioButton.setChecked(true);
@@ -427,11 +427,11 @@ public class pictionaryFragment extends Fragment implements OnGameClose {
                                 rl_mcq.setBackground(getActivity().getResources().getDrawable(R.drawable.custom_edit_text));
                                 tick.setVisibility(View.VISIBLE);
                                 String fileName = options.get(finalR).getSubUrl();
-                                String localPath = readingContentPath + "/Images/" + fileName;
+                                String localPath = readingContentPath  + fileName;
 
 
 //                            if (AssessmentApplication.wiseF.isDeviceConnectedToMobileOrWifiNetwork()) {
-                                showZoomDialog(getActivity(), options.get(finalR).getSubUrl(), localPath);
+                               // showZoomDialog(getActivity(), options.get(finalR).getSubUrl(), localPath);
                             /*} else {
                                  showZoomDialog(localPath);
                             }*/

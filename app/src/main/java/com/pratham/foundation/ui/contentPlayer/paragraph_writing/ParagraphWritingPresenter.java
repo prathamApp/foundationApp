@@ -38,7 +38,6 @@ public class ParagraphWritingPresenter implements ParagraphWritingContract.Parag
     private int totalWordCount, learntWordCount;
     private String gameName, resId, contentTitle, readingContentPath;
 
-
     public ParagraphWritingPresenter(Context context) {
         this.context = context;
 
@@ -88,10 +87,12 @@ public class ParagraphWritingPresenter implements ParagraphWritingContract.Parag
             Collections.shuffle(quetionModelList);
             for (int i = 0; i < quetionModelList.size(); i++) {
                 if (perc < 95) {
-                    if (!checkWord("" + quetionModelList.get(i).getTitle())) {
+                    questionModel = quetionModelList.get(i);
+                    break;
+                    /*if (!checkWord("" + quetionModelList.get(i).getTitle())) {
                         questionModel = quetionModelList.get(i);
                         break;
-                    }
+                    }*/
                 } else {
                     questionModel = quetionModelList.get(i);
                     break;
