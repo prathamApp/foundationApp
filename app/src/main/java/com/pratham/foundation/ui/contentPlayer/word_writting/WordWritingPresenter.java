@@ -182,6 +182,7 @@ public class WordWritingPresenter implements WordWritingContract.WordWritingPres
                 }
                 GameConstatnts.playGameNext(context, GameConstatnts.FALSE, (OnGameClose) view);
 
+
             }
         } else {
             GameConstatnts.playGameNext(context, GameConstatnts.TRUE, (OnGameClose) view);
