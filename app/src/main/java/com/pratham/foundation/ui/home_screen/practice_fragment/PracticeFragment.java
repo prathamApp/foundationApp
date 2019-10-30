@@ -255,15 +255,19 @@ public class PracticeFragment extends Fragment implements PracticeContract.Pract
     @Override
     public void showLoader() {
         if (!loaderVisible) {
-            loaderVisible = true;
-            myLoadingDialog = new Dialog(getActivity());
-            myLoadingDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-            Objects.requireNonNull(myLoadingDialog.getWindow()).
-                    setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-            myLoadingDialog.setContentView(R.layout.loading_dialog);
-            myLoadingDialog.setCanceledOnTouchOutside(false);
+            try {
+                loaderVisible = true;
+                myLoadingDialog = new Dialog(getActivity());
+                myLoadingDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+                Objects.requireNonNull(myLoadingDialog.getWindow()).
+                        setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+                myLoadingDialog.setContentView(R.layout.loading_dialog);
+                myLoadingDialog.setCanceledOnTouchOutside(false);
 //        myLoadingDialog.setCancelable(false);
-            myLoadingDialog.show();
+                myLoadingDialog.show();
+            }catch (Exception e){
+                e.printStackTrace();
+            }
         }
     }
 

@@ -53,6 +53,38 @@ public class MenuActivity extends BaseActivity {
             show_STT_Dialog();
     }
 
+    private void showLoginDialog(String nextActivity) {
+        Dialog dialog = new Dialog(MenuActivity.this);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setContentView(R.layout.fc_custom_dialog);
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        dialog.setCancelable(false);
+        dialog.setCanceledOnTouchOutside(false);
+        dialog.show();
+        TextView dia_title = dialog.findViewById(R.id.dia_title);
+        Button dia_btn_green = dialog.findViewById(R.id.dia_btn_green);
+        Button dia_btn_yellow = dialog.findViewById(R.id.dia_btn_yellow);
+        Button dia_btn_red = dialog.findViewById(R.id.dia_btn_red);
+
+        dia_title.setTextSize(getResources().getDimension(R.dimen._10sdp));
+        dia_title.setText("Login Mode");
+        dia_btn_green.setVisibility(View.GONE);
+        dia_btn_red.setText("Group");
+        dia_btn_yellow.setText("Individual");
+
+        dia_btn_red.setOnClickListener(v -> {
+            FC_Constants.LOGIN_MODE = FC_Constants.GROUP_MODE;
+            gotoNext(nextActivity);
+            dialog.dismiss();
+        });
+
+        dia_btn_yellow.setOnClickListener(v -> {
+            FC_Constants.LOGIN_MODE = FC_Constants.INDIVIDUAL_MODE;
+            gotoNext(nextActivity);
+            dialog.dismiss();
+        });
+    }
+
     private void show_STT_Dialog() {
         Dialog dialog = new Dialog(MenuActivity.this);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -89,13 +121,20 @@ public class MenuActivity extends BaseActivity {
     @Click(R.id.btn_qr)
     public void gotoQRActivity() {
         ButtonClickSound.start();
-        startActivity(new Intent(this, QRScanActivity_.class));
+        showLoginDialog("QRScan");
     }
 
     @Click(R.id.btn_grp)
     public void gotoGroupLogin() {
         ButtonClickSound.start();
-        startActivity(new Intent(this, SelectGroupActivity_.class));
+        showLoginDialog("SelectGroup");
+    }
+
+    private void gotoNext(String nextActivity) {
+        if(nextActivity.equalsIgnoreCase("SelectGroup"))
+            startActivity(new Intent(this, SelectGroupActivity_.class));
+        else
+            startActivity(new Intent(this, QRScanActivity_.class));
     }
 
     @Click({R.id.btn_admin, R.id.rl_admin})
@@ -103,7 +142,6 @@ public class MenuActivity extends BaseActivity {
         ButtonClickSound.start();
         startActivity(new Intent(this, AdminControlsActivity_.class));
     }
-    //todo remove#
    /* @Click(R.id.btn_share_receive)
     public void goto_share_receive() {
         ButtonClickSound.start();

@@ -42,6 +42,8 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
+import static com.pratham.foundation.utility.FC_Constants.GROUP_MODE;
+import static com.pratham.foundation.utility.FC_Constants.LOGIN_MODE;
 import static com.pratham.foundation.utility.FC_Utility.dpToPx;
 
 public class FragmentChildAttendance extends Fragment implements ContractChildAttendance.attendanceView {
@@ -95,7 +97,7 @@ public class FragmentChildAttendance extends Fragment implements ContractChildAt
             /*for (Student stu : students)
                 avatars.add(stu.getAvatarName());*/
         }
-        setChilds(students);
+        setChilds();
     }
 
     @Override
@@ -103,9 +105,9 @@ public class FragmentChildAttendance extends Fragment implements ContractChildAt
         super.onResume();
     }
 
-    public void setChilds(ArrayList<Student> childs) {
+    public void setChilds() {
         if (childAdapter == null) {
-            childAdapter = new ChildAdapter(getActivity(), childs, avatarsFemale, avatarsMale, FragmentChildAttendance.this);
+            childAdapter = new ChildAdapter(getActivity(), students, avatarsFemale, avatarsMale, FragmentChildAttendance.this);
             rv_child.setHasFixedSize(true);
             RecyclerView.LayoutManager mLayoutManager = new GridLayoutManager(getActivity(), 2);
             rv_child.setLayoutManager(mLayoutManager);
@@ -121,6 +123,7 @@ public class FragmentChildAttendance extends Fragment implements ContractChildAt
     @Override
     public void childItemClicked(Student student, int position) {
         Log.d("ooo", "" + position);
+        if(LOGIN_MODE.equalsIgnoreCase(GROUP_MODE))
         for (Student stu : students) {
             if (stu.getStudentID().equalsIgnoreCase(student.getStudentID())) {
                 if (stu.isChecked()) {
@@ -130,6 +133,12 @@ public class FragmentChildAttendance extends Fragment implements ContractChildAt
                 }
                 break;
             }
+        }
+        else{
+            for(int i=0; i<students.size(); i++){
+                students.get(i).setChecked(false);
+            }
+            students.get(position).setChecked(true);
         }
         childAdapter.notifyDataSetChanged();
         // setChilds(students);

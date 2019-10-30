@@ -28,7 +28,6 @@ import com.pratham.foundation.services.shared_preferences.FastSave;
 import com.pratham.foundation.ui.home_screen.fun.FunFragment_;
 import com.pratham.foundation.ui.home_screen.learning_fragment.LearningFragment_;
 import com.pratham.foundation.ui.home_screen.practice_fragment.PracticeFragment_;
-import com.pratham.foundation.ui.home_screen.test_fragment.TestFragment_;
 import com.pratham.foundation.ui.selectSubject.SelectSubject_;
 import com.pratham.foundation.ui.student_profile.Student_profile_activity;
 import com.pratham.foundation.ui.test.supervisor.SupervisedAssessmentActivity;
@@ -49,6 +48,7 @@ import java.util.Objects;
 
 import static com.pratham.foundation.utility.FC_Constants.BACK_PRESSED;
 import static com.pratham.foundation.utility.FC_Constants.GROUP_LOGIN;
+import static com.pratham.foundation.utility.FC_Constants.GROUP_QR;
 import static com.pratham.foundation.utility.FC_Constants.LEVEL_CHANGED;
 import static com.pratham.foundation.utility.FC_Constants.currentSubject;
 import static com.pratham.foundation.utility.FC_Constants.dialog_btn_cancel;
@@ -109,10 +109,15 @@ public class HomeActivity extends BaseActivity {
     @Background
     public void displayProfileImage() {
         String sImage;
-        if (!GROUP_LOGIN)
-            sImage = AppDatabase.getDatabaseInstance(this).getStudentDao().getStudentAvatar(FC_Constants.currentStudentID);
-        else
+        try {
+            if (!GROUP_LOGIN)
+                sImage = AppDatabase.getDatabaseInstance(this).getStudentDao().getStudentAvatar(FC_Constants.currentStudentID);
+            else
+                sImage = "group_icon";
+        } catch (Exception e) {
+            e.printStackTrace();
             sImage = "group_icon";
+        }
         setStudentProfileImage(sImage);
     }
 
@@ -154,15 +159,18 @@ public class HomeActivity extends BaseActivity {
 
     @Background
     public void displayProfileName() {
-        String profileName;
+        String profileName = "QR Student";
         if (!GROUP_LOGIN)
             profileName = AppDatabase.getDatabaseInstance(this).getStudentDao().getFullName(FC_Constants.currentStudentID);
-        else
-            profileName = AppDatabase.getDatabaseInstance(this).getGroupsDao().getGroupNameByGrpID(FC_Constants.currentStudentID);
-
-        if (!FC_Constants.GROUP_LOGIN)
+        else {
+            if (!GROUP_QR)
+                profileName = AppDatabase.getDatabaseInstance(this).getGroupsDao().getGroupNameByGrpID(FC_Constants.currentStudentID);
+        }
+        if (!FC_Constants.GROUP_LOGIN && !GROUP_QR)
             profileName = profileName.split(" ")[0];
 
+        if(profileName==null)
+            profileName  = "QR Student";
         setProfileName(profileName);
     }
 

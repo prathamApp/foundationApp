@@ -23,6 +23,7 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.google.zxing.Result;
 import com.pratham.foundation.ApplicationClass;
+import com.pratham.foundation.BaseActivity;
 import com.pratham.foundation.R;
 import com.pratham.foundation.database.BackupDatabase;
 import com.pratham.foundation.database.dao.StatusDao;
@@ -33,7 +34,6 @@ import com.pratham.foundation.database.domain.Session;
 import com.pratham.foundation.database.domain.Student;
 import com.pratham.foundation.modalclasses.PlayerModal;
 import com.pratham.foundation.ui.selectSubject.SelectSubject_;
-import com.pratham.foundation.BaseActivity;
 import com.pratham.foundation.utility.FC_Constants;
 import com.pratham.foundation.utility.FC_Utility;
 
@@ -52,6 +52,7 @@ import java.util.UUID;
 import me.dm7.barcodescanner.zxing.ZXingScannerView;
 
 import static com.pratham.foundation.database.AppDatabase.appDatabase;
+import static com.pratham.foundation.utility.FC_Constants.GROUP_MODE;
 import static com.pratham.foundation.utility.FC_Constants.currentStudentName;
 import static com.pratham.foundation.utility.SplashSupportActivity.ButtonClickSound;
 
@@ -68,6 +69,14 @@ public class QRScanActivity extends BaseActivity implements
     RelativeLayout rl_qr_main;
     @ViewById(R.id.tv_stud_one)
     TextView tv_stud_one;
+    @ViewById(R.id.tv_stud_two)
+    TextView tv_stud_two;
+    @ViewById(R.id.tv_stud_three)
+    TextView tv_stud_three;
+    @ViewById(R.id.tv_stud_four)
+    TextView tv_stud_four;
+    @ViewById(R.id.tv_stud_five)
+    TextView tv_stud_five;
     @ViewById(R.id.btn_start_game)
     Button btn_start_game;
     @ViewById(R.id.btn_reset_btn)
@@ -76,12 +85,10 @@ public class QRScanActivity extends BaseActivity implements
     Button btn_get_progress;
 
     PlayerModal playerModal;
+    List<PlayerModal> playerModalList;
     int totalStudents = 0;
-    String stdFirstName, stdId;
     Dialog dialog;
-    Boolean setStud = false;
     public ZXingScannerView mScannerView;
-    int crlCheck;
     Gson gson;
 
     @AfterViews
@@ -90,6 +97,8 @@ public class QRScanActivity extends BaseActivity implements
         mScannerView.setResultHandler(this);
         content_frame.addView((mScannerView));
         gson = new Gson();
+        playerModalList = new ArrayList<>();
+        btn_get_progress.setVisibility(View.GONE);
         Log.d("tag", "SD Path: " + ApplicationClass.contentSDPath);
         initCamera();
     }
@@ -197,22 +206,37 @@ public class QRScanActivity extends BaseActivity implements
 
     @Click(R.id.btn_reset_btn)
     public void resetQrList() {
-        stdFirstName = "";
-        stdId = "";
+        totalStudents=0;
+        playerModalList.clear();
+        hideNameViews();
         hideButtonsAnimation(this, button_ll, tv_stud_one);
         ButtonClickSound.start();
         scanNextQRCode();
     }
 
+    public void hideNameViews() {
+        tv_stud_one.setText("");
+        tv_stud_two.setText("");
+        tv_stud_three.setText("");
+        tv_stud_four.setText("");
+        tv_stud_five.setText("");
+
+        tv_stud_one.setVisibility(View.GONE);
+        tv_stud_two.setVisibility(View.GONE);
+        tv_stud_three.setVisibility(View.GONE);
+        tv_stud_four.setVisibility(View.GONE);
+        tv_stud_five.setVisibility(View.GONE);
+    }
+
     public Dialog myLoadingDialog;
+
     @Click(R.id.btn_get_progress)
     public void fetchProgress() {
 //        stdId;
         if (FC_Utility.isDataConnectionAvailable(this)) {
             showLoader();
-            getStudentData(FC_Constants.STUDENT_PROGRESS_INTERNET, FC_Constants.STUDENT_PROGRESS_API, stdId);
-        }
-        else{
+//            getStudentData(FC_Constants.STUDENT_PROGRESS_INTERNET, FC_Constants.STUDENT_PROGRESS_API, stdId);
+        } else {
             Toast.makeText(this, "No Internet Connection", Toast.LENGTH_SHORT).show();
         }
     }
@@ -266,7 +290,7 @@ public class QRScanActivity extends BaseActivity implements
             } catch (Exception e) {
                 e.printStackTrace();
             }
-            getStudentData(FC_Constants.LEARNT_WORDS_INTERNET, FC_Constants.LEARNT_WORDS_API, stdId);
+//            getStudentData(FC_Constants.LEARNT_WORDS_INTERNET, FC_Constants.LEARNT_WORDS_API, stdId);
         } else if (requestType.equalsIgnoreCase(FC_Constants.LEARNT_WORDS_INTERNET)) {
             try {
                 Type listType = new TypeToken<ArrayList<KeyWords>>() {
@@ -309,16 +333,23 @@ public class QRScanActivity extends BaseActivity implements
 
     @Click(R.id.btn_start_game)
     public void gotoGame() {
-        mScannerView.stopCamera();
-        enterStudentData(stdId, stdFirstName);
-        currentStudentName = stdFirstName;
-        startSession();
-        FC_Constants.currentStudentID = stdId;
-        ButtonClickSound.start();
-        FC_Constants.GROUP_LOGIN = false;
-        //todo remove#
-       // startActivity(new Intent(this, HomeActivity_.class));
-        startActivity(new Intent(this, SelectSubject_.class));
+        if(playerModalList.size()>0) {
+            mScannerView.stopCamera();
+            enterStudentData(playerModalList);
+            startSession();
+            if(FC_Constants.LOGIN_MODE.equalsIgnoreCase(GROUP_MODE)) {
+                FC_Constants.GROUP_QR = true;
+                FC_Constants.currentStudentID = "QR";
+                currentStudentName = "QR Students";
+            }else {
+                FC_Constants.GROUP_QR = false;
+                FC_Constants.currentStudentID = ""+playerModalList.get(0).getStudentID();
+                currentStudentName = ""+playerModalList.get(0).getStudentName();
+            }
+            ButtonClickSound.start();
+            FC_Constants.GROUP_LOGIN = false;
+            startActivity(new Intent(this, SelectSubject_.class));
+        }
     }
 
     private String[] decodeStudentId(String text, String s) {
@@ -342,10 +373,31 @@ public class QRScanActivity extends BaseActivity implements
         myLoadingDialog.show();
     }
 
-    public void dialogClick() {
-        tv_stud_one.setVisibility(View.VISIBLE);
-        tv_stud_one.setText("" + stdFirstName);
-        AnimateTextView(this, tv_stud_one);
+    public void dialogClick(int currentStudNo) {
+        if (totalStudents < 4)
+            totalStudents++;
+        switch (currentStudNo) {
+            case 0:
+                tv_stud_one.setVisibility(View.VISIBLE);
+                tv_stud_one.setText(playerModalList.get(currentStudNo).getStudentName());
+                break;
+            case 1:
+                tv_stud_two.setVisibility(View.VISIBLE);
+                tv_stud_two.setText(playerModalList.get(currentStudNo).getStudentName());
+                break;
+            case 2:
+                tv_stud_three.setVisibility(View.VISIBLE);
+                tv_stud_three.setText(playerModalList.get(currentStudNo).getStudentName());
+                break;
+            case 3:
+                tv_stud_four.setVisibility(View.VISIBLE);
+                tv_stud_four.setText(playerModalList.get(currentStudNo).getStudentName());
+                break;
+            case 4:
+                tv_stud_five.setVisibility(View.VISIBLE);
+                tv_stud_five.setText(playerModalList.get(currentStudNo).getStudentName());
+                break;
+        }
         scanNextQRCode();
     }
 
@@ -355,12 +407,40 @@ public class QRScanActivity extends BaseActivity implements
             boolean dulicateQR = false;
             mScannerView.stopCamera();
             Log.d("RawResult:::", "****" + result.getText());
-
             JSONObject jsonobject = new JSONObject(result.getText());
-            stdId = jsonobject.getString("stuId");
-            stdFirstName = jsonobject.getString("name");
+            playerModal = new PlayerModal();
+            playerModal.setStudentID(jsonobject.getString("stuId"));
+            playerModal.setStudentName(jsonobject.getString("name"));
 
-            dialogClick();
+            if(FC_Constants.LOGIN_MODE.equalsIgnoreCase(GROUP_MODE)) {
+                if (totalStudents < 4) {
+                    if (playerModalList.size() > 0) {
+                        for (int i = 0; i < playerModalList.size(); i++)
+                            if (playerModalList.get(i).getStudentID().equalsIgnoreCase(playerModal.studentID)) {
+                                dulicateQR = true;
+                                break;
+                            }
+
+                        if (dulicateQR)
+                            showDuplicateDialog("Duplicate");
+                        else {
+                            playerModalList.add(playerModal);
+                            dialogClick(totalStudents);
+                        }
+                    } else {
+                        playerModalList.add(playerModal);
+                        dialogClick(totalStudents);
+                    }
+                } else {
+                    showDuplicateDialog("Complete");
+                }
+            }
+            else {
+                totalStudents = 0;
+                playerModalList.clear();
+                playerModalList.add(playerModal);
+                dialogClick(totalStudents);
+            }
 
         } catch (Exception e) {
             Toast.makeText(this, "Invalid QR Code !!!", Toast.LENGTH_SHORT).show();
@@ -369,6 +449,33 @@ public class QRScanActivity extends BaseActivity implements
             e.printStackTrace();
         }
 
+    }
+
+    private void showDuplicateDialog(String dialogMode) {
+        final Dialog dialog = new Dialog(this);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        dialog.setContentView(R.layout.fc_custom_dialog);
+        dialog.setCancelable(false);
+        dialog.setCanceledOnTouchOutside(false);
+        TextView title = dialog.findViewById(R.id.dia_title);
+        Button dia_btn_yellow = dialog.findViewById(R.id.dia_btn_yellow);
+        Button dia_btn_green = dialog.findViewById(R.id.dia_btn_green);
+        Button dia_btn_red = dialog.findViewById(R.id.dia_btn_red);
+
+        if (dialogMode.equalsIgnoreCase("Complete"))
+            title.setText("Only 5 Students Allowed");
+        else
+            title.setText("This Student already exists...\n Scan new QR.");
+        dia_btn_green.setText("OK");
+        dia_btn_red.setVisibility(View.GONE);
+        dia_btn_yellow.setVisibility(View.GONE);
+
+        dialog.show();
+        dia_btn_green.setOnClickListener(v -> {
+            scanNextQRCode();
+            dialog.dismiss();
+        });
     }
 
     @Background
@@ -390,33 +497,13 @@ public class QRScanActivity extends BaseActivity implements
             startSesion.setSentFlag(0);
             appDatabase.getSessionDao().insert(startSesion);
 
-            Attendance attendance = new Attendance();
-            attendance.setSessionID("" + currentSession);
-            attendance.setDate(timerTime);
-            attendance.setStudentID("" + stdId);
-            attendance.setGroupID("QR");
-            appDatabase.getAttendanceDao().insert(attendance);
-
-            BackupDatabase.backup(QRScanActivity.this);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-
-    @Background
-    public void enterStudentData(final String stdId, final String stdFirstName) {
-        try {
-
-            Student student = new Student();
-
-            student.setStudentID("" + stdId);
-            student.setFullName("" + stdFirstName);
-            student.setNewFlag(1);
-            String studentName = appDatabase.getStudentDao().checkStudent("" + stdId);
-
-            if (studentName == null) {
-                appDatabase.getStudentDao().insert(student);
+            for (int i = 0; i < playerModalList.size(); i++) {
+                Attendance attendance = new Attendance();
+                attendance.setSessionID("" + currentSession);
+                attendance.setDate(timerTime);
+                attendance.setStudentID("" + playerModalList.get(i).getStudentID());
+                attendance.setGroupID("QR");
+                appDatabase.getAttendanceDao().insert(attendance);
             }
 
             BackupDatabase.backup(QRScanActivity.this);
@@ -424,34 +511,30 @@ public class QRScanActivity extends BaseActivity implements
             e.printStackTrace();
         }
     }
+
+    @Background
+    public void enterStudentData(final List<PlayerModal> finalPlayerModalList) {
+        try {
+
+            for (int i = 0; i < finalPlayerModalList.size(); i++) {
+                Student student = new Student();
+                student.setStudentID("" + finalPlayerModalList.get(i).getStudentID());
+                student.setFullName("" + finalPlayerModalList.get(i).getStudentName());
+                student.setFirstName("" + finalPlayerModalList.get(i).getStudentName());
+                student.setGender("NA");
+                student.setAge(0);
+                student.setAvatarName("NA");
+                student.setSentFlag(0);
+                student.setNewFlag(1);
+                String studentName = appDatabase.getStudentDao().
+                        checkStudent("" + finalPlayerModalList.get(i).getStudentID());
+
+                if (studentName == null)
+                    appDatabase.getStudentDao().insert(student);
+            }
+            BackupDatabase.backup(QRScanActivity.this);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 }
-
-
-/*
-
-<ImageView
-                android:id="@+id/iv_admin"
-                android:layout_width="95dp"
-                android:layout_height="95dp"
-                android:src="@drawable/ic_admin"
-                android:scaleType="fitXY"
-                android:layout_centerInParent="true"
-                android:layout_alignParentTop="true"
-                android:layout_marginVertical="10dp"
-                android:gravity="center"
-                android:textSize="20sp"
-                android:textStyle="bold" />
-
-            <ImageView
-                android:id="@+id/btn_stats"
-                android:layout_width="95dp"
-                android:layout_height="95dp"
-                android:src="@drawable/ic_stats"
-                android:scaleType="fitXY"
-                android:layout_centerInParent="true"
-                android:layout_marginVertical="10dp"
-                android:gravity="center"
-                android:textSize="20sp"
-                android:textStyle="bold" />
-
-* */

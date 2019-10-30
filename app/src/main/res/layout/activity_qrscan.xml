@@ -32,7 +32,7 @@
                 android:id="@+id/rl_selector_section"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
-                android:layout_weight="5.5"
+                android:layout_weight="4.5"
                 android:orientation="vertical"
                 android:weightSum="10">
 
@@ -49,16 +49,10 @@
 
             </LinearLayout>
 
-            <LinearLayout
+            <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
-                android:layout_weight="4.5"
-                android:weightSum="6"
-                android:orientation="vertical">
-
-                <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent">
+                android:layout_weight="5.5">
 
                     <View
                         android:id="@+id/wall_view"
@@ -71,15 +65,90 @@
                     <com.pratham.foundation.customView.SansTextView
                         android:id="@+id/tv_stud_one"
                         android:layout_width="match_parent"
-                        android:layout_height="@dimen/_60sdp"
+                        android:layout_height="wrap_content"
                         android:layout_gravity="center"
                         android:layout_marginTop="@dimen/_10sdp"
                         android:visibility="gone"
+                        android:paddingTop="@dimen/_2sdp"
+                        android:paddingBottom="@dimen/_2sdp"
                         android:layout_below="@id/wall_view"
-                        android:layout_marginHorizontal="30dp"
+                        android:layout_marginStart="30dp"
+                        android:layout_marginEnd="30dp"
                         android:textStyle="bold|italic"
                         android:textColor="@color/text_color"
-                        android:text="Student Name"
+                        android:text="Student 1 Name"
+                        android:background="@drawable/rounded_border_yellow"
+                        android:gravity="center"
+                        android:textSize="25sp" />
+                    <com.pratham.foundation.customView.SansTextView
+                        android:id="@+id/tv_stud_two"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:paddingTop="@dimen/_2sdp"
+                        android:paddingBottom="@dimen/_2sdp"
+                        android:layout_marginTop="@dimen/_10sdp"
+                        android:visibility="gone"
+                        android:layout_below="@id/tv_stud_one"
+                        android:layout_marginStart="30dp"
+                        android:layout_marginEnd="30dp"
+                        android:textStyle="bold|italic"
+                        android:textColor="@color/text_color"
+                        android:text="Student 2 Name"
+                        android:background="@drawable/rounded_border_yellow"
+                        android:gravity="center"
+                        android:textSize="25sp" />
+                    <com.pratham.foundation.customView.SansTextView
+                        android:id="@+id/tv_stud_three"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginTop="@dimen/_10sdp"
+                        android:visibility="gone"
+                        android:paddingTop="@dimen/_2sdp"
+                        android:paddingBottom="@dimen/_2sdp"
+                        android:layout_below="@id/tv_stud_two"
+                        android:layout_marginStart="30dp"
+                        android:layout_marginEnd="30dp"
+                        android:textStyle="bold|italic"
+                        android:textColor="@color/text_color"
+                        android:text="Student 3 Name"
+                        android:background="@drawable/rounded_border_yellow"
+                        android:gravity="center"
+                        android:textSize="25sp" />
+                    <com.pratham.foundation.customView.SansTextView
+                        android:id="@+id/tv_stud_four"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginTop="@dimen/_10sdp"
+                        android:visibility="gone"
+                        android:layout_below="@id/tv_stud_three"
+                        android:layout_marginStart="30dp"
+                        android:paddingTop="@dimen/_2sdp"
+                        android:paddingBottom="@dimen/_2sdp"
+                        android:layout_marginEnd="30dp"
+                        android:textStyle="bold|italic"
+                        android:textColor="@color/text_color"
+                        android:text="Student 4 Name"
+                        android:background="@drawable/rounded_border_yellow"
+                        android:gravity="center"
+                        android:textSize="25sp" />
+                    <com.pratham.foundation.customView.SansTextView
+                        android:id="@+id/tv_stud_five"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginTop="@dimen/_10sdp"
+                        android:visibility="gone"
+                        android:layout_below="@id/tv_stud_four"
+                        android:layout_marginStart="30dp"
+                        android:layout_marginEnd="30dp"
+                        android:textStyle="bold|italic"
+                        android:textColor="@color/text_color"
+                        android:paddingTop="@dimen/_2sdp"
+                        android:paddingBottom="@dimen/_2sdp"
+                        android:text="Student 5 Name"
                         android:background="@drawable/rounded_border_yellow"
                         android:gravity="center"
                         android:textSize="25sp" />
@@ -91,7 +160,7 @@
                         android:layout_gravity="center"
                         android:gravity="center"
                         android:layout_alignParentBottom="true"
-                        android:visibility="gone"
+                        android:visibility="visible"
                         android:layout_marginBottom="@dimen/_2sdp" >
 
                         <com.pratham.foundation.customView.SansButton
@@ -104,7 +173,7 @@
                             android:textStyle="bold"
                             android:textColor="@color/white"
                             android:background="@drawable/red_button"
-                            android:text="Scan New"/>
+                            android:text="Reset"/>
 
                         <com.pratham.foundation.customView.SansButton
                             android:id="@+id/btn_get_progress"
@@ -116,6 +185,7 @@
                             android:layout_marginBottom="@dimen/_10sdp"
                             android:elevation="@dimen/_5sdp"
                             android:textStyle="bold"
+                            android:visibility="gone"
                             android:textColor="@color/white"
                             android:background="@drawable/yellow_button"
                             android:text="Get Progress"/>
@@ -136,15 +206,7 @@
 
                     </RelativeLayout>
 
-
-
-                </RelativeLayout>
-
-            </LinearLayout>
-
-
+            </RelativeLayout>
         </LinearLayout>
-
     </RelativeLayout>
-
 </RelativeLayout>

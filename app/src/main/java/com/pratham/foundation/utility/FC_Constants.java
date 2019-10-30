@@ -97,6 +97,9 @@ public class FC_Constants {
     public static final String ROOT_NODE = "root_node";
     public static final String BOTTOM_NODE = "BOTTOM_NODE";
     public static final String LANGUAGE_SPLASH_DIALOG = "language_splash_dialog";
+    public static String LOGIN_MODE = "login_mode";
+    public static final String GROUP_MODE = "group_mode";
+    public static final String INDIVIDUAL_MODE = "individual_mode";
     public static String RECEIVED_FOLDER_PATH = "";
     public static boolean TAB_LAYOUT = false;
     public static int FTP_HOTSPOT_KEYMGMT = -11;
@@ -217,6 +220,7 @@ public class FC_Constants {
     public static String currentSelectedLanguage;
     public static String newDataLanguageInserted = "newDataLanguageInserted";
     public static String currentSubject = "";
+    public static boolean GROUP_QR = false;
 
     public static enum URL {
         BROWSE_BY_ID(BASE_URL + "get?id="),

@@ -42,6 +42,7 @@ import java.util.Comparator;
 import java.util.List;
 
 import static com.pratham.foundation.ui.home_screen.HomeActivity.sub_nodeId;
+import static com.pratham.foundation.utility.FC_Constants.GROUP_QR;
 
 @EBean
 public class PracticePresenter implements PracticeContract.PracticePresenter, API_Content_Result {
@@ -345,6 +346,7 @@ public class PracticePresenter implements PracticeContract.PracticePresenter, AP
                                 contentChild.setOnSDCard(childDwContentList.get(i).isOnSDCard());
                                 contentChild.setNodelist(null);
                                 maxScoreChild = new ArrayList();
+                                if(!GROUP_QR)
                                 findMaxScoreNew(childDwContentList.get(i).getNodeId());
                                 double totalScore = 0;
                                 for (int q = 0; maxScoreChild.size() > q; q++) {
@@ -393,6 +395,7 @@ public class PracticePresenter implements PracticeContract.PracticePresenter, AP
     public void updateUI() {
         maxScore.clear();
         try {
+            if(!GROUP_QR)
             findMaxScore("" + nodeIds.get(nodeIds.size() - 1));
         } catch (Exception e) {
             e.printStackTrace();
