@@ -6,7 +6,6 @@ import android.media.AudioManager;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.view.Window;
@@ -15,11 +14,12 @@ import android.view.WindowManager;
 import com.pratham.foundation.database.AppDatabase;
 import com.pratham.foundation.database.BackupDatabase;
 import com.pratham.foundation.services.TTSService;
+import com.pratham.foundation.utility.CatchoTransparentActivity;
 import com.pratham.foundation.utility.FC_Utility;
 
-import java.util.Locale;
+import net.alhazmy13.catcho.library.Catcho;
 
-import static android.view.View.SYSTEM_UI_FLAG_HIDE_NAVIGATION;
+import java.util.Locale;
 
 
 public class BaseActivity extends AppCompatActivity {
@@ -39,9 +39,13 @@ public class BaseActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         mDecorView = getWindow().getDecorView();
-        audioManager = (AudioManager) getSystemService(this.AUDIO_SERVICE);
+        audioManager = (AudioManager) getSystemService(AUDIO_SERVICE);
         startSTT();
         muteFlg = false;
+                Catcho.Builder(this)
+                .activity(CatchoTransparentActivity.class).build();
+//                .recipients("your-email@domain.com").build();
+
     }
 
     @Override
