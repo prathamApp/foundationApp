@@ -601,7 +601,7 @@ public class JSInterface implements RecognitionListener {
         } else {
 
             String quesFinal;
-            quesFinal = quesWord.replaceAll("[\\-\\+\\.\\^\\?\\'\\!:,]", "");
+            quesFinal = quesWord.replaceAll("\\p{Punct}","");;
 
             String questionSplit[] = quesFinal.split(" ");
             String resSplit[] = extractedText.split(" ");

@@ -128,7 +128,7 @@ public class SequenceLayout extends Fragment implements SequeanceLayoutContract.
                         bundle, KeywordMappingFragment_.class.getSimpleName());
                 break;
             case GameConstatnts.PARAGRAPH_WRITING:
-                if (FC_Constants.currentLevel <= 2 && FC_Constants.currentSubject.equalsIgnoreCase("english")) {
+                if (FC_Constants.currentLevel <= 2 ) {
                     FC_Utility.showFragment((Activity) context, new WordWritingFragment_(), R.id.RL_CPA,
                             bundle, WordWritingFragment_.class.getSimpleName());
                 } else {
@@ -171,6 +171,7 @@ public class SequenceLayout extends Fragment implements SequeanceLayoutContract.
             case GameConstatnts.THINKANDWRITE:
             case GameConstatnts.DOING_ACT_READ:
             case GameConstatnts.DOING_ACT_VIDEO:
+            case GameConstatnts.LetterWriting:
                 FC_Utility.showFragment((Activity) context, new DoingFragment(), R.id.RL_CPA,
                         bundle, DoingFragment.class.getSimpleName());
                 break;

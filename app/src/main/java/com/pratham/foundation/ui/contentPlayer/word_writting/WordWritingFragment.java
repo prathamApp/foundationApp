@@ -166,14 +166,9 @@ public class WordWritingFragment extends Fragment
         if (filePath.exists()) {
             presenter.addLearntWords(questionModel, imageName);
             imageName = null;
+        }else {
+            GameConstatnts.playGameNext(getActivity(), GameConstatnts.TRUE, this);
         }
-        //  GameConstatnts.playGameNext(getActivity());
-       /* Bundle bundle = GameConstatnts.findGameData("105");
-        if (bundle != null) {
-            FC_Utility.showFragment(getActivity(), new ListeningAndWritting_(), R.id.RL_CPA,
-                    bundle, ListeningAndWritting_.class.getSimpleName());
-        }*/
-
     }
 
     private void ShowPreviewDialog(File path) {

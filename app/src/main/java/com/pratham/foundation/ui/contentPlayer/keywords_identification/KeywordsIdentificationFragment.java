@@ -108,21 +108,21 @@ public class KeywordsIdentificationFragment extends Fragment implements Keywords
         }
         String[] paragraphWords = questionModel.getQuestion().split(" ");
         for (int i = 0; i < paragraphWords.length; i++) {
-            if (positionMap.containsKey(paragraphWords[i].replaceAll("[\\-\\+\\.\\^\\?\\'\\!:,]", ""))) {
-                List temp = positionMap.get(paragraphWords[i]);
+            if (positionMap.containsKey(paragraphWords[i].replaceAll("\\p{Punct}","").trim())) {
+                List temp = positionMap.get(paragraphWords[i].replaceAll("\\p{Punct}","").trim());
                 if (temp != null)
                     temp.add(i);
             } else {
                 List<Integer> temp = new ArrayList<>();
                 temp.add(i);
-                positionMap.put(paragraphWords[i].replaceAll("[\\-\\+\\.\\^\\?\\'\\!:,]", ""), temp);
+                positionMap.put(paragraphWords[i].replaceAll("\\p{Punct}","").trim(), temp);
             }
 
             final SansTextView textView = new SansTextView(getActivity());
             textView.setTextSize(30);
             textView.setText(paragraphWords[i]);
             final int temp_i = i;
-            textView.setOnClickListener(v -> paragraphWordClicked("" + textView.getText().toString().replaceAll("[\\-\\+\\.\\^\\?\\'\\!:,]", ""), temp_i));
+            textView.setOnClickListener(v -> paragraphWordClicked("" + textView.getText().toString().replaceAll("\\p{Punct}","").trim(), temp_i));
             paraghaph.addView(textView);
         }
 
@@ -140,6 +140,13 @@ public class KeywordsIdentificationFragment extends Fragment implements Keywords
             SansTextViewBold correct_keywords = dialog.findViewById(R.id.correct_keywords);
             SansTextViewBold wrong_keywords = dialog.findViewById(R.id.wrong_keywords);
             SansButton dia_btn_yellow = dialog.findViewById(R.id.dia_btn_yellow);
+
+            SansTextViewBold dia_titleCorrect = dialog.findViewById(R.id.dia_title);
+            SansTextViewBold dia_title_wrong = dialog.findViewById(R.id.dia_title_wrong);
+
+            dia_titleCorrect.setText("Existing Keywords");
+            dia_title_wrong.setText("New Keywords");
+
             dia_btn_yellow.setText("OK");
             correct_keywords.setText(correctWord.toString().substring(1, correctWord.toString().length() - 1));
             wrong_keywords.setText(wrongWord.toString().substring(1, wrongWord.toString().length() - 1));
@@ -184,7 +191,7 @@ public class KeywordsIdentificationFragment extends Fragment implements Keywords
                     final ImageView imageView = new ImageView(getActivity());
                     imageView.setId(pos);
                     imageView.setTag(paraText);
-                    imageView.setImageDrawable(ContextCompat.getDrawable(getActivity(), R.drawable.ic_close));
+                    imageView.setImageDrawable(ContextCompat.getDrawable(getActivity(), R.drawable.ic_close_black_24dp));
                     imageView.setPadding(5, 3, 10, 3);
 
                     linearLayout.addView(imageView);
@@ -255,7 +262,7 @@ public class KeywordsIdentificationFragment extends Fragment implements Keywords
                     if (positions != null)
                         for (int i = 0; i < positions.size(); i++) {
                             SansTextView textViewTemp = (SansTextView) paraghaph.getChildAt((int) positions.get(i));
-                            textViewTemp.setBackgroundColor(ContextCompat.getColor(getActivity(), R.color.colorGreenCorrect));
+                            textViewTemp.setBackgroundColor(ContextCompat.getColor(getActivity(), R.color.level_2_color));
                         }
                 }
             } else {

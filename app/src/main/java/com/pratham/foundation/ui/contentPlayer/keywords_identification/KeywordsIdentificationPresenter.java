@@ -150,7 +150,7 @@ public class KeywordsIdentificationPresenter implements KeywordsIdentificationCo
 
     private boolean checkAnswerNew(List<ScienceQuestionChoice> optionListlist, String word) {
         for (int i = 0; i < optionListlist.size(); i++) {
-            if (optionListlist.get(i).getSubQues().equalsIgnoreCase(word)) {
+            if (optionListlist.get(i).getSubQues().replaceAll("\\p{Punct}","").trim().equalsIgnoreCase(word)) {
                 return true;
             }
         }

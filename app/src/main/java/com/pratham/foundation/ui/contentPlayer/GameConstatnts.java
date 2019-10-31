@@ -27,10 +27,12 @@ import com.pratham.foundation.ui.contentPlayer.paragraph_writing.ParagraphWritin
 import com.pratham.foundation.ui.contentPlayer.pictionary.pictionaryFragment;
 import com.pratham.foundation.ui.contentPlayer.reading.ReadingFragment;
 import com.pratham.foundation.ui.contentPlayer.sequenceLayout.SequenceLayout_;
+import com.pratham.foundation.ui.contentPlayer.story_reading.StoryReadingFragment;
 import com.pratham.foundation.ui.contentPlayer.story_reading.StoryReadingFragment_;
 import com.pratham.foundation.ui.contentPlayer.trueFalse.TrueFalseFragment;
 import com.pratham.foundation.ui.contentPlayer.video_view.ActivityVideoView;
 import com.pratham.foundation.ui.contentPlayer.video_view.ActivityVideoView_;
+import com.pratham.foundation.ui.contentPlayer.word_writting.WordWritingFragment_;
 import com.pratham.foundation.utility.FC_Constants;
 import com.pratham.foundation.utility.FC_Utility;
 
@@ -54,6 +56,7 @@ public class GameConstatnts {
     public static final String READINGGAME = "ShowMeAndroid";
     public static final String THINKANDWRITE = "TAW";
     public static final String DOING_ACT_READ = "doing_act_read";
+    public static final String LetterWriting = "letter";
     public static final String DOING_ACT_VIDEO = "doing_act_video";
     public static final boolean TRUE = true;
     public static final boolean FALSE = false;
@@ -171,71 +174,10 @@ public class GameConstatnts {
             bundle.putString("resId", contentTable1.getResourceId());
             bundle.putString("contentName", contentTable1.getNodeTitle());
             bundle.putBoolean("onSdCard", true);
+            bundle.putString("jsonName", contentTable1.getResourceType());
             if (contentTable1 != null)
-               /* switch (contentTable1.getResourceType()) {
-                    case GameConstatnts.FACTRETRIEVAL:
-                        FC_Utility.showFragment((Activity) context, new FactRetrieval_(), R.id.RL_CPA,
-                                bundle, FactRetrieval_.class.getSimpleName());
-                        break;
-                    case GameConstatnts.KEYWORD_IDENTIFICATION:
-                        FC_Utility.showFragment((Activity) context, new KeywordsIdentificationFragment_(), R.id.RL_CPA,
-                                bundle, KeywordsIdentificationFragment_.class.getSimpleName());
-                        break;
 
-                    case GameConstatnts.KEYWORD_MAPPING:
-                        FC_Utility.showFragment((Activity) context, new KeywordMappingFragment_(), R.id.RL_CPA,
-                                bundle, KeywordMappingFragment_.class.getSimpleName());
-                        break;
-                    case GameConstatnts.PARAGRAPH_WRITING:
-                        FC_Utility.showFragment((Activity) context, new ParagraphWritingFragment_(), R.id.RL_CPA,
-                                bundle, ParagraphWritingFragment_.class.getSimpleName());
-                        break;
-                    case "105":
-                        FC_Utility.showFragment((Activity) context, new ListeningAndWritting_(), R.id.RL_CPA,
-                                bundle, ListeningAndWritting_.class.getSimpleName());
-                        break;
-                    case "106":
-                        FC_Utility.showFragment((Activity) context, new ReadingFragment(), R.id.RL_CPA,
-                                bundle, ReadingFragment.class.getSimpleName());
-                        break;
-                    case "108":
-                        FC_Utility.showFragment((Activity) context, new McqFillInTheBlanksFragment(), R.id.RL_CPA,
-                                bundle, McqFillInTheBlanksFragment.class.getSimpleName());
-                        break;
-                    case "109":
-                        FC_Utility.showFragment((Activity) context, new TrueFalseFragment(), R.id.RL_CPA,
-                                bundle, TrueFalseFragment.class.getSimpleName());
-                        break;
-                    case "110":
-                        FC_Utility.showFragment((Activity) context, new FillInTheBlanksFragment(), R.id.RL_CPA,
-                                bundle, FillInTheBlanksFragment.class.getSimpleName());
-                        break;
-                    case GameConstatnts.READINGGAME:
-                        FC_Utility.showFragment((Activity) context, new pictionaryFragment(), R.id.RL_CPA,
-                                bundle, pictionaryFragment.class.getSimpleName());
-                        break;
-                    case "112":
-                        FC_Utility.showFragment((Activity) context, new Fact_Retrieval_Fragment_(), R.id.RL_CPA,
-                                bundle, Fact_Retrieval_Fragment_.class.getSimpleName());
-                        break;
-                    case GameConstatnts.PICTIONARYFRAGMENT:
-                        FC_Utility.showFragment((Activity) context, new StoryReadingFragment_(), R.id.RL_CPA,
-                                bundle, StoryReadingFragment_.class.getSimpleName());
-                        break;
-                    case GameConstatnts.VIDEO:
-                        Intent intent = new Intent(context, ActivityVideoView_.class);
-                        intent.putExtra("contentPath", contentTable1.getResourcePath());
-                        intent.putExtra("StudentID", FC_Constants.currentStudentID);
-                        intent.putExtra("resId", contentTable1.getResourceId());
-                        intent.putExtra("contentName", contentTable1.getNodeTitle());
-                        intent.putExtra("onSdCard", true);
-                        context.startActivity(intent);
-//                        FC_Utility.showFragment((Activity) context, new ActivityVideoView_(), R.id.RL_CPA,
-//                                bundle, ActivityVideoView.class.getSimpleName());
-                        break;
-                }*/
-
-                switch (contentTable1.getResourceType()) {
+            /*    switch (contentTable1.getResourceType()) {
                     case GameConstatnts.FACTRETRIEVAL:
                         FC_Utility.showFragment((Activity) context, new FactRetrieval_(), R.id.RL_CPA,
                                 bundle, FactRetrieval_.class.getSimpleName());
@@ -305,8 +247,80 @@ public class GameConstatnts {
 //                FC_Utility.showFragment((Activity) context, new ActivityVideoView_(), R.id.RL_CPA,
 //                        bundle, ActivityVideoView.class.getSimpleName());
                         break;
+                }*/
+                switch (contentTable1.getResourceType()) {
+                    case GameConstatnts.FACTRETRIEVAL:
+                        FC_Utility.showFragment((Activity) context, new FactRetrieval_(), R.id.RL_CPA,
+                                bundle, FactRetrieval_.class.getSimpleName());
+                        break;
+                    case GameConstatnts.KEYWORD_IDENTIFICATION:
+                        FC_Utility.showFragment((Activity) context, new KeywordsIdentificationFragment_(), R.id.RL_CPA,
+                                bundle, KeywordsIdentificationFragment_.class.getSimpleName());
+                        break;
+                    case GameConstatnts.KEYWORD_MAPPING:
+                        FC_Utility.showFragment((Activity) context, new KeywordMappingFragment_(), R.id.RL_CPA,
+                                bundle, KeywordMappingFragment_.class.getSimpleName());
+                        break;
+                    case GameConstatnts.PARAGRAPH_WRITING:
+                        if (FC_Constants.currentLevel <= 2 ) {
+                            FC_Utility.showFragment((Activity) context, new WordWritingFragment_(), R.id.RL_CPA,
+                                    bundle, WordWritingFragment_.class.getSimpleName());
+                        } else {
+                            FC_Utility.showFragment((Activity) context, new ParagraphWritingFragment_(), R.id.RL_CPA,
+                                    bundle, ParagraphWritingFragment_.class.getSimpleName());
+                        }
+                        break;
+                    case GameConstatnts.LISTNING_AND_WRITTING:
+                        FC_Utility.showFragment((Activity) context, new ListeningAndWritting_(), R.id.RL_CPA,
+                                bundle, ListeningAndWritting_.class.getSimpleName());
+                        break;
+                    case "106":
+                        FC_Utility.showFragment((Activity) context, new ReadingFragment(), R.id.RL_CPA,
+                                bundle, ReadingFragment.class.getSimpleName());
+                        break;
+                    case "108":
+                        FC_Utility.showFragment((Activity) context, new McqFillInTheBlanksFragment(), R.id.RL_CPA,
+                                bundle, McqFillInTheBlanksFragment.class.getSimpleName());
+                        break;
+                    case "109":
+                        FC_Utility.showFragment((Activity) context, new TrueFalseFragment(), R.id.RL_CPA,
+                                bundle, TrueFalseFragment.class.getSimpleName());
+                        break;
+                    case "110":
+                        FC_Utility.showFragment((Activity) context, new FillInTheBlanksFragment(), R.id.RL_CPA,
+                                bundle, FillInTheBlanksFragment.class.getSimpleName());
+                        break;
+                    case GameConstatnts.READINGGAME:
+                        FC_Utility.showFragment((Activity) context, new pictionaryFragment(), R.id.RL_CPA,
+                                bundle, pictionaryFragment.class.getSimpleName());
+                        break;
+                    case "112":
+                        FC_Utility.showFragment((Activity) context, new Fact_Retrieval_Fragment_(), R.id.RL_CPA,
+                                bundle, Fact_Retrieval_Fragment_.class.getSimpleName());
+                        break;
+                    case GameConstatnts.PICTIONARYFRAGMENT:
+                        FC_Utility.showFragment((Activity) context, new StoryReadingFragment_(), R.id.RL_CPA,
+                                bundle, StoryReadingFragment.class.getSimpleName());
+                        break;
+                    case GameConstatnts.THINKANDWRITE:
+                    case GameConstatnts.DOING_ACT_READ:
+                    case GameConstatnts.DOING_ACT_VIDEO:
+                    case GameConstatnts.LetterWriting:
+                        FC_Utility.showFragment((Activity) context, new DoingFragment(), R.id.RL_CPA,
+                                bundle, DoingFragment.class.getSimpleName());
+                        break;
+                    case GameConstatnts.VIDEO:
+                        Intent intent = new Intent(context, ActivityVideoView_.class);
+                        intent.putExtra("contentPath", contentTable1.getResourcePath());
+                        intent.putExtra("StudentID", FC_Constants.currentStudentID);
+                        intent.putExtra("resId", contentTable1.getResourceId());
+                        intent.putExtra("contentName", contentTable1.getNodeTitle());
+                        intent.putExtra("onSdCard", true);
+                        context.startActivity(intent);
+//                FC_Utility.showFragment((Activity) context, new ActivityVideoView_(), R.id.RL_CPA,
+//                        bundle, ActivityVideoView.class.getSimpleName());
+                        break;
                 }
-
         } else {
             ((ContentPlayerActivity) context).getSupportFragmentManager().popBackStack(SequenceLayout_.class.getSimpleName(), 0);
         }

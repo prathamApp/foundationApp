@@ -23,7 +23,6 @@ import android.widget.RadioGroup;
 import com.bumptech.glide.Glide;
 import com.pratham.foundation.ApplicationClass;
 import com.pratham.foundation.R;
-import com.pratham.foundation.customView.SansButton;
 import com.pratham.foundation.customView.SansTextView;
 import com.pratham.foundation.interfaces.OnGameClose;
 import com.pratham.foundation.ui.contentPlayer.GameConstatnts;
@@ -35,11 +34,11 @@ import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Bean;
 import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EFragment;
+import org.androidannotations.annotations.UiThread;
 import org.androidannotations.annotations.ViewById;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.IOException;
 import java.util.List;
 
 @EFragment(R.layout.fragment_list_and_writting)
@@ -53,7 +52,7 @@ public class ListeningAndWritting extends Fragment implements ListeningAndWritti
     RadioGroup radiogroup;
 
     @ViewById(R.id.title)
-    SansTextView title;
+    com.pratham.foundation.customView.SansTextView title;
 
     @ViewById(R.id.previous)
     ImageView previous;
@@ -126,9 +125,11 @@ public class ListeningAndWritting extends Fragment implements ListeningAndWritti
     }
 
     @Override
+    @UiThread
     public void loadUI(List<ScienceQuestion> listenAndWrittingModal) {
         this.listenAndWrittingModal = listenAndWrittingModal;
-        title.setText(listenAndWrittingModal.get(index).getInstruction());
+        if (listenAndWrittingModal.get(index).getInstruction() != null && !listenAndWrittingModal.get(index).getInstruction().isEmpty())
+            title.setText(listenAndWrittingModal.get(index).getInstruction());
         setAudioResource();
     }
 
@@ -139,6 +140,7 @@ public class ListeningAndWritting extends Fragment implements ListeningAndWritti
         Glide.with(getActivity()).load(R.drawable.play_button)
                 .into(play);
         count.setText("" + (index + 1));
+        submitBtn.setVisibility(View.INVISIBLE);
         if (index == 0) {
             previous.setVisibility(View.INVISIBLE);
         } else {

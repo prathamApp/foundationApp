@@ -230,6 +230,10 @@ public class DoingFragment extends Fragment implements OnGameClose {
             questionImage.setVisibility(View.GONE);
             questionGif.setVisibility(View.GONE);
             question.setText(scienceQuestion.getQuestion());
+            if (scienceQuestion.getQuestion().equalsIgnoreCase(""))
+                question.setVisibility(View.GONE);
+            else question.setText(scienceQuestion.getQuestion());
+
             question.setMovementMethod(new ScrollingMovementMethod());
             if (!scienceQuestion.getInstruction().isEmpty())
                 tittle.setText(scienceQuestion.getInstruction());
@@ -257,11 +261,6 @@ public class DoingFragment extends Fragment implements OnGameClose {
                 } else {
                     try {
                         questionPath = readingContentPath + fileName;
-                        if (scienceQuestion.getQuestion().equalsIgnoreCase(""))
-                            question.setVisibility(View.GONE);
-                        else question.setText(scienceQuestion.getQuestion());
-
-
                         BitmapFactory.Options options = new BitmapFactory.Options();
                         options.inSampleSize = 1;
                         Bitmap thumb = ThumbnailUtils.createVideoThumbnail(questionPath, MediaStore.Images.Thumbnails.MICRO_KIND);
