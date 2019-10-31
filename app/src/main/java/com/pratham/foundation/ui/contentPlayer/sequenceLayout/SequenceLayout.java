@@ -23,6 +23,7 @@ import com.pratham.foundation.ui.contentPlayer.multipleChoice.McqFillInTheBlanks
 import com.pratham.foundation.ui.contentPlayer.paragraph_writing.ParagraphWritingFragment_;
 import com.pratham.foundation.ui.contentPlayer.pictionary.pictionaryFragment;
 import com.pratham.foundation.ui.contentPlayer.reading.ReadingFragment;
+import com.pratham.foundation.ui.contentPlayer.story_reading.StoryReadingFragment;
 import com.pratham.foundation.ui.contentPlayer.story_reading.StoryReadingFragment_;
 import com.pratham.foundation.ui.contentPlayer.trueFalse.TrueFalseFragment;
 import com.pratham.foundation.ui.contentPlayer.video_view.ActivityVideoView;
@@ -96,7 +97,7 @@ public class SequenceLayout extends Fragment implements SequeanceLayoutContract.
     public void playFromStartClick() {
         Bundle bundle = new Bundle();
         bundle.putString("dd", "");
-        FC_Utility.showFragment((Activity) getActivity(), new FillInTheBlanksFragment(), R.id.RL_CPA,
+        FC_Utility.showFragment(getActivity(), new FillInTheBlanksFragment(), R.id.RL_CPA,
                 bundle, FillInTheBlanksFragment.class.getSimpleName());
         /*currentGameAdapterposition=-1;
         GameConstatnts.playGameNext(getActivity());*/
@@ -167,7 +168,7 @@ public class SequenceLayout extends Fragment implements SequeanceLayoutContract.
                 break;
             case GameConstatnts.PICTIONARYFRAGMENT:
                 FC_Utility.showFragment((Activity) context, new StoryReadingFragment_(), R.id.RL_CPA,
-                        bundle, StoryReadingFragment_.class.getSimpleName());
+                        bundle, StoryReadingFragment.class.getSimpleName());
                 break;
             case GameConstatnts.THINKANDWRITE:
             case GameConstatnts.DOING_ACT_READ:
