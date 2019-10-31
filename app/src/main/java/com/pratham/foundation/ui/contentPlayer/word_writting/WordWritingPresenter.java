@@ -1,4 +1,4 @@
-package com.pratham.foundation.ui.contentPlayer.paragraph_writing;
+package com.pratham.foundation.ui.contentPlayer.word_writting;
 
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -14,7 +14,7 @@ import com.pratham.foundation.database.domain.Score;
 import com.pratham.foundation.interfaces.OnGameClose;
 import com.pratham.foundation.ui.contentPlayer.GameConstatnts;
 import com.pratham.foundation.ui.contentPlayer.fact_retrival_selection.ScienceQuestion;
-import com.pratham.foundation.ui.contentPlayer.keywords_identification.QuestionModel;
+import com.pratham.foundation.ui.contentPlayer.paragraph_writing.ParagraphWritingContract;
 import com.pratham.foundation.utility.FC_Constants;
 import com.pratham.foundation.utility.FC_Utility;
 
@@ -23,27 +23,28 @@ import org.androidannotations.annotations.EBean;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.lang.reflect.Type;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
 import static com.pratham.foundation.database.AppDatabase.appDatabase;
 
 @EBean
-public class ParagraphWritingPresenter implements ParagraphWritingContract.ParagraphWritingPresenter {
-    private ScienceQuestion questionModel;
-    private ParagraphWritingContract.ParagraphWritingView view;
+public class WordWritingPresenter implements WordWritingContract.WordWritingPresenter {
+    private List<ScienceQuestion> questionModel;
+    private WordWritingContract.WordWritingView view;
     private Context context;
     private List<ScienceQuestion> quetionModelList;
     private float perc;
     private int totalWordCount, learntWordCount;
     private String gameName, resId, contentTitle, readingContentPath;
 
-    public ParagraphWritingPresenter(Context context) {
+    public WordWritingPresenter(Context context) {
         this.context = context;
 
     }
 
-    public void setView(ParagraphWritingContract.ParagraphWritingView view, String resId, String readingContentPath) {
+    public void setView(WordWritingContract.WordWritingView view, String resId, String readingContentPath) {
         this.view = view;
         this.resId = resId;
         this.readingContentPath = readingContentPath;
@@ -51,7 +52,7 @@ public class ParagraphWritingPresenter implements ParagraphWritingContract.Parag
 
     @Override
     public void getData() {
-        questionModel = new ScienceQuestion();
+        questionModel = new ArrayList<>();
         String text = FC_Utility.loadJSONFromStorage(readingContentPath, "CWiritng.json");
         Gson gson = new Gson();
         Type type = new TypeToken<List<ScienceQuestion>>() {
@@ -87,14 +88,17 @@ public class ParagraphWritingPresenter implements ParagraphWritingContract.Parag
             Collections.shuffle(quetionModelList);
             for (int i = 0; i < quetionModelList.size(); i++) {
                 if (perc < 95) {
-                    questionModel = quetionModelList.get(i);
-                    break;
+                    questionModel.add(quetionModelList.get(i));
+
                     /*if (!checkWord("" + quetionModelList.get(i).getTitle())) {
                         questionModel = quetionModelList.get(i);
                         break;
                     }*/
                 } else {
-                    questionModel = quetionModelList.get(i);
+                    questionModel.add(quetionModelList.get(i));
+
+                }
+                if (questionModel.size() == 5) {
                     break;
                 }
             }
@@ -162,19 +166,24 @@ public class ParagraphWritingPresenter implements ParagraphWritingContract.Parag
 
     }
 
-    public void addLearntWords(ScienceQuestion questionModel, String imageName) {
+    public void addLearntWords(List<ScienceQuestion> questionModel, String imageName) {
         if (imageName != null && !imageName.isEmpty()) {
-            KeyWords keyWords = new KeyWords();
-            keyWords.setResourceId(resId);
-            keyWords.setSentFlag(0);
-            keyWords.setStudentId(FC_Constants.currentStudentID);
-            keyWords.setKeyWord(questionModel.getTitle());
-            keyWords.setWordType("word");
-            addScore(GameConstatnts.getInt(questionModel.getQid()), GameConstatnts.PARAGRAPH_WRITING, 0, 0, FC_Utility.getCurrentDateTime(), imageName);
-            appDatabase.getKeyWordDao().insert(keyWords);
-            Toast.makeText(context, "inserted succussfully", Toast.LENGTH_LONG).show();
-            GameConstatnts.playGameNext(context, GameConstatnts.FALSE, (OnGameClose) view);
+            if (questionModel != null && !questionModel.isEmpty()) {
+                for (int i = 0; i < questionModel.size(); i++) {
+                    KeyWords keyWords = new KeyWords();
+                    keyWords.setResourceId(resId);
+                    keyWords.setSentFlag(0);
+                    keyWords.setStudentId(FC_Constants.currentStudentID);
+                    String key = questionModel.get(i).getQuestion().toString();
+                    keyWords.setKeyWord(key);
+                    keyWords.setWordType("word");
+                    appDatabase.getKeyWordDao().insert(keyWords);
+                    addScore(GameConstatnts.getInt(questionModel.get(i).getQid()), GameConstatnts.PARAGRAPH_WRITING, 0, 0, FC_Utility.getCurrentDateTime(), imageName);
+                }
+                GameConstatnts.playGameNext(context, GameConstatnts.FALSE, (OnGameClose) view);
 
+
+            }
         } else {
             GameConstatnts.playGameNext(context, GameConstatnts.TRUE, (OnGameClose) view);
 

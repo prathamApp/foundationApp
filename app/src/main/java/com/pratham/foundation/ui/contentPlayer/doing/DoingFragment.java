@@ -64,6 +64,7 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import okhttp3.Cache;
 
 import static com.pratham.foundation.database.AppDatabase.appDatabase;
 
@@ -235,7 +236,7 @@ public class DoingFragment extends Fragment implements OnGameClose {
             if (fileName != null && !fileName.isEmpty()) {
                 RelativeLayout.setVisibility(View.VISIBLE);
                 if (fileName.toLowerCase().endsWith(".jpeg") || fileName.toLowerCase().endsWith(".jpg") || fileName.toLowerCase().endsWith(".png")) {
-                    questionPath = readingContentPath  + fileName;
+                    questionPath = readingContentPath + fileName;
                     Glide.with(getActivity())
                             .load(questionPath)
                             .apply(new RequestOptions()
@@ -243,7 +244,7 @@ public class DoingFragment extends Fragment implements OnGameClose {
                             .into(questionImage);
                     questionImage.setVisibility(View.VISIBLE);
                 } else if (fileName.toLowerCase().endsWith(".gif")) {
-                    questionPath = readingContentPath  + fileName;
+                    questionPath = readingContentPath + fileName;
                     InputStream gif;
                     try {
                         gif = new FileInputStream(questionPath);
@@ -254,18 +255,23 @@ public class DoingFragment extends Fragment implements OnGameClose {
                     }
 
                 } else {
-                    questionPath = readingContentPath  + fileName;
-                    if (scienceQuestion.getQuestion().equalsIgnoreCase(""))
-                        question.setText("Watch the video");
-                    else question.setText(scienceQuestion.getQuestion());
+                    try {
+                        questionPath = readingContentPath + fileName;
+                        if (scienceQuestion.getQuestion().equalsIgnoreCase(""))
+                            question.setVisibility(View.GONE);
+                        else question.setText(scienceQuestion.getQuestion());
 
 
-                    BitmapFactory.Options options = new BitmapFactory.Options();
-                    options.inSampleSize = 1;
-                    Bitmap thumb = ThumbnailUtils.createVideoThumbnail(questionPath, MediaStore.Images.Thumbnails.MICRO_KIND);
-                    BitmapDrawable ob = new BitmapDrawable(getResources(), thumb);
-                    questionImage.setBackgroundDrawable(ob);
-                    questionImage.setVisibility(View.VISIBLE);
+                        BitmapFactory.Options options = new BitmapFactory.Options();
+                        options.inSampleSize = 1;
+                        Bitmap thumb = ThumbnailUtils.createVideoThumbnail(questionPath, MediaStore.Images.Thumbnails.MICRO_KIND);
+                        BitmapDrawable ob = new BitmapDrawable(getResources(), thumb);
+                        questionImage.setBackgroundDrawable(ob);
+                        questionImage.setVisibility(View.VISIBLE);
+                    } catch (Exception e) {
+
+                    }
+
                 }
             } else {
                 RelativeLayout.setVisibility(View.INVISIBLE);

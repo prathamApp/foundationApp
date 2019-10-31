@@ -28,6 +28,8 @@ import com.pratham.foundation.ui.contentPlayer.story_reading.StoryReadingFragmen
 import com.pratham.foundation.ui.contentPlayer.trueFalse.TrueFalseFragment;
 import com.pratham.foundation.ui.contentPlayer.video_view.ActivityVideoView;
 import com.pratham.foundation.ui.contentPlayer.video_view.ActivityVideoView_;
+import com.pratham.foundation.ui.contentPlayer.word_writting.WordWritingFragment;
+import com.pratham.foundation.ui.contentPlayer.word_writting.WordWritingFragment_;
 import com.pratham.foundation.utility.FC_Constants;
 import com.pratham.foundation.utility.FC_Utility;
 
@@ -134,8 +136,14 @@ public class SequenceLayout extends Fragment implements SequeanceLayoutContract.
                         bundle, KeywordMappingFragment_.class.getSimpleName());
                 break;
             case GameConstatnts.PARAGRAPH_WRITING:
-                FC_Utility.showFragment((Activity) context, new ParagraphWritingFragment_(), R.id.RL_CPA,
-                        bundle, ParagraphWritingFragment_.class.getSimpleName());
+                if (FC_Constants.currentLevel == 0 && FC_Constants.currentSubject.equalsIgnoreCase("english")) {
+                    FC_Utility.showFragment((Activity) context, new WordWritingFragment_(), R.id.RL_CPA,
+                            bundle, WordWritingFragment_.class.getSimpleName());
+                }else {
+                    FC_Utility.showFragment((Activity) context, new ParagraphWritingFragment_(), R.id.RL_CPA,
+                            bundle, ParagraphWritingFragment_.class.getSimpleName());
+                }
+
                 break;
 
             case GameConstatnts.LISTNING_AND_WRITTING:

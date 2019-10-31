@@ -1,4 +1,4 @@
-package com.pratham.foundation.ui.contentPlayer.paragraph_writing;
+package com.pratham.foundation.ui.contentPlayer.word_writting;
 
 import android.app.Dialog;
 import android.content.Intent;
@@ -28,6 +28,7 @@ import com.pratham.foundation.customView.SansTextView;
 import com.pratham.foundation.interfaces.OnGameClose;
 import com.pratham.foundation.ui.contentPlayer.GameConstatnts;
 import com.pratham.foundation.ui.contentPlayer.fact_retrival_selection.ScienceQuestion;
+import com.pratham.foundation.ui.contentPlayer.paragraph_writing.SentenceAdapter;
 import com.pratham.foundation.utility.FC_Utility;
 
 import org.androidannotations.annotations.AfterViews;
@@ -38,16 +39,18 @@ import org.androidannotations.annotations.ViewById;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 import butterknife.OnClick;
 
 @EFragment(R.layout.fragment_paragraph_writing)
-public class ParagraphWritingFragment extends Fragment
-        implements ParagraphWritingContract.ParagraphWritingView, OnGameClose {
+public class WordWritingFragment extends Fragment
+        implements WordWritingContract.WordWritingView, OnGameClose {
 
-    @Bean(ParagraphWritingPresenter.class)
-    ParagraphWritingContract.ParagraphWritingPresenter presenter;
+    @Bean(WordWritingPresenter.class)
+    WordWritingContract.WordWritingPresenter presenter;
 
     private int index = 0;
     @ViewById(R.id.paragraph)
@@ -63,7 +66,7 @@ public class ParagraphWritingFragment extends Fragment
     @ViewById(R.id.title)
     SansTextView title;
 
-    private String[] paragraphWords;
+    private List<String> paragraphWords;
     //    private RelativeLayout.LayoutParams viewParam;
     private LinearLayoutManager layoutManager;
     private RecyclerView.SmoothScroller smoothScroller;
@@ -71,7 +74,7 @@ public class ParagraphWritingFragment extends Fragment
     private String imageName = null, imagePath;
     private String contentPath, contentTitle, StudentID, resId, readingContentPath, resStartTime;
     private boolean onSdCard;
-    private ScienceQuestion questionModel;
+    private List<ScienceQuestion> questionModel;
 
     @AfterViews
     protected void initiate() {
@@ -87,18 +90,22 @@ public class ParagraphWritingFragment extends Fragment
             else
                 readingContentPath = ApplicationClass.foundationPath + "/.FCA/English/Game/" + contentPath + "/";
         }
-        presenter.setView(ParagraphWritingFragment.this, resId, readingContentPath);
+        presenter.setView(WordWritingFragment.this, resId, readingContentPath);
         presenter.getData();
         resStartTime = FC_Utility.getCurrentDateTime();
         presenter.addScore(0, "", 0, 0, resStartTime, GameConstatnts.PARAGRAPH_WRITING + " " + GameConstatnts.START);
     }
 
     @Override
-    public void showParagraph(ScienceQuestion questionModel) {
+    public void showParagraph(List<ScienceQuestion> questionModel) {
         this.questionModel = questionModel;
-        title.setText(questionModel.getInstruction());
-        paragraphWords = questionModel.getQuestion().trim().split("(?<=\\.\\s)|(?<=[?!]\\s)");
-        SentenceAdapter arrayAdapter = new SentenceAdapter(Arrays.asList(paragraphWords), getActivity());
+        title.setText(questionModel.get(0).getInstruction());
+        paragraphWords=new ArrayList<>();
+        for (int i=0;i<questionModel.size();i++){
+            paragraphWords.add(questionModel.get(i).getQuestion());
+        }
+       // paragraphWords = questionModel.getQuestion().trim().split("(?<=\\.\\s)|(?<=[?!]\\s)");
+        SentenceAdapter arrayAdapter = new SentenceAdapter(paragraphWords, getActivity());
         paragraph.setAdapter(arrayAdapter);
         LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
         paragraph.setLayoutManager(layoutManager);

@@ -12,5 +12,6 @@
         android:layout_marginHorizontal="@dimen/_5sdp"
         android:layout_marginVertical="@dimen/_5sdp"
         android:layout_height="wrap_content"
+        android:textAlignment="center"
         android:textSize="30sp"/>
 </RelativeLayout>
