@@ -26,9 +26,7 @@ import com.pratham.foundation.ui.contentPlayer.reading.ReadingFragment;
 import com.pratham.foundation.ui.contentPlayer.story_reading.StoryReadingFragment;
 import com.pratham.foundation.ui.contentPlayer.story_reading.StoryReadingFragment_;
 import com.pratham.foundation.ui.contentPlayer.trueFalse.TrueFalseFragment;
-import com.pratham.foundation.ui.contentPlayer.video_view.ActivityVideoView;
 import com.pratham.foundation.ui.contentPlayer.video_view.ActivityVideoView_;
-import com.pratham.foundation.ui.contentPlayer.word_writting.WordWritingFragment;
 import com.pratham.foundation.ui.contentPlayer.word_writting.WordWritingFragment_;
 import com.pratham.foundation.utility.FC_Constants;
 import com.pratham.foundation.utility.FC_Utility;
@@ -180,7 +178,6 @@ public class SequenceLayout extends Fragment implements SequeanceLayoutContract.
                 FC_Utility.showFragment((Activity) context, new DoingFragment(), R.id.RL_CPA,
                         bundle, DoingFragment.class.getSimpleName());
                 break;
-
             case GameConstatnts.VIDEO:
                 Intent intent = new Intent(context, ActivityVideoView_.class);
                 intent.putExtra("contentPath", contentTable.getResourcePath());
