@@ -309,7 +309,11 @@ public class LearningFragment extends Fragment implements LearningContract.Learn
 
     @Override
     public void onContentClicked(ContentTableNew singleItem) {
-        ButtonClickSound.start();
+        try {
+            ButtonClickSound.start();
+        } catch (IllegalStateException e) {
+            e.printStackTrace();
+        }
         if (singleItem.getResourceType().equalsIgnoreCase("category")) {
             Intent intent = new Intent(getActivity(), ContentDisplay_.class);
             intent.putExtra("nodeId", singleItem.getNodeId());

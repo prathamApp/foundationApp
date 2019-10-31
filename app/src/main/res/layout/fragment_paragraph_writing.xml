@@ -8,7 +8,7 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@id/scrollView"
+        android:layout_below="@id/paragraph"
         android:layout_alignParentBottom="true"
         android:layout_marginHorizontal="@dimen/_10sdp"
         android:layout_marginVertical="@dimen/_10sdp"
@@ -83,23 +83,18 @@
         </LinearLayout>
     </RelativeLayout>
 
-    <ScrollView
-        android:id="@+id/scrollView"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/_330sdp"
-        android:layout_below="@id/title"
-        android:layout_marginHorizontal="@dimen/_10sdp"
-        android:layout_marginTop="@dimen/_10sdp"
-        android:background="@drawable/dialog_bg">
-
         <android.support.v7.widget.RecyclerView
             android:id="@+id/paragraph"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="@dimen/_330sdp"
+            android:padding="@dimen/_5sdp"
+            android:layout_below="@id/title"
+            android:layout_marginHorizontal="@dimen/_10sdp"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:background="@drawable/dialog_bg"
             android:layout_gravity="center"
-            android:layout_marginTop="@dimen/_8sdp"
+            android:elevation="@dimen/_3sdp"
             android:orientation="vertical" />
-    </ScrollView>
 
     <com.pratham.foundation.customView.SansTextView
         android:id="@+id/title"

@@ -95,7 +95,11 @@ public class PracticeFragment extends Fragment implements PracticeContract.Pract
 
     @UiThread
     public void notifyAdapter() {
-        sortAllList(contentParentList);
+        try {
+            sortAllList(contentParentList);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         if (adapterParent == null) {
             adapterParent = new PracticeOuterDataAdapter(getActivity(), contentParentList, this);
             RecyclerView.LayoutManager mLayoutManager = new GridLayoutManager(getActivity(), 1);
@@ -318,12 +322,15 @@ public class PracticeFragment extends Fragment implements PracticeContract.Pract
             intent.putExtra("contentTitle", singleItem.getNodeTitle());
             intent.putExtra("level", "" + currentLevel);
             startActivity(intent);
+        } else if(singleItem.getResourceType().equalsIgnoreCase("preResource")){
+            Intent mainNew = new Intent(getActivity(), ContentPlayerActivity_.class);
+            mainNew.putExtra("nodeID", singleItem.getNodeId());
+            startActivity(mainNew);
         } else {
             contentParentList.clear();
             presenter.insertNodeId(singleItem.nodeId);
             presenter.getDataForList();
         }
-
     }
 
     @Override

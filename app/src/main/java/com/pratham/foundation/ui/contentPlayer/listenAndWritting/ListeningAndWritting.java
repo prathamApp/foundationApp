@@ -134,8 +134,12 @@ public class ListeningAndWritting extends Fragment implements ListeningAndWritti
     }
 
     private void setAudioResource() {
-        if (sp != null)
-            sp.pause(id);
+        try {
+            if (sp != null)
+                sp.stop(id);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
         Glide.with(getActivity()).load(R.drawable.play_button)
                 .into(play);
@@ -253,9 +257,9 @@ public class ListeningAndWritting extends Fragment implements ListeningAndWritti
     public void onStop() {
         super.onStop();
         try {
-            sp.pause(id);
+            sp.stop(id);
         } catch (Exception e) {
-
+            e.printStackTrace();
         }
     }
 
