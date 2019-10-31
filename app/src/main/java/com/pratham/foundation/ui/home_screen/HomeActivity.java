@@ -53,7 +53,6 @@ import static com.pratham.foundation.utility.FC_Constants.LEVEL_CHANGED;
 import static com.pratham.foundation.utility.FC_Constants.currentSubject;
 import static com.pratham.foundation.utility.FC_Constants.dialog_btn_cancel;
 import static com.pratham.foundation.utility.FC_Constants.dialog_btn_exit;
-import static com.pratham.foundation.utility.FC_Constants.dialog_btn_restart;
 
 @EActivity(R.layout.activity_home)
 public class HomeActivity extends BaseActivity {
@@ -159,17 +158,19 @@ public class HomeActivity extends BaseActivity {
     @Background
     public void displayProfileName() {
         String profileName = "QR Student";
-        if (!GROUP_LOGIN)
-            profileName = AppDatabase.getDatabaseInstance(this).getStudentDao().getFullName(FC_Constants.currentStudentID);
-        else {
-            if (!GROUP_QR)
-                profileName = AppDatabase.getDatabaseInstance(this).getGroupsDao().getGroupNameByGrpID(FC_Constants.currentStudentID);
-        }
-        if (!FC_Constants.GROUP_LOGIN && !GROUP_QR)
-            profileName = profileName.split(" ")[0];
+        try {
+            if (!GROUP_LOGIN)
+                profileName = AppDatabase.getDatabaseInstance(this).getStudentDao().getFullName(FC_Constants.currentStudentID);
+            else {
+                if (!GROUP_QR)
+                    profileName = AppDatabase.getDatabaseInstance(this).getGroupsDao().getGroupNameByGrpID(FC_Constants.currentStudentID);
+            }
+            if (!FC_Constants.GROUP_LOGIN && !GROUP_QR)
+                profileName = profileName.split(" ")[0];
 
-        if(profileName==null)
-            profileName  = "QR Student";
+            if (profileName == null)
+                profileName = "QR Student";
+        }catch (Exception e){profileName = "QR Student";e.printStackTrace();}
         setProfileName(profileName);
     }
 
@@ -418,7 +419,7 @@ public class HomeActivity extends BaseActivity {
         Dialog dialog = new Dialog(HomeActivity.this);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setContentView(R.layout.fc_custom_dialog);
-/*        Bitmap map=FC_Utility.takeScreenShot(HomeActivity.this);
+/*      Bitmap map=FC_Utility.takeScreenShot(HomeActivity.this);
         Bitmap fast=FC_Utility.fastblur(map, 20);
         final Drawable draw=new BitmapDrawable(getResources(),fast);
         dialog.getWindow().setBackgroundDrawable(draw);*/
@@ -427,13 +428,15 @@ public class HomeActivity extends BaseActivity {
         dialog.setCanceledOnTouchOutside(false);
         dialog.show();
 
+        TextView dia_title = dialog.findViewById(R.id.dia_title);
         Button next_btn = dialog.findViewById(R.id.dia_btn_green);
         Button test_btn = dialog.findViewById(R.id.dia_btn_yellow);
         Button revise_btn = dialog.findViewById(R.id.dia_btn_red);
 
+        dia_title.setText("Change Language?");
         revise_btn.setText("" + dialog_btn_exit);
         test_btn.setText("" + dialog_btn_cancel);
-        next_btn.setText("" + dialog_btn_restart);
+        next_btn.setText("OK");
 
         next_btn.setOnClickListener(v -> {
             endSession(HomeActivity.this);

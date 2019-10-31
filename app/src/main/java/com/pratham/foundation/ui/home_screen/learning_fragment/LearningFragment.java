@@ -96,7 +96,7 @@ public class LearningFragment extends Fragment implements LearningContract.Learn
 
     @UiThread
     public void notifyAdapter() {
-        sortAllList(contentParentList);
+//        sortAllList(contentParentList);
         if (adapterParent == null) {
             adapterParent = new LearningOuterDataAdapter(getActivity(), contentParentList, this);
             RecyclerView.LayoutManager mLayoutManager = new GridLayoutManager(getActivity(), 1);
