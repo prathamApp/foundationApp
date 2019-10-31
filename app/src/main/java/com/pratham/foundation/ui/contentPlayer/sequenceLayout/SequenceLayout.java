@@ -125,12 +125,10 @@ public class SequenceLayout extends Fragment implements SequeanceLayoutContract.
                 FC_Utility.showFragment((Activity) context, new FactRetrieval_(), R.id.RL_CPA,
                         bundle, FactRetrieval_.class.getSimpleName());
                 break;
-
             case GameConstatnts.KEYWORD_IDENTIFICATION:
                 FC_Utility.showFragment((Activity) context, new KeywordsIdentificationFragment_(), R.id.RL_CPA,
                         bundle, KeywordsIdentificationFragment_.class.getSimpleName());
                 break;
-
             case GameConstatnts.KEYWORD_MAPPING:
                 FC_Utility.showFragment((Activity) context, new KeywordMappingFragment_(), R.id.RL_CPA,
                         bundle, KeywordMappingFragment_.class.getSimpleName());
@@ -143,9 +141,7 @@ public class SequenceLayout extends Fragment implements SequeanceLayoutContract.
                     FC_Utility.showFragment((Activity) context, new ParagraphWritingFragment_(), R.id.RL_CPA,
                             bundle, ParagraphWritingFragment_.class.getSimpleName());
                 }
-
                 break;
-
             case GameConstatnts.LISTNING_AND_WRITTING:
                 FC_Utility.showFragment((Activity) context, new ListeningAndWritting_(), R.id.RL_CPA,
                         bundle, ListeningAndWritting_.class.getSimpleName());
