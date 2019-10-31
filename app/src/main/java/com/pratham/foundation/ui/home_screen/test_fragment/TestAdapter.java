@@ -20,7 +20,6 @@ import android.widget.TextView;
 
 import com.pratham.foundation.R;
 import com.pratham.foundation.modalclasses.CertificateModelClass;
-import com.pratham.foundation.ui.home_screen.HomeActivity;
 import com.pratham.foundation.ui.test.certificate.CertificateClicked;
 
 import org.json.JSONArray;
@@ -28,6 +27,8 @@ import org.json.JSONObject;
 
 import java.io.InputStream;
 import java.util.List;
+
+import static com.pratham.foundation.utility.FC_Constants.currentLevel;
 
 
 public class TestAdapter extends RecyclerView.Adapter {
@@ -101,9 +102,9 @@ public class TestAdapter extends RecyclerView.Adapter {
 
         TestItemRowHolder(View view) {
             super(view);
-            certificate_card = (RelativeLayout) view.findViewById(R.id.certificate_card_view);
-            title = (TextView) view.findViewById(R.id.assess_data);
-            ratingStars = (RatingBar) view.findViewById(R.id.ratingStars);
+            certificate_card = view.findViewById(R.id.certificate_card_view);
+            title = view.findViewById(R.id.assess_data);
+            ratingStars = view.findViewById(R.id.ratingStars);
         }
     }
 
@@ -111,7 +112,7 @@ public class TestAdapter extends RecyclerView.Adapter {
         Spinner spinner;
         TestSpinnerHolder(View view) {
             super(view);
-            spinner = (Spinner) view.findViewById(R.id.test_lang_spinner);
+            spinner = view.findViewById(R.id.test_lang_spinner);
         }
     }
 
@@ -286,7 +287,7 @@ public class TestAdapter extends RecyclerView.Adapter {
 
     private String getLevelWiseJson() {
         String jsonName = "TestBeginnerJson.json";
-        switch (HomeActivity.currentLevelNo) {
+        switch (currentLevel) {
             case 0:
                 jsonName = "TestBeginnerJson.json";
                 break;

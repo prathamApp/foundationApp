@@ -38,7 +38,6 @@ import com.pratham.foundation.ui.contentPlayer.reading_paragraphs.ReadingParagra
 import com.pratham.foundation.ui.contentPlayer.reading_rhyming.ReadingRhymesActivity_;
 import com.pratham.foundation.ui.contentPlayer.vocabulary_qa.ReadingVocabularyActivity_;
 import com.pratham.foundation.ui.contentPlayer.web_view.WebViewActivity;
-import com.pratham.foundation.ui.home_screen.HomeActivity;
 import com.pratham.foundation.ui.home_screen.display_content.ContentDisplay_;
 import com.pratham.foundation.utility.FC_Constants;
 import com.pratham.foundation.utility.FC_Utility;
@@ -62,6 +61,7 @@ import java.util.Objects;
 
 import static com.pratham.foundation.ui.home_screen.HomeActivity.header_rl;
 import static com.pratham.foundation.ui.home_screen.HomeActivity.tv_progress;
+import static com.pratham.foundation.utility.FC_Constants.currentLevel;
 import static com.pratham.foundation.utility.FC_Utility.dpToPx;
 import static com.pratham.foundation.utility.SplashSupportActivity.ButtonClickSound;
 
@@ -91,14 +91,14 @@ public class FunFragment extends Fragment implements FunContract.FunView,
         RetractableToolbarUtil.ShowHideToolbarOnScrollingListener showHideToolbarListener;
         my_recycler_view.addOnScrollListener(showHideToolbarListener =
                 new RetractableToolbarUtil.ShowHideToolbarOnScrollingListener(header_rl));
-        presenter.getBottomNavId(HomeActivity.currentLevelNo, "Fun");
+        presenter.getBottomNavId(currentLevel, "Fun");
     }
 
     @UiThread
     public void notifyAdapter() {
         sortAllList(contentParentList);
         if (adapterParent == null) {
-            adapterParent = new FunOuterDataAdapter(getActivity(), contentParentList, (FunContract.FunItemClicked) this);
+            adapterParent = new FunOuterDataAdapter(getActivity(), contentParentList, this);
             RecyclerView.LayoutManager mLayoutManager = new GridLayoutManager(getActivity(), 1);
             my_recycler_view.setLayoutManager(mLayoutManager);
             my_recycler_view.addItemDecoration(new GridSpacingItemDecoration(1,dpToPx(getActivity()),true));
@@ -208,14 +208,14 @@ public class FunFragment extends Fragment implements FunContract.FunView,
     @Override
     public void setSelectedLevel(List<ContentTable> contentTable) {
         rootLevelList = contentTable;
-        presenter.insertNodeId(contentTable.get(HomeActivity.currentLevelNo).getNodeId());
+        presenter.insertNodeId(contentTable.get(currentLevel).getNodeId());
         presenter.getDataForList();
     }
 
     public void onLevelChanged() {
         contentParentList.clear();
         presenter.removeLastNodeId();
-        presenter.insertNodeId(rootLevelList.get(HomeActivity.currentLevelNo).getNodeId());
+        presenter.insertNodeId(rootLevelList.get(currentLevel).getNodeId());
         presenter.getDataForList();
     }
 
@@ -314,7 +314,7 @@ public class FunFragment extends Fragment implements FunContract.FunView,
             Intent intent = new Intent(getActivity(), ContentDisplay_.class);
             intent.putExtra("nodeId", singleItem.getNodeId());
             intent.putExtra("contentTitle", singleItem.getNodeTitle());
-            intent.putExtra("level", "" + HomeActivity.currentLevelNo);
+            intent.putExtra("level", "" + currentLevel);
             startActivity(intent);
         } else if(singleItem.getResourceType().equalsIgnoreCase("preResource")){
             Intent mainNew = new Intent(getActivity(), ContentPlayerActivity_.class);

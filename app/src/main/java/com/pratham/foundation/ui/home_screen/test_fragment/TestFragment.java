@@ -32,7 +32,6 @@ import com.pratham.foundation.modalclasses.EventMessage;
 import com.pratham.foundation.modalclasses.Modal_FileDownloading;
 import com.pratham.foundation.ui.contentPlayer.fact_retrieval_fragment.FactRetrieval_;
 import com.pratham.foundation.ui.contentPlayer.web_view.WebViewActivity;
-import com.pratham.foundation.ui.home_screen.HomeActivity;
 import com.pratham.foundation.ui.test.certificate.CertificateClicked;
 import com.pratham.foundation.utility.FC_Constants;
 import com.pratham.foundation.utility.FC_Utility;
@@ -56,6 +55,7 @@ import java.util.List;
 import java.util.Objects;
 
 import static com.pratham.foundation.ui.home_screen.HomeActivity.header_rl;
+import static com.pratham.foundation.utility.FC_Constants.currentLevel;
 import static com.pratham.foundation.utility.FC_Constants.isTest;
 import static com.pratham.foundation.utility.FC_Constants.testSessionEntered;
 
@@ -92,7 +92,7 @@ public class TestFragment extends Fragment implements TestContract.TestView,
         RetractableToolbarUtil.ShowHideToolbarOnScrollingListener showHideToolbarListener;
         my_recycler_view.addOnScrollListener(showHideToolbarListener =
                 new RetractableToolbarUtil.ShowHideToolbarOnScrollingListener(header_rl));
-        presenter.getBottomNavId(HomeActivity.currentLevelNo, "Test");
+        presenter.getBottomNavId(currentLevel, "Test");
     }
 
     private int dpToPx() {
@@ -195,17 +195,17 @@ public class TestFragment extends Fragment implements TestContract.TestView,
     @Override
     public void setSelectedLevel(List<ContentTable> contentTable) {
         rootLevelList = contentTable;
-        presenter.insertNodeId(contentTable.get(HomeActivity.currentLevelNo).getNodeId());
+        presenter.insertNodeId(contentTable.get(currentLevel).getNodeId());
 
         String jsonName = getLevelWiseJson();
         JSONArray testData = presenter.getTestData(jsonName);
-        presenter.generateTestData(testData, rootLevelList.get(HomeActivity.currentLevelNo).getNodeId());
+        presenter.generateTestData(testData, rootLevelList.get(currentLevel).getNodeId());
     }
 
     public void onLevelChanged() {
         contentParentList.clear();
         presenter.removeLastNodeId();
-        presenter.insertNodeId(rootLevelList.get(HomeActivity.currentLevelNo).getNodeId());
+        presenter.insertNodeId(rootLevelList.get(currentLevel).getNodeId());
 //        presenter.getDataForList();
     }
 
@@ -253,10 +253,10 @@ public class TestFragment extends Fragment implements TestContract.TestView,
 
     @Click(R.id.btn_test_dw)
     void onDownLoadClick() {
-        resName = rootLevelList.get(HomeActivity.currentLevelNo).getNodeTitle();
-        resServerImageName = rootLevelList.get(HomeActivity.currentLevelNo).getNodeServerImage();
+        resName = rootLevelList.get(currentLevel).getNodeTitle();
+        resServerImageName = rootLevelList.get(currentLevel).getNodeServerImage();
         downloadType = FC_Constants.TEST_DOWNLOAD;
-        presenter.downloadResource(rootLevelList.get(HomeActivity.currentLevelNo).getNodeId());
+        presenter.downloadResource(rootLevelList.get(currentLevel).getNodeId());
     }
 
     @Override
@@ -453,7 +453,7 @@ public class TestFragment extends Fragment implements TestContract.TestView,
     }
 
     private void hideTestDownloadBtnOnComplete() {
-        if (rootLevelList.get(HomeActivity.currentLevelNo).isDownloaded.equalsIgnoreCase("true"))
+        if (rootLevelList.get(currentLevel).isDownloaded.equalsIgnoreCase("true"))
             btn_test_dw.setVisibility(View.GONE);
         else
             btn_test_dw.setVisibility(View.VISIBLE);
@@ -464,12 +464,12 @@ public class TestFragment extends Fragment implements TestContract.TestView,
     public void displayCurrentDownloadedTest() {
         String jsonName = getLevelWiseJson();
         JSONArray testData = presenter.getTestData(jsonName);
-        presenter.generateTestData(testData, rootLevelList.get(HomeActivity.currentLevelNo).getNodeId());
+        presenter.generateTestData(testData, rootLevelList.get(currentLevel).getNodeId());
     }
 
     private String getLevelWiseJson() {
         String jsonName = "TestBeginnerJson.json";
-        switch (HomeActivity.currentLevelNo) {
+        switch (currentLevel) {
             case 0:
                 jsonName = "TestBeginnerJson.json";
                 break;
@@ -598,7 +598,7 @@ public class TestFragment extends Fragment implements TestContract.TestView,
 
     @Override
     public void onSpinnerLanguageChanged(String selectedLanguage) {
-        this.language = selectedLanguage;
+        language = selectedLanguage;
         if(testAdapter == null) {
             testAdapter = new TestAdapter(getActivity(), testList, TestFragment.this, TestFragment.this);
             RecyclerView.LayoutManager myLayoutManager = new GridLayoutManager(getActivity(), 1);

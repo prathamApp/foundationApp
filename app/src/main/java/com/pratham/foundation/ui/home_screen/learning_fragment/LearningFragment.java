@@ -37,9 +37,8 @@ import com.pratham.foundation.ui.contentPlayer.reading_activity.ReadingStoryActi
 import com.pratham.foundation.ui.contentPlayer.reading_paragraphs.ReadingParagraphsActivity_;
 import com.pratham.foundation.ui.contentPlayer.reading_rhyming.ReadingRhymesActivity_;
 import com.pratham.foundation.ui.contentPlayer.vocabulary_qa.ReadingVocabularyActivity_;
-import com.pratham.foundation.ui.home_screen.HomeActivity;
-import com.pratham.foundation.ui.home_screen.display_content.ContentDisplay_;
 import com.pratham.foundation.ui.contentPlayer.web_view.WebViewActivity;
+import com.pratham.foundation.ui.home_screen.display_content.ContentDisplay_;
 import com.pratham.foundation.utility.FC_Constants;
 import com.pratham.foundation.utility.FC_Utility;
 
@@ -62,6 +61,7 @@ import java.util.Objects;
 
 import static com.pratham.foundation.ui.home_screen.HomeActivity.header_rl;
 import static com.pratham.foundation.ui.home_screen.HomeActivity.tv_progress;
+import static com.pratham.foundation.utility.FC_Constants.currentLevel;
 import static com.pratham.foundation.utility.FC_Utility.dpToPx;
 import static com.pratham.foundation.utility.SplashSupportActivity.ButtonClickSound;
 
@@ -91,14 +91,14 @@ public class LearningFragment extends Fragment implements LearningContract.Learn
         RetractableToolbarUtil.ShowHideToolbarOnScrollingListener showHideToolbarListener;
         my_recycler_view.addOnScrollListener(showHideToolbarListener =
                 new RetractableToolbarUtil.ShowHideToolbarOnScrollingListener(header_rl));
-        presenter.getBottomNavId(HomeActivity.currentLevelNo, "Learning");
+        presenter.getBottomNavId(currentLevel, "Learning");
     }
 
     @UiThread
     public void notifyAdapter() {
         sortAllList(contentParentList);
         if (adapterParent == null) {
-            adapterParent = new LearningOuterDataAdapter(getActivity(), contentParentList, (LearningContract.LearningItemClicked) this);
+            adapterParent = new LearningOuterDataAdapter(getActivity(), contentParentList, this);
             RecyclerView.LayoutManager mLayoutManager = new GridLayoutManager(getActivity(), 1);
             my_recycler_view.setLayoutManager(mLayoutManager);
             my_recycler_view.addItemDecoration(new GridSpacingItemDecoration(1,dpToPx(getActivity()),true));
@@ -208,14 +208,14 @@ public class LearningFragment extends Fragment implements LearningContract.Learn
     @Override
     public void setSelectedLevel(List<ContentTable> contentTable) {
         rootLevelList = contentTable;
-        presenter.insertNodeId(contentTable.get(HomeActivity.currentLevelNo).getNodeId());
+        presenter.insertNodeId(contentTable.get(currentLevel).getNodeId());
         presenter.getDataForList();
     }
 
     public void onLevelChanged() {
         contentParentList.clear();
         presenter.removeLastNodeId();
-        presenter.insertNodeId(rootLevelList.get(HomeActivity.currentLevelNo).getNodeId());
+        presenter.insertNodeId(rootLevelList.get(currentLevel).getNodeId());
         presenter.getDataForList();
     }
 
@@ -314,7 +314,7 @@ public class LearningFragment extends Fragment implements LearningContract.Learn
             Intent intent = new Intent(getActivity(), ContentDisplay_.class);
             intent.putExtra("nodeId", singleItem.getNodeId());
             intent.putExtra("contentTitle", singleItem.getNodeTitle());
-            intent.putExtra("level", "" + HomeActivity.currentLevelNo);
+            intent.putExtra("level", "" + currentLevel);
             startActivity(intent);
         } else if(singleItem.getResourceType().equalsIgnoreCase("preResource")){
             Intent mainNew = new Intent(getActivity(), ContentPlayerActivity_.class);

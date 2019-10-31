@@ -75,7 +75,6 @@ public class HomeActivity extends BaseActivity {
     ImageView iv_level;
     @ViewById(R.id.profileImage)
     ImageView profileImage;
-    public static int currentLevelNo;
     @DrawableRes(R.drawable.home_header_1_bg)
     Drawable homeHeader1;
     @DrawableRes(R.drawable.home_header_2_bg)
@@ -186,7 +185,7 @@ public class HomeActivity extends BaseActivity {
         SubmarineItem item4 = new SubmarineItem(getDrawable(R.drawable.level_4), null);
 
         submarine.setSubmarineItemClickListener((position, submarineItem) -> {
-            currentLevelNo = position;
+            FC_Constants.currentLevel = position;
             switch (position) {
                 case 0:
                     iv_level.setImageResource(R.drawable.level_1);
@@ -204,7 +203,7 @@ public class HomeActivity extends BaseActivity {
             EventMessage eventMessage = new EventMessage();
             eventMessage.setMessage(LEVEL_CHANGED);
             EventBus.getDefault().post(eventMessage);
-            changeBGNew(currentLevelNo);
+            changeBGNew(FC_Constants.currentLevel);
             submarine.dip();
         });
 
@@ -217,8 +216,8 @@ public class HomeActivity extends BaseActivity {
         submarine.addSubmarineItem(item4);
     }
 
-    private void changeBGNew(int currentLevelNo) {
-        switch (currentLevelNo) {
+    private void changeBGNew(int currentLevel) {
+        switch (currentLevel) {
             case 0:
                 header_rl.setBackground(homeHeader1);
                 tabLayout.setBackgroundColor(getResources().getColor(R.color.level_1_color));
@@ -354,7 +353,7 @@ public class HomeActivity extends BaseActivity {
                 my_recycler_view.setVisibility(View.GONE);
                 test_recycler_view.setVisibility(View.VISIBLE);
                 bottomSection = "Test";
-                presenter.getBottomNavId(currentLevelNo, bottomSection);*/
+                presenter.getBottomNavId(currentLevel, bottomSection);*/
             } else if (resultCode == Activity.RESULT_CANCELED) {
                 try {
                 } catch (Exception e) {
