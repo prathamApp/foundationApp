@@ -123,7 +123,6 @@ public class pictionaryFragment extends Fragment implements OnGameClose {
             resStartTime = FC_Utility.getCurrentDateTime();
             addScore(0, "", 0, 0, resStartTime, GameConstatnts.PICTIONARYFRAGMENT + " " + GameConstatnts.START);
 
-
             getData();
         }
     }
