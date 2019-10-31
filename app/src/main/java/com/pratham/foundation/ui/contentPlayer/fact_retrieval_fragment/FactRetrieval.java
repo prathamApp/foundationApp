@@ -15,6 +15,7 @@ import android.widget.TextView;
 import com.pratham.foundation.ApplicationClass;
 import com.pratham.foundation.R;
 import com.pratham.foundation.customView.SansButton;
+import com.pratham.foundation.customView.SansTextView;
 import com.pratham.foundation.interfaces.OnGameClose;
 import com.pratham.foundation.modalclasses.ScienceQuestionChoice;
 import com.pratham.foundation.ui.contentPlayer.GameConstatnts;
@@ -48,6 +49,9 @@ public class FactRetrieval extends Fragment implements FactRetrievalContract.Fac
     SansButton submitBtn;
     @ViewById(R.id.next)
     SansButton next;
+
+    @ViewById(R.id.tittle)
+    SansTextView tittle;
 
     private String answer, para;
     private String contentPath, contentTitle, StudentID, resId, readingContentPath, resStartTime;
@@ -84,6 +88,9 @@ public class FactRetrieval extends Fragment implements FactRetrievalContract.Fac
     public void showParagraph(ScienceQuestion questionModel) {
         this.para = questionModel.getQuestion();
         this.selectedQuetion = questionModel.getLstquestionchoice();
+        if (questionModel.getInstruction() != null && !questionModel.getInstruction().isEmpty()) {
+            tittle.setText(questionModel.getInstruction());
+        }
         Collections.shuffle(selectedQuetion);
         showQuetion();
         final int SETANSWER = 0;

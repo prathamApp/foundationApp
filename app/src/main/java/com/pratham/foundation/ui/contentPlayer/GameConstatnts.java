@@ -118,12 +118,12 @@ public class GameConstatnts {
         Button dia_btn_red = dialog.findViewById(R.id.dia_btn_red);
 
         dia_btn_green.setText("Yes");
-        dia_btn_red.setText("Exit Game");
+        dia_btn_red.setText("Exit");
         dia_btn_yellow.setText("" + dialog_btn_cancel);
         if (!flag) {
             dia_btn_yellow.setVisibility(View.GONE);
         }
-        dia_title.setText("Play next Game?");
+        dia_title.setText("Next activity?");
         dialog.show();
 
         dia_btn_green.setOnClickListener(new View.OnClickListener() {
@@ -156,7 +156,7 @@ public class GameConstatnts {
 
     }
 
-    private static void plaGame(Context context) {
+    public static void plaGame(Context context) {
 
         ContentTable contentTable1 = null;
         Bundle bundle = null;
@@ -310,5 +310,12 @@ public class GameConstatnts {
         } else {
             ((ContentPlayerActivity) context).getSupportFragmentManager().popBackStack(SequenceLayout_.class.getSimpleName(), 0);
         }
+    }
+
+    public static int getCount() {
+        if (FC_Constants.currentLevel <= 2) {
+            return 5;
+        }
+        return 1;
     }
 }

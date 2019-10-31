@@ -21,13 +21,16 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ScrollView;
+import android.widget.TextView;
 
 import com.pratham.foundation.ApplicationClass;
 import com.pratham.foundation.R;
 import com.pratham.foundation.customView.SansTextView;
 import com.pratham.foundation.interfaces.OnGameClose;
+import com.pratham.foundation.ui.contentPlayer.ContentPlayerActivity;
 import com.pratham.foundation.ui.contentPlayer.GameConstatnts;
 import com.pratham.foundation.ui.contentPlayer.fact_retrival_selection.ScienceQuestion;
+import com.pratham.foundation.ui.contentPlayer.sequenceLayout.SequenceLayout_;
 import com.pratham.foundation.utility.FC_Utility;
 
 import org.androidannotations.annotations.AfterViews;
@@ -41,6 +44,8 @@ import java.io.FileInputStream;
 import java.util.Arrays;
 
 import butterknife.OnClick;
+
+import static com.pratham.foundation.utility.FC_Constants.dialog_btn_cancel;
 
 @EFragment(R.layout.fragment_paragraph_writing)
 public class ParagraphWritingFragment extends Fragment
@@ -159,7 +164,10 @@ public class ParagraphWritingFragment extends Fragment
         if (filePath.exists()) {
             presenter.addLearntWords(questionModel, imageName);
             imageName = null;
+        } else {
+            GameConstatnts.playGameNext(getActivity(), GameConstatnts.TRUE, this);
         }
+
         //  GameConstatnts.playGameNext(getActivity());
        /* Bundle bundle = GameConstatnts.findGameData("105");
         if (bundle != null) {

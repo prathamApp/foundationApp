@@ -48,6 +48,8 @@ public class KeywordsIdentificationFragment extends Fragment implements Keywords
 
     @ViewById(R.id.paragraph)
     FlowLayout paraghaph;
+    @ViewById(R.id.tittle)
+    SansTextView tittle;
     @ViewById(R.id.keywords)
     FlowLayout keywords;
     @ViewById(R.id.keyword_selected)
@@ -100,7 +102,10 @@ public class KeywordsIdentificationFragment extends Fragment implements Keywords
     @Override
     public void showParagraph(ScienceQuestion questionModel) {
         this.questionModel = questionModel;
-        this.questionModel.setQuestion(questionModel.getQuestion().replace("\n"," "));
+        this.questionModel.setQuestion(questionModel.getQuestion().replace("\n", " "));
+        if (questionModel.getInstruction() != null && !questionModel.getInstruction().isEmpty()) {
+            tittle.setText(questionModel.getInstruction());
+        }
         String[] paragraphWords = questionModel.getQuestion().split(" ");
         for (int i = 0; i < paragraphWords.length; i++) {
             if (positionMap.containsKey(paragraphWords[i].replaceAll("[\\-\\+\\.\\^\\?\\'\\!:,]", ""))) {
@@ -140,12 +145,12 @@ public class KeywordsIdentificationFragment extends Fragment implements Keywords
             wrong_keywords.setText(wrongWord.toString().substring(1, wrongWord.toString().length() - 1));
             dia_btn_yellow.setOnClickListener(v -> {
                         dialog.dismiss();
-                        GameConstatnts.playGameNext(getActivity(), GameConstatnts.FALSE,this);
+                        GameConstatnts.playGameNext(getActivity(), GameConstatnts.FALSE, this);
                     }
             );
             dialog.show();
         } else {
-            GameConstatnts.playGameNext(getActivity(), GameConstatnts.TRUE,this);
+            GameConstatnts.playGameNext(getActivity(), GameConstatnts.TRUE, this);
         }
     }
 
@@ -277,7 +282,6 @@ public class KeywordsIdentificationFragment extends Fragment implements Keywords
             }
         }
     }
-
 
 
     @Override

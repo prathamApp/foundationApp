@@ -119,7 +119,7 @@ public class ParagraphWritingPresenter implements ParagraphWritingContract.Parag
         }
     }
 
-    private boolean checkWord(String wordStr) {
+    /*private boolean checkWord(String wordStr) {
         try {
             String word = appDatabase.getKeyWordDao().checkWord(FC_Constants.currentStudentID, resId, wordStr);
             if (word != null)
@@ -130,7 +130,7 @@ public class ParagraphWritingPresenter implements ParagraphWritingContract.Parag
             e.printStackTrace();
             return false;
         }
-    }
+    }*/
 
     private int getLearntWordsCount() {
         int count = 0;

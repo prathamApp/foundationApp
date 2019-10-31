@@ -26,6 +26,7 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.lang.reflect.Type;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -42,7 +43,8 @@ public class ListeningAndWrittingPresenterImp implements ListeningAndWrittingCon
     private List<String> correctWordList, wrongWordList;
     private boolean isTest = false;
     private List<ScienceQuestion> dataList;
-    private ScienceQuestion listenAndWrittingModal;
+    private List<ScienceQuestion> listenAndWrittingModal;
+    private int count = 1;
 
     public ListeningAndWrittingPresenterImp(Context context) {
         this.context = context;
@@ -82,15 +84,18 @@ public class ListeningAndWrittingPresenterImp implements ListeningAndWrittingCon
     @Override
     public void getDataList() {
         try {
+            count = GameConstatnts.getCount();
+            listenAndWrittingModal = new ArrayList<>();
             perc = getPercentage();
             Collections.shuffle(dataList);
             for (int i = 0; i < dataList.size(); i++) {
                 if (perc < 95) {
                     if (!checkWord("" + dataList.get(i).getTitle()))
-                        listenAndWrittingModal = dataList.get(i);
-                    break;
+                        listenAndWrittingModal.add(dataList.get(i));
                 } else {
-                    listenAndWrittingModal = dataList.get(i);
+                    listenAndWrittingModal.add(dataList.get(i));
+                }
+                if (listenAndWrittingModal.size() == count) {
                     break;
                 }
             }
@@ -101,18 +106,22 @@ public class ListeningAndWrittingPresenterImp implements ListeningAndWrittingCon
     }
 
     @Override
-    public void addLearntWords(ScienceQuestion listenAndWrittingModal, String imageName) {
+    public void addLearntWords(List<ScienceQuestion> listenAndWrittingModal, String imageName) {
         if (imageName != null && !imageName.isEmpty()) {
-            KeyWords keyWords = new KeyWords();
-            keyWords.setResourceId(resId);
-            keyWords.setSentFlag(0);
-            keyWords.setStudentId(FC_Constants.currentStudentID);
-            keyWords.setKeyWord(listenAndWrittingModal.getTitle());
-            keyWords.setWordType("word");
-            addScore(GameConstatnts.getInt(listenAndWrittingModal.getQid()), listenAndWrittingModal.getTitle(), 0, 0, FC_Utility.getCurrentDateTime(), imageName);
-            appDatabase.getKeyWordDao().insert(keyWords);
-            Toast.makeText(context, "inserted succussfully", Toast.LENGTH_LONG).show();
-            GameConstatnts.playGameNext(context, GameConstatnts.FALSE, (OnGameClose) view);
+            if (listenAndWrittingModal != null && !listenAndWrittingModal.isEmpty()) {
+                for (int i = 0; i < listenAndWrittingModal.size(); i++) {
+                    KeyWords keyWords = new KeyWords();
+                    keyWords.setResourceId(resId);
+                    keyWords.setSentFlag(0);
+                    keyWords.setStudentId(FC_Constants.currentStudentID);
+                    String key = listenAndWrittingModal.get(i).getTitle().toString();
+                    keyWords.setKeyWord(key);
+                    keyWords.setWordType("word");
+                    appDatabase.getKeyWordDao().insert(keyWords);
+                    addScore(GameConstatnts.getInt(listenAndWrittingModal.get(i).getQid()), GameConstatnts.PARAGRAPH_WRITING, 0, 0, FC_Utility.getCurrentDateTime(), imageName);
+                }
+                GameConstatnts.playGameNext(context, GameConstatnts.FALSE, (OnGameClose) view);
+            }
         } else {
             GameConstatnts.playGameNext(context, GameConstatnts.TRUE, (OnGameClose) view);
         }

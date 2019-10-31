@@ -95,12 +95,8 @@ public class SequenceLayout extends Fragment implements SequeanceLayoutContract.
 
     @Click(R.id.playFromStart)
     public void playFromStartClick() {
-        Bundle bundle = new Bundle();
-        bundle.putString("dd", "");
-        FC_Utility.showFragment(getActivity(), new FillInTheBlanksFragment(), R.id.RL_CPA,
-                bundle, FillInTheBlanksFragment.class.getSimpleName());
-        /*currentGameAdapterposition=-1;
-        GameConstatnts.playGameNext(getActivity());*/
+        GameConstatnts.currentGameAdapterposition = -1;
+        GameConstatnts.plaGame(getActivity());
     }
 
     @Override
@@ -132,10 +128,10 @@ public class SequenceLayout extends Fragment implements SequeanceLayoutContract.
                         bundle, KeywordMappingFragment_.class.getSimpleName());
                 break;
             case GameConstatnts.PARAGRAPH_WRITING:
-                if (FC_Constants.currentLevel == 0 && FC_Constants.currentSubject.equalsIgnoreCase("english")) {
+                if (FC_Constants.currentLevel <= 2 && FC_Constants.currentSubject.equalsIgnoreCase("english")) {
                     FC_Utility.showFragment((Activity) context, new WordWritingFragment_(), R.id.RL_CPA,
                             bundle, WordWritingFragment_.class.getSimpleName());
-                }else {
+                } else {
                     FC_Utility.showFragment((Activity) context, new ParagraphWritingFragment_(), R.id.RL_CPA,
                             bundle, ParagraphWritingFragment_.class.getSimpleName());
                 }

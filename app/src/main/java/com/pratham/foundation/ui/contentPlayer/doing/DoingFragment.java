@@ -327,6 +327,8 @@ public class DoingFragment extends Fragment implements OnGameClose {
         if (filePath.exists()) {
             addLearntWords(scienceQuestion, imageName);
             imageName = null;
+        } else {
+            GameConstatnts.playGameNext(getActivity(), GameConstatnts.TRUE, this);
         }
         // GameConstatnts.playGameNext(getActivity());
        /* Bundle bundle = GameConstatnts.findGameData("105");

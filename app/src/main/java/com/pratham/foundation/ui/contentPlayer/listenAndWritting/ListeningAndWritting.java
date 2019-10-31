@@ -17,11 +17,13 @@ import android.view.View;
 import android.view.Window;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RadioGroup;
 
 import com.bumptech.glide.Glide;
 import com.pratham.foundation.ApplicationClass;
 import com.pratham.foundation.R;
+import com.pratham.foundation.customView.SansButton;
 import com.pratham.foundation.customView.SansTextView;
 import com.pratham.foundation.interfaces.OnGameClose;
 import com.pratham.foundation.ui.contentPlayer.GameConstatnts;
@@ -38,6 +40,7 @@ import org.androidannotations.annotations.ViewById;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.util.List;
 
 @EFragment(R.layout.fragment_list_and_writting)
 public class ListeningAndWritting extends Fragment implements ListeningAndWrittingContract.ListeningAndWrittingView, OnGameClose {
@@ -52,10 +55,20 @@ public class ListeningAndWritting extends Fragment implements ListeningAndWritti
     @ViewById(R.id.title)
     SansTextView title;
 
+    @ViewById(R.id.previous)
+    ImageView previous;
+    @ViewById(R.id.submitcontainer)
+    LinearLayout submitBtn;
+    @ViewById(R.id.next)
+    ImageView next;
 
+    @ViewById(R.id.count)
+    SansTextView count;
+
+    private int index = 0;
     private String readingContentPath, contentPath, contentTitle, StudentID, resId, resStartTime;
     private boolean onSdCard, isPlaying;
-    private ScienceQuestion listenAndWrittingModal;
+    private List<ScienceQuestion> listenAndWrittingModal;
     private MediaPlayerUtil mediaPlayerUtil;
     private String imageName = null;
     private static final int CAMERA_REQUEST = 1;
@@ -113,9 +126,31 @@ public class ListeningAndWritting extends Fragment implements ListeningAndWritti
     }
 
     @Override
-    public void loadUI(ScienceQuestion listenAndWrittingModal) {
+    public void loadUI(List<ScienceQuestion> listenAndWrittingModal) {
         this.listenAndWrittingModal = listenAndWrittingModal;
-        title.setText(listenAndWrittingModal.getInstruction());
+        title.setText(listenAndWrittingModal.get(index).getInstruction());
+        setAudioResource();
+    }
+
+    private void setAudioResource() {
+        if (sp != null)
+            sp.pause(id);
+
+        Glide.with(getActivity()).load(R.drawable.play_button)
+                .into(play);
+        count.setText("" + (index + 1));
+        if (index == 0) {
+            previous.setVisibility(View.INVISIBLE);
+        } else {
+            previous.setVisibility(View.VISIBLE);
+        }
+        if (index == (listenAndWrittingModal.size() - 1)) {
+            submitBtn.setVisibility(View.VISIBLE);
+            next.setVisibility(View.INVISIBLE);
+        } else {
+            submitBtn.setVisibility(View.INVISIBLE);
+            next.setVisibility(View.VISIBLE);
+        }
     }
 
     @Click(R.id.play_button)
@@ -123,10 +158,9 @@ public class ListeningAndWritting extends Fragment implements ListeningAndWritti
         // mediaPlayerUtil.playMedia(readingContentPath + "/" + listenAndWrittingModal.getSound());
 
         try {
-
+            id = sp.load(readingContentPath + listenAndWrittingModal.get(index).getPhotourl(), 1);
             sp.setRate(sID, rate);
 
-            id = sp.load(readingContentPath + listenAndWrittingModal.getPhotourl(), 1);
             sp.setOnLoadCompleteListener(new SoundPool.OnLoadCompleteListener() {
                 @Override
                 public void onLoadComplete(SoundPool soundPool, int sampleId, int status) {
@@ -202,6 +236,8 @@ public class ListeningAndWritting extends Fragment implements ListeningAndWritti
         if (filePath.exists()) {
             presenter.addLearntWords(listenAndWrittingModal, imageName);
             imageName = null;
+        } else {
+            GameConstatnts.playGameNext(getActivity(), GameConstatnts.TRUE, this);
         }
         //GameConstatnts.playGameNext(getActivity());
     }
@@ -220,4 +256,23 @@ public class ListeningAndWritting extends Fragment implements ListeningAndWritti
 
         }
     }
+
+    @Click(R.id.previous)
+    public void onPreviousClick() {
+        if (listenAndWrittingModal != null)
+            if (index > 0) {
+                index--;
+                setAudioResource();
+            }
+    }
+
+    @Click(R.id.next)
+    public void onNextClick() {
+        if (listenAndWrittingModal != null)
+            if (index < (listenAndWrittingModal.size() - 1)) {
+                index++;
+                setAudioResource();
+            }
+    }
+
 }
