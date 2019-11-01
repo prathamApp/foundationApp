@@ -60,6 +60,7 @@ import java.util.List;
 import java.util.Objects;
 
 import static com.pratham.foundation.ui.home_screen.HomeActivity.header_rl;
+import static com.pratham.foundation.ui.home_screen.HomeActivity.levelChanged;
 import static com.pratham.foundation.ui.home_screen.HomeActivity.tv_progress;
 import static com.pratham.foundation.utility.FC_Constants.currentLevel;
 import static com.pratham.foundation.utility.FC_Utility.dpToPx;
@@ -101,7 +102,7 @@ public class LearningFragment extends Fragment implements LearningContract.Learn
             adapterParent = new LearningOuterDataAdapter(getActivity(), contentParentList, this);
             RecyclerView.LayoutManager mLayoutManager = new GridLayoutManager(getActivity(), 1);
             my_recycler_view.setLayoutManager(mLayoutManager);
-            my_recycler_view.addItemDecoration(new GridSpacingItemDecoration(1,dpToPx(getActivity()),true));
+            my_recycler_view.addItemDecoration(new GridSpacingItemDecoration(1, dpToPx(getActivity()), true));
             my_recycler_view.setItemAnimator(new DefaultItemAnimator());
             my_recycler_view.setAdapter(adapterParent);
         } else
@@ -208,6 +209,9 @@ public class LearningFragment extends Fragment implements LearningContract.Learn
     @Override
     public void setSelectedLevel(List<ContentTable> contentTable) {
         rootLevelList = contentTable;
+        if (rootLevelList != null) {
+            levelChanged.setActualLevel(rootLevelList.size());
+        }
         presenter.insertNodeId(contentTable.get(currentLevel).getNodeId());
         presenter.getDataForList();
     }
@@ -277,7 +281,7 @@ public class LearningFragment extends Fragment implements LearningContract.Learn
 
     @Override
     public void setLevelprogress(int percent) {
-        tv_progress.setText(percent+"%");
+        tv_progress.setText(percent + "%");
 //        level_progress.setCurProgress(percent);
     }
 
@@ -309,6 +313,7 @@ public class LearningFragment extends Fragment implements LearningContract.Learn
 
     @Override
     public void onContentClicked(ContentTableNew singleItem) {
+        FC_Constants.isPractice = false;
         try {
             ButtonClickSound.start();
         } catch (IllegalStateException e) {
@@ -320,7 +325,7 @@ public class LearningFragment extends Fragment implements LearningContract.Learn
             intent.putExtra("contentTitle", singleItem.getNodeTitle());
             intent.putExtra("level", "" + currentLevel);
             startActivity(intent);
-        } else if(singleItem.getResourceType().equalsIgnoreCase("preResource")){
+        } else if (singleItem.getResourceType().equalsIgnoreCase("preResource")) {
             Intent mainNew = new Intent(getActivity(), ContentPlayerActivity_.class);
             mainNew.putExtra("nodeID", singleItem.getNodeId());
             startActivity(mainNew);
@@ -335,10 +340,11 @@ public class LearningFragment extends Fragment implements LearningContract.Learn
     public void onContentOpenClicked(ContentTableNew contentList) {
         //Toast.makeText(this, "ContentOpen : Work In Progress", Toast.LENGTH_SHORT).show();
         //todo remove#
+        FC_Constants.isPractice = false;
         ButtonClickSound.start();
         downloadNodeId = contentList.getNodeId();
         resName = contentList.getNodeTitle();
-        if(contentList.getNodeType().equalsIgnoreCase("PreResource")||
+        if (contentList.getNodeType().equalsIgnoreCase("PreResource") ||
                 contentList.getResourceType().equalsIgnoreCase("PreResource")) {
             Intent mainNew = new Intent(getActivity(), ContentPlayerActivity_.class);
             mainNew.putExtra("resId", contentList.getResourceId());
@@ -347,7 +353,7 @@ public class LearningFragment extends Fragment implements LearningContract.Learn
             mainNew.putExtra("onSdCard", contentList.isOnSDCard());
             mainNew.putExtra("contentPath", contentList.getResourcePath());
             startActivity(mainNew);
-        }else {
+        } else {
             if (contentList.getResourceType().toLowerCase().contains(FC_Constants.HTML_GAME_RESOURCE)) {
                 String resPath;
                 String gameID = contentList.getResourceId();
@@ -454,6 +460,7 @@ public class LearningFragment extends Fragment implements LearningContract.Learn
     public void onContentDownloadClicked(ContentTableNew contentList, int parentPos, int childPos, String downloadType) {
         this.downloadType = downloadType;
         downloadNodeId = contentList.getNodeId();
+        FC_Constants.isPractice = false;
         ButtonClickSound.start();
 //        downloadNodeId = "" + 1371;
         this.parentPos = parentPos;

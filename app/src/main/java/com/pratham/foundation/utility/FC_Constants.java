@@ -221,8 +221,9 @@ public class FC_Constants {
     public static String newDataLanguageInserted = "newDataLanguageInserted";
     public static String currentSubject = "";
     public static boolean GROUP_QR = false;
+    public static boolean levelSet = false;
 
-    public static enum URL {
+    public enum URL {
         BROWSE_BY_ID(BASE_URL + "get?id="),
         SEARCH_BY_KEYWORD(BASE_URL + "GetSearchList?"),
         POST_GOOGLE_DATA(BASE_URL + "PostGoogleSignIn"),
@@ -239,12 +240,12 @@ public class FC_Constants {
 
         private final String name;
 
-        private URL(String s) {
+        URL(String s) {
             name = s;
         }
 
         public boolean equalsName(String otherName) {
-            return (otherName == null) ? false : name.equals(otherName);
+            return (otherName != null) && name.equals(otherName);
         }
 
         public String toString() {

@@ -198,7 +198,6 @@ public class Fact_Retrieval_Fragment extends Fragment implements Fact_Retrieval_
         }*/
     }
 
-
     @Click(R.id.previous)
     public void onPreviousClick() {
         if (index > 0) {

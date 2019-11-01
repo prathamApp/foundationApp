@@ -30,7 +30,6 @@ import com.pratham.foundation.ui.contentPlayer.sequenceLayout.SequenceLayout_;
 import com.pratham.foundation.ui.contentPlayer.story_reading.StoryReadingFragment;
 import com.pratham.foundation.ui.contentPlayer.story_reading.StoryReadingFragment_;
 import com.pratham.foundation.ui.contentPlayer.trueFalse.TrueFalseFragment;
-import com.pratham.foundation.ui.contentPlayer.video_view.ActivityVideoView;
 import com.pratham.foundation.ui.contentPlayer.video_view.ActivityVideoView_;
 import com.pratham.foundation.ui.contentPlayer.word_writting.WordWritingFragment_;
 import com.pratham.foundation.utility.FC_Constants;
@@ -123,9 +122,9 @@ public class GameConstatnts {
         dia_btn_green.setText("Yes");
         dia_btn_red.setText("Exit");
         dia_btn_yellow.setText("" + dialog_btn_cancel);
-        if (!flag) {
+        if (!flag)
             dia_btn_yellow.setVisibility(View.GONE);
-        }
+
         dia_title.setText("Next activity?");
         dialog.show();
 
@@ -155,8 +154,6 @@ public class GameConstatnts {
                 dialog.dismiss();
             }
         });
-
-
     }
 
     public static void plaGame(Context context) {
@@ -262,7 +259,7 @@ public class GameConstatnts {
                                 bundle, KeywordMappingFragment_.class.getSimpleName());
                         break;
                     case GameConstatnts.PARAGRAPH_WRITING:
-                        if (FC_Constants.currentLevel <= 2 ) {
+                        if (FC_Constants.currentLevel <= 2) {
                             FC_Utility.showFragment((Activity) context, new WordWritingFragment_(), R.id.RL_CPA,
                                     bundle, WordWritingFragment_.class.getSimpleName());
                         } else {

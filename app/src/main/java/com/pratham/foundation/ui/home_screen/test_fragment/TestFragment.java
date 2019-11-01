@@ -253,6 +253,7 @@ public class TestFragment extends Fragment implements TestContract.TestView,
 
     @Click(R.id.btn_test_dw)
     void onDownLoadClick() {
+        FC_Constants.isPractice=false;
         resName = rootLevelList.get(currentLevel).getNodeTitle();
         resServerImageName = rootLevelList.get(currentLevel).getNodeServerImage();
         downloadType = FC_Constants.TEST_DOWNLOAD;
@@ -266,6 +267,7 @@ public class TestFragment extends Fragment implements TestContract.TestView,
     @Override
     public void onCertificateOpenGame(int position, String nodeId) {
         try {
+            FC_Constants.isPractice=false;
             clicked_Pos = position;
             presenter.getTempData("" + nodeId);
             if (!testSessionEntered) {

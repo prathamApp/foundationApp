@@ -9,7 +9,7 @@
         android:id="@+id/tittle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Fact Retrival (long answer)"
+        android:text="Answer in full sentence"
         android:background="@color/red"
         android:padding="@dimen/_5sdp"
         android:textColor="@color/white"

@@ -55,7 +55,7 @@ import static com.pratham.foundation.utility.FC_Constants.dialog_btn_cancel;
 import static com.pratham.foundation.utility.FC_Constants.dialog_btn_exit;
 
 @EActivity(R.layout.activity_home)
-public class HomeActivity extends BaseActivity {
+public class HomeActivity extends BaseActivity implements LevelChanged {
 
     public static String sub_nodeId = "";
     @ViewById(R.id.viewpager)
@@ -69,9 +69,9 @@ public class HomeActivity extends BaseActivity {
     @ViewById(R.id.header_rl)
     public static RelativeLayout header_rl;
     @ViewById(R.id.submarine)
-    SubmarineView submarine;
+    public static SubmarineView submarine;
     @ViewById(R.id.iv_level)
-    ImageView iv_level;
+    public static ImageView iv_level;
     @ViewById(R.id.profileImage)
     ImageView profileImage;
     @DrawableRes(R.drawable.home_header_1_bg)
@@ -83,6 +83,9 @@ public class HomeActivity extends BaseActivity {
     @DrawableRes(R.drawable.home_header_4_bg)
     Drawable homeHeader4;
     public static boolean languageChanged = false;
+    static int count = 0;
+    public static LevelChanged levelChanged;
+
 
     @AfterViews
     public void initialize() {
@@ -92,6 +95,7 @@ public class HomeActivity extends BaseActivity {
         FC_Constants.currentSelectedLanguage = FastSave.getInstance().getString(FC_Constants.LANGUAGE, "");
         setupViewPager(viewpager);
         tv_progress.setText("0%");
+        levelChanged = HomeActivity.this;
         tabLayout.setupWithViewPager(viewpager);
         setupTabIcons();
 /*        IconForm iconForm = new IconForm.Builder(this)
@@ -170,7 +174,10 @@ public class HomeActivity extends BaseActivity {
 
             if (profileName == null)
                 profileName = "QR Student";
-        }catch (Exception e){profileName = "QR Student";e.printStackTrace();}
+        } catch (Exception e) {
+            profileName = "QR Student";
+            e.printStackTrace();
+        }
         setProfileName(profileName);
     }
 
@@ -179,11 +186,19 @@ public class HomeActivity extends BaseActivity {
         tv_studentName.setText(profileName);
     }
 
+    @Override
+    public void setActualLevel(int levelCount) {
+        count = levelCount;
+        setLevel();
+    }
+
     public void setLevel() {
+
         SubmarineItem item = new SubmarineItem(getDrawable(R.drawable.level_1), null);
         SubmarineItem item2 = new SubmarineItem(getDrawable(R.drawable.level_2), null);
         SubmarineItem item3 = new SubmarineItem(getDrawable(R.drawable.level_3), null);
         SubmarineItem item4 = new SubmarineItem(getDrawable(R.drawable.level_4), null);
+
 
         submarine.setSubmarineItemClickListener((position, submarineItem) -> {
             FC_Constants.currentLevel = position;
@@ -211,10 +226,27 @@ public class HomeActivity extends BaseActivity {
         submarine.setSubmarineCircleClickListener(() -> {
             submarine.dip();
         });
-        submarine.addSubmarineItem(item);
-        submarine.addSubmarineItem(item2);
-        submarine.addSubmarineItem(item3);
-        submarine.addSubmarineItem(item4);
+
+        try {
+            submarine.clearAllSubmarineItems();
+        }catch (Exception e){e.printStackTrace();}
+
+        for (int i = 0; i < count; i++) {
+            switch (i) {
+                case 0:
+                    submarine.addSubmarineItem(item);
+                    break;
+                case 1:
+                    submarine.addSubmarineItem(item2);
+                    break;
+                case 2:
+                    submarine.addSubmarineItem(item3);
+                    break;
+                case 3:
+                    submarine.addSubmarineItem(item4);
+                    break;
+            }
+        }
     }
 
     private void changeBGNew(int currentLevel) {
@@ -263,9 +295,10 @@ public class HomeActivity extends BaseActivity {
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
-//                if(tab.getPosition()== 2){
-//                    //TODO Test Dialog
-//                }
+                EventMessage eventMessage = new EventMessage();
+                eventMessage.setMessage(LEVEL_CHANGED);
+                EventBus.getDefault().post(eventMessage);
+                changeBGNew(FC_Constants.currentLevel);
             }
 
             @Override
@@ -274,9 +307,10 @@ public class HomeActivity extends BaseActivity {
 
             @Override
             public void onTabReselected(TabLayout.Tab tab) {
-//                if(tab.getPosition()== 2){
-//                    //TODO Test Dialog
-//                }
+                EventMessage eventMessage = new EventMessage();
+                eventMessage.setMessage(LEVEL_CHANGED);
+                EventBus.getDefault().post(eventMessage);
+                changeBGNew(FC_Constants.currentLevel);
             }
         });
     }
@@ -371,7 +405,7 @@ public class HomeActivity extends BaseActivity {
 
     private void setupViewPager(ViewPager viewpager) {
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
-        viewpager.setOffscreenPageLimit(4);
+        viewpager.setOffscreenPageLimit(1);
         adapter.addFrag(new LearningFragment_(), "Learning");
         adapter.addFrag(new PracticeFragment_(), "Practice");
         if (currentSubject.equalsIgnoreCase("english")) {
@@ -409,9 +443,13 @@ public class HomeActivity extends BaseActivity {
         EventBus.getDefault().post(eventMessage);
     }
 
+    boolean dialogFlg = false;
     @Override
     public void onBackPressed() {
+        if(!dialogFlg) {
+            dialogFlg=true;
         exitDialog();
+        }
     }
 
     @SuppressLint("SetTextI18n")
@@ -446,15 +484,19 @@ public class HomeActivity extends BaseActivity {
                 startActivity(new Intent(HomeActivity.this, SelectSubject_.class));
             }
             finish();
+            dialogFlg=false;
             dialog.dismiss();
         });
 
         revise_btn.setOnClickListener(v -> {
             endSession(HomeActivity.this);
             finishAffinity();
+            dialogFlg=false;
             dialog.dismiss();
         });
 
-        test_btn.setOnClickListener(v -> dialog.dismiss());
+        test_btn.setOnClickListener(v -> {
+            dialogFlg=false;
+            dialog.dismiss();});
     }
 }

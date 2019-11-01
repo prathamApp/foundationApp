@@ -60,6 +60,7 @@ import java.util.List;
 import java.util.Objects;
 
 import static com.pratham.foundation.ui.home_screen.HomeActivity.header_rl;
+import static com.pratham.foundation.ui.home_screen.HomeActivity.levelChanged;
 import static com.pratham.foundation.ui.home_screen.HomeActivity.tv_progress;
 import static com.pratham.foundation.utility.FC_Constants.currentLevel;
 import static com.pratham.foundation.utility.FC_Utility.dpToPx;
@@ -208,6 +209,8 @@ public class FunFragment extends Fragment implements FunContract.FunView,
     @Override
     public void setSelectedLevel(List<ContentTable> contentTable) {
         rootLevelList = contentTable;
+        if(rootLevelList!=null)
+            levelChanged.setActualLevel(rootLevelList.size());
         presenter.insertNodeId(contentTable.get(currentLevel).getNodeId());
         presenter.getDataForList();
     }
@@ -310,6 +313,7 @@ public class FunFragment extends Fragment implements FunContract.FunView,
     @Override
     public void onContentClicked(ContentTableNew singleItem) {
         ButtonClickSound.start();
+        FC_Constants.isPractice=false;
         if (singleItem.getResourceType().equalsIgnoreCase("category")) {
             Intent intent = new Intent(getActivity(), ContentDisplay_.class);
             intent.putExtra("nodeId", singleItem.getNodeId());
@@ -332,7 +336,7 @@ public class FunFragment extends Fragment implements FunContract.FunView,
     public void onContentOpenClicked(ContentTableNew contentList) {
         //Toast.makeText(this, "ContentOpen : Work In Progress", Toast.LENGTH_SHORT).show();
         //todo remove#
-        ButtonClickSound.start();
+        FC_Constants.isPractice=false;        ButtonClickSound.start();
         downloadNodeId = contentList.getNodeId();
         resName = contentList.getNodeTitle();
         if(contentList.getNodeType().equalsIgnoreCase("PreResource")||
