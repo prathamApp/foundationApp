@@ -62,8 +62,6 @@ public class GameConstatnts {
     public static final String START = "start";
     public static final String END = "end";
     public static final String VIDEO = "Video";
-
-
     public static List<ContentTable> gameList;
     public static int currentGameAdapterposition;
 
@@ -85,7 +83,6 @@ public class GameConstatnts {
         }
         return null;
     }
-
     /*public static Bundle isContains(String resourceID) {
         for (int i = 0; i < gameList.size(); i++) {
             if (resourceID.equalsIgnoreCase(gameList.get(i).getResourceId())) {
@@ -179,12 +176,10 @@ public class GameConstatnts {
                         FC_Utility.showFragment((Activity) context, new FactRetrieval_(), R.id.RL_CPA,
                                 bundle, FactRetrieval_.class.getSimpleName());
                         break;
-
                     case GameConstatnts.KEYWORD_IDENTIFICATION:
                         FC_Utility.showFragment((Activity) context, new KeywordsIdentificationFragment_(), R.id.RL_CPA,
                                 bundle, KeywordsIdentificationFragment_.class.getSimpleName());
                         break;
-
                     case GameConstatnts.KEYWORD_MAPPING:
                         FC_Utility.showFragment((Activity) context, new KeywordMappingFragment_(), R.id.RL_CPA,
                                 bundle, KeywordMappingFragment_.class.getSimpleName());
@@ -193,7 +188,6 @@ public class GameConstatnts {
                         FC_Utility.showFragment((Activity) context, new ParagraphWritingFragment_(), R.id.RL_CPA,
                                 bundle, ParagraphWritingFragment_.class.getSimpleName());
                         break;
-
                     case GameConstatnts.LISTNING_AND_WRITTING:
                         FC_Utility.showFragment((Activity) context, new ListeningAndWritting_(), R.id.RL_CPA,
                                 bundle, ListeningAndWritting_.class.getSimpleName());
@@ -232,7 +226,6 @@ public class GameConstatnts {
                         FC_Utility.showFragment((Activity) context, new DoingFragment(), R.id.RL_CPA,
                                 bundle, DoingFragment.class.getSimpleName());
                         break;
-
                     case GameConstatnts.VIDEO:
                         Intent intent = new Intent(context, ActivityVideoView_.class);
                         intent.putExtra("contentPath", contentTable1.getResourcePath());
