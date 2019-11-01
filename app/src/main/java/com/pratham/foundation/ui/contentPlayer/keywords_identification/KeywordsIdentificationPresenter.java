@@ -134,9 +134,12 @@ public class KeywordsIdentificationPresenter implements KeywordsIdentificationCo
                     keyWords.setKeyWord(key);
                     keyWords.setWordType("word");
                     appDatabase.getKeyWordDao().insert(keyWords);
+                    addScore(GameConstatnts.getInt(questionModel.getQid()), GameConstatnts.KEYWORD_IDENTIFICATION, 10, 10, FC_Utility.getCurrentDateTime(), selectedAnsList.get(i).toString());
+
+                }else {
+                    addScore(GameConstatnts.getInt(questionModel.getQid()), GameConstatnts.KEYWORD_IDENTIFICATION, 0, 10, FC_Utility.getCurrentDateTime(), selectedAnsList.get(i).toString());
                 }
             }
-            addScore(GameConstatnts.getInt(questionModel.getQid()), GameConstatnts.KEYWORD_IDENTIFICATION, scoredMarks, 10, FC_Utility.getCurrentDateTime(), selectedAnsList.toString());
 
             if (!FC_Constants.isTest) {
                 viewKeywords.showResult(correctWordList, wrongWordList);

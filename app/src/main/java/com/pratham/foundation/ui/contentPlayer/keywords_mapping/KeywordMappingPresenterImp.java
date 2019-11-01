@@ -146,9 +146,11 @@ public class KeywordMappingPresenterImp implements KeywordMappingContract.Keywor
                     keyWords.setKeyWord(key);
                     keyWords.setWordType("word");
                     appDatabase.getKeyWordDao().insert(keyWords);
+                    addScore(GameConstatnts.getInt(keywordmapping.getQid()), GameConstatnts.KEYWORD_MAPPING, 10, 10, FC_Utility.getCurrentDateTime(), selectedAnsList.get(i).toString());
+                }else {
+                    addScore(GameConstatnts.getInt(keywordmapping.getQid()), GameConstatnts.KEYWORD_MAPPING, 0, 10, FC_Utility.getCurrentDateTime(), selectedAnsList.get(i).toString());
                 }
             }
-            addScore(GameConstatnts.getInt(keywordmapping.getQid()), GameConstatnts.KEYWORD_MAPPING, scoredMarks, 10, FC_Utility.getCurrentDateTime(), selectedAnsList.toString());
 
             if (!FC_Constants.isTest) {
                 view.showResult(correctWordList, wrongWordList);

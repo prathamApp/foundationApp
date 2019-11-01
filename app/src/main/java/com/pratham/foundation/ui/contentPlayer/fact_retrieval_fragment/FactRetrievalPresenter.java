@@ -145,7 +145,8 @@ public class FactRetrievalPresenter implements FactRetrievalContract.FactRetriev
                     } else {
                         scoredMarks = 0;
                     }
-                    addScore(0, GameConstatnts.FACTRETRIEVAL, scoredMarks, 10, FC_Utility.getCurrentDateTime(), selectedAnsList.get(i).toString());
+                   // addScore(GameConstatnts.getInt(selectedAnsList.get(i).getQid()), GameConstatnts.FACTRETRIEVAL, scoredMarks, 10, FC_Utility.getCurrentDateTime(), selectedAnsList.get(i).toString());
+                    addScore(GameConstatnts.getInt(questionModel.getQid()), GameConstatnts.FACTRETRIEVAL, scoredMarks, 10, FC_Utility.getCurrentDateTime(), selectedAnsList.get(i).toString());
                 }
             }
             appDatabase.getKeyWordDao().insertAllWord(learntWords);

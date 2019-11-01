@@ -157,7 +157,7 @@ public class DoingFragment extends Fragment implements OnGameClose {
             Collections.shuffle(dataList);
             for (int i = 0; i < dataList.size(); i++) {
                 if (perc < 95) {
-                    if (!checkWord("" + dataList.get(i).getTitle())) {
+                    if (!checkWord("" + dataList.get(i).getTitle())||dataList.get(i).getTitle().isEmpty()) {
                         scienceQuestion = dataList.get(i);
                         break;
                     }
@@ -369,7 +369,7 @@ public class DoingFragment extends Fragment implements OnGameClose {
             score.setStartDateTime(resStartTime);
             score.setDeviceID(deviceId.equals(null) ? "0000" : deviceId);
             score.setEndDateTime(FC_Utility.getCurrentDateTime());
-            score.setLevel(4);
+            score.setLevel(FC_Constants.currentLevel);
             score.setLabel(Word + "___" + Label);
             score.setSentFlag(0);
             appDatabase.getScoreDao().insert(score);

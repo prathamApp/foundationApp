@@ -121,7 +121,7 @@ public class pictionaryFragment extends Fragment implements OnGameClose {
                 readingContentPath = ApplicationClass.foundationPath + "/.FCA/English/Game/" + contentPath + "/";
 
             resStartTime = FC_Utility.getCurrentDateTime();
-            addScore(0, "", 0, 0, resStartTime, GameConstatnts.PICTIONARYFRAGMENT + " " + GameConstatnts.START);
+            addScore(0, "", 0, 0, resStartTime, GameConstatnts.READINGGAME + " " + GameConstatnts.START);
 
             getData();
         }
@@ -720,7 +720,7 @@ public class pictionaryFragment extends Fragment implements OnGameClose {
                         }
                     }
 
-                    addScore(GameConstatnts.getInt(selectedAnsList.get(i).getQid().trim()), GameConstatnts.PICTIONARYFRAGMENT, 10, 10, FC_Utility.getCurrentDateTime(), selectedAnsList.get(i).getUserAnswer());
+                    addScore(GameConstatnts.getInt(selectedAnsList.get(i).getQid().trim()), GameConstatnts.READINGGAME, 10, 10, FC_Utility.getCurrentDateTime(), selectedAnsList.get(i).getUserAnswer());
                 } else {
                     if (selectedAnsList.get(i).getUserAnswer() != null && !selectedAnsList.get(i).getUserAnswer().trim().equalsIgnoreCase("")) {
                         List<ScienceQuestionChoice> tempOptionList = selectedAnsList.get(i).getLstquestionchoice();
@@ -729,7 +729,7 @@ public class pictionaryFragment extends Fragment implements OnGameClose {
                                 wrongWordList.add(tempOptionList.get(k));
                             }
                         }
-                        addScore(GameConstatnts.getInt(selectedAnsList.get(i).getQid().trim()), GameConstatnts.PICTIONARYFRAGMENT, 0, 10, FC_Utility.getCurrentDateTime(), selectedAnsList.get(i).getUserAnswer());
+                        addScore(GameConstatnts.getInt(selectedAnsList.get(i).getQid().trim()), GameConstatnts.READINGGAME, 0, 10, FC_Utility.getCurrentDateTime(), selectedAnsList.get(i).getUserAnswer());
                     }
                 }
             }
@@ -830,7 +830,7 @@ public class pictionaryFragment extends Fragment implements OnGameClose {
 
     @Override
     public void gameClose() {
-        addScore(0, "", 0, 0, resStartTime, GameConstatnts.PICTIONARYFRAGMENT + " " + GameConstatnts.END);
+        addScore(0, "", 0, 0, resStartTime, GameConstatnts.READINGGAME + " " + GameConstatnts.END);
     }
 }
 

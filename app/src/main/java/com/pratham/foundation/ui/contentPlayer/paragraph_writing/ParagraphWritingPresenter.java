@@ -195,7 +195,7 @@ public class ParagraphWritingPresenter implements ParagraphWritingContract.Parag
             score.setStartDateTime(resStartTime);
             score.setDeviceID(deviceId.equals(null) ? "0000" : deviceId);
             score.setEndDateTime(FC_Utility.getCurrentDateTime());
-            score.setLevel(4);
+            score.setLevel(FC_Constants.currentLevel);
             score.setLabel(Word + "___" + Label);
             score.setSentFlag(0);
             appDatabase.getScoreDao().insert(score);
