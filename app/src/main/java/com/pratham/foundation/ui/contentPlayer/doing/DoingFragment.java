@@ -64,7 +64,6 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import okhttp3.Cache;
 
 import static com.pratham.foundation.database.AppDatabase.appDatabase;
 
@@ -157,7 +156,7 @@ public class DoingFragment extends Fragment implements OnGameClose {
             Collections.shuffle(dataList);
             for (int i = 0; i < dataList.size(); i++) {
                 if (perc < 95) {
-                    if (!checkWord("" + dataList.get(i).getTitle())||dataList.get(i).getTitle().isEmpty()) {
+                    if (!checkWord("" + dataList.get(i).getTitle()) || dataList.get(i).getTitle().isEmpty()) {
                         scienceQuestion = dataList.get(i);
                         break;
                     }

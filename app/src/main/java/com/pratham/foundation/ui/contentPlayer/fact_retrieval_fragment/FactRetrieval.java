@@ -58,7 +58,6 @@ public class FactRetrieval extends Fragment implements FactRetrievalContract.Fac
     boolean onSdCard;
     private List<ScienceQuestionChoice> selectedQuetion;
     private int index = 0;
-    private boolean isTest = false;
 
 
     @AfterViews
@@ -102,6 +101,7 @@ public class FactRetrieval extends Fragment implements FactRetrievalContract.Fac
                 menu.removeGroup(1);
                 menu.add(0, SETANSWER, 0, "set answer");
                 menu.add(0, CLEAR_ANSWER, 1, "clear answer");
+                submitBtn.setVisibility(View.GONE);
                 return true;
             }
 
@@ -115,6 +115,7 @@ public class FactRetrieval extends Fragment implements FactRetrievalContract.Fac
                 menu.removeItem(android.R.id.copy);
                 menu.removeItem(android.R.id.textAssist);
                 //    return true;
+                submitBtn.setVisibility(View.GONE);
                 return false;
             }
 
@@ -151,12 +152,16 @@ public class FactRetrieval extends Fragment implements FactRetrievalContract.Fac
                                 dialog.setCancelable(false);
                                 dialog.setCanceledOnTouchOutside(false);
                                 SansButton dia_btn_yellow = dialog.findViewById(R.id.dia_btn_yellow);
+                                SansTextView correctAns = dialog.findViewById(R.id.correctAns);
+                                correctAns.setText(selectedQuetion.get(index).getCorrectAnswer());
                                 dia_btn_yellow.setOnClickListener(v -> dialog.dismiss());
                                 dialog.show();
                             }
                         }
                         paragraph.setText(str);
-
+                        if (index == (selectedQuetion.size() - 1)) {
+                            submitBtn.setVisibility(View.VISIBLE);
+                        }
                         break;
                     case CLEAR_ANSWER:
                         paragraph.setText(para);
@@ -164,6 +169,9 @@ public class FactRetrieval extends Fragment implements FactRetrievalContract.Fac
                         selectedQuetion.get(index).setUserAns(answer);
                         selectedQuetion.get(index).setStart(0);
                         selectedQuetion.get(index).setEnd(0);
+                        if (index == (selectedQuetion.size() - 1)) {
+                            submitBtn.setVisibility(View.VISIBLE);
+                        }
                 }
                 return false;
             }

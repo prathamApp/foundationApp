@@ -27,7 +27,7 @@ import java.util.List;
 import static com.pratham.foundation.database.AppDatabase.appDatabase;
 
 @EBean
-public class FactRetrievalPresenter implements FactRetrievalContract.FactRetrievalPresenter,OnGameClose {
+public class FactRetrievalPresenter implements FactRetrievalContract.FactRetrievalPresenter, OnGameClose {
     private ScienceQuestion questionModel;
     private FactRetrievalContract.FactRetrievalView view;
     private Context context;
@@ -128,7 +128,7 @@ public class FactRetrievalPresenter implements FactRetrievalContract.FactRetriev
     }
 
     public void addLearntWords(List<ScienceQuestionChoice> selectedAnsList) {
-        if (selectedAnsList != null && !selectedAnsList.isEmpty()) {
+        if (selectedAnsList != null && checkAttemptedornot(selectedAnsList)) {
             List<KeyWords> learntWords = new ArrayList<>();
             int scoredMarks;
             KeyWords keyWords = new KeyWords();
@@ -145,7 +145,7 @@ public class FactRetrievalPresenter implements FactRetrievalContract.FactRetriev
                     } else {
                         scoredMarks = 0;
                     }
-                   // addScore(GameConstatnts.getInt(selectedAnsList.get(i).getQid()), GameConstatnts.FACTRETRIEVAL, scoredMarks, 10, FC_Utility.getCurrentDateTime(), selectedAnsList.get(i).toString());
+                    // addScore(GameConstatnts.getInt(selectedAnsList.get(i).getQid()), GameConstatnts.FACTRETRIEVAL, scoredMarks, 10, FC_Utility.getCurrentDateTime(), selectedAnsList.get(i).toString());
                     addScore(GameConstatnts.getInt(questionModel.getQid()), GameConstatnts.FACTRETRIEVAL, scoredMarks, 10, FC_Utility.getCurrentDateTime(), selectedAnsList.get(i).toString());
                 }
             }
@@ -155,6 +155,15 @@ public class FactRetrievalPresenter implements FactRetrievalContract.FactRetriev
             GameConstatnts.playGameNext(context, GameConstatnts.TRUE, (OnGameClose) view);
         }
         BackupDatabase.backup(context);
+    }
+
+    private boolean checkAttemptedornot(List<ScienceQuestionChoice> selectedAnsList) {
+        for (int i = 0; i < selectedAnsList.size(); i++) {
+            if (selectedAnsList.get(i).getUserAns() != null && !selectedAnsList.get(i).getUserAns().isEmpty()) {
+                return true;
+            }
+        }
+        return false;
     }
 
     public void addScore(int wID, String Word, int scoredMarks, int totalMarks, String resStartTime, String Label) {
