@@ -62,6 +62,8 @@ public class GameConstatnts {
     public static final String START = "start";
     public static final String END = "end";
     public static final String VIDEO = "Video";
+
+
     public static List<ContentTable> gameList;
     public static int currentGameAdapterposition;
 
@@ -83,6 +85,7 @@ public class GameConstatnts {
         }
         return null;
     }
+
     /*public static Bundle isContains(String resourceID) {
         for (int i = 0; i < gameList.size(); i++) {
             if (resourceID.equalsIgnoreCase(gameList.get(i).getResourceId())) {
@@ -119,10 +122,21 @@ public class GameConstatnts {
         dia_btn_green.setText("Yes");
         dia_btn_red.setText("Exit");
         dia_btn_yellow.setText("" + dialog_btn_cancel);
-        if (!flag)
-            dia_btn_yellow.setVisibility(View.GONE);
-
         dia_title.setText("Next activity?");
+        if (!flag) {
+            dia_btn_yellow.setVisibility(View.GONE);
+        }
+        if (gameList != null && (currentGameAdapterposition == (gameList.size() - 1))) {
+            dia_btn_red.setVisibility(View.GONE);
+            if (!flag) {
+                dia_title.setText("activity completed");
+                dia_btn_green.setText("Ok");
+            } else {
+                dia_title.setText("Do you want to exit?");
+            }
+        }
+
+
         dialog.show();
 
         dia_btn_green.setOnClickListener(new View.OnClickListener() {
@@ -151,6 +165,8 @@ public class GameConstatnts {
                 dialog.dismiss();
             }
         });
+
+
     }
 
     public static void plaGame(Context context) {
@@ -176,10 +192,12 @@ public class GameConstatnts {
                         FC_Utility.showFragment((Activity) context, new FactRetrieval_(), R.id.RL_CPA,
                                 bundle, FactRetrieval_.class.getSimpleName());
                         break;
+
                     case GameConstatnts.KEYWORD_IDENTIFICATION:
                         FC_Utility.showFragment((Activity) context, new KeywordsIdentificationFragment_(), R.id.RL_CPA,
                                 bundle, KeywordsIdentificationFragment_.class.getSimpleName());
                         break;
+
                     case GameConstatnts.KEYWORD_MAPPING:
                         FC_Utility.showFragment((Activity) context, new KeywordMappingFragment_(), R.id.RL_CPA,
                                 bundle, KeywordMappingFragment_.class.getSimpleName());
@@ -188,6 +206,7 @@ public class GameConstatnts {
                         FC_Utility.showFragment((Activity) context, new ParagraphWritingFragment_(), R.id.RL_CPA,
                                 bundle, ParagraphWritingFragment_.class.getSimpleName());
                         break;
+
                     case GameConstatnts.LISTNING_AND_WRITTING:
                         FC_Utility.showFragment((Activity) context, new ListeningAndWritting_(), R.id.RL_CPA,
                                 bundle, ListeningAndWritting_.class.getSimpleName());
@@ -226,6 +245,7 @@ public class GameConstatnts {
                         FC_Utility.showFragment((Activity) context, new DoingFragment(), R.id.RL_CPA,
                                 bundle, DoingFragment.class.getSimpleName());
                         break;
+
                     case GameConstatnts.VIDEO:
                         Intent intent = new Intent(context, ActivityVideoView_.class);
                         intent.putExtra("contentPath", contentTable1.getResourcePath());
