@@ -15,14 +15,12 @@ import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.Window;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.RatingBar;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
@@ -33,12 +31,13 @@ import com.pratham.foundation.ApplicationClass;
 import com.pratham.foundation.BaseActivity;
 import com.pratham.foundation.R;
 import com.pratham.foundation.customView.GifView;
-import com.pratham.foundation.customView.RipplePulseLayout;
 import com.pratham.foundation.customView.SansTextView;
+import com.pratham.foundation.interfaces.OnGameClose;
 import com.pratham.foundation.modalclasses.ModalParaSubMenu;
 import com.pratham.foundation.services.TTSService;
 import com.pratham.foundation.services.stt.ContinuousSpeechService_New;
 import com.pratham.foundation.services.stt.STT_Result_New;
+import com.pratham.foundation.ui.contentPlayer.GameConstatnts;
 import com.pratham.foundation.utility.FC_Constants;
 import com.pratham.foundation.utility.FC_Utility;
 
@@ -63,7 +62,7 @@ import static com.pratham.foundation.utility.SplashSupportActivity.ButtonClickSo
 @EFragment(R.layout.fragment_story_reading)
 public class StoryReadingFragment extends Fragment implements
         /*RecognitionListener, */STT_Result_New.sttView,
-        StoryReadingContract.StoryReadingView {
+        StoryReadingContract.StoryReadingView , OnGameClose {
 
     @Bean(StoryReadingPresenter.class)
     StoryReadingContract.StoryReadingPresenter presenter;
@@ -230,10 +229,6 @@ public class StoryReadingFragment extends Fragment implements
     @Override
     public void initializeContent(int pageNo) {
         currentPage = pageNo;
-        if (currentPage == totalPages - 1) {
-            lastPgFlag = true;
-            btn_nextpage.setVisibility(View.GONE);
-        }
         if (currentPage == 0) {
             lastPgFlag = false;
             btn_previouspage.setVisibility(View.GONE);
@@ -252,10 +247,7 @@ public class StoryReadingFragment extends Fragment implements
             story_title.setText(pageTitle);
         story_title.setTextSize(35);
 
-        if(storyAudio.equalsIgnoreCase("NA"))
-            playHideFlg = true;
-        else
-            playHideFlg = false;
+        playHideFlg = storyAudio.equalsIgnoreCase("NA");
 
         try {
             File f = new File(readingContentPath + storyBg);
@@ -799,6 +791,9 @@ public class StoryReadingFragment extends Fragment implements
             presenter.getPage(currentPage);
             Log.d("click", "NextBtn - totalPages: " + totalPages + "  currentPage: " + currentPage);
         }
+        else{
+            GameConstatnts.playGameNext(getActivity(),true,this);
+        }
     }
 
     @SuppressLint("SetTextI18n")
@@ -1114,5 +1109,18 @@ public class StoryReadingFragment extends Fragment implements
             silence_outer_layout.setVisibility(View.GONE);
             continuousSpeechService.resetHandler(false);
         }, 10);
+    }
+
+    @Override
+    public void gameClose() {
+        if (FC_Constants.isTest) {
+            float correctCnt = getPercentage();
+            Intent returnIntent = new Intent();
+            returnIntent.putExtra("cCode", certiCode);
+            returnIntent.putExtra("sMarks", correctCnt);
+            returnIntent.putExtra("tMarks", correctArr.length);
+//                setResult(Activity.RESULT_OK, returnIntent);
+        }
+        exitDBEntry();
     }
 }

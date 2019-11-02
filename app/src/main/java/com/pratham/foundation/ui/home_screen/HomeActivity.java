@@ -295,28 +295,6 @@ public class HomeActivity extends BaseActivity implements LevelChanged {
             tabLayout.getTabAt(0).setCustomView(practiceTab);
             tabLayout.getTabAt(1).setCustomView(learningTab);
         }
-
-        tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
-            @Override
-            public void onTabSelected(TabLayout.Tab tab) {
-//                EventMessage eventMessage = new EventMessage();
-//                eventMessage.setMessage(LEVEL_CHANGED);
-//                EventBus.getDefault().post(eventMessage);
-//                changeBGNew(FC_Constants.currentLevel);
-            }
-
-            @Override
-            public void onTabUnselected(TabLayout.Tab tab) {
-            }
-
-            @Override
-            public void onTabReselected(TabLayout.Tab tab) {
-//                EventMessage eventMessage = new EventMessage();
-//                eventMessage.setMessage(LEVEL_CHANGED);
-//                EventBus.getDefault().post(eventMessage);
-//                changeBGNew(FC_Constants.currentLevel);
-            }
-        });
     }
 
     @SuppressLint("SetTextI18n")

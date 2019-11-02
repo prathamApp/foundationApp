@@ -14,6 +14,7 @@ import android.view.WindowManager;
 import com.pratham.foundation.database.AppDatabase;
 import com.pratham.foundation.database.BackupDatabase;
 import com.pratham.foundation.services.TTSService;
+import com.pratham.foundation.utility.CatchoTransparentActivity;
 import com.pratham.foundation.utility.FC_Utility;
 
 import net.alhazmy13.catcho.library.Catcho;
@@ -42,8 +43,8 @@ public class BaseActivity extends AppCompatActivity {
         startSTT();
         muteFlg = false;
                 Catcho.Builder(this)
-//                .activity(CatchoTransparentActivity.class).build();
-                .recipients("abc@domain.com").build();
+                .activity(CatchoTransparentActivity.class).build();
+//                .recipients("abc@domain.com").build();
 
     }
 
