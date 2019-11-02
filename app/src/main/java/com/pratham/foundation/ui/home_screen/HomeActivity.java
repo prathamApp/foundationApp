@@ -388,8 +388,14 @@ public class HomeActivity extends BaseActivity implements LevelChanged {
     private void setupViewPager(ViewPager viewpager) {
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
         viewpager.setOffscreenPageLimit(4);
-        adapter.addFrag(new LearningFragment_(), "Learning");
-        adapter.addFrag(new PracticeFragment_(), "Practice");
+        if(LOGIN_MODE.contains("group")) {
+            adapter.addFrag(new LearningFragment_(), "Learning");
+            adapter.addFrag(new PracticeFragment_(), "Practice");
+        }
+        else {
+            adapter.addFrag(new PracticeFragment_(), "Practice");
+            adapter.addFrag(new LearningFragment_(), "Learning");
+        }
         if (currentSubject.equalsIgnoreCase("english")) {
 //            adapter.addFrag(new TestFragment_(), "Test");
             adapter.addFrag(new FunFragment_(), "Fun");
