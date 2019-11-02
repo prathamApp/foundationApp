@@ -50,7 +50,7 @@ public class SelectSubject extends BaseActivity implements
         FC_Constants.TAB_LAYOUT = config.smallestScreenWidthDp > 425;
         List<ContentTable> subjectList = presenter.getSubjectList();
 
-        if(FC_Constants.GROUP_LOGIN)
+        if(FC_Constants.LOGIN_MODE.contains("group"))
             studName = currentStudentName;
         else
             studName = currentStudentName.split(" ")[0];
@@ -79,5 +79,11 @@ public class SelectSubject extends BaseActivity implements
         Intent intent = new Intent(context, HomeActivity_.class);
         intent.putExtra("nodeId", contentTableObj.getNodeId());
         context.startActivity(intent);
+    }
+
+    @Override
+    public void onBackPressed() {
+        endSession(this);
+        super.onBackPressed();
     }
 }

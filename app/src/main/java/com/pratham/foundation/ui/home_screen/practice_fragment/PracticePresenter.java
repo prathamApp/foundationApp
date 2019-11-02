@@ -36,13 +36,15 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
 import java.lang.reflect.Type;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
 import static com.pratham.foundation.ui.home_screen.HomeActivity.sub_nodeId;
-import static com.pratham.foundation.utility.FC_Constants.GROUP_QR;
+import static com.pratham.foundation.utility.FC_Constants.LOGIN_MODE;
+
 
 @EBean
 public class PracticePresenter implements PracticeContract.PracticePresenter, API_Content_Result {
@@ -346,7 +348,7 @@ public class PracticePresenter implements PracticeContract.PracticePresenter, AP
                                 contentChild.setOnSDCard(childDwContentList.get(i).isOnSDCard());
                                 contentChild.setNodelist(null);
                                 maxScoreChild = new ArrayList();
-                                if(!GROUP_QR)
+                                if(!LOGIN_MODE.contains("qr"))
                                 findMaxScoreNew(childDwContentList.get(i).getNodeId());
                                 double totalScore = 0;
                                 for (int q = 0; maxScoreChild.size() > q; q++) {
@@ -395,7 +397,7 @@ public class PracticePresenter implements PracticeContract.PracticePresenter, AP
     public void updateUI() {
         maxScore.clear();
         try {
-            if(!GROUP_QR)
+            if(!LOGIN_MODE.contains("qr"))
             findMaxScore("" + nodeIds.get(nodeIds.size() - 1));
         } catch (Exception e) {
             e.printStackTrace();
@@ -466,7 +468,7 @@ public class PracticePresenter implements PracticeContract.PracticePresenter, AP
         try {
             //InputStream is = new FileInputStream(ApplicationClass.pradigiPath + "/.FCA/"+FC_Constants.currentSelectedLanguage+"/RC/" + jasonName);
             InputStream is = mContext.getAssets().open("" + jasonName);
-            JsonReader reader = new JsonReader(new InputStreamReader(is, "UTF-8"));
+            JsonReader reader = new JsonReader(new InputStreamReader(is, StandardCharsets.UTF_8));
             Gson gson = new GsonBuilder().create();
             // Read file in stream mode
             reader.beginArray();
@@ -534,7 +536,7 @@ public class PracticePresenter implements PracticeContract.PracticePresenter, AP
             List<ContentTable> contentTableList = new ArrayList<>();
             contentTableList = download_content.getNodelist();
             for (int i = 0; i < contentTableList.size(); i++) {
-                api_content.downloadImage(contentTableList.get(i).nodeServerImage, contentTableList.get(i).getNodeImage());
+                API_Content.downloadImage(contentTableList.get(i).nodeServerImage, contentTableList.get(i).getNodeImage());
                 contentTableList.get(i).setIsDownloaded("true");
             }
             AppDatabase.getDatabaseInstance(mContext).getContentTableDao().addContentList(contentTableList);

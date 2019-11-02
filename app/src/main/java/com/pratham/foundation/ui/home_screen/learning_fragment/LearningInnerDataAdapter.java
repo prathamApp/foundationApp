@@ -26,8 +26,6 @@ import com.pratham.foundation.utility.FC_Constants;
 import java.io.File;
 import java.util.List;
 
-import static com.pratham.foundation.utility.FC_Utility.getRandomDrawableGradiant;
-
 
 public class LearningInnerDataAdapter extends RecyclerView.Adapter {
 
@@ -93,9 +91,10 @@ public class LearningInnerDataAdapter extends RecyclerView.Adapter {
             case 1:
                 //folder
                 FolderHolder folderHolder = (FolderHolder) viewHolder;
-                int randomNo = getRandomDrawableGradiant();
-                folderHolder.rl_root.setBackground(mContext.getResources().getDrawable(randomNo));
+//                int randomNo = getRandomDrawableGradiant();
+//                folderHolder.rl_root.setBackground(mContext.getResources().getDrawable(randomNo));
                 folderHolder.tvTitle.setText(itemsList.get(i).getNodeTitle());
+                folderHolder.tvTitle.setTextColor(mContext.getResources().getColor(R.color.text_color));
                 folderHolder.progressLayout.setCurProgress(Integer.parseInt(itemsList.get(i).getNodePercentage()));
                 File f;
                 if (itemsList.get(i).getIsDownloaded().equalsIgnoreCase("1") ||
@@ -211,10 +210,10 @@ public class LearningInnerDataAdapter extends RecyclerView.Adapter {
 
         public FileHolder(View view) {
             super(view);
-            this.tvTitle = (TextView) view.findViewById(R.id.file_Title);
+            this.tvTitle = view.findViewById(R.id.file_Title);
             this.itemImage = view.findViewById(R.id.file_Image);
-            this.actionBtn = (ImageView) view.findViewById(R.id.btn_file_download);
-            this.rl_root = (RelativeLayout) view.findViewById(R.id.file_card_view);
+            this.actionBtn = view.findViewById(R.id.btn_file_download);
+            this.rl_root = view.findViewById(R.id.file_card_view);
         }
 
     }
@@ -228,9 +227,9 @@ public class LearningInnerDataAdapter extends RecyclerView.Adapter {
 
         public FolderHolder(View view) {
             super(view);
-            this.tvTitle = (TextView) view.findViewById(R.id.tvTitle);
+            this.tvTitle = view.findViewById(R.id.tvTitle);
             this.itemImage = view.findViewById(R.id.item_Image);
-            this.rl_root = (RelativeLayout) view.findViewById(R.id.rl_root);
+            this.rl_root = view.findViewById(R.id.rl_root);
             progressLayout = view.findViewById(R.id.card_progressLayout);
         }
 

@@ -13,13 +13,12 @@ import android.widget.ImageButton;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-
+import com.pratham.foundation.BaseActivity;
 import com.pratham.foundation.R;
 import com.pratham.foundation.services.shared_preferences.FastSave;
 import com.pratham.foundation.ui.admin_panel.AdminControlsActivity_;
 import com.pratham.foundation.ui.admin_panel.group_selection.SelectGroupActivity_;
 import com.pratham.foundation.ui.qr_scan.QRScanActivity_;
-import com.pratham.foundation.BaseActivity;
 import com.pratham.foundation.utility.FC_Constants;
 
 import org.androidannotations.annotations.AfterViews;
@@ -73,6 +72,9 @@ public class MenuActivity extends BaseActivity {
         dia_btn_yellow.setText("Individual");
 
         dia_btn_red.setOnClickListener(v -> {
+            if(nextActivity.equalsIgnoreCase("QRScan"))
+            FC_Constants.LOGIN_MODE = FC_Constants.QR_GROUP_MODE;
+            else
             FC_Constants.LOGIN_MODE = FC_Constants.GROUP_MODE;
             gotoNext(nextActivity);
             dialog.dismiss();

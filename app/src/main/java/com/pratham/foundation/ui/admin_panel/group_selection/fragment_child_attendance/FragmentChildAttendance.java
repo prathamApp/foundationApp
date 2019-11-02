@@ -2,8 +2,6 @@ package com.pratham.foundation.ui.admin_panel.group_selection.fragment_child_att
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
-import android.content.res.Resources;
-import android.graphics.Rect;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -13,7 +11,6 @@ import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
-import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,23 +18,23 @@ import android.widget.Button;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
-
 import com.pratham.foundation.ApplicationClass;
 import com.pratham.foundation.R;
 import com.pratham.foundation.customView.GridSpacingItemDecoration;
-import com.pratham.foundation.services.shared_preferences.FastSave;
 import com.pratham.foundation.database.AppDatabase;
 import com.pratham.foundation.database.BackupDatabase;
 import com.pratham.foundation.database.dao.StatusDao;
-
 import com.pratham.foundation.database.domain.Attendance;
 import com.pratham.foundation.database.domain.Session;
 import com.pratham.foundation.database.domain.Student;
+import com.pratham.foundation.services.shared_preferences.FastSave;
 import com.pratham.foundation.ui.selectSubject.SelectSubject_;
 import com.pratham.foundation.utility.FC_Constants;
 import com.pratham.foundation.utility.FC_Utility;
+
 import java.util.ArrayList;
 import java.util.UUID;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -211,7 +208,12 @@ public class FragmentChildAttendance extends Fragment implements ContractChildAt
                         Log.d("ChildAttendence", "currentSession : " + currentSession + "  StudentId: " + stud.get(i).getStudentID());
                     }
 
-                    FC_Constants.currentStudentID = groupID;
+                    if(LOGIN_MODE.equalsIgnoreCase(GROUP_MODE))
+                        FC_Constants.currentStudentID = groupID;
+                    else {
+                        FC_Constants.currentStudentID = stud.get(0).getStudentID();
+                        FC_Constants.currentStudentName = stud.get(0).getFullName();
+                    }
                     BackupDatabase.backup(getContext());
                     return null;
                 } catch (Exception e) {

@@ -52,7 +52,7 @@ import java.util.UUID;
 import me.dm7.barcodescanner.zxing.ZXingScannerView;
 
 import static com.pratham.foundation.database.AppDatabase.appDatabase;
-import static com.pratham.foundation.utility.FC_Constants.GROUP_MODE;
+import static com.pratham.foundation.utility.FC_Constants.QR_GROUP_MODE;
 import static com.pratham.foundation.utility.FC_Constants.currentStudentName;
 import static com.pratham.foundation.utility.SplashSupportActivity.ButtonClickSound;
 
@@ -315,10 +315,7 @@ public class QRScanActivity extends BaseActivity implements
     private boolean checkWord(String studentId, String wordUUId, String wordCheck, String wordType) {
         try {
             String word = appDatabase.getKeyWordDao().checkLearntData(studentId, "" + wordUUId, wordCheck.toLowerCase(), wordType);
-            if (word != null)
-                return true;
-            else
-                return false;
+            return word != null;
         } catch (Exception e) {
             e.printStackTrace();
             return false;
@@ -337,17 +334,14 @@ public class QRScanActivity extends BaseActivity implements
             mScannerView.stopCamera();
             enterStudentData(playerModalList);
             startSession();
-            if(FC_Constants.LOGIN_MODE.equalsIgnoreCase(GROUP_MODE)) {
-                FC_Constants.GROUP_QR = true;
+            if(FC_Constants.LOGIN_MODE.equalsIgnoreCase(QR_GROUP_MODE)) {
                 FC_Constants.currentStudentID = "QR";
                 currentStudentName = "QR Students";
             }else {
-                FC_Constants.GROUP_QR = false;
                 FC_Constants.currentStudentID = ""+playerModalList.get(0).getStudentID();
                 currentStudentName = ""+playerModalList.get(0).getStudentName();
             }
             ButtonClickSound.start();
-            FC_Constants.GROUP_LOGIN = false;
             startActivity(new Intent(this, SelectSubject_.class));
         }
     }
@@ -412,7 +406,7 @@ public class QRScanActivity extends BaseActivity implements
             playerModal.setStudentID(jsonobject.getString("stuId"));
             playerModal.setStudentName(jsonobject.getString("name"));
 
-            if(FC_Constants.LOGIN_MODE.equalsIgnoreCase(GROUP_MODE)) {
+            if(FC_Constants.LOGIN_MODE.equalsIgnoreCase(QR_GROUP_MODE)) {
                 if (totalStudents < 4) {
                     if (playerModalList.size() > 0) {
                         for (int i = 0; i < playerModalList.size(); i++)
