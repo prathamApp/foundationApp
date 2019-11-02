@@ -17,7 +17,6 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.pratham.foundation.ApplicationClass;
 import com.pratham.foundation.BaseActivity;
 import com.pratham.foundation.R;
 import com.pratham.foundation.customView.submarine_view.SubmarineItem;
@@ -28,7 +27,6 @@ import com.pratham.foundation.services.shared_preferences.FastSave;
 import com.pratham.foundation.ui.home_screen.fun.FunFragment_;
 import com.pratham.foundation.ui.home_screen.learning_fragment.LearningFragment_;
 import com.pratham.foundation.ui.home_screen.practice_fragment.PracticeFragment_;
-import com.pratham.foundation.ui.selectSubject.SelectSubject_;
 import com.pratham.foundation.ui.student_profile.Student_profile_activity;
 import com.pratham.foundation.ui.test.supervisor.SupervisedAssessmentActivity;
 import com.pratham.foundation.utility.FC_Constants;
@@ -48,8 +46,11 @@ import java.util.Objects;
 
 import static com.pratham.foundation.utility.FC_Constants.BACK_PRESSED;
 import static com.pratham.foundation.utility.FC_Constants.GROUP_LOGIN;
-import static com.pratham.foundation.utility.FC_Constants.GROUP_QR;
+import static com.pratham.foundation.utility.FC_Constants.GROUP_MODE;
+import static com.pratham.foundation.utility.FC_Constants.INDIVIDUAL_MODE;
 import static com.pratham.foundation.utility.FC_Constants.LEVEL_CHANGED;
+import static com.pratham.foundation.utility.FC_Constants.LOGIN_MODE;
+import static com.pratham.foundation.utility.FC_Constants.QR_GROUP_MODE;
 import static com.pratham.foundation.utility.FC_Constants.currentSubject;
 import static com.pratham.foundation.utility.FC_Constants.dialog_btn_cancel;
 import static com.pratham.foundation.utility.FC_Constants.dialog_btn_exit;
@@ -161,21 +162,18 @@ public class HomeActivity extends BaseActivity implements LevelChanged {
 
     @Background
     public void displayProfileName() {
-        String profileName = "QR Student";
+        String profileName = "QR Group";
         try {
-            if (!GROUP_LOGIN)
+            if (LOGIN_MODE.equalsIgnoreCase(GROUP_MODE))
+                profileName = AppDatabase.getDatabaseInstance(this).getGroupsDao().getGroupNameByGrpID(FC_Constants.currentStudentID);
+            else if(!LOGIN_MODE.equalsIgnoreCase(QR_GROUP_MODE)){
                 profileName = AppDatabase.getDatabaseInstance(this).getStudentDao().getFullName(FC_Constants.currentStudentID);
-            else {
-                if (!GROUP_QR)
-                    profileName = AppDatabase.getDatabaseInstance(this).getGroupsDao().getGroupNameByGrpID(FC_Constants.currentStudentID);
             }
-            if (!FC_Constants.GROUP_LOGIN && !GROUP_QR)
+
+            if (LOGIN_MODE.equalsIgnoreCase(INDIVIDUAL_MODE))
                 profileName = profileName.split(" ")[0];
 
-            if (profileName == null)
-                profileName = "QR Student";
         } catch (Exception e) {
-            profileName = "QR Student";
             e.printStackTrace();
         }
         setProfileName(profileName);
@@ -271,15 +269,13 @@ public class HomeActivity extends BaseActivity implements LevelChanged {
     }
 
     private void setupTabIcons() {
-        TextView tabOne = (TextView) LayoutInflater.from(this).inflate(R.layout.custom_tab_text, null);
-        tabOne.setText("Learning");
-        tabOne.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.ic_learning, 0, 0);
-        tabLayout.getTabAt(0).setCustomView(tabOne);
+        TextView learningTab = (TextView) LayoutInflater.from(this).inflate(R.layout.custom_tab_text, null);
+        learningTab.setText("Learning");
+        learningTab.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.ic_learning, 0, 0);
 
-        TextView tabTwo = (TextView) LayoutInflater.from(this).inflate(R.layout.custom_tab_text, null);
-        tabTwo.setText("Practice");
-        tabTwo.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.ic_practice, 0, 0);
-        tabLayout.getTabAt(1).setCustomView(tabTwo);
+        TextView practiceTab = (TextView) LayoutInflater.from(this).inflate(R.layout.custom_tab_text, null);
+        practiceTab.setText("Practice");
+        practiceTab.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.ic_practice, 0, 0);
 
         if (currentSubject.equalsIgnoreCase("english")) {
 //            TextView tabThree = (TextView) LayoutInflater.from(this).inflate(R.layout.custom_tab_text, null);
@@ -290,6 +286,14 @@ public class HomeActivity extends BaseActivity implements LevelChanged {
             tabFour.setText("Fun");
             tabFour.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.ic_fun, 0, 0);
             tabLayout.getTabAt(2).setCustomView(tabFour);
+        }
+
+        if(LOGIN_MODE.contains("group")){
+            tabLayout.getTabAt(0).setCustomView(learningTab);
+            tabLayout.getTabAt(1).setCustomView(practiceTab);
+        }else{
+            tabLayout.getTabAt(0).setCustomView(practiceTab);
+            tabLayout.getTabAt(1).setCustomView(learningTab);
         }
 
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
@@ -405,7 +409,7 @@ public class HomeActivity extends BaseActivity implements LevelChanged {
 
     private void setupViewPager(ViewPager viewpager) {
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
-        viewpager.setOffscreenPageLimit(1);
+        viewpager.setOffscreenPageLimit(4);
         adapter.addFrag(new LearningFragment_(), "Learning");
         adapter.addFrag(new PracticeFragment_(), "Practice");
         if (currentSubject.equalsIgnoreCase("english")) {
@@ -471,18 +475,12 @@ public class HomeActivity extends BaseActivity implements LevelChanged {
         Button test_btn = dialog.findViewById(R.id.dia_btn_yellow);
         Button revise_btn = dialog.findViewById(R.id.dia_btn_red);
 
-        dia_title.setText("Change Language?");
+        dia_title.setText("Change Subject?");
         revise_btn.setText("" + dialog_btn_exit);
         test_btn.setText("" + dialog_btn_cancel);
         next_btn.setText("OK");
 
         next_btn.setOnClickListener(v -> {
-            endSession(HomeActivity.this);
-            if (!ApplicationClass.isTablet) {
-                startActivity(new Intent(HomeActivity.this, SelectSubject_.class));
-            } else {
-                startActivity(new Intent(HomeActivity.this, SelectSubject_.class));
-            }
             finish();
             dialogFlg=false;
             dialog.dismiss();
