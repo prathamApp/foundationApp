@@ -5,6 +5,7 @@
     android:layout_height="wrap_content"
     android:layout_margin="@dimen/_5sdp"
     android:layout_marginHorizontal="@dimen/_10sdp"
+    android:elevation="@dimen/_3sdp"
     android:background="@drawable/ripple_rectangle_card">
 
     <ImageView
@@ -14,9 +15,9 @@
         android:layout_alignParentTop="true"
         android:background="@drawable/dialog_image_bg"
         android:elevation="5dp"
-        android:padding="5dp"
+        android:padding="@dimen/_8sdp"
         android:layout_margin="@dimen/_10sdp"
-        android:src="@drawable/b1" />
+        android:src="@drawable/think" />
 
     <com.pratham.foundation.customView.SansButton
         android:id="@+id/play"

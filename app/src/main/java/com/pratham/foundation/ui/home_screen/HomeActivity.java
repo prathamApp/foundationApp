@@ -311,10 +311,10 @@ public class HomeActivity extends BaseActivity implements LevelChanged {
 
             @Override
             public void onTabReselected(TabLayout.Tab tab) {
-                EventMessage eventMessage = new EventMessage();
-                eventMessage.setMessage(LEVEL_CHANGED);
-                EventBus.getDefault().post(eventMessage);
-                changeBGNew(FC_Constants.currentLevel);
+//                EventMessage eventMessage = new EventMessage();
+//                eventMessage.setMessage(LEVEL_CHANGED);
+//                EventBus.getDefault().post(eventMessage);
+//                changeBGNew(FC_Constants.currentLevel);
             }
         });
     }
