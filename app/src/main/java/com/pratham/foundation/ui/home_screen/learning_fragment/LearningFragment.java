@@ -11,6 +11,7 @@ import android.support.v4.app.Fragment;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.widget.Button;
@@ -98,6 +99,11 @@ public class LearningFragment extends Fragment implements LearningContract.Learn
     @UiThread
     public void notifyAdapter() {
 //        sortAllList(contentParentList);
+        try {
+            for (int i = 0; i < contentParentList.size(); i++)
+                Log.d("Practice List", "" + contentParentList.get(i).getNodeTitle());
+        }catch (Exception e){e.printStackTrace();}
+
         if (adapterParent == null) {
             adapterParent = new LearningOuterDataAdapter(getActivity(), contentParentList, this);
             RecyclerView.LayoutManager mLayoutManager = new GridLayoutManager(getActivity(), 1);
