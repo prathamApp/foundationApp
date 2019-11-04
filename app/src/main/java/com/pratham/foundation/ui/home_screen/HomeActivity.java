@@ -295,28 +295,6 @@ public class HomeActivity extends BaseActivity implements LevelChanged {
             tabLayout.getTabAt(0).setCustomView(practiceTab);
             tabLayout.getTabAt(1).setCustomView(learningTab);
         }
-
-        tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
-            @Override
-            public void onTabSelected(TabLayout.Tab tab) {
-//                EventMessage eventMessage = new EventMessage();
-//                eventMessage.setMessage(LEVEL_CHANGED);
-//                EventBus.getDefault().post(eventMessage);
-//                changeBGNew(FC_Constants.currentLevel);
-            }
-
-            @Override
-            public void onTabUnselected(TabLayout.Tab tab) {
-            }
-
-            @Override
-            public void onTabReselected(TabLayout.Tab tab) {
-//                EventMessage eventMessage = new EventMessage();
-//                eventMessage.setMessage(LEVEL_CHANGED);
-//                EventBus.getDefault().post(eventMessage);
-//                changeBGNew(FC_Constants.currentLevel);
-            }
-        });
     }
 
     @SuppressLint("SetTextI18n")
@@ -410,8 +388,14 @@ public class HomeActivity extends BaseActivity implements LevelChanged {
     private void setupViewPager(ViewPager viewpager) {
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
         viewpager.setOffscreenPageLimit(4);
-        adapter.addFrag(new LearningFragment_(), "Learning");
-        adapter.addFrag(new PracticeFragment_(), "Practice");
+        if(LOGIN_MODE.contains("group")) {
+            adapter.addFrag(new LearningFragment_(), "Learning");
+            adapter.addFrag(new PracticeFragment_(), "Practice");
+        }
+        else {
+            adapter.addFrag(new PracticeFragment_(), "Practice");
+            adapter.addFrag(new LearningFragment_(), "Learning");
+        }
         if (currentSubject.equalsIgnoreCase("english")) {
 //            adapter.addFrag(new TestFragment_(), "Test");
             adapter.addFrag(new FunFragment_(), "Fun");
