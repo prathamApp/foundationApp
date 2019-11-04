@@ -141,8 +141,10 @@ public class FC_Constants {
     public static final String INTERNET_DOWNLOAD_RESOURCE = "downloadResource";
     public static final String STUDENT_PROGRESS_INTERNET= "student_progress_internet";
     public static final String LEARNT_WORDS_INTERNET= "learnt_words_internet";
+    public static final String PUSH_IMAGE= "push_image";
 
 //    PRATHAM APIS
+    public static final String PUSH_IMAGE_API = "http://devprodigi.openiscool.org/api/Foundation/PostImage";
     public static final String INTERNET_DOWNLOAD_NEW_API = "http://prodigi.openiscool.org/api/POSV2/Get2LevelChild?id=";
     public static final String INTERNET_DOWNLOAD_RESOURCE_API = "http://prodigi.openiscool.org/api/posv2/DownloadResourceCOS?resid=";
     public static final String STUDENT_PROGRESS_API = "http://prodigi.openiscool.org/api/cosv2/GetProgress?id=";

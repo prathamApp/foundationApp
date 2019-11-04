@@ -1,17 +1,20 @@
 package com.pratham.foundation.async;
 
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.Context;
+import android.os.Environment;
 import android.util.Base64;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.androidnetworking.AndroidNetworking;
 import com.androidnetworking.common.Priority;
 import com.androidnetworking.error.ANError;
+import com.androidnetworking.interfaces.JSONObjectRequestListener;
 import com.androidnetworking.interfaces.StringRequestListener;
 import com.google.gson.Gson;
 import com.pratham.foundation.ApplicationClass;
-import com.pratham.foundation.services.shared_preferences.FastSave;
 import com.pratham.foundation.database.AppDatabase;
 import com.pratham.foundation.database.BackupDatabase;
 import com.pratham.foundation.database.domain.Assessment;
@@ -26,16 +29,19 @@ import com.pratham.foundation.database.domain.Score;
 import com.pratham.foundation.database.domain.Session;
 import com.pratham.foundation.database.domain.Student;
 import com.pratham.foundation.database.domain.SupervisorData;
+import com.pratham.foundation.services.shared_preferences.FastSave;
 import com.pratham.foundation.ui.admin_panel.AdminControlsActivity_;
 import com.pratham.foundation.utility.FC_Constants;
-
+import com.pratham.foundation.utility.FC_Utility;
 
 import org.androidannotations.annotations.Background;
 import org.androidannotations.annotations.EBean;
 import org.androidannotations.annotations.UiThread;
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.File;
 import java.util.List;
 import java.util.concurrent.Executors;
 
@@ -56,6 +62,7 @@ public class PushDataToServer {
     JSONArray keyWordsData;
     JSONArray logsData;
     boolean pushSuccessfull = false;
+    int jsonIndex = 0, totalImages, imageUploadCnt;
 
     public PushDataToServer(Context context) {
 
@@ -115,16 +122,78 @@ public class PushDataToServer {
             if (ApplicationClass.wiseF.isDeviceConnectedToWifiNetwork()) {
                 if (ApplicationClass.wiseF.isDeviceConnectedToSSID(FC_Constants.PRATHAM_KOLIBRI_HOTSPOT)) {
                     getFacilityId(requestString);
-                }else {
+                } else {
                     isConnectedToRasp = false;
                     pushDataToServer(context, requestString, ApplicationClass.uploadDataUrl);
+                    getImageList();
                 }
             } else {
                 isConnectedToRasp = false;
                 pushDataToServer(context, requestString, ApplicationClass.uploadDataUrl);
+                getImageList();
             }
         } catch (Exception e) {
             e.printStackTrace();
+        }
+    }
+
+    public void getImageList() {
+        String path = Environment.getExternalStorageDirectory().toString() + "/.FC/Internal/photos/";
+        Log.d("Files", "Path: " + path);
+        File directory = new File(path);
+        File[] files = directory.listFiles();
+        Log.d("Files", "Size: " + files.length);
+        for (int i = 0; i < files.length; i++) {
+            Log.d("Files", "FileName:" + files[i].getName());
+        }
+        totalImages = files.length;
+        imageUploadCnt = 0;
+        jsonIndex = 0;
+        pushImagesToServer(files);
+    }
+
+    public void pushImagesToServer(final File[] imageFilesArray) {
+
+        if (imageFilesArray.length > jsonIndex) {
+            imageFilesArray[jsonIndex].getPath();
+            File file = new File(imageFilesArray[jsonIndex].getAbsolutePath());
+            if (file.exists()) {
+                final ProgressDialog dialog = new ProgressDialog(context);
+                FC_Utility.showDialogInApiCalling(dialog, context, "Uploading Image(s)..");
+                String fName = file.getName();
+                AndroidNetworking.upload(FC_Constants.PUSH_IMAGE_API)
+                        .addMultipartFile(fName, file)
+                        .addHeaders("Content-Type", "images")
+                        .build()
+                        .getAsJSONObject(new JSONObjectRequestListener() {
+                            @Override
+                            public void onResponse(JSONObject response) {
+                                FC_Utility.dismissDialog(dialog);
+                                try {
+
+                                    if (response.getBoolean("success")) {
+                                        jsonIndex++;
+                                        imageUploadCnt++;
+                                        if (totalImages == imageUploadCnt) {
+                                        } else {
+                                            pushImagesToServer(imageFilesArray);
+                                        }
+                                    }
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
+                            }
+
+                            @Override
+                            public void onError(ANError anError) {
+                                Toast.makeText(context, "Image push failed", Toast.LENGTH_SHORT).show();
+                                FC_Utility.dismissDialog(dialog);
+                            }
+                        });
+            } else {
+                jsonIndex++;
+                pushImagesToServer(imageFilesArray);
+            }
         }
     }
 
@@ -208,7 +277,7 @@ public class PushDataToServer {
 
     @UiThread
     public void onPostExecute() {
-        if(!autoPush) {
+        if (!autoPush) {
             if (pushSuccessfull) {
                 new AlertDialog.Builder(context)
                         .setMessage("Data pushed successfully")
@@ -282,6 +351,7 @@ public class PushDataToServer {
         }
         return requestString;
     }
+
     private JSONArray fillSessionData(List<Session> sessionList) {
         JSONArray newSessionsData = new JSONArray();
         JSONObject _sessionObj;
@@ -301,7 +371,6 @@ public class PushDataToServer {
     }
 
     private JSONArray fillCrlData(List<Crl> crlsList) {
-
         JSONArray crlsData = new JSONArray();
         JSONObject _crlObj;
         try {
