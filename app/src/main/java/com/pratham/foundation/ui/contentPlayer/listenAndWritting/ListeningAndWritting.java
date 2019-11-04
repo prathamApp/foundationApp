@@ -185,7 +185,7 @@ public class ListeningAndWritting extends Fragment implements ListeningAndWritti
 
     @Click(R.id.capture)
     public void captureClick() {
-        imageName = "" + ApplicationClass.getUniqueID();
+        imageName = "" + ApplicationClass.getUniqueID()+".JPEG";
         Intent takePicture = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         startActivityForResult(takePicture, CAMERA_REQUEST);
     }
