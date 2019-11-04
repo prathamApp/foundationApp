@@ -64,8 +64,7 @@ public class KeywordsIdentificationFragment extends Fragment implements Keywords
     private boolean onSdCard;
     private ScienceQuestion questionModel;
     private boolean isKeyWordShowing = false;
-
-
+    
     @AfterViews
     public void initiate() {
         Bundle bundle = getArguments();
