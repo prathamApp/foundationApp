@@ -148,7 +148,7 @@ public class WordWritingFragment extends Fragment
 
     @Click(R.id.capture)
     public void captureClick() {
-        imageName = "" + ApplicationClass.getUniqueID()+".JPEG";
+        imageName = "" + ApplicationClass.getUniqueID();
         Intent takePicture = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         startActivityForResult(takePicture, CAMERA_REQUEST);
     }
