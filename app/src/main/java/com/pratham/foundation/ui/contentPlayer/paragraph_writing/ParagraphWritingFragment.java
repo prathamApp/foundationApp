@@ -21,16 +21,13 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ScrollView;
-import android.widget.TextView;
 
 import com.pratham.foundation.ApplicationClass;
 import com.pratham.foundation.R;
 import com.pratham.foundation.customView.SansTextView;
 import com.pratham.foundation.interfaces.OnGameClose;
-import com.pratham.foundation.ui.contentPlayer.ContentPlayerActivity;
 import com.pratham.foundation.ui.contentPlayer.GameConstatnts;
 import com.pratham.foundation.ui.contentPlayer.fact_retrival_selection.ScienceQuestion;
-import com.pratham.foundation.ui.contentPlayer.sequenceLayout.SequenceLayout_;
 import com.pratham.foundation.utility.FC_Utility;
 
 import org.androidannotations.annotations.AfterViews;
@@ -44,8 +41,6 @@ import java.io.FileInputStream;
 import java.util.Arrays;
 
 import butterknife.OnClick;
-
-import static com.pratham.foundation.utility.FC_Constants.dialog_btn_cancel;
 
 @EFragment(R.layout.fragment_paragraph_writing)
 public class ParagraphWritingFragment extends Fragment
@@ -146,7 +141,7 @@ public class ParagraphWritingFragment extends Fragment
 
     @Click(R.id.capture)
     public void captureClick() {
-        imageName = "" + ApplicationClass.getUniqueID()+".JPEG";
+        imageName = "" + ApplicationClass.getUniqueID()+".jpg";
         Intent takePicture = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         startActivityForResult(takePicture, CAMERA_REQUEST);
     }

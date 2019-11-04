@@ -116,8 +116,7 @@ public class DoingFragment extends Fragment implements OnGameClose {
         resId = getArguments().getString("resId");
         contentTitle = getArguments().getString("contentName");
         jsonName = getArguments().getString("jsonName");
-        if (getArguments().getBoolean("onSdCard", false)) onSdCard = true;
-        else onSdCard = false;
+        onSdCard = getArguments().getBoolean("onSdCard", false);
         if (onSdCard)
             readingContentPath = ApplicationClass.contentSDPath + "/.FCA/English/Game/" + contentPath + "/";
         else
@@ -174,10 +173,7 @@ public class DoingFragment extends Fragment implements OnGameClose {
     private boolean checkWord(String wordStr) {
         try {
             String word = appDatabase.getKeyWordDao().checkWord(FC_Constants.currentStudentID, resId, wordStr);
-            if (word != null)
-                return true;
-            else
-                return false;
+            return word != null;
         } catch (Exception e) {
             e.printStackTrace();
             return false;
@@ -306,7 +302,7 @@ public class DoingFragment extends Fragment implements OnGameClose {
 
     @OnClick(R.id.capture)
     public void captureClick() {
-        imageName = "" + ApplicationClass.getUniqueID()+".JPEG";
+        imageName = "" + ApplicationClass.getUniqueID()+".jpg";
         Intent takePicture = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         startActivityForResult(takePicture, CAMERA_REQUEST);
     }
@@ -347,9 +343,9 @@ public class DoingFragment extends Fragment implements OnGameClose {
             addScore(GameConstatnts.getInt(questionModel.getQid()), jsonName, 0, 0, FC_Utility.getCurrentDateTime(), imageName);
             appDatabase.getKeyWordDao().insert(keyWords);
             Toast.makeText(context, "inserted succussfully", Toast.LENGTH_LONG).show();
-            GameConstatnts.playGameNext(context, GameConstatnts.FALSE, (OnGameClose) this);
+            GameConstatnts.playGameNext(context, GameConstatnts.FALSE, this);
         } else {
-            GameConstatnts.playGameNext(context, GameConstatnts.TRUE, (OnGameClose) this);
+            GameConstatnts.playGameNext(context, GameConstatnts.TRUE, this);
         }
         BackupDatabase.backup(context);
     }
