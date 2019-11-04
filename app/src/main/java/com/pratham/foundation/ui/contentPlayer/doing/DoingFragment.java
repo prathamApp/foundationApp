@@ -298,7 +298,6 @@ public class DoingFragment extends Fragment implements OnGameClose {
 
     }
 
-
     @Override
     public void onPause() {
         super.onPause();
