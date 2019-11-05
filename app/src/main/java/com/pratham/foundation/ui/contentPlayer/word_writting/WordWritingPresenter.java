@@ -3,7 +3,6 @@ package com.pratham.foundation.ui.contentPlayer.word_writting;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.os.Environment;
-import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -14,7 +13,6 @@ import com.pratham.foundation.database.domain.Score;
 import com.pratham.foundation.interfaces.OnGameClose;
 import com.pratham.foundation.ui.contentPlayer.GameConstatnts;
 import com.pratham.foundation.ui.contentPlayer.fact_retrival_selection.ScienceQuestion;
-import com.pratham.foundation.ui.contentPlayer.paragraph_writing.ParagraphWritingContract;
 import com.pratham.foundation.utility.FC_Constants;
 import com.pratham.foundation.utility.FC_Utility;
 
@@ -126,10 +124,7 @@ public class WordWritingPresenter implements WordWritingContract.WordWritingPres
     private boolean checkWord(String wordStr) {
         try {
             String word = appDatabase.getKeyWordDao().checkWord(FC_Constants.currentStudentID, resId, wordStr);
-            if (word != null)
-                return true;
-            else
-                return false;
+            return word != null;
         } catch (Exception e) {
             e.printStackTrace();
             return false;
@@ -174,10 +169,10 @@ public class WordWritingPresenter implements WordWritingContract.WordWritingPres
                     keyWords.setResourceId(resId);
                     keyWords.setSentFlag(0);
                     keyWords.setStudentId(FC_Constants.currentStudentID);
-                    String key = questionModel.get(i).getQuestion().toString();
+                    String key = questionModel.get(i).getQuestion();
                     keyWords.setKeyWord(key);
                     keyWords.setWordType("word");
-                    appDatabase.getKeyWordDao().insert(keyWords);
+//                    appDatabase.getKeyWordDao().insert(keyWords);
                     addScore(GameConstatnts.getInt(questionModel.get(i).getQid()), GameConstatnts.PARAGRAPH_WRITING, 0, 0, FC_Utility.getCurrentDateTime(), imageName);
                 }
                 GameConstatnts.playGameNext(context, GameConstatnts.FALSE, (OnGameClose) view);

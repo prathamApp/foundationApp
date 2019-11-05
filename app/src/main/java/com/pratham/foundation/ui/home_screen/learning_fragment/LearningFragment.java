@@ -509,6 +509,11 @@ public class LearningFragment extends Fragment implements LearningContract.Learn
 
     @Override
     public void seeMore(String nodeId, String nodeTitle) {
+        Intent intent = new Intent(getActivity(), ContentDisplay_.class);
+        intent.putExtra("nodeId", nodeId);
+        intent.putExtra("contentTitle", nodeTitle);
+        intent.putExtra("level", "" + currentLevel);
+        startActivity(intent);
     }
 
 }

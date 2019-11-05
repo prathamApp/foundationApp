@@ -32,12 +32,14 @@
             android:scrollbars="vertical"
             android:layout_centerInParent="true"
             android:paddingTop="@dimen/_10sdp"
+            android:gravity="center"
+            android:textColor="@color/red"
             android:paddingBottom="@dimen/_10sdp"
             android:layout_gravity="center"
             android:textSize="25sp"/>
     </RelativeLayout>
 
-    <RelativeLayout
+    <ScrollView
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_margin="20dp"
@@ -46,16 +48,20 @@
         android:elevation="5dp"
         android:padding="10dp">
 
-        <com.pratham.foundation.customView.SansTextView
-            android:id="@+id/paragraph"
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:textIsSelectable="true"
-            android:scrollbars="vertical"
-            android:gravity="center"
-            android:layout_gravity="center"
-            android:textSize="25sp" />
-    </RelativeLayout>
+            android:layout_height="wrap_content">
+
+            <com.pratham.foundation.customView.SansTextView
+                android:id="@+id/paragraph"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:textIsSelectable="true"
+                android:gravity="center"
+                android:layout_gravity="center"
+                android:textSize="25sp" />
+        </RelativeLayout>
+    </ScrollView>
 
     <RelativeLayout
         android:layout_width="match_parent"

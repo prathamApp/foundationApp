@@ -6,7 +6,9 @@ import android.arch.persistence.room.Insert;
 import android.arch.persistence.room.OnConflictStrategy;
 import android.arch.persistence.room.Query;
 import android.arch.persistence.room.Update;
+
 import com.pratham.foundation.database.domain.Score;
+
 import java.util.List;
 
 
@@ -42,13 +44,13 @@ public interface ScoreDao {
     List<Score> getAllNewScores(String s_id);
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    public void addScoreList(List<Score> contentList);
+    void addScoreList(List<Score> contentList);
 
     @Query("update Score set sentFlag=1 where sentFlag=0")
-    public void setSentFlag();
+    void setSentFlag();
 
     @Query("Select MAX(ScoredMarks) from Score where StudentID=:stdID AND Label='RC-sessionTotalScore '")
-    public int getRCHighScore(String stdID);
+    int getRCHighScore(String stdID);
 
     @Query("select * from Score where StudentID=:stdID AND Label='RC-sessionTotalScore '")
     List<Score> getScoreByStdID(String stdID);
@@ -61,4 +63,7 @@ public interface ScoreDao {
 
     @Query("select * from Score where sentFlag = 0 ")
     List<Score> getAllNotSentScores();
+
+    @Query("delete from Score where sentFlag = 1")
+    void deletePushedScore();
 }

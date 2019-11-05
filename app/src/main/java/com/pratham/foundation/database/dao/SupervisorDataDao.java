@@ -17,20 +17,23 @@ public interface SupervisorDataDao {
     long insert(SupervisorData supervisorData);
 
     @Query("DELETE FROM SupervisorData")
-    public void deleteAllSupervisorData();
+    void deleteAllSupervisorData();
 
     @Query("SELECT * FROM SupervisorData where sentFlag=0")
-    public List<SupervisorData> getAllSupervisorData();
+    List<SupervisorData> getAllSupervisorData();
 
     @Query("SELECT * FROM SupervisorData where supervisorId = :supervisorId")
-    public SupervisorData getSupervisorById(String supervisorId);
+    SupervisorData getSupervisorById(String supervisorId);
 
     @Query("SELECT * FROM SupervisorData where assessmentSessionId = :assessmentSessionId")
-    public List<SupervisorData> getSupervisorBySession(String assessmentSessionId);
+    List<SupervisorData> getSupervisorBySession(String assessmentSessionId);
 
     @Query("update SupervisorData set sentFlag=1 where sentFlag=0")
-    public void setSentFlag();
+    void setSentFlag();
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     void insertAll(List<SupervisorData> supervisorDataList);
+
+    @Query("delete from SupervisorData where sentFlag = 1")
+    void deletePushedSupervisorData();
 }

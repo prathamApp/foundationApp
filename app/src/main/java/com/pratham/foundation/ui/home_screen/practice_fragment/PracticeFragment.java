@@ -505,6 +505,11 @@ public class PracticeFragment extends Fragment implements PracticeContract.Pract
 
     @Override
     public void seeMore(String nodeId, String nodeTitle) {
+        Intent intent = new Intent(getActivity(), ContentDisplay_.class);
+        intent.putExtra("nodeId", nodeId);
+        intent.putExtra("contentTitle", nodeTitle);
+        intent.putExtra("level", "" + currentLevel);
+        startActivity(intent);
     }
 
 }

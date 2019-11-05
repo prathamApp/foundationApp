@@ -3,7 +3,6 @@ package com.pratham.foundation.ui.contentPlayer.story_reading;
 import android.content.Context;
 
 import com.google.gson.Gson;
-import com.pratham.foundation.ApplicationClass;
 import com.pratham.foundation.database.BackupDatabase;
 import com.pratham.foundation.database.domain.Assessment;
 import com.pratham.foundation.database.domain.ContentProgress;
@@ -39,7 +38,7 @@ public class StoryReadingPresenter implements StoryReadingContract.StoryReadingP
     List<ModalParaSubMenu> modalParaSubMenuList;
     List<KeyWords> learntWordsList;
     KeyWords learntWords;
-    public static float pagePercentage[];
+    public static float[] pagePercentage;
     int pgNo;
     String resId, resStartTime;
 
@@ -102,7 +101,12 @@ public class StoryReadingPresenter implements StoryReadingContract.StoryReadingP
         }
     }
 
-    private void addSttResultDB(String stt_Result) {
+    private void addSttResultDB(ArrayList<String> stt_Result) {
+        String deviceId = appDatabase.getStatusDao().getValue("DeviceId");
+        String strWord = "STT_ALL_RESULT - ";
+        for(int i =0 ; i<stt_Result.size(); i++)
+            strWord = strWord +stt_Result.get(i)+ " - ";
+
         try {
             Score score = new Score();
             score.setSessionID(FC_Constants.currentSession);
@@ -112,10 +116,10 @@ public class StoryReadingPresenter implements StoryReadingContract.StoryReadingP
             score.setTotalMarks(0);
             score.setStudentID(FC_Constants.currentStudentID);
             score.setStartDateTime(resStartTime);
-            score.setDeviceID(stt_Result);
+            score.setDeviceID(deviceId.equals(null) ? "0000" : deviceId);
             score.setEndDateTime(FC_Utility.getCurrentDateTime());
             score.setLevel(0);
-            score.setLabel("STT_ALL_RESULT");
+            score.setLabel(""+strWord);
             score.setSentFlag(0);
             appDatabase.getScoreDao().insert(score);
             BackupDatabase.backup(context);
@@ -132,11 +136,10 @@ public class StoryReadingPresenter implements StoryReadingContract.StoryReadingP
         String[] splitRes = sttRes.split(" ");
         String word = " ";
         float perc;
-        for (int j = 0; j < sttResult.size(); j++)
-            addSttResultDB(sttResult.get(j));
+        addSttResultDB(sttResult);
 
         for (int j = 0; j < splitRes.length; j++) {
-            String regex = "[\\-+.\"^?!@#%&*,:()]";
+            String regex = "[\\-+.\"^?!@#%&*,:|<>()]";
             splitRes[j] = splitRes[j].replaceAll(regex, "");
             for (int i = 0; i < splitWordsPunct.size(); i++) {
                 if ((splitRes[j].equalsIgnoreCase(splitWordsPunct.get(i))) && !correctArr[i]) {
@@ -171,10 +174,7 @@ public class StoryReadingPresenter implements StoryReadingContract.StoryReadingP
     public boolean checkLearnt(String wordCheck) {
         try {
             String word = appDatabase.getKeyWordDao().checkWord(FC_Constants.currentStudentID, "" + resId, wordCheck.toLowerCase());
-            if (word != null)
-                return true;
-            else
-                return false;
+            return word != null;
         } catch (Exception e) {
             e.printStackTrace();
             return false;

@@ -4,9 +4,7 @@ import android.content.Context;
 import android.util.Log;
 
 import com.google.gson.Gson;
-import com.pratham.foundation.ApplicationClass;
 import com.pratham.foundation.database.BackupDatabase;
-import com.pratham.foundation.database.dao.KeyWordDao;
 import com.pratham.foundation.database.domain.Assessment;
 import com.pratham.foundation.database.domain.ContentProgress;
 import com.pratham.foundation.database.domain.KeyWords;
@@ -129,10 +127,7 @@ public class ReadingVocabularyPresenter implements ReadingVocabularyContract.Rea
     private boolean checkWord(String checkWord) {
         try {
             String word = appDatabase.getKeyWordDao().checkWord(FC_Constants.currentStudentID, "" + resId, checkWord);
-            if (word != null)
-                return true;
-            else
-                return false;
+            return word != null;
         } catch (Exception e) {
             e.printStackTrace();
             return false;
@@ -206,7 +201,7 @@ public class ReadingVocabularyPresenter implements ReadingVocabularyContract.Rea
         float perc = 0;
 
         try {
-            String regex = "[\\-+.\"^?!@#%&*,:]";
+            String regex = "[\\-+.\"^?!@#%&*,|:]";
             String quesCheckFinal = ansCheck.replaceAll(regex, "");
             String quesFinal = fullAns.replaceAll(regex, "");
 
@@ -214,8 +209,9 @@ public class ReadingVocabularyPresenter implements ReadingVocabularyContract.Rea
             String words = " ";
             String keyWordCorrect = "";
 
+            addSttResultDB(sttResults);
+
             for (int k = 0; k < sttResults.size(); k++) {
-                addSttResultDB(sttResults.get(k));
                 String sttResult = sttResults.get(k);
                 if (sttResult.toLowerCase().contains(quesCheckFinal.toLowerCase())) {
                     allCorrect = true;
@@ -262,7 +258,12 @@ public class ReadingVocabularyPresenter implements ReadingVocabularyContract.Rea
         }
     }
 
-    private void addSttResultDB(String stt_Result) {
+    private void addSttResultDB(ArrayList<String> stt_Result) {
+        String deviceId = appDatabase.getStatusDao().getValue("DeviceId");
+        String strWord = "STT_ALL_RESULT - ";
+        for(int i =0 ; i<stt_Result.size(); i++)
+            strWord = strWord +stt_Result.get(i)+ " - ";
+
         try {
             Score score = new Score();
             score.setSessionID(FC_Constants.currentSession);
@@ -272,10 +273,10 @@ public class ReadingVocabularyPresenter implements ReadingVocabularyContract.Rea
             score.setTotalMarks(0);
             score.setStudentID(FC_Constants.currentStudentID);
             score.setStartDateTime(resStartTime);
-            score.setDeviceID(stt_Result);
+            score.setDeviceID(deviceId.equals(null) ? "0000" : deviceId);
             score.setEndDateTime(FC_Utility.getCurrentDateTime());
             score.setLevel(0);
-            score.setLabel("STT_ALL_RESULT");
+            score.setLabel(""+strWord);
             score.setSentFlag(0);
             appDatabase.getScoreDao().insert(score);
             BackupDatabase.backup(context);

@@ -80,7 +80,8 @@ public class ReadingFragment extends Fragment implements STT_Result {
     private float percScore = 0;
     private String answer;
     public static SpeechRecognizer speech = null;
-    private static boolean voiceStart = false, correctArr[];
+    private static boolean voiceStart = false;
+    private static boolean[] correctArr;
     public static Intent intent;
 
     private String readingContentPath, contentPath, contentTitle, StudentID, resId;
@@ -186,10 +187,7 @@ public class ReadingFragment extends Fragment implements STT_Result {
     private boolean checkWord(String wordStr) {
         try {
             String word = appDatabase.getKeyWordDao().checkWord(FC_Constants.currentStudentID, resId, wordStr);
-            if (word != null)
-                return true;
-            else
-                return false;
+            return word != null;
         } catch (Exception e) {
             e.printStackTrace();
             return false;
@@ -354,7 +352,7 @@ public class ReadingFragment extends Fragment implements STT_Result {
             else sttResult = matches.get(0);
         }
         sttQuestion = scienceQuestion.getAnswer();
-        String regex = "[\\-+.\"^?!@#%&*,:]";
+        String regex = "[\\-+.\"^?!@#%&*,:|<>()]";
         String quesFinal = sttQuestion.replaceAll(regex, "");
 
 

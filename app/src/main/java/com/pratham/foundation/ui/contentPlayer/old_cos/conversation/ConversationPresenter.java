@@ -73,7 +73,7 @@ public class ConversationPresenter implements ConversationContract.ConversationP
         String sttQuestion = answer;
 
         String quesFinal;
-        String regex = "[\\-+.\"^?!@#%&*,:]";
+        String regex = "[\\-+.\"^?!@#%&*,:|<>()]";
 //        String regex = "[\\-\\+\\.\\\"\\^\\?\\!\\@\\#\\%\\&\\*\\,\\:]";
 //        String regex = "(?:(?<!\\S)\\p{Punct}+)|(?:\\p{Punct}+(?!\\S))";
         quesFinal = sttQuestion.replaceAll(regex, "");

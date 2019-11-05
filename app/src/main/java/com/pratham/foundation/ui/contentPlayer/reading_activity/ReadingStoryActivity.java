@@ -231,10 +231,7 @@ public class ReadingStoryActivity extends BaseActivity implements
             story_title.setText(pageTitle);
         story_title.setTextSize(35);
 
-        if (storyAudio.equalsIgnoreCase("NA"))
-            playHideFlg = true;
-        else
-            playHideFlg = false;
+        playHideFlg = storyAudio.equalsIgnoreCase("NA");
 
         try {
             File f = new File(readingContentPath + storyBg);
@@ -271,7 +268,7 @@ public class ReadingStoryActivity extends BaseActivity implements
             if (modalPagesList.get(currentPage).getReadList().get(i).getWord().equalsIgnoreCase("#"))
                 lineBreakCounter += 1;
             correctArr[i] = false;
-            String regex = "[\\-+.\"^?!@#%&*,:]";
+            String regex = "[\\-+.\"^?!@#%&*,:|<>()]";
             splitWordsPunct.add(splitWords.get(i).replaceAll(regex, ""));
             wordsDurationList.add(modalPagesList.get(currentPage).getReadList().get(i).getWordDuration());
             wordsResIdList.add(modalPagesList.get(currentPage).getReadList().get(i).getWordId());

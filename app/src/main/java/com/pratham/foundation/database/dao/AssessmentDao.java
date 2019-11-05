@@ -6,8 +6,8 @@ import android.arch.persistence.room.Insert;
 import android.arch.persistence.room.OnConflictStrategy;
 import android.arch.persistence.room.Query;
 import android.arch.persistence.room.Update;
-import com.pratham.foundation.database.domain.Assessment;
 
+import com.pratham.foundation.database.domain.Assessment;
 
 import java.util.List;
 
@@ -31,7 +31,7 @@ public interface AssessmentDao {
     void deleteAll(Assessment... assessments);
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    public void addAssessmentList(List<Assessment> contentList);
+    void addAssessmentList(List<Assessment> contentList);
 
     @Query("select * from Assessment where sentFlag=0")
     List<Assessment> getAllAssessment();
@@ -43,11 +43,14 @@ public interface AssessmentDao {
     List<Assessment> getCertificates(String stdID, String COS_Lbl);
 
     @Query("select count(*) from Assessment WHERE StudentIDa=:stdID")
-    public int getAssessmentCount(String stdID);
+    int getAssessmentCount(String stdID);
 
     @Query("update Assessment set sentFlag=1 where sentFlag=0")
-    public void setSentFlag();
+    void setSentFlag();
 
     @Query("select * from Assessment WHERE StartDateTimea=:currentGroup AND Labela=:certificateLbl ORDER BY EndDateTimea DESC")
     List<Assessment> getCertificatesGroups(String currentGroup, String certificateLbl);
+
+    @Query("delete from Assessment where sentFlag = 1")
+    void deletePushedAssessment();
 }

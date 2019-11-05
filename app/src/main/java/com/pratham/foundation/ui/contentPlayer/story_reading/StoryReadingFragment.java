@@ -284,7 +284,7 @@ public class StoryReadingFragment extends Fragment implements
             if (modalPagesList.get(currentPage).getReadList().get(i).getWord().equalsIgnoreCase("#"))
                 lineBreakCounter += 1;
             correctArr[i] = false;
-            String regex = "[\\-+.\"^?!@#%&*,:]";
+            String regex = "[\\-+.\"^?!@#%&*,:|<>()]";
             splitWordsPunct.add(splitWords.get(i).replaceAll(regex, ""));
             wordsDurationList.add(modalPagesList.get(currentPage).getReadList().get(i).getWordDuration());
             wordsResIdList.add(modalPagesList.get(currentPage).getReadList().get(i).getWordId());

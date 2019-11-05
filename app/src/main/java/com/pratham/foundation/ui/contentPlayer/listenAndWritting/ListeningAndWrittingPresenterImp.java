@@ -3,7 +3,6 @@ package com.pratham.foundation.ui.contentPlayer.listenAndWritting;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.os.Environment;
-import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -114,10 +113,10 @@ public class ListeningAndWrittingPresenterImp implements ListeningAndWrittingCon
                     keyWords.setResourceId(resId);
                     keyWords.setSentFlag(0);
                     keyWords.setStudentId(FC_Constants.currentStudentID);
-                    String key = listenAndWrittingModal.get(i).getTitle().toString();
+                    String key = listenAndWrittingModal.get(i).getTitle();
                     keyWords.setKeyWord(key);
                     keyWords.setWordType("word");
-                    appDatabase.getKeyWordDao().insert(keyWords);
+//                    appDatabase.getKeyWordDao().insert(keyWords);
                     addScore(GameConstatnts.getInt(listenAndWrittingModal.get(i).getQid()), GameConstatnts.LISTNING_AND_WRITTING, 0, 0, FC_Utility.getCurrentDateTime(), imageName);
                 }
                 GameConstatnts.playGameNext(context, GameConstatnts.FALSE, (OnGameClose) view);
@@ -179,10 +178,7 @@ public class ListeningAndWrittingPresenterImp implements ListeningAndWrittingCon
     private boolean checkWord(String wordStr) {
         try {
             String word = appDatabase.getKeyWordDao().checkWord(FC_Constants.currentStudentID, resId, wordStr);
-            if (word != null)
-                return true;
-            else
-                return false;
+            return word != null;
         } catch (Exception e) {
             e.printStackTrace();
             return false;

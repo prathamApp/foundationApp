@@ -11,7 +11,6 @@ import android.widget.Toast;
 import com.androidnetworking.AndroidNetworking;
 import com.androidnetworking.common.Priority;
 import com.androidnetworking.error.ANError;
-import com.androidnetworking.interfaces.JSONObjectRequestListener;
 import com.androidnetworking.interfaces.StringRequestListener;
 import com.google.gson.Gson;
 import com.pratham.foundation.ApplicationClass;
@@ -38,7 +37,6 @@ import org.androidannotations.annotations.Background;
 import org.androidannotations.annotations.EBean;
 import org.androidannotations.annotations.UiThread;
 import org.json.JSONArray;
-import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.File;
@@ -124,13 +122,13 @@ public class PushDataToServer {
                     getFacilityId(requestString);
                 } else {
                     isConnectedToRasp = false;
-                    pushDataToServer(context, requestString, ApplicationClass.uploadDataUrl);
                     getImageList();
+                    pushDataToServer(context, requestString, ApplicationClass.uploadDataUrl);
                 }
             } else {
                 isConnectedToRasp = false;
-                pushDataToServer(context, requestString, ApplicationClass.uploadDataUrl);
                 getImageList();
+                pushDataToServer(context, requestString, ApplicationClass.uploadDataUrl);
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -152,6 +150,7 @@ public class PushDataToServer {
         pushImagesToServer(files);
     }
 
+    @UiThread
     public void pushImagesToServer(final File[] imageFilesArray) {
 
         if (imageFilesArray.length > jsonIndex) {
@@ -165,13 +164,13 @@ public class PushDataToServer {
                         .addMultipartFile(fName, file)
                         .addHeaders("Content-Type", "images")
                         .build()
-                        .getAsJSONObject(new JSONObjectRequestListener() {
+                        .getAsString(new StringRequestListener() {
                             @Override
-                            public void onResponse(JSONObject response) {
+                            public void onResponse(String response) {
                                 FC_Utility.dismissDialog(dialog);
                                 try {
-
-                                    if (response.getBoolean("success")) {
+                                    if (response.equalsIgnoreCase("success")) {
+                                        file.delete();
                                         jsonIndex++;
                                         imageUploadCnt++;
                                         if (totalImages == imageUploadCnt) {
@@ -179,9 +178,11 @@ public class PushDataToServer {
                                             pushImagesToServer(imageFilesArray);
                                         }
                                     }
-                                } catch (JSONException e) {
+                                } catch (Exception e) {
+                                    FC_Utility.dismissDialog(dialog);
                                     e.printStackTrace();
                                 }
+
                             }
 
                             @Override
@@ -664,5 +665,10 @@ public class PushDataToServer {
         AppDatabase.getDatabaseInstance(context).getStudentDao().setSentFlag();
         AppDatabase.getDatabaseInstance(context).getKeyWordDao().setSentFlag();
         AppDatabase.getDatabaseInstance(context).getContentProgressDao().setSentFlag();
+
+        AppDatabase.getDatabaseInstance(context).getLogsDao().deletePushedLogs();
+        AppDatabase.getDatabaseInstance(context).getScoreDao().deletePushedScore();
+        AppDatabase.getDatabaseInstance(context).getAssessmentDao().deletePushedAssessment();
+        AppDatabase.getDatabaseInstance(context).getSupervisorDataDao().deletePushedSupervisorData();
     }
 }

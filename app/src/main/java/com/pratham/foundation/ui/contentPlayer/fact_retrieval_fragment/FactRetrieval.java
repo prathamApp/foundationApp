@@ -75,7 +75,7 @@ public class FactRetrieval extends Fragment implements FactRetrievalContract.Fac
             else
                 readingContentPath = ApplicationClass.foundationPath + "/.FCA/English/Game/" + contentPath + "/";
 
-            paragraph.setMovementMethod(new ScrollingMovementMethod());
+//            paragraph.setMovementMethod(new ScrollingMovementMethod());
             quetion.setMovementMethod(new ScrollingMovementMethod());
         }
 

@@ -137,6 +137,7 @@ public class FunInnerDataAdapter extends RecyclerView.Adapter {
                 //file
                 FileHolder fileHolder = (FileHolder) viewHolder;
                 fileHolder.tvTitle.setText(itemsList.get(i).getNodeTitle());
+                fileHolder.tvTitle.setTextColor(mContext.getResources().getColor(R.color.text_color));
                 File file;
                 if (itemsList.get(i).getIsDownloaded().equalsIgnoreCase("1") ||
                         itemsList.get(i).getIsDownloaded().equalsIgnoreCase("true")) {
