@@ -122,6 +122,9 @@
         <activity
             android:name=".ui.contentPlayer.video_view.ActivityVideoView_"
             android:screenOrientation="sensorLandscape" />
+        <activity
+            android:name=".ui.contentPlayer.doing.FullScreenVideo_"
+            android:screenOrientation="sensorLandscape" />
         <service
             android:name=".services.AppExitService"
             android:enabled="true"

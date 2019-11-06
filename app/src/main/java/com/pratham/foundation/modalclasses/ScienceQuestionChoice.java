@@ -30,7 +30,18 @@ public class ScienceQuestionChoice implements Serializable {
     private int end;
     @Ignore
     private boolean isclicked = false;
-    ;
+
+    @Ignore
+    private String startTime;
+
+    @Ignore
+    private String endTime;
+
+
+
+
+
+
 
     public int getStart() {
         return start;
@@ -111,6 +122,23 @@ public class ScienceQuestionChoice implements Serializable {
 
     public void setIsclicked(boolean isclicked) {
         this.isclicked = isclicked;
+    }
+
+
+    public String getStartTime() {
+        return startTime;
+    }
+
+    public void setStartTime(String startTime) {
+        this.startTime = startTime;
+    }
+
+    public String getEndTime() {
+        return endTime;
+    }
+
+    public void setEndTime(String endTime) {
+        this.endTime = endTime;
     }
 
     @NonNull

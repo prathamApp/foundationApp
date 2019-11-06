@@ -13,6 +13,7 @@ import android.widget.Toast;
 import com.pratham.foundation.R;
 import com.pratham.foundation.modalclasses.OptionKeyMap;
 import com.pratham.foundation.modalclasses.ScienceQuestionChoice;
+import com.pratham.foundation.utility.FC_Utility;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,7 +21,7 @@ import java.util.List;
 public class KeywordOptionAdapter extends RecyclerView.Adapter<KeywordOptionAdapter.Myviewholder> {
     Context context;
     List<ScienceQuestionChoice> datalist;
-    List selectedOption = new ArrayList();
+    List<ScienceQuestionChoice> selectedOption = new ArrayList();
     int maxSelect;
 
     public KeywordOptionAdapter(Context context, List<ScienceQuestionChoice> datalist, int maxSelect) {
@@ -49,20 +50,22 @@ public class KeywordOptionAdapter extends RecyclerView.Adapter<KeywordOptionAdap
             public void onClick(View v) {
 
                 if (datalist.get(myviewholder.getAdapterPosition()).isIsclicked()) {
-                    if (selectedOption.contains(datalist.get(myviewholder.getAdapterPosition()).getSubQues())) {
-                        selectedOption.remove(datalist.get(myviewholder.getAdapterPosition()).getSubQues());
+                    if (selectedOption.contains(datalist.get(myviewholder.getAdapterPosition()))) {
+                        selectedOption.remove(datalist.get(myviewholder.getAdapterPosition()));
                     }
                     datalist.get(myviewholder.getAdapterPosition()).setIsclicked(false);
                     myviewholder.itemView.setBackground(ContextCompat.getDrawable(context, R.drawable.dialog_bg));
                 } else {
-                    if (maxSelect >selectedOption.size()) {
-                        if (!selectedOption.contains(datalist.get(myviewholder.getAdapterPosition()).getSubQues())) {
-                            selectedOption.add(datalist.get(myviewholder.getAdapterPosition()).getSubQues());
+                    if (maxSelect > selectedOption.size()) {
+                        if (!selectedOption.contains(datalist.get(myviewholder.getAdapterPosition()))) {
+                            datalist.get(myviewholder.getAdapterPosition()).setStartTime(FC_Utility.getCurrentDateTime());
+                            datalist.get(myviewholder.getAdapterPosition()).setEndTime(FC_Utility.getCurrentDateTime());
+                            selectedOption.add(datalist.get(myviewholder.getAdapterPosition()));
                         }
                         datalist.get(myviewholder.getAdapterPosition()).setIsclicked(true);
                         myviewholder.itemView.setBackground(ContextCompat.getDrawable(context, R.drawable.correct_bg));
-                    }else {
-                        Toast.makeText(context,"you can not select more than "+maxSelect+" items",Toast.LENGTH_LONG).show();
+                    } else {
+                        Toast.makeText(context, "you can not select more than " + maxSelect + " items", Toast.LENGTH_LONG).show();
                     }
                 }
             }

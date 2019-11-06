@@ -20,7 +20,7 @@ public interface FactRetrievalContract {
         void addLearntWords(List<ScienceQuestionChoice> selectedQuetion);
 
         float checkAnswer(ScienceQuestionChoice selectedAnsList);
-        void addScore(int wID, String Word, int scoredMarks, int totalMarks, String resStartTime, String Label);
+        void addScore(int wID, String Word, int scoredMarks, int totalMarks, String resStartTime,String resEndTime, String Label);
     }
 
 }

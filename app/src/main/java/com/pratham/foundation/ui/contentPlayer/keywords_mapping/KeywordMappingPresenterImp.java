@@ -131,24 +131,24 @@ public class KeywordMappingPresenterImp implements KeywordMappingContract.Keywor
         }
     }
 
-    public void addLearntWords(ScienceQuestion keywordmapping, List selectedAnsList) {
+    public void addLearntWords(ScienceQuestion keywordmapping, List<ScienceQuestionChoice> selectedAnsList) {
         correctWordList = new ArrayList<>();
         wrongWordList = new ArrayList<>();
         int scoredMarks = (int) checkAnswer(keywordmapping.getLstquestionchoice(), selectedAnsList);
         if (selectedAnsList != null && !selectedAnsList.isEmpty()) {
             for (int i = 0; i < selectedAnsList.size(); i++) {
-                if ( checkAnswerNew( keywordmapping.getLstquestionchoice(),selectedAnsList.get(i).toString())){
+                if ( checkAnswerNew( keywordmapping.getLstquestionchoice(),selectedAnsList.get(i).getSubQues())){
                     KeyWords keyWords = new KeyWords();
                     keyWords.setResourceId(resId);
                     keyWords.setSentFlag(0);
                     keyWords.setStudentId(FC_Constants.currentStudentID);
-                    String key = selectedAnsList.get(i).toString();
+                    String key = selectedAnsList.get(i).getSubQues().toString();
                     keyWords.setKeyWord(key);
                     keyWords.setWordType("word");
                     appDatabase.getKeyWordDao().insert(keyWords);
-                    addScore(GameConstatnts.getInt(keywordmapping.getQid()), GameConstatnts.KEYWORD_MAPPING, 10, 10, FC_Utility.getCurrentDateTime(), selectedAnsList.get(i).toString());
+                    addScore(GameConstatnts.getInt(keywordmapping.getQid()), GameConstatnts.KEYWORD_MAPPING, 10, 10, selectedAnsList.get(i).getStartTime(),selectedAnsList.get(i).getEndTime(), selectedAnsList.get(i).toString());
                 }else {
-                    addScore(GameConstatnts.getInt(keywordmapping.getQid()), GameConstatnts.KEYWORD_MAPPING, 0, 10, FC_Utility.getCurrentDateTime(), selectedAnsList.get(i).toString());
+                    addScore(GameConstatnts.getInt(keywordmapping.getQid()), GameConstatnts.KEYWORD_MAPPING, 0, 10,selectedAnsList.get(i).getStartTime(),selectedAnsList.get(i).getEndTime(),selectedAnsList.get(i).toString());
                 }
             }
 
@@ -161,7 +161,7 @@ public class KeywordMappingPresenterImp implements KeywordMappingContract.Keywor
         BackupDatabase.backup(context);
     }
 
-    public void addScore(int wID, String Word, int scoredMarks, int totalMarks, String resStartTime, String Label) {
+    public void addScore(int wID, String Word, int scoredMarks, int totalMarks, String resStartTime,String resEndTime, String Label) {
         try {
             String deviceId = appDatabase.getStatusDao().getValue("DeviceId");
             Score score = new Score();
@@ -173,7 +173,7 @@ public class KeywordMappingPresenterImp implements KeywordMappingContract.Keywor
             score.setStudentID(FC_Constants.currentStudentID);
             score.setStartDateTime(resStartTime);
             score.setDeviceID(deviceId.equals(null) ? "0000" : deviceId);
-            score.setEndDateTime(FC_Utility.getCurrentDateTime());
+            score.setEndDateTime(resEndTime);
             score.setLevel(FC_Constants.currentLevel);
             score.setLabel(Word + " - " + Label);
             score.setSentFlag(0);
@@ -190,7 +190,7 @@ public class KeywordMappingPresenterImp implements KeywordMappingContract.Keywor
                 assessment.setStudentIDa(FC_Constants.currentAssessmentStudentID);
                 assessment.setStartDateTimea(resStartTime);
                 assessment.setDeviceIDa(deviceId.equals(null) ? "0000" : deviceId);
-                assessment.setEndDateTime(FC_Utility.getCurrentDateTime());
+                assessment.setEndDateTime(resEndTime);
                 assessment.setLevela(FC_Constants.currentLevel);
                 assessment.setLabel("test: " + Label);
                 assessment.setSentFlag(0);
@@ -213,14 +213,14 @@ public class KeywordMappingPresenterImp implements KeywordMappingContract.Keywor
 
 
 
-    public float checkAnswer(List<ScienceQuestionChoice> ansSet,List<String> selectedAnsList) {
+    public float checkAnswer(List<ScienceQuestionChoice> ansSet,List<ScienceQuestionChoice> selectedAnsList) {
         int correctCnt = 0;
         for (int i = 0; i < selectedAnsList.size(); i++) {
-            if (checkAnswerNew(ansSet, selectedAnsList.get(i).toString())) {
+            if (checkAnswerNew(ansSet, selectedAnsList.get(i).getSubQues())) {
                 correctCnt++;
-                correctWordList.add(selectedAnsList.get(i));
+                correctWordList.add(selectedAnsList.get(i).getSubQues());
             } else {
-                wrongWordList.add(selectedAnsList.get(i));
+                wrongWordList.add(selectedAnsList.get(i).getSubQues());
             }
         }
         return 10 * correctCnt / getCorrectCnt(ansSet);

@@ -73,7 +73,7 @@ public class KeywordMappingFragment extends Fragment implements KeywordMappingCo
         presenter.setView(KeywordMappingFragment.this, resId, readingContentPath);
         presenter.getData();
         resStartTime = FC_Utility.getCurrentDateTime();
-        presenter.addScore(0, "", 0, 0, resStartTime, GameConstatnts.KEYWORD_MAPPING + " " + GameConstatnts.START);
+        presenter.addScore(0, "", 0, 0, resStartTime,FC_Utility.getCurrentDateTime(), GameConstatnts.KEYWORD_MAPPING + " " + GameConstatnts.START);
 
     }
 
@@ -141,7 +141,7 @@ public class KeywordMappingFragment extends Fragment implements KeywordMappingCo
     @Click(R.id.submit)
     public void submitClick() {
         if (keywordOptionAdapter != null && keywordmapping != null) {
-            List selectedoptionList = keywordOptionAdapter.getSelectedOptionList();
+            List<ScienceQuestionChoice> selectedoptionList = keywordOptionAdapter.getSelectedOptionList();
             presenter.addLearntWords(keywordmapping, selectedoptionList);
         }
         // GameConstatnts.playGameNext(getActivity());
@@ -155,6 +155,6 @@ public class KeywordMappingFragment extends Fragment implements KeywordMappingCo
 
     @Override
     public void gameClose() {
-        presenter.addScore(0, "", 0, 0, resStartTime, GameConstatnts.KEYWORD_MAPPING + " " + GameConstatnts.END);
+        presenter.addScore(0, "", 0, 0, resStartTime,FC_Utility.getCurrentDateTime(), GameConstatnts.KEYWORD_MAPPING + " " + GameConstatnts.END);
     }
 }

@@ -1,6 +1,7 @@
 package com.pratham.foundation.ui.contentPlayer.fact_retrieval_fragment;
 
 import android.app.Dialog;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.text.SpannableString;
@@ -59,7 +60,9 @@ public class FactRetrieval extends Fragment implements FactRetrievalContract.Fac
     boolean onSdCard;
     private List<ScienceQuestionChoice> selectedQuetion;
     private int index = 0;
-
+    private MediaPlayer mediaPlayerWrong;
+    private MediaPlayer mediaPlayercorrect;
+    private String startTime;
 
     @AfterViews
     public void initiate() {
@@ -75,6 +78,8 @@ public class FactRetrieval extends Fragment implements FactRetrievalContract.Fac
             else
                 readingContentPath = ApplicationClass.foundationPath + "/.FCA/English/Game/" + contentPath + "/";
 
+            mediaPlayerWrong = MediaPlayer.create(getActivity(), R.raw.wrong_sound);
+            mediaPlayercorrect = MediaPlayer.create(getActivity(), R.raw.welldone);
 //            paragraph.setMovementMethod(new ScrollingMovementMethod());
             quetion.setMovementMethod(new ScrollingMovementMethod());
         }
@@ -82,7 +87,7 @@ public class FactRetrieval extends Fragment implements FactRetrievalContract.Fac
         presenter.setView(FactRetrieval.this, contentTitle, resId);
         presenter.getData(readingContentPath);
         resStartTime = FC_Utility.getCurrentDateTime();
-        presenter.addScore(0, "", 0, 0, resStartTime, GameConstatnts.FACTRETRIEVAL + " " + GameConstatnts.START);
+        presenter.addScore(0, "", 0, 0, resStartTime, FC_Utility.getCurrentDateTime(), GameConstatnts.FACTRETRIEVAL + " " + GameConstatnts.START);
 
     }
 
@@ -131,6 +136,9 @@ public class FactRetrieval extends Fragment implements FactRetrievalContract.Fac
                         SpannableString str = new SpannableString(para);
                         str.setSpan(new BackgroundColorSpan(getResources().getColor(R.color.colorBtnOrangeLight)), start, end, 0);
                         answer = para.substring(start, end).trim();
+                        selectedQuetion.get(index).setStartTime(startTime);
+                        selectedQuetion.get(index).setEndTime(FC_Utility.getCurrentDateTime());
+
                         if (!answer.isEmpty()) {
                             selectedQuetion.get(index).setStart(start);
                             selectedQuetion.get(index).setEnd(end);
@@ -148,6 +156,8 @@ public class FactRetrieval extends Fragment implements FactRetrievalContract.Fac
                                 SansButton dia_btn_yellow = dialog.findViewById(R.id.dia_btn_yellow);
                                 dia_btn_yellow.setOnClickListener(v -> dialog.dismiss());
                                 dialog.show();
+                                mediaPlayercorrect.start();
+
                             } else {
                                 final Dialog dialog = new Dialog(getActivity());
                                 dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -159,6 +169,7 @@ public class FactRetrieval extends Fragment implements FactRetrievalContract.Fac
                                 correctAns.setText(selectedQuetion.get(index).getCorrectAnswer());
                                 dia_btn_yellow.setOnClickListener(v -> dialog.dismiss());
                                 dialog.show();
+                                mediaPlayerWrong.start();
                             }
                         }
                         paragraph.setText(str);
@@ -194,6 +205,8 @@ public class FactRetrieval extends Fragment implements FactRetrievalContract.Fac
                 str.setSpan(new BackgroundColorSpan(getResources().getColor(R.color.colorBtnOrangeLight)), selectedQuetion.get(index).getStart(), selectedQuetion.get(index).getEnd(), 0);
             }
             quetion.setText(selectedQuetion.get(index).getSubQues());
+            startTime = FC_Utility.getCurrentDateTime();
+
             paragraph.setText(str);
             if (index == 0) {
                 previous.setVisibility(View.INVISIBLE);
@@ -234,9 +247,9 @@ public class FactRetrieval extends Fragment implements FactRetrievalContract.Fac
 
     @Click(R.id.submitBtn)
     public void onsubmitBtnClick() {
-        if (selectedQuetion != null)
+        if (selectedQuetion != null) {
             presenter.addLearntWords(selectedQuetion);
-
+        }
         //  GameConstatnts.playGameNext(getActivity());
         /* Bundle bundle = GameConstatnts.findGameData(resId);
         if (bundle != null) {
@@ -248,6 +261,6 @@ public class FactRetrieval extends Fragment implements FactRetrievalContract.Fac
 
     @Override
     public void gameClose() {
-        presenter.addScore(0, "", 0, 0, resStartTime, GameConstatnts.FACTRETRIEVAL + " " + GameConstatnts.END);
+        presenter.addScore(0, "", 0, 0, resStartTime, FC_Utility.getCurrentDateTime(), GameConstatnts.FACTRETRIEVAL + " " + GameConstatnts.END);
     }
 }

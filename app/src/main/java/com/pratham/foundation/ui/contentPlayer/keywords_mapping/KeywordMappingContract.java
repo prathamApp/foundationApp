@@ -1,5 +1,6 @@
 package com.pratham.foundation.ui.contentPlayer.keywords_mapping;
 
+import com.pratham.foundation.modalclasses.ScienceQuestionChoice;
 import com.pratham.foundation.modalclasses.keywordmapping;
 import com.pratham.foundation.ui.contentPlayer.fact_retrival_selection.ScienceQuestion;
 
@@ -18,9 +19,9 @@ public interface KeywordMappingContract {
 
         void getDataList();
 
-        void addLearntWords(ScienceQuestion keywordmapping, List selectedOption);
+        void addLearntWords(ScienceQuestion keywordmapping, List<ScienceQuestionChoice> selectedOption);
 
         void setView(KeywordMappingContract.KeywordMappingView keywordMappingView, String resId,String readingContentPath);
-        void addScore(int wID, String Word, int scoredMarks, int totalMarks, String resStartTime, String Label);
+        void addScore(int wID, String Word, int scoredMarks, int totalMarks, String resStartTime,String resEndTime, String Label);
     }
 }

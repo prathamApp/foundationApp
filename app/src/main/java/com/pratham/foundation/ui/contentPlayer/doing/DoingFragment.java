@@ -280,17 +280,19 @@ public class DoingFragment extends Fragment implements OnGameClose {
     public void onVideoClicked() {
      /*   ZoomImageDialog zoomImageDialog = new ZoomImageDialog(getActivity(), path, scienceQuestion.getQtid());
         zoomImageDialog.show();*/
+        Intent intent = new Intent(getActivity(), FullScreenVideo_.class);
+        intent.putExtra("questionPath",questionPath);
+        startActivity(intent);
+       // MediaController mediaController = new MediaController(getActivity());
 
-        MediaController mediaController = new MediaController(getActivity());
-
-        questionImage.setVisibility(View.GONE);
+      /*  questionImage.setVisibility(View.GONE);
         vv_question.setVisibility(View.VISIBLE);
         vv_question.setVideoPath(questionPath);
         vv_question.setMediaController(mediaController);
         mediaController.setAnchorView(vv_question);
         vv_question.setZOrderOnTop(true);
         vv_question.setZOrderMediaOverlay(true);
-        vv_question.start();
+        vv_question.start();*/
 
     }
 
@@ -302,7 +304,7 @@ public class DoingFragment extends Fragment implements OnGameClose {
 
     @OnClick(R.id.capture)
     public void captureClick() {
-        imageName = "" + ApplicationClass.getUniqueID()+".jpg";
+        imageName = "" + ApplicationClass.getUniqueID() + ".jpg";
         Intent takePicture = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         startActivityForResult(takePicture, CAMERA_REQUEST);
     }

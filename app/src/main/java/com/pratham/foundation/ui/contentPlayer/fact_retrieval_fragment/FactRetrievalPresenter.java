@@ -146,7 +146,7 @@ public class FactRetrievalPresenter implements FactRetrievalContract.FactRetriev
                         scoredMarks = 0;
                     }
                     // addScore(GameConstatnts.getInt(selectedAnsList.get(i).getQid()), GameConstatnts.FACTRETRIEVAL, scoredMarks, 10, FC_Utility.getCurrentDateTime(), selectedAnsList.get(i).toString());
-                    addScore(GameConstatnts.getInt(questionModel.getQid()), GameConstatnts.FACTRETRIEVAL, scoredMarks, 10, FC_Utility.getCurrentDateTime(), selectedAnsList.get(i).toString());
+                    addScore(GameConstatnts.getInt(questionModel.getQid()), GameConstatnts.FACTRETRIEVAL, scoredMarks, 10,selectedAnsList.get(i).getStartTime(),selectedAnsList.get(i).getEndTime(), selectedAnsList.get(i).toString());
                 }
             }
             appDatabase.getKeyWordDao().insertAllWord(learntWords);
@@ -166,7 +166,7 @@ public class FactRetrievalPresenter implements FactRetrievalContract.FactRetriev
         return false;
     }
 
-    public void addScore(int wID, String Word, int scoredMarks, int totalMarks, String resStartTime, String Label) {
+    public void addScore(int wID, String Word, int scoredMarks, int totalMarks, String resStartTime,String resEndTime, String Label) {
         try {
             String deviceId = appDatabase.getStatusDao().getValue("DeviceId");
             Score score = new Score();
@@ -178,7 +178,8 @@ public class FactRetrievalPresenter implements FactRetrievalContract.FactRetriev
             score.setStudentID(FC_Constants.currentStudentID);
             score.setStartDateTime(resStartTime);
             score.setDeviceID(deviceId.equals(null) ? "0000" : deviceId);
-            score.setEndDateTime(FC_Utility.getCurrentDateTime());
+            //score.setEndDateTime(FC_Utility.getCurrentDateTime());
+            score.setEndDateTime(resEndTime);
             score.setLevel(FC_Constants.currentLevel);
             score.setLabel(Word + " - " + Label);
             score.setSentFlag(0);
@@ -195,7 +196,7 @@ public class FactRetrievalPresenter implements FactRetrievalContract.FactRetriev
                 assessment.setStudentIDa(FC_Constants.currentAssessmentStudentID);
                 assessment.setStartDateTimea(resStartTime);
                 assessment.setDeviceIDa(deviceId.equals(null) ? "0000" : deviceId);
-                assessment.setEndDateTime(FC_Utility.getCurrentDateTime());
+                assessment.setEndDateTime(resEndTime);
                 assessment.setLevela(FC_Constants.currentLevel);
                 assessment.setLabel("test: " + Label);
                 assessment.setSentFlag(0);

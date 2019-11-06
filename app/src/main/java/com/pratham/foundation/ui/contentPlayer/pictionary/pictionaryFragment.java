@@ -86,7 +86,7 @@ public class pictionaryFragment extends Fragment implements OnGameClose {
     @BindView(R.id.next)
     TextView next;
 
-    private String readingContentPath, contentPath, contentTitle, StudentID, resId,resStartTime;
+    private String readingContentPath, contentPath, contentTitle, StudentID, resId, resStartTime;
     private int totalWordCount, learntWordCount;
     List<ScienceQuestionChoice> options;
     private List<ScienceQuestion> selectedFive;
@@ -121,7 +121,7 @@ public class pictionaryFragment extends Fragment implements OnGameClose {
                 readingContentPath = ApplicationClass.foundationPath + "/.FCA/English/Game/" + contentPath + "/";
 
             resStartTime = FC_Utility.getCurrentDateTime();
-            addScore(0, "", 0, 0, resStartTime, GameConstatnts.READINGGAME + " " + GameConstatnts.START);
+            addScore(0, "", 0, 0, resStartTime, FC_Utility.getCurrentDateTime(), GameConstatnts.READINGGAME + " " + GameConstatnts.START);
 
             getData();
         }
@@ -351,7 +351,7 @@ public class pictionaryFragment extends Fragment implements OnGameClose {
                             }
                         } else {*/
                             radioButton.setText(options.get(r).getSubQues());
-                         //   Log.d("tag111", "a" + selectedFive.get(index).getUserAnswer() + "  B" + options.get(r).getQid());
+                            //   Log.d("tag111", "a" + selectedFive.get(index).getUserAnswer() + "  B" + options.get(r).getQid());
                             if (selectedFive.get(index).getUserAnswer().equalsIgnoreCase(options.get(r).getQid())) {
 
                                 radioButton.setChecked(true);
@@ -373,7 +373,7 @@ public class pictionaryFragment extends Fragment implements OnGameClose {
                         gridMcq.setVisibility(View.VISIBLE);
                         String fileName = options.get(r).getSubUrl();
 //                String localPath = Environment.getExternalStorageDirectory() + Assessment_Constants.STORE_DOWNLOADED_MEDIA_PATH + "/" + fileName;
-                        String localPath = readingContentPath  + fileName;
+                        String localPath = readingContentPath + fileName;
 
                         String path = options.get(r).getSubUrl();
 
@@ -426,11 +426,11 @@ public class pictionaryFragment extends Fragment implements OnGameClose {
                                 rl_mcq.setBackground(getActivity().getResources().getDrawable(R.drawable.custom_edit_text));
                                 tick.setVisibility(View.VISIBLE);
                                 String fileName = options.get(finalR).getSubUrl();
-                                String localPath = readingContentPath  + fileName;
+                                String localPath = readingContentPath + fileName;
 
 
 //                            if (AssessmentApplication.wiseF.isDeviceConnectedToMobileOrWifiNetwork()) {
-                               // showZoomDialog(getActivity(), options.get(finalR).getSubUrl(), localPath);
+                                // showZoomDialog(getActivity(), options.get(finalR).getSubUrl(), localPath);
                             /*} else {
                                  showZoomDialog(localPath);
                             }*/
@@ -438,6 +438,8 @@ public class pictionaryFragment extends Fragment implements OnGameClose {
                                 ans.add(options.get(finalR));
                                 //todo
                                 selectedFive.get(index).setUserAnswer(options.get(finalR).getQid());
+                                selectedFive.get(index).setStartTime(FC_Utility.getCurrentDateTime());
+                                selectedFive.get(index).setEndTime(FC_Utility.getCurrentDateTime());
                             }
                         });
 
@@ -585,6 +587,8 @@ public class pictionaryFragment extends Fragment implements OnGameClose {
                             ans.add(options.get(i));
                             //todo
                             selectedFive.get(index).setUserAnswer(options.get(i).getQid());
+                            selectedFive.get(index).setStartTime(FC_Utility.getCurrentDateTime());
+                            selectedFive.get(index).setEndTime(FC_Utility.getCurrentDateTime());
                         } else {
                             // ((RadioButton) group.getChildAt(i)).setTextColor(getActivity().getResources().getColor(R.color.white));
                         }
@@ -625,13 +629,15 @@ public class pictionaryFragment extends Fragment implements OnGameClose {
         ans.add(scienceQuestionChoice);
         //todo
         selectedFive.get(index).setUserAnswer(scienceQuestionChoice.getQid());
+        selectedFive.get(index).setStartTime(FC_Utility.getCurrentDateTime());
+        selectedFive.get(index).setEndTime(FC_Utility.getCurrentDateTime());
 
     }
 
     private void setImage(View view, final String choiceurl, String placeholderTemp) {
 //        if (AssessmentApplication.wiseF.isDeviceConnectedToMobileOrWifiNetwork()) {
-        String path = choiceurl.replace(" ","");
-        String placeholder = placeholderTemp.replace(" ","");
+        String path = choiceurl.replace(" ", "");
+        String placeholder = placeholderTemp.replace(" ", "");
         String[] imgPath = path.split("\\.");
         int len;
         if (imgPath.length > 0)
@@ -720,7 +726,7 @@ public class pictionaryFragment extends Fragment implements OnGameClose {
                         }
                     }
 
-                    addScore(GameConstatnts.getInt(selectedAnsList.get(i).getQid().trim()), GameConstatnts.READINGGAME, 10, 10, FC_Utility.getCurrentDateTime(), selectedAnsList.get(i).getUserAnswer());
+                    addScore(GameConstatnts.getInt(selectedAnsList.get(i).getQid().trim()), GameConstatnts.READINGGAME, 10, 10, selectedAnsList.get(i).getStartTime(), selectedAnsList.get(i).getEndTime(), selectedAnsList.get(i).getUserAnswer());
                 } else {
                     if (selectedAnsList.get(i).getUserAnswer() != null && !selectedAnsList.get(i).getUserAnswer().trim().equalsIgnoreCase("")) {
                         List<ScienceQuestionChoice> tempOptionList = selectedAnsList.get(i).getLstquestionchoice();
@@ -729,14 +735,14 @@ public class pictionaryFragment extends Fragment implements OnGameClose {
                                 wrongWordList.add(tempOptionList.get(k));
                             }
                         }
-                        addScore(GameConstatnts.getInt(selectedAnsList.get(i).getQid().trim()), GameConstatnts.READINGGAME, 0, 10, FC_Utility.getCurrentDateTime(), selectedAnsList.get(i).getUserAnswer());
+                        addScore(GameConstatnts.getInt(selectedAnsList.get(i).getQid().trim()), GameConstatnts.READINGGAME, 0, 10, selectedAnsList.get(i).getStartTime(), selectedAnsList.get(i).getEndTime(), selectedAnsList.get(i).getUserAnswer());
                     }
                 }
             }
             if (!FC_Constants.isTest) {
                 showResult(correctWordList, wrongWordList);
             }
-        }else {
+        } else {
             GameConstatnts.playGameNext(getActivity(), GameConstatnts.TRUE, (OnGameClose) this);
         }
         BackupDatabase.backup(getActivity());
@@ -779,7 +785,7 @@ public class pictionaryFragment extends Fragment implements OnGameClose {
             dia_btn_yellow.setText("OK");
             dia_btn_yellow.setOnClickListener(v -> {
                 dialog.dismiss();
-                GameConstatnts.playGameNext(getActivity(), GameConstatnts.FALSE,this);
+                GameConstatnts.playGameNext(getActivity(), GameConstatnts.FALSE, this);
             });
             dialog.show();
         } else {
@@ -787,7 +793,7 @@ public class pictionaryFragment extends Fragment implements OnGameClose {
         }
     }
 
-    public void addScore(int wID, String Word, int scoredMarks, int totalMarks, String resStartTime, String Label) {
+    public void addScore(int wID, String Word, int scoredMarks, int totalMarks, String resStartTime, String resEndTime, String Label) {
         try {
             String deviceId = appDatabase.getStatusDao().getValue("DeviceId");
             Score score = new Score();
@@ -799,7 +805,7 @@ public class pictionaryFragment extends Fragment implements OnGameClose {
             score.setStudentID(FC_Constants.currentStudentID);
             score.setStartDateTime(resStartTime);
             score.setDeviceID(deviceId.equals(null) ? "0000" : deviceId);
-            score.setEndDateTime(FC_Utility.getCurrentDateTime());
+            score.setEndDateTime(resEndTime);
             score.setLevel(FC_Constants.currentLevel);
             score.setLabel(Word + " - " + Label);
             score.setSentFlag(0);
@@ -816,7 +822,7 @@ public class pictionaryFragment extends Fragment implements OnGameClose {
                 assessment.setStudentIDa(FC_Constants.currentAssessmentStudentID);
                 assessment.setStartDateTimea(resStartTime);
                 assessment.setDeviceIDa(deviceId.equals(null) ? "0000" : deviceId);
-                assessment.setEndDateTime(FC_Utility.getCurrentDateTime());
+                assessment.setEndDateTime(resEndTime);
                 assessment.setLevela(FC_Constants.currentLevel);
                 assessment.setLabel("test: " + Label);
                 assessment.setSentFlag(0);
@@ -830,7 +836,7 @@ public class pictionaryFragment extends Fragment implements OnGameClose {
 
     @Override
     public void gameClose() {
-        addScore(0, "", 0, 0, resStartTime, GameConstatnts.READINGGAME + " " + GameConstatnts.END);
+        addScore(0, "", 0, 0, resStartTime, FC_Utility.getCurrentDateTime(), GameConstatnts.READINGGAME + " " + GameConstatnts.END);
     }
 }
 
