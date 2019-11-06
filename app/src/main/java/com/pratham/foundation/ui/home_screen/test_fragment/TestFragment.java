@@ -26,7 +26,6 @@ import com.pratham.foundation.R;
 import com.pratham.foundation.customView.collapsingView.RetractableToolbarUtil;
 import com.pratham.foundation.customView.progress_layout.ProgressLayout;
 import com.pratham.foundation.database.domain.ContentTable;
-import com.pratham.foundation.database.domain.ContentTableNew;
 import com.pratham.foundation.modalclasses.CertificateModelClass;
 import com.pratham.foundation.modalclasses.EventMessage;
 import com.pratham.foundation.modalclasses.Modal_FileDownloading;
@@ -75,7 +74,7 @@ public class TestFragment extends Fragment implements TestContract.TestView,
     private TestAdapter testAdapter;
     private int clicked_Pos = 0;
     public List<ContentTable> rootList, rootLevelList, dwParentList, childDwContentList;
-    public List<ContentTableNew> contentParentList, contentDBList, contentApiList, childContentList;
+    public List<ContentTable> contentParentList, contentDBList, contentApiList, childContentList;
     private String  downloadNodeId, resName, resServerImageName, downloadType, certi_Code = "";
     private int childPos = 0, parentPos = 0, resumeCntr = 0;
     public static  String language = "English";
@@ -127,17 +126,17 @@ public class TestFragment extends Fragment implements TestContract.TestView,
         }, delay);
     }
 
-    public void sortAllList(List<ContentTableNew> contentParentList) {
-        Collections.sort(contentParentList, new Comparator<ContentTableNew>() {
+    public void sortAllList(List<ContentTable> contentParentList) {
+        Collections.sort(contentParentList, new Comparator<ContentTable>() {
             @Override
-            public int compare(ContentTableNew o1, ContentTableNew o2) {
+            public int compare(ContentTable o1, ContentTable o2) {
                 return o1.getNodeId().compareTo(o2.getNodeId());
             }
         });
     }
 
     @UiThread
-    public void addContentToViewList(List<ContentTableNew> contentParentList) {
+    public void addContentToViewList(List<ContentTable> contentParentList) {
         this.contentParentList.clear();
         this.contentParentList.addAll(contentParentList);
     }

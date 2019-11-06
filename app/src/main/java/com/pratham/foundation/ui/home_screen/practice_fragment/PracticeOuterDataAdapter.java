@@ -12,7 +12,7 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.pratham.foundation.R;
-import com.pratham.foundation.database.domain.ContentTableNew;
+import com.pratham.foundation.database.domain.ContentTable;
 import com.pratham.foundation.utility.FC_Constants;
 
 import java.util.ArrayList;
@@ -25,14 +25,14 @@ public class PracticeOuterDataAdapter extends RecyclerView.Adapter {
     private static final String TYPE_ITEM = "Resource";
     private static final String TYPE_FOOTER = "Footer";
 
-    private List<ContentTableNew> dataList;
-    private List<ContentTableNew> sublistList;
-    private ContentTableNew contentTable;
+    private List<ContentTable> dataList;
+    private List<ContentTable> sublistList;
+    private ContentTable contentTable;
     private Context mContext;
     public int childCounter = 0;
     PracticeContract.PracticeItemClicked tempItemClicked;
 
-    public PracticeOuterDataAdapter(Context context, List<ContentTableNew> dataList,
+    public PracticeOuterDataAdapter(Context context, List<ContentTable> dataList,
                                     PracticeContract.PracticeItemClicked tempItemClicked) {
         this.dataList = dataList;
         this.mContext = context;
@@ -122,8 +122,8 @@ public class PracticeOuterDataAdapter extends RecyclerView.Adapter {
         }
     }
 
-    private List<ContentTableNew> getList(List<ContentTableNew> nodelist) {
-        List<ContentTableNew> tempList = new ArrayList<>();
+    private List<ContentTable> getList(List<ContentTable> nodelist) {
+        List<ContentTable> tempList = new ArrayList<>();
         for (int i = 0; i < nodelist.size() && i < 6; i++)
             tempList.add(nodelist.get(i));
         return tempList;
@@ -164,10 +164,10 @@ public class PracticeOuterDataAdapter extends RecyclerView.Adapter {
 
         FolderHolder(View view) {
             super(view);
-            this.itemTitle = (TextView) view.findViewById(R.id.itemTitle);
-            this.recycler_view_list = (RecyclerView) view.findViewById(R.id.recycler_view_list);
-            this.btnMore = (Button) view.findViewById(R.id.btnMore);
-            this.actionBtn = (Button) view.findViewById(R.id.ib_action_btn);
+            this.itemTitle = view.findViewById(R.id.itemTitle);
+            this.recycler_view_list = view.findViewById(R.id.recycler_view_list);
+            this.btnMore = view.findViewById(R.id.btnMore);
+            this.actionBtn = view.findViewById(R.id.ib_action_btn);
         }
 
     }

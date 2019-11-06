@@ -1,19 +1,19 @@
 package com.pratham.foundation.ui.home_screen;
 
 
-import com.pratham.foundation.database.domain.ContentTableNew;
+import com.pratham.foundation.database.domain.ContentTable;
 
 public interface TempItemClicked {
 
-    void onContentClicked(ContentTableNew singleItem);
+    void onContentClicked(ContentTable singleItem);
 
-    void onContentOpenClicked(ContentTableNew contentList);
+    void onContentOpenClicked(ContentTable contentList);
 
-    void onContentDownloadClicked(ContentTableNew contentList, int parentPos, int childPos, String downloadType);
+    void onContentDownloadClicked(ContentTable contentList, int parentPos, int childPos, String downloadType);
 
-    void onContentDeleteClicked(ContentTableNew contentList);
+    void onContentDeleteClicked(ContentTable contentList);
 
-    void onContentTestOpenClicked(ContentTableNew singleItem);
+    void onContentTestOpenClicked(ContentTable singleItem);
 
     void seeMore(String nodeId, String nodeTitle);
 }

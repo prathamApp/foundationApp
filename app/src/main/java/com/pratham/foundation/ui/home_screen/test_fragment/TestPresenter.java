@@ -14,7 +14,6 @@ import com.pratham.foundation.database.AppDatabase;
 import com.pratham.foundation.database.BackupDatabase;
 import com.pratham.foundation.database.domain.ContentProgress;
 import com.pratham.foundation.database.domain.ContentTable;
-import com.pratham.foundation.database.domain.ContentTableNew;
 import com.pratham.foundation.database.domain.WordEnglish;
 import com.pratham.foundation.interfaces.API_Content_Result;
 import com.pratham.foundation.modalclasses.CertificateModelClass;
@@ -38,6 +37,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
 import java.lang.reflect.Type;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -51,7 +51,7 @@ public class TestPresenter implements TestContract.TestPresenter, API_Content_Re
     Context mContext;
     TestContract.TestView myView;
     public List<ContentTable> rootList, rootLevelList, dwParentList, childDwContentList;
-    public List<ContentTableNew> contentParentList, contentDBList, contentApiList, childContentList;
+    public List<ContentTable> contentParentList, contentDBList, contentApiList, childContentList;
     ArrayList<String> nodeIds;
     API_Content api_content;
     String downloadNodeId, fileName;
@@ -396,16 +396,16 @@ public class TestPresenter implements TestContract.TestPresenter, API_Content_Re
     public void getDataForList() {
         myView.showLoader();
         try {
-            ContentTableNew resContentTable = new ContentTableNew();
-            List<ContentTableNew> resourceList;
-            List<ContentTableNew> tempList2;
+            ContentTable resContentTable = new ContentTable();
+            List<ContentTable> resourceList;
+            List<ContentTable> tempList2;
             tempList2 = new ArrayList<>();
 
             resourceList = new ArrayList<>();
             resContentTable.setNodeTitle("Direct Play");
             resContentTable.setNodeType("resList");
 
-            ContentTableNew contentTableRes = new ContentTableNew();
+            ContentTable contentTableRes = new ContentTable();
             contentTableRes.setNodeId("0");
             contentTableRes.setNodeType("Header");
             tempList2.add(contentTableRes);
@@ -420,7 +420,7 @@ public class TestPresenter implements TestContract.TestPresenter, API_Content_Re
             try {
                 for (int j = 0; j < dwParentList.size(); j++) {
                     if (dwParentList.get(j).getNodeType().equalsIgnoreCase("Resource")) {
-                        contentTableRes = new ContentTableNew();
+                        contentTableRes = new ContentTable();
                         tempList2 = new ArrayList<>();
                         contentTableRes.setNodeId("" + dwParentList.get(j).getNodeId());
                         contentTableRes.setNodeType("" + dwParentList.get(j).getNodeType());
@@ -441,8 +441,8 @@ public class TestPresenter implements TestContract.TestPresenter, API_Content_Re
                         contentTableRes.setNodelist(tempList2);
                         resourceList.add(contentTableRes);
                     } else {
-                        List<ContentTableNew> tempList;
-                        ContentTableNew contentTable = new ContentTableNew();
+                        List<ContentTable> tempList;
+                        ContentTable contentTable = new ContentTable();
                         tempList = new ArrayList<>();
                         childDwContentList = AppDatabase.appDatabase.getContentTableDao().getContentData("" + dwParentList.get(j).getNodeId());
                         sortContentList(childDwContentList);
@@ -465,12 +465,12 @@ public class TestPresenter implements TestContract.TestPresenter, API_Content_Re
 
                         int childListSize = childDwContentList.size();
                         if (childDwContentList.size() > 0) {
-                            ContentTableNew contentChild = new ContentTableNew();
+                            ContentTable contentChild = new ContentTable();
                             contentChild.setNodeId("0");
                             contentChild.setNodeType("Header");
                             tempList.add(contentChild);
                             for (int i = 0; i < childListSize; i++) {
-                                contentChild = new ContentTableNew();
+                                contentChild = new ContentTable();
                                 contentChild.setNodeId("" + childDwContentList.get(i).getNodeId());
                                 contentChild.setNodeType("" + childDwContentList.get(i).getNodeType());
                                 contentChild.setNodeTitle("" + childDwContentList.get(i).getNodeTitle());
@@ -502,7 +502,7 @@ public class TestPresenter implements TestContract.TestPresenter, API_Content_Re
                                 }
                                 tempList.add(contentChild);
                             }
-                            contentChild = new ContentTableNew();
+                            contentChild = new ContentTable();
                             contentChild.setNodeId("999999");
                             contentChild.setNodeType("Header");
                             tempList.add(contentChild);
@@ -513,7 +513,7 @@ public class TestPresenter implements TestContract.TestPresenter, API_Content_Re
                     }
                 }
                 if (resourceList.size() > 1) {
-                    contentTableRes = new ContentTableNew();
+                    contentTableRes = new ContentTable();
                     contentTableRes.setNodeId("999999");
                     contentTableRes.setNodeType("Header");
                     tempList2.add(contentTableRes);
@@ -553,10 +553,10 @@ public class TestPresenter implements TestContract.TestPresenter, API_Content_Re
         }
     }
 
-    public void sortAllList(List<ContentTableNew> contentParentList) {
-        Collections.sort(contentParentList, new Comparator<ContentTableNew>() {
+    public void sortAllList(List<ContentTable> contentParentList) {
+        Collections.sort(contentParentList, new Comparator<ContentTable>() {
             @Override
-            public int compare(ContentTableNew o1, ContentTableNew o2) {
+            public int compare(ContentTable o1, ContentTable o2) {
                 return o1.getNodeId().compareTo(o2.getNodeId());
             }
         });
@@ -606,7 +606,7 @@ public class TestPresenter implements TestContract.TestPresenter, API_Content_Re
         try {
             //InputStream is = new FileInputStream(ApplicationClass.pradigiPath + "/.FCA/"+FC_Constants.currentSelectedLanguage+"/RC/" + jasonName);
             InputStream is = mContext.getAssets().open("" + jasonName);
-            JsonReader reader = new JsonReader(new InputStreamReader(is, "UTF-8"));
+            JsonReader reader = new JsonReader(new InputStreamReader(is, StandardCharsets.UTF_8));
             Gson gson = new GsonBuilder().create();
             // Read file in stream mode
             reader.beginArray();
@@ -674,7 +674,7 @@ public class TestPresenter implements TestContract.TestPresenter, API_Content_Re
             List<ContentTable> contentTableList = new ArrayList<>();
             contentTableList = download_content.getNodelist();
             for (int i = 0; i < contentTableList.size(); i++) {
-                api_content.downloadImage(contentTableList.get(i).nodeServerImage, contentTableList.get(i).getNodeImage());
+                API_Content.downloadImage(contentTableList.get(i).nodeServerImage, contentTableList.get(i).getNodeImage());
                 contentTableList.get(i).setIsDownloaded("true");
             }
             AppDatabase.getDatabaseInstance(mContext).getContentTableDao().addContentList(contentTableList);
@@ -696,25 +696,8 @@ public class TestPresenter implements TestContract.TestPresenter, API_Content_Re
 
     @Background
     @Override
-    public void updateCurrentNode(ContentTableNew contentTableNew) {
+    public void updateCurrentNode(ContentTable contentTable) {
         try {
-            ContentTable contentTable = new ContentTable();
-
-            contentTable.setNodeId("" + contentTableNew.getNodeId());
-            contentTable.setNodeType("" + contentTableNew.getNodeType());
-            contentTable.setNodeTitle("" + contentTableNew.getNodeTitle());
-            contentTable.setNodeKeywords("" + contentTableNew.getNodeKeywords());
-            contentTable.setNodeAge("" + contentTableNew.getNodeAge());
-            contentTable.setNodeDesc("" + contentTableNew.getNodeDesc());
-            contentTable.setNodeServerImage("" + contentTableNew.getNodeServerImage());
-            contentTable.setNodeImage("" + contentTableNew.getNodeImage());
-            contentTable.setResourceId("" + contentTableNew.getResourceId());
-            contentTable.setResourceType("" + contentTableNew.getResourceType());
-            contentTable.setResourcePath("" + contentTableNew.getResourcePath());
-            contentTable.setParentId("" + contentTableNew.getParentId());
-            contentTable.setLevel("" + contentTableNew.getLevel());
-            contentTable.setVersion("" + contentTableNew.getVersion());
-            contentTable.setContentType(contentTableNew.getContentType());
             contentTable.setIsDownloaded("true");
             contentTable.setOnSDCard(false);
             AppDatabase.getDatabaseInstance(mContext).getContentTableDao().insert(contentTable);
@@ -734,13 +717,13 @@ public class TestPresenter implements TestContract.TestPresenter, API_Content_Re
             boolean parentFound = false, childFound = false;
             try {
                 contentDBList.clear();
-                Type listType = new TypeToken<ArrayList<ContentTableNew>>() {
+                Type listType = new TypeToken<ArrayList<ContentTable>>() {
                 }.getType();
-                List<ContentTableNew> serverContentList = gson.fromJson(response, listType);
+                List<ContentTable> serverContentList = gson.fromJson(response, listType);
                 for (int i = 0; i < serverContentList.size(); i++) {
                     parentFound = false;
-                    List<ContentTableNew> tempList;
-                    ContentTableNew contentTable = new ContentTableNew();
+                    List<ContentTable> tempList;
+                    ContentTable contentTable = new ContentTable();
                     for (int j = 0; j < contentParentList.size(); j++) {
                         if (serverContentList.get(i).getNodeId().equalsIgnoreCase(
                                 contentParentList.get(j).getNodeId())) {
@@ -749,7 +732,7 @@ public class TestPresenter implements TestContract.TestPresenter, API_Content_Re
                             contentDBList.add(contentParentList.get(j));
                             if (serverContentList.get(i).getNodelist().size() > 0)
                                 for (int k = 0; k < serverContentList.get(i).getNodelist().size(); k++) {
-                                    ContentTableNew contentTableTemp = new ContentTableNew();
+                                    ContentTable contentTableTemp = new ContentTable();
                                     childFound = false;
                                     int listChild = 0;
                                     childContentList = new ArrayList<>();
@@ -765,7 +748,7 @@ public class TestPresenter implements TestContract.TestPresenter, API_Content_Re
                                             }
                                         }
                                         if (!childFound) {
-                                            contentTableTemp = new ContentTableNew();
+                                            contentTableTemp = new ContentTable();
                                             contentTableTemp.setNodeId("" + serverContentList.get(i).getNodelist().get(k).getNodeId());
                                             contentTableTemp.setNodeType("" + serverContentList.get(i).getNodelist().get(k).getNodeType());
                                             contentTableTemp.setNodeTitle("" + serverContentList.get(i).getNodelist().get(k).getNodeTitle());
@@ -792,7 +775,7 @@ public class TestPresenter implements TestContract.TestPresenter, API_Content_Re
                                         }
                                     } else {
                                         for (int f = 0; f < serverContentList.get(i).getNodelist().size(); f++) {
-                                            ContentTableNew contentTableChildTemp = new ContentTableNew();
+                                            ContentTable contentTableChildTemp = new ContentTable();
                                             contentTableChildTemp.setNodeId("" + serverContentList.get(i).getNodelist().get(f).getNodeId());
                                             contentTableChildTemp.setNodeType("" + serverContentList.get(i).getNodelist().get(f).getNodeType());
                                             contentTableChildTemp.setNodeTitle("" + serverContentList.get(i).getNodelist().get(f).getNodeTitle());
@@ -814,12 +797,12 @@ public class TestPresenter implements TestContract.TestPresenter, API_Content_Re
                                         }
 //                                        contentTable.setNodelist(tempList);
                                         //Added whole child.
-                                        contentTableTemp = new ContentTableNew();
+                                        contentTableTemp = new ContentTable();
                                         contentTableTemp.setNodeId("0");
                                         contentTableTemp.setNodeType("Header");
                                         tempList.add(contentTableTemp);
 
-                                        contentTableTemp = new ContentTableNew();
+                                        contentTableTemp = new ContentTable();
                                         contentTableTemp.setNodeId("999999");
                                         contentTableTemp.setNodeType("Header");
                                         tempList.add(contentTableTemp);
@@ -851,13 +834,13 @@ public class TestPresenter implements TestContract.TestPresenter, API_Content_Re
 
                         if (serverContentList.get(i).getNodelist().size() > 0) {
                             tempList = new ArrayList<>();
-                            ContentTableNew contentTableRes = new ContentTableNew();
+                            ContentTable contentTableRes = new ContentTable();
                             contentTableRes.setNodeId("0");
                             contentTableRes.setNodeType("Header");
                             tempList.add(contentTableRes);
 
                             for (int f = 0; f < serverContentList.get(i).getNodelist().size(); f++) {
-                                ContentTableNew contentTableTemp = new ContentTableNew();
+                                ContentTable contentTableTemp = new ContentTable();
                                 contentTableTemp.setNodeId("" + serverContentList.get(i).getNodelist().get(f).getNodeId());
                                 contentTableTemp.setNodeType("" + serverContentList.get(i).getNodelist().get(f).getNodeType());
                                 contentTableTemp.setNodeTitle("" + serverContentList.get(i).getNodelist().get(f).getNodeTitle());
@@ -877,12 +860,12 @@ public class TestPresenter implements TestContract.TestPresenter, API_Content_Re
                                 contentTableTemp.setOnSDCard(false);
                                 tempList.add(contentTableTemp);
                             }
-                            contentTableRes = new ContentTableNew();
+                            contentTableRes = new ContentTable();
                             contentTableRes.setNodeId("0");
                             contentTableRes.setNodeType("Header");
                             tempList.add(contentTableRes);
 
-                            contentTableRes = new ContentTableNew();
+                            contentTableRes = new ContentTable();
                             contentTableRes.setNodeId("9999999");
                             contentTableRes.setNodeType("Header");
                             tempList.add(contentTableRes);
@@ -924,9 +907,9 @@ public class TestPresenter implements TestContract.TestPresenter, API_Content_Re
         } else if (header.equalsIgnoreCase(FC_Constants.INTERNET_LEVEL)) {
             try {
                 rootLevelList = new ArrayList<>();
-                Type listType = new TypeToken<ArrayList<ContentTableNew>>() {
+                Type listType = new TypeToken<ArrayList<ContentTable>>() {
                 }.getType();
-                List<ContentTableNew> serverContentList = gson.fromJson(response, listType);
+                List<ContentTable> serverContentList = gson.fromJson(response, listType);
                 boolean itemFound = false;
 
                 for (int i = 0; i < serverContentList.size(); i++) {
@@ -965,9 +948,9 @@ public class TestPresenter implements TestContract.TestPresenter, API_Content_Re
             myView.setSelectedLevel(rootLevelList);
         } else if (header.equalsIgnoreCase(FC_Constants.BOTTOM_NODE)) {
             try {
-                Type listType = new TypeToken<ArrayList<ContentTableNew>>() {
+                Type listType = new TypeToken<ArrayList<ContentTable>>() {
                 }.getType();
-                List<ContentTableNew> serverContentList = gson.fromJson(response, listType);
+                List<ContentTable> serverContentList = gson.fromJson(response, listType);
                 String botNodeId = serverContentList.get(0).getNodeId();
                 for (int i = 0; i < serverContentList.size(); i++)
                     if (serverContentList.get(i).getNodeTitle().equalsIgnoreCase(cosSection))

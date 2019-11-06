@@ -14,7 +14,6 @@ import com.pratham.foundation.database.AppDatabase;
 import com.pratham.foundation.database.BackupDatabase;
 import com.pratham.foundation.database.domain.ContentProgress;
 import com.pratham.foundation.database.domain.ContentTable;
-import com.pratham.foundation.database.domain.ContentTableNew;
 import com.pratham.foundation.database.domain.WordEnglish;
 import com.pratham.foundation.interfaces.API_Content_Result;
 import com.pratham.foundation.modalclasses.Modal_DownloadAssessment;
@@ -52,7 +51,7 @@ public class LearningPresenter implements LearningContract.LearningPresenter, AP
     Context mContext;
     LearningContract.LearningView learningView;
     public List<ContentTable> rootList, rootLevelList, dwParentList, childDwContentList;
-    public List<ContentTableNew> contentParentList, contentDBList, contentApiList, childContentList;
+    public List<ContentTable> contentParentList, contentDBList, contentApiList, childContentList;
     ArrayList<String> nodeIds;
     API_Content api_content;
     String downloadNodeId, fileName;
@@ -256,11 +255,11 @@ public class LearningPresenter implements LearningContract.LearningPresenter, AP
             sortContentList(dwParentList);
             contentParentList.clear();
 
-            ContentTableNew resContentTable = new ContentTableNew();
-            List<ContentTableNew> resourceList= new ArrayList<>();
-            List<ContentTableNew> tempList2 = new ArrayList<>();
+            ContentTable resContentTable = new ContentTable();
+            List<ContentTable> resourceList= new ArrayList<>();
+            List<ContentTable> tempList2 = new ArrayList<>();
 
-            ContentTableNew contentTableRes = new ContentTableNew();
+            ContentTable contentTableRes = new ContentTable();
             contentTableRes.setNodeId("0");
             contentTableRes.setNodeType("Header");
             tempList2.add(contentTableRes);
@@ -272,7 +271,7 @@ public class LearningPresenter implements LearningContract.LearningPresenter, AP
             try {
                 for (int j = 0; j < dwParentList.size(); j++) {
                     if (dwParentList.get(j).getNodeType().equalsIgnoreCase("Resource")) {
-                        contentTableRes = new ContentTableNew();
+                        contentTableRes = new ContentTable();
                         tempList2 = new ArrayList<>();
                         contentTableRes.setNodeId("" + dwParentList.get(j).getNodeId());
                         contentTableRes.setNodeType("" + dwParentList.get(j).getNodeType());
@@ -293,8 +292,8 @@ public class LearningPresenter implements LearningContract.LearningPresenter, AP
                         contentTableRes.setNodelist(tempList2);
                         resourceList.add(contentTableRes);
                     } else {
-                        List<ContentTableNew> tempList;
-                        ContentTableNew contentTable = new ContentTableNew();
+                        List<ContentTable> tempList;
+                        ContentTable contentTable = new ContentTable();
                         tempList = new ArrayList<>();
                         childDwContentList = AppDatabase.appDatabase.getContentTableDao().getContentData("" + dwParentList.get(j).getNodeId());
                         sortContentList(childDwContentList);
@@ -317,12 +316,12 @@ public class LearningPresenter implements LearningContract.LearningPresenter, AP
 
                         int childListSize = childDwContentList.size();
                         if (childDwContentList.size() > 0) {
-                            ContentTableNew contentChild = new ContentTableNew();
+                            ContentTable contentChild = new ContentTable();
                             contentChild.setNodeId("0");
                             contentChild.setNodeType("Header");
                             tempList.add(contentChild);
                             for (int i = 0; i < childListSize; i++) {
-                                contentChild = new ContentTableNew();
+                                contentChild = new ContentTable();
                                 contentChild.setNodeId("" + childDwContentList.get(i).getNodeId());
                                 contentChild.setNodeType("" + childDwContentList.get(i).getNodeType());
                                 contentChild.setNodeTitle("" + childDwContentList.get(i).getNodeTitle());
@@ -355,7 +354,7 @@ public class LearningPresenter implements LearningContract.LearningPresenter, AP
                                 }
                                 tempList.add(contentChild);
                             }
-                            contentChild = new ContentTableNew();
+                            contentChild = new ContentTable();
                             contentChild.setNodeId("999999");
                             contentChild.setNodeType("Header");
                             tempList.add(contentChild);
@@ -366,7 +365,7 @@ public class LearningPresenter implements LearningContract.LearningPresenter, AP
                     }
                 }
                 if (resourceList.size() > 1) {
-                    contentTableRes = new ContentTableNew();
+                    contentTableRes = new ContentTable();
                     contentTableRes.setNodeId("999999");
                     contentTableRes.setNodeType("Header");
                     tempList2.add(contentTableRes);
@@ -408,10 +407,10 @@ public class LearningPresenter implements LearningContract.LearningPresenter, AP
 //        }
     }
 
-    public void sortAllList(List<ContentTableNew> contentParentList) {
-        Collections.sort(contentParentList, new Comparator<ContentTableNew>() {
+    public void sortAllList(List<ContentTable> contentParentList) {
+        Collections.sort(contentParentList, new Comparator<ContentTable>() {
             @Override
-            public int compare(ContentTableNew o1, ContentTableNew o2) {
+            public int compare(ContentTable o1, ContentTable o2) {
                 return o1.getNodeId().compareTo(o2.getNodeId());
             }
         });
@@ -544,25 +543,8 @@ public class LearningPresenter implements LearningContract.LearningPresenter, AP
 
     @Background
     @Override
-    public void updateCurrentNode(ContentTableNew contentTableNew) {
+    public void updateCurrentNode(ContentTable contentTable) {
         try {
-            ContentTable contentTable = new ContentTable();
-
-            contentTable.setNodeId("" + contentTableNew.getNodeId());
-            contentTable.setNodeType("" + contentTableNew.getNodeType());
-            contentTable.setNodeTitle("" + contentTableNew.getNodeTitle());
-            contentTable.setNodeKeywords("" + contentTableNew.getNodeKeywords());
-            contentTable.setNodeAge("" + contentTableNew.getNodeAge());
-            contentTable.setNodeDesc("" + contentTableNew.getNodeDesc());
-            contentTable.setNodeServerImage("" + contentTableNew.getNodeServerImage());
-            contentTable.setNodeImage("" + contentTableNew.getNodeImage());
-            contentTable.setResourceId("" + contentTableNew.getResourceId());
-            contentTable.setResourceType("" + contentTableNew.getResourceType());
-            contentTable.setResourcePath("" + contentTableNew.getResourcePath());
-            contentTable.setParentId("" + contentTableNew.getParentId());
-            contentTable.setLevel("" + contentTableNew.getLevel());
-            contentTable.setVersion("" + contentTableNew.getVersion());
-            contentTable.setContentType(contentTableNew.getContentType());
             contentTable.setIsDownloaded("true");
             contentTable.setOnSDCard(false);
             AppDatabase.getDatabaseInstance(mContext).getContentTableDao().insert(contentTable);
@@ -582,13 +564,13 @@ public class LearningPresenter implements LearningContract.LearningPresenter, AP
             boolean parentFound = false, childFound = false;
             try {
                 contentDBList.clear();
-                Type listType = new TypeToken<ArrayList<ContentTableNew>>() {
+                Type listType = new TypeToken<ArrayList<ContentTable>>() {
                 }.getType();
-                List<ContentTableNew> serverContentList = gson.fromJson(response, listType);
+                List<ContentTable> serverContentList = gson.fromJson(response, listType);
                 for (int i = 0; i < serverContentList.size(); i++) {
                     parentFound = false;
-                    List<ContentTableNew> tempList;
-                    ContentTableNew contentTable = new ContentTableNew();
+                    List<ContentTable> tempList;
+                    ContentTable contentTable = new ContentTable();
                     for (int j = 0; j < contentParentList.size(); j++) {
                         if (serverContentList.get(i).getNodeId().equalsIgnoreCase(
                                 contentParentList.get(j).getNodeId())) {
@@ -597,7 +579,7 @@ public class LearningPresenter implements LearningContract.LearningPresenter, AP
                             contentDBList.add(contentParentList.get(j));
                             if (serverContentList.get(i).getNodelist().size() > 0)
                                 for (int k = 0; k < serverContentList.get(i).getNodelist().size(); k++) {
-                                    ContentTableNew contentTableTemp = new ContentTableNew();
+                                    ContentTable contentTableTemp = new ContentTable();
                                     childFound = false;
                                     int listChild = 0;
                                     childContentList = new ArrayList<>();
@@ -613,7 +595,7 @@ public class LearningPresenter implements LearningContract.LearningPresenter, AP
                                             }
                                         }
                                         if (!childFound) {
-                                            contentTableTemp = new ContentTableNew();
+                                            contentTableTemp = new ContentTable();
                                             contentTableTemp.setNodeId("" + serverContentList.get(i).getNodelist().get(k).getNodeId());
                                             contentTableTemp.setNodeType("" + serverContentList.get(i).getNodelist().get(k).getNodeType());
                                             contentTableTemp.setNodeTitle("" + serverContentList.get(i).getNodelist().get(k).getNodeTitle());
@@ -640,7 +622,7 @@ public class LearningPresenter implements LearningContract.LearningPresenter, AP
                                         }
                                     } else {
                                         for (int f = 0; f < serverContentList.get(i).getNodelist().size(); f++) {
-                                            ContentTableNew contentTableChildTemp = new ContentTableNew();
+                                            ContentTable contentTableChildTemp = new ContentTable();
                                             contentTableChildTemp.setNodeId("" + serverContentList.get(i).getNodelist().get(f).getNodeId());
                                             contentTableChildTemp.setNodeType("" + serverContentList.get(i).getNodelist().get(f).getNodeType());
                                             contentTableChildTemp.setNodeTitle("" + serverContentList.get(i).getNodelist().get(f).getNodeTitle());
@@ -662,12 +644,12 @@ public class LearningPresenter implements LearningContract.LearningPresenter, AP
                                         }
 //                                        contentTable.setNodelist(tempList);
                                         //Added whole child.
-                                        contentTableTemp = new ContentTableNew();
+                                        contentTableTemp = new ContentTable();
                                         contentTableTemp.setNodeId("0");
                                         contentTableTemp.setNodeType("Header");
                                         tempList.add(contentTableTemp);
 
-                                        contentTableTemp = new ContentTableNew();
+                                        contentTableTemp = new ContentTable();
                                         contentTableTemp.setNodeId("999999");
                                         contentTableTemp.setNodeType("Header");
                                         tempList.add(contentTableTemp);
@@ -699,13 +681,13 @@ public class LearningPresenter implements LearningContract.LearningPresenter, AP
 
                         if (serverContentList.get(i).getNodelist().size() > 0) {
                             tempList = new ArrayList<>();
-                            ContentTableNew contentTableRes = new ContentTableNew();
+                            ContentTable contentTableRes = new ContentTable();
                             contentTableRes.setNodeId("0");
                             contentTableRes.setNodeType("Header");
                             tempList.add(contentTableRes);
 
                             for (int f = 0; f < serverContentList.get(i).getNodelist().size(); f++) {
-                                ContentTableNew contentTableTemp = new ContentTableNew();
+                                ContentTable contentTableTemp = new ContentTable();
                                 contentTableTemp.setNodeId("" + serverContentList.get(i).getNodelist().get(f).getNodeId());
                                 contentTableTemp.setNodeType("" + serverContentList.get(i).getNodelist().get(f).getNodeType());
                                 contentTableTemp.setNodeTitle("" + serverContentList.get(i).getNodelist().get(f).getNodeTitle());
@@ -725,12 +707,12 @@ public class LearningPresenter implements LearningContract.LearningPresenter, AP
                                 contentTableTemp.setOnSDCard(false);
                                 tempList.add(contentTableTemp);
                             }
-                            contentTableRes = new ContentTableNew();
+                            contentTableRes = new ContentTable();
                             contentTableRes.setNodeId("0");
                             contentTableRes.setNodeType("Header");
                             tempList.add(contentTableRes);
 
-                            contentTableRes = new ContentTableNew();
+                            contentTableRes = new ContentTable();
                             contentTableRes.setNodeId("9999999");
                             contentTableRes.setNodeType("Header");
                             tempList.add(contentTableRes);
@@ -772,9 +754,9 @@ public class LearningPresenter implements LearningContract.LearningPresenter, AP
         } else if (header.equalsIgnoreCase(FC_Constants.INTERNET_LEVEL)) {
             try {
                 rootLevelList = new ArrayList<>();
-                Type listType = new TypeToken<ArrayList<ContentTableNew>>() {
+                Type listType = new TypeToken<ArrayList<ContentTable>>() {
                 }.getType();
-                List<ContentTableNew> serverContentList = gson.fromJson(response, listType);
+                List<ContentTable> serverContentList = gson.fromJson(response, listType);
                 boolean itemFound = false;
 
                 for (int i = 0; i < serverContentList.size(); i++) {
@@ -813,9 +795,9 @@ public class LearningPresenter implements LearningContract.LearningPresenter, AP
             learningView.setSelectedLevel(rootLevelList);
         } else if (header.equalsIgnoreCase(FC_Constants.BOTTOM_NODE)) {
             try {
-                Type listType = new TypeToken<ArrayList<ContentTableNew>>() {
+                Type listType = new TypeToken<ArrayList<ContentTable>>() {
                 }.getType();
-                List<ContentTableNew> serverContentList = gson.fromJson(response, listType);
+                List<ContentTable> serverContentList = gson.fromJson(response, listType);
                 String botNodeId = serverContentList.get(0).getNodeId();
                 for (int i = 0; i < serverContentList.size(); i++)
                     if (serverContentList.get(i).getNodeTitle().equalsIgnoreCase(cosSection))

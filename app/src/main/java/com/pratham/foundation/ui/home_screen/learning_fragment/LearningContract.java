@@ -4,7 +4,6 @@ package com.pratham.foundation.ui.home_screen.learning_fragment;
 
 
 import com.pratham.foundation.database.domain.ContentTable;
-import com.pratham.foundation.database.domain.ContentTableNew;
 
 import java.util.List;
 
@@ -12,13 +11,13 @@ public interface LearningContract {
 
     interface LearningItemClicked {
 
-        void onContentClicked(ContentTableNew singleItem);
+        void onContentClicked(ContentTable singleItem);
 
-        void onContentOpenClicked(ContentTableNew contentList);
+        void onContentOpenClicked(ContentTable contentList);
 
-        void onContentDownloadClicked(ContentTableNew contentList, int parentPos, int childPos, String downloadType);
+        void onContentDownloadClicked(ContentTable contentList, int parentPos, int childPos, String downloadType);
 
-        void onContentDeleteClicked(ContentTableNew contentList);
+        void onContentDeleteClicked(ContentTable contentList);
 
         void seeMore(String nodeId, String nodeTitle);
     }
@@ -27,7 +26,7 @@ public interface LearningContract {
 
         void notifyAdapter();
 
-        void addContentToViewList(List<ContentTableNew> contentParentList);
+        void addContentToViewList(List<ContentTable> contentParentList);
 
         void setSelectedLevel(List<ContentTable> contentTable);
 
@@ -66,7 +65,7 @@ public interface LearningContract {
 
         void updateDownloadJson(String folderPath);
 
-        void updateCurrentNode(ContentTableNew contentTableNew);
+        void updateCurrentNode(ContentTable contentTable);
 
         String getcurrentNodeID();
 

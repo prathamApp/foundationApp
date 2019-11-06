@@ -26,7 +26,6 @@ import com.pratham.foundation.customView.GridSpacingItemDecoration;
 import com.pratham.foundation.customView.collapsingView.RetractableToolbarUtil;
 import com.pratham.foundation.customView.progress_layout.ProgressLayout;
 import com.pratham.foundation.database.domain.ContentTable;
-import com.pratham.foundation.database.domain.ContentTableNew;
 import com.pratham.foundation.modalclasses.EventMessage;
 import com.pratham.foundation.modalclasses.Modal_FileDownloading;
 import com.pratham.foundation.ui.contentPlayer.ContentPlayerActivity_;
@@ -77,7 +76,7 @@ public class PracticeFragment extends Fragment implements PracticeContract.Pract
     RecyclerView my_recycler_view;
     private PracticeOuterDataAdapter adapterParent;
     public List<ContentTable> rootList, rootLevelList, dwParentList, childDwContentList;
-    public List<ContentTableNew> contentParentList, contentDBList, contentApiList, childContentList;
+    public List<ContentTable> contentParentList, contentDBList, contentApiList, childContentList;
     private String downloadNodeId, resName, resServerImageName, downloadType;
     private int childPos = 0, parentPos = 0, resumeCntr = 0;
 
@@ -127,17 +126,17 @@ public class PracticeFragment extends Fragment implements PracticeContract.Pract
         }, delay);
     }
 
-    public void sortAllList(List<ContentTableNew> contentParentList) {
-        Collections.sort(contentParentList, new Comparator<ContentTableNew>() {
+    public void sortAllList(List<ContentTable> contentParentList) {
+        Collections.sort(contentParentList, new Comparator<ContentTable>() {
             @Override
-            public int compare(ContentTableNew o1, ContentTableNew o2) {
+            public int compare(ContentTable o1, ContentTable o2) {
                 return o1.getNodeId().compareTo(o2.getNodeId());
             }
         });
     }
 
     @UiThread
-    public void addContentToViewList(List<ContentTableNew> contentParentList) {
+    public void addContentToViewList(List<ContentTable> contentParentList) {
         this.contentParentList.clear();
         this.contentParentList.addAll(contentParentList);
     }
@@ -318,7 +317,7 @@ public class PracticeFragment extends Fragment implements PracticeContract.Pract
     }
 
     @Override
-    public void onContentClicked(ContentTableNew singleItem) {
+    public void onContentClicked(ContentTable singleItem) {
         ButtonClickSound.start();
         FC_Constants.isPractice=true;
         if (singleItem.getResourceType().equalsIgnoreCase("category")) {
@@ -339,7 +338,7 @@ public class PracticeFragment extends Fragment implements PracticeContract.Pract
     }
 
     @Override
-    public void onContentOpenClicked(ContentTableNew contentList) {
+    public void onContentOpenClicked(ContentTable contentList) {
         //Toast.makeText(this, "ContentOpen : Work In Progress", Toast.LENGTH_SHORT).show();
         //todo remove#
         ButtonClickSound.start();
@@ -459,7 +458,7 @@ public class PracticeFragment extends Fragment implements PracticeContract.Pract
     }
 
     @Override
-    public void onContentDownloadClicked(ContentTableNew contentList, int parentPos, int childPos, String downloadType) {
+    public void onContentDownloadClicked(ContentTable contentList, int parentPos, int childPos, String downloadType) {
         this.downloadType = downloadType;
         FC_Constants.isPractice=true;
         downloadNodeId = contentList.getNodeId();
@@ -500,7 +499,7 @@ public class PracticeFragment extends Fragment implements PracticeContract.Pract
     }
 
     @Override
-    public void onContentDeleteClicked(ContentTableNew contentList) {
+    public void onContentDeleteClicked(ContentTable contentList) {
     }
 
     @Override

@@ -7,12 +7,10 @@ import android.os.AsyncTask;
 import android.os.Environment;
 import android.util.Log;
 
-
 import com.pratham.foundation.ApplicationClass;
 import com.pratham.foundation.database.AppDatabase;
 import com.pratham.foundation.database.BackupDatabase;
 import com.pratham.foundation.database.domain.ContentTable;
-import com.pratham.foundation.database.domain.ContentTableNew;
 import com.pratham.foundation.database.domain.Session;
 import com.pratham.foundation.database.domain.Student;
 import com.pratham.foundation.database.domain.SupervisorData;
@@ -87,7 +85,7 @@ public class TestTypePresenter implements TestTypeContract.TestTypePresenter {
     @SuppressLint("StaticFieldLeak")
     public void getData() {
         new AsyncTask<Object, Void, Object>() {
-            ContentTableNew contentTable = new ContentTableNew();
+            ContentTable contentTable = new ContentTable();
 
             @Override
             protected Object doInBackground(Object[] objects) {

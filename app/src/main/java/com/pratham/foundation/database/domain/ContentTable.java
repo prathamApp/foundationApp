@@ -4,6 +4,7 @@ import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.Ignore;
 import android.arch.persistence.room.PrimaryKey;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 
 import com.google.gson.annotations.SerializedName;
 
@@ -44,11 +45,13 @@ public class ContentTable {
     public String contentType;
     public String contentLanguage;
     public String nodeKeywords;
-    private boolean onSDCard = false;
     @Ignore
     public String nodePercentage;
+    private boolean onSDCard = false;
+
+    @Nullable
     @Ignore
-    private List<ContentTable> nodelist = null;
+    public List<ContentTable> nodelist = null;
 
     public String getVersion() {
         return version;
@@ -134,7 +137,9 @@ public class ContentTable {
         return nodeServerImage;
     }
 
-    public void setNodeServerImage(String nodeServerImage) { this.nodeServerImage = nodeServerImage; }
+    public void setNodeServerImage(String nodeServerImage) {
+        this.nodeServerImage = nodeServerImage;
+    }
 
     public String getNodeImage() {
         return nodeImage;

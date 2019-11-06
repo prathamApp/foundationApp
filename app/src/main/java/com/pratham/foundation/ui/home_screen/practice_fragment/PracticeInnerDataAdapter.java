@@ -20,7 +20,7 @@ import com.facebook.imagepipeline.request.ImageRequestBuilder;
 import com.pratham.foundation.ApplicationClass;
 import com.pratham.foundation.R;
 import com.pratham.foundation.customView.progress_layout.ProgressLayout;
-import com.pratham.foundation.database.domain.ContentTableNew;
+import com.pratham.foundation.database.domain.ContentTable;
 import com.pratham.foundation.utility.FC_Constants;
 
 import java.io.File;
@@ -29,7 +29,7 @@ import java.util.List;
 
 public class PracticeInnerDataAdapter extends RecyclerView.Adapter {
 
-    private List<ContentTableNew> itemsList;
+    private List<ContentTable> itemsList;
     private Context mContext;
     boolean dw_Ready = false;
     PracticeContract.PracticeItemClicked itemClicked;
@@ -41,7 +41,7 @@ public class PracticeInnerDataAdapter extends RecyclerView.Adapter {
     private static final String TYPE_ITEM = "Resource";
 
 
-    public PracticeInnerDataAdapter(Context context, List<ContentTableNew> itemsList,
+    public PracticeInnerDataAdapter(Context context, List<ContentTable> itemsList,
                                     PracticeContract.PracticeItemClicked itemClicked, int parentPos) {
         this.itemsList = itemsList;
         this.mContext = context;

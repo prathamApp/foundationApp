@@ -4,7 +4,6 @@ package com.pratham.foundation.ui.home_screen.test_fragment;
 
 
 import com.pratham.foundation.database.domain.ContentTable;
-import com.pratham.foundation.database.domain.ContentTableNew;
 import com.pratham.foundation.modalclasses.CertificateModelClass;
 
 import org.json.JSONArray;
@@ -21,7 +20,7 @@ public interface TestContract {
 
         void notifyAdapter();
 
-        void addContentToViewList(List<ContentTableNew> contentParentList);
+        void addContentToViewList(List<ContentTable> contentParentList);
 
         void setSelectedLevel(List<ContentTable> contentTable);
 
@@ -72,7 +71,7 @@ public interface TestContract {
 
         void updateDownloadJson(String folderPath);
 
-        void updateCurrentNode(ContentTableNew contentTableNew);
+        void updateCurrentNode(ContentTable contentTable);
 
         String getcurrentNodeID();
 

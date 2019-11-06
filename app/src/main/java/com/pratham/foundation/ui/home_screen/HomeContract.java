@@ -4,7 +4,6 @@ package com.pratham.foundation.ui.home_screen;
 
 
 import com.pratham.foundation.database.domain.ContentTable;
-import com.pratham.foundation.database.domain.ContentTableNew;
 import com.pratham.foundation.modalclasses.CertificateModelClass;
 
 import org.json.JSONArray;
@@ -18,11 +17,11 @@ public interface HomeContract {
 
         void notifyAdapter();
 
-        void addContentToViewList(List<ContentTableNew> contentParentList);
+        void addContentToViewList(List<ContentTable> contentParentList);
 
         void addContentToViewTestList(CertificateModelClass test);
 
-        void openRCGame(ContentTableNew contentList);
+        void openRCGame(ContentTable contentList);
 
         void setSelectedLevel(List<ContentTable> contentTable);
 
@@ -61,11 +60,11 @@ public interface HomeContract {
 
         void insertNodeId(String nodeId);
 
-        public void updateDownloads();
+        void updateDownloads();
 
         void downloadResource(String downloadNodeId);
 
-        void enterRCData(ContentTableNew contentList);
+        void enterRCData(ContentTable contentList);
 
         boolean removeLastNodeId();
 
@@ -83,7 +82,7 @@ public interface HomeContract {
 
         void updateDownloadJson(String folderPath);
 
-        void updateCurrentNode(ContentTableNew contentTableNew);
+        void updateCurrentNode(ContentTable contentTable);
 
         JSONArray getTestData(String jsonName);
 
