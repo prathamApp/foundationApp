@@ -8,6 +8,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.Rect;
+import android.graphics.drawable.AnimationDrawable;
 import android.graphics.drawable.ColorDrawable;
 import android.media.MediaPlayer;
 import android.os.Bundle;
@@ -82,12 +83,16 @@ public class StoryReadingFragment extends Fragment implements
     ImageButton btn_Play;
     @ViewById(R.id.btn_read_mic)
     ImageButton btn_Mic;
+    @ViewById(R.id.btn_Stop)
+    ImageButton btn_Stop;
     @ViewById(R.id.myScrollView)
     ScrollView myScrollView;
     @ViewById(R.id.btn_submit)
     Button btn_submit;
     @ViewById(R.id.gif_view)
     GifView gif_view;
+    @ViewById(R.id.story_ll)
+    RelativeLayout story_ll;
 //    @ViewById(R.id.ll_btn_next)
 //    LinearLayout ll_btn_next;
 //    @ViewById(R.id.ll_btn_prev)
@@ -122,6 +127,7 @@ public class StoryReadingFragment extends Fragment implements
     boolean voiceStart = false, flgPerMarked = false, onSdCard;
     static boolean[] correctArr;
     static boolean[] testCorrectArr;
+    AnimationDrawable animationDrawable;
 
 /*
         bundle.putString("nodeID", nodeID);
@@ -148,6 +154,12 @@ public class StoryReadingFragment extends Fragment implements
         onSdCard = bundle.getBoolean("onSdCard", false);
         ttsService = BaseActivity.ttsService;
         contentType = "story";
+
+        animationDrawable = (AnimationDrawable) story_ll.getBackground();
+        animationDrawable.setEnterFadeDuration(4500);
+        animationDrawable.setExitFadeDuration(4500);
+        animationDrawable.start();
+
 
         context = getActivity();
         presenter.setView(StoryReadingFragment.this);
@@ -501,15 +513,51 @@ public class StoryReadingFragment extends Fragment implements
             view.getParent().requestChildFocus(view, view);
     }
 
+    @Click(R.id.btn_Stop)
+    void stopBtn() {
+        if (voiceStart) {
+            voiceStart = false;
+            btn_Stop.setVisibility(View.GONE);
+            if (!FC_Constants.isTest && !playHideFlg)
+                btn_Play.setVisibility(View.VISIBLE);
+            btn_Mic.setVisibility(View.VISIBLE);
+            continuousSpeechService.stopSpeechInput();
+        }else if(playFlg){
+            btn_Stop.setVisibility(View.GONE);
+            btn_Play.setVisibility(View.VISIBLE);
+            if (!contentType.equalsIgnoreCase(FC_Constants.RHYME_RESOURCE))
+                btn_Mic.setVisibility(View.VISIBLE);
+            wordCounter = 0;
+            try {
+                playFlg = false;
+                pauseFlg = true;
+                try {
+                    if (mp.isPlaying()) {
+                        mp.stop();
+                        mp.reset();
+                        mp.release();
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                if (startReadingHandler != null)
+                    startReadingHandler.removeCallbacksAndMessages(null);
+                if (soundStopHandler != null)
+                    soundStopHandler.removeCallbacksAndMessages(null);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
     @Click(R.id.btn_read_mic)
     void sttMethod() {
-        if (!voiceStart) {
+//        if (!voiceStart) {
             voiceStart = true;
             flgPerMarked = false;
-            btn_Mic.setImageResource(R.drawable.ic_stop_black_24dp);
-//            layout_mic_ripple.stopRippleAnimation();
+            btn_Mic.setVisibility(View.GONE);
             btn_Play.setVisibility(View.GONE);
-//            layout_ripplepulse_right.stopRippleAnimation();
+            btn_Stop.setVisibility(View.VISIBLE);
             try {
                 if (quesReadHandler != null) {
                     quesReadHandler.removeCallbacksAndMessages(null);
@@ -527,21 +575,23 @@ public class StoryReadingFragment extends Fragment implements
                 e.printStackTrace();
             }
             continuousSpeechService.startSpeechInput();
-        } else {
-            voiceStart = false;
-            if (!FC_Constants.isTest && !playHideFlg)
-                btn_Play.setVisibility(View.VISIBLE);
-            btn_Mic.setImageResource(R.drawable.ic_mic_black_24dp);
-//            layout_mic_ripple.startRippleAnimation();
-//            layout_ripplepulse_right.startRippleAnimation();
-            continuousSpeechService.stopSpeechInput();
-        }
+//        } else {
+//            voiceStart = false;
+//            if (!FC_Constants.isTest && !playHideFlg)
+//                btn_Play.setVisibility(View.VISIBLE);
+//            btn_Mic.setImageResource(R.drawable.ic_mic_black_24dp);
+////            layout_mic_ripple.startRippleAnimation();
+////            layout_ripplepulse_right.startRippleAnimation();
+//            continuousSpeechService.stopSpeechInput();
+//        }
     }
 
     @Click(R.id.btn_play)
     void playReading() {
         if ((!playFlg || pauseFlg) && !storyAudio.equalsIgnoreCase("NA")) {
             btn_Mic.setVisibility(View.GONE);
+            btn_Play.setVisibility(View.GONE);
+            btn_Stop.setVisibility(View.VISIBLE);
             playFlg = true;
             pauseFlg = false;
             try {
@@ -560,7 +610,7 @@ public class StoryReadingFragment extends Fragment implements
             } catch (Exception e) {
                 e.printStackTrace();
             }
-            btn_Play.setImageResource(R.drawable.ic_stop_black_24dp);
+//            btn_Play.setImageResource(R.drawable.ic_stop_black_24dp);
 //            btn_Play.setText("Stop");
             if (audioHandler != null)
                 audioHandler.removeCallbacksAndMessages(null);
@@ -589,10 +639,7 @@ public class StoryReadingFragment extends Fragment implements
             setMute(0);
             startAudioReading();
         } else {
-            btn_Play.setImageResource(R.drawable.ic_play_arrow);
-//            layout_mic_ripple.startRippleAnimation();
-//            layout_ripplepulse_right.startRippleAnimation();
-//            btn_Play.setText("Read");
+/*            btn_Play.setImageResource(R.drawable.ic_play_arrow);
             if (!contentType.equalsIgnoreCase(FC_Constants.RHYME_RESOURCE))
                 btn_Mic.setVisibility(View.VISIBLE);
             wordCounter = 0;
@@ -614,7 +661,7 @@ public class StoryReadingFragment extends Fragment implements
                     soundStopHandler.removeCallbacksAndMessages(null);
             } catch (Exception e) {
                 e.printStackTrace();
-            }
+            }*/
         }
     }
 

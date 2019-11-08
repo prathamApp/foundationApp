@@ -150,7 +150,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_marginBottom="@dimen/_5sdp"
-                    android:background="@drawable/temp_button"
+                    android:background="@drawable/arrow_btn_bg"
                     android:elevation="5dp"
                     android:scaleType="centerInside"
                     android:src="@drawable/ic_navigate_before_black_24dp" />
@@ -172,8 +172,23 @@
                     android:background="@drawable/yellow_button"
                     android:elevation="@dimen/_3sdp"
                     android:padding="@dimen/_8sdp"
+                    android:visibility="visible"
                     android:scaleType="centerInside"
                     android:src="@drawable/ic_play_arrow" />
+
+                <ImageButton
+                    android:id="@+id/btn_Stop"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginStart="@dimen/_5sdp"
+                    android:layout_marginEnd="@dimen/_5sdp"
+                    android:layout_marginBottom="@dimen/_5sdp"
+                    android:layout_weight="1"
+                    android:background="@drawable/red_button"
+                    android:elevation="@dimen/_3sdp"
+                    android:visibility="gone"
+                    android:scaleType="centerInside"
+                    android:src="@drawable/ic_stop_black_24dp" />
 
                 <com.pratham.foundation.customView.SansButton
                     android:id="@+id/btn_submit"
@@ -187,7 +202,7 @@
                     android:elevation="5dp"
                     android:text="submit"
                     android:textColor="@color/white"
-                    android:textSize="@dimen/_15sdp"
+                    android:textSize="@dimen/_13sdp"
                     android:visibility="gone" />
 
                 <ImageButton
@@ -201,6 +216,7 @@
                     android:background="@drawable/yellow_button"
                     android:elevation="@dimen/_3sdp"
                     android:padding="@dimen/_5sdp"
+                    android:visibility="visible"
                     android:scaleType="centerInside"
                     android:src="@drawable/ic_mic_black_24dp" />
 
@@ -219,7 +235,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_marginBottom="@dimen/_5sdp"
-                    android:background="@drawable/temp_button"
+                    android:background="@drawable/arrow_btn_bg"
                     android:elevation="5dp"
                     android:scaleType="centerInside"
                     android:src="@drawable/ic_navigate_next_black_24dp" />
