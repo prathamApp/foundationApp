@@ -479,11 +479,22 @@ public class SplashActivity extends SplashSupportActivity implements SplashContr
         if (checkDB != null) {
             checkDB.close();
         }
-        return checkDB != null ? true : false;
+        return checkDB != null;
     }
 
     @Override
     public void gotoNextActivity() {
+
+        File direct = new File(Environment.getExternalStorageDirectory().toString() + "/.FC");
+        if (!direct.exists())
+            direct.mkdir();
+        direct = new File(Environment.getExternalStorageDirectory().toString() + "/.FC/Internal");
+        if (!direct.exists())
+            direct.mkdir();
+        direct = new File(Environment.getExternalStorageDirectory().toString() + "/.FC/Internal/photos");
+        if (!direct.exists())
+            direct.mkdir();
+
         if (!FastSave.getInstance().getBoolean(FC_Constants.INITIAL_ENTRIES, false))
             splashPresenter.doInitialEntries(AppDatabase.appDatabase);
 //        if(FastSave.getInstance().getBoolean(FC_Constants.newDataLanguageInserted, false))

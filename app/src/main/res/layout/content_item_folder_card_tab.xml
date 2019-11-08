@@ -22,7 +22,7 @@
             android:layout_centerVertical="true"
             app:actualImageScaleType="fitCenter"
             android:layout_marginEnd="@dimen/_5sdp"
-            app:placeholderImage="@drawable/place_holder_temp"
+            app:placeholderImage="@drawable/pratham_logo"
             app:roundedCornerRadius="@dimen/_10sdp"
             app:roundingBorderWidth="@dimen/_1sdp" />
 

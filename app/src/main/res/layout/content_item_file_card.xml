@@ -45,6 +45,7 @@
                     android:layout_alignStart="@+id/card_img"
                     android:layout_alignTop="@+id/card_img"
                     android:foregroundGravity="center"
+                    app:placeholderImage="@drawable/fc_logo"
                     android:scaleType="fitXY"
                     android:src="@drawable/pratham_logo" />
             </android.support.v7.widget.CardView>
