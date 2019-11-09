@@ -22,6 +22,7 @@ import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RatingBar;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
@@ -63,7 +64,7 @@ import static com.pratham.foundation.utility.SplashSupportActivity.ButtonClickSo
 @EFragment(R.layout.fragment_story_reading)
 public class StoryReadingFragment extends Fragment implements
         /*RecognitionListener, */STT_Result_New.sttView,
-        StoryReadingContract.StoryReadingView , OnGameClose {
+        StoryReadingContract.StoryReadingView, OnGameClose {
 
     @Bean(StoryReadingPresenter.class)
     StoryReadingContract.StoryReadingPresenter presenter;
@@ -85,6 +86,8 @@ public class StoryReadingFragment extends Fragment implements
     ImageButton btn_Mic;
     @ViewById(R.id.btn_Stop)
     ImageButton btn_Stop;
+    @ViewById(R.id.btn_camera)
+    ImageButton btn_camera;
     @ViewById(R.id.myScrollView)
     ScrollView myScrollView;
     @ViewById(R.id.btn_submit)
@@ -93,6 +96,8 @@ public class StoryReadingFragment extends Fragment implements
     GifView gif_view;
     @ViewById(R.id.story_ll)
     RelativeLayout story_ll;
+    @ViewById(R.id.bottom_bar2)
+    LinearLayout bottom_bar2;
 //    @ViewById(R.id.ll_btn_next)
 //    LinearLayout ll_btn_next;
 //    @ViewById(R.id.ll_btn_prev)
@@ -154,6 +159,9 @@ public class StoryReadingFragment extends Fragment implements
         onSdCard = bundle.getBoolean("onSdCard", false);
         ttsService = BaseActivity.ttsService;
         contentType = "story";
+
+        bottom_bar2.setVisibility(View.GONE);
+        btn_camera.setVisibility(View.GONE);
 
         animationDrawable = (AnimationDrawable) story_ll.getBackground();
         animationDrawable.setEnterFadeDuration(4500);
@@ -255,7 +263,7 @@ public class StoryReadingFragment extends Fragment implements
         storyAudio = modalPagesList.get(currentPage).getReadPageAudio();
         storyBg = modalPagesList.get(currentPage).getPageImage();
         pageTitle = modalPagesList.get(currentPage).getPageTitle();
-        if(pageTitle != null && !pageTitle.equalsIgnoreCase(""))
+        if (pageTitle != null && !pageTitle.equalsIgnoreCase(""))
             story_title.setText(pageTitle);
         story_title.setTextSize(35);
 
@@ -264,19 +272,19 @@ public class StoryReadingFragment extends Fragment implements
         try {
             File f = new File(readingContentPath + storyBg);
             if (f.exists()) {
-                if(storyBg.contains(".gif")){
+                if (storyBg.contains(".gif")) {
                     pageImage.setVisibility(View.GONE);
                     gif_view.setVisibility(View.VISIBLE);
                     gif_view.setGifResource(new FileInputStream(readingContentPath + storyBg));
                     gif_view.play();
-                }else {
+                } else {
                     gif_view.setVisibility(View.GONE);
                     pageImage.setVisibility(View.VISIBLE);
                     Bitmap bmImg = BitmapFactory.decodeFile(readingContentPath + storyBg);
                     BitmapFactory.decodeStream(new FileInputStream(readingContentPath + storyBg));
                     pageImage.setImageBitmap(bmImg);
                 }
-            }else {
+            } else {
                 gif_view.setVisibility(View.GONE);
                 pageImage.setVisibility(View.GONE);
             }
@@ -303,7 +311,7 @@ public class StoryReadingFragment extends Fragment implements
         }
         startPlayBack = Float.parseFloat(modalPagesList.get(currentPage).getReadList().get(0).getWordFrom());
         setWordsToLayout();
-         if(playHideFlg)
+        if (playHideFlg)
             btn_Play.setVisibility(View.GONE);
         startTime = FC_Utility.getCurrentDateTime();
         new Handler().postDelayed(() -> {
@@ -312,6 +320,7 @@ public class StoryReadingFragment extends Fragment implements
             else {
                 btn_Mic.performClick();
                 btn_Play.setVisibility(View.GONE);
+                bottom_bar2.setVisibility(View.VISIBLE);
                 btn_submit.setVisibility(View.VISIBLE);
             }
         }, 200);
@@ -357,14 +366,14 @@ public class StoryReadingFragment extends Fragment implements
                         myTextView.setTextColor(getResources().getColor(R.color.colorRedDark));
                         Animation animation = AnimationUtils.loadAnimation(context, R.anim.reading_zoom_in);
                         myTextView.startAnimation(animation);
-                        if(colorChangeHandler == null)
+                        if (colorChangeHandler == null)
                             colorChangeHandler = new Handler();
                         colorChangeHandler.postDelayed(() -> {
                             myTextView.setTextColor(getResources().getColor(R.color.colorText));
                             Animation animation1 = AnimationUtils.loadAnimation(context, R.anim.reading_zoom_out);
                             myTextView.startAnimation(animation1);
                         }, 350);
-                        if(!storyAudio.equalsIgnoreCase("NA"))
+                        if (!storyAudio.equalsIgnoreCase("NA"))
                             playClickedWord(finalI);
 //                        ttsService.play("" + linesStringList[finalI]);
                     }
@@ -403,12 +412,13 @@ public class StoryReadingFragment extends Fragment implements
         }
     }
 
-    private void startAudioReading() {
+    private void startAudioReading(int wordCounter) {
         try {
             mp = new MediaPlayer();
+            float seekTime = Float.parseFloat(modalPagesList.get(currentPage).getReadList().get(wordCounter).getWordFrom());
             mp.setDataSource(readingContentPath + storyAudio);
             mp.prepare();
-            mp.seekTo((int) (startPlayBack * 1000));
+            mp.seekTo((int) (seekTime * 1000));
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -448,6 +458,8 @@ public class StoryReadingFragment extends Fragment implements
                             pauseFlg = true;
                             if (!contentType.equalsIgnoreCase(FC_Constants.RHYME_RESOURCE)) {
                                 btn_Mic.setVisibility(View.VISIBLE);
+                                btn_Stop.setVisibility(View.GONE);
+                                wordCounter = 0;
                                 quesReadHandler = new Handler();
                                 quesReadHandler.postDelayed(() -> {
                                     Collections.shuffle(readSounds);
@@ -455,9 +467,7 @@ public class StoryReadingFragment extends Fragment implements
                                     mPlayer.start();
                                 }, (long) (5000));
                             }
-                            if (mp != null && mp.isPlaying())
-                                mp.stop();
-                            btn_Play.setImageResource(R.drawable.ic_play_arrow);
+                            btn_Stop.performClick();
 //                            layout_mic_ripple.startRippleAnimation();
 //                            layout_ripplepulse_right.startRippleAnimation();
                         } catch (Exception e) {
@@ -522,11 +532,13 @@ public class StoryReadingFragment extends Fragment implements
                 btn_Play.setVisibility(View.VISIBLE);
             btn_Mic.setVisibility(View.VISIBLE);
             continuousSpeechService.stopSpeechInput();
-        }else if(playFlg){
+        } else if (playFlg || pauseFlg) {
             btn_Stop.setVisibility(View.GONE);
             btn_Play.setVisibility(View.VISIBLE);
             if (!contentType.equalsIgnoreCase(FC_Constants.RHYME_RESOURCE))
                 btn_Mic.setVisibility(View.VISIBLE);
+            btn_Play.setImageResource(R.drawable.ic_play_arrow_black);
+            startPlayBack = Float.parseFloat(modalPagesList.get(currentPage).getReadList().get(0).getWordFrom());
             wordCounter = 0;
             try {
                 playFlg = false;
@@ -553,33 +565,33 @@ public class StoryReadingFragment extends Fragment implements
     @Click(R.id.btn_read_mic)
     void sttMethod() {
 //        if (!voiceStart) {
-            voiceStart = true;
-            flgPerMarked = false;
-            btn_Mic.setVisibility(View.GONE);
-            btn_Play.setVisibility(View.GONE);
-            btn_Stop.setVisibility(View.VISIBLE);
-            try {
-                if (quesReadHandler != null) {
-                    quesReadHandler.removeCallbacksAndMessages(null);
-                    try {
-                        if (mPlayer.isPlaying()) {
-                            mPlayer.stop();
-                            mPlayer.reset();
-                            mPlayer.release();
-                        }
-                    } catch (Exception e) {
-                        e.printStackTrace();
+        voiceStart = true;
+        flgPerMarked = false;
+        btn_Mic.setVisibility(View.GONE);
+        btn_Play.setVisibility(View.GONE);
+        btn_Stop.setVisibility(View.VISIBLE);
+        try {
+            if (quesReadHandler != null) {
+                quesReadHandler.removeCallbacksAndMessages(null);
+                try {
+                    if (mPlayer.isPlaying()) {
+                        mPlayer.stop();
+                        mPlayer.reset();
+                        mPlayer.release();
                     }
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
-            } catch (Exception e) {
-                e.printStackTrace();
             }
-            continuousSpeechService.startSpeechInput();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        continuousSpeechService.startSpeechInput();
 //        } else {
 //            voiceStart = false;
 //            if (!FC_Constants.isTest && !playHideFlg)
 //                btn_Play.setVisibility(View.VISIBLE);
-//            btn_Mic.setImageResource(R.drawable.ic_mic_black_24dp);
+//            btn_Mic.setImageResource(R.drawable.ic_mic_black);
 ////            layout_mic_ripple.startRippleAnimation();
 ////            layout_ripplepulse_right.startRippleAnimation();
 //            continuousSpeechService.stopSpeechInput();
@@ -588,13 +600,38 @@ public class StoryReadingFragment extends Fragment implements
 
     @Click(R.id.btn_play)
     void playReading() {
-        if ((!playFlg || pauseFlg) && !storyAudio.equalsIgnoreCase("NA")) {
-            btn_Mic.setVisibility(View.GONE);
-            btn_Play.setVisibility(View.GONE);
-            btn_Stop.setVisibility(View.VISIBLE);
-            playFlg = true;
-            pauseFlg = false;
-            try {
+        if (!storyAudio.equalsIgnoreCase("NA")) {
+            if (!playFlg) {
+                btn_Mic.setVisibility(View.GONE);
+                btn_Play.setVisibility(View.VISIBLE);
+                btn_Stop.setVisibility(View.VISIBLE);
+                btn_Play.setImageResource(R.drawable.ic_pause_black);
+                playFlg = true;
+                pauseFlg = false;
+                try {
+                    if (quesReadHandler != null) {
+                        quesReadHandler.removeCallbacksAndMessages(null);
+                        try {
+                            if (mPlayer.isPlaying() && mPlayer != null) {
+                                mPlayer.stop();
+                                mPlayer.reset();
+                                mPlayer.release();
+                            }
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+//            btn_Play.setImageResource(R.drawable.ic_stop_black_24dp);
+//            btn_Play.setText("Stop");
+                if (audioHandler != null)
+                    audioHandler.removeCallbacksAndMessages(null);
+                if (handler != null)
+                    handler.removeCallbacksAndMessages(null);
+                if (colorChangeHandler != null)
+                    colorChangeHandler.removeCallbacksAndMessages(null);
                 if (quesReadHandler != null) {
                     quesReadHandler.removeCallbacksAndMessages(null);
                     try {
@@ -607,39 +644,28 @@ public class StoryReadingFragment extends Fragment implements
                         e.printStackTrace();
                     }
                 }
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-//            btn_Play.setImageResource(R.drawable.ic_stop_black_24dp);
-//            btn_Play.setText("Stop");
-            if (audioHandler != null)
-                audioHandler.removeCallbacksAndMessages(null);
-            if (handler != null)
-                handler.removeCallbacksAndMessages(null);
-            if (colorChangeHandler != null)
-                colorChangeHandler.removeCallbacksAndMessages(null);
-            if (quesReadHandler != null) {
-                quesReadHandler.removeCallbacksAndMessages(null);
+                if (startReadingHandler != null)
+                    startReadingHandler.removeCallbacksAndMessages(null);
+                if (soundStopHandler != null)
+                    soundStopHandler.removeCallbacksAndMessages(null);
+//            layout_ripplepulse_right.stopRippleAnimation();
+                setMute(0);
+                startAudioReading(wordCounter);
+            } else {
+                playFlg = false;
+                pauseFlg = true;
+                btn_Play.setImageResource(R.drawable.ic_play_arrow_black);
+                if (wordCounter > 1)
+                    wordCounter--;
                 try {
-                    if (mPlayer.isPlaying() && mPlayer != null) {
-                        mPlayer.stop();
-                        mPlayer.reset();
-                        mPlayer.release();
+                    if (mp.isPlaying()) {
+                        mp.pause();
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
-            }
-            if (startReadingHandler != null)
-                startReadingHandler.removeCallbacksAndMessages(null);
-            if (soundStopHandler != null)
-                soundStopHandler.removeCallbacksAndMessages(null);
-            wordCounter = 0;
-//            layout_ripplepulse_right.stopRippleAnimation();
-            setMute(0);
-            startAudioReading();
-        } else {
-/*            btn_Play.setImageResource(R.drawable.ic_play_arrow);
+
+/*            btn_Play.setImageResource(R.drawable.ic_play_arrow_black);
             if (!contentType.equalsIgnoreCase(FC_Constants.RHYME_RESOURCE))
                 btn_Mic.setVisibility(View.VISIBLE);
             wordCounter = 0;
@@ -662,6 +688,7 @@ public class StoryReadingFragment extends Fragment implements
             } catch (Exception e) {
                 e.printStackTrace();
             }*/
+            }
         }
     }
 
@@ -731,7 +758,7 @@ public class StoryReadingFragment extends Fragment implements
                 voiceStart = false;
                 if (!FC_Constants.isTest && !playHideFlg)
                     btn_Play.setVisibility(View.VISIBLE);
-                btn_Mic.setImageResource(R.drawable.ic_mic_black_24dp);
+                btn_Mic.setImageResource(R.drawable.ic_mic_black);
                 continuousSpeechService.stopSpeechInput();
                 setMute(0);
             }
@@ -807,7 +834,7 @@ public class StoryReadingFragment extends Fragment implements
                 voiceStart = false;
                 if (!FC_Constants.isTest && !playHideFlg)
                     btn_Play.setVisibility(View.VISIBLE);
-                btn_Mic.setImageResource(R.drawable.ic_mic_black_24dp);
+                btn_Mic.setImageResource(R.drawable.ic_mic_black);
                 continuousSpeechService.stopSpeechInput();
                 setMute(0);
             }
@@ -837,9 +864,8 @@ public class StoryReadingFragment extends Fragment implements
             pauseFlg = true;
             presenter.getPage(currentPage);
             Log.d("click", "NextBtn - totalPages: " + totalPages + "  currentPage: " + currentPage);
-        }
-        else{
-            GameConstatnts.playGameNext(getActivity(),true,this);
+        } else {
+            GameConstatnts.playGameNext(getActivity(), true, this);
         }
     }
 
@@ -1028,7 +1054,7 @@ public class StoryReadingFragment extends Fragment implements
     }
 
     public float getStarRating(float perc) {
-        float ratings=0;
+        float ratings = 0;
         if (perc < 21)
             ratings = (float) 1;
         else if (perc >= 21 && perc < 41)
@@ -1090,7 +1116,7 @@ public class StoryReadingFragment extends Fragment implements
 /*        if (!voiceStart) {
             resetSpeechRecognizer();
             btn_Play.setVisibility(View.VISIBLE);
-            btn_Mic.setImageResource(R.drawable.ic_mic_black_24dp);
+            btn_Mic.setImageResource(R.drawable.ic_mic_black);
             setMute(0);
         } else
             speech.startListening(recognizerIntent);*/
