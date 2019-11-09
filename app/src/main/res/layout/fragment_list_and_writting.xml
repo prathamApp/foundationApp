@@ -122,6 +122,7 @@
                 android:padding="@dimen/_20sdp"
                 android:scaleType="fitXY"
                 android:src="@drawable/play_button" />
+
             <RadioGroup
                 android:id="@+id/radiogroup"
                 android:layout_width="wrap_content"

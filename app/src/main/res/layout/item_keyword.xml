@@ -8,11 +8,6 @@
     android:elevation="@dimen/_3sdp"
     android:background="@drawable/dialog_bg">
 
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_centerInParent="true"
-        android:layout_margin="8dp">
         <com.pratham.foundation.customView.SansTextView
             android:id="@+id/keywordname"
             android:layout_width="match_parent"
@@ -23,6 +18,4 @@
             android:text="asanksjdnaks"
             android:textColor="@android:color/black"
             android:textSize="@dimen/_15sdp" />
-    </RelativeLayout>
-
 </RelativeLayout>

@@ -66,7 +66,8 @@ public class ListeningAndWritting extends Fragment implements ListeningAndWritti
 
     private int index = 0;
     private String readingContentPath, contentPath, contentTitle, StudentID, resId, resStartTime;
-    private boolean onSdCard, isPlaying;
+    private boolean onSdCard;
+    private int isPlaying = -1;
     private List<ScienceQuestion> listenAndWrittingModal;
     private MediaPlayerUtil mediaPlayerUtil;
     private String imageName = null;
@@ -170,22 +171,39 @@ public class ListeningAndWritting extends Fragment implements ListeningAndWritti
             sp.setOnLoadCompleteListener(new SoundPool.OnLoadCompleteListener() {
                 @Override
                 public void onLoadComplete(SoundPool soundPool, int sampleId, int status) {
-                    Glide.with(getActivity()).load(R.drawable.replay)
-                            .into(play);
-                    sID = sp.play(id, 1, 1, 1, 0, rate);
+                    if (isPlaying == -1) {
+                        isPlaying = 1;
+                        Glide.with(getActivity()).load(R.drawable.replay)
+                                .into(play);
+                        sID = sp.play(id, 1, 1, 1, 0, rate);
+                    } else if (isPlaying == 1) {
+                        isPlaying = 0;
+                        sp.pause(sID);
+                        Glide.with(getActivity()).load(R.drawable.play_button)
+                                .into(play);
+                    } else if (isPlaying == 0) {
+                        isPlaying = 1;
+                        Glide.with(getActivity()).load(R.drawable.replay)
+                                .into(play);
+                        sp.resume(sID);
+                    }
+
                 }
+
             });
 
 
-        } catch (Exception e) {
+        } catch (
+                Exception e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
+
     }
 
     @Click(R.id.capture)
     public void captureClick() {
-        imageName = "" + ApplicationClass.getUniqueID()+".jpg";
+        imageName = "" + ApplicationClass.getUniqueID() + ".jpg";
         Intent takePicture = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         startActivityForResult(takePicture, CAMERA_REQUEST);
     }

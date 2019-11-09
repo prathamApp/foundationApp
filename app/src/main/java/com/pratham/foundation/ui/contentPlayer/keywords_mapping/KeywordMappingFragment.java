@@ -1,19 +1,17 @@
 package com.pratham.foundation.ui.contentPlayer.keywords_mapping;
 
-import android.app.Dialog;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
+import android.graphics.Paint;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.view.Window;
+import android.widget.Button;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.pratham.foundation.ApplicationClass;
 import com.pratham.foundation.R;
-import com.pratham.foundation.customView.SansButton;
-import com.pratham.foundation.customView.SansTextViewBold;
+import com.pratham.foundation.customView.SansTextView;
 import com.pratham.foundation.interfaces.OnGameClose;
 import com.pratham.foundation.modalclasses.ScienceQuestionChoice;
 import com.pratham.foundation.ui.contentPlayer.GameConstatnts;
@@ -30,7 +28,6 @@ import org.androidannotations.annotations.ViewById;
 
 import java.util.Collections;
 import java.util.List;
-import java.util.Objects;
 
 @EFragment(R.layout.fragment_keyword_mapping)
 public class KeywordMappingFragment extends Fragment implements KeywordMappingContract.KeywordMappingView, OnGameClose {
@@ -44,6 +41,8 @@ public class KeywordMappingFragment extends Fragment implements KeywordMappingCo
     TextView keyword;
     @ViewById(R.id.recycler_view)
     RecyclerView recycler_view;
+    @ViewById(R.id.submit)
+    Button submit;
 
     private String contentPath, contentTitle, StudentID, resId, readingContentPath, resStartTime;
     private boolean onSdCard;
@@ -51,6 +50,7 @@ public class KeywordMappingFragment extends Fragment implements KeywordMappingCo
     private List<ScienceQuestionChoice> optionList;
     private KeywordOptionAdapter keywordOptionAdapter;
     private ScienceQuestion keywordmapping;
+    private boolean isSubmitted = false;
 
     @AfterViews
     protected void initiate() {
@@ -73,7 +73,7 @@ public class KeywordMappingFragment extends Fragment implements KeywordMappingCo
         presenter.setView(KeywordMappingFragment.this, resId, readingContentPath);
         presenter.getData();
         resStartTime = FC_Utility.getCurrentDateTime();
-        presenter.addScore(0, "", 0, 0, resStartTime,FC_Utility.getCurrentDateTime(), GameConstatnts.KEYWORD_MAPPING + " " + GameConstatnts.START);
+        presenter.addScore(0, "", 0, 0, resStartTime, FC_Utility.getCurrentDateTime(), GameConstatnts.KEYWORD_MAPPING + " " + GameConstatnts.START);
 
     }
 
@@ -113,8 +113,20 @@ public class KeywordMappingFragment extends Fragment implements KeywordMappingCo
     }
 
     @Override
-    public void showResult(List correctWord, List wrongWord) {
-        if ((correctWord != null && !correctWord.isEmpty()) || (wrongWord != null && !wrongWord.isEmpty())) {
+    public void showResult(ScienceQuestion selectedAnsList) {
+        submit.setText("Next");
+        keywordOptionAdapter.setClickable(false);
+        for (int index = 0; index < recycler_view.getChildCount(); index++) {
+            RelativeLayout relativeLayout = (RelativeLayout) recycler_view.getChildAt(index);
+            SansTextView textView = (SansTextView) relativeLayout.getChildAt(0);
+
+            if (!presenter.checkAnswerNew(selectedAnsList.getLstquestionchoice(), textView.getText().toString())) {
+                textView.setPaintFlags(textView.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
+            }
+        }
+        //     textView.setPaintFlags(textView.getPaintFlags() & (~ Paint.STRIKE_THRU_TEXT_FLAG));
+        //iews.setInt(R.id.widgetTitle, "setPaintFlags", Paint.ANTI_ALIAS_FLAG);
+        /*if ((correctWord != null && !correctWord.isEmpty()) || (wrongWord != null && !wrongWord.isEmpty())) {
             final Dialog dialog = new Dialog(getActivity());
             dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
             dialog.setContentView(R.layout.show_result);
@@ -135,26 +147,24 @@ public class KeywordMappingFragment extends Fragment implements KeywordMappingCo
             dialog.show();
         } else {
             GameConstatnts.playGameNext(getActivity(), GameConstatnts.TRUE, this);
-        }
+        }*/
     }
 
     @Click(R.id.submit)
     public void submitClick() {
-        if (keywordOptionAdapter != null && keywordmapping != null) {
-            List<ScienceQuestionChoice> selectedoptionList = keywordOptionAdapter.getSelectedOptionList();
-            presenter.addLearntWords(keywordmapping, selectedoptionList);
-        }
-        // GameConstatnts.playGameNext(getActivity());
-       /* Bundle bundle = GameConstatnts.findGameData("104");
-        if (bundle != null) {
-            FC_Utility.showFragment(getActivity(), new ParagraphWritingFragment_(), R.id.RL_CPA,
-                    bundle, ParagraphWritingFragment_.class.getSimpleName());
+        if (!isSubmitted) {
+            isSubmitted=true;
+            if (keywordOptionAdapter != null && keywordmapping != null) {
+                List<ScienceQuestionChoice> selectedoptionList = keywordOptionAdapter.getSelectedOptionList();
+                presenter.addLearntWords(keywordmapping, selectedoptionList);
+            }
+        }else {
 
-        }*/
+        }
     }
 
     @Override
     public void gameClose() {
-        presenter.addScore(0, "", 0, 0, resStartTime,FC_Utility.getCurrentDateTime(), GameConstatnts.KEYWORD_MAPPING + " " + GameConstatnts.END);
+        presenter.addScore(0, "", 0, 0, resStartTime, FC_Utility.getCurrentDateTime(), GameConstatnts.KEYWORD_MAPPING + " " + GameConstatnts.END);
     }
 }
