@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="@dimen/_10sdp"
+    tools:context=".ui.contentPlayer.pictionary.PictionaryResult">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <com.pratham.foundation.customView.SansTextView
+            android:id="@+id/tittle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Result Show me"
+            android:textAlignment="center"
+            android:textSize="@dimen/_20sdp" />
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/result"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@id/tittle"
+            android:layout_above="@id/dia_btn_green"/>
+        <com.pratham.foundation.customView.SansButton
+            android:id="@+id/dia_btn_green"
+            android:layout_width="@dimen/_70sdp"
+            android:layout_height="@dimen/_40sdp"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginHorizontal="@dimen/_10sdp"
+            android:layout_marginBottom="@dimen/_15sdp"
+            android:background="@drawable/green_button"
+            android:elevation="5dp"
+            android:text="Next"
+            android:textColor="@color/white"
+            android:textSize="@dimen/_10sdp" />
+
+
+    </RelativeLayout>
+
+
+</RelativeLayout>
