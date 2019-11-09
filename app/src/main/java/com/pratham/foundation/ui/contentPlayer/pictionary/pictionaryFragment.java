@@ -1,6 +1,7 @@
 package com.pratham.foundation.ui.contentPlayer.pictionary;
 
 import android.app.Dialog;
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
@@ -89,7 +90,7 @@ public class pictionaryFragment extends Fragment implements OnGameClose {
     private String readingContentPath, contentPath, contentTitle, StudentID, resId, resStartTime;
     private int totalWordCount, learntWordCount;
     List<ScienceQuestionChoice> options;
-    private List<ScienceQuestion> selectedFive;
+    private ArrayList<ScienceQuestion> selectedFive;
     private List<ScienceQuestion> dataList;
     private static final String POS = "pos";
     private static final String SCIENCE_QUESTION = "scienceQuestion";
@@ -305,7 +306,7 @@ public class pictionaryFragment extends Fragment implements OnGameClose {
                 gridMcq.removeAllViews();
 
                 for (int r = 0; r < options.size(); r++) {
-                    if (!options.get(r).getSubUrl().equalsIgnoreCase("")) {
+                    if (!options.get(r).getSubUrl().trim().equalsIgnoreCase("")) {
                         imgCnt++;
                     }
                     if (!options.get(r).getSubQues().equalsIgnoreCase("")) {
@@ -321,7 +322,7 @@ public class pictionaryFragment extends Fragment implements OnGameClose {
                     String ansId = selectedFive.get(index).getUserAnswer();
 
                     if (textCnt == options.size()) {
-                        if (options.get(r).getSubUrl().equalsIgnoreCase("")) {
+                        if (options.get(r).getSubUrl().trim().equalsIgnoreCase("")) {
                             radioGroupMcq.setVisibility(View.VISIBLE);
                             gridMcq.setVisibility(View.GONE);
 
@@ -371,11 +372,11 @@ public class pictionaryFragment extends Fragment implements OnGameClose {
                     } else if (imgCnt == options.size()) {
                         radioGroupMcq.setVisibility(View.GONE);
                         gridMcq.setVisibility(View.VISIBLE);
-                        String fileName = options.get(r).getSubUrl();
+                        String fileName = options.get(r).getSubUrl().trim();
 //                String localPath = Environment.getExternalStorageDirectory() + Assessment_Constants.STORE_DOWNLOADED_MEDIA_PATH + "/" + fileName;
                         String localPath = readingContentPath + fileName;
 
-                        String path = options.get(r).getSubUrl();
+                        String path = options.get(r).getSubUrl().trim();
 
                         String[] imgPath = path.split("\\.");
                         int len;
@@ -385,18 +386,19 @@ public class pictionaryFragment extends Fragment implements OnGameClose {
                   /*  final GifView gifView;
                     ImageView imageView = null;*/
 
-                        final String imageUrl = options.get(r).getSubUrl();
+                        final String imageUrl = options.get(r).getSubUrl().trim();
                         final View view;
                         final RelativeLayout rl_mcq;
                         View viewRoot;
                         final ImageView tick;
-
+                        final ImageView zoomImg;
 
                         if (imgPath[len].equalsIgnoreCase("gif")) {
                             viewRoot = LayoutInflater.from(getActivity()).inflate(R.layout.layout_mcq_gif_item, gridMcq, false);
                             view = viewRoot.findViewById(R.id.mcq_gif);
                             rl_mcq = viewRoot.findViewById(R.id.rl_mcq);
                             tick = viewRoot.findViewById(R.id.iv_tick);
+                            zoomImg = viewRoot.findViewById(R.id.iv_view_img);
                         /*  setImage(view, imageUrl, localPath);
                         gridMcq.addView(view);*/
                         } else {
@@ -404,6 +406,7 @@ public class pictionaryFragment extends Fragment implements OnGameClose {
                             view = viewRoot.findViewById(R.id.mcq_img);
                             rl_mcq = viewRoot.findViewById(R.id.rl_mcq);
                             tick = viewRoot.findViewById(R.id.iv_tick);
+                            zoomImg = viewRoot.findViewById(R.id.iv_view_img);
 /*setImage(view, imageUrl, localPath);
                         gridMcq.addView(view);*/
 //                        if (scienceQuestion.getUserAnswerId().equalsIgnoreCase(options.get(r).getQcid())) {
@@ -425,7 +428,7 @@ public class pictionaryFragment extends Fragment implements OnGameClose {
                                 }
                                 rl_mcq.setBackground(getActivity().getResources().getDrawable(R.drawable.custom_edit_text));
                                 tick.setVisibility(View.VISIBLE);
-                                String fileName = options.get(finalR).getSubUrl();
+                                String fileName = options.get(finalR).getSubUrl().trim();
                                 String localPath = readingContentPath + fileName;
 
 
@@ -442,7 +445,15 @@ public class pictionaryFragment extends Fragment implements OnGameClose {
                                 selectedFive.get(index).setEndTime(FC_Utility.getCurrentDateTime());
                             }
                         });
+                        zoomImg.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                String fileName = options.get(finalR).getSubUrl().trim();
+                                String localPath = readingContentPath  + fileName;
+                                showZoomDialog(getActivity(), options.get(finalR).getSubUrl().trim(), localPath);
 
+                            }
+                        });
                         if (selectedFive.get(index).getUserAnswer().equalsIgnoreCase(options.get(r).getQid())) {
                             rl_mcq.setBackground(getActivity().getResources().getDrawable(R.drawable.custom_edit_text));
                             tick.setVisibility(View.VISIBLE);
@@ -458,15 +469,15 @@ public class pictionaryFragment extends Fragment implements OnGameClose {
                     } else {
                         gridMcq.setColumnCount(2);
                         final int finalR1 = r;
-                        if (!options.get(r).getSubUrl().equalsIgnoreCase("")) {
+                        if (!options.get(r).getSubUrl().trim().equalsIgnoreCase("")) {
 
 //                        final String imageUrl = options.get(r).getChoiceurl();
                             final View view;
                             final RelativeLayout rl_mcq;
                             View viewRoot;
                             final ImageView tick;
-
-                            String path = options.get(r).getSubUrl();
+                            final ImageView zoomImg;
+                            String path = options.get(r).getSubUrl().trim();
 
                             String[] imgPath = path.split("\\.");
                             int len;
@@ -480,6 +491,7 @@ public class pictionaryFragment extends Fragment implements OnGameClose {
                                 view = viewRoot.findViewById(R.id.mcq_gif);
                                 rl_mcq = viewRoot.findViewById(R.id.rl_mcq);
                                 tick = viewRoot.findViewById(R.id.iv_tick);
+                                zoomImg = viewRoot.findViewById(R.id.iv_view_img);
 
                         /*  setImage(view, imageUrl, localPath);
                         gridMcq.addView(view);*/
@@ -488,6 +500,7 @@ public class pictionaryFragment extends Fragment implements OnGameClose {
                                 view = viewRoot.findViewById(R.id.mcq_img);
                                 rl_mcq = viewRoot.findViewById(R.id.rl_mcq);
                                 tick = viewRoot.findViewById(R.id.iv_tick);
+                                zoomImg = viewRoot.findViewById(R.id.iv_view_img);
 /*setImage(view, imageUrl, localPath);
                         gridMcq.addView(view);*/
 //                        if (scienceQuestion.getUserAnswerId().equalsIgnoreCase(options.get(r).getQcid())) {
@@ -502,13 +515,13 @@ public class pictionaryFragment extends Fragment implements OnGameClose {
 
 //                        final View view = LayoutInflater.from(getActivity()).inflate(R.layout.layout_mcq_image_item, gridMcq, false);
 
-                            String fileName = options.get(r).getSubUrl();
+                            String fileName = options.get(r).getSubUrl().trim();
 //                String localPath = Environment.getExternalStorageDirectory() + Assessment_Constants.STORE_DOWNLOADED_MEDIA_PATH + "/" + fileName;
-                            String localPath = readingContentPath + "/images/" + fileName;
+                            String localPath = readingContentPath + fileName;
 
 //                        final ImageView imageView = (ImageView) view;
 //                        if (AssessmentApplication.wiseF.isDeviceConnectedToMobileOrWifiNetwork()) {
-                            final String imageUrl = options.get(r).getSubUrl();
+                            final String imageUrl = options.get(r).getSubUrl().trim();
                             setImage(view, imageUrl, localPath);
 
                             gridMcq.addView(viewRoot);
@@ -526,17 +539,25 @@ public class pictionaryFragment extends Fragment implements OnGameClose {
                                 @Override
                                 public void onClick(View v) {
                                     setOnclickOnItem(v, options.get(finalR1));
-                                    String fileName = options.get(finalR1).getSubUrl();
-                                    String localPath = readingContentPath + "/images/" + fileName;
+                                    String fileName = options.get(finalR1).getSubUrl().trim();
+                                    String localPath = readingContentPath +  fileName;
                                     tick.setVisibility(View.VISIBLE);
 
                                     rl_mcq.setBackground(getActivity().getResources().getDrawable(R.drawable.custom_edit_text));
 //                                if (AssessmentApplication.wiseF.isDeviceConnectedToMobileOrWifiNetwork()) {
-                                    showZoomDialog(getActivity(), options.get(finalR1).getSubUrl(), localPath);
+                                 //   showZoomDialog(getActivity(), options.get(finalR1).getSubUrl(), localPath);
 
                                /* } else {
                                     showZoomDialog(localPath);
                                 }*/
+                                }
+                            });
+                            zoomImg.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    String fileName = options.get(finalR1).getSubUrl().trim();
+                                    String localPath = readingContentPath + fileName;
+                                    showZoomDialog(getActivity(), options.get(finalR1).getSubUrl().trim(), localPath);
                                 }
                             });
                         } else {
@@ -694,6 +715,8 @@ public class pictionaryFragment extends Fragment implements OnGameClose {
     public void onsubmitBtnClick() {
         if (selectedFive != null)
             addLearntWords(selectedFive);
+
+        gameClose();
         //  GameConstatnts.playGameNext(getActivity());
         /*Bundle bundle = GameConstatnts.findGameData("110");
         if (bundle != null) {
@@ -703,7 +726,7 @@ public class pictionaryFragment extends Fragment implements OnGameClose {
 
     }
 
-    public void addLearntWords(List<ScienceQuestion> selectedAnsList) {
+    public void addLearntWords(ArrayList<ScienceQuestion> selectedAnsList) {
         int correctCnt = 0;
         correctWordList = new ArrayList<>();
         wrongWordList = new ArrayList<>();
@@ -740,7 +763,11 @@ public class pictionaryFragment extends Fragment implements OnGameClose {
                 }
             }
             if (!FC_Constants.isTest) {
-                showResult(correctWordList, wrongWordList);
+               // showResult(correctWordList, wrongWordList);
+                Intent intent=new Intent(getActivity(),PictionaryResult.class);
+                intent.putExtra("selectlist",selectedAnsList);
+                intent.putExtra("readingContentPath",readingContentPath);
+                getActivity().startActivity(intent);
             }
         } else {
             GameConstatnts.playGameNext(getActivity(), GameConstatnts.TRUE, (OnGameClose) this);

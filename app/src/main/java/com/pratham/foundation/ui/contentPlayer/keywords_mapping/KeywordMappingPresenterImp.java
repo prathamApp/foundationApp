@@ -153,7 +153,7 @@ public class KeywordMappingPresenterImp implements KeywordMappingContract.Keywor
             }
 
             if (!FC_Constants.isTest) {
-                view.showResult(correctWordList, wrongWordList);
+                view.showResult(keywordmapping);
             }
         } else {
             GameConstatnts.playGameNext(context, GameConstatnts.TRUE, (OnGameClose) view);
@@ -202,7 +202,7 @@ public class KeywordMappingPresenterImp implements KeywordMappingContract.Keywor
         }
     }
 
-    private boolean checkAnswerNew(List<ScienceQuestionChoice> optionListlist, String word) {
+    public boolean checkAnswerNew(List<ScienceQuestionChoice> optionListlist, String word) {
         for (int i = 0; i < optionListlist.size(); i++) {
             if (optionListlist.get(i).getSubQues().equalsIgnoreCase(word)&&(optionListlist.get(i).getCorrectAnswer().equalsIgnoreCase("true"))) {
                 return true;

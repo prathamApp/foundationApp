@@ -42,8 +42,8 @@ public class BaseActivity extends AppCompatActivity {
         audioManager = (AudioManager) getSystemService(AUDIO_SERVICE);
         startSTT();
         muteFlg = false;
-                Catcho.Builder(this)
-                .activity(CatchoTransparentActivity.class).build();
+                Catcho.Builder(this);
+//                .activity(CatchoTransparentActivity.class).build();
 //                .recipients("abc@domain.com").build();
 
     }

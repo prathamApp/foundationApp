@@ -23,6 +23,7 @@ public class KeywordOptionAdapter extends RecyclerView.Adapter<KeywordOptionAdap
     List<ScienceQuestionChoice> datalist;
     List<ScienceQuestionChoice> selectedOption = new ArrayList();
     int maxSelect;
+    boolean isClickable = true;
 
     public KeywordOptionAdapter(Context context, List<ScienceQuestionChoice> datalist, int maxSelect) {
         this.context = context;
@@ -48,15 +49,14 @@ public class KeywordOptionAdapter extends RecyclerView.Adapter<KeywordOptionAdap
         myviewholder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                if (datalist.get(myviewholder.getAdapterPosition()).isIsclicked()) {
-                    if (selectedOption.contains(datalist.get(myviewholder.getAdapterPosition()))) {
-                        selectedOption.remove(datalist.get(myviewholder.getAdapterPosition()));
-                    }
-                    datalist.get(myviewholder.getAdapterPosition()).setIsclicked(false);
-                    myviewholder.itemView.setBackground(ContextCompat.getDrawable(context, R.drawable.dialog_bg));
-                } else {
-                    if (maxSelect > selectedOption.size()) {
+                if (isClickable) {
+                    if (datalist.get(myviewholder.getAdapterPosition()).isIsclicked()) {
+                        if (selectedOption.contains(datalist.get(myviewholder.getAdapterPosition()))) {
+                            selectedOption.remove(datalist.get(myviewholder.getAdapterPosition()));
+                        }
+                        datalist.get(myviewholder.getAdapterPosition()).setIsclicked(false);
+                        myviewholder.itemView.setBackground(ContextCompat.getDrawable(context, R.drawable.dialog_bg));
+                    } else {
                         if (!selectedOption.contains(datalist.get(myviewholder.getAdapterPosition()))) {
                             datalist.get(myviewholder.getAdapterPosition()).setStartTime(FC_Utility.getCurrentDateTime());
                             datalist.get(myviewholder.getAdapterPosition()).setEndTime(FC_Utility.getCurrentDateTime());
@@ -64,8 +64,6 @@ public class KeywordOptionAdapter extends RecyclerView.Adapter<KeywordOptionAdap
                         }
                         datalist.get(myviewholder.getAdapterPosition()).setIsclicked(true);
                         myviewholder.itemView.setBackground(ContextCompat.getDrawable(context, R.drawable.correct_bg));
-                    } else {
-                        Toast.makeText(context, "you can not select more than " + maxSelect + " items", Toast.LENGTH_LONG).show();
                     }
                 }
             }
@@ -88,5 +86,13 @@ public class KeywordOptionAdapter extends RecyclerView.Adapter<KeywordOptionAdap
 
     public List getSelectedOptionList() {
         return selectedOption;
+    }
+
+    public boolean isClickable() {
+        return isClickable;
+    }
+
+    public void setClickable(boolean clickable) {
+        isClickable = clickable;
     }
 }

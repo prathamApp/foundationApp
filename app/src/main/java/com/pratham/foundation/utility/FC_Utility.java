@@ -1878,6 +1878,8 @@ public class FC_Utility {
         return dateFormat.format(cal.getTime());
     }
     public static void showZoomDialog(Context context,String path, String localPath) {
+        path=path.replace(" ","");
+        localPath=localPath.replace(" ","");
         ZoomImageDialog zoomImageDialog = new ZoomImageDialog(context, path, localPath);
         zoomImageDialog.show();
     }

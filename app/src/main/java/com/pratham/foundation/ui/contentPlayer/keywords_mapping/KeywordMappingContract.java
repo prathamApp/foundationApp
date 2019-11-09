@@ -9,7 +9,7 @@ import java.util.List;
 public interface KeywordMappingContract {
     public interface KeywordMappingView {
         void loadUI(List<ScienceQuestion> list);
-        public void showResult(List correctWord, List wrongWord);
+        public void showResult(ScienceQuestion scienceQuestions);
     }
 
     public interface KeywordMappingPresenter {
@@ -18,7 +18,7 @@ public interface KeywordMappingContract {
         //void setView(String contentTitle, String resId);
 
         void getDataList();
-
+        boolean checkAnswerNew(List<ScienceQuestionChoice> optionListlist, String word);
         void addLearntWords(ScienceQuestion keywordmapping, List<ScienceQuestionChoice> selectedOption);
 
         void setView(KeywordMappingContract.KeywordMappingView keywordMappingView, String resId,String readingContentPath);
