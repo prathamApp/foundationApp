@@ -20,7 +20,9 @@ import android.view.Window;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ScrollView;
+import android.widget.TextView;
 
 import com.pratham.foundation.ApplicationClass;
 import com.pratham.foundation.R;
@@ -44,7 +46,7 @@ import java.util.List;
 
 import butterknife.OnClick;
 
-@EFragment(R.layout.fragment_paragraph_writing)
+@EFragment(R.layout.fragment_word_writing)
 public class WordWritingFragment extends Fragment
         implements WordWritingContract.WordWritingView, OnGameClose {
 
@@ -52,28 +54,32 @@ public class WordWritingFragment extends Fragment
     WordWritingContract.WordWritingPresenter presenter;
 
     private int index = 0;
-    @ViewById(R.id.paragraph)
-    RecyclerView paragraph;
-    @ViewById(R.id.scrollView)
-    ScrollView scrollView;
-    @ViewById(R.id.previous)
-    Button previous;
+    @ViewById(R.id.text)
+    SansTextView text;
+  /*  @ViewById(R.id.scrollView)
+    ScrollView scrollView;*/
     @ViewById(R.id.capture)
     Button capture;
-    @ViewById(R.id.next)
-    Button next;
     @ViewById(R.id.title)
     SansTextView title;
 
+    @ViewById(R.id.previous)
+    ImageView previous;
+
+    @ViewById(R.id.submitcontainer)
+    LinearLayout submitBtn;
+    @ViewById(R.id.next)
+    ImageView next;
+
+
     private List<String> paragraphWords;
-    //    private RelativeLayout.LayoutParams viewParam;
-    private LinearLayoutManager layoutManager;
-    private RecyclerView.SmoothScroller smoothScroller;
+
     private static final int CAMERA_REQUEST = 1;
     private String imageName = null, imagePath;
     private String contentPath, contentTitle, StudentID, resId, readingContentPath, resStartTime;
     private boolean onSdCard;
     private List<ScienceQuestion> questionModel;
+
 
     @AfterViews
     protected void initiate() {
@@ -99,51 +105,44 @@ public class WordWritingFragment extends Fragment
     public void showParagraph(List<ScienceQuestion> questionModel) {
         this.questionModel = questionModel;
         title.setText(questionModel.get(0).getInstruction());
+        showSingleQuestion();
+
+    }
+
+    private void showSingleQuestion() {
         paragraphWords=new ArrayList<>();
-        for (int i=0;i<questionModel.size();i++){
-            paragraphWords.add(questionModel.get(i).getQuestion());
-        }
-       // paragraphWords = questionModel.getQuestion().trim().split("(?<=\\.\\s)|(?<=[?!]\\s)");
-        SentenceAdapter arrayAdapter = new SentenceAdapter(paragraphWords, getActivity());
+        //for (int i=0;i<questionModel.size();i++){
+       // paragraphWords.add(questionModel.get(index).getQuestion());
+        //  }
+        // paragraphWords = questionModel.getQuestion().trim().split("(?<=\\.\\s)|(?<=[?!]\\s)");
+        /*SentenceAdapter arrayAdapter = new SentenceAdapter(paragraphWords, getActivity());
         paragraph.setAdapter(arrayAdapter);
         LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
-        paragraph.setLayoutManager(layoutManager);
-    }
-
-    @OnClick(R.id.previous)
-    public void showPrevios() {
-        if (index > 0) {
-            View view = paragraph.getChildAt(index);
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                view.setElevation(0);
-            }
-            view.setBackgroundColor(ContextCompat.getColor(getActivity(), R.color.white));
-            index--;
-            //   paragraph.requestChildFocus(paragraph.getChildAt(index), paragraph.getChildAt(index + 1));
-            highlightText();
+        paragraph.setLayoutManager(layoutManager);*/
+        text.setText(questionModel.get(index).getQuestion());
+        submitBtn.setVisibility(View.INVISIBLE);
+        if (index == 0) {
+            previous.setVisibility(View.INVISIBLE);
+        } else {
+            previous.setVisibility(View.VISIBLE);
+        }
+        if (index == (questionModel.size() - 1)) {
+            submitBtn.setVisibility(View.VISIBLE);
+            next.setVisibility(View.INVISIBLE);
+        } else {
+            submitBtn.setVisibility(View.INVISIBLE);
+            next.setVisibility(View.VISIBLE);
         }
     }
 
-    @OnClick(R.id.next)
-    public void showNext() {
 
-        if (index < (paragraph.getAdapter().getItemCount() - 1)) {
-            View view = paragraph.getChildAt(index);
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                view.setElevation(0);
-            }
-            view.setBackgroundColor(ContextCompat.getColor(getActivity(), R.color.white));
-            index++;
-            highlightText();
-        }
-    }
 
-    private void highlightText() {
+/*    private void highlightText() {
         // paragraph.smoothScrollToPosition(index);
         View view = paragraph.getChildAt(index);
         paragraph.getLayoutManager().scrollToPosition(index + 1);
         view.setBackground(ContextCompat.getDrawable(getActivity(), R.drawable.rounded_border_yellow));
-    }
+    }*/
 
     @Click(R.id.capture)
     public void captureClick() {
@@ -212,5 +211,23 @@ public class WordWritingFragment extends Fragment
     @Override
     public void gameClose() {
         presenter.addScore(0, "", 0, 0, resStartTime, GameConstatnts.PARAGRAPH_WRITING + " " + GameConstatnts.END);
+    }
+
+    @Click(R.id.previous)
+    public void onPreviousClick() {
+        if (questionModel != null)
+            if (index > 0) {
+                index--;
+                showSingleQuestion();
+            }
+    }
+
+    @Click(R.id.next)
+    public void onNextClick() {
+        if (questionModel != null)
+            if (index < (questionModel.size() - 1)) {
+                index++;
+                showSingleQuestion();
+            }
     }
 }
