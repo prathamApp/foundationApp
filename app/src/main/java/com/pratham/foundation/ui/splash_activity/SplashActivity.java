@@ -56,6 +56,7 @@ import org.greenrobot.eventbus.EventBus;
 
 import java.io.File;
 
+import static com.pratham.foundation.utility.FC_Constants.activityPhotoPath;
 import static com.pratham.foundation.utility.FC_Constants.dialog_btn_cancel;
 import static com.pratham.foundation.utility.FC_Constants.dialog_btn_exit;
 import static com.pratham.foundation.utility.FC_Constants.dialog_btn_restart;
@@ -486,15 +487,17 @@ public class SplashActivity extends SplashSupportActivity implements SplashContr
     public void gotoNextActivity() {
 
         File direct;
-        direct = new File(Environment.getExternalStorageDirectory().toString() + "/.FC");
+        direct = new File(Environment.getExternalStorageDirectory().toString() + "/.FCAInternal");
         if (!direct.exists())
             direct.mkdir();
-        direct = new File(Environment.getExternalStorageDirectory().toString() + "/.FC/Internal");
+        direct = new File(Environment.getExternalStorageDirectory().toString() + "/.FCAInternal/ActivityPhotos");
         if (!direct.exists())
             direct.mkdir();
-        direct = new File(Environment.getExternalStorageDirectory().toString() + "/.FC/Internal/photos");
+        direct = new File(Environment.getExternalStorageDirectory().toString() + "/.FCAInternal/SupervisorPhotos");
         if (!direct.exists())
             direct.mkdir();
+
+        activityPhotoPath = Environment.getExternalStorageDirectory().toString() + "/.FCAInternal/ActivityPhotos/";
 
         if (!FastSave.getInstance().getBoolean(FC_Constants.INITIAL_ENTRIES, false))
             splashPresenter.doInitialEntries(AppDatabase.appDatabase);

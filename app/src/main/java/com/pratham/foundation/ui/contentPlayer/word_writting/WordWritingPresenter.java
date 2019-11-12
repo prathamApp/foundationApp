@@ -2,7 +2,6 @@ package com.pratham.foundation.ui.contentPlayer.word_writting;
 
 import android.content.Context;
 import android.graphics.Bitmap;
-import android.os.Environment;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -26,6 +25,7 @@ import java.util.Collections;
 import java.util.List;
 
 import static com.pratham.foundation.database.AppDatabase.appDatabase;
+import static com.pratham.foundation.utility.FC_Constants.activityPhotoPath;
 
 @EBean
 public class WordWritingPresenter implements WordWritingContract.WordWritingPresenter {
@@ -139,22 +139,13 @@ public class WordWritingPresenter implements WordWritingContract.WordWritingPres
 
     public void createDirectoryAndSaveFile(Bitmap imageToSave, String fileName) {
         try {
-
-            File direct = new File(Environment.getExternalStorageDirectory().toString() + "/.FC");
-            if (!direct.exists()) direct.mkdir();
-            direct = new File(Environment.getExternalStorageDirectory().toString() + "/.FC/Internal");
-            if (!direct.exists()) direct.mkdir();
-            direct = new File(Environment.getExternalStorageDirectory().toString() + "/.FC/Internal/photos");
-            if (!direct.exists()) direct.mkdir();
-
+            File direct = new File(activityPhotoPath);
             File file = new File(direct, fileName);
-
             FileOutputStream out = new FileOutputStream(file);
             imageToSave.compress(Bitmap.CompressFormat.JPEG, 100, out);
             // isPhotoSaved = true;
             out.flush();
             out.close();
-
         } catch (Exception e) {
             e.printStackTrace();
         }

@@ -11,7 +11,6 @@ import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.media.ThumbnailUtils;
 import android.os.Bundle;
-import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -65,6 +64,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 import static com.pratham.foundation.database.AppDatabase.appDatabase;
+import static com.pratham.foundation.utility.FC_Constants.activityPhotoPath;
 import static com.pratham.foundation.utility.FC_Constants.gameFolderPath;
 
 
@@ -311,14 +311,14 @@ public class DoingFragment extends Fragment implements OnGameClose {
 
     @OnClick(R.id.preview)
     public void previewClick() {
-        File filePath = new File(Environment.getExternalStorageDirectory().toString() + "/.FC/Internal/photos/" + imageName);
+        File filePath = new File(activityPhotoPath + imageName);
         if (filePath.exists())
             ShowPreviewDialog(filePath);
     }
 
     @OnClick(R.id.submit)
     public void submitClick() {
-        File filePath = new File(Environment.getExternalStorageDirectory().toString() + "/.FC/Internal/photos/" + imageName);
+        File filePath = new File(activityPhotoPath + imageName);
         if (filePath.exists()) {
             addLearntWords(scienceQuestion, imageName);
             imageName = null;
@@ -436,13 +436,7 @@ public class DoingFragment extends Fragment implements OnGameClose {
     public void createDirectoryAndSaveFile(Bitmap imageToSave, String fileName) {
         try {
 
-            File direct = new File(Environment.getExternalStorageDirectory().toString() + "/.FC");
-            if (!direct.exists()) direct.mkdir();
-            direct = new File(Environment.getExternalStorageDirectory().toString() + "/.FC/Internal");
-            if (!direct.exists()) direct.mkdir();
-            direct = new File(Environment.getExternalStorageDirectory().toString() + "/.FC/Internal/photos");
-            if (!direct.exists()) direct.mkdir();
-
+            File direct = new File(activityPhotoPath);
             File file = new File(direct, fileName);
 
             FileOutputStream out = new FileOutputStream(file);

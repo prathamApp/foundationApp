@@ -9,7 +9,6 @@ import android.graphics.drawable.ColorDrawable;
 import android.media.AudioManager;
 import android.media.SoundPool;
 import android.os.Bundle;
-import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -41,6 +40,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.util.List;
 
+import static com.pratham.foundation.utility.FC_Constants.activityPhotoPath;
 import static com.pratham.foundation.utility.FC_Constants.gameFolderPath;
 
 @EFragment(R.layout.fragment_list_and_writting)
@@ -212,7 +212,7 @@ public class ListeningAndWritting extends Fragment implements ListeningAndWritti
 
     @Click(R.id.preview)
     public void previewClick() {
-        File filePath = new File(Environment.getExternalStorageDirectory().toString() + "/.FC/Internal/photos/" + imageName);
+        File filePath = new File(activityPhotoPath + imageName);
         if (filePath.exists())
             ShowPreviewDialog(filePath);
     }
@@ -258,7 +258,7 @@ public class ListeningAndWritting extends Fragment implements ListeningAndWritti
 
     @Click(R.id.submit)
     public void submitClick() {
-        File filePath = new File(Environment.getExternalStorageDirectory().toString() + "/.FC/Internal/photos/" + imageName);
+        File filePath = new File(activityPhotoPath + imageName);
         if (filePath.exists()) {
             presenter.addLearntWords(listenAndWrittingModal, imageName);
             imageName = null;

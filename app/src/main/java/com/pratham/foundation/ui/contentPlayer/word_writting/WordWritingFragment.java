@@ -8,7 +8,6 @@ import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
@@ -43,6 +42,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.OnClick;
+
+import static com.pratham.foundation.utility.FC_Constants.activityPhotoPath;
+import static com.pratham.foundation.utility.FC_Constants.gameFolderPath;
 
 @EFragment(R.layout.fragment_paragraph_writing)
 public class WordWritingFragment extends Fragment
@@ -85,9 +87,9 @@ public class WordWritingFragment extends Fragment
             contentTitle = bundle.getString("contentName");
             onSdCard = bundle.getBoolean("onSdCard", false);
             if (onSdCard)
-                readingContentPath = ApplicationClass.contentSDPath + "/.FCA/English/Game/" + contentPath + "/";
+                readingContentPath = ApplicationClass.contentSDPath + gameFolderPath + "/" + contentPath + "/";
             else
-                readingContentPath = ApplicationClass.foundationPath + "/.FCA/English/Game/" + contentPath + "/";
+                readingContentPath = ApplicationClass.foundationPath + gameFolderPath + "/" + contentPath + "/";
         }
         presenter.setView(WordWritingFragment.this, resId, readingContentPath);
         presenter.getData();
@@ -154,14 +156,14 @@ public class WordWritingFragment extends Fragment
 
     @Click(R.id.preview)
     public void previewClick() {
-        File filePath = new File(Environment.getExternalStorageDirectory().toString() + "/.FC/Internal/photos/" + imageName);
+        File filePath = new File(activityPhotoPath + imageName);
         if (filePath.exists())
             ShowPreviewDialog(filePath);
     }
 
     @Click(R.id.submit)
     public void submitClick() {
-        File filePath = new File(Environment.getExternalStorageDirectory().toString() + "/.FC/Internal/photos/" + imageName);
+        File filePath = new File(activityPhotoPath + imageName);
         if (filePath.exists()) {
             presenter.addLearntWords(questionModel, imageName);
             imageName = null;

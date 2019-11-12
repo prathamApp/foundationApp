@@ -3,7 +3,6 @@ package com.pratham.foundation.async;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
-import android.os.Environment;
 import android.util.Base64;
 import android.util.Log;
 import android.widget.Toast;
@@ -42,6 +41,8 @@ import org.json.JSONObject;
 import java.io.File;
 import java.util.List;
 import java.util.concurrent.Executors;
+
+import static com.pratham.foundation.utility.FC_Constants.activityPhotoPath;
 
 @EBean
 public class PushDataToServer {
@@ -136,9 +137,8 @@ public class PushDataToServer {
     }
 
     public void getImageList() {
-        String path = Environment.getExternalStorageDirectory().toString() + "/.FC/Internal/photos/";
-        Log.d("Files", "Path: " + path);
-        File directory = new File(path);
+        Log.d("Files", "Path: " + activityPhotoPath);
+        File directory = new File(activityPhotoPath);
         File[] files = directory.listFiles();
         Log.d("Files", "Size: " + files.length);
         for (int i = 0; i < files.length; i++) {
