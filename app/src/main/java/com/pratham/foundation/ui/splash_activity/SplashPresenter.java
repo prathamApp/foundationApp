@@ -17,12 +17,9 @@ import android.os.Environment;
 import android.provider.Settings;
 import android.util.Log;
 
-
 import com.pratham.foundation.ApplicationClass;
-import com.pratham.foundation.utility.FileUtils;
 import com.pratham.foundation.async.GetLatestVersion;
 import com.pratham.foundation.async.PushDataToServer;
-import com.pratham.foundation.services.shared_preferences.FastSave;
 import com.pratham.foundation.database.AppDatabase;
 import com.pratham.foundation.database.BackupDatabase;
 import com.pratham.foundation.database.dao.StatusDao;
@@ -36,9 +33,11 @@ import com.pratham.foundation.database.domain.Session;
 import com.pratham.foundation.database.domain.Status;
 import com.pratham.foundation.services.AppExitService;
 import com.pratham.foundation.services.LocationService;
+import com.pratham.foundation.services.shared_preferences.FastSave;
 import com.pratham.foundation.utility.FC_Constants;
 import com.pratham.foundation.utility.FC_Utility;
 import com.pratham.foundation.utility.SDCardUtil;
+
 import net.lingala.zip4j.core.ZipFile;
 import net.lingala.zip4j.exception.ZipException;
 
@@ -56,8 +55,8 @@ import java.util.Iterator;
 import java.util.List;
 
 import static android.content.Context.ACTIVITY_SERVICE;
-import static com.pratham.foundation.utility.FC_Constants.CURRENT_VERSION;
 import static com.pratham.foundation.ui.splash_activity.SplashActivity.exitDialogOpen;
+import static com.pratham.foundation.utility.FC_Constants.CURRENT_VERSION;
 
 @EBean
 public class SplashPresenter implements SplashContract.SplashPresenter {
@@ -123,7 +122,7 @@ public class SplashPresenter implements SplashContract.SplashPresenter {
                 protected Void doInBackground(Void... voids) {
                     File folder_file, db_file;
                     try {
-                        ArrayList<String> sdPath = FileUtils.getExtSdCardPaths(context);
+//                        ArrayList<String> sdPath = FileUtils.getExtSdCardPaths(context);
                         SQLiteDatabase db = SQLiteDatabase.openDatabase(Environment.getExternalStorageDirectory().getAbsolutePath() + "/foundation_db", null, SQLiteDatabase.OPEN_READONLY);
                         if (db != null) {
                             try {
@@ -594,7 +593,7 @@ public class SplashPresenter implements SplashContract.SplashPresenter {
         try {
             File direct = new File(Environment.getExternalStorageDirectory().toString() + "/.FCAInternal");
             if (!direct.exists()) direct.mkdir();
-            InputStream in = new FileInputStream(ApplicationClass.contentSDPath + "/.FCA/English/" + AppDatabase.DB_NAME);
+            InputStream in = new FileInputStream(ApplicationClass.contentSDPath + "/.FCA/" + AppDatabase.DB_NAME);
             OutputStream out = new FileOutputStream(Environment.getExternalStorageDirectory().toString() + "/.FCAInternal/" + AppDatabase.DB_NAME);
             byte[] buffer = new byte[1024];
             int read = in.read(buffer);
@@ -654,7 +653,6 @@ public class SplashPresenter implements SplashContract.SplashPresenter {
                                     AppDatabase.appDatabase.getContentTableDao().addContentList(contents);
                                     ApplicationClass.contentExistOnSD = true;
                                     content_cursor.close();
-//                            sharedPreferences.edit().putBoolean(FC_Constants.SD_CARD_Content_STR, true).apply();
                                 } catch (Exception e) {
                                     e.printStackTrace();
                                 }
@@ -687,7 +685,7 @@ public class SplashPresenter implements SplashContract.SplashPresenter {
                 if (ApplicationClass.isTablet) {
                     folder_file = new File(ApplicationClass.contentSDPath);
                 } else
-                    folder_file = new File(ApplicationClass.foundationPath + "/.FCA/English/");
+                    folder_file = new File(ApplicationClass.foundationPath + "/.FCA/");
                 if (folder_file.exists()) {
                     Log.d("-CT-", "doInBackground ApplicationClass.contentSDPath: " + ApplicationClass.contentSDPath);
                     db_file = new File(folder_file + "/" + AppDatabase.DB_NAME);
@@ -860,10 +858,7 @@ public class SplashPresenter implements SplashContract.SplashPresenter {
         try {
             cVersion = Float.parseFloat(currentVersion);
             pVersion = Float.parseFloat(playStoreVersion);
-            if (cVersion < pVersion)
-                return true;
-            else
-                return false;
+            return cVersion < pVersion;
         } catch (Exception e) {
             e.printStackTrace();
             return false;
@@ -882,7 +877,7 @@ public class SplashPresenter implements SplashContract.SplashPresenter {
 
         File file;
         if (ApplicationClass.isTablet) {
-            file = new File(fpath + "/.FCA/English/foundation_db");
+            file = new File(fpath + "/.FCA/foundation_db");
 
             if (file.exists()) {
                 ApplicationClass.contentSDPath = fpath;

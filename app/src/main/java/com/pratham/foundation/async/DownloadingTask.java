@@ -8,14 +8,13 @@ import com.androidnetworking.common.Priority;
 import com.androidnetworking.error.ANError;
 import com.androidnetworking.interfaces.DownloadListener;
 import com.pratham.foundation.ApplicationClass;
-import com.pratham.foundation.services.shared_preferences.FastSave;
 import com.pratham.foundation.database.AppDatabase;
 import com.pratham.foundation.database.domain.ContentTable;
 import com.pratham.foundation.modalclasses.EventMessage;
 import com.pratham.foundation.modalclasses.Modal_Download;
 import com.pratham.foundation.modalclasses.Modal_FileDownloading;
+import com.pratham.foundation.services.shared_preferences.FastSave;
 import com.pratham.foundation.utility.FC_Constants;
-
 
 import net.lingala.zip4j.core.ZipFile;
 import net.lingala.zip4j.exception.ZipException;
@@ -31,6 +30,7 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.concurrent.Executors;
 
+import static com.pratham.foundation.ApplicationClass.App_Thumbs_Path;
 import static com.pratham.foundation.utility.FC_Constants.FILE_DOWNLOAD_STARTED;
 
 
@@ -102,7 +102,7 @@ public class DownloadingTask extends AsyncTask {
             input = connection.getInputStream();
             // Output stream to write file
             output = new FileOutputStream(dir_path + "/" + f_name);
-            byte data[] = new byte[4096];
+            byte[] data = new byte[4096];
             long total = 0;
 //                long download_percentage_old = 00;
             int count;
@@ -197,7 +197,7 @@ public class DownloadingTask extends AsyncTask {
     }
 
     public static void downloadImage(String url, String filename) {
-        File dir = new File(ApplicationClass.foundationPath + "/.FCA/English/App_Thumbs"); //Creating an internal dir;
+        File dir = new File(ApplicationClass.foundationPath + "" + App_Thumbs_Path ); //Creating an internal dir;
         if (!dir.exists()) dir.mkdirs();
         AndroidNetworking.download(url, dir.getAbsolutePath(), filename)
                 .setPriority(Priority.HIGH)

@@ -12,7 +12,6 @@ import android.support.v4.app.Fragment;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -44,7 +43,6 @@ import com.pratham.foundation.ui.contentPlayer.fact_retrival_selection.ScienceQu
 import com.pratham.foundation.utility.FC_Constants;
 import com.pratham.foundation.utility.FC_Utility;
 
-import org.androidannotations.annotations.ViewById;
 import org.json.JSONArray;
 import org.json.JSONException;
 
@@ -63,6 +61,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 import static com.pratham.foundation.database.AppDatabase.appDatabase;
+import static com.pratham.foundation.utility.FC_Constants.gameFolderPath;
 import static com.pratham.foundation.utility.FC_Utility.showZoomDialog;
 
 
@@ -117,9 +116,9 @@ public class pictionaryFragment extends Fragment implements OnGameClose {
             contentTitle = getArguments().getString("contentName");
             onSdCard = getArguments().getBoolean("onSdCard", false);
             if (onSdCard)
-                readingContentPath = ApplicationClass.contentSDPath + "/.FCA/English/Game/" + contentPath + "/";
+                readingContentPath = ApplicationClass.contentSDPath + gameFolderPath + "/" + contentPath + "/";
             else
-                readingContentPath = ApplicationClass.foundationPath + "/.FCA/English/Game/" + contentPath + "/";
+                readingContentPath = ApplicationClass.foundationPath + gameFolderPath + "/" + contentPath + "/";
 
             resStartTime = FC_Utility.getCurrentDateTime();
             addScore(0, "", 0, 0, resStartTime, FC_Utility.getCurrentDateTime(), GameConstatnts.READINGGAME + " " + GameConstatnts.START);
@@ -197,10 +196,7 @@ public class pictionaryFragment extends Fragment implements OnGameClose {
     private boolean checkWord(String wordStr) {
         try {
             String word = appDatabase.getKeyWordDao().checkWord(FC_Constants.currentStudentID, resId, wordStr);
-            if (word != null)
-                return true;
-            else
-                return false;
+            return word != null;
         } catch (Exception e) {
             e.printStackTrace();
             return false;
@@ -770,7 +766,7 @@ public class pictionaryFragment extends Fragment implements OnGameClose {
                 getActivity().startActivity(intent);
             }
         } else {
-            GameConstatnts.playGameNext(getActivity(), GameConstatnts.TRUE, (OnGameClose) this);
+            GameConstatnts.playGameNext(getActivity(), GameConstatnts.TRUE, this);
         }
         BackupDatabase.backup(getActivity());
     }

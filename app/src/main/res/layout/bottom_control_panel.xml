@@ -21,7 +21,7 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_marginEnd="@dimen/_8sdp"
-            android:layout_weight="0.28">
+            android:layout_weight="0.25">
 
             <ImageButton
                 android:id="@+id/btn_prev"
@@ -90,7 +90,7 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_marginStart="@dimen/_8sdp"
-            android:layout_weight="0.28">
+            android:layout_weight="0.25">
 
             <ImageButton
                 android:id="@+id/btn_next"

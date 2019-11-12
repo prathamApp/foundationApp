@@ -6,7 +6,6 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
-import android.graphics.drawable.AnimationDrawable;
 import android.graphics.drawable.ColorDrawable;
 import android.media.MediaPlayer;
 import android.os.Handler;
@@ -44,6 +43,7 @@ import java.util.Objects;
 
 import static com.pratham.foundation.ui.contentPlayer.old_cos.conversation.ConversationActivity.mediaPlayerUtil;
 import static com.pratham.foundation.utility.FC_Constants.dialog_btn_cancel;
+import static com.pratham.foundation.utility.FC_Constants.gameFolderPath;
 
 @EActivity(R.layout.activity_rhymes_reading)
 public class ReadingRhymesActivity extends BaseActivity
@@ -89,7 +89,9 @@ public class ReadingRhymesActivity extends BaseActivity
     int rhymeLevel, correctDone = 0;
     Handler handler;
     Dialog nextDialog;
-    static boolean readingFlg, newData, correctArr[];
+    static boolean readingFlg;
+    static boolean newData;
+    static boolean[] correctArr;
     boolean testFlg, playingFlg, audioPlaying, noNextButton, dbEntry, onSdCard;
     List<ModalRhymingWords> rhymingWordsList;
     static String readingContentPath;
@@ -127,9 +129,9 @@ public class ReadingRhymesActivity extends BaseActivity
         Collections.shuffle(readSounds);
 
         if (onSdCard)
-            readingContentPath = ApplicationClass.contentSDPath + "/.FCA/English/Game/" + contentPath + "/";
+            readingContentPath = ApplicationClass.contentSDPath + gameFolderPath + "/" + contentPath + "/";
         else
-            readingContentPath = ApplicationClass.foundationPath + "/.FCA/English/Game/" + contentPath + "/";
+            readingContentPath = ApplicationClass.foundationPath + gameFolderPath + "/" + contentPath + "/";
         showViewDialog();
     }
 
@@ -597,10 +599,7 @@ public class ReadingRhymesActivity extends BaseActivity
     private boolean checkWord(String wordStr) {
         try {
             String word = AppDatabase.appDatabase.getKeyWordDao().checkWord(FC_Constants.currentStudentID, "" + resId, wordStr.toLowerCase());
-            if (word != null)
-                return true;
-            else
-                return false;
+            return word != null;
         } catch (Exception e) {
             e.printStackTrace();
             return false;

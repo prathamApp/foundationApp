@@ -13,11 +13,12 @@ import com.androidnetworking.interfaces.StringRequestListener;
 import com.pratham.foundation.ApplicationClass;
 import com.pratham.foundation.interfaces.API_Content_Result;
 
-
 import org.json.JSONArray;
 
 import java.io.File;
 import java.util.concurrent.Executors;
+
+import static com.pratham.foundation.ApplicationClass.App_Thumbs_Path;
 
 public class API_Content {
 
@@ -144,7 +145,7 @@ public class API_Content {
     }
 
     public static void downloadImage(String url, String filename) {
-        File dir = new File(ApplicationClass.foundationPath + "/.FCA/English/App_Thumbs"); //Creating an internal dir;
+        File dir = new File(ApplicationClass.foundationPath +  "" + App_Thumbs_Path ); //Creating an internal dir;
         if (!dir.exists()) dir.mkdirs();
         AndroidNetworking.download(url, dir.getAbsolutePath(), filename)
                 .setPriority(Priority.HIGH)

@@ -67,7 +67,6 @@ import com.pratham.foundation.ui.contentPlayer.ContentPlayerActivity_;
 import com.pratham.foundation.ui.splash_activity.SplashActivity;
 import com.pratham.foundation.ui.student_profile.Student_profile_activity;
 
-
 import org.json.JSONArray;
 import org.json.JSONException;
 
@@ -82,9 +81,9 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.io.UnsupportedEncodingException;
 import java.net.URL;
 import java.net.URLConnection;
+import java.nio.charset.StandardCharsets;
 import java.security.InvalidKeyException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -115,7 +114,7 @@ public class FC_Utility {
             byte[] buffer = new byte[size];
             is.read(buffer);
             is.close();
-            json = new String(buffer, "UTF-8");
+            json = new String(buffer, StandardCharsets.UTF_8);
         } catch (IOException ex) {
             ex.printStackTrace();
             return null;
@@ -276,15 +275,15 @@ public class FC_Utility {
         int wh = w * h;
         int div = radius + radius + 1;
 
-        int r[] = new int[wh];
-        int g[] = new int[wh];
-        int b[] = new int[wh];
+        int[] r = new int[wh];
+        int[] g = new int[wh];
+        int[] b = new int[wh];
         int rsum, gsum, bsum, x, y, i, p, yp, yi, yw;
-        int vmin[] = new int[Math.max(w, h)];
+        int[] vmin = new int[Math.max(w, h)];
 
         int divsum = (div + 1) >> 1;
         divsum *= divsum;
-        int dv[] = new int[256 * divsum];
+        int[] dv = new int[256 * divsum];
         for (i = 0; i < 256 * divsum; i++) {
             dv[i] = (i / divsum);
         }
@@ -463,8 +462,7 @@ public class FC_Utility {
     public static boolean checkIfPermissionGranted(Context context, String permission) {
         PackageManager pm = context.getPackageManager();
         int hasPerm = pm.checkPermission(permission, context.getPackageName());
-        if (hasPerm != PackageManager.PERMISSION_GRANTED) return false;
-        else return true;
+        return hasPerm == PackageManager.PERMISSION_GRANTED;
     }
 
     public static String getCurrentVersion(Context context) {
@@ -567,7 +565,7 @@ public class FC_Utility {
         File[] intDir = context.getExternalFilesDirs("");
         File mydir = null;
 
-        mydir = new File(intDir[0].getAbsolutePath() + "/.FCA/English/Game");
+        mydir = new File(intDir[0].getAbsolutePath() + "/.FCA/App_Thumbs");
         if (mydir.exists())
             return intDir[0].getAbsolutePath();
         else if (intDir.length > 1) {
@@ -925,11 +923,11 @@ public class FC_Utility {
         String digest = null;
         try {
             SecretKeySpec key = new SecretKeySpec(
-                    (keyString).getBytes("UTF-8"), "HmacSHA256");
+                    (keyString).getBytes(StandardCharsets.UTF_8), "HmacSHA256");
             Mac mac = Mac.getInstance("HmacSHA256");
             mac.init(key);
 
-            byte[] bytes = mac.doFinal(msg.getBytes("ASCII"));
+            byte[] bytes = mac.doFinal(msg.getBytes(StandardCharsets.US_ASCII));
 
             StringBuffer hash = new StringBuffer();
             for (int i = 0; i < bytes.length; i++) {
@@ -940,7 +938,6 @@ public class FC_Utility {
                 hash.append(hex);
             }
             digest = hash.toString();
-        } catch (UnsupportedEncodingException e) {
         } catch (InvalidKeyException e) {
         } catch (NoSuchAlgorithmException e) {
         }
@@ -1001,16 +998,12 @@ public class FC_Utility {
         }
 
         NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
-        if (activeNetwork != null && activeNetwork.isConnected()) {
-            return true;
-        }
-
-        return false;
+        return activeNetwork != null && activeNetwork.isConnected();
 
     }
 
     public static Bitmap getThumbnail(Uri uri, Context mContext)
-            throws FileNotFoundException, IOException {
+            throws IOException {
         InputStream input = mContext.getContentResolver().openInputStream(uri);
 
         BitmapFactory.Options onlyBoundsOptions = new BitmapFactory.Options();
@@ -1159,11 +1152,7 @@ public class FC_Utility {
      * @return
      */
     public static boolean isOdd(int position) {
-        if ((position % 2) == 0) {
-            return false;
-        } else {
-            return true;
-        }
+        return (position % 2) != 0;
     }
 
     /**
@@ -1343,11 +1332,7 @@ public class FC_Utility {
                 age--;
             }
 
-            if (age < 18) {
-                return false;
-            } else {
-                return true;
-            }
+            return age >= 18;
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -1396,7 +1381,7 @@ public class FC_Utility {
                 Locale.US);
         try {
             Date mDate = Meeting_Date_SDF.parse(str_Date);
-            return Meeting_Date_SDF_Formatted.format(mDate).toString();
+            return Meeting_Date_SDF_Formatted.format(mDate);
 
         } catch (ParseException e) {
             e.printStackTrace();
@@ -1419,7 +1404,7 @@ public class FC_Utility {
                 Locale.US);
         try {
             Date mDate = Meeting_Time_SDF.parse(str_Time);
-            return Meeting_Time_SDF_Formatted.format(mDate).toString();
+            return Meeting_Time_SDF_Formatted.format(mDate);
 
         } catch (ParseException e) {
             e.printStackTrace();

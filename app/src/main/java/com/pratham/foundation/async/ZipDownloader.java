@@ -5,18 +5,20 @@ import android.os.AsyncTask;
 import android.support.v4.provider.DocumentFile;
 import android.util.Log;
 
-
 import com.pratham.foundation.ApplicationClass;
-import com.pratham.foundation.utility.FileUtils;
-import com.pratham.foundation.services.shared_preferences.FastSave;
 import com.pratham.foundation.database.domain.ContentTable;
 import com.pratham.foundation.modalclasses.Modal_Download;
+import com.pratham.foundation.services.shared_preferences.FastSave;
 import com.pratham.foundation.utility.FC_Constants;
+import com.pratham.foundation.utility.FileUtils;
 
 import org.androidannotations.annotations.EBean;
 
 import java.io.File;
 import java.util.ArrayList;
+
+import static com.pratham.foundation.ApplicationClass.App_Thumbs_Path;
+import static com.pratham.foundation.utility.FC_Constants.currentSubjectFolder;
 
 /**
  * Created by User on 16/11/15.
@@ -49,11 +51,11 @@ public class ZipDownloader {
         File mydir = null;
         mydir = new File(ApplicationClass.foundationPath + "/.FCA");
         if (!mydir.exists()) mydir.mkdirs();
-        mydir = new File(ApplicationClass.foundationPath + "/.FCA/English");
+        mydir = new File(ApplicationClass.foundationPath + "/.FCA/"+currentSubjectFolder+"/");
         if (!mydir.exists()) mydir.mkdirs();
-        mydir = new File(ApplicationClass.foundationPath + "/.FCA/English/App_Thumbs");
+        mydir = new File(ApplicationClass.foundationPath +  "" + App_Thumbs_Path );
         if (!mydir.exists()) mydir.mkdirs();
-        mydir = new File(ApplicationClass.foundationPath + "/.FCA/English/Game/" );
+        mydir = new File(ApplicationClass.foundationPath + "/.FCA/"+currentSubjectFolder+"/Game");
         if (!mydir.exists()) mydir.mkdirs();
 
         if (ApplicationClass.wiseF.isDeviceConnectedToSSID(FC_Constants.PRATHAM_KOLIBRI_HOTSPOT)) {
@@ -84,10 +86,10 @@ public class ZipDownloader {
         if (path.isEmpty())
             return;
         DocumentFile documentFile = DocumentFile.fromFile(new File(path));
-        if (documentFile.findFile("/.FCA/English/" + foldername) != null)
-            documentFile = documentFile.findFile("/.FCA/English/"+ foldername);
+        if (documentFile.findFile("/.FCA/"+currentSubjectFolder+"/" + foldername) != null)
+            documentFile = documentFile.findFile("/.FCA/"+currentSubjectFolder+"/" + foldername);
         else
-            documentFile = documentFile.createDirectory("/.FCA/English/" + foldername);
+            documentFile = documentFile.createDirectory("/.FCA/"+currentSubjectFolder+"/" + foldername);
         if (ApplicationClass.wiseF.isDeviceConnectedToSSID(FC_Constants.PRATHAM_KOLIBRI_HOTSPOT)) {
             if (foldername.equalsIgnoreCase(FC_Constants.GAME)) {
                 f_name = f_name.substring(0, f_name.lastIndexOf("."));

@@ -1,4 +1,4 @@
-package com.pratham.foundation.ui.contentPlayer.story_reading;
+package com.pratham.foundation.ui.contentPlayer.new_vocab_reading;
 import com.pratham.foundation.modalclasses.ModalParaSubMenu;
 
 import java.util.ArrayList;
@@ -8,9 +8,9 @@ import java.util.List;
  * Created by Ameya on 23-Nov-17.
  **/
 
-public interface StoryReadingContract {
+public interface VocabReadingContract {
 
-    interface StoryReadingView {
+    interface VocabReadingView {
         void setListData(List<ModalParaSubMenu> paraDataList);
 
         void setCategoryTitle(String title);
@@ -28,7 +28,7 @@ public interface StoryReadingContract {
         void showLoader();
     }
 
-    interface StoryReadingPresenter {
+    interface VocabReadingPresenter {
         void fetchJsonData(String contentPath);
 
         void getDataList();
@@ -45,7 +45,7 @@ public interface StoryReadingContract {
 
         void addProgress();
 
-        void setView(StoryReadingContract.StoryReadingView readingView);
+        void setView(VocabReadingContract.VocabReadingView readingView);
     }
 
 }

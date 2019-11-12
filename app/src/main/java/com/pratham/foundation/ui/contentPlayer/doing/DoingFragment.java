@@ -24,7 +24,6 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.MediaController;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -66,6 +65,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 import static com.pratham.foundation.database.AppDatabase.appDatabase;
+import static com.pratham.foundation.utility.FC_Constants.gameFolderPath;
 
 
 public class DoingFragment extends Fragment implements OnGameClose {
@@ -118,9 +118,9 @@ public class DoingFragment extends Fragment implements OnGameClose {
         jsonName = getArguments().getString("jsonName");
         onSdCard = getArguments().getBoolean("onSdCard", false);
         if (onSdCard)
-            readingContentPath = ApplicationClass.contentSDPath + "/.FCA/English/Game/" + contentPath + "/";
+            readingContentPath = ApplicationClass.contentSDPath + gameFolderPath + "/" + contentPath + "/";
         else
-            readingContentPath = ApplicationClass.foundationPath + "/.FCA/English/Game/" + contentPath + "/";
+            readingContentPath = ApplicationClass.foundationPath + gameFolderPath + "/" + contentPath + "/";
         resStartTime = FC_Utility.getCurrentDateTime();
         addScore(0, "", 0, 0, resStartTime, jsonName + " " + GameConstatnts.START);
         getData();

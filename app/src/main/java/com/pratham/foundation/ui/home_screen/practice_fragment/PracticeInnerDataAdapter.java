@@ -26,6 +26,8 @@ import com.pratham.foundation.utility.FC_Constants;
 import java.io.File;
 import java.util.List;
 
+import static com.pratham.foundation.ApplicationClass.App_Thumbs_Path;
+
 
 public class PracticeInnerDataAdapter extends RecyclerView.Adapter {
 
@@ -102,13 +104,13 @@ public class PracticeInnerDataAdapter extends RecyclerView.Adapter {
                         itemsList.get(i).getIsDownloaded().equalsIgnoreCase("true")) {
                     if (itemsList.get(i).isOnSDCard()) {
                         f = new File(ApplicationClass.contentSDPath +
-                                "/.FCA/English/App_Thumbs/" + itemsList.get(i).getNodeImage());
+                                "" + App_Thumbs_Path + itemsList.get(i).getNodeImage());
                         if (f.exists()) {
                             folderHolder.itemImage.setImageURI(Uri.fromFile(f));
                         }
                     } else {
                         f = new File(ApplicationClass.foundationPath +
-                                "/.FCA/English/App_Thumbs/" + itemsList.get(i).getNodeImage());
+                                "" + App_Thumbs_Path + itemsList.get(i).getNodeImage());
                         if (f.exists()) {
                             folderHolder.itemImage.setImageURI(Uri.fromFile(f));
                         }
@@ -152,13 +154,13 @@ public class PracticeInnerDataAdapter extends RecyclerView.Adapter {
 
                     if (itemsList.get(i).isOnSDCard()) {
                         file = new File(ApplicationClass.contentSDPath +
-                                "/.FCA/English/App_Thumbs/" + itemsList.get(i).getNodeImage());
+                                "" + App_Thumbs_Path + itemsList.get(i).getNodeImage());
                         if (file.exists()) {
                             fileHolder.itemImage.setImageURI(Uri.fromFile(file));
                         }
                     } else {
                         file = new File(ApplicationClass.foundationPath +
-                                "/.FCA/English/App_Thumbs/" + itemsList.get(i).getNodeImage());
+                                "" + App_Thumbs_Path + itemsList.get(i).getNodeImage());
                         if (file.exists()) {
                             fileHolder.itemImage.setImageURI(Uri.fromFile(file));
                         }

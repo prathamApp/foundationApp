@@ -43,6 +43,7 @@ import java.util.List;
 
 import static com.pratham.foundation.ui.home_screen.HomeActivity.sub_nodeId;
 import static com.pratham.foundation.utility.FC_Constants.LOGIN_MODE;
+import static com.pratham.foundation.utility.FC_Constants.gameFolderPath;
 
 
 @EBean
@@ -521,7 +522,7 @@ public class PracticePresenter implements PracticeContract.PracticePresenter, AP
     @Background
     @Override
     public void updateDownloadJson(String folderPath) {
-        String path = ApplicationClass.foundationPath + "/.FCA/English/Game" + folderPath;
+        String path = ApplicationClass.foundationPath + "" + gameFolderPath + folderPath;
         try {
             InputStream is = new FileInputStream(path + "/gameinfo.json");
             int size = is.available();

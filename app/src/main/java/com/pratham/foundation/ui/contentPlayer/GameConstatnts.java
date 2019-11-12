@@ -23,12 +23,12 @@ import com.pratham.foundation.ui.contentPlayer.keywords_identification.KeywordsI
 import com.pratham.foundation.ui.contentPlayer.keywords_mapping.KeywordMappingFragment_;
 import com.pratham.foundation.ui.contentPlayer.listenAndWritting.ListeningAndWritting_;
 import com.pratham.foundation.ui.contentPlayer.multipleChoice.McqFillInTheBlanksFragment;
+import com.pratham.foundation.ui.contentPlayer.new_reading_fragment.ContentReadingFragment;
+import com.pratham.foundation.ui.contentPlayer.new_reading_fragment.ContentReadingFragment_;
 import com.pratham.foundation.ui.contentPlayer.paragraph_writing.ParagraphWritingFragment_;
 import com.pratham.foundation.ui.contentPlayer.pictionary.pictionaryFragment;
 import com.pratham.foundation.ui.contentPlayer.reading.ReadingFragment;
 import com.pratham.foundation.ui.contentPlayer.sequenceLayout.SequenceLayout_;
-import com.pratham.foundation.ui.contentPlayer.story_reading.StoryReadingFragment;
-import com.pratham.foundation.ui.contentPlayer.story_reading.StoryReadingFragment_;
 import com.pratham.foundation.ui.contentPlayer.trueFalse.TrueFalseFragment;
 import com.pratham.foundation.ui.contentPlayer.video_view.ActivityVideoView_;
 import com.pratham.foundation.ui.contentPlayer.word_writting.WordWritingFragment_;
@@ -57,6 +57,7 @@ public class GameConstatnts {
     public static final String DOING_ACT_READ = "doing_act_read";
     public static final String LetterWriting = "letter";
     public static final String DOING_ACT_VIDEO = "doing_act_video";
+    public static final String READ_VOCAB_ANDROID = "ReadVocabAndroid";
     public static final boolean TRUE = true;
     public static final boolean FALSE = false;
     public static final String START = "start";
@@ -236,8 +237,8 @@ public class GameConstatnts {
                                 bundle, Fact_Retrieval_Fragment_.class.getSimpleName());
                         break;
                     case GameConstatnts.PICTIONARYFRAGMENT:
-                        FC_Utility.showFragment((Activity) context, new StoryReadingFragment_(), R.id.RL_CPA,
-                                bundle, StoryReadingFragment_.class.getSimpleName());
+                        FC_Utility.showFragment((Activity) context, new ContentReadingFragment_(), R.id.RL_CPA,
+                                bundle, ContentReadingFragment_.class.getSimpleName());
                         break;
                     case GameConstatnts.THINKANDWRITE:
                     case GameConstatnts.DOING_ACT_READ:
@@ -309,8 +310,8 @@ public class GameConstatnts {
                                 bundle, Fact_Retrieval_Fragment_.class.getSimpleName());
                         break;
                     case GameConstatnts.PICTIONARYFRAGMENT:
-                        FC_Utility.showFragment((Activity) context, new StoryReadingFragment_(), R.id.RL_CPA,
-                                bundle, StoryReadingFragment.class.getSimpleName());
+                        FC_Utility.showFragment((Activity) context, new ContentReadingFragment_(), R.id.RL_CPA,
+                                bundle, ContentReadingFragment.class.getSimpleName());
                         break;
                     case GameConstatnts.THINKANDWRITE:
                     case GameConstatnts.DOING_ACT_READ:

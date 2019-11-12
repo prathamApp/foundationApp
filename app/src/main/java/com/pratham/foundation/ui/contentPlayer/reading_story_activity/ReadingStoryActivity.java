@@ -1,4 +1,4 @@
-package com.pratham.foundation.ui.contentPlayer.story_reading;
+package com.pratham.foundation.ui.contentPlayer.reading_story_activity;
 
 import android.annotation.SuppressLint;
 import android.app.Dialog;
@@ -11,9 +11,7 @@ import android.graphics.Rect;
 import android.graphics.drawable.AnimationDrawable;
 import android.graphics.drawable.ColorDrawable;
 import android.media.MediaPlayer;
-import android.os.Bundle;
 import android.os.Handler;
-import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.View;
 import android.view.Window;
@@ -34,19 +32,17 @@ import com.pratham.foundation.BaseActivity;
 import com.pratham.foundation.R;
 import com.pratham.foundation.customView.GifView;
 import com.pratham.foundation.customView.SansTextView;
-import com.pratham.foundation.interfaces.OnGameClose;
 import com.pratham.foundation.modalclasses.ModalParaSubMenu;
 import com.pratham.foundation.services.TTSService;
 import com.pratham.foundation.services.stt.ContinuousSpeechService_New;
 import com.pratham.foundation.services.stt.STT_Result_New;
-import com.pratham.foundation.ui.contentPlayer.GameConstatnts;
 import com.pratham.foundation.utility.FC_Constants;
 import com.pratham.foundation.utility.FC_Utility;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Bean;
 import org.androidannotations.annotations.Click;
-import org.androidannotations.annotations.EFragment;
+import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.UiThread;
 import org.androidannotations.annotations.ViewById;
 
@@ -56,18 +52,17 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import static com.pratham.foundation.BaseActivity.setMute;
 import static com.pratham.foundation.utility.FC_Constants.dialog_btn_cancel;
+import static com.pratham.foundation.utility.FC_Constants.gameFolderPath;
 import static com.pratham.foundation.utility.SplashSupportActivity.ButtonClickSound;
 
-
-@EFragment(R.layout.fragment_story_reading)
-public class StoryReadingFragment extends Fragment implements
+@EActivity(R.layout.fragment_story_reading)
+public class ReadingStoryActivity extends BaseActivity implements
         /*RecognitionListener, */STT_Result_New.sttView,
-        StoryReadingContract.StoryReadingView, OnGameClose {
+        ReadingStoryActivityContract.ReadingStoryView {
 
-    @Bean(StoryReadingPresenter.class)
-    StoryReadingContract.StoryReadingPresenter presenter;
+    @Bean(ReadingStoryActivityPresenter.class)
+    ReadingStoryActivityContract.ReadingStoryActivityPresenter presenter;
 
     public static MediaPlayer mp, mPlayer;
     @ViewById(R.id.myflowlayout)
@@ -84,10 +79,6 @@ public class StoryReadingFragment extends Fragment implements
     ImageButton btn_Play;
     @ViewById(R.id.btn_read_mic)
     ImageButton btn_Mic;
-    @ViewById(R.id.btn_Stop)
-    ImageButton btn_Stop;
-    @ViewById(R.id.btn_camera)
-    ImageButton btn_camera;
     @ViewById(R.id.myScrollView)
     ScrollView myScrollView;
     @ViewById(R.id.btn_submit)
@@ -96,12 +87,13 @@ public class StoryReadingFragment extends Fragment implements
     GifView gif_view;
     @ViewById(R.id.story_ll)
     RelativeLayout story_ll;
+    @ViewById(R.id.btn_camera)
+    ImageButton btn_camera;
+    @ViewById(R.id.btn_Stop)
+    ImageButton btn_Stop;
     @ViewById(R.id.bottom_bar2)
     LinearLayout bottom_bar2;
-//    @ViewById(R.id.ll_btn_next)
-//    LinearLayout ll_btn_next;
-//    @ViewById(R.id.ll_btn_prev)
-//    LinearLayout ll_btn_prev;
+
 
     ContinuousSpeechService_New continuousSpeechService;
 
@@ -111,7 +103,7 @@ public class StoryReadingFragment extends Fragment implements
 
     List<ModalParaSubMenu> modalPagesList;
 
-    String contentType, storyPath, storyName, storyAudio, certiCode, storyBg, pageTitle;
+    String contentType, storyPath, storyData, storyName, storyAudio, certiCode, storyBg, pageTitle;
     static int currentPage, lineBreakCounter = 0;
 
     public Handler handler, audioHandler, soundStopHandler, colorChangeHandler,
@@ -134,29 +126,17 @@ public class StoryReadingFragment extends Fragment implements
     static boolean[] testCorrectArr;
     AnimationDrawable animationDrawable;
 
-/*
-        bundle.putString("nodeID", nodeID);
-        bundle.putString("contentType","s");
-        bundle.putString("storyPath","s");
-        bundle.putString("storyId","s");
-        bundle.putString("storyTitle","s");
-        bundle.putString("certiCode","s");
-        bundle.putBoolean("onSdCard", false);
-        FC_Utility.showFragment(ContentPlayerActivity.this, new StoryReadingFragment_(), R.id.RL_CPA,
-    bundle, StoryReadingFragment_.class.getSimpleName());
-*/
-
 
     @AfterViews
     public void initialize() {
         silence_outer_layout.setVisibility(View.GONE);
-        Bundle bundle = getArguments();
-        contentType = bundle.getString("contentType");
-        storyPath = bundle.getString("contentPath");
-        storyId = bundle.getString("resId");
-        storyName = bundle.getString("contentName");
-        certiCode = bundle.getString("certiCode");
-        onSdCard = bundle.getBoolean("onSdCard", false);
+        Intent intent = getIntent();
+        contentType = intent.getStringExtra("contentType");
+        storyPath = intent.getStringExtra("storyPath");
+        storyId = intent.getStringExtra("storyId");
+        storyName = intent.getStringExtra("storyTitle");
+        certiCode = intent.getStringExtra("certiCode");
+        onSdCard = intent.getBooleanExtra("onSdCard", false);
         ttsService = BaseActivity.ttsService;
         contentType = "story";
 
@@ -169,12 +149,12 @@ public class StoryReadingFragment extends Fragment implements
         animationDrawable.start();
 
 
-        context = getActivity();
-        presenter.setView(StoryReadingFragment.this);
+        context = ReadingStoryActivity.this;
+        presenter.setView(ReadingStoryActivity.this);
         showLoader();
         modalPagesList = new ArrayList<>();
 
-        continuousSpeechService = new ContinuousSpeechService_New(context, StoryReadingFragment.this, FC_Constants.currentSelectedLanguage);
+        continuousSpeechService = new ContinuousSpeechService_New(context, ReadingStoryActivity.this, FC_Constants.currentSelectedLanguage);
         if (contentType.equalsIgnoreCase(FC_Constants.RHYME_RESOURCE))
             btn_Mic.setVisibility(View.GONE);
 
@@ -190,9 +170,9 @@ public class StoryReadingFragment extends Fragment implements
 
         presenter.addScore(0, "", 0, 0, startTime, contentType + " start");
         if (onSdCard)
-            readingContentPath = ApplicationClass.contentSDPath + "/.FCA/English/Game/" + storyPath + "/";
+            readingContentPath = ApplicationClass.contentSDPath + gameFolderPath + "/" + storyPath + "/";
         else
-            readingContentPath = ApplicationClass.foundationPath + "/.FCA/English/Game/" + storyPath + "/";
+            readingContentPath = ApplicationClass.foundationPath + gameFolderPath + "/" + storyPath + "/";
 
         continuousSpeechService.resetSpeechRecognizer();
 
@@ -213,24 +193,27 @@ public class StoryReadingFragment extends Fragment implements
     }
 
     public Dialog myLoadingDialog;
-
+    boolean dialogFlg = false;
     @UiThread
     @Override
     public void showLoader() {
-        myLoadingDialog = new Dialog(context);
-        myLoadingDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        myLoadingDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-        myLoadingDialog.setContentView(R.layout.loading_dialog);
-        myLoadingDialog.setCanceledOnTouchOutside(false);
-//        myLoadingDialog.setCancelable(false);
-        myLoadingDialog.show();
+        if(!dialogFlg) {
+            dialogFlg = true;
+            myLoadingDialog = new Dialog(context);
+            myLoadingDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+            myLoadingDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+            myLoadingDialog.setContentView(R.layout.loading_dialog);
+            myLoadingDialog.setCanceledOnTouchOutside(false);
+            myLoadingDialog.show();
+        }
     }
 
     @UiThread
     @Override
     public void dismissLoadingDialog() {
-        if (myLoadingDialog != null) {
-            myLoadingDialog.dismiss();
+        if(dialogFlg) {
+            if (myLoadingDialog != null)
+                myLoadingDialog.dismiss();
         }
     }
 
@@ -265,7 +248,6 @@ public class StoryReadingFragment extends Fragment implements
         pageTitle = modalPagesList.get(currentPage).getPageTitle();
         if (pageTitle != null && !pageTitle.equalsIgnoreCase(""))
             story_title.setText(pageTitle);
-        story_title.setTextSize(35);
 
         playHideFlg = storyAudio.equalsIgnoreCase("NA");
 
@@ -482,20 +464,22 @@ public class StoryReadingFragment extends Fragment implements
         } else
             wordDuration = 1;
 
-        handler.postDelayed(() -> {
-            if (index < wordFlowLayout.getChildCount()) {
-                wordCounter += 1;
-                if (!pauseFlg)
-                    startStoryReading(wordCounter);
-            } else {
-                for (int i = 0; i < wordsDurationList.size(); i++) {
-                    SansTextView myView = (SansTextView) wordFlowLayout.getChildAt(i);
-                    myView.setBackgroundColor(Color.TRANSPARENT);
-                    myView.setTextColor(getResources().getColor(R.color.colorText));
+        if(playFlg && !pauseFlg) {
+            handler.postDelayed(() -> {
+                if (index < wordFlowLayout.getChildCount()) {
+                    wordCounter += 1;
+                    if (!pauseFlg)
+                        startStoryReading(wordCounter);
+                } else {
+                    for (int i = 0; i < wordsDurationList.size(); i++) {
+                        SansTextView myView = (SansTextView) wordFlowLayout.getChildAt(i);
+                        myView.setBackgroundColor(Color.TRANSPARENT);
+                        myView.setTextColor(getResources().getColor(R.color.colorText));
+                    }
+                    wordCounter = 0;
                 }
-                wordCounter = 0;
-            }
-        }, (long) (wordDuration * 1000));
+            }, (long) (wordDuration * 1000));
+        }
 
     }
 
@@ -864,9 +848,9 @@ public class StoryReadingFragment extends Fragment implements
             pauseFlg = true;
             presenter.getPage(currentPage);
             Log.d("click", "NextBtn - totalPages: " + totalPages + "  currentPage: " + currentPage);
-        } else {
+        }/* else {
             GameConstatnts.playGameNext(getActivity(), true, this);
-        }
+        }*/
     }
 
     @SuppressLint("SetTextI18n")
@@ -958,46 +942,26 @@ public class StoryReadingFragment extends Fragment implements
         presenter.addProgress();
     }
 
-/*
+    @Click(R.id.ib_back)
+    public void backPressed() {
+        onBackPressed();
+    }
+
     @Override
     public void onBackPressed() {
-
-        if (voiceStart) {
-            btn_Mic.performClick();
-            voiceStart = false;
-            if (!FC_Constants.isTest)
-                ll_btn_play.setVisibility(View.VISIBLE);
-            setMute(0);
-        }
         try {
-            if (playFlg)
-                btn_Play.performClick();
-            if (audioHandler != null)
-                audioHandler.removeCallbacksAndMessages(null);
-            if (handler != null)
-                handler.removeCallbacksAndMessages(null);
-            if (colorChangeHandler != null)
-                colorChangeHandler.removeCallbacksAndMessages(null);
-            if (quesReadHandler != null) {
-                quesReadHandler.removeCallbacksAndMessages(null);
-            }
-            if (soundStopHandler != null)
-                soundStopHandler.removeCallbacksAndMessages(null);
+            if (voiceStart || playFlg)
+                btn_Stop.performClick();
         } catch (Exception e) {
             e.printStackTrace();
         }
-
-        if (!fragFlg) {
+        if (!fragFlg)
             showAcknowledgeDialog(false);
-        } else {
+        else
             fragFlg = false;
-//            getSupportFragmentManager().popBackStack();
-        }
     }
-*/
 
     int correctCnt = 0, total = 0;
-
     @SuppressLint("SetTextI18n")
     private void showStars(boolean diaComplete) {
         final Dialog dialog = new Dialog(context);
@@ -1184,16 +1148,4 @@ public class StoryReadingFragment extends Fragment implements
         }, 10);
     }
 
-    @Override
-    public void gameClose() {
-        if (FC_Constants.isTest) {
-            float correctCnt = getPercentage();
-            Intent returnIntent = new Intent();
-            returnIntent.putExtra("cCode", certiCode);
-            returnIntent.putExtra("sMarks", correctCnt);
-            returnIntent.putExtra("tMarks", correctArr.length);
-//                setResult(Activity.RESULT_OK, returnIntent);
-        }
-        exitDBEntry();
-    }
 }

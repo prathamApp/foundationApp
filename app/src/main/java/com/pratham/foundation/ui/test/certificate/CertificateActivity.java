@@ -2,16 +2,13 @@ package com.pratham.foundation.ui.test.certificate;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.Rect;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.TypedValue;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.AdapterView;
@@ -21,14 +18,13 @@ import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 
-
 import com.pratham.foundation.ApplicationClass;
+import com.pratham.foundation.BaseActivity;
 import com.pratham.foundation.R;
 import com.pratham.foundation.customView.GridSpacingItemDecoration;
-import com.pratham.foundation.ui.contentPlayer.web_view.WebViewActivity;
 import com.pratham.foundation.database.domain.Assessment;
 import com.pratham.foundation.modalclasses.CertificateModelClass;
-import com.pratham.foundation.BaseActivity;
+import com.pratham.foundation.ui.contentPlayer.web_view.WebViewActivity;
 import com.pratham.foundation.utility.FC_Constants;
 
 import org.json.JSONArray;
@@ -44,6 +40,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 import static com.pratham.foundation.ui.contentPlayer.web_view.WebViewActivity.gameLevel;
+import static com.pratham.foundation.utility.FC_Constants.gameFolderPath;
 import static com.pratham.foundation.utility.FC_Utility.dpToPx;
 
 
@@ -83,7 +80,10 @@ public class CertificateActivity extends BaseActivity implements CertificateCont
     int clicked_Pos = 0;
     static String certificateLanguage;
     String level_lbl = "", certificate_lbl = "", supervisorName_lbl, supervisorPhoto;
-    String allCodes[], nodeId, CertiTitle, certiMode;
+    String[] allCodes;
+    String nodeId;
+    String CertiTitle;
+    String certiMode;
 
 
     @Override
@@ -103,7 +103,7 @@ public class CertificateActivity extends BaseActivity implements CertificateCont
 
         ContentTableList = new ArrayList<>();
 
-        recyclerView = (RecyclerView) findViewById(R.id.assessment_recycler);
+        recyclerView = findViewById(R.id.assessment_recycler);
         certificateAdapter = new CertificateAdapter(this, ContentTableList, this);
         RecyclerView.LayoutManager mLayoutManager = new GridLayoutManager(this, 1);
         recyclerView.setLayoutManager(mLayoutManager);
@@ -256,10 +256,10 @@ public class CertificateActivity extends BaseActivity implements CertificateCont
         String gameID = ContentTableList.get(position).getResourceId();
         gameLevel = ContentTableList.get(position).getNodeAge();
         if (!ApplicationClass.isTablet)
-            resPath = ApplicationClass.foundationPath + "/.FCA/English/Game/" +
+            resPath = ApplicationClass.foundationPath + gameFolderPath + "/" +
                     ContentTableList.get(position).getResourcePath();
         else
-            resPath = ApplicationClass.contentSDPath + "/.FCA/English/Game/" +
+            resPath = ApplicationClass.contentSDPath + gameFolderPath + "/" +
                     ContentTableList.get(position).getResourcePath();
         File file = new File(resPath);
         Uri path = Uri.fromFile(file);

@@ -1,0 +1,266 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/story_ll"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/bg_anim_login">
+
+        <RelativeLayout
+            android:id="@+id/silence_outer"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/black_20"
+            android:visibility="gone"
+            android:elevation="50dp">
+
+            <RelativeLayout
+                android:id="@+id/silence_main_layout"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_150sdp"
+                android:layout_marginStart="@dimen/_30sdp"
+                android:layout_marginEnd="@dimen/_30sdp"
+                android:layout_centerInParent="true"
+                android:padding="@dimen/_10sdp">
+
+                <ImageView
+                    android:id="@+id/silence_iv"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/_90sdp"
+                    android:layout_alignParentTop="true"
+                    android:elevation="@dimen/_20sdp"
+                    android:layout_centerHorizontal="true"
+                    android:src="@drawable/stt_listener" />
+
+                <RelativeLayout
+                    android:layout_width="@dimen/_150sdp"
+                    android:layout_height="@dimen/_60sdp"
+                    android:layout_marginTop="@dimen/_80sdp"
+                    android:layout_centerHorizontal="true"
+                    android:background="@drawable/ripple_rectangle_card">
+
+                    <com.pratham.foundation.customView.SansTextViewBold
+                        android:id="@+id/silence_tv"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:gravity="center"
+                        android:layout_alignParentBottom="true"
+                        android:layout_centerHorizontal="true"
+                        android:textColor="@color/red"
+                        android:textSize="@dimen/_15sdp"
+                        android:text="I am listening..."/>
+
+                </RelativeLayout>
+            </RelativeLayout>
+        </RelativeLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_above="@+id/bottom_bar"
+            android:orientation="vertical">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="5.2"
+                android:orientation="vertical"
+                android:weightSum="10">
+
+<!--                android:layout_marginTop="@dimen/_8sdp"-->
+<!--                android:layout_marginStart="@dimen/_8sdp"-->
+<!--                android:layout_marginEnd="@dimen/_8sdp"-->
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:elevation="5dp"
+                    android:paddingTop="@dimen/_3sdp"
+                    android:paddingBottom="@dimen/_3sdp"
+                    android:background="@color/red"
+                    android:id="@+id/title_bar">
+
+                    <ImageButton
+                        android:id="@+id/ib_back"
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
+                        android:layout_marginStart="5dp"
+                        android:layout_marginEnd="5dp"
+                        android:background="@drawable/red_ripple_round"
+                        android:src="@drawable/ic_left_arrow_white" />
+
+                    <com.pratham.foundation.customView.SansTextViewBold
+                        android:id="@+id/tv_story_title"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_toEndOf="@+id/ib_back"
+                        android:gravity="center"
+                        android:layout_marginStart="5dp"
+                        android:layout_marginEnd="5dp"
+                        android:layout_toStartOf="@+id/ib_page_img"
+                        android:text="The Moon And The Cap"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/_35sdp"
+                        android:textStyle="bold" />
+
+                    <ImageButton
+                        android:id="@+id/ib_page_img"
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
+                        android:layout_alignParentEnd="true"
+                        android:layout_marginStart="5dp"
+                        android:layout_marginEnd="5dp"
+                        android:padding="3dp"
+                        android:scaleType="fitCenter"
+                        android:background="@drawable/red_ripple_round"
+                        android:src="@drawable/ic_image_white" />
+
+                </RelativeLayout>
+
+                <ScrollView
+                    android:id="@+id/myScrollView"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginStart="@dimen/_8sdp"
+                    android:layout_marginEnd="@dimen/_8sdp"
+                    android:layout_below="@+id/title_bar"
+                    android:layout_marginTop="10dp"
+                    android:elevation="5dp"
+                    android:padding="@dimen/_5sdp"
+                    android:layout_marginBottom="10dp"
+                    android:background="@drawable/dialog_bg">
+
+                    <com.nex3z.flowlayout.FlowLayout xmlns:app="http://schemas.android.com/apk/res-auto"
+                        android:id="@+id/myflowlayout"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:paddingHorizontal="10dp"
+                        app:flChildSpacing="10dp" />
+
+                </ScrollView>
+            </RelativeLayout>
+        </LinearLayout>
+
+    <include
+        android:id="@+id/bottom_bar"
+        layout="@layout/bottom_control_panel"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_gravity="bottom|center_horizontal"
+        android:layout_marginBottom="1dp"
+        android:gravity="bottom|center_horizontal" />
+
+    <!--        <LinearLayout-->
+<!--            android:id="@+id/bottom_bar"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="70dp"-->
+<!--            android:layout_alignParentBottom="true"-->
+<!--            android:layout_marginBottom="5dp"-->
+<!--            android:layout_gravity="bottom|center_horizontal"-->
+<!--            android:gravity="bottom|center_horizontal"-->
+<!--            android:orientation="horizontal">-->
+
+<!--            <LinearLayout-->
+<!--                android:id="@+id/ll_btn_prev"-->
+<!--                android:layout_width="0dp"-->
+<!--                android:layout_height="match_parent"-->
+<!--                android:layout_marginEnd="@dimen/_8sdp"-->
+<!--                android:layout_weight="0.25">-->
+
+<!--                <ImageButton-->
+<!--                    android:id="@+id/btn_prev"-->
+<!--                    android:layout_width="match_parent"-->
+<!--                    android:layout_height="match_parent"-->
+<!--                    android:layout_marginBottom="@dimen/_5sdp"-->
+<!--                    android:background="@drawable/arrow_left_bg"-->
+<!--                    android:elevation="5dp"-->
+<!--                    android:scaleType="centerInside"-->
+<!--                    android:src="@drawable/ic_navigate_before_black_24dp" />-->
+<!--            </LinearLayout>-->
+
+<!--            <LinearLayout-->
+<!--                android:layout_width="0dp"-->
+<!--                android:layout_height="match_parent"-->
+<!--                android:layout_weight="2">-->
+
+<!--                <ImageButton-->
+<!--                    android:id="@+id/btn_play"-->
+<!--                    android:layout_width="0dp"-->
+<!--                    android:layout_height="match_parent"-->
+<!--                    android:layout_marginStart="@dimen/_5sdp"-->
+<!--                    android:layout_marginEnd="@dimen/_5sdp"-->
+<!--                    android:layout_marginBottom="@dimen/_5sdp"-->
+<!--                    android:layout_weight="1"-->
+<!--                    android:background="@drawable/yellow_button"-->
+<!--                    android:elevation="@dimen/_3sdp"-->
+<!--                    android:padding="@dimen/_8sdp"-->
+<!--                    android:visibility="visible"-->
+<!--                    android:scaleType="centerInside"-->
+<!--                    android:src="@drawable/ic_play_arrow" />-->
+
+<!--                <ImageButton-->
+<!--                    android:id="@+id/btn_Stop"-->
+<!--                    android:layout_width="0dp"-->
+<!--                    android:layout_height="match_parent"-->
+<!--                    android:layout_marginStart="@dimen/_5sdp"-->
+<!--                    android:layout_marginEnd="@dimen/_5sdp"-->
+<!--                    android:layout_marginBottom="@dimen/_5sdp"-->
+<!--                    android:layout_weight="1"-->
+<!--                    android:background="@drawable/red_button"-->
+<!--                    android:elevation="@dimen/_3sdp"-->
+<!--                    android:visibility="gone"-->
+<!--                    android:scaleType="centerInside"-->
+<!--                    android:src="@drawable/ic_stop_black_24dp" />-->
+
+<!--                <com.pratham.foundation.customView.SansButton-->
+<!--                    android:id="@+id/btn_submit"-->
+<!--                    android:layout_width="0dp"-->
+<!--                    android:layout_height="match_parent"-->
+<!--                    android:layout_marginStart="@dimen/_8sdp"-->
+<!--                    android:layout_marginEnd="@dimen/_8sdp"-->
+<!--                    android:layout_marginBottom="@dimen/_5sdp"-->
+<!--                    android:layout_weight="1.5"-->
+<!--                    android:background="@drawable/green_button"-->
+<!--                    android:elevation="5dp"-->
+<!--                    android:text="submit"-->
+<!--                    android:textColor="@color/white"-->
+<!--                    android:textSize="@dimen/_13sdp"-->
+<!--                    android:visibility="gone" />-->
+
+<!--                <ImageButton-->
+<!--                    android:id="@+id/btn_read_mic"-->
+<!--                    android:layout_width="0dp"-->
+<!--                    android:layout_height="match_parent"-->
+<!--                    android:layout_marginStart="@dimen/_5sdp"-->
+<!--                    android:layout_marginEnd="@dimen/_5sdp"-->
+<!--                    android:layout_marginBottom="@dimen/_5sdp"-->
+<!--                    android:layout_weight="1"-->
+<!--                    android:background="@drawable/yellow_button"-->
+<!--                    android:elevation="@dimen/_3sdp"-->
+<!--                    android:padding="@dimen/_5sdp"-->
+<!--                    android:visibility="visible"-->
+<!--                    android:scaleType="centerInside"-->
+<!--                    android:src="@drawable/ic_mic_black_24dp" />-->
+
+<!--            </LinearLayout>-->
+
+<!--            <LinearLayout-->
+<!--                android:id="@+id/ll_btn_next"-->
+<!--                android:layout_width="0dp"-->
+<!--                android:layout_height="match_parent"-->
+<!--                android:layout_marginStart="@dimen/_8sdp"-->
+<!--                android:layout_weight="0.25">-->
+
+<!--                <ImageButton-->
+<!--                    android:id="@+id/btn_next"-->
+<!--                    android:layout_width="match_parent"-->
+<!--                    android:layout_height="match_parent"-->
+<!--                    android:layout_marginBottom="@dimen/_5sdp"-->
+<!--                    android:background="@drawable/arrow_right_bg"-->
+<!--                    android:elevation="5dp"-->
+<!--                    android:scaleType="centerInside"-->
+<!--                    android:src="@drawable/ic_navigate_next_black_24dp" />-->
+<!--            </LinearLayout>-->
+
+<!--        </LinearLayout>-->
+
+    </RelativeLayout>

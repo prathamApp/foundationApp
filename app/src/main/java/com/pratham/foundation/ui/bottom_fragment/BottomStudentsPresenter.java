@@ -24,21 +24,16 @@ import com.pratham.foundation.ApplicationClass;
 import com.pratham.foundation.database.AppDatabase;
 import com.pratham.foundation.database.BackupDatabase;
 import com.pratham.foundation.database.dao.StatusDao;
-import com.pratham.foundation.database.domain.Assessment;
 import com.pratham.foundation.database.domain.Attendance;
 import com.pratham.foundation.database.domain.ContentProgress;
 import com.pratham.foundation.database.domain.ContentTable;
 import com.pratham.foundation.database.domain.KeyWords;
-import com.pratham.foundation.database.domain.Score;
 import com.pratham.foundation.database.domain.Session;
 import com.pratham.foundation.database.domain.Status;
 import com.pratham.foundation.database.domain.Student;
 import com.pratham.foundation.services.AppExitService;
 import com.pratham.foundation.services.LocationService;
 import com.pratham.foundation.services.shared_preferences.FastSave;
-import com.pratham.foundation.ui.contentPlayer.GameConstatnts;
-import com.pratham.foundation.ui.contentPlayer.keywords_identification.KeywordsIdentificationContract;
-import com.pratham.foundation.ui.contentPlayer.keywords_identification.QuestionModel;
 import com.pratham.foundation.utility.FC_Constants;
 import com.pratham.foundation.utility.FC_Utility;
 
@@ -48,12 +43,10 @@ import org.androidannotations.annotations.EBean;
 import java.io.File;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 
 import static android.content.Context.ACTIVITY_SERVICE;
-import static com.pratham.foundation.database.AppDatabase.appDatabase;
 import static com.pratham.foundation.utility.FC_Constants.currentStudentID;
 
 @EBean
@@ -240,10 +233,7 @@ public class BottomStudentsPresenter implements BottomStudentsContract.BottomStu
     private boolean checkWord(String studentId, String wordUUId, String wordCheck, String wordType) {
         try {
             String word = AppDatabase.appDatabase.getKeyWordDao().checkLearntData(studentId, "" + wordUUId, wordCheck.toLowerCase(), wordType);
-            if (word != null)
-                return true;
-            else
-                return false;
+            return word != null;
         } catch (Exception e) {
             e.printStackTrace();
             return false;
@@ -253,7 +243,7 @@ public class BottomStudentsPresenter implements BottomStudentsContract.BottomStu
         public void populateMenu() {
             try {
                 File folder_file, db_file;
-                folder_file = new File(ApplicationClass.foundationPath + "/.FCA/English/");
+                folder_file = new File(ApplicationClass.foundationPath + "/.FCA/");
                 if (folder_file.exists()) {
                     Log.d("-CT-", "doInBackground ApplicationClass.contentSDPath: " + ApplicationClass.contentSDPath);
                     db_file = new File(folder_file + "/" + AppDatabase.DB_NAME);

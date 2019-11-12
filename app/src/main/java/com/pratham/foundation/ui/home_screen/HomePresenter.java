@@ -50,6 +50,7 @@ import static com.pratham.foundation.utility.FC_Constants.GROUP_LOGIN;
 import static com.pratham.foundation.utility.FC_Constants.assessmentSession;
 import static com.pratham.foundation.utility.FC_Constants.currentGroup;
 import static com.pratham.foundation.utility.FC_Constants.currentLevel;
+import static com.pratham.foundation.utility.FC_Constants.gameFolderPath;
 import static com.pratham.foundation.utility.FC_Constants.isTest;
 import static com.pratham.foundation.utility.FC_Constants.testSessionEnded;
 import static com.pratham.foundation.utility.FC_Constants.testSessionEntered;
@@ -578,7 +579,7 @@ public class HomePresenter implements HomeContract.HomePresenter, API_Content_Re
     @Background
     @Override
     public void updateDownloadJson(String folderPath) {
-        String path = ApplicationClass.foundationPath + "/.FCA/English/Game" + folderPath;
+        String path = ApplicationClass.foundationPath + "" + gameFolderPath + folderPath;
         try {
             InputStream is = new FileInputStream(path + "/gameinfo.json");
             int size = is.available();

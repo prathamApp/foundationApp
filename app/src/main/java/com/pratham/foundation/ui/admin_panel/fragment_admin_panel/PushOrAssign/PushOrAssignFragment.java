@@ -256,7 +256,7 @@ public class PushOrAssignFragment extends Fragment {
     public void populateMenu() {
         try {
             File folder_file, db_file;
-            folder_file = new File(ApplicationClass.foundationPath + "/.FCA/English/");
+            folder_file = new File(ApplicationClass.foundationPath + "/.FCA/");
             if (folder_file.exists()) {
                 Log.d("-CT-", "doInBackground ApplicationClass.contentSDPath: " + ApplicationClass.contentSDPath);
                 db_file = new File(folder_file + "/" + AppDatabase.DB_NAME);
@@ -719,10 +719,7 @@ public class PushOrAssignFragment extends Fragment {
     private boolean checkWord(String studentId, String wordUUId, String wordCheck, String wordType) {
         try {
             String word = appDatabase.getKeyWordDao().checkLearntData(studentId, "" + wordUUId, wordCheck.toLowerCase(), wordType);
-            if (word != null)
-                return true;
-            else
-                return false;
+            return word != null;
         } catch (Exception e) {
             e.printStackTrace();
             return false;

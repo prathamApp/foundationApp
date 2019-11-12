@@ -29,6 +29,8 @@ import org.androidannotations.annotations.ViewById;
 import java.util.Collections;
 import java.util.List;
 
+import static com.pratham.foundation.utility.FC_Constants.gameFolderPath;
+
 @EFragment(R.layout.fragment_keyword_mapping)
 public class KeywordMappingFragment extends Fragment implements KeywordMappingContract.KeywordMappingView, OnGameClose {
 
@@ -64,9 +66,9 @@ public class KeywordMappingFragment extends Fragment implements KeywordMappingCo
             contentTitle = bundle.getString("contentName");
             onSdCard = bundle.getBoolean("onSdCard", false);
             if (onSdCard)
-                readingContentPath = ApplicationClass.contentSDPath + "/.FCA/English/Game/" + contentPath + "/";
+                readingContentPath = ApplicationClass.contentSDPath + gameFolderPath + "/" + contentPath + "/";
             else
-                readingContentPath = ApplicationClass.foundationPath + "/.FCA/English/Game/" + contentPath + "/";
+                readingContentPath = ApplicationClass.foundationPath + gameFolderPath + "/" + contentPath + "/";
 
         }
 

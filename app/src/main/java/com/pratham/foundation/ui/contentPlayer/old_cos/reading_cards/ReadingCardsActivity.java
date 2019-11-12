@@ -40,6 +40,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static com.pratham.foundation.utility.FC_Constants.dialog_btn_cancel;
+import static com.pratham.foundation.utility.FC_Constants.gameFolderPath;
 import static com.pratham.foundation.utility.SplashSupportActivity.ButtonClickSound;
 
 
@@ -72,7 +73,7 @@ public class ReadingCardsActivity extends BaseActivity implements
     Context mContext;
     static int currentPageNo, totalPages = 0;
     Handler endhandler;
-    static boolean correctArr[];
+    static boolean[] correctArr;
     boolean isAudioPlaying = false, onSdCard, gotoNext = false;
     String readingContentPath, contentPath, contentTitle, StudentID, resId, cardAudio, resStartTime;
     AnimationDrawable animationDrawable;
@@ -103,9 +104,9 @@ public class ReadingCardsActivity extends BaseActivity implements
         resStartTime = FC_Utility.getCurrentDateTime();
 
         if (onSdCard)
-            readingContentPath = ApplicationClass.contentSDPath + "/.FCA/English/Game/" + contentPath + "/";
+            readingContentPath = ApplicationClass.contentSDPath + gameFolderPath + "/" + contentPath + "/";
         else
-            readingContentPath = ApplicationClass.foundationPath + "/.FCA/English/Game/" + contentPath + "/";
+            readingContentPath = ApplicationClass.foundationPath + gameFolderPath + "/" + contentPath + "/";
 
         tvContentTitle.setText("" + contentTitle);
         presenter.setResId(resId);

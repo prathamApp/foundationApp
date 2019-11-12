@@ -55,6 +55,7 @@ import java.util.Objects;
 
 import static com.pratham.foundation.ui.home_screen.HomeActivity.header_rl;
 import static com.pratham.foundation.utility.FC_Constants.currentLevel;
+import static com.pratham.foundation.utility.FC_Constants.gameFolderPath;
 import static com.pratham.foundation.utility.FC_Constants.isTest;
 import static com.pratham.foundation.utility.FC_Constants.testSessionEntered;
 
@@ -288,9 +289,9 @@ public class TestFragment extends Fragment implements TestContract.TestView,
                 String resPath;
                 String gameID = testData.getResourceId();
                 if (testData.isOnSDCard())
-                    resPath = ApplicationClass.contentSDPath + "/.FCA/English/Game/" + testDataSplit.getResourcePath();
+                    resPath = ApplicationClass.contentSDPath + gameFolderPath + "/" + testDataSplit.getResourcePath();
                 else
-                    resPath = ApplicationClass.foundationPath + "/.FCA/English/Game/" + testDataSplit.getResourcePath();
+                    resPath = ApplicationClass.foundationPath + gameFolderPath + "/" + testDataSplit.getResourcePath();
                 File file = new File(resPath);
                 if (file.exists()) {
                     Uri path = Uri.fromFile(file);

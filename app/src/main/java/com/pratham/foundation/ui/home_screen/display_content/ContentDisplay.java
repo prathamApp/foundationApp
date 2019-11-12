@@ -23,24 +23,24 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.pratham.foundation.ApplicationClass;
+import com.pratham.foundation.BaseActivity;
 import com.pratham.foundation.R;
 import com.pratham.foundation.customView.GridSpacingItemDecoration;
-import com.pratham.foundation.ui.contentPlayer.matchingPairGame.MatchThePairGameActivity;
-import com.pratham.foundation.ui.contentPlayer.old_cos.reading_cards.ReadingCardsActivity_;
-import com.pratham.foundation.ui.contentPlayer.ContentPlayerActivity_;
-import com.pratham.foundation.ui.contentPlayer.old_cos.conversation.ConversationActivity_;
-import com.pratham.foundation.ui.contentPlayer.opposites.OppositesActivity_;
-import com.pratham.foundation.ui.contentPlayer.reading_activity.ReadingStoryActivity_;
-import com.pratham.foundation.ui.contentPlayer.reading_paragraphs.ReadingParagraphsActivity_;
-import com.pratham.foundation.ui.contentPlayer.reading_rhyming.ReadingRhymesActivity_;
-import com.pratham.foundation.ui.contentPlayer.vocabulary_qa.ReadingVocabularyActivity_;
-import com.pratham.foundation.ui.contentPlayer.web_view.WebViewActivity;
 import com.pratham.foundation.customView.progress_layout.ProgressLayout;
 import com.pratham.foundation.database.domain.ContentTable;
 import com.pratham.foundation.modalclasses.EventMessage;
 import com.pratham.foundation.modalclasses.Modal_FileDownloading;
+import com.pratham.foundation.ui.contentPlayer.ContentPlayerActivity_;
+import com.pratham.foundation.ui.contentPlayer.matchingPairGame.MatchThePairGameActivity;
+import com.pratham.foundation.ui.contentPlayer.old_cos.conversation.ConversationActivity_;
+import com.pratham.foundation.ui.contentPlayer.old_cos.reading_cards.ReadingCardsActivity_;
+import com.pratham.foundation.ui.contentPlayer.opposites.OppositesActivity_;
+import com.pratham.foundation.ui.contentPlayer.reading_paragraphs.ReadingParagraphsActivity_;
+import com.pratham.foundation.ui.contentPlayer.reading_rhyming.ReadingRhymesActivity_;
+import com.pratham.foundation.ui.contentPlayer.reading_story_activity.ReadingStoryActivity_;
+import com.pratham.foundation.ui.contentPlayer.vocabulary_qa.ReadingVocabularyActivity_;
+import com.pratham.foundation.ui.contentPlayer.web_view.WebViewActivity;
 import com.pratham.foundation.ui.student_profile.Student_profile_activity;
-import com.pratham.foundation.BaseActivity;
 import com.pratham.foundation.utility.FC_Constants;
 import com.pratham.foundation.utility.FC_Utility;
 
@@ -61,6 +61,7 @@ import java.util.Collections;
 import java.util.List;
 
 import static com.pratham.foundation.ui.home_screen.HomeActivity.languageChanged;
+import static com.pratham.foundation.utility.FC_Constants.gameFolderPath;
 import static com.pratham.foundation.utility.FC_Utility.dpToPx;
 import static com.pratham.foundation.utility.SplashSupportActivity.ButtonClickSound;
 
@@ -122,7 +123,7 @@ public class ContentDisplay extends BaseActivity implements ContentContract.Cont
 //        presenter.getPerc(nodeId);
 
         ContentTableList = new ArrayList<>();
-        recyclerView = (RecyclerView) findViewById(R.id.attendnce_recycler_view);
+        recyclerView = findViewById(R.id.attendnce_recycler_view);
         contentAdapter = new ContentAdapter(this, ContentTableList, this);
         RecyclerView.LayoutManager mLayoutManager = new GridLayoutManager(this, 2);
         recyclerView.setLayoutManager(mLayoutManager);
@@ -329,10 +330,10 @@ public class ContentDisplay extends BaseActivity implements ContentContract.Cont
                 String resPath = null;
                 String gameID = ContentTableList.get(position).getResourceId();
                 if (ContentTableList.get(position).isOnSDCard())
-                    resPath = ApplicationClass.contentSDPath + "/.FCA/English/Game/" +
+                    resPath = ApplicationClass.contentSDPath + gameFolderPath + "/" +
                             ContentTableList.get(position).getResourcePath();
                 else
-                    resPath = ApplicationClass.foundationPath + "/.FCA/English/Game/" +
+                    resPath = ApplicationClass.foundationPath + gameFolderPath + "/" +
                             ContentTableList.get(position).getResourcePath();
                 File file = new File(resPath);
                 if (file.exists()) {

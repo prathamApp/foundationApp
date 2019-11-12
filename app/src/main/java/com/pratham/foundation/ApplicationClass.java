@@ -6,10 +6,9 @@ import android.util.Log;
 
 import com.androidnetworking.AndroidNetworking;
 import com.facebook.drawee.backends.pipeline.Fresco;
+import com.isupatches.wisefy.WiseFy;
 import com.pratham.foundation.services.shared_preferences.FastSave;
 import com.pratham.foundation.utility.FC_Utility;
-import com.isupatches.wisefy.WiseFy;
-
 
 import java.io.File;
 import java.text.DateFormat;
@@ -29,6 +28,7 @@ public class ApplicationClass extends Application {
     public static boolean contentExistOnSD = false, LocationFlg = false;
     public static String contentSDPath = "";
     public static String foundationPath = "";
+    public static String App_Thumbs_Path = "/.FCA/App_Thumbs/";
     OkHttpClient okHttpClient;
     public static WiseFy wiseF;
     public static ApplicationClass applicationClass;
@@ -49,13 +49,7 @@ public class ApplicationClass extends Application {
         foundationPath = FC_Utility.getInternalPath(this);
         if (foundationPath != null) {
             File mydir = null;
-            mydir = new File(applicationClass.foundationPath + "/.FCA");
-            if (!mydir.exists())
-                mydir.mkdirs();
-            mydir = new File(applicationClass.foundationPath + "/.FCA/English");
-            if (!mydir.exists())
-                mydir.mkdirs();
-            mydir = new File(applicationClass.foundationPath + "/.FCA/English/Game");
+            mydir = new File(foundationPath + "/.FCA");
             if (!mydir.exists())
                 mydir.mkdirs();
         }

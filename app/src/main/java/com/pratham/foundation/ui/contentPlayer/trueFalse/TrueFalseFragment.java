@@ -31,7 +31,6 @@ import com.pratham.foundation.database.domain.KeyWords;
 import com.pratham.foundation.database.domain.Score;
 import com.pratham.foundation.modalclasses.ScienceQuestion;
 import com.pratham.foundation.ui.contentPlayer.GameConstatnts;
-import com.pratham.foundation.ui.contentPlayer.reading.ReadingFragment;
 import com.pratham.foundation.utility.FC_Constants;
 import com.pratham.foundation.utility.FC_Utility;
 
@@ -51,6 +50,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 import static com.pratham.foundation.database.AppDatabase.appDatabase;
+import static com.pratham.foundation.utility.FC_Constants.gameFolderPath;
 
 
 public class TrueFalseFragment extends Fragment {
@@ -112,9 +112,9 @@ public class TrueFalseFragment extends Fragment {
 
 
                 if (onSdCard)
-                    readingContentPath = ApplicationClass.contentSDPath + "/.FCA/English/Game/" + contentPath + "/";
+                    readingContentPath = ApplicationClass.contentSDPath + gameFolderPath + "/" + contentPath + "/";
                 else
-                    readingContentPath = ApplicationClass.foundationPath + "/.FCA/English/Game/" + contentPath + "/";
+                    readingContentPath = ApplicationClass.foundationPath + gameFolderPath + "/" + contentPath + "/";
                 getData();
             }
         }
@@ -190,10 +190,7 @@ public class TrueFalseFragment extends Fragment {
     private boolean checkWord(String wordStr) {
         try {
             String word = appDatabase.getKeyWordDao().checkWord(FC_Constants.currentStudentID, resId, wordStr);
-            if (word != null)
-                return true;
-            else
-                return false;
+            return word != null;
         } catch (Exception e) {
             e.printStackTrace();
             return false;

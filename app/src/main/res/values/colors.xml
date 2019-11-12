@@ -17,12 +17,18 @@
     <color name="colorAccentDark">#FFB300</color>
     <color name="colorGreen">#AED581</color
         >
-    <color name="colorBtnGreenDark">#81c784</color>
-    <color name="colorBtnGreenLight">#c8e6c9</color>
-    <color name="colorBtnOrangeDark">#ffd54f</color>
-    <color name="colorBtnOrangeLight">#ffecb3</color>
-    <color name="colorBtnRedDark">#e57373</color>
-    <color name="colorBtnRedLight">#ffcdd2</color>
+<!--    <color name="colorBtnGreenDark">#81c784</color>-->
+<!--    <color name="colorBtnGreenLight">#c8e6c9</color>-->
+    <color name="colorBtnGreenDark">#00c853</color>
+    <color name="colorBtnGreenLight">#69f0ae</color>
+<!--    <color name="colorBtnOrangeDark">#ffd54f</color>-->
+<!--    <color name="colorBtnOrangeLight">#ffecb3</color>-->
+    <color name="colorBtnOrangeDark">#ffd600</color>
+    <color name="colorBtnOrangeLight">#ffff00</color>
+<!--    <color name="colorBtnRedDark">#e57373</color>-->
+<!--    <color name="colorBtnRedLight">#ffcdd2</color>-->
+    <color name="colorBtnRedDark">#d50000</color>
+    <color name="colorBtnRedLight">#ff5252</color>
     <color name="colorBtnPurpleDark">#ba68c8</color>
     <color name="colorBtnPurpleLight">#e1bee7</color>
     <color name="colorBtnTealDark">#b2dfdb</color>

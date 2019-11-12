@@ -1,4 +1,4 @@
-package com.pratham.foundation.ui.contentPlayer.story_reading;
+package com.pratham.foundation.ui.contentPlayer.new_vocab_reading;
 
 import android.content.Context;
 
@@ -23,15 +23,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static com.pratham.foundation.database.AppDatabase.appDatabase;
-import static com.pratham.foundation.ui.contentPlayer.story_reading.StoryReadingFragment.correctArr;
-import static com.pratham.foundation.ui.contentPlayer.story_reading.StoryReadingFragment.lineBreakCounter;
-import static com.pratham.foundation.ui.contentPlayer.story_reading.StoryReadingFragment.testCorrectArr;
+import static com.pratham.foundation.ui.contentPlayer.new_vocab_reading.VocabReadingFragment.correctArr;
+import static com.pratham.foundation.ui.contentPlayer.new_vocab_reading.VocabReadingFragment.lineBreakCounter;
+import static com.pratham.foundation.ui.contentPlayer.new_vocab_reading.VocabReadingFragment.testCorrectArr;
 
 
 @EBean
-public class StoryReadingPresenter implements StoryReadingContract.StoryReadingPresenter {
+public class VocabReadingPresenter implements VocabReadingContract.VocabReadingPresenter {
 
-    StoryReadingContract.StoryReadingView readingView;
+    VocabReadingContract.VocabReadingView readingView;
 
     Context context;
     ModalParaMainMenu modalParaMainMenu;
@@ -42,12 +42,12 @@ public class StoryReadingPresenter implements StoryReadingContract.StoryReadingP
     int pgNo;
     String resId, resStartTime;
 
-    public StoryReadingPresenter(Context context) {
+    public VocabReadingPresenter(Context context) {
         this.context = context;
     }
 
     @Override
-    public void setView(StoryReadingContract.StoryReadingView readingView) {
+    public void setView(VocabReadingContract.VocabReadingView readingView) {
         this.readingView = readingView;
         learntWordsList = new ArrayList<>();
     }
@@ -76,6 +76,7 @@ public class StoryReadingPresenter implements StoryReadingContract.StoryReadingP
 
     @Override
     public void getPage(int pgNo) {
+        readingView.showLoader();
         this.pgNo = pgNo;
         String paraAudio = modalParaSubMenuList.get(pgNo).getReadPageAudio();
         readingView.setParaAudio(paraAudio);

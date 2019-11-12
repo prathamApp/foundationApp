@@ -24,6 +24,8 @@ import org.androidannotations.annotations.ViewById;
 import java.util.List;
 
 import static com.pratham.foundation.utility.FC_Constants.currentStudentName;
+import static com.pratham.foundation.utility.FC_Constants.currentSubjectFolder;
+import static com.pratham.foundation.utility.FC_Constants.gameFolderPath;
 import static com.pratham.foundation.utility.FC_Utility.dpToPx;
 
 @EActivity(R.layout.activity_select_subject)
@@ -76,7 +78,21 @@ public class SelectSubject extends BaseActivity implements
     @Override
     public void onItemClicked(ContentTable contentTableObj) {
         FC_Constants.currentSubject = contentTableObj.getNodeTitle();
-        Intent intent = new Intent(context, HomeActivity_.class);
+
+        if (contentTableObj.getNodeTitle().equals("Science")) {
+            currentSubjectFolder = "Science";
+        } else if (contentTableObj.getNodeTitle().equals("Maths")) {
+            currentSubjectFolder = "Maths";
+        } else if (contentTableObj.getNodeTitle().equals("English")) {
+            currentSubjectFolder = "English";
+        } else if (contentTableObj.getNodeTitle().equals("H Science")) {
+            currentSubjectFolder = "H_Science";
+        }else
+            currentSubjectFolder = "LS_Science";
+
+        gameFolderPath = "/.FCA/"+currentSubjectFolder+"/Game";
+
+            Intent intent = new Intent(context, HomeActivity_.class);
         intent.putExtra("nodeId", contentTableObj.getNodeId());
         context.startActivity(intent);
     }

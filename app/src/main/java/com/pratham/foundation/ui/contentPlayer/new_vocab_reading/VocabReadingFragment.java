@@ -1,4 +1,4 @@
-package com.pratham.foundation.ui.contentPlayer.reading_activity;
+package com.pratham.foundation.ui.contentPlayer.new_vocab_reading;
 
 import android.annotation.SuppressLint;
 import android.app.Dialog;
@@ -8,9 +8,12 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.Rect;
+import android.graphics.drawable.AnimationDrawable;
 import android.graphics.drawable.ColorDrawable;
 import android.media.MediaPlayer;
+import android.os.Bundle;
 import android.os.Handler;
+import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.View;
 import android.view.Window;
@@ -19,6 +22,7 @@ import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RatingBar;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
@@ -30,17 +34,19 @@ import com.pratham.foundation.BaseActivity;
 import com.pratham.foundation.R;
 import com.pratham.foundation.customView.GifView;
 import com.pratham.foundation.customView.SansTextView;
+import com.pratham.foundation.interfaces.OnGameClose;
 import com.pratham.foundation.modalclasses.ModalParaSubMenu;
 import com.pratham.foundation.services.TTSService;
 import com.pratham.foundation.services.stt.ContinuousSpeechService_New;
 import com.pratham.foundation.services.stt.STT_Result_New;
+import com.pratham.foundation.ui.contentPlayer.GameConstatnts;
 import com.pratham.foundation.utility.FC_Constants;
 import com.pratham.foundation.utility.FC_Utility;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Bean;
 import org.androidannotations.annotations.Click;
-import org.androidannotations.annotations.EActivity;
+import org.androidannotations.annotations.EFragment;
 import org.androidannotations.annotations.UiThread;
 import org.androidannotations.annotations.ViewById;
 
@@ -50,24 +56,25 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import static com.pratham.foundation.BaseActivity.setMute;
 import static com.pratham.foundation.utility.FC_Constants.dialog_btn_cancel;
+import static com.pratham.foundation.utility.FC_Constants.gameFolderPath;
 import static com.pratham.foundation.utility.SplashSupportActivity.ButtonClickSound;
 
-@EActivity(R.layout.fragment_story_reading)
-public class ReadingStoryActivity extends BaseActivity implements
-        /*RecognitionListener, */STT_Result_New.sttView,
-        ReadingStoryActivityContract.ReadingStoryView {
 
-    @Bean(ReadingStoryActivityPresenter.class)
-    ReadingStoryActivityContract.ReadingStoryActivityPresenter presenter;
+@EFragment(R.layout.fragment_story_reading)
+public class VocabReadingFragment extends Fragment implements
+        /*RecognitionListener, */STT_Result_New.sttView,
+        VocabReadingContract.VocabReadingView, OnGameClose {
+
+    @Bean(VocabReadingPresenter.class)
+    VocabReadingContract.VocabReadingPresenter presenter;
 
     public static MediaPlayer mp, mPlayer;
     @ViewById(R.id.myflowlayout)
     FlowLayout wordFlowLayout;
     @ViewById(R.id.tv_story_title)
     TextView story_title;
-    @ViewById(R.id.iv_image)
-    ImageView pageImage;
     @ViewById(R.id.btn_prev)
     ImageButton btn_previouspage;
     @ViewById(R.id.btn_next)
@@ -80,8 +87,24 @@ public class ReadingStoryActivity extends BaseActivity implements
     ScrollView myScrollView;
     @ViewById(R.id.btn_submit)
     Button btn_submit;
+    @ViewById(R.id.story_ll)
+    RelativeLayout story_ll;
+    @ViewById(R.id.btn_Stop)
+    ImageButton btn_Stop;
+    @ViewById(R.id.btn_camera)
+    ImageButton btn_camera;
+    @ViewById(R.id.ib_back)
+    ImageButton ib_back;
+    @ViewById(R.id.bottom_bar2)
+    LinearLayout bottom_bar2;
+    @ViewById(R.id.iv_image)
+    ImageView iv_image;
     @ViewById(R.id.gif_view)
     GifView gif_view;
+//    @ViewById(R.id.ll_btn_next)
+//    LinearLayout ll_btn_next;
+//    @ViewById(R.id.ll_btn_prev)
+//    LinearLayout ll_btn_prev;
 
     ContinuousSpeechService_New continuousSpeechService;
 
@@ -91,7 +114,7 @@ public class ReadingStoryActivity extends BaseActivity implements
 
     List<ModalParaSubMenu> modalPagesList;
 
-    String contentType, storyPath, storyData, storyName, storyAudio, certiCode, storyBg,pageTitle;
+    String contentType, storyPath, storyName, storyAudio, certiCode, storyBg, pageTitle;
     static int currentPage, lineBreakCounter = 0;
 
     public Handler handler, audioHandler, soundStopHandler, colorChangeHandler,
@@ -112,29 +135,50 @@ public class ReadingStoryActivity extends BaseActivity implements
     boolean voiceStart = false, flgPerMarked = false, onSdCard;
     static boolean[] correctArr;
     static boolean[] testCorrectArr;
+    AnimationDrawable animationDrawable;
+
+/*
+        bundle.putString("nodeID", nodeID);
+        bundle.putString("contentType","s");
+        bundle.putString("storyPath","s");
+        bundle.putString("storyId","s");
+        bundle.putString("storyTitle","s");
+        bundle.putString("certiCode","s");
+        bundle.putBoolean("onSdCard", false);
+        FC_Utility.showFragment(ContentPlayerActivity.this, new ContentReadingFragment_(), R.id.RL_CPA,
+    bundle, ContentReadingFragment_.class.getSimpleName());
+*/
 
 
     @AfterViews
     public void initialize() {
         silence_outer_layout.setVisibility(View.GONE);
-
-        Intent intent = getIntent();
-        contentType = getIntent().getStringExtra("contentType");
-        storyData = intent.getStringExtra("storyData");
-        storyPath = intent.getStringExtra("storyPath");
-        storyId = intent.getStringExtra("storyId");
-        StudentID = intent.getStringExtra("StudentID");
-        storyName = intent.getStringExtra("storyTitle");
-        certiCode = intent.getStringExtra("certiCode");
-        onSdCard = getIntent().getBooleanExtra("onSdCard", false);
+        Bundle bundle = getArguments();
+        contentType = bundle.getString("contentType");
+        storyPath = bundle.getString("contentPath");
+        storyId = bundle.getString("resId");
+        storyName = bundle.getString("contentName");
+        certiCode = bundle.getString("certiCode");
+        onSdCard = bundle.getBoolean("onSdCard", false);
         ttsService = BaseActivity.ttsService;
+        contentType = "story";
 
-        context = ReadingStoryActivity.this;
-        presenter.setView(ReadingStoryActivity.this);
+        bottom_bar2.setVisibility(View.GONE);
+        btn_camera.setVisibility(View.GONE);
+        gif_view.setVisibility(View.GONE);
+
+        animationDrawable = (AnimationDrawable) story_ll.getBackground();
+        animationDrawable.setEnterFadeDuration(4500);
+        animationDrawable.setExitFadeDuration(4500);
+        animationDrawable.start();
+
+
+        context = getActivity();
+        presenter.setView(VocabReadingFragment.this);
         showLoader();
         modalPagesList = new ArrayList<>();
 
-        continuousSpeechService = new ContinuousSpeechService_New(context, this, FC_Constants.ENGLISH);
+        continuousSpeechService = new ContinuousSpeechService_New(context, VocabReadingFragment.this, FC_Constants.currentSelectedLanguage);
         if (contentType.equalsIgnoreCase(FC_Constants.RHYME_RESOURCE))
             btn_Mic.setVisibility(View.GONE);
 
@@ -150,9 +194,9 @@ public class ReadingStoryActivity extends BaseActivity implements
 
         presenter.addScore(0, "", 0, 0, startTime, contentType + " start");
         if (onSdCard)
-            readingContentPath = ApplicationClass.contentSDPath + "/.FCA/English/Game/" + storyPath + "/";
+            readingContentPath = ApplicationClass.contentSDPath + gameFolderPath + "/" + storyPath + "/";
         else
-            readingContentPath = ApplicationClass.foundationPath + "/.FCA/English/Game/" + storyPath + "/";
+            readingContentPath = ApplicationClass.foundationPath + gameFolderPath + "/" + storyPath + "/";
 
         continuousSpeechService.resetSpeechRecognizer();
 
@@ -173,24 +217,27 @@ public class ReadingStoryActivity extends BaseActivity implements
     }
 
     public Dialog myLoadingDialog;
-
+    boolean dialogFlg = false;
     @UiThread
     @Override
     public void showLoader() {
-        myLoadingDialog = new Dialog(context);
-        myLoadingDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        myLoadingDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-        myLoadingDialog.setContentView(R.layout.loading_dialog);
-        myLoadingDialog.setCanceledOnTouchOutside(false);
-//        myLoadingDialog.setCancelable(false);
-        myLoadingDialog.show();
+        if(!dialogFlg) {
+            dialogFlg = true;
+            myLoadingDialog = new Dialog(context);
+            myLoadingDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+            myLoadingDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+            myLoadingDialog.setContentView(R.layout.loading_dialog);
+            myLoadingDialog.setCanceledOnTouchOutside(false);
+            myLoadingDialog.show();
+        }
     }
 
     @UiThread
     @Override
     public void dismissLoadingDialog() {
-        if (myLoadingDialog != null) {
-            myLoadingDialog.dismiss();
+        if(dialogFlg) {
+            if (myLoadingDialog != null)
+                myLoadingDialog.dismiss();
         }
     }
 
@@ -209,10 +256,6 @@ public class ReadingStoryActivity extends BaseActivity implements
     @Override
     public void initializeContent(int pageNo) {
         currentPage = pageNo;
-        if (currentPage == totalPages - 1) {
-            lastPgFlag = true;
-            btn_nextpage.setVisibility(View.GONE);
-        }
         if (currentPage == 0) {
             lastPgFlag = false;
             btn_previouspage.setVisibility(View.GONE);
@@ -229,32 +272,10 @@ public class ReadingStoryActivity extends BaseActivity implements
         pageTitle = modalPagesList.get(currentPage).getPageTitle();
         if (pageTitle != null && !pageTitle.equalsIgnoreCase(""))
             story_title.setText(pageTitle);
-        story_title.setTextSize(35);
 
         playHideFlg = storyAudio.equalsIgnoreCase("NA");
 
-        try {
-            File f = new File(readingContentPath + storyBg);
-            if (f.exists()) {
-                if (storyBg.contains(".gif")) {
-                    pageImage.setVisibility(View.GONE);
-                    gif_view.setVisibility(View.VISIBLE);
-                    gif_view.setGifResource(new FileInputStream(readingContentPath + storyBg));
-                    gif_view.play();
-                } else {
-                    gif_view.setVisibility(View.GONE);
-                    pageImage.setVisibility(View.VISIBLE);
-                    Bitmap bmImg = BitmapFactory.decodeFile(readingContentPath + storyBg);
-                    BitmapFactory.decodeStream(new FileInputStream(readingContentPath + storyBg));
-                    pageImage.setImageBitmap(bmImg);
-                }
-            } else {
-                gif_view.setVisibility(View.GONE);
-                pageImage.setVisibility(View.GONE);
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        showPageImage();
 
         correctArr = new boolean[modalPagesList.get(currentPage).getReadList().size()];
         splitWords = new ArrayList<>();
@@ -278,12 +299,39 @@ public class ReadingStoryActivity extends BaseActivity implements
         if (playHideFlg)
             btn_Play.setVisibility(View.GONE);
         startTime = FC_Utility.getCurrentDateTime();
+    }
+
+    private void showPageImage() {
+        try {
+            File f = new File(readingContentPath + storyBg);
+            if (f.exists()) {
+                if (storyBg.contains(".gif")) {
+                    iv_image.setVisibility(View.GONE);
+                    gif_view.setVisibility(View.VISIBLE);
+                    gif_view.setGifResource(new FileInputStream(readingContentPath + storyBg));
+                    gif_view.play();
+                } else {
+                    gif_view.setVisibility(View.GONE);
+                    iv_image.setVisibility(View.VISIBLE);
+                    Bitmap bmImg = BitmapFactory.decodeFile(readingContentPath + storyBg);
+                    BitmapFactory.decodeStream(new FileInputStream(readingContentPath + storyBg));
+                    iv_image.setImageBitmap(bmImg);
+                }
+            } else {
+                gif_view.setVisibility(View.GONE);
+                iv_image.setVisibility(View.GONE);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
         new Handler().postDelayed(() -> {
             if (!FC_Constants.isTest)
                 btn_Play.performClick();
             else {
                 btn_Mic.performClick();
                 btn_Play.setVisibility(View.GONE);
+                bottom_bar2.setVisibility(View.VISIBLE);
                 btn_submit.setVisibility(View.VISIBLE);
             }
         }, 200);
@@ -375,12 +423,13 @@ public class ReadingStoryActivity extends BaseActivity implements
         }
     }
 
-    private void startAudioReading() {
+    private void startAudioReading(int wordCounter) {
         try {
             mp = new MediaPlayer();
+            float seekTime = Float.parseFloat(modalPagesList.get(currentPage).getReadList().get(wordCounter).getWordFrom());
             mp.setDataSource(readingContentPath + storyAudio);
             mp.prepare();
-            mp.seekTo((int) (startPlayBack * 1000));
+            mp.seekTo((int) (seekTime * 1000));
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -420,6 +469,8 @@ public class ReadingStoryActivity extends BaseActivity implements
                             pauseFlg = true;
                             if (!contentType.equalsIgnoreCase(FC_Constants.RHYME_RESOURCE)) {
                                 btn_Mic.setVisibility(View.VISIBLE);
+                                btn_Stop.setVisibility(View.GONE);
+                                wordCounter = 0;
                                 quesReadHandler = new Handler();
                                 quesReadHandler.postDelayed(() -> {
                                     Collections.shuffle(readSounds);
@@ -427,9 +478,7 @@ public class ReadingStoryActivity extends BaseActivity implements
                                     mPlayer.start();
                                 }, (long) (5000));
                             }
-                            if (mp != null && mp.isPlaying())
-                                mp.stop();
-                            btn_Play.setImageResource(R.drawable.ic_play_arrow);
+                            btn_Stop.performClick();
 //                            layout_mic_ripple.startRippleAnimation();
 //                            layout_ripplepulse_right.startRippleAnimation();
                         } catch (Exception e) {
@@ -445,17 +494,20 @@ public class ReadingStoryActivity extends BaseActivity implements
             wordDuration = 1;
 
         handler.postDelayed(() -> {
-            if (index < wordFlowLayout.getChildCount()) {
-                wordCounter += 1;
-                if (!pauseFlg)
-                    startStoryReading(wordCounter);
-            } else {
-                for (int i = 0; i < wordsDurationList.size(); i++) {
-                    SansTextView myView = (SansTextView) wordFlowLayout.getChildAt(i);
-                    myView.setBackgroundColor(Color.TRANSPARENT);
-                    myView.setTextColor(getResources().getColor(R.color.colorText));
+            if (playFlg && !pauseFlg) {
+                if (index < wordFlowLayout.getChildCount()) {
+                    wordCounter += 1;
+                    if (!pauseFlg) {
+                        startStoryReading(wordCounter);
+                    }
+                } else {
+                    for (int i = 0; i < wordsDurationList.size(); i++) {
+                        SansTextView myView = (SansTextView) wordFlowLayout.getChildAt(i);
+                        myView.setBackgroundColor(Color.TRANSPARENT);
+                        myView.setTextColor(getResources().getColor(R.color.colorText));
+                    }
+                    wordCounter = 0;
                 }
-                wordCounter = 0;
             }
         }, (long) (wordDuration * 1000));
 
@@ -485,50 +537,116 @@ public class ReadingStoryActivity extends BaseActivity implements
             view.getParent().requestChildFocus(view, view);
     }
 
-    @Click(R.id.btn_read_mic)
-    void sttMethod() {
-        if (!voiceStart) {
-            voiceStart = true;
-            flgPerMarked = false;
-            btn_Mic.setImageResource(R.drawable.ic_stop_black_24dp);
-//            layout_mic_ripple.stopRippleAnimation();
-            btn_Play.setVisibility(View.GONE);
-//            layout_ripplepulse_right.stopRippleAnimation();
+    @Click(R.id.btn_Stop)
+    void stopBtn() {
+        if (voiceStart) {
+            voiceStart = false;
+            btn_Stop.setVisibility(View.GONE);
+            if (!FC_Constants.isTest && !playHideFlg)
+                btn_Play.setVisibility(View.VISIBLE);
+            btn_Mic.setVisibility(View.VISIBLE);
+            continuousSpeechService.stopSpeechInput();
+        } else if (playFlg || pauseFlg) {
+            wordCounter = 0;
+            btn_Stop.setVisibility(View.GONE);
+            btn_Play.setVisibility(View.VISIBLE);
+            if (!contentType.equalsIgnoreCase(FC_Constants.RHYME_RESOURCE))
+                btn_Mic.setVisibility(View.VISIBLE);
+            btn_Play.setImageResource(R.drawable.ic_play_arrow_black);
+            startPlayBack = Float.parseFloat(modalPagesList.get(currentPage).getReadList().get(0).getWordFrom());
+
             try {
-                if (quesReadHandler != null) {
-                    quesReadHandler.removeCallbacksAndMessages(null);
-                    try {
-                        if (mPlayer.isPlaying()) {
-                            mPlayer.stop();
-                            mPlayer.reset();
-                            mPlayer.release();
-                        }
-                    } catch (Exception e) {
-                        e.printStackTrace();
+                playFlg = false;
+                pauseFlg = true;
+                try {
+                    if (mp.isPlaying()) {
+                        mp.stop();
+                        mp.reset();
+                        mp.release();
                     }
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
+                if (startReadingHandler != null)
+                    startReadingHandler.removeCallbacksAndMessages(null);
+                if (soundStopHandler != null)
+                    soundStopHandler.removeCallbacksAndMessages(null);
             } catch (Exception e) {
                 e.printStackTrace();
             }
-            continuousSpeechService.startSpeechInput();
-        } else {
-            voiceStart = false;
-            if (!FC_Constants.isTest && !playHideFlg)
-                btn_Play.setVisibility(View.VISIBLE);
-            btn_Mic.setImageResource(R.drawable.ic_mic_black_24dp);
-//            layout_mic_ripple.startRippleAnimation();
-//            layout_ripplepulse_right.startRippleAnimation();
-            continuousSpeechService.stopSpeechInput();
         }
+    }
+
+    @Click(R.id.btn_read_mic)
+    void sttMethod() {
+//        if (!voiceStart) {
+        voiceStart = true;
+        flgPerMarked = false;
+        btn_Mic.setVisibility(View.GONE);
+        btn_Play.setVisibility(View.GONE);
+        btn_Stop.setVisibility(View.VISIBLE);
+        try {
+            if (quesReadHandler != null) {
+                quesReadHandler.removeCallbacksAndMessages(null);
+                try {
+                    if (mPlayer.isPlaying()) {
+                        mPlayer.stop();
+                        mPlayer.reset();
+                        mPlayer.release();
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        continuousSpeechService.startSpeechInput();
+//        } else {
+//            voiceStart = false;
+//            if (!FC_Constants.isTest && !playHideFlg)
+//                btn_Play.setVisibility(View.VISIBLE);
+//            btn_Mic.setImageResource(R.drawable.ic_mic_black);
+////            layout_mic_ripple.startRippleAnimation();
+////            layout_ripplepulse_right.startRippleAnimation();
+//            continuousSpeechService.stopSpeechInput();
+//        }
     }
 
     @Click(R.id.btn_play)
     void playReading() {
-        if ((!playFlg || pauseFlg) && !storyAudio.equalsIgnoreCase("NA")) {
-            btn_Mic.setVisibility(View.GONE);
-            playFlg = true;
-            pauseFlg = false;
-            try {
+        if (!storyAudio.equalsIgnoreCase("NA")) {
+            if (!playFlg) {
+                btn_Mic.setVisibility(View.GONE);
+                btn_Play.setVisibility(View.VISIBLE);
+                btn_Stop.setVisibility(View.VISIBLE);
+                btn_Play.setImageResource(R.drawable.ic_pause_black);
+                playFlg = true;
+                pauseFlg = false;
+                try {
+                    if (quesReadHandler != null) {
+                        quesReadHandler.removeCallbacksAndMessages(null);
+                        try {
+                            if (mPlayer.isPlaying() && mPlayer != null) {
+                                mPlayer.stop();
+                                mPlayer.reset();
+                                mPlayer.release();
+                            }
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+//            btn_Play.setImageResource(R.drawable.ic_stop_black_24dp);
+//            btn_Play.setText("Stop");
+                if (audioHandler != null)
+                    audioHandler.removeCallbacksAndMessages(null);
+                if (handler != null)
+                    handler.removeCallbacksAndMessages(null);
+                if (colorChangeHandler != null)
+                    colorChangeHandler.removeCallbacksAndMessages(null);
                 if (quesReadHandler != null) {
                     quesReadHandler.removeCallbacksAndMessages(null);
                     try {
@@ -541,42 +659,28 @@ public class ReadingStoryActivity extends BaseActivity implements
                         e.printStackTrace();
                     }
                 }
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-            btn_Play.setImageResource(R.drawable.ic_stop_black_24dp);
-//            btn_Play.setText("Stop");
-            if (audioHandler != null)
-                audioHandler.removeCallbacksAndMessages(null);
-            if (handler != null)
-                handler.removeCallbacksAndMessages(null);
-            if (colorChangeHandler != null)
-                colorChangeHandler.removeCallbacksAndMessages(null);
-            if (quesReadHandler != null) {
-                quesReadHandler.removeCallbacksAndMessages(null);
+                if (startReadingHandler != null)
+                    startReadingHandler.removeCallbacksAndMessages(null);
+                if (soundStopHandler != null)
+                    soundStopHandler.removeCallbacksAndMessages(null);
+//            layout_ripplepulse_right.stopRippleAnimation();
+                setMute(0);
+                startAudioReading(wordCounter);
+            } else {
+                playFlg = false;
+                pauseFlg = true;
+                btn_Play.setImageResource(R.drawable.ic_play_arrow_black);
+                if (wordCounter > 1)
+                    wordCounter--;
                 try {
-                    if (mPlayer.isPlaying() && mPlayer != null) {
-                        mPlayer.stop();
-                        mPlayer.reset();
-                        mPlayer.release();
+                    if (mp.isPlaying()) {
+                        mp.pause();
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
-            }
-            if (startReadingHandler != null)
-                startReadingHandler.removeCallbacksAndMessages(null);
-            if (soundStopHandler != null)
-                soundStopHandler.removeCallbacksAndMessages(null);
-            wordCounter = 0;
-//            layout_ripplepulse_right.stopRippleAnimation();
-            setMute(0);
-            startAudioReading();
-        } else {
-            btn_Play.setImageResource(R.drawable.ic_play_arrow);
-//            layout_mic_ripple.startRippleAnimation();
-//            layout_ripplepulse_right.startRippleAnimation();
-//            btn_Play.setText("Read");
+
+/*            btn_Play.setImageResource(R.drawable.ic_play_arrow_black);
             if (!contentType.equalsIgnoreCase(FC_Constants.RHYME_RESOURCE))
                 btn_Mic.setVisibility(View.VISIBLE);
             wordCounter = 0;
@@ -598,6 +702,7 @@ public class ReadingStoryActivity extends BaseActivity implements
                     soundStopHandler.removeCallbacksAndMessages(null);
             } catch (Exception e) {
                 e.printStackTrace();
+            }*/
             }
         }
     }
@@ -668,7 +773,7 @@ public class ReadingStoryActivity extends BaseActivity implements
                 voiceStart = false;
                 if (!FC_Constants.isTest && !playHideFlg)
                     btn_Play.setVisibility(View.VISIBLE);
-                btn_Mic.setImageResource(R.drawable.ic_mic_black_24dp);
+                btn_Mic.setImageResource(R.drawable.ic_mic_black);
                 continuousSpeechService.stopSpeechInput();
                 setMute(0);
             }
@@ -708,6 +813,11 @@ public class ReadingStoryActivity extends BaseActivity implements
         showStars(false);
     }
 
+    @Click(R.id.ib_back)
+    public void backPressed() {
+        getActivity().onBackPressed();
+    }
+
     @Click(R.id.btn_next)
     void gotoNextPage() {
         if (currentPage < totalPages - 1) {
@@ -744,7 +854,7 @@ public class ReadingStoryActivity extends BaseActivity implements
                 voiceStart = false;
                 if (!FC_Constants.isTest && !playHideFlg)
                     btn_Play.setVisibility(View.VISIBLE);
-                btn_Mic.setImageResource(R.drawable.ic_mic_black_24dp);
+                btn_Mic.setImageResource(R.drawable.ic_mic_black);
                 continuousSpeechService.stopSpeechInput();
                 setMute(0);
             }
@@ -774,6 +884,8 @@ public class ReadingStoryActivity extends BaseActivity implements
             pauseFlg = true;
             presenter.getPage(currentPage);
             Log.d("click", "NextBtn - totalPages: " + totalPages + "  currentPage: " + currentPage);
+        } else {
+            GameConstatnts.playGameNext(getActivity(), true, this);
         }
     }
 
@@ -1024,7 +1136,7 @@ public class ReadingStoryActivity extends BaseActivity implements
 /*        if (!voiceStart) {
             resetSpeechRecognizer();
             btn_Play.setVisibility(View.VISIBLE);
-            btn_Mic.setImageResource(R.drawable.ic_mic_black_24dp);
+            btn_Mic.setImageResource(R.drawable.ic_mic_black);
             setMute(0);
         } else
             speech.startListening(recognizerIntent);*/
@@ -1092,11 +1204,16 @@ public class ReadingStoryActivity extends BaseActivity implements
         }, 10);
     }
 
-/*    public void loadFragment() {
-        Bundle bundle = new Bundle();
-        bundle.putString("contentType", contentType);
-        FC_Utility.showFragment(ReadingStoryActivity.this, new fragment_acknowledge(), R.id.story_ll,
-                bundle, fragment_acknowledge.class.getSimpleName());
-    }*/
-
+    @Override
+    public void gameClose() {
+        if (FC_Constants.isTest) {
+            float correctCnt = getPercentage();
+            Intent returnIntent = new Intent();
+            returnIntent.putExtra("cCode", certiCode);
+            returnIntent.putExtra("sMarks", correctCnt);
+            returnIntent.putExtra("tMarks", correctArr.length);
+//                setResult(Activity.RESULT_OK, returnIntent);
+        }
+        exitDBEntry();
+    }
 }

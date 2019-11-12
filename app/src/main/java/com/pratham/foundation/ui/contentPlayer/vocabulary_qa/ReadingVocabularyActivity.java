@@ -56,6 +56,7 @@ import java.util.List;
 
 import static com.pratham.foundation.ui.contentPlayer.old_cos.conversation.ConversationActivity.mediaPlayerUtil;
 import static com.pratham.foundation.utility.FC_Constants.dialog_btn_cancel;
+import static com.pratham.foundation.utility.FC_Constants.gameFolderPath;
 import static com.pratham.foundation.utility.FC_Constants.isTest;
 
 
@@ -165,9 +166,9 @@ public class ReadingVocabularyActivity extends BaseActivity implements MediaCall
         Collections.shuffle(readSounds);
 
         if (onSdCard)
-            readingContentPath = ApplicationClass.contentSDPath + "/.FCA/English/Game/" + contentPath + "/";
+            readingContentPath = ApplicationClass.contentSDPath + gameFolderPath + "/" + contentPath + "/";
         else
-            readingContentPath = ApplicationClass.foundationPath + "/.FCA/English/Game/" + contentPath + "/";
+            readingContentPath = ApplicationClass.foundationPath + gameFolderPath + "/" + contentPath + "/";
 
         continuousSpeechService.resetSpeechRecognizer();
         recyclerView.setHasFixedSize(true);

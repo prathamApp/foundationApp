@@ -46,7 +46,7 @@
             android:layout_margin="@dimen/_5sdp"
             app:c_borderWidth="1dp"
             app:c_progress="40"
-            app:c_progressColor="@color/white"
+            app:c_progressColor="@color/colorBtnGreenDark"
             app:c_progressRadius="@dimen/_3sdp" />
 
     </RelativeLayout>

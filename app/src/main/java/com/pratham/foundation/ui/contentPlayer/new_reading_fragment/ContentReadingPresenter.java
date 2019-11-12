@@ -1,4 +1,4 @@
-package com.pratham.foundation.ui.contentPlayer.reading_activity;
+package com.pratham.foundation.ui.contentPlayer.new_reading_fragment;
 
 import android.content.Context;
 
@@ -23,15 +23,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static com.pratham.foundation.database.AppDatabase.appDatabase;
-import static com.pratham.foundation.ui.contentPlayer.reading_activity.ReadingStoryActivity.correctArr;
-import static com.pratham.foundation.ui.contentPlayer.reading_activity.ReadingStoryActivity.lineBreakCounter;
-import static com.pratham.foundation.ui.contentPlayer.reading_activity.ReadingStoryActivity.testCorrectArr;
+import static com.pratham.foundation.ui.contentPlayer.new_reading_fragment.ContentReadingFragment.correctArr;
+import static com.pratham.foundation.ui.contentPlayer.new_reading_fragment.ContentReadingFragment.lineBreakCounter;
+import static com.pratham.foundation.ui.contentPlayer.new_reading_fragment.ContentReadingFragment.testCorrectArr;
 
 
 @EBean
-public class ReadingStoryActivityPresenter implements ReadingStoryActivityContract.ReadingStoryActivityPresenter {
+public class ContentReadingPresenter implements ContentReadingContract.ContentReadingPresenter {
 
-    ReadingStoryActivityContract.ReadingStoryView readingView;
+    ContentReadingContract.ContentReadingView readingView;
 
     Context context;
     ModalParaMainMenu modalParaMainMenu;
@@ -42,12 +42,12 @@ public class ReadingStoryActivityPresenter implements ReadingStoryActivityContra
     int pgNo;
     String resId, resStartTime;
 
-    public ReadingStoryActivityPresenter(Context context) {
+    public ContentReadingPresenter(Context context) {
         this.context = context;
     }
 
     @Override
-    public void setView(ReadingStoryActivityContract.ReadingStoryView readingView) {
+    public void setView(ContentReadingContract.ContentReadingView readingView) {
         this.readingView = readingView;
         learntWordsList = new ArrayList<>();
     }
@@ -76,6 +76,7 @@ public class ReadingStoryActivityPresenter implements ReadingStoryActivityContra
 
     @Override
     public void getPage(int pgNo) {
+        readingView.showLoader();
         this.pgNo = pgNo;
         String paraAudio = modalParaSubMenuList.get(pgNo).getReadPageAudio();
         readingView.setParaAudio(paraAudio);
@@ -86,7 +87,7 @@ public class ReadingStoryActivityPresenter implements ReadingStoryActivityContra
     @Override
     public void fetchJsonData(String contentPath) {
         try {
-            InputStream is = new FileInputStream(contentPath + "/Data.json");
+            InputStream is = new FileInputStream(contentPath + "/StoryReadingData.json");
             int size = is.available();
             byte[] buffer = new byte[size];
             is.read(buffer);
@@ -136,7 +137,6 @@ public class ReadingStoryActivityPresenter implements ReadingStoryActivityContra
         String[] splitRes = sttRes.split(" ");
         String word = " ";
         float perc;
-
         addSttResultDB(sttResult);
 
         for (int j = 0; j < splitRes.length; j++) {
@@ -193,7 +193,7 @@ public class ReadingStoryActivityPresenter implements ReadingStoryActivityContra
                         learntWords.setStudentId(FC_Constants.currentStudentID);
                         learntWords.setResourceId(resId);
                         learntWords.setKeyWord(splitWordsPunct.get(i).toLowerCase());
-                        learntWords.setWordType("Story word");
+                        learntWords.setWordType("word");
                         learntWords.setTopic("Topic");
                         appDatabase.getKeyWordDao().insert(learntWords);
                     }

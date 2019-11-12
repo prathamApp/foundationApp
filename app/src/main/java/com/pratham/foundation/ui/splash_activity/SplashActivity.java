@@ -485,7 +485,8 @@ public class SplashActivity extends SplashSupportActivity implements SplashContr
     @Override
     public void gotoNextActivity() {
 
-        File direct = new File(Environment.getExternalStorageDirectory().toString() + "/.FC");
+        File direct;
+        direct = new File(Environment.getExternalStorageDirectory().toString() + "/.FC");
         if (!direct.exists())
             direct.mkdir();
         direct = new File(Environment.getExternalStorageDirectory().toString() + "/.FC/Internal");

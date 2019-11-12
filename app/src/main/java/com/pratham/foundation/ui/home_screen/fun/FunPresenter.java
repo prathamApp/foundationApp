@@ -42,6 +42,7 @@ import java.util.Comparator;
 import java.util.List;
 
 import static com.pratham.foundation.ui.home_screen.HomeActivity.sub_nodeId;
+import static com.pratham.foundation.utility.FC_Constants.gameFolderPath;
 
 @EBean
 public class FunPresenter implements FunContract.FunPresenter, API_Content_Result {
@@ -510,7 +511,7 @@ public class FunPresenter implements FunContract.FunPresenter, API_Content_Resul
     @Background
     @Override
     public void updateDownloadJson(String folderPath) {
-        String path = ApplicationClass.foundationPath + "/.FCA/English/Game" + folderPath;
+        String path = ApplicationClass.foundationPath + "" + gameFolderPath + folderPath;
         try {
             InputStream is = new FileInputStream(path + "/gameinfo.json");
             int size = is.available();

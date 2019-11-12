@@ -16,7 +16,7 @@
         android:layout_alignParentTop="true"
         android:layout_marginTop="5dp">
 
-        <com.pratham.foundation.customView.FrederickaButton
+        <com.pratham.foundation.customView.SansButton
             android:id="@+id/btnMore"
             android:layout_width="@dimen/_70sdp"
             android:layout_height="@dimen/_20sdp"
@@ -24,7 +24,7 @@
             android:layout_centerVertical="true"
             android:layout_marginRight="@dimen/_20sdp"
             android:background="?android:selectableItemBackground"
-            android:drawableRight="@drawable/ic_right_arrow"
+            android:drawableRight="@drawable/ic_navigate_next_black_24dp"
             android:text="See All"
             android:textColor="@color/colorText"
             android:textSize="@dimen/_8sdp"
@@ -47,7 +47,7 @@
             android:textSize="@dimen/_8sdp"
             android:visibility="gone" />
 
-        <com.pratham.foundation.customView.FrederickaTextView
+        <com.pratham.foundation.customView.SansTextView
             android:id="@+id/itemTitle"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"

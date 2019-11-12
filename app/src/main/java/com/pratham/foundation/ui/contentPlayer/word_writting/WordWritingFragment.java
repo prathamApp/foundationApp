@@ -44,6 +44,8 @@ import java.util.List;
 
 import butterknife.OnClick;
 
+import static com.pratham.foundation.utility.FC_Constants.gameFolderPath;
+
 @EFragment(R.layout.fragment_paragraph_writing)
 public class WordWritingFragment extends Fragment
         implements WordWritingContract.WordWritingView, OnGameClose {
@@ -85,9 +87,9 @@ public class WordWritingFragment extends Fragment
             contentTitle = bundle.getString("contentName");
             onSdCard = bundle.getBoolean("onSdCard", false);
             if (onSdCard)
-                readingContentPath = ApplicationClass.contentSDPath + "/.FCA/English/Game/" + contentPath + "/";
+                readingContentPath = ApplicationClass.contentSDPath + gameFolderPath + "/" + contentPath + "/";
             else
-                readingContentPath = ApplicationClass.foundationPath + "/.FCA/English/Game/" + contentPath + "/";
+                readingContentPath = ApplicationClass.foundationPath + gameFolderPath + "/" + contentPath + "/";
         }
         presenter.setView(WordWritingFragment.this, resId, readingContentPath);
         presenter.getData();

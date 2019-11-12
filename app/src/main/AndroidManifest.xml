@@ -81,7 +81,7 @@
             android:name=".ui.contentPlayer.old_cos.conversation.ConversationActivity_"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".ui.contentPlayer.reading_activity.ReadingStoryActivity_"
+            android:name=".ui.contentPlayer.reading_story_activity.ReadingStoryActivity_"
             android:screenOrientation="portrait" />
         <activity
             android:name=".ui.contentPlayer.reading_paragraphs.ReadingParagraphsActivity_"
@@ -109,6 +109,17 @@
             android:name=".services.AppExitService"
             android:enabled="true"
             android:stopWithTask="false" />
+
+<!--        <activity
+            android:name="com.adityaanand.morphdialog.MorphDialogActivity"
+            android:theme="@style/MorphDialog.Custom.Light">
+        </activity>
+
+        <activity
+            android:name="com.adityaanand.morphdialog.MorphDialogActivityDark"
+            android:theme="@style/MorphDialog.Custom.Dark">
+        </activity>-->
+
     </application>
 
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />

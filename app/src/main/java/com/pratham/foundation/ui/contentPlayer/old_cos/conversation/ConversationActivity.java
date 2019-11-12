@@ -52,6 +52,7 @@ import java.util.List;
 import java.util.Random;
 
 import static com.pratham.foundation.utility.FC_Constants.dialog_btn_cancel;
+import static com.pratham.foundation.utility.FC_Constants.gameFolderPath;
 import static com.pratham.foundation.utility.SplashSupportActivity.ButtonClickSound;
 
 
@@ -136,9 +137,9 @@ public class ConversationActivity extends BaseActivity
         convoMode = "A";
 
         if (onSdCard)
-            convoPath = ApplicationClass.contentSDPath + "/.FCA/English/Game/" + contentPath + "/";
+            convoPath = ApplicationClass.contentSDPath + gameFolderPath + "/" + contentPath + "/";
         else
-            convoPath = ApplicationClass.foundationPath + "/.FCA/English/Game/" + contentPath + "/";
+            convoPath = ApplicationClass.foundationPath + gameFolderPath + "/" + contentPath + "/";
 
         iv_ConvoMode.setImageResource(R.drawable.mode_a);
 //        if (convoMode.equals("A"))

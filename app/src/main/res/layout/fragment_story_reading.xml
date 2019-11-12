@@ -59,49 +59,94 @@
             android:layout_above="@+id/bottom_bar"
             android:orientation="vertical">
 
-            <com.pratham.foundation.customView.GifView
-                android:id="@+id/gif_view"
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/_220sdp"
-                android:layout_gravity="center_horizontal|top"
-                android:background="@color/full_transparent"
-                android:visibility="visible"
-                android:scaleType="fitCenter"/>
-
-            <ImageView
-                android:id="@+id/iv_image"
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/_220sdp"
-                android:layout_gravity="center_horizontal|top"
-                android:background="@color/white"
-                android:scaleType="fitCenter"
-                android:visibility="gone"
-                android:src="@drawable/pratham_logo" />
-
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginTop="10dp"
                 android:layout_weight="5.2"
                 android:orientation="vertical"
                 android:weightSum="10">
 
-                <com.pratham.foundation.customView.FredokaOneTextView
-                    android:id="@+id/tv_story_title"
+<!--                android:layout_marginTop="@dimen/_8sdp"-->
+<!--                android:layout_marginStart="@dimen/_8sdp"-->
+<!--                android:layout_marginEnd="@dimen/_8sdp"-->
+                <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="2dp"
-                    android:background="@drawable/dialog_bg"
-                    android:layout_marginStart="@dimen/_8sdp"
-                    android:layout_marginEnd="@dimen/_8sdp"
                     android:elevation="5dp"
-                    android:gravity="center"
-                    android:paddingTop="@dimen/_10sdp"
-                    android:paddingBottom="@dimen/_10sdp"
-                    android:text="The Moon And The Cap"
-                    android:textColor="@color/colorBtnPurpleDark"
-                    android:textSize="@dimen/_20sdp"
-                    android:textStyle="bold" />
+                    android:paddingTop="@dimen/_3sdp"
+                    android:paddingBottom="@dimen/_3sdp"
+                    android:background="@color/red"
+                    android:id="@+id/title_bar">
+
+                    <ImageButton
+                        android:id="@+id/ib_back"
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
+                        android:layout_marginStart="5dp"
+                        android:layout_marginEnd="5dp"
+                        android:background="@drawable/red_ripple_round"
+                        android:src="@drawable/ic_left_arrow_white" />
+
+                    <com.pratham.foundation.customView.SansTextViewBold
+                        android:id="@+id/tv_story_title"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_toEndOf="@+id/ib_back"
+                        android:gravity="center"
+                        android:layout_marginStart="5dp"
+                        android:layout_marginEnd="5dp"
+                        android:layout_toStartOf="@+id/ib_page_img"
+                        android:text="The Moon And The Cap"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/_30sdp"
+                        android:textStyle="bold" />
+
+<!--
+                    <ImageButton
+                        android:id="@+id/ib_page_img"
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
+                        android:layout_alignParentEnd="true"
+                        android:layout_margin="5dp"
+                        android:padding="3dp"
+                        android:scaleType="fitCenter"
+                        android:background="@drawable/red_ripple_round"
+                        android:src="@drawable/ic_image_black" />
+-->
+
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:id="@+id/image_container"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/_220sdp"
+                    android:layout_below="@+id/title_bar"
+                    android:layout_gravity="center_horizontal|top"
+                    android:layout_marginStart="@dimen/_8sdp"
+                    android:layout_marginTop="@dimen/_8sdp"
+                    android:layout_marginEnd="@dimen/_8sdp"
+                    android:background="@drawable/dialog_bg"
+                    android:elevation="5dp">
+
+                <com.pratham.foundation.customView.GifView
+                        android:id="@+id/gif_view"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/_220sdp"
+                        android:layout_gravity="center_horizontal|top"
+                        android:background="@drawable/dialog_bg"
+                        android:visibility="gone"
+                        android:scaleType="fitCenter"/>
+
+                    <ImageView
+                        android:id="@+id/iv_image"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:scaleType="fitCenter"
+                        android:visibility="gone"
+                        android:background="@drawable/dialog_bg"
+                        android:src="@drawable/pratham_logo" />
+
+                </RelativeLayout>
 
                 <ScrollView
                     android:id="@+id/myScrollView"
@@ -109,7 +154,7 @@
                     android:layout_height="match_parent"
                     android:layout_marginStart="@dimen/_8sdp"
                     android:layout_marginEnd="@dimen/_8sdp"
-                    android:layout_below="@+id/tv_story_title"
+                    android:layout_below="@+id/image_container"
                     android:layout_marginTop="10dp"
                     android:elevation="5dp"
                     android:padding="@dimen/_5sdp"
@@ -131,12 +176,13 @@
         android:id="@+id/bottom_bar"
         layout="@layout/bottom_control_panel"
         android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_gravity="bottom|center_horizontal"
-        android:gravity="bottom|center_horizontal"
-        android:layout_height="wrap_content" />
+        android:layout_marginBottom="1dp"
+        android:gravity="bottom|center_horizontal" />
 
-<!--        <LinearLayout-->
+    <!--        <LinearLayout-->
 <!--            android:id="@+id/bottom_bar"-->
 <!--            android:layout_width="match_parent"-->
 <!--            android:layout_height="70dp"-->

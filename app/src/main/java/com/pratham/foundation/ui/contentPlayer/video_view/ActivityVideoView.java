@@ -1,7 +1,6 @@
 package com.pratham.foundation.ui.contentPlayer.video_view;
 
 import android.content.Intent;
-import android.os.Bundle;
 import android.os.Handler;
 import android.widget.VideoView;
 
@@ -13,11 +12,14 @@ import com.pratham.foundation.database.BackupDatabase;
 import com.pratham.foundation.database.domain.Score;
 import com.pratham.foundation.utility.FC_Constants;
 import com.pratham.foundation.utility.FC_Utility;
+
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Background;
 import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.ViewById;
+
 import static com.pratham.foundation.database.AppDatabase.appDatabase;
+import static com.pratham.foundation.utility.FC_Constants.gameFolderPath;
 
 
 @EActivity(R.layout.fragment_video_view)
@@ -43,9 +45,9 @@ public class ActivityVideoView extends BaseActivity {
         onSdCard = intent.getBooleanExtra("onSdCard", false);
 
         if (onSdCard)
-            videoPath = ApplicationClass.contentSDPath + "/.FCA/English/Game/Videos/" + videoPath;
+            videoPath = ApplicationClass.contentSDPath + gameFolderPath + "/Videos/" + videoPath;
         else
-            videoPath = ApplicationClass.foundationPath + "/.FCA/English/Game/Videos/" + videoPath;
+            videoPath = ApplicationClass.foundationPath + gameFolderPath + "/Videos/" + videoPath;
 
         initializePlayer(videoPath);
     }

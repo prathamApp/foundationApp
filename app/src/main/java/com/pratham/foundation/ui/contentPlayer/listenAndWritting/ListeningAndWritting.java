@@ -41,6 +41,8 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.util.List;
 
+import static com.pratham.foundation.utility.FC_Constants.gameFolderPath;
+
 @EFragment(R.layout.fragment_list_and_writting)
 public class ListeningAndWritting extends Fragment implements ListeningAndWrittingContract.ListeningAndWrittingView, OnGameClose {
     @Bean(ListeningAndWrittingPresenterImp.class)
@@ -93,9 +95,9 @@ public class ListeningAndWritting extends Fragment implements ListeningAndWritti
             onSdCard = bundle.getBoolean("onSdCard", false);
         }
         if (onSdCard)
-            readingContentPath = ApplicationClass.contentSDPath + "/.FCA/English/Game/" + contentPath + "/";
+            readingContentPath = ApplicationClass.contentSDPath + gameFolderPath + "/" + contentPath + "/";
         else
-            readingContentPath = ApplicationClass.foundationPath + "/.FCA/English/Game/" + contentPath + "/";
+            readingContentPath = ApplicationClass.foundationPath + gameFolderPath + "/" + contentPath + "/";
         presenter.setView(ListeningAndWritting.this, contentTitle, resId);
         mediaPlayerUtil = new MediaPlayerUtil(getActivity());
         presenter.fetchJsonData(readingContentPath);

@@ -32,9 +32,9 @@ import com.pratham.foundation.ui.contentPlayer.matchingPairGame.MatchThePairGame
 import com.pratham.foundation.ui.contentPlayer.old_cos.conversation.ConversationActivity_;
 import com.pratham.foundation.ui.contentPlayer.old_cos.reading_cards.ReadingCardsActivity_;
 import com.pratham.foundation.ui.contentPlayer.opposites.OppositesActivity_;
-import com.pratham.foundation.ui.contentPlayer.reading_activity.ReadingStoryActivity_;
 import com.pratham.foundation.ui.contentPlayer.reading_paragraphs.ReadingParagraphsActivity_;
 import com.pratham.foundation.ui.contentPlayer.reading_rhyming.ReadingRhymesActivity_;
+import com.pratham.foundation.ui.contentPlayer.reading_story_activity.ReadingStoryActivity_;
 import com.pratham.foundation.ui.contentPlayer.vocabulary_qa.ReadingVocabularyActivity_;
 import com.pratham.foundation.ui.contentPlayer.web_view.WebViewActivity;
 import com.pratham.foundation.ui.home_screen.display_content.ContentDisplay_;
@@ -62,6 +62,7 @@ import static com.pratham.foundation.ui.home_screen.HomeActivity.header_rl;
 import static com.pratham.foundation.ui.home_screen.HomeActivity.levelChanged;
 import static com.pratham.foundation.ui.home_screen.HomeActivity.tv_progress;
 import static com.pratham.foundation.utility.FC_Constants.currentLevel;
+import static com.pratham.foundation.utility.FC_Constants.gameFolderPath;
 import static com.pratham.foundation.utility.FC_Utility.dpToPx;
 import static com.pratham.foundation.utility.SplashSupportActivity.ButtonClickSound;
 
@@ -352,9 +353,9 @@ public class FunFragment extends Fragment implements FunContract.FunView,
                 String resPath;
                 String gameID = contentList.getResourceId();
                 if (contentList.isOnSDCard())
-                    resPath = ApplicationClass.contentSDPath + "/.FCA/English/Game/" + contentList.getResourcePath();
+                    resPath = ApplicationClass.contentSDPath + gameFolderPath + "/" + contentList.getResourcePath();
                 else
-                    resPath = ApplicationClass.foundationPath + "/.FCA/English/Game/" + contentList.getResourcePath();
+                    resPath = ApplicationClass.foundationPath + gameFolderPath + "/" + contentList.getResourcePath();
                 File file = new File(resPath);
                 Uri path = Uri.fromFile(file);
                 Intent intent = new Intent(getActivity(), WebViewActivity.class);

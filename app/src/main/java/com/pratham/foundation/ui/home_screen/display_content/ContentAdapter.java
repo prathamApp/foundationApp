@@ -18,8 +18,9 @@ import com.pratham.foundation.ApplicationClass;
 import com.pratham.foundation.R;
 import com.pratham.foundation.database.domain.ContentTable;
 
-
 import java.util.List;
+
+import static com.pratham.foundation.ApplicationClass.App_Thumbs_Path;
 
 
 public class ContentAdapter extends RecyclerView.Adapter<ContentAdapter.MyViewHolder> {
@@ -36,10 +37,10 @@ public class ContentAdapter extends RecyclerView.Adapter<ContentAdapter.MyViewHo
 
         public MyViewHolder(View view) {
             super(view);
-            title = (TextView) view.findViewById(R.id.content_title);
-            thumbnail = (ImageView) view.findViewById(R.id.content_thumbnail);
-            content_card_view = (RelativeLayout) view.findViewById(R.id.content_card_view);
-            ib_action_btn = (ImageView) view.findViewById(R.id.ib_action_btn);
+            title = view.findViewById(R.id.content_title);
+            thumbnail = view.findViewById(R.id.content_thumbnail);
+            content_card_view = view.findViewById(R.id.content_card_view);
+            ib_action_btn = view.findViewById(R.id.ib_action_btn);
         }
     }
 
@@ -68,7 +69,7 @@ public class ContentAdapter extends RecyclerView.Adapter<ContentAdapter.MyViewHo
         if (!ApplicationClass.isTablet) {
             if (contentList.getIsDownloaded().equalsIgnoreCase("true") || contentList.getIsDownloaded().equalsIgnoreCase("1"))
                 Glide.with(mContext).setDefaultRequestOptions(requestOptions)
-                        .load(ApplicationClass.foundationPath + "/.FCA/English/App_Thumbs/" + contentList.getNodeImage())
+                        .load(ApplicationClass.foundationPath + "" + App_Thumbs_Path + contentList.getNodeImage())
                         .into(holder.thumbnail);
             else
                 Glide.with(mContext).setDefaultRequestOptions(requestOptions)
@@ -78,19 +79,19 @@ public class ContentAdapter extends RecyclerView.Adapter<ContentAdapter.MyViewHo
         } else {
             if (contentList.isOnSDCard())
                 Glide.with(mContext).setDefaultRequestOptions(requestOptions)
-                        .load(ApplicationClass.contentSDPath + "/.FCA/English/App_Thumbs/" + contentList.getNodeImage())
+                        .load(ApplicationClass.contentSDPath + "" + App_Thumbs_Path + contentList.getNodeImage())
                         .into(holder.thumbnail);
             else if ( (contentList.isOnSDCard() )&&
                     (contentList.getIsDownloaded().equalsIgnoreCase("true")
                             || contentList.getIsDownloaded().equalsIgnoreCase("1")))
                 Glide.with(mContext).setDefaultRequestOptions(requestOptions)
-                        .load(ApplicationClass.contentSDPath + "/.FCA/English/App_Thumbs/" + contentList.getNodeImage())
+                        .load(ApplicationClass.contentSDPath + "" + App_Thumbs_Path + contentList.getNodeImage())
                         .into(holder.thumbnail);
             else if ( (!contentList.isOnSDCard() )&&
                     (contentList.getIsDownloaded().equalsIgnoreCase("true")
                             || contentList.getIsDownloaded().equalsIgnoreCase("1")))
                 Glide.with(mContext).setDefaultRequestOptions(requestOptions)
-                        .load(ApplicationClass.foundationPath+ "/.FCA/English/App_Thumbs/" + contentList.getNodeImage())
+                        .load(ApplicationClass.foundationPath+ "" + App_Thumbs_Path + contentList.getNodeImage())
                         .into(holder.thumbnail);
             else
                 Glide.with(mContext).setDefaultRequestOptions(requestOptions)

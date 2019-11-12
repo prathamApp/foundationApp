@@ -1,4 +1,4 @@
-package com.pratham.foundation.ui.contentPlayer.reading_activity;
+package com.pratham.foundation.ui.contentPlayer.reading_story_activity;
 
 import com.pratham.foundation.modalclasses.ModalParaSubMenu;
 

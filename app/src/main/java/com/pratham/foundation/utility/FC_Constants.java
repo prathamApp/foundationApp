@@ -225,6 +225,8 @@ public class FC_Constants {
     public static final String GROUP_MODE = "group_mode";
     public static final String QR_GROUP_MODE = "qr_group_mode";
     public static final String INDIVIDUAL_MODE = "individual_mode";
+    public static String currentSubjectFolder = "";
+    public static String gameFolderPath = "";
 
     public enum URL {
         BROWSE_BY_ID(BASE_URL + "get?id="),

@@ -30,6 +30,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import static com.pratham.foundation.utility.FC_Constants.gameFolderPath;
+
 @EFragment(R.layout.fact_retrival_selection)
 public class Fact_Retrieval_Fragment extends Fragment implements Fact_Retrieval_Contract.Fact_retrival_View, OnGameClose {
 
@@ -73,9 +75,9 @@ public class Fact_Retrieval_Fragment extends Fragment implements Fact_Retrieval_
             contentTitle = bundle.getString("contentName");
             onSdCard = bundle.getBoolean("onSdCard", false);
             if (onSdCard)
-                readingContentPath = ApplicationClass.contentSDPath + "/.FCA/English/Game/" + contentPath + "/";
+                readingContentPath = ApplicationClass.contentSDPath + gameFolderPath + "/" + contentPath + "/";
             else
-                readingContentPath = ApplicationClass.foundationPath + "/.FCA/English/Game/" + contentPath + "/";
+                readingContentPath = ApplicationClass.foundationPath + gameFolderPath + "/" + contentPath + "/";
         }
         presenter.setView(Fact_Retrieval_Fragment.this, resId, readingContentPath);
         selectedQuetion = new ArrayList<>();

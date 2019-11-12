@@ -17,6 +17,7 @@ import com.pratham.foundation.interfaces.API_Content_Result;
 import com.pratham.foundation.modalclasses.Modal_DownloadContent;
 import com.pratham.foundation.utility.FC_Constants;
 import com.pratham.foundation.utility.FC_Utility;
+
 import org.androidannotations.annotations.Background;
 import org.androidannotations.annotations.Bean;
 import org.androidannotations.annotations.EBean;
@@ -28,6 +29,9 @@ import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+
+import static com.pratham.foundation.ApplicationClass.App_Thumbs_Path;
+import static com.pratham.foundation.utility.FC_Constants.gameFolderPath;
 
 @EBean
 public class ContentPresenter implements ContentContract.ContentPresenter, API_Content_Result {
@@ -284,10 +288,10 @@ public class ContentPresenter implements ContentContract.ContentPresenter, API_C
 
         String foldername = contentItem.getResourcePath()/*.split("/")[0]*/;
         FC_Utility.deleteRecursive(new File(ApplicationClass.foundationPath
-                + "/.FCA/English/Game/" + foldername));
+                + gameFolderPath + "/" + foldername));
 
         FC_Utility.deleteRecursive(new File(ApplicationClass.foundationPath
-                + "/.FCA/English/App_Thumbs/" + contentItem.getNodeImage()));
+                + "" + App_Thumbs_Path + contentItem.getNodeImage()));
         contentView.notifyAdapterItem(deletePos);
     }
 

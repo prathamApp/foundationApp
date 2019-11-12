@@ -57,6 +57,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 import static com.pratham.foundation.database.AppDatabase.appDatabase;
+import static com.pratham.foundation.utility.FC_Constants.gameFolderPath;
 
 
 public class ReadingFragment extends Fragment implements STT_Result {
@@ -108,9 +109,9 @@ public class ReadingFragment extends Fragment implements STT_Result {
             contentTitle = getArguments().getString("contentName");
             onSdCard = getArguments().getBoolean("onSdCard", false);
             if (onSdCard)
-                readingContentPath = ApplicationClass.contentSDPath + "/.FCA/English/Game/" + contentPath + "/";
+                readingContentPath = ApplicationClass.contentSDPath + gameFolderPath + "/" + contentPath + "/";
             else
-                readingContentPath = ApplicationClass.foundationPath + "/.FCA/English/Game/" + contentPath + "/";
+                readingContentPath = ApplicationClass.foundationPath + gameFolderPath + "/" + contentPath + "/";
 
 
             getData();

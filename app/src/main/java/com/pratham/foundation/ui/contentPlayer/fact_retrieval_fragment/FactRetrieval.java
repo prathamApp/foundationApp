@@ -35,6 +35,8 @@ import org.androidannotations.annotations.ViewById;
 import java.util.Collections;
 import java.util.List;
 
+import static com.pratham.foundation.utility.FC_Constants.gameFolderPath;
+
 @EFragment(R.layout.fragment_fact_retrival)
 public class FactRetrieval extends Fragment implements FactRetrievalContract.FactRetrievalView, OnGameClose {
 
@@ -74,9 +76,9 @@ public class FactRetrieval extends Fragment implements FactRetrievalContract.Fac
             contentTitle = bundle.getString("contentName");
             onSdCard = bundle.getBoolean("onSdCard", false);
             if (onSdCard)
-                readingContentPath = ApplicationClass.contentSDPath + "/.FCA/English/Game/" + contentPath + "/";
+                readingContentPath = ApplicationClass.contentSDPath + gameFolderPath + "/" + contentPath + "/";
             else
-                readingContentPath = ApplicationClass.foundationPath + "/.FCA/English/Game/" + contentPath + "/";
+                readingContentPath = ApplicationClass.foundationPath + gameFolderPath + "/" + contentPath + "/";
 
             mediaPlayerWrong = MediaPlayer.create(getActivity(), R.raw.wrong_sound);
             mediaPlayercorrect = MediaPlayer.create(getActivity(), R.raw.welldone);
