@@ -118,4 +118,6 @@ dependencies {
     implementation 'org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.3.41'
     implementation 'com.facebook.fresco:fresco:1.13.0'
 
+    //Fab For Level Menu
+    implementation 'com.rany.albeg.wein:spring-fab-menu:1.0.1'
 }

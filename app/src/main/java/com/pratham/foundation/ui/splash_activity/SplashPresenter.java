@@ -878,7 +878,6 @@ public class SplashPresenter implements SplashContract.SplashPresenter {
         File file;
         if (ApplicationClass.isTablet) {
             file = new File(fpath + "/.FCA/foundation_db");
-
             if (file.exists()) {
                 ApplicationClass.contentSDPath = fpath;
                 Log.d("getSD", "getSdCardPath: " + ApplicationClass.contentSDPath);
@@ -889,7 +888,6 @@ public class SplashPresenter implements SplashContract.SplashPresenter {
                 return false;
             }
         } else {
-            file = new File(fpath);
             ApplicationClass.contentSDPath = fpath;
             return false;
         }
