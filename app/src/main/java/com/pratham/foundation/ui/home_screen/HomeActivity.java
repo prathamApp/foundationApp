@@ -10,7 +10,9 @@ import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
+import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -19,13 +21,13 @@ import android.widget.TextView;
 
 import com.pratham.foundation.BaseActivity;
 import com.pratham.foundation.R;
-import com.pratham.foundation.customView.submarine_view.SubmarineItem;
-import com.pratham.foundation.customView.submarine_view.SubmarineView;
 import com.pratham.foundation.database.AppDatabase;
 import com.pratham.foundation.modalclasses.EventMessage;
 import com.pratham.foundation.services.shared_preferences.FastSave;
 import com.pratham.foundation.ui.home_screen.fun.FunFragment_;
 import com.pratham.foundation.ui.home_screen.learning_fragment.LearningFragment_;
+import com.pratham.foundation.ui.home_screen.level.Level_ImageAdapter;
+import com.pratham.foundation.ui.home_screen.level.Level_ImageData;
 import com.pratham.foundation.ui.home_screen.practice_fragment.PracticeFragment_;
 import com.pratham.foundation.ui.student_profile.Student_profile_activity;
 import com.pratham.foundation.ui.test.supervisor.SupervisedAssessmentActivity;
@@ -42,7 +44,11 @@ import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
+
+import github.hellocsl.cursorwheel.CursorWheelLayout;
 
 import static com.pratham.foundation.utility.FC_Constants.BACK_PRESSED;
 import static com.pratham.foundation.utility.FC_Constants.GROUP_LOGIN;
@@ -56,7 +62,7 @@ import static com.pratham.foundation.utility.FC_Constants.dialog_btn_cancel;
 import static com.pratham.foundation.utility.FC_Constants.dialog_btn_exit;
 
 @EActivity(R.layout.activity_home)
-public class HomeActivity extends BaseActivity implements LevelChanged {
+public class HomeActivity extends BaseActivity implements LevelChanged, CursorWheelLayout.OnMenuSelectedListener {
 
     public static String sub_nodeId = "";
     @ViewById(R.id.viewpager)
@@ -69,10 +75,14 @@ public class HomeActivity extends BaseActivity implements LevelChanged {
     TabLayout tabLayout;
     @ViewById(R.id.header_rl)
     public static RelativeLayout header_rl;
-    @ViewById(R.id.submarine)
-    public static SubmarineView submarine;
-    @ViewById(R.id.iv_level)
-    public static ImageView iv_level;
+//    @ViewById(R.id.submarine)
+//    public static SubmarineView submarine;
+//    @ViewById(R.id.iv_level)
+//    public static ImageView iv_level;
+
+    @ViewById(R.id.level_circle)
+    CursorWheelLayout level_circle;
+
     @ViewById(R.id.profileImage)
     ImageView profileImage;
     @DrawableRes(R.drawable.home_header_1_bg)
@@ -97,6 +107,7 @@ public class HomeActivity extends BaseActivity implements LevelChanged {
         setupViewPager(viewpager);
         tv_progress.setText("0%");
         levelChanged = HomeActivity.this;
+        count = 0;
         tabLayout.setupWithViewPager(viewpager);
         setupTabIcons();
 /*        IconForm iconForm = new IconForm.Builder(this)
@@ -190,9 +201,32 @@ public class HomeActivity extends BaseActivity implements LevelChanged {
         setLevel();
     }
 
+    @UiThread
     public void setLevel() {
+        try {
+            if(count>0){
+            List<Level_ImageData> imageDatas = new ArrayList<>();
+            for (int i = 0; i < count; i++) {
+                imageDatas.add(new Level_ImageData("" + i));
+            }
+            Level_ImageAdapter simpleImageAdapter = new Level_ImageAdapter(this, imageDatas);
+            level_circle.setAdapter(simpleImageAdapter);
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        try{
+            level_circle.setOnMenuSelectedListener((parent, view, pos) -> {
+                FC_Constants.currentLevel = pos;
+                EventMessage eventMessage = new EventMessage();
+                eventMessage.setMessage(LEVEL_CHANGED);
+                EventBus.getDefault().post(eventMessage);
+                changeBGNew(FC_Constants.currentLevel);
+//                Toast.makeText(HomeActivity.this, "Level : " + pos, Toast.LENGTH_SHORT).show();
+            });
+        }catch (Exception e){e.printStackTrace();}
 
-        SubmarineItem item = new SubmarineItem(getDrawable(R.drawable.level_1), null);
+/*        SubmarineItem item = new SubmarineItem(getDrawable(R.drawable.level_1), null);
         SubmarineItem item2 = new SubmarineItem(getDrawable(R.drawable.level_2), null);
         SubmarineItem item3 = new SubmarineItem(getDrawable(R.drawable.level_3), null);
         SubmarineItem item4 = new SubmarineItem(getDrawable(R.drawable.level_4), null);
@@ -244,7 +278,7 @@ public class HomeActivity extends BaseActivity implements LevelChanged {
                     submarine.addSubmarineItem(item4);
                     break;
             }
-        }
+        }*/
     }
 
     private void changeBGNew(int currentLevel) {
@@ -380,10 +414,9 @@ public class HomeActivity extends BaseActivity implements LevelChanged {
         }
     }
 
-    @Click(R.id.iv_level)
-    public void levelChange() {
-        submarine.show();
-    }
+//    @Click(R.id.iv_level)
+//    public void levelChange() {
+//    }
 
     private void setupViewPager(ViewPager viewpager) {
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
@@ -480,5 +513,10 @@ public class HomeActivity extends BaseActivity implements LevelChanged {
         test_btn.setOnClickListener(v -> {
             dialogFlg=false;
             dialog.dismiss();});
+    }
+
+    @Override
+    public void onItemSelected(CursorWheelLayout parent, View view, int pos) {
+        Log.d("LevelChanger", "onItemSelected: "+pos);
     }
 }
