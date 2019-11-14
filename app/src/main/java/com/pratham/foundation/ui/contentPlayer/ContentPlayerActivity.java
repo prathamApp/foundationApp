@@ -2,19 +2,17 @@ package com.pratham.foundation.ui.contentPlayer;
 
 import android.app.Dialog;
 import android.content.Intent;
-import android.content.pm.ActivityInfo;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
 import android.view.View;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.TextView;
 
-import com.pratham.foundation.R;
 import com.pratham.foundation.BaseActivity;
+import com.pratham.foundation.R;
 import com.pratham.foundation.interfaces.OnGameClose;
 import com.pratham.foundation.ui.contentPlayer.sequenceLayout.SequenceLayout_;
 import com.pratham.foundation.utility.FC_Utility;
@@ -53,7 +51,11 @@ public class ContentPlayerActivity extends BaseActivity {
 
     @Override
     public void onBackPressed() {
-        showExitDialog();
+        Fragment fragment = getSupportFragmentManager().findFragmentByTag(SequenceLayout_.class.getSimpleName());
+        if (fragment != null && fragment.isVisible())
+            finish();
+        else
+            showExitDialog();
     }
 
     private void showExitDialog() {

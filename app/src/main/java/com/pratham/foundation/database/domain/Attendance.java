@@ -16,19 +16,15 @@ public class Attendance {
     private String SessionID;
     @ColumnInfo(name = "StudentID")
     private String StudentID;
-
     @SerializedName("Date")
     public String Date;
     @SerializedName("GroupID")
     public String GroupID;
-
     @SerializedName("sentFlag")
     public int sentFlag;
-
     public int getSentFlag() {
         return sentFlag;
     }
-
     public void setSentFlag(int sentFlag) {
         this.sentFlag = sentFlag;
     }

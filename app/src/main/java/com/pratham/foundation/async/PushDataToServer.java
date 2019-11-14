@@ -76,12 +76,9 @@ public class PushDataToServer {
         studentData = new JSONArray();
         assessmentData = new JSONArray();
         contentProgress = new JSONArray();
-
     }
 
     Boolean isConnectedToRasp = false;
-
-
     boolean isRaspberry = false;
     String programID = "";
 
@@ -112,24 +109,24 @@ public class PushDataToServer {
             List<KeyWords> keyWordsList = AppDatabase.getDatabaseInstance(context).getKeyWordDao().getAllData();
             keyWordsData = fillkeyWordsData(keyWordsList);
 
-            JSONObject rootJson = new JSONObject();
-            String requestString = generateRequestString(scoreData, attendanceData, sessionData, supervisorData, logsData, assessmentData, studentData, contentProgress, keyWordsData);
+            JSONObject pushDataJsonObject = new JSONObject();
+            pushDataJsonObject = generateRequestString(scoreData, attendanceData, sessionData, supervisorData, logsData, assessmentData, studentData, contentProgress, keyWordsData);
             pushSuccessfull = false;
             Gson gson = new Gson();
             //iterate through all new sessions
             JSONObject metadataJson = new JSONObject();
             if (ApplicationClass.wiseF.isDeviceConnectedToWifiNetwork()) {
                 if (ApplicationClass.wiseF.isDeviceConnectedToSSID(FC_Constants.PRATHAM_KOLIBRI_HOTSPOT)) {
-                    getFacilityId(requestString);
+                    getFacilityId(pushDataJsonObject);
                 } else {
                     isConnectedToRasp = false;
                     getImageList();
-                    pushDataToServer(context, requestString, ApplicationClass.uploadDataUrl);
+                    pushDataToServer(context, pushDataJsonObject, ApplicationClass.uploadDataUrl);
                 }
             } else {
                 isConnectedToRasp = false;
                 getImageList();
-                pushDataToServer(context, requestString, ApplicationClass.uploadDataUrl);
+                pushDataToServer(context, pushDataJsonObject, ApplicationClass.uploadDataUrl);
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -199,7 +196,7 @@ public class PushDataToServer {
     }
 
     @UiThread
-    public void getFacilityId(String requestString) {
+    public void getFacilityId(JSONObject requestString) {
         try {
             JSONObject object = new JSONObject();
             object.put("username", "pratham");
@@ -299,8 +296,10 @@ public class PushDataToServer {
         }
     }
 
-    private String generateRequestString(JSONArray scoreData, JSONArray attendanceData, JSONArray sessionData, JSONArray supervisorData, JSONArray logsData, JSONArray assessmentData, JSONArray studentData, JSONArray contentProgress, JSONArray keyWordsData) {
-        String requestString = "";
+    private JSONObject generateRequestString(JSONArray scoreData, JSONArray attendanceData, JSONArray sessionData, JSONArray supervisorData, JSONArray logsData, JSONArray assessmentData, JSONArray studentData, JSONArray contentProgress, JSONArray keyWordsData) {
+//        String requestString = "";
+        JSONObject pushJsonObject = new JSONObject();
+
         try {
             JSONObject sessionObj = new JSONObject();
             JSONObject metaDataObj = new JSONObject();
@@ -343,14 +342,17 @@ public class PushDataToServer {
             sessionObj.put("assessmentData", assessmentData);
             sessionObj.put("supervisor", supervisorData);
 
-            requestString = "{ \"session\": " + sessionObj +
-                    ", \"metadata\": " + metaDataObj +
-                    "}";
+            pushJsonObject.put("session",sessionObj);
+            pushJsonObject.put("metadata",metaDataObj);
+
+//            requestString = "{ \"session\": " + sessionObj +
+//                    ", \"metadata\": " + metaDataObj +
+//                    "}";
+            return pushJsonObject;
         } catch (Exception e) {
             e.printStackTrace();
-            return null;
+            return pushJsonObject = new JSONObject();
         }
-        return requestString;
     }
 
     private JSONArray fillSessionData(List<Session> sessionList) {
@@ -620,15 +622,14 @@ public class PushDataToServer {
     }
 
     @UiThread
-    public void pushDataToServer(Context context, String data, String url) {
+    public void pushDataToServer(Context context, JSONObject data, String url) {
         try {
-            JSONObject jsonArrayData = new JSONObject(data);
             AndroidNetworking.post(url)
                     .addHeaders("Content-Type", "application/json")
-                    .addJSONObjectBody(jsonArrayData)
+                    .addJSONObjectBody(data)
+                    .setPriority(Priority.HIGH)
                     .build()
                     .getAsString(new StringRequestListener() {
-
                         @Override
                         public void onResponse(String response) {
                             Log.d("PUSH_STATUS", "Data pushed successfully");

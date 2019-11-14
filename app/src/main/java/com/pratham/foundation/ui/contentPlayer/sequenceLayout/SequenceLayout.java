@@ -5,8 +5,9 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.widget.ImageButton;
 
 import com.pratham.foundation.R;
 import com.pratham.foundation.database.AppDatabase;
@@ -53,6 +54,8 @@ public class SequenceLayout extends Fragment implements SequeanceLayoutContract.
 
     @ViewById(R.id.recycler_view)
     RecyclerView recyclerView;
+    @ViewById(R.id.btn_back)
+    ImageButton btn_back;
 
     private String nodeID;
     private boolean onSdCard;
@@ -91,7 +94,7 @@ public class SequenceLayout extends Fragment implements SequeanceLayoutContract.
     public void loadUI() {
         GameConstatnts.gameList = contentTableList;
         SequenceGameAdapter sequenceGameAdapter = new SequenceGameAdapter(getActivity(), contentTableList, SequenceLayout.this);
-        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
+        recyclerView.setLayoutManager(new GridLayoutManager(getActivity(), GridLayoutManager.DEFAULT_SPAN_COUNT));
         recyclerView.setAdapter(sequenceGameAdapter);
     }
 
@@ -194,5 +197,10 @@ public class SequenceLayout extends Fragment implements SequeanceLayoutContract.
                 break;
         }
 
+    }
+
+    @Click(R.id.btn_back)
+    public void arrowBackpresses(){
+        getActivity().onBackPressed();
     }
 }

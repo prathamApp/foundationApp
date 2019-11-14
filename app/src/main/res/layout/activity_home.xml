@@ -95,11 +95,13 @@
 
             <github.hellocsl.cursorwheel.CursorWheelLayout
                 android:id="@+id/level_circle"
-                android:layout_width="150dp"
-                android:layout_height="150dp"
+                android:layout_width="140dp"
+                android:layout_height="140dp"
+                android:layout_centerVertical="true"
+                android:layout_marginEnd="5dp"
                 android:layout_gravity="center_vertical|right"
-                app:wheelBackgroundColor="@color/colorAccent_Translucent"
-                app:wheelCursorColor="@color/purple"
+                app:wheelBackgroundColor="@color/black_overlay"
+                app:wheelCursorColor="@color/colorAccentDark"
                 app:wheelCursorHeight="20dip"
                 app:wheelFlingValue="1"
                 app:wheelSelectedAngle="180">

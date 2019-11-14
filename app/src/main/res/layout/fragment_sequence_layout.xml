@@ -10,8 +10,36 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
+        <RelativeLayout
+            android:id="@+id/header_rl"
+            android:background="@color/red"
+            android:layout_width="match_parent"
+            android:elevation="5dp"
+            android:layout_height="?attr/actionBarSize">
+
+            <ImageButton
+                android:id="@+id/btn_back"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_centerVertical="true"
+                android:layout_marginStart="@dimen/_5sdp"
+                android:background="?android:selectableItemBackground"
+                android:padding="@dimen/_5sdp"
+                android:src="@drawable/ic_left_arrow_white" />
+
+            <com.pratham.foundation.customView.SansTextViewBold
+                android:id="@+id/tv_title"
+                android:layout_toEndOf="@+id/btn_back"
+                android:layout_marginStart="@dimen/_10sdp"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+
+        </RelativeLayout>
+
         <android.support.v7.widget.RecyclerView
             android:id="@+id/recycler_view"
+            android:layout_marginTop="@dimen/_5sdp"
+            android:layout_below="@+id/header_rl"
             android:layout_above="@id/playFromStart"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />

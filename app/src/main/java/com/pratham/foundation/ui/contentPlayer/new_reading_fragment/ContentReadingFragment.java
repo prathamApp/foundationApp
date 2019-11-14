@@ -1,6 +1,10 @@
 package com.pratham.foundation.ui.contentPlayer.new_reading_fragment;
 
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
 import android.annotation.SuppressLint;
+import android.app.Activity;
+import android.app.ActivityOptions;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
@@ -16,6 +20,7 @@ import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.View;
+import android.view.ViewAnimationUtils;
 import android.view.Window;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
@@ -34,6 +39,7 @@ import com.pratham.foundation.BaseActivity;
 import com.pratham.foundation.R;
 import com.pratham.foundation.customView.GifView;
 import com.pratham.foundation.customView.SansTextView;
+import com.pratham.foundation.customView.display_image_dialog.Activity_DisplayImage_;
 import com.pratham.foundation.interfaces.OnGameClose;
 import com.pratham.foundation.modalclasses.ModalParaSubMenu;
 import com.pratham.foundation.services.TTSService;
@@ -95,6 +101,8 @@ public class ContentReadingFragment extends Fragment implements
     ImageButton btn_camera;
     @ViewById(R.id.ib_back)
     ImageButton ib_back;
+    @ViewById(R.id.ib_page_img)
+    ImageButton ib_page_img;
     @ViewById(R.id.bottom_bar2)
     LinearLayout bottom_bar2;
 //    @ViewById(R.id.ll_btn_next)
@@ -247,10 +255,17 @@ public class ContentReadingFragment extends Fragment implements
         storyAudio = paraAudio;
     }
 
+    public static String readingImgPath="";
+
     @Click(R.id.ib_page_img)
     public void viewPageImg(){
         btn_Stop.performClick();
-        showPageImage();
+        readingImgPath = readingContentPath + storyBg;
+        Intent intent = new Intent(getActivity(), Activity_DisplayImage_.class);
+        ActivityOptions options = ActivityOptions.makeSceneTransitionAnimation(getActivity(),
+                ib_page_img, "transition_dialog");
+        startActivityForResult(intent, 11, options.toBundle());
+//        showPageImage();
     }
 
     @UiThread
@@ -275,9 +290,7 @@ public class ContentReadingFragment extends Fragment implements
             story_title.setText(pageTitle);
 
         playHideFlg = storyAudio.equalsIgnoreCase("NA");
-
-        showPageImage();
-
+        ib_page_img.performClick();
         correctArr = new boolean[modalPagesList.get(currentPage).getReadList().size()];
         splitWords = new ArrayList<>();
         splitWordsPunct = new ArrayList<>();
@@ -302,15 +315,52 @@ public class ContentReadingFragment extends Fragment implements
         startTime = FC_Utility.getCurrentDateTime();
     }
 
+    private void revealShow(View dialogView, boolean b, final Dialog dialog) {
+
+        final View view = dialogView.findViewById(R.id.dialog_main);
+        int w = view.getWidth();
+        int h = view.getHeight();
+        int endRadius = (int) Math.hypot(w, h);
+        int cx = (int) (view.getX() + (view.getWidth()/2));
+        int cy = (int) (view.getY())+ view.getHeight() + 56;
+
+        if(b){
+            Animator revealAnimator = ViewAnimationUtils.createCircularReveal(view, cx,cy, 0, endRadius);
+            view.setVisibility(View.VISIBLE);
+            revealAnimator.setDuration(700);
+            revealAnimator.start();
+
+        } else {
+
+            Animator anim =
+                    ViewAnimationUtils.createCircularReveal(view, cx, cy, endRadius, 0);
+
+            anim.addListener(new AnimatorListenerAdapter() {
+                @Override
+                public void onAnimationEnd(Animator animation) {
+                    super.onAnimationEnd(animation);
+                    dialog.dismiss();
+                    view.setVisibility(View.INVISIBLE);
+                }
+            });
+            anim.setDuration(700);
+            anim.start();
+        }
+
+    }
+
     private void showPageImage() {
         final Dialog dialog = new Dialog(getActivity());
+        final View dialogView = View.inflate(getActivity(),R.layout.fc_show_image_dialog,null);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-        dialog.setContentView(R.layout.fc_show_image_dialog);
+        dialog.setContentView(dialogView);
         dialog.setCanceledOnTouchOutside(false);
         ImageView iv_dia_preview = dialog.findViewById(R.id.iv_dia_img);
         ImageButton dia_btn_cross = dialog.findViewById(R.id.dia_btn_cross);
         GifView gif_view = dialog.findViewById(R.id.gif_dia_view);
+
+        dialog.setOnShowListener(dialogInterface -> revealShow(dialogView, true, null));
 
         try {
             File f = new File(readingContentPath + storyBg);
@@ -1229,5 +1279,24 @@ public class ContentReadingFragment extends Fragment implements
 //                setResult(Activity.RESULT_OK, returnIntent);
         }
         exitDBEntry();
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == 11) {
+            if (resultCode == Activity.RESULT_OK) {
+                new Handler().postDelayed(() -> {
+                    if (!FC_Constants.isTest)
+                        btn_Play.performClick();
+                    else {
+                        btn_Mic.performClick();
+                        btn_Play.setVisibility(View.GONE);
+                        bottom_bar2.setVisibility(View.VISIBLE);
+                        btn_submit.setVisibility(View.VISIBLE);
+                    }
+                }, 200);
+            }
+        }
     }
 }
