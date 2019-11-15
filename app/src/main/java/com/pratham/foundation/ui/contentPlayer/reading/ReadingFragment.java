@@ -57,6 +57,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 import static com.pratham.foundation.database.AppDatabase.appDatabase;
+import static com.pratham.foundation.utility.FC_Constants.STT_REGEX;
 import static com.pratham.foundation.utility.FC_Constants.gameFolderPath;
 
 
@@ -353,8 +354,7 @@ public class ReadingFragment extends Fragment implements STT_Result {
             else sttResult = matches.get(0);
         }
         sttQuestion = scienceQuestion.getAnswer();
-        String regex = "[\\-+.\"^?!@#%&*,:|<>()]";
-        String quesFinal = sttQuestion.replaceAll(regex, "");
+        String quesFinal = sttQuestion.replaceAll(STT_REGEX, "");
 
 
         String[] splitQues = quesFinal.split(" ");

@@ -21,6 +21,7 @@ import java.io.InputStream;
 import java.util.ArrayList;
 
 import static com.pratham.foundation.database.AppDatabase.appDatabase;
+import static com.pratham.foundation.utility.FC_Constants.STT_REGEX;
 
 
 @EBean
@@ -73,10 +74,7 @@ public class ConversationPresenter implements ConversationContract.ConversationP
         String sttQuestion = answer;
 
         String quesFinal;
-        String regex = "[\\-+.\"^?!@#%&*,:|<>()]";
-//        String regex = "[\\-\\+\\.\\\"\\^\\?\\!\\@\\#\\%\\&\\*\\,\\:]";
-//        String regex = "(?:(?<!\\S)\\p{Punct}+)|(?:\\p{Punct}+(?!\\S))";
-        quesFinal = sttQuestion.replaceAll(regex, "");
+        quesFinal = sttQuestion.replaceAll(STT_REGEX, "");
         Log.d("Punctu", "onResults: " + sttQuestion);
         Log.d("Punctu", "onResults: " + quesFinal);
 
@@ -86,7 +84,7 @@ public class ConversationPresenter implements ConversationContract.ConversationP
         try {
             for (int k=0 ; k < sttServerResult.size() ; k++ ) {
                 String sttResult = sttServerResult.get(k);
-                sttResult = sttResult.replaceAll(regex, "");
+                sttResult = sttResult.replaceAll(STT_REGEX, "");
                 String[] splitRes = sttResult.split(" ");
                 for (int j = 0; j < splitRes.length; j++) {
                     for (int i = 0; i < splitQues.length; i++) {

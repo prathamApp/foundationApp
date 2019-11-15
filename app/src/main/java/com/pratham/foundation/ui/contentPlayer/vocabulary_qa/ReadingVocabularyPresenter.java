@@ -26,6 +26,7 @@ import java.util.List;
 import static com.pratham.foundation.database.AppDatabase.appDatabase;
 import static com.pratham.foundation.ui.contentPlayer.vocabulary_qa.ReadingVocabularyActivity.currentPageNo;
 import static com.pratham.foundation.ui.contentPlayer.vocabulary_qa.ReadingVocabularyActivity.testCorrectArr;
+import static com.pratham.foundation.utility.FC_Constants.STT_REGEX;
 
 
 @EBean
@@ -201,9 +202,8 @@ public class ReadingVocabularyPresenter implements ReadingVocabularyContract.Rea
         float perc = 0;
 
         try {
-            String regex = "[\\-+.\"^?!@#%&*,|:]";
-            String quesCheckFinal = ansCheck.replaceAll(regex, "");
-            String quesFinal = fullAns.replaceAll(regex, "");
+            String quesCheckFinal = ansCheck.replaceAll(STT_REGEX, "");
+            String quesFinal = fullAns.replaceAll(STT_REGEX, "");
 
             String[] splitQues = quesFinal.split(" ");
             String words = " ";

@@ -9,7 +9,6 @@ import android.text.method.ScrollingMovementMethod;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.pratham.foundation.ApplicationClass;
@@ -41,6 +40,7 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 
+import static com.pratham.foundation.utility.FC_Constants.STT_REGEX;
 import static com.pratham.foundation.utility.FC_Constants.gameFolderPath;
 
 @EFragment(R.layout.fragment_fact_retrival)
@@ -403,11 +403,10 @@ public class FactRetrieval extends Fragment implements FactRetrievalContract.Fac
         boolean[] correctArr;
         float perc;
         // String originalAns = selectedAnsList.getCorrectAnswer();
-        String regex = "[\\-+.\"^?!@#%&*,:]";
-        String quesFinal = originalAns.replaceAll(regex, "");
+        String quesFinal = originalAns.replaceAll(STT_REGEX, "");
 
         String[] originalAnsArr = quesFinal.split(" ");
-        String[] userAnsArr = userAns.replaceAll(regex, "").split(" ");
+        String[] userAnsArr = userAns.replaceAll(STT_REGEX, "").split(" ");
 
         if (originalAnsArr.length < userAnsArr.length)
             correctArr = new boolean[userAnsArr.length];

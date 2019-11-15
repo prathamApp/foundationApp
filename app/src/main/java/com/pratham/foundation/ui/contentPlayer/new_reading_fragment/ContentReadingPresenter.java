@@ -26,6 +26,7 @@ import static com.pratham.foundation.database.AppDatabase.appDatabase;
 import static com.pratham.foundation.ui.contentPlayer.new_reading_fragment.ContentReadingFragment.correctArr;
 import static com.pratham.foundation.ui.contentPlayer.new_reading_fragment.ContentReadingFragment.lineBreakCounter;
 import static com.pratham.foundation.ui.contentPlayer.new_reading_fragment.ContentReadingFragment.testCorrectArr;
+import static com.pratham.foundation.utility.FC_Constants.STT_REGEX;
 
 
 @EBean
@@ -140,8 +141,7 @@ public class ContentReadingPresenter implements ContentReadingContract.ContentRe
         addSttResultDB(sttResult);
 
         for (int j = 0; j < splitRes.length; j++) {
-            String regex = "[\\-+.\"^?!@#%&*,:|<>()]";
-            splitRes[j] = splitRes[j].replaceAll(regex, "");
+            splitRes[j] = splitRes[j].replaceAll(STT_REGEX, "");
             for (int i = 0; i < splitWordsPunct.size(); i++) {
                 if ((splitRes[j].equalsIgnoreCase(splitWordsPunct.get(i))) && !correctArr[i]) {
                     correctArr[i] = true;

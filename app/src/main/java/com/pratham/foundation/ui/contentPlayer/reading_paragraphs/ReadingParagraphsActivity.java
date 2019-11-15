@@ -47,6 +47,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import static com.pratham.foundation.utility.FC_Constants.STT_REGEX;
 import static com.pratham.foundation.utility.FC_Constants.dialog_btn_cancel;
 import static com.pratham.foundation.utility.FC_Constants.gameFolderPath;
 import static com.pratham.foundation.utility.FC_Constants.isTest;
@@ -187,8 +188,7 @@ public class ReadingParagraphsActivity extends BaseActivity
                 splitWords.add(modalParaWordList.get(j).getWord());
                 if (modalParaWordList.get(j).getWord().equalsIgnoreCase("#"))
                     lineBreakCounter += 1;
-                String regex = "[\\-+.\"^?!@#%&*,:]";
-                splitWordsPunct.add(splitWords.get(j).replaceAll(regex, ""));
+                splitWordsPunct.add(splitWords.get(j).replaceAll(STT_REGEX, ""));
                 wordsDurationList.add(modalParaWordList.get(j).getWordDuration());
                 wordsResIdList.add(modalParaWordList.get(j).getWordId());
             }

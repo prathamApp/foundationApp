@@ -57,6 +57,7 @@ import java.util.Collections;
 import java.util.List;
 
 import static com.pratham.foundation.BaseActivity.setMute;
+import static com.pratham.foundation.utility.FC_Constants.STT_REGEX;
 import static com.pratham.foundation.utility.FC_Constants.dialog_btn_cancel;
 import static com.pratham.foundation.utility.FC_Constants.gameFolderPath;
 import static com.pratham.foundation.utility.SplashSupportActivity.ButtonClickSound;
@@ -289,8 +290,7 @@ public class VocabReadingFragment extends Fragment implements
             if (modalPagesList.get(currentPage).getReadList().get(i).getWord().equalsIgnoreCase("#"))
                 lineBreakCounter += 1;
             correctArr[i] = false;
-            String regex = "[\\-+.\"^?!@#%&*,:|<>()]";
-            splitWordsPunct.add(splitWords.get(i).replaceAll(regex, ""));
+            splitWordsPunct.add(splitWords.get(i).replaceAll(STT_REGEX, ""));
             wordsDurationList.add(modalPagesList.get(currentPage).getReadList().get(i).getWordDuration());
             wordsResIdList.add(modalPagesList.get(currentPage).getReadList().get(i).getWordId());
         }

@@ -1,7 +1,6 @@
 package com.pratham.foundation.ui.contentPlayer.fact_retrieval_fragment;
 
 import android.content.Context;
-import android.content.Intent;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
@@ -14,7 +13,6 @@ import com.pratham.foundation.interfaces.OnGameClose;
 import com.pratham.foundation.modalclasses.ScienceQuestionChoice;
 import com.pratham.foundation.ui.contentPlayer.GameConstatnts;
 import com.pratham.foundation.ui.contentPlayer.fact_retrival_selection.ScienceQuestion;
-import com.pratham.foundation.ui.contentPlayer.pictionary.PictionaryResult;
 import com.pratham.foundation.utility.FC_Constants;
 import com.pratham.foundation.utility.FC_Utility;
 
@@ -27,6 +25,7 @@ import java.util.Collections;
 import java.util.List;
 
 import static com.pratham.foundation.database.AppDatabase.appDatabase;
+import static com.pratham.foundation.utility.FC_Constants.STT_REGEX;
 
 @EBean
 public class FactRetrievalPresenter implements FactRetrievalContract.FactRetrievalPresenter, OnGameClose {
@@ -118,10 +117,7 @@ public class FactRetrievalPresenter implements FactRetrievalContract.FactRetriev
     private boolean checkWord(String wordStr) {
         try {
             String word = appDatabase.getKeyWordDao().checkWord(FC_Constants.currentStudentID, resId, wordStr);
-            if (word != null)
-                return true;
-            else
-                return false;
+            return word != null;
         } catch (Exception e) {
             e.printStackTrace();
             return false;
@@ -216,11 +212,10 @@ public class FactRetrievalPresenter implements FactRetrievalContract.FactRetriev
         boolean[] correctArr;
         float perc;
         String originalAns = selectedAnsList.getAnsInPassage();
-        String regex = "[\\-+.\"^?!@#%&*,:]";
-        String quesFinal = originalAns.replaceAll(regex, "");
+        String quesFinal = originalAns.replaceAll(STT_REGEX, "");
 
         String[] originalAnsArr = quesFinal.split(" ");
-        String[] userAnsArr = selectedAnsList.getUserAns().replaceAll(regex, "").split(" ");
+        String[] userAnsArr = selectedAnsList.getUserAns().replaceAll(STT_REGEX, "").split(" ");
 
         if (originalAnsArr.length < userAnsArr.length)
             correctArr = new boolean[userAnsArr.length];
