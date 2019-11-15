@@ -5,11 +5,13 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.view.View;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.pratham.foundation.BaseActivity;
 import com.pratham.foundation.R;
@@ -18,7 +20,9 @@ import com.pratham.foundation.ui.contentPlayer.sequenceLayout.SequenceLayout_;
 import com.pratham.foundation.utility.FC_Utility;
 
 import org.androidannotations.annotations.AfterViews;
+import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EActivity;
+import org.androidannotations.annotations.ViewById;
 
 import static com.pratham.foundation.utility.FC_Constants.dialog_btn_cancel;
 
@@ -27,6 +31,11 @@ import static com.pratham.foundation.utility.FC_Constants.dialog_btn_cancel;
 public class ContentPlayerActivity extends BaseActivity {
 
     private String nodeID;
+
+    @ViewById(R.id.floating_back)
+    FloatingActionButton floating_back;
+    @ViewById(R.id.floating_info)
+    FloatingActionButton floating_info;
 
     @AfterViews
     public void initialize() {
@@ -39,6 +48,8 @@ public class ContentPlayerActivity extends BaseActivity {
         contentTitle = intent.getStringExtra("contentName");
         onSdCard = getIntent().getBooleanExtra("onSdCard", false);
 */
+        floating_back.setImageResource(R.drawable.ic_left_arrow_white);
+        floating_info.setImageResource(R.drawable.ic_info_outline_white);
         loadFragment();
     }
 
@@ -47,6 +58,16 @@ public class ContentPlayerActivity extends BaseActivity {
         bundle.putString("nodeID", nodeID);
         FC_Utility.showFragment(ContentPlayerActivity.this, new SequenceLayout_(), R.id.RL_CPA,
                 bundle, SequenceLayout_.class.getSimpleName());
+    }
+
+    @Click(R.id.floating_back)
+    public void pressedFloatingBackBtn(){
+        onBackPressed();
+    }
+
+    @Click(R.id.floating_info)
+    public void pressedFloatingInfo(){
+        Toast.makeText(this, "INFO", Toast.LENGTH_SHORT).show();
     }
 
     @Override
