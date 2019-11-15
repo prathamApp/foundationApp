@@ -5,7 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.widget.ImageButton;
 
@@ -94,7 +94,7 @@ public class SequenceLayout extends Fragment implements SequeanceLayoutContract.
     public void loadUI() {
         GameConstatnts.gameList = contentTableList;
         SequenceGameAdapter sequenceGameAdapter = new SequenceGameAdapter(getActivity(), contentTableList, SequenceLayout.this);
-        recyclerView.setLayoutManager(new GridLayoutManager(getActivity(), GridLayoutManager.DEFAULT_SPAN_COUNT));
+        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
         recyclerView.setAdapter(sequenceGameAdapter);
     }
 
