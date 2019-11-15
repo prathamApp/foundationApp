@@ -5,11 +5,50 @@
     android:layout_height="match_parent"
     android:background="@drawable/bg_anim_fourth_layer">
 
+    <RelativeLayout
+        android:id="@+id/topPanel"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_alignParentTop="true"
+        android:background="@color/colorBtnRedDark">
+
+        <ImageButton
+            android:id="@+id/btn_back"
+            android:layout_width="50dp"
+            android:layout_height="match_parent"
+            android:layout_centerVertical="true"
+            android:background="?android:selectableItemBackground"
+            android:padding="@dimen/_5sdp"
+            android:src="@drawable/ic_left_arrow_white" />
+
+        <com.pratham.foundation.customView.SansTextViewBold
+            android:id="@+id/title"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_centerInParent="true"
+            android:layout_toEndOf="@+id/btn_back"
+            android:layout_toStartOf="@+id/just_view"
+            android:layout_marginStart="@dimen/_5sdp"
+            android:layout_marginEnd="@dimen/_5sdp"
+            android:gravity="center"
+            android:text="Login"
+            android:textColor="@color/white"
+            android:textSize="@dimen/_18sdp"
+            android:textStyle="bold" />
+
+        <View
+            android:id="@+id/just_view"
+            android:layout_width="50dp"
+            android:layout_height="match_parent"
+            android:layout_alignParentEnd="true" />
+    </RelativeLayout>
+
     <LinearLayout
         android:id="@+id/login_credential"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/_120sdp"
+        android:layout_below="@+id/topPanel"
+        android:layout_marginTop="@dimen/_70sdp"
         android:orientation="vertical"
         android:paddingLeft="50dp"
         android:paddingRight="50dp"

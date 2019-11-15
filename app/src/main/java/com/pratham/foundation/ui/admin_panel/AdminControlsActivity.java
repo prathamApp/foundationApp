@@ -3,12 +3,12 @@ package com.pratham.foundation.ui.admin_panel;
 import android.content.Intent;
 import android.support.v4.app.FragmentManager;
 
+import com.pratham.foundation.BaseActivity;
 import com.pratham.foundation.R;
 import com.pratham.foundation.interfaces.DataPushListener;
 import com.pratham.foundation.ui.admin_panel.fragment_admin_panel.AdminPanelFragment;
 import com.pratham.foundation.ui.admin_panel.fragment_admin_panel.AdminPanelFragment_;
 import com.pratham.foundation.ui.bottom_fragment.add_student.MenuActivity_;
-import com.pratham.foundation.BaseActivity;
 import com.pratham.foundation.utility.FC_Utility;
 
 import org.androidannotations.annotations.AfterViews;
@@ -33,7 +33,6 @@ public class AdminControlsActivity extends BaseActivity implements DataPushListe
             finish();
         }
     }
-
 
     @Override
     public void onResponseGet() {

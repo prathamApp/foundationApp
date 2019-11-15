@@ -1,17 +1,13 @@
 package com.pratham.foundation.ui.admin_panel.group_selection.fragment_select_group;
 
-import android.content.res.Resources;
-import android.graphics.Rect;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.TypedValue;
 import android.view.View;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
-
 
 import com.pratham.foundation.R;
 import com.pratham.foundation.customView.GridSpacingItemDecoration;
@@ -22,13 +18,13 @@ import com.pratham.foundation.ui.admin_panel.group_selection.fragment_child_atte
 import com.pratham.foundation.utility.FC_Constants;
 import com.pratham.foundation.utility.FC_Utility;
 
-
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EFragment;
 import org.androidannotations.annotations.ViewById;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
 import static com.pratham.foundation.utility.FC_Constants.currentStudentName;
 import static com.pratham.foundation.utility.FC_Utility.dpToPx;
@@ -161,6 +157,12 @@ public class FragmentSelectGroup extends Fragment implements ContractGroup {
         }
         setGroups(groups);
     }
+
+    @Click(R.id.btn_back)
+    public void pressedBackButton() {
+        Objects.requireNonNull(getActivity()).onBackPressed();
+    }
+
 
     //    public void presentActivity(View view) {
 //        ActivityOptionsCompat options = ActivityOptionsCompat.makeSceneTransitionAnimation((Activity) getActivity(), view, "transition");

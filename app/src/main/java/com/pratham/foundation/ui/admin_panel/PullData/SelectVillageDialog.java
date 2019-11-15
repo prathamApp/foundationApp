@@ -6,9 +6,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.view.Gravity;
 import android.widget.GridLayout;
-import android.widget.ImageButton;
 import android.widget.TextView;
-
 
 import com.pratham.foundation.R;
 import com.pratham.foundation.customView.SansCheckBox;
@@ -24,10 +22,6 @@ import butterknife.OnClick;
 
 public class SelectVillageDialog extends Dialog {
 
-    @BindView(R.id.txt_clear_changes)
-    TextView clear_changes;
-    @BindView(R.id.btn_close)
-    ImageButton btn_close;
     @BindView(R.id.txt_message)
     TextView txt_message_village;
     @BindView(R.id.flowLayout)
@@ -40,7 +34,7 @@ public class SelectVillageDialog extends Dialog {
 
 
     public SelectVillageDialog(@NonNull Context context, VillageSelectListener villageSelectListener, List tempList) {
-        super(context, android.R.style.Theme_DeviceDefault_Light_NoActionBar);
+        super(context, android.R.style.Theme_Translucent_NoTitleBar_Fullscreen/*Theme_Black_NoTitleBar_Fullscreen*//*Theme_DeviceDefault_Light_NoActionBar*/);
         this.villageList = tempList;
         this.context = context;
         this.villageSelectListener = villageSelectListener;
@@ -70,7 +64,7 @@ public class SelectVillageDialog extends Dialog {
         }
     }
 
-    @OnClick(R.id.btn_close)
+    @OnClick(R.id.btn_back)
     public void closeDialog() {
         dismiss();
     }

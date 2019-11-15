@@ -68,6 +68,7 @@ import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Objects;
 
 import static android.content.Context.ACTIVITY_SERVICE;
 import static com.pratham.foundation.database.AppDatabase.appDatabase;
@@ -738,6 +739,11 @@ public class PushOrAssignFragment extends Fragment {
         if (myLoadingDialog != null) {
             myLoadingDialog.dismiss();
         }
+    }
+
+    @Click(R.id.btn_back)
+    public void pressedBackButton() {
+        Objects.requireNonNull(getActivity()).onBackPressed();
     }
 
 }

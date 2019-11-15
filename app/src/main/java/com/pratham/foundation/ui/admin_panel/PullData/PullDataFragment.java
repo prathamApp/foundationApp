@@ -254,4 +254,10 @@ public class PullDataFragment extends Fragment implements PullDataContract.PullD
     public void saveData() {
         pullDataPresenter.onSaveClick();
     }
+
+    @OnClick(R.id.btn_back)
+    public void pressedBackButton() {
+        Objects.requireNonNull(getActivity()).onBackPressed();
+    }
+
 }

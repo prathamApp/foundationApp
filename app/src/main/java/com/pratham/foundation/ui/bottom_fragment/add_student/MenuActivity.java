@@ -41,6 +41,8 @@ public class MenuActivity extends BaseActivity {
     ImageButton btn_grp;
     @ViewById(R.id.btn_admin)
     ImageButton btn_admin;
+    @ViewById(R.id.btn_back)
+    ImageButton btn_back;
     @ViewById(R.id.rl_admin)
     RelativeLayout rl_admin;
     @ViewById(R.id.main_menu_layout)
@@ -150,9 +152,14 @@ public class MenuActivity extends BaseActivity {
         startActivity(new Intent(this, ActivityShareReceive_.class));
     }*/
 
+    @Click(R.id.btn_back)
+    public void pressedBackButton(){
+        showExitDialog();
+    }
+
     @Override
     public void onBackPressed() {
-        showExitDialog();
+        btn_back.performClick();
     }
 
     @SuppressLint("SetTextI18n")

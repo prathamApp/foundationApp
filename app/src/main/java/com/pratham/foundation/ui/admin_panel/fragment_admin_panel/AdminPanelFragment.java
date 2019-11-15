@@ -10,7 +10,6 @@ import android.support.v4.app.Fragment;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Toast;
 
-
 import com.pratham.foundation.R;
 import com.pratham.foundation.ui.admin_panel.PullData.PullDataFragment;
 import com.pratham.foundation.ui.admin_panel.fragment_admin_panel.PushOrAssign.PushOrAssignFragment;
@@ -23,6 +22,8 @@ import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EFragment;
 import org.androidannotations.annotations.UiThread;
 import org.androidannotations.annotations.ViewById;
+
+import java.util.Objects;
 
 
 /**
@@ -138,6 +139,12 @@ public class AdminPanelFragment extends Fragment implements AdminPanelContract.A
             }
         }
     }
+
+    @Click(R.id.btn_back)
+    public void pressedBackButton() {
+        Objects.requireNonNull(getActivity()).onBackPressed();
+    }
+
 
     @UiThread
     @Override

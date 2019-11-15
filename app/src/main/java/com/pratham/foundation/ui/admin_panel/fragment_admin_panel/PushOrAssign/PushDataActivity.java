@@ -12,9 +12,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.pratham.foundation.ApplicationClass;
+import com.pratham.foundation.BaseActivity;
 import com.pratham.foundation.R;
 import com.pratham.foundation.ui.admin_panel.AdminControlsActivity_;
-import com.pratham.foundation.BaseActivity;
 import com.pratham.foundation.utility.FC_Constants;
 import com.pratham.foundation.utility.FC_Utility;
 
@@ -37,7 +37,6 @@ public class PushDataActivity extends BaseActivity implements PushDataContract.P
     public void initialize() {
         checkConnectivity();
         presenter.createJsonForTransfer();
-
     }
 
     @UiThread

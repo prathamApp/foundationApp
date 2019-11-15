@@ -33,6 +33,7 @@ import com.pratham.foundation.utility.FC_Constants;
 import com.pratham.foundation.utility.FC_Utility;
 
 import java.util.ArrayList;
+import java.util.Objects;
 import java.util.UUID;
 
 import butterknife.BindView;
@@ -51,7 +52,6 @@ public class FragmentChildAttendance extends Fragment implements ContractChildAt
     Button btn_attendance_next;
     @BindView(R.id.main_layout)
     RelativeLayout main_layout;
-
     ChildAdapter childAdapter;
     ArrayList<Student> students;
     ArrayList<Integer> avatarsMale;
@@ -170,7 +170,6 @@ public class FragmentChildAttendance extends Fragment implements ContractChildAt
         }
     }
 
-
     @SuppressLint("StaticFieldLeak")
     private void startSession(final ArrayList<Student> stud) {
         new AsyncTask<Object, Void, Object>() {
@@ -224,7 +223,6 @@ public class FragmentChildAttendance extends Fragment implements ContractChildAt
         }.execute();
     }
 
-
     public void markAttendance(ArrayList<Student> stud) {
         FastSave.getInstance().saveString(FC_Constants.SESSIONID, FC_Utility.getUUID().toString());
         ArrayList<Attendance> attendances = new ArrayList<>();
@@ -246,6 +244,11 @@ public class FragmentChildAttendance extends Fragment implements ContractChildAt
         s.setFromDate(FC_Utility.getCurrentDateTime());
         s.setToDate("NA");
         AppDatabase.getDatabaseInstance(getActivity()).getSessionDao().insert(s);
+    }
+
+    @OnClick(R.id.btn_back)
+    public void pressedBackButton() {
+        Objects.requireNonNull(getActivity()).onBackPressed();
     }
 
 }

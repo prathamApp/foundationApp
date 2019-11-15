@@ -1,14 +1,15 @@
 package com.pratham.foundation.ui.admin_panel.group_selection;
 
 import android.widget.FrameLayout;
+import android.widget.ImageButton;
 import android.widget.RelativeLayout;
 
-
-import com.pratham.foundation.R;
 import com.pratham.foundation.BaseActivity;
+import com.pratham.foundation.R;
 import com.pratham.foundation.utility.FC_Utility;
 
 import org.androidannotations.annotations.AfterViews;
+import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.ViewById;
 
@@ -19,6 +20,8 @@ public class SelectGroupActivity extends BaseActivity {
     RelativeLayout main_layout;
     @ViewById(R.id.frame_group)
     FrameLayout frame_group;
+    @ViewById(R.id.btn_back)
+    ImageButton btn_back;
 
     @AfterViews
     public void initialize() {
@@ -26,8 +29,8 @@ public class SelectGroupActivity extends BaseActivity {
                 null, MenuFragment.class.getSimpleName());
     }
 
-    @Override
-    public void onBackPressed() {
+    @Click(R.id.btn_back)
+    public void pressedBackButton(){
         int fragments = getSupportFragmentManager().getBackStackEntryCount();
         if (fragments == 1) {
             finish();
@@ -42,4 +45,8 @@ public class SelectGroupActivity extends BaseActivity {
         }
     }
 
+    @Override
+    public void onBackPressed() {
+        btn_back.performClick();
+    }
 }
