@@ -119,25 +119,25 @@ public class KeywordsIdentificationPresenter implements KeywordsIdentificationCo
         }
     }
 
-    public void addLearntWords(List selectedAnsList) {
+    public void addLearntWords(List<ScienceQuestionChoice> selectedAnsList) {
         correctWordList = new ArrayList<>();
         wrongWordList = new ArrayList<>();
         int scoredMarks = (int) checkAnswer(selectedAnsList);
         if (selectedAnsList != null && !selectedAnsList.isEmpty()) {
             for (int i = 0; i < selectedAnsList.size(); i++) {
-                if (checkAnswerNew(questionModel.getLstquestionchoice(), selectedAnsList.get(i).toString())) {
+                if (checkAnswerNew(questionModel.getLstquestionchoice(), selectedAnsList.get(i).getSubQues())) {
                     KeyWords keyWords = new KeyWords();
                     keyWords.setResourceId(resId);
                     keyWords.setSentFlag(0);
                     keyWords.setStudentId(FC_Constants.currentStudentID);
-                    String key = selectedAnsList.get(i).toString();
+                    String key = selectedAnsList.get(i).getSubQues();
                     keyWords.setKeyWord(key);
                     keyWords.setWordType("word");
                     appDatabase.getKeyWordDao().insert(keyWords);
-                    addScore(GameConstatnts.getInt(questionModel.getQid()), GameConstatnts.KEYWORD_IDENTIFICATION, 10, 10, FC_Utility.getCurrentDateTime(), selectedAnsList.get(i).toString());
+                    addScore(GameConstatnts.getInt(questionModel.getQid()), GameConstatnts.KEYWORD_IDENTIFICATION, 10, 10,selectedAnsList.get(i).getStartTime(),selectedAnsList.get(i).getEndTime(), selectedAnsList.get(i).getSubQues());
 
                 }else {
-                    addScore(GameConstatnts.getInt(questionModel.getQid()), GameConstatnts.KEYWORD_IDENTIFICATION, 0, 10, FC_Utility.getCurrentDateTime(), selectedAnsList.get(i).toString());
+                    addScore(GameConstatnts.getInt(questionModel.getQid()), GameConstatnts.KEYWORD_IDENTIFICATION, 0, 10, selectedAnsList.get(i).getStartTime(),selectedAnsList.get(i).getEndTime(), selectedAnsList.get(i).getSubQues());
                 }
             }
 
@@ -160,7 +160,7 @@ public class KeywordsIdentificationPresenter implements KeywordsIdentificationCo
         return false;
     }
 
-    public void addScore(int wID, String Word, int scoredMarks, int totalMarks, String resStartTime, String Label) {
+    public void addScore(int wID, String Word, int scoredMarks, int totalMarks, String resStartTime,String resEndTime, String Label) {
         try {
             String deviceId = appDatabase.getStatusDao().getValue("DeviceId");
             Score score = new Score();
@@ -172,7 +172,7 @@ public class KeywordsIdentificationPresenter implements KeywordsIdentificationCo
             score.setStudentID(FC_Constants.currentStudentID);
             score.setStartDateTime(resStartTime);
             score.setDeviceID(deviceId.equals(null) ? "0000" : deviceId);
-            score.setEndDateTime(FC_Utility.getCurrentDateTime());
+            score.setEndDateTime(resEndTime);
             score.setLevel(FC_Constants.currentLevel);
             score.setLabel(Word + " - " + Label);
             score.setSentFlag(0);
@@ -189,7 +189,7 @@ public class KeywordsIdentificationPresenter implements KeywordsIdentificationCo
                 assessment.setStudentIDa(FC_Constants.currentAssessmentStudentID);
                 assessment.setStartDateTimea(resStartTime);
                 assessment.setDeviceIDa(deviceId.equals(null) ? "0000" : deviceId);
-                assessment.setEndDateTime(FC_Utility.getCurrentDateTime());
+                assessment.setEndDateTime(resEndTime);
                 assessment.setLevela(FC_Constants.currentLevel);
                 assessment.setLabel("test: " + Label);
                 assessment.setSentFlag(0);
@@ -201,15 +201,15 @@ public class KeywordsIdentificationPresenter implements KeywordsIdentificationCo
         }
     }
 
-    public float checkAnswer(List<String> selectedAnsList) {
+    public float checkAnswer(List<ScienceQuestionChoice> selectedAnsList) {
         if (questionModel != null) {
             int correctCnt = 0;
             for (int i = 0; i < selectedAnsList.size(); i++) {
-                if (checkAnswerNew(questionModel.getLstquestionchoice(), selectedAnsList.get(i).toString())) {
+                if (checkAnswerNew(questionModel.getLstquestionchoice(), selectedAnsList.get(i).getSubQues())) {
                     correctCnt++;
-                    correctWordList.add(selectedAnsList.get(i));
+                    correctWordList.add(selectedAnsList.get(i).getSubQues());
                 } else {
-                    wrongWordList.add(selectedAnsList.get(i));
+                    wrongWordList.add(selectedAnsList.get(i).getSubQues());
                 }
             }
             return 10 * correctCnt / questionModel.getLstquestionchoice().size();

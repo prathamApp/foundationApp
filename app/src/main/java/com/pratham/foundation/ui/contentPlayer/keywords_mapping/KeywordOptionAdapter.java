@@ -3,15 +3,15 @@ package com.pratham.foundation.ui.contentPlayer.keywords_mapping;
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.pratham.foundation.R;
-import com.pratham.foundation.modalclasses.OptionKeyMap;
 import com.pratham.foundation.modalclasses.ScienceQuestionChoice;
 import com.pratham.foundation.utility.FC_Utility;
 
@@ -39,12 +39,36 @@ public class KeywordOptionAdapter extends RecyclerView.Adapter<KeywordOptionAdap
     }
 
     @Override
-    public void onBindViewHolder(@NonNull Myviewholder myviewholder, int i) {
-        myviewholder.textView.setText(datalist.get(i).getSubQues());
-        if (datalist.get(myviewholder.getAdapterPosition()).isIsclicked()) {
-            myviewholder.itemView.setBackground(ContextCompat.getDrawable(context, R.drawable.correct_bg));
+    public void onBindViewHolder(@NonNull Myviewholder myviewholder, int position) {
+      /*  ;
+        Bitmap bitmap = BitmapCache.INSTANCE.getBitmap(R.drawable.img_7);
+        HiveDrawable drawable = new HiveDrawable(HiveLayoutManager.HORIZONTAL,bitmap);
+        myviewholder.img_img.setImageDrawable(drawable);*/
+
+        int pos = position + 1;
+        int topMargin = pxFromDp(myviewholder.textView.getContext(), -35);
+        int leftMargin = pxFromDp(myviewholder.textView.getContext(), 50); //3 times of 17
+        GridLayoutManager.LayoutParams param = (GridLayoutManager.LayoutParams) myviewholder.textView.getLayoutParams();
+       /* if (pos < 2) {
+            param.setMargins(0, 0, 0, 0);
+        } else if ((pos + 1) % 3 == 0 ) {
+            param.setMargins(leftMargin, topMargin, 0, 0);
+        }else */
+        if (pos <= 2) {
+            param.setMargins(0, 0, 0, 0);
+        } else if (pos % 3 == 0) {
+            param.setMargins((leftMargin * 2), topMargin, 0, 0);
         } else {
-            myviewholder.itemView.setBackground(ContextCompat.getDrawable(context, R.drawable.dialog_bg));
+            param.setMargins(0, topMargin, 0, 0);
+        }
+        myviewholder.textView.setLayoutParams(param);
+        myviewholder.textView.setText(datalist.get(position).getSubQues());
+
+
+        if (datalist.get(myviewholder.getAdapterPosition()).isIsclicked()) {
+            myviewholder.itemView.setBackground(ContextCompat.getDrawable(context, R.drawable.hexagon_yellow));
+        } else {
+            myviewholder.itemView.setBackground(ContextCompat.getDrawable(context, R.drawable.hexagon));
         }
         myviewholder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -55,7 +79,7 @@ public class KeywordOptionAdapter extends RecyclerView.Adapter<KeywordOptionAdap
                             selectedOption.remove(datalist.get(myviewholder.getAdapterPosition()));
                         }
                         datalist.get(myviewholder.getAdapterPosition()).setIsclicked(false);
-                        myviewholder.itemView.setBackground(ContextCompat.getDrawable(context, R.drawable.dialog_bg));
+                        myviewholder.itemView.setBackground(ContextCompat.getDrawable(context, R.drawable.hexagon));
                     } else {
                         if (!selectedOption.contains(datalist.get(myviewholder.getAdapterPosition()))) {
                             datalist.get(myviewholder.getAdapterPosition()).setStartTime(FC_Utility.getCurrentDateTime());
@@ -63,11 +87,15 @@ public class KeywordOptionAdapter extends RecyclerView.Adapter<KeywordOptionAdap
                             selectedOption.add(datalist.get(myviewholder.getAdapterPosition()));
                         }
                         datalist.get(myviewholder.getAdapterPosition()).setIsclicked(true);
-                        myviewholder.itemView.setBackground(ContextCompat.getDrawable(context, R.drawable.correct_bg));
+                        myviewholder.itemView.setBackground(ContextCompat.getDrawable(context, R.drawable.hexagon_yellow));
                     }
                 }
             }
         });
+    }
+
+    private int pxFromDp(final Context context, final float dp) {
+        return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp, context.getResources().getDisplayMetrics());
     }
 
     @Override
@@ -94,5 +122,9 @@ public class KeywordOptionAdapter extends RecyclerView.Adapter<KeywordOptionAdap
 
     public void setClickable(boolean clickable) {
         isClickable = clickable;
+    }
+
+    public void addData(ScienceQuestionChoice data) {
+        datalist.add(data);
     }
 }

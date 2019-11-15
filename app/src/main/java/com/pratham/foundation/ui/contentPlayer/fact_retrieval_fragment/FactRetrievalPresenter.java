@@ -1,6 +1,7 @@
 package com.pratham.foundation.ui.contentPlayer.fact_retrieval_fragment;
 
 import android.content.Context;
+import android.content.Intent;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
@@ -13,6 +14,7 @@ import com.pratham.foundation.interfaces.OnGameClose;
 import com.pratham.foundation.modalclasses.ScienceQuestionChoice;
 import com.pratham.foundation.ui.contentPlayer.GameConstatnts;
 import com.pratham.foundation.ui.contentPlayer.fact_retrival_selection.ScienceQuestion;
+import com.pratham.foundation.ui.contentPlayer.pictionary.PictionaryResult;
 import com.pratham.foundation.utility.FC_Constants;
 import com.pratham.foundation.utility.FC_Utility;
 
@@ -30,8 +32,8 @@ import static com.pratham.foundation.database.AppDatabase.appDatabase;
 public class FactRetrievalPresenter implements FactRetrievalContract.FactRetrievalPresenter, OnGameClose {
     private ScienceQuestion questionModel;
     private FactRetrievalContract.FactRetrievalView view;
-    private Context context;
-    private String gameName, resId, contentTitle;
+    private final Context context;
+    private String  resId;
     private float perc;
     //private List<QuetionAns> quetionAnsList;
     private List<ScienceQuestion> quetionModelList;
@@ -46,7 +48,6 @@ public class FactRetrievalPresenter implements FactRetrievalContract.FactRetriev
     public void setView(FactRetrievalContract.FactRetrievalView factRetrivalView, String contentTitle, String resId) {
         this.view = factRetrivalView;
         this.resId = resId;
-        this.contentTitle = contentTitle;
     }
 
     @Override
@@ -92,7 +93,7 @@ public class FactRetrievalPresenter implements FactRetrievalContract.FactRetriev
     }
 
 
-    public float getPercentage() {
+    private float getPercentage() {
         float perc = 0f;
         try {
             totalWordCount = quetionModelList.size();
@@ -127,7 +128,7 @@ public class FactRetrievalPresenter implements FactRetrievalContract.FactRetriev
         }
     }
 
-    public void addLearntWords(List<ScienceQuestionChoice> selectedAnsList) {
+    public void addLearntWords(ArrayList<ScienceQuestionChoice> selectedAnsList) {
         if (selectedAnsList != null && checkAttemptedornot(selectedAnsList)) {
             List<KeyWords> learntWords = new ArrayList<>();
             int scoredMarks;
@@ -142,15 +143,18 @@ public class FactRetrievalPresenter implements FactRetrievalContract.FactRetriev
                 if (selectedAnsList.get(i).getUserAns() != null && !selectedAnsList.get(i).getUserAns().isEmpty()) {
                     if (checkAnswer(selectedAnsList.get(i)) > 75) {
                         scoredMarks = 10;
+                        selectedAnsList.get(i).setTrue(true);
                     } else {
                         scoredMarks = 0;
+                        selectedAnsList.get(i).setTrue(false);
                     }
                     // addScore(GameConstatnts.getInt(selectedAnsList.get(i).getQid()), GameConstatnts.FACTRETRIEVAL, scoredMarks, 10, FC_Utility.getCurrentDateTime(), selectedAnsList.get(i).toString());
                     addScore(GameConstatnts.getInt(questionModel.getQid()), GameConstatnts.FACTRETRIEVAL, scoredMarks, 10,selectedAnsList.get(i).getStartTime(),selectedAnsList.get(i).getEndTime(), selectedAnsList.get(i).toString());
                 }
             }
             appDatabase.getKeyWordDao().insertAllWord(learntWords);
-            GameConstatnts.playGameNext(context, GameConstatnts.FALSE, (OnGameClose) view);
+           view.showResult(selectedAnsList);
+            //GameConstatnts.playGameNext(context, GameConstatnts.FALSE, (OnGameClose) view);
         } else {
             GameConstatnts.playGameNext(context, GameConstatnts.TRUE, (OnGameClose) view);
         }
@@ -211,7 +215,7 @@ public class FactRetrievalPresenter implements FactRetrievalContract.FactRetriev
     public float checkAnswer(ScienceQuestionChoice selectedAnsList) {
         boolean[] correctArr;
         float perc;
-        String originalAns = selectedAnsList.getCorrectAnswer();
+        String originalAns = selectedAnsList.getAnsInPassage();
         String regex = "[\\-+.\"^?!@#%&*,:]";
         String quesFinal = originalAns.replaceAll(regex, "");
 

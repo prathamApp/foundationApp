@@ -6,17 +6,14 @@ import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.widget.Button;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.pratham.foundation.ApplicationClass;
 import com.pratham.foundation.R;
-import com.pratham.foundation.customView.SansTextView;
 import com.pratham.foundation.interfaces.OnGameClose;
 import com.pratham.foundation.modalclasses.ScienceQuestionChoice;
 import com.pratham.foundation.ui.contentPlayer.GameConstatnts;
 import com.pratham.foundation.ui.contentPlayer.fact_retrival_selection.ScienceQuestion;
-import com.pratham.foundation.utility.FC_Constants;
 import com.pratham.foundation.utility.FC_Utility;
 
 import org.androidannotations.annotations.AfterViews;
@@ -54,6 +51,7 @@ public class KeywordMappingFragment extends Fragment implements KeywordMappingCo
     private ScienceQuestion keywordmapping;
     private boolean isSubmitted = false;
 
+
     @AfterViews
     protected void initiate() {
         // super.onCreate(savedInstanceState);
@@ -86,22 +84,33 @@ public class KeywordMappingFragment extends Fragment implements KeywordMappingCo
         keyword.setText(list.get(index).getQuestion());
         final GridLayoutManager gridLayoutManager;
 
-        /* RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());*/
-        if (FC_Constants.TAB_LAYOUT) {
+       /* if (FC_Constants.TAB_LAYOUT) {
             gridLayoutManager = new GridLayoutManager(getActivity(), 3);
         } else {
             gridLayoutManager = new GridLayoutManager(getActivity(), 2);
-        }
-
+        }*/
+        gridLayoutManager = new GridLayoutManager(getActivity(), 2);
+        gridLayoutManager.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
+            @Override
+            public int getSpanSize(int position) {
+                int size = 1;
+                if ((position + 1) % 3 == 0) {
+                    size = 2;
+                }
+                return size;
+            }
+        });
         optionList = list.get(index).getLstquestionchoice();
         Collections.shuffle(optionList);
         //  List temp =
        /* for (int i = 0; i < temp.size(); i++) {
             optionList.add(new OptionKeyMap(temp.get(i).toString(), false));
         }*/
-        recycler_view.setLayoutManager(gridLayoutManager);
         keywordOptionAdapter = new KeywordOptionAdapter(getActivity(), optionList, getCorrectCnt(optionList));
         recycler_view.setAdapter(keywordOptionAdapter);
+        recycler_view.setLayoutManager(gridLayoutManager);
+
+
     }
 
     private int getCorrectCnt(List<ScienceQuestionChoice> lstquestionchoice) {
@@ -119,11 +128,11 @@ public class KeywordMappingFragment extends Fragment implements KeywordMappingCo
         submit.setText("Next");
         keywordOptionAdapter.setClickable(false);
         for (int index = 0; index < recycler_view.getChildCount(); index++) {
-            RelativeLayout relativeLayout = (RelativeLayout) recycler_view.getChildAt(index);
-            SansTextView textView = (SansTextView) relativeLayout.getChildAt(0);
-
+            TextView textView = (TextView) recycler_view.getChildAt(index);
             if (!presenter.checkAnswerNew(selectedAnsList.getLstquestionchoice(), textView.getText().toString())) {
                 textView.setPaintFlags(textView.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
+            } else {
+
             }
         }
         //     textView.setPaintFlags(textView.getPaintFlags() & (~ Paint.STRIKE_THRU_TEXT_FLAG));
@@ -155,12 +164,12 @@ public class KeywordMappingFragment extends Fragment implements KeywordMappingCo
     @Click(R.id.submit)
     public void submitClick() {
         if (!isSubmitted) {
-            isSubmitted=true;
+            isSubmitted = true;
             if (keywordOptionAdapter != null && keywordmapping != null) {
                 List<ScienceQuestionChoice> selectedoptionList = keywordOptionAdapter.getSelectedOptionList();
                 presenter.addLearntWords(keywordmapping, selectedoptionList);
             }
-        }else {
+        } else {
 
         }
     }

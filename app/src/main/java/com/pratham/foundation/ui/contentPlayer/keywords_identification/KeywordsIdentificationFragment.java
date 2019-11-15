@@ -1,8 +1,6 @@
 package com.pratham.foundation.ui.contentPlayer.keywords_identification;
 
 import android.app.Dialog;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
@@ -18,9 +16,8 @@ import android.widget.Toast;
 import com.nex3z.flowlayout.FlowLayout;
 import com.pratham.foundation.ApplicationClass;
 import com.pratham.foundation.R;
-import com.pratham.foundation.customView.SansButton;
 import com.pratham.foundation.customView.SansTextView;
-import com.pratham.foundation.customView.SansTextViewBold;
+import com.pratham.foundation.customView.fonts.SansButton;
 import com.pratham.foundation.interfaces.OnGameClose;
 import com.pratham.foundation.modalclasses.ScienceQuestionChoice;
 import com.pratham.foundation.ui.contentPlayer.ContentPlayerActivity;
@@ -36,8 +33,8 @@ import org.androidannotations.annotations.ViewById;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
-import java.util.Objects;
 
 import static com.pratham.foundation.utility.FC_Constants.gameFolderPath;
 
@@ -53,6 +50,8 @@ public class KeywordsIdentificationFragment extends Fragment implements Keywords
     SansTextView tittle;
     @ViewById(R.id.keywords)
     FlowLayout keywords;
+    @ViewById(R.id.btn_submit)
+    SansButton btn_submit;
     @ViewById(R.id.keyword_selected)
     RelativeLayout keyword_selected;
     @ViewById(R.id.show_me_keywords)
@@ -60,12 +59,13 @@ public class KeywordsIdentificationFragment extends Fragment implements Keywords
 
     RelativeLayout.LayoutParams viewParam;
     private HashMap<String, List<Integer>> positionMap;
-    private List<String> selectedKeywords;
+    private List<ScienceQuestionChoice> selectedKeywords;
     private String contentPath, contentTitle, StudentID, resId, readingContentPath, resStartTime;
     private boolean onSdCard;
     private ScienceQuestion questionModel;
     private boolean isKeyWordShowing = false;
-    
+    private boolean issubmitted = false;
+
     @AfterViews
     public void initiate() {
         Bundle bundle = getArguments();
@@ -85,7 +85,7 @@ public class KeywordsIdentificationFragment extends Fragment implements Keywords
         positionMap = new HashMap<>();
 
         resStartTime = FC_Utility.getCurrentDateTime();
-        presenter.addScore(0, "", 0, 0, resStartTime, GameConstatnts.KEYWORD_IDENTIFICATION + " " + GameConstatnts.START);
+        presenter.addScore(0, "", 0, 0, resStartTime, FC_Utility.getCurrentDateTime(), GameConstatnts.KEYWORD_IDENTIFICATION + " " + GameConstatnts.START);
 
         viewParam = new RelativeLayout.LayoutParams(
                 RelativeLayout.LayoutParams.WRAP_CONTENT,
@@ -108,21 +108,22 @@ public class KeywordsIdentificationFragment extends Fragment implements Keywords
         }
         String[] paragraphWords = questionModel.getQuestion().split(" ");
         for (int i = 0; i < paragraphWords.length; i++) {
-            if (positionMap.containsKey(paragraphWords[i].replaceAll("\\p{Punct}","").trim())) {
-                List temp = positionMap.get(paragraphWords[i].replaceAll("\\p{Punct}","").trim());
+            if (positionMap.containsKey(paragraphWords[i].replaceAll("\\p{Punct}", "").trim())) {
+                List temp = positionMap.get(paragraphWords[i].replaceAll("\\p{Punct}", "").trim());
                 if (temp != null)
                     temp.add(i);
             } else {
                 List<Integer> temp = new ArrayList<>();
                 temp.add(i);
-                positionMap.put(paragraphWords[i].replaceAll("\\p{Punct}","").trim(), temp);
+                positionMap.put(paragraphWords[i].replaceAll("\\p{Punct}", "").trim(), temp);
             }
 
             final SansTextView textView = new SansTextView(getActivity());
             textView.setTextSize(30);
             textView.setText(paragraphWords[i]);
+            textView.setPadding(10, 5, 10, 5);
             final int temp_i = i;
-            textView.setOnClickListener(v -> paragraphWordClicked("" + textView.getText().toString().replaceAll("\\p{Punct}","").trim(), temp_i));
+            textView.setOnClickListener(v -> paragraphWordClicked("" + textView.getText().toString().replaceAll("\\p{Punct}", "").trim(), temp_i));
             paraghaph.addView(textView);
         }
 
@@ -131,7 +132,17 @@ public class KeywordsIdentificationFragment extends Fragment implements Keywords
     @Override
     public void showResult(List correctWord, List wrongWord) {
         if ((correctWord != null && !correctWord.isEmpty()) || (wrongWord != null && !wrongWord.isEmpty())) {
-            final Dialog dialog = new Dialog(getActivity());
+            for (int i = 0; i < keywords.getChildCount(); i++) {
+                LinearLayout linearLayout = (LinearLayout) keywords.getChildAt(i);
+                String text = ((SansTextView) linearLayout.getChildAt(0)).getText().toString();
+                if (correctWord.contains(text)) {
+                    linearLayout.setBackground(ContextCompat.getDrawable(getActivity(), R.drawable.convo_correct_bg));
+                }
+
+            }
+
+
+            /*final Dialog dialog = new Dialog(getActivity());
             dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
             dialog.setContentView(R.layout.show_result);
             dialog.setCancelable(false);
@@ -155,22 +166,27 @@ public class KeywordsIdentificationFragment extends Fragment implements Keywords
                         GameConstatnts.playGameNext(getActivity(), GameConstatnts.FALSE, this);
                     }
             );
-            dialog.show();
+            dialog.show();*/
         } else {
             GameConstatnts.playGameNext(getActivity(), GameConstatnts.TRUE, this);
         }
     }
 
     private void paragraphWordClicked(String paraText, int pos) {
-        if (!isKeyWordShowing) {
-            int correctCnt = getCorrectCnt(questionModel.getLstquestionchoice());
-            if (selectedKeywords.size() <= correctCnt) {
-                if (!selectedKeywords.contains(paraText)) {
+        if (!issubmitted) {
+            if (!isKeyWordShowing) {
+                int correctCnt = getCorrectCnt(questionModel.getLstquestionchoice());
+
+                // boolean flag = checkIsConins(paraText);
+                // if (!selectedKeywords.contains(paraText)) {
+                if (!checkIsConins(paraText)) {
                     List positions = positionMap.get(paraText.trim());
                     if (positions != null)
                         for (int i = 0; i < positions.size(); i++) {
                             SansTextView textViewTemp = (SansTextView) paraghaph.getChildAt((int) positions.get(i));
-                            textViewTemp.setBackgroundColor(ContextCompat.getColor(getActivity(), R.color.colorGreenCorrect));
+                            // textViewTemp.setBackgroundColor(ContextCompat.getColor(getActivity(), R.color.colorGreenCorrect));
+                            textViewTemp.setBackground(ContextCompat.getDrawable(getActivity(), R.drawable.tag_view));
+                            textViewTemp.setTextColor(ContextCompat.getColor(getActivity(), R.color.white));
                         }
 
                     LinearLayout linearLayout = new LinearLayout(getActivity());
@@ -198,33 +214,62 @@ public class KeywordsIdentificationFragment extends Fragment implements Keywords
 
                     keywords.addView(linearLayout);
 
-                    selectedKeywords.add(paraText);
+                    //  selectedKeywords.add(paraText);
+                    ScienceQuestionChoice scienceQuestionChoice = new ScienceQuestionChoice();
+                    scienceQuestionChoice.setSubQues(paraText);
+                    scienceQuestionChoice.setStartTime(FC_Utility.getCurrentDateTime());
+                    scienceQuestionChoice.setEndTime(FC_Utility.getCurrentDateTime());
+                    selectedKeywords.add(scienceQuestionChoice);
 
                     imageView.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            String temp = imageView.getTag().toString();
-                            if (selectedKeywords.contains(temp)) {
-                                selectedKeywords.remove(temp);
-                                List positions = positionMap.get(paraText.trim());
-                                for (int i = 0; i < positions.size(); i++) {
-                                    SansTextView textViewTemp = (SansTextView) paraghaph.getChildAt((int) positions.get(i));
-                                    textViewTemp.setBackgroundColor(ContextCompat.getColor(getActivity(), R.color.white));
-                                }
-                                View view = (View) imageView.getParent();
-                                keywords.removeView(view);
+                            if (!issubmitted) {
+                                String temp = imageView.getTag().toString();
+                                // if (selectedKeywords.contains(temp)) {
+                                if (checkIsConins(temp)) {
+                                    //selectedKeywords.remove(temp);
+                                    removeItem(temp);
+                                    List positions = positionMap.get(paraText.trim());
+                                    for (int i = 0; i < positions.size(); i++) {
+                                        SansTextView textViewTemp = (SansTextView) paraghaph.getChildAt((int) positions.get(i));
+                                        textViewTemp.setBackgroundColor(ContextCompat.getColor(getActivity(), R.color.white));
+                                        textViewTemp.setTextColor(ContextCompat.getColor(getActivity(), R.color.black_20));
+                                    }
+                                    View view = (View) imageView.getParent();
+                                    keywords.removeView(view);
 
-                            } else {
-                                Toast.makeText(getActivity(), "Something went wrong", Toast.LENGTH_SHORT).show();
+                                } else {
+                                    Toast.makeText(getActivity(), "Something went wrong", Toast.LENGTH_SHORT).show();
+                                }
                             }
                         }
                     });
                 }
             } else {
-                Toast.makeText(getActivity(), "Upper limit reached", Toast.LENGTH_SHORT).show();
+                ((ContentPlayerActivity) getActivity()).ttsService.play(paraText);
             }
-        } else {
-            ((ContentPlayerActivity) getActivity()).ttsService.play(paraText);
+        }
+    }
+
+    private boolean checkIsConins(String paraText) {
+        for (int i = 0; i < selectedKeywords.size(); i++) {
+            if (selectedKeywords.get(i).getSubQues().equalsIgnoreCase(paraText)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private void removeItem(String paraText) {
+
+        Iterator<ScienceQuestionChoice> iterator = selectedKeywords.iterator();
+        while (iterator.hasNext()) {
+            ScienceQuestionChoice scienceQuestionChoice = iterator.next();
+            if (scienceQuestionChoice.getSubQues().equalsIgnoreCase(paraText)) {
+                iterator.remove();
+                break;
+            }
         }
     }
 
@@ -241,8 +286,12 @@ public class KeywordsIdentificationFragment extends Fragment implements Keywords
 
     @Click(R.id.btn_submit)
     public void submitClicked() {
-        if (selectedKeywords != null)
+        if (selectedKeywords != null) {
+            issubmitted = true;
+            btn_submit.setText("Next");
+            show_me_keywords.setVisibility(View.INVISIBLE);
             presenter.addLearntWords(selectedKeywords);
+        }
     }
 
     @Click(R.id.show_me_keywords)
@@ -293,7 +342,7 @@ public class KeywordsIdentificationFragment extends Fragment implements Keywords
 
     @Override
     public void gameClose() {
-        presenter.addScore(0, "", 0, 0, resStartTime, GameConstatnts.KEYWORD_IDENTIFICATION + " " + GameConstatnts.END);
+        presenter.addScore(0, "", 0, 0, resStartTime, FC_Utility.getCurrentDateTime(), GameConstatnts.KEYWORD_IDENTIFICATION + " " + GameConstatnts.END);
 
     }
 }

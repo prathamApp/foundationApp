@@ -1,28 +1,31 @@
 package com.pratham.foundation.ui.contentPlayer.fact_retrieval_fragment;
 
-import android.app.Dialog;
+import android.content.Intent;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.text.SpannableString;
+import android.support.v7.widget.RecyclerView;
 import android.text.method.ScrollingMovementMethod;
-import android.text.style.BackgroundColorSpan;
-import android.view.ActionMode;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
-import android.view.Window;
+import android.widget.ImageButton;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.pratham.foundation.ApplicationClass;
 import com.pratham.foundation.R;
 import com.pratham.foundation.customView.SansButton;
 import com.pratham.foundation.customView.SansTextView;
+import com.pratham.foundation.customView.dragselectrecyclerview.DragSelectTouchListener;
+import com.pratham.foundation.customView.dragselectrecyclerview.DragSelectionProcessor;
+import com.pratham.foundation.customView.flexbox.FlexDirection;
+import com.pratham.foundation.customView.flexbox.FlexboxLayoutManager;
+import com.pratham.foundation.customView.flexbox.JustifyContent;
 import com.pratham.foundation.interfaces.OnGameClose;
 import com.pratham.foundation.modalclasses.ScienceQuestionChoice;
 import com.pratham.foundation.ui.contentPlayer.GameConstatnts;
 import com.pratham.foundation.ui.contentPlayer.fact_retrival_selection.ScienceQuestion;
-import com.pratham.foundation.utility.FC_Constants;
+import com.pratham.foundation.ui.contentPlayer.pictionary.PictionaryResult;
 import com.pratham.foundation.utility.FC_Utility;
 
 import org.androidannotations.annotations.AfterViews;
@@ -32,7 +35,10 @@ import org.androidannotations.annotations.EFragment;
 import org.androidannotations.annotations.UiThread;
 import org.androidannotations.annotations.ViewById;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
 
 import static com.pratham.foundation.utility.FC_Constants.gameFolderPath;
@@ -42,32 +48,53 @@ public class FactRetrieval extends Fragment implements FactRetrievalContract.Fac
 
     @Bean(FactRetrievalPresenter.class)
     FactRetrievalContract.FactRetrievalPresenter presenter;
-    @ViewById(R.id.paragraph)
-    TextView paragraph;
+    @ViewById(R.id.paragraphRecycler)
+    RecyclerView paragraphRecycler;
+
     @ViewById(R.id.quetion)
     TextView quetion;
 
-    @ViewById(R.id.previous)
-    SansButton previous;
-    @ViewById(R.id.submitBtn)
+    @ViewById(R.id.btn_prev)
+    ImageButton previous;
+
+    @ViewById(R.id.btn_submit)
     SansButton submitBtn;
-    @ViewById(R.id.next)
-    SansButton next;
+
+    @ViewById(R.id.btn_next)
+    ImageButton next;
 
     @ViewById(R.id.tittle)
     SansTextView tittle;
 
+    @ViewById(R.id.clear_selection)
+    SansButton clear_selection;
+
+    @ViewById(R.id.show_answer)
+    SansButton show_answer;
+
+    @ViewById(R.id.bottom_bar1)
+    LinearLayout bottom_control_container;
+
+    private String[] sentences;
     private String answer, para;
     private String contentPath, contentTitle, StudentID, resId, readingContentPath, resStartTime;
-    boolean onSdCard;
-    private List<ScienceQuestionChoice> selectedQuetion;
+    private boolean onSdCard;
+    private ArrayList<ScienceQuestionChoice> selectedQuetion;
     private int index = 0;
     private MediaPlayer mediaPlayerWrong;
     private MediaPlayer mediaPlayercorrect;
     private String startTime;
+    private ScienceQuestion questionModel;
+
+
+    private DragSelectionProcessor.Mode mMode = DragSelectionProcessor.Mode.Simple;
+    private DragSelectTouchListener mDragSelectTouchListener = null;
+    private TestAutoDataAdapter mAdapter;
+    private DragSelectionProcessor mDragSelectionProcessor;
 
     @AfterViews
     public void initiate() {
+
         Bundle bundle = getArguments();
         if (bundle != null) {
             contentPath = bundle.getString("contentPath");
@@ -75,6 +102,8 @@ public class FactRetrieval extends Fragment implements FactRetrievalContract.Fac
             resId = bundle.getString("resId");
             contentTitle = bundle.getString("contentName");
             onSdCard = bundle.getBoolean("onSdCard", false);
+
+
             if (onSdCard)
                 readingContentPath = ApplicationClass.contentSDPath + gameFolderPath + "/" + contentPath + "/";
             else
@@ -95,16 +124,22 @@ public class FactRetrieval extends Fragment implements FactRetrievalContract.Fac
 
     @Override
     public void showParagraph(ScienceQuestion questionModel) {
-        this.para = questionModel.getQuestion();
+        this.questionModel = questionModel;
+        questionModel.setQuestion(questionModel.getQuestion().replace("\n", " "));
+        //this.para = questionModel.getQuestion();
         this.selectedQuetion = questionModel.getLstquestionchoice();
+        startTime = FC_Utility.getCurrentDateTime();
         if (questionModel.getInstruction() != null && !questionModel.getInstruction().isEmpty()) {
             tittle.setText(questionModel.getInstruction());
         }
         Collections.shuffle(selectedQuetion);
-        showQuetion();
-        final int SETANSWER = 0;
-        final int CLEAR_ANSWER = 1;
-        paragraph.setCustomSelectionActionModeCallback(new ActionMode.Callback() {
+        LoadRecyclerText();
+        getAnswersInPassage();
+
+        showQuestion();
+     /*   final int SETANSWER = 0;
+        final int CLEAR_ANSWER = 1;*/
+       /* paragraph.setCustomSelectionActionModeCallback(new ActionMode.Callback() {
             @Override
             public boolean onCreateActionMode(ActionMode mode, Menu menu) {
                 menu.clear();
@@ -196,20 +231,56 @@ public class FactRetrieval extends Fragment implements FactRetrievalContract.Fac
             public void onDestroyActionMode(ActionMode mode) {
 
             }
-        });
+        });*/
+    }
+
+    @Override
+    public void showResult(ArrayList<ScienceQuestionChoice> selectedQuestion) {
+        Intent intent=new Intent(getActivity(), PictionaryResult.class);
+        intent.putExtra("quetionsFact",selectedQuestion);
+        intent.putExtra("readingContentPath",readingContentPath);
+        intent.putExtra("resourceType",GameConstatnts.FACTRETRIEVAL);
+        getActivity().startActivity(intent);
+    }
+
+    private void getAnswersInPassage() {
+        for (int queIndex = 0; queIndex < selectedQuetion.size(); queIndex++) {
+            String correctAns = selectedQuetion.get(queIndex).getCorrectAnswer().replace("\n", " ");
+            String[] correctAnsArr = correctAns.trim().split("(?<=\\.\\s)|(?<=[?!]\\s)");
+            for (int correctIndex = 0; correctIndex < correctAnsArr.length; correctIndex++) {
+                float max, temp = 0;
+                int start = -1;
+                max = checkAnswer(sentences[0], correctAnsArr[correctIndex]);
+                for (int sentenceIndx = 0; sentenceIndx < sentences.length; sentenceIndx++) {
+                    temp = checkAnswer(sentences[sentenceIndx], correctAnsArr[correctIndex]);
+                    if (temp >= max) {
+                        start = sentenceIndx;
+                        max = temp;
+                    }
+                }
+                if (start > -1) {
+                    String ansInPassage=selectedQuetion.get(queIndex).getAnsInPassage()==null? sentences[start]:selectedQuetion.get(queIndex).getAnsInPassage()+sentences[start];
+                    selectedQuetion.get(queIndex).setAnsInPassage(ansInPassage);
+                }
+            }
+        }
     }
 
     @UiThread
-    public void showQuetion() {
+    public void showQuestion() {
         try {
-            SpannableString str = new SpannableString(para);
+            mAdapter.deselectAll();
             if (selectedQuetion.get(index).getUserAns() != null && !selectedQuetion.get(index).getUserAns().isEmpty()) {
-                str.setSpan(new BackgroundColorSpan(getResources().getColor(R.color.colorBtnOrangeLight)), selectedQuetion.get(index).getStart(), selectedQuetion.get(index).getEnd(), 0);
+                mAdapter.selectRange(selectedQuetion.get(index).getStart(), selectedQuetion.get(index).getEnd(), true);
+                clear_selection.setVisibility(View.VISIBLE);
+            } else {
+                clear_selection.setVisibility(View.INVISIBLE);
             }
             quetion.setText(selectedQuetion.get(index).getSubQues());
-            startTime = FC_Utility.getCurrentDateTime();
 
-            paragraph.setText(str);
+            //   paragraph.setText(str);
+
+
             if (index == 0) {
                 previous.setVisibility(View.INVISIBLE);
             } else {
@@ -229,36 +300,190 @@ public class FactRetrieval extends Fragment implements FactRetrievalContract.Fac
         }
     }
 
-    @Click(R.id.previous)
+    private void LoadRecyclerText() {
+        String[] paragraphWords = questionModel.getQuestion().split(" ");
+        sentences = questionModel.getQuestion().trim().split("(?<=\\.\\s)|(?<=[?!]\\s)");
+        // TextAdapter arrayAdapter = new TextAdapter(Arrays.asList(paragraphWords), getActivity());
+        mAdapter = new TestAutoDataAdapter(getActivity(), Arrays.asList(paragraphWords));
+        paragraphRecycler.setAdapter(mAdapter);
+        FlexboxLayoutManager layoutManager = new FlexboxLayoutManager(getActivity());
+        layoutManager.setFlexDirection(FlexDirection.ROW);
+        layoutManager.setJustifyContent(JustifyContent.CENTER);
+        paragraphRecycler.setLayoutManager(layoutManager);
+        mAdapter.setClickListener(new TestAutoDataAdapter.ItemClickListener() {
+            @Override
+            public void onItemClick(View view, int position) {
+                // mAdapter.toggleSelection(position);
+            }
+
+            @Override
+            public boolean onItemLongClick(View view, int position) {
+                // if one item is long pressed, we start the drag selection like following:
+                // we just call this function and pass in the position of the first selected item
+                // the selection processor does take care to update the positions selection mode correctly
+                // and will correctly transform the touch events so that they can be directly applied to your adapter!!!
+                if (!mAdapter.isShowAnswerEnabled()) {
+                    mAdapter.deselectAll();
+                    mDragSelectTouchListener.startDragSelection(position);
+                    return true;
+                } else {
+                    return false;
+                }
+            }
+        });
+        mDragSelectionProcessor = new DragSelectionProcessor(new DragSelectionProcessor.ISelectionHandler() {
+            @Override
+            public HashSet<Integer> getSelection() {
+                return mAdapter.getSelection();
+            }
+
+            @Override
+            public boolean isSelected(int index) {
+                return mAdapter.getSelection().contains(index);
+            }
+
+            @Override
+            public void updateSelection(int start, int end, boolean isSelected, boolean calledFromOnStart) {
+                mAdapter.selectRange(start, end, isSelected);
+                setAnswer();
+                clear_selection.setVisibility(View.VISIBLE);
+            }
+        }).withMode(mMode);
+        mDragSelectTouchListener = new DragSelectTouchListener()
+                .withSelectListener(mDragSelectionProcessor);
+        updateSelectionListener();
+        paragraphRecycler.addOnItemTouchListener(mDragSelectTouchListener);
+
+    }
+
+    @Click(R.id.clear_selection)
+    public void clear_selection() {
+        mAdapter.deselectAll();
+        clearAns();
+        clear_selection.setVisibility(View.INVISIBLE);
+    }
+
+    @Click(R.id.show_answer)
+    public void show_answer() {
+        if (!mAdapter.isShowAnswerEnabled()) {
+            show_answer.setText("hide Answer");
+            bottom_control_container.setVisibility(View.INVISIBLE);
+            mAdapter.deselectAll();
+            String correctAns = selectedQuetion.get(index).getCorrectAnswer().replace("\n", " ");
+            String[] correctAnsArr = correctAns.trim().split("(?<=\\.\\s)|(?<=[?!]\\s)");
+            for (int correctIndex = 0; correctIndex < correctAnsArr.length; correctIndex++) {
+                float max, temp = 0;
+                int start = -1;
+                max = checkAnswer(sentences[0], correctAnsArr[correctIndex]);
+                for (int sentenceIndx = 0; sentenceIndx < sentences.length; sentenceIndx++) {
+                    temp = checkAnswer(sentences[sentenceIndx], correctAnsArr[correctIndex]);
+                    if (temp >= max) {
+                        start = sentenceIndx;
+                        max = temp;
+                    }
+                }
+                if (start > -1) {
+                    List tempList = Arrays.asList(sentences[start].split(" "));
+                    int ansStart = Collections.indexOfSubList(mAdapter.datalist, tempList);
+
+                    mAdapter.selectRange(ansStart, ansStart + tempList.size() - 1, true);
+                }
+            }
+            mAdapter.setShowAnswerEnabled(true);
+        } else {
+            show_answer.setText("show Answer");
+            mAdapter.setShowAnswerEnabled(false);
+            bottom_control_container.setVisibility(View.VISIBLE);
+            showQuestion();
+        }
+
+    }
+
+    private float checkAnswer(String originalAns, String userAns) {
+        boolean[] correctArr;
+        float perc;
+        // String originalAns = selectedAnsList.getCorrectAnswer();
+        String regex = "[\\-+.\"^?!@#%&*,:]";
+        String quesFinal = originalAns.replaceAll(regex, "");
+
+        String[] originalAnsArr = quesFinal.split(" ");
+        String[] userAnsArr = userAns.replaceAll(regex, "").split(" ");
+
+        if (originalAnsArr.length < userAnsArr.length)
+            correctArr = new boolean[userAnsArr.length];
+        else correctArr = new boolean[originalAnsArr.length];
+
+
+        for (int j = 0; j < userAnsArr.length; j++) {
+            for (int i = 0; i < originalAnsArr.length; i++) {
+                if (userAnsArr[j].equalsIgnoreCase(originalAnsArr[i])) {
+                    correctArr[i] = true;
+                    break;
+                }
+            }
+        }
+
+        int correctCnt = 0;
+        for (int x = 0; x < correctArr.length; x++) {
+            if (correctArr[x])
+                correctCnt++;
+        }
+        perc = ((float) correctCnt / (float) correctArr.length) * 100;
+        return perc;
+    }
+
+    private void updateSelectionListener() {
+        mDragSelectionProcessor.withMode(mMode);
+        // mToolbar.setSubtitle("Mode: " + mMode.name());
+    }
+
+
+    @Click(R.id.btn_prev)
     public void onPreviousClick() {
         if (selectedQuetion != null)
             if (index > 0) {
+                //  setAnswer();
                 index--;
-                showQuetion();
+                showQuestion();
             }
     }
 
-    @Click(R.id.next)
+    private void setAnswer() {
+        StringBuilder selectedText = new StringBuilder();
+        HashSet<Integer> selection = mAdapter.getSelection();
+        if (!selection.isEmpty()) {
+            List<Integer> list = new ArrayList<Integer>(selection);
+            Collections.sort(list);
+            for (int i = 0; i < list.size(); i++) {
+                selectedText.append(" ").append(mAdapter.datalist.get(list.get(i)));
+            }
+            selectedQuetion.get(index).setUserAns(selectedText.toString());
+            selectedQuetion.get(index).setStart(list.get(0));
+            selectedQuetion.get(index).setEnd(list.get(list.size() - 1));
+        }
+    }
+
+    private void clearAns() {
+        selectedQuetion.get(index).setUserAns("");
+        selectedQuetion.get(index).setStart(-1);
+        selectedQuetion.get(index).setEnd(-1);
+    }
+
+    @Click(R.id.btn_next)
     public void onNextClick() {
         if (selectedQuetion != null)
             if (index < (selectedQuetion.size() - 1)) {
+                //  setAnswer();
                 index++;
-                showQuetion();
+                showQuestion();
             }
     }
 
-    @Click(R.id.submitBtn)
+    @Click(R.id.btn_submit)
     public void onsubmitBtnClick() {
         if (selectedQuetion != null) {
             presenter.addLearntWords(selectedQuetion);
         }
-        //  GameConstatnts.playGameNext(getActivity());
-        /* Bundle bundle = GameConstatnts.findGameData(resId);
-        if (bundle != null) {
-            FC_Utility.showFragment(getActivity(), new KeywordsIdentificationFragment_(), R.id.RL_CPA,
-                    bundle, KeywordsIdentificationFragment_.class.getSimpleName());
-        }*/
-
     }
 
     @Override

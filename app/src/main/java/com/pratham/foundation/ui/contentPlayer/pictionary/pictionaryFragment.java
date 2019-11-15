@@ -763,6 +763,7 @@ public class pictionaryFragment extends Fragment implements OnGameClose {
                 Intent intent=new Intent(getActivity(),PictionaryResult.class);
                 intent.putExtra("selectlist",selectedAnsList);
                 intent.putExtra("readingContentPath",readingContentPath);
+                intent.putExtra("resourceType",GameConstatnts.READINGGAME);
                 getActivity().startActivity(intent);
             }
         } else {

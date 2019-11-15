@@ -7,8 +7,7 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_below="@id/title">
+        android:layout_height="match_parent">
 
         <Button
             android:id="@+id/submit"
@@ -24,15 +23,13 @@
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/recycler_view"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:gravity="center"
-            android:layout_marginHorizontal="@dimen/_10sdp"
-            android:clipToPadding="false"
-            android:layoutAnimation="@anim/layout_fall_down"
             android:layout_above="@id/submit"
             android:layout_below="@id/keyword"
-            android:layout_centerInParent="true" />
+            android:layout_centerInParent="true"
+            android:layout_margin="@dimen/hexa_dp"
+            android:gravity="center" />
 
 
         <com.pratham.foundation.customView.SansTextView
@@ -48,15 +45,5 @@
             android:textSize="@dimen/_30sdp" />
     </RelativeLayout>
 
-    <com.pratham.foundation.customView.SansTextView
-        android:id="@+id/title"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/red"
-        android:padding="@dimen/_5sdp"
-        android:text="Choose Keywords"
-        android:textAlignment="center"
-        android:textColor="@color/white"
-        android:textSize="25sp" />
 
 </RelativeLayout>

@@ -19,6 +19,8 @@ public class ScienceQuestionChoice implements Serializable {
     private String subQues;
     private String correctAnswer;
     private String subUrl;
+    @Ignore
+    private String ansInPassage;
 
     @Ignore
     private String userAns = "";
@@ -38,7 +40,8 @@ public class ScienceQuestionChoice implements Serializable {
     private String endTime;
 
 
-
+    @Ignore
+    private boolean isTrue;
 
 
 
@@ -145,5 +148,21 @@ public class ScienceQuestionChoice implements Serializable {
     @Override
     public String toString() {
         return "{ que :" + subQues + ", ans :" + userAns + " }";
+    }
+
+    public String getAnsInPassage() {
+        return ansInPassage;
+    }
+
+    public void setAnsInPassage(String ansInPassage) {
+        this.ansInPassage = ansInPassage;
+    }
+
+    public boolean isTrue() {
+        return isTrue;
+    }
+
+    public void setTrue(boolean aTrue) {
+        isTrue = aTrue;
     }
 }
