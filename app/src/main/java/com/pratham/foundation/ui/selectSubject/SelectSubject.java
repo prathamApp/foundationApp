@@ -18,6 +18,7 @@ import com.pratham.foundation.utility.FC_Constants;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Bean;
+import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.ViewById;
 
@@ -95,6 +96,11 @@ public class SelectSubject extends BaseActivity implements
             Intent intent = new Intent(context, HomeActivity_.class);
         intent.putExtra("nodeId", contentTableObj.getNodeId());
         context.startActivity(intent);
+    }
+
+    @Click(R.id.btn_back)
+    public void pressedBackButton(){
+        onBackPressed();
     }
 
     @Override

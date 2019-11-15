@@ -4,22 +4,49 @@
     android:layout_width="match_parent"
     android:id="@+id/rl_qr_main"
     android:layout_height="match_parent"
+    android:background="@drawable/bg_anim_fourth_layer"
     tools:context=".ui.qr_scan.QRScanActivity">
 
-    <com.pratham.foundation.customView.SansTextView
-        android:id="@+id/tv_title"
+    <RelativeLayout
+        android:id="@+id/topPanel"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/_40sdp"
-        android:layout_weight="4"
-        android:text="Scan QR"
-        android:gravity="center"
-        android:background="@color/colorBtnRedDark"
-        android:textColor="@color/white"
-        android:textSize="@dimen/_18sdp"
-        android:textStyle="bold" />
+        android:layout_height="60dp"
+        android:layout_alignParentTop="true"
+        android:background="@color/colorBtnRedDark">
+
+        <ImageButton
+            android:id="@+id/btn_back"
+            android:layout_width="50dp"
+            android:layout_height="match_parent"
+            android:layout_centerVertical="true"
+            android:background="?android:selectableItemBackground"
+            android:padding="@dimen/_5sdp"
+            android:src="@drawable/ic_left_arrow_white" />
+
+        <com.pratham.foundation.customView.SansTextViewBold
+            android:id="@+id/tv_title"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_centerInParent="true"
+            android:layout_toEndOf="@+id/btn_back"
+            android:layout_toStartOf="@+id/just_view"
+            android:layout_marginStart="@dimen/_5sdp"
+            android:layout_marginEnd="@dimen/_5sdp"
+            android:gravity="center"
+            android:text="Scan QR Code"
+            android:textColor="@color/white"
+            android:textSize="@dimen/_18sdp"
+            android:textStyle="bold" />
+
+        <View
+            android:id="@+id/just_view"
+            android:layout_width="50dp"
+            android:layout_height="match_parent"
+            android:layout_alignParentEnd="true" />
+    </RelativeLayout>
 
     <RelativeLayout
-        android:layout_below="@id/tv_title"
+        android:layout_below="@id/topPanel"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
         <LinearLayout
@@ -54,30 +81,43 @@
                 android:layout_height="0dp"
                 android:layout_weight="5.5">
 
-                    <View
+                    <ImageView
                         android:id="@+id/wall_view"
-                        android:layout_width="match_parent"
-                        android:layout_height="@dimen/_15sdp"
-                        android:layout_marginTop="@dimen/_5sdp"
-                        android:background="@drawable/certi_separator"
+                        android:layout_width="wrap_content"
+                        android:layout_height="@dimen/_10sdp"
+                        android:layout_centerHorizontal="true"
+                        android:layout_marginTop="@dimen/_10sdp"
+                        android:src="@drawable/certi_separator"
+                        android:scaleType="centerInside"
                         android:elevation="10dp"/>
+
+                <RelativeLayout
+                    android:id="@+id/rl_student_list"
+                    android:layout_width="match_parent"
+                    android:layout_marginStart="30dp"
+                    android:layout_marginEnd="30dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:paddingTop="@dimen/_10sdp"
+                    android:visibility="gone"
+                    android:paddingBottom="@dimen/_10sdp"
+                    android:layout_below="@id/wall_view">
 
                     <com.pratham.foundation.customView.SansTextView
                         android:id="@+id/tv_stud_one"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
-                        android:layout_marginTop="@dimen/_10sdp"
                         android:visibility="gone"
                         android:paddingTop="@dimen/_2sdp"
                         android:paddingBottom="@dimen/_2sdp"
-                        android:layout_below="@id/wall_view"
+                        android:layout_alignParentTop="true"
                         android:layout_marginStart="30dp"
                         android:layout_marginEnd="30dp"
                         android:textStyle="bold|italic"
-                        android:textColor="@color/text_color"
+                        android:textColor="@color/colorText"
                         android:text="Student 1 Name"
-                        android:background="@drawable/rounded_border_yellow"
+                        android:background="@drawable/qr_student_bg"
                         android:gravity="center"
                         android:textSize="25sp" />
                     <com.pratham.foundation.customView.SansTextView
@@ -93,9 +133,9 @@
                         android:layout_marginStart="30dp"
                         android:layout_marginEnd="30dp"
                         android:textStyle="bold|italic"
-                        android:textColor="@color/text_color"
+                        android:textColor="@color/colorText"
                         android:text="Student 2 Name"
-                        android:background="@drawable/rounded_border_yellow"
+                        android:background="@drawable/qr_student_bg"
                         android:gravity="center"
                         android:textSize="25sp" />
                     <com.pratham.foundation.customView.SansTextView
@@ -111,9 +151,9 @@
                         android:layout_marginStart="30dp"
                         android:layout_marginEnd="30dp"
                         android:textStyle="bold|italic"
-                        android:textColor="@color/text_color"
+                        android:textColor="@color/colorText"
                         android:text="Student 3 Name"
-                        android:background="@drawable/rounded_border_yellow"
+                        android:background="@drawable/qr_student_bg"
                         android:gravity="center"
                         android:textSize="25sp" />
                     <com.pratham.foundation.customView.SansTextView
@@ -129,9 +169,9 @@
                         android:paddingBottom="@dimen/_2sdp"
                         android:layout_marginEnd="30dp"
                         android:textStyle="bold|italic"
-                        android:textColor="@color/text_color"
+                        android:textColor="@color/colorText"
                         android:text="Student 4 Name"
-                        android:background="@drawable/rounded_border_yellow"
+                        android:background="@drawable/qr_student_bg"
                         android:gravity="center"
                         android:textSize="25sp" />
                     <com.pratham.foundation.customView.SansTextView
@@ -145,13 +185,15 @@
                         android:layout_marginStart="30dp"
                         android:layout_marginEnd="30dp"
                         android:textStyle="bold|italic"
-                        android:textColor="@color/text_color"
+                        android:textColor="@color/colorText"
                         android:paddingTop="@dimen/_2sdp"
                         android:paddingBottom="@dimen/_2sdp"
                         android:text="Student 5 Name"
-                        android:background="@drawable/rounded_border_yellow"
+                        android:background="@drawable/qr_student_bg"
                         android:gravity="center"
                         android:textSize="25sp" />
+
+                </RelativeLayout>
 
                     <RelativeLayout
                         android:id="@+id/button_rl"

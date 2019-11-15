@@ -4,24 +4,49 @@
     android:layout_height="match_parent"
     android:background="@drawable/bg_anim_fourth_layer">
 
-    <com.pratham.foundation.customView.SansTextView
-        android:id="@+id/title"
+    <RelativeLayout
+        android:id="@+id/topPanel"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/colorBtnRedDark"
-        android:drawableLeft="@mipmap/ic_launcher_new_round"
-        android:gravity="center"
-        android:paddingLeft="16dp"
-        android:text="Assign Groups"
-        android:textColor="@color/white"
-        android:textSize="32sp"
-        android:textStyle="bold" />
+        android:layout_height="60dp"
+        android:layout_alignParentTop="true"
+        android:background="@color/colorBtnRedDark">
+
+        <ImageButton
+            android:id="@+id/btn_back"
+            android:layout_width="50dp"
+            android:layout_height="match_parent"
+            android:layout_centerVertical="true"
+            android:background="?android:selectableItemBackground"
+            android:padding="@dimen/_5sdp"
+            android:src="@drawable/ic_left_arrow_white" />
+
+        <com.pratham.foundation.customView.SansTextViewBold
+            android:id="@+id/tv_title"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_centerInParent="true"
+            android:layout_toEndOf="@+id/btn_back"
+            android:layout_toStartOf="@+id/just_view"
+            android:layout_marginStart="@dimen/_5sdp"
+            android:layout_marginEnd="@dimen/_5sdp"
+            android:gravity="center"
+            android:text="Asign Groups"
+            android:textColor="@color/white"
+            android:textSize="@dimen/_18sdp"
+            android:textStyle="bold" />
+
+        <View
+            android:id="@+id/just_view"
+            android:layout_width="50dp"
+            android:layout_height="match_parent"
+            android:layout_alignParentEnd="true" />
+    </RelativeLayout>
 
     <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/scrollView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@+id/title"
+        android:layout_below="@+id/topPanel"
         android:scrollbarAlwaysDrawVerticalTrack="true">
 
         <RelativeLayout

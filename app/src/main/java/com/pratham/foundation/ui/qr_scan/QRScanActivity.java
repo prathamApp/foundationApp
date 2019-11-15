@@ -83,10 +83,11 @@ public class QRScanActivity extends BaseActivity implements
     Button btn_reset_btn;
     @ViewById(R.id.btn_get_progress)
     Button btn_get_progress;
+    @ViewById(R.id.rl_student_list)
+    RelativeLayout rl_student_list;
 
     PlayerModal playerModal;
     List<PlayerModal> playerModalList;
-    int totalStudents = 0;
     Dialog dialog;
     public ZXingScannerView mScannerView;
     Gson gson;
@@ -192,11 +193,15 @@ public class QRScanActivity extends BaseActivity implements
         mScannerView.resumeCameraPreview(this);
     }
 
+    @Click(R.id.btn_back)
+    public void pressedBackButton(){
+        onBackPressed();
+    }
+
     @Override
     public void onBackPressed() {
-        super.onBackPressed();
-
         mScannerView.stopCamera();
+        super.onBackPressed();
     }
 
     public void initCamera() {
@@ -206,7 +211,6 @@ public class QRScanActivity extends BaseActivity implements
 
     @Click(R.id.btn_reset_btn)
     public void resetQrList() {
-        totalStudents=0;
         playerModalList.clear();
         hideNameViews();
         hideButtonsAnimation(this, button_ll, tv_stud_one);
@@ -221,6 +225,7 @@ public class QRScanActivity extends BaseActivity implements
         tv_stud_four.setText("");
         tv_stud_five.setText("");
 
+        rl_student_list.setVisibility(View.GONE);
         tv_stud_one.setVisibility(View.GONE);
         tv_stud_two.setVisibility(View.GONE);
         tv_stud_three.setVisibility(View.GONE);
@@ -368,10 +373,9 @@ public class QRScanActivity extends BaseActivity implements
     }
 
     public void dialogClick(int currentStudNo) {
-        if (totalStudents < 4)
-            totalStudents++;
         switch (currentStudNo) {
             case 0:
+                rl_student_list.setVisibility(View.VISIBLE);
                 tv_stud_one.setVisibility(View.VISIBLE);
                 tv_stud_one.setText(playerModalList.get(currentStudNo).getStudentName());
                 break;
@@ -407,7 +411,7 @@ public class QRScanActivity extends BaseActivity implements
             playerModal.setStudentName(jsonobject.getString("name"));
 
             if(FC_Constants.LOGIN_MODE.equalsIgnoreCase(QR_GROUP_MODE)) {
-                if (totalStudents < 4) {
+                if (playerModalList.size() < 5) {
                     if (playerModalList.size() > 0) {
                         for (int i = 0; i < playerModalList.size(); i++)
                             if (playerModalList.get(i).getStudentID().equalsIgnoreCase(playerModal.studentID)) {
@@ -419,21 +423,20 @@ public class QRScanActivity extends BaseActivity implements
                             showDuplicateDialog("Duplicate");
                         else {
                             playerModalList.add(playerModal);
-                            dialogClick(totalStudents);
+                            dialogClick(playerModalList.size()-1);
                         }
                     } else {
                         playerModalList.add(playerModal);
-                        dialogClick(totalStudents);
+                        dialogClick(playerModalList.size()-1);
                     }
                 } else {
                     showDuplicateDialog("Complete");
                 }
             }
             else {
-                totalStudents = 0;
                 playerModalList.clear();
                 playerModalList.add(playerModal);
-                dialogClick(totalStudents);
+                dialogClick(playerModalList.size()-1);
             }
 
         } catch (Exception e) {

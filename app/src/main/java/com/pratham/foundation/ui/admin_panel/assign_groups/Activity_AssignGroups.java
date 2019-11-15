@@ -17,13 +17,12 @@ import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.Toast;
 
-
+import com.pratham.foundation.BaseActivity;
 import com.pratham.foundation.R;
 import com.pratham.foundation.customView.SansCheckBox;
 import com.pratham.foundation.database.domain.Groups;
 import com.pratham.foundation.database.domain.Village;
 import com.pratham.foundation.ui.admin_panel.AdminControlsActivity_;
-import com.pratham.foundation.BaseActivity;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Bean;
@@ -62,7 +61,12 @@ public class Activity_AssignGroups extends BaseActivity implements AssignGroupsC
     List<Village> blocksVillagesList;
     private List<Groups> dbgroupList;
     private int vilID, cnt = 0;
-    public String checkBoxIds[], group1 = "0", group2 = "0", group3 = "0", group4 = "0", group5 = "0";
+    public String[] checkBoxIds;
+    public String group1 = "0";
+    public String group2 = "0";
+    public String group3 = "0";
+    public String group4 = "0";
+    public String group5 = "0";
     private ProgressDialog progress;
 
     @AfterViews
@@ -222,7 +226,7 @@ public class Activity_AssignGroups extends BaseActivity implements AssignGroupsC
             group1 = group2 = group3 = group4 = group5 = "0";
             cnt = 0;
             for (int i = 0; i < checkBoxIds.length; i++) {
-                CheckBox checkBox = (CheckBox) findViewById(i);
+                CheckBox checkBox = findViewById(i);
                 if (checkBox.isChecked() && group1.equals("0")) {
                     group1 = (String) checkBox.getTag();
                     cnt++;
@@ -284,6 +288,11 @@ public class Activity_AssignGroups extends BaseActivity implements AssignGroupsC
         dismissProgressDialog();
         Toast.makeText(Activity_AssignGroups.this, " Groups Assigned Successfully !!!", Toast.LENGTH_SHORT).show();
         startActivity(new Intent(Activity_AssignGroups.this, AdminControlsActivity_.class));
+        onBackPressed();
+    }
+
+    @Click(R.id.btn_back)
+    public void pressedBackButton(){
         onBackPressed();
     }
 
