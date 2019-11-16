@@ -40,10 +40,6 @@ public class KeywordOptionAdapter extends RecyclerView.Adapter<KeywordOptionAdap
 
     @Override
     public void onBindViewHolder(@NonNull Myviewholder myviewholder, int position) {
-      /*  ;
-        Bitmap bitmap = BitmapCache.INSTANCE.getBitmap(R.drawable.img_7);
-        HiveDrawable drawable = new HiveDrawable(HiveLayoutManager.HORIZONTAL,bitmap);
-        myviewholder.img_img.setImageDrawable(drawable);*/
 
         int pos = position + 1;
         int topMargin = pxFromDp(myviewholder.textView.getContext(), -35);
@@ -124,7 +120,5 @@ public class KeywordOptionAdapter extends RecyclerView.Adapter<KeywordOptionAdap
         isClickable = clickable;
     }
 
-    public void addData(ScienceQuestionChoice data) {
-        datalist.add(data);
-    }
+
 }
