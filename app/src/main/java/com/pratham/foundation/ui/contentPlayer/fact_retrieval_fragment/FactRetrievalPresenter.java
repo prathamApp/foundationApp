@@ -158,7 +158,7 @@ public class FactRetrievalPresenter implements FactRetrievalContract.FactRetriev
     }
 
     private boolean checkAttemptedornot(List<ScienceQuestionChoice> selectedAnsList) {
-        for (int i = 0; i < selectedAnsList.size(); i++) {
+         for (int i = 0; i < selectedAnsList.size(); i++) {
             if (selectedAnsList.get(i).getUserAns() != null && !selectedAnsList.get(i).getUserAns().isEmpty()) {
                 return true;
             }
