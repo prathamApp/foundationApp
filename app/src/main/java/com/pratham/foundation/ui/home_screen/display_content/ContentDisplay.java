@@ -96,10 +96,10 @@ public class ContentDisplay extends BaseActivity implements ContentContract.Cont
     @ViewById(R.id.header_rl)
     RelativeLayout header_rl;
 
-    @ViewById(R.id.tv_progress)
-    TextView tv_progress;
-//    @ViewById(R.id.full_level_progressLayout)
-//    ProgressLayout level_progress;
+//    @ViewById(R.id.tv_progress)
+//    TextView tv_progress;
+    @ViewById(R.id.full_level_progressLayout)
+    ProgressLayout level_progress;
 
     @DrawableRes(R.drawable.home_header_1_bg)
     Drawable homeHeader1;
@@ -204,7 +204,8 @@ public class ContentDisplay extends BaseActivity implements ContentContract.Cont
     @UiThread
     @Override
     public void setHeaderProgress(int percent) {
-        tv_progress.setText(""+percent+"%");
+//        tv_progress.setText(""+percent+"%");
+        level_progress.setCurProgress(percent);
     }
 
     @Override

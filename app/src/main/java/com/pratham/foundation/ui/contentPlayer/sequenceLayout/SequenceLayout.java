@@ -5,11 +5,13 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.widget.ImageButton;
 
 import com.pratham.foundation.R;
+import com.pratham.foundation.customView.GridSpacingItemDecoration;
 import com.pratham.foundation.database.AppDatabase;
 import com.pratham.foundation.database.domain.ContentTable;
 import com.pratham.foundation.ui.contentPlayer.GameConstatnts;
@@ -44,6 +46,8 @@ import org.androidannotations.annotations.ViewById;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static com.pratham.foundation.utility.FC_Utility.dpToPx;
 
 @EFragment(R.layout.fragment_sequence_layout)
 public class SequenceLayout extends Fragment implements SequeanceLayoutContract.SequenceLayoutView,
@@ -94,7 +98,14 @@ public class SequenceLayout extends Fragment implements SequeanceLayoutContract.
     public void loadUI() {
         GameConstatnts.gameList = contentTableList;
         SequenceGameAdapter sequenceGameAdapter = new SequenceGameAdapter(getActivity(), contentTableList, SequenceLayout.this);
-        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
+        RecyclerView.LayoutManager mLayoutManager = new GridLayoutManager(getActivity(), 2);
+        recyclerView.setLayoutManager(mLayoutManager);
+        int dp = 12;
+        if (FC_Constants.TAB_LAYOUT)
+            dp = 20;
+        recyclerView.addItemDecoration(new GridSpacingItemDecoration(2, dpToPx(getActivity(),dp), true));
+        recyclerView.setItemAnimator(new DefaultItemAnimator());
+//        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
         recyclerView.setAdapter(sequenceGameAdapter);
     }
 

@@ -70,19 +70,18 @@
             android:text="@string/app_name"
             android:textSize="@dimen/_17sdp" />
 
-        <com.pratham.foundation.customView.SansTextViewBold
-            android:id="@+id/tv_progress"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/leftCol"
+        <com.pratham.foundation.customView.progress_layout.ProgressLayout
+            android:id="@+id/card_progressLayout"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_6sdp"
+            android:layout_marginStart="90dp"
+            android:layout_marginBottom="@dimen/_5sdp"
             android:layout_alignParentBottom="true"
-            android:layout_marginStart="@dimen/_10sdp"
-            android:layout_marginTop="@dimen/_5sdp"
-            android:elevation="20dp"
-            android:gravity="center_horizontal"
-            android:text="Progress"
-            android:textColor="@color/colorText"
-            android:textSize="@dimen/_10sdp" />
+            android:layout_toStartOf="@+id/profile_header"
+            app:c_borderWidth="1dp"
+            app:c_progress="40"
+            app:c_progressColor="@color/white"
+            app:c_progressRadius="@dimen/_3sdp" />
 
         <RelativeLayout
             android:id="@+id/profile_header"
@@ -100,7 +99,8 @@
                 android:layout_centerVertical="true"
                 android:layout_marginEnd="5dp"
                 android:layout_gravity="center_vertical|right"
-                app:wheelBackgroundColor="@color/black_overlay"
+                android:background="@drawable/new_grad_round"
+                app:wheelBackgroundColor="@color/full_transparent"
                 app:wheelCursorColor="@color/colorAccentDark"
                 app:wheelCursorHeight="20dip"
                 app:wheelFlingValue="1"

@@ -7,10 +7,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import com.pratham.foundation.R;
-import com.pratham.foundation.customView.SansButton;
-import com.pratham.foundation.customView.SansTextView;
 import com.pratham.foundation.database.domain.ContentTable;
 import com.pratham.foundation.ui.contentPlayer.GameConstatnts;
 
@@ -32,15 +32,16 @@ public class SequenceGameAdapter extends RecyclerView.Adapter<SequenceGameAdapte
     @NonNull
     @Override
     public MyViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
-        View view = LayoutInflater.from(context).inflate(R.layout.sequence_game_item, viewGroup, false);
+        View view = LayoutInflater.from(context).inflate(R.layout.content_card, viewGroup, false);
         return new MyViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder myViewHolder, int i) {
         ContentTable contentTable = gamesList.get(i);
-        myViewHolder.gameName.setText(contentTable.getNodeTitle());
-        myViewHolder.play.setOnClickListener(new View.OnClickListener() {
+        myViewHolder.title.setText(contentTable.getNodeTitle());
+        myViewHolder.ib_action_btn.setVisibility(View.GONE);
+        myViewHolder.content_card_view.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 GameConstatnts.currentGameAdapterposition=myViewHolder.getAdapterPosition();
@@ -55,16 +56,18 @@ public class SequenceGameAdapter extends RecyclerView.Adapter<SequenceGameAdapte
         return gamesList.size();
     }
 
-    class MyViewHolder extends RecyclerView.ViewHolder {
-        ImageView icon;
-        SansButton play;
-        SansTextView gameName;
+    public class MyViewHolder extends RecyclerView.ViewHolder {
+        public TextView title;
+        public ImageView thumbnail, ib_action_btn;
+        public RelativeLayout content_card_view;
 
-        public MyViewHolder(@NonNull View itemView) {
-            super(itemView);
-            icon = itemView.findViewById(R.id.gameIcon);
-            play = itemView.findViewById(R.id.play);
-            gameName = itemView.findViewById(R.id.gameName);
+        public MyViewHolder(View view) {
+            super(view);
+            title = view.findViewById(R.id.content_title);
+            thumbnail = view.findViewById(R.id.content_thumbnail);
+            content_card_view = view.findViewById(R.id.content_card_view);
+            ib_action_btn = view.findViewById(R.id.ib_action_btn);
         }
     }
+
 }

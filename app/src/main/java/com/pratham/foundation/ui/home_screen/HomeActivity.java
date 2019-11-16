@@ -21,6 +21,7 @@ import android.widget.TextView;
 
 import com.pratham.foundation.BaseActivity;
 import com.pratham.foundation.R;
+import com.pratham.foundation.customView.progress_layout.ProgressLayout;
 import com.pratham.foundation.database.AppDatabase;
 import com.pratham.foundation.modalclasses.EventMessage;
 import com.pratham.foundation.services.shared_preferences.FastSave;
@@ -69,8 +70,8 @@ public class HomeActivity extends BaseActivity implements LevelChanged, CursorWh
     ViewPager viewpager;
     @ViewById(R.id.tv_studentName)
     TextView tv_studentName;
-    @ViewById(R.id.tv_progress)
-    public static TextView tv_progress;
+    @ViewById(R.id.card_progressLayout)
+    public static ProgressLayout tv_progress;
     @ViewById(R.id.tabs)
     TabLayout tabLayout;
     @ViewById(R.id.header_rl)
@@ -105,7 +106,7 @@ public class HomeActivity extends BaseActivity implements LevelChanged, CursorWh
         sub_nodeId = getIntent().getStringExtra("nodeId");
         FC_Constants.currentSelectedLanguage = FastSave.getInstance().getString(FC_Constants.LANGUAGE, "");
         setupViewPager(viewpager);
-        tv_progress.setText("0%");
+        tv_progress.setCurProgress(0);
         levelChanged = HomeActivity.this;
         count = 0;
         tabLayout.setupWithViewPager(viewpager);

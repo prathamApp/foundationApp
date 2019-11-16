@@ -280,8 +280,8 @@ public class FunFragment extends Fragment implements FunContract.FunView,
 
     @Override
     public void setLevelprogress(int percent) {
-        tv_progress.setText(percent+"%");
-//        level_progress.setCurProgress(percent);
+//        tv_progress.setText(percent+"%");
+        tv_progress.setCurProgress(percent);
     }
 
     private Dialog downloadDialog;

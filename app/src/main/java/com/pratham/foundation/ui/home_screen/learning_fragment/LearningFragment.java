@@ -287,8 +287,8 @@ public class LearningFragment extends Fragment implements LearningContract.Learn
 
     @Override
     public void setLevelprogress(int percent) {
-        tv_progress.setText(percent + "%");
-//        level_progress.setCurProgress(percent);
+//        tv_progress.setText(percent + "%");
+        tv_progress.setCurProgress(percent);
     }
 
     private Dialog downloadDialog;
