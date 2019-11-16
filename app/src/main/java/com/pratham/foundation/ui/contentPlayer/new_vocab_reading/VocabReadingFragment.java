@@ -262,7 +262,6 @@ public class VocabReadingFragment extends Fragment implements
                 showInstructions();
         }
     }
-
     //Insert Instuctions
     private void showInstructions() {
     }

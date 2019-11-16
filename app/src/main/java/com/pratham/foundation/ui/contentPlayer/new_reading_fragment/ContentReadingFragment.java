@@ -41,6 +41,7 @@ import com.pratham.foundation.customView.GifView;
 import com.pratham.foundation.customView.SansTextView;
 import com.pratham.foundation.customView.display_image_dialog.Activity_DisplayImage_;
 import com.pratham.foundation.interfaces.OnGameClose;
+import com.pratham.foundation.modalclasses.EventMessage;
 import com.pratham.foundation.modalclasses.ModalParaSubMenu;
 import com.pratham.foundation.services.TTSService;
 import com.pratham.foundation.services.stt.ContinuousSpeechService_New;
@@ -55,6 +56,8 @@ import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EFragment;
 import org.androidannotations.annotations.UiThread;
 import org.androidannotations.annotations.ViewById;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -1279,6 +1282,19 @@ public class ContentReadingFragment extends Fragment implements
 //                setResult(Activity.RESULT_OK, returnIntent);
         }
         exitDBEntry();
+    }
+
+    @SuppressLint("SetTextI18n")
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void messageReceived(EventMessage message) {
+        if (message != null) {
+            if (message.getMessage().equalsIgnoreCase(FC_Constants.INFO_CLICKED))
+                showInstructions();
+        }
+    }
+
+    //Insert Instuctions
+    private void showInstructions() {
     }
 
     @Override

@@ -1,5 +1,6 @@
 package com.pratham.foundation.ui.contentPlayer;
 
+import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.content.Intent;
 import android.graphics.Color;
@@ -17,13 +18,17 @@ import com.pratham.foundation.R;
 import com.pratham.foundation.interfaces.OnGameClose;
 import com.pratham.foundation.modalclasses.EventMessage;
 import com.pratham.foundation.ui.contentPlayer.sequenceLayout.SequenceLayout_;
+import com.pratham.foundation.utility.FC_Constants;
 import com.pratham.foundation.utility.FC_Utility;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EActivity;
+import org.androidannotations.annotations.UiThread;
 import org.androidannotations.annotations.ViewById;
 import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import static com.pratham.foundation.utility.FC_Constants.INFO_CLICKED;
 import static com.pratham.foundation.utility.FC_Constants.dialog_btn_cancel;
@@ -62,6 +67,7 @@ public class ContentPlayerActivity extends BaseActivity {
                 bundle, SequenceLayout_.class.getSimpleName());
     }
 
+    @UiThread
     @Click(R.id.floating_back)
     public void pressedFloatingBackBtn(){
         onBackPressed();
@@ -79,11 +85,21 @@ public class ContentPlayerActivity extends BaseActivity {
         EventBus.getDefault().unregister(this);
     }
 
+    @UiThread
     @Click(R.id.floating_info)
     public void pressedFloatingInfo(){
         EventMessage eventMessage = new EventMessage();
         eventMessage.setMessage(INFO_CLICKED);
         EventBus.getDefault().post(eventMessage);
+    }
+
+    @SuppressLint("SetTextI18n")
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void messageReceived(EventMessage message) {
+        if (message != null) {
+            if (message.getMessage().equalsIgnoreCase(FC_Constants.LEVEL_CHANGED)) {
+            }
+        }
     }
 
     @Override
