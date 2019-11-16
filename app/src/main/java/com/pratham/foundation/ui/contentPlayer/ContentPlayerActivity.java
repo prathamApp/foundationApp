@@ -11,11 +11,11 @@ import android.view.View;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.pratham.foundation.BaseActivity;
 import com.pratham.foundation.R;
 import com.pratham.foundation.interfaces.OnGameClose;
+import com.pratham.foundation.modalclasses.EventMessage;
 import com.pratham.foundation.ui.contentPlayer.sequenceLayout.SequenceLayout_;
 import com.pratham.foundation.utility.FC_Utility;
 
@@ -23,7 +23,9 @@ import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.ViewById;
+import org.greenrobot.eventbus.EventBus;
 
+import static com.pratham.foundation.utility.FC_Constants.INFO_CLICKED;
 import static com.pratham.foundation.utility.FC_Constants.dialog_btn_cancel;
 
 
@@ -65,9 +67,23 @@ public class ContentPlayerActivity extends BaseActivity {
         onBackPressed();
     }
 
+    @Override
+    public void onStart() {
+        super.onStart();
+        EventBus.getDefault().register(this);
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        EventBus.getDefault().unregister(this);
+    }
+
     @Click(R.id.floating_info)
     public void pressedFloatingInfo(){
-        Toast.makeText(this, "INFO", Toast.LENGTH_SHORT).show();
+        EventMessage eventMessage = new EventMessage();
+        eventMessage.setMessage(INFO_CLICKED);
+        EventBus.getDefault().post(eventMessage);
     }
 
     @Override

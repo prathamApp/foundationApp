@@ -35,6 +35,7 @@ import com.pratham.foundation.R;
 import com.pratham.foundation.customView.GifView;
 import com.pratham.foundation.customView.SansTextView;
 import com.pratham.foundation.interfaces.OnGameClose;
+import com.pratham.foundation.modalclasses.EventMessage;
 import com.pratham.foundation.modalclasses.ModalParaSubMenu;
 import com.pratham.foundation.services.TTSService;
 import com.pratham.foundation.services.stt.ContinuousSpeechService_New;
@@ -49,6 +50,8 @@ import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EFragment;
 import org.androidannotations.annotations.UiThread;
 import org.androidannotations.annotations.ViewById;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -150,7 +153,6 @@ public class VocabReadingFragment extends Fragment implements
     bundle, ContentReadingFragment_.class.getSimpleName());
 */
 
-
     @AfterViews
     public void initialize() {
         silence_outer_layout.setVisibility(View.GONE);
@@ -172,8 +174,6 @@ public class VocabReadingFragment extends Fragment implements
         animationDrawable.setEnterFadeDuration(4500);
         animationDrawable.setExitFadeDuration(4500);
         animationDrawable.start();
-
-
         context = getActivity();
         presenter.setView(VocabReadingFragment.this);
         showLoader();
@@ -219,10 +219,11 @@ public class VocabReadingFragment extends Fragment implements
 
     public Dialog myLoadingDialog;
     boolean dialogFlg = false;
+
     @UiThread
     @Override
     public void showLoader() {
-        if(!dialogFlg) {
+        if (!dialogFlg) {
             dialogFlg = true;
             myLoadingDialog = new Dialog(context);
             myLoadingDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -236,7 +237,7 @@ public class VocabReadingFragment extends Fragment implements
     @UiThread
     @Override
     public void dismissLoadingDialog() {
-        if(dialogFlg) {
+        if (dialogFlg) {
             if (myLoadingDialog != null)
                 myLoadingDialog.dismiss();
         }
@@ -251,6 +252,19 @@ public class VocabReadingFragment extends Fragment implements
     @Override
     public void setParaAudio(String paraAudio) {
         storyAudio = paraAudio;
+    }
+
+    @SuppressLint("SetTextI18n")
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void messageReceived(EventMessage message) {
+        if (message != null) {
+            if (message.getMessage().equalsIgnoreCase(FC_Constants.INFO_CLICKED))
+                showInstructions();
+        }
+    }
+
+    //Insert Instuctions
+    private void showInstructions() {
     }
 
     @UiThread

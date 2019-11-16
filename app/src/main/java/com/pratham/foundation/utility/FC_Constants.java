@@ -45,6 +45,7 @@ public class FC_Constants {
     public static final String FILE_DOWNLOAD_ERROR= "file_download_error";
     public static final String FILE_DOWNLOAD_COMPLETE = "file_download_complete";
     public static final String LEVEL_CHANGED= "level_changed";
+    public static final String INFO_CLICKED = "info_clicked";
     public static final String BACK_PRESSED= "back_pressed";
     public static final String FRAGMENT_BACK_PRESSED= "fragment_back_pressed";
     public static final String DOWNLOAD_COMPLETE = "download_complete";
