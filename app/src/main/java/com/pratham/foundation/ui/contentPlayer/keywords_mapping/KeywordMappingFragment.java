@@ -11,6 +11,7 @@ import android.widget.TextView;
 import com.pratham.foundation.ApplicationClass;
 import com.pratham.foundation.R;
 import com.pratham.foundation.interfaces.OnGameClose;
+import com.pratham.foundation.interfaces.ShowInstruction;
 import com.pratham.foundation.modalclasses.ScienceQuestionChoice;
 import com.pratham.foundation.ui.contentPlayer.GameConstatnts;
 import com.pratham.foundation.ui.contentPlayer.fact_retrival_selection.ScienceQuestion;
@@ -29,7 +30,7 @@ import java.util.List;
 import static com.pratham.foundation.utility.FC_Constants.gameFolderPath;
 
 @EFragment(R.layout.fragment_keyword_mapping)
-public class KeywordMappingFragment extends Fragment implements KeywordMappingContract.KeywordMappingView, OnGameClose {
+public class KeywordMappingFragment extends Fragment implements KeywordMappingContract.KeywordMappingView, OnGameClose, ShowInstruction {
 
     @Bean(KeywordMappingPresenterImp.class)
     KeywordMappingContract.KeywordMappingPresenter presenter;
@@ -69,7 +70,8 @@ public class KeywordMappingFragment extends Fragment implements KeywordMappingCo
                 readingContentPath = ApplicationClass.foundationPath + gameFolderPath + "/" + contentPath + "/";
 
         }
-
+        //showInstructionDialog(getActivity(), GameConstatnts.KEYWORD_MAPPING);
+        // GameConstatnts.showInstructionDialog(this, getActivity(), GameConstatnts.KEYWORD_MAPPING);
         presenter.setView(KeywordMappingFragment.this, resId, readingContentPath);
         presenter.getData();
         resStartTime = FC_Utility.getCurrentDateTime();
@@ -77,9 +79,24 @@ public class KeywordMappingFragment extends Fragment implements KeywordMappingCo
 
     }
 
+    @Override
+    public void play() {
+      /*  presenter.setView(KeywordMappingFragment.this, resId, readingContentPath);
+        presenter.getData();
+        resStartTime = FC_Utility.getCurrentDateTime();
+        presenter.addScore(0, "", 0, 0, resStartTime, FC_Utility.getCurrentDateTime(), GameConstatnts.KEYWORD_MAPPING + " " + GameConstatnts.START);*/
+    }
+
+    @Override
+    public void exit() {
+        getActivity().finish();
+    }
+
+
     @UiThread
     @Override
     public void loadUI(List<ScienceQuestion> list) {
+        //show instruction dialog
         keywordmapping = list.get(index);
         keyword.setText(list.get(index).getQuestion());
         final GridLayoutManager gridLayoutManager;
@@ -113,6 +130,7 @@ public class KeywordMappingFragment extends Fragment implements KeywordMappingCo
 
     }
 
+
     private int getCorrectCnt(List<ScienceQuestionChoice> lstquestionchoice) {
         int correctCnt = 0;
         for (int i = 0; i < lstquestionchoice.size(); i++) {
@@ -125,7 +143,7 @@ public class KeywordMappingFragment extends Fragment implements KeywordMappingCo
 
     @Override
     public void showResult(ScienceQuestion selectedAnsList) {
-        submit.setText("Next");
+
         keywordOptionAdapter.setClickable(false);
         for (int index = 0; index < recycler_view.getChildCount(); index++) {
             TextView textView = (TextView) recycler_view.getChildAt(index);
@@ -163,14 +181,19 @@ public class KeywordMappingFragment extends Fragment implements KeywordMappingCo
 
     @Click(R.id.submit)
     public void submitClick() {
-        if (!isSubmitted) {
-            isSubmitted = true;
-            if (keywordOptionAdapter != null && keywordmapping != null) {
-                List<ScienceQuestionChoice> selectedoptionList = keywordOptionAdapter.getSelectedOptionList();
-                presenter.addLearntWords(keywordmapping, selectedoptionList);
+        if (keywordOptionAdapter != null && keywordmapping != null) {
+            List<ScienceQuestionChoice> selectedoptionList = keywordOptionAdapter.getSelectedOptionList();
+            if (selectedoptionList != null && selectedoptionList.size() > 0) {
+                if(isSubmitted){
+                    GameConstatnts.playGameNext(getActivity(), GameConstatnts.FALSE, this);
+                }else {
+                    isSubmitted = true;
+                    presenter.addLearntWords(keywordmapping, selectedoptionList);
+                    submit.setText("Next");
+                }
+            }else {
+                GameConstatnts.playGameNext(getActivity(), GameConstatnts.TRUE, (OnGameClose) this);
             }
-        } else {
-
         }
     }
 
@@ -178,4 +201,6 @@ public class KeywordMappingFragment extends Fragment implements KeywordMappingCo
     public void gameClose() {
         presenter.addScore(0, "", 0, 0, resStartTime, FC_Utility.getCurrentDateTime(), GameConstatnts.KEYWORD_MAPPING + " " + GameConstatnts.END);
     }
+
+
 }

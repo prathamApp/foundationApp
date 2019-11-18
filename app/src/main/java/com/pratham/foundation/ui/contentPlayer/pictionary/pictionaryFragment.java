@@ -39,6 +39,7 @@ import com.pratham.foundation.database.domain.Score;
 import com.pratham.foundation.interfaces.OnGameClose;
 import com.pratham.foundation.modalclasses.ScienceQuestionChoice;
 import com.pratham.foundation.ui.contentPlayer.GameConstatnts;
+import com.pratham.foundation.ui.contentPlayer.fact_retrieval_fragment.FactRetrieval;
 import com.pratham.foundation.ui.contentPlayer.fact_retrival_selection.ScienceQuestion;
 import com.pratham.foundation.utility.FC_Constants;
 import com.pratham.foundation.utility.FC_Utility;
@@ -764,7 +765,7 @@ public class pictionaryFragment extends Fragment implements OnGameClose {
                 intent.putExtra("selectlist",selectedAnsList);
                 intent.putExtra("readingContentPath",readingContentPath);
                 intent.putExtra("resourceType",GameConstatnts.READINGGAME);
-                getActivity().startActivity(intent);
+               startActivityForResult(intent,111);
             }
         } else {
             GameConstatnts.playGameNext(getActivity(), GameConstatnts.TRUE, this);
@@ -861,6 +862,14 @@ public class pictionaryFragment extends Fragment implements OnGameClose {
     @Override
     public void gameClose() {
         addScore(0, "", 0, 0, resStartTime, FC_Utility.getCurrentDateTime(), GameConstatnts.READINGGAME + " " + GameConstatnts.END);
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(requestCode==111){
+            GameConstatnts.playGameNext(getActivity(), GameConstatnts.FALSE, this );
+        }
     }
 }
 

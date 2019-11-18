@@ -49,7 +49,7 @@ public class ContentPlayerActivity extends BaseActivity {
         Intent intent = getIntent();
         nodeID = intent.getStringExtra("nodeID");
 /*
-        contentPath = intent.getStringExtra("contentPath");
+ contentPath = intent.getStringExtra("contentPath");
         StudentID = intent.getStringExtra("StudentID");
         resId = intent.getStringExtra("resId");
         contentTitle = intent.getStringExtra("contentName");

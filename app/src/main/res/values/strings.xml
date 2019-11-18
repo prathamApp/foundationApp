@@ -344,4 +344,9 @@
         <item>ur</item>
         <item>pa</item>
     </string-array>
+
+
+
+    <string name="chKeywords">संबंधित शब्दों को पहचाने</string>
+    <string name="ShowMeAndroid">खोपड़ी दिखाओ.</string>
 </resources>

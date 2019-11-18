@@ -1,6 +1,7 @@
 package com.pratham.foundation.ui.contentPlayer;
 
 import android.app.Activity;
+import android.app.ActivityOptions;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
@@ -13,8 +14,10 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.pratham.foundation.R;
+import com.pratham.foundation.customView.SansTextView;
 import com.pratham.foundation.database.domain.ContentTable;
 import com.pratham.foundation.interfaces.OnGameClose;
+import com.pratham.foundation.interfaces.ShowInstruction;
 import com.pratham.foundation.ui.contentPlayer.doing.DoingFragment;
 import com.pratham.foundation.ui.contentPlayer.fact_retrieval_fragment.FactRetrieval_;
 import com.pratham.foundation.ui.contentPlayer.fact_retrival_selection.Fact_Retrieval_Fragment_;
@@ -64,6 +67,8 @@ public class GameConstatnts {
     public static final String END = "end";
     public static final String VIDEO = "Video";
 
+    public static boolean playInsequence = false;
+
 
     public static List<ContentTable> gameList;
     public static int currentGameAdapterposition;
@@ -108,7 +113,6 @@ public class GameConstatnts {
     }
 
     public static void playGameNext(Context context, boolean flag, OnGameClose onGameClose) {
-
         final Dialog dialog = new Dialog(context);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
@@ -135,6 +139,15 @@ public class GameConstatnts {
             } else {
                 dia_title.setText("Do you want to exit?");
             }
+        } else {
+            if (!playInsequence) {
+                if (!flag) {
+                    dia_title.setText("activity completed");
+                    dia_btn_green.setText("Ok");
+                } else {
+                    dia_title.setText("Do you want to exit?");
+                }
+            }
         }
 
 
@@ -143,10 +156,15 @@ public class GameConstatnts {
         dia_btn_green.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //play next game
-                onGameClose.gameClose();
-                plaGame(context);
                 dialog.dismiss();
+                if (playInsequence) {
+                    onGameClose.gameClose();
+                    plaGame(context);
+                } else {
+                    ((ContentPlayerActivity) context).getSupportFragmentManager().popBackStack(SequenceLayout_.class.getSimpleName(), 0);
+                }
+                //play next game
+
             }
         });
 
@@ -167,7 +185,6 @@ public class GameConstatnts {
             }
         });
 
-
     }
 
     public static void plaGame(Context context) {
@@ -186,79 +203,8 @@ public class GameConstatnts {
             bundle.putString("contentName", contentTable1.getNodeTitle());
             bundle.putBoolean("onSdCard", true);
             bundle.putString("jsonName", contentTable1.getResourceType());
+            playInsequence = true;
             if (contentTable1 != null)
-
-            /*    switch (contentTable1.getResourceType()) {
-                    case GameConstatnts.FACTRETRIEVAL:
-                        FC_Utility.showFragment((Activity) context, new FactRetrieval_(), R.id.RL_CPA,
-                                bundle, FactRetrieval_.class.getSimpleName());
-                        break;
-
-                    case GameConstatnts.KEYWORD_IDENTIFICATION:
-                        FC_Utility.showFragment((Activity) context, new KeywordsIdentificationFragment_(), R.id.RL_CPA,
-                                bundle, KeywordsIdentificationFragment_.class.getSimpleName());
-                        break;
-
-                    case GameConstatnts.KEYWORD_MAPPING:
-                        FC_Utility.showFragment((Activity) context, new KeywordMappingFragment_(), R.id.RL_CPA,
-                                bundle, KeywordMappingFragment_.class.getSimpleName());
-                        break;
-                    case GameConstatnts.PARAGRAPH_WRITING:
-                        FC_Utility.showFragment((Activity) context, new ParagraphWritingFragment_(), R.id.RL_CPA,
-                                bundle, ParagraphWritingFragment_.class.getSimpleName());
-                        break;
-
-                    case GameConstatnts.LISTNING_AND_WRITTING:
-                        FC_Utility.showFragment((Activity) context, new ListeningAndWritting_(), R.id.RL_CPA,
-                                bundle, ListeningAndWritting_.class.getSimpleName());
-                        break;
-                    case "106":
-                        FC_Utility.showFragment((Activity) context, new ReadingFragment(), R.id.RL_CPA,
-                                bundle, ReadingFragment.class.getSimpleName());
-                        break;
-                    case "108":
-                        FC_Utility.showFragment((Activity) context, new McqFillInTheBlanksFragment(), R.id.RL_CPA,
-                                bundle, McqFillInTheBlanksFragment.class.getSimpleName());
-                        break;
-                    case "109":
-                        FC_Utility.showFragment((Activity) context, new TrueFalseFragment(), R.id.RL_CPA,
-                                bundle, TrueFalseFragment.class.getSimpleName());
-                        break;
-                    case "110":
-                        FC_Utility.showFragment((Activity) context, new FillInTheBlanksFragment(), R.id.RL_CPA,
-                                bundle, FillInTheBlanksFragment.class.getSimpleName());
-                        break;
-                    case GameConstatnts.READINGGAME:
-                        FC_Utility.showFragment((Activity) context, new pictionaryFragment(), R.id.RL_CPA,
-                                bundle, pictionaryFragment.class.getSimpleName());
-                        break;
-                    case "112":
-                        FC_Utility.showFragment((Activity) context, new Fact_Retrieval_Fragment_(), R.id.RL_CPA,
-                                bundle, Fact_Retrieval_Fragment_.class.getSimpleName());
-                        break;
-                    case GameConstatnts.PICTIONARYFRAGMENT:
-                        FC_Utility.showFragment((Activity) context, new ContentReadingFragment_(), R.id.RL_CPA,
-                                bundle, ContentReadingFragment_.class.getSimpleName());
-                        break;
-                    case GameConstatnts.THINKANDWRITE:
-                    case GameConstatnts.DOING_ACT_READ:
-                    case GameConstatnts.DOING_ACT_VIDEO:
-                        FC_Utility.showFragment((Activity) context, new DoingFragment(), R.id.RL_CPA,
-                                bundle, DoingFragment.class.getSimpleName());
-                        break;
-
-                    case GameConstatnts.VIDEO:
-                        Intent intent = new Intent(context, ActivityVideoView_.class);
-                        intent.putExtra("contentPath", contentTable1.getResourcePath());
-                        intent.putExtra("StudentID", FC_Constants.currentStudentID);
-                        intent.putExtra("resId", contentTable1.getResourceId());
-                        intent.putExtra("contentName", contentTable1.getNodeTitle());
-                        intent.putExtra("onSdCard", true);
-                        context.startActivity(intent);
-//                FC_Utility.showFragment((Activity) context, new ActivityVideoView_(), R.id.RL_CPA,
-//                        bundle, ActivityVideoView.class.getSimpleName());
-                        break;
-                }*/
                 switch (contentTable1.getResourceType()) {
                     case GameConstatnts.FACTRETRIEVAL:
                         FC_Utility.showFragment((Activity) context, new FactRetrieval_(), R.id.RL_CPA,
@@ -342,5 +288,22 @@ public class GameConstatnts {
             return 5;
         }
         return 1;
+    }
+
+    public static void showInstructionDialog(ShowInstruction showInstruction, Activity context, String resorcetype) {
+        InstructionsDialog instructionsDialog = new InstructionsDialog(context, showInstruction, resorcetype);
+        instructionsDialog.show();
+
+    }
+
+    public static void showGameInfo(Context context, String info) {
+        final Dialog dialog = new Dialog(context);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        dialog.setContentView(R.layout.fc_custom_info_dialog);
+        SansTextView infoText = dialog.findViewById(R.id.info);
+        if (info != null)
+            infoText.setText(info);
+        dialog.show();
     }
 }

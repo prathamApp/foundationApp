@@ -6,7 +6,7 @@
     android:background="@drawable/bg_anim_fourth_layer"
     android:orientation="vertical">
 
-    <com.pratham.foundation.customView.SansTextView
+   <!-- <com.pratham.foundation.customView.SansTextView
         android:id="@+id/tittle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -15,8 +15,10 @@
         android:padding="@dimen/_5sdp"
         android:textAlignment="center"
         android:textColor="@color/white"
-        android:textSize="30sp" />
-
+        android:textSize="30sp" />-->
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="60dp"/>
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
@@ -92,7 +94,7 @@
         android:layout_weight=".5"
         android:layout_margin="@dimen/_10sdp"
         android:orientation="horizontal">
-        <com.pratham.foundation.customView.fonts.SansButton
+        <com.pratham.foundation.customView.SansButton
             android:id="@+id/show_me_keywords"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
@@ -105,7 +107,7 @@
             android:text="show Answer"
             android:textColor="@color/white"
             android:textSize="@dimen/_13sdp"/>
-        <com.pratham.foundation.customView.fonts.SansButton
+        <com.pratham.foundation.customView.SansButton
             android:id="@+id/btn_submit"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
@@ -113,6 +115,7 @@
             android:layout_marginEnd="@dimen/_8sdp"
             android:layout_marginBottom="@dimen/_5sdp"
             android:layout_alignParentEnd="true"
+            android:paddingHorizontal="@dimen/_10sdp"
             android:background="@drawable/green_button"
             android:elevation="5dp"
             android:text="submit"
