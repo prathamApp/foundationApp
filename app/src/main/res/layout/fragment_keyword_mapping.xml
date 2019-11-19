@@ -17,12 +17,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
-            android:layout_margin="@dimen/_10sdp"
-            android:background="@drawable/green_button"
-            android:elevation="@dimen/_5sdp"
             android:text="Submit"
-            android:textColor="@color/white"
-            android:textSize="@dimen/_13sdp" />
+            style="@style/submitbtn" />
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/recycler_view"
@@ -39,13 +35,8 @@
             android:id="@+id/keyword"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="@dimen/_10sdp"
-            android:background="@drawable/dialog_bg"
-            android:elevation="5dp"
-            android:padding="@dimen/_10sdp"
             android:text="@string/age_3_to_6"
-            android:textAlignment="center"
-            android:textSize="@dimen/_30sdp" />
+            style="@style/question"/>
     </RelativeLayout>
 
 

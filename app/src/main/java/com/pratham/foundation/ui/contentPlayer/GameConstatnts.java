@@ -1,7 +1,6 @@
 package com.pratham.foundation.ui.contentPlayer;
 
 import android.app.Activity;
-import android.app.ActivityOptions;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
@@ -55,7 +54,7 @@ public class GameConstatnts {
     public static final String DOING = "doing_act";
     public static final String FACT_RETRIAL_CLICK = "fact_retrial_click";
     public static final String FACTRETRIEVAL = "factRetrieval";
-    public static final String READINGGAME = "ShowMeAndroid";
+    public static final String SHOW_ME_ANDROID = "ShowMeAndroid";
     public static final String THINKANDWRITE = "TAW";
     public static final String DOING_ACT_READ = "doing_act_read";
     public static final String LetterWriting = "letter";
@@ -247,7 +246,7 @@ public class GameConstatnts {
                         FC_Utility.showFragment((Activity) context, new FillInTheBlanksFragment(), R.id.RL_CPA,
                                 bundle, FillInTheBlanksFragment.class.getSimpleName());
                         break;
-                    case GameConstatnts.READINGGAME:
+                    case GameConstatnts.SHOW_ME_ANDROID:
                         FC_Utility.showFragment((Activity) context, new pictionaryFragment(), R.id.RL_CPA,
                                 bundle, pictionaryFragment.class.getSimpleName());
                         break;

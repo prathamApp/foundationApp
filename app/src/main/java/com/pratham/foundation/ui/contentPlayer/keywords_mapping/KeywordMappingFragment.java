@@ -12,6 +12,7 @@ import com.pratham.foundation.ApplicationClass;
 import com.pratham.foundation.R;
 import com.pratham.foundation.interfaces.OnGameClose;
 import com.pratham.foundation.interfaces.ShowInstruction;
+import com.pratham.foundation.modalclasses.EventMessage;
 import com.pratham.foundation.modalclasses.ScienceQuestionChoice;
 import com.pratham.foundation.ui.contentPlayer.GameConstatnts;
 import com.pratham.foundation.ui.contentPlayer.fact_retrival_selection.ScienceQuestion;
@@ -23,6 +24,9 @@ import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EFragment;
 import org.androidannotations.annotations.UiThread;
 import org.androidannotations.annotations.ViewById;
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.Collections;
 import java.util.List;
@@ -30,7 +34,7 @@ import java.util.List;
 import static com.pratham.foundation.utility.FC_Constants.gameFolderPath;
 
 @EFragment(R.layout.fragment_keyword_mapping)
-public class KeywordMappingFragment extends Fragment implements KeywordMappingContract.KeywordMappingView, OnGameClose, ShowInstruction {
+public class KeywordMappingFragment extends Fragment implements KeywordMappingContract.KeywordMappingView, OnGameClose {
 
     @Bean(KeywordMappingPresenterImp.class)
     KeywordMappingContract.KeywordMappingPresenter presenter;
@@ -55,8 +59,6 @@ public class KeywordMappingFragment extends Fragment implements KeywordMappingCo
 
     @AfterViews
     protected void initiate() {
-        // super.onCreate(savedInstanceState);
-        // setContentView(R.layout.activity_keyword_mapping2);
         Bundle bundle = getArguments();
         if (bundle != null) {
             contentPath = bundle.getString("contentPath");
@@ -70,8 +72,7 @@ public class KeywordMappingFragment extends Fragment implements KeywordMappingCo
                 readingContentPath = ApplicationClass.foundationPath + gameFolderPath + "/" + contentPath + "/";
 
         }
-        //showInstructionDialog(getActivity(), GameConstatnts.KEYWORD_MAPPING);
-        // GameConstatnts.showInstructionDialog(this, getActivity(), GameConstatnts.KEYWORD_MAPPING);
+        EventBus.getDefault().register(this);
         presenter.setView(KeywordMappingFragment.this, resId, readingContentPath);
         presenter.getData();
         resStartTime = FC_Utility.getCurrentDateTime();
@@ -79,18 +80,7 @@ public class KeywordMappingFragment extends Fragment implements KeywordMappingCo
 
     }
 
-    @Override
-    public void play() {
-      /*  presenter.setView(KeywordMappingFragment.this, resId, readingContentPath);
-        presenter.getData();
-        resStartTime = FC_Utility.getCurrentDateTime();
-        presenter.addScore(0, "", 0, 0, resStartTime, FC_Utility.getCurrentDateTime(), GameConstatnts.KEYWORD_MAPPING + " " + GameConstatnts.START);*/
-    }
 
-    @Override
-    public void exit() {
-        getActivity().finish();
-    }
 
 
     @UiThread
@@ -202,5 +192,14 @@ public class KeywordMappingFragment extends Fragment implements KeywordMappingCo
         presenter.addScore(0, "", 0, 0, resStartTime, FC_Utility.getCurrentDateTime(), GameConstatnts.KEYWORD_MAPPING + " " + GameConstatnts.END);
     }
 
+    @Override
+    public void onStop() {
+        EventBus.getDefault().unregister(this);
+        super.onStop();
+    }
 
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onMessageEvent(EventMessage event) {
+        GameConstatnts.showGameInfo(getActivity(),keywordmapping.getInstruction());
+    }
 }

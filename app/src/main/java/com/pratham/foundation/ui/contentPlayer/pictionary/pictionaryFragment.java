@@ -17,6 +17,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.GridLayout;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
@@ -37,13 +38,16 @@ import com.pratham.foundation.database.domain.Assessment;
 import com.pratham.foundation.database.domain.KeyWords;
 import com.pratham.foundation.database.domain.Score;
 import com.pratham.foundation.interfaces.OnGameClose;
+import com.pratham.foundation.modalclasses.EventMessage;
 import com.pratham.foundation.modalclasses.ScienceQuestionChoice;
 import com.pratham.foundation.ui.contentPlayer.GameConstatnts;
-import com.pratham.foundation.ui.contentPlayer.fact_retrieval_fragment.FactRetrieval;
 import com.pratham.foundation.ui.contentPlayer.fact_retrival_selection.ScienceQuestion;
 import com.pratham.foundation.utility.FC_Constants;
 import com.pratham.foundation.utility.FC_Utility;
 
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 import org.json.JSONArray;
 import org.json.JSONException;
 
@@ -80,12 +84,12 @@ public class pictionaryFragment extends Fragment implements OnGameClose {
     GridLayout gridMcq;
 
 
-    @BindView(R.id.previous)
-    SansButton previous;
-    @BindView(R.id.submitBtn)
-    TextView submitBtn;
-    @BindView(R.id.next)
-    TextView next;
+    @BindView(R.id.btn_prev)
+    ImageButton previous;
+    @BindView(R.id.btn_submit)
+    SansButton submitBtn;
+    @BindView(R.id.btn_next)
+    ImageButton next;
 
     private String readingContentPath, contentPath, contentTitle, StudentID, resId, resStartTime;
     private int totalWordCount, learntWordCount;
@@ -121,8 +125,9 @@ public class pictionaryFragment extends Fragment implements OnGameClose {
             else
                 readingContentPath = ApplicationClass.foundationPath + gameFolderPath + "/" + contentPath + "/";
 
+            EventBus.getDefault().register(this);
             resStartTime = FC_Utility.getCurrentDateTime();
-            addScore(0, "", 0, 0, resStartTime, FC_Utility.getCurrentDateTime(), GameConstatnts.READINGGAME + " " + GameConstatnts.START);
+            addScore(0, "", 0, 0, resStartTime, FC_Utility.getCurrentDateTime(), GameConstatnts.SHOW_ME_ANDROID + " " + GameConstatnts.START);
 
             getData();
         }
@@ -690,7 +695,7 @@ public class pictionaryFragment extends Fragment implements OnGameClose {
 //        }
     }
 
-    @OnClick(R.id.previous)
+    @OnClick(R.id.btn_prev)
     public void onPreviousClick() {
         if (selectedFive != null)
             if (index > 0) {
@@ -699,7 +704,7 @@ public class pictionaryFragment extends Fragment implements OnGameClose {
             }
     }
 
-    @OnClick(R.id.next)
+    @OnClick(R.id.btn_next)
     public void onNextClick() {
         if (selectedFive != null)
             if (index < (selectedFive.size() - 1)) {
@@ -708,7 +713,7 @@ public class pictionaryFragment extends Fragment implements OnGameClose {
             }
     }
 
-    @OnClick(R.id.submitBtn)
+    @OnClick(R.id.btn_submit)
     public void onsubmitBtnClick() {
         if (selectedFive != null)
             addLearntWords(selectedFive);
@@ -746,7 +751,7 @@ public class pictionaryFragment extends Fragment implements OnGameClose {
                         }
                     }
 
-                    addScore(GameConstatnts.getInt(selectedAnsList.get(i).getQid().trim()), GameConstatnts.READINGGAME, 10, 10, selectedAnsList.get(i).getStartTime(), selectedAnsList.get(i).getEndTime(), selectedAnsList.get(i).getUserAnswer());
+                    addScore(GameConstatnts.getInt(selectedAnsList.get(i).getQid().trim()), GameConstatnts.SHOW_ME_ANDROID, 10, 10, selectedAnsList.get(i).getStartTime(), selectedAnsList.get(i).getEndTime(), selectedAnsList.get(i).getUserAnswer());
                 } else {
                     if (selectedAnsList.get(i).getUserAnswer() != null && !selectedAnsList.get(i).getUserAnswer().trim().equalsIgnoreCase("")) {
                         List<ScienceQuestionChoice> tempOptionList = selectedAnsList.get(i).getLstquestionchoice();
@@ -755,7 +760,7 @@ public class pictionaryFragment extends Fragment implements OnGameClose {
                                 wrongWordList.add(tempOptionList.get(k));
                             }
                         }
-                        addScore(GameConstatnts.getInt(selectedAnsList.get(i).getQid().trim()), GameConstatnts.READINGGAME, 0, 10, selectedAnsList.get(i).getStartTime(), selectedAnsList.get(i).getEndTime(), selectedAnsList.get(i).getUserAnswer());
+                        addScore(GameConstatnts.getInt(selectedAnsList.get(i).getQid().trim()), GameConstatnts.SHOW_ME_ANDROID, 0, 10, selectedAnsList.get(i).getStartTime(), selectedAnsList.get(i).getEndTime(), selectedAnsList.get(i).getUserAnswer());
                     }
                 }
             }
@@ -764,7 +769,7 @@ public class pictionaryFragment extends Fragment implements OnGameClose {
                 Intent intent=new Intent(getActivity(),PictionaryResult.class);
                 intent.putExtra("selectlist",selectedAnsList);
                 intent.putExtra("readingContentPath",readingContentPath);
-                intent.putExtra("resourceType",GameConstatnts.READINGGAME);
+                intent.putExtra("resourceType",GameConstatnts.SHOW_ME_ANDROID);
                startActivityForResult(intent,111);
             }
         } else {
@@ -861,7 +866,7 @@ public class pictionaryFragment extends Fragment implements OnGameClose {
 
     @Override
     public void gameClose() {
-        addScore(0, "", 0, 0, resStartTime, FC_Utility.getCurrentDateTime(), GameConstatnts.READINGGAME + " " + GameConstatnts.END);
+        addScore(0, "", 0, 0, resStartTime, FC_Utility.getCurrentDateTime(), GameConstatnts.SHOW_ME_ANDROID + " " + GameConstatnts.END);
     }
 
     @Override
@@ -870,6 +875,18 @@ public class pictionaryFragment extends Fragment implements OnGameClose {
         if(requestCode==111){
             GameConstatnts.playGameNext(getActivity(), GameConstatnts.FALSE, this );
         }
+    }
+
+    @Override
+    public void onStop() {
+        EventBus.getDefault().unregister(this);
+        super.onStop();
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onMessageEvent(EventMessage event) {
+        if (!scienceQuestion.getInstruction().isEmpty())
+            GameConstatnts.showGameInfo(getActivity(),scienceQuestion.getInstruction());
     }
 }
 

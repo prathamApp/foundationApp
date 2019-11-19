@@ -22,8 +22,10 @@ import android.widget.RadioGroup;
 import com.bumptech.glide.Glide;
 import com.pratham.foundation.ApplicationClass;
 import com.pratham.foundation.R;
+import com.pratham.foundation.customView.SansButton;
 import com.pratham.foundation.customView.SansTextView;
 import com.pratham.foundation.interfaces.OnGameClose;
+import com.pratham.foundation.modalclasses.EventMessage;
 import com.pratham.foundation.ui.contentPlayer.GameConstatnts;
 import com.pratham.foundation.ui.contentPlayer.fact_retrival_selection.ScienceQuestion;
 import com.pratham.foundation.utility.FC_Utility;
@@ -35,6 +37,9 @@ import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EFragment;
 import org.androidannotations.annotations.UiThread;
 import org.androidannotations.annotations.ViewById;
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -53,19 +58,24 @@ public class ListeningAndWritting extends Fragment implements ListeningAndWritti
     @ViewById(R.id.radiogroup)
     RadioGroup radiogroup;
 
-    @ViewById(R.id.title)
-    com.pratham.foundation.customView.SansTextView title;
+ /*   @ViewById(R.id.title)
+    com.pratham.foundation.customView.SansTextView title;*/
 
     @ViewById(R.id.previous)
-    ImageView previous;
-    @ViewById(R.id.submitcontainer)
-    LinearLayout submitBtn;
-    @ViewById(R.id.next)
-    ImageView next;
+    ImageButton previous;
+   /* @ViewById(R.id.submitcontainer)
+    LinearLayout submitBtn;*/
 
+    @ViewById(R.id.camera_controll)
+    LinearLayout camera_controll;
+    @ViewById(R.id.next)
+    ImageButton next;
+    @ViewById(R.id.preview)
+    SansButton preview;
     @ViewById(R.id.count)
     SansTextView count;
-
+    @ViewById(R.id.submit)
+    SansButton submitBtn;
     private int index = 0;
     private String readingContentPath, contentPath, contentTitle, StudentID, resId, resStartTime;
     private boolean onSdCard;
@@ -98,6 +108,9 @@ public class ListeningAndWritting extends Fragment implements ListeningAndWritti
             readingContentPath = ApplicationClass.contentSDPath + gameFolderPath + "/" + contentPath + "/";
         else
             readingContentPath = ApplicationClass.foundationPath + gameFolderPath + "/" + contentPath + "/";
+
+        EventBus.getDefault().register(this);
+        preview.setVisibility(View.INVISIBLE);
         presenter.setView(ListeningAndWritting.this, contentTitle, resId);
         mediaPlayerUtil = new MediaPlayerUtil(getActivity());
         presenter.fetchJsonData(readingContentPath);
@@ -131,8 +144,8 @@ public class ListeningAndWritting extends Fragment implements ListeningAndWritti
     @UiThread
     public void loadUI(List<ScienceQuestion> listenAndWrittingModal) {
         this.listenAndWrittingModal = listenAndWrittingModal;
-        if (listenAndWrittingModal.get(index).getInstruction() != null && !listenAndWrittingModal.get(index).getInstruction().isEmpty())
-            title.setText(listenAndWrittingModal.get(index).getInstruction());
+       /* if (listenAndWrittingModal.get(index).getInstruction() != null && !listenAndWrittingModal.get(index).getInstruction().isEmpty())
+            title.setText(listenAndWrittingModal.get(index).getInstruction());*/
         setAudioResource();
     }
 
@@ -148,6 +161,7 @@ public class ListeningAndWritting extends Fragment implements ListeningAndWritti
                 .into(play);
         count.setText("" + (index + 1));
         submitBtn.setVisibility(View.INVISIBLE);
+        camera_controll.setVisibility(View.INVISIBLE);
         if (index == 0) {
             previous.setVisibility(View.INVISIBLE);
         } else {
@@ -155,9 +169,11 @@ public class ListeningAndWritting extends Fragment implements ListeningAndWritti
         }
         if (index == (listenAndWrittingModal.size() - 1)) {
             submitBtn.setVisibility(View.VISIBLE);
+            camera_controll.setVisibility(View.VISIBLE);
             next.setVisibility(View.INVISIBLE);
         } else {
             submitBtn.setVisibility(View.INVISIBLE);
+            camera_controll.setVisibility(View.INVISIBLE);
             next.setVisibility(View.VISIBLE);
         }
     }
@@ -227,6 +243,7 @@ public class ListeningAndWritting extends Fragment implements ListeningAndWritti
                 preview.setImageBitmap(photo);
                 preview.setScaleType(ImageView.ScaleType.FIT_XY);*/
                 presenter.createDirectoryAndSaveFile(photo, imageName);
+                preview.setVisibility(View.VISIBLE);
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -275,6 +292,7 @@ public class ListeningAndWritting extends Fragment implements ListeningAndWritti
 
     @Override
     public void onStop() {
+        EventBus.getDefault().unregister(this);
         super.onStop();
         try {
             sp.stop(id);
@@ -301,4 +319,9 @@ public class ListeningAndWritting extends Fragment implements ListeningAndWritti
             }
     }
 
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onMessageEvent(EventMessage event) {
+        GameConstatnts.showGameInfo(getActivity(),listenAndWrittingModal.get(index).getInstruction());
+    }
 }

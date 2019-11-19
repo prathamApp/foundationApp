@@ -1,6 +1,5 @@
 package com.pratham.foundation.ui.contentPlayer.pictionary;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -48,7 +47,7 @@ public class PictionaryResult extends AppCompatActivity {
                 ResultAdapterFactRetrieval resultAdapterFactRetrieval = new ResultAdapterFactRetrieval(quetionsFact, this, readingContentPath);
                 result.setAdapter(resultAdapterFactRetrieval);
                 break;
-            case GameConstatnts.READINGGAME:
+            case GameConstatnts.SHOW_ME_ANDROID:
                 ResultAdapterS resultAdapter = new ResultAdapterS(quetions, this, readingContentPath);
                 result.setAdapter(resultAdapter);
                 break;
