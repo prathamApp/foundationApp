@@ -11,6 +11,7 @@ import android.media.SoundPool;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.v4.app.Fragment;
+import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
 import android.view.View;
 import android.view.Window;
@@ -152,13 +153,14 @@ public class ListeningAndWritting extends Fragment implements ListeningAndWritti
     private void setAudioResource() {
         try {
             if (sp != null)
-                sp.stop(id);
+                sp.stop(sID);
         } catch (Exception e) {
             e.printStackTrace();
         }
 
         Glide.with(getActivity()).load(R.drawable.play_button)
                 .into(play);
+        isPlaying=-1;
         count.setText("" + (index + 1));
         submitBtn.setVisibility(View.INVISIBLE);
         camera_controll.setVisibility(View.INVISIBLE);
@@ -177,7 +179,26 @@ public class ListeningAndWritting extends Fragment implements ListeningAndWritti
             next.setVisibility(View.VISIBLE);
         }
     }
-
+    @Click(R.id.show_answer)
+    public void showAnswer(){
+        try {
+            isPlaying = 0;
+            sp.pause(sID);
+            Glide.with(getActivity()).load(R.drawable.play_button)
+                    .into(play);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        final Dialog dialog = new Dialog(getActivity());
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        dialog.setContentView(R.layout.fc_show_ans_listenandwrite);
+        SansTextView infoText = dialog.findViewById(R.id.info);
+        infoText.setMovementMethod(new ScrollingMovementMethod());
+        if (listenAndWrittingModal.get(index).getQuestion() != null)
+            infoText.setText(listenAndWrittingModal.get(index).getQuestion());
+        dialog.show();
+    }
     @Click(R.id.play_button)
     public void onPlayClick() {
         // mediaPlayerUtil.playMedia(readingContentPath + "/" + listenAndWrittingModal.getSound());
@@ -191,7 +212,7 @@ public class ListeningAndWritting extends Fragment implements ListeningAndWritti
                 public void onLoadComplete(SoundPool soundPool, int sampleId, int status) {
                     if (isPlaying == -1) {
                         isPlaying = 1;
-                        Glide.with(getActivity()).load(R.drawable.replay)
+                        Glide.with(getActivity()).load(R.drawable.pausebars)
                                 .into(play);
                         sID = sp.play(id, 1, 1, 1, 0, rate);
                     } else if (isPlaying == 1) {
@@ -201,7 +222,7 @@ public class ListeningAndWritting extends Fragment implements ListeningAndWritti
                                 .into(play);
                     } else if (isPlaying == 0) {
                         isPlaying = 1;
-                        Glide.with(getActivity()).load(R.drawable.replay)
+                        Glide.with(getActivity()).load(R.drawable.pausebars)
                                 .into(play);
                         sp.resume(sID);
                     }
@@ -217,6 +238,12 @@ public class ListeningAndWritting extends Fragment implements ListeningAndWritti
             e.printStackTrace();
         }
 
+    }
+
+    @Click(R.id.replay)
+    public void replay(){
+        isPlaying = -1;
+        onPlayClick();
     }
 
     @Click(R.id.capture)

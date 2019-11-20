@@ -463,6 +463,8 @@ public class FactRetrieval extends Fragment implements FactRetrievalContract.Fac
             selectedQuetion.get(index).setUserAns(selectedText.toString());
             selectedQuetion.get(index).setStart(list.get(0));
             selectedQuetion.get(index).setEnd(list.get(list.size() - 1));
+            selectedQuetion.get(index).setStartTime(FC_Utility.getCurrentDateTime());
+            selectedQuetion.get(index).setEndTime(FC_Utility.getCurrentDateTime());
         }
     }
 

@@ -35,6 +35,7 @@ import com.pratham.foundation.customView.GifView;
 import com.pratham.foundation.customView.SansButton;
 import com.pratham.foundation.database.BackupDatabase;
 import com.pratham.foundation.database.domain.Assessment;
+import com.pratham.foundation.database.domain.ContentProgress;
 import com.pratham.foundation.database.domain.KeyWords;
 import com.pratham.foundation.database.domain.Score;
 import com.pratham.foundation.interfaces.OnGameClose;
@@ -155,7 +156,37 @@ public class pictionaryFragment extends Fragment implements OnGameClose {
             e.printStackTrace();
         }
     }
+    public void setCompletionPercentage() {
+        try {
+            totalWordCount = dataList.size();
+            learntWordCount = getLearntWordsCount();
+            String Label = "resourceProgress";
+            if (learntWordCount > 0) {
+                perc = ((float) learntWordCount / (float) totalWordCount) * 100;
+                addContentProgress(perc, Label);
+            } else {
+                addContentProgress(0, Label);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 
+    private void addContentProgress(float perc, String label) {
+        try {
+            ContentProgress contentProgress = new ContentProgress();
+            contentProgress.setProgressPercentage("" + perc);
+            contentProgress.setResourceId("" + resId);
+            contentProgress.setSessionId("" + FC_Constants.currentSession);
+            contentProgress.setStudentId("" + FC_Constants.currentStudentID);
+            contentProgress.setUpdatedDateTime("" + FC_Utility.getCurrentDateTime());
+            contentProgress.setLabel("" + label);
+            contentProgress.setSentFlag(0);
+            appDatabase.getContentProgressDao().insert(contentProgress);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
     private void getDataList() {
         try {
             selectedFive = new ArrayList<ScienceQuestion>();
@@ -195,7 +226,8 @@ public class pictionaryFragment extends Fragment implements OnGameClose {
 
     private int getLearntWordsCount() {
         int count = 0;
-        count = appDatabase.getKeyWordDao().checkWordCount(FC_Constants.currentStudentID, resId);
+       // count = appDatabase.getKeyWordDao().checkWordCount(FC_Constants.currentStudentID, resId);
+        count = appDatabase.getKeyWordDao().checkUniqueWordCount(FC_Constants.currentStudentID, resId);
         return count;
     }
 
@@ -718,7 +750,6 @@ public class pictionaryFragment extends Fragment implements OnGameClose {
         if (selectedFive != null)
             addLearntWords(selectedFive);
 
-        gameClose();
         //  GameConstatnts.playGameNext(getActivity());
         /*Bundle bundle = GameConstatnts.findGameData("110");
         if (bundle != null) {
@@ -740,7 +771,7 @@ public class pictionaryFragment extends Fragment implements OnGameClose {
                     keyWords.setResourceId(resId);
                     keyWords.setSentFlag(0);
                     keyWords.setStudentId(FC_Constants.currentStudentID);
-                    String key = selectedAnsList.get(i).getUserAnswer();
+                    String key = selectedAnsList.get(i).getQuestion();
                     keyWords.setKeyWord(key);
                     keyWords.setWordType("word");
                     appDatabase.getKeyWordDao().insert(keyWords);
@@ -764,6 +795,7 @@ public class pictionaryFragment extends Fragment implements OnGameClose {
                     }
                 }
             }
+            setCompletionPercentage();
             if (!FC_Constants.isTest) {
                // showResult(correctWordList, wrongWordList);
                 Intent intent=new Intent(getActivity(),PictionaryResult.class);

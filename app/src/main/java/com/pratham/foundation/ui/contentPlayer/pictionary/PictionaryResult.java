@@ -57,10 +57,10 @@ public class PictionaryResult extends AppCompatActivity {
 
     }
 
-    /*@Override
+    @Override
     public void onBackPressed() {
         //super.onBackPressed();
-    }*/
+    }
 
     @OnClick(R.id.dia_btn_green)
     public void onNext(){

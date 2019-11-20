@@ -113,7 +113,7 @@ public class KeywordMappingFragment extends Fragment implements KeywordMappingCo
        /* for (int i = 0; i < temp.size(); i++) {
             optionList.add(new OptionKeyMap(temp.get(i).toString(), false));
         }*/
-        keywordOptionAdapter = new KeywordOptionAdapter(getActivity(), optionList, getCorrectCnt(optionList));
+        keywordOptionAdapter = new KeywordOptionAdapter(getActivity(), optionList, getCorrectCnt(optionList),presenter);
         recycler_view.setAdapter(keywordOptionAdapter);
         recycler_view.setLayoutManager(gridLayoutManager);
 
@@ -135,14 +135,16 @@ public class KeywordMappingFragment extends Fragment implements KeywordMappingCo
     public void showResult(ScienceQuestion selectedAnsList) {
 
         keywordOptionAdapter.setClickable(false);
-        for (int index = 0; index < recycler_view.getChildCount(); index++) {
+        keywordOptionAdapter.notifyDataSetChanged();
+       /* for (int index = 0; index < recycler_view.getChildCount(); index++) {
             TextView textView = (TextView) recycler_view.getChildAt(index);
             if (!presenter.checkAnswerNew(selectedAnsList.getLstquestionchoice(), textView.getText().toString())) {
                 textView.setPaintFlags(textView.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
+                textView.setBackgroundColor(getResources().getColor(R.color.level_1_color));
             } else {
-
+                textView.setBackgroundColor(getResources().getColor(R.color.colorRed));
             }
-        }
+        }*/
         //     textView.setPaintFlags(textView.getPaintFlags() & (~ Paint.STRIKE_THRU_TEXT_FLAG));
         //iews.setInt(R.id.widgetTitle, "setPaintFlags", Paint.ANTI_ALIAS_FLAG);
         /*if ((correctWord != null && !correctWord.isEmpty()) || (wrongWord != null && !wrongWord.isEmpty())) {

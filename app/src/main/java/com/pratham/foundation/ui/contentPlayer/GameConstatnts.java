@@ -156,8 +156,8 @@ public class GameConstatnts {
             @Override
             public void onClick(View v) {
                 dialog.dismiss();
+                onGameClose.gameClose();
                 if (playInsequence) {
-                    onGameClose.gameClose();
                     plaGame(context);
                 } else {
                     ((ContentPlayerActivity) context).getSupportFragmentManager().popBackStack(SequenceLayout_.class.getSimpleName(), 0);

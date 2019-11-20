@@ -15,7 +15,6 @@
             android:layout_height="match_parent"
             android:layout_marginVertical="@dimen/_10sdp"
             android:gravity="center"
-            android:lines="2"
             android:paddingHorizontal="@dimen/_7sdp"
             android:text=""
             android:textColor="@color/gradianceCardStartColor"

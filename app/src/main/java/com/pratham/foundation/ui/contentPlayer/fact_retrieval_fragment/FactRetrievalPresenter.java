@@ -7,6 +7,7 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.pratham.foundation.database.BackupDatabase;
 import com.pratham.foundation.database.domain.Assessment;
+import com.pratham.foundation.database.domain.ContentProgress;
 import com.pratham.foundation.database.domain.KeyWords;
 import com.pratham.foundation.database.domain.Score;
 import com.pratham.foundation.interfaces.OnGameClose;
@@ -61,11 +62,54 @@ public class FactRetrievalPresenter implements FactRetrievalContract.FactRetriev
             quetionModelList = gson.fromJson(text, type);
             //  quetionAnsList = quetionModelList.get(0).getKeywords();
             getDataList();
+            //setCompletionPercentage();
         } else {
             Toast.makeText(context, "Data not found", Toast.LENGTH_LONG).show();
         }
 
     }
+
+
+    public void setCompletionPercentage() {
+        try {
+            totalWordCount = quetionModelList.size();
+            learntWordCount = getLearntWordsCount();
+            String Label = "resourceProgress";
+            if (learntWordCount > 0) {
+                perc = ((float) learntWordCount / (float) totalWordCount) * 100;
+                addContentProgress(perc, Label);
+            } else {
+                addContentProgress(0, Label);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void addContentProgress(float perc, String label) {
+        try {
+            ContentProgress contentProgress = new ContentProgress();
+            contentProgress.setProgressPercentage("" + perc);
+            contentProgress.setResourceId("" + resId);
+            contentProgress.setSessionId("" + FC_Constants.currentSession);
+            contentProgress.setStudentId("" + FC_Constants.currentStudentID);
+            contentProgress.setUpdatedDateTime("" + FC_Utility.getCurrentDateTime());
+            contentProgress.setLabel("" + label);
+            contentProgress.setSentFlag(0);
+            appDatabase.getContentProgressDao().insert(contentProgress);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+
+
+
+
+
+
+
+
 
     @Background
     @Override
@@ -110,7 +154,8 @@ public class FactRetrievalPresenter implements FactRetrievalContract.FactRetriev
 
     private int getLearntWordsCount() {
         int count = 0;
-        count = appDatabase.getKeyWordDao().checkWordCount(FC_Constants.currentStudentID, resId);
+        //count = appDatabase.getKeyWordDao().checkWordCount(FC_Constants.currentStudentID, resId);
+        count = appDatabase.getKeyWordDao().checkUniqueWordCount(FC_Constants.currentStudentID, resId);
         return count;
     }
 
@@ -137,7 +182,7 @@ public class FactRetrievalPresenter implements FactRetrievalContract.FactRetriev
             learntWords.add(keyWords);
             for (int i = 0; i < selectedAnsList.size(); i++) {
                 if (selectedAnsList.get(i).getUserAns() != null && !selectedAnsList.get(i).getUserAns().isEmpty()) {
-                    if (checkAnswer(selectedAnsList.get(i)) > 75) {
+                    if (checkAnswer(selectedAnsList.get(i)) > 70) {
                         scoredMarks = 10;
                         selectedAnsList.get(i).setTrue(true);
                     } else {
@@ -149,6 +194,7 @@ public class FactRetrievalPresenter implements FactRetrievalContract.FactRetriev
                 }
             }
             appDatabase.getKeyWordDao().insertAllWord(learntWords);
+            setCompletionPercentage();
            view.showResult(selectedAnsList);
             //GameConstatnts.playGameNext(context, GameConstatnts.FALSE, (OnGameClose) view);
         } else {

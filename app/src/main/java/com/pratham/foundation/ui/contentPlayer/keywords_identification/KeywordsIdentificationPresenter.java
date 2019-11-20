@@ -7,6 +7,7 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.pratham.foundation.database.BackupDatabase;
 import com.pratham.foundation.database.domain.Assessment;
+import com.pratham.foundation.database.domain.ContentProgress;
 import com.pratham.foundation.database.domain.KeyWords;
 import com.pratham.foundation.database.domain.Score;
 import com.pratham.foundation.interfaces.OnGameClose;
@@ -57,11 +58,43 @@ public class KeywordsIdentificationPresenter implements KeywordsIdentificationCo
             }.getType();
             quetionModelList = gson.fromJson(text, type);
             getDataList();
+           // setCompletionPercentage();
         } else {
             Toast.makeText(context, "No data found", Toast.LENGTH_SHORT).show();
         }
     }
 
+    public void setCompletionPercentage() {
+        try {
+            totalWordCount = quetionModelList.size();
+            learntWordCount = getLearntWordsCount();
+            String Label = "resourceProgress";
+            if (learntWordCount > 0) {
+                perc = ((float) learntWordCount / (float) totalWordCount) * 100;
+                addContentProgress(perc, Label);
+            } else {
+                addContentProgress(0, Label);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void addContentProgress(float perc, String label) {
+        try {
+            ContentProgress contentProgress = new ContentProgress();
+            contentProgress.setProgressPercentage("" + perc);
+            contentProgress.setResourceId("" + resId);
+            contentProgress.setSessionId("" + FC_Constants.currentSession);
+            contentProgress.setStudentId("" + FC_Constants.currentStudentID);
+            contentProgress.setUpdatedDateTime("" + FC_Utility.getCurrentDateTime());
+            contentProgress.setLabel("" + label);
+            contentProgress.setSentFlag(0);
+            appDatabase.getContentProgressDao().insert(contentProgress);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
     public void getDataList() {
         try {
             perc = getPercentage();
@@ -102,7 +135,8 @@ public class KeywordsIdentificationPresenter implements KeywordsIdentificationCo
 
     private int getLearntWordsCount() {
         int count = 0;
-        count = appDatabase.getKeyWordDao().checkWordCount(FC_Constants.currentStudentID, resId);
+       // count = appDatabase.getKeyWordDao().checkWordCount(FC_Constants.currentStudentID, resId);
+        count = appDatabase.getKeyWordDao().checkUniqueWordCount(FC_Constants.currentStudentID, resId);
         return count;
     }
 
@@ -124,23 +158,26 @@ public class KeywordsIdentificationPresenter implements KeywordsIdentificationCo
         wrongWordList = new ArrayList<>();
         int scoredMarks = (int) checkAnswer(selectedAnsList);
         if (selectedAnsList != null && !selectedAnsList.isEmpty()) {
+
+            KeyWords keyWords = new KeyWords();
+            keyWords.setResourceId(resId);
+            keyWords.setSentFlag(0);
+            keyWords.setStudentId(FC_Constants.currentStudentID);
+            String key = questionModel.getTitle();
+            keyWords.setKeyWord(key);
+            keyWords.setWordType("word");
+            appDatabase.getKeyWordDao().insert(keyWords);
+
             for (int i = 0; i < selectedAnsList.size(); i++) {
                 if (checkAnswerNew(questionModel.getLstquestionchoice(), selectedAnsList.get(i).getSubQues())) {
-                    KeyWords keyWords = new KeyWords();
-                    keyWords.setResourceId(resId);
-                    keyWords.setSentFlag(0);
-                    keyWords.setStudentId(FC_Constants.currentStudentID);
-                    String key = selectedAnsList.get(i).getSubQues();
-                    keyWords.setKeyWord(key);
-                    keyWords.setWordType("word");
-                    appDatabase.getKeyWordDao().insert(keyWords);
+
                     addScore(GameConstatnts.getInt(questionModel.getQid()), GameConstatnts.KEYWORD_IDENTIFICATION, 10, 10,selectedAnsList.get(i).getStartTime(),selectedAnsList.get(i).getEndTime(), selectedAnsList.get(i).getSubQues());
 
                 }else {
                     addScore(GameConstatnts.getInt(questionModel.getQid()), GameConstatnts.KEYWORD_IDENTIFICATION, 0, 10, selectedAnsList.get(i).getStartTime(),selectedAnsList.get(i).getEndTime(), selectedAnsList.get(i).getSubQues());
                 }
             }
-
+            setCompletionPercentage();
             if (!FC_Constants.isTest) {
                 viewKeywords.showResult(correctWordList, wrongWordList);
             }
