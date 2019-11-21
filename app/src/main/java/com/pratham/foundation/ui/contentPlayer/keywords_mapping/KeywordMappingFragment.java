@@ -11,6 +11,8 @@ import android.widget.TextView;
 import com.pratham.foundation.ApplicationClass;
 import com.pratham.foundation.R;
 import com.pratham.foundation.interfaces.OnGameClose;
+import com.pratham.foundation.interfaces.ShowInstruction;
+import com.pratham.foundation.modalclasses.EventMessage;
 import com.pratham.foundation.modalclasses.ScienceQuestionChoice;
 import com.pratham.foundation.ui.contentPlayer.GameConstatnts;
 import com.pratham.foundation.ui.contentPlayer.fact_retrival_selection.ScienceQuestion;
@@ -22,6 +24,9 @@ import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EFragment;
 import org.androidannotations.annotations.UiThread;
 import org.androidannotations.annotations.ViewById;
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.Collections;
 import java.util.List;
@@ -54,8 +59,6 @@ public class KeywordMappingFragment extends Fragment implements KeywordMappingCo
 
     @AfterViews
     protected void initiate() {
-        // super.onCreate(savedInstanceState);
-        // setContentView(R.layout.activity_keyword_mapping2);
         Bundle bundle = getArguments();
         if (bundle != null) {
             contentPath = bundle.getString("contentPath");
@@ -69,7 +72,7 @@ public class KeywordMappingFragment extends Fragment implements KeywordMappingCo
                 readingContentPath = ApplicationClass.foundationPath + gameFolderPath + "/" + contentPath + "/";
 
         }
-
+        EventBus.getDefault().register(this);
         presenter.setView(KeywordMappingFragment.this, resId, readingContentPath);
         presenter.getData();
         resStartTime = FC_Utility.getCurrentDateTime();
@@ -77,9 +80,13 @@ public class KeywordMappingFragment extends Fragment implements KeywordMappingCo
 
     }
 
+
+
+
     @UiThread
     @Override
     public void loadUI(List<ScienceQuestion> list) {
+        //show instruction dialog
         keywordmapping = list.get(index);
         keyword.setText(list.get(index).getQuestion());
         final GridLayoutManager gridLayoutManager;
@@ -106,12 +113,13 @@ public class KeywordMappingFragment extends Fragment implements KeywordMappingCo
        /* for (int i = 0; i < temp.size(); i++) {
             optionList.add(new OptionKeyMap(temp.get(i).toString(), false));
         }*/
-        keywordOptionAdapter = new KeywordOptionAdapter(getActivity(), optionList, getCorrectCnt(optionList));
+        keywordOptionAdapter = new KeywordOptionAdapter(getActivity(), optionList, getCorrectCnt(optionList),presenter);
         recycler_view.setAdapter(keywordOptionAdapter);
         recycler_view.setLayoutManager(gridLayoutManager);
 
 
     }
+
 
     private int getCorrectCnt(List<ScienceQuestionChoice> lstquestionchoice) {
         int correctCnt = 0;
@@ -125,16 +133,18 @@ public class KeywordMappingFragment extends Fragment implements KeywordMappingCo
 
     @Override
     public void showResult(ScienceQuestion selectedAnsList) {
-        submit.setText("Next");
+
         keywordOptionAdapter.setClickable(false);
-        for (int index = 0; index < recycler_view.getChildCount(); index++) {
+        keywordOptionAdapter.notifyDataSetChanged();
+       /* for (int index = 0; index < recycler_view.getChildCount(); index++) {
             TextView textView = (TextView) recycler_view.getChildAt(index);
             if (!presenter.checkAnswerNew(selectedAnsList.getLstquestionchoice(), textView.getText().toString())) {
                 textView.setPaintFlags(textView.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
+                textView.setBackgroundColor(getResources().getColor(R.color.level_1_color));
             } else {
-
+                textView.setBackgroundColor(getResources().getColor(R.color.colorRed));
             }
-        }
+        }*/
         //     textView.setPaintFlags(textView.getPaintFlags() & (~ Paint.STRIKE_THRU_TEXT_FLAG));
         //iews.setInt(R.id.widgetTitle, "setPaintFlags", Paint.ANTI_ALIAS_FLAG);
         /*if ((correctWord != null && !correctWord.isEmpty()) || (wrongWord != null && !wrongWord.isEmpty())) {
@@ -163,19 +173,35 @@ public class KeywordMappingFragment extends Fragment implements KeywordMappingCo
 
     @Click(R.id.submit)
     public void submitClick() {
-        if (!isSubmitted) {
-            isSubmitted = true;
-            if (keywordOptionAdapter != null && keywordmapping != null) {
-                List<ScienceQuestionChoice> selectedoptionList = keywordOptionAdapter.getSelectedOptionList();
-                presenter.addLearntWords(keywordmapping, selectedoptionList);
+        if (keywordOptionAdapter != null && keywordmapping != null) {
+            List<ScienceQuestionChoice> selectedoptionList = keywordOptionAdapter.getSelectedOptionList();
+            if (selectedoptionList != null && selectedoptionList.size() > 0) {
+                if(isSubmitted){
+                    GameConstatnts.playGameNext(getActivity(), GameConstatnts.FALSE, this);
+                }else {
+                    isSubmitted = true;
+                    presenter.addLearntWords(keywordmapping, selectedoptionList);
+                    submit.setText("Next");
+                }
+            }else {
+                GameConstatnts.playGameNext(getActivity(), GameConstatnts.TRUE, (OnGameClose) this);
             }
-        } else {
-
         }
     }
 
     @Override
     public void gameClose() {
         presenter.addScore(0, "", 0, 0, resStartTime, FC_Utility.getCurrentDateTime(), GameConstatnts.KEYWORD_MAPPING + " " + GameConstatnts.END);
+    }
+
+    @Override
+    public void onStop() {
+        EventBus.getDefault().unregister(this);
+        super.onStop();
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onMessageEvent(EventMessage event) {
+        GameConstatnts.showGameInfo(getActivity(),keywordmapping.getInstruction());
     }
 }

@@ -6,6 +6,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 
 import com.pratham.foundation.R;
+import com.pratham.foundation.customView.SansButton;
 import com.pratham.foundation.modalclasses.ScienceQuestionChoice;
 import com.pratham.foundation.ui.contentPlayer.GameConstatnts;
 import com.pratham.foundation.ui.contentPlayer.fact_retrieval_fragment.ResultAdapterFactRetrieval;
@@ -15,6 +16,7 @@ import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 public class PictionaryResult extends AppCompatActivity {
     ArrayList<ScienceQuestion> quetions;
@@ -24,6 +26,9 @@ public class PictionaryResult extends AppCompatActivity {
 
     @BindView(R.id.result)
     RecyclerView result;
+
+    @BindView(R.id.dia_btn_green)
+    SansButton dia_btn_green;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,7 +47,7 @@ public class PictionaryResult extends AppCompatActivity {
                 ResultAdapterFactRetrieval resultAdapterFactRetrieval = new ResultAdapterFactRetrieval(quetionsFact, this, readingContentPath);
                 result.setAdapter(resultAdapterFactRetrieval);
                 break;
-            case GameConstatnts.READINGGAME:
+            case GameConstatnts.SHOW_ME_ANDROID:
                 ResultAdapterS resultAdapter = new ResultAdapterS(quetions, this, readingContentPath);
                 result.setAdapter(resultAdapter);
                 break;
@@ -52,8 +57,15 @@ public class PictionaryResult extends AppCompatActivity {
 
     }
 
-    /*@Override
+    @Override
     public void onBackPressed() {
         //super.onBackPressed();
-    }*/
+    }
+
+    @OnClick(R.id.dia_btn_green)
+    public void onNext(){
+
+        setResult(111);
+        finish();
+    }
 }

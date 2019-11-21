@@ -23,8 +23,10 @@ import android.widget.ScrollView;
 
 import com.pratham.foundation.ApplicationClass;
 import com.pratham.foundation.R;
+import com.pratham.foundation.customView.SansButton;
 import com.pratham.foundation.customView.SansTextView;
 import com.pratham.foundation.interfaces.OnGameClose;
+import com.pratham.foundation.modalclasses.EventMessage;
 import com.pratham.foundation.ui.contentPlayer.GameConstatnts;
 import com.pratham.foundation.ui.contentPlayer.fact_retrival_selection.ScienceQuestion;
 import com.pratham.foundation.utility.FC_Utility;
@@ -34,6 +36,9 @@ import org.androidannotations.annotations.Bean;
 import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EFragment;
 import org.androidannotations.annotations.ViewById;
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -56,14 +61,17 @@ public class ParagraphWritingFragment extends Fragment
     RecyclerView paragraph;
     @ViewById(R.id.scrollView)
     ScrollView scrollView;
-    @ViewById(R.id.previous)
-    Button previous;
-    @ViewById(R.id.capture)
-    Button capture;
-    @ViewById(R.id.next)
-    Button next;
-    @ViewById(R.id.title)
-    SansTextView title;
+    /*@ViewById(R.id.previous)
+    Button previous;*/
+   /* @ViewById(R.id.capture)
+    ImageView capture;*/
+  /*  @ViewById(R.id.next)
+    Button next;*/
+
+    @ViewById(R.id.preview)
+    SansButton preview;
+ /*   @ViewById(R.id.title)
+    SansTextView title;*/
 
     private String[] paragraphWords;
     //    private RelativeLayout.LayoutParams viewParam;
@@ -89,6 +97,8 @@ public class ParagraphWritingFragment extends Fragment
             else
                 readingContentPath = ApplicationClass.foundationPath + gameFolderPath + "/" + contentPath + "/";
         }
+        EventBus.getDefault().register(this);
+        preview.setVisibility(View.INVISIBLE);
         presenter.setView(ParagraphWritingFragment.this, resId, readingContentPath);
         presenter.getData();
         resStartTime = FC_Utility.getCurrentDateTime();
@@ -98,7 +108,8 @@ public class ParagraphWritingFragment extends Fragment
     @Override
     public void showParagraph(ScienceQuestion questionModel) {
         this.questionModel = questionModel;
-        title.setText(questionModel.getInstruction());
+        File filePath = new File(activityPhotoPath + imageName);
+    /*    title.setText(questionModel.getInstruction());*/
         paragraphWords = questionModel.getQuestion().trim().split("(?<=\\.\\s)|(?<=[?!]\\s)");
         SentenceAdapter arrayAdapter = new SentenceAdapter(Arrays.asList(paragraphWords), getActivity());
         paragraph.setAdapter(arrayAdapter);
@@ -207,6 +218,7 @@ public class ParagraphWritingFragment extends Fragment
                 preview.setImageBitmap(photo);
                 preview.setScaleType(ImageView.ScaleType.FIT_XY);*/
                 presenter.createDirectoryAndSaveFile(photo, imageName);
+                preview.setVisibility(View.VISIBLE);
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -216,5 +228,15 @@ public class ParagraphWritingFragment extends Fragment
     @Override
     public void gameClose() {
         presenter.addScore(0, "", 0, 0, resStartTime, GameConstatnts.PARAGRAPH_WRITING + " " + GameConstatnts.END);
+    }
+    @Override
+    public void onStop() {
+        EventBus.getDefault().unregister(this);
+        super.onStop();
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onMessageEvent(EventMessage event) {
+        GameConstatnts.showGameInfo(getActivity(),questionModel.getInstruction());
     }
 }

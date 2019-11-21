@@ -7,169 +7,232 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@id/title">
+        android:layout_below="@id/space">
 
-        <LinearLayout
-            android:id="@+id/controls_top"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_margin="@dimen/_10sdp"
-            android:orientation="horizontal">
-            <RelativeLayout
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="0.5">
-                <ImageView
-                    android:id="@+id/previous"
-                    android:background="@drawable/ripple_round"
-                    android:src="@drawable/ic_left_arrow"
-                    android:layout_width="@dimen/_50sdp"
-                    android:layout_centerInParent="true"
-                    android:padding="@dimen/_10sdp"
-                    android:layout_height="@dimen/_50sdp" />
-            </RelativeLayout>
-            <LinearLayout
-                android:id="@+id/submitcontainer"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="2"
-                android:orientation="vertical">
+        <!-- <LinearLayout
+             android:id="@+id/controls_top"
+             android:layout_width="match_parent"
+             android:layout_height="wrap_content"
+             android:layout_alignParentBottom="true"
+             android:layout_margin="@dimen/_10sdp"
+             android:orientation="horizontal">
+             <RelativeLayout
+                 android:layout_width="0dp"
+                 android:layout_height="match_parent"
+                 android:layout_weight="0.5">
+                 <ImageView
+                     android:id="@+id/previous"
+                     android:background="@drawable/ripple_round"
+                     android:src="@drawable/ic_left_arrow"
+                     android:layout_width="@dimen/_50sdp"
+                     android:layout_centerInParent="true"
+                     android:padding="@dimen/_10sdp"
+                     android:layout_height="@dimen/_50sdp" />
+             </RelativeLayout>
+             <LinearLayout
+                 android:id="@+id/submitcontainer"
+                 android:layout_width="0dp"
+                 android:layout_height="wrap_content"
+                 android:layout_weight="2"
+                 android:orientation="vertical">
 
-                <LinearLayout
+                 <LinearLayout
 
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentBottom="true"
-                    android:layout_margin="@dimen/_10sdp"
-                    android:gravity="center"
-                    android:weightSum="3">
+                     android:layout_width="match_parent"
+                     android:layout_height="wrap_content"
+                     android:layout_alignParentBottom="true"
+                     android:layout_margin="@dimen/_10sdp"
+                     android:gravity="center"
+                     android:weightSum="3">
 
-                    <com.pratham.foundation.customView.fonts.SansButton
-                        android:id="@+id/capture"
-                        android:layout_width="0dp"
-                        android:layout_height="50dp"
-                        android:layout_marginHorizontal="@dimen/_5sdp"
-                        android:layout_weight="1"
-                        android:background="@drawable/purple_button"
-                        android:text="capture"
-                        android:textColor="@color/white" />
+                     <com.pratham.foundation.customView.SansButton
+                         android:id="@+id/capture"
+                         android:layout_width="0dp"
+                         android:layout_height="50dp"
+                         android:layout_marginHorizontal="@dimen/_5sdp"
+                         android:layout_weight="1"
+                         android:background="@drawable/purple_button"
+                         android:text="capture"
+                         android:textColor="@color/white" />
 
-                    <com.pratham.foundation.customView.fonts.SansButton
-                        android:id="@+id/preview"
-                        android:layout_width="0dp"
-                        android:layout_height="50dp"
-                        android:layout_marginHorizontal="@dimen/_5sdp"
-                        android:layout_weight="1"
-                        android:background="@drawable/purple_button"
-                        android:text="preview"
-                        android:textColor="@color/white" />
-                </LinearLayout>
+                     <com.pratham.foundation.customView.SansButton
+                         android:id="@+id/preview"
+                         android:layout_width="0dp"
+                         android:layout_height="50dp"
+                         android:layout_marginHorizontal="@dimen/_5sdp"
+                         android:layout_weight="1"
+                         android:background="@drawable/purple_button"
+                         android:text="preview"
+                         android:textColor="@color/white" />
+                 </LinearLayout>
 
-                <LinearLayout
-                    android:id="@+id/controls_bot"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@id/controls_top"
-                    android:layout_marginTop="@dimen/_5sdp">
-                    <com.pratham.foundation.customView.fonts.SansButton
-                        android:id="@+id/submit"
-                        android:layout_width="0dp"
-                        android:layout_height="50dp"
-                        android:layout_marginHorizontal="@dimen/_5sdp"
-                        android:layout_weight="1"
-                        android:background="@drawable/yellow_button"
-                        android:text="submit"
-                        android:textColor="@color/white" />
-                </LinearLayout>
+                 <LinearLayout
+                     android:id="@+id/controls_bot"
+                     android:layout_width="match_parent"
+                     android:layout_height="wrap_content"
+                     android:layout_below="@id/controls_top"
+                     android:layout_marginTop="@dimen/_5sdp">
+                     <com.pratham.foundation.customView.SansButton
+                         android:id="@+id/submit"
+                         android:layout_width="0dp"
+                         android:layout_height="50dp"
+                         android:layout_marginHorizontal="@dimen/_5sdp"
+                         android:layout_weight="1"
+                         android:background="@drawable/yellow_button"
+                         android:text="submit"
+                         android:textColor="@color/white" />
+                 </LinearLayout>
 
-            </LinearLayout>
-            <RelativeLayout
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="0.5">
-                <ImageView
-                    android:id="@+id/next"
-                    android:background="@drawable/ripple_round"
-                    android:src="@drawable/ic_right_arrow"
-                    android:layout_width="@dimen/_50sdp"
-                    android:layout_centerInParent="true"
-                    android:padding="@dimen/_10sdp"
-                    android:layout_height="@dimen/_50sdp" />
-            </RelativeLayout>
-        </LinearLayout>
+             </LinearLayout>
+             <RelativeLayout
+                 android:layout_width="0dp"
+                 android:layout_height="match_parent"
+                 android:layout_weight="0.5">
+                 <ImageView
+                     android:id="@+id/next"
+                     android:background="@drawable/ripple_round"
+                     android:src="@drawable/ic_right_arrow"
+                     android:layout_width="@dimen/_50sdp"
+                     android:layout_centerInParent="true"
+                     android:padding="@dimen/_10sdp"
+                     android:layout_height="@dimen/_50sdp" />
+             </RelativeLayout>
+         </LinearLayout>-->
 
         <RelativeLayout
             android:id="@+id/media"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_above="@+id/controls_top">
-            <com.pratham.foundation.customView.SansTextView
-                android:id="@+id/count"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="1"
-                android:textSize="@dimen/_50sdp"
-                android:layout_centerHorizontal="true"
-                android:layout_above="@id/play_button"
-                android:layout_margin="@dimen/_30sdp"/>
-            <ImageView
-                android:id="@+id/play_button"
-                android:layout_width="@dimen/_100sdp"
-                android:layout_height="@dimen/_100sdp"
+            android:layout_above="@+id/bottom_bar">
+
+            <LinearLayout
+                android:id="@+id/play_button_control"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_110sdp"
                 android:layout_centerInParent="true"
-                android:background="@drawable/rounded_rectangle_stroke_bg"
-                android:padding="@dimen/_20sdp"
-                android:scaleType="fitXY"
-                android:src="@drawable/play_button" />
+                android:orientation="horizontal">
+
+                <RelativeLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1">
+
+                    <ImageView
+                        android:id="@+id/play_button"
+                        android:layout_width="@dimen/_100sdp"
+                        android:layout_height="@dimen/_100sdp"
+                        android:layout_centerInParent="true"
+                        android:background="@drawable/rounded_rectangle_stroke_bg"
+                        android:padding="@dimen/_20sdp"
+                        android:scaleType="fitXY"
+                        android:src="@drawable/play_button" />
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1">
+
+                    <ImageView
+                        android:id="@+id/replay"
+                        android:layout_width="@dimen/_100sdp"
+                        android:layout_height="@dimen/_100sdp"
+                        android:layout_centerInParent="true"
+                        android:background="@drawable/rounded_rectangle_stroke_bg"
+                        android:padding="@dimen/_20sdp"
+                        android:scaleType="fitXY"
+                        android:src="@drawable/replay" />
+                </RelativeLayout>
+
+
+            </LinearLayout>
 
             <RadioGroup
                 android:id="@+id/radiogroup"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/play_button"
-                android:layout_marginTop="@dimen/_40sdp"
-                android:paddingTop="@dimen/_10sdp"
-                android:paddingBottom="@dimen/_10sdp"
-                android:paddingStart="@dimen/_50sdp"
-                android:paddingEnd="@dimen/_50sdp"
-                android:checkedButton="@+id/normal"
+                android:layout_below="@id/play_button_control"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="@dimen/_30sdp"
                 android:background="@drawable/rounded_rectangle_stroke_bg"
-                android:layout_centerHorizontal="true">
+                android:checkedButton="@+id/normal"
+                android:orientation="horizontal"
+                android:paddingStart="@dimen/_50sdp"
+                android:paddingTop="@dimen/_10sdp"
+                android:paddingEnd="@dimen/_50sdp"
+                android:paddingBottom="@dimen/_10sdp">
 
                 <RadioButton
                     android:id="@+id/slow"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/_5sdp"
                     android:text="slow" />
 
                 <RadioButton
                     android:id="@+id/normal"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/_5sdp"
                     android:text="normal" />
 
                 <RadioButton
                     android:id="@+id/fast"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/_5sdp"
                     android:text="fast" />
 
             </RadioGroup>
+
+
+            <com.pratham.foundation.customView.SansButton
+                android:id="@+id/show_answer"
+                style="@style/submitbtn"
+                android:layout_width="wrap_content"
+                android:layout_height="50dp"
+                android:layout_below="@+id/radiogroup"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:background="@drawable/yellow_button"
+                android:paddingHorizontal="@dimen/_10sdp"
+                android:text="show answer" />
+
+            <com.pratham.foundation.customView.SansTextView
+                android:id="@+id/count"
+                style="@style/question"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_above="@id/play_button_control"
+                android:layout_centerHorizontal="true"
+                android:layout_marginBottom="@dimen/_30sdp"
+                android:text="Listen and write" />
         </RelativeLayout>
 
+        <include
+            android:id="@+id/bottom_bar"
+            layout="@layout/bottom_control_panel_v4"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_gravity="bottom|center_horizontal"
+            android:layout_marginBottom="1dp"
+            android:gravity="bottom|center_horizontal" />
     </RelativeLayout>
 
-    <com.pratham.foundation.customView.SansTextView
-        android:id="@+id/title"
+    <!-- <com.pratham.foundation.customView.SansTextView
+         android:id="@+id/title"
+         android:layout_width="match_parent"
+         android:layout_height="wrap_content"
+         android:background="@color/red"
+         android:padding="@dimen/_5sdp"
+         android:text="Listen And Write"
+         android:textAlignment="center"
+         android:textColor="@color/white"
+         android:textSize="25sp" />-->
+    <Space
+        android:id="@+id/space"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/red"
-        android:padding="@dimen/_5sdp"
-        android:text="Listen And Write"
-        android:textAlignment="center"
-        android:textColor="@color/white"
-        android:textSize="25sp" />
-
+        android:layout_height="60dp" />
 
 </RelativeLayout>

@@ -35,17 +35,23 @@ import com.google.gson.reflect.TypeToken;
 import com.pratham.foundation.ApplicationClass;
 import com.pratham.foundation.R;
 import com.pratham.foundation.customView.GifView;
+import com.pratham.foundation.customView.SansButton;
 import com.pratham.foundation.customView.SansTextView;
 import com.pratham.foundation.database.BackupDatabase;
 import com.pratham.foundation.database.domain.Assessment;
 import com.pratham.foundation.database.domain.KeyWords;
 import com.pratham.foundation.database.domain.Score;
 import com.pratham.foundation.interfaces.OnGameClose;
+import com.pratham.foundation.modalclasses.EventMessage;
 import com.pratham.foundation.ui.contentPlayer.GameConstatnts;
 import com.pratham.foundation.ui.contentPlayer.fact_retrival_selection.ScienceQuestion;
 import com.pratham.foundation.utility.FC_Constants;
 import com.pratham.foundation.utility.FC_Utility;
 
+import org.androidannotations.annotations.ViewById;
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 import org.json.JSONArray;
 import org.json.JSONException;
 
@@ -69,7 +75,8 @@ import static com.pratham.foundation.utility.FC_Constants.gameFolderPath;
 
 
 public class DoingFragment extends Fragment implements OnGameClose {
-
+    /* @BindView(R.id.tittle)
+        SansTextView tittle;*/
     @BindView(R.id.tv_question)
     TextView question;
     @BindView(R.id.iv_question_image)
@@ -80,11 +87,15 @@ public class DoingFragment extends Fragment implements OnGameClose {
     @BindView(R.id.vv_question)
     VideoView vv_question;
 
-    @BindView(R.id.tittle)
-    SansTextView tittle;
+    @BindView(R.id.capture)
+    ImageView capture;
+
 
     @BindView(R.id.RelativeLayout)
     RelativeLayout RelativeLayout;
+
+    @BindView(R.id.preview)
+    SansButton preview;
 
     String fileName;
     String questionPath;
@@ -121,6 +132,8 @@ public class DoingFragment extends Fragment implements OnGameClose {
             readingContentPath = ApplicationClass.contentSDPath + gameFolderPath + "/" + contentPath + "/";
         else
             readingContentPath = ApplicationClass.foundationPath + gameFolderPath + "/" + contentPath + "/";
+        EventBus.getDefault().register(this);
+
         resStartTime = FC_Utility.getCurrentDateTime();
         addScore(0, "", 0, 0, resStartTime, jsonName + " " + GameConstatnts.START);
         getData();
@@ -212,7 +225,7 @@ public class DoingFragment extends Fragment implements OnGameClose {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         ButterKnife.bind(this, view);
-
+        preview.setVisibility(View.INVISIBLE);
         setVideoQuestion();
     }
 
@@ -230,8 +243,8 @@ public class DoingFragment extends Fragment implements OnGameClose {
             else question.setText(scienceQuestion.getQuestion());
 
             question.setMovementMethod(new ScrollingMovementMethod());
-            if (!scienceQuestion.getInstruction().isEmpty())
-                tittle.setText(scienceQuestion.getInstruction());
+          /*  if (!scienceQuestion.getInstruction().isEmpty())
+                tittle.setText(scienceQuestion.getInstruction());*/
             if (fileName != null && !fileName.isEmpty()) {
                 RelativeLayout.setVisibility(View.VISIBLE);
                 if (fileName.toLowerCase().endsWith(".jpeg") || fileName.toLowerCase().endsWith(".jpg") || fileName.toLowerCase().endsWith(".png")) {
@@ -427,6 +440,7 @@ public class DoingFragment extends Fragment implements OnGameClose {
                 preview.setImageBitmap(photo);
                 preview.setScaleType(ImageView.ScaleType.FIT_XY);*/
                 createDirectoryAndSaveFile(photo, imageName);
+                preview.setVisibility(View.VISIBLE);
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -454,5 +468,17 @@ public class DoingFragment extends Fragment implements OnGameClose {
     @Override
     public void gameClose() {
         addScore(0, "", 0, 0, resStartTime, jsonName + " " + GameConstatnts.END);
+    }
+
+    @Override
+    public void onStop() {
+        EventBus.getDefault().unregister(this);
+        super.onStop();
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onMessageEvent(EventMessage event) {
+        if (!scienceQuestion.getInstruction().isEmpty())
+        GameConstatnts.showGameInfo(getActivity(),scienceQuestion.getInstruction());
     }
 }

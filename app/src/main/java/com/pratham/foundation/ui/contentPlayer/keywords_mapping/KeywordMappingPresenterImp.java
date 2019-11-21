@@ -6,6 +6,7 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.pratham.foundation.database.BackupDatabase;
 import com.pratham.foundation.database.domain.Assessment;
+import com.pratham.foundation.database.domain.ContentProgress;
 import com.pratham.foundation.database.domain.KeyWords;
 import com.pratham.foundation.database.domain.Score;
 import com.pratham.foundation.interfaces.OnGameClose;
@@ -62,8 +63,39 @@ public class KeywordMappingPresenterImp implements KeywordMappingContract.Keywor
         }.getType();
         quetionModelList = gson.fromJson(text, type);
         getDataList();
+        //setCompletionPercentage();
+    }
+    public void setCompletionPercentage() {
+        try {
+            totalWordCount = quetionModelList.size();
+            learntWordCount = getLearntWordsCount();
+            String Label = "resourceProgress";
+            if (learntWordCount > 0) {
+                perc = ((float) learntWordCount / (float) totalWordCount) * 100;
+                addContentProgress(perc, Label);
+            } else {
+                addContentProgress(0, Label);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
+    private void addContentProgress(float perc, String label) {
+        try {
+            ContentProgress contentProgress = new ContentProgress();
+            contentProgress.setProgressPercentage("" + perc);
+            contentProgress.setResourceId("" + resId);
+            contentProgress.setSessionId("" + FC_Constants.currentSession);
+            contentProgress.setStudentId("" + FC_Constants.currentStudentID);
+            contentProgress.setUpdatedDateTime("" + FC_Utility.getCurrentDateTime());
+            contentProgress.setLabel("" + label);
+            contentProgress.setSentFlag(0);
+            appDatabase.getContentProgressDao().insert(contentProgress);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
   /*  @Override
     public void setView(String contentTitle, String resId) {
         this.resId = resId;
@@ -136,19 +168,23 @@ public class KeywordMappingPresenterImp implements KeywordMappingContract.Keywor
         wrongWordList = new ArrayList<>();
         int scoredMarks = (int) checkAnswer(keywordmapping.getLstquestionchoice(), selectedAnsList);
         if (selectedAnsList != null && !selectedAnsList.isEmpty()) {
+            KeyWords keyWords = new KeyWords();
+            keyWords.setResourceId(resId);
+            keyWords.setSentFlag(0);
+            keyWords.setStudentId(FC_Constants.currentStudentID);
+            String key = keywordmapping.getQuestion();
+            keyWords.setKeyWord(key);
+            keyWords.setWordType("word");
+            appDatabase.getKeyWordDao().insert(keyWords);
+            setCompletionPercentage();
             for (int i = 0; i < selectedAnsList.size(); i++) {
                 if ( checkAnswerNew( keywordmapping.getLstquestionchoice(),selectedAnsList.get(i).getSubQues())){
-                    KeyWords keyWords = new KeyWords();
-                    keyWords.setResourceId(resId);
-                    keyWords.setSentFlag(0);
-                    keyWords.setStudentId(FC_Constants.currentStudentID);
-                    String key = selectedAnsList.get(i).getSubQues().toString();
-                    keyWords.setKeyWord(key);
-                    keyWords.setWordType("word");
-                    appDatabase.getKeyWordDao().insert(keyWords);
-                    addScore(GameConstatnts.getInt(keywordmapping.getQid()), GameConstatnts.KEYWORD_MAPPING, 10, 10, selectedAnsList.get(i).getStartTime(),selectedAnsList.get(i).getEndTime(), selectedAnsList.get(i).toString());
+                    selectedAnsList.get(i).setTrue(true);
+
+                    addScore(GameConstatnts.getInt(keywordmapping.getQid()), GameConstatnts.KEYWORD_MAPPING, 10, 10, selectedAnsList.get(i).getStartTime(),selectedAnsList.get(i).getEndTime(), selectedAnsList.get(i).getSubQues());
                 }else {
-                    addScore(GameConstatnts.getInt(keywordmapping.getQid()), GameConstatnts.KEYWORD_MAPPING, 0, 10,selectedAnsList.get(i).getStartTime(),selectedAnsList.get(i).getEndTime(),selectedAnsList.get(i).toString());
+                    selectedAnsList.get(i).setTrue(false);
+                    addScore(GameConstatnts.getInt(keywordmapping.getQid()), GameConstatnts.KEYWORD_MAPPING, 0, 10,selectedAnsList.get(i).getStartTime(),selectedAnsList.get(i).getEndTime(),selectedAnsList.get(i).getSubQues());
                 }
             }
 

@@ -10,17 +10,18 @@ import android.view.View;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.pratham.foundation.ApplicationClass;
 import com.pratham.foundation.R;
 import com.pratham.foundation.customView.SansButton;
-import com.pratham.foundation.customView.SansTextView;
 import com.pratham.foundation.customView.dragselectrecyclerview.DragSelectTouchListener;
 import com.pratham.foundation.customView.dragselectrecyclerview.DragSelectionProcessor;
 import com.pratham.foundation.customView.flexbox.FlexDirection;
 import com.pratham.foundation.customView.flexbox.FlexboxLayoutManager;
 import com.pratham.foundation.customView.flexbox.JustifyContent;
 import com.pratham.foundation.interfaces.OnGameClose;
+import com.pratham.foundation.modalclasses.EventMessage;
 import com.pratham.foundation.modalclasses.ScienceQuestionChoice;
 import com.pratham.foundation.ui.contentPlayer.GameConstatnts;
 import com.pratham.foundation.ui.contentPlayer.fact_retrival_selection.ScienceQuestion;
@@ -33,6 +34,9 @@ import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EFragment;
 import org.androidannotations.annotations.UiThread;
 import org.androidannotations.annotations.ViewById;
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -63,8 +67,8 @@ public class FactRetrieval extends Fragment implements FactRetrievalContract.Fac
     @ViewById(R.id.btn_next)
     ImageButton next;
 
-    @ViewById(R.id.tittle)
-    SansTextView tittle;
+   /* @ViewById(R.id.tittle)
+    SansTextView tittle;*/
 
     @ViewById(R.id.clear_selection)
     SansButton clear_selection;
@@ -114,7 +118,7 @@ public class FactRetrieval extends Fragment implements FactRetrievalContract.Fac
 //            paragraph.setMovementMethod(new ScrollingMovementMethod());
             quetion.setMovementMethod(new ScrollingMovementMethod());
         }
-
+        EventBus.getDefault().register(this);
         presenter.setView(FactRetrieval.this, contentTitle, resId);
         presenter.getData(readingContentPath);
         resStartTime = FC_Utility.getCurrentDateTime();
@@ -129,9 +133,9 @@ public class FactRetrieval extends Fragment implements FactRetrievalContract.Fac
         //this.para = questionModel.getQuestion();
         this.selectedQuetion = questionModel.getLstquestionchoice();
         startTime = FC_Utility.getCurrentDateTime();
-        if (questionModel.getInstruction() != null && !questionModel.getInstruction().isEmpty()) {
+        /*if (questionModel.getInstruction() != null && !questionModel.getInstruction().isEmpty()) {
             tittle.setText(questionModel.getInstruction());
-        }
+        }*/
         Collections.shuffle(selectedQuetion);
         LoadRecyclerText();
         getAnswersInPassage();
@@ -236,11 +240,11 @@ public class FactRetrieval extends Fragment implements FactRetrievalContract.Fac
 
     @Override
     public void showResult(ArrayList<ScienceQuestionChoice> selectedQuestion) {
-        Intent intent=new Intent(getActivity(), PictionaryResult.class);
-        intent.putExtra("quetionsFact",selectedQuestion);
-        intent.putExtra("readingContentPath",readingContentPath);
-        intent.putExtra("resourceType",GameConstatnts.FACTRETRIEVAL);
-        getActivity().startActivity(intent);
+        Intent intent = new Intent(getActivity(), PictionaryResult.class);
+        intent.putExtra("quetionsFact", selectedQuestion);
+        intent.putExtra("readingContentPath", readingContentPath);
+        intent.putExtra("resourceType", GameConstatnts.FACTRETRIEVAL);
+        startActivityForResult(intent,111);
     }
 
     private void getAnswersInPassage() {
@@ -259,7 +263,7 @@ public class FactRetrieval extends Fragment implements FactRetrievalContract.Fac
                     }
                 }
                 if (start > -1) {
-                    String ansInPassage=selectedQuetion.get(queIndex).getAnsInPassage()==null? sentences[start]:selectedQuetion.get(queIndex).getAnsInPassage()+sentences[start];
+                    String ansInPassage = selectedQuetion.get(queIndex).getAnsInPassage() == null ? sentences[start] : selectedQuetion.get(queIndex).getAnsInPassage() + sentences[start];
                     selectedQuetion.get(queIndex).setAnsInPassage(ansInPassage);
                 }
             }
@@ -459,6 +463,8 @@ public class FactRetrieval extends Fragment implements FactRetrievalContract.Fac
             selectedQuetion.get(index).setUserAns(selectedText.toString());
             selectedQuetion.get(index).setStart(list.get(0));
             selectedQuetion.get(index).setEnd(list.get(list.size() - 1));
+            selectedQuetion.get(index).setStartTime(FC_Utility.getCurrentDateTime());
+            selectedQuetion.get(index).setEndTime(FC_Utility.getCurrentDateTime());
         }
     }
 
@@ -486,7 +492,27 @@ public class FactRetrieval extends Fragment implements FactRetrievalContract.Fac
     }
 
     @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == 111) {
+            GameConstatnts.playGameNext(getActivity(), GameConstatnts.FALSE,FactRetrieval.this );
+        }
+    }
+
+    @Override
     public void gameClose() {
         presenter.addScore(0, "", 0, 0, resStartTime, FC_Utility.getCurrentDateTime(), GameConstatnts.FACTRETRIEVAL + " " + GameConstatnts.END);
+    }
+
+    @Override
+    public void onStop() {
+        EventBus.getDefault().unregister(this);
+        super.onStop();
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onMessageEvent(EventMessage event) {
+        GameConstatnts.showGameInfo(getActivity(),questionModel.getInstruction());
+       // Toast.makeText(getActivity(), event.getMessage(), Toast.LENGTH_SHORT).show();
     }
 }

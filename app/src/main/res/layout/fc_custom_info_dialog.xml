@@ -1,0 +1,24 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_gravity="center">
+
+    <RelativeLayout
+        android:layout_width="@dimen/_240sdp"
+        android:layout_height="@dimen/_100sdp"
+        android:layout_centerInParent="true"
+        android:background="@drawable/dialog_bg">
+
+        <com.pratham.foundation.customView.SansTextView
+            android:id="@+id/info"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginVertical="@dimen/_10sdp"
+            android:gravity="center"
+            android:paddingHorizontal="@dimen/_7sdp"
+            android:text=""
+            android:textColor="@color/gradianceCardStartColor"
+            android:textSize="@dimen/_15sdp" />
+    </RelativeLayout>
+
+</RelativeLayout>

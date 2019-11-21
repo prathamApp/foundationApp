@@ -42,7 +42,7 @@
                 android:textColor="@color/red"
                 android:textSize="@dimen/_15sdp" />
 
-            <com.pratham.foundation.customView.fonts.SansButton
+            <com.pratham.foundation.customView.SansButton
                 android:id="@+id/dialog_error_btn"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/_35sdp"

@@ -16,9 +16,10 @@ import android.widget.Toast;
 import com.nex3z.flowlayout.FlowLayout;
 import com.pratham.foundation.ApplicationClass;
 import com.pratham.foundation.R;
+import com.pratham.foundation.customView.SansButton;
 import com.pratham.foundation.customView.SansTextView;
-import com.pratham.foundation.customView.fonts.SansButton;
 import com.pratham.foundation.interfaces.OnGameClose;
+import com.pratham.foundation.modalclasses.EventMessage;
 import com.pratham.foundation.modalclasses.ScienceQuestionChoice;
 import com.pratham.foundation.ui.contentPlayer.ContentPlayerActivity;
 import com.pratham.foundation.ui.contentPlayer.GameConstatnts;
@@ -30,6 +31,9 @@ import org.androidannotations.annotations.Bean;
 import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EFragment;
 import org.androidannotations.annotations.ViewById;
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -46,8 +50,8 @@ public class KeywordsIdentificationFragment extends Fragment implements Keywords
 
     @ViewById(R.id.paragraph)
     FlowLayout paraghaph;
-    @ViewById(R.id.tittle)
-    SansTextView tittle;
+    /* @ViewById(R.id.tittle)
+     SansTextView tittle;*/
     @ViewById(R.id.keywords)
     FlowLayout keywords;
     @ViewById(R.id.btn_submit)
@@ -55,7 +59,7 @@ public class KeywordsIdentificationFragment extends Fragment implements Keywords
     @ViewById(R.id.keyword_selected)
     RelativeLayout keyword_selected;
     @ViewById(R.id.show_me_keywords)
-    com.pratham.foundation.customView.fonts.SansButton show_me_keywords;
+    SansButton show_me_keywords;
 
     RelativeLayout.LayoutParams viewParam;
     private HashMap<String, List<Integer>> positionMap;
@@ -80,6 +84,7 @@ public class KeywordsIdentificationFragment extends Fragment implements Keywords
             else
                 readingContentPath = ApplicationClass.foundationPath + gameFolderPath + "/" + contentPath + "/";
         }
+        EventBus.getDefault().register(this);
         presenter.setView(KeywordsIdentificationFragment.this, resId, readingContentPath);
         selectedKeywords = new ArrayList<>();
         positionMap = new HashMap<>();
@@ -103,9 +108,9 @@ public class KeywordsIdentificationFragment extends Fragment implements Keywords
     public void showParagraph(ScienceQuestion questionModel) {
         this.questionModel = questionModel;
         this.questionModel.setQuestion(questionModel.getQuestion().replace("\n", " "));
-        if (questionModel.getInstruction() != null && !questionModel.getInstruction().isEmpty()) {
+       /* if (questionModel.getInstruction() != null && !questionModel.getInstruction().isEmpty()) {
             tittle.setText(questionModel.getInstruction());
-        }
+        }*/
         String[] paragraphWords = questionModel.getQuestion().split(" ");
         for (int i = 0; i < paragraphWords.length; i++) {
             if (positionMap.containsKey(paragraphWords[i].replaceAll("\\p{Punct}", "").trim())) {
@@ -286,11 +291,18 @@ public class KeywordsIdentificationFragment extends Fragment implements Keywords
 
     @Click(R.id.btn_submit)
     public void submitClicked() {
-        if (selectedKeywords != null) {
-            issubmitted = true;
-            btn_submit.setText("Next");
-            show_me_keywords.setVisibility(View.INVISIBLE);
-            presenter.addLearntWords(selectedKeywords);
+        if (selectedKeywords != null && selectedKeywords.size() > 0) {
+            if (issubmitted) {
+                GameConstatnts.playGameNext(getActivity(), GameConstatnts.FALSE, this);
+            } else {
+                issubmitted = true;
+                btn_submit.setText("Next");
+                show_me_keywords.setVisibility(View.INVISIBLE);
+                presenter.addLearntWords(selectedKeywords);
+            }
+
+        } else {
+            GameConstatnts.playGameNext(getActivity(), GameConstatnts.TRUE, (OnGameClose) this);
         }
     }
 
@@ -343,6 +355,15 @@ public class KeywordsIdentificationFragment extends Fragment implements Keywords
     @Override
     public void gameClose() {
         presenter.addScore(0, "", 0, 0, resStartTime, FC_Utility.getCurrentDateTime(), GameConstatnts.KEYWORD_IDENTIFICATION + " " + GameConstatnts.END);
+    }
+    @Override
+    public void onStop() {
+        EventBus.getDefault().unregister(this);
+        super.onStop();
+    }
 
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onMessageEvent(EventMessage event) {
+        GameConstatnts.showGameInfo(getActivity(),questionModel.getInstruction());
     }
 }

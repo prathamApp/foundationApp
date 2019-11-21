@@ -1,6 +1,8 @@
 package com.pratham.foundation.ui.contentPlayer.keywords_mapping;
 
 import android.content.Context;
+import android.graphics.Color;
+import android.graphics.Paint;
 import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.GridLayoutManager;
@@ -24,11 +26,12 @@ public class KeywordOptionAdapter extends RecyclerView.Adapter<KeywordOptionAdap
     List<ScienceQuestionChoice> selectedOption = new ArrayList();
     int maxSelect;
     boolean isClickable = true;
-
-    public KeywordOptionAdapter(Context context, List<ScienceQuestionChoice> datalist, int maxSelect) {
+    KeywordMappingContract.KeywordMappingPresenter presenter;
+    public KeywordOptionAdapter(Context context, List<ScienceQuestionChoice> datalist, int maxSelect,KeywordMappingContract.KeywordMappingPresenter presenter) {
         this.context = context;
         this.datalist = datalist;
         this.maxSelect = maxSelect;
+        this.presenter = presenter;
     }
 
     @NonNull
@@ -66,6 +69,8 @@ public class KeywordOptionAdapter extends RecyclerView.Adapter<KeywordOptionAdap
         } else {
             myviewholder.itemView.setBackground(ContextCompat.getDrawable(context, R.drawable.hexagon));
         }
+
+
         myviewholder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -88,6 +93,24 @@ public class KeywordOptionAdapter extends RecyclerView.Adapter<KeywordOptionAdap
                 }
             }
         });
+
+        if(!isClickable){
+
+            if (!presenter.checkAnswerNew(datalist,  myviewholder.textView.getText().toString())) {
+                myviewholder.textView.setTextColor(Color.RED);
+                myviewholder.textView.setPaintFlags(myviewholder.textView.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
+            } else {
+                myviewholder.textView.setPaintFlags(  myviewholder.textView.getPaintFlags() & (~ Paint.STRIKE_THRU_TEXT_FLAG));
+
+            }
+
+           /* if(!datalist.get(myviewholder.getAdapterPosition()).isTrue()){
+                myviewholder.textView.setTextColor(Color.RED);
+                myviewholder.textView.setPaintFlags(myviewholder.textView.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
+            }else {
+                myviewholder.textView.setPaintFlags(  myviewholder.textView.getPaintFlags() & (~ Paint.STRIKE_THRU_TEXT_FLAG));
+            }*/
+        }
     }
 
     private int pxFromDp(final Context context, final float dp) {

@@ -9,16 +9,15 @@
         android:hardwareAccelerated="true"
         android:icon="@drawable/fc_logo"
         android:label="@string/app_name"
+        android:networkSecurityConfig="@xml/network_security_config"
         android:roundIcon="@drawable/fc_logo_round"
         android:supportsRtl="true"
-        android:networkSecurityConfig="@xml/network_security_config"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
+
         <activity
             android:name=".ui.contentPlayer.pictionary.PictionaryResult"
-            android:screenOrientation="portrait">
-
-        </activity>
+            android:screenOrientation="portrait"></activity>
         <activity
             android:name=".ui.selectSubject.SelectSubject_"
             android:screenOrientation="portrait" />
@@ -38,8 +37,6 @@
         <activity
             android:name=".ui.admin_panel.AdminControlsActivity_"
             android:screenOrientation="portrait" />
-
-
         <activity
             android:name=".ui.bottom_fragment.add_student.MenuActivity_"
             android:screenOrientation="portrait" />
@@ -60,7 +57,7 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".ui.admin_panel.fragment_admin_panel.PushOrAssign.PushDataActivity_"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait" />
         <activity
             android:name=".ui.contentPlayer.ContentPlayerActivity_"
             android:screenOrientation="portrait" />
@@ -70,7 +67,7 @@
         <activity
             android:name=".customView.display_image_dialog.Activity_DisplayImage_"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.Dialog"/>
+            android:theme="@style/AppTheme.Dialog" />
         <activity
             android:name=".ui.test.supervisor.SupervisedAssessmentActivity"
             android:screenOrientation="sensorPortrait"
@@ -113,19 +110,7 @@
             android:name=".services.AppExitService"
             android:enabled="true"
             android:stopWithTask="false" />
-
-<!--        <activity
-            android:name="com.adityaanand.morphdialog.MorphDialogActivity"
-            android:theme="@style/MorphDialog.Custom.Light">
-        </activity>
-
-        <activity
-            android:name="com.adityaanand.morphdialog.MorphDialogActivityDark"
-            android:theme="@style/MorphDialog.Custom.Dark">
-        </activity>-->
-
     </application>
-
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />

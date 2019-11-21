@@ -19,12 +19,15 @@ import android.view.Window;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ScrollView;
 
 import com.pratham.foundation.ApplicationClass;
 import com.pratham.foundation.R;
+import com.pratham.foundation.customView.SansButton;
 import com.pratham.foundation.customView.SansTextView;
 import com.pratham.foundation.interfaces.OnGameClose;
+import com.pratham.foundation.modalclasses.EventMessage;
 import com.pratham.foundation.ui.contentPlayer.GameConstatnts;
 import com.pratham.foundation.ui.contentPlayer.fact_retrival_selection.ScienceQuestion;
 import com.pratham.foundation.ui.contentPlayer.paragraph_writing.SentenceAdapter;
@@ -35,6 +38,9 @@ import org.androidannotations.annotations.Bean;
 import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EFragment;
 import org.androidannotations.annotations.ViewById;
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -46,7 +52,7 @@ import butterknife.OnClick;
 import static com.pratham.foundation.utility.FC_Constants.activityPhotoPath;
 import static com.pratham.foundation.utility.FC_Constants.gameFolderPath;
 
-@EFragment(R.layout.fragment_paragraph_writing)
+@EFragment(R.layout.fragment_word_writing)
 public class WordWritingFragment extends Fragment
         implements WordWritingContract.WordWritingView, OnGameClose {
 
@@ -54,18 +60,24 @@ public class WordWritingFragment extends Fragment
     WordWritingContract.WordWritingPresenter presenter;
 
     private int index = 0;
-    @ViewById(R.id.paragraph)
-    RecyclerView paragraph;
-    @ViewById(R.id.scrollView)
-    ScrollView scrollView;
+   /* @ViewById(R.id.paragraph)
+    RecyclerView paragraph;*/
+   /* @ViewById(R.id.scrollView)
+    ScrollView scrollView;*/
     @ViewById(R.id.previous)
-    Button previous;
-    @ViewById(R.id.capture)
-    Button capture;
+    ImageButton previous;
+    @ViewById(R.id.camera_controll)
+    LinearLayout camera_controll;
     @ViewById(R.id.next)
-    Button next;
-    @ViewById(R.id.title)
-    SansTextView title;
+    ImageButton next;
+    @ViewById(R.id.preview)
+    SansButton preview;
+    @ViewById(R.id.text)
+    SansTextView text;
+    @ViewById(R.id.submit)
+    SansButton submitBtn;
+   /* @ViewById(R.id.title)
+    SansTextView title;*/
 
     private List<String> paragraphWords;
     //    private RelativeLayout.LayoutParams viewParam;
@@ -91,6 +103,8 @@ public class WordWritingFragment extends Fragment
             else
                 readingContentPath = ApplicationClass.foundationPath + gameFolderPath + "/" + contentPath + "/";
         }
+        EventBus.getDefault().register(this);
+        preview.setVisibility(View.INVISIBLE);
         presenter.setView(WordWritingFragment.this, resId, readingContentPath);
         presenter.getData();
         resStartTime = FC_Utility.getCurrentDateTime();
@@ -100,56 +114,66 @@ public class WordWritingFragment extends Fragment
     @Override
     public void showParagraph(List<ScienceQuestion> questionModel) {
         this.questionModel = questionModel;
-        title.setText(questionModel.get(0).getInstruction());
-        paragraphWords=new ArrayList<>();
-        for (int i=0;i<questionModel.size();i++){
+        /*  title.setText(questionModel.get(0).getInstruction());*/
+        paragraphWords = new ArrayList<>();
+        for (int i = 0; i < questionModel.size(); i++) {
             paragraphWords.add(questionModel.get(i).getQuestion());
         }
-       // paragraphWords = questionModel.getQuestion().trim().split("(?<=\\.\\s)|(?<=[?!]\\s)");
-        SentenceAdapter arrayAdapter = new SentenceAdapter(paragraphWords, getActivity());
+        // paragraphWords = questionModel.getQuestion().trim().split("(?<=\\.\\s)|(?<=[?!]\\s)");
+       /* SentenceAdapter arrayAdapter = new SentenceAdapter(paragraphWords, getActivity());
         paragraph.setAdapter(arrayAdapter);
         LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
-        paragraph.setLayoutManager(layoutManager);
+        paragraph.setLayoutManager(layoutManager);*/
+       ShowSingleQuestion();
     }
 
-    @OnClick(R.id.previous)
-    public void showPrevios() {
-        if (index > 0) {
-            View view = paragraph.getChildAt(index);
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                view.setElevation(0);
-            }
-            view.setBackgroundColor(ContextCompat.getColor(getActivity(), R.color.white));
-            index--;
-            //   paragraph.requestChildFocus(paragraph.getChildAt(index), paragraph.getChildAt(index + 1));
-            highlightText();
+    private void ShowSingleQuestion() {
+        text.setText(paragraphWords.get(index));
+        submitBtn.setVisibility(View.INVISIBLE);
+        camera_controll.setVisibility(View.INVISIBLE);
+       // preview.setVisibility(View.INVISIBLE);
+        if (index == 0) {
+            previous.setVisibility(View.INVISIBLE);
+        } else {
+            previous.setVisibility(View.VISIBLE);
+        }
+        if (index == (paragraphWords.size() - 1)) {
+            submitBtn.setVisibility(View.VISIBLE);
+            camera_controll.setVisibility(View.VISIBLE);
+           // preview.setVisibility(View.VISIBLE);
+            next.setVisibility(View.INVISIBLE);
+        } else {
+            submitBtn.setVisibility(View.INVISIBLE);
+            camera_controll.setVisibility(View.INVISIBLE);
+            //preview.setVisibility(View.INVISIBLE);
+            next.setVisibility(View.VISIBLE);
         }
     }
 
-    @OnClick(R.id.next)
-    public void showNext() {
 
-        if (index < (paragraph.getAdapter().getItemCount() - 1)) {
-            View view = paragraph.getChildAt(index);
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                view.setElevation(0);
+    @Click(R.id.previous)
+    public void onPreviousClick() {
+        if (paragraphWords != null)
+            if (index > 0) {
+                index--;
+                ShowSingleQuestion();
             }
-            view.setBackgroundColor(ContextCompat.getColor(getActivity(), R.color.white));
-            index++;
-            highlightText();
-        }
     }
 
-    private void highlightText() {
-        // paragraph.smoothScrollToPosition(index);
-        View view = paragraph.getChildAt(index);
-        paragraph.getLayoutManager().scrollToPosition(index + 1);
-        view.setBackground(ContextCompat.getDrawable(getActivity(), R.drawable.rounded_border_yellow));
+    @Click(R.id.next)
+    public void onNextClick() {
+        if (paragraphWords != null)
+            if (index < (paragraphWords.size() - 1)) {
+                index++;
+                ShowSingleQuestion();
+            }
     }
+
+
 
     @Click(R.id.capture)
     public void captureClick() {
-        imageName = "" + ApplicationClass.getUniqueID()+".jpg";
+        imageName = "" + ApplicationClass.getUniqueID() + ".jpg";
         Intent takePicture = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         startActivityForResult(takePicture, CAMERA_REQUEST);
     }
@@ -167,7 +191,7 @@ public class WordWritingFragment extends Fragment
         if (filePath.exists()) {
             presenter.addLearntWords(questionModel, imageName);
             imageName = null;
-        }else {
+        } else {
             GameConstatnts.playGameNext(getActivity(), GameConstatnts.TRUE, this);
         }
     }
@@ -205,6 +229,7 @@ public class WordWritingFragment extends Fragment
                 preview.setImageBitmap(photo);
                 preview.setScaleType(ImageView.ScaleType.FIT_XY);*/
                 presenter.createDirectoryAndSaveFile(photo, imageName);
+                preview.setVisibility(View.VISIBLE);
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -214,5 +239,16 @@ public class WordWritingFragment extends Fragment
     @Override
     public void gameClose() {
         presenter.addScore(0, "", 0, 0, resStartTime, GameConstatnts.PARAGRAPH_WRITING + " " + GameConstatnts.END);
+    }
+
+    @Override
+    public void onStop() {
+        EventBus.getDefault().unregister(this);
+        super.onStop();
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onMessageEvent(EventMessage event) {
+        GameConstatnts.showGameInfo(getActivity(), questionModel.get(index).getInstruction());
     }
 }

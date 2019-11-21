@@ -70,7 +70,7 @@ public class Activity_DisplayImage extends BaseActivity {
 
     }
 
-    private void setupEnterTransitions() {
+    private void  setupEnterTransitions() {
         ArcMotion arcMotion = new ArcMotion();
         arcMotion.setMinimumHorizontalAngle(90f);
         arcMotion.setMinimumVerticalAngle(50f);

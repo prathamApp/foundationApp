@@ -201,4 +201,45 @@
         <item name="android:gravity">center</item>
         <item name="android:textColor">@color/white</item>
     </style>
+
+    <style name="FullScreenCustomDialogStyle" parent="AppTheme">
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowFullscreen">true</item>
+        <item name="android:windowIsFloating">false</item>
+    </style>
+
+    <style name="submitbtn">
+        <item name="android:layout_marginStart">@dimen/_8sdp</item>
+        <item name="android:layout_marginEnd">@dimen/_8sdp</item>
+        <item name="android:layout_marginBottom">@dimen/_5sdp</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="android:textSize">@dimen/_13sdp</item>
+        <item name="android:elevation">5dp</item>
+        <item name="android:background">@drawable/green_button</item>
+    </style>
+    <style name="capturebtn">
+        <item name="android:layout_marginStart">@dimen/_5sdp</item>
+        <item name="android:layout_marginEnd">@dimen/_5sdp</item>
+        <item name="android:layout_marginBottom">@dimen/_5sdp</item>
+        <item name="android:padding">@dimen/_5sdp</item>
+        <item name="android:elevation">5dp</item>
+        <item name="android:scaleType">centerInside</item>
+        <item name="android:background">@drawable/green_button</item>
+        <item name="android:src">@drawable/ic_photo_camera_black</item>
+    </style>
+    <style name="question">
+        <item name="android:background">@drawable/dialog_bg</item>
+        <item name="android:layout_margin">@dimen/_10sdp</item>
+        <item name="android:elevation">5dp</item>
+        <item name="android:padding"> @dimen/_15sdp</item>
+        <item name="android:textSize">@dimen/_20sdp</item>
+        <item name="android:textAlignment">center</item>
+    </style>
+    <style name="paragraph">
+        <item name="android:background">@drawable/dialog_bg</item>
+        <item name="android:elevation">5dp</item>
+        <item name="android:padding"> @dimen/_10sdp</item>
+        <item name="android:textSize">@dimen/_10sdp</item>
+        <item name="android:textAlignment">center</item>
+    </style>
 </resources>
