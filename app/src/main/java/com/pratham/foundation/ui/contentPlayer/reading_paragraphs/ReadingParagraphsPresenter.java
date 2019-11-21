@@ -3,7 +3,6 @@ package com.pratham.foundation.ui.contentPlayer.reading_paragraphs;
 import android.content.Context;
 
 import com.google.gson.Gson;
-import com.pratham.foundation.ApplicationClass;
 import com.pratham.foundation.database.BackupDatabase;
 import com.pratham.foundation.database.domain.Assessment;
 import com.pratham.foundation.database.domain.ContentProgress;
@@ -47,9 +46,7 @@ public class ReadingParagraphsPresenter implements ReadingParagraphsContract.Rea
     public int randomCategory, GLC, totalVocabSize, learntWordsCount;
     public String resId, resStartTime, resType, paraAudio;
 
-    public ReadingParagraphsPresenter(Context context) {
-        this.context = context;
-    }
+    public ReadingParagraphsPresenter(Context context) { this.context = context; }
 
     @Override
     public void setView(ReadingParagraphsContract.ReadingParagraphsView readingView) {
@@ -118,10 +115,7 @@ public class ReadingParagraphsPresenter implements ReadingParagraphsContract.Rea
     private boolean checkLearnt(String wordCheck) {
         try {
             String word = appDatabase.getKeyWordDao().checkWord(FC_Constants.currentStudentID, "" + resId, wordCheck.toLowerCase());
-            if (word != null)
-                return true;
-            else
-                return false;
+            return word != null;
         } catch (Exception e) {
             e.printStackTrace();
             return false;

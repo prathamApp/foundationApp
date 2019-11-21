@@ -38,8 +38,38 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="2">
+
             <ImageButton
-                android:id="@+id/btn_camera"
+                android:id="@+id/btn_play"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginStart="@dimen/_5sdp"
+                android:layout_marginEnd="@dimen/_5sdp"
+                android:layout_marginBottom="@dimen/_5sdp"
+                android:layout_weight="1"
+                android:background="@drawable/green_button"
+                android:elevation="@dimen/_3sdp"
+                android:padding="@dimen/_8sdp"
+                android:scaleType="centerInside"
+                android:src="@drawable/ic_play_arrow_black"
+                android:visibility="visible" />
+
+            <ImageButton
+                android:id="@+id/btn_Stop"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginStart="@dimen/_5sdp"
+                android:layout_marginEnd="@dimen/_5sdp"
+                android:layout_marginBottom="@dimen/_5sdp"
+                android:layout_weight="1"
+                android:background="@drawable/red_button"
+                android:elevation="@dimen/_3sdp"
+                android:scaleType="centerInside"
+                android:src="@drawable/ic_stop_black"
+                android:visibility="gone" />
+
+            <ImageButton
+                android:id="@+id/btn_read_mic"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_marginStart="@dimen/_5sdp"
@@ -50,23 +80,8 @@
                 android:elevation="@dimen/_3sdp"
                 android:padding="@dimen/_5sdp"
                 android:scaleType="centerInside"
-                android:src="@drawable/ic_photo_camera_black"
+                android:src="@drawable/ic_mic_black"
                 android:visibility="visible" />
-
-            <com.pratham.foundation.customView.SansButton
-                android:id="@+id/btn_submit"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_marginStart="@dimen/_8sdp"
-                android:layout_marginEnd="@dimen/_8sdp"
-                android:layout_marginBottom="@dimen/_5sdp"
-                android:layout_weight="1"
-                android:background="@drawable/green_button"
-                android:elevation="5dp"
-                android:text="submit"
-                android:textColor="@color/white"
-                android:textSize="@dimen/_13sdp"/>
-
 
         </LinearLayout>
 
@@ -89,7 +104,5 @@
         </LinearLayout>
 
     </LinearLayout>
-
-
 
 </RelativeLayout>
