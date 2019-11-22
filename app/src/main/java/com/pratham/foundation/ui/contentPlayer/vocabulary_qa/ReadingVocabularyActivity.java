@@ -522,6 +522,17 @@ public class ReadingVocabularyActivity extends BaseActivity implements MediaCall
     }
 
     @Override
+    public void stoppedPressed() {
+//        showLoader();
+//        presenter.micStopped(splitWordsPunct, wordsResIdList);
+    }
+
+    @Override
+    public void sttEngineReady() {
+//        dismissLoadingDialog();
+    }
+
+    @Override
     public void Stt_onResult(ArrayList<String> sttResults) {
         presenter.sttResultProcess(sttResults, modalVocabularyList.get(currentPageNo), ansCheck, ans);
     }

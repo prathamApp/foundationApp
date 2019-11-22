@@ -4,20 +4,20 @@ import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.SuppressLint;
 import android.app.Activity;
-import android.app.ActivityOptions;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
-import android.graphics.Rect;
 import android.graphics.drawable.AnimationDrawable;
 import android.graphics.drawable.ColorDrawable;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.design.widget.CoordinatorLayout;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewAnimationUtils;
@@ -37,9 +37,7 @@ import com.nex3z.flowlayout.FlowLayout;
 import com.pratham.foundation.ApplicationClass;
 import com.pratham.foundation.BaseActivity;
 import com.pratham.foundation.R;
-import com.pratham.foundation.customView.GifView;
 import com.pratham.foundation.customView.SansTextView;
-import com.pratham.foundation.customView.display_image_dialog.Activity_DisplayImage_;
 import com.pratham.foundation.interfaces.OnGameClose;
 import com.pratham.foundation.modalclasses.EventMessage;
 import com.pratham.foundation.modalclasses.ModalParaSubMenu;
@@ -51,6 +49,7 @@ import com.pratham.foundation.utility.FC_Constants;
 import com.pratham.foundation.utility.FC_Utility;
 
 import org.androidannotations.annotations.AfterViews;
+import org.androidannotations.annotations.Background;
 import org.androidannotations.annotations.Bean;
 import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EFragment;
@@ -59,8 +58,8 @@ import org.androidannotations.annotations.ViewById;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
-import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -83,8 +82,12 @@ public class ContentReadingFragment extends Fragment implements
     public static MediaPlayer mp, mPlayer;
     @ViewById(R.id.myflowlayout)
     FlowLayout wordFlowLayout;
-    @ViewById(R.id.tv_story_title)
-    TextView story_title;
+    @ViewById(R.id.toolbar)
+    Toolbar toolbar;
+    @ViewById(R.id.parapax_image)
+    ImageView parapax_image;
+    //    @ViewById(R.id.tv_story_title)
+//    TextView story_title;
     @ViewById(R.id.btn_prev)
     ImageButton btn_previouspage;
     @ViewById(R.id.btn_next)
@@ -98,15 +101,15 @@ public class ContentReadingFragment extends Fragment implements
     @ViewById(R.id.btn_submit)
     Button btn_submit;
     @ViewById(R.id.story_ll)
-    RelativeLayout story_ll;
+    CoordinatorLayout story_ll;
     @ViewById(R.id.btn_Stop)
     ImageButton btn_Stop;
     @ViewById(R.id.btn_camera)
     ImageButton btn_camera;
-    @ViewById(R.id.ib_back)
-    ImageButton ib_back;
-    @ViewById(R.id.ib_page_img)
-    ImageButton ib_page_img;
+    //    @ViewById(R.id.ib_back)
+//    ImageButton ib_back;
+//    @ViewById(R.id.ib_page_img)
+//    ImageButton ib_page_img;
     @ViewById(R.id.bottom_bar2)
     LinearLayout bottom_bar2;
 //    @ViewById(R.id.ll_btn_next)
@@ -160,6 +163,8 @@ public class ContentReadingFragment extends Fragment implements
 
     @AfterViews
     public void initialize() {
+        showLoader();
+        context = getActivity();
         silence_outer_layout.setVisibility(View.GONE);
         Bundle bundle = getArguments();
         contentType = bundle.getString("contentType");
@@ -174,15 +179,13 @@ public class ContentReadingFragment extends Fragment implements
         bottom_bar2.setVisibility(View.GONE);
         btn_camera.setVisibility(View.GONE);
 
-        animationDrawable = (AnimationDrawable) story_ll.getBackground();
-        animationDrawable.setEnterFadeDuration(4500);
-        animationDrawable.setExitFadeDuration(4500);
-        animationDrawable.start();
+//        animationDrawable = (AnimationDrawable) story_ll.getBackground();
+//        animationDrawable.setEnterFadeDuration(4500);
+//        animationDrawable.setExitFadeDuration(4500);
+//        animationDrawable.start();
 
 
-        context = getActivity();
         presenter.setView(ContentReadingFragment.this);
-        showLoader();
         modalPagesList = new ArrayList<>();
 
         continuousSpeechService = new ContinuousSpeechService_New(context, ContentReadingFragment.this, FC_Constants.currentSelectedLanguage);
@@ -208,7 +211,8 @@ public class ContentReadingFragment extends Fragment implements
         continuousSpeechService.resetSpeechRecognizer();
 
         try {
-            story_title.setText(storyName);
+//            story_title.setText(storyName);
+            toolbar.setTitle(storyName);
             presenter.fetchJsonData(readingContentPath);
             //pageArray = presenter.fetchJsonData(storyName);
 //            getWordsOfStoryOfPage();
@@ -225,10 +229,11 @@ public class ContentReadingFragment extends Fragment implements
 
     public Dialog myLoadingDialog;
     boolean dialogFlg = false;
+
     @UiThread
     @Override
     public void showLoader() {
-        if(!dialogFlg) {
+        if (!dialogFlg) {
             dialogFlg = true;
             myLoadingDialog = new Dialog(context);
             myLoadingDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -242,7 +247,8 @@ public class ContentReadingFragment extends Fragment implements
     @UiThread
     @Override
     public void dismissLoadingDialog() {
-        if(dialogFlg) {
+        if (dialogFlg) {
+            dialogFlg = false;
             if (myLoadingDialog != null)
                 myLoadingDialog.dismiss();
         }
@@ -251,7 +257,8 @@ public class ContentReadingFragment extends Fragment implements
     @UiThread
     @Override
     public void setCategoryTitle(String title) {
-        story_title.setText(storyName);
+//        story_title.setText(storyName);
+        toolbar.setTitle(storyName);
     }
 
     @Override
@@ -259,18 +266,18 @@ public class ContentReadingFragment extends Fragment implements
         storyAudio = paraAudio;
     }
 
-    public static String readingImgPath="";
+    public static String readingImgPath = "";
 
-    @Click(R.id.ib_page_img)
-    public void viewPageImg(){
-        btn_Stop.performClick();
-        readingImgPath = readingContentPath + storyBg;
-        Intent intent = new Intent(getActivity(), Activity_DisplayImage_.class);
-        ActivityOptions options = ActivityOptions.makeSceneTransitionAnimation(getActivity(),
-                ib_page_img, "transition_dialog");
-        startActivityForResult(intent, 11, options.toBundle());
+//    @Click(R.id.ib_page_img)
+//    public void viewPageImg(){
+//        btn_Stop.performClick();
+//        readingImgPath = readingContentPath + storyBg;
+//        Intent intent = new Intent(getActivity(), Activity_DisplayImage_.class);
+//        ActivityOptions options = ActivityOptions.makeSceneTransitionAnimation(getActivity(),
+//                ib_page_img, "transition_dialog");
+//        startActivityForResult(intent, 11, options.toBundle());
 //        showPageImage();
-    }
+//    }
 
     @UiThread
     @Override
@@ -290,11 +297,15 @@ public class ContentReadingFragment extends Fragment implements
         storyAudio = modalPagesList.get(currentPage).getReadPageAudio();
         storyBg = modalPagesList.get(currentPage).getPageImage();
         pageTitle = modalPagesList.get(currentPage).getPageTitle();
+//        if (pageTitle != null && !pageTitle.equalsIgnoreCase(""))
+//            story_title.setText(pageTitle);
         if (pageTitle != null && !pageTitle.equalsIgnoreCase(""))
-            story_title.setText(pageTitle);
+            toolbar.setTitle(storyName);
 
         playHideFlg = storyAudio.equalsIgnoreCase("NA");
-        ib_page_img.performClick();
+        btn_Stop.performClick();
+//        ib_page_img.performClick();
+        showPageImage();
         correctArr = new boolean[modalPagesList.get(currentPage).getReadList().size()];
         splitWords = new ArrayList<>();
         splitWordsPunct = new ArrayList<>();
@@ -324,11 +335,11 @@ public class ContentReadingFragment extends Fragment implements
         int w = view.getWidth();
         int h = view.getHeight();
         int endRadius = (int) Math.hypot(w, h);
-        int cx = (int) (view.getX() + (view.getWidth()/2));
-        int cy = (int) (view.getY())+ view.getHeight() + 56;
+        int cx = (int) (view.getX() + (view.getWidth() / 2));
+        int cy = (int) (view.getY()) + view.getHeight() + 56;
 
-        if(b){
-            Animator revealAnimator = ViewAnimationUtils.createCircularReveal(view, cx,cy, 0, endRadius);
+        if (b) {
+            Animator revealAnimator = ViewAnimationUtils.createCircularReveal(view, cx, cy, 0, endRadius);
             view.setVisibility(View.VISIBLE);
             revealAnimator.setDuration(700);
             revealAnimator.start();
@@ -353,7 +364,14 @@ public class ContentReadingFragment extends Fragment implements
     }
 
     private void showPageImage() {
-        final Dialog dialog = new Dialog(getActivity());
+        try {
+            Bitmap bmImg = BitmapFactory.decodeFile(readingContentPath + storyBg);
+            BitmapFactory.decodeStream(new FileInputStream(readingContentPath + storyBg));
+            parapax_image.setImageBitmap(bmImg);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+/*        final Dialog dialog = new Dialog(getActivity());
         final View dialogView = View.inflate(getActivity(),R.layout.fc_show_image_dialog,null);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
@@ -401,12 +419,13 @@ public class ContentReadingFragment extends Fragment implements
                     btn_submit.setVisibility(View.VISIBLE);
                 }
             }, 200);
-        });
+        });*/
     }
 
     @UiThread
     @Override
     public void allCorrectAnswer() {
+        dismissLoadingDialog();
         for (int i = 0; i < splitWordsPunct.size(); i++) {
             ((SansTextView) wordFlowLayout.getChildAt(i)).setTextColor(getResources().getColor(R.color.colorGreenDark));
             correctArr[i] = true;
@@ -421,11 +440,10 @@ public class ContentReadingFragment extends Fragment implements
             } else {
                 btn_nextpage.performClick();
             }
-        }, 1000);
+        }, 1200);
     }
 
     private void setWordsToLayout() {
-
         for (int i = 0; i < splitWords.size(); i++) {
             if (splitWords.get(i).equalsIgnoreCase("#")) {
                 final SansTextView myTextView = new SansTextView(context);
@@ -519,14 +537,16 @@ public class ContentReadingFragment extends Fragment implements
             if (myNextView != null)
                 isScrollBelowVisible(myNextView);
             myView.setTextColor(getResources().getColor(R.color.colorRedDark));
-            Animation animation = AnimationUtils.loadAnimation(context, R.anim.reading_zoom_in);
-            myView.startAnimation(animation);
+            myView.setBackgroundColor(getResources().getColor(R.color.yellow_text_bg));
+//            Animation animation = AnimationUtils.loadAnimation(context, R.anim.reading_zoom_in);
+//            myView.startAnimation(animation);
 //            wordPopUp(this, myView);
             colorChangeHandler.postDelayed(() -> {
                 myView.setTextColor(getResources().getColor(R.color.colorText));
+                myView.setBackgroundColor(getResources().getColor(R.color.full_transparent));
 //                    wordPopDown(ReadingStoryActivity.this, myView);
-                Animation animation1 = AnimationUtils.loadAnimation(context, R.anim.reading_zoom_out);
-                myView.startAnimation(animation1);
+//                Animation animation1 = AnimationUtils.loadAnimation(context, R.anim.reading_zoom_out);
+//                myView.startAnimation(animation1);
             }, 350);
             if (index == wordsDurationList.size() - 1) {
                 try {
@@ -561,7 +581,7 @@ public class ContentReadingFragment extends Fragment implements
             wordDuration = 1;
 
         handler.postDelayed(() -> {
-            if(playFlg && !pauseFlg) {
+            if (playFlg && !pauseFlg) {
                 if (index < wordFlowLayout.getChildCount()) {
                     wordCounter += 1;
                     if (!pauseFlg) {
@@ -594,14 +614,14 @@ public class ContentReadingFragment extends Fragment implements
 
     //If you want to detect that the view is FULLY visible:
     private void isScrollBelowVisible(View view) {
-        Rect scrollBounds = new Rect();
+ /*       Rect scrollBounds = new Rect();
         myScrollView.getDrawingRect(scrollBounds);
 
         float top = view.getY();
         float bottom = top + view.getHeight();
 
         if (!(scrollBounds.top < top) || !(scrollBounds.bottom > bottom))
-            view.getParent().requestChildFocus(view, view);
+            view.getParent().requestChildFocus(view, view);*/
     }
 
     @Click(R.id.btn_Stop)
@@ -649,6 +669,7 @@ public class ContentReadingFragment extends Fragment implements
 //        if (!voiceStart) {
         voiceStart = true;
         flgPerMarked = false;
+        showLoader();
         btn_Mic.setVisibility(View.GONE);
         btn_Play.setVisibility(View.GONE);
         btn_Stop.setVisibility(View.VISIBLE);
@@ -685,7 +706,6 @@ public class ContentReadingFragment extends Fragment implements
         if (!storyAudio.equalsIgnoreCase("NA")) {
             if (!playFlg) {
                 btn_Mic.setVisibility(View.GONE);
-                btn_Play.setVisibility(View.VISIBLE);
                 btn_Stop.setVisibility(View.VISIBLE);
                 btn_Play.setImageResource(R.drawable.ic_pause_black);
                 playFlg = true;
@@ -880,10 +900,10 @@ public class ContentReadingFragment extends Fragment implements
         showStars(false);
     }
 
-    @Click(R.id.ib_back)
-    public void backPressed() {
-        getActivity().onBackPressed();
-    }
+//    @Click(R.id.ib_back)
+//    public void backPressed() {
+//        getActivity().onBackPressed();
+//    }
 
     @Click(R.id.btn_next)
     void gotoNextPage() {
@@ -1194,6 +1214,18 @@ public class ContentReadingFragment extends Fragment implements
         }
     }
 
+    @Override
+    public void stoppedPressed() {
+        showLoader();
+        presenter.micStopped(splitWordsPunct, wordsResIdList);
+    }
+
+    @Override
+    public void sttEngineReady() {
+        dismissLoadingDialog();
+    }
+
+    @Background
     @Override
     public void Stt_onResult(ArrayList<String> sttResult) {
 

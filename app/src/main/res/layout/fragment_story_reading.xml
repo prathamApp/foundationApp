@@ -78,7 +78,6 @@
                     android:background="@color/red"
                     android:id="@+id/title_bar">
 
-<!--
                     <ImageButton
                         android:id="@+id/ib_back"
                         android:layout_width="50dp"
@@ -87,8 +86,7 @@
                         android:layout_marginEnd="5dp"
                         android:background="@drawable/red_ripple_round"
                         android:src="@drawable/ic_left_arrow_white" />
-                        android:layout_toEndOf="@+id/ib_back"
--->
+<!--                        android:layout_toEndOf="@+id/ib_back"-->
 
                     <com.pratham.foundation.customView.SansTextViewBold
                         android:id="@+id/tv_story_title"
@@ -97,13 +95,13 @@
                         android:gravity="center"
                         android:layout_marginStart="5dp"
                         android:layout_marginEnd="5dp"
+                        android:layout_toEndOf="@+id/ib_back"
                         android:layout_toStartOf="@+id/ib_page_img"
                         android:text="The Moon And The Cap"
                         android:textColor="@color/white"
                         android:textSize="@dimen/_30sdp"
                         android:textStyle="bold" />
 
-<!--
                     <ImageButton
                         android:id="@+id/ib_page_img"
                         android:layout_width="50dp"
@@ -114,7 +112,6 @@
                         android:scaleType="fitCenter"
                         android:background="@drawable/red_ripple_round"
                         android:src="@drawable/ic_image_black" />
--->
 
                 </RelativeLayout>
 

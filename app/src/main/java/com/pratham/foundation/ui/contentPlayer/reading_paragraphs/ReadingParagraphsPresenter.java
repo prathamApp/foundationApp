@@ -55,6 +55,11 @@ public class ReadingParagraphsPresenter implements ReadingParagraphsContract.Rea
     }
 
     @Override
+    public void micStopped(List<String> splitWordsPunct, List<String> wordsResIdList) {
+
+    }
+
+    @Override
     public void setResId(String resourceId) {
         resId = resourceId;
         resStartTime = FC_Utility.getCurrentDateTime();

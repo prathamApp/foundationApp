@@ -13,6 +13,7 @@
 
     <color name="white">#ffffff</color>
     <color name="yellow">#FFFFFF00</color>
+    <color name="yellow_text_bg">#FFEB3B</color>
     <color name="hahaColor">#ff26b4e9</color>
     <color name="colorAccentDark">#FFB300</color>
     <color name="colorGreen">#AED581</color

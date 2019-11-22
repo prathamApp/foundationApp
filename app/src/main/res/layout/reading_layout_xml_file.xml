@@ -1,25 +1,75 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/story_ll"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/bg_anim_login">
+    android:background="@drawable/background_gradiance_bg"
+    android:orientation="vertical">
+
+    <android.support.design.widget.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/full_transparent">
+
+        <android.support.design.widget.CollapsingToolbarLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:contentScrim="@color/gradianceCardStartColor"
+            app:expandedTitleTextAppearance="@style/TextAppearance.AppCompat.Title"
+            app:layout_scrollFlags="scroll|exitUntilCollapsed"
+            app:titleEnabled="false">
+
+            <ImageView
+                android:id="@+id/parapax_image"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_200sdp"
+                android:scaleType="centerInside"
+                app:layout_scrollFlags="scroll|enterAlways|enterAlwaysCollapsed"
+                app:layout_collapseMode="parallax" />
+
+            <android.support.v7.widget.Toolbar
+                android:id="@+id/toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="70dp"
+                android:paddingStart="80dp"
+                android:gravity="center_vertical"
+                app:layout_collapseMode="pin"
+                app:layout_scrollFlags="scroll|enterAlways"
+                app:popupTheme="@style/AppTheme.PopupOverlay"
+                app:theme="@style/Widget.AppCompat.Toolbar" />
+
+
+        </android.support.design.widget.CollapsingToolbarLayout>
+    </android.support.design.widget.AppBarLayout>
+
+    <android.support.v4.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/dialog_bg"
+        android:orientation="vertical"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
 
         <RelativeLayout
             android:id="@+id/silence_outer"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="@color/black_20"
-            android:visibility="gone"
-            android:elevation="50dp">
+            android:elevation="50dp"
+            android:visibility="gone">
 
             <RelativeLayout
                 android:id="@+id/silence_main_layout"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/_150sdp"
+                android:layout_centerInParent="true"
                 android:layout_marginStart="@dimen/_30sdp"
                 android:layout_marginEnd="@dimen/_30sdp"
-                android:layout_centerInParent="true"
                 android:padding="@dimen/_10sdp">
 
                 <ImageView
@@ -27,94 +77,111 @@
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/_90sdp"
                     android:layout_alignParentTop="true"
-                    android:elevation="@dimen/_20sdp"
                     android:layout_centerHorizontal="true"
+                    android:elevation="@dimen/_20sdp"
                     android:src="@drawable/stt_listener" />
 
                 <RelativeLayout
                     android:layout_width="@dimen/_150sdp"
                     android:layout_height="@dimen/_60sdp"
-                    android:layout_marginTop="@dimen/_80sdp"
                     android:layout_centerHorizontal="true"
+                    android:layout_marginTop="@dimen/_80sdp"
                     android:background="@drawable/ripple_rectangle_card">
 
                     <com.pratham.foundation.customView.SansTextViewBold
                         android:id="@+id/silence_tv"
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
-                        android:gravity="center"
                         android:layout_alignParentBottom="true"
                         android:layout_centerHorizontal="true"
+                        android:gravity="center"
+                        android:text="I am listening..."
                         android:textColor="@color/red"
-                        android:textSize="@dimen/_15sdp"
-                        android:text="I am listening..."/>
+                        android:textSize="@dimen/_15sdp" />
 
                 </RelativeLayout>
             </RelativeLayout>
         </RelativeLayout>
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_above="@+id/bottom_bar"
-            android:orientation="vertical">
+<!--        <ScrollView-->
+<!--            android:id="@+id/myScrollView"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="match_parent"-->
+<!--            android:layout_alignParentTop="true"-->
+<!--            android:layout_marginStart="@dimen/_25sdp"-->
+<!--            android:layout_marginTop="10dp"-->
+<!--            android:layout_marginEnd="@dimen/_25sdp"-->
+<!--            android:layout_marginBottom="10dp"-->
+<!--            android:elevation="5dp"-->
+<!--            android:padding="@dimen/_5sdp">-->
 
-            <RelativeLayout
+            <com.nex3z.flowlayout.FlowLayout xmlns:app="http://schemas.android.com/apk/res-auto"
+                android:id="@+id/myflowlayout"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_weight="5.2"
-                android:orientation="vertical"
-                android:weightSum="10">
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_25sdp"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="@dimen/_25sdp"
+                android:layout_marginBottom="@dimen/_35sdp"
+                app:flChildSpacing="10dp" />
+<!--        </ScrollView>-->
+        </RelativeLayout>
+    </android.support.v4.widget.NestedScrollView>
 
-<!--                android:layout_marginTop="@dimen/_8sdp"-->
-<!--                android:layout_marginStart="@dimen/_8sdp"-->
-<!--                android:layout_marginEnd="@dimen/_8sdp"-->
-                <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:elevation="5dp"
-                    android:paddingTop="@dimen/_3sdp"
-                    android:paddingBottom="@dimen/_3sdp"
-                    android:background="@color/red"
-                    android:id="@+id/title_bar">
+    <include
+        android:id="@+id/bottom_bar"
+        layout="@layout/bottom_control_panel"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_gravity="bottom"
+        android:gravity="bottom|center_horizontal" />
+</android.support.design.widget.CoordinatorLayout>
 
-                    <ImageButton
-                        android:id="@+id/ib_back"
-                        android:layout_width="50dp"
-                        android:layout_height="50dp"
-                        android:layout_marginStart="5dp"
-                        android:layout_marginEnd="5dp"
-                        android:background="@drawable/red_ripple_round"
-                        android:src="@drawable/ic_left_arrow_white" />
 
-                    <com.pratham.foundation.customView.SansTextViewBold
-                        android:id="@+id/tv_story_title"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_toEndOf="@+id/ib_back"
-                        android:gravity="center"
-                        android:layout_marginStart="5dp"
-                        android:layout_marginEnd="5dp"
-                        android:layout_toStartOf="@+id/ib_page_img"
-                        android:text="The Moon And The Cap"
-                        android:textColor="@color/white"
-                        android:textSize="@dimen/_35sdp"
-                        android:textStyle="bold" />
+<!--<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"-->
+<!--    xmlns:app="http://schemas.android.com/apk/res-auto"-->
+<!--    android:id="@+id/activity_main"-->
+<!--    android:layout_width="match_parent"-->
+<!--    android:layout_height="match_parent"-->
+<!--    android:fitsSystemWindows="true"-->
+<!--    android:orientation="vertical"-->
+<!--    android:background="@drawable/bg_anim_login">-->
 
-                    <ImageButton
-                        android:id="@+id/ib_page_img"
-                        android:layout_width="50dp"
-                        android:layout_height="50dp"
-                        android:layout_alignParentEnd="true"
-                        android:layout_marginStart="5dp"
-                        android:layout_marginEnd="5dp"
-                        android:padding="3dp"
-                        android:scaleType="fitCenter"
-                        android:background="@drawable/red_ripple_round"
-                        android:src="@drawable/ic_image_white" />
+<!--    <android.support.design.widget.AppBarLayout-->
+<!--        android:id="@+id/app_bar"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:background="?attr/colorPrimary">-->
+<!--        <android.support.design.widget.CollapsingToolbarLayout-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="match_parent"-->
+<!--            app:contentScrim="?attr/colorPrimary"-->
+<!--            app:layout_scrollFlags="scroll|exitUntilCollapsed"-->
+<!--            app:expandedTitleTextAppearance="@style/TextAppearance.AppCompat.Title">-->
 
-                </RelativeLayout>
+<!--            <ImageView-->
+<!--                android:id="@+id/parapax_image"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="250dp"-->
+<!--                app:layout_collapseMode="parallax"/>-->
+<!--            <android.support.v7.widget.Toolbar-->
+<!--                android:id="@+id/toolbar"-->
+<!--                android:layout_width="match_parent"-->
+<!--                app:layout_collapseMode="pin"-->
+<!--                android:layout_height="?attr/actionBarSize"-->
+<!--                app:popupTheme="@style/ThemeOverlay.AppCompat.Light"-->
+<!--                app:theme="@style/Widget.Design.CollapsingToolbar" />-->
+<!--        </android.support.design.widget.CollapsingToolbarLayout>-->
 
+<!--    </android.support.design.widget.AppBarLayout>-->
+
+<!--    <android.support.v4.widget.NestedScrollView-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="match_parent"-->
+<!--        app:layout_behavior="@string/appbar_scrolling_view_behavior">-->
+
+        <!--
                 <ScrollView
                     android:id="@+id/myScrollView"
                     android:layout_width="match_parent"
@@ -127,28 +194,100 @@
                     android:padding="@dimen/_5sdp"
                     android:layout_marginBottom="10dp"
                     android:background="@drawable/dialog_bg">
+        -->
+        <!--        </ScrollView>-->
 
-                    <com.nex3z.flowlayout.FlowLayout xmlns:app="http://schemas.android.com/apk/res-auto"
-                        android:id="@+id/myflowlayout"
+<!--    </android.support.v4.widget.NestedScrollView>-->
+
+    <!--
+
+        <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+            android:layout_below="@+id/app_bar"
+                android:layout_above="@+id/bottom_bar"
+                android:orientation="vertical">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="5.2"
+                    android:orientation="vertical"
+                    android:weightSum="10">
+
+    &lt;!&ndash;                android:layout_marginTop="@dimen/_8sdp"&ndash;&gt;
+    &lt;!&ndash;                android:layout_marginStart="@dimen/_8sdp"&ndash;&gt;
+    &lt;!&ndash;                android:layout_marginEnd="@dimen/_8sdp"&ndash;&gt;
+    &lt;!&ndash;                <RelativeLayout&ndash;&gt;
+    &lt;!&ndash;                    android:layout_width="match_parent"&ndash;&gt;
+    &lt;!&ndash;                    android:layout_height="wrap_content"&ndash;&gt;
+    &lt;!&ndash;                    android:elevation="5dp"&ndash;&gt;
+    &lt;!&ndash;                    android:paddingTop="@dimen/_3sdp"&ndash;&gt;
+    &lt;!&ndash;                    android:paddingBottom="@dimen/_3sdp"&ndash;&gt;
+    &lt;!&ndash;                    android:background="@color/red"&ndash;&gt;
+    &lt;!&ndash;                    android:id="@+id/title_bar">&ndash;&gt;
+    &lt;!&ndash;                    <ImageButton&ndash;&gt;
+    &lt;!&ndash;                        android:id="@+id/ib_back"&ndash;&gt;
+    &lt;!&ndash;                        android:layout_width="50dp"&ndash;&gt;
+    &lt;!&ndash;                        android:layout_height="50dp"&ndash;&gt;
+    &lt;!&ndash;                        android:layout_marginStart="5dp"&ndash;&gt;
+    &lt;!&ndash;                        android:layout_marginEnd="5dp"&ndash;&gt;
+    &lt;!&ndash;                        android:background="@drawable/red_ripple_round"&ndash;&gt;
+    &lt;!&ndash;                        android:src="@drawable/ic_left_arrow_white" />&ndash;&gt;
+
+    &lt;!&ndash;                    <com.pratham.foundation.customView.SansTextViewBold&ndash;&gt;
+    &lt;!&ndash;                        android:id="@+id/tv_story_title"&ndash;&gt;
+    &lt;!&ndash;                        android:layout_width="match_parent"&ndash;&gt;
+    &lt;!&ndash;                        android:layout_height="wrap_content"&ndash;&gt;
+    &lt;!&ndash;                        android:layout_toEndOf="@+id/ib_back"&ndash;&gt;
+    &lt;!&ndash;                        android:gravity="center"&ndash;&gt;
+    &lt;!&ndash;                        android:layout_marginStart="5dp"&ndash;&gt;
+    &lt;!&ndash;                        android:layout_marginEnd="5dp"&ndash;&gt;
+    &lt;!&ndash;                        android:layout_toStartOf="@+id/ib_page_img"&ndash;&gt;
+    &lt;!&ndash;                        android:text="The Moon And The Cap"&ndash;&gt;
+    &lt;!&ndash;                        android:textColor="@color/white"&ndash;&gt;
+    &lt;!&ndash;                        android:textSize="@dimen/_35sdp"&ndash;&gt;
+    &lt;!&ndash;                        android:textStyle="bold" />&ndash;&gt;
+
+    &lt;!&ndash;                    <ImageButton&ndash;&gt;
+    &lt;!&ndash;                        android:id="@+id/ib_page_img"&ndash;&gt;
+    &lt;!&ndash;                        android:layout_width="50dp"&ndash;&gt;
+    &lt;!&ndash;                        android:layout_height="50dp"&ndash;&gt;
+    &lt;!&ndash;                        android:layout_alignParentEnd="true"&ndash;&gt;
+    &lt;!&ndash;                        android:layout_marginStart="5dp"&ndash;&gt;
+    &lt;!&ndash;                        android:layout_marginEnd="5dp"&ndash;&gt;
+    &lt;!&ndash;                        android:padding="3dp"&ndash;&gt;
+    &lt;!&ndash;                        android:scaleType="fitCenter"&ndash;&gt;
+    &lt;!&ndash;                        android:background="@drawable/red_ripple_round"&ndash;&gt;
+    &lt;!&ndash;                        android:src="@drawable/ic_image_white" />&ndash;&gt;
+
+    &lt;!&ndash;                </RelativeLayout>&ndash;&gt;
+
+                    <ScrollView
+                        android:id="@+id/myScrollView"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:paddingHorizontal="10dp"
-                        app:flChildSpacing="10dp" />
+                        android:layout_height="match_parent"
+                        android:layout_marginStart="@dimen/_8sdp"
+                        android:layout_marginEnd="@dimen/_8sdp"
+                        android:layout_below="@+id/title_bar"
+                        android:layout_marginTop="10dp"
+                        android:elevation="5dp"
+                        android:padding="@dimen/_5sdp"
+                        android:layout_marginBottom="10dp"
+                        android:background="@drawable/dialog_bg">
 
-                </ScrollView>
-            </RelativeLayout>
-        </LinearLayout>
+                        <com.nex3z.flowlayout.FlowLayout xmlns:app="http://schemas.android.com/apk/res-auto"
+                            android:id="@+id/myflowlayout"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:paddingHorizontal="10dp"
+                            app:flChildSpacing="10dp" />
 
-    <include
-        android:id="@+id/bottom_bar"
-        layout="@layout/bottom_control_panel"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_gravity="bottom|center_horizontal"
-        android:layout_marginBottom="1dp"
-        android:gravity="bottom|center_horizontal" />
+                    </ScrollView>
+                </RelativeLayout>
+            </LinearLayout>
 
+    -->
     <!--        <LinearLayout-->
 <!--            android:id="@+id/bottom_bar"-->
 <!--            android:layout_width="match_parent"-->
@@ -263,4 +402,4 @@
 
 <!--        </LinearLayout>-->
 
-    </RelativeLayout>
+<!--    </android.support.design.widget.CoordinatorLayout>-->

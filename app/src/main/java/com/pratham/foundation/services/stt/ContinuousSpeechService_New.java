@@ -82,6 +82,7 @@ public class ContinuousSpeechService_New implements RecognitionListener, STT_Res
                 silenceHandler.removeCallbacksAndMessages(null);
         }catch (Exception e){}
         logDBEntry("Stopped");
+        stt_result.stoppedPressed();
         speech.stopListening();
     }
 
@@ -115,6 +116,7 @@ public class ContinuousSpeechService_New implements RecognitionListener, STT_Res
     @Override
     public void onReadyForSpeech(Bundle params) {
         Log.d(LOG_TAG, "onReadyForSpeech");
+        stt_result.sttEngineReady();
         startCountDown();
     }
 

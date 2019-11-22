@@ -46,6 +46,8 @@ public interface VocabReadingContract {
         void addProgress();
 
         void setView(VocabReadingContract.VocabReadingView readingView);
+
+        void micStopped(List<String> splitWordsPunct, List<String> wordsResIdList);
     }
 
 }
