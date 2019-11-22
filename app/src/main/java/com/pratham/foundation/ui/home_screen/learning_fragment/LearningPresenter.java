@@ -341,7 +341,7 @@ public class LearningPresenter implements LearningContract.LearningPresenter, AP
                                 contentChild.setOnSDCard(childDwContentList.get(i).isOnSDCard());
                                 contentChild.setNodelist(null);
                                 maxScoreChild = new ArrayList();
-                                if(!LOGIN_MODE.contains("qr"))
+                                if(!LOGIN_MODE.equalsIgnoreCase(QR_GROUP_MODE))
                                     findMaxScoreNew(childDwContentList.get(i).getNodeId());
                                 double totalScore = 0;
                                 for (int q = 0; maxScoreChild.size() > q; q++) {

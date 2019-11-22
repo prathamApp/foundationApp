@@ -273,7 +273,7 @@ public class ReadingVocabularyActivity extends BaseActivity implements MediaCall
                     btn_reading.setClickable(false);
                     vocabChatFlow.removeAllViews();
                     if (newSetDataHandler == null)
-                    newSetDataHandler = new Handler();
+                        newSetDataHandler = new Handler();
                     newSetDataHandler.postDelayed(() -> {
                         if (currentPageNo < modalVocabularyList.size() - 1) {
                             currentPageNo++;
@@ -308,10 +308,12 @@ public class ReadingVocabularyActivity extends BaseActivity implements MediaCall
     }
 
     private void setImage(String ques) {
-        if (ques.toLowerCase().contains("this") || ques.toLowerCase().contains("these")) {
+        if (ques.toLowerCase().contains("this") || ques.toLowerCase().contains("these")
+                || ques.toLowerCase().contains("यह")) {
             this_image.setVisibility(View.VISIBLE);
             that_image.setVisibility(View.GONE);
-        } else if (ques.toLowerCase().contains("that") || ques.toLowerCase().contains("those")) {
+        } else if (ques.toLowerCase().contains("that") || ques.toLowerCase().contains("those")
+                || ques.toLowerCase().contains("वह")) {
             that_image.setVisibility(View.VISIBLE);
             this_image.setVisibility(View.GONE);
         } else {
@@ -761,7 +763,7 @@ public class ReadingVocabularyActivity extends BaseActivity implements MediaCall
         });
     }
 
-    public void disableHandlers(){
+    public void disableHandlers() {
         try {
             if (readingFlg)
                 startReading();

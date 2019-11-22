@@ -14,7 +14,7 @@
         android:layout_marginStart="@dimen/_10sdp"
         android:layout_marginEnd="@dimen/_10sdp"
         android:layout_marginBottom="@dimen/_5sdp"
-        app:elevation="@dimen/_10sdp"
+        app:elevation="500dp"
         android:background="@drawable/home_header_1_bg"
         android:layout_height="110dp">
 <!--

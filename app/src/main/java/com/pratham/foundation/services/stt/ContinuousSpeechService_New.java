@@ -82,8 +82,8 @@ public class ContinuousSpeechService_New implements RecognitionListener, STT_Res
                 silenceHandler.removeCallbacksAndMessages(null);
         }catch (Exception e){}
         logDBEntry("Stopped");
-        stt_result.stoppedPressed();
         speech.stopListening();
+        stt_result.stoppedPressed();
     }
 
     public void startSpeechInput() {
