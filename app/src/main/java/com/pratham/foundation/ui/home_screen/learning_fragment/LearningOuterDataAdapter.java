@@ -115,7 +115,7 @@ public class LearningOuterDataAdapter extends RecyclerView.Adapter {
 
                 try {
                     itemRowHolder.itemTitle.setText(sectionName);
-                    LearningInnerDataAdapter learningInnerDataAdapter = new LearningInnerDataAdapter(mContext, sublistList, tempItemClicked, i);
+                    LearningInnerDataAdapter learningInnerDataAdapter = new LearningInnerDataAdapter(mContext, sublistList, tempItemClicked, i,sectionName);
                     itemRowHolder.recycler_view_list.setLayoutManager(new LinearLayoutManager(mContext, LinearLayoutManager.HORIZONTAL, false));
                     itemRowHolder.recycler_view_list.setAdapter(learningInnerDataAdapter);
                     childCounter += 1;

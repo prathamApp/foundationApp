@@ -37,17 +37,16 @@ public class LearningInnerDataAdapter extends RecyclerView.Adapter {
     LearningContract.LearningItemClicked itemClicked;
     int parentPos = 0;
 //    List maxScore;
-
-
+    String parentName;
     private static final String TYPE_HEADER = "Header";
     private static final String TYPE_ITEM = "Resource";
 
-
-    public LearningInnerDataAdapter(Context context, List<ContentTable> itemsList, LearningContract.LearningItemClicked itemClicked, int parentPos) {
+    public LearningInnerDataAdapter(Context context, List<ContentTable> itemsList, LearningContract.LearningItemClicked itemClicked, int parentPos, String parentName) {
         this.itemsList = itemsList;
         this.mContext = context;
         this.itemClicked = itemClicked;
         this.parentPos = parentPos;
+        this.parentName = parentName;
     }
 
     @NonNull
@@ -96,7 +95,7 @@ public class LearningInnerDataAdapter extends RecyclerView.Adapter {
 //                int randomNo = getRandomDrawableGradiant();
 //                folderHolder.rl_root.setBackground(mContext.getResources().getDrawable(randomNo));
                 folderHolder.tvTitle.setText(itemsList.get(i).getNodeTitle());
-                folderHolder.tvTitle.setTextColor(mContext.getResources().getColor(R.color.text_color));
+                folderHolder.tvTitle.setTextColor(mContext.getResources().getColor(R.color.colorText));
                 folderHolder.progressLayout.setCurProgress(Integer.parseInt(itemsList.get(i).getNodePercentage()));
                 File f;
                 if (itemsList.get(i).getIsDownloaded().equalsIgnoreCase("1") ||
@@ -127,12 +126,7 @@ public class LearningInnerDataAdapter extends RecyclerView.Adapter {
                     folderHolder.itemImage.setController(controller);
 
                 }
-                folderHolder.rl_root.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                            itemClicked.onContentClicked(itemsList.get(i));
-                    }
-                });
+                folderHolder.rl_root.setOnClickListener(v -> itemClicked.onContentClicked(itemsList.get(i), parentName));
 
                 break;
             case 2:

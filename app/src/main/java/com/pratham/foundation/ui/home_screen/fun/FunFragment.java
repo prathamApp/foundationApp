@@ -60,6 +60,7 @@ import java.util.Objects;
 
 import static com.pratham.foundation.ui.home_screen.HomeActivity.header_rl;
 import static com.pratham.foundation.ui.home_screen.HomeActivity.levelChanged;
+import static com.pratham.foundation.ui.home_screen.HomeActivity.sub_Name;
 import static com.pratham.foundation.ui.home_screen.HomeActivity.tv_progress;
 import static com.pratham.foundation.utility.FC_Constants.currentLevel;
 import static com.pratham.foundation.utility.FC_Constants.gameFolderPath;
@@ -278,6 +279,7 @@ public class FunFragment extends Fragment implements FunContract.FunView,
         }
     }
 
+    @UiThread
     @Override
     public void setLevelprogress(int percent) {
 //        tv_progress.setText(percent+"%");
@@ -311,13 +313,14 @@ public class FunFragment extends Fragment implements FunContract.FunView,
     }
 
     @Override
-    public void onContentClicked(ContentTable singleItem) {
+    public void onContentClicked(ContentTable singleItem, String parentName) {
         ButtonClickSound.start();
         FC_Constants.isPractice=false;
         if (singleItem.getResourceType().equalsIgnoreCase("category")) {
             Intent intent = new Intent(getActivity(), ContentDisplay_.class);
             intent.putExtra("nodeId", singleItem.getNodeId());
             intent.putExtra("contentTitle", singleItem.getNodeTitle());
+            intent.putExtra("parentName", parentName);
             intent.putExtra("level", "" + currentLevel);
             startActivity(intent);
         } else if(singleItem.getResourceType().equalsIgnoreCase("preResource")){
@@ -500,6 +503,7 @@ public class FunFragment extends Fragment implements FunContract.FunView,
         Intent intent = new Intent(getActivity(), ContentDisplay_.class);
         intent.putExtra("nodeId", nodeId);
         intent.putExtra("contentTitle", nodeTitle);
+        intent.putExtra("parentName", sub_Name);
         intent.putExtra("level", "" + currentLevel);
         startActivity(intent);
     }

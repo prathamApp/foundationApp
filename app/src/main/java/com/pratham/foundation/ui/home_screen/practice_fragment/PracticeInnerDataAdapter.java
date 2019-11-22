@@ -37,18 +37,18 @@ public class PracticeInnerDataAdapter extends RecyclerView.Adapter {
     PracticeContract.PracticeItemClicked itemClicked;
     int parentPos = 0;
 //    List maxScore;
-
-
+    String parentName;
     private static final String TYPE_HEADER = "Header";
     private static final String TYPE_ITEM = "Resource";
 
 
     public PracticeInnerDataAdapter(Context context, List<ContentTable> itemsList,
-                                    PracticeContract.PracticeItemClicked itemClicked, int parentPos) {
+                                    PracticeContract.PracticeItemClicked itemClicked, int parentPos, String parentName) {
         this.itemsList = itemsList;
         this.mContext = context;
         this.itemClicked = itemClicked;
         this.parentPos = parentPos;
+        this.parentName = parentName;
     }
 
     @NonNull
@@ -96,7 +96,7 @@ public class PracticeInnerDataAdapter extends RecyclerView.Adapter {
                 FolderHolder folderHolder = (FolderHolder) viewHolder;
 //                int randomNo = getRandomDrawableGradiant();
 //                folderHolder.rl_root.setBackground(mContext.getResources().getDrawable(randomNo));
-                folderHolder.tvTitle.setTextColor(mContext.getResources().getColor(R.color.text_color));
+                folderHolder.tvTitle.setTextColor(mContext.getResources().getColor(R.color.colorText));
                 folderHolder.tvTitle.setText(itemsList.get(i).getNodeTitle());
                 folderHolder.progressLayout.setCurProgress(Integer.parseInt(itemsList.get(i).getNodePercentage()));
                 File f;
@@ -131,7 +131,7 @@ public class PracticeInnerDataAdapter extends RecyclerView.Adapter {
                 folderHolder.rl_root.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                            itemClicked.onContentClicked(itemsList.get(i));
+                            itemClicked.onContentClicked(itemsList.get(i),parentName);
                     }
                 });
 

@@ -54,6 +54,7 @@ import java.util.List;
 import java.util.Objects;
 
 import static com.pratham.foundation.ui.home_screen.HomeActivity.header_rl;
+import static com.pratham.foundation.ui.home_screen.HomeActivity.tv_progress;
 import static com.pratham.foundation.utility.FC_Constants.currentLevel;
 import static com.pratham.foundation.utility.FC_Constants.gameFolderPath;
 import static com.pratham.foundation.utility.FC_Constants.isTest;
@@ -544,8 +545,10 @@ public class TestFragment extends Fragment implements TestContract.TestView,
         }
     }
 
+    @UiThread
     @Override
     public void setLevelprogress(int percent) {
+        tv_progress.setCurProgress(percent);
 //        level_progress.setCurProgress(percent);
     }
 

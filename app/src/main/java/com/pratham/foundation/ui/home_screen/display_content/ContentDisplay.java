@@ -8,6 +8,7 @@ import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Handler;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -15,7 +16,6 @@ import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.widget.Button;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -75,21 +75,19 @@ public class ContentDisplay extends BaseActivity implements ContentContract.Cont
     private RecyclerView recyclerView;
     private ContentAdapter contentAdapter;
     int tempDownloadPos, resumeCntr = 0;
-    String downloadNodeId, resName, resServerImageName;
+    String downloadNodeId, resName, resServerImageName, parentName;
     List<ContentTable> ContentTableList;
     public Dialog downloadDialog;
     ProgressLayout progressLayout;
     TextView dialog_file_name;
     ImageView iv_file_trans;
 
-    @ViewById(R.id.tv_title)
-    TextView tv_title;
-    @ViewById(R.id.btn_back)
-    ImageButton btn_back;
-    @ViewById(R.id.tv_level)
-    TextView tv_level;
-    @ViewById(R.id.profileImage)
-    ImageView profileImage;
+    @ViewById(R.id.tv_Topic)
+    TextView tv_Topic;
+    @ViewById(R.id.tv_Activity)
+    TextView tv_Activity;
+    @ViewById(R.id.iv_level)
+    ImageView iv_level;
     String nodeId, level, contentTitle;
     @ViewById(R.id.home_root_layout)
     RelativeLayout homeRoot;
@@ -98,7 +96,7 @@ public class ContentDisplay extends BaseActivity implements ContentContract.Cont
 
 //    @ViewById(R.id.tv_progress)
 //    TextView tv_progress;
-    @ViewById(R.id.full_level_progressLayout)
+    @ViewById(R.id.card_progressLayout)
     ProgressLayout level_progress;
 
     @DrawableRes(R.drawable.home_header_1_bg)
@@ -109,6 +107,10 @@ public class ContentDisplay extends BaseActivity implements ContentContract.Cont
     Drawable homeHeader3;
     @DrawableRes(R.drawable.home_header_4_bg)
     Drawable homeHeader4;
+    @ViewById(R.id.floating_back)
+    FloatingActionButton floating_back;
+    @ViewById(R.id.floating_info)
+    FloatingActionButton floating_info;
 
 
     @AfterViews
@@ -116,9 +118,11 @@ public class ContentDisplay extends BaseActivity implements ContentContract.Cont
         resumeCntr = 0;
         nodeId = getIntent().getStringExtra("nodeId");
         contentTitle = getIntent().getStringExtra("contentTitle");
+        parentName = getIntent().getStringExtra("parentName");
         level = getIntent().getStringExtra("level");
         changeBG(Integer.parseInt(level));
-
+        floating_back.setImageResource(R.drawable.ic_left_arrow_white);
+        floating_info.setImageResource(R.drawable.ic_info_outline_white);
         presenter.setView(ContentDisplay.this);
 //        presenter.getPerc(nodeId);
 
@@ -137,7 +141,8 @@ public class ContentDisplay extends BaseActivity implements ContentContract.Cont
         FC_Constants.isTest = false;
         presenter.displayProfileImage();
         presenter.getPerc(nodeId);
-        tv_title.setText("" + contentTitle);
+        tv_Topic.setText("" + contentTitle);
+        tv_Activity.setText("" + parentName);
     }
 
     @SuppressLint("SetTextI18n")
@@ -145,19 +150,23 @@ public class ContentDisplay extends BaseActivity implements ContentContract.Cont
         switch (levelNo) {
             case 0:
                 header_rl.setBackground(homeHeader1);
-                tv_level.setText("Level 1");
+                iv_level.setImageResource(R.drawable.level_1);
                 break;
             case 1:
                 header_rl.setBackground(homeHeader2);
-                tv_level.setText("Level 2");
+                iv_level.setImageResource(R.drawable.level_2);
                 break;
             case 2:
                 header_rl.setBackground(homeHeader3);
-                tv_level.setText("Level 3");
+                iv_level.setImageResource(R.drawable.level_3);
                 break;
             case 3:
                 header_rl.setBackground(homeHeader4);
-                tv_level.setText("Level 4");
+                iv_level.setImageResource(R.drawable.level_4);
+                break;
+            case 4:
+                header_rl.setBackground(homeHeader4);
+                iv_level.setImageResource(R.drawable.level_5);
                 break;
         }
     }
@@ -166,7 +175,7 @@ public class ContentDisplay extends BaseActivity implements ContentContract.Cont
     @Override
     public void setStudentProfileImage(String sImage) {
         showLoader();
-        if (sImage != null) {
+/*        if (sImage != null) {
             if (sImage.equalsIgnoreCase("group_icon"))
                 profileImage.setImageResource(R.drawable.ic_grp_btn);
             else if (!FC_Constants.GROUP_LOGIN && ApplicationClass.isTablet)
@@ -195,10 +204,11 @@ public class ContentDisplay extends BaseActivity implements ContentContract.Cont
                 }
             }
         } else
-            profileImage.setImageResource(R.drawable.b2);
+            profileImage.setImageResource(R.drawable.b2);*/
 
         presenter.addNodeIdToList(nodeId);
         presenter.getListData();
+
     }
 
     @UiThread
@@ -246,7 +256,7 @@ public class ContentDisplay extends BaseActivity implements ContentContract.Cont
             finish();
     }
 
-    @Click(R.id.btn_back)
+    @Click(R.id.floating_back)
     public void backClicked(){
         onBackPressed();
     }

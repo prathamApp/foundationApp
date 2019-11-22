@@ -65,7 +65,6 @@ import com.pratham.foundation.ui.admin_panel.AdminControlsActivity_;
 import com.pratham.foundation.ui.admin_panel.group_selection.SelectGroupActivity_;
 import com.pratham.foundation.ui.contentPlayer.ContentPlayerActivity_;
 import com.pratham.foundation.ui.splash_activity.SplashActivity;
-import com.pratham.foundation.ui.student_profile.Student_profile_activity;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -633,12 +632,12 @@ public class FC_Utility {
                     .replace(frame, mFragment, TAG)
                     .addToBackStack(TAG)
                     .commit();
-        } else if (mActivity instanceof Student_profile_activity) {
-            ((Student_profile_activity) mActivity).getSupportFragmentManager()
-                    .beginTransaction()
-                    .replace(frame, mFragment, TAG)
-                    .addToBackStack(TAG)
-                    .commit();
+//        } else if (mActivity instanceof Student_profile_activity) {
+//            ((Student_profile_activity) mActivity).getSupportFragmentManager()
+//                    .beginTransaction()
+//                    .replace(frame, mFragment, TAG)
+//                    .addToBackStack(TAG)
+//                    .commit();
         } else if (mActivity instanceof SelectGroupActivity_) {
             ((SelectGroupActivity_) mActivity).getSupportFragmentManager()
                     .beginTransaction()

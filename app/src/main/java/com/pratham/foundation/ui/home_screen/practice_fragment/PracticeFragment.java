@@ -61,6 +61,8 @@ import java.util.Objects;
 
 import static com.pratham.foundation.ui.home_screen.HomeActivity.header_rl;
 import static com.pratham.foundation.ui.home_screen.HomeActivity.levelChanged;
+import static com.pratham.foundation.ui.home_screen.HomeActivity.sub_Name;
+import static com.pratham.foundation.ui.home_screen.HomeActivity.tv_progress;
 import static com.pratham.foundation.utility.FC_Constants.currentLevel;
 import static com.pratham.foundation.utility.FC_Constants.gameFolderPath;
 import static com.pratham.foundation.utility.FC_Utility.dpToPx;
@@ -286,8 +288,10 @@ public class PracticeFragment extends Fragment implements PracticeContract.Pract
         }
     }
 
+    @UiThread
     @Override
     public void setLevelprogress(int percent) {
+        tv_progress.setCurProgress(percent);
 //        level_progress.setCurProgress(percent);
     }
 
@@ -318,13 +322,14 @@ public class PracticeFragment extends Fragment implements PracticeContract.Pract
     }
 
     @Override
-    public void onContentClicked(ContentTable singleItem) {
+    public void onContentClicked(ContentTable singleItem, String parentName) {
         ButtonClickSound.start();
         FC_Constants.isPractice=true;
         if (singleItem.getResourceType().equalsIgnoreCase("category")) {
             Intent intent = new Intent(getActivity(), ContentDisplay_.class);
             intent.putExtra("nodeId", singleItem.getNodeId());
             intent.putExtra("contentTitle", singleItem.getNodeTitle());
+            intent.putExtra("parentName", parentName);
             intent.putExtra("level", "" + currentLevel);
             startActivity(intent);
         } else if(singleItem.getResourceType().equalsIgnoreCase("preResource")){
@@ -508,6 +513,7 @@ public class PracticeFragment extends Fragment implements PracticeContract.Pract
         Intent intent = new Intent(getActivity(), ContentDisplay_.class);
         intent.putExtra("nodeId", nodeId);
         intent.putExtra("contentTitle", nodeTitle);
+        intent.putExtra("parentName", sub_Name);
         intent.putExtra("level", "" + currentLevel);
         startActivity(intent);
     }

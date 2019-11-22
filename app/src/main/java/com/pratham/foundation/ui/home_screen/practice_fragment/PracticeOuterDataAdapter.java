@@ -110,7 +110,7 @@ public class PracticeOuterDataAdapter extends RecyclerView.Adapter {
                 try {
                     itemRowHolder.itemTitle.setText(sectionName);
                     PracticeInnerDataAdapter PracticeInnerDataAdapter = new PracticeInnerDataAdapter(mContext,
-                            sublistList, tempItemClicked, i);
+                            sublistList, tempItemClicked, i,sectionName);
                     itemRowHolder.recycler_view_list.setLayoutManager(new LinearLayoutManager(mContext,
                             LinearLayoutManager.HORIZONTAL, false));
                     itemRowHolder.recycler_view_list.setAdapter(PracticeInnerDataAdapter);

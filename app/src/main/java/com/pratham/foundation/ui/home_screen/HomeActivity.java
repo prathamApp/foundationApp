@@ -8,6 +8,7 @@ import android.content.res.Configuration;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
+import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
@@ -22,15 +23,16 @@ import android.widget.TextView;
 import com.pratham.foundation.BaseActivity;
 import com.pratham.foundation.R;
 import com.pratham.foundation.customView.progress_layout.ProgressLayout;
+import com.pratham.foundation.customView.submarine_view.SubmarineItem;
+import com.pratham.foundation.customView.submarine_view.SubmarineView;
 import com.pratham.foundation.database.AppDatabase;
 import com.pratham.foundation.modalclasses.EventMessage;
 import com.pratham.foundation.services.shared_preferences.FastSave;
 import com.pratham.foundation.ui.home_screen.fun.FunFragment_;
 import com.pratham.foundation.ui.home_screen.learning_fragment.LearningFragment_;
-import com.pratham.foundation.ui.home_screen.level.Level_ImageAdapter;
-import com.pratham.foundation.ui.home_screen.level.Level_ImageData;
 import com.pratham.foundation.ui.home_screen.practice_fragment.PracticeFragment_;
 import com.pratham.foundation.ui.student_profile.Student_profile_activity;
+import com.pratham.foundation.ui.student_profile.Student_profile_activity_;
 import com.pratham.foundation.ui.test.supervisor.SupervisedAssessmentActivity;
 import com.pratham.foundation.utility.FC_Constants;
 
@@ -45,8 +47,6 @@ import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Objects;
 
 import github.hellocsl.cursorwheel.CursorWheelLayout;
@@ -65,24 +65,26 @@ import static com.pratham.foundation.utility.FC_Constants.dialog_btn_exit;
 @EActivity(R.layout.activity_home)
 public class HomeActivity extends BaseActivity implements LevelChanged, CursorWheelLayout.OnMenuSelectedListener {
 
-    public static String sub_nodeId = "";
+    public static String sub_Name, sub_nodeId = "";
     @ViewById(R.id.viewpager)
     ViewPager viewpager;
-    @ViewById(R.id.tv_studentName)
-    TextView tv_studentName;
+    @ViewById(R.id.tv_Topic)
+    TextView tv_Topic;
+    @ViewById(R.id.tv_Activity)
+    TextView tv_Activity;
     @ViewById(R.id.card_progressLayout)
     public static ProgressLayout tv_progress;
     @ViewById(R.id.tabs)
     TabLayout tabLayout;
     @ViewById(R.id.header_rl)
     public static RelativeLayout header_rl;
-//    @ViewById(R.id.submarine)
-//    public static SubmarineView submarine;
-//    @ViewById(R.id.iv_level)
-//    public static ImageView iv_level;
+    @ViewById(R.id.submarine)
+    public static SubmarineView submarine;
+    @ViewById(R.id.iv_level)
+    public static ImageView iv_level;
 
-    @ViewById(R.id.level_circle)
-    CursorWheelLayout level_circle;
+//    @ViewById(R.id.level_circle)
+//    CursorWheelLayout level_circle;
 
     @ViewById(R.id.profileImage)
     ImageView profileImage;
@@ -94,16 +96,23 @@ public class HomeActivity extends BaseActivity implements LevelChanged, CursorWh
     Drawable homeHeader3;
     @DrawableRes(R.drawable.home_header_4_bg)
     Drawable homeHeader4;
+    @ViewById(R.id.floating_back)
+    FloatingActionButton floating_back;
+    @ViewById(R.id.floating_info)
+    FloatingActionButton floating_info;
+
     public static boolean languageChanged = false;
     static int count = 0;
     public static LevelChanged levelChanged;
-
 
     @AfterViews
     public void initialize() {
         Configuration config = getResources().getConfiguration();
         FC_Constants.TAB_LAYOUT = config.smallestScreenWidthDp > 425;
         sub_nodeId = getIntent().getStringExtra("nodeId");
+        sub_Name = getIntent().getStringExtra("nodeTitle");
+        floating_back.setImageResource(R.drawable.ic_left_arrow_white);
+        floating_info.setImageResource(R.drawable.ic_info_outline_white);
         FC_Constants.currentSelectedLanguage = FastSave.getInstance().getString(FC_Constants.LANGUAGE, "");
         setupViewPager(viewpager);
         tv_progress.setCurProgress(0);
@@ -143,7 +152,7 @@ public class HomeActivity extends BaseActivity implements LevelChanged, CursorWh
 
     @UiThread
     public void setStudentProfileImage(String sImage) {
-        if (sImage != null) {
+/*        if (sImage != null) {
             if (sImage.equalsIgnoreCase("group_icon"))
                 profileImage.setImageResource(R.drawable.ic_grp_btn);
             else {
@@ -169,7 +178,7 @@ public class HomeActivity extends BaseActivity implements LevelChanged, CursorWh
                         break;
                 }
             }
-        }
+        }*/
     }
 
     @Background
@@ -178,7 +187,7 @@ public class HomeActivity extends BaseActivity implements LevelChanged, CursorWh
         try {
             if (LOGIN_MODE.equalsIgnoreCase(GROUP_MODE))
                 profileName = AppDatabase.getDatabaseInstance(this).getGroupsDao().getGroupNameByGrpID(FC_Constants.currentStudentID);
-            else if(!LOGIN_MODE.equalsIgnoreCase(QR_GROUP_MODE)){
+            else if (!LOGIN_MODE.equalsIgnoreCase(QR_GROUP_MODE)) {
                 profileName = AppDatabase.getDatabaseInstance(this).getStudentDao().getFullName(FC_Constants.currentStudentID);
             }
 
@@ -193,7 +202,8 @@ public class HomeActivity extends BaseActivity implements LevelChanged, CursorWh
 
     @UiThread
     public void setProfileName(String profileName) {
-        tv_studentName.setText(profileName);
+        tv_Activity.setText(profileName);
+        tv_Topic.setText(sub_Name);
     }
 
     @Override
@@ -204,6 +214,7 @@ public class HomeActivity extends BaseActivity implements LevelChanged, CursorWh
 
     @UiThread
     public void setLevel() {
+/*
         try {
             if(count>0){
             List<Level_ImageData> imageDatas = new ArrayList<>();
@@ -226,8 +237,9 @@ public class HomeActivity extends BaseActivity implements LevelChanged, CursorWh
 //                Toast.makeText(HomeActivity.this, "Level : " + pos, Toast.LENGTH_SHORT).show();
             });
         }catch (Exception e){e.printStackTrace();}
+*/
 
-/*        SubmarineItem item = new SubmarineItem(getDrawable(R.drawable.level_1), null);
+        SubmarineItem item = new SubmarineItem(getDrawable(R.drawable.level_1), null);
         SubmarineItem item2 = new SubmarineItem(getDrawable(R.drawable.level_2), null);
         SubmarineItem item3 = new SubmarineItem(getDrawable(R.drawable.level_3), null);
         SubmarineItem item4 = new SubmarineItem(getDrawable(R.drawable.level_4), null);
@@ -262,7 +274,9 @@ public class HomeActivity extends BaseActivity implements LevelChanged, CursorWh
 
         try {
             submarine.clearAllSubmarineItems();
-        }catch (Exception e){e.printStackTrace();}
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
         for (int i = 0; i < count; i++) {
             switch (i) {
@@ -279,7 +293,7 @@ public class HomeActivity extends BaseActivity implements LevelChanged, CursorWh
                     submarine.addSubmarineItem(item4);
                     break;
             }
-        }*/
+        }
     }
 
     private void changeBGNew(int currentLevel) {
@@ -312,6 +326,10 @@ public class HomeActivity extends BaseActivity implements LevelChanged, CursorWh
         practiceTab.setText("Practice");
         practiceTab.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.ic_practice, 0, 0);
 
+        TextView profileTab = (TextView) LayoutInflater.from(this).inflate(R.layout.custom_tab_text, null);
+        profileTab.setText("Profile");
+        profileTab.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.ic_profile, 0, 0);
+
         if (currentSubject.equalsIgnoreCase("english")) {
 //            TextView tabThree = (TextView) LayoutInflater.from(this).inflate(R.layout.custom_tab_text, null);
 //            tabThree.setText("Test");
@@ -321,15 +339,44 @@ public class HomeActivity extends BaseActivity implements LevelChanged, CursorWh
             tabFour.setText("Fun");
             tabFour.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.ic_fun, 0, 0);
             tabLayout.getTabAt(2).setCustomView(tabFour);
-        }
+            tabLayout.getTabAt(3).setCustomView(profileTab);
+        }else
+            tabLayout.getTabAt(2).setCustomView(profileTab);
 
-        if(LOGIN_MODE.contains("group")){
+        if (LOGIN_MODE.contains("group")) {
             tabLayout.getTabAt(0).setCustomView(learningTab);
             tabLayout.getTabAt(1).setCustomView(practiceTab);
-        }else{
+        } else {
             tabLayout.getTabAt(0).setCustomView(practiceTab);
             tabLayout.getTabAt(1).setCustomView(learningTab);
         }
+
+        tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+            @Override
+            public void onTabSelected(TabLayout.Tab tab) {
+                if(tab.getText().toString().equalsIgnoreCase("Profile")){
+                    header_rl.setVisibility(View.GONE);
+                }else
+                    header_rl.setVisibility(View.VISIBLE);
+            }
+
+            @Override
+            public void onTabUnselected(TabLayout.Tab tab) {
+            }
+
+            @Override
+            public void onTabReselected(TabLayout.Tab tab) {
+                if(tab.getText().toString().equalsIgnoreCase("Profile")){
+                    header_rl.setVisibility(View.GONE);
+                }else
+                    header_rl.setVisibility(View.VISIBLE);
+
+                if(tab.getPosition()== 2){
+                    //TODO Test Dialog
+                }
+            }
+        });
+
     }
 
     @SuppressLint("SetTextI18n")
@@ -415,25 +462,29 @@ public class HomeActivity extends BaseActivity implements LevelChanged, CursorWh
         }
     }
 
-//    @Click(R.id.iv_level)
-//    public void levelChange() {
-//    }
+    @Click(R.id.iv_level)
+    public void levelChange() {
+        submarine.show();
+    }
 
     private void setupViewPager(ViewPager viewpager) {
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
-        viewpager.setOffscreenPageLimit(4);
-        if(LOGIN_MODE.contains("group")) {
+        viewpager.setOffscreenPageLimit(5);
+        if (LOGIN_MODE.contains("group")) {
             adapter.addFrag(new LearningFragment_(), "Learning");
             adapter.addFrag(new PracticeFragment_(), "Practice");
-        }
-        else {
+        } else {
             adapter.addFrag(new PracticeFragment_(), "Practice");
             adapter.addFrag(new LearningFragment_(), "Learning");
         }
         if (currentSubject.equalsIgnoreCase("english")) {
 //            adapter.addFrag(new TestFragment_(), "Test");
             adapter.addFrag(new FunFragment_(), "Fun");
+            adapter.addFrag(new Student_profile_activity_(), "Profile");
         }
+        else
+            adapter.addFrag(new Student_profile_activity_(), "Profile");
+
         viewpager.setAdapter(adapter);
     }
 
@@ -458,7 +509,7 @@ public class HomeActivity extends BaseActivity implements LevelChanged, CursorWh
         }
     }
 
-    @Click(R.id.btn_back)
+    @Click(R.id.floating_back)
     public void backBtnPressed() {
         EventMessage eventMessage = new EventMessage();
         eventMessage.setMessage(BACK_PRESSED);
@@ -466,12 +517,15 @@ public class HomeActivity extends BaseActivity implements LevelChanged, CursorWh
     }
 
     boolean dialogFlg = false;
+
     @Override
     public void onBackPressed() {
-        if(!dialogFlg) {
-            dialogFlg=true;
-        exitDialog();
-        }
+        super.onBackPressed();
+        finish();
+//        if (!dialogFlg) {
+//            dialogFlg = true;
+//            exitDialog();
+//        }
     }
 
     @SuppressLint("SetTextI18n")
@@ -500,24 +554,25 @@ public class HomeActivity extends BaseActivity implements LevelChanged, CursorWh
 
         next_btn.setOnClickListener(v -> {
             finish();
-            dialogFlg=false;
+            dialogFlg = false;
             dialog.dismiss();
         });
 
         revise_btn.setOnClickListener(v -> {
             endSession(HomeActivity.this);
             finishAffinity();
-            dialogFlg=false;
+            dialogFlg = false;
             dialog.dismiss();
         });
 
         test_btn.setOnClickListener(v -> {
-            dialogFlg=false;
-            dialog.dismiss();});
+            dialogFlg = false;
+            dialog.dismiss();
+        });
     }
 
     @Override
     public void onItemSelected(CursorWheelLayout parent, View view, int pos) {
-        Log.d("LevelChanger", "onItemSelected: "+pos);
+        Log.d("LevelChanger", "onItemSelected: " + pos);
     }
 }

@@ -8,7 +8,7 @@ public interface FunContract {
 
     interface FunItemClicked {
 
-        void onContentClicked(ContentTable singleItem);
+        void onContentClicked(ContentTable singleItem, String parentName);
 
         void onContentOpenClicked(ContentTable contentList);
 
