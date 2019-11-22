@@ -1,18 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.contentPlayer.sequenceLayout.SequenceLayout">
+    tools:context=".ui.contentPlayer.sequenceLayout.SequenceLayout"
+    android:orientation="vertical">
 
     <!-- TODO: Update blank fragment layout -->
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="60dp"/>
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/recycler_view"
-            android:layout_marginTop="@dimen/_15sdp"
+            android:layout_marginTop="@dimen/_2sdp"
             android:layout_below="@+id/header_rl"
             android:layout_above="@id/bottom_rl"
             android:layout_width="match_parent"
@@ -61,4 +65,4 @@
 
     </RelativeLayout>
 
-</FrameLayout>
+</LinearLayout>

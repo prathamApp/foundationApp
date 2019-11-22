@@ -8,6 +8,7 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.pratham.foundation.database.BackupDatabase;
 import com.pratham.foundation.database.domain.Assessment;
+import com.pratham.foundation.database.domain.ContentProgress;
 import com.pratham.foundation.database.domain.KeyWords;
 import com.pratham.foundation.database.domain.Score;
 import com.pratham.foundation.interfaces.OnGameClose;
@@ -79,7 +80,37 @@ public class ParagraphWritingPresenter implements ParagraphWritingContract.Parag
         questionModel.setKeywords(new ArrayList(Arrays.asList(instrumentNames)));*/
         //view.showParagraph(questionModel);
     }
+    public void setCompletionPercentage() {
+        try {
+            totalWordCount = quetionModelList.size();
+            learntWordCount = getLearntWordsCount();
+            String Label = "resourceProgress";
+            if (learntWordCount > 0) {
+                perc = ((float) learntWordCount / (float) totalWordCount) * 100;
+                addContentProgress(perc, Label);
+            } else {
+                addContentProgress(0, Label);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 
+    private void addContentProgress(float perc, String label) {
+        try {
+            ContentProgress contentProgress = new ContentProgress();
+            contentProgress.setProgressPercentage("" + perc);
+            contentProgress.setResourceId("" + resId);
+            contentProgress.setSessionId("" + FC_Constants.currentSession);
+            contentProgress.setStudentId("" + FC_Constants.currentStudentID);
+            contentProgress.setUpdatedDateTime("" + FC_Utility.getCurrentDateTime());
+            contentProgress.setLabel("" + label);
+            contentProgress.setSentFlag(0);
+            appDatabase.getContentProgressDao().insert(contentProgress);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
     public void getDataList() {
         try {
             perc = getPercentage();
@@ -133,7 +164,9 @@ public class ParagraphWritingPresenter implements ParagraphWritingContract.Parag
 
     private int getLearntWordsCount() {
         int count = 0;
-        count = appDatabase.getKeyWordDao().checkWordCount(FC_Constants.currentStudentID, resId);
+       // count = appDatabase.getKeyWordDao().checkWordCount(FC_Constants.currentStudentID, resId);
+        count = appDatabase.getKeyWordDao().checkUniqueWordCount(FC_Constants.currentStudentID, resId);
+
         return count;
     }
 
@@ -160,7 +193,8 @@ public class ParagraphWritingPresenter implements ParagraphWritingContract.Parag
             keyWords.setKeyWord(questionModel.getTitle());
             keyWords.setWordType("word");
             addScore(GameConstatnts.getInt(questionModel.getQid()), GameConstatnts.PARAGRAPH_WRITING, 0, 0, FC_Utility.getCurrentDateTime(), imageName);
-//            appDatabase.getKeyWordDao().insert(keyWords);
+            appDatabase.getKeyWordDao().insert(keyWords);
+            setCompletionPercentage();
             Toast.makeText(context, "inserted succussfully", Toast.LENGTH_LONG).show();
             GameConstatnts.playGameNext(context, GameConstatnts.FALSE, (OnGameClose) view);
 

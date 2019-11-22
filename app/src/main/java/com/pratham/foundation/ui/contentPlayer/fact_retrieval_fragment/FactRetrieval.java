@@ -10,7 +10,6 @@ import android.view.View;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.pratham.foundation.ApplicationClass;
 import com.pratham.foundation.R;
@@ -244,7 +243,7 @@ public class FactRetrieval extends Fragment implements FactRetrievalContract.Fac
         intent.putExtra("quetionsFact", selectedQuestion);
         intent.putExtra("readingContentPath", readingContentPath);
         intent.putExtra("resourceType", GameConstatnts.FACTRETRIEVAL);
-        startActivityForResult(intent,111);
+        startActivityForResult(intent, 111);
     }
 
     private void getAnswersInPassage() {
@@ -495,7 +494,7 @@ public class FactRetrieval extends Fragment implements FactRetrievalContract.Fac
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == 111) {
-            GameConstatnts.playGameNext(getActivity(), GameConstatnts.FALSE,FactRetrieval.this );
+            GameConstatnts.playGameNext(getActivity(), GameConstatnts.FALSE, FactRetrieval.this);
         }
     }
 
@@ -512,7 +511,7 @@ public class FactRetrieval extends Fragment implements FactRetrievalContract.Fac
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onMessageEvent(EventMessage event) {
-        GameConstatnts.showGameInfo(getActivity(),questionModel.getInstruction());
-       // Toast.makeText(getActivity(), event.getMessage(), Toast.LENGTH_SHORT).show();
+        GameConstatnts.showGameInfo(getActivity(), questionModel.getInstruction());
+        // Toast.makeText(getActivity(), event.getMessage(), Toast.LENGTH_SHORT).show();
     }
 }

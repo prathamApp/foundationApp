@@ -15,6 +15,7 @@ import com.pratham.foundation.customView.GridSpacingItemDecoration;
 import com.pratham.foundation.database.AppDatabase;
 import com.pratham.foundation.database.domain.ContentTable;
 import com.pratham.foundation.interfaces.ShowInstruction;
+import com.pratham.foundation.ui.contentPlayer.ContentPlayerActivity;
 import com.pratham.foundation.ui.contentPlayer.GameConstatnts;
 import com.pratham.foundation.ui.contentPlayer.doing.DoingFragment;
 import com.pratham.foundation.ui.contentPlayer.fact_retrieval_fragment.FactRetrieval_;
@@ -23,7 +24,7 @@ import com.pratham.foundation.ui.contentPlayer.fillInTheBlanks.FillInTheBlanksFr
 import com.pratham.foundation.ui.contentPlayer.keywords_identification.KeywordsIdentificationFragment_;
 import com.pratham.foundation.ui.contentPlayer.keywords_mapping.KeywordMappingFragment_;
 import com.pratham.foundation.ui.contentPlayer.listenAndWritting.ListeningAndWritting_;
-import com.pratham.foundation.ui.contentPlayer.multipleChoice.McqFillInTheBlanksFragment;
+import com.pratham.foundation.ui.contentPlayer.multipleChoiceQuetion.multipleChoiceFragment;
 import com.pratham.foundation.ui.contentPlayer.new_reading_fragment.ContentReadingFragment;
 import com.pratham.foundation.ui.contentPlayer.new_reading_fragment.ContentReadingFragment_;
 import com.pratham.foundation.ui.contentPlayer.new_vocab_reading.VocabReadingFragment;
@@ -68,6 +69,7 @@ public class SequenceLayout extends Fragment implements SequeanceLayoutContract.
     Context context;
     List<ContentTable> contentTableList;
     private ContentTable onConentClickeditem;
+
     public SequenceLayout() {
         // Required empty public constructor
     }
@@ -80,6 +82,9 @@ public class SequenceLayout extends Fragment implements SequeanceLayoutContract.
             nodeID = bundle.getString("nodeID");
             getListResData(nodeID);
             sequenceLayoutPresenter.setView(this);
+            if (getActivity() instanceof ContentPlayerActivity) {
+                ((ContentPlayerActivity) getActivity()).hideFloating_info();
+            }
             //sequenceLayoutPresenter.getData();
         }
     }
@@ -124,9 +129,9 @@ public class SequenceLayout extends Fragment implements SequeanceLayoutContract.
 
     @Override
     public void contentClicked(ContentTable contentTable) {
-        onConentClickeditem=contentTable;
-        GameConstatnts.showInstructionDialog(this,getActivity(),contentTable.getResourceType());
-
+        onConentClickeditem = contentTable;
+        GameConstatnts.showInstructionDialog(this, getActivity(), contentTable.getResourceType());
+        play();
     }
 
     @Click(R.id.btn_back)
@@ -136,7 +141,7 @@ public class SequenceLayout extends Fragment implements SequeanceLayoutContract.
 
     @Override
     public void play() {
-        if(onConentClickeditem!=null) {
+        if (onConentClickeditem != null) {
             Bundle bundle = new Bundle();
             bundle.putString("contentPath", onConentClickeditem.getResourcePath());
             bundle.putString("StudentID", FC_Constants.currentStudentID);
@@ -145,7 +150,9 @@ public class SequenceLayout extends Fragment implements SequeanceLayoutContract.
             bundle.putBoolean("onSdCard", true);
             bundle.putString("jsonName", onConentClickeditem.getResourceType());
             playInsequence = false;
-
+           /* if (getActivity() instanceof ContentPlayerActivity) {
+                ((ContentPlayerActivity) getActivity()).showFloating_info();
+            }*/
             switch (onConentClickeditem.getResourceType()) {
                 case GameConstatnts.FACTRETRIEVAL:
                     FC_Utility.showFragment((Activity) context, new FactRetrieval_(), R.id.RL_CPA,
@@ -172,14 +179,17 @@ public class SequenceLayout extends Fragment implements SequeanceLayoutContract.
                     FC_Utility.showFragment((Activity) context, new ListeningAndWritting_(), R.id.RL_CPA,
                             bundle, ListeningAndWritting_.class.getSimpleName());
                     break;
-                case "106":
+
+                case GameConstatnts.MULTIPLE_CHOICE:
+                    FC_Utility.showFragment((Activity) context, new multipleChoiceFragment(), R.id.RL_CPA,
+                            bundle, multipleChoiceFragment.class.getSimpleName());
+                    break;
+
+                case GameConstatnts.READING_STT:
                     FC_Utility.showFragment((Activity) context, new ReadingFragment(), R.id.RL_CPA,
                             bundle, ReadingFragment.class.getSimpleName());
                     break;
-                case "108":
-                    FC_Utility.showFragment((Activity) context, new McqFillInTheBlanksFragment(), R.id.RL_CPA,
-                            bundle, McqFillInTheBlanksFragment.class.getSimpleName());
-                    break;
+
                 case "109":
                     FC_Utility.showFragment((Activity) context, new TrueFalseFragment(), R.id.RL_CPA,
                             bundle, TrueFalseFragment.class.getSimpleName());
@@ -229,5 +239,13 @@ public class SequenceLayout extends Fragment implements SequeanceLayoutContract.
     @Override
     public void exit() {
 
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        if (getActivity() instanceof ContentPlayerActivity) {
+            ((ContentPlayerActivity) getActivity()).showFloating_info();
+        }
     }
 }

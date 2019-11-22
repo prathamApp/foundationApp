@@ -19,12 +19,11 @@ import com.pratham.foundation.interfaces.OnGameClose;
 import com.pratham.foundation.interfaces.ShowInstruction;
 import com.pratham.foundation.ui.contentPlayer.doing.DoingFragment;
 import com.pratham.foundation.ui.contentPlayer.fact_retrieval_fragment.FactRetrieval_;
-import com.pratham.foundation.ui.contentPlayer.fact_retrival_selection.Fact_Retrieval_Fragment_;
 import com.pratham.foundation.ui.contentPlayer.fillInTheBlanks.FillInTheBlanksFragment;
 import com.pratham.foundation.ui.contentPlayer.keywords_identification.KeywordsIdentificationFragment_;
 import com.pratham.foundation.ui.contentPlayer.keywords_mapping.KeywordMappingFragment_;
 import com.pratham.foundation.ui.contentPlayer.listenAndWritting.ListeningAndWritting_;
-import com.pratham.foundation.ui.contentPlayer.multipleChoice.McqFillInTheBlanksFragment;
+import com.pratham.foundation.ui.contentPlayer.multipleChoiceQuetion.multipleChoiceFragment;
 import com.pratham.foundation.ui.contentPlayer.new_reading_fragment.ContentReadingFragment;
 import com.pratham.foundation.ui.contentPlayer.new_reading_fragment.ContentReadingFragment_;
 import com.pratham.foundation.ui.contentPlayer.paragraph_writing.ParagraphWritingFragment_;
@@ -46,8 +45,8 @@ public class GameConstatnts {
     public static final String KEYWORD_MAPPING = "chKeywords";
     public static final String PARAGRAPH_WRITING = "CWiritng";
     public static final String LISTNING_AND_WRITTING = "Dict";
-    public static final String READING = "reading";
-    public static final String MULTIPLE_CHOICE_QUE = "multiple_choice_que";
+ //   public static final String READING = "reading";
+//    public static final String MULTIPLE_CHOICE_QUE = "multiple_choice_que";
     public static final String FILL_IN_THE_BLANKS = "fill_in_the_blanks";
     public static final String TRUE_FALSE = "true_false";
     public static final String PICTIONARYFRAGMENT = "PictAndroid";
@@ -60,6 +59,8 @@ public class GameConstatnts {
     public static final String LetterWriting = "letter";
     public static final String DOING_ACT_VIDEO = "doing_act_video";
     public static final String READ_VOCAB_ANDROID = "ReadVocabAndroid";
+    public static final String MULTIPLE_CHOICE = "multiple_choice";
+    public static final String READING_STT = "reading_stt";
     public static final boolean TRUE = true;
     public static final boolean FALSE = false;
     public static final String START = "start";
@@ -230,14 +231,16 @@ public class GameConstatnts {
                         FC_Utility.showFragment((Activity) context, new ListeningAndWritting_(), R.id.RL_CPA,
                                 bundle, ListeningAndWritting_.class.getSimpleName());
                         break;
-                    case "106":
+                    case GameConstatnts.MULTIPLE_CHOICE:
+                        FC_Utility.showFragment((Activity) context, new multipleChoiceFragment(), R.id.RL_CPA,
+                                bundle, multipleChoiceFragment.class.getSimpleName());
+                        break;
+
+                    case GameConstatnts.READING_STT:
                         FC_Utility.showFragment((Activity) context, new ReadingFragment(), R.id.RL_CPA,
                                 bundle, ReadingFragment.class.getSimpleName());
                         break;
-                    case "108":
-                        FC_Utility.showFragment((Activity) context, new McqFillInTheBlanksFragment(), R.id.RL_CPA,
-                                bundle, McqFillInTheBlanksFragment.class.getSimpleName());
-                        break;
+
                     case "109":
                         FC_Utility.showFragment((Activity) context, new TrueFalseFragment(), R.id.RL_CPA,
                                 bundle, TrueFalseFragment.class.getSimpleName());
@@ -250,10 +253,7 @@ public class GameConstatnts {
                         FC_Utility.showFragment((Activity) context, new pictionaryFragment(), R.id.RL_CPA,
                                 bundle, pictionaryFragment.class.getSimpleName());
                         break;
-                    case "112":
-                        FC_Utility.showFragment((Activity) context, new Fact_Retrieval_Fragment_(), R.id.RL_CPA,
-                                bundle, Fact_Retrieval_Fragment_.class.getSimpleName());
-                        break;
+
                     case GameConstatnts.PICTIONARYFRAGMENT:
                         FC_Utility.showFragment((Activity) context, new ContentReadingFragment_(), R.id.RL_CPA,
                                 bundle, ContentReadingFragment.class.getSimpleName());
