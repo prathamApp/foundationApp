@@ -45,8 +45,8 @@ public class GameConstatnts {
     public static final String KEYWORD_MAPPING = "chKeywords";
     public static final String PARAGRAPH_WRITING = "CWiritng";
     public static final String LISTNING_AND_WRITTING = "Dict";
-    public static final String READING = "reading";
-    public static final String MULTIPLE_CHOICE_QUE = "multiple_choice_que";
+ //   public static final String READING = "reading";
+//    public static final String MULTIPLE_CHOICE_QUE = "multiple_choice_que";
     public static final String FILL_IN_THE_BLANKS = "fill_in_the_blanks";
     public static final String TRUE_FALSE = "true_false";
     public static final String PICTIONARYFRAGMENT = "PictAndroid";

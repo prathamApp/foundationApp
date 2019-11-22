@@ -128,7 +128,7 @@ public class multipleChoiceFragment extends Fragment implements OnGameClose {
 
             EventBus.getDefault().register(this);
             resStartTime = FC_Utility.getCurrentDateTime();
-            addScore(0, "", 0, 0, resStartTime, FC_Utility.getCurrentDateTime(), GameConstatnts.SHOW_ME_ANDROID + " " + GameConstatnts.START);
+            addScore(0, "", 0, 0, resStartTime, FC_Utility.getCurrentDateTime(), GameConstatnts.MULTIPLE_CHOICE + " " + GameConstatnts.START);
 
             getData();
         }
@@ -156,6 +156,7 @@ public class multipleChoiceFragment extends Fragment implements OnGameClose {
             e.printStackTrace();
         }
     }
+
     public void setCompletionPercentage() {
         try {
             totalWordCount = dataList.size();
@@ -187,6 +188,7 @@ public class multipleChoiceFragment extends Fragment implements OnGameClose {
             e.printStackTrace();
         }
     }
+
     private void getDataList() {
         try {
             selectedFive = new ArrayList<ScienceQuestion>();
@@ -226,7 +228,7 @@ public class multipleChoiceFragment extends Fragment implements OnGameClose {
 
     private int getLearntWordsCount() {
         int count = 0;
-       // count = appDatabase.getKeyWordDao().checkWordCount(FC_Constants.currentStudentID, resId);
+        // count = appDatabase.getKeyWordDao().checkWordCount(FC_Constants.currentStudentID, resId);
         count = appDatabase.getKeyWordDao().checkUniqueWordCount(FC_Constants.currentStudentID, resId);
         return count;
     }
@@ -483,7 +485,7 @@ public class multipleChoiceFragment extends Fragment implements OnGameClose {
                             @Override
                             public void onClick(View v) {
                                 String fileName = options.get(finalR).getSubUrl().trim();
-                                String localPath = readingContentPath  + fileName;
+                                String localPath = readingContentPath + fileName;
                                 showZoomDialog(getActivity(), options.get(finalR).getSubUrl().trim(), localPath);
 
                             }
@@ -574,12 +576,12 @@ public class multipleChoiceFragment extends Fragment implements OnGameClose {
                                 public void onClick(View v) {
                                     setOnclickOnItem(v, options.get(finalR1));
                                     String fileName = options.get(finalR1).getSubUrl().trim();
-                                    String localPath = readingContentPath +  fileName;
+                                    String localPath = readingContentPath + fileName;
                                     tick.setVisibility(View.VISIBLE);
 
                                     rl_mcq.setBackground(getActivity().getResources().getDrawable(R.drawable.custom_edit_text));
 //                                if (AssessmentApplication.wiseF.isDeviceConnectedToMobileOrWifiNetwork()) {
-                                 //   showZoomDialog(getActivity(), options.get(finalR1).getSubUrl(), localPath);
+                                    //   showZoomDialog(getActivity(), options.get(finalR1).getSubUrl(), localPath);
 
                                /* } else {
                                     showZoomDialog(localPath);
@@ -765,44 +767,47 @@ public class multipleChoiceFragment extends Fragment implements OnGameClose {
         wrongWordList = new ArrayList<>();
         if (selectedAnsList != null && !selectedAnsList.isEmpty()) {
             for (int i = 0; i < selectedAnsList.size(); i++) {
-                if (checkAnswer(selectedAnsList.get(i))) {
-                    correctCnt++;
-                    KeyWords keyWords = new KeyWords();
-                    keyWords.setResourceId(resId);
-                    keyWords.setSentFlag(0);
-                    keyWords.setStudentId(FC_Constants.currentStudentID);
-                    String key = selectedAnsList.get(i).getQuestion();
-                    keyWords.setKeyWord(key);
-                    keyWords.setWordType("word");
-                    appDatabase.getKeyWordDao().insert(keyWords);
-                    List<ScienceQuestionChoice> tempOptionList = selectedAnsList.get(i).getLstquestionchoice();
-                    for (int k = 0; k < tempOptionList.size(); k++) {
-                        if (tempOptionList.get(k).getQid().equalsIgnoreCase(selectedAnsList.get(i).getUserAnswer())) {
-                            correctWordList.add(tempOptionList.get(k));
-                        }
-                    }
-
-                    addScore(GameConstatnts.getInt(selectedAnsList.get(i).getQid().trim()), GameConstatnts.SHOW_ME_ANDROID, 10, 10, selectedAnsList.get(i).getStartTime(), selectedAnsList.get(i).getEndTime(), selectedAnsList.get(i).getUserAnswer());
-                } else {
-                    if (selectedAnsList.get(i).getUserAnswer() != null && !selectedAnsList.get(i).getUserAnswer().trim().equalsIgnoreCase("")) {
+                String ans = getAnswer(selectedAnsList.get(i));
+                if (ans != null) {
+                    if (checkAnswer(selectedAnsList.get(i))) {
+                        correctCnt++;
+                        KeyWords keyWords = new KeyWords();
+                        keyWords.setResourceId(resId);
+                        keyWords.setSentFlag(0);
+                        keyWords.setStudentId(FC_Constants.currentStudentID);
+                        String key = selectedAnsList.get(i).getQuestion();
+                        keyWords.setKeyWord(key);
+                        keyWords.setWordType("word");
+                        appDatabase.getKeyWordDao().insert(keyWords);
                         List<ScienceQuestionChoice> tempOptionList = selectedAnsList.get(i).getLstquestionchoice();
                         for (int k = 0; k < tempOptionList.size(); k++) {
                             if (tempOptionList.get(k).getQid().equalsIgnoreCase(selectedAnsList.get(i).getUserAnswer())) {
-                                wrongWordList.add(tempOptionList.get(k));
+                                correctWordList.add(tempOptionList.get(k));
                             }
                         }
-                        addScore(GameConstatnts.getInt(selectedAnsList.get(i).getQid().trim()), GameConstatnts.SHOW_ME_ANDROID, 0, 10, selectedAnsList.get(i).getStartTime(), selectedAnsList.get(i).getEndTime(), selectedAnsList.get(i).getUserAnswer());
+
+                        addScore(GameConstatnts.getInt(selectedAnsList.get(i).getQid().trim()), GameConstatnts.MULTIPLE_CHOICE, 10, 10, selectedAnsList.get(i).getStartTime(), selectedAnsList.get(i).getEndTime(), ans);
+                    } else {
+                        if (selectedAnsList.get(i).getUserAnswer() != null && !selectedAnsList.get(i).getUserAnswer().trim().equalsIgnoreCase("")) {
+                            List<ScienceQuestionChoice> tempOptionList = selectedAnsList.get(i).getLstquestionchoice();
+                            for (int k = 0; k < tempOptionList.size(); k++) {
+                                if (tempOptionList.get(k).getQid().equalsIgnoreCase(selectedAnsList.get(i).getUserAnswer())) {
+                                    wrongWordList.add(tempOptionList.get(k));
+                                }
+                            }
+                            addScore(GameConstatnts.getInt(selectedAnsList.get(i).getQid().trim()), GameConstatnts.MULTIPLE_CHOICE, 0, 10, selectedAnsList.get(i).getStartTime(), selectedAnsList.get(i).getEndTime(), ans);
+                        }
                     }
                 }
             }
             setCompletionPercentage();
             if (!FC_Constants.isTest) {
-               // showResult(correctWordList, wrongWordList);
-                Intent intent=new Intent(getActivity(),PictionaryResult.class);
-                intent.putExtra("selectlist",selectedAnsList);
-                intent.putExtra("readingContentPath",readingContentPath);
-                intent.putExtra("resourceType",GameConstatnts.SHOW_ME_ANDROID);
-               startActivityForResult(intent,111);
+                // showResult(correctWordList, wrongWordList);
+                Intent intent = new Intent(getActivity(), PictionaryResult.class);
+                intent.putExtra("selectlist", selectedAnsList);
+                intent.putExtra("readingContentPath", readingContentPath);
+                intent.putExtra("resourceType", GameConstatnts.SHOW_ME_ANDROID);
+                startActivityForResult(intent, 111);
             }
         } else {
             GameConstatnts.playGameNext(getActivity(), GameConstatnts.TRUE, this);
@@ -820,6 +825,19 @@ public class multipleChoiceFragment extends Fragment implements OnGameClose {
         return false;
     }
 
+    private String getAnswer(ScienceQuestion scienceQuestion) {
+        List<ScienceQuestionChoice> optionListlist = scienceQuestion.getLstquestionchoice();
+        for (int i = 0; i < optionListlist.size(); i++) {
+            if (optionListlist.get(i).getQid().equalsIgnoreCase(scienceQuestion.getUserAnswer())) {
+                if (optionListlist.get(i).getSubQues() != null && !optionListlist.get(i).getSubQues().isEmpty()) {
+                    return optionListlist.get(i).getSubQues();
+                } else {
+                    return optionListlist.get(i).getSubUrl().replace("Images/","");
+                }
+            }
+        }
+        return null;
+    }
 
     private void showResult(List<ScienceQuestionChoice> correctWord, List<ScienceQuestionChoice> wrongWord) {
         if ((correctWord != null && !correctWord.isEmpty()) || (wrongWord != null && !wrongWord.isEmpty())) {
@@ -898,14 +916,14 @@ public class multipleChoiceFragment extends Fragment implements OnGameClose {
 
     @Override
     public void gameClose() {
-        addScore(0, "", 0, 0, resStartTime, FC_Utility.getCurrentDateTime(), GameConstatnts.SHOW_ME_ANDROID + " " + GameConstatnts.END);
+        addScore(0, "", 0, 0, resStartTime, FC_Utility.getCurrentDateTime(), GameConstatnts.MULTIPLE_CHOICE + " " + GameConstatnts.END);
     }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if(requestCode==111){
-            GameConstatnts.playGameNext(getActivity(), GameConstatnts.FALSE, this );
+        if (requestCode == 111) {
+            GameConstatnts.playGameNext(getActivity(), GameConstatnts.FALSE, this);
         }
     }
 
@@ -918,7 +936,7 @@ public class multipleChoiceFragment extends Fragment implements OnGameClose {
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onMessageEvent(EventMessage event) {
         if (!scienceQuestion.getInstruction().isEmpty())
-            GameConstatnts.showGameInfo(getActivity(),scienceQuestion.getInstruction());
+            GameConstatnts.showGameInfo(getActivity(), scienceQuestion.getInstruction());
     }
 }
 

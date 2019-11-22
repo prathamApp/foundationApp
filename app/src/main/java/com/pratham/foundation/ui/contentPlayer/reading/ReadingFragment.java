@@ -32,6 +32,7 @@ import com.pratham.foundation.customView.GifView;
 import com.pratham.foundation.customView.SansTextView;
 import com.pratham.foundation.database.BackupDatabase;
 import com.pratham.foundation.database.domain.Assessment;
+import com.pratham.foundation.database.domain.ContentProgress;
 import com.pratham.foundation.database.domain.KeyWords;
 import com.pratham.foundation.database.domain.Score;
 import com.pratham.foundation.interfaces.OnGameClose;
@@ -162,19 +163,55 @@ public class ReadingFragment extends Fragment implements STT_Result_New.sttView,
 
     }
 
+    public void setCompletionPercentage() {
+        try {
+            totalWordCount = dataList.size();
+            learntWordCount = getLearntWordsCount();
+            String Label = "resourceProgress";
+            if (learntWordCount > 0) {
+                perc = ((float) learntWordCount / (float) totalWordCount) * 100;
+                addContentProgress(perc, Label);
+            } else {
+                addContentProgress(0, Label);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void addContentProgress(float perc, String label) {
+        try {
+            ContentProgress contentProgress = new ContentProgress();
+            contentProgress.setProgressPercentage("" + perc);
+            contentProgress.setResourceId("" + resId);
+            contentProgress.setSessionId("" + FC_Constants.currentSession);
+            contentProgress.setStudentId("" + FC_Constants.currentStudentID);
+            contentProgress.setUpdatedDateTime("" + FC_Utility.getCurrentDateTime());
+            contentProgress.setLabel("" + label);
+            contentProgress.setSentFlag(0);
+            appDatabase.getContentProgressDao().insert(contentProgress);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
     public void getDataList() {
         try {
             perc = getPercentage();
             Collections.shuffle(dataList);
-            for (int i = 0; i < dataList.size(); i++) {
-                if (perc < 95) {
-                    if (!checkWord("" + dataList.get(i).getTitle())) {
+            if (dataList.get(0).getTitle() == null || dataList.get(0).getTitle().isEmpty()) {
+                scienceQuestion = dataList.get(0);
+            }else {
+                for (int i = 0; i < dataList.size(); i++) {
+                    if (perc < 95) {
+                        if (!checkWord("" + dataList.get(i).getTitle())) {
+                            scienceQuestion = dataList.get(i);
+                            break;
+                        }
+                    } else {
                         scienceQuestion = dataList.get(i);
                         break;
                     }
-                } else {
-                    scienceQuestion = dataList.get(i);
-                    break;
                 }
             }
             //view.loadUI(listenAndWrittingModal);
@@ -201,7 +238,8 @@ public class ReadingFragment extends Fragment implements STT_Result_New.sttView,
 
     private int getLearntWordsCount() {
         int count = 0;
-        count = appDatabase.getKeyWordDao().checkWordCount(FC_Constants.currentStudentID, resId);
+        //  count = appDatabase.getKeyWordDao().checkWordCount(FC_Constants.currentStudentID, resId);
+        count = appDatabase.getKeyWordDao().checkUniqueWordCount(FC_Constants.currentStudentID, resId);
         return count;
     }
 
@@ -233,62 +271,67 @@ public class ReadingFragment extends Fragment implements STT_Result_New.sttView,
 
 
     public void setFillInTheBlanksQuestion() {
-        question.setText(scienceQuestion.getQuestion());
-        if (!scienceQuestion.getPhotourl().trim().equalsIgnoreCase("")) {
-            questionImage.setVisibility(View.VISIBLE);
+        if (scienceQuestion != null) {
+            question.setText(scienceQuestion.getQuestion());
+            if (!scienceQuestion.getPhotourl().trim().equalsIgnoreCase("")) {
+                questionImage.setVisibility(View.VISIBLE);
 //            if (AssessmentApplication.wiseF.isDeviceConnectedToMobileOrWifiNetwork()) {
 
 
-            String fileName = scienceQuestion.getPhotourl();
+                String fileName = scienceQuestion.getPhotourl();
 //                String localPath = Environment.getExternalStorageDirectory() + Assessment_Constants.STORE_DOWNLOADED_MEDIA_PATH + "/" + fileName;
-            final String localPath = readingContentPath + fileName;
+                final String localPath = readingContentPath + fileName;
 
 
-            String path = scienceQuestion.getPhotourl();
-            String[] imgPath = path.split("\\.");
-            int len;
-            if (imgPath.length > 0)
-                len = imgPath.length - 1;
-            else len = 0;
-            if (imgPath[len].equalsIgnoreCase("gif")) {
-                try {
-                    InputStream gif;
-                    gif = new FileInputStream(localPath);
-                    questionImage.setVisibility(View.GONE);
-                    questionGif.setVisibility(View.VISIBLE);
-                    questionGif.setGifResource(gif);
-                    //  }
-                } catch (Exception e) {
-                    e.printStackTrace();
+                String path = scienceQuestion.getPhotourl();
+                String[] imgPath = path.split("\\.");
+                int len;
+                if (imgPath.length > 0)
+                    len = imgPath.length - 1;
+                else len = 0;
+                if (imgPath[len].equalsIgnoreCase("gif")) {
+                    try {
+                        InputStream gif;
+                        gif = new FileInputStream(localPath);
+                        questionImage.setVisibility(View.GONE);
+                        questionGif.setVisibility(View.VISIBLE);
+                        questionGif.setGifResource(gif);
+                        //  }
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                } else {
+                    Glide.with(getActivity())
+                            .load(path)
+                            .apply(new RequestOptions()
+                                    .placeholder(Drawable.createFromPath(localPath)))
+                            .into(questionImage);
                 }
-            } else {
-                Glide.with(getActivity())
-                        .load(path)
-                        .apply(new RequestOptions()
-                                .placeholder(Drawable.createFromPath(localPath)))
-                        .into(questionImage);
-            }
 
-        } else questionImage.setVisibility(View.GONE);
+            } else questionImage.setVisibility(View.GONE);
 
 
-        etAnswer.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
+            etAnswer.addTextChangedListener(new TextWatcher() {
+                @Override
+                public void onTextChanged(CharSequence s, int start, int before, int count) {
 
 
-            }
+                }
 
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                @Override
+                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
-            }
+                }
 
-            @Override
-            public void afterTextChanged(Editable s) {
-                answer = s.toString();
-            }
-        });
+                @Override
+                public void afterTextChanged(Editable s) {
+                    answer = s.toString();
+                }
+            });
+
+        } else {
+            Toast.makeText(context, "No data found", Toast.LENGTH_SHORT).show();
+        }
 
     }
 
@@ -459,25 +502,30 @@ public class ReadingFragment extends Fragment implements STT_Result_New.sttView,
     }
 
     public void addLearntWords() {
-        int scoredMarks;
-        if (percScore > 70) {
-            scoredMarks = 10;
+        if (answer != null && !answer.isEmpty()) {
+            int scoredMarks;
+            if (percScore > 70) {
+                scoredMarks = 10;
+            } else {
+                scoredMarks = 0;
+            }
+            KeyWords keyWords = new KeyWords();
+            keyWords.setResourceId(resId);
+            keyWords.setSentFlag(0);
+            keyWords.setStudentId(FC_Constants.currentStudentID);
+            keyWords.setKeyWord(scienceQuestion.getTitle());
+            keyWords.setWordType("word");
+            addScore(GameConstatnts.getInt(scienceQuestion.getQid()), GameConstatnts.READING_STT, 0, 10, FC_Utility.getCurrentDateTime(), answer);
+            appDatabase.getKeyWordDao().insert(keyWords);
+            setCompletionPercentage();
+            if (!isTest) {
+                showResult(scoredMarks);
+            }
+            BackupDatabase.backup(context);
         } else {
-            scoredMarks = 0;
-        }
-        KeyWords keyWords = new KeyWords();
-        keyWords.setResourceId(resId);
-        keyWords.setSentFlag(0);
-        keyWords.setStudentId(FC_Constants.currentStudentID);
-        keyWords.setKeyWord(scienceQuestion.getTitle());
-        keyWords.setWordType("word");
-        addScore(GameConstatnts.getInt(scienceQuestion.getQid()), GameConstatnts.READING_STT, scoredMarks, 10, FC_Utility.getCurrentDateTime(), answer);
-        appDatabase.getKeyWordDao().insert(keyWords);
-        if (!isTest) {
-            showResult(scoredMarks);
+            GameConstatnts.playGameNext(context, GameConstatnts.TRUE, (OnGameClose) this);
         }
 
-        BackupDatabase.backup(context);
 
     }
 
