@@ -37,17 +37,17 @@ public class FunInnerDataAdapter extends RecyclerView.Adapter {
     FunContract.FunItemClicked itemClicked;
     int parentPos = 0;
 //    List maxScore;
-
-
+    String parentName;
     private static final String TYPE_HEADER = "Header";
     private static final String TYPE_ITEM = "Resource";
 
 
-    public FunInnerDataAdapter(Context context, List<ContentTable> itemsList, FunContract.FunItemClicked itemClicked, int parentPos) {
+    public FunInnerDataAdapter(Context context, List<ContentTable> itemsList, FunContract.FunItemClicked itemClicked, int parentPos, String parentName) {
         this.itemsList = itemsList;
         this.mContext = context;
         this.itemClicked = itemClicked;
         this.parentPos = parentPos;
+        this.parentName = parentName;
     }
 
     @NonNull
@@ -95,7 +95,7 @@ public class FunInnerDataAdapter extends RecyclerView.Adapter {
                 FolderHolder folderHolder = (FolderHolder) viewHolder;
 //                int randomNo = getRandomDrawableGradiant();
 //                folderHolder.rl_root.setBackground(mContext.getResources().getDrawable(randomNo));
-                folderHolder.tvTitle.setTextColor(mContext.getResources().getColor(R.color.text_color));
+                folderHolder.tvTitle.setTextColor(mContext.getResources().getColor(R.color.colorText));
                 folderHolder.tvTitle.setText(itemsList.get(i).getNodeTitle());
                 folderHolder.progressLayout.setCurProgress(Integer.parseInt(itemsList.get(i).getNodePercentage()));
                 File f;
@@ -130,7 +130,7 @@ public class FunInnerDataAdapter extends RecyclerView.Adapter {
                 folderHolder.rl_root.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                            itemClicked.onContentClicked(itemsList.get(i));
+                            itemClicked.onContentClicked(itemsList.get(i),parentName);
                     }
                 });
 
@@ -139,7 +139,7 @@ public class FunInnerDataAdapter extends RecyclerView.Adapter {
                 //file
                 FileHolder fileHolder = (FileHolder) viewHolder;
                 fileHolder.tvTitle.setText(itemsList.get(i).getNodeTitle());
-                fileHolder.tvTitle.setTextColor(mContext.getResources().getColor(R.color.text_color));
+                fileHolder.tvTitle.setTextColor(mContext.getResources().getColor(R.color.colorText));
                 File file;
                 if (itemsList.get(i).getIsDownloaded().equalsIgnoreCase("1") ||
                         itemsList.get(i).getIsDownloaded().equalsIgnoreCase("true")) {

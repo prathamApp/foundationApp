@@ -2,17 +2,23 @@ package com.pratham.foundation.ui.student_profile;
 
 import android.content.Context;
 
-
 import com.pratham.foundation.database.AppDatabase;
 import com.pratham.foundation.utility.FC_Constants;
 
+import org.androidannotations.annotations.EBean;
+
+@EBean
 public class Student_profile_presenterImpl implements Student_profile_contract.Student_profile_presenter {
     Context mContext;
     Student_profile_contract.Student_profile_view student_profile_view;
 
     public Student_profile_presenterImpl(Context mContext) {
         this.mContext = mContext;
-        student_profile_view = (Student_profile_contract.Student_profile_view) mContext;
+    }
+
+    @Override
+    public void setView(Student_profile_contract.Student_profile_view view) {
+        student_profile_view = view;
     }
 
     @Override

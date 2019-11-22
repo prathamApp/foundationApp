@@ -6,15 +6,14 @@ import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.AsyncTask;
-import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.view.Window;
-import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -22,57 +21,58 @@ import android.widget.ImageButton;
 import android.widget.Spinner;
 import android.widget.TextView;
 
-
 import com.pratham.foundation.ApplicationClass;
 import com.pratham.foundation.R;
-import com.pratham.foundation.services.shared_preferences.FastSave;
 import com.pratham.foundation.customView.CircularImageView;
 import com.pratham.foundation.database.AppDatabase;
 import com.pratham.foundation.database.domain.ContentProgress;
 import com.pratham.foundation.database.domain.ContentTable;
+import com.pratham.foundation.services.shared_preferences.FastSave;
 import com.pratham.foundation.ui.home_screen.HomeActivity;
 import com.pratham.foundation.ui.student_profile.discription_adapter.DiscriptionAdapter;
-import com.pratham.foundation.BaseActivity;
 import com.pratham.foundation.utility.FC_Constants;
 import com.pratham.foundation.utility.FC_Utility;
 import com.yarolegovich.discretescrollview.DiscreteScrollView;
 import com.yarolegovich.discretescrollview.transform.ScaleTransformer;
 
+import org.androidannotations.annotations.AfterViews;
+import org.androidannotations.annotations.Bean;
+import org.androidannotations.annotations.Click;
+import org.androidannotations.annotations.EFragment;
+import org.androidannotations.annotations.ViewById;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.OnClick;
 
-public class Student_profile_activity extends BaseActivity implements Student_profile_contract.Student_profile_view, DiscreteScrollView.ScrollStateChangeListener<ForecastAdapter.ViewHolder>,
+@EFragment(R.layout.activity_student_profile)
+public class Student_profile_activity extends Fragment implements Student_profile_contract.Student_profile_view,
+        DiscreteScrollView.ScrollStateChangeListener<ForecastAdapter.ViewHolder>,
         DiscreteScrollView.OnItemChangedListener<ForecastAdapter.ViewHolder> {
 
-    @BindView(R.id.tv_studentName)
+    @Bean(Student_profile_presenterImpl.class)
+    Student_profile_contract.Student_profile_presenter presenter;
+
+    @ViewById(R.id.tv_studentName)
     TextView studentName;
-    @BindView(R.id.ib_langChange)
+    @ViewById(R.id.ib_langChange)
     ImageButton ib_langChange;
-    @BindView(R.id.profileImage)
+    @ViewById(R.id.profileImage)
     CircularImageView profileImage;
-    @BindView(R.id.forecast_city_picker)
+    @ViewById(R.id.forecast_city_picker)
     DiscreteScrollView cityPicker;
-    @BindView(R.id.discription)
+    @ViewById(R.id.discription)
     RecyclerView discriptionRecycler;
-    Student_profile_contract.Student_profile_presenter student_profile_presenter;
 
     private List<Forecast> forecasts;
     private Context context;
     List maxScore;
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_student_profile);
-        ButterKnife.bind(this);
-        getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
-        context = Student_profile_activity.this;
-        student_profile_presenter = new Student_profile_presenterImpl(this);
+    @AfterViews
+    public void initialize() {
+        presenter.setView(Student_profile_activity.this);
+        context = getActivity();
         displayStudentProfileNameAndImage();
         HomeActivity.languageChanged = false;
         ib_langChange.setVisibility(View.GONE);
@@ -82,7 +82,7 @@ public class Student_profile_activity extends BaseActivity implements Student_pr
 
     @SuppressLint("SetTextI18n")
     private void showLanguageSelectionDialog() {
-        final Dialog dialog = new Dialog(context);
+        final Dialog dialog = new Dialog(getActivity());
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         dialog.setContentView(R.layout.fc_custom_language_dialog);
@@ -96,8 +96,8 @@ public class Student_profile_activity extends BaseActivity implements Student_pr
         String currLang = "" + FastSave.getInstance().getString(FC_Constants.LANGUAGE,"Hindi");
         dia_title.setText("Current Language : "+currLang);
 
-        ArrayAdapter<String> dataAdapter = new ArrayAdapter<>(this, R.layout.custom_spinner,
-                getResources().getStringArray(R.array.app_Language));
+        ArrayAdapter<String> dataAdapter = new ArrayAdapter<>(getActivity(), R.layout.custom_spinner,
+                getActivity().getResources().getStringArray(R.array.app_Language));
         dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         lang_spinner.setAdapter(dataAdapter);
         String[] languages = getResources().getStringArray(R.array.app_Language);
@@ -125,12 +125,7 @@ public class Student_profile_activity extends BaseActivity implements Student_pr
             dialog.dismiss();
         });
     }
-
-    @Override
-    public void onBackPressed() {
-        super.onBackPressed();
-    }
-
+    
     @SuppressLint("StaticFieldLeak")
     @Override
     public void displayStudentProfileNameAndImage() {
@@ -140,8 +135,8 @@ public class Student_profile_activity extends BaseActivity implements Student_pr
 
             @Override
             protected Object doInBackground(Object... objects) {
-                profileName = student_profile_presenter.getStudentProfileName();
-                sImage = student_profile_presenter.getStudentProfileImage();
+                profileName = presenter.getStudentProfileName();
+                sImage = presenter.getStudentProfileImage();
                 studentName.setText(profileName);
                 return null;
             }
@@ -186,7 +181,7 @@ public class Student_profile_activity extends BaseActivity implements Student_pr
     }
 
     private void loadRecycler() {
-        forecasts = WeatherStation.get(this).getForecasts();
+        forecasts = WeatherStation.get(getActivity()).getForecasts();
         cityPicker.setSlideOnFling(true);
         cityPicker.setAdapter(new ForecastAdapter(forecasts));
         cityPicker.addOnItemChangedListener(this);
@@ -196,7 +191,7 @@ public class Student_profile_activity extends BaseActivity implements Student_pr
                 .setMinScale(0.8f)
                 .build());
         // forecastView.setForecast(forecasts.get(0));
-        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
+        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
         discriptionRecycler.setLayoutManager(layoutManager);
         loadDiscriptionData(context.getString(R.string.Summary));
         // discriptionRecycler.setAdapter(new DiscriptionAdapter(forecasts, this));
@@ -319,7 +314,7 @@ public class Student_profile_activity extends BaseActivity implements Student_pr
     public Dialog myLoadingDialog;
 
     private void showLoader() {
-        myLoadingDialog = new Dialog(this);
+        myLoadingDialog = new Dialog(getActivity());
         myLoadingDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         myLoadingDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         myLoadingDialog.setContentView(R.layout.loading_dialog);
@@ -440,7 +435,7 @@ public class Student_profile_activity extends BaseActivity implements Student_pr
         startActivity(new Intent(this, ActivityShareReceive_.class));
     }*/
 
-    @OnClick(R.id.ib_langChange)
+    @Click(R.id.ib_langChange)
     public void langChangeButtonClick() {
         showLanguageSelectionDialog();
     }

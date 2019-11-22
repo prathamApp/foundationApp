@@ -203,7 +203,7 @@ public class KeywordsIdentificationFragment extends Fragment implements Keywords
 
                     SansTextView textViewkey = new SansTextView(getActivity());
                     textViewkey.setText(paraText);
-                    textViewkey.setTextColor(ContextCompat.getColor(getActivity(), R.color.text_color));
+                    textViewkey.setTextColor(ContextCompat.getColor(getActivity(), R.color.colorText));
                     textViewkey.setId(pos);
                     textViewkey.setPadding(10, 5, 5, 5);
                     textViewkey.setTextSize(25);
@@ -302,7 +302,7 @@ public class KeywordsIdentificationFragment extends Fragment implements Keywords
             }
 
         } else {
-            GameConstatnts.playGameNext(getActivity(), GameConstatnts.TRUE, (OnGameClose) this);
+            GameConstatnts.playGameNext(getActivity(), GameConstatnts.TRUE, this);
         }
     }
 

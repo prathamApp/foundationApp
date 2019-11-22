@@ -40,9 +40,9 @@ public class ContentPlayerActivity extends BaseActivity {
     private String nodeID;
 
     @ViewById(R.id.floating_back)
-    FloatingActionButton floating_back;
+    public static FloatingActionButton floating_back;
     @ViewById(R.id.floating_info)
-    FloatingActionButton floating_info;
+    public static FloatingActionButton floating_info;
 
     @AfterViews
     public void initialize() {

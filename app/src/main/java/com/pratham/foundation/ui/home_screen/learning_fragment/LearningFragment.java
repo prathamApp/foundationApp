@@ -61,6 +61,7 @@ import java.util.Objects;
 
 import static com.pratham.foundation.ui.home_screen.HomeActivity.header_rl;
 import static com.pratham.foundation.ui.home_screen.HomeActivity.levelChanged;
+import static com.pratham.foundation.ui.home_screen.HomeActivity.sub_Name;
 import static com.pratham.foundation.ui.home_screen.HomeActivity.tv_progress;
 import static com.pratham.foundation.utility.FC_Constants.currentLevel;
 import static com.pratham.foundation.utility.FC_Constants.gameFolderPath;
@@ -90,9 +91,8 @@ public class LearningFragment extends Fragment implements LearningContract.Learn
         childDwContentList = new ArrayList<>();
         contentParentList = new ArrayList<>();
         presenter.setView(LearningFragment.this);
-        RetractableToolbarUtil.ShowHideToolbarOnScrollingListener showHideToolbarListener;
-        my_recycler_view.addOnScrollListener(showHideToolbarListener =
-                new RetractableToolbarUtil.ShowHideToolbarOnScrollingListener(header_rl));
+        my_recycler_view.addOnScrollListener(new RetractableToolbarUtil
+                .ShowHideToolbarOnScrollingListener(header_rl));
         presenter.getBottomNavId(currentLevel, "Learning");
     }
 
@@ -285,6 +285,7 @@ public class LearningFragment extends Fragment implements LearningContract.Learn
         }
     }
 
+    @UiThread
     @Override
     public void setLevelprogress(int percent) {
 //        tv_progress.setText(percent + "%");
@@ -318,7 +319,7 @@ public class LearningFragment extends Fragment implements LearningContract.Learn
     }
 
     @Override
-    public void onContentClicked(ContentTable singleItem) {
+    public void onContentClicked(ContentTable singleItem, String parentName) {
         FC_Constants.isPractice = false;
         try {
             ButtonClickSound.start();
@@ -327,7 +328,9 @@ public class LearningFragment extends Fragment implements LearningContract.Learn
         }
         if (singleItem.getResourceType().equalsIgnoreCase("category")) {
             Intent intent = new Intent(getActivity(), ContentDisplay_.class);
+
             intent.putExtra("nodeId", singleItem.getNodeId());
+            intent.putExtra("parentName", parentName);
             intent.putExtra("contentTitle", singleItem.getNodeTitle());
             intent.putExtra("level", "" + currentLevel);
             startActivity(intent);
@@ -512,6 +515,7 @@ public class LearningFragment extends Fragment implements LearningContract.Learn
         Intent intent = new Intent(getActivity(), ContentDisplay_.class);
         intent.putExtra("nodeId", nodeId);
         intent.putExtra("contentTitle", nodeTitle);
+        intent.putExtra("parentName", sub_Name);
         intent.putExtra("level", "" + currentLevel);
         startActivity(intent);
     }

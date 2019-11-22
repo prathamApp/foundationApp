@@ -115,7 +115,7 @@ public class FunOuterDataAdapter extends RecyclerView.Adapter {
 
                 try {
                     itemRowHolder.itemTitle.setText(sectionName);
-                    FunInnerDataAdapter funInnerDataAdapter = new FunInnerDataAdapter(mContext, sublistList, tempItemClicked, i);
+                    FunInnerDataAdapter funInnerDataAdapter = new FunInnerDataAdapter(mContext, sublistList, tempItemClicked, i,sectionName);
                     itemRowHolder.recycler_view_list.setLayoutManager(new LinearLayoutManager(mContext, LinearLayoutManager.HORIZONTAL, false));
                     itemRowHolder.recycler_view_list.setAdapter(funInnerDataAdapter);
                     childCounter += 1;

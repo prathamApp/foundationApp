@@ -95,6 +95,7 @@ public class SelectSubject extends BaseActivity implements
 
             Intent intent = new Intent(context, HomeActivity_.class);
         intent.putExtra("nodeId", contentTableObj.getNodeId());
+        intent.putExtra("nodeTitle", contentTableObj.getNodeTitle());
         context.startActivity(intent);
     }
 
