@@ -39,6 +39,7 @@ import com.pratham.foundation.customView.SansButton;
 import com.pratham.foundation.customView.SansTextView;
 import com.pratham.foundation.database.BackupDatabase;
 import com.pratham.foundation.database.domain.Assessment;
+import com.pratham.foundation.database.domain.ContentProgress;
 import com.pratham.foundation.database.domain.KeyWords;
 import com.pratham.foundation.database.domain.Score;
 import com.pratham.foundation.interfaces.OnGameClose;
@@ -111,6 +112,7 @@ public class DoingFragment extends Fragment implements OnGameClose {
     private boolean onSdCard;
     private List<ScienceQuestion> dataList;
     private String jsonName;
+    private boolean isVideoQuestion = false;
 
     public DoingFragment() {
         // Required empty public constructor
@@ -161,7 +163,37 @@ public class DoingFragment extends Fragment implements OnGameClose {
             e.printStackTrace();
         }
     }
+    public void setCompletionPercentage() {
+        try {
+            totalWordCount = dataList.size();
+            learntWordCount = getLearntWordsCount();
+            String Label = "resourceProgress";
+            if (learntWordCount > 0) {
+                perc = ((float) learntWordCount / (float) totalWordCount) * 100;
+                addContentProgress(perc, Label);
+            } else {
+                addContentProgress(0, Label);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 
+    private void addContentProgress(float perc, String label) {
+        try {
+            ContentProgress contentProgress = new ContentProgress();
+            contentProgress.setProgressPercentage("" + perc);
+            contentProgress.setResourceId("" + resId);
+            contentProgress.setSessionId("" + FC_Constants.currentSession);
+            contentProgress.setStudentId("" + FC_Constants.currentStudentID);
+            contentProgress.setUpdatedDateTime("" + FC_Utility.getCurrentDateTime());
+            contentProgress.setLabel("" + label);
+            contentProgress.setSentFlag(0);
+            appDatabase.getContentProgressDao().insert(contentProgress);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
     private void getDataList() {
         try {
             perc = getPercentage();
@@ -210,7 +242,8 @@ public class DoingFragment extends Fragment implements OnGameClose {
 
     private int getLearntWordsCount() {
         int count = 0;
-        count = appDatabase.getKeyWordDao().checkWordCount(FC_Constants.currentStudentID, resId);
+       // count = appDatabase.getKeyWordDao().checkWordCount(FC_Constants.currentStudentID, resId);
+        count = appDatabase.getKeyWordDao().checkUniqueWordCount(FC_Constants.currentStudentID, resId);
         return count;
     }
 
@@ -231,6 +264,7 @@ public class DoingFragment extends Fragment implements OnGameClose {
 
     public void setVideoQuestion() {
         if (scienceQuestion != null) {
+            isVideoQuestion = false;
             fileName = scienceQuestion.getPhotourl();
             //getFileName(scienceQuestion.getQid(), scienceQuestion.getPhotourl());
 
@@ -268,6 +302,7 @@ public class DoingFragment extends Fragment implements OnGameClose {
 
                 } else {
                     try {
+                        isVideoQuestion = true;
                         questionPath = readingContentPath + fileName;
                         BitmapFactory.Options options = new BitmapFactory.Options();
                         options.inSampleSize = 1;
@@ -293,10 +328,12 @@ public class DoingFragment extends Fragment implements OnGameClose {
     public void onVideoClicked() {
      /*   ZoomImageDialog zoomImageDialog = new ZoomImageDialog(getActivity(), path, scienceQuestion.getQtid());
         zoomImageDialog.show();*/
-        Intent intent = new Intent(getActivity(), FullScreenVideo_.class);
-        intent.putExtra("questionPath",questionPath);
-        startActivity(intent);
-       // MediaController mediaController = new MediaController(getActivity());
+        if (isVideoQuestion) {
+            Intent intent = new Intent(getActivity(), FullScreenVideo_.class);
+            intent.putExtra("questionPath", questionPath);
+            startActivity(intent);
+        }
+        // MediaController mediaController = new MediaController(getActivity());
 
       /*  questionImage.setVisibility(View.GONE);
         vv_question.setVisibility(View.VISIBLE);
@@ -357,6 +394,7 @@ public class DoingFragment extends Fragment implements OnGameClose {
             keyWords.setWordType("word");
             addScore(GameConstatnts.getInt(questionModel.getQid()), jsonName, 0, 0, FC_Utility.getCurrentDateTime(), imageName);
             appDatabase.getKeyWordDao().insert(keyWords);
+            setCompletionPercentage();
             Toast.makeText(context, "inserted succussfully", Toast.LENGTH_LONG).show();
             GameConstatnts.playGameNext(context, GameConstatnts.FALSE, this);
         } else {
@@ -479,6 +517,6 @@ public class DoingFragment extends Fragment implements OnGameClose {
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onMessageEvent(EventMessage event) {
         if (!scienceQuestion.getInstruction().isEmpty())
-        GameConstatnts.showGameInfo(getActivity(),scienceQuestion.getInstruction());
+            GameConstatnts.showGameInfo(getActivity(), scienceQuestion.getInstruction());
     }
 }

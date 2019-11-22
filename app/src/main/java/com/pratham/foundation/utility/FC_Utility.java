@@ -121,7 +121,7 @@ public class FC_Utility {
         return json;
     }
     public static String loadJSONFromStorage(String readingContentPath, String fileName) {
-        JSONArray jsonObj = null;
+        String jsonStr;
         try {
             InputStream is = null;
             is = new FileInputStream(readingContentPath + fileName);
@@ -129,18 +129,12 @@ public class FC_Utility {
             byte[] buffer = new byte[size];
             is.read(buffer);
             is.close();
-            String jsonStr = new String(buffer);
-            jsonObj = new JSONArray(jsonStr);
+            jsonStr = new String(buffer);
         } catch (IOException e) {
             e.printStackTrace();
             return null;
-        } catch (JSONException e) {
-            e.printStackTrace();
-            return null;
         }
-
-
-        return jsonObj.toString();
+        return jsonStr;
     }
     private static int[] gradiant_bg = new int[]{
             R.drawable.gradient_one, R.drawable.gradient_two, R.drawable.gradient_three,

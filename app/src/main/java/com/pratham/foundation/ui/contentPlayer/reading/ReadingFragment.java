@@ -3,9 +3,10 @@ package com.pratham.foundation.ui.contentPlayer.reading;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.speech.SpeechRecognizer;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -19,6 +20,7 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
@@ -27,25 +29,25 @@ import com.google.gson.reflect.TypeToken;
 import com.pratham.foundation.ApplicationClass;
 import com.pratham.foundation.R;
 import com.pratham.foundation.customView.GifView;
-import com.pratham.foundation.customView.SansButton;
 import com.pratham.foundation.customView.SansTextView;
 import com.pratham.foundation.database.BackupDatabase;
 import com.pratham.foundation.database.domain.Assessment;
 import com.pratham.foundation.database.domain.KeyWords;
 import com.pratham.foundation.database.domain.Score;
-import com.pratham.foundation.modalclasses.ScienceQuestion;
-import com.pratham.foundation.services.stt.ContinuousSpeechService;
-import com.pratham.foundation.services.stt.STT_Result;
+import com.pratham.foundation.interfaces.OnGameClose;
+import com.pratham.foundation.modalclasses.EventMessage;
+import com.pratham.foundation.services.stt.ContinuousSpeechService_New;
+import com.pratham.foundation.services.stt.STT_Result_New;
 import com.pratham.foundation.ui.contentPlayer.GameConstatnts;
-import com.pratham.foundation.ui.contentPlayer.fact_retrieval_fragment.FactRetrieval_;
+import com.pratham.foundation.ui.contentPlayer.fact_retrival_selection.ScienceQuestion;
 import com.pratham.foundation.utility.FC_Constants;
 import com.pratham.foundation.utility.FC_Utility;
 
-import org.json.JSONArray;
-import org.json.JSONException;
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.io.FileInputStream;
-import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
@@ -61,7 +63,7 @@ import static com.pratham.foundation.utility.FC_Constants.STT_REGEX;
 import static com.pratham.foundation.utility.FC_Constants.gameFolderPath;
 
 
-public class ReadingFragment extends Fragment implements STT_Result {
+public class ReadingFragment extends Fragment implements STT_Result_New.sttView, OnGameClose {
 
     @BindView(R.id.tv_question)
     SansTextView question;
@@ -75,13 +77,13 @@ public class ReadingFragment extends Fragment implements STT_Result {
     ImageButton ib_mic;
 
 
-    ContinuousSpeechService speechService;
+    // ContinuousSpeechService speechService;
     ScienceQuestion scienceQuestion;
     private int totalWordCount, learntWordCount;
     private float perc = 0;
     private float percScore = 0;
     private String answer;
-    public static SpeechRecognizer speech = null;
+    // public static SpeechRecognizer speech = null;
     private static boolean voiceStart = false;
     private static boolean[] correctArr;
     public static Intent intent;
@@ -91,6 +93,10 @@ public class ReadingFragment extends Fragment implements STT_Result {
     private Context context;
     private List<ScienceQuestion> dataList;
     private boolean isTest = false;
+    String resStartTime;
+    private ContinuousSpeechService_New continuousSpeechService;
+    public Dialog myLoadingDialog;
+    boolean dialogFlg = false;
 
     public ReadingFragment() {
         // Required empty public constructor
@@ -102,8 +108,10 @@ public class ReadingFragment extends Fragment implements STT_Result {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
             context = getActivity();
-            speechService = new ContinuousSpeechService(context, ReadingFragment.this);
-            speechService.resetSpeechRecognizer();
+            continuousSpeechService = new ContinuousSpeechService_New(context, ReadingFragment.this, FC_Constants.currentSelectedLanguage);
+            continuousSpeechService.resetSpeechRecognizer();
+            //speechService = new ContinuousSpeechService(context, ReadingFragment.this);
+            // speechService.resetSpeechRecognizer();
             contentPath = getArguments().getString("contentPath");
             StudentID = getArguments().getString("StudentID");
             resId = getArguments().getString("resId");
@@ -114,33 +122,44 @@ public class ReadingFragment extends Fragment implements STT_Result {
             else
                 readingContentPath = ApplicationClass.foundationPath + gameFolderPath + "/" + contentPath + "/";
 
+            EventBus.getDefault().register(this);
+            resStartTime = FC_Utility.getCurrentDateTime();
+            addScore(0, "", 0, 0, resStartTime, GameConstatnts.READING_STT + " " + GameConstatnts.START);
 
             getData();
         }
     }
 
+    public void showLoader() {
+        if (!dialogFlg) {
+            dialogFlg = true;
+            myLoadingDialog = new Dialog(context);
+            myLoadingDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+            myLoadingDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+            myLoadingDialog.setContentView(R.layout.loading_dialog);
+            myLoadingDialog.setCanceledOnTouchOutside(false);
+            myLoadingDialog.show();
+        }
+    }
+
     private void getData() {
         //String text = FC_Utility.loadJSONFromAsset(context, "reading.json");
-        try {
-            InputStream is = new FileInputStream(readingContentPath + "reading.json");
-            int size = is.available();
-            byte[] buffer = new byte[size];
-            is.read(buffer);
-            is.close();
-            String jsonStr = new String(buffer);
-            JSONArray jsonObj = new JSONArray(jsonStr);
 
-            // List instrumentNames = new ArrayList<>();
+        /*  InputStream is = new FileInputStream(readingContentPath + "reading_stt.json");
+         */
+
+        String text = FC_Utility.loadJSONFromStorage(readingContentPath, "reading_stt.json");
+        // List instrumentNames = new ArrayList<>();
+        if (text != null) {
             Gson gson = new Gson();
             Type type = new TypeToken<List<ScienceQuestion>>() {
             }.getType();
-            dataList = gson.fromJson(jsonObj.toString(), type);
+            dataList = gson.fromJson(text, type);
             getDataList();
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (JSONException e) {
-            e.printStackTrace();
+        } else {
+            Toast.makeText(context, "Data not found", Toast.LENGTH_LONG).show();
         }
+
     }
 
     public void getDataList() {
@@ -214,8 +233,8 @@ public class ReadingFragment extends Fragment implements STT_Result {
 
 
     public void setFillInTheBlanksQuestion() {
-        question.setText(scienceQuestion.getQname());
-        if (!scienceQuestion.getPhotourl().equalsIgnoreCase("")) {
+        question.setText(scienceQuestion.getQuestion());
+        if (!scienceQuestion.getPhotourl().trim().equalsIgnoreCase("")) {
             questionImage.setVisibility(View.VISIBLE);
 //            if (AssessmentApplication.wiseF.isDeviceConnectedToMobileOrWifiNetwork()) {
 
@@ -283,11 +302,15 @@ public class ReadingFragment extends Fragment implements STT_Result {
         if (!voiceStart) {
             voiceStart = true;
             micPressed(1);
-            speechService.startSpeechInput();
+            showLoader();
+            continuousSpeechService.startSpeechInput();
+            // speechService.startSpeechInput();
         } else {
             voiceStart = false;
             micPressed(0);
-            speechService.stopSpeechInput();
+            showLoader();
+            continuousSpeechService.stopSpeechInput();
+            //speechService.stopSpeechInput();
         }
     }
 
@@ -300,12 +323,37 @@ public class ReadingFragment extends Fragment implements STT_Result {
         }
     }
 
+    @Override
+    public void silenceDetected() {
+
+    }
+
+    @Override
+    public void stoppedPressed() {
+        dismissLoadingDialog();
+    }
+
+    @Override
+    public void sttEngineReady() {
+        dismissLoadingDialog();
+    }
+
+
+    public void dismissLoadingDialog() {
+        if (dialogFlg) {
+            dialogFlg = false;
+            if (myLoadingDialog != null)
+                myLoadingDialog.dismiss();
+        }
+    }
 
     @Override
     public void onStop() {
         super.onStop();
-        if (speech != null) {
-            speech.stopListening();
+        EventBus.getDefault().unregister(this);
+        if (continuousSpeechService != null) {
+            continuousSpeechService.onEndOfSpeech();
+            // speech.stopListening();
             micPressed(0);
             voiceStart = false;
         }
@@ -314,20 +362,24 @@ public class ReadingFragment extends Fragment implements STT_Result {
     @Override
     public void onPause() {
         super.onPause();
-        if (speechService != null)
-            speechService.stopSpeechInput();
+       /* if (speechService != null)
+            speechService.stopSpeechInput();*/
+
+        if (continuousSpeechService != null) {
+            continuousSpeechService.stopSpeechInput();
+        }
         micPressed(0);
         voiceStart = false;
-        if (speech != null) {
+       /* if (speech != null) {
             speech.stopListening();
-        }
-
+        }*/
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        speechService.resetSpeechRecognizer();
+        //   speechService.resetSpeechRecognizer();
+        continuousSpeechService.resetSpeechRecognizer();
        /* if (speech != null) {
             micPressed(0);
             voiceStart = false;
@@ -397,16 +449,13 @@ public class ReadingFragment extends Fragment implements STT_Result {
         etAnswer.setText(sttResult);
         voiceStart = false;
         micPressed(0);
+        continuousSpeechService.stopSpeechInput();
     }
+
 
     @OnClick(R.id.submit)
     public void submitClick() {
         addLearntWords();
-        Bundle bundle = GameConstatnts.findGameData("101");
-        if (bundle != null) {
-            FC_Utility.showFragment(getActivity(), new FactRetrieval_(), R.id.RL_CPA,
-                    bundle, FactRetrieval_.class.getSimpleName());
-        }
     }
 
     public void addLearntWords() {
@@ -422,7 +471,7 @@ public class ReadingFragment extends Fragment implements STT_Result {
         keyWords.setStudentId(FC_Constants.currentStudentID);
         keyWords.setKeyWord(scienceQuestion.getTitle());
         keyWords.setWordType("word");
-        addScore(scienceQuestion.getQid(), GameConstatnts.READING, scoredMarks, 10, FC_Utility.getCurrentDateTime(), answer);
+        addScore(GameConstatnts.getInt(scienceQuestion.getQid()), GameConstatnts.READING_STT, scoredMarks, 10, FC_Utility.getCurrentDateTime(), answer);
         appDatabase.getKeyWordDao().insert(keyWords);
         if (!isTest) {
             showResult(scoredMarks);
@@ -445,7 +494,7 @@ public class ReadingFragment extends Fragment implements STT_Result {
             score.setStartDateTime(resStartTime);
             score.setDeviceID(deviceId.equals(null) ? "0000" : deviceId);
             score.setEndDateTime(FC_Utility.getCurrentDateTime());
-            score.setLevel(4);
+            score.setLevel(FC_Constants.currentLevel);
             score.setLabel(Word + " - " + Label);
             score.setSentFlag(0);
             appDatabase.getScoreDao().insert(score);
@@ -475,6 +524,15 @@ public class ReadingFragment extends Fragment implements STT_Result {
 
 
     public void showResult(int scoredMark) {
+        if (answer != null && !answer.isEmpty()) {
+            GameConstatnts.playGameNext(getActivity(), GameConstatnts.FALSE, (OnGameClose) this);
+        } else {
+            GameConstatnts.playGameNext(context, GameConstatnts.TRUE, (OnGameClose) this);
+        }
+
+
+
+/*
         if (scoredMark == 10) {
             final Dialog dialog = new Dialog(getActivity());
             dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -493,6 +551,17 @@ public class ReadingFragment extends Fragment implements STT_Result {
             SansButton dia_btn_yellow = dialog.findViewById(R.id.dia_btn_yellow);
             dia_btn_yellow.setOnClickListener(v -> dialog.dismiss());
             dialog.show();
-        }
+        }*/
+    }
+
+    @Override
+    public void gameClose() {
+        addScore(0, "", 0, 0, resStartTime, GameConstatnts.READING_STT + " " + GameConstatnts.END);
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onMessageEvent(EventMessage event) {
+        if (!scienceQuestion.getInstruction().isEmpty())
+            GameConstatnts.showGameInfo(getActivity(), scienceQuestion.getInstruction());
     }
 }

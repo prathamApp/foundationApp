@@ -147,6 +147,7 @@ public class KeywordMappingPresenterImp implements KeywordMappingContract.Keywor
     private int getLearntWordsCount() {
         int count = 0;
         count = appDatabase.getKeyWordDao().checkWordCount(FC_Constants.currentStudentID, resId);
+        count = appDatabase.getKeyWordDao().checkUniqueWordCount(FC_Constants.currentStudentID, resId);
         return count;
     }
 
