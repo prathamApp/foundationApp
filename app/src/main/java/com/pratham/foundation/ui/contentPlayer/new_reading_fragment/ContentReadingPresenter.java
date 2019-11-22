@@ -42,6 +42,8 @@ public class ContentReadingPresenter implements ContentReadingContract.ContentRe
     public static float[] pagePercentage;
     int pgNo;
     String resId, resStartTime;
+    public ArrayList<String> remainingResult;
+
 
     public ContentReadingPresenter(Context context) {
         this.context = context;
@@ -51,6 +53,7 @@ public class ContentReadingPresenter implements ContentReadingContract.ContentRe
     public void setView(ContentReadingContract.ContentReadingView readingView) {
         this.readingView = readingView;
         learntWordsList = new ArrayList<>();
+        remainingResult = new ArrayList<>();
     }
 
     @Background
@@ -105,10 +108,13 @@ public class ContentReadingPresenter implements ContentReadingContract.ContentRe
 
     private void addSttResultDB(ArrayList<String> stt_Result) {
         String deviceId = appDatabase.getStatusDao().getValue("DeviceId");
-        String strWord = "STT_ALL_RESULT - ";
-        for(int i =0 ; i<stt_Result.size(); i++)
-            strWord = strWord +stt_Result.get(i)+ " - ";
-
+        StringBuilder strWord = new StringBuilder("STT_ALL_RESULT - ");
+        for(int i =0 ; i<stt_Result.size(); i++) {
+            strWord.append(stt_Result.get(i)).append(" - ");
+            stt_Result.size();
+            if(i > 0 && i < 3)
+                remainingResult.add(stt_Result.get(i));
+        }
         try {
             Score score = new Score();
             score.setSessionID(FC_Constants.currentSession);
@@ -137,7 +143,6 @@ public class ContentReadingPresenter implements ContentReadingContract.ContentRe
         String sttRes = sttResult.get(0);
         String[] splitRes = sttRes.split(" ");
         String word = " ";
-        float perc;
         addSttResultDB(sttResult);
 
         for (int j = 0; j < splitRes.length; j++) {
@@ -153,10 +158,45 @@ public class ContentReadingPresenter implements ContentReadingContract.ContentRe
 
         int correctWordCount = getCorrectCounter();
         String wordTime = FC_Utility.getCurrentDateTime();
-        addLearntWords(splitWordsPunct, wordsResIdList);
-//        readingView.addLearntWords(splitWordsPunct, wordsResIdList);
+//        addLearntWords(splitWordsPunct, wordsResIdList);
         addScore(0, "Words:" + word, correctWordCount, correctArr.length, wordTime, " ");
+            readingView.setCorrectViewColor();
+
+    }
+
+    @Background
+    @Override
+    public void micStopped(List<String> splitWordsPunct, List<String> wordsResIdList) {
+        float perc;
+        String word = " ";
+        for(int k =0; k<remainingResult.size(); k++) {
+            String[] splitRes = remainingResult.get(k).split("");
+            for (int j = 0; j < splitRes.length; j++) {
+                splitRes[j] = splitRes[j].replaceAll(STT_REGEX, "");
+                for (int i = 0; i < splitWordsPunct.size(); i++) {
+                    if ((splitRes[j].equalsIgnoreCase(splitWordsPunct.get(i))) && !correctArr[i]) {
+                        correctArr[i] = true;
+                        word = word + splitWordsPunct.get(i) + "(" + wordsResIdList.get(i) + "),";
+                        break;
+                    }
+                }
+            }
+        }
+        remainingResult.clear();
+        List<String> learntWords_List = new ArrayList<>();
+        List<String> wordResId_List = new ArrayList<>();
+        for (int i = 0; i < splitWordsPunct.size(); i++) {
+            if (correctArr[i]) {
+                learntWords_List.add(splitWordsPunct.get(i));
+                wordResId_List.add(wordsResIdList.get(i));
+            }
+        }
+
+        addLearntWords(learntWords_List, wordResId_List);
+        int correctWordCount = getCorrectCounter();
         perc = getPercentage(correctWordCount);
+
+        addScore(0, "Words:" + word, correctWordCount, correctArr.length, FC_Utility.getCurrentDateTime(), " ");
 
         if (pagePercentage[pgNo] < perc) {
             pagePercentage[pgNo] = perc;
@@ -168,8 +208,7 @@ public class ContentReadingPresenter implements ContentReadingContract.ContentRe
         if (perc >= 75)
             readingView.allCorrectAnswer();
         else
-            readingView.setCorrectViewColor();
-
+            readingView.dismissLoadingDialog();
     }
 
     public boolean checkLearnt(String wordCheck) {

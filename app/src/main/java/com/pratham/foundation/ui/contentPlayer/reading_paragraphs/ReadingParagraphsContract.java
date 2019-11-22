@@ -1,6 +1,7 @@
 package com.pratham.foundation.ui.contentPlayer.reading_paragraphs;
 
 import com.pratham.foundation.modalclasses.ModalParaWord;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -19,6 +20,10 @@ public interface ReadingParagraphsContract {
         void allCorrectAnswer();
 
         void setCorrectViewColor();
+
+        void dismissLoadingDialog();
+        
+        void showLoader();
     }
 
     interface ReadingParagraphsPresenter {
@@ -41,6 +46,8 @@ public interface ReadingParagraphsContract {
         void addParaVocabProgress();
 
         void setView(ReadingParagraphsContract.ReadingParagraphsView readingView);
+
+        void micStopped(List<String> splitWordsPunct, List<String> wordsResIdList);
     }
 
 }

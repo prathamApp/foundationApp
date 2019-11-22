@@ -238,6 +238,7 @@ public class VocabReadingFragment extends Fragment implements
     @Override
     public void dismissLoadingDialog() {
         if (dialogFlg) {
+            dialogFlg = false;
             if (myLoadingDialog != null)
                 myLoadingDialog.dismiss();
         }
@@ -353,6 +354,7 @@ public class VocabReadingFragment extends Fragment implements
     @UiThread
     @Override
     public void allCorrectAnswer() {
+        dismissLoadingDialog();
         for (int i = 0; i < splitWordsPunct.size(); i++) {
             ((SansTextView) wordFlowLayout.getChildAt(i)).setTextColor(getResources().getColor(R.color.colorGreenDark));
             correctArr[i] = true;
@@ -367,7 +369,7 @@ public class VocabReadingFragment extends Fragment implements
             } else {
                 btn_nextpage.performClick();
             }
-        }, 1000);
+        }, 1200);
     }
 
     private void setWordsToLayout() {
@@ -595,6 +597,7 @@ public class VocabReadingFragment extends Fragment implements
 //        if (!voiceStart) {
         voiceStart = true;
         flgPerMarked = false;
+        showLoader();
         btn_Mic.setVisibility(View.GONE);
         btn_Play.setVisibility(View.GONE);
         btn_Stop.setVisibility(View.VISIBLE);
@@ -1138,6 +1141,17 @@ public class VocabReadingFragment extends Fragment implements
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    @Override
+    public void stoppedPressed() {
+        showLoader();
+        presenter.micStopped(splitWordsPunct, wordsResIdList);
+    }
+
+    @Override
+    public void sttEngineReady() {
+        dismissLoadingDialog();
     }
 
     @Override

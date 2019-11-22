@@ -658,10 +658,48 @@ public class ReadingParagraphsActivity extends BaseActivity
     }
 
     @Override
+    public void stoppedPressed() {
+        showLoader();
+        presenter.micStopped(splitWordsPunct, wordsResIdList);
+    }
+
+    @Override
+    public void sttEngineReady() {
+        dismissLoadingDialog();
+    }
+
+    @Override
     public void Stt_onResult(ArrayList<String> sttResult) {
         iv_monk.setVisibility(View.VISIBLE);
         iv_monk.startAnimation(AnimationUtils.loadAnimation(this, R.anim.float_anim));
         presenter.sttResultProcess(sttResult, splitWordsPunct, wordsResIdList);
+    }
+
+    public Dialog myLoadingDialog;
+    boolean dialogFlg = false;
+
+    @UiThread
+    @Override
+    public void showLoader() {
+        if (!dialogFlg) {
+            dialogFlg = true;
+            myLoadingDialog = new Dialog(this);
+            myLoadingDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+            myLoadingDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+            myLoadingDialog.setContentView(R.layout.loading_dialog);
+            myLoadingDialog.setCanceledOnTouchOutside(false);
+            myLoadingDialog.show();
+        }
+    }
+
+    @UiThread
+    @Override
+    public void dismissLoadingDialog() {
+        if (dialogFlg) {
+            dialogFlg = false;
+            if (myLoadingDialog != null)
+                myLoadingDialog.dismiss();
+        }
     }
 
 

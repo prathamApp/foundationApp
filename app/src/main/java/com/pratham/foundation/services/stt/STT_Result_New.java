@@ -12,5 +12,9 @@ public interface STT_Result_New {
     interface sttView {
         void Stt_onResult(ArrayList<String> sttResult);
         void silenceDetected();
+
+        void stoppedPressed();
+
+        void sttEngineReady();
     }
 }

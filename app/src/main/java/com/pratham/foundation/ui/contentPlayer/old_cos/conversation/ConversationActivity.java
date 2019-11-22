@@ -485,6 +485,17 @@ public class ConversationActivity extends BaseActivity
     }
 
     @Override
+    public void stoppedPressed() {
+//        showLoader();
+//        presenter.micStopped(splitWordsPunct, wordsResIdList);
+    }
+
+    @Override
+    public void sttEngineReady() {
+//        dismissLoadingDialog();
+    }
+
+    @Override
     public void Stt_onResult(ArrayList<String> sttServerResult) {
         iv_monk.setVisibility(View.VISIBLE);
         iv_monk.startAnimation(AnimationUtils.loadAnimation(ConversationActivity.this, R.anim.float_anim));

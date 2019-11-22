@@ -155,7 +155,7 @@ public class ReadingStoryActivity extends BaseActivity implements
         showLoader();
         modalPagesList = new ArrayList<>();
 
-        continuousSpeechService = new ContinuousSpeechService_New(context, ReadingStoryActivity.this, FC_Constants.currentSelectedLanguage);
+        continuousSpeechService = new ContinuousSpeechService_New(context, ReadingStoryActivity.this, "english"/*FC_Constants.currentSelectedLanguage*/);
         if (contentType.equalsIgnoreCase(FC_Constants.RHYME_RESOURCE))
             btn_Mic.setVisibility(View.GONE);
 
@@ -195,6 +195,7 @@ public class ReadingStoryActivity extends BaseActivity implements
 
     public Dialog myLoadingDialog;
     boolean dialogFlg = false;
+
     @UiThread
     @Override
     public void showLoader() {
@@ -213,6 +214,7 @@ public class ReadingStoryActivity extends BaseActivity implements
     @Override
     public void dismissLoadingDialog() {
         if(dialogFlg) {
+            dialogFlg = false;
             if (myLoadingDialog != null)
                 myLoadingDialog.dismiss();
         }
@@ -549,6 +551,7 @@ public class ReadingStoryActivity extends BaseActivity implements
     @Click(R.id.btn_read_mic)
     void sttMethod() {
 //        if (!voiceStart) {
+        showLoader();
         voiceStart = true;
         flgPerMarked = false;
         btn_Mic.setVisibility(View.GONE);
@@ -889,7 +892,7 @@ public class ReadingStoryActivity extends BaseActivity implements
             }
             exitDBEntry();
             //TODO Back Press Here
-//            ReadingStoryActivity.super.onBackPressed();
+            ReadingStoryActivity.super.onBackPressed();
         });
     }
 
@@ -1069,6 +1072,17 @@ public class ReadingStoryActivity extends BaseActivity implements
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    @Override
+    public void stoppedPressed() {
+        showLoader();
+        presenter.micStopped(splitWordsPunct, wordsResIdList);
+    }
+
+    @Override
+    public void sttEngineReady() {
+        dismissLoadingDialog();
     }
 
     @Override
