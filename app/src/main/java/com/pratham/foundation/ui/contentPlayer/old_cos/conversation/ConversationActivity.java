@@ -11,6 +11,7 @@ import android.graphics.drawable.ColorDrawable;
 import android.media.MediaPlayer;
 import android.os.Handler;
 import android.speech.RecognitionListener;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -73,13 +74,17 @@ public class ConversationActivity extends BaseActivity
     @ViewById(R.id.btn_speaker)
     ImageButton btn_speaker;
     @ViewById(R.id.tv_title)
-    SansTextView tv_title;
+    TextView tv_title;
     @ViewById(R.id.lin_layout)
     LinearLayout lin_layout;
     @ViewById(R.id.iv_ConvoMode)
     ImageView iv_ConvoMode;
     @ViewById(R.id.iv_monk)
     ImageView iv_monk;
+    @ViewById(R.id.floating_back)
+    FloatingActionButton floating_back;
+    @ViewById(R.id.floating_info)
+    FloatingActionButton floating_info;
 
     @Bean(ConversationPresenter.class)
     ConversationContract.ConversationPresenter presenter;
@@ -110,6 +115,8 @@ public class ConversationActivity extends BaseActivity
     public void initialize() {
         iv_monk.setVisibility(View.GONE);
         silence_outer_layout.setVisibility(View.GONE);
+        floating_back.setImageResource(R.drawable.ic_left_arrow_white);
+        floating_info.setImageResource(R.drawable.ic_info_outline_white);
 
         animationDrawable = (AnimationDrawable) ll_convo_mainw.getBackground();
         animationDrawable.setEnterFadeDuration(4500);
@@ -202,11 +209,13 @@ public class ConversationActivity extends BaseActivity
         if (!voiceStart) {
             // ButtonClickSound.start();
             voiceStart = true;
-            btn_reading.setImageResource(R.drawable.ic_stop_black_24dp);
+            btn_reading.setImageResource(R.drawable.ic_stop_black);
+            btn_reading.setBackgroundResource(R.drawable.red_button);
             continuousSpeechService.startSpeechInput();
         } else {
             voiceStart = false;
-            btn_reading.setImageResource(R.drawable.ic_mic_black_24dp);
+            btn_reading.setImageResource(R.drawable.ic_mic_black);
+            btn_reading.setBackgroundResource(R.drawable.green_button);
             continuousSpeechService.stopSpeechInput();
             //ButtonClickSound.start();
         }
@@ -220,7 +229,7 @@ public class ConversationActivity extends BaseActivity
         presenter.addScore(0, "perc - " + perc, correctAnswerCount, correctArr.length, " Convo ");
         setMute(0);
         ButtonClickSound.start();
-        btn_reading.setImageResource(R.drawable.ic_mic_black_24dp);
+        btn_reading.setImageResource(R.drawable.ic_mic_black);
         if (voiceStart)
             btn_reading.performClick();
         readChatFlow.removeAllViews();
@@ -438,7 +447,7 @@ public class ConversationActivity extends BaseActivity
             }
             lin_layout.setBackgroundResource(R.drawable.convo_correct_bg);
             new Handler().postDelayed(() -> {
-                lin_layout.setBackgroundResource(R.drawable.choose_level_bg);
+                lin_layout.setBackgroundResource(R.drawable.dialog_bg);
                 sendMessage();
             }, 1200);
         } catch (Exception e) {
@@ -631,6 +640,11 @@ public class ConversationActivity extends BaseActivity
             e.printStackTrace();
         }
         return tot;
+    }
+
+    @Click (R.id.floating_back)
+    public void pressedBackBtn(){
+        onBackPressed();
     }
 
     @Override

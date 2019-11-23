@@ -420,6 +420,7 @@ public class ContentDisplay extends BaseActivity implements ContentContract.Cont
                 mainNew.putExtra("contentPath", ContentTableList.get(position).getResourcePath());
                 mainNew.putExtra("onSdCard", ContentTableList.get(position).isOnSDCard());
                 mainNew.putExtra("resType", ContentTableList.get(position).getResourceType());
+                mainNew.putExtra("sttLang", ContentTableList.get(position).getContentLanguage());
                 mainNew.putExtra("contentTitle", ContentTableList.get(position).getNodeTitle());
                 startActivity(mainNew);
             } else if (ContentTableList.get(position).getResourceType().equalsIgnoreCase(FC_Constants.VOCAB_ANDROID)) {
@@ -430,6 +431,7 @@ public class ContentDisplay extends BaseActivity implements ContentContract.Cont
                 mainNew.putExtra("contentTitle", ContentTableList.get(position).getNodeTitle());
                 mainNew.putExtra("vocabLevel", ContentTableList.get(position).getNodeDesc());
                 mainNew.putExtra("onSdCard", ContentTableList.get(position).isOnSDCard());
+                mainNew.putExtra("sttLang", ContentTableList.get(position).getContentLanguage());
                 mainNew.putExtra("vocabCategory", ContentTableList.get(position).getNodeKeywords());
                 startActivity(mainNew);
             } else if (ContentTableList.get(position).getResourceType().equalsIgnoreCase(FC_Constants.RHYMING_WORD_ANDROID)) {

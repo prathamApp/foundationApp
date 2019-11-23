@@ -14,7 +14,6 @@
         android:layout_marginStart="@dimen/_10sdp"
         android:layout_marginEnd="@dimen/_10sdp"
         android:layout_marginBottom="@dimen/_5sdp"
-        app:elevation="500dp"
         android:background="@drawable/home_header_1_bg"
         android:layout_height="110dp">
 <!--
@@ -179,6 +178,7 @@
         android:layout_width="60dp"
         android:layout_height="60dp"
         app:elevation="@dimen/_11sdp"
+        android:visibility="gone"
         android:layout_marginTop="@dimen/_5sdp"
         android:layout_marginEnd="@dimen/_5sdp" />
 

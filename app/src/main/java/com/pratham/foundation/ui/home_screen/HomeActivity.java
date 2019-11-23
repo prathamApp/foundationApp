@@ -243,6 +243,7 @@ public class HomeActivity extends BaseActivity implements LevelChanged, CursorWh
         SubmarineItem item2 = new SubmarineItem(getDrawable(R.drawable.level_2), null);
         SubmarineItem item3 = new SubmarineItem(getDrawable(R.drawable.level_3), null);
         SubmarineItem item4 = new SubmarineItem(getDrawable(R.drawable.level_4), null);
+        SubmarineItem item5 = new SubmarineItem(getDrawable(R.drawable.level_5), null);
 
 
         submarine.setSubmarineItemClickListener((position, submarineItem) -> {
@@ -259,6 +260,9 @@ public class HomeActivity extends BaseActivity implements LevelChanged, CursorWh
                     break;
                 case 3:
                     iv_level.setImageResource(R.drawable.level_4);
+                    break;
+                case 4:
+                    iv_level.setImageResource(R.drawable.level_5);
                     break;
             }
             EventMessage eventMessage = new EventMessage();
@@ -292,6 +296,9 @@ public class HomeActivity extends BaseActivity implements LevelChanged, CursorWh
                 case 3:
                     submarine.addSubmarineItem(item4);
                     break;
+                case 4:
+                    submarine.addSubmarineItem(item5);
+                    break;
             }
         }
     }
@@ -311,6 +318,10 @@ public class HomeActivity extends BaseActivity implements LevelChanged, CursorWh
                 tabLayout.setBackgroundColor(getResources().getColor(R.color.level_3_color));
                 break;
             case 3:
+                header_rl.setBackground(homeHeader4);
+                tabLayout.setBackgroundColor(getResources().getColor(R.color.level_4_color));
+                break;
+            case 4:
                 header_rl.setBackground(homeHeader4);
                 tabLayout.setBackgroundColor(getResources().getColor(R.color.level_4_color));
                 break;

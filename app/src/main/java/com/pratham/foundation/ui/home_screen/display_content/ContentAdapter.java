@@ -135,8 +135,9 @@ public class ContentAdapter extends RecyclerView.Adapter<ContentAdapter.MyViewHo
                         } else if (contentList.getIsDownloaded().equalsIgnoreCase("false"))
                             contentClicked.onContentDownloadClicked(position, contentList.nodeId);
                     }
-                } else
-                    contentClicked.onContentClicked(position, contentList.nodeId);
+                    else
+                        contentClicked.onContentClicked(position, contentList.nodeId);
+                }
             }
         });
         holder.content_card_view.setVisibility(View.GONE);
