@@ -40,7 +40,7 @@ import java.util.List;
 
 import static com.pratham.foundation.utility.FC_Constants.dialog_btn_cancel;
 
-public class GameConstatnts {
+public class GameConstatnts implements ShowInstruction {
     public static final String KEYWORD_IDENTIFICATION = "IKWAndroid";
     public static final String KEYWORD_MAPPING = "chKeywords";
     public static final String PARAGRAPH_WRITING = "CWiritng";
@@ -203,6 +203,8 @@ public class GameConstatnts {
             bundle.putString("contentName", contentTable1.getNodeTitle());
             bundle.putBoolean("onSdCard", true);
             bundle.putString("jsonName", contentTable1.getResourceType());
+            InstructionsDialog instructionsDialog = new InstructionsDialog(context, contentTable1.getResourceType());
+            instructionsDialog.show();
             playInsequence = true;
             if (contentTable1 != null)
                 switch (contentTable1.getResourceType()) {
@@ -290,7 +292,7 @@ public class GameConstatnts {
     }
 
     public static void showInstructionDialog(ShowInstruction showInstruction, Activity context, String resorcetype) {
-        InstructionsDialog instructionsDialog = new InstructionsDialog(context, showInstruction, resorcetype);
+        InstructionsDialog instructionsDialog = new InstructionsDialog(context, resorcetype);
         instructionsDialog.show();
 
     }
@@ -304,5 +306,15 @@ public class GameConstatnts {
         if (info != null)
             infoText.setText(info);
         dialog.show();
+    }
+
+    @Override
+    public void play() {
+
+    }
+
+    @Override
+    public void exit() {
+
     }
 }

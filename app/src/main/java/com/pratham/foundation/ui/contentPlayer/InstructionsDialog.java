@@ -25,11 +25,10 @@ public class InstructionsDialog extends Dialog {
     private Context context;
     private InstructionsDialog instructionsDialog;
 
-    public InstructionsDialog(@NonNull Context context, ShowInstruction showInstruction, String resorcetype) {
+    public InstructionsDialog(@NonNull Context context, String resorcetype) {
         super(context,R.style.FullScreenCustomDialogStyle);
         this.resorcetype = resorcetype;
         this.context = context;
-        this.showInstruction = showInstruction;
     }
 
     @Override

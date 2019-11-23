@@ -173,7 +173,7 @@ public class ListeningAndWritting extends Fragment implements ListeningAndWritti
                 for(int i= 0; i<childCount; i++){
                     TextView tv = (TextView) tickMarkLabelsRelativeLayout.getChildAt(i);
                     if(i == position)
-                        tv.setTextColor(getResources().getColor(R.color.colorPrimary));
+                        tv.setTextColor(getResources().getColor(R.color.hahaColor));
                     else
                         tv.setTextColor(getResources().getColor(R.color.grey_400));
 
@@ -231,7 +231,7 @@ public class ListeningAndWritting extends Fragment implements ListeningAndWritti
             tv.setText(tickMarkLabels[i]);
             tv.setGravity(Gravity.CENTER);
             if(i==discreteSlider.getPosition())
-                tv.setTextColor(getResources().getColor(R.color.colorPrimary));
+                tv.setTextColor(getResources().getColor(R.color.hahaColor));
             else
                 tv.setTextColor(getResources().getColor(R.color.grey_400));
 
@@ -340,7 +340,6 @@ public class ListeningAndWritting extends Fragment implements ListeningAndWritti
                 }
 
             });
-
 
         } catch (
                 Exception e) {
