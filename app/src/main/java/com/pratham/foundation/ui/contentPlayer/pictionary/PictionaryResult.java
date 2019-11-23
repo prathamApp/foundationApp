@@ -51,10 +51,7 @@ public class PictionaryResult extends AppCompatActivity {
                 ResultAdapterS resultAdapter = new ResultAdapterS(quetions, this, readingContentPath);
                 result.setAdapter(resultAdapter);
                 break;
-
         }
-
-
     }
 
     @Override

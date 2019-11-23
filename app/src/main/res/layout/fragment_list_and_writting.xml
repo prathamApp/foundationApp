@@ -2,6 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@drawable/bg_anim_fourth_layer">
 
     <RelativeLayout
@@ -119,8 +120,8 @@
 
                     <ImageView
                         android:id="@+id/play_button"
-                        android:layout_width="@dimen/_100sdp"
-                        android:layout_height="@dimen/_100sdp"
+                        android:layout_width="@dimen/_80sdp"
+                        android:layout_height="@dimen/_80sdp"
                         android:layout_centerInParent="true"
                         android:background="@drawable/rounded_rectangle_stroke_bg"
                         android:padding="@dimen/_20sdp"
@@ -135,56 +136,51 @@
 
                     <ImageView
                         android:id="@+id/replay"
-                        android:layout_width="@dimen/_100sdp"
-                        android:layout_height="@dimen/_100sdp"
+                        android:layout_width="@dimen/_80sdp"
+                        android:layout_height="@dimen/_80sdp"
                         android:layout_centerInParent="true"
                         android:background="@drawable/rounded_rectangle_stroke_bg"
                         android:padding="@dimen/_20sdp"
                         android:scaleType="fitXY"
-                        android:src="@drawable/replay" />
+                        android:src="@drawable/stop" />
                 </RelativeLayout>
 
 
             </LinearLayout>
 
-            <RadioGroup
+            <LinearLayout
                 android:id="@+id/radiogroup"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
                 android:layout_below="@id/play_button_control"
-                android:layout_centerHorizontal="true"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
                 android:layout_marginTop="@dimen/_30sdp"
-                android:background="@drawable/rounded_rectangle_stroke_bg"
-                android:checkedButton="@+id/normal"
-                android:orientation="horizontal"
-                android:paddingStart="@dimen/_50sdp"
-                android:paddingTop="@dimen/_10sdp"
-                android:paddingEnd="@dimen/_50sdp"
-                android:paddingBottom="@dimen/_10sdp">
+                android:background="@color/grey_100">
 
-                <RadioButton
-                    android:id="@+id/slow"
-                    android:layout_width="wrap_content"
+                <RelativeLayout
+                    android:id="@+id/tick_mark_labels_rl"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_margin="@dimen/_5sdp"
-                    android:text="slow" />
+                    android:paddingTop="12dp"/>
 
-                <RadioButton
-                    android:id="@+id/normal"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="@dimen/_5sdp"
-                    android:text="normal" />
-
-                <RadioButton
-                    android:id="@+id/fast"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="@dimen/_5sdp"
-                    android:text="fast" />
-
-            </RadioGroup>
-
+                <com.etiennelawlor.discreteslider.library.ui.DiscreteSlider
+                    android:id="@+id/discrete_slider"
+                    android:layout_width="match_parent"
+                    android:layout_height="56dp"
+                    android:layout_marginBottom="4dp"
+                    android:paddingLeft="8dp"
+                    android:paddingRight="8dp"
+                    android:background="@color/grey_100"
+                    app:backdropFillColor="@color/grey_200"
+                    app:backdropStrokeColor="@color/grey_300"
+                    app:backdropStrokeWidth="1dp"
+                    app:horizontalBarThickness="4dp"
+                    app:tickMarkCount="3"
+                    app:tickMarkRadius="8dp"
+                    app:position="1"
+                    app:thumb="@drawable/thumb"
+                    app:progressDrawable="@drawable/transparent_progress_drawable"/>
+            </LinearLayout>
 
             <com.pratham.foundation.customView.SansButton
                 android:id="@+id/show_answer"
@@ -196,7 +192,7 @@
                 android:layout_marginTop="@dimen/_10sdp"
                 android:background="@drawable/yellow_button"
                 android:paddingHorizontal="@dimen/_10sdp"
-                android:text="show answer" />
+                android:text="hint" />
 
             <com.pratham.foundation.customView.SansTextView
                 android:id="@+id/count"

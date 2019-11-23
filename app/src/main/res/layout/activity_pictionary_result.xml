@@ -4,14 +4,13 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white"
     tools:context=".ui.contentPlayer.pictionary.PictionaryResult">
 
         <com.pratham.foundation.customView.SansTextViewBold
             android:id="@+id/tittle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Result Show me"
+            android:text="Result"
             android:textAlignment="center"
             android:paddingTop="@dimen/_5sdp"
             android:paddingBottom="@dimen/_5sdp"

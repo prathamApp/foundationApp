@@ -333,6 +333,7 @@ public class pictionaryFragment extends Fragment implements OnGameClose {
 
             options.clear();
             options = selectedFive.get(index).getLstquestionchoice();
+            Collections.shuffle(options);
             imgCnt = 0;
             textCnt = 0;
             if (options != null) {

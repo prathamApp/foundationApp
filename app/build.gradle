@@ -117,4 +117,7 @@ dependencies {
 
     //Level Wheel
     implementation 'github.hellocsl:CursorWheelLayout:1.1.0'
+
+    //DiscreteSlider Android Arsenal
+    implementation 'com.github.lawloretienne:discreteslider:0.0.9'
 }

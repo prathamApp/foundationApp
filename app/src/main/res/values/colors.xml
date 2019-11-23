@@ -181,5 +181,8 @@
     <color name="grayIconTint">#727272</color>
     <color name="submarine_white">#f4f4f4</color>
 
-
+    <color name="grey_100">#f5f5f5</color>
+    <color name="grey_200">#eeeeee</color>
+    <color name="grey_300">#e0e0e0</color>
+    <color name="grey_400">#bdbdbd</color>
 </resources>

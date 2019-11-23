@@ -10,17 +10,25 @@ import android.media.AudioManager;
 import android.media.SoundPool;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.View;
+import android.view.ViewTreeObserver;
 import android.view.Window;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RadioGroup;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.etiennelawlor.discreteslider.library.ui.DiscreteSlider;
+import com.etiennelawlor.discreteslider.library.utilities.DisplayUtility;
 import com.pratham.foundation.ApplicationClass;
 import com.pratham.foundation.R;
 import com.pratham.foundation.customView.SansButton;
@@ -56,8 +64,8 @@ public class ListeningAndWritting extends Fragment implements ListeningAndWritti
 
     @ViewById(R.id.play_button)
     ImageView play;
-    @ViewById(R.id.radiogroup)
-    RadioGroup radiogroup;
+ /*   @ViewById(R.id.radiogroup)
+    RadioGroup radiogroup;*/
 
  /*   @ViewById(R.id.title)
     com.pratham.foundation.customView.SansTextView title;*/
@@ -77,6 +85,12 @@ public class ListeningAndWritting extends Fragment implements ListeningAndWritti
     SansTextView count;
     @ViewById(R.id.submit)
     SansButton submitBtn;
+
+    @ViewById(R.id.discrete_slider)
+    DiscreteSlider discreteSlider;
+    @ViewById(R.id.tick_mark_labels_rl)
+    RelativeLayout tickMarkLabelsRelativeLayout;
+
     private int index = 0;
     private String readingContentPath, contentPath, contentTitle, StudentID, resId, resStartTime;
     private boolean onSdCard;
@@ -116,7 +130,7 @@ public class ListeningAndWritting extends Fragment implements ListeningAndWritti
         mediaPlayerUtil = new MediaPlayerUtil(getActivity());
         presenter.fetchJsonData(readingContentPath);
         sp = new SoundPool(1, AudioManager.STREAM_MUSIC, 0);
-        radiogroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+     /*   radiogroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup group, int checkedId) {
                 switch (checkedId) {
@@ -135,11 +149,107 @@ public class ListeningAndWritting extends Fragment implements ListeningAndWritti
                 }
             }
         });
-        resStartTime = FC_Utility.getCurrentDateTime();
+       */ resStartTime = FC_Utility.getCurrentDateTime();
         presenter.addScore(0, "", 0, 0, resStartTime, GameConstatnts.LISTNING_AND_WRITTING + " " + GameConstatnts.START);
+        tickMarkLabelsRelativeLayout.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+            @Override
+            public void onGlobalLayout() {
+                tickMarkLabelsRelativeLayout.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+                tickMarkLabelsRelativeLayout.getHeight(); //height is ready
+                addTickMarkTextLabels();
+            }
+        });
+
 
 
     }
+    private void addTickMarkTextLabels(){
+
+
+        discreteSlider.setOnDiscreteSliderChangeListener(new DiscreteSlider.OnDiscreteSliderChangeListener() {
+            @Override
+            public void onPositionChanged(int position) {
+                int childCount = tickMarkLabelsRelativeLayout.getChildCount();
+                for(int i= 0; i<childCount; i++){
+                    TextView tv = (TextView) tickMarkLabelsRelativeLayout.getChildAt(i);
+                    if(i == position)
+                        tv.setTextColor(getResources().getColor(R.color.colorPrimary));
+                    else
+                        tv.setTextColor(getResources().getColor(R.color.grey_400));
+
+                }
+                switch (position) {
+                    case 0:
+                        rate = 0.8f;
+                        // do operations specific to this selection
+                        break;
+                    case 1:
+                        rate = 1f;
+                        // do operations specific to this selection
+                        break;
+                    case 2:
+                        rate = 1.2f;
+                        // do operations specific to this selection
+                        break;
+                }
+                try {
+                    sp.stop(id);
+                    Glide.with(getActivity()).load(R.drawable.play_button)
+                            .into(play);
+                    isPlaying = -1;
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+
+
+
+
+
+
+        int tickMarkCount = discreteSlider.getTickMarkCount();
+        float tickMarkRadius = discreteSlider.getTickMarkRadius();
+        int width = tickMarkLabelsRelativeLayout.getMeasuredWidth();
+
+        int discreteSliderBackdropLeftMargin = DisplayUtility.dp2px(getContext(), 32);
+        int discreteSliderBackdropRightMargin = DisplayUtility.dp2px(getContext(), 32);
+        float firstTickMarkRadius = tickMarkRadius;
+        float lastTickMarkRadius = tickMarkRadius;
+        int interval = (width - (discreteSliderBackdropLeftMargin+discreteSliderBackdropRightMargin) - ((int)(firstTickMarkRadius+lastTickMarkRadius)) )
+                / (tickMarkCount-1);
+
+        String[] tickMarkLabels = {"slow", "normal", "fast"};
+        int tickMarkLabelWidth = DisplayUtility.dp2px(getContext(), 40);
+
+        for(int i=0; i<tickMarkCount; i++) {
+            TextView tv = new TextView(getContext());
+
+            RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(
+                    tickMarkLabelWidth, RelativeLayout.LayoutParams.WRAP_CONTENT);
+
+            tv.setText(tickMarkLabels[i]);
+            tv.setGravity(Gravity.CENTER);
+            if(i==discreteSlider.getPosition())
+                tv.setTextColor(getResources().getColor(R.color.colorPrimary));
+            else
+                tv.setTextColor(getResources().getColor(R.color.grey_400));
+
+//                    tv.setBackgroundColor(getResources().getColor(android.R.color.holo_blue_dark));
+
+            int left = discreteSliderBackdropLeftMargin + (int)firstTickMarkRadius + (i * interval) - (tickMarkLabelWidth/2);
+
+            layoutParams.setMargins(left,
+                    0,
+                    0,
+                    0);
+            tv.setLayoutParams(layoutParams);
+
+            tickMarkLabelsRelativeLayout.addView(tv);
+        }
+    }
+
+
 
     @Override
     @UiThread
@@ -242,8 +352,15 @@ public class ListeningAndWritting extends Fragment implements ListeningAndWritti
 
     @Click(R.id.replay)
     public void replay(){
-        isPlaying = -1;
-        onPlayClick();
+        try {
+            sp.stop(id);
+            Glide.with(getActivity()).load(R.drawable.play_button)
+                    .into(play);
+            isPlaying = -1;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+       // onPlayClick();
     }
 
     @Click(R.id.capture)
