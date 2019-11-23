@@ -167,7 +167,7 @@ public class SequenceLayout extends Fragment implements SequeanceLayoutContract.
                             bundle, KeywordMappingFragment_.class.getSimpleName());
                     break;
                 case GameConstatnts.PARAGRAPH_WRITING:
-                    if (FC_Constants.currentLevel <= 2) {
+                    if (FC_Constants.currentLevel <=  2) {
                         FC_Utility.showFragment((Activity) context, new WordWritingFragment_(), R.id.RL_CPA,
                                 bundle, WordWritingFragment_.class.getSimpleName());
                     } else {

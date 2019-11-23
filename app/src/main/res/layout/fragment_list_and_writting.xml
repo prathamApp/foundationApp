@@ -120,13 +120,12 @@
 
                     <ImageView
                         android:id="@+id/play_button"
-                        android:layout_width="@dimen/_80sdp"
-                        android:layout_height="@dimen/_80sdp"
+                        android:layout_width="@dimen/_100sdp"
+                        android:layout_height="@dimen/_40sdp"
                         android:layout_centerInParent="true"
-                        android:background="@drawable/rounded_rectangle_stroke_bg"
-                        android:padding="@dimen/_20sdp"
+                        style="@style/submitbtn"
                         android:scaleType="fitXY"
-                        android:src="@drawable/play_button" />
+                        android:src="@drawable/ic_play_arrow_black" />
                 </RelativeLayout>
 
                 <RelativeLayout
@@ -139,10 +138,10 @@
                         android:layout_width="@dimen/_80sdp"
                         android:layout_height="@dimen/_80sdp"
                         android:layout_centerInParent="true"
-                        android:background="@drawable/rounded_rectangle_stroke_bg"
-                        android:padding="@dimen/_20sdp"
+                        style="@style/submitbtn"
+                        android:background="@drawable/red_button"
                         android:scaleType="fitXY"
-                        android:src="@drawable/stop" />
+                        android:src="@drawable/ic_stop_black" />
                 </RelativeLayout>
 
 
