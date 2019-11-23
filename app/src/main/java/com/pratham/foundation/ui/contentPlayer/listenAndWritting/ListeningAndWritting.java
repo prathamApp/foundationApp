@@ -224,9 +224,9 @@ public class ListeningAndWritting extends Fragment implements ListeningAndWritti
 
         for(int i=0; i<tickMarkCount; i++) {
             TextView tv = new TextView(getContext());
-
+            tv.setTextSize(25);
             RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(
-                    tickMarkLabelWidth, RelativeLayout.LayoutParams.WRAP_CONTENT);
+                    RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
 
             tv.setText(tickMarkLabels[i]);
             tv.setGravity(Gravity.CENTER);
