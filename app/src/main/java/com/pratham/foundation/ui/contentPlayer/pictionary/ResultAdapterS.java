@@ -57,11 +57,13 @@ public class ResultAdapterS extends RecyclerView.Adapter<ResultAdapterS.MyViewHo
             myViewHolder.questionImg.setVisibility(View.GONE);
         }
         if (checkAnswer(scienceQuestion)) {
-            myViewHolder.iv_correct_wrong_indicator.setImageResource(R.drawable.ic_check_black);
+            myViewHolder.iv_correct_wrong_indicator.setImageResource(R.drawable.ic_check_white);
             myViewHolder.iv_correct_wrong_indicator.setBackgroundColor(context.getResources().getColor(R.color.level_1_color));
+            myViewHolder.cardView.setBackgroundColor(context.getResources().getColor(R.color.colorPrimary));
         } else {
-            myViewHolder.iv_correct_wrong_indicator.setImageResource(R.drawable.ic_close_black_24dp);
+            myViewHolder.iv_correct_wrong_indicator.setImageResource(R.drawable.ic_close);
             myViewHolder.iv_correct_wrong_indicator.setBackgroundColor(context.getResources().getColor(R.color.colorRed));
+            myViewHolder.cardView.setBackgroundColor(context.getResources().getColor(R.color.convoRed));
         }
         List<ScienceQuestionChoice> optionListlist = scienceQuestion.getLstquestionchoice();
         for (int k = 0; k < optionListlist.size(); k++) {

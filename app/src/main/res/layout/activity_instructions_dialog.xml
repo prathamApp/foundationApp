@@ -3,37 +3,12 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_gravity="center"
-    android:background="@color/full_transparent">
-
-    <RelativeLayout
-        android:layout_width="@dimen/_240sdp"
-        android:layout_height="@dimen/_190sdp"
-        android:layout_centerInParent="true"
-        android:background="@color/full_transparent">
-
-        <ImageView
-            android:layout_width="@dimen/_70sdp"
-            android:layout_height="@dimen/_70sdp"
-            android:layout_alignParentTop="true"
-            android:layout_centerHorizontal="true"
-            android:elevation="5dp"
-            android:padding="5dp"
-            android:background="@drawable/dialog_image_bg"
-            android:src="@drawable/b1" />
-
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginTop="@dimen/_45sdp"
-            android:layout_marginBottom="@dimen/_35sdp"
-            android:background="@drawable/dialog_bg"
-            android:gravity="center">
+    android:background="@drawable/bg_anim_fourth_layer">
 
             <com.pratham.foundation.customView.SansTextViewBold
                 android:id="@+id/dia_title"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginVertical="@dimen/_10sdp"
                 android:gravity="center"
                 android:lines="2"
                 android:paddingHorizontal="@dimen/_7sdp"
@@ -41,37 +16,24 @@
                 android:textColor="@color/gradianceCardStartColor"
                 android:textSize="@dimen/_15sdp" />
 
-
-        </RelativeLayout>
-
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="@dimen/_50sdp"
             android:layout_alignParentBottom="true"
             android:layout_centerHorizontal="true"
             android:layout_marginBottom="@dimen/_5sdp"
-            android:gravity="center"
             android:elevation="5dp">
-
-
-        />
 
             <com.pratham.foundation.customView.SansButton
                 android:id="@+id/dia_btn_green"
                 android:layout_width="@dimen/_70sdp"
                 android:layout_height="@dimen/_40sdp"
-                android:layout_centerHorizontal="true"
-                android:layout_marginHorizontal="@dimen/_10sdp"
                 android:layout_marginBottom="@dimen/_15sdp"
-                android:background="@drawable/green_button"
-                android:elevation="5dp"
-                android:text="play"
-                android:textColor="@color/white"
+                android:layout_alignParentEnd="true"
+                android:layout_marginEnd="@dimen/_30sdp"
+                android:text="Go"
+                style="@style/submitbtn"
                 android:textSize="@dimen/_10sdp" />
-
-
-
-
         </RelativeLayout>
 
         <ImageButton
@@ -85,5 +47,3 @@
             android:src="@drawable/credits_icon"
             android:visibility="gone" />
     </RelativeLayout>
-
-</RelativeLayout>
