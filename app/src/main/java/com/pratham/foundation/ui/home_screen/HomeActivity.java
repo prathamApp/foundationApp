@@ -65,7 +65,6 @@ import static com.pratham.foundation.utility.FC_Constants.dialog_btn_exit;
 @EActivity(R.layout.activity_home)
 public class HomeActivity extends BaseActivity implements LevelChanged, CursorWheelLayout.OnMenuSelectedListener {
 
-    public static String sub_Name, sub_nodeId = "";
     @ViewById(R.id.viewpager)
     ViewPager viewpager;
     @ViewById(R.id.tv_Topic)
@@ -82,12 +81,12 @@ public class HomeActivity extends BaseActivity implements LevelChanged, CursorWh
     public static SubmarineView submarine;
     @ViewById(R.id.iv_level)
     public static ImageView iv_level;
-
 //    @ViewById(R.id.level_circle)
 //    CursorWheelLayout level_circle;
-
     @ViewById(R.id.profileImage)
     ImageView profileImage;
+    @DrawableRes(R.drawable.home_header_0_bg)
+    Drawable homeHeader0;
     @DrawableRes(R.drawable.home_header_1_bg)
     Drawable homeHeader1;
     @DrawableRes(R.drawable.home_header_2_bg)
@@ -101,6 +100,7 @@ public class HomeActivity extends BaseActivity implements LevelChanged, CursorWh
     @ViewById(R.id.floating_info)
     FloatingActionButton floating_info;
 
+    public static String sub_Name, sub_nodeId = "";
     public static boolean languageChanged = false;
     static int count = 0;
     public static LevelChanged levelChanged;
@@ -238,13 +238,11 @@ public class HomeActivity extends BaseActivity implements LevelChanged, CursorWh
             });
         }catch (Exception e){e.printStackTrace();}
 */
-
         SubmarineItem item = new SubmarineItem(getDrawable(R.drawable.level_1), null);
         SubmarineItem item2 = new SubmarineItem(getDrawable(R.drawable.level_2), null);
         SubmarineItem item3 = new SubmarineItem(getDrawable(R.drawable.level_3), null);
         SubmarineItem item4 = new SubmarineItem(getDrawable(R.drawable.level_4), null);
         SubmarineItem item5 = new SubmarineItem(getDrawable(R.drawable.level_5), null);
-
 
         submarine.setSubmarineItemClickListener((position, submarineItem) -> {
             FC_Constants.currentLevel = position;
@@ -306,20 +304,20 @@ public class HomeActivity extends BaseActivity implements LevelChanged, CursorWh
     private void changeBGNew(int currentLevel) {
         switch (currentLevel) {
             case 0:
+                header_rl.setBackground(homeHeader0);
+                tabLayout.setBackgroundColor(getResources().getColor(R.color.level_0_color));
+                break;
+            case 1:
                 header_rl.setBackground(homeHeader1);
                 tabLayout.setBackgroundColor(getResources().getColor(R.color.level_1_color));
                 break;
-            case 1:
+            case 2:
                 header_rl.setBackground(homeHeader2);
                 tabLayout.setBackgroundColor(getResources().getColor(R.color.level_2_color));
                 break;
-            case 2:
+            case 3:
                 header_rl.setBackground(homeHeader3);
                 tabLayout.setBackgroundColor(getResources().getColor(R.color.level_3_color));
-                break;
-            case 3:
-                header_rl.setBackground(homeHeader4);
-                tabLayout.setBackgroundColor(getResources().getColor(R.color.level_4_color));
                 break;
             case 4:
                 header_rl.setBackground(homeHeader4);

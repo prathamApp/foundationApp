@@ -57,6 +57,7 @@
     <color name="colorGreenDark">#7CB342</color>
     <color name="colorSignBoard">#00a175</color>
     <color name="colorSignBoardLight">#00d1a5</color>
+    <color name="level_0_color">#00d1a5</color>
     <color name="level_1_color">#43a047</color>
     <color name="level_2_color">#ffc107</color>
     <color name="level_3_color">#fb8c00</color>
