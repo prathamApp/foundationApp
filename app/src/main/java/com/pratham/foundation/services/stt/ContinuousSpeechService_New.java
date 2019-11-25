@@ -41,10 +41,11 @@ public class ContinuousSpeechService_New implements RecognitionListener, STT_Res
         resetSpeechRecognizer();
         resetFlg = false;
         this.language = language;
-        if(language.equalsIgnoreCase("english"))
-            myLocal = "en-IN";
-        else if(language.equalsIgnoreCase("hindi"))
+        if(language.equalsIgnoreCase("hindi"))
             myLocal = "hi-IN";
+        else
+            myLocal = "en-IN";
+
     }
 
     public void setRecogniserIntent() {

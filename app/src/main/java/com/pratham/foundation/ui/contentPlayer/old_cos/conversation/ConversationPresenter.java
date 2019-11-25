@@ -21,7 +21,7 @@ import java.io.InputStream;
 import java.util.ArrayList;
 
 import static com.pratham.foundation.database.AppDatabase.appDatabase;
-import static com.pratham.foundation.utility.FC_Constants.STT_REGEX;
+import static com.pratham.foundation.utility.FC_Constants.STT_REGEX_2;
 
 
 @EBean
@@ -70,19 +70,17 @@ public class ConversationPresenter implements ConversationContract.ConversationP
     @Override
     public void sttResultProcess(ArrayList<String> sttServerResult, String answer) {
 
+        answer = answer.replaceAll(STT_REGEX_2, "");
         String[] splitQues = answer.split(" ");
         String words = " ";
 
         try {
             for (int k=0 ; k < sttServerResult.size() ; k++ ) {
                 String sttResult = sttServerResult.get(k);
-                sttResult = sttResult.replaceAll(STT_REGEX, "");
+                sttResult = sttResult.replaceAll(STT_REGEX_2, "");
                 String[] splitRes = sttResult.split(" ");
                 for (int j = 0; j < splitRes.length; j++) {
                     for (int i = 0; i < splitQues.length; i++) {
-                        Log.d("Punctu", "onResults: " + splitQues[i]);
-                        splitQues[i] = splitQues[i].replaceAll(STT_REGEX, "");
-                        Log.d("Punctu", "onResults: " + splitQues[i]);
                         if (splitRes[j].equalsIgnoreCase(splitQues[i]) && !correctArr[i]) {
                             correctArr[i] = true;
                             words = words + splitQues[i] + ",";
