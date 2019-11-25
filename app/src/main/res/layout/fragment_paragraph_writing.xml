@@ -4,11 +4,33 @@
     android:layout_height="match_parent"
     android:background="@drawable/bg_anim_fourth_layer"
     android:orientation="vertical">
+    <Space
+        android:id="@+id/space"
+        android:layout_width="match_parent"
+        android:layout_height="60dp" />
+    <RelativeLayout
+        android:id="@+id/paragraph_container"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/_330sdp"
+        android:layout_below="@id/space"
+        android:layout_gravity="center"
+        android:layout_marginHorizontal="@dimen/_10sdp"
+        android:layout_marginTop="@dimen/_10sdp"
+        android:orientation="vertical"
+        style="@style/paragraph">
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/paragraph"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_3sdp"
+            android:layout_centerInParent="true"
+            android:orientation="vertical" />
+    </RelativeLayout>
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@id/paragraph"
+        android:layout_below="@id/paragraph_container"
         android:layout_alignParentBottom="true"
         android:layout_marginHorizontal="@dimen/_10sdp"
         android:layout_marginVertical="@dimen/_10sdp"
@@ -59,22 +81,8 @@
         </LinearLayout>
     </RelativeLayout>
 
-    <Space
-        android:id="@+id/space"
-        android:layout_width="match_parent"
-        android:layout_height="60dp" />
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/paragraph"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/_330sdp"
-        android:layout_below="@id/space"
-        android:layout_gravity="center"
-        android:layout_marginHorizontal="@dimen/_10sdp"
-        android:layout_marginTop="@dimen/_10sdp"
-        android:orientation="vertical"
-        style="@style/paragraph"
-        />
+
     <!-- <com.pratham.foundation.customView.SansTextView
          android:id="@+id/title"
          android:layout_width="match_parent"

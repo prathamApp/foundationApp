@@ -48,13 +48,13 @@ public class ContentPlayerActivity extends BaseActivity {
     public void initialize() {
         Intent intent = getIntent();
         nodeID = intent.getStringExtra("nodeID");
-/*
- contentPath = intent.getStringExtra("contentPath");
-        StudentID = intent.getStringExtra("StudentID");
-        resId = intent.getStringExtra("resId");
-        contentTitle = intent.getStringExtra("contentName");
-        onSdCard = getIntent().getBooleanExtra("onSdCard", false);
-*/
+        /*
+         contentPath = intent.getStringExtra("contentPath");
+         StudentID = intent.getStringExtra("StudentID");
+         resId = intent.getStringExtra("resId");
+         contentTitle = intent.getStringExtra("contentName");
+         onSdCard = getIntent().getBooleanExtra("onSdCard", false);
+        */
         floating_back.setImageResource(R.drawable.ic_left_arrow_white);
         floating_info.setImageResource(R.drawable.ic_info_outline_white);
         loadFragment();
