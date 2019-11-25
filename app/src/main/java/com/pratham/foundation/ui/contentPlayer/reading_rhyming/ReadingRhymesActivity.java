@@ -9,6 +9,7 @@ import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.media.MediaPlayer;
 import android.os.Handler;
+import android.support.design.widget.FloatingActionButton;
 import android.view.View;
 import android.view.Window;
 import android.view.animation.Animation;
@@ -78,6 +79,10 @@ public class ReadingRhymesActivity extends BaseActivity
     ImageButton btn_play;
     @ViewById(R.id.btn_next)
     ImageButton btn_next;
+    @ViewById(R.id.floating_back)
+    FloatingActionButton floating_back;
+    @ViewById(R.id.floating_info)
+    FloatingActionButton floating_info;
 //    @ViewById(R.id.layout_play_ripple)
 //    RipplePulseLayout layout_play_ripple;
 
@@ -105,6 +110,9 @@ public class ReadingRhymesActivity extends BaseActivity
         correctSound = MediaPlayer.create(this, R.raw.correct_ans);
         mediaPlayerUtil = new MediaPlayerUtil(ReadingRhymesActivity.this);
         mediaPlayerUtil.initCallback(ReadingRhymesActivity.this);
+
+        floating_back.setImageResource(R.drawable.ic_left_arrow_white);
+        floating_info.setImageResource(R.drawable.ic_info_outline_white);
 
         presenter.setView(ReadingRhymesActivity.this);
 
@@ -581,6 +589,11 @@ public class ReadingRhymesActivity extends BaseActivity
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    @Click (R.id.floating_back)
+    public void pressedBackBtn(){
+        onBackPressed();
     }
 
     @Override

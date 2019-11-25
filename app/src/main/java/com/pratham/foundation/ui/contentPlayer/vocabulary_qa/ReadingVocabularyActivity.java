@@ -12,6 +12,7 @@ import android.graphics.drawable.AnimationDrawable;
 import android.graphics.drawable.ColorDrawable;
 import android.media.MediaPlayer;
 import android.os.Handler;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -80,7 +81,7 @@ public class ReadingVocabularyActivity extends BaseActivity implements MediaCall
     @ViewById(R.id.btn_imgsend)
     ImageButton btn_imgsend;
     @ViewById(R.id.tv_title)
-    SansTextView tv_title;
+    TextView tv_title;
     @ViewById(R.id.lin_layout)
     LinearLayout lin_layout;
     @ViewById(R.id.content_image)
@@ -95,6 +96,10 @@ public class ReadingVocabularyActivity extends BaseActivity implements MediaCall
     ImageButton btn_prev;
     @ViewById(R.id.btn_next)
     ImageButton btn_next;
+    @ViewById(R.id.floating_back)
+    FloatingActionButton floating_back;
+    @ViewById(R.id.floating_info)
+    FloatingActionButton floating_info;
 
     ContinuousSpeechService_New continuousSpeechService;
 
@@ -112,7 +117,7 @@ public class ReadingVocabularyActivity extends BaseActivity implements MediaCall
     boolean testFlg, playingFlg, onSdCard;
     List<ModalVocabulary> modalVocabularyList;
     static String readingContentPath;
-    String contentPath, contentTitle, StudentID, resId, vocabCategory,
+    String contentPath, contentTitle, StudentID, resId, vocabCategory, sttLang,
             ques, quesAudio, ans, ansAudio, ansCheck, certiCode;
     AnimationDrawable animationDrawable;
     Handler setDataHandler, showDataHandler, setBackgroundHandler, sendMessageHandler, newSetDataHandler;
@@ -127,20 +132,11 @@ public class ReadingVocabularyActivity extends BaseActivity implements MediaCall
         animationDrawable.setEnterFadeDuration(4500);
         animationDrawable.setExitFadeDuration(4500);
         animationDrawable.start();
+        floating_back.setImageResource(R.drawable.ic_left_arrow_white);
+        floating_info.setImageResource(R.drawable.ic_info_outline_white);
         testFlg = false;
 
-        continuousSpeechService = new ContinuousSpeechService_New(mContext, ReadingVocabularyActivity.this, FC_Constants.ENGLISH);
-
-        correctSound = MediaPlayer.create(this, R.raw.correct_ans);
-        mediaPlayerUtil = new MediaPlayerUtil(ReadingVocabularyActivity.this);
-        mediaPlayerUtil.initCallback(ReadingVocabularyActivity.this);
-        sendClikChanger(0);
-
         presenter.setView(ReadingVocabularyActivity.this);
-        currentPageNo = 0;
-        currentQueNo = 0;
-        vocabLevel = 0;
-
 /*        ViewGroup.MarginLayoutParams params = (ViewGroup.MarginLayoutParams) layout_ripplepulse_right.getLayoutParams();
         params.rightMargin = -(int) getResources().getDimension(R.dimen._25sdp);
         params.bottomMargin = -(int) getResources().getDimension(R.dimen._25sdp);
@@ -155,7 +151,21 @@ public class ReadingVocabularyActivity extends BaseActivity implements MediaCall
         resId = intent.getStringExtra("resId");
         vocabCategory = intent.getStringExtra("vocabCategory");
         certiCode = intent.getStringExtra("certiCode");
+        sttLang = intent.getStringExtra("sttLang");
         onSdCard = getIntent().getBooleanExtra("onSdCard", false);
+
+        tv_title.setText(""+contentTitle);
+
+        continuousSpeechService = new ContinuousSpeechService_New(mContext, ReadingVocabularyActivity.this, sttLang);
+
+        correctSound = MediaPlayer.create(this, R.raw.correct_ans);
+        mediaPlayerUtil = new MediaPlayerUtil(ReadingVocabularyActivity.this);
+        mediaPlayerUtil.initCallback(ReadingVocabularyActivity.this);
+        sendClikChanger(0);
+
+        currentPageNo = 0;
+        currentQueNo = 0;
+        vocabLevel = 0;
 
         presenter.setResIdAndStartTime(resId);
 
@@ -309,11 +319,11 @@ public class ReadingVocabularyActivity extends BaseActivity implements MediaCall
 
     private void setImage(String ques) {
         if (ques.toLowerCase().contains("this") || ques.toLowerCase().contains("these")
-                || ques.toLowerCase().contains("यह")) {
+                || ques.toLowerCase().contains("यह") || ques.toLowerCase().contains("ये")) {
             this_image.setVisibility(View.VISIBLE);
             that_image.setVisibility(View.GONE);
         } else if (ques.toLowerCase().contains("that") || ques.toLowerCase().contains("those")
-                || ques.toLowerCase().contains("वह")) {
+                || ques.toLowerCase().contains("वह") || ques.toLowerCase().contains("वे")) {
             that_image.setVisibility(View.VISIBLE);
             this_image.setVisibility(View.GONE);
         } else {
@@ -379,11 +389,13 @@ public class ReadingVocabularyActivity extends BaseActivity implements MediaCall
         if (!readingFlg) {
             readingFlg = true;
             continuousSpeechService.startSpeechInput();
-            btn_reading.setImageResource(R.drawable.ic_stop_black_24dp);
+            btn_reading.setImageResource(R.drawable.ic_stop_black);
+            btn_reading.setBackgroundResource(R.drawable.red_button);
         } else {
             readingFlg = false;
             continuousSpeechService.stopSpeechInput();
-            btn_reading.setImageResource(R.drawable.ic_mic_black_24dp);
+            btn_reading.setImageResource(R.drawable.ic_mic_black);
+            btn_reading.setBackgroundResource(R.drawable.green_button);
         }
     }
 
@@ -664,7 +676,7 @@ public class ReadingVocabularyActivity extends BaseActivity implements MediaCall
         if (setBackgroundHandler == null)
             setBackgroundHandler = new Handler();
         setBackgroundHandler.postDelayed(() -> {
-            lin_layout.setBackgroundResource(R.drawable.choose_level_bg);
+            lin_layout.setBackgroundResource(R.drawable.dialog_bg);
             sendMessage();
         }, 1200);
     }
@@ -680,6 +692,11 @@ public class ReadingVocabularyActivity extends BaseActivity implements MediaCall
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    @Click (R.id.floating_back)
+    public void pressedBackBtn(){
+        onBackPressed();
     }
 
     @Override

@@ -1,11 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/ll_convo_main"
+<RelativeLayout android:id="@+id/ll_convo_main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/bg_anim_login"
     android:elevation="@dimen/_5sdp"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:ripple="http://schemas.android.com/apk/res-auto">
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/floating_back"
+        android:layout_alignParentStart="true"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_marginTop="@dimen/_5sdp"
+        android:layout_marginStart="@dimen/_5sdp" />
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/floating_info"
+        android:layout_alignParentEnd="true"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:visibility="gone"
+        android:layout_marginTop="@dimen/_5sdp"
+        android:layout_marginEnd="@dimen/_5sdp" />
 
     <RelativeLayout
         android:id="@+id/silence_outer"
@@ -62,39 +80,43 @@
         android:layout_centerInParent="true"
         android:src="@drawable/monk_char"/>
 
-    <LinearLayout
+    <android.support.design.card.MaterialCardView
         android:id="@+id/topPanel"
         android:layout_width="match_parent"
         android:layout_height="@dimen/_40sdp"
         android:layout_alignParentTop="true"
-        android:layout_marginVertical="@dimen/_5sdp"
-        android:layout_marginHorizontal="@dimen/_5sdp"
-        android:background="@drawable/ripple_rectangle_card"
-        android:elevation="3dp"
-        android:orientation="horizontal"
-        android:weightSum="10">
+        android:layout_marginTop="30dp"
+        android:layout_marginStart="@dimen/_10sdp"
+        android:layout_marginEnd="@dimen/_10sdp"
+        ripple:cardBackgroundColor="@color/colorBtnRedDark"
+        ripple:cardCornerRadius="@dimen/_8sdp">
 
-        <com.pratham.foundation.customView.SansTextView
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+        <com.pratham.foundation.customView.SansTextViewBold
             android:id="@+id/tv_title"
-            android:layout_width="0dp"
+            android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginLeft="@dimen/_20sdp"
-            android:layout_weight="8"
             android:gravity="left|center_vertical"
             android:text="Chat"
-            android:textColor="@color/colorBlack"
+            android:layout_toStartOf="@+id/iv_ConvoMode"
+            android:textColor="@color/white"
             android:textSize="@dimen/_16sdp"
             android:textStyle="bold" />
 
         <ImageView
             android:id="@+id/iv_ConvoMode"
-            android:layout_width="0dp"
+            android:layout_width="100dp"
             android:layout_height="match_parent"
-            android:layout_marginRight="@dimen/_20sdp"
-            android:layout_weight="2"
+            android:layout_marginEnd="@dimen/_20sdp"
+            android:layout_alignParentEnd="true"
             android:scaleType="centerInside"
             android:src="@drawable/mode_a" />
-    </LinearLayout>
+        </RelativeLayout>
+    </android.support.design.card.MaterialCardView>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -128,10 +150,10 @@
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1.5"
-                android:background="@drawable/ripple_effect"
+                android:background="@drawable/green_button"
                 android:elevation="2dp"
                 android:scaleType="fitCenter"
-                android:src="@drawable/ic_mic_black_24dp" />
+                android:src="@drawable/ic_mic_black" />
 
             <LinearLayout
                 android:id="@+id/lin_layout"
@@ -140,7 +162,7 @@
                 android:layout_gravity="center"
                 android:layout_marginHorizontal="@dimen/_5sdp"
                 android:layout_weight="7"
-                android:background="@drawable/choose_level_bg"
+                android:background="@drawable/dialog_bg"
                 android:elevation="2dp"
                 android:gravity="center"
                 android:orientation="horizontal">
@@ -164,21 +186,21 @@
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1.5"
-                android:background="@drawable/ripple_effect"
+                android:background="@drawable/green_button"
                 android:elevation="2dp"
                 android:visibility="gone"
                 android:scaleType="fitCenter"
-                android:src="@drawable/ic_send_black_24dp" />
+                android:src="@drawable/ic_navigate_next_white" />
             <ImageButton
                 android:id="@+id/btn_speaker"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1.5"
-                android:background="@drawable/ripple_effect"
+                android:background="@drawable/yellow_button"
                 android:elevation="2dp"
                 android:padding="@dimen/_5sdp"
                 android:scaleType="fitCenter"
-                android:src="@drawable/ic_volume" />
+                android:src="@drawable/ic_volume_up" />
         </LinearLayout>
 
     </LinearLayout>

@@ -24,6 +24,7 @@ public final class RetractableToolbarUtil {
         public ShowHideToolbarOnScrollingListener(View toolbar) {
             this.toolbar = toolbar;
             this.state = new State();
+            toolbar.setElevation(TOOLBAR_ELEVATION);
         }
 
         @TargetApi(Build.VERSION_CODES.LOLLIPOP)
@@ -41,7 +42,7 @@ public final class RetractableToolbarUtil {
                     .setListener(new AnimatorListenerAdapter() {
                         @Override
                         public void onAnimationStart(Animator animation) {
-                            toolbarSetElevation(verticalOffset == 0 ? 0 : TOOLBAR_ELEVATION);
+                            toolbarSetElevation(/*verticalOffset == 0 ? 0 : */TOOLBAR_ELEVATION);
                         }
                     });
         }
@@ -91,13 +92,13 @@ public final class RetractableToolbarUtil {
                     }
                     toolbar.setTranslationY(state.translationY = -toolbarYOffset);
                 } else {
-                    toolbarSetElevation(0);
+                    toolbarSetElevation(TOOLBAR_ELEVATION);
                     toolbar.setTranslationY(state.translationY = -toolbar.getHeight());
                 }
             } else if (state.scrollingOffset < 0) {
                 if (toolbarYOffset < 0) {
                     if (state.verticalOffset <= 0) {
-                        toolbarSetElevation(0);
+                        toolbarSetElevation(TOOLBAR_ELEVATION);
                     }
                     toolbar.setTranslationY(state.translationY = 0);
                 } else {
@@ -114,7 +115,7 @@ public final class RetractableToolbarUtil {
             this.state.verticalOffset = state.verticalOffset;
             this.state.scrollingOffset = state.scrollingOffset;
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                toolbar.setElevation(state.elevation);
+                toolbar.setElevation(TOOLBAR_ELEVATION);
                 toolbar.setTranslationY(state.translationY);
             }
         }

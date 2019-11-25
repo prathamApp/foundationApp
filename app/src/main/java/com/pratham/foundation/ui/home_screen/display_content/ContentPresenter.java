@@ -165,6 +165,7 @@ public class ContentPresenter implements ContentContract.ContentPresenter, API_C
                     contentTable.setResourcePath("" + downloadedContentTableList.get(j).getResourcePath());
                     contentTable.setParentId("" + downloadedContentTableList.get(j).getParentId());
                     contentTable.setLevel("" + downloadedContentTableList.get(j).getLevel());
+                    contentTable.setContentLanguage("" + downloadedContentTableList.get(j).getContentLanguage());
                     contentTable.setVersion("" + downloadedContentTableList.get(j).getVersion());
                     contentTable.setContentType(downloadedContentTableList.get(j).getContentType());
                     contentTable.setIsDownloaded("" + downloadedContentTableList.get(j).getIsDownloaded());
@@ -244,6 +245,7 @@ public class ContentPresenter implements ContentContract.ContentPresenter, API_C
                             contentTableTemp.setLevel("" + serverContentList.get(i).getLevel());
                             contentTableTemp.setVersion("" + serverContentList.get(i).getVersion());
                             contentTableTemp.setContentType("" + serverContentList.get(i).getContentType());
+                            contentTableTemp.setContentLanguage("" + serverContentList.get(i).getContentLanguage());
                             contentTableTemp.setIsDownloaded("false");
                             contentTableTemp.setOnSDCard(false);
                             ListForContentTable2.add(contentTableTemp);
