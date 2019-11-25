@@ -61,6 +61,9 @@ public class ParagraphWritingFragment extends Fragment
     RecyclerView paragraph;
     @ViewById(R.id.scrollView)
     ScrollView scrollView;
+
+    @ViewById(R.id.capture)
+    ImageButton capture;
     /*@ViewById(R.id.previous)
     Button previous;*/
    /* @ViewById(R.id.capture)
@@ -98,7 +101,7 @@ public class ParagraphWritingFragment extends Fragment
                 readingContentPath = ApplicationClass.foundationPath + gameFolderPath + "/" + contentPath + "/";
         }
         EventBus.getDefault().register(this);
-        preview.setVisibility(View.INVISIBLE);
+        preview.setVisibility(View.GONE);
         presenter.setView(ParagraphWritingFragment.this, resId, readingContentPath);
         presenter.getData();
         resStartTime = FC_Utility.getCurrentDateTime();
@@ -109,7 +112,7 @@ public class ParagraphWritingFragment extends Fragment
     public void showParagraph(ScienceQuestion questionModel) {
         this.questionModel = questionModel;
         File filePath = new File(activityPhotoPath + imageName);
-    /*    title.setText(questionModel.getInstruction());*/
+        /*    title.setText(questionModel.getInstruction());*/
         paragraphWords = questionModel.getQuestion().trim().split("(?<=\\.\\s)|(?<=[?!]\\s)");
         SentenceAdapter arrayAdapter = new SentenceAdapter(Arrays.asList(paragraphWords), getActivity());
         paragraph.setAdapter(arrayAdapter);
@@ -154,7 +157,6 @@ public class ParagraphWritingFragment extends Fragment
 
     @Click(R.id.capture)
     public void captureClick() {
-        imageName = "" + ApplicationClass.getUniqueID()+".jpg";
         Intent takePicture = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         startActivityForResult(takePicture, CAMERA_REQUEST);
     }
@@ -192,7 +194,8 @@ public class ParagraphWritingFragment extends Fragment
         dialog.setContentView(R.layout.fc_image_preview_dialog);
         dialog.setCanceledOnTouchOutside(false);
         ImageView iv_dia_preview = dialog.findViewById(R.id.iv_dia_preview);
-        ImageButton dia_btn_cross = dialog.findViewById(R.id.dia_btn_cross);
+        SansButton dia_btn_cross = dialog.findViewById(R.id.dia_btn_cross);
+        ImageButton camera = dialog.findViewById(R.id.camera);
 
         dialog.show();
         try {
@@ -206,6 +209,13 @@ public class ParagraphWritingFragment extends Fragment
         dia_btn_cross.setOnClickListener(v -> {
             dialog.dismiss();
         });
+        camera.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+                captureClick();
+            }
+        });
     }
 
     @Override
@@ -213,12 +223,16 @@ public class ParagraphWritingFragment extends Fragment
         Log.d("codes", String.valueOf(requestCode) + resultCode);
         try {
             if (requestCode == CAMERA_REQUEST) {
-                Bitmap photo = (Bitmap) data.getExtras().get("data");
+                if (data.getExtras() != null) {
+                    Bitmap photo = (Bitmap) data.getExtras().get("data");
                /* preview.setVisibility(View.VISIBLE);
                 preview.setImageBitmap(photo);
                 preview.setScaleType(ImageView.ScaleType.FIT_XY);*/
-                presenter.createDirectoryAndSaveFile(photo, imageName);
-                preview.setVisibility(View.VISIBLE);
+                    imageName = "" + ApplicationClass.getUniqueID() + ".jpg";
+                    presenter.createDirectoryAndSaveFile(photo, imageName);
+                    capture.setVisibility(View.GONE);
+                    preview.setVisibility(View.VISIBLE);
+                }
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -229,6 +243,7 @@ public class ParagraphWritingFragment extends Fragment
     public void gameClose() {
         presenter.addScore(0, "", 0, 0, resStartTime, GameConstatnts.PARAGRAPH_WRITING + " " + GameConstatnts.END);
     }
+
     @Override
     public void onStop() {
         EventBus.getDefault().unregister(this);
@@ -237,6 +252,6 @@ public class ParagraphWritingFragment extends Fragment
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onMessageEvent(EventMessage event) {
-        GameConstatnts.showGameInfo(getActivity(),questionModel.getInstruction());
+        GameConstatnts.showGameInfo(getActivity(), questionModel.getInstruction());
     }
 }

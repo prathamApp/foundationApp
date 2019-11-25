@@ -258,7 +258,7 @@ public class DoingFragment extends Fragment implements OnGameClose {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         ButterKnife.bind(this, view);
-        preview.setVisibility(View.INVISIBLE);
+        preview.setVisibility(View.GONE);
         setVideoQuestion();
     }
 
@@ -354,7 +354,6 @@ public class DoingFragment extends Fragment implements OnGameClose {
 
     @OnClick(R.id.capture)
     public void captureClick() {
-        imageName = "" + ApplicationClass.getUniqueID() + ".jpg";
         Intent takePicture = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         startActivityForResult(takePicture, CAMERA_REQUEST);
     }
@@ -452,7 +451,8 @@ public class DoingFragment extends Fragment implements OnGameClose {
         dialog.setContentView(R.layout.fc_image_preview_dialog);
         dialog.setCanceledOnTouchOutside(false);
         ImageView iv_dia_preview = dialog.findViewById(R.id.iv_dia_preview);
-        ImageButton dia_btn_cross = dialog.findViewById(R.id.dia_btn_cross);
+        SansButton dia_btn_cross = dialog.findViewById(R.id.dia_btn_cross);
+        ImageButton camera = dialog.findViewById(R.id.camera);
 
         dialog.show();
         try {
@@ -466,6 +466,14 @@ public class DoingFragment extends Fragment implements OnGameClose {
         dia_btn_cross.setOnClickListener(v -> {
             dialog.dismiss();
         });
+
+        camera.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+                captureClick();
+            }
+        });
     }
 
     @Override
@@ -477,7 +485,9 @@ public class DoingFragment extends Fragment implements OnGameClose {
                /* preview.setVisibility(View.VISIBLE);
                 preview.setImageBitmap(photo);
                 preview.setScaleType(ImageView.ScaleType.FIT_XY);*/
+                imageName = "" + ApplicationClass.getUniqueID() + ".jpg";
                 createDirectoryAndSaveFile(photo, imageName);
+                capture.setVisibility(View.GONE);
                 preview.setVisibility(View.VISIBLE);
             }
         } catch (Exception e) {
