@@ -93,12 +93,13 @@ public class ContentDisplay extends BaseActivity implements ContentContract.Cont
     RelativeLayout homeRoot;
     @ViewById(R.id.header_rl)
     RelativeLayout header_rl;
-
 //    @ViewById(R.id.tv_progress)
 //    TextView tv_progress;
     @ViewById(R.id.card_progressLayout)
     ProgressLayout level_progress;
 
+    @DrawableRes(R.drawable.home_header_0_bg)
+    Drawable homeHeader0;
     @DrawableRes(R.drawable.home_header_1_bg)
     Drawable homeHeader1;
     @DrawableRes(R.drawable.home_header_2_bg)
@@ -149,19 +150,19 @@ public class ContentDisplay extends BaseActivity implements ContentContract.Cont
     private void changeBG(int levelNo) {
         switch (levelNo) {
             case 0:
-                header_rl.setBackground(homeHeader1);
+                header_rl.setBackground(homeHeader0);
                 iv_level.setImageResource(R.drawable.level_1);
                 break;
             case 1:
-                header_rl.setBackground(homeHeader2);
+                header_rl.setBackground(homeHeader1);
                 iv_level.setImageResource(R.drawable.level_2);
                 break;
             case 2:
-                header_rl.setBackground(homeHeader3);
+                header_rl.setBackground(homeHeader2);
                 iv_level.setImageResource(R.drawable.level_3);
                 break;
             case 3:
-                header_rl.setBackground(homeHeader4);
+                header_rl.setBackground(homeHeader3);
                 iv_level.setImageResource(R.drawable.level_4);
                 break;
             case 4:
@@ -387,13 +388,15 @@ public class ContentDisplay extends BaseActivity implements ContentContract.Cont
                 mainNew.putExtra("onSdCard", ContentTableList.get(position).isOnSDCard());
                 mainNew.putExtra("contentPath", ContentTableList.get(position).getResourcePath());
                 startActivity(mainNew);
-            } else if (ContentTableList.get(position).getResourceType().equalsIgnoreCase(FC_Constants.RHYME_RESOURCE) || ContentTableList.get(position).getResourceType().equalsIgnoreCase(FC_Constants.STORY_RESOURCE)) {
+            } else if (ContentTableList.get(position).getResourceType().equalsIgnoreCase(FC_Constants.RHYME_RESOURCE)
+                    || ContentTableList.get(position).getResourceType().equalsIgnoreCase(FC_Constants.STORY_RESOURCE)) {
                 Intent mainNew = new Intent(ContentDisplay.this, ReadingStoryActivity_.class);
                 mainNew.putExtra("storyId", ContentTableList.get(position).getResourceId());
                 mainNew.putExtra("StudentID", FC_Constants.currentStudentID);
                 mainNew.putExtra("storyPath", ContentTableList.get(position).getResourcePath());
                 mainNew.putExtra("storyTitle", ContentTableList.get(position).getNodeTitle());
                 mainNew.putExtra("onSdCard", ContentTableList.get(position).isOnSDCard());
+                mainNew.putExtra("sttLang", ContentTableList.get(position).getContentLanguage());
                 mainNew.putExtra("contentType", ContentTableList.get(position).getResourceType());
                 startActivity(mainNew);
             } /*else if (ContentTableList.get(position).getResourceType().equalsIgnoreCase(FC_Constants.WORD_ANDROID)) {

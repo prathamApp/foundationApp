@@ -31,9 +31,9 @@ public class RhymingWordsAdapter extends RecyclerView.Adapter<RhymingWordsAdapte
 
         public MyViewHolder(View view) {
             super(view);
-            rhymingWord = (TextView) view.findViewById(R.id.rhyming_card_word);
-            rl_card = (RelativeLayout) view.findViewById(R.id.rl_card);
-            rhyming_card_view = (RelativeLayout) view.findViewById(R.id.rhyming_card_view);
+            rhymingWord = view.findViewById(R.id.rhyming_card_word);
+            rl_card = view.findViewById(R.id.rl_card);
+            rhyming_card_view = view.findViewById(R.id.rhyming_card_view);
         }
     }
 
@@ -62,7 +62,7 @@ public class RhymingWordsAdapter extends RecyclerView.Adapter<RhymingWordsAdapte
         holder.rhymingWord.setText(wordList.getWord().toUpperCase());
         holder.rhymingWord.setTextColor(mContext.getResources().getColor(R.color.colorBlack));
         if (wordList.isCorrectRead())
-            holder.rhymingWord.setTextColor(mContext.getResources().getColor(R.color.colorGreenDark));
+            holder.rhymingWord.setTextColor(mContext.getResources().getColor(R.color.colorBtnGreenDark));
         if (newData && wordList.isReadOut()) {
             Animation animation = AnimationUtils.loadAnimation(mContext, R.anim.rhyming_zoom_in_and_out);
             holder.rhymingWord.startAnimation(animation);

@@ -10,6 +10,7 @@ import android.graphics.Rect;
 import android.graphics.drawable.ColorDrawable;
 import android.media.MediaPlayer;
 import android.os.Handler;
+import android.support.design.widget.FloatingActionButton;
 import android.util.Log;
 import android.view.View;
 import android.view.Window;
@@ -83,6 +84,10 @@ public class ReadingParagraphsActivity extends BaseActivity
     LinearLayout ll_btn_stop;
     @ViewById(R.id.iv_monk)
     ImageView iv_monk;
+    @ViewById(R.id.floating_back)
+    FloatingActionButton floating_back;
+    @ViewById(R.id.floating_info)
+    FloatingActionButton floating_info;
 
     ContinuousSpeechService_New continuousSpeechService;
 
@@ -111,6 +116,9 @@ public class ReadingParagraphsActivity extends BaseActivity
         mContext = ReadingParagraphsActivity.this;
         endhandler = new Handler();
         continuousSpeechService = new ContinuousSpeechService_New(mContext, ReadingParagraphsActivity.this, FC_Constants.ENGLISH);
+
+        floating_back.setImageResource(R.drawable.ic_left_arrow_white);
+        floating_info.setImageResource(R.drawable.ic_info_outline_white);
 
         presenter.setView(ReadingParagraphsActivity.this);
         currentPageNo = 0;
@@ -211,7 +219,7 @@ public class ReadingParagraphsActivity extends BaseActivity
                     final SansTextView myTextView = new SansTextView(this);
                     myTextView.setText("" + modalParaWordList.get(i).getWord());
                     myTextView.setTextSize(35);
-                    myTextView.setTextColor(getResources().getColor(R.color.colorPrimary));
+                    myTextView.setTextColor(getResources().getColor(R.color.colorText));
                     myTextView.setId(i);
                     myTextView.setOnClickListener(v -> {
                         if (!readingFlg && !playingFlg && !isTest) {
@@ -252,7 +260,7 @@ public class ReadingParagraphsActivity extends BaseActivity
                 endhandler.postDelayed(() -> {
                     clickMP.stop();
                     final SansTextView myView = (SansTextView) myFlowLayout.getChildAt(id);
-                    myView.setTextColor(getResources().getColor(R.color.colorPrimary));
+                    myView.setTextColor(getResources().getColor(R.color.colorText));
                     clickFlag = false;
                 }, (long) end);
             }
@@ -291,9 +299,11 @@ public class ReadingParagraphsActivity extends BaseActivity
             if (myNextView != null)
                 isScrollBelowVisible(myNextView);
 
-            myView.setTextColor(getResources().getColor(R.color.colorRed));
-            Animation animation = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.reading_zoom_in_and_out);
-            myView.startAnimation(animation);
+            myView.setTextColor(getResources().getColor(R.color.colorRedDark));
+            myView.setBackgroundColor(getResources().getColor(R.color.yellow_text_bg));
+            colorChangeHandler.postDelayed(() -> {
+                myView.setBackgroundColor(getResources().getColor(R.color.full_transparent));
+            }, 350);
             if (index == wordsDurationList.size() - 1) {
                 try {
                     handler.postDelayed(() -> {
@@ -310,7 +320,8 @@ public class ReadingParagraphsActivity extends BaseActivity
                             if (mp != null && mp.isPlaying())
                                 mp.stop();
                             ll_btn_stop.setVisibility(View.GONE);
-                            btn_Play.setImageResource(R.drawable.ic_play_arrow);
+                            btn_Play.setImageResource(R.drawable.ic_play_arrow_black);
+                            btn_Play.setBackgroundResource(R.drawable.green_button);
                             resetParaTheme();
                             layout_mic_ripple.startRippleAnimation();
                         } catch (Exception e) {
@@ -335,7 +346,7 @@ public class ReadingParagraphsActivity extends BaseActivity
         for (int i = 0; i < wordsDurationList.size(); i++) {
             SansTextView myView = (SansTextView) myFlowLayout.getChildAt(i);
             myView.setBackgroundColor(Color.TRANSPARENT);
-            myView.setTextColor(getResources().getColor(R.color.colorPrimary));
+            myView.setTextColor(getResources().getColor(R.color.colorText));
         }
     }
 
@@ -354,6 +365,7 @@ public class ReadingParagraphsActivity extends BaseActivity
     @Click(R.id.btn_mic)
     public void startReading() {
         if (!readingFlg) {
+            showLoader();
             if (quesReadHandler != null) {
                 quesReadHandler.removeCallbacksAndMessages(null);
                 try {
@@ -369,13 +381,15 @@ public class ReadingParagraphsActivity extends BaseActivity
             readingFlg = true;
             ll_btn_play.setVisibility(View.GONE);
             continuousSpeechService.startSpeechInput();
-            btn_Mic.setImageResource(R.drawable.ic_stop_black_24dp);
+            btn_Mic.setImageResource(R.drawable.ic_stop_black);
+            btn_Mic.setBackgroundResource(R.drawable.red_button);
         } else {
             readingFlg = false;
             if (!isTest)
                 ll_btn_play.setVisibility(View.VISIBLE);
             continuousSpeechService.stopSpeechInput();
-            btn_Mic.setImageResource(R.drawable.ic_mic_black_24dp);
+            btn_Mic.setImageResource(R.drawable.ic_mic_black);
+            btn_Mic.setBackgroundResource(R.drawable.green_button);
         }
     }
 
@@ -396,7 +410,8 @@ public class ReadingParagraphsActivity extends BaseActivity
             }
             playingFlg = true;
             layout_mic_ripple.setVisibility(View.GONE);
-            btn_Play.setImageResource(R.drawable.ic_pause);
+            btn_Play.setImageResource(R.drawable.ic_pause_black);
+            btn_Play.setBackgroundResource(R.drawable.yellow_button);
             ll_btn_stop.setVisibility(View.VISIBLE);
             initializeAudioReading(wordCounter);
         } else {
@@ -404,7 +419,8 @@ public class ReadingParagraphsActivity extends BaseActivity
             //resetParaTheme();
             if (wordCounter > 1)
                 wordCounter--;
-            btn_Play.setImageResource(R.drawable.ic_play_arrow);
+            btn_Play.setImageResource(R.drawable.ic_play_arrow_black);
+            btn_Play.setBackgroundResource(R.drawable.green_button);
             ll_btn_stop.setVisibility(View.GONE);
             layout_mic_ripple.setVisibility(View.VISIBLE);
             mp.stop();
@@ -419,10 +435,16 @@ public class ReadingParagraphsActivity extends BaseActivity
         playingFlg = false;
         resetParaTheme();
         wordCounter = 0;
-        btn_Play.setImageResource(R.drawable.ic_play_arrow);
+        btn_Play.setImageResource(R.drawable.ic_play_arrow_black);
+        btn_Play.setBackgroundResource(R.drawable.green_button);
         layout_mic_ripple.setVisibility(View.VISIBLE);
         ll_btn_stop.setVisibility(View.GONE);
         wordCounter = 0;
+    }
+
+    @Click (R.id.floating_back)
+    public void pressedBackBtn(){
+        onBackPressed();
     }
 
     @Override
@@ -453,7 +475,8 @@ public class ReadingParagraphsActivity extends BaseActivity
             playingFlg = false;
             resetParaTheme();
             wordCounter = 0;
-            btn_Play.setImageResource(R.drawable.ic_play_arrow);
+            btn_Play.setImageResource(R.drawable.ic_play_arrow_black);
+            btn_Play.setBackgroundResource(R.drawable.green_button);
             ll_btn_stop.setVisibility(View.GONE);
             layout_mic_ripple.setVisibility(View.VISIBLE);
             mp.stop();
@@ -462,7 +485,8 @@ public class ReadingParagraphsActivity extends BaseActivity
         if (readingFlg) {
             readingFlg = false;
             ll_btn_play.setVisibility(View.VISIBLE);
-            btn_Mic.setImageResource(R.drawable.ic_mic_black_24dp);
+            btn_Mic.setImageResource(R.drawable.ic_mic_black);
+            btn_Mic.setBackgroundResource(R.drawable.green_button);
             continuousSpeechService.stopSpeechInput();
         }
         try {
@@ -490,7 +514,8 @@ public class ReadingParagraphsActivity extends BaseActivity
         if (readingFlg) {
             readingFlg = false;
             ll_btn_play.setVisibility(View.VISIBLE);
-            btn_Mic.setImageResource(R.drawable.ic_mic_black_24dp);
+            btn_Mic.setImageResource(R.drawable.ic_mic_black);
+            btn_Mic.setBackgroundResource(R.drawable.green_button);
             continuousSpeechService.stopSpeechInput();
             wordCounter = 0;
         }

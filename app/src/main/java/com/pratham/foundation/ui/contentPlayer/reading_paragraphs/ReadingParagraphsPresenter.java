@@ -1,6 +1,7 @@
 package com.pratham.foundation.ui.contentPlayer.reading_paragraphs;
 
 import android.content.Context;
+import android.util.Log;
 
 import com.google.gson.Gson;
 import com.pratham.foundation.database.BackupDatabase;
@@ -27,6 +28,7 @@ import java.util.List;
 import static com.pratham.foundation.database.AppDatabase.appDatabase;
 import static com.pratham.foundation.ui.contentPlayer.reading_paragraphs.ReadingParagraphsActivity.correctArr;
 import static com.pratham.foundation.ui.contentPlayer.reading_paragraphs.ReadingParagraphsActivity.lineBreakCounter;
+import static com.pratham.foundation.utility.FC_Constants.STT_REGEX;
 
 
 @EBean
@@ -56,7 +58,8 @@ public class ReadingParagraphsPresenter implements ReadingParagraphsContract.Rea
 
     @Override
     public void micStopped(List<String> splitWordsPunct, List<String> wordsResIdList) {
-
+        //TODO Add The Logic
+        readingView.dismissLoadingDialog();
     }
 
     @Override
@@ -177,9 +180,10 @@ public class ReadingParagraphsPresenter implements ReadingParagraphsContract.Rea
         String sttRes = sttResult.get(0);
         String[] splitRes = sttRes.split(" ");
         String word = " ";
+        Log.d("Punctu", "onResults: " + sttRes);
 
         for (int j = 0; j < splitRes.length; j++) {
-            splitRes[j] = splitRes[j].replaceAll("[^A-Za-z]+", "");
+            splitRes[j] = splitRes[j].replaceAll(STT_REGEX, "");
             for (int i = 0; i < splitWordsPunct.size(); i++) {
                 if ((splitRes[j].equalsIgnoreCase(splitWordsPunct.get(i))) && !correctArr[i]) {
                     correctArr[i] = true;

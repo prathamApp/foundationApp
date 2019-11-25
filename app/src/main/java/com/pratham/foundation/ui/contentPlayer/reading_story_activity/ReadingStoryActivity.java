@@ -12,6 +12,7 @@ import android.graphics.drawable.AnimationDrawable;
 import android.graphics.drawable.ColorDrawable;
 import android.media.MediaPlayer;
 import android.os.Handler;
+import android.support.design.widget.FloatingActionButton;
 import android.util.Log;
 import android.view.View;
 import android.view.Window;
@@ -57,7 +58,7 @@ import static com.pratham.foundation.utility.FC_Constants.dialog_btn_cancel;
 import static com.pratham.foundation.utility.FC_Constants.gameFolderPath;
 import static com.pratham.foundation.utility.SplashSupportActivity.ButtonClickSound;
 
-@EActivity(R.layout.fragment_story_reading)
+@EActivity(R.layout.activity_story_reading)
 public class ReadingStoryActivity extends BaseActivity implements
         /*RecognitionListener, */STT_Result_New.sttView,
         ReadingStoryActivityContract.ReadingStoryView {
@@ -88,33 +89,33 @@ public class ReadingStoryActivity extends BaseActivity implements
     GifView gif_view;
     @ViewById(R.id.story_ll)
     RelativeLayout story_ll;
+    @ViewById(R.id.image_container)
+    RelativeLayout image_container;
     @ViewById(R.id.btn_camera)
     ImageButton btn_camera;
     @ViewById(R.id.btn_Stop)
     ImageButton btn_Stop;
     @ViewById(R.id.bottom_bar2)
     LinearLayout bottom_bar2;
-
+    @ViewById(R.id.floating_back)
+    FloatingActionButton floating_back;
+    @ViewById(R.id.floating_info)
+    FloatingActionButton floating_info;
 
     ContinuousSpeechService_New continuousSpeechService;
 
     public static String storyId, StudentID = "", readingContentPath;
     TTSService ttsService;
     Context context;
-
     List<ModalParaSubMenu> modalPagesList;
-
-    String contentType, storyPath, storyData, storyName, storyAudio, certiCode, storyBg, pageTitle;
+    String contentType, storyPath, storyData, storyName, storyAudio, certiCode, storyBg, pageTitle,sttLang;
     static int currentPage, lineBreakCounter = 0;
-
     public Handler handler, audioHandler, soundStopHandler, colorChangeHandler,
             startReadingHandler, quesReadHandler, endhandler;
-
     List<String> splitWords = new ArrayList<String>();
     List<String> splitWordsPunct = new ArrayList<String>();
     List<String> wordsDurationList = new ArrayList<String>();
     List<String> wordsResIdList = new ArrayList<String>();
-
     boolean fragFlg = false, lastPgFlag = false;
     boolean playFlg = false, mediaPauseFlag = false, pauseFlg = false, playHideFlg = false;
     int wordCounter = 0, totalPages = 0, correctAnswerCount, pageNo = 1, quesNo = 0, quesPgNo = 0;
@@ -127,16 +128,18 @@ public class ReadingStoryActivity extends BaseActivity implements
     static boolean[] testCorrectArr;
     AnimationDrawable animationDrawable;
 
-
     @AfterViews
     public void initialize() {
         silence_outer_layout.setVisibility(View.GONE);
         Intent intent = getIntent();
+        floating_back.setImageResource(R.drawable.ic_left_arrow_white);
+        floating_info.setImageResource(R.drawable.ic_info_outline_white);
         contentType = intent.getStringExtra("contentType");
         storyPath = intent.getStringExtra("storyPath");
         storyId = intent.getStringExtra("storyId");
         storyName = intent.getStringExtra("storyTitle");
         certiCode = intent.getStringExtra("certiCode");
+        sttLang = intent.getStringExtra("sttLang");
         onSdCard = intent.getBooleanExtra("onSdCard", false);
         ttsService = BaseActivity.ttsService;
         contentType = "story";
@@ -155,7 +158,8 @@ public class ReadingStoryActivity extends BaseActivity implements
         showLoader();
         modalPagesList = new ArrayList<>();
 
-        continuousSpeechService = new ContinuousSpeechService_New(context, ReadingStoryActivity.this, "english"/*FC_Constants.currentSelectedLanguage*/);
+        continuousSpeechService = new ContinuousSpeechService_New(context,
+                ReadingStoryActivity.this, sttLang);
         if (contentType.equalsIgnoreCase(FC_Constants.RHYME_RESOURCE))
             btn_Mic.setVisibility(View.GONE);
 
@@ -314,7 +318,7 @@ public class ReadingStoryActivity extends BaseActivity implements
     @Override
     public void allCorrectAnswer() {
         for (int i = 0; i < splitWordsPunct.size(); i++) {
-            ((SansTextView) wordFlowLayout.getChildAt(i)).setTextColor(getResources().getColor(R.color.colorGreenDark));
+            ((SansTextView) wordFlowLayout.getChildAt(i)).setTextColor(getResources().getColor(R.color.colorBtnGreenDark));
             correctArr[i] = true;
         }
         new Handler().postDelayed(() -> {
@@ -425,14 +429,10 @@ public class ReadingStoryActivity extends BaseActivity implements
             if (myNextView != null)
                 isScrollBelowVisible(myNextView);
             myView.setTextColor(getResources().getColor(R.color.colorRedDark));
-            Animation animation = AnimationUtils.loadAnimation(context, R.anim.reading_zoom_in);
-            myView.startAnimation(animation);
-//            wordPopUp(this, myView);
+            myView.setBackgroundColor(getResources().getColor(R.color.yellow_text_bg));
             colorChangeHandler.postDelayed(() -> {
                 myView.setTextColor(getResources().getColor(R.color.colorText));
-//                    wordPopDown(ReadingStoryActivity.this, myView);
-                Animation animation1 = AnimationUtils.loadAnimation(context, R.anim.reading_zoom_out);
-                myView.startAnimation(animation1);
+                myView.setBackgroundColor(getResources().getColor(R.color.full_transparent));
             }, 350);
             if (index == wordsDurationList.size() - 1) {
                 try {
@@ -490,7 +490,7 @@ public class ReadingStoryActivity extends BaseActivity implements
     public void setCorrectViewColor() {
         for (int x = 0; x < correctArr.length; x++) {
             if (correctArr[x]) {
-                ((SansTextView) wordFlowLayout.getChildAt(x)).setTextColor(getResources().getColor(R.color.colorGreenDark));
+                ((SansTextView) wordFlowLayout.getChildAt(x)).setTextColor(getResources().getColor(R.color.colorBtnGreenDark));
             }
         }
 //        if (voiceStart)
@@ -683,7 +683,7 @@ public class ReadingStoryActivity extends BaseActivity implements
         int counter = 0;
         for (int x = 0; x < correctArr.length; x++) {
             if (correctArr[x]) {
-                ((SansTextView) wordFlowLayout.getChildAt(x)).setTextColor(getResources().getColor(R.color.colorGreenDark));
+                ((SansTextView) wordFlowLayout.getChildAt(x)).setTextColor(getResources().getColor(R.color.colorBtnGreenDark));
                 counter++;
             }
         }
@@ -697,7 +697,7 @@ public class ReadingStoryActivity extends BaseActivity implements
         try {
             for (int x = 0; x < correctArr.length; x++) {
                 if (correctArr[x]) {
-                    ((SansTextView) wordFlowLayout.getChildAt(x)).setTextColor(getResources().getColor(R.color.colorGreenDark));
+                    ((SansTextView) wordFlowLayout.getChildAt(x)).setTextColor(getResources().getColor(R.color.colorBtnGreenDark));
                     counter++;
                 }
             }
@@ -945,8 +945,8 @@ public class ReadingStoryActivity extends BaseActivity implements
         presenter.addProgress();
     }
 
-    @Click(R.id.ib_back)
-    public void backPressed() {
+    @Click (R.id.floating_back)
+    public void pressedBackBtn(){
         onBackPressed();
     }
 

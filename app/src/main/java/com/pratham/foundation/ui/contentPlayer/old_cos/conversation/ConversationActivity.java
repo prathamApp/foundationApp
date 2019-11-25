@@ -94,7 +94,7 @@ public class ConversationActivity extends BaseActivity
     private List messageList = new ArrayList();
     public static MediaPlayerUtil mediaPlayerUtil;
     String question;
-    String answer;
+    String answer, ansForCheck;
     String questionAudio;
     String answerAudio, startTime;
     MediaPlayer correctSound;
@@ -207,6 +207,7 @@ public class ConversationActivity extends BaseActivity
     @Click(R.id.btn_reading)
     public void startRecognition() {
         if (!voiceStart) {
+            showLoader();
             // ButtonClickSound.start();
             voiceStart = true;
             btn_reading.setImageResource(R.drawable.ic_stop_black);
@@ -469,7 +470,7 @@ public class ConversationActivity extends BaseActivity
             correctArr = ansCorrect;
             for (int x = 0; x < correctArr.length; x++)
                 if (correctArr[x])
-                    ((SansTextView) readChatFlow.getChildAt(x)).setTextColor(getResources().getColor(R.color.colorGreenDark));
+                    ((SansTextView) readChatFlow.getChildAt(x)).setTextColor(getResources().getColor(R.color.colorBtnGreenDark));
 
             float perc = presenter.getPercentage();
             if (msgPercentage[currentMsgNo] < perc)
@@ -484,13 +485,38 @@ public class ConversationActivity extends BaseActivity
         try {
             for (int x = 0; x < correctArr.length; x++)
                 if (correctArr[x]) {
-                    ((SansTextView) readChatFlow.getChildAt(x)).setTextColor(getResources().getColor(R.color.colorGreenDark));
+                    ((SansTextView) readChatFlow.getChildAt(x)).setTextColor(getResources().getColor(R.color.colorBtnGreenDark));
                     counter++;
                 }
         } catch (Exception e) {
             e.printStackTrace();
         }
         return counter;
+    }
+
+    public Dialog myLoadingDialog;
+    boolean dialogFlg = false;
+
+    @UiThread
+    public void showLoader() {
+        if (!dialogFlg) {
+            dialogFlg = true;
+            myLoadingDialog = new Dialog(this);
+            myLoadingDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+            myLoadingDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+            myLoadingDialog.setContentView(R.layout.loading_dialog);
+            myLoadingDialog.setCanceledOnTouchOutside(false);
+            myLoadingDialog.show();
+        }
+    }
+
+    @UiThread
+    public void dismissLoadingDialog() {
+        if (dialogFlg) {
+            dialogFlg = false;
+            if (myLoadingDialog != null)
+                myLoadingDialog.dismiss();
+        }
     }
 
     @Override
@@ -501,7 +527,7 @@ public class ConversationActivity extends BaseActivity
 
     @Override
     public void sttEngineReady() {
-//        dismissLoadingDialog();
+        dismissLoadingDialog();
     }
 
     @Override

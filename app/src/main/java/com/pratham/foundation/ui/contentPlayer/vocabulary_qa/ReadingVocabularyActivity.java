@@ -388,6 +388,7 @@ public class ReadingVocabularyActivity extends BaseActivity implements MediaCall
     public void startReading() {
         if (!readingFlg) {
             readingFlg = true;
+            showLoader();
             continuousSpeechService.startSpeechInput();
             btn_reading.setImageResource(R.drawable.ic_stop_black);
             btn_reading.setBackgroundResource(R.drawable.red_button);
@@ -535,6 +536,31 @@ public class ReadingVocabularyActivity extends BaseActivity implements MediaCall
 
     }
 
+    public Dialog myLoadingDialog;
+    boolean dialogFlg = false;
+
+    @UiThread
+    public void showLoader() {
+        if (!dialogFlg) {
+            dialogFlg = true;
+            myLoadingDialog = new Dialog(this);
+            myLoadingDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+            myLoadingDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+            myLoadingDialog.setContentView(R.layout.loading_dialog);
+            myLoadingDialog.setCanceledOnTouchOutside(false);
+            myLoadingDialog.show();
+        }
+    }
+
+    @UiThread
+    public void dismissLoadingDialog() {
+        if (dialogFlg) {
+            dialogFlg = false;
+            if (myLoadingDialog != null)
+                myLoadingDialog.dismiss();
+        }
+    }
+
     @Override
     public void stoppedPressed() {
 //        showLoader();
@@ -543,7 +569,7 @@ public class ReadingVocabularyActivity extends BaseActivity implements MediaCall
 
     @Override
     public void sttEngineReady() {
-//        dismissLoadingDialog();
+        dismissLoadingDialog();
     }
 
     @Override
@@ -622,7 +648,7 @@ public class ReadingVocabularyActivity extends BaseActivity implements MediaCall
             for (int x = 0; x < correctArr.length; x++)
                 if (correctArr[x]) {
                     vocabChatFlow.getChildAt(x).setVisibility(View.VISIBLE);
-                    ((SansTextView) vocabChatFlow.getChildAt(x)).setTextColor(getResources().getColor(R.color.colorGreenDark));
+                    ((SansTextView) vocabChatFlow.getChildAt(x)).setTextColor(getResources().getColor(R.color.colorBtnGreenDark));
                 }
         } catch (Exception e) {
             e.printStackTrace();

@@ -13,6 +13,7 @@ import android.graphics.drawable.ColorDrawable;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.View;
@@ -97,38 +98,29 @@ public class VocabReadingFragment extends Fragment implements
     ImageButton btn_Stop;
     @ViewById(R.id.btn_camera)
     ImageButton btn_camera;
-    @ViewById(R.id.ib_back)
-    ImageButton ib_back;
     @ViewById(R.id.bottom_bar2)
     LinearLayout bottom_bar2;
     @ViewById(R.id.iv_image)
     ImageView iv_image;
     @ViewById(R.id.gif_view)
     GifView gif_view;
-//    @ViewById(R.id.ll_btn_next)
-//    LinearLayout ll_btn_next;
-//    @ViewById(R.id.ll_btn_prev)
-//    LinearLayout ll_btn_prev;
+    @ViewById(R.id.floating_img)
+    FloatingActionButton floating_img;
 
     ContinuousSpeechService_New continuousSpeechService;
 
     public static String storyId, StudentID = "", readingContentPath;
     TTSService ttsService;
     Context context;
-
     List<ModalParaSubMenu> modalPagesList;
-
-    String contentType, storyPath, storyName, storyAudio, certiCode, storyBg, pageTitle;
+    String contentType, storyPath, storyName, storyAudio, certiCode, storyBg, pageTitle,sttLang;
     static int currentPage, lineBreakCounter = 0;
-
     public Handler handler, audioHandler, soundStopHandler, colorChangeHandler,
             startReadingHandler, quesReadHandler, endhandler;
-
     List<String> splitWords = new ArrayList<String>();
     List<String> splitWordsPunct = new ArrayList<String>();
     List<String> wordsDurationList = new ArrayList<String>();
     List<String> wordsResIdList = new ArrayList<String>();
-
     boolean fragFlg = false, lastPgFlag = false;
     boolean playFlg = false, mediaPauseFlag = false, pauseFlg = false, playHideFlg = false;
     int wordCounter = 0, totalPages = 0, correctAnswerCount, pageNo = 1, quesNo = 0, quesPgNo = 0;
@@ -140,7 +132,6 @@ public class VocabReadingFragment extends Fragment implements
     static boolean[] correctArr;
     static boolean[] testCorrectArr;
     AnimationDrawable animationDrawable;
-
 /*
         bundle.putString("nodeID", nodeID);
         bundle.putString("contentType","s");
@@ -162,6 +153,7 @@ public class VocabReadingFragment extends Fragment implements
         storyId = bundle.getString("resId");
         storyName = bundle.getString("contentName");
         certiCode = bundle.getString("certiCode");
+        sttLang = bundle.getString("sttLang");
         onSdCard = bundle.getBoolean("onSdCard", false);
         ttsService = BaseActivity.ttsService;
         contentType = "story";
@@ -179,7 +171,11 @@ public class VocabReadingFragment extends Fragment implements
         showLoader();
         modalPagesList = new ArrayList<>();
 
-        continuousSpeechService = new ContinuousSpeechService_New(context, VocabReadingFragment.this, FC_Constants.currentSelectedLanguage);
+        floating_img.hide();
+//                floating_info.setImageResource(R.drawable.ic_info_outline_white);
+
+        continuousSpeechService = new ContinuousSpeechService_New(context,
+                VocabReadingFragment.this, sttLang);
         if (contentType.equalsIgnoreCase(FC_Constants.RHYME_RESOURCE))
             btn_Mic.setVisibility(View.GONE);
 
@@ -356,7 +352,7 @@ public class VocabReadingFragment extends Fragment implements
     public void allCorrectAnswer() {
         dismissLoadingDialog();
         for (int i = 0; i < splitWordsPunct.size(); i++) {
-            ((SansTextView) wordFlowLayout.getChildAt(i)).setTextColor(getResources().getColor(R.color.colorGreenDark));
+            ((SansTextView) wordFlowLayout.getChildAt(i)).setTextColor(getResources().getColor(R.color.level_1_color));
             correctArr[i] = true;
         }
         new Handler().postDelayed(() -> {
@@ -467,14 +463,10 @@ public class VocabReadingFragment extends Fragment implements
             if (myNextView != null)
                 isScrollBelowVisible(myNextView);
             myView.setTextColor(getResources().getColor(R.color.colorRedDark));
-            Animation animation = AnimationUtils.loadAnimation(context, R.anim.reading_zoom_in);
-            myView.startAnimation(animation);
-//            wordPopUp(this, myView);
+            myView.setBackgroundColor(getResources().getColor(R.color.yellow_text_bg));
             colorChangeHandler.postDelayed(() -> {
                 myView.setTextColor(getResources().getColor(R.color.colorText));
-//                    wordPopDown(ReadingStoryActivity.this, myView);
-                Animation animation1 = AnimationUtils.loadAnimation(context, R.anim.reading_zoom_out);
-                myView.startAnimation(animation1);
+                myView.setBackgroundColor(getResources().getColor(R.color.full_transparent));
             }, 350);
             if (index == wordsDurationList.size() - 1) {
                 try {
@@ -533,7 +525,7 @@ public class VocabReadingFragment extends Fragment implements
     public void setCorrectViewColor() {
         for (int x = 0; x < correctArr.length; x++) {
             if (correctArr[x]) {
-                ((SansTextView) wordFlowLayout.getChildAt(x)).setTextColor(getResources().getColor(R.color.colorGreenDark));
+                ((SansTextView) wordFlowLayout.getChildAt(x)).setTextColor(getResources().getColor(R.color.level_1_color));
             }
         }
 //        if (voiceStart)
@@ -727,7 +719,7 @@ public class VocabReadingFragment extends Fragment implements
         int counter = 0;
         for (int x = 0; x < correctArr.length; x++) {
             if (correctArr[x]) {
-                ((SansTextView) wordFlowLayout.getChildAt(x)).setTextColor(getResources().getColor(R.color.colorGreenDark));
+                ((SansTextView) wordFlowLayout.getChildAt(x)).setTextColor(getResources().getColor(R.color.level_1_color));
                 counter++;
             }
         }
@@ -741,7 +733,7 @@ public class VocabReadingFragment extends Fragment implements
         try {
             for (int x = 0; x < correctArr.length; x++) {
                 if (correctArr[x]) {
-                    ((SansTextView) wordFlowLayout.getChildAt(x)).setTextColor(getResources().getColor(R.color.colorGreenDark));
+                    ((SansTextView) wordFlowLayout.getChildAt(x)).setTextColor(getResources().getColor(R.color.level_1_color));
                     counter++;
                 }
             }
@@ -829,10 +821,6 @@ public class VocabReadingFragment extends Fragment implements
         showStars(false);
     }
 
-    @Click(R.id.ib_back)
-    public void backPressed() {
-        getActivity().onBackPressed();
-    }
 
     @Click(R.id.btn_next)
     void gotoNextPage() {

@@ -173,7 +173,8 @@ public class ContentPlayerActivity extends BaseActivity {
             }
         });
     }
-    public   void hideFloating_info() {
+
+    public void hideFloating_info() {
         floating_info.hide();
     }
 

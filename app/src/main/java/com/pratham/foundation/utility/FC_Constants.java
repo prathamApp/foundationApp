@@ -125,7 +125,7 @@ public class FC_Constants {
     public static final String STORAGE_ASKED = "storage_asked";
     public static final String INITIAL_ENTRIES = "initial_entries";
     public static final String SDCARD_URI = "sdcard_uri";
-    public static final String STT_REGEX = "[\\-+.\"^?!@#%-_;&*,:|।<>()]";
+    public static final String STT_REGEX = "[\"\\-+.'^?!@#%-_;&*,:|।<>()]";
 
     public static String currentStudentID;
     public static String currentAssessmentStudentID;

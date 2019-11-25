@@ -147,6 +147,7 @@ public class SequenceLayout extends Fragment implements SequeanceLayoutContract.
             bundle.putString("StudentID", FC_Constants.currentStudentID);
             bundle.putString("resId", onConentClickeditem.getResourceId());
             bundle.putString("contentName", onConentClickeditem.getNodeTitle());
+            bundle.putString("sttLang", onConentClickeditem.getContentLanguage());
             bundle.putBoolean("onSdCard", true);
             bundle.putString("jsonName", onConentClickeditem.getResourceType());
             playInsequence = false;

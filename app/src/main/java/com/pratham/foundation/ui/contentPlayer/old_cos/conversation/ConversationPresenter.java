@@ -70,15 +70,7 @@ public class ConversationPresenter implements ConversationContract.ConversationP
     @Override
     public void sttResultProcess(ArrayList<String> sttServerResult, String answer) {
 
-        System.out.println("LogTag" + " onResults");
-        String sttQuestion = answer;
-
-        String quesFinal;
-        quesFinal = sttQuestion.replaceAll(STT_REGEX, "");
-        Log.d("Punctu", "onResults: " + sttQuestion);
-        Log.d("Punctu", "onResults: " + quesFinal);
-
-        String[] splitQues = quesFinal.split(" ");
+        String[] splitQues = answer.split(" ");
         String words = " ";
 
         try {
@@ -88,6 +80,9 @@ public class ConversationPresenter implements ConversationContract.ConversationP
                 String[] splitRes = sttResult.split(" ");
                 for (int j = 0; j < splitRes.length; j++) {
                     for (int i = 0; i < splitQues.length; i++) {
+                        Log.d("Punctu", "onResults: " + splitQues[i]);
+                        splitQues[i] = splitQues[i].replaceAll(STT_REGEX, "");
+                        Log.d("Punctu", "onResults: " + splitQues[i]);
                         if (splitRes[j].equalsIgnoreCase(splitQues[i]) && !correctArr[i]) {
                             correctArr[i] = true;
                             words = words + splitQues[i] + ",";

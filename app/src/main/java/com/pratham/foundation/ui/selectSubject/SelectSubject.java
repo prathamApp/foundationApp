@@ -24,6 +24,7 @@ import org.androidannotations.annotations.ViewById;
 
 import java.util.List;
 
+import static com.pratham.foundation.utility.FC_Constants.currentLevel;
 import static com.pratham.foundation.utility.FC_Constants.currentStudentName;
 import static com.pratham.foundation.utility.FC_Constants.currentSubjectFolder;
 import static com.pratham.foundation.utility.FC_Constants.gameFolderPath;
@@ -79,6 +80,7 @@ public class SelectSubject extends BaseActivity implements
     @Override
     public void onItemClicked(ContentTable contentTableObj) {
         FC_Constants.currentSubject = contentTableObj.getNodeTitle();
+        currentLevel = 0;
 
         if (contentTableObj.getNodeTitle().equals("Science")) {
             currentSubjectFolder = "Science";
