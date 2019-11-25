@@ -10,17 +10,16 @@ import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.v4.app.Fragment;
-import android.support.v4.content.ContextCompat;
+import android.support.v4.widget.TextViewCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
 import android.view.Window;
-import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.ScrollView;
+import android.widget.TextView;
 
 import com.pratham.foundation.ApplicationClass;
 import com.pratham.foundation.R;
@@ -30,7 +29,6 @@ import com.pratham.foundation.interfaces.OnGameClose;
 import com.pratham.foundation.modalclasses.EventMessage;
 import com.pratham.foundation.ui.contentPlayer.GameConstatnts;
 import com.pratham.foundation.ui.contentPlayer.fact_retrival_selection.ScienceQuestion;
-import com.pratham.foundation.ui.contentPlayer.paragraph_writing.SentenceAdapter;
 import com.pratham.foundation.utility.FC_Utility;
 
 import org.androidannotations.annotations.AfterViews;
@@ -47,8 +45,7 @@ import java.io.FileInputStream;
 import java.util.ArrayList;
 import java.util.List;
 
-import butterknife.OnClick;
-
+import static android.widget.TextView.AUTO_SIZE_TEXT_TYPE_UNIFORM;
 import static com.pratham.foundation.utility.FC_Constants.activityPhotoPath;
 import static com.pratham.foundation.utility.FC_Constants.gameFolderPath;
 
@@ -60,10 +57,6 @@ public class WordWritingFragment extends Fragment
     WordWritingContract.WordWritingPresenter presenter;
 
     private int index = 0;
-   /* @ViewById(R.id.paragraph)
-    RecyclerView paragraph;*/
-   /* @ViewById(R.id.scrollView)
-    ScrollView scrollView;*/
     @ViewById(R.id.previous)
     ImageButton previous;
     @ViewById(R.id.camera_controll)
@@ -73,16 +66,13 @@ public class WordWritingFragment extends Fragment
     @ViewById(R.id.preview)
     SansButton preview;
     @ViewById(R.id.text)
-    SansTextView text;
+    TextView text;
     @ViewById(R.id.submit)
     SansButton submitBtn;
    /* @ViewById(R.id.title)
     SansTextView title;*/
 
     private List<String> paragraphWords;
-    //    private RelativeLayout.LayoutParams viewParam;
-    private LinearLayoutManager layoutManager;
-    private RecyclerView.SmoothScroller smoothScroller;
     private static final int CAMERA_REQUEST = 1;
     private String imageName = null, imagePath;
     private String contentPath, contentTitle, StudentID, resId, readingContentPath, resStartTime;
@@ -109,6 +99,13 @@ public class WordWritingFragment extends Fragment
         presenter.getData();
         resStartTime = FC_Utility.getCurrentDateTime();
         presenter.addScore(0, "", 0, 0, resStartTime, GameConstatnts.PARAGRAPH_WRITING + " " + GameConstatnts.START);
+
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            text.setAutoSizeTextTypeWithDefaults(AUTO_SIZE_TEXT_TYPE_UNIFORM);
+        } else {
+            TextViewCompat.setAutoSizeTextTypeWithDefaults(text, TextViewCompat.AUTO_SIZE_TEXT_TYPE_UNIFORM);
+        }
     }
 
     @Override
@@ -124,14 +121,14 @@ public class WordWritingFragment extends Fragment
         paragraph.setAdapter(arrayAdapter);
         LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
         paragraph.setLayoutManager(layoutManager);*/
-       ShowSingleQuestion();
+        ShowSingleQuestion();
     }
 
     private void ShowSingleQuestion() {
         text.setText(paragraphWords.get(index));
         submitBtn.setVisibility(View.INVISIBLE);
         camera_controll.setVisibility(View.INVISIBLE);
-       // preview.setVisibility(View.INVISIBLE);
+        // preview.setVisibility(View.INVISIBLE);
         if (index == 0) {
             previous.setVisibility(View.INVISIBLE);
         } else {
@@ -140,7 +137,7 @@ public class WordWritingFragment extends Fragment
         if (index == (paragraphWords.size() - 1)) {
             submitBtn.setVisibility(View.VISIBLE);
             camera_controll.setVisibility(View.VISIBLE);
-           // preview.setVisibility(View.VISIBLE);
+            // preview.setVisibility(View.VISIBLE);
             next.setVisibility(View.INVISIBLE);
         } else {
             submitBtn.setVisibility(View.INVISIBLE);
@@ -168,7 +165,6 @@ public class WordWritingFragment extends Fragment
                 ShowSingleQuestion();
             }
     }
-
 
 
     @Click(R.id.capture)

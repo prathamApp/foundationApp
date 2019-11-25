@@ -221,12 +221,20 @@ public class GameConstatnts implements ShowInstruction {
                                 bundle, KeywordMappingFragment_.class.getSimpleName());
                         break;
                     case GameConstatnts.PARAGRAPH_WRITING:
-                        if (FC_Constants.currentLevel <= 2) {
+                        if (FC_Constants.currentSubject.equalsIgnoreCase("English")) {
                             FC_Utility.showFragment((Activity) context, new WordWritingFragment_(), R.id.RL_CPA,
                                     bundle, WordWritingFragment_.class.getSimpleName());
-                        } else {
+                        } else if(FC_Constants.currentSubject.equalsIgnoreCase("Science")){
                             FC_Utility.showFragment((Activity) context, new ParagraphWritingFragment_(), R.id.RL_CPA,
                                     bundle, ParagraphWritingFragment_.class.getSimpleName());
+                        }else {
+                            if (FC_Constants.currentLevel <= 2) {
+                                FC_Utility.showFragment((Activity) context, new WordWritingFragment_(), R.id.RL_CPA,
+                                        bundle, WordWritingFragment_.class.getSimpleName());
+                            } else {
+                                FC_Utility.showFragment((Activity) context, new ParagraphWritingFragment_(), R.id.RL_CPA,
+                                        bundle, ParagraphWritingFragment_.class.getSimpleName());
+                            }
                         }
                         break;
                     case GameConstatnts.LISTNING_AND_WRITTING:
