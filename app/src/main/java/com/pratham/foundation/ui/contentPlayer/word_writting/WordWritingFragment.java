@@ -11,8 +11,6 @@ import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.TextViewCompat;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
 import android.view.Window;
@@ -24,7 +22,6 @@ import android.widget.TextView;
 import com.pratham.foundation.ApplicationClass;
 import com.pratham.foundation.R;
 import com.pratham.foundation.customView.SansButton;
-import com.pratham.foundation.customView.SansTextView;
 import com.pratham.foundation.interfaces.OnGameClose;
 import com.pratham.foundation.modalclasses.EventMessage;
 import com.pratham.foundation.ui.contentPlayer.GameConstatnts;
@@ -69,6 +66,9 @@ public class WordWritingFragment extends Fragment
     TextView text;
     @ViewById(R.id.submit)
     SansButton submitBtn;
+
+    @ViewById(R.id.capture)
+    ImageButton capture;
    /* @ViewById(R.id.title)
     SansTextView title;*/
 
@@ -94,7 +94,7 @@ public class WordWritingFragment extends Fragment
                 readingContentPath = ApplicationClass.foundationPath + gameFolderPath + "/" + contentPath + "/";
         }
         EventBus.getDefault().register(this);
-        preview.setVisibility(View.INVISIBLE);
+        preview.setVisibility(View.GONE);
         presenter.setView(WordWritingFragment.this, resId, readingContentPath);
         presenter.getData();
         resStartTime = FC_Utility.getCurrentDateTime();
@@ -169,7 +169,6 @@ public class WordWritingFragment extends Fragment
 
     @Click(R.id.capture)
     public void captureClick() {
-        imageName = "" + ApplicationClass.getUniqueID() + ".jpg";
         Intent takePicture = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         startActivityForResult(takePicture, CAMERA_REQUEST);
     }
@@ -199,7 +198,8 @@ public class WordWritingFragment extends Fragment
         dialog.setContentView(R.layout.fc_image_preview_dialog);
         dialog.setCanceledOnTouchOutside(false);
         ImageView iv_dia_preview = dialog.findViewById(R.id.iv_dia_preview);
-        ImageButton dia_btn_cross = dialog.findViewById(R.id.dia_btn_cross);
+        SansButton dia_btn_cross = dialog.findViewById(R.id.dia_btn_cross);
+        ImageButton camera = dialog.findViewById(R.id.camera);
 
         dialog.show();
         try {
@@ -213,6 +213,14 @@ public class WordWritingFragment extends Fragment
         dia_btn_cross.setOnClickListener(v -> {
             dialog.dismiss();
         });
+
+        camera.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+                captureClick();
+            }
+        });
     }
 
     @Override
@@ -224,8 +232,10 @@ public class WordWritingFragment extends Fragment
                /* preview.setVisibility(View.VISIBLE);
                 preview.setImageBitmap(photo);
                 preview.setScaleType(ImageView.ScaleType.FIT_XY);*/
+                imageName = "" + ApplicationClass.getUniqueID() + ".jpg";
                 presenter.createDirectoryAndSaveFile(photo, imageName);
                 preview.setVisibility(View.VISIBLE);
+                capture.setVisibility(View.GONE);
             }
         } catch (Exception e) {
             e.printStackTrace();

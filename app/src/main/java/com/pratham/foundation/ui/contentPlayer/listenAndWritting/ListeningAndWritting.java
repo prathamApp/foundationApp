@@ -1,6 +1,7 @@
 package com.pratham.foundation.ui.contentPlayer.listenAndWritting;
 
 import android.app.Dialog;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -60,6 +61,9 @@ public class ListeningAndWritting extends Fragment implements ListeningAndWritti
 
     @ViewById(R.id.play_button)
     ImageView play;
+
+    @ViewById(R.id.capture)
+    ImageButton capture;
  /*   @ViewById(R.id.radiogroup)
     RadioGroup radiogroup;*/
 
@@ -120,8 +124,9 @@ public class ListeningAndWritting extends Fragment implements ListeningAndWritti
         else
             readingContentPath = ApplicationClass.foundationPath + gameFolderPath + "/" + contentPath + "/";
 
+
+        preview.setVisibility(View.GONE);
         EventBus.getDefault().register(this);
-        preview.setVisibility(View.INVISIBLE);
         presenter.setView(ListeningAndWritting.this, contentTitle, resId);
         mediaPlayerUtil = new MediaPlayerUtil(getActivity());
         presenter.fetchJsonData(readingContentPath);
@@ -190,7 +195,8 @@ public class ListeningAndWritting extends Fragment implements ListeningAndWritti
                         break;
                 }
                 try {
-                    sp.stop(id);
+
+                    sp.stop(sID);
                     setPlayImage();
                    /* Glide.with(getActivity()).load(R.drawable.ic_play_arrow_black)
                             .into(play);*/
@@ -359,7 +365,7 @@ public class ListeningAndWritting extends Fragment implements ListeningAndWritti
     @Click(R.id.replay)
     public void replay() {
         try {
-            sp.stop(id);
+            sp.stop(sID);
            /* Glide.with(getActivity()).load(R.drawable.ic_play_arrow_black)
                     .into(play);*/
             setPlayImage();
@@ -372,16 +378,17 @@ public class ListeningAndWritting extends Fragment implements ListeningAndWritti
 
     @Click(R.id.capture)
     public void captureClick() {
-        imageName = "" + ApplicationClass.getUniqueID() + ".jpg";
         Intent takePicture = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         startActivityForResult(takePicture, CAMERA_REQUEST);
     }
 
     @Click(R.id.preview)
     public void previewClick() {
-        File filePath = new File(activityPhotoPath + imageName);
-        if (filePath.exists())
-            ShowPreviewDialog(filePath);
+        if (imageName != null) {
+            File filePath = new File(activityPhotoPath + imageName);
+            if (filePath.exists())
+                ShowPreviewDialog(filePath);
+        }
     }
 
     @Override
@@ -389,12 +396,16 @@ public class ListeningAndWritting extends Fragment implements ListeningAndWritti
         Log.d("codes", String.valueOf(requestCode) + resultCode);
         try {
             if (requestCode == CAMERA_REQUEST) {
-                Bitmap photo = (Bitmap) data.getExtras().get("data");
+                if (data.getExtras() != null) {
+                    Bitmap photo = (Bitmap) data.getExtras().get("data");
                /* preview.setVisibility(View.VISIBLE);
                 preview.setImageBitmap(photo);
                 preview.setScaleType(ImageView.ScaleType.FIT_XY);*/
-                presenter.createDirectoryAndSaveFile(photo, imageName);
-                preview.setVisibility(View.VISIBLE);
+                    imageName = "" + ApplicationClass.getUniqueID() + ".jpg";
+                    presenter.createDirectoryAndSaveFile(photo, imageName);
+                    capture.setVisibility(View.GONE);
+                    preview.setVisibility(View.VISIBLE);
+                }
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -408,7 +419,8 @@ public class ListeningAndWritting extends Fragment implements ListeningAndWritti
         dialog.setContentView(R.layout.fc_image_preview_dialog);
         dialog.setCanceledOnTouchOutside(false);
         ImageView iv_dia_preview = dialog.findViewById(R.id.iv_dia_preview);
-        ImageButton dia_btn_cross = dialog.findViewById(R.id.dia_btn_cross);
+        SansButton dia_btn_cross = dialog.findViewById(R.id.dia_btn_cross);
+        ImageButton camera = dialog.findViewById(R.id.camera);
 
         dialog.show();
         try {
@@ -421,6 +433,13 @@ public class ListeningAndWritting extends Fragment implements ListeningAndWritti
 
         dia_btn_cross.setOnClickListener(v -> {
             dialog.dismiss();
+        });
+        camera.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+                captureClick();
+            }
         });
     }
 
@@ -446,7 +465,7 @@ public class ListeningAndWritting extends Fragment implements ListeningAndWritti
         EventBus.getDefault().unregister(this);
         super.onStop();
         try {
-            sp.stop(id);
+            sp.stop(sID);
         } catch (Exception e) {
             e.printStackTrace();
         }
