@@ -14,7 +14,7 @@
         android:layout_marginStart="@dimen/_10sdp"
         android:layout_marginEnd="@dimen/_10sdp"
         android:layout_marginBottom="@dimen/_5sdp"
-        android:background="@drawable/home_header_1_bg"
+        android:background="@drawable/home_header_0_bg"
         android:layout_height="110dp">
 <!--
         <LinearLayout
@@ -156,7 +156,7 @@
         android:layout_height="?attr/actionBarSize"
         android:layout_alignParentBottom="true"
         android:elevation="10dp"
-        android:background="@color/level_1_color"
+        android:background="@color/level_0_color"
         app:tabIndicatorHeight="@dimen/_3sdp"
         app:tabIndicatorFullWidth="true"
         app:tabIndicatorColor="@color/trans_card_text"
