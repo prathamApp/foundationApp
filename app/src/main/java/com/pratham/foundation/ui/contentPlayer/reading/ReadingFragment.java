@@ -144,10 +144,7 @@ public class ReadingFragment extends Fragment implements STT_Result_New.sttView,
     }
 
     private void getData() {
-        //String text = FC_Utility.loadJSONFromAsset(context, "reading.json");
 
-        /*  InputStream is = new FileInputStream(readingContentPath + "reading_stt.json");
-         */
 
         String text = FC_Utility.loadJSONFromStorage(readingContentPath, "reading_stt.json");
         // List instrumentNames = new ArrayList<>();
