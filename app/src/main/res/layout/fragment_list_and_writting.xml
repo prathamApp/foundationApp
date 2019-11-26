@@ -3,12 +3,13 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:ripple="http://schemas.android.com/apk/res-auto"
     android:background="@drawable/bg_anim_fourth_layer">
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@id/space">
+        android:layout_below="@id/topPanel">
 
         <!-- <LinearLayout
              android:id="@+id/controls_top"
@@ -105,8 +106,8 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_alignParentTop="true"
-            android:layout_marginTop="@dimen/_20sdp"
-            android:layout_marginBottom="@dimen/_20sdp"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:layout_marginBottom="@dimen/_10sdp"
             android:layout_marginStart="@dimen/_10sdp"
             android:layout_marginEnd="@dimen/_15sdp"
             android:layout_above="@+id/bottom_bar">
@@ -186,7 +187,7 @@
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
                     android:elevation="2dp"
-                    android:background="@color/colorButtonPressedBg"
+                    android:background="@color/bg_grey"
                     android:layout_marginTop="@dimen/_20sdp"
                     android:layout_marginBottom="@dimen/_20sdp">
 
@@ -255,9 +256,32 @@
          android:textAlignment="center"
          android:textColor="@color/white"
          android:textSize="25sp" />-->
-    <Space
-        android:id="@+id/space"
+    <android.support.design.card.MaterialCardView
+        android:id="@+id/topPanel"
         android:layout_width="match_parent"
-        android:layout_height="60dp" />
+        android:layout_height="@dimen/_40sdp"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="30dp"
+        android:layout_marginStart="@dimen/_10sdp"
+        android:layout_marginEnd="@dimen/_10sdp"
+        ripple:cardBackgroundColor="@color/colorBtnRedDark"
+        ripple:cardCornerRadius="@dimen/_8sdp">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <com.pratham.foundation.customView.SansTextViewBold
+                android:id="@+id/tv_content_title"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:text="Listen and write"
+                android:textColor="@color/white"
+                android:textSize="@dimen/_20sdp"
+                android:textStyle="bold" />
+
+        </RelativeLayout>
+    </android.support.design.card.MaterialCardView>
 
 </RelativeLayout>

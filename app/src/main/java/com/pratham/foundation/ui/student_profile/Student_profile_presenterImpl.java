@@ -7,6 +7,11 @@ import com.pratham.foundation.utility.FC_Constants;
 
 import org.androidannotations.annotations.EBean;
 
+import static com.pratham.foundation.utility.FC_Constants.GROUP_MODE;
+import static com.pratham.foundation.utility.FC_Constants.INDIVIDUAL_MODE;
+import static com.pratham.foundation.utility.FC_Constants.LOGIN_MODE;
+import static com.pratham.foundation.utility.FC_Constants.QR_GROUP_MODE;
+
 @EBean
 public class Student_profile_presenterImpl implements Student_profile_contract.Student_profile_presenter {
     Context mContext;
@@ -23,11 +28,20 @@ public class Student_profile_presenterImpl implements Student_profile_contract.S
 
     @Override
     public String getStudentProfileName() {
-        String profileName;
-        if (!FC_Constants.GROUP_LOGIN)
-            profileName = AppDatabase.getDatabaseInstance(mContext).getStudentDao().getFullName(FC_Constants.currentStudentID);
-        else
-            profileName = AppDatabase.getDatabaseInstance(mContext).getGroupsDao().getGroupNameByGrpID(FC_Constants.currentStudentID);
+        String profileName = "QR Group";
+        try {
+            if (LOGIN_MODE.equalsIgnoreCase(GROUP_MODE))
+                profileName = AppDatabase.getDatabaseInstance(mContext).getGroupsDao().getGroupNameByGrpID(FC_Constants.currentStudentID);
+            else if (!LOGIN_MODE.equalsIgnoreCase(QR_GROUP_MODE)) {
+                profileName = AppDatabase.getDatabaseInstance(mContext).getStudentDao().getFullName(FC_Constants.currentStudentID);
+            }
+
+            if (LOGIN_MODE.equalsIgnoreCase(INDIVIDUAL_MODE))
+                profileName = profileName.split(" ")[0];
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         return profileName;
     }
 

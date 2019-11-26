@@ -59,7 +59,7 @@ public class SelectSubject extends BaseActivity implements
         else
             studName = currentStudentName.split(" ")[0];
 
-        name.setText("Welcome "+studName+".");
+        name.setText(getResources().getString(R.string.Welcome)+" "+studName+".");
 
         subjectAdapter = new SelectSubjectAdapter(this, subjectList);
         RecyclerView.LayoutManager mLayoutManager = new GridLayoutManager(this, 2);
@@ -67,7 +67,8 @@ public class SelectSubject extends BaseActivity implements
         int dp = 12;
         if (FC_Constants.TAB_LAYOUT)
             dp = 20;
-        subject_recycler.addItemDecoration(new GridSpacingItemDecoration(2, dpToPx(this,dp), true));
+        subject_recycler.addItemDecoration(new GridSpacingItemDecoration(
+                2, dpToPx(this,dp), true));
         subject_recycler.setItemAnimator(new DefaultItemAnimator());
         subject_recycler.setAdapter(subjectAdapter);
     }
@@ -95,7 +96,7 @@ public class SelectSubject extends BaseActivity implements
 
         gameFolderPath = "/.FCA/"+currentSubjectFolder+"/Game";
 
-            Intent intent = new Intent(context, HomeActivity_.class);
+        Intent intent = new Intent(context, HomeActivity_.class);
         intent.putExtra("nodeId", contentTableObj.getNodeId());
         intent.putExtra("nodeTitle", contentTableObj.getNodeTitle());
         context.startActivity(intent);

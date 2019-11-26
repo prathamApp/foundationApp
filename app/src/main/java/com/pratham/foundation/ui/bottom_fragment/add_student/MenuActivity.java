@@ -26,9 +26,6 @@ import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.ViewById;
 
-import static com.pratham.foundation.utility.FC_Constants.dialog_btn_cancel;
-import static com.pratham.foundation.utility.FC_Constants.dialog_btn_exit;
-import static com.pratham.foundation.utility.FC_Constants.dialog_btn_restart;
 import static com.pratham.foundation.utility.SplashSupportActivity.ButtonClickSound;
 
 
@@ -68,10 +65,10 @@ public class MenuActivity extends BaseActivity {
         Button dia_btn_red = dialog.findViewById(R.id.dia_btn_red);
 
         dia_title.setTextSize(getResources().getDimension(R.dimen._10sdp));
-        dia_title.setText("Login Mode");
+        dia_title.setText(getResources().getString(R.string.login_mode));
         dia_btn_green.setVisibility(View.GONE);
-        dia_btn_red.setText("Group");
-        dia_btn_yellow.setText("Individual");
+        dia_btn_red.setText(getResources().getString(R.string.Group));
+        dia_btn_yellow.setText(getResources().getString(R.string.Individual));
 
         dia_btn_red.setOnClickListener(v -> {
             if(nextActivity.equalsIgnoreCase("QRScan"))
@@ -103,9 +100,9 @@ public class MenuActivity extends BaseActivity {
         Button dia_btn_red = dialog.findViewById(R.id.dia_btn_red);
 
         dia_title.setTextSize(getResources().getDimension(R.dimen._10sdp));
-        dia_title.setText("Please download language packs offline for better performance");
-        dia_btn_green.setText("OK");
-        dia_btn_red.setText("SKIP");
+        dia_title.setText(getResources().getString(R.string.Stt_Dialog_Msg));
+        dia_btn_green.setText(getResources().getString(R.string.Okay));
+        dia_btn_red.setText(getResources().getString(R.string.Skip));
         dia_btn_yellow.setVisibility(View.GONE);
 
         dia_btn_green.setOnClickListener(v -> {
@@ -173,9 +170,9 @@ public class MenuActivity extends BaseActivity {
         Button dia_btn_green = dialog.findViewById(R.id.dia_btn_green);
         Button dia_btn_red = dialog.findViewById(R.id.dia_btn_red);
 
-        dia_btn_green.setText (""+dialog_btn_restart);
-        dia_btn_red.setText   (""+dialog_btn_exit);
-        dia_btn_yellow.setText(""+dialog_btn_cancel);
+        dia_btn_green.setText (getResources().getString(R.string.Restart));
+        dia_btn_red.setText   (getResources().getString(R.string.Exit));
+        dia_btn_yellow.setText(getResources().getString(R.string.Cancel));
         dia_btn_green.setVisibility(View.GONE);
         dialog.show();
 

@@ -57,9 +57,7 @@ import org.greenrobot.eventbus.EventBus;
 import java.io.File;
 
 import static com.pratham.foundation.utility.FC_Constants.activityPhotoPath;
-import static com.pratham.foundation.utility.FC_Constants.dialog_btn_cancel;
-import static com.pratham.foundation.utility.FC_Constants.dialog_btn_exit;
-import static com.pratham.foundation.utility.FC_Constants.dialog_btn_restart;
+import static com.pratham.foundation.utility.FC_Utility.setAppLocal;
 
 
 @EActivity(R.layout.activity_splash)
@@ -252,12 +250,15 @@ public class SplashActivity extends SplashSupportActivity implements SplashContr
 
     @Override
     public void startApp() {
-        FC_Constants.currentSelectedLanguage = FC_Constants.HINDI;
-        FastSave.getInstance().saveString(FC_Constants.LANGUAGE, FC_Constants.currentSelectedLanguage);
-//        if (!FastSave.getInstance().getBoolean(FC_Constants.LANGUAGE_SPLASH_DIALOG, false))
-//            showLanguageSelectionDialog();
-//        else
+//        FC_Constants.currentSelectedLanguage = FC_Constants.HINDI;
+//        FastSave.getInstance().saveString(FC_Constants.LANGUAGE, FC_Constants.currentSelectedLanguage);
+        if (!FastSave.getInstance().getBoolean(FC_Constants.LANGUAGE_SPLASH_DIALOG, false))
+            showLanguageSelectionDialog();
+        else {
+            FC_Constants.currentSelectedLanguage = FastSave.getInstance().getString(FC_Constants.LANGUAGE, "");
+            setAppLocal(this, FC_Constants.currentSelectedLanguage);
             createDataBase();
+        }
     }
 
     @SuppressLint("SetTextI18n")
@@ -294,6 +295,7 @@ public class SplashActivity extends SplashSupportActivity implements SplashContr
 
         dia_btn_green.setOnClickListener(v -> {
             FastSave.getInstance().saveBoolean(FC_Constants.LANGUAGE_SPLASH_DIALOG, true);
+            setAppLocal(this, FC_Constants.currentSelectedLanguage);
             createDataBase();
             dialog.dismiss();
         });
@@ -303,7 +305,7 @@ public class SplashActivity extends SplashSupportActivity implements SplashContr
     public void showProgressDialog() {
         progressDialog = new ProgressDialog(SplashActivity.this);
         progressDialog.setCanceledOnTouchOutside(false);
-        progressDialog.setMessage("Loading... Please wait...");
+        progressDialog.setMessage(getResources().getString(R.string.loding_please_wait));
         progressDialog.setCancelable(false);
         progressDialog.show();
     }
@@ -365,9 +367,9 @@ public class SplashActivity extends SplashSupportActivity implements SplashContr
         Button dia_btn_red = dialog.findViewById(R.id.dia_btn_red);
         exitDialogOpen = true;
 
-        dia_btn_green.setText("" + dialog_btn_restart);
-        dia_btn_red.setText("" + dialog_btn_exit);
-        dia_btn_yellow.setText("" + dialog_btn_cancel);
+        dia_btn_green.setText(getResources().getString(R.string.Restart));
+        dia_btn_red.setText(getResources().getString(R.string.Exit));
+        dia_btn_yellow.setText(getResources().getString(R.string.Cancel));
 
         dialog.show();
 
@@ -407,7 +409,7 @@ public class SplashActivity extends SplashSupportActivity implements SplashContr
 
     @Override
     public void permissionGranted() {
-        Log.d("Splash", "permissionGranted: HAHAHAHAHAHA");
+//        Log.d("Splash", "permissionGranted: HAHAHAHAHAHA");
         startApp();
 //        splashPresenter.checkVersion();
     }
@@ -537,9 +539,9 @@ public class SplashActivity extends SplashSupportActivity implements SplashContr
         Button dia_btn_red = dialog.findViewById(R.id.dia_btn_red);
 
         dia_title.setTextSize(14);
-        dia_title.setText("Please download language packs offline for better performance");
-        dia_btn_green.setText("OK");
-        dia_btn_red.setText("SKIP");
+        dia_title.setText(getResources().getString(R.string.Stt_Dialog_Msg));
+        dia_btn_green.setText(getResources().getString(R.string.Okay));
+        dia_btn_red.setText(getResources().getString(R.string.Skip));
         dia_btn_yellow.setVisibility(View.GONE);
 
         dia_btn_green.setOnClickListener(new View.OnClickListener() {

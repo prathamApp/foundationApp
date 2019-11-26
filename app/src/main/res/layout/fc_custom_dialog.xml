@@ -35,7 +35,7 @@
                 android:gravity="center"
                 android:lines="2"
                 android:paddingHorizontal="@dimen/_7sdp"
-                android:text="What do you want to do?"
+                android:text="@string/what_do_you_want_to_do"
                 android:textColor="@color/gradianceCardStartColor"
                 android:textSize="@dimen/_15sdp" />
 

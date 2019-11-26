@@ -1,7 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">Foundation App</string>
 
-    <string name="Login">Login</string>
+    <string name="Login">लॉग इन करें</string>
     <string name="Stt_Dialog_Msg">Please download language packs offline for better performance</string>
     <string name="Okay">OK</string>
     <string name="Skip">SKIP</string>
@@ -22,9 +23,8 @@
     <string name="Only_5_Students_Allowed">Only 5 Students Allowed</string>
     <string name="Student_exists">This Student already exists</string>
     <string name="Scan_new_QR">Scan new QR.</string>
-    <string name="Welcome">Welcome </string>
+    <string name="Welcome">वेलकम </string>
     <string name="select_subject">Please select a subject...</string>
-
 
 
 
@@ -387,4 +387,5 @@
     <string name="ReadVocabAndroid">READ_VOCAB_ANDROID</string>
     <string name="reading_stt">READING_STT</string>
     <string name="multiple_choice">MULTIPLE_CHOICE</string>
+
 </resources>

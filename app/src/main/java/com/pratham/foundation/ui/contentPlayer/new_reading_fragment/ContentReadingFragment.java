@@ -56,6 +56,7 @@ import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EFragment;
 import org.androidannotations.annotations.UiThread;
 import org.androidannotations.annotations.ViewById;
+import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
@@ -235,14 +236,6 @@ public class ContentReadingFragment extends Fragment implements
         } catch (Exception e) {
             e.printStackTrace();
         }
-    }
-
-    @Override
-    public void onStop() {
-//        if (getActivity() instanceof ContentPlayerActivity) {
-//            ((ContentPlayerActivity) getActivity()).showFloating_info();
-//        }
-        super.onStop();
     }
 
     @Override
@@ -1329,6 +1322,18 @@ public class ContentReadingFragment extends Fragment implements
 //                setResult(Activity.RESULT_OK, returnIntent);
         }
         exitDBEntry();
+    }
+
+    @Override
+    public void onStop() {
+        EventBus.getDefault().unregister(this);
+        super.onStop();
+    }
+
+    @Override
+    public void onStart() {
+        EventBus.getDefault().register(this);
+        super.onStart();
     }
 
     @SuppressLint("SetTextI18n")

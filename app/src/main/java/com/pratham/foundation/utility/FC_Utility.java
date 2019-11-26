@@ -13,6 +13,7 @@ import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.content.pm.Signature;
+import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.database.Cursor;
 import android.graphics.Bitmap;
@@ -65,9 +66,6 @@ import com.pratham.foundation.ui.admin_panel.AdminControlsActivity_;
 import com.pratham.foundation.ui.admin_panel.group_selection.SelectGroupActivity_;
 import com.pratham.foundation.ui.contentPlayer.ContentPlayerActivity_;
 import com.pratham.foundation.ui.splash_activity.SplashActivity;
-
-import org.json.JSONArray;
-import org.json.JSONException;
 
 import java.io.BufferedReader;
 import java.io.ByteArrayOutputStream;
@@ -143,6 +141,59 @@ public class FC_Utility {
     public static int getRandomDrawableGradiant(){
         int bg_grad = gradiant_bg[new Random().nextInt(gradiant_bg.length)];
         return bg_grad;
+    }
+
+    public static void setAppLocal(Context context, String selectedLang){
+        String language = "en";
+        switch (selectedLang){
+            case ""+FC_Constants.HINDI:
+                language = "hi";
+                break;
+/*            case ""+FC_Constants.MARATHI:
+                language = "hi-IN";
+                break;
+            case ""+FC_Constants.ASSAMESE:
+                language = "hi-IN";
+                break;
+            case ""+FC_Constants.KANNADA:
+                language = "hi-IN";
+                break;
+            case ""+FC_Constants.TELUGU:
+                language = "hi-IN";
+                break;
+            case ""+FC_Constants.BENGALI:
+                language = "hi-IN";
+                break;
+            case ""+FC_Constants.GUJARATI:
+                language = "hi-IN";
+                break;
+            case ""+FC_Constants.TAMIL:
+                language = "hi-IN";
+                break;
+            case ""+FC_Constants.ODIYA:
+                language = "hi-IN";
+                break;*/
+            case ""+FC_Constants.ENGLISH:
+                language = "en";
+                break;
+        }
+
+        Locale myLocale = new Locale(language);
+        Resources res = context.getResources();
+        DisplayMetrics dm = res.getDisplayMetrics();
+        Configuration conf = res.getConfiguration();
+        conf.locale = myLocale;
+        res.updateConfiguration(conf, dm);
+
+//        Resources resources = context.getResources();
+//        DisplayMetrics dm = resources.getDisplayMetrics();
+//        Configuration config = resources.getConfiguration();
+//        if (Build.VERSION.SDK_INT>=Build.VERSION_CODES.JELLY_BEAN_MR1){
+//            config.setLocale(new Locale(language));
+//        } else {
+//            config.locale = new Locale(language);
+//        }
+//        resources.updateConfiguration(config, dm);
     }
 
     public static StateListDrawable createStateListDrawable(Drawable drawable, @ColorInt int drawableColor) {

@@ -1,10 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/bg_anim_fourth_layer"
-    tools:context=".ui.selectSubject.SelectSubject">
+    android:background="@drawable/bg_anim_fourth_layer">
 
     <RelativeLayout
         android:id="@+id/topPanel"
@@ -32,7 +30,7 @@
             android:layout_marginStart="@dimen/_5sdp"
             android:layout_marginEnd="@dimen/_5sdp"
             android:gravity="center"
-            android:text="Welcome "
+            android:text="@string/Welcome"
             android:textColor="@color/white"
             android:textSize="@dimen/_18sdp"
             android:textStyle="bold" />
@@ -48,7 +46,7 @@
         android:id="@+id/subject"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Please select a subject..."
+        android:text="@string/select_subject"
         android:paddingHorizontal="@dimen/_10sdp"
         android:layout_marginTop="@dimen/_5sdp"
         android:gravity="center"

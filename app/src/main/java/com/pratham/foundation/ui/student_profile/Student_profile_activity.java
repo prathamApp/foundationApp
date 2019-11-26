@@ -45,6 +45,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import static com.pratham.foundation.utility.FC_Utility.setAppLocal;
+
 
 @EFragment(R.layout.activity_student_profile)
 public class Student_profile_activity extends Fragment implements Student_profile_contract.Student_profile_view,
@@ -75,7 +77,7 @@ public class Student_profile_activity extends Fragment implements Student_profil
         context = getActivity();
         displayStudentProfileNameAndImage();
         HomeActivity.languageChanged = false;
-        ib_langChange.setVisibility(View.GONE);
+//        ib_langChange.setVisibility(View.GONE);
         // student_profile_presenter.calculateStudentProgress();
         loadRecycler();
     }
@@ -122,6 +124,7 @@ public class Student_profile_activity extends Fragment implements Student_profil
 
         dia_btn_green.setOnClickListener(v -> {
             HomeActivity.languageChanged = true;
+            setAppLocal(context, FC_Constants.currentSelectedLanguage);
             dialog.dismiss();
         });
     }

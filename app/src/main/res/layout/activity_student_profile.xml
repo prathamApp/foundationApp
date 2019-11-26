@@ -60,57 +60,101 @@
     <RelativeLayout
         android:id="@+id/header_rl"
         android:layout_width="match_parent"
-        android:layout_height="140dp"
-        android:layout_alignParentTop="true"
-        android:visibility="visible"
-        android:background="@drawable/home_header_1_bg"
-        android:elevation="5dp">
+        android:layout_marginTop="@dimen/_15sdp"
+        android:layout_marginStart="@dimen/_10sdp"
+        android:layout_marginEnd="@dimen/_10sdp"
+        android:layout_marginBottom="@dimen/_5sdp"
+        android:background="@drawable/home_header_0_bg"
+        android:elevation="@dimen/_5sdp"
+        android:layout_height="110dp">
 
         <RelativeLayout
-            android:id="@+id/header_layout"
+            android:id="@+id/profile_header"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginTop="5dp">
+            android:layout_alignParentTop="true">
 
-            <RelativeLayout
-                android:id="@+id/profile_header"
+            <com.pratham.foundation.customView.CircularImageView
+                android:id="@+id/profileImage"
+                android:layout_width="75dp"
+                android:layout_height="75dp"
+                android:layout_centerHorizontal="true"
+                android:scaleType="fitCenter"
+                android:src="@drawable/b2"
+                app:border="true"
+                app:border_color="@color/colorAccent"
+                app:border_width="2dp"
+                app:shadow="true" />
+
+            <com.pratham.foundation.customView.SansTextView
+                android:id="@+id/tv_studentName"
                 android:layout_width="match_parent"
-                android:layout_height="130dp"
-                android:layout_alignParentTop="true">
-
-                <com.pratham.foundation.customView.CircularImageView
-                    android:id="@+id/profileImage"
-                    android:layout_width="90dp"
-                    android:layout_height="90dp"
-                    android:layout_centerHorizontal="true"
-                    android:scaleType="fitCenter"
-                    android:src="@drawable/b2"
-                    app:border="true"
-                    app:border_color="@color/colorAccent"
-                    app:border_width="2dp"
-                    app:shadow="true" />
-
-                <com.pratham.foundation.customView.SansTextView
-                    android:id="@+id/tv_studentName"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/profileImage"
-                    android:gravity="center"
-                    android:paddingVertical="2dp"
-                    android:textAllCaps="true"
-                    android:textColor="@color/white"
-                    android:textSize="@dimen/_15sdp" />
-
-            </RelativeLayout>
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/profileImage"
+                android:gravity="center"
+                android:paddingVertical="2dp"
+                android:textAllCaps="true"
+                android:textColor="@color/white"
+                android:textSize="@dimen/_15sdp" />
 
         </RelativeLayout>
+
     </RelativeLayout>
+
+<!--    <RelativeLayout-->
+<!--        android:id="@+id/header_rll"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="140dp"-->
+<!--        android:layout_alignParentTop="true"-->
+<!--        android:visibility="gone"-->
+<!--        android:background="@drawable/home_header_1_bg"-->
+<!--        android:elevation="5dp">-->
+
+<!--        <RelativeLayout-->
+<!--            android:id="@+id/header_layout"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="match_parent"-->
+<!--            android:layout_marginTop="5dp">-->
+
+<!--            <RelativeLayout-->
+<!--                android:id="@+id/profile_headerl"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="130dp"-->
+<!--                android:layout_alignParentTop="true">-->
+
+<!--                <com.pratham.foundation.customView.CircularImageView-->
+<!--                    android:id="@+id/profileImagel"-->
+<!--                    android:layout_width="90dp"-->
+<!--                    android:layout_height="90dp"-->
+<!--                    android:layout_centerHorizontal="true"-->
+<!--                    android:scaleType="fitCenter"-->
+<!--                    android:src="@drawable/b2"-->
+<!--                    app:border="true"-->
+<!--                    app:border_color="@color/colorAccent"-->
+<!--                    app:border_width="2dp"-->
+<!--                    app:shadow="true" />-->
+
+<!--                <com.pratham.foundation.customView.SansTextView-->
+<!--                    android:id="@+id/tv_studentNamel"-->
+<!--                    android:layout_width="match_parent"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:layout_below="@+id/profileImagel"-->
+<!--                    android:gravity="center"-->
+<!--                    android:paddingVertical="2dp"-->
+<!--                    android:textAllCaps="true"-->
+<!--                    android:textColor="@color/white"-->
+<!--                    android:textSize="@dimen/_15sdp" />-->
+
+<!--            </RelativeLayout>-->
+
+<!--        </RelativeLayout>-->
+<!--    </RelativeLayout>-->
 
     <com.yarolegovich.discretescrollview.DiscreteScrollView
         android:id="@+id/forecast_city_picker"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="140dp"
+        android:layout_marginTop="145dp"
         android:layout_gravity="bottom"
         android:elevation="7dp" />
 
@@ -136,7 +180,7 @@
         android:layout_alignParentBottom="true"
         android:layout_alignParentRight="true"
         android:layout_marginEnd="20dp"
-        android:layout_marginBottom="50dp"
+        android:layout_marginBottom="20dp"
         android:scaleType="centerInside"
         android:background="@drawable/dialog_image_bg"
         android:src="@drawable/language_icon"

@@ -242,7 +242,7 @@ public class QRScanActivity extends BaseActivity implements
             showLoader();
 //            getStudentData(FC_Constants.STUDENT_PROGRESS_INTERNET, FC_Constants.STUDENT_PROGRESS_API, stdId);
         } else {
-            Toast.makeText(this, "No Internet Connection", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, getResources().getString(R.string.No_Internet_Connection), Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -440,7 +440,7 @@ public class QRScanActivity extends BaseActivity implements
             }
 
         } catch (Exception e) {
-            Toast.makeText(this, "Invalid QR Code !!!", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, getResources().getString(R.string.Invalid_QR_Code), Toast.LENGTH_SHORT).show();
             scanNextQRCode();
             BackupDatabase.backup(this);
             e.printStackTrace();
@@ -461,10 +461,11 @@ public class QRScanActivity extends BaseActivity implements
         Button dia_btn_red = dialog.findViewById(R.id.dia_btn_red);
 
         if (dialogMode.equalsIgnoreCase("Complete"))
-            title.setText("Only 5 Students Allowed");
+            title.setText(getResources().getString(R.string.Only_5_Students_Allowed));
         else
-            title.setText("This Student already exists...\n Scan new QR.");
-        dia_btn_green.setText("OK");
+            title.setText(getResources().getString(R.string.Student_exists)+
+                    "...\n"+getResources().getString(R.string.Scan_new_QR));
+        dia_btn_green.setText(getResources().getString(R.string.Okay));
         dia_btn_red.setVisibility(View.GONE);
         dia_btn_yellow.setVisibility(View.GONE);
 

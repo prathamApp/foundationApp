@@ -33,7 +33,7 @@
             android:layout_marginStart="@dimen/_5sdp"
             android:layout_marginEnd="@dimen/_5sdp"
             android:gravity="center"
-            android:text="Scan QR Code"
+            android:text="@string/Scan_QR_Code"
             android:textColor="@color/white"
             android:textSize="@dimen/_18sdp"
             android:textStyle="bold" />
@@ -215,7 +215,7 @@
                             android:textStyle="bold"
                             android:textColor="@color/white"
                             android:background="@drawable/red_button"
-                            android:text="Reset"/>
+                            android:text="@string/Reset"/>
 
                         <com.pratham.foundation.customView.SansButton
                             android:id="@+id/btn_get_progress"
@@ -230,7 +230,7 @@
                             android:visibility="gone"
                             android:textColor="@color/white"
                             android:background="@drawable/yellow_button"
-                            android:text="Get Progress"/>
+                            android:text="@string/Get_Progress"/>
 
                         <com.pratham.foundation.customView.SansButton
                             android:id="@+id/btn_start_game"
@@ -244,7 +244,7 @@
                             android:textStyle="bold"
                             android:textColor="@color/white"
                             android:background="@drawable/green_button"
-                            android:text="Start"/>
+                            android:text="@string/Start"/>
 
                     </RelativeLayout>
 
