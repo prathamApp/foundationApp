@@ -565,7 +565,6 @@ public class SplashActivity extends SplashSupportActivity implements SplashContr
                 dialog.dismiss();
             }
         });
-
     }
 
     @Override
