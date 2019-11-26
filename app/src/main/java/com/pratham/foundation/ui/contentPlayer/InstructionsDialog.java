@@ -25,10 +25,11 @@ public class InstructionsDialog extends Dialog {
     private Context context;
     private InstructionsDialog instructionsDialog;
 
-    public InstructionsDialog(@NonNull Context context, String resorcetype) {
+    public InstructionsDialog(ShowInstruction showInstruction,@NonNull Context context, String resorcetype) {
         super(context,R.style.FullScreenCustomDialogStyle);
         this.resorcetype = resorcetype;
         this.context = context;
+        this.showInstruction=showInstruction;
     }
 
     @Override
@@ -49,15 +50,7 @@ public class InstructionsDialog extends Dialog {
 
     @OnClick(R.id.dia_btn_green)
     public void playGame() {
-       // showInstruction.play();
-        this.dismiss();
-       /* Handler handler = new Handler();
-        handler.postDelayed(new Runnable() {
-            public void run() {
-                instructionsDialog.dismiss();
-            }
-        }, 1000);*/
-
+        showInstruction.play(context);
     }
 
 

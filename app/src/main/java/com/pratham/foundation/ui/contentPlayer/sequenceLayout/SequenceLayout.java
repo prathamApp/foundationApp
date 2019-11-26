@@ -130,8 +130,11 @@ public class SequenceLayout extends Fragment implements SequeanceLayoutContract.
     @Override
     public void contentClicked(ContentTable contentTable) {
         onConentClickeditem = contentTable;
-        GameConstatnts.showInstructionDialog(this, getActivity(), contentTable.getResourceType());
-        play();
+       // GameConstatnts.showInstructionDialog(this, getActivity(), contentTable.getResourceType());
+        if (!contentTable.getResourceType().equalsIgnoreCase(GameConstatnts.READ_VOCAB_ANDROID)) {
+            playInsequence = false;
+            playGamesAfterDialog();
+        }
     }
 
     @Click(R.id.btn_back)
@@ -139,10 +142,11 @@ public class SequenceLayout extends Fragment implements SequeanceLayoutContract.
         getActivity().onBackPressed();
     }
 
-    @Override
-    public void play() {
+
+    public void playGamesAfterDialog() {
         if (onConentClickeditem != null) {
-            Bundle bundle = new Bundle();
+            GameConstatnts.gameSelector(getActivity(), onConentClickeditem);
+           /* Bundle bundle = new Bundle();
             bundle.putString("contentPath", onConentClickeditem.getResourcePath());
             bundle.putString("StudentID", FC_Constants.currentStudentID);
             bundle.putString("resId", onConentClickeditem.getResourceId());
@@ -150,10 +154,10 @@ public class SequenceLayout extends Fragment implements SequeanceLayoutContract.
             bundle.putString("sttLang", onConentClickeditem.getContentLanguage());
             bundle.putBoolean("onSdCard", true);
             bundle.putString("jsonName", onConentClickeditem.getResourceType());
-            playInsequence = false;
-           /* if (getActivity() instanceof ContentPlayerActivity) {
+
+           *//* if (getActivity() instanceof ContentPlayerActivity) {
                 ((ContentPlayerActivity) getActivity()).showFloating_info();
-            }*/
+            }*//*
             switch (onConentClickeditem.getResourceType()) {
                 case GameConstatnts.FACTRETRIEVAL:
                     FC_Utility.showFragment((Activity) context, new FactRetrieval_(), R.id.RL_CPA,
@@ -215,14 +219,8 @@ public class SequenceLayout extends Fragment implements SequeanceLayoutContract.
                     FC_Utility.showFragment((Activity) context, new Fact_Retrieval_Fragment_(), R.id.RL_CPA,
                             bundle, Fact_Retrieval_Fragment_.class.getSimpleName());
                     break;
-                case GameConstatnts.PICTIONARYFRAGMENT:
-                    FC_Utility.showFragment((Activity) context, new ContentReadingFragment_(), R.id.RL_CPA,
-                            bundle, ContentReadingFragment.class.getSimpleName());
-                    break;
-                case GameConstatnts.READ_VOCAB_ANDROID:
-                    FC_Utility.showFragment((Activity) context, new VocabReadingFragment_(), R.id.RL_CPA,
-                            bundle, VocabReadingFragment.class.getSimpleName());
-                    break;
+
+
                 case GameConstatnts.THINKANDWRITE:
                 case GameConstatnts.DOING_ACT_READ:
                 case GameConstatnts.DOING_ACT_VIDEO:
@@ -240,6 +238,31 @@ public class SequenceLayout extends Fragment implements SequeanceLayoutContract.
                     context.startActivity(intent);
 //                FC_Utility.showFragment((Activity) context, new ActivityVideoView_(), R.id.RL_CPA,
 //                        bundle, ActivityVideoView.class.getSimpleName());
+                    break;
+            }*/
+        }
+    }
+
+    @Override
+    public void play(Context context) {
+        if (onConentClickeditem != null) {
+            Bundle bundle = new Bundle();
+            bundle.putString("contentPath", onConentClickeditem.getResourcePath());
+            bundle.putString("StudentID", FC_Constants.currentStudentID);
+            bundle.putString("resId", onConentClickeditem.getResourceId());
+            bundle.putString("contentName", onConentClickeditem.getNodeTitle());
+            bundle.putString("sttLang", onConentClickeditem.getContentLanguage());
+            bundle.putBoolean("onSdCard", true);
+            bundle.putString("jsonName", onConentClickeditem.getResourceType());
+            playInsequence = false;
+            switch (onConentClickeditem.getResourceType()) {
+                case GameConstatnts.READ_VOCAB_ANDROID:
+                    FC_Utility.showFragment((Activity) context, new VocabReadingFragment_(), R.id.RL_CPA,
+                            bundle, VocabReadingFragment.class.getSimpleName());
+                    break;
+                case GameConstatnts.PICTIONARYFRAGMENT:
+                    FC_Utility.showFragment((Activity) context, new ContentReadingFragment_(), R.id.RL_CPA,
+                            bundle, ContentReadingFragment.class.getSimpleName());
                     break;
             }
         }

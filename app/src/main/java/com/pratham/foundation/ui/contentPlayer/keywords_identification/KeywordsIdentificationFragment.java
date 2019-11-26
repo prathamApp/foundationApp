@@ -7,6 +7,8 @@ import android.support.v4.content.ContextCompat;
 import android.view.Gravity;
 import android.view.View;
 import android.view.Window;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -60,6 +62,8 @@ public class KeywordsIdentificationFragment extends Fragment implements Keywords
     RelativeLayout keyword_selected;
     @ViewById(R.id.show_me_keywords)
     SansButton show_me_keywords;
+    @ViewById(R.id.resultLayout)
+    RelativeLayout resultLayout;
 
     RelativeLayout.LayoutParams viewParam;
     private HashMap<String, List<Integer>> positionMap;
@@ -69,7 +73,7 @@ public class KeywordsIdentificationFragment extends Fragment implements Keywords
     private ScienceQuestion questionModel;
     private boolean isKeyWordShowing = false;
     private boolean issubmitted = false;
-
+    private Animation animFadein;
     @AfterViews
     public void initiate() {
         Bundle bundle = getArguments();
@@ -84,6 +88,8 @@ public class KeywordsIdentificationFragment extends Fragment implements Keywords
             else
                 readingContentPath = ApplicationClass.foundationPath + gameFolderPath + "/" + contentPath + "/";
         }
+        animFadein = AnimationUtils.loadAnimation(getActivity().getApplicationContext(),
+                R.anim.bounce_new);
         EventBus.getDefault().register(this);
         presenter.setView(KeywordsIdentificationFragment.this, resId, readingContentPath);
         selectedKeywords = new ArrayList<>();
@@ -299,6 +305,7 @@ public class KeywordsIdentificationFragment extends Fragment implements Keywords
                 btn_submit.setText("Next");
                 show_me_keywords.setVisibility(View.INVISIBLE);
                 presenter.addLearntWords(selectedKeywords);
+                resultLayout.startAnimation(animFadein);
             }
 
         } else {
