@@ -5,6 +5,8 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.TextView;
 
@@ -55,7 +57,7 @@ public class KeywordMappingFragment extends Fragment implements KeywordMappingCo
     private KeywordOptionAdapter keywordOptionAdapter;
     private ScienceQuestion keywordmapping;
     private boolean isSubmitted = false;
-
+    private Animation animFadein;
 
     @AfterViews
     protected void initiate() {
@@ -71,7 +73,8 @@ public class KeywordMappingFragment extends Fragment implements KeywordMappingCo
             else
                 readingContentPath = ApplicationClass.foundationPath + gameFolderPath + "/" + contentPath + "/";
         }
-
+        animFadein = AnimationUtils.loadAnimation(getActivity().getApplicationContext(),
+                R.anim.bounce_new);
         EventBus.getDefault().register(this);
         presenter.setView(KeywordMappingFragment.this, resId, readingContentPath);
         presenter.getData();
@@ -180,6 +183,7 @@ public class KeywordMappingFragment extends Fragment implements KeywordMappingCo
                     isSubmitted = true;
                     presenter.addLearntWords(keywordmapping, selectedoptionList);
                     submit.setText("Next");
+                    recycler_view.startAnimation(animFadein);
                 }
             } else {
                 GameConstatnts.playGameNext(getActivity(), GameConstatnts.TRUE, (OnGameClose) this);
