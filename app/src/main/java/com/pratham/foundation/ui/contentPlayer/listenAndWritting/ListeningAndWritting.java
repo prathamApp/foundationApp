@@ -1,7 +1,6 @@
 package com.pratham.foundation.ui.contentPlayer.listenAndWritting;
 
 import android.app.Dialog;
-import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -60,7 +59,7 @@ public class ListeningAndWritting extends Fragment implements ListeningAndWritti
     ListeningAndWrittingContract.ListeningAndWrittingPresenter presenter;
 
     @ViewById(R.id.play_button)
-    ImageView play;
+    ImageButton play;
 
     @ViewById(R.id.capture)
     ImageButton capture;
@@ -175,9 +174,9 @@ public class ListeningAndWritting extends Fragment implements ListeningAndWritti
                 for (int i = 0; i < childCount; i++) {
                     TextView tv = (TextView) tickMarkLabelsRelativeLayout.getChildAt(i);
                     if (i == position)
-                        tv.setTextColor(getResources().getColor(R.color.hahaColor));
+                        tv.setTextColor(getResources().getColor(R.color.colorBtnGreenDark));
                     else
-                        tv.setTextColor(getResources().getColor(R.color.grey_400));
+                        tv.setTextColor(getResources().getColor(R.color.colorRed));
 
                 }
                 switch (position) {
@@ -219,11 +218,11 @@ public class ListeningAndWritting extends Fragment implements ListeningAndWritti
         int interval = (width - (discreteSliderBackdropLeftMargin + discreteSliderBackdropRightMargin) - ((int) (firstTickMarkRadius + lastTickMarkRadius)))
                 / (tickMarkCount - 1);
 
-        String[] tickMarkLabels = {"slow", "normal", "fast"};
+        String[] tickMarkLabels = {" Slow ", "Normal", " Fast "};
         int tickMarkLabelWidth = DisplayUtility.dp2px(getContext(), 40);
 
         for (int i = 0; i < tickMarkCount; i++) {
-            TextView tv = new TextView(getContext());
+            SansTextView tv = new SansTextView(getContext());
             tv.setTextSize(25);
             RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(
                     RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
@@ -231,9 +230,9 @@ public class ListeningAndWritting extends Fragment implements ListeningAndWritti
             tv.setText(tickMarkLabels[i]);
             tv.setGravity(Gravity.CENTER);
             if (i == discreteSlider.getPosition())
-                tv.setTextColor(getResources().getColor(R.color.hahaColor));
+                tv.setTextColor(getResources().getColor(R.color.colorBtnGreenDark));
             else
-                tv.setTextColor(getResources().getColor(R.color.grey_400));
+                tv.setTextColor(getResources().getColor(R.color.colorRed));
 
 //                    tv.setBackgroundColor(getResources().getColor(android.R.color.holo_blue_dark));
 

@@ -104,104 +104,134 @@
             android:id="@+id/media"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:layout_alignParentTop="true"
+            android:layout_marginTop="@dimen/_20sdp"
+            android:layout_marginBottom="@dimen/_20sdp"
+            android:layout_marginStart="@dimen/_10sdp"
+            android:layout_marginEnd="@dimen/_15sdp"
             android:layout_above="@+id/bottom_bar">
 
-            <LinearLayout
-                android:id="@+id/play_button_control"
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/_110sdp"
-                android:layout_centerInParent="true"
-                android:orientation="horizontal">
-
-                <RelativeLayout
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1">
-
-                    <ImageView
-                        android:id="@+id/play_button"
-                        android:layout_width="@dimen/_50sdp"
-                        android:layout_height="@dimen/_50sdp"
-                        android:layout_centerInParent="true"
-                        style="@style/submitbtn"
-                        android:scaleType="fitXY"
-                        android:src="@drawable/ic_play_arrow_black" />
-                </RelativeLayout>
-
-                <RelativeLayout
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1">
-
-                    <ImageView
-                        android:id="@+id/replay"
-                        android:layout_width="@dimen/_50sdp"
-                        android:layout_height="@dimen/_50sdp"
-                        android:layout_centerInParent="true"
-                        style="@style/submitbtn"
-                        android:background="@drawable/red_button"
-                        android:scaleType="fitXY"
-                        android:src="@drawable/ic_stop_black" />
-                </RelativeLayout>
-
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/radiogroup"
-                android:layout_below="@id/play_button_control"
+            <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:layout_marginTop="@dimen/_30sdp"
-                android:background="@color/grey_100">
+                android:paddingTop="@dimen/_10sdp"
+                android:paddingBottom="@dimen/_10sdp"
+                android:layout_centerInParent="true"
+                android:elevation="@dimen/_5sdp"
+                android:background="@drawable/dialog_bg">
 
-                <RelativeLayout
-                    android:id="@+id/tick_mark_labels_rl"
+                <com.pratham.foundation.customView.SansTextView
+                    android:id="@+id/count"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:paddingTop="12dp"/>
+                    android:layout_alignParentTop="true"
+                    android:layout_centerHorizontal="true"
+                    android:textSize="@dimen/_20sdp"
+                    android:gravity="center"
+                    android:textColor="@color/colorText"
+                    android:layout_marginTop="@dimen/_20sdp"
+                    android:layout_marginBottom="@dimen/_20sdp"
+                    android:text="Listen and write" />
 
-                <com.etiennelawlor.discreteslider.library.ui.DiscreteSlider
-                    android:id="@+id/discrete_slider"
+                <LinearLayout
+                    android:id="@+id/play_button_control"
                     android:layout_width="match_parent"
-                    android:layout_height="56dp"
-                    android:layout_marginBottom="4dp"
-                    android:paddingLeft="8dp"
-                    android:paddingRight="8dp"
-                    android:background="@color/grey_100"
-                    app:backdropFillColor="@color/grey_200"
-                    app:backdropStrokeColor="@color/grey_300"
-                    app:backdropStrokeWidth="1dp"
-                    app:horizontalBarThickness="4dp"
-                    app:tickMarkCount="3"
-                    app:tickMarkRadius="8dp"
-                    app:position="1"
-                    app:thumb="@drawable/thumb"
-                    app:progressDrawable="@drawable/transparent_progress_drawable"/>
-            </LinearLayout>
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/count"
+                    android:orientation="horizontal">
 
-            <com.pratham.foundation.customView.SansButton
-                android:id="@+id/show_answer"
-                style="@style/submitbtn"
-                android:layout_width="wrap_content"
-                android:layout_height="50dp"
-                android:layout_below="@+id/radiogroup"
-                android:layout_centerHorizontal="true"
-                android:layout_marginTop="@dimen/_10sdp"
-                android:background="@drawable/yellow_button"
-                android:paddingHorizontal="@dimen/_10sdp"
-                android:text="hint" />
+                    <RelativeLayout
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_marginTop="@dimen/_10sdp"
+                        android:layout_marginBottom="@dimen/_10sdp"
+                        android:layout_weight="1">
 
-            <com.pratham.foundation.customView.SansTextView
-                android:id="@+id/count"
-                style="@style/question"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_above="@id/play_button_control"
-                android:layout_centerHorizontal="true"
-                android:layout_marginBottom="@dimen/_30sdp"
-                android:text="Listen and write" />
+                        <ImageButton
+                            android:id="@+id/play_button"
+                            android:layout_width="@dimen/_80sdp"
+                            android:layout_height="@dimen/_30sdp"
+                            android:layout_centerInParent="true"
+                            android:scaleType="centerInside"
+                            android:elevation="5dp"
+                            style="@style/submitbtn"
+                            android:src="@drawable/ic_play_arrow_black" />
+                    </RelativeLayout>
+
+                    <RelativeLayout
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_marginTop="@dimen/_10sdp"
+                        android:layout_marginBottom="@dimen/_10sdp"
+                        android:layout_weight="1">
+
+                        <ImageButton
+                            android:id="@+id/replay"
+                            android:layout_width="@dimen/_80sdp"
+                            android:layout_height="@dimen/_30sdp"
+                            android:layout_centerInParent="true"
+                            android:scaleType="centerInside"
+                            style="@style/submitbtn"
+                            android:elevation="5dp"
+                            android:background="@drawable/red_button"
+                            android:src="@drawable/ic_stop_black" />
+                    </RelativeLayout>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/radiogroup"
+                    android:layout_below="@id/play_button_control"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:elevation="2dp"
+                    android:background="@color/colorButtonPressedBg"
+                    android:layout_marginTop="@dimen/_20sdp"
+                    android:layout_marginBottom="@dimen/_20sdp">
+
+                    <RelativeLayout
+                        android:id="@+id/tick_mark_labels_rl"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/_10sdp"
+                        android:layout_marginEnd="@dimen/_10sdp"
+                        android:paddingTop="12dp"/>
+
+                    <com.etiennelawlor.discreteslider.library.ui.DiscreteSlider
+                        android:id="@+id/discrete_slider"
+                        android:layout_width="match_parent"
+                        android:layout_height="56dp"
+                        android:layout_marginBottom="4dp"
+                        android:layout_marginStart="@dimen/_10sdp"
+                        android:layout_marginEnd="@dimen/_10sdp"
+                        android:paddingLeft="8dp"
+                        android:paddingRight="8dp"
+                        app:backdropFillColor="@color/grey_200"
+                        app:backdropStrokeColor="@color/gradianceStartColor"
+                        app:backdropStrokeWidth="1dp"
+                        app:horizontalBarThickness="4dp"
+                        app:tickMarkCount="3"
+                        app:tickMarkRadius="8dp"
+                        app:position="1"
+                        app:thumb="@drawable/thumb"
+                        app:progressDrawable="@drawable/transparent_progress_drawable"/>
+                </LinearLayout>
+
+                <com.pratham.foundation.customView.SansButton
+                    android:id="@+id/show_answer"
+                    style="@style/submitbtn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="50dp"
+                    android:layout_below="@+id/radiogroup"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:background="@drawable/yellow_button"
+                    android:paddingHorizontal="@dimen/_10sdp"
+                    android:text="hint" />
+
+            </RelativeLayout>
+
         </RelativeLayout>
 
         <include

@@ -233,6 +233,7 @@
         <item name="android:elevation">5dp</item>
         <item name="android:padding"> @dimen/_15sdp</item>
         <item name="android:textSize">@dimen/_20sdp</item>
+        <item name="android:color">@color/colorText</item>
         <item name="android:textAlignment">center</item>
     </style>
     <style name="paragraph">
