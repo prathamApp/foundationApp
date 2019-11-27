@@ -25,6 +25,10 @@
     <string name="Scan_new_QR">Scan new QR.</string>
     <string name="Welcome">वेलकम </string>
     <string name="select_subject">Please select a subject...</string>
+    <string name="usage">Usage</string>
+    <string name="days">Days</string>
+    <string name="hours">Hours</string>
+    <string name="progress">Progress</string>
 
 
 

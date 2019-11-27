@@ -1,21 +1,32 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+<com.pratham.foundation.customView.shape_of_view.ShadowLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/content_card_view"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@drawable/ripple_rectangle_card"
-    android:padding="5dp"
-    app:cardElevation="@dimen/_3sdp"
-    app:cardCornerRadius="13dp">
+    app:sl_shadow_angle="30"
+    app:sl_shadow_color="@color/colorBlackTransparentLight"
+    app:sl_shadow_distance="@dimen/_5sdp"
+    app:sl_shadow_radius="@dimen/_3sdp"
+    app:sl_shadowed="true">
+<!--
 
-    <ImageView
-        android:id="@+id/content_thumbnail"
+    <com.pratham.foundation.customView.shape_of_view.ShapeOfView
+        android:id="@+id/content_card_view"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_alignStart="@+id/card_img"
-        android:layout_alignTop="@+id/card_img"
-        android:foregroundGravity="center"
-        android:scaleType="fitXY"
-        android:src="@drawable/ic_cos_english" />
-</android.support.v7.widget.CardView>
+        android:layout_height="@dimen/_100sdp"
+        android:background="@color/blue"
+        android:elevation="@dimen/_10sdp"
+        app:clip_drawable="@drawable/eng_01">
+-->
+
+        <ImageView
+            android:id="@+id/content_thumbnail"
+            android:layout_width="match_parent"
+            android:scaleType="fitCenter"
+            android:layout_height="@dimen/_100sdp"
+            android:src="@drawable/eng_01" />
+
+<!--    </com.pratham.foundation.customView.shape_of_view.ShapeOfView>-->
+</com.pratham.foundation.customView.shape_of_view.ShadowLayout>
+
+    <!--    android:background="@drawable/ripple_rectangle_card"-->

@@ -37,17 +37,16 @@ public class SelectSubjectAdapter extends RecyclerView.Adapter<SelectSubjectAdap
     @Override
     public void onBindViewHolder(@NonNull Myviewholder myviewholder, int i) {
         if (datalist.get(i).getNodeTitle().equals("Science")) {
-            myviewholder.content_thumbnail.setImageResource(R.drawable.ic_cos_science);
+            myviewholder.content_thumbnail.setImageResource(R.drawable.sci_01);
         } else if (datalist.get(i).getNodeTitle().equals("Maths")) {
-            myviewholder.content_thumbnail.setImageResource(R.drawable.ic_cos_math);
+            myviewholder.content_thumbnail.setImageResource(R.drawable.math_01);
         } else if (datalist.get(i).getNodeTitle().equals("English")) {
-            myviewholder.content_thumbnail.setImageResource(R.drawable.ic_cos_english);
+            myviewholder.content_thumbnail.setImageResource(R.drawable.eng_01);
         } else if (datalist.get(i).getNodeTitle().equals("H Science")) {
             myviewholder.content_thumbnail.setImageResource(R.drawable.ic_cos_h_science);
         } else {
-            myviewholder.content_thumbnail.setImageResource(R.drawable.ic_cos_lang);
+            myviewholder.content_thumbnail.setImageResource(R.drawable.lang_01);
         }
-
         myviewholder.content_thumbnail.setOnClickListener(v -> {
             itemClicked.onItemClicked(datalist.get(i));
         });

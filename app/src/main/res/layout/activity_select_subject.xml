@@ -2,7 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/bg_anim_fourth_layer">
+    android:background="#FEFCF7">
 
     <RelativeLayout
         android:id="@+id/topPanel"
@@ -40,6 +40,7 @@
             android:layout_width="50dp"
             android:layout_height="match_parent"
             android:layout_alignParentEnd="true" />
+
     </RelativeLayout>
 
     <com.pratham.foundation.customView.SansTextView
@@ -47,7 +48,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/select_subject"
-        android:paddingHorizontal="@dimen/_10sdp"
+        android:paddingStart="@dimen/_10sdp"
+        android:paddingEnd="@dimen/_10sdp"
         android:layout_marginTop="@dimen/_5sdp"
         android:gravity="center"
         android:layout_below="@id/topPanel"
@@ -59,7 +61,6 @@
         android:layout_width="match_parent"
         android:layout_below="@id/subject"
         android:layout_height="match_parent"
-        android:layout_marginTop="@dimen/_10sdp"
-        />
+        android:layout_marginTop="@dimen/_10sdp"/>
 
 </RelativeLayout>

@@ -1,5 +1,6 @@
 package com.pratham.foundation.ui.selectSubject;
 
+
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
@@ -30,6 +31,7 @@ import static com.pratham.foundation.utility.FC_Constants.currentSubjectFolder;
 import static com.pratham.foundation.utility.FC_Constants.gameFolderPath;
 import static com.pratham.foundation.utility.FC_Utility.dpToPx;
 
+
 @EActivity(R.layout.activity_select_subject)
 public class SelectSubject extends BaseActivity implements
         SelectSubjectContract.View, SelectSubjectContract.itemClicked {
@@ -47,8 +49,6 @@ public class SelectSubject extends BaseActivity implements
 
     @AfterViews
     protected void initiate() {
-        // super.onCreate(savedInstanceState);
-        //setContentView();
         context = SelectSubject.this;
         Configuration config = getResources().getConfiguration();
         FC_Constants.TAB_LAYOUT = config.smallestScreenWidthDp > 425;
@@ -58,12 +58,11 @@ public class SelectSubject extends BaseActivity implements
             studName = currentStudentName;
         else
             studName = currentStudentName.split(" ")[0];
-
         name.setText(getResources().getString(R.string.Welcome)+" "+studName+".");
-
         subjectAdapter = new SelectSubjectAdapter(this, subjectList);
-        RecyclerView.LayoutManager mLayoutManager = new GridLayoutManager(this, 2);
+        RecyclerView.LayoutManager mLayoutManager = new GridLayoutManager(this, 1);
         subject_recycler.setLayoutManager(mLayoutManager);
+
         int dp = 12;
         if (FC_Constants.TAB_LAYOUT)
             dp = 20;

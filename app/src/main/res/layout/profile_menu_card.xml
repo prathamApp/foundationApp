@@ -1,0 +1,40 @@
+<android.support.design.card.MaterialCardView android:id="@+id/lbl_Progreess_layout"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_alignParentTop="true"
+    android:layout_marginTop="@dimen/_3sdp"
+    android:layout_marginBottom="@dimen/_8sdp"
+    android:layout_marginStart="@dimen/_15sdp"
+    android:layout_marginEnd="@dimen/_15sdp"
+    app:cardElevation="@dimen/_2sdp"
+    app:cardCornerRadius="@dimen/_10sdp"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_margin="10dp">
+
+        <com.pratham.foundation.customView.SansTextViewBold
+            android:id="@+id/lbl_Progreess_header"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:paddingTop="2dp"
+            android:paddingBottom="2dp"
+            android:layout_marginTop="5dp"
+            android:text="@string/progress"
+            android:textAllCaps="true"
+            android:textColor="@color/colorBtnGreenDark"
+            android:textSize="@dimen/_14sdp" />
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/recycler_view_grid_list"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_5sdp"
+            android:layout_below="@+id/lbl_Progreess_header" />
+
+    </RelativeLayout>
+</android.support.design.card.MaterialCardView>

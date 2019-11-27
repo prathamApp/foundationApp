@@ -31,8 +31,8 @@ import com.pratham.foundation.services.shared_preferences.FastSave;
 import com.pratham.foundation.ui.home_screen.fun.FunFragment_;
 import com.pratham.foundation.ui.home_screen.learning_fragment.LearningFragment_;
 import com.pratham.foundation.ui.home_screen.practice_fragment.PracticeFragment_;
+import com.pratham.foundation.ui.home_screen.profile_new.ProfileFragment_;
 import com.pratham.foundation.ui.student_profile.Student_profile_activity;
-import com.pratham.foundation.ui.student_profile.Student_profile_activity_;
 import com.pratham.foundation.ui.test.supervisor.SupervisedAssessmentActivity;
 import com.pratham.foundation.utility.FC_Constants;
 
@@ -489,10 +489,10 @@ public class HomeActivity extends BaseActivity implements LevelChanged, CursorWh
         if (currentSubject.equalsIgnoreCase("english")) {
 //            adapter.addFrag(new TestFragment_(), "Test");
             adapter.addFrag(new FunFragment_(), "Fun");
-            adapter.addFrag(new Student_profile_activity_(), "Profile");
+            adapter.addFrag(new ProfileFragment_(), "Profile");
         }
         else
-            adapter.addFrag(new Student_profile_activity_(), "Profile");
+            adapter.addFrag(new ProfileFragment_(), "Profile");
 
         viewpager.setAdapter(adapter);
     }
