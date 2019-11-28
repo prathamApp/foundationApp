@@ -40,4 +40,30 @@ public class ProfileFragment extends Fragment implements ProfileContract.Profile
             my_recycler_view.setAdapter(adapterParent);
         }
     }
+
+//    @Click({R.id.rl_share_app, R.id.btn_share_app})
+//    public void share_app() {
+//        KotlinPermissions.with(getActivity())
+//                .permissions(Manifest.permission.WRITE_EXTERNAL_STORAGE,
+//                        Manifest.permission.READ_EXTERNAL_STORAGE)
+//                .onAccepted(permissionResult -> {
+//                    try {
+//                        Intent intentShareFile = new Intent(Intent.ACTION_SEND);
+//                        PackageManager pm = ApplicationClass.getInstance().getPackageManager();
+//                        ApplicationInfo ai = pm.getApplicationInfo(ApplicationClass.getInstance().getPackageName(), 0);
+//                        File localFile = new File(ai.publicSourceDir);
+//                        Uri uri = FileProvider.getUriForFile(getActivity(),
+//                                BuildConfig.APPLICATION_ID + ".provider", localFile);
+//                        intentShareFile.setType("*/*");
+//                        intentShareFile.putExtra(Intent.EXTRA_STREAM, uri);
+//                        intentShareFile.putExtra(Intent.EXTRA_SUBJECT, "Please download apk from here...");
+//                        intentShareFile.putExtra(Intent.EXTRA_TEXT, "https://play.google.com/store/apps/details?id=com.pratham.foundation");
+//                        intentShareFile.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+//                        startActivity(Intent.createChooser(intentShareFile, "Share through"));
+//                    } catch (Exception e) {
+//                        e.printStackTrace();
+//                    }
+//                })
+//                .ask();
+//    }
 }

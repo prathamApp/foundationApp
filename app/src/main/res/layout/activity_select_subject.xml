@@ -2,44 +2,59 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="#FEFCF7">
+
+    <com.pratham.foundation.customView.shape_of_view.ShadowLayout
+        android:layout_width="wrap_content"
+        android:id="@+id/shadow_close"
+        android:layout_alignParentEnd="true"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/_10sdp"
+        app:sl_shadow_angle="30"
+        app:sl_shadow_color="@color/colorBlackTransparentLight"
+        app:sl_shadow_distance="4dp"
+        app:sl_shadow_radius="5dp"
+        app:sl_shadowed="true">
+
+        <ImageButton
+            android:id="@+id/btn_back"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_centerVertical="true"
+            android:scaleType="fitXY"
+            android:background="?android:selectableItemBackground"
+            android:src="@drawable/ic_close_red" />
+    </com.pratham.foundation.customView.shape_of_view.ShadowLayout>
+
 
     <RelativeLayout
         android:id="@+id/topPanel"
         android:layout_width="match_parent"
         android:layout_height="60dp"
-        android:layout_alignParentTop="true"
-        android:background="@color/colorBtnRedDark">
-
-        <ImageButton
-            android:id="@+id/btn_back"
-            android:layout_width="50dp"
-            android:layout_height="match_parent"
-            android:layout_centerVertical="true"
-            android:background="?android:selectableItemBackground"
-            android:padding="@dimen/_5sdp"
-            android:src="@drawable/ic_left_arrow_white" />
+        android:layout_marginTop="@dimen/_10sdp"
+        android:layout_alignParentTop="true">
 
         <com.pratham.foundation.customView.SansTextViewBold
             android:id="@+id/name"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:layout_centerInParent="true"
-            android:layout_toEndOf="@+id/btn_back"
-            android:layout_toStartOf="@+id/just_view"
-            android:layout_marginStart="@dimen/_5sdp"
+            android:layout_alignParentStart="true"
+            android:layout_toStartOf="@+id/just_view2"
+            android:layout_marginStart="@dimen/_25sdp"
             android:layout_marginEnd="@dimen/_5sdp"
-            android:gravity="center"
+            android:gravity="center_vertical"
             android:text="@string/Welcome"
-            android:textColor="@color/white"
+            android:textColor="@color/colorText"
             android:textSize="@dimen/_18sdp"
             android:textStyle="bold" />
 
         <View
-            android:id="@+id/just_view"
+            android:id="@+id/just_view2"
             android:layout_width="50dp"
-            android:layout_height="match_parent"
-            android:layout_alignParentEnd="true" />
+            android:layout_alignParentEnd="true"
+            android:layout_height="match_parent"/>
+
 
     </RelativeLayout>
 
@@ -48,10 +63,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/select_subject"
-        android:paddingStart="@dimen/_10sdp"
-        android:paddingEnd="@dimen/_10sdp"
+        android:layout_marginStart="@dimen/_25sdp"
         android:layout_marginTop="@dimen/_5sdp"
-        android:gravity="center"
         android:layout_below="@id/topPanel"
         android:textColor="@color/colorText"
         android:textSize="@dimen/_18sdp" />
@@ -61,6 +74,7 @@
         android:layout_width="match_parent"
         android:layout_below="@id/subject"
         android:layout_height="match_parent"
-        android:layout_marginTop="@dimen/_10sdp"/>
+        android:layout_marginTop="@dimen/_10sdp"
+        />
 
 </RelativeLayout>

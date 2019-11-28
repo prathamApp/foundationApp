@@ -1,13 +1,19 @@
 package com.pratham.foundation.ui.selectSubject;
 
 
+import android.annotation.SuppressLint;
+import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.DisplayMetrics;
+import android.view.Window;
+import android.widget.Button;
 import android.widget.TextView;
 
 import com.pratham.foundation.BaseActivity;
@@ -15,6 +21,7 @@ import com.pratham.foundation.R;
 import com.pratham.foundation.customView.GridSpacingItemDecoration;
 import com.pratham.foundation.database.domain.ContentTable;
 import com.pratham.foundation.ui.home_screen.HomeActivity_;
+import com.pratham.foundation.ui.splash_activity.SplashActivity_;
 import com.pratham.foundation.utility.FC_Constants;
 
 import org.androidannotations.annotations.AfterViews;
@@ -24,6 +31,7 @@ import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.ViewById;
 
 import java.util.List;
+import java.util.Objects;
 
 import static com.pratham.foundation.utility.FC_Constants.currentLevel;
 import static com.pratham.foundation.utility.FC_Constants.currentStudentName;
@@ -108,7 +116,47 @@ public class SelectSubject extends BaseActivity implements
 
     @Override
     public void onBackPressed() {
-        endSession(this);
-        super.onBackPressed();
+        exitDialog();
     }
+
+    @SuppressLint("SetTextI18n")
+    private void exitDialog() {
+        Dialog dialog = new Dialog(SelectSubject.this);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setContentView(R.layout.fc_custom_exit_dialog);
+/*      Bitmap map=FC_Utility.takeScreenShot(HomeActivity.this);
+        Bitmap fast=FC_Utility.fastblur(map, 20);
+        final Drawable draw=new BitmapDrawable(getResources(),fast);
+        dialog.getWindow().setBackgroundDrawable(draw);*/
+        Objects.requireNonNull(dialog.getWindow()).setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        dialog.setCancelable(false);
+        dialog.setCanceledOnTouchOutside(false);
+        dialog.show();
+
+        TextView dia_title = dialog.findViewById(R.id.dia_title);
+        Button dia_btn_green = dialog.findViewById(R.id.dia_btn_green);
+        Button dia_btn_yellow = dialog.findViewById(R.id.dia_btn_yellow);
+        Button dia_btn_red = dialog.findViewById(R.id.dia_btn_red);
+
+        dia_btn_green.setText (getResources().getString(R.string.Restart));
+        dia_btn_red.setText   (getResources().getString(R.string.Exit));
+        dia_btn_yellow.setText(getResources().getString(R.string.Cancel));
+
+        dia_btn_green.setOnClickListener(v -> {
+            finishAffinity();
+            context.startActivity(new Intent(context, SplashActivity_.class));
+            dialog.dismiss();
+        });
+
+        dia_btn_red.setOnClickListener(v -> {
+            endSession(this);
+            finishAffinity();
+            dialog.dismiss();
+        });
+
+        dia_btn_yellow.setOnClickListener(v -> {
+            dialog.dismiss();
+        });
+    }
+
 }

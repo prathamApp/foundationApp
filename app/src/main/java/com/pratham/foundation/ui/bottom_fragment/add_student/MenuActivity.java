@@ -132,10 +132,13 @@ public class MenuActivity extends BaseActivity {
     }
 
     private void gotoNext(String nextActivity) {
-        if(nextActivity.equalsIgnoreCase("SelectGroup"))
+        if(nextActivity.equalsIgnoreCase("SelectGroup")) {
             startActivity(new Intent(this, SelectGroupActivity_.class));
-        else
+            finish();
+        }else {
             startActivity(new Intent(this, QRScanActivity_.class));
+            finish();
+        }
     }
 
     @Click({R.id.btn_admin, R.id.rl_admin})

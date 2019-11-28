@@ -348,6 +348,7 @@ public class QRScanActivity extends BaseActivity implements
             }
             ButtonClickSound.start();
             startActivity(new Intent(this, SelectSubject_.class));
+            finish();
         }
     }
 
