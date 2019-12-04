@@ -65,8 +65,12 @@ import static com.pratham.foundation.utility.FC_Constants.dialog_btn_exit;
 @EActivity(R.layout.activity_home)
 public class HomeActivity extends BaseActivity implements LevelChanged, CursorWheelLayout.OnMenuSelectedListener {
 
+    @ViewById(R.id.tv_header_progress)
+    TextView tv_header_progress;
     @ViewById(R.id.viewpager)
     ViewPager viewpager;
+    @ViewById(R.id.home_root_layout)
+    RelativeLayout home_root_layout;
     @ViewById(R.id.tv_Topic)
     TextView tv_Topic;
     @ViewById(R.id.tv_Activity)
@@ -95,8 +99,8 @@ public class HomeActivity extends BaseActivity implements LevelChanged, CursorWh
     Drawable homeHeader3;
     @DrawableRes(R.drawable.home_header_4_bg)
     Drawable homeHeader4;
-    @ViewById(R.id.floating_back)
-    FloatingActionButton floating_back;
+    @ViewById(R.id.main_back)
+    ImageView main_back;
     @ViewById(R.id.floating_info)
     FloatingActionButton floating_info;
 
@@ -111,11 +115,13 @@ public class HomeActivity extends BaseActivity implements LevelChanged, CursorWh
         FC_Constants.TAB_LAYOUT = config.smallestScreenWidthDp > 425;
         sub_nodeId = getIntent().getStringExtra("nodeId");
         sub_Name = getIntent().getStringExtra("nodeTitle");
-        floating_back.setImageResource(R.drawable.ic_left_arrow_white);
+        changeBackground(sub_Name);
+//        floating_back.setImageResource(R.drawable.ic_left_arrow_white);
         floating_info.setImageResource(R.drawable.ic_info_outline_white);
         FC_Constants.currentSelectedLanguage = FastSave.getInstance().getString(FC_Constants.LANGUAGE, "");
         setupViewPager(viewpager);
-        tv_progress.setCurProgress(0);
+        tv_header_progress.setText("0%");
+//        tv_progress.setCurProgress(0);
         levelChanged = HomeActivity.this;
         count = 0;
         tabLayout.setupWithViewPager(viewpager);
@@ -128,6 +134,17 @@ public class HomeActivity extends BaseActivity implements LevelChanged, CursorWh
         setLevel();
         displayProfileName();
         displayProfileImage();
+    }
+
+    private void changeBackground(String sub_name) {
+//        if(sub_name.toLowerCase().contains("science"))
+//            home_root_layout.setBackground(getDrawable(R.drawable.science_bkgd));
+//        if(sub_name.toLowerCase().contains("english"))
+//            home_root_layout.setBackground(getDrawable(R.drawable.science_bkgd));
+//        if(sub_name.toLowerCase().contains("math"))
+//            home_root_layout.setBackground(getDrawable(R.drawable.science_bkgd));
+//        if(sub_name.toLowerCase().contains("language"))
+//            home_root_layout.setBackground(getDrawable(R.drawable.science_bkgd));
     }
 
     @Background
@@ -152,33 +169,6 @@ public class HomeActivity extends BaseActivity implements LevelChanged, CursorWh
 
     @UiThread
     public void setStudentProfileImage(String sImage) {
-/*        if (sImage != null) {
-            if (sImage.equalsIgnoreCase("group_icon"))
-                profileImage.setImageResource(R.drawable.ic_grp_btn);
-            else {
-                profileImage.setImageResource(R.drawable.b2);
-                switch (sImage) {
-                    case "b1.png":
-                        profileImage.setImageResource(R.drawable.b1);
-                        break;
-                    case "b2.png":
-                        profileImage.setImageResource(R.drawable.b2);
-                        break;
-                    case "b3.png":
-                        profileImage.setImageResource(R.drawable.b3);
-                        break;
-                    case "g1.png":
-                        profileImage.setImageResource(R.drawable.g1);
-                        break;
-                    case "g2.png":
-                        profileImage.setImageResource(R.drawable.g2);
-                        break;
-                    case "g3.png":
-                        profileImage.setImageResource(R.drawable.g3);
-                        break;
-                }
-            }
-        }*/
     }
 
     @Background
@@ -214,30 +204,6 @@ public class HomeActivity extends BaseActivity implements LevelChanged, CursorWh
 
     @UiThread
     public void setLevel() {
-/*
-        try {
-            if(count>0){
-            List<Level_ImageData> imageDatas = new ArrayList<>();
-            for (int i = 0; i < count; i++) {
-                imageDatas.add(new Level_ImageData("" + i));
-            }
-            Level_ImageAdapter simpleImageAdapter = new Level_ImageAdapter(this, imageDatas);
-            level_circle.setAdapter(simpleImageAdapter);
-            }
-        }catch (Exception e){
-            e.printStackTrace();
-        }
-        try{
-            level_circle.setOnMenuSelectedListener((parent, view, pos) -> {
-                FC_Constants.currentLevel = pos;
-                EventMessage eventMessage = new EventMessage();
-                eventMessage.setMessage(LEVEL_CHANGED);
-                EventBus.getDefault().post(eventMessage);
-                changeBGNew(FC_Constants.currentLevel);
-//                Toast.makeText(HomeActivity.this, "Level : " + pos, Toast.LENGTH_SHORT).show();
-            });
-        }catch (Exception e){e.printStackTrace();}
-*/
         SubmarineItem item = new SubmarineItem(getDrawable(R.drawable.level_1), null);
         SubmarineItem item2 = new SubmarineItem(getDrawable(R.drawable.level_2), null);
         SubmarineItem item3 = new SubmarineItem(getDrawable(R.drawable.level_3), null);
@@ -304,24 +270,28 @@ public class HomeActivity extends BaseActivity implements LevelChanged, CursorWh
     private void changeBGNew(int currentLevel) {
         switch (currentLevel) {
             case 0:
-                header_rl.setBackground(homeHeader0);
-                tabLayout.setBackgroundColor(getResources().getColor(R.color.level_0_color));
+//                header_rl.setBackground(homeHeader0);
+                tabLayout.setBackground(getResources().getDrawable(R.drawable.home_footer_0_bg));
                 break;
             case 1:
-                header_rl.setBackground(homeHeader1);
-                tabLayout.setBackgroundColor(getResources().getColor(R.color.level_1_color));
+//                header_rl.setBackground(homeHeader1);
+                tabLayout.setBackground(getResources().getDrawable(R.drawable.home_footer_1_bg));
+//                tabLayout.setBackgroundColor(getResources().getColor(R.color.level_1_color));
                 break;
             case 2:
-                header_rl.setBackground(homeHeader2);
-                tabLayout.setBackgroundColor(getResources().getColor(R.color.level_2_color));
+//                header_rl.setBackground(homeHeader2);
+                tabLayout.setBackground(getResources().getDrawable(R.drawable.home_footer_2_bg));
+//                tabLayout.setBackgroundColor(getResources().getColor(R.color.level_2_color));
                 break;
             case 3:
-                header_rl.setBackground(homeHeader3);
-                tabLayout.setBackgroundColor(getResources().getColor(R.color.level_3_color));
+//                header_rl.setBackground(homeHeader3);
+                tabLayout.setBackground(getResources().getDrawable(R.drawable.home_footer_3_bg));
+//                tabLayout.setBackgroundColor(getResources().getColor(R.color.level_3_color));
                 break;
             case 4:
-                header_rl.setBackground(homeHeader4);
-                tabLayout.setBackgroundColor(getResources().getColor(R.color.level_4_color));
+//                header_rl.setBackground(homeHeader4);
+                tabLayout.setBackground(getResources().getDrawable(R.drawable.home_footer_4_bg));
+//                tabLayout.setBackgroundColor(getResources().getColor(R.color.level_4_color));
                 break;
         }
     }
@@ -518,7 +488,7 @@ public class HomeActivity extends BaseActivity implements LevelChanged, CursorWh
         }
     }
 
-    @Click(R.id.floating_back)
+    @Click(R.id.main_back)
     public void backBtnPressed() {
         EventMessage eventMessage = new EventMessage();
         eventMessage.setMessage(BACK_PRESSED);

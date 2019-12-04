@@ -95,7 +95,8 @@ public class LearningInnerDataAdapter extends RecyclerView.Adapter {
 //                int randomNo = getRandomDrawableGradiant();
 //                folderHolder.rl_root.setBackground(mContext.getResources().getDrawable(randomNo));
                 folderHolder.tvTitle.setText(itemsList.get(i).getNodeTitle());
-                folderHolder.tvTitle.setTextColor(mContext.getResources().getColor(R.color.colorText));
+//                folderHolder.tvTitle.setTextColor(mContext.getResources().getColor(R.color.colorText));
+                folderHolder.tv_progress.setText(itemsList.get(i).getNodePercentage()+"%");
                 folderHolder.progressLayout.setCurProgress(Integer.parseInt(itemsList.get(i).getNodePercentage()));
                 File f;
                 if (itemsList.get(i).getIsDownloaded().equalsIgnoreCase("1") ||
@@ -217,6 +218,7 @@ public class LearningInnerDataAdapter extends RecyclerView.Adapter {
     public class FolderHolder extends RecyclerView.ViewHolder {
 
         protected TextView tvTitle;
+        protected TextView tv_progress;
         SimpleDraweeView itemImage;
         protected RelativeLayout rl_root;
         protected ProgressLayout progressLayout;
@@ -224,6 +226,7 @@ public class LearningInnerDataAdapter extends RecyclerView.Adapter {
         public FolderHolder(View view) {
             super(view);
             this.tvTitle = view.findViewById(R.id.tvTitle);
+            this.tv_progress = view.findViewById(R.id.tv_progress);
             this.itemImage = view.findViewById(R.id.item_Image);
             this.rl_root = view.findViewById(R.id.rl_root);
             progressLayout = view.findViewById(R.id.card_progressLayout);

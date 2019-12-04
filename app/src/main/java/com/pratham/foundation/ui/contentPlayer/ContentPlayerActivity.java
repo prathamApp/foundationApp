@@ -6,11 +6,11 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.view.View;
 import android.view.Window;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.pratham.foundation.BaseActivity;
@@ -37,17 +37,18 @@ import static com.pratham.foundation.utility.FC_Constants.dialog_btn_cancel;
 @EActivity(R.layout.activity_content_player)
 public class ContentPlayerActivity extends BaseActivity {
 
-    private String nodeID;
+    private String nodeID,title;
 
     @ViewById(R.id.floating_back)
-    public static FloatingActionButton floating_back;
+    public static ImageView floating_back;
     @ViewById(R.id.floating_info)
-    public static FloatingActionButton floating_info;
+    public static ImageView floating_info;
 
     @AfterViews
     public void initialize() {
         Intent intent = getIntent();
         nodeID = intent.getStringExtra("nodeID");
+        title = intent.getStringExtra("title");
         /*
          contentPath = intent.getStringExtra("contentPath");
          StudentID = intent.getStringExtra("StudentID");
@@ -55,21 +56,22 @@ public class ContentPlayerActivity extends BaseActivity {
          contentTitle = intent.getStringExtra("contentName");
          onSdCard = getIntent().getBooleanExtra("onSdCard", false);
         */
-        floating_back.setImageResource(R.drawable.ic_left_arrow_white);
-        floating_info.setImageResource(R.drawable.ic_info_outline_white);
+//        floating_back.setImageResource(R.drawable.ic_left_arrow_white);
+//        floating_info.setImageResource(R.drawable.ic_info_outline_white);
         loadFragment();
     }
 
     public void loadFragment() {
         Bundle bundle = new Bundle();
         bundle.putString("nodeID", nodeID);
+        bundle.putString("title", title);
         FC_Utility.showFragment(ContentPlayerActivity.this, new SequenceLayout_(), R.id.RL_CPA,
                 bundle, SequenceLayout_.class.getSimpleName());
     }
 
     @UiThread
     @Click(R.id.floating_back)
-    public void pressedFloatingBackBtn(){
+    public void pressedFloatingBackBtn() {
         onBackPressed();
     }
 
@@ -87,7 +89,7 @@ public class ContentPlayerActivity extends BaseActivity {
 
     @UiThread
     @Click(R.id.floating_info)
-    public void pressedFloatingInfo(){
+    public void pressedFloatingInfo() {
         EventMessage eventMessage = new EventMessage();
         eventMessage.setMessage(INFO_CLICKED);
         EventBus.getDefault().post(eventMessage);
@@ -175,11 +177,11 @@ public class ContentPlayerActivity extends BaseActivity {
     }
 
     public void hideFloating_info() {
-        floating_info.hide();
+        floating_info./*hide()*/setVisibility(View.GONE);
     }
 
     public void showFloating_info() {
-        floating_info.show();
+        floating_info./*show()*/setVisibility(View.VISIBLE);
     }
 }
 

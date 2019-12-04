@@ -10,6 +10,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
+import android.graphics.Typeface;
 import android.graphics.drawable.ColorDrawable;
 import android.media.MediaPlayer;
 import android.net.Uri;
@@ -27,11 +28,11 @@ import android.view.animation.AnimationUtils;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import com.hanks.htextview.typer.TyperTextView;
 import com.pratham.foundation.ApplicationClass;
 import com.pratham.foundation.R;
 import com.pratham.foundation.database.AppDatabase;
@@ -66,10 +67,12 @@ public class SplashActivity extends SplashSupportActivity implements SplashContr
 
     @ViewById(R.id.splash_root)
     RelativeLayout splash_root;
-    @ViewById(R.id.iv_splash)
-    ImageView iv_splash;
-    @ViewById(R.id.gifcomplete)
-    TextView gifcomplete;
+    @ViewById(R.id.tv_typer)
+    TyperTextView tv_typer;
+    //    @ViewById(R.id.iv_splash)
+//    ImageView iv_splash;
+//    @ViewById(R.id.gifcomplete)
+//    TextView gifcomplete;
     static String fpath, appname;
     public static MediaPlayer bgMusic;
     public ProgressDialog progressDialog;
@@ -87,6 +90,13 @@ public class SplashActivity extends SplashSupportActivity implements SplashContr
 
     @AfterViews
     public void init() {
+        new Handler().postDelayed(() -> {
+            final Typeface title_font = Typeface.createFromAsset(getAssets(), "fonts/FredokaOne.ttf");
+            tv_typer.setTypeface(title_font);
+            tv_typer.setVisibility(View.VISIBLE);
+            tv_typer.animateText("Foundation\nCourse");
+            tv_typer.setAnimationListener(hTextView -> initiateApp());
+        }, 500);
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
         dialog = new ProgressDialog(this);
         fpath = "";
@@ -100,7 +110,7 @@ public class SplashActivity extends SplashSupportActivity implements SplashContr
             String myString = b.getString("KEY_DATA");
             Toast.makeText(this, "" + myString, Toast.LENGTH_SHORT).show();
         }*/
-        ImageViewAnimatedChange(this, gifcomplete);
+//        ImageViewAnimatedChange(this, gifcomplete);
 //        initiateApp();
     }
 
@@ -138,7 +148,7 @@ public class SplashActivity extends SplashSupportActivity implements SplashContr
             @Override
             public void onAnimationEnd(Animation animation) {
                 ImageViewAnimatedChangeSecond(c, iv_logo);
-                iv_splash.setVisibility(View.VISIBLE);
+//                iv_splash.setVisibility(View.VISIBLE);
             }
         });
         iv_logo.setAnimation(anim_in);
@@ -516,6 +526,7 @@ public class SplashActivity extends SplashSupportActivity implements SplashContr
         } else {
             dismissProgressDialog();
             startActivity(new Intent(context, MenuActivity_.class));
+            finish();
         }
     }
 

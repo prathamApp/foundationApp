@@ -1,42 +1,57 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.design.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="@dimen/_150sdp"
-    android:layout_height="180dp"
-    android:background="?attr/selectableItemBackground"
-    android:layout_marginStart="@dimen/_10sdp">
+    android:layout_width="@dimen/_100sdp"
+    android:layout_height="@dimen/_120sdp"
+    android:layout_marginStart="@dimen/_10sdp"
+    android:layout_marginBottom="@dimen/_5sdp"
+    app:cardElevation="@dimen/_4sdp"
+    app:cardBackgroundColor="#488feb"
+    app:cardCornerRadius="@dimen/_8sdp">
 
     <RelativeLayout
         android:id="@+id/rl_root"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@drawable/dialog_bg"
-        android:layout_marginBottom="@dimen/_5sdp"
-        android:elevation="@dimen/_3sdp">
+        android:layout_height="match_parent">
+
+        <com.pratham.foundation.customView.FredokaOneTextView
+            android:id="@+id/tvTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/_5sdp"
+            android:layout_marginTop="@dimen/_5sdp"
+            android:text="Colors and Shape"
+            android:textColor="@color/white"
+            android:textSize="@dimen/_12sdp" />
+
+        <com.pratham.foundation.customView.SansTextViewBold
+            android:id="@+id/tv_progress"
+            android:layout_width="wrap_content"
+            android:layout_below="@+id/tvTitle"
+            android:layout_height="wrap_content"
+            android:background="@drawable/progress_background"
+            android:paddingStart="@dimen/_8sdp"
+            android:paddingEnd="@dimen/_8sdp"
+            android:layout_marginStart="@dimen/_5sdp"
+            android:layout_marginTop="@dimen/_5sdp"
+            android:text="40%"
+            android:textColor="@color/white"
+            android:textSize="@dimen/_10sdp" />
 
         <com.facebook.drawee.view.SimpleDraweeView
             android:id="@+id/item_Image"
             android:layout_width="@dimen/_60sdp"
             android:layout_height="@dimen/_60sdp"
             android:layout_alignParentEnd="true"
-            android:layout_centerVertical="true"
-            app:actualImageScaleType="fitCenter"
             android:layout_marginEnd="@dimen/_5sdp"
-            app:placeholderImage="@drawable/pratham_logo"
-            app:roundedCornerRadius="@dimen/_10sdp"
-            app:roundingBorderWidth="@dimen/_1sdp" />
-
-        <com.pratham.foundation.customView.FredokaOneTextView
-            android:id="@+id/tvTitle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentStart="true"
-            android:layout_centerVertical="true"
-            android:layout_margin="@dimen/_5sdp"
-            android:layout_toStartOf="@+id/item_Image"
-            android:gravity="center"
-            android:textColor="@color/white"
-            android:textSize="@dimen/_12sdp" />
+            android:layout_marginBottom="@dimen/_5sdp"
+            android:background="@android:color/transparent"
+            app:roundingBorderColor="@color/white"
+            app:roundingBorderWidth="@dimen/_1sdp"
+            app:roundedCornerRadius="@dimen/_30sdp"
+            android:layout_alignParentBottom="true"
+            app:actualImageScaleType="fitCenter"
+            app:placeholderImage="@drawable/pratham_logo"/>
 
         <com.pratham.foundation.customView.progress_layout.ProgressLayout
             android:id="@+id/card_progressLayout"
@@ -45,10 +60,13 @@
             android:layout_alignParentBottom="true"
             android:layout_margin="@dimen/_5sdp"
             app:c_borderWidth="1dp"
+            app:c_isShowDesc="true"
             app:c_progress="40"
+            android:visibility="gone"
             app:c_progressColor="@color/colorBtnGreenDark"
+            app:c_progressDescColor="@color/oslo_grey"
             app:c_progressRadius="@dimen/_3sdp" />
 
     </RelativeLayout>
 
-</RelativeLayout>
+</android.support.design.card.MaterialCardView>

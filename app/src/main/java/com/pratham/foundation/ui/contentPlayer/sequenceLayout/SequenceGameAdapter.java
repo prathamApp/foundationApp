@@ -2,12 +2,12 @@ package com.pratham.foundation.ui.contentPlayer.sequenceLayout;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
+import android.support.design.card.MaterialCardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.pratham.foundation.R;
@@ -58,13 +58,13 @@ public class SequenceGameAdapter extends RecyclerView.Adapter<SequenceGameAdapte
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
         public TextView title;
-        public ImageView thumbnail, ib_action_btn;
-        public RelativeLayout content_card_view;
+        public ImageView /*thumbnail,*/ ib_action_btn;
+        public MaterialCardView content_card_view;
 
         public MyViewHolder(View view) {
             super(view);
             title = view.findViewById(R.id.content_title);
-            thumbnail = view.findViewById(R.id.content_thumbnail);
+//            thumbnail = view.findViewById(R.id.content_thumbnail);
             content_card_view = view.findViewById(R.id.content_card_view);
             ib_action_btn = view.findViewById(R.id.ib_action_btn);
         }

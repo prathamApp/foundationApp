@@ -158,6 +158,8 @@ public class ReadingStoryActivity extends BaseActivity implements
         showLoader();
         modalPagesList = new ArrayList<>();
 
+        if(sttLang==null)
+            sttLang = "English";
         continuousSpeechService = new ContinuousSpeechService_New(context,
                 ReadingStoryActivity.this, sttLang);
         if (contentType.equalsIgnoreCase(FC_Constants.RHYME_RESOURCE))

@@ -32,10 +32,10 @@ import static com.pratham.foundation.utility.SplashSupportActivity.ButtonClickSo
 @EActivity(R.layout.activity_menu)
 public class MenuActivity extends BaseActivity {
 
-    @ViewById(R.id.btn_qr)
-    ImageButton btn_qr;
-    @ViewById(R.id.btn_grp)
-    ImageButton btn_grp;
+//    @ViewById(R.id.mcv_qr)
+//    ImageButton btn_qr;
+//    @ViewById(R.id.mcv_group)
+//    ImageButton btn_grp;
     @ViewById(R.id.btn_admin)
     ImageButton btn_admin;
     @ViewById(R.id.btn_back)
@@ -44,6 +44,7 @@ public class MenuActivity extends BaseActivity {
     RelativeLayout rl_admin;
     @ViewById(R.id.main_menu_layout)
     RelativeLayout main_layout;
+
 
     @AfterViews
     public void initialize() {
@@ -119,13 +120,13 @@ public class MenuActivity extends BaseActivity {
 
     }
 
-    @Click(R.id.btn_qr)
+    @Click(R.id.mcv_qr)
     public void gotoQRActivity() {
         ButtonClickSound.start();
         showLoginDialog("QRScan");
     }
 
-    @Click(R.id.btn_grp)
+    @Click(R.id.mcv_group)
     public void gotoGroupLogin() {
         ButtonClickSound.start();
         showLoginDialog("SelectGroup");

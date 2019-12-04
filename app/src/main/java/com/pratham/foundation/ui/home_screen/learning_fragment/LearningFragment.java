@@ -337,6 +337,7 @@ public class LearningFragment extends Fragment implements LearningContract.Learn
         } else if (singleItem.getResourceType().equalsIgnoreCase("preResource")) {
             Intent mainNew = new Intent(getActivity(), ContentPlayerActivity_.class);
             mainNew.putExtra("nodeID", singleItem.getNodeId());
+            mainNew.putExtra("title", singleItem.getNodeTitle());
             startActivity(mainNew);
         } else {
             contentParentList.clear();

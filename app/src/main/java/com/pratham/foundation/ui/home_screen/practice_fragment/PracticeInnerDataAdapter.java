@@ -96,7 +96,7 @@ public class PracticeInnerDataAdapter extends RecyclerView.Adapter {
                 FolderHolder folderHolder = (FolderHolder) viewHolder;
 //                int randomNo = getRandomDrawableGradiant();
 //                folderHolder.rl_root.setBackground(mContext.getResources().getDrawable(randomNo));
-                folderHolder.tvTitle.setTextColor(mContext.getResources().getColor(R.color.colorText));
+//                folderHolder.tvTitle.setTextColor(mContext.getResources().getColor(R.color.colorText));
                 folderHolder.tvTitle.setText(itemsList.get(i).getNodeTitle());
                 folderHolder.progressLayout.setCurProgress(Integer.parseInt(itemsList.get(i).getNodePercentage()));
                 File f;

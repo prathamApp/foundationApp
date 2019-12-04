@@ -8,7 +8,6 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.Rect;
-import android.graphics.drawable.AnimationDrawable;
 import android.graphics.drawable.ColorDrawable;
 import android.media.MediaPlayer;
 import android.os.Bundle;
@@ -35,6 +34,7 @@ import com.pratham.foundation.BaseActivity;
 import com.pratham.foundation.R;
 import com.pratham.foundation.customView.GifView;
 import com.pratham.foundation.customView.SansTextView;
+import com.pratham.foundation.customView.shape_of_view.ShadowLayout;
 import com.pratham.foundation.interfaces.OnGameClose;
 import com.pratham.foundation.modalclasses.EventMessage;
 import com.pratham.foundation.modalclasses.ModalParaSubMenu;
@@ -92,8 +92,8 @@ public class VocabReadingFragment extends Fragment implements
     ScrollView myScrollView;
     @ViewById(R.id.btn_submit)
     Button btn_submit;
-    @ViewById(R.id.story_ll)
-    RelativeLayout story_ll;
+//    @ViewById(R.id.story_ll)
+//    RelativeLayout story_ll;
     @ViewById(R.id.btn_Stop)
     ImageButton btn_Stop;
     @ViewById(R.id.btn_camera)
@@ -106,6 +106,8 @@ public class VocabReadingFragment extends Fragment implements
     GifView gif_view;
     @ViewById(R.id.floating_img)
     FloatingActionButton floating_img;
+    @ViewById(R.id.image_container)
+    ShadowLayout image_container;
 
     ContinuousSpeechService_New continuousSpeechService;
 
@@ -131,7 +133,7 @@ public class VocabReadingFragment extends Fragment implements
     boolean voiceStart = false, flgPerMarked = false, onSdCard;
     static boolean[] correctArr;
     static boolean[] testCorrectArr;
-    AnimationDrawable animationDrawable;
+//    AnimationDrawable animationDrawable;
 /*
         bundle.putString("nodeID", nodeID);
         bundle.putString("contentType","s");
@@ -162,10 +164,10 @@ public class VocabReadingFragment extends Fragment implements
         btn_camera.setVisibility(View.GONE);
         gif_view.setVisibility(View.GONE);
 
-        animationDrawable = (AnimationDrawable) story_ll.getBackground();
-        animationDrawable.setEnterFadeDuration(4500);
-        animationDrawable.setExitFadeDuration(4500);
-        animationDrawable.start();
+//        animationDrawable = (AnimationDrawable) story_ll.getBackground();
+//        animationDrawable.setEnterFadeDuration(4500);
+//        animationDrawable.setExitFadeDuration(4500);
+//        animationDrawable.start();
         context = getActivity();
         presenter.setView(VocabReadingFragment.this);
         showLoader();
@@ -326,6 +328,7 @@ public class VocabReadingFragment extends Fragment implements
                     Bitmap bmImg = BitmapFactory.decodeFile(readingContentPath + storyBg);
                     BitmapFactory.decodeStream(new FileInputStream(readingContentPath + storyBg));
                     iv_image.setImageBitmap(bmImg);
+                    image_container.setShadowDistance(8);
                 }
             } else {
                 gif_view.setVisibility(View.GONE);

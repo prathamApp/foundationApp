@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main_menu_layout"
     android:layout_width="match_parent"
@@ -7,91 +8,210 @@
     android:layout_gravity="center"
     tools:context="com.pratham.foundation.ui.bottom_fragment.add_student.MenuActivity">
 
-    <RelativeLayout
-        android:id="@+id/topPanel"
-        android:layout_width="match_parent"
-        android:layout_height="60dp"
-        android:layout_alignParentTop="true"
-        android:elevation="3dp"
-        android:background="@color/colorBtnRedDark">
+    <com.pratham.foundation.customView.FredokaOneTextView
+        android:id="@+id/txt_login"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/_10sdp"
+        android:layout_marginTop="@dimen/_10sdp"
+        android:text="Login"
+        android:textColor="@color/dark_blue"
+        android:textSize="@dimen/_22sdp" />
+
+    <com.pratham.foundation.customView.SansTextView
+        android:id="@+id/txt_using"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/txt_login"
+        android:layout_marginStart="@dimen/_10sdp"
+        android:text="Mark your attendance using..."
+        android:textColor="@color/dark_blue"
+        android:textSize="@dimen/_18sdp" />
+
+    <com.pratham.foundation.customView.shape_of_view.ShadowLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_margin="@dimen/_10sdp"
+        app:sl_shadow_angle="30"
+        app:sl_shadow_color="@color/colorBlackTransparentLight"
+        app:sl_shadow_distance="4dp"
+        app:sl_shadow_radius="5dp"
+        app:sl_shadowed="true">
 
         <ImageButton
             android:id="@+id/btn_back"
-            android:layout_width="50dp"
-            android:layout_height="match_parent"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
             android:layout_centerVertical="true"
             android:background="?android:selectableItemBackground"
-            android:padding="@dimen/_5sdp"
-            android:src="@drawable/ic_left_arrow_white" />
-
-        <com.pratham.foundation.customView.SansTextViewBold
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_centerInParent="true"
-            android:layout_toEndOf="@+id/btn_back"
-            android:layout_toStartOf="@+id/just_view"
-            android:layout_marginStart="@dimen/_5sdp"
-            android:layout_marginEnd="@dimen/_5sdp"
-            android:gravity="center"
-            android:text="@string/Login"
-            android:textColor="@color/white"
-            android:textSize="@dimen/_18sdp"
-            android:textStyle="bold" />
-
-        <View
-            android:id="@+id/just_view"
-            android:layout_width="50dp"
-            android:layout_height="match_parent"
-            android:layout_alignParentEnd="true" />
-    </RelativeLayout>
+            android:scaleType="fitXY"
+            android:src="@drawable/ic_close_red" />
+    </com.pratham.foundation.customView.shape_of_view.ShadowLayout>
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_below="@+id/topPanel"
-        android:layout_marginTop="0dp">
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true">
 
-        <RelativeLayout
+        <android.support.design.card.MaterialCardView
+            android:id="@+id/mcv_qr"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:gravity="center"
-            android:orientation="vertical"
-            android:paddingHorizontal="@dimen/_40sdp"
-            android:weightSum="6">
+            android:layout_height="@dimen/_120sdp"
+            android:layout_marginStart="@dimen/_10sdp"
+            android:layout_marginTop="@dimen/_20sdp"
+            android:layout_marginEnd="@dimen/_10sdp"
+            app:cardCornerRadius="@dimen/_5sdp"
+            app:cardElevation="@dimen/_5sdp">
 
-            <ImageButton
-                android:id="@+id/btn_qr"
-                android:layout_width="@dimen/_90sdp"
-                android:layout_height="@dimen/_90sdp"
-                android:layout_gravity="center"
-                android:layout_marginVertical="@dimen/_10sdp"
-                android:layout_marginRight="@dimen/_15sdp"
-                android:background="@drawable/ripple_rectangle_card"
-                android:elevation="5dp"
-                android:gravity="center"
-                android:padding="@dimen/_5sdp"
-                android:scaleType="centerInside"
-                android:src="@drawable/ic_qr_code" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
 
-            <ImageButton
-                android:id="@+id/btn_grp"
-                android:layout_width="@dimen/_90sdp"
-                android:layout_height="@dimen/_90sdp"
-                android:layout_gravity="center"
-                android:layout_marginVertical="@dimen/_10sdp"
-                android:layout_marginLeft="@dimen/_15sdp"
-                android:layout_toRightOf="@+id/btn_qr"
-                android:background="@drawable/ripple_rectangle_card"
-                android:elevation="5dp"
-                android:padding="@dimen/_5sdp"
-                android:scaleType="centerInside"
-                android:src="@drawable/ic_grp_btn" />
+                <ImageView
+                    android:id="@+id/img_qr"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    app:srcCompat="@drawable/ic_attendance_qr" />
 
+                <com.pratham.foundation.customView.FredokaOneTextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:text="QR"
+                    android:textColor="@color/blue"
+                    android:textSize="@dimen/_22sdp" />
+            </LinearLayout>
+        </android.support.design.card.MaterialCardView>
 
-        </RelativeLayout>
+        <android.support.design.card.MaterialCardView
+            android:id="@+id/mcv_group"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_120sdp"
+            android:layout_below="@+id/mcv_qr"
+            android:layout_marginStart="@dimen/_10sdp"
+            android:layout_marginTop="@dimen/_20sdp"
+            android:layout_marginBottom="@dimen/_10sdp"
+            android:layout_marginEnd="@dimen/_10sdp"
+            app:cardCornerRadius="@dimen/_5sdp"
+            app:cardElevation="@dimen/_5sdp">
 
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal"
+                android:weightSum="1">
+
+                <com.pratham.foundation.customView.FredokaOneTextView
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center"
+                    android:layout_marginEnd="@dimen/_10sdp"
+                    android:layout_weight=".4"
+                    android:gravity="center"
+                    android:text="Group"
+                    android:textColor="@color/blue"
+                    android:textSize="@dimen/_22sdp" />
+
+                <ImageView
+                    android:id="@+id/img_group"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight=".6"
+                    app:srcCompat="@drawable/ic_group_qr" />
+
+            </LinearLayout>
+        </android.support.design.card.MaterialCardView>
     </RelativeLayout>
+    <!--    <RelativeLayout-->
+    <!--        android:id="@+id/topPanel"-->
+    <!--        android:layout_width="match_parent"-->
+    <!--        android:layout_height="60dp"-->
+    <!--        android:layout_alignParentTop="true"-->
+    <!--        android:elevation="3dp"-->
+    <!--        android:visibility="gone"-->
+    <!--        android:background="@color/colorBtnRedDark">-->
+
+    <!--        <ImageButton-->
+    <!--            android:id="@+id/btn_back"-->
+    <!--            android:layout_width="50dp"-->
+    <!--            android:layout_height="match_parent"-->
+    <!--            android:layout_centerVertical="true"-->
+    <!--            android:background="?android:selectableItemBackground"-->
+    <!--            android:padding="@dimen/_5sdp"-->
+    <!--            android:src="@drawable/ic_left_arrow_white" />-->
+
+    <!--        <com.pratham.foundation.customView.SansTextViewBold-->
+    <!--            android:layout_width="wrap_content"-->
+    <!--            android:layout_height="match_parent"-->
+    <!--            android:layout_centerInParent="true"-->
+    <!--            android:layout_toEndOf="@+id/btn_back"-->
+    <!--            android:layout_toStartOf="@+id/just_view"-->
+    <!--            android:layout_marginStart="@dimen/_5sdp"-->
+    <!--            android:layout_marginEnd="@dimen/_5sdp"-->
+    <!--            android:gravity="center"-->
+    <!--            android:text="@string/Login"-->
+    <!--            android:textColor="@color/white"-->
+    <!--            android:textSize="@dimen/_18sdp"-->
+    <!--            android:textStyle="bold" />-->
+
+    <!--        <View-->
+    <!--            android:id="@+id/just_view"-->
+    <!--            android:layout_width="50dp"-->
+    <!--            android:layout_height="match_parent"-->
+    <!--            android:layout_alignParentEnd="true" />-->
+    <!--    </RelativeLayout>-->
+
+    <!--    <RelativeLayout-->
+    <!--        android:layout_width="match_parent"-->
+    <!--        android:layout_height="match_parent"-->
+    <!--        android:layout_below="@+id/topPanel"-->
+    <!--        android:visibility="gone"-->
+    <!--        android:layout_marginTop="0dp">-->
+
+    <!--        <RelativeLayout-->
+    <!--            android:layout_width="match_parent"-->
+    <!--            android:layout_height="wrap_content"-->
+    <!--            android:layout_centerInParent="true"-->
+    <!--            android:gravity="center"-->
+    <!--            android:orientation="vertical"-->
+    <!--            android:paddingHorizontal="@dimen/_40sdp"-->
+    <!--            android:weightSum="6">-->
+
+    <!--            <ImageButton-->
+    <!--                android:id="@+id/btn_qr"-->
+    <!--                android:layout_width="@dimen/_90sdp"-->
+    <!--                android:layout_height="@dimen/_90sdp"-->
+    <!--                android:layout_gravity="center"-->
+    <!--                android:layout_marginVertical="@dimen/_10sdp"-->
+    <!--                android:layout_marginRight="@dimen/_15sdp"-->
+    <!--                android:background="@drawable/ripple_rectangle_card"-->
+    <!--                android:elevation="5dp"-->
+    <!--                android:gravity="center"-->
+    <!--                android:padding="@dimen/_5sdp"-->
+    <!--                android:scaleType="centerInside"-->
+    <!--                android:src="@drawable/ic_qr_code" />-->
+
+    <!--            <ImageButton-->
+    <!--                android:id="@+id/btn_grp"-->
+    <!--                android:layout_width="@dimen/_90sdp"-->
+    <!--                android:layout_height="@dimen/_90sdp"-->
+    <!--                android:layout_gravity="center"-->
+    <!--                android:layout_marginVertical="@dimen/_10sdp"-->
+    <!--                android:layout_marginLeft="@dimen/_15sdp"-->
+    <!--                android:layout_toRightOf="@+id/btn_qr"-->
+    <!--                android:background="@drawable/ripple_rectangle_card"-->
+    <!--                android:elevation="5dp"-->
+    <!--                android:padding="@dimen/_5sdp"-->
+    <!--                android:scaleType="centerInside"-->
+    <!--                android:src="@drawable/ic_grp_btn" />-->
+
+
+    <!--        </RelativeLayout>-->
+
+    <!--    </RelativeLayout>-->
 
     <RelativeLayout
         android:id="@+id/rl_admin"
@@ -107,9 +227,9 @@
             android:layout_width="50dp"
             android:layout_height="50dp"
             android:layout_alignParentEnd="true"
+            android:layout_alignParentBottom="true"
             android:layout_marginEnd="13dp"
             android:layout_marginBottom="13dp"
-            android:layout_alignParentBottom="true"
             android:background="@null"
             android:scaleType="fitCenter"
             android:src="@drawable/ic_admin" />
@@ -122,18 +242,18 @@
         android:layout_alignParentStart="true"
         android:layout_alignParentBottom="true"
         android:background="@drawable/share_btn_bg"
-        android:visibility="visible"
-        android:elevation="15dp">
+        android:elevation="15dp"
+        android:visibility="visible">
 
         <ImageButton
             android:id="@+id/btn_share_receive"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:layout_marginStart="13dp"
-            android:layout_marginBottom="13dp"
+            android:layout_width="@dimen/_30sdp"
+            android:layout_height="@dimen/_30sdp"
             android:layout_alignParentBottom="true"
+            android:layout_marginStart="@dimen/_5sdp"
+            android:layout_marginBottom="@dimen/_5sdp"
             android:background="@null"
             android:scaleType="fitCenter"
-            android:src="@drawable/ic_share_receive" />
+            android:src="@drawable/ic_share_icon" />
     </RelativeLayout>
 </RelativeLayout>

@@ -3,39 +3,32 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginTop="5dp"
-    android:paddingTop="10dp"
-    android:paddingBottom="5dp"
-    android:layout_marginBottom="5dp"
-    android:background="@color/full_transparent"
-    android:orientation="vertical">
+    android:layout_marginBottom="5dp">
 
     <RelativeLayout
         android:id="@+id/topPanel"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/_25sdp"
-        android:layout_alignParentTop="true"
-        android:layout_marginTop="5dp">
+        android:layout_height="wrap_content">
 
         <com.pratham.foundation.customView.SansButton
             android:id="@+id/btnMore"
-            android:layout_width="@dimen/_70sdp"
-            android:layout_height="@dimen/_20sdp"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:layout_marginRight="@dimen/_20sdp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_marginEnd="@dimen/_10sdp"
             android:background="?android:selectableItemBackground"
             android:drawableRight="@drawable/ic_navigate_next_black_24dp"
+            android:drawablePadding="@dimen/_10sdp"
+            android:gravity="center_vertical"
             android:text="See All"
             android:textColor="@color/colorText"
-            android:textSize="@dimen/_8sdp"
-            android:visibility="visible" />
+            android:textSize="@dimen/_8sdp" />
 
         <com.pratham.foundation.customView.SansButton
             android:id="@+id/ib_action_btn"
             android:layout_width="wrap_content"
             android:layout_height="@dimen/_20sdp"
             android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
             android:layout_marginRight="@dimen/_10sdp"
             android:background="@drawable/temp_button"
             android:drawableLeft="@drawable/ic_download"
@@ -47,29 +40,24 @@
             android:textSize="@dimen/_8sdp"
             android:visibility="gone" />
 
-        <com.pratham.foundation.customView.SansTextView
+        <com.pratham.foundation.customView.SansTextViewBold
             android:id="@+id/itemTitle"
             android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_centerVertical="true"
-            android:layout_marginLeft="@dimen/_10sdp"
-            android:paddingStart="@dimen/_5sdp"
-            android:paddingEnd="@dimen/_5sdp"
-            android:maxLines="2"
-            android:shadowColor="@color/whiteButtonPressedBg"
-            android:shadowDx="-1"
-            android:shadowDy="-1"
-            android:shadowRadius="1"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/_15sdp"
+            android:layout_marginBottom="@dimen/_3sdp"
+            android:maxLines="1"
             android:text="City Of Stories"
             android:textColor="@color/colorText"
-            android:textSize="@dimen/_16sdp" />
+            android:textSize="@dimen/_15sdp" />
 
     </RelativeLayout>
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/recycler_view_list"
         android:layout_width="match_parent"
-        android:layout_height="190dp"
+        android:layout_height="wrap_content"
+        android:paddingBottom="@dimen/_10sdp"
         android:layout_below="@+id/topPanel" />
 
 </RelativeLayout>

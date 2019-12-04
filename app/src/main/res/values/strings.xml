@@ -23,7 +23,7 @@
     <string name="Student_exists">This Student already exists</string>
     <string name="Scan_new_QR">Scan new QR.</string>
     <string name="Welcome">Welcome </string>
-    <string name="select_subject">Please select a subject...</string>
+    <string name="select_subject">Please select a study subject...</string>
     <string name="usage">Usage</string>
     <string name="days">Days</string>
     <string name="hours">Hours</string>
@@ -391,4 +391,5 @@
     <string name="ReadVocabAndroid">READ_VOCAB_ANDROID</string>
     <string name="reading_stt">READING_STT</string>
     <string name="multiple_choice">MULTIPLE_CHOICE</string>
+    <string name="restart_dialog_msg">Do you want to restart?</string>
 </resources>

@@ -39,6 +39,7 @@ import com.pratham.foundation.BaseActivity;
 import com.pratham.foundation.R;
 import com.pratham.foundation.customView.SansTextView;
 import com.pratham.foundation.customView.display_image_dialog.Activity_DisplayImage_;
+import com.pratham.foundation.customView.shape_of_view.ShadowLayout;
 import com.pratham.foundation.interfaces.OnGameClose;
 import com.pratham.foundation.modalclasses.EventMessage;
 import com.pratham.foundation.modalclasses.ModalParaSubMenu;
@@ -121,7 +122,7 @@ public class ContentReadingFragment extends Fragment implements
 //    @ViewById(R.id.ll_btn_prev)
 //    LinearLayout ll_btn_prev;
     @ViewById(R.id.image_container)
-    RelativeLayout image_container;
+    ShadowLayout image_container;
     @ViewById(R.id.floating_img)
     FloatingActionButton floating_img;
 

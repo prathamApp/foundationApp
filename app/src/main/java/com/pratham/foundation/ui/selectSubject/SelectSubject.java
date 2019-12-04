@@ -21,7 +21,6 @@ import com.pratham.foundation.R;
 import com.pratham.foundation.customView.GridSpacingItemDecoration;
 import com.pratham.foundation.database.domain.ContentTable;
 import com.pratham.foundation.ui.home_screen.HomeActivity_;
-import com.pratham.foundation.ui.splash_activity.SplashActivity_;
 import com.pratham.foundation.utility.FC_Constants;
 
 import org.androidannotations.annotations.AfterViews;
@@ -121,40 +120,40 @@ public class SelectSubject extends BaseActivity implements
 
     @SuppressLint("SetTextI18n")
     private void exitDialog() {
-        Dialog dialog = new Dialog(SelectSubject.this);
+        Dialog dialog = new Dialog(SelectSubject.this,R.style.ExitDialog);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        dialog.setContentView(R.layout.fc_custom_exit_dialog);
+        dialog.setContentView(R.layout.lottie_exit_dialog);
 /*      Bitmap map=FC_Utility.takeScreenShot(HomeActivity.this);
         Bitmap fast=FC_Utility.fastblur(map, 20);
         final Drawable draw=new BitmapDrawable(getResources(),fast);
         dialog.getWindow().setBackgroundDrawable(draw);*/
         Objects.requireNonNull(dialog.getWindow()).setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-        dialog.setCancelable(false);
-        dialog.setCanceledOnTouchOutside(false);
+        dialog.setCancelable(true);
+        dialog.setCanceledOnTouchOutside(true);
         dialog.show();
 
-        TextView dia_title = dialog.findViewById(R.id.dia_title);
-        Button dia_btn_green = dialog.findViewById(R.id.dia_btn_green);
-        Button dia_btn_yellow = dialog.findViewById(R.id.dia_btn_yellow);
-        Button dia_btn_red = dialog.findViewById(R.id.dia_btn_red);
+//        TextView dia_title = dialog.findViewById(R.id.dia_title);
+//        Button dia_btn_green = dialog.findViewById(R.id.dia_btn_green);
+        Button dia_btn_no = dialog.findViewById(R.id.dia_btn_no);
+        TextView dia_btn_yes = dialog.findViewById(R.id.dia_btn_yes);
 
-        dia_btn_green.setText (getResources().getString(R.string.Restart));
-        dia_btn_red.setText   (getResources().getString(R.string.Exit));
-        dia_btn_yellow.setText(getResources().getString(R.string.Cancel));
+//        dia_btn_green.setText (getResources().getString(R.string.Restart));
+//        dia_btn_yes.setText   (getResources().getString(R.string.Exit));
+//        dia_btn_no.setText(getResources().getString(R.string.Cancel));
 
-        dia_btn_green.setOnClickListener(v -> {
-            finishAffinity();
-            context.startActivity(new Intent(context, SplashActivity_.class));
-            dialog.dismiss();
-        });
+//        dia_btn_green.setOnClickListener(v -> {
+//            finishAffinity();
+//            context.startActivity(new Intent(context, SplashActivity_.class));
+//            dialog.dismiss();
+//        });
 
-        dia_btn_red.setOnClickListener(v -> {
+        dia_btn_yes.setOnClickListener(v -> {
             endSession(this);
             finishAffinity();
             dialog.dismiss();
         });
 
-        dia_btn_yellow.setOnClickListener(v -> {
+        dia_btn_no.setOnClickListener(v -> {
             dialog.dismiss();
         });
     }

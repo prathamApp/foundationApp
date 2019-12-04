@@ -11,7 +11,7 @@ public interface ContentClicked {
 
     void onContentClicked(int position, String nId);
 
-    void onPreResOpenClicked(int position, String nId);
+    void onPreResOpenClicked(int position, String nId, String title);
 
     void onContentOpenClicked(int position, String nId);
 

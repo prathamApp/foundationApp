@@ -391,5 +391,6 @@
     <string name="ReadVocabAndroid">READ_VOCAB_ANDROID</string>
     <string name="reading_stt">READING_STT</string>
     <string name="multiple_choice">MULTIPLE_CHOICE</string>
+    <string name="restart_dialog_msg">Do you want to restart?</string>
 
 </resources>

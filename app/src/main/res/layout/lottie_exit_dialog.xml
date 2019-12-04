@@ -1,0 +1,62 @@
+<android.support.design.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="@dimen/_200sdp"
+    android:layout_height="@dimen/_250sdp"
+    android:layout_centerInParent="true"
+    android:layout_gravity="center"
+    android:elevation="0dp"
+    app:cardBackgroundColor="@color/white"
+    app:cardCornerRadius="@dimen/_8sdp">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <com.airbnb.lottie.LottieAnimationView
+            android:id="@+id/dl_lottie_view"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_120sdp"
+            app:lottie_autoPlay="true"
+            app:lottie_fileName="quit.json"
+            app:lottie_loop="true" />
+
+        <com.pratham.foundation.customView.FredokaOneTextView
+            android:id="@+id/dia_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/dl_lottie_view"
+            android:layout_centerHorizontal="true"
+            android:text="@string/restart_dialog_msg"
+            android:textColor="@color/colorRed"
+            android:textSize="@dimen/_15sdp" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:gravity="center_vertical"
+            android:orientation="vertical">
+
+            <com.pratham.foundation.customView.SansTextViewBold
+                android:id="@+id/dia_btn_yes"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_30sdp"
+                android:background="@android:color/transparent"
+                android:gravity="center"
+                android:text="Yes"
+                android:textColor="@color/colorBlack"
+                android:textSize="@dimen/_15sdp" />
+
+            <com.pratham.foundation.customView.SansButton
+                android:id="@+id/dia_btn_no"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_40sdp"
+                android:background="@drawable/yellow_button"
+                android:layout_margin="@dimen/_5sdp"
+                android:elevation="@dimen/_5sdp"
+                android:text="No"
+                android:textColor="@color/white"
+                android:textSize="@dimen/_15sdp" />
+        </LinearLayout>
+    </RelativeLayout>
+</android.support.design.card.MaterialCardView>

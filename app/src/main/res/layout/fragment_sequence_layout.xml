@@ -1,68 +1,76 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.contentPlayer.sequenceLayout.SequenceLayout"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    tools:context=".ui.contentPlayer.sequenceLayout.SequenceLayout">
 
     <!-- TODO: Update blank fragment layout -->
-    <Space
-        android:layout_width="match_parent"
-        android:layout_height="60dp"/>
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
+    <!--    <Space-->
+    <!--        android:layout_width="match_parent"-->
+    <!--        android:layout_height="60dp" />-->
 
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/recycler_view"
-            android:layout_marginTop="@dimen/_2sdp"
-            android:layout_below="@+id/header_rl"
-            android:layout_above="@id/bottom_rl"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+    <com.pratham.foundation.customView.FredokaOneTextView
+        android:id="@+id/txt_seq_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/_15sdp"
+        android:layout_marginTop="@dimen/_35sdp"
+        android:text=""
+        android:textColor="@color/dark_blue"
+        android:textSize="@dimen/_22sdp" />
+
+
+    <com.pratham.foundation.customView.shape_of_view.ShadowLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:sl_shadow_angle="60"
+        app:sl_shadow_color="@color/lightGrey"
+        app:sl_shadow_distance="5dp"
+        app:sl_shadow_radius="5dp"
+        app:sl_shadowed="true">
 
         <RelativeLayout
             android:id="@+id/bottom_rl"
             android:layout_width="match_parent"
-            android:layout_alignParentBottom="true"
-            android:layout_marginHorizontal="@dimen/_40sdp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/_5sdp"
-            android:layout_marginBottom="@dimen/_10sdp"
-            android:elevation="@dimen/_2sdp"
+            android:layout_height="@dimen/_50sdp"
+            android:layout_margin="@dimen/_5sdp"
             android:background="@drawable/trans_dialog_bg">
 
             <com.pratham.foundation.customView.SansTextView
                 android:id="@+id/tv_top_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentTop="true"
-                android:layout_marginTop="@dimen/_10sdp"
-                android:layout_marginBottom="@dimen/_10sdp"
-                android:text="Resvise the complete topic."
-                android:textSize="@dimen/_15sdp"
-                android:textColor="@color/colorText"
-                android:layout_centerHorizontal="true"/>
+                android:layout_centerVertical="true"
+                android:layout_marginStart="@dimen/_5sdp"
+                android:layout_toStartOf="@id/playFromStart"
+                android:gravity="center"
+                android:text="To play all the topics sequentially, click Play."
+                android:textColor="@color/dark_blue"
+                android:textSize="@dimen/_15sdp" />
 
             <com.pratham.foundation.customView.SansButton
                 android:id="@+id/playFromStart"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/_5sdp"
-                android:layout_below="@+id/tv_top_title"
-                android:layout_centerHorizontal="true"
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true"
+                android:layout_marginEnd="@dimen/_10sdp"
+                android:background="@drawable/progress_background"
+                android:elevation="5dp"
                 android:paddingStart="@dimen/_20sdp"
                 android:paddingEnd="@dimen/_20sdp"
-                android:layout_marginBottom="@dimen/_8sdp"
-                android:background="@drawable/green_button"
-                android:elevation="5dp"
                 android:text="play"
                 android:textColor="@color/white"
                 android:textSize="@dimen/_10sdp" />
-
         </RelativeLayout>
+    </com.pratham.foundation.customView.shape_of_view.ShadowLayout>
 
-    </RelativeLayout>
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/recycler_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
 
 </LinearLayout>

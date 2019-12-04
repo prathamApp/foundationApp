@@ -2,13 +2,13 @@ package com.pratham.foundation.ui.contentPlayer.sequenceLayout;
 
 import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.widget.ImageButton;
+import android.widget.TextView;
 
 import com.pratham.foundation.R;
 import com.pratham.foundation.customView.GridSpacingItemDecoration;
@@ -17,24 +17,10 @@ import com.pratham.foundation.database.domain.ContentTable;
 import com.pratham.foundation.interfaces.ShowInstruction;
 import com.pratham.foundation.ui.contentPlayer.ContentPlayerActivity;
 import com.pratham.foundation.ui.contentPlayer.GameConstatnts;
-import com.pratham.foundation.ui.contentPlayer.doing.DoingFragment;
-import com.pratham.foundation.ui.contentPlayer.fact_retrieval_fragment.FactRetrieval_;
-import com.pratham.foundation.ui.contentPlayer.fact_retrival_selection.Fact_Retrieval_Fragment_;
-import com.pratham.foundation.ui.contentPlayer.fillInTheBlanks.FillInTheBlanksFragment;
-import com.pratham.foundation.ui.contentPlayer.keywords_identification.KeywordsIdentificationFragment_;
-import com.pratham.foundation.ui.contentPlayer.keywords_mapping.KeywordMappingFragment_;
-import com.pratham.foundation.ui.contentPlayer.listenAndWritting.ListeningAndWritting_;
-import com.pratham.foundation.ui.contentPlayer.multipleChoiceQuetion.multipleChoiceFragment;
 import com.pratham.foundation.ui.contentPlayer.new_reading_fragment.ContentReadingFragment;
 import com.pratham.foundation.ui.contentPlayer.new_reading_fragment.ContentReadingFragment_;
 import com.pratham.foundation.ui.contentPlayer.new_vocab_reading.VocabReadingFragment;
 import com.pratham.foundation.ui.contentPlayer.new_vocab_reading.VocabReadingFragment_;
-import com.pratham.foundation.ui.contentPlayer.paragraph_writing.ParagraphWritingFragment_;
-import com.pratham.foundation.ui.contentPlayer.pictionary.pictionaryFragment;
-import com.pratham.foundation.ui.contentPlayer.reading.ReadingFragment;
-import com.pratham.foundation.ui.contentPlayer.trueFalse.TrueFalseFragment;
-import com.pratham.foundation.ui.contentPlayer.video_view.ActivityVideoView_;
-import com.pratham.foundation.ui.contentPlayer.word_writting.WordWritingFragment_;
 import com.pratham.foundation.utility.FC_Constants;
 import com.pratham.foundation.utility.FC_Utility;
 
@@ -61,10 +47,12 @@ public class SequenceLayout extends Fragment implements SequeanceLayoutContract.
 
     @ViewById(R.id.recycler_view)
     RecyclerView recyclerView;
+    @ViewById(R.id.txt_seq_title)
+    TextView txt_seq_title;
     @ViewById(R.id.btn_back)
     ImageButton btn_back;
 
-    private String nodeID;
+    private String nodeID, title;
     private boolean onSdCard;
     Context context;
     List<ContentTable> contentTableList;
@@ -80,8 +68,10 @@ public class SequenceLayout extends Fragment implements SequeanceLayoutContract.
         Bundle bundle = getArguments();
         if (bundle != null) {
             nodeID = bundle.getString("nodeID");
+            title = bundle.getString("title");
             getListResData(nodeID);
             sequenceLayoutPresenter.setView(this);
+            txt_seq_title.setText(title);
             if (getActivity() instanceof ContentPlayerActivity) {
                 ((ContentPlayerActivity) getActivity()).hideFloating_info();
             }
@@ -104,13 +94,15 @@ public class SequenceLayout extends Fragment implements SequeanceLayoutContract.
     @UiThread
     public void loadUI() {
         GameConstatnts.gameList = contentTableList;
-        SequenceGameAdapter sequenceGameAdapter = new SequenceGameAdapter(getActivity(), contentTableList, SequenceLayout.this);
+        SequenceGameAdapter sequenceGameAdapter = new SequenceGameAdapter(getActivity(),
+                contentTableList, SequenceLayout.this);
         RecyclerView.LayoutManager mLayoutManager = new GridLayoutManager(getActivity(), 2);
         recyclerView.setLayoutManager(mLayoutManager);
         int dp = 12;
         if (FC_Constants.TAB_LAYOUT)
             dp = 20;
-        recyclerView.addItemDecoration(new GridSpacingItemDecoration(2, dpToPx(getActivity(), dp), true));
+        recyclerView.addItemDecoration(new GridSpacingItemDecoration(2,
+                dpToPx(getActivity(), dp), true));
         recyclerView.setItemAnimator(new DefaultItemAnimator());
 //        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
         recyclerView.setAdapter(sequenceGameAdapter);

@@ -8,7 +8,6 @@ import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Handler;
-import android.support.design.widget.FloatingActionButton;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -108,10 +107,12 @@ public class ContentDisplay extends BaseActivity implements ContentContract.Cont
     Drawable homeHeader3;
     @DrawableRes(R.drawable.home_header_4_bg)
     Drawable homeHeader4;
-    @ViewById(R.id.floating_back)
+/*    @ViewById(R.id.floating_back)
     FloatingActionButton floating_back;
     @ViewById(R.id.floating_info)
-    FloatingActionButton floating_info;
+    FloatingActionButton floating_info;*/
+    @ViewById(R.id.main_back)
+    ImageView main_back;
 
 
     @AfterViews
@@ -122,8 +123,8 @@ public class ContentDisplay extends BaseActivity implements ContentContract.Cont
         parentName = getIntent().getStringExtra("parentName");
         level = getIntent().getStringExtra("level");
         changeBG(Integer.parseInt(level));
-        floating_back.setImageResource(R.drawable.ic_left_arrow_white);
-        floating_info.setImageResource(R.drawable.ic_info_outline_white);
+/*        floating_back.setImageResource(R.drawable.ic_left_arrow_white);
+        floating_info.setImageResource(R.drawable.ic_info_outline_white);*/
         presenter.setView(ContentDisplay.this);
 //        presenter.getPerc(nodeId);
 
@@ -257,7 +258,7 @@ public class ContentDisplay extends BaseActivity implements ContentContract.Cont
             finish();
     }
 
-    @Click(R.id.floating_back)
+    @Click(R.id.main_back)
     public void backClicked(){
         onBackPressed();
     }
@@ -311,10 +312,11 @@ public class ContentDisplay extends BaseActivity implements ContentContract.Cont
 
     @UiThread
     @Override
-    public void onPreResOpenClicked(int position, String nId) {
+    public void onPreResOpenClicked(int position, String nId, String title) {
         ButtonClickSound.start();
         Intent mainNew = new Intent(ContentDisplay.this, ContentPlayerActivity_.class);
         mainNew.putExtra("nodeID", nId);
+        mainNew.putExtra("title", title);
         startActivity(mainNew);
     }
 
