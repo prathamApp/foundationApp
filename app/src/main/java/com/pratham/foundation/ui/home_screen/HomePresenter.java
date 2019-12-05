@@ -393,10 +393,8 @@ public class HomePresenter implements HomeContract.HomePresenter, API_Content_Re
                         tempList2.add(contentTableRes);
                         resContentTable.setNodelist(tempList2);
                         resourceList.add(contentTableRes);
-
                         resContentTable.setNodelist(resourceList);
                         contentParentList.add(resContentTable);
-
                     }
                 } catch (Exception e) {
                     e.printStackTrace();

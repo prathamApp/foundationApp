@@ -74,7 +74,6 @@ import static com.pratham.foundation.utility.FC_Constants.dialog_btn_cancel;
 import static com.pratham.foundation.utility.FC_Constants.gameFolderPath;
 import static com.pratham.foundation.utility.SplashSupportActivity.ButtonClickSound;
 
-
 //@EFragment(R.layout.reading_layout_xml_file)
 @EFragment(R.layout.fragment_story_reading)
 public class ContentReadingFragment extends Fragment implements
@@ -169,16 +168,12 @@ public class ContentReadingFragment extends Fragment implements
     bundle, ContentReadingFragment_.class.getSimpleName());
 */
 
-
     @AfterViews
     public void initialize() {
         showLoader();
         context = getActivity();
-
 //        if (getActivity() instanceof ContentPlayerActivity) {
-//            ((ContentPlayerActivity) getActivity()).hideFloating_info();
-//        }
-
+//            ((ContentPlayerActivity) getActivity()).hideFloating_info();}
         silence_outer_layout.setVisibility(View.GONE);
         Bundle bundle = getArguments();
         contentType = bundle.getString("contentType");
@@ -190,10 +185,9 @@ public class ContentReadingFragment extends Fragment implements
         onSdCard = bundle.getBoolean("onSdCard", false);
         ttsService = BaseActivity.ttsService;
         contentType = "story";
-
-        image_container.setVisibility(View.GONE);
         floating_img.setImageResource(R.drawable.ic_image_white);
 
+        image_container.setVisibility(View.GONE);
         bottom_bar2.setVisibility(View.GONE);
         btn_camera.setVisibility(View.GONE);
 
@@ -285,8 +279,6 @@ public class ContentReadingFragment extends Fragment implements
     }
 
     public static String readingImgPath = "";
-
-
     @UiThread
     @Override
     public void initializeContent(int pageNo) {

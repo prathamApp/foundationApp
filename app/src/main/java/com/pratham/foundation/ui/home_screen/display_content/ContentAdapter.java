@@ -113,7 +113,6 @@ public class ContentAdapter extends RecyclerView.Adapter {
             this.rl_root = view.findViewById(R.id.rl_root);
             progressLayout = view.findViewById(R.id.card_progressLayout);
         }
-
     }
 
     @Override
@@ -121,7 +120,6 @@ public class ContentAdapter extends RecyclerView.Adapter {
         if (contentViewList.get(position).getNodeType() != null) {
             switch (contentViewList.get(position).getNodeType()) {
                 case "Resource":
-                case "PreResource":
                     return 1;
                 default:
                     return 2;
