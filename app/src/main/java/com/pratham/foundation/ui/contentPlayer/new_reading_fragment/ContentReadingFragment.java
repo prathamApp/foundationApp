@@ -14,14 +14,11 @@ import android.graphics.Color;
 import android.graphics.drawable.AnimationDrawable;
 import android.graphics.drawable.ColorDrawable;
 import android.media.MediaPlayer;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
-import android.support.v4.widget.TextViewCompat;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewAnimationUtils;
 import android.view.Window;
@@ -36,10 +33,11 @@ import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
-import com.google.android.flexbox.FlexboxLayout;
+import com.nex3z.flowlayout.FlowLayout;
 import com.pratham.foundation.ApplicationClass;
 import com.pratham.foundation.BaseActivity;
 import com.pratham.foundation.R;
+import com.pratham.foundation.customView.SansTextView;
 import com.pratham.foundation.customView.display_image_dialog.Activity_DisplayImage_;
 import com.pratham.foundation.customView.shape_of_view.ShadowLayout;
 import com.pratham.foundation.interfaces.OnGameClose;
@@ -69,13 +67,13 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import static android.widget.TextView.AUTO_SIZE_TEXT_TYPE_UNIFORM;
 import static com.pratham.foundation.BaseActivity.setMute;
 import static com.pratham.foundation.ui.contentPlayer.ContentPlayerActivity.floating_info;
 import static com.pratham.foundation.utility.FC_Constants.STT_REGEX;
 import static com.pratham.foundation.utility.FC_Constants.dialog_btn_cancel;
 import static com.pratham.foundation.utility.FC_Constants.gameFolderPath;
 import static com.pratham.foundation.utility.SplashSupportActivity.ButtonClickSound;
+
 
 //@EFragment(R.layout.reading_layout_xml_file)
 @EFragment(R.layout.fragment_story_reading)
@@ -88,8 +86,8 @@ public class ContentReadingFragment extends Fragment implements
 
     public static MediaPlayer mp, mPlayer;
     @ViewById(R.id.myflowlayout)
-    FlexboxLayout wordFlowLayout;
-    //    @ViewById(R.id.toolbar)
+    FlowLayout wordFlowLayout;
+//    @ViewById(R.id.toolbar)
 //    Toolbar toolbar;
     @ViewById(R.id.parapax_image)
     ImageView parapax_image;
@@ -119,7 +117,7 @@ public class ContentReadingFragment extends Fragment implements
 //    ImageButton ib_page_img;
     @ViewById(R.id.bottom_bar2)
     LinearLayout bottom_bar2;
-    //    @ViewById(R.id.ll_btn_next)
+//    @ViewById(R.id.ll_btn_next)
 //    LinearLayout ll_btn_next;
 //    @ViewById(R.id.ll_btn_prev)
 //    LinearLayout ll_btn_prev;
@@ -129,13 +127,14 @@ public class ContentReadingFragment extends Fragment implements
     FloatingActionButton floating_img;
 
     ContinuousSpeechService_New continuousSpeechService;
+
     public static String storyId, StudentID = "", readingContentPath;
     TTSService ttsService;
     Context context;
 
     List<ModalParaSubMenu> modalPagesList;
 
-    String contentType, storyPath, storyName, storyAudio, certiCode, storyBg, pageTitle, sttLang;
+    String contentType, storyPath, storyName, storyAudio, certiCode, storyBg, pageTitle,sttLang;
     static int currentPage, lineBreakCounter = 0;
 
     public Handler handler, audioHandler, soundStopHandler, colorChangeHandler,
@@ -157,7 +156,9 @@ public class ContentReadingFragment extends Fragment implements
     static boolean[] correctArr;
     static boolean[] testCorrectArr;
     AnimationDrawable animationDrawable;
-/*        bundle.putString("nodeID", nodeID);
+
+/*
+        bundle.putString("nodeID", nodeID);
         bundle.putString("contentType","s");
         bundle.putString("storyPath","s");
         bundle.putString("storyId","s");
@@ -165,14 +166,19 @@ public class ContentReadingFragment extends Fragment implements
         bundle.putString("certiCode","s");
         bundle.putBoolean("onSdCard", false);
         FC_Utility.showFragment(ContentPlayerActivity.this, new ContentReadingFragment_(), R.id.RL_CPA,
-    bundle, ContentReadingFragment_.class.getSimpleName());*/
+    bundle, ContentReadingFragment_.class.getSimpleName());
+*/
+
 
     @AfterViews
     public void initialize() {
         showLoader();
         context = getActivity();
+
 //        if (getActivity() instanceof ContentPlayerActivity) {
-//            ((ContentPlayerActivity) getActivity()).hideFloating_info();}
+//            ((ContentPlayerActivity) getActivity()).hideFloating_info();
+//        }
+
         silence_outer_layout.setVisibility(View.GONE);
         Bundle bundle = getArguments();
         contentType = bundle.getString("contentType");
@@ -184,9 +190,10 @@ public class ContentReadingFragment extends Fragment implements
         onSdCard = bundle.getBoolean("onSdCard", false);
         ttsService = BaseActivity.ttsService;
         contentType = "story";
-        floating_img.setImageResource(R.drawable.ic_image_white);
 
         image_container.setVisibility(View.GONE);
+        floating_img.setImageResource(R.drawable.ic_image_white);
+
         bottom_bar2.setVisibility(View.GONE);
         btn_camera.setVisibility(View.GONE);
 
@@ -194,6 +201,8 @@ public class ContentReadingFragment extends Fragment implements
 //        animationDrawable.setEnterFadeDuration(4500);
 //        animationDrawable.setExitFadeDuration(4500);
 //        animationDrawable.start();
+
+
         presenter.setView(ContentReadingFragment.this);
         modalPagesList = new ArrayList<>();
 
@@ -208,6 +217,7 @@ public class ContentReadingFragment extends Fragment implements
         Collections.shuffle(readSounds);
         startTime = FC_Utility.getCurrentDateTime();
         presenter.setResId(storyId);
+
         currentPage = 0;
 
         presenter.addScore(0, "", 0, 0, startTime, contentType + " start");
@@ -217,6 +227,7 @@ public class ContentReadingFragment extends Fragment implements
             readingContentPath = ApplicationClass.foundationPath + gameFolderPath + "/" + storyPath + "/";
 
         continuousSpeechService.resetSpeechRecognizer();
+
         try {
             story_title.setText(storyName);
 //            toolbar.setTitle(storyName);
@@ -274,6 +285,8 @@ public class ContentReadingFragment extends Fragment implements
     }
 
     public static String readingImgPath = "";
+
+
     @UiThread
     @Override
     public void initializeContent(int pageNo) {
@@ -423,7 +436,7 @@ public class ContentReadingFragment extends Fragment implements
     public void allCorrectAnswer() {
         dismissLoadingDialog();
         for (int i = 0; i < splitWordsPunct.size(); i++) {
-            ((TextView) wordFlowLayout.getChildAt(i)).setTextColor(getResources().getColor(R.color.colorBtnGreenDark));
+            ((SansTextView) wordFlowLayout.getChildAt(i)).setTextColor(getResources().getColor(R.color.colorBtnGreenDark));
             correctArr[i] = true;
         }
         new Handler().postDelayed(() -> {
@@ -442,18 +455,11 @@ public class ContentReadingFragment extends Fragment implements
     private void setWordsToLayout() {
         for (int i = 0; i < splitWords.size(); i++) {
             if (splitWords.get(i).equalsIgnoreCase("#")) {
-                final TextView myTextView = new TextView(context);
+                final SansTextView myTextView = new SansTextView(context);
                 myTextView.setWidth(2000);
                 wordFlowLayout.addView(myTextView);
             } else {
-                //final SansTextView myTextView = new SansTextView(context);
-                final TextView myTextView = (TextView) LayoutInflater.from(getActivity()).inflate(R.layout.textvew_flexbox, null);//new SansTextView(R.layout.textvew_flexbox);
-
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                    myTextView.setAutoSizeTextTypeWithDefaults(AUTO_SIZE_TEXT_TYPE_UNIFORM);
-                } else {
-                    TextViewCompat.setAutoSizeTextTypeWithDefaults(myTextView, TextViewCompat.AUTO_SIZE_TEXT_TYPE_UNIFORM);
-                }
+                final SansTextView myTextView = new SansTextView(context);
                 myTextView.setText(splitWords.get(i));
                 myTextView.setId(i);
                 myTextView.setTextSize(30);
@@ -501,7 +507,7 @@ public class ContentReadingFragment extends Fragment implements
                 endhandler = new Handler();
                 endhandler.postDelayed(() -> {
                     clickMP.stop();
-                    final TextView myView = (TextView) wordFlowLayout.getChildAt(id);
+                    final SansTextView myView = (SansTextView) wordFlowLayout.getChildAt(id);
                     myView.setTextColor(getResources().getColor(R.color.colorText));
                     clickFlag = false;
                 }, (long) end);
@@ -529,13 +535,13 @@ public class ContentReadingFragment extends Fragment implements
         handler = new Handler();
         colorChangeHandler = new Handler();
         mp.start();
-        TextView myNextView = null;
+        SansTextView myNextView = null;
 
         if (index < wordsDurationList.size()) {
             wordDuration = Float.parseFloat(wordsDurationList.get(index));
-            final TextView myView = (TextView) wordFlowLayout.getChildAt(index);
+            final SansTextView myView = (SansTextView) wordFlowLayout.getChildAt(index);
             if (index < wordFlowLayout.getChildCount())
-                myNextView = (TextView) wordFlowLayout.getChildAt(index + 1);
+                myNextView = (SansTextView) wordFlowLayout.getChildAt(index + 1);
 
             if (myNextView != null)
                 isScrollBelowVisible(myNextView);
@@ -592,7 +598,7 @@ public class ContentReadingFragment extends Fragment implements
                     }
                 } else {
                     for (int i = 0; i < wordsDurationList.size(); i++) {
-                        TextView myView = (TextView) wordFlowLayout.getChildAt(i);
+                        SansTextView myView = (SansTextView) wordFlowLayout.getChildAt(i);
                         myView.setBackgroundColor(Color.TRANSPARENT);
                         myView.setTextColor(getResources().getColor(R.color.colorText));
                     }
@@ -608,7 +614,7 @@ public class ContentReadingFragment extends Fragment implements
     public void setCorrectViewColor() {
         for (int x = 0; x < correctArr.length; x++) {
             if (correctArr[x]) {
-                ((TextView) wordFlowLayout.getChildAt(x)).setTextColor(getResources().getColor(R.color.colorBtnGreenDark));
+                ((SansTextView) wordFlowLayout.getChildAt(x)).setTextColor(getResources().getColor(R.color.colorBtnGreenDark));
             }
         }
 //        if (voiceStart)
@@ -801,7 +807,7 @@ public class ContentReadingFragment extends Fragment implements
         int counter = 0;
         for (int x = 0; x < correctArr.length; x++) {
             if (correctArr[x]) {
-                ((TextView) wordFlowLayout.getChildAt(x)).setTextColor(getResources().getColor(R.color.colorBtnGreenDark));
+                ((SansTextView) wordFlowLayout.getChildAt(x)).setTextColor(getResources().getColor(R.color.colorBtnGreenDark));
                 counter++;
             }
         }
@@ -815,7 +821,7 @@ public class ContentReadingFragment extends Fragment implements
         try {
             for (int x = 0; x < correctArr.length; x++) {
                 if (correctArr[x]) {
-                    ((TextView) wordFlowLayout.getChildAt(x)).setTextColor(getResources().getColor(R.color.colorBtnGreenDark));
+                    ((SansTextView) wordFlowLayout.getChildAt(x)).setTextColor(getResources().getColor(R.color.colorBtnGreenDark));
                     counter++;
                 }
             }
@@ -1068,8 +1074,10 @@ public class ContentReadingFragment extends Fragment implements
         presenter.addProgress();
     }
 
-/*  @Override
+/*
+    @Override
     public void onBackPressed() {
+
         if (voiceStart) {
             btn_Mic.performClick();
             voiceStart = false;
@@ -1229,8 +1237,10 @@ public class ContentReadingFragment extends Fragment implements
     @Background
     @Override
     public void Stt_onResult(ArrayList<String> sttResult) {
+
         flgPerMarked = false;
         presenter.sttResultProcess(sttResult, splitWordsPunct, wordsResIdList);
+
 /*        if (!voiceStart) {
             resetSpeechRecognizer();
             btn_Play.setVisibility(View.VISIBLE);
@@ -1337,7 +1347,7 @@ public class ContentReadingFragment extends Fragment implements
     }
 
     @Click(R.id.floating_img)
-    public void showPageImageDialog() {
+    public void showPageImageDialog(){
         btn_Stop.performClick();
         readingImgPath = readingContentPath + storyBg;
         Intent intent = new Intent(getActivity(), Activity_DisplayImage_.class);

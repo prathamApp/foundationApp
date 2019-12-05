@@ -11,6 +11,7 @@
     <color name="colorParent">#E7F2E9</color>
     <color name="colorText">#232F34</color>
 
+    <color name="strokeColor">#344955</color>
     <color name="white">#ffffff</color>
     <color name="yellow">#FFFFFF00</color>
     <color name="yellow_text_bg">#FFEB3B</color>
@@ -85,6 +86,7 @@
     <color name="colorBlackTransparentDark">#e8000000</color>
     <color name="colorBlackTransparentLight">#b2000000</color>
     <color name="ratingFilled">#FFC107</color>
+    <color name="deep_teal">#ff009688</color>
     <color name="black_overlay">#66000000</color>
     <color name="splash_background">#F6F6F6</color>
     <color name="toolbar_background">#37474f</color>

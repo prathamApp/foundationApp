@@ -2,6 +2,7 @@
 <android.support.design.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
+    android:id="@+id/card_main"
     android:layout_height="@dimen/_120sdp"
     android:layout_marginBottom="@dimen/_5sdp"
     android:layout_marginStart="@dimen/_5sdp"
@@ -36,7 +37,7 @@
             android:layout_marginStart="@dimen/_5sdp"
             android:layout_marginTop="@dimen/_5sdp"
             android:text="40%"
-            android:textColor="@color/white"
+            android:textColor="@color/colorText"
             android:textSize="@dimen/_10sdp" />
 
         <com.facebook.drawee.view.SimpleDraweeView

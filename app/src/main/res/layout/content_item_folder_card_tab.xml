@@ -3,6 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="@dimen/_100sdp"
     android:layout_height="@dimen/_120sdp"
+    android:id="@+id/card_main"
     android:layout_marginBottom="@dimen/_5sdp"
     android:layout_marginStart="@dimen/_5sdp"
     android:layout_marginEnd="@dimen/_5sdp"
@@ -36,7 +37,7 @@
             android:layout_marginStart="@dimen/_5sdp"
             android:layout_marginTop="@dimen/_5sdp"
             android:text="40%"
-            android:textColor="@color/white"
+            android:textColor="@color/colorText"
             android:textSize="@dimen/_10sdp" />
 
         <com.facebook.drawee.view.SimpleDraweeView
@@ -48,7 +49,7 @@
             android:layout_marginBottom="@dimen/_5sdp"
             android:background="@android:color/transparent"
             android:layout_alignParentBottom="true"
-            app:roundingBorderColor="@color/white"
+            app:roundingBorderColor="@color/strokeColor"
             app:roundingBorderWidth="@dimen/_1sdp"
             app:roundedCornerRadius="@dimen/_30sdp"
             app:actualImageScaleType="centerInside"

@@ -45,7 +45,7 @@ public interface ContentReadingContract {
 
         void addProgress();
 
-        void setView(ContentReadingContract.ContentReadingView readingView);
+        void setView(ContentReadingView readingView);
 
         void micStopped(List<String> splitWordsPunct, List<String> wordsResIdList);
     }

@@ -3,6 +3,7 @@ package com.pratham.foundation.ui.home_screen.practice_fragment;
 import android.content.Context;
 import android.net.Uri;
 import android.support.annotation.NonNull;
+import android.support.design.card.MaterialCardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -27,6 +28,7 @@ import java.io.File;
 import java.util.List;
 
 import static com.pratham.foundation.ApplicationClass.App_Thumbs_Path;
+import static com.pratham.foundation.utility.FC_Utility.getRandomCardColor;
 
 
 public class PracticeInnerDataAdapter extends RecyclerView.Adapter {
@@ -66,7 +68,7 @@ public class PracticeInnerDataAdapter extends RecyclerView.Adapter {
                 return new FolderHolder(view);
             case 2:
                 LayoutInflater file = LayoutInflater.from(viewGroup.getContext());
-                view = file.inflate(R.layout.content_item_file_card, viewGroup, false);
+                view = file.inflate(R.layout.content_card, viewGroup, false);
                 return new FileHolder(view);
             default:
                 return null;
@@ -94,9 +96,8 @@ public class PracticeInnerDataAdapter extends RecyclerView.Adapter {
             case 1:
                 //folder
                 FolderHolder folderHolder = (FolderHolder) viewHolder;
-//                int randomNo = getRandomDrawableGradiant();
-//                folderHolder.rl_root.setBackground(mContext.getResources().getDrawable(randomNo));
-//                folderHolder.tvTitle.setTextColor(mContext.getResources().getColor(R.color.colorText));
+                folderHolder.card_main.setBackground(mContext.getResources().getDrawable(getRandomCardColor()));
+                folderHolder.tvTitle.setText(itemsList.get(i).getNodeTitle());
                 folderHolder.tvTitle.setText(itemsList.get(i).getNodeTitle());
                 folderHolder.progressLayout.setCurProgress(Integer.parseInt(itemsList.get(i).getNodePercentage()));
                 File f;
@@ -139,13 +140,14 @@ public class PracticeInnerDataAdapter extends RecyclerView.Adapter {
             case 2:
                 //file
                 FileHolder fileHolder = (FileHolder) viewHolder;
+                fileHolder.content_card_view.setBackground(mContext.getResources().getDrawable(getRandomCardColor()));
                 fileHolder.tvTitle.setText(itemsList.get(i).getNodeTitle());
                 File file;
                 if (itemsList.get(i).getIsDownloaded().equalsIgnoreCase("1") ||
                         itemsList.get(i).getIsDownloaded().equalsIgnoreCase("true")) {
 
                     fileHolder.actionBtn.setVisibility(View.GONE);/*setImageResource(R.drawable.ic_joystick);*/
-                    fileHolder.rl_root.setOnClickListener(new View.OnClickListener() {
+                    fileHolder.content_card_view.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
                             itemClicked.onContentOpenClicked(itemsList.get(i));
@@ -177,7 +179,7 @@ public class PracticeInnerDataAdapter extends RecyclerView.Adapter {
                             .build();
                     fileHolder.itemImage.setController(controller);
 
-                    fileHolder.rl_root.setOnClickListener(new View.OnClickListener() {
+                    fileHolder.content_card_view.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
                             itemClicked.onContentDownloadClicked(itemsList.get(i),parentPos,i,""+ FC_Constants.SINGLE_RES_DOWNLOAD);
@@ -206,17 +208,17 @@ public class PracticeInnerDataAdapter extends RecyclerView.Adapter {
 
     public class FileHolder extends RecyclerView.ViewHolder {
 
-        protected TextView tvTitle;
-        protected ImageView actionBtn;
-        SimpleDraweeView itemImage;
-        protected RelativeLayout rl_root;
+        public TextView tvTitle;
+        public ImageView actionBtn;
+        public SimpleDraweeView itemImage;
+        public MaterialCardView content_card_view;
 
         public FileHolder(View view) {
             super(view);
-            this.tvTitle = view.findViewById(R.id.file_Title);
-            this.itemImage = view.findViewById(R.id.file_Image);
-            this.actionBtn = view.findViewById(R.id.btn_file_download);
-            this.rl_root = view.findViewById(R.id.file_card_view);
+            tvTitle = view.findViewById(R.id.content_title);
+            itemImage = view.findViewById(R.id.content_thumbnail);
+            content_card_view = view.findViewById(R.id.content_card_view);
+            actionBtn = view.findViewById(R.id.ib_action_btn);
         }
 
     }
@@ -227,12 +229,14 @@ public class PracticeInnerDataAdapter extends RecyclerView.Adapter {
         SimpleDraweeView itemImage;
         protected RelativeLayout rl_root;
         protected ProgressLayout progressLayout;
+        MaterialCardView card_main;
 
         public FolderHolder(View view) {
             super(view);
             this.tvTitle = view.findViewById(R.id.tvTitle);
             this.itemImage = view.findViewById(R.id.item_Image);
             this.rl_root = view.findViewById(R.id.rl_root);
+            this.card_main = view.findViewById(R.id.card_main);
             progressLayout = view.findViewById(R.id.card_progressLayout);
         }
 

@@ -138,8 +138,17 @@ public class FC_Utility {
             R.drawable.gradient_one, R.drawable.gradient_two, R.drawable.gradient_three,
             R.drawable.gradient_four,R.drawable.gradient_five};
 
+    private static int[] cord_color_bg = new int[]{
+            R.drawable.card_color_bg1,R.drawable.card_color_bg2, R.drawable.card_color_bg3,
+            R.drawable.card_color_bg4,R.drawable.card_color_bg5};
+
     public static int getRandomDrawableGradiant(){
         int bg_grad = gradiant_bg[new Random().nextInt(gradiant_bg.length)];
+        return bg_grad;
+    }
+
+    public static int getRandomCardColor(){
+        int bg_grad = cord_color_bg[new Random().nextInt(cord_color_bg.length)];
         return bg_grad;
     }
 

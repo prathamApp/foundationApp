@@ -2,7 +2,7 @@
 <android.support.design.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/content_card_view"
-    android:layout_width="match_parent"
+    android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:layout_margin="@dimen/_3sdp"
     app:cardBackgroundColor="@color/blue"
@@ -13,17 +13,6 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <com.facebook.drawee.view.SimpleDraweeView
-            android:id="@+id/content_image"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/_90sdp"
-            android:layout_margin="@dimen/_5sdp"
-            android:background="@android:color/transparent"
-            app:actualImageScaleType="fitCenter"
-            app:placeholderImage="@drawable/pratham_logo"
-            app:roundedCornerRadius="@dimen/_10sdp"
-            app:roundingBorderColor="@color/white"
-            app:roundingBorderWidth="@dimen/_2sdp" />
         <!--
                 <android.support.v7.widget.CardView
                     android:id="@+id/card_img"
@@ -45,12 +34,27 @@
                 </android.support.v7.widget.CardView>
         -->
 
+        <com.facebook.drawee.view.SimpleDraweeView
+            android:id="@+id/content_image"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_90sdp"
+            android:layout_marginStart="@dimen/_2sdp"
+            android:layout_marginTop="@dimen/_2sdp"
+            android:layout_marginEnd="@dimen/_2sdp"
+            android:background="@android:color/transparent"
+            app:actualImageScaleType="fitCenter"
+            app:placeholderImage="@drawable/pratham_logo"
+            app:roundedCornerRadius="@dimen/_10sdp"
+            app:roundingBorderColor="@color/strokeColor"
+            app:roundingBorderWidth="@dimen/_2sdp" />
+
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@id/content_image"
             android:layout_marginEnd="@dimen/_5sdp"
-            android:layout_marginBottom="@dimen/_5sdp"
+            android:layout_marginTop="@dimen/_2sdp"
+            android:layout_marginBottom="@dimen/_2sdp"
             android:layout_marginStart="@dimen/_5sdp">
 
             <ImageView
@@ -68,9 +72,10 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_toLeftOf="@+id/ib_action_btn"
+                android:layout_centerVertical="true"
                 android:text="@string/app_name"
                 android:textColor="@color/white"
-                android:textSize="@dimen/_15sdp" />
+                android:textSize="@dimen/_12sdp" />
 
         </RelativeLayout>
 

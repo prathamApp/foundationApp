@@ -1,84 +1,84 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.design.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="225dp"
-    android:layout_height="180dp"
-    android:elevation="3dp"
-    android:layout_marginStart="2dp"
-    android:layout_marginEnd="2dp">
+    android:id="@+id/content_card_view"
+    android:layout_width="@dimen/_120sdp"
+    android:layout_height="wrap_content"
+    android:layout_margin="@dimen/_3sdp"
+    app:cardBackgroundColor="@color/blue"
+    app:cardCornerRadius="@dimen/_8sdp">
 
     <RelativeLayout
-        android:id="@+id/file_root"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:visibility="gone" />
+        android:id="@+id/rl_card"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
-    <RelativeLayout
-        android:id="@+id/file_card_view"
-        android:layout_width="220dp"
-        android:layout_height="175dp"
-        android:layout_alignParentTop="true"
-        android:layout_marginHorizontal="3dp"
-        android:layout_marginTop="1dp"
-        android:layout_marginBottom="3dp"
-        android:background="@color/full_transparent"
-        android:padding="6dp">
+        <!--
+                <android.support.v7.widget.CardView
+                    android:id="@+id/card_img"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/_85sdp"
+                    android:layout_centerHorizontal="true"
+                    android:layout_margin="5dp"
+                    app:cardCornerRadius="13dp">
+
+                    <ImageView
+                        android:id="@+id/content_thumbnail"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_alignStart="@+id/card_img"
+                        android:layout_alignTop="@+id/card_img"
+                        android:foregroundGravity="center"
+                        android:scaleType="fitXY"
+                        android:src="@drawable/pratham_logo" />
+                </android.support.v7.widget.CardView>
+        -->
+
+        <com.facebook.drawee.view.SimpleDraweeView
+            android:id="@+id/content_image"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_90sdp"
+            android:layout_marginStart="@dimen/_5sdp"
+            android:layout_marginTop="@dimen/_5sdp"
+            android:layout_marginEnd="@dimen/_5sdp"
+            android:background="@android:color/transparent"
+            app:actualImageScaleType="fitCenter"
+            app:placeholderImage="@drawable/pratham_logo"
+            app:roundedCornerRadius="@dimen/_10sdp"
+            app:roundingBorderColor="@color/strokeColor"
+            app:roundingBorderWidth="@dimen/_2sdp" />
 
         <RelativeLayout
-            android:id="@+id/rl_root1"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="wrap_content"
+            android:layout_below="@id/content_image"
+            android:layout_marginEnd="@dimen/_5sdp"
+            android:layout_marginTop="@dimen/_2sdp"
+            android:layout_marginBottom="@dimen/_2sdp"
+            android:layout_marginStart="@dimen/_5sdp">
 
-            <android.support.v7.widget.CardView
-                android:id="@+id/card_img"
-                android:layout_width="match_parent"
-                android:layout_height="110dp"
-                android:layout_centerHorizontal="true"
-                android:layout_margin="1dp"
-                app:cardCornerRadius="13dp"
-                app:cardElevation="3dp">
+            <ImageView
+                android:id="@+id/ib_action_btn"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_alignParentEnd="true"
+                android:scaleType="centerInside"
+                android:layout_centerVertical="true"
+                android:src="@drawable/ic_download"
+                android:visibility="visible" />
 
-                <com.facebook.drawee.view.SimpleDraweeView
-                    android:id="@+id/file_Image"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_alignStart="@+id/card_img"
-                    android:layout_alignTop="@+id/card_img"
-                    android:foregroundGravity="center"
-                    app:placeholderImage="@drawable/fc_logo"
-                    android:scaleType="fitXY"
-                    android:src="@drawable/pratham_logo" />
-            </android.support.v7.widget.CardView>
-
-            <RelativeLayout
+            <com.pratham.foundation.customView.FredokaOneTextView
+                android:id="@+id/content_title"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/card_img"
-                android:layout_marginTop="4dp">
-
-                <ImageView
-                    android:id="@+id/btn_file_download"
-                    android:layout_width="@dimen/_25sdp"
-                    android:layout_height="@dimen/_25sdp"
-                    android:layout_alignParentRight="true"
-                    android:layout_centerVertical="true"
-                    android:scaleType="fitCenter"
-                    android:src="@drawable/ic_download"
-                    android:visibility="visible" />
-
-                <com.pratham.foundation.customView.SansTextView
-                    android:id="@+id/file_Title"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_toLeftOf="@+id/ib_action_btn"
-                    android:gravity="center"
-                    android:padding="2dp"
-                    android:text="@string/app_name"
-                    android:textColor="@color/colorText"
-                    android:textSize="@dimen/_12sdp" />
-
-            </RelativeLayout>
+                android:layout_toLeftOf="@+id/ib_action_btn"
+                android:layout_centerVertical="true"
+                android:text="@string/app_name"
+                android:textColor="@color/white"
+                android:textSize="@dimen/_12sdp" />
 
         </RelativeLayout>
+
     </RelativeLayout>
-</RelativeLayout>
+
+</android.support.design.card.MaterialCardView>
