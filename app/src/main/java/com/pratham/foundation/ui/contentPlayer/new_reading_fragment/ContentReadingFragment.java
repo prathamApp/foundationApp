@@ -1068,10 +1068,8 @@ public class ContentReadingFragment extends Fragment implements
         presenter.addProgress();
     }
 
-/*
-    @Override
+/*  @Override
     public void onBackPressed() {
-
         if (voiceStart) {
             btn_Mic.performClick();
             voiceStart = false;
