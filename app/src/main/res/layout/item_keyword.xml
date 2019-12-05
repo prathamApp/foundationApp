@@ -7,7 +7,7 @@
     android:layout_marginTop="5dp"
     android:background="@drawable/hexagon"
     android:gravity="center"
-    android:text="asanksjdnaks"
+    android:text=""
     android:textColor="@color/white"
     android:textSize="@dimen/_15sdp" />
 

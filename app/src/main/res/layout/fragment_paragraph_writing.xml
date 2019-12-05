@@ -10,27 +10,27 @@
         android:layout_height="60dp" />
     <RelativeLayout
         android:id="@+id/paragraph_container"
+        style="@style/paragraph"
         android:layout_width="match_parent"
         android:layout_height="@dimen/_330sdp"
         android:layout_below="@id/space"
         android:layout_gravity="center"
         android:layout_marginHorizontal="@dimen/_10sdp"
         android:layout_marginTop="@dimen/_10sdp"
-        android:orientation="vertical"
-        style="@style/paragraph">
+        android:orientation="vertical">
+
         <android.support.v7.widget.RecyclerView
             android:id="@+id/paragraph"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/_3sdp"
             android:layout_centerInParent="true"
+            android:layout_marginTop="@dimen/_3sdp"
             android:orientation="vertical" />
     </RelativeLayout>
 
-    <RelativeLayout
+   <!-- <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_below="@id/paragraph_container"
+        android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_marginHorizontal="@dimen/_10sdp"
         android:layout_marginVertical="@dimen/_10sdp"
@@ -40,8 +40,7 @@
             android:id="@+id/controls_top"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="center"
-            android:weightSum="3">
+            android:gravity="center">
 
             <ImageButton
                 android:id="@+id/capture"
@@ -56,9 +55,10 @@
                 style="@style/submitbtn"
                 android:layout_width="0dp"
                 android:layout_height="50dp"
-                android:layout_weight="1"
                 android:layout_margin="@dimen/_2sdp"
-                android:text="preview" />
+                android:layout_weight="1"
+                android:text="preview"
+                android:visibility="gone"/>
         </LinearLayout>
 
         <LinearLayout
@@ -67,7 +67,6 @@
             android:layout_height="wrap_content"
             android:layout_below="@id/controls_top"
             android:layout_marginTop="@dimen/_5sdp">
-
 
 
             <com.pratham.foundation.customView.SansButton
@@ -79,9 +78,18 @@
                 android:text="submit" />
 
         </LinearLayout>
-    </RelativeLayout>
+    </RelativeLayout>-->
 
 
+    <include
+        android:id="@+id/bottom_bar"
+        layout="@layout/bottom_control_panel_v4"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_gravity="bottom|center_horizontal"
+        android:layout_marginBottom="1dp"
+        android:gravity="bottom|center_horizontal" />
 
     <!-- <com.pratham.foundation.customView.SansTextView
          android:id="@+id/title"

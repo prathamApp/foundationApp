@@ -1,7 +1,6 @@
 package com.pratham.foundation.ui.contentPlayer.paragraph_writing;
 
 import android.content.Context;
-import android.graphics.Bitmap;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
@@ -19,18 +18,15 @@ import com.pratham.foundation.utility.FC_Utility;
 
 import org.androidannotations.annotations.EBean;
 
-import java.io.File;
-import java.io.FileOutputStream;
 import java.lang.reflect.Type;
 import java.util.Collections;
 import java.util.List;
 
 import static com.pratham.foundation.database.AppDatabase.appDatabase;
-import static com.pratham.foundation.utility.FC_Constants.activityPhotoPath;
 
 @EBean
 public class ParagraphWritingPresenter implements ParagraphWritingContract.ParagraphWritingPresenter {
-    private ScienceQuestion questionModel;
+    private ScienceQuestion questionModel = null;
     private ParagraphWritingContract.ParagraphWritingView view;
     private Context context;
     private List<ScienceQuestion> quetionModelList;
@@ -40,7 +36,6 @@ public class ParagraphWritingPresenter implements ParagraphWritingContract.Parag
 
     public ParagraphWritingPresenter(Context context) {
         this.context = context;
-
     }
 
     public void setView(ParagraphWritingContract.ParagraphWritingView view, String resId, String readingContentPath) {
@@ -51,7 +46,6 @@ public class ParagraphWritingPresenter implements ParagraphWritingContract.Parag
 
     @Override
     public void getData() {
-        questionModel = new ScienceQuestion();
         String text = FC_Utility.loadJSONFromStorage(readingContentPath, "CWiritng.json");
         Gson gson = new Gson();
         Type type = new TypeToken<List<ScienceQuestion>>() {
@@ -80,6 +74,7 @@ public class ParagraphWritingPresenter implements ParagraphWritingContract.Parag
         questionModel.setKeywords(new ArrayList(Arrays.asList(instrumentNames)));*/
         //view.showParagraph(questionModel);
     }
+
     public void setCompletionPercentage() {
         try {
             totalWordCount = quetionModelList.size();
@@ -111,6 +106,7 @@ public class ParagraphWritingPresenter implements ParagraphWritingContract.Parag
             e.printStackTrace();
         }
     }
+
     public void getDataList() {
         try {
             perc = getPercentage();
@@ -118,13 +114,14 @@ public class ParagraphWritingPresenter implements ParagraphWritingContract.Parag
             for (int i = 0; i < quetionModelList.size(); i++) {
                 if (perc < 95) {
                     questionModel = quetionModelList.get(i);
-                    break;
                     /*if (!checkWord("" + quetionModelList.get(i).getTitle())) {
                         questionModel = quetionModelList.get(i);
                         break;
                     }*/
                 } else {
                     questionModel = quetionModelList.get(i);
+                }
+                if (questionModel != null) {
                     break;
                 }
             }
@@ -164,26 +161,26 @@ public class ParagraphWritingPresenter implements ParagraphWritingContract.Parag
 
     private int getLearntWordsCount() {
         int count = 0;
-       // count = appDatabase.getKeyWordDao().checkWordCount(FC_Constants.currentStudentID, resId);
+        // count = appDatabase.getKeyWordDao().checkWordCount(FC_Constants.currentStudentID, resId);
         count = appDatabase.getKeyWordDao().checkUniqueWordCount(FC_Constants.currentStudentID, resId);
 
         return count;
     }
 
-    public void createDirectoryAndSaveFile(Bitmap imageToSave, String fileName) {
-        try {
-            File direct = new File(activityPhotoPath);
-            File file = new File(direct, fileName);
-            FileOutputStream out = new FileOutputStream(file);
-            imageToSave.compress(Bitmap.CompressFormat.JPEG, 100, out);
-            // isPhotoSaved = true;
-            out.flush();
-            out.close();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
+    /* public void createDirectoryAndSaveFile(Bitmap imageToSave, String fileName) {
+         try {
+             File direct = new File(activityPhotoPath);
+             File file = new File(direct, fileName);
+             FileOutputStream out = new FileOutputStream(file);
+             imageToSave.compress(Bitmap.CompressFormat.JPEG, 100, out);
+             // isPhotoSaved = true;
+             out.flush();
+             out.close();
+         } catch (Exception e) {
+             e.printStackTrace();
+         }
+     }
+ */
     public void addLearntWords(ScienceQuestion questionModel, String imageName) {
         if (imageName != null && !imageName.isEmpty()) {
             KeyWords keyWords = new KeyWords();
@@ -197,10 +194,8 @@ public class ParagraphWritingPresenter implements ParagraphWritingContract.Parag
             setCompletionPercentage();
             Toast.makeText(context, "inserted succussfully", Toast.LENGTH_LONG).show();
             GameConstatnts.playGameNext(context, GameConstatnts.FALSE, (OnGameClose) view);
-
         } else {
             GameConstatnts.playGameNext(context, GameConstatnts.TRUE, (OnGameClose) view);
-
         }
         BackupDatabase.backup(context);
     }

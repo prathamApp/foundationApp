@@ -14,11 +14,14 @@ import android.graphics.Color;
 import android.graphics.drawable.AnimationDrawable;
 import android.graphics.drawable.ColorDrawable;
 import android.media.MediaPlayer;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.TextViewCompat;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewAnimationUtils;
 import android.view.Window;
@@ -33,11 +36,10 @@ import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
-import com.nex3z.flowlayout.FlowLayout;
+import com.google.android.flexbox.FlexboxLayout;
 import com.pratham.foundation.ApplicationClass;
 import com.pratham.foundation.BaseActivity;
 import com.pratham.foundation.R;
-import com.pratham.foundation.customView.SansTextView;
 import com.pratham.foundation.customView.display_image_dialog.Activity_DisplayImage_;
 import com.pratham.foundation.customView.shape_of_view.ShadowLayout;
 import com.pratham.foundation.interfaces.OnGameClose;
@@ -67,6 +69,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import static android.widget.TextView.AUTO_SIZE_TEXT_TYPE_UNIFORM;
 import static com.pratham.foundation.BaseActivity.setMute;
 import static com.pratham.foundation.ui.contentPlayer.ContentPlayerActivity.floating_info;
 import static com.pratham.foundation.utility.FC_Constants.STT_REGEX;
@@ -86,8 +89,8 @@ public class ContentReadingFragment extends Fragment implements
 
     public static MediaPlayer mp, mPlayer;
     @ViewById(R.id.myflowlayout)
-    FlowLayout wordFlowLayout;
-//    @ViewById(R.id.toolbar)
+    FlexboxLayout wordFlowLayout;
+    //    @ViewById(R.id.toolbar)
 //    Toolbar toolbar;
     @ViewById(R.id.parapax_image)
     ImageView parapax_image;
@@ -117,7 +120,7 @@ public class ContentReadingFragment extends Fragment implements
 //    ImageButton ib_page_img;
     @ViewById(R.id.bottom_bar2)
     LinearLayout bottom_bar2;
-//    @ViewById(R.id.ll_btn_next)
+    //    @ViewById(R.id.ll_btn_next)
 //    LinearLayout ll_btn_next;
 //    @ViewById(R.id.ll_btn_prev)
 //    LinearLayout ll_btn_prev;
@@ -134,7 +137,7 @@ public class ContentReadingFragment extends Fragment implements
 
     List<ModalParaSubMenu> modalPagesList;
 
-    String contentType, storyPath, storyName, storyAudio, certiCode, storyBg, pageTitle,sttLang;
+    String contentType, storyPath, storyName, storyAudio, certiCode, storyBg, pageTitle, sttLang;
     static int currentPage, lineBreakCounter = 0;
 
     public Handler handler, audioHandler, soundStopHandler, colorChangeHandler,
@@ -436,7 +439,7 @@ public class ContentReadingFragment extends Fragment implements
     public void allCorrectAnswer() {
         dismissLoadingDialog();
         for (int i = 0; i < splitWordsPunct.size(); i++) {
-            ((SansTextView) wordFlowLayout.getChildAt(i)).setTextColor(getResources().getColor(R.color.colorBtnGreenDark));
+            ((TextView) wordFlowLayout.getChildAt(i)).setTextColor(getResources().getColor(R.color.colorBtnGreenDark));
             correctArr[i] = true;
         }
         new Handler().postDelayed(() -> {
@@ -455,11 +458,18 @@ public class ContentReadingFragment extends Fragment implements
     private void setWordsToLayout() {
         for (int i = 0; i < splitWords.size(); i++) {
             if (splitWords.get(i).equalsIgnoreCase("#")) {
-                final SansTextView myTextView = new SansTextView(context);
+                final TextView myTextView = new TextView(context);
                 myTextView.setWidth(2000);
                 wordFlowLayout.addView(myTextView);
             } else {
-                final SansTextView myTextView = new SansTextView(context);
+                //final SansTextView myTextView = new SansTextView(context);
+                final TextView myTextView = (TextView) LayoutInflater.from(getActivity()).inflate(R.layout.textvew_flexbox, null);//new SansTextView(R.layout.textvew_flexbox);
+
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                    myTextView.setAutoSizeTextTypeWithDefaults(AUTO_SIZE_TEXT_TYPE_UNIFORM);
+                } else {
+                    TextViewCompat.setAutoSizeTextTypeWithDefaults(myTextView, TextViewCompat.AUTO_SIZE_TEXT_TYPE_UNIFORM);
+                }
                 myTextView.setText(splitWords.get(i));
                 myTextView.setId(i);
                 myTextView.setTextSize(30);
@@ -507,7 +517,7 @@ public class ContentReadingFragment extends Fragment implements
                 endhandler = new Handler();
                 endhandler.postDelayed(() -> {
                     clickMP.stop();
-                    final SansTextView myView = (SansTextView) wordFlowLayout.getChildAt(id);
+                    final TextView myView = (TextView) wordFlowLayout.getChildAt(id);
                     myView.setTextColor(getResources().getColor(R.color.colorText));
                     clickFlag = false;
                 }, (long) end);
@@ -535,13 +545,13 @@ public class ContentReadingFragment extends Fragment implements
         handler = new Handler();
         colorChangeHandler = new Handler();
         mp.start();
-        SansTextView myNextView = null;
+        TextView myNextView = null;
 
         if (index < wordsDurationList.size()) {
             wordDuration = Float.parseFloat(wordsDurationList.get(index));
-            final SansTextView myView = (SansTextView) wordFlowLayout.getChildAt(index);
+            final TextView myView = (TextView) wordFlowLayout.getChildAt(index);
             if (index < wordFlowLayout.getChildCount())
-                myNextView = (SansTextView) wordFlowLayout.getChildAt(index + 1);
+                myNextView = (TextView) wordFlowLayout.getChildAt(index + 1);
 
             if (myNextView != null)
                 isScrollBelowVisible(myNextView);
@@ -598,7 +608,7 @@ public class ContentReadingFragment extends Fragment implements
                     }
                 } else {
                     for (int i = 0; i < wordsDurationList.size(); i++) {
-                        SansTextView myView = (SansTextView) wordFlowLayout.getChildAt(i);
+                        TextView myView = (TextView) wordFlowLayout.getChildAt(i);
                         myView.setBackgroundColor(Color.TRANSPARENT);
                         myView.setTextColor(getResources().getColor(R.color.colorText));
                     }
@@ -614,7 +624,7 @@ public class ContentReadingFragment extends Fragment implements
     public void setCorrectViewColor() {
         for (int x = 0; x < correctArr.length; x++) {
             if (correctArr[x]) {
-                ((SansTextView) wordFlowLayout.getChildAt(x)).setTextColor(getResources().getColor(R.color.colorBtnGreenDark));
+                ((TextView) wordFlowLayout.getChildAt(x)).setTextColor(getResources().getColor(R.color.colorBtnGreenDark));
             }
         }
 //        if (voiceStart)
@@ -807,7 +817,7 @@ public class ContentReadingFragment extends Fragment implements
         int counter = 0;
         for (int x = 0; x < correctArr.length; x++) {
             if (correctArr[x]) {
-                ((SansTextView) wordFlowLayout.getChildAt(x)).setTextColor(getResources().getColor(R.color.colorBtnGreenDark));
+                ((TextView) wordFlowLayout.getChildAt(x)).setTextColor(getResources().getColor(R.color.colorBtnGreenDark));
                 counter++;
             }
         }
@@ -821,7 +831,7 @@ public class ContentReadingFragment extends Fragment implements
         try {
             for (int x = 0; x < correctArr.length; x++) {
                 if (correctArr[x]) {
-                    ((SansTextView) wordFlowLayout.getChildAt(x)).setTextColor(getResources().getColor(R.color.colorBtnGreenDark));
+                    ((TextView) wordFlowLayout.getChildAt(x)).setTextColor(getResources().getColor(R.color.colorBtnGreenDark));
                     counter++;
                 }
             }
@@ -1347,7 +1357,7 @@ public class ContentReadingFragment extends Fragment implements
     }
 
     @Click(R.id.floating_img)
-    public void showPageImageDialog(){
+    public void showPageImageDialog() {
         btn_Stop.performClick();
         readingImgPath = readingContentPath + storyBg;
         Intent intent = new Intent(getActivity(), Activity_DisplayImage_.class);

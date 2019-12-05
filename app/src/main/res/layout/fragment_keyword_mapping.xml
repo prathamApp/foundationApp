@@ -6,37 +6,50 @@
     <Space
         android:id="@+id/space"
         android:layout_width="match_parent"
-        android:layout_height="60dp"/>
+        android:layout_height="00dp"/>
     <RelativeLayout
         android:layout_below="@id/space"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-
+        <com.pratham.foundation.customView.SansTextView
+            android:id="@+id/keyword"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/age_3_to_6"
+            style="@style/tittle"/>
+    <LinearLayout
+        android:id="@+id/button_controls"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:orientation="vertical">
+        <Button
+            android:id="@+id/showAnswer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="hint"
+            style="@style/yellow_button"/>
         <Button
             android:id="@+id/submit"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
             android:text="Submit"
             style="@style/submitbtn" />
+    </LinearLayout>
+
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/recycler_view"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_above="@id/submit"
+            android:layout_above="@id/button_controls"
             android:layout_below="@id/keyword"
             android:layout_centerInParent="true"
             android:layout_margin="@dimen/hexa_dp"
             android:gravity="center" />
 
 
-        <com.pratham.foundation.customView.SansTextView
-            android:id="@+id/keyword"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/age_3_to_6"
-            style="@style/question"/>
+
     </RelativeLayout>
 
 

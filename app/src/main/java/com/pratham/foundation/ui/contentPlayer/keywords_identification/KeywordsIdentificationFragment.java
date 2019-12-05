@@ -26,6 +26,7 @@ import com.pratham.foundation.modalclasses.ScienceQuestionChoice;
 import com.pratham.foundation.ui.contentPlayer.ContentPlayerActivity;
 import com.pratham.foundation.ui.contentPlayer.GameConstatnts;
 import com.pratham.foundation.ui.contentPlayer.fact_retrival_selection.ScienceQuestion;
+import com.pratham.foundation.utility.FC_Constants;
 import com.pratham.foundation.utility.FC_Utility;
 
 import org.androidannotations.annotations.AfterViews;
@@ -106,14 +107,16 @@ public class KeywordsIdentificationFragment extends Fragment implements Keywords
                 RelativeLayout.LayoutParams.WRAP_CONTENT,
                 RelativeLayout.LayoutParams.WRAP_CONTENT);
         lp.setMargins(10, 5, 10, 5);
-
+        if (FC_Constants.isTest) {
+            show_me_keywords.setVisibility(View.GONE);
+        }
         presenter.getData();
     }
 
     @Override
     public void showParagraph(ScienceQuestion questionModel) {
         this.questionModel = questionModel;
-        this.questionModel.setQuestion(questionModel.getQuestion().replace("\n", " "));
+        this.questionModel.setQuestion(questionModel.getQuestion().replace("\n", ""));
        /* if (questionModel.getInstruction() != null && !questionModel.getInstruction().isEmpty()) {
             tittle.setText(questionModel.getInstruction());
         }*/

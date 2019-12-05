@@ -11,6 +11,7 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.pratham.foundation.R;
+import com.pratham.foundation.customView.FredokaOneTextView;
 import com.pratham.foundation.customView.GridSpacingItemDecoration;
 import com.pratham.foundation.database.AppDatabase;
 import com.pratham.foundation.database.domain.ContentTable;
@@ -48,7 +49,7 @@ public class SequenceLayout extends Fragment implements SequeanceLayoutContract.
     @ViewById(R.id.recycler_view)
     RecyclerView recyclerView;
     @ViewById(R.id.txt_seq_title)
-    TextView txt_seq_title;
+    FredokaOneTextView txt_seq_title;
     @ViewById(R.id.btn_back)
     ImageButton btn_back;
 
@@ -111,6 +112,7 @@ public class SequenceLayout extends Fragment implements SequeanceLayoutContract.
     @Click(R.id.playFromStart)
     public void playFromStartClick() {
         GameConstatnts.currentGameAdapterposition = -1;
+        playInsequence = true;
         GameConstatnts.plaGame(getActivity());
     }
 
@@ -122,9 +124,9 @@ public class SequenceLayout extends Fragment implements SequeanceLayoutContract.
     @Override
     public void contentClicked(ContentTable contentTable) {
         onConentClickeditem = contentTable;
-       // GameConstatnts.showInstructionDialog(this, getActivity(), contentTable.getResourceType());
+        // GameConstatnts.showInstructionDialog(this, getActivity(), contentTable.getResourceType());
         if (!contentTable.getResourceType().equalsIgnoreCase(GameConstatnts.READ_VOCAB_ANDROID)) {
-            playInsequence = false;
+             playInsequence = false;
             playGamesAfterDialog();
         }
     }
@@ -246,7 +248,6 @@ public class SequenceLayout extends Fragment implements SequeanceLayoutContract.
             bundle.putString("sttLang", onConentClickeditem.getContentLanguage());
             bundle.putBoolean("onSdCard", true);
             bundle.putString("jsonName", onConentClickeditem.getResourceType());
-            playInsequence = false;
             switch (onConentClickeditem.getResourceType()) {
                 case GameConstatnts.READ_VOCAB_ANDROID:
                     FC_Utility.showFragment((Activity) context, new VocabReadingFragment_(), R.id.RL_CPA,

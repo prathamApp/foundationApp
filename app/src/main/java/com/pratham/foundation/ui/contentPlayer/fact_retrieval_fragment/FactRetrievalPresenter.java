@@ -29,11 +29,11 @@ import static com.pratham.foundation.database.AppDatabase.appDatabase;
 import static com.pratham.foundation.utility.FC_Constants.STT_REGEX;
 
 @EBean
-public class FactRetrievalPresenter implements FactRetrievalContract.FactRetrievalPresenter, OnGameClose {
+public class FactRetrievalPresenter implements FactRetrievalContract.FactRetrievalPresenter {
     private ScienceQuestion questionModel;
     private FactRetrievalContract.FactRetrievalView view;
     private final Context context;
-    private String  resId;
+    private String resId;
     private float perc;
     //private List<QuetionAns> quetionAnsList;
     private List<ScienceQuestion> quetionModelList;
@@ -103,14 +103,6 @@ public class FactRetrievalPresenter implements FactRetrievalContract.FactRetriev
     }
 
 
-
-
-
-
-
-
-
-
     @Background
     @Override
     public void getDataList() {
@@ -151,7 +143,6 @@ public class FactRetrievalPresenter implements FactRetrievalContract.FactRetriev
         }
     }
 
-
     private int getLearntWordsCount() {
         int count = 0;
         //count = appDatabase.getKeyWordDao().checkWordCount(FC_Constants.currentStudentID, resId);
@@ -190,12 +181,16 @@ public class FactRetrievalPresenter implements FactRetrievalContract.FactRetriev
                         selectedAnsList.get(i).setTrue(false);
                     }
                     // addScore(GameConstatnts.getInt(selectedAnsList.get(i).getQid()), GameConstatnts.FACTRETRIEVAL, scoredMarks, 10, FC_Utility.getCurrentDateTime(), selectedAnsList.get(i).toString());
-                    addScore(GameConstatnts.getInt(questionModel.getQid()), GameConstatnts.FACTRETRIEVAL, scoredMarks, 10,selectedAnsList.get(i).getStartTime(),selectedAnsList.get(i).getEndTime(), selectedAnsList.get(i).toString());
+                    addScore(GameConstatnts.getInt(questionModel.getQid()), GameConstatnts.FACTRETRIEVAL, scoredMarks, 10, selectedAnsList.get(i).getStartTime(), selectedAnsList.get(i).getEndTime(), selectedAnsList.get(i).toString());
                 }
             }
             appDatabase.getKeyWordDao().insertAllWord(learntWords);
             setCompletionPercentage();
-           view.showResult(selectedAnsList);
+            if (!FC_Constants.isTest) {
+                view.showResult(selectedAnsList);
+            }else {
+                GameConstatnts.playGameNext(context, GameConstatnts.FALSE, (OnGameClose) view);
+            }
             //GameConstatnts.playGameNext(context, GameConstatnts.FALSE, (OnGameClose) view);
         } else {
             GameConstatnts.playGameNext(context, GameConstatnts.TRUE, (OnGameClose) view);
@@ -204,7 +199,7 @@ public class FactRetrievalPresenter implements FactRetrievalContract.FactRetriev
     }
 
     private boolean checkAttemptedornot(List<ScienceQuestionChoice> selectedAnsList) {
-         for (int i = 0; i < selectedAnsList.size(); i++) {
+        for (int i = 0; i < selectedAnsList.size(); i++) {
             if (selectedAnsList.get(i).getUserAns() != null && !selectedAnsList.get(i).getUserAns().isEmpty()) {
                 return true;
             }
@@ -212,7 +207,7 @@ public class FactRetrievalPresenter implements FactRetrievalContract.FactRetriev
         return false;
     }
 
-    public void addScore(int wID, String Word, int scoredMarks, int totalMarks, String resStartTime,String resEndTime, String Label) {
+    public void addScore(int wID, String Word, int scoredMarks, int totalMarks, String resStartTime, String resEndTime, String Label) {
         try {
             String deviceId = appDatabase.getStatusDao().getValue("DeviceId");
             Score score = new Score();
@@ -286,8 +281,5 @@ public class FactRetrievalPresenter implements FactRetrievalContract.FactRetriev
         return perc;
     }
 
-    @Override
-    public void gameClose() {
 
-    }
 }

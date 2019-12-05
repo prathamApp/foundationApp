@@ -60,7 +60,7 @@
             android:padding="@dimen/_8sdp"
             android:textSize="@dimen/_20sdp" />
     </LinearLayout>
-    <ImageButton
+   <!-- <ImageButton
         android:id="@+id/ib_mic"
         android:layout_above="@id/submit"
         android:layout_width="@dimen/_80sdp"
@@ -70,8 +70,19 @@
         android:padding="@dimen/_5sdp"
         android:layout_centerHorizontal="true"
         android:scaleType="fitXY"
-        android:src="@drawable/ic_mic_24dp" />
-
+        android:src="@drawable/ic_mic_24dp" />-->
+    <ImageButton
+        android:id="@+id/ib_mic"
+        android:layout_above="@id/submit"
+        android:layout_width="@dimen/_80sdp"
+        android:layout_height="@dimen/_80sdp"
+        android:layout_gravity="center"
+        android:layout_centerHorizontal="true"
+        android:scaleType="centerInside"
+        android:elevation="5dp"
+        style="@style/submitbtn"
+        android:padding="@dimen/_5sdp"
+        android:src="@drawable/ic_mic_black"/>
     <com.pratham.foundation.customView.SansButton
         android:id="@+id/submit"
         android:layout_width="wrap_content"

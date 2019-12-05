@@ -26,6 +26,7 @@ public class KeywordOptionAdapter extends RecyclerView.Adapter<KeywordOptionAdap
     List<ScienceQuestionChoice> selectedOption = new ArrayList();
     int maxSelect;
     boolean isClickable = true;
+    private boolean showAnswer=false;
     KeywordMappingContract.KeywordMappingPresenter presenter;
     public KeywordOptionAdapter(Context context, List<ScienceQuestionChoice> datalist, int maxSelect,KeywordMappingContract.KeywordMappingPresenter presenter) {
         this.context = context;
@@ -63,7 +64,8 @@ public class KeywordOptionAdapter extends RecyclerView.Adapter<KeywordOptionAdap
         myviewholder.textView.setLayoutParams(param);
         myviewholder.textView.setText(datalist.get(position).getSubQues());
 
-
+        myviewholder.textView.setPaintFlags(  myviewholder.textView.getPaintFlags() & (~ Paint.STRIKE_THRU_TEXT_FLAG));
+        myviewholder.textView.setTextColor(Color.WHITE);
         if (datalist.get(myviewholder.getAdapterPosition()).isIsclicked()) {
             myviewholder.itemView.setBackground(ContextCompat.getDrawable(context, R.drawable.hexagon_yellow));
         } else {
@@ -95,21 +97,21 @@ public class KeywordOptionAdapter extends RecyclerView.Adapter<KeywordOptionAdap
         });
 
         if(!isClickable){
-
             if (!presenter.checkAnswerNew(datalist,  myviewholder.textView.getText().toString())) {
                 myviewholder.textView.setTextColor(Color.RED);
                 myviewholder.textView.setPaintFlags(myviewholder.textView.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
             } else {
                 myviewholder.textView.setPaintFlags(  myviewholder.textView.getPaintFlags() & (~ Paint.STRIKE_THRU_TEXT_FLAG));
-
             }
+        }
 
-           /* if(!datalist.get(myviewholder.getAdapterPosition()).isTrue()){
+        if(!isClickable && showAnswer){
+            if (!presenter.checkAnswerNew(datalist,  myviewholder.textView.getText().toString())) {
                 myviewholder.textView.setTextColor(Color.RED);
                 myviewholder.textView.setPaintFlags(myviewholder.textView.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
-            }else {
+            } else {
                 myviewholder.textView.setPaintFlags(  myviewholder.textView.getPaintFlags() & (~ Paint.STRIKE_THRU_TEXT_FLAG));
-            }*/
+            }
         }
     }
 
@@ -143,5 +145,11 @@ public class KeywordOptionAdapter extends RecyclerView.Adapter<KeywordOptionAdap
         isClickable = clickable;
     }
 
+    public boolean isShowAnswer() {
+        return showAnswer;
+    }
 
+    public void setShowAnswer(boolean showAnswer) {
+        this.showAnswer = showAnswer;
+    }
 }

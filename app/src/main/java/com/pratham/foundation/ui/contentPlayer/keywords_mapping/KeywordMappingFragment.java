@@ -1,10 +1,10 @@
 package com.pratham.foundation.ui.contentPlayer.keywords_mapping;
 
-import android.graphics.Paint;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
@@ -13,11 +13,11 @@ import android.widget.TextView;
 import com.pratham.foundation.ApplicationClass;
 import com.pratham.foundation.R;
 import com.pratham.foundation.interfaces.OnGameClose;
-import com.pratham.foundation.interfaces.ShowInstruction;
 import com.pratham.foundation.modalclasses.EventMessage;
 import com.pratham.foundation.modalclasses.ScienceQuestionChoice;
 import com.pratham.foundation.ui.contentPlayer.GameConstatnts;
 import com.pratham.foundation.ui.contentPlayer.fact_retrival_selection.ScienceQuestion;
+import com.pratham.foundation.utility.FC_Constants;
 import com.pratham.foundation.utility.FC_Utility;
 
 import org.androidannotations.annotations.AfterViews;
@@ -49,7 +49,8 @@ public class KeywordMappingFragment extends Fragment implements KeywordMappingCo
     RecyclerView recycler_view;
     @ViewById(R.id.submit)
     Button submit;
-
+    @ViewById(R.id.showAnswer)
+    Button showAnswer;
     private String contentPath, contentTitle, StudentID, resId, readingContentPath, resStartTime;
     private boolean onSdCard;
     private int index = 0;
@@ -58,6 +59,7 @@ public class KeywordMappingFragment extends Fragment implements KeywordMappingCo
     private ScienceQuestion keywordmapping;
     private boolean isSubmitted = false;
     private Animation animFadein;
+    private boolean showanswer = false;
 
     @AfterViews
     protected void initiate() {
@@ -80,7 +82,9 @@ public class KeywordMappingFragment extends Fragment implements KeywordMappingCo
         presenter.getData();
         resStartTime = FC_Utility.getCurrentDateTime();
         presenter.addScore(0, "", 0, 0, resStartTime, FC_Utility.getCurrentDateTime(), GameConstatnts.KEYWORD_MAPPING + " " + GameConstatnts.START);
-
+        if (FC_Constants.isTest) {
+            showAnswer.setVisibility(View.INVISIBLE);
+        }
     }
 
 
@@ -182,6 +186,7 @@ public class KeywordMappingFragment extends Fragment implements KeywordMappingCo
                 } else {
                     isSubmitted = true;
                     presenter.addLearntWords(keywordmapping, selectedoptionList);
+                    showAnswer.setVisibility(View.INVISIBLE);
                     submit.setText("Next");
                     recycler_view.startAnimation(animFadein);
                 }
@@ -205,5 +210,25 @@ public class KeywordMappingFragment extends Fragment implements KeywordMappingCo
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onMessageEvent(EventMessage event) {
         GameConstatnts.showGameInfo(getActivity(), keywordmapping.getInstruction());
+    }
+
+    @Click(R.id.showAnswer)
+    public void showAnswer() {
+        if (showanswer) {
+            //hide answer
+            showAnswer.setText("Hint");
+            showanswer = false;
+            keywordOptionAdapter.setClickable(true);
+            submit.setVisibility(View.VISIBLE);
+
+        } else {
+            //show Answer
+            showAnswer.setText("Hide Hint");
+            showanswer = true;
+            keywordOptionAdapter.setClickable(false);
+            submit.setVisibility(View.INVISIBLE);
+        }
+        keywordOptionAdapter.setShowAnswer(showanswer);
+        keywordOptionAdapter.notifyDataSetChanged();
     }
 }
