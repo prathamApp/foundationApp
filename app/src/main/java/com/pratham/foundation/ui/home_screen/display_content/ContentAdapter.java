@@ -61,7 +61,7 @@ public class ContentAdapter extends RecyclerView.Adapter {
                 return new FileHolder(view);
             case 2:
                 LayoutInflater folder = LayoutInflater.from(viewGroup.getContext());
-                view = folder.inflate(R.layout.content_item_folder_card_tab, viewGroup, false);
+                view = folder.inflate(R.layout.content_adaprer_item_folder_card, viewGroup, false);
                 return new FolderHolder(view);
             default:
                 return null;

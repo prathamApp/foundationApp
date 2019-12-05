@@ -129,7 +129,6 @@ public class ContentReadingFragment extends Fragment implements
     FloatingActionButton floating_img;
 
     ContinuousSpeechService_New continuousSpeechService;
-
     public static String storyId, StudentID = "", readingContentPath;
     TTSService ttsService;
     Context context;
@@ -158,9 +157,7 @@ public class ContentReadingFragment extends Fragment implements
     static boolean[] correctArr;
     static boolean[] testCorrectArr;
     AnimationDrawable animationDrawable;
-
-/*
-        bundle.putString("nodeID", nodeID);
+/*        bundle.putString("nodeID", nodeID);
         bundle.putString("contentType","s");
         bundle.putString("storyPath","s");
         bundle.putString("storyId","s");
@@ -168,8 +165,7 @@ public class ContentReadingFragment extends Fragment implements
         bundle.putString("certiCode","s");
         bundle.putBoolean("onSdCard", false);
         FC_Utility.showFragment(ContentPlayerActivity.this, new ContentReadingFragment_(), R.id.RL_CPA,
-    bundle, ContentReadingFragment_.class.getSimpleName());
-*/
+    bundle, ContentReadingFragment_.class.getSimpleName());*/
 
     @AfterViews
     public void initialize() {
@@ -198,8 +194,6 @@ public class ContentReadingFragment extends Fragment implements
 //        animationDrawable.setEnterFadeDuration(4500);
 //        animationDrawable.setExitFadeDuration(4500);
 //        animationDrawable.start();
-
-
         presenter.setView(ContentReadingFragment.this);
         modalPagesList = new ArrayList<>();
 
@@ -214,7 +208,6 @@ public class ContentReadingFragment extends Fragment implements
         Collections.shuffle(readSounds);
         startTime = FC_Utility.getCurrentDateTime();
         presenter.setResId(storyId);
-
         currentPage = 0;
 
         presenter.addScore(0, "", 0, 0, startTime, contentType + " start");
@@ -224,7 +217,6 @@ public class ContentReadingFragment extends Fragment implements
             readingContentPath = ApplicationClass.foundationPath + gameFolderPath + "/" + storyPath + "/";
 
         continuousSpeechService.resetSpeechRecognizer();
-
         try {
             story_title.setText(storyName);
 //            toolbar.setTitle(storyName);
@@ -1239,10 +1231,8 @@ public class ContentReadingFragment extends Fragment implements
     @Background
     @Override
     public void Stt_onResult(ArrayList<String> sttResult) {
-
         flgPerMarked = false;
         presenter.sttResultProcess(sttResult, splitWordsPunct, wordsResIdList);
-
 /*        if (!voiceStart) {
             resetSpeechRecognizer();
             btn_Play.setVisibility(View.VISIBLE);
