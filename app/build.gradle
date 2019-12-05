@@ -58,7 +58,7 @@ dependencies {
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
 
     implementation 'com.yarolegovich:discrete-scrollview:1.4.9'
-    implementation 'com.google.android:flexbox:1.1.0'
+    implementation 'com.google.android:flexbox:1.0.0'
     implementation 'com.jakewharton:butterknife:8.8.1'
 
     implementation 'com.github.igalata:Bubble-Picker:v0.2.4'

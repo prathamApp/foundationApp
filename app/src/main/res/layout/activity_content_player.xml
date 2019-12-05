@@ -11,6 +11,7 @@
         android:layout_height="@dimen/_30sdp"
         android:layout_margin="@dimen/_5sdp"
         android:scaleType="center"
+        android:elevation="5dp"
         app:srcCompat="@drawable/ic_left_arrow_white" />
 
     <ImageView
@@ -20,6 +21,7 @@
         android:layout_margin="@dimen/_5sdp"
         android:layout_alignParentEnd="true"
         android:scaleType="centerCrop"
+        android:elevation="5dp"
         app:srcCompat="@drawable/ic_info_outline_white" />
     <!--
         <android.support.design.widget.FloatingActionButton

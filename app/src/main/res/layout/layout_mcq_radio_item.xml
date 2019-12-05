@@ -8,5 +8,6 @@
     android:padding="@dimen/_5sdp"
     android:layout_margin="@dimen/_3sdp"
     android:checked="false"
+    android:buttonTint="@color/bluetheme"
     android:background="@drawable/custom_radio_button" />
 

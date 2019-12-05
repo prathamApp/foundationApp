@@ -41,7 +41,6 @@ public class ListeningAndWrittingPresenterImp implements ListeningAndWrittingCon
     private ListeningAndWrittingContract.ListeningAndWrittingView view;
     private String gameName, resId, contentTitle;
     private List<String> correctWordList, wrongWordList;
-    private boolean isTest = false;
     private List<ScienceQuestion> dataList;
     private List<ScienceQuestion> listenAndWrittingModal;
     private int count = 1;
@@ -150,7 +149,7 @@ public class ListeningAndWrittingPresenterImp implements ListeningAndWrittingCon
                     keyWords.setKeyWord(key);
                     keyWords.setWordType("word");
                     appDatabase.getKeyWordDao().insert(keyWords);
-//                    addScore(GameConstatnts.getInt(listenAndWrittingModal.get(i).getQid()), GameConstatnts.LISTNING_AND_WRITTING, 0, 0, FC_Utility.getCurrentDateTime(), imageName);
+                    addScore(GameConstatnts.getInt(listenAndWrittingModal.get(i).getQid()), GameConstatnts.LISTNING_AND_WRITTING, 0, 0, FC_Utility.getCurrentDateTime(), imageName);
                 }
                 GameConstatnts.playGameNext(context, GameConstatnts.FALSE, (OnGameClose) view);
             }
@@ -161,13 +160,12 @@ public class ListeningAndWrittingPresenterImp implements ListeningAndWrittingCon
         BackupDatabase.backup(context);
     }
 
-    public void createDirectoryAndSaveFile(Bitmap imageToSave, String fileName) {
+   /* public void createDirectoryAndSaveFile(Bitmap imageToSave, String fileName) {
         try {
             File direct = new File(activityPhotoPath);
             File file = new File(direct, fileName);
             FileOutputStream out = new FileOutputStream(file);
             String path = file.getAbsolutePath();
-            //new AndroidBmpUtil().save(imageToSave,path );
             imageToSave.compress(Bitmap.CompressFormat.JPEG, 100, out);
             // isPhotoSaved = true;
             out.flush();
@@ -176,7 +174,7 @@ public class ListeningAndWrittingPresenterImp implements ListeningAndWrittingCon
             e.printStackTrace();
         }
     }
-
+*/
     public float getPercentage() {
         float perc = 0f;
         try {

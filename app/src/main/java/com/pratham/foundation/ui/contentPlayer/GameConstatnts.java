@@ -200,7 +200,6 @@ public class GameConstatnts implements ShowInstruction {
             currentGameAdapterposition++;
             contentTable1 = gameList.get(currentGameAdapterposition);
             if (contentTable1 != null) {
-                playInsequence = true;
                 gameSelector(context, contentTable1);
             }
         } else {
@@ -316,7 +315,6 @@ public class GameConstatnts implements ShowInstruction {
             bundle.putString("sttLang", contentTable1.getContentLanguage());
             bundle.putBoolean("onSdCard", true);
             bundle.putString("jsonName", contentTable1.getResourceType());
-            playInsequence = false;
             final Handler handler = new Handler();
             switch (contentTable1.getResourceType()) {
                 case GameConstatnts.READ_VOCAB_ANDROID:

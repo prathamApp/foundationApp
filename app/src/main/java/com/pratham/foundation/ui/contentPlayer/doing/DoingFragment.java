@@ -10,19 +10,24 @@ import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.media.ThumbnailUtils;
+import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -44,11 +49,16 @@ import com.pratham.foundation.database.domain.KeyWords;
 import com.pratham.foundation.database.domain.Score;
 import com.pratham.foundation.interfaces.OnGameClose;
 import com.pratham.foundation.modalclasses.EventMessage;
+import com.pratham.foundation.modalclasses.ScienceQuestionChoice;
+import com.pratham.foundation.services.stt.ContinuousSpeechService_New;
+import com.pratham.foundation.services.stt.STT_Result_New;
 import com.pratham.foundation.ui.contentPlayer.GameConstatnts;
 import com.pratham.foundation.ui.contentPlayer.fact_retrival_selection.ScienceQuestion;
+import com.pratham.foundation.ui.contentPlayer.reading.ReadingFragment;
 import com.pratham.foundation.utility.FC_Constants;
 import com.pratham.foundation.utility.FC_Utility;
 
+import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.ViewById;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -63,6 +73,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.Type;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -70,12 +81,14 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
+import static android.app.Activity.RESULT_OK;
 import static com.pratham.foundation.database.AppDatabase.appDatabase;
+import static com.pratham.foundation.utility.FC_Constants.STT_REGEX;
 import static com.pratham.foundation.utility.FC_Constants.activityPhotoPath;
 import static com.pratham.foundation.utility.FC_Constants.gameFolderPath;
 
 
-public class DoingFragment extends Fragment implements OnGameClose {
+public class DoingFragment extends Fragment implements STT_Result_New.sttView,OnGameClose {
     /* @BindView(R.id.tittle)
         SansTextView tittle;*/
     @BindView(R.id.tv_question)
@@ -92,28 +105,65 @@ public class DoingFragment extends Fragment implements OnGameClose {
     ImageView capture;
 
 
-    @BindView(R.id.RelativeLayout)
-    RelativeLayout RelativeLayout;
+   /* @BindView(R.id.RelativeLayout)
+    RelativeLayout RelativeLayout;*/
 
     @BindView(R.id.preview)
     SansButton preview;
+
+    @BindView(R.id.submit)
+    SansButton submitBtn;
+
+    @BindView(R.id.previous)
+    ImageButton previous;
+
+    @BindView(R.id.next)
+    ImageButton next;
+
+    @BindView(R.id.sub_questions_container)
+    LinearLayout sub_questions_container;
+
+    @BindView(R.id.relativeLayout)
+    RelativeLayout relativeLayout;
+
+    @BindView(R.id.camera_controll)
+    LinearLayout camera_controll;
+
+    @BindView(R.id.subQuestion)
+    SansTextView subQuestion;
+
+
+    @BindView(R.id.answer)
+    SansTextView etAnswer;
+    @BindView(R.id.btn_read_mic)
+    ImageButton ib_mic;
 
     String fileName;
     String questionPath;
     private Context context;
     private String resourcePath;
     private static final int CAMERA_REQUEST = 1;
-
-
     private String readingContentPath, contentPath, contentTitle, StudentID, resId, imageName, resStartTime;
-    private int totalWordCount, learntWordCount;
+    private int totalWordCount, learntWordCount,index=0;
     private ScienceQuestion scienceQuestion;
     private float perc;
     private boolean onSdCard;
     private List<ScienceQuestion> dataList;
     private String jsonName;
     private boolean isVideoQuestion = false;
+    private List<ScienceQuestionChoice> scienceQuestionChoices;
 
+    private float percScore = 0;
+    private String answer;
+    // public static SpeechRecognizer speech = null;
+    private static boolean voiceStart = false;
+    private static boolean[] correctArr;
+    public static Intent intent;
+    private Uri capturedImageUri;
+    private ContinuousSpeechService_New continuousSpeechService;
+    public Dialog myLoadingDialog;
+    private String speechStartTime;
+    boolean dialogFlg = false;
     public DoingFragment() {
         // Required empty public constructor
     }
@@ -122,8 +172,8 @@ public class DoingFragment extends Fragment implements OnGameClose {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         context = getActivity();
-        // speechService = new ContinuousSpeechService(context, ReadingFragment.this);
-        // speechService.resetSpeechRecognizer();
+        continuousSpeechService = new ContinuousSpeechService_New(context, DoingFragment.this, FC_Constants.currentSelectedLanguage);
+        continuousSpeechService.resetSpeechRecognizer();
         contentPath = getArguments().getString("contentPath");
         StudentID = getArguments().getString("StudentID");
         resId = getArguments().getString("resId");
@@ -135,9 +185,9 @@ public class DoingFragment extends Fragment implements OnGameClose {
         else
             readingContentPath = ApplicationClass.foundationPath + gameFolderPath + "/" + contentPath + "/";
         EventBus.getDefault().register(this);
-
+        imageName = "" + ApplicationClass.getUniqueID() + ".jpg";
         resStartTime = FC_Utility.getCurrentDateTime();
-        addScore(0, "", 0, 0, resStartTime, jsonName + " " + GameConstatnts.START);
+        addScore(0, "", 0, 0, resStartTime,FC_Utility.getCurrentDateTime(), jsonName + " " + GameConstatnts.START);
         getData();
     }
 
@@ -268,11 +318,11 @@ public class DoingFragment extends Fragment implements OnGameClose {
             fileName = scienceQuestion.getPhotourl();
             //getFileName(scienceQuestion.getQid(), scienceQuestion.getPhotourl());
 
-//        questionPath = Environment.getExternalStorageDirectory().toString() + "/.Assessment/Content/Downloaded" + "/" + fileName;
+      //questionPath = Environment.getExternalStorageDirectory().toString() + "/.Assessment/Content/Downloaded" + "/" + fileName;
             questionImage.setVisibility(View.GONE);
             questionGif.setVisibility(View.GONE);
-            question.setText(scienceQuestion.getQuestion());
-            if (scienceQuestion.getQuestion().equalsIgnoreCase(""))
+            relativeLayout.setVisibility(View.GONE);
+            if (scienceQuestion.getQuestion().trim().equalsIgnoreCase(""))
                 question.setVisibility(View.GONE);
             else question.setText(scienceQuestion.getQuestion());
 
@@ -280,7 +330,7 @@ public class DoingFragment extends Fragment implements OnGameClose {
           /*  if (!scienceQuestion.getInstruction().isEmpty())
                 tittle.setText(scienceQuestion.getInstruction());*/
             if (fileName != null && !fileName.isEmpty()) {
-                RelativeLayout.setVisibility(View.VISIBLE);
+               // RelativeLayout.setVisibility(View.VISIBLE);
                 if (fileName.toLowerCase().endsWith(".jpeg") || fileName.toLowerCase().endsWith(".jpg") || fileName.toLowerCase().endsWith(".png")) {
                     questionPath = readingContentPath + fileName;
                     Glide.with(getActivity())
@@ -289,17 +339,18 @@ public class DoingFragment extends Fragment implements OnGameClose {
                                     .placeholder(Drawable.createFromPath(questionPath)))
                             .into(questionImage);
                     questionImage.setVisibility(View.VISIBLE);
+                    relativeLayout.setVisibility(View.VISIBLE);
                 } else if (fileName.toLowerCase().endsWith(".gif")) {
                     questionPath = readingContentPath + fileName;
                     InputStream gif;
                     try {
                         gif = new FileInputStream(questionPath);
                         questionGif.setVisibility(View.VISIBLE);
+                        relativeLayout.setVisibility(View.VISIBLE);
                         questionGif.setGifResource(gif);
                     } catch (FileNotFoundException e) {
                         e.printStackTrace();
                     }
-
                 } else {
                     try {
                         isVideoQuestion = true;
@@ -310,13 +361,20 @@ public class DoingFragment extends Fragment implements OnGameClose {
                         BitmapDrawable ob = new BitmapDrawable(getResources(), thumb);
                         questionImage.setBackgroundDrawable(ob);
                         questionImage.setVisibility(View.VISIBLE);
+                        relativeLayout.setVisibility(View.VISIBLE);
                     } catch (Exception e) {
 
                     }
 
                 }
-            } else {
-                RelativeLayout.setVisibility(View.INVISIBLE);
+            }
+            scienceQuestionChoices=scienceQuestion.getLstquestionchoice();
+            if(scienceQuestionChoices!=null&& !scienceQuestionChoices.isEmpty()){
+                loadSubQuestions();
+            }else {
+                sub_questions_container.setVisibility(View.GONE);
+                previous.setVisibility(View.INVISIBLE);
+                next.setVisibility(View.INVISIBLE);
             }
 
         } else {
@@ -324,6 +382,230 @@ public class DoingFragment extends Fragment implements OnGameClose {
         }
     }
 
+    private void loadSubQuestions() {
+        if (continuousSpeechService != null) {
+            continuousSpeechService.onEndOfSpeech();
+            // speech.stopListening();
+            micPressed(0);
+            voiceStart = false;
+        }
+        subQuestion.setText(scienceQuestionChoices.get(index).getSubQues());
+        if(scienceQuestionChoices.get(index).getUserAns().trim()!=null && !scienceQuestionChoices.get(index).getUserAns().isEmpty()){
+            etAnswer.setText(scienceQuestionChoices.get(index).getUserAns());
+        }else {
+            etAnswer.setText("");
+        }
+        etAnswer.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                scienceQuestionChoices.get(index).setUserAns(s.toString());
+                scienceQuestionChoices.get(index).setStartTime(speechStartTime);
+                scienceQuestionChoices.get(index).setEndTime( FC_Utility.getCurrentDateTime());
+            }
+        });
+        submitBtn.setVisibility(View.INVISIBLE);
+        camera_controll.setVisibility(View.INVISIBLE);
+        if (index == 0) {
+            previous.setVisibility(View.INVISIBLE);
+        } else {
+            previous.setVisibility(View.VISIBLE);
+        }
+        if (index == (scienceQuestionChoices.size() - 1)) {
+            submitBtn.setVisibility(View.VISIBLE);
+            camera_controll.setVisibility(View.VISIBLE);
+            next.setVisibility(View.INVISIBLE);
+        } else {
+            submitBtn.setVisibility(View.INVISIBLE);
+            camera_controll.setVisibility(View.INVISIBLE);
+            next.setVisibility(View.VISIBLE);
+        }
+    }
+
+////////////////////////////////
+
+
+    public void showLoader() {
+        if (!dialogFlg) {
+            dialogFlg = true;
+            myLoadingDialog = new Dialog(context);
+            myLoadingDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+            myLoadingDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+            myLoadingDialog.setContentView(R.layout.loading_dialog);
+            myLoadingDialog.setCanceledOnTouchOutside(false);
+            myLoadingDialog.show();
+        }
+    }
+
+
+    @OnClick(R.id.btn_read_mic)
+    public void onMicClicked() {
+        callSTT();
+    }
+
+    public void callSTT() {
+        if (!voiceStart) {
+            voiceStart = true;
+            micPressed(1);
+            showLoader();
+            speechStartTime= FC_Utility.getCurrentDateTime();
+            continuousSpeechService.startSpeechInput();
+            // speechService.startSpeechInput();
+        } else {
+            voiceStart = false;
+            micPressed(0);
+            showLoader();
+            continuousSpeechService.stopSpeechInput();
+            //speechService.stopSpeechInput();
+        }
+    }
+
+
+    public void micPressed(int micPressed) {
+        if (micPressed == 0) {
+            ib_mic.setImageResource(R.drawable.ic_mic_black);
+        } else if (micPressed == 1) {
+            ib_mic.setImageResource(R.drawable.ic_stop_black);
+        }
+    }
+
+    @Override
+    public void silenceDetected() {
+
+    }
+
+    @Override
+    public void stoppedPressed() {
+        dismissLoadingDialog();
+    }
+
+    @Override
+    public void sttEngineReady() {
+        dismissLoadingDialog();
+    }
+
+
+    public void dismissLoadingDialog() {
+        if (dialogFlg) {
+            dialogFlg = false;
+            if (myLoadingDialog != null)
+                myLoadingDialog.dismiss();
+        }
+    }
+
+
+
+
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        //   speechService.resetSpeechRecognizer();
+        continuousSpeechService.resetSpeechRecognizer();
+       /* if (speech != null) {
+            micPressed(0);
+            voiceStart = false;
+        }*/
+    }
+
+
+    @Override
+    public void Stt_onResult(ArrayList<String> matches) {
+        micPressed(0);
+//        ib_mic.stopRecording();
+
+        System.out.println("LogTag" + " onResults");
+//        ArrayList<String> matches = results;
+
+        String sttResult = "";
+//        String sttResult = matches.get(0);
+        String sttQuestion;
+        for (int i = 0; i < matches.size(); i++) {
+            System.out.println("LogTag" + " onResults :  " + matches.get(i));
+
+            if (matches.get(i).equalsIgnoreCase(scienceQuestion.getAnswer()))
+                sttResult = matches.get(i);
+            else sttResult = matches.get(0);
+        }
+        sttQuestion = scienceQuestion.getAnswer();
+        String quesFinal = sttQuestion.replaceAll(STT_REGEX, "");
+
+
+        String[] splitQues = quesFinal.split(" ");
+        String[] splitRes = sttResult.split(" ");
+
+        if (splitQues.length < splitRes.length)
+            correctArr = new boolean[splitRes.length];
+        else correctArr = new boolean[splitQues.length];
+
+
+        for (int j = 0; j < splitRes.length; j++) {
+            for (int i = 0; i < splitQues.length; i++) {
+                if (splitRes[j].equalsIgnoreCase(splitQues[i])) {
+                    // ((TextView) readChatFlow.getChildAt(i)).setTextColor(getResources().getColor(R.color.readingGreen));
+                    correctArr[i] = true;
+                    //sendClikChanger(1);
+                    break;
+                }
+            }
+        }
+
+
+        int correctCnt = 0;
+        for (int x = 0; x < correctArr.length; x++) {
+            if (correctArr[x])
+                correctCnt++;
+        }
+        percScore = ((float) correctCnt / (float) correctArr.length) * 100;
+        Log.d("Punctu", "onResults: " + percScore);
+        if (percScore >= 75) {
+
+            for (int i = 0; i < splitQues.length; i++) {
+                //((TextView) readChatFlow.getChildAt(i)).setTextColor(getResources().getColor(R.color.readingGreen));
+                correctArr[i] = true;
+            }
+
+//            scrollView.setBackgroundResource(R.drawable.convo_correct_bg);
+        }
+
+        etAnswer.setText(sttResult);
+        scienceQuestionChoices.get(index).setUserAns(sttResult);
+        scienceQuestionChoices.get(index).setStartTime(speechStartTime);
+        scienceQuestionChoices.get(index).setEndTime( FC_Utility.getCurrentDateTime());
+
+        voiceStart = false;
+        micPressed(0);
+        continuousSpeechService.stopSpeechInput();
+    }
+
+    @OnClick(R.id.previous)
+    public void onPreviousClick() {
+        if (scienceQuestionChoices != null)
+            if (index > 0) {
+                index--;
+                loadSubQuestions();
+            }
+    }
+
+    @OnClick(R.id.next)
+    public void onNextClick() {
+        if (scienceQuestionChoices != null)
+            if (index < (scienceQuestionChoices.size() - 1)) {
+                index++;
+                loadSubQuestions();
+            }
+    }
+
+    ////////////////////////////
     @OnClick({R.id.iv_question_image})
     public void onVideoClicked() {
      /*   ZoomImageDialog zoomImageDialog = new ZoomImageDialog(getActivity(), path, scienceQuestion.getQtid());
@@ -350,12 +632,24 @@ public class DoingFragment extends Fragment implements OnGameClose {
     public void onPause() {
         super.onPause();
         vv_question.pause();
+        if (continuousSpeechService != null) {
+            continuousSpeechService.stopSpeechInput();
+        }
+        micPressed(0);
+        voiceStart = false;
     }
 
     @OnClick(R.id.capture)
     public void captureClick() {
-        Intent takePicture = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        startActivityForResult(takePicture, CAMERA_REQUEST);
+      /*  Intent takePicture = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        startActivityForResult(takePicture, CAMERA_REQUEST);*/
+        Intent cameraIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
+        File imagesFolder = new File(activityPhotoPath);
+        if (!imagesFolder.exists()) imagesFolder.mkdirs();
+        File image = new File(imagesFolder, imageName);
+        capturedImageUri = Uri.fromFile(image);
+        cameraIntent.putExtra(android.provider.MediaStore.EXTRA_OUTPUT, capturedImageUri);
+        startActivityForResult(cameraIntent, CAMERA_REQUEST);
     }
 
     @OnClick(R.id.preview)
@@ -374,13 +668,6 @@ public class DoingFragment extends Fragment implements OnGameClose {
         } else {
             GameConstatnts.playGameNext(getActivity(), GameConstatnts.TRUE, this);
         }
-        // GameConstatnts.playGameNext(getActivity());
-       /* Bundle bundle = GameConstatnts.findGameData("105");
-        if (bundle != null) {
-            FC_Utility.showFragment(getActivity(), new ListeningAndWritting_(), R.id.RL_CPA,
-                    bundle, ListeningAndWritting_.class.getSimpleName());
-        }*/
-
     }
 
     public void addLearntWords(ScienceQuestion questionModel, String imageName) {
@@ -391,10 +678,10 @@ public class DoingFragment extends Fragment implements OnGameClose {
             keyWords.setStudentId(FC_Constants.currentStudentID);
             keyWords.setKeyWord(questionModel.getTitle());
             keyWords.setWordType("word");
-            addScore(GameConstatnts.getInt(questionModel.getQid()), jsonName, 0, 0, FC_Utility.getCurrentDateTime(), imageName);
+            addScore(GameConstatnts.getInt(questionModel.getQid()), jsonName, 0, 0,resStartTime, FC_Utility.getCurrentDateTime(), imageName);
             appDatabase.getKeyWordDao().insert(keyWords);
             setCompletionPercentage();
-            Toast.makeText(context, "inserted succussfully", Toast.LENGTH_LONG).show();
+            Toast.makeText(context, "inserted successfully", Toast.LENGTH_LONG).show();
             GameConstatnts.playGameNext(context, GameConstatnts.FALSE, this);
         } else {
             GameConstatnts.playGameNext(context, GameConstatnts.TRUE, this);
@@ -402,7 +689,7 @@ public class DoingFragment extends Fragment implements OnGameClose {
         BackupDatabase.backup(context);
     }
 
-    public void addScore(int wID, String Word, int scoredMarks, int totalMarks, String resStartTime, String Label) {
+    public void addScore(int wID, String Word, int scoredMarks, int totalMarks, String resStartTime,String resEndTime, String Label) {
         try {
             String deviceId = appDatabase.getStatusDao().getValue("DeviceId");
             Score score = new Score();
@@ -414,7 +701,7 @@ public class DoingFragment extends Fragment implements OnGameClose {
             score.setStudentID(FC_Constants.currentStudentID);
             score.setStartDateTime(resStartTime);
             score.setDeviceID(deviceId.equals(null) ? "0000" : deviceId);
-            score.setEndDateTime(FC_Utility.getCurrentDateTime());
+            score.setEndDateTime(resEndTime);
             score.setLevel(FC_Constants.currentLevel);
             score.setLabel(Word + "___" + Label);
             score.setSentFlag(0);
@@ -431,7 +718,7 @@ public class DoingFragment extends Fragment implements OnGameClose {
                 assessment.setStudentIDa(FC_Constants.currentAssessmentStudentID);
                 assessment.setStartDateTimea(resStartTime);
                 assessment.setDeviceIDa(deviceId.equals(null) ? "0000" : deviceId);
-                assessment.setEndDateTime(FC_Utility.getCurrentDateTime());
+                assessment.setEndDateTime(resEndTime);
                 assessment.setLevela(FC_Constants.currentLevel);
                 assessment.setLabel("test: ___" + Label);
                 assessment.setSentFlag(0);
@@ -453,16 +740,16 @@ public class DoingFragment extends Fragment implements OnGameClose {
         ImageView iv_dia_preview = dialog.findViewById(R.id.iv_dia_preview);
         SansButton dia_btn_cross = dialog.findViewById(R.id.dia_btn_cross);
         ImageButton camera = dialog.findViewById(R.id.camera);
-
         dialog.show();
-        try {
+        /*try {
             Bitmap bmImg = BitmapFactory.decodeFile("" + path);
             BitmapFactory.decodeStream(new FileInputStream(path));
             iv_dia_preview.setImageBitmap(bmImg);
         } catch (Exception e) {
             e.printStackTrace();
-        }
+        }*/
 
+        iv_dia_preview.setImageURI(capturedImageUri);
         dia_btn_cross.setOnClickListener(v -> {
             dialog.dismiss();
         });
@@ -481,21 +768,27 @@ public class DoingFragment extends Fragment implements OnGameClose {
         Log.d("codes", String.valueOf(requestCode) + resultCode);
         try {
             if (requestCode == CAMERA_REQUEST) {
-                Bitmap photo = (Bitmap) data.getExtras().get("data");
+                if (requestCode == CAMERA_REQUEST) {
+                    if (resultCode == RESULT_OK) {
+                        capture.setVisibility(View.GONE);
+                        preview.setVisibility(View.VISIBLE);
+                    }
+                }
+                //Bitmap photo = (Bitmap) data.getExtras().get("data");
                /* preview.setVisibility(View.VISIBLE);
                 preview.setImageBitmap(photo);
                 preview.setScaleType(ImageView.ScaleType.FIT_XY);*/
-                imageName = "" + ApplicationClass.getUniqueID() + ".jpg";
-                createDirectoryAndSaveFile(photo, imageName);
-                capture.setVisibility(View.GONE);
-                preview.setVisibility(View.VISIBLE);
+
+               // createDirectoryAndSaveFile(photo, imageName);
+               /* capture.setVisibility(View.GONE);
+                preview.setVisibility(View.VISIBLE);*/
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
-    public void createDirectoryAndSaveFile(Bitmap imageToSave, String fileName) {
+   /* public void createDirectoryAndSaveFile(Bitmap imageToSave, String fileName) {
         try {
 
             File direct = new File(activityPhotoPath);
@@ -511,17 +804,30 @@ public class DoingFragment extends Fragment implements OnGameClose {
             e.printStackTrace();
         }
 
-    }
-
+    }*/
     @Override
     public void gameClose() {
-        addScore(0, "", 0, 0, resStartTime, jsonName + " " + GameConstatnts.END);
+        if(scienceQuestionChoices!=null && !scienceQuestionChoices.isEmpty()) {
+            for (int i = 0; i <scienceQuestionChoices.size() ; i++) {
+                if(scienceQuestionChoices.get(i).getUserAns()!=null && !scienceQuestionChoices.get(i).getUserAns().trim().isEmpty()){
+                    addScore(GameConstatnts.getInt(scienceQuestion.getQid()), jsonName, 0, 0,scienceQuestionChoices.get(i).getStartTime(), scienceQuestionChoices.get(i).getEndTime(), scienceQuestionChoices.get(i).toString());
+                }
+            }
+        }
+        addScore(0, "", 0, 0, resStartTime,FC_Utility.getCurrentDateTime(), jsonName + " " + GameConstatnts.END);
     }
 
     @Override
     public void onStop() {
         EventBus.getDefault().unregister(this);
         super.onStop();
+
+        if (continuousSpeechService != null) {
+            continuousSpeechService.onEndOfSpeech();
+            // speech.stopListening();
+            micPressed(0);
+            voiceStart = false;
+        }
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)

@@ -2,14 +2,13 @@ package com.pratham.foundation.ui.contentPlayer.listenAndWritting;
 
 import android.app.Dialog;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.media.AudioManager;
+import android.media.MediaPlayer;
 import android.media.SoundPool;
+import android.net.Uri;
 import android.os.Bundle;
-import android.provider.MediaStore;
 import android.support.v4.app.Fragment;
 import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
@@ -33,8 +32,8 @@ import com.pratham.foundation.interfaces.OnGameClose;
 import com.pratham.foundation.modalclasses.EventMessage;
 import com.pratham.foundation.ui.contentPlayer.GameConstatnts;
 import com.pratham.foundation.ui.contentPlayer.fact_retrival_selection.ScienceQuestion;
+import com.pratham.foundation.utility.FC_Constants;
 import com.pratham.foundation.utility.FC_Utility;
-import com.pratham.foundation.utility.MediaPlayerUtil;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Bean;
@@ -47,9 +46,9 @@ import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
 import java.io.File;
-import java.io.FileInputStream;
 import java.util.List;
 
+import static android.app.Activity.RESULT_OK;
 import static com.pratham.foundation.utility.FC_Constants.activityPhotoPath;
 import static com.pratham.foundation.utility.FC_Constants.gameFolderPath;
 
@@ -71,6 +70,9 @@ public class ListeningAndWritting extends Fragment implements ListeningAndWritti
 
     @ViewById(R.id.previous)
     ImageButton previous;
+
+    @ViewById(R.id.show_answer)
+    SansButton show_answer;
    /* @ViewById(R.id.submitcontainer)
     LinearLayout submitBtn;*/
 
@@ -95,10 +97,12 @@ public class ListeningAndWritting extends Fragment implements ListeningAndWritti
     private boolean onSdCard;
     private int isPlaying = -1;
     private List<ScienceQuestion> listenAndWrittingModal;
-    private MediaPlayerUtil mediaPlayerUtil;
     private String imageName = null;
     private static final int CAMERA_REQUEST = 1;
-
+    private MediaPlayer mediaPlayer;
+    CountDownTimer countDownTimer;
+    private Uri capturedImageUri;
+    int duration;
     float rate = 1.0f;
     SoundPool sp = null;
     int sID = 0;
@@ -123,11 +127,10 @@ public class ListeningAndWritting extends Fragment implements ListeningAndWritti
         else
             readingContentPath = ApplicationClass.foundationPath + gameFolderPath + "/" + contentPath + "/";
 
-
+        imageName = "" + ApplicationClass.getUniqueID() + ".jpg";
         preview.setVisibility(View.GONE);
         EventBus.getDefault().register(this);
         presenter.setView(ListeningAndWritting.this, contentTitle, resId);
-        mediaPlayerUtil = new MediaPlayerUtil(getActivity());
         presenter.fetchJsonData(readingContentPath);
         sp = new SoundPool(1, AudioManager.STREAM_MUSIC, 0);
      /*   radiogroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
@@ -160,13 +163,12 @@ public class ListeningAndWritting extends Fragment implements ListeningAndWritti
                 addTickMarkTextLabels();
             }
         });
-
-
+        if (FC_Constants.isTest) {
+            show_answer.setVisibility(View.GONE);
+        }
     }
 
     private void addTickMarkTextLabels() {
-
-
         discreteSlider.setOnDiscreteSliderChangeListener(new DiscreteSlider.OnDiscreteSliderChangeListener() {
             @Override
             public void onPositionChanged(int position) {
@@ -183,13 +185,16 @@ public class ListeningAndWritting extends Fragment implements ListeningAndWritti
                     case 0:
                         rate = 0.8f;
                         // do operations specific to this selection
+                        setCountDown((duration * 0.8));
                         break;
                     case 1:
                         rate = 1f;
+                        setCountDown((duration));
                         // do operations specific to this selection
                         break;
                     case 2:
                         rate = 1.2f;
+                        setCountDown((duration / 1.2));
                         // do operations specific to this selection
                         break;
                 }
@@ -260,6 +265,23 @@ public class ListeningAndWritting extends Fragment implements ListeningAndWritti
 
     private void setAudioResource() {
         try {
+
+            if (mediaPlayer == null)
+                mediaPlayer = new MediaPlayer();
+
+            mediaPlayer.reset();
+            // Set the data source to the mediaFile location
+            mediaPlayer.setDataSource(readingContentPath + listenAndWrittingModal.get(index).getPhotourl());
+            mediaPlayer.prepare();
+            duration = mediaPlayer.getDuration();
+
+            if (rate == 0.8f) {
+                setCountDown((duration * 0.8));
+            } else if (rate == 1f) {
+                setCountDown((duration));
+            } else if (rate == 1.2f) {
+                setCountDown((duration / 1.2));
+            }
             if (sp != null)
                 sp.stop(sID);
         } catch (Exception e) {
@@ -288,6 +310,35 @@ public class ListeningAndWritting extends Fragment implements ListeningAndWritti
         }
     }
 
+
+    public void setCountDown(double duration) {
+        if (countDownTimer != null) {
+            countDownTimer.cancel();
+            countDownTimer = null;
+        }
+        countDownTimer = new CountDownTimer((int) duration, 100) {
+
+            @Override
+            public void onTick(long millisUntilFinished) {
+
+            }
+
+            @Override
+            public void onFinish() {
+                try {
+                    sp.stop(sID);
+           /* Glide.with(getActivity()).load(R.drawable.ic_play_arrow_black)
+                    .into(play);*/
+                    setPlayImage();
+                    isPlaying = -1;
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        };
+    }
+
+
     @Click(R.id.show_answer)
     public void showAnswer() {
         try {
@@ -313,7 +364,6 @@ public class ListeningAndWritting extends Fragment implements ListeningAndWritti
     @Click(R.id.play_button)
     public void onPlayClick() {
         // mediaPlayerUtil.playMedia(readingContentPath + "/" + listenAndWrittingModal.getSound());
-
         try {
             id = sp.load(readingContentPath + listenAndWrittingModal.get(index).getPhotourl(), 1);
             sp.setRate(sID, rate);
@@ -327,9 +377,11 @@ public class ListeningAndWritting extends Fragment implements ListeningAndWritti
                         /*Glide.with(getActivity()).load(R.drawable.ic_pause_black)
                                 .into(play);*/
                         sID = sp.play(id, 1, 1, 1, 0, rate);
+                        countDownTimer.start();
                     } else if (isPlaying == 1) {
                         isPlaying = 0;
                         sp.pause(sID);
+                        countDownTimer.pause();
                         setPlayImage();
                        /* Glide.with(getActivity()).load(R.drawable.ic_play_arrow_black)
                                 .into(play);*/
@@ -339,6 +391,7 @@ public class ListeningAndWritting extends Fragment implements ListeningAndWritti
                        /* Glide.with(getActivity()).load(R.drawable.ic_pause_black)
                                 .into(play);*/
                         sp.resume(sID);
+                        countDownTimer.resume();
                     }
 
                 }
@@ -377,8 +430,13 @@ public class ListeningAndWritting extends Fragment implements ListeningAndWritti
 
     @Click(R.id.capture)
     public void captureClick() {
-        Intent takePicture = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        startActivityForResult(takePicture, CAMERA_REQUEST);
+        Intent cameraIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
+        File imagesFolder = new File(activityPhotoPath);
+        if (!imagesFolder.exists()) imagesFolder.mkdirs();
+        File image = new File(imagesFolder, imageName);
+        capturedImageUri = Uri.fromFile(image);
+        cameraIntent.putExtra(android.provider.MediaStore.EXTRA_OUTPUT, capturedImageUri);
+        startActivityForResult(cameraIntent, CAMERA_REQUEST);
     }
 
     @Click(R.id.preview)
@@ -395,13 +453,7 @@ public class ListeningAndWritting extends Fragment implements ListeningAndWritti
         Log.d("codes", String.valueOf(requestCode) + resultCode);
         try {
             if (requestCode == CAMERA_REQUEST) {
-                if (data.getExtras() != null) {
-                    Bitmap photo = (Bitmap) data.getExtras().get("data");
-               /* preview.setVisibility(View.VISIBLE);
-                preview.setImageBitmap(photo);
-                preview.setScaleType(ImageView.ScaleType.FIT_XY);*/
-                    imageName = "" + ApplicationClass.getUniqueID() + ".jpg";
-                    presenter.createDirectoryAndSaveFile(photo, imageName);
+                if (resultCode == RESULT_OK) {
                     capture.setVisibility(View.GONE);
                     preview.setVisibility(View.VISIBLE);
                 }
@@ -410,6 +462,7 @@ public class ListeningAndWritting extends Fragment implements ListeningAndWritti
             e.printStackTrace();
         }
     }
+
 
     private void ShowPreviewDialog(File path) {
         final Dialog dialog = new Dialog(getActivity());
@@ -422,14 +475,8 @@ public class ListeningAndWritting extends Fragment implements ListeningAndWritti
         ImageButton camera = dialog.findViewById(R.id.camera);
 
         dialog.show();
-        try {
-            Bitmap bmImg = BitmapFactory.decodeFile("" + path);
-            BitmapFactory.decodeStream(new FileInputStream(path));
-            iv_dia_preview.setImageBitmap(bmImg);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
 
+        iv_dia_preview.setImageURI(capturedImageUri);
         dia_btn_cross.setOnClickListener(v -> {
             dialog.dismiss();
         });
@@ -464,6 +511,7 @@ public class ListeningAndWritting extends Fragment implements ListeningAndWritti
         EventBus.getDefault().unregister(this);
         super.onStop();
         try {
+            countDownTimer.onFinish();
             sp.stop(sID);
         } catch (Exception e) {
             e.printStackTrace();

@@ -357,9 +357,9 @@ public class ReadingFragment extends Fragment implements STT_Result_New.sttView,
 
     public void micPressed(int micPressed) {
         if (micPressed == 0) {
-            ib_mic.setImageResource(R.drawable.ic_mic_24dp);
+            ib_mic.setImageResource(R.drawable.ic_mic_black);
         } else if (micPressed == 1) {
-            ib_mic.setImageResource(R.drawable.ic_stop_black_24dp);
+            ib_mic.setImageResource(R.drawable.ic_pause_black);
         }
     }
 

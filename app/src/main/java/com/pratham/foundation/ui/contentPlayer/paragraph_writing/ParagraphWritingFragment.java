@@ -6,9 +6,9 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.provider.MediaStore;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.LinearLayoutManager;
@@ -16,7 +16,6 @@ import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
 import android.view.Window;
-import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ScrollView;
@@ -24,11 +23,11 @@ import android.widget.ScrollView;
 import com.pratham.foundation.ApplicationClass;
 import com.pratham.foundation.R;
 import com.pratham.foundation.customView.SansButton;
-import com.pratham.foundation.customView.SansTextView;
 import com.pratham.foundation.interfaces.OnGameClose;
 import com.pratham.foundation.modalclasses.EventMessage;
 import com.pratham.foundation.ui.contentPlayer.GameConstatnts;
 import com.pratham.foundation.ui.contentPlayer.fact_retrival_selection.ScienceQuestion;
+import com.pratham.foundation.utility.FC_Constants;
 import com.pratham.foundation.utility.FC_Utility;
 
 import org.androidannotations.annotations.AfterViews;
@@ -46,6 +45,7 @@ import java.util.Arrays;
 
 import butterknife.OnClick;
 
+import static android.app.Activity.RESULT_OK;
 import static com.pratham.foundation.utility.FC_Constants.activityPhotoPath;
 import static com.pratham.foundation.utility.FC_Constants.gameFolderPath;
 
@@ -64,6 +64,11 @@ public class ParagraphWritingFragment extends Fragment
 
     @ViewById(R.id.capture)
     ImageButton capture;
+
+    @ViewById(R.id.next)
+    ImageButton next;
+    @ViewById(R.id.previous)
+    ImageButton previous;
     /*@ViewById(R.id.previous)
     Button previous;*/
    /* @ViewById(R.id.capture)
@@ -77,14 +82,15 @@ public class ParagraphWritingFragment extends Fragment
     SansTextView title;*/
 
     private String[] paragraphWords;
-    //    private RelativeLayout.LayoutParams viewParam;
-    private LinearLayoutManager layoutManager;
-    private RecyclerView.SmoothScroller smoothScroller;
+    // private RelativeLayout.LayoutParams viewParam;
+   /* private LinearLayoutManager layoutManager;
+    private RecyclerView.SmoothScroller smoothScroller;*/
     private static final int CAMERA_REQUEST = 1;
-    private String imageName = null, imagePath;
+    private String imageName = null;
     private String contentPath, contentTitle, StudentID, resId, readingContentPath, resStartTime;
     private boolean onSdCard;
     private ScienceQuestion questionModel;
+    private Uri capturedImageUri;
 
     @AfterViews
     protected void initiate() {
@@ -102,6 +108,9 @@ public class ParagraphWritingFragment extends Fragment
         }
         EventBus.getDefault().register(this);
         preview.setVisibility(View.GONE);
+        next.setVisibility(View.GONE);
+        previous.setVisibility(View.GONE);
+        imageName = "" + ApplicationClass.getUniqueID() + ".jpg";
         presenter.setView(ParagraphWritingFragment.this, resId, readingContentPath);
         presenter.getData();
         resStartTime = FC_Utility.getCurrentDateTime();
@@ -111,7 +120,7 @@ public class ParagraphWritingFragment extends Fragment
     @Override
     public void showParagraph(ScienceQuestion questionModel) {
         this.questionModel = questionModel;
-        File filePath = new File(activityPhotoPath + imageName);
+      //  File filePath = new File(activityPhotoPath + imageName);
         /*    title.setText(questionModel.getInstruction());*/
         paragraphWords = questionModel.getQuestion().trim().split("(?<=\\.\\s)|(?<=[?!]\\s)");
         SentenceAdapter arrayAdapter = new SentenceAdapter(Arrays.asList(paragraphWords), getActivity());
@@ -136,7 +145,6 @@ public class ParagraphWritingFragment extends Fragment
 
     @OnClick(R.id.next)
     public void showNext() {
-
         if (index < (paragraph.getAdapter().getItemCount() - 1)) {
             View view = paragraph.getChildAt(index);
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
@@ -157,8 +165,15 @@ public class ParagraphWritingFragment extends Fragment
 
     @Click(R.id.capture)
     public void captureClick() {
-        Intent takePicture = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        startActivityForResult(takePicture, CAMERA_REQUEST);
+       /* Intent takePicture = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        startActivityForResult(takePicture, CAMERA_REQUEST);*/
+        Intent cameraIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
+        File imagesFolder = new File(activityPhotoPath);
+        if (!imagesFolder.exists()) imagesFolder.mkdirs();
+        File image = new File(imagesFolder, imageName);
+        capturedImageUri = Uri.fromFile(image);
+        cameraIntent.putExtra(android.provider.MediaStore.EXTRA_OUTPUT, capturedImageUri);
+        startActivityForResult(cameraIntent, CAMERA_REQUEST);
     }
 
     @Click(R.id.preview)
@@ -198,13 +213,14 @@ public class ParagraphWritingFragment extends Fragment
         ImageButton camera = dialog.findViewById(R.id.camera);
 
         dialog.show();
-        try {
+        iv_dia_preview.setImageURI(capturedImageUri);
+        /*try {
             Bitmap bmImg = BitmapFactory.decodeFile("" + path);
             BitmapFactory.decodeStream(new FileInputStream(path));
             iv_dia_preview.setImageBitmap(bmImg);
         } catch (Exception e) {
             e.printStackTrace();
-        }
+        }*/
 
         dia_btn_cross.setOnClickListener(v -> {
             dialog.dismiss();
@@ -223,16 +239,19 @@ public class ParagraphWritingFragment extends Fragment
         Log.d("codes", String.valueOf(requestCode) + resultCode);
         try {
             if (requestCode == CAMERA_REQUEST) {
-                if (data.getExtras() != null) {
+                if (requestCode == CAMERA_REQUEST) {
+                    if (resultCode == RESULT_OK) {
+                        capture.setVisibility(View.GONE);
+                        preview.setVisibility(View.VISIBLE);
+                    }
+                }
+               /* if (data.getExtras() != null) {
                     Bitmap photo = (Bitmap) data.getExtras().get("data");
-               /* preview.setVisibility(View.VISIBLE);
-                preview.setImageBitmap(photo);
-                preview.setScaleType(ImageView.ScaleType.FIT_XY);*/
-                    imageName = "" + ApplicationClass.getUniqueID() + ".jpg";
-                    presenter.createDirectoryAndSaveFile(photo, imageName);
+
+                 //   presenter.createDirectoryAndSaveFile(photo, imageName);
                     capture.setVisibility(View.GONE);
                     preview.setVisibility(View.VISIBLE);
-                }
+                }*/
             }
         } catch (Exception e) {
             e.printStackTrace();

@@ -207,7 +207,15 @@
         <item name="android:windowFullscreen">true</item>
         <item name="android:windowIsFloating">false</item>
     </style>
-
+    <style name="yellow_button">
+        <item name="android:layout_marginEnd">@dimen/_50sdp</item>
+        <item name="android:layout_marginBottom">@dimen/_5sdp</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="android:textSize">@dimen/_13sdp</item>
+        <item name="android:elevation">5dp</item>
+        <item name="android:layout_marginStart">@dimen/_50sdp</item>
+        <item name="android:background">@drawable/yellow_button</item>
+    </style>
     <style name="submitbtn">
         <item name="android:layout_marginStart">@dimen/_8sdp</item>
         <item name="android:layout_marginEnd">@dimen/_8sdp</item>
@@ -231,6 +239,14 @@
         <item name="android:background">@drawable/dialog_bg</item>
         <item name="android:layout_margin">@dimen/_10sdp</item>
         <item name="android:elevation">5dp</item>
+        <item name="android:padding"> @dimen/_15sdp</item>
+        <item name="android:textSize">@dimen/_20sdp</item>
+        <item name="android:color">@color/colorText</item>
+        <item name="android:textAlignment">center</item>
+    </style>
+    <style name="tittle">
+        <item name="android:layout_marginStart">60dp</item>
+        <item name="android:layout_marginEnd">60dp</item>
         <item name="android:padding"> @dimen/_15sdp</item>
         <item name="android:textSize">@dimen/_20sdp</item>
         <item name="android:color">@color/colorText</item>

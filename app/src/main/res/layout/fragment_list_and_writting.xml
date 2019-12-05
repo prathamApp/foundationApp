@@ -8,8 +8,7 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_below="@id/topPanel">
+        android:layout_height="match_parent">
 
         <!-- <LinearLayout
              android:id="@+id/controls_top"
@@ -256,32 +255,6 @@
          android:textAlignment="center"
          android:textColor="@color/white"
          android:textSize="25sp" />-->
-    <android.support.design.card.MaterialCardView
-        android:id="@+id/topPanel"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/_40sdp"
-        android:layout_alignParentTop="true"
-        android:layout_marginTop="30dp"
-        android:layout_marginStart="@dimen/_10sdp"
-        android:layout_marginEnd="@dimen/_10sdp"
-        ripple:cardBackgroundColor="@color/colorBtnRedDark"
-        ripple:cardCornerRadius="@dimen/_8sdp">
 
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-            <com.pratham.foundation.customView.SansTextViewBold
-                android:id="@+id/tv_content_title"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:gravity="center"
-                android:text="Listen and write"
-                android:textColor="@color/white"
-                android:textSize="@dimen/_20sdp"
-                android:textStyle="bold" />
-
-        </RelativeLayout>
-    </android.support.design.card.MaterialCardView>
 
 </RelativeLayout>

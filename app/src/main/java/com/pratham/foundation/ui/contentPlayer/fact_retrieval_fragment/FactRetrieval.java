@@ -25,6 +25,7 @@ import com.pratham.foundation.modalclasses.ScienceQuestionChoice;
 import com.pratham.foundation.ui.contentPlayer.GameConstatnts;
 import com.pratham.foundation.ui.contentPlayer.fact_retrival_selection.ScienceQuestion;
 import com.pratham.foundation.ui.contentPlayer.pictionary.PictionaryResult;
+import com.pratham.foundation.utility.FC_Constants;
 import com.pratham.foundation.utility.FC_Utility;
 
 import org.androidannotations.annotations.AfterViews;
@@ -97,7 +98,6 @@ public class FactRetrieval extends Fragment implements FactRetrievalContract.Fac
 
     @AfterViews
     public void initiate() {
-
         Bundle bundle = getArguments();
         if (bundle != null) {
             contentPath = bundle.getString("contentPath");
@@ -105,8 +105,6 @@ public class FactRetrieval extends Fragment implements FactRetrievalContract.Fac
             resId = bundle.getString("resId");
             contentTitle = bundle.getString("contentName");
             onSdCard = bundle.getBoolean("onSdCard", false);
-
-
             if (onSdCard)
                 readingContentPath = ApplicationClass.contentSDPath + gameFolderPath + "/" + contentPath + "/";
             else
@@ -122,7 +120,9 @@ public class FactRetrieval extends Fragment implements FactRetrievalContract.Fac
         presenter.getData(readingContentPath);
         resStartTime = FC_Utility.getCurrentDateTime();
         presenter.addScore(0, "", 0, 0, resStartTime, FC_Utility.getCurrentDateTime(), GameConstatnts.FACTRETRIEVAL + " " + GameConstatnts.START);
-
+        if (FC_Constants.isTest) {
+            show_answer.setVisibility(View.GONE);
+        }
     }
 
     @Override

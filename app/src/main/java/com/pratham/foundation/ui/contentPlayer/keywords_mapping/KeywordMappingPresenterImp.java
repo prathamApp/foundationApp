@@ -191,6 +191,8 @@ public class KeywordMappingPresenterImp implements KeywordMappingContract.Keywor
 
             if (!FC_Constants.isTest) {
                 view.showResult(keywordmapping);
+            }else {
+                GameConstatnts.playGameNext(context, GameConstatnts.FALSE,  (OnGameClose) view);
             }
         } else {
             GameConstatnts.playGameNext(context, GameConstatnts.TRUE, (OnGameClose) view);

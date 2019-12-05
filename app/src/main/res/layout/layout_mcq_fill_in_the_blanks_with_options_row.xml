@@ -4,14 +4,15 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     app:cardBackgroundColor="@android:color/transparent"
-    app:cardElevation="0dp">
+    app:cardElevation="0dp"
+    android:background="@color/white">
     <Space
         android:id="@+id/space"
         android:layout_width="match_parent"
         android:layout_height="60dp"/>
     <LinearLayout
         android:layout_below="@+id/space"
-        android:layout_above="@id/bottom_bar"
+        android:layout_above="@id/hint"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginTop="@dimen/_10sdp"
@@ -30,7 +31,8 @@
                 android:orientation="vertical"
                 android:layout_marginStart="@dimen/_10sdp"
                 android:layout_marginEnd="@dimen/_10sdp"
-                android:background="@drawable/dialog_bg">
+                android:background="@drawable/dialog_bg_blue">
+              <!--  android:background="@drawable/dialog_bg"-->
                 <com.pratham.foundation.customView.SansTextView
                     android:id="@+id/tv_question"
                     android:layout_height="wrap_content"
@@ -40,12 +42,17 @@
                     android:textSize="@dimen/_20sdp"
                     android:padding="@dimen/_15sdp"
                     android:textAlignment="center"
+                    android:textColor="@color/white"
                     android:layout_margin="@dimen/_10sdp"
                     android:text="ggggg" />
                 <ImageView
                     android:id="@+id/iv_question_image"
+                    android:layout_width="@dimen/_200sdp"
                     style="@style/CustomQuestionImageStyle"
-
+                    android:layout_gravity="center"
+                    android:padding="@dimen/_2sdp"
+                    android:layout_margin="@dimen/_10sdp"
+                    android:background="@drawable/rounded_rectangle_stroke_bg"
                     android:layout_weight="0.5" />
 
                 <com.pratham.foundation.customView.GifView
@@ -80,15 +87,26 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerInParent="true"
-                    android:layout_gravity="center"
                     android:layout_margin="@dimen/_10sdp"
                     android:alignmentMode="alignMargins"
-
                     android:columnCount="2" />
             </RelativeLayout>
         </ScrollView>
 
     </LinearLayout>
+    <RelativeLayout
+        android:id="@+id/hint"
+        android:layout_above="@+id/bottom_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <com.pratham.foundation.customView.SansButton
+            android:id="@+id/show_answer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="HINT"
+            style="@style/yellow_button"
+            android:background="@drawable/yellow_button"/>
+    </RelativeLayout>
     <include
         android:id="@+id/bottom_bar"
         layout="@layout/bottom_control_panel_v2"

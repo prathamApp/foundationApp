@@ -16,6 +16,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.GridLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -92,19 +94,24 @@ public class pictionaryFragment extends Fragment implements OnGameClose {
     @BindView(R.id.btn_next)
     ImageButton next;
 
+    @BindView(R.id.show_answer)
+    SansButton show_answer;
+
     private String readingContentPath, contentPath, contentTitle, StudentID, resId, resStartTime;
     private int totalWordCount, learntWordCount;
     List<ScienceQuestionChoice> options;
     private ArrayList<ScienceQuestion> selectedFive;
     private List<ScienceQuestion> dataList;
-    private static final String POS = "pos";
-    private static final String SCIENCE_QUESTION = "scienceQuestion";
+
 
     private int imgCnt = 0, textCnt = 0, index = 0;
     private ScienceQuestion scienceQuestion;
-    private boolean onSdCard, isTest = false;
+    private boolean onSdCard;
     private float perc;
     private List<ScienceQuestionChoice> correctWordList, wrongWordList;
+    private boolean showanswer = false;
+    private Animation animFadein;
+    View ansview;
 
     public pictionaryFragment() {
         // Required empty public constructor
@@ -115,7 +122,6 @@ public class pictionaryFragment extends Fragment implements OnGameClose {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-
             contentPath = getArguments().getString("contentPath");
             StudentID = getArguments().getString("StudentID");
             resId = getArguments().getString("resId");
@@ -127,10 +133,12 @@ public class pictionaryFragment extends Fragment implements OnGameClose {
                 readingContentPath = ApplicationClass.foundationPath + gameFolderPath + "/" + contentPath + "/";
 
             EventBus.getDefault().register(this);
+            animFadein = AnimationUtils.loadAnimation(getActivity().getApplicationContext(),
+                    R.anim.shake);
             resStartTime = FC_Utility.getCurrentDateTime();
             addScore(0, "", 0, 0, resStartTime, FC_Utility.getCurrentDateTime(), GameConstatnts.SHOW_ME_ANDROID + " " + GameConstatnts.START);
-
             getData();
+
         }
     }
 
@@ -156,6 +164,7 @@ public class pictionaryFragment extends Fragment implements OnGameClose {
             e.printStackTrace();
         }
     }
+
     public void setCompletionPercentage() {
         try {
             totalWordCount = dataList.size();
@@ -187,6 +196,7 @@ public class pictionaryFragment extends Fragment implements OnGameClose {
             e.printStackTrace();
         }
     }
+
     private void getDataList() {
         try {
             selectedFive = new ArrayList<ScienceQuestion>();
@@ -226,7 +236,7 @@ public class pictionaryFragment extends Fragment implements OnGameClose {
 
     private int getLearntWordsCount() {
         int count = 0;
-       // count = appDatabase.getKeyWordDao().checkWordCount(FC_Constants.currentStudentID, resId);
+        // count = appDatabase.getKeyWordDao().checkWordCount(FC_Constants.currentStudentID, resId);
         count = appDatabase.getKeyWordDao().checkUniqueWordCount(FC_Constants.currentStudentID, resId);
         return count;
     }
@@ -252,10 +262,14 @@ public class pictionaryFragment extends Fragment implements OnGameClose {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         ButterKnife.bind(this, view);
+        if (FC_Constants.isTest) {
+            show_answer.setVisibility(View.INVISIBLE);
+        }
         setMcqsQuestion();
     }
 
     public void setMcqsQuestion() {
+        clerAnimation();
         if (selectedFive != null) {
             options = new ArrayList<>();
             question.setText(selectedFive.get(index).getQuestion());
@@ -386,15 +400,23 @@ public class pictionaryFragment extends Fragment implements OnGameClose {
                                 radioButton.setTextColor(Color.WHITE);
                             }
                         } else {*/
+                            radioButton.setTextColor(Color.BLACK);
+                            radioButton.setBackground(getActivity().getResources().getDrawable(R.drawable.custom_radio_button));
                             radioButton.setText(options.get(r).getSubQues());
+                            if (options.get(r).getCorrectAnswer().equalsIgnoreCase("true")) {
+                                ansview = radioButton;
+                            }
                             //   Log.d("tag111", "a" + selectedFive.get(index).getUserAnswer() + "  B" + options.get(r).getQid());
                             if (selectedFive.get(index).getUserAnswer().equalsIgnoreCase(options.get(r).getQid())) {
+                                 radioButton.setChecked(true);
+                                 radioButton.setTextColor(Color.WHITE);
+                                radioButton.setBackground(getActivity().getResources().getDrawable(R.drawable.dialog_bg_blue));
 
-                                radioButton.setChecked(true);
-                                // radioButton.setTextColor(Assessment_Utility.selectedColor);
                             } else {
                                 radioButton.setChecked(false);
-                                // radioButton.setTextColor(Color.WHITE);
+                                radioButton.setTextColor(Color.BLACK);
+                                radioButton.setBackground(getActivity().getResources().getDrawable(R.drawable.custom_radio_button));
+
                             }
                             radioGroupMcq.addView(radioButton);
                             if (ans.equals(options.get(r).getSubQues())) {
@@ -454,6 +476,9 @@ public class pictionaryFragment extends Fragment implements OnGameClose {
                         }
                         final int finalR = r;
 //                    final ImageView finalImageView = imageView;
+                        if (options.get(r).getCorrectAnswer().equalsIgnoreCase("true")) {
+                            ansview = viewRoot;
+                        }
                         view.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
@@ -484,7 +509,7 @@ public class pictionaryFragment extends Fragment implements OnGameClose {
                             @Override
                             public void onClick(View v) {
                                 String fileName = options.get(finalR).getSubUrl().trim();
-                                String localPath = readingContentPath  + fileName;
+                                String localPath = readingContentPath + fileName;
                                 showZoomDialog(getActivity(), options.get(finalR).getSubUrl().trim(), localPath);
 
                             }
@@ -498,7 +523,9 @@ public class pictionaryFragment extends Fragment implements OnGameClose {
                             tick.setVisibility(View.GONE);
 
                         }
+                        view.setBackground((getActivity().getResources().getDrawable(R.drawable.rounded_rectangle_stroke_bg)));
                         setImage(view, imageUrl, localPath);
+
                         gridMcq.addView(viewRoot);
 
                     } else {
@@ -557,6 +584,7 @@ public class pictionaryFragment extends Fragment implements OnGameClose {
 //                        final ImageView imageView = (ImageView) view;
 //                        if (AssessmentApplication.wiseF.isDeviceConnectedToMobileOrWifiNetwork()) {
                             final String imageUrl = options.get(r).getSubUrl().trim();
+                            view.setBackground((getActivity().getResources().getDrawable(R.drawable.rounded_rectangle_stroke_bg)));
                             setImage(view, imageUrl, localPath);
 
                             gridMcq.addView(viewRoot);
@@ -569,18 +597,20 @@ public class pictionaryFragment extends Fragment implements OnGameClose {
                                 rl_mcq.setBackground(getActivity().getResources().getDrawable(R.drawable.custom_radio_button));
                                 tick.setVisibility(View.GONE);
                             }
-
+                            if (options.get(r).getCorrectAnswer().equalsIgnoreCase("true")) {
+                                ansview = viewRoot;
+                            }
                             view.setOnClickListener(new View.OnClickListener() {
                                 @Override
                                 public void onClick(View v) {
                                     setOnclickOnItem(v, options.get(finalR1));
                                     String fileName = options.get(finalR1).getSubUrl().trim();
-                                    String localPath = readingContentPath +  fileName;
+                                    String localPath = readingContentPath + fileName;
                                     tick.setVisibility(View.VISIBLE);
 
                                     rl_mcq.setBackground(getActivity().getResources().getDrawable(R.drawable.custom_edit_text));
 //                                if (AssessmentApplication.wiseF.isDeviceConnectedToMobileOrWifiNetwork()) {
-                                 //   showZoomDialog(getActivity(), options.get(finalR1).getSubUrl(), localPath);
+                                    //   showZoomDialog(getActivity(), options.get(finalR1).getSubUrl(), localPath);
 
                                /* } else {
                                     showZoomDialog(localPath);
@@ -600,6 +630,9 @@ public class pictionaryFragment extends Fragment implements OnGameClose {
                             final TextView textView = (TextView) view;
                             textView.setElevation(3);
                             textView.setText(options.get(r).getSubQues());
+                            if (options.get(r).getCorrectAnswer().equalsIgnoreCase("true")) {
+                                ansview = view;
+                            }
                             gridMcq.addView(textView);
                             if (selectedFive.get(index).getUserAnswer().equalsIgnoreCase(options.get(r).getQid())) {
                                 // textView.setTextColor(Assessment_Utility.selectedColor);
@@ -632,12 +665,15 @@ public class pictionaryFragment extends Fragment implements OnGameClose {
                     RadioButton rb = group.findViewById(checkedId);
                     if (rb != null) {
                         rb.setChecked(true);
-                        //   rb.setTextColor(Assessment_Utility.selectedColor);
+                           rb.setTextColor(Color.WHITE);
+                           rb.setBackground(getActivity().getResources().getDrawable(R.drawable.dialog_bg_blue));
+
                     }
 
                     for (int i = 0; i < group.getChildCount(); i++) {
                         if ((group.getChildAt(i)).getId() == checkedId) {
-                            //  ((RadioButton) group.getChildAt(i)).setTextColor(Assessment_Utility.selectedColor);
+                              ((RadioButton) group.getChildAt(i)).setTextColor(Color.WHITE);
+                              ((RadioButton) group.getChildAt(i)).setBackground(getActivity().getResources().getDrawable(R.drawable.dialog_bg_blue));
 
                             List<ScienceQuestionChoice> ans = new ArrayList<>();
                             ans.add(options.get(i));
@@ -646,7 +682,8 @@ public class pictionaryFragment extends Fragment implements OnGameClose {
                             selectedFive.get(index).setStartTime(FC_Utility.getCurrentDateTime());
                             selectedFive.get(index).setEndTime(FC_Utility.getCurrentDateTime());
                         } else {
-                            // ((RadioButton) group.getChildAt(i)).setTextColor(getActivity().getResources().getColor(R.color.white));
+                             ((RadioButton) group.getChildAt(i)).setTextColor(Color.BLACK);
+                             ((RadioButton) group.getChildAt(i)).setBackground(getActivity().getResources().getDrawable(R.drawable.custom_radio_button));
                         }
                     }
                 }
@@ -760,11 +797,22 @@ public class pictionaryFragment extends Fragment implements OnGameClose {
 
     }
 
+    private boolean checkAttemptedornot(List<ScienceQuestion> selectedAnsList) {
+             if (selectedAnsList != null) {
+                for (int i = 0; i < selectedAnsList.size(); i++) {
+                    if (selectedAnsList.get(i).getUserAnswer() != null && !selectedAnsList.get(i).getUserAnswer().isEmpty()) {
+                        return true;
+                    }
+                }
+        }
+        return false;
+    }
+
     public void addLearntWords(ArrayList<ScienceQuestion> selectedAnsList) {
         int correctCnt = 0;
         correctWordList = new ArrayList<>();
         wrongWordList = new ArrayList<>();
-        if (selectedAnsList != null && !selectedAnsList.isEmpty()) {
+        if (selectedAnsList != null && checkAttemptedornot(selectedAnsList)) {
             for (int i = 0; i < selectedAnsList.size(); i++) {
                 if (checkAnswer(selectedAnsList.get(i))) {
                     correctCnt++;
@@ -798,12 +846,14 @@ public class pictionaryFragment extends Fragment implements OnGameClose {
             }
             setCompletionPercentage();
             if (!FC_Constants.isTest) {
-               // showResult(correctWordList, wrongWordList);
-                Intent intent=new Intent(getActivity(),PictionaryResult.class);
-                intent.putExtra("selectlist",selectedAnsList);
-                intent.putExtra("readingContentPath",readingContentPath);
-                intent.putExtra("resourceType",GameConstatnts.SHOW_ME_ANDROID);
-               startActivityForResult(intent,111);
+                // showResult(correctWordList, wrongWordList);
+                Intent intent = new Intent(getActivity(), PictionaryResult.class);
+                intent.putExtra("selectlist", selectedAnsList);
+                intent.putExtra("readingContentPath", readingContentPath);
+                intent.putExtra("resourceType", GameConstatnts.SHOW_ME_ANDROID);
+                startActivityForResult(intent, 111);
+            } else {
+                GameConstatnts.playGameNext(getActivity(), GameConstatnts.FALSE, this);
             }
         } else {
             GameConstatnts.playGameNext(getActivity(), GameConstatnts.TRUE, this);
@@ -905,8 +955,8 @@ public class pictionaryFragment extends Fragment implements OnGameClose {
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if(requestCode==111){
-            GameConstatnts.playGameNext(getActivity(), GameConstatnts.FALSE, this );
+        if (requestCode == 111) {
+            GameConstatnts.playGameNext(getActivity(), GameConstatnts.FALSE, this);
         }
     }
 
@@ -919,7 +969,44 @@ public class pictionaryFragment extends Fragment implements OnGameClose {
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onMessageEvent(EventMessage event) {
         if (!scienceQuestion.getInstruction().isEmpty())
-            GameConstatnts.showGameInfo(getActivity(),scienceQuestion.getInstruction());
+            GameConstatnts.showGameInfo(getActivity(), scienceQuestion.getInstruction());
+    }
+
+    @OnClick(R.id.show_answer)
+    public void showAnswer() {
+        if (showanswer) {
+            //hide answer
+            clerAnimation();
+
+        } else {
+            //show Answer
+            showanswer = true;
+            show_answer.setText("Hide Hint");
+            if (ansview != null) {
+                ansview.startAnimation(animFadein);
+                animFadein.setAnimationListener(new Animation.AnimationListener() {
+                    @Override
+                    public void onAnimationStart(Animation animation) {
+
+                    }
+
+                    @Override
+                    public void onAnimationEnd(Animation animation) {
+                        clerAnimation();
+                    }
+
+                    @Override
+                    public void onAnimationRepeat(Animation animation) {
+
+                    }
+                });
+            }
+        }
+    }
+
+    private void clerAnimation() {
+        showanswer = false;
+        show_answer.setText("Hint");
     }
 }
 

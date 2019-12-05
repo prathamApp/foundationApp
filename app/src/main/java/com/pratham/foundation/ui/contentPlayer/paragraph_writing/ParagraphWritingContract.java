@@ -10,13 +10,12 @@ public interface ParagraphWritingContract {
         public void showParagraph(ScienceQuestion questionModel);
     }
 
-
     public interface ParagraphWritingPresenter {
         public void getData();
 
         public void addScore(int wID, String Word, int scoredMarks, int totalMarks, String resStartTime, String Label);
 
-        public void createDirectoryAndSaveFile(Bitmap imageToSave, String fileName);
+       // public void createDirectoryAndSaveFile(Bitmap imageToSave, String fileName);
 
         public void addLearntWords(ScienceQuestion questionModel, String imageName);
 

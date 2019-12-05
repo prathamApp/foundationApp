@@ -25,7 +25,7 @@ public interface ListeningAndWrittingContract {
 
         void addScore(int wID, String Word, int scoredMarks, int totalMarks, String resStartTime, String Label);
 
-        void createDirectoryAndSaveFile(Bitmap imageToSave, String fileName);
+     //   void createDirectoryAndSaveFile(Bitmap imageToSave, String fileName);
         //   void setView(ListeningAndWrittingContract.ListeningAndWrittingView listeningAndWrittingView);
     }
 }

@@ -16,6 +16,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.GridLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -93,6 +95,8 @@ public class multipleChoiceFragment extends Fragment implements OnGameClose {
     SansButton submitBtn;
     @BindView(R.id.btn_next)
     ImageButton next;
+    @BindView(R.id.show_answer)
+    SansButton show_answer;
 
     private String readingContentPath, contentPath, contentTitle, StudentID, resId, resStartTime;
     private int totalWordCount, learntWordCount;
@@ -105,6 +109,9 @@ public class multipleChoiceFragment extends Fragment implements OnGameClose {
     private boolean onSdCard, isTest = false;
     private float perc;
     private List<ScienceQuestionChoice> correctWordList, wrongWordList;
+    private boolean showanswer = false;
+    private Animation animFadein;
+    View ansview;
 
     public multipleChoiceFragment() {
         // Required empty public constructor
@@ -114,8 +121,8 @@ public class multipleChoiceFragment extends Fragment implements OnGameClose {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        FC_Constants.isTest = true;
         if (getArguments() != null) {
-
             contentPath = getArguments().getString("contentPath");
             StudentID = getArguments().getString("StudentID");
             resId = getArguments().getString("resId");
@@ -126,10 +133,11 @@ public class multipleChoiceFragment extends Fragment implements OnGameClose {
             else
                 readingContentPath = ApplicationClass.foundationPath + gameFolderPath + "/" + contentPath + "/";
 
+            animFadein = AnimationUtils.loadAnimation(getActivity().getApplicationContext(),
+                    R.anim.shake);
             EventBus.getDefault().register(this);
             resStartTime = FC_Utility.getCurrentDateTime();
             addScore(0, "", 0, 0, resStartTime, FC_Utility.getCurrentDateTime(), GameConstatnts.MULTIPLE_CHOICE + " " + GameConstatnts.START);
-
             getData();
         }
     }
@@ -206,6 +214,11 @@ public class multipleChoiceFragment extends Fragment implements OnGameClose {
                 }
             }
             Collections.shuffle(selectedFive);
+            for (ScienceQuestion scienceQuestion : selectedFive) {
+                ArrayList<ScienceQuestionChoice> list = scienceQuestion.getLstquestionchoice();
+                Collections.shuffle(list);
+                scienceQuestion.setLstquestionchoice(list);
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -254,10 +267,14 @@ public class multipleChoiceFragment extends Fragment implements OnGameClose {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         ButterKnife.bind(this, view);
+        if (FC_Constants.isTest) {
+            show_answer.setVisibility(View.INVISIBLE);
+        }
         setMcqsQuestion();
     }
 
     public void setMcqsQuestion() {
+        clerAnimation();
         if (selectedFive != null) {
             options = new ArrayList<>();
             question.setText(selectedFive.get(index).getQuestion());
@@ -388,6 +405,9 @@ public class multipleChoiceFragment extends Fragment implements OnGameClose {
                             }
                         } else {*/
                             radioButton.setText(options.get(r).getSubQues());
+                            if (options.get(r).getCorrectAnswer().equalsIgnoreCase("true")) {
+                                ansview = radioButton;
+                            }
                             //   Log.d("tag111", "a" + selectedFive.get(index).getUserAnswer() + "  B" + options.get(r).getQid());
                             if (selectedFive.get(index).getUserAnswer().equalsIgnoreCase(options.get(r).getQid())) {
 
@@ -455,6 +475,9 @@ public class multipleChoiceFragment extends Fragment implements OnGameClose {
                         }
                         final int finalR = r;
 //                    final ImageView finalImageView = imageView;
+                        if (options.get(r).getCorrectAnswer().equalsIgnoreCase("true")) {
+                            ansview = viewRoot;
+                        }
                         view.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
@@ -570,7 +593,9 @@ public class multipleChoiceFragment extends Fragment implements OnGameClose {
                                 rl_mcq.setBackground(getActivity().getResources().getDrawable(R.drawable.custom_radio_button));
                                 tick.setVisibility(View.GONE);
                             }
-
+                            if (options.get(r).getCorrectAnswer().equalsIgnoreCase("true")) {
+                                ansview = viewRoot;
+                            }
                             view.setOnClickListener(new View.OnClickListener() {
                                 @Override
                                 public void onClick(View v) {
@@ -601,6 +626,9 @@ public class multipleChoiceFragment extends Fragment implements OnGameClose {
                             final TextView textView = (TextView) view;
                             textView.setElevation(3);
                             textView.setText(options.get(r).getSubQues());
+                            if (options.get(r).getCorrectAnswer().equalsIgnoreCase("true")) {
+                                ansview = view;
+                            }
                             gridMcq.addView(textView);
                             if (selectedFive.get(index).getUserAnswer().equalsIgnoreCase(options.get(r).getQid())) {
                                 // textView.setTextColor(Assessment_Utility.selectedColor);
@@ -610,12 +638,13 @@ public class multipleChoiceFragment extends Fragment implements OnGameClose {
                                 textView.setBackground(getActivity().getResources().getDrawable(R.drawable.custom_radio_button));
 
                             }
+
                             textView.setOnClickListener(new View.OnClickListener() {
                                 @Override
                                 public void onClick(View v) {
                                     setOnclickOnItem(v, options.get(finalR1));
 
-                                    textView.setBackground(getActivity().getResources().getDrawable(R.drawable.custom_edit_text));
+                                    textView.setBackground(getActivity().getResources().getDrawable(R.drawable.gradient_selector));
                                     //  textView.setTextColor(Assessment_Utility.selectedColor);
                                 }
                             });
@@ -675,12 +704,12 @@ public class multipleChoiceFragment extends Fragment implements OnGameClose {
 
 
     private void setOnclickOnItem(View v, ScienceQuestionChoice scienceQuestionChoice) {
-        /*for (int g = 0; g < gridMcq.getChildCount(); g++) {
-          //  gridMcq.getChildAt(g).setBackgroundDrawable(getActivity().getResources().getDrawable(R.drawable.custom_radio_button));
-            //View view = gridMcq.getChildAt(g);
-           *//* if (view instanceof TextView)
-                ((TextView) view).setTextColor(Color.WHITE);*//*
-        }*/
+        for (int g = 0; g < gridMcq.getChildCount(); g++) {
+            gridMcq.getChildAt(g).setBackgroundDrawable(getActivity().getResources().getDrawable(R.drawable.custom_radio_button));
+            View view = gridMcq.getChildAt(g);
+           /* if (view instanceof TextView)
+                ((TextView) view).setTextColor(Color.WHITE);*/
+        }
 
         List<ScienceQuestionChoice> ans = new ArrayList<>();
         ans.add(scienceQuestionChoice);
@@ -761,11 +790,22 @@ public class multipleChoiceFragment extends Fragment implements OnGameClose {
 
     }
 
+    private boolean checkAttemptedornot(List<ScienceQuestion> selectedAnsList) {
+        if (selectedAnsList != null) {
+            for (int i = 0; i < selectedAnsList.size(); i++) {
+                if (selectedAnsList.get(i).getUserAnswer() != null && !selectedAnsList.get(i).getUserAnswer().isEmpty()) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
     public void addLearntWords(ArrayList<ScienceQuestion> selectedAnsList) {
         int correctCnt = 0;
         correctWordList = new ArrayList<>();
         wrongWordList = new ArrayList<>();
-        if (selectedAnsList != null && !selectedAnsList.isEmpty()) {
+        if (selectedAnsList != null && checkAttemptedornot(selectedAnsList)) {
             for (int i = 0; i < selectedAnsList.size(); i++) {
                 String ans = getAnswer(selectedAnsList.get(i));
                 if (ans != null) {
@@ -808,6 +848,8 @@ public class multipleChoiceFragment extends Fragment implements OnGameClose {
                 intent.putExtra("readingContentPath", readingContentPath);
                 intent.putExtra("resourceType", GameConstatnts.SHOW_ME_ANDROID);
                 startActivityForResult(intent, 111);
+            } else {
+                GameConstatnts.playGameNext(getActivity(), GameConstatnts.FALSE, this);
             }
         } else {
             GameConstatnts.playGameNext(getActivity(), GameConstatnts.TRUE, this);
@@ -832,7 +874,7 @@ public class multipleChoiceFragment extends Fragment implements OnGameClose {
                 if (optionListlist.get(i).getSubQues() != null && !optionListlist.get(i).getSubQues().isEmpty()) {
                     return optionListlist.get(i).getSubQues();
                 } else {
-                    return optionListlist.get(i).getSubUrl().replace("Images/","");
+                    return optionListlist.get(i).getSubUrl().replace("Images/", "");
                 }
             }
         }
@@ -937,6 +979,43 @@ public class multipleChoiceFragment extends Fragment implements OnGameClose {
     public void onMessageEvent(EventMessage event) {
         if (!scienceQuestion.getInstruction().isEmpty())
             GameConstatnts.showGameInfo(getActivity(), scienceQuestion.getInstruction());
+    }
+
+    @OnClick(R.id.show_answer)
+    public void showAnswer() {
+        if (showanswer) {
+            //hide answer
+            clerAnimation();
+
+        } else {
+            //show Answer
+            showanswer = true;
+            show_answer.setText("Hide Hint");
+            if (ansview != null) {
+                ansview.startAnimation(animFadein);
+                animFadein.setAnimationListener(new Animation.AnimationListener() {
+                    @Override
+                    public void onAnimationStart(Animation animation) {
+
+                    }
+
+                    @Override
+                    public void onAnimationEnd(Animation animation) {
+                        clerAnimation();
+                    }
+
+                    @Override
+                    public void onAnimationRepeat(Animation animation) {
+
+                    }
+                });
+            }
+        }
+    }
+
+    private void clerAnimation() {
+        showanswer = false;
+        show_answer.setText("Hint");
     }
 }
 
