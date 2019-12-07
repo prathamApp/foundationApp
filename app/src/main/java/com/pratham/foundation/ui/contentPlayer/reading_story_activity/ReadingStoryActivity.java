@@ -141,7 +141,7 @@ public class ReadingStoryActivity extends BaseActivity implements
         certiCode = intent.getStringExtra("certiCode");
         sttLang = intent.getStringExtra("sttLang");
         onSdCard = intent.getBooleanExtra("onSdCard", false);
-        ttsService = BaseActivity.ttsService;
+        ttsService = ApplicationClass.ttsService;
         contentType = "story";
 
         bottom_bar2.setVisibility(View.GONE);

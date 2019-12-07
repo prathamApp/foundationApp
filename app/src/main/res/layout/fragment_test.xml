@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/home_root_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -17,19 +16,34 @@
 
     <com.pratham.foundation.customView.SansButton
         android:id="@+id/btn_test_dw"
-        android:layout_width="160dp"
+        android:layout_width="190dp"
         android:layout_height="50dp"
         android:background="@drawable/green_button"
-        android:drawableLeft="@drawable/ic_download"
+        android:drawableStart="@drawable/ic_download"
         android:drawablePadding="5dp"
         android:layout_centerHorizontal="true"
         android:layout_alignParentBottom="true"
         android:elevation="15dp"
-        android:paddingHorizontal="15dp"
+        android:paddingStart="15dp"
+        android:paddingEnd="15dp"
         android:text="Download"
         android:layout_marginBottom="@dimen/_80sdp"
         android:textColor="@color/white"
         android:textSize="15sp"
         android:visibility="visible" />
+
+    <ImageButton
+        android:id="@+id/ib_langChange"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:elevation="5dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginEnd="20dp"
+        android:layout_marginBottom="20dp"
+        android:scaleType="centerInside"
+        android:background="@drawable/dialog_image_bg"
+        android:src="@drawable/language_icon"
+        />
 
 </RelativeLayout>

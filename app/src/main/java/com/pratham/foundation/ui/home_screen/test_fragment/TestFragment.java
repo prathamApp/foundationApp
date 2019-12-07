@@ -1,6 +1,7 @@
 package com.pratham.foundation.ui.home_screen.test_fragment;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.app.Dialog;
 import android.content.Intent;
 import android.content.res.Resources;
@@ -12,14 +13,19 @@ import android.support.v4.app.Fragment;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.View;
 import android.view.Window;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.airbnb.lottie.LottieAnimationView;
 import com.bumptech.glide.Glide;
 import com.pratham.foundation.ApplicationClass;
 import com.pratham.foundation.R;
@@ -29,7 +35,16 @@ import com.pratham.foundation.database.domain.ContentTable;
 import com.pratham.foundation.modalclasses.CertificateModelClass;
 import com.pratham.foundation.modalclasses.EventMessage;
 import com.pratham.foundation.modalclasses.Modal_FileDownloading;
+import com.pratham.foundation.services.shared_preferences.FastSave;
 import com.pratham.foundation.ui.contentPlayer.fact_retrieval_fragment.FactRetrieval_;
+import com.pratham.foundation.ui.contentPlayer.matchingPairGame.MatchThePairGameActivity;
+import com.pratham.foundation.ui.contentPlayer.old_cos.conversation.ConversationActivity_;
+import com.pratham.foundation.ui.contentPlayer.old_cos.reading_cards.ReadingCardsActivity_;
+import com.pratham.foundation.ui.contentPlayer.opposites.OppositesActivity_;
+import com.pratham.foundation.ui.contentPlayer.reading_paragraphs.ReadingParagraphsActivity_;
+import com.pratham.foundation.ui.contentPlayer.reading_rhyming.ReadingRhymesActivity_;
+import com.pratham.foundation.ui.contentPlayer.reading_story_activity.ReadingStoryActivity_;
+import com.pratham.foundation.ui.contentPlayer.vocabulary_qa.ReadingVocabularyActivity_;
 import com.pratham.foundation.ui.contentPlayer.web_view.WebViewActivity;
 import com.pratham.foundation.ui.test.certificate.CertificateClicked;
 import com.pratham.foundation.utility.FC_Constants;
@@ -45,6 +60,7 @@ import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 import org.json.JSONArray;
+import org.json.JSONObject;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -55,6 +71,8 @@ import java.util.Objects;
 
 import static com.pratham.foundation.ui.home_screen.HomeActivity.header_rl;
 import static com.pratham.foundation.ui.home_screen.HomeActivity.tv_progress;
+import static com.pratham.foundation.utility.FC_Constants.CLOSE_TEST_EVENTBUS;
+import static com.pratham.foundation.utility.FC_Constants.LEVEL_TEST_GIVEN;
 import static com.pratham.foundation.utility.FC_Constants.currentLevel;
 import static com.pratham.foundation.utility.FC_Constants.gameFolderPath;
 import static com.pratham.foundation.utility.FC_Constants.isTest;
@@ -103,7 +121,7 @@ public class TestFragment extends Fragment implements TestContract.TestView,
 
     @UiThread
     public void notifyAdapter() {
-        sortAllList(contentParentList);
+//        sortAllList(contentParentList);
         if (testAdapter == null) {
             testAdapter = new TestAdapter(getActivity(), testList,TestFragment.this,TestFragment.this);
             RecyclerView.LayoutManager myLayoutManager = new GridLayoutManager(getActivity(), 1);
@@ -137,28 +155,91 @@ public class TestFragment extends Fragment implements TestContract.TestView,
         });
     }
 
+    @Click(R.id.ib_langChange)
+    public void langChangeButtonClick() {
+        showLanguageSelectionDialog();
+    }
+
+    @SuppressLint("SetTextI18n")
+    private void showLanguageSelectionDialog() {
+        final Dialog dialog = new Dialog(getActivity());
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        dialog.setContentView(R.layout.fc_custom_language_dialog);
+        dialog.setCancelable(false);
+        dialog.setCanceledOnTouchOutside(false);
+        TextView dia_title = dialog.findViewById(R.id.dia_title);
+        Button dia_btn_green = dialog.findViewById(R.id.dia_btn_green);
+        Spinner lang_spinner = dialog.findViewById(R.id.lang_spinner);
+        dia_btn_green.setText("OK");
+        dialog.show();
+        String currLang = "" + FastSave.getInstance().getString(FC_Constants.LANGUAGE,"Hindi");
+        dia_title.setText("Current Test Language : "+currLang);
+
+        ArrayAdapter<String> dataAdapter = new ArrayAdapter<>(getActivity(), R.layout.custom_spinner,
+                getActivity().getResources().getStringArray(R.array.certificate_Languages));
+        dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        lang_spinner.setAdapter(dataAdapter);
+        String[] languages = getResources().getStringArray(R.array.certificate_Languages);
+        for(int i = 0 ; i<languages.length ; i++) {
+            if (currLang.equalsIgnoreCase(languages[i])) {
+                lang_spinner.setSelection(i);
+                break;
+            }
+        }
+
+        lang_spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                language = lang_spinner.getSelectedItem().toString();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+            }
+        });
+
+        dia_btn_green.setOnClickListener(v -> {
+            onSpinnerLanguageChanged(language);
+            dialog.dismiss();
+        });
+    }
+
+
     @UiThread
     public void addContentToViewList(List<ContentTable> contentParentList) {
         this.contentParentList.clear();
         this.contentParentList.addAll(contentParentList);
     }
 
+    boolean eventBusFlg = false;
     @Override
     public void onStart() {
+        isTest = true;
         super.onStart();
+        if(!eventBusFlg) {
+            eventBusFlg = true;
         EventBus.getDefault().register(this);
+        }
     }
 
     @Override
     public void onStop() {
         super.onStop();
-        EventBus.getDefault().unregister(this);
+//        EventBus.getDefault().unregister(this);
     }
 
     @SuppressLint("SetTextI18n")
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void messageReceived(EventMessage message) {
         if (message != null) {
+            if (message.getMessage().contains(LEVEL_TEST_GIVEN)){
+                addTestStarResult(message.getMessage());
+            }
+            if (message.getMessage().contains(CLOSE_TEST_EVENTBUS)){
+                eventBusFlg = false;
+                EventBus.getDefault().unregister(this);
+            }
             if (message.getMessage().equalsIgnoreCase(FC_Constants.LEVEL_CHANGED))
                 onLevelChanged();
             else if (message.getMessage().equalsIgnoreCase(FC_Constants.BACK_PRESSED))
@@ -192,21 +273,49 @@ public class TestFragment extends Fragment implements TestContract.TestView,
         }
     }
 
+    private void addTestStarResult(String levelTestGiven) {
+        try {
+        String[] splitRes = levelTestGiven.split(":");
+        for(int i=0; i<splitRes.length; i++){
+            Log.d("splitRes", "addTestStarResult: "+splitRes[i]);
+        }
+        String cCode = levelTestGiven.split(":")[1];
+        int tMarks = Integer.parseInt(levelTestGiven.split(":")[2]);
+        int sMarks = Integer.parseInt(levelTestGiven.split(":")[3]);
+            if (cCode.equalsIgnoreCase(certi_Code)) {
+                testList.get(clicked_Pos).setAsessmentGiven(true);
+                testList.get(clicked_Pos).setTotalMarks(tMarks);
+                testList.get(clicked_Pos).setScoredMarks(sMarks);
+                float perc = ((float) sMarks / (float) tMarks) * 100;
+                testList.get(clicked_Pos).setStudentPercentage("" + perc);
+                testList.get(clicked_Pos).setCertificateRating(presenter.getStarRating(perc));
+                testAdapter.notifyItemChanged(clicked_Pos, testList.get(clicked_Pos));
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        checkAllAssessmentsDone();
+    }
+
     @UiThread
     @Override
     public void setSelectedLevel(List<ContentTable> contentTable) {
         rootLevelList = contentTable;
         presenter.insertNodeId(contentTable.get(currentLevel).getNodeId());
-
         String jsonName = getLevelWiseJson();
         JSONArray testData = presenter.getTestData(jsonName);
         presenter.generateTestData(testData, rootLevelList.get(currentLevel).getNodeId());
     }
 
     public void onLevelChanged() {
+
         contentParentList.clear();
+        testList.clear();
         presenter.removeLastNodeId();
         presenter.insertNodeId(rootLevelList.get(currentLevel).getNodeId());
+        String jsonName = getLevelWiseJson();
+        JSONArray testData = presenter.getTestData(jsonName);
+        presenter.generateTestData(testData, rootLevelList.get(currentLevel).getNodeId());
 //        presenter.getDataForList();
     }
 
@@ -303,6 +412,7 @@ public class TestFragment extends Fragment implements TestContract.TestView,
                     mainNew.putExtra("gameLevel", "" + testData.getNodeDesc());
                     mainNew.putExtra("gameName", "" + testData.getNodeTitle());
                     mainNew.putExtra("gameType", "" + testData.getResourceType());
+                    mainNew.putExtra("sttLang", "English");
                     mainNew.putExtra("gameCategory", "" + testData.getNodeKeywords());
                     startActivityForResult(mainNew, 1);
                 } else {
@@ -313,55 +423,58 @@ public class TestFragment extends Fragment implements TestContract.TestView,
                 mainNew.putExtra("resId", testData.getResourceId());
                 mainNew.putExtra("StudentID", FC_Constants.currentStudentID);
                 mainNew.putExtra("contentName", testData.getNodeTitle());
+                mainNew.putExtra("sttLang", "English");
                 mainNew.putExtra("onSdCard", testData.isOnSDCard());
                 mainNew.putExtra("certiCode", testData.getNodeDesc());
                 mainNew.putExtra("contentPath", testData.getResourcePath());
                 startActivityForResult(mainNew, 1);
             }
-
-
-         /*   else if (testData.getResourceType().equalsIgnoreCase(FC_Constants.CONVO_RESOURCE)) {
+            else if (testData.getResourceType().equalsIgnoreCase(FC_Constants.CONVO_RESOURCE)) {
                 ContentTable randomTestData = presenter.getRandomData(testData.getResourceType(), testData.getNodeKeywords());
-                Intent mainNew = new Intent(HomeActivity.this, ConversationActivity_.class);
+                Intent mainNew = new Intent(getActivity(), ConversationActivity_.class);
                 mainNew.putExtra("storyId", randomTestData.getResourceId());
                 mainNew.putExtra("StudentID", FC_Constants.currentStudentID);
                 mainNew.putExtra("contentName", randomTestData.getNodeTitle());
                 mainNew.putExtra("onSdCard", randomTestData.isOnSDCard());
                 mainNew.putExtra("contentPath", randomTestData.getResourcePath());
+                mainNew.putExtra("sttLang", "English");
                 mainNew.putExtra("certiCode", testData.getNodeDesc());
                 startActivityForResult(mainNew, 1);
             } else if (testData.getResourceType().equalsIgnoreCase(FC_Constants.COMIC_CONVO_RESOURCE)) {
                 ContentTable randomTestData = presenter.getRandomData(testData.getResourceType(), testData.getNodeKeywords());
-                Intent mainNew = new Intent(HomeActivity.this, ReadingCardsActivity_.class);
+                Intent mainNew = new Intent(getActivity(), ReadingCardsActivity_.class);
                 mainNew.putExtra("storyId", randomTestData.getResourceId());
                 mainNew.putExtra("StudentID", FC_Constants.currentStudentID);
                 mainNew.putExtra("contentName", randomTestData.getNodeTitle());
                 mainNew.putExtra("onSdCard", randomTestData.isOnSDCard());
+                mainNew.putExtra("sttLang", "English");
                 mainNew.putExtra("certiCode", testData.getNodeDesc());
                 mainNew.putExtra("contentPath", randomTestData.getResourcePath());
                 startActivityForResult(mainNew, 1);
             } else if (testData.getResourceType().equalsIgnoreCase(FC_Constants.OPPOSITE_WORDS)) {
-                Intent mainNew = new Intent(HomeActivity.this, OppositesActivity_.class);
+                Intent mainNew = new Intent(getActivity(), OppositesActivity_.class);
                 mainNew.putExtra("resId", testData.getResourceId());
                 mainNew.putExtra("StudentID", FC_Constants.currentStudentID);
                 mainNew.putExtra("contentName", testData.getNodeTitle());
                 mainNew.putExtra("onSdCard", testData.isOnSDCard());
                 mainNew.putExtra("certiCode", testData.getNodeDesc());
+                mainNew.putExtra("sttLang", "English");
                 mainNew.putExtra("contentPath", testData.getResourcePath());
                 startActivityForResult(mainNew, 1);
             } else if (testData.getResourceType().equalsIgnoreCase(FC_Constants.RHYME_RESOURCE) || testData.getResourceType().equalsIgnoreCase(FC_Constants.STORY_RESOURCE)) {
                 ContentTable randomTestData = presenter.getRandomData(testData.getResourceType(), testData.getNodeKeywords());
-                Intent mainNew = new Intent(HomeActivity.this, ReadingStoryActivity_.class);
+                Intent mainNew = new Intent(getActivity(), ReadingStoryActivity_.class);
                 mainNew.putExtra("storyId", randomTestData.getResourceId());
                 mainNew.putExtra("StudentID", FC_Constants.currentStudentID);
                 mainNew.putExtra("storyPath", randomTestData.getResourcePath());
                 mainNew.putExtra("storyTitle", randomTestData.getNodeTitle());
+                mainNew.putExtra("sttLang", "English");
                 mainNew.putExtra("onSdCard", randomTestData.isOnSDCard());
                 mainNew.putExtra("certiCode", testData.getNodeDesc());
                 mainNew.putExtra("contentType", randomTestData.getResourceType());
                 startActivityForResult(mainNew, 1);
-            } else if (testData.getResourceType().equalsIgnoreCase(FC_Constants.WORD_ANDROID)) {
-                Intent mainNew = new Intent(HomeActivity.this, ReadingWordScreenActivity.class);
+            } /*else if (testData.getResourceType().equalsIgnoreCase(FC_Constants.WORD_ANDROID)) {
+                Intent mainNew = new Intent(getActivity(), ReadingWordScreenActivity.class);
                 mainNew.putExtra("resId", testData.getResourceId());
                 mainNew.putExtra("StudentID", FC_Constants.currentStudentID);
                 mainNew.putExtra("contentPath", testData.getResourcePath());
@@ -369,34 +482,37 @@ public class TestFragment extends Fragment implements TestContract.TestView,
                 mainNew.putExtra("certiCode", testData.getNodeDesc());
                 mainNew.putExtra("contentTitle", testData.getNodeTitle());
                 startActivityForResult(mainNew, 1);
-            } else if (testData.getResourceType().equalsIgnoreCase(FC_Constants.PARA_ANDROID)) {
+            } */else if (testData.getResourceType().equalsIgnoreCase(FC_Constants.PARA_ANDROID)) {
                 ContentTable randomTestData = presenter.getRandomData(testData.getResourceType(), testData.getNodeKeywords());
-                Intent mainNew = new Intent(HomeActivity.this, ReadingParagraphsActivity_.class);
+                Intent mainNew = new Intent(getActivity(), ReadingParagraphsActivity_.class);
                 mainNew.putExtra("resId", randomTestData.getResourceId());
                 mainNew.putExtra("StudentID", FC_Constants.currentStudentID);
                 mainNew.putExtra("contentPath", randomTestData.getResourcePath());
                 mainNew.putExtra("onSdCard", randomTestData.isOnSDCard());
                 mainNew.putExtra("resType", randomTestData.getResourceType());
                 mainNew.putExtra("certiCode", testData.getNodeDesc());
+                mainNew.putExtra("sttLang", "English");
                 mainNew.putExtra("contentTitle", randomTestData.getNodeTitle());
                 startActivityForResult(mainNew, 1);
             } else if (testData.getResourceType().equalsIgnoreCase(FC_Constants.PARA_VOCAB_ANDROID)) {
                 ContentTable randomTestData = presenter.getRandomData(testData.getResourceType(), testData.getNodeKeywords());
-                Intent mainNew = new Intent(HomeActivity.this, ReadingParagraphsActivity_.class);
+                Intent mainNew = new Intent(getActivity(), ReadingParagraphsActivity_.class);
                 mainNew.putExtra("resId", randomTestData.getResourceId());
                 mainNew.putExtra("StudentID", FC_Constants.currentStudentID);
                 mainNew.putExtra("contentPath", randomTestData.getResourcePath());
                 mainNew.putExtra("onSdCard", randomTestData.isOnSDCard());
                 mainNew.putExtra("resType", randomTestData.getResourceType());
+                mainNew.putExtra("sttLang", "English");
                 mainNew.putExtra("certiCode", testData.getNodeDesc());
                 mainNew.putExtra("contentTitle", randomTestData.getNodeTitle());
                 startActivityForResult(mainNew, 1);
             } else if (testData.getResourceType().equalsIgnoreCase(FC_Constants.VOCAB_ANDROID)) {
-                Intent mainNew = new Intent(HomeActivity.this, ReadingVocabularyActivity_.class);
+                Intent mainNew = new Intent(getActivity(), ReadingVocabularyActivity_.class);
                 mainNew.putExtra("resId", testData.getResourceId());
                 mainNew.putExtra("StudentID", FC_Constants.currentStudentID);
                 mainNew.putExtra("contentPath", testData.getResourcePath());
                 mainNew.putExtra("contentTitle", testData.getNodeTitle());
+                mainNew.putExtra("sttLang", "English");
                 mainNew.putExtra("vocabLevel", testData.getNodeDesc());
                 mainNew.putExtra("onSdCard", testData.isOnSDCard());
                 mainNew.putExtra("certiCode", testData.getNodeDesc());
@@ -404,31 +520,32 @@ public class TestFragment extends Fragment implements TestContract.TestView,
                 startActivityForResult(mainNew, 1);
             } else if (testData.getResourceType().equalsIgnoreCase(FC_Constants.RHYMING_WORD_ANDROID)) {
                 ContentTable randomTestData = presenter.getRandomData(testData.getResourceType(), testData.getNodeKeywords());
-                Intent mainNew = new Intent(HomeActivity.this, ReadingRhymesActivity_.class);
+                Intent mainNew = new Intent(getActivity(), ReadingRhymesActivity_.class);
                 mainNew.putExtra("resId", randomTestData.getResourceId());
                 mainNew.putExtra("StudentID", FC_Constants.currentStudentID);
                 mainNew.putExtra("contentPath", randomTestData.getResourcePath());
                 mainNew.putExtra("contentTitle", randomTestData.getNodeTitle());
                 mainNew.putExtra("onSdCard", randomTestData.isOnSDCard());
                 mainNew.putExtra("certiCode", testData.getNodeDesc());
+                mainNew.putExtra("sttLang", "English");
                 mainNew.putExtra("rhymeLevel", randomTestData.getNodeDesc());
                 startActivityForResult(mainNew, 1);
             } else if (testData.getResourceType().equalsIgnoreCase(FC_Constants.MATCH_THE_PAIR)) {
-                Intent mainNew = new Intent(HomeActivity.this, MatchThePairGameActivity.class);
+                Intent mainNew = new Intent(getActivity(), MatchThePairGameActivity.class);
                 mainNew.putExtra("resId", testData.getResourceId());
                 mainNew.putExtra("StudentID", FC_Constants.currentStudentID);
                 mainNew.putExtra("contentPath", testData.getResourcePath());
                 mainNew.putExtra("contentTitle", testData.getNodeTitle());
                 mainNew.putExtra("onSdCard", testData.isOnSDCard());
+                mainNew.putExtra("sttLang", "English");
                 mainNew.putExtra("certiCode", testData.getNodeDesc());
                 mainNew.putExtra("rhymeLevel", testData.getNodeDesc());
                 startActivityForResult(mainNew, 1);
-            }*/
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
-
 
     @UiThread
     @Override
@@ -460,6 +577,84 @@ public class TestFragment extends Fragment implements TestContract.TestView,
             btn_test_dw.setVisibility(View.GONE);
         else
             btn_test_dw.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+            if (resultCode == Activity.RESULT_OK) {
+                String cCode = data.getStringExtra("cCode");
+                int tMarks = data.getIntExtra("tMarks", 0);
+                int sMarks = data.getIntExtra("sMarks", 0);
+                try {
+                    if (cCode.equalsIgnoreCase(certi_Code)) {
+                        testList.get(clicked_Pos).setAsessmentGiven(true);
+                        testList.get(clicked_Pos).setTotalMarks(tMarks);
+                        testList.get(clicked_Pos).setScoredMarks(sMarks);
+                        float perc = ((float) sMarks / (float) tMarks) * 100;
+                        testList.get(clicked_Pos).setStudentPercentage("" + perc);
+                        testList.get(clicked_Pos).setCertificateRating(presenter.getStarRating(perc));
+                        testAdapter.notifyItemChanged(clicked_Pos, testList.get(clicked_Pos));
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+            checkAllAssessmentsDone();
+    }
+
+    private void checkAllAssessmentsDone() {
+        boolean testGiven = true;
+//        if (!certiMode.equalsIgnoreCase("display")) {
+        JSONObject jsonObjectAssessment = new JSONObject();
+        for (int i = 0; i < testList.size(); i++) {
+            try {
+                if (testList.get(i).isAsessmentGiven()) {
+                    jsonObjectAssessment.put("CertCode" + i + "_" + testList.get(i).getCertiCode(), "" + testList.get(i).getStudentPercentage());
+                } else {
+                    testGiven = false;
+                    break;
+                }
+                //question
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        if (testGiven) {
+            presenter.endTestSession();
+            presenter.recordTestData(jsonObjectAssessment, "");
+            new Handler().postDelayed(this::showTestCompleteDialog, 1000);
+        }
+//        }
+    }
+
+    @SuppressLint("SetTextI18n")
+    private void showTestCompleteDialog() {
+        Dialog dialog = new Dialog(getActivity(),R.style.ExitDialog);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setContentView(R.layout.lottie_exit_dialog);
+/*      Bitmap map=FC_Utility.takeScreenShot(getActivity());
+        Bitmap fast=FC_Utility.fastblur(map, 20);
+        final Drawable draw=new BitmapDrawable(getResources(),fast);
+        dialog.getWindow().setBackgroundDrawable(draw);*/
+        Objects.requireNonNull(dialog.getWindow()).setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        dialog.setCancelable(true);
+        dialog.setCanceledOnTouchOutside(true);
+        dialog.show();
+
+        TextView dia_title = dialog.findViewById(R.id.dia_title);
+//        Button dia_btn_green = dialog.findViewById(R.id.dia_btn_green);
+        LottieAnimationView lottieAnimationView = dialog.findViewById(R.id.dl_lottie_view);
+        Button dia_btn_no = dialog.findViewById(R.id.dia_btn_no);
+        TextView dia_btn_yes = dialog.findViewById(R.id.dia_btn_yes);
+        dia_btn_yes.setVisibility(View.GONE);
+
+        lottieAnimationView.setAnimation("Success.json");
+        dia_title.setText(getResources().getString(R.string.Test_Complete_Dialog));
+        dia_btn_no.setText(getResources().getString(R.string.Okay));
+
+        dia_btn_no.setOnClickListener(v -> {
+            dialog.dismiss();
+        });
     }
 
     @UiThread

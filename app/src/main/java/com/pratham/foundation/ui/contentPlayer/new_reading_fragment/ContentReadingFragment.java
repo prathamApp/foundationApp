@@ -35,7 +35,6 @@ import android.widget.TextView;
 
 import com.nex3z.flowlayout.FlowLayout;
 import com.pratham.foundation.ApplicationClass;
-import com.pratham.foundation.BaseActivity;
 import com.pratham.foundation.R;
 import com.pratham.foundation.customView.SansTextView;
 import com.pratham.foundation.customView.display_image_dialog.Activity_DisplayImage_;
@@ -188,7 +187,7 @@ public class ContentReadingFragment extends Fragment implements
         certiCode = bundle.getString("certiCode");
         sttLang = bundle.getString("sttLang");
         onSdCard = bundle.getBoolean("onSdCard", false);
-        ttsService = BaseActivity.ttsService;
+        ttsService = ApplicationClass.ttsService;
         contentType = "story";
 
         image_container.setVisibility(View.GONE);
@@ -201,8 +200,6 @@ public class ContentReadingFragment extends Fragment implements
 //        animationDrawable.setEnterFadeDuration(4500);
 //        animationDrawable.setExitFadeDuration(4500);
 //        animationDrawable.start();
-
-
         presenter.setView(ContentReadingFragment.this);
         modalPagesList = new ArrayList<>();
 

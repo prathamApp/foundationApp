@@ -4,7 +4,7 @@
     android:id="@+id/home_root_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/splash_background"
+    android:background="@drawable/science_bkgd"
     android:orientation="vertical">
 
     <RelativeLayout

@@ -58,11 +58,18 @@
     <color name="colorGreenDark">#7CB342</color>
     <color name="colorSignBoard">#00a175</color>
     <color name="colorSignBoardLight">#00d1a5</color>
+<!--
     <color name="level_0_color">#0E2058</color>
     <color name="level_1_color">#3F5740</color>
     <color name="level_2_color">#C11012</color>
     <color name="level_3_color">#EE6787</color>
     <color name="level_4_color">#452b50</color>
+-->
+    <color name="level_0_color">#7CB342</color>
+    <color name="level_1_color">#00a175</color>
+    <color name="level_2_color">#FFA001</color>
+    <color name="level_3_color">#ef6c00</color>
+    <color name="level_4_color">#d50000</color>
     <color name="readingGreen">#45a716</color>
     <color name="colorRed">#EF5350</color>
     <color name="colorNew">#03DAC6</color>

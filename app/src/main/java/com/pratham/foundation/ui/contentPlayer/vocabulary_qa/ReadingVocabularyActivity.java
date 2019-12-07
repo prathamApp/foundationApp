@@ -684,7 +684,7 @@ public class ReadingVocabularyActivity extends BaseActivity implements MediaCall
                 btn_imgsend.setBackgroundResource(R.drawable.convo_send_disable);
             } else {
                 btn_imgsend.setClickable(true);
-                btn_imgsend.setBackgroundResource(R.drawable.ripple_effect);
+                btn_imgsend.setBackgroundResource(R.drawable.yellow_button);
             }
         }
     }

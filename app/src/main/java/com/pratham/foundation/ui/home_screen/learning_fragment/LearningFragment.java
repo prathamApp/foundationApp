@@ -62,7 +62,7 @@ import java.util.Objects;
 import static com.pratham.foundation.ui.home_screen.HomeActivity.header_rl;
 import static com.pratham.foundation.ui.home_screen.HomeActivity.levelChanged;
 import static com.pratham.foundation.ui.home_screen.HomeActivity.sub_Name;
-import static com.pratham.foundation.ui.home_screen.HomeActivity.tv_progress;
+import static com.pratham.foundation.ui.home_screen.HomeActivity.tv_header_progress;
 import static com.pratham.foundation.utility.FC_Constants.currentLevel;
 import static com.pratham.foundation.utility.FC_Constants.gameFolderPath;
 import static com.pratham.foundation.utility.FC_Utility.dpToPx;
@@ -150,6 +150,26 @@ public class LearningFragment extends Fragment implements LearningContract.Learn
         EventBus.getDefault().register(this);
     }
 
+/*
+    @Override
+    public void onResume() {
+        super.onResume();
+        if (resumeCntr == 0)
+            resumeCntr = 1;
+        else {
+            showLoader();
+            presenter.getDataForList();
+            String currentNodeID = presenter.getcurrentNodeID();
+            try {
+                if (!currentNodeID.equalsIgnoreCase("na"))
+                    presenter.findMaxScore("" + currentNodeID);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
+*/
+
     @Override
     public void onStop() {
         super.onStop();
@@ -169,6 +189,10 @@ public class LearningFragment extends Fragment implements LearningContract.Learn
             } else if (message.getMessage().equalsIgnoreCase(FC_Constants.FILE_DOWNLOAD_UPDATE)) {
                 if (progressLayout != null)
                     progressLayout.setCurProgress(message.getModal_fileDownloading().getProgress());
+            } else if (message.getMessage().equalsIgnoreCase(FC_Constants.FRAGMENT_SELECTED)) {
+                fragmentSelected();
+            } else if (message.getMessage().equalsIgnoreCase(FC_Constants.FRAGMENT_RESELECTED)) {
+                fragmentSelected();
             } else if (message.getMessage().equalsIgnoreCase(FC_Constants.FILE_DOWNLOAD_ERROR)) {
                 downloadDialog.dismiss();
                 showDownloadErrorDialog();
@@ -209,6 +233,18 @@ public class LearningFragment extends Fragment implements LearningContract.Learn
                     e.printStackTrace();
                 }
             }
+        }
+    }
+
+    private void fragmentSelected() {
+        showLoader();
+        presenter.getDataForList();
+        String currentNodeID = presenter.getcurrentNodeID();
+        try {
+            if (!currentNodeID.equalsIgnoreCase("na"))
+                presenter.findMaxScore("" + currentNodeID);
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 
@@ -288,8 +324,8 @@ public class LearningFragment extends Fragment implements LearningContract.Learn
     @UiThread
     @Override
     public void setLevelprogress(int percent) {
-//        tv_progress.setText(percent + "%");
-        tv_progress.setCurProgress(percent);
+        tv_header_progress.setText(percent + "%");
+//        tv_progress.setCurProgress(percent);
     }
 
     private Dialog downloadDialog;

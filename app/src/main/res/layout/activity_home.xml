@@ -29,71 +29,89 @@
             android:id="@+id/main_back"
             android:layout_width="@dimen/_30sdp"
             android:layout_height="@dimen/_30sdp"
-            android:layout_margin="@dimen/_5sdp"
+            android:layout_marginTop="@dimen/_5sdp"
+            android:layout_marginStart="@dimen/_5sdp"
             android:scaleType="center"
             app:srcCompat="@drawable/ic_left_arrow_white" />
 
         <com.pratham.foundation.customView.FredokaOneTextView
             android:id="@+id/txt_level"
-            android:layout_width="wrap_content"
+            android:layout_width="@dimen/_35sdp"
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
-            android:layout_margin="@dimen/_7sdp"
+            android:layout_above="@+id/leftCol"
+            android:layout_marginEnd="@dimen/_15sdp"
             android:text="Level"
             android:textColor="@color/colorBlack"
-            android:textSize="@dimen/_18sdp" />
+            android:textSize="@dimen/_12sdp" />
 
         <RelativeLayout
             android:id="@+id/leftCol"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_below="@+id/main_back"
             android:layout_marginStart="@dimen/_15sdp">
-
-            <ImageView
-                android:id="@+id/iv_level"
-                android:layout_width="@dimen/_30sdp"
-                android:layout_height="@dimen/_30sdp"
-                android:layout_alignParentEnd="true"
-                android:layout_centerVertical="true"
-                android:layout_marginEnd="@dimen/_15sdp"
-                android:src="@drawable/level_1" />
 
             <com.pratham.foundation.customView.SansTextViewBold
                 android:id="@+id/tv_Topic"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="@dimen/_10sdp"
-                android:layout_toStartOf="@+id/iv_level"
+                android:layout_toStartOf="@+id/level_shadow"
                 android:text="Topic"
                 android:textColor="@color/colorBlack"
-                android:textSize="@dimen/_22sdp" />
+                android:textSize="@dimen/_20sdp" />
 
-            <com.pratham.foundation.customView.SansTextView
-                android:id="@+id/tv_Activity"
+            <com.pratham.foundation.customView.shape_of_view.ShadowLayout
+                android:id="@+id/level_shadow"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/tv_Topic"
-                android:layout_marginEnd="@dimen/_10sdp"
-                android:text="Topic"
-                android:gravity="center"
-                android:textColor="@color/oslo_grey"
-                android:textSize="@dimen/_18sdp" />
+                android:layout_alignParentEnd="true"
+                android:layout_marginTop="@dimen/_5sdp"
+                android:layout_marginEnd="@dimen/_15sdp"
+                app:sl_shadow_angle="60"
+                app:sl_shadow_color="@color/strokeColor"
+                app:sl_shadow_distance="5dp"
+                app:sl_shadow_radius="5dp"
+                app:sl_shadowed="true">
+            <ImageView
+                android:id="@+id/iv_level"
+                android:layout_width="@dimen/_30sdp"
+                android:layout_height="@dimen/_30sdp"
+                android:src="@drawable/level_1"
+                android:padding="2dp"
+                android:background="@drawable/red_ripple_round"/>
+            </com.pratham.foundation.customView.shape_of_view.ShadowLayout>
 
-            <com.pratham.foundation.customView.SansTextViewBold
-                android:id="@+id/tv_header_progress"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/_5sdp"
-                android:layout_marginTop="@dimen/_6sdp"
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
                 android:layout_below="@+id/tv_Topic"
-                android:layout_toEndOf="@+id/tv_Activity"
-                android:background="@drawable/progress_background"
-                android:paddingStart="@dimen/_8sdp"
-                android:paddingEnd="@dimen/_8sdp"
-                android:text="40%"
-                android:textColor="@color/white"
-                android:textSize="@dimen/_10sdp" />
+                android:layout_toStartOf="@+id/level_shadow"
+                android:orientation="horizontal">
+                <com.pratham.foundation.customView.SansTextView
+                    android:id="@+id/tv_Activity"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="@dimen/_10sdp"
+                    android:text="Topic"
+                    android:gravity="center"
+                    android:textColor="@color/oslo_grey"
+                    android:textSize="@dimen/_18sdp" />
+
+                <com.pratham.foundation.customView.SansTextViewBold
+                    android:id="@+id/tv_header_progress"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/_5sdp"
+                    android:background="@drawable/progress_background2"
+                    android:paddingStart="@dimen/_8sdp"
+                    android:paddingEnd="@dimen/_8sdp"
+                    android:text="40%"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/_10sdp" />
+            </LinearLayout>
         </RelativeLayout>
 
         <com.pratham.foundation.customView.progress_layout.ProgressLayout
@@ -147,7 +165,7 @@
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
         android:layout_alignParentBottom="true"
-        android:background="@drawable/home_footer_4_bg"
+        android:background="@drawable/home_footer_0_bg"
         android:elevation="10dp"
         app:tabGravity="fill"
         app:tabIndicatorColor="@color/trans_card_text"

@@ -3,6 +3,7 @@ package com.pratham.foundation.ui.home_screen.profile_new;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.support.annotation.NonNull;
+import android.support.design.card.MaterialCardView;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -82,6 +83,7 @@ public class ProfileOuterDataAdapter extends RecyclerView.Adapter {
             else
                 itemRowHolder.next_nav_btn.setVisibility(View.GONE);*/
         try {
+//            itemRowHolder.card_layout.setBackground(mContext.getResources().getDrawable(getRandomCardColor()));
             itemRowHolder.itemTitle.setText(progressArray[i]);
             if(progressArray[i].equalsIgnoreCase("Progress")){
                 sublistList = progressSubArray;
@@ -195,11 +197,13 @@ public class ProfileOuterDataAdapter extends RecyclerView.Adapter {
     public class FolderHolder extends RecyclerView.ViewHolder {
         TextView itemTitle;
         RecyclerView recycler_view_grid_list;
+        MaterialCardView card_layout;
 
         FolderHolder(View view) {
             super(view);
             this.itemTitle = view.findViewById(R.id.lbl_Progreess_header);
             this.recycler_view_grid_list = view.findViewById(R.id.recycler_view_grid_list);
+            this.card_layout= view.findViewById(R.id.profile_card_layout);
         }
 
     }

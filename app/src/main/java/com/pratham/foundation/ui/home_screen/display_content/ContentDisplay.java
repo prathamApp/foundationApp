@@ -60,6 +60,8 @@ import java.util.Collections;
 import java.util.List;
 
 import static com.pratham.foundation.ui.home_screen.HomeActivity.languageChanged;
+import static com.pratham.foundation.utility.FC_Constants.LOGIN_MODE;
+import static com.pratham.foundation.utility.FC_Constants.QR_GROUP_MODE;
 import static com.pratham.foundation.utility.FC_Constants.gameFolderPath;
 import static com.pratham.foundation.utility.FC_Utility.dpToPx;
 import static com.pratham.foundation.utility.SplashSupportActivity.ButtonClickSound;
@@ -81,6 +83,8 @@ public class ContentDisplay extends BaseActivity implements ContentContract.Cont
     TextView dialog_file_name;
     ImageView iv_file_trans;
 
+    @ViewById(R.id.tv_header_progress)
+    TextView tv_header_progress;
     @ViewById(R.id.tv_Topic)
     TextView tv_Topic;
     @ViewById(R.id.tv_Activity)
@@ -142,7 +146,8 @@ public class ContentDisplay extends BaseActivity implements ContentContract.Cont
         recyclerView.setAdapter(contentAdapter);
         FC_Constants.isTest = false;
         presenter.displayProfileImage();
-        presenter.getPerc(nodeId);
+        if(!LOGIN_MODE.equalsIgnoreCase(QR_GROUP_MODE))
+            presenter.getPerc(nodeId);
         tv_Topic.setText("" + contentTitle);
         tv_Activity.setText("" + parentName);
     }
@@ -216,8 +221,8 @@ public class ContentDisplay extends BaseActivity implements ContentContract.Cont
     @UiThread
     @Override
     public void setHeaderProgress(int percent) {
-//        tv_progress.setText(""+percent+"%");
-        level_progress.setCurProgress(percent);
+        tv_header_progress.setText(""+percent+"%");
+//        level_progress.setCurProgress(percent);
     }
 
     @Override
@@ -251,6 +256,7 @@ public class ContentDisplay extends BaseActivity implements ContentContract.Cont
                 resumeCntr = 1;
             else {
                 showLoader();
+                if(!LOGIN_MODE.equalsIgnoreCase(QR_GROUP_MODE))
                 presenter.getPerc(nodeId);
                 notifyAdapter();
             }

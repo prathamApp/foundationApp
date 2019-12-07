@@ -38,7 +38,7 @@
             android:name=".ui.admin_panel.AdminControlsActivity_"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".ui.bottom_fragment.add_student.MenuActivity_"
+            android:name=".ui.admin_panel.MenuActivity_"
             android:screenOrientation="portrait" />
         <activity
             android:name=".ui.qr_scan.QRScanActivity_"

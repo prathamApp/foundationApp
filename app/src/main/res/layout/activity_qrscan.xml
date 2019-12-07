@@ -2,47 +2,60 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/rl_qr_main"
     android:layout_height="match_parent"
-    android:background="@drawable/bg_anim_fourth_layer"
+    android:background="@drawable/science_bkgd"
     tools:context=".ui.qr_scan.QRScanActivity">
 
     <RelativeLayout
         android:id="@+id/topPanel"
         android:layout_width="match_parent"
-        android:layout_height="60dp"
-        android:layout_alignParentTop="true"
-        android:background="@color/colorBtnRedDark">
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true">
 
-        <ImageButton
-            android:id="@+id/btn_back"
-            android:layout_width="50dp"
-            android:layout_height="match_parent"
-            android:layout_centerVertical="true"
-            android:background="?android:selectableItemBackground"
-            android:padding="@dimen/_5sdp"
-            android:src="@drawable/ic_left_arrow_white" />
-
-        <com.pratham.foundation.customView.SansTextViewBold
-            android:id="@+id/tv_title"
+        <com.pratham.foundation.customView.FredokaOneTextView
+            android:id="@+id/txt_login"
             android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_centerInParent="true"
-            android:layout_toEndOf="@+id/btn_back"
-            android:layout_toStartOf="@+id/just_view"
-            android:layout_marginStart="@dimen/_5sdp"
-            android:layout_marginEnd="@dimen/_5sdp"
-            android:gravity="center"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/_10sdp"
+            android:layout_marginTop="@dimen/_10sdp"
             android:text="@string/Scan_QR_Code"
-            android:textColor="@color/white"
-            android:textSize="@dimen/_18sdp"
-            android:textStyle="bold" />
+            android:textColor="@color/dark_blue"
+            android:textSize="@dimen/_22sdp" />
 
-        <View
-            android:id="@+id/just_view"
-            android:layout_width="50dp"
-            android:layout_height="match_parent"
-            android:layout_alignParentEnd="true" />
+        <com.pratham.foundation.customView.SansTextView
+            android:id="@+id/txt_using"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/txt_login"
+            android:layout_marginStart="@dimen/_10sdp"
+            android:layout_marginBottom="@dimen/_10sdp"
+            android:text="Mark your attendance"
+            android:textColor="@color/dark_blue"
+            android:textSize="@dimen/_18sdp" />
+
+        <com.pratham.foundation.customView.shape_of_view.ShadowLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_margin="@dimen/_10sdp"
+            app:sl_shadow_angle="30"
+            app:sl_shadow_color="@color/colorBlackTransparentLight"
+            app:sl_shadow_distance="4dp"
+            app:sl_shadow_radius="5dp"
+            app:sl_shadowed="true">
+
+            <ImageButton
+                android:id="@+id/btn_back"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:layout_centerVertical="true"
+                android:background="?android:selectableItemBackground"
+                android:scaleType="fitXY"
+                android:src="@drawable/ic_close_red" />
+        </com.pratham.foundation.customView.shape_of_view.ShadowLayout>
+
     </RelativeLayout>
 
     <RelativeLayout

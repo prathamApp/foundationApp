@@ -30,7 +30,6 @@ import android.widget.TextView;
 
 import com.nex3z.flowlayout.FlowLayout;
 import com.pratham.foundation.ApplicationClass;
-import com.pratham.foundation.BaseActivity;
 import com.pratham.foundation.R;
 import com.pratham.foundation.customView.GifView;
 import com.pratham.foundation.customView.SansTextView;
@@ -157,7 +156,7 @@ public class VocabReadingFragment extends Fragment implements
         certiCode = bundle.getString("certiCode");
         sttLang = bundle.getString("sttLang");
         onSdCard = bundle.getBoolean("onSdCard", false);
-        ttsService = BaseActivity.ttsService;
+        ttsService = ApplicationClass.ttsService;
         contentType = "story";
 
         bottom_bar2.setVisibility(View.GONE);

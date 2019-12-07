@@ -6,7 +6,13 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_gravity="center"
-    tools:context="com.pratham.foundation.ui.bottom_fragment.add_student.MenuActivity">
+    android:background="@drawable/science_bkgd"
+    tools:context="com.pratham.foundation.ui.admin_panel.MenuActivity">
+
+    <RelativeLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_alignParentTop="true">
 
     <com.pratham.foundation.customView.FredokaOneTextView
         android:id="@+id/txt_login"
@@ -24,6 +30,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/txt_login"
         android:layout_marginStart="@dimen/_10sdp"
+        android:layout_marginBottom="@dimen/_10sdp"
         android:text="Mark your attendance using..."
         android:textColor="@color/dark_blue"
         android:textSize="@dimen/_18sdp" />
@@ -49,6 +56,8 @@
             android:src="@drawable/ic_close_red" />
     </com.pratham.foundation.customView.shape_of_view.ShadowLayout>
 
+</RelativeLayout>
+
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -67,21 +76,24 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:weightSum="1">
 
                 <ImageView
                     android:id="@+id/img_qr"
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
+                    android:layout_weight=".6"
                     android:layout_height="match_parent"
                     app:srcCompat="@drawable/ic_attendance_qr" />
 
                 <com.pratham.foundation.customView.FredokaOneTextView
-                    android:layout_width="match_parent"
+                    android:layout_width="0dp"
                     android:layout_height="match_parent"
+                    android:layout_weight=".4"
                     android:layout_gravity="center"
                     android:gravity="center"
                     android:text="QR"
-                    android:textColor="@color/blue"
+                    android:textColor="@color/colorRed"
                     android:textSize="@dimen/_22sdp" />
             </LinearLayout>
         </android.support.design.card.MaterialCardView>
@@ -112,7 +124,7 @@
                     android:layout_weight=".4"
                     android:gravity="center"
                     android:text="Group"
-                    android:textColor="@color/blue"
+                    android:textColor="@color/readingGreen"
                     android:textSize="@dimen/_22sdp" />
 
                 <ImageView

@@ -4,6 +4,7 @@
     android:id="@+id/home_root_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#FCFDFE"
     android:paddingBottom="2dp">
 
     <RelativeLayout
@@ -19,7 +20,8 @@
             android:id="@+id/main_back"
             android:layout_width="@dimen/_30sdp"
             android:layout_height="@dimen/_30sdp"
-            android:layout_margin="@dimen/_5sdp"
+            android:layout_marginTop="@dimen/_5sdp"
+            android:layout_marginStart="@dimen/_5sdp"
             android:scaleType="center"
             app:srcCompat="@drawable/ic_left_arrow_white" />
 
@@ -28,26 +30,18 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
-            android:layout_margin="@dimen/_7sdp"
+            android:layout_above="@+id/leftCol"
+            android:layout_marginEnd="@dimen/_15sdp"
             android:text="Level"
             android:textColor="@color/colorBlack"
-            android:textSize="@dimen/_18sdp" />
+            android:textSize="@dimen/_12sdp" />
 
         <RelativeLayout
             android:id="@+id/leftCol"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_below="@+id/main_back"
             android:layout_marginStart="@dimen/_15sdp">
-
-            <ImageView
-                android:id="@+id/iv_level"
-                android:layout_width="@dimen/_30sdp"
-                android:layout_height="@dimen/_30sdp"
-                android:layout_alignParentEnd="true"
-                android:layout_centerVertical="true"
-                android:layout_marginEnd="@dimen/_15sdp"
-                android:src="@drawable/level_1" />
 
             <com.pratham.foundation.customView.SansTextViewBold
                 android:id="@+id/tv_Topic"
@@ -57,33 +51,46 @@
                 android:layout_toStartOf="@+id/iv_level"
                 android:text="Topic"
                 android:textColor="@color/colorBlack"
-                android:textSize="@dimen/_22sdp" />
+                android:textSize="@dimen/_20sdp" />
 
-            <com.pratham.foundation.customView.SansTextView
-                android:id="@+id/tv_Activity"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/tv_Topic"
-                android:layout_marginEnd="@dimen/_10sdp"
-                android:text="Topic"
-                android:gravity="center"
-                android:textColor="@color/oslo_grey"
-                android:textSize="@dimen/_18sdp" />
+            <ImageView
+                android:id="@+id/iv_level"
+                android:layout_width="@dimen/_30sdp"
+                android:layout_height="@dimen/_30sdp"
+                android:layout_alignParentEnd="true"
+                android:layout_marginTop="@dimen/_5sdp"
+                android:layout_marginEnd="@dimen/_15sdp"
+                android:src="@drawable/level_1" />
 
-            <com.pratham.foundation.customView.SansTextViewBold
-                android:id="@+id/tv_header_progress"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/_5sdp"
-                android:layout_marginTop="@dimen/_6sdp"
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
                 android:layout_below="@+id/tv_Topic"
-                android:layout_toEndOf="@+id/tv_Activity"
-                android:background="@drawable/progress_background"
-                android:paddingStart="@dimen/_8sdp"
-                android:paddingEnd="@dimen/_8sdp"
-                android:text="40%"
-                android:textColor="@color/white"
-                android:textSize="@dimen/_10sdp" />
+                android:layout_toStartOf="@+id/iv_level"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+                <com.pratham.foundation.customView.SansTextView
+                    android:id="@+id/tv_Activity"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="@dimen/_10sdp"
+                    android:text="Topic"
+                    android:gravity="center"
+                    android:textColor="@color/oslo_grey"
+                    android:textSize="@dimen/_18sdp" />
+
+                <com.pratham.foundation.customView.SansTextViewBold
+                    android:id="@+id/tv_header_progress"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/_5sdp"
+                    android:background="@drawable/progress_background2"
+                    android:paddingStart="@dimen/_8sdp"
+                    android:paddingEnd="@dimen/_8sdp"
+                    android:text="40%"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/_10sdp" />
+            </LinearLayout>
         </RelativeLayout>
 
         <com.pratham.foundation.customView.progress_layout.ProgressLayout
@@ -101,6 +108,102 @@
             app:c_progressRadius="@dimen/_3sdp" />
 
     </RelativeLayout>
+
+<!--    <RelativeLayout-->
+<!--        android:id="@+id/header_rl"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="@dimen/_110sdp">-->
+<!--        <ImageView-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="match_parent"-->
+<!--            android:scaleType="centerCrop"-->
+<!--            app:srcCompat="@drawable/science_bkgd"/>-->
+<!--        <ImageView-->
+<!--            android:id="@+id/main_back"-->
+<!--            android:layout_width="@dimen/_30sdp"-->
+<!--            android:layout_height="@dimen/_30sdp"-->
+<!--            android:layout_margin="@dimen/_5sdp"-->
+<!--            android:scaleType="center"-->
+<!--            app:srcCompat="@drawable/ic_left_arrow_white" />-->
+
+<!--        <com.pratham.foundation.customView.FredokaOneTextView-->
+<!--            android:id="@+id/txt_level"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_alignParentEnd="true"-->
+<!--            android:layout_margin="@dimen/_7sdp"-->
+<!--            android:text="Level"-->
+<!--            android:textColor="@color/colorBlack"-->
+<!--            android:textSize="@dimen/_18sdp" />-->
+
+<!--        <RelativeLayout-->
+<!--            android:id="@+id/leftCol"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_below="@+id/main_back"-->
+<!--            android:layout_marginStart="@dimen/_15sdp">-->
+
+<!--            <ImageView-->
+<!--                android:id="@+id/iv_level"-->
+<!--                android:layout_width="@dimen/_30sdp"-->
+<!--                android:layout_height="@dimen/_30sdp"-->
+<!--                android:layout_alignParentEnd="true"-->
+<!--                android:layout_centerVertical="true"-->
+<!--                android:layout_marginEnd="@dimen/_15sdp"-->
+<!--                android:src="@drawable/level_1" />-->
+
+<!--            <com.pratham.foundation.customView.SansTextViewBold-->
+<!--                android:id="@+id/tv_Topic"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_marginEnd="@dimen/_10sdp"-->
+<!--                android:layout_toStartOf="@+id/iv_level"-->
+<!--                android:text="Topic"-->
+<!--                android:textColor="@color/colorBlack"-->
+<!--                android:textSize="@dimen/_22sdp" />-->
+
+<!--            <com.pratham.foundation.customView.SansTextView-->
+<!--                android:id="@+id/tv_Activity"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_below="@+id/tv_Topic"-->
+<!--                android:layout_marginEnd="@dimen/_10sdp"-->
+<!--                android:text="Topic"-->
+<!--                android:gravity="center"-->
+<!--                android:textColor="@color/oslo_grey"-->
+<!--                android:textSize="@dimen/_18sdp" />-->
+
+<!--            <com.pratham.foundation.customView.SansTextViewBold-->
+<!--                android:id="@+id/tv_header_progress"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_marginStart="@dimen/_5sdp"-->
+<!--                android:layout_marginTop="@dimen/_6sdp"-->
+<!--                android:layout_below="@+id/tv_Topic"-->
+<!--                android:layout_toEndOf="@+id/tv_Activity"-->
+<!--                android:background="@drawable/progress_background2"-->
+<!--                android:paddingStart="@dimen/_8sdp"-->
+<!--                android:paddingEnd="@dimen/_8sdp"-->
+<!--                android:text="40%"-->
+<!--                android:textColor="@color/white"-->
+<!--                android:textSize="@dimen/_10sdp" />-->
+<!--        </RelativeLayout>-->
+
+<!--        <com.pratham.foundation.customView.progress_layout.ProgressLayout-->
+<!--            android:id="@+id/card_progressLayout"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="@dimen/_6sdp"-->
+<!--            android:layout_alignParentBottom="true"-->
+<!--            android:layout_centerHorizontal="true"-->
+<!--            android:layout_marginStart="@dimen/_30sdp"-->
+<!--            android:layout_marginBottom="@dimen/_5sdp"-->
+<!--            android:visibility="gone"-->
+<!--            app:c_borderWidth="1dp"-->
+<!--            app:c_progress="40"-->
+<!--            app:c_progressColor="@color/white"-->
+<!--            app:c_progressRadius="@dimen/_3sdp" />-->
+
+<!--    </RelativeLayout>-->
 
 
     <!--

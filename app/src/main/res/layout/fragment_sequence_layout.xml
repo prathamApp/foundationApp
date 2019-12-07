@@ -35,21 +35,21 @@
         <RelativeLayout
             android:id="@+id/bottom_rl"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/_50sdp"
+            android:layout_height="@dimen/_90sdp"
             android:layout_margin="@dimen/_5sdp"
-            android:background="@drawable/trans_dialog_bg">
+            android:background="@drawable/gradient_one_rounded">
 
-            <com.pratham.foundation.customView.SansTextView
+            <com.pratham.foundation.customView.SansTextViewBold
                 android:id="@+id/tv_top_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
-                android:layout_marginStart="@dimen/_5sdp"
+                android:layout_marginStart="@dimen/_15sdp"
                 android:layout_toStartOf="@id/playFromStart"
                 android:gravity="center"
                 android:text="To play all the topics sequentially, click Play."
-                android:textColor="@color/dark_blue"
-                android:textSize="@dimen/_15sdp" />
+                android:textColor="@color/white"
+                android:textSize="@dimen/_18sdp" />
 
             <com.pratham.foundation.customView.SansButton
                 android:id="@+id/playFromStart"
@@ -58,7 +58,7 @@
                 android:layout_alignParentEnd="true"
                 android:layout_centerVertical="true"
                 android:layout_marginEnd="@dimen/_10sdp"
-                android:background="@drawable/progress_background"
+                android:background="@drawable/green_button"
                 android:elevation="5dp"
                 android:paddingStart="@dimen/_20sdp"
                 android:paddingEnd="@dimen/_20sdp"

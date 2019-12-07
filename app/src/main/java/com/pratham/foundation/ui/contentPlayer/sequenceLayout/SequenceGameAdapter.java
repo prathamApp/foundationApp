@@ -1,6 +1,7 @@
 package com.pratham.foundation.ui.contentPlayer.sequenceLayout;
 
 import android.content.Context;
+import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.design.card.MaterialCardView;
 import android.support.v7.widget.RecyclerView;
@@ -10,11 +11,22 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.facebook.drawee.backends.pipeline.Fresco;
+import com.facebook.drawee.interfaces.DraweeController;
+import com.facebook.drawee.view.SimpleDraweeView;
+import com.facebook.imagepipeline.common.ResizeOptions;
+import com.facebook.imagepipeline.request.ImageRequest;
+import com.facebook.imagepipeline.request.ImageRequestBuilder;
+import com.pratham.foundation.ApplicationClass;
 import com.pratham.foundation.R;
 import com.pratham.foundation.database.domain.ContentTable;
 import com.pratham.foundation.ui.contentPlayer.GameConstatnts;
 
+import java.io.File;
 import java.util.List;
+
+import static com.pratham.foundation.ApplicationClass.App_Thumbs_Path;
+import static com.pratham.foundation.utility.FC_Utility.getRandomCardColor;
 
 public class SequenceGameAdapter extends RecyclerView.Adapter<SequenceGameAdapter.MyViewHolder> {
     private Context context;
@@ -39,8 +51,39 @@ public class SequenceGameAdapter extends RecyclerView.Adapter<SequenceGameAdapte
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder myViewHolder, int i) {
         ContentTable contentTable = gamesList.get(i);
+        myViewHolder.content_card_view.setBackground(context.getResources().getDrawable(getRandomCardColor()));
         myViewHolder.title.setText(contentTable.getNodeTitle());
         myViewHolder.ib_action_btn.setVisibility(View.GONE);
+
+        File f;
+        if (contentTable.getIsDownloaded().equalsIgnoreCase("1") ||
+                contentTable.getIsDownloaded().equalsIgnoreCase("true")) {
+            if (contentTable.isOnSDCard()) {
+                f = new File(ApplicationClass.contentSDPath +
+                        "" + App_Thumbs_Path + contentTable.getNodeImage());
+                if (f.exists()) {
+                    myViewHolder.thumbnail.setImageURI(Uri.fromFile(f));
+                }
+            } else {
+                f = new File(ApplicationClass.foundationPath +
+                        "" + App_Thumbs_Path + contentTable.getNodeImage());
+                if (f.exists()) {
+                    myViewHolder.thumbnail.setImageURI(Uri.fromFile(f));
+                }
+            }
+        } else {
+            ImageRequest imageRequest = ImageRequestBuilder
+                    .newBuilderWithSource(Uri.parse(contentTable.getNodeServerImage()))
+                    .setResizeOptions(new ResizeOptions(300, 200))
+                    .setLocalThumbnailPreviewsEnabled(true)
+                    .build();
+            DraweeController controller = Fresco.newDraweeControllerBuilder()
+                    .setImageRequest(imageRequest)
+                    .setOldController(myViewHolder.thumbnail.getController())
+                    .build();
+            myViewHolder.thumbnail.setController(controller);
+        }
+
         myViewHolder.content_card_view.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -57,14 +100,16 @@ public class SequenceGameAdapter extends RecyclerView.Adapter<SequenceGameAdapte
     }
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
-        public TextView title;
-        public ImageView /*thumbnail,*/ ib_action_btn;
-        public MaterialCardView content_card_view;
 
-        public MyViewHolder(View view) {
+        public TextView title;
+        public ImageView ib_action_btn;
+        public MaterialCardView content_card_view;
+        SimpleDraweeView thumbnail;
+
+        public MyViewHolder (View view) {
             super(view);
             title = view.findViewById(R.id.content_title);
-//            thumbnail = view.findViewById(R.id.content_thumbnail);
+            thumbnail = view.findViewById(R.id.content_image);
             content_card_view = view.findViewById(R.id.content_card_view);
             ib_action_btn = view.findViewById(R.id.ib_action_btn);
         }

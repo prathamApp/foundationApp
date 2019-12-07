@@ -150,8 +150,7 @@ public class ContentAdapter extends RecyclerView.Adapter {
             case 1:
                 //file
                 ContentAdapter.FileHolder holder = (ContentAdapter.FileHolder) viewHolder;
-                int randomNo1 = getRandomCardColor();
-                holder.content_card_view.setBackground(mContext.getResources().getDrawable(randomNo1));
+                holder.content_card_view.setBackground(mContext.getResources().getDrawable(getRandomCardColor()));
                 holder.title.setText(contentList.getNodeTitle());
                 RequestOptions requestOptions = new RequestOptions();
                 requestOptions.placeholder(R.drawable.download_icon);
@@ -167,6 +166,7 @@ public class ContentAdapter extends RecyclerView.Adapter {
                     holder.ib_action_btn.setImageResource(R.drawable.ic_joystick);
                     holder.ib_action_btn.setClickable(true);
                 }
+
                 File f;
                 if (contentList.getIsDownloaded().equalsIgnoreCase("1") ||
                         contentList.getIsDownloaded().equalsIgnoreCase("true")) {
@@ -197,7 +197,6 @@ public class ContentAdapter extends RecyclerView.Adapter {
 
                 }
 
-
                 holder.content_card_view.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -215,8 +214,7 @@ public class ContentAdapter extends RecyclerView.Adapter {
             case 2:
                 //folder
                 ContentAdapter.FolderHolder folderHolder = (ContentAdapter.FolderHolder) viewHolder;
-                int randomNo2 = getRandomCardColor();
-                folderHolder.card_main.setBackground(mContext.getResources().getDrawable(randomNo2));
+                folderHolder.card_main.setBackground(mContext.getResources().getDrawable(getRandomCardColor()));
                 folderHolder.tvTitle.setText(contentList.getNodeTitle());
                 RequestOptions requestOptions2 = new RequestOptions();
                 requestOptions2.placeholder(R.drawable.download_icon);
@@ -253,7 +251,7 @@ public class ContentAdapter extends RecyclerView.Adapter {
                 }
 
 
-                folderHolder.rl_root.setOnClickListener(new View.OnClickListener() {
+                folderHolder.card_main.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         if (contentList.getNodeType() != null) {
@@ -267,7 +265,7 @@ public class ContentAdapter extends RecyclerView.Adapter {
                         }
                     }
                 });
-                setAnimations(folderHolder.rl_root, position);
+                setAnimations(folderHolder.card_main, position);
                 break;
         }
     }

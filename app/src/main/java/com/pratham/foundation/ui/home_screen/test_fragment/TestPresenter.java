@@ -12,8 +12,10 @@ import com.pratham.foundation.async.API_Content;
 import com.pratham.foundation.async.ZipDownloader;
 import com.pratham.foundation.database.AppDatabase;
 import com.pratham.foundation.database.BackupDatabase;
+import com.pratham.foundation.database.domain.Assessment;
 import com.pratham.foundation.database.domain.ContentProgress;
 import com.pratham.foundation.database.domain.ContentTable;
+import com.pratham.foundation.database.domain.Session;
 import com.pratham.foundation.database.domain.WordEnglish;
 import com.pratham.foundation.interfaces.API_Content_Result;
 import com.pratham.foundation.modalclasses.CertificateModelClass;
@@ -44,6 +46,10 @@ import java.util.Comparator;
 import java.util.List;
 
 import static com.pratham.foundation.ui.home_screen.HomeActivity.sub_nodeId;
+import static com.pratham.foundation.utility.FC_Constants.GROUP_LOGIN;
+import static com.pratham.foundation.utility.FC_Constants.assessmentSession;
+import static com.pratham.foundation.utility.FC_Constants.currentGroup;
+import static com.pratham.foundation.utility.FC_Constants.currentLevel;
 import static com.pratham.foundation.utility.FC_Constants.gameFolderPath;
 
 @EBean
@@ -82,6 +88,7 @@ public class TestPresenter implements TestContract.TestPresenter, API_Content_Re
         contentApiList = new ArrayList<>();
         pos = new ArrayList<>();
         maxScore = new ArrayList();
+        testList = new ArrayList();
         maxScoreChild = new ArrayList();
         gson = new Gson();
         api_content = new API_Content(mContext, TestPresenter.this);
@@ -182,6 +189,7 @@ public class TestPresenter implements TestContract.TestPresenter, API_Content_Re
     @Override
     public void generateTestData(JSONArray testData, String bottomNavNodeId) {
         myView.showLoader();
+        testList.clear();
         testList = AppDatabase.appDatabase.getContentTableDao().getContentData(bottomNavNodeId);
         sortTestList(testList);
 
@@ -198,12 +206,12 @@ public class TestPresenter implements TestContract.TestPresenter, API_Content_Re
         contentTableHeader.setContentType("Header");
         myView.addContentToViewTestList(contentTableHeader);
 
-        contentTableHeader = new CertificateModelClass();
+/*        contentTableHeader = new CertificateModelClass();
         contentTableHeader.setNodeId("1");
         contentTableHeader.setResourceId("1");
         contentTableHeader.setResourcePath("path");
         contentTableHeader.setContentType("Spinner");
-        myView.addContentToViewTestList(contentTableHeader);
+        myView.addContentToViewTestList(contentTableHeader);*/
 
         try {
             for (int j = 0; j < testList.size(); j++) {
@@ -272,15 +280,72 @@ public class TestPresenter implements TestContract.TestPresenter, API_Content_Re
                 }
                 myView.addContentToViewTestList(contentTable);
             }
-
             myView.doubleQuestionCheck();
-
         } catch (Exception e) {
             e.printStackTrace();
         }
         if (testList.size() > 0)
             myView.hideTestDownloadBtn();
         myView.initializeTheIndex();
+    }
+
+    @Override
+    public ContentTable getRandomData(String resourceType, String nodeId) {
+        List<ContentTable> List = AppDatabase.getDatabaseInstance(mContext).getContentTableDao().getContentData(nodeId);
+        if (List.size() > 0) {
+            int random = FC_Utility.generateRandomNum(List.size());
+            ContentTable contentTable = List.get(random);
+            return contentTable;
+        } else
+            return null;
+    }
+
+    @Background
+    @Override
+    public void endTestSession() {
+        try {
+            Session startSesion = new Session();
+            String toDateTemp = AppDatabase.appDatabase.getSessionDao().getToDate(assessmentSession);
+            if (toDateTemp != null && toDateTemp.equalsIgnoreCase("na"))
+                AppDatabase.appDatabase.getSessionDao().UpdateToDate(assessmentSession, FC_Utility.getCurrentDateTime());
+            BackupDatabase.backup(mContext);
+            AppDatabase.appDatabase.getSessionDao().insert(startSesion);
+            FC_Constants.testSessionEnded = true;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Background
+    @Override
+    public void recordTestData(JSONObject jsonObjectAssessment, String certiTitle) {
+        try {
+            Assessment assessment = new Assessment();
+            assessment.setResourceIDa(jsonObjectAssessment.toString());
+            assessment.setSessionIDa(assessmentSession);
+            assessment.setSessionIDm(FC_Constants.currentSession);
+            assessment.setQuestionIda(0);
+            assessment.setScoredMarksa(0);
+            assessment.setTotalMarksa(0);
+            assessment.setStudentIDa(FC_Constants.currentAssessmentStudentID);
+            if (GROUP_LOGIN)
+                assessment.setStartDateTimea("" + currentGroup);
+            else
+                assessment.setStartDateTimea("na");
+
+            assessment.setEndDateTime(FC_Utility.getCurrentDateTime());
+            if (FC_Constants.supervisedAssessment)
+                assessment.setDeviceIDa("" + FC_Constants.currentsupervisorID);
+            else
+                assessment.setDeviceIDa("na");
+            assessment.setLevela(currentLevel);
+            assessment.setLabel("" + FC_Constants.CERTIFICATE_LBL);
+            assessment.setSentFlag(0);
+            AppDatabase.appDatabase.getAssessmentDao().insert(assessment);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
@@ -301,6 +366,23 @@ public class TestPresenter implements TestContract.TestPresenter, API_Content_Re
             return null;
         }
         return returnCodeList;
+    }
+
+    @Override
+    public float getStarRating(float perc) {
+        float ratings = 5;
+        if (perc < 21)
+            ratings = (float) 1;
+        else if (perc >= 21 && perc < 41)
+            ratings = (float) 2;
+        else if (perc >= 41 && perc < 61)
+            ratings = (float) 3;
+        else if (perc >= 61 && perc < 81)
+            ratings = (float) 4;
+        else if (perc >= 81)
+            ratings = (float) 5;
+
+        return ratings;
     }
 
     @Background

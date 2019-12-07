@@ -2,11 +2,13 @@ package com.pratham.foundation;
 
 import android.app.Application;
 import android.content.Context;
+import android.media.AudioManager;
 import android.util.Log;
 
 import com.androidnetworking.AndroidNetworking;
 import com.facebook.drawee.backends.pipeline.Fresco;
 import com.isupatches.wisefy.WiseFy;
+import com.pratham.foundation.services.TTSService;
 import com.pratham.foundation.services.shared_preferences.FastSave;
 import com.pratham.foundation.utility.FC_Utility;
 
@@ -35,7 +37,8 @@ public class ApplicationClass extends Application {
     private static final DateFormat dateTimeFormat = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss", Locale.ENGLISH);
     private static final DateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy", Locale.ENGLISH);
     public static String path;
-
+    public static TTSService ttsService;
+    public static AudioManager audioManager;
 
     @Override
     public void onCreate() {

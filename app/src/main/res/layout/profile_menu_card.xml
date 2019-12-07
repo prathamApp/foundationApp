@@ -1,4 +1,7 @@
-<android.support.design.card.MaterialCardView android:id="@+id/lbl_Progreess_layout"
+<android.support.design.card.MaterialCardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/profile_card_layout"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_alignParentTop="true"
@@ -7,14 +10,13 @@
     android:layout_marginStart="@dimen/_15sdp"
     android:layout_marginEnd="@dimen/_15sdp"
     app:cardElevation="@dimen/_2sdp"
-    app:cardCornerRadius="@dimen/_10sdp"
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    app:cardBackgroundColor="@color/trans_card_text"
+    app:cardCornerRadius="@dimen/_10sdp">
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_margin="10dp">
+        android:padding="10dp">
 
         <com.pratham.foundation.customView.SansTextViewBold
             android:id="@+id/lbl_Progreess_header"

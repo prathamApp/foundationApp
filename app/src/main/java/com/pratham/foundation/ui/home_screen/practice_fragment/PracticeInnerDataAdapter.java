@@ -20,7 +20,6 @@ import com.facebook.imagepipeline.request.ImageRequest;
 import com.facebook.imagepipeline.request.ImageRequestBuilder;
 import com.pratham.foundation.ApplicationClass;
 import com.pratham.foundation.R;
-import com.pratham.foundation.customView.progress_layout.ProgressLayout;
 import com.pratham.foundation.database.domain.ContentTable;
 import com.pratham.foundation.utility.FC_Constants;
 
@@ -99,7 +98,8 @@ public class PracticeInnerDataAdapter extends RecyclerView.Adapter {
                 folderHolder.card_main.setBackground(mContext.getResources().getDrawable(getRandomCardColor()));
                 folderHolder.tvTitle.setText(itemsList.get(i).getNodeTitle());
                 folderHolder.tvTitle.setText(itemsList.get(i).getNodeTitle());
-                folderHolder.progressLayout.setCurProgress(Integer.parseInt(itemsList.get(i).getNodePercentage()));
+//                folderHolder.progressLayout.setCurProgress(Integer.parseInt(itemsList.get(i).getNodePercentage()));
+                folderHolder.progressLayout.setText(itemsList.get(i).getNodePercentage()+"%");
                 File f;
                 if (itemsList.get(i).getIsDownloaded().equalsIgnoreCase("1") ||
                         itemsList.get(i).getIsDownloaded().equalsIgnoreCase("true")) {
@@ -228,7 +228,8 @@ public class PracticeInnerDataAdapter extends RecyclerView.Adapter {
         protected TextView tvTitle;
         SimpleDraweeView itemImage;
         protected RelativeLayout rl_root;
-        protected ProgressLayout progressLayout;
+//        protected ProgressLayout progressLayout;
+        protected TextView progressLayout;
         MaterialCardView card_main;
 
         public FolderHolder(View view) {
@@ -237,7 +238,7 @@ public class PracticeInnerDataAdapter extends RecyclerView.Adapter {
             this.itemImage = view.findViewById(R.id.item_Image);
             this.rl_root = view.findViewById(R.id.rl_root);
             this.card_main = view.findViewById(R.id.card_main);
-            progressLayout = view.findViewById(R.id.card_progressLayout);
+            progressLayout = view.findViewById(R.id.tv_progress);
         }
 
     }

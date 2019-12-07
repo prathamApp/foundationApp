@@ -144,7 +144,7 @@ public class LearningPresenter implements LearningContract.LearningPresenter, AP
         String rootID = sub_nodeId;
         botID = AppDatabase.appDatabase.getContentTableDao().getContentDataByTitle("" + rootID, cosSection);
 //        if (botID != null && !FC_Utility.isDataConnectionAvailable(mContext))
-        if (botID != null )
+        if (botID != null)
             getLevelDataForList(currentLevelNo, botID);
 //        else
 //            getRootData(rootID);
@@ -164,7 +164,7 @@ public class LearningPresenter implements LearningContract.LearningPresenter, AP
 //        if (FC_Utility.isDataConnectionAvailable(mContext))
 //            getLevelDataFromApi(currentLevelNo, bottomNavNodeId);
 //        else
-            learningView.setSelectedLevel(rootList);
+        learningView.setSelectedLevel(rootList);
     }
 
     public void getLevelDataFromApi(int currentLevelNo, String botNodeId) {
@@ -231,10 +231,10 @@ public class LearningPresenter implements LearningContract.LearningPresenter, AP
     public void getWholePercentage(List maxScore) {
         double totalScore = 0;
         try {
-            for (int j = 0; maxScore.size() > j; j++) {
-                totalScore = totalScore + Double.parseDouble(maxScore.get(j).toString());
-            }
             if (maxScore.size() > 0) {
+                for (int j = 0; maxScore.size() > j; j++) {
+                    totalScore = totalScore + Double.parseDouble(maxScore.get(j).toString());
+                }
                 int percent = (int) (totalScore / maxScore.size());
                 learningView.setLevelprogress(percent);
             } else {
@@ -251,13 +251,11 @@ public class LearningPresenter implements LearningContract.LearningPresenter, AP
     public void getDataForList() {
         learningView.showLoader();
         try {
-
             dwParentList = AppDatabase.appDatabase.getContentTableDao().getContentData("" + nodeIds.get(nodeIds.size() - 1));
             sortContentList(dwParentList);
             contentParentList.clear();
-
             ContentTable resContentTable = new ContentTable();
-            List<ContentTable> resourceList= new ArrayList<>();
+            List<ContentTable> resourceList = new ArrayList<>();
             List<ContentTable> tempList2 = new ArrayList<>();
 
             ContentTable contentTableRes = new ContentTable();
@@ -266,7 +264,6 @@ public class LearningPresenter implements LearningContract.LearningPresenter, AP
             tempList2.add(contentTableRes);
             resContentTable.setNodelist(tempList2);
             resourceList.add(contentTableRes);
-
             contentParentList.add(contentTableRes);
 
             try {
@@ -341,7 +338,7 @@ public class LearningPresenter implements LearningContract.LearningPresenter, AP
                                 contentChild.setOnSDCard(childDwContentList.get(i).isOnSDCard());
                                 contentChild.setNodelist(null);
                                 maxScoreChild = new ArrayList();
-                                if(!LOGIN_MODE.equalsIgnoreCase(QR_GROUP_MODE))
+                                if (!LOGIN_MODE.equalsIgnoreCase(QR_GROUP_MODE))
                                     findMaxScoreNew(childDwContentList.get(i).getNodeId());
                                 double totalScore = 0;
                                 for (int q = 0; maxScoreChild.size() > q; q++) {
@@ -390,7 +387,7 @@ public class LearningPresenter implements LearningContract.LearningPresenter, AP
     public void updateUI() {
         maxScore.clear();
         try {
-            if(!LOGIN_MODE.equalsIgnoreCase(QR_GROUP_MODE))
+            if (!LOGIN_MODE.equalsIgnoreCase(QR_GROUP_MODE))
                 findMaxScore("" + nodeIds.get(nodeIds.size() - 1));
         } catch (Exception e) {
             e.printStackTrace();
@@ -399,12 +396,12 @@ public class LearningPresenter implements LearningContract.LearningPresenter, AP
 //            api_content.getAPIContent(FC_Constants.INTERNET_DOWNLOAD, FC_Constants.INTERNET_DOWNLOAD_NEW_API, nodeIds.get(nodeIds.size() - 1));
 //        } else {
 //            if (contentParentList.size() == 0 && !FC_Utility.isDataConnectionAvailable(mContext)) {
-            if (contentParentList.size() == 0) {
-                learningView.showNoDataDownloadedDialog();
-            } else {
-                learningView.addContentToViewList(contentParentList);
-                learningView.notifyAdapter();
-            }
+        if (contentParentList.size() == 0) {
+            learningView.showNoDataDownloadedDialog();
+        } else {
+            learningView.addContentToViewList(contentParentList);
+            learningView.notifyAdapter();
+        }
 //        }
     }
 

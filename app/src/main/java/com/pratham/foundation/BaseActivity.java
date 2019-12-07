@@ -14,19 +14,19 @@ import android.view.WindowManager;
 import com.pratham.foundation.database.AppDatabase;
 import com.pratham.foundation.database.BackupDatabase;
 import com.pratham.foundation.services.TTSService;
-import com.pratham.foundation.utility.CatchoTransparentActivity;
 import com.pratham.foundation.utility.FC_Utility;
 
 import net.alhazmy13.catcho.library.Catcho;
 
 import java.util.Locale;
 
+import static com.pratham.foundation.ApplicationClass.audioManager;
+import static com.pratham.foundation.ApplicationClass.ttsService;
+
 
 public class BaseActivity extends AppCompatActivity {
 
     public static boolean muteFlg = false;
-    public static TTSService ttsService;
-    private static AudioManager audioManager;
     View mDecorView;
 
     @Override
@@ -39,10 +39,11 @@ public class BaseActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         mDecorView = getWindow().getDecorView();
-        audioManager = (AudioManager) getSystemService(AUDIO_SERVICE);
+        if (audioManager == null)
+            audioManager = (AudioManager) getSystemService(AUDIO_SERVICE);
         startSTT();
         muteFlg = false;
-                Catcho.Builder(this);
+        Catcho.Builder(this);
 //                .activity(CatchoTransparentActivity.class).build();
 //                .recipients("abc@domain.com").build();
 
@@ -68,10 +69,12 @@ public class BaseActivity extends AppCompatActivity {
     }
 
     private void startSTT() {
-        ttsService = new TTSService(getApplication());
-        ttsService.setActivity(this);
-        ttsService.setSpeechRate(0.7f);
-        ttsService.setLanguage(new Locale("en", "IN"));
+        if (ttsService == null) {
+            ttsService = new TTSService(getApplication());
+            ttsService.setActivity(this);
+            ttsService.setSpeechRate(0.7f);
+            ttsService.setLanguage(new Locale("en", "IN"));
+        }
     }
 
     public static void setMute(int m) {
@@ -107,6 +110,7 @@ public class BaseActivity extends AppCompatActivity {
 //        ActivityResumed();
         BackupDatabase.backup(this);
     }
+
     @SuppressLint("StaticFieldLeak")
     public void endSession(Context context) {
         try {

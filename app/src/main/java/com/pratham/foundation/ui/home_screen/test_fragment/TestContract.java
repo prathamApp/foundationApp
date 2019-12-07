@@ -7,6 +7,7 @@ import com.pratham.foundation.database.domain.ContentTable;
 import com.pratham.foundation.modalclasses.CertificateModelClass;
 
 import org.json.JSONArray;
+import org.json.JSONObject;
 
 import java.util.List;
 
@@ -84,5 +85,13 @@ public interface TestContract {
         void generateTestData(JSONArray testData, String nodeId);
 
         void getTempData(String s);
+
+        void endTestSession();
+
+        void recordTestData(JSONObject jsonObjectAssessment, String s);
+
+        float getStarRating(float perc);
+
+        ContentTable getRandomData(String resourceType, String nodeKeywords);
     }
 }

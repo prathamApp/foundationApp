@@ -45,8 +45,8 @@
             app:actualImageScaleType="fitCenter"
             app:placeholderImage="@drawable/pratham_logo"
             app:roundedCornerRadius="@dimen/_10sdp"
-            app:roundingBorderColor="@color/strokeColor"
-            app:roundingBorderWidth="@dimen/_2sdp" />
+            app:roundingBorderColor="@color/white"
+            app:roundingBorderWidth="@dimen/_2sdp"/>
 
         <RelativeLayout
             android:layout_width="match_parent"

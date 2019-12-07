@@ -32,6 +32,7 @@ import com.pratham.foundation.ui.home_screen.fun.FunFragment_;
 import com.pratham.foundation.ui.home_screen.learning_fragment.LearningFragment_;
 import com.pratham.foundation.ui.home_screen.practice_fragment.PracticeFragment_;
 import com.pratham.foundation.ui.home_screen.profile_new.ProfileFragment_;
+import com.pratham.foundation.ui.home_screen.test_fragment.TestFragment_;
 import com.pratham.foundation.ui.student_profile.Student_profile_activity;
 import com.pratham.foundation.ui.test.supervisor.SupervisedAssessmentActivity;
 import com.pratham.foundation.utility.FC_Constants;
@@ -52,21 +53,25 @@ import java.util.Objects;
 import github.hellocsl.cursorwheel.CursorWheelLayout;
 
 import static com.pratham.foundation.utility.FC_Constants.BACK_PRESSED;
+import static com.pratham.foundation.utility.FC_Constants.FRAGMENT_RESELECTED;
+import static com.pratham.foundation.utility.FC_Constants.FRAGMENT_SELECTED;
 import static com.pratham.foundation.utility.FC_Constants.GROUP_LOGIN;
 import static com.pratham.foundation.utility.FC_Constants.GROUP_MODE;
 import static com.pratham.foundation.utility.FC_Constants.INDIVIDUAL_MODE;
 import static com.pratham.foundation.utility.FC_Constants.LEVEL_CHANGED;
+import static com.pratham.foundation.utility.FC_Constants.LEVEL_TEST_GIVEN;
 import static com.pratham.foundation.utility.FC_Constants.LOGIN_MODE;
 import static com.pratham.foundation.utility.FC_Constants.QR_GROUP_MODE;
 import static com.pratham.foundation.utility.FC_Constants.currentSubject;
 import static com.pratham.foundation.utility.FC_Constants.dialog_btn_cancel;
 import static com.pratham.foundation.utility.FC_Constants.dialog_btn_exit;
+import static com.pratham.foundation.utility.FC_Constants.isTest;
 
 @EActivity(R.layout.activity_home)
 public class HomeActivity extends BaseActivity implements LevelChanged, CursorWheelLayout.OnMenuSelectedListener {
 
     @ViewById(R.id.tv_header_progress)
-    TextView tv_header_progress;
+    public static  TextView tv_header_progress;
     @ViewById(R.id.viewpager)
     ViewPager viewpager;
     @ViewById(R.id.home_root_layout)
@@ -116,7 +121,8 @@ public class HomeActivity extends BaseActivity implements LevelChanged, CursorWh
         sub_nodeId = getIntent().getStringExtra("nodeId");
         sub_Name = getIntent().getStringExtra("nodeTitle");
         changeBackground(sub_Name);
-//        floating_back.setImageResource(R.drawable.ic_left_arrow_white);
+        changeBGNew(0);
+        //        floating_back.setImageResource(R.drawable.ic_left_arrow_white);
         floating_info.setImageResource(R.drawable.ic_info_outline_white);
         FC_Constants.currentSelectedLanguage = FastSave.getInstance().getString(FC_Constants.LANGUAGE, "");
         setupViewPager(viewpager);
@@ -310,15 +316,17 @@ public class HomeActivity extends BaseActivity implements LevelChanged, CursorWh
         profileTab.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.ic_profile, 0, 0);
 
         if (currentSubject.equalsIgnoreCase("english")) {
-//            TextView tabThree = (TextView) LayoutInflater.from(this).inflate(R.layout.custom_tab_text, null);
-//            tabThree.setText("Test");
-//            tabThree.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.ic_test, 0, 0);
-//            tabLayout.getTabAt(2).setCustomView(tabThree);
+            TextView tabThree = (TextView) LayoutInflater.from(this).inflate(R.layout.custom_tab_text, null);
+            tabThree.setText("Test");
+            tabThree.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.ic_test, 0, 0);
+            tabLayout.getTabAt(2).setCustomView(tabThree);
+
             TextView tabFour = (TextView) LayoutInflater.from(this).inflate(R.layout.custom_tab_text, null);
             tabFour.setText("Fun");
             tabFour.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.ic_fun, 0, 0);
-            tabLayout.getTabAt(2).setCustomView(tabFour);
-            tabLayout.getTabAt(3).setCustomView(profileTab);
+
+            tabLayout.getTabAt(3).setCustomView(tabFour);
+            tabLayout.getTabAt(4).setCustomView(profileTab);
         }else
             tabLayout.getTabAt(2).setCustomView(profileTab);
 
@@ -333,25 +341,37 @@ public class HomeActivity extends BaseActivity implements LevelChanged, CursorWh
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
-                if(tab.getText().toString().equalsIgnoreCase("Profile")){
+                if(tab.getText().toString().equalsIgnoreCase("Test"))
+                    FC_Constants.isTest = true;
+                else if(tab.getText().toString().equalsIgnoreCase("Profile")){
+                    FC_Constants.isTest = false;
                     header_rl.setVisibility(View.GONE);
-                }else
+                }else {
+                    EventMessage eventMessage = new EventMessage();
+                    eventMessage.setMessage(FRAGMENT_SELECTED);
+                    EventBus.getDefault().post(eventMessage);
+                    FC_Constants.isTest = false;
                     header_rl.setVisibility(View.VISIBLE);
+                }
             }
 
             @Override
-            public void onTabUnselected(TabLayout.Tab tab) {
-            }
+            public void onTabUnselected(TabLayout.Tab tab) {}
 
             @Override
             public void onTabReselected(TabLayout.Tab tab) {
-                if(tab.getText().toString().equalsIgnoreCase("Profile")){
-                    header_rl.setVisibility(View.GONE);
-                }else
-                    header_rl.setVisibility(View.VISIBLE);
 
-                if(tab.getPosition()== 2){
-                    //TODO Test Dialog
+                if(tab.getText().toString().equalsIgnoreCase("Test"))
+                    FC_Constants.isTest = true;
+                else if(tab.getText().toString().equalsIgnoreCase("Profile")){
+                    FC_Constants.isTest = false;
+                    header_rl.setVisibility(View.GONE);
+                }else {
+                    EventMessage eventMessage = new EventMessage();
+                    eventMessage.setMessage(FRAGMENT_RESELECTED);
+                    EventBus.getDefault().post(eventMessage);
+                    FC_Constants.isTest = false;
+                    header_rl.setVisibility(View.VISIBLE);
                 }
             }
         });
@@ -398,26 +418,21 @@ public class HomeActivity extends BaseActivity implements LevelChanged, CursorWh
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == 1) {
-/*            if (resultCode == Activity.RESULT_OK) {
+        if(isTest){
+            if (resultCode == Activity.RESULT_OK) {
                 String cCode = data.getStringExtra("cCode");
                 int tMarks = data.getIntExtra("tMarks", 0);
                 int sMarks = data.getIntExtra("sMarks", 0);
                 try {
-                    if (cCode.equalsIgnoreCase(certi_Code)) {
-                        testList.get(clicked_Pos).setAsessmentGiven(true);
-                        testList.get(clicked_Pos).setTotalMarks(tMarks);
-                        testList.get(clicked_Pos).setScoredMarks(sMarks);
-                        float perc = ((float) sMarks / (float) tMarks) * 100;
-                        testList.get(clicked_Pos).setStudentPercentage("" + perc);
-                        testList.get(clicked_Pos).setCertificateRating(presenter.getStarRating(perc));
-                        testAdapter.notifyItemChanged(clicked_Pos, testList.get(clicked_Pos));
-                    }
+//                    new Handler().postDelayed(() -> {
+                        EventMessage eventMessage = new EventMessage();
+                        eventMessage.setMessage(LEVEL_TEST_GIVEN +":"+cCode+":"+tMarks+":"+sMarks);
+                        EventBus.getDefault().post(eventMessage);
+//                    }, 1000);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
             }
-            checkAllAssessmentsDone();*/
         } else if (requestCode == 10) {
             if (resultCode == Activity.RESULT_OK) {
 //                EventMessage eventMessage = new EventMessage();
@@ -457,7 +472,7 @@ public class HomeActivity extends BaseActivity implements LevelChanged, CursorWh
             adapter.addFrag(new LearningFragment_(), "Learning");
         }
         if (currentSubject.equalsIgnoreCase("english")) {
-//            adapter.addFrag(new TestFragment_(), "Test");
+            adapter.addFrag(new TestFragment_(), "Test");
             adapter.addFrag(new FunFragment_(), "Fun");
             adapter.addFrag(new ProfileFragment_(), "Profile");
         }

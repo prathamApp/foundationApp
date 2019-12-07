@@ -3,11 +3,14 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:id="@+id/certificate_card_view"
-    android:layout_marginHorizontal="@dimen/_10sdp"
-    android:background="@drawable/ripple_rectangle_card"
-    android:layout_margin="@dimen/_5sdp">
+    android:layout_marginTop="@dimen/_5sdp"
+    android:layout_marginBottom="@dimen/_5sdp"
+    android:layout_marginStart="@dimen/_15sdp"
+    android:elevation="@dimen/_3sdp"
+    android:layout_marginEnd="@dimen/_15sdp"
+    android:background="@drawable/card_color_bg1">
 
-    <com.pratham.foundation.customView.SansTextView
+    <com.pratham.foundation.customView.SansTextViewBold
         android:id="@+id/assess_data"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -15,7 +18,7 @@
         android:layout_alignParentTop="true"
         android:padding="@dimen/_7sdp"
         android:text="Student Knows "
-        android:textColor="@color/colorBlack"
+        android:textColor="@color/white"
         android:textSize="@dimen/_13sdp"
         android:textStyle="bold" />
 
@@ -30,7 +33,7 @@
         android:numStars="5"
         android:stepSize="1"
         android:isIndicator="true"
-        android:progressTint="@color/ratingFilled" />
+        android:progressTint="@color/white" />
 
     <View
         android:layout_width="match_parent"

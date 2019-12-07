@@ -23,7 +23,6 @@ import com.pratham.foundation.customView.SansTextView;
 import com.pratham.foundation.interfaces.OnGameClose;
 import com.pratham.foundation.modalclasses.EventMessage;
 import com.pratham.foundation.modalclasses.ScienceQuestionChoice;
-import com.pratham.foundation.ui.contentPlayer.ContentPlayerActivity;
 import com.pratham.foundation.ui.contentPlayer.GameConstatnts;
 import com.pratham.foundation.ui.contentPlayer.fact_retrival_selection.ScienceQuestion;
 import com.pratham.foundation.utility.FC_Constants;
@@ -261,7 +260,7 @@ public class KeywordsIdentificationFragment extends Fragment implements Keywords
                     });
                 }
             } else {
-                ((ContentPlayerActivity) getActivity()).ttsService.play(paraText);
+                ApplicationClass.ttsService.play(paraText);
             }
         }
     }

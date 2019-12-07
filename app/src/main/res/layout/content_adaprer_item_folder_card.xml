@@ -36,7 +36,7 @@
             android:paddingEnd="@dimen/_8sdp"
             android:layout_marginStart="@dimen/_5sdp"
             android:layout_marginTop="@dimen/_5sdp"
-            android:text="40%"
+            android:text="0%"
             android:textColor="@color/colorText"
             android:textSize="@dimen/_10sdp" />
 
@@ -49,7 +49,7 @@
             android:layout_marginBottom="@dimen/_5sdp"
             android:background="@android:color/transparent"
             app:roundingBorderColor="@color/white"
-            app:roundingBorderWidth="@dimen/_1sdp"
+            app:roundingBorderWidth="@dimen/_2sdp"
             app:roundedCornerRadius="@dimen/_30sdp"
             android:layout_alignParentBottom="true"
             app:actualImageScaleType="centerInside"

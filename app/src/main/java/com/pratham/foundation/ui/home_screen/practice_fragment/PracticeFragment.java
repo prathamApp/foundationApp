@@ -62,7 +62,7 @@ import java.util.Objects;
 import static com.pratham.foundation.ui.home_screen.HomeActivity.header_rl;
 import static com.pratham.foundation.ui.home_screen.HomeActivity.levelChanged;
 import static com.pratham.foundation.ui.home_screen.HomeActivity.sub_Name;
-import static com.pratham.foundation.ui.home_screen.HomeActivity.tv_progress;
+import static com.pratham.foundation.ui.home_screen.HomeActivity.tv_header_progress;
 import static com.pratham.foundation.utility.FC_Constants.currentLevel;
 import static com.pratham.foundation.utility.FC_Constants.gameFolderPath;
 import static com.pratham.foundation.utility.FC_Utility.dpToPx;
@@ -102,13 +102,15 @@ public class PracticeFragment extends Fragment implements PracticeContract.Pract
         try {
             for (int i = 0; i < contentParentList.size(); i++)
                 Log.d("Practice List", "" + contentParentList.get(i).getNodeTitle());
-        }catch (Exception e){e.printStackTrace();}
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
         if (adapterParent == null) {
             adapterParent = new PracticeOuterDataAdapter(getActivity(), contentParentList, this);
             RecyclerView.LayoutManager mLayoutManager = new GridLayoutManager(getActivity(), 1);
             my_recycler_view.setLayoutManager(mLayoutManager);
-            my_recycler_view.addItemDecoration(new GridSpacingItemDecoration(1,dpToPx(getActivity()),true));
+            my_recycler_view.addItemDecoration(new GridSpacingItemDecoration(1, dpToPx(getActivity()), true));
             my_recycler_view.setItemAnimator(new DefaultItemAnimator());
             my_recycler_view.setAdapter(adapterParent);
         } else
@@ -150,10 +152,40 @@ public class PracticeFragment extends Fragment implements PracticeContract.Pract
         EventBus.getDefault().register(this);
     }
 
+//    @Override
+//    public void onResume() {
+//        super.onResume();
+//        if (resumeCntr == 0)
+//            resumeCntr = 1;
+//        else {
+//            showLoader();
+//            presenter.getDataForList();
+//            String currentNodeID = presenter.getcurrentNodeID();
+//            try {
+//                if (!currentNodeID.equalsIgnoreCase("na"))
+//                    presenter.findMaxScore("" + currentNodeID);
+//            } catch (Exception e) {
+//                e.printStackTrace();
+//            }
+//        }
+//    }
+
     @Override
     public void onStop() {
         super.onStop();
         EventBus.getDefault().unregister(this);
+    }
+
+    private void fragmentSelected() {
+        showLoader();
+        presenter.getDataForList();
+        String currentNodeID = presenter.getcurrentNodeID();
+        try {
+            if (!currentNodeID.equalsIgnoreCase("na"))
+                presenter.findMaxScore("" + currentNodeID);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     @SuppressLint("SetTextI18n")
@@ -169,6 +201,10 @@ public class PracticeFragment extends Fragment implements PracticeContract.Pract
             } else if (message.getMessage().equalsIgnoreCase(FC_Constants.FILE_DOWNLOAD_UPDATE)) {
                 if (progressLayout != null)
                     progressLayout.setCurProgress(message.getModal_fileDownloading().getProgress());
+            } else if (message.getMessage().equalsIgnoreCase(FC_Constants.FRAGMENT_SELECTED)) {
+                fragmentSelected();
+            } else if (message.getMessage().equalsIgnoreCase(FC_Constants.FRAGMENT_RESELECTED)) {
+                fragmentSelected();
             } else if (message.getMessage().equalsIgnoreCase(FC_Constants.FILE_DOWNLOAD_ERROR)) {
                 downloadDialog.dismiss();
                 showDownloadErrorDialog();
@@ -215,7 +251,7 @@ public class PracticeFragment extends Fragment implements PracticeContract.Pract
     @Override
     public void setSelectedLevel(List<ContentTable> contentTable) {
         rootLevelList = contentTable;
-        if(rootLevelList!=null)
+        if (rootLevelList != null)
             levelChanged.setActualLevel(rootLevelList.size());
         presenter.insertNodeId(contentTable.get(currentLevel).getNodeId());
         presenter.getDataForList();
@@ -274,7 +310,7 @@ public class PracticeFragment extends Fragment implements PracticeContract.Pract
                 myLoadingDialog.setCanceledOnTouchOutside(false);
 //        myLoadingDialog.setCancelable(false);
                 myLoadingDialog.show();
-            }catch (Exception e){
+            } catch (Exception e) {
                 e.printStackTrace();
             }
         }
@@ -291,7 +327,8 @@ public class PracticeFragment extends Fragment implements PracticeContract.Pract
     @UiThread
     @Override
     public void setLevelprogress(int percent) {
-        tv_progress.setCurProgress(percent);
+        tv_header_progress.setText(percent + "%");
+//        tv_progress.setCurProgress(percent);
 //        level_progress.setCurProgress(percent);
     }
 
@@ -324,7 +361,7 @@ public class PracticeFragment extends Fragment implements PracticeContract.Pract
     @Override
     public void onContentClicked(ContentTable singleItem, String parentName) {
         ButtonClickSound.start();
-        FC_Constants.isPractice=true;
+        FC_Constants.isPractice = true;
         if (singleItem.getResourceType().equalsIgnoreCase("category")) {
             Intent intent = new Intent(getActivity(), ContentDisplay_.class);
             intent.putExtra("nodeId", singleItem.getNodeId());
@@ -332,7 +369,7 @@ public class PracticeFragment extends Fragment implements PracticeContract.Pract
             intent.putExtra("parentName", parentName);
             intent.putExtra("level", "" + currentLevel);
             startActivity(intent);
-        } else if(singleItem.getResourceType().equalsIgnoreCase("preResource")){
+        } else if (singleItem.getResourceType().equalsIgnoreCase("preResource")) {
             Intent mainNew = new Intent(getActivity(), ContentPlayerActivity_.class);
             mainNew.putExtra("nodeID", singleItem.getNodeId());
             startActivity(mainNew);
@@ -348,10 +385,10 @@ public class PracticeFragment extends Fragment implements PracticeContract.Pract
         //Toast.makeText(this, "ContentOpen : Work In Progress", Toast.LENGTH_SHORT).show();
         //todo remove#
         ButtonClickSound.start();
-        FC_Constants.isPractice=true;
+        FC_Constants.isPractice = true;
         downloadNodeId = contentList.getNodeId();
         resName = contentList.getNodeTitle();
-        if(contentList.getNodeType().equalsIgnoreCase("PreResource")||
+        if (contentList.getNodeType().equalsIgnoreCase("PreResource") ||
                 contentList.getResourceType().equalsIgnoreCase("PreResource")) {
             Intent mainNew = new Intent(getActivity(), ContentPlayerActivity_.class);
             mainNew.putExtra("resId", contentList.getResourceId());
@@ -360,7 +397,7 @@ public class PracticeFragment extends Fragment implements PracticeContract.Pract
             mainNew.putExtra("onSdCard", contentList.isOnSDCard());
             mainNew.putExtra("contentPath", contentList.getResourcePath());
             startActivity(mainNew);
-        }else {
+        } else {
             if (contentList.getResourceType().toLowerCase().contains(FC_Constants.HTML_GAME_RESOURCE)) {
                 String resPath;
                 String gameID = contentList.getResourceId();
@@ -466,7 +503,7 @@ public class PracticeFragment extends Fragment implements PracticeContract.Pract
     @Override
     public void onContentDownloadClicked(ContentTable contentList, int parentPos, int childPos, String downloadType) {
         this.downloadType = downloadType;
-        FC_Constants.isPractice=true;
+        FC_Constants.isPractice = true;
         downloadNodeId = contentList.getNodeId();
         ButtonClickSound.start();
 //        downloadNodeId = "" + 1371;
