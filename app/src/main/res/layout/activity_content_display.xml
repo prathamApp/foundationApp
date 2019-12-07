@@ -87,7 +87,7 @@
                     android:background="@drawable/progress_background2"
                     android:paddingStart="@dimen/_8sdp"
                     android:paddingEnd="@dimen/_8sdp"
-                    android:text="40%"
+                    android:text="0%"
                     android:textColor="@color/white"
                     android:textSize="@dimen/_10sdp" />
             </LinearLayout>

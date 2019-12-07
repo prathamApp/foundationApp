@@ -174,7 +174,7 @@ public class TestFragment extends Fragment implements TestContract.TestView,
         dia_btn_green.setText("OK");
         dialog.show();
         String currLang = "" + FastSave.getInstance().getString(FC_Constants.LANGUAGE,"Hindi");
-        dia_title.setText("Current Test Language : "+currLang);
+        dia_title.setText("Current Language : "+currLang);
 
         ArrayAdapter<String> dataAdapter = new ArrayAdapter<>(getActivity(), R.layout.custom_spinner,
                 getActivity().getResources().getStringArray(R.array.certificate_Languages));
