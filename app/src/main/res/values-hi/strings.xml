@@ -379,7 +379,7 @@
 
     <string name="factRetrieval">FACTRETRIEVAL_HINDI</string>
     <string name="IKWAndroid">KEYWORD_IDENTIFICATION_HINDI</string>
-    <string name="CWiritng">PARAGRAPH_WRITING_HINDI</string>
+    <string name="CWiritng">WRITING_HINDI</string>
     <string name="chKeywords">संबंधित शब्दों को पहचाने_HINDI</string>
     <string name="ShowMeAndroid">खोपड़ी दिखाओ._HINDI</string>
     <string name="Dict">LISTNING_AND_WRITTING_HINDI</string>
