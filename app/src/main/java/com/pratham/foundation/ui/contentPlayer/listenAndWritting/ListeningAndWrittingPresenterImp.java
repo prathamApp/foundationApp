@@ -1,7 +1,6 @@
 package com.pratham.foundation.ui.contentPlayer.listenAndWritting;
 
 import android.content.Context;
-import android.graphics.Bitmap;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -12,7 +11,7 @@ import com.pratham.foundation.database.domain.KeyWords;
 import com.pratham.foundation.database.domain.Score;
 import com.pratham.foundation.interfaces.OnGameClose;
 import com.pratham.foundation.ui.contentPlayer.GameConstatnts;
-import com.pratham.foundation.ui.contentPlayer.fact_retrival_selection.ScienceQuestion;
+import com.pratham.foundation.modalclasses.ScienceQuestion;
 import com.pratham.foundation.utility.FC_Constants;
 import com.pratham.foundation.utility.FC_Utility;
 
@@ -20,9 +19,7 @@ import org.androidannotations.annotations.Background;
 import org.androidannotations.annotations.EBean;
 import org.json.JSONArray;
 
-import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
@@ -30,7 +27,6 @@ import java.util.Collections;
 import java.util.List;
 
 import static com.pratham.foundation.database.AppDatabase.appDatabase;
-import static com.pratham.foundation.utility.FC_Constants.activityPhotoPath;
 
 @EBean
 public class ListeningAndWrittingPresenterImp implements ListeningAndWrittingContract.ListeningAndWrittingPresenter {

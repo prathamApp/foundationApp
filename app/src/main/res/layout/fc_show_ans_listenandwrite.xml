@@ -7,17 +7,21 @@
         android:layout_width="@dimen/_240sdp"
         android:layout_height="@dimen/_240sdp"
         android:layout_centerInParent="true"
+        android:layout_margin="@dimen/_10sdp"
+        android:padding="@dimen/_5sdp"
         android:background="@drawable/dialog_bg">
 
-        <com.pratham.foundation.customView.SansTextView
+        <TextView
             android:id="@+id/info"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:gravity="center"
             android:scrollbars="vertical"
             android:paddingHorizontal="@dimen/_7sdp"
-            android:text=""
-            android:textColor="@color/gradianceCardStartColor"
+            android:text="jjfglkjlk"
+            android:autoSizeTextType="uniform"
+            android:textColor="@color/colorLightBlack"
+            android:autoSizeMaxTextSize="@dimen/_30sdp"
             android:textSize="@dimen/_15sdp" />
     </RelativeLayout>
 

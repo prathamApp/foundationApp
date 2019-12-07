@@ -377,20 +377,20 @@
         <item>pa</item>
     </string-array>
 
-    <string name="factRetrieval">FACTRETRIEVAL</string>
-    <string name="IKWAndroid">KEYWORD_IDENTIFICATION</string>
-    <string name="CWiritng">PARAGRAPH_WRITING</string>
-    <string name="chKeywords">संबंधित शब्दों को पहचाने</string>
-    <string name="ShowMeAndroid">खोपड़ी दिखाओ.</string>
-    <string name="Dict">LISTNING_AND_WRITTING</string>
-    <string name="PictAndroid">PICTIONARYFRAGMENT</string>
-    <string name="TAW">THINKANDWRITE</string>
-    <string name="doing_act_read">DOING_ACT_READ</string>
-    <string name="letter">LetterWriting</string>
-    <string name="doing_act_video">DOING_ACT_VIDEO</string>
-    <string name="ReadVocabAndroid">READ_VOCAB_ANDROID</string>
-    <string name="reading_stt">READING_STT</string>
-    <string name="multiple_choice">MULTIPLE_CHOICE</string>
-    <string name="restart_dialog_msg">Do you want to restart?</string>
+    <string name="factRetrieval">FACTRETRIEVAL_HINDI</string>
+    <string name="IKWAndroid">KEYWORD_IDENTIFICATION_HINDI</string>
+    <string name="CWiritng">PARAGRAPH_WRITING_HINDI</string>
+    <string name="chKeywords">संबंधित शब्दों को पहचाने_HINDI</string>
+    <string name="ShowMeAndroid">खोपड़ी दिखाओ._HINDI</string>
+    <string name="Dict">LISTNING_AND_WRITTING_HINDI</string>
+    <string name="PictAndroid">PICTIONARYFRAGMENT_HINDI</string>
+    <string name="TAW">THINKANDWRITE_HINDI</string>
+    <string name="doing_act_read">DOING_ACT_READ_HINDI</string>
+    <string name="letter">LetterWriting_HINDI</string>
+    <string name="doing_act_video">DOING_ACT_VIDEO_HINDI</string>
+    <string name="ReadVocabAndroid">READ_VOCAB_ANDROID_HINDI</string>
+    <string name="reading_stt">READING_STT_HINDI</string>
+    <string name="multiple_choice">MULTIPLE_CHOICE_HINDI</string>
+    <string name="restart_dialog_msg">Do you want to restart?_HINDI</string>
 
 </resources>

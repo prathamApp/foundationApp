@@ -127,7 +127,7 @@ public class SequenceLayout extends Fragment implements SequeanceLayoutContract.
         // GameConstatnts.showInstructionDialog(this, getActivity(), contentTable.getResourceType());
         if (!contentTable.getResourceType().equalsIgnoreCase(GameConstatnts.READ_VOCAB_ANDROID)) {
              playInsequence = false;
-            playGamesAfterDialog();
+             playGamesAfterDialog();
         }
     }
 

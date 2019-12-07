@@ -1,5 +1,6 @@
 package com.pratham.foundation.ui.contentPlayer.fact_retrival_selection;
 
+import com.pratham.foundation.modalclasses.ScienceQuestion;
 import com.pratham.foundation.modalclasses.ScienceQuestionChoice;
 
 import java.util.List;

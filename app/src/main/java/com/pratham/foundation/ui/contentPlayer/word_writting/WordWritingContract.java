@@ -2,7 +2,7 @@ package com.pratham.foundation.ui.contentPlayer.word_writting;
 
 import android.graphics.Bitmap;
 
-import com.pratham.foundation.ui.contentPlayer.fact_retrival_selection.ScienceQuestion;
+import com.pratham.foundation.modalclasses.ScienceQuestion;
 
 import java.util.List;
 

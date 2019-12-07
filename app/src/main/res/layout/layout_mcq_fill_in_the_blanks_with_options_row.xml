@@ -3,9 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    app:cardBackgroundColor="@android:color/transparent"
-    app:cardElevation="0dp"
-    android:background="@color/white">
+    android:background="@drawable/bg_anim_fourth_layer"
+    app:cardElevation="0dp">
     <Space
         android:id="@+id/space"
         android:layout_width="match_parent"
@@ -31,8 +30,8 @@
                 android:orientation="vertical"
                 android:layout_marginStart="@dimen/_10sdp"
                 android:layout_marginEnd="@dimen/_10sdp"
-                android:background="@drawable/dialog_bg_blue">
-              <!--  android:background="@drawable/dialog_bg"-->
+                android:background="@drawable/dialog_bg">
+              <!--  -->
                 <com.pratham.foundation.customView.SansTextView
                     android:id="@+id/tv_question"
                     android:layout_height="wrap_content"
@@ -42,7 +41,6 @@
                     android:textSize="@dimen/_20sdp"
                     android:padding="@dimen/_15sdp"
                     android:textAlignment="center"
-                    android:textColor="@color/white"
                     android:layout_margin="@dimen/_10sdp"
                     android:text="ggggg" />
                 <ImageView
@@ -78,7 +76,7 @@
                     android:id="@+id/rg_mcq"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_margin="@dimen/_10sdp"
+                    android:layout_margin="@dimen/_5sdp"
                     android:layout_centerInParent="true"
                     android:orientation="vertical" />
 

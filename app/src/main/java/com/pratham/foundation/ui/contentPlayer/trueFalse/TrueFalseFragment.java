@@ -150,7 +150,7 @@ public class TrueFalseFragment extends Fragment {
             Collections.shuffle(dataList);
             for (int i = 0; i < dataList.size(); i++) {
                 if (perc < 95) {
-                    if (!checkWord("" + dataList.get(i).getQname()))
+                    if (!checkWord("" + dataList.get(i).getQuestion()))
                         selectedFive.add(dataList.get(i));
                 } else {
                     selectedFive.add(dataList.get(i));
@@ -214,7 +214,7 @@ public class TrueFalseFragment extends Fragment {
     public void setTrueFalseQuestion() {
 
 
-        question.setText(selectedFive.get(index).getQname());
+        question.setText(selectedFive.get(index).getQuestion());
         if (!selectedFive.get(index).getPhotourl().equalsIgnoreCase("")) {
             questionImage.setVisibility(View.VISIBLE);
 //            if (AssessmentApplication.wiseF.isDeviceConnectedToMobileOrWifiNetwork()) {
@@ -387,17 +387,17 @@ public class TrueFalseFragment extends Fragment {
                     keyWords.setResourceId(resId);
                     keyWords.setSentFlag(0);
                     keyWords.setStudentId(FC_Constants.currentStudentID);
-                    String key = selectedAnsList.get(i).getQname();
+                    String key = selectedAnsList.get(i).getQuestion();
                     keyWords.setKeyWord(key);
                     keyWords.setWordType("word");
                     appDatabase.getKeyWordDao().insert(keyWords);
-                    correctWordList.add("\n\n" + selectedAnsList.get(i).getQname());
-                    addScore(selectedAnsList.get(i).getQid(), GameConstatnts.TRUE_FALSE, 10, 10, FC_Utility.getCurrentDateTime(), selectedAnsList.get(i).getUserAnswer());
+                    correctWordList.add("\n\n" + selectedAnsList.get(i).getQuestion());
+                    addScore(GameConstatnts.getInt(selectedAnsList.get(i).getQid()), GameConstatnts.TRUE_FALSE, 10, 10, FC_Utility.getCurrentDateTime(), selectedAnsList.get(i).getUserAnswer());
 
                 } else {
                     if (selectedAnsList.get(i).getUserAnswer() != null && !selectedAnsList.get(i).getUserAnswer().trim().equalsIgnoreCase("")) {
-                        wrongWordList.add("\n\n" + selectedAnsList.get(i).getQname());
-                        addScore(selectedAnsList.get(i).getQid(), GameConstatnts.TRUE_FALSE, 0, 10, FC_Utility.getCurrentDateTime(), selectedAnsList.get(i).getUserAnswer());
+                        wrongWordList.add("\n\n" + selectedAnsList.get(i).getQuestion());
+                        addScore(GameConstatnts.getInt(selectedAnsList.get(i).getQid()), GameConstatnts.TRUE_FALSE, 0, 10, FC_Utility.getCurrentDateTime(), selectedAnsList.get(i).getUserAnswer());
                     }
                 }
             }

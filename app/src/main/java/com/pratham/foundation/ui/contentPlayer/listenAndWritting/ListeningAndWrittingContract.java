@@ -1,9 +1,6 @@
 package com.pratham.foundation.ui.contentPlayer.listenAndWritting;
 
-import android.graphics.Bitmap;
-
-import com.pratham.foundation.modalclasses.keywordmapping;
-import com.pratham.foundation.ui.contentPlayer.fact_retrival_selection.ScienceQuestion;
+import com.pratham.foundation.modalclasses.ScienceQuestion;
 
 import java.util.List;
 

@@ -25,7 +25,7 @@ import com.pratham.foundation.customView.SansButton;
 import com.pratham.foundation.interfaces.OnGameClose;
 import com.pratham.foundation.modalclasses.EventMessage;
 import com.pratham.foundation.ui.contentPlayer.GameConstatnts;
-import com.pratham.foundation.ui.contentPlayer.fact_retrival_selection.ScienceQuestion;
+import com.pratham.foundation.modalclasses.ScienceQuestion;
 import com.pratham.foundation.utility.FC_Utility;
 
 import org.androidannotations.annotations.AfterViews;
@@ -97,6 +97,9 @@ public class WordWritingFragment extends Fragment
         preview.setVisibility(View.GONE);
         presenter.setView(WordWritingFragment.this, resId, readingContentPath);
         presenter.getData();
+     /*   if (questionModel != null)
+            GameConstatnts.showGameInfo(getActivity(), questionModel.get(index).getInstruction(), readingContentPath + questionModel.get(index).getInstructionUrl());
+*/
         resStartTime = FC_Utility.getCurrentDateTime();
         presenter.addScore(0, "", 0, 0, resStartTime, GameConstatnts.PARAGRAPH_WRITING + " " + GameConstatnts.START);
 
@@ -255,6 +258,6 @@ public class WordWritingFragment extends Fragment
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onMessageEvent(EventMessage event) {
-        GameConstatnts.showGameInfo(getActivity(), questionModel.get(index).getInstruction());
+        GameConstatnts.showGameInfo(getActivity(), questionModel.get(index).getInstruction(), readingContentPath + questionModel.get(index).getInstructionUrl());
     }
 }

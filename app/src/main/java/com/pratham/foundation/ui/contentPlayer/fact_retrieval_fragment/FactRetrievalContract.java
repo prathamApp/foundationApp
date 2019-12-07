@@ -1,10 +1,9 @@
 package com.pratham.foundation.ui.contentPlayer.fact_retrieval_fragment;
 
 import com.pratham.foundation.modalclasses.ScienceQuestionChoice;
-import com.pratham.foundation.ui.contentPlayer.fact_retrival_selection.ScienceQuestion;
+import com.pratham.foundation.modalclasses.ScienceQuestion;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public interface FactRetrievalContract {
     public interface FactRetrievalView {

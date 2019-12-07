@@ -38,7 +38,7 @@ import com.pratham.foundation.database.domain.Score;
 import com.pratham.foundation.services.stt.ContinuousSpeechService;
 import com.pratham.foundation.services.stt.STT_Result;
 import com.pratham.foundation.ui.contentPlayer.GameConstatnts;
-import com.pratham.foundation.ui.contentPlayer.fact_retrival_selection.ScienceQuestion;
+import com.pratham.foundation.modalclasses.ScienceQuestion;
 import com.pratham.foundation.utility.FC_Constants;
 import com.pratham.foundation.utility.FC_Utility;
 

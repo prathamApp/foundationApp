@@ -1,8 +1,6 @@
 package com.pratham.foundation.ui.contentPlayer.paragraph_writing;
 
-import android.graphics.Bitmap;
-
-import com.pratham.foundation.ui.contentPlayer.fact_retrival_selection.ScienceQuestion;
+import com.pratham.foundation.modalclasses.ScienceQuestion;
 
 
 public interface ParagraphWritingContract {

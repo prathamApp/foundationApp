@@ -44,7 +44,7 @@ import com.pratham.foundation.interfaces.OnGameClose;
 import com.pratham.foundation.modalclasses.EventMessage;
 import com.pratham.foundation.modalclasses.ScienceQuestionChoice;
 import com.pratham.foundation.ui.contentPlayer.GameConstatnts;
-import com.pratham.foundation.ui.contentPlayer.fact_retrival_selection.ScienceQuestion;
+import com.pratham.foundation.modalclasses.ScienceQuestion;
 import com.pratham.foundation.utility.FC_Constants;
 import com.pratham.foundation.utility.FC_Utility;
 
@@ -214,6 +214,11 @@ public class pictionaryFragment extends Fragment implements OnGameClose {
                 }
             }
             Collections.shuffle(selectedFive);
+            for (ScienceQuestion scienceQuestion : selectedFive) {
+                ArrayList<ScienceQuestionChoice> list = scienceQuestion.getLstquestionchoice();
+                Collections.shuffle(list);
+                scienceQuestion.setLstquestionchoice(list);
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -347,7 +352,6 @@ public class pictionaryFragment extends Fragment implements OnGameClose {
 
             options.clear();
             options = selectedFive.get(index).getLstquestionchoice();
-            Collections.shuffle(options);
             imgCnt = 0;
             textCnt = 0;
             if (options != null) {
@@ -523,7 +527,7 @@ public class pictionaryFragment extends Fragment implements OnGameClose {
                             tick.setVisibility(View.GONE);
 
                         }
-                        view.setBackground((getActivity().getResources().getDrawable(R.drawable.rounded_rectangle_stroke_bg)));
+                      //  view.setBackground((getActivity().getResources().getDrawable(R.drawable.rounded_rectangle_stroke_bg)));
                         setImage(view, imageUrl, localPath);
 
                         gridMcq.addView(viewRoot);
@@ -584,7 +588,7 @@ public class pictionaryFragment extends Fragment implements OnGameClose {
 //                        final ImageView imageView = (ImageView) view;
 //                        if (AssessmentApplication.wiseF.isDeviceConnectedToMobileOrWifiNetwork()) {
                             final String imageUrl = options.get(r).getSubUrl().trim();
-                            view.setBackground((getActivity().getResources().getDrawable(R.drawable.rounded_rectangle_stroke_bg)));
+                          //  view.setBackground((getActivity().getResources().getDrawable(R.drawable.rounded_rectangle_stroke_bg)));
                             setImage(view, imageUrl, localPath);
 
                             gridMcq.addView(viewRoot);
@@ -969,7 +973,7 @@ public class pictionaryFragment extends Fragment implements OnGameClose {
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onMessageEvent(EventMessage event) {
         if (!scienceQuestion.getInstruction().isEmpty())
-            GameConstatnts.showGameInfo(getActivity(), scienceQuestion.getInstruction());
+            GameConstatnts.showGameInfo(getActivity(), scienceQuestion.getInstruction(),readingContentPath+scienceQuestion.getInstructionUrl());
     }
 
     @OnClick(R.id.show_answer)

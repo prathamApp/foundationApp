@@ -4,6 +4,7 @@ import android.app.Dialog;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.NonNull;
@@ -20,16 +21,16 @@ public class InstructionsDialog extends Dialog {
 
     @BindView(R.id.dia_title)
     SansTextViewBold dia_title;
-    ShowInstruction showInstruction;
+    private ShowInstruction showInstruction;
     private String resorcetype = "";
     private Context context;
-    private InstructionsDialog instructionsDialog;
+    private MediaPlayer mediaPlayer;
 
-    public InstructionsDialog(ShowInstruction showInstruction,@NonNull Context context, String resorcetype) {
-        super(context,R.style.FullScreenCustomDialogStyle);
+    public InstructionsDialog(ShowInstruction showInstruction, @NonNull Context context, String resorcetype) {
+        super(context, R.style.FullScreenCustomDialogStyle);
         this.resorcetype = resorcetype;
         this.context = context;
-        this.showInstruction=showInstruction;
+        this.showInstruction = showInstruction;
     }
 
     @Override
@@ -37,19 +38,27 @@ public class InstructionsDialog extends Dialog {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_instructions_dialog);
         ButterKnife.bind(this);
-        instructionsDialog = InstructionsDialog.this;
         getWindow().setDimAmount(.7f);
         int resId = context.getResources().getIdentifier(resorcetype, "string", context.getPackageName());
         if (resId != 0) {
-            String instruction = context.getString(resId);
+            String instruction = context.getResources().getString(resId);
             dia_title.setText(instruction);
-        }else {
+        } else {
             dia_title.setText("");
+        }
+
+        int rawID = context.getResources().getIdentifier("degree_celcius_audio", "raw", context.getPackageName());
+        if (rawID != 0) {
+            mediaPlayer = MediaPlayer.create(context, rawID);
+            mediaPlayer.start();
         }
     }
 
     @OnClick(R.id.dia_btn_green)
     public void playGame() {
+        if (mediaPlayer != null) {
+            mediaPlayer.stop();
+        }
         showInstruction.play(context);
     }
 

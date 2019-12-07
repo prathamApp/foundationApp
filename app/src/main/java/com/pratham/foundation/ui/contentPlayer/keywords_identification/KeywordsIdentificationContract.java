@@ -1,10 +1,7 @@
 package com.pratham.foundation.ui.contentPlayer.keywords_identification;
 
-import com.pratham.foundation.database.domain.QuetionAns;
 import com.pratham.foundation.modalclasses.ScienceQuestionChoice;
-import com.pratham.foundation.ui.contentPlayer.GameConstatnts;
-import com.pratham.foundation.ui.contentPlayer.fact_retrival_selection.ScienceQuestion;
-import com.pratham.foundation.utility.FC_Utility;
+import com.pratham.foundation.modalclasses.ScienceQuestion;
 
 import java.util.List;
 

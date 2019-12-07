@@ -44,7 +44,7 @@ import com.pratham.foundation.interfaces.OnGameClose;
 import com.pratham.foundation.modalclasses.EventMessage;
 import com.pratham.foundation.modalclasses.ScienceQuestionChoice;
 import com.pratham.foundation.ui.contentPlayer.GameConstatnts;
-import com.pratham.foundation.ui.contentPlayer.fact_retrival_selection.ScienceQuestion;
+import com.pratham.foundation.modalclasses.ScienceQuestion;
 import com.pratham.foundation.ui.contentPlayer.pictionary.PictionaryResult;
 import com.pratham.foundation.ui.contentPlayer.pictionary.resultAdapter;
 import com.pratham.foundation.utility.FC_Constants;
@@ -106,7 +106,7 @@ public class multipleChoiceFragment extends Fragment implements OnGameClose {
 
     private int imgCnt = 0, textCnt = 0, index = 0;
     private ScienceQuestion scienceQuestion;
-    private boolean onSdCard, isTest = false;
+    private boolean onSdCard;
     private float perc;
     private List<ScienceQuestionChoice> correctWordList, wrongWordList;
     private boolean showanswer = false;
@@ -121,7 +121,6 @@ public class multipleChoiceFragment extends Fragment implements OnGameClose {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        FC_Constants.isTest = true;
         if (getArguments() != null) {
             contentPath = getArguments().getString("contentPath");
             StudentID = getArguments().getString("StudentID");
@@ -978,7 +977,7 @@ public class multipleChoiceFragment extends Fragment implements OnGameClose {
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onMessageEvent(EventMessage event) {
         if (!scienceQuestion.getInstruction().isEmpty())
-            GameConstatnts.showGameInfo(getActivity(), scienceQuestion.getInstruction());
+            GameConstatnts.showGameInfo(getActivity(), scienceQuestion.getInstruction(),readingContentPath+scienceQuestion.getInstructionUrl());
     }
 
     @OnClick(R.id.show_answer)
