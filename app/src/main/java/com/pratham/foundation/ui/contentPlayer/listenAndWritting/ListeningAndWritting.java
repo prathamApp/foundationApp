@@ -8,8 +8,10 @@ import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.media.SoundPool;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.TextViewCompat;
 import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
 import android.view.Gravity;
@@ -31,7 +33,7 @@ import com.pratham.foundation.customView.SansTextView;
 import com.pratham.foundation.interfaces.OnGameClose;
 import com.pratham.foundation.modalclasses.EventMessage;
 import com.pratham.foundation.ui.contentPlayer.GameConstatnts;
-import com.pratham.foundation.ui.contentPlayer.fact_retrival_selection.ScienceQuestion;
+import com.pratham.foundation.modalclasses.ScienceQuestion;
 import com.pratham.foundation.utility.FC_Constants;
 import com.pratham.foundation.utility.FC_Utility;
 
@@ -49,6 +51,7 @@ import java.io.File;
 import java.util.List;
 
 import static android.app.Activity.RESULT_OK;
+import static android.widget.TextView.AUTO_SIZE_TEXT_TYPE_UNIFORM;
 import static com.pratham.foundation.utility.FC_Constants.activityPhotoPath;
 import static com.pratham.foundation.utility.FC_Constants.gameFolderPath;
 
@@ -132,6 +135,10 @@ public class ListeningAndWritting extends Fragment implements ListeningAndWritti
         EventBus.getDefault().register(this);
         presenter.setView(ListeningAndWritting.this, contentTitle, resId);
         presenter.fetchJsonData(readingContentPath);
+       /* if (listenAndWrittingModal != null)
+            GameConstatnts.showGameInfo(getActivity(), listenAndWrittingModal.get(index).getInstruction(), readingContentPath + listenAndWrittingModal.get(index).getInstructionUrl());
+*/
+
         sp = new SoundPool(1, AudioManager.STREAM_MUSIC, 0);
      /*   radiogroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
@@ -350,14 +357,21 @@ public class ListeningAndWritting extends Fragment implements ListeningAndWritti
         } catch (Exception e) {
             e.printStackTrace();
         }
+
+
         final Dialog dialog = new Dialog(getActivity());
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         dialog.setContentView(R.layout.fc_show_ans_listenandwrite);
-        SansTextView infoText = dialog.findViewById(R.id.info);
+        TextView infoText = dialog.findViewById(R.id.info);
         infoText.setMovementMethod(new ScrollingMovementMethod());
         if (listenAndWrittingModal.get(index).getQuestion() != null)
             infoText.setText(listenAndWrittingModal.get(index).getQuestion());
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            infoText.setAutoSizeTextTypeWithDefaults(AUTO_SIZE_TEXT_TYPE_UNIFORM);
+        } else {
+            TextViewCompat.setAutoSizeTextTypeWithDefaults(infoText, TextViewCompat.AUTO_SIZE_TEXT_TYPE_UNIFORM);
+        }
         dialog.show();
     }
 
@@ -539,6 +553,6 @@ public class ListeningAndWritting extends Fragment implements ListeningAndWritti
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onMessageEvent(EventMessage event) {
-        GameConstatnts.showGameInfo(getActivity(), listenAndWrittingModal.get(index).getInstruction());
+        GameConstatnts.showGameInfo(getActivity(), listenAndWrittingModal.get(index).getInstruction(), readingContentPath + listenAndWrittingModal.get(index).getInstructionUrl());
     }
 }

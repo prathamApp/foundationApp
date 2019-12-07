@@ -125,6 +125,7 @@
             android:layout_marginVertical="@dimen/_5sdp"
             android:layout_height="@dimen/_150sdp"
             android:textAlignment="center"
+            android:gravity="center"
             android:autoSizeTextType="uniform"
             android:layout_centerInParent="true" />
     </RelativeLayout>

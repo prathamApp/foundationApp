@@ -40,7 +40,7 @@ import com.pratham.foundation.modalclasses.EventMessage;
 import com.pratham.foundation.services.stt.ContinuousSpeechService_New;
 import com.pratham.foundation.services.stt.STT_Result_New;
 import com.pratham.foundation.ui.contentPlayer.GameConstatnts;
-import com.pratham.foundation.ui.contentPlayer.fact_retrival_selection.ScienceQuestion;
+import com.pratham.foundation.modalclasses.ScienceQuestion;
 import com.pratham.foundation.utility.FC_Constants;
 import com.pratham.foundation.utility.FC_Utility;
 
@@ -98,7 +98,7 @@ public class ReadingFragment extends Fragment implements STT_Result_New.sttView,
     private ContinuousSpeechService_New continuousSpeechService;
     public Dialog myLoadingDialog;
     boolean dialogFlg = false;
-
+    private String jsonName;
     public ReadingFragment() {
         // Required empty public constructor
     }
@@ -118,6 +118,7 @@ public class ReadingFragment extends Fragment implements STT_Result_New.sttView,
             resId = getArguments().getString("resId");
             contentTitle = getArguments().getString("contentName");
             onSdCard = getArguments().getBoolean("onSdCard", false);
+            jsonName = getArguments().getString("jsonName");
             if (onSdCard)
                 readingContentPath = ApplicationClass.contentSDPath + gameFolderPath + "/" + contentPath + "/";
             else
@@ -125,7 +126,7 @@ public class ReadingFragment extends Fragment implements STT_Result_New.sttView,
 
             EventBus.getDefault().register(this);
             resStartTime = FC_Utility.getCurrentDateTime();
-            addScore(0, "", 0, 0, resStartTime, GameConstatnts.READING_STT + " " + GameConstatnts.START);
+            addScore(0, "", 0, 0, resStartTime, jsonName + " " + GameConstatnts.START);
 
             getData();
         }
@@ -146,7 +147,7 @@ public class ReadingFragment extends Fragment implements STT_Result_New.sttView,
     private void getData() {
 
 
-        String text = FC_Utility.loadJSONFromStorage(readingContentPath, "reading_stt.json");
+        String text = FC_Utility.loadJSONFromStorage(readingContentPath, jsonName+".json");
         // List instrumentNames = new ArrayList<>();
         if (text != null) {
             Gson gson = new Gson();
@@ -512,7 +513,7 @@ public class ReadingFragment extends Fragment implements STT_Result_New.sttView,
             keyWords.setStudentId(FC_Constants.currentStudentID);
             keyWords.setKeyWord(scienceQuestion.getTitle());
             keyWords.setWordType("word");
-            addScore(GameConstatnts.getInt(scienceQuestion.getQid()), GameConstatnts.READING_STT, 0, 10, FC_Utility.getCurrentDateTime(), answer);
+            addScore(GameConstatnts.getInt(scienceQuestion.getQid()), jsonName, 0, 10, FC_Utility.getCurrentDateTime(), answer);
             appDatabase.getKeyWordDao().insert(keyWords);
             setCompletionPercentage();
             if (!isTest) {
@@ -601,12 +602,12 @@ public class ReadingFragment extends Fragment implements STT_Result_New.sttView,
 
     @Override
     public void gameClose() {
-        addScore(0, "", 0, 0, resStartTime, GameConstatnts.READING_STT + " " + GameConstatnts.END);
+        addScore(0, "", 0, 0, resStartTime, jsonName+ " " + GameConstatnts.END);
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onMessageEvent(EventMessage event) {
         if (!scienceQuestion.getInstruction().isEmpty())
-            GameConstatnts.showGameInfo(getActivity(), scienceQuestion.getInstruction());
+            GameConstatnts.showGameInfo(getActivity(), scienceQuestion.getInstruction(),readingContentPath+scienceQuestion.getInstructionUrl());
     }
 }

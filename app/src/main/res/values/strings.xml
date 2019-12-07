@@ -383,7 +383,7 @@
 
     <string name="factRetrieval">FACTRETRIEVAL</string>
     <string name="IKWAndroid">KEYWORD_IDENTIFICATION</string>
-    <string name="CWiritng">PARAGRAPH_WRITING</string>
+    <string name="CWiritng">WRITING</string>
     <string name="chKeywords">संबंधित शब्दों को पहचाने</string>
     <string name="ShowMeAndroid">खोपड़ी दिखाओ.</string>
     <string name="Dict">LISTNING_AND_WRITTING</string>

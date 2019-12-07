@@ -1,7 +1,6 @@
 package com.pratham.foundation.ui.contentPlayer.fact_retrieval_fragment;
 
 import android.content.Context;
-import android.graphics.drawable.Drawable;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
@@ -12,16 +11,9 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.request.RequestOptions;
 import com.pratham.foundation.R;
-import com.pratham.foundation.customView.GifView;
 import com.pratham.foundation.modalclasses.ScienceQuestionChoice;
-import com.pratham.foundation.ui.contentPlayer.fact_retrival_selection.ScienceQuestion;
 
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -52,7 +44,7 @@ public class ResultAdapterFactRetrieval extends RecyclerView.Adapter<ResultAdapt
         myViewHolder.questionImg.setVisibility(View.GONE);
         if (scienceQuestionChoice.isTrue()) {
             myViewHolder.iv_correct_wrong_indicator.setImageResource(R.drawable.ic_check_black);
-            myViewHolder.iv_correct_wrong_indicator.setBackgroundColor(context.getResources().getColor(R.color.level_1_color));
+            myViewHolder.iv_correct_wrong_indicator.setBackgroundColor(context.getResources().getColor(R.color.colorGreenDark));
         } else {
             myViewHolder.iv_correct_wrong_indicator.setImageResource(R.drawable.ic_close_black_24dp);
             myViewHolder.iv_correct_wrong_indicator.setBackgroundColor(context.getResources().getColor(R.color.colorRed));

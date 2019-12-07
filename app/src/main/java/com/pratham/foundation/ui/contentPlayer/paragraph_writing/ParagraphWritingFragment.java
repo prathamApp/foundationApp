@@ -2,8 +2,6 @@ package com.pratham.foundation.ui.contentPlayer.paragraph_writing;
 
 import android.app.Dialog;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
@@ -26,8 +24,7 @@ import com.pratham.foundation.customView.SansButton;
 import com.pratham.foundation.interfaces.OnGameClose;
 import com.pratham.foundation.modalclasses.EventMessage;
 import com.pratham.foundation.ui.contentPlayer.GameConstatnts;
-import com.pratham.foundation.ui.contentPlayer.fact_retrival_selection.ScienceQuestion;
-import com.pratham.foundation.utility.FC_Constants;
+import com.pratham.foundation.modalclasses.ScienceQuestion;
 import com.pratham.foundation.utility.FC_Utility;
 
 import org.androidannotations.annotations.AfterViews;
@@ -40,7 +37,6 @@ import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
 import java.io.File;
-import java.io.FileInputStream;
 import java.util.Arrays;
 
 import butterknife.OnClick;
@@ -113,6 +109,9 @@ public class ParagraphWritingFragment extends Fragment
         imageName = "" + ApplicationClass.getUniqueID() + ".jpg";
         presenter.setView(ParagraphWritingFragment.this, resId, readingContentPath);
         presenter.getData();
+      /*  if (questionModel != null)
+            GameConstatnts.showGameInfo(getActivity(), questionModel.getInstruction(), readingContentPath + questionModel.getInstructionUrl());
+*/
         resStartTime = FC_Utility.getCurrentDateTime();
         presenter.addScore(0, "", 0, 0, resStartTime, GameConstatnts.PARAGRAPH_WRITING + " " + GameConstatnts.START);
     }
@@ -120,7 +119,7 @@ public class ParagraphWritingFragment extends Fragment
     @Override
     public void showParagraph(ScienceQuestion questionModel) {
         this.questionModel = questionModel;
-      //  File filePath = new File(activityPhotoPath + imageName);
+        //  File filePath = new File(activityPhotoPath + imageName);
         /*    title.setText(questionModel.getInstruction());*/
         paragraphWords = questionModel.getQuestion().trim().split("(?<=\\.\\s)|(?<=[?!]\\s)");
         SentenceAdapter arrayAdapter = new SentenceAdapter(Arrays.asList(paragraphWords), getActivity());
@@ -271,6 +270,6 @@ public class ParagraphWritingFragment extends Fragment
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onMessageEvent(EventMessage event) {
-        GameConstatnts.showGameInfo(getActivity(), questionModel.getInstruction());
+        GameConstatnts.showGameInfo(getActivity(), questionModel.getInstruction(), readingContentPath + questionModel.getInstructionUrl());
     }
 }

@@ -14,10 +14,11 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.pratham.foundation.R;
-import com.pratham.foundation.customView.SansTextView;
 import com.pratham.foundation.database.domain.ContentTable;
 import com.pratham.foundation.interfaces.OnGameClose;
 import com.pratham.foundation.interfaces.ShowInstruction;
+import com.pratham.foundation.modalclasses.EventMessage;
+import com.pratham.foundation.ui.contentPlayer.dialogs.InstructionDialog;
 import com.pratham.foundation.ui.contentPlayer.doing.DoingFragment;
 import com.pratham.foundation.ui.contentPlayer.fact_retrieval_fragment.FactRetrieval_;
 import com.pratham.foundation.ui.contentPlayer.fillInTheBlanks.FillInTheBlanksFragment;
@@ -39,8 +40,11 @@ import com.pratham.foundation.ui.contentPlayer.word_writting.WordWritingFragment
 import com.pratham.foundation.utility.FC_Constants;
 import com.pratham.foundation.utility.FC_Utility;
 
+import org.greenrobot.eventbus.EventBus;
+
 import java.util.List;
 
+import static com.pratham.foundation.utility.FC_Constants.INFO_CLICKED;
 import static com.pratham.foundation.utility.FC_Constants.dialog_btn_cancel;
 
 public class GameConstatnts implements ShowInstruction {
@@ -208,9 +212,8 @@ public class GameConstatnts implements ShowInstruction {
     }
 
     public static void gameSelector(Context context, ContentTable contentTable) {
-        contentTable1=contentTable;
-
-        instructionsDialog = new InstructionsDialog(getGameConstantInstance(),context, contentTable1.getResourceType());
+        contentTable1 = contentTable;
+        instructionsDialog = new InstructionsDialog(getGameConstantInstance(), context, contentTable1.getResourceType());
         instructionsDialog.show();
 
         Bundle bundle = null;
@@ -297,7 +300,7 @@ public class GameConstatnts implements ShowInstruction {
                 intent.putExtra("onSdCard", true);
                 context.startActivity(intent);
 //                FC_Utility.showFragment((Activity) context, new ActivityVideoView_(), R.id.RL_CPA,
-//                        bundle, ActivityVideoView.class.getSimpleName());
+//                bundle, ActivityVideoView.class.getSimpleName());
                 break;
         }
 
@@ -339,9 +342,12 @@ public class GameConstatnts implements ShowInstruction {
                         }
                     }, 100);
                     break;
-                    default:
-                        instructionsDialog.dismiss();
-                        break;
+                default:
+                    instructionsDialog.dismiss();
+                    EventMessage eventMessage = new EventMessage();
+                    eventMessage.setMessage(INFO_CLICKED);
+                    EventBus.getDefault().post(eventMessage);
+                    break;
             }
 
 
@@ -361,15 +367,18 @@ public class GameConstatnts implements ShowInstruction {
 
     }*/
 
-    public static void showGameInfo(Context context, String info) {
-        final Dialog dialog = new Dialog(context);
+    public static void showGameInfo(Context context, String info, String infoPath) {
+        InstructionDialog instructionDialog = new InstructionDialog(context, info, infoPath);
+        instructionDialog.show();
+      /*  final Dialog dialog = new Dialog(context);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         dialog.setContentView(R.layout.fc_custom_info_dialog);
         SansTextView infoText = dialog.findViewById(R.id.info);
         if (info != null)
             infoText.setText(info);
-        dialog.show();
+        dialog.show();*/
+
     }
 
 
@@ -377,9 +386,10 @@ public class GameConstatnts implements ShowInstruction {
     public void exit() {
 
     }
-    private static GameConstatnts getGameConstantInstance(){
-        if(gameConstatnts==null){
-            gameConstatnts=new GameConstatnts();
+
+    private static GameConstatnts getGameConstantInstance() {
+        if (gameConstatnts == null) {
+            gameConstatnts = new GameConstatnts();
         }
         return gameConstatnts;
     }

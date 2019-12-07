@@ -17,7 +17,7 @@ import com.bumptech.glide.request.RequestOptions;
 import com.pratham.foundation.R;
 import com.pratham.foundation.customView.GifView;
 import com.pratham.foundation.modalclasses.ScienceQuestionChoice;
-import com.pratham.foundation.ui.contentPlayer.fact_retrival_selection.ScienceQuestion;
+import com.pratham.foundation.modalclasses.ScienceQuestion;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
