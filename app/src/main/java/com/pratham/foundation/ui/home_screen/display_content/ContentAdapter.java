@@ -40,7 +40,6 @@ public class ContentAdapter extends RecyclerView.Adapter {
     private int lastPos = -1;
     private List<ContentTable> contentViewList;
     ContentClicked contentClicked;
-
 /*    public class MyViewHolder extends RecyclerView.ViewHolder {
         public TextView title;
         public ImageView *//*thumbnail,*//* ib_action_btn;

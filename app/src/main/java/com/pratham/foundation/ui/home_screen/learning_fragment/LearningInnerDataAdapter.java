@@ -37,7 +37,6 @@ public class LearningInnerDataAdapter extends RecyclerView.Adapter {
     boolean dw_Ready = false;
     LearningContract.LearningItemClicked itemClicked;
     int parentPos = 0;
-//    List maxScore;
     String parentName;
     private static final String TYPE_HEADER = "Header";
     private static final String TYPE_ITEM = "Resource";
