@@ -332,7 +332,7 @@ public class KeywordsIdentificationFragment extends Fragment implements Keywords
                     if (positions != null)
                         for (int i = 0; i < positions.size(); i++) {
                             SansTextView textViewTemp = (SansTextView) paraghaph.getChildAt((int) positions.get(i));
-                            textViewTemp.setBackgroundColor(ContextCompat.getColor(getActivity(), R.color.level_2_color));
+                            textViewTemp.setBackgroundColor(ContextCompat.getColor(getActivity(), R.color.ratingFilled));
                         }
                 }
             } else {

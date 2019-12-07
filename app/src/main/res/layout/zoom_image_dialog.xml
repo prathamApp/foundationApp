@@ -55,7 +55,7 @@
         android:layout_margin="@dimen/_5sdp"
         android:background="@drawable/ripple_round"
         android:elevation="@dimen/_10sdp"
-        android:src="@drawable/ic_close_black_24dp"
+        android:src="@drawable/ic_close_white_24dp"
         android:textSize="@dimen/_15sdp" />
 
 </RelativeLayout>

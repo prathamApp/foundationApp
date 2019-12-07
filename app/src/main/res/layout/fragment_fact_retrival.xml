@@ -79,7 +79,6 @@
             android:layout_weight="1"
             android:background="@drawable/yellow_button"
             android:text="show answer"
-            android:visibility="gone"
             style="@style/submitbtn"/>
     </LinearLayout>
 
