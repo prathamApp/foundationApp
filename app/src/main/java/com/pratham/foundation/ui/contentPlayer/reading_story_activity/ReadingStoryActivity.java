@@ -8,7 +8,6 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.Rect;
-import android.graphics.drawable.AnimationDrawable;
 import android.graphics.drawable.ColorDrawable;
 import android.media.MediaPlayer;
 import android.os.Handler;
@@ -33,6 +32,7 @@ import com.pratham.foundation.BaseActivity;
 import com.pratham.foundation.R;
 import com.pratham.foundation.customView.GifView;
 import com.pratham.foundation.customView.SansTextView;
+import com.pratham.foundation.customView.shape_of_view.ShadowLayout;
 import com.pratham.foundation.modalclasses.ModalParaSubMenu;
 import com.pratham.foundation.services.TTSService;
 import com.pratham.foundation.services.stt.ContinuousSpeechService_New;
@@ -58,7 +58,8 @@ import static com.pratham.foundation.utility.FC_Constants.dialog_btn_cancel;
 import static com.pratham.foundation.utility.FC_Constants.gameFolderPath;
 import static com.pratham.foundation.utility.SplashSupportActivity.ButtonClickSound;
 
-@EActivity(R.layout.activity_story_reading)
+//@EActivity(R.layout.activity_story_reading)
+@EActivity(R.layout.fragment_story_reading)
 public class ReadingStoryActivity extends BaseActivity implements
         /*RecognitionListener, */STT_Result_New.sttView,
         ReadingStoryActivityContract.ReadingStoryView {
@@ -90,17 +91,19 @@ public class ReadingStoryActivity extends BaseActivity implements
     @ViewById(R.id.story_ll)
     RelativeLayout story_ll;
     @ViewById(R.id.image_container)
-    RelativeLayout image_container;
+    ShadowLayout image_container;
     @ViewById(R.id.btn_camera)
     ImageButton btn_camera;
     @ViewById(R.id.btn_Stop)
     ImageButton btn_Stop;
     @ViewById(R.id.bottom_bar2)
     LinearLayout bottom_bar2;
-    @ViewById(R.id.floating_back)
+/*    @ViewById(R.id.floating_back)
     FloatingActionButton floating_back;
     @ViewById(R.id.floating_info)
-    FloatingActionButton floating_info;
+    FloatingActionButton floating_info;*/
+    @ViewById(R.id.floating_img)
+    FloatingActionButton floating_img;
 
     ContinuousSpeechService_New continuousSpeechService;
 
@@ -126,14 +129,15 @@ public class ReadingStoryActivity extends BaseActivity implements
     boolean voiceStart = false, flgPerMarked = false, onSdCard;
     static boolean[] correctArr;
     static boolean[] testCorrectArr;
-    AnimationDrawable animationDrawable;
+//    AnimationDrawable animationDrawable;
 
     @AfterViews
     public void initialize() {
         silence_outer_layout.setVisibility(View.GONE);
         Intent intent = getIntent();
-        floating_back.setImageResource(R.drawable.ic_left_arrow_white);
-        floating_info.setImageResource(R.drawable.ic_info_outline_white);
+//        floating_back.setImageResource(R.drawable.ic_left_arrow_white);
+//        floating_info.setImageResource(R.drawable.ic_info_outline_white);
+        floating_img.setImageResource(R.drawable.ic_image_white);
         contentType = intent.getStringExtra("contentType");
         storyPath = intent.getStringExtra("storyPath");
         storyId = intent.getStringExtra("storyId");
@@ -147,10 +151,10 @@ public class ReadingStoryActivity extends BaseActivity implements
         bottom_bar2.setVisibility(View.GONE);
         btn_camera.setVisibility(View.GONE);
 
-        animationDrawable = (AnimationDrawable) story_ll.getBackground();
+/*        animationDrawable = (AnimationDrawable) story_ll.getBackground();
         animationDrawable.setEnterFadeDuration(4500);
         animationDrawable.setExitFadeDuration(4500);
-        animationDrawable.start();
+        animationDrawable.start();*/
 
 
         context = ReadingStoryActivity.this;

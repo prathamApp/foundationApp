@@ -31,7 +31,6 @@ import com.pratham.foundation.services.shared_preferences.FastSave;
 import com.pratham.foundation.ui.home_screen.fun.FunFragment_;
 import com.pratham.foundation.ui.home_screen.learning_fragment.LearningFragment_;
 import com.pratham.foundation.ui.home_screen.practice_fragment.PracticeFragment_;
-import com.pratham.foundation.ui.home_screen.profile_new.ProfileFragment_;
 import com.pratham.foundation.ui.home_screen.test_fragment.TestFragment_;
 import com.pratham.foundation.ui.student_profile.Student_profile_activity;
 import com.pratham.foundation.ui.test.supervisor.SupervisedAssessmentActivity;
@@ -71,7 +70,7 @@ import static com.pratham.foundation.utility.FC_Constants.isTest;
 public class HomeActivity extends BaseActivity implements LevelChanged, CursorWheelLayout.OnMenuSelectedListener {
 
     @ViewById(R.id.tv_header_progress)
-    public static  TextView tv_header_progress;
+    public static TextView tv_header_progress;
     @ViewById(R.id.viewpager)
     ViewPager viewpager;
     @ViewById(R.id.home_root_layout)
@@ -90,7 +89,7 @@ public class HomeActivity extends BaseActivity implements LevelChanged, CursorWh
     public static SubmarineView submarine;
     @ViewById(R.id.iv_level)
     public static ImageView iv_level;
-//    @ViewById(R.id.level_circle)
+    //    @ViewById(R.id.level_circle)
 //    CursorWheelLayout level_circle;
     @ViewById(R.id.profileImage)
     ImageView profileImage;
@@ -311,24 +310,9 @@ public class HomeActivity extends BaseActivity implements LevelChanged, CursorWh
         practiceTab.setText("Practice");
         practiceTab.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.ic_practice, 0, 0);
 
-        TextView profileTab = (TextView) LayoutInflater.from(this).inflate(R.layout.custom_tab_text, null);
+/*        TextView profileTab = (TextView) LayoutInflater.from(this).inflate(R.layout.custom_tab_text, null);
         profileTab.setText("Profile");
-        profileTab.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.ic_profile, 0, 0);
-
-        if (currentSubject.equalsIgnoreCase("english")) {
-            TextView tabThree = (TextView) LayoutInflater.from(this).inflate(R.layout.custom_tab_text, null);
-            tabThree.setText("Test");
-            tabThree.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.ic_test, 0, 0);
-            tabLayout.getTabAt(2).setCustomView(tabThree);
-
-            TextView tabFour = (TextView) LayoutInflater.from(this).inflate(R.layout.custom_tab_text, null);
-            tabFour.setText("Fun");
-            tabFour.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.ic_fun, 0, 0);
-
-            tabLayout.getTabAt(3).setCustomView(tabFour);
-            tabLayout.getTabAt(4).setCustomView(profileTab);
-        }else
-            tabLayout.getTabAt(2).setCustomView(profileTab);
+        profileTab.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.ic_profile, 0, 0);*/
 
         if (LOGIN_MODE.contains("group")) {
             tabLayout.getTabAt(0).setCustomView(learningTab);
@@ -337,16 +321,31 @@ public class HomeActivity extends BaseActivity implements LevelChanged, CursorWh
             tabLayout.getTabAt(0).setCustomView(practiceTab);
             tabLayout.getTabAt(1).setCustomView(learningTab);
         }
+        if (currentSubject.equalsIgnoreCase("english")) {
+            TextView testTab = (TextView) LayoutInflater.from(this).inflate(R.layout.custom_tab_text, null);
+            testTab.setText("Test");
+            testTab.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.ic_test, 0, 0);
+
+            TextView funTab = (TextView) LayoutInflater.from(this).inflate(R.layout.custom_tab_text, null);
+            funTab.setText("Fun");
+            funTab.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.ic_fun, 0, 0);
+
+            tabLayout.getTabAt(2).setCustomView(testTab);
+            tabLayout.getTabAt(3).setCustomView(funTab);
+//            tabLayout.getTabAt(4).setCustomView(profileTab);
+        } else {
+//            tabLayout.getTabAt(2).setCustomView(profileTab);
+        }
 
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
-                if(tab.getText().toString().equalsIgnoreCase("Test"))
+                if (tab.getText().toString().equalsIgnoreCase("Test"))
                     FC_Constants.isTest = true;
-                else if(tab.getText().toString().equalsIgnoreCase("Profile")){
+                else if (tab.getText().toString().equalsIgnoreCase("Profile")) {
                     FC_Constants.isTest = false;
                     header_rl.setVisibility(View.GONE);
-                }else {
+                } else {
                     EventMessage eventMessage = new EventMessage();
                     eventMessage.setMessage(FRAGMENT_SELECTED);
                     EventBus.getDefault().post(eventMessage);
@@ -356,17 +355,18 @@ public class HomeActivity extends BaseActivity implements LevelChanged, CursorWh
             }
 
             @Override
-            public void onTabUnselected(TabLayout.Tab tab) {}
+            public void onTabUnselected(TabLayout.Tab tab) {
+            }
 
             @Override
             public void onTabReselected(TabLayout.Tab tab) {
 
-                if(tab.getText().toString().equalsIgnoreCase("Test"))
+                if (tab.getText().toString().equalsIgnoreCase("Test"))
                     FC_Constants.isTest = true;
-                else if(tab.getText().toString().equalsIgnoreCase("Profile")){
+                else if (tab.getText().toString().equalsIgnoreCase("Profile")) {
                     FC_Constants.isTest = false;
                     header_rl.setVisibility(View.GONE);
-                }else {
+                } else {
                     EventMessage eventMessage = new EventMessage();
                     eventMessage.setMessage(FRAGMENT_RESELECTED);
                     EventBus.getDefault().post(eventMessage);
@@ -375,7 +375,6 @@ public class HomeActivity extends BaseActivity implements LevelChanged, CursorWh
                 }
             }
         });
-
     }
 
     @SuppressLint("SetTextI18n")
@@ -418,16 +417,16 @@ public class HomeActivity extends BaseActivity implements LevelChanged, CursorWh
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if(isTest){
+        if (isTest) {
             if (resultCode == Activity.RESULT_OK) {
                 String cCode = data.getStringExtra("cCode");
                 int tMarks = data.getIntExtra("tMarks", 0);
                 int sMarks = data.getIntExtra("sMarks", 0);
                 try {
 //                    new Handler().postDelayed(() -> {
-                        EventMessage eventMessage = new EventMessage();
-                        eventMessage.setMessage(LEVEL_TEST_GIVEN +":"+cCode+":"+tMarks+":"+sMarks);
-                        EventBus.getDefault().post(eventMessage);
+                    EventMessage eventMessage = new EventMessage();
+                    eventMessage.setMessage(LEVEL_TEST_GIVEN + ":" + cCode + ":" + tMarks + ":" + sMarks);
+                    EventBus.getDefault().post(eventMessage);
 //                    }, 1000);
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -467,18 +466,20 @@ public class HomeActivity extends BaseActivity implements LevelChanged, CursorWh
         if (LOGIN_MODE.contains("group")) {
             adapter.addFrag(new LearningFragment_(), "Learning");
             adapter.addFrag(new PracticeFragment_(), "Practice");
+            if (currentSubject.equalsIgnoreCase("english")) {
+                adapter.addFrag(new TestFragment_(), "Test");
+                adapter.addFrag(new FunFragment_(), "Fun");
+            }
+//            adapter.addFrag(new ProfileFragment_(), "Profile");
         } else {
             adapter.addFrag(new PracticeFragment_(), "Practice");
             adapter.addFrag(new LearningFragment_(), "Learning");
+            if (currentSubject.equalsIgnoreCase("english")) {
+                adapter.addFrag(new TestFragment_(), "Test");
+                adapter.addFrag(new FunFragment_(), "Fun");
+            }
+//            adapter.addFrag(new ProfileFragment_(), "Profile");
         }
-        if (currentSubject.equalsIgnoreCase("english")) {
-            adapter.addFrag(new TestFragment_(), "Test");
-            adapter.addFrag(new FunFragment_(), "Fun");
-            adapter.addFrag(new ProfileFragment_(), "Profile");
-        }
-        else
-            adapter.addFrag(new ProfileFragment_(), "Profile");
-
         viewpager.setAdapter(adapter);
     }
 

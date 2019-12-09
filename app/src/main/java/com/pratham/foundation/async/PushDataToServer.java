@@ -632,11 +632,13 @@ public class PushDataToServer {
                     .getAsString(new StringRequestListener() {
                         @Override
                         public void onResponse(String response) {
-                            Log.d("PUSH_STATUS", "Data pushed successfully");
-                            if (!autoPush) {
-                                pushSuccessfull = true;
+                            if(response.equalsIgnoreCase("success")) {
+                                Log.d("PUSH_STATUS", "Data pushed successfully");
+                                if (!autoPush) {
+                                    pushSuccessfull = true;
+                                }
+                                setPushFlag();
                             }
-                            setPushFlag();
                             onPostExecute();
                         }
 

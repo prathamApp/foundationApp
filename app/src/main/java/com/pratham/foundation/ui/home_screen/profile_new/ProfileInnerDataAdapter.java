@@ -19,7 +19,7 @@ public class ProfileInnerDataAdapter extends RecyclerView.Adapter {
     private String[] itemsImgList;
     private Context mContext;
     boolean dw_Ready = false;
-//    LearningContract.LearningItemClicked itemClicked;
+    ProfileContract.ProfileItemClicked itemClicked;
     int parentPos = 0;
 //    List maxScore;
     String parentName;
@@ -30,7 +30,7 @@ public class ProfileInnerDataAdapter extends RecyclerView.Adapter {
         this.itemsList = itemsList;
         this.itemsImgList = itemsImgList;
         this.mContext = context;
-//        this.itemClicked = itemClicked;
+        this.itemClicked = itemClicked;
         this.parentPos = parentPos;
     }
 
@@ -90,6 +90,7 @@ public class ProfileInnerDataAdapter extends RecyclerView.Adapter {
                 break;
             case "Usage":
                 itemHolder.item_Image.setImageResource(R.drawable.progress_report);
+                itemClicked.itemClicked("Usage");
                 break;
             case "Badges":
                 itemHolder.item_Image.setImageResource(R.drawable.right_student_arrow);

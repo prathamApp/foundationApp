@@ -123,7 +123,7 @@ public class SplashPresenter implements SplashContract.SplashPresenter {
                     File folder_file, db_file;
                     try {
 //                        ArrayList<String> sdPath = FileUtils.getExtSdCardPaths(context);
-                        SQLiteDatabase db = SQLiteDatabase.openDatabase(Environment.getExternalStorageDirectory().getAbsolutePath() + "/foundation_db", null, SQLiteDatabase.OPEN_READONLY);
+                        SQLiteDatabase db = SQLiteDatabase.openDatabase(Environment.getExternalStorageDirectory().getAbsolutePath() + "/PrathamBackups/foundation_db", null, SQLiteDatabase.OPEN_READONLY);
                         if (db != null) {
                             try {
                                 Cursor content_cursor;

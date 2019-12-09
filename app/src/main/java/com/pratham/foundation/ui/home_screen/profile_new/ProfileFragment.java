@@ -17,7 +17,7 @@ import static com.pratham.foundation.utility.FC_Utility.dpToPx;
 
 
 @EFragment(R.layout.fragment_profile)
-public class ProfileFragment extends Fragment implements ProfileContract.ProfileView{
+public class ProfileFragment extends Fragment implements ProfileContract.ProfileView, ProfileContract.ProfileItemClicked{
 
     @Bean(ProfilePresenter.class)
     ProfileContract.ProfilePresenter presenter;
@@ -39,6 +39,15 @@ public class ProfileFragment extends Fragment implements ProfileContract.Profile
             my_recycler_view.setItemAnimator(new DefaultItemAnimator());
             my_recycler_view.setAdapter(adapterParent);
         }
+    }
+
+    @Override
+    public void itemClicked(String usage) {
+        showUsage();
+    }
+
+    private void showUsage() {
+
     }
 
 //    @Click({R.id.rl_share_app, R.id.btn_share_app})

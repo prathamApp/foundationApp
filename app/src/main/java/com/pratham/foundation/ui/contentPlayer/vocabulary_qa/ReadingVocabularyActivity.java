@@ -541,15 +541,17 @@ public class ReadingVocabularyActivity extends BaseActivity implements MediaCall
 
     @UiThread
     public void showLoader() {
-        if (!dialogFlg) {
-            dialogFlg = true;
-            myLoadingDialog = new Dialog(this);
-            myLoadingDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-            myLoadingDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-            myLoadingDialog.setContentView(R.layout.loading_dialog);
-            myLoadingDialog.setCanceledOnTouchOutside(false);
-            myLoadingDialog.show();
-        }
+        try {
+            if (!dialogFlg) {
+                dialogFlg = true;
+                myLoadingDialog = new Dialog(this);
+                myLoadingDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+                myLoadingDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+                myLoadingDialog.setContentView(R.layout.loading_dialog);
+                myLoadingDialog.setCanceledOnTouchOutside(false);
+                myLoadingDialog.show();
+            }
+        }catch (Exception e){e.printStackTrace();}
     }
 
     @UiThread

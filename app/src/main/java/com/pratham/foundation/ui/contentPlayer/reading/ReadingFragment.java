@@ -37,10 +37,10 @@ import com.pratham.foundation.database.domain.KeyWords;
 import com.pratham.foundation.database.domain.Score;
 import com.pratham.foundation.interfaces.OnGameClose;
 import com.pratham.foundation.modalclasses.EventMessage;
+import com.pratham.foundation.modalclasses.ScienceQuestion;
 import com.pratham.foundation.services.stt.ContinuousSpeechService_New;
 import com.pratham.foundation.services.stt.STT_Result_New;
 import com.pratham.foundation.ui.contentPlayer.GameConstatnts;
-import com.pratham.foundation.modalclasses.ScienceQuestion;
 import com.pratham.foundation.utility.FC_Constants;
 import com.pratham.foundation.utility.FC_Utility;
 
@@ -430,67 +430,72 @@ public class ReadingFragment extends Fragment implements STT_Result_New.sttView,
 
     @Override
     public void Stt_onResult(ArrayList<String> matches) {
-        micPressed(0);
+
+        try {
+            micPressed(0);
 //        ib_mic.stopRecording();
 
-        System.out.println("LogTag" + " onResults");
+            System.out.println("LogTag" + " onResults");
 //        ArrayList<String> matches = results;
 
-        String sttResult = "";
+            String sttResult = "";
 //        String sttResult = matches.get(0);
-        String sttQuestion;
-        for (int i = 0; i < matches.size(); i++) {
-            System.out.println("LogTag" + " onResults :  " + matches.get(i));
+            String sttQuestion;
+            for (int i = 0; i < matches.size(); i++) {
+                System.out.println("LogTag" + " onResults :  " + matches.get(i));
 
-            if (matches.get(i).equalsIgnoreCase(scienceQuestion.getAnswer()))
-                sttResult = matches.get(i);
-            else sttResult = matches.get(0);
-        }
-        sttQuestion = scienceQuestion.getAnswer();
-        String quesFinal = sttQuestion.replaceAll(STT_REGEX, "");
-
-
-        String[] splitQues = quesFinal.split(" ");
-        String[] splitRes = sttResult.split(" ");
-
-        if (splitQues.length < splitRes.length)
-            correctArr = new boolean[splitRes.length];
-        else correctArr = new boolean[splitQues.length];
+                if (matches.get(i).equalsIgnoreCase(scienceQuestion.getAnswer()))
+                    sttResult = matches.get(i);
+                else sttResult = matches.get(0);
+            }
+            sttQuestion = scienceQuestion.getAnswer();
+            String quesFinal = sttQuestion.replaceAll(STT_REGEX, "");
 
 
-        for (int j = 0; j < splitRes.length; j++) {
-            for (int i = 0; i < splitQues.length; i++) {
-                if (splitRes[j].equalsIgnoreCase(splitQues[i])) {
-                    // ((TextView) readChatFlow.getChildAt(i)).setTextColor(getResources().getColor(R.color.readingGreen));
-                    correctArr[i] = true;
-                    //sendClikChanger(1);
-                    break;
+            String[] splitQues = quesFinal.split(" ");
+            String[] splitRes = sttResult.split(" ");
+
+            if (splitQues.length < splitRes.length)
+                correctArr = new boolean[splitRes.length];
+            else correctArr = new boolean[splitQues.length];
+
+
+            for (int j = 0; j < splitRes.length; j++) {
+                for (int i = 0; i < splitQues.length; i++) {
+                    if (splitRes[j].equalsIgnoreCase(splitQues[i])) {
+                        // ((TextView) readChatFlow.getChildAt(i)).setTextColor(getResources().getColor(R.color.readingGreen));
+                        correctArr[i] = true;
+                        //sendClikChanger(1);
+                        break;
+                    }
                 }
             }
-        }
 
 
-        int correctCnt = 0;
-        for (int x = 0; x < correctArr.length; x++) {
-            if (correctArr[x])
-                correctCnt++;
-        }
-        percScore = ((float) correctCnt / (float) correctArr.length) * 100;
-        Log.d("Punctu", "onResults: " + percScore);
-        if (percScore >= 75) {
+            int correctCnt = 0;
+            for (int x = 0; x < correctArr.length; x++) {
+                if (correctArr[x])
+                    correctCnt++;
+            }
+            percScore = ((float) correctCnt / (float) correctArr.length) * 100;
+            Log.d("Punctu", "onResults: " + percScore);
+            if (percScore >= 75) {
 
-            for (int i = 0; i < splitQues.length; i++) {
-                //((TextView) readChatFlow.getChildAt(i)).setTextColor(getResources().getColor(R.color.readingGreen));
-                correctArr[i] = true;
+                for (int i = 0; i < splitQues.length; i++) {
+                    //((TextView) readChatFlow.getChildAt(i)).setTextColor(getResources().getColor(R.color.readingGreen));
+                    correctArr[i] = true;
+                }
+
+    //            scrollView.setBackgroundResource(R.drawable.convo_correct_bg);
             }
 
-//            scrollView.setBackgroundResource(R.drawable.convo_correct_bg);
+            etAnswer.setText(sttResult);
+            voiceStart = false;
+            micPressed(0);
+            continuousSpeechService.stopSpeechInput();
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-
-        etAnswer.setText(sttResult);
-        voiceStart = false;
-        micPressed(0);
-        continuousSpeechService.stopSpeechInput();
     }
 
 
@@ -521,7 +526,7 @@ public class ReadingFragment extends Fragment implements STT_Result_New.sttView,
             }
             BackupDatabase.backup(context);
         } else {
-            GameConstatnts.playGameNext(context, GameConstatnts.TRUE, (OnGameClose) this);
+            GameConstatnts.playGameNext(context, GameConstatnts.TRUE, this);
         }
 
 
@@ -571,9 +576,9 @@ public class ReadingFragment extends Fragment implements STT_Result_New.sttView,
 
     public void showResult(int scoredMark) {
         if (answer != null && !answer.isEmpty()) {
-            GameConstatnts.playGameNext(getActivity(), GameConstatnts.FALSE, (OnGameClose) this);
+            GameConstatnts.playGameNext(getActivity(), GameConstatnts.FALSE, this);
         } else {
-            GameConstatnts.playGameNext(context, GameConstatnts.TRUE, (OnGameClose) this);
+            GameConstatnts.playGameNext(context, GameConstatnts.TRUE, this);
         }
 
 

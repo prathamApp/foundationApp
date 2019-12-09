@@ -719,6 +719,7 @@ public class TestFragment extends Fragment implements TestContract.TestView,
     @UiThread
     @Override
     public void showLoader() {
+        try{
         if (!loaderVisible) {
             loaderVisible = true;
             myLoadingDialog = new Dialog(getActivity());
@@ -729,14 +730,18 @@ public class TestFragment extends Fragment implements TestContract.TestView,
             myLoadingDialog.setCanceledOnTouchOutside(false);
 //        myLoadingDialog.setCancelable(false);
             myLoadingDialog.show();
-        }
+        }}catch (Exception e){e.printStackTrace();}
     }
 
     @Override
     public void dismissLoadingDialog() {
-        if (myLoadingDialog != null) {
-            loaderVisible = false;
-            myLoadingDialog.dismiss();
+        try {
+            if (myLoadingDialog != null) {
+                loaderVisible = false;
+                myLoadingDialog.dismiss();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 

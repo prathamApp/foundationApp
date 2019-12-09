@@ -60,6 +60,7 @@ import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
@@ -1347,10 +1348,13 @@ public class ContentReadingFragment extends Fragment implements
     public void showPageImageDialog(){
         btn_Stop.performClick();
         readingImgPath = readingContentPath + storyBg;
-        Intent intent = new Intent(getActivity(), Activity_DisplayImage_.class);
-        ActivityOptions options = ActivityOptions.makeSceneTransitionAnimation(getActivity(),
-                floating_info, "transition_dialog");
-        startActivityForResult(intent, 11, options.toBundle());
+        File f = new File(readingImgPath);
+        if (f.exists()) {
+            Intent intent = new Intent(getActivity(), Activity_DisplayImage_.class);
+            ActivityOptions options = ActivityOptions.makeSceneTransitionAnimation(getActivity(),
+                    floating_info, "transition_dialog");
+            startActivityForResult(intent, 11, options.toBundle());
+        }
     }
 
     //Insert Instuctions

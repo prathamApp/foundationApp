@@ -123,6 +123,10 @@ public class SplashActivity extends SplashSupportActivity implements SplashContr
                 PermissionUtils.Manifest_ACCESS_FINE_LOCATION
         };
 
+        File sd = new File(Environment.getExternalStorageDirectory()+"/PrathamBackups");
+        if(!sd.exists())
+            sd.mkdir();
+
         new Handler().postDelayed(() -> {
             if ((Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)) {
                 if (!isPermissionsGranted(SplashActivity.this, permissionArray))
@@ -447,7 +451,7 @@ public class SplashActivity extends SplashSupportActivity implements SplashContr
                             AppDatabase.getDatabaseInstance(SplashActivity.this);
                             //todo remove#
                             // ApplicationClass.contentProgressDao = AppDatabase.appDatabase.getContentProgressDao();
-                            if (new File(Environment.getExternalStorageDirectory().getAbsolutePath() + "/foundation_db").exists()) {
+                            if (new File(Environment.getExternalStorageDirectory().getAbsolutePath() + "/PrathamBackups/foundation_db").exists()) {
                                 try {
                                     copyDb = true;
                                 } catch (Exception e) {

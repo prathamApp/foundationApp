@@ -8,7 +8,6 @@ import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.widget.ImageButton;
-import android.widget.TextView;
 
 import com.pratham.foundation.R;
 import com.pratham.foundation.customView.FredokaOneTextView;
@@ -125,10 +124,10 @@ public class SequenceLayout extends Fragment implements SequeanceLayoutContract.
     public void contentClicked(ContentTable contentTable) {
         onConentClickeditem = contentTable;
         // GameConstatnts.showInstructionDialog(this, getActivity(), contentTable.getResourceType());
-        if (!contentTable.getResourceType().equalsIgnoreCase(GameConstatnts.READ_VOCAB_ANDROID)) {
+//        if (!contentTable.getResourceType().equalsIgnoreCase(GameConstatnts.READ_VOCAB_ANDROID)) {
              playInsequence = false;
              playGamesAfterDialog();
-        }
+//        }
     }
 
     @Click(R.id.btn_back)

@@ -12,7 +12,9 @@ public class BackupDatabase {
 
     public static void backup(Context mContext) {
         try {
-            File sd = Environment.getExternalStorageDirectory();
+            File sd = new File(Environment.getExternalStorageDirectory()+"/PrathamBackups");
+            if(!sd.exists())
+                sd.mkdir();
             if (sd.canWrite()) {
                 File currentDB = mContext.getDatabasePath(AppDatabase.DB_NAME);
                 File parentPath = currentDB.getParentFile();
