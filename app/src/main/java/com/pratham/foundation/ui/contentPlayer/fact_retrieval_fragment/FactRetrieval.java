@@ -89,7 +89,8 @@ public class FactRetrieval extends Fragment implements FactRetrievalContract.Fac
     private MediaPlayer mediaPlayercorrect;
     private String startTime;
     private ScienceQuestion questionModel;
-
+    //private String REGEXF="(?<=\\.\\s)|(?<=[?!]\\s)|(?<=\\|\\s)";
+    private String REGEXF="(?<=\\.\\s)|(?<=[?!]\\s)";
 
     private DragSelectionProcessor.Mode mMode = DragSelectionProcessor.Mode.Simple;
     private DragSelectTouchListener mDragSelectTouchListener = null;
@@ -249,7 +250,7 @@ public class FactRetrieval extends Fragment implements FactRetrievalContract.Fac
     private void getAnswersInPassage() {
         for (int queIndex = 0; queIndex < selectedQuetion.size(); queIndex++) {
             String correctAns = selectedQuetion.get(queIndex).getCorrectAnswer().replace("\n", " ");
-            String[] correctAnsArr = correctAns.trim().split("(?<=\\.\\s)|(?<=[?!]\\s)");
+            String[] correctAnsArr = correctAns.trim().split(REGEXF);
             for (int correctIndex = 0; correctIndex < correctAnsArr.length; correctIndex++) {
                 float max, temp = 0;
                 int start = -1;
@@ -305,7 +306,7 @@ public class FactRetrieval extends Fragment implements FactRetrievalContract.Fac
 
     private void LoadRecyclerText() {
         String[] paragraphWords = questionModel.getQuestion().split(" ");
-        sentences = questionModel.getQuestion().trim().split("(?<=\\.\\s)|(?<=[?!]\\s)");
+        sentences = questionModel.getQuestion().trim().split(REGEXF);
         // TextAdapter arrayAdapter = new TextAdapter(Arrays.asList(paragraphWords), getActivity());
         mAdapter = new TestAutoDataAdapter(getActivity(), Arrays.asList(paragraphWords));
         paragraphRecycler.setAdapter(mAdapter);
@@ -373,7 +374,7 @@ public class FactRetrieval extends Fragment implements FactRetrievalContract.Fac
             bottom_control_container.setVisibility(View.INVISIBLE);
             mAdapter.deselectAll();
             String correctAns = selectedQuetion.get(index).getCorrectAnswer().replace("\n", " ");
-            String[] correctAnsArr = correctAns.trim().split("(?<=\\.\\s)|(?<=[?!]\\s)");
+            String[] correctAnsArr = correctAns.trim().split(REGEXF);
             for (int correctIndex = 0; correctIndex < correctAnsArr.length; correctIndex++) {
                 float max, temp = 0;
                 int start = -1;

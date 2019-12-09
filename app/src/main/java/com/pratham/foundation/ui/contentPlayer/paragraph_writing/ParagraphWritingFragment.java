@@ -111,7 +111,7 @@ public class ParagraphWritingFragment extends Fragment
         presenter.getData();
       /*  if (questionModel != null)
             GameConstatnts.showGameInfo(getActivity(), questionModel.getInstruction(), readingContentPath + questionModel.getInstructionUrl());
-*/
+      */
         resStartTime = FC_Utility.getCurrentDateTime();
         presenter.addScore(0, "", 0, 0, resStartTime, GameConstatnts.PARAGRAPH_WRITING + " " + GameConstatnts.START);
     }

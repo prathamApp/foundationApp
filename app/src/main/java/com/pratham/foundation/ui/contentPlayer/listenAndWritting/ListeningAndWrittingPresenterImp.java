@@ -117,8 +117,9 @@ public class ListeningAndWrittingPresenterImp implements ListeningAndWrittingCon
             Collections.shuffle(dataList);
             for (int i = 0; i < dataList.size(); i++) {
                 if (perc < 95) {
-                    if (!checkWord("" + dataList.get(i).getTitle()))
-                        listenAndWrittingModal.add(dataList.get(i));
+                    /*if (!checkWord("" + dataList.get(i).getTitle()))
+                        listenAndWrittingModal.add(dataList.get(i));*/
+                    listenAndWrittingModal.add(dataList.get(i));
                 } else {
                     listenAndWrittingModal.add(dataList.get(i));
                 }
@@ -126,6 +127,7 @@ public class ListeningAndWrittingPresenterImp implements ListeningAndWrittingCon
                     break;
                 }
             }
+
             view.loadUI(listenAndWrittingModal);
         } catch (Exception e) {
             e.printStackTrace();

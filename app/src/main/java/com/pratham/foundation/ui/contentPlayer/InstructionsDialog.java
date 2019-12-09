@@ -47,7 +47,7 @@ public class InstructionsDialog extends Dialog {
             dia_title.setText("");
         }
 
-        int rawID = context.getResources().getIdentifier("degree_celcius_audio", "raw", context.getPackageName());
+        int rawID = context.getResources().getIdentifier(resorcetype.toLowerCase(), "raw", context.getPackageName());
         if (rawID != 0) {
             mediaPlayer = MediaPlayer.create(context, rawID);
             mediaPlayer.start();

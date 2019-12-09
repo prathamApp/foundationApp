@@ -3,6 +3,7 @@ package com.pratham.foundation;
 import android.app.Application;
 import android.content.Context;
 import android.media.AudioManager;
+import android.os.StrictMode;
 import android.util.Log;
 
 import com.androidnetworking.AndroidNetworking;
@@ -43,6 +44,9 @@ public class ApplicationClass extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
+        //this way the VM ignores the file URI exposure. if commented, the camera crashes on open
+        StrictMode.VmPolicy.Builder builder = new StrictMode.VmPolicy.Builder();
+        StrictMode.setVmPolicy(builder.build());
         Fresco.initialize(this);
         if (applicationClass == null) {
             applicationClass = this;

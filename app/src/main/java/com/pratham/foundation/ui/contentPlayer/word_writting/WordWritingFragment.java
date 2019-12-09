@@ -6,6 +6,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -42,6 +43,7 @@ import java.io.FileInputStream;
 import java.util.ArrayList;
 import java.util.List;
 
+import static android.app.Activity.RESULT_OK;
 import static android.widget.TextView.AUTO_SIZE_TEXT_TYPE_UNIFORM;
 import static com.pratham.foundation.utility.FC_Constants.activityPhotoPath;
 import static com.pratham.foundation.utility.FC_Constants.gameFolderPath;
@@ -69,9 +71,9 @@ public class WordWritingFragment extends Fragment
 
     @ViewById(R.id.capture)
     ImageButton capture;
-   /* @ViewById(R.id.title)
-    SansTextView title;*/
-
+    /* @ViewById(R.id.title)
+     SansTextView title;*/
+    private Uri capturedImageUri;
     private List<String> paragraphWords;
     private static final int CAMERA_REQUEST = 1;
     private String imageName = null, imagePath;
@@ -95,6 +97,8 @@ public class WordWritingFragment extends Fragment
         }
         EventBus.getDefault().register(this);
         preview.setVisibility(View.GONE);
+        imageName = "" + ApplicationClass.getUniqueID() + ".jpg";
+
         presenter.setView(WordWritingFragment.this, resId, readingContentPath);
         presenter.getData();
      /*   if (questionModel != null)
@@ -172,8 +176,16 @@ public class WordWritingFragment extends Fragment
 
     @Click(R.id.capture)
     public void captureClick() {
-        Intent takePicture = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        startActivityForResult(takePicture, CAMERA_REQUEST);
+      /*  Intent takePicture = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        startActivityForResult(takePicture, CAMERA_REQUEST);*/
+
+        Intent cameraIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
+        File imagesFolder = new File(activityPhotoPath);
+        if (!imagesFolder.exists()) imagesFolder.mkdirs();
+        File image = new File(imagesFolder, imageName);
+        capturedImageUri = Uri.fromFile(image);
+        cameraIntent.putExtra(android.provider.MediaStore.EXTRA_OUTPUT, capturedImageUri);
+        startActivityForResult(cameraIntent, CAMERA_REQUEST);
     }
 
     @Click(R.id.preview)
@@ -231,14 +243,21 @@ public class WordWritingFragment extends Fragment
         Log.d("codes", String.valueOf(requestCode) + resultCode);
         try {
             if (requestCode == CAMERA_REQUEST) {
-                Bitmap photo = (Bitmap) data.getExtras().get("data");
-               /* preview.setVisibility(View.VISIBLE);
+
+                if (requestCode == CAMERA_REQUEST) {
+                    if (resultCode == RESULT_OK) {
+                        capture.setVisibility(View.GONE);
+                        preview.setVisibility(View.VISIBLE);
+                    }
+                }
+
+                /*Bitmap photo = (Bitmap) data.getExtras().get("data");
+                preview.setVisibility(View.VISIBLE);
                 preview.setImageBitmap(photo);
-                preview.setScaleType(ImageView.ScaleType.FIT_XY);*/
-                imageName = "" + ApplicationClass.getUniqueID() + ".jpg";
+                preview.setScaleType(ImageView.ScaleType.FIT_XY);
                 presenter.createDirectoryAndSaveFile(photo, imageName);
                 preview.setVisibility(View.VISIBLE);
-                capture.setVisibility(View.GONE);
+                capture.setVisibility(View.GONE);*/
             }
         } catch (Exception e) {
             e.printStackTrace();

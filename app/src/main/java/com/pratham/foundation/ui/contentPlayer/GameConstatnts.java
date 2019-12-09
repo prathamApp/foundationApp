@@ -355,10 +355,27 @@ public class GameConstatnts implements ShowInstruction {
     }
 
     public static int getCount() {
-        if (FC_Constants.currentLevel <= 2) {
-            return 5;
+        if (FC_Constants.currentSubject.equalsIgnoreCase("English")) {
+            if (FC_Constants.currentLevel <= 2) {
+                return 5;
+            } else {
+                return 1;
+            }
+
+        } else if (FC_Constants.currentSubject.equalsIgnoreCase("Science")) {
+            if (FC_Constants.currentLevel <= 2) {
+                return 5;
+            } else {
+                return 1;
+            }
+
+        } else {
+            if (FC_Constants.currentLevel < 2) {
+                return 5;
+            } else {
+                return 1;
+            }
         }
-        return 1;
     }
 
 /*    public static void showInstructionDialog(ShowInstruction showInstruction, Activity context, String resorcetype) {
