@@ -11,7 +11,6 @@ import android.graphics.drawable.Drawable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.Window;
@@ -49,8 +48,6 @@ import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.Objects;
 
-import github.hellocsl.cursorwheel.CursorWheelLayout;
-
 import static com.pratham.foundation.utility.FC_Constants.BACK_PRESSED;
 import static com.pratham.foundation.utility.FC_Constants.FRAGMENT_RESELECTED;
 import static com.pratham.foundation.utility.FC_Constants.FRAGMENT_SELECTED;
@@ -67,7 +64,7 @@ import static com.pratham.foundation.utility.FC_Constants.dialog_btn_exit;
 import static com.pratham.foundation.utility.FC_Constants.isTest;
 
 @EActivity(R.layout.activity_home)
-public class HomeActivity extends BaseActivity implements LevelChanged, CursorWheelLayout.OnMenuSelectedListener {
+public class HomeActivity extends BaseActivity implements LevelChanged {
 
     @ViewById(R.id.tv_header_progress)
     public static TextView tv_header_progress;
@@ -566,8 +563,4 @@ public class HomeActivity extends BaseActivity implements LevelChanged, CursorWh
         });
     }
 
-    @Override
-    public void onItemSelected(CursorWheelLayout parent, View view, int pos) {
-        Log.d("LevelChanger", "onItemSelected: " + pos);
-    }
 }

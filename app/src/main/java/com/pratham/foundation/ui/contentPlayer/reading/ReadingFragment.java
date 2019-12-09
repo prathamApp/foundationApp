@@ -77,7 +77,6 @@ public class ReadingFragment extends Fragment implements STT_Result_New.sttView,
     @BindView(R.id.ib_mic)
     ImageButton ib_mic;
 
-
     // ContinuousSpeechService speechService;
     ScienceQuestion scienceQuestion;
     private int totalWordCount, learntWordCount;
@@ -103,7 +102,6 @@ public class ReadingFragment extends Fragment implements STT_Result_New.sttView,
         // Required empty public constructor
     }
 
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -111,8 +109,6 @@ public class ReadingFragment extends Fragment implements STT_Result_New.sttView,
             context = getActivity();
             continuousSpeechService = new ContinuousSpeechService_New(context, ReadingFragment.this, FC_Constants.currentSelectedLanguage);
             continuousSpeechService.resetSpeechRecognizer();
-            //speechService = new ContinuousSpeechService(context, ReadingFragment.this);
-            // speechService.resetSpeechRecognizer();
             contentPath = getArguments().getString("contentPath");
             StudentID = getArguments().getString("StudentID");
             resId = getArguments().getString("resId");
@@ -127,7 +123,6 @@ public class ReadingFragment extends Fragment implements STT_Result_New.sttView,
             EventBus.getDefault().register(this);
             resStartTime = FC_Utility.getCurrentDateTime();
             addScore(0, "", 0, 0, resStartTime, jsonName + " " + GameConstatnts.START);
-
             getData();
         }
     }
@@ -145,8 +140,6 @@ public class ReadingFragment extends Fragment implements STT_Result_New.sttView,
     }
 
     private void getData() {
-
-
         String text = FC_Utility.loadJSONFromStorage(readingContentPath, jsonName+".json");
         // List instrumentNames = new ArrayList<>();
         if (text != null) {
@@ -158,7 +151,6 @@ public class ReadingFragment extends Fragment implements STT_Result_New.sttView,
         } else {
             Toast.makeText(context, "Data not found", Toast.LENGTH_LONG).show();
         }
-
     }
 
     public void setCompletionPercentage() {
@@ -212,7 +204,6 @@ public class ReadingFragment extends Fragment implements STT_Result_New.sttView,
                     }
                 }
             }
-            //view.loadUI(listenAndWrittingModal);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -233,7 +224,6 @@ public class ReadingFragment extends Fragment implements STT_Result_New.sttView,
         }
     }
 
-
     private int getLearntWordsCount() {
         int count = 0;
         //  count = appDatabase.getKeyWordDao().checkWordCount(FC_Constants.currentStudentID, resId);
@@ -251,11 +241,9 @@ public class ReadingFragment extends Fragment implements STT_Result_New.sttView,
         }
     }
 
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
         return inflater.inflate(R.layout.reading_layout, container, false);
     }
 
@@ -273,14 +261,8 @@ public class ReadingFragment extends Fragment implements STT_Result_New.sttView,
             question.setText(scienceQuestion.getQuestion());
             if (!scienceQuestion.getPhotourl().trim().equalsIgnoreCase("")) {
                 questionImage.setVisibility(View.VISIBLE);
-//            if (AssessmentApplication.wiseF.isDeviceConnectedToMobileOrWifiNetwork()) {
-
-
                 String fileName = scienceQuestion.getPhotourl();
-//                String localPath = Environment.getExternalStorageDirectory() + Assessment_Constants.STORE_DOWNLOADED_MEDIA_PATH + "/" + fileName;
                 final String localPath = readingContentPath + fileName;
-
-
                 String path = scienceQuestion.getPhotourl();
                 String[] imgPath = path.split("\\.");
                 int len;
@@ -305,22 +287,14 @@ public class ReadingFragment extends Fragment implements STT_Result_New.sttView,
                                     .placeholder(Drawable.createFromPath(localPath)))
                             .into(questionImage);
                 }
-
-            } else questionImage.setVisibility(View.GONE);
-
+            } else
+                questionImage.setVisibility(View.GONE);
 
             etAnswer.addTextChangedListener(new TextWatcher() {
                 @Override
-                public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-
-                }
-
+                public void onTextChanged(CharSequence s, int start, int before, int count) { }
                 @Override
-                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-                }
-
+                public void beforeTextChanged(CharSequence s, int start, int count, int after) { }
                 @Override
                 public void afterTextChanged(Editable s) {
                     answer = s.toString();
@@ -330,9 +304,7 @@ public class ReadingFragment extends Fragment implements STT_Result_New.sttView,
         } else {
             Toast.makeText(context, "No data found", Toast.LENGTH_SHORT).show();
         }
-
     }
-
 
     @OnClick(R.id.ib_mic)
     public void onMicClicked() {
@@ -345,16 +317,13 @@ public class ReadingFragment extends Fragment implements STT_Result_New.sttView,
             micPressed(1);
             showLoader();
             continuousSpeechService.startSpeechInput();
-            // speechService.startSpeechInput();
         } else {
             voiceStart = false;
             micPressed(0);
             showLoader();
             continuousSpeechService.stopSpeechInput();
-            //speechService.stopSpeechInput();
         }
     }
-
 
     public void micPressed(int micPressed) {
         if (micPressed == 0) {
@@ -365,9 +334,7 @@ public class ReadingFragment extends Fragment implements STT_Result_New.sttView,
     }
 
     @Override
-    public void silenceDetected() {
-
-    }
+    public void silenceDetected() { }
 
     @Override
     public void stoppedPressed() {
@@ -392,58 +359,24 @@ public class ReadingFragment extends Fragment implements STT_Result_New.sttView,
     public void onStop() {
         super.onStop();
         EventBus.getDefault().unregister(this);
-        if (continuousSpeechService != null) {
-            continuousSpeechService.onEndOfSpeech();
-            // speech.stopListening();
-            micPressed(0);
-            voiceStart = false;
-        }
-    }
-
-    @Override
-    public void onPause() {
-        super.onPause();
-       /* if (speechService != null)
-            speechService.stopSpeechInput();*/
-
-        if (continuousSpeechService != null) {
-            continuousSpeechService.stopSpeechInput();
-        }
-        micPressed(0);
-        voiceStart = false;
-       /* if (speech != null) {
-            speech.stopListening();
-        }*/
+        if(voiceStart)
+            callSTT();
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        //   speechService.resetSpeechRecognizer();
-        continuousSpeechService.resetSpeechRecognizer();
-       /* if (speech != null) {
-            micPressed(0);
-            voiceStart = false;
-        }*/
     }
 
-
+    String myString = "";
     @Override
     public void Stt_onResult(ArrayList<String> matches) {
-
         try {
-            micPressed(0);
-//        ib_mic.stopRecording();
-
             System.out.println("LogTag" + " onResults");
-//        ArrayList<String> matches = results;
-
             String sttResult = "";
-//        String sttResult = matches.get(0);
             String sttQuestion;
             for (int i = 0; i < matches.size(); i++) {
                 System.out.println("LogTag" + " onResults :  " + matches.get(i));
-
                 if (matches.get(i).equalsIgnoreCase(scienceQuestion.getAnswer()))
                     sttResult = matches.get(i);
                 else sttResult = matches.get(0);
@@ -451,14 +384,12 @@ public class ReadingFragment extends Fragment implements STT_Result_New.sttView,
             sttQuestion = scienceQuestion.getAnswer();
             String quesFinal = sttQuestion.replaceAll(STT_REGEX, "");
 
-
             String[] splitQues = quesFinal.split(" ");
             String[] splitRes = sttResult.split(" ");
 
             if (splitQues.length < splitRes.length)
                 correctArr = new boolean[splitRes.length];
             else correctArr = new boolean[splitQues.length];
-
 
             for (int j = 0; j < splitRes.length; j++) {
                 for (int i = 0; i < splitQues.length; i++) {
@@ -470,8 +401,6 @@ public class ReadingFragment extends Fragment implements STT_Result_New.sttView,
                     }
                 }
             }
-
-
             int correctCnt = 0;
             for (int x = 0; x < correctArr.length; x++) {
                 if (correctArr[x])
@@ -480,28 +409,25 @@ public class ReadingFragment extends Fragment implements STT_Result_New.sttView,
             percScore = ((float) correctCnt / (float) correctArr.length) * 100;
             Log.d("Punctu", "onResults: " + percScore);
             if (percScore >= 75) {
-
-                for (int i = 0; i < splitQues.length; i++) {
-                    //((TextView) readChatFlow.getChildAt(i)).setTextColor(getResources().getColor(R.color.readingGreen));
+                for (int i = 0; i < splitQues.length; i++)
                     correctArr[i] = true;
-                }
-
-    //            scrollView.setBackgroundResource(R.drawable.convo_correct_bg);
             }
-
-            etAnswer.setText(sttResult);
-            voiceStart = false;
-            micPressed(0);
-            continuousSpeechService.stopSpeechInput();
+            myString = myString + " " + sttResult ;
+            etAnswer.setText(myString);
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
-
     @OnClick(R.id.submit)
     public void submitClick() {
         addLearntWords();
+    }
+
+    @OnClick(R.id.reset_btn)
+    public void resetClick() {
+        myString = "";
+        etAnswer.setText(myString);
     }
 
     public void addLearntWords() {
