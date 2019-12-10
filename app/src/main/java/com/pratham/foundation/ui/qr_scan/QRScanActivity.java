@@ -33,6 +33,7 @@ import com.pratham.foundation.database.domain.KeyWords;
 import com.pratham.foundation.database.domain.Session;
 import com.pratham.foundation.database.domain.Student;
 import com.pratham.foundation.modalclasses.PlayerModal;
+import com.pratham.foundation.services.shared_preferences.FastSave;
 import com.pratham.foundation.ui.selectSubject.SelectSubject_;
 import com.pratham.foundation.utility.FC_Constants;
 import com.pratham.foundation.utility.FC_Utility;
@@ -53,6 +54,7 @@ import me.dm7.barcodescanner.zxing.ZXingScannerView;
 
 import static com.pratham.foundation.database.AppDatabase.appDatabase;
 import static com.pratham.foundation.utility.FC_Constants.QR_GROUP_MODE;
+import static com.pratham.foundation.utility.FC_Constants.currentStudentID;
 import static com.pratham.foundation.utility.FC_Constants.currentStudentName;
 import static com.pratham.foundation.utility.SplashSupportActivity.ButtonClickSound;
 
@@ -340,11 +342,15 @@ public class QRScanActivity extends BaseActivity implements
             enterStudentData(playerModalList);
             startSession();
             if(FC_Constants.LOGIN_MODE.equalsIgnoreCase(QR_GROUP_MODE)) {
-                FC_Constants.currentStudentID = "QR";
+                currentStudentID = "QR";
                 currentStudentName = "QR Students";
+                FastSave.getInstance().saveString(FC_Constants.CURRENT_STUDENT_ID , currentStudentID);
+                FastSave.getInstance().saveString(FC_Constants.CURRENT_STUDENT_NAME , currentStudentName);
             }else {
-                FC_Constants.currentStudentID = ""+playerModalList.get(0).getStudentID();
+                currentStudentID = ""+playerModalList.get(0).getStudentID();
                 currentStudentName = ""+playerModalList.get(0).getStudentName();
+                FastSave.getInstance().saveString(FC_Constants.CURRENT_STUDENT_ID , currentStudentID);
+                FastSave.getInstance().saveString(FC_Constants.CURRENT_STUDENT_NAME , currentStudentName);
             }
             ButtonClickSound.start();
             startActivity(new Intent(this, SelectSubject_.class));
@@ -484,6 +490,7 @@ public class QRScanActivity extends BaseActivity implements
             StatusDao statusDao = appDatabase.getStatusDao();
             currentSession = "" + UUID.randomUUID().toString();
             FC_Constants.currentSession = currentSession;
+            FastSave.getInstance().saveString(FC_Constants.CURRENT_STUDENT_ID, currentSession);
             statusDao.updateValue("CurrentSession", "" + currentSession);
 
             Session startSesion = new Session();

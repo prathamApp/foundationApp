@@ -8,7 +8,7 @@
     android:layout_marginStart="@dimen/_15sdp"
     android:elevation="@dimen/_3sdp"
     android:layout_marginEnd="@dimen/_15sdp"
-    android:background="@drawable/card_color_bg1">
+    android:background="@drawable/dialog_bg">
 
     <com.pratham.foundation.customView.SansTextViewBold
         android:id="@+id/assess_data"
@@ -18,7 +18,7 @@
         android:layout_alignParentTop="true"
         android:padding="@dimen/_7sdp"
         android:text="Student Knows "
-        android:textColor="@color/white"
+        android:textColor="@color/colorText"
         android:textSize="@dimen/_13sdp"
         android:textStyle="bold" />
 
@@ -33,7 +33,7 @@
         android:numStars="5"
         android:stepSize="1"
         android:isIndicator="true"
-        android:progressTint="@color/white" />
+        android:progressTint="@color/colorAccentDark" />
 
     <View
         android:layout_width="match_parent"

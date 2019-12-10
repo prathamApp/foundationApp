@@ -25,7 +25,6 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.airbnb.lottie.LottieAnimationView;
 import com.bumptech.glide.Glide;
 import com.pratham.foundation.ApplicationClass;
 import com.pratham.foundation.R;
@@ -108,9 +107,8 @@ public class TestFragment extends Fragment implements TestContract.TestView,
         contentParentList = new ArrayList<>();
         testList = new ArrayList<>();
         presenter.setView(TestFragment.this);
-        RetractableToolbarUtil.ShowHideToolbarOnScrollingListener showHideToolbarListener;
-        my_recycler_view.addOnScrollListener(showHideToolbarListener =
-                new RetractableToolbarUtil.ShowHideToolbarOnScrollingListener(header_rl));
+        my_recycler_view.addOnScrollListener(new RetractableToolbarUtil
+                .ShowHideToolbarOnScrollingListener(header_rl));
         presenter.getBottomNavId(currentLevel, "Test");
     }
 
@@ -608,13 +606,14 @@ public class TestFragment extends Fragment implements TestContract.TestView,
         JSONObject jsonObjectAssessment = new JSONObject();
         for (int i = 0; i < testList.size(); i++) {
             try {
-                if (testList.get(i).isAsessmentGiven()) {
-                    jsonObjectAssessment.put("CertCode" + i + "_" + testList.get(i).getCertiCode(), "" + testList.get(i).getStudentPercentage());
-                } else {
-                    testGiven = false;
-                    break;
+                if(!testList.get(i).getContentType().equalsIgnoreCase("header")) {
+                    if (testList.get(i).isAsessmentGiven()) {
+                        jsonObjectAssessment.put("CertCode" + i + "_" + testList.get(i).getCertiCode(), "" + testList.get(i).getStudentPercentage());
+                    } else {
+                        testGiven = false;
+                        break;
+                    }
                 }
-                //question
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -631,28 +630,28 @@ public class TestFragment extends Fragment implements TestContract.TestView,
     private void showTestCompleteDialog() {
         Dialog dialog = new Dialog(getActivity(),R.style.ExitDialog);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        dialog.setContentView(R.layout.lottie_exit_dialog);
+        dialog.setContentView(R.layout.fc_custom_dialog);
 /*      Bitmap map=FC_Utility.takeScreenShot(getActivity());
         Bitmap fast=FC_Utility.fastblur(map, 20);
         final Drawable draw=new BitmapDrawable(getResources(),fast);
         dialog.getWindow().setBackgroundDrawable(draw);*/
         Objects.requireNonNull(dialog.getWindow()).setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-        dialog.setCancelable(true);
-        dialog.setCanceledOnTouchOutside(true);
+        dialog.setCancelable(false);
+        dialog.setCanceledOnTouchOutside(false);
         dialog.show();
 
         TextView dia_title = dialog.findViewById(R.id.dia_title);
 //        Button dia_btn_green = dialog.findViewById(R.id.dia_btn_green);
-        LottieAnimationView lottieAnimationView = dialog.findViewById(R.id.dl_lottie_view);
-        Button dia_btn_no = dialog.findViewById(R.id.dia_btn_no);
-        TextView dia_btn_yes = dialog.findViewById(R.id.dia_btn_yes);
-        dia_btn_yes.setVisibility(View.GONE);
+        Button dia_btn_yellow = dialog.findViewById(R.id.dia_btn_yellow);
+        Button dia_btn_green = dialog.findViewById(R.id.dia_btn_green);
+        Button dia_btn_red = dialog.findViewById(R.id.dia_btn_red);
+        dia_btn_yellow.setVisibility(View.GONE);
+        dia_btn_red.setVisibility(View.GONE);
 
-        lottieAnimationView.setAnimation("Success.json");
         dia_title.setText(getResources().getString(R.string.Test_Complete_Dialog));
-        dia_btn_no.setText(getResources().getString(R.string.Okay));
+        dia_btn_green.setText(getResources().getString(R.string.Okay));
 
-        dia_btn_no.setOnClickListener(v -> {
+        dia_btn_green.setOnClickListener(v -> {
             dialog.dismiss();
         });
     }

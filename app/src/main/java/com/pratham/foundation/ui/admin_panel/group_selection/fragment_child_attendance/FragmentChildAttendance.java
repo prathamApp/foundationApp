@@ -42,6 +42,9 @@ import butterknife.OnClick;
 
 import static com.pratham.foundation.utility.FC_Constants.GROUP_MODE;
 import static com.pratham.foundation.utility.FC_Constants.LOGIN_MODE;
+import static com.pratham.foundation.utility.FC_Constants.currentSession;
+import static com.pratham.foundation.utility.FC_Constants.currentStudentID;
+import static com.pratham.foundation.utility.FC_Constants.currentStudentName;
 import static com.pratham.foundation.utility.FC_Utility.dpToPx;
 
 public class FragmentChildAttendance extends Fragment implements ContractChildAttendance.attendanceView {
@@ -173,27 +176,25 @@ public class FragmentChildAttendance extends Fragment implements ContractChildAt
     @SuppressLint("StaticFieldLeak")
     private void startSession(final ArrayList<Student> stud) {
         new AsyncTask<Object, Void, Object>() {
-            String currentSession;
+            String newCurrentSession;
 
             @Override
             protected Object doInBackground(Object[] objects) {
                 try {
-
                     StatusDao statusDao = AppDatabase.getDatabaseInstance(getContext()).getStatusDao();
-                    currentSession = "" + UUID.randomUUID().toString();
-                    FC_Constants.currentSession = currentSession;
+                    newCurrentSession = "" + UUID.randomUUID().toString();
+                    currentSession = newCurrentSession;
+                    FastSave.getInstance().saveString(FC_Constants.CURRENT_SESSION, currentSession);
                     statusDao.updateValue("CurrentSession", "" + currentSession);
 
                     Session startSesion = new Session();
                     startSesion.setSessionID("" + currentSession);
                     String timerTime = FC_Utility.getCurrentDateTime();
-
                     Log.d("doInBackground", "--------------------------------------------doInBackground : " + timerTime);
                     startSesion.setFromDate(timerTime);
                     startSesion.setToDate("NA");
                     startSesion.setSentFlag(0);
                     AppDatabase.getDatabaseInstance(getContext()).getSessionDao().insert(startSesion);
-
                     Log.d("ChildAttendence","Student Count: " + stud.size());
 
                     Attendance attendance = new Attendance();
@@ -208,11 +209,13 @@ public class FragmentChildAttendance extends Fragment implements ContractChildAt
                     }
 
                     if(LOGIN_MODE.equalsIgnoreCase(GROUP_MODE))
-                        FC_Constants.currentStudentID = groupID;
+                        currentStudentID = groupID;
                     else {
-                        FC_Constants.currentStudentID = stud.get(0).getStudentID();
-                        FC_Constants.currentStudentName = stud.get(0).getFullName();
+                        currentStudentID = stud.get(0).getStudentID();
+                        currentStudentName = stud.get(0).getFullName();
+                        FastSave.getInstance().saveString(FC_Constants.CURRENT_STUDENT_NAME , currentStudentName);
                     }
+                    FastSave.getInstance().saveString(FC_Constants.CURRENT_STUDENT_ID , currentStudentID);
                     BackupDatabase.backup(getContext());
                     return null;
                 } catch (Exception e) {
@@ -236,7 +239,8 @@ public class FragmentChildAttendance extends Fragment implements ContractChildAt
             FastSave.getInstance().saveString(FC_Constants.GROUPID, groupID);
             attendances.add(attendance);
 
-            FC_Constants.currentStudentID = groupID;
+            currentStudentID = groupID;
+            FastSave.getInstance().saveString(FC_Constants.CURRENT_STUDENT_ID , currentStudentID);
         }
         AppDatabase.getDatabaseInstance(getActivity()).getAttendanceDao().insertAll(attendances);
         Session s = new Session();

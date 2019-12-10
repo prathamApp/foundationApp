@@ -30,6 +30,7 @@ import com.pratham.foundation.services.shared_preferences.FastSave;
 import com.pratham.foundation.ui.home_screen.fun.FunFragment_;
 import com.pratham.foundation.ui.home_screen.learning_fragment.LearningFragment_;
 import com.pratham.foundation.ui.home_screen.practice_fragment.PracticeFragment_;
+import com.pratham.foundation.ui.home_screen.profile_new.ProfileFragment_;
 import com.pratham.foundation.ui.home_screen.test_fragment.TestFragment_;
 import com.pratham.foundation.ui.student_profile.Student_profile_activity;
 import com.pratham.foundation.ui.test.supervisor.SupervisedAssessmentActivity;
@@ -307,9 +308,9 @@ public class HomeActivity extends BaseActivity implements LevelChanged {
         practiceTab.setText("Practice");
         practiceTab.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.ic_practice, 0, 0);
 
-/*        TextView profileTab = (TextView) LayoutInflater.from(this).inflate(R.layout.custom_tab_text, null);
+        TextView profileTab = (TextView) LayoutInflater.from(this).inflate(R.layout.custom_tab_text, null);
         profileTab.setText("Profile");
-        profileTab.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.ic_profile, 0, 0);*/
+        profileTab.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.ic_profile, 0, 0);
 
         if (LOGIN_MODE.contains("group")) {
             tabLayout.getTabAt(0).setCustomView(learningTab);
@@ -329,24 +330,25 @@ public class HomeActivity extends BaseActivity implements LevelChanged {
 
             tabLayout.getTabAt(2).setCustomView(testTab);
             tabLayout.getTabAt(3).setCustomView(funTab);
-//            tabLayout.getTabAt(4).setCustomView(profileTab);
+            tabLayout.getTabAt(4).setCustomView(profileTab);
         } else {
-//            tabLayout.getTabAt(2).setCustomView(profileTab);
+            tabLayout.getTabAt(2).setCustomView(profileTab);
         }
 
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
-                if (tab.getText().toString().equalsIgnoreCase("Test"))
+                if (tab.getText().toString().equalsIgnoreCase("Test")) {
                     FC_Constants.isTest = true;
-                else if (tab.getText().toString().equalsIgnoreCase("Profile")) {
+                    showTestTypeSelectionDialog();
+                }else if (tab.getText().toString().equalsIgnoreCase("Profile")) {
                     FC_Constants.isTest = false;
                     header_rl.setVisibility(View.GONE);
                 } else {
+                    FC_Constants.isTest = false;
                     EventMessage eventMessage = new EventMessage();
                     eventMessage.setMessage(FRAGMENT_SELECTED);
                     EventBus.getDefault().post(eventMessage);
-                    FC_Constants.isTest = false;
                     header_rl.setVisibility(View.VISIBLE);
                 }
             }
@@ -358,16 +360,17 @@ public class HomeActivity extends BaseActivity implements LevelChanged {
             @Override
             public void onTabReselected(TabLayout.Tab tab) {
 
-                if (tab.getText().toString().equalsIgnoreCase("Test"))
+                if (tab.getText().toString().equalsIgnoreCase("Test")) {
                     FC_Constants.isTest = true;
-                else if (tab.getText().toString().equalsIgnoreCase("Profile")) {
+                    showTestTypeSelectionDialog();
+                }else if (tab.getText().toString().equalsIgnoreCase("Profile")) {
                     FC_Constants.isTest = false;
                     header_rl.setVisibility(View.GONE);
                 } else {
+                    FC_Constants.isTest = false;
                     EventMessage eventMessage = new EventMessage();
                     eventMessage.setMessage(FRAGMENT_RESELECTED);
                     EventBus.getDefault().post(eventMessage);
-                    FC_Constants.isTest = false;
                     header_rl.setVisibility(View.VISIBLE);
                 }
             }
@@ -396,14 +399,14 @@ public class HomeActivity extends BaseActivity implements LevelChanged {
             dialog.dismiss();
             Intent intent = new Intent(HomeActivity.this, SupervisedAssessmentActivity.class);
             intent.putExtra("testMode", "unsupervised");
-            startActivityForResult(intent, 10);
+            startActivity(intent);
         });
 
         dia_btn_yellow.setOnClickListener(v -> {
             dialog.dismiss();
             Intent intent = new Intent(HomeActivity.this, SupervisedAssessmentActivity.class);
             intent.putExtra("testMode", "supervised");
-            startActivityForResult(intent, 10);
+            startActivity(intent);
         });
 
         dia_btn_green.setOnClickListener(v -> {
@@ -467,7 +470,7 @@ public class HomeActivity extends BaseActivity implements LevelChanged {
                 adapter.addFrag(new TestFragment_(), "Test");
                 adapter.addFrag(new FunFragment_(), "Fun");
             }
-//            adapter.addFrag(new ProfileFragment_(), "Profile");
+            adapter.addFrag(new ProfileFragment_(), "Profile");
         } else {
             adapter.addFrag(new PracticeFragment_(), "Practice");
             adapter.addFrag(new LearningFragment_(), "Learning");
@@ -475,7 +478,7 @@ public class HomeActivity extends BaseActivity implements LevelChanged {
                 adapter.addFrag(new TestFragment_(), "Test");
                 adapter.addFrag(new FunFragment_(), "Fun");
             }
-//            adapter.addFrag(new ProfileFragment_(), "Profile");
+            adapter.addFrag(new ProfileFragment_(), "Profile");
         }
         viewpager.setAdapter(adapter);
     }

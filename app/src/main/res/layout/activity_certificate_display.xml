@@ -9,9 +9,13 @@
 <!--    android:background="#F9FCFE"-->
 
     <RelativeLayout
+        android:id="@+id/list_display"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+    <RelativeLayout
         android:id="@+id/header_rl"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/_110sdp">
+        android:layout_height="@dimen/_80sdp">
         <ImageView
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
@@ -25,17 +29,6 @@
             android:layout_marginStart="@dimen/_5sdp"
             android:scaleType="center"
             app:srcCompat="@drawable/ic_left_arrow_white" />
-
-        <com.pratham.foundation.customView.FredokaOneTextView
-            android:id="@+id/txt_level"
-            android:layout_width="@dimen/_35sdp"
-            android:layout_height="wrap_content"
-            android:layout_alignParentEnd="true"
-            android:layout_above="@+id/leftCol"
-            android:layout_marginEnd="@dimen/_15sdp"
-            android:text="Level"
-            android:textColor="@color/colorBlack"
-            android:textSize="@dimen/_12sdp" />
 
         <RelativeLayout
             android:id="@+id/leftCol"
@@ -54,32 +47,12 @@
                 android:textColor="@color/colorBlack"
                 android:textSize="@dimen/_20sdp" />
 
-            <com.pratham.foundation.customView.shape_of_view.ShadowLayout
-                android:id="@+id/level_shadow"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentEnd="true"
-                android:layout_marginTop="@dimen/_5sdp"
-                android:layout_marginEnd="@dimen/_12sdp"
-                app:sl_shadow_angle="60"
-                app:sl_shadow_color="@color/strokeColor"
-                app:sl_shadow_distance="5dp"
-                app:sl_shadow_radius="5dp"
-                app:sl_shadowed="true">
-            <ImageView
-                android:id="@+id/iv_level"
-                android:layout_width="@dimen/_30sdp"
-                android:layout_height="@dimen/_30sdp"
-                android:src="@drawable/level_1"
-                android:padding="2dp"
-                android:background="@drawable/red_ripple_round"/>
-            </com.pratham.foundation.customView.shape_of_view.ShadowLayout>
-
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_below="@+id/tv_Topic"
                 android:layout_toStartOf="@+id/level_shadow"
+                android:visibility="gone"
                 android:orientation="horizontal">
                 <com.pratham.foundation.customView.SansTextView
                     android:id="@+id/tv_Activity"
@@ -104,6 +77,18 @@
                     android:textSize="@dimen/_10sdp" />
             </LinearLayout>
         </RelativeLayout>
+    </RelativeLayout>
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/certificate_recycler_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:layout_centerInParent="true"
+        android:clipToPadding="false"
+        android:layoutAnimation="@anim/layout_fall_down"
+        android:scrollbars="vertical" />
+
     </RelativeLayout>
 
 </RelativeLayout>

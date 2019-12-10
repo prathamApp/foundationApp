@@ -203,6 +203,7 @@ public class TestPresenter implements TestContract.TestPresenter, API_Content_Re
         contentTableHeader.setNodeId("0");
         contentTableHeader.setResourceId("0");
         contentTableHeader.setResourcePath("path");
+        contentTableHeader.setAsessmentGiven(true);
         contentTableHeader.setContentType("Header");
         myView.addContentToViewTestList(contentTableHeader);
 
@@ -359,6 +360,12 @@ public class TestPresenter implements TestContract.TestPresenter, API_Content_Re
             is.read(buffer);
             is.close();
             String jsonStr = new String(buffer);
+            JSONArray jsonArray = new JSONArray(jsonStr);
+            for(int i=0; i<jsonArray.length(); i++) {
+                String subj = ((JSONObject) jsonArray.get(i)).get("storyLanguage").toString();
+
+
+            }
             JSONObject jsonObj = new JSONObject(jsonStr);
             returnCodeList = jsonObj.getJSONArray("CodeList");
         } catch (Exception e) {

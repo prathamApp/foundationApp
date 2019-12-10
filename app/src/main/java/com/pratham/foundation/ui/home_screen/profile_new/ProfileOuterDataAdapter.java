@@ -32,12 +32,12 @@ public class ProfileOuterDataAdapter extends RecyclerView.Adapter {
     String[] shareImgSubArray = {"Share App", "Share Content"};
 
     public int childCounter = 0;
-//    LearningContract.LearningItemClicked tempItemClicked;
+    ProfileContract.ProfileItemClicked profileItemClicked;
 
-    public ProfileOuterDataAdapter(Context context, String[] progressArray/*, LearningContract.LearningItemClicked tempItemClicked*/) {
+    public ProfileOuterDataAdapter(Context context, String[] progressArray, ProfileContract.ProfileItemClicked profileItemClicked) {
         this.progressArray = progressArray;
         this.mContext = context;
-//        this.tempItemClicked = tempItemClicked;
+        this.profileItemClicked = profileItemClicked;
     }
 
     public class EmptyHolder extends RecyclerView.ViewHolder {
@@ -94,7 +94,7 @@ public class ProfileOuterDataAdapter extends RecyclerView.Adapter {
             }
 
             ProfileInnerDataAdapter ProfileInnerDataAdapter = new ProfileInnerDataAdapter(mContext,
-                    sublistList, subImgList, /*tempItemClicked, */i);
+                    sublistList, subImgList, profileItemClicked, i);
             itemRowHolder.recycler_view_grid_list.setLayoutManager(new GridLayoutManager(mContext, 2));
             itemRowHolder.recycler_view_grid_list.setAdapter(ProfileInnerDataAdapter);
             childCounter += 1;

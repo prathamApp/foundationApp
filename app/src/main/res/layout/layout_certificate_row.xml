@@ -3,8 +3,12 @@
     android:id="@+id/certi_root"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@drawable/ripple_rectangle_card"
-    android:layout_margin="@dimen/_12sdp"
+    android:background="@drawable/dialog_bg"
+    android:layout_marginStart="@dimen/_12sdp"
+    android:layout_marginEnd="@dimen/_12sdp"
+    android:layout_marginTop="@dimen/_5sdp"
+    android:layout_marginBottom="@dimen/_8sdp"
+    android:elevation="@dimen/_3sdp"
     android:padding="@dimen/_12sdp">
 
     <RelativeLayout
@@ -18,8 +22,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="word"
-            android:textColor="@color/colorBtnOrangeDark"
-            android:textSize="@dimen/_15sdp" />
+            android:textColor="@color/colorAccentDark"
+            android:textSize="@dimen/_18sdp" />
 
         <com.pratham.foundation.customView.SansTextView
             android:id="@+id/tv_timestamp"
@@ -28,10 +32,10 @@
             android:layout_below="@id/tv_assessment"
             android:text="timestamp"
             android:textColor="@color/colorBtnRedLight"
-            android:textSize="@dimen/_8sdp" />
+            android:textSize="@dimen/_10sdp" />
     </RelativeLayout>
 
-    <com.pratham.foundation.customView.SansTextView
+    <com.pratham.foundation.customView.SansTextViewBold
         android:id="@+id/tv_view"
         android:layout_width="@dimen/_60sdp"
         android:layout_height="wrap_content"

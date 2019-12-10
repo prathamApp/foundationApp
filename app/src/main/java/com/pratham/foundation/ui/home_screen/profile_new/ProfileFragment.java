@@ -1,5 +1,6 @@
 package com.pratham.foundation.ui.home_screen.profile_new;
 
+import android.content.Intent;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.GridLayoutManager;
@@ -7,6 +8,7 @@ import android.support.v7.widget.RecyclerView;
 
 import com.pratham.foundation.R;
 import com.pratham.foundation.customView.GridSpacingItemDecoration;
+import com.pratham.foundation.ui.home_screen.profile_new.certificate_display.CertificateDisplayActivity_;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Bean;
@@ -32,7 +34,7 @@ public class ProfileFragment extends Fragment implements ProfileContract.Profile
     public void initialize() {
         presenter.setView(ProfileFragment.this);
         if (adapterParent == null) {
-            adapterParent = new ProfileOuterDataAdapter(getActivity(), progressArray);
+            adapterParent = new ProfileOuterDataAdapter(getActivity(), progressArray, this);
             RecyclerView.LayoutManager mLayoutManager = new GridLayoutManager(getActivity(), 1);
             my_recycler_view.setLayoutManager(mLayoutManager);
             my_recycler_view.addItemDecoration(new GridSpacingItemDecoration(1, dpToPx(getActivity()), true));
@@ -47,7 +49,7 @@ public class ProfileFragment extends Fragment implements ProfileContract.Profile
     }
 
     private void showUsage() {
-
+        startActivity(new Intent(getActivity(), CertificateDisplayActivity_.class));
     }
 
 //    @Click({R.id.rl_share_app, R.id.btn_share_app})

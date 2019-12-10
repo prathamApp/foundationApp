@@ -26,11 +26,11 @@ public class ProfileInnerDataAdapter extends RecyclerView.Adapter {
     private static final String TYPE_HEADER = "Header";
     private static final String TYPE_ITEM = "Resource";
 
-    public ProfileInnerDataAdapter(Context context, String[] itemsList, String[] itemsImgList, /*LearningContract.LearningItemClicked itemClicked, */int parentPos) {
+    public ProfileInnerDataAdapter(Context context, String[] itemsList, String[] itemsImgList, ProfileContract.ProfileItemClicked profileItemClicked, int parentPos) {
         this.itemsList = itemsList;
         this.itemsImgList = itemsImgList;
         this.mContext = context;
-        this.itemClicked = itemClicked;
+        this.itemClicked = profileItemClicked;
         this.parentPos = parentPos;
     }
 
@@ -84,13 +84,14 @@ public class ProfileInnerDataAdapter extends RecyclerView.Adapter {
         switch (itemsList[i]) {
             case "Certificate":
                 itemHolder.item_Image.setImageResource(R.drawable.certificates);
+                itemHolder.rl_root.setOnClickListener(v ->itemClicked.itemClicked("Certificate"));
                 break;
             case "Projects":
                 itemHolder.item_Image.setImageResource(R.drawable.lang_01);
                 break;
             case "Usage":
                 itemHolder.item_Image.setImageResource(R.drawable.progress_report);
-                itemClicked.itemClicked("Usage");
+                itemHolder.rl_root.setOnClickListener(v ->itemClicked.itemClicked("Usage"));
                 break;
             case "Badges":
                 itemHolder.item_Image.setImageResource(R.drawable.right_student_arrow);

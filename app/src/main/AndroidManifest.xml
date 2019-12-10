@@ -47,6 +47,12 @@
             android:name=".ui.admin_panel.assign_groups.Activity_AssignGroups_"
             android:screenOrientation="portrait" />
         <activity
+            android:name=".ui.test.certificate.CertificateActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.home_screen.profile_new.certificate_display.CertificateDisplayActivity_"
+            android:screenOrientation="portrait" />
+        <activity
             android:name=".ui.admin_panel.group_selection.SelectGroupActivity_"
             android:screenOrientation="portrait" />
         <activity

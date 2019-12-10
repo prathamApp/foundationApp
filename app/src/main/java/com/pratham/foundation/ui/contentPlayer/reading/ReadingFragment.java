@@ -63,7 +63,6 @@ import static com.pratham.foundation.database.AppDatabase.appDatabase;
 import static com.pratham.foundation.utility.FC_Constants.STT_REGEX;
 import static com.pratham.foundation.utility.FC_Constants.gameFolderPath;
 
-
 public class ReadingFragment extends Fragment implements STT_Result_New.sttView, OnGameClose {
 
     @BindView(R.id.tv_question)
@@ -77,17 +76,14 @@ public class ReadingFragment extends Fragment implements STT_Result_New.sttView,
     @BindView(R.id.ib_mic)
     ImageButton ib_mic;
 
-    // ContinuousSpeechService speechService;
     ScienceQuestion scienceQuestion;
     private int totalWordCount, learntWordCount;
     private float perc = 0;
     private float percScore = 0;
     private String answer;
-    // public static SpeechRecognizer speech = null;
     private static boolean voiceStart = false;
     private static boolean[] correctArr;
     public static Intent intent;
-
     private String readingContentPath, contentPath, contentTitle, StudentID, resId;
     private boolean onSdCard;
     private Context context;
@@ -98,9 +94,8 @@ public class ReadingFragment extends Fragment implements STT_Result_New.sttView,
     public Dialog myLoadingDialog;
     boolean dialogFlg = false;
     private String jsonName;
-    public ReadingFragment() {
-        // Required empty public constructor
-    }
+
+    public ReadingFragment() { }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -254,7 +249,6 @@ public class ReadingFragment extends Fragment implements STT_Result_New.sttView,
         etAnswer.setMovementMethod(new ScrollingMovementMethod());
         setFillInTheBlanksQuestion();
     }
-
 
     public void setFillInTheBlanksQuestion() {
         if (scienceQuestion != null) {
@@ -454,8 +448,6 @@ public class ReadingFragment extends Fragment implements STT_Result_New.sttView,
         } else {
             GameConstatnts.playGameNext(context, GameConstatnts.TRUE, this);
         }
-
-
     }
 
     public void addScore(int wID, String Word, int scoredMarks, int totalMarks, String resStartTime, String Label) {
@@ -506,10 +498,7 @@ public class ReadingFragment extends Fragment implements STT_Result_New.sttView,
         } else {
             GameConstatnts.playGameNext(context, GameConstatnts.TRUE, this);
         }
-
-
-
-/*
+        /*
         if (scoredMark == 10) {
             final Dialog dialog = new Dialog(getActivity());
             dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
