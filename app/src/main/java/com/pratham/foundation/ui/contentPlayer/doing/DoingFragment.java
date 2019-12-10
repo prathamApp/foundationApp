@@ -485,6 +485,7 @@ public class DoingFragment extends Fragment implements STT_Result_New.sttView,On
     @Override
     public void silenceDetected() {
 
+
     }
 
     @Override
