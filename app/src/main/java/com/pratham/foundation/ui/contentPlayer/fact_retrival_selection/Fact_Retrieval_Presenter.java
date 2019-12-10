@@ -6,6 +6,7 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.pratham.foundation.database.BackupDatabase;
 import com.pratham.foundation.database.domain.Assessment;
+import com.pratham.foundation.database.domain.ContentProgress;
 import com.pratham.foundation.database.domain.KeyWords;
 import com.pratham.foundation.database.domain.Score;
 import com.pratham.foundation.interfaces.OnGameClose;
@@ -60,7 +61,7 @@ public class Fact_Retrieval_Presenter implements Fact_Retrieval_Contract.Fact_re
 
 
         try {
-            InputStream is = new FileInputStream(readingContentPath + "fact_retrial_word.json");
+            InputStream is = new FileInputStream(readingContentPath + "fact_retrial_click.json");
             int size = is.available();
             byte[] buffer = new byte[size];
             is.read(buffer);
@@ -121,7 +122,8 @@ public class Fact_Retrieval_Presenter implements Fact_Retrieval_Contract.Fact_re
 
     private int getLearntWordsCount() {
         int count = 0;
-        count = appDatabase.getKeyWordDao().checkWordCount(FC_Constants.currentStudentID, resId);
+        //count = appDatabase.getKeyWordDao().checkWordCount(FC_Constants.currentStudentID, resId);
+        count = appDatabase.getKeyWordDao().checkUniqueWordCount(FC_Constants.currentStudentID, resId);
         return count;
     }
 
@@ -138,28 +140,71 @@ public class Fact_Retrieval_Presenter implements Fact_Retrieval_Contract.Fact_re
         }
     }
 
-    public void addLearntWords(List<ScienceQuestionChoice> selectedAnsList) {
-        correctWordList = new ArrayList<>();
-        wrongWordList = new ArrayList<>();
-        int correctCnt = 0;
-        /* int scoredMarks = (int) checkAnswer(selectedAnsList);*/
-        if (selectedAnsList != null && !selectedAnsList.isEmpty()) {
+    public void setCompletionPercentage() {
+        try {
+            totalWordCount = quetionModelList.size();
+            learntWordCount = getLearntWordsCount();
+            String Label = "resourceProgress";
+            if (learntWordCount > 0) {
+                perc = ((float) learntWordCount / (float) totalWordCount) * 100;
+                addContentProgress(perc, Label);
+            } else {
+                addContentProgress(0, Label);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void addContentProgress(float perc, String label) {
+        try {
+            ContentProgress contentProgress = new ContentProgress();
+            contentProgress.setProgressPercentage("" + perc);
+            contentProgress.setResourceId("" + resId);
+            contentProgress.setSessionId("" + FC_Constants.currentSession);
+            contentProgress.setStudentId("" + FC_Constants.currentStudentID);
+            contentProgress.setUpdatedDateTime("" + FC_Utility.getCurrentDateTime());
+            contentProgress.setLabel("" + label);
+            contentProgress.setSentFlag(0);
+            appDatabase.getContentProgressDao().insert(contentProgress);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void addLearntWords(ArrayList<ScienceQuestionChoice> selectedAnsList) {
+        if (selectedAnsList != null && checkAttemptedornot(selectedAnsList)) {
+            // correctWordList = new ArrayList<>();
+            //  wrongWordList = new ArrayList<>();
+            //  int correctCnt = 0;
+            /* int scoredMarks = (int) checkAnswer(selectedAnsList);*/
+            int scoredMarks;
+            KeyWords keyWords = new KeyWords();
+            keyWords.setResourceId(resId);
+            keyWords.setSentFlag(0);
+            keyWords.setStudentId(FC_Constants.currentStudentID);
+            String key = questionModel.getTitle();
+            keyWords.setKeyWord(key);
+            keyWords.setWordType("word");
+            appDatabase.getKeyWordDao().insert(keyWords);
             for (int i = 0; i < selectedAnsList.size(); i++) {
-                if (selectedAnsList.get(i).getCorrectAnswer().equalsIgnoreCase(selectedAnsList.get(i).getUserAns())) {
-                    correctCnt++;
-                    KeyWords keyWords = new KeyWords();
-                    keyWords.setResourceId(resId);
-                    keyWords.setSentFlag(0);
-                    keyWords.setStudentId(FC_Constants.currentStudentID);
-                    String key = selectedAnsList.get(i).getCorrectAnswer();
-                    keyWords.setKeyWord(key);
-                    keyWords.setWordType("word");
-                    appDatabase.getKeyWordDao().insert(keyWords);
-                    GameConstatnts.playGameNext(context, GameConstatnts.FALSE, (OnGameClose) viewKeywords);
+                if (selectedAnsList.get(i).getUserAns() != null && !selectedAnsList.get(i).getUserAns().isEmpty()) {
+                    if (selectedAnsList.get(i).getCorrectAnswer().equalsIgnoreCase(selectedAnsList.get(i).getUserAns())) {
+                        scoredMarks = 10;
+                        selectedAnsList.get(i).setTrue(true);
+                    } else {
+                        scoredMarks = 0;
+                        selectedAnsList.get(i).setTrue(false);
+                    }
+                    addScore(Integer.parseInt(questionModel.getQid()), GameConstatnts.FACT_RETRIAL_CLICK, scoredMarks, 10,selectedAnsList.get(i).getStartTime(),selectedAnsList.get(i).getEndTime(), selectedAnsList.get(i).toString());
                 }
             }
-            int scoredMarks = correctCnt * 2;
-            addScore(Integer.parseInt(questionModel.getQid()), GameConstatnts.FACT_RETRIAL_CLICK, scoredMarks, 10, FC_Utility.getCurrentDateTime(), selectedAnsList.toString());
+            setCompletionPercentage();
+            if (!FC_Constants.isTest) {
+                viewKeywords.showResult(selectedAnsList);
+            } else {
+                GameConstatnts.playGameNext(context, GameConstatnts.FALSE, (OnGameClose) viewKeywords);
+            }
         } else {
             GameConstatnts.playGameNext(context, GameConstatnts.TRUE, (OnGameClose) viewKeywords);
         }
@@ -167,7 +212,16 @@ public class Fact_Retrieval_Presenter implements Fact_Retrieval_Contract.Fact_re
 
     }
 
-    public void addScore(int wID, String Word, int scoredMarks, int totalMarks, String resStartTime, String Label) {
+    private boolean checkAttemptedornot(List<ScienceQuestionChoice> selectedAnsList) {
+        for (int i = 0; i < selectedAnsList.size(); i++) {
+            if (selectedAnsList.get(i).getUserAns() != null && !selectedAnsList.get(i).getUserAns().isEmpty()) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public void addScore(int wID, String Word, int scoredMarks, int totalMarks, String resStartTime,String resEndTime, String Label) {
         try {
             String deviceId = appDatabase.getStatusDao().getValue("DeviceId");
             Score score = new Score();
@@ -179,7 +233,7 @@ public class Fact_Retrieval_Presenter implements Fact_Retrieval_Contract.Fact_re
             score.setStudentID(FC_Constants.currentStudentID);
             score.setStartDateTime(resStartTime);
             score.setDeviceID(deviceId.equals(null) ? "0000" : deviceId);
-            score.setEndDateTime(FC_Utility.getCurrentDateTime());
+            score.setEndDateTime(resEndTime);
             score.setLevel(FC_Constants.currentLevel);
             score.setLabel(Word + " - " + Label);
             score.setSentFlag(0);
@@ -196,7 +250,7 @@ public class Fact_Retrieval_Presenter implements Fact_Retrieval_Contract.Fact_re
                 assessment.setStudentIDa(FC_Constants.currentAssessmentStudentID);
                 assessment.setStartDateTimea(resStartTime);
                 assessment.setDeviceIDa(deviceId.equals(null) ? "0000" : deviceId);
-                assessment.setEndDateTime(FC_Utility.getCurrentDateTime());
+                assessment.setEndDateTime(resEndTime);
                 assessment.setLevela(FC_Constants.currentLevel);
                 assessment.setLabel("test: " + Label);
                 assessment.setSentFlag(0);

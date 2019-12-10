@@ -49,10 +49,11 @@ public class ResultAdapterFactRetrieval extends RecyclerView.Adapter<ResultAdapt
             myViewHolder.iv_correct_wrong_indicator.setImageResource(R.drawable.ic_close_white_24dp);
             myViewHolder.iv_correct_wrong_indicator.setBackgroundColor(context.getResources().getColor(R.color.colorRed));
         }
-        myViewHolder.correctAnswer.setText(scienceQuestionChoice.getAnsInPassage());
-        myViewHolder.userAnswer.setText(scienceQuestionChoice.getUserAns());
+        myViewHolder.correctAnswer.setText(scienceQuestionChoice.getCorrectAnswer());
+        if (scienceQuestionChoice.getUserAns() != null && !scienceQuestionChoice.getUserAns().isEmpty()) {
+            myViewHolder.userAnswer.setText(scienceQuestionChoice.getUserAns());
+        }
     }
-
 
 
     @Override

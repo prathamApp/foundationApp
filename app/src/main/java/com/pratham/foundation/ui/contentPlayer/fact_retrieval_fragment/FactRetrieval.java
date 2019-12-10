@@ -90,7 +90,7 @@ public class FactRetrieval extends Fragment implements FactRetrievalContract.Fac
     private String startTime;
     private ScienceQuestion questionModel;
     //private String REGEXF="(?<=\\.\\s)|(?<=[?!]\\s)|(?<=\\|\\s)";
-    private String REGEXF="(?<=\\.\\s)|(?<=[?!]\\s)";
+    private String REGEXF="(?<=\\.\\s)|(?<=[?!]\\s)|(?<=।)|(?<=\\|)";
 
     private DragSelectionProcessor.Mode mMode = DragSelectionProcessor.Mode.Simple;
     private DragSelectTouchListener mDragSelectTouchListener = null;
@@ -130,6 +130,7 @@ public class FactRetrieval extends Fragment implements FactRetrievalContract.Fac
     public void showParagraph(ScienceQuestion questionModel) {
         this.questionModel = questionModel;
         questionModel.setQuestion(questionModel.getQuestion().replace("\n", " "));
+        questionModel.setQuestion(questionModel.getQuestion().replaceAll("\\s+", " "));
         //this.para = questionModel.getQuestion();
         this.selectedQuetion = questionModel.getLstquestionchoice();
         startTime = FC_Utility.getCurrentDateTime();
@@ -373,7 +374,7 @@ public class FactRetrieval extends Fragment implements FactRetrievalContract.Fac
             show_answer.setText("hide Answer");
             bottom_control_container.setVisibility(View.INVISIBLE);
             mAdapter.deselectAll();
-            String correctAns = selectedQuetion.get(index).getCorrectAnswer().replace("\n", " ");
+            String correctAns = selectedQuetion.get(index).getAnsInPassage().trim().replace("\n", " ");
             String[] correctAnsArr = correctAns.trim().split(REGEXF);
             for (int correctIndex = 0; correctIndex < correctAnsArr.length; correctIndex++) {
                 float max, temp = 0;
@@ -387,7 +388,7 @@ public class FactRetrieval extends Fragment implements FactRetrievalContract.Fac
                     }
                 }
                 if (start > -1) {
-                    List tempList = Arrays.asList(sentences[start].split(" "));
+                    List tempList = Arrays.asList(sentences[start].trim().split(" "));
                     int ansStart = Collections.indexOfSubList(mAdapter.datalist, tempList);
 
                     mAdapter.selectRange(ansStart, ansStart + tempList.size() - 1, true);

@@ -41,6 +41,7 @@ import com.pratham.foundation.R;
 import com.pratham.foundation.customView.GifView;
 import com.pratham.foundation.customView.SansButton;
 import com.pratham.foundation.customView.SansTextView;
+import com.pratham.foundation.customView.fancy_loaders_library.model.Line;
 import com.pratham.foundation.database.BackupDatabase;
 import com.pratham.foundation.database.domain.Assessment;
 import com.pratham.foundation.database.domain.ContentProgress;
@@ -133,6 +134,9 @@ public class DoingFragment extends Fragment implements STT_Result_New.sttView,On
     @BindView(R.id.btn_read_mic)
     ImageButton ib_mic;
 
+   /* @BindView(R.id.bottom_bar1)
+    LinearLayout bottom_control_container;*/
+
     String fileName;
     String questionPath;
     private Context context;
@@ -158,6 +162,7 @@ public class DoingFragment extends Fragment implements STT_Result_New.sttView,On
     public Dialog myLoadingDialog;
     private String speechStartTime;
     boolean dialogFlg = false;
+
     public DoingFragment() {
         // Required empty public constructor
     }
@@ -302,6 +307,11 @@ public class DoingFragment extends Fragment implements STT_Result_New.sttView,On
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         ButterKnife.bind(this, view);
+
+        //hide camera controls for reading stt game
+        if(jsonName.equalsIgnoreCase(GameConstatnts.READING_STT)){
+            capture.setVisibility(View.GONE);
+        }
         preview.setVisibility(View.GONE);
         setVideoQuestion();
     }
@@ -801,6 +811,7 @@ public class DoingFragment extends Fragment implements STT_Result_New.sttView,On
     }*/
     @Override
     public void gameClose() {
+        //add quetions only attempted (correct or wrong any)
         if(scienceQuestionChoices!=null && !scienceQuestionChoices.isEmpty()) {
             for (int i = 0; i <scienceQuestionChoices.size() ; i++) {
                 if(scienceQuestionChoices.get(i).getUserAns()!=null && !scienceQuestionChoices.get(i).getUserAns().trim().isEmpty()){

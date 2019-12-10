@@ -6,7 +6,7 @@
     android:background="@drawable/bg_anim_fourth_layer"
     android:orientation="vertical">
 
-    <com.pratham.foundation.customView.SansTextView
+   <!-- <com.pratham.foundation.customView.SansTextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Identifiy Keywords"
@@ -14,27 +14,24 @@
         android:padding="@dimen/_5sdp"
         android:textAlignment="center"
         android:textColor="@color/white"
-        android:textSize="30sp" />
-    <ScrollView
+        android:textSize="30sp" />-->
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="60dp"/>
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_margin="20dp"
         android:layout_weight="1"
-        android:elevation="5dp"
-        android:background="@drawable/dialog_bg"
-        android:padding="10dp">
+        android:elevation="5dp">
 
         <com.pratham.foundation.customView.SansTextViewBold
             android:id="@+id/quetion"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:scrollbars="vertical"
-            android:gravity="center"
-            android:paddingTop="@dimen/_10sdp"
-            android:paddingBottom="@dimen/_10sdp"
-            android:layout_gravity="center"
-            android:textSize="25sp"/>
-    </ScrollView>
+            android:layout_centerInParent="true"
+            style="@style/question" />
+    </RelativeLayout>
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
@@ -42,6 +39,7 @@
         android:layout_marginTop="@dimen/_10sdp"
         android:layout_weight="3"
         android:background="@drawable/dialog_bg"
+        android:layout_marginBottom="@dimen/_20sdp"
         android:elevation="5dp">
 
         <ScrollView
@@ -102,7 +100,7 @@
 
     </RelativeLayout>-->
 
-    <RelativeLayout
+  <!--  <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
@@ -137,6 +135,39 @@
             android:layout_alignParentEnd="true"
             android:text="next" />
 
-    </RelativeLayout>
-
+    </RelativeLayout>-->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        <com.pratham.foundation.customView.SansButton
+            android:id="@+id/clear_selection"
+            android:layout_width="0dp"
+            android:layout_height="50dp"
+            android:maxWidth="@dimen/_50sdp"
+            android:layout_weight="1"
+            android:layout_centerVertical="true"
+            android:adjustViewBounds="true"
+            android:textColor="@color/white"
+            android:background="@drawable/red_button"
+            android:text="clear"
+            style="@style/submitbtn"/>
+        <com.pratham.foundation.customView.SansButton
+            android:id="@+id/show_answer"
+            android:layout_width="0dp"
+            android:layout_height="50dp"
+            android:layout_weight="1"
+            android:background="@drawable/yellow_button"
+            android:text="show answer"
+            style="@style/submitbtn"/>
+    </LinearLayout>
+    <include
+        android:id="@+id/bottom_bar"
+        layout="@layout/bottom_control_panel_v2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_gravity="bottom|center_horizontal"
+        android:layout_marginBottom="1dp"
+        android:gravity="bottom|center_horizontal" />
 </LinearLayout>

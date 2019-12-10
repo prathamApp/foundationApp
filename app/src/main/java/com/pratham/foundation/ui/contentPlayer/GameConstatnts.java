@@ -21,6 +21,7 @@ import com.pratham.foundation.modalclasses.EventMessage;
 import com.pratham.foundation.ui.contentPlayer.dialogs.InstructionDialog;
 import com.pratham.foundation.ui.contentPlayer.doing.DoingFragment;
 import com.pratham.foundation.ui.contentPlayer.fact_retrieval_fragment.FactRetrieval_;
+import com.pratham.foundation.ui.contentPlayer.fact_retrival_selection.Fact_Retrieval_Fragment_;
 import com.pratham.foundation.ui.contentPlayer.fillInTheBlanks.FillInTheBlanksFragment;
 import com.pratham.foundation.ui.contentPlayer.keywords_identification.KeywordsIdentificationFragment_;
 import com.pratham.foundation.ui.contentPlayer.keywords_mapping.KeywordMappingFragment_;
@@ -231,6 +232,11 @@ public class GameConstatnts implements ShowInstruction {
                 FC_Utility.showFragment((Activity) context, new FactRetrieval_(), R.id.RL_CPA,
                         bundle, FactRetrieval_.class.getSimpleName());
                 break;
+            case GameConstatnts.
+                    FACT_RETRIAL_CLICK:
+                FC_Utility.showFragment((Activity) context, new Fact_Retrieval_Fragment_(), R.id.RL_CPA,
+                        bundle, FactRetrieval_.class.getSimpleName());
+                break;
             case GameConstatnts.KEYWORD_IDENTIFICATION:
                 FC_Utility.showFragment((Activity) context, new KeywordsIdentificationFragment_(), R.id.RL_CPA,
                         bundle, KeywordsIdentificationFragment_.class.getSimpleName());
@@ -265,10 +271,10 @@ public class GameConstatnts implements ShowInstruction {
                         bundle, multipleChoiceFragment.class.getSimpleName());
                 break;
 
-            case GameConstatnts.READING_STT:
+          /*  case GameConstatnts.READING_STT:
                 FC_Utility.showFragment((Activity) context, new ReadingFragment(), R.id.RL_CPA,
                         bundle, ReadingFragment.class.getSimpleName());
-                break;
+                break;*/
 
             case "109":
                 FC_Utility.showFragment((Activity) context, new TrueFalseFragment(), R.id.RL_CPA,
@@ -288,6 +294,7 @@ public class GameConstatnts implements ShowInstruction {
             case GameConstatnts.DOING_ACT_READ:
             case GameConstatnts.DOING_ACT_VIDEO:
             case GameConstatnts.LetterWriting:
+            case GameConstatnts.READING_STT:
                 FC_Utility.showFragment((Activity) context, new DoingFragment(), R.id.RL_CPA,
                         bundle, DoingFragment.class.getSimpleName());
                 break;
