@@ -16,7 +16,6 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.ImageButton;
-import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -54,7 +53,7 @@ public class ReadingRhymesActivity extends BaseActivity
     ReadingRhymesContract.ReadingRhymesPresenter presenter;
 
     @ViewById(R.id.story_ll)
-    LinearLayout story_ll;
+    RelativeLayout story_ll;
     @ViewById(R.id.rl_card1)
     RelativeLayout cardLayout1;
     @ViewById(R.id.rl_card2)

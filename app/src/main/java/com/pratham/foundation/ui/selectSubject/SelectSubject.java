@@ -102,7 +102,7 @@ public class SelectSubject extends BaseActivity implements
             currentSubjectFolder = "LS_Science";
 
         gameFolderPath = "/.FCA/"+currentSubjectFolder+"/Game";
-        FastSave.getInstance().saveString(FC_Constants.LANGUAGE_FOLDER, currentSubjectFolder);
+        FastSave.getInstance().saveString(FC_Constants.CURRENT_FOLDER_NAME, currentSubjectFolder);
         FastSave.getInstance().saveString(FC_Constants.CURRENT_ROOT_NODE, contentTableObj.getNodeId());
         Intent intent = new Intent(context, HomeActivity_.class);
         intent.putExtra("nodeId", contentTableObj.getNodeId());

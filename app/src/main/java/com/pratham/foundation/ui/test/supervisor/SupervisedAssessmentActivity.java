@@ -3,9 +3,7 @@ package com.pratham.foundation.ui.test.supervisor;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
-import android.content.res.Resources;
 import android.graphics.Bitmap;
-import android.graphics.Rect;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
@@ -15,7 +13,6 @@ import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
-import android.util.TypedValue;
 import android.view.View;
 import android.view.WindowManager;
 import android.view.animation.Animation;
@@ -27,13 +24,13 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
-
 import com.pratham.foundation.ApplicationClass;
 import com.pratham.foundation.R;
 import com.pratham.foundation.database.AppDatabase;
 import com.pratham.foundation.database.BackupDatabase;
 import com.pratham.foundation.database.domain.Student;
 import com.pratham.foundation.database.domain.SupervisorData;
+import com.pratham.foundation.services.shared_preferences.FastSave;
 import com.pratham.foundation.ui.test.assessment_type.TestStudentAdapter;
 import com.pratham.foundation.ui.test.assessment_type.TestStudentClicked;
 import com.pratham.foundation.utility.FC_Constants;
@@ -48,7 +45,10 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 import static com.pratham.foundation.ApplicationClass.isTablet;
+import static com.pratham.foundation.utility.FC_Constants.CURRENT_ASSESSMENT_STUDENT_ID;
 import static com.pratham.foundation.utility.FC_Constants.assessmentSession;
+import static com.pratham.foundation.utility.FC_Constants.currentAssessmentStudentID;
+import static com.pratham.foundation.utility.FC_Constants.currentsupervisorID;
 
 
 public class SupervisedAssessmentActivity extends AppCompatActivity implements TestStudentClicked {
@@ -94,11 +94,13 @@ public class SupervisedAssessmentActivity extends AppCompatActivity implements T
                     attendence_layout.setVisibility(View.VISIBLE);
                     getStudents();
                 } else {
-                    FC_Constants.currentAssessmentStudentID = FC_Constants.currentStudentID;
+                    currentAssessmentStudentID = FC_Constants.currentStudentID;
+                    FastSave.getInstance().saveString(CURRENT_ASSESSMENT_STUDENT_ID, currentAssessmentStudentID);
                     submitSupervisorData();
                 }
             } else {
-                FC_Constants.currentAssessmentStudentID = FC_Constants.currentStudentID;
+                currentAssessmentStudentID = FC_Constants.currentStudentID;
+                FastSave.getInstance().saveString(CURRENT_ASSESSMENT_STUDENT_ID, currentAssessmentStudentID);
                 submitSupervisorData();
             }
         } else {
@@ -153,7 +155,7 @@ public class SupervisedAssessmentActivity extends AppCompatActivity implements T
                 if (FC_Constants.GROUP_LOGIN) {
                     getStudents();
                 }else {
-                    FC_Constants.currentAssessmentStudentID = FC_Constants.currentStudentID;
+                    currentAssessmentStudentID = FC_Constants.currentStudentID;
                     submitSupervisorData();
                 }
             } else Toast.makeText(this, "Enter supervisor name", Toast.LENGTH_SHORT).show();
@@ -185,8 +187,8 @@ public class SupervisedAssessmentActivity extends AppCompatActivity implements T
                     BackupDatabase.backup(SupervisedAssessmentActivity.this);
 
                     AppDatabase.getDatabaseInstance(SupervisedAssessmentActivity.this).getStatusDao().updateValue("AssessmentSession", "" + assessmentSession);
-                    FC_Constants.currentsupervisorID = "" + supervisorID;
-
+                    currentsupervisorID = "" + supervisorID;
+                    FastSave.getInstance().saveString(FC_Constants.CURRENT_SUPERVISOR_ID, currentsupervisorID);
 //                    getStudents();
                     // goToAssessment();
                     return null;
@@ -235,7 +237,7 @@ public class SupervisedAssessmentActivity extends AppCompatActivity implements T
     }
 
     private void setStudentsToRecycler() {
-        recyclerView = (RecyclerView) findViewById(R.id.test_attendnce_recycler);
+        recyclerView = findViewById(R.id.test_attendnce_recycler);
         testStudentAdapter = new TestStudentAdapter(this, studentTableList, this);
         RecyclerView.LayoutManager mLayoutManager = new GridLayoutManager(this, 1);
         recyclerView.setLayoutManager(mLayoutManager);
@@ -281,7 +283,7 @@ public class SupervisedAssessmentActivity extends AppCompatActivity implements T
 
     @Override
     public void onStudentClicked(int position, String studentId) {
-        FC_Constants.currentAssessmentStudentID = "" + studentId;
+        currentAssessmentStudentID = "" + studentId;
         submitSupervisorData();
     }
 

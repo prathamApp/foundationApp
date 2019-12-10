@@ -361,11 +361,13 @@ public class TestFragment extends Fragment implements TestContract.TestView,
 
     @Click(R.id.btn_test_dw)
     void onDownLoadClick() {
-        FC_Constants.isPractice=false;
-        resName = rootLevelList.get(currentLevel).getNodeTitle();
-        resServerImageName = rootLevelList.get(currentLevel).getNodeServerImage();
-        downloadType = FC_Constants.TEST_DOWNLOAD;
-        presenter.downloadResource(rootLevelList.get(currentLevel).getNodeId());
+        try {
+            FC_Constants.isPractice = false;
+            resName = rootLevelList.get(currentLevel).getNodeTitle();
+            resServerImageName = rootLevelList.get(currentLevel).getNodeServerImage();
+            downloadType = FC_Constants.TEST_DOWNLOAD;
+            presenter.downloadResource(rootLevelList.get(currentLevel).getNodeId());
+        }catch (Exception e){e.printStackTrace();}
     }
 
     @Override
@@ -548,13 +550,18 @@ public class TestFragment extends Fragment implements TestContract.TestView,
     @UiThread
     @Override
     public void hideTestDownloadBtn() {
-        btn_test_dw.setVisibility(View.GONE);
+        try {
+            btn_test_dw.setVisibility(View.GONE);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     @UiThread
     @Override
     public void initializeTheIndex() {
-        my_recycler_view.removeAllViews();
+        try {
+            my_recycler_view.removeAllViews();
         if (testList.size() > 0) {
             if (testAdapter == null) {
                 testAdapter = new TestAdapter(getActivity(), testList, TestFragment.this, TestFragment.this);
@@ -566,6 +573,7 @@ public class TestFragment extends Fragment implements TestContract.TestView,
                 testAdapter.notifyDataSetChanged();
         } else
             btn_test_dw.setVisibility(View.VISIBLE);
+        }catch (Exception e){e.printStackTrace();}
         dismissLoadingDialog();
         //        testAdapter.initializeIndex();
     }
@@ -729,7 +737,8 @@ public class TestFragment extends Fragment implements TestContract.TestView,
             myLoadingDialog.setCanceledOnTouchOutside(false);
 //        myLoadingDialog.setCancelable(false);
             myLoadingDialog.show();
-        }}catch (Exception e){e.printStackTrace();}
+        }
+        }catch (Exception e){e.printStackTrace();}
     }
 
     @Override

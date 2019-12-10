@@ -315,9 +315,13 @@ public class LearningFragment extends Fragment implements LearningContract.Learn
 
     @Override
     public void dismissLoadingDialog() {
-        if (myLoadingDialog != null) {
-            loaderVisible = false;
-            myLoadingDialog.dismiss();
+        try {
+            if (myLoadingDialog != null && myLoadingDialog.isShowing()) {
+                loaderVisible = false;
+                myLoadingDialog.dismiss();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 

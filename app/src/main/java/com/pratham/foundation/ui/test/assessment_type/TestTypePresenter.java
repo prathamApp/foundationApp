@@ -14,6 +14,7 @@ import com.pratham.foundation.database.domain.ContentTable;
 import com.pratham.foundation.database.domain.Session;
 import com.pratham.foundation.database.domain.Student;
 import com.pratham.foundation.database.domain.SupervisorData;
+import com.pratham.foundation.services.shared_preferences.FastSave;
 import com.pratham.foundation.utility.FC_Constants;
 import com.pratham.foundation.utility.FC_Utility;
 
@@ -22,7 +23,10 @@ import java.io.FileOutputStream;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.pratham.foundation.utility.FC_Constants.ASSESSMENT_SESSION;
+import static com.pratham.foundation.utility.FC_Constants.CURRENT_SUPERVISOR_ID;
 import static com.pratham.foundation.utility.FC_Constants.assessmentSession;
+import static com.pratham.foundation.utility.FC_Constants.currentsupervisorID;
 
 
 public class TestTypePresenter implements TestTypeContract.TestTypePresenter {
@@ -44,6 +48,7 @@ public class TestTypePresenter implements TestTypeContract.TestTypePresenter {
             protected Object doInBackground(Object[] objects) {
                 try {
                     assessmentSession = "test-" + ApplicationClass.getUniqueID();
+                    FastSave.getInstance().saveString(ASSESSMENT_SESSION, assessmentSession);
                     SupervisorData supervisorData = new SupervisorData();
                     supervisorData.setSupervisorId(supervisorID);
                     supervisorData.setSupervisorName(sName);
@@ -65,7 +70,8 @@ public class TestTypePresenter implements TestTypeContract.TestTypePresenter {
                     startSesion.setFromDate(timerTime);
                     startSesion.setToDate("NA");
                     startSesion.setSentFlag(0);
-                    FC_Constants.currentsupervisorID = "" + supervisorID;
+                    currentsupervisorID = "" + supervisorID;
+                    FastSave.getInstance().saveString(CURRENT_SUPERVISOR_ID, currentsupervisorID);
                     AppDatabase.appDatabase.getSessionDao().insert(startSesion);
                     return null;
                 } catch (Exception e) {

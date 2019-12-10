@@ -21,6 +21,7 @@ import com.pratham.foundation.interfaces.API_Content_Result;
 import com.pratham.foundation.modalclasses.CertificateModelClass;
 import com.pratham.foundation.modalclasses.Modal_DownloadAssessment;
 import com.pratham.foundation.modalclasses.Modal_DownloadContent;
+import com.pratham.foundation.services.shared_preferences.FastSave;
 import com.pratham.foundation.ui.contentPlayer.web_view.WebViewActivity;
 import com.pratham.foundation.utility.FC_Constants;
 import com.pratham.foundation.utility.FC_Utility;
@@ -46,6 +47,7 @@ import java.util.Comparator;
 import java.util.List;
 
 import static com.pratham.foundation.ui.home_screen.HomeActivity.sub_nodeId;
+import static com.pratham.foundation.utility.FC_Constants.CURRENT_FOLDER_NAME;
 import static com.pratham.foundation.utility.FC_Constants.GROUP_LOGIN;
 import static com.pratham.foundation.utility.FC_Constants.assessmentSession;
 import static com.pratham.foundation.utility.FC_Constants.currentGroup;
@@ -363,16 +365,28 @@ public class TestPresenter implements TestContract.TestPresenter, API_Content_Re
             JSONArray jsonArray = new JSONArray(jsonStr);
             for(int i=0; i<jsonArray.length(); i++) {
                 String subj = ((JSONObject) jsonArray.get(i)).get("storyLanguage").toString();
-
-
+                if (subj.equalsIgnoreCase(FastSave.getInstance().getString(CURRENT_FOLDER_NAME,""))) {
+                    returnCodeList = ((JSONObject) jsonArray.get(i)).getJSONArray("CodeList");
+                    return  returnCodeList;
+                }
+/*
+                } else if (subj.equalsIgnoreCase("Maths")) {
+                    currentSubjectFolder = "Maths";
+                } else if (subj.equalsIgnoreCase("English")) {
+                    currentSubjectFolder = "English";
+                } else if (subj.equalsIgnoreCase("H Science")) {
+                    currentSubjectFolder = "H_Science";
+                }else
+                    currentSubjectFolder = "LS_Science";
+*/
             }
-            JSONObject jsonObj = new JSONObject(jsonStr);
-            returnCodeList = jsonObj.getJSONArray("CodeList");
+//            JSONObject jsonObj = new JSONObject(jsonStr);
+//            returnCodeList = jsonObj.getJSONArray("CodeList");
         } catch (Exception e) {
             e.printStackTrace();
             return null;
         }
-        return returnCodeList;
+        return null;
     }
 
     @Override

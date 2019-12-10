@@ -2,16 +2,13 @@ package com.pratham.foundation.ui.test.assessment_type;
 
 import android.content.Context;
 import android.content.Intent;
-import android.content.res.Resources;
 import android.graphics.Bitmap;
-import android.graphics.Rect;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
-import android.util.TypedValue;
 import android.view.View;
 import android.view.WindowManager;
 import android.view.animation.Animation;
@@ -23,13 +20,13 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-
 import com.pratham.foundation.ApplicationClass;
+import com.pratham.foundation.BaseActivity;
 import com.pratham.foundation.R;
 import com.pratham.foundation.customView.GridSpacingItemDecoration;
 import com.pratham.foundation.database.domain.Student;
+import com.pratham.foundation.services.shared_preferences.FastSave;
 import com.pratham.foundation.ui.test.certificate.CertificateActivity;
-import com.pratham.foundation.BaseActivity;
 import com.pratham.foundation.utility.FC_Constants;
 
 import java.util.ArrayList;
@@ -39,6 +36,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
+import static com.pratham.foundation.utility.FC_Constants.CURRENT_ASSESSMENT_STUDENT_ID;
 import static com.pratham.foundation.utility.FC_Utility.dpToPx;
 import static com.pratham.foundation.utility.SplashSupportActivity.ButtonClickSound;
 
@@ -84,7 +82,7 @@ public class TestTypeActivity extends BaseActivity implements TestTypeContract.T
         formFlg = false;
         studentTableList = new ArrayList<>();
         form_layout.setVisibility(View.GONE);
-        recyclerView = (RecyclerView) findViewById(R.id.test_attendnce_recycler);
+        recyclerView = findViewById(R.id.test_attendnce_recycler);
         testStudentAdapter = new TestStudentAdapter(this, studentTableList, this);
         RecyclerView.LayoutManager mLayoutManager = new GridLayoutManager(this, 1);
         recyclerView.setLayoutManager(mLayoutManager);
@@ -154,8 +152,10 @@ public class TestTypeActivity extends BaseActivity implements TestTypeContract.T
             } else {
                 AnimateCamButtom(this, iv_image);
             }
-        }else
+        }else {
+            FastSave.getInstance().saveString(CURRENT_ASSESSMENT_STUDENT_ID, "NA");
             presenter.AddSupervisor("NA", "NA", "NA");
+        }
     }
 
     public void AnimateCamButtom(Context c, final ImageView imageView) {

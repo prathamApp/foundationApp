@@ -120,7 +120,6 @@ public class FC_Constants {
     public static final String MALAYALAM = "Malayalam";
     public static final String ASSAMESE = "Assamese";
     public static final String LANGUAGE = "language";
-    public static final String LANGUAGE_FOLDER = "language_folder";
     public static int READ_BUFFER_SIZE = 1024 * 4;
     public static String jsonFolderPath = "JsonFiles/";
     public static final String APK = "apk";
@@ -137,9 +136,11 @@ public class FC_Constants {
     public static final String CURRENT_STUDENT_NAME = "current_student_name";
     public static final String CURRENT_ROOT_NODE = "current_root_node";
     public static final String CURRENT_SESSION = "current_session";
+    public static final String CURRENT_LEVEL = "current_level";
     public static final String CURRENT_ASSESSMENT_STUDENT_ID = "current_assessment_student_id";
     public static final String CURRENT_SUPERVISOR_ID = "current_supervisor_id";
     public static final String ASSESSMENT_SESSION = "assessment_session";
+    public static final String CURRENT_FOLDER_NAME = "current_folder_name";
 
     public static String currentStudentID;
     public static String currentAssessmentStudentID;

@@ -59,6 +59,9 @@ import static com.pratham.foundation.utility.FC_Constants.LEVEL_CHANGED;
 import static com.pratham.foundation.utility.FC_Constants.LEVEL_TEST_GIVEN;
 import static com.pratham.foundation.utility.FC_Constants.LOGIN_MODE;
 import static com.pratham.foundation.utility.FC_Constants.QR_GROUP_MODE;
+import static com.pratham.foundation.utility.FC_Constants.currentLevel;
+import static com.pratham.foundation.utility.FC_Constants.currentSession;
+import static com.pratham.foundation.utility.FC_Constants.currentStudentID;
 import static com.pratham.foundation.utility.FC_Constants.currentSubject;
 import static com.pratham.foundation.utility.FC_Constants.dialog_btn_cancel;
 import static com.pratham.foundation.utility.FC_Constants.dialog_btn_exit;
@@ -137,6 +140,12 @@ public class HomeActivity extends BaseActivity implements LevelChanged {
         setLevel();
         displayProfileName();
         displayProfileImage();
+
+        currentStudentID = FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, "");
+        sub_nodeId = FastSave.getInstance().getString(FC_Constants.CURRENT_ROOT_NODE, "");
+        currentSession = FastSave.getInstance().getString(FC_Constants.CURRENT_SESSION, "");
+        currentSession = FastSave.getInstance().getString(FC_Constants.CURRENT_SESSION, "");
+        currentLevel = FastSave.getInstance().getInt(FC_Constants.CURRENT_LEVEL, 0);
     }
 
     private void changeBackground(String sub_name) {
@@ -155,7 +164,7 @@ public class HomeActivity extends BaseActivity implements LevelChanged {
         String sImage;
         try {
             if (!GROUP_LOGIN)
-                sImage = AppDatabase.getDatabaseInstance(this).getStudentDao().getStudentAvatar(FC_Constants.currentStudentID);
+                sImage = AppDatabase.getDatabaseInstance(this).getStudentDao().getStudentAvatar(FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""));
             else
                 sImage = "group_icon";
         } catch (Exception e) {
@@ -179,9 +188,13 @@ public class HomeActivity extends BaseActivity implements LevelChanged {
         String profileName = "QR Group";
         try {
             if (LOGIN_MODE.equalsIgnoreCase(GROUP_MODE))
-                profileName = AppDatabase.getDatabaseInstance(this).getGroupsDao().getGroupNameByGrpID(FC_Constants.currentStudentID);
+                profileName = AppDatabase.getDatabaseInstance(this)
+                        .getGroupsDao().getGroupNameByGrpID(FastSave.getInstance()
+                                .getString(FC_Constants.CURRENT_STUDENT_ID, ""));
             else if (!LOGIN_MODE.equalsIgnoreCase(QR_GROUP_MODE)) {
-                profileName = AppDatabase.getDatabaseInstance(this).getStudentDao().getFullName(FC_Constants.currentStudentID);
+                profileName = AppDatabase.getDatabaseInstance(this)
+                        .getStudentDao().getFullName(FastSave.getInstance()
+                                .getString(FC_Constants.CURRENT_STUDENT_ID, ""));
             }
 
             if (LOGIN_MODE.equalsIgnoreCase(INDIVIDUAL_MODE))
@@ -215,7 +228,8 @@ public class HomeActivity extends BaseActivity implements LevelChanged {
 
         submarine.setSubmarineItemClickListener((position, submarineItem) -> {
             FC_Constants.currentLevel = position;
-            switch (position) {
+            FastSave.getInstance().saveInt(FC_Constants.CURRENT_LEVEL, position);
+        switch (position) {
                 case 0:
                     iv_level.setImageResource(R.drawable.level_1);
                     break;
@@ -235,7 +249,7 @@ public class HomeActivity extends BaseActivity implements LevelChanged {
             EventMessage eventMessage = new EventMessage();
             eventMessage.setMessage(LEVEL_CHANGED);
             EventBus.getDefault().post(eventMessage);
-            changeBGNew(FC_Constants.currentLevel);
+            changeBGNew(FastSave.getInstance().getInt(FC_Constants.CURRENT_LEVEL, position));
             submarine.dip();
         });
 
@@ -312,6 +326,10 @@ public class HomeActivity extends BaseActivity implements LevelChanged {
         profileTab.setText("Profile");
         profileTab.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.ic_profile, 0, 0);
 
+        TextView testTab = (TextView) LayoutInflater.from(this).inflate(R.layout.custom_tab_text, null);
+        testTab.setText("Test");
+        testTab.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.ic_test, 0, 0);
+
         if (LOGIN_MODE.contains("group")) {
             tabLayout.getTabAt(0).setCustomView(learningTab);
             tabLayout.getTabAt(1).setCustomView(practiceTab);
@@ -320,10 +338,6 @@ public class HomeActivity extends BaseActivity implements LevelChanged {
             tabLayout.getTabAt(1).setCustomView(learningTab);
         }
         if (currentSubject.equalsIgnoreCase("english")) {
-            TextView testTab = (TextView) LayoutInflater.from(this).inflate(R.layout.custom_tab_text, null);
-            testTab.setText("Test");
-            testTab.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.ic_test, 0, 0);
-
             TextView funTab = (TextView) LayoutInflater.from(this).inflate(R.layout.custom_tab_text, null);
             funTab.setText("Fun");
             funTab.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.ic_fun, 0, 0);
@@ -332,12 +346,17 @@ public class HomeActivity extends BaseActivity implements LevelChanged {
             tabLayout.getTabAt(3).setCustomView(funTab);
             tabLayout.getTabAt(4).setCustomView(profileTab);
         } else {
-            tabLayout.getTabAt(2).setCustomView(profileTab);
+            tabLayout.getTabAt(2).setCustomView(testTab);
+            tabLayout.getTabAt(3).setCustomView(profileTab);
         }
 
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
+/*                if (tab.getText().toString().equalsIgnoreCase("Learning")) {
+                    FC_Constants.isTest = true;
+                }if (tab.getText().toString().equalsIgnoreCase("Practice")) {
+                }*/
                 if (tab.getText().toString().equalsIgnoreCase("Test")) {
                     FC_Constants.isTest = true;
                     showTestTypeSelectionDialog();
@@ -466,16 +485,16 @@ public class HomeActivity extends BaseActivity implements LevelChanged {
         if (LOGIN_MODE.contains("group")) {
             adapter.addFrag(new LearningFragment_(), "Learning");
             adapter.addFrag(new PracticeFragment_(), "Practice");
+            adapter.addFrag(new TestFragment_(), "Test");
             if (currentSubject.equalsIgnoreCase("english")) {
-                adapter.addFrag(new TestFragment_(), "Test");
                 adapter.addFrag(new FunFragment_(), "Fun");
             }
             adapter.addFrag(new ProfileFragment_(), "Profile");
         } else {
             adapter.addFrag(new PracticeFragment_(), "Practice");
             adapter.addFrag(new LearningFragment_(), "Learning");
+            adapter.addFrag(new TestFragment_(), "Test");
             if (currentSubject.equalsIgnoreCase("english")) {
-                adapter.addFrag(new TestFragment_(), "Test");
                 adapter.addFrag(new FunFragment_(), "Fun");
             }
             adapter.addFrag(new ProfileFragment_(), "Profile");
