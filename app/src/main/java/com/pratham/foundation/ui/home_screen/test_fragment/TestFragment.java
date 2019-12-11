@@ -687,6 +687,9 @@ public class TestFragment extends Fragment implements TestContract.TestView,
             case 3:
                 jsonName = "TestSubSeniorJson.json";
                 break;
+            case 4:
+                jsonName = "TestSeniorJson.json";
+                break;
         }
         return jsonName;
     }

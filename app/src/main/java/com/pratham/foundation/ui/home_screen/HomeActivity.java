@@ -346,8 +346,7 @@ public class HomeActivity extends BaseActivity implements LevelChanged {
             tabLayout.getTabAt(3).setCustomView(funTab);
             tabLayout.getTabAt(4).setCustomView(profileTab);
         } else {
-            tabLayout.getTabAt(2).setCustomView(testTab);
-            tabLayout.getTabAt(3).setCustomView(profileTab);
+            tabLayout.getTabAt(2).setCustomView(profileTab);
         }
 
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
@@ -485,16 +484,16 @@ public class HomeActivity extends BaseActivity implements LevelChanged {
         if (LOGIN_MODE.contains("group")) {
             adapter.addFrag(new LearningFragment_(), "Learning");
             adapter.addFrag(new PracticeFragment_(), "Practice");
-            adapter.addFrag(new TestFragment_(), "Test");
             if (currentSubject.equalsIgnoreCase("english")) {
+                adapter.addFrag(new TestFragment_(), "Test");
                 adapter.addFrag(new FunFragment_(), "Fun");
             }
             adapter.addFrag(new ProfileFragment_(), "Profile");
         } else {
             adapter.addFrag(new PracticeFragment_(), "Practice");
             adapter.addFrag(new LearningFragment_(), "Learning");
-            adapter.addFrag(new TestFragment_(), "Test");
             if (currentSubject.equalsIgnoreCase("english")) {
+                adapter.addFrag(new TestFragment_(), "Test");
                 adapter.addFrag(new FunFragment_(), "Fun");
             }
             adapter.addFrag(new ProfileFragment_(), "Profile");
