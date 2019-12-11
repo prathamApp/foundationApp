@@ -388,7 +388,7 @@ public class FactRetrieval extends Fragment implements FactRetrievalContract.Fac
                     }
                 }
                 if (start > -1) {
-                    List tempList = Arrays.asList(sentences[start].trim().split(" "));
+                    List tempList = Arrays.asList(sentences[start].replace("”","").trim().split(" "));
                     int ansStart = Collections.indexOfSubList(mAdapter.datalist, tempList);
 
                     mAdapter.selectRange(ansStart, ansStart + tempList.size() - 1, true);
