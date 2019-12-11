@@ -4,13 +4,13 @@ import android.content.Context;
 import android.util.Log;
 
 import com.google.gson.Gson;
-import com.pratham.foundation.ApplicationClass;
 import com.pratham.foundation.database.AppDatabase;
 import com.pratham.foundation.database.BackupDatabase;
 import com.pratham.foundation.database.domain.ContentProgress;
 import com.pratham.foundation.database.domain.KeyWords;
 import com.pratham.foundation.database.domain.Score;
 import com.pratham.foundation.modalclasses.ModalRhymingWords;
+import com.pratham.foundation.services.shared_preferences.FastSave;
 import com.pratham.foundation.utility.FC_Constants;
 import com.pratham.foundation.utility.FC_Utility;
 
@@ -102,8 +102,8 @@ public class ReadingRhymesPresenter implements ReadingRhymesContract.ReadingRhym
             ContentProgress contentProgress = new ContentProgress();
             contentProgress.setProgressPercentage("" + perc);
             contentProgress.setResourceId("" + resId);
-            contentProgress.setSessionId("" + FC_Constants.currentSession);
-            contentProgress.setStudentId("" + FC_Constants.currentStudentID);
+            contentProgress.setSessionId("" + FastSave.getInstance().getString(FC_Constants.CURRENT_SESSION, ""));
+            contentProgress.setStudentId("" + FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""));
             contentProgress.setUpdatedDateTime("" + FC_Utility.getCurrentDateTime());
             contentProgress.setLabel("" + label);
             contentProgress.setSentFlag(0);
@@ -118,12 +118,12 @@ public class ReadingRhymesPresenter implements ReadingRhymesContract.ReadingRhym
     public void addExitScore(float perc, int scoredMarks, int totalMarks, String resStartTime, String Label) {
         try {
             Score score = new Score();
-            score.setSessionID(FC_Constants.currentSession);
+            score.setSessionID(FastSave.getInstance().getString(FC_Constants.CURRENT_SESSION, ""));
             score.setResourceID(resId);
             score.setQuestionId(0);
             score.setScoredMarks(scoredMarks);
             score.setTotalMarks(totalMarks);
-            score.setStudentID(FC_Constants.currentStudentID);
+            score.setStudentID(FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""));
             score.setStartDateTime(resStartTime);
             score.setDeviceID("" + perc);
             score.setEndDateTime(FC_Utility.getCurrentDateTime());
@@ -183,7 +183,7 @@ public class ReadingRhymesPresenter implements ReadingRhymesContract.ReadingRhym
 
     @Background
     public void getLearntWordsCount() {
-        learntWordCount = AppDatabase.appDatabase.getKeyWordDao().checkWordCount(FC_Constants.currentStudentID, "" + resId);
+        learntWordCount = AppDatabase.appDatabase.getKeyWordDao().checkWordCount(FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""), "" + resId);
     }
 
     @Background
@@ -204,7 +204,7 @@ public class ReadingRhymesPresenter implements ReadingRhymesContract.ReadingRhym
 
     private boolean checkWord(String wordStr) {
         try {
-            String word = AppDatabase.appDatabase.getKeyWordDao().checkWord(FC_Constants.currentStudentID, "" + resId, wordStr.toLowerCase());
+            String word = AppDatabase.appDatabase.getKeyWordDao().checkWord(FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""), "" + resId, wordStr.toLowerCase());
             return word != null;
         } catch (Exception e) {
             e.printStackTrace();
@@ -267,12 +267,12 @@ public class ReadingRhymesPresenter implements ReadingRhymesContract.ReadingRhym
         try {
             String deviceId = AppDatabase.appDatabase.getStatusDao().getValue("DeviceId");
             Score score = new Score();
-            score.setSessionID(FC_Constants.currentSession);
+            score.setSessionID(FastSave.getInstance().getString(FC_Constants.CURRENT_SESSION, ""));
             score.setResourceID(resId);
             score.setQuestionId(wID);
             score.setScoredMarks(scoredMarks);
             score.setTotalMarks(totalMarks);
-            score.setStudentID(FC_Constants.currentStudentID);
+            score.setStudentID(FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""));
             score.setStartDateTime(resStartTime);
             score.setDeviceID(deviceId.equals(null) ? "0000" : deviceId);
             score.setEndDateTime(FC_Utility.getCurrentDateTime());
@@ -294,7 +294,7 @@ public class ReadingRhymesPresenter implements ReadingRhymesContract.ReadingRhym
                 KeyWords learntWords = new KeyWords();
                 learntWords.setResourceId(resId);
                 learntWords.setSentFlag(0);
-                learntWords.setStudentId(FC_Constants.currentStudentID);
+                learntWords.setStudentId(FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""));
                 learntWords.setKeyWord(rhymingWords.getWord().toLowerCase());
                 learntWords.setTopic("Rhyming Words");
                 learntWords.setWordType("word");

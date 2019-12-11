@@ -60,8 +60,6 @@ import static com.pratham.foundation.utility.FC_Constants.LEVEL_TEST_GIVEN;
 import static com.pratham.foundation.utility.FC_Constants.LOGIN_MODE;
 import static com.pratham.foundation.utility.FC_Constants.QR_GROUP_MODE;
 import static com.pratham.foundation.utility.FC_Constants.currentLevel;
-import static com.pratham.foundation.utility.FC_Constants.currentSession;
-import static com.pratham.foundation.utility.FC_Constants.currentStudentID;
 import static com.pratham.foundation.utility.FC_Constants.currentSubject;
 import static com.pratham.foundation.utility.FC_Constants.dialog_btn_cancel;
 import static com.pratham.foundation.utility.FC_Constants.dialog_btn_exit;
@@ -140,11 +138,7 @@ public class HomeActivity extends BaseActivity implements LevelChanged {
         setLevel();
         displayProfileName();
         displayProfileImage();
-
-        currentStudentID = FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, "");
         sub_nodeId = FastSave.getInstance().getString(FC_Constants.CURRENT_ROOT_NODE, "");
-        currentSession = FastSave.getInstance().getString(FC_Constants.CURRENT_SESSION, "");
-        currentSession = FastSave.getInstance().getString(FC_Constants.CURRENT_SESSION, "");
         currentLevel = FastSave.getInstance().getInt(FC_Constants.CURRENT_LEVEL, 0);
     }
 

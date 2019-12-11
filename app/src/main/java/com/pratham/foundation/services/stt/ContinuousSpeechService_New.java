@@ -14,6 +14,7 @@ import android.util.Log;
 
 import com.pratham.foundation.database.AppDatabase;
 import com.pratham.foundation.database.domain.Modal_Log;
+import com.pratham.foundation.services.shared_preferences.FastSave;
 import com.pratham.foundation.utility.FC_Constants;
 import com.pratham.foundation.utility.FC_Utility;
 
@@ -103,7 +104,7 @@ public class ContinuousSpeechService_New implements RecognitionListener, STT_Res
                 try {
                     Modal_Log modal_log = new Modal_Log();
                     modal_log.setCurrentDateTime(FC_Utility.getCurrentDateTime());
-                    modal_log.setSessionId(FC_Constants.currentSession);
+                    modal_log.setSessionId(FastSave.getInstance().getString(FC_Constants.CURRENT_SESSION, ""));
                     modal_log.setLogDetail("Stt Intent Fired - "+sttString);
                     AppDatabase.appDatabase.getLogsDao().insertLog(modal_log);
                 } catch (Exception e) {

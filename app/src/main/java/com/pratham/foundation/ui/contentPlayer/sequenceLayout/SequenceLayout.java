@@ -15,6 +15,7 @@ import com.pratham.foundation.customView.GridSpacingItemDecoration;
 import com.pratham.foundation.database.AppDatabase;
 import com.pratham.foundation.database.domain.ContentTable;
 import com.pratham.foundation.interfaces.ShowInstruction;
+import com.pratham.foundation.services.shared_preferences.FastSave;
 import com.pratham.foundation.ui.contentPlayer.ContentPlayerActivity;
 import com.pratham.foundation.ui.contentPlayer.GameConstatnts;
 import com.pratham.foundation.ui.contentPlayer.new_reading_fragment.ContentReadingFragment;
@@ -141,7 +142,7 @@ public class SequenceLayout extends Fragment implements SequeanceLayoutContract.
             GameConstatnts.gameSelector(getActivity(), onConentClickeditem);
            /* Bundle bundle = new Bundle();
             bundle.putString("contentPath", onConentClickeditem.getResourcePath());
-            bundle.putString("StudentID", FC_Constants.currentStudentID);
+            bundle.putString("StudentID", FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""));
             bundle.putString("resId", onConentClickeditem.getResourceId());
             bundle.putString("contentName", onConentClickeditem.getNodeTitle());
             bundle.putString("sttLang", onConentClickeditem.getContentLanguage());
@@ -224,7 +225,7 @@ public class SequenceLayout extends Fragment implements SequeanceLayoutContract.
                 case GameConstatnts.VIDEO:
                     Intent intent = new Intent(context, ActivityVideoView_.class);
                     intent.putExtra("contentPath", onConentClickeditem.getResourcePath());
-                    intent.putExtra("StudentID", FC_Constants.currentStudentID);
+                    intent.putExtra("StudentID", FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""));
                     intent.putExtra("resId", onConentClickeditem.getResourceId());
                     intent.putExtra("contentName", onConentClickeditem.getNodeTitle());
                     intent.putExtra("onSdCard", true);
@@ -241,7 +242,7 @@ public class SequenceLayout extends Fragment implements SequeanceLayoutContract.
         if (onConentClickeditem != null) {
             Bundle bundle = new Bundle();
             bundle.putString("contentPath", onConentClickeditem.getResourcePath());
-            bundle.putString("StudentID", FC_Constants.currentStudentID);
+            bundle.putString("StudentID", FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""));
             bundle.putString("resId", onConentClickeditem.getResourceId());
             bundle.putString("contentName", onConentClickeditem.getNodeTitle());
             bundle.putString("sttLang", onConentClickeditem.getContentLanguage());

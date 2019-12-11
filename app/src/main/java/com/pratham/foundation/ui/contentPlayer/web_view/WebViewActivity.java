@@ -19,18 +19,23 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.Button;
 import android.widget.TextView;
+
+import com.pratham.foundation.BaseActivity;
 import com.pratham.foundation.R;
 import com.pratham.foundation.database.BackupDatabase;
 import com.pratham.foundation.database.domain.ContentProgress;
 import com.pratham.foundation.database.domain.KeyWords;
 import com.pratham.foundation.interfaces.WebViewInterface;
 import com.pratham.foundation.modalclasses.CertificateModelClass;
-import com.pratham.foundation.BaseActivity;
+import com.pratham.foundation.services.shared_preferences.FastSave;
 import com.pratham.foundation.utility.FC_Constants;
 import com.pratham.foundation.utility.FC_Utility;
+
 import java.util.ArrayList;
 import java.util.List;
+
 import butterknife.ButterKnife;
+
 import static com.pratham.foundation.database.AppDatabase.appDatabase;
 import static com.pratham.foundation.utility.FC_Constants.dialog_btn_cancel;
 
@@ -52,7 +57,7 @@ public class WebViewActivity extends BaseActivity implements WebViewInterface {
         setContentView(R.layout.activity_web_view);
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
         ButterKnife.bind(this);
-        webView = (WebView) findViewById(R.id.loadPage);
+        webView = findViewById(R.id.loadPage);
 
         webResId = getIntent().getStringExtra("resId");
         gamePath = getIntent().getStringExtra("resPath");
@@ -108,7 +113,7 @@ public class WebViewActivity extends BaseActivity implements WebViewInterface {
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
             if (0 != (getApplicationInfo().flags & ApplicationInfo.FLAG_DEBUGGABLE)) {
-                webView.setWebContentsDebuggingEnabled(true);
+                WebView.setWebContentsDebuggingEnabled(true);
             }
         }
         webView.setWebViewClient(new WebViewClient());
@@ -191,8 +196,8 @@ public class WebViewActivity extends BaseActivity implements WebViewInterface {
                             KeyWords learntWords = new KeyWords();
                             learntWords.setResourceId(webResId);
                             learntWords.setSentFlag(0);
-                            learntWords.setStudentId(FC_Constants.currentStudentID);
-                           // learntWords.setSessionId(FC_Constants.currentSession);
+                            learntWords.setStudentId(FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""));
+                           // learntWords.setSessionId(FastSave.getInstance().getString(FC_Constants.CURRENT_SESSION, ""));
                             learntWords.setKeyWord(learntWordsList.get(i).getKeyWord().toLowerCase());
                            // learntWords.setSynId("" + gameName);
                             learntWords.setWordType("" + learntWordsList.get(i).getWordType());
@@ -200,7 +205,7 @@ public class WebViewActivity extends BaseActivity implements WebViewInterface {
                         }
                     }
                 }
-                int scoredMarks = appDatabase.getKeyWordDao().checkWebWordCount(FC_Constants.currentStudentID, "" + webResId);
+                int scoredMarks = appDatabase.getKeyWordDao().checkWebWordCount(FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""), "" + webResId);
                 float perc = 0f;
                 try {
                     if (scoredMarks > 0 && dataTotalLength > 0) {
@@ -214,8 +219,8 @@ public class WebViewActivity extends BaseActivity implements WebViewInterface {
                     ContentProgress contentProgress = new ContentProgress();
                     contentProgress.setProgressPercentage("" + perc);
                     contentProgress.setResourceId("" + webResId);
-                    contentProgress.setSessionId("" + FC_Constants.currentSession);
-                    contentProgress.setStudentId("" + FC_Constants.currentStudentID);
+                    contentProgress.setSessionId("" + FastSave.getInstance().getString(FC_Constants.CURRENT_SESSION, ""));
+                    contentProgress.setStudentId("" + FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""));
                     contentProgress.setUpdatedDateTime("" + FC_Utility.getCurrentDateTime());
                     contentProgress.setLabel("resourceProgress");
                     contentProgress.setSentFlag(0);
@@ -232,11 +237,8 @@ public class WebViewActivity extends BaseActivity implements WebViewInterface {
 
     private boolean checkWord(String checkWord) {
         try {
-            String word = appDatabase.getKeyWordDao().checkWord(FC_Constants.currentStudentID, "" + webResId, checkWord);
-            if (word != null)
-                return true;
-            else
-                return false;
+            String word = appDatabase.getKeyWordDao().checkWord(FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""), "" + webResId, checkWord);
+            return word != null;
         } catch (Exception e) {
             e.printStackTrace();
             return false;

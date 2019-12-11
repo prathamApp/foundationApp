@@ -54,8 +54,6 @@ import me.dm7.barcodescanner.zxing.ZXingScannerView;
 
 import static com.pratham.foundation.database.AppDatabase.appDatabase;
 import static com.pratham.foundation.utility.FC_Constants.QR_GROUP_MODE;
-import static com.pratham.foundation.utility.FC_Constants.currentStudentID;
-import static com.pratham.foundation.utility.FC_Constants.currentStudentName;
 import static com.pratham.foundation.utility.SplashSupportActivity.ButtonClickSound;
 
 
@@ -342,13 +340,12 @@ public class QRScanActivity extends BaseActivity implements
             enterStudentData(playerModalList);
             startSession();
             if(FC_Constants.LOGIN_MODE.equalsIgnoreCase(QR_GROUP_MODE)) {
-                currentStudentID = "QR";
-                currentStudentName = "QR Students";
-                FastSave.getInstance().saveString(FC_Constants.CURRENT_STUDENT_ID , currentStudentID);
+                String currentStudentName = "QR Students";
+                FastSave.getInstance().saveString(FC_Constants.CURRENT_STUDENT_ID , "QR");
                 FastSave.getInstance().saveString(FC_Constants.CURRENT_STUDENT_NAME , currentStudentName);
             }else {
-                currentStudentID = ""+playerModalList.get(0).getStudentID();
-                currentStudentName = ""+playerModalList.get(0).getStudentName();
+                String currentStudentID = ""+playerModalList.get(0).getStudentID();
+                String currentStudentName = ""+playerModalList.get(0).getStudentName();
                 FastSave.getInstance().saveString(FC_Constants.CURRENT_STUDENT_ID , currentStudentID);
                 FastSave.getInstance().saveString(FC_Constants.CURRENT_STUDENT_NAME , currentStudentName);
             }
@@ -489,7 +486,6 @@ public class QRScanActivity extends BaseActivity implements
         try {
             StatusDao statusDao = appDatabase.getStatusDao();
             currentSession = "" + UUID.randomUUID().toString();
-            FC_Constants.currentSession = currentSession;
             FastSave.getInstance().saveString(FC_Constants.CURRENT_STUDENT_ID, currentSession);
             statusDao.updateValue("CurrentSession", "" + currentSession);
 

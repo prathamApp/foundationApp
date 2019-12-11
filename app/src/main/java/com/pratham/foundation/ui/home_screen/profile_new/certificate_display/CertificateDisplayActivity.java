@@ -13,6 +13,7 @@ import com.pratham.foundation.R;
 import com.pratham.foundation.customView.GridSpacingItemDecoration;
 import com.pratham.foundation.database.AppDatabase;
 import com.pratham.foundation.database.domain.Assessment;
+import com.pratham.foundation.services.shared_preferences.FastSave;
 import com.pratham.foundation.ui.student_profile.Student_profile_activity;
 import com.pratham.foundation.ui.test.certificate.CertificateActivity;
 import com.pratham.foundation.utility.FC_Constants;
@@ -70,7 +71,7 @@ public class CertificateDisplayActivity extends BaseActivity implements
                     .getCertificatesGroups(FC_Constants.currentGroup, FC_Constants.CERTIFICATE_LBL);
         else
             assessmentList = AppDatabase.getDatabaseInstance(this).getAssessmentDao()
-                    .getCertificates(FC_Constants.currentStudentID, FC_Constants.CERTIFICATE_LBL);
+                    .getCertificates(FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""), FC_Constants.CERTIFICATE_LBL);
 
         addToAdapter(assessmentList);
     }
@@ -96,7 +97,7 @@ public class CertificateDisplayActivity extends BaseActivity implements
         String sImage;
         try {
             if (!GROUP_LOGIN)
-                sImage = AppDatabase.getDatabaseInstance(this).getStudentDao().getStudentAvatar(FC_Constants.currentStudentID);
+                sImage = AppDatabase.getDatabaseInstance(this).getStudentDao().getStudentAvatar(FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""));
             else
                 sImage = "group_icon";
         } catch (Exception e) {
@@ -120,9 +121,9 @@ public class CertificateDisplayActivity extends BaseActivity implements
         String profileName = "QR Group";
         try {
             if (LOGIN_MODE.equalsIgnoreCase(GROUP_MODE))
-                profileName = AppDatabase.getDatabaseInstance(this).getGroupsDao().getGroupNameByGrpID(FC_Constants.currentStudentID);
+                profileName = AppDatabase.getDatabaseInstance(this).getGroupsDao().getGroupNameByGrpID(FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""));
             else if (!LOGIN_MODE.equalsIgnoreCase(QR_GROUP_MODE)) {
-                profileName = AppDatabase.getDatabaseInstance(this).getStudentDao().getFullName(FC_Constants.currentStudentID);
+                profileName = AppDatabase.getDatabaseInstance(this).getStudentDao().getFullName(FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""));
             }
 
             if (LOGIN_MODE.equalsIgnoreCase(INDIVIDUAL_MODE))

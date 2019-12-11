@@ -421,7 +421,7 @@ public class TestFragment extends Fragment implements TestContract.TestView,
             } else if (testData.getResourceType().equalsIgnoreCase(FC_Constants.OPPOSITE_WORDS)) {
                 Intent mainNew = new Intent(getActivity(), FactRetrieval_.class);
                 mainNew.putExtra("resId", testData.getResourceId());
-                mainNew.putExtra("StudentID", FC_Constants.currentStudentID);
+                mainNew.putExtra("StudentID", FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""));
                 mainNew.putExtra("contentName", testData.getNodeTitle());
                 mainNew.putExtra("sttLang", "English");
                 mainNew.putExtra("onSdCard", testData.isOnSDCard());
@@ -433,7 +433,7 @@ public class TestFragment extends Fragment implements TestContract.TestView,
                 ContentTable randomTestData = presenter.getRandomData(testData.getResourceType(), testData.getNodeKeywords());
                 Intent mainNew = new Intent(getActivity(), ConversationActivity_.class);
                 mainNew.putExtra("storyId", randomTestData.getResourceId());
-                mainNew.putExtra("StudentID", FC_Constants.currentStudentID);
+                mainNew.putExtra("StudentID", FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""));
                 mainNew.putExtra("contentName", randomTestData.getNodeTitle());
                 mainNew.putExtra("onSdCard", randomTestData.isOnSDCard());
                 mainNew.putExtra("contentPath", randomTestData.getResourcePath());
@@ -444,7 +444,7 @@ public class TestFragment extends Fragment implements TestContract.TestView,
                 ContentTable randomTestData = presenter.getRandomData(testData.getResourceType(), testData.getNodeKeywords());
                 Intent mainNew = new Intent(getActivity(), ReadingCardsActivity_.class);
                 mainNew.putExtra("storyId", randomTestData.getResourceId());
-                mainNew.putExtra("StudentID", FC_Constants.currentStudentID);
+                mainNew.putExtra("StudentID", FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""));
                 mainNew.putExtra("contentName", randomTestData.getNodeTitle());
                 mainNew.putExtra("onSdCard", randomTestData.isOnSDCard());
                 mainNew.putExtra("sttLang", "English");
@@ -454,7 +454,7 @@ public class TestFragment extends Fragment implements TestContract.TestView,
             } else if (testData.getResourceType().equalsIgnoreCase(FC_Constants.OPPOSITE_WORDS)) {
                 Intent mainNew = new Intent(getActivity(), OppositesActivity_.class);
                 mainNew.putExtra("resId", testData.getResourceId());
-                mainNew.putExtra("StudentID", FC_Constants.currentStudentID);
+                mainNew.putExtra("StudentID", FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""));
                 mainNew.putExtra("contentName", testData.getNodeTitle());
                 mainNew.putExtra("onSdCard", testData.isOnSDCard());
                 mainNew.putExtra("certiCode", testData.getNodeDesc());
@@ -465,7 +465,7 @@ public class TestFragment extends Fragment implements TestContract.TestView,
                 ContentTable randomTestData = presenter.getRandomData(testData.getResourceType(), testData.getNodeKeywords());
                 Intent mainNew = new Intent(getActivity(), ReadingStoryActivity_.class);
                 mainNew.putExtra("storyId", randomTestData.getResourceId());
-                mainNew.putExtra("StudentID", FC_Constants.currentStudentID);
+                mainNew.putExtra("StudentID", FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""));
                 mainNew.putExtra("storyPath", randomTestData.getResourcePath());
                 mainNew.putExtra("storyTitle", randomTestData.getNodeTitle());
                 mainNew.putExtra("sttLang", "English");
@@ -476,7 +476,7 @@ public class TestFragment extends Fragment implements TestContract.TestView,
             } /*else if (testData.getResourceType().equalsIgnoreCase(FC_Constants.WORD_ANDROID)) {
                 Intent mainNew = new Intent(getActivity(), ReadingWordScreenActivity.class);
                 mainNew.putExtra("resId", testData.getResourceId());
-                mainNew.putExtra("StudentID", FC_Constants.currentStudentID);
+                mainNew.putExtra("StudentID", FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""));
                 mainNew.putExtra("contentPath", testData.getResourcePath());
                 mainNew.putExtra("onSdCard", testData.isOnSDCard());
                 mainNew.putExtra("certiCode", testData.getNodeDesc());
@@ -486,7 +486,7 @@ public class TestFragment extends Fragment implements TestContract.TestView,
                 ContentTable randomTestData = presenter.getRandomData(testData.getResourceType(), testData.getNodeKeywords());
                 Intent mainNew = new Intent(getActivity(), ReadingParagraphsActivity_.class);
                 mainNew.putExtra("resId", randomTestData.getResourceId());
-                mainNew.putExtra("StudentID", FC_Constants.currentStudentID);
+                mainNew.putExtra("StudentID", FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""));
                 mainNew.putExtra("contentPath", randomTestData.getResourcePath());
                 mainNew.putExtra("onSdCard", randomTestData.isOnSDCard());
                 mainNew.putExtra("resType", randomTestData.getResourceType());
@@ -498,7 +498,7 @@ public class TestFragment extends Fragment implements TestContract.TestView,
                 ContentTable randomTestData = presenter.getRandomData(testData.getResourceType(), testData.getNodeKeywords());
                 Intent mainNew = new Intent(getActivity(), ReadingParagraphsActivity_.class);
                 mainNew.putExtra("resId", randomTestData.getResourceId());
-                mainNew.putExtra("StudentID", FC_Constants.currentStudentID);
+                mainNew.putExtra("StudentID", FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""));
                 mainNew.putExtra("contentPath", randomTestData.getResourcePath());
                 mainNew.putExtra("onSdCard", randomTestData.isOnSDCard());
                 mainNew.putExtra("resType", randomTestData.getResourceType());
@@ -509,7 +509,7 @@ public class TestFragment extends Fragment implements TestContract.TestView,
             } else if (testData.getResourceType().equalsIgnoreCase(FC_Constants.VOCAB_ANDROID)) {
                 Intent mainNew = new Intent(getActivity(), ReadingVocabularyActivity_.class);
                 mainNew.putExtra("resId", testData.getResourceId());
-                mainNew.putExtra("StudentID", FC_Constants.currentStudentID);
+                mainNew.putExtra("StudentID", FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""));
                 mainNew.putExtra("contentPath", testData.getResourcePath());
                 mainNew.putExtra("contentTitle", testData.getNodeTitle());
                 mainNew.putExtra("sttLang", "English");
@@ -522,7 +522,7 @@ public class TestFragment extends Fragment implements TestContract.TestView,
                 ContentTable randomTestData = presenter.getRandomData(testData.getResourceType(), testData.getNodeKeywords());
                 Intent mainNew = new Intent(getActivity(), ReadingRhymesActivity_.class);
                 mainNew.putExtra("resId", randomTestData.getResourceId());
-                mainNew.putExtra("StudentID", FC_Constants.currentStudentID);
+                mainNew.putExtra("StudentID", FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""));
                 mainNew.putExtra("contentPath", randomTestData.getResourcePath());
                 mainNew.putExtra("contentTitle", randomTestData.getNodeTitle());
                 mainNew.putExtra("onSdCard", randomTestData.isOnSDCard());
@@ -533,7 +533,7 @@ public class TestFragment extends Fragment implements TestContract.TestView,
             } else if (testData.getResourceType().equalsIgnoreCase(FC_Constants.MATCH_THE_PAIR)) {
                 Intent mainNew = new Intent(getActivity(), MatchThePairGameActivity.class);
                 mainNew.putExtra("resId", testData.getResourceId());
-                mainNew.putExtra("StudentID", FC_Constants.currentStudentID);
+                mainNew.putExtra("StudentID", FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""));
                 mainNew.putExtra("contentPath", testData.getResourcePath());
                 mainNew.putExtra("contentTitle", testData.getNodeTitle());
                 mainNew.putExtra("onSdCard", testData.isOnSDCard());

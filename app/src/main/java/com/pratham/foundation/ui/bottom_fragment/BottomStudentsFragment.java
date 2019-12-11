@@ -28,13 +28,13 @@ import com.pratham.foundation.customView.progress_layout.ProgressLayout;
 import com.pratham.foundation.database.domain.Student;
 import com.pratham.foundation.interfaces.SplashInterface;
 import com.pratham.foundation.modalclasses.EventMessage;
+import com.pratham.foundation.services.shared_preferences.FastSave;
 import com.pratham.foundation.ui.bottom_fragment.add_student.AddStudentFragment;
 import com.pratham.foundation.ui.selectSubject.SelectSubject_;
 import com.pratham.foundation.ui.splash_activity.SplashActivity;
 import com.pratham.foundation.utility.FC_Constants;
 
 import org.androidannotations.annotations.AfterViews;
-import org.androidannotations.annotations.Background;
 import org.androidannotations.annotations.Bean;
 import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EFragment;
@@ -46,9 +46,6 @@ import org.greenrobot.eventbus.Subscribe;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
-
-import static com.pratham.foundation.ui.splash_activity.SplashActivity.bgMusic;
-import static com.pratham.foundation.utility.FC_Constants.currentStudentName;
 
 
 @EFragment(R.layout.student_list_fragment)
@@ -258,9 +255,10 @@ public class BottomStudentsFragment extends BottomSheetDialogFragment
     @Override
     public void onStudentClick(String studentName, String studentId) {
         showProgressDialog();
-        FC_Constants.currentStudentID = studentId;
-        currentStudentName = studentName;
-        FC_Constants.currentSession = "" + UUID.randomUUID().toString();
+        String currentSession = "" + UUID.randomUUID().toString();
+        FastSave.getInstance().saveString(FC_Constants.CURRENT_SESSION, ""+currentSession);
+        FastSave.getInstance().saveString(FC_Constants.CURRENT_STUDENT_ID, ""+studentId);
+        FastSave.getInstance().saveString(FC_Constants.CURRENT_STUDENT_NAME, ""+studentName);
         presenter.updateStudentData();
     }
 

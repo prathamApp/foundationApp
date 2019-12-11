@@ -131,7 +131,7 @@ public class TestTypeActivity extends BaseActivity implements TestTypeContract.T
         Intent i = new Intent(this, CertificateActivity.class);
         i.putExtra("nodeId", nodeId);
         i.putExtra("CertiTitle", certiTitle);
-        i.putExtra("display", FC_Constants.assessmentSession);
+        i.putExtra("display", FastSave.getInstance().getString(FC_Constants.ASSESSMENT_SESSION, ""));
         startActivity(i);
     }
 
@@ -268,7 +268,7 @@ public class TestTypeActivity extends BaseActivity implements TestTypeContract.T
 
     @Override
     public void onStudentClicked(int position, String studentId) {
-        FC_Constants.currentAssessmentStudentID = ""+studentId;
+        FastSave.getInstance().saveString(FC_Constants.CURRENT_ASSESSMENT_STUDENT_ID, studentId);
         submitSupervisorData();
     }
 }

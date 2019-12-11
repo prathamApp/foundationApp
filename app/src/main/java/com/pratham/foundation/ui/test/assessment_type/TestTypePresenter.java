@@ -25,8 +25,6 @@ import java.util.List;
 
 import static com.pratham.foundation.utility.FC_Constants.ASSESSMENT_SESSION;
 import static com.pratham.foundation.utility.FC_Constants.CURRENT_SUPERVISOR_ID;
-import static com.pratham.foundation.utility.FC_Constants.assessmentSession;
-import static com.pratham.foundation.utility.FC_Constants.currentsupervisorID;
 
 
 public class TestTypePresenter implements TestTypeContract.TestTypePresenter {
@@ -47,7 +45,7 @@ public class TestTypePresenter implements TestTypeContract.TestTypePresenter {
             @Override
             protected Object doInBackground(Object[] objects) {
                 try {
-                    assessmentSession = "test-" + ApplicationClass.getUniqueID();
+                    String assessmentSession = "test-" + ApplicationClass.getUniqueID();
                     FastSave.getInstance().saveString(ASSESSMENT_SESSION, assessmentSession);
                     SupervisorData supervisorData = new SupervisorData();
                     supervisorData.setSupervisorId(supervisorID);
@@ -59,7 +57,6 @@ public class TestTypePresenter implements TestTypeContract.TestTypePresenter {
                     BackupDatabase.backup(context);
 
                     AppDatabase.appDatabase.getStatusDao().updateValue("AssessmentSession", "" + assessmentSession);
-                    assessmentSession = assessmentSession;
                     FC_Constants.assessmentFlag = true;
 
                     String AppStartDateTime = AppDatabase.appDatabase.getStatusDao().getValue("AppStartDateTime");
@@ -70,7 +67,7 @@ public class TestTypePresenter implements TestTypeContract.TestTypePresenter {
                     startSesion.setFromDate(timerTime);
                     startSesion.setToDate("NA");
                     startSesion.setSentFlag(0);
-                    currentsupervisorID = "" + supervisorID;
+                    String currentsupervisorID = "" + supervisorID;
                     FastSave.getInstance().saveString(CURRENT_SUPERVISOR_ID, currentsupervisorID);
                     AppDatabase.appDatabase.getSessionDao().insert(startSesion);
                     return null;
@@ -165,7 +162,7 @@ public class TestTypePresenter implements TestTypeContract.TestTypePresenter {
                 @Override
                 protected Object doInBackground(Object[] objects) {
                     try {
-                        studentList = AppDatabase.appDatabase.getStudentDao().getGroupwiseStudents(FC_Constants.currentStudentID);
+                        studentList = AppDatabase.appDatabase.getStudentDao().getGroupwiseStudents(FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""));
                         return null;
                     } catch (Exception e) {
                         e.printStackTrace();

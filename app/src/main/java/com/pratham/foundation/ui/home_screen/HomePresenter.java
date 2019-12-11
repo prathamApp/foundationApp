@@ -21,6 +21,7 @@ import com.pratham.foundation.interfaces.API_Content_Result;
 import com.pratham.foundation.modalclasses.CertificateModelClass;
 import com.pratham.foundation.modalclasses.Modal_DownloadAssessment;
 import com.pratham.foundation.modalclasses.Modal_DownloadContent;
+import com.pratham.foundation.services.shared_preferences.FastSave;
 import com.pratham.foundation.ui.contentPlayer.web_view.WebViewActivity;
 import com.pratham.foundation.utility.FC_Constants;
 import com.pratham.foundation.utility.FC_Utility;
@@ -47,7 +48,6 @@ import java.util.List;
 
 import static com.pratham.foundation.ui.home_screen.HomeActivity.sub_nodeId;
 import static com.pratham.foundation.utility.FC_Constants.GROUP_LOGIN;
-import static com.pratham.foundation.utility.FC_Constants.assessmentSession;
 import static com.pratham.foundation.utility.FC_Constants.currentGroup;
 import static com.pratham.foundation.utility.FC_Constants.currentLevel;
 import static com.pratham.foundation.utility.FC_Constants.gameFolderPath;
@@ -100,9 +100,9 @@ public class HomePresenter implements HomeContract.HomePresenter, API_Content_Re
     public void displayProfileName() {
         String profileName;
         if (!GROUP_LOGIN)
-            profileName = AppDatabase.getDatabaseInstance(mContext).getStudentDao().getFullName(FC_Constants.currentStudentID);
+            profileName = AppDatabase.getDatabaseInstance(mContext).getStudentDao().getFullName(FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""));
         else
-            profileName = AppDatabase.getDatabaseInstance(mContext).getGroupsDao().getGroupNameByGrpID(FC_Constants.currentStudentID);
+            profileName = AppDatabase.getDatabaseInstance(mContext).getGroupsDao().getGroupNameByGrpID(FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""));
 
         homeView.setProfileName(profileName);
     }
@@ -112,7 +112,7 @@ public class HomePresenter implements HomeContract.HomePresenter, API_Content_Re
     public void displayProfileImage() {
         String sImage;
         if (!GROUP_LOGIN)
-            sImage = AppDatabase.getDatabaseInstance(mContext).getStudentDao().getStudentAvatar(FC_Constants.currentStudentID);
+            sImage = AppDatabase.getDatabaseInstance(mContext).getStudentDao().getStudentAvatar(FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""));
         else
             sImage = "group_icon";
         homeView.setStudentProfileImage(sImage);
@@ -205,7 +205,7 @@ public class HomePresenter implements HomeContract.HomePresenter, API_Content_Re
             for (int childCnt = 0; childList.size() > childCnt; childCnt++) {
                 if (childList.get(childCnt).getNodeType().equals("Resource")) {
                     double maxScoreTemp = 0.0;
-                    List<ContentProgress> score = AppDatabase.getDatabaseInstance(mContext).getContentProgressDao().getProgressByStudIDAndResID(FC_Constants.currentStudentID, childList.get(childCnt).getResourceId(), "resourceProgress");
+                    List<ContentProgress> score = AppDatabase.getDatabaseInstance(mContext).getContentProgressDao().getProgressByStudIDAndResID(FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""), childList.get(childCnt).getResourceId(), "resourceProgress");
                     for (int cnt = 0; cnt < score.size(); cnt++) {
                         String d = score.get(cnt).getProgressPercentage();
                         double scoreTemp = Double.parseDouble(d);
@@ -229,7 +229,7 @@ public class HomePresenter implements HomeContract.HomePresenter, API_Content_Re
         for (int childCnt = 0; childList.size() > childCnt; childCnt++) {
             if (childList.get(childCnt).getNodeType().equals("Resource")) {
                 double maxScoreTemp = 0.0;
-                List<ContentProgress> score = AppDatabase.getDatabaseInstance(mContext).getContentProgressDao().getProgressByStudIDAndResID(FC_Constants.currentStudentID, childList.get(childCnt).getResourceId(), "resourceProgress");
+                List<ContentProgress> score = AppDatabase.getDatabaseInstance(mContext).getContentProgressDao().getProgressByStudIDAndResID(FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""), childList.get(childCnt).getResourceId(), "resourceProgress");
                 for (int cnt = 0; cnt < score.size(); cnt++) {
                     String d = score.get(cnt).getProgressPercentage();
                     double scoreTemp = Double.parseDouble(d);
@@ -671,7 +671,7 @@ public class HomePresenter implements HomeContract.HomePresenter, API_Content_Re
                 contentTable.setResourceId("" + testList.get(j).getResourceId());
                 contentTable.setResourcePath("" + testList.get(j).getResourcePath());
                 contentTable.setAsessmentGiven(false);
-                contentTable.setStudentId(FC_Constants.currentStudentID);
+                contentTable.setStudentId(FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""));
                 contentTable.setScoredMarks(0);
                 contentTable.setTotalMarks(0);
                 contentTable.setCertificateRating(0.0f);
@@ -1034,12 +1034,12 @@ public class HomePresenter implements HomeContract.HomePresenter, API_Content_Re
         try {
             Assessment assessment = new Assessment();
             assessment.setResourceIDa(jsonObjectAssessment.toString());
-            assessment.setSessionIDa(assessmentSession);
-            assessment.setSessionIDm(FC_Constants.currentSession);
+            assessment.setSessionIDa(FastSave.getInstance().getString(FC_Constants.ASSESSMENT_SESSION, ""));
+            assessment.setSessionIDm(FastSave.getInstance().getString(FC_Constants.CURRENT_SESSION, ""));
             assessment.setQuestionIda(0);
             assessment.setScoredMarksa(0);
             assessment.setTotalMarksa(0);
-            assessment.setStudentIDa(FC_Constants.currentAssessmentStudentID);
+            assessment.setStudentIDa(FastSave.getInstance().getString(FC_Constants.CURRENT_ASSESSMENT_STUDENT_ID, ""));
             if (GROUP_LOGIN)
                 assessment.setStartDateTimea("" + currentGroup);
             else
@@ -1047,7 +1047,7 @@ public class HomePresenter implements HomeContract.HomePresenter, API_Content_Re
 
             assessment.setEndDateTime(FC_Utility.getCurrentDateTime());
             if (FC_Constants.supervisedAssessment)
-                assessment.setDeviceIDa("" + FC_Constants.currentsupervisorID);
+                assessment.setDeviceIDa("" + FastSave.getInstance().getString(FC_Constants.CURRENT_SUPERVISOR_ID, ""));
             else
                 assessment.setDeviceIDa("na");
             assessment.setLevela(currentLevel);
@@ -1065,7 +1065,7 @@ public class HomePresenter implements HomeContract.HomePresenter, API_Content_Re
     public void insertTestSession() {
         try {
             Session startSesion = new Session();
-            startSesion.setSessionID("" + assessmentSession);
+            startSesion.setSessionID("" + FastSave.getInstance().getString(FC_Constants.ASSESSMENT_SESSION, ""));
             startSesion.setFromDate("" + FC_Utility.getCurrentDateTime());
             startSesion.setToDate("NA");
             startSesion.setSentFlag(0);
@@ -1081,9 +1081,9 @@ public class HomePresenter implements HomeContract.HomePresenter, API_Content_Re
     public void endTestSession() {
         try {
             Session startSesion = new Session();
-            String toDateTemp = AppDatabase.appDatabase.getSessionDao().getToDate(assessmentSession);
+            String toDateTemp = AppDatabase.appDatabase.getSessionDao().getToDate(FastSave.getInstance().getString(FC_Constants.ASSESSMENT_SESSION, ""));
             if (toDateTemp != null && toDateTemp.equalsIgnoreCase("na")) {
-                AppDatabase.appDatabase.getSessionDao().UpdateToDate(assessmentSession, FC_Utility.getCurrentDateTime());
+                AppDatabase.appDatabase.getSessionDao().UpdateToDate(FastSave.getInstance().getString(FC_Constants.ASSESSMENT_SESSION, ""), FC_Utility.getCurrentDateTime());
             }
             BackupDatabase.backup(mContext);
             AppDatabase.appDatabase.getSessionDao().insert(startSesion);

@@ -212,8 +212,8 @@ public class Student_profile_activity extends Fragment implements Student_profil
 
                     @Override
                     protected Object doInBackground(Object... objects) {
-                        learntSentence = AppDatabase.getDatabaseInstance(context).getKeyWordDao().getLearntSentenceCount(FC_Constants.currentStudentID);
-                        learntWords = AppDatabase.getDatabaseInstance(context).getKeyWordDao().getLearntWordCount(FC_Constants.currentStudentID);
+                        learntSentence = AppDatabase.getDatabaseInstance(context).getKeyWordDao().getLearntSentenceCount(FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""));
+                        learntWords = AppDatabase.getDatabaseInstance(context).getKeyWordDao().getLearntWordCount(FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""));
                         return null;
                     }
 
@@ -351,7 +351,7 @@ public class Student_profile_activity extends Fragment implements Student_profil
 //            if (!childList.get(childCnt).getNodeId().equalsIgnoreCase("4033")) {
             if (childList.get(childCnt).getNodeType().equals("Resource")) {
                 double maxScoreTemp = 0.0;
-                List<ContentProgress> contentProgressList = AppDatabase.getDatabaseInstance(context).getContentProgressDao().getContentNodeProgress(FC_Constants.currentStudentID, childList.get(childCnt).getResourceId(), "resourceProgress");
+                List<ContentProgress> contentProgressList = AppDatabase.getDatabaseInstance(context).getContentProgressDao().getContentNodeProgress(FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""), childList.get(childCnt).getResourceId(), "resourceProgress");
                 for (int cnt = 0; cnt < contentProgressList.size(); cnt++) {
                     String d = contentProgressList.get(cnt).getProgressPercentage();
                     double scoreTemp = Double.parseDouble(d);
@@ -371,7 +371,7 @@ public class Student_profile_activity extends Fragment implements Student_profil
         for (int childCnt = 0; childList.size() > childCnt; childCnt++) {
             if (childList.get(childCnt).getNodeType().equals("Resource")) {
                 double maxScoreTemp = 0.0;
-                List<ContentProgress> score = AppDatabase.getDatabaseInstance(context).getContentProgressDao().getProgressByStudIDAndResID(FC_Constants.currentStudentID, childList.get(childCnt).getResourceId(), "resourceProgress");
+                List<ContentProgress> score = AppDatabase.getDatabaseInstance(context).getContentProgressDao().getProgressByStudIDAndResID(FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""), childList.get(childCnt).getResourceId(), "resourceProgress");
                 for (int cnt = 0; cnt < score.size(); cnt++) {
                     String d = score.get(cnt).getProgressPercentage();
                     double scoreTemp = Double.parseDouble(d);

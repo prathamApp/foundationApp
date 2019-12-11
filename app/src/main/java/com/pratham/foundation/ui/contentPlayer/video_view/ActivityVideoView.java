@@ -10,6 +10,7 @@ import com.pratham.foundation.R;
 import com.pratham.foundation.customView.media_controller.PlayerControlView;
 import com.pratham.foundation.database.BackupDatabase;
 import com.pratham.foundation.database.domain.Score;
+import com.pratham.foundation.services.shared_preferences.FastSave;
 import com.pratham.foundation.utility.FC_Constants;
 import com.pratham.foundation.utility.FC_Utility;
 
@@ -81,8 +82,8 @@ public class ActivityVideoView extends BaseActivity {
     public void addScore() {
         String endTime = FC_Utility.getCurrentDateTime();
         Score score = new Score();
-        score.setSessionID(FC_Constants.currentSession);
-        score.setStudentID(""+FC_Constants.currentStudentID);
+        score.setSessionID(FastSave.getInstance().getString(FC_Constants.CURRENT_SESSION, ""));
+        score.setStudentID(""+FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""));
         score.setDeviceID(FC_Utility.getDeviceID());
         score.setResourceID(resId);
         score.setQuestionId(0);

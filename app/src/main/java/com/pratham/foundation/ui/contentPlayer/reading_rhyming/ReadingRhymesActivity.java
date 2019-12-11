@@ -25,6 +25,7 @@ import com.pratham.foundation.R;
 import com.pratham.foundation.database.AppDatabase;
 import com.pratham.foundation.interfaces.MediaCallbacks;
 import com.pratham.foundation.modalclasses.ModalRhymingWords;
+import com.pratham.foundation.services.shared_preferences.FastSave;
 import com.pratham.foundation.utility.FC_Constants;
 import com.pratham.foundation.utility.FC_Utility;
 import com.pratham.foundation.utility.MediaPlayerUtil;
@@ -610,7 +611,7 @@ public class ReadingRhymesActivity extends BaseActivity
 
     private boolean checkWord(String wordStr) {
         try {
-            String word = AppDatabase.appDatabase.getKeyWordDao().checkWord(FC_Constants.currentStudentID, "" + resId, wordStr.toLowerCase());
+            String word = AppDatabase.appDatabase.getKeyWordDao().checkWord(FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""), "" + resId, wordStr.toLowerCase());
             return word != null;
         } catch (Exception e) {
             e.printStackTrace();

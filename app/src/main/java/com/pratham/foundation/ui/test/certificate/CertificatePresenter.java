@@ -5,7 +5,6 @@ import android.os.AsyncTask;
 import android.os.Environment;
 import android.util.Log;
 
-import com.pratham.foundation.ui.contentPlayer.web_view.WebViewActivity;
 import com.pratham.foundation.database.AppDatabase;
 import com.pratham.foundation.database.BackupDatabase;
 import com.pratham.foundation.database.domain.Assessment;
@@ -13,6 +12,8 @@ import com.pratham.foundation.database.domain.ContentTable;
 import com.pratham.foundation.database.domain.Student;
 import com.pratham.foundation.database.domain.SupervisorData;
 import com.pratham.foundation.modalclasses.CertificateModelClass;
+import com.pratham.foundation.services.shared_preferences.FastSave;
+import com.pratham.foundation.ui.contentPlayer.web_view.WebViewActivity;
 import com.pratham.foundation.utility.FC_Constants;
 import com.pratham.foundation.utility.FC_Utility;
 
@@ -98,7 +99,7 @@ public class CertificatePresenter implements CertificateContract.CertificatePres
                                 contentTable.setResourceId("" + certiGameList.get(j).getResourceId());
                                 contentTable.setResourcePath("" + certiGameList.get(j).getResourcePath());
                                 contentTable.setAsessmentGiven(false);
-                                contentTable.setStudentId(FC_Constants.currentStudentID);
+                                contentTable.setStudentId(FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""));
                                 contentTable.setScoredMarks(0);
                                 contentTable.setTotalMarks(0);
                                 contentTable.setCertificateRating(0.0f);
@@ -208,7 +209,7 @@ public class CertificatePresenter implements CertificateContract.CertificatePres
                     contentTable.setResourceId("");
                     contentTable.setResourcePath("");
                     contentTable.setAsessmentGiven(true);
-                    contentTable.setStudentId(FC_Constants.currentStudentID);
+                    contentTable.setStudentId(FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""));
                     contentTable.setScoredMarks(0);
                     contentTable.setTotalMarks(0);
                     contentTable.setCertificateRating(getStarRating(Float.parseFloat(jsonObject.getString(key))));
@@ -303,19 +304,19 @@ public class CertificatePresenter implements CertificateContract.CertificatePres
                     assessment.setResourceIDa(jsonObjectAssessment.toString());
                     /*gameWebViewList.get(WebViewActivity.gameCounter).getResourceId()*/
 //                            WebViewActivity.webResId);
-                    assessment.setSessionIDa(FC_Constants.assessmentSession);
-                    assessment.setSessionIDm(FC_Constants.currentSession);
+                    assessment.setSessionIDa(FastSave.getInstance().getString(FC_Constants.ASSESSMENT_SESSION, ""));
+                    assessment.setSessionIDm(FastSave.getInstance().getString(FC_Constants.CURRENT_SESSION, ""));
                     assessment.setQuestionIda(0);
                     assessment.setScoredMarksa(0);
                     assessment.setTotalMarksa(0);
-                    assessment.setStudentIDa(FC_Constants.currentAssessmentStudentID);
+                    assessment.setStudentIDa(FastSave.getInstance().getString(FC_Constants.CURRENT_ASSESSMENT_STUDENT_ID, ""));
                     if (FC_Constants.GROUP_LOGIN)
-                        assessment.setStartDateTimea(FC_Constants.currentAssessmentStudentID + "_" + certiTitle);
+                        assessment.setStartDateTimea(FastSave.getInstance().getString(FC_Constants.CURRENT_ASSESSMENT_STUDENT_ID, "") + "_" + certiTitle);
                     else
                         assessment.setStartDateTimea("" + certiTitle);
                     assessment.setEndDateTime(FC_Utility.getCurrentDateTime());
                     if (FC_Constants.supervisedAssessment)
-                        assessment.setDeviceIDa("" + FC_Constants.currentsupervisorID);
+                        assessment.setDeviceIDa("" + FastSave.getInstance().getString(FC_Constants.CURRENT_SUPERVISOR_ID, ""));
                     else
                         assessment.setDeviceIDa("na");
                     assessment.setLevela(Integer.parseInt(WebViewActivity.gameLevel));
@@ -382,7 +383,7 @@ public class CertificatePresenter implements CertificateContract.CertificatePres
                 try {
                     SupervisorData supervisorData;
                     if (!certiMode.equalsIgnoreCase("display")) {
-                        supervisorData = AppDatabase.appDatabase.getSupervisorDataDao().getSupervisorById(FC_Constants.currentsupervisorID);
+                        supervisorData = AppDatabase.appDatabase.getSupervisorDataDao().getSupervisorById(FastSave.getInstance().getString(FC_Constants.CURRENT_SUPERVISOR_ID, ""));
                     } else
                         supervisorData = AppDatabase.appDatabase.getSupervisorDataDao().getSupervisorById("" + assessmentProfile.getDeviceIDa());
 

@@ -30,6 +30,7 @@ import com.pratham.foundation.database.domain.Assessment;
 import com.pratham.foundation.database.domain.KeyWords;
 import com.pratham.foundation.database.domain.Score;
 import com.pratham.foundation.modalclasses.ScienceQuestion;
+import com.pratham.foundation.services.shared_preferences.FastSave;
 import com.pratham.foundation.ui.contentPlayer.GameConstatnts;
 import com.pratham.foundation.utility.FC_Constants;
 import com.pratham.foundation.utility.FC_Utility;
@@ -183,13 +184,13 @@ public class TrueFalseFragment extends Fragment {
 
     private int getLearntWordsCount() {
         int count = 0;
-        count = appDatabase.getKeyWordDao().checkWordCount(FC_Constants.currentStudentID, resId);
+        count = appDatabase.getKeyWordDao().checkWordCount(FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""), resId);
         return count;
     }
 
     private boolean checkWord(String wordStr) {
         try {
-            String word = appDatabase.getKeyWordDao().checkWord(FC_Constants.currentStudentID, resId, wordStr);
+            String word = appDatabase.getKeyWordDao().checkWord(FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""), resId, wordStr);
             return word != null;
         } catch (Exception e) {
             e.printStackTrace();
@@ -386,7 +387,7 @@ public class TrueFalseFragment extends Fragment {
                     KeyWords keyWords = new KeyWords();
                     keyWords.setResourceId(resId);
                     keyWords.setSentFlag(0);
-                    keyWords.setStudentId(FC_Constants.currentStudentID);
+                    keyWords.setStudentId(FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""));
                     String key = selectedAnsList.get(i).getQuestion();
                     keyWords.setKeyWord(key);
                     keyWords.setWordType("word");
@@ -413,12 +414,12 @@ public class TrueFalseFragment extends Fragment {
         try {
             String deviceId = appDatabase.getStatusDao().getValue("DeviceId");
             Score score = new Score();
-            score.setSessionID(FC_Constants.currentSession);
+            score.setSessionID(FastSave.getInstance().getString(FC_Constants.CURRENT_SESSION, ""));
             score.setResourceID(resId);
             score.setQuestionId(wID);
             score.setScoredMarks(scoredMarks);
             score.setTotalMarks(totalMarks);
-            score.setStudentID(FC_Constants.currentStudentID);
+            score.setStudentID(FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""));
             score.setStartDateTime(resStartTime);
             score.setDeviceID(deviceId.equals(null) ? "0000" : deviceId);
             score.setEndDateTime(FC_Utility.getCurrentDateTime());
@@ -430,12 +431,12 @@ public class TrueFalseFragment extends Fragment {
             if (FC_Constants.isTest) {
                 Assessment assessment = new Assessment();
                 assessment.setResourceIDa(resId);
-                assessment.setSessionIDa(FC_Constants.assessmentSession);
-                assessment.setSessionIDm(FC_Constants.currentSession);
+                assessment.setSessionIDa(FastSave.getInstance().getString(FC_Constants.ASSESSMENT_SESSION, ""));
+                assessment.setSessionIDm(FastSave.getInstance().getString(FC_Constants.CURRENT_SESSION, ""));
                 assessment.setQuestionIda(wID);
                 assessment.setScoredMarksa(scoredMarks);
                 assessment.setTotalMarksa(totalMarks);
-                assessment.setStudentIDa(FC_Constants.currentAssessmentStudentID);
+                assessment.setStudentIDa(FastSave.getInstance().getString(FC_Constants.CURRENT_ASSESSMENT_STUDENT_ID, ""));
                 assessment.setStartDateTimea(resStartTime);
                 assessment.setDeviceIDa(deviceId.equals(null) ? "0000" : deviceId);
                 assessment.setEndDateTime(FC_Utility.getCurrentDateTime());

@@ -18,6 +18,7 @@ import com.pratham.foundation.database.domain.ContentTable;
 import com.pratham.foundation.interfaces.OnGameClose;
 import com.pratham.foundation.interfaces.ShowInstruction;
 import com.pratham.foundation.modalclasses.EventMessage;
+import com.pratham.foundation.services.shared_preferences.FastSave;
 import com.pratham.foundation.ui.contentPlayer.dialogs.InstructionDialog;
 import com.pratham.foundation.ui.contentPlayer.doing.DoingFragment;
 import com.pratham.foundation.ui.contentPlayer.fact_retrieval_fragment.FactRetrieval_;
@@ -89,7 +90,7 @@ public class GameConstatnts implements ShowInstruction {
                     ContentTable contentTable1 = gameList.get(i);
                     Bundle bundle = new Bundle();
                     bundle.putString("contentPath", contentTable1.getResourcePath());
-                    bundle.putString("StudentID", FC_Constants.currentStudentID);
+                    bundle.putString("StudentID", FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""));
                     bundle.putString("resId", contentTable1.getResourceId());
                     bundle.putString("contentName", contentTable1.getNodeTitle());
                     bundle.putBoolean("onSdCard", true);
@@ -106,7 +107,7 @@ public class GameConstatnts implements ShowInstruction {
                 ContentTable contentTable1 = gameList.get(i);
                 Bundle bundle = new Bundle();
                 bundle.putString("contentPath", contentTable1.getResourcePath());
-                bundle.putString("StudentID", FC_Constants.currentStudentID);
+                bundle.putString("StudentID", FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""));
                 bundle.putString("resId", contentTable1.getResourceId());
                 bundle.putString("contentName", contentTable1.getNodeTitle());
                 bundle.putBoolean("onSdCard", true);
@@ -219,7 +220,7 @@ public class GameConstatnts implements ShowInstruction {
         Bundle bundle = null;
         bundle = new Bundle();
         bundle.putString("contentPath", contentTable1.getResourcePath());
-        bundle.putString("StudentID", FC_Constants.currentStudentID);
+        bundle.putString("StudentID", FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""));
         bundle.putString("resId", contentTable1.getResourceId());
         bundle.putString("contentName", contentTable1.getNodeTitle());
         bundle.putString("sttLang", contentTable1.getContentLanguage());
@@ -300,7 +301,7 @@ public class GameConstatnts implements ShowInstruction {
             case GameConstatnts.VIDEO:
                 Intent intent = new Intent(context, ActivityVideoView_.class);
                 intent.putExtra("contentPath", contentTable1.getResourcePath());
-                intent.putExtra("StudentID", FC_Constants.currentStudentID);
+                intent.putExtra("StudentID", FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""));
                 intent.putExtra("resId", contentTable1.getResourceId());
                 intent.putExtra("contentName", contentTable1.getNodeTitle());
                 intent.putExtra("onSdCard", true);
@@ -318,7 +319,7 @@ public class GameConstatnts implements ShowInstruction {
         if (contentTable1 != null) {
             Bundle bundle = new Bundle();
             bundle.putString("contentPath", contentTable1.getResourcePath());
-            bundle.putString("StudentID", FC_Constants.currentStudentID);
+            bundle.putString("StudentID", FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""));
             bundle.putString("resId", contentTable1.getResourceId());
             bundle.putString("contentName", contentTable1.getNodeTitle());
             bundle.putString("sttLang", contentTable1.getContentLanguage());

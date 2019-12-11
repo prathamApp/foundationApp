@@ -8,6 +8,7 @@ import com.pratham.foundation.database.BackupDatabase;
 import com.pratham.foundation.database.domain.Assessment;
 import com.pratham.foundation.database.domain.ContentProgress;
 import com.pratham.foundation.database.domain.Score;
+import com.pratham.foundation.services.shared_preferences.FastSave;
 import com.pratham.foundation.utility.FC_Constants;
 import com.pratham.foundation.utility.FC_Utility;
 
@@ -142,8 +143,8 @@ public class ConversationPresenter implements ConversationContract.ConversationP
             ContentProgress contentProgress = new ContentProgress();
             contentProgress.setProgressPercentage("" + perc);
             contentProgress.setResourceId("" + contentId);
-            contentProgress.setSessionId("" + FC_Constants.currentSession);
-            contentProgress.setStudentId("" + FC_Constants.currentStudentID);
+            contentProgress.setSessionId("" + FastSave.getInstance().getString(FC_Constants.CURRENT_SESSION, ""));
+            contentProgress.setStudentId("" + FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""));
             contentProgress.setUpdatedDateTime("" + FC_Utility.getCurrentDateTime());
             contentProgress.setLabel("resourceProgress");
             contentProgress.setSentFlag(0);
@@ -180,12 +181,12 @@ public class ConversationPresenter implements ConversationContract.ConversationP
         try {
             String deviceId = AppDatabase.appDatabase.getStatusDao().getValue("DeviceId");
             Score score = new Score();
-            score.setSessionID(FC_Constants.currentSession);
+            score.setSessionID(FastSave.getInstance().getString(FC_Constants.CURRENT_SESSION, ""));
             score.setResourceID(contentId);
             score.setQuestionId(wID);
             score.setScoredMarks(scoredMarks);
             score.setTotalMarks(totalMarks);
-            score.setStudentID(FC_Constants.currentStudentID);
+            score.setStudentID(FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""));
             score.setStartDateTime(startTime);
             score.setDeviceID(deviceId.equals(null) ? "0000" : deviceId);
             score.setEndDateTime(FC_Utility.getCurrentDateTime());
@@ -197,12 +198,12 @@ public class ConversationPresenter implements ConversationContract.ConversationP
             if (FC_Constants.isTest) {
                 Assessment assessment = new Assessment();
                 assessment.setResourceIDa(contentId);
-                assessment.setSessionIDa(FC_Constants.assessmentSession);
-                assessment.setSessionIDm(FC_Constants.currentSession);
+                assessment.setSessionIDa(FastSave.getInstance().getString(FC_Constants.ASSESSMENT_SESSION, ""));
+                assessment.setSessionIDm(FastSave.getInstance().getString(FC_Constants.CURRENT_SESSION, ""));
                 assessment.setQuestionIda(wID);
                 assessment.setScoredMarksa(scoredMarks);
                 assessment.setTotalMarksa(totalMarks);
-                assessment.setStudentIDa(FC_Constants.currentAssessmentStudentID);
+                assessment.setStudentIDa(FastSave.getInstance().getString(FC_Constants.CURRENT_ASSESSMENT_STUDENT_ID, ""));
                 assessment.setStartDateTimea(startTime);
                 assessment.setDeviceIDa(deviceId.equals(null) ? "0000" : deviceId);
                 assessment.setEndDateTime(FC_Utility.getCurrentDateTime());

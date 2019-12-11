@@ -142,11 +142,11 @@ public class FC_Constants {
     public static final String ASSESSMENT_SESSION = "assessment_session";
     public static final String CURRENT_FOLDER_NAME = "current_folder_name";
 
-    public static String currentStudentID;
+/*    public static String currentStudentID;
     public static String currentAssessmentStudentID;
     public static String currentsupervisorID;
     public static String currentSession;
-    public static String assessmentSession;
+    public static String assessmentSession;*/
     public static String STORING_IN;
     public static boolean assessmentFlag;
     public static boolean supervisedAssessment;
