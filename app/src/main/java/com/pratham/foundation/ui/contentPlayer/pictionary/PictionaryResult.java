@@ -7,13 +7,11 @@ import android.support.v7.widget.RecyclerView;
 
 import com.pratham.foundation.R;
 import com.pratham.foundation.customView.SansButton;
+import com.pratham.foundation.modalclasses.ScienceQuestion;
 import com.pratham.foundation.modalclasses.ScienceQuestionChoice;
 import com.pratham.foundation.ui.contentPlayer.GameConstatnts;
 import com.pratham.foundation.ui.contentPlayer.fact_retrieval_fragment.ResultAdapterFactRetrieval;
-import com.pratham.foundation.modalclasses.ScienceQuestion;
-
 import java.util.ArrayList;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -60,8 +58,7 @@ public class PictionaryResult extends AppCompatActivity {
     }
 
     @OnClick(R.id.dia_btn_green)
-    public void onNext(){
-
+    public void onNext() {
         setResult(111);
         finish();
     }

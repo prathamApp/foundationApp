@@ -381,20 +381,21 @@
         <item>pa</item>
     </string-array>
 
-    <string name="factRetrieval">FACTRETRIEVAL</string>
-    <string name="IKWAndroid">KEYWORD_IDENTIFICATION</string>
-    <string name="CWiritng">WRITING</string>
-    <string name="chKeywords">संबंधित शब्दों को पहचाने</string>
-    <string name="ShowMeAndroid">खोपड़ी दिखाओ.</string>
-    <string name="Dict">LISTNING_AND_WRITTING</string>
-    <string name="PictAndroid">PICTIONARYFRAGMENT</string>
-    <string name="TAW">THINKANDWRITE</string>
-    <string name="doing_act_read">DOING_ACT_READ</string>
-    <string name="letter">LetterWriting</string>
-    <string name="doing_act_video">DOING_ACT_VIDEO</string>
-    <string name="ReadVocabAndroid">READ_VOCAB_ANDROID</string>
-    <string name="reading_stt">READING_STT</string>
-    <string name="multiple_choice">MULTIPLE_CHOICE</string>
+    <string name="fact_retrial_click">Answer the question by selecting the word and then submit it.</string>
+    <string name="factRetrieval">Answer the question by selecting the word by long pressing it and then submit the selected answer.</string>
+    <string name="IKWAndroid">Identify keywords from paragraph and submit </string>
+    <string name="CWiritng">Write the text displayed in the app in your notebook and then submit the photo</string>
+    <string name="chKeywords">Select the words releted to the topic and submit your answers</string>
+    <string name="ShowMeAndroid">Give the answer by selecting the correct option form the given options.</string>
+    <string name="Dict">Listen to the audio and write it in your notebook and then submit the photo.</string>
+    <string name="PictAndroid">Listen to a story</string>
+    <string name="TAW">Write in your own words about the given topic in your notebook and sumbit its photo.</string>
+    <string name="doing_act_read">Read the instructions and try to perform the activity.</string>
+    <string name="letter">Write a letter on the given subject in notebook and submit its photo.</string>
+    <string name="doing_act_video">Watch the video and try to perform the activity.</string>
+    <string name="ReadVocabAndroid">Read the following in order to increase you vocabulary.</string>
+    <string name="reading_stt">Answer the question by Give the answer by selecting the correct option form the given options.using the speech to text functionality.</string>
+    <string name="multiple_choice">Select the correct answer from multiple answers and submit it</string>
     <string name="restart_dialog_msg">Do you want to restart?</string>
     <string name="exit_dialog_msg">Do you want to exit?</string>
 </resources>

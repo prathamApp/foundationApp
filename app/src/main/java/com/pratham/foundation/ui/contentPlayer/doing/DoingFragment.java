@@ -394,6 +394,7 @@ public class DoingFragment extends Fragment implements STT_Result_New.sttView,On
             voiceStart = false;
         }
         subQuestion.setText(scienceQuestionChoices.get(index).getSubQues());
+        subQuestion.setMovementMethod(new ScrollingMovementMethod());
         if(scienceQuestionChoices.get(index).getUserAns().trim()!=null && !scienceQuestionChoices.get(index).getUserAns().isEmpty()){
             etAnswer.setText(scienceQuestionChoices.get(index).getUserAns());
         }else {
