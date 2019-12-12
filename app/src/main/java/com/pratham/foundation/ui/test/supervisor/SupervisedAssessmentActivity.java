@@ -46,9 +46,6 @@ import butterknife.OnClick;
 
 import static com.pratham.foundation.ApplicationClass.isTablet;
 import static com.pratham.foundation.utility.FC_Constants.CURRENT_ASSESSMENT_STUDENT_ID;
-import static com.pratham.foundation.utility.FC_Constants.assessmentSession;
-import static com.pratham.foundation.utility.FC_Constants.currentAssessmentStudentID;
-import static com.pratham.foundation.utility.FC_Constants.currentsupervisorID;
 
 
 public class SupervisedAssessmentActivity extends AppCompatActivity implements TestStudentClicked {
@@ -94,12 +91,12 @@ public class SupervisedAssessmentActivity extends AppCompatActivity implements T
                     attendence_layout.setVisibility(View.VISIBLE);
                     getStudents();
                 } else {
-                    currentAssessmentStudentID = FC_Constants.currentStudentID;
+                    String currentAssessmentStudentID = FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, "");
                     FastSave.getInstance().saveString(CURRENT_ASSESSMENT_STUDENT_ID, currentAssessmentStudentID);
                     submitSupervisorData();
                 }
             } else {
-                currentAssessmentStudentID = FC_Constants.currentStudentID;
+                String currentAssessmentStudentID = FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, "");
                 FastSave.getInstance().saveString(CURRENT_ASSESSMENT_STUDENT_ID, currentAssessmentStudentID);
                 submitSupervisorData();
             }
@@ -155,7 +152,7 @@ public class SupervisedAssessmentActivity extends AppCompatActivity implements T
                 if (FC_Constants.GROUP_LOGIN) {
                     getStudents();
                 }else {
-                    currentAssessmentStudentID = FC_Constants.currentStudentID;
+                    FastSave.getInstance().saveString(FC_Constants.CURRENT_ASSESSMENT_STUDENT_ID, FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""));
                     submitSupervisorData();
                 }
             } else Toast.makeText(this, "Enter supervisor name", Toast.LENGTH_SHORT).show();
@@ -180,14 +177,14 @@ public class SupervisedAssessmentActivity extends AppCompatActivity implements T
                     SupervisorData supervisorData = new SupervisorData();
                     supervisorData.setSupervisorId(supervisorID);
                     supervisorData.setSupervisorName(sName);
-                    supervisorData.setAssessmentSessionId(assessmentSession);
+                    supervisorData.setAssessmentSessionId(FastSave.getInstance().getString(FC_Constants.ASSESSMENT_SESSION, ""));
                     supervisorData.setSupervisorPhoto(supervisorPhoto);
 
                     AppDatabase.getDatabaseInstance(SupervisedAssessmentActivity.this).getSupervisorDataDao().insert(supervisorData);
                     BackupDatabase.backup(SupervisedAssessmentActivity.this);
 
-                    AppDatabase.getDatabaseInstance(SupervisedAssessmentActivity.this).getStatusDao().updateValue("AssessmentSession", "" + assessmentSession);
-                    currentsupervisorID = "" + supervisorID;
+                    AppDatabase.getDatabaseInstance(SupervisedAssessmentActivity.this).getStatusDao().updateValue("AssessmentSession", "" + FastSave.getInstance().getString(FC_Constants.ASSESSMENT_SESSION, ""));
+                    String currentsupervisorID = "" + supervisorID;
                     FastSave.getInstance().saveString(FC_Constants.CURRENT_SUPERVISOR_ID, currentsupervisorID);
 //                    getStudents();
                     // goToAssessment();
@@ -211,7 +208,7 @@ public class SupervisedAssessmentActivity extends AppCompatActivity implements T
                 try {
                     if (isTablet && FC_Constants.GROUP_LOGIN) {
 
-                        studentList = AppDatabase.appDatabase.getStudentDao().getGroupwiseStudents(FC_Constants.currentStudentID);
+                        studentList = AppDatabase.appDatabase.getStudentDao().getGroupwiseStudents(FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""));
                     } else {
                         studentList = AppDatabase.appDatabase.getStudentDao().getAllStudents();
                     }
@@ -283,7 +280,7 @@ public class SupervisedAssessmentActivity extends AppCompatActivity implements T
 
     @Override
     public void onStudentClicked(int position, String studentId) {
-        currentAssessmentStudentID = "" + studentId;
+        FastSave.getInstance().saveString(FC_Constants.CURRENT_ASSESSMENT_STUDENT_ID, studentId);
         submitSupervisorData();
     }
 

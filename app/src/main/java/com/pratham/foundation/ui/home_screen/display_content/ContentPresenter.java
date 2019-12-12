@@ -15,6 +15,7 @@ import com.pratham.foundation.database.domain.ContentTable;
 import com.pratham.foundation.database.domain.Score;
 import com.pratham.foundation.interfaces.API_Content_Result;
 import com.pratham.foundation.modalclasses.Modal_DownloadContent;
+import com.pratham.foundation.services.shared_preferences.FastSave;
 import com.pratham.foundation.utility.FC_Constants;
 import com.pratham.foundation.utility.FC_Utility;
 
@@ -77,7 +78,7 @@ public class ContentPresenter implements ContentContract.ContentPresenter, API_C
     public void displayProfileImage() {
         String sImage;
         if (!FC_Constants.GROUP_LOGIN)
-            sImage = AppDatabase.getDatabaseInstance(context).getStudentDao().getStudentAvatar(FC_Constants.currentStudentID);
+            sImage = AppDatabase.getDatabaseInstance(context).getStudentDao().getStudentAvatar(FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""));
         else
             sImage = "group_icon";
 
@@ -98,7 +99,7 @@ public class ContentPresenter implements ContentContract.ContentPresenter, API_C
             for (int childCnt = 0; childList.size() > childCnt; childCnt++) {
                 if (childList.get(childCnt).getNodeType().equals("Resource")) {
                     double maxScoreTemp = 0.0;
-                    List<ContentProgress> contentProgressList = AppDatabase.getDatabaseInstance(context).getContentProgressDao().getContentNodeProgress(FC_Constants.currentStudentID, childList.get(childCnt).getResourceId(), "resourceProgress");
+                    List<ContentProgress> contentProgressList = AppDatabase.getDatabaseInstance(context).getContentProgressDao().getContentNodeProgress(FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""), childList.get(childCnt).getResourceId(), "resourceProgress");
                     for (int cnt = 0; cnt < contentProgressList.size(); cnt++) {
                         String d = contentProgressList.get(cnt).getProgressPercentage();
                         double scoreTemp = Double.parseDouble(d);
@@ -314,12 +315,12 @@ public class ContentPresenter implements ContentContract.ContentPresenter, API_C
         try {
             String deviceId = AppDatabase.appDatabase.getStatusDao().getValue("DeviceId");
             Score score = new Score();
-            score.setSessionID(FC_Constants.currentSession);
+            score.setSessionID(FastSave.getInstance().getString(FC_Constants.CURRENT_SESSION, ""));
             score.setResourceID("" + contentID);
             score.setQuestionId(0);
             score.setScoredMarks(0);
             score.setTotalMarks(0);
-            score.setStudentID(FC_Constants.currentStudentID);
+            score.setStudentID(FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""));
             score.setStartDateTime(FC_Utility.getCurrentDateTime());
             score.setDeviceID(deviceId.equals(null) ? "0000" : deviceId);
             score.setEndDateTime(FC_Utility.getCurrentDateTime());

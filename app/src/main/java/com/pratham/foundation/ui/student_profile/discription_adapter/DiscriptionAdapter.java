@@ -1,7 +1,6 @@
 package com.pratham.foundation.ui.student_profile.discription_adapter;
 
 import android.content.Context;
-import android.content.Intent;
 import android.os.AsyncTask;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
@@ -12,12 +11,12 @@ import android.widget.ArrayAdapter;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-
 import com.pratham.foundation.R;
 import com.pratham.foundation.database.AppDatabase;
 import com.pratham.foundation.database.domain.Assessment;
 import com.pratham.foundation.database.domain.ContentProgress;
 import com.pratham.foundation.database.domain.ContentTable;
+import com.pratham.foundation.services.shared_preferences.FastSave;
 import com.pratham.foundation.ui.student_profile.Profile_Model;
 import com.pratham.foundation.utility.FC_Constants;
 
@@ -132,7 +131,7 @@ public class DiscriptionAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
                         if(GROUP_LOGIN)
                             assessmentList = AppDatabase.getDatabaseInstance(context).getAssessmentDao().getCertificatesGroups(FC_Constants.currentGroup, FC_Constants.CERTIFICATE_LBL);
                         else
-                            assessmentList = AppDatabase.getDatabaseInstance(context).getAssessmentDao().getCertificates(FC_Constants.currentStudentID, FC_Constants.CERTIFICATE_LBL);
+                            assessmentList = AppDatabase.getDatabaseInstance(context).getAssessmentDao().getCertificates(FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""), FC_Constants.CERTIFICATE_LBL);
                         return null;
                     }
 
@@ -155,7 +154,7 @@ public class DiscriptionAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         for (int childCnt = 0; childList.size() > childCnt; childCnt++) {
             if (childList.get(childCnt).getNodeType().equals("Resource")) {
                 double maxScoreTemp = 0.0;
-                List<ContentProgress> score = AppDatabase.getDatabaseInstance(context).getContentProgressDao().getProgressByStudIDAndResID(FC_Constants.currentStudentID, childList.get(childCnt).getResourceId(), "resourceProgress");
+                List<ContentProgress> score = AppDatabase.getDatabaseInstance(context).getContentProgressDao().getProgressByStudIDAndResID(FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""), childList.get(childCnt).getResourceId(), "resourceProgress");
                 for (int cnt = 0; cnt < score.size(); cnt++) {
                     String d = score.get(cnt).getProgressPercentage();
                     double scoreTemp = Double.parseDouble(d);
@@ -187,9 +186,9 @@ public class DiscriptionAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         for (int childCnt = 0; childList.size() > childCnt; childCnt++) {
             if (childList.get(childCnt).getNodeType().equals("Resource")) {
                 double maxScoreTemp = 0.0;
-                // List<Score> score = AppDatabase.getDatabaseInstance(context).getScoreDao().getScoreByStudIDAndResID(FC_Constants.currentStudentID, childList.get(childCnt).getResourceId(), "resourceProgress");
-                List<ContentProgress> contentProgressList = AppDatabase.getDatabaseInstance(context).getContentProgressDao().getContentNodeProgress(FC_Constants.currentStudentID, childList.get(childCnt).getResourceId(), "resourceProgress");
-                //List<Score> score = AppDatabase.getDatabaseInstance(context).getScoreDao().getScoreByStudIDAndResID(FC_Constants.currentStudentID, childList.get(childCnt).getResourceId(), "resourceProgress");
+                // List<Score> score = AppDatabase.getDatabaseInstance(context).getScoreDao().getScoreByStudIDAndResID(FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""), childList.get(childCnt).getResourceId(), "resourceProgress");
+                List<ContentProgress> contentProgressList = AppDatabase.getDatabaseInstance(context).getContentProgressDao().getContentNodeProgress(FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""), childList.get(childCnt).getResourceId(), "resourceProgress");
+                //List<Score> score = AppDatabase.getDatabaseInstance(context).getScoreDao().getScoreByStudIDAndResID(FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""), childList.get(childCnt).getResourceId(), "resourceProgress");
 
                 for (int cnt = 0; cnt < contentProgressList.size(); cnt++) {
                     String d = contentProgressList.get(cnt).getProgressPercentage();
@@ -221,7 +220,7 @@ public class DiscriptionAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
   /*  private void getCertificates() {
         // Display Word Progress
 
-        // List<Assessment> assessmentList = AppDatabase.getDatabaseInstance(ProfileActivity.this).getAssessmentDao().getCertificates(FC_Constants.currentStudentID, FC_Constants.CERTIFICATE_LBL);
+        // List<Assessment> assessmentList = AppDatabase.getDatabaseInstance(ProfileActivity.this).getAssessmentDao().getCertificates(FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""), FC_Constants.CERTIFICATE_LBL);
         if (assessmentList != null) {
             //certificate_progress.setText("" + assessmentList.size());
         }

@@ -32,6 +32,7 @@ import com.pratham.foundation.database.domain.ContentProgress;
 import com.pratham.foundation.database.domain.KeyWords;
 import com.pratham.foundation.database.domain.Score;
 import com.pratham.foundation.modalclasses.MatchThePair;
+import com.pratham.foundation.services.shared_preferences.FastSave;
 import com.pratham.foundation.utility.FC_Constants;
 import com.pratham.foundation.utility.FC_Utility;
 
@@ -387,7 +388,7 @@ public class MatchThePairGameActivity extends BaseActivity implements MatchThePa
 
     private boolean checkWord(String wordStr) {
         try {
-            String word = appDatabase.getKeyWordDao().checkWord(FC_Constants.currentStudentID, resId, wordStr);
+            String word = appDatabase.getKeyWordDao().checkWord(FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""), resId, wordStr);
             return word != null;
         } catch (Exception e) {
             e.printStackTrace();
@@ -427,8 +428,8 @@ public class MatchThePairGameActivity extends BaseActivity implements MatchThePa
         ContentProgress contentProgress = new ContentProgress();
         contentProgress.setProgressPercentage("" + perc);
         contentProgress.setResourceId("" + resId);
-        contentProgress.setSessionId("" + FC_Constants.currentSession);
-        contentProgress.setStudentId("" + FC_Constants.currentStudentID);
+        contentProgress.setSessionId("" + FastSave.getInstance().getString(FC_Constants.CURRENT_SESSION, ""));
+        contentProgress.setStudentId("" + FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""));
         contentProgress.setUpdatedDateTime("" + FC_Utility.getCurrentDateTime());
         contentProgress.setLabel("" + label);
         contentProgress.setSentFlag(0);
@@ -439,7 +440,7 @@ public class MatchThePairGameActivity extends BaseActivity implements MatchThePa
     //    @Background
     private int getLearntWordsCount() {
         int count = 0;
-        count = appDatabase.getKeyWordDao().checkWordCount(FC_Constants.currentStudentID, resId);
+        count = appDatabase.getKeyWordDao().checkWordCount(FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""), resId);
         return count;
     }
 
@@ -447,7 +448,7 @@ public class MatchThePairGameActivity extends BaseActivity implements MatchThePa
         KeyWords learntWords = new KeyWords();
         learntWords.setResourceId(resId);
         learntWords.setSentFlag(0);
-        learntWords.setStudentId(FC_Constants.currentStudentID);
+        learntWords.setStudentId(FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""));
         learntWords.setKeyWord(draggedList.get(0).getParaTitle().toLowerCase());
         learntWords.setTopic(FC_Constants.MATCH_THE_PAIR);
         learntWords.setWordType("word");
@@ -499,12 +500,12 @@ public class MatchThePairGameActivity extends BaseActivity implements MatchThePa
         try {
             String deviceId = appDatabase.getStatusDao().getValue("DeviceId");
             Score score = new Score();
-            score.setSessionID(FC_Constants.currentSession);
+            score.setSessionID(FastSave.getInstance().getString(FC_Constants.CURRENT_SESSION, ""));
             score.setResourceID(resId);
             score.setQuestionId(Integer.parseInt(draggedList.get(0).getId()));
             score.setScoredMarks(10);
             score.setTotalMarks(10);
-            score.setStudentID(FC_Constants.currentStudentID);
+            score.setStudentID(FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""));
             score.setStartDateTime(questionStartTime);
             score.setDeviceID(deviceId.equals(null) ? "0000" : deviceId);
             score.setEndDateTime(FC_Utility.getCurrentDateTime());
@@ -516,12 +517,12 @@ public class MatchThePairGameActivity extends BaseActivity implements MatchThePa
             if (FC_Constants.isTest) {
                 Assessment assessment = new Assessment();
                 assessment.setResourceIDa(resId);
-                assessment.setSessionIDa(FC_Constants.assessmentSession);
-                assessment.setSessionIDm(FC_Constants.currentSession);
+                assessment.setSessionIDa(FastSave.getInstance().getString(FC_Constants.ASSESSMENT_SESSION, ""));
+                assessment.setSessionIDm(FastSave.getInstance().getString(FC_Constants.CURRENT_SESSION, ""));
                 assessment.setQuestionIda(Integer.parseInt(draggedList.get(0).getId()));
                 assessment.setScoredMarksa(10);
                 assessment.setTotalMarksa(10);
-                assessment.setStudentIDa(FC_Constants.currentAssessmentStudentID);
+                assessment.setStudentIDa(FastSave.getInstance().getString(FC_Constants.CURRENT_ASSESSMENT_STUDENT_ID, ""));
                 assessment.setStartDateTimea(questionStartTime);
                 assessment.setDeviceIDa(deviceId.equals(null) ? "0000" : deviceId);
                 assessment.setEndDateTime(FC_Utility.getCurrentDateTime());
@@ -540,12 +541,12 @@ public class MatchThePairGameActivity extends BaseActivity implements MatchThePa
  /*   public void addExitScore(float perc, int scoredMarks, int totalMarks, String resStartTime, String Label) {
         try {
             Score score = new Score();
-            score.setSessionID(FC_Constants.currentSession);
+            score.setSessionID(FastSave.getInstance().getString(FC_Constants.CURRENT_SESSION, ""));
             score.setResourceID(resId);
             score.setQuestionId(0);
             score.setScoredMarks(scoredMarks);
             score.setTotalMarks(totalMarks);
-            score.setStudentID(FC_Constants.currentStudentID);
+            score.setStudentID(FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""));
             score.setStartDateTime(resStartTime);
             score.setDeviceID("" + perc);
             score.setEndDateTime(ApplicationClass.getCurrentDateTime());

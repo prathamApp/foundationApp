@@ -8,6 +8,7 @@ import com.pratham.foundation.database.domain.ContentProgress;
 import com.pratham.foundation.database.domain.KeyWords;
 import com.pratham.foundation.modalclasses.ModalReadingCardMenu;
 import com.pratham.foundation.modalclasses.ModalReadingCardSubMenu;
+import com.pratham.foundation.services.shared_preferences.FastSave;
 import com.pratham.foundation.utility.FC_Constants;
 import com.pratham.foundation.utility.FC_Utility;
 
@@ -103,8 +104,8 @@ public class ReadingCardPresenter implements ReadingCardContract.ReadingCardPres
             ContentProgress contentProgress = new ContentProgress();
             contentProgress.setProgressPercentage("" + perc);
             contentProgress.setResourceId("" + resId);
-            contentProgress.setSessionId("" + FC_Constants.currentSession);
-            contentProgress.setStudentId("" + FC_Constants.currentStudentID);
+            contentProgress.setSessionId("" + FastSave.getInstance().getString(FC_Constants.CURRENT_SESSION, ""));
+            contentProgress.setStudentId("" + FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""));
             contentProgress.setUpdatedDateTime("" + FC_Utility.getCurrentDateTime());
             contentProgress.setLabel("resourceProgress");
             contentProgress.setSentFlag(0);

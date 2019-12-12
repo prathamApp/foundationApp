@@ -9,6 +9,7 @@ import android.support.annotation.Nullable;
 import android.util.Log;
 
 import com.pratham.foundation.database.BackupDatabase;
+import com.pratham.foundation.services.shared_preferences.FastSave;
 import com.pratham.foundation.ui.splash_activity.SplashActivity;
 import com.pratham.foundation.utility.FC_Constants;
 import com.pratham.foundation.utility.FC_Utility;
@@ -34,20 +35,20 @@ public class AppExitService extends Service {
                 protected Object doInBackground(Object[] objects) {
                     try {
                         Log.d("AppExitService:  ", "1]  In Try");
-                        Log.d("AppExitService:  ", "2]  toDateTemp : "+ FC_Constants.currentSession);
-                        String toDateTemp = appDatabase.getSessionDao().getToDate(FC_Constants.currentSession);
+                        Log.d("AppExitService:  ", "2]  toDateTemp : "+ FastSave.getInstance().getString(FC_Constants.CURRENT_SESSION, ""));
+                        String toDateTemp = appDatabase.getSessionDao().getToDate(FastSave.getInstance().getString(FC_Constants.CURRENT_SESSION, ""));
                         Log.d("AppExitService:  ", "3]  toDateTemp : "+toDateTemp);
                         if (toDateTemp.equalsIgnoreCase("na")) {
                             Log.d("AppExitService:  ", "4]  toDateTemp If NA: "+toDateTemp);
-                            appDatabase.getSessionDao().UpdateToDate(FC_Constants.currentSession, FC_Utility.getCurrentDateTime());
+                            appDatabase.getSessionDao().UpdateToDate(FastSave.getInstance().getString(FC_Constants.CURRENT_SESSION, ""), FC_Utility.getCurrentDateTime());
                         }
                         if(FC_Constants.assessmentFlag || isTest) {
                             Log.d("AppExitService:  ", "5]  Assessment Flg: ");
-                            String toDateAssessment = appDatabase.getSessionDao().getToDate(FC_Constants.assessmentSession);
+                            String toDateAssessment = appDatabase.getSessionDao().getToDate(FastSave.getInstance().getString(FC_Constants.ASSESSMENT_SESSION, ""));
                             Log.d("AppExitService:  ", "6]  Assessment toDate: "+toDateAssessment);
                             if (toDateAssessment.equalsIgnoreCase("na")) {
                                 Log.d("AppExitService:  ", "7]  Assessment toDate If Na: "+toDateAssessment);
-                                appDatabase.getSessionDao().UpdateToDate(FC_Constants.assessmentSession, FC_Utility.getCurrentDateTime());
+                                appDatabase.getSessionDao().UpdateToDate(FastSave.getInstance().getString(FC_Constants.ASSESSMENT_SESSION, ""), FC_Utility.getCurrentDateTime());
                             }
                         }
                         Log.d("AppExitService:  ", "8]  Outside : ");

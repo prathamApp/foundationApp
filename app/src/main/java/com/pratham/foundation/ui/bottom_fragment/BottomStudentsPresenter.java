@@ -47,7 +47,6 @@ import java.util.Iterator;
 import java.util.List;
 
 import static android.content.Context.ACTIVITY_SERVICE;
-import static com.pratham.foundation.utility.FC_Constants.currentStudentID;
 
 @EBean
 public class BottomStudentsPresenter implements BottomStudentsContract.BottomStudentsPresenter {
@@ -95,17 +94,17 @@ public class BottomStudentsPresenter implements BottomStudentsContract.BottomStu
     @Background
     @Override
     public void updateStudentData() {
-        AppDatabase.appDatabase.getStatusDao().updateValue("CurrentSession", "" + FC_Constants.currentSession);
+        AppDatabase.appDatabase.getStatusDao().updateValue("CurrentSession", "" + FastSave.getInstance().getString(FC_Constants.CURRENT_SESSION, ""));
         Attendance attendance = new Attendance();
-        attendance.setSessionID(FC_Constants.currentSession);
-        attendance.setStudentID(currentStudentID);
+        attendance.setSessionID(FastSave.getInstance().getString(FC_Constants.CURRENT_SESSION, ""));
+        attendance.setStudentID(FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""));
         attendance.setDate(FC_Utility.getCurrentDateTime());
         attendance.setGroupID("SP");
         attendance.setSentFlag(0);
         AppDatabase.appDatabase.getAttendanceDao().insert(attendance);
 
         Session startSesion = new Session();
-        startSesion.setSessionID("" + FC_Constants.currentSession);
+        startSesion.setSessionID("" + FastSave.getInstance().getString(FC_Constants.CURRENT_SESSION, ""));
         startSesion.setFromDate("" + FC_Utility.getCurrentDateTime());
         startSesion.setToDate("NA");
         startSesion.setSentFlag(0);
@@ -113,7 +112,7 @@ public class BottomStudentsPresenter implements BottomStudentsContract.BottomStu
 
         myView.gotoNext();
         if (FC_Utility.isDataConnectionAvailable(context))
-            getStudentData(FC_Constants.STUDENT_PROGRESS_INTERNET, FC_Constants.STUDENT_PROGRESS_API, currentStudentID);
+            getStudentData(FC_Constants.STUDENT_PROGRESS_INTERNET, FC_Constants.STUDENT_PROGRESS_API, FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""));
 
     }
 
@@ -177,7 +176,7 @@ public class BottomStudentsPresenter implements BottomStudentsContract.BottomStu
 //                @Override
 //                protected void onPostExecute(Object o) {
 //                    super.onPostExecute(o);
-            getStudentData(FC_Constants.LEARNT_WORDS_INTERNET, FC_Constants.LEARNT_WORDS_API, FC_Constants.currentStudentID);
+            getStudentData(FC_Constants.LEARNT_WORDS_INTERNET, FC_Constants.LEARNT_WORDS_API, FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""));
 //                }
 //            }.execute();
         } else if (requestType.equalsIgnoreCase(FC_Constants.LEARNT_WORDS_INTERNET)) {

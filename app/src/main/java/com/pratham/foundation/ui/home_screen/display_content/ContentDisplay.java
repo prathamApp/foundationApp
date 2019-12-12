@@ -29,6 +29,7 @@ import com.pratham.foundation.customView.progress_layout.ProgressLayout;
 import com.pratham.foundation.database.domain.ContentTable;
 import com.pratham.foundation.modalclasses.EventMessage;
 import com.pratham.foundation.modalclasses.Modal_FileDownloading;
+import com.pratham.foundation.services.shared_preferences.FastSave;
 import com.pratham.foundation.ui.contentPlayer.ContentPlayerActivity_;
 import com.pratham.foundation.ui.contentPlayer.matchingPairGame.MatchThePairGameActivity;
 import com.pratham.foundation.ui.contentPlayer.old_cos.conversation.ConversationActivity_;
@@ -339,7 +340,7 @@ public class ContentDisplay extends BaseActivity implements ContentContract.Cont
                 ContentTableList.get(position).getResourceType().equalsIgnoreCase("PreResource")){
                 Intent mainNew = new Intent(ContentDisplay.this, ContentPlayerActivity_.class);
                 mainNew.putExtra("resId", ContentTableList.get(position).getResourceId());
-                mainNew.putExtra("StudentID", FC_Constants.currentStudentID);
+                mainNew.putExtra("StudentID", FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""));
                 mainNew.putExtra("contentName", ContentTableList.get(position).getNodeTitle());
                 mainNew.putExtra("onSdCard", ContentTableList.get(position).isOnSDCard());
                 mainNew.putExtra("contentPath", ContentTableList.get(position).getResourcePath());
@@ -375,7 +376,7 @@ public class ContentDisplay extends BaseActivity implements ContentContract.Cont
             } else if (ContentTableList.get(position).getResourceType().equalsIgnoreCase(FC_Constants.CONVO_RESOURCE)) {
                 Intent mainNew = new Intent(ContentDisplay.this, ConversationActivity_.class);
                 mainNew.putExtra("storyId", ContentTableList.get(position).getResourceId());
-                mainNew.putExtra("StudentID", FC_Constants.currentStudentID);
+                mainNew.putExtra("StudentID", FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""));
                 mainNew.putExtra("contentName", ContentTableList.get(position).getNodeTitle());
                 mainNew.putExtra("onSdCard", ContentTableList.get(position).isOnSDCard());
                 mainNew.putExtra("contentPath", ContentTableList.get(position).getResourcePath());
@@ -383,7 +384,7 @@ public class ContentDisplay extends BaseActivity implements ContentContract.Cont
             } else if (ContentTableList.get(position).getResourceType().equalsIgnoreCase(FC_Constants.COMIC_CONVO_RESOURCE)) {
                 Intent mainNew = new Intent(ContentDisplay.this, ReadingCardsActivity_.class);
                 mainNew.putExtra("resId", ContentTableList.get(position).getResourceId());
-                mainNew.putExtra("StudentID", FC_Constants.currentStudentID);
+                mainNew.putExtra("StudentID", FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""));
                 mainNew.putExtra("contentName", ContentTableList.get(position).getNodeTitle());
                 mainNew.putExtra("onSdCard", ContentTableList.get(position).isOnSDCard());
                 mainNew.putExtra("contentPath", ContentTableList.get(position).getResourcePath());
@@ -391,7 +392,7 @@ public class ContentDisplay extends BaseActivity implements ContentContract.Cont
             } else if (ContentTableList.get(position).getResourceType().equalsIgnoreCase(FC_Constants.OPPOSITE_WORDS)) {
                 Intent mainNew = new Intent(ContentDisplay.this, OppositesActivity_.class);
                 mainNew.putExtra("resId", ContentTableList.get(position).getResourceId());
-                mainNew.putExtra("StudentID", FC_Constants.currentStudentID);
+                mainNew.putExtra("StudentID", FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""));
                 mainNew.putExtra("contentName", ContentTableList.get(position).getNodeTitle());
                 mainNew.putExtra("onSdCard", ContentTableList.get(position).isOnSDCard());
                 mainNew.putExtra("contentPath", ContentTableList.get(position).getResourcePath());
@@ -400,7 +401,7 @@ public class ContentDisplay extends BaseActivity implements ContentContract.Cont
                     || ContentTableList.get(position).getResourceType().equalsIgnoreCase(FC_Constants.STORY_RESOURCE)) {
                 Intent mainNew = new Intent(ContentDisplay.this, ReadingStoryActivity_.class);
                 mainNew.putExtra("storyId", ContentTableList.get(position).getResourceId());
-                mainNew.putExtra("StudentID", FC_Constants.currentStudentID);
+                mainNew.putExtra("StudentID", FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""));
                 mainNew.putExtra("storyPath", ContentTableList.get(position).getResourcePath());
                 mainNew.putExtra("storyTitle", ContentTableList.get(position).getNodeTitle());
                 mainNew.putExtra("onSdCard", ContentTableList.get(position).isOnSDCard());
@@ -410,7 +411,7 @@ public class ContentDisplay extends BaseActivity implements ContentContract.Cont
             } /*else if (ContentTableList.get(position).getResourceType().equalsIgnoreCase(FC_Constants.WORD_ANDROID)) {
             Intent mainNew = new Intent(ContentDisplay.this, ReadingWordScreenActivity.class);
             mainNew.putExtra("resId", ContentTableList.get(position).getResourceId());
-            mainNew.putExtra("StudentID", FC_Constants.currentStudentID);
+            mainNew.putExtra("StudentID", FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""));
             mainNew.putExtra("contentPath", ContentTableList.get(position).getResourcePath());
             mainNew.putExtra("onSdCard", ContentTableList.get(position).isOnSDCard());
             mainNew.putExtra("contentTitle", ContentTableList.get(position).getNodeTitle());
@@ -418,7 +419,7 @@ public class ContentDisplay extends BaseActivity implements ContentContract.Cont
         } */ else if (ContentTableList.get(position).getResourceType().equalsIgnoreCase(FC_Constants.PARA_ANDROID)) {
                 Intent mainNew = new Intent(ContentDisplay.this, ReadingParagraphsActivity_.class);
                 mainNew.putExtra("resId", ContentTableList.get(position).getResourceId());
-                mainNew.putExtra("StudentID", FC_Constants.currentStudentID);
+                mainNew.putExtra("StudentID", FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""));
                 mainNew.putExtra("contentPath", ContentTableList.get(position).getResourcePath());
                 mainNew.putExtra("onSdCard", ContentTableList.get(position).isOnSDCard());
                 mainNew.putExtra("resType", ContentTableList.get(position).getResourceType());
@@ -427,7 +428,7 @@ public class ContentDisplay extends BaseActivity implements ContentContract.Cont
             } else if (ContentTableList.get(position).getResourceType().equalsIgnoreCase(FC_Constants.PARA_VOCAB_ANDROID)) {
                 Intent mainNew = new Intent(ContentDisplay.this, ReadingParagraphsActivity_.class);
                 mainNew.putExtra("resId", ContentTableList.get(position).getResourceId());
-                mainNew.putExtra("StudentID", FC_Constants.currentStudentID);
+                mainNew.putExtra("StudentID", FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""));
                 mainNew.putExtra("contentPath", ContentTableList.get(position).getResourcePath());
                 mainNew.putExtra("onSdCard", ContentTableList.get(position).isOnSDCard());
                 mainNew.putExtra("resType", ContentTableList.get(position).getResourceType());
@@ -437,7 +438,7 @@ public class ContentDisplay extends BaseActivity implements ContentContract.Cont
             } else if (ContentTableList.get(position).getResourceType().equalsIgnoreCase(FC_Constants.VOCAB_ANDROID)) {
                 Intent mainNew = new Intent(ContentDisplay.this, ReadingVocabularyActivity_.class);
                 mainNew.putExtra("resId", ContentTableList.get(position).getResourceId());
-                mainNew.putExtra("StudentID", FC_Constants.currentStudentID);
+                mainNew.putExtra("StudentID", FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""));
                 mainNew.putExtra("contentPath", ContentTableList.get(position).getResourcePath());
                 mainNew.putExtra("contentTitle", ContentTableList.get(position).getNodeTitle());
                 mainNew.putExtra("vocabLevel", ContentTableList.get(position).getNodeDesc());
@@ -448,7 +449,7 @@ public class ContentDisplay extends BaseActivity implements ContentContract.Cont
             } else if (ContentTableList.get(position).getResourceType().equalsIgnoreCase(FC_Constants.RHYMING_WORD_ANDROID)) {
                 Intent mainNew = new Intent(ContentDisplay.this, ReadingRhymesActivity_.class);
                 mainNew.putExtra("resId", ContentTableList.get(position).getResourceId());
-                mainNew.putExtra("StudentID", FC_Constants.currentStudentID);
+                mainNew.putExtra("StudentID", FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""));
                 mainNew.putExtra("contentPath", ContentTableList.get(position).getResourcePath());
                 mainNew.putExtra("contentTitle", ContentTableList.get(position).getNodeTitle());
                 mainNew.putExtra("onSdCard", ContentTableList.get(position).isOnSDCard());
@@ -457,7 +458,7 @@ public class ContentDisplay extends BaseActivity implements ContentContract.Cont
             } else if (ContentTableList.get(position).getResourceType().equalsIgnoreCase(FC_Constants.MATCH_THE_PAIR)) {
                 Intent mainNew = new Intent(ContentDisplay.this, MatchThePairGameActivity.class);
                 mainNew.putExtra("resId", ContentTableList.get(position).getResourceId());
-                mainNew.putExtra("StudentID", FC_Constants.currentStudentID);
+                mainNew.putExtra("StudentID", FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""));
                 mainNew.putExtra("contentPath", ContentTableList.get(position).getResourcePath());
                 mainNew.putExtra("contentTitle", ContentTableList.get(position).getNodeTitle());
                 mainNew.putExtra("onSdCard", ContentTableList.get(position).isOnSDCard());

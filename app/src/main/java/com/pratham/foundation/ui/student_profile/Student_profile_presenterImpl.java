@@ -3,6 +3,7 @@ package com.pratham.foundation.ui.student_profile;
 import android.content.Context;
 
 import com.pratham.foundation.database.AppDatabase;
+import com.pratham.foundation.services.shared_preferences.FastSave;
 import com.pratham.foundation.utility.FC_Constants;
 
 import org.androidannotations.annotations.EBean;
@@ -31,9 +32,9 @@ public class Student_profile_presenterImpl implements Student_profile_contract.S
         String profileName = "QR Group";
         try {
             if (LOGIN_MODE.equalsIgnoreCase(GROUP_MODE))
-                profileName = AppDatabase.getDatabaseInstance(mContext).getGroupsDao().getGroupNameByGrpID(FC_Constants.currentStudentID);
+                profileName = AppDatabase.getDatabaseInstance(mContext).getGroupsDao().getGroupNameByGrpID(FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""));
             else if (!LOGIN_MODE.equalsIgnoreCase(QR_GROUP_MODE)) {
-                profileName = AppDatabase.getDatabaseInstance(mContext).getStudentDao().getFullName(FC_Constants.currentStudentID);
+                profileName = AppDatabase.getDatabaseInstance(mContext).getStudentDao().getFullName(FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""));
             }
 
             if (LOGIN_MODE.equalsIgnoreCase(INDIVIDUAL_MODE))
@@ -49,7 +50,7 @@ public class Student_profile_presenterImpl implements Student_profile_contract.S
     public String getStudentProfileImage() {
         String sImage;
         if (!FC_Constants.GROUP_LOGIN)
-            sImage = AppDatabase.getDatabaseInstance(mContext).getStudentDao().getStudentAvatar(FC_Constants.currentStudentID);
+            sImage = AppDatabase.getDatabaseInstance(mContext).getStudentDao().getStudentAvatar(FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""));
         else
             sImage = "group_icon";
         return sImage;
@@ -61,7 +62,7 @@ public class Student_profile_presenterImpl implements Student_profile_contract.S
         int totalSentence = AppDatabase.getDatabaseInstance(mContext).getEnglishWordDao().getSentenceCount();
         int totalWords = totalEntries - totalSentence;
 
-        int learntSentence = AppDatabase.getDatabaseInstance(mContext).getKeyWordDao().getLearntSentenceCount(FC_Constants.currentStudentID);
+        int learntSentence = AppDatabase.getDatabaseInstance(mContext).getKeyWordDao().getLearntSentenceCount(FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""));
         int sentenceProgress;
         if (totalSentence == 0) {
             sentenceProgress = 0;
@@ -69,7 +70,7 @@ public class Student_profile_presenterImpl implements Student_profile_contract.S
             sentenceProgress = (learntSentence / totalSentence) * 100;
         }
 
-        int learntWords = AppDatabase.getDatabaseInstance(mContext).getKeyWordDao().getLearntWordCount(FC_Constants.currentStudentID);
+        int learntWords = AppDatabase.getDatabaseInstance(mContext).getKeyWordDao().getLearntWordCount(FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""));
         int wordsProgress;
         if (totalWords == 0) {
             wordsProgress = 0;

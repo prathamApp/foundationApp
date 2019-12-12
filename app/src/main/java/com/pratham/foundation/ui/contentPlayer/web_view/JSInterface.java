@@ -16,7 +16,6 @@ import android.util.Log;
 import android.webkit.JavascriptInterface;
 import android.webkit.WebView;
 
-
 import com.pratham.foundation.ApplicationClass;
 import com.pratham.foundation.database.AppDatabase;
 import com.pratham.foundation.database.BackupDatabase;
@@ -24,6 +23,7 @@ import com.pratham.foundation.database.domain.Assessment;
 import com.pratham.foundation.database.domain.KeyWords;
 import com.pratham.foundation.database.domain.Score;
 import com.pratham.foundation.interfaces.WebViewInterface;
+import com.pratham.foundation.services.shared_preferences.FastSave;
 import com.pratham.foundation.utility.FC_Constants;
 import com.pratham.foundation.utility.FC_Utility;
 
@@ -31,7 +31,6 @@ import java.util.ArrayList;
 
 import static com.pratham.foundation.ui.contentPlayer.web_view.WebViewActivity.gameCategory;
 import static com.pratham.foundation.ui.contentPlayer.web_view.WebViewActivity.webResId;
-import static com.pratham.foundation.utility.FC_Constants.assessmentSession;
 
 
 public class JSInterface implements RecognitionListener {
@@ -51,7 +50,7 @@ public class JSInterface implements RecognitionListener {
 
 
     JSInterface(Context mContext, WebView w, TextToSpeechCustom tts, WebViewActivity activity_instance, WebViewInterface webViewInterface) {
-        this.mContext = mContext;
+        JSInterface.mContext = mContext;
         this.activity_instance = activity_instance;
         sdCardPath = ApplicationClass.contentSDPath;
         mp = new MediaPlayer();
@@ -189,7 +188,7 @@ public class JSInterface implements RecognitionListener {
         try {
             mp.stop();
             mp.reset();
-            if (tts.textToSpeech.isSpeaking()) {
+            if (TextToSpeechCustom.textToSpeech.isSpeaking()) {
                 tts.stopSpeakerDuringJS();
             }
             String path = "";
@@ -258,12 +257,12 @@ public class JSInterface implements RecognitionListener {
 
 
                     Score score = new Score();
-                    score.setSessionID(FC_Constants.currentSession);
+                    score.setSessionID(FastSave.getInstance().getString(FC_Constants.CURRENT_SESSION, ""));
                     score.setResourceID(webResId);
                     score.setQuestionId(questionId);
                     score.setScoredMarks(scorefromGame);
                     score.setTotalMarks(totalMarks);
-                    score.setStudentID(FC_Constants.currentStudentID);
+                    score.setStudentID(FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""));
 
                     splited = startTime.split("\\s+");
                     splitedDate = splited[0].split("\\-+");
@@ -283,12 +282,12 @@ public class JSInterface implements RecognitionListener {
 
                         Assessment assessment = new Assessment();
                         assessment.setResourceIDa(/*gameWebViewList.get(WebViewActivity.gameCounter).getResourceId()*/webResId);
-                        assessment.setSessionIDa(assessmentSession);
-                        assessment.setSessionIDm(FC_Constants.currentSession);
+                        assessment.setSessionIDa(FastSave.getInstance().getString(FC_Constants.ASSESSMENT_SESSION, ""));
+                        assessment.setSessionIDm(FastSave.getInstance().getString(FC_Constants.CURRENT_SESSION, ""));
                         assessment.setQuestionIda(questionId);
                         assessment.setScoredMarksa(scorefromGame);
                         assessment.setTotalMarksa(totalMarks);
-                        assessment.setStudentIDa(FC_Constants.currentAssessmentStudentID);
+                        assessment.setStudentIDa(FastSave.getInstance().getString(FC_Constants.CURRENT_ASSESSMENT_STUDENT_ID, ""));
                         assessment.setStartDateTimea(customDate + " " + customTime);
                         assessment.setDeviceIDa(deviceId.equals(null) ? "0000" : deviceId);
                         assessment.setEndDateTime(FC_Utility.getCurrentDateTime());
@@ -321,8 +320,8 @@ public class JSInterface implements RecognitionListener {
                     KeyWords learntWords = new KeyWords();
                     learntWords.setResourceId(webResId);
                     learntWords.setSentFlag(0);
-                    learntWords.setStudentId(FC_Constants.currentStudentID);
-                   // learntWords.setSessionId(FC_Constants.currentSession);
+                    learntWords.setStudentId(FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""));
+                   // learntWords.setSessionId(FastSave.getInstance().getString(FC_Constants.CURRENT_SESSION, ""));
                     learntWords.setKeyWord(word.toLowerCase());
                     //learntWords.setSynId("" + WebViewActivity.gameName);
                     learntWords.setWordType("" + type);
@@ -370,12 +369,12 @@ public class JSInterface implements RecognitionListener {
                     String deviceId = AppDatabase.appDatabase.getStatusDao().getValue("DeviceId");
 
                     Score score = new Score();
-                    score.setSessionID(FC_Constants.currentSession);
+                    score.setSessionID(FastSave.getInstance().getString(FC_Constants.CURRENT_SESSION, ""));
                     score.setResourceID(webResId);
                     score.setQuestionId(questionId);
                     score.setScoredMarks(scorefromGame);
                     score.setTotalMarks(totalMarks);
-                    score.setStudentID(FC_Constants.currentStudentID);
+                    score.setStudentID(FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""));
 
                     splited = startTime.split("\\s+");
                     splitedDate = splited[0].split("\\-+");
@@ -396,12 +395,12 @@ public class JSInterface implements RecognitionListener {
 
                         Assessment assessment = new Assessment();
                         assessment.setResourceIDa(/*gameWebViewList.get(WebViewActivity.gameCounter).getResourceId()*/webResId);
-                        assessment.setSessionIDa(assessmentSession);
-                        assessment.setSessionIDm(FC_Constants.currentSession);
+                        assessment.setSessionIDa(FastSave.getInstance().getString(FC_Constants.ASSESSMENT_SESSION, ""));
+                        assessment.setSessionIDm(FastSave.getInstance().getString(FC_Constants.CURRENT_SESSION, ""));
                         assessment.setQuestionIda(questionId);
                         assessment.setScoredMarksa(scorefromGame);
                         assessment.setTotalMarksa(totalMarks);
-                        assessment.setStudentIDa(FC_Constants.currentAssessmentStudentID);
+                        assessment.setStudentIDa(FastSave.getInstance().getString(FC_Constants.CURRENT_ASSESSMENT_STUDENT_ID, ""));
                         assessment.setStartDateTimea(customDate + " " + customTime);
                         assessment.setDeviceIDa(deviceId.equals(null) ? "0000" : deviceId);
                         assessment.setEndDateTime(FC_Utility.getCurrentDateTime());
@@ -434,7 +433,7 @@ public class JSInterface implements RecognitionListener {
     public void playTts(String theWordWasAndYouSaid, String ttsLanguage) {
         mp.stop();
         mp.reset();
-        if (tts.textToSpeech.isSpeaking()) {
+        if (TextToSpeechCustom.textToSpeech.isSpeaking()) {
             tts.stopSpeakerDuringJS();
         }
         if (ttsLanguage == null) {
@@ -590,7 +589,7 @@ public class JSInterface implements RecognitionListener {
                 .getStringArrayList(SpeechRecognizer.RESULTS_RECOGNITION);
         extractedText = matches.get(0);
 
-        boolean correctArr[];
+        boolean[] correctArr;
         if (resArray) {
             String tempRes = "";
             for (int i = 0; i < matches.size(); i++) {
@@ -601,10 +600,10 @@ public class JSInterface implements RecognitionListener {
         } else {
 
             String quesFinal;
-            quesFinal = quesWord.replaceAll("\\p{Punct}","");;
+            quesFinal = quesWord.replaceAll("\\p{Punct}","");
 
-            String questionSplit[] = quesFinal.split(" ");
-            String resSplit[] = extractedText.split(" ");
+            String[] questionSplit = quesFinal.split(" ");
+            String[] resSplit = extractedText.split(" ");
             correctArr = new boolean[questionSplit.length];
 
             for (int j = 0; j < resSplit.length; j++) {

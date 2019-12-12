@@ -42,8 +42,6 @@ import butterknife.OnClick;
 
 import static com.pratham.foundation.utility.FC_Constants.GROUP_MODE;
 import static com.pratham.foundation.utility.FC_Constants.LOGIN_MODE;
-import static com.pratham.foundation.utility.FC_Constants.currentSession;
-import static com.pratham.foundation.utility.FC_Constants.currentStudentID;
 import static com.pratham.foundation.utility.FC_Constants.currentStudentName;
 import static com.pratham.foundation.utility.FC_Utility.dpToPx;
 
@@ -183,7 +181,7 @@ public class FragmentChildAttendance extends Fragment implements ContractChildAt
                 try {
                     StatusDao statusDao = AppDatabase.getDatabaseInstance(getContext()).getStatusDao();
                     newCurrentSession = "" + UUID.randomUUID().toString();
-                    currentSession = newCurrentSession;
+                    String currentSession = newCurrentSession;
                     FastSave.getInstance().saveString(FC_Constants.CURRENT_SESSION, currentSession);
                     statusDao.updateValue("CurrentSession", "" + currentSession);
 
@@ -199,15 +197,16 @@ public class FragmentChildAttendance extends Fragment implements ContractChildAt
 
                     Attendance attendance = new Attendance();
                     for (int i = 0; i < stud.size(); i++) {
-                        attendance.setSessionID("" + currentSession);
+                        attendance.setSessionID("" + FastSave.getInstance().getString(FC_Constants.CURRENT_SESSION, ""));
                         attendance.setStudentID("" + stud.get(i).getStudentID());
                         attendance.setDate(FC_Utility.getCurrentDateTime());
                         attendance.setGroupID(groupID);
                         attendance.setSentFlag(0);
                         AppDatabase.getDatabaseInstance(getContext()).getAttendanceDao().insert(attendance);
-                        Log.d("ChildAttendence", "currentSession : " + currentSession + "  StudentId: " + stud.get(i).getStudentID());
+                        Log.d("ChildAttendence", "currentSession : " + FastSave.getInstance().getString(FC_Constants.CURRENT_SESSION, "")+ "  StudentId: " + stud.get(i).getStudentID());
                     }
 
+                    String currentStudentID = "";
                     if(LOGIN_MODE.equalsIgnoreCase(GROUP_MODE))
                         currentStudentID = groupID;
                     else {
@@ -238,9 +237,7 @@ public class FragmentChildAttendance extends Fragment implements ContractChildAt
             attendance.setSentFlag(0);
             FastSave.getInstance().saveString(FC_Constants.GROUPID, groupID);
             attendances.add(attendance);
-
-            currentStudentID = groupID;
-            FastSave.getInstance().saveString(FC_Constants.CURRENT_STUDENT_ID , currentStudentID);
+            FastSave.getInstance().saveString(FC_Constants.CURRENT_STUDENT_ID , groupID);
         }
         AppDatabase.getDatabaseInstance(getActivity()).getAttendanceDao().insertAll(attendances);
         Session s = new Session();
