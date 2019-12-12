@@ -373,6 +373,7 @@ public class FactRetrieval extends Fragment implements FactRetrievalContract.Fac
         if (!mAdapter.isShowAnswerEnabled()) {
             show_answer.setText("hide Answer");
             bottom_control_container.setVisibility(View.INVISIBLE);
+            clear_selection.setVisibility(View.INVISIBLE);
             mAdapter.deselectAll();
             String correctAns = selectedQuetion.get(index).getAnsInPassage().trim().replace("\n", " ");
             String[] correctAnsArr = correctAns.trim().split(REGEXF);
@@ -399,6 +400,7 @@ public class FactRetrieval extends Fragment implements FactRetrievalContract.Fac
             show_answer.setText("show Answer");
             mAdapter.setShowAnswerEnabled(false);
             bottom_control_container.setVisibility(View.VISIBLE);
+            clear_selection.setVisibility(View.VISIBLE);
             showQuestion();
         }
 
