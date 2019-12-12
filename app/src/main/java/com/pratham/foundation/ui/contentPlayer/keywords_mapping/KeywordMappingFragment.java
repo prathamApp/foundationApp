@@ -209,7 +209,8 @@ public class KeywordMappingFragment extends Fragment implements KeywordMappingCo
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onMessageEvent(EventMessage event) {
-        GameConstatnts.showGameInfo(getActivity(), keywordmapping.getInstruction(),readingContentPath+keywordmapping.getInstructionUrl());
+        if (!keywordmapping.getInstruction().isEmpty())
+            GameConstatnts.showGameInfo(getActivity(), keywordmapping.getInstruction(), readingContentPath + keywordmapping.getInstructionUrl());
     }
 
     @Click(R.id.showAnswer)
