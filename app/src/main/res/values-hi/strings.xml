@@ -392,5 +392,5 @@
     <string name="ReadVocabAndroid">Read the following in order to increase you vocabulary.</string>
     <string name="reading_stt">Answer the question by Give the answer by selecting the correct option form the given options.using the speech to text functionality.</string>
     <string name="multiple_choice">Select the correct answer from multiple answers and submit it</string>
-
+    <string name="Video">Watch the video</string>
 </resources>
