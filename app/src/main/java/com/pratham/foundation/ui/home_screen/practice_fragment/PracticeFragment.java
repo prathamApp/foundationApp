@@ -375,6 +375,7 @@ public class PracticeFragment extends Fragment implements PracticeContract.Pract
         } else if (singleItem.getResourceType().equalsIgnoreCase("preResource")) {
             Intent mainNew = new Intent(getActivity(), ContentPlayerActivity_.class);
             mainNew.putExtra("nodeID", singleItem.getNodeId());
+            mainNew.putExtra("title", singleItem.getNodeTitle());
             startActivity(mainNew);
         } else {
             contentParentList.clear();

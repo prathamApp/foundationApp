@@ -329,7 +329,6 @@ public class ContentDisplay extends BaseActivity implements ContentContract.Cont
 
     @Override
     public void onContentOpenClicked(int position, String nodeId) {
-        //todo remove#
         try {
             ButtonClickSound.start();
         } catch (IllegalStateException e) {

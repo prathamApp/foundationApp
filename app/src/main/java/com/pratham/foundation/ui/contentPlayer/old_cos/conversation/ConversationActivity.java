@@ -174,7 +174,8 @@ public class ConversationActivity extends BaseActivity
             recyclerView.setLayoutManager(linearLayoutManager);
             mAdapter = new MessageAdapter(messageList, this);
             recyclerView.setAdapter(mAdapter);
-
+            for(int i =0; i<msgPercentage.length; i++)
+                msgPercentage[1] = 0;
             new Handler().postDelayed(() -> displayNextQuestion(currentQueNos), (long) (800));
         }
     }
