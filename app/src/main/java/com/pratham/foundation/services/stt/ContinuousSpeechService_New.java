@@ -39,18 +39,16 @@ public class ContinuousSpeechService_New implements RecognitionListener, STT_Res
     public ContinuousSpeechService_New(Context context, STT_Result_New.sttView stt_result, String language) {
         this.context = context;
         this.stt_result = stt_result;
-        resetSpeechRecognizer();
         resetFlg = false;
         this.language = language;
-        if(language.equalsIgnoreCase("hindi"))
-            myLocal = "hi-IN";
-        else
+        if(FastSave.getInstance().getString(FC_Constants.CURRENT_FOLDER_NAME, "").equalsIgnoreCase("English"))
             myLocal = "en-IN";
-
+        else
+            myLocal = "hi-IN";
+        resetSpeechRecognizer();
     }
 
     public void setRecogniserIntent() {
-
         recognizerIntent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
         recognizerIntent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_PREFERENCE, myLocal);
         recognizerIntent.putExtra(RecognizerIntent.EXTRA_LANGUAGE, myLocal);
@@ -62,17 +60,21 @@ public class ContinuousSpeechService_New implements RecognitionListener, STT_Res
     }
 
     public void resetSpeechRecognizer() {
+        try {
         if (speech != null) {
-            try {
                 speech.destroy();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
         }
-        speech = SpeechRecognizer.createSpeechRecognizer(context);
-        Log.i(LOG_TAG, "isRecognitionAvailable: " + SpeechRecognizer.isRecognitionAvailable(context));
-        if (SpeechRecognizer.isRecognitionAvailable(context))
-            speech.setRecognitionListener(this);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        try {
+            speech = SpeechRecognizer.createSpeechRecognizer(context);
+            Log.i(LOG_TAG, "isRecognitionAvailable: " + SpeechRecognizer.isRecognitionAvailable(context));
+            if (SpeechRecognizer.isRecognitionAvailable(context))
+                speech.setRecognitionListener(this);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     public void stopSpeechInput() {

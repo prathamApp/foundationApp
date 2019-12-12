@@ -636,7 +636,7 @@ public class TestFragment extends Fragment implements TestContract.TestView,
 
     @SuppressLint("SetTextI18n")
     private void showTestCompleteDialog() {
-        Dialog dialog = new Dialog(getActivity(),R.style.ExitDialog);
+        Dialog dialog = new Dialog(getActivity()/*,R.style.ExitDialog*/);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setContentView(R.layout.fc_custom_dialog);
 /*      Bitmap map=FC_Utility.takeScreenShot(getActivity());

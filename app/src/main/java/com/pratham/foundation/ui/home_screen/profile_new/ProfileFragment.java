@@ -5,10 +5,14 @@ import android.support.v4.app.Fragment;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.pratham.foundation.R;
 import com.pratham.foundation.customView.GridSpacingItemDecoration;
+import com.pratham.foundation.services.shared_preferences.FastSave;
 import com.pratham.foundation.ui.home_screen.profile_new.certificate_display.CertificateDisplayActivity_;
+import com.pratham.foundation.utility.FC_Constants;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Bean;
@@ -26,12 +30,17 @@ public class ProfileFragment extends Fragment implements ProfileContract.Profile
 
     @ViewById(R.id.my_recycler_view)
     RecyclerView my_recycler_view;
+    @ViewById(R.id.tv_studentName)
+    TextView tv_studentName;
 
     String[] progressArray = {"Progress", "Share"};
     private ProfileOuterDataAdapter adapterParent;
 
     @AfterViews
     public void initialize() {
+        FC_Constants.isTest = false;
+        FC_Constants.isPractice = false;
+        tv_studentName.setText(""+ FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_NAME,"Student"));
         presenter.setView(ProfileFragment.this);
         if (adapterParent == null) {
             adapterParent = new ProfileOuterDataAdapter(getActivity(), progressArray, this);
@@ -41,15 +50,35 @@ public class ProfileFragment extends Fragment implements ProfileContract.Profile
             my_recycler_view.setItemAnimator(new DefaultItemAnimator());
             my_recycler_view.setAdapter(adapterParent);
         }
+
     }
 
     @Override
     public void itemClicked(String usage) {
-        showUsage();
+        switch (usage){
+            case "Certificate":
+                showCertificates();
+                break;
+            case "Projects":
+                break;
+            case "Usage":
+                showUsage();
+                break;
+            case "Badges":
+                break;
+            case "Share Content":
+                break;
+            case "Share App":
+                break;
+        }
+    }
+
+    private void showCertificates() {
+        startActivity(new Intent(getActivity(), CertificateDisplayActivity_.class));
     }
 
     private void showUsage() {
-        startActivity(new Intent(getActivity(), CertificateDisplayActivity_.class));
+        Toast.makeText(getActivity(), "Work In Progress", Toast.LENGTH_SHORT).show();
     }
 
 //    @Click({R.id.rl_share_app, R.id.btn_share_app})

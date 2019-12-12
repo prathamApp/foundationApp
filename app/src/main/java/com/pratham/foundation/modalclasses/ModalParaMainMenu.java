@@ -2,6 +2,8 @@
 package com.pratham.foundation.modalclasses;
 
 
+import android.support.annotation.Nullable;
+
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
@@ -12,18 +14,22 @@ public class ModalParaMainMenu implements Serializable {
 
 
     @SerializedName("parentId")
+    @Nullable
     @Expose
     private String parentId;
 
     @SerializedName("nodeId")
+    @Nullable
     @Expose
     private String nodeId;
 
     @SerializedName("resourceId")
+    @Nullable
     @Expose
     private String resourceId;
 
     @SerializedName("nodeType")
+    @Nullable
     @Expose
     private String nodeType;
 
@@ -32,6 +38,7 @@ public class ModalParaMainMenu implements Serializable {
     private String contentTitle;
 
     @SerializedName("pageImage")
+    @Nullable
     @Expose
     private String contentImage;
 

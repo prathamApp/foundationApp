@@ -1,6 +1,7 @@
 package com.pratham.foundation.ui.contentPlayer.reading_story_activity;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
@@ -146,7 +147,7 @@ public class ReadingStoryActivity extends BaseActivity implements
         sttLang = intent.getStringExtra("sttLang");
         onSdCard = intent.getBooleanExtra("onSdCard", false);
         ttsService = ApplicationClass.ttsService;
-        contentType = "story";
+//        contentType = "story";
 
         bottom_bar2.setVisibility(View.GONE);
         btn_camera.setVisibility(View.GONE);
@@ -1021,8 +1022,8 @@ public class ReadingStoryActivity extends BaseActivity implements
             returnIntent.putExtra("cCode", certiCode);
             returnIntent.putExtra("sMarks", correctCnt);
             returnIntent.putExtra("tMarks", total);
-//            setResult(Activity.RESULT_OK, returnIntent);
-//            finish();
+            setResult(Activity.RESULT_OK, returnIntent);
+            finish();
         });
     }
 

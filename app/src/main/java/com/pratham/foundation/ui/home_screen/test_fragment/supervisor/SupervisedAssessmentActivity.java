@@ -1,4 +1,4 @@
-package com.pratham.foundation.ui.test.supervisor;
+package com.pratham.foundation.ui.home_screen.test_fragment.supervisor;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -46,6 +46,8 @@ import butterknife.OnClick;
 
 import static com.pratham.foundation.ApplicationClass.isTablet;
 import static com.pratham.foundation.utility.FC_Constants.CURRENT_ASSESSMENT_STUDENT_ID;
+import static com.pratham.foundation.utility.FC_Constants.GROUP_MODE;
+import static com.pratham.foundation.utility.FC_Constants.LOGIN_MODE;
 
 
 public class SupervisedAssessmentActivity extends AppCompatActivity implements TestStudentClicked {
@@ -87,17 +89,17 @@ public class SupervisedAssessmentActivity extends AppCompatActivity implements T
 
         if (testMode.equalsIgnoreCase("unsupervised")) {
             if (isTablet) {
-                if (FC_Constants.GROUP_LOGIN) {
+                if (LOGIN_MODE.equalsIgnoreCase(GROUP_MODE)) {
                     attendence_layout.setVisibility(View.VISIBLE);
                     getStudents();
                 } else {
-                    String currentAssessmentStudentID = FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, "");
-                    FastSave.getInstance().saveString(CURRENT_ASSESSMENT_STUDENT_ID, currentAssessmentStudentID);
+                    FastSave.getInstance().saveString(CURRENT_ASSESSMENT_STUDENT_ID,
+                            FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""));
                     submitSupervisorData();
                 }
             } else {
-                String currentAssessmentStudentID = FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, "");
-                FastSave.getInstance().saveString(CURRENT_ASSESSMENT_STUDENT_ID, currentAssessmentStudentID);
+                FastSave.getInstance().saveString(CURRENT_ASSESSMENT_STUDENT_ID,
+                        FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""));
                 submitSupervisorData();
             }
         } else {
@@ -184,8 +186,7 @@ public class SupervisedAssessmentActivity extends AppCompatActivity implements T
                     BackupDatabase.backup(SupervisedAssessmentActivity.this);
 
                     AppDatabase.getDatabaseInstance(SupervisedAssessmentActivity.this).getStatusDao().updateValue("AssessmentSession", "" + FastSave.getInstance().getString(FC_Constants.ASSESSMENT_SESSION, ""));
-                    String currentsupervisorID = "" + supervisorID;
-                    FastSave.getInstance().saveString(FC_Constants.CURRENT_SUPERVISOR_ID, currentsupervisorID);
+                    FastSave.getInstance().saveString(FC_Constants.CURRENT_SUPERVISOR_ID, supervisorID);
 //                    getStudents();
                     // goToAssessment();
                     return null;
@@ -193,7 +194,6 @@ public class SupervisedAssessmentActivity extends AppCompatActivity implements T
                     e.printStackTrace();
                     return null;
                 }
-
             }
         }.execute();
     }
@@ -206,8 +206,7 @@ public class SupervisedAssessmentActivity extends AppCompatActivity implements T
             @Override
             protected Object doInBackground(Object[] objects) {
                 try {
-                    if (isTablet && FC_Constants.GROUP_LOGIN) {
-
+                    if (isTablet && FC_Constants.LOGIN_MODE.equalsIgnoreCase(GROUP_MODE)) {
                         studentList = AppDatabase.appDatabase.getStudentDao().getGroupwiseStudents(FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""));
                     } else {
                         studentList = AppDatabase.appDatabase.getStudentDao().getAllStudents();
@@ -230,7 +229,6 @@ public class SupervisedAssessmentActivity extends AppCompatActivity implements T
                 setStudentsToRecycler();
             }
         }.execute();
-
     }
 
     private void setStudentsToRecycler() {
@@ -242,14 +240,12 @@ public class SupervisedAssessmentActivity extends AppCompatActivity implements T
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setAdapter(testStudentAdapter);
         testStudentAdapter.notifyDataSetChanged();
-
     }
 
     private void goToAssessment() {
         setResult(RESULT_OK);
         finish();
     }
-
 
     public void createDirectoryAndSaveFile(Bitmap imageToSave, String fileName) {
         try {
@@ -258,9 +254,7 @@ public class SupervisedAssessmentActivity extends AppCompatActivity implements T
             if (!direct.exists()) direct.mkdir();
             direct = new File(Environment.getExternalStorageDirectory().toString() + "/.FCAInternal/supervisorImages/");
             if (!direct.exists()) direct.mkdir();
-
             File file = new File(direct, fileName);
-
             FileOutputStream out = new FileOutputStream(file);
             imageToSave.compress(Bitmap.CompressFormat.JPEG, 100, out);
             isPhotoSaved = true;

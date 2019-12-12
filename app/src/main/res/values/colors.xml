@@ -7,6 +7,7 @@
 -->
     <color name="colorPrimaryDark">#98CEA7</color>
     <color name="colorPrimary">#B8DFC4</color>
+    <color name="test_item">#E8FAEF</color>
     <color name="colorAccent">#FFA001</color>
     <color name="colorParent">#E7F2E9</color>
     <color name="colorText">#232F34</color>

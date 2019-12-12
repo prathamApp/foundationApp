@@ -86,6 +86,7 @@ public class PracticeFragment extends Fragment implements PracticeContract.Pract
 
     @AfterViews
     public void initialize() {
+        FC_Constants.isTest = false;
         rootList = new ArrayList<>();
         rootLevelList = new ArrayList<>();
         dwParentList = new ArrayList<>();
@@ -363,6 +364,7 @@ public class PracticeFragment extends Fragment implements PracticeContract.Pract
     public void onContentClicked(ContentTable singleItem, String parentName) {
         ButtonClickSound.start();
         FC_Constants.isPractice = true;
+        FC_Constants.isTest = false;
         if (singleItem.getResourceType().equalsIgnoreCase("category")) {
             Intent intent = new Intent(getActivity(), ContentDisplay_.class);
             intent.putExtra("nodeId", singleItem.getNodeId());
@@ -387,6 +389,7 @@ public class PracticeFragment extends Fragment implements PracticeContract.Pract
         //todo remove#
         ButtonClickSound.start();
         FC_Constants.isPractice = true;
+        FC_Constants.isTest = false;
         downloadNodeId = contentList.getNodeId();
         resName = contentList.getNodeTitle();
         if (contentList.getNodeType().equalsIgnoreCase("PreResource") ||
@@ -505,6 +508,7 @@ public class PracticeFragment extends Fragment implements PracticeContract.Pract
     public void onContentDownloadClicked(ContentTable contentList, int parentPos, int childPos, String downloadType) {
         this.downloadType = downloadType;
         FC_Constants.isPractice = true;
+        FC_Constants.isTest = false;
         downloadNodeId = contentList.getNodeId();
         ButtonClickSound.start();
 //        downloadNodeId = "" + 1371;
@@ -548,6 +552,7 @@ public class PracticeFragment extends Fragment implements PracticeContract.Pract
 
     @Override
     public void seeMore(String nodeId, String nodeTitle) {
+        FC_Constants.isTest = false;
         Intent intent = new Intent(getActivity(), ContentDisplay_.class);
         intent.putExtra("nodeId", nodeId);
         intent.putExtra("contentTitle", nodeTitle);

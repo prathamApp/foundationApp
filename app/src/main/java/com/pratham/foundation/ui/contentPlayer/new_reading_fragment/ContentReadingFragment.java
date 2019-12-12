@@ -1179,7 +1179,6 @@ public class ContentReadingFragment extends Fragment implements
             ratings = (float) 4;
         else if (perc >= 81)
             ratings = (float) 5;
-
         return ratings;
     }
 

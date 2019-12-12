@@ -38,6 +38,7 @@ import com.pratham.foundation.ui.contentPlayer.opposites.OppositesActivity_;
 import com.pratham.foundation.ui.contentPlayer.reading_paragraphs.ReadingParagraphsActivity_;
 import com.pratham.foundation.ui.contentPlayer.reading_rhyming.ReadingRhymesActivity_;
 import com.pratham.foundation.ui.contentPlayer.reading_story_activity.ReadingStoryActivity_;
+import com.pratham.foundation.ui.contentPlayer.video_view.ActivityVideoView_;
 import com.pratham.foundation.ui.contentPlayer.vocabulary_qa.ReadingVocabularyActivity_;
 import com.pratham.foundation.ui.contentPlayer.web_view.WebViewActivity;
 import com.pratham.foundation.ui.student_profile.Student_profile_activity;
@@ -145,7 +146,6 @@ public class ContentDisplay extends BaseActivity implements ContentContract.Cont
         recyclerView.addItemDecoration(new GridSpacingItemDecoration(2, dpToPx(this,dp), true));
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setAdapter(contentAdapter);
-        FC_Constants.isTest = false;
         presenter.displayProfileImage();
         if(!LOGIN_MODE.equalsIgnoreCase(QR_GROUP_MODE))
             presenter.getPerc(nodeId);
@@ -464,6 +464,14 @@ public class ContentDisplay extends BaseActivity implements ContentContract.Cont
                 mainNew.putExtra("onSdCard", ContentTableList.get(position).isOnSDCard());
                 mainNew.putExtra("rhymeLevel", ContentTableList.get(position).getNodeDesc());
                 startActivity(mainNew);
+            } else if (ContentTableList.get(position).getResourceType().equalsIgnoreCase(FC_Constants.VIDEO)) {
+                Intent intent = new Intent(ContentDisplay.this, ActivityVideoView_.class);
+                intent.putExtra("contentPath", ContentTableList.get(position).getResourcePath());
+                intent.putExtra("StudentID", FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""));
+                intent.putExtra("resId", ContentTableList.get(position).getResourceId());
+                intent.putExtra("contentName", ContentTableList.get(position).getNodeTitle());
+                intent.putExtra("onSdCard", true);
+                startActivity(intent);
             } /*else if (ContentTableList.get(position).getResourceType().equalsIgnoreCase(FC_Constants.CHATBOT_ANDROID)) {
             Intent talkbot = new Intent(this, com.pratham.cityofstories.talkbot.feature.HomeActivity.class);
             startActivity(talkbot);
