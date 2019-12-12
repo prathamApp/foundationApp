@@ -351,7 +351,7 @@ public class GameConstatnts implements ShowInstruction {
                         @Override
                         public void run() {
                             instructionsDialog.dismiss();
-                            //Do something after 100ms
+
                         }
                     }, 100);
 //                FC_Utility.showFragment((Activity) context, new ActivityVideoView_(), R.id.RL_CPA,
