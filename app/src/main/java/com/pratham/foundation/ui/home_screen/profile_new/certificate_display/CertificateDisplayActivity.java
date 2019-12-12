@@ -135,6 +135,16 @@ public class CertificateDisplayActivity extends BaseActivity implements
         setProfileName(profileName);
     }
 
+    @Click(R.id.main_back)
+    public void pressedBack(){
+        onBackPressed();
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+    }
+
     @UiThread
     public void setProfileName(String profileName) {
 //        tv_Activity.setText(profileName);
@@ -149,6 +159,7 @@ public class CertificateDisplayActivity extends BaseActivity implements
         intent.putExtra("CertiTitle", "" + assessment.getLevela());
         intent.putExtra("display", "display");
         intent.putExtra("assessment", assessment);
+
         startActivity(intent);
     }
 }

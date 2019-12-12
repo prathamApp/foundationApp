@@ -32,8 +32,8 @@ import com.pratham.foundation.ui.home_screen.learning_fragment.LearningFragment_
 import com.pratham.foundation.ui.home_screen.practice_fragment.PracticeFragment_;
 import com.pratham.foundation.ui.home_screen.profile_new.ProfileFragment_;
 import com.pratham.foundation.ui.home_screen.test_fragment.TestFragment_;
+import com.pratham.foundation.ui.home_screen.test_fragment.supervisor.SupervisedAssessmentActivity;
 import com.pratham.foundation.ui.student_profile.Student_profile_activity;
-import com.pratham.foundation.ui.test.supervisor.SupervisedAssessmentActivity;
 import com.pratham.foundation.utility.FC_Constants;
 
 import org.androidannotations.annotations.AfterViews;
@@ -118,6 +118,9 @@ public class HomeActivity extends BaseActivity implements LevelChanged {
         FC_Constants.TAB_LAYOUT = config.smallestScreenWidthDp > 425;
         sub_nodeId = getIntent().getStringExtra("nodeId");
         sub_Name = getIntent().getStringExtra("nodeTitle");
+        sub_nodeId = FastSave.getInstance().getString(FC_Constants.CURRENT_ROOT_NODE, "");
+        FastSave.getInstance().saveInt(FC_Constants.CURRENT_LEVEL, 0);
+        currentLevel = FastSave.getInstance().getInt(FC_Constants.CURRENT_LEVEL, 0);
         changeBackground(sub_Name);
         changeBGNew(0);
         //        floating_back.setImageResource(R.drawable.ic_left_arrow_white);
@@ -138,8 +141,6 @@ public class HomeActivity extends BaseActivity implements LevelChanged {
         setLevel();
         displayProfileName();
         displayProfileImage();
-        sub_nodeId = FastSave.getInstance().getString(FC_Constants.CURRENT_ROOT_NODE, "");
-        currentLevel = FastSave.getInstance().getInt(FC_Constants.CURRENT_LEVEL, 0);
     }
 
     private void changeBackground(String sub_name) {
@@ -423,7 +424,7 @@ public class HomeActivity extends BaseActivity implements LevelChanged {
 
         dia_btn_green.setOnClickListener(v -> {
             dialog.dismiss();
-            //TODO Goto Learning
+            tabLayout.getTabAt(0).select();
         });
     }
 
@@ -446,18 +447,6 @@ public class HomeActivity extends BaseActivity implements LevelChanged {
             }
         } else if (requestCode == 10) {
             if (resultCode == Activity.RESULT_OK) {
-//                EventMessage eventMessage = new EventMessage();
-//                eventMessage.setMessage(LEVEL_CHANGED);
-//                EventBus.getDefault().post(eventMessage);
-
-/*                presenter.clearNodeIds();
-                navChanged = true;
-                levelList.clear();
-                test_lang_spinner.setVisibility(View.VISIBLE);
-                my_recycler_view.setVisibility(View.GONE);
-                test_recycler_view.setVisibility(View.VISIBLE);
-                bottomSection = "Test";
-                presenter.getBottomNavId(currentLevel, bottomSection);*/
             } else if (resultCode == Activity.RESULT_CANCELED) {
                 try {
                 } catch (Exception e) {

@@ -29,7 +29,6 @@ import java.io.InputStream;
 import java.util.List;
 
 import static com.pratham.foundation.utility.FC_Constants.currentLevel;
-import static com.pratham.foundation.utility.FC_Utility.getRandomCardColor;
 
 
 public class TestAdapter extends RecyclerView.Adapter {
@@ -140,7 +139,7 @@ public class TestAdapter extends RecyclerView.Adapter {
             case 1:
                 TestItemRowHolder itemRowHolder = (TestItemRowHolder) viewitemRowHolder;
 
-                itemRowHolder.certificate_card.setBackground(mContext.getResources().getDrawable(getRandomCardColor()));
+//                itemRowHolder.certificate_card.setBackground(mContext.getResources().getDrawable(getRandomCardColor()));
                 //final ContentView gamesList = gamesViewList.get(position);
                 Animation animation = null;
                 animation = AnimationUtils.loadAnimation(mContext, R.anim.item_fall_down);

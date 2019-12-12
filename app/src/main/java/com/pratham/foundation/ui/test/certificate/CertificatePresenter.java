@@ -1,5 +1,6 @@
 package com.pratham.foundation.ui.test.certificate;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Environment;
@@ -28,6 +29,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import static com.pratham.foundation.ui.test.certificate.CertificateActivity.assessmentProfile;
+import static com.pratham.foundation.utility.FC_Constants.CURRENT_FOLDER_NAME;
 
 
 public class CertificatePresenter implements CertificateContract.CertificatePresenter {
@@ -45,6 +47,7 @@ public class CertificatePresenter implements CertificateContract.CertificatePres
         codesText = new ArrayList<>();
     }
 
+    @SuppressLint("StaticFieldLeak")
     @Override
     public void getStudentName(String certiMode) {
         new AsyncTask<Object, Void, Object>() {
@@ -72,6 +75,7 @@ public class CertificatePresenter implements CertificateContract.CertificatePres
         }.execute();
     }
 
+    @SuppressLint("StaticFieldLeak")
     public void proceed(JSONArray certiData, String nodeId) {
         try {
             new AsyncTask<Object, Void, Object>() {
@@ -365,13 +369,25 @@ public class CertificatePresenter implements CertificateContract.CertificatePres
             is.read(buffer);
             is.close();
             String jsonStr = new String(buffer);
+            JSONArray jsonArray = new JSONArray(jsonStr);
+            for(int i=0; i<jsonArray.length(); i++) {
+                String subj = ((JSONObject) jsonArray.get(i)).get("storyLanguage").toString();
+                if (subj.equalsIgnoreCase(FastSave.getInstance().getString(CURRENT_FOLDER_NAME, ""))) {
+                    returnCodeList = ((JSONObject) jsonArray.get(i)).getJSONArray("CodeList");
+                    return returnCodeList;
+                }
+            }
+
+/*
+            String jsonStr = new String(buffer);
             JSONObject jsonObj = new JSONObject(jsonStr);
             returnCodeList = jsonObj.getJSONArray("CodeList");
+*/
         } catch (Exception e) {
             e.printStackTrace();
             return null;
         }
-        return returnCodeList;
+        return null;
     }
 
     @Override

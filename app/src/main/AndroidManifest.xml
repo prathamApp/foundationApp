@@ -75,7 +75,7 @@
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.Dialog" />
         <activity
-            android:name=".ui.test.supervisor.SupervisedAssessmentActivity"
+            android:name=".ui.home_screen.test_fragment.supervisor.SupervisedAssessmentActivity"
             android:screenOrientation="sensorPortrait"
             android:theme="@style/Theme.AppCompat.Light.Dialog.MinWidth" />
 <!--        <activity-->

@@ -88,6 +88,7 @@ public class ProfileInnerDataAdapter extends RecyclerView.Adapter {
                 break;
             case "Projects":
                 itemHolder.item_Image.setImageResource(R.drawable.lang_01);
+                itemHolder.rl_root.setOnClickListener(v ->itemClicked.itemClicked("Projects"));
                 break;
             case "Usage":
                 itemHolder.item_Image.setImageResource(R.drawable.progress_report);
@@ -95,12 +96,15 @@ public class ProfileInnerDataAdapter extends RecyclerView.Adapter {
                 break;
             case "Badges":
                 itemHolder.item_Image.setImageResource(R.drawable.right_student_arrow);
+                itemHolder.rl_root.setOnClickListener(v ->itemClicked.itemClicked("Badges"));
                 break;
             case "Share Content":
                 itemHolder.item_Image.setImageResource(R.drawable.ic_share_receive);
+                itemHolder.rl_root.setOnClickListener(v ->itemClicked.itemClicked("Share Content"));
                 break;
             case "Share App":
                 itemHolder.item_Image.setImageResource(R.drawable.app_share);
+                itemHolder.rl_root.setOnClickListener(v ->itemClicked.itemClicked("Share App"));
                 break;
         }
     }

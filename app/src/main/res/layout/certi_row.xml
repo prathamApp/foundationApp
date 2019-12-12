@@ -8,7 +8,9 @@
     android:layout_marginStart="@dimen/_15sdp"
     android:elevation="@dimen/_3sdp"
     android:layout_marginEnd="@dimen/_15sdp"
-    android:background="@drawable/dialog_bg">
+    android:gravity="center"
+    android:layout_gravity="center"
+    android:background="@drawable/test_item_bg">
 
     <com.pratham.foundation.customView.SansTextViewBold
         android:id="@+id/assess_data"
@@ -26,21 +28,12 @@
         android:id="@+id/ratingStars"
         android:theme="@style/Widget.AppCompat.RatingBar"
         android:layout_width="wrap_content"
-        android:layout_height="@dimen/_40sdp"
+        android:layout_height="wrap_content"
         android:layout_below="@id/assess_data"
         android:visibility="visible"
-        android:layout_centerHorizontal="true"
+        android:layout_centerInParent="true"
         android:numStars="5"
         android:stepSize="1"
         android:isIndicator="true"
         android:progressTint="@color/colorAccentDark" />
-
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:layout_marginTop="@dimen/_2sdp"
-        android:layout_alignParentBottom="true"
-        android:background="@color/colorBlack"
-        android:visibility="gone"
-        android:alpha="0.3"/>
 </RelativeLayout>

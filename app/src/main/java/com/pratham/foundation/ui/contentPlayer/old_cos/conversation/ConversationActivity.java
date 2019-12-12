@@ -199,7 +199,7 @@ public class ConversationActivity extends BaseActivity
                 btn_imgsend.setBackgroundResource(R.drawable.convo_send_disable);
             } else {
                 btn_imgsend.setClickable(true);
-                btn_imgsend.setBackgroundResource(R.drawable.ripple_effect);
+                btn_imgsend.setBackgroundResource(R.drawable.yellow_button);
             }
         }
     }
@@ -228,7 +228,6 @@ public class ConversationActivity extends BaseActivity
         int correctAnswerCount = setBooleanGetCounter();
         float perc = presenter.getPercentage();
         presenter.addScore(0, "perc - " + perc, correctAnswerCount, correctArr.length, " Convo ");
-        setMute(0);
         ButtonClickSound.start();
         btn_reading.setImageResource(R.drawable.ic_mic_black);
         if (voiceStart)
@@ -283,7 +282,6 @@ public class ConversationActivity extends BaseActivity
     public void displayNextQuestion(int currentQueNo) {
         try {
             presenter.setStartTime(FC_Utility.getCurrentDateTime());
-            setMute(0);
             if (currentQueNo < conversation.length()) {
                 iv_monk.clearAnimation();
                 iv_monk.setVisibility(View.GONE);
@@ -638,9 +636,8 @@ public class ConversationActivity extends BaseActivity
                 returnIntent.putExtra("sMarks", pages);
                 returnIntent.putExtra("tMarks", msgPercLength);
                 setResult(Activity.RESULT_OK, returnIntent);
-                finish();
-            } else
-                closeConvo();
+            }
+            closeConvo();
         });
     }
 
@@ -670,12 +667,15 @@ public class ConversationActivity extends BaseActivity
 
     @Click (R.id.floating_back)
     public void pressedBackBtn(){
-        onBackPressed();
+        if (voiceStart)
+            btn_reading.performClick();
+        showExitDialog(this);
     }
 
     @Override
     public void onBackPressed() {
-        setMute(0);
+        if (voiceStart)
+            btn_reading.performClick();
         showExitDialog(this);
     }
 
@@ -730,8 +730,7 @@ public class ConversationActivity extends BaseActivity
             returnIntent.putExtra("sMarks", correctCnt);
             returnIntent.putExtra("tMarks", total);
             setResult(Activity.RESULT_OK, returnIntent);
-
-            finish();
+            closeConvo();
         });
     }
 
@@ -751,9 +750,8 @@ public class ConversationActivity extends BaseActivity
         return ratings;
     }
 
-    private void closeConvo() {
-        setMute(0);
-//        super.onBackPressed();
+    @UiThread
+    public void closeConvo() {
         finish();
     }
 
@@ -777,6 +775,8 @@ public class ConversationActivity extends BaseActivity
         dia_btn_yellow.setText("" + dialog_btn_cancel);
         dialog.show();
 
+        dia_btn_red.setOnClickListener(v -> dialog.dismiss());
+        dia_btn_yellow.setOnClickListener(v -> dialog.dismiss());
         dia_btn_green.setOnClickListener(v -> {
             float perc = getCompletionPercentage();
             presenter.addCompletion(perc);
@@ -795,13 +795,9 @@ public class ConversationActivity extends BaseActivity
                 returnIntent.putExtra("sMarks", pages);
                 returnIntent.putExtra("tMarks", msgPercLength);
                 setResult(Activity.RESULT_OK, returnIntent);
-                finish();
-            } else
-                finish();
+            }
+            closeConvo();
         });
-
-        dia_btn_red.setOnClickListener(v -> dialog.dismiss());
-        dia_btn_yellow.setOnClickListener(v -> dialog.dismiss());
     }
 
 }

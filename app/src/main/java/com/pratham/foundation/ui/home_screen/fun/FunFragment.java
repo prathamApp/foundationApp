@@ -85,6 +85,7 @@ public class FunFragment extends Fragment implements FunContract.FunView,
 
     @AfterViews
     public void initialize() {
+        FC_Constants.isTest = false;
         rootList = new ArrayList<>();
         rootLevelList = new ArrayList<>();
         dwParentList = new ArrayList<>();
@@ -351,6 +352,7 @@ public class FunFragment extends Fragment implements FunContract.FunView,
     public void onContentClicked(ContentTable singleItem, String parentName) {
         ButtonClickSound.start();
         FC_Constants.isPractice=false;
+        FC_Constants.isTest = false;
         if (singleItem.getResourceType().equalsIgnoreCase("category")) {
             Intent intent = new Intent(getActivity(), ContentDisplay_.class);
             intent.putExtra("nodeId", singleItem.getNodeId());
@@ -375,6 +377,7 @@ public class FunFragment extends Fragment implements FunContract.FunView,
         //Toast.makeText(this, "ContentOpen : Work In Progress", Toast.LENGTH_SHORT).show();
         //todo remove#
         FC_Constants.isPractice=false;        ButtonClickSound.start();
+        FC_Constants.isTest = false;
         downloadNodeId = contentList.getNodeId();
         resName = contentList.getNodeTitle();
         if(contentList.getNodeType().equalsIgnoreCase("PreResource")||
@@ -493,6 +496,7 @@ public class FunFragment extends Fragment implements FunContract.FunView,
     public void onContentDownloadClicked(ContentTable contentList, int parentPos, int childPos, String downloadType) {
         this.downloadType = downloadType;
         downloadNodeId = contentList.getNodeId();
+        FC_Constants.isTest = false;
         ButtonClickSound.start();
 //        downloadNodeId = "" + 1371;
         this.parentPos = parentPos;
@@ -535,6 +539,7 @@ public class FunFragment extends Fragment implements FunContract.FunView,
 
     @Override
     public void seeMore(String nodeId, String nodeTitle) {
+        FC_Constants.isTest = false;
         Intent intent = new Intent(getActivity(), ContentDisplay_.class);
         intent.putExtra("nodeId", nodeId);
         intent.putExtra("contentTitle", nodeTitle);
