@@ -42,7 +42,6 @@ import butterknife.OnClick;
 
 import static com.pratham.foundation.utility.FC_Constants.GROUP_MODE;
 import static com.pratham.foundation.utility.FC_Constants.LOGIN_MODE;
-import static com.pratham.foundation.utility.FC_Constants.currentStudentName;
 import static com.pratham.foundation.utility.FC_Utility.dpToPx;
 
 public class FragmentChildAttendance extends Fragment implements ContractChildAttendance.attendanceView {
@@ -211,8 +210,8 @@ public class FragmentChildAttendance extends Fragment implements ContractChildAt
                         currentStudentID = groupID;
                     else {
                         currentStudentID = stud.get(0).getStudentID();
-                        currentStudentName = stud.get(0).getFullName();
-                        FastSave.getInstance().saveString(FC_Constants.CURRENT_STUDENT_NAME , currentStudentName);
+                        String currentStudName = stud.get(0).getFullName();
+                        FastSave.getInstance().saveString(FC_Constants.CURRENT_STUDENT_NAME , currentStudName);
                     }
                     FastSave.getInstance().saveString(FC_Constants.CURRENT_STUDENT_ID , currentStudentID);
                     BackupDatabase.backup(getContext());

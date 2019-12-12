@@ -34,7 +34,6 @@ import java.util.List;
 import java.util.Objects;
 
 import static com.pratham.foundation.utility.FC_Constants.currentLevel;
-import static com.pratham.foundation.utility.FC_Constants.currentStudentName;
 import static com.pratham.foundation.utility.FC_Constants.currentSubjectFolder;
 import static com.pratham.foundation.utility.FC_Constants.gameFolderPath;
 import static com.pratham.foundation.utility.FC_Utility.dpToPx;
@@ -63,9 +62,9 @@ public class SelectSubject extends BaseActivity implements
         List<ContentTable> subjectList = presenter.getSubjectList();
 
         if(FC_Constants.LOGIN_MODE.contains("group"))
-            studName = currentStudentName;
+            studName = FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_NAME , "");
         else
-            studName = currentStudentName.split(" ")[0];
+            studName = FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_NAME , "").split(" ")[0];
         name.setText(getResources().getString(R.string.Welcome)+" "+studName+".");
         subjectAdapter = new SelectSubjectAdapter(this, subjectList);
         RecyclerView.LayoutManager mLayoutManager = new GridLayoutManager(this, 1);

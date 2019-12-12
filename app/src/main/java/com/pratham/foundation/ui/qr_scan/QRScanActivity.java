@@ -340,14 +340,14 @@ public class QRScanActivity extends BaseActivity implements
             enterStudentData(playerModalList);
             startSession();
             if(FC_Constants.LOGIN_MODE.equalsIgnoreCase(QR_GROUP_MODE)) {
-                String currentStudentName = "QR Students";
+                String currentStudName = "QR Students";
                 FastSave.getInstance().saveString(FC_Constants.CURRENT_STUDENT_ID , "QR");
-                FastSave.getInstance().saveString(FC_Constants.CURRENT_STUDENT_NAME , currentStudentName);
+                FastSave.getInstance().saveString(FC_Constants.CURRENT_STUDENT_NAME , currentStudName);
             }else {
                 String currentStudentID = ""+playerModalList.get(0).getStudentID();
-                String currentStudentName = ""+playerModalList.get(0).getStudentName();
+                String currentStudName = ""+playerModalList.get(0).getStudentName();
                 FastSave.getInstance().saveString(FC_Constants.CURRENT_STUDENT_ID , currentStudentID);
-                FastSave.getInstance().saveString(FC_Constants.CURRENT_STUDENT_NAME , currentStudentName);
+                FastSave.getInstance().saveString(FC_Constants.CURRENT_STUDENT_NAME , currentStudName);
             }
             ButtonClickSound.start();
             startActivity(new Intent(this, SelectSubject_.class));

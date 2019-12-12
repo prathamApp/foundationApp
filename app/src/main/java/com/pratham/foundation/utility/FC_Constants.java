@@ -218,7 +218,7 @@ public class FC_Constants {
     public static final String GOOGLE_TOKEN = "GOOGLE_TOKEN";
     public static final String FILE_DOWNLOAD_STARTED = "file_download_started";
     public static final String FILE_DOWNLOAD_UPDATE= "file_download_update";
-    public static String currentStudentName="";
+//    public static String currentStudentName="";
     public static String CERTIFICATE_LBL = "certificate_lbl";
     public static final String PREFS_VERSION = "com.pratham.foundation.database";
     public static final String CURRENT_VERSION = "App Version";

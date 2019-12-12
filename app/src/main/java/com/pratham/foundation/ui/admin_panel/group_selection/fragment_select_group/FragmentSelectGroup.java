@@ -14,6 +14,7 @@ import com.pratham.foundation.customView.GridSpacingItemDecoration;
 import com.pratham.foundation.database.AppDatabase;
 import com.pratham.foundation.database.domain.Groups;
 import com.pratham.foundation.database.domain.Student;
+import com.pratham.foundation.services.shared_preferences.FastSave;
 import com.pratham.foundation.ui.admin_panel.group_selection.fragment_child_attendance.FragmentChildAttendance;
 import com.pratham.foundation.utility.FC_Constants;
 import com.pratham.foundation.utility.FC_Utility;
@@ -26,7 +27,6 @@ import org.androidannotations.annotations.ViewById;
 import java.util.ArrayList;
 import java.util.Objects;
 
-import static com.pratham.foundation.utility.FC_Constants.currentStudentName;
 import static com.pratham.foundation.utility.FC_Utility.dpToPx;
 
 
@@ -134,7 +134,8 @@ public class FragmentSelectGroup extends Fragment implements ContractGroup {
             //todo remove comment
           //  ApplicationClass.bubble_mp.start();
             ArrayList<Student> students = new ArrayList<>();
-            currentStudentName = groupSelected.GroupName;
+            String currentStudName = groupSelected.GroupName;
+            FastSave.getInstance().saveString(FC_Constants.CURRENT_STUDENT_NAME , currentStudName);
             students.addAll(AppDatabase.appDatabase.getStudentDao().getGroupwiseStudents(groupSelected.getGroupId()));
             Bundle bundle = new Bundle();
             bundle.putParcelableArrayList(FC_Constants.STUDENT_LIST, students);

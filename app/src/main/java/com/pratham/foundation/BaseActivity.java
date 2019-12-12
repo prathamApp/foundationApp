@@ -47,7 +47,6 @@ public class BaseActivity extends AppCompatActivity {
         Catcho.Builder(this)
                 .activity(CatchoTransparentActivity.class).build();
 //                .recipients("abc@domain.com").build();
-
     }
 
     @Override
@@ -137,5 +136,4 @@ public class BaseActivity extends AppCompatActivity {
             e.printStackTrace();
         }
     }
-
 }
