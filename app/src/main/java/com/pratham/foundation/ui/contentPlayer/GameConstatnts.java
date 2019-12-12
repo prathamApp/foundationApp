@@ -298,17 +298,7 @@ public class GameConstatnts implements ShowInstruction {
                 FC_Utility.showFragment((Activity) context, new DoingFragment(), R.id.RL_CPA,
                         bundle, DoingFragment.class.getSimpleName());
                 break;
-            case GameConstatnts.VIDEO:
-                Intent intent = new Intent(context, ActivityVideoView_.class);
-                intent.putExtra("contentPath", contentTable1.getResourcePath());
-                intent.putExtra("StudentID", FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""));
-                intent.putExtra("resId", contentTable1.getResourceId());
-                intent.putExtra("contentName", contentTable1.getNodeTitle());
-                intent.putExtra("onSdCard", true);
-                context.startActivity(intent);
-//                FC_Utility.showFragment((Activity) context, new ActivityVideoView_(), R.id.RL_CPA,
-//                bundle, ActivityVideoView.class.getSimpleName());
-                break;
+
         }
 
 
@@ -348,6 +338,24 @@ public class GameConstatnts implements ShowInstruction {
                             //Do something after 100ms
                         }
                     }, 100);
+                    break;
+                case GameConstatnts.VIDEO:
+                    Intent intent = new Intent(context, ActivityVideoView_.class);
+                    intent.putExtra("contentPath", contentTable1.getResourcePath());
+                    intent.putExtra("StudentID", FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""));
+                    intent.putExtra("resId", contentTable1.getResourceId());
+                    intent.putExtra("contentName", contentTable1.getNodeTitle());
+                    intent.putExtra("onSdCard", true);
+                    context.startActivity(intent);
+                    handler.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            instructionsDialog.dismiss();
+                            //Do something after 100ms
+                        }
+                    }, 100);
+//                FC_Utility.showFragment((Activity) context, new ActivityVideoView_(), R.id.RL_CPA,
+//                bundle, ActivityVideoView.class.getSimpleName());
                     break;
                 default:
                     instructionsDialog.dismiss();
