@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.pratham.foundation.customView.SansTextView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/stat_res_name"
+    android:layout_width="@dimen/_130sdp"
+    android:layout_height="wrap_content"
+    android:layout_margin="@dimen/_5sdp"
+    android:background="@drawable/button_purple"
+    android:gravity="center"
+    android:maxLines="2"
+    android:padding="@dimen/_5sdp"
+    android:textColor="@color/dark_grey" />

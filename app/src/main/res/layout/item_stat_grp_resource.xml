@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.design.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="@dimen/_5sdp"
+    app:cardBackgroundColor="@color/vanilla"
+    app:cardCornerRadius="@dimen/_7sdp">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="@dimen/_5sdp">
+
+        <com.pratham.foundation.customView.SansTextViewBold
+            android:id="@+id/stat_date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="aksjdaksjdaskdj"
+            android:textColor="@color/dark_grey"
+            android:textSize="@dimen/_12sdp" />
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/rv_stat_resource"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@+id/stat_date" />
+    </RelativeLayout>
+</android.support.design.card.MaterialCardView>

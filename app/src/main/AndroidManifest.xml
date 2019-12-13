@@ -22,6 +22,9 @@
             android:name=".ui.selectSubject.SelectSubject_"
             android:screenOrientation="portrait" />
         <activity
+            android:name=".ui.admin_panel.fragment_admin_panel.tab_usage.TabUsageActivity_"
+            android:screenOrientation="portrait" />
+        <activity
             android:name=".BaseActivity"
             android:screenOrientation="portrait" />
         <activity

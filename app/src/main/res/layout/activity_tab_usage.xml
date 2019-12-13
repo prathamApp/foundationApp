@@ -1,0 +1,76 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/science_bkgd">
+
+    <RelativeLayout
+        android:id="@+id/header_rl"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/_45sdp">
+
+        <ImageView
+            android:id="@+id/main_back"
+            android:layout_width="@dimen/_30sdp"
+            android:layout_height="@dimen/_30sdp"
+            android:layout_marginStart="@dimen/_5sdp"
+            android:layout_centerVertical="true"
+            android:scaleType="center"
+            app:srcCompat="@drawable/ic_left_arrow_white" />
+
+        <com.pratham.foundation.customView.SansTextViewBold
+            android:id="@+id/txt_active"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginEnd="@dimen/_10sdp"
+            android:layout_marginTop="@dimen/_5sdp"
+            android:layout_toEndOf="@id/main_back"
+            android:layout_marginStart="@dimen/_15sdp"
+            android:text="Topic"
+            android:textColor="@color/dark_blue"
+            android:textSize="@dimen/_20sdp" />
+
+    </RelativeLayout>
+
+    <com.yarolegovich.discretescrollview.DiscreteScrollView
+        android:id="@+id/rv_stat_group"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/_120sdp"
+        android:layout_below="@+id/header_rl"
+        app:dsv_orientation="horizontal" />
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/rv_daily_stat"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/rv_stat_group" />
+
+    <RelativeLayout
+        android:id="@+id/rl_no_data"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/header_rl"
+        android:visibility="gone">
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:src="@drawable/no_usage_data" />
+
+        <com.pratham.foundation.customView.SansTextViewBold
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="@dimen/_25sdp"
+            android:text="No usage on this device!"
+            android:textColor="@color/dark_blue"
+            android:textSize="@dimen/_25sdp"
+            tools:ignore="HardcodedText" />
+    </RelativeLayout>
+
+
+
+</RelativeLayout>

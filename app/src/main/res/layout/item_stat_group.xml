@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.design.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/item_grp_card"
+    android:layout_width="@dimen/_170sdp"
+    android:layout_height="@dimen/_110sdp"
+    app:cardBackgroundColor="@color/blue_light"
+    app:cardCornerRadius="@dimen/_8sdp">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <com.pratham.foundation.customView.SansTextView
+            android:id="@+id/stat_grp_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_margin="@dimen/_5sdp"
+            android:gravity="center"
+            android:maxLines="3"
+            android:textColor="@android:color/black"
+            android:textSize="@dimen/_15sdp" />
+
+        <com.pratham.foundation.customView.SansTextView
+            android:id="@+id/stat_grp_date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:layout_margin="@dimen/_5sdp"
+            android:drawableStart="@drawable/ic_access_time"
+            android:drawablePadding="@dimen/_7sdp"
+            android:gravity="center"
+            android:maxLines="3"
+            android:textColor="@color/red"
+            android:textSize="@dimen/_20sdp" />
+    </RelativeLayout>
+</android.support.design.card.MaterialCardView>

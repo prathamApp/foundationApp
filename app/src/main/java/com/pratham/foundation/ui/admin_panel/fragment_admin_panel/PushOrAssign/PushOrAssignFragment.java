@@ -52,6 +52,7 @@ import com.pratham.foundation.services.AppExitService;
 import com.pratham.foundation.services.LocationService;
 import com.pratham.foundation.services.shared_preferences.FastSave;
 import com.pratham.foundation.ui.admin_panel.assign_groups.Activity_AssignGroups_;
+import com.pratham.foundation.ui.admin_panel.fragment_admin_panel.tab_usage.TabUsageActivity_;
 import com.pratham.foundation.utility.FC_Constants;
 import com.pratham.foundation.utility.FC_Utility;
 
@@ -83,6 +84,8 @@ public class PushOrAssignFragment extends Fragment {
     Button push;
     @ViewById(R.id.btn_progress)
     Button btn_progress;
+    @ViewById(R.id.btn_Usage)
+    Button btn_Usage;
     Gson gson;
     int groupsSize = 0;
     public Dialog myLoadingDialog;
@@ -121,6 +124,13 @@ public class PushOrAssignFragment extends Fragment {
     @Click(R.id.btn_push)
     public void onPushClick() {
         pushDataToServer.doInBackground(false);
+    }
+
+    @Click(R.id.btn_Usage)
+    public void viewTabUsage() {
+        Intent intent = new Intent(getActivity(), TabUsageActivity_.class);
+        startActivityForResult(intent, 1);
+        getActivity().startActivity(intent);
     }
 
     @Override
