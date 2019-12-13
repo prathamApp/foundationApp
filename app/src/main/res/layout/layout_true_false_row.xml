@@ -71,7 +71,7 @@
                 android:layout_height="50dp"
                 android:layout_centerVertical="true"
                 android:textColor="@color/white"
-                android:background="@drawable/red_button"
+                android:background="@drawable/button_red"
                 android:text="previous" />
 
             <com.pratham.foundation.customView.SansButton
@@ -79,7 +79,7 @@
                 android:layout_width="100dp"
                 android:layout_height="50dp"
                 android:textColor="@color/white"
-                android:background="@drawable/green_button"
+                android:background="@drawable/button_green"
                 android:layout_centerInParent="true"
                 android:text="Submit" />
 
@@ -88,7 +88,7 @@
                 android:layout_width="100dp"
                 android:layout_height="50dp"
                 android:textColor="@color/white"
-                android:background="@drawable/yellow_button"
+                android:background="@drawable/button_yellow"
                 android:layout_centerVertical="true"
                 android:layout_alignParentEnd="true"
                 android:text="next" />

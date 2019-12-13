@@ -58,7 +58,7 @@
                 android:layout_alignParentEnd="true"
                 android:layout_centerVertical="true"
                 android:layout_marginEnd="@dimen/_10sdp"
-                android:background="@drawable/green_button"
+                android:background="@drawable/button_green"
                 android:elevation="5dp"
                 android:paddingStart="@dimen/_20sdp"
                 android:paddingEnd="@dimen/_20sdp"

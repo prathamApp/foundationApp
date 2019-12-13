@@ -118,7 +118,7 @@
                 android:layout_below="@+id/LinearLayoutGroups"
                 android:layout_gravity="center"
                 android:layout_margin="16dp"
-                android:background="@drawable/green_button"
+                android:background="@drawable/button_green"
                 android:text="  Assign  "
                 android:textColor="#FFFFFF"
                 android:textSize="20sp"

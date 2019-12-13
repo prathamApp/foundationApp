@@ -76,7 +76,7 @@
         android:layout_marginTop="@dimen/_10sdp"
         android:layout_marginBottom="@dimen/_10sdp"
         android:textColor="@color/white"
-        android:background="@drawable/green_button"
+        android:background="@drawable/button_green"
         android:elevation="@dimen/_2sdp"
         android:scaleType="centerCrop"
         android:text="Next"

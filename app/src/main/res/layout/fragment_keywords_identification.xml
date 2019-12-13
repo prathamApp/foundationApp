@@ -97,7 +97,7 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:background="@drawable/yellow_button"
+            android:background="@drawable/button_yellow"
             style="@style/submitbtn"
             android:text="show Answer"            />
         <com.pratham.foundation.customView.SansButton

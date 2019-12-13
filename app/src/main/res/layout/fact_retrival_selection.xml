@@ -149,7 +149,7 @@
             android:layout_centerVertical="true"
             android:adjustViewBounds="true"
             android:textColor="@color/white"
-            android:background="@drawable/red_button"
+            android:background="@drawable/button_red"
             android:text="clear"
             style="@style/submitbtn"/>
         <com.pratham.foundation.customView.SansButton
@@ -157,7 +157,7 @@
             android:layout_width="0dp"
             android:layout_height="50dp"
             android:layout_weight="1"
-            android:background="@drawable/yellow_button"
+            android:background="@drawable/button_yellow"
             android:text="show answer"
             style="@style/submitbtn"/>
     </LinearLayout>

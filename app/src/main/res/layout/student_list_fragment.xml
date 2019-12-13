@@ -17,7 +17,7 @@
         android:textColor="@color/white"
         android:textSize="@dimen/_11sdp"
         android:text="Download all data from local repository"
-        android:background="@drawable/yellow_button" />
+        android:background="@drawable/button_yellow" />
 
 
     <ScrollView
@@ -46,7 +46,7 @@
                 android:layout_marginHorizontal="@dimen/_10sdp"
                 android:layout_marginTop="@dimen/_5sdp"
                 android:layout_marginBottom="@dimen/_15sdp"
-                android:background="@drawable/green_button"
+                android:background="@drawable/button_green"
                 android:text="Create Profile"
                 android:elevation="@dimen/_3sdp"
                 android:textColor="@color/white"

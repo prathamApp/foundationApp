@@ -18,7 +18,7 @@
         android:id="@+id/btn_test_dw"
         android:layout_width="190dp"
         android:layout_height="50dp"
-        android:background="@drawable/green_button"
+        android:background="@drawable/button_green"
         android:drawableStart="@drawable/ic_download"
         android:drawablePadding="5dp"
         android:layout_centerHorizontal="true"

@@ -35,7 +35,7 @@
             android:layout_width="@dimen/_60sdp"
             android:layout_height="@dimen/_30sdp"
             android:layout_marginBottom="@dimen/_15sdp"
-            android:background="@drawable/yellow_button"
+            android:background="@drawable/button_yellow"
             android:text="Revise"
             android:textColor="@color/white"
             android:textSize="@dimen/_12sdp" />
@@ -47,7 +47,7 @@
             android:layout_marginLeft="@dimen/_10sdp"
             android:layout_marginBottom="@dimen/_15sdp"
             android:layout_toRightOf="@id/dia_btn_revise"
-            android:background="@drawable/red_button"
+            android:background="@drawable/button_red"
             android:textColor="@color/white"
             android:text="Test"
             android:textSize="@dimen/_12sdp" />
@@ -59,7 +59,7 @@
             android:layout_marginLeft="@dimen/_10sdp"
             android:layout_marginBottom="@dimen/_15sdp"
             android:layout_toRightOf="@id/dia_btn_test"
-            android:background="@drawable/green_button"
+            android:background="@drawable/button_green"
             android:textColor="@color/white"
             android:text="Next"
             android:textSize="@dimen/_12sdp" />

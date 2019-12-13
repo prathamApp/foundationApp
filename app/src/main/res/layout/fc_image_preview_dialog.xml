@@ -35,7 +35,7 @@
                 android:layout_marginBottom="@dimen/_5sdp"
                 android:layout_marginTop="@dimen/_5sdp"
                 android:layout_weight="1"
-                android:background="@drawable/green_button"
+                android:background="@drawable/button_green"
                 android:elevation="@dimen/_3sdp"
                 android:padding="@dimen/_5sdp"
                 android:scaleType="centerInside"

@@ -200,7 +200,7 @@ public class ConversationActivity extends BaseActivity
                 btn_imgsend.setBackgroundResource(R.drawable.convo_send_disable);
             } else {
                 btn_imgsend.setClickable(true);
-                btn_imgsend.setBackgroundResource(R.drawable.yellow_button);
+                btn_imgsend.setBackgroundResource(R.drawable.button_yellow);
             }
         }
     }
@@ -212,12 +212,12 @@ public class ConversationActivity extends BaseActivity
             // ButtonClickSound.start();
             voiceStart = true;
             btn_reading.setImageResource(R.drawable.ic_stop_black);
-            btn_reading.setBackgroundResource(R.drawable.red_button);
+            btn_reading.setBackgroundResource(R.drawable.button_red);
             continuousSpeechService.startSpeechInput();
         } else {
             voiceStart = false;
             btn_reading.setImageResource(R.drawable.ic_mic_black);
-            btn_reading.setBackgroundResource(R.drawable.green_button);
+            btn_reading.setBackgroundResource(R.drawable.button_green);
             continuousSpeechService.stopSpeechInput();
             //ButtonClickSound.start();
         }

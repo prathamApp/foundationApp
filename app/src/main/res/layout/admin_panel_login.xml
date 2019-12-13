@@ -111,7 +111,7 @@
             android:layout_height="50dp"
             android:layout_weight="2"
             android:textColor="@color/white"
-            android:background="@drawable/green_button"
+            android:background="@drawable/button_green"
             android:text="Login"/>
 
         <Space
@@ -125,7 +125,7 @@
             android:layout_height="50dp"
             android:layout_weight="2"
             android:textColor="@color/white"
-            android:background="@drawable/red_button"
+            android:background="@drawable/button_red"
             android:text="Clear Data" />
     </LinearLayout>
 </RelativeLayout>

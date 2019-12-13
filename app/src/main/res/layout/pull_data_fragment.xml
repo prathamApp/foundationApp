@@ -91,7 +91,7 @@
         android:textSize="@dimen/_12sdp"
         android:elevation="@dimen/_3sdp"
         android:textColor="@color/white"
-        android:background="@drawable/green_button"
+        android:background="@drawable/button_green"
         android:text="Save"/>
 
 </RelativeLayout>

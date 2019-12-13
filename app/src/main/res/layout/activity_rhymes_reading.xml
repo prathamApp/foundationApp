@@ -175,7 +175,7 @@
         android:id="@+id/btn_next"
         android:layout_width="@dimen/_100sdp"
         android:layout_height="80dp"
-        android:background="@drawable/green_button"
+        android:background="@drawable/button_green"
         android:layout_centerHorizontal="true"
         android:layout_alignParentBottom="true"
         android:elevation="@dimen/_2sdp"

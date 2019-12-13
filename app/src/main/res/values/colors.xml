@@ -99,6 +99,7 @@
     <color name="splash_background">#F6F6F6</color>
     <color name="toolbar_background">#37474f</color>
     <color name="lightGrey">#d7d7db</color>
+    <color name="blue_light">#9FB8E0</color>
     <color name="blue">#488feb</color>
     <color name="light_black">#424242</color>
     <color name="light_blue">#bfd7e7e4</color>

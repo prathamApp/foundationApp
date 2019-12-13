@@ -228,7 +228,7 @@
                             android:elevation="@dimen/_5sdp"
                             android:textStyle="bold"
                             android:textColor="@color/white"
-                            android:background="@drawable/red_button"
+                            android:background="@drawable/button_red"
                             android:text="@string/Reset"/>
 
                         <com.pratham.foundation.customView.SansButton
@@ -243,7 +243,7 @@
                             android:textStyle="bold"
                             android:visibility="gone"
                             android:textColor="@color/white"
-                            android:background="@drawable/yellow_button"
+                            android:background="@drawable/button_yellow"
                             android:text="@string/Get_Progress"/>
 
                         <com.pratham.foundation.customView.SansButton
@@ -257,7 +257,7 @@
                             android:elevation="@dimen/_5sdp"
                             android:textStyle="bold"
                             android:textColor="@color/white"
-                            android:background="@drawable/green_button"
+                            android:background="@drawable/button_green"
                             android:text="@string/Start"/>
 
                     </RelativeLayout>

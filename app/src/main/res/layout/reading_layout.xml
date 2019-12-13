@@ -121,7 +121,7 @@
             android:layout_marginEnd="@dimen/_2sdp"
             android:elevation="@dimen/_5sdp"
             android:textColor="@color/white"
-            android:background="@drawable/green_button"
+            android:background="@drawable/button_green"
             android:src="@drawable/ic_mic_black"/>
         <com.pratham.foundation.customView.SansButton
             android:id="@+id/reset_btn"
@@ -134,7 +134,7 @@
             android:layout_marginEnd="@dimen/_2sdp"
             android:elevation="@dimen/_5sdp"
             android:text="Reset"
-            android:background="@drawable/yellow_button"
+            android:background="@drawable/button_yellow"
             android:textColor="@color/white"
             android:textSize="@dimen/_12sdp"/>
         <com.pratham.foundation.customView.SansButton
@@ -147,7 +147,7 @@
             android:layout_marginStart="@dimen/_2sdp"
             android:layout_marginEnd="@dimen/_2sdp"
             android:elevation="@dimen/_5sdp"
-            android:background="@drawable/green_button"
+            android:background="@drawable/button_green"
             android:text="submit"
             android:textColor="@color/white"
             android:textSize="@dimen/_12sdp"/>

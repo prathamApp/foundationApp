@@ -53,7 +53,7 @@
                 android:id="@+id/dia_btn_no"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/_40sdp"
-                android:background="@drawable/yellow_button"
+                android:background="@drawable/button_yellow"
                 android:layout_marginStart="@dimen/_10sdp"
                 android:layout_marginEnd="@dimen/_10sdp"
                 android:layout_marginBottom="@dimen/_8sdp"

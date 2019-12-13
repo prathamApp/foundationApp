@@ -104,7 +104,7 @@
             android:layout_alignParentBottom="true"
             android:layout_centerHorizontal="true"
             android:layout_marginBottom="8dp"
-            android:background="@drawable/green_button"
+            android:background="@drawable/button_green"
             android:elevation="5dp"
             android:scaleType="centerInside"
             android:src="@drawable/ic_play_arrow_black" />

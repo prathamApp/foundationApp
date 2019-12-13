@@ -321,7 +321,7 @@ public class ReadingParagraphsActivity extends BaseActivity
                                 mp.stop();
                             ll_btn_stop.setVisibility(View.GONE);
                             btn_Play.setImageResource(R.drawable.ic_play_arrow_black);
-                            btn_Play.setBackgroundResource(R.drawable.green_button);
+                            btn_Play.setBackgroundResource(R.drawable.button_green);
                             resetParaTheme();
                             layout_mic_ripple.startRippleAnimation();
                         } catch (Exception e) {
@@ -382,14 +382,14 @@ public class ReadingParagraphsActivity extends BaseActivity
             ll_btn_play.setVisibility(View.GONE);
             continuousSpeechService.startSpeechInput();
             btn_Mic.setImageResource(R.drawable.ic_stop_black);
-            btn_Mic.setBackgroundResource(R.drawable.red_button);
+            btn_Mic.setBackgroundResource(R.drawable.button_red);
         } else {
             readingFlg = false;
             if (!isTest)
                 ll_btn_play.setVisibility(View.VISIBLE);
             continuousSpeechService.stopSpeechInput();
             btn_Mic.setImageResource(R.drawable.ic_mic_black);
-            btn_Mic.setBackgroundResource(R.drawable.green_button);
+            btn_Mic.setBackgroundResource(R.drawable.button_green);
         }
     }
 
@@ -411,7 +411,7 @@ public class ReadingParagraphsActivity extends BaseActivity
             playingFlg = true;
             layout_mic_ripple.setVisibility(View.GONE);
             btn_Play.setImageResource(R.drawable.ic_pause_black);
-            btn_Play.setBackgroundResource(R.drawable.yellow_button);
+            btn_Play.setBackgroundResource(R.drawable.button_yellow);
             ll_btn_stop.setVisibility(View.VISIBLE);
             initializeAudioReading(wordCounter);
         } else {
@@ -420,7 +420,7 @@ public class ReadingParagraphsActivity extends BaseActivity
             if (wordCounter > 1)
                 wordCounter--;
             btn_Play.setImageResource(R.drawable.ic_play_arrow_black);
-            btn_Play.setBackgroundResource(R.drawable.green_button);
+            btn_Play.setBackgroundResource(R.drawable.button_green);
             ll_btn_stop.setVisibility(View.GONE);
             layout_mic_ripple.setVisibility(View.VISIBLE);
             mp.stop();
@@ -436,7 +436,7 @@ public class ReadingParagraphsActivity extends BaseActivity
         resetParaTheme();
         wordCounter = 0;
         btn_Play.setImageResource(R.drawable.ic_play_arrow_black);
-        btn_Play.setBackgroundResource(R.drawable.green_button);
+        btn_Play.setBackgroundResource(R.drawable.button_green);
         layout_mic_ripple.setVisibility(View.VISIBLE);
         ll_btn_stop.setVisibility(View.GONE);
         wordCounter = 0;
@@ -476,7 +476,7 @@ public class ReadingParagraphsActivity extends BaseActivity
             resetParaTheme();
             wordCounter = 0;
             btn_Play.setImageResource(R.drawable.ic_play_arrow_black);
-            btn_Play.setBackgroundResource(R.drawable.green_button);
+            btn_Play.setBackgroundResource(R.drawable.button_green);
             ll_btn_stop.setVisibility(View.GONE);
             layout_mic_ripple.setVisibility(View.VISIBLE);
             mp.stop();
@@ -486,7 +486,7 @@ public class ReadingParagraphsActivity extends BaseActivity
             readingFlg = false;
             ll_btn_play.setVisibility(View.VISIBLE);
             btn_Mic.setImageResource(R.drawable.ic_mic_black);
-            btn_Mic.setBackgroundResource(R.drawable.green_button);
+            btn_Mic.setBackgroundResource(R.drawable.button_green);
             continuousSpeechService.stopSpeechInput();
         }
         try {
@@ -515,7 +515,7 @@ public class ReadingParagraphsActivity extends BaseActivity
             readingFlg = false;
             ll_btn_play.setVisibility(View.VISIBLE);
             btn_Mic.setImageResource(R.drawable.ic_mic_black);
-            btn_Mic.setBackgroundResource(R.drawable.green_button);
+            btn_Mic.setBackgroundResource(R.drawable.button_green);
             continuousSpeechService.stopSpeechInput();
             wordCounter = 0;
         }

@@ -103,7 +103,7 @@
             android:layout_height="wrap_content"
             android:text="HINT"
             style="@style/yellow_button"
-            android:background="@drawable/yellow_button"/>
+            android:background="@drawable/button_yellow"/>
     </RelativeLayout>
     <include
         android:id="@+id/bottom_bar"
