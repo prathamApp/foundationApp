@@ -1,7 +1,6 @@
 package com.pratham.foundation.ui.contentPlayer.paragraph_writing;
 
 import android.content.Context;
-import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -47,7 +46,7 @@ public class ParagraphWritingPresenter implements ParagraphWritingContract.Parag
 
     @Override
     public void getData() {
-        String text = FC_Utility.loadJSONFromStorage(readingContentPath, "CopyWriting.json");
+        String text = FC_Utility.loadJSONFromStorage(readingContentPath, "CWiritng.json");
         Gson gson = new Gson();
         Type type = new TypeToken<List<ScienceQuestion>>() {
         }.getType();
@@ -193,7 +192,7 @@ public class ParagraphWritingPresenter implements ParagraphWritingContract.Parag
             addScore(GameConstatnts.getInt(questionModel.getQid()), GameConstatnts.PARAGRAPH_WRITING, 0, 0, FC_Utility.getCurrentDateTime(), imageName);
             appDatabase.getKeyWordDao().insert(keyWords);
             setCompletionPercentage();
-            GameConstatnts.postScoreEvent(1,1);
+            GameConstatnts.postScoreEvent(1, 1);
             //Toast.makeText(context, "inserted succussfully", Toast.LENGTH_LONG).show();
             GameConstatnts.playGameNext(context, GameConstatnts.FALSE, (OnGameClose) view);
         } else {

@@ -14,7 +14,6 @@ import android.view.Window;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.pratham.foundation.BaseActivity;
 import com.pratham.foundation.R;
@@ -115,17 +114,19 @@ public class ContentPlayerActivity extends BaseActivity implements ShowInstructi
             }
         }
     }
+
     @SuppressLint("SetTextI18n")
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void scoreEventReceived(ScoreEvent scoreEvent) {
         if (scoreEvent != null) {
-             if(scoreEvent.getMessage().equalsIgnoreCase(FC_Constants.RETURNSCORE)){
-                 returnIntent.putExtra("tMarks", scoreEvent.getTotalCount());
-                 returnIntent.putExtra("sMarks", scoreEvent.getScoredMarks());
+            if (scoreEvent.getMessage().equalsIgnoreCase(FC_Constants.RETURNSCORE)) {
+                returnIntent.putExtra("tMarks", scoreEvent.getTotalCount());
+                returnIntent.putExtra("sMarks", scoreEvent.getScoredMarks());
                 // Toast.makeText(this, ""+scoreEvent.getMessage(), Toast.LENGTH_SHORT).show();
             }
         }
     }
+
     @Override
     public void onBackPressed() {
         Fragment fragment = getSupportFragmentManager().findFragmentByTag(SequenceLayout_.class.getSimpleName());
