@@ -69,6 +69,8 @@
         android:id="@+id/frameLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:fadeScrollbars="false"
+        android:scrollbarSize="@dimen/_2sdp"
         android:layout_above="@+id/bottomControls"
         android:layout_below="@id/view">
 

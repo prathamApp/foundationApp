@@ -8,6 +8,7 @@
     android:orientation="vertical">
 
     <!--<android.support.design.widget.FloatingActionButton
+    android:background="#F9FCFE"
         android:id="@+id/floating_back"
         android:layout_width="60dp"
         android:layout_height="60dp"

@@ -46,6 +46,8 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_below="@+id/para_tv"
+            android:fadeScrollbars="false"
+            android:scrollbarSize="@dimen/_2sdp"
             android:padding="10dp">
 
             <com.nex3z.flowlayout.FlowLayout xmlns:app="http://schemas.android.com/apk/res-auto"

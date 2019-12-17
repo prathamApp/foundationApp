@@ -144,6 +144,8 @@
             android:layout_height="match_parent"
             android:layout_below="@+id/image_container"
             android:layout_marginStart="@dimen/_10sdp"
+            android:fadeScrollbars="false"
+            android:scrollbarSize="@dimen/_2sdp"
             android:layout_marginEnd="@dimen/_10sdp"
             android:layout_marginTop="10dp"
             android:layout_marginBottom="10dp"

@@ -34,6 +34,8 @@
         <ScrollView
             android:layout_width="match_parent"
             android:layout_below="@+id/lbl_ques"
+            android:fadeScrollbars="false"
+            android:scrollbarSize="@dimen/_2sdp"
             android:layout_height="match_parent">
             <com.pratham.foundation.customView.SansTextView
                 android:id="@+id/tv_question"
@@ -77,6 +79,8 @@
         <ScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:fadeScrollbars="false"
+            android:scrollbarSize="@dimen/_2sdp"
             android:layout_below="@+id/lbl_ans">
         <com.pratham.foundation.customView.SansTextView
             android:id="@+id/et_answer"

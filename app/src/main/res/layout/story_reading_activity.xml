@@ -6,13 +6,13 @@
     android:layout_height="match_parent">
 
     <android.support.design.widget.FloatingActionButton
-        android:id="@+id/floating_img"
+        android:id="@+id/floating_back"
         android:layout_width="60dp"
         android:layout_height="60dp"
-        android:layout_alignParentEnd="true"
+        android:layout_alignParentStart="true"
         android:layout_marginTop="@dimen/_5sdp"
-        android:layout_marginEnd="@dimen/_5sdp"
-        android:visibility="gone" />
+        android:layout_marginStart="@dimen/_5sdp"
+        android:visibility="visible" />
 
     <RelativeLayout
         android:id="@+id/silence_outer"
@@ -171,10 +171,10 @@
         android:layout_below="@+id/image_container"
         android:layout_marginStart="@dimen/_10sdp"
         android:layout_marginTop="10dp"
-        android:fadeScrollbars="false"
-        android:scrollbarSize="@dimen/_2sdp"
         android:layout_marginEnd="@dimen/_10sdp"
         android:layout_marginBottom="10dp"
+        android:fadeScrollbars="false"
+        android:scrollbarSize="@dimen/_2sdp"
         android:background="@drawable/dialog_bg"
         android:elevation="5dp"
         android:padding="@dimen/_5sdp">

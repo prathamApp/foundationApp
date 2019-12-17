@@ -217,6 +217,8 @@
                     android:id="@+id/scroll_ll"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
+                    android:fadeScrollbars="false"
+                    android:scrollbarSize="@dimen/_2sdp"
                     android:layout_marginHorizontal="@dimen/_5sdp">
 
                     <com.nex3z.flowlayout.FlowLayout xmlns:app="http://schemas.android.com/apk/res-auto"

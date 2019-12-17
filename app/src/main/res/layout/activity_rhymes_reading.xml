@@ -30,6 +30,8 @@
             android:layout_marginEnd="@dimen/_12sdp"
             android:layout_marginStart="@dimen/_12sdp"
             android:layout_marginTop="35dp"
+            android:fadeScrollbars="false"
+            android:scrollbarSize="@dimen/_2sdp"
             android:layout_marginBottom="@dimen/_10sdp"
             android:layout_above="@+id/btn_next">
 

@@ -13,6 +13,7 @@ import android.graphics.drawable.ColorDrawable;
 import android.media.MediaPlayer;
 import android.os.Handler;
 import android.support.design.widget.FloatingActionButton;
+import android.text.Html;
 import android.util.Log;
 import android.view.View;
 import android.view.Window;
@@ -60,7 +61,7 @@ import static com.pratham.foundation.utility.FC_Constants.gameFolderPath;
 import static com.pratham.foundation.utility.SplashSupportActivity.ButtonClickSound;
 
 //@EActivity(R.layout.activity_story_reading)
-@EActivity(R.layout.fragment_story_reading)
+@EActivity(R.layout.story_reading_activity)
 public class ReadingStoryActivity extends BaseActivity implements
         /*RecognitionListener, */STT_Result_New.sttView,
         ReadingStoryActivityContract.ReadingStoryView {
@@ -99,9 +100,9 @@ public class ReadingStoryActivity extends BaseActivity implements
     ImageButton btn_Stop;
     @ViewById(R.id.bottom_bar2)
     LinearLayout bottom_bar2;
-/*    @ViewById(R.id.floating_back)
+    @ViewById(R.id.floating_back)
     FloatingActionButton floating_back;
-    @ViewById(R.id.floating_info)
+/*    @ViewById(R.id.floating_info)
     FloatingActionButton floating_info;*/
     @ViewById(R.id.floating_img)
     FloatingActionButton floating_img;
@@ -136,9 +137,9 @@ public class ReadingStoryActivity extends BaseActivity implements
     public void initialize() {
         silence_outer_layout.setVisibility(View.GONE);
         Intent intent = getIntent();
-//        floating_back.setImageResource(R.drawable.ic_left_arrow_white);
+        floating_back.setImageResource(R.drawable.ic_left_arrow_white);
 //        floating_info.setImageResource(R.drawable.ic_info_outline_white);
-        floating_img.setImageResource(R.drawable.ic_image_white);
+//        floating_img.setImageResource(R.drawable.ic_image_white);
         contentType = intent.getStringExtra("contentType");
         storyPath = intent.getStringExtra("storyPath");
         storyId = intent.getStringExtra("storyId");
@@ -148,16 +149,12 @@ public class ReadingStoryActivity extends BaseActivity implements
         onSdCard = intent.getBooleanExtra("onSdCard", false);
         ttsService = ApplicationClass.ttsService;
 //        contentType = "story";
-
         bottom_bar2.setVisibility(View.GONE);
         btn_camera.setVisibility(View.GONE);
-
 /*        animationDrawable = (AnimationDrawable) story_ll.getBackground();
         animationDrawable.setEnterFadeDuration(4500);
         animationDrawable.setExitFadeDuration(4500);
         animationDrawable.start();*/
-
-
         context = ReadingStoryActivity.this;
         presenter.setView(ReadingStoryActivity.this);
         showLoader();
@@ -350,7 +347,7 @@ public class ReadingStoryActivity extends BaseActivity implements
                 wordFlowLayout.addView(myTextView);
             } else {
                 final SansTextView myTextView = new SansTextView(context);
-                myTextView.setText(splitWords.get(i));
+                myTextView.setText(Html.fromHtml(splitWords.get(i)));
                 myTextView.setId(i);
                 myTextView.setTextSize(30);
                 myTextView.setTextColor(getResources().getColor(R.color.colorText));

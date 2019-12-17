@@ -8,7 +8,6 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -25,6 +24,7 @@ import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.pratham.foundation.ApplicationClass;
+import com.pratham.foundation.BaseActivity;
 import com.pratham.foundation.R;
 import com.pratham.foundation.database.AppDatabase;
 import com.pratham.foundation.database.BackupDatabase;
@@ -50,7 +50,7 @@ import static com.pratham.foundation.utility.FC_Constants.GROUP_MODE;
 import static com.pratham.foundation.utility.FC_Constants.LOGIN_MODE;
 
 
-public class SupervisedAssessmentActivity extends AppCompatActivity implements TestStudentClicked {
+public class SupervisedAssessmentActivity extends BaseActivity implements TestStudentClicked {
     @BindView(R.id.submitBtn)
     Button submitBtn;
     @BindView(R.id.btn_camera)
@@ -268,8 +268,8 @@ public class SupervisedAssessmentActivity extends AppCompatActivity implements T
 
     @Override
     public void onBackPressed() {
-        setResult(RESULT_CANCELED);
-        super.onBackPressed();
+//        setResult(RESULT_CANCELED);
+//        super.onBackPressed();
     }
 
     @Override
