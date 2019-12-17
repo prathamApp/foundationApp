@@ -174,7 +174,7 @@ public class Fact_Retrieval_Presenter implements Fact_Retrieval_Contract.Fact_re
         if (selectedAnsList != null && checkAttemptedornot(selectedAnsList)) {
             // correctWordList = new ArrayList<>();
             //  wrongWordList = new ArrayList<>();
-            //  int correctCnt = 0;
+              int correctCnt = 0;
             /* int scoredMarks = (int) checkAnswer(selectedAnsList);*/
             int scoredMarks;
             KeyWords keyWords = new KeyWords();
@@ -190,6 +190,7 @@ public class Fact_Retrieval_Presenter implements Fact_Retrieval_Contract.Fact_re
                     if (selectedAnsList.get(i).getCorrectAnswer().equalsIgnoreCase(selectedAnsList.get(i).getUserAns())) {
                         scoredMarks = 10;
                         selectedAnsList.get(i).setTrue(true);
+                        correctCnt++;
                     } else {
                         scoredMarks = 0;
                         selectedAnsList.get(i).setTrue(false);
@@ -198,6 +199,7 @@ public class Fact_Retrieval_Presenter implements Fact_Retrieval_Contract.Fact_re
                 }
             }
             setCompletionPercentage();
+            GameConstatnts.postScoreEvent(selectedAnsList.size(),correctCnt);
             if (!FC_Constants.isTest) {
                 viewKeywords.showResult(selectedAnsList);
             } else {

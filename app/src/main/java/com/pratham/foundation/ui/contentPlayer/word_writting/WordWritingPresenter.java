@@ -11,13 +11,16 @@ import com.pratham.foundation.database.domain.ContentProgress;
 import com.pratham.foundation.database.domain.KeyWords;
 import com.pratham.foundation.database.domain.Score;
 import com.pratham.foundation.interfaces.OnGameClose;
+import com.pratham.foundation.modalclasses.EventMessage;
 import com.pratham.foundation.modalclasses.ScienceQuestion;
+import com.pratham.foundation.modalclasses.ScoreEvent;
 import com.pratham.foundation.services.shared_preferences.FastSave;
 import com.pratham.foundation.ui.contentPlayer.GameConstatnts;
 import com.pratham.foundation.utility.FC_Constants;
 import com.pratham.foundation.utility.FC_Utility;
 
 import org.androidannotations.annotations.EBean;
+import org.greenrobot.eventbus.EventBus;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -183,7 +186,6 @@ public class WordWritingPresenter implements WordWritingContract.WordWritingPres
         } catch (Exception e) {
             e.printStackTrace();
         }
-
     }
 
     public void addLearntWords(List<ScienceQuestion> questionModel, String imageName) {
@@ -200,17 +202,17 @@ public class WordWritingPresenter implements WordWritingContract.WordWritingPres
                     appDatabase.getKeyWordDao().insert(keyWords);
                     addScore(GameConstatnts.getInt(questionModel.get(i).getQid()), GameConstatnts.PARAGRAPH_WRITING, 0, 0, FC_Utility.getCurrentDateTime(), imageName);
                 }
+                GameConstatnts.postScoreEvent(questionModel.size(),questionModel.size());
                 setCompletionPercentage();
                 GameConstatnts.playGameNext(context, GameConstatnts.FALSE, (OnGameClose) view);
-
-
             }
         } else {
             GameConstatnts.playGameNext(context, GameConstatnts.TRUE, (OnGameClose) view);
-
         }
         BackupDatabase.backup(context);
     }
+
+
 
     public void addScore(int wID, String Word, int scoredMarks, int totalMarks, String resStartTime, String Label) {
         try {

@@ -849,6 +849,7 @@ public class pictionaryFragment extends Fragment implements OnGameClose {
                     }
                 }
             }
+            GameConstatnts.postScoreEvent(selectedAnsList.size(),correctCnt);
             setCompletionPercentage();
             if (!FC_Constants.isTest) {
                 // showResult(correctWordList, wrongWordList);

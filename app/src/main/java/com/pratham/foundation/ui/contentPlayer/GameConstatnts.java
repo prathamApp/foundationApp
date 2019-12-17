@@ -17,7 +17,7 @@ import com.pratham.foundation.R;
 import com.pratham.foundation.database.domain.ContentTable;
 import com.pratham.foundation.interfaces.OnGameClose;
 import com.pratham.foundation.interfaces.ShowInstruction;
-import com.pratham.foundation.modalclasses.EventMessage;
+import com.pratham.foundation.modalclasses.ScoreEvent;
 import com.pratham.foundation.services.shared_preferences.FastSave;
 import com.pratham.foundation.ui.contentPlayer.dialogs.InstructionDialog;
 import com.pratham.foundation.ui.contentPlayer.doing.DoingFragment;
@@ -34,6 +34,7 @@ import com.pratham.foundation.ui.contentPlayer.new_vocab_reading.VocabReadingFra
 import com.pratham.foundation.ui.contentPlayer.new_vocab_reading.VocabReadingFragment_;
 import com.pratham.foundation.ui.contentPlayer.paragraph_writing.ParagraphWritingFragment_;
 import com.pratham.foundation.ui.contentPlayer.pictionary.pictionaryFragment;
+import com.pratham.foundation.ui.contentPlayer.reading.ReadingFragment;
 import com.pratham.foundation.ui.contentPlayer.sequenceLayout.SequenceLayout_;
 import com.pratham.foundation.ui.contentPlayer.trueFalse.TrueFalseFragment;
 import com.pratham.foundation.ui.contentPlayer.video_view.ActivityVideoView_;
@@ -45,7 +46,6 @@ import org.greenrobot.eventbus.EventBus;
 
 import java.util.List;
 
-import static com.pratham.foundation.utility.FC_Constants.INFO_CLICKED;
 import static com.pratham.foundation.utility.FC_Constants.dialog_btn_cancel;
 
 public class GameConstatnts implements ShowInstruction {
@@ -167,6 +167,10 @@ public class GameConstatnts implements ShowInstruction {
             public void onClick(View v) {
                 dialog.dismiss();
                 onGameClose.gameClose();
+
+                if (FC_Constants.isTest) {
+                    ((ContentPlayerActivity) context).finish();
+                }
                 if (playInsequence) {
                     plaGame(context);
                 } else {
@@ -182,6 +186,10 @@ public class GameConstatnts implements ShowInstruction {
             public void onClick(View v) {
                 //Exit game
                 onGameClose.gameClose();
+
+                if (FC_Constants.isTest) {
+                    ((ContentPlayerActivity) context).finish();
+                }
                 ((ContentPlayerActivity) context).getSupportFragmentManager().popBackStack(SequenceLayout_.class.getSimpleName(), 0);
                 dialog.dismiss();
             }
@@ -208,6 +216,9 @@ public class GameConstatnts implements ShowInstruction {
                 gameSelector(context, contentTable1);
             }
         } else {
+            if (FC_Constants.isTest) {
+                ((ContentPlayerActivity) context).finish();
+            }
             ((ContentPlayerActivity) context).getSupportFragmentManager().popBackStack(SequenceLayout_.class.getSimpleName(), 0);
         }
     }
@@ -216,7 +227,6 @@ public class GameConstatnts implements ShowInstruction {
         contentTable1 = contentTable;
         instructionsDialog = new InstructionsDialog(getGameConstantInstance(), context, contentTable1.getResourceType());
         instructionsDialog.show();
-
         Bundle bundle = null;
         bundle = new Bundle();
         bundle.putString("contentPath", contentTable1.getResourcePath());
@@ -271,10 +281,10 @@ public class GameConstatnts implements ShowInstruction {
                         bundle, multipleChoiceFragment.class.getSimpleName());
                 break;
 
-          /*  case GameConstatnts.READING_STT:
+            case GameConstatnts.READING_STT:
                 FC_Utility.showFragment((Activity) context, new ReadingFragment(), R.id.RL_CPA,
                         bundle, ReadingFragment.class.getSimpleName());
-                break;*/
+                break;
 
             case "109":
                 FC_Utility.showFragment((Activity) context, new TrueFalseFragment(), R.id.RL_CPA,
@@ -294,7 +304,6 @@ public class GameConstatnts implements ShowInstruction {
             case GameConstatnts.DOING_ACT_READ:
             case GameConstatnts.DOING_ACT_VIDEO:
             case GameConstatnts.LetterWriting:
-            case GameConstatnts.READING_STT:
                 FC_Utility.showFragment((Activity) context, new DoingFragment(), R.id.RL_CPA,
                         bundle, DoingFragment.class.getSimpleName());
                 break;
@@ -356,13 +365,12 @@ public class GameConstatnts implements ShowInstruction {
                     break;
                 default:
                     instructionsDialog.dismiss();
-                    EventMessage eventMessage = new EventMessage();
+                    //  show instruction on game dstart uncomment bellow code
+                  /*  EventMessage eventMessage = new EventMessage();
                     eventMessage.setMessage(INFO_CLICKED);
-                    EventBus.getDefault().post(eventMessage);
+                    EventBus.getDefault().post(eventMessage);*/
                     break;
             }
-
-
         }
     }
 
@@ -415,7 +423,9 @@ public class GameConstatnts implements ShowInstruction {
     public void exit() {
 
     }
-
+    public static void postScoreEvent(int totalMarks,int scoredMarks) {
+        EventBus.getDefault().post(new ScoreEvent(FC_Constants.RETURNSCORE,totalMarks,scoredMarks));
+    }
     private static GameConstatnts getGameConstantInstance() {
         if (gameConstatnts == null) {
             gameConstatnts = new GameConstatnts();

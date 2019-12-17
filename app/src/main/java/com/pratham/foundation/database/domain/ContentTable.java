@@ -8,10 +8,11 @@ import android.support.annotation.Nullable;
 
 import com.google.gson.annotations.SerializedName;
 
+import java.io.Serializable;
 import java.util.List;
 
 @Entity
-public class ContentTable {
+public class ContentTable implements Serializable {
 
     @NonNull
     @PrimaryKey

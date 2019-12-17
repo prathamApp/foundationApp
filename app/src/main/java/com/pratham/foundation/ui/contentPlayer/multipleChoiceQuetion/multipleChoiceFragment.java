@@ -841,6 +841,7 @@ public class multipleChoiceFragment extends Fragment implements OnGameClose {
                 }
             }
             setCompletionPercentage();
+            GameConstatnts.postScoreEvent(selectedAnsList.size(),correctCnt);
             if (!FC_Constants.isTest) {
                 // showResult(correctWordList, wrongWordList);
                 Intent intent = new Intent(getActivity(), PictionaryResult.class);
