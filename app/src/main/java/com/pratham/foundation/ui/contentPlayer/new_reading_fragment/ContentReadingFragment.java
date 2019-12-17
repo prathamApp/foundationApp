@@ -11,6 +11,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.graphics.Rect;
 import android.graphics.drawable.AnimationDrawable;
 import android.graphics.drawable.ColorDrawable;
 import android.media.MediaPlayer;
@@ -621,14 +622,14 @@ public class ContentReadingFragment extends Fragment implements
 
     //If you want to detect that the view is FULLY visible:
     private void isScrollBelowVisible(View view) {
- /*       Rect scrollBounds = new Rect();
+        Rect scrollBounds = new Rect();
         myScrollView.getDrawingRect(scrollBounds);
 
         float top = view.getY();
         float bottom = top + view.getHeight();
 
         if (!(scrollBounds.top < top) || !(scrollBounds.bottom > bottom))
-            view.getParent().requestChildFocus(view, view);*/
+            view.getParent().requestChildFocus(view, view);
     }
 
     @Click(R.id.btn_Stop)
