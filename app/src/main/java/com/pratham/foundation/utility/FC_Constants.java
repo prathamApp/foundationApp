@@ -50,6 +50,7 @@ public class FC_Constants {
     public static final String FRAGMENT_RESELECTED = "fragment_reselected";
     public static final String CLOSE_TEST_EVENTBUS = "close_test_eventbus";
     public static final String INFO_CLICKED = "info_clicked";
+    public static final String RETURNSCORE = "returnScore";
     public static final String BACK_PRESSED= "back_pressed";
     public static final String FRAGMENT_BACK_PRESSED= "fragment_back_pressed";
     public static final String DOWNLOAD_COMPLETE = "download_complete";

@@ -193,7 +193,8 @@ public class ParagraphWritingPresenter implements ParagraphWritingContract.Parag
             addScore(GameConstatnts.getInt(questionModel.getQid()), GameConstatnts.PARAGRAPH_WRITING, 0, 0, FC_Utility.getCurrentDateTime(), imageName);
             appDatabase.getKeyWordDao().insert(keyWords);
             setCompletionPercentage();
-            Toast.makeText(context, "inserted succussfully", Toast.LENGTH_LONG).show();
+            GameConstatnts.postScoreEvent(1,1);
+            //Toast.makeText(context, "inserted succussfully", Toast.LENGTH_LONG).show();
             GameConstatnts.playGameNext(context, GameConstatnts.FALSE, (OnGameClose) view);
         } else {
             GameConstatnts.playGameNext(context, GameConstatnts.TRUE, (OnGameClose) view);

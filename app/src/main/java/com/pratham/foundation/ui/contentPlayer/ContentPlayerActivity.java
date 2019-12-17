@@ -1,7 +1,9 @@
 package com.pratham.foundation.ui.contentPlayer;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.app.Dialog;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
@@ -12,11 +14,15 @@ import android.view.Window;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.pratham.foundation.BaseActivity;
 import com.pratham.foundation.R;
+import com.pratham.foundation.database.domain.ContentTable;
 import com.pratham.foundation.interfaces.OnGameClose;
+import com.pratham.foundation.interfaces.ShowInstruction;
 import com.pratham.foundation.modalclasses.EventMessage;
+import com.pratham.foundation.modalclasses.ScoreEvent;
 import com.pratham.foundation.ui.contentPlayer.sequenceLayout.SequenceLayout_;
 import com.pratham.foundation.utility.FC_Constants;
 import com.pratham.foundation.utility.FC_Utility;
@@ -33,11 +39,11 @@ import org.greenrobot.eventbus.ThreadMode;
 import static com.pratham.foundation.utility.FC_Constants.INFO_CLICKED;
 import static com.pratham.foundation.utility.FC_Constants.dialog_btn_cancel;
 
-
 @EActivity(R.layout.activity_content_player)
-public class ContentPlayerActivity extends BaseActivity {
+public class ContentPlayerActivity extends BaseActivity implements ShowInstruction {
 
-    private String nodeID,title;
+    private String nodeID, title, cCode;
+    private Intent returnIntent;
 
     @ViewById(R.id.floating_back)
     public static ImageView floating_back;
@@ -49,16 +55,22 @@ public class ContentPlayerActivity extends BaseActivity {
         Intent intent = getIntent();
         nodeID = intent.getStringExtra("nodeID");
         title = intent.getStringExtra("title");
-        /*
-         contentPath = intent.getStringExtra("contentPath");
-         StudentID = intent.getStringExtra("StudentID");
-         resId = intent.getStringExtra("resId");
-         contentTitle = intent.getStringExtra("contentName");
-         onSdCard = getIntent().getBooleanExtra("onSdCard", false);
-        */
-//        floating_back.setImageResource(R.drawable.ic_left_arrow_white);
-//        floating_info.setImageResource(R.drawable.ic_info_outline_white);
-        loadFragment();
+        String testcall = intent.getStringExtra("testcall");
+
+        if (testcall == null) {
+            loadFragment();
+        } else {
+            ContentTable testData = (ContentTable) intent.getSerializableExtra("testData");
+            cCode = testData.getNodeDesc();
+            //  GameConstatnts.gameList = contentTableList;
+            // GameConstatnts.currentGameAdapterposition=myViewHolder.getAdapterPosition();
+            GameConstatnts.gameSelector(this, testData);
+            returnIntent = new Intent();
+            returnIntent.putExtra("cCode", cCode);
+            returnIntent.putExtra("tMarks", 1);
+            returnIntent.putExtra("sMarks", 0);
+            setResult(Activity.RESULT_OK, returnIntent);
+        }
     }
 
     public void loadFragment() {
@@ -103,7 +115,17 @@ public class ContentPlayerActivity extends BaseActivity {
             }
         }
     }
-
+    @SuppressLint("SetTextI18n")
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void scoreEventReceived(ScoreEvent scoreEvent) {
+        if (scoreEvent != null) {
+             if(scoreEvent.getMessage().equalsIgnoreCase(FC_Constants.RETURNSCORE)){
+                 returnIntent.putExtra("tMarks", scoreEvent.getTotalCount());
+                 returnIntent.putExtra("sMarks", scoreEvent.getScoredMarks());
+                // Toast.makeText(this, ""+scoreEvent.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        }
+    }
     @Override
     public void onBackPressed() {
         Fragment fragment = getSupportFragmentManager().findFragmentByTag(SequenceLayout_.class.getSimpleName());
@@ -133,19 +155,7 @@ public class ContentPlayerActivity extends BaseActivity {
         dia_btn_green.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                if (!FC_Constants.isTest)
-//                    addGameProgress();
-//                if(FC_Constants.isTest){
-//                    Intent returnIntent = new Intent();
-//                    returnIntent.putExtra("cCode", cCode);
-//                    returnIntent.putExtra("tMarks", tMarks);
-//                    returnIntent.putExtra("sMarks", sMarks);
-//                    setResult(Activity.RESULT_OK, returnIntent);
-//                }
-                //finish();
-
                 dialog.dismiss();
-
                 //if backpress when game list is shown then finish activity othewise popbackstack all fragmets Exclusive (sequence fdragment)
                 Fragment fragment = getSupportFragmentManager().findFragmentByTag(SequenceLayout_.class.getSimpleName());
                 if (fragment != null && fragment.isVisible()) {
@@ -155,7 +165,12 @@ public class ContentPlayerActivity extends BaseActivity {
                     if (f instanceof OnGameClose) {
                         ((OnGameClose) f).gameClose();
                     }
-                    getSupportFragmentManager().popBackStack(SequenceLayout_.class.getSimpleName(), 0);
+                    //if game opened from test
+                    if (f.getActivity() instanceof ContentPlayerActivity) {
+                        finish();
+                    } else {
+                        getSupportFragmentManager().popBackStack(SequenceLayout_.class.getSimpleName(), 0);
+                    }
                 }
 
             }
@@ -182,6 +197,16 @@ public class ContentPlayerActivity extends BaseActivity {
 
     public void showFloating_info() {
         floating_info./*show()*/setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void play(Context context) {
+
+    }
+
+    @Override
+    public void exit() {
+
     }
 }
 

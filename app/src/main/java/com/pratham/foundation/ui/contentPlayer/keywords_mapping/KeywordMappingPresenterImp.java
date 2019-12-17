@@ -163,7 +163,8 @@ public class KeywordMappingPresenterImp implements KeywordMappingContract.Keywor
     public void addLearntWords(ScienceQuestion keywordmapping, List<ScienceQuestionChoice> selectedAnsList) {
         correctWordList = new ArrayList<>();
         wrongWordList = new ArrayList<>();
-        int scoredMarks = (int) checkAnswer(keywordmapping.getLstquestionchoice(), selectedAnsList);
+        int correctCnt = 0;
+       // int scoredMarks = (int) checkAnswer(keywordmapping.getLstquestionchoice(), selectedAnsList);
         if (selectedAnsList != null && !selectedAnsList.isEmpty()) {
             KeyWords keyWords = new KeyWords();
             keyWords.setResourceId(resId);
@@ -176,15 +177,15 @@ public class KeywordMappingPresenterImp implements KeywordMappingContract.Keywor
             setCompletionPercentage();
             for (int i = 0; i < selectedAnsList.size(); i++) {
                 if ( checkAnswerNew( keywordmapping.getLstquestionchoice(),selectedAnsList.get(i).getSubQues())){
+                    correctCnt++;
                     selectedAnsList.get(i).setTrue(true);
-
                     addScore(GameConstatnts.getInt(keywordmapping.getQid()), GameConstatnts.KEYWORD_MAPPING, 10, 10, selectedAnsList.get(i).getStartTime(),selectedAnsList.get(i).getEndTime(), selectedAnsList.get(i).getSubQues());
                 }else {
                     selectedAnsList.get(i).setTrue(false);
                     addScore(GameConstatnts.getInt(keywordmapping.getQid()), GameConstatnts.KEYWORD_MAPPING, 0, 10,selectedAnsList.get(i).getStartTime(),selectedAnsList.get(i).getEndTime(),selectedAnsList.get(i).getSubQues());
                 }
             }
-
+            GameConstatnts.postScoreEvent(selectedAnsList.size(),correctCnt);
             if (!FC_Constants.isTest) {
                 view.showResult(keywordmapping);
             }else {

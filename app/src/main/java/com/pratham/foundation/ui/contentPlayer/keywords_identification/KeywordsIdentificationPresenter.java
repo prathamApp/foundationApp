@@ -154,7 +154,8 @@ public class KeywordsIdentificationPresenter implements KeywordsIdentificationCo
     public void addLearntWords(List<ScienceQuestionChoice> selectedAnsList) {
         correctWordList = new ArrayList<>();
         wrongWordList = new ArrayList<>();
-        int scoredMarks = (int) checkAnswer(selectedAnsList);
+        int correctCnt = 0;
+       // int scoredMarks = (int) checkAnswer(selectedAnsList);
         if (selectedAnsList != null && !selectedAnsList.isEmpty()) {
 
             KeyWords keyWords = new KeyWords();
@@ -168,14 +169,14 @@ public class KeywordsIdentificationPresenter implements KeywordsIdentificationCo
 
             for (int i = 0; i < selectedAnsList.size(); i++) {
                 if (checkAnswerNew(questionModel.getLstquestionchoice(), selectedAnsList.get(i).getSubQues())) {
-
+                    correctCnt++;
                     addScore(GameConstatnts.getInt(questionModel.getQid()), GameConstatnts.KEYWORD_IDENTIFICATION, 10, 10,selectedAnsList.get(i).getStartTime(),selectedAnsList.get(i).getEndTime(), selectedAnsList.get(i).getSubQues());
-
                 }else {
                     addScore(GameConstatnts.getInt(questionModel.getQid()), GameConstatnts.KEYWORD_IDENTIFICATION, 0, 10, selectedAnsList.get(i).getStartTime(),selectedAnsList.get(i).getEndTime(), selectedAnsList.get(i).getSubQues());
                 }
             }
             setCompletionPercentage();
+            GameConstatnts.postScoreEvent(selectedAnsList.size(),correctCnt);
             if (!FC_Constants.isTest) {
                 viewKeywords.showResult(correctWordList, wrongWordList);
             }

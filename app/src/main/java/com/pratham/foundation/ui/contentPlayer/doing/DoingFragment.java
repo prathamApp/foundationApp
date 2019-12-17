@@ -134,8 +134,7 @@ public class DoingFragment extends Fragment implements STT_Result_New.sttView,On
     @BindView(R.id.btn_read_mic)
     ImageButton ib_mic;
 
-   /* @BindView(R.id.bottom_bar1)
-    LinearLayout bottom_control_container;*/
+
 
     String fileName;
     String questionPath;
@@ -153,7 +152,7 @@ public class DoingFragment extends Fragment implements STT_Result_New.sttView,On
 
     private float percScore = 0;
     private String answer;
-    // public static SpeechRecognizer speech = null;
+
     private static boolean voiceStart = false;
     private static boolean[] correctArr;
     public static Intent intent;
@@ -687,7 +686,8 @@ public class DoingFragment extends Fragment implements STT_Result_New.sttView,On
             addScore(GameConstatnts.getInt(questionModel.getQid()), jsonName, 0, 0,resStartTime, FC_Utility.getCurrentDateTime(), imageName);
             appDatabase.getKeyWordDao().insert(keyWords);
             setCompletionPercentage();
-            Toast.makeText(context, "inserted successfully", Toast.LENGTH_LONG).show();
+            //Toast.makeText(context, "inserted successfully", Toast.LENGTH_LONG).show();
+            GameConstatnts.postScoreEvent(1,1);
             GameConstatnts.playGameNext(context, GameConstatnts.FALSE, this);
         } else {
             GameConstatnts.playGameNext(context, GameConstatnts.TRUE, this);
@@ -813,7 +813,7 @@ public class DoingFragment extends Fragment implements STT_Result_New.sttView,On
     }*/
     @Override
     public void gameClose() {
-        //add quetions only attempted (correct or wrong any)
+        //add questions only attempted (correct or wrong any)
         if(scienceQuestionChoices!=null && !scienceQuestionChoices.isEmpty()) {
             for (int i = 0; i <scienceQuestionChoices.size() ; i++) {
                 if(scienceQuestionChoices.get(i).getUserAns()!=null && !scienceQuestionChoices.get(i).getUserAns().trim().isEmpty()){

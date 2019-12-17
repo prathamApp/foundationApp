@@ -35,6 +35,7 @@ import com.pratham.foundation.modalclasses.CertificateModelClass;
 import com.pratham.foundation.modalclasses.EventMessage;
 import com.pratham.foundation.modalclasses.Modal_FileDownloading;
 import com.pratham.foundation.services.shared_preferences.FastSave;
+import com.pratham.foundation.ui.contentPlayer.ContentPlayerActivity_;
 import com.pratham.foundation.ui.contentPlayer.fact_retrieval_fragment.FactRetrieval_;
 import com.pratham.foundation.ui.contentPlayer.matchingPairGame.MatchThePairGameActivity;
 import com.pratham.foundation.ui.contentPlayer.old_cos.conversation.ConversationActivity_;
@@ -79,7 +80,7 @@ import static com.pratham.foundation.utility.FC_Constants.testSessionEntered;
 
 @EFragment(R.layout.fragment_test)
 public class TestFragment extends Fragment implements TestContract.TestView,
-        CertificateClicked , TestContract.LanguageSpinnerListner{
+        CertificateClicked, TestContract.LanguageSpinnerListner {
 
     @Bean(TestPresenter.class)
     TestContract.TestPresenter presenter;
@@ -94,9 +95,9 @@ public class TestFragment extends Fragment implements TestContract.TestView,
     private int clicked_Pos = 0;
     public List<ContentTable> rootList, rootLevelList, dwParentList, childDwContentList;
     public List<ContentTable> contentParentList, contentDBList, contentApiList, childContentList;
-    private String  downloadNodeId, resName, resServerImageName, downloadType, certi_Code = "";
+    private String downloadNodeId, resName, resServerImageName, downloadType, certi_Code = "";
     private int childPos = 0, parentPos = 0, resumeCntr = 0;
-    public static  String language = "English";
+    public static String language = "English";
 
     @AfterViews
     public void initialize() {
@@ -121,7 +122,7 @@ public class TestFragment extends Fragment implements TestContract.TestView,
     public void notifyAdapter() {
 //        sortAllList(contentParentList);
         if (testAdapter == null) {
-            testAdapter = new TestAdapter(getActivity(), testList,TestFragment.this,TestFragment.this);
+            testAdapter = new TestAdapter(getActivity(), testList, TestFragment.this, TestFragment.this);
             RecyclerView.LayoutManager myLayoutManager = new GridLayoutManager(getActivity(), 1);
             my_recycler_view.setLayoutManager(myLayoutManager);
             my_recycler_view.setItemAnimator(new DefaultItemAnimator());
@@ -171,15 +172,15 @@ public class TestFragment extends Fragment implements TestContract.TestView,
         Spinner lang_spinner = dialog.findViewById(R.id.lang_spinner);
         dia_btn_green.setText("OK");
         dialog.show();
-        String currLang = "" + FastSave.getInstance().getString(FC_Constants.LANGUAGE,"Hindi");
-        dia_title.setText("Current Language : "+currLang);
+        String currLang = "" + FastSave.getInstance().getString(FC_Constants.LANGUAGE, "Hindi");
+        dia_title.setText("Current Language : " + currLang);
 
         ArrayAdapter<String> dataAdapter = new ArrayAdapter<>(getActivity(), R.layout.custom_spinner,
                 getActivity().getResources().getStringArray(R.array.certificate_Languages));
         dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         lang_spinner.setAdapter(dataAdapter);
         String[] languages = getResources().getStringArray(R.array.certificate_Languages);
-        for(int i = 0 ; i<languages.length ; i++) {
+        for (int i = 0; i < languages.length; i++) {
             if (currLang.equalsIgnoreCase(languages[i])) {
                 lang_spinner.setSelection(i);
                 break;
@@ -211,13 +212,14 @@ public class TestFragment extends Fragment implements TestContract.TestView,
     }
 
     boolean eventBusFlg = false;
+
     @Override
     public void onStart() {
         isTest = true;
         super.onStart();
-        if(!eventBusFlg) {
+        if (!eventBusFlg) {
             eventBusFlg = true;
-        EventBus.getDefault().register(this);
+            EventBus.getDefault().register(this);
         }
     }
 
@@ -231,10 +233,10 @@ public class TestFragment extends Fragment implements TestContract.TestView,
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void messageReceived(EventMessage message) {
         if (message != null) {
-            if (message.getMessage().contains(LEVEL_TEST_GIVEN)){
+            if (message.getMessage().contains(LEVEL_TEST_GIVEN)) {
                 addTestStarResult(message.getMessage());
             }
-            if (message.getMessage().contains(CLOSE_TEST_EVENTBUS)){
+            if (message.getMessage().contains(CLOSE_TEST_EVENTBUS)) {
                 eventBusFlg = false;
                 EventBus.getDefault().unregister(this);
             }
@@ -273,13 +275,13 @@ public class TestFragment extends Fragment implements TestContract.TestView,
 
     private void addTestStarResult(String levelTestGiven) {
         try {
-        String[] splitRes = levelTestGiven.split(":");
-        for(int i=0; i<splitRes.length; i++){
-            Log.d("splitRes", "addTestStarResult: "+splitRes[i]);
-        }
-        String cCode = levelTestGiven.split(":")[1];
-        int tMarks = Integer.parseInt(levelTestGiven.split(":")[2]);
-        int sMarks = Integer.parseInt(levelTestGiven.split(":")[3]);
+            String[] splitRes = levelTestGiven.split(":");
+            for (int i = 0; i < splitRes.length; i++) {
+                Log.d("splitRes", "addTestStarResult: " + splitRes[i]);
+            }
+            String cCode = levelTestGiven.split(":")[1];
+            int tMarks = Integer.parseInt(levelTestGiven.split(":")[2]);
+            int sMarks = Integer.parseInt(levelTestGiven.split(":")[3]);
             if (cCode.equalsIgnoreCase(certi_Code)) {
                 testList.get(clicked_Pos).setAsessmentGiven(true);
                 testList.get(clicked_Pos).setTotalMarks(tMarks);
@@ -367,7 +369,9 @@ public class TestFragment extends Fragment implements TestContract.TestView,
             resServerImageName = rootLevelList.get(currentLevel).getNodeServerImage();
             downloadType = FC_Constants.TEST_DOWNLOAD;
             presenter.downloadResource(rootLevelList.get(currentLevel).getNodeId());
-        }catch (Exception e){e.printStackTrace();}
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
@@ -377,7 +381,7 @@ public class TestFragment extends Fragment implements TestContract.TestView,
     @Override
     public void onCertificateOpenGame(int position, String nodeId) {
         try {
-            FC_Constants.isPractice=false;
+            FC_Constants.isPractice = false;
             clicked_Pos = position;
             presenter.getTempData("" + nodeId);
             if (!testSessionEntered) {
@@ -428,8 +432,7 @@ public class TestFragment extends Fragment implements TestContract.TestView,
                 mainNew.putExtra("certiCode", testData.getNodeDesc());
                 mainNew.putExtra("contentPath", testData.getResourcePath());
                 startActivityForResult(mainNew, 1);
-            }
-            else if (testData.getResourceType().equalsIgnoreCase(FC_Constants.CONVO_RESOURCE)) {
+            } else if (testData.getResourceType().equalsIgnoreCase(FC_Constants.CONVO_RESOURCE)) {
                 ContentTable randomTestData = presenter.getRandomData(testData.getResourceType(), testData.getNodeKeywords());
                 Intent mainNew = new Intent(getActivity(), ConversationActivity_.class);
                 mainNew.putExtra("storyId", randomTestData.getResourceId());
@@ -482,7 +485,7 @@ public class TestFragment extends Fragment implements TestContract.TestView,
                 mainNew.putExtra("certiCode", testData.getNodeDesc());
                 mainNew.putExtra("contentTitle", testData.getNodeTitle());
                 startActivityForResult(mainNew, 1);
-            } */else if (testData.getResourceType().equalsIgnoreCase(FC_Constants.PARA_ANDROID)) {
+            } */ else if (testData.getResourceType().equalsIgnoreCase(FC_Constants.PARA_ANDROID)) {
                 ContentTable randomTestData = presenter.getRandomData(testData.getResourceType(), testData.getNodeKeywords());
                 Intent mainNew = new Intent(getActivity(), ReadingParagraphsActivity_.class);
                 mainNew.putExtra("resId", randomTestData.getResourceId());
@@ -541,6 +544,11 @@ public class TestFragment extends Fragment implements TestContract.TestView,
                 mainNew.putExtra("certiCode", testData.getNodeDesc());
                 mainNew.putExtra("rhymeLevel", testData.getNodeDesc());
                 startActivityForResult(mainNew, 1);
+            } else {
+                Intent mainNew = new Intent(getActivity(), ContentPlayerActivity_.class);
+                mainNew.putExtra("testData",testData);
+                mainNew.putExtra("testcall", "true");
+                startActivityForResult(mainNew, 1);
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -562,18 +570,20 @@ public class TestFragment extends Fragment implements TestContract.TestView,
     public void initializeTheIndex() {
         try {
             my_recycler_view.removeAllViews();
-        if (testList.size() > 0) {
-            if (testAdapter == null) {
-                testAdapter = new TestAdapter(getActivity(), testList, TestFragment.this, TestFragment.this);
-                RecyclerView.LayoutManager myLayoutManager = new GridLayoutManager(getActivity(), 1);
-                my_recycler_view.setLayoutManager(myLayoutManager);
-                my_recycler_view.setItemAnimator(new DefaultItemAnimator());
-                my_recycler_view.setAdapter(testAdapter);
+            if (testList.size() > 0) {
+                if (testAdapter == null) {
+                    testAdapter = new TestAdapter(getActivity(), testList, TestFragment.this, TestFragment.this);
+                    RecyclerView.LayoutManager myLayoutManager = new GridLayoutManager(getActivity(), 1);
+                    my_recycler_view.setLayoutManager(myLayoutManager);
+                    my_recycler_view.setItemAnimator(new DefaultItemAnimator());
+                    my_recycler_view.setAdapter(testAdapter);
+                } else
+                    testAdapter.notifyDataSetChanged();
             } else
-                testAdapter.notifyDataSetChanged();
-        } else
-            btn_test_dw.setVisibility(View.VISIBLE);
-        }catch (Exception e){e.printStackTrace();}
+                btn_test_dw.setVisibility(View.VISIBLE);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         dismissLoadingDialog();
         //        testAdapter.initializeIndex();
     }
@@ -587,25 +597,25 @@ public class TestFragment extends Fragment implements TestContract.TestView,
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-            if (resultCode == Activity.RESULT_OK) {
-                String cCode = data.getStringExtra("cCode");
-                int tMarks = data.getIntExtra("tMarks", 0);
-                int sMarks = data.getIntExtra("sMarks", 0);
-                try {
-                    if (cCode.equalsIgnoreCase(certi_Code)) {
-                        testList.get(clicked_Pos).setAsessmentGiven(true);
-                        testList.get(clicked_Pos).setTotalMarks(tMarks);
-                        testList.get(clicked_Pos).setScoredMarks(sMarks);
-                        float perc = ((float) sMarks / (float) tMarks) * 100;
-                        testList.get(clicked_Pos).setStudentPercentage("" + perc);
-                        testList.get(clicked_Pos).setCertificateRating(presenter.getStarRating(perc));
-                        testAdapter.notifyItemChanged(clicked_Pos, testList.get(clicked_Pos));
-                    }
-                } catch (Exception e) {
-                    e.printStackTrace();
+        if (resultCode == Activity.RESULT_OK) {
+            String cCode = data.getStringExtra("cCode");
+            int tMarks = data.getIntExtra("tMarks", 0);
+            int sMarks = data.getIntExtra("sMarks", 0);
+            try {
+                if (cCode.equalsIgnoreCase(certi_Code)) {
+                    testList.get(clicked_Pos).setAsessmentGiven(true);
+                    testList.get(clicked_Pos).setTotalMarks(tMarks);
+                    testList.get(clicked_Pos).setScoredMarks(sMarks);
+                    float perc = ((float) sMarks / (float) tMarks) * 100;
+                    testList.get(clicked_Pos).setStudentPercentage("" + perc);
+                    testList.get(clicked_Pos).setCertificateRating(presenter.getStarRating(perc));
+                    testAdapter.notifyItemChanged(clicked_Pos, testList.get(clicked_Pos));
                 }
+            } catch (Exception e) {
+                e.printStackTrace();
             }
-            checkAllAssessmentsDone();
+        }
+        checkAllAssessmentsDone();
     }
 
     private void checkAllAssessmentsDone() {
@@ -614,7 +624,7 @@ public class TestFragment extends Fragment implements TestContract.TestView,
         JSONObject jsonObjectAssessment = new JSONObject();
         for (int i = 0; i < testList.size(); i++) {
             try {
-                if(!testList.get(i).getContentType().equalsIgnoreCase("header")) {
+                if (!testList.get(i).getContentType().equalsIgnoreCase("header")) {
                     if (testList.get(i).isAsessmentGiven()) {
                         jsonObjectAssessment.put("CertCode" + i + "_" + testList.get(i).getCertiCode(), "" + testList.get(i).getStudentPercentage());
                     } else {
@@ -729,19 +739,21 @@ public class TestFragment extends Fragment implements TestContract.TestView,
     @UiThread
     @Override
     public void showLoader() {
-        try{
-        if (!loaderVisible) {
-            loaderVisible = true;
-            myLoadingDialog = new Dialog(getActivity());
-            myLoadingDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-            Objects.requireNonNull(myLoadingDialog.getWindow()).
-                    setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-            myLoadingDialog.setContentView(R.layout.loading_dialog);
-            myLoadingDialog.setCanceledOnTouchOutside(false);
+        try {
+            if (!loaderVisible) {
+                loaderVisible = true;
+                myLoadingDialog = new Dialog(getActivity());
+                myLoadingDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+                Objects.requireNonNull(myLoadingDialog.getWindow()).
+                        setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+                myLoadingDialog.setContentView(R.layout.loading_dialog);
+                myLoadingDialog.setCanceledOnTouchOutside(false);
 //        myLoadingDialog.setCancelable(false);
-            myLoadingDialog.show();
+                myLoadingDialog.show();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-        }catch (Exception e){e.printStackTrace();}
     }
 
     @Override
@@ -815,13 +827,13 @@ public class TestFragment extends Fragment implements TestContract.TestView,
     @Override
     public void onSpinnerLanguageChanged(String selectedLanguage) {
         language = selectedLanguage;
-        if(testAdapter == null) {
+        if (testAdapter == null) {
             testAdapter = new TestAdapter(getActivity(), testList, TestFragment.this, TestFragment.this);
             RecyclerView.LayoutManager myLayoutManager = new GridLayoutManager(getActivity(), 1);
             my_recycler_view.setLayoutManager(myLayoutManager);
             my_recycler_view.setItemAnimator(new DefaultItemAnimator());
             my_recycler_view.setAdapter(testAdapter);
-        }else
+        } else
             testAdapter.notifyDataSetChanged();
     }
 }

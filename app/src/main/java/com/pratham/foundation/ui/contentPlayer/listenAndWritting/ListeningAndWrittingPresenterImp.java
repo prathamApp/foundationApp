@@ -150,9 +150,10 @@ public class ListeningAndWrittingPresenterImp implements ListeningAndWrittingCon
                     appDatabase.getKeyWordDao().insert(keyWords);
                     addScore(GameConstatnts.getInt(listenAndWrittingModal.get(i).getQid()), GameConstatnts.LISTNING_AND_WRITTING, 0, 0, FC_Utility.getCurrentDateTime(), imageName);
                 }
+                setCompletionPercentage();
+                GameConstatnts.postScoreEvent(listenAndWrittingModal.size(),listenAndWrittingModal.size());
                 GameConstatnts.playGameNext(context, GameConstatnts.FALSE, (OnGameClose) view);
             }
-            setCompletionPercentage();
         } else {
             GameConstatnts.playGameNext(context, GameConstatnts.TRUE, (OnGameClose) view);
         }

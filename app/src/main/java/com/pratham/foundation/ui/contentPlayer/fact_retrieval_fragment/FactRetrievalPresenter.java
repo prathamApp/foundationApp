@@ -13,6 +13,7 @@ import com.pratham.foundation.database.domain.Score;
 import com.pratham.foundation.interfaces.OnGameClose;
 import com.pratham.foundation.modalclasses.ScienceQuestion;
 import com.pratham.foundation.modalclasses.ScienceQuestionChoice;
+import com.pratham.foundation.modalclasses.ScoreEvent;
 import com.pratham.foundation.services.shared_preferences.FastSave;
 import com.pratham.foundation.ui.contentPlayer.GameConstatnts;
 import com.pratham.foundation.utility.FC_Constants;
@@ -20,6 +21,7 @@ import com.pratham.foundation.utility.FC_Utility;
 
 import org.androidannotations.annotations.Background;
 import org.androidannotations.annotations.EBean;
+import org.greenrobot.eventbus.EventBus;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
@@ -163,6 +165,7 @@ public class FactRetrievalPresenter implements FactRetrievalContract.FactRetriev
 
     public void addLearntWords(ArrayList<ScienceQuestionChoice> selectedAnsList) {
         if (selectedAnsList != null && checkAttemptedornot(selectedAnsList)) {
+            int correctCnt=0;
             List<KeyWords> learntWords = new ArrayList<>();
             int scoredMarks;
             KeyWords keyWords = new KeyWords();
@@ -176,6 +179,7 @@ public class FactRetrievalPresenter implements FactRetrievalContract.FactRetriev
                 if (selectedAnsList.get(i).getUserAns() != null && !selectedAnsList.get(i).getUserAns().isEmpty()) {
                     if (checkAnswer(selectedAnsList.get(i)) > 70) {
                         scoredMarks = 10;
+                        correctCnt++;
                         selectedAnsList.get(i).setTrue(true);
                     } else {
                         scoredMarks = 0;
@@ -187,6 +191,7 @@ public class FactRetrievalPresenter implements FactRetrievalContract.FactRetriev
             }
             appDatabase.getKeyWordDao().insertAllWord(learntWords);
             setCompletionPercentage();
+            GameConstatnts.postScoreEvent(selectedAnsList.size(),correctCnt);
             if (!FC_Constants.isTest) {
                 view.showResult(selectedAnsList);
             }else {

@@ -31,8 +31,6 @@ import static com.pratham.foundation.utility.FC_Utility.getRandomCardColor;
 public class SequenceGameAdapter extends RecyclerView.Adapter<SequenceGameAdapter.MyViewHolder> {
     private Context context;
     List<ContentTable> gamesList;
-    private String contentPath, contentTitle, StudentID, resId;
-    private boolean onSdCard;
     SequeanceLayoutContract.clickListner clickListner;
 
     public SequenceGameAdapter(Context context, List<ContentTable> gamesList, SequeanceLayoutContract.clickListner clickListner) {
@@ -100,7 +98,6 @@ public class SequenceGameAdapter extends RecyclerView.Adapter<SequenceGameAdapte
     }
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
-
         public TextView title;
         public ImageView ib_action_btn;
         public MaterialCardView content_card_view;
@@ -114,5 +111,4 @@ public class SequenceGameAdapter extends RecyclerView.Adapter<SequenceGameAdapte
             ib_action_btn = view.findViewById(R.id.ib_action_btn);
         }
     }
-
 }
