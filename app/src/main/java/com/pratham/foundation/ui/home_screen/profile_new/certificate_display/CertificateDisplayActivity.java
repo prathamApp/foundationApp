@@ -60,23 +60,11 @@ public class CertificateDisplayActivity extends BaseActivity implements
         presenter.setView(CertificateDisplayActivity.this);
         displayProfileName();
         displayProfileImage();
-        showCertificates();
-    }
-
-    @Background
-    public void showCertificates() {
-        List<Assessment> assessmentList;
-        if(GROUP_LOGIN)
-            assessmentList = AppDatabase.getDatabaseInstance(this).getAssessmentDao()
-                    .getCertificatesGroups(FC_Constants.currentGroup, FC_Constants.CERTIFICATE_LBL);
-        else
-            assessmentList = AppDatabase.getDatabaseInstance(this).getAssessmentDao()
-                    .getCertificates(FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""), FC_Constants.CERTIFICATE_LBL);
-
-        addToAdapter(assessmentList);
+        presenter.showCertificates();
     }
 
     @UiThread
+    @Override
     public void addToAdapter(List<Assessment> assessmentList) {
         assessmentMainList = assessmentList;
         if(certificateAdapter==null) {

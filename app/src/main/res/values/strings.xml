@@ -28,11 +28,11 @@
     <string name="days">Days</string>
     <string name="hours">Hours</string>
     <string name="progress">Progress</string>
-    <string name="Test_Complete_Dialog">You can view the certificates in the profile section</string>
+    <string name="Test_Complete_Dialog" translatable="false">You can view the certificates in the profile section</string>
 
-    <string name="selectGroup">Select group</string>
-    <string name="select_Age">Select age group</string>
-    <string name="select_Name">Select your name</string>
+    <string name="selectGroup" translatable="false">Select group</string>
+    <string name="select_Age" translatable="false">Select age group</string>
+    <string name="select_Name" translatable="false">Select your name</string>
 
 
 
@@ -381,13 +381,13 @@
         <item>pa</item>
     </string-array>
 
-    <string name="fact_retrial_click">Answer the question by selecting the word and then submit it.</string>
+    <string name="fact_retrieval_click">Answer the question by selecting the word and then submit it.</string>
     <string name="factRetrieval">Answer the question by selecting the word by long pressing it and then submit the selected answer.</string>
     <string name="IKWAndroid">Identify keywords from paragraph and submit </string>
-    <string name="CWiritng">Write the text displayed in the app in your notebook and then submit the photo</string>
+    <string name="CopyWriting">Write the text displayed in the app in your notebook and then submit the photo</string>
     <string name="chKeywords">Select the words releted to the topic and submit your answers</string>
     <string name="ShowMeAndroid">Give the answer by selecting the correct option form the given options.</string>
-    <string name="Dict">Listen to the audio and write it in your notebook and then submit the photo.</string>
+    <string name="Dictation">Listen to the audio and write it in your notebook and then submit the photo.</string>
     <string name="PictAndroid">Listen to a story</string>
     <string name="TAW">Write in your own words about the given topic in your notebook and sumbit its photo.</string>
     <string name="doing_act_read">Read the instructions and try to perform the activity.</string>
@@ -397,6 +397,6 @@
     <string name="reading_stt">Answer the question by Give the answer by selecting the correct option form the given options.using the speech to text functionality.</string>
     <string name="multiple_choice">Select the correct answer from multiple answers and submit it</string>
     <string name="Video">Watch the video</string>
-    <string name="restart_dialog_msg">Do you want to restart?</string>
-    <string name="exit_dialog_msg">Do you want to exit?</string>
+    <string name="restart_dialog_msg" translatable="false">Do you want to restart?</string>
+    <string name="exit_dialog_msg" translatable="false">Do you want to exit?</string>
 </resources>

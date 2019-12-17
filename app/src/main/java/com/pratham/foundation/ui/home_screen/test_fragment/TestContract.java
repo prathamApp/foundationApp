@@ -93,5 +93,7 @@ public interface TestContract {
         float getStarRating(float perc);
 
         ContentTable getRandomData(String resourceType, String nodeKeywords);
+
+        void insertTestSession();
     }
 }

@@ -230,8 +230,8 @@ public class FC_Constants {
     public static boolean isPractice;
     public static boolean isTest;
     public static int currentLevel;
-    public static boolean testSessionEntered;
-    public static boolean testSessionEnded;
+    public static boolean testSessionEntered = false;
+    public static boolean testSessionEnded = true;
     public static String currentGroup;
     public static String currentSelectedLanguage;
     public static String newDataLanguageInserted = "newDataLanguageInserted";

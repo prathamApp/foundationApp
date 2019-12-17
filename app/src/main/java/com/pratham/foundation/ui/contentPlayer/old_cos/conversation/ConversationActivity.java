@@ -31,7 +31,7 @@ import com.nex3z.flowlayout.FlowLayout;
 import com.pratham.foundation.ApplicationClass;
 import com.pratham.foundation.BaseActivity;
 import com.pratham.foundation.R;
-import com.pratham.foundation.customView.SansTextView;
+import com.pratham.foundation.customView.SansTextViewBold;
 import com.pratham.foundation.interfaces.MediaCallbacks;
 import com.pratham.foundation.modalclasses.Message;
 import com.pratham.foundation.services.stt.ContinuousSpeechService_New;
@@ -383,7 +383,7 @@ public class ConversationActivity extends BaseActivity
         //readChatFlow.removeAllViews();
         String[] splittedAnswer = answerText.split(" ");
         for (String word : splittedAnswer) {
-            final SansTextView myTextView = new SansTextView(this);
+            final SansTextViewBold myTextView = new SansTextViewBold(this);
             myTextView.setText(word);
             myTextView.setOnClickListener(v -> {
                 if (!FC_Constants.isTest) {
@@ -442,7 +442,7 @@ public class ConversationActivity extends BaseActivity
             correctSound.start();
             sendClikChanger(0);
             for (int i = 0; i < splitQues.length; i++) {
-                ((SansTextView) readChatFlow.getChildAt(i)).setTextColor(getResources().getColor(R.color.readingGreen));
+                ((SansTextViewBold) readChatFlow.getChildAt(i)).setTextColor(getResources().getColor(R.color.readingGreen));
                 correctArr[i] = true;
             }
             lin_layout.setBackgroundResource(R.drawable.convo_correct_bg);
@@ -469,7 +469,7 @@ public class ConversationActivity extends BaseActivity
             correctArr = ansCorrect;
             for (int x = 0; x < correctArr.length; x++)
                 if (correctArr[x])
-                    ((SansTextView) readChatFlow.getChildAt(x)).setTextColor(getResources().getColor(R.color.colorBtnGreenDark));
+                    ((SansTextViewBold) readChatFlow.getChildAt(x)).setTextColor(getResources().getColor(R.color.colorBtnGreenDark));
 
             float perc = presenter.getPercentage();
             if (msgPercentage[currentMsgNo] < perc)
@@ -484,7 +484,7 @@ public class ConversationActivity extends BaseActivity
         try {
             for (int x = 0; x < correctArr.length; x++)
                 if (correctArr[x]) {
-                    ((SansTextView) readChatFlow.getChildAt(x)).setTextColor(getResources().getColor(R.color.colorBtnGreenDark));
+                    ((SansTextViewBold) readChatFlow.getChildAt(x)).setTextColor(getResources().getColor(R.color.colorBtnGreenDark));
                     counter++;
                 }
         } catch (Exception e) {

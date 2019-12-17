@@ -2,14 +2,13 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/bg_anim_fourth_layer">
+    android:background="@drawable/science_bkgd">
 
     <RelativeLayout
         android:id="@+id/topPanel"
         android:layout_width="match_parent"
-        android:layout_height="60dp"
-        android:layout_alignParentTop="true"
-        android:background="@color/colorBtnRedDark">
+        android:layout_height="70dp"
+        android:layout_alignParentTop="true">
 
         <ImageButton
             android:id="@+id/btn_back"
@@ -25,13 +24,13 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_centerInParent="true"
-            android:layout_toEndOf="@+id/btn_back"
-            android:layout_toStartOf="@+id/just_view"
-            android:layout_marginStart="@dimen/_5sdp"
+            android:layout_marginStart="@dimen/_10sdp"
             android:layout_marginEnd="@dimen/_5sdp"
-            android:gravity="center"
+            android:layout_toStartOf="@+id/just_view"
+            android:layout_toEndOf="@+id/btn_back"
             android:text="Pull Data"
-            android:textColor="@color/white"
+            android:gravity="center_vertical"
+            android:textColor="@color/colorText"
             android:textSize="@dimen/_18sdp"
             android:textStyle="bold" />
 
@@ -54,19 +53,23 @@
         <Spinner
             android:id="@+id/programSpinner"
             android:layout_width="match_parent"
-            android:layout_height="0dp"
+            android:layout_height="wrap_content"
+            android:paddingTop="@dimen/_3sdp"
+            android:paddingBottom="@dimen/_3sdp"
             android:layout_margin="10dp"
-            android:layout_weight="1"
             android:autofillHints="Select State"
             android:background="@drawable/gradient_spinner"
+            android:popupBackground="@drawable/dialog_bg"
             android:visibility="visible" />
 
         <Spinner
             android:id="@+id/stateSpinner"
             android:layout_width="match_parent"
-            android:layout_height="0dp"
+            android:layout_height="wrap_content"
+            android:paddingTop="@dimen/_3sdp"
+            android:popupBackground="@drawable/dialog_bg"
+            android:paddingBottom="@dimen/_3sdp"
             android:layout_margin="10dp"
-            android:layout_weight="1"
             android:autofillHints="Select State"
             android:background="@drawable/gradient_spinner"
             android:visibility="visible" />
@@ -74,9 +77,11 @@
         <Spinner
             android:id="@+id/blockSpinner"
             android:layout_width="match_parent"
-            android:layout_height="0dp"
+            android:popupBackground="@drawable/dialog_bg"
+            android:layout_height="wrap_content"
+            android:paddingTop="@dimen/_3sdp"
+            android:paddingBottom="@dimen/_3sdp"
             android:layout_margin="10dp"
-            android:layout_weight="1"
             android:autofillHints="Select Block"
             android:background="@drawable/gradient_spinner" />
     </LinearLayout>
@@ -85,9 +90,9 @@
         android:id="@+id/save_button"
         android:layout_width="249dp"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/linearLayout"
+        android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="@dimen/_80sdp"
+        android:layout_marginBottom="@dimen/_30sdp"
         android:textSize="@dimen/_12sdp"
         android:elevation="@dimen/_3sdp"
         android:textColor="@color/white"

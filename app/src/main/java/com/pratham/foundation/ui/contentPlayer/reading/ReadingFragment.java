@@ -323,8 +323,10 @@ public class ReadingFragment extends Fragment implements STT_Result_New.sttView,
     public void micPressed(int micPressed) {
         if (micPressed == 0) {
             ib_mic.setImageResource(R.drawable.ic_mic_black);
+            ib_mic.setBackgroundResource(R.drawable.button_green);
         } else if (micPressed == 1) {
             ib_mic.setImageResource(R.drawable.ic_pause_black);
+            ib_mic.setBackgroundResource(R.drawable.button_yellow);
         }
     }
 
@@ -340,7 +342,6 @@ public class ReadingFragment extends Fragment implements STT_Result_New.sttView,
     public void sttEngineReady() {
         dismissLoadingDialog();
     }
-
 
     public void dismissLoadingDialog() {
         if (dialogFlg) {

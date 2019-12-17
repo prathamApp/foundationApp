@@ -75,6 +75,7 @@ import static com.pratham.foundation.utility.FC_Constants.LEVEL_TEST_GIVEN;
 import static com.pratham.foundation.utility.FC_Constants.currentLevel;
 import static com.pratham.foundation.utility.FC_Constants.gameFolderPath;
 import static com.pratham.foundation.utility.FC_Constants.isTest;
+import static com.pratham.foundation.utility.FC_Constants.testSessionEnded;
 import static com.pratham.foundation.utility.FC_Constants.testSessionEntered;
 
 @EFragment(R.layout.fragment_test)
@@ -107,6 +108,8 @@ public class TestFragment extends Fragment implements TestContract.TestView,
         contentParentList = new ArrayList<>();
         testList = new ArrayList<>();
         presenter.setView(TestFragment.this);
+        testSessionEntered = false;
+        testSessionEnded = false;
         my_recycler_view.addOnScrollListener(new RetractableToolbarUtil
                 .ShowHideToolbarOnScrollingListener(header_rl));
         presenter.getBottomNavId(currentLevel, "Test");
@@ -381,7 +384,7 @@ public class TestFragment extends Fragment implements TestContract.TestView,
             clicked_Pos = position;
             presenter.getTempData("" + nodeId);
             if (!testSessionEntered) {
-//                presenter.insertTestSession();
+                presenter.insertTestSession();
             }
         } catch (Exception e) {
             e.printStackTrace();

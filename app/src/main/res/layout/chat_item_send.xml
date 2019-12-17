@@ -17,9 +17,10 @@
         android:paddingHorizontal="10dp"
         android:paddingVertical="10dp"
         android:elevation="3dp"
+        android:text="@string/app_name"
         android:textAppearance="?android:attr/textAppearanceMedium"
-        android:textColor="#000000"
-        android:textSize="18sp" />
+        android:textColor="@color/colorSignBoard"
+        android:textSize="@dimen/_13sdp" />
 
     <LinearLayout
         android:id="@+id/arrow"

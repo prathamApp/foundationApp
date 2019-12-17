@@ -14,7 +14,7 @@
 
         <ImageView
             android:id="@+id/item_Image"
-            android:layout_width="30dp"
+            android:layout_width="40dp"
             android:layout_height="match_parent"
             android:layout_alignParentStart="true"
             android:layout_centerInParent="true"
@@ -30,7 +30,7 @@
             android:text="aaaaaa"
             android:gravity="center_vertical"
             android:layout_marginStart="10dp"
-            android:textSize="@dimen/_15sdp"/>
+            android:textSize="@dimen/_13sdp"/>
 
     </RelativeLayout>
 

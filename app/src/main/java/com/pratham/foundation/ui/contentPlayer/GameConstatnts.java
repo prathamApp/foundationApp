@@ -51,15 +51,15 @@ import static com.pratham.foundation.utility.FC_Constants.dialog_btn_cancel;
 public class GameConstatnts implements ShowInstruction {
     public static final String KEYWORD_IDENTIFICATION = "IKWAndroid";
     public static final String KEYWORD_MAPPING = "chKeywords";
-    public static final String PARAGRAPH_WRITING = "CWiritng";
-    public static final String LISTNING_AND_WRITTING = "Dict";
+    public static final String PARAGRAPH_WRITING = "CopyWriting";
+    public static final String LISTNING_AND_WRITTING = "Dictation";
     //   public static final String READING = "reading";
 //    public static final String MULTIPLE_CHOICE_QUE = "multiple_choice_que";
     public static final String FILL_IN_THE_BLANKS = "fill_in_the_blanks";
     public static final String TRUE_FALSE = "true_false";
     public static final String PICTIONARYFRAGMENT = "PictAndroid";
     public static final String DOING = "doing_act";
-    public static final String FACT_RETRIAL_CLICK = "fact_retrial_click";
+    public static final String FACT_RETRIAL_CLICK = "fact_retrieval_click";
     public static final String FACTRETRIEVAL = "factRetrieval";
     public static final String SHOW_ME_ANDROID = "ShowMeAndroid";
     public static final String THINKANDWRITE = "TAW";
@@ -298,10 +298,7 @@ public class GameConstatnts implements ShowInstruction {
                 FC_Utility.showFragment((Activity) context, new DoingFragment(), R.id.RL_CPA,
                         bundle, DoingFragment.class.getSimpleName());
                 break;
-
         }
-
-
     }
 
     @Override

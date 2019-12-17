@@ -314,10 +314,11 @@ public class CertificatePresenter implements CertificateContract.CertificatePres
                     assessment.setScoredMarksa(0);
                     assessment.setTotalMarksa(0);
                     assessment.setStudentIDa(FastSave.getInstance().getString(FC_Constants.CURRENT_ASSESSMENT_STUDENT_ID, ""));
-                    if (FC_Constants.GROUP_LOGIN)
-                        assessment.setStartDateTimea(FastSave.getInstance().getString(FC_Constants.CURRENT_ASSESSMENT_STUDENT_ID, "") + "_" + certiTitle);
-                    else
-                        assessment.setStartDateTimea("" + certiTitle);
+                    assessment.setStartDateTimea(""+FastSave.getInstance().getString(FC_Constants.CURRENT_FOLDER_NAME, ""));
+//                    if (FC_Constants.GROUP_LOGIN)
+//                        assessment.setStartDateTimea(FastSave.getInstance().getString(FC_Constants.CURRENT_ASSESSMENT_STUDENT_ID, "") + "_" + certiTitle);
+//                    else
+//                        assessment.setStartDateTimea("" + certiTitle);
                     assessment.setEndDateTime(FC_Utility.getCurrentDateTime());
                     if (FC_Constants.supervisedAssessment)
                         assessment.setDeviceIDa("" + FastSave.getInstance().getString(FC_Constants.CURRENT_SUPERVISOR_ID, ""));

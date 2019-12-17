@@ -62,7 +62,7 @@ public class Fact_Retrieval_Presenter implements Fact_Retrieval_Contract.Fact_re
 
 
         try {
-            InputStream is = new FileInputStream(readingContentPath + "fact_retrial_click.json");
+            InputStream is = new FileInputStream(readingContentPath + "fact_retrieval_click.json");
             int size = is.available();
             byte[] buffer = new byte[size];
             is.read(buffer);

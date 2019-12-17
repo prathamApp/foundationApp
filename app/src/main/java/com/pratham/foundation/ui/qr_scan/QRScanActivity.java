@@ -486,7 +486,7 @@ public class QRScanActivity extends BaseActivity implements
         try {
             StatusDao statusDao = appDatabase.getStatusDao();
             currentSession = "" + UUID.randomUUID().toString();
-            FastSave.getInstance().saveString(FC_Constants.CURRENT_STUDENT_ID, currentSession);
+            FastSave.getInstance().saveString(FC_Constants.CURRENT_SESSION, currentSession);
             statusDao.updateValue("CurrentSession", "" + currentSession);
 
             Session startSesion = new Session();

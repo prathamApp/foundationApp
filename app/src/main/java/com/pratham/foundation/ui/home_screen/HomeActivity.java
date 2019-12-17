@@ -19,12 +19,15 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.pratham.foundation.ApplicationClass;
 import com.pratham.foundation.BaseActivity;
 import com.pratham.foundation.R;
 import com.pratham.foundation.customView.progress_layout.ProgressLayout;
 import com.pratham.foundation.customView.submarine_view.SubmarineItem;
 import com.pratham.foundation.customView.submarine_view.SubmarineView;
 import com.pratham.foundation.database.AppDatabase;
+import com.pratham.foundation.database.BackupDatabase;
+import com.pratham.foundation.database.domain.Session;
 import com.pratham.foundation.modalclasses.EventMessage;
 import com.pratham.foundation.services.shared_preferences.FastSave;
 import com.pratham.foundation.ui.home_screen.fun.FunFragment_;
@@ -35,6 +38,7 @@ import com.pratham.foundation.ui.home_screen.test_fragment.TestFragment_;
 import com.pratham.foundation.ui.home_screen.test_fragment.supervisor.SupervisedAssessmentActivity;
 import com.pratham.foundation.ui.student_profile.Student_profile_activity;
 import com.pratham.foundation.utility.FC_Constants;
+import com.pratham.foundation.utility.FC_Utility;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Background;
@@ -49,6 +53,7 @@ import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.Objects;
 
+import static com.pratham.foundation.utility.FC_Constants.ASSESSMENT_SESSION;
 import static com.pratham.foundation.utility.FC_Constants.BACK_PRESSED;
 import static com.pratham.foundation.utility.FC_Constants.FRAGMENT_RESELECTED;
 import static com.pratham.foundation.utility.FC_Constants.FRAGMENT_SELECTED;
@@ -64,6 +69,8 @@ import static com.pratham.foundation.utility.FC_Constants.currentSubject;
 import static com.pratham.foundation.utility.FC_Constants.dialog_btn_cancel;
 import static com.pratham.foundation.utility.FC_Constants.dialog_btn_exit;
 import static com.pratham.foundation.utility.FC_Constants.isTest;
+import static com.pratham.foundation.utility.FC_Constants.testSessionEnded;
+import static com.pratham.foundation.utility.FC_Constants.testSessionEntered;
 
 @EActivity(R.layout.activity_home)
 public class HomeActivity extends BaseActivity implements LevelChanged {
@@ -353,12 +360,18 @@ public class HomeActivity extends BaseActivity implements LevelChanged {
                 }*/
                 if (tab.getText().toString().equalsIgnoreCase("Test")) {
                     FC_Constants.isTest = true;
+                    String assessmentSession = "test-" + ApplicationClass.getUniqueID();
+                    FastSave.getInstance().saveString(ASSESSMENT_SESSION, assessmentSession);
                     showTestTypeSelectionDialog();
                 }else if (tab.getText().toString().equalsIgnoreCase("Profile")) {
                     FC_Constants.isTest = false;
+                    if(testSessionEntered && !testSessionEnded)
+                        endTestSession();
                     header_rl.setVisibility(View.GONE);
                 } else {
                     FC_Constants.isTest = false;
+                    if(testSessionEntered && !testSessionEnded)
+                        endTestSession();
                     EventMessage eventMessage = new EventMessage();
                     eventMessage.setMessage(FRAGMENT_SELECTED);
                     EventBus.getDefault().post(eventMessage);
@@ -388,6 +401,27 @@ public class HomeActivity extends BaseActivity implements LevelChanged {
                 }
             }
         });
+    }
+
+    @Background
+    public void endTestSession() {
+        try {
+            Session startSesion = new Session();
+            String toDateTemp = AppDatabase.appDatabase.getSessionDao().
+                    getToDate(FastSave.getInstance().getString(FC_Constants.ASSESSMENT_SESSION, ""));
+            if (toDateTemp != null && toDateTemp.equalsIgnoreCase("na")) {
+                AppDatabase.appDatabase.getSessionDao().UpdateToDate(FastSave.getInstance()
+                        .getString(FC_Constants.ASSESSMENT_SESSION, ""),
+                        FC_Utility.getCurrentDateTime());
+            }
+            BackupDatabase.backup(this);
+            AppDatabase.appDatabase.getSessionDao().insert(startSesion);
+            FastSave.getInstance().saveString(FC_Constants.ASSESSMENT_SESSION, "NA");
+            testSessionEntered = false;
+            testSessionEnded = true;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     @SuppressLint("SetTextI18n")

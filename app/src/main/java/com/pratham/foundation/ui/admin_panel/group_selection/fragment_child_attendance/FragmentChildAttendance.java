@@ -78,14 +78,17 @@ public class FragmentChildAttendance extends Fragment implements ContractChildAt
         avatarsFemale = new ArrayList<>();
         avatarsMale = new ArrayList<>();
         if (ApplicationClass.isTablet) {
-            btn_attendance_next.setVisibility(View.VISIBLE);
-            //add_child.setVisibility(View.GONE);
-            groupID = getArguments().getString(FC_Constants.GROUPID);
-            FC_Constants.GROUP_LOGIN = true;
-            FC_Constants.currentGroup = ""+groupID;
-            for (Student stu : students) {
-                avatarsMale.add(FC_Utility.getRandomMaleAvatar(getActivity()));
-                avatarsFemale.add(FC_Utility.getRandomFemaleAvatar(getActivity()));
+            if(LOGIN_MODE.equalsIgnoreCase(GROUP_MODE)) {
+                btn_attendance_next.setVisibility(View.VISIBLE);
+                //add_child.setVisibility(View.GONE);
+                groupID = getArguments().getString(FC_Constants.GROUPID);
+                FC_Constants.GROUP_LOGIN = true;
+                FC_Constants.currentGroup = "" + groupID;
+                FastSave.getInstance().saveString(FC_Constants.CURRENT_STUDENT_ID, ""+groupID);
+                for (Student stu : students) {
+                    avatarsMale.add(FC_Utility.getRandomMaleAvatar(getActivity()));
+                    avatarsFemale.add(FC_Utility.getRandomFemaleAvatar(getActivity()));
+                }
             }
         } else {
             btn_attendance_next.setVisibility(View.GONE);

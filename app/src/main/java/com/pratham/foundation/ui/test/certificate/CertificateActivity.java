@@ -38,6 +38,7 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 import static com.pratham.foundation.ui.contentPlayer.web_view.WebViewActivity.gameLevel;
 import static com.pratham.foundation.utility.FC_Constants.gameFolderPath;
@@ -217,6 +218,11 @@ public class CertificateActivity extends BaseActivity implements CertificateCont
         return allCodes;
     }*/
 
+    @OnClick(R.id.main_back)
+    public void pressedBack(){
+        onBackPressed();
+    }
+
     @Override
     public void onBackPressed() {
         super.onBackPressed();
@@ -317,193 +323,3 @@ public class CertificateActivity extends BaseActivity implements CertificateCont
         certificateAdapter.notifyDataSetChanged();
     }
 }
-
-
-
-//beginner
-/*,
-        {
-        "lang": "Malayalam",
-        "questionList": {
-        "1": "ഇതിൽ ശിശുഗാനം ഏതെന്നു തിരിച്ചറിയുക?",
-        "2": "ചിത്രം തിരിച്ചറിയുക?",
-        "3": "പറയുന്നത് ശ്രദ്ധിച്ചു ഉത്തരം നൽകാമോ",
-        "4": "താങ്കൾക്ക് സല്ലപിക്കാൻ കഴിയുമോ?",
-        "5": "Can you read alphabets?",
-        "6": "വാക്കുകൾ കണ്ടെത്താൻ താങ്കൾക്ക് അറിയാമോ?",
-        "7": "താങ്കൾക്ക് പ്രാസം കണ്ടെത്താൻ കഴിയുമോ",
-        "8": "താങ്കൾക്ക് പ്രാസം ഉണ്ടാക്കാൻ കഴിയുമോ"
-        },
-        "answerList": {
-        "1": "Can identify nursery rhymes.",
-        "2": "Can identify pictures.",
-        "3": "Can listen and answer.",
-        "4": "Can chat.",
-        "5": "Can read alphabets.",
-        "6": "Can find words.",
-        "7": "Can find rhyming words.",
-        "8": "Can  make rhyming words."
-        }
-        },
-        {
-        "lang": "Punjabi",
-        "questionList": {
-        "1": "ਕੀ ਤੁਸੀਂ ਅੰਗਰੇਜ਼ੀ ਕਵਿਤਾਵਾਂ ਪਹਿਚਾਣ ਸਕਦੇ ਹੋ?",
-        "2": "ਕੀ ਤੁਸੀਂ ਤਸਵੀਰਾਂ ਦੀ ਪਹਿਚਾਣ ਕਰ ਸਕਦੇ ਹੋ?",
-        "3": "ਕੀ ਤੁਸੀਂ ਸੁਣ ਕੇ ਜਵਾਬ ਦੇ ਸਕਦੇ ਹੋ?",
-        "4": "ਕੀ ਤੁਸੀਂ ਗੱਲਬਾਤ ਕਰ ਸਕਦੇ ਹੋ?",
-        "5": "ਪ੍ਰਸ਼ਨ: ਕੀ ਤੁਸੀਂ ਅੱਖਰ ਪੜ੍ਹ ਸਕਦੇ ਹੋ?",
-        "6": "ਕੀ ਤੁਸੀਂ ਸ਼ਬਦ ਲੱਭ ਸਕਦੇ ਹੋ?",
-        "7": "ਕੀ ਤੁਸੀਂ ਲੈ ਬੱਧ ਲਿਖੇ ਸ਼ਬਦ ਲੱਭ ਸਕਦੇ ਹੋ?",
-        "8": "ਕੀ ਤੁਸੀਂ ਲੈ ਬੱਧ ਸ਼ਬਦ ਬਣਾ ਸਕਦੇ ਹੋ?"
-        },
-        "answerList": {
-        "1": "Can identify nursery rhymes.",
-        "2": "Can identify pictures.",
-        "3": "Can listen and answer.",
-        "4": "Can chat.",
-        "5": "Can read alphabets.",
-        "6": "Can find words.",
-        "7": "Can find rhyming words.",
-        "8": "Can  make rhyming words."
-        }
-        }*/
-
-
-/*
-Junior
-,
-    {
-      "lang": "Malayalam",
-      "questionList": {
-        "1": "താങ്കൾക്ക് ഒരു കഥ വായിക്കാൻ കഴിയുമോ?",
-        "2": "താങ്കൾക്ക് മുൻപദം അറിയാമോ?",
-        "3": "താങ്കൾക്ക് നാമ വിശേഷണങ്ങൾ അറിയാമോ?",
-        "4": "താങ്കൾക്ക് സല്ലപിക്കാൻ കഴിയുമോ?",
-        "5": "വാക്കുകൾ കണ്ടെത്താൻ താങ്കൾക്ക് അറിയാമോ?",
-        "6": "താങ്കൾക്ക് വാചകങ്ങൾ വായിക്കാൻ കഴിയുമോ?",
-        "7": "താങ്കൾക്ക് വാക്കുകൾ ഉണ്ടാക്കാൻ കഴിയുമോ?",
-        "8": "താങ്കൾക്ക് വാചകങ്ങൾ ഉണ്ടാക്കാൻ കഴിയുമോ?",
-        "9": "താങ്കൾക്ക് ഒരു ഖണ്ഡിക വായിക്കാൻ കഴിയുമോ?"
-      },
-      "answerList": {
-        "1": "Can read a story.",
-        "2": "know prepositions.",
-        "3": "know adjectives.",
-        "4": "Can chat.",
-        "5": "Can find words.",
-        "6": "Can read sentences.",
-        "7": "Can make words.",
-        "8": "Can  make sentences.",
-        "9": "Can  read a simple paragraph."
-      }
-    },
-    {
-      "lang": "Punjabi",
-      "questionList": {
-        "1": "ਕੀ ਤੁਸੀਂ ਕੋਈ ਇੱਕ ਕਹਾਣੀ ਪੜ੍ਹ ਸਕਦੇ ਹੋ?",
-        "2": "ਕੀ ਤੁਸੀਂ ਯੋਜਕ ਜਾਣਦੇ ਹੋ?",
-        "3": "ਕੀ ਤੁਸੀਂ ਵਿਸ਼ੇਸ਼ਣ ਜਾਣਦੇ ਹੋ?",
-        "4": "ਕੀ ਤੁਸੀਂ ਗੱਲਬਾਤ ਕਰ ਸਕਦੇ ਹੋ?",
-        "5": "ਕੀ ਤੁਸੀਂ ਸ਼ਬਦ ਲੱਭ ਸਕਦੇ ਹੋ?",
-        "6": "ਕੀ ਤੁਸੀਂ ਵਾਕ ਪੜ੍ਹ ਸਕਦੇ ਹੋ?",
-        "7": "ਕੀ ਤੁਸੀਂ ਸ਼ਬਦ ਬਣਾ ਸਕਦੇ ਹੋ?",
-        "8": "ਕੀ ਤੁਸੀਂ ਵਾਕ ਬਣਾ ਸਕਦੇ ਹੋ?",
-        "9": "ਕੀ ਤੁਸੀਂ ਇੱਕ ਸਧਾਰਨ ਪੈਰਾ ਪੜ੍ਹ ਸਕਦੇ ਹੋ?"
-      },
-      "answerList": {
-        "1": "Can read a story.",
-        "2": "know prepositions.",
-        "3": "know adjectives.",
-        "4": "Can chat.",
-        "5": "Can find words.",
-        "6": "Can read sentences.",
-        "7": "Can make words.",
-        "8": "Can  make sentences.",
-        "9": "Can  read a simple paragraph."
-      }
-    }*/
-/*,{
-        "lang": "Malayalam",
-        "questionList": {
-        "1": "Can you identify Nursery Rhymes?",
-        "2": "Can you identify pictures?",
-        "3": "Can you tell the date and time?",
-        "4": "Can you listen and answer?",
-        "5": "Can you chat?",
-        "6": "Can you identify blends?",
-        "7": "Can you find words?",
-        "8": "Can you find rhyming words?",
-        "9": "Can you make rhyming words?"
-        },
-        "answerList": {
-        "1": "Can identify nursery rhymes.",
-        "2": "Can identify pictures.",
-        "3" :"Can tell the date and time",
-        "4": "Can listen and answer.",
-        "5": "Can chat.",
-        "6": "Can identify blends.",
-        "7": "Can find words.",
-        "8": "Can find rhyming words.",
-        "9": "Can make rhyming words."
-        }
-        },{
-        "lang": "Punjabi",
-        "questionList": {
-        "1": "Can you identify Nursery Rhymes?",
-        "2": "Can you identify pictures?",
-        "3": "Can you tell the date and time?",
-        "4": "Can you listen and answer?",
-        "5": "Can you chat?",
-        "6": "Can you identify blends?",
-        "7": "Can you find words?",
-        "8": "Can you find rhyming words?",
-        "9": "Can you make rhyming words?"
-        },
-        "answerList": {
-        "1": "Can identify nursery rhymes.",
-        "2": "Can identify pictures.",
-        "3" :"Can tell the date and time",
-        "4": "Can listen and answer.",
-        "5": "Can chat.",
-        "6": "Can identify blends.",
-        "7": "Can find words.",
-        "8": "Can find rhyming words.",
-        "9": "Can make rhyming words."
-        }
-        }*/
-
-/*
-,
-        {
-        "lang": "Malayalam",
-        "questionList": {
-        "1": "താങ്കൾക്ക് ഒരു കഥ വായിക്കാൻ കഴിയുമോ?",
-        "2": "താങ്കൾക്ക് ചെറു കഥ മനസിലാക്കാൻ കഴിയുമോ",
-        "3": "താങ്കൾക്ക് ചെറു കഥ വായിക്കാൻ കഴിയുമോ",
-        "4": "താങ്കൾക്ക് സല്ലപിക്കാൻ കഴിയുമോ?"
-        },
-        "answerList": {
-        "1": "Can read a story.",
-        "2": "understands short story",
-        "3": "Can read a short story.",
-        "4": "Can chat."
-        }
-        },
-        {
-        "lang": "Punjabi",
-        "questionList": {
-        "1": "ਕੀ ਤੁਸੀਂ ਕੋਈ ਕਹਾਣੀ ਪੜ੍ਹ ਸਕਦੇ ਹੋ?",
-        "2": "ਕੀ ਤੁਸੀਂ ਇੱਕ ਛੋਟੀ ਕਹਾਣੀ ਸਮਝ ਸਕਦੇ ਹੋ?",
-        "3": "ਕੀ ਤੁਸੀਂ ਛੋਟੀ ਕਹਾਣੀ ਪੜ੍ਹ ਸਕਦੇ ਹੋ?",
-        "4": "ਕੀ ਤੁਸੀਂ ਗੱਲਬਾਤ ਕਰ ਸਕਦੇ ਹੋ?"
-        },
-        "answerList": {
-        "1": "Can read a story.",
-        "2": "understands short story",
-        "3": "Can read a short story.",
-        "4": "Can chat."
-
-        }
-        }
-*/

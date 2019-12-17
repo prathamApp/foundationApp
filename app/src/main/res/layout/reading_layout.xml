@@ -5,6 +5,9 @@
     android:layout_height="match_parent"
     app:cardBackgroundColor="@android:color/transparent"
     app:cardElevation="0dp">
+
+
+
     <Space
         android:id="@+id/space"
         android:layout_width="match_parent"
@@ -134,7 +137,7 @@
             android:layout_marginEnd="@dimen/_2sdp"
             android:elevation="@dimen/_5sdp"
             android:text="Reset"
-            android:background="@drawable/button_yellow"
+            android:background="@drawable/button_purple"
             android:textColor="@color/white"
             android:textSize="@dimen/_12sdp"/>
         <com.pratham.foundation.customView.SansButton

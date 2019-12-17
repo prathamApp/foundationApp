@@ -48,7 +48,6 @@ import java.util.List;
 
 import static com.pratham.foundation.ui.home_screen.HomeActivity.sub_nodeId;
 import static com.pratham.foundation.utility.FC_Constants.GROUP_LOGIN;
-import static com.pratham.foundation.utility.FC_Constants.currentGroup;
 import static com.pratham.foundation.utility.FC_Constants.currentLevel;
 import static com.pratham.foundation.utility.FC_Constants.gameFolderPath;
 import static com.pratham.foundation.utility.FC_Constants.isTest;
@@ -1040,11 +1039,11 @@ public class HomePresenter implements HomeContract.HomePresenter, API_Content_Re
             assessment.setScoredMarksa(0);
             assessment.setTotalMarksa(0);
             assessment.setStudentIDa(FastSave.getInstance().getString(FC_Constants.CURRENT_ASSESSMENT_STUDENT_ID, ""));
-            if (GROUP_LOGIN)
-                assessment.setStartDateTimea("" + currentGroup);
-            else
-                assessment.setStartDateTimea("na");
-
+//            if (GROUP_LOGIN)
+//                assessment.setStartDateTimea("" + currentGroup);
+//            else
+//                assessment.setStartDateTimea("na");
+            assessment.setStartDateTimea(""+FastSave.getInstance().getString(FC_Constants.CURRENT_FOLDER_NAME, ""));
             assessment.setEndDateTime(FC_Utility.getCurrentDateTime());
             if (FC_Constants.supervisedAssessment)
                 assessment.setDeviceIDa("" + FastSave.getInstance().getString(FC_Constants.CURRENT_SUPERVISOR_ID, ""));
@@ -1088,6 +1087,7 @@ public class HomePresenter implements HomeContract.HomePresenter, API_Content_Re
             BackupDatabase.backup(mContext);
             AppDatabase.appDatabase.getSessionDao().insert(startSesion);
             testSessionEnded = true;
+            FastSave.getInstance().saveString(FC_Constants.ASSESSMENT_SESSION, "NA");
         } catch (Exception e) {
             e.printStackTrace();
         }

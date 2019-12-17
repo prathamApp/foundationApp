@@ -48,10 +48,9 @@ import java.util.List;
 
 import static com.pratham.foundation.ui.home_screen.HomeActivity.sub_nodeId;
 import static com.pratham.foundation.utility.FC_Constants.CURRENT_FOLDER_NAME;
-import static com.pratham.foundation.utility.FC_Constants.GROUP_LOGIN;
-import static com.pratham.foundation.utility.FC_Constants.currentGroup;
 import static com.pratham.foundation.utility.FC_Constants.currentLevel;
 import static com.pratham.foundation.utility.FC_Constants.gameFolderPath;
+import static com.pratham.foundation.utility.FC_Constants.testSessionEntered;
 
 @EBean
 public class TestPresenter implements TestContract.TestPresenter, API_Content_Result {
@@ -326,16 +325,12 @@ public class TestPresenter implements TestContract.TestPresenter, API_Content_Re
             assessment.setResourceIDa(jsonObjectAssessment.toString());
             assessment.setSessionIDa(FastSave.getInstance().getString(FC_Constants.ASSESSMENT_SESSION, ""));
             assessment.setSessionIDm(FastSave.getInstance().getString(FC_Constants.CURRENT_SESSION, ""));
-            assessment.setQuestionIda(0);
+            assessment.setQuestionIda(FC_Utility.getSubjectNo());
             assessment.setScoredMarksa(0);
             assessment.setTotalMarksa(0);
             assessment.setStudentIDa(FastSave.getInstance().getString(FC_Constants.CURRENT_ASSESSMENT_STUDENT_ID, ""));
-            if (GROUP_LOGIN)
-                assessment.setStartDateTimea("" + currentGroup);
-            else
-                assessment.setStartDateTimea("na");
-
-            assessment.setEndDateTime(FC_Utility.getCurrentDateTime());
+            assessment.setStartDateTimea(""+FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""));
+            assessment.setEndDateTime(FC_Utility.GetCurrentDateTime());
             if (FC_Constants.supervisedAssessment)
                 assessment.setDeviceIDa("" + FastSave.getInstance().getString(FC_Constants.CURRENT_SUPERVISOR_ID, ""));
             else
@@ -403,6 +398,22 @@ public class TestPresenter implements TestContract.TestPresenter, API_Content_Re
             ratings = (float) 5;
 
         return ratings;
+    }
+
+    @Background
+    @Override
+    public void insertTestSession() {
+        try {
+            Session startSesion = new Session();
+            startSesion.setSessionID("" + FastSave.getInstance().getString(FC_Constants.ASSESSMENT_SESSION, ""));
+            startSesion.setFromDate("" + FC_Utility.getCurrentDateTime());
+            startSesion.setToDate("NA");
+            startSesion.setSentFlag(0);
+            AppDatabase.appDatabase.getSessionDao().insert(startSesion);
+            testSessionEntered = true;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     @Background

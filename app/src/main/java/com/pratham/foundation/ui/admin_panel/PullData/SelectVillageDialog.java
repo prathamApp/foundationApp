@@ -52,7 +52,7 @@ public class SelectVillageDialog extends Dialog {
         for (int i = 0; i < villageList.size(); i++) {
             SansCheckBox checkBox = new SansCheckBox(context);
             checkBox.setText(villageList.get(i).getVillageName());
-            checkBox.setTextSize(context.getResources().getDimension(R.dimen._10sdp));
+            checkBox.setTextSize(context.getResources().getDimension(R.dimen._12sdp));
             checkBox.setTag(villageList.get(i).getVillageId());
             GridLayout.LayoutParams param = new GridLayout.LayoutParams();
             param.height = GridLayout.LayoutParams.WRAP_CONTENT;

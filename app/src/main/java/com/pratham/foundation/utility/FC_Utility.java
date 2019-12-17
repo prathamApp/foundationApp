@@ -62,6 +62,7 @@ import com.google.gson.Gson;
 import com.pratham.foundation.ApplicationClass;
 import com.pratham.foundation.R;
 import com.pratham.foundation.customView.ZoomImageDialog;
+import com.pratham.foundation.services.shared_preferences.FastSave;
 import com.pratham.foundation.ui.admin_panel.AdminControlsActivity_;
 import com.pratham.foundation.ui.admin_panel.group_selection.SelectGroupActivity_;
 import com.pratham.foundation.ui.contentPlayer.ContentPlayerActivity_;
@@ -118,6 +119,7 @@ public class FC_Utility {
         }
         return json;
     }
+
     public static String loadJSONFromStorage(String readingContentPath, String fileName) {
         String jsonStr;
         try {
@@ -134,28 +136,29 @@ public class FC_Utility {
         }
         return jsonStr;
     }
+
     private static int[] gradiant_bg = new int[]{
             R.drawable.gradient_one, R.drawable.gradient_two, R.drawable.gradient_three,
-            R.drawable.gradient_four,R.drawable.gradient_five};
+            R.drawable.gradient_four, R.drawable.gradient_five};
 
     private static int[] cord_color_bg = new int[]{
-            R.drawable.card_color_bg1,R.drawable.card_color_bg2, R.drawable.card_color_bg3,
-            R.drawable.card_color_bg4,R.drawable.card_color_bg5};
+            R.drawable.card_color_bg1, R.drawable.card_color_bg2, R.drawable.card_color_bg3,
+            R.drawable.card_color_bg4, R.drawable.card_color_bg5};
 
-    public static int getRandomDrawableGradiant(){
+    public static int getRandomDrawableGradiant() {
         int bg_grad = gradiant_bg[new Random().nextInt(gradiant_bg.length)];
         return bg_grad;
     }
 
-    public static int getRandomCardColor(){
+    public static int getRandomCardColor() {
         int bg_grad = cord_color_bg[new Random().nextInt(cord_color_bg.length)];
         return bg_grad;
     }
 
-    public static void setAppLocal(Context context, String selectedLang){
+    public static void setAppLocal(Context context, String selectedLang) {
         String language = "en";
-        switch (selectedLang){
-            case ""+FC_Constants.HINDI:
+        switch (selectedLang) {
+            case "" + FC_Constants.HINDI:
                 language = "hi";
                 break;
 /*            case ""+FC_Constants.MARATHI:
@@ -182,7 +185,7 @@ public class FC_Utility {
             case ""+FC_Constants.ODIYA:
                 language = "hi-IN";
                 break;*/
-            case ""+FC_Constants.ENGLISH:
+            case "" + FC_Constants.ENGLISH:
                 language = "en";
                 break;
         }
@@ -680,7 +683,8 @@ public class FC_Utility {
                     .replace(frame, mFragment, TAG)
                     .addToBackStack(TAG)
                     .commit();
-        } else*/ if (mActivity instanceof AdminControlsActivity_) {
+        } else*/
+        if (mActivity instanceof AdminControlsActivity_) {
             ((AdminControlsActivity_) mActivity).getSupportFragmentManager()
                     .beginTransaction()
                     .replace(frame, mFragment, TAG)
@@ -704,7 +708,7 @@ public class FC_Utility {
                     .replace(frame, mFragment, TAG)
                     .addToBackStack(TAG)
                     .commit();
-        }else if (mActivity instanceof ContentPlayerActivity_) {
+        } else if (mActivity instanceof ContentPlayerActivity_) {
             ((ContentPlayerActivity_) mActivity).getSupportFragmentManager()
                     .beginTransaction()
                     .replace(frame, mFragment, TAG)
@@ -1354,6 +1358,40 @@ public class FC_Utility {
         }
     }
 
+    public static int getSubjectNo() {
+        int no = 0;
+        String subj = "" + FastSave.getInstance().getString(FC_Constants.CURRENT_FOLDER_NAME, "");
+        if (subj.equals("Science")) {
+            no = 1;
+        } else if (subj.equals("Maths")) {
+            no = 2;
+        } else if (subj.equals("English")) {
+            no = 3;
+        } else if (subj.equals("H_Science")) {
+            no = 4;
+        } else
+            no = 5;
+
+        return no;
+    }
+
+    public static String getSubjectNameFromNum(int num) {
+        switch (num) {
+            case 1:
+                return "Science";
+            case 2:
+                return "Maths";
+            case 3:
+                return "English";
+            case 4:
+                return "Home Sci.";
+            case 5:
+                return "Social Sci.";
+            default:
+                return "NA";
+        }
+    }
+
 /*    public static void setLanguage() {
         if(FastSave.getInstance().getString(FC_Constants.LANGUAGE, FC_Constants.HINDI)
                 .equalsIgnoreCase("English") ||
@@ -1915,9 +1953,10 @@ public class FC_Utility {
         DateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss", Locale.ENGLISH);
         return dateFormat.format(cal.getTime());
     }
-    public static void showZoomDialog(Context context,String path, String localPath) {
-        path=path.replace(" ","");
-        localPath=localPath.replace(" ","");
+
+    public static void showZoomDialog(Context context, String path, String localPath) {
+        path = path.replace(" ", "");
+        localPath = localPath.replace(" ", "");
         ZoomImageDialog zoomImageDialog = new ZoomImageDialog(context, path, localPath);
         zoomImageDialog.show();
     }

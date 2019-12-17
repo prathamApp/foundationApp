@@ -47,7 +47,7 @@ public class ParagraphWritingPresenter implements ParagraphWritingContract.Parag
 
     @Override
     public void getData() {
-        String text = FC_Utility.loadJSONFromStorage(readingContentPath, "CWiritng.json");
+        String text = FC_Utility.loadJSONFromStorage(readingContentPath, "CopyWriting.json");
         Gson gson = new Gson();
         Type type = new TypeToken<List<ScienceQuestion>>() {
         }.getType();

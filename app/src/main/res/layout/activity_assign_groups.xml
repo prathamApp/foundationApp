@@ -2,14 +2,13 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/bg_anim_fourth_layer">
+    android:background="@drawable/science_bkgd">
 
     <RelativeLayout
         android:id="@+id/topPanel"
         android:layout_width="match_parent"
-        android:layout_height="60dp"
-        android:layout_alignParentTop="true"
-        android:background="@color/colorBtnRedDark">
+        android:layout_height="70dp"
+        android:layout_alignParentTop="true">
 
         <ImageButton
             android:id="@+id/btn_back"
@@ -21,17 +20,17 @@
             android:src="@drawable/ic_left_arrow_white" />
 
         <com.pratham.foundation.customView.SansTextViewBold
-            android:id="@+id/tv_title"
+            android:id="@+id/title"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_centerInParent="true"
-            android:layout_toEndOf="@+id/btn_back"
-            android:layout_toStartOf="@+id/just_view"
-            android:layout_marginStart="@dimen/_5sdp"
+            android:layout_marginStart="@dimen/_10sdp"
             android:layout_marginEnd="@dimen/_5sdp"
-            android:gravity="center"
+            android:layout_toStartOf="@+id/just_view"
+            android:layout_toEndOf="@+id/btn_back"
             android:text="Asign Groups"
-            android:textColor="@color/white"
+            android:gravity="center_vertical"
+            android:textColor="@color/colorText"
             android:textSize="@dimen/_18sdp"
             android:textStyle="bold" />
 
@@ -52,7 +51,8 @@
         <RelativeLayout
             android:id="@+id/RelativeLayout"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:layout_marginTop="@dimen/_10sdp">
 
             <!--Select State Drop Down List-->
             <Spinner
@@ -60,7 +60,11 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_centerHorizontal="true"
-                android:layout_margin="16dp"
+                android:background="@drawable/gradient_spinner"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="16dp"
+                android:layout_marginBottom="8dp"
+                android:layout_marginStart="16dp"
                 android:textAlignment="center" />
 
             <!--Select Block Drop Down List-->
@@ -70,7 +74,11 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/spinner_SelectState"
                 android:layout_centerHorizontal="true"
-                android:layout_margin="16dp"
+                android:background="@drawable/gradient_spinner"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="16dp"
+                android:layout_marginBottom="8dp"
+                android:layout_marginStart="16dp"
                 android:textAlignment="center" />
 
             <!--Village Drop Down List-->
@@ -80,7 +88,11 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/spinner_SelectBlock"
                 android:layout_centerHorizontal="true"
-                android:layout_margin="16dp"
+                android:background="@drawable/gradient_spinner"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="16dp"
+                android:layout_marginBottom="8dp"
+                android:layout_marginStart="16dp"
                 android:textAlignment="center" />
 
 
@@ -89,8 +101,11 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/spinner_selectVillage"
-                android:layout_margin="16dp"
-                android:background="@drawable/card_gradiance_bg"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="16dp"
+                android:layout_marginBottom="8dp"
+                android:layout_marginStart="16dp"
+                android:background="@drawable/trans_dialog_bg"
                 android:gravity="center_horizontal"
                 android:orientation="horizontal"
                 android:padding="@dimen/_5sdp">
@@ -116,14 +131,14 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/LinearLayoutGroups"
-                android:layout_gravity="center"
                 android:layout_margin="16dp"
                 android:background="@drawable/button_green"
-                android:text="  Assign  "
+                android:paddingTop="@dimen/_5sdp"
+                android:paddingBottom="@dimen/_5sdp"
+                android:text="Assign"
                 android:textColor="#FFFFFF"
                 android:textSize="20sp"
-                android:textStyle="bold"
-                android:visibility="invisible" />
+                android:visibility="visible" />
 
         </RelativeLayout>
 
