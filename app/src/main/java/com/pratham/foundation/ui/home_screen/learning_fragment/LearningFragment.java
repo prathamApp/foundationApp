@@ -1,7 +1,6 @@
 package com.pratham.foundation.ui.home_screen.learning_fragment;
 
 import android.annotation.SuppressLint;
-import android.app.Dialog;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
@@ -24,6 +23,7 @@ import com.pratham.foundation.ApplicationClass;
 import com.pratham.foundation.R;
 import com.pratham.foundation.customView.GridSpacingItemDecoration;
 import com.pratham.foundation.customView.collapsingView.RetractableToolbarUtil;
+import com.pratham.foundation.customView.display_image_dialog.CustomLodingDialog;
 import com.pratham.foundation.customView.progress_layout.ProgressLayout;
 import com.pratham.foundation.database.domain.ContentTable;
 import com.pratham.foundation.modalclasses.EventMessage;
@@ -269,7 +269,7 @@ public class LearningFragment extends Fragment implements LearningContract.Learn
 
     @Override
     public void showNoDataDownloadedDialog() {
-        final Dialog dialog = new Dialog(getActivity());
+        final CustomLodingDialog dialog = new CustomLodingDialog(getActivity());
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         Objects.requireNonNull(dialog.getWindow()).setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         dialog.setContentView(R.layout.fc_custom_dialog);
@@ -297,14 +297,14 @@ public class LearningFragment extends Fragment implements LearningContract.Learn
     }
 
     private boolean loaderVisible = false;
-    private Dialog myLoadingDialog;
+    private CustomLodingDialog myLoadingDialog;
 
     @UiThread
     @Override
     public void showLoader() {
         if (!loaderVisible) {
             loaderVisible = true;
-            myLoadingDialog = new Dialog(getActivity());
+            myLoadingDialog = new CustomLodingDialog(getActivity());
             myLoadingDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
             Objects.requireNonNull(myLoadingDialog.getWindow()).
                     setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
@@ -334,13 +334,13 @@ public class LearningFragment extends Fragment implements LearningContract.Learn
 //        tv_progress.setCurProgress(percent);
     }
 
-    private Dialog downloadDialog;
+    private CustomLodingDialog downloadDialog;
     private ProgressLayout progressLayout;
     private TextView dialog_file_name;
 
     @SuppressLint("SetTextI18n")
     private void resourceDownloadDialog(Modal_FileDownloading modal_fileDownloading) {
-        downloadDialog = new Dialog(getActivity());
+        downloadDialog = new CustomLodingDialog(getActivity());
         downloadDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         Objects.requireNonNull(downloadDialog.getWindow()).setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         downloadDialog.setContentView(R.layout.dialog_file_downloading);
@@ -531,7 +531,7 @@ public class LearningFragment extends Fragment implements LearningContract.Learn
 
     @UiThread
     public void showDownloadErrorDialog() {
-        Dialog errorDialog = new Dialog(getActivity());
+        CustomLodingDialog errorDialog = new CustomLodingDialog(getActivity());
         errorDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         errorDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         errorDialog.setContentView(R.layout.dialog_file_error_downloading);

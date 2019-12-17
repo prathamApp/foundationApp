@@ -2,7 +2,6 @@ package com.pratham.foundation.ui.home_screen;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
-import android.app.Dialog;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.graphics.Color;
@@ -22,6 +21,7 @@ import android.widget.TextView;
 import com.pratham.foundation.ApplicationClass;
 import com.pratham.foundation.BaseActivity;
 import com.pratham.foundation.R;
+import com.pratham.foundation.customView.display_image_dialog.CustomLodingDialog;
 import com.pratham.foundation.customView.progress_layout.ProgressLayout;
 import com.pratham.foundation.customView.submarine_view.SubmarineItem;
 import com.pratham.foundation.customView.submarine_view.SubmarineView;
@@ -426,7 +426,7 @@ public class HomeActivity extends BaseActivity implements LevelChanged {
 
     @SuppressLint("SetTextI18n")
     private void showTestTypeSelectionDialog() {
-        final Dialog dialog = new Dialog(this);
+        final CustomLodingDialog dialog = new CustomLodingDialog(this);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         Objects.requireNonNull(dialog.getWindow()).setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         dialog.setContentView(R.layout.test_type_dialog);
@@ -560,7 +560,7 @@ public class HomeActivity extends BaseActivity implements LevelChanged {
 
     @SuppressLint("SetTextI18n")
     private void exitDialog() {
-        Dialog dialog = new Dialog(HomeActivity.this);
+        CustomLodingDialog dialog = new CustomLodingDialog(HomeActivity.this);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setContentView(R.layout.fc_custom_dialog);
 /*      Bitmap map=FC_Utility.takeScreenShot(HomeActivity.this);

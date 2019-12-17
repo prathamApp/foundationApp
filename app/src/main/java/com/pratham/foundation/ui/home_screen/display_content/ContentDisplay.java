@@ -1,7 +1,6 @@
 package com.pratham.foundation.ui.home_screen.display_content;
 
 import android.annotation.SuppressLint;
-import android.app.Dialog;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
@@ -25,6 +24,7 @@ import com.pratham.foundation.ApplicationClass;
 import com.pratham.foundation.BaseActivity;
 import com.pratham.foundation.R;
 import com.pratham.foundation.customView.GridSpacingItemDecoration;
+import com.pratham.foundation.customView.display_image_dialog.CustomLodingDialog;
 import com.pratham.foundation.customView.progress_layout.ProgressLayout;
 import com.pratham.foundation.database.domain.ContentTable;
 import com.pratham.foundation.modalclasses.EventMessage;
@@ -80,7 +80,7 @@ public class ContentDisplay extends BaseActivity implements ContentContract.Cont
     int tempDownloadPos, resumeCntr = 0;
     String downloadNodeId, resName, resServerImageName, parentName;
     List<ContentTable> ContentTableList;
-    public Dialog downloadDialog;
+    public CustomLodingDialog downloadDialog;
     ProgressLayout progressLayout;
     TextView dialog_file_name;
     ImageView iv_file_trans;
@@ -278,7 +278,7 @@ public class ContentDisplay extends BaseActivity implements ContentContract.Cont
     @SuppressLint("SetTextI18n")
     @Override
     public void showNoDataDownloadedDialog() {
-        final Dialog dialog = new Dialog(this);
+        final CustomLodingDialog dialog = new CustomLodingDialog(this);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         dialog.setCanceledOnTouchOutside(false);
@@ -501,7 +501,7 @@ public class ContentDisplay extends BaseActivity implements ContentContract.Cont
 
     @SuppressLint("SetTextI18n")
     private void showDeleteDialog(int deletePos, ContentTable contentTableItem) {
-        final Dialog dialog = new Dialog(this);
+        final CustomLodingDialog dialog = new CustomLodingDialog(this);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         dialog.setContentView(R.layout.exit_dialog);
@@ -540,7 +540,7 @@ public class ContentDisplay extends BaseActivity implements ContentContract.Cont
     }
 
     private void resourceDownloadDialog(Modal_FileDownloading modal_fileDownloading) {
-        downloadDialog = new Dialog(this);
+        downloadDialog = new CustomLodingDialog(this);
         downloadDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         downloadDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         downloadDialog.setContentView(R.layout.dialog_file_downloading);
@@ -596,12 +596,12 @@ public class ContentDisplay extends BaseActivity implements ContentContract.Cont
         }
     }
 
-    public Dialog myLoadingDialog;
+    public CustomLodingDialog myLoadingDialog;
 
     @UiThread
     @Override
     public void showLoader() {
-        myLoadingDialog = new Dialog(this);
+        myLoadingDialog = new CustomLodingDialog(this);
         myLoadingDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         myLoadingDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         myLoadingDialog.setContentView(R.layout.loading_dialog);
@@ -621,7 +621,7 @@ public class ContentDisplay extends BaseActivity implements ContentContract.Cont
 
     @UiThread
     public void showDownloadErrorDialog() {
-        Dialog errorDialog = new Dialog(this);
+        CustomLodingDialog errorDialog = new CustomLodingDialog(this);
         errorDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         errorDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         errorDialog.setContentView(R.layout.dialog_file_error_downloading);

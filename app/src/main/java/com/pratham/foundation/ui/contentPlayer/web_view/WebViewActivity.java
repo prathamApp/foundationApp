@@ -2,7 +2,6 @@ package com.pratham.foundation.ui.contentPlayer.web_view;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
-import android.app.Dialog;
 import android.content.Intent;
 import android.content.pm.ApplicationInfo;
 import android.graphics.Color;
@@ -22,6 +21,7 @@ import android.widget.TextView;
 
 import com.pratham.foundation.BaseActivity;
 import com.pratham.foundation.R;
+import com.pratham.foundation.customView.display_image_dialog.CustomLodingDialog;
 import com.pratham.foundation.database.BackupDatabase;
 import com.pratham.foundation.database.domain.ContentProgress;
 import com.pratham.foundation.database.domain.KeyWords;
@@ -134,7 +134,7 @@ public class WebViewActivity extends BaseActivity implements WebViewInterface {
     }
 
     private void showExitDialog() {
-        final Dialog dialog = new Dialog(this);
+        final CustomLodingDialog dialog = new CustomLodingDialog(this);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         dialog.setContentView(R.layout.fc_custom_dialog);
