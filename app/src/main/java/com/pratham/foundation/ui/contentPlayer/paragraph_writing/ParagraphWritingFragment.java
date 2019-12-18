@@ -4,6 +4,7 @@ import android.app.Dialog;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -23,9 +24,10 @@ import com.pratham.foundation.R;
 import com.pratham.foundation.customView.SansButton;
 import com.pratham.foundation.interfaces.OnGameClose;
 import com.pratham.foundation.modalclasses.EventMessage;
-import com.pratham.foundation.ui.contentPlayer.GameConstatnts;
 import com.pratham.foundation.modalclasses.ScienceQuestion;
+import com.pratham.foundation.ui.contentPlayer.GameConstatnts;
 import com.pratham.foundation.utility.FC_Utility;
+import com.pratham.foundation.utility.MediaPlayerUtil;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Bean;
@@ -37,6 +39,7 @@ import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.Arrays;
 
 import butterknife.OnClick;
@@ -65,6 +68,12 @@ public class ParagraphWritingFragment extends Fragment
     ImageButton next;
     @ViewById(R.id.previous)
     ImageButton previous;
+
+    @ViewById(R.id.play_button)
+    ImageButton play;
+   /* @ViewById(R.id.replay)
+    ImageButton replay;*/
+
     /*@ViewById(R.id.previous)
     Button previous;*/
    /* @ViewById(R.id.capture)
@@ -87,6 +96,8 @@ public class ParagraphWritingFragment extends Fragment
     private boolean onSdCard;
     private ScienceQuestion questionModel;
     private Uri capturedImageUri;
+    MediaPlayer mediaPlayer;
+    private boolean isPlaying = false;
 
     @AfterViews
     protected void initiate() {
@@ -106,6 +117,7 @@ public class ParagraphWritingFragment extends Fragment
         preview.setVisibility(View.GONE);
         next.setVisibility(View.GONE);
         previous.setVisibility(View.GONE);
+        mediaPlayer = new MediaPlayer();
         imageName = "" + ApplicationClass.getUniqueID() + ".jpg";
         presenter.setView(ParagraphWritingFragment.this, resId, readingContentPath);
         presenter.getData();
@@ -122,6 +134,14 @@ public class ParagraphWritingFragment extends Fragment
         //  File filePath = new File(activityPhotoPath + imageName);
         /*    title.setText(questionModel.getInstruction());*/
         paragraphWords = questionModel.getQuestion().trim().split("(?<=\\.\\s)|(?<=[?!]\\s)");
+
+        try {
+            mediaPlayer.setDataSource(readingContentPath + "/" + questionModel.getPhotourl());
+            mediaPlayer.prepare();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         SentenceAdapter arrayAdapter = new SentenceAdapter(Arrays.asList(paragraphWords), getActivity());
         paragraph.setAdapter(arrayAdapter);
         LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
@@ -257,6 +277,51 @@ public class ParagraphWritingFragment extends Fragment
         }
     }
 
+    @Click(R.id.play_button)
+    public void onPlayClick() {
+        if (mediaPlayer != null) {
+            if (mediaPlayer.isPlaying()) {
+                mediaPlayer.pause();
+                setPlayImage();
+            } else {
+                mediaPlayer.start();
+                setPauseImage();
+            }
+            mediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+                @Override
+                public void onCompletion(MediaPlayer mp) {
+                    setPlayImage();
+                }
+            });
+        }
+    }
+
+    @Click(R.id.replay)
+    public void onStopClick() {
+        if (mediaPlayer != null) {
+            if (mediaPlayer.isPlaying()) {
+                mediaPlayer.stop();
+                setPlayImage();
+                try {
+                    mediaPlayer.reset();
+                    mediaPlayer.setDataSource(readingContentPath + "/" + questionModel.getPhotourl());
+                    mediaPlayer.prepare();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
+            }
+        }
+    }
+
+    private void setPlayImage() {
+        play.setImageDrawable(getActivity().getDrawable(R.drawable.ic_play_arrow_black));
+    }
+
+    private void setPauseImage() {
+        play.setImageDrawable(getActivity().getDrawable(R.drawable.ic_pause_black));
+    }
+
     @Override
     public void gameClose() {
         presenter.addScore(0, "", 0, 0, resStartTime, GameConstatnts.PARAGRAPH_WRITING + " " + GameConstatnts.END);
@@ -264,6 +329,8 @@ public class ParagraphWritingFragment extends Fragment
 
     @Override
     public void onStop() {
+        mediaPlayer.stop();
+        setPlayImage();
         EventBus.getDefault().unregister(this);
         super.onStop();
     }

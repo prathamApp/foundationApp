@@ -16,6 +16,7 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
 import com.pratham.foundation.R;
+import com.pratham.foundation.customView.display_image_dialog.CustomLodingDialog;
 
 
 import java.io.FileInputStream;
@@ -26,7 +27,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 
-public class ZoomImageDialog extends Dialog {
+public class ZoomImageDialog extends CustomLodingDialog {
 
     @BindView(R.id.btn_ok_img)
     ImageButton btn_ok;

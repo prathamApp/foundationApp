@@ -35,6 +35,7 @@ import com.pratham.foundation.ApplicationClass;
 import com.pratham.foundation.R;
 import com.pratham.foundation.customView.GifView;
 import com.pratham.foundation.customView.SansButton;
+import com.pratham.foundation.customView.display_image_dialog.CustomLodingDialog;
 import com.pratham.foundation.database.BackupDatabase;
 import com.pratham.foundation.database.domain.Assessment;
 import com.pratham.foundation.database.domain.ContentProgress;
@@ -97,6 +98,12 @@ public class pictionaryFragment extends Fragment implements OnGameClose {
 
     @BindView(R.id.show_answer)
     SansButton show_answer;
+
+    @BindView(R.id.image_container)
+    RelativeLayout image_container;
+
+    @BindView(R.id.iv_view_img)
+    ImageView iv_view_img;
 
     private String readingContentPath, contentPath, contentTitle, StudentID, resId, resStartTime;
     private int totalWordCount, learntWordCount;
@@ -281,6 +288,7 @@ public class pictionaryFragment extends Fragment implements OnGameClose {
             question.setText(selectedFive.get(index).getQuestion());
             if (!selectedFive.get(index).getPhotourl().equalsIgnoreCase("")) {
                 questionImage.setVisibility(View.VISIBLE);
+                image_container.setVisibility(View.VISIBLE);
 //            if (AssessmentApplication.wiseF.isDeviceConnectedToMobileOrWifiNetwork()) {
 
                 String fileName = selectedFive.get(index).getPhotourl();
@@ -326,18 +334,18 @@ public class pictionaryFragment extends Fragment implements OnGameClose {
                             .into(questionImage);
                 }
 
-                questionImage.setOnClickListener(new View.OnClickListener() {
+                iv_view_img.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         showZoomDialog(getActivity(), selectedFive.get(index).getPhotourl(), localPath);
                     }
                 });
-                questionGif.setOnClickListener(new View.OnClickListener() {
+               /* image_container.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         showZoomDialog(getActivity(), selectedFive.get(index).getPhotourl(), localPath);
                     }
-                });
+                });*/
            /* } else {
                 String fileName = Assessment_Utility.getFileName(scienceQuestion.getQid(), scienceQuestion.getPhotourl());
                 final String localPath = AssessmentApplication.assessPath + Assessment_Constants.STORE_DOWNLOADED_MEDIA_PATH + "/" + fileName;
@@ -349,7 +357,10 @@ public class pictionaryFragment extends Fragment implements OnGameClose {
                     }
                 });
             }*/
-            } else questionImage.setVisibility(View.GONE);
+            } else {
+                questionImage.setVisibility(View.GONE);
+                image_container.setVisibility(View.GONE);
+            }
 
             options.clear();
             options = selectedFive.get(index).getLstquestionchoice();
@@ -413,8 +424,8 @@ public class pictionaryFragment extends Fragment implements OnGameClose {
                             }
                             //   Log.d("tag111", "a" + selectedFive.get(index).getUserAnswer() + "  B" + options.get(r).getQid());
                             if (selectedFive.get(index).getUserAnswer().equalsIgnoreCase(options.get(r).getQid())) {
-                                 radioButton.setChecked(true);
-                                 radioButton.setTextColor(Color.WHITE);
+                                radioButton.setChecked(true);
+                                radioButton.setTextColor(Color.WHITE);
                                 radioButton.setBackground(getActivity().getResources().getDrawable(R.drawable.dialog_bg_blue));
 
                             } else {
@@ -528,7 +539,7 @@ public class pictionaryFragment extends Fragment implements OnGameClose {
                             tick.setVisibility(View.GONE);
 
                         }
-                      //  view.setBackground((getActivity().getResources().getDrawable(R.drawable.rounded_rectangle_stroke_bg)));
+                        //  view.setBackground((getActivity().getResources().getDrawable(R.drawable.rounded_rectangle_stroke_bg)));
                         setImage(view, imageUrl, localPath);
 
                         gridMcq.addView(viewRoot);
@@ -589,7 +600,7 @@ public class pictionaryFragment extends Fragment implements OnGameClose {
 //                        final ImageView imageView = (ImageView) view;
 //                        if (AssessmentApplication.wiseF.isDeviceConnectedToMobileOrWifiNetwork()) {
                             final String imageUrl = options.get(r).getSubUrl().trim();
-                          //  view.setBackground((getActivity().getResources().getDrawable(R.drawable.rounded_rectangle_stroke_bg)));
+                            //  view.setBackground((getActivity().getResources().getDrawable(R.drawable.rounded_rectangle_stroke_bg)));
                             setImage(view, imageUrl, localPath);
 
                             gridMcq.addView(viewRoot);
@@ -670,15 +681,15 @@ public class pictionaryFragment extends Fragment implements OnGameClose {
                     RadioButton rb = group.findViewById(checkedId);
                     if (rb != null) {
                         rb.setChecked(true);
-                           rb.setTextColor(Color.WHITE);
-                           rb.setBackground(getActivity().getResources().getDrawable(R.drawable.dialog_bg_blue));
+                        rb.setTextColor(Color.WHITE);
+                        rb.setBackground(getActivity().getResources().getDrawable(R.drawable.dialog_bg_blue));
 
                     }
 
                     for (int i = 0; i < group.getChildCount(); i++) {
                         if ((group.getChildAt(i)).getId() == checkedId) {
-                              ((RadioButton) group.getChildAt(i)).setTextColor(Color.WHITE);
-                              group.getChildAt(i).setBackground(getActivity().getResources().getDrawable(R.drawable.dialog_bg_blue));
+                            ((RadioButton) group.getChildAt(i)).setTextColor(Color.WHITE);
+                            group.getChildAt(i).setBackground(getActivity().getResources().getDrawable(R.drawable.dialog_bg_blue));
 
                             List<ScienceQuestionChoice> ans = new ArrayList<>();
                             ans.add(options.get(i));
@@ -687,8 +698,8 @@ public class pictionaryFragment extends Fragment implements OnGameClose {
                             selectedFive.get(index).setStartTime(FC_Utility.getCurrentDateTime());
                             selectedFive.get(index).setEndTime(FC_Utility.getCurrentDateTime());
                         } else {
-                             ((RadioButton) group.getChildAt(i)).setTextColor(Color.BLACK);
-                             group.getChildAt(i).setBackground(getActivity().getResources().getDrawable(R.drawable.custom_radio_button));
+                            ((RadioButton) group.getChildAt(i)).setTextColor(Color.BLACK);
+                            group.getChildAt(i).setBackground(getActivity().getResources().getDrawable(R.drawable.custom_radio_button));
                         }
                     }
                 }
@@ -803,12 +814,12 @@ public class pictionaryFragment extends Fragment implements OnGameClose {
     }
 
     private boolean checkAttemptedornot(List<ScienceQuestion> selectedAnsList) {
-             if (selectedAnsList != null) {
-                for (int i = 0; i < selectedAnsList.size(); i++) {
-                    if (selectedAnsList.get(i).getUserAnswer() != null && !selectedAnsList.get(i).getUserAnswer().isEmpty()) {
-                        return true;
-                    }
+        if (selectedAnsList != null) {
+            for (int i = 0; i < selectedAnsList.size(); i++) {
+                if (selectedAnsList.get(i).getUserAnswer() != null && !selectedAnsList.get(i).getUserAnswer().isEmpty()) {
+                    return true;
                 }
+            }
         }
         return false;
     }
@@ -849,7 +860,7 @@ public class pictionaryFragment extends Fragment implements OnGameClose {
                     }
                 }
             }
-            GameConstatnts.postScoreEvent(selectedAnsList.size(),correctCnt);
+            GameConstatnts.postScoreEvent(selectedAnsList.size(), correctCnt);
             setCompletionPercentage();
             if (!FC_Constants.isTest) {
                 // showResult(correctWordList, wrongWordList);
@@ -881,7 +892,7 @@ public class pictionaryFragment extends Fragment implements OnGameClose {
     private void showResult(List<ScienceQuestionChoice> correctWord, List<ScienceQuestionChoice> wrongWord) {
         if ((correctWord != null && !correctWord.isEmpty()) || (wrongWord != null && !wrongWord.isEmpty())) {
 
-            final Dialog dialog = new Dialog(getActivity());
+            final Dialog dialog = new CustomLodingDialog(getActivity());
             dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
             dialog.setContentView(R.layout.show_result_pictionary);
             dialog.setCancelable(false);
@@ -975,7 +986,7 @@ public class pictionaryFragment extends Fragment implements OnGameClose {
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onMessageEvent(EventMessage event) {
         if (!scienceQuestion.getInstruction().isEmpty())
-            GameConstatnts.showGameInfo(getActivity(), scienceQuestion.getInstruction(),readingContentPath+scienceQuestion.getInstructionUrl());
+            GameConstatnts.showGameInfo(getActivity(), scienceQuestion.getInstruction(), readingContentPath + scienceQuestion.getInstructionUrl());
     }
 
     @OnClick(R.id.show_answer)

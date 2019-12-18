@@ -41,6 +41,7 @@ import com.pratham.foundation.R;
 import com.pratham.foundation.customView.GifView;
 import com.pratham.foundation.customView.SansButton;
 import com.pratham.foundation.customView.SansTextView;
+import com.pratham.foundation.customView.display_image_dialog.CustomLodingDialog;
 import com.pratham.foundation.database.BackupDatabase;
 import com.pratham.foundation.database.domain.Assessment;
 import com.pratham.foundation.database.domain.ContentProgress;
@@ -158,7 +159,7 @@ public class DoingFragment extends Fragment implements STT_Result_New.sttView,On
     public static Intent intent;
     private Uri capturedImageUri;
     private ContinuousSpeechService_New continuousSpeechService;
-    public Dialog myLoadingDialog;
+    public CustomLodingDialog myLoadingDialog;
     private String speechStartTime;
     boolean dialogFlg = false;
 
@@ -441,7 +442,7 @@ public class DoingFragment extends Fragment implements STT_Result_New.sttView,On
     public void showLoader() {
         if (!dialogFlg) {
             dialogFlg = true;
-            myLoadingDialog = new Dialog(context);
+            myLoadingDialog = new CustomLodingDialog(context);
             myLoadingDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
             myLoadingDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
             myLoadingDialog.setContentView(R.layout.loading_dialog);
@@ -738,7 +739,7 @@ public class DoingFragment extends Fragment implements STT_Result_New.sttView,On
 
 
     private void ShowPreviewDialog(File path) {
-        final Dialog dialog = new Dialog(getActivity());
+        final CustomLodingDialog dialog = new CustomLodingDialog(getActivity());
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         dialog.setContentView(R.layout.fc_image_preview_dialog);

@@ -35,6 +35,7 @@ import com.pratham.foundation.ApplicationClass;
 import com.pratham.foundation.R;
 import com.pratham.foundation.customView.GifView;
 import com.pratham.foundation.customView.SansButton;
+import com.pratham.foundation.customView.display_image_dialog.CustomLodingDialog;
 import com.pratham.foundation.database.BackupDatabase;
 import com.pratham.foundation.database.domain.Assessment;
 import com.pratham.foundation.database.domain.ContentProgress;
@@ -98,7 +99,10 @@ public class multipleChoiceFragment extends Fragment implements OnGameClose {
     ImageButton next;
     @BindView(R.id.show_answer)
     SansButton show_answer;
-
+    @BindView(R.id.image_container)
+    RelativeLayout image_container;
+    @BindView(R.id.iv_view_img)
+    ImageView iv_view_img;
     private String readingContentPath, contentPath, contentTitle, StudentID, resId, resStartTime;
     private int totalWordCount, learntWordCount;
     List<ScienceQuestionChoice> options;
@@ -280,6 +284,7 @@ public class multipleChoiceFragment extends Fragment implements OnGameClose {
             question.setText(selectedFive.get(index).getQuestion());
             if (!selectedFive.get(index).getPhotourl().equalsIgnoreCase("")) {
                 questionImage.setVisibility(View.VISIBLE);
+                image_container.setVisibility(View.VISIBLE);
 //            if (AssessmentApplication.wiseF.isDeviceConnectedToMobileOrWifiNetwork()) {
 
                 String fileName = selectedFive.get(index).getPhotourl();
@@ -325,18 +330,18 @@ public class multipleChoiceFragment extends Fragment implements OnGameClose {
                             .into(questionImage);
                 }
 
-                questionImage.setOnClickListener(new View.OnClickListener() {
+                iv_view_img.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         showZoomDialog(getActivity(), selectedFive.get(index).getPhotourl(), localPath);
                     }
                 });
-                questionGif.setOnClickListener(new View.OnClickListener() {
+               /* image_container.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         showZoomDialog(getActivity(), selectedFive.get(index).getPhotourl(), localPath);
                     }
-                });
+                });*/
            /* } else {
                 String fileName = Assessment_Utility.getFileName(scienceQuestion.getQid(), scienceQuestion.getPhotourl());
                 final String localPath = AssessmentApplication.assessPath + Assessment_Constants.STORE_DOWNLOADED_MEDIA_PATH + "/" + fileName;
@@ -348,7 +353,10 @@ public class multipleChoiceFragment extends Fragment implements OnGameClose {
                     }
                 });
             }*/
-            } else questionImage.setVisibility(View.GONE);
+            } else {
+                questionImage.setVisibility(View.GONE);
+                image_container.setVisibility(View.GONE);
+            }
 
             options.clear();
             options = selectedFive.get(index).getLstquestionchoice();
@@ -885,7 +893,7 @@ public class multipleChoiceFragment extends Fragment implements OnGameClose {
     private void showResult(List<ScienceQuestionChoice> correctWord, List<ScienceQuestionChoice> wrongWord) {
         if ((correctWord != null && !correctWord.isEmpty()) || (wrongWord != null && !wrongWord.isEmpty())) {
 
-            final Dialog dialog = new Dialog(getActivity());
+            final Dialog dialog = new CustomLodingDialog(getActivity());
             dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
             dialog.setContentView(R.layout.show_result_pictionary);
             dialog.setCancelable(false);

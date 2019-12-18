@@ -2,7 +2,6 @@ package com.pratham.foundation.ui.selectSubject;
 
 
 import android.annotation.SuppressLint;
-import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
@@ -19,6 +18,7 @@ import android.widget.TextView;
 import com.pratham.foundation.BaseActivity;
 import com.pratham.foundation.R;
 import com.pratham.foundation.customView.GridSpacingItemDecoration;
+import com.pratham.foundation.customView.display_image_dialog.CustomLodingDialog;
 import com.pratham.foundation.database.domain.ContentTable;
 import com.pratham.foundation.services.shared_preferences.FastSave;
 import com.pratham.foundation.ui.home_screen.HomeActivity_;
@@ -61,11 +61,11 @@ public class SelectSubject extends BaseActivity implements
         FC_Constants.TAB_LAYOUT = config.smallestScreenWidthDp > 425;
         List<ContentTable> subjectList = presenter.getSubjectList();
 
-        if(FC_Constants.LOGIN_MODE.contains("group"))
-            studName = FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_NAME , "");
+        if (FC_Constants.LOGIN_MODE.contains("group"))
+            studName = FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_NAME, "");
         else
-            studName = FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_NAME , "").split(" ")[0];
-        name.setText(getResources().getString(R.string.Welcome)+" "+studName+".");
+            studName = FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_NAME, "").split(" ")[0];
+        name.setText(getResources().getString(R.string.Welcome) + " " + studName + ".");
         subjectAdapter = new SelectSubjectAdapter(this, subjectList);
         RecyclerView.LayoutManager mLayoutManager = new GridLayoutManager(this, 1);
         subject_recycler.setLayoutManager(mLayoutManager);
@@ -74,7 +74,7 @@ public class SelectSubject extends BaseActivity implements
         if (FC_Constants.TAB_LAYOUT)
             dp = 20;
         subject_recycler.addItemDecoration(new GridSpacingItemDecoration(
-                2, dpToPx(this,dp), true));
+                2, dpToPx(this, dp), true));
         subject_recycler.setItemAnimator(new DefaultItemAnimator());
         subject_recycler.setAdapter(subjectAdapter);
     }
@@ -97,10 +97,10 @@ public class SelectSubject extends BaseActivity implements
             currentSubjectFolder = "English";
         } else if (contentTableObj.getNodeTitle().equals("H Science")) {
             currentSubjectFolder = "H_Science";
-        }else
+        } else
             currentSubjectFolder = "LS_Science";
 
-        gameFolderPath = "/.FCA/"+currentSubjectFolder+"/Game";
+        gameFolderPath = "/.FCA/" + currentSubjectFolder + "/Game";
         FastSave.getInstance().saveString(FC_Constants.CURRENT_FOLDER_NAME, currentSubjectFolder);
         FastSave.getInstance().saveString(FC_Constants.CURRENT_ROOT_NODE, contentTableObj.getNodeId());
         Intent intent = new Intent(context, HomeActivity_.class);
@@ -110,7 +110,7 @@ public class SelectSubject extends BaseActivity implements
     }
 
     @Click(R.id.btn_back)
-    public void pressedBackButton(){
+    public void pressedBackButton() {
         onBackPressed();
     }
 
@@ -121,7 +121,7 @@ public class SelectSubject extends BaseActivity implements
 
     @SuppressLint("SetTextI18n")
     private void exitDialog() {
-        Dialog dialog = new Dialog(SelectSubject.this,R.style.ExitDialog);
+        CustomLodingDialog dialog = new CustomLodingDialog(SelectSubject.this, R.style.ExitDialog);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setContentView(R.layout.lottie_exit_dialog);
 /*      Bitmap map=FC_Utility.takeScreenShot(HomeActivity.this);
@@ -135,8 +135,8 @@ public class SelectSubject extends BaseActivity implements
 
 //        TextView dia_title = dialog.findViewById(R.id.dia_title);
 //        Button dia_btn_green = dialog.findViewById(R.id.dia_btn_green);
-        Button dia_btn_no = dialog.findViewById(R.id.dia_btn_no);
-        TextView dia_btn_yes = dialog.findViewById(R.id.dia_btn_yes);
+          Button dia_btn_no = dialog.findViewById(R.id.dia_btn_no);
+          TextView dia_btn_yes = dialog.findViewById(R.id.dia_btn_yes);
 
 //        dia_btn_green.setText (getResources().getString(R.string.Restart));
 //        dia_btn_yes.setText   (getResources().getString(R.string.Exit));

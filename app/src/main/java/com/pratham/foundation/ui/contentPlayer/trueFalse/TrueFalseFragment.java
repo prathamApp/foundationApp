@@ -25,6 +25,7 @@ import com.pratham.foundation.R;
 import com.pratham.foundation.customView.GifView;
 import com.pratham.foundation.customView.SansButton;
 import com.pratham.foundation.customView.SansTextViewBold;
+import com.pratham.foundation.customView.display_image_dialog.CustomLodingDialog;
 import com.pratham.foundation.database.BackupDatabase;
 import com.pratham.foundation.database.domain.Assessment;
 import com.pratham.foundation.database.domain.KeyWords;
@@ -453,7 +454,7 @@ public class TrueFalseFragment extends Fragment {
 
 
     public void showResult(List<String> correctWord, List<String> wrongWord) {
-        final Dialog dialog = new Dialog(getActivity());
+        final CustomLodingDialog dialog = new CustomLodingDialog(getActivity());
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setContentView(R.layout.show_result_true_false);
         dialog.setCancelable(false);

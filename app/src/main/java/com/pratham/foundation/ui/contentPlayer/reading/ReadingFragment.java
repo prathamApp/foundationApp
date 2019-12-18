@@ -30,6 +30,7 @@ import com.pratham.foundation.ApplicationClass;
 import com.pratham.foundation.R;
 import com.pratham.foundation.customView.GifView;
 import com.pratham.foundation.customView.SansTextView;
+import com.pratham.foundation.customView.display_image_dialog.CustomLodingDialog;
 import com.pratham.foundation.database.BackupDatabase;
 import com.pratham.foundation.database.domain.Assessment;
 import com.pratham.foundation.database.domain.ContentProgress;
@@ -92,7 +93,7 @@ public class ReadingFragment extends Fragment implements STT_Result_New.sttView,
     private boolean isTest = false;
     String resStartTime;
     private ContinuousSpeechService_New continuousSpeechService;
-    public Dialog myLoadingDialog;
+    public CustomLodingDialog myLoadingDialog;
     boolean dialogFlg = false;
     private String jsonName;
 
@@ -126,7 +127,7 @@ public class ReadingFragment extends Fragment implements STT_Result_New.sttView,
     public void showLoader() {
         if (!dialogFlg) {
             dialogFlg = true;
-            myLoadingDialog = new Dialog(context);
+            myLoadingDialog = new CustomLodingDialog(context);
             myLoadingDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
             myLoadingDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
             myLoadingDialog.setContentView(R.layout.loading_dialog);

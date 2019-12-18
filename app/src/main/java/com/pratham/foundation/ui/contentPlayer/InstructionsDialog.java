@@ -11,13 +11,14 @@ import android.support.annotation.NonNull;
 
 import com.pratham.foundation.R;
 import com.pratham.foundation.customView.SansTextViewBold;
+import com.pratham.foundation.customView.display_image_dialog.CustomLodingDialog;
 import com.pratham.foundation.interfaces.ShowInstruction;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class InstructionsDialog extends Dialog {
+public class InstructionsDialog extends CustomLodingDialog {
 
     @BindView(R.id.dia_title)
     SansTextViewBold dia_title;

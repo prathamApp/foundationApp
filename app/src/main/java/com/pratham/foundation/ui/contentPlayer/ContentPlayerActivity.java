@@ -14,10 +14,10 @@ import android.view.Window;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.pratham.foundation.BaseActivity;
 import com.pratham.foundation.R;
+import com.pratham.foundation.customView.display_image_dialog.CustomLodingDialog;
 import com.pratham.foundation.database.domain.ContentTable;
 import com.pratham.foundation.interfaces.OnGameClose;
 import com.pratham.foundation.interfaces.ShowInstruction;
@@ -115,17 +115,19 @@ public class ContentPlayerActivity extends BaseActivity implements ShowInstructi
             }
         }
     }
+
     @SuppressLint("SetTextI18n")
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void scoreEventReceived(ScoreEvent scoreEvent) {
         if (scoreEvent != null) {
-             if(scoreEvent.getMessage().equalsIgnoreCase(FC_Constants.RETURNSCORE)){
-                 returnIntent.putExtra("tMarks", scoreEvent.getTotalCount());
-                 returnIntent.putExtra("sMarks", scoreEvent.getScoredMarks());
+            if (scoreEvent.getMessage().equalsIgnoreCase(FC_Constants.RETURNSCORE)) {
+                returnIntent.putExtra("tMarks", scoreEvent.getTotalCount());
+                returnIntent.putExtra("sMarks", scoreEvent.getScoredMarks());
                 // Toast.makeText(this, ""+scoreEvent.getMessage(), Toast.LENGTH_SHORT).show();
             }
         }
     }
+
     @Override
     public void onBackPressed() {
         Fragment fragment = getSupportFragmentManager().findFragmentByTag(SequenceLayout_.class.getSimpleName());
@@ -136,7 +138,7 @@ public class ContentPlayerActivity extends BaseActivity implements ShowInstructi
     }
 
     private void showExitDialog() {
-        final Dialog dialog = new Dialog(this);
+        final CustomLodingDialog dialog = new CustomLodingDialog(this);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         dialog.setContentView(R.layout.fc_custom_dialog);

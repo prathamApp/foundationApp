@@ -56,7 +56,7 @@ public class WordWritingPresenter implements WordWritingContract.WordWritingPres
     @Override
     public void getData() {
         questionModel = new ArrayList<>();
-        String text = FC_Utility.loadJSONFromStorage(readingContentPath, "CopyWriting.json");
+        String text = FC_Utility.loadJSONFromStorage(readingContentPath, "CWiritng.json");
         Gson gson = new Gson();
         Type type = new TypeToken<List<ScienceQuestion>>() {
         }.getType();

@@ -51,7 +51,7 @@ public class ListeningAndWrittingPresenterImp implements ListeningAndWrittingCon
     @Override
     public void fetchJsonData(String contentPath) {
         try {
-            InputStream is = new FileInputStream(contentPath + "Dictation.json");
+            InputStream is = new FileInputStream(contentPath + "Dict.json");
             int size = is.available();
             byte[] buffer = new byte[size];
             is.read(buffer);
