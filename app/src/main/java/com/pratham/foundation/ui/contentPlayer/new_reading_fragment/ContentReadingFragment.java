@@ -19,6 +19,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
+import android.text.Html;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewAnimationUtils;
@@ -228,7 +229,7 @@ public class ContentReadingFragment extends Fragment implements
         continuousSpeechService.resetSpeechRecognizer();
 
         try {
-            story_title.setText(storyName);
+            story_title.setText(Html.fromHtml(""+storyName));
 //            toolbar.setTitle(storyName);
             presenter.fetchJsonData(readingContentPath);
             //pageArray = presenter.fetchJsonData(storyName);
@@ -274,7 +275,7 @@ public class ContentReadingFragment extends Fragment implements
     @UiThread
     @Override
     public void setCategoryTitle(String title) {
-        story_title.setText(storyName);
+        story_title.setText(Html.fromHtml(""+storyName));
 //        toolbar.setTitle(storyName);
     }
 
@@ -305,7 +306,7 @@ public class ContentReadingFragment extends Fragment implements
         storyBg = modalPagesList.get(currentPage).getPageImage();
         pageTitle = modalPagesList.get(currentPage).getPageTitle();
         if (pageTitle != null && !pageTitle.equalsIgnoreCase(""))
-            story_title.setText(pageTitle);
+            story_title.setText(Html.fromHtml(""+pageTitle));
 //        if (pageTitle != null && !pageTitle.equalsIgnoreCase(""))
 //            toolbar.setTitle(storyName);
 
@@ -459,7 +460,7 @@ public class ContentReadingFragment extends Fragment implements
                 wordFlowLayout.addView(myTextView);
             } else {
                 final SansTextView myTextView = new SansTextView(context);
-                myTextView.setText(splitWords.get(i));
+                myTextView.setText(Html.fromHtml(splitWords.get(i)));
                 myTextView.setId(i);
                 myTextView.setTextSize(30);
                 myTextView.setTextColor(getResources().getColor(R.color.colorText));

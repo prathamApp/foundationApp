@@ -293,6 +293,15 @@ public class TestFragment extends Fragment implements TestContract.TestView,
                 testList.get(clicked_Pos).setStudentPercentage("" + perc);
                 testList.get(clicked_Pos).setCertificateRating(presenter.getStarRating(perc));
                 testAdapter.notifyItemChanged(clicked_Pos, testList.get(clicked_Pos));
+            }else{
+                //TODO Remove After Testing.
+                testList.get(clicked_Pos).setAsessmentGiven(true);
+                testList.get(clicked_Pos).setTotalMarks(tMarks);
+                testList.get(clicked_Pos).setScoredMarks(sMarks);
+                float perc = ((float) sMarks / (float) tMarks) * 100;
+                testList.get(clicked_Pos).setStudentPercentage("" + perc);
+                testList.get(clicked_Pos).setCertificateRating(presenter.getStarRating(perc));
+                testAdapter.notifyItemChanged(clicked_Pos, testList.get(clicked_Pos));
             }
         } catch (Exception e) {
             e.printStackTrace();

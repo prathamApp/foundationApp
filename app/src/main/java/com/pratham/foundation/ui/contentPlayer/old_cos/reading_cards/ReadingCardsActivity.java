@@ -1,7 +1,6 @@
 package com.pratham.foundation.ui.contentPlayer.old_cos.reading_cards;
 
 import android.annotation.SuppressLint;
-import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -24,6 +23,7 @@ import android.widget.TextView;
 import com.pratham.foundation.ApplicationClass;
 import com.pratham.foundation.BaseActivity;
 import com.pratham.foundation.R;
+import com.pratham.foundation.customView.display_image_dialog.CustomLodingDialog;
 import com.pratham.foundation.modalclasses.ModalReadingCardSubMenu;
 import com.pratham.foundation.utility.FC_Utility;
 
@@ -77,7 +77,7 @@ public class ReadingCardsActivity extends BaseActivity implements
     boolean isAudioPlaying = false, onSdCard, gotoNext = false;
     String readingContentPath, contentPath, contentTitle, StudentID, resId, cardAudio, resStartTime;
     AnimationDrawable animationDrawable;
-    public Dialog myLoadingDialog;
+    public CustomLodingDialog myLoadingDialog;
 
 
     @SuppressLint("SetTextI18n")
@@ -148,7 +148,7 @@ public class ReadingCardsActivity extends BaseActivity implements
     @UiThread
     @Override
     public void showLoader() {
-        myLoadingDialog = new Dialog(this);
+        myLoadingDialog = new CustomLodingDialog(this);
         myLoadingDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         myLoadingDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         myLoadingDialog.setContentView(R.layout.loading_dialog);
@@ -215,7 +215,7 @@ public class ReadingCardsActivity extends BaseActivity implements
             if (isAudioPlaying) {
                 isAudioPlaying = false;
                 stopAudio();
-                btn_Play.setImageResource(R.drawable.ic_play_arrow);
+                btn_Play.setImageResource(R.drawable.ic_play_arrow_black);
             }
             currentPageNo++;
             btn_prev.setVisibility(View.VISIBLE);
@@ -240,7 +240,7 @@ public class ReadingCardsActivity extends BaseActivity implements
             if (isAudioPlaying) {
                 isAudioPlaying = false;
                 stopAudio();
-                btn_Play.setImageResource(R.drawable.ic_play_arrow);
+                btn_Play.setImageResource(R.drawable.ic_play_arrow_black);
             }
             currentPageNo--;
             btn_next.setVisibility(View.VISIBLE);
@@ -261,11 +261,11 @@ public class ReadingCardsActivity extends BaseActivity implements
         if (!isAudioPlaying) {
             isAudioPlaying = true;
             playAudio();
-            btn_Play.setImageResource(R.drawable.ic_stop_black_24dp);
+            btn_Play.setImageResource(R.drawable.ic_stop_black);
         } else {
             isAudioPlaying = false;
             stopAudio();
-            btn_Play.setImageResource(R.drawable.ic_play_arrow);
+            btn_Play.setImageResource(R.drawable.ic_play_arrow_black);
         }
     }
 
@@ -294,14 +294,14 @@ public class ReadingCardsActivity extends BaseActivity implements
         if (isAudioPlaying) {
             isAudioPlaying = false;
             stopAudio();
-            btn_Play.setImageResource(R.drawable.ic_play_arrow);
+            btn_Play.setImageResource(R.drawable.ic_play_arrow_black);
         }
         showExitDialog();
     }
 
     @SuppressLint("SetTextI18n")
     public void showExitDialog() {
-        final Dialog dialog = new Dialog(this);
+        final CustomLodingDialog dialog = new CustomLodingDialog(this);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         dialog.setContentView(R.layout.fc_custom_dialog);
@@ -340,7 +340,7 @@ public class ReadingCardsActivity extends BaseActivity implements
         if (isAudioPlaying) {
             isAudioPlaying = false;
             stopAudio();
-            btn_Play.setImageResource(R.drawable.ic_play_arrow);
+            btn_Play.setImageResource(R.drawable.ic_play_arrow_black);
         }
     }
 
@@ -355,7 +355,7 @@ public class ReadingCardsActivity extends BaseActivity implements
             mp.setOnPreparedListener(mp -> {
                 mp.start();
                 mp.setOnCompletionListener(mp1 -> {
-                    btn_Play.setImageResource(R.drawable.ic_play_arrow);
+                    btn_Play.setImageResource(R.drawable.ic_play_arrow_black);
                     isAudioPlaying = false;
                     try {
                         if (mp1.isPlaying())

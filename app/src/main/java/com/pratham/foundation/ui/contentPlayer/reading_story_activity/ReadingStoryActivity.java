@@ -186,7 +186,7 @@ public class ReadingStoryActivity extends BaseActivity implements
         continuousSpeechService.resetSpeechRecognizer();
 
         try {
-            story_title.setText(storyName);
+            story_title.setText(Html.fromHtml(storyName));
             presenter.fetchJsonData(readingContentPath);
             //pageArray = presenter.fetchJsonData(storyName);
 //            getWordsOfStoryOfPage();
@@ -231,7 +231,7 @@ public class ReadingStoryActivity extends BaseActivity implements
     @UiThread
     @Override
     public void setCategoryTitle(String title) {
-        story_title.setText(storyName);
+        story_title.setText(Html.fromHtml(storyName));
     }
 
     @Override
@@ -258,7 +258,7 @@ public class ReadingStoryActivity extends BaseActivity implements
         storyBg = modalPagesList.get(currentPage).getPageImage();
         pageTitle = modalPagesList.get(currentPage).getPageTitle();
         if (pageTitle != null && !pageTitle.equalsIgnoreCase(""))
-            story_title.setText(pageTitle);
+            story_title.setText(Html.fromHtml(pageTitle));
 
         playHideFlg = storyAudio.equalsIgnoreCase("NA");
 

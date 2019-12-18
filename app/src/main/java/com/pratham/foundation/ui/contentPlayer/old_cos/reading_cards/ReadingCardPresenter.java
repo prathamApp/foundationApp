@@ -3,9 +3,11 @@ package com.pratham.foundation.ui.contentPlayer.old_cos.reading_cards;
 import android.content.Context;
 
 import com.google.gson.Gson;
+import com.pratham.foundation.database.AppDatabase;
 import com.pratham.foundation.database.BackupDatabase;
 import com.pratham.foundation.database.domain.ContentProgress;
 import com.pratham.foundation.database.domain.KeyWords;
+import com.pratham.foundation.database.domain.Score;
 import com.pratham.foundation.modalclasses.ModalReadingCardMenu;
 import com.pratham.foundation.modalclasses.ModalReadingCardSubMenu;
 import com.pratham.foundation.services.shared_preferences.FastSave;
@@ -71,7 +73,33 @@ public class ReadingCardPresenter implements ReadingCardContract.ReadingCardPres
             readingView.setCardAudio(cardAudio);
             readingView.setListData(modalReadingCardSubMenuList);
             readingView.initializeContent();
+            addScore("Start");
         } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Background
+    public void addScore(String comicConvo) {
+        try {
+            String deviceId = AppDatabase.appDatabase.getStatusDao().getValue("DeviceId");
+            Score score = new Score();
+            score.setSessionID(FastSave.getInstance().getString(FC_Constants.CURRENT_SESSION, ""));
+            score.setResourceID(resId);
+            score.setQuestionId(0);
+            score.setScoredMarks(0);
+            score.setTotalMarks(0);
+            score.setStudentID(FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""));
+            score.setStartDateTime(FC_Utility.getCurrentDateTime());
+            score.setDeviceID(deviceId.equals(null) ? "0000" : deviceId);
+            score.setEndDateTime(FC_Utility.getCurrentDateTime());
+            score.setLevel(0);
+            score.setSentFlag(0);
+            score.setLabel("comicConvo - " + comicConvo);
+            AppDatabase.appDatabase.getScoreDao().insert(score);
+            BackupDatabase.backup(context);
+        } catch (Exception e) {
+            BackupDatabase.backup(context);
             e.printStackTrace();
         }
     }
@@ -83,6 +111,7 @@ public class ReadingCardPresenter implements ReadingCardContract.ReadingCardPres
 
     @Override
     public void addCompletion() {
+        addScore("End");
         addActualCompletion();
     }
 
