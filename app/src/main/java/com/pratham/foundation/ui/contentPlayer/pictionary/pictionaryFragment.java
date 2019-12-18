@@ -503,7 +503,7 @@ public class pictionaryFragment extends Fragment implements OnGameClose {
                                     ((CardView) ((RelativeLayout) gridMcq.getChildAt(g)).getChildAt(0)).getChildAt(1).setVisibility(View.GONE);
                                     rl_mcq.setBackground(getActivity().getResources().getDrawable(R.drawable.custom_radio_button));
                                 }
-                              //  rl_mcq.setBackground(getActivity().getResources().getDrawable(R.drawable.custom_edit_text));
+                                //  rl_mcq.setBackground(getActivity().getResources().getDrawable(R.drawable.custom_edit_text));
                                 rl_mcq.setBackground(getActivity().getResources().getDrawable(R.drawable.rounded_rectangle_stroke_bg));
                                 tick.setVisibility(View.VISIBLE);
                                 String fileName = options.get(finalR).getSubUrl().trim();
@@ -535,11 +535,9 @@ public class pictionaryFragment extends Fragment implements OnGameClose {
                         if (selectedFive.get(index).getUserAnswer().equalsIgnoreCase(options.get(r).getQid())) {
                             rl_mcq.setBackground(getActivity().getResources().getDrawable(R.drawable.rounded_rectangle_stroke_bg));
                             tick.setVisibility(View.VISIBLE);
-
                         } else {
                             rl_mcq.setBackground(getActivity().getResources().getDrawable(R.drawable.custom_radio_button));
                             tick.setVisibility(View.GONE);
-
                         }
                         //  view.setBackground((getActivity().getResources().getDrawable(R.drawable.rounded_rectangle_stroke_bg)));
                         setImage(view, imageUrl, localPath);
