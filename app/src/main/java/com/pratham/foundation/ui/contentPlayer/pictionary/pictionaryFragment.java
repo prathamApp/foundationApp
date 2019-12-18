@@ -32,6 +32,7 @@ import com.bumptech.glide.request.RequestOptions;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.pratham.foundation.ApplicationClass;
+import com.pratham.foundation.BaseActivity;
 import com.pratham.foundation.R;
 import com.pratham.foundation.customView.GifView;
 import com.pratham.foundation.customView.SansButton;
@@ -334,7 +335,7 @@ public class pictionaryFragment extends Fragment implements OnGameClose {
                             .into(questionImage);
                 }
 
-                iv_view_img.setOnClickListener(new View.OnClickListener() {
+                image_container.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         showZoomDialog(getActivity(), selectedFive.get(index).getPhotourl(), localPath);
@@ -861,6 +862,7 @@ public class pictionaryFragment extends Fragment implements OnGameClose {
                 }
             }
             GameConstatnts.postScoreEvent(selectedAnsList.size(), correctCnt);
+            BaseActivity.correctSound.start();
             setCompletionPercentage();
             if (!FC_Constants.isTest) {
                 // showResult(correctWordList, wrongWordList);

@@ -15,6 +15,7 @@ import android.widget.TextView;
 
 import com.pratham.foundation.BaseActivity;
 import com.pratham.foundation.R;
+import com.pratham.foundation.customView.display_image_dialog.CustomLodingDialog;
 import com.pratham.foundation.services.shared_preferences.FastSave;
 import com.pratham.foundation.ui.admin_panel.group_selection.SelectGroupActivity_;
 import com.pratham.foundation.ui.qr_scan.QRScanActivity_;
@@ -54,7 +55,7 @@ public class MenuActivity extends BaseActivity {
     }
 
     private void showLoginDialog(String nextActivity) {
-        Dialog dialog = new Dialog(MenuActivity.this);
+        Dialog dialog = new CustomLodingDialog(MenuActivity.this);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setContentView(R.layout.fc_custom_dialog);
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
@@ -167,7 +168,7 @@ public class MenuActivity extends BaseActivity {
 
     @SuppressLint("SetTextI18n")
     private void showExitDialog() {
-        Dialog dialog = new Dialog(this, R.style.ExitDialog);
+        Dialog dialog = new CustomLodingDialog(this, R.style.ExitDialog);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setContentView(R.layout.lottie_exit_dialog);
 /*      Bitmap map=FC_Utility.takeScreenShot(HomeActivity.this);

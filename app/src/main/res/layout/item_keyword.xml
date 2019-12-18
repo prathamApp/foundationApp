@@ -8,6 +8,7 @@
     android:background="@drawable/hexagon"
     android:gravity="center"
     android:text=""
-    android:textColor="@color/white"
+    android:elevation="5dp"
+    android:textColor="@color/colorBlack"
     android:textSize="@dimen/_15sdp" />
 

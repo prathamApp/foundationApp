@@ -1,6 +1,5 @@
 package com.pratham.foundation.ui.contentPlayer.dialogs;
 
-import android.app.Dialog;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
@@ -9,9 +8,10 @@ import android.support.annotation.NonNull;
 
 import com.pratham.foundation.R;
 import com.pratham.foundation.customView.SansTextView;
+import com.pratham.foundation.customView.display_image_dialog.CustomLodingDialog;
 import com.pratham.foundation.utility.MediaPlayerUtil;
 
-public class InstructionDialog extends Dialog {
+public class InstructionDialog extends CustomLodingDialog {
 
     private final String info;
     private final Context context;

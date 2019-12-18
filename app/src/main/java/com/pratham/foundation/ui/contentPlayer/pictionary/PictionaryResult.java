@@ -5,6 +5,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 
+import com.pratham.foundation.BaseActivity;
 import com.pratham.foundation.R;
 import com.pratham.foundation.customView.SansButton;
 import com.pratham.foundation.modalclasses.ScienceQuestion;
@@ -16,7 +17,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class PictionaryResult extends AppCompatActivity {
+public class PictionaryResult extends BaseActivity {
     ArrayList<ScienceQuestion> quetions;
     ArrayList<ScienceQuestionChoice> quetionsFact;
     String readingContentPath;

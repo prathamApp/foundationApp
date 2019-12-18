@@ -170,6 +170,7 @@ public class KeywordsIdentificationPresenter implements KeywordsIdentificationCo
             for (int i = 0; i < selectedAnsList.size(); i++) {
                 if (checkAnswerNew(questionModel.getLstquestionchoice(), selectedAnsList.get(i).getSubQues())) {
                     correctCnt++;
+                    correctWordList.add(selectedAnsList.get(i).getSubQues());
                     addScore(GameConstatnts.getInt(questionModel.getQid()), GameConstatnts.KEYWORD_IDENTIFICATION, 10, 10,selectedAnsList.get(i).getStartTime(),selectedAnsList.get(i).getEndTime(), selectedAnsList.get(i).getSubQues());
                 }else {
                     addScore(GameConstatnts.getInt(questionModel.getQid()), GameConstatnts.KEYWORD_IDENTIFICATION, 0, 10, selectedAnsList.get(i).getStartTime(),selectedAnsList.get(i).getEndTime(), selectedAnsList.get(i).getSubQues());

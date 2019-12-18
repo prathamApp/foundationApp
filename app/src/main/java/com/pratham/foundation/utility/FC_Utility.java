@@ -62,6 +62,7 @@ import com.google.gson.Gson;
 import com.pratham.foundation.ApplicationClass;
 import com.pratham.foundation.R;
 import com.pratham.foundation.customView.ZoomImageDialog;
+import com.pratham.foundation.customView.display_image_dialog.CustomLodingDialog;
 import com.pratham.foundation.services.shared_preferences.FastSave;
 import com.pratham.foundation.ui.admin_panel.AdminControlsActivity_;
 import com.pratham.foundation.ui.admin_panel.group_selection.SelectGroupActivity_;
@@ -1544,7 +1545,7 @@ public class FC_Utility {
     }
 
     public static void showTryAgainDialog(Context context) {
-        Dialog dialog = new Dialog(context);
+        Dialog dialog = new CustomLodingDialog(context);
         dialog.setCanceledOnTouchOutside(false);
         dialog.setCancelable(false);
         dialog.setTitle("Please check your network connectivity and try again.");

@@ -17,9 +17,11 @@ import android.widget.Toast;
 
 import com.nex3z.flowlayout.FlowLayout;
 import com.pratham.foundation.ApplicationClass;
+import com.pratham.foundation.BaseActivity;
 import com.pratham.foundation.R;
 import com.pratham.foundation.customView.SansButton;
 import com.pratham.foundation.customView.SansTextView;
+import com.pratham.foundation.customView.display_image_dialog.CustomLodingDialog;
 import com.pratham.foundation.interfaces.OnGameClose;
 import com.pratham.foundation.modalclasses.EventMessage;
 import com.pratham.foundation.modalclasses.ScienceQuestionChoice;
@@ -304,6 +306,7 @@ public class KeywordsIdentificationFragment extends Fragment implements Keywords
                 GameConstatnts.playGameNext(getActivity(), GameConstatnts.FALSE, this);
             } else {
                 issubmitted = true;
+                BaseActivity.correctSound.start();
                 btn_submit.setText("Next");
                 show_me_keywords.setVisibility(View.INVISIBLE);
                 presenter.addLearntWords(selectedKeywords);
@@ -346,7 +349,7 @@ public class KeywordsIdentificationFragment extends Fragment implements Keywords
                             textViewTemp.setBackgroundColor(ContextCompat.getColor(getActivity(), R.color.white));
                         }
                 }
-                final Dialog dialog = new Dialog(getActivity());
+                final Dialog dialog = new CustomLodingDialog(getActivity());
                 dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
                 dialog.setContentView(R.layout.app_success_dialog);
                 dialog.setCancelable(false);

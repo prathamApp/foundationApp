@@ -40,6 +40,7 @@ import com.pratham.foundation.ApplicationClass;
 import com.pratham.foundation.R;
 import com.pratham.foundation.customView.SansTextView;
 import com.pratham.foundation.customView.display_image_dialog.Activity_DisplayImage_;
+import com.pratham.foundation.customView.display_image_dialog.CustomLodingDialog;
 import com.pratham.foundation.customView.shape_of_view.ShadowLayout;
 import com.pratham.foundation.interfaces.OnGameClose;
 import com.pratham.foundation.modalclasses.EventMessage;
@@ -987,7 +988,7 @@ public class ContentReadingFragment extends Fragment implements
 
     @SuppressLint("SetTextI18n")
     public void showAcknowledgeDialog(boolean diaComplete) {
-        final Dialog dialog = new Dialog(context);
+        final Dialog dialog = new CustomLodingDialog(context);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         dialog.setContentView(R.layout.fc_custom_dialog);
@@ -1116,7 +1117,7 @@ public class ContentReadingFragment extends Fragment implements
 
     @SuppressLint("SetTextI18n")
     private void showStars(boolean diaComplete) {
-        final Dialog dialog = new Dialog(context);
+        final Dialog dialog = new CustomLodingDialog(context);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         dialog.setContentView(R.layout.fc_custom_test_star_dialog);

@@ -10,6 +10,7 @@ import android.widget.TextView;
 
 import com.pratham.foundation.R;
 import com.pratham.foundation.customView.SansCheckBox;
+import com.pratham.foundation.customView.display_image_dialog.CustomLodingDialog;
 import com.pratham.foundation.database.domain.Village;
 
 import java.util.ArrayList;
@@ -20,7 +21,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 
-public class SelectVillageDialog extends Dialog {
+public class SelectVillageDialog extends CustomLodingDialog {
 
     @BindView(R.id.txt_message)
     TextView txt_message_village;
