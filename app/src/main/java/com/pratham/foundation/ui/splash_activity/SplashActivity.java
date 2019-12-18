@@ -35,6 +35,7 @@ import android.widget.TextView;
 import com.hanks.htextview.typer.TyperTextView;
 import com.pratham.foundation.ApplicationClass;
 import com.pratham.foundation.R;
+import com.pratham.foundation.customView.display_image_dialog.CustomLodingDialog;
 import com.pratham.foundation.database.AppDatabase;
 import com.pratham.foundation.interfaces.Interface_copying;
 import com.pratham.foundation.interfaces.PermissionResult;
@@ -277,7 +278,7 @@ public class SplashActivity extends SplashSupportActivity implements SplashContr
 
     @SuppressLint("SetTextI18n")
     private void showLanguageSelectionDialog() {
-        final Dialog dialog = new Dialog(context);
+        final Dialog dialog = new CustomLodingDialog(context);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         dialog.setContentView(R.layout.fc_custom_language_dialog);

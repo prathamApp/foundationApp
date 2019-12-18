@@ -31,6 +31,7 @@ import com.pratham.foundation.customView.GifView;
 import com.pratham.foundation.customView.SansButton;
 import com.pratham.foundation.customView.SansTextView;
 import com.pratham.foundation.customView.SansTextViewBold;
+import com.pratham.foundation.customView.display_image_dialog.CustomLodingDialog;
 import com.pratham.foundation.database.BackupDatabase;
 import com.pratham.foundation.database.domain.Assessment;
 import com.pratham.foundation.database.domain.KeyWords;
@@ -492,7 +493,7 @@ public class FillInTheBlanksFragment extends Fragment implements STT_Result {
 
 
     public void showResult(List<String> correctWord, List<String> wrongWord) {
-        final Dialog dialog = new Dialog(getActivity());
+        final Dialog dialog = new CustomLodingDialog(getActivity());
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setContentView(R.layout.show_result);
         dialog.setCancelable(false);

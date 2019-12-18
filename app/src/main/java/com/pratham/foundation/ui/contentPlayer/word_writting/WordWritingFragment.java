@@ -23,6 +23,7 @@ import android.widget.TextView;
 import com.pratham.foundation.ApplicationClass;
 import com.pratham.foundation.R;
 import com.pratham.foundation.customView.SansButton;
+import com.pratham.foundation.customView.display_image_dialog.CustomLodingDialog;
 import com.pratham.foundation.interfaces.OnGameClose;
 import com.pratham.foundation.modalclasses.EventMessage;
 import com.pratham.foundation.ui.contentPlayer.GameConstatnts;
@@ -207,7 +208,7 @@ public class WordWritingFragment extends Fragment
     }
 
     private void ShowPreviewDialog(File path) {
-        final Dialog dialog = new Dialog(getActivity());
+        final CustomLodingDialog dialog = new CustomLodingDialog(getActivity());
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         dialog.setContentView(R.layout.fc_image_preview_dialog);

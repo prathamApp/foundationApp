@@ -69,7 +69,6 @@ public class ApplicationClass extends Application {
                 .writeTimeout(10, TimeUnit.SECONDS)
                 .build();
         AndroidNetworking.initialize(getApplicationContext(), okHttpClient);
-
     }
 
     @Override

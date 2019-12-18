@@ -35,6 +35,7 @@ import com.pratham.foundation.ApplicationClass;
 import com.pratham.foundation.R;
 import com.pratham.foundation.customView.GifView;
 import com.pratham.foundation.customView.SansButton;
+import com.pratham.foundation.customView.display_image_dialog.CustomLodingDialog;
 import com.pratham.foundation.database.BackupDatabase;
 import com.pratham.foundation.database.domain.Assessment;
 import com.pratham.foundation.database.domain.ContentProgress;
@@ -892,7 +893,7 @@ public class multipleChoiceFragment extends Fragment implements OnGameClose {
     private void showResult(List<ScienceQuestionChoice> correctWord, List<ScienceQuestionChoice> wrongWord) {
         if ((correctWord != null && !correctWord.isEmpty()) || (wrongWord != null && !wrongWord.isEmpty())) {
 
-            final Dialog dialog = new Dialog(getActivity());
+            final Dialog dialog = new CustomLodingDialog(getActivity());
             dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
             dialog.setContentView(R.layout.show_result_pictionary);
             dialog.setCancelable(false);

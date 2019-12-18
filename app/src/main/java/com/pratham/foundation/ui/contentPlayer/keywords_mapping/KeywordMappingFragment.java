@@ -153,7 +153,7 @@ public class KeywordMappingFragment extends Fragment implements KeywordMappingCo
         //     textView.setPaintFlags(textView.getPaintFlags() & (~ Paint.STRIKE_THRU_TEXT_FLAG));
         //iews.setInt(R.id.widgetTitle, "setPaintFlags", Paint.ANTI_ALIAS_FLAG);
         /*if ((correctWord != null && !correctWord.isEmpty()) || (wrongWord != null && !wrongWord.isEmpty())) {
-            final Dialog dialog = new Dialog(getActivity());
+            final CustomLodingDialogdialog = new Dialog(getActivity());
             dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
             dialog.setContentView(R.layout.show_result);
             dialog.setCancelable(false);

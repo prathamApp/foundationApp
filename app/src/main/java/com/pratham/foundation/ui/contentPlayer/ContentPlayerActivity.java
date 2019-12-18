@@ -17,6 +17,7 @@ import android.widget.TextView;
 
 import com.pratham.foundation.BaseActivity;
 import com.pratham.foundation.R;
+import com.pratham.foundation.customView.display_image_dialog.CustomLodingDialog;
 import com.pratham.foundation.database.domain.ContentTable;
 import com.pratham.foundation.interfaces.OnGameClose;
 import com.pratham.foundation.interfaces.ShowInstruction;
@@ -137,7 +138,7 @@ public class ContentPlayerActivity extends BaseActivity implements ShowInstructi
     }
 
     private void showExitDialog() {
-        final Dialog dialog = new Dialog(this);
+        final CustomLodingDialog dialog = new CustomLodingDialog(this);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         dialog.setContentView(R.layout.fc_custom_dialog);
