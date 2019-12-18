@@ -6,6 +6,7 @@
     android:layout_width="@dimen/_100sdp"
     android:layout_height="@dimen/_100sdp"
     android:layout_margin="@dimen/_5sdp"
+    android:padding="6dp"
     android:background="@drawable/custom_radio_button">
 
 

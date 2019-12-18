@@ -5,6 +5,7 @@ import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import com.pratham.foundation.BaseActivity;
 import com.pratham.foundation.database.BackupDatabase;
 import com.pratham.foundation.database.domain.Assessment;
 import com.pratham.foundation.database.domain.ContentProgress;
@@ -192,6 +193,7 @@ public class FactRetrievalPresenter implements FactRetrievalContract.FactRetriev
             appDatabase.getKeyWordDao().insertAllWord(learntWords);
             setCompletionPercentage();
             GameConstatnts.postScoreEvent(selectedAnsList.size(),correctCnt);
+            BaseActivity.correctSound.start();
             if (!FC_Constants.isTest) {
                 view.showResult(selectedAnsList);
             }else {

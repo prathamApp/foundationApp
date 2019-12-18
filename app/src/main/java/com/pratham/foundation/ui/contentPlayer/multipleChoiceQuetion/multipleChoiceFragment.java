@@ -32,6 +32,7 @@ import com.bumptech.glide.request.RequestOptions;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.pratham.foundation.ApplicationClass;
+import com.pratham.foundation.BaseActivity;
 import com.pratham.foundation.R;
 import com.pratham.foundation.customView.GifView;
 import com.pratham.foundation.customView.SansButton;
@@ -850,6 +851,7 @@ public class multipleChoiceFragment extends Fragment implements OnGameClose {
             }
             setCompletionPercentage();
             GameConstatnts.postScoreEvent(selectedAnsList.size(),correctCnt);
+            BaseActivity.correctSound.start();
             if (!FC_Constants.isTest) {
                 // showResult(correctWordList, wrongWordList);
                 Intent intent = new Intent(getActivity(), PictionaryResult.class);

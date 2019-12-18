@@ -381,7 +381,6 @@ public class pictionaryFragment extends Fragment implements OnGameClose {
 
                 }
                 for (int r = 0; r < options.size(); r++) {
-
                     String ans = "$";
                     if (!selectedFive.get(index).getUserAnswer().equalsIgnoreCase(""))
                         ans = selectedFive.get(index).getUserAnswer();
@@ -502,8 +501,10 @@ public class pictionaryFragment extends Fragment implements OnGameClose {
                                 for (int g = 0; g < gridMcq.getChildCount(); g++) {
                                     gridMcq.getChildAt(g).setBackgroundDrawable(getActivity().getResources().getDrawable(R.drawable.custom_radio_button));
                                     ((CardView) ((RelativeLayout) gridMcq.getChildAt(g)).getChildAt(0)).getChildAt(1).setVisibility(View.GONE);
+                                    rl_mcq.setBackground(getActivity().getResources().getDrawable(R.drawable.custom_radio_button));
                                 }
-                                rl_mcq.setBackground(getActivity().getResources().getDrawable(R.drawable.custom_edit_text));
+                              //  rl_mcq.setBackground(getActivity().getResources().getDrawable(R.drawable.custom_edit_text));
+                                rl_mcq.setBackground(getActivity().getResources().getDrawable(R.drawable.rounded_rectangle_stroke_bg));
                                 tick.setVisibility(View.VISIBLE);
                                 String fileName = options.get(finalR).getSubUrl().trim();
                                 String localPath = readingContentPath + fileName;
@@ -532,7 +533,7 @@ public class pictionaryFragment extends Fragment implements OnGameClose {
                             }
                         });
                         if (selectedFive.get(index).getUserAnswer().equalsIgnoreCase(options.get(r).getQid())) {
-                            rl_mcq.setBackground(getActivity().getResources().getDrawable(R.drawable.custom_edit_text));
+                            rl_mcq.setBackground(getActivity().getResources().getDrawable(R.drawable.rounded_rectangle_stroke_bg));
                             tick.setVisibility(View.VISIBLE);
 
                         } else {
