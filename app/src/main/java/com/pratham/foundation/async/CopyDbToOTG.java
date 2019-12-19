@@ -51,9 +51,9 @@ public class CopyDbToOTG extends AsyncTask {
                 File[] files = activityPhotosFile.listFiles();
                 for (int i = 0; i < files.length; i++) {
                     Log.d("Files", "FileName:" + files[i].getName());
-//                    DocumentFile file = mediaFolder.findFile(files[i].getName());
-//                    if (file != null) file.delete();
-                    DocumentFile file = mediaFolder.createFile("image", files[i].getName());
+                    DocumentFile file = mediaFolder.findFile(files[i].getName());
+                    if (file != null) file.delete();
+                    file = mediaFolder.createFile("image", files[i].getName());
                     OutputStream out = ApplicationClass.getInstance().getContentResolver().openOutputStream(file.getUri());
                     FileInputStream in = new FileInputStream(files[i].getAbsolutePath());
                     byte[] buffer = new byte[1024];
