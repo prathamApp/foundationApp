@@ -47,13 +47,13 @@ public class TestAutoDataAdapter extends RecyclerView.Adapter<TestAutoDataAdapte
         holder.tvText.setText(datalist.get(position));
         if (!showAnswerEnabled) {
             if (mSelected.contains(position))
+                holder.tvText.setBackgroundColor(mContext.getResources().getColor(R.color.yellow_text_bg));
                // holder.tvText.setBackgroundColor(Color.GREEN);
-               holder.tvText.setBackgroundColor(mContext.getResources().getColor(R.color.light_green));
             else
                 holder.tvText.setBackgroundColor(Color.WHITE);
         }else {
             if (mSelected.contains(position))
-                holder.tvText.setBackgroundColor(Color.YELLOW);
+                holder.tvText.setBackgroundColor(mContext.getResources().getColor(R.color.light_green));
             else
                 holder.tvText.setBackgroundColor(Color.WHITE);
         }
