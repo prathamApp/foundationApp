@@ -25,6 +25,7 @@ import com.google.zxing.Result;
 import com.pratham.foundation.ApplicationClass;
 import com.pratham.foundation.BaseActivity;
 import com.pratham.foundation.R;
+import com.pratham.foundation.customView.display_image_dialog.CustomLodingDialog;
 import com.pratham.foundation.database.BackupDatabase;
 import com.pratham.foundation.database.dao.StatusDao;
 import com.pratham.foundation.database.domain.Attendance;
@@ -453,7 +454,7 @@ public class QRScanActivity extends BaseActivity implements
     }
 
     private void showDuplicateDialog(String dialogMode) {
-        final Dialog dialog = new Dialog(this);
+        final Dialog dialog = new CustomLodingDialog(this);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         dialog.setContentView(R.layout.fc_custom_dialog);

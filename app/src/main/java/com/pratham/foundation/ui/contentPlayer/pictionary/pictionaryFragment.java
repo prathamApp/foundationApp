@@ -32,6 +32,7 @@ import com.bumptech.glide.request.RequestOptions;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.pratham.foundation.ApplicationClass;
+import com.pratham.foundation.BaseActivity;
 import com.pratham.foundation.R;
 import com.pratham.foundation.customView.GifView;
 import com.pratham.foundation.customView.SansButton;
@@ -334,7 +335,7 @@ public class pictionaryFragment extends Fragment implements OnGameClose {
                             .into(questionImage);
                 }
 
-                iv_view_img.setOnClickListener(new View.OnClickListener() {
+                image_container.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         showZoomDialog(getActivity(), selectedFive.get(index).getPhotourl(), localPath);
@@ -380,7 +381,6 @@ public class pictionaryFragment extends Fragment implements OnGameClose {
 
                 }
                 for (int r = 0; r < options.size(); r++) {
-
                     String ans = "$";
                     if (!selectedFive.get(index).getUserAnswer().equalsIgnoreCase(""))
                         ans = selectedFive.get(index).getUserAnswer();
@@ -501,8 +501,10 @@ public class pictionaryFragment extends Fragment implements OnGameClose {
                                 for (int g = 0; g < gridMcq.getChildCount(); g++) {
                                     gridMcq.getChildAt(g).setBackgroundDrawable(getActivity().getResources().getDrawable(R.drawable.custom_radio_button));
                                     ((CardView) ((RelativeLayout) gridMcq.getChildAt(g)).getChildAt(0)).getChildAt(1).setVisibility(View.GONE);
+                                    rl_mcq.setBackground(getActivity().getResources().getDrawable(R.drawable.custom_radio_button));
                                 }
-                                rl_mcq.setBackground(getActivity().getResources().getDrawable(R.drawable.custom_edit_text));
+                                //  rl_mcq.setBackground(getActivity().getResources().getDrawable(R.drawable.custom_edit_text));
+                                rl_mcq.setBackground(getActivity().getResources().getDrawable(R.drawable.rounded_rectangle_stroke_bg));
                                 tick.setVisibility(View.VISIBLE);
                                 String fileName = options.get(finalR).getSubUrl().trim();
                                 String localPath = readingContentPath + fileName;
@@ -531,13 +533,11 @@ public class pictionaryFragment extends Fragment implements OnGameClose {
                             }
                         });
                         if (selectedFive.get(index).getUserAnswer().equalsIgnoreCase(options.get(r).getQid())) {
-                            rl_mcq.setBackground(getActivity().getResources().getDrawable(R.drawable.custom_edit_text));
+                            rl_mcq.setBackground(getActivity().getResources().getDrawable(R.drawable.rounded_rectangle_stroke_bg));
                             tick.setVisibility(View.VISIBLE);
-
                         } else {
                             rl_mcq.setBackground(getActivity().getResources().getDrawable(R.drawable.custom_radio_button));
                             tick.setVisibility(View.GONE);
-
                         }
                         //  view.setBackground((getActivity().getResources().getDrawable(R.drawable.rounded_rectangle_stroke_bg)));
                         setImage(view, imageUrl, localPath);
@@ -861,6 +861,7 @@ public class pictionaryFragment extends Fragment implements OnGameClose {
                 }
             }
             GameConstatnts.postScoreEvent(selectedAnsList.size(), correctCnt);
+            BaseActivity.correctSound.start();
             setCompletionPercentage();
             if (!FC_Constants.isTest) {
                 // showResult(correctWordList, wrongWordList);

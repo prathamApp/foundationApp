@@ -11,6 +11,7 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.pratham.foundation.ApplicationClass;
+import com.pratham.foundation.BaseActivity;
 import com.pratham.foundation.R;
 import com.pratham.foundation.interfaces.OnGameClose;
 import com.pratham.foundation.modalclasses.EventMessage;
@@ -188,6 +189,7 @@ public class KeywordMappingFragment extends Fragment implements KeywordMappingCo
                     presenter.addLearntWords(keywordmapping, selectedoptionList);
                     showAnswer.setVisibility(View.INVISIBLE);
                     submit.setText("Next");
+                    BaseActivity.correctSound.start();
                     recycler_view.startAnimation(animFadein);
                 }
             } else {

@@ -25,6 +25,7 @@ import com.google.gson.reflect.TypeToken;
 import com.pratham.foundation.ApplicationClass;
 import com.pratham.foundation.BaseActivity;
 import com.pratham.foundation.R;
+import com.pratham.foundation.customView.display_image_dialog.CustomLodingDialog;
 import com.pratham.foundation.database.AppDatabase;
 import com.pratham.foundation.database.BackupDatabase;
 import com.pratham.foundation.database.domain.Assessment;
@@ -331,7 +332,7 @@ public class MatchThePairGameActivity extends BaseActivity implements MatchThePa
 
     public void showNextDialog() {
 
-        Dialog nextDialog = new Dialog(this);
+        Dialog nextDialog = new CustomLodingDialog(this);
         nextDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         nextDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         nextDialog.setContentView(R.layout.show_word_next_dialog);
@@ -464,7 +465,7 @@ public class MatchThePairGameActivity extends BaseActivity implements MatchThePa
 
     @SuppressLint("StaticFieldLeak")
     private void showExitDialog() {
-        final Dialog dialog = new Dialog(this);
+        final Dialog dialog = new CustomLodingDialog(this);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         dialog.setContentView(R.layout.fc_custom_dialog);

@@ -24,6 +24,7 @@ import android.widget.TextView;
 import com.pratham.foundation.ApplicationClass;
 import com.pratham.foundation.R;
 import com.pratham.foundation.customView.CircularImageView;
+import com.pratham.foundation.customView.display_image_dialog.CustomLodingDialog;
 import com.pratham.foundation.database.AppDatabase;
 import com.pratham.foundation.database.domain.ContentProgress;
 import com.pratham.foundation.database.domain.ContentTable;
@@ -84,7 +85,7 @@ public class Student_profile_activity extends Fragment implements Student_profil
 
     @SuppressLint("SetTextI18n")
     private void showLanguageSelectionDialog() {
-        final Dialog dialog = new Dialog(getActivity());
+        final Dialog dialog = new CustomLodingDialog(getActivity());
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         dialog.setContentView(R.layout.fc_custom_language_dialog);

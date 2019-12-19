@@ -14,6 +14,7 @@ import android.widget.Toast;
 import com.pratham.foundation.ApplicationClass;
 import com.pratham.foundation.BaseActivity;
 import com.pratham.foundation.R;
+import com.pratham.foundation.customView.display_image_dialog.CustomLodingDialog;
 import com.pratham.foundation.ui.admin_panel.AdminControlsActivity_;
 import com.pratham.foundation.utility.FC_Constants;
 import com.pratham.foundation.utility.FC_Utility;
@@ -43,7 +44,7 @@ public class PushDataActivity extends BaseActivity implements PushDataContract.P
     @Override
     public void showDialog(boolean statusFlg) {
 
-        final Dialog dialog = new Dialog(this);
+        final Dialog dialog = new CustomLodingDialog(this);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         dialog.setContentView(R.layout.fc_custom_dialog);

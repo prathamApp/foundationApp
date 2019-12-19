@@ -371,7 +371,7 @@ public class SplashActivity extends SplashSupportActivity implements SplashContr
     }
 
     public void showExitDialog() {
-        final Dialog dialog = new Dialog(context);
+        final Dialog dialog = new CustomLodingDialog(context);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         dialog.setContentView(R.layout.fc_custom_dialog);
@@ -537,7 +537,7 @@ public class SplashActivity extends SplashSupportActivity implements SplashContr
     }
 
     private void show_STT_Dialog() {
-        Dialog dialog = new Dialog(this);
+        Dialog dialog = new CustomLodingDialog(this);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setContentView(R.layout.fc_custom_dialog);
 /*        Bitmap map=FC_Utility.takeScreenShot(HomeActivity.this);

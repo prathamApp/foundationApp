@@ -22,6 +22,7 @@ import android.widget.TextView;
 import com.pratham.foundation.ApplicationClass;
 import com.pratham.foundation.BaseActivity;
 import com.pratham.foundation.R;
+import com.pratham.foundation.customView.display_image_dialog.CustomLodingDialog;
 import com.pratham.foundation.database.AppDatabase;
 import com.pratham.foundation.interfaces.MediaCallbacks;
 import com.pratham.foundation.modalclasses.ModalRhymingWords;
@@ -144,7 +145,7 @@ public class ReadingRhymesActivity extends BaseActivity
     }
 
     private void showViewDialog() {
-        final Dialog dialog = new Dialog(this);
+        final Dialog dialog = new CustomLodingDialog(this);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         Objects.requireNonNull(dialog.getWindow()).setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         dialog.setContentView(R.layout.fc_custom_dialog);
@@ -389,7 +390,7 @@ public class ReadingRhymesActivity extends BaseActivity
     @SuppressLint("SetTextI18n")
     public void showExitDialog() {
 
-        final Dialog dialog = new Dialog(this);
+        final Dialog dialog = new CustomLodingDialog(this);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         Objects.requireNonNull(dialog.getWindow()).setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         dialog.setContentView(R.layout.fc_custom_dialog);

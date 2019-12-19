@@ -20,6 +20,7 @@ import com.bumptech.glide.Glide;
 import com.pratham.foundation.ApplicationClass;
 import com.pratham.foundation.BaseActivity;
 import com.pratham.foundation.R;
+import com.pratham.foundation.customView.display_image_dialog.CustomLodingDialog;
 import com.pratham.foundation.interfaces.MediaCallbacks;
 import com.pratham.foundation.modalclasses.ModalReadingVocabulary;
 import com.pratham.foundation.utility.FC_Constants;
@@ -244,7 +245,7 @@ public class OppositesActivity extends BaseActivity
         } catch (Exception e) {
             e.printStackTrace();
         }
-        final Dialog dialog = new Dialog(this);
+        final Dialog dialog = new CustomLodingDialog(this);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         dialog.setContentView(R.layout.fc_custom_dialog);
