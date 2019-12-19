@@ -109,7 +109,7 @@ public class KeywordMappingPresenterImp implements KeywordMappingContract.Keywor
             perc = getPercentage();
             Collections.shuffle(quetionModelList);
             for (int i = 0; i < quetionModelList.size(); i++) {
-                if (perc < 95) {
+                /*if (perc < 95) {
                     if (!checkWord("" + quetionModelList.get(i).getQuestion()))
                         selectedFive.add(quetionModelList.get(i));
                 } else {
@@ -117,7 +117,8 @@ public class KeywordMappingPresenterImp implements KeywordMappingContract.Keywor
                 }
                 if (selectedFive.size() >= 1) {
                     break;
-                }
+                }*/
+                selectedFive.add(quetionModelList.get(i));
             }
             Collections.shuffle(selectedFive);
             view.loadUI(selectedFive);
@@ -187,9 +188,7 @@ public class KeywordMappingPresenterImp implements KeywordMappingContract.Keywor
             }
             GameConstatnts.postScoreEvent(selectedAnsList.size(),correctCnt);
             if (!FC_Constants.isTest) {
-                view.showResult(keywordmapping);
-            }else {
-                GameConstatnts.playGameNext(context, GameConstatnts.FALSE,  (OnGameClose) view);
+                view.showResult();
             }
         } else {
             GameConstatnts.playGameNext(context, GameConstatnts.TRUE, (OnGameClose) view);

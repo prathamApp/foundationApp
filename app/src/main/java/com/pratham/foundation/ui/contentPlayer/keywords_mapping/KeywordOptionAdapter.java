@@ -69,6 +69,7 @@ public class KeywordOptionAdapter extends RecyclerView.Adapter<KeywordOptionAdap
         myviewholder.textView.setTextColor(Color.BLACK);
         if (datalist.get(myviewholder.getAdapterPosition()).isIsclicked()) {
             myviewholder.itemView.setBackground(ContextCompat.getDrawable(context, R.drawable.hexagon_yellow));
+            selectedOption.add(datalist.get(myviewholder.getAdapterPosition()));
         } else {
             myviewholder.itemView.setBackground(ContextCompat.getDrawable(context, R.drawable.hexagon));
         }
@@ -111,7 +112,7 @@ public class KeywordOptionAdapter extends RecyclerView.Adapter<KeywordOptionAdap
                 }else {
                     myviewholder.textView.setTextColor(Color.RED);
                 }
-                //  myviewholder.textView.setPaintFlags(myviewholder.textView.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
+                  myviewholder.textView.setPaintFlags(myviewholder.textView.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
             } else {
                 myviewholder.textView.setPaintFlags(  myviewholder.textView.getPaintFlags() & (~ Paint.STRIKE_THRU_TEXT_FLAG));
                 if(datalist.get(myviewholder.getAdapterPosition()).isIsclicked()){
@@ -122,14 +123,14 @@ public class KeywordOptionAdapter extends RecyclerView.Adapter<KeywordOptionAdap
             }
         }
 
-        if(!isClickable && showAnswer){
+       /* if(!isClickable && showAnswer){
             if (!presenter.checkAnswerNew(datalist,  myviewholder.textView.getText().toString())) {
                 myviewholder.textView.setTextColor(Color.RED);
                 myviewholder.textView.setPaintFlags(myviewholder.textView.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
             } else {
                 myviewholder.textView.setPaintFlags(  myviewholder.textView.getPaintFlags() & (~ Paint.STRIKE_THRU_TEXT_FLAG));
             }
-        }
+        }*/
     }
 
     private int pxFromDp(final Context context, final float dp) {

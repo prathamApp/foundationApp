@@ -63,7 +63,7 @@ public class ScienceQuestion implements Serializable {
 
     private String hint;
 
-    private String examid;
+    private boolean isSubmitted;
 
     private String pdid;
     private String startTime;
@@ -305,13 +305,7 @@ public class ScienceQuestion implements Serializable {
         this.hint = hint;
     }
 
-    public String getExamid() {
-        return examid;
-    }
 
-    public void setExamid(String examid) {
-        this.examid = examid;
-    }
 
     public String getPdid() {
         return pdid;
@@ -378,5 +372,13 @@ public class ScienceQuestion implements Serializable {
 
     public void setInstructionUrl(String instructionUrl) {
         this.instructionUrl = instructionUrl;
+    }
+
+    public boolean isSubmitted() {
+        return isSubmitted;
+    }
+
+    public void setSubmitted(boolean submitted) {
+        isSubmitted = submitted;
     }
 }

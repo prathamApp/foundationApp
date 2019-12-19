@@ -29,12 +29,19 @@
             android:layout_height="wrap_content"
             android:text="hint"
             style="@style/yellow_button"/>
-        <Button
+      <!--  <Button
             android:id="@+id/submit"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Submit"
-            style="@style/submitbtn" />
+            style="@style/submitbtn" />-->
+        <include
+            android:id="@+id/bottom_bar"
+            layout="@layout/bottom_control_panel_v2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="1dp"
+            android:gravity="bottom|center_horizontal" />
     </LinearLayout>
 
 
@@ -46,6 +53,9 @@
             android:layout_below="@id/keyword"
             android:layout_centerInParent="true"
             android:layout_margin="@dimen/hexa_dp"
+            android:scrollbars="vertical"
+            android:scrollbarAlwaysDrawVerticalTrack="true"
+            android:scrollbarSize="@dimen/_2sdp"
             android:gravity="center" />
 
 

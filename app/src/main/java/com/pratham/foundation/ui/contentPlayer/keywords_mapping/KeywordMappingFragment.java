@@ -8,16 +8,18 @@ import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.pratham.foundation.ApplicationClass;
 import com.pratham.foundation.BaseActivity;
 import com.pratham.foundation.R;
+import com.pratham.foundation.customView.SansButton;
 import com.pratham.foundation.interfaces.OnGameClose;
 import com.pratham.foundation.modalclasses.EventMessage;
+import com.pratham.foundation.modalclasses.ScienceQuestion;
 import com.pratham.foundation.modalclasses.ScienceQuestionChoice;
 import com.pratham.foundation.ui.contentPlayer.GameConstatnts;
-import com.pratham.foundation.modalclasses.ScienceQuestion;
 import com.pratham.foundation.utility.FC_Constants;
 import com.pratham.foundation.utility.FC_Utility;
 
@@ -48,8 +50,17 @@ public class KeywordMappingFragment extends Fragment implements KeywordMappingCo
     TextView keyword;
     @ViewById(R.id.recycler_view)
     RecyclerView recycler_view;
-    @ViewById(R.id.submit)
-    Button submit;
+
+
+    @ViewById(R.id.btn_prev)
+    ImageButton previous;
+
+    @ViewById(R.id.btn_submit)
+    SansButton submitBtn;
+
+    @ViewById(R.id.btn_next)
+    ImageButton next;
+
     @ViewById(R.id.showAnswer)
     Button showAnswer;
     private String contentPath, contentTitle, StudentID, resId, readingContentPath, resStartTime;
@@ -57,10 +68,11 @@ public class KeywordMappingFragment extends Fragment implements KeywordMappingCo
     private int index = 0;
     private List<ScienceQuestionChoice> optionList;
     private KeywordOptionAdapter keywordOptionAdapter;
-    private ScienceQuestion keywordmapping;
+    private List<ScienceQuestion> keywordmapping;
     private boolean isSubmitted = false;
     private Animation animFadein;
     private boolean showanswer = false;
+    private GridLayoutManager gridLayoutManager;
 
     @AfterViews
     protected void initiate() {
@@ -93,28 +105,39 @@ public class KeywordMappingFragment extends Fragment implements KeywordMappingCo
     @Override
     public void loadUI(List<ScienceQuestion> list) {
         //show instruction dialog
-        keywordmapping = list.get(index);
-        keyword.setText(list.get(index).getQuestion());
-        final GridLayoutManager gridLayoutManager;
+        if (list != null) {
+            keywordmapping = list;
+            keyword.setText(list.get(index).getQuestion());
+
 
        /* if (FC_Constants.TAB_LAYOUT) {
             gridLayoutManager = new GridLayoutManager(getActivity(), 3);
         } else {
             gridLayoutManager = new GridLayoutManager(getActivity(), 2);
         }*/
-        gridLayoutManager = new GridLayoutManager(getActivity(), 2);
-        gridLayoutManager.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
-            @Override
-            public int getSpanSize(int position) {
-                int size = 1;
-                if ((position + 1) % 3 == 0) {
-                    size = 2;
+            gridLayoutManager = new GridLayoutManager(getActivity(), 2);
+            gridLayoutManager.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
+                @Override
+                public int getSpanSize(int position) {
+                    int size = 1;
+                    if ((position + 1) % 3 == 0) {
+                        size = 2;
+                    }
+                    return size;
                 }
-                return size;
+            });
+            for (int i = 0; i < keywordmapping.size(); i++) {
+                optionList = keywordmapping.get(i).getLstquestionchoice();
+                Collections.shuffle(optionList);
             }
-        });
-        optionList = list.get(index).getLstquestionchoice();
-        Collections.shuffle(optionList);
+            LoadItemsToRecycler();
+        }
+    }
+
+    private void LoadItemsToRecycler() {
+
+        optionList = keywordmapping.get(index).getLstquestionchoice();
+        //Collections.shuffle(optionList);
         //  List temp =
        /* for (int i = 0; i < temp.size(); i++) {
             optionList.add(new OptionKeyMap(temp.get(i).toString(), false));
@@ -122,10 +145,59 @@ public class KeywordMappingFragment extends Fragment implements KeywordMappingCo
         keywordOptionAdapter = new KeywordOptionAdapter(getActivity(), optionList, getCorrectCnt(optionList), presenter);
         recycler_view.setAdapter(keywordOptionAdapter);
         recycler_view.setLayoutManager(gridLayoutManager);
+        if (keywordmapping.get(index).isSubmitted()) {
+            if (!FC_Constants.isTest) {
+                showResult();
+            }else {
+                keywordOptionAdapter.setClickable(false);
+                keywordOptionAdapter.setShowAnswer(true);
+            }
+            submitBtn.setVisibility(View.INVISIBLE);
+            showAnswer.setVisibility(View.INVISIBLE);
+        } else {
+            submitBtn.setVisibility(View.VISIBLE);
+            if (FC_Constants.isTest) {
+                showAnswer.setVisibility(View.INVISIBLE);
+            } else {
+                showAnswer.setVisibility(View.VISIBLE);
+            }
+        }
 
+        if (index == 0) {
+            previous.setVisibility(View.INVISIBLE);
+        } else {
+            previous.setVisibility(View.VISIBLE);
+        }
+      /*  if (index == (keywordmapping.size() - 1)) {
+           submitBtn.setVisibility(View.VISIBLE);
+              next.setVisibility(View.INVISIBLE);
+        } else {
+             submitBtn.setVisibility(View.INVISIBLE);
+            submitBtn.setVisibility(View.VISIBLE);
+        }*/
 
     }
 
+    @Click(R.id.btn_next)
+    public void onNextClick() {
+        if (keywordOptionAdapter != null)
+            if (index < (keywordmapping.size() - 1)) {
+                index++;
+                LoadItemsToRecycler();
+            } else {
+                    GameConstatnts.playGameNext(getActivity(), GameConstatnts.TRUE, (OnGameClose) this);
+            }
+    }
+
+    @Click(R.id.btn_prev)
+    public void onPreviousClick() {
+        if (keywordOptionAdapter != null)
+            if (index > 0) {
+                //  setAnswer();
+                index--;
+                LoadItemsToRecycler();
+            }
+    }
 
     private int getCorrectCnt(List<ScienceQuestionChoice> lstquestionchoice) {
         int correctCnt = 0;
@@ -138,7 +210,7 @@ public class KeywordMappingFragment extends Fragment implements KeywordMappingCo
     }
 
     @Override
-    public void showResult(ScienceQuestion selectedAnsList) {
+    public void showResult() {
 
         keywordOptionAdapter.setClickable(false);
         keywordOptionAdapter.notifyDataSetChanged();
@@ -177,23 +249,19 @@ public class KeywordMappingFragment extends Fragment implements KeywordMappingCo
         }*/
     }
 
-    @Click(R.id.submit)
+    @Click(R.id.btn_submit)
     public void submitClick() {
         if (keywordOptionAdapter != null && keywordmapping != null) {
             List<ScienceQuestionChoice> selectedoptionList = keywordOptionAdapter.getSelectedOptionList();
             if (selectedoptionList != null && selectedoptionList.size() > 0) {
-                if (isSubmitted) {
-                    GameConstatnts.playGameNext(getActivity(), GameConstatnts.FALSE, this);
-                } else {
-                    isSubmitted = true;
-                    presenter.addLearntWords(keywordmapping, selectedoptionList);
-                    showAnswer.setVisibility(View.INVISIBLE);
-                    submit.setText("Next");
-                    BaseActivity.correctSound.start();
-                    recycler_view.startAnimation(animFadein);
-                }
-            } else {
-                GameConstatnts.playGameNext(getActivity(), GameConstatnts.TRUE, (OnGameClose) this);
+                isSubmitted = true;
+                presenter.addLearntWords(keywordmapping.get(index), selectedoptionList);
+                showAnswer.setVisibility(View.INVISIBLE);
+                keywordmapping.get(index).setSubmitted(true);
+                // submitBtn.setText("Next");
+                submitBtn.setVisibility(View.INVISIBLE);
+                BaseActivity.correctSound.start();
+                recycler_view.startAnimation(animFadein);
             }
         }
     }
@@ -211,8 +279,8 @@ public class KeywordMappingFragment extends Fragment implements KeywordMappingCo
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onMessageEvent(EventMessage event) {
-        if (!keywordmapping.getInstruction().isEmpty())
-            GameConstatnts.showGameInfo(getActivity(), keywordmapping.getInstruction(), readingContentPath + keywordmapping.getInstructionUrl());
+        if (!keywordmapping.get(index).getInstruction().isEmpty())
+            GameConstatnts.showGameInfo(getActivity(), keywordmapping.get(index).getInstruction(), readingContentPath + keywordmapping.get(index).getInstructionUrl());
     }
 
     @Click(R.id.showAnswer)
@@ -222,14 +290,22 @@ public class KeywordMappingFragment extends Fragment implements KeywordMappingCo
             showAnswer.setText("Hint");
             showanswer = false;
             keywordOptionAdapter.setClickable(true);
-            submit.setVisibility(View.VISIBLE);
+            submitBtn.setVisibility(View.VISIBLE);
+            next.setVisibility(View.VISIBLE);
+            if (index == 0) {
+                previous.setVisibility(View.INVISIBLE);
+            } else {
+                previous.setVisibility(View.VISIBLE);
+            }
 
         } else {
             //show Answer
             showAnswer.setText("Hide Hint");
             showanswer = true;
             keywordOptionAdapter.setClickable(false);
-            submit.setVisibility(View.INVISIBLE);
+            submitBtn.setVisibility(View.INVISIBLE);
+            next.setVisibility(View.INVISIBLE);
+            previous.setVisibility(View.INVISIBLE);
         }
         keywordOptionAdapter.setShowAnswer(showanswer);
         keywordOptionAdapter.notifyDataSetChanged();

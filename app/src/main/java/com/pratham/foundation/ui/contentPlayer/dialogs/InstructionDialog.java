@@ -29,7 +29,6 @@ public class InstructionDialog extends CustomLodingDialog {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.fc_custom_info_dialog);
-        getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         SansTextView infoText = findViewById(R.id.info);
         if (info != null)
             infoText.setText(info);
