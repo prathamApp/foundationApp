@@ -3,6 +3,7 @@ package com.pratham.foundation;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.media.AudioManager;
+import android.media.MediaPlayer;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
@@ -29,6 +30,7 @@ public class BaseActivity extends AppCompatActivity {
 
     public static boolean muteFlg = false;
     View mDecorView;
+    public static MediaPlayer correctSound;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,6 +45,7 @@ public class BaseActivity extends AppCompatActivity {
         if (audioManager == null)
             audioManager = (AudioManager) getSystemService(AUDIO_SERVICE);
         startSTT();
+        correctSound = MediaPlayer.create(this, R.raw.correct_ans);
         muteFlg = false;
         Catcho.Builder(this)
                 .activity(CatchoTransparentActivity.class).build();

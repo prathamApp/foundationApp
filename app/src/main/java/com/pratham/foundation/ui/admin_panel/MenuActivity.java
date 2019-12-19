@@ -47,7 +47,6 @@ public class MenuActivity extends BaseActivity {
     @ViewById(R.id.main_menu_layout)
     RelativeLayout main_layout;
 
-
     @AfterViews
     public void initialize() {
         if (!FastSave.getInstance().getBoolean(FC_Constants.VOICES_DOWNLOAD_INTENT, false))
@@ -119,9 +118,7 @@ public class MenuActivity extends BaseActivity {
             startActivity(intent);
             dialog.dismiss();
         });
-
         dia_btn_red.setOnClickListener(v -> dialog.dismiss());
-
     }
 
     @Click(R.id.mcv_ind)
