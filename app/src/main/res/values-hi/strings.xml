@@ -378,20 +378,26 @@
         <item>pa</item>
     </string-array>
 
-    <string name="fact_retrieval_click">Answer the question by selecting the word and then submit it.</string>
-    <string name="factRetrieval">Answer the question by selecting the word by long pressing it and then submit the selected answer.</string>
-    <string name="IKWAndroid">Identify keywords from paragraph and submit </string>
-    <string name="CopyWriting">Write the text displayed in the app in your notebook and then submit the photo</string>
-    <string name="chKeywords">Select the words releted to the topic and submit your answers</string>
-    <string name="ShowMeAndroid">Give the answer by selecting the correct option form the given options.</string>
-    <string name="Dictation">Listen to the audio and write it in your notebook and then submit the photo.</string>
-    <string name="PictAndroid">Listen to a story</string>
-    <string name="TAW">Write in your own words about the given topic in your notebook and sumbit its photo.</string>
+    <string name="fact_retrieval_click">जवाब देने के लिएअनुच्छेद से सही शब्द या वाक्य चुनिए|</string>
+    <string name="factRetrieval">जवाब देने के लिएअनुच्छेद से सही शब्द या वाक्य चुनिए|</string>
+    <string name="IKWAndroid">गए अनुच्छेद में वैज्ञानिक शब्दों को दिखाइए|</string>
+    <string name="CopyWriting">गए शब्द और जानकारी को अपनी कॉपी में लिखिए और उसकी फोटो सबमिट कीजिए|</string>
+    <string name="chKeywords">दिए गए शब्दों में से करीबी शब्द चुनिए|</string>
+    <string name="ShowMeAndroid">सही विकल्प चुनें|</string>
+    <string name="Dictation">ऑडियो सुनकर अपनी कॉपीमें लिखिए और उसकी फोटो सबमिट कीजिए|</string>
+    <string name="PictAndroid">प्ले बटन पर क्लिक कीजिए और सुनिए. फिर माइक बटन पर क्लिक करके साफ़ आवाज में पढ़िए|</string>
+    <string name="TAW">गए शब्द या वाक्य पर अपने विचार कॉपी में लिखिए और उसकी फोटो सबमिट कीजिए|</string>
     <string name="doing_act_read">Read the instructions and try to perform the activity.</string>
     <string name="letter">Write a letter on the given subject in noteboook and submit its photo.</string>
     <string name="doing_act_video">Watch the video and try to perform the activity.</string>
     <string name="ReadVocabAndroid">Read the following in order to increase you vocabulary.</string>
-    <string name="reading_stt">Answer the question by Give the answer by selecting the correct option form the given options.using the speech to text functionality.</string>
-    <string name="multiple_choice">Select the correct answer from multiple answers and submit it</string>
+    <string name="reading_stt">माइक बटन पर क्लिक कीजिए| जवाब रिकॉर्ड कर के सबमिट कीजिए।</string>
+    <string name="multiple_choice">जवाब देने के लिए दिए गए शब्दों में से सही विकल्प चुनिए|</string>
     <string name="Video">Watch the video</string>
+
+
+    <string name="Next_activity">Next activity?</string>
+    <string name="Do_you_want_to_exit">Do you want to exit?</string>
+    <string name="activity_completed">Activity completed</string>
+
 </resources>

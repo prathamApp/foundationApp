@@ -37,6 +37,9 @@
     <string name="Summary">Summary</string>
     <string name="Progress">Progress</string>
     <string name="Certificates">Certificates</string>
+    <string name="Next_activity">Next activity?</string>
+    <string name="Do_you_want_to_exit">Do you want to exit?</string>
+    <string name="activity_completed">Activity completed</string>
 
 <!--    game Instructions-->
     <string name="fact_retrieval_click">Answer the question by selecting the word and then submit it.</string>
