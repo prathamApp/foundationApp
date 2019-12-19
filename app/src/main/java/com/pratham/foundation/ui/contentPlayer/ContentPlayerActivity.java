@@ -2,7 +2,6 @@ package com.pratham.foundation.ui.contentPlayer;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
-import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
@@ -87,7 +86,7 @@ public class ContentPlayerActivity extends BaseActivity implements ShowInstructi
         onBackPressed();
     }
 
-    @Override
+/*    @Override
     public void onStart() {
         super.onStart();
         EventBus.getDefault().register(this);
@@ -97,7 +96,7 @@ public class ContentPlayerActivity extends BaseActivity implements ShowInstructi
     public void onStop() {
         super.onStop();
         EventBus.getDefault().unregister(this);
-    }
+    }*/
 
     @UiThread
     @Click(R.id.floating_info)

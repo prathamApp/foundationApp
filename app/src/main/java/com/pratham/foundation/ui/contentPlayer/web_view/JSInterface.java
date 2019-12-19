@@ -139,7 +139,6 @@ public class JSInterface implements RecognitionListener {
             e.printStackTrace();
         }
     }
-
 */
 
     @JavascriptInterface

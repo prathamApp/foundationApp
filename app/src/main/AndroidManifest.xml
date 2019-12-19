@@ -115,10 +115,25 @@
             android:name=".ui.contentPlayer.doing.FullScreenVideo_"
             android:screenOrientation="sensorLandscape" />
 
+        <activity
+            android:name=".utility.CatchoTransparentActivity"
+            android:parentActivityName=".BaseActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.Transparent"
+            android:windowSoftInputMode="stateAlwaysHidden" />
+
         <service
             android:name=".services.AppExitService"
             android:enabled="true"
             android:stopWithTask="false" />
+        <receiver
+            android:name=".services.OTGListener"
+            android:enabled="true">
+            <intent-filter>
+                <action android:name="android.hardware.usb.action.USB_DEVICE_ATTACHED" />
+                <action android:name="android.hardware.usb.action.USB_DEVICE_DETACHED" />
+            </intent-filter>
+        </receiver>
 
 
         <provider

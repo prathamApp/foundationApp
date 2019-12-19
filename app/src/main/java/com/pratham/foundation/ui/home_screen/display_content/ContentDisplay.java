@@ -52,7 +52,6 @@ import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.UiThread;
 import org.androidannotations.annotations.ViewById;
 import org.androidannotations.annotations.res.DrawableRes;
-import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
@@ -554,7 +553,7 @@ public class ContentDisplay extends BaseActivity implements ContentContract.Cont
         progressLayout.setCurProgress(modal_fileDownloading.getProgress());
     }
 
-    @Override
+/*    @Override
     public void onStart() {
         super.onStart();
         EventBus.getDefault().register(this);
@@ -564,7 +563,7 @@ public class ContentDisplay extends BaseActivity implements ContentContract.Cont
     public void onStop() {
         EventBus.getDefault().unregister(this);
         super.onStop();
-    }
+    }*/
 
     @SuppressLint("SetTextI18n")
     @Subscribe(threadMode = ThreadMode.MAIN)

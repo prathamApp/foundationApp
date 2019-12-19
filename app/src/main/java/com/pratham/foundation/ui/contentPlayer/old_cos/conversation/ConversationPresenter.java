@@ -22,6 +22,9 @@ import java.io.InputStream;
 import java.util.ArrayList;
 
 import static com.pratham.foundation.database.AppDatabase.appDatabase;
+import static com.pratham.foundation.utility.FC_Constants.CURRENT_FOLDER_NAME;
+import static com.pratham.foundation.utility.FC_Constants.STT_REGEX;
+import static com.pratham.foundation.utility.FC_Constants.STT_REGEX_2;
 
 
 @EBean
@@ -70,17 +73,25 @@ public class ConversationPresenter implements ConversationContract.ConversationP
     @Override
     public void sttResultProcess(ArrayList<String> sttServerResult, String answer) {
 
-//        String answer2 = answer.replaceAll(STT_REGEX_2, "");
-//        String[] splitQues = answer2.split(" ");
-        String[] splitQues = answer.replaceAll("[^a-zA-Z ]", "").toLowerCase().split("\\s+");
+        String[] splitQues;
+        if (FastSave.getInstance().getString(CURRENT_FOLDER_NAME, "").equalsIgnoreCase("English"))
+            splitQues = answer.replaceAll("[^a-zA-Z ]", "").toLowerCase().split("\\s+");
+        else {
+            String answer2 = answer.replaceAll(STT_REGEX_2, "");
+            splitQues = answer2.split(" ");
+        }
         String words = " ";
 
         try {
-            for (int k=0 ; k < sttServerResult.size() ; k++ ) {
+            for (int k = 0; k < sttServerResult.size(); k++) {
                 String sttResult = sttServerResult.get(k);
-//                sttResult = sttResult.replaceAll(STT_REGEX_2, "");
-//                String[] splitRes = sttResult.split(" ");
-                String[] splitRes = sttResult.replaceAll("[^a-zA-Z ]", "").toLowerCase().split("\\s+");
+                String[] splitRes;
+                if (FastSave.getInstance().getString(CURRENT_FOLDER_NAME, "").equalsIgnoreCase("English"))
+                    splitRes = sttResult.replaceAll("[^a-zA-Z ]", "").toLowerCase().split("\\s+");
+                else {
+                    sttResult = sttResult.replaceAll(STT_REGEX, "");
+                    splitRes = sttResult.split(" ");
+                }
                 for (int j = 0; j < splitRes.length; j++) {
                     for (int i = 0; i < splitQues.length; i++) {
                         if (splitRes[j].equalsIgnoreCase(splitQues[i]) && !correctArr[i]) {
@@ -157,6 +168,7 @@ public class ConversationPresenter implements ConversationContract.ConversationP
     }
 
     private String startTime;
+
     @Override
     public void setStartTime(String currentDateTime) {
         startTime = currentDateTime;

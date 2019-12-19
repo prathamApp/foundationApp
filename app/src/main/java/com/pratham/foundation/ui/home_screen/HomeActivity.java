@@ -332,7 +332,7 @@ public class HomeActivity extends BaseActivity implements LevelChanged {
         testTab.setText("Test");
         testTab.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.ic_test, 0, 0);
 
-        if (LOGIN_MODE.contains("group")) {
+        if (FastSave.getInstance().getString(FC_Constants.LOGIN_MODE, FC_Constants.GROUP_MODE).contains("group")) {
             tabLayout.getTabAt(0).setCustomView(learningTab);
             tabLayout.getTabAt(1).setCustomView(practiceTab);
         } else {
@@ -498,7 +498,7 @@ public class HomeActivity extends BaseActivity implements LevelChanged {
     private void setupViewPager(ViewPager viewpager) {
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
         viewpager.setOffscreenPageLimit(5);
-        if (LOGIN_MODE.contains("group")) {
+        if (FastSave.getInstance().getString(FC_Constants.LOGIN_MODE, FC_Constants.GROUP_MODE).contains("group")) {
             adapter.addFrag(new LearningFragment_(), "Learning");
             adapter.addFrag(new PracticeFragment_(), "Practice");
             if (currentSubject.equalsIgnoreCase("english")) {
@@ -518,7 +518,7 @@ public class HomeActivity extends BaseActivity implements LevelChanged {
         viewpager.setAdapter(adapter);
     }
 
-    @Override
+/*    @Override
     public void onStart() {
         super.onStart();
         EventBus.getDefault().register(this);
@@ -528,7 +528,7 @@ public class HomeActivity extends BaseActivity implements LevelChanged {
     public void onStop() {
         super.onStop();
         EventBus.getDefault().unregister(this);
-    }
+    }*/
 
     @SuppressLint("SetTextI18n")
     @Subscribe(threadMode = ThreadMode.MAIN)

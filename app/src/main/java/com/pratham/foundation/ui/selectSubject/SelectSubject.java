@@ -61,7 +61,7 @@ public class SelectSubject extends BaseActivity implements
         FC_Constants.TAB_LAYOUT = config.smallestScreenWidthDp > 425;
         List<ContentTable> subjectList = presenter.getSubjectList();
 
-        if (FC_Constants.LOGIN_MODE.contains("group"))
+        if (FastSave.getInstance().getString(FC_Constants.LOGIN_MODE, FC_Constants.GROUP_MODE).contains("group"))
             studName = FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_NAME, "");
         else
             studName = FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_NAME, "").split(" ")[0];

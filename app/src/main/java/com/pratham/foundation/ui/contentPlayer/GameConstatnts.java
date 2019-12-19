@@ -300,7 +300,6 @@ public class GameConstatnts implements ShowInstruction {
                         bundle, pictionaryFragment.class.getSimpleName());
                 break;
 
-
             case GameConstatnts.THINKANDWRITE:
             case GameConstatnts.DOING_ACT_READ:
             case GameConstatnts.DOING_ACT_VIDEO:

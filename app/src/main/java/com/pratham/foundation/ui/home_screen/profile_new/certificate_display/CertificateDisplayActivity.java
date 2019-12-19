@@ -31,7 +31,6 @@ import java.util.List;
 import static com.pratham.foundation.utility.FC_Constants.GROUP_LOGIN;
 import static com.pratham.foundation.utility.FC_Constants.GROUP_MODE;
 import static com.pratham.foundation.utility.FC_Constants.INDIVIDUAL_MODE;
-import static com.pratham.foundation.utility.FC_Constants.LOGIN_MODE;
 import static com.pratham.foundation.utility.FC_Constants.QR_GROUP_MODE;
 import static com.pratham.foundation.utility.FC_Utility.dpToPx;
 
@@ -108,13 +107,13 @@ public class CertificateDisplayActivity extends BaseActivity implements
     public void displayProfileName() {
         String profileName = "QR Group";
         try {
-            if (LOGIN_MODE.equalsIgnoreCase(GROUP_MODE))
+            if (FastSave.getInstance().getString(FC_Constants.LOGIN_MODE, FC_Constants.GROUP_MODE).equalsIgnoreCase(GROUP_MODE))
                 profileName = AppDatabase.getDatabaseInstance(this).getGroupsDao().getGroupNameByGrpID(FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""));
-            else if (!LOGIN_MODE.equalsIgnoreCase(QR_GROUP_MODE)) {
+            else if (!FastSave.getInstance().getString(FC_Constants.LOGIN_MODE, FC_Constants.GROUP_MODE).equalsIgnoreCase(QR_GROUP_MODE)) {
                 profileName = AppDatabase.getDatabaseInstance(this).getStudentDao().getFullName(FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""));
             }
 
-            if (LOGIN_MODE.equalsIgnoreCase(INDIVIDUAL_MODE))
+            if (FastSave.getInstance().getString(FC_Constants.LOGIN_MODE, FC_Constants.GROUP_MODE).equalsIgnoreCase(INDIVIDUAL_MODE))
                 profileName = profileName.split(" ")[0];
 
         } catch (Exception e) {

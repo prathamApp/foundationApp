@@ -184,7 +184,6 @@ public class VocabReadingPresenter implements VocabReadingContract.VocabReadingP
             readingView.dismissLoadingDialog();
     }
 
-
     @Background
     @Override
     public void sttResultProcess(ArrayList<String> sttResult, List<String> splitWordsPunct, List<String> wordsResIdList) {

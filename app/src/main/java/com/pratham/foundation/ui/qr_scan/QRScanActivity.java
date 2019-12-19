@@ -339,7 +339,7 @@ public class QRScanActivity extends BaseActivity implements
             mScannerView.stopCamera();
             enterStudentData(playerModalList);
             startSession();
-            if(FC_Constants.LOGIN_MODE.equalsIgnoreCase(QR_GROUP_MODE)) {
+            if(FastSave.getInstance().getString(FC_Constants.LOGIN_MODE, FC_Constants.GROUP_MODE).equalsIgnoreCase(QR_GROUP_MODE)) {
                 String currentStudName = "QR Students";
                 FastSave.getInstance().saveString(FC_Constants.CURRENT_STUDENT_ID , "QR");
                 FastSave.getInstance().saveString(FC_Constants.CURRENT_STUDENT_NAME , currentStudName);
@@ -414,7 +414,7 @@ public class QRScanActivity extends BaseActivity implements
             playerModal.setStudentID(jsonobject.getString("stuId"));
             playerModal.setStudentName(jsonobject.getString("name"));
 
-            if(FC_Constants.LOGIN_MODE.equalsIgnoreCase(QR_GROUP_MODE)) {
+            if(FastSave.getInstance().getString(FC_Constants.LOGIN_MODE, FC_Constants.GROUP_MODE).equalsIgnoreCase(QR_GROUP_MODE)) {
                 if (playerModalList.size() < 5) {
                     if (playerModalList.size() > 0) {
                         for (int i = 0; i < playerModalList.size(); i++)

@@ -103,6 +103,9 @@ public class FC_Constants {
     public static final String ROOT_NODE = "root_node";
     public static final String BOTTOM_NODE = "BOTTOM_NODE";
     public static final String LANGUAGE_SPLASH_DIALOG = "language_splash_dialog";
+    public static final String OTG_INSERTED = "otg_inserted";
+    public static final String BACKUP_DB_COPIED = "BACKUP_DB_COPIED";
+    public static final String BACKUP_DB_NOT_COPIED = "backup_db_not_copied";
     public static String RECEIVED_FOLDER_PATH = "";
     public static boolean TAB_LAYOUT = false;
     public static int FTP_HOTSPOT_KEYMGMT = -11;
@@ -239,7 +242,7 @@ public class FC_Constants {
     public static String currentSubject = "";
 //    public static boolean GROUP_QR = false;
     public static boolean levelSet = false;
-    public static String LOGIN_MODE = "login_mode";
+    public static final String LOGIN_MODE = "login_mode";
     public static final String GROUP_MODE = "group_mode";
     public static final String QR_GROUP_MODE = "qr_group_mode";
     public static final String INDIVIDUAL_MODE = "individual_mode";

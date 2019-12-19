@@ -95,6 +95,7 @@
     <string name="download">Download</string>
     <string name="age_3_to_6">Age 3 to 6</string>
     <string name="age_8_to_14">Age 8 to 14</string>
+    <string name="age_8_and_above">Age 8 and above.</string>
     <string name="Summary">Summary</string>
     <string name="Progress">Progress</string>
     <string name="Certificates">Certificates</string>

@@ -308,7 +308,7 @@ public class OppositesActivity extends BaseActivity
     }
 
     @Override
-    protected void onStop() {
+    public void onStop() {
         super.onStop();
         try {
             mediaPlayerUtil.stopMedia();

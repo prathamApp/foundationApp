@@ -41,7 +41,6 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 import static com.pratham.foundation.utility.FC_Constants.GROUP_MODE;
-import static com.pratham.foundation.utility.FC_Constants.LOGIN_MODE;
 import static com.pratham.foundation.utility.FC_Utility.dpToPx;
 
 public class FragmentChildAttendance extends Fragment implements ContractChildAttendance.attendanceView {
@@ -83,7 +82,7 @@ public class FragmentChildAttendance extends Fragment implements ContractChildAt
                 groupID = getArguments().getString(FC_Constants.GROUPID);
                 FC_Constants.GROUP_LOGIN = true;
                 FC_Constants.currentGroup = "" + groupID;
-                if(LOGIN_MODE.equalsIgnoreCase(GROUP_MODE))
+                if(FastSave.getInstance().getString(FC_Constants.LOGIN_MODE, FC_Constants.GROUP_MODE).equalsIgnoreCase(GROUP_MODE))
                     FastSave.getInstance().saveString(FC_Constants.CURRENT_STUDENT_ID, ""+groupID);
                 for (Student stu : students) {
                     avatarsMale.add(FC_Utility.getRandomMaleAvatar(getActivity()));
@@ -122,7 +121,7 @@ public class FragmentChildAttendance extends Fragment implements ContractChildAt
     @Override
     public void childItemClicked(Student student, int position) {
         Log.d("ooo", "" + position);
-        if(LOGIN_MODE.equalsIgnoreCase(GROUP_MODE))
+        if(FastSave.getInstance().getString(FC_Constants.LOGIN_MODE, FC_Constants.GROUP_MODE).equalsIgnoreCase(GROUP_MODE))
         for (Student stu : students) {
             if (stu.getStudentID().equalsIgnoreCase(student.getStudentID())) {
                 if (stu.isChecked()) {
@@ -208,7 +207,7 @@ public class FragmentChildAttendance extends Fragment implements ContractChildAt
                     }
 
                     String currentStudentID = "";
-                    if(LOGIN_MODE.equalsIgnoreCase(GROUP_MODE))
+                    if(FastSave.getInstance().getString(FC_Constants.LOGIN_MODE, FC_Constants.GROUP_MODE).equalsIgnoreCase(GROUP_MODE))
                         currentStudentID = groupID;
                     else {
                         currentStudentID = stud.get(0).getStudentID();

@@ -422,7 +422,7 @@ public class ConversationActivity extends BaseActivity
     }
 
     @Override
-    protected void onPause() {
+    public void onPause() {
         Log.d(LOG_TAG, "pause");
         super.onPause();
         if (voiceStart)
@@ -430,7 +430,7 @@ public class ConversationActivity extends BaseActivity
     }
 
     @Override
-    protected void onStop() {
+    public void onStop() {
         Log.d(LOG_TAG, "stop");
         super.onStop();
     }

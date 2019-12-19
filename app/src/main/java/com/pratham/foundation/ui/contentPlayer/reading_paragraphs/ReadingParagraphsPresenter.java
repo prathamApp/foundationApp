@@ -29,6 +29,7 @@ import java.util.List;
 import static com.pratham.foundation.database.AppDatabase.appDatabase;
 import static com.pratham.foundation.ui.contentPlayer.reading_paragraphs.ReadingParagraphsActivity.correctArr;
 import static com.pratham.foundation.ui.contentPlayer.reading_paragraphs.ReadingParagraphsActivity.lineBreakCounter;
+import static com.pratham.foundation.utility.FC_Constants.CURRENT_FOLDER_NAME;
 import static com.pratham.foundation.utility.FC_Constants.STT_REGEX;
 
 
@@ -184,7 +185,10 @@ public class ReadingParagraphsPresenter implements ReadingParagraphsContract.Rea
         Log.d("Punctu", "onResults: " + sttRes);
 
         for (int j = 0; j < splitRes.length; j++) {
-            splitRes[j] = splitRes[j].replaceAll(STT_REGEX, "");
+            if(FastSave.getInstance().getString(CURRENT_FOLDER_NAME,"").equalsIgnoreCase("English"))
+                splitRes[j] = String.valueOf(splitRes[j].replaceAll("[^a-zA-Z ]", "").toLowerCase().split("\\s+"));
+            else
+                splitRes[j] = splitRes[j].replaceAll(STT_REGEX, "").toLowerCase();
             for (int i = 0; i < splitWordsPunct.size(); i++) {
                 if ((splitRes[j].equalsIgnoreCase(splitWordsPunct.get(i))) && !correctArr[i]) {
                     correctArr[i] = true;

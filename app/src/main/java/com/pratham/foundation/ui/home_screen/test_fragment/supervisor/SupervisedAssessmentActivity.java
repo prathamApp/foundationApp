@@ -47,7 +47,6 @@ import butterknife.OnClick;
 import static com.pratham.foundation.ApplicationClass.isTablet;
 import static com.pratham.foundation.utility.FC_Constants.CURRENT_ASSESSMENT_STUDENT_ID;
 import static com.pratham.foundation.utility.FC_Constants.GROUP_MODE;
-import static com.pratham.foundation.utility.FC_Constants.LOGIN_MODE;
 
 
 public class SupervisedAssessmentActivity extends BaseActivity implements TestStudentClicked {
@@ -89,7 +88,7 @@ public class SupervisedAssessmentActivity extends BaseActivity implements TestSt
 
         if (testMode.equalsIgnoreCase("unsupervised")) {
             if (isTablet) {
-                if (LOGIN_MODE.equalsIgnoreCase(GROUP_MODE)) {
+                if (FastSave.getInstance().getString(FC_Constants.LOGIN_MODE, FC_Constants.GROUP_MODE).equalsIgnoreCase(GROUP_MODE)) {
                     attendence_layout.setVisibility(View.VISIBLE);
                     getStudents();
                 } else {
@@ -206,7 +205,7 @@ public class SupervisedAssessmentActivity extends BaseActivity implements TestSt
             @Override
             protected Object doInBackground(Object[] objects) {
                 try {
-                    if (isTablet && FC_Constants.LOGIN_MODE.equalsIgnoreCase(GROUP_MODE)) {
+                    if (isTablet && FastSave.getInstance().getString(FC_Constants.LOGIN_MODE, FC_Constants.GROUP_MODE).equalsIgnoreCase(GROUP_MODE)) {
                         studentList = AppDatabase.appDatabase.getStudentDao().getGroupwiseStudents(FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""));
                     } else {
                         studentList = AppDatabase.appDatabase.getStudentDao().getAllStudents();

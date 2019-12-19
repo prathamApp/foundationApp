@@ -116,6 +116,7 @@ public class SplashActivity extends SplashSupportActivity implements SplashContr
     }
 
     public void initiateApp() {
+        FastSave.getInstance().saveString(FC_Constants.LOGIN_MODE, "NA");
 
         String[] permissionArray = new String[]{PermissionUtils.Manifest_CAMERA,
                 PermissionUtils.Manifest_WRITE_EXTERNAL_STORAGE,

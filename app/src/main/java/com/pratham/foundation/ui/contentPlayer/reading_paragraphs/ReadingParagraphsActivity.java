@@ -32,6 +32,7 @@ import com.pratham.foundation.R;
 import com.pratham.foundation.customView.RipplePulseLayout;
 import com.pratham.foundation.customView.SansTextView;
 import com.pratham.foundation.modalclasses.ModalParaWord;
+import com.pratham.foundation.services.shared_preferences.FastSave;
 import com.pratham.foundation.services.stt.ContinuousSpeechService_New;
 import com.pratham.foundation.services.stt.STT_Result_New;
 import com.pratham.foundation.utility.FC_Constants;
@@ -48,6 +49,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import static com.pratham.foundation.utility.FC_Constants.CURRENT_FOLDER_NAME;
 import static com.pratham.foundation.utility.FC_Constants.STT_REGEX;
 import static com.pratham.foundation.utility.FC_Constants.dialog_btn_cancel;
 import static com.pratham.foundation.utility.FC_Constants.gameFolderPath;
@@ -196,7 +198,12 @@ public class ReadingParagraphsActivity extends BaseActivity
                 splitWords.add(modalParaWordList.get(j).getWord());
                 if (modalParaWordList.get(j).getWord().equalsIgnoreCase("#"))
                     lineBreakCounter += 1;
-                splitWordsPunct.add(splitWords.get(j).replaceAll(STT_REGEX, ""));
+                if(FastSave.getInstance().getString(CURRENT_FOLDER_NAME,"").equalsIgnoreCase("English"))
+                    splitWordsPunct.add(String.valueOf(splitWords.get(j)
+                            .replaceAll("[^a-zA-Z ]", "")
+                            .toLowerCase().split("\\s+")));
+                else
+                    splitWordsPunct.add(splitWords.get(j).replaceAll(STT_REGEX, ""));
                 wordsDurationList.add(modalParaWordList.get(j).getWordDuration());
                 wordsResIdList.add(modalParaWordList.get(j).getWordId());
             }
