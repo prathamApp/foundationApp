@@ -51,7 +51,8 @@ public class ListeningAndWrittingPresenterImp implements ListeningAndWrittingCon
     @Override
     public void fetchJsonData(String contentPath) {
         try {
-            InputStream is = new FileInputStream(contentPath + "Dict.json");
+            // InputStream is = new FileInputStream(contentPath + "Dict.json");
+            InputStream is = new FileInputStream(contentPath + "Dictation.json");
             int size = is.available();
             byte[] buffer = new byte[size];
             is.read(buffer);
@@ -118,9 +119,8 @@ public class ListeningAndWrittingPresenterImp implements ListeningAndWrittingCon
             Collections.shuffle(dataList);
             for (int i = 0; i < dataList.size(); i++) {
                 if (perc < 95) {
-                    /*if (!checkWord("" + dataList.get(i).getTitle()))
-                        listenAndWrittingModal.add(dataList.get(i));*/
-                    listenAndWrittingModal.add(dataList.get(i));
+                    if (!checkWord("" + dataList.get(i).getTitle()))
+                        listenAndWrittingModal.add(dataList.get(i));
                 } else {
                     listenAndWrittingModal.add(dataList.get(i));
                 }

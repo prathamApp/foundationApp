@@ -21,7 +21,7 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1"
+        android:layout_weight="1.5"
         android:elevation="5dp"  >
 
         <com.pratham.foundation.customView.SansTextViewBold
@@ -70,7 +70,7 @@
             android:adjustViewBounds="true"
             android:textColor="@color/white"
             android:background="@drawable/button_red"
-            android:text="clear"
+            android:text="@string/clear"
             style="@style/submitbtn"/>
         <com.pratham.foundation.customView.SansButton
             android:id="@+id/show_answer"
@@ -78,7 +78,7 @@
             android:layout_height="50dp"
             android:layout_weight="1"
             android:background="@drawable/button_yellow"
-            android:text="show answer"
+            android:text="@string/hint"
             style="@style/submitbtn"/>
     </LinearLayout>
 

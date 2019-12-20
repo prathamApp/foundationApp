@@ -72,6 +72,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:fadeScrollbars="false"
+                android:scrollbars="vertical"
                 android:layout_centerInParent="true"
                 android:layout_marginTop="@dimen/_3sdp"
                 android:orientation="vertical" />

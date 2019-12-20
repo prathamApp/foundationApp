@@ -317,10 +317,12 @@ public class ParagraphWritingFragment extends Fragment
 
     private void setPlayImage() {
         play.setImageDrawable(getActivity().getDrawable(R.drawable.ic_play_arrow_black));
+        play.setBackground(getActivity().getResources().getDrawable(R.drawable.button_green));
     }
 
     private void setPauseImage() {
         play.setImageDrawable(getActivity().getDrawable(R.drawable.ic_pause_black));
+        play.setBackground(getActivity().getResources().getDrawable(R.drawable.button_yellow));
     }
 
     @Override

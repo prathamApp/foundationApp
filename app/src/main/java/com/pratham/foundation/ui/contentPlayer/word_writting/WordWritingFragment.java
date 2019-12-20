@@ -23,6 +23,7 @@ import android.widget.TextView;
 import com.pratham.foundation.ApplicationClass;
 import com.pratham.foundation.R;
 import com.pratham.foundation.customView.SansButton;
+import com.pratham.foundation.customView.SansTextView;
 import com.pratham.foundation.customView.display_image_dialog.CustomLodingDialog;
 import com.pratham.foundation.interfaces.OnGameClose;
 import com.pratham.foundation.modalclasses.EventMessage;
@@ -72,6 +73,9 @@ public class WordWritingFragment extends Fragment
 
     @ViewById(R.id.capture)
     ImageButton capture;
+
+    @ViewById(R.id.count)
+    SansTextView count;
     /* @ViewById(R.id.title)
      SansTextView title;*/
     private Uri capturedImageUri;
@@ -134,6 +138,7 @@ public class WordWritingFragment extends Fragment
 
     private void ShowSingleQuestion() {
         text.setText(paragraphWords.get(index));
+        count.setText("" + (index + 1));
         submitBtn.setVisibility(View.INVISIBLE);
         camera_controll.setVisibility(View.INVISIBLE);
         // preview.setVisibility(View.INVISIBLE);

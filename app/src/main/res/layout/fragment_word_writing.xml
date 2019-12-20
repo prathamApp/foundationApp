@@ -118,8 +118,21 @@
         android:elevation="@dimen/_3sdp"
         android:orientation="vertical"
         android:padding="@dimen/_5sdp">
+        <com.pratham.foundation.customView.SansTextView
+            android:id="@+id/count"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:textSize="@dimen/_20sdp"
+            android:gravity="center"
+            android:textColor="@color/colorText"
+            android:layout_marginTop="@dimen/_20sdp"
+            android:layout_marginBottom="@dimen/_20sdp"
+            android:text="write" />
         <TextView
             android:id="@+id/text"
+            android:layout_below="@id/count"
             android:layout_width="match_parent"
             android:layout_marginHorizontal="@dimen/_5sdp"
             android:layout_marginVertical="@dimen/_5sdp"

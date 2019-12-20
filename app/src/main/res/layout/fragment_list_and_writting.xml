@@ -228,7 +228,7 @@
                     android:layout_marginTop="@dimen/_10sdp"
                     android:background="@drawable/button_yellow"
                     android:paddingHorizontal="@dimen/_10sdp"
-                    android:text="hint" />
+                    android:text="@string/hint" />
 
             </RelativeLayout>
 

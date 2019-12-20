@@ -57,7 +57,7 @@
                     android:layout_margin="@dimen/_5sdp"
                     android:gravity="center"
                     android:textColor="@color/colorText"
-                    android:text="You answered"
+                    android:text="@string/You_answered"
                     android:textSize="@dimen/_12sdp" />
 
 
@@ -67,7 +67,7 @@
                     android:layout_height="wrap_content"
                     android:layout_margin="@dimen/_5sdp"
                     android:gravity="center"
-                    android:text="Scipped"
+                    android:text="@string/Skipped"
                     android:textColor="@color/colorText"
                     android:textSize="@dimen/_11sdp" />
 
@@ -101,7 +101,7 @@
                     android:layout_height="wrap_content"
                     android:layout_margin="@dimen/_5sdp"
                     android:gravity="center"
-                    android:text="Correct Answer"
+                    android:text="@string/Correct_Answer"
                     android:textSize="@dimen/_12sdp" />
 
                 <com.pratham.foundation.customView.SansTextView

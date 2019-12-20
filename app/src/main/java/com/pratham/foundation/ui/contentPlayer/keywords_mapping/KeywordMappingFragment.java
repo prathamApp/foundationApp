@@ -107,7 +107,7 @@ public class KeywordMappingFragment extends Fragment implements KeywordMappingCo
         //show instruction dialog
         if (list != null) {
             keywordmapping = list;
-            keyword.setText(list.get(index).getQuestion());
+
 
 
        /* if (FC_Constants.TAB_LAYOUT) {
@@ -135,7 +135,7 @@ public class KeywordMappingFragment extends Fragment implements KeywordMappingCo
     }
 
     private void LoadItemsToRecycler() {
-
+        keyword.setText(keywordmapping.get(index).getQuestion());
         optionList = keywordmapping.get(index).getLstquestionchoice();
         //Collections.shuffle(optionList);
         //  List temp =
@@ -268,6 +268,7 @@ public class KeywordMappingFragment extends Fragment implements KeywordMappingCo
 
     @Override
     public void gameClose() {
+        presenter.returnScore();
         presenter.addScore(0, "", 0, 0, resStartTime, FC_Utility.getCurrentDateTime(), GameConstatnts.KEYWORD_MAPPING + " " + GameConstatnts.END);
     }
 
@@ -287,7 +288,8 @@ public class KeywordMappingFragment extends Fragment implements KeywordMappingCo
     public void showAnswer() {
         if (showanswer) {
             //hide answer
-            showAnswer.setText("Hint");
+           // showAnswer.setText("Hint");
+           showAnswer.setText(getResources().getString(R.string.hint));
             showanswer = false;
             keywordOptionAdapter.setClickable(true);
             submitBtn.setVisibility(View.VISIBLE);
@@ -300,7 +302,8 @@ public class KeywordMappingFragment extends Fragment implements KeywordMappingCo
 
         } else {
             //show Answer
-            showAnswer.setText("Hide Hint");
+            //showAnswer.setText("Hide Hint");
+            showAnswer.setText(getResources().getString(R.string.hide_hint));
             showanswer = true;
             keywordOptionAdapter.setClickable(false);
             submitBtn.setVisibility(View.INVISIBLE);
