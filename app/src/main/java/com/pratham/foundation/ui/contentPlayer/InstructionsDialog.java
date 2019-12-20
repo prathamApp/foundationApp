@@ -3,6 +3,7 @@ package com.pratham.foundation.ui.contentPlayer;
 import android.app.Dialog;
 import android.content.Context;
 import android.graphics.Color;
+import android.graphics.Typeface;
 import android.graphics.drawable.ColorDrawable;
 import android.media.MediaPlayer;
 import android.os.Bundle;
@@ -13,6 +14,7 @@ import com.pratham.foundation.R;
 import com.pratham.foundation.customView.SansTextViewBold;
 import com.pratham.foundation.customView.display_image_dialog.CustomLodingDialog;
 import com.pratham.foundation.interfaces.ShowInstruction;
+import com.pratham.foundation.utility.FC_Constants;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -47,7 +49,9 @@ public class InstructionsDialog extends CustomLodingDialog {
         } else {
             dia_title.setText("");
         }
-
+        if (FC_Constants.currentSelectedLanguage.equalsIgnoreCase("Hindi")) {
+            resorcetype="hi_"+resorcetype;
+        }
         int rawID = context.getResources().getIdentifier(resorcetype.toLowerCase(), "raw", context.getPackageName());
         if (rawID != 0) {
             mediaPlayer = MediaPlayer.create(context, rawID);

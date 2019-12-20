@@ -46,8 +46,6 @@ import org.greenrobot.eventbus.EventBus;
 
 import java.util.List;
 
-import static com.pratham.foundation.utility.FC_Constants.dialog_btn_cancel;
-
 public class GameConstatnts implements ShowInstruction {
     public static final String KEYWORD_IDENTIFICATION = "IKWAndroid";
     public static final String KEYWORD_MAPPING = "chKeywords";
