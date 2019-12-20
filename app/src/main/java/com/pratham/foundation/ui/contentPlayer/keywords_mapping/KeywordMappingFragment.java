@@ -287,7 +287,8 @@ public class KeywordMappingFragment extends Fragment implements KeywordMappingCo
     public void showAnswer() {
         if (showanswer) {
             //hide answer
-            showAnswer.setText("Hint");
+           // showAnswer.setText("Hint");
+           showAnswer.setText(getResources().getString(R.string.hint));
             showanswer = false;
             keywordOptionAdapter.setClickable(true);
             submitBtn.setVisibility(View.VISIBLE);
@@ -300,7 +301,8 @@ public class KeywordMappingFragment extends Fragment implements KeywordMappingCo
 
         } else {
             //show Answer
-            showAnswer.setText("Hide Hint");
+            //showAnswer.setText("Hide Hint");
+            showAnswer.setText(getResources().getString(R.string.hide_hint));
             showanswer = true;
             keywordOptionAdapter.setClickable(false);
             submitBtn.setVisibility(View.INVISIBLE);

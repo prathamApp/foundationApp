@@ -148,12 +148,12 @@ public class ContentPlayerActivity extends BaseActivity implements ShowInstructi
         Button dia_btn_green = dialog.findViewById(R.id.dia_btn_green);
         Button dia_btn_red = dialog.findViewById(R.id.dia_btn_red);
 
-        dia_btn_green.setText("Yes");
-        dia_btn_red.setText("No");
-        dia_btn_yellow.setText("" + dialog_btn_cancel);
-        dia_title.setText("Exit the game?");
+        dia_btn_green.setText(getResources().getString(R.string.Okay));
+        //dia_btn_red.setText("No");
+        dia_btn_red.setVisibility(View.GONE);
+        dia_btn_yellow.setText(getResources().getString(R.string.Cancel));
+        dia_title.setText(getResources().getString(R.string.exit_dialog_msg));
         dialog.show();
-
         dia_btn_green.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

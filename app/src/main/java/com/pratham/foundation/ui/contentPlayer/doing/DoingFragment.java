@@ -100,6 +100,9 @@ public class DoingFragment extends Fragment implements STT_Result_New.sttView,On
     @BindView(R.id.capture)
     ImageView capture;
 
+    @BindView(R.id.reset_btn)
+    SansButton reset_btn;
+
 
    /* @BindView(R.id.RelativeLayout)
     RelativeLayout RelativeLayout;*/
@@ -394,10 +397,13 @@ public class DoingFragment extends Fragment implements STT_Result_New.sttView,On
         }
         subQuestion.setText(scienceQuestionChoices.get(index).getSubQues());
         subQuestion.setMovementMethod(new ScrollingMovementMethod());
+        etAnswer.setMovementMethod(new ScrollingMovementMethod());
         if(scienceQuestionChoices.get(index).getUserAns().trim()!=null && !scienceQuestionChoices.get(index).getUserAns().isEmpty()){
-            etAnswer.setText(scienceQuestionChoices.get(index).getUserAns());
+            myAns=scienceQuestionChoices.get(index).getUserAns();
+            etAnswer.setText(myAns);
         }else {
-            etAnswer.setText("");
+            myAns="";
+            etAnswer.setText(myAns);
         }
         etAnswer.addTextChangedListener(new TextWatcher() {
             @Override
@@ -477,11 +483,40 @@ public class DoingFragment extends Fragment implements STT_Result_New.sttView,On
     public void micPressed(int micPressed) {
         if (micPressed == 0) {
             ib_mic.setImageResource(R.drawable.ic_mic_black);
+            showButtons();
         } else if (micPressed == 1) {
             ib_mic.setImageResource(R.drawable.ic_stop_black);
+            hideButtons();
         }
     }
+    private void hideButtons() {
+        previous.setVisibility(View.INVISIBLE);
+        next.setVisibility(View.INVISIBLE);
+        reset_btn.setVisibility(View.INVISIBLE);
+        submitBtn.setVisibility(View.INVISIBLE);
+        camera_controll.setVisibility(View.INVISIBLE);
+    }
 
+    private void showButtons() {
+        if (index == 0) {
+            previous.setVisibility(View.INVISIBLE);
+        } else {
+            previous.setVisibility(View.VISIBLE);
+        }
+        if (index == (scienceQuestionChoices.size() - 1)) {
+            submitBtn.setVisibility(View.VISIBLE);
+            next.setVisibility(View.INVISIBLE);
+        } else {
+            submitBtn.setVisibility(View.INVISIBLE);
+            next.setVisibility(View.VISIBLE);
+        }
+        if (index == (scienceQuestionChoices.size() - 1)) {
+            submitBtn.setVisibility(View.VISIBLE);
+            camera_controll.setVisibility(View.VISIBLE);
+
+        }
+        reset_btn.setVisibility(View.VISIBLE);
+    }
     @Override
     public void silenceDetected() {
 
@@ -525,7 +560,7 @@ public class DoingFragment extends Fragment implements STT_Result_New.sttView,On
 
     @Override
     public void Stt_onResult(ArrayList<String> matches) {
-        micPressed(0);
+      //  micPressed(0);
 //        ib_mic.stopRecording();
 
         System.out.println("LogTag" + " onResults");
@@ -602,7 +637,14 @@ public class DoingFragment extends Fragment implements STT_Result_New.sttView,On
                 loadSubQuestions();
             }
     }
-
+    @OnClick(R.id.reset_btn)
+    public void reset(){
+        myAns="";
+        etAnswer.setText(myAns);
+        scienceQuestionChoices.get(index).setUserAns(myAns);
+        scienceQuestionChoices.get(index).setStartTime(speechStartTime);
+        scienceQuestionChoices.get(index).setEndTime( FC_Utility.getCurrentDateTime());
+    }
     @OnClick(R.id.next)
     public void onNextClick() {
         if (scienceQuestionChoices != null)
@@ -749,13 +791,7 @@ public class DoingFragment extends Fragment implements STT_Result_New.sttView,On
         SansButton dia_btn_cross = dialog.findViewById(R.id.dia_btn_cross);
         ImageButton camera = dialog.findViewById(R.id.camera);
         dialog.show();
-        /*try {
-            Bitmap bmImg = BitmapFactory.decodeFile("" + path);
-            BitmapFactory.decodeStream(new FileInputStream(path));
-            iv_dia_preview.setImageBitmap(bmImg);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }*/
+
 
         iv_dia_preview.setImageURI(capturedImageUri);
         dia_btn_cross.setOnClickListener(v -> {
@@ -782,37 +818,13 @@ public class DoingFragment extends Fragment implements STT_Result_New.sttView,On
                         preview.setVisibility(View.VISIBLE);
                     }
                 }
-                //Bitmap photo = (Bitmap) data.getExtras().get("data");
-               /* preview.setVisibility(View.VISIBLE);
-                preview.setImageBitmap(photo);
-                preview.setScaleType(ImageView.ScaleType.FIT_XY);*/
-
-               // createDirectoryAndSaveFile(photo, imageName);
-               /* capture.setVisibility(View.GONE);
-                preview.setVisibility(View.VISIBLE);*/
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
-   /* public void createDirectoryAndSaveFile(Bitmap imageToSave, String fileName) {
-        try {
 
-            File direct = new File(activityPhotoPath);
-            File file = new File(direct, fileName);
-
-            FileOutputStream out = new FileOutputStream(file);
-            imageToSave.compress(Bitmap.CompressFormat.JPEG, 100, out);
-            // isPhotoSaved = true;
-            out.flush();
-            out.close();
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-    }*/
     @Override
     public void gameClose() {
         //add questions only attempted (correct or wrong any)

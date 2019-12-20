@@ -5,9 +5,6 @@
     android:layout_height="match_parent"
     app:cardBackgroundColor="@android:color/transparent"
     app:cardElevation="0dp">
-
-
-
     <Space
         android:id="@+id/space"
         android:layout_width="match_parent"
@@ -34,8 +31,6 @@
         <ScrollView
             android:layout_width="match_parent"
             android:layout_below="@+id/lbl_ques"
-            android:fadeScrollbars="false"
-            android:scrollbarSize="@dimen/_2sdp"
             android:layout_height="match_parent">
             <com.pratham.foundation.customView.SansTextView
                 android:id="@+id/tv_question"
@@ -75,12 +70,10 @@
                 android:layout_marginTop="@dimen/_5sdp"
                 android:gravity="center_horizontal"
                 android:textSize="@dimen/_15sdp"
-                android:text="Your Answer"/>
+                android:text="@string/Your_answer"/>
         <ScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:fadeScrollbars="false"
-            android:scrollbarSize="@dimen/_2sdp"
             android:layout_below="@+id/lbl_ans">
         <com.pratham.foundation.customView.SansTextView
             android:id="@+id/et_answer"
@@ -91,7 +84,7 @@
             android:scrollbars="vertical"
             android:background="@drawable/ripple_rectangle"
             android:gravity="center"
-            android:hint="Enter Answer"
+            android:hint="@string/Enter_answer"
             android:padding="@dimen/_8sdp"
             android:textSize="@dimen/_20sdp" />
         </ScrollView>
@@ -108,56 +101,13 @@
         android:layout_centerHorizontal="true"
         android:scaleType="fitXY"
         android:src="@drawable/ic_mic_24dp" />-->
-    <LinearLayout
+    <include
         android:id="@+id/bottom_panel"
+        layout="@layout/bottom_control_panel_v5"
         android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:layout_marginStart="@dimen/_10sdp"
-        android:layout_marginEnd="@dimen/_10sdp"
-        android:layout_height="wrap_content">
-
-        <ImageButton
-            android:id="@+id/ib_mic"
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:layout_height="@dimen/_35sdp"
-            android:layout_marginBottom="@dimen/_10sdp"
-            android:layout_marginTop="@dimen/_5sdp"
-            android:scaleType="centerInside"
-            android:layout_marginStart="@dimen/_2sdp"
-            android:layout_marginEnd="@dimen/_2sdp"
-            android:elevation="@dimen/_5sdp"
-            android:textColor="@color/white"
-            android:background="@drawable/button_green"
-            android:src="@drawable/ic_mic_black"/>
-        <com.pratham.foundation.customView.SansButton
-            android:id="@+id/reset_btn"
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:layout_height="@dimen/_35sdp"
-            android:layout_marginBottom="@dimen/_10sdp"
-            android:layout_marginTop="@dimen/_5sdp"
-            android:layout_marginStart="@dimen/_2sdp"
-            android:layout_marginEnd="@dimen/_2sdp"
-            android:elevation="@dimen/_5sdp"
-            android:text="Reset"
-            android:background="@drawable/button_purple"
-            android:textColor="@color/white"
-            android:textSize="@dimen/_12sdp"/>
-        <com.pratham.foundation.customView.SansButton
-            android:id="@+id/submit"
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:layout_height="@dimen/_35sdp"
-            android:layout_marginBottom="@dimen/_10sdp"
-            android:layout_marginTop="@dimen/_5sdp"
-            android:layout_marginStart="@dimen/_2sdp"
-            android:layout_marginEnd="@dimen/_2sdp"
-            android:elevation="@dimen/_5sdp"
-            android:background="@drawable/button_green"
-            android:text="submit"
-            android:textColor="@color/white"
-            android:textSize="@dimen/_12sdp"/>
-
-    </LinearLayout>
+        android:layout_gravity="bottom|center_horizontal"
+        android:layout_marginBottom="1dp"
+        android:gravity="bottom|center_horizontal" />
 </RelativeLayout>

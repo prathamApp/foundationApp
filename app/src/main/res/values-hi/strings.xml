@@ -422,8 +422,11 @@
     <string name="Video">Watch the video</string>
 
 
-    <string name="Next_activity">Next activity?</string>
+    <string name="Next_activity">अगली गतिविधि?</string>
     <string name="Do_you_want_to_exit">Do you want to exit?</string>
-    <string name="activity_completed">Activity completed</string>
+    <string name="activity_completed">गतिविधि पूरी हुई</string>
+    <string name="hint">संकेत</string>
+    <string name="clear">बदलाव हटाएँ</string>
+
 
 </resources>

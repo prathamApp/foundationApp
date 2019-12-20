@@ -329,7 +329,8 @@ public class KeywordsIdentificationFragment extends Fragment implements Keywords
             showParagraph(questionModel);
             if (!isKeyWordShowing) {
                 isKeyWordShowing = true;
-                show_me_keywords.setText("hide keywords");
+              //  show_me_keywords.setText("hide keywords");
+               show_me_keywords.setText(getResources().getString(R.string.hide_hint));
                 for (int keywordIndex = 0; keywordIndex < keywordList.size(); keywordIndex++) {
                     List positions = positionMap.get(keywordList.get(keywordIndex).getSubQues().trim());
                     if (positions != null)
@@ -340,7 +341,8 @@ public class KeywordsIdentificationFragment extends Fragment implements Keywords
                 }
             } else {
                 isKeyWordShowing = false;
-                show_me_keywords.setText("show keywords");
+                //show_me_keywords.setText("show keywords");
+                show_me_keywords.setText(getResources().getString(R.string.hint));
                 for (int keywordIndex = 0; keywordIndex < keywordList.size(); keywordIndex++) {
                     List positions = positionMap.get(keywordList.get(keywordIndex).getSubQues().trim());
                     if (positions != null)

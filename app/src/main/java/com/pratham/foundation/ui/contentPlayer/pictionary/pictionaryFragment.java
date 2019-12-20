@@ -999,7 +999,8 @@ public class pictionaryFragment extends Fragment implements OnGameClose {
         } else {
             //show Answer
             showanswer = true;
-            show_answer.setText("Hide Hint");
+           // show_answer.setText("Hide Hint");
+            show_answer.setText(getResources().getString(R.string.hide_hint));
             if (ansview != null) {
                 ansview.startAnimation(animFadein);
                 animFadein.setAnimationListener(new Animation.AnimationListener() {
@@ -1024,7 +1025,8 @@ public class pictionaryFragment extends Fragment implements OnGameClose {
 
     private void clerAnimation() {
         showanswer = false;
-        show_answer.setText("Hint");
+        //show_answer.setText("Hint");
+        show_answer.setText(getResources().getString(R.string.hint));
     }
 }
 

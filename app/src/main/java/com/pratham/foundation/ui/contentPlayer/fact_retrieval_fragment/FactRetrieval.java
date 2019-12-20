@@ -371,7 +371,8 @@ public class FactRetrieval extends Fragment implements FactRetrievalContract.Fac
     @Click(R.id.show_answer)
     public void show_answer() {
         if (!mAdapter.isShowAnswerEnabled()) {
-            show_answer.setText("hide Answer");
+           // show_answer.setText("hide Answer");
+            show_answer.setText(getResources().getString(R.string.hide_hint));
             bottom_control_container.setVisibility(View.INVISIBLE);
             clear_selection.setVisibility(View.INVISIBLE);
             mAdapter.deselectAll();
@@ -397,7 +398,8 @@ public class FactRetrieval extends Fragment implements FactRetrievalContract.Fac
             }
             mAdapter.setShowAnswerEnabled(true);
         } else {
-            show_answer.setText("show Answer");
+           // show_answer.setText("show Answer");
+            show_answer.setText(getResources().getString(R.string.hint));
             mAdapter.setShowAnswerEnabled(false);
             bottom_control_container.setVisibility(View.VISIBLE);
             clear_selection.setVisibility(View.VISIBLE);

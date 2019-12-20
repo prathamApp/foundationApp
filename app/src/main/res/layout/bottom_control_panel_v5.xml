@@ -96,7 +96,7 @@
                 android:layout_marginStart="@dimen/_2sdp"
                 android:layout_marginEnd="@dimen/_2sdp"
                 android:elevation="@dimen/_5sdp"
-                android:text="Reset"
+                android:text="@string/Reset"
                 android:background="@drawable/button_yellow"
                 android:textColor="@color/white"
                 android:textSize="@dimen/_12sdp"/>
@@ -110,7 +110,7 @@
                 android:layout_marginEnd="@dimen/_2sdp"
                 android:elevation="@dimen/_5sdp"
                 android:background="@drawable/button_green"
-                android:text="submit"
+                android:text="@string/submit"
                 android:textColor="@color/white"
                 android:textSize="@dimen/_12sdp"/>
 

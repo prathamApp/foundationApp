@@ -35,8 +35,7 @@
             android:layout_height="0dp"
             android:layout_weight="0.1"
             android:layout_gravity="center"
-            android:layout_margin="@dimen/_5sdp"
-            android:padding="@dimen/_5sdp">
+            android:layout_margin="@dimen/_5sdp">
 
             <ImageView
                 android:id="@+id/iv_question_image"
@@ -69,12 +68,12 @@
             android:id="@+id/sub_questions_container"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="0.1"
+            android:layout_weight="0.2"
             android:orientation="vertical">
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
-                android:layout_weight="1">
+                android:layout_weight="1.5">
             <com.pratham.foundation.customView.SansTextView
                 android:id="@+id/subQuestion"
                 android:layout_width="match_parent"
@@ -94,8 +93,9 @@
                     android:layout_width="0dp"
                     android:layout_weight="3"
                     android:scrollbars="vertical"
-                    android:padding="@dimen/_8sdp"
-                    android:textSize="@dimen/_20sdp"
+                    android:fadeScrollbars="false"
+                    android:padding="8dp"
+                    android:textSize="@dimen/_15sdp"
                     android:text="khopadi dikhao"
                     android:gravity="center"
                     android:textAlignment="center"
@@ -104,17 +104,31 @@
                 <RelativeLayout
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
-                    android:layout_weight="1">
+                    android:layout_weight="1"
+                    android:orientation="vertical">
                     <ImageButton
                         android:id="@+id/btn_read_mic"
                         android:layout_width="@dimen/_100sdp"
                         android:layout_height="@dimen/_40sdp"
-                        android:layout_centerInParent="true"
                         android:scaleType="centerInside"
                         android:elevation="5dp"
                         style="@style/submitbtn"
                         android:padding="@dimen/_5sdp"
                         android:src="@drawable/ic_mic_black"/>
+                    <com.pratham.foundation.customView.SansButton
+                        android:id="@+id/reset_btn"
+                        android:layout_width="@dimen/_100sdp"
+                        android:layout_height="@dimen/_35sdp"
+                        android:layout_below="@+id/btn_read_mic"
+                        android:layout_marginBottom="@dimen/_10sdp"
+                        android:layout_marginTop="@dimen/_5sdp"
+                        android:layout_marginStart="@dimen/_2sdp"
+                        android:layout_marginEnd="@dimen/_2sdp"
+                        android:elevation="@dimen/_5sdp"
+                        android:text="@string/Reset"
+                        android:background="@drawable/button_yellow"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/_12sdp"/>
                 </RelativeLayout>
 
             </LinearLayout>
