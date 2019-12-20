@@ -269,11 +269,6 @@ public class ContentDisplay extends BaseActivity implements ContentContract.Cont
         onBackPressed();
     }
 
-    /*    @Override
-    public void ActivityResumed() {
-        super.ActivityResumed();
-    }*/
-
     @SuppressLint("SetTextI18n")
     @Override
     public void showNoDataDownloadedDialog() {
@@ -282,10 +277,6 @@ public class ContentDisplay extends BaseActivity implements ContentContract.Cont
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         dialog.setCanceledOnTouchOutside(false);
         dialog.setContentView(R.layout.fc_custom_dialog);
-/*        Bitmap map=FC_Utility.takeScreenShot(HomeActivity.this);
-        Bitmap fast=FC_Utility.fastblur(map, 20);
-        final Drawable draw=new BitmapDrawable(getResources(),fast);
-        dialog.getWindow().setBackgroundDrawable(draw);*/
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         dialog.setCancelable(false);
         dialog.setCanceledOnTouchOutside(false);
