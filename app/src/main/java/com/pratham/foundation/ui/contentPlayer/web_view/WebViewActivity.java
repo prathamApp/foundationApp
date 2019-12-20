@@ -67,6 +67,10 @@ public class WebViewActivity extends BaseActivity implements WebViewInterface {
         gameName = getIntent().getStringExtra("gameName");
         gameCategory = getIntent().getStringExtra("gameCategory");
 
+        sMarks = 0;
+        tMarks = 0;
+        cCode = "NA";
+
         Log.d("WevViewLevel", "onCreate: " + gameLevel);
 
         tts = new TextToSpeechCustom(this, 0.6f);

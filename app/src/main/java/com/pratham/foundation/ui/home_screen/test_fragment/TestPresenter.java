@@ -153,7 +153,8 @@ public class TestPresenter implements TestContract.TestPresenter, API_Content_Re
         if (botID != null && !FC_Utility.isDataConnectionAvailable(mContext))
             getLevelDataForList(currentLevelNo, botID);
         else
-            getRootData(rootID);
+            getLevelDataForList(currentLevelNo, botID);
+//            getRootData(rootID);
 
 //        myView.setBotNodeId(botID);
 /*      if (FC_Utility.isDataConnectionAvailable(mContext)) {
@@ -420,9 +421,9 @@ public class TestPresenter implements TestContract.TestPresenter, API_Content_Re
     @Override
     public void getLevelDataForList(int currentLevelNo, String bottomNavNodeId) {
         rootList = AppDatabase.appDatabase.getContentTableDao().getContentData("" + bottomNavNodeId);
-        if (FC_Utility.isDataConnectionAvailable(mContext))
-            getLevelDataFromApi(currentLevelNo, bottomNavNodeId);
-        else
+//        if (FC_Utility.isDataConnectionAvailable(mContext))
+//            getLevelDataFromApi(currentLevelNo, bottomNavNodeId);
+//        else
             myView.setSelectedLevel(rootList);
     }
 
@@ -655,16 +656,16 @@ public class TestPresenter implements TestContract.TestPresenter, API_Content_Re
         } catch (Exception e) {
             e.printStackTrace();
         }
-        if (FC_Utility.isDataConnectionAvailable(mContext)) {
-            api_content.getAPIContent(FC_Constants.INTERNET_DOWNLOAD, FC_Constants.INTERNET_DOWNLOAD_NEW_API, nodeIds.get(nodeIds.size() - 1));
-        } else {
+//        if (FC_Utility.isDataConnectionAvailable(mContext)) {
+//            api_content.getAPIContent(FC_Constants.INTERNET_DOWNLOAD, FC_Constants.INTERNET_DOWNLOAD_NEW_API, nodeIds.get(nodeIds.size() - 1));
+//        } else {
             if (contentParentList.size() == 0 && !FC_Utility.isDataConnectionAvailable(mContext)) {
                 myView.showNoDataDownloadedDialog();
             } else {
                 myView.addContentToViewList(contentParentList);
                 myView.notifyAdapter();
             }
-        }
+//        }
     }
 
     public void sortAllList(List<ContentTable> contentParentList) {

@@ -369,9 +369,8 @@ public class LearningFragment extends Fragment implements LearningContract.Learn
         } catch (IllegalStateException e) {
             e.printStackTrace();
         }
-        if (singleItem.getResourceType().equalsIgnoreCase("category")) {
+        if (singleItem.getNodeType().equalsIgnoreCase("category")) {
             Intent intent = new Intent(getActivity(), ContentDisplay_.class);
-
             intent.putExtra("nodeId", singleItem.getNodeId());
             intent.putExtra("parentName", parentName);
             intent.putExtra("contentTitle", singleItem.getNodeTitle());

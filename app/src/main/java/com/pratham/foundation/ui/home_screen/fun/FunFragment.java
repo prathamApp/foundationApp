@@ -353,7 +353,7 @@ public class FunFragment extends Fragment implements FunContract.FunView,
         ButtonClickSound.start();
         FC_Constants.isPractice=false;
         FC_Constants.isTest = false;
-        if (singleItem.getResourceType().equalsIgnoreCase("category")) {
+        if (singleItem.getNodeType().equalsIgnoreCase("category")) {
             Intent intent = new Intent(getActivity(), ContentDisplay_.class);
             intent.putExtra("nodeId", singleItem.getNodeId());
             intent.putExtra("contentTitle", singleItem.getNodeTitle());

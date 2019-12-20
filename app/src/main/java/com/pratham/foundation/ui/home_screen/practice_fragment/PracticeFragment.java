@@ -365,7 +365,7 @@ public class PracticeFragment extends Fragment implements PracticeContract.Pract
         ButtonClickSound.start();
         FC_Constants.isPractice = true;
         FC_Constants.isTest = false;
-        if (singleItem.getResourceType().equalsIgnoreCase("category")) {
+        if (singleItem.getNodeType().equalsIgnoreCase("category")) {
             Intent intent = new Intent(getActivity(), ContentDisplay_.class);
             intent.putExtra("nodeId", singleItem.getNodeId());
             intent.putExtra("contentTitle", singleItem.getNodeTitle());

@@ -86,16 +86,18 @@ public class SelectSubject extends BaseActivity implements
 
     @Override
     public void onItemClicked(ContentTable contentTableObj) {
-        FC_Constants.currentSubject = contentTableObj.getNodeTitle();
         currentLevel = 0;
-
-        if (contentTableObj.getNodeTitle().equals("Science")) {
+        FC_Constants.currentSubject = contentTableObj.getNodeKeywords();
+        if(contentTableObj.getNodeKeywords().equals("Science")) {
             currentSubjectFolder = "Science";
-        } else if (contentTableObj.getNodeTitle().equals("Maths")) {
+        } else if (contentTableObj.getNodeTitle().equals("Maths") ||
+                contentTableObj.getNodeKeywords().equals("Maths")) {
             currentSubjectFolder = "Maths";
-        } else if (contentTableObj.getNodeTitle().equals("English")) {
+        } else if (contentTableObj.getNodeTitle().equals("English") ||
+                contentTableObj.getNodeKeywords().equals("English")) {
             currentSubjectFolder = "English";
-        } else if (contentTableObj.getNodeTitle().equals("H Science")) {
+        } else if (contentTableObj.getNodeTitle().equals("H Science") ||
+                contentTableObj.getNodeTitle().equals("H Science")) {
             currentSubjectFolder = "H_Science";
         } else
             currentSubjectFolder = "LS_Science";

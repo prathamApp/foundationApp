@@ -278,7 +278,7 @@ public class PushDataToServer {
         if (!autoPush) {
             if (pushSuccessfull) {
                 new AlertDialog.Builder(context)
-                        .setMessage("Data pushed successfully")
+                        .setMessage("Data pushed successfully\n Score Count "+scoreData.length())
                         .setCancelable(false)
                         .setPositiveButton("ok", (dialog, which) -> {
                             dialog.dismiss();
@@ -670,8 +670,8 @@ public class PushDataToServer {
         AppDatabase.getDatabaseInstance(context).getContentProgressDao().setSentFlag();
 
         AppDatabase.getDatabaseInstance(context).getLogsDao().deletePushedLogs();
-        AppDatabase.getDatabaseInstance(context).getScoreDao().deletePushedScore();
-        AppDatabase.getDatabaseInstance(context).getAssessmentDao().deletePushedAssessment();
-        AppDatabase.getDatabaseInstance(context).getSupervisorDataDao().deletePushedSupervisorData();
+//        AppDatabase.getDatabaseInstance(context).getScoreDao().deletePushedScore();
+//        AppDatabase.getDatabaseInstance(context).getAssessmentDao().deletePushedAssessment();
+//        AppDatabase.getDatabaseInstance(context).getSupervisorDataDao().deletePushedSupervisorData();
     }
 }

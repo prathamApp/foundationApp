@@ -36,13 +36,17 @@ public class SelectSubjectAdapter extends RecyclerView.Adapter<SelectSubjectAdap
 
     @Override
     public void onBindViewHolder(@NonNull Myviewholder myviewholder, int i) {
-        if (datalist.get(i).getNodeTitle().equals("Science")) {
+        if (datalist.get(i).getNodeTitle().equalsIgnoreCase("Science")||
+                datalist.get(i).getNodeKeywords().equalsIgnoreCase("Science")) {
             myviewholder.content_thumbnail.setImageResource(R.drawable.sci_01);
-        } else if (datalist.get(i).getNodeTitle().equals("Maths")) {
+        } else if (datalist.get(i).getNodeTitle().equalsIgnoreCase("Maths")||
+                datalist.get(i).getNodeKeywords().equalsIgnoreCase("Maths")) {
             myviewholder.content_thumbnail.setImageResource(R.drawable.math_01);
-        } else if (datalist.get(i).getNodeTitle().equals("English")) {
+        } else if (datalist.get(i).getNodeTitle().equalsIgnoreCase("English")||
+                datalist.get(i).getNodeKeywords().equalsIgnoreCase("English")) {
             myviewholder.content_thumbnail.setImageResource(R.drawable.eng_01);
-        } else if (datalist.get(i).getNodeTitle().equals("H Science")) {
+        } else if (datalist.get(i).getNodeTitle().equalsIgnoreCase("H Science")||
+                datalist.get(i).getNodeKeywords().equalsIgnoreCase("H Science")) {
             myviewholder.content_thumbnail.setImageResource(R.drawable.ic_cos_h_science);
         } else {
             myviewholder.content_thumbnail.setImageResource(R.drawable.lang_01);

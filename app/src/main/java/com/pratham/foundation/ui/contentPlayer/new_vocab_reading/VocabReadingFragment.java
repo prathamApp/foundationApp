@@ -39,6 +39,7 @@ import com.pratham.foundation.interfaces.OnGameClose;
 import com.pratham.foundation.modalclasses.EventMessage;
 import com.pratham.foundation.modalclasses.ModalParaSubMenu;
 import com.pratham.foundation.services.TTSService;
+import com.pratham.foundation.services.shared_preferences.FastSave;
 import com.pratham.foundation.services.stt.ContinuousSpeechService_New;
 import com.pratham.foundation.services.stt.STT_Result_New;
 import com.pratham.foundation.ui.contentPlayer.GameConstatnts;
@@ -92,7 +93,7 @@ public class VocabReadingFragment extends Fragment implements
     ScrollView myScrollView;
     @ViewById(R.id.btn_submit)
     Button btn_submit;
-//    @ViewById(R.id.story_ll)
+    //    @ViewById(R.id.story_ll)
 //    RelativeLayout story_ll;
     @ViewById(R.id.btn_Stop)
     ImageButton btn_Stop;
@@ -115,7 +116,7 @@ public class VocabReadingFragment extends Fragment implements
     TTSService ttsService;
     Context context;
     List<ModalParaSubMenu> modalPagesList;
-    String contentType, storyPath, storyName, storyAudio, certiCode, storyBg, pageTitle,sttLang;
+    String contentType, storyPath, storyName, storyAudio, certiCode, storyBg, pageTitle, sttLang;
     static int currentPage, lineBreakCounter = 0;
     public Handler handler, audioHandler, soundStopHandler, colorChangeHandler,
             startReadingHandler, quesReadHandler, endhandler;
@@ -200,7 +201,7 @@ public class VocabReadingFragment extends Fragment implements
         continuousSpeechService.resetSpeechRecognizer();
 
         try {
-            story_title.setText(Html.fromHtml(""+storyName));
+            story_title.setText(Html.fromHtml("" + storyName));
             presenter.fetchJsonData(readingContentPath);
             //pageArray = presenter.fetchJsonData(storyName);
 //            getWordsOfStoryOfPage();
@@ -245,7 +246,7 @@ public class VocabReadingFragment extends Fragment implements
     @UiThread
     @Override
     public void setCategoryTitle(String title) {
-        story_title.setText(Html.fromHtml(""+storyName));
+        story_title.setText(Html.fromHtml("" + storyName));
     }
 
     @Override
@@ -261,6 +262,7 @@ public class VocabReadingFragment extends Fragment implements
                 showInstructions();
         }
     }
+
     //Insert Instuctions
     private void showInstructions() {
     }
@@ -284,7 +286,7 @@ public class VocabReadingFragment extends Fragment implements
         storyBg = modalPagesList.get(currentPage).getPageImage();
         pageTitle = modalPagesList.get(currentPage).getPageTitle();
         if (pageTitle != null && !pageTitle.equalsIgnoreCase(""))
-            story_title.setText(Html.fromHtml(""+pageTitle));
+            story_title.setText(Html.fromHtml("" + pageTitle));
 
         playHideFlg = storyAudio.equalsIgnoreCase("NA");
 
@@ -386,22 +388,23 @@ public class VocabReadingFragment extends Fragment implements
                 myTextView.setTextColor(getResources().getColor(R.color.colorText));
                 final int finalI = i;
                 myTextView.setOnClickListener(v -> {
-                    if ((!playFlg || pauseFlg) && !voiceStart) {
-                        setMute(0);
-                        myTextView.setTextColor(getResources().getColor(R.color.colorRedDark));
-                        Animation animation = AnimationUtils.loadAnimation(context, R.anim.reading_zoom_in);
-                        myTextView.startAnimation(animation);
-                        if (colorChangeHandler == null)
-                            colorChangeHandler = new Handler();
-                        colorChangeHandler.postDelayed(() -> {
-                            myTextView.setTextColor(getResources().getColor(R.color.colorText));
-                            Animation animation1 = AnimationUtils.loadAnimation(context, R.anim.reading_zoom_out);
-                            myTextView.startAnimation(animation1);
-                        }, 350);
-                        if (!storyAudio.equalsIgnoreCase("NA"))
-                            playClickedWord(finalI);
+                    if (!FastSave.getInstance().getString(FC_Constants.CURRENT_FOLDER_NAME, "").equalsIgnoreCase("maths"))
+                        if ((!playFlg || pauseFlg) && !voiceStart) {
+                            setMute(0);
+                            myTextView.setTextColor(getResources().getColor(R.color.colorRedDark));
+                            Animation animation = AnimationUtils.loadAnimation(context, R.anim.reading_zoom_in);
+                            myTextView.startAnimation(animation);
+                            if (colorChangeHandler == null)
+                                colorChangeHandler = new Handler();
+                            colorChangeHandler.postDelayed(() -> {
+                                myTextView.setTextColor(getResources().getColor(R.color.colorText));
+                                Animation animation1 = AnimationUtils.loadAnimation(context, R.anim.reading_zoom_out);
+                                myTextView.startAnimation(animation1);
+                            }, 350);
+                            if (!storyAudio.equalsIgnoreCase("NA"))
+                                playClickedWord(finalI);
 //                        ttsService.play("" + linesStringList[finalI]);
-                    }
+                        }
                 });
                 wordFlowLayout.addView(myTextView);
             }

@@ -3,18 +3,24 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/item_grp_card"
     android:layout_width="@dimen/_170sdp"
-    android:layout_height="@dimen/_110sdp"
-    app:cardBackgroundColor="@color/blue_light"
-    app:cardCornerRadius="@dimen/_8sdp">
+    android:layout_height="wrap_content"
+    app:cardBackgroundColor="@color/transparent_white_btn"
+    app:strokeColor="@color/red"
+    android:layout_marginStart="@dimen/_5sdp"
+    android:layout_marginEnd="@dimen/_5sdp"
+    app:strokeWidth="@dimen/_2sdp"
+    android:elevation="@dimen/_3sdp"
+    app:cardCornerRadius="@dimen/_10sdp">
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content">
 
         <com.pratham.foundation.customView.SansTextView
             android:id="@+id/stat_grp_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
             android:layout_centerHorizontal="true"
             android:layout_margin="@dimen/_5sdp"
             android:gravity="center"
@@ -22,18 +28,33 @@
             android:textColor="@android:color/black"
             android:textSize="@dimen/_15sdp" />
 
-        <com.pratham.foundation.customView.SansTextView
-            android:id="@+id/stat_grp_date"
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
             android:layout_centerHorizontal="true"
-            android:layout_margin="@dimen/_5sdp"
-            android:drawableStart="@drawable/ic_access_time"
-            android:drawablePadding="@dimen/_7sdp"
-            android:gravity="center"
-            android:maxLines="3"
-            android:textColor="@color/red"
-            android:textSize="@dimen/_20sdp" />
+            android:layout_margin="@dimen/_2sdp"
+            android:orientation="horizontal"
+            android:layout_below="@+id/stat_grp_name">
+
+            <com.airbnb.lottie.LottieAnimationView
+                android:layout_width="@dimen/_35sdp"
+                android:layout_height="@dimen/_35sdp"
+                android:layout_margin="@dimen/_2sdp"
+                android:layout_gravity="center_vertical"
+                app:lottie_autoPlay="true"
+                app:lottie_fileName="timer_time.json"
+                app:lottie_loop="true" />
+
+            <com.pratham.foundation.customView.SansTextViewBold
+                android:id="@+id/stat_grp_date"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_margin="@dimen/_5sdp"
+                android:gravity="center"
+                android:maxLines="3"
+                android:textColor="@color/red"
+                android:textSize="@dimen/_20sdp" />
+        </LinearLayout>
     </RelativeLayout>
 </android.support.design.card.MaterialCardView>

@@ -45,6 +45,7 @@ import com.pratham.foundation.interfaces.OnGameClose;
 import com.pratham.foundation.modalclasses.EventMessage;
 import com.pratham.foundation.modalclasses.ModalParaSubMenu;
 import com.pratham.foundation.services.TTSService;
+import com.pratham.foundation.services.shared_preferences.FastSave;
 import com.pratham.foundation.services.stt.ContinuousSpeechService_New;
 import com.pratham.foundation.services.stt.STT_Result_New;
 import com.pratham.foundation.ui.contentPlayer.GameConstatnts;
@@ -89,7 +90,7 @@ public class ContentReadingFragment extends Fragment implements
     public static MediaPlayer mp, mPlayer;
     @ViewById(R.id.myflowlayout)
     FlowLayout wordFlowLayout;
-//    @ViewById(R.id.toolbar)
+    //    @ViewById(R.id.toolbar)
 //    Toolbar toolbar;
     @ViewById(R.id.parapax_image)
     ImageView parapax_image;
@@ -119,7 +120,7 @@ public class ContentReadingFragment extends Fragment implements
 //    ImageButton ib_page_img;
     @ViewById(R.id.bottom_bar2)
     LinearLayout bottom_bar2;
-//    @ViewById(R.id.ll_btn_next)
+    //    @ViewById(R.id.ll_btn_next)
 //    LinearLayout ll_btn_next;
 //    @ViewById(R.id.ll_btn_prev)
 //    LinearLayout ll_btn_prev;
@@ -136,7 +137,7 @@ public class ContentReadingFragment extends Fragment implements
 
     List<ModalParaSubMenu> modalPagesList;
 
-    String contentType, storyPath, storyName, storyAudio, certiCode, storyBg, pageTitle,sttLang;
+    String contentType, storyPath, storyName, storyAudio, certiCode, storyBg, pageTitle, sttLang;
     static int currentPage, lineBreakCounter = 0;
 
     public Handler handler, audioHandler, soundStopHandler, colorChangeHandler,
@@ -229,7 +230,7 @@ public class ContentReadingFragment extends Fragment implements
         continuousSpeechService.resetSpeechRecognizer();
 
         try {
-            story_title.setText(Html.fromHtml(""+storyName));
+            story_title.setText(Html.fromHtml("" + storyName));
 //            toolbar.setTitle(storyName);
             presenter.fetchJsonData(readingContentPath);
             //pageArray = presenter.fetchJsonData(storyName);
@@ -275,7 +276,7 @@ public class ContentReadingFragment extends Fragment implements
     @UiThread
     @Override
     public void setCategoryTitle(String title) {
-        story_title.setText(Html.fromHtml(""+storyName));
+        story_title.setText(Html.fromHtml("" + storyName));
 //        toolbar.setTitle(storyName);
     }
 
@@ -306,7 +307,7 @@ public class ContentReadingFragment extends Fragment implements
         storyBg = modalPagesList.get(currentPage).getPageImage();
         pageTitle = modalPagesList.get(currentPage).getPageTitle();
         if (pageTitle != null && !pageTitle.equalsIgnoreCase(""))
-            story_title.setText(Html.fromHtml(""+pageTitle));
+            story_title.setText(Html.fromHtml("" + pageTitle));
 //        if (pageTitle != null && !pageTitle.equalsIgnoreCase(""))
 //            toolbar.setTitle(storyName);
 
@@ -466,22 +467,23 @@ public class ContentReadingFragment extends Fragment implements
                 myTextView.setTextColor(getResources().getColor(R.color.colorText));
                 final int finalI = i;
                 myTextView.setOnClickListener(v -> {
-                    if ((!playFlg || pauseFlg) && !voiceStart) {
-                        setMute(0);
-                        myTextView.setTextColor(getResources().getColor(R.color.colorRedDark));
-                        Animation animation = AnimationUtils.loadAnimation(context, R.anim.reading_zoom_in);
-                        myTextView.startAnimation(animation);
-                        if (colorChangeHandler == null)
-                            colorChangeHandler = new Handler();
-                        colorChangeHandler.postDelayed(() -> {
-                            myTextView.setTextColor(getResources().getColor(R.color.colorText));
-                            Animation animation1 = AnimationUtils.loadAnimation(context, R.anim.reading_zoom_out);
-                            myTextView.startAnimation(animation1);
-                        }, 350);
-                        if (!storyAudio.equalsIgnoreCase("NA"))
-                            playClickedWord(finalI);
+                    if (!FastSave.getInstance().getString(FC_Constants.CURRENT_FOLDER_NAME, "").equalsIgnoreCase("maths"))
+                        if ((!playFlg || pauseFlg) && !voiceStart) {
+                            setMute(0);
+                            myTextView.setTextColor(getResources().getColor(R.color.colorRedDark));
+                            Animation animation = AnimationUtils.loadAnimation(context, R.anim.reading_zoom_in);
+                            myTextView.startAnimation(animation);
+                            if (colorChangeHandler == null)
+                                colorChangeHandler = new Handler();
+                            colorChangeHandler.postDelayed(() -> {
+                                myTextView.setTextColor(getResources().getColor(R.color.colorText));
+                                Animation animation1 = AnimationUtils.loadAnimation(context, R.anim.reading_zoom_out);
+                                myTextView.startAnimation(animation1);
+                            }, 350);
+                            if (!storyAudio.equalsIgnoreCase("NA"))
+                                playClickedWord(finalI);
 //                        ttsService.play("" + linesStringList[finalI]);
-                    }
+                        }
                 });
                 wordFlowLayout.addView(myTextView);
             }
@@ -1346,7 +1348,7 @@ public class ContentReadingFragment extends Fragment implements
     }
 
     @Click(R.id.floating_img)
-    public void showPageImageDialog(){
+    public void showPageImageDialog() {
         btn_Stop.performClick();
         readingImgPath = readingContentPath + storyBg;
         File f = new File(readingImgPath);

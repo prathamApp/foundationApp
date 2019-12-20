@@ -198,7 +198,7 @@ public class ReadingParagraphsActivity extends BaseActivity
                 splitWords.add(modalParaWordList.get(j).getWord());
                 if (modalParaWordList.get(j).getWord().equalsIgnoreCase("#"))
                     lineBreakCounter += 1;
-                if(FastSave.getInstance().getString(CURRENT_FOLDER_NAME,"").equalsIgnoreCase("English"))
+                if (FastSave.getInstance().getString(CURRENT_FOLDER_NAME, "").equalsIgnoreCase("English"))
                     splitWordsPunct.add(String.valueOf(splitWords.get(j)
                             .replaceAll("[^a-zA-Z ]", "")
                             .toLowerCase().split("\\s+")));
@@ -229,13 +229,14 @@ public class ReadingParagraphsActivity extends BaseActivity
                     myTextView.setTextColor(getResources().getColor(R.color.colorText));
                     myTextView.setId(i);
                     myTextView.setOnClickListener(v -> {
-                        if (!readingFlg && !playingFlg && !isTest) {
-                            myTextView.setTextColor(getResources().getColor(R.color.colorRed));
-                            Animation animation = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.reading_zoom_in_and_out);
-                            myTextView.startAnimation(animation);
-                            playClickedWord(myTextView.getId());
+                        if (!FastSave.getInstance().getString(FC_Constants.CURRENT_FOLDER_NAME, "").equalsIgnoreCase("maths"))
+                            if (!readingFlg && !playingFlg && !isTest) {
+                                myTextView.setTextColor(getResources().getColor(R.color.colorRed));
+                                Animation animation = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.reading_zoom_in_and_out);
+                                myTextView.startAnimation(animation);
+                                playClickedWord(myTextView.getId());
 //                            ttsService.play("" + linesStringList[finalI]);
-                        }
+                            }
                     });
                     myFlowLayout.addView(myTextView);
                 }
@@ -366,7 +367,7 @@ public class ReadingParagraphsActivity extends BaseActivity
 
         if (!(scrollBounds.top < top) || !(scrollBounds.bottom > bottom))
             view.getParent().requestChildFocus(view, view);
-            //myScrollView.smoothScrollTo(view.getTop(), view.getBottom());
+        //myScrollView.smoothScrollTo(view.getTop(), view.getBottom());
     }
 
     @Click(R.id.btn_mic)
@@ -449,8 +450,8 @@ public class ReadingParagraphsActivity extends BaseActivity
         wordCounter = 0;
     }
 
-    @Click (R.id.floating_back)
-    public void pressedBackBtn(){
+    @Click(R.id.floating_back)
+    public void pressedBackBtn() {
         onBackPressed();
     }
 

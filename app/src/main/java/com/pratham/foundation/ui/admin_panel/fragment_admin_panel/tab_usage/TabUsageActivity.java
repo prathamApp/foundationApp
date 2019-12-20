@@ -67,7 +67,7 @@ public class TabUsageActivity extends BaseActivity implements TabUsageContract.T
     public void initializeGroupAdapter(List<Modal_TotalDaysGroupsPlayed> modal_totalDaysGroupsPlayeds) {
         if (groupAdapter == null) {
             groupAdapter = new GroupAdapter(TabUsageActivity.this, modal_totalDaysGroupsPlayeds, this);
-            rv_stat_group.setOrientation(DSVOrientation.VERTICAL);
+            rv_stat_group.setOrientation(DSVOrientation.HORIZONTAL);
             rv_stat_group.setAdapter(groupAdapter);
             rv_stat_group.addOnItemChangedListener(new DiscreteScrollView.OnItemChangedListener<RecyclerView.ViewHolder>() {
                 @Override

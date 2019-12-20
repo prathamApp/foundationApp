@@ -28,7 +28,7 @@
             android:layout_marginEnd="@dimen/_5sdp"
             android:layout_toStartOf="@+id/just_view"
             android:layout_toEndOf="@+id/btn_back"
-            android:text="Asign Groups"
+            android:text="Assign Groups"
             android:gravity="center_vertical"
             android:textColor="@color/colorText"
             android:textSize="@dimen/_18sdp"

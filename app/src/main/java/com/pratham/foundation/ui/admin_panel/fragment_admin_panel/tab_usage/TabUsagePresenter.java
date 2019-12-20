@@ -64,6 +64,6 @@ public class TabUsagePresenter implements TabUsageContract.TabUsagePresenter {
     @Background
     @Override
     public void getDeviceActiveDays() {
-/*        int days = appDatabase.getScoreDao().getTotalActiveDeviceDays();
-        tabUsageView.showDeviceDays(days);*/
+        int days = appDatabase.getScoreDao().getTotalActiveDeviceDays();
+        tabUsageView.showDeviceDays(days);
     }}

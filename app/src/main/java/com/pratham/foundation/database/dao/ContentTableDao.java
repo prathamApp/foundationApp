@@ -60,6 +60,9 @@ public interface ContentTableDao {
 
     @Query("SELECT nodeId FROM ContentTable WHERE nodeTitle=:cosSection and contentLanguage=:currentLanguage")
     String getBottomNavigationId(String currentLanguage, String cosSection);
+
+    @Query("SELECT nodeTitle FROM ContentTable WHERE resourceId=:resourceID")
+    String getContentTitleById(String resourceID);
 //
 //    @Query("SELECT * FROM ContentTable WHERE parentid ISNULL or parentid = 0 or parentid=''and contentLanguage=:language")
 //    public List<ContentTable> getParentsHeadersNew(String language);

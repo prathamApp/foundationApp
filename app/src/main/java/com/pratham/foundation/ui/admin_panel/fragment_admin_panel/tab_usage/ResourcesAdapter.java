@@ -15,6 +15,8 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
+import static com.pratham.foundation.database.AppDatabase.appDatabase;
+
 public class ResourcesAdapter extends RecyclerView.Adapter<ResourcesAdapter.ViewHolder> {
 
     private List<Modal_ResourcePlayedByGroups> datalist;
@@ -33,7 +35,8 @@ public class ResourcesAdapter extends RecyclerView.Adapter<ResourcesAdapter.View
 
     @Override
     public void onBindViewHolder(@NonNull ResourcesAdapter.ViewHolder viewHolder, int i) {
-        viewHolder.stat_res_name.setText(datalist.get(viewHolder.getAdapterPosition()).getNodetitle());
+        viewHolder.stat_res_name.setText(appDatabase.getContentTableDao().
+                getContentTitleById(datalist.get(viewHolder.getAdapterPosition()).getResourceID()));
     }
 
     @Override

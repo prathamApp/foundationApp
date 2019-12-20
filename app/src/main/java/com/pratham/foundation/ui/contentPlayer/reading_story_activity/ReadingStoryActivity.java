@@ -37,6 +37,7 @@ import com.pratham.foundation.customView.display_image_dialog.CustomLodingDialog
 import com.pratham.foundation.customView.shape_of_view.ShadowLayout;
 import com.pratham.foundation.modalclasses.ModalParaSubMenu;
 import com.pratham.foundation.services.TTSService;
+import com.pratham.foundation.services.shared_preferences.FastSave;
 import com.pratham.foundation.services.stt.ContinuousSpeechService_New;
 import com.pratham.foundation.services.stt.STT_Result_New;
 import com.pratham.foundation.utility.FC_Constants;
@@ -102,8 +103,8 @@ public class ReadingStoryActivity extends BaseActivity implements
     LinearLayout bottom_bar2;
     @ViewById(R.id.floating_back)
     FloatingActionButton floating_back;
-/*    @ViewById(R.id.floating_info)
-    FloatingActionButton floating_info;*/
+    /*    @ViewById(R.id.floating_info)
+        FloatingActionButton floating_info;*/
     @ViewById(R.id.floating_img)
     FloatingActionButton floating_img;
 
@@ -113,7 +114,7 @@ public class ReadingStoryActivity extends BaseActivity implements
     TTSService ttsService;
     Context context;
     List<ModalParaSubMenu> modalPagesList;
-    String contentType, storyPath, storyData, storyName, storyAudio, certiCode, storyBg, pageTitle,sttLang;
+    String contentType, storyPath, storyData, storyName, storyAudio, certiCode, storyBg, pageTitle, sttLang;
     static int currentPage, lineBreakCounter = 0;
     public Handler handler, audioHandler, soundStopHandler, colorChangeHandler,
             startReadingHandler, quesReadHandler, endhandler;
@@ -160,7 +161,7 @@ public class ReadingStoryActivity extends BaseActivity implements
         showLoader();
         modalPagesList = new ArrayList<>();
 
-        if(sttLang==null)
+        if (sttLang == null)
             sttLang = "English";
         continuousSpeechService = new ContinuousSpeechService_New(context,
                 ReadingStoryActivity.this, sttLang);
@@ -207,7 +208,7 @@ public class ReadingStoryActivity extends BaseActivity implements
     @UiThread
     @Override
     public void showLoader() {
-        if(!dialogFlg) {
+        if (!dialogFlg) {
             dialogFlg = true;
             myLoadingDialog = new CustomLodingDialog(context);
             myLoadingDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -221,7 +222,7 @@ public class ReadingStoryActivity extends BaseActivity implements
     @UiThread
     @Override
     public void dismissLoadingDialog() {
-        if(dialogFlg) {
+        if (dialogFlg) {
             dialogFlg = false;
             if (myLoadingDialog != null)
                 myLoadingDialog.dismiss();
@@ -339,7 +340,6 @@ public class ReadingStoryActivity extends BaseActivity implements
     }
 
     private void setWordsToLayout() {
-
         for (int i = 0; i < splitWords.size(); i++) {
             if (splitWords.get(i).equalsIgnoreCase("#")) {
                 final SansTextView myTextView = new SansTextView(context);
@@ -353,22 +353,23 @@ public class ReadingStoryActivity extends BaseActivity implements
                 myTextView.setTextColor(getResources().getColor(R.color.colorText));
                 final int finalI = i;
                 myTextView.setOnClickListener(v -> {
-                    if ((!playFlg || pauseFlg) && !voiceStart) {
-                        setMute(0);
-                        myTextView.setTextColor(getResources().getColor(R.color.colorRedDark));
-                        Animation animation = AnimationUtils.loadAnimation(context, R.anim.reading_zoom_in);
-                        myTextView.startAnimation(animation);
-                        if (colorChangeHandler == null)
-                            colorChangeHandler = new Handler();
-                        colorChangeHandler.postDelayed(() -> {
-                            myTextView.setTextColor(getResources().getColor(R.color.colorText));
-                            Animation animation1 = AnimationUtils.loadAnimation(context, R.anim.reading_zoom_out);
-                            myTextView.startAnimation(animation1);
-                        }, 350);
-                        if (!storyAudio.equalsIgnoreCase("NA"))
-                            playClickedWord(finalI);
+                    if (!FastSave.getInstance().getString(FC_Constants.CURRENT_FOLDER_NAME, "").equalsIgnoreCase("maths"))
+                        if ((!playFlg || pauseFlg) && !voiceStart) {
+                            setMute(0);
+                            myTextView.setTextColor(getResources().getColor(R.color.colorRedDark));
+                            Animation animation = AnimationUtils.loadAnimation(context, R.anim.reading_zoom_in);
+                            myTextView.startAnimation(animation);
+                            if (colorChangeHandler == null)
+                                colorChangeHandler = new Handler();
+                            colorChangeHandler.postDelayed(() -> {
+                                myTextView.setTextColor(getResources().getColor(R.color.colorText));
+                                Animation animation1 = AnimationUtils.loadAnimation(context, R.anim.reading_zoom_out);
+                                myTextView.startAnimation(animation1);
+                            }, 350);
+                            if (!storyAudio.equalsIgnoreCase("NA"))
+                                playClickedWord(finalI);
 //                        ttsService.play("" + linesStringList[finalI]);
-                    }
+                        }
                 });
                 wordFlowLayout.addView(myTextView);
             }
@@ -377,7 +378,6 @@ public class ReadingStoryActivity extends BaseActivity implements
     }
 
     Boolean clickFlag = false;
-
     private void playClickedWord(int id) {
         try {
             if (!FC_Constants.isTest && !clickFlag) {
@@ -470,7 +470,7 @@ public class ReadingStoryActivity extends BaseActivity implements
         } else
             wordDuration = 1;
 
-        if(playFlg && !pauseFlg) {
+        if (playFlg && !pauseFlg) {
             handler.postDelayed(() -> {
                 if (index < wordFlowLayout.getChildCount()) {
                     wordCounter += 1;
@@ -949,8 +949,8 @@ public class ReadingStoryActivity extends BaseActivity implements
         presenter.addProgress();
     }
 
-    @Click (R.id.floating_back)
-    public void pressedBackBtn(){
+    @Click(R.id.floating_back)
+    public void pressedBackBtn() {
         onBackPressed();
     }
 
@@ -969,6 +969,7 @@ public class ReadingStoryActivity extends BaseActivity implements
     }
 
     int correctCnt = 0, total = 0;
+
     @SuppressLint("SetTextI18n")
     private void showStars(boolean diaComplete) {
         final CustomLodingDialog dialog = new CustomLodingDialog(context);

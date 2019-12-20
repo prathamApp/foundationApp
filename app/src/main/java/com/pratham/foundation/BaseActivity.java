@@ -28,11 +28,8 @@ import com.pratham.foundation.database.AppDatabase;
 import com.pratham.foundation.database.BackupDatabase;
 import com.pratham.foundation.modalclasses.EventMessage;
 import com.pratham.foundation.services.TTSService;
-import com.pratham.foundation.utility.CatchoTransparentActivity;
 import com.pratham.foundation.utility.FC_Constants;
 import com.pratham.foundation.utility.FC_Utility;
-
-import net.alhazmy13.catcho.library.Catcho;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -42,6 +39,7 @@ import java.util.Objects;
 
 import static com.pratham.foundation.ApplicationClass.audioManager;
 import static com.pratham.foundation.ApplicationClass.ttsService;
+import static com.pratham.foundation.database.AppDatabase.appDatabase;
 
 
 public class BaseActivity extends AppCompatActivity {
@@ -77,8 +75,8 @@ public class BaseActivity extends AppCompatActivity {
         startSTT();
         correctSound = MediaPlayer.create(this, R.raw.correct_ans);
         muteFlg = false;
-        Catcho.Builder(this)
-                .activity(CatchoTransparentActivity.class).build();
+//        Catcho.Builder(this)
+//                .activity(CatchoTransparentActivity.class).build();
 //                .recipients("abc@domain.com").build();
     }
 
@@ -186,7 +184,8 @@ public class BaseActivity extends AppCompatActivity {
                 case HIDE_OTG_TRANSFER_DIALOG_SUCCESS:
                     push_lottie.setAnimation("success.json");
                     push_lottie.playAnimation();
-                    txt_push_dialog_msg.setText("Data Copied Successfully!!");
+                    int days = appDatabase.getScoreDao().getTotalActiveDeviceDays();
+                    txt_push_dialog_msg.setText("Data of "+days+" days\nCopied Successfully!!");
                     ok_btn.setVisibility(View.VISIBLE);
                     break;
                 case HIDE_OTG_TRANSFER_DIALOG_FAILED:

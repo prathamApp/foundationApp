@@ -312,11 +312,13 @@ public class TestFragment extends Fragment implements TestContract.TestView,
     @UiThread
     @Override
     public void setSelectedLevel(List<ContentTable> contentTable) {
-        rootLevelList = contentTable;
-        presenter.insertNodeId(contentTable.get(currentLevel).getNodeId());
-        String jsonName = getLevelWiseJson();
-        JSONArray testData = presenter.getTestData(jsonName);
-        presenter.generateTestData(testData, rootLevelList.get(currentLevel).getNodeId());
+        try {
+            rootLevelList = contentTable;
+            presenter.insertNodeId(contentTable.get(currentLevel).getNodeId());
+            String jsonName = getLevelWiseJson();
+            JSONArray testData = presenter.getTestData(jsonName);
+            presenter.generateTestData(testData, rootLevelList.get(currentLevel).getNodeId());
+        }catch (Exception e){e.printStackTrace();}
     }
 
     public void onLevelChanged() {

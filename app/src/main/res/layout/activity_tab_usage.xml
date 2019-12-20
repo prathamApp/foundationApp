@@ -8,14 +8,15 @@
     <RelativeLayout
         android:id="@+id/header_rl"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/_45sdp">
+        android:layout_height="wrap_content">
 
         <ImageView
             android:id="@+id/main_back"
             android:layout_width="@dimen/_30sdp"
             android:layout_height="@dimen/_30sdp"
             android:layout_marginStart="@dimen/_5sdp"
-            android:layout_centerVertical="true"
+            android:layout_marginTop="@dimen/_5sdp"
+            android:layout_alignParentStart="true"
             android:scaleType="center"
             app:srcCompat="@drawable/ic_left_arrow_white" />
 
@@ -26,11 +27,12 @@
             android:layout_centerVertical="true"
             android:layout_marginEnd="@dimen/_10sdp"
             android:layout_marginTop="@dimen/_5sdp"
-            android:layout_toEndOf="@id/main_back"
+            android:layout_below="@id/main_back"
             android:layout_marginStart="@dimen/_15sdp"
+            android:maxLines="2"
             android:text="Topic"
             android:textColor="@color/dark_blue"
-            android:textSize="@dimen/_20sdp" />
+            android:textSize="@dimen/_17sdp" />
 
     </RelativeLayout>
 

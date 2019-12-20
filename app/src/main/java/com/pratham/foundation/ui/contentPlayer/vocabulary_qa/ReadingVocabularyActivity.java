@@ -491,7 +491,7 @@ public class ReadingVocabularyActivity extends BaseActivity implements MediaCall
         nextDialog = new CustomLodingDialog(context);
         nextDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         nextDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-        nextDialog.setContentView(R.layout.fc_custom_dialog);
+        nextDialog.setContentView(R.layout.fc_next_word_dialog);
         nextDialog.setCancelable(false);
         nextDialog.setCanceledOnTouchOutside(false);
         nextDialog.show();
@@ -499,6 +499,7 @@ public class ReadingVocabularyActivity extends BaseActivity implements MediaCall
         Button dia_btn_yellow = nextDialog.findViewById(R.id.dia_btn_yellow);
         Button dia_btn_green = nextDialog.findViewById(R.id.dia_btn_green);
         Button dia_btn_red = nextDialog.findViewById(R.id.dia_btn_red);
+        Button dia_btn_exit = nextDialog.findViewById(R.id.dia_btn_exit);
 
         dia_btn_green.setText(""+getResources().getString(R.string.Next));
         dia_btn_red.setText(""+getResources().getString(R.string.Test));
@@ -512,6 +513,33 @@ public class ReadingVocabularyActivity extends BaseActivity implements MediaCall
             presenter.createWholeList(vocabCategory);
             dilogOpen = false;
             nextDialog.dismiss();
+        });
+
+        dia_btn_exit.setOnClickListener(v -> {
+            dilogOpen = false;
+            presenter.setCompletionPercentage();
+            if (isTest) {
+                int correctCnt = 0, total = 0;
+                try {
+                    total = correctArr.length;
+                    for (int x = 0; x < correctArr.length; x++)
+                        if (correctArr[x])
+                            correctCnt += 1;
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    correctCnt = 0;
+                    total = 0;
+                }
+
+                Intent returnIntent = new Intent();
+                returnIntent.putExtra("cCode", certiCode);
+                returnIntent.putExtra("sMarks", correctCnt);
+                returnIntent.putExtra("tMarks", total);
+                setResult(Activity.RESULT_OK, returnIntent);
+            }
+            disableHandlers();
+            nextDialog.dismiss();
+            finish();
         });
 
         dia_btn_red.setOnClickListener(v -> {
