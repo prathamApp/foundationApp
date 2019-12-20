@@ -986,8 +986,8 @@ public class pictionaryFragment extends Fragment implements OnGameClose {
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onMessageEvent(EventMessage event) {
-        if (!scienceQuestion.getInstruction().isEmpty())
-            GameConstatnts.showGameInfo(getActivity(), scienceQuestion.getInstruction(), readingContentPath + scienceQuestion.getInstructionUrl());
+        if (!selectedFive.get(index).getInstruction().isEmpty())
+            GameConstatnts.showGameInfo(getActivity(),selectedFive.get(index).getInstruction(), readingContentPath +selectedFive.get(index).getInstruction());
     }
 
     @OnClick(R.id.show_answer)

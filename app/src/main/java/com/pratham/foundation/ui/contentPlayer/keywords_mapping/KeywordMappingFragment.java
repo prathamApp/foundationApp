@@ -107,7 +107,7 @@ public class KeywordMappingFragment extends Fragment implements KeywordMappingCo
         //show instruction dialog
         if (list != null) {
             keywordmapping = list;
-            keyword.setText(list.get(index).getQuestion());
+
 
 
        /* if (FC_Constants.TAB_LAYOUT) {
@@ -135,7 +135,7 @@ public class KeywordMappingFragment extends Fragment implements KeywordMappingCo
     }
 
     private void LoadItemsToRecycler() {
-
+        keyword.setText(keywordmapping.get(index).getQuestion());
         optionList = keywordmapping.get(index).getLstquestionchoice();
         //Collections.shuffle(optionList);
         //  List temp =

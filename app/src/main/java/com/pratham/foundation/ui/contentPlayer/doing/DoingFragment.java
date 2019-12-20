@@ -186,6 +186,7 @@ public class DoingFragment extends Fragment implements STT_Result_New.sttView,On
         else
             readingContentPath = ApplicationClass.foundationPath + gameFolderPath + "/" + contentPath + "/";
         EventBus.getDefault().register(this);
+
         imageName = "" + ApplicationClass.getUniqueID() + ".jpg";
         resStartTime = FC_Utility.getCurrentDateTime();
         addScore(0, "", 0, 0, resStartTime,FC_Utility.getCurrentDateTime(), jsonName + " " + GameConstatnts.START);
@@ -309,7 +310,9 @@ public class DoingFragment extends Fragment implements STT_Result_New.sttView,On
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         ButterKnife.bind(this, view);
-
+        if (!GameConstatnts.WATCHING_VIDEO.equalsIgnoreCase(jsonName)) {
+            camera_controll.setVisibility(View.VISIBLE);
+        }
         //hide camera controls for reading stt game
         if(jsonName.equalsIgnoreCase(GameConstatnts.READING_STT)){
             capture.setVisibility(View.GONE);
@@ -432,7 +435,9 @@ public class DoingFragment extends Fragment implements STT_Result_New.sttView,On
         }
         if (index == (scienceQuestionChoices.size() - 1)) {
             submitBtn.setVisibility(View.VISIBLE);
-            camera_controll.setVisibility(View.VISIBLE);
+            if (!GameConstatnts.WATCHING_VIDEO.equalsIgnoreCase(jsonName)) {
+                camera_controll.setVisibility(View.VISIBLE);
+            }
             next.setVisibility(View.INVISIBLE);
         } else {
             submitBtn.setVisibility(View.INVISIBLE);
@@ -512,7 +517,9 @@ public class DoingFragment extends Fragment implements STT_Result_New.sttView,On
         }
         if (index == (scienceQuestionChoices.size() - 1)) {
             submitBtn.setVisibility(View.VISIBLE);
-            camera_controll.setVisibility(View.VISIBLE);
+            if (!GameConstatnts.WATCHING_VIDEO.equalsIgnoreCase(jsonName)) {
+                camera_controll.setVisibility(View.VISIBLE);
+            }
 
         }
         reset_btn.setVisibility(View.VISIBLE);

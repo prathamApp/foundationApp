@@ -97,7 +97,7 @@ public class KeywordOptionAdapter extends RecyclerView.Adapter<KeywordOptionAdap
                 }
             }
         });
-
+        //SHOW ANSWER
         if(!isClickable && !showAnswer){
            /* if (!presenter.checkAnswerNew(datalist,  myviewholder.textView.getText().toString())) {
                 myviewholder.textView.setTextColor(Color.RED);
@@ -122,15 +122,15 @@ public class KeywordOptionAdapter extends RecyclerView.Adapter<KeywordOptionAdap
                 }
             }
         }
-
-       /* if(!isClickable && showAnswer){
+        //SHOW HINT
+        if(!isClickable && showAnswer){
             if (!presenter.checkAnswerNew(datalist,  myviewholder.textView.getText().toString())) {
                 myviewholder.textView.setTextColor(Color.RED);
                 myviewholder.textView.setPaintFlags(myviewholder.textView.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
             } else {
                 myviewholder.textView.setPaintFlags(  myviewholder.textView.getPaintFlags() & (~ Paint.STRIKE_THRU_TEXT_FLAG));
             }
-        }*/
+        }
     }
 
     private int pxFromDp(final Context context, final float dp) {

@@ -276,8 +276,10 @@ public class ReadingFragment extends Fragment implements STT_Result_New.sttView,
                 voiceStart = false;
             }
             if (scienceQuestionChoices.get(index).getUserAns().trim() != null && !scienceQuestionChoices.get(index).getUserAns().isEmpty()) {
+                myString=scienceQuestionChoices.get(index).getUserAns();
                 etAnswer.setText(scienceQuestionChoices.get(index).getUserAns());
             } else {
+                myString="";
                 etAnswer.setText("");
             }
             question.setText(scienceQuestionChoices.get(index).getSubQues());
@@ -323,7 +325,10 @@ public class ReadingFragment extends Fragment implements STT_Result_New.sttView,
 
                 @Override
                 public void afterTextChanged(Editable s) {
-                    answer = s.toString();
+                    //answer = s.toString();
+                    scienceQuestionChoices.get(index).setStartTime(FC_Utility.GetCurrentDateTime());
+                    scienceQuestionChoices.get(index).setEndTime(FC_Utility.GetCurrentDateTime());
+                    scienceQuestionChoices.get(index).setUserAns( s.toString());
                 }
             });
             if (index == 0) {

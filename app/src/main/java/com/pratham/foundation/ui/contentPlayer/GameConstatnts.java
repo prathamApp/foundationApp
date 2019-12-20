@@ -67,6 +67,7 @@ public class GameConstatnts implements ShowInstruction {
     public static final String READ_VOCAB_ANDROID = "ReadVocabAndroid";
     public static final String MULTIPLE_CHOICE = "multiple_choice";
     public static final String READING_STT = "reading_stt";
+    public static final String WATCHING_VIDEO = "watching_video";
     public static final boolean TRUE = true;
     public static final boolean FALSE = false;
     public static final String START = "start";
@@ -301,6 +302,7 @@ public class GameConstatnts implements ShowInstruction {
             case GameConstatnts.DOING_ACT_READ:
             case GameConstatnts.DOING_ACT_VIDEO:
             case GameConstatnts.LetterWriting:
+            case GameConstatnts.WATCHING_VIDEO:
                 FC_Utility.showFragment((Activity) context, new DoingFragment(), R.id.RL_CPA,
                         bundle, DoingFragment.class.getSimpleName());
                 break;

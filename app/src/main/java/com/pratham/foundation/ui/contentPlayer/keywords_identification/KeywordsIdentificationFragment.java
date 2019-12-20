@@ -182,8 +182,6 @@ public class KeywordsIdentificationFragment extends Fragment implements Keywords
                     }
             );
             dialog.show();*/
-        } else {
-            GameConstatnts.playGameNext(getActivity(), GameConstatnts.TRUE, this);
         }
     }
 

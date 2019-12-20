@@ -27,7 +27,7 @@
                 android:layout_alignParentTop="true"
                 android:gravity="center_horizontal"
                 android:textSize="@dimen/_15sdp"
-                android:text="Read"/>
+                android:text="@string/Read"/>
         <ScrollView
             android:layout_width="match_parent"
             android:layout_below="@+id/lbl_ques"

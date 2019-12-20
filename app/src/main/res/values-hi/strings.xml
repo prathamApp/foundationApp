@@ -420,7 +420,7 @@
     <string name="reading_stt">माइक बटन पर क्लिक कीजिए| जवाब रिकॉर्ड कर के सबमिट कीजिए।</string>
     <string name="multiple_choice">जवाब देने के लिए दिए गए शब्दों में से सही विकल्प चुनिए|</string>
     <string name="Video">Watch the video</string>
-
+    <string name="watching_video">माइक बटन पर क्लिक करके अपना उत्तर रिकॉर्ड कीजिए और सबमिट कीजिए| </string>
 
     <string name="Next_activity">अगली गतिविधि?</string>
     <string name="Do_you_want_to_exit">Do you want to exit?</string>

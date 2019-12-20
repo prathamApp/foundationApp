@@ -46,7 +46,8 @@ public class ParagraphWritingPresenter implements ParagraphWritingContract.Parag
 
     @Override
     public void getData() {
-        String text = FC_Utility.loadJSONFromStorage(readingContentPath, "CWiritng.json");
+       // String text = FC_Utility.loadJSONFromStorage(readingContentPath, "CWiritng.json");
+        String text = FC_Utility.loadJSONFromStorage(readingContentPath, "CopyWriting.json");
         Gson gson = new Gson();
         Type type = new TypeToken<List<ScienceQuestion>>() {
         }.getType();
@@ -114,10 +115,10 @@ public class ParagraphWritingPresenter implements ParagraphWritingContract.Parag
             for (int i = 0; i < quetionModelList.size(); i++) {
                 if (perc < 95) {
                     questionModel = quetionModelList.get(i);
-                    /*if (!checkWord("" + quetionModelList.get(i).getTitle())) {
+                    if (!checkWord("" + quetionModelList.get(i).getTitle())) {
                         questionModel = quetionModelList.get(i);
                         break;
-                    }*/
+                    }
                 } else {
                     questionModel = quetionModelList.get(i);
                 }
@@ -146,7 +147,7 @@ public class ParagraphWritingPresenter implements ParagraphWritingContract.Parag
         }
     }
 
-    /*private boolean checkWord(String wordStr) {
+    private boolean checkWord(String wordStr) {
         try {
             String word = appDatabase.getKeyWordDao().checkWord(FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""), resId, wordStr);
             if (word != null)
@@ -157,7 +158,7 @@ public class ParagraphWritingPresenter implements ParagraphWritingContract.Parag
             e.printStackTrace();
             return false;
         }
-    }*/
+    }
 
     private int getLearntWordsCount() {
         int count = 0;

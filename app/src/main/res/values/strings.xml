@@ -48,6 +48,11 @@
     <string name="hide_hint">Hide Hint</string>
     <string name="Enter_answer">Enter Answer</string>
     <string name="Your_answer">Your Answer</string>
+    <string name="Result">Result</string>
+    <string name="You_answered">You answered</string>
+    <string name="Correct_Answer">Correct Answer</string>
+    <string name="Skipped">Skipped</string>
+    <string name="Read">Read</string>
 <!--    game Instructions-->
     <string name="fact_retrieval_click">Answer the question by selecting the word and then submit it.</string>
     <string name="factRetrieval">Answer the question by selecting the word by long pressing it and then submit the selected answer.</string>
@@ -61,6 +66,7 @@
     <string name="doing_act_read">Read the instructions and try to perform the activity.</string>
     <string name="letter">Write a letter on the given subject in notebook and submit its photo.</string>
     <string name="doing_act_video">Watch the video and try to perform the activity.</string>
+    <string name="watching_video">Watch the video and click on mike button to record answer </string>
     <string name="ReadVocabAndroid">Read the following in order to increase you vocabulary.</string>
     <string name="reading_stt">Answer the question by Give the answer by selecting the correct option form the given options.using the speech to text functionality.</string>
     <string name="multiple_choice">Select the correct answer from multiple answers and submit it</string>
