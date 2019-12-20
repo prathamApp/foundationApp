@@ -1,27 +1,16 @@
 package com.pratham.foundation.services.stt;
 
 
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
-import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.Handler;
 import android.speech.RecognitionListener;
 import android.speech.RecognizerIntent;
 import android.speech.SpeechRecognizer;
 import android.util.Log;
 
-import com.pratham.foundation.ApplicationClass;
-import com.pratham.foundation.database.AppDatabase;
-import com.pratham.foundation.database.domain.Modal_Log;
-import com.pratham.foundation.utility.FC_Constants;
-import com.pratham.foundation.utility.FC_Utility;
-
 import java.util.ArrayList;
 
-import static com.pratham.foundation.BaseActivity.setMute;
-import static com.pratham.foundation.utility.FC_Constants.currentSubject;
 import static com.pratham.foundation.utility.FC_Constants.currentSubjectFolder;
 
 

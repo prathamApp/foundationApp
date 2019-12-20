@@ -87,7 +87,7 @@ public class SelectSubject extends BaseActivity implements
     @Override
     public void onItemClicked(ContentTable contentTableObj) {
         currentLevel = 0;
-        FC_Constants.currentSubject = contentTableObj.getNodeKeywords();
+        String currentSubject = contentTableObj.getNodeKeywords();
         if(contentTableObj.getNodeKeywords().equals("Science")) {
             currentSubjectFolder = "Science";
         } else if (contentTableObj.getNodeTitle().equals("Maths") ||
@@ -103,6 +103,7 @@ public class SelectSubject extends BaseActivity implements
             currentSubjectFolder = "LS_Science";
 
         gameFolderPath = "/.FCA/" + currentSubjectFolder + "/Game";
+        FastSave.getInstance().saveString(FC_Constants.CURRENT_SUBJECT, currentSubject);
         FastSave.getInstance().saveString(FC_Constants.CURRENT_FOLDER_NAME, currentSubjectFolder);
         FastSave.getInstance().saveString(FC_Constants.CURRENT_ROOT_NODE, contentTableObj.getNodeId());
         Intent intent = new Intent(context, HomeActivity_.class);

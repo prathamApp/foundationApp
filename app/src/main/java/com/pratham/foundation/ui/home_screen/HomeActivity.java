@@ -63,7 +63,6 @@ import static com.pratham.foundation.utility.FC_Constants.LEVEL_CHANGED;
 import static com.pratham.foundation.utility.FC_Constants.LEVEL_TEST_GIVEN;
 import static com.pratham.foundation.utility.FC_Constants.LOGIN_MODE;
 import static com.pratham.foundation.utility.FC_Constants.currentLevel;
-import static com.pratham.foundation.utility.FC_Constants.currentSubjectFolder;
 import static com.pratham.foundation.utility.FC_Constants.isTest;
 import static com.pratham.foundation.utility.FC_Constants.testSessionEnded;
 import static com.pratham.foundation.utility.FC_Constants.testSessionEntered;
@@ -326,7 +325,7 @@ public class HomeActivity extends BaseActivity implements LevelChanged {
             tabLayout.getTabAt(0).setCustomView(practiceTab);
             tabLayout.getTabAt(1).setCustomView(learningTab);
         }
-        if (FastSave.getInstance().getString(FC_Constants.CURRENT_FOLDER_NAME, currentSubjectFolder)
+        if (FastSave.getInstance().getString(FC_Constants.CURRENT_SUBJECT, "")
                 .equalsIgnoreCase("english")) {
             TextView funTab = (TextView) LayoutInflater.from(this).inflate(R.layout.custom_tab_text, null);
             funTab.setText(""+getResources().getString(R.string.Fun));
@@ -335,7 +334,7 @@ public class HomeActivity extends BaseActivity implements LevelChanged {
             tabLayout.getTabAt(2).setCustomView(testTab);
             tabLayout.getTabAt(3).setCustomView(funTab);
             tabLayout.getTabAt(4).setCustomView(profileTab);
-        }else if (FastSave.getInstance().getString(FC_Constants.CURRENT_FOLDER_NAME, currentSubjectFolder)
+        }else if (FastSave.getInstance().getString(FC_Constants.CURRENT_SUBJECT, "")
                 .equalsIgnoreCase("maths")) {
             tabLayout.getTabAt(2).setCustomView(testTab);
             tabLayout.getTabAt(3).setCustomView(profileTab);
@@ -493,10 +492,10 @@ public class HomeActivity extends BaseActivity implements LevelChanged {
         if (FastSave.getInstance().getString(FC_Constants.LOGIN_MODE, FC_Constants.GROUP_MODE).contains("group")) {
             adapter.addFrag(new LearningFragment_(), ""+getResources().getString(R.string.Learning));
             adapter.addFrag(new PracticeFragment_(), ""+getResources().getString(R.string.Practice));
-            if (FastSave.getInstance().getString(FC_Constants.CURRENT_FOLDER_NAME, currentSubjectFolder)
+            if (FastSave.getInstance().getString(FC_Constants.CURRENT_SUBJECT, "")
                     .equalsIgnoreCase("maths")) {
                 adapter.addFrag(new TestFragment_(), ""+getResources().getString(R.string.Test));
-            }else if (FastSave.getInstance().getString(FC_Constants.CURRENT_FOLDER_NAME, currentSubjectFolder)
+            }else if (FastSave.getInstance().getString(FC_Constants.CURRENT_SUBJECT, "")
                     .equalsIgnoreCase("english")) {
                 adapter.addFrag(new TestFragment_(), ""+getResources().getString(R.string.Test));
                 adapter.addFrag(new FunFragment_(), ""+getResources().getString(R.string.Fun));
@@ -505,10 +504,10 @@ public class HomeActivity extends BaseActivity implements LevelChanged {
         } else {
             adapter.addFrag(new PracticeFragment_(), ""+getResources().getString(R.string.Practice));
             adapter.addFrag(new LearningFragment_(), ""+getResources().getString(R.string.Learning));
-            if (FastSave.getInstance().getString(FC_Constants.CURRENT_FOLDER_NAME, currentSubjectFolder)
+            if (FastSave.getInstance().getString(FC_Constants.CURRENT_SUBJECT, "")
                     .equalsIgnoreCase("maths")) {
                 adapter.addFrag(new TestFragment_(), ""+getResources().getString(R.string.Test));
-            }else if (FastSave.getInstance().getString(FC_Constants.CURRENT_FOLDER_NAME, currentSubjectFolder)
+            }else if (FastSave.getInstance().getString(FC_Constants.CURRENT_SUBJECT, "")
                     .equalsIgnoreCase("english")) {
                 adapter.addFrag(new TestFragment_(), ""+getResources().getString(R.string.Test));
                 adapter.addFrag(new FunFragment_(), ""+getResources().getString(R.string.Fun));

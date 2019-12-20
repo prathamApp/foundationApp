@@ -106,6 +106,7 @@ public class FC_Constants {
     public static final String OTG_INSERTED = "otg_inserted";
     public static final String BACKUP_DB_COPIED = "BACKUP_DB_COPIED";
     public static final String BACKUP_DB_NOT_COPIED = "backup_db_not_copied";
+    public static final String CURRENT_SUBJECT = "current_subject";
     public static String RECEIVED_FOLDER_PATH = "";
     public static boolean TAB_LAYOUT = false;
     public static int FTP_HOTSPOT_KEYMGMT = -11;
@@ -239,7 +240,6 @@ public class FC_Constants {
     public static String currentGroup;
     public static String currentSelectedLanguage;
     public static String newDataLanguageInserted = "newDataLanguageInserted";
-    public static String currentSubject = "";
 //    public static boolean GROUP_QR = false;
     public static boolean levelSet = false;
     public static final String LOGIN_MODE = "login_mode";

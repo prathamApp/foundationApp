@@ -255,10 +255,10 @@ public class GameConstatnts implements ShowInstruction {
                         bundle, KeywordMappingFragment_.class.getSimpleName());
                 break;
             case GameConstatnts.PARAGRAPH_WRITING:
-                if (FC_Constants.currentSubject.equalsIgnoreCase("English")) {
+                if (FastSave.getInstance().getString(FC_Constants.CURRENT_SUBJECT, "").equalsIgnoreCase("English")) {
                     FC_Utility.showFragment((Activity) context, new WordWritingFragment_(), R.id.RL_CPA,
                             bundle, WordWritingFragment_.class.getSimpleName());
-                } else if (FC_Constants.currentSubject.equalsIgnoreCase("Science")) {
+                } else if (FastSave.getInstance().getString(FC_Constants.CURRENT_SUBJECT, "").equalsIgnoreCase("Science")) {
                     FC_Utility.showFragment((Activity) context, new ParagraphWritingFragment_(), R.id.RL_CPA,
                             bundle, ParagraphWritingFragment_.class.getSimpleName());
                 } else {
@@ -374,14 +374,14 @@ public class GameConstatnts implements ShowInstruction {
     }
 
     public static int getCount() {
-        if (FC_Constants.currentSubject.equalsIgnoreCase("English")) {
+        if (FastSave.getInstance().getString(FC_Constants.CURRENT_SUBJECT, "").equalsIgnoreCase("English")) {
             if (FC_Constants.currentLevel <= 2) {
                 return 5;
             } else {
                 return 1;
             }
 
-        } else if (FC_Constants.currentSubject.equalsIgnoreCase("Science")) {
+        } else if (FastSave.getInstance().getString(FC_Constants.CURRENT_SUBJECT, "").equalsIgnoreCase("Science")) {
             if (FC_Constants.currentLevel <= 2) {
                 return 5;
             } else {

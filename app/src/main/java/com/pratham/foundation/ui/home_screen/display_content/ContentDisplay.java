@@ -13,6 +13,7 @@ import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
 import android.view.Window;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -247,14 +248,29 @@ public class ContentDisplay extends BaseActivity implements ContentContract.Cont
         new Handler().postDelayed(this::dismissLoadingDialog, 300);
     }
 
+    private void hideSystemUI() {
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
+                WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        getWindow().getDecorView().setSystemUiVisibility(
+                View.SYSTEM_UI_FLAG_FULLSCREEN
+                        | View.SYSTEM_UI_FLAG_LOW_PROFILE
+                        | View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+                        | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY
+                        | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
+                        | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
+        );
+    }
+
     @Override
     protected void onResume() {
         super.onResume();
         if (!languageChanged) {
+            hideSystemUI();
             Log.d("HomeActivityTAG", "ActivityResumed: ");
             if (resumeCntr == 0)
                 resumeCntr = 1;
             else {
+                hideSystemUI();
                 showLoader();
                 if(!LOGIN_MODE.equalsIgnoreCase(QR_GROUP_MODE))
                 presenter.getPerc(nodeId);
