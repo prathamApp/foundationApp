@@ -63,6 +63,7 @@ public class ContentPlayerActivity extends BaseActivity implements ShowInstructi
             cCode = testData.getNodeDesc();
             //  GameConstatnts.gameList = contentTableList;
             // GameConstatnts.currentGameAdapterposition=myViewHolder.getAdapterPosition();
+            GameConstatnts.playInsequence = false;
             GameConstatnts.gameSelector(this, testData);
             returnIntent = new Intent();
             returnIntent.putExtra("cCode", cCode);
@@ -167,9 +168,13 @@ public class ContentPlayerActivity extends BaseActivity implements ShowInstructi
                         ((OnGameClose) f).gameClose();
                     }
                     //if game opened from test
-                    if (f.getActivity() instanceof ContentPlayerActivity) {
-                        finish();
-                    } else {
+                    if (FC_Constants.isTest) {
+                        if (f.getActivity() instanceof ContentPlayerActivity) {
+                            finish();
+                        } else {
+                            getSupportFragmentManager().popBackStack(SequenceLayout_.class.getSimpleName(), 0);
+                        }
+                    }else {
                         getSupportFragmentManager().popBackStack(SequenceLayout_.class.getSimpleName(), 0);
                     }
                 }

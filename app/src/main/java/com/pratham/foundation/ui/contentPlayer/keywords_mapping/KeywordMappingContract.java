@@ -8,7 +8,7 @@ import java.util.List;
 public interface KeywordMappingContract {
     public interface KeywordMappingView {
         void loadUI(List<ScienceQuestion> list);
-        public void showResult(ScienceQuestion scienceQuestions);
+        public void showResult();
     }
 
     public interface KeywordMappingPresenter {

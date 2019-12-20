@@ -133,28 +133,28 @@ public class GameConstatnts implements ShowInstruction {
         Button dia_btn_green = dialog.findViewById(R.id.dia_btn_green);
         Button dia_btn_red = dialog.findViewById(R.id.dia_btn_red);
 
-        dia_btn_green.setText("Yes");
-        dia_btn_red.setText("Exit");
-        dia_btn_yellow.setText("" + dialog_btn_cancel);
-        dia_title.setText("Next activity?");
+        dia_btn_green.setText(context.getResources().getString(R.string.Okay));
+        dia_btn_red.setText(context.getResources().getString(R.string.Exit));
+        dia_btn_yellow.setText(context.getResources().getString(R.string.Cancel));
+        dia_title.setText(context.getResources().getString(R.string.Next_activity));
         if (!flag) {
             dia_btn_yellow.setVisibility(View.GONE);
         }
         if (gameList != null && (currentGameAdapterposition == (gameList.size() - 1))) {
             dia_btn_red.setVisibility(View.GONE);
             if (!flag) {
-                dia_title.setText("activity completed");
-                dia_btn_green.setText("Ok");
+                dia_title.setText(context.getResources().getString(R.string.activity_completed));
+                dia_btn_green.setText(context.getResources().getString(R.string.Okay));
             } else {
-                dia_title.setText("Do you want to exit?");
+                dia_title.setText(context.getResources().getString(R.string.Do_you_want_to_exit));
             }
         } else {
             if (!playInsequence) {
                 if (!flag) {
-                    dia_title.setText("activity completed");
-                    dia_btn_green.setText("Ok");
+                    dia_title.setText(context.getResources().getString(R.string.activity_completed));
+                    dia_btn_green.setText(context.getResources().getString(R.string.Okay));
                 } else {
-                    dia_title.setText("Do you want to exit?");
+                    dia_title.setText(context.getResources().getString(R.string.Do_you_want_to_exit));
                 }
             }
         }
