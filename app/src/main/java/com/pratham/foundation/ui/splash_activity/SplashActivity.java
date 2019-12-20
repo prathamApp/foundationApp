@@ -117,14 +117,12 @@ public class SplashActivity extends SplashSupportActivity implements SplashContr
 
     public void initiateApp() {
         FastSave.getInstance().saveString(FC_Constants.LOGIN_MODE, "NA");
-
         String[] permissionArray = new String[]{PermissionUtils.Manifest_CAMERA,
                 PermissionUtils.Manifest_WRITE_EXTERNAL_STORAGE,
                 PermissionUtils.Manifest_RECORD_AUDIO,
                 PermissionUtils.Manifest_ACCESS_COARSE_LOCATION,
                 PermissionUtils.Manifest_ACCESS_FINE_LOCATION
         };
-
         File sd = new File(Environment.getExternalStorageDirectory()+"/PrathamBackups");
         if(!sd.exists())
             sd.mkdir();
