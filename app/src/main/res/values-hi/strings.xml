@@ -428,5 +428,16 @@
     <string name="hint">संकेत</string>
     <string name="clear">बदलाव हटाएँ</string>
 
+    <string name="submit">सबमिट</string>
+    <string name="hide_hint">संकेत छिपाएं</string>
+    <string name="Enter_answer">उत्तर दर्ज करें</string>
+    <string name="Your_answer">आपका उत्तर</string>
+    <string name="Result">परिणाम</string>
+    <string name="You_answered">आपका उत्तर</string>
+    <string name="Correct_Answer">सही उत्तर</string>
+    <string name="Skipped">छोड़ा गया</string>
+    <string name="Read">पढ़ें</string>
+    <string name="Paragraph">अनुच्छेद : </string>
+    <string name="Keyword">संकेत शब्द : </string>
 
 </resources>

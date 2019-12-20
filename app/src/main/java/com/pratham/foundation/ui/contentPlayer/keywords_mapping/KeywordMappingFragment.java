@@ -268,6 +268,7 @@ public class KeywordMappingFragment extends Fragment implements KeywordMappingCo
 
     @Override
     public void gameClose() {
+        presenter.returnScore();
         presenter.addScore(0, "", 0, 0, resStartTime, FC_Utility.getCurrentDateTime(), GameConstatnts.KEYWORD_MAPPING + " " + GameConstatnts.END);
     }
 

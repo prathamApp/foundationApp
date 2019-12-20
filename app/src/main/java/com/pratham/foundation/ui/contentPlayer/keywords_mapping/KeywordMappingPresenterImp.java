@@ -38,7 +38,9 @@ public class KeywordMappingPresenterImp implements KeywordMappingContract.Keywor
     private KeywordMappingContract.KeywordMappingView view;
     private String gameName, resId, contentTitle, readingContentPath;
     private List<String> correctWordList, wrongWordList;
-    private boolean isTest = false;
+    private int correct = 0;
+    private int totalCount = 0;
+
 
 
     public KeywordMappingPresenterImp(Context context) {
@@ -164,7 +166,6 @@ public class KeywordMappingPresenterImp implements KeywordMappingContract.Keywor
     public void addLearntWords(ScienceQuestion keywordmapping, List<ScienceQuestionChoice> selectedAnsList) {
         correctWordList = new ArrayList<>();
         wrongWordList = new ArrayList<>();
-        int correctCnt = 0;
        // int scoredMarks = (int) checkAnswer(keywordmapping.getLstquestionchoice(), selectedAnsList);
         if (selectedAnsList != null && !selectedAnsList.isEmpty()) {
             KeyWords keyWords = new KeyWords();
@@ -178,7 +179,7 @@ public class KeywordMappingPresenterImp implements KeywordMappingContract.Keywor
             setCompletionPercentage();
             for (int i = 0; i < selectedAnsList.size(); i++) {
                 if ( checkAnswerNew( keywordmapping.getLstquestionchoice(),selectedAnsList.get(i).getSubQues())){
-                    correctCnt++;
+                    correct++;
                     selectedAnsList.get(i).setTrue(true);
                     addScore(GameConstatnts.getInt(keywordmapping.getQid()), GameConstatnts.KEYWORD_MAPPING, 10, 10, selectedAnsList.get(i).getStartTime(),selectedAnsList.get(i).getEndTime(), selectedAnsList.get(i).getSubQues());
                 }else {
@@ -186,7 +187,8 @@ public class KeywordMappingPresenterImp implements KeywordMappingContract.Keywor
                     addScore(GameConstatnts.getInt(keywordmapping.getQid()), GameConstatnts.KEYWORD_MAPPING, 0, 10,selectedAnsList.get(i).getStartTime(),selectedAnsList.get(i).getEndTime(),selectedAnsList.get(i).getSubQues());
                 }
             }
-            GameConstatnts.postScoreEvent(selectedAnsList.size(),correctCnt);
+            totalCount=+totalCount+selectedAnsList.size();
+           //
             if (!FC_Constants.isTest) {
                 view.showResult();
             }
@@ -195,7 +197,9 @@ public class KeywordMappingPresenterImp implements KeywordMappingContract.Keywor
         }
         BackupDatabase.backup(context);
     }
-
+    public void returnScore(){
+        GameConstatnts.postScoreEvent(totalCount,correct);
+    }
     public void addScore(int wID, String Word, int scoredMarks, int totalMarks, String resStartTime,String resEndTime, String Label) {
         try {
             String deviceId = appDatabase.getStatusDao().getValue("DeviceId");

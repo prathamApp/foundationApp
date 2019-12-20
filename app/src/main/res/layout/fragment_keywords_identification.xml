@@ -48,7 +48,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
-            android:text="Paragaph : "
+            android:text="@string/Paragraph"
             android:textColor="@color/colorBlack"
             android:textSize="25sp" />
     </RelativeLayout>
@@ -83,10 +83,9 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:paddingHorizontal="@dimen/_10sdp"
-            android:text="Keywords : "
+            android:text="@string/Keyword"
             android:textColor="@color/colorBlack"
             android:textSize="25sp" />
-
     </RelativeLayout>
 
     <LinearLayout

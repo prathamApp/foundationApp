@@ -15,7 +15,7 @@ public interface KeywordMappingContract {
         void getData();
 
         //void setView(String contentTitle, String resId);
-
+        void returnScore();
         void getDataList();
         boolean checkAnswerNew(List<ScienceQuestionChoice> optionListlist, String word);
         void addLearntWords(ScienceQuestion keywordmapping, List<ScienceQuestionChoice> selectedOption);

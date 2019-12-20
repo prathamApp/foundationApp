@@ -61,9 +61,9 @@ public class GameConstatnts implements ShowInstruction {
     public static final String FACTRETRIEVAL = "factRetrieval";
     public static final String SHOW_ME_ANDROID = "ShowMeAndroid";
     public static final String THINKANDWRITE = "TAW";
-    public static final String DOING_ACT_READ = "doing_act_read";
+    public static final String DOING_ACT_READ = "doing_act";
     public static final String LetterWriting = "letter";
-    public static final String DOING_ACT_VIDEO = "doing_act_video";
+   // public static final String DOING_ACT_VIDEO = "doing_act_video";
     public static final String READ_VOCAB_ANDROID = "ReadVocabAndroid";
     public static final String MULTIPLE_CHOICE = "multiple_choice";
     public static final String READING_STT = "reading_stt";
@@ -298,9 +298,9 @@ public class GameConstatnts implements ShowInstruction {
                         bundle, pictionaryFragment.class.getSimpleName());
                 break;
 
+           // case GameConstatnts.DOING_ACT_VIDEO:
             case GameConstatnts.THINKANDWRITE:
             case GameConstatnts.DOING_ACT_READ:
-            case GameConstatnts.DOING_ACT_VIDEO:
             case GameConstatnts.LetterWriting:
             case GameConstatnts.WATCHING_VIDEO:
                 FC_Utility.showFragment((Activity) context, new DoingFragment(), R.id.RL_CPA,

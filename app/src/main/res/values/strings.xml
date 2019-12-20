@@ -53,6 +53,8 @@
     <string name="Correct_Answer">Correct Answer</string>
     <string name="Skipped">Skipped</string>
     <string name="Read">Read</string>
+    <string name="Paragraph">Paragraph : </string>
+    <string name="Keyword">Keyword : </string>
 <!--    game Instructions-->
     <string name="fact_retrieval_click">Answer the question by selecting the word and then submit it.</string>
     <string name="factRetrieval">Answer the question by selecting the word by long pressing it and then submit the selected answer.</string>

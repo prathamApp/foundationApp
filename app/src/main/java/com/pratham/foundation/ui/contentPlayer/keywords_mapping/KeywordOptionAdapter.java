@@ -15,6 +15,7 @@ import android.widget.TextView;
 
 import com.pratham.foundation.R;
 import com.pratham.foundation.modalclasses.ScienceQuestionChoice;
+import com.pratham.foundation.utility.FC_Constants;
 import com.pratham.foundation.utility.FC_Utility;
 
 import java.util.ArrayList;
@@ -98,7 +99,8 @@ public class KeywordOptionAdapter extends RecyclerView.Adapter<KeywordOptionAdap
             }
         });
         //SHOW ANSWER
-        if(!isClickable && !showAnswer){
+        if (!FC_Constants.isTest) {
+            if(!isClickable && !showAnswer){
            /* if (!presenter.checkAnswerNew(datalist,  myviewholder.textView.getText().toString())) {
                 myviewholder.textView.setTextColor(Color.RED);
                 myviewholder.textView.setPaintFlags(myviewholder.textView.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
@@ -106,29 +108,30 @@ public class KeywordOptionAdapter extends RecyclerView.Adapter<KeywordOptionAdap
                 myviewholder.textView.setPaintFlags(  myviewholder.textView.getPaintFlags() & (~ Paint.STRIKE_THRU_TEXT_FLAG));
             }*/
 
-            if (!presenter.checkAnswerNew(datalist,  myviewholder.textView.getText().toString())) {
-                if(datalist.get(myviewholder.getAdapterPosition()).isIsclicked()){
-                    myviewholder.itemView.setBackground(ContextCompat.getDrawable(context, R.drawable.hexagon_red));
-                }else {
-                    myviewholder.textView.setTextColor(Color.RED);
-                }
-                  myviewholder.textView.setPaintFlags(myviewholder.textView.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
-            } else {
-                myviewholder.textView.setPaintFlags(  myviewholder.textView.getPaintFlags() & (~ Paint.STRIKE_THRU_TEXT_FLAG));
-                if(datalist.get(myviewholder.getAdapterPosition()).isIsclicked()){
-                    myviewholder.itemView.setBackground(ContextCompat.getDrawable(context, R.drawable.hexagon_green));
-                }else {
-                    myviewholder.textView.setTextColor(context.getResources().getColor(R.color.light_green));
+                if (!presenter.checkAnswerNew(datalist,  myviewholder.textView.getText().toString())) {
+                    if(datalist.get(myviewholder.getAdapterPosition()).isIsclicked()){
+                        myviewholder.itemView.setBackground(ContextCompat.getDrawable(context, R.drawable.hexagon_red));
+                    }else {
+                        myviewholder.textView.setTextColor(Color.RED);
+                    }
+                    myviewholder.textView.setPaintFlags(myviewholder.textView.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
+                } else {
+                    myviewholder.textView.setPaintFlags(  myviewholder.textView.getPaintFlags() & (~ Paint.STRIKE_THRU_TEXT_FLAG));
+                    if(datalist.get(myviewholder.getAdapterPosition()).isIsclicked()){
+                        myviewholder.itemView.setBackground(ContextCompat.getDrawable(context, R.drawable.hexagon_green));
+                    }else {
+                        myviewholder.textView.setTextColor(context.getResources().getColor(R.color.light_green));
+                    }
                 }
             }
-        }
-        //SHOW HINT
-        if(!isClickable && showAnswer){
-            if (!presenter.checkAnswerNew(datalist,  myviewholder.textView.getText().toString())) {
-                myviewholder.textView.setTextColor(Color.RED);
-                myviewholder.textView.setPaintFlags(myviewholder.textView.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
-            } else {
-                myviewholder.textView.setPaintFlags(  myviewholder.textView.getPaintFlags() & (~ Paint.STRIKE_THRU_TEXT_FLAG));
+            //SHOW HINT
+            if(!isClickable && showAnswer){
+                if (!presenter.checkAnswerNew(datalist,  myviewholder.textView.getText().toString())) {
+                    myviewholder.textView.setTextColor(Color.RED);
+                    myviewholder.textView.setPaintFlags(myviewholder.textView.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
+                } else {
+                    myviewholder.textView.setPaintFlags(  myviewholder.textView.getPaintFlags() & (~ Paint.STRIKE_THRU_TEXT_FLAG));
+                }
             }
         }
     }
