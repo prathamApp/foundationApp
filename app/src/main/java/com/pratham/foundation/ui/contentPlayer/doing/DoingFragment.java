@@ -1,6 +1,5 @@
 package com.pratham.foundation.ui.contentPlayer.doing;
 
-import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -582,16 +581,18 @@ public class DoingFragment extends Fragment implements STT_Result_New.sttView,On
 
 //            scrollView.setBackgroundResource(R.drawable.convo_correct_bg);
         }
-
-        etAnswer.setText(sttResult);
-        scienceQuestionChoices.get(index).setUserAns(sttResult);
+        myAns += sttResult;
+        etAnswer.setText(myAns);
+        scienceQuestionChoices.get(index).setUserAns(myAns);
         scienceQuestionChoices.get(index).setStartTime(speechStartTime);
         scienceQuestionChoices.get(index).setEndTime( FC_Utility.getCurrentDateTime());
 
-        voiceStart = false;
-        micPressed(0);
-        continuousSpeechService.stopSpeechInput();
+//        voiceStart = false;
+//        micPressed(0);
+//        continuousSpeechService.stopSpeechInput();
     }
+
+    String myAns="";
 
     @OnClick(R.id.previous)
     public void onPreviousClick() {

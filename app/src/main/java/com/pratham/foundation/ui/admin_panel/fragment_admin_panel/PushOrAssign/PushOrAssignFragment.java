@@ -130,7 +130,6 @@ public class PushOrAssignFragment extends Fragment {
     public void viewTabUsage() {
         Intent intent = new Intent(getActivity(), TabUsageActivity_.class);
         startActivityForResult(intent, 1);
-        getActivity().startActivity(intent);
     }
 
     @Override
