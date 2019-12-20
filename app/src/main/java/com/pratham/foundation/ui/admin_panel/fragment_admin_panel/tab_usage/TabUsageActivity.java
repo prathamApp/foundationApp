@@ -26,7 +26,7 @@ import org.androidannotations.annotations.ViewById;
 import java.util.HashMap;
 import java.util.List;
 
-@EActivity(R.layout.activity_push_data)
+@EActivity(R.layout.activity_tab_usage)
 public class TabUsageActivity extends BaseActivity implements TabUsageContract.TabUsageView, ContractOptions{
 
     @Bean(TabUsagePresenter.class)

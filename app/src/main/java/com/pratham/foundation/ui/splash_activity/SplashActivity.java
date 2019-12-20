@@ -92,7 +92,7 @@ public class SplashActivity extends SplashSupportActivity implements SplashContr
     @AfterViews
     public void init() {
         new Handler().postDelayed(() -> {
-            final Typeface title_font = Typeface.createFromAsset(getAssets(), "fonts/Sarala_Bold.ttf.ttf");
+            final Typeface title_font = Typeface.createFromAsset(getAssets(), "fonts/Sarala_Bold.ttf");
             tv_typer.setTypeface(title_font);
             tv_typer.setVisibility(View.VISIBLE);
             tv_typer.animateText("Foundation\nCourse");
