@@ -1,7 +1,6 @@
 package com.pratham.foundation.ui.contentPlayer;
 
 import android.app.Activity;
-import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
@@ -123,7 +122,7 @@ public class GameConstatnts implements ShowInstruction {
     }
 
     public static void playGameNext(Context context, boolean flag, OnGameClose onGameClose) {
-        final Dialog dialog = new CustomLodingDialog(context);
+        final CustomLodingDialog dialog = new CustomLodingDialog(context);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         dialog.setContentView(R.layout.fc_custom_dialog);

@@ -142,11 +142,18 @@ public class PracticeInnerDataAdapter extends RecyclerView.Adapter {
                 FileHolder fileHolder = (FileHolder) viewHolder;
                 fileHolder.content_card_view.setBackground(mContext.getResources().getDrawable(getRandomCardColor()));
                 fileHolder.tvTitle.setText(itemsList.get(i).getNodeTitle());
+                fileHolder.tvTitle.setSelected(true);
                 File file;
                 if (itemsList.get(i).getIsDownloaded().equalsIgnoreCase("1") ||
                         itemsList.get(i).getIsDownloaded().equalsIgnoreCase("true")) {
 
-                    fileHolder.actionBtn.setVisibility(View.GONE);/*setImageResource(R.drawable.ic_joystick);*/
+                    if(itemsList.get(i).getResourceType().equalsIgnoreCase(FC_Constants.VIDEO))
+                        fileHolder.actionBtn.setImageResource(R.drawable.ic_video);
+                    else if(itemsList.get(i).getResourceType().toLowerCase().contains(FC_Constants.GAME))
+                        fileHolder.actionBtn.setImageResource(R.drawable.ic_joystick);
+                    else
+                        fileHolder.actionBtn.setImageResource(R.drawable.ic_android_act);
+
                     fileHolder.content_card_view.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {

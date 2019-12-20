@@ -1,6 +1,5 @@
 package com.pratham.foundation.ui.contentPlayer.fillInTheBlanks;
 
-import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
@@ -493,7 +492,7 @@ public class FillInTheBlanksFragment extends Fragment implements STT_Result {
 
 
     public void showResult(List<String> correctWord, List<String> wrongWord) {
-        final Dialog dialog = new CustomLodingDialog(getActivity());
+        final CustomLodingDialog dialog = new CustomLodingDialog(getActivity());
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setContentView(R.layout.show_result);
         dialog.setCancelable(false);

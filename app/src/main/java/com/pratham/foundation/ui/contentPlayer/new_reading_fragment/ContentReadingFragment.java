@@ -5,7 +5,6 @@ import android.animation.AnimatorListenerAdapter;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.ActivityOptions;
-import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -246,7 +245,7 @@ public class ContentReadingFragment extends Fragment implements
         totalPages = modalPagesList.size();
     }
 
-    public Dialog myLoadingDialog;
+    public CustomLodingDialog myLoadingDialog;
     boolean dialogFlg = false;
 
     @UiThread
@@ -254,7 +253,7 @@ public class ContentReadingFragment extends Fragment implements
     public void showLoader() {
         if (!dialogFlg) {
             dialogFlg = true;
-            myLoadingDialog = new Dialog(context);
+            myLoadingDialog = new CustomLodingDialog(context);
             myLoadingDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
             myLoadingDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
             myLoadingDialog.setContentView(R.layout.loading_dialog);
@@ -339,7 +338,7 @@ public class ContentReadingFragment extends Fragment implements
         startTime = FC_Utility.getCurrentDateTime();
     }
 
-    private void revealShow(View dialogView, boolean b, final Dialog dialog) {
+    private void revealShow(View dialogView, boolean b, final CustomLodingDialog dialog) {
 
         final View view = dialogView.findViewById(R.id.dialog_main);
         int w = view.getWidth();
@@ -988,7 +987,7 @@ public class ContentReadingFragment extends Fragment implements
 
     @SuppressLint("SetTextI18n")
     public void showAcknowledgeDialog(boolean diaComplete) {
-        final Dialog dialog = new CustomLodingDialog(context);
+        final CustomLodingDialog dialog = new CustomLodingDialog(context);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         dialog.setContentView(R.layout.fc_custom_dialog);
@@ -1117,7 +1116,7 @@ public class ContentReadingFragment extends Fragment implements
 
     @SuppressLint("SetTextI18n")
     private void showStars(boolean diaComplete) {
-        final Dialog dialog = new CustomLodingDialog(context);
+        final CustomLodingDialog dialog = new CustomLodingDialog(context);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         dialog.setContentView(R.layout.fc_custom_test_star_dialog);

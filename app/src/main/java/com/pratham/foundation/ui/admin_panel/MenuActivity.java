@@ -1,7 +1,6 @@
 package com.pratham.foundation.ui.admin_panel;
 
 import android.annotation.SuppressLint;
-import android.app.Dialog;
 import android.content.ComponentName;
 import android.content.Intent;
 import android.graphics.Color;
@@ -91,7 +90,7 @@ public class MenuActivity extends BaseActivity {
     }*/
 
     private void show_STT_Dialog() {
-        Dialog dialog = new Dialog(MenuActivity.this);
+        CustomLodingDialog dialog = new CustomLodingDialog(MenuActivity.this);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setContentView(R.layout.fc_custom_dialog);
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
@@ -173,7 +172,7 @@ public class MenuActivity extends BaseActivity {
 
     @SuppressLint("SetTextI18n")
     private void showExitDialog() {
-        Dialog dialog = new CustomLodingDialog(this, R.style.ExitDialog);
+        CustomLodingDialog dialog = new CustomLodingDialog(this, R.style.ExitDialog);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setContentView(R.layout.lottie_exit_dialog);
 /*      Bitmap map=FC_Utility.takeScreenShot(HomeActivity.this);

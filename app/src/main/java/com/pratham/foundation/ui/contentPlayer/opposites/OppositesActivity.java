@@ -1,6 +1,5 @@
 package com.pratham.foundation.ui.contentPlayer.opposites;
 
-import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
@@ -60,7 +59,7 @@ public class OppositesActivity extends BaseActivity
     @ViewById(R.id.topContainer)
     CardView topContainer;
 
-    Dialog nextDialog;
+    CustomLodingDialog nextDialog;
     Context mContext;
     boolean isAudioPlaying = false, onSdCard;
     String readingContentPath, contentPath, contentTitle, StudentID, resId;
@@ -185,7 +184,7 @@ public class OppositesActivity extends BaseActivity
                 mhandler.removeCallbacksAndMessages(null);
             }
             mediaPlayerUtil.stopMedia();
-            nextDialog = new Dialog(this);
+            nextDialog = new CustomLodingDialog(this);
             nextDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
             nextDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
             nextDialog.setContentView(R.layout.fc_custom_dialog);
@@ -245,7 +244,7 @@ public class OppositesActivity extends BaseActivity
         } catch (Exception e) {
             e.printStackTrace();
         }
-        final Dialog dialog = new CustomLodingDialog(this);
+        final CustomLodingDialog dialog = new CustomLodingDialog(this);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         dialog.setContentView(R.layout.fc_custom_dialog);

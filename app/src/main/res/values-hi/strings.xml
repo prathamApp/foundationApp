@@ -3,33 +3,63 @@
     <string name="app_name">Foundation App</string>
 
     <string name="Login">लॉग इन करें</string>
-    <string name="Stt_Dialog_Msg">Please download language packs offline for better performance</string>
-    <string name="Okay">OK</string>
-    <string name="Skip">SKIP</string>
-    <string name="loding_please_wait">Loading... Please wait...</string>
-    <string name="Exit">Exit</string>
-    <string name="Cancel">Cancel</string>
-    <string name="Restart">Restart</string>
-    <string name="login_mode">Login Mode</string>
-    <string name="Group">Group</string>
-    <string name="Individual">Individual</string>
-    <string name="what_do_you_want_to_do">What do you want to do?</string>
-    <string name="Scan_QR_Code">Scan QR Code</string>
-    <string name="Reset">Reset</string>
-    <string name="Get_Progress">Get Progress</string>
-    <string name="Start">Start</string>
-    <string name="No_Internet_Connection">No Internet Connection</string>
-    <string name="Invalid_QR_Code">Invalid QR Code !!!</string>
-    <string name="Only_5_Students_Allowed">Only 5 Students Allowed</string>
-    <string name="Student_exists">This Student already exists</string>
-    <string name="Scan_new_QR">Scan new QR.</string>
-    <string name="Welcome">वेलकम </string>
-    <string name="select_subject">Please select a subject...</string>
-    <string name="usage">Usage</string>
-    <string name="days">Days</string>
-    <string name="hours">Hours</string>
-    <string name="progress">Progress</string>
+    <string name="Stt_Dialog_Msg">बेहतर प्रदर्शन के लिए कृपया ऑफलाइन भाषा पैक डाउनलोड करें.</string>
+    <string name="Okay">ठीक है</string>
+    <string name="Skip">छोड़कर आगे बढ़े</string>
+    <string name="loding_please_wait">लोड हो रहा है कृपया प्रतीक्षा करें...</string>
+    <string name="Exit">बाहर</string>
+    <string name="Cancel">रद्द करें</string>
+    <string name="Restart">दोबारा शुरू करें</string>
+    <string name="login_mode">लॉगिन मोड</string>
+    <string name="Group">समूह लॉगिन</string>
+    <string name="Individual">व्यक्तिगत लॉगिन</string>
+    <string name="what_do_you_want_to_do">आप क्या करना चाहते हैं?</string>
+    <string name="Scan_QR_Code">क्यू आर कोड स्कैन करें</string>
+    <string name="Reset">रीसेट</string>
+    <string name="Get_Progress">प्रगति देखें</string>
+    <string name="Start">शुरू करें</string>
+    <string name="No_Internet_Connection">इंटरनेट कनेक्शन मौजूद नहीं है</string>
+    <string name="Invalid_QR_Code">अवैध क्यू आर कोड !!!</string>
+    <string name="Only_5_Students_Allowed">केवल पाँच छात्रों की अनुमति।</string>
+    <string name="Student_exists">यह छात्र पहले से मौजूद है</string>
+    <string name="Scan_new_QR">नया क्यू आर स्कैन करें।</string>
+    <string name="Welcome">आपका स्वागत है</string>
+    <string name="select_subject">कृपया किसी एक अध्ययन विषय का चयन करें ...</string>
+    <string name="usage">प्रयोग</string>
+    <string name="days">दिन</string>
+    <string name="hours">घंटे</string>
+    <string name="progress">प्रगति</string>
+    <string name="yes">हाँ</string>
+    <string name="no">नहीं</string>
+    <string name="Test_Complete_Dialog">आप प्रोफाइल विभाग में प्रमाण पत्र देख सकते हैं</string>
 
+    <string name="selectGroup" >ग्रुप का चयन करें</string>
+    <string name="select_Age" >आयु वर्ग का चयन करें</string>
+    <string name="select_Name" >अपना नाम चुनें</string>
+    <string name="age_8_and_above">उम्र 8 साल और ऊपर</string>
+    <string name="Summary">सारांश</string>
+    <string name="Progress">प्रगति</string>
+    <string name="Certificates">प्रमाण पत्र</string>
+
+    <string name="restart_dialog_msg" >क्या आप पुनः आरंभ करना चाहते हैं?</string>
+    <string name="exit_dialog_msg" >क्या आप निकास करना चाहते हैं?</string>
+
+    <string name="read_full_sentence" >Read the full sentence.</string>
+    <string name="Click_group_name" >Click your group name.</string>
+    <string name="mark_attendance" >Mark your attendance.</string>
+    <string name="Learning" >Learning</string>
+    <string name="Practice" >Practice</string>
+    <string name="Test" >Test</string>
+    <string name="Fun" >Fun</string>
+    <string name="Profile" >Profile</string>
+    <string name="Level" >Level</string>
+    <string name="Next" >Next</string>
+    <string name="Revise" >Revise</string>
+    <string name="nice_chatting_with_you" >Nice chatting with you.</string>
+    <string name="byebye" >Bye-bye!</string>
+    <string name="Unsupervised">Unsupervised</string>
+    <string name="Supervised">Supervised</string>
+    <string name="change_subj">Change Subject?</string>
 
 
 
@@ -95,10 +125,6 @@
     <string name="download">Download</string>
     <string name="age_3_to_6">Age 3 to 6</string>
     <string name="age_8_to_14">Age 8 to 14</string>
-    <string name="age_8_and_above">Age 8 and above.</string>
-    <string name="Summary">Summary</string>
-    <string name="Progress">Progress</string>
-    <string name="Certificates">Certificates</string>
     <string name="title_activity_home_">Home_Activity</string>
     <string name="title_activity_keyword_mapping">KeywordMapping</string>
 

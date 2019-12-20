@@ -65,7 +65,7 @@ public class SelectSubject extends BaseActivity implements
             studName = FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_NAME, "");
         else
             studName = FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_NAME, "").split(" ")[0];
-        name.setText(getResources().getString(R.string.Welcome) + " " + studName + ".");
+        name.setText(/*getResources().getString(R.string.Welcome) + " " + */studName + ".");
         subjectAdapter = new SelectSubjectAdapter(this, subjectList);
         RecyclerView.LayoutManager mLayoutManager = new GridLayoutManager(this, 1);
         subject_recycler.setLayoutManager(mLayoutManager);

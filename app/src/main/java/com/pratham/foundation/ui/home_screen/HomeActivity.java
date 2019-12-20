@@ -36,7 +36,6 @@ import com.pratham.foundation.ui.home_screen.practice_fragment.PracticeFragment_
 import com.pratham.foundation.ui.home_screen.profile_new.ProfileFragment_;
 import com.pratham.foundation.ui.home_screen.test_fragment.TestFragment_;
 import com.pratham.foundation.ui.home_screen.test_fragment.supervisor.SupervisedAssessmentActivity;
-import com.pratham.foundation.ui.student_profile.Student_profile_activity;
 import com.pratham.foundation.utility.FC_Constants;
 import com.pratham.foundation.utility.FC_Utility;
 
@@ -63,11 +62,8 @@ import static com.pratham.foundation.utility.FC_Constants.INDIVIDUAL_MODE;
 import static com.pratham.foundation.utility.FC_Constants.LEVEL_CHANGED;
 import static com.pratham.foundation.utility.FC_Constants.LEVEL_TEST_GIVEN;
 import static com.pratham.foundation.utility.FC_Constants.LOGIN_MODE;
-import static com.pratham.foundation.utility.FC_Constants.QR_GROUP_MODE;
 import static com.pratham.foundation.utility.FC_Constants.currentLevel;
 import static com.pratham.foundation.utility.FC_Constants.currentSubject;
-import static com.pratham.foundation.utility.FC_Constants.dialog_btn_cancel;
-import static com.pratham.foundation.utility.FC_Constants.dialog_btn_exit;
 import static com.pratham.foundation.utility.FC_Constants.isTest;
 import static com.pratham.foundation.utility.FC_Constants.testSessionEnded;
 import static com.pratham.foundation.utility.FC_Constants.testSessionEntered;
@@ -173,32 +169,22 @@ public class HomeActivity extends BaseActivity implements LevelChanged {
             e.printStackTrace();
             sImage = "group_icon";
         }
-        setStudentProfileImage(sImage);
     }
 
-    @Click(R.id.profileImage)
-    public void loadProfile() {
-        startActivity(new Intent(this, Student_profile_activity.class));
-    }
-
-    @UiThread
-    public void setStudentProfileImage(String sImage) {
-    }
 
     @Background
     public void displayProfileName() {
         String profileName = "QR Group";
         try {
-            if (LOGIN_MODE.equalsIgnoreCase(GROUP_MODE))
+            if (FastSave.getInstance().getString(LOGIN_MODE, "").equalsIgnoreCase(GROUP_MODE))
                 profileName = AppDatabase.getDatabaseInstance(this)
                         .getGroupsDao().getGroupNameByGrpID(FastSave.getInstance()
                                 .getString(FC_Constants.CURRENT_STUDENT_ID, ""));
-            else if (!LOGIN_MODE.equalsIgnoreCase(QR_GROUP_MODE)) {
+/*            else if (!LOGIN_MODE.equalsIgnoreCase(QR_GROUP_MODE)) {
                 profileName = AppDatabase.getDatabaseInstance(this)
                         .getStudentDao().getFullName(FastSave.getInstance()
                                 .getString(FC_Constants.CURRENT_STUDENT_ID, ""));
-            }
-
+            }*/
             if (LOGIN_MODE.equalsIgnoreCase(INDIVIDUAL_MODE))
                 profileName = profileName.split(" ")[0];
 
@@ -212,6 +198,7 @@ public class HomeActivity extends BaseActivity implements LevelChanged {
     public void setProfileName(String profileName) {
         tv_Activity.setText(profileName);
         tv_Topic.setText(sub_Name);
+        tv_Topic.setSelected(true);
     }
 
     @Override
@@ -317,19 +304,19 @@ public class HomeActivity extends BaseActivity implements LevelChanged {
 
     private void setupTabIcons() {
         TextView learningTab = (TextView) LayoutInflater.from(this).inflate(R.layout.custom_tab_text, null);
-        learningTab.setText("Learning");
+        learningTab.setText(""+getResources().getString(R.string.Learning));
         learningTab.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.ic_learning, 0, 0);
 
         TextView practiceTab = (TextView) LayoutInflater.from(this).inflate(R.layout.custom_tab_text, null);
-        practiceTab.setText("Practice");
+        practiceTab.setText(""+getResources().getString(R.string.Practice));
         practiceTab.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.ic_practice, 0, 0);
 
         TextView profileTab = (TextView) LayoutInflater.from(this).inflate(R.layout.custom_tab_text, null);
-        profileTab.setText("Profile");
+        profileTab.setText(""+getResources().getString(R.string.Profile));
         profileTab.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.ic_profile, 0, 0);
 
         TextView testTab = (TextView) LayoutInflater.from(this).inflate(R.layout.custom_tab_text, null);
-        testTab.setText("Test");
+        testTab.setText(""+getResources().getString(R.string.Test));
         testTab.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.ic_test, 0, 0);
 
         if (FastSave.getInstance().getString(FC_Constants.LOGIN_MODE, FC_Constants.GROUP_MODE).contains("group")) {
@@ -341,7 +328,7 @@ public class HomeActivity extends BaseActivity implements LevelChanged {
         }
         if (currentSubject.equalsIgnoreCase("english")) {
             TextView funTab = (TextView) LayoutInflater.from(this).inflate(R.layout.custom_tab_text, null);
-            funTab.setText("Fun");
+            funTab.setText(""+getResources().getString(R.string.Fun));
             funTab.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.ic_fun, 0, 0);
 
             tabLayout.getTabAt(2).setCustomView(testTab);
@@ -358,12 +345,12 @@ public class HomeActivity extends BaseActivity implements LevelChanged {
                     FC_Constants.isTest = true;
                 }if (tab.getText().toString().equalsIgnoreCase("Practice")) {
                 }*/
-                if (tab.getText().toString().equalsIgnoreCase("Test")) {
+                if (tab.getText().toString().equalsIgnoreCase(""+getResources().getString(R.string.Test))) {
                     FC_Constants.isTest = true;
                     String assessmentSession = "test-" + ApplicationClass.getUniqueID();
                     FastSave.getInstance().saveString(ASSESSMENT_SESSION, assessmentSession);
                     showTestTypeSelectionDialog();
-                }else if (tab.getText().toString().equalsIgnoreCase("Profile")) {
+                }else if (tab.getText().toString().equalsIgnoreCase(""+getResources().getString(R.string.Profile))) {
                     FC_Constants.isTest = false;
                     if(testSessionEntered && !testSessionEnded)
                         endTestSession();
@@ -386,10 +373,10 @@ public class HomeActivity extends BaseActivity implements LevelChanged {
             @Override
             public void onTabReselected(TabLayout.Tab tab) {
 
-                if (tab.getText().toString().equalsIgnoreCase("Test")) {
+                if (tab.getText().toString().equalsIgnoreCase(""+getResources().getString(R.string.Test))) {
                     FC_Constants.isTest = true;
                     showTestTypeSelectionDialog();
-                }else if (tab.getText().toString().equalsIgnoreCase("Profile")) {
+                }else if (tab.getText().toString().equalsIgnoreCase(""+getResources().getString(R.string.Profile))) {
                     FC_Constants.isTest = false;
                     header_rl.setVisibility(View.GONE);
                 } else {
@@ -437,9 +424,9 @@ public class HomeActivity extends BaseActivity implements LevelChanged {
         Button dia_btn_yellow = dialog.findViewById(R.id.dia_btn_yellow);
         Button dia_btn_red = dialog.findViewById(R.id.dia_btn_red);
 
-        dia_btn_red.setText("unsupervised");
-        dia_btn_green.setText("" + dialog_btn_cancel);
-        dia_btn_yellow.setText("supervised");
+        dia_btn_red.setText(""+getResources().getString(R.string.Unsupervised));
+        dia_btn_green.setText(""+getResources().getString(R.string.Cancel));
+        dia_btn_yellow.setText(""+getResources().getString(R.string.Supervised));
         dialog.show();
 
         dia_btn_red.setOnClickListener(v -> {
@@ -499,21 +486,21 @@ public class HomeActivity extends BaseActivity implements LevelChanged {
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
         viewpager.setOffscreenPageLimit(5);
         if (FastSave.getInstance().getString(FC_Constants.LOGIN_MODE, FC_Constants.GROUP_MODE).contains("group")) {
-            adapter.addFrag(new LearningFragment_(), "Learning");
-            adapter.addFrag(new PracticeFragment_(), "Practice");
+            adapter.addFrag(new LearningFragment_(), ""+getResources().getString(R.string.Learning));
+            adapter.addFrag(new PracticeFragment_(), ""+getResources().getString(R.string.Practice));
             if (currentSubject.equalsIgnoreCase("english")) {
-                adapter.addFrag(new TestFragment_(), "Test");
-                adapter.addFrag(new FunFragment_(), "Fun");
+                adapter.addFrag(new TestFragment_(), ""+getResources().getString(R.string.Test));
+                adapter.addFrag(new FunFragment_(), ""+getResources().getString(R.string.Fun));
             }
-            adapter.addFrag(new ProfileFragment_(), "Profile");
+            adapter.addFrag(new ProfileFragment_(), ""+getResources().getString(R.string.Profile));
         } else {
-            adapter.addFrag(new PracticeFragment_(), "Practice");
-            adapter.addFrag(new LearningFragment_(), "Learning");
+            adapter.addFrag(new PracticeFragment_(), ""+getResources().getString(R.string.Practice));
+            adapter.addFrag(new LearningFragment_(), ""+getResources().getString(R.string.Learning));
             if (currentSubject.equalsIgnoreCase("english")) {
-                adapter.addFrag(new TestFragment_(), "Test");
-                adapter.addFrag(new FunFragment_(), "Fun");
+                adapter.addFrag(new TestFragment_(), ""+getResources().getString(R.string.Test));
+                adapter.addFrag(new FunFragment_(), ""+getResources().getString(R.string.Fun));
             }
-            adapter.addFrag(new ProfileFragment_(), "Profile");
+            adapter.addFrag(new ProfileFragment_(), ""+getResources().getString(R.string.Profile));
         }
         viewpager.setAdapter(adapter);
     }
@@ -577,10 +564,10 @@ public class HomeActivity extends BaseActivity implements LevelChanged {
         Button test_btn = dialog.findViewById(R.id.dia_btn_yellow);
         Button revise_btn = dialog.findViewById(R.id.dia_btn_red);
 
-        dia_title.setText("Change Subject?");
-        revise_btn.setText("" + dialog_btn_exit);
-        test_btn.setText("" + dialog_btn_cancel);
-        next_btn.setText("OK");
+        dia_title.setText(""+getResources().getString(R.string.change_subj));
+        revise_btn.setText(""+getResources().getString(R.string.Exit));
+        test_btn.setText(""+getResources().getString(R.string.Cancel));
+        next_btn.setText(""+getResources().getString(R.string.Okay));
 
         next_btn.setOnClickListener(v -> {
             finish();

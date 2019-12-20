@@ -14,13 +14,13 @@
     android:layout_height="wrap_content"
     android:layout_alignParentTop="true">
 
-    <com.pratham.foundation.customView.FredokaOneTextView
+    <com.pratham.foundation.customView.SansTextViewBold
         android:id="@+id/txt_login"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/_10sdp"
         android:layout_marginTop="@dimen/_10sdp"
-        android:text="Login"
+        android:text="@string/Login"
         android:textColor="@color/dark_blue"
         android:textSize="@dimen/_22sdp" />
 
@@ -87,7 +87,7 @@
                     android:layout_height="match_parent"
                     app:srcCompat="@drawable/b1" />
 
-                <com.pratham.foundation.customView.FredokaOneTextView
+                <com.pratham.foundation.customView.SansTextViewBold
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight=".5"
@@ -117,14 +117,14 @@
                 android:orientation="horizontal"
                 android:weightSum="1">
 
-                <com.pratham.foundation.customView.FredokaOneTextView
+                <com.pratham.foundation.customView.SansTextViewBold
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_gravity="center"
                     android:layout_marginEnd="@dimen/_10sdp"
                     android:layout_weight=".5"
                     android:gravity="center"
-                    android:text="Group"
+                    android:text="@string/Group"
                     android:textColor="@color/readingGreen"
                     android:textSize="@dimen/_22sdp" />
 

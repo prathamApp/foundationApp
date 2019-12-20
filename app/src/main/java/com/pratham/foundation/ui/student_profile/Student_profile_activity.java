@@ -1,7 +1,6 @@
 package com.pratham.foundation.ui.student_profile;
 
 import android.annotation.SuppressLint;
-import android.app.Dialog;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
@@ -85,7 +84,7 @@ public class Student_profile_activity extends Fragment implements Student_profil
 
     @SuppressLint("SetTextI18n")
     private void showLanguageSelectionDialog() {
-        final Dialog dialog = new CustomLodingDialog(getActivity());
+        final CustomLodingDialog dialog = new CustomLodingDialog(getActivity());
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         dialog.setContentView(R.layout.fc_custom_language_dialog);
@@ -315,10 +314,10 @@ public class Student_profile_activity extends Fragment implements Student_profil
 
     }
 
-    public Dialog myLoadingDialog;
+    public CustomLodingDialog myLoadingDialog;
 
     private void showLoader() {
-        myLoadingDialog = new Dialog(getActivity());
+        myLoadingDialog = new CustomLodingDialog(getActivity());
         myLoadingDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         myLoadingDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         myLoadingDialog.setContentView(R.layout.loading_dialog);

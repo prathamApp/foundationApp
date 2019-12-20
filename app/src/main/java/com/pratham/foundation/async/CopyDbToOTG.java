@@ -66,7 +66,6 @@ public class CopyDbToOTG extends AsyncTask {
                     out.flush();
                     out.close();
                 }
-
             }
 
             for (File f : parentPath.listFiles()) {

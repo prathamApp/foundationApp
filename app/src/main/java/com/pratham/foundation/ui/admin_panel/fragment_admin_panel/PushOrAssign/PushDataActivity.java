@@ -1,6 +1,5 @@
 package com.pratham.foundation.ui.admin_panel.fragment_admin_panel.PushOrAssign;
 
-import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Color;
@@ -44,7 +43,7 @@ public class PushDataActivity extends BaseActivity implements PushDataContract.P
     @Override
     public void showDialog(boolean statusFlg) {
 
-        final Dialog dialog = new CustomLodingDialog(this);
+        final CustomLodingDialog dialog = new CustomLodingDialog(this);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         dialog.setContentView(R.layout.fc_custom_dialog);

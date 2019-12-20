@@ -1,6 +1,5 @@
 package com.pratham.foundation.ui.contentPlayer.listenAndWritting;
 
-import android.app.Dialog;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
@@ -33,8 +32,8 @@ import com.pratham.foundation.customView.SansTextView;
 import com.pratham.foundation.customView.display_image_dialog.CustomLodingDialog;
 import com.pratham.foundation.interfaces.OnGameClose;
 import com.pratham.foundation.modalclasses.EventMessage;
-import com.pratham.foundation.ui.contentPlayer.GameConstatnts;
 import com.pratham.foundation.modalclasses.ScienceQuestion;
+import com.pratham.foundation.ui.contentPlayer.GameConstatnts;
 import com.pratham.foundation.utility.FC_Constants;
 import com.pratham.foundation.utility.FC_Utility;
 
@@ -360,7 +359,7 @@ public class ListeningAndWritting extends Fragment implements ListeningAndWritti
         }
 
 
-        final Dialog dialog = new CustomLodingDialog(getActivity());
+        final CustomLodingDialog dialog = new CustomLodingDialog(getActivity());
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         dialog.setContentView(R.layout.fc_show_ans_listenandwrite);
@@ -480,7 +479,7 @@ public class ListeningAndWritting extends Fragment implements ListeningAndWritti
 
 
     private void ShowPreviewDialog(File path) {
-        final Dialog dialog = new CustomLodingDialog(getActivity());
+        final CustomLodingDialog dialog = new CustomLodingDialog(getActivity());
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         dialog.setContentView(R.layout.fc_image_preview_dialog);

@@ -1,7 +1,6 @@
 package com.pratham.foundation.ui.admin_panel.PullData;
 
 import android.app.AlertDialog;
-import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
@@ -18,6 +17,7 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.pratham.foundation.R;
+import com.pratham.foundation.customView.display_image_dialog.CustomLodingDialog;
 import com.pratham.foundation.database.domain.ModalProgram;
 import com.pratham.foundation.ui.admin_panel.fragment_admin_panel.AdminPanelFragment;
 import com.pratham.foundation.ui.admin_panel.fragment_admin_panel.AdminPanelFragment_;
@@ -210,7 +210,7 @@ public class PullDataFragment extends Fragment implements PullDataContract.PullD
 
     @Override
     public void showVillageDialog(List villageList) {
-        Dialog villageDialog = new SelectVillageDialog(getActivity(), this, villageList);
+        CustomLodingDialog villageDialog = new SelectVillageDialog(getActivity(), this, villageList);
         villageDialog.show();
     }
 

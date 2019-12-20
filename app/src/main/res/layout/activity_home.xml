@@ -35,14 +35,14 @@
             android:scaleType="center"
             app:srcCompat="@drawable/ic_left_arrow_white" />
 
-        <com.pratham.foundation.customView.FredokaOneTextView
+        <com.pratham.foundation.customView.SansTextView
             android:id="@+id/txt_level"
             android:layout_width="@dimen/_35sdp"
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
             android:layout_above="@+id/leftCol"
             android:layout_marginEnd="@dimen/_15sdp"
-            android:text="Level"
+            android:text="@string/Level"
             android:textColor="@color/colorBlack"
             android:textSize="@dimen/_12sdp" />
 
@@ -60,6 +60,12 @@
                 android:layout_marginEnd="@dimen/_10sdp"
                 android:layout_toStartOf="@+id/level_shadow"
                 android:text="Topic"
+                android:duplicateParentState="true"
+                android:ellipsize="marquee"
+                android:fadingEdge="horizontal"
+                android:marqueeRepeatLimit="marquee_forever"
+                android:scrollHorizontally="true"
+                android:singleLine="true"
                 android:textColor="@color/colorBlack"
                 android:textSize="@dimen/_20sdp" />
 

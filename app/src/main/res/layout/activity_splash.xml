@@ -5,6 +5,7 @@
     android:id="@+id/splash_root"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#FEFEFE"
     tools:context="com.pratham.foundation.ui.splash_activity.SplashActivity">
 
     <ImageView

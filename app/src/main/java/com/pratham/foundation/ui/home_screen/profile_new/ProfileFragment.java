@@ -1,17 +1,25 @@
 package com.pratham.foundation.ui.home_screen.profile_new;
 
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.view.Window;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.RelativeLayout;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.pratham.foundation.R;
 import com.pratham.foundation.customView.GridSpacingItemDecoration;
+import com.pratham.foundation.customView.display_image_dialog.CustomLodingDialog;
 import com.pratham.foundation.modalclasses.ModalTopCertificates;
 import com.pratham.foundation.services.shared_preferences.FastSave;
 import com.pratham.foundation.ui.home_screen.profile_new.certificate_display.CertificateDisplayActivity_;
@@ -28,6 +36,7 @@ import java.util.Comparator;
 import java.util.List;
 
 import static com.pratham.foundation.utility.FC_Utility.dpToPx;
+import static com.pratham.foundation.utility.FC_Utility.setAppLocal;
 
 
 @EFragment(R.layout.fragment_profile)
@@ -145,6 +154,58 @@ public class ProfileFragment extends Fragment implements ProfileContract.Profile
 
     private void showUsage() {
         Toast.makeText(getActivity(), "Work In Progress", Toast.LENGTH_SHORT).show();
+    }
+
+    @Click(R.id.ib_langChange)
+    public void langChangeButtonClick() {
+        showLanguageSelectionDialog();
+    }
+
+    private void showLanguageSelectionDialog() {
+        final CustomLodingDialog dialog = new CustomLodingDialog(getActivity());
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        dialog.setContentView(R.layout.fc_custom_language_dialog);
+        dialog.setCancelable(false);
+        dialog.setCanceledOnTouchOutside(false);
+        TextView dia_title = dialog.findViewById(R.id.dia_title);
+        Button dia_btn_green = dialog.findViewById(R.id.dia_btn_green);
+        Spinner lang_spinner = dialog.findViewById(R.id.lang_spinner);
+        dia_btn_green.setText("OK");
+        dialog.show();
+        String currLang = "" + FastSave.getInstance().getString(FC_Constants.LANGUAGE,"Hindi");
+        dia_title.setText("Current Language : "+currLang);
+
+        ArrayAdapter<String> dataAdapter = new ArrayAdapter<>(getActivity(), R.layout.custom_spinner,
+                getActivity().getResources().getStringArray(R.array.app_Language));
+        dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        lang_spinner.setAdapter(dataAdapter);
+        String[] languages = getResources().getStringArray(R.array.app_Language);
+        for(int i = 0 ; i<languages.length ; i++) {
+            if (currLang.equalsIgnoreCase(languages[i])) {
+                lang_spinner.setSelection(i);
+                break;
+            }
+        }
+
+        lang_spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                FC_Constants.currentSelectedLanguage = lang_spinner.getSelectedItem().toString();
+                FastSave.getInstance().saveString(FC_Constants.LANGUAGE, FC_Constants.currentSelectedLanguage);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+            }
+        });
+
+        dia_btn_green.setOnClickListener(v -> {
+//            HomeActivity.languageChanged = true;
+            FastSave.getInstance().saveBoolean(FC_Constants.LANGUAGE_SPLASH_DIALOG, true);
+            setAppLocal(getActivity(), FC_Constants.currentSelectedLanguage);
+            dialog.dismiss();
+        });
     }
 
 //    @Click({R.id.rl_share_app, R.id.btn_share_app})

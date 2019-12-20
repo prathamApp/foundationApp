@@ -1,7 +1,6 @@
 package com.pratham.foundation.ui.contentPlayer.new_vocab_reading;
 
 import android.annotation.SuppressLint;
-import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -216,7 +215,7 @@ public class VocabReadingFragment extends Fragment implements
         totalPages = modalPagesList.size();
     }
 
-    public Dialog myLoadingDialog;
+    public CustomLodingDialog myLoadingDialog;
     boolean dialogFlg = false;
 
     @UiThread
@@ -224,7 +223,7 @@ public class VocabReadingFragment extends Fragment implements
     public void showLoader() {
         if (!dialogFlg) {
             dialogFlg = true;
-            myLoadingDialog = new Dialog(context);
+            myLoadingDialog = new CustomLodingDialog(context);
             myLoadingDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
             myLoadingDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
             myLoadingDialog.setContentView(R.layout.loading_dialog);
@@ -899,7 +898,7 @@ public class VocabReadingFragment extends Fragment implements
 
     @SuppressLint("SetTextI18n")
     public void showAcknowledgeDialog(boolean diaComplete) {
-        final Dialog dialog = new CustomLodingDialog(context);
+        final CustomLodingDialog dialog = new CustomLodingDialog(context);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         dialog.setContentView(R.layout.fc_custom_dialog);
@@ -1028,7 +1027,7 @@ public class VocabReadingFragment extends Fragment implements
 
     @SuppressLint("SetTextI18n")
     private void showStars(boolean diaComplete) {
-        final Dialog dialog = new CustomLodingDialog(context);
+        final CustomLodingDialog dialog = new CustomLodingDialog(context);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         dialog.setContentView(R.layout.fc_custom_test_star_dialog);

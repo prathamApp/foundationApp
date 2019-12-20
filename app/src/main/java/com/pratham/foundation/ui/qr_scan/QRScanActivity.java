@@ -1,6 +1,5 @@
 package com.pratham.foundation.ui.qr_scan;
 
-import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
@@ -89,7 +88,7 @@ public class QRScanActivity extends BaseActivity implements
 
     PlayerModal playerModal;
     List<PlayerModal> playerModalList;
-    Dialog dialog;
+    CustomLodingDialog dialog;
     public ZXingScannerView mScannerView;
     Gson gson;
 
@@ -234,7 +233,7 @@ public class QRScanActivity extends BaseActivity implements
         tv_stud_five.setVisibility(View.GONE);
     }
 
-    public Dialog myLoadingDialog;
+    public CustomLodingDialog myLoadingDialog;
 
     @Click(R.id.btn_get_progress)
     public void fetchProgress() {
@@ -369,7 +368,7 @@ public class QRScanActivity extends BaseActivity implements
     }
 
     private void showLoader() {
-        myLoadingDialog = new Dialog(QRScanActivity.this);
+        myLoadingDialog = new CustomLodingDialog(QRScanActivity.this);
         myLoadingDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         myLoadingDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         myLoadingDialog.setContentView(R.layout.loading_dialog);
@@ -454,7 +453,7 @@ public class QRScanActivity extends BaseActivity implements
     }
 
     private void showDuplicateDialog(String dialogMode) {
-        final Dialog dialog = new CustomLodingDialog(this);
+        final CustomLodingDialog dialog = new CustomLodingDialog(this);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         dialog.setContentView(R.layout.fc_custom_dialog);

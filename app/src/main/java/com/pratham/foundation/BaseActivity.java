@@ -62,7 +62,6 @@ public class BaseActivity extends AppCompatActivity {
     CustomLodingDialog sd_builder;
     public static MediaPlayer correctSound;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         getWindow().setFlags(
@@ -179,43 +178,10 @@ public class BaseActivity extends AppCompatActivity {
             switch (msg.what) {
                 case SHOW_OTG_TRANSFER_DIALOG:
                     showSDBuilderDialog();
-/*                    sd_builder = new BlurPopupWindow.Builder(BaseActivity.this)
-                            .setContentView(R.layout.dialog_alert_sd_card)
-                            .setGravity(Gravity.CENTER)
-                            .setScaleRatio(0.2f)
-                            .bindClickListener(v -> {
-                                new Handler().postDelayed(() -> {
-                                    Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT_TREE);
-                                    intent.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
-                                    startActivityForResult(intent, SDCARD_LOCATION_CHOOSER);
-                                }, 1200);
-                                sd_builder.dismiss();
-                            }, R.id.txt_choose_sd_card)
-                            .setDismissOnClickBack(true)
-                            .setDismissOnTouchBackground(false)
-                            .setScaleRatio(0.2f)
-                            .setBlurRadius(8)
-                            .setTintColor(0x30000000)
-                            .build();
-                    ((TextView) sd_builder.findViewById(R.id.txt_choose_sd_card)).setText("Select OTG");
-                    sd_builder.show();*/
                     break;
                 case SHOW_OTG_SELECT_DIALOG:
                     ShowOTGPushDialog();
                     ok_btn.setVisibility(View.GONE);
-/*                    pushDialog = new BlurPopupWindow.Builder(BaseActivity.this)
-                            .setContentView(R.layout.app_send_success_dialog)
-                            .setGravity(Gravity.CENTER)
-                            .setScaleRatio(0.2f)
-                            .setDismissOnClickBack(true)
-                            .setDismissOnTouchBackground(true)
-                            .setBlurRadius(10)
-                            .setTintColor(0x30000000)
-                            .build();
-                    push_lottie = pushDialog.findViewById(R.id.push_lottie);
-                    txt_push_dialog_msg = pushDialog.findViewById(R.id.txt_push_dialog_msg);
-                    txt_push_error = pushDialog.findViewById(R.id.txt_push_error);
-                    pushDialog.show();*/
                     break;
                 case HIDE_OTG_TRANSFER_DIALOG_SUCCESS:
                     push_lottie.setAnimation("success.json");
@@ -273,7 +239,6 @@ public class BaseActivity extends AppCompatActivity {
             dialog.dismiss();
         });
     }
-
 
     @SuppressLint("StaticFieldLeak")
     public void endSession(Context context) {

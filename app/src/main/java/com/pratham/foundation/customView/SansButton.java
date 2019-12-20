@@ -27,7 +27,7 @@ public class SansButton extends android.support.v7.widget.AppCompatButton {
 
         private void setFont() {
             Typeface font = Typeface.createFromAsset(getContext().getAssets(),
-                    "fonts/GlacialIndifference-Bold.otf");
+                    "fonts/Sarala_Bold.ttf");
             setTypeface(font, Typeface.NORMAL);
         }
 

@@ -28,7 +28,7 @@
     </com.pratham.foundation.customView.shape_of_view.ShadowLayout>
 
     <com.pratham.foundation.customView.SansTextViewBold
-        android:id="@+id/name"
+        android:id="@+id/name_welcome"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:gravity="center_vertical"
@@ -36,7 +36,20 @@
         android:layout_marginTop="@dimen/_10sdp"
         android:layout_marginStart="@dimen/_10sdp"
         android:textColor="@color/colorText"
-        android:textSize="@dimen/_18sdp"
+        android:textSize="@dimen/_16sdp"
+        android:textStyle="bold" />
+
+    <com.pratham.foundation.customView.SansTextViewBold
+        android:id="@+id/name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:layout_below="@id/name_welcome"
+        android:text="@string/Welcome"
+        android:layout_marginTop="@dimen/_2sdp"
+        android:layout_marginStart="@dimen/_10sdp"
+        android:textColor="@color/colorText"
+        android:textSize="@dimen/_16sdp"
         android:textStyle="bold" />
 
     <com.pratham.foundation.customView.SansTextView
@@ -45,9 +58,10 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/name"
         android:layout_marginStart="@dimen/_10sdp"
+        android:layout_marginTop="@dimen/_5sdp"
         android:text="@string/select_subject"
         android:textColor="@color/colorBlackTransparentLight"
-        android:textSize="@dimen/_18sdp" />
+        android:textSize="@dimen/_14sdp" />
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/subject_recycler"

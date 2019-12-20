@@ -2,7 +2,6 @@ package com.pratham.foundation.ui.admin_panel.fragment_admin_panel.PushOrAssign;
 
 import android.annotation.SuppressLint;
 import android.app.ActivityManager;
-import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
@@ -38,6 +37,7 @@ import com.pratham.foundation.ApplicationClass;
 import com.pratham.foundation.R;
 import com.pratham.foundation.async.DownloadData;
 import com.pratham.foundation.async.PushDataToServer;
+import com.pratham.foundation.customView.display_image_dialog.CustomLodingDialog;
 import com.pratham.foundation.customView.progress_layout.ProgressLayout;
 import com.pratham.foundation.database.AppDatabase;
 import com.pratham.foundation.database.BackupDatabase;
@@ -88,9 +88,9 @@ public class PushOrAssignFragment extends Fragment {
     Button btn_Usage;
     Gson gson;
     int groupsSize = 0;
-    public Dialog myLoadingDialog;
+    public CustomLodingDialog myLoadingDialog;
     ArrayList<String> present_groups;
-    Dialog progress;
+    CustomLodingDialog progress;
 
     @Bean(PushDataToServer.class)
     PushDataToServer pushDataToServer;
@@ -171,7 +171,7 @@ public class PushOrAssignFragment extends Fragment {
 
     @SuppressLint("InvalidWakeLockTag")
     private void setProgressDailog() {
-        progress = new Dialog(getActivity());
+        progress = new CustomLodingDialog(getActivity());
         progress.requestWindowFeature(Window.FEATURE_NO_TITLE);
         progress.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         progress.setContentView(R.layout.dialog_file_downloading);
@@ -623,7 +623,7 @@ public class PushOrAssignFragment extends Fragment {
     }
 
     private void showLoader() {
-        myLoadingDialog = new Dialog(getActivity());
+        myLoadingDialog = new CustomLodingDialog(getActivity());
         myLoadingDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         myLoadingDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         myLoadingDialog.setContentView(R.layout.loading_dialog);

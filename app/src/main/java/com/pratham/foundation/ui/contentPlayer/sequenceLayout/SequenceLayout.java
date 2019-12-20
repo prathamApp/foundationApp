@@ -8,9 +8,9 @@ import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.widget.ImageButton;
+import android.widget.TextView;
 
 import com.pratham.foundation.R;
-import com.pratham.foundation.customView.FredokaOneTextView;
 import com.pratham.foundation.customView.GridSpacingItemDecoration;
 import com.pratham.foundation.database.AppDatabase;
 import com.pratham.foundation.database.domain.ContentTable;
@@ -49,7 +49,7 @@ public class SequenceLayout extends Fragment implements SequeanceLayoutContract.
     @ViewById(R.id.recycler_view)
     RecyclerView recyclerView;
     @ViewById(R.id.txt_seq_title)
-    FredokaOneTextView txt_seq_title;
+    TextView txt_seq_title;
     @ViewById(R.id.btn_back)
     ImageButton btn_back;
 

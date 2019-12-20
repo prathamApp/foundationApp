@@ -92,7 +92,7 @@ public class SplashActivity extends SplashSupportActivity implements SplashContr
     @AfterViews
     public void init() {
         new Handler().postDelayed(() -> {
-            final Typeface title_font = Typeface.createFromAsset(getAssets(), "fonts/FredokaOne.ttf");
+            final Typeface title_font = Typeface.createFromAsset(getAssets(), "fonts/Sarala_Bold.ttf.ttf");
             tv_typer.setTypeface(title_font);
             tv_typer.setVisibility(View.VISIBLE);
             tv_typer.animateText("Foundation\nCourse");
@@ -279,7 +279,7 @@ public class SplashActivity extends SplashSupportActivity implements SplashContr
 
     @SuppressLint("SetTextI18n")
     private void showLanguageSelectionDialog() {
-        final Dialog dialog = new CustomLodingDialog(context);
+        final CustomLodingDialog dialog = new CustomLodingDialog(context);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         dialog.setContentView(R.layout.fc_custom_language_dialog);
@@ -371,7 +371,7 @@ public class SplashActivity extends SplashSupportActivity implements SplashContr
     }
 
     public void showExitDialog() {
-        final Dialog dialog = new CustomLodingDialog(context);
+        final CustomLodingDialog dialog = new CustomLodingDialog(context);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         dialog.setContentView(R.layout.fc_custom_dialog);
@@ -537,7 +537,7 @@ public class SplashActivity extends SplashSupportActivity implements SplashContr
     }
 
     private void show_STT_Dialog() {
-        Dialog dialog = new CustomLodingDialog(this);
+        CustomLodingDialog dialog = new CustomLodingDialog(this);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setContentView(R.layout.fc_custom_dialog);
 /*        Bitmap map=FC_Utility.takeScreenShot(HomeActivity.this);

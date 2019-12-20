@@ -26,6 +26,7 @@ import com.pratham.foundation.ApplicationClass;
 import com.pratham.foundation.R;
 import com.pratham.foundation.customView.progress_layout.ProgressLayout;
 import com.pratham.foundation.database.domain.ContentTable;
+import com.pratham.foundation.utility.FC_Constants;
 
 import java.io.File;
 import java.util.List;
@@ -151,19 +152,26 @@ public class ContentAdapter extends RecyclerView.Adapter {
                 ContentAdapter.FileHolder holder = (ContentAdapter.FileHolder) viewHolder;
                 holder.content_card_view.setBackground(mContext.getResources().getDrawable(getRandomCardColor()));
                 holder.title.setText(contentList.getNodeTitle());
+                holder.title.setSelected(true);
                 RequestOptions requestOptions = new RequestOptions();
                 requestOptions.placeholder(R.drawable.download_icon);
                 requestOptions.error(R.drawable.warning);
 
                 holder.ib_action_btn.setVisibility(View.GONE);
-                if (contentList.getNodeType().equalsIgnoreCase("Resource") && contentList.getIsDownloaded().equalsIgnoreCase("false")) {
+                if (contentList.getIsDownloaded().equalsIgnoreCase("false")) {
                     holder.ib_action_btn.setVisibility(View.VISIBLE);
                     holder.ib_action_btn.setImageResource(R.drawable.ic_download);//setVisibility(View.VISIBLE);
                     holder.ib_action_btn.setClickable(false);
-                } else if (contentList.getIsDownloaded().equalsIgnoreCase("true") && contentList.getNodeType().equalsIgnoreCase("Resource")) {
+                } else if (contentList.getIsDownloaded().equalsIgnoreCase("true")) {
                     holder.ib_action_btn.setVisibility(View.VISIBLE);
                     holder.ib_action_btn.setImageResource(R.drawable.ic_joystick);
                     holder.ib_action_btn.setClickable(true);
+                    if(contentList.getResourceType().equalsIgnoreCase(FC_Constants.VIDEO))
+                        holder.ib_action_btn.setImageResource(R.drawable.ic_video);
+                    else if(contentList.getResourceType().toLowerCase().contains(FC_Constants.GAME))
+                        holder.ib_action_btn.setImageResource(R.drawable.ic_joystick);
+                    else
+                        holder.ib_action_btn.setImageResource(R.drawable.ic_android_act);
                 }
 
                 File f;

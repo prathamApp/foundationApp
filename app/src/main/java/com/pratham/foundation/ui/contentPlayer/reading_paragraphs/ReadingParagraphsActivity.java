@@ -2,7 +2,6 @@ package com.pratham.foundation.ui.contentPlayer.reading_paragraphs;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
-import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
@@ -104,7 +103,7 @@ public class ReadingParagraphsActivity extends BaseActivity
     static int currentPageNo, lineBreakCounter = 0;
     int wordCounter = 0, flow_Width, flow_Height;
     Handler handler, colorChangeHandler, quesReadHandler, endhandler;
-    Dialog nextDialog;
+    CustomLodingDialog nextDialog;
     static boolean[] correctArr;
     boolean readingFlg, playingFlg, fragFlg = false, onSdCard;
     List<ModalParaWord> modalParaWordList;
@@ -544,7 +543,7 @@ public class ReadingParagraphsActivity extends BaseActivity
 
     @SuppressLint("SetTextI18n")
     public void showAcknowledgeDialog(boolean diaComplete) {
-        final Dialog dialog = new CustomLodingDialog(this);
+        final CustomLodingDialog dialog = new CustomLodingDialog(this);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         dialog.setContentView(R.layout.fc_custom_dialog);
@@ -624,7 +623,7 @@ public class ReadingParagraphsActivity extends BaseActivity
     @SuppressLint("SetTextI18n")
     private void showStars(boolean diaComplete) {
 
-        final Dialog dialog = new CustomLodingDialog(this);
+        final CustomLodingDialog dialog = new CustomLodingDialog(this);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         dialog.setContentView(R.layout.fc_custom_test_star_dialog);
@@ -708,7 +707,7 @@ public class ReadingParagraphsActivity extends BaseActivity
         presenter.sttResultProcess(sttResult, splitWordsPunct, wordsResIdList);
     }
 
-    public Dialog myLoadingDialog;
+    public CustomLodingDialog myLoadingDialog;
     boolean dialogFlg = false;
 
     @UiThread
@@ -716,7 +715,7 @@ public class ReadingParagraphsActivity extends BaseActivity
     public void showLoader() {
         if (!dialogFlg) {
             dialogFlg = true;
-            myLoadingDialog = new Dialog(this);
+            myLoadingDialog = new CustomLodingDialog(this);
             myLoadingDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
             myLoadingDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
             myLoadingDialog.setContentView(R.layout.loading_dialog);

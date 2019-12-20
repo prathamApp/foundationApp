@@ -2,7 +2,6 @@ package com.pratham.foundation.ui.contentPlayer.reading_rhyming;
 
 
 import android.annotation.SuppressLint;
-import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
@@ -94,7 +93,7 @@ public class ReadingRhymesActivity extends BaseActivity
     static int currentPageNo, currentQueNo;
     int rhymeLevel, correctDone = 0;
     Handler handler;
-    Dialog nextDialog;
+    CustomLodingDialog nextDialog;
     static boolean readingFlg;
     static boolean newData;
     static boolean[] correctArr;
@@ -145,7 +144,7 @@ public class ReadingRhymesActivity extends BaseActivity
     }
 
     private void showViewDialog() {
-        final Dialog dialog = new CustomLodingDialog(this);
+        final CustomLodingDialog dialog = new CustomLodingDialog(this);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         Objects.requireNonNull(dialog.getWindow()).setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         dialog.setContentView(R.layout.fc_custom_dialog);
@@ -390,7 +389,7 @@ public class ReadingRhymesActivity extends BaseActivity
     @SuppressLint("SetTextI18n")
     public void showExitDialog() {
 
-        final Dialog dialog = new CustomLodingDialog(this);
+        final CustomLodingDialog dialog = new CustomLodingDialog(this);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         Objects.requireNonNull(dialog.getWindow()).setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         dialog.setContentView(R.layout.fc_custom_dialog);
@@ -423,7 +422,7 @@ public class ReadingRhymesActivity extends BaseActivity
     @SuppressLint("SetTextI18n")
     public void showWordNextDialog(Context context) {
 
-        nextDialog = new Dialog(context);
+        nextDialog = new CustomLodingDialog(context);
         nextDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         Objects.requireNonNull(nextDialog.getWindow()).setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         nextDialog.setContentView(R.layout.fc_custom_dialog);

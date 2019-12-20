@@ -66,7 +66,7 @@
     <color name="level_3_color">#EE6787</color>
     <color name="level_4_color">#452b50</color>
 -->
-    <color name="level_0_color">#7CB342</color>
+    <color name="level_0_color">#00d1a5</color>
     <color name="level_1_color">#00a175</color>
     <color name="level_2_color">#FFA001</color>
     <color name="level_3_color">#ef6c00</color>
@@ -108,6 +108,7 @@
     <color name="trans_ghost_white">#7ffafafc</color>
     <color name="act_bg">#7FECECEC</color>
     <color name="yellow_sand">#fff1b9</color>
+    <color name="yellow_sand_new">#befff1b9</color>
     <color name="yellow_sand_dark">#FFFFEBA2</color>
     <color name="light_green">#39b54a</color>
     <color name="oslo_grey">#eb828786</color>

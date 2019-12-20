@@ -11,10 +11,9 @@ import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
-import android.support.v4.content.PermissionChecker;
 import android.support.v7.app.AppCompatActivity;
+import android.view.View;
 import android.view.WindowManager;
-
 
 import com.pratham.foundation.R;
 import com.pratham.foundation.interfaces.PermissionResult;
@@ -43,7 +42,7 @@ public class SplashSupportActivity extends AppCompatActivity implements MediaPla
 
     private final int KEY_PERMISSION = 200;
     private PermissionResult permissionResult;
-    private String permissionsAsk[];
+    private String[] permissionsAsk;
     private static AudioManager audioManager;
     public static MediaPlayer ButtonClickSound;
 
@@ -52,9 +51,29 @@ public class SplashSupportActivity extends AppCompatActivity implements MediaPla
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        audioManager = (AudioManager) getSystemService(this.AUDIO_SERVICE);
+        audioManager = (AudioManager) getSystemService(AUDIO_SERVICE);
         ButtonClickSound = MediaPlayer.create(this, R.raw.click);//new MediaPlayer instance
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+        hideSystemUI();
+    }
+
+    @Override
+    public void onWindowFocusChanged(boolean hasFocus) {
+        super.onWindowFocusChanged(hasFocus);
+        hideSystemUI();
+    }
+
+    private void hideSystemUI() {
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
+                WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        getWindow().getDecorView().setSystemUiVisibility(
+                View.SYSTEM_UI_FLAG_FULLSCREEN
+                        | View.SYSTEM_UI_FLAG_LOW_PROFILE
+                        | View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+                        | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY
+                        | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
+                        | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
+        );
     }
 
     /**
@@ -72,7 +91,7 @@ public class SplashSupportActivity extends AppCompatActivity implements MediaPla
      * @param permissions String[] permission to ask
      * @return boolean true/false
      */
-    public boolean isPermissionsGranted(Context context, String permissions[]) {
+    public boolean isPermissionsGranted(Context context, String[] permissions) {
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M)
             return true;
 
@@ -88,7 +107,7 @@ public class SplashSupportActivity extends AppCompatActivity implements MediaPla
 
 
     private void internalRequestPermission(String[] permissionAsk) {
-        String arrayPermissionNotGranted[];
+        String[] arrayPermissionNotGranted;
         ArrayList<String> permissionsNotGranted = new ArrayList<>();
 
         for (int i = 0; i < permissionAsk.length; i++) {
@@ -167,7 +186,7 @@ public class SplashSupportActivity extends AppCompatActivity implements MediaPla
      * @param permissions      String[] permissions ask
      * @param permissionResult callback PermissionResult
      */
-    public void askCompactPermissions(String permissions[], PermissionResult permissionResult) {
+    public void askCompactPermissions(String[] permissions, PermissionResult permissionResult) {
         permissionsAsk = permissions;
         this.permissionResult = permissionResult;
         internalRequestPermission(permissionsAsk);

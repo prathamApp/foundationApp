@@ -1,7 +1,6 @@
 package com.pratham.foundation.ui.contentPlayer.matchingPairGame;
 
 import android.annotation.SuppressLint;
-import android.app.Dialog;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
@@ -83,7 +82,7 @@ public class MatchThePairGameActivity extends BaseActivity implements MatchThePa
     String questionStartTime;
     String gameStartTime;
     FragmentManager fragmentManager;
-    Dialog correctDialog;
+    CustomLodingDialog correctDialog;
     TextView dia_title = null;
 
     @Override
@@ -278,7 +277,7 @@ public class MatchThePairGameActivity extends BaseActivity implements MatchThePa
     private void showCorrectDialog(String msg) {
 
         if (correctDialog == null) {
-            correctDialog = new Dialog(MatchThePairGameActivity.this);
+            correctDialog = new CustomLodingDialog(MatchThePairGameActivity.this);
             correctDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
             correctDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
             correctDialog.setContentView(R.layout.show_word_next_dialog);
@@ -332,7 +331,7 @@ public class MatchThePairGameActivity extends BaseActivity implements MatchThePa
 
     public void showNextDialog() {
 
-        Dialog nextDialog = new CustomLodingDialog(this);
+        CustomLodingDialog nextDialog = new CustomLodingDialog(this);
         nextDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         nextDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         nextDialog.setContentView(R.layout.show_word_next_dialog);
@@ -465,7 +464,7 @@ public class MatchThePairGameActivity extends BaseActivity implements MatchThePa
 
     @SuppressLint("StaticFieldLeak")
     private void showExitDialog() {
-        final Dialog dialog = new CustomLodingDialog(this);
+        final CustomLodingDialog dialog = new CustomLodingDialog(this);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         dialog.setContentView(R.layout.fc_custom_dialog);

@@ -12,19 +12,19 @@ public class SansTextView extends TextView {
 
     public SansTextView(Context context) {
         super(context);
-        Typeface face = Typeface.createFromAsset(context.getAssets(), "fonts/GlacialIndifference-Regular.otf");
+        Typeface face = Typeface.createFromAsset(context.getAssets(), "fonts/Sarala_Regular.ttf");
         this.setTypeface(face);
     }
 
     public SansTextView(Context context, AttributeSet attrs) {
         super(context, attrs);
-        Typeface face = Typeface.createFromAsset(context.getAssets(), "fonts/GlacialIndifference-Regular.otf");
+        Typeface face = Typeface.createFromAsset(context.getAssets(), "fonts/Sarala_Regular.ttf");
         this.setTypeface(face);
     }
 
     public SansTextView(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
-        Typeface face = Typeface.createFromAsset(context.getAssets(), "fonts/GlacialIndifference-Regular.otf");
+        Typeface face = Typeface.createFromAsset(context.getAssets(), "fonts/Sarala_Regular.ttf");
         this.setTypeface(face);
     }
 

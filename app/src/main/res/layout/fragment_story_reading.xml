@@ -90,7 +90,7 @@
     <!--        </RelativeLayout>-->
     <!--    </android.support.design.card.MaterialCardView>-->
 
-    <com.pratham.foundation.customView.FredokaOneTextView
+    <com.pratham.foundation.customView.SansTextView
         android:id="@+id/tv_story_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

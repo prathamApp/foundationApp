@@ -2,7 +2,6 @@ package com.pratham.foundation.ui.contentPlayer.old_cos.conversation;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
-import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
@@ -53,7 +52,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-import static com.pratham.foundation.utility.FC_Constants.dialog_btn_cancel;
 import static com.pratham.foundation.utility.FC_Constants.gameFolderPath;
 import static com.pratham.foundation.utility.SplashSupportActivity.ButtonClickSound;
 
@@ -494,14 +492,14 @@ public class ConversationActivity extends BaseActivity
         return counter;
     }
 
-    public Dialog myLoadingDialog;
+    public CustomLodingDialog myLoadingDialog;
     boolean dialogFlg = false;
 
     @UiThread
     public void showLoader() {
         if (!dialogFlg) {
             dialogFlg = true;
-            myLoadingDialog = new Dialog(this);
+            myLoadingDialog = new CustomLodingDialog(this);
             myLoadingDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
             myLoadingDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
             myLoadingDialog.setContentView(R.layout.loading_dialog);
@@ -606,7 +604,7 @@ public class ConversationActivity extends BaseActivity
 
     @SuppressLint("SetTextI18n")
     private void ConvoEndDialog() {
-        final Dialog dialog = new CustomLodingDialog(this);
+        final CustomLodingDialog dialog = new CustomLodingDialog(this);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         dialog.setContentView(R.layout.fc_custom_dialog);
@@ -618,7 +616,7 @@ public class ConversationActivity extends BaseActivity
         Button dia_btn_red = dialog.findViewById(R.id.dia_btn_red);
 
         dia_title.setText("Nice chatting with you.\nBye-bye!");
-        dia_btn_green.setText("Ok");
+        dia_btn_green.setText(""+getResources().getString(R.string.Okay));
         dia_btn_red.setVisibility(View.GONE);
         dia_btn_yellow.setVisibility(View.GONE);
         dialog.show();
@@ -685,7 +683,7 @@ public class ConversationActivity extends BaseActivity
 
     private void showStars(boolean diaComplete) {
 
-        final Dialog dialog = new CustomLodingDialog(this);
+        final CustomLodingDialog dialog = new CustomLodingDialog(this);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         dialog.setContentView(R.layout.fc_custom_test_star_dialog);
@@ -714,8 +712,8 @@ public class ConversationActivity extends BaseActivity
         dia_ratingBar.setRating(rating);
 
         dia_btn_red.setVisibility(View.GONE);
-        dia_btn_green.setText("Next");
-        dia_btn_yellow.setText("" + dialog_btn_cancel);
+        dia_btn_green.setText(""+getResources().getString(R.string.Next));
+        dia_btn_yellow.setText(""+getResources().getString(R.string.Cancel));
         if (diaComplete)
             dia_btn_yellow.setVisibility(View.GONE);
 
@@ -760,7 +758,7 @@ public class ConversationActivity extends BaseActivity
     @SuppressLint("SetTextI18n")
     public void showExitDialog(Context context) {
 
-        final Dialog dialog = new CustomLodingDialog(this);
+        final CustomLodingDialog dialog = new CustomLodingDialog(this);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         dialog.setContentView(R.layout.fc_custom_dialog);
@@ -771,10 +769,10 @@ public class ConversationActivity extends BaseActivity
         Button dia_btn_green = dialog.findViewById(R.id.dia_btn_green);
         Button dia_btn_red = dialog.findViewById(R.id.dia_btn_red);
 
-        dia_title.setText("Exit this chat?");
-        dia_btn_green.setText("Yes");
-        dia_btn_red.setText("No");
-        dia_btn_yellow.setText("" + dialog_btn_cancel);
+        dia_title.setText(""+getResources().getString(R.string.Exit));
+        dia_btn_green.setText(""+getResources().getString(R.string.yes));
+        dia_btn_red.setText(""+getResources().getString(R.string.no));
+        dia_btn_yellow.setText(""+getResources().getString(R.string.Cancel));
         dialog.show();
 
         dia_btn_red.setOnClickListener(v -> dialog.dismiss());

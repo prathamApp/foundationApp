@@ -2,7 +2,6 @@ package com.pratham.foundation.ui.contentPlayer.vocabulary_qa;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
-import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -109,7 +108,7 @@ public class ReadingVocabularyActivity extends BaseActivity implements MediaCall
     Context mContext;
     static int currentPageNo, currentQueNo;
     int vocabLevel;
-    Dialog nextDialog;
+    CustomLodingDialog nextDialog;
     private RecyclerView.Adapter mAdapter;
     static boolean[] correctArr;
     static boolean readingFlg, allCorrect = false, dilogOpen = false;
@@ -198,7 +197,7 @@ public class ReadingVocabularyActivity extends BaseActivity implements MediaCall
 
     @SuppressLint("SetTextI18n")
     private void showReadFullDialog() {
-        final Dialog dialog = new CustomLodingDialog(this);
+        final CustomLodingDialog dialog = new CustomLodingDialog(this);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         dialog.setContentView(R.layout.fc_custom_dialog);
@@ -209,11 +208,11 @@ public class ReadingVocabularyActivity extends BaseActivity implements MediaCall
         Button dia_btn_green = dialog.findViewById(R.id.dia_btn_green);
         Button dia_btn_red = dialog.findViewById(R.id.dia_btn_red);
 
-        dia_btn_green.setText("Ok");
+        dia_btn_green.setText(getResources().getString(R.string.Okay)+"");
         dia_btn_red.setVisibility(View.GONE);
         dia_btn_yellow.setVisibility(View.GONE);
         dialog.show();
-        dia_title.setText("Read the full sentence");
+        dia_title.setText(""+getResources().getString(R.string.read_full_sentence));
         dia_btn_green.setOnClickListener(v -> {
             dialog.dismiss();
             presenter.fetchJsonData(readingContentPath, vocabCategory);
@@ -489,7 +488,7 @@ public class ReadingVocabularyActivity extends BaseActivity implements MediaCall
     @SuppressLint("SetTextI18n")
     public void showWordNextDialog(Context context) {
 
-        nextDialog = new Dialog(context);
+        nextDialog = new CustomLodingDialog(context);
         nextDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         nextDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         nextDialog.setContentView(R.layout.fc_custom_dialog);
@@ -501,9 +500,9 @@ public class ReadingVocabularyActivity extends BaseActivity implements MediaCall
         Button dia_btn_green = nextDialog.findViewById(R.id.dia_btn_green);
         Button dia_btn_red = nextDialog.findViewById(R.id.dia_btn_red);
 
-        dia_btn_green.setText("Next");
-        dia_btn_red.setText("Test");
-        dia_btn_yellow.setText("Revise");
+        dia_btn_green.setText(""+getResources().getString(R.string.Next));
+        dia_btn_red.setText(""+getResources().getString(R.string.Test));
+        dia_btn_yellow.setText(""+getResources().getString(R.string.Revise));
 
         dia_btn_green.setOnClickListener(v -> {
             currentPageNo = 0;
@@ -537,7 +536,7 @@ public class ReadingVocabularyActivity extends BaseActivity implements MediaCall
 
     }
 
-    public Dialog myLoadingDialog;
+    public CustomLodingDialog myLoadingDialog;
     boolean dialogFlg = false;
 
     @UiThread
@@ -545,7 +544,7 @@ public class ReadingVocabularyActivity extends BaseActivity implements MediaCall
         try {
             if (!dialogFlg) {
                 dialogFlg = true;
-                myLoadingDialog = new Dialog(this);
+                myLoadingDialog = new CustomLodingDialog(this);
                 myLoadingDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
                 myLoadingDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
                 myLoadingDialog.setContentView(R.layout.loading_dialog);
@@ -749,7 +748,7 @@ public class ReadingVocabularyActivity extends BaseActivity implements MediaCall
     @SuppressLint("SetTextI18n")
     private void showStars(boolean diaComplete) {
 
-        final Dialog dialog = new CustomLodingDialog(this);
+        final CustomLodingDialog dialog = new CustomLodingDialog(this);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         dialog.setContentView(R.layout.fc_custom_test_star_dialog);
@@ -870,7 +869,7 @@ public class ReadingVocabularyActivity extends BaseActivity implements MediaCall
     @SuppressLint("SetTextI18n")
     public void showExitDialog(Context context) {
 
-        final Dialog dialog = new CustomLodingDialog(this);
+        final CustomLodingDialog dialog = new CustomLodingDialog(this);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         dialog.setContentView(R.layout.fc_custom_dialog);
@@ -881,10 +880,10 @@ public class ReadingVocabularyActivity extends BaseActivity implements MediaCall
         Button dia_btn_green = dialog.findViewById(R.id.dia_btn_green);
         Button dia_btn_red = dialog.findViewById(R.id.dia_btn_red);
 
-        dia_title.setText("Exit game?");
-        dia_btn_green.setText("Yes");
-        dia_btn_red.setText("No");
-        dia_btn_yellow.setText("" + dialog_btn_cancel);
+        dia_title.setText(""+getResources().getString(R.string.Exit));
+        dia_btn_green.setText(""+getResources().getString(R.string.yes));
+        dia_btn_red.setText(""+getResources().getString(R.string.no));
+        dia_btn_yellow.setText(""+getResources().getString(R.string.Cancel));
 
         dialog.show();
 

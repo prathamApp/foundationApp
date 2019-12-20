@@ -28,11 +28,13 @@
     <string name="days">Days</string>
     <string name="hours">Hours</string>
     <string name="progress">Progress</string>
-    <string name="Test_Complete_Dialog" translatable="false">You can view the certificates in the profile section</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
+    <string name="Test_Complete_Dialog">You can view the certificates in the profile section</string>
 
-    <string name="selectGroup" translatable="false">Select group</string>
-    <string name="select_Age" translatable="false">Select age group</string>
-    <string name="select_Name" translatable="false">Select your name</string>
+    <string name="selectGroup" >Select group</string>
+    <string name="select_Age" >Select age group</string>
+    <string name="select_Name" >Select your name</string>
     <string name="age_8_and_above">Age 8 and above.</string>
     <string name="Summary">Summary</string>
     <string name="Progress">Progress</string>
@@ -55,9 +57,25 @@
     <string name="reading_stt">Answer the question by Give the answer by selecting the correct option form the given options.using the speech to text functionality.</string>
     <string name="multiple_choice">Select the correct answer from multiple answers and submit it</string>
     <string name="Video">Watch the video</string>
-    <string name="restart_dialog_msg" translatable="false">Do you want to restart?</string>
-    <string name="exit_dialog_msg" translatable="false">Do you want to exit?</string>
+    <string name="restart_dialog_msg" >Do you want to restart?</string>
+    <string name="exit_dialog_msg" >Do you want to exit?</string>
 
+    <string name="read_full_sentence" >Read the full sentence.</string>
+    <string name="Click_group_name" >Click your group name.</string>
+    <string name="mark_attendance" >Mark your attendance.</string>
+    <string name="Learning" >Learning</string>
+    <string name="Practice" >Practice</string>
+    <string name="Test" >Test</string>
+    <string name="Fun" >Fun</string>
+    <string name="Profile" >Profile</string>
+    <string name="Level" >Level</string>
+    <string name="Next" >Next</string>
+    <string name="Revise" >Revise</string>
+    <string name="nice_chatting_with_you" >Nice chatting with you.</string>
+    <string name="byebye" >Bye-bye!</string>
+    <string name="Unsupervised">Unsupervised</string>
+    <string name="Supervised">Supervised</string>
+    <string name="change_subj">Change Subject?</string>
 
 
 
