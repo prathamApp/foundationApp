@@ -36,7 +36,6 @@ import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
 import static com.pratham.foundation.utility.FC_Constants.INFO_CLICKED;
-import static com.pratham.foundation.utility.FC_Constants.dialog_btn_cancel;
 
 @EActivity(R.layout.activity_content_player)
 public class ContentPlayerActivity extends BaseActivity implements ShowInstruction {
@@ -65,11 +64,13 @@ public class ContentPlayerActivity extends BaseActivity implements ShowInstructi
             // GameConstatnts.currentGameAdapterposition=myViewHolder.getAdapterPosition();
             GameConstatnts.playInsequence = false;
             GameConstatnts.gameSelector(this, testData);
-            returnIntent = new Intent();
-            returnIntent.putExtra("cCode", cCode);
-            returnIntent.putExtra("tMarks", 1);
-            returnIntent.putExtra("sMarks", 0);
-            setResult(Activity.RESULT_OK, returnIntent);
+            if (FC_Constants.isTest) {
+                returnIntent = new Intent();
+                returnIntent.putExtra("cCode", cCode);
+                returnIntent.putExtra("tMarks", 0);
+                returnIntent.putExtra("sMarks", 0);
+                setResult(Activity.RESULT_OK, returnIntent);
+            }
         }
     }
 
@@ -120,10 +121,12 @@ public class ContentPlayerActivity extends BaseActivity implements ShowInstructi
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void scoreEventReceived(ScoreEvent scoreEvent) {
         if (scoreEvent != null) {
-            if (scoreEvent.getMessage().equalsIgnoreCase(FC_Constants.RETURNSCORE)) {
-                returnIntent.putExtra("tMarks", scoreEvent.getTotalCount());
-                returnIntent.putExtra("sMarks", scoreEvent.getScoredMarks());
-                // Toast.makeText(this, ""+scoreEvent.getMessage(), Toast.LENGTH_SHORT).show();
+            if (FC_Constants.isTest) {
+                if (scoreEvent.getMessage().equalsIgnoreCase(FC_Constants.RETURNSCORE)) {
+                    returnIntent.putExtra("tMarks", scoreEvent.getTotalCount());
+                    returnIntent.putExtra("sMarks", scoreEvent.getScoredMarks());
+                    // Toast.makeText(this, ""+scoreEvent.getMessage(), Toast.LENGTH_SHORT).show();
+                }
             }
         }
     }

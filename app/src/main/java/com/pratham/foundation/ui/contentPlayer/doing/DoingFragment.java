@@ -173,8 +173,6 @@ public class DoingFragment extends Fragment implements STT_Result_New.sttView,On
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         context = getActivity();
-        continuousSpeechService = new ContinuousSpeechService_New(context, DoingFragment.this, FC_Constants.currentSelectedLanguage);
-        continuousSpeechService.resetSpeechRecognizer();
         contentPath = getArguments().getString("contentPath");
         StudentID = getArguments().getString("StudentID");
         resId = getArguments().getString("resId");
@@ -379,6 +377,8 @@ public class DoingFragment extends Fragment implements STT_Result_New.sttView,On
             }
             scienceQuestionChoices=scienceQuestion.getLstquestionchoice();
             if(scienceQuestionChoices!=null&& !scienceQuestionChoices.isEmpty()){
+                continuousSpeechService = new ContinuousSpeechService_New(context, DoingFragment.this, FC_Constants.currentSelectedLanguage);
+                continuousSpeechService.resetSpeechRecognizer();
                 loadSubQuestions();
             }else {
                 sub_questions_container.setVisibility(View.GONE);
@@ -557,7 +557,8 @@ public class DoingFragment extends Fragment implements STT_Result_New.sttView,On
     public void onResume() {
         super.onResume();
         //   speechService.resetSpeechRecognizer();
-        continuousSpeechService.resetSpeechRecognizer();
+        if (continuousSpeechService != null)
+            continuousSpeechService.resetSpeechRecognizer();
        /* if (speech != null) {
             micPressed(0);
             voiceStart = false;
@@ -690,9 +691,9 @@ public class DoingFragment extends Fragment implements STT_Result_New.sttView,On
         vv_question.pause();
         if (continuousSpeechService != null) {
             continuousSpeechService.stopSpeechInput();
+            micPressed(0);
+            voiceStart = false;
         }
-        micPressed(0);
-        voiceStart = false;
     }
 
     @OnClick(R.id.capture)
@@ -836,15 +837,20 @@ public class DoingFragment extends Fragment implements STT_Result_New.sttView,On
     public void gameClose() {
         //add questions only attempted (correct or wrong any)
         if(scienceQuestionChoices!=null && !scienceQuestionChoices.isEmpty()) {
+            int count=0;
             for (int i = 0; i <scienceQuestionChoices.size() ; i++) {
                 if(scienceQuestionChoices.get(i).getUserAns()!=null && !scienceQuestionChoices.get(i).getUserAns().trim().isEmpty()){
+                    count++;
                     addScore(GameConstatnts.getInt(scienceQuestion.getQid()), jsonName, 0, 0,scienceQuestionChoices.get(i).getStartTime(), scienceQuestionChoices.get(i).getEndTime(), scienceQuestionChoices.get(i).toString());
                 }
             }
+            returnScore(scienceQuestionChoices.size(),count);
         }
         addScore(0, "", 0, 0, resStartTime,FC_Utility.getCurrentDateTime(), jsonName + " " + GameConstatnts.END);
     }
-
+    private void returnScore(int totalscore,int scoredmarks){
+        GameConstatnts.postScoreEvent(totalscore, scoredmarks);
+    }
     @Override
     public void onStop() {
         EventBus.getDefault().unregister(this);
