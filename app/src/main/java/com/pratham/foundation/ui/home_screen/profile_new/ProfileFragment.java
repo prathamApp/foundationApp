@@ -3,6 +3,7 @@ package com.pratham.foundation.ui.home_screen.profile_new;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.support.annotation.UiThread;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.GridLayoutManager;
@@ -51,6 +52,8 @@ public class ProfileFragment extends Fragment implements ProfileContract.Profile
     TextView tv_studentName;
     @ViewById(R.id.tv_usage)
     TextView tv_usage;
+    @ViewById(R.id.tv_days)
+    TextView tv_days;
     @ViewById(R.id.certi1_perc)
     TextView certi1_perc;
     @ViewById(R.id.certi1_subj)
@@ -71,7 +74,8 @@ public class ProfileFragment extends Fragment implements ProfileContract.Profile
     RelativeLayout rl_certi3;
 
 
-    String[] progressArray = {"Progress", "Share"};
+//    String[] progressArray = {"Progress", "Share"};
+    String[] progressArray = {"Progress"};
     private ProfileOuterDataAdapter adapterParent;
 
     @AfterViews
@@ -89,11 +93,18 @@ public class ProfileFragment extends Fragment implements ProfileContract.Profile
             my_recycler_view.setAdapter(adapterParent);
         }
         presenter.getCertificateCount();
+        presenter.getActiveData();
     }
 
-    @Click(R.id.card_img)
-    public void getCertiData(){
-        presenter.getActiveData();
+//    @Click(R.id.card_img)
+//    public void getCertiData(){
+//        presenter.getActiveData();
+//    }
+
+    @UiThread
+    @Override
+    public void setDays(int size) {
+        tv_days.setText(""+size);
     }
 
     @Override

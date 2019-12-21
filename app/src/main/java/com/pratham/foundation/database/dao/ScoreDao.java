@@ -10,6 +10,7 @@ import android.arch.persistence.room.Update;
 import com.pratham.foundation.database.domain.Score;
 import com.pratham.foundation.modalclasses.Modal_ResourcePlayedByGroups;
 import com.pratham.foundation.modalclasses.Modal_TotalDaysGroupsPlayed;
+import com.pratham.foundation.modalclasses.Modal_TotalDaysStudentsPlayed;
 
 import java.util.List;
 
@@ -78,8 +79,12 @@ public interface ScoreDao {
     @Query("Select count(distinct REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(substr(startdatetime,1,instr(startdatetime,' ')),'01','1'),'02','2'),'03','3'),'04','4'),'05','5'),'06','6'),'07','7'),'08','8'),'09','9')) as dates,at.groupid,g.groupname from Score sc inner join Attendance at on sc.sessionid=at.sessionid inner join Groups g on at.groupid=g.groupid where length(startdatetime)>5 group by at.groupid,g.groupname")
     List<Modal_TotalDaysGroupsPlayed> getTotalDaysGroupsPlayed();
 
-    @Query("Select count(distinct REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(substr(startdatetime,1,instr(startdatetime,' ')),'01','1'),'02','2'),'03','3'),'04','4'),'05','5'),'06','6'),'07','7'),'08','8'),'09','9')) as dates,at.studentid,s.fullname from Score sc inner join Attendance at on sc.sessionid=at.sessionid inner join Student s on at.studentid=s.studentid where length(startdatetime)>5 group by at.studentid,s.fullname")
-    List<Modal_TotalDaysGroupsPlayed> getTotalDaysStudentPlayed();
+    //    @Query("Select count(distinct REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(substr(startdatetime,1,instr(startdatetime,' ')),'01','1'),'02','2'),'03','3'),'04','4'),'05','5'),'06','6'),'07','7'),'08','8'),'09','9')) as dates,at.studentid, st.fullname from Score sc inner join Attendance at on sc.sessionid=at.sessionid inner join Student st on at.studentid=st.studentid where length(startdatetime)>5 AND at.studentid=:stdid group by at.studentid, st.fullname ")
+    @Query("Select count(distinct REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(substr(startdatetime,1,instr(startdatetime,' ')),'01','1'),'02','2'),'03','3'),'04','4'),'05','5'),'06','6'),'07','7'),'08','8'),'09','9')) as dates,at.studentid,st.fullname from Score sc inner join Attendance at on sc.sessionid=at.sessionid inner join Student st on at.studentid=st.studentid where length(startdatetime)>5 and at.studentid=:stdid group by at.studentid,st.fullname")
+    List<Modal_TotalDaysStudentsPlayed> getTotalDaysStudentPlayed(String stdid);
+
+    @Query("Select distinct REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(substr(startdatetime,1,instr(startdatetime,' ')),'01','1'),'02','2'),'03','3'),'04','4'),'05','5'),'06','6'),'07','7'),'08','8'),'09','9') as dates,sc.resourceid,tc.nodeTitle, at.studentid,st.fullname from Score sc inner join ContentTable tc on tc.resourceid=sc.resourceid inner join Attendance at on sc.sessionid=at.sessionid inner join Student st on at.studentid=st.studentid where length(startdatetime)>5 and at.studentid=:stdId")
+    List<Modal_TotalDaysStudentsPlayed> getTotalDaysByStudentID(String stdId);
 
     @Query("Select distinct REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(substr(startdatetime,1,instr(startdatetime,' ')),'01','1'),'02','2'),'03','3'),'04','4'),'05','5'),'06','6'),'07','7'),'08','8'),'09','9') as dates,sc.resourceid,tc.nodeTitle, at.groupid,g.groupname from Score sc inner join ContentTable tc on tc.resourceid=sc.resourceid inner join Attendance at on sc.sessionid=at.sessionid inner join Groups g on at.groupid=g.groupid where length(startdatetime)>5 and at.groupid=:grpId")
     List<Modal_ResourcePlayedByGroups> getRecourcesPlayedByGroups(String grpId);

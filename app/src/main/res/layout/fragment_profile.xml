@@ -103,28 +103,6 @@
                     android:textAllCaps="true"
                     android:textColor="@color/colorText"
                     android:textSize="@dimen/_12sdp" />
-                <com.pratham.foundation.customView.SansTextView
-                    android:id="@+id/tv_hours"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:gravity="center_vertical"
-                    android:layout_toEndOf="@+id/lbl_days"
-                    android:layout_marginStart="10dp"
-                    android:layout_marginEnd="5dp"
-                    android:text="100"
-                    android:textAllCaps="true"
-                    android:textColor="@color/colorText"
-                    android:textSize="@dimen/_12sdp" />
-                <com.pratham.foundation.customView.SansTextView
-                    android:id="@+id/lbl_hours"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_toEndOf="@+id/tv_hours"
-                    android:gravity="center_vertical"
-                    android:text="@string/hours"
-                    android:textAllCaps="true"
-                    android:textColor="@color/colorText"
-                    android:textSize="@dimen/_12sdp" />
         </RelativeLayout>
             <RelativeLayout
                 android:layout_width="match_parent"

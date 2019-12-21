@@ -31,7 +31,10 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:fadeScrollbars="false"
-            android:scrollbarSize="@dimen/_2sdp"
+                    android:scrollbarSize="6dp"
+        android:scrollbarThumbVertical="@drawable/card_color_bg4"
+        android:scrollbarTrackVertical="@drawable/scroll_bg"
+
             android:layout_below="@+id/para_tv" >
 
             <com.nex3z.flowlayout.FlowLayout xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -66,7 +69,10 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:fadeScrollbars="false"
-            android:scrollbarSize="@dimen/_2sdp"
+                    android:scrollbarSize="6dp"
+        android:scrollbarThumbVertical="@drawable/card_color_bg4"
+        android:scrollbarTrackVertical="@drawable/scroll_bg"
+
             android:layout_below="@+id/keywords_tv"
             android:paddingHorizontal="10dp">
 

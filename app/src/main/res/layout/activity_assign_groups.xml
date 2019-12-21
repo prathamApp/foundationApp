@@ -47,7 +47,10 @@
         android:layout_height="match_parent"
         android:layout_below="@+id/topPanel"
         android:fadeScrollbars="false"
-        android:scrollbarSize="@dimen/_2sdp"
+                android:scrollbarSize="6dp"
+        android:scrollbarThumbVertical="@drawable/card_color_bg4"
+        android:scrollbarTrackVertical="@drawable/scroll_bg"
+
         android:scrollbarAlwaysDrawVerticalTrack="true">
 
         <RelativeLayout

@@ -7,7 +7,7 @@ import com.pratham.foundation.database.AppDatabase;
 import com.pratham.foundation.database.domain.Assessment;
 import com.pratham.foundation.interfaces.API_Content_Result;
 import com.pratham.foundation.modalclasses.ModalTopCertificates;
-import com.pratham.foundation.modalclasses.Modal_TotalDaysGroupsPlayed;
+import com.pratham.foundation.modalclasses.Modal_TotalDaysStudentsPlayed;
 import com.pratham.foundation.services.shared_preferences.FastSave;
 import com.pratham.foundation.utility.FC_Constants;
 import com.pratham.foundation.utility.FC_Utility;
@@ -44,8 +44,22 @@ public class ProfilePresenter implements ProfileContract.ProfilePresenter, API_C
     @Background
     @Override
     public void getActiveData() {
-        List<Modal_TotalDaysGroupsPlayed> modal_totalDaysGroupsPlayeds = appDatabase.getScoreDao().getTotalDaysStudentPlayed();
-        Log.d("getActiveData: ", modal_totalDaysGroupsPlayeds.size() + "");
+        String studId = ""+FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID,"");
+        List<Modal_TotalDaysStudentsPlayed> modal_totalDaysStudentsPlayeds1 = appDatabase.getScoreDao().getTotalDaysByStudentID(studId);
+//        List<Modal_TotalDaysStudentsPlayed> modal_totalDaysStudentsPlayeds2 = appDatabase.getScoreDao().getTotalDaysStudentPlayed();
+        Log.d("getActiveData: ", "1 : "+modal_totalDaysStudentsPlayeds1.size());
+        List <String> dateList = new ArrayList<>();
+        for(int i =0 ; i<modal_totalDaysStudentsPlayeds1.size(); i++){
+            if(i==0)
+                dateList.add(""+ modal_totalDaysStudentsPlayeds1.get(i).dates);
+            else{
+                if(!dateList.contains(modal_totalDaysStudentsPlayeds1.get(i).dates))
+                    dateList.add(modal_totalDaysStudentsPlayeds1.get(i).dates);
+            }
+        }
+        Log.d("getActiveData: ", "2 : "+dateList.size());
+        profileView.setDays(dateList.size());
+//        Log.d("getActiveData: ", "2 : "+modal_totalDaysStudentsPlayeds2.size());
 //        tabUsageView.showTotalDaysPlayedByGroups(modal_totalDaysGroupsPlayeds);
     }
 

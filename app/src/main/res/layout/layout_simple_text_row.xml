@@ -16,7 +16,10 @@
     <ScrollView
         android:layout_width="match_parent"
         android:fadeScrollbars="false"
-        android:scrollbarSize="@dimen/_2sdp"
+                android:scrollbarSize="6dp"
+        android:scrollbarThumbVertical="@drawable/card_color_bg4"
+        android:scrollbarTrackVertical="@drawable/scroll_bg"
+
         android:layout_height="match_parent">
 
         <com.pratham.foundation.customView.SansTextView

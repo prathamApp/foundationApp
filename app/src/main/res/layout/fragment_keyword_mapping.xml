@@ -55,7 +55,10 @@
             android:layout_margin="@dimen/hexa_dp"
             android:scrollbars="vertical"
             android:scrollbarAlwaysDrawVerticalTrack="true"
-            android:scrollbarSize="@dimen/_2sdp"
+                    android:scrollbarSize="6dp"
+        android:scrollbarThumbVertical="@drawable/card_color_bg4"
+        android:scrollbarTrackVertical="@drawable/scroll_bg"
+
             android:gravity="center" />
 
 

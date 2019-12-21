@@ -13,6 +13,8 @@ public interface ProfileContract {
 
     interface ProfileView {
         void setCertificateCount(List<ModalTopCertificates> modalTopCertificatesList);
+
+        void setDays(int size);
     }
 
     interface ProfilePresenter {
