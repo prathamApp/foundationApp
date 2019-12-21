@@ -47,7 +47,7 @@
         android:id="@+id/tv_typer"
         android:visibility="gone"
         android:textSize="@dimen/_35sdp"
-        android:lineSpacingMultiplier="1.5"
+        android:lineSpacingMultiplier="1"
         app:typerSpeed="100"/>
 
 <!--    <ImageView-->

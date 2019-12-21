@@ -55,7 +55,7 @@ public class GameConstatnts implements ShowInstruction {
 //    public static final String MULTIPLE_CHOICE_QUE = "multiple_choice_que";
     public static final String FILL_IN_THE_BLANKS = "fill_in_the_blanks";
     public static final String TRUE_FALSE = "true_false";
-    public static final String PICTIONARYFRAGMENT = "PictAndroid";
+    public static final String READING_ANDROID = "ReadingAndroid";
     public static final String DOING = "doing_act";
     public static final String FACT_RETRIAL_CLICK = "fact_retrieval_click";
     public static final String FACTRETRIEVAL = "factRetrieval";
@@ -333,7 +333,7 @@ public class GameConstatnts implements ShowInstruction {
                         }
                     }, 100);
                     break;
-                case GameConstatnts.PICTIONARYFRAGMENT:
+                case GameConstatnts.READING_ANDROID:
                     FC_Utility.showFragment((Activity) context, new ContentReadingFragment_(), R.id.RL_CPA,
                             bundle, ContentReadingFragment.class.getSimpleName());
                     handler.postDelayed(new Runnable() {

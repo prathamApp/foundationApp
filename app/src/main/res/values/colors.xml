@@ -95,6 +95,7 @@
     <color name="colorBlackTransparentLight">#b2000000</color>
     <color name="ratingFilled">#FFC107</color>
     <color name="deep_teal">#ff009688</color>
+    <color name="deep_teal_lite">#25D3C2</color>
     <color name="black_overlay">#66000000</color>
     <color name="splash_background">#F6F6F6</color>
     <color name="toolbar_background">#37474f</color>

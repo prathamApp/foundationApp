@@ -1,15 +1,18 @@
 package com.pratham.foundation.ui.home_screen.profile_new;
 
 import android.content.Context;
+import android.util.Log;
 
 import com.pratham.foundation.database.AppDatabase;
 import com.pratham.foundation.database.domain.Assessment;
 import com.pratham.foundation.interfaces.API_Content_Result;
 import com.pratham.foundation.modalclasses.ModalTopCertificates;
+import com.pratham.foundation.modalclasses.Modal_TotalDaysGroupsPlayed;
 import com.pratham.foundation.services.shared_preferences.FastSave;
 import com.pratham.foundation.utility.FC_Constants;
 import com.pratham.foundation.utility.FC_Utility;
 
+import org.androidannotations.annotations.Background;
 import org.androidannotations.annotations.EBean;
 import org.json.JSONObject;
 
@@ -17,6 +20,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import static com.pratham.foundation.database.AppDatabase.appDatabase;
 import static com.pratham.foundation.utility.FC_Constants.LOGIN_MODE;
 
 
@@ -36,6 +40,15 @@ public class ProfilePresenter implements ProfileContract.ProfilePresenter, API_C
     }
 
     ArrayList<String> codesText;
+
+    @Background
+    @Override
+    public void getActiveData() {
+        List<Modal_TotalDaysGroupsPlayed> modal_totalDaysGroupsPlayeds = appDatabase.getScoreDao().getTotalDaysStudentPlayed();
+        Log.d("getActiveData: ", modal_totalDaysGroupsPlayeds.size() + "");
+//        tabUsageView.showTotalDaysPlayedByGroups(modal_totalDaysGroupsPlayeds);
+    }
+
 
     @Override
     public void getCertificateCount() {

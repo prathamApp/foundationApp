@@ -278,7 +278,7 @@ public class LearningFragment extends Fragment implements LearningContract.Learn
         dialog.setCanceledOnTouchOutside(false);
         TextView title = dialog.findViewById(R.id.dia_title);
         dialog.show();
-        title.setText("Connect to Internet");
+        title.setText("No Data Found");
         Button btn_gree = dialog.findViewById(R.id.dia_btn_green);
         Button btn_yellow = dialog.findViewById(R.id.dia_btn_yellow);
         Button btn_red = dialog.findViewById(R.id.dia_btn_red);

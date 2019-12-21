@@ -19,5 +19,7 @@ public interface ProfileContract {
         void setView(ProfileContract.ProfileView ProfileView);
 
         void getCertificateCount();
+
+        void getActiveData();
     }
 }

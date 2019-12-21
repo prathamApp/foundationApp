@@ -16,6 +16,7 @@ import com.pratham.foundation.utility.FC_Utility;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Background;
+import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.ViewById;
 
@@ -51,6 +52,11 @@ public class ActivityVideoView extends BaseActivity {
             videoPath = ApplicationClass.foundationPath + gameFolderPath + "/" + videoPath;
 
         initializePlayer(videoPath);
+    }
+
+    @Click(R.id.close_video)
+    public void closeVide(){
+        onBackPressed();
     }
 
     private void initializePlayer(String videoPath) {

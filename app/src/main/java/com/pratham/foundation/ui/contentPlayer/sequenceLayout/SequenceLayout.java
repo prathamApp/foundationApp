@@ -254,7 +254,7 @@ public class SequenceLayout extends Fragment implements SequeanceLayoutContract.
                     FC_Utility.showFragment((Activity) context, new VocabReadingFragment_(), R.id.RL_CPA,
                             bundle, VocabReadingFragment.class.getSimpleName());
                     break;
-                case GameConstatnts.PICTIONARYFRAGMENT:
+                case GameConstatnts.READING_ANDROID:
                     FC_Utility.showFragment((Activity) context, new ContentReadingFragment_(), R.id.RL_CPA,
                             bundle, ContentReadingFragment.class.getSimpleName());
                     break;

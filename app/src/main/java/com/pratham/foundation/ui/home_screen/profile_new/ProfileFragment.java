@@ -91,9 +91,10 @@ public class ProfileFragment extends Fragment implements ProfileContract.Profile
         presenter.getCertificateCount();
     }
 
-    @Click(R.id.tv_studentName)
+    @Click(R.id.card_img)
     public void getCertiData(){
-        presenter.getCertificateCount(); }
+        presenter.getActiveData();
+    }
 
     @Override
     public void setCertificateCount(List<ModalTopCertificates> modalTopCertificatesList) {
