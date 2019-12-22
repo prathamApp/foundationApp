@@ -153,18 +153,22 @@ public class LearningInnerDataAdapter extends RecyclerView.Adapter {
                         }
                     });
 
-                    if (itemsList.get(i).isOnSDCard()) {
-                        file = new File(ApplicationClass.contentSDPath +
-                                "" + App_Thumbs_Path + itemsList.get(i).getNodeImage());
-                        if (file.exists()) {
-                            fileHolder.itemImage.setImageURI(Uri.fromFile(file));
+                    try {
+                        if (itemsList.get(i).isOnSDCard()) {
+                            file = new File(ApplicationClass.contentSDPath +
+                                    "" + App_Thumbs_Path + itemsList.get(i).getNodeImage());
+                            if (file.exists()) {
+                                fileHolder.itemImage.setImageURI(Uri.fromFile(file));
+                            }
+                        } else {
+                            file = new File(ApplicationClass.foundationPath +
+                                    "" + App_Thumbs_Path + itemsList.get(i).getNodeImage());
+                            if (file.exists()) {
+                                fileHolder.itemImage.setImageURI(Uri.fromFile(file));
+                            }
                         }
-                    } else {
-                        file = new File(ApplicationClass.foundationPath +
-                                "" + App_Thumbs_Path + itemsList.get(i).getNodeImage());
-                        if (file.exists()) {
-                            fileHolder.itemImage.setImageURI(Uri.fromFile(file));
-                        }
+                    } catch (Exception e) {
+                        e.printStackTrace();
                     }
                 }else {
                     ImageRequest imageRequest = ImageRequestBuilder

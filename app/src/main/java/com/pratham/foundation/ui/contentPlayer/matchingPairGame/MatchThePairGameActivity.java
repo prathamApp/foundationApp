@@ -114,7 +114,7 @@ public class MatchThePairGameActivity extends BaseActivity implements MatchThePa
             @Override
             protected Object doInBackground(Object... objects) {
 //                matchThePairList=new ArrayList<>();
-                matchThePairList = AppDatabase.getDatabaseInstance(MatchThePairGameActivity.this).getMatchThePairDao().getQuestions(FC_Constants.currentSelectedLanguage);
+                matchThePairList = AppDatabase.getDatabaseInstance(MatchThePairGameActivity.this).getMatchThePairDao().getQuestions(FastSave.getInstance().getString(FC_Constants.LANGUAGE, FC_Constants.HINDI));
                 return null;
             }
 
@@ -149,7 +149,7 @@ public class MatchThePairGameActivity extends BaseActivity implements MatchThePa
                     matchThePairList = getDataFromJson();
                     for (int i = 0; i < matchThePairList.size(); i++) {
                         String[] splittedHinList;
-                        if (FC_Constants.currentSelectedLanguage.equalsIgnoreCase(FC_Constants.HINDI)) {
+                        if (FastSave.getInstance().getString(FC_Constants.LANGUAGE, FC_Constants.HINDI).equalsIgnoreCase(FC_Constants.HINDI)) {
                             splittedHinList = splitSentence(matchThePairList.get(i).getLangText(), ("(?<=\\|\\s)|(?<=[?!]\\s)"));
                         } else {
                             splittedHinList = splitSentence(matchThePairList.get(i).getLangText(), ("(?<=\\.\\s)|(?<=[?!]\\s)"));
@@ -180,7 +180,7 @@ public class MatchThePairGameActivity extends BaseActivity implements MatchThePa
         String[] splittedHinList;
 
         String[] splittedEngList = splitSentence(randomQuestion.getParaText(), ("(?<=\\.\\s)|(?<=[?!]\\s)"));
-        if (FC_Constants.currentSelectedLanguage.equalsIgnoreCase(FC_Constants.HINDI)) {
+        if (FastSave.getInstance().getString(FC_Constants.LANGUAGE, FC_Constants.HINDI).equalsIgnoreCase(FC_Constants.HINDI)) {
             splittedHinList = splitSentence(randomQuestion.getLangText(), ("(?<=\\|\\s)|(?<=[?!]\\s)"));
         } else {
             splittedHinList = splitSentence(randomQuestion.getLangText(), ("(?<=\\.\\s)|(?<=[?!]\\s)"));
@@ -266,7 +266,7 @@ public class MatchThePairGameActivity extends BaseActivity implements MatchThePa
             }.getType();
             matchThePairsList = gson.fromJson(jsonStr, type);
             for (int i = 0; i < matchThePairsList.size(); i++)
-                matchThePairsList.get(i).setParaLang(FC_Constants.currentSelectedLanguage);
+                matchThePairsList.get(i).setParaLang(FastSave.getInstance().getString(FC_Constants.LANGUAGE, FC_Constants.HINDI));
         } catch (Exception e) {
             e.printStackTrace();
         }

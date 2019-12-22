@@ -5,7 +5,7 @@
         android:radius="@dimen/_10sdp"/>
 <!--    <solid android:color="@color/ratingFilled" />-->
     <gradient
-        android:angle="45"
+        android:angle="135"
         android:endColor="@color/ratingFilled"
         android:startColor="@color/yellow_sand_dark"
         android:type="linear" />

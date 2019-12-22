@@ -113,8 +113,8 @@ public class Student_profile_activity extends Fragment implements Student_profil
         lang_spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                FC_Constants.currentSelectedLanguage = lang_spinner.getSelectedItem().toString();
-                FastSave.getInstance().saveString(FC_Constants.LANGUAGE, FC_Constants.currentSelectedLanguage);
+//                FC_Constants.currentSelectedLanguage = lang_spinner.getSelectedItem().toString();
+//                FastSave.getInstance().saveString(FC_Constants.LANGUAGE, FC_Constants.currentSelectedLanguage);
             }
 
             @Override
@@ -124,7 +124,7 @@ public class Student_profile_activity extends Fragment implements Student_profil
 
         dia_btn_green.setOnClickListener(v -> {
             HomeActivity.languageChanged = true;
-            setAppLocal(context, FC_Constants.currentSelectedLanguage);
+            setAppLocal(context, FastSave.getInstance().getString(FC_Constants.LANGUAGE, FC_Constants.HINDI));
             dialog.dismiss();
         });
     }
@@ -175,7 +175,7 @@ public class Student_profile_activity extends Fragment implements Student_profil
                                 break;
                         }
 /*                        Glide.with(context).load(ApplicationClass.pradigiPath + "/.FCA/" +
-                                FC_Constants.currentSelectedLanguage + "/App_Thumbs/" + sImage).into(profileImage);*/
+                                FastSave.getInstance().getString(FC_Constants.LANGUAGE, FC_Constants.HINDI) + "/App_Thumbs/" + sImage).into(profileImage);*/
                     }
                 } else
                     profileImage.setImageResource(R.drawable.b2);
@@ -257,7 +257,7 @@ public class Student_profile_activity extends Fragment implements Student_profil
             @Override
             protected Object doInBackground(Object... objects) {
                 try {
-                    String rootNodeId = FC_Utility.getRootNode(FC_Constants.currentSelectedLanguage);
+                    String rootNodeId = FC_Utility.getRootNode(FastSave.getInstance().getString(FC_Constants.LANGUAGE, FC_Constants.HINDI));
                     maxScore = new ArrayList();
                     switch (pos) {
                         case 0:

@@ -360,7 +360,7 @@ public class FunFragment extends Fragment implements FunContract.FunView,
             intent.putExtra("parentName", parentName);
             intent.putExtra("level", "" + currentLevel);
             startActivity(intent);
-        } else if(singleItem.getResourceType().equalsIgnoreCase("preResource")){
+        } else if(singleItem.getNodeType().equalsIgnoreCase("preResource")){
             Intent mainNew = new Intent(getActivity(), ContentPlayerActivity_.class);
             mainNew.putExtra("nodeID", singleItem.getNodeId());
             startActivity(mainNew);

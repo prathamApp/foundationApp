@@ -19,6 +19,7 @@ import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -91,6 +92,8 @@ public class TestFragment extends Fragment implements TestContract.TestView,
     RecyclerView my_recycler_view;
     @ViewById(R.id.btn_test_dw)
     Button btn_test_dw;
+    @ViewById(R.id.ib_langChange)
+    ImageButton ib_langChange;
 
     private TestAdapter testAdapter;
     private int clicked_Pos = 0;
@@ -98,7 +101,7 @@ public class TestFragment extends Fragment implements TestContract.TestView,
     public List<ContentTable> contentParentList, contentDBList, contentApiList, childContentList;
     private String downloadNodeId, resName, resServerImageName, downloadType, certi_Code = "";
     private int childPos = 0, parentPos = 0, resumeCntr = 0;
-    public static String language = "English";
+    public static String language = "Hindi";
 
     @AfterViews
     public void initialize() {
@@ -111,6 +114,7 @@ public class TestFragment extends Fragment implements TestContract.TestView,
         presenter.setView(TestFragment.this);
         testSessionEntered = false;
         testSessionEnded = false;
+        ib_langChange.setVisibility(View.GONE);
         my_recycler_view.addOnScrollListener(new RetractableToolbarUtil
                 .ShowHideToolbarOnScrollingListener(header_rl));
         presenter.getBottomNavId(currentLevel, "Test");

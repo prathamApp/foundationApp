@@ -1466,7 +1466,7 @@ public class FC_Utility {
                 .equalsIgnoreCase("English") ||
                 FastSave.getInstance().getString(FC_Constants.LANGUAGE, FC_Constants.HINDI)
                         .equalsIgnoreCase("Hindi"))
-        FC_Constants.currentSelectedLanguage= FastSave.getInstance().getString(FC_Constants.LANGUAGE, FC_Constants.HINDI);
+        FastSave.getInstance().getString(FC_Constants.LANGUAGE, FC_Constants.HINDI)= FastSave.getInstance().getString(FC_Constants.LANGUAGE, FC_Constants.HINDI);
     }*/
 
     /**

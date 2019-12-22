@@ -5,9 +5,9 @@
         android:radius="@dimen/_10sdp"/>
 <!--    <solid android:color="@color/colorBtnRedLight" />-->
     <gradient
-        android:angle="45"
+        android:angle="135"
         android:endColor="@color/colorRedDark"
-        android:startColor="@color/colorBtnRedLight"
+        android:startColor="@color/convoRed"
         android:type="linear" />
 
 </shape>

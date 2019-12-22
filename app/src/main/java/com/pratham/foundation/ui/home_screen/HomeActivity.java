@@ -127,7 +127,6 @@ public class HomeActivity extends BaseActivity implements LevelChanged {
         changeBGNew(0);
         //        floating_back.setImageResource(R.drawable.ic_left_arrow_white);
         floating_info.setImageResource(R.drawable.ic_info_outline_white);
-        FC_Constants.currentSelectedLanguage = FastSave.getInstance().getString(FC_Constants.LANGUAGE, "");
         setupViewPager(viewpager);
         tv_header_progress.setText("0%");
 //        tv_progress.setCurProgress(0);

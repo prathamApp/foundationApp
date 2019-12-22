@@ -264,15 +264,15 @@ public class SplashActivity extends SplashSupportActivity implements SplashContr
 
     @Override
     public void startApp() {
-//        FC_Constants.currentSelectedLanguage = FC_Constants.HINDI;
-//        FastSave.getInstance().saveString(FC_Constants.LANGUAGE, FC_Constants.currentSelectedLanguage);
-        if (!FastSave.getInstance().getBoolean(FC_Constants.LANGUAGE_SPLASH_DIALOG, false))
+        FastSave.getInstance().saveString(FC_Constants.LANGUAGE, FC_Constants.HINDI);
+        setAppLocal(this, FC_Constants.HINDI);
+        createDataBase();
+/*        if (!FastSave.getInstance().getBoolean(FC_Constants.LANGUAGE_SPLASH_DIALOG, false))
             showLanguageSelectionDialog();
         else {
-            FC_Constants.currentSelectedLanguage = FastSave.getInstance().getString(FC_Constants.LANGUAGE, "");
-            setAppLocal(this, FC_Constants.currentSelectedLanguage);
+            setAppLocal(this, FastSave.getInstance().getString(FC_Constants.LANGUAGE, FC_Constants.HINDI));
             createDataBase();
-        }
+        }*/
     }
 
     @SuppressLint("SetTextI18n")
@@ -298,8 +298,8 @@ public class SplashActivity extends SplashSupportActivity implements SplashContr
         lang_spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                FC_Constants.currentSelectedLanguage = lang_spinner.getSelectedItem().toString();
-                FastSave.getInstance().saveString(FC_Constants.LANGUAGE, FC_Constants.currentSelectedLanguage);
+//                FC_Constants.currentSelectedLanguage = lang_spinner.getSelectedItem().toString();
+//                FastSave.getInstance().saveString(FC_Constants.LANGUAGE, FC_Constants.currentSelectedLanguage);
             }
 
             @Override
@@ -308,12 +308,16 @@ public class SplashActivity extends SplashSupportActivity implements SplashContr
         });
 
         dia_btn_green.setOnClickListener(v -> {
-            FastSave.getInstance().saveBoolean(FC_Constants.LANGUAGE_SPLASH_DIALOG, true);
-            setAppLocal(this, FC_Constants.currentSelectedLanguage);
-            createDataBase();
+                FastSave.getInstance().saveBoolean(FC_Constants.LANGUAGE_SPLASH_DIALOG, true);
+                setAppLocal(this, FastSave.getInstance().getString(FC_Constants.LANGUAGE, FC_Constants.HINDI));
+                createDataBase();
             dialog.dismiss();
         });
     }
+
+//    private void showComingSoonToast() {
+//        showLanguageSelectionDialog();
+//    }
 
     @Override
     public void showProgressDialog() {

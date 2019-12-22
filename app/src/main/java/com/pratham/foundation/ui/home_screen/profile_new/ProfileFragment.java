@@ -13,6 +13,7 @@ import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -72,6 +73,8 @@ public class ProfileFragment extends Fragment implements ProfileContract.Profile
     RelativeLayout rl_certi2;
     @ViewById(R.id.rl_certi3)
     RelativeLayout rl_certi3;
+    @ViewById(R.id.ib_langChange)
+    ImageButton ib_langChange;
 
 
 //    String[] progressArray = {"Progress", "Share"};
@@ -92,6 +95,7 @@ public class ProfileFragment extends Fragment implements ProfileContract.Profile
             my_recycler_view.setItemAnimator(new DefaultItemAnimator());
             my_recycler_view.setAdapter(adapterParent);
         }
+        ib_langChange.setVisibility(View.GONE);
         presenter.getCertificateCount();
         presenter.getActiveData();
     }
@@ -203,8 +207,9 @@ public class ProfileFragment extends Fragment implements ProfileContract.Profile
         lang_spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                FC_Constants.currentSelectedLanguage = lang_spinner.getSelectedItem().toString();
-                FastSave.getInstance().saveString(FC_Constants.LANGUAGE, FC_Constants.currentSelectedLanguage);
+//                FC_Constants.currentSelectedLanguage = lang_spinner.getSelectedItem().toString();
+//                FastSave.getInstance().saveString(FC_Constants.LANGUAGE, FC_Constants.currentSelectedLanguage);
+                FastSave.getInstance().getString(FC_Constants.LANGUAGE, FC_Constants.HINDI);
             }
 
             @Override
@@ -215,7 +220,8 @@ public class ProfileFragment extends Fragment implements ProfileContract.Profile
         dia_btn_green.setOnClickListener(v -> {
 //            HomeActivity.languageChanged = true;
             FastSave.getInstance().saveBoolean(FC_Constants.LANGUAGE_SPLASH_DIALOG, true);
-            setAppLocal(getActivity(), FC_Constants.currentSelectedLanguage);
+            setAppLocal(getActivity(), FastSave.getInstance().
+                    getString(FC_Constants.LANGUAGE, FC_Constants.HINDI));
             dialog.dismiss();
         });
     }

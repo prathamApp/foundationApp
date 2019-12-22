@@ -1,19 +1,15 @@
 package com.pratham.foundation.ui.contentPlayer;
 
-import android.app.Dialog;
 import android.content.Context;
-import android.graphics.Color;
-import android.graphics.Typeface;
-import android.graphics.drawable.ColorDrawable;
 import android.media.MediaPlayer;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.annotation.NonNull;
 
 import com.pratham.foundation.R;
 import com.pratham.foundation.customView.SansTextViewBold;
 import com.pratham.foundation.customView.display_image_dialog.CustomLodingDialog;
 import com.pratham.foundation.interfaces.ShowInstruction;
+import com.pratham.foundation.services.shared_preferences.FastSave;
 import com.pratham.foundation.utility.FC_Constants;
 
 import butterknife.BindView;
@@ -49,7 +45,7 @@ public class InstructionsDialog extends CustomLodingDialog {
         } else {
             dia_title.setText("");
         }
-        if (FC_Constants.currentSelectedLanguage.equalsIgnoreCase("Hindi")) {
+        if (FastSave.getInstance().getString(FC_Constants.LANGUAGE, FC_Constants.HINDI).equalsIgnoreCase("Hindi")) {
             resorcetype="hi_"+resorcetype;
         }
         int rawID = context.getResources().getIdentifier(resorcetype.toLowerCase(), "raw", context.getPackageName());

@@ -33,9 +33,9 @@ public class TestStudentAdapter extends RecyclerView.Adapter<TestStudentAdapter.
 
         public MyViewHolder(View view) {
             super(view);
-            title = (TextView) view.findViewById(R.id.tv_studentName);
-            thumbnail = (ImageView) view.findViewById(R.id.test_student_img);
-            content_card_view = (RelativeLayout) view.findViewById(R.id.test_student_card);
+            title = view.findViewById(R.id.tv_studentName);
+            thumbnail = view.findViewById(R.id.test_student_img);
+            content_card_view = view.findViewById(R.id.test_student_card);
         }
     }
 
@@ -59,15 +59,15 @@ public class TestStudentAdapter extends RecyclerView.Adapter<TestStudentAdapter.
         if (studentList.getGender() != null) {
             if (studentList.getGender().equalsIgnoreCase("male"))
                 Glide.with(mContext).load(R.drawable.b2/* ApplicationClass.contentSDPath + "/.FCA/"+
-                        FC_Constants.currentSelectedLanguage+"/App_Thumbs/b2.png"*/)
+                        FastSave.getInstance().getString(FC_Constants.LANGUAGE, FC_Constants.HINDI)+"/App_Thumbs/b2.png"*/)
                         .into(holder.thumbnail);
             else
                 Glide.with(mContext).load(R.drawable.g1/*2ApplicationClass.contentSDPath + "/.FCA/"+
-                        FC_Constants.currentSelectedLanguage+"/App_Thumbs/g1.png"*/)
+                        FastSave.getInstance().getString(FC_Constants.LANGUAGE, FC_Constants.HINDI)+"/App_Thumbs/g1.png"*/)
                         .into(holder.thumbnail);
         } else
             Glide.with(mContext).load(R.drawable.g1/*ApplicationClass.contentSDPath + "/.FCA/"+
-                    FC_Constants.currentSelectedLanguage+"/App_Thumbs/g1.png"*/)
+                    FastSave.getInstance().getString(FC_Constants.LANGUAGE, FC_Constants.HINDI)+"/App_Thumbs/g1.png"*/)
                     .into(holder.thumbnail);
         holder.content_card_view.setOnClickListener(new View.OnClickListener() {
             @Override

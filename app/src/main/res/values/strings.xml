@@ -388,45 +388,44 @@
         <item> 12 </item>
     </string-array>
     <string-array name="certificate_Languages">
-        <item>English   </item>
         <item>Hindi     </item>
         <item>Marathi   </item>
-        <item>Gujarati  </item>
-        <item>Kannada   </item>
-        <item>Bengali   </item>
-        <item>Assamese  </item>
-        <item>Telugu    </item>
-        <item>Tamil     </item>
-        <item>Odiya     </item>
-        <!--
-        <item>Malayalam</item>
-        <item>Punjabi</item>
-        <item>Urdu</item>
--->
     </string-array>
+<!--    <item>Marathi   </item>-->
+<!--    <item>Gujarati  </item>-->
+<!--    <item>Kannada   </item>-->
+<!--    <item>Bengali   </item>-->
+<!--    <item>Assamese  </item>-->
+<!--    <item>Telugu    </item>-->
+<!--    <item>Tamil     </item>-->
+<!--    <item>Odiya     </item>-->
+    <!--
+    <item>Malayalam</item>
+    <item>Punjabi</item>
+    <item>Urdu</item>
+-->
     <string-array name="app_Language">
         <item>Hindi</item>
         <item>Marathi</item>
-        <item>Gujarati</item>
-        <item>Kannada</item>
-        <item>Bengali</item>
-        <item>Assamese  </item>
-        <item>Telugu</item>
-        <item>Tamil</item>
-        <item>Odiya</item>
     </string-array>
+<!--        <item>Gujarati</item>-->
+<!--        <item>Kannada</item>-->
+<!--        <item>Bengali</item>-->
+<!--        <item>Assamese  </item>-->
+<!--        <item>Telugu</item>-->
+<!--        <item>Tamil</item>-->
+<!--        <item>Odiya</item>-->
     <string-array name="translation_Languages">
-        <item>English</item>
         <item>Hindi</item>
         <item>Marathi</item>
-        <item>Gujarati</item>
-        <item>Kannada</item>
-        <item>Bengali</item>
-        <item>Telugu</item>
-        <item>Tamil</item>
-        <item>Urdu</item>
-        <item>Punjabi</item>
     </string-array>
+<!--    <item>Gujarati</item>-->
+<!--    <item>Kannada</item>-->
+<!--    <item>Bengali</item>-->
+<!--    <item>Telugu</item>-->
+<!--    <item>Tamil</item>-->
+<!--    <item>Urdu</item>-->
+<!--    <item>Punjabi</item>-->
     <string-array name="language_codes">
         <item>en</item>
         <item>hi</item>

@@ -11,6 +11,7 @@ import android.widget.TextView;
 
 import com.pratham.foundation.R;
 import com.pratham.foundation.modalclasses.MatchThePair;
+import com.pratham.foundation.services.shared_preferences.FastSave;
 import com.pratham.foundation.utility.FC_Constants;
 
 import java.util.List;
@@ -44,15 +45,15 @@ public class MatchPairAdapter extends RecyclerView.Adapter<MatchPairAdapter.MyVi
     @Override
     public void onBindViewHolder(@NonNull final MyViewHolder myViewHolder, int i) {
         MatchThePair matchThePair = pairList.get(i);
-        if (FC_Constants.currentSelectedLanguage.equalsIgnoreCase("Gujarati")) {
+        if (FastSave.getInstance().getString(FC_Constants.LANGUAGE, FC_Constants.HINDI).equalsIgnoreCase("Gujarati")) {
             Typeface face = Typeface.createFromAsset(context.getAssets(), "fonts/muktavaani_gujarati.ttf");
             myViewHolder.text.setTypeface(face);
             myViewHolder.text.setText(matchThePair.getParaText());
-        } else if (FC_Constants.currentSelectedLanguage.equalsIgnoreCase("Assamese")) {
+        } else if (FastSave.getInstance().getString(FC_Constants.LANGUAGE, FC_Constants.HINDI).equalsIgnoreCase("Assamese")) {
             Typeface face = Typeface.createFromAsset(context.getAssets(), "fonts/lohit_oriya.ttf");
             myViewHolder.text.setTypeface(face);
             myViewHolder.text.setText(matchThePair.getParaText());
-        } else if (FC_Constants.currentSelectedLanguage.equalsIgnoreCase("Odiya")) {
+        } else if (FastSave.getInstance().getString(FC_Constants.LANGUAGE, FC_Constants.HINDI).equalsIgnoreCase("Odiya")) {
             Typeface face = Typeface.createFromAsset(context.getAssets(), "fonts/lohit_oriya.ttf");
             myViewHolder.text.setTypeface(face);
             myViewHolder.text.setText(matchThePair.getParaText());

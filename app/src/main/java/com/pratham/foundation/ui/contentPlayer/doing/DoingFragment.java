@@ -377,7 +377,7 @@ public class DoingFragment extends Fragment implements STT_Result_New.sttView,On
             }
             scienceQuestionChoices=scienceQuestion.getLstquestionchoice();
             if(scienceQuestionChoices!=null&& !scienceQuestionChoices.isEmpty()){
-                continuousSpeechService = new ContinuousSpeechService_New(context, DoingFragment.this, FC_Constants.currentSelectedLanguage);
+                continuousSpeechService = new ContinuousSpeechService_New(context, DoingFragment.this, FastSave.getInstance().getString(FC_Constants.LANGUAGE, FC_Constants.HINDI));
                 continuousSpeechService.resetSpeechRecognizer();
                 loadSubQuestions();
             }else {

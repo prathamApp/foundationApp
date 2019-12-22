@@ -16,6 +16,7 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -91,6 +92,8 @@ public class ContentDisplay extends BaseActivity implements ContentContract.Cont
     TextView tv_Topic;
     @ViewById(R.id.tv_Activity)
     TextView tv_Activity;
+    @ViewById(R.id.ll_topic_parent)
+    LinearLayout ll_topic_parent;
     @ViewById(R.id.iv_level)
     ImageView iv_level;
     String nodeId, level, contentTitle;
@@ -150,6 +153,8 @@ public class ContentDisplay extends BaseActivity implements ContentContract.Cont
         if(!LOGIN_MODE.equalsIgnoreCase(QR_GROUP_MODE))
             presenter.getPerc(nodeId);
         tv_Topic.setText("" + contentTitle);
+        tv_Topic.setSelected(true);
+        ll_topic_parent.setSelected(true);
         tv_Activity.setText("" + parentName);
     }
 

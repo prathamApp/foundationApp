@@ -147,7 +147,7 @@ public class TestPresenter implements TestContract.TestPresenter, API_Content_Re
         this.currentLevelNo = currentLevelNo;
         this.cosSection = cosSection;
         String botID;
-//        String rootID = FC_Utility.getRootNode(FC_Constants.currentSelectedLanguage);
+//        String rootID = FC_Utility.getRootNode(FastSave.getInstance().getString(FC_Constants.LANGUAGE, FC_Constants.HINDI));
         String rootID = sub_nodeId;
         botID = AppDatabase.appDatabase.getContentTableDao().getContentDataByTitle("" + rootID, cosSection);
         if (botID != null && !FC_Utility.isDataConnectionAvailable(mContext))
@@ -168,10 +168,10 @@ public class TestPresenter implements TestContract.TestPresenter, API_Content_Re
             }
         }*/
 
-/*      if (FC_Constants.currentSelectedLanguage.equalsIgnoreCase("Hindi"))
+/*      if (FastSave.getInstance().getString(FC_Constants.LANGUAGE, FC_Constants.HINDI).equalsIgnoreCase("Hindi"))
             botID = AppDatabase.appDatabase.getContentTableDao().getBottomNavigationId("English", cosSection);
         else
-            botID = AppDatabase.appDatabase.getContentTableDao().getBottomNavigationId(FC_Constants.currentSelectedLanguage, cosSection);
+            botID = AppDatabase.appDatabase.getContentTableDao().getBottomNavigationId(FastSave.getInstance().getString(FC_Constants.LANGUAGE, FC_Constants.HINDI), cosSection);
         myView.setBotNodeId(botID);
         getLevelDataForList(currentLevelNo, botID);*/
     }
@@ -351,7 +351,7 @@ public class TestPresenter implements TestContract.TestPresenter, API_Content_Re
         JSONArray returnCodeList = null;
         try {
             InputStream is = mContext.getAssets().open(jsonName);
-//            InputStream is = new FileInputStream(ApplicationClass.pradigiPath + "/.FCA/"+FC_Constants.currentSelectedLanguage+"/Game/CertificateData.json");
+//            InputStream is = new FileInputStream(ApplicationClass.pradigiPath + "/.FCA/"+FastSave.getInstance().getString(FC_Constants.LANGUAGE, FC_Constants.HINDI)+"/Game/CertificateData.json");
             int size = is.available();
             byte[] buffer = new byte[size];
             is.read(buffer);
@@ -719,7 +719,7 @@ public class TestPresenter implements TestContract.TestPresenter, API_Content_Re
     private List<WordEnglish> fetchWords(String jasonName) {
         ArrayList<WordEnglish> arrayList = new ArrayList<>();
         try {
-            //InputStream is = new FileInputStream(ApplicationClass.pradigiPath + "/.FCA/"+FC_Constants.currentSelectedLanguage+"/RC/" + jasonName);
+            //InputStream is = new FileInputStream(ApplicationClass.pradigiPath + "/.FCA/"+FastSave.getInstance().getString(FC_Constants.LANGUAGE, FC_Constants.HINDI)+"/RC/" + jasonName);
             InputStream is = mContext.getAssets().open("" + jasonName);
             JsonReader reader = new JsonReader(new InputStreamReader(is, StandardCharsets.UTF_8));
             Gson gson = new GsonBuilder().create();
@@ -746,7 +746,7 @@ public class TestPresenter implements TestContract.TestPresenter, API_Content_Re
     public JSONArray fetchSentences(String jasonName) {
         JSONArray jsonArr = null;
         try {
-            //InputStream is = new FileInputStream(ApplicationClass.pradigiPath + "/.FCA/"+FC_Constants.currentSelectedLanguage+"/RC/" + jasonName);
+            //InputStream is = new FileInputStream(ApplicationClass.pradigiPath + "/.FCA/"+FastSave.getInstance().getString(FC_Constants.LANGUAGE, FC_Constants.HINDI)+"/RC/" + jasonName);
             InputStream is = mContext.getAssets().open("" + jasonName);
             int size = is.available();
             byte[] buffer = new byte[size];

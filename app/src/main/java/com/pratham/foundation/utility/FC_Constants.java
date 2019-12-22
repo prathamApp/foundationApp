@@ -238,7 +238,6 @@ public class FC_Constants {
     public static boolean testSessionEntered = false;
     public static boolean testSessionEnded = true;
     public static String currentGroup;
-    public static String currentSelectedLanguage;
     public static String newDataLanguageInserted = "newDataLanguageInserted";
 //    public static boolean GROUP_QR = false;
     public static boolean levelSet = false;

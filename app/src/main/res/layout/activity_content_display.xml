@@ -50,6 +50,12 @@
                 android:layout_marginEnd="@dimen/_10sdp"
                 android:layout_toStartOf="@+id/iv_level"
                 android:text="Topic"
+                android:duplicateParentState="true"
+                android:ellipsize="marquee"
+                android:fadingEdge="horizontal"
+                android:marqueeRepeatLimit="marquee_forever"
+                android:scrollHorizontally="true"
+                android:singleLine="true"
                 android:textColor="@color/colorBlack"
                 android:textSize="@dimen/_20sdp" />
 
@@ -63,11 +69,17 @@
                 android:src="@drawable/level_1" />
 
             <LinearLayout
+                android:id="@+id/ll_topic_parent"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_below="@+id/tv_Topic"
                 android:layout_toStartOf="@+id/iv_level"
                 android:gravity="center_vertical"
+                android:duplicateParentState="true"
+                android:ellipsize="marquee"
+                android:fadingEdge="horizontal"
+                android:marqueeRepeatLimit="marquee_forever"
+                android:scrollHorizontally="true"
                 android:orientation="horizontal">
                 <com.pratham.foundation.customView.SansTextView
                     android:id="@+id/tv_Activity"
@@ -76,6 +88,7 @@
                     android:layout_marginEnd="@dimen/_10sdp"
                     android:text="Topic"
                     android:gravity="center"
+                    android:singleLine="true"
                     android:textColor="@color/oslo_grey"
                     android:textSize="@dimen/_18sdp" />
 

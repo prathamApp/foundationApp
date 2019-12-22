@@ -114,7 +114,7 @@ public class ReadingFragment extends Fragment implements STT_Result_New.sttView,
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
             context = getActivity();
-            continuousSpeechService = new ContinuousSpeechService_New(context, ReadingFragment.this, FC_Constants.currentSelectedLanguage);
+            continuousSpeechService = new ContinuousSpeechService_New(context, ReadingFragment.this, FastSave.getInstance().getString(FC_Constants.LANGUAGE, FC_Constants.HINDI));
             continuousSpeechService.resetSpeechRecognizer();
             contentPath = getArguments().getString("contentPath");
             StudentID = getArguments().getString("StudentID");

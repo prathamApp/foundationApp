@@ -10,7 +10,8 @@ import com.google.gson.annotations.SerializedName;
 import java.io.Serializable;
 import java.util.List;
 
-public class ModalParaMainMenu implements Serializable {
+public class ModalStoryMainMenu implements Serializable {
+
 
     @SerializedName("parentId")
     @Nullable
@@ -32,11 +33,11 @@ public class ModalParaMainMenu implements Serializable {
     @Expose
     private String nodeType;
 
-    @SerializedName("paraTitle")
+    @SerializedName("storyTitle")
     @Expose
     private String contentTitle;
 
-    @SerializedName("pageImage")
+    @SerializedName("storyImage")
     @Nullable
     @Expose
     private String contentImage;

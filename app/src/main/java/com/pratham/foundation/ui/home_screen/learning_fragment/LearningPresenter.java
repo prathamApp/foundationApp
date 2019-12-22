@@ -141,7 +141,7 @@ public class LearningPresenter implements LearningContract.LearningPresenter, AP
         this.currentLevelNo = currentLevelNo;
         this.cosSection = cosSection;
         String botID;
-//        String rootID = FC_Utility.getRootNode(FC_Constants.currentSelectedLanguage);
+//        String rootID = FC_Utility.getRootNode(FastSave.getInstance().getString(FC_Constants.LANGUAGE, FC_Constants.HINDI));
         String rootID = sub_nodeId;
         botID = AppDatabase.appDatabase.getContentTableDao().getContentDataByTitle("" + rootID, cosSection);
 //        if (botID != null && !FC_Utility.isDataConnectionAvailable(mContext))
@@ -398,12 +398,12 @@ public class LearningPresenter implements LearningContract.LearningPresenter, AP
 //            api_content.getAPIContent(FC_Constants.INTERNET_DOWNLOAD, FC_Constants.INTERNET_DOWNLOAD_NEW_API, nodeIds.get(nodeIds.size() - 1));
 //        } else {
 //            if (contentParentList.size() == 0 && !FC_Utility.isDataConnectionAvailable(mContext)) {
-        if (contentParentList.size() == 0) {
-            learningView.showNoDataDownloadedDialog();
-        } else {
+//        if (contentParentList.size() == 0) {
+//            learningView.showNoDataDownloadedDialog();
+//        } else {
             learningView.addContentToViewList(contentParentList);
             learningView.notifyAdapter();
-        }
+//        }
 //        }
     }
 
@@ -458,7 +458,7 @@ public class LearningPresenter implements LearningContract.LearningPresenter, AP
     private List<WordEnglish> fetchWords(String jasonName) {
         ArrayList<WordEnglish> arrayList = new ArrayList<>();
         try {
-            //InputStream is = new FileInputStream(ApplicationClass.pradigiPath + "/.FCA/"+FC_Constants.currentSelectedLanguage+"/RC/" + jasonName);
+            //InputStream is = new FileInputStream(ApplicationClass.pradigiPath + "/.FCA/"+FastSave.getInstance().getString(FC_Constants.LANGUAGE, FC_Constants.HINDI)+"/RC/" + jasonName);
             InputStream is = mContext.getAssets().open("" + jasonName);
             JsonReader reader = new JsonReader(new InputStreamReader(is, StandardCharsets.UTF_8));
             Gson gson = new GsonBuilder().create();
@@ -485,7 +485,7 @@ public class LearningPresenter implements LearningContract.LearningPresenter, AP
     public JSONArray fetchSentences(String jasonName) {
         JSONArray jsonArr = null;
         try {
-            //InputStream is = new FileInputStream(ApplicationClass.pradigiPath + "/.FCA/"+FC_Constants.currentSelectedLanguage+"/RC/" + jasonName);
+            //InputStream is = new FileInputStream(ApplicationClass.pradigiPath + "/.FCA/"+FastSave.getInstance().getString(FC_Constants.LANGUAGE, FC_Constants.HINDI)+"/RC/" + jasonName);
             InputStream is = mContext.getAssets().open("" + jasonName);
             int size = is.available();
             byte[] buffer = new byte[size];

@@ -63,7 +63,7 @@ public class GameConstatnts implements ShowInstruction {
     public static final String THINKANDWRITE = "TAW";
     public static final String DOING_ACT_READ = "doing_act";
     public static final String LetterWriting = "letter";
-   // public static final String DOING_ACT_VIDEO = "doing_act_video";
+    // public static final String DOING_ACT_VIDEO = "doing_act_video";
     public static final String READ_VOCAB_ANDROID = "ReadVocabAndroid";
     public static final String MULTIPLE_CHOICE = "multiple_choice";
     public static final String READING_STT = "reading_stt";
@@ -157,10 +157,7 @@ public class GameConstatnts implements ShowInstruction {
                 }
             }
         }
-
-
         dialog.show();
-
         dia_btn_green.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -176,7 +173,6 @@ public class GameConstatnts implements ShowInstruction {
                     ((ContentPlayerActivity) context).getSupportFragmentManager().popBackStack(SequenceLayout_.class.getSimpleName(), 0);
                 }
                 //play next game
-
             }
         });
 
@@ -185,7 +181,6 @@ public class GameConstatnts implements ShowInstruction {
             public void onClick(View v) {
                 //Exit game
                 onGameClose.gameClose();
-
                 if (FC_Constants.isTest) {
                     ((ContentPlayerActivity) context).finish();
                 }
@@ -200,13 +195,10 @@ public class GameConstatnts implements ShowInstruction {
                 dialog.dismiss();
             }
         });
-
     }
 
     public static void plaGame(Context context) {
-
         contentTable1 = null;
-
         if (gameList != null && (currentGameAdapterposition < (gameList.size() - 1))) {
             //currentGameAdapterposition is initialized in adapter when game is played
             currentGameAdapterposition++;
@@ -297,8 +289,7 @@ public class GameConstatnts implements ShowInstruction {
                 FC_Utility.showFragment((Activity) context, new pictionaryFragment(), R.id.RL_CPA,
                         bundle, pictionaryFragment.class.getSimpleName());
                 break;
-
-           // case GameConstatnts.DOING_ACT_VIDEO:
+            // case GameConstatnts.DOING_ACT_VIDEO:
             case GameConstatnts.THINKANDWRITE:
             case GameConstatnts.DOING_ACT_READ:
             case GameConstatnts.LetterWriting:
@@ -396,13 +387,11 @@ public class GameConstatnts implements ShowInstruction {
             }
         }
     }
-
 /*    public static void showInstructionDialog(ShowInstruction showInstruction, Activity context, String resorcetype) {
         InstructionsDialog instructionsDialog = new InstructionsDialog(context, resorcetype);
         instructionsDialog.show();
 
     }*/
-
     public static void showGameInfo(Context context, String info, String infoPath) {
         InstructionDialog instructionDialog = new InstructionDialog(context, info, infoPath);
         instructionDialog.show();
@@ -417,18 +406,16 @@ public class GameConstatnts implements ShowInstruction {
 
     }
 
-
     @Override
-    public void exit() {
+    public void exit() { }
 
+    public static void postScoreEvent(int totalMarks, int scoredMarks) {
+        EventBus.getDefault().post(new ScoreEvent(FC_Constants.RETURNSCORE, totalMarks, scoredMarks));
     }
-    public static void postScoreEvent(int totalMarks,int scoredMarks) {
-        EventBus.getDefault().post(new ScoreEvent(FC_Constants.RETURNSCORE,totalMarks,scoredMarks));
-    }
+
     private static GameConstatnts getGameConstantInstance() {
-        if (gameConstatnts == null) {
+        if (gameConstatnts == null)
             gameConstatnts = new GameConstatnts();
-        }
         return gameConstatnts;
     }
 }
