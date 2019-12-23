@@ -65,7 +65,7 @@
     <string name="Dictation">Listen to the audio and write it in your notebook and then submit the photo.</string>
     <string name="PictAndroid">Listen to a story</string>
     <string name="TAW">Write in your own words about the given topic in your notebook and sumbit its photo.</string>
-    <string name="doing_act_read">Read the instructions and try to perform the activity.</string>
+    <string name="doing_act">try to perform the activity.</string>
     <string name="letter">Write a letter on the given subject in notebook and submit its photo.</string>
     <string name="doing_act_video">Watch the video and try to perform the activity.</string>
     <string name="watching_video">Watch the video and click on mike button to record answer </string>
