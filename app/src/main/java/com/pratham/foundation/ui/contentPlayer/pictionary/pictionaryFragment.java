@@ -212,7 +212,7 @@ public class pictionaryFragment extends Fragment implements OnGameClose {
             perc = getPercentage();
             Collections.shuffle(dataList);
             for (int i = 0; i < dataList.size(); i++) {
-                if (perc < 95) {
+                /*if (perc < 95) {
                     if (!checkWord("" + dataList.get(i).getAnswer()))
                         selectedFive.add(dataList.get(i));
                 } else {
@@ -220,7 +220,8 @@ public class pictionaryFragment extends Fragment implements OnGameClose {
                 }
                 if (selectedFive.size() >= 5) {
                     break;
-                }
+                }*/
+                selectedFive.add(dataList.get(i));
             }
             Collections.shuffle(selectedFive);
             for (ScienceQuestion scienceQuestion : selectedFive) {
