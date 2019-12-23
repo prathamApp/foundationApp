@@ -154,7 +154,10 @@ public class ReadingVocabularyActivity extends BaseActivity implements MediaCall
         sttLang = intent.getStringExtra("sttLang");
         onSdCard = getIntent().getBooleanExtra("onSdCard", false);
 
-        tv_title.setText(""+contentTitle);
+        if (!isTest)
+            tv_title.setText("" + contentTitle);
+        else
+            tv_title.setText("" + getResources().getString(R.string.Test));
 
         continuousSpeechService = new ContinuousSpeechService_New(mContext, ReadingVocabularyActivity.this, sttLang);
 
@@ -208,11 +211,11 @@ public class ReadingVocabularyActivity extends BaseActivity implements MediaCall
         Button dia_btn_green = dialog.findViewById(R.id.dia_btn_green);
         Button dia_btn_red = dialog.findViewById(R.id.dia_btn_red);
 
-        dia_btn_green.setText(getResources().getString(R.string.Okay)+"");
+        dia_btn_green.setText(getResources().getString(R.string.Okay) + "");
         dia_btn_red.setVisibility(View.GONE);
         dia_btn_yellow.setVisibility(View.GONE);
         dialog.show();
-        dia_title.setText(""+getResources().getString(R.string.read_full_sentence));
+        dia_title.setText("" + getResources().getString(R.string.read_full_sentence));
         dia_btn_green.setOnClickListener(v -> {
             dialog.dismiss();
             presenter.fetchJsonData(readingContentPath, vocabCategory);
@@ -501,9 +504,9 @@ public class ReadingVocabularyActivity extends BaseActivity implements MediaCall
         Button dia_btn_red = nextDialog.findViewById(R.id.dia_btn_red);
         Button dia_btn_exit = nextDialog.findViewById(R.id.dia_btn_exit);
 
-        dia_btn_green.setText(""+getResources().getString(R.string.Next));
-        dia_btn_red.setText(""+getResources().getString(R.string.Test));
-        dia_btn_yellow.setText(""+getResources().getString(R.string.Revise));
+        dia_btn_green.setText("" + getResources().getString(R.string.Next));
+        dia_btn_red.setText("" + getResources().getString(R.string.Test));
+        dia_btn_yellow.setText("" + getResources().getString(R.string.Revise));
 
         dia_btn_green.setOnClickListener(v -> {
             currentPageNo = 0;
@@ -579,7 +582,9 @@ public class ReadingVocabularyActivity extends BaseActivity implements MediaCall
                 myLoadingDialog.setCanceledOnTouchOutside(false);
                 myLoadingDialog.show();
             }
-        }catch (Exception e){e.printStackTrace();}
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     @UiThread
@@ -750,8 +755,8 @@ public class ReadingVocabularyActivity extends BaseActivity implements MediaCall
         }
     }
 
-    @Click (R.id.floating_back)
-    public void pressedBackBtn(){
+    @Click(R.id.floating_back)
+    public void pressedBackBtn() {
         onBackPressed();
     }
 
@@ -908,10 +913,10 @@ public class ReadingVocabularyActivity extends BaseActivity implements MediaCall
         Button dia_btn_green = dialog.findViewById(R.id.dia_btn_green);
         Button dia_btn_red = dialog.findViewById(R.id.dia_btn_red);
 
-        dia_title.setText(""+getResources().getString(R.string.Exit));
-        dia_btn_green.setText(""+getResources().getString(R.string.yes));
-        dia_btn_red.setText(""+getResources().getString(R.string.no));
-        dia_btn_yellow.setText(""+getResources().getString(R.string.Cancel));
+        dia_title.setText("" + getResources().getString(R.string.Exit));
+        dia_btn_green.setText("" + getResources().getString(R.string.yes));
+        dia_btn_red.setText("" + getResources().getString(R.string.no));
+        dia_btn_yellow.setText("" + getResources().getString(R.string.Cancel));
 
         dialog.show();
 

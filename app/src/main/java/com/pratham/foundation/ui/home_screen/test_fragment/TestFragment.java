@@ -294,7 +294,7 @@ public class TestFragment extends Fragment implements TestContract.TestView,
                 testList.get(clicked_Pos).setTotalMarks(tMarks);
                 testList.get(clicked_Pos).setScoredMarks(sMarks);
                 float perc =0f;
-                if(tMarks>sMarks)
+                if(tMarks>0 && sMarks<=tMarks)
                     perc = ((float) sMarks / (float) tMarks) * 100;
                 testList.get(clicked_Pos).setStudentPercentage("" + perc);
                 testList.get(clicked_Pos).setCertificateRating(presenter.getStarRating(perc));
@@ -305,7 +305,7 @@ public class TestFragment extends Fragment implements TestContract.TestView,
                 testList.get(clicked_Pos).setTotalMarks(tMarks);
                 testList.get(clicked_Pos).setScoredMarks(sMarks);
                 float perc =0f;
-                if(tMarks>sMarks)
+                if(tMarks>0 && sMarks<=tMarks)
                     perc = ((float) sMarks / (float) tMarks) * 100;
                 testList.get(clicked_Pos).setStudentPercentage("" + perc);
                 testList.get(clicked_Pos).setCertificateRating(presenter.getStarRating(perc));

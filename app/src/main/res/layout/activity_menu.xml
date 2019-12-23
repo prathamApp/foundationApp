@@ -257,7 +257,7 @@
         android:layout_alignParentBottom="true"
         android:background="@drawable/share_btn_bg"
         android:elevation="15dp"
-        android:visibility="visible">
+        android:visibility="gone">
 
         <ImageButton
             android:id="@+id/btn_share_receive"

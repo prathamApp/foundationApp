@@ -281,6 +281,11 @@ public class ReadingCardsActivity extends BaseActivity implements
         }
     }
 
+    @Click(R.id.btn_back)
+    public void pressedBack(){
+        onBackPressed();
+    }
+
 
     @Override
     public void onBackPressed() {
