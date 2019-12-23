@@ -29,7 +29,7 @@
             android:layout_below="@+id/txt_login"
             android:layout_marginStart="@dimen/_10sdp"
             android:layout_marginBottom="@dimen/_10sdp"
-            android:text="Mark your attendance."
+            android:text="@string/mark_attendance"
             android:textColor="@color/dark_blue"
             android:textSize="@dimen/_18sdp" />
 

@@ -1,104 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">Foundation App</string>
 
-    <string name="Login">Login</string>
-    <string name="Stt_Dialog_Msg">Please download language packs offline for better performance</string>
-    <string name="Okay">OK</string>
-    <string name="Skip">SKIP</string>
-    <string name="loding_please_wait">Loading... Please wait...</string>
-    <string name="Exit">Exit</string>
-    <string name="Cancel">Cancel</string>
-    <string name="Restart">Restart</string>
-    <string name="login_mode">Login Mode</string>
-    <string name="Group">Group</string>
-    <string name="Individual">Individual</string>
-    <string name="what_do_you_want_to_do">What do you want to do?</string>
-    <string name="Scan_QR_Code">Scan QR Code</string>
-    <string name="Reset">Reset</string>
-    <string name="Get_Progress">Get Progress</string>
-    <string name="Start">Start</string>
-    <string name="No_Internet_Connection">No Internet Connection</string>
-    <string name="Invalid_QR_Code">Invalid QR Code !!!</string>
-    <string name="Only_5_Students_Allowed">Only 5 Students Allowed</string>
-    <string name="Student_exists">This Student already exists</string>
-    <string name="Scan_new_QR">Scan new QR.</string>
-    <string name="Welcome">Welcome </string>
-    <string name="select_subject">Please select a study subject...</string>
-    <string name="usage">Usage</string>
-    <string name="days">Days</string>
-    <string name="hours">Hours</string>
-    <string name="progress">Progress</string>
-    <string name="yes">Yes</string>
-    <string name="no">No</string>
-    <string name="Test_Complete_Dialog">You can view the certificates in the profile section</string>
+    <string name="Login">लॉग इन करें</string>
+    <string name="Stt_Dialog_Msg">बेहतर प्रदर्शन के लिए कृपया ऑफलाइन भाषा पैक डाउनलोड करें.</string>
+    <string name="Okay">ठीक है</string>
+    <string name="Skip">छोड़कर आगे बढ़े</string>
+    <string name="loding_please_wait">लोड हो रहा है कृपया प्रतीक्षा करें...</string>
+    <string name="Exit">बाहर</string>
+    <string name="Cancel">रद्द करें</string>
+    <string name="Restart">दोबारा शुरू करें</string>
+    <string name="login_mode">लॉगिन मोड</string>
+    <string name="Group">समूह लॉगिन</string>
+    <string name="Individual">व्यक्तिगत लॉगिन</string>
+    <string name="what_do_you_want_to_do">आप क्या करना चाहते हैं?</string>
+    <string name="Scan_QR_Code">क्यू आर कोड स्कैन करें</string>
+    <string name="Reset">रीसेट</string>
+    <string name="Get_Progress">प्रगति देखें</string>
+    <string name="Start">शुरू करें</string>
+    <string name="No_Internet_Connection">इंटरनेट कनेक्शन मौजूद नहीं है</string>
+    <string name="Invalid_QR_Code">अवैध क्यू आर कोड !!!</string>
+    <string name="Only_5_Students_Allowed">केवल पाँच छात्रों की अनुमति।</string>
+    <string name="Student_exists">यह छात्र पहले से मौजूद है</string>
+    <string name="Scan_new_QR">नया क्यू आर स्कैन करें।</string>
+    <string name="Welcome">आपका स्वागत है</string>
+    <string name="select_subject">कृपया किसी एक अध्ययन विषय का चयन करें…</string>
+    <string name="usage">प्रयोग</string>
+    <string name="days">दिन</string>
+    <string name="hours">घंटे</string>
+    <string name="progress">प्रगति</string>
+    <string name="yes">हाँ</string>
+    <string name="no">नहीं</string>
+    <string name="Test_Complete_Dialog">आप प्रोफाइल विभाग में प्रमाण पत्र देख सकते हैं</string>
 
-    <string name="selectGroup" >Select group</string>
-    <string name="select_Age" >Select age group</string>
-    <string name="select_Name" >Select your name</string>
-    <string name="age_8_and_above">Age 8 and above.</string>
-    <string name="Summary">Summary</string>
-    <string name="Progress">Progress</string>
-    <string name="Certificates">Certificates</string>
-    <string name="Next_activity">Next activity?</string>
-    <string name="Do_you_want_to_exit">Do you want to exit?</string>
-    <string name="activity_completed">Activity completed</string>
-    <string name="hint">hint</string>
-    <string name="clear">clear</string>
-    <string name="submit">submit</string>
-    <string name="hide_hint">Hide Hint</string>
-    <string name="Enter_answer">Enter Answer</string>
-    <string name="Your_answer">Your Answer</string>
-    <string name="Result">Result</string>
-    <string name="You_answered">You answered</string>
-    <string name="Correct_Answer">Correct Answer</string>
-    <string name="Skipped">Skipped</string>
-    <string name="Read">Read</string>
-    <string name="Paragraph">Paragraph : </string>
-    <string name="Keyword">Keyword : </string>
-<!--    game Instructions-->
-    <string name="fact_retrieval_click">Answer the question by selecting the word and then submit it.</string>
-    <string name="factRetrieval">Answer the question by selecting the word by long pressing it and then submit the selected answer.</string>
-    <string name="IKWAndroid">Identify keywords from paragraph and submit </string>
-    <string name="CopyWriting">Write the text displayed in the app in your notebook and then submit the photo</string>
-    <string name="chKeywords">Select the words releted to the topic and submit your answers</string>
-    <string name="ShowMeAndroid">Give the answer by selecting the correct option form the given options.</string>
-    <string name="Dictation">Listen to the audio and write it in your notebook and then submit the photo.</string>
-    <string name="PictAndroid">Listen to a story</string>
-    <string name="ReadingAndroid">Listen to a story</string>
-    <string name="TAW">Write in your own words about the given topic in your notebook and sumbit its photo.</string>
-    <string name="doing_act">try to perform the activity.</string>
-    <string name="letter">Write a letter on the given subject in notebook and submit its photo.</string>
-    <string name="doing_act_video">Watch the video and try to perform the activity.</string>
-    <string name="watching_video">Watch the video and click on mike button to record answer </string>
-    <string name="ReadVocabAndroid">Read the following in order to increase you vocabulary.</string>
-    <string name="reading_stt">Answer the question by Give the answer by selecting the correct option form the given options.using the speech to text functionality.</string>
-    <string name="multiple_choice">Select the correct answer from multiple answers and submit it</string>
-    <string name="Video">Watch the video</string>
+    <string name="selectGroup" >ग्रुप का चयन करें</string>
+    <string name="select_Age" >आयु वर्ग का चयन करें</string>
+    <string name="select_Name" >अपना नाम चुनें</string>
+    <string name="age_8_and_above">उम्र 8 साल और ऊपर</string>
+    <string name="Summary">सारांश</string>
+    <string name="Progress">प्रगति</string>
+    <string name="Certificates">प्रमाण पत्र</string>
 
-    <string name="restart_dialog_msg" >Do you want to restart?</string>
-    <string name="exit_dialog_msg" >Do you want to exit?</string>
+    <string name="restart_dialog_msg" >क्या आप पुनः आरंभ करना चाहते हैं?</string>
+    <string name="exit_dialog_msg" >क्या आप निकास करना चाहते हैं?</string>
 
-    <string name="read_full_sentence" >Read the full sentence.</string>
-    <string name="Click_group_name" >Click your group name.</string>
-    <string name="mark_attendance" >Mark your attendance.</string>
-    <string name="Learning" >Learning</string>
-    <string name="Practice" >Practice</string>
-    <string name="Test" >Test</string>
-    <string name="Fun" >Fun</string>
-    <string name="Profile" >Profile</string>
-    <string name="Level" >Level</string>
-    <string name="Next" >Next</string>
-    <string name="Revise" >Revise</string>
-    <string name="nice_chatting_with_you" >Nice chatting with you.</string>
-    <string name="byebye" >Bye-bye!</string>
-    <string name="Unsupervised">Unsupervised</string>
-    <string name="Supervised">Supervised</string>
-    <string name="change_subj">Change Subject?</string>
+    <string name="read_full_sentence" >वाक्य को पूरा पढ़ें.</string>
+    <string name="Click_group_name" >अपने समूह के नाम पर क्लिक करें.</string>
+    <string name="mark_attendance" >अपनी उपस्थिति को चिह्नित करें.</string>
+    <string name="Learning" >सीखना</string>
+    <string name="Practice" >अभ्यास</string>
+    <string name="Test" >परीक्षा</string>
+    <string name="Fun" >मज़ा</string>
+    <string name="Profile" >प्रोफ़ाइल</string>
+    <string name="Level" >स्तर</string>
+    <string name="Next" >अगला</string>
+    <string name="Revise" >संशोधन</string>
+    <string name="nice_chatting_with_you" >आपके साथ बात करके अच्छा लगा।</string>
+    <string name="byebye" >अलविदा!</string>
+    <string name="Unsupervised">अप्रशिक्षित</string>
+    <string name="Supervised">प्रशिक्षित</string>
+    <string name="change_subj">विषय बदलें?</string>
     <string name="save">बचाएं</string>
-
-
-
-
 
 
 
@@ -372,8 +334,6 @@
         <item> 99 </item>
         <item> 100 </item>
     </string-array>
-
-
     <!-- Student_profile -->
     <string-array name="student_class">
         <item>Select Class</item>
@@ -394,14 +354,13 @@
         <item>Hindi     </item>
         <item>Marathi   </item>
     </string-array>
-<!--    <item>Marathi   </item>-->
-<!--    <item>Gujarati  </item>-->
-<!--    <item>Kannada   </item>-->
-<!--    <item>Bengali   </item>-->
-<!--    <item>Assamese  </item>-->
-<!--    <item>Telugu    </item>-->
-<!--    <item>Tamil     </item>-->
-<!--    <item>Odiya     </item>-->
+    <!--    <item>Gujarati  </item>-->
+    <!--    <item>Kannada   </item>-->
+    <!--    <item>Bengali   </item>-->
+    <!--    <item>Assamese  </item>-->
+    <!--    <item>Telugu    </item>-->
+    <!--    <item>Tamil     </item>-->
+    <!--    <item>Odiya     </item>-->
     <!--
     <item>Malayalam</item>
     <item>Punjabi</item>
@@ -411,24 +370,509 @@
         <item>Hindi</item>
         <item>Marathi</item>
     </string-array>
-<!--        <item>Gujarati</item>-->
-<!--        <item>Kannada</item>-->
-<!--        <item>Bengali</item>-->
-<!--        <item>Assamese  </item>-->
-<!--        <item>Telugu</item>-->
-<!--        <item>Tamil</item>-->
-<!--        <item>Odiya</item>-->
+    <!--    <item>Gujarati</item>-->
+    <!--    <item>Kannada</item>-->
+    <!--    <item>Bengali</item>-->
+    <!--    <item>Assamese  </item>-->
+    <!--    <item>Telugu</item>-->
+    <!--    <item>Tamil</item>-->
+    <!--    <item>Odiya</item>-->
     <string-array name="translation_Languages">
         <item>Hindi</item>
         <item>Marathi</item>
     </string-array>
-<!--    <item>Gujarati</item>-->
-<!--    <item>Kannada</item>-->
-<!--    <item>Bengali</item>-->
-<!--    <item>Telugu</item>-->
-<!--    <item>Tamil</item>-->
-<!--    <item>Urdu</item>-->
-<!--    <item>Punjabi</item>-->
+    <!--    <item>English</item>-->
+    <!--    <item>Gujarati</item>-->
+    <!--    <item>Kannada</item>-->
+    <!--    <item>Bengali</item>-->
+    <!--    <item>Telugu</item>-->
+    <!--    <item>Tamil</item>-->
+    <!--    <item>Urdu</item>-->
+    <!--    <item>Punjabi</item>-->
+    <string-array name="language_codes">
+        <item>en</item>
+        <item>hi</item>
+        <item>mr</item>
+        <item>gu</item>
+        <item>kn</item>
+        <item>bn</item>
+        <item>te</item>
+        <item>ta</item>
+        <item>ur</item>
+        <item>pa</item>
+    </string-array>
+
+    <string name="fact_retrieval_click">जवाब देने के लिएअनुच्छेद से सही शब्द या वाक्य चुनिए|</string>
+    <string name="factRetrieval">जवाब देने के लिए अनुच्छेद से सही शब्द या वाक्य चुनिए|</string>
+    <string name="IKWAndroid">दिए गए अनुच्छेद में वैज्ञानिक शब्दों को दिखाइए|</string>
+    <string name="CopyWriting">दिए गए शब्द और जानकारी को अपनी कॉपी में लिखिए और उसकी फोटो सबमिट कीजिए|</string>
+    <string name="chKeywords">दिए गए शब्दों में से करीबी शब्द चुनिए|</string>
+    <string name="ShowMeAndroid">सही विकल्प चुनें|</string>
+    <string name="Dictation">ऑडियो सुनकर अपनी कॉपीमें लिखिए और उसकी फोटो सबमिट कीजिए|</string>
+    <string name="PictAndroid">प्ले बटन पर क्लिक कीजिए और सुनिए. फिर माइक बटन पर क्लिक करके साफ़ आवाज में पढ़िए|</string>
+    <string name="ReadingAndroid">प्ले बटन पर क्लिक कीजिए और सुनिए. फिर माइक बटन पर क्लिक करके साफ़ आवाज में पढ़िए|</string>
+    <string name="TAW">दिए गए शब्द या वाक्य पर अपने विचार कॉपी में लिखिए और उसकी फोटो सबमिट कीजिए|</string>
+    <string name="doing_act">माइक बटन पर क्लिक करके अपना उत्तर रिकॉर्ड कीजिए और सबमिट कीजिए|</string>
+    <string name="letter">दिए गए विषय पर पत्र लिखें और उसकी फोटो सबमिट कीजिए|</string>
+    <string name="doing_act_video">माइक बटन पर क्लिक करके अपना उत्तर रिकॉर्ड कीजिए और सबमिट कीजिए|</string>
+    <string name="ReadVocabAndroid">प्ले बटन पर क्लिक कीजिए और सुनिए. फिर माइक बटन पर क्लिक करके साफ़ आवाज में पढ़िए|</string>
+    <string name="reading_stt">माइक बटन पर क्लिक कीजिए| जवाब रिकॉर्ड कर के सबमिट कीजिए।</string>
+    <string name="multiple_choice">जवाब देने के लिए दिए गए शब्दों में से सही विकल्प चुनिए|</string>
+    <string name="Video">विडियो देखें</string>
+    <string name="watching_video">माइक बटन पर क्लिक करके अपना उत्तर रिकॉर्ड कीजिए और सबमिट कीजिए|</string>
+
+
+    <string name="Next_activity">अगली गतिविधि?</string>
+    <string name="Do_you_want_to_exit">क्या आप निकास करना चाहते हैं?</string>
+    <string name="activity_completed">गतिविधि पूरी हुई</string>
+    <string name="hint">संकेत</string>
+    <string name="clear">बदलाव हटाएँ</string>
+
+    <string name="submit">सबमिट</string>
+    <string name="hide_hint">संकेत छिपाएं</string>
+    <string name="Enter_answer">उत्तर दर्ज करें</string>
+    <string name="Your_answer">आपका उत्तर</string>
+    <string name="Result">परिणाम</string>
+    <string name="You_answered">आपका उत्तर</string>
+    <string name="Correct_Answer">सही उत्तर</string>
+    <string name="Skipped">छोड़ा गया</string>
+    <string name="Read">पढ़ें</string>
+    <string name="Paragraph">अनुच्छेद : </string>
+    <string name="Keyword">संकेत शब्द : </string>
+
+</resources>
+    <!--
+<resources>
+    <string name="app_name">Foundation App</string>
+
+    <string name="Login">Login</string>
+    <string name="Stt_Dialog_Msg">Please download language packs offline for better performance</string>
+    <string name="Okay">OK</string>
+    <string name="Skip">SKIP</string>
+    <string name="loding_please_wait">Loading... Please wait...</string>
+    <string name="Exit">Exit</string>
+    <string name="Cancel">Cancel</string>
+    <string name="Restart">Restart</string>
+    <string name="login_mode">Login Mode</string>
+    <string name="Group">Group</string>
+    <string name="Individual">Individual</string>
+    <string name="what_do_you_want_to_do">What do you want to do?</string>
+    <string name="Scan_QR_Code">Scan QR Code</string>
+    <string name="Reset">Reset</string>
+    <string name="Get_Progress">Get Progress</string>
+    <string name="Start">Start</string>
+    <string name="No_Internet_Connection">No Internet Connection</string>
+    <string name="Invalid_QR_Code">Invalid QR Code !!!</string>
+    <string name="Only_5_Students_Allowed">Only 5 Students Allowed</string>
+    <string name="Student_exists">This Student already exists</string>
+    <string name="Scan_new_QR">Scan new QR.</string>
+    <string name="Welcome">Welcome </string>
+    <string name="select_subject">Please select a study subject...</string>
+    <string name="usage">Usage</string>
+    <string name="days">Days</string>
+    <string name="hours">Hours</string>
+    <string name="progress">Progress</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
+    <string name="Test_Complete_Dialog">You can view the certificates in the profile section</string>
+
+    <string name="selectGroup" >Select group</string>
+    <string name="select_Age" >Select age group</string>
+    <string name="select_Name" >Select your name</string>
+    <string name="age_8_and_above">Age 8 and above.</string>
+    <string name="Summary">Summary</string>
+    <string name="Progress">Progress</string>
+    <string name="Certificates">Certificates</string>
+    <string name="Next_activity">Next activity?</string>
+    <string name="Do_you_want_to_exit">Do you want to exit?</string>
+    <string name="activity_completed">Activity completed</string>
+    <string name="hint">hint</string>
+    <string name="clear">clear</string>
+    <string name="submit">submit</string>
+    <string name="hide_hint">Hide Hint</string>
+    <string name="Enter_answer">Enter Answer</string>
+    <string name="Your_answer">Your Answer</string>
+    <string name="Result">Result</string>
+    <string name="You_answered">You answered</string>
+    <string name="Correct_Answer">Correct Answer</string>
+    <string name="Skipped">Skipped</string>
+    <string name="Read">Read</string>
+    <string name="Paragraph">Paragraph : </string>
+    <string name="Keyword">Keyword : </string>
+&lt;!&ndash;    game Instructions&ndash;&gt;
+    <string name="fact_retrieval_click">Answer the question by selecting the word and then submit it.</string>
+    <string name="factRetrieval">Answer the question by selecting the word by long pressing it and then submit the selected answer.</string>
+    <string name="IKWAndroid">Identify keywords from paragraph and submit </string>
+    <string name="CopyWriting">Write the text displayed in the app in your notebook and then submit the photo</string>
+    <string name="chKeywords">Select the words releted to the topic and submit your answers</string>
+    <string name="ShowMeAndroid">Give the answer by selecting the correct option form the given options.</string>
+    <string name="Dictation">Listen to the audio and write it in your notebook and then submit the photo.</string>
+    <string name="PictAndroid">Listen to a story</string>
+    <string name="ReadingAndroid">Listen to a story</string>
+    <string name="TAW">Write in your own words about the given topic in your notebook and sumbit its photo.</string>
+    <string name="doing_act">try to perform the activity.</string>
+    <string name="letter">Write a letter on the given subject in notebook and submit its photo.</string>
+    <string name="doing_act_video">Watch the video and try to perform the activity.</string>
+    <string name="watching_video">Watch the video and click on mike button to record answer </string>
+    <string name="ReadVocabAndroid">Read the following in order to increase you vocabulary.</string>
+    <string name="reading_stt">Answer the question by Give the answer by selecting the correct option form the given options.using the speech to text functionality.</string>
+    <string name="multiple_choice">Select the correct answer from multiple answers and submit it</string>
+    <string name="Video">Watch the video</string>
+
+    <string name="restart_dialog_msg" >Do you want to restart?</string>
+    <string name="exit_dialog_msg" >Do you want to exit?</string>
+
+    <string name="read_full_sentence" >Read the full sentence.</string>
+    <string name="Click_group_name" >Click your group name.</string>
+    <string name="mark_attendance" >Mark your attendance.</string>
+    <string name="Learning" >Learning</string>
+    <string name="Practice" >Practice</string>
+    <string name="Test" >Test</string>
+    <string name="Fun" >Fun</string>
+    <string name="Profile" >Profile</string>
+    <string name="Level" >Level</string>
+    <string name="Next" >Next</string>
+    <string name="Revise" >Revise</string>
+    <string name="nice_chatting_with_you" >Nice chatting with you.</string>
+    <string name="byebye" >Bye-bye!</string>
+    <string name="Unsupervised">Unsupervised</string>
+    <string name="Supervised">Supervised</string>
+    <string name="change_subj">Change Subject?</string>
+    <string name="save">बचाएं</string>
+
+
+
+
+
+
+
+
+
+    <string name="Agent_name">Vernicula</string>
+    <string name="talkbot">Talkbot</string>
+    <string name="more">more</string>
+
+    &lt;!&ndash; TODO: Remove or change this placeholder text &ndash;&gt;
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="title_activity_level_wise_words">LevelWiseWordsActivity</string>
+
+    <string name="title_activity_admin_panel">AdminPanelActivity</string>
+    <string name="dummy_button">Dummy Button</string>
+    <string name="dummy_content">DUMMY\nCONTENT</string>
+    <string name="default_notification_channel_id">fcm_default_channel</string>
+    <string name="fcm_message">City of Stories - PraDigi</string>
+
+    <string name="read_india">Read India</string>
+
+    <string name="hybrid_learning">Hybrid Learning</string>
+
+    <string name="second_chance">Second Chance</string>
+    <string name="ECE">ECE</string>
+    <string name="pratham_institute">Pratham Institute</string>
+    &lt;!&ndash;<string-array name="avatars">
+        <item>avatars/dino_dance.json</item>
+        <item>avatars/green_monster.json</item>
+        <item>avatars/pumped_up.json</item>
+        <item>avatars/personal_character.json</item>
+        <item>avatars/rabbit.json</item>
+        <item>avatars/funky_chicken.json</item>
+        <item>avatars/techno_penguin.json</item>
+        <item>avatars/biking_is_cool.json</item>
+        <item>avatars/acrobatics.json</item>
+    </string-array>&ndash;&gt;
+
+    <string name="urbon_program">Urban programme</string>
+
+    <string name="title_activity_push_data">PushDataActivity</string>
+
+    <string name="top_sheet_behavior" translatable="false">com.pratham.prathamdigital.custom.topsheet.TopSheetBehavior</string>
+
+    <string name="switch_off_mobile_hotspot">Please switch off the mobile data and try again.</string>
+
+    <string name="change">Change</string>
+
+    <string name="content_download_alert">Content will be downloaded in</string>
+    <string name="nsd_servername_postfix">FTP Server</string>
+    <string name="storage_warning">Warning: storage is not available. You may want to unmount it.</string>
+    <string name="notification_server_starting">Starting at %s</string>
+    <string name="notification_title">FTP Server is running</string>
+    <string name="notification_text">at %s</string>
+    <string name="notification_stop_text">Stop Server</string>
+    <string name="notif_settings_text">Settings</string>
+    <string name="swiftp_name">FTP Server</string>
+    <string name="share">Create</string>
+    <string name="recieve">Join</string>
+    <string name="retry">Retry</string>
+    <string name="Open">Open</string>
+    <string name="downloading">Downloading...</string>
+    <string name="download">Download</string>
+    <string name="age_3_to_6">Age 3 to 6</string>
+    <string name="age_8_to_14">Age 8 to 14</string>
+    <string name="title_activity_home_">Home_Activity</string>
+    <string name="title_activity_keyword_mapping">KeywordMapping</string>
+
+    <string-array name="no_data">
+        <item>Sorry ... No Data Available ...</item>
+    </string-array>
+    <string-array name="dummy_data">
+        <item>Sample Entry One</item>
+        <item>Sample Entry Two</item>
+        <item>Sample Entry Three</item>
+        <item>Sample Entry Four</item>
+        <item>Sample Entry Five</item>
+        <item>Sample Entry Six</item>
+        <item>Sample Entry Seven</item>
+        <item>Sample Entry Eight</item>
+        <item>Sample Entry Nine</item>
+        <item>Sample Entry Ten</item>
+    </string-array>
+    <string-array name="india_states">
+        <item>SELECT STATE</item>
+        <item>Andhra Pradesh(AP)</item>
+        <item>Arunachal Pradesh(AR)</item>
+        <item>Assam(AS)</item>
+        <item>Bihar(BR)</item>
+        <item>Chhattisgarh(CG)</item>
+        <item>Goa(GA)</item>
+        <item>Gujarat(GJ)</item>
+        <item>Haryana(HR)</item>
+        <item>Himachal Pradesh(HP)</item>
+        <item>Jammu and kashmir(JK)</item>
+        <item>Jharkhand(JH)</item>
+        <item>Karnataka(KA)</item>
+        <item>Kerala(KL)</item>
+        <item>Madhya Pradesh(MP)</item>
+        <item>Maharashtra(MH)</item>
+        <item>Manipur(MN)</item>
+        <item>Meghalaya(ML)</item>
+        <item>Mizoram(MZ)</item>
+        <item>Nagaland(NL)</item>
+        <item>Orissa(OR)</item>
+        <item>Punjab(PB)</item>
+        <item>Rajasthan(RJ)</item>
+        <item>Sikkim(SK)</item>
+        <item>Tamil Nadu(TN)</item>
+        <item>Telangana(TS)</item>
+        <item>Tripura(TR)</item>
+        <item>Uttarakhand(UK)</item>
+        <item>Uttar Pradesh(UP)</item>
+        <item>West Bengal(WB)</item>
+        <item>Andaman and Nicobar Islands(AN)</item>
+        <item>Chandigarh(CH)</item>
+        <item>Dadra and Nagar Haveli(DH)</item>
+        <item>Daman and Diu(DD)</item>
+        <item>Delhi(DL)</item>
+        <item>Lakshadweep(LD)</item>
+        <item>Pondicherry(PY)</item>
+    </string-array>
+    <string-array name="india_states_shortcode">
+        <item>SELECT STATE</item>
+        <item>AP</item>
+        <item>AR</item>
+        <item>AS</item>
+        <item>BR</item>
+        <item>CG</item>
+        <item>GA</item>
+        <item>GJ</item>
+        <item>HR</item>
+        <item>HP</item>
+        <item>JK</item>
+        <item>JH</item>
+        <item>KA</item>
+        <item>KL</item>
+        <item>MP</item>
+        <item>MH</item>
+        <item>MN</item>
+        <item>ML</item>
+        <item>MZ</item>
+        <item>NL</item>
+        <item>OR</item>
+        <item>PB</item>
+        <item>RJ</item>
+        <item>SK</item>
+        <item>TN</item>
+        <item>TS</item>
+        <item>TR</item>
+        <item>UK</item>
+        <item>UP</item>
+        <item>WB</item>
+        <item>AN</item>
+        <item>CH</item>
+        <item>DH</item>
+        <item>DD</item>
+        <item>DL</item>
+        <item>LD</item>
+        <item>PY</item>
+    </string-array>
+    <string-array name="avatars">
+        <item>avatars/b1.png</item>
+        <item>avatars/b2.png</item>
+        <item>avatars/b3.png</item>
+        <item>avatars/g1.png</item>
+        <item>avatars/g2.png</item>
+        <item>avatars/g3.png</item>
+        &lt;!&ndash; <item>avatars/techno_penguin.json</item>
+        <item>avatars/biking_is_cool.json</item>
+        <item>avatars/acrobatics.json</item>&ndash;&gt;
+    </string-array>
+    <string-array name="age">
+        <item>Select Age</item>
+        <item> 3  </item>
+        <item> 4  </item>
+        <item> 5  </item>
+        <item> 6  </item>
+        <item> 7  </item>
+        <item> 8  </item>
+        <item> 9  </item>
+        <item> 10 </item>
+        <item> 11 </item>
+        <item> 12 </item>
+        <item> 13 </item>
+        <item> 14 </item>
+        <item> 15 </item>
+        <item> 16 </item>
+        <item> 17 </item>
+        <item> 18 </item>
+        <item> 19 </item>
+        <item> 20 </item>
+        <item> 21 </item>
+        <item> 22 </item>
+        <item> 23 </item>
+        <item> 24 </item>
+        <item> 25 </item>
+        <item> 26 </item>
+        <item> 27 </item>
+        <item> 28 </item>
+        <item> 29 </item>
+        <item> 30 </item>
+        <item> 31 </item>
+        <item> 32 </item>
+        <item> 33 </item>
+        <item> 34 </item>
+        <item> 35 </item>
+        <item> 36 </item>
+        <item> 37 </item>
+        <item> 38 </item>
+        <item> 39 </item>
+        <item> 40 </item>
+        <item> 41 </item>
+        <item> 42 </item>
+        <item> 43 </item>
+        <item> 44 </item>
+        <item> 45 </item>
+        <item> 46 </item>
+        <item> 47 </item>
+        <item> 48 </item>
+        <item> 49 </item>
+        <item> 50 </item>
+        <item> 51 </item>
+        <item> 52 </item>
+        <item> 53 </item>
+        <item> 54 </item>
+        <item> 55 </item>
+        <item> 56 </item>
+        <item> 57 </item>
+        <item> 58 </item>
+        <item> 59 </item>
+        <item> 60 </item>
+        <item> 61 </item>
+        <item> 62 </item>
+        <item> 63 </item>
+        <item> 64 </item>
+        <item> 65 </item>
+        <item> 66 </item>
+        <item> 67 </item>
+        <item> 68 </item>
+        <item> 69 </item>
+        <item> 70 </item>
+        <item> 71 </item>
+        <item> 72 </item>
+        <item> 73 </item>
+        <item> 74 </item>
+        <item> 75 </item>
+        <item> 76 </item>
+        <item> 77 </item>
+        <item> 78 </item>
+        <item> 79 </item>
+        <item> 80 </item>
+        <item> 81 </item>
+        <item> 82 </item>
+        <item> 83 </item>
+        <item> 84 </item>
+        <item> 85 </item>
+        <item> 86 </item>
+        <item> 87 </item>
+        <item> 88 </item>
+        <item> 89 </item>
+        <item> 90 </item>
+        <item> 91 </item>
+        <item> 92 </item>
+        <item> 93 </item>
+        <item> 94 </item>
+        <item> 95 </item>
+        <item> 96 </item>
+        <item> 97 </item>
+        <item> 98 </item>
+        <item> 99 </item>
+        <item> 100 </item>
+    </string-array>
+
+
+    &lt;!&ndash; Student_profile &ndash;&gt;
+    <string-array name="student_class">
+        <item>Select Class</item>
+        <item> 1  </item>
+        <item> 2  </item>
+        <item> 3  </item>
+        <item> 4  </item>
+        <item> 5  </item>
+        <item> 6  </item>
+        <item> 7  </item>
+        <item> 8  </item>
+        <item> 9  </item>
+        <item> 10 </item>
+        <item> 11 </item>
+        <item> 12 </item>
+    </string-array>
+    <string-array name="certificate_Languages">
+        <item>Hindi     </item>
+        <item>Marathi   </item>
+    </string-array>
+&lt;!&ndash;    <item>Marathi   </item>&ndash;&gt;
+&lt;!&ndash;    <item>Gujarati  </item>&ndash;&gt;
+&lt;!&ndash;    <item>Kannada   </item>&ndash;&gt;
+&lt;!&ndash;    <item>Bengali   </item>&ndash;&gt;
+&lt;!&ndash;    <item>Assamese  </item>&ndash;&gt;
+&lt;!&ndash;    <item>Telugu    </item>&ndash;&gt;
+&lt;!&ndash;    <item>Tamil     </item>&ndash;&gt;
+&lt;!&ndash;    <item>Odiya     </item>&ndash;&gt;
+    &lt;!&ndash;
+    <item>Malayalam</item>
+    <item>Punjabi</item>
+    <item>Urdu</item>
+&ndash;&gt;
+    <string-array name="app_Language">
+        <item>Hindi</item>
+        <item>Marathi</item>
+    </string-array>
+&lt;!&ndash;        <item>Gujarati</item>&ndash;&gt;
+&lt;!&ndash;        <item>Kannada</item>&ndash;&gt;
+&lt;!&ndash;        <item>Bengali</item>&ndash;&gt;
+&lt;!&ndash;        <item>Assamese  </item>&ndash;&gt;
+&lt;!&ndash;        <item>Telugu</item>&ndash;&gt;
+&lt;!&ndash;        <item>Tamil</item>&ndash;&gt;
+&lt;!&ndash;        <item>Odiya</item>&ndash;&gt;
+    <string-array name="translation_Languages">
+        <item>Hindi</item>
+        <item>Marathi</item>
+    </string-array>
+&lt;!&ndash;    <item>Gujarati</item>&ndash;&gt;
+&lt;!&ndash;    <item>Kannada</item>&ndash;&gt;
+&lt;!&ndash;    <item>Bengali</item>&ndash;&gt;
+&lt;!&ndash;    <item>Telugu</item>&ndash;&gt;
+&lt;!&ndash;    <item>Tamil</item>&ndash;&gt;
+&lt;!&ndash;    <item>Urdu</item>&ndash;&gt;
+&lt;!&ndash;    <item>Punjabi</item>&ndash;&gt;
     <string-array name="language_codes">
         <item>en</item>
         <item>hi</item>
@@ -442,3 +886,4 @@
         <item>pa</item>
     </string-array>
 </resources>
+-->

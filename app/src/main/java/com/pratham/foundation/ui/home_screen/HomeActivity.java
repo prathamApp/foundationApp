@@ -113,6 +113,7 @@ public class HomeActivity extends BaseActivity implements LevelChanged {
     public static boolean languageChanged = false;
     static int count = 0;
     public static LevelChanged levelChanged;
+    String currSubj;
 
     @AfterViews
     public void initialize() {
@@ -125,6 +126,7 @@ public class HomeActivity extends BaseActivity implements LevelChanged {
         currentLevel = FastSave.getInstance().getInt(FC_Constants.CURRENT_LEVEL, 0);
         changeBackground(sub_Name);
         changeBGNew(0);
+        currSubj= FastSave.getInstance().getString(FC_Constants.CURRENT_SUBJECT, "");
         //        floating_back.setImageResource(R.drawable.ic_left_arrow_white);
         floating_info.setImageResource(R.drawable.ic_info_outline_white);
         setupViewPager(viewpager);
@@ -299,7 +301,6 @@ public class HomeActivity extends BaseActivity implements LevelChanged {
                 break;
         }
     }
-
     private void setupTabIcons() {
         TextView learningTab = (TextView) LayoutInflater.from(this).inflate(R.layout.custom_tab_text, null);
         learningTab.setText(""+getResources().getString(R.string.Learning));
@@ -324,8 +325,8 @@ public class HomeActivity extends BaseActivity implements LevelChanged {
             tabLayout.getTabAt(0).setCustomView(practiceTab);
             tabLayout.getTabAt(1).setCustomView(learningTab);
         }
-        if (FastSave.getInstance().getString(FC_Constants.CURRENT_SUBJECT, "")
-                .equalsIgnoreCase("english")) {
+
+        if (currSubj.equalsIgnoreCase("english")) {
             TextView funTab = (TextView) LayoutInflater.from(this).inflate(R.layout.custom_tab_text, null);
             funTab.setText(""+getResources().getString(R.string.Fun));
             funTab.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.ic_fun, 0, 0);
@@ -333,15 +334,12 @@ public class HomeActivity extends BaseActivity implements LevelChanged {
             tabLayout.getTabAt(2).setCustomView(testTab);
             tabLayout.getTabAt(3).setCustomView(funTab);
             tabLayout.getTabAt(4).setCustomView(profileTab);
-        }else if (FastSave.getInstance().getString(FC_Constants.CURRENT_SUBJECT, "")
-                .equalsIgnoreCase("maths")|| FastSave.getInstance().getString(FC_Constants.CURRENT_SUBJECT, "")
-                .equalsIgnoreCase("Language")) {
+        }else if (currSubj.equalsIgnoreCase("Language")||currSubj.equalsIgnoreCase("Maths")) {
             tabLayout.getTabAt(2).setCustomView(testTab);
             tabLayout.getTabAt(3).setCustomView(profileTab);
         } else {
             tabLayout.getTabAt(2).setCustomView(profileTab);
         }
-
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
@@ -492,13 +490,9 @@ public class HomeActivity extends BaseActivity implements LevelChanged {
         if (FastSave.getInstance().getString(FC_Constants.LOGIN_MODE, FC_Constants.GROUP_MODE).contains("group")) {
             adapter.addFrag(new LearningFragment_(), ""+getResources().getString(R.string.Learning));
             adapter.addFrag(new PracticeFragment_(), ""+getResources().getString(R.string.Practice));
-            if (FastSave.getInstance().getString(FC_Constants.CURRENT_SUBJECT, "")
-                    .equalsIgnoreCase("maths")||
-                    FastSave.getInstance().getString(FC_Constants.CURRENT_SUBJECT, "")
-                    .equalsIgnoreCase("Language")) {
+            if (currSubj.equalsIgnoreCase("Language")||currSubj.equalsIgnoreCase("Maths")) {
                 adapter.addFrag(new TestFragment_(), ""+getResources().getString(R.string.Test));
-            }else if (FastSave.getInstance().getString(FC_Constants.CURRENT_SUBJECT, "")
-                    .equalsIgnoreCase("english")) {
+            }else if (currSubj.equalsIgnoreCase("english")) {
                 adapter.addFrag(new TestFragment_(), ""+getResources().getString(R.string.Test));
                 adapter.addFrag(new FunFragment_(), ""+getResources().getString(R.string.Fun));
             }
@@ -506,13 +500,9 @@ public class HomeActivity extends BaseActivity implements LevelChanged {
         } else {
             adapter.addFrag(new PracticeFragment_(), ""+getResources().getString(R.string.Practice));
             adapter.addFrag(new LearningFragment_(), ""+getResources().getString(R.string.Learning));
-            if (FastSave.getInstance().getString(FC_Constants.CURRENT_SUBJECT, "")
-                    .equalsIgnoreCase("maths")||
-                    FastSave.getInstance().getString(FC_Constants.CURRENT_SUBJECT, "")
-                    .equalsIgnoreCase("Language")) {
-                adapter.addFrag(new TestFragment_(), ""+getResources().getString(R.string.Test));
-            }else if (FastSave.getInstance().getString(FC_Constants.CURRENT_SUBJECT, "")
-                    .equalsIgnoreCase("english")) {
+            if (currSubj.equalsIgnoreCase("Language")||currSubj.equalsIgnoreCase("Maths")) {
+            adapter.addFrag(new TestFragment_(), ""+getResources().getString(R.string.Test));
+            }else if (currSubj.equalsIgnoreCase("english")) {
                 adapter.addFrag(new TestFragment_(), ""+getResources().getString(R.string.Test));
                 adapter.addFrag(new FunFragment_(), ""+getResources().getString(R.string.Fun));
             }

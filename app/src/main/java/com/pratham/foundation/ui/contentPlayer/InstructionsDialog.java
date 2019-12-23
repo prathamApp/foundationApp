@@ -9,8 +9,6 @@ import com.pratham.foundation.R;
 import com.pratham.foundation.customView.SansTextViewBold;
 import com.pratham.foundation.customView.display_image_dialog.CustomLodingDialog;
 import com.pratham.foundation.interfaces.ShowInstruction;
-import com.pratham.foundation.services.shared_preferences.FastSave;
-import com.pratham.foundation.utility.FC_Constants;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -45,9 +43,11 @@ public class InstructionsDialog extends CustomLodingDialog {
         } else {
             dia_title.setText("");
         }
-        if (FastSave.getInstance().getString(FC_Constants.LANGUAGE, FC_Constants.HINDI).equalsIgnoreCase("Hindi")) {
-            resorcetype="hi_"+resorcetype;
-        }
+        //TODO change as per dialog language when added
+        resorcetype="hi_"+resorcetype;
+//        if (FastSave.getInstance().getString(FC_Constants.LANGUAGE, FC_Constants.HINDI).equalsIgnoreCase("Hindi")) {
+//            resorcetype="hi_"+resorcetype;
+//        }
         int rawID = context.getResources().getIdentifier(resorcetype.toLowerCase(), "raw", context.getPackageName());
         if (rawID != 0) {
             mediaPlayer = MediaPlayer.create(context, rawID);
