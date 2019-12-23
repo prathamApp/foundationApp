@@ -3,46 +3,51 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/bg_anim_fourth_layer">
+
     <Space
         android:id="@+id/space"
         android:layout_width="match_parent"
-        android:layout_height="00dp"/>
+        android:layout_height="00dp" />
+
     <RelativeLayout
-        android:layout_below="@id/space"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:layout_below="@id/space">
+
         <com.pratham.foundation.customView.SansTextView
             android:id="@+id/keyword"
+            style="@style/tittle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/age_3_to_6"
-            style="@style/tittle"/>
-    <LinearLayout
-        android:id="@+id/button_controls"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:orientation="vertical">
-        <Button
-            android:id="@+id/showAnswer"
+            android:text="@string/age_3_to_6" />
+
+        <LinearLayout
+            android:id="@+id/button_controls"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/hint"
-            style="@style/yellow_button"/>
-      <!--  <Button
-            android:id="@+id/submit"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Submit"
-            style="@style/submitbtn" />-->
-        <include
-            android:id="@+id/bottom_bar"
-            layout="@layout/bottom_control_panel_v2"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="1dp"
-            android:gravity="bottom|center_horizontal" />
-    </LinearLayout>
+            android:layout_alignParentBottom="true"
+            android:orientation="vertical">
+
+            <Button
+                android:id="@+id/showAnswer"
+                style="@style/yellow_button"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/hint" />
+            <!--  <Button
+                  android:id="@+id/submit"
+                  android:layout_width="match_parent"
+                  android:layout_height="wrap_content"
+                  android:text="Submit"
+                  style="@style/submitbtn" />-->
+            <include
+                android:id="@+id/bottom_bar"
+                layout="@layout/bottom_control_panel_v2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="1dp"
+                android:gravity="bottom|center_horizontal" />
+        </LinearLayout>
 
 
         <android.support.v7.widget.RecyclerView
@@ -53,14 +58,12 @@
             android:layout_below="@id/keyword"
             android:layout_centerInParent="true"
             android:layout_margin="@dimen/hexa_dp"
-            android:scrollbars="vertical"
+            android:fadeScrollbars="false"
             android:scrollbarAlwaysDrawVerticalTrack="true"
-                    android:scrollbarSize="6dp"
-        android:scrollbarThumbVertical="@drawable/card_color_bg4"
-        android:scrollbarTrackVertical="@drawable/scroll_bg"
+            android:gravity="center"
+            android:scrollbarSize="6dp"
 
-            android:gravity="center" />
-
+            android:scrollbars="vertical" />
 
 
     </RelativeLayout>

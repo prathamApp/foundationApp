@@ -404,14 +404,14 @@
 
     <string name="fact_retrieval_click">जवाब देने के लिएअनुच्छेद से सही शब्द या वाक्य चुनिए|</string>
     <string name="factRetrieval">जवाब देने के लिएअनुच्छेद से सही शब्द या वाक्य चुनिए|</string>
-    <string name="IKWAndroid">गए अनुच्छेद में वैज्ञानिक शब्दों को दिखाइए|</string>
+    <string name="IKWAndroid">दिए गए अनुच्छेद में वैज्ञानिक शब्दों को दिखाइए|</string>
     <string name="CopyWriting">गए शब्द और जानकारी को अपनी कॉपी में लिखिए और उसकी फोटो सबमिट कीजिए|</string>
     <string name="chKeywords">दिए गए शब्दों में से करीबी शब्द चुनिए|</string>
     <string name="ShowMeAndroid">सही विकल्प चुनें|</string>
     <string name="Dictation">ऑडियो सुनकर अपनी कॉपीमें लिखिए और उसकी फोटो सबमिट कीजिए|</string>
     <string name="PictAndroid">प्ले बटन पर क्लिक कीजिए और सुनिए. फिर माइक बटन पर क्लिक करके साफ़ आवाज में पढ़िए|</string>
     <string name="TAW">गए शब्द या वाक्य पर अपने विचार कॉपी में लिखिए और उसकी फोटो सबमिट कीजिए|</string>
-    <string name="doing_act_read">Read the instructions and try to perform the activity.</string>
+    <string name="doing_act">try to perform the activity.</string>
     <string name="letter">Write a letter on the given subject in noteboook and submit its photo.</string>
     <string name="doing_act_video">Watch the video and try to perform the activity.</string>
     <string name="ReadVocabAndroid">प्ले बटन पर क्लिक कीजिए और सुनिए. फिर माइक बटन पर क्लिक करके साफ़ आवाज में पढ़िए|</string>

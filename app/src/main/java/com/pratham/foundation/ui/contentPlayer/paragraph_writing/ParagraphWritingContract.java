@@ -17,6 +17,6 @@ public interface ParagraphWritingContract {
 
         public void addLearntWords(ScienceQuestion questionModel, String imageName);
 
-        void setView(ParagraphWritingContract.ParagraphWritingView paragraphWritingView, String imageName, String readingContentPath);
+        void setView(ParagraphWritingView paragraphWritingView, String imageName, String readingContentPath);
     }
 }
