@@ -248,6 +248,7 @@ public class FC_Constants {
     public static String currentSubjectFolder = "";
     public static String gameFolderPath = "";
     public static String activityPhotoPath = "";
+    public static int TransferedImages = 0;
 
     public enum URL {
         BROWSE_BY_ID(BASE_URL + "get?id="),

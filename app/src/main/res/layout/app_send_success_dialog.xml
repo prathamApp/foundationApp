@@ -11,7 +11,7 @@
         android:layout_centerHorizontal="true"
         android:layout_width="@dimen/_80sdp"
         android:layout_height="@dimen/_80sdp"
-        android:layout_marginTop="@dimen/_30sdp"
+        android:layout_marginTop="@dimen/_20sdp"
         app:lottie_autoPlay="true"
         app:lottie_fileName="loading_new.json"
         app:lottie_loop="true" />

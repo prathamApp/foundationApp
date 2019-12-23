@@ -25,6 +25,8 @@ public class CopyDbToOTG extends AsyncTask {
     @Override
     protected Object doInBackground(Object[] objects) {
         try {
+            FC_Constants.TransferedImages = 0;
+
             Uri treeUri = (Uri) objects[0];
             DocumentFile rootFile = DocumentFile.fromTreeUri(ApplicationClass.getInstance(), treeUri);
 
@@ -66,6 +68,7 @@ public class CopyDbToOTG extends AsyncTask {
 
             if(activityPhotosFile.exists()){
                 File[] files = activityPhotosFile.listFiles();
+                FC_Constants.TransferedImages = files.length;
                 for (int i = 0; i < files.length; i++) {
                     Log.d("Files", "FileName:" + files[i].getName());
 //                    DocumentFile file = mediaFolder.findFile(files[i].getName());

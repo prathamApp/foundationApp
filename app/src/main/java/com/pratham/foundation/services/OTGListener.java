@@ -3,7 +3,6 @@ package com.pratham.foundation.services;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.hardware.usb.UsbDevice;
 import android.hardware.usb.UsbManager;
 
 import com.pratham.foundation.modalclasses.EventMessage;
@@ -15,6 +14,8 @@ import org.greenrobot.eventbus.EventBus;
 
 import java.util.List;
 
+import static com.pratham.foundation.BaseActivity.myUsbDevice;
+
 public class OTGListener extends BroadcastReceiver {
     private static final String TAG = OTGListener.class.getSimpleName();
 
@@ -23,8 +24,8 @@ public class OTGListener extends BroadcastReceiver {
         String action = intent.getAction();
         //Initilizing globel class to access USB ATTACH and DETACH state
         if (action.equalsIgnoreCase("android.hardware.usb.action.USB_DEVICE_ATTACHED")) {
-            UsbDevice device = intent.getParcelableExtra(UsbManager.EXTRA_DEVICE);
-            if (device != null) {
+            myUsbDevice = intent.getParcelableExtra(UsbManager.EXTRA_DEVICE);
+            if (myUsbDevice != null) {
 //                int vendorID = device.getVendorId();
 //                int productID = device.getProductId();
 //                Toast.makeText(context, "onReceive: usb attached: vendorid= " + vendorID + "..productid=" + productID, Toast.LENGTH_SHORT).show();

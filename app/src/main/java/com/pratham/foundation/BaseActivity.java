@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.hardware.usb.UsbDevice;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.net.Uri;
@@ -40,6 +41,7 @@ import java.util.Objects;
 import static com.pratham.foundation.ApplicationClass.audioManager;
 import static com.pratham.foundation.ApplicationClass.ttsService;
 import static com.pratham.foundation.database.AppDatabase.appDatabase;
+import static com.pratham.foundation.utility.FC_Constants.TransferedImages;
 
 
 public class BaseActivity extends AppCompatActivity {
@@ -52,6 +54,7 @@ public class BaseActivity extends AppCompatActivity {
     private static final int HIDE_OTG_TRANSFER_DIALOG_SUCCESS = 12;
     private static final int HIDE_OTG_TRANSFER_DIALOG_FAILED = 13;
     private static final int SDCARD_LOCATION_CHOOSER = 10;
+    public static UsbDevice myUsbDevice;
     LottieAnimationView push_lottie;
     TextView txt_push_dialog_msg;
     TextView txt_push_error;
@@ -185,7 +188,7 @@ public class BaseActivity extends AppCompatActivity {
                     push_lottie.setAnimation("success.json");
                     push_lottie.playAnimation();
                     int days = appDatabase.getScoreDao().getTotalActiveDeviceDays();
-                    txt_push_dialog_msg.setText("Data of "+days+" days\nCopied Successfully!!");
+                    txt_push_dialog_msg.setText("Data of "+days+" days and\n"+TransferedImages+" Images\nCopied Successfully!!");
                     ok_btn.setVisibility(View.VISIBLE);
                     break;
                 case HIDE_OTG_TRANSFER_DIALOG_FAILED:
@@ -216,8 +219,13 @@ public class BaseActivity extends AppCompatActivity {
         ok_btn = pushDialog.findViewById(R.id.ok_btn);
 
         ok_btn.setOnClickListener(v -> {
+            ejectOTG();
             pushDialog.dismiss();
         });
+    }
+
+    private void ejectOTG() {
+//        myUsbDevice.
     }
 
     private void showSDBuilderDialog() {
