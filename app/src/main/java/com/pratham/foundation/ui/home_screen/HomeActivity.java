@@ -334,7 +334,8 @@ public class HomeActivity extends BaseActivity implements LevelChanged {
             tabLayout.getTabAt(3).setCustomView(funTab);
             tabLayout.getTabAt(4).setCustomView(profileTab);
         }else if (FastSave.getInstance().getString(FC_Constants.CURRENT_SUBJECT, "")
-                .equalsIgnoreCase("maths")) {
+                .equalsIgnoreCase("maths")|| FastSave.getInstance().getString(FC_Constants.CURRENT_SUBJECT, "")
+                .equalsIgnoreCase("Language")) {
             tabLayout.getTabAt(2).setCustomView(testTab);
             tabLayout.getTabAt(3).setCustomView(profileTab);
         } else {
@@ -492,7 +493,9 @@ public class HomeActivity extends BaseActivity implements LevelChanged {
             adapter.addFrag(new LearningFragment_(), ""+getResources().getString(R.string.Learning));
             adapter.addFrag(new PracticeFragment_(), ""+getResources().getString(R.string.Practice));
             if (FastSave.getInstance().getString(FC_Constants.CURRENT_SUBJECT, "")
-                    .equalsIgnoreCase("maths")) {
+                    .equalsIgnoreCase("maths")||
+                    FastSave.getInstance().getString(FC_Constants.CURRENT_SUBJECT, "")
+                    .equalsIgnoreCase("Language")) {
                 adapter.addFrag(new TestFragment_(), ""+getResources().getString(R.string.Test));
             }else if (FastSave.getInstance().getString(FC_Constants.CURRENT_SUBJECT, "")
                     .equalsIgnoreCase("english")) {
@@ -504,7 +507,9 @@ public class HomeActivity extends BaseActivity implements LevelChanged {
             adapter.addFrag(new PracticeFragment_(), ""+getResources().getString(R.string.Practice));
             adapter.addFrag(new LearningFragment_(), ""+getResources().getString(R.string.Learning));
             if (FastSave.getInstance().getString(FC_Constants.CURRENT_SUBJECT, "")
-                    .equalsIgnoreCase("maths")) {
+                    .equalsIgnoreCase("maths")||
+                    FastSave.getInstance().getString(FC_Constants.CURRENT_SUBJECT, "")
+                    .equalsIgnoreCase("Language")) {
                 adapter.addFrag(new TestFragment_(), ""+getResources().getString(R.string.Test));
             }else if (FastSave.getInstance().getString(FC_Constants.CURRENT_SUBJECT, "")
                     .equalsIgnoreCase("english")) {
