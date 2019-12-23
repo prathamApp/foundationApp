@@ -413,16 +413,16 @@
     <string name="ReadingAndroid">प्ले बटन पर क्लिक कीजिए और सुनिए. फिर माइक बटन पर क्लिक करके साफ़ आवाज में पढ़िए|</string>
     <string name="TAW">दिए गए शब्द या वाक्य पर अपने विचार कॉपी में लिखिए और उसकी फोटो सबमिट कीजिए|</string>
     <string name="doing_act">माइक बटन पर क्लिक करके अपना उत्तर रिकॉर्ड कीजिए और सबमिट कीजिए|</string>
-    <string name="letter">Write a letter on the given subject in noteboook and submit its photo.</string>
-    <string name="doing_act_video">Watch the video and try to perform the activity.</string>
+    <string name="letter">दिए गए विषय पर पत्र लिखें और उसकी फोटो सबमिट कीजिए|</string>
+    <string name="doing_act_video">माइक बटन पर क्लिक करके अपना उत्तर रिकॉर्ड कीजिए और सबमिट कीजिए|</string>
     <string name="ReadVocabAndroid">प्ले बटन पर क्लिक कीजिए और सुनिए. फिर माइक बटन पर क्लिक करके साफ़ आवाज में पढ़िए|</string>
     <string name="reading_stt">माइक बटन पर क्लिक कीजिए| जवाब रिकॉर्ड कर के सबमिट कीजिए।</string>
     <string name="multiple_choice">जवाब देने के लिए दिए गए शब्दों में से सही विकल्प चुनिए|</string>
-    <string name="Video">Watch the video</string>
+    <string name="Video">विडियो देखें</string>
     <string name="watching_video">माइक बटन पर क्लिक करके अपना उत्तर रिकॉर्ड कीजिए और सबमिट कीजिए|</string>
 
     <string name="Next_activity">अगली गतिविधि?</string>
-    <string name="Do_you_want_to_exit">Do you want to exit?</string>
+    <string name="Do_you_want_to_exit">क्या आप निकास करना चाहते हैं?</string>
     <string name="activity_completed">गतिविधि पूरी हुई</string>
     <string name="hint">संकेत</string>
     <string name="clear">बदलाव हटाएँ</string>
