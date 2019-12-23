@@ -20,6 +20,7 @@ import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.airbnb.lottie.LottieAnimationView;
@@ -58,7 +59,8 @@ public class BaseActivity extends AppCompatActivity {
     LottieAnimationView push_lottie;
     TextView txt_push_dialog_msg;
     TextView txt_push_error;
-    Button ok_btn;
+    RelativeLayout rl_btn;
+    Button ok_btn,eject_btn;
     CustomLodingDialog pushDialog;
     CustomLodingDialog sd_builder;
     public static MediaPlayer correctSound;
@@ -182,14 +184,14 @@ public class BaseActivity extends AppCompatActivity {
                     break;
                 case SHOW_OTG_SELECT_DIALOG:
                     ShowOTGPushDialog();
-                    ok_btn.setVisibility(View.GONE);
+                    rl_btn.setVisibility(View.GONE);
                     break;
                 case HIDE_OTG_TRANSFER_DIALOG_SUCCESS:
                     push_lottie.setAnimation("success.json");
                     push_lottie.playAnimation();
                     int days = appDatabase.getScoreDao().getTotalActiveDeviceDays();
                     txt_push_dialog_msg.setText("Data of "+days+" days and\n"+TransferedImages+" Images\nCopied Successfully!!");
-                    ok_btn.setVisibility(View.VISIBLE);
+                    rl_btn.setVisibility(View.VISIBLE);
                     break;
                 case HIDE_OTG_TRANSFER_DIALOG_FAILED:
                     push_lottie.setAnimation("error_cross.json");
@@ -197,7 +199,7 @@ public class BaseActivity extends AppCompatActivity {
                     txt_push_dialog_msg.setText("Data Copying Failed!! Please re-insert the OTG");
                     txt_push_dialog_msg.setTextColor(getResources().getColor(R.color.red));
                     txt_push_error.setVisibility(View.GONE);
-                    ok_btn.setVisibility(View.VISIBLE);
+                    rl_btn.setVisibility(View.VISIBLE);
                     break;
             }
         }
@@ -216,16 +218,22 @@ public class BaseActivity extends AppCompatActivity {
         txt_push_dialog_msg = pushDialog.findViewById(R.id.txt_push_dialog_msg);
         txt_push_error = pushDialog.findViewById(R.id.txt_push_error);
         txt_push_error = pushDialog.findViewById(R.id.txt_push_error);
+        rl_btn = pushDialog.findViewById(R.id.rl_btn);
         ok_btn = pushDialog.findViewById(R.id.ok_btn);
+        eject_btn = pushDialog.findViewById(R.id.eject_btn);
 
         ok_btn.setOnClickListener(v -> {
+            pushDialog.dismiss();
+        });
+        eject_btn.setOnClickListener(v -> {
             ejectOTG();
             pushDialog.dismiss();
         });
     }
 
     private void ejectOTG() {
-//        myUsbDevice.
+        Intent i = new Intent(android.provider.Settings.ACTION_MEMORY_CARD_SETTINGS);
+        startActivity(i);
     }
 
     private void showSDBuilderDialog() {
