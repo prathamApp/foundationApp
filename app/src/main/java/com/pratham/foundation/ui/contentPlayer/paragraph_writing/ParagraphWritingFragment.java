@@ -17,6 +17,8 @@ import android.view.View;
 import android.view.Window;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 
 import com.pratham.foundation.ApplicationClass;
@@ -26,9 +28,10 @@ import com.pratham.foundation.customView.display_image_dialog.CustomLodingDialog
 import com.pratham.foundation.interfaces.OnGameClose;
 import com.pratham.foundation.modalclasses.EventMessage;
 import com.pratham.foundation.modalclasses.ScienceQuestion;
+import com.pratham.foundation.services.shared_preferences.FastSave;
 import com.pratham.foundation.ui.contentPlayer.GameConstatnts;
+import com.pratham.foundation.utility.FC_Constants;
 import com.pratham.foundation.utility.FC_Utility;
-import com.pratham.foundation.utility.MediaPlayerUtil;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Bean;
@@ -72,6 +75,9 @@ public class ParagraphWritingFragment extends Fragment
 
     @ViewById(R.id.play_button)
     ImageButton play;
+
+    @ViewById(R.id.play_button_control)
+    LinearLayout play_button_control;
    /* @ViewById(R.id.replay)
     ImageButton replay;*/
 
@@ -122,6 +128,9 @@ public class ParagraphWritingFragment extends Fragment
         imageName = "" + ApplicationClass.getUniqueID() + ".jpg";
         presenter.setView(ParagraphWritingFragment.this, resId, readingContentPath);
         presenter.getData();
+        if (!FastSave.getInstance().getString(FC_Constants.CURRENT_SUBJECT, "").equalsIgnoreCase("Science")) {
+            play_button_control.setVisibility(View.GONE);
+        }
       /*  if (questionModel != null)
             GameConstatnts.showGameInfo(getActivity(), questionModel.getInstruction(), readingContentPath + questionModel.getInstructionUrl());
       */

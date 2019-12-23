@@ -233,8 +233,7 @@ public class GameConstatnts implements ShowInstruction {
                 FC_Utility.showFragment((Activity) context, new FactRetrieval_(), R.id.RL_CPA,
                         bundle, FactRetrieval_.class.getSimpleName());
                 break;
-            case GameConstatnts.
-                    FACT_RETRIAL_CLICK:
+            case GameConstatnts.FACT_RETRIAL_CLICK:
                 FC_Utility.showFragment((Activity) context, new Fact_Retrieval_Fragment_(), R.id.RL_CPA,
                         bundle, FactRetrieval_.class.getSimpleName());
                 break;
