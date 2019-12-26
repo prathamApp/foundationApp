@@ -5,9 +5,9 @@ import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.widget.TextView;
 
 import com.pratham.foundation.R;
-import com.pratham.foundation.customView.SansTextView;
 import com.pratham.foundation.customView.display_image_dialog.CustomLodingDialog;
 import com.pratham.foundation.utility.MediaPlayerUtil;
 
@@ -30,7 +30,7 @@ public class InstructionDialog extends CustomLodingDialog {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.fc_custom_info_dialog);
         getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-        SansTextView infoText = findViewById(R.id.info);
+        TextView infoText = findViewById(R.id.info);
         if (info != null)
             infoText.setText(info);
 

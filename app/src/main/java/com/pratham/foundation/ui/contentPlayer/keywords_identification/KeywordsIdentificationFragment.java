@@ -24,9 +24,9 @@ import com.pratham.foundation.customView.SansTextView;
 import com.pratham.foundation.customView.display_image_dialog.CustomLodingDialog;
 import com.pratham.foundation.interfaces.OnGameClose;
 import com.pratham.foundation.modalclasses.EventMessage;
+import com.pratham.foundation.modalclasses.ScienceQuestion;
 import com.pratham.foundation.modalclasses.ScienceQuestionChoice;
 import com.pratham.foundation.ui.contentPlayer.GameConstatnts;
-import com.pratham.foundation.modalclasses.ScienceQuestion;
 import com.pratham.foundation.utility.FC_Constants;
 import com.pratham.foundation.utility.FC_Utility;
 
@@ -135,6 +135,7 @@ public class KeywordsIdentificationFragment extends Fragment implements Keywords
 
             final SansTextView textView = new SansTextView(getActivity());
             textView.setTextSize(30);
+            textView.setTextColor(ContextCompat.getColor(getActivity(), R.color.colorText));
             textView.setText(paragraphWords[i]);
             textView.setPadding(10, 5, 10, 5);
             final int temp_i = i;
@@ -220,7 +221,7 @@ public class KeywordsIdentificationFragment extends Fragment implements Keywords
                     final ImageView imageView = new ImageView(getActivity());
                     imageView.setId(pos);
                     imageView.setTag(paraText);
-                    imageView.setImageDrawable(ContextCompat.getDrawable(getActivity(), R.drawable.ic_close_black_24dp));
+                    imageView.setImageDrawable(ContextCompat.getDrawable(getActivity(), R.drawable.ic_close_red_24dp));
                     imageView.setPadding(5, 3, 10, 3);
 
                     linearLayout.addView(imageView);
@@ -246,8 +247,8 @@ public class KeywordsIdentificationFragment extends Fragment implements Keywords
                                     List positions = positionMap.get(paraText.trim());
                                     for (int i = 0; i < positions.size(); i++) {
                                         SansTextView textViewTemp = (SansTextView) paraghaph.getChildAt((int) positions.get(i));
-                                        textViewTemp.setBackgroundColor(ContextCompat.getColor(getActivity(), R.color.white));
-                                        textViewTemp.setTextColor(ContextCompat.getColor(getActivity(), R.color.black_20));
+                                        textViewTemp.setBackground(null);
+                                        textViewTemp.setTextColor(ContextCompat.getColor(getActivity(), R.color.colorText));
                                     }
                                     View view = (View) imageView.getParent();
                                     keywords.removeView(view);
@@ -334,7 +335,7 @@ public class KeywordsIdentificationFragment extends Fragment implements Keywords
                     if (positions != null)
                         for (int i = 0; i < positions.size(); i++) {
                             SansTextView textViewTemp = (SansTextView) paraghaph.getChildAt((int) positions.get(i));
-                            textViewTemp.setBackgroundColor(ContextCompat.getColor(getActivity(), R.color.ratingFilled));
+                            textViewTemp.setBackgroundResource(R.drawable.dialog_bg_blue);
                         }
                 }
             } else {
@@ -346,7 +347,7 @@ public class KeywordsIdentificationFragment extends Fragment implements Keywords
                     if (positions != null)
                         for (int i = 0; i < positions.size(); i++) {
                             SansTextView textViewTemp = (SansTextView) paraghaph.getChildAt((int) positions.get(i));
-                            textViewTemp.setBackgroundColor(ContextCompat.getColor(getActivity(), R.color.white));
+                            textViewTemp.setBackground(null);
                         }
                 }
                 final Dialog dialog = new CustomLodingDialog(getActivity());

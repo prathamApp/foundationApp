@@ -86,20 +86,24 @@ public class ActivityVideoView extends BaseActivity {
 
     @Background
     public void addScore() {
-        String endTime = FC_Utility.getCurrentDateTime();
-        Score score = new Score();
-        score.setSessionID(FastSave.getInstance().getString(FC_Constants.CURRENT_SESSION, ""));
-        score.setStudentID(""+FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""));
-        score.setDeviceID(FC_Utility.getDeviceID());
-        score.setResourceID(resId);
-        score.setQuestionId(0);
-        score.setScoredMarks((int) FC_Utility.getTimeDifference(startTime, endTime));
-        score.setTotalMarks((int) videoDuration);
-        score.setStartDateTime(startTime);
-        score.setEndDateTime(endTime);
-        score.setLevel(0);
-        score.setLabel("video");
-        score.setSentFlag(0);
-        appDatabase.getScoreDao().insert(score);
+        try {
+            String endTime = FC_Utility.getCurrentDateTime();
+            Score score = new Score();
+            score.setSessionID(FastSave.getInstance().getString(FC_Constants.CURRENT_SESSION, ""));
+            score.setStudentID(""+FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""));
+            score.setDeviceID(FC_Utility.getDeviceID());
+            score.setResourceID(resId);
+            score.setQuestionId(0);
+            score.setScoredMarks((int) FC_Utility.getTimeDifference(startTime, endTime));
+            score.setTotalMarks((int) videoDuration);
+            score.setStartDateTime(startTime);
+            score.setEndDateTime(endTime);
+            score.setLevel(0);
+            score.setLabel("video");
+            score.setSentFlag(0);
+            appDatabase.getScoreDao().insert(score);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }

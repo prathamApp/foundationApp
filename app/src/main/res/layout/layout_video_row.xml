@@ -1,32 +1,35 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    app:cardBackgroundColor="@android:color/transparent"
-    app:cardElevation="0dp">
+    android:background="@drawable/science_bkgd">
 
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_above="@+id/bottom_bar"
-        android:layout_margin="@dimen/_2sdp"
         android:orientation="vertical">
 
         <Space
             android:id="@+id/space"
             android:layout_width="match_parent"
             android:layout_height="60dp"/>
-        <TextView
+        <com.pratham.foundation.customView.SansTextViewBold
+            android:id="@+id/tv_question"
             android:scrollbars="vertical"
             android:fadeScrollbars="false"
-            android:id="@+id/tv_question"
+            android:scrollbarSize="6dp"
+            android:scrollbarThumbVertical="@drawable/card_color_bg4"
+            android:scrollbarTrackVertical="@drawable/scroll_bg"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:textSize="@dimen/_30sdp"
             android:gravity="center"
             style="@style/paragraph"
-            android:layout_margin="@dimen/_5sdp"
+            android:layout_marginStart="@dimen/_10sdp"
+            android:layout_marginEnd="@dimen/_10sdp"
+            android:layout_marginTop="@dimen/_5sdp"
+            android:layout_marginBottom="@dimen/_5sdp"
             android:layout_weight="0.1" />
 
         <RelativeLayout
@@ -34,8 +37,7 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="0.1"
-            android:layout_gravity="center"
-            android:layout_margin="@dimen/_5sdp">
+            android:layout_gravity="center">
 
             <ImageView
                 android:id="@+id/iv_question_image"
@@ -77,9 +79,16 @@
             <com.pratham.foundation.customView.SansTextView
                 android:id="@+id/subQuestion"
                 android:layout_width="match_parent"
-                style="@style/question"
+                style="@style/paragraph"
+                android:layout_marginStart="@dimen/_10sdp"
+                android:layout_marginEnd="@dimen/_10sdp"
+                android:textSize="@dimen/_18sdp"
                 android:text="kjkjkjkj"
-                android:scrollbars="vertical"
+                android:textColor="@color/colorText"
+                android:fadeScrollbars="false"
+                android:scrollbarSize="6dp"
+                android:scrollbarThumbVertical="@drawable/card_color_bg4"
+                android:scrollbarTrackVertical="@drawable/scroll_bg"
                 android:layout_height="wrap_content"/>
             </RelativeLayout>
             <LinearLayout

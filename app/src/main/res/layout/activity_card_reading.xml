@@ -1,17 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:ripple="http://schemas.android.com/apk/res-auto"
     android:id="@+id/story_ll"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/bg_anim_login">
+    android:background="@drawable/science_bkgd">
 
     <RelativeLayout
         android:id="@+id/topPanel"
         android:layout_width="match_parent"
         android:layout_height="60dp"
-        android:layout_alignParentTop="true"
-        android:background="@color/colorBtnRedDark">
+        android:layout_alignParentTop="true">
 
         <ImageButton
             android:id="@+id/btn_back"
@@ -27,20 +25,14 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_centerInParent="true"
-            android:layout_toEndOf="@+id/btn_back"
-            android:layout_toStartOf="@+id/just_view"
             android:layout_marginStart="@dimen/_15sdp"
             android:layout_marginEnd="@dimen/_5sdp"
+            android:layout_toEndOf="@+id/btn_back"
             android:text="Welcome "
-            android:textColor="@color/white"
+            android:textColor="@color/dark_blue"
             android:textSize="@dimen/_18sdp"
             android:textStyle="bold" />
 
-        <View
-            android:id="@+id/just_view"
-            android:layout_width="50dp"
-            android:layout_height="match_parent"
-            android:layout_alignParentEnd="true" />
     </RelativeLayout>
 
     <RelativeLayout
@@ -50,32 +42,30 @@
         android:layout_marginTop="@dimen/_10sdp"
         android:gravity="center">
 
-        <android.support.design.card.MaterialCardView
+        <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginBottom="@dimen/_25sdp"
             android:layout_marginHorizontal="@dimen/_12sdp"
-            ripple:cardCornerRadius="@dimen/_5sdp">
+            android:layout_marginBottom="@dimen/_25sdp"
+            style="@style/paragraph">
 
             <ScrollView
                 android:id="@+id/intro_scroll"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:layout_margin="@dimen/_5sdp"
                 android:fadeScrollbars="false"
-                        android:scrollbarSize="6dp"
-        android:scrollbarThumbVertical="@drawable/card_color_bg4"
-        android:scrollbarTrackVertical="@drawable/scroll_bg"
-
-                android:layout_marginHorizontal="@dimen/_40sdp"
-                android:layout_marginVertical="@dimen/_10sdp">
+                android:scrollbarSize="6dp"
+                android:scrollbarThumbVertical="@drawable/card_color_bg4"
+                android:scrollbarTrackVertical="@drawable/scroll_bg">
 
                 <com.pratham.foundation.customView.SansTextView
                     android:id="@+id/text_intro"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:textSize="@dimen/_20sdp"
                     android:gravity="center"
-                    android:textColor="@color/colorBlack" />
+                    android:textColor="@color/colorText"
+                    android:textSize="@dimen/_20sdp" />
 
             </ScrollView>
 
@@ -84,10 +74,10 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_gravity="center_horizontal"
-                android:visibility="gone"
                 android:scaleType="fitCenter"
-                android:src="@drawable/pratham_logo" />
-        </android.support.design.card.MaterialCardView>
+                android:src="@drawable/pratham_logo"
+                android:visibility="gone" />
+        </RelativeLayout>
 
         <ImageButton
             android:id="@+id/btn_prev"
@@ -95,12 +85,12 @@
             android:layout_height="@dimen/_40sdp"
             android:layout_alignParentLeft="true"
             android:layout_alignParentBottom="true"
-            android:visibility="visible"
             android:layout_marginBottom="8dp"
             android:background="@drawable/arrow_left_bg"
             android:elevation="5dp"
             android:scaleType="centerInside"
-            android:src="@drawable/ic_navigate_before_black_24dp" />
+            android:src="@drawable/ic_navigate_before_black_24dp"
+            android:visibility="visible" />
 
         <ImageButton
             android:id="@+id/btn_play"
@@ -122,10 +112,10 @@
             android:layout_alignParentBottom="true"
             android:layout_marginBottom="8dp"
             android:background="@drawable/arrow_right_bg"
-            android:visibility="visible"
             android:elevation="5dp"
             android:scaleType="centerInside"
-            android:src="@drawable/ic_navigate_next_black_24dp" />
+            android:src="@drawable/ic_navigate_next_black_24dp"
+            android:visibility="visible" />
 
     </RelativeLayout>
 

@@ -3,12 +3,13 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    app:cardBackgroundColor="@android:color/transparent"
+    android:background="@drawable/science_bkgd"
     app:cardElevation="0dp">
     <Space
         android:id="@+id/space"
         android:layout_width="match_parent"
         android:layout_height="60dp" />
+
     <LinearLayout
         android:layout_below="@id/space"
         android:layout_above="@id/bottom_panel"
@@ -16,31 +17,45 @@
         android:layout_height="match_parent"
         android:layout_margin="@dimen/_2sdp"
         android:orientation="vertical">
+
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="1">
-            <com.pratham.foundation.customView.SansTextView
+            android:layout_weight="1"
+            android:layout_marginStart="@dimen/_10sdp"
+            android:layout_marginEnd="@dimen/_10sdp">
+
+            <com.pratham.foundation.customView.SansTextViewBold
                 android:id="@+id/lbl_ques"
                 android:layout_height="wrap_content"
                 android:layout_width="match_parent"
                 android:layout_alignParentTop="true"
                 android:gravity="center_horizontal"
-                android:textSize="@dimen/_15sdp"
+                android:textColor="@color/dark_blue"
+                android:textSize="@dimen/_20sdp"
                 android:text="@string/Read"/>
-        <ScrollView
-            android:layout_width="match_parent"
-            android:layout_below="@+id/lbl_ques"
-            android:layout_height="match_parent">
-            <com.pratham.foundation.customView.SansTextView
-                android:id="@+id/tv_question"
-                android:layout_height="wrap_content"
+
+            <ScrollView
                 android:layout_width="match_parent"
-                android:gravity="center"
-                android:scrollbars="vertical"
-                style="@style/question"
-                />
-        </ScrollView>
+                android:layout_height="match_parent"
+                android:layout_below="@+id/lbl_ques"
+                android:layout_marginTop="5dp"
+                android:layout_marginBottom="5dp"
+                android:fadeScrollbars="false"
+                android:scrollbarSize="6dp"
+                android:scrollbarThumbVertical="@drawable/card_color_bg4"
+                android:scrollbarTrackVertical="@drawable/scroll_bg">
+                <com.pratham.foundation.customView.SansTextView
+                    android:id="@+id/tv_question"
+                    style="@style/paragraph"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/mark_attendance"
+                    android:textSize="@dimen/_18sdp"
+                    android:textColor="@color/colorText"
+                    android:gravity="center"
+                    android:scrollbars="vertical" />
+            </ScrollView>
         </RelativeLayout>
         <ImageView
             android:id="@+id/iv_question_image"
@@ -48,7 +63,7 @@
             android:layout_weight="1"
             android:layout_width="match_parent"
             android:layout_gravity="center"
-            android:src="@drawable/ic_warning"
+            android:src="@drawable/warning"
             android:visibility="gone"/>
 
         <com.pratham.foundation.customView.GifView
@@ -62,31 +77,42 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="1">
-            <com.pratham.foundation.customView.SansTextView
+            android:layout_weight="1"
+            android:layout_marginStart="@dimen/_10sdp"
+            android:layout_marginEnd="@dimen/_10sdp">
+
+            <com.pratham.foundation.customView.SansTextViewBold
                 android:id="@+id/lbl_ans"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/_5sdp"
                 android:gravity="center_horizontal"
-                android:textSize="@dimen/_15sdp"
+                android:textColor="@color/dark_blue"
+                android:textSize="@dimen/_20sdp"
                 android:text="@string/Your_answer"/>
         <ScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_below="@+id/lbl_ans">
+            android:layout_below="@+id/lbl_ans"
+            android:fadeScrollbars="false"
+            android:scrollbarSize="6dp"
+            android:scrollbarThumbVertical="@drawable/card_color_bg4"
+            android:scrollbarTrackVertical="@drawable/scroll_bg">
+
         <com.pratham.foundation.customView.SansTextView
             android:id="@+id/et_answer"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="@dimen/_5sdp"
+            android:layout_marginTop="@dimen/_5sdp"
+            android:layout_marginBottom="@dimen/_5sdp"
             android:layout_below="@+id/lbl_ans"
             android:scrollbars="vertical"
-            android:background="@drawable/ripple_rectangle"
+            style="@style/paragraph"
+            android:textColor="@color/colorText"
             android:gravity="center"
             android:hint="@string/Enter_answer"
             android:padding="@dimen/_8sdp"
-            android:textSize="@dimen/_20sdp" />
+            android:textSize="@dimen/_18sdp" />
         </ScrollView>
         </RelativeLayout>
     </LinearLayout>

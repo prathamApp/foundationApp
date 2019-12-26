@@ -2,11 +2,10 @@
 <RelativeLayout android:id="@+id/ll_convo_main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/bg_anim_login"
+    android:background="@drawable/science_bkgd"
     android:elevation="@dimen/_5sdp"
     android:orientation="vertical"
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:ripple="http://schemas.android.com/apk/res-auto">
+    xmlns:android="http://schemas.android.com/apk/res/android">
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/floating_back"
@@ -80,48 +79,24 @@
         android:layout_centerInParent="true"
         android:src="@drawable/monk_char"/>
 
-    <android.support.design.card.MaterialCardView
-        android:id="@+id/topPanel"
+    <com.pratham.foundation.customView.SansTextViewBold
+        android:id="@+id/tv_title"
         android:layout_width="match_parent"
         android:layout_height="@dimen/_40sdp"
         android:layout_alignParentTop="true"
         android:layout_marginTop="30dp"
         android:layout_marginStart="@dimen/_10sdp"
         android:layout_marginEnd="@dimen/_10sdp"
-        ripple:cardBackgroundColor="@color/colorBtnRedDark"
-        ripple:cardCornerRadius="@dimen/_8sdp">
-
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-        <com.pratham.foundation.customView.SansTextViewBold
-            android:id="@+id/tv_title"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginLeft="@dimen/_20sdp"
-            android:gravity="left|center_vertical"
-            android:text="Chat"
-            android:layout_toStartOf="@+id/iv_ConvoMode"
-            android:textColor="@color/white"
-            android:textSize="@dimen/_16sdp"
-            android:textStyle="bold" />
-
-        <ImageView
-            android:id="@+id/iv_ConvoMode"
-            android:layout_width="100dp"
-            android:layout_height="match_parent"
-            android:layout_marginEnd="@dimen/_20sdp"
-            android:layout_alignParentEnd="true"
-            android:scaleType="centerInside"
-            android:src="@drawable/mode_a" />
-        </RelativeLayout>
-    </android.support.design.card.MaterialCardView>
+        android:gravity="center"
+        android:text="Chat"
+        android:textColor="@color/dark_blue"
+        android:textSize="@dimen/_16sdp"
+        android:textStyle="bold" />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@id/topPanel"
+        android:layout_below="@id/tv_title"
         android:orientation="vertical"
         android:weightSum="10">
 

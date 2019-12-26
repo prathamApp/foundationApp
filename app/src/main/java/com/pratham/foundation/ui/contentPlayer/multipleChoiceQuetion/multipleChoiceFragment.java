@@ -8,6 +8,7 @@ import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.card.MaterialCardView;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
@@ -57,11 +58,9 @@ import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 import org.json.JSONArray;
-import org.json.JSONException;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
@@ -101,7 +100,7 @@ public class multipleChoiceFragment extends Fragment implements OnGameClose {
     @BindView(R.id.show_answer)
     SansButton show_answer;
     @BindView(R.id.image_container)
-    RelativeLayout image_container;
+    MaterialCardView image_container;
     @BindView(R.id.iv_view_img)
     ImageView iv_view_img;
     private String readingContentPath, contentPath, contentTitle, StudentID, resId, resStartTime;
@@ -163,9 +162,7 @@ public class multipleChoiceFragment extends Fragment implements OnGameClose {
             }.getType();
             dataList = gson.fromJson(jsonObj.toString(), type);
             getDataList();
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (JSONException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }

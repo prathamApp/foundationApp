@@ -45,6 +45,7 @@
     <color name="gradianceCardStartColor">#FFC700C7</color>
     <color name="gradianceCardEndColor">#FFFFC2FC</color>
     <color name="CardTransparentBg">#2DFFFFFF</color>
+    <color name="CardTransparentBgNew">#C8FFFFFF</color>
     <color name="colorProgress">#689C2D</color>
     <color name="colorGreenCorrect">#caf29b</color>
     <color name="sky_blue">#47D9CC</color>

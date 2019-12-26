@@ -3,6 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/story_ll"
     android:layout_width="match_parent"
+    android:background="@drawable/science_bkgd"
     android:layout_height="match_parent">
 
     <android.support.design.widget.FloatingActionButton
@@ -90,7 +91,7 @@
     <!--        </RelativeLayout>-->
     <!--    </android.support.design.card.MaterialCardView>-->
 
-    <com.pratham.foundation.customView.SansTextView
+    <com.pratham.foundation.customView.SansTextViewBold
         android:id="@+id/tv_story_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

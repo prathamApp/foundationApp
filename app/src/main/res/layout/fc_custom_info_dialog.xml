@@ -1,24 +1,56 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_gravity="center">
+
+    <com.pratham.foundation.customView.SansButton
+        android:id="@+id/dia_btn_exit"
+        android:layout_width="@dimen/_40sdp"
+        android:layout_height="@dimen/_40sdp"
+        android:layout_alignParentEnd="true"
+        android:layout_marginTop="@dimen/_5sdp"
+        android:layout_marginEnd="@dimen/_5sdp"
+        android:background="@drawable/button_purple"
+        android:elevation="5dp"
+        android:visibility="gone"
+        android:text="@string/Exit"
+        android:textColor="@color/white"
+        android:textSize="@dimen/_10sdp" />
+
 
     <RelativeLayout
         android:layout_width="@dimen/_240sdp"
-        android:layout_height="@dimen/_100sdp"
+        android:layout_height="wrap_content"
         android:layout_centerInParent="true"
         android:background="@drawable/dialog_bg">
 
-        <com.pratham.foundation.customView.SansTextView
-            android:id="@+id/info"
+        <com.airbnb.lottie.LottieAnimationView
+            android:id="@+id/dl_lottie_view"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginVertical="@dimen/_10sdp"
-            android:gravity="center"
-            android:paddingHorizontal="@dimen/_7sdp"
-            android:text=""
-            android:textColor="@color/gradianceCardStartColor"
-            android:textSize="@dimen/_15sdp" />
-    </RelativeLayout>
+            android:layout_marginTop="@dimen/_5sdp"
+            android:layout_height="@dimen/_80sdp"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:elevation="5dp"
+            app:lottie_autoPlay="true"
+            app:lottie_fileName="instructions_lottie.json"
+            app:lottie_loop="true" />
 
+
+            <com.pratham.foundation.customView.SansTextViewBold
+                android:id="@+id/info"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/dl_lottie_view"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:layout_marginStart="@dimen/_10sdp"
+                android:layout_marginEnd="@dimen/_10sdp"
+                android:layout_marginBottom="@dimen/_20sdp"
+                android:gravity="center"
+                android:paddingHorizontal="@dimen/_7sdp"
+                android:text="@string/what_do_you_want_to_do"
+                android:textColor="@color/gradianceCardStartColor"
+                android:textSize="@dimen/_20sdp" />
+    </RelativeLayout>
 </RelativeLayout>

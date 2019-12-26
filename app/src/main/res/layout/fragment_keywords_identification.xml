@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/bg_anim_fourth_layer"
+    android:background="@drawable/science_bkgd"
     android:orientation="vertical">
 
    <!-- <com.pratham.foundation.customView.SansTextView
@@ -46,7 +46,7 @@
                 app:flChildSpacing="10dp" />
         </ScrollView>
 
-        <com.pratham.foundation.customView.SansTextView
+        <com.pratham.foundation.customView.SansTextViewBold
             android:id="@+id/para_tv"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -84,11 +84,10 @@
                 app:flRowSpacing="2dp" />
         </ScrollView>
 
-        <com.pratham.foundation.customView.SansTextView
+        <com.pratham.foundation.customView.SansTextViewBold
             android:id="@+id/keywords_tv"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingHorizontal="@dimen/_10sdp"
             android:text="@string/Keyword"
             android:textColor="@color/colorBlack"
             android:textSize="25sp" />

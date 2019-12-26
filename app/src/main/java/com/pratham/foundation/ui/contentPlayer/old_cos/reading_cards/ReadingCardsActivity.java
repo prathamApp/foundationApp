@@ -6,7 +6,6 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
-import android.graphics.drawable.AnimationDrawable;
 import android.graphics.drawable.ColorDrawable;
 import android.media.MediaPlayer;
 import android.os.Handler;
@@ -76,7 +75,7 @@ public class ReadingCardsActivity extends BaseActivity implements
     static boolean[] correctArr;
     boolean isAudioPlaying = false, onSdCard, gotoNext = false;
     String readingContentPath, contentPath, contentTitle, StudentID, resId, cardAudio, resStartTime;
-    AnimationDrawable animationDrawable;
+//    AnimationDrawable animationDrawable;
     public CustomLodingDialog myLoadingDialog;
 
 
@@ -84,10 +83,10 @@ public class ReadingCardsActivity extends BaseActivity implements
     @AfterViews
     public void initialize() {
 
-        animationDrawable = (AnimationDrawable) story_ll.getBackground();
-        animationDrawable.setEnterFadeDuration(4500);
-        animationDrawable.setExitFadeDuration(4500);
-        animationDrawable.start();
+//        animationDrawable = (AnimationDrawable) story_ll.getBackground();
+//        animationDrawable.setEnterFadeDuration(4500);
+//        animationDrawable.setExitFadeDuration(4500);
+//        animationDrawable.start();
 
         mContext = ReadingCardsActivity.this;
         presenter.setView(ReadingCardsActivity.this);

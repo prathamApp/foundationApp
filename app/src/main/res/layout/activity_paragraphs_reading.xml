@@ -4,7 +4,7 @@
     android:id="@+id/story_ll"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/bg_anim_login"
+    android:background="@drawable/science_bkgd"
     android:orientation="vertical"
     android:weightSum="10">
 
@@ -72,44 +72,30 @@
         android:layout_marginTop="@dimen/_5sdp"
         android:layout_marginEnd="@dimen/_5sdp" />
 
-    <android.support.design.card.MaterialCardView
-        android:id="@+id/topPanel"
+    <com.pratham.foundation.customView.SansTextViewBold
+        android:id="@+id/tv_content_title"
         android:layout_width="match_parent"
         android:layout_height="@dimen/_40sdp"
         android:layout_alignParentTop="true"
         android:layout_marginTop="30dp"
         android:layout_marginStart="@dimen/_10sdp"
         android:layout_marginEnd="@dimen/_10sdp"
-        ripple:cardBackgroundColor="@color/colorBtnRedDark"
-        ripple:cardCornerRadius="@dimen/_8sdp">
-
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-            <com.pratham.foundation.customView.SansTextViewBold
-                android:id="@+id/tv_content_title"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:gravity="center"
-                android:text="Chat"
-                android:textColor="@color/white"
-                android:textSize="@dimen/_16sdp"
-                android:textStyle="bold" />
-
-        </RelativeLayout>
-    </android.support.design.card.MaterialCardView>
+        android:gravity="center"
+        android:text="Chat"
+        android:textColor="@color/dark_blue"
+        android:textSize="@dimen/_16sdp"
+        android:textStyle="bold" />
 
     <RelativeLayout
         android:id="@+id/main_section"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_above="@+id/bottom_layout"
-        android:layout_below="@+id/topPanel"
+        android:layout_below="@+id/tv_content_title"
         android:layout_gravity="center"
         android:layout_marginHorizontal="@dimen/_10sdp"
         android:layout_marginTop="@dimen/_10sdp"
-        android:background="@drawable/ripple_rectangle_card"
+        style="@style/paragraph"
         android:elevation="@dimen/_2sdp"
         android:gravity="center">
 
@@ -124,14 +110,13 @@
         <ScrollView
             android:id="@+id/myScrollView"
             android:layout_width="match_parent"
+            android:layout_height="match_parent"
             android:fadeScrollbars="false"
-                    android:scrollbarSize="6dp"
-        android:scrollbarThumbVertical="@drawable/card_color_bg4"
-        android:scrollbarTrackVertical="@drawable/scroll_bg"
+            android:scrollbarSize="6dp"
+            android:scrollbarThumbVertical="@drawable/card_color_bg4"
+            android:scrollbarTrackVertical="@drawable/scroll_bg">
 
-            android:layout_height="match_parent">
-
-            <com.nex3z.flowlayout.FlowLayout xmlns:app="http://schemas.android.com/apk/res-auto"
+        <com.nex3z.flowlayout.FlowLayout xmlns:app="http://schemas.android.com/apk/res-auto"
                 android:id="@+id/myflowlayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

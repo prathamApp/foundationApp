@@ -5,7 +5,6 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
-import android.graphics.drawable.AnimationDrawable;
 import android.graphics.drawable.ColorDrawable;
 import android.media.MediaPlayer;
 import android.os.Handler;
@@ -76,8 +75,6 @@ public class ConversationActivity extends BaseActivity
     TextView tv_title;
     @ViewById(R.id.lin_layout)
     LinearLayout lin_layout;
-    @ViewById(R.id.iv_ConvoMode)
-    ImageView iv_ConvoMode;
     @ViewById(R.id.iv_monk)
     ImageView iv_monk;
     @ViewById(R.id.floating_back)
@@ -107,7 +104,7 @@ public class ConversationActivity extends BaseActivity
     boolean myMsg, onSdCard;
     float[] msgPercentage;
     ContinuousSpeechService_New continuousSpeechService;
-    AnimationDrawable animationDrawable;
+//    AnimationDrawable animationDrawable;
 
 
     @AfterViews
@@ -117,10 +114,10 @@ public class ConversationActivity extends BaseActivity
         floating_back.setImageResource(R.drawable.ic_left_arrow_white);
         floating_info.setImageResource(R.drawable.ic_info_outline_white);
 
-        animationDrawable = (AnimationDrawable) ll_convo_mainw.getBackground();
-        animationDrawable.setEnterFadeDuration(4500);
-        animationDrawable.setExitFadeDuration(4500);
-        animationDrawable.start();
+//        animationDrawable = (AnimationDrawable) ll_convo_mainw.getBackground();
+//        animationDrawable.setEnterFadeDuration(4500);
+//        animationDrawable.setExitFadeDuration(4500);
+//        animationDrawable.start();
         continuousSpeechService = new ContinuousSpeechService_New(this, ConversationActivity.this, FC_Constants.ENGLISH);
         correctSound = MediaPlayer.create(this, R.raw.correct_ans);
 
@@ -146,9 +143,7 @@ public class ConversationActivity extends BaseActivity
             convoPath = ApplicationClass.contentSDPath + gameFolderPath + "/" + contentPath + "/";
         else
             convoPath = ApplicationClass.foundationPath + gameFolderPath + "/" + contentPath + "/";
-
-        iv_ConvoMode.setImageResource(R.drawable.mode_a);
-//        if (convoMode.equals("A"))
+        //        if (convoMode.equals("A"))
 //            iv_ConvoMode.setImageResource(R.drawable.mode_a);
 //        else if (convoMode.equals("B"))
 //            iv_ConvoMode.setImageResource(R.drawable.mode_b);
@@ -234,7 +229,6 @@ public class ConversationActivity extends BaseActivity
             btn_reading.performClick();
         readChatFlow.removeAllViews();
 
-        iv_ConvoMode.setImageResource(R.drawable.mode_a);
         addItemInConvo(answer, answerAudio, true);
         currentQueNos += 1;
         new Handler().postDelayed(() -> displayNextQuestion(currentQueNos), (long) (1000));

@@ -1,10 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:ripple="http://schemas.android.com/apk/res-auto"
     android:id="@+id/ll_convo_main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/bg_anim_login"
+    android:background="@drawable/science_bkgd"
     android:elevation="@dimen/_5sdp"
     android:orientation="vertical">
 
@@ -73,36 +72,28 @@
         </RelativeLayout>
     </RelativeLayout>
 
-    <android.support.design.card.MaterialCardView
-        android:id="@+id/topPanel"
-        android:layout_width="match_parent"
-        android:layout_height="60dp"
-        android:layout_marginTop="30dp"
-        android:layout_marginStart="@dimen/_10sdp"
-        android:layout_marginEnd="@dimen/_10sdp"
-        android:layout_alignParentTop="true"
-        ripple:cardBackgroundColor="@color/colorBtnRedDark"
-        ripple:cardCornerRadius="@dimen/_8sdp">
 
         <com.pratham.foundation.customView.SansTextViewBold
             android:id="@+id/tv_title"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:layout_centerInParent="true"
-            android:layout_marginStart="@dimen/_5sdp"
-            android:layout_marginEnd="@dimen/_5sdp"
             android:gravity="center"
             android:text="Welcome "
-            android:textColor="@color/white"
+            android:textColor="@color/dark_blue"
             android:textSize="@dimen/_18sdp"
-            android:textStyle="bold" />
-    </android.support.design.card.MaterialCardView>
+            android:textStyle="bold"
+            android:layout_marginTop="30dp"
+            android:layout_marginStart="@dimen/_10sdp"
+            android:layout_marginEnd="@dimen/_10sdp"
+            android:layout_alignParentTop="true"/>
+
 
     <RelativeLayout
         android:id="@+id/rl_img"
         android:layout_width="match_parent"
         android:layout_height="@dimen/_180sdp"
-        android:layout_below="@id/topPanel"
+        android:layout_below="@id/tv_title"
         android:layout_marginHorizontal="@dimen/_10sdp"
         android:layout_marginTop="@dimen/_10sdp"
         android:layout_weight="3.5"

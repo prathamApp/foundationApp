@@ -1,7 +1,6 @@
 package com.pratham.foundation.ui.contentPlayer.fact_retrieval_fragment;
 
 import android.content.Context;
-import android.graphics.Color;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -47,15 +46,14 @@ public class TestAutoDataAdapter extends RecyclerView.Adapter<TestAutoDataAdapte
         holder.tvText.setText(datalist.get(position));
         if (!showAnswerEnabled) {
             if (mSelected.contains(position))
-                holder.tvText.setBackgroundColor(mContext.getResources().getColor(R.color.yellow_text_bg));
-               // holder.tvText.setBackgroundColor(Color.GREEN);
+                holder.tvText.setBackgroundColor(mContext.getResources().getColor(R.color.mustord_yellow));
             else
-                holder.tvText.setBackgroundColor(Color.WHITE);
+                holder.tvText.setBackground(null);
         }else {
             if (mSelected.contains(position))
-                holder.tvText.setBackgroundColor(mContext.getResources().getColor(R.color.light_green));
+                holder.tvText.setBackgroundColor(mContext.getResources().getColor(R.color.colorBtnGreenDark));
             else
-                holder.tvText.setBackgroundColor(Color.WHITE);
+                holder.tvText.setBackground(null);
         }
     }
     public boolean isShowAnswerEnabled() {
@@ -143,7 +141,7 @@ public class TestAutoDataAdapter extends RecyclerView.Adapter<TestAutoDataAdapte
 
         public ViewHolder(View itemView) {
             super(itemView);
-            tvText = (SansTextView) itemView.findViewById(R.id.text);
+            tvText = itemView.findViewById(R.id.text);
             itemView.setOnClickListener(this);
             itemView.setOnLongClickListener(this);
         }

@@ -189,7 +189,7 @@
         <item name="android:layout_height">0dp</item>
         <item name="android:layout_weight">0.5</item>
         <item name="android:adjustViewBounds">true</item>
-        <item name="android:src">@drawable/ic_warning</item>
+        <item name="android:src">@drawable/warning</item>
         <item name="android:gravity">center</item>
         <item name="android:visibility">gone</item>
     </style>
@@ -212,7 +212,7 @@
         <item name="android:layout_marginBottom">@dimen/_5sdp</item>
         <item name="android:textColor">@color/white</item>
         <item name="android:textSize">@dimen/_13sdp</item>
-        <item name="android:elevation">5dp</item>
+        <item name="android:elevation">@dimen/_3sdp</item>
         <item name="android:layout_marginStart">@dimen/_50sdp</item>
         <item name="android:background">@drawable/button_yellow</item>
     </style>
@@ -222,7 +222,7 @@
         <item name="android:layout_marginBottom">@dimen/_5sdp</item>
         <item name="android:textColor">@color/white</item>
         <item name="android:textSize">@dimen/_13sdp</item>
-        <item name="android:elevation">5dp</item>
+        <item name="android:elevation">@dimen/_3sdp</item>
         <item name="android:background">@drawable/button_green</item>
     </style>
     <style name="capturebtn">
@@ -230,7 +230,7 @@
         <item name="android:layout_marginEnd">@dimen/_5sdp</item>
         <item name="android:layout_marginBottom">@dimen/_5sdp</item>
         <item name="android:padding">@dimen/_5sdp</item>
-        <item name="android:elevation">5dp</item>
+        <item name="android:elevation">@dimen/_3sdp</item>
         <item name="android:scaleType">centerInside</item>
         <item name="android:background">@drawable/button_green</item>
         <item name="android:src">@drawable/ic_photo_camera_black</item>
@@ -253,7 +253,7 @@
         <item name="android:textAlignment">center</item>
     </style>
     <style name="paragraph">
-        <item name="android:background">@drawable/dialog_bg</item>
+        <item name="android:background">@drawable/trans_dialog_bg</item>
         <item name="android:elevation">5dp</item>
         <item name="android:padding"> @dimen/_10sdp</item>
         <item name="android:textSize">@dimen/_10sdp</item>

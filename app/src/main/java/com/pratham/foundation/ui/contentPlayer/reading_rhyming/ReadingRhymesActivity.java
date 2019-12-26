@@ -184,59 +184,6 @@ public class ReadingRhymesActivity extends BaseActivity
         newData = true;
         new Handler().postDelayed(this::showALLViews, 800);
     }
-/*
-    private void setWord(int quesNo) {
-        try {
-            if ((quesNo < rhymingWordsList.size()) && audioPlaying) {
-                rhymingWordsList.get(quesNo).setReadOut(true);
-                switch (quesNo) {
-                    case 0:
-                        cardLayout1.setVisibility(View.VISIBLE);
-                        cardText1.setText(rhymingWordsList.get(quesNo).getWord());
-                        animateRoundView(cardLayout1,quesNo);
-                        presenter.addLearntWords(0, rhymingWordsList.get(quesNo));
-                        cardLayout1.setOnClickListener(v -> startAudioReading(rhymingWordsList.get(quesNo)));
-                        break;
-                    case 1:
-                        cardLayout2.setVisibility(View.VISIBLE);
-                        cardText2.setText(rhymingWordsList.get(quesNo).getWord());
-                        animateRoundView(cardLayout2,quesNo);
-                        presenter.addLearntWords(0, rhymingWordsList.get(quesNo));
-                        cardLayout2.setOnClickListener(v -> startAudioReading(rhymingWordsList.get(quesNo)));
-                        break;
-                    case 2:
-                        cardLayout3.setVisibility(View.VISIBLE);
-                        cardText3.setText(rhymingWordsList.get(quesNo).getWord());
-                        animateRoundView(cardLayout3,quesNo);
-                        presenter.addLearntWords(0, rhymingWordsList.get(quesNo));
-                        cardLayout3.setOnClickListener(v -> startAudioReading(rhymingWordsList.get(quesNo)));
-                        break;
-                    case 3:
-                        cardLayout4.setVisibility(View.VISIBLE);
-                        cardText4.setText(rhymingWordsList.get(quesNo).getWord());
-                        animateRoundView(cardLayout4,quesNo);
-                        presenter.addLearntWords(0, rhymingWordsList.get(quesNo));
-                        cardLayout4.setOnClickListener(v -> startAudioReading(rhymingWordsList.get(quesNo)));
-                        break;
-                    case 4:
-                        cardLayout5.setVisibility(View.VISIBLE);
-                        cardText5.setText(rhymingWordsList.get(quesNo).getWord());
-                        animateRoundView(cardLayout5,quesNo);
-                        presenter.addLearntWords(0, rhymingWordsList.get(quesNo));
-                        cardLayout5.setOnClickListener(v -> startAudioReading(rhymingWordsList.get(quesNo)));
-                        break;
-                }
-                startAudioReading(rhymingWordsList.get(quesNo));
-            } else if (newData) {
-                startPlayback();
-                newData = false;
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-*/
 
     public void animateRoundView(final RelativeLayout roundView, int quesNo) {
         Animation animation = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.rhyming_zoom_in_and_out);
@@ -256,26 +203,6 @@ public class ReadingRhymesActivity extends BaseActivity
         });
         roundView.setAnimation(animation);
     }
-
-//    @Click(R.id.btn_play)
-//    public void startPlayback() {
-//        if (audioPlaying) {
-//            audioPlaying = false;
-//            newData = false;
-//            showALLViews();
-//            btn_next.setVisibility(View.VISIBLE);
-//            layout_play_ripple.setVisibility(View.VISIBLE);
-//            btn_play.setImageResource(R.drawable.ic_play_arrow);
-//        } else {
-//            audioPlaying = true;
-//            currentQueNo = 0;
-//            newData = true;
-//            setWord(currentQueNo);
-//            layout_play_ripple.setVisibility(View.VISIBLE);
-//            btn_next.setVisibility(View.GONE);
-//            btn_play.setImageResource(R.drawable.ic_stop_black_24dp);
-//        }
-//    }
 
     private void showALLViews() {
         for (int quesNo = 0; quesNo < rhymingWordsList.size(); quesNo++) {
@@ -348,15 +275,7 @@ public class ReadingRhymesActivity extends BaseActivity
             mp.start();
             mp.setOnCompletionListener(mp -> {
                     changeViewColorYellow(pos);
-//                handler = new Handler();
-//                handler.postDelayed(() -> {
-//                    playingFlg = false;
-//                    changeViewColorYellow(currentQueNo);
-////                    currentQueNo++;
-////                    setWord(currentQueNo);
-////                            setDataToView(currentQueNo);
-//                }, 500);
-            });
+         });
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -372,19 +291,6 @@ public class ReadingRhymesActivity extends BaseActivity
             showWordNextDialog(this);
         }
     }
-
-//    @OnClick(R.id.btn_prev)
-//    public void prevBtnPressed() {
-//        if (readingFlg)
-//            startReading();
-//        if (playingFlg)
-//            mp.stop();
-//        if (currentPageNo > 0) {
-//            currentQueNo = 0;
-//            currentPageNo--;
-//            //setData();
-//        }
-//    }
 
     @SuppressLint("SetTextI18n")
     public void showExitDialog() {
@@ -489,19 +395,6 @@ public class ReadingRhymesActivity extends BaseActivity
         cardText1.setText("");
     }
 
-//    @Override
-//    public void Stt_onResult(ArrayList<String> sttResults) {
-//        presenter.sttResultProcess(sttResults, rhymingWordsList); }
-//    @Override
-//    public void silenceDetected() { }
-
-//    public float getPercentage(int counter, int totLen) {
-//        float perc = 0f;
-//        if (counter > 0)
-//            perc = ((float) counter / totLen) * 100;
-//        return perc;
-//    }
-
     public int getCorrectCounter() {
         int counter = 0;
         for (boolean b : correctArr)
@@ -579,7 +472,6 @@ public class ReadingRhymesActivity extends BaseActivity
         }
     }
 
-
     @Override
     protected void onPause() {
         super.onPause();
@@ -598,8 +490,6 @@ public class ReadingRhymesActivity extends BaseActivity
 
     @Override
     public void onBackPressed() {
-//        if (audioPlaying)
-//            startPlayback();
         try {
             if (playingFlg)
                 mp.stop();
@@ -618,7 +508,6 @@ public class ReadingRhymesActivity extends BaseActivity
             return false;
         }
     }
-
 
     @Override
     public void onComplete() {

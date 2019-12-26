@@ -1,6 +1,5 @@
 package com.pratham.foundation.ui.contentPlayer.word_writting;
 
-import android.app.Dialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -9,7 +8,6 @@ import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.provider.MediaStore;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.TextViewCompat;
 import android.util.Log;
@@ -23,12 +21,11 @@ import android.widget.TextView;
 import com.pratham.foundation.ApplicationClass;
 import com.pratham.foundation.R;
 import com.pratham.foundation.customView.SansButton;
-import com.pratham.foundation.customView.SansTextView;
 import com.pratham.foundation.customView.display_image_dialog.CustomLodingDialog;
 import com.pratham.foundation.interfaces.OnGameClose;
 import com.pratham.foundation.modalclasses.EventMessage;
-import com.pratham.foundation.ui.contentPlayer.GameConstatnts;
 import com.pratham.foundation.modalclasses.ScienceQuestion;
+import com.pratham.foundation.ui.contentPlayer.GameConstatnts;
 import com.pratham.foundation.utility.FC_Utility;
 
 import org.androidannotations.annotations.AfterViews;
@@ -75,7 +72,7 @@ public class WordWritingFragment extends Fragment
     ImageButton capture;
 
     @ViewById(R.id.count)
-    SansTextView count;
+    TextView count;
     /* @ViewById(R.id.title)
      SansTextView title;*/
     private Uri capturedImageUri;
@@ -138,7 +135,7 @@ public class WordWritingFragment extends Fragment
 
     private void ShowSingleQuestion() {
         text.setText(paragraphWords.get(index));
-        count.setText("" + (index + 1));
+        count.setText("No. " + (index + 1));
         submitBtn.setVisibility(View.INVISIBLE);
         camera_controll.setVisibility(View.INVISIBLE);
         // preview.setVisibility(View.INVISIBLE);

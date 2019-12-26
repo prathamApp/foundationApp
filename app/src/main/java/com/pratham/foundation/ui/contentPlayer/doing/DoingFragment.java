@@ -624,7 +624,7 @@ public class DoingFragment extends Fragment implements STT_Result_New.sttView,On
 
 //            scrollView.setBackgroundResource(R.drawable.convo_correct_bg);
         }
-        myAns += sttResult;
+        myAns += " "+sttResult;
         etAnswer.setText(myAns);
         scienceQuestionChoices.get(index).setUserAns(myAns);
         scienceQuestionChoices.get(index).setStartTime(speechStartTime);

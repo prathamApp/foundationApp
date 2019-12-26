@@ -7,7 +7,6 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
-import android.graphics.drawable.AnimationDrawable;
 import android.graphics.drawable.ColorDrawable;
 import android.media.MediaPlayer;
 import android.os.Handler;
@@ -119,19 +118,13 @@ public class ReadingVocabularyActivity extends BaseActivity implements MediaCall
     static String readingContentPath;
     String contentPath, contentTitle, StudentID, resId, vocabCategory, sttLang,
             ques, quesAudio, ans, ansAudio, ansCheck, certiCode;
-    AnimationDrawable animationDrawable;
     Handler setDataHandler, showDataHandler, setBackgroundHandler, sendMessageHandler, newSetDataHandler;
-
 
     @AfterViews
     public void initialize() {
 
         silence_outer_layout.setVisibility(View.GONE);
         mContext = ReadingVocabularyActivity.this;
-        animationDrawable = (AnimationDrawable) ll_convo_main.getBackground();
-        animationDrawable.setEnterFadeDuration(4500);
-        animationDrawable.setExitFadeDuration(4500);
-        animationDrawable.start();
         floating_back.setImageResource(R.drawable.ic_left_arrow_white);
         floating_info.setImageResource(R.drawable.ic_info_outline_white);
         testFlg = false;

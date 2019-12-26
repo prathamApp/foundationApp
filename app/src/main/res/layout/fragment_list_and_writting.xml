@@ -3,8 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:ripple="http://schemas.android.com/apk/res-auto"
-    android:background="@drawable/bg_anim_fourth_layer">
+    android:background="@drawable/science_bkgd">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -118,9 +117,9 @@
                 android:paddingBottom="@dimen/_10sdp"
                 android:layout_centerInParent="true"
                 android:elevation="@dimen/_5sdp"
-                android:background="@drawable/dialog_bg">
+                style="@style/paragraph">
 
-                <com.pratham.foundation.customView.SansTextView
+                <com.pratham.foundation.customView.SansTextViewBold
                     android:id="@+id/count"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"

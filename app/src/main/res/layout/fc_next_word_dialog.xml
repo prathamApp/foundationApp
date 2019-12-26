@@ -31,7 +31,7 @@
             android:elevation="5dp"
             android:padding="5dp"
             android:background="@drawable/dialog_image_bg"
-            android:src="@drawable/b1" />
+            android:src="@drawable/g3" />
 
         <RelativeLayout
             android:layout_width="match_parent"

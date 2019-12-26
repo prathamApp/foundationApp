@@ -2,7 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/bg_anim_fourth_layer"
+    android:background="@drawable/science_bkgd"
     android:orientation="vertical">
 
     <!--<com.pratham.foundation.customView.SansTextView
@@ -28,14 +28,18 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:scrollbars="vertical"
-            style="@style/question"
+            style="@style/paragraph"
+            android:textSize="@dimen/_20sdp"
+            android:layout_marginStart="@dimen/_10sdp"
+            android:layout_marginEnd="@dimen/_10sdp"
+            android:textColor="@color/colorText"
             android:fadeScrollbars="false"
+            android:scrollbarSize="6dp"
+            android:scrollbarThumbVertical="@drawable/card_color_bg4"
+            android:scrollbarTrackVertical="@drawable/scroll_bg"
             android:layout_centerInParent="true"
             android:gravity="center"  />
     </RelativeLayout>
-
-
-
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -47,7 +51,9 @@
                 android:id="@+id/paragraphRecycler"
                 android:layout_width="match_parent"
                 android:fadeScrollbars="false"
-                android:scrollbars="vertical"
+                android:scrollbarSize="6dp"
+                android:scrollbarThumbVertical="@drawable/card_color_bg4"
+                android:scrollbarTrackVertical="@drawable/scroll_bg"
                 android:layout_height="match_parent"/>
           <!--  <com.pratham.foundation.customView.SansTextView
                 android:id="@+id/paragraph"

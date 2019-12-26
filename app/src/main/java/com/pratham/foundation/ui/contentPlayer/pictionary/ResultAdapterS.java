@@ -16,8 +16,8 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.pratham.foundation.R;
 import com.pratham.foundation.customView.GifView;
-import com.pratham.foundation.modalclasses.ScienceQuestionChoice;
 import com.pratham.foundation.modalclasses.ScienceQuestion;
+import com.pratham.foundation.modalclasses.ScienceQuestionChoice;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -35,7 +35,6 @@ public class ResultAdapterS extends RecyclerView.Adapter<ResultAdapterS.MyViewHo
         this.context = context;
         this.path = path;
     }
-
 
     @NonNull
     @Override
@@ -58,7 +57,7 @@ public class ResultAdapterS extends RecyclerView.Adapter<ResultAdapterS.MyViewHo
         }
         if (checkAnswer(scienceQuestion)) {
             myViewHolder.iv_correct_wrong_indicator.setImageResource(R.drawable.ic_check_white);
-            myViewHolder.iv_correct_wrong_indicator.setBackgroundColor(context.getResources().getColor(R.color.level_1_color));
+            myViewHolder.iv_correct_wrong_indicator.setBackgroundColor(context.getResources().getColor(R.color.colorBtnGreenDark));
         } else {
             myViewHolder.iv_correct_wrong_indicator.setImageResource(R.drawable.ic_close_white_24dp);
             myViewHolder.iv_correct_wrong_indicator.setBackgroundColor(context.getResources().getColor(R.color.colorRed));
@@ -97,10 +96,8 @@ public class ResultAdapterS extends RecyclerView.Adapter<ResultAdapterS.MyViewHo
                 myViewHolder.btnUserAnswer.setVisibility(View.VISIBLE);
                 myViewHolder.userAnswer.setVisibility(View.GONE);
                 setImage(myViewHolder.btnUserAnswer,userAns.getSubUrl(), path + userAns.getSubUrl());
-                // myViewHolder.correctAnswer.setText(correctAns.getSubQues());
             }
         }
-
     }
 
     private boolean checkAnswer(ScienceQuestion scienceQuestion) {
@@ -117,7 +114,6 @@ public class ResultAdapterS extends RecyclerView.Adapter<ResultAdapterS.MyViewHo
     public int getItemCount() {
         return scienceQuestionList.size();
     }
-
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
         TextView question, userAnswer, correctAnswer, tv_you_answered_label;
@@ -143,7 +139,6 @@ public class ResultAdapterS extends RecyclerView.Adapter<ResultAdapterS.MyViewHo
     }
 
     private void setImage(View view, final String choiceurl, String placeholderTemp) {
-//        if (AssessmentApplication.wiseF.isDeviceConnectedToMobileOrWifiNetwork()) {
         String path = choiceurl.replace(" ", "");
         String placeholder = placeholderTemp.replace(" ", "");
         String[] imgPath = path.split("\\.");
@@ -152,9 +147,7 @@ public class ResultAdapterS extends RecyclerView.Adapter<ResultAdapterS.MyViewHo
             len = imgPath.length - 1;
         else len = 0;
 
-
         if (imgPath[len].equalsIgnoreCase("gif")) {
-
             try {
                 GifView gifView = (GifView) view;
                 InputStream gif = new FileInputStream(placeholder);
@@ -162,11 +155,6 @@ public class ResultAdapterS extends RecyclerView.Adapter<ResultAdapterS.MyViewHo
             } catch (FileNotFoundException e) {
                 e.printStackTrace();
             }
-    /*        Glide.with(getActivity()).asGif()
-                    .load(path)
-                    .apply(new RequestOptions()
-                            .placeholder(Drawable.createFromPath(placeholder)))
-                    .into(imageView);*/
         } else {
             ImageView imageView = (ImageView) view;
             Glide.with(context)
@@ -175,8 +163,5 @@ public class ResultAdapterS extends RecyclerView.Adapter<ResultAdapterS.MyViewHo
                             .placeholder(Drawable.createFromPath(placeholder)))
                     .into(imageView);
         }
-
-
-//        }
     }
 }

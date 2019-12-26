@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/bg_anim_fourth_layer"
+    android:background="@drawable/science_bkgd"
     app:cardElevation="0dp">
 
     <Space
@@ -15,7 +15,7 @@
         android:layout_height="match_parent"
         android:layout_above="@id/hint"
         android:layout_below="@+id/space"
-        android:layout_marginTop="@dimen/_10sdp"
+        android:layout_marginTop="@dimen/_5sdp"
         android:orientation="vertical">
         <LinearLayout
             android:layout_width="match_parent"
@@ -29,75 +29,92 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/_10sdp"
                 android:layout_marginEnd="@dimen/_10sdp"
-                android:background="@drawable/dialog_bg"
+                android:layout_marginBottom="@dimen/_10sdp"
+                style="@style/paragraph"
                 android:orientation="vertical">
-                <com.pratham.foundation.customView.SansTextView
+
+                <com.pratham.foundation.customView.SansTextViewBold
                     android:id="@+id/tv_question"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:layout_margin="@dimen/_10sdp"
+                    android:layout_marginTop="@dimen/_5sdp"
+                    android:layout_marginBottom="@dimen/_5sdp"
                     android:padding="@dimen/_15sdp"
+                    android:textColor="@color/colorText"
                     android:scrollbars="vertical"
                     android:textAlignment="center"
                     android:textSize="@dimen/_20sdp" />
 
-                <RelativeLayout
+                <android.support.design.card.MaterialCardView
                     android:id="@+id/image_container"
                     android:layout_width="@dimen/_170sdp"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:layout_margin="@dimen/_10sdp"
-                    android:background="@drawable/rounded_rectangle_stroke_bg">
+                    android:layout_marginBottom="@dimen/_5sdp"
+                    app:cardCornerRadius="@dimen/_10sdp"
+                    android:background="@color/white"
+                    app:strokeWidth="@dimen/_2sdp"
+                    app:strokeColor="@color/colorAccent">
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
 
+                    <com.pratham.foundation.customView.shape_of_view.ShadowLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
+                        android:layout_marginTop="@dimen/_5sdp"
+                        android:layout_marginEnd="@dimen/_5sdp"
+                        android:layout_centerHorizontal="true"
+                        android:elevation="@dimen/_2sdp"
+                        app:sl_shadow_angle="60"
+                        app:sl_shadow_color="@color/lightGrey"
+                        app:sl_shadow_distance="2dp"
+                        app:sl_shadow_radius="2dp"
+                        app:sl_shadowed="true">
                     <ImageView
                         android:id="@+id/iv_view_img"
                         android:layout_width="@dimen/_25sdp"
                         android:layout_height="@dimen/_25sdp"
-                        android:layout_alignParentEnd="true"
-                        android:layout_marginTop="@dimen/_3sdp"
-                        android:layout_marginEnd="@dimen/_4sdp"
-                        android:background="@drawable/ripple_rectangle"
                         android:elevation="@dimen/_2sdp"
+                        android:background="@null"
                         android:padding="0dp"
                         android:src="@drawable/ic_eye"
                         android:visibility="visible" />
+                    </com.pratham.foundation.customView.shape_of_view.ShadowLayout>
 
                     <ImageView
                         android:id="@+id/iv_question_image"
                         style="@style/CustomQuestionImageStyle"
                         android:layout_width="match_parent"
                         android:layout_height="@dimen/_250sdp"
-                        android:layout_gravity="center"
-                        android:layout_margin="@dimen/_10sdp"
-                        android:layout_weight="0.5"
                         android:padding="@dimen/_2sdp"
                         android:visibility="visible" />
-
                     <com.pratham.foundation.customView.GifView
                         android:id="@+id/iv_question_gif"
                         style="@style/CustomQuestionImageStyle"
-                        android:layout_gravity="center_horizontal"
-                        android:layout_weight="0.5" />
+                        android:layout_gravity="center_horizontal"/>
                 </RelativeLayout>
-
+                </android.support.design.card.MaterialCardView>
 
             </LinearLayout>
-
         </LinearLayout>
 
         <ScrollView
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_margin="@dimen/_5sdp"
+            android:layout_marginStart="@dimen/_10sdp"
+            android:layout_marginEnd="@dimen/_10sdp"
+            android:layout_marginBottom="@dimen/_10sdp"
             android:layout_weight="0.7"
             android:fadeScrollbars="false"
-                    android:scrollbarSize="6dp"
-        android:scrollbarThumbVertical="@drawable/card_color_bg4"
-        android:scrollbarTrackVertical="@drawable/scroll_bg"
->
+            android:scrollbarSize="6dp"
+            style="@style/paragraph"
+            android:scrollbarThumbVertical="@drawable/card_color_bg4"
+            android:scrollbarTrackVertical="@drawable/scroll_bg">
 
-            <RelativeLayout
+        <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
 
@@ -114,7 +131,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerInParent="true"
-                    android:layout_margin="@dimen/_10sdp"
+                    android:layout_margin="@dimen/_5sdp"
                     android:alignmentMode="alignMargins"
                     android:columnCount="2" />
             </RelativeLayout>
