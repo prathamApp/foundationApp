@@ -107,9 +107,6 @@ public class KeywordMappingFragment extends Fragment implements KeywordMappingCo
         //show instruction dialog
         if (list != null) {
             keywordmapping = list;
-
-
-
        /* if (FC_Constants.TAB_LAYOUT) {
             gridLayoutManager = new GridLayoutManager(getActivity(), 3);
         } else {
@@ -185,7 +182,7 @@ public class KeywordMappingFragment extends Fragment implements KeywordMappingCo
                 index++;
                 LoadItemsToRecycler();
             } else {
-                    GameConstatnts.playGameNext(getActivity(), GameConstatnts.TRUE, (OnGameClose) this);
+                    GameConstatnts.playGameNext(getActivity(), GameConstatnts.TRUE, this);
             }
     }
 

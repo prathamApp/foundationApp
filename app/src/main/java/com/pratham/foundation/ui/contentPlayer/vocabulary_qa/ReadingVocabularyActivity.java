@@ -183,6 +183,7 @@ public class ReadingVocabularyActivity extends BaseActivity implements MediaCall
         recyclerView.setLayoutManager(linearLayoutManager);
         mAdapter = new QA_Adapter(messageList, this);
         recyclerView.setAdapter(mAdapter);
+        tv_title.setSelected(true);
 
         if (FC_Utility.isDataConnectionAvailable(this)) {
             presenter.fetchJsonData(readingContentPath, vocabCategory);

@@ -4,7 +4,7 @@
     android:id="@+id/home_root_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/subject_bkgd">
+    android:background="@drawable/activity_bkgd">
 
     <RelativeLayout
         android:id="@+id/header_rl"
@@ -18,13 +18,13 @@
 
         <android.support.design.card.MaterialCardView
             android:id="@+id/card_img"
-            android:layout_width="155dp"
+            android:layout_width="@dimen/_80sdp"
             android:layout_height="@dimen/_100sdp"
             android:layout_marginTop="10dp"
             android:layout_marginBottom="10dp"
             android:layout_marginStart="10dp"
             android:layout_centerVertical="true"
-            android:layout_marginEnd="10dp"
+            android:layout_marginEnd="15dp"
             app:cardCornerRadius="20dp"
             app:cardBackgroundColor="@color/trans_charcoal"
             app:cardElevation="5dp">

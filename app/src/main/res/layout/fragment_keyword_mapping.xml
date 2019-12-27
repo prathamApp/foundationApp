@@ -7,18 +7,19 @@
     <Space
         android:id="@+id/space"
         android:layout_width="match_parent"
-        android:layout_height="00dp" />
+        android:layout_height="10dp" />
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@id/space">
 
-        <com.pratham.foundation.customView.SansTextView
+        <com.pratham.foundation.customView.SansTextViewBold
             android:id="@+id/keyword"
             style="@style/tittle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:textColor="@color/dark_blue"
             android:text="@string/age_3_to_6" />
 
         <LinearLayout
@@ -57,16 +58,16 @@
             android:layout_above="@id/button_controls"
             android:layout_below="@id/keyword"
             android:layout_centerInParent="true"
-            android:layout_margin="@dimen/hexa_dp"
             android:fadeScrollbars="false"
-            android:scrollbarAlwaysDrawVerticalTrack="true"
-            android:gravity="center"
+            android:scrollbars="vertical"
             android:scrollbarSize="6dp"
-
-            android:scrollbars="vertical" />
-
+            android:scrollbarThumbVertical="@drawable/card_color_bg4"
+            android:scrollbarTrackVertical="@drawable/scroll_bg"
+            android:layout_marginStart="@dimen/_10sdp"
+            android:layout_marginEnd="@dimen/_10sdp"
+            android:layout_marginTop="@dimen/_5sdp"
+            android:layout_marginBottom="@dimen/_10sdp"
+            android:gravity="center" />
 
     </RelativeLayout>
-
-
 </RelativeLayout>
