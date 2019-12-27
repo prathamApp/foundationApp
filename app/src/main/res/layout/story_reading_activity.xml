@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/story_ll"
     android:layout_width="match_parent"
-    android:background="@drawable/science_bkgd"
+    android:background="@drawable/activity_bkgd"
     android:layout_height="match_parent">
 
     <android.support.design.widget.FloatingActionButton
@@ -62,34 +62,6 @@
             </RelativeLayout>
         </RelativeLayout>
     </RelativeLayout>
-
-    <!--    <android.support.design.card.MaterialCardView-->
-    <!--        android:id="@+id/topPanel"-->
-    <!--        android:layout_width="match_parent"-->
-    <!--        android:layout_height="@dimen/_40sdp"-->
-    <!--        android:layout_alignParentTop="true"-->
-    <!--        android:layout_marginStart="@dimen/_10sdp"-->
-    <!--        android:layout_marginTop="30dp"-->
-    <!--        android:layout_marginEnd="@dimen/_10sdp"-->
-    <!--        ripple:cardBackgroundColor="@color/colorBtnRedDark"-->
-    <!--        ripple:cardCornerRadius="@dimen/_8sdp">-->
-
-    <!--        <RelativeLayout-->
-    <!--            android:layout_width="match_parent"-->
-    <!--            android:layout_height="match_parent">-->
-
-    <!--            <com.pratham.foundation.customView.SansTextViewBold-->
-    <!--                android:id="@+id/tv_story_title"-->
-    <!--                android:layout_width="match_parent"-->
-    <!--                android:layout_height="match_parent"-->
-    <!--                android:gravity="center"-->
-    <!--                android:text="Story"-->
-    <!--                android:textColor="@color/white"-->
-    <!--                android:textSize="@dimen/_25sdp"-->
-    <!--                android:textStyle="bold" />-->
-
-    <!--        </RelativeLayout>-->
-    <!--    </android.support.design.card.MaterialCardView>-->
 
     <com.pratham.foundation.customView.SansTextViewBold
         android:id="@+id/tv_story_title"
@@ -151,7 +123,7 @@
         android:layout_marginStart="@dimen/_5sdp"
         android:layout_centerHorizontal="true"
         app:sl_shadow_angle="60"
-        app:sl_shadow_color="@color/lightGrey"
+        app:sl_shadow_color="@color/colorBlackTransparentLight"
         app:sl_shadow_distance="5dp"
         app:sl_shadow_radius="5dp"
         app:sl_shadowed="true">
@@ -178,7 +150,7 @@
         android:scrollbarSize="6dp"
         android:scrollbarThumbVertical="@drawable/card_color_bg4"
         android:scrollbarTrackVertical="@drawable/scroll_bg"
-        android:background="@drawable/dialog_bg"
+        style="@style/paragraph"
         android:elevation="5dp"
         android:padding="@dimen/_5sdp">
 

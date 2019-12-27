@@ -3,7 +3,7 @@
     android:id="@+id/story_ll"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/science_bkgd"
+    android:background="@drawable/activity_bkgd"
     android:orientation="vertical"
     android:weightSum="10">
 

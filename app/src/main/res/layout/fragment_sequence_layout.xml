@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="@drawable/science_bkgd"
+    android:background="@drawable/activity_bkgd"
     tools:context=".ui.contentPlayer.sequenceLayout.SequenceLayout">
 
     <!-- TODO: Update blank fragment layout -->
@@ -29,7 +29,7 @@
         android:layout_height="wrap_content"
         android:visibility="gone"
         app:sl_shadow_angle="60"
-        app:sl_shadow_color="@color/lightGrey"
+        app:sl_shadow_color="@color/colorBlackTransparentLight"
         app:sl_shadow_distance="5dp"
         app:sl_shadow_radius="5dp"
         app:sl_shadowed="true">

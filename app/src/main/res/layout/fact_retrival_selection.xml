@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/bg_anim_fourth_layer"
+    android:background="@drawable/activity_bkgd"
     android:orientation="vertical">
 
    <!-- <com.pratham.foundation.customView.SansTextView
@@ -29,8 +29,12 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:scrollbars="vertical"
+            android:layout_marginStart="@dimen/_10sdp"
+            android:layout_marginEnd="@dimen/_10sdp"
+            android:textSize="@dimen/_20sdp"
+            android:textColor="@color/dark_blue"
             android:layout_centerInParent="true"
-            style="@style/question" />
+            style="@style/paragraph" />
     </RelativeLayout>
     <RelativeLayout
         android:layout_width="match_parent"
@@ -38,7 +42,7 @@
         android:layout_marginHorizontal="20dp"
         android:layout_marginTop="@dimen/_10sdp"
         android:layout_weight="3"
-        android:background="@drawable/dialog_bg"
+        style="@style/paragraph"
         android:layout_marginBottom="@dimen/_20sdp"
         android:elevation="5dp">
 
@@ -47,13 +51,12 @@
             android:layout_height="match_parent"
             android:layout_below="@+id/para_tv"
             android:fadeScrollbars="false"
-                    android:scrollbarSize="6dp"
-        android:scrollbarThumbVertical="@drawable/card_color_bg4"
-        android:scrollbarTrackVertical="@drawable/scroll_bg"
+            android:padding="10dp"
+            android:scrollbarSize="6dp"
+            android:scrollbarThumbVertical="@drawable/card_color_bg4"
+            android:scrollbarTrackVertical="@drawable/scroll_bg">
 
-            android:padding="10dp">
-
-            <com.nex3z.flowlayout.FlowLayout xmlns:app="http://schemas.android.com/apk/res-auto"
+        <com.nex3z.flowlayout.FlowLayout xmlns:app="http://schemas.android.com/apk/res-auto"
                 android:id="@+id/paragraph"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -62,14 +65,14 @@
                 app:flChildSpacing="10dp" />
         </ScrollView>
 
-        <com.pratham.foundation.customView.SansTextView
+        <com.pratham.foundation.customView.SansTextViewBold
             android:id="@+id/para_tv"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:paddingHorizontal="@dimen/_10sdp"
             android:text="Paragaph : "
-            android:textColor="@color/colorBlack"
+            android:textColor="@color/dark_blue"
             android:textSize="25sp" />
     </RelativeLayout>
 

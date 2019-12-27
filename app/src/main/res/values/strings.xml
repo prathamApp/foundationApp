@@ -42,7 +42,7 @@
     <string name="Certificates">प्रमाण पत्र</string>
 
     <string name="restart_dialog_msg" >क्या आप पुनः आरंभ करना चाहते हैं?</string>
-    <string name="exit_dialog_msg" >क्या आप निकास करना चाहते हैं?</string>
+    <string name="exit_dialog_msg" >क्या आप\nनिकास करना चाहते हैं?</string>
 
     <string name="read_full_sentence" >वाक्य को पूरा पढ़ें.</string>
     <string name="Click_group_name" >अपने समूह के नाम पर क्लिक करें.</string>

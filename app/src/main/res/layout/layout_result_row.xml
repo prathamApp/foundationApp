@@ -4,7 +4,10 @@
     android:id="@+id/result_card_view"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="@dimen/_5sdp"
+    android:layout_marginTop="@dimen/_5sdp"
+    android:layout_marginBottom="@dimen/_5sdp"
+    android:layout_marginStart="@dimen/_10sdp"
+    android:layout_marginEnd="@dimen/_10sdp"
     android:background="@drawable/ripple_rectangle"
     android:padding="@dimen/_5sdp"
     app:cardCornerRadius="@dimen/_5sdp"
@@ -20,9 +23,9 @@
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/_5sdp"
             android:gravity="center"
-            android:textColor="@color/colorText"
+            android:textColor="@color/dark_blue"
             android:text="Question"
-            android:textSize="@dimen/_14sdp" />
+            android:textSize="@dimen/_16sdp" />
 
 
         <ImageView
@@ -50,15 +53,15 @@
                 android:layout_gravity="center"
                 android:orientation="vertical">
 
-                <com.pratham.foundation.customView.SansTextView
+                <com.pratham.foundation.customView.SansTextViewBold
                     android:id="@+id/tv_you_answered_label"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_margin="@dimen/_5sdp"
                     android:gravity="center"
-                    android:textColor="@color/colorText"
+                    android:textColor="@color/colorAccentDark"
                     android:text="@string/You_answered"
-                    android:textSize="@dimen/_12sdp" />
+                    android:textSize="@dimen/_15sdp" />
 
 
                 <com.pratham.foundation.customView.SansTextView
@@ -68,8 +71,8 @@
                     android:layout_margin="@dimen/_5sdp"
                     android:gravity="center"
                     android:text="@string/Skipped"
-                    android:textColor="@color/colorText"
-                    android:textSize="@dimen/_11sdp" />
+                    android:textColor="@color/dark_blue"
+                    android:textSize="@dimen/_14sdp" />
 
                 <ImageView
                     android:id="@+id/useranswer"
@@ -94,25 +97,25 @@
                 android:layout_gravity="center"
                 android:orientation="vertical">
 
-                <com.pratham.foundation.customView.SansTextView
+                <com.pratham.foundation.customView.SansTextViewBold
                     android:id="@+id/tv_correct_answer_label"
                     android:layout_width="match_parent"
-                    android:textColor="@color/colorText"
+                    android:textColor="@color/colorBtnGreenDark"
                     android:layout_height="wrap_content"
                     android:layout_margin="@dimen/_5sdp"
                     android:gravity="center"
                     android:text="@string/Correct_Answer"
-                    android:textSize="@dimen/_12sdp" />
+                    android:textSize="@dimen/_15sdp" />
 
                 <com.pratham.foundation.customView.SansTextView
                     android:id="@+id/tv_correct_answer"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_margin="@dimen/_5sdp"
-                    android:textColor="@color/colorText"
+                    android:textColor="@color/dark_blue"
                     android:gravity="center"
                     android:text="Answer"
-                    android:textSize="@dimen/_11sdp" />
+                    android:textSize="@dimen/_14sdp" />
                 <ImageView
                     android:id="@+id/btn_correct_answer"
                     android:layout_width="@dimen/_100sdp"

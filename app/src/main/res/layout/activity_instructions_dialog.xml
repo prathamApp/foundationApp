@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_gravity="center"
-    android:background="@drawable/science_bkgd">
+    android:background="@drawable/activity_bkgd">
 
     <com.pratham.foundation.customView.SansTextViewBold
         android:id="@+id/dia_title"
@@ -15,9 +15,9 @@
         android:layout_marginEnd="20dp"
         android:layout_marginBottom="10dp"
         android:gravity="center"
-        android:text="@string/common_google_play_services_notification_ticker"
+        android:text="@string/Click_group_name"
         android:paddingHorizontal="@dimen/_7sdp"
-        android:textColor="@color/gradianceCardStartColor"
+        android:textColor="@color/dark_blue"
         android:textSize="@dimen/_25sdp" />
 
     <RelativeLayout

@@ -77,7 +77,7 @@
                 android:layout_marginTop="@dimen/_5sdp"
                 android:layout_marginEnd="@dimen/_12sdp"
                 app:sl_shadow_angle="60"
-                app:sl_shadow_color="@color/strokeColor"
+                app:sl_shadow_color="@color/colorBlackTransparentLight"
                 app:sl_shadow_distance="5dp"
                 app:sl_shadow_radius="5dp"
                 app:sl_shadowed="true">
