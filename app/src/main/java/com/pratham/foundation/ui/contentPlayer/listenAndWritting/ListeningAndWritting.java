@@ -29,6 +29,7 @@ import com.pratham.foundation.ApplicationClass;
 import com.pratham.foundation.R;
 import com.pratham.foundation.customView.SansButton;
 import com.pratham.foundation.customView.SansTextView;
+import com.pratham.foundation.customView.SansTextViewBold;
 import com.pratham.foundation.customView.display_image_dialog.CustomLodingDialog;
 import com.pratham.foundation.interfaces.OnGameClose;
 import com.pratham.foundation.modalclasses.EventMessage;
@@ -86,7 +87,7 @@ public class ListeningAndWritting extends Fragment implements ListeningAndWritti
     @ViewById(R.id.preview)
     SansButton preview;
     @ViewById(R.id.count)
-    SansTextView count;
+    SansTextViewBold  count;
     @ViewById(R.id.submit)
     SansButton submitBtn;
 
@@ -192,7 +193,7 @@ public class ListeningAndWritting extends Fragment implements ListeningAndWritti
                     case 0:
                         rate = 0.8f;
                         // do operations specific to this selection
-                        setCountDown((duration * 0.8));
+                        setCountDown((duration / 0.8));
                         break;
                     case 1:
                         rate = 1f;
@@ -283,7 +284,7 @@ public class ListeningAndWritting extends Fragment implements ListeningAndWritti
             duration = mediaPlayer.getDuration();
 
             if (rate == 0.8f) {
-                setCountDown((duration * 0.8));
+                setCountDown((duration /0.8));
             } else if (rate == 1f) {
                 setCountDown((duration));
             } else if (rate == 1.2f) {

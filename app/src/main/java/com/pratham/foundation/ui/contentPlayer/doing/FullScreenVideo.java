@@ -10,6 +10,7 @@ import com.pratham.foundation.customView.media_controller.PlayerControlView;
 import com.pratham.foundation.utility.FC_Utility;
 
 import org.androidannotations.annotations.AfterViews;
+import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.ViewById;
 
@@ -50,6 +51,11 @@ public class FullScreenVideo extends BaseActivity {
     @Override
     public void onBackPressed() {
         super.onBackPressed();
+    }
+
+    @Click(R.id.close_video)
+    public void onCloseClick(){
+        onBackPressed();
     }
 
 }

@@ -6,6 +6,8 @@ import android.arch.persistence.room.PrimaryKey;
 import android.support.annotation.NonNull;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 @Entity
@@ -39,12 +41,19 @@ public class ScienceQuestionChoice implements Serializable {
     @Ignore
     private String endTime;
 
+    public List getStt_result() {
+        return stt_result;
+    }
+
+    public void setStt_result(List stt_result) {
+        this.stt_result = stt_result;
+    }
+
+    @Ignore
+    private List stt_result=new ArrayList();
 
     @Ignore
     private boolean isTrue;
-
-
-
 
     public int getStart() {
         return start;
@@ -165,4 +174,8 @@ public class ScienceQuestionChoice implements Serializable {
     public void setTrue(boolean aTrue) {
         isTrue = aTrue;
     }
+
+
+
+
 }

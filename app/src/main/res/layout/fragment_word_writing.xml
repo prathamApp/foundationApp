@@ -130,7 +130,7 @@
             android:layout_marginTop="@dimen/_20sdp"
             android:layout_marginBottom="@dimen/_20sdp"
             android:text="write" />
-        <com.pratham.foundation.customView.SansTextView
+        <TextView
             android:id="@+id/text"
             android:layout_below="@id/count"
             android:layout_width="match_parent"

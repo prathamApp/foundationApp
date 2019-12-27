@@ -6,10 +6,8 @@ import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.media.MediaPlayer;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -18,7 +16,6 @@ import android.view.Window;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 
 import com.pratham.foundation.ApplicationClass;
@@ -45,16 +42,14 @@ import org.greenrobot.eventbus.ThreadMode;
 import java.io.File;
 import java.io.IOException;
 import java.util.Arrays;
-
-import butterknife.OnClick;
+import java.util.List;
 
 import static android.app.Activity.RESULT_OK;
 import static com.pratham.foundation.utility.FC_Constants.activityPhotoPath;
 import static com.pratham.foundation.utility.FC_Constants.gameFolderPath;
 
 @EFragment(R.layout.fragment_paragraph_writing)
-public class ParagraphWritingFragment extends Fragment
-        implements ParagraphWritingContract.ParagraphWritingView, OnGameClose {
+public class ParagraphWritingFragment extends Fragment implements ParagraphWritingContract.ParagraphWritingView, OnGameClose {
 
     @Bean(ParagraphWritingPresenter.class)
     ParagraphWritingContract.ParagraphWritingPresenter presenter;
@@ -78,6 +73,10 @@ public class ParagraphWritingFragment extends Fragment
 
     @ViewById(R.id.play_button_control)
     LinearLayout play_button_control;
+    @ViewById(R.id.camera_controll)
+    LinearLayout camera_controll;
+    @ViewById(R.id.submit)
+    SansButton submitBtn;
    /* @ViewById(R.id.replay)
     ImageButton replay;*/
 
@@ -98,14 +97,13 @@ public class ParagraphWritingFragment extends Fragment
    /* private LinearLayoutManager layoutManager;
     private RecyclerView.SmoothScroller smoothScroller;*/
     private static final int CAMERA_REQUEST = 1;
-    private String imageName = null;
     private String contentPath, contentTitle, StudentID, resId, readingContentPath, resStartTime;
     private boolean onSdCard;
-    private ScienceQuestion questionModel;
-    private Uri capturedImageUri;
+    private List<ScienceQuestion> questionModel;
+    private String jsonName;
     MediaPlayer mediaPlayer;
     private boolean isPlaying = false;
-
+    private String REGEXF = "(?<=\\.\\s)|(?<=[?!]\\s)|(?<=।)|(?<=\\|)";
     @AfterViews
     protected void initiate() {
         Bundle bundle = getArguments();
@@ -115,40 +113,40 @@ public class ParagraphWritingFragment extends Fragment
             resId = bundle.getString("resId");
             contentTitle = bundle.getString("contentName");
             onSdCard = bundle.getBoolean("onSdCard", false);
+            jsonName = getArguments().getString("jsonName");
             if (onSdCard)
                 readingContentPath = ApplicationClass.contentSDPath + gameFolderPath + "/" + contentPath + "/";
             else
                 readingContentPath = ApplicationClass.foundationPath + gameFolderPath + "/" + contentPath + "/";
         }
         EventBus.getDefault().register(this);
+
         preview.setVisibility(View.GONE);
-        next.setVisibility(View.GONE);
-        previous.setVisibility(View.GONE);
         mediaPlayer = new MediaPlayer();
-        imageName = "" + ApplicationClass.getUniqueID() + ".jpg";
-        presenter.setView(ParagraphWritingFragment.this, resId, readingContentPath);
+        presenter.setView(ParagraphWritingFragment.this, resId, readingContentPath, jsonName);
         presenter.getData();
-        if (!FastSave.getInstance().getString(FC_Constants.CURRENT_SUBJECT, "").equalsIgnoreCase("Science")) {
+        if (!FastSave.getInstance().getString(FC_Constants.CURRENT_SUBJECT, "").equalsIgnoreCase("Science") && jsonName.equalsIgnoreCase(GameConstatnts.PARAGRAPH_WRITING)) {
             play_button_control.setVisibility(View.GONE);
         }
-      /*  if (questionModel != null)
-            GameConstatnts.showGameInfo(getActivity(), questionModel.getInstruction(), readingContentPath + questionModel.getInstructionUrl());
-      */
         resStartTime = FC_Utility.getCurrentDateTime();
-        presenter.addScore(0, "", 0, 0, resStartTime, GameConstatnts.PARAGRAPH_WRITING + " " + GameConstatnts.START);
+        presenter.addScore(0, "", 0, 0, resStartTime, jsonName + " " + GameConstatnts.START);
     }
 
     @Override
-    public void showParagraph(ScienceQuestion questionModel) {
+    public void showParagraph(List<ScienceQuestion> questionModel) {
         this.questionModel = questionModel;
-        //  File filePath = new File(activityPhotoPath + imageName);
-        /*    title.setText(questionModel.getInstruction());*/
-        paragraphWords = questionModel.getQuestion().trim().split("(?<=\\.\\s)|(?<=[?!]\\s)");
+        for (int i = 0; i < questionModel.size(); i++) {
+            questionModel.get(i).setUserAnswer("" + ApplicationClass.getUniqueID() + ".jpg");
+        }
+        showSingleParagraph();
+    }
 
+    private void showSingleParagraph() {
+        paragraphWords = questionModel.get(index).getQuestion().trim().split(REGEXF);
         try {
-            mediaPlayer.setDataSource(readingContentPath + "/" + questionModel.getPhotourl());
+            mediaPlayer.reset();
+            mediaPlayer.setDataSource(readingContentPath + "/" + questionModel.get(index).getPhotourl());
             mediaPlayer.prepare();
-
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -156,79 +154,94 @@ public class ParagraphWritingFragment extends Fragment
         paragraph.setAdapter(arrayAdapter);
         LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
         paragraph.setLayoutManager(layoutManager);
-    }
-
-    @OnClick(R.id.previous)
-    public void showPrevios() {
-        if (index > 0) {
-            View view = paragraph.getChildAt(index);
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                view.setElevation(0);
+        submitBtn.setVisibility(View.INVISIBLE);
+        if (questionModel.get(index).getUserAnswer() != null && !questionModel.get(index).getUserAnswer().isEmpty()) {
+            File filePath = new File(activityPhotoPath + questionModel.get(index).getUserAnswer());
+            if (filePath.exists()) {
+                capture.setVisibility(View.GONE);
+                preview.setVisibility(View.VISIBLE);
+            } else {
+                capture.setVisibility(View.VISIBLE);
+                preview.setVisibility(View.GONE);
             }
-            view.setBackgroundColor(ContextCompat.getColor(getActivity(), R.color.white));
-            index--;
-            //   paragraph.requestChildFocus(paragraph.getChildAt(index), paragraph.getChildAt(index + 1));
-            highlightText();
+        } else {
+            capture.setVisibility(View.VISIBLE);
+            preview.setVisibility(View.GONE);
+        }
+        if (index == 0) {
+            previous.setVisibility(View.INVISIBLE);
+        } else {
+            previous.setVisibility(View.VISIBLE);
+        }
+        if (index == (questionModel.size() - 1)) {
+            submitBtn.setVisibility(View.VISIBLE);
+            next.setVisibility(View.INVISIBLE);
+        } else {
+            submitBtn.setVisibility(View.INVISIBLE);
+            next.setVisibility(View.VISIBLE);
         }
     }
 
-    @OnClick(R.id.next)
-    public void showNext() {
-        if (index < (paragraph.getAdapter().getItemCount() - 1)) {
-            View view = paragraph.getChildAt(index);
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                view.setElevation(0);
+    @Click(R.id.previous)
+    public void onPreviousClick() {
+        if (questionModel != null)
+            if (index > 0) {
+                index--;
+                showSingleParagraph();
             }
-            view.setBackgroundColor(ContextCompat.getColor(getActivity(), R.color.white));
-            index++;
-            highlightText();
-        }
     }
 
-    private void highlightText() {
+    @Click(R.id.next)
+    public void onNextClick() {
+        if (questionModel != null)
+            if (index < (questionModel.size() - 1)) {
+                index++;
+                showSingleParagraph();
+            }
+    }
+
+
+ /*   private void highlightText() {
         // paragraph.smoothScrollToPosition(index);
         View view = paragraph.getChildAt(index);
         paragraph.getLayoutManager().scrollToPosition(index + 1);
         view.setBackground(ContextCompat.getDrawable(getActivity(), R.drawable.rounded_border_yellow));
-    }
+    }*/
 
     @Click(R.id.capture)
     public void captureClick() {
-       /* Intent takePicture = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        startActivityForResult(takePicture, CAMERA_REQUEST);*/
         Intent cameraIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
         File imagesFolder = new File(activityPhotoPath);
         if (!imagesFolder.exists()) imagesFolder.mkdirs();
-        File image = new File(imagesFolder, imageName);
-        capturedImageUri = Uri.fromFile(image);
+        File image = new File(imagesFolder, questionModel.get(index).getUserAnswer());
+        Uri capturedImageUri = Uri.fromFile(image);
         cameraIntent.putExtra(android.provider.MediaStore.EXTRA_OUTPUT, capturedImageUri);
         startActivityForResult(cameraIntent, CAMERA_REQUEST);
     }
 
     @Click(R.id.preview)
     public void previewClick() {
-        File filePath = new File(activityPhotoPath + imageName);
+        File filePath = new File(activityPhotoPath + questionModel.get(index).getUserAnswer());
         if (filePath.exists())
             ShowPreviewDialog(filePath);
     }
 
     @Click(R.id.submit)
     public void submitClick() {
-        File filePath = new File(activityPhotoPath + imageName);
-        if (filePath.exists()) {
-            presenter.addLearntWords(questionModel, imageName);
-            imageName = null;
+        if (checkIsPlayed(questionModel)) {
+            presenter.addLearntWords(questionModel);
         } else {
             GameConstatnts.playGameNext(getActivity(), GameConstatnts.TRUE, this);
         }
+    }
 
-        //  GameConstatnts.playGameNext(getActivity());
-       /* Bundle bundle = GameConstatnts.findGameData("105");
-        if (bundle != null) {
-            FC_Utility.showFragment(getActivity(), new ListeningAndWritting_(), R.id.RL_CPA,
-                    bundle, ListeningAndWritting_.class.getSimpleName());
-        }*/
-
+    private boolean checkIsPlayed(List<ScienceQuestion> questionModel) {
+        for (int i = 0; i < questionModel.size(); i++) {
+            if (presenter.checkIsAttempted(questionModel.get(i))) {
+                return true;
+            }
+        }
+        return false;
     }
 
     private void ShowPreviewDialog(File path) {
@@ -242,14 +255,11 @@ public class ParagraphWritingFragment extends Fragment
         ImageButton camera = dialog.findViewById(R.id.camera);
 
         dialog.show();
+        File imagesFolder = new File(activityPhotoPath);
+        if (!imagesFolder.exists()) imagesFolder.mkdirs();
+        File image = new File(imagesFolder, questionModel.get(index).getUserAnswer());
+        Uri capturedImageUri = Uri.fromFile(image);
         iv_dia_preview.setImageURI(capturedImageUri);
-        /*try {
-            Bitmap bmImg = BitmapFactory.decodeFile("" + path);
-            BitmapFactory.decodeStream(new FileInputStream(path));
-            iv_dia_preview.setImageBitmap(bmImg);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }*/
 
         dia_btn_cross.setOnClickListener(v -> {
             dialog.dismiss();
@@ -274,13 +284,6 @@ public class ParagraphWritingFragment extends Fragment
                         preview.setVisibility(View.VISIBLE);
                     }
                 }
-               /* if (data.getExtras() != null) {
-                    Bitmap photo = (Bitmap) data.getExtras().get("data");
-
-                 //   presenter.createDirectoryAndSaveFile(photo, imageName);
-                    capture.setVisibility(View.GONE);
-                    preview.setVisibility(View.VISIBLE);
-                }*/
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -314,7 +317,7 @@ public class ParagraphWritingFragment extends Fragment
                 setPlayImage();
                 try {
                     mediaPlayer.reset();
-                    mediaPlayer.setDataSource(readingContentPath + "/" + questionModel.getPhotourl());
+                    mediaPlayer.setDataSource(readingContentPath + "/" + questionModel.get(index).getPhotourl());
                     mediaPlayer.prepare();
                 } catch (IOException e) {
                     e.printStackTrace();
@@ -336,7 +339,7 @@ public class ParagraphWritingFragment extends Fragment
 
     @Override
     public void gameClose() {
-        presenter.addScore(0, "", 0, 0, resStartTime, GameConstatnts.PARAGRAPH_WRITING + " " + GameConstatnts.END);
+        presenter.addScore(0, "", 0, 0, resStartTime, jsonName + " " + GameConstatnts.END);
     }
 
     @Override
@@ -349,6 +352,6 @@ public class ParagraphWritingFragment extends Fragment
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onMessageEvent(EventMessage event) {
-        GameConstatnts.showGameInfo(getActivity(), questionModel.getInstruction(), readingContentPath + questionModel.getInstructionUrl());
+        GameConstatnts.showGameInfo(getActivity(), questionModel.get(index).getInstruction(), readingContentPath + questionModel.get(index).getInstructionUrl());
     }
 }

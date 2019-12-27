@@ -18,36 +18,46 @@ import com.pratham.foundation.utility.FC_Utility;
 
 import org.androidannotations.annotations.EBean;
 
+import java.io.File;
 import java.lang.reflect.Type;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
 import static com.pratham.foundation.database.AppDatabase.appDatabase;
+import static com.pratham.foundation.utility.FC_Constants.activityPhotoPath;
 
 @EBean
 public class ParagraphWritingPresenter implements ParagraphWritingContract.ParagraphWritingPresenter {
-    private ScienceQuestion questionModel = null;
+    private List<ScienceQuestion> questionModel = null;
     private ParagraphWritingContract.ParagraphWritingView view;
     private Context context;
     private List<ScienceQuestion> quetionModelList;
     private float perc;
     private int totalWordCount, learntWordCount;
     private String gameName, resId, contentTitle, readingContentPath;
+    private String jsonName;
 
     public ParagraphWritingPresenter(Context context) {
         this.context = context;
     }
 
-    public void setView(ParagraphWritingContract.ParagraphWritingView view, String resId, String readingContentPath) {
+    public void setView(ParagraphWritingContract.ParagraphWritingView view, String resId, String readingContentPath, String jsonName) {
         this.view = view;
         this.resId = resId;
+        this.jsonName = jsonName;
         this.readingContentPath = readingContentPath;
     }
 
     @Override
     public void getData() {
        // String text = FC_Utility.loadJSONFromStorage(readingContentPath, "CWiritng.json");
-        String text = FC_Utility.loadJSONFromStorage(readingContentPath, "CopyWriting.json");
+        String text;
+        if (jsonName.equalsIgnoreCase(GameConstatnts.PARAGRAPH_WRITING)) {
+            text = FC_Utility.loadJSONFromStorage(readingContentPath, "CopyWriting.json");
+        } else {
+            text = FC_Utility.loadJSONFromStorage(readingContentPath, jsonName + ".json");
+        }
         Gson gson = new Gson();
         Type type = new TypeToken<List<ScienceQuestion>>() {
         }.getType();
@@ -111,19 +121,26 @@ public class ParagraphWritingPresenter implements ParagraphWritingContract.Parag
     public void getDataList() {
         try {
             perc = getPercentage();
+            questionModel = new ArrayList<>();
             Collections.shuffle(quetionModelList);
-            for (int i = 0; i < quetionModelList.size(); i++) {
-                if (perc < 95) {
-                    questionModel = quetionModelList.get(i);
-                    if (!checkWord("" + quetionModelList.get(i).getTitle())) {
-                        questionModel = quetionModelList.get(i);
+            if (FC_Constants.currentSubjectFolder.equalsIgnoreCase("Science")) {
+                for (int i = 0; i < quetionModelList.size(); i++) {
+                    questionModel.add(quetionModelList.get(i));
+                }
+            } else {
+                for (int i = 0; i < quetionModelList.size(); i++) {
+                    if (perc < 95) {
+                        questionModel.add(quetionModelList.get(i));
+                        if (!checkWord("" + quetionModelList.get(i).getTitle())) {
+                            questionModel.add(quetionModelList.get(i));
+                            break;
+                        }
+                    } else {
+                        questionModel.add(quetionModelList.get(i));
+                    }
+                    if (questionModel != null) {
                         break;
                     }
-                } else {
-                    questionModel = quetionModelList.get(i);
-                }
-                if (questionModel != null) {
-                    break;
                 }
             }
             view.showParagraph(questionModel);
@@ -182,16 +199,20 @@ public class ParagraphWritingPresenter implements ParagraphWritingContract.Parag
          }
      }
  */
-    public void addLearntWords(ScienceQuestion questionModel, String imageName) {
-        if (imageName != null && !imageName.isEmpty()) {
-            KeyWords keyWords = new KeyWords();
-            keyWords.setResourceId(resId);
-            keyWords.setSentFlag(0);
-            keyWords.setStudentId(FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""));
-            keyWords.setKeyWord(questionModel.getTitle());
-            keyWords.setWordType("word");
-            addScore(GameConstatnts.getInt(questionModel.getQid()), GameConstatnts.PARAGRAPH_WRITING, 0, 0, FC_Utility.getCurrentDateTime(), imageName);
-            appDatabase.getKeyWordDao().insert(keyWords);
+    public void addLearntWords(List<ScienceQuestion> questionModel) {
+        if (questionModel != null && !questionModel.isEmpty()) {
+            for (int i = 0; i < questionModel.size(); i++) {
+                if (checkIsAttempted(questionModel.get(i))) {
+                    KeyWords keyWords = new KeyWords();
+                    keyWords.setResourceId(resId);
+                    keyWords.setSentFlag(0);
+                    keyWords.setStudentId(FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""));
+                    keyWords.setKeyWord(questionModel.get(i).getTitle());
+                    keyWords.setWordType("word");
+                    addScore(GameConstatnts.getInt(questionModel.get(i).getQid()), jsonName, 0, 0, FC_Utility.getCurrentDateTime(), questionModel.get(i).getUserAnswer());
+                    appDatabase.getKeyWordDao().insert(keyWords);
+                }
+            }
             setCompletionPercentage();
             GameConstatnts.postScoreEvent(1, 1);
             //Toast.makeText(context, "inserted succussfully", Toast.LENGTH_LONG).show();
@@ -200,6 +221,15 @@ public class ParagraphWritingPresenter implements ParagraphWritingContract.Parag
             GameConstatnts.playGameNext(context, GameConstatnts.TRUE, (OnGameClose) view);
         }
         BackupDatabase.backup(context);
+    }
+
+    public boolean checkIsAttempted(ScienceQuestion scienceQuestion) {
+        File filePath = new File(activityPhotoPath + scienceQuestion.getUserAnswer());
+        if (filePath.exists()) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
     public void addScore(int wID, String Word, int scoredMarks, int totalMarks, String resStartTime, String Label) {

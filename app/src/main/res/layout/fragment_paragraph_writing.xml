@@ -29,18 +29,25 @@
             android:layout_height="match_parent"
             android:layout_below="@+id/count">
 
-            <android.support.v7.widget.RecyclerView
-                android:id="@+id/paragraph"
+            <RelativeLayout
+                android:id="@+id/recyclerparent"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_above="@+id/play_button_control"
-                android:layout_centerInParent="true"
-                android:layout_marginTop="@dimen/_3sdp"
-                android:fadeScrollbars="false"
-                android:orientation="vertical"
-                android:scrollbarSize="6dp"
-                android:scrollbarThumbVertical="@drawable/card_color_bg4"
-                android:scrollbarTrackVertical="@drawable/scroll_bg" />
+                android:layout_above="@+id/play_button_control">
+
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/paragraph"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:layout_marginTop="@dimen/_3sdp"
+                    android:fadeScrollbars="false"
+                    android:orientation="vertical"
+                    android:scrollbarSize="6dp"
+                    android:scrollbarThumbVertical="@drawable/card_color_bg4"
+                    android:scrollbarTrackVertical="@drawable/scroll_bg" />
+            </RelativeLayout>
+
 
             <LinearLayout
                 android:id="@+id/play_button_control"

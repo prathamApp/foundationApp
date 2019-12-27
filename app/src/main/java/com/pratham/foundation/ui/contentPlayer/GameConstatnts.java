@@ -245,6 +245,10 @@ public class GameConstatnts implements ShowInstruction {
                 FC_Utility.showFragment((Activity) context, new KeywordMappingFragment_(), R.id.RL_CPA,
                         bundle, KeywordMappingFragment_.class.getSimpleName());
                 break;
+            case GameConstatnts.THINKANDWRITE:
+                FC_Utility.showFragment((Activity) context, new ParagraphWritingFragment_(), R.id.RL_CPA,
+                        bundle, ParagraphWritingFragment_.class.getSimpleName());
+                break;
             case GameConstatnts.PARAGRAPH_WRITING:
                 if (FastSave.getInstance().getString(FC_Constants.CURRENT_SUBJECT, "").equalsIgnoreCase("English")) {
                     FC_Utility.showFragment((Activity) context, new WordWritingFragment_(), R.id.RL_CPA,
@@ -289,7 +293,6 @@ public class GameConstatnts implements ShowInstruction {
                         bundle, pictionaryFragment.class.getSimpleName());
                 break;
             // case GameConstatnts.DOING_ACT_VIDEO:
-            case GameConstatnts.THINKANDWRITE:
             case GameConstatnts.DOING_ACT_READ:
             case GameConstatnts.LetterWriting:
             case GameConstatnts.WATCHING_VIDEO:
