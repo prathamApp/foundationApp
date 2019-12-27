@@ -2,135 +2,146 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/bg_anim_fourth_layer"
+    android:background="@drawable/science_bkgd"
     android:orientation="vertical">
+
     <Space
         android:id="@+id/space"
         android:layout_width="match_parent"
         android:layout_height="60dp" />
+
     <RelativeLayout
         android:id="@+id/paragraph_container"
         style="@style/paragraph"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/_330sdp"
+        android:layout_height="match_parent"
+        android:layout_above="@id/bottom_bar"
         android:layout_below="@id/space"
         android:layout_gravity="center"
         android:layout_marginHorizontal="@dimen/_10sdp"
         android:layout_marginTop="@dimen/_10sdp"
+        android:layout_marginBottom="@dimen/_10sdp"
         android:orientation="vertical">
-        <LinearLayout
-            android:id="@+id/play_button_control"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/count"
-            android:orientation="horizontal">
 
-            <RelativeLayout
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_marginTop="@dimen/_10sdp"
-                android:layout_marginBottom="@dimen/_10sdp"
-                android:layout_weight="1">
-
-                <ImageButton
-                    android:id="@+id/play_button"
-                    android:layout_width="@dimen/_80sdp"
-                    android:layout_height="@dimen/_30sdp"
-                    android:layout_centerInParent="true"
-                    android:scaleType="centerInside"
-                    android:elevation="5dp"
-                    style="@style/submitbtn"
-                    android:src="@drawable/ic_play_arrow_black" />
-            </RelativeLayout>
-
-            <RelativeLayout
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_marginTop="@dimen/_10sdp"
-                android:layout_marginBottom="@dimen/_10sdp"
-                android:layout_weight="1">
-
-                <ImageButton
-                    android:id="@+id/replay"
-                    android:layout_width="@dimen/_80sdp"
-                    android:layout_height="@dimen/_30sdp"
-                    android:layout_centerInParent="true"
-                    android:scaleType="centerInside"
-                    style="@style/submitbtn"
-                    android:elevation="5dp"
-                    android:background="@drawable/button_red"
-                    android:src="@drawable/ic_stop_black" />
-            </RelativeLayout>
-
-        </LinearLayout>
         <RelativeLayout
-            android:layout_below="@id/play_button_control"
+            android:id="@+id/rl_rec"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:layout_below="@+id/count">
+
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/paragraph"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:fadeScrollbars="false"
-                android:scrollbars="vertical"
+                android:layout_height="match_parent"
+                android:layout_above="@+id/play_button_control"
                 android:layout_centerInParent="true"
                 android:layout_marginTop="@dimen/_3sdp"
-                android:orientation="vertical" />
-        </RelativeLayout>
+                android:fadeScrollbars="false"
+                android:orientation="vertical"
+                android:scrollbarSize="6dp"
+                android:scrollbarThumbVertical="@drawable/card_color_bg4"
+                android:scrollbarTrackVertical="@drawable/scroll_bg" />
 
+            <LinearLayout
+                android:id="@+id/play_button_control"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:orientation="horizontal">
+
+                <RelativeLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:layout_marginBottom="@dimen/_10sdp"
+                    android:layout_weight="1">
+
+                    <ImageButton
+                        android:id="@+id/play_button"
+                        style="@style/submitbtn"
+                        android:layout_width="@dimen/_80sdp"
+                        android:layout_height="@dimen/_30sdp"
+                        android:layout_centerInParent="true"
+                        android:elevation="5dp"
+                        android:scaleType="centerInside"
+                        android:src="@drawable/ic_play_arrow_black" />
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:layout_marginBottom="@dimen/_10sdp"
+                    android:layout_weight="1">
+
+                    <ImageButton
+                        android:id="@+id/replay"
+                        style="@style/submitbtn"
+                        android:layout_width="@dimen/_80sdp"
+                        android:layout_height="@dimen/_30sdp"
+                        android:layout_centerInParent="true"
+                        android:background="@drawable/button_red"
+                        android:elevation="5dp"
+                        android:scaleType="centerInside"
+                        android:src="@drawable/ic_stop_black" />
+                </RelativeLayout>
+
+            </LinearLayout>
+
+        </RelativeLayout>
     </RelativeLayout>
 
-   <!-- <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_marginHorizontal="@dimen/_10sdp"
-        android:layout_marginVertical="@dimen/_10sdp"
-        android:gravity="center">
+    <!-- <RelativeLayout
+         android:layout_width="match_parent"
+         android:layout_height="wrap_content"
+         android:layout_alignParentBottom="true"
+         android:layout_marginHorizontal="@dimen/_10sdp"
+         android:layout_marginVertical="@dimen/_10sdp"
+         android:gravity="center">
 
-        <LinearLayout
-            android:id="@+id/controls_top"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center">
+         <LinearLayout
+             android:id="@+id/controls_top"
+             android:layout_width="match_parent"
+             android:layout_height="wrap_content"
+             android:gravity="center">
 
-            <ImageButton
-                android:id="@+id/capture"
-                style="@style/capturebtn"
-                android:layout_width="0dp"
-                android:layout_height="50dp"
-                android:layout_margin="@dimen/_2sdp"
-                android:layout_weight="1" />
+             <ImageButton
+                 android:id="@+id/capture"
+                 style="@style/capturebtn"
+                 android:layout_width="0dp"
+                 android:layout_height="50dp"
+                 android:layout_margin="@dimen/_2sdp"
+                 android:layout_weight="1" />
 
-            <com.pratham.foundation.customView.SansButton
-                android:id="@+id/preview"
-                style="@style/submitbtn"
-                android:layout_width="0dp"
-                android:layout_height="50dp"
-                android:layout_margin="@dimen/_2sdp"
-                android:layout_weight="1"
-                android:text="preview"
-                android:visibility="gone"/>
-        </LinearLayout>
+             <com.pratham.foundation.customView.SansButton
+                 android:id="@+id/preview"
+                 style="@style/submitbtn"
+                 android:layout_width="0dp"
+                 android:layout_height="50dp"
+                 android:layout_margin="@dimen/_2sdp"
+                 android:layout_weight="1"
+                 android:text="preview"
+                 android:visibility="gone"/>
+         </LinearLayout>
 
-        <LinearLayout
-            android:id="@+id/controls_bot"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/controls_top"
-            android:layout_marginTop="@dimen/_5sdp">
+         <LinearLayout
+             android:id="@+id/controls_bot"
+             android:layout_width="match_parent"
+             android:layout_height="wrap_content"
+             android:layout_below="@id/controls_top"
+             android:layout_marginTop="@dimen/_5sdp">
 
 
-            <com.pratham.foundation.customView.SansButton
-                android:id="@+id/submit"
-                style="@style/submitbtn"
-                android:layout_width="0dp"
-                android:layout_height="50dp"
-                android:layout_weight="1"
-                android:text="submit" />
+             <com.pratham.foundation.customView.SansButton
+                 android:id="@+id/submit"
+                 style="@style/submitbtn"
+                 android:layout_width="0dp"
+                 android:layout_height="50dp"
+                 android:layout_weight="1"
+                 android:text="submit" />
 
-        </LinearLayout>
-    </RelativeLayout>-->
+         </LinearLayout>
+     </RelativeLayout>-->
 
 
     <include

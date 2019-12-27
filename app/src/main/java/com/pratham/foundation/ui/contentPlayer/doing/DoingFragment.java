@@ -93,51 +93,34 @@ public class DoingFragment extends Fragment implements STT_Result_New.sttView,On
     ImageView questionImage;
     @BindView(R.id.iv_question_gif)
     GifView questionGif;
-
     @BindView(R.id.vv_question)
     VideoView vv_question;
-
     @BindView(R.id.capture)
     ImageView capture;
-
     @BindView(R.id.reset_btn)
     SansButton reset_btn;
-
-
    /* @BindView(R.id.RelativeLayout)
     RelativeLayout RelativeLayout;*/
-
     @BindView(R.id.preview)
     SansButton preview;
-
     @BindView(R.id.submit)
     SansButton submitBtn;
-
     @BindView(R.id.previous)
     ImageButton previous;
-
     @BindView(R.id.next)
     ImageButton next;
-
     @BindView(R.id.sub_questions_container)
     LinearLayout sub_questions_container;
-
     @BindView(R.id.relativeLayout)
     RelativeLayout relativeLayout;
-
     @BindView(R.id.camera_controll)
     LinearLayout camera_controll;
-
     @BindView(R.id.subQuestion)
     SansTextView subQuestion;
-
-
     @BindView(R.id.answer)
     SansTextView etAnswer;
     @BindView(R.id.btn_read_mic)
     ImageButton ib_mic;
-
-
 
     String fileName;
     String questionPath;
