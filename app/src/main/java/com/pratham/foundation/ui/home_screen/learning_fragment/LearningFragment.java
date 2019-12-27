@@ -64,6 +64,7 @@ import static com.pratham.foundation.ui.home_screen.HomeActivity.header_rl;
 import static com.pratham.foundation.ui.home_screen.HomeActivity.levelChanged;
 import static com.pratham.foundation.ui.home_screen.HomeActivity.sub_Name;
 import static com.pratham.foundation.ui.home_screen.HomeActivity.tv_header_progress;
+import static com.pratham.foundation.utility.FC_Constants.COMING_SOON;
 import static com.pratham.foundation.utility.FC_Constants.currentLevel;
 import static com.pratham.foundation.utility.FC_Constants.gameFolderPath;
 import static com.pratham.foundation.utility.FC_Utility.dpToPx;
@@ -96,6 +97,13 @@ public class LearningFragment extends Fragment implements LearningContract.Learn
         my_recycler_view.addOnScrollListener(new RetractableToolbarUtil
                 .ShowHideToolbarOnScrollingListener(header_rl));
         presenter.getBottomNavId(currentLevel, "Learning");
+    }
+
+    @Override
+    public void showComingSoonDiaog() {
+        EventMessage eventMessage = new EventMessage();
+        eventMessage.setMessage(COMING_SOON);
+        EventBus.getDefault().post(eventMessage);
     }
 
     @UiThread

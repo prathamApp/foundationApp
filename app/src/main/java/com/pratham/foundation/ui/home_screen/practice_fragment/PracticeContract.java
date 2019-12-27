@@ -40,6 +40,8 @@ public interface PracticeContract {
 
         void dismissDownloadDialog();
 
+        void showComingSoonDiaog();
+
 //        void setBotNodeId(String botID);
     }
 

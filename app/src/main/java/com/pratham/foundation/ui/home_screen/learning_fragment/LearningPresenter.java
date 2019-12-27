@@ -147,7 +147,8 @@ public class LearningPresenter implements LearningContract.LearningPresenter, AP
 //        if (botID != null && !FC_Utility.isDataConnectionAvailable(mContext))
         if (botID != null)
             getLevelDataForList(currentLevelNo, botID);
-//        else
+        else
+            learningView.showComingSoonDiaog();
 //            getRootData(rootID);
 
     }

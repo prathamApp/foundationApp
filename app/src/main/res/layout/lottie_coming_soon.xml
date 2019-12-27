@@ -1,0 +1,30 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="@dimen/_200sdp"
+    android:layout_height="@dimen/_200sdp"
+    android:layout_gravity="center"
+    android:background="@drawable/dialog_bg">
+
+    <ImageView
+        android:id="@+id/dl_lottie_view"
+        android:layout_width="@dimen/_170sdp"
+        android:layout_height="@dimen/_160sdp"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:src="@drawable/coming_soon"/>
+
+    <com.pratham.foundation.customView.SansButton
+        android:id="@+id/dia_btn_yes"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/_30sdp"
+        android:layout_alignParentBottom="true"
+        android:layout_marginStart="@dimen/_10sdp"
+        android:layout_marginEnd="@dimen/_10sdp"
+        android:layout_marginBottom="@dimen/_10sdp"
+        android:background="@drawable/button_red"
+        android:elevation="@dimen/_3sdp"
+        android:gravity="center"
+        android:text="OK"
+        android:textColor="@color/white"
+        android:textSize="@dimen/_15sdp" />
+
+</RelativeLayout>

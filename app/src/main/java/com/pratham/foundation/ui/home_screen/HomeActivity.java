@@ -451,6 +451,30 @@ public class HomeActivity extends BaseActivity implements LevelChanged {
         });
     }
 
+
+    @UiThread
+    @SuppressLint("SetTextI18n")
+    void showComingSoonDia() {
+        final CustomLodingDialog dialog = new CustomLodingDialog(this, R.style.ExitDialog);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        Objects.requireNonNull(dialog.getWindow()).setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        dialog.setContentView(R.layout.lottie_coming_soon);
+        dialog.setCancelable(false);
+        dialog.setCanceledOnTouchOutside(false);
+        dialog.show();
+
+        TextView dia_btn_yes = dialog.findViewById(R.id.dia_btn_yes);
+
+        dia_btn_yes.setOnClickListener(v -> {
+            comngSoonFlg=false;
+            finish();
+            dialog.dismiss();
+        });
+
+    }
+
+    boolean comngSoonFlg=false;
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (isTest) {
@@ -527,7 +551,11 @@ public class HomeActivity extends BaseActivity implements LevelChanged {
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void messageReceived(EventMessage message) {
         if (message != null) {
-            if (message.getMessage().equalsIgnoreCase(FC_Constants.LEVEL_CHANGED)) {
+            if (message.getMessage().equalsIgnoreCase(FC_Constants.COMING_SOON)){
+                if(!comngSoonFlg) {
+                    comngSoonFlg = true;
+                    showComingSoonDia();
+                }
             }
         }
     }

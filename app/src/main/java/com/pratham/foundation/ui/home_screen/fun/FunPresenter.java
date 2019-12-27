@@ -145,7 +145,8 @@ public class FunPresenter implements FunContract.FunPresenter, API_Content_Resul
 //        if (botID != null && !FC_Utility.isDataConnectionAvailable(mContext))
         if (botID != null )
             getLevelDataForList(currentLevelNo, botID);
-//        else
+        else
+            funView.showComingSoonDiaog();
 //            getRootData(rootID);
 
     }

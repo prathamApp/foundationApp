@@ -147,6 +147,8 @@ public class PracticePresenter implements PracticeContract.PracticePresenter, AP
 //        if (botID != null && !FC_Utility.isDataConnectionAvailable(mContext))
         if (botID != null )
             getLevelDataForList(currentLevelNo, botID);
+        else
+            PracticeView.showComingSoonDiaog();
 //        else
 //            getRootData(rootID);
 

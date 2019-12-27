@@ -52,7 +52,6 @@ public class ContentPresenter implements ContentContract.ContentPresenter, API_C
     @Bean(ZipDownloader.class)
     ZipDownloader zipDownloader;
 
-
     @Override
     public void setView(ContentContract.ContentView contentView) {
         this.contentView = contentView;
@@ -67,7 +66,6 @@ public class ContentPresenter implements ContentContract.ContentPresenter, API_C
     private void sortAllList(List<ContentTable> contentParentList) {
         Collections.sort(contentParentList, (o1, o2) -> o1.getNodeId().compareTo(o2.getNodeId()));
     }
-
 
     public ContentPresenter(Context context) {
         this.context = context;

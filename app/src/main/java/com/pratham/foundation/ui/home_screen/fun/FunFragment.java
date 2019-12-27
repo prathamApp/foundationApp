@@ -63,6 +63,7 @@ import static com.pratham.foundation.ui.home_screen.HomeActivity.header_rl;
 import static com.pratham.foundation.ui.home_screen.HomeActivity.levelChanged;
 import static com.pratham.foundation.ui.home_screen.HomeActivity.sub_Name;
 import static com.pratham.foundation.ui.home_screen.HomeActivity.tv_header_progress;
+import static com.pratham.foundation.utility.FC_Constants.COMING_SOON;
 import static com.pratham.foundation.utility.FC_Constants.currentLevel;
 import static com.pratham.foundation.utility.FC_Constants.gameFolderPath;
 import static com.pratham.foundation.utility.FC_Utility.dpToPx;
@@ -124,6 +125,13 @@ public class FunFragment extends Fragment implements FunContract.FunView,
                 e.printStackTrace();
             }
         }, delay);
+    }
+
+    @Override
+    public void showComingSoonDiaog() {
+        EventMessage eventMessage = new EventMessage();
+        eventMessage.setMessage(COMING_SOON);
+        EventBus.getDefault().post(eventMessage);
     }
 
     public void sortAllList(List<ContentTable> contentParentList) {

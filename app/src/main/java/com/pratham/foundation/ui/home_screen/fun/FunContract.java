@@ -37,6 +37,8 @@ public interface FunContract {
 
         void dismissDownloadDialog();
 
+        void showComingSoonDiaog();
+
 //        void setBotNodeId(String botID);
     }
 

@@ -40,6 +40,8 @@ public interface LearningContract {
 
         void dismissDownloadDialog();
 
+        void showComingSoonDiaog();
+
 //        void setBotNodeId(String botID);
     }
 
