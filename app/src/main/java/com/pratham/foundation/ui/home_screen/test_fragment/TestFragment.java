@@ -102,6 +102,7 @@ public class TestFragment extends Fragment implements TestContract.TestView,
     private String downloadNodeId, resName, resServerImageName, downloadType, certi_Code = "";
     private int childPos = 0, parentPos = 0, resumeCntr = 0;
     public static String language = "Hindi";
+    String currLang="";
 
     @AfterViews
     public void initialize() {
@@ -179,7 +180,7 @@ public class TestFragment extends Fragment implements TestContract.TestView,
         Spinner lang_spinner = dialog.findViewById(R.id.lang_spinner);
         dia_btn_green.setText("OK");
         dialog.show();
-        String currLang = "" + FastSave.getInstance().getString(FC_Constants.LANGUAGE, "Hindi");
+        currLang = "" + FastSave.getInstance().getString(FC_Constants.LANGUAGE, "Hindi");
         dia_title.setText("Current Language : " + currLang);
 
         ArrayAdapter<String> dataAdapter = new ArrayAdapter<>(getActivity(), R.layout.custom_spinner,

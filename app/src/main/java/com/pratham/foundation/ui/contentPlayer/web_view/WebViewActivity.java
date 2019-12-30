@@ -37,7 +37,6 @@ import java.util.List;
 import butterknife.ButterKnife;
 
 import static com.pratham.foundation.database.AppDatabase.appDatabase;
-import static com.pratham.foundation.utility.FC_Constants.dialog_btn_cancel;
 
 public class WebViewActivity extends BaseActivity implements WebViewInterface {
 
@@ -148,10 +147,10 @@ public class WebViewActivity extends BaseActivity implements WebViewInterface {
         Button dia_btn_green = dialog.findViewById(R.id.dia_btn_green);
         Button dia_btn_red = dialog.findViewById(R.id.dia_btn_red);
 
-        dia_btn_green.setText ("Yes");
-        dia_btn_red.setText   ("No");
-        dia_btn_yellow.setText(""+dialog_btn_cancel);
-        dia_title.setText("Exit the game?");
+        dia_btn_green.setText (""+getResources().getString(R.string.yes));
+        dia_btn_red.setText   (""+getResources().getString(R.string.no));
+        dia_btn_yellow.setText(""+getResources().getString(R.string.Cancel));
+        dia_title.setText(""+getResources().getString(R.string.exit_dialog_msg));
         dialog.show();
 
         dia_btn_green.setOnClickListener(new View.OnClickListener() {
