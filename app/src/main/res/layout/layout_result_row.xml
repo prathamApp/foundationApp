@@ -67,7 +67,7 @@
                 <com.pratham.foundation.customView.SansTextView
                     android:id="@+id/tv_you_answered"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="@dimen/_100sdp"
                     android:layout_margin="@dimen/_5sdp"
                     android:gravity="center"
                     android:text="@string/Skipped"
@@ -110,7 +110,7 @@
                 <com.pratham.foundation.customView.SansTextView
                     android:id="@+id/tv_correct_answer"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="@dimen/_100sdp"
                     android:layout_margin="@dimen/_5sdp"
                     android:textColor="@color/dark_blue"
                     android:gravity="center"

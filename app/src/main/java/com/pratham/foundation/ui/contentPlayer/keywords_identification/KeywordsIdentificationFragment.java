@@ -357,7 +357,7 @@ public class KeywordsIdentificationFragment extends Fragment implements Keywords
                 dialog.setCanceledOnTouchOutside(false);
                 SansButton dia_btn_yellow = dialog.findViewById(R.id.dia_btn_yellow);
                 TextView message = dialog.findViewById(R.id.message);
-                message.setText("Now its your turn to select keyword");
+                message.setText(getResources().getString(R.string.usermessage));
                 dia_btn_yellow.setOnClickListener(v -> dialog.dismiss());
                 dialog.show();
             }

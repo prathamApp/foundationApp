@@ -439,6 +439,7 @@
     <string name="Read">पढ़ें</string>
     <string name="Paragraph">अनुच्छेद : </string>
     <string name="Keyword">संकेत शब्द : </string>
+    <string name="usermessage">अब कीवर्ड चुनने के लिए आपकी बारी है</string>
 
 </resources>
     <!--
