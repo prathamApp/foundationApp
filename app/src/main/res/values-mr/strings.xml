@@ -72,6 +72,7 @@
     <string name="Read">वाचा</string>
     <string name="Paragraph">परिच्छेद : </string>
     <string name="Keyword">महत्वाचा शब्द : </string>
+    <string name="usermessage">आता मुख्य शब्द निवडण्याची तुमची पाळी आहे.</string>
 
     <string name="yes">होय</string>
     <string name="no">नाही</string>
