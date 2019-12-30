@@ -462,15 +462,12 @@ public class HomeActivity extends BaseActivity implements LevelChanged {
         dialog.setCancelable(false);
         dialog.setCanceledOnTouchOutside(false);
         dialog.show();
-
         TextView dia_btn_yes = dialog.findViewById(R.id.dia_btn_yes);
-
         dia_btn_yes.setOnClickListener(v -> {
             comngSoonFlg=false;
             finish();
             dialog.dismiss();
         });
-
     }
 
     boolean comngSoonFlg=false;
@@ -534,18 +531,6 @@ public class HomeActivity extends BaseActivity implements LevelChanged {
         }
         viewpager.setAdapter(adapter);
     }
-
-/*    @Override
-    public void onStart() {
-        super.onStart();
-        EventBus.getDefault().register(this);
-    }
-
-    @Override
-    public void onStop() {
-        super.onStop();
-        EventBus.getDefault().unregister(this);
-    }*/
 
     @SuppressLint("SetTextI18n")
     @Subscribe(threadMode = ThreadMode.MAIN)
