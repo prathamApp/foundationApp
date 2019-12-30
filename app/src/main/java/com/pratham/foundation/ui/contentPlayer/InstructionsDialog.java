@@ -44,7 +44,8 @@ public class InstructionsDialog extends CustomLodingDialog {
             dia_title.setText("");
         }
         //TODO change as per dialog language when added
-        resorcetype="hi_"+resorcetype;
+        resorcetype="mr_"+resorcetype;
+//        resorcetype="hi_"+resorcetype;
 //        if (FastSave.getInstance().getString(FC_Constants.LANGUAGE, FC_Constants.HINDI).equalsIgnoreCase("Hindi")) {
 //            resorcetype="hi_"+resorcetype;
 //        }
