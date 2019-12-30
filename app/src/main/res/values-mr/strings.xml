@@ -49,8 +49,8 @@
     <string name="Next" >पुढे</string>
     <string name="nice_chatting_with_you" >तुमच्याशी बोलून छान वाटले.</string>
     <string name="byebye" >टाटा!</string>
-    <string name="Unsupervised">देखरेखीखाली</string>
-    <string name="Supervised">देखरेखीविना</string>
+    <string name="Unsupervised">देखरेखीविना</string>
+    <string name="Supervised">देखरेखीखाली</string>
     <string name="change_subj">विषय बदलायचा आहे का?</string>
     <string name="save">जतन करा</string>
     <string name="restart_dialog_msg" >तुम्हाला पुन्हा सुरु करायचे आहे का? </string>

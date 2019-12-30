@@ -47,11 +47,11 @@
             android:layout_marginTop="-30dp"
             android:layout_marginRight="10dp"
             android:layout_marginBottom="10dp"
-            android:background="@drawable/gragiance_ripple_round"
+            android:background="@drawable/button_yellow"
             android:elevation="@dimen/_5sdp"
             android:padding="@dimen/_10sdp"
             android:scaleType="centerInside"
-            android:src="@drawable/camera_btn_icon" />
+            android:src="@drawable/ic_photo_camera_black" />
 
         <com.pratham.foundation.customView.SansEditText
             android:id="@+id/supervisor_name"

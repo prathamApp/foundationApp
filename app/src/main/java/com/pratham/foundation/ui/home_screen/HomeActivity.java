@@ -558,10 +558,6 @@ public class HomeActivity extends BaseActivity implements LevelChanged {
     public void onBackPressed() {
         super.onBackPressed();
         finish();
-//        if (!dialogFlg) {
-//            dialogFlg = true;
-//            exitDialog();
-//        }
     }
 
     @SuppressLint("SetTextI18n")

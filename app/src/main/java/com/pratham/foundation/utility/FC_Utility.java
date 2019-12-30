@@ -144,8 +144,8 @@ public class FC_Utility {
     }
 
     private static int[] gradiant_bg = new int[]{
-            R.drawable.gradient_one, R.drawable.gradient_two, R.drawable.gradient_three,
-            R.drawable.gradient_four, R.drawable.gradient_five};
+            R.drawable.card_color_bg1, R.drawable.card_color_bg2, R.drawable.card_color_bg3,
+            R.drawable.card_color_bg4, R.drawable.card_color_bg5};
 
     private static int[] cord_color_bg = new int[]{
             R.drawable.card_color_bg1, R.drawable.card_color_bg2, R.drawable.card_color_bg3,
