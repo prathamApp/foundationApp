@@ -5,9 +5,6 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
-import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.support.design.card.MaterialCardView;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.CardView;
@@ -15,7 +12,6 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.Window;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
@@ -52,6 +48,10 @@ import com.pratham.foundation.ui.contentPlayer.GameConstatnts;
 import com.pratham.foundation.utility.FC_Constants;
 import com.pratham.foundation.utility.FC_Utility;
 
+import org.androidannotations.annotations.AfterViews;
+import org.androidannotations.annotations.Click;
+import org.androidannotations.annotations.EFragment;
+import org.androidannotations.annotations.ViewById;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
@@ -68,43 +68,39 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.OnClick;
-
 import static com.pratham.foundation.database.AppDatabase.appDatabase;
 import static com.pratham.foundation.utility.FC_Constants.gameFolderPath;
 import static com.pratham.foundation.utility.FC_Utility.showZoomDialog;
 
-
+@EFragment(R.layout.layout_mcq_fill_in_the_blanks_with_options_row)
 public class pictionaryFragment extends Fragment implements OnGameClose {
 
-    @BindView(R.id.tv_question)
+    @ViewById(R.id.tv_question)
     TextView question;
-    @BindView(R.id.iv_question_image)
+    @ViewById(R.id.iv_question_image)
     ImageView questionImage;
-    @BindView(R.id.iv_question_gif)
+    @ViewById(R.id.iv_question_gif)
     GifView questionGif;
-    @BindView(R.id.rg_mcq)
+    @ViewById(R.id.rg_mcq)
     RadioGroup radioGroupMcq;
-    @BindView(R.id.grid_mcq)
+    @ViewById(R.id.grid_mcq)
     GridLayout gridMcq;
 
 
-    @BindView(R.id.btn_prev)
+    @ViewById(R.id.btn_prev)
     ImageButton previous;
-    @BindView(R.id.btn_submit)
+    @ViewById(R.id.btn_submit)
     SansButton submitBtn;
-    @BindView(R.id.btn_next)
+    @ViewById(R.id.btn_next)
     ImageButton next;
 
-    @BindView(R.id.show_answer)
+    @ViewById(R.id.show_answer)
     SansButton show_answer;
 
-    @BindView(R.id.image_container)
+    @ViewById(R.id.image_container)
     MaterialCardView image_container;
 
-    @BindView(R.id.iv_view_img)
+    @ViewById(R.id.iv_view_img)
     ImageView iv_view_img;
 
     private String readingContentPath, contentPath, contentTitle, StudentID, resId, resStartTime;
@@ -128,9 +124,9 @@ public class pictionaryFragment extends Fragment implements OnGameClose {
     }
 
 
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+    @AfterViews
+    public void initiate() {
+        // super.onCreate(savedInstanceState);
         if (getArguments() != null) {
             contentPath = getArguments().getString("contentPath");
             StudentID = getArguments().getString("StudentID");
@@ -143,8 +139,10 @@ public class pictionaryFragment extends Fragment implements OnGameClose {
                 readingContentPath = ApplicationClass.foundationPath + gameFolderPath + "/" + contentPath + "/";
 
             EventBus.getDefault().register(this);
-            animFadein = AnimationUtils.loadAnimation(getActivity().getApplicationContext(),
-                    R.anim.shake);
+            if (FC_Constants.isTest) {
+                show_answer.setVisibility(View.INVISIBLE);
+            }
+            animFadein = AnimationUtils.loadAnimation(getActivity().getApplicationContext(), R.anim.shake);
             resStartTime = FC_Utility.getCurrentDateTime();
             addScore(0, "", 0, 0, resStartTime, FC_Utility.getCurrentDateTime(), GameConstatnts.SHOW_ME_ANDROID + " " + GameConstatnts.START);
             getData();
@@ -230,6 +228,7 @@ public class pictionaryFragment extends Fragment implements OnGameClose {
                 Collections.shuffle(list);
                 scienceQuestion.setLstquestionchoice(list);
             }
+            setMcqsQuestion();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -257,7 +256,7 @@ public class pictionaryFragment extends Fragment implements OnGameClose {
         return count;
     }
 
-    private boolean checkWord(String wordStr) {
+   /* private boolean checkWord(String wordStr) {
         try {
             String word = appDatabase.getKeyWordDao().checkWord(FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""), resId, wordStr);
             return word != null;
@@ -265,24 +264,24 @@ public class pictionaryFragment extends Fragment implements OnGameClose {
             e.printStackTrace();
             return false;
         }
-    }
+    }*/
 
-    @Override
+   /* @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.layout_mcq_fill_in_the_blanks_with_options_row, container, false);
-    }
+    }*/
 
-    @Override
+   /* @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        ButterKnife.bind(this, view);
+      //  ButterKnife.bind(this, view);
         if (FC_Constants.isTest) {
             show_answer.setVisibility(View.INVISIBLE);
         }
         setMcqsQuestion();
-    }
+    }*/
 
     public void setMcqsQuestion() {
         clerAnimation();
@@ -783,7 +782,7 @@ public class pictionaryFragment extends Fragment implements OnGameClose {
 //        }
     }
 
-    @OnClick(R.id.btn_prev)
+    @Click(R.id.btn_prev)
     public void onPreviousClick() {
         if (selectedFive != null)
             if (index > 0) {
@@ -792,7 +791,7 @@ public class pictionaryFragment extends Fragment implements OnGameClose {
             }
     }
 
-    @OnClick(R.id.btn_next)
+    @Click(R.id.btn_next)
     public void onNextClick() {
         if (selectedFive != null)
             if (index < (selectedFive.size() - 1)) {
@@ -801,7 +800,7 @@ public class pictionaryFragment extends Fragment implements OnGameClose {
             }
     }
 
-    @OnClick(R.id.btn_submit)
+    @Click(R.id.btn_submit)
     public void onsubmitBtnClick() {
         if (selectedFive != null)
             addLearntWords(selectedFive);
@@ -992,7 +991,7 @@ public class pictionaryFragment extends Fragment implements OnGameClose {
             GameConstatnts.showGameInfo(getActivity(),selectedFive.get(index).getInstruction(), readingContentPath +selectedFive.get(index).getInstruction());
     }
 
-    @OnClick(R.id.show_answer)
+    @Click(R.id.show_answer)
     public void showAnswer() {
         if (showanswer) {
             //hide answer

@@ -6,17 +6,12 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
-import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -24,18 +19,11 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 import com.pratham.foundation.ApplicationClass;
 import com.pratham.foundation.R;
 import com.pratham.foundation.customView.GifView;
 import com.pratham.foundation.customView.SansButton;
 import com.pratham.foundation.customView.SansTextView;
-import com.pratham.foundation.database.BackupDatabase;
-import com.pratham.foundation.database.domain.Assessment;
-import com.pratham.foundation.database.domain.ContentProgress;
-import com.pratham.foundation.database.domain.KeyWords;
-import com.pratham.foundation.database.domain.Score;
 import com.pratham.foundation.interfaces.OnGameClose;
 import com.pratham.foundation.modalclasses.EventMessage;
 import com.pratham.foundation.modalclasses.ScienceQuestion;
@@ -47,49 +35,51 @@ import com.pratham.foundation.ui.contentPlayer.GameConstatnts;
 import com.pratham.foundation.utility.FC_Constants;
 import com.pratham.foundation.utility.FC_Utility;
 
+import org.androidannotations.annotations.AfterViews;
+import org.androidannotations.annotations.Bean;
+import org.androidannotations.annotations.Click;
+import org.androidannotations.annotations.EFragment;
+import org.androidannotations.annotations.ViewById;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
 import java.io.FileInputStream;
 import java.io.InputStream;
-import java.lang.reflect.Type;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.OnClick;
-
-import static com.pratham.foundation.database.AppDatabase.appDatabase;
 import static com.pratham.foundation.utility.FC_Constants.STT_REGEX;
 import static com.pratham.foundation.utility.FC_Constants.gameFolderPath;
 
-public class ReadingFragment extends Fragment implements STT_Result_New.sttView, OnGameClose {
+@EFragment(R.layout.reading_layout)
+public class ReadingFragment extends Fragment implements STT_Result_New.sttView, OnGameClose, ReadingFragment_Contract.ReadingFragmentView {
 
-    @BindView(R.id.tv_question)
+    @ViewById(R.id.tv_question)
     SansTextView question;
-    @BindView(R.id.iv_question_image)
+    @ViewById(R.id.iv_question_image)
     ImageView questionImage;
-    @BindView(R.id.iv_question_gif)
+    @ViewById(R.id.iv_question_gif)
     GifView questionGif;
-    @BindView(R.id.et_answer)
+    @ViewById(R.id.et_answer)
     SansTextView etAnswer;
-    @BindView(R.id.ib_mic)
+    @ViewById(R.id.ib_mic)
     ImageButton ib_mic;
-    @BindView(R.id.btn_prev)
+    @ViewById(R.id.btn_prev)
     ImageButton previous;
-    @BindView(R.id.btn_next)
+    @ViewById(R.id.btn_next)
     ImageButton next;
-    @BindView(R.id.submit)
+    @ViewById(R.id.submit)
     SansButton submitBtn;
 
-    @BindView(R.id.reset_btn)
+    @ViewById(R.id.reset_btn)
     SansButton reset_btn;
+
+    @Bean(ReadingFragment_Presenter.class)
+    ReadingFragment_Contract.ReadingFragmentPresenter presenter;
     private ScienceQuestion scienceQuestion;
     private List<ScienceQuestionChoice> scienceQuestionChoices;
-    private int totalWordCount, learntWordCount, index = 0;
+    private int index = 0;
     private float perc = 0;
     private float percScore = 0;
     private String answer;
@@ -106,12 +96,13 @@ public class ReadingFragment extends Fragment implements STT_Result_New.sttView,
     boolean dialogFlg = false;
     private String jsonName;
 
+    //private String speechStartTime;
     public ReadingFragment() {
     }
 
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+    @AfterViews
+    public void initiate() {
+        // super.onCreate(savedInstanceState);
         if (getArguments() != null) {
             context = getActivity();
             continuousSpeechService = new ContinuousSpeechService_New(context, ReadingFragment.this, FastSave.getInstance().getString(FC_Constants.LANGUAGE, FC_Constants.HINDI));
@@ -126,11 +117,13 @@ public class ReadingFragment extends Fragment implements STT_Result_New.sttView,
                 readingContentPath = ApplicationClass.contentSDPath + gameFolderPath + "/" + contentPath + "/";
             else
                 readingContentPath = ApplicationClass.foundationPath + gameFolderPath + "/" + contentPath + "/";
-
+            etAnswer.setMovementMethod(new ScrollingMovementMethod());
             EventBus.getDefault().register(this);
             resStartTime = FC_Utility.getCurrentDateTime();
-            addScore(0, "", 0, 0, resStartTime, jsonName + " " + GameConstatnts.START);
-            getData();
+            presenter.setView(this,jsonName,resId,resStartTime);
+            presenter.addScore(0, "", 0, 0, resStartTime, jsonName + " " + GameConstatnts.START);
+            //getData();
+            presenter.getData(readingContentPath);
         }
     }
 
@@ -146,128 +139,14 @@ public class ReadingFragment extends Fragment implements STT_Result_New.sttView,
         }
     }
 
-    private void getData() {
-        String text = FC_Utility.loadJSONFromStorage(readingContentPath, jsonName + ".json");
-        // List instrumentNames = new ArrayList<>();
-        if (text != null) {
-            Gson gson = new Gson();
-            Type type = new TypeToken<List<ScienceQuestion>>() {
-            }.getType();
-            dataList = gson.fromJson(text, type);
-            getDataList();
-        } else {
-            Toast.makeText(context, "Data not found", Toast.LENGTH_LONG).show();
+    public void showQuestion(ScienceQuestion scienceQuestion) {
+        if (scienceQuestion != null) {
+            this.scienceQuestion = scienceQuestion;
+            scienceQuestionChoices = scienceQuestion.getLstquestionchoice();
+            setFillInTheBlanksQuestion();
         }
     }
-
-    public void setCompletionPercentage() {
-        try {
-            totalWordCount = dataList.size();
-            learntWordCount = getLearntWordsCount();
-            String Label = "resourceProgress";
-            if (learntWordCount > 0) {
-                perc = ((float) learntWordCount / (float) totalWordCount) * 100;
-                addContentProgress(perc, Label);
-            } else {
-                addContentProgress(0, Label);
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-    private void addContentProgress(float perc, String label) {
-        try {
-            ContentProgress contentProgress = new ContentProgress();
-            contentProgress.setProgressPercentage("" + perc);
-            contentProgress.setResourceId("" + resId);
-            contentProgress.setSessionId("" + FastSave.getInstance().getString(FC_Constants.CURRENT_SESSION, ""));
-            contentProgress.setStudentId("" + FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""));
-            contentProgress.setUpdatedDateTime("" + FC_Utility.getCurrentDateTime());
-            contentProgress.setLabel("" + label);
-            contentProgress.setSentFlag(0);
-            appDatabase.getContentProgressDao().insert(contentProgress);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-    public void getDataList() {
-        try {
-
-            perc = getPercentage();
-            Collections.shuffle(dataList);
-            if (dataList.get(0).getTitle() == null || dataList.get(0).getTitle().isEmpty()) {
-                scienceQuestion = dataList.get(0);
-            } else {
-                for (int i = 0; i < dataList.size(); i++) {
-                    if (perc < 95) {
-                        if (!checkWord("" + dataList.get(i).getTitle())) {
-                            scienceQuestion = dataList.get(i);
-                            break;
-                        }
-                    } else {
-                        scienceQuestion = dataList.get(i);
-                        break;
-                    }
-                }
-            }
-            if (scienceQuestion != null) {
-                scienceQuestionChoices = scienceQuestion.getLstquestionchoice();
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-    public float getPercentage() {
-        float perc = 0f;
-        try {
-            totalWordCount = dataList.size();
-            learntWordCount = getLearntWordsCount();
-            if (learntWordCount > 0) {
-                perc = ((float) learntWordCount / (float) totalWordCount) * 100;
-                return perc;
-            } else
-                return 0f;
-        } catch (Exception e) {
-            return 0f;
-        }
-    }
-
-    private int getLearntWordsCount() {
-        int count = 0;
-        //  count = appDatabase.getKeyWordDao().checkWordCount(FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""), resId);
-        count = appDatabase.getKeyWordDao().checkUniqueWordCount(FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""), resId);
-        return count;
-    }
-
-    private boolean checkWord(String wordStr) {
-        try {
-            String word = appDatabase.getKeyWordDao().checkWord(FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""), resId, wordStr);
-            return word != null;
-        } catch (Exception e) {
-            e.printStackTrace();
-            return false;
-        }
-    }
-
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.reading_layout, container, false);
-    }
-
-    @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-        ButterKnife.bind(this, view);
-        etAnswer.setMovementMethod(new ScrollingMovementMethod());
-        setFillInTheBlanksQuestion();
-    }
-
     public void setFillInTheBlanksQuestion() {
-
         if (scienceQuestionChoices != null && !scienceQuestionChoices.isEmpty()) {
             if (continuousSpeechService != null) {
                 continuousSpeechService.onEndOfSpeech();
@@ -326,9 +205,9 @@ public class ReadingFragment extends Fragment implements STT_Result_New.sttView,
                 @Override
                 public void afterTextChanged(Editable s) {
                     //answer = s.toString();
-                    scienceQuestionChoices.get(index).setStartTime(FC_Utility.GetCurrentDateTime());
+                   /* scienceQuestionChoices.get(index).setStartTime(FC_Utility.GetCurrentDateTime());
                     scienceQuestionChoices.get(index).setEndTime(FC_Utility.GetCurrentDateTime());
-                    scienceQuestionChoices.get(index).setUserAns( s.toString());
+                    scienceQuestionChoices.get(index).setUserAns( s.toString());*/
                 }
             });
             if (index == 0) {
@@ -348,7 +227,7 @@ public class ReadingFragment extends Fragment implements STT_Result_New.sttView,
         }
     }
 
-    @OnClick(R.id.ib_mic)
+    @Click(R.id.ib_mic)
     public void onMicClicked() {
         callSTT();
     }
@@ -487,27 +366,30 @@ public class ReadingFragment extends Fragment implements STT_Result_New.sttView,
             }
             myString = myString + " " + sttResult;
             etAnswer.setText(myString);
+            //scienceQuestionChoices.get(index).setStartTime(resStartTime);
+            // scienceQuestionChoices.get(index).setEndTime(FC_Utility.GetCurrentDateTime());
+            scienceQuestionChoices.get(index).setUserAns(myString);
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
-    @OnClick(R.id.submit)
+    @Click(R.id.submit)
     public void submitClick() {
         voiceStart = false;
         micPressed(0);
         showLoader();
         continuousSpeechService.stopSpeechInput();
-        addLearntWords(scienceQuestionChoices);
+        presenter.addLearntWords(scienceQuestionChoices);
     }
 
-    @OnClick(R.id.reset_btn)
+    @Click(R.id.reset_btn)
     public void resetClick() {
         myString = "";
         etAnswer.setText(myString);
     }
 
-    @OnClick(R.id.btn_next)
+    @Click(R.id.btn_next)
     public void onNextClick() {
         if (scienceQuestionChoices != null)
             if (index < (scienceQuestionChoices.size() - 1)) {
@@ -517,7 +399,7 @@ public class ReadingFragment extends Fragment implements STT_Result_New.sttView,
             }
     }
 
-    @OnClick(R.id.btn_prev)
+    @Click(R.id.btn_prev)
     public void onPreviousClick() {
         if (scienceQuestionChoices != null)
             if (index > 0) {
@@ -527,86 +409,9 @@ public class ReadingFragment extends Fragment implements STT_Result_New.sttView,
             }
     }
 
-    public void addLearntWords(List<ScienceQuestionChoice> scienceQuestionChoices) {
-        int correctCnt = 0;
-        if (scienceQuestionChoices != null && checkAttemptedornot(scienceQuestionChoices)) {
-            KeyWords keyWords = new KeyWords();
-            keyWords.setResourceId(resId);
-            keyWords.setSentFlag(0);
-            keyWords.setStudentId(FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""));
-            keyWords.setKeyWord(scienceQuestion.getTitle());
-            keyWords.setWordType("word");
-            appDatabase.getKeyWordDao().insert(keyWords);
-            for (int i = 0; i < scienceQuestionChoices.size(); i++) {
-                if (scienceQuestionChoices.get(i).getUserAns() != null && !scienceQuestionChoices.get(i).getUserAns().isEmpty()) {
-                    correctCnt++;
-                    addScore(GameConstatnts.getInt(scienceQuestion.getQid()), jsonName, 10, 10, FC_Utility.getCurrentDateTime(), scienceQuestionChoices.get(i).toString());
-                }
-            }
-            GameConstatnts.postScoreEvent(scienceQuestionChoices.size(),correctCnt);
-            setCompletionPercentage();
-            if (!FC_Constants.isTest) {
-                showResult();
-            }
-            BackupDatabase.backup(context);
-        } else {
-            GameConstatnts.playGameNext(context, GameConstatnts.TRUE, this);
-        }
-    }
-
-    private boolean checkAttemptedornot(List<ScienceQuestionChoice> selectedAnsList) {
-        for (int i = 0; i < selectedAnsList.size(); i++) {
-            if (selectedAnsList.get(i).getUserAns() != null && !selectedAnsList.get(i).getUserAns().isEmpty()) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    public void addScore(int wID, String Word, int scoredMarks, int totalMarks, String resStartTime, String Label) {
-        try {
-            String deviceId = appDatabase.getStatusDao().getValue("DeviceId");
-            Score score = new Score();
-            score.setSessionID(FastSave.getInstance().getString(FC_Constants.CURRENT_SESSION, ""));
-            score.setResourceID(resId);
-            score.setQuestionId(wID);
-            score.setScoredMarks(scoredMarks);
-            score.setTotalMarks(totalMarks);
-            score.setStudentID(FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""));
-            score.setStartDateTime(resStartTime);
-            score.setDeviceID(deviceId.equals(null) ? "0000" : deviceId);
-            score.setEndDateTime(FC_Utility.getCurrentDateTime());
-            score.setLevel(FC_Constants.currentLevel);
-            score.setLabel(Word + " - " + Label);
-            score.setSentFlag(0);
-            appDatabase.getScoreDao().insert(score);
-
-            if (FC_Constants.isTest) {
-                Assessment assessment = new Assessment();
-                assessment.setResourceIDa(resId);
-                assessment.setSessionIDa(FastSave.getInstance().getString(FC_Constants.ASSESSMENT_SESSION, ""));
-                assessment.setSessionIDm(FastSave.getInstance().getString(FC_Constants.CURRENT_SESSION, ""));
-                assessment.setQuestionIda(wID);
-                assessment.setScoredMarksa(scoredMarks);
-                assessment.setTotalMarksa(totalMarks);
-                assessment.setStudentIDa(FastSave.getInstance().getString(FC_Constants.CURRENT_ASSESSMENT_STUDENT_ID, ""));
-                assessment.setStartDateTimea(resStartTime);
-                assessment.setDeviceIDa(deviceId.equals(null) ? "0000" : deviceId);
-                assessment.setEndDateTime(FC_Utility.getCurrentDateTime());
-                assessment.setLevela(FC_Constants.currentLevel);
-                assessment.setLabel("test: " + Label);
-                assessment.setSentFlag(0);
-                appDatabase.getAssessmentDao().insert(assessment);
-            }
-            BackupDatabase.backup(context);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
 
     public void showResult() {
-        if (answer != null && !answer.isEmpty()) {
+        if (scienceQuestionChoices != null && presenter.checkAttemptedornot(scienceQuestionChoices)){
             GameConstatnts.playGameNext(getActivity(), GameConstatnts.FALSE, this);
         } else {
             GameConstatnts.playGameNext(context, GameConstatnts.TRUE, this);
@@ -635,7 +440,7 @@ public class ReadingFragment extends Fragment implements STT_Result_New.sttView,
 
     @Override
     public void gameClose() {
-        addScore(0, "", 0, 0, resStartTime, jsonName + " " + GameConstatnts.END);
+        presenter.addScore(0, "", 0, 0, resStartTime, jsonName + " " + GameConstatnts.END);
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)

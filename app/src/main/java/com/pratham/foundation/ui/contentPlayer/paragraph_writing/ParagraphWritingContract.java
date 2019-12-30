@@ -13,7 +13,7 @@ public interface ParagraphWritingContract {
     public interface ParagraphWritingPresenter {
         public void getData();
 
-        public void addScore(int wID, String Word, int scoredMarks, int totalMarks, String resStartTime, String Label);
+        public void addScore(int wID, String Word, int scoredMarks, int totalMarks, String resStartTime,String resEndTime, String Label);
 
        // public void createDirectoryAndSaveFile(Bitmap imageToSave, String fileName);
 

@@ -49,5 +49,4 @@ public interface ContentReadingContract {
 
         void micStopped(List<String> splitWordsPunct, List<String> wordsResIdList);
     }
-
 }

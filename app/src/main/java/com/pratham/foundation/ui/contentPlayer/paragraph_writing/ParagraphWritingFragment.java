@@ -129,7 +129,7 @@ public class ParagraphWritingFragment extends Fragment implements ParagraphWriti
             play_button_control.setVisibility(View.GONE);
         }
         resStartTime = FC_Utility.getCurrentDateTime();
-        presenter.addScore(0, "", 0, 0, resStartTime, jsonName + " " + GameConstatnts.START);
+        presenter.addScore(0, "", 0, 0, resStartTime,FC_Utility.getCurrentDateTime(), jsonName + " " + GameConstatnts.START);
     }
 
     @Override
@@ -282,6 +282,8 @@ public class ParagraphWritingFragment extends Fragment implements ParagraphWriti
                     if (resultCode == RESULT_OK) {
                         capture.setVisibility(View.GONE);
                         preview.setVisibility(View.VISIBLE);
+                        questionModel.get(index).setStartTime(FC_Utility.getCurrentDateTime());
+                        questionModel.get(index).setEndTime(FC_Utility.getCurrentDateTime());
                     }
                 }
             }
@@ -339,7 +341,7 @@ public class ParagraphWritingFragment extends Fragment implements ParagraphWriti
 
     @Override
     public void gameClose() {
-        presenter.addScore(0, "", 0, 0, resStartTime, jsonName + " " + GameConstatnts.END);
+        presenter.addScore(0, "", 0, 0, resStartTime,FC_Utility.getCurrentDateTime(), jsonName + " " + GameConstatnts.END);
     }
 
     @Override

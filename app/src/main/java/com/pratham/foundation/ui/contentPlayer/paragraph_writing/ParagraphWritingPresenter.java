@@ -209,7 +209,7 @@ public class ParagraphWritingPresenter implements ParagraphWritingContract.Parag
                     keyWords.setStudentId(FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""));
                     keyWords.setKeyWord(questionModel.get(i).getTitle());
                     keyWords.setWordType("word");
-                    addScore(GameConstatnts.getInt(questionModel.get(i).getQid()), jsonName, 0, 0, FC_Utility.getCurrentDateTime(), questionModel.get(i).getUserAnswer());
+                    addScore(GameConstatnts.getInt(questionModel.get(i).getQid()), jsonName, 0, 0, questionModel.get(i).getStartTime(),questionModel.get(i).getEndTime(), questionModel.get(i).getUserAnswer());
                     appDatabase.getKeyWordDao().insert(keyWords);
                 }
             }
@@ -232,7 +232,7 @@ public class ParagraphWritingPresenter implements ParagraphWritingContract.Parag
         }
     }
 
-    public void addScore(int wID, String Word, int scoredMarks, int totalMarks, String resStartTime, String Label) {
+    public void addScore(int wID, String Word, int scoredMarks, int totalMarks, String resStartTime,String resEndTime, String Label) {
         try {
             String deviceId = appDatabase.getStatusDao().getValue("DeviceId");
             Score score = new Score();
@@ -244,7 +244,7 @@ public class ParagraphWritingPresenter implements ParagraphWritingContract.Parag
             score.setStudentID(FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""));
             score.setStartDateTime(resStartTime);
             score.setDeviceID(deviceId.equals(null) ? "0000" : deviceId);
-            score.setEndDateTime(FC_Utility.getCurrentDateTime());
+            score.setEndDateTime(resEndTime);
             score.setLevel(FC_Constants.currentLevel);
             score.setLabel(Word + "___" + Label);
             score.setSentFlag(0);
@@ -261,7 +261,7 @@ public class ParagraphWritingPresenter implements ParagraphWritingContract.Parag
                 assessment.setStudentIDa(FastSave.getInstance().getString(FC_Constants.CURRENT_ASSESSMENT_STUDENT_ID, ""));
                 assessment.setStartDateTimea(resStartTime);
                 assessment.setDeviceIDa(deviceId.equals(null) ? "0000" : deviceId);
-                assessment.setEndDateTime(FC_Utility.getCurrentDateTime());
+                assessment.setEndDateTime(resEndTime);
                 assessment.setLevela(FC_Constants.currentLevel);
                 assessment.setLabel("test: ___" + Label);
                 assessment.setSentFlag(0);

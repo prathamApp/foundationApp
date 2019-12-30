@@ -50,7 +50,7 @@
                     style="@style/paragraph"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@string/mark_attendance"
+                    android:text=""
                     android:textSize="@dimen/_18sdp"
                     android:textColor="@color/colorText"
                     android:gravity="center"

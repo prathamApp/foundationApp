@@ -10,18 +10,13 @@ import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.media.ThumbnailUtils;
 import android.net.Uri;
-import android.os.Bundle;
 import android.provider.MediaStore;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -57,6 +52,10 @@ import com.pratham.foundation.ui.contentPlayer.GameConstatnts;
 import com.pratham.foundation.utility.FC_Constants;
 import com.pratham.foundation.utility.FC_Utility;
 
+import org.androidannotations.annotations.AfterViews;
+import org.androidannotations.annotations.Click;
+import org.androidannotations.annotations.EFragment;
+import org.androidannotations.annotations.ViewById;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
@@ -72,54 +71,49 @@ import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.OnClick;
-
 import static android.app.Activity.RESULT_OK;
 import static com.pratham.foundation.database.AppDatabase.appDatabase;
 import static com.pratham.foundation.utility.FC_Constants.STT_REGEX;
 import static com.pratham.foundation.utility.FC_Constants.activityPhotoPath;
 import static com.pratham.foundation.utility.FC_Constants.gameFolderPath;
 
-
+@EFragment(R.layout.layout_video_row)
 public class DoingFragment extends Fragment implements STT_Result_New.sttView,OnGameClose {
     /* @BindView(R.id.tittle)
         SansTextView tittle;*/
-    @BindView(R.id.tv_question)
+    @ViewById(R.id.tv_question)
     TextView question;
-    @BindView(R.id.iv_question_image)
+    @ViewById(R.id.iv_question_image)
     ImageView questionImage;
-    @BindView(R.id.iv_question_gif)
+    @ViewById(R.id.iv_question_gif)
     GifView questionGif;
-    @BindView(R.id.vv_question)
+    @ViewById(R.id.vv_question)
     VideoView vv_question;
-    @BindView(R.id.capture)
+    @ViewById(R.id.capture)
     ImageView capture;
-    @BindView(R.id.reset_btn)
+    @ViewById(R.id.reset_btn)
     SansButton reset_btn;
    /* @BindView(R.id.RelativeLayout)
     RelativeLayout RelativeLayout;*/
-    @BindView(R.id.preview)
+   @ViewById(R.id.preview)
     SansButton preview;
-    @BindView(R.id.submit)
+    @ViewById(R.id.submit)
     SansButton submitBtn;
-    @BindView(R.id.previous)
+    @ViewById(R.id.previous)
     ImageButton previous;
-    @BindView(R.id.next)
+    @ViewById(R.id.next)
     ImageButton next;
-    @BindView(R.id.sub_questions_container)
+    @ViewById(R.id.sub_questions_container)
     LinearLayout sub_questions_container;
-    @BindView(R.id.relativeLayout)
+    @ViewById(R.id.relativeLayout)
     RelativeLayout relativeLayout;
-    @BindView(R.id.camera_controll)
+    @ViewById(R.id.camera_controll)
     LinearLayout camera_controll;
-    @BindView(R.id.subQuestion)
+    @ViewById(R.id.subQuestion)
     SansTextView subQuestion;
-    @BindView(R.id.answer)
+    @ViewById(R.id.answer)
     SansTextView etAnswer;
-    @BindView(R.id.btn_read_mic)
+    @ViewById(R.id.btn_read_mic)
     ImageButton ib_mic;
 
     String fileName;
@@ -152,7 +146,7 @@ public class DoingFragment extends Fragment implements STT_Result_New.sttView,On
         // Required empty public constructor
     }
 
-    @Override
+   /* @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         context = getActivity();
@@ -171,6 +165,37 @@ public class DoingFragment extends Fragment implements STT_Result_New.sttView,On
         imageName = "" + ApplicationClass.getUniqueID() + ".jpg";
         resStartTime = FC_Utility.getCurrentDateTime();
         addScore(0, "", 0, 0, resStartTime,FC_Utility.getCurrentDateTime(), jsonName + " " + GameConstatnts.START);
+        getData();
+    } */
+
+    @AfterViews
+    public void initiate() {
+        context = getActivity();
+        contentPath = getArguments().getString("contentPath");
+        StudentID = getArguments().getString("StudentID");
+        resId = getArguments().getString("resId");
+        contentTitle = getArguments().getString("contentName");
+        jsonName = getArguments().getString("jsonName");
+        onSdCard = getArguments().getBoolean("onSdCard", false);
+        if (onSdCard)
+            readingContentPath = ApplicationClass.contentSDPath + gameFolderPath + "/" + contentPath + "/";
+        else
+            readingContentPath = ApplicationClass.foundationPath + gameFolderPath + "/" + contentPath + "/";
+        EventBus.getDefault().register(this);
+
+        if (!GameConstatnts.WATCHING_VIDEO.equalsIgnoreCase(jsonName)) {
+            camera_controll.setVisibility(View.VISIBLE);
+        }
+        //hide camera controls for reading stt game
+        if (jsonName.equalsIgnoreCase(GameConstatnts.READING_STT)) {
+            capture.setVisibility(View.GONE);
+        }
+        preview.setVisibility(View.GONE);
+
+
+        imageName = "" + ApplicationClass.getUniqueID() + ".jpg";
+        resStartTime = FC_Utility.getCurrentDateTime();
+        addScore(0, "", 0, 0, resStartTime, FC_Utility.getCurrentDateTime(), jsonName + " " + GameConstatnts.START);
         getData();
     }
 
@@ -243,6 +268,7 @@ public class DoingFragment extends Fragment implements STT_Result_New.sttView,On
                 }
             }
             //view.loadUI(listenAndWrittingModal);
+            setVideoQuestion();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -280,17 +306,17 @@ public class DoingFragment extends Fragment implements STT_Result_New.sttView,On
         return count;
     }
 
-    @Override
+    /*@Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.layout_video_row, container, false);
-    }
+    }*/
 
-    @Override
+/*    @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        ButterKnife.bind(this, view);
+       // ButterKnife.bind(this, view);
         if (!GameConstatnts.WATCHING_VIDEO.equalsIgnoreCase(jsonName)) {
             camera_controll.setVisibility(View.VISIBLE);
         }
@@ -300,7 +326,7 @@ public class DoingFragment extends Fragment implements STT_Result_New.sttView,On
         }
         preview.setVisibility(View.GONE);
         setVideoQuestion();
-    }
+    }*/
 
     public void setVideoQuestion() {
         if (scienceQuestion != null) {
@@ -404,9 +430,9 @@ public class DoingFragment extends Fragment implements STT_Result_New.sttView,On
 
             @Override
             public void afterTextChanged(Editable s) {
-                scienceQuestionChoices.get(index).setUserAns(s.toString());
+               /* scienceQuestionChoices.get(index).setUserAns(s.toString());
                 scienceQuestionChoices.get(index).setStartTime(speechStartTime);
-                scienceQuestionChoices.get(index).setEndTime( FC_Utility.getCurrentDateTime());
+                scienceQuestionChoices.get(index).setEndTime( FC_Utility.getCurrentDateTime());*/
             }
         });
         submitBtn.setVisibility(View.INVISIBLE);
@@ -445,7 +471,7 @@ public class DoingFragment extends Fragment implements STT_Result_New.sttView,On
     }
 
 
-    @OnClick(R.id.btn_read_mic)
+    @Click(R.id.btn_read_mic)
     public void onMicClicked() {
         callSTT();
     }
@@ -610,8 +636,8 @@ public class DoingFragment extends Fragment implements STT_Result_New.sttView,On
         myAns += " "+sttResult;
         etAnswer.setText(myAns);
         scienceQuestionChoices.get(index).setUserAns(myAns);
-        scienceQuestionChoices.get(index).setStartTime(speechStartTime);
-        scienceQuestionChoices.get(index).setEndTime( FC_Utility.getCurrentDateTime());
+       // scienceQuestionChoices.get(index).setStartTime(speechStartTime);
+       // scienceQuestionChoices.get(index).setEndTime( FC_Utility.getCurrentDateTime());
 
 //        voiceStart = false;
 //        micPressed(0);
@@ -620,7 +646,7 @@ public class DoingFragment extends Fragment implements STT_Result_New.sttView,On
 
     String myAns="";
 
-    @OnClick(R.id.previous)
+    @Click(R.id.previous)
     public void onPreviousClick() {
         if (scienceQuestionChoices != null)
             if (index > 0) {
@@ -628,15 +654,17 @@ public class DoingFragment extends Fragment implements STT_Result_New.sttView,On
                 loadSubQuestions();
             }
     }
-    @OnClick(R.id.reset_btn)
+
+    @Click(R.id.reset_btn)
     public void reset(){
         myAns="";
         etAnswer.setText(myAns);
         scienceQuestionChoices.get(index).setUserAns(myAns);
-        scienceQuestionChoices.get(index).setStartTime(speechStartTime);
-        scienceQuestionChoices.get(index).setEndTime( FC_Utility.getCurrentDateTime());
+       // scienceQuestionChoices.get(index).setStartTime("");
+      //  scienceQuestionChoices.get(index).setEndTime("");
     }
-    @OnClick(R.id.next)
+
+    @Click(R.id.next)
     public void onNextClick() {
         if (scienceQuestionChoices != null)
             if (index < (scienceQuestionChoices.size() - 1)) {
@@ -646,7 +674,7 @@ public class DoingFragment extends Fragment implements STT_Result_New.sttView,On
     }
 
     ////////////////////////////
-    @OnClick({R.id.iv_question_image})
+    @Click({R.id.iv_question_image})
     public void onVideoClicked() {
      /*   ZoomImageDialog zoomImageDialog = new ZoomImageDialog(getActivity(), path, scienceQuestion.getQtid());
         zoomImageDialog.show();*/
@@ -679,7 +707,7 @@ public class DoingFragment extends Fragment implements STT_Result_New.sttView,On
         }
     }
 
-    @OnClick(R.id.capture)
+    @Click(R.id.capture)
     public void captureClick() {
       /*  Intent takePicture = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         startActivityForResult(takePicture, CAMERA_REQUEST);*/
@@ -692,14 +720,14 @@ public class DoingFragment extends Fragment implements STT_Result_New.sttView,On
         startActivityForResult(cameraIntent, CAMERA_REQUEST);
     }
 
-    @OnClick(R.id.preview)
+    @Click(R.id.preview)
     public void previewClick() {
         File filePath = new File(activityPhotoPath + imageName);
         if (filePath.exists())
             ShowPreviewDialog(filePath);
     }
 
-    @OnClick(R.id.submit)
+    @Click(R.id.submit)
     public void submitClick() {
         File filePath = new File(activityPhotoPath + imageName);
         if (filePath.exists()) {
@@ -718,7 +746,7 @@ public class DoingFragment extends Fragment implements STT_Result_New.sttView,On
             keyWords.setStudentId(FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""));
             keyWords.setKeyWord(questionModel.getTitle());
             keyWords.setWordType("word");
-            addScore(GameConstatnts.getInt(questionModel.getQid()), jsonName, 0, 0,resStartTime, FC_Utility.getCurrentDateTime(), imageName);
+            addScore(GameConstatnts.getInt(questionModel.getQid()), jsonName, 0, 0, questionModel.getStartTime(),questionModel.getEndTime(), imageName);
             appDatabase.getKeyWordDao().insert(keyWords);
             setCompletionPercentage();
             //Toast.makeText(context, "inserted successfully", Toast.LENGTH_LONG).show();
@@ -807,6 +835,8 @@ public class DoingFragment extends Fragment implements STT_Result_New.sttView,On
                     if (resultCode == RESULT_OK) {
                         capture.setVisibility(View.GONE);
                         preview.setVisibility(View.VISIBLE);
+                        scienceQuestion.setStartTime(FC_Utility.getCurrentDateTime());
+                        scienceQuestion.setEndTime(FC_Utility.getCurrentDateTime());
                     }
                 }
             }
@@ -824,7 +854,7 @@ public class DoingFragment extends Fragment implements STT_Result_New.sttView,On
             for (int i = 0; i <scienceQuestionChoices.size() ; i++) {
                 if(scienceQuestionChoices.get(i).getUserAns()!=null && !scienceQuestionChoices.get(i).getUserAns().trim().isEmpty()){
                     count++;
-                    addScore(GameConstatnts.getInt(scienceQuestion.getQid()), jsonName, 0, 0,scienceQuestionChoices.get(i).getStartTime(), scienceQuestionChoices.get(i).getEndTime(), scienceQuestionChoices.get(i).toString());
+                    addScore(GameConstatnts.getInt(scienceQuestion.getQid()), jsonName, 0, 0,resStartTime, FC_Utility.getCurrentDateTime(), scienceQuestionChoices.get(i).toString());
                 }
             }
             returnScore(scienceQuestionChoices.size(),count);
