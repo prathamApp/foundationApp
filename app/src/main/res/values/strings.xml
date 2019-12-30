@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">Foundation App</string>
+    <string name="app_name" translatable="false">Foundation App</string>
 
     <string name="Login">लॉग इन करें</string>
     <string name="Stt_Dialog_Msg">बेहतर प्रदर्शन के लिए कृपया ऑफलाइन भाषा पैक डाउनलोड करें.</string>
@@ -66,27 +66,27 @@
 
 
 
-    <string name="Agent_name">Vernicula</string>
-    <string name="talkbot">Talkbot</string>
-    <string name="more">more</string>
+    <string name="Agent_name" translatable="false">Vernicula</string>
+    <string name="talkbot" translatable="false">Talkbot</string>
+    <string name="more" translatable="false">more</string>
 
     <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="title_activity_level_wise_words">LevelWiseWordsActivity</string>
+    <string name="hello_blank_fragment" translatable="false">Hello blank fragment</string>
+    <string name="title_activity_level_wise_words" translatable="false">LevelWiseWordsActivity</string>
 
-    <string name="title_activity_admin_panel">AdminPanelActivity</string>
-    <string name="dummy_button">Dummy Button</string>
-    <string name="dummy_content">DUMMY\nCONTENT</string>
-    <string name="default_notification_channel_id">fcm_default_channel</string>
-    <string name="fcm_message">City of Stories - PraDigi</string>
+    <string name="title_activity_admin_panel" translatable="false">AdminPanelActivity</string>
+    <string name="dummy_button" translatable="false">Dummy Button</string>
+    <string name="dummy_content" translatable="false">DUMMY\nCONTENT</string>
+    <string name="default_notification_channel_id" translatable="false">fcm_default_channel</string>
+    <string name="fcm_message" translatable="false">City of Stories - PraDigi</string>
 
-    <string name="read_india">Read India</string>
+    <string name="read_india" translatable="false">Read India</string>
 
-    <string name="hybrid_learning">Hybrid Learning</string>
+    <string name="hybrid_learning" translatable="false">Hybrid Learning</string>
 
-    <string name="second_chance">Second Chance</string>
-    <string name="ECE">ECE</string>
-    <string name="pratham_institute">Pratham Institute</string>
+    <string name="second_chance" translatable="false">Second Chance</string>
+    <string name="ECE" translatable="false">ECE</string>
+    <string name="pratham_institute" translatable="false">Pratham Institute</string>
     <!--<string-array name="avatars">
         <item>avatars/dino_dance.json</item>
         <item>avatars/green_monster.json</item>
@@ -99,35 +99,35 @@
         <item>avatars/acrobatics.json</item>
     </string-array>-->
 
-    <string name="urbon_program">Urban programme</string>
+    <string name="urbon_program" translatable="false">Urban programme</string>
 
-    <string name="title_activity_push_data">PushDataActivity</string>
+    <string name="title_activity_push_data" translatable="false">PushDataActivity</string>
 
     <string name="top_sheet_behavior" translatable="false">com.pratham.prathamdigital.custom.topsheet.TopSheetBehavior</string>
 
-    <string name="switch_off_mobile_hotspot">Please switch off the mobile data and try again.</string>
+    <string name="switch_off_mobile_hotspot" translatable="false">Please switch off the mobile data and try again.</string>
 
-    <string name="change">Change</string>
+    <string name="change" translatable="false">Change</string>
 
-    <string name="content_download_alert">Content will be downloaded in</string>
-    <string name="nsd_servername_postfix">FTP Server</string>
-    <string name="storage_warning">Warning: storage is not available. You may want to unmount it.</string>
-    <string name="notification_server_starting">Starting at %s</string>
-    <string name="notification_title">FTP Server is running</string>
-    <string name="notification_text">at %s</string>
-    <string name="notification_stop_text">Stop Server</string>
-    <string name="notif_settings_text">Settings</string>
-    <string name="swiftp_name">FTP Server</string>
-    <string name="share">Create</string>
-    <string name="recieve">Join</string>
-    <string name="retry">Retry</string>
-    <string name="Open">Open</string>
-    <string name="downloading">Downloading...</string>
-    <string name="download">Download</string>
-    <string name="age_3_to_6">Age 3 to 6</string>
-    <string name="age_8_to_14">Age 8 to 14</string>
-    <string name="title_activity_home_">Home_Activity</string>
-    <string name="title_activity_keyword_mapping">KeywordMapping</string>
+    <string name="content_download_alert" translatable="false">Content will be downloaded in</string>
+    <string name="nsd_servername_postfix" translatable="false">FTP Server</string>
+    <string name="storage_warning" translatable="false">Warning: storage is not available. You may want to unmount it.</string>
+    <string name="notification_server_starting" translatable="false">Starting at %s</string>
+    <string name="notification_title" translatable="false">FTP Server is running</string>
+    <string name="notification_text" translatable="false">at %s</string>
+    <string name="notification_stop_text" translatable="false">Stop Server</string>
+    <string name="notif_settings_text" translatable="false">Settings</string>
+    <string name="swiftp_name" translatable="false">FTP Server</string>
+    <string name="share" translatable="false">Create</string>
+    <string name="recieve" translatable="false">Join</string>
+    <string name="retry" translatable="false">Retry</string>
+    <string name="Open" translatable="false">Open</string>
+    <string name="downloading" translatable="false">Downloading...</string>
+    <string name="download" translatable="false">Download</string>
+    <string name="age_3_to_6" translatable="false">Age 3 to 6</string>
+    <string name="age_8_to_14" translatable="false">Age 8 to 14</string>
+    <string name="title_activity_home_" translatable="false">Home_Activity</string>
+    <string name="title_activity_keyword_mapping" translatable="false">KeywordMapping</string>
 
     <string-array name="no_data">
         <item>Sorry ... No Data Available ...</item>

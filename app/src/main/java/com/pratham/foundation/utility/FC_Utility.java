@@ -167,10 +167,10 @@ public class FC_Utility {
             case "" + FC_Constants.HINDI:
                 language = "hi";
                 break;
-/*            case ""+FC_Constants.MARATHI:
-                language = "hi-IN";
+            case ""+FC_Constants.MARATHI:
+                language = "mr";
                 break;
-            case ""+FC_Constants.ASSAMESE:
+/*            case ""+FC_Constants.ASSAMESE:
                 language = "hi-IN";
                 break;
             case ""+FC_Constants.KANNADA:

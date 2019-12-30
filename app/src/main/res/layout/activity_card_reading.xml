@@ -28,6 +28,7 @@
             android:layout_marginStart="@dimen/_15sdp"
             android:layout_marginEnd="@dimen/_5sdp"
             android:layout_toEndOf="@+id/btn_back"
+            android:gravity="center_vertical"
             android:text="Welcome "
             android:textColor="@color/dark_blue"
             android:textSize="@dimen/_18sdp"

@@ -8,7 +8,6 @@ import com.androidnetworking.error.ANError;
 import com.androidnetworking.interfaces.JSONArrayRequestListener;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-
 import com.pratham.foundation.ApplicationClass;
 import com.pratham.foundation.R;
 import com.pratham.foundation.async.API_Content;
@@ -17,7 +16,6 @@ import com.pratham.foundation.database.BackupDatabase;
 import com.pratham.foundation.database.domain.Crl;
 import com.pratham.foundation.database.domain.Groups;
 import com.pratham.foundation.database.domain.ModalProgram;
-
 import com.pratham.foundation.database.domain.RaspCrl;
 import com.pratham.foundation.database.domain.RaspGroup;
 import com.pratham.foundation.database.domain.RaspProgram;
@@ -382,7 +380,6 @@ public class PullDataPresenterImp implements PullDataContract.PullDataPresenter,
                     loadStudent(url);
                     break;
             }
-
         }*/
     }
 
@@ -847,7 +844,7 @@ public class PullDataPresenterImp implements PullDataContract.PullDataPresenter,
             pullDataView.closeProgressDialog();
         } else if (header.equalsIgnoreCase(FC_Constants.KOLIBRI_STU)) {
             count++;
-            String json = response.toString();
+            String json = response;
             gson = new Gson();
             Type listType = new TypeToken<List<RaspStudent>>() {
             }.getType();
@@ -860,7 +857,7 @@ public class PullDataPresenterImp implements PullDataContract.PullDataPresenter,
             loadGroups();
         } else if (header.equalsIgnoreCase(FC_Constants.SERVER_STU)) {
             count++;
-            String json = response.toString();
+            String json = response;
             gson = new Gson();
             Type listType = new TypeToken<List<Student>>() {
             }.getType();
@@ -871,7 +868,7 @@ public class PullDataPresenterImp implements PullDataContract.PullDataPresenter,
             loadGroups();
         } else if (header.equalsIgnoreCase(FC_Constants.KOLIBRI_GRP)) {
             groupCount++;
-            String json = response.toString();
+            String json = response;
             gson = new Gson();
             Type listType = new TypeToken<List<RaspGroup>>() {
             }.getType();
@@ -885,7 +882,7 @@ public class PullDataPresenterImp implements PullDataContract.PullDataPresenter,
             loadCRL();
         } else if (header.equalsIgnoreCase(FC_Constants.SERVER_GRP)) {
             groupCount++;
-            String json = response.toString();
+            String json = response;
             gson = new Gson();
             Type listType = new TypeToken<List<Groups>>() {
             }.getType();
@@ -898,7 +895,7 @@ public class PullDataPresenterImp implements PullDataContract.PullDataPresenter,
             gson = new Gson();
             Type listType = new TypeToken<List<RaspCrl>>() {
             }.getType();
-            ArrayList<RaspCrl> crlListTemp = gson.fromJson(response.toString(), listType);
+            ArrayList<RaspCrl> crlListTemp = gson.fromJson(response, listType);
             crlList.clear();
             for (RaspCrl raspCrl : crlListTemp) {
                 for (Crl modal_crl : raspCrl.getData()) {
@@ -911,7 +908,7 @@ public class PullDataPresenterImp implements PullDataContract.PullDataPresenter,
             gson = new Gson();
             Type listType = new TypeToken<List<Crl>>() {
             }.getType();
-            ArrayList<Crl> crlListTemp = gson.fromJson(response.toString(), listType);
+            ArrayList<Crl> crlListTemp = gson.fromJson(response, listType);
             crlList.clear();
             crlList.addAll(crlListTemp);
             pullDataView.closeProgressDialog();

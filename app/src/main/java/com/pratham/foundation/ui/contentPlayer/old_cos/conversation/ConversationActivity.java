@@ -661,9 +661,7 @@ public class ConversationActivity extends BaseActivity
 
     @Click (R.id.floating_back)
     public void pressedBackBtn(){
-        if (voiceStart)
-            btn_reading.performClick();
-        showExitDialog(this);
+        onBackPressed();
     }
 
     @Override

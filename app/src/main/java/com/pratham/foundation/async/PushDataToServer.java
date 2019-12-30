@@ -179,7 +179,6 @@ public class PushDataToServer {
                                     FC_Utility.dismissDialog(dialog);
                                     e.printStackTrace();
                                 }
-
                             }
 
                             @Override
@@ -215,6 +214,11 @@ public class PushDataToServer {
                             isConnectedToRasp = true;
                             pushDataToRaspberry("" + FC_Constants.URL.DATASTORE_RASPBERY_URL.toString(),
                                     "" + requestString, programID, FC_Constants.USAGEDATA);
+                            try {
+                                getRaspImageList();
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
                         }
 
                         @Override
@@ -229,6 +233,22 @@ public class PushDataToServer {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    private void getRaspImageList() {
+        Log.d("Files", "Path: " + activityPhotoPath);
+        File directory = new File(activityPhotoPath);
+        File[] files = directory.listFiles();
+        Log.d("Files", "Size: " + files.length);
+        for (int i = 0; i < files.length; i++) {
+            Log.d("Files", "FileName:" + files[i].getName());
+        }
+        totalImages = files.length;
+        imageUploadCnt = 0;
+        jsonIndex = 0;
+        pushImagesToRaspberry("" + FC_Constants.URL.DATASTORE_RASPBERY_URL.toString(),
+                files, programID, FC_Constants.PUSH_IMAGE);
+
     }
 
     private String getAuthHeader() {
@@ -271,6 +291,58 @@ public class PushDataToServer {
                         Log.d("Raspberry Error::", anError.getResponse().toString());
                     }
                 });
+    }
+
+    public void pushImagesToRaspberry(String url, final File[] imageFilesArray, String filter_name, String table_name) {
+        String authHeader = getAuthHeader();
+        if (imageFilesArray.length > jsonIndex) {
+            imageFilesArray[jsonIndex].getPath();
+            File file = new File(imageFilesArray[jsonIndex].getAbsolutePath());
+            if (file.exists()) {
+                final ProgressDialog dialog = new ProgressDialog(context);
+                FC_Utility.showDialogInApiCalling(dialog, context, "Uploading Image(s)..");
+                String fName = file.getName();
+                AndroidNetworking.post(url)
+                        .addHeaders("Content-Type", "images")
+                        .addHeaders("Authorization", authHeader)
+                        .addBodyParameter("filter_name", filter_name)
+                        .addBodyParameter("facility", FastSave.getInstance().getString(FC_Constants.FACILITY_ID, ""))
+                        .addFileBody(file)
+                        .setExecutor(Executors.newSingleThreadExecutor())
+                        .setPriority(Priority.HIGH)
+                        .build()
+                        .getAsString(new StringRequestListener() {
+                            @Override
+                            public void onResponse(String response) {
+                                FC_Utility.dismissDialog(dialog);
+                                try {
+                                    if (response.equalsIgnoreCase("success")) {
+                                        file.delete();
+                                        jsonIndex++;
+                                        imageUploadCnt++;
+                                        if (totalImages == imageUploadCnt) {
+                                        } else {
+                                            pushImagesToRaspberry("" + FC_Constants.URL.DATASTORE_RASPBERY_URL.toString(),
+                                                    imageFilesArray, programID, FC_Constants.PUSH_IMAGE);
+                                        }
+                                    }
+                                } catch (Exception e) {
+                                    FC_Utility.dismissDialog(dialog);
+                                    e.printStackTrace();
+                                }
+                            }
+
+                            @Override
+                            public void onError(ANError anError) {
+                                Toast.makeText(context, "Image push failed", Toast.LENGTH_SHORT).show();
+                                FC_Utility.dismissDialog(dialog);
+                            }
+                        });
+            }else {
+                jsonIndex++;
+                pushImagesToServer(imageFilesArray);
+            }
+        }
     }
 
     @UiThread
