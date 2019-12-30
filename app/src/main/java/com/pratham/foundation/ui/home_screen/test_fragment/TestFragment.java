@@ -114,7 +114,7 @@ public class TestFragment extends Fragment implements TestContract.TestView,
         presenter.setView(TestFragment.this);
         testSessionEntered = false;
         testSessionEnded = false;
-        ib_langChange.setVisibility(View.GONE);
+//        ib_langChange.setVisibility(View.GONE);
         my_recycler_view.addOnScrollListener(new RetractableToolbarUtil
                 .ShowHideToolbarOnScrollingListener(header_rl));
         presenter.getBottomNavId(currentLevel, "Test");

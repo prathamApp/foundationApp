@@ -162,39 +162,14 @@ public class FC_Utility {
     }
 
     public static void setAppLocal(Context context, String selectedLang) {
-        String language = "en";
-        switch (selectedLang) {
-            case "" + FC_Constants.HINDI:
-                language = "hi";
-                break;
-            case ""+FC_Constants.MARATHI:
-                language = "mr";
-                break;
-/*            case ""+FC_Constants.ASSAMESE:
-                language = "hi-IN";
-                break;
-            case ""+FC_Constants.KANNADA:
-                language = "hi-IN";
-                break;
-            case ""+FC_Constants.TELUGU:
-                language = "hi-IN";
-                break;
-            case ""+FC_Constants.BENGALI:
-                language = "hi-IN";
-                break;
-            case ""+FC_Constants.GUJARATI:
-                language = "hi-IN";
-                break;
-            case ""+FC_Constants.TAMIL:
-                language = "hi-IN";
-                break;
-            case ""+FC_Constants.ODIYA:
-                language = "hi-IN";
-                break;*/
-            case "" + FC_Constants.ENGLISH:
-                language = "en";
-                break;
-        }
+        String language = "mr";
+
+        if(selectedLang.equalsIgnoreCase(FC_Constants.HINDI))
+            language = "hi";
+        else if(selectedLang.equalsIgnoreCase(FC_Constants.MARATHI))
+            language = "mr";
+        else
+            language = "mr";
 
         Locale myLocale = new Locale(language);
         Resources res = context.getResources();

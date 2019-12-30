@@ -38,7 +38,6 @@ import java.util.Comparator;
 import java.util.List;
 
 import static com.pratham.foundation.utility.FC_Utility.dpToPx;
-import static com.pratham.foundation.utility.FC_Utility.setAppLocal;
 
 
 @EFragment(R.layout.fragment_profile)
@@ -220,8 +219,8 @@ public class ProfileFragment extends Fragment implements ProfileContract.Profile
         dia_btn_green.setOnClickListener(v -> {
 //            HomeActivity.languageChanged = true;
             FastSave.getInstance().saveBoolean(FC_Constants.LANGUAGE_SPLASH_DIALOG, true);
-            setAppLocal(getActivity(), FastSave.getInstance().
-                    getString(FC_Constants.LANGUAGE, FC_Constants.HINDI));
+//            setAppLocal(getActivity(), FastSave.getInstance().
+//                    getString(FC_Constants.LANGUAGE, FC_Constants.HINDI));
             dialog.dismiss();
         });
     }

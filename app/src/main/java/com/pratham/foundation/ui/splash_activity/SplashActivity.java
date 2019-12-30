@@ -309,7 +309,7 @@ public class SplashActivity extends SplashSupportActivity implements SplashContr
 
         dia_btn_green.setOnClickListener(v -> {
                 FastSave.getInstance().saveBoolean(FC_Constants.LANGUAGE_SPLASH_DIALOG, true);
-                setAppLocal(this, FastSave.getInstance().getString(FC_Constants.LANGUAGE, FC_Constants.HINDI));
+//                setAppLocal(this, FastSave.getInstance().getString(FC_Constants.LANGUAGE, FC_Constants.HINDI));
                 createDataBase();
             dialog.dismiss();
         });
