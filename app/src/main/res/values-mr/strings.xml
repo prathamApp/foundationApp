@@ -73,25 +73,25 @@
     <string name="Paragraph">परिच्छेद : </string>
     <string name="Keyword">महत्वाचा शब्द : </string>
 
-    <string name="yes">हाँ</string>
-    <string name="no">नहीं</string>
+    <string name="yes">होय</string>
+    <string name="no">नाही</string>
     <string name="fact_retrieval_click">जवाब देने के लिएअनुच्छेद से सही शब्द या वाक्य चुनिए|</string>
-    <string name="factRetrieval">जवाब देने के लिए अनुच्छेद से सही शब्द या वाक्य चुनिए|</string>
-    <string name="IKWAndroid">दिए गए अनुच्छेद में वैज्ञानिक शब्दों को दिखाइए|</string>
-    <string name="CopyWriting">दिए गए शब्द और जानकारी को अपनी कॉपी में लिखिए और उसकी फोटो सबमिट कीजिए|</string>
-    <string name="chKeywords">दिए गए शब्दों में से करीबी शब्द चुनिए|</string>
-    <string name="ShowMeAndroid">सही विकल्प चुनें|</string>
-    <string name="Dictation">ऑडियो सुनकर अपनी कॉपीमें लिखिए और उसकी फोटो सबमिट कीजिए|</string>
-    <string name="PictAndroid">प्ले बटन पर क्लिक कीजिए और सुनिए. फिर माइक बटन पर क्लिक करके साफ़ आवाज में पढ़िए|</string>
-    <string name="ReadingAndroid">प्ले बटन पर क्लिक कीजिए और सुनिए. फिर माइक बटन पर क्लिक करके साफ़ आवाज में पढ़िए|</string>
-    <string name="TAW">दिए गए शब्द या वाक्य पर अपने विचार कॉपी में लिखिए और उसकी फोटो सबमिट कीजिए|</string>
-    <string name="doing_act">माइक बटन पर क्लिक करके अपना उत्तर रिकॉर्ड कीजिए और सबमिट कीजिए|</string>
-    <string name="letter">दिए गए विषय पर पत्र लिखें और उसकी फोटो सबमिट कीजिए|</string>
+    <string name="factRetrieval">उत्तर देण्यासाठी परिच्छेदामधील योग्य शब्द किंवा वाक्य निवडा.</string>
+    <string name="IKWAndroid">दिलेल्या परिच्छेदामधले वैज्ञानिक शब्द दाखवा.</string>
+    <string name="CopyWriting">दिलेले शब्द आणि त्यांची माहिती वहीत लिहा आणि त्याचा फोटो सबमिट करा.</string>
+    <string name="chKeywords">दिलेल्या शब्दांमधून संबंधित शब्द निवडा.</string>
+    <string name="ShowMeAndroid">योग्य पर्याय निवडा.</string>
+    <string name="Dictation">ऑडिओ ऐकून वहीत लिहा आणि त्याचा फोटो सबमिट करा.</string>
+    <string name="PictAndroid">प्ले बटणावर क्लिक करा आणि ऐका. नंतर माइक बटणावर क्लिक करा आणि स्पष्ट आवाजात वाचा.</string>
+    <string name="ReadingAndroid">प्ले बटणावर क्लिक करा आणि ऐका. नंतर माइक बटणावर क्लिक करा आणि स्पष्ट आवाजात वाचा.</string>
+    <string name="TAW">ददिलेला शब्द किंवा वाक्यावर आपली मते लिहा आणि त्याचा फोटो सबमिट करा.</string>
+    <string name="doing_act">माइक बटणावर क्लिक करून आपले उत्तर रेकॉर्ड करा आणि सबमिट करा.</string>
+    <string name="letter">दिलेल्या विषयावर पत्र लिहून त्याचा फोटो सबमिट करा.</string>
     <string name="doing_act_video">माइक बटन पर क्लिक करके अपना उत्तर रिकॉर्ड कीजिए और सबमिट कीजिए|</string>
-    <string name="ReadVocabAndroid">प्ले बटन पर क्लिक कीजिए और सुनिए. फिर माइक बटन पर क्लिक करके साफ़ आवाज में पढ़िए|</string>
-    <string name="reading_stt">माइक बटन पर क्लिक कीजिए| जवाब रिकॉर्ड कर के सबमिट कीजिए।</string>
-    <string name="multiple_choice">जवाब देने के लिए दिए गए शब्दों में से सही विकल्प चुनिए|</string>
-    <string name="Video">विडियो देखें</string>
-    <string name="watching_video">माइक बटन पर क्लिक करके अपना उत्तर रिकॉर्ड कीजिए और सबमिट कीजिए|</string>
+    <string name="ReadVocabAndroid">प्ले बटणावर क्लिक करा आणि ऐका. नंतर माइक बटणावर क्लिक करा आणि स्पष्ट आवाजात वाचा.</string>
+    <string name="reading_stt">माइक बटणावर क्लिक करा. उत्तर रेकॉर्ड करा आणि सबमिट करा.</string>
+    <string name="multiple_choice">उत्तर देण्यासाठी दिलेल्या शब्दांमधून योग्य पर्याय निवडा.</string>
+    <string name="Video">व्हिडीओ पहा.</string>
+    <string name="watching_video">माइक बटणावर क्लिक करून आपले उत्तर रेकॉर्ड करा आणि सबमिट करा.</string>
 
 </resources>
