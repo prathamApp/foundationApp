@@ -185,8 +185,8 @@ public class ReadingParagraphsPresenter implements ReadingParagraphsContract.Rea
         Log.d("Punctu", "onResults: " + sttRes);
 
         for (int j = 0; j < splitRes.length; j++) {
-            if(FastSave.getInstance().getString(CURRENT_FOLDER_NAME,"").equalsIgnoreCase("English"))
-                splitRes[j] = String.valueOf(splitRes[j].replaceAll("[^a-zA-Z ]", "").toLowerCase().split("\\s+"));
+            if(!FastSave.getInstance().getString(CURRENT_FOLDER_NAME,"").equalsIgnoreCase("English"))
+                splitRes[j] = splitRes[j].replaceAll("[^a-zA-Z ]", "").toLowerCase();
             else
                 splitRes[j] = splitRes[j].replaceAll(STT_REGEX, "").toLowerCase();
             for (int i = 0; i < splitWordsPunct.size(); i++) {
@@ -307,7 +307,6 @@ public class ReadingParagraphsPresenter implements ReadingParagraphsContract.Rea
         }
     }
 
-
     @Background
     @Override
     public void addScore(int wID, String Word, int scoredMarks, int totalMarks, String resStartTime, String Label) {
@@ -345,11 +344,9 @@ public class ReadingParagraphsPresenter implements ReadingParagraphsContract.Rea
                 assessment.setSentFlag(0);
                 appDatabase.getAssessmentDao().insert(assessment);
             }
-
             BackupDatabase.backup(context);
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
-
 }

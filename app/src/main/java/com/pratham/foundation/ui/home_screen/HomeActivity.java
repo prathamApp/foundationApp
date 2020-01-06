@@ -218,7 +218,7 @@ public class HomeActivity extends BaseActivity implements LevelChanged {
         submarine.setSubmarineItemClickListener((position, submarineItem) -> {
             FC_Constants.currentLevel = position;
             FastSave.getInstance().saveInt(FC_Constants.CURRENT_LEVEL, position);
-        switch (position) {
+            switch (position) {
                 case 0:
                     iv_level.setImageResource(R.drawable.level_1);
                     break;
@@ -400,7 +400,7 @@ public class HomeActivity extends BaseActivity implements LevelChanged {
                     getToDate(FastSave.getInstance().getString(FC_Constants.ASSESSMENT_SESSION, ""));
             if (toDateTemp != null && toDateTemp.equalsIgnoreCase("na")) {
                 AppDatabase.appDatabase.getSessionDao().UpdateToDate(FastSave.getInstance()
-                        .getString(FC_Constants.ASSESSMENT_SESSION, ""),
+                                .getString(FC_Constants.ASSESSMENT_SESSION, ""),
                         FC_Utility.getCurrentDateTime());
             }
             BackupDatabase.backup(this);
@@ -465,7 +465,6 @@ public class HomeActivity extends BaseActivity implements LevelChanged {
         TextView dia_btn_yes = dialog.findViewById(R.id.dia_btn_yes);
         dia_btn_yes.setOnClickListener(v -> {
             comngSoonFlg=false;
-            finish();
             dialog.dismiss();
         });
     }
@@ -522,7 +521,7 @@ public class HomeActivity extends BaseActivity implements LevelChanged {
             adapter.addFrag(new PracticeFragment_(), ""+getResources().getString(R.string.Practice));
             adapter.addFrag(new LearningFragment_(), ""+getResources().getString(R.string.Learning));
             if (currSubj.equalsIgnoreCase("Language")||currSubj.equalsIgnoreCase("Maths")) {
-            adapter.addFrag(new TestFragment_(), ""+getResources().getString(R.string.Test));
+                adapter.addFrag(new TestFragment_(), ""+getResources().getString(R.string.Test));
             }else if (currSubj.equalsIgnoreCase("english")) {
                 adapter.addFrag(new TestFragment_(), ""+getResources().getString(R.string.Test));
                 adapter.addFrag(new FunFragment_(), ""+getResources().getString(R.string.Fun));

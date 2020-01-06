@@ -68,7 +68,7 @@ public interface FunContract {
 
         String getcurrentNodeID();
 
-        void setView(FunContract.FunView funView);
+        void setView(FunView funView);
 
         void getBottomNavId(int currentLevelNo, String cosSection);
 

@@ -1,4 +1,4 @@
-package com.pratham.foundation.ui.home_screen.learning_fragment;
+package com.pratham.foundation.ui.home_screen.Content_Fragment;
 
 import android.content.Context;
 import android.util.Log;
@@ -43,15 +43,13 @@ import java.util.Comparator;
 import java.util.List;
 
 import static com.pratham.foundation.ui.home_screen.HomeActivity.sub_nodeId;
-import static com.pratham.foundation.utility.FC_Constants.LOGIN_MODE;
-import static com.pratham.foundation.utility.FC_Constants.QR_GROUP_MODE;
 import static com.pratham.foundation.utility.FC_Constants.gameFolderPath;
 
 @EBean
-public class LearningPresenter implements LearningContract.LearningPresenter, API_Content_Result {
+public class ContentFragmentPresenter implements Content_Fragment_Contract.ContentFunPresenter, API_Content_Result {
 
     Context mContext;
-    LearningContract.LearningView learningView;
+    Content_Fragment_Contract.ContentFunView funView;
     public List<ContentTable> rootList, rootLevelList, dwParentList, childDwContentList;
     public List<ContentTable> contentParentList, contentDBList, contentApiList, childContentList;
     ArrayList<String> nodeIds;
@@ -69,13 +67,13 @@ public class LearningPresenter implements LearningContract.LearningPresenter, AP
     ZipDownloader zipDownloader;
     private String cosSection;
 
-    public LearningPresenter(Context mContext) {
+    public ContentFragmentPresenter(Context mContext) {
         this.mContext = mContext;
     }
 
     @Override
-    public void setView(LearningContract.LearningView learningView) {
-        this.learningView = learningView;
+    public void setFunView(Content_Fragment_Contract.ContentFunView funView) {
+        this.funView = funView;
         nodeIds = new ArrayList<>();
         contentParentList = new ArrayList<>();
         contentDBList = new ArrayList<>();
@@ -85,7 +83,7 @@ public class LearningPresenter implements LearningContract.LearningPresenter, AP
         maxScore = new ArrayList();
         maxScoreChild = new ArrayList();
         gson = new Gson();
-        api_content = new API_Content(mContext, LearningPresenter.this);
+        api_content = new API_Content(mContext, ContentFragmentPresenter.this);
     }
 
 /*    @Background
@@ -97,7 +95,7 @@ public class LearningPresenter implements LearningContract.LearningPresenter, AP
         else
             profileName = AppDatabase.getDatabaseInstance(mContext).getGroupsDao().getGroupNameByGrpID(FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""));
 
-        learningView.setProfileName(profileName);
+        funView.setProfileName(profileName);
     }
 
     @Background
@@ -108,7 +106,7 @@ public class LearningPresenter implements LearningContract.LearningPresenter, AP
             sImage = AppDatabase.getDatabaseInstance(mContext).getStudentDao().getStudentAvatar(FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""));
         else
             sImage = "group_icon";
-        learningView.setStudentProfileImage(sImage);
+        funView.setStudentProfileImage(sImage);
     }*/
 
     @Override
@@ -145,10 +143,10 @@ public class LearningPresenter implements LearningContract.LearningPresenter, AP
         String rootID = sub_nodeId;
         botID = AppDatabase.appDatabase.getContentTableDao().getContentDataByTitle("" + rootID, cosSection);
 //        if (botID != null && !FC_Utility.isDataConnectionAvailable(mContext))
-        if (botID != null)
+        if (botID != null )
             getLevelDataForList(currentLevelNo, botID);
         else
-            learningView.showComingSoonDiaog();
+            funView.showComingSoonDiaog();
 //            getRootData(rootID);
 
     }
@@ -166,7 +164,7 @@ public class LearningPresenter implements LearningContract.LearningPresenter, AP
 //        if (FC_Utility.isDataConnectionAvailable(mContext))
 //            getLevelDataFromApi(currentLevelNo, bottomNavNodeId);
 //        else
-        learningView.setSelectedLevel(rootList);
+            funView.setSelectedLevel(rootList);
     }
 
     public void getLevelDataFromApi(int currentLevelNo, String botNodeId) {
@@ -182,8 +180,7 @@ public class LearningPresenter implements LearningContract.LearningPresenter, AP
             for (int childCnt = 0; childList.size() > childCnt; childCnt++) {
                 if (childList.get(childCnt).getNodeType().equals("Resource")) {
                     double maxScoreTemp = 0.0;
-                    List<ContentProgress> score = AppDatabase.getDatabaseInstance(mContext).getContentProgressDao().getProgressByStudIDAndResID(FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""),
-                            childList.get(childCnt).getResourceId(), "resourceProgress");
+                    List<ContentProgress> score = AppDatabase.getDatabaseInstance(mContext).getContentProgressDao().getProgressByStudIDAndResID(FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""), childList.get(childCnt).getResourceId(), "resourceProgress");
                     for (int cnt = 0; cnt < score.size(); cnt++) {
                         String d = score.get(cnt).getProgressPercentage();
                         double scoreTemp = Double.parseDouble(d);
@@ -234,31 +231,33 @@ public class LearningPresenter implements LearningContract.LearningPresenter, AP
     public void getWholePercentage(List maxScore) {
         double totalScore = 0;
         try {
+            for (int j = 0; maxScore.size() > j; j++) {
+                totalScore = totalScore + Double.parseDouble(maxScore.get(j).toString());
+            }
             if (maxScore.size() > 0) {
-                for (int j = 0; maxScore.size() > j; j++) {
-                    totalScore = totalScore + Double.parseDouble(maxScore.get(j).toString());
-                }
                 int percent = (int) (totalScore / maxScore.size());
-                learningView.setLevelprogress(percent);
+                funView.setLevelprogress(percent);
             } else {
-                learningView.setLevelprogress(0);
+                funView.setLevelprogress(0);
             }
         } catch (Exception e) {
             e.printStackTrace();
-            learningView.setLevelprogress(0);
+            funView.setLevelprogress(0);
         }
     }
 
     @Override
     @Background
     public void getDataForList() {
-        learningView.showLoader();
+        funView.showLoader();
         try {
+
             dwParentList = AppDatabase.appDatabase.getContentTableDao().getContentData("" + nodeIds.get(nodeIds.size() - 1));
             sortContentList(dwParentList);
             contentParentList.clear();
+
             ContentTable resContentTable = new ContentTable();
-            List<ContentTable> resourceList = new ArrayList<>();
+            List<ContentTable> resourceList= new ArrayList<>();
             List<ContentTable> tempList2 = new ArrayList<>();
 
             ContentTable contentTableRes = new ContentTable();
@@ -267,6 +266,7 @@ public class LearningPresenter implements LearningContract.LearningPresenter, AP
             tempList2.add(contentTableRes);
             resContentTable.setNodelist(tempList2);
             resourceList.add(contentTableRes);
+
             contentParentList.add(contentTableRes);
 
             try {
@@ -341,8 +341,7 @@ public class LearningPresenter implements LearningContract.LearningPresenter, AP
                                 contentChild.setOnSDCard(childDwContentList.get(i).isOnSDCard());
                                 contentChild.setNodelist(null);
                                 maxScoreChild = new ArrayList();
-                                if (!LOGIN_MODE.equalsIgnoreCase(QR_GROUP_MODE))
-                                    findMaxScoreNew(childDwContentList.get(i).getNodeId());
+                                findMaxScoreNew(childDwContentList.get(i).getNodeId());
                                 double totalScore = 0;
                                 for (int q = 0; maxScoreChild.size() > q; q++) {
                                     totalScore = totalScore + Double.parseDouble(maxScoreChild.get(q).toString());
@@ -390,8 +389,7 @@ public class LearningPresenter implements LearningContract.LearningPresenter, AP
     public void updateUI() {
         maxScore.clear();
         try {
-            if (!LOGIN_MODE.equalsIgnoreCase(QR_GROUP_MODE))
-                findMaxScore("" + nodeIds.get(nodeIds.size() - 1));
+            findMaxScore("" + nodeIds.get(nodeIds.size() - 1));
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -399,12 +397,12 @@ public class LearningPresenter implements LearningContract.LearningPresenter, AP
 //            api_content.getAPIContent(FC_Constants.INTERNET_DOWNLOAD, FC_Constants.INTERNET_DOWNLOAD_NEW_API, nodeIds.get(nodeIds.size() - 1));
 //        } else {
 //            if (contentParentList.size() == 0 && !FC_Utility.isDataConnectionAvailable(mContext)) {
-//        if (contentParentList.size() == 0) {
-//            learningView.showNoDataDownloadedDialog();
-//        } else {
-        learningView.addContentToViewList(contentParentList);
-        learningView.notifyAdapter();
-//        }
+            if (contentParentList.size() == 0) {
+                funView.showNoDataDownloadedDialog();
+            } else {
+                funView.addContentToViewList(contentParentList);
+                funView.notifyAdapter();
+            }
 //        }
     }
 
@@ -507,7 +505,7 @@ public class LearningPresenter implements LearningContract.LearningPresenter, AP
         if (FC_Utility.isDataConnectionAvailable(mContext)) {
             api_content.getAPIContent(FC_Constants.INTERNET_DOWNLOAD_RESOURCE, FC_Constants.INTERNET_DOWNLOAD_RESOURCE_API, downloadNodeId);
         } else {
-            learningView.showNoDataDownloadedDialog();
+            funView.showNoDataDownloadedDialog();
         }
 //        getAPIContent(FC_Constants.INTERNET_DOWNLOAD_RESOURCE, FC_Constants.INTERNET_DOWNLOAD_RESOURCE_API);
     }
@@ -537,9 +535,9 @@ public class LearningPresenter implements LearningContract.LearningPresenter, AP
             e.printStackTrace();
         }
         BackupDatabase.backup(mContext);
-        learningView.dismissDownloadDialog();
-//        learningView.hideTestDownloadBtn();
-//        learningView.displayCurrentDownloadedTest();
+        funView.dismissDownloadDialog();
+//        funView.hideTestDownloadBtn();
+//        funView.displayCurrentDownloadedTest();
     }
 
     @Background
@@ -723,13 +721,13 @@ public class LearningPresenter implements LearningContract.LearningPresenter, AP
                         }
                     }
                 }
-                //learningView.addContentToViewList(contentParentList);
+                //funView.addContentToViewList(contentParentList);
             } catch (Exception e) {
                 e.printStackTrace();
             }
 //            contentParentList = contentDBList;
-            learningView.addContentToViewList(contentDBList);
-            learningView.notifyAdapter();
+            funView.addContentToViewList(contentDBList);
+            funView.notifyAdapter();
 
         } else if (header.equalsIgnoreCase(FC_Constants.INTERNET_DOWNLOAD_RESOURCE)) {
             try {
@@ -793,7 +791,7 @@ public class LearningPresenter implements LearningContract.LearningPresenter, AP
                 e.printStackTrace();
             }
             sortContentList(rootLevelList);
-            learningView.setSelectedLevel(rootLevelList);
+            funView.setSelectedLevel(rootLevelList);
         } else if (header.equalsIgnoreCase(FC_Constants.BOTTOM_NODE)) {
             try {
                 Type listType = new TypeToken<ArrayList<ContentTable>>() {
@@ -803,7 +801,7 @@ public class LearningPresenter implements LearningContract.LearningPresenter, AP
                 for (int i = 0; i < serverContentList.size(); i++)
                     if (serverContentList.get(i).getNodeTitle().equalsIgnoreCase(cosSection))
                         botNodeId = serverContentList.get(i).getNodeId();
-//                learningView.setBotNodeId(botNodeId);
+//                funView.setBotNodeId(botNodeId);
                 getLevelDataFromApi(currentLevelNo, botNodeId);
             } catch (Exception e) {
                 e.printStackTrace();
@@ -828,10 +826,10 @@ public class LearningPresenter implements LearningContract.LearningPresenter, AP
     @Override
     public void receivedError(String header) {
         if (header.equalsIgnoreCase(FC_Constants.INTERNET_LEVEL)) {
-            learningView.setSelectedLevel(rootList);
+            funView.setSelectedLevel(rootList);
         } else if (header.equalsIgnoreCase(FC_Constants.INTERNET_DOWNLOAD)) {
-            learningView.addContentToViewList(contentParentList);
-            learningView.notifyAdapter();
+            funView.addContentToViewList(contentParentList);
+            funView.notifyAdapter();
         }
     }
 }

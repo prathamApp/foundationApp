@@ -212,7 +212,6 @@ public class TestFragment extends Fragment implements TestContract.TestView,
         });
     }
 
-
     @UiThread
     public void addContentToViewList(List<ContentTable> contentParentList) {
         this.contentParentList.clear();

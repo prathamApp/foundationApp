@@ -199,9 +199,9 @@ public class ReadingParagraphsActivity extends BaseActivity
                 if (modalParaWordList.get(j).getWord().equalsIgnoreCase("#"))
                     lineBreakCounter += 1;
                 if (FastSave.getInstance().getString(CURRENT_FOLDER_NAME, "").equalsIgnoreCase("English"))
-                    splitWordsPunct.add(String.valueOf(splitWords.get(j)
+                    splitWordsPunct.add(splitWords.get(j)
                             .replaceAll("[^a-zA-Z ]", "")
-                            .toLowerCase().split("\\s+")));
+                            .toLowerCase());
                 else
                     splitWordsPunct.add(splitWords.get(j).replaceAll(STT_REGEX, ""));
                 wordsDurationList.add(modalParaWordList.get(j).getWordDuration());

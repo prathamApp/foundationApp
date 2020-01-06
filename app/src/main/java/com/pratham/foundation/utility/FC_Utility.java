@@ -162,14 +162,14 @@ public class FC_Utility {
     }
 
     public static void setAppLocal(Context context, String selectedLang) {
-        String language = "mr";
+        String language = "hi";
 
         if(selectedLang.equalsIgnoreCase(FC_Constants.HINDI))
-            language = "hi";
+            language = "h                            i";
         else if(selectedLang.equalsIgnoreCase(FC_Constants.MARATHI))
             language = "mr";
         else
-            language = "mr";
+            language = "hi";
 
         Locale myLocale = new Locale(language);
         Resources res = context.getResources();

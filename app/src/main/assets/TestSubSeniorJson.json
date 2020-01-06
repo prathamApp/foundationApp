@@ -5,22 +5,24 @@
       {
         "lang": "English",
         "questionList": {
-          "1": "Can you read a story?",
-          "2": "Can you chat?",
-          "3": "Do you understand a short story?",
-          "4": "Can you read a short story?",
-          "5": "Do you understand tenses?",
-          "6": "Do you know how to use Verbs?",
-          "7": "Can you make simple sentences?"
+          "1": "क्या आप कहानी पढ़ सकते हैं?",
+          "2": "क्या आप चैट कर सकते हैं?",
+          "3": "क्या आप एक छोटी कहानी समझ सकते हैं?",
+          "4": "क्या आप एक छोटी कहानी पढ़ सकते हैं?",
+          "5": "क्या आप सही वाक्य पहचान सकते हैं?",
+          "6": "क्या आप काल पहचान सकते हैं?",
+          "7": "क्या आप क्रियापद का उपयोग जानते है?",
+          "8": "क्या आप सही वाक्य बना सकते हैं?"
         },
         "answerList": {
-          "1": "Can read a story.",
-          "2": "Can chat.",
-          "3": "Can understand a short story.",
-          "4": "Can read a short story.",
-          "5": "Can understand tenses.",
-          "6": "Can use Verbs.",
-          "7": "Can make simple sentences."
+          "1": "कहानी पढ़ सकते हैं|",
+          "2": "चैट कर सकते हैं|",
+          "3": "एक छोटी कहानी समझ सकते हैं|",
+          "4": "एक छोटी कहानी पढ़ सकते हैं|",
+          "5": "सही वाक्य पहचान सकते हैं|",
+          "6": "काल पहचान सकते हैं|",
+          "7": "क्रियापद का उपयोग जानते है|",
+          "8": "सही वाक्य बना सकते हैं|"
         }
       },
       {

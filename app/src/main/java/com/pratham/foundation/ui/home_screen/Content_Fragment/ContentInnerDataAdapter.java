@@ -1,4 +1,4 @@
-package com.pratham.foundation.ui.home_screen.fun;
+package com.pratham.foundation.ui.home_screen.Content_Fragment;
 
 import android.content.Context;
 import android.net.Uri;
@@ -31,20 +31,19 @@ import static com.pratham.foundation.ApplicationClass.App_Thumbs_Path;
 import static com.pratham.foundation.utility.FC_Utility.getRandomCardColor;
 
 
-public class FunInnerDataAdapter extends RecyclerView.Adapter {
+public class ContentInnerDataAdapter extends RecyclerView.Adapter {
 
     private List<ContentTable> itemsList;
     private Context mContext;
     boolean dw_Ready = false;
-    FunContract.FunItemClicked itemClicked;
+    Content_Fragment_Contract.ContentItemClicked itemClicked;
     int parentPos = 0;
     //    List maxScore;
     String parentName;
     private static final String TYPE_HEADER = "Header";
     private static final String TYPE_ITEM = "Resource";
 
-
-    public FunInnerDataAdapter(Context context, List<ContentTable> itemsList, FunContract.FunItemClicked itemClicked, int parentPos, String parentName) {
+    public ContentInnerDataAdapter(Context context, List<ContentTable> itemsList, Content_Fragment_Contract.ContentItemClicked itemClicked, int parentPos, String parentName) {
         this.itemsList = itemsList;
         this.mContext = context;
         this.itemClicked = itemClicked;
