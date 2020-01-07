@@ -1,4 +1,4 @@
-package com.pratham.foundation.ui.home_screen;
+package com.pratham.foundation.ui.home_screen.Content_Fragment;
 
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;

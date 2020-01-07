@@ -1,4 +1,4 @@
-package com.pratham.foundation.ui.home_screen.practice_fragment;
+package com.pratham.foundation.ui.home_screen.Content_Fragment;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
@@ -60,26 +60,30 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
 
-import static com.pratham.foundation.ui.home_screen.HomeActivity.header_rl;
-import static com.pratham.foundation.ui.home_screen.HomeActivity.levelChanged;
-import static com.pratham.foundation.ui.home_screen.HomeActivity.sub_Name;
-import static com.pratham.foundation.ui.home_screen.HomeActivity.tv_header_progress;
+import static com.pratham.foundation.ui.home_screen.ContentHomeActivity.header_rl;
+import static com.pratham.foundation.ui.home_screen.ContentHomeActivity.levelChanged;
+import static com.pratham.foundation.ui.home_screen.ContentHomeActivity.sub_Name;
+import static com.pratham.foundation.ui.home_screen.ContentHomeActivity.tv_header_progress;
 import static com.pratham.foundation.utility.FC_Constants.COMING_SOON;
+import static com.pratham.foundation.utility.FC_Constants.CONTENT_CLICKED;
+import static com.pratham.foundation.utility.FC_Constants.CONTENT_DELETE_CLICKED;
+import static com.pratham.foundation.utility.FC_Constants.CONTENT_DOWNLOAD_CLICKED;
+import static com.pratham.foundation.utility.FC_Constants.CONTENT_OPEN_CLICKED;
+import static com.pratham.foundation.utility.FC_Constants.SEE_MORE_CLICKED;
 import static com.pratham.foundation.utility.FC_Constants.currentLevel;
 import static com.pratham.foundation.utility.FC_Constants.gameFolderPath;
 import static com.pratham.foundation.utility.FC_Utility.dpToPx;
 import static com.pratham.foundation.utility.SplashSupportActivity.ButtonClickSound;
 
 @EFragment(R.layout.fragment_tab_one)
-public class PracticeFragment extends Fragment implements PracticeContract.PracticeView,
-        PracticeContract.PracticeItemClicked {
+public class ContentPracticeFragment extends Fragment implements ContentFragmentContract.ContentView {
 
-    @Bean(PracticePresenter.class)
-    PracticeContract.PracticePresenter presenter;
+    @Bean(ContentFragmentPresenter.class)
+    ContentFragmentContract.ContentFragmentPresenter presenter;
 
     @ViewById(R.id.my_recycler_view)
     RecyclerView my_recycler_view;
-    private PracticeOuterDataAdapter adapterParent;
+    private ContentOuterDataAdapter adapterParent;
     public List<ContentTable> rootList, rootLevelList, dwParentList, childDwContentList;
     public List<ContentTable> contentParentList, contentDBList, contentApiList, childContentList;
     private String downloadNodeId, resName, resServerImageName, downloadType;
@@ -93,7 +97,7 @@ public class PracticeFragment extends Fragment implements PracticeContract.Pract
         dwParentList = new ArrayList<>();
         childDwContentList = new ArrayList<>();
         contentParentList = new ArrayList<>();
-        presenter.setView(PracticeFragment.this);
+        presenter.setView(ContentPracticeFragment.this);
         RetractableToolbarUtil.ShowHideToolbarOnScrollingListener showHideToolbarListener;
         my_recycler_view.addOnScrollListener(showHideToolbarListener =
                 new RetractableToolbarUtil.ShowHideToolbarOnScrollingListener(header_rl));
@@ -110,7 +114,7 @@ public class PracticeFragment extends Fragment implements PracticeContract.Pract
         }
 
         if (adapterParent == null) {
-            adapterParent = new PracticeOuterDataAdapter(getActivity(), contentParentList, this);
+            adapterParent = new ContentOuterDataAdapter(getActivity(), contentParentList);
             RecyclerView.LayoutManager mLayoutManager = new GridLayoutManager(getActivity(), 1);
             my_recycler_view.setLayoutManager(mLayoutManager);
             my_recycler_view.addItemDecoration(new GridSpacingItemDecoration(1, dpToPx(getActivity()), true));
@@ -211,6 +215,16 @@ public class PracticeFragment extends Fragment implements PracticeContract.Pract
             } else if (message.getMessage().equalsIgnoreCase(FC_Constants.FILE_DOWNLOAD_UPDATE)) {
                 if (progressLayout != null)
                     progressLayout.setCurProgress(message.getModal_fileDownloading().getProgress());
+            }  else if (message.getMessage().equalsIgnoreCase(CONTENT_CLICKED)) {
+                onContentClicked(message.getContentDetail(),message.getNodeTitle());
+            } else if (message.getMessage().equalsIgnoreCase(CONTENT_OPEN_CLICKED)) {
+                onContentOpenClicked(message.getContentDetail());
+            } else if (message.getMessage().equalsIgnoreCase(CONTENT_DOWNLOAD_CLICKED)) {
+                onContentDownloadClicked(message.getContentDetail(),message.getParentPos(),message.getChildPos(),message.getDownloadType());
+            } else if (message.getMessage().equalsIgnoreCase(CONTENT_DELETE_CLICKED)) {
+                onContentDeleteClicked(message.getContentDetail());
+            } else if (message.getMessage().equalsIgnoreCase(SEE_MORE_CLICKED)) {
+                seeMore(message.getNodeID(),message.getNodeTitle());
             } else if (message.getMessage().equalsIgnoreCase(FC_Constants.FRAGMENT_SELECTED)) {
                 fragmentSelected();
             } else if (message.getMessage().equalsIgnoreCase(FC_Constants.FRAGMENT_RESELECTED)) {
@@ -368,7 +382,6 @@ public class PracticeFragment extends Fragment implements PracticeContract.Pract
             downloadDialog.dismiss();
     }
 
-    @Override
     public void onContentClicked(ContentTable singleItem, String parentName) {
         ButtonClickSound.start();
         FC_Constants.isPractice = true;
@@ -392,7 +405,6 @@ public class PracticeFragment extends Fragment implements PracticeContract.Pract
         }
     }
 
-    @Override
     public void onContentOpenClicked(ContentTable contentList) {
         //Toast.makeText(this, "ContentOpen : Work In Progress", Toast.LENGTH_SHORT).show();
         //todo remove#
@@ -513,7 +525,6 @@ public class PracticeFragment extends Fragment implements PracticeContract.Pract
         resServerImageName = contentList.getNodeServerImage();
     }
 
-    @Override
     public void onContentDownloadClicked(ContentTable contentList, int parentPos, int childPos, String downloadType) {
         this.downloadType = downloadType;
         FC_Constants.isPractice = true;
@@ -555,11 +566,9 @@ public class PracticeFragment extends Fragment implements PracticeContract.Pract
         }
     }
 
-    @Override
     public void onContentDeleteClicked(ContentTable contentList) {
     }
 
-    @Override
     public void seeMore(String nodeId, String nodeTitle) {
         FC_Constants.isTest = false;
         Intent intent = new Intent(getActivity(), ContentDisplay_.class);

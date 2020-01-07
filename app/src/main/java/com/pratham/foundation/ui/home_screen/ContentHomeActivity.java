@@ -17,6 +17,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.pratham.foundation.ApplicationClass;
 import com.pratham.foundation.BaseActivity;
@@ -27,12 +28,14 @@ import com.pratham.foundation.customView.submarine_view.SubmarineItem;
 import com.pratham.foundation.customView.submarine_view.SubmarineView;
 import com.pratham.foundation.database.AppDatabase;
 import com.pratham.foundation.database.BackupDatabase;
+import com.pratham.foundation.database.domain.ContentTable;
 import com.pratham.foundation.database.domain.Session;
 import com.pratham.foundation.modalclasses.EventMessage;
 import com.pratham.foundation.services.shared_preferences.FastSave;
-import com.pratham.foundation.ui.home_screen.fun.FunFragment_;
-import com.pratham.foundation.ui.home_screen.learning_fragment.LearningFragment_;
-import com.pratham.foundation.ui.home_screen.practice_fragment.PracticeFragment_;
+import com.pratham.foundation.ui.home_screen.Content_Fragment.ContentFunFragment_;
+import com.pratham.foundation.ui.home_screen.Content_Fragment.ContentLearningFragment_;
+import com.pratham.foundation.ui.home_screen.Content_Fragment.ContentPracticeFragment_;
+import com.pratham.foundation.ui.home_screen.Content_Fragment.ViewPagerAdapter;
 import com.pratham.foundation.ui.home_screen.profile_new.ProfileFragment_;
 import com.pratham.foundation.ui.home_screen.test_fragment.TestFragment_;
 import com.pratham.foundation.ui.home_screen.test_fragment.supervisor.SupervisedAssessmentActivity;
@@ -54,6 +57,9 @@ import java.util.Objects;
 
 import static com.pratham.foundation.utility.FC_Constants.ASSESSMENT_SESSION;
 import static com.pratham.foundation.utility.FC_Constants.BACK_PRESSED;
+import static com.pratham.foundation.utility.FC_Constants.CONTENT_CLICKED;
+import static com.pratham.foundation.utility.FC_Constants.CONTENT_DOWNLOAD_CLICKED;
+import static com.pratham.foundation.utility.FC_Constants.CONTENT_OPEN_CLICKED;
 import static com.pratham.foundation.utility.FC_Constants.FRAGMENT_RESELECTED;
 import static com.pratham.foundation.utility.FC_Constants.FRAGMENT_SELECTED;
 import static com.pratham.foundation.utility.FC_Constants.GROUP_LOGIN;
@@ -62,13 +68,14 @@ import static com.pratham.foundation.utility.FC_Constants.INDIVIDUAL_MODE;
 import static com.pratham.foundation.utility.FC_Constants.LEVEL_CHANGED;
 import static com.pratham.foundation.utility.FC_Constants.LEVEL_TEST_GIVEN;
 import static com.pratham.foundation.utility.FC_Constants.LOGIN_MODE;
+import static com.pratham.foundation.utility.FC_Constants.SEE_MORE_CLICKED;
 import static com.pratham.foundation.utility.FC_Constants.currentLevel;
 import static com.pratham.foundation.utility.FC_Constants.isTest;
 import static com.pratham.foundation.utility.FC_Constants.testSessionEnded;
 import static com.pratham.foundation.utility.FC_Constants.testSessionEntered;
 
 @EActivity(R.layout.activity_home)
-public class HomeActivity extends BaseActivity implements LevelChanged {
+public class ContentHomeActivity extends BaseActivity implements ContentHomeContract.ContentLevelChanged, ContentHomeContract.ContentItemClicked {
 
     @ViewById(R.id.tv_header_progress)
     public static TextView tv_header_progress;
@@ -112,7 +119,8 @@ public class HomeActivity extends BaseActivity implements LevelChanged {
     public static String sub_Name, sub_nodeId = "";
     public static boolean languageChanged = false;
     static int count = 0;
-    public static LevelChanged levelChanged;
+    public static ContentHomeContract.ContentLevelChanged levelChanged;
+    public static ContentHomeContract.ContentItemClicked itemClicked;
     String currSubj;
 
     @AfterViews
@@ -132,8 +140,10 @@ public class HomeActivity extends BaseActivity implements LevelChanged {
         setupViewPager(viewpager);
         tv_header_progress.setText("0%");
 //        tv_progress.setCurProgress(0);
-        levelChanged = HomeActivity.this;
+        levelChanged = ContentHomeActivity.this;
+        itemClicked = ContentHomeActivity.this;
         count = 0;
+        Toast.makeText(this, "NEW HOME", Toast.LENGTH_LONG).show();
         tabLayout.setupWithViewPager(viewpager);
         setupTabIcons();
 /*        IconForm iconForm = new IconForm.Builder(this)
@@ -433,14 +443,14 @@ public class HomeActivity extends BaseActivity implements LevelChanged {
 
         dia_btn_red.setOnClickListener(v -> {
             dialog.dismiss();
-            Intent intent = new Intent(HomeActivity.this, SupervisedAssessmentActivity.class);
+            Intent intent = new Intent(ContentHomeActivity.this, SupervisedAssessmentActivity.class);
             intent.putExtra("testMode", "unsupervised");
             startActivity(intent);
         });
 
         dia_btn_yellow.setOnClickListener(v -> {
             dialog.dismiss();
-            Intent intent = new Intent(HomeActivity.this, SupervisedAssessmentActivity.class);
+            Intent intent = new Intent(ContentHomeActivity.this, SupervisedAssessmentActivity.class);
             intent.putExtra("testMode", "supervised");
             startActivity(intent);
         });
@@ -508,23 +518,23 @@ public class HomeActivity extends BaseActivity implements LevelChanged {
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
         viewpager.setOffscreenPageLimit(5);
         if (FastSave.getInstance().getString(FC_Constants.LOGIN_MODE, FC_Constants.GROUP_MODE).contains("group")) {
-            adapter.addFrag(new LearningFragment_(), ""+getResources().getString(R.string.Learning));
-            adapter.addFrag(new PracticeFragment_(), ""+getResources().getString(R.string.Practice));
+            adapter.addFrag(new ContentLearningFragment_(), ""+getResources().getString(R.string.Learning));
+            adapter.addFrag(new ContentPracticeFragment_(), ""+getResources().getString(R.string.Practice));
             if (currSubj.equalsIgnoreCase("Language")||currSubj.equalsIgnoreCase("Maths")) {
                 adapter.addFrag(new TestFragment_(), ""+getResources().getString(R.string.Test));
             }else if (currSubj.equalsIgnoreCase("english")) {
                 adapter.addFrag(new TestFragment_(), ""+getResources().getString(R.string.Test));
-                adapter.addFrag(new FunFragment_(), ""+getResources().getString(R.string.Fun));
+                adapter.addFrag(new ContentFunFragment_(), ""+getResources().getString(R.string.Fun));
             }
             adapter.addFrag(new ProfileFragment_(), ""+getResources().getString(R.string.Profile));
         } else {
-            adapter.addFrag(new PracticeFragment_(), ""+getResources().getString(R.string.Practice));
-            adapter.addFrag(new LearningFragment_(), ""+getResources().getString(R.string.Learning));
+            adapter.addFrag(new ContentPracticeFragment_(), ""+getResources().getString(R.string.Practice));
+            adapter.addFrag(new ContentLearningFragment_(), ""+getResources().getString(R.string.Learning));
             if (currSubj.equalsIgnoreCase("Language")||currSubj.equalsIgnoreCase("Maths")) {
                 adapter.addFrag(new TestFragment_(), ""+getResources().getString(R.string.Test));
             }else if (currSubj.equalsIgnoreCase("english")) {
                 adapter.addFrag(new TestFragment_(), ""+getResources().getString(R.string.Test));
-                adapter.addFrag(new FunFragment_(), ""+getResources().getString(R.string.Fun));
+                adapter.addFrag(new ContentFunFragment_(), ""+getResources().getString(R.string.Fun));
             }
             adapter.addFrag(new ProfileFragment_(), ""+getResources().getString(R.string.Profile));
         }
@@ -561,13 +571,9 @@ public class HomeActivity extends BaseActivity implements LevelChanged {
 
     @SuppressLint("SetTextI18n")
     private void exitDialog() {
-        CustomLodingDialog dialog = new CustomLodingDialog(HomeActivity.this);
+        CustomLodingDialog dialog = new CustomLodingDialog(ContentHomeActivity.this);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setContentView(R.layout.fc_custom_dialog);
-/*      Bitmap map=FC_Utility.takeScreenShot(HomeActivity.this);
-        Bitmap fast=FC_Utility.fastblur(map, 20);
-        final Drawable draw=new BitmapDrawable(getResources(),fast);
-        dialog.getWindow().setBackgroundDrawable(draw);*/
         Objects.requireNonNull(dialog.getWindow()).setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         dialog.setCancelable(false);
         dialog.setCanceledOnTouchOutside(false);
@@ -590,7 +596,7 @@ public class HomeActivity extends BaseActivity implements LevelChanged {
         });
 
         revise_btn.setOnClickListener(v -> {
-            endSession(HomeActivity.this);
+            endSession(ContentHomeActivity.this);
             finishAffinity();
             dialogFlg = false;
             dialog.dismiss();
@@ -602,4 +608,50 @@ public class HomeActivity extends BaseActivity implements LevelChanged {
         });
     }
 
+    @Override
+    public void onContentClicked(ContentTable singleItem, String parentName) {
+        //TODO ADD CODE
+        EventMessage eventMessage = new EventMessage();
+        eventMessage.setContentDetail(singleItem);
+        eventMessage.setNodeTitle(parentName);
+        eventMessage.setMessage(CONTENT_CLICKED);
+        EventBus.getDefault().post(eventMessage);
+    }
+
+    @Override
+    public void onContentOpenClicked(ContentTable contentList) {
+        EventMessage eventMessage = new EventMessage();
+        eventMessage.setContentDetail(contentList);
+        eventMessage.setMessage(CONTENT_OPEN_CLICKED);
+        EventBus.getDefault().post(eventMessage);
+    }
+
+    @Override
+    public void onContentDownloadClicked(ContentTable contentList, int parentPos, int childPos, String downloadType) {
+        EventMessage eventMessage = new EventMessage();
+        eventMessage.setMessage(CONTENT_DOWNLOAD_CLICKED);
+        eventMessage.setContentDetail(contentList);
+        eventMessage.setParentPos(parentPos);
+        eventMessage.setChildPos(childPos);
+        eventMessage.setDownloadType(downloadType);
+        EventBus.getDefault().post(eventMessage);
+    }
+
+    @Override
+    public void onContentDeleteClicked(ContentTable contentList) {
+/*        EventMessage eventMessage = new EventMessage();
+        eventMessage.setMessage(CONTENT_DELETE_CLICKED);
+        eventMessage.setContentDetail(contentList);
+        EventBus.getDefault().post(eventMessage);*/
+    }
+
+    @Override
+    public void seeMore(String nodeId, String nodeTitle) {
+        EventMessage eventMessage = new EventMessage();
+        eventMessage.setMessage(SEE_MORE_CLICKED);
+        eventMessage.setNodeID(nodeId);
+        eventMessage.setNodeTitle(nodeTitle);
+        EventBus.getDefault().post(eventMessage);
+
+    }
 }

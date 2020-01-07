@@ -13,6 +13,7 @@ import android.widget.TextView;
 
 import com.pratham.foundation.R;
 import com.pratham.foundation.database.domain.ContentTable;
+import com.pratham.foundation.ui.home_screen.ContentHomeActivity;
 import com.pratham.foundation.utility.FC_Constants;
 
 import java.util.ArrayList;
@@ -30,12 +31,10 @@ public class ContentOuterDataAdapter extends RecyclerView.Adapter {
     private ContentTable contentTable;
     private Context mContext;
     public int childCounter = 0;
-    Content_Fragment_Contract.ContentItemClicked itemClicked;
 
-    public ContentOuterDataAdapter(Context context, List<ContentTable> dataList, Content_Fragment_Contract.ContentItemClicked itemClicked) {
+    public ContentOuterDataAdapter(Context context, List<ContentTable> dataList) {
         this.dataList = dataList;
         this.mContext = context;
-        this.itemClicked = itemClicked;
     }
 
     public class EmptyHolder extends RecyclerView.ViewHolder {
@@ -83,7 +82,7 @@ public class ContentOuterDataAdapter extends RecyclerView.Adapter {
                             && (contentTable.isDownloaded.equalsIgnoreCase("false"))) {
                         itemRowHolder.btnMore.setVisibility(View.GONE);
                         itemRowHolder.actionBtn.setVisibility(View.VISIBLE);
-                        itemRowHolder.actionBtn.setOnClickListener(v -> itemClicked.onContentDownloadClicked(dataList.get(i),
+                        itemRowHolder.actionBtn.setOnClickListener(v -> ContentHomeActivity.itemClicked.onContentDownloadClicked(dataList.get(i),
                                 i, 0, "" + FC_Constants.FULL_DOWNLOAD));
                     } else {
                         int size = dataList.get(i).getNodelist().size() - 2;
@@ -91,7 +90,7 @@ public class ContentOuterDataAdapter extends RecyclerView.Adapter {
                         itemRowHolder.btnMore.setVisibility(View.GONE);
                         if (size > 6) {
                             itemRowHolder.btnMore.setVisibility(View.VISIBLE);
-                            itemRowHolder.btnMore.setOnClickListener(v -> itemClicked.seeMore(dataList.get(i).getNodeId(),
+                            itemRowHolder.btnMore.setOnClickListener(v -> ContentHomeActivity.itemClicked.seeMore(dataList.get(i).getNodeId(),
                                     dataList.get(i).getNodeTitle()));
                         }
                         itemRowHolder.actionBtn.setVisibility(View.GONE);
@@ -102,7 +101,7 @@ public class ContentOuterDataAdapter extends RecyclerView.Adapter {
                     itemRowHolder.btnMore.setVisibility(View.GONE);
                     if (size > 6) {
                         itemRowHolder.btnMore.setVisibility(View.VISIBLE);
-                        itemRowHolder.btnMore.setOnClickListener(v -> itemClicked.seeMore(dataList.get(i).getNodeId(),
+                        itemRowHolder.btnMore.setOnClickListener(v -> ContentHomeActivity.itemClicked.seeMore(dataList.get(i).getNodeId(),
                                 dataList.get(i).getNodeTitle()));
                     }
                     itemRowHolder.actionBtn.setVisibility(View.GONE);
@@ -115,7 +114,7 @@ public class ContentOuterDataAdapter extends RecyclerView.Adapter {
 
                 try {
                     itemRowHolder.itemTitle.setText(sectionName);
-                    ContentInnerDataAdapter contentInnerDataAdapter = new ContentInnerDataAdapter(mContext, sublistList, itemClicked, i,sectionName);
+                    ContentInnerDataAdapter contentInnerDataAdapter = new ContentInnerDataAdapter(mContext, sublistList, i,sectionName);
                     itemRowHolder.recycler_view_list.setLayoutManager(new LinearLayoutManager(mContext, LinearLayoutManager.HORIZONTAL, false));
                     itemRowHolder.recycler_view_list.setAdapter(contentInnerDataAdapter);
                     childCounter += 1;

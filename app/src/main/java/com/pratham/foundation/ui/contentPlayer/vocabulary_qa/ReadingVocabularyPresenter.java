@@ -216,7 +216,7 @@ public class ReadingVocabularyPresenter implements ReadingVocabularyContract.Rea
                 String sttResult = sttResults.get(k);
                 if (sttResult.toLowerCase().contains(quesCheckFinal.toLowerCase())) {
                     allCorrect = true;
-                    keyWordCorrect = " : keyWord" + quesCheckFinal.toLowerCase();
+                    keyWordCorrect = " : keyWord " + quesCheckFinal.toLowerCase();
                     addLearntWords(quesCheckFinal.toLowerCase());
                 }
             }

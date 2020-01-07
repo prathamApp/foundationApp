@@ -4,22 +4,32 @@ import com.pratham.foundation.database.domain.ContentTable;
 
 import java.util.List;
 
-public interface Content_Fragment_Contract {
-
-    interface ContentItemClicked {
-
-        void onContentClicked(ContentTable singleItem, String parentName);
-
-        void onContentOpenClicked(ContentTable contentList);
-
-        void onContentDownloadClicked(ContentTable contentList, int parentPos, int childPos, String downloadType);
-
-        void onContentDeleteClicked(ContentTable contentList);
-
-        void seeMore(String nodeId, String nodeTitle);
-    }
+public interface ContentFragmentContract {
 
     interface ContentFunView {
+
+        void notifyAdapter();
+
+        void addContentToViewList(List<ContentTable> contentParentList);
+
+        void setSelectedLevel(List<ContentTable> contentTable);
+
+        void showNoDataDownloadedDialog();
+
+        void showLoader();
+
+        void dismissLoadingDialog();
+
+        void setLevelprogress(int percent);
+
+        void dismissDownloadDialog();
+
+        void showComingSoonDiaog();
+
+//        void setBotNodeId(String botID);
+    }
+
+    interface ContentView {
 
         void notifyAdapter();
 
@@ -65,40 +75,31 @@ public interface Content_Fragment_Contract {
 //        void setBotNodeId(String botID);
     }
 
-    interface ContentLearningPresenter {
+    interface ContentPracticeView {
 
-        void getDataForList();
+        void notifyAdapter();
 
-        void insertNodeId(String nodeId);
+        void addContentToViewList(List<ContentTable> contentParentList);
 
-        void updateDownloads();
+        void setSelectedLevel(List<ContentTable> contentTable);
 
-        void downloadResource(String downloadNodeId);
+        void showNoDataDownloadedDialog();
 
-        boolean removeLastNodeId();
+        void showLoader();
 
-        void clearNodeIds();
+        void dismissLoadingDialog();
 
-        void getLevelDataForList(int currentLevelNo, String bottomNavNodeId);
+        void setLevelprogress(int percent);
 
-        void clearLevelList();
+        void dismissDownloadDialog();
 
-        void findMaxScore(String nodeId);
+        void showComingSoonDiaog();
 
-        void updateDownloadJson(String folderPath);
-
-        void updateCurrentNode(ContentTable contentTable);
-
-        String getcurrentNodeID();
-
-        void setFunView(Content_Fragment_Contract.ContentFunView funView);
-
-        void getBottomNavId(int currentLevelNo, String cosSection);
-
-        void setLearningView(Content_Fragment_Contract.ContentLearningView learningView);
+//        void setBotNodeId(String botID);
     }
 
-    interface ContentFunPresenter {
+
+    interface ContentFragmentPresenter {
 
         void getDataForList();
 
@@ -124,8 +125,15 @@ public interface Content_Fragment_Contract {
 
         String getcurrentNodeID();
 
-        void setFunView(Content_Fragment_Contract.ContentFunView funView);
-
         void getBottomNavId(int currentLevelNo, String cosSection);
+
+/*        void setFunView(ContentFragmentContract.ContentFunView funView);
+
+        void setLearningView(ContentFragmentContract.ContentLearningView learningView);
+
+        void setPracticeView(ContentFragmentContract.ContentPracticeView PracticeView);*/
+
+        void setView(ContentFragmentContract.ContentView contentView);
+
     }
 }

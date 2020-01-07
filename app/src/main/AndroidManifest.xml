@@ -59,7 +59,7 @@
             android:name=".ui.admin_panel.group_selection.SelectGroupActivity_"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".ui.home_screen.HomeActivity_"
+            android:name=".ui.home_screen.ContentHomeActivity_"
             android:screenOrientation="portrait" />
         <activity
             android:name=".ui.home_screen.display_content.ContentDisplay_"

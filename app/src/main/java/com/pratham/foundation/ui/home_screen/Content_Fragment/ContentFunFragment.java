@@ -59,10 +59,10 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
 
-import static com.pratham.foundation.ui.home_screen.HomeActivity.header_rl;
-import static com.pratham.foundation.ui.home_screen.HomeActivity.levelChanged;
-import static com.pratham.foundation.ui.home_screen.HomeActivity.sub_Name;
-import static com.pratham.foundation.ui.home_screen.HomeActivity.tv_header_progress;
+import static com.pratham.foundation.ui.home_screen.ContentHomeActivity.header_rl;
+import static com.pratham.foundation.ui.home_screen.ContentHomeActivity.levelChanged;
+import static com.pratham.foundation.ui.home_screen.ContentHomeActivity.sub_Name;
+import static com.pratham.foundation.ui.home_screen.ContentHomeActivity.tv_header_progress;
 import static com.pratham.foundation.utility.FC_Constants.COMING_SOON;
 import static com.pratham.foundation.utility.FC_Constants.currentLevel;
 import static com.pratham.foundation.utility.FC_Constants.gameFolderPath;
@@ -70,11 +70,10 @@ import static com.pratham.foundation.utility.FC_Utility.dpToPx;
 import static com.pratham.foundation.utility.SplashSupportActivity.ButtonClickSound;
 
 @EFragment(R.layout.fragment_tab_one)
-public class ContentFunFragment extends Fragment implements Content_Fragment_Contract.ContentFunView,
-        Content_Fragment_Contract.ContentItemClicked {
+public class ContentFunFragment extends Fragment implements ContentFragmentContract.ContentView{
 
     @Bean(ContentFragmentPresenter.class)
-    Content_Fragment_Contract.ContentFunPresenter presenter;
+    ContentFragmentContract.ContentFragmentPresenter presenter;
 
     @ViewById(R.id.my_recycler_view)
     RecyclerView my_recycler_view;
@@ -92,7 +91,7 @@ public class ContentFunFragment extends Fragment implements Content_Fragment_Con
         dwParentList = new ArrayList<>();
         childDwContentList = new ArrayList<>();
         contentParentList = new ArrayList<>();
-        presenter.setFunView(ContentFunFragment.this);
+        presenter.setView(ContentFunFragment.this);
         RetractableToolbarUtil.ShowHideToolbarOnScrollingListener showHideToolbarListener;
         my_recycler_view.addOnScrollListener(showHideToolbarListener =
                 new RetractableToolbarUtil.ShowHideToolbarOnScrollingListener(header_rl));
@@ -103,7 +102,7 @@ public class ContentFunFragment extends Fragment implements Content_Fragment_Con
     public void notifyAdapter() {
         sortAllList(contentParentList);
         if (adapterParent == null) {
-            adapterParent = new ContentOuterDataAdapter(getActivity(), contentParentList, this);
+            adapterParent = new ContentOuterDataAdapter(getActivity(), contentParentList);
             RecyclerView.LayoutManager mLayoutManager = new GridLayoutManager(getActivity(), 1);
             my_recycler_view.setLayoutManager(mLayoutManager);
             my_recycler_view.addItemDecoration(new GridSpacingItemDecoration(1,dpToPx(getActivity()),true));
@@ -356,7 +355,6 @@ public class ContentFunFragment extends Fragment implements Content_Fragment_Con
             downloadDialog.dismiss();
     }
 
-    @Override
     public void onContentClicked(ContentTable singleItem, String parentName) {
         ButtonClickSound.start();
         FC_Constants.isPractice=false;
@@ -380,7 +378,6 @@ public class ContentFunFragment extends Fragment implements Content_Fragment_Con
 
     }
 
-    @Override
     public void onContentOpenClicked(ContentTable contentList) {
         //Toast.makeText(this, "ContentOpen : Work In Progress", Toast.LENGTH_SHORT).show();
         //todo remove#
@@ -500,7 +497,6 @@ public class ContentFunFragment extends Fragment implements Content_Fragment_Con
         resServerImageName = contentList.getNodeServerImage();
     }
 
-    @Override
     public void onContentDownloadClicked(ContentTable contentList, int parentPos, int childPos, String downloadType) {
         this.downloadType = downloadType;
         downloadNodeId = contentList.getNodeId();
@@ -541,11 +537,9 @@ public class ContentFunFragment extends Fragment implements Content_Fragment_Con
         }
     }
 
-    @Override
     public void onContentDeleteClicked(ContentTable contentList) {
     }
 
-    @Override
     public void seeMore(String nodeId, String nodeTitle) {
         FC_Constants.isTest = false;
         Intent intent = new Intent(getActivity(), ContentDisplay_.class);

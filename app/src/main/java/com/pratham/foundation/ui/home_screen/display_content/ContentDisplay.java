@@ -62,7 +62,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import static com.pratham.foundation.ui.home_screen.HomeActivity.languageChanged;
+import static com.pratham.foundation.ui.home_screen.ContentHomeActivity.languageChanged;
 import static com.pratham.foundation.utility.FC_Constants.LOGIN_MODE;
 import static com.pratham.foundation.utility.FC_Constants.QR_GROUP_MODE;
 import static com.pratham.foundation.utility.FC_Constants.gameFolderPath;

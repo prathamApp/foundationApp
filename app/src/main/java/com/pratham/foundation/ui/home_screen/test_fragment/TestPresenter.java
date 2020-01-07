@@ -46,7 +46,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
-import static com.pratham.foundation.ui.home_screen.HomeActivity.sub_nodeId;
+import static com.pratham.foundation.ui.home_screen.ContentHomeActivity.sub_nodeId;
 import static com.pratham.foundation.utility.FC_Constants.CURRENT_FOLDER_NAME;
 import static com.pratham.foundation.utility.FC_Constants.currentLevel;
 import static com.pratham.foundation.utility.FC_Constants.gameFolderPath;

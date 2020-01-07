@@ -233,6 +233,11 @@ public class FC_Constants {
     public static String dialog_btn_exit = "Exit";
     public static String dialog_btn_cancel = "Cancel";
     public static String dialog_btn_restart = "Restart";
+    public static String CONTENT_CLICKED = "content_clicked";
+    public static String CONTENT_OPEN_CLICKED = "content_open_clicked";
+    public static String CONTENT_DOWNLOAD_CLICKED = "content_download_clicked";
+    public static String CONTENT_DELETE_CLICKED= "content_delete_clicked";
+    public static String SEE_MORE_CLICKED= "see_more_clicked";
     public static boolean isPractice;
     public static boolean isTest;
     public static int currentLevel;

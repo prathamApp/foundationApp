@@ -18,6 +18,11 @@ public class EventMessage {
     private String pushData;
     private String downloadId;
     private String file_name;
+    private int parentPos;
+    private int childPos;
+    private String downloadType;
+    private String nodeTitle;
+    private String nodeID;
     private long progress;
     private Location location;
     private Modal_FileDownloading modal_fileDownloading;
@@ -124,5 +129,45 @@ public class EventMessage {
 
     public void setPushData(String pushData) {
         this.pushData = pushData;
+    }
+
+    public int getParentPos() {
+        return parentPos;
+    }
+
+    public void setParentPos(int parentPos) {
+        this.parentPos = parentPos;
+    }
+
+    public int getChildPos() {
+        return childPos;
+    }
+
+    public void setChildPos(int childPos) {
+        this.childPos = childPos;
+    }
+
+    public String getDownloadType() {
+        return downloadType;
+    }
+
+    public void setDownloadType(String downloadType) {
+        this.downloadType = downloadType;
+    }
+
+    public String getNodeTitle() {
+        return nodeTitle;
+    }
+
+    public void setNodeTitle(String nodeTitle) {
+        this.nodeTitle = nodeTitle;
+    }
+
+    public String getNodeID() {
+        return nodeID;
+    }
+
+    public void setNodeID(String nodeID) {
+        this.nodeID = nodeID;
     }
 }

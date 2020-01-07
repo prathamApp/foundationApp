@@ -42,14 +42,18 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
-import static com.pratham.foundation.ui.home_screen.HomeActivity.sub_nodeId;
+import static com.pratham.foundation.ui.home_screen.ContentHomeActivity.sub_nodeId;
 import static com.pratham.foundation.utility.FC_Constants.gameFolderPath;
 
 @EBean
-public class ContentFragmentPresenter implements Content_Fragment_Contract.ContentFunPresenter, API_Content_Result {
+public class ContentFragmentPresenter implements
+        ContentFragmentContract.ContentFragmentPresenter, API_Content_Result {
 
     Context mContext;
-    Content_Fragment_Contract.ContentFunView funView;
+    ContentFragmentContract.ContentFunView funView;
+    ContentFragmentContract.ContentView contentView;
+    ContentFragmentContract.ContentLearningView learningView;
+    ContentFragmentContract.ContentPracticeView practiceView;
     public List<ContentTable> rootList, rootLevelList, dwParentList, childDwContentList;
     public List<ContentTable> contentParentList, contentDBList, contentApiList, childContentList;
     ArrayList<String> nodeIds;
@@ -72,8 +76,12 @@ public class ContentFragmentPresenter implements Content_Fragment_Contract.Conte
     }
 
     @Override
-    public void setFunView(Content_Fragment_Contract.ContentFunView funView) {
-        this.funView = funView;
+    public void setView(ContentFragmentContract.ContentView contentView) {
+        this.contentView = contentView;
+        initializeVars();
+    }
+
+    private void initializeVars() {
         nodeIds = new ArrayList<>();
         contentParentList = new ArrayList<>();
         contentDBList = new ArrayList<>();
@@ -145,9 +153,10 @@ public class ContentFragmentPresenter implements Content_Fragment_Contract.Conte
 //        if (botID != null && !FC_Utility.isDataConnectionAvailable(mContext))
         if (botID != null )
             getLevelDataForList(currentLevelNo, botID);
-        else
-            funView.showComingSoonDiaog();
+        else {
+            contentView.showComingSoonDiaog();
 //            getRootData(rootID);
+        }
 
     }
 
@@ -164,7 +173,7 @@ public class ContentFragmentPresenter implements Content_Fragment_Contract.Conte
 //        if (FC_Utility.isDataConnectionAvailable(mContext))
 //            getLevelDataFromApi(currentLevelNo, bottomNavNodeId);
 //        else
-            funView.setSelectedLevel(rootList);
+            contentView.setSelectedLevel(rootList);
     }
 
     public void getLevelDataFromApi(int currentLevelNo, String botNodeId) {
@@ -236,20 +245,20 @@ public class ContentFragmentPresenter implements Content_Fragment_Contract.Conte
             }
             if (maxScore.size() > 0) {
                 int percent = (int) (totalScore / maxScore.size());
-                funView.setLevelprogress(percent);
+                contentView.setLevelprogress(percent);
             } else {
-                funView.setLevelprogress(0);
+                contentView.setLevelprogress(0);
             }
         } catch (Exception e) {
             e.printStackTrace();
-            funView.setLevelprogress(0);
+            contentView.setLevelprogress(0);
         }
     }
 
     @Override
     @Background
     public void getDataForList() {
-        funView.showLoader();
+        contentView.showLoader();
         try {
 
             dwParentList = AppDatabase.appDatabase.getContentTableDao().getContentData("" + nodeIds.get(nodeIds.size() - 1));
@@ -398,10 +407,10 @@ public class ContentFragmentPresenter implements Content_Fragment_Contract.Conte
 //        } else {
 //            if (contentParentList.size() == 0 && !FC_Utility.isDataConnectionAvailable(mContext)) {
             if (contentParentList.size() == 0) {
-                funView.showNoDataDownloadedDialog();
+                contentView.showNoDataDownloadedDialog();
             } else {
-                funView.addContentToViewList(contentParentList);
-                funView.notifyAdapter();
+                contentView.addContentToViewList(contentParentList);
+                contentView.notifyAdapter();
             }
 //        }
     }
@@ -505,7 +514,7 @@ public class ContentFragmentPresenter implements Content_Fragment_Contract.Conte
         if (FC_Utility.isDataConnectionAvailable(mContext)) {
             api_content.getAPIContent(FC_Constants.INTERNET_DOWNLOAD_RESOURCE, FC_Constants.INTERNET_DOWNLOAD_RESOURCE_API, downloadNodeId);
         } else {
-            funView.showNoDataDownloadedDialog();
+            contentView.showNoDataDownloadedDialog();
         }
 //        getAPIContent(FC_Constants.INTERNET_DOWNLOAD_RESOURCE, FC_Constants.INTERNET_DOWNLOAD_RESOURCE_API);
     }
@@ -535,9 +544,9 @@ public class ContentFragmentPresenter implements Content_Fragment_Contract.Conte
             e.printStackTrace();
         }
         BackupDatabase.backup(mContext);
-        funView.dismissDownloadDialog();
-//        funView.hideTestDownloadBtn();
-//        funView.displayCurrentDownloadedTest();
+        contentView.dismissDownloadDialog();
+//        contentView.hideTestDownloadBtn();
+//        contentView.displayCurrentDownloadedTest();
     }
 
     @Background
@@ -721,13 +730,13 @@ public class ContentFragmentPresenter implements Content_Fragment_Contract.Conte
                         }
                     }
                 }
-                //funView.addContentToViewList(contentParentList);
+                //contentView.addContentToViewList(contentParentList);
             } catch (Exception e) {
                 e.printStackTrace();
             }
 //            contentParentList = contentDBList;
-            funView.addContentToViewList(contentDBList);
-            funView.notifyAdapter();
+            contentView.addContentToViewList(contentDBList);
+            contentView.notifyAdapter();
 
         } else if (header.equalsIgnoreCase(FC_Constants.INTERNET_DOWNLOAD_RESOURCE)) {
             try {
@@ -791,7 +800,7 @@ public class ContentFragmentPresenter implements Content_Fragment_Contract.Conte
                 e.printStackTrace();
             }
             sortContentList(rootLevelList);
-            funView.setSelectedLevel(rootLevelList);
+            contentView.setSelectedLevel(rootLevelList);
         } else if (header.equalsIgnoreCase(FC_Constants.BOTTOM_NODE)) {
             try {
                 Type listType = new TypeToken<ArrayList<ContentTable>>() {
@@ -801,7 +810,7 @@ public class ContentFragmentPresenter implements Content_Fragment_Contract.Conte
                 for (int i = 0; i < serverContentList.size(); i++)
                     if (serverContentList.get(i).getNodeTitle().equalsIgnoreCase(cosSection))
                         botNodeId = serverContentList.get(i).getNodeId();
-//                funView.setBotNodeId(botNodeId);
+//                contentView.setBotNodeId(botNodeId);
                 getLevelDataFromApi(currentLevelNo, botNodeId);
             } catch (Exception e) {
                 e.printStackTrace();
@@ -826,10 +835,10 @@ public class ContentFragmentPresenter implements Content_Fragment_Contract.Conte
     @Override
     public void receivedError(String header) {
         if (header.equalsIgnoreCase(FC_Constants.INTERNET_LEVEL)) {
-            funView.setSelectedLevel(rootList);
+            contentView.setSelectedLevel(rootList);
         } else if (header.equalsIgnoreCase(FC_Constants.INTERNET_DOWNLOAD)) {
-            funView.addContentToViewList(contentParentList);
-            funView.notifyAdapter();
+            contentView.addContentToViewList(contentParentList);
+            contentView.notifyAdapter();
         }
     }
 }

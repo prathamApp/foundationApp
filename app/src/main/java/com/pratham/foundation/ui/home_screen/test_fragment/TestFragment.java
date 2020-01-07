@@ -47,6 +47,7 @@ import com.pratham.foundation.ui.contentPlayer.reading_rhyming.ReadingRhymesActi
 import com.pratham.foundation.ui.contentPlayer.reading_story_activity.ReadingStoryActivity_;
 import com.pratham.foundation.ui.contentPlayer.vocabulary_qa.ReadingVocabularyActivity_;
 import com.pratham.foundation.ui.contentPlayer.web_view.WebViewActivity;
+import com.pratham.foundation.ui.home_screen.ContentHomeActivity;
 import com.pratham.foundation.ui.test.certificate.CertificateClicked;
 import com.pratham.foundation.utility.FC_Constants;
 import com.pratham.foundation.utility.FC_Utility;
@@ -70,8 +71,7 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
 
-import static com.pratham.foundation.ui.home_screen.HomeActivity.header_rl;
-import static com.pratham.foundation.ui.home_screen.HomeActivity.tv_progress;
+import static com.pratham.foundation.ui.home_screen.ContentHomeActivity.header_rl;
 import static com.pratham.foundation.utility.FC_Constants.CLOSE_TEST_EVENTBUS;
 import static com.pratham.foundation.utility.FC_Constants.LEVEL_TEST_GIVEN;
 import static com.pratham.foundation.utility.FC_Constants.currentLevel;
@@ -793,7 +793,7 @@ public class TestFragment extends Fragment implements TestContract.TestView,
     @UiThread
     @Override
     public void setLevelprogress(int percent) {
-        tv_progress.setCurProgress(percent);
+        ContentHomeActivity.tv_progress.setCurProgress(percent);
 //        level_progress.setCurProgress(percent);
     }
 

@@ -200,16 +200,6 @@ public class BottomStudentsPresenter implements BottomStudentsContract.BottomStu
             } catch (Exception e) {
                 e.printStackTrace();
             }
-//                    return null;
-//                }
-//
-//                @Override
-//                protected void onPostExecute(Object o) {
-//                    super.onPostExecute(o);
-//                    startActivity(new Intent(getActivity(), HomeActivity.class));
-//                    getActivity().finish();
-//                }
-//            }.execute();
         }
     }
 

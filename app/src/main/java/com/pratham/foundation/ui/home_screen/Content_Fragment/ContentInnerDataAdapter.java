@@ -22,6 +22,7 @@ import com.pratham.foundation.ApplicationClass;
 import com.pratham.foundation.R;
 import com.pratham.foundation.customView.progress_layout.ProgressLayout;
 import com.pratham.foundation.database.domain.ContentTable;
+import com.pratham.foundation.ui.home_screen.ContentHomeActivity;
 import com.pratham.foundation.utility.FC_Constants;
 
 import java.io.File;
@@ -36,17 +37,15 @@ public class ContentInnerDataAdapter extends RecyclerView.Adapter {
     private List<ContentTable> itemsList;
     private Context mContext;
     boolean dw_Ready = false;
-    Content_Fragment_Contract.ContentItemClicked itemClicked;
     int parentPos = 0;
     //    List maxScore;
     String parentName;
     private static final String TYPE_HEADER = "Header";
     private static final String TYPE_ITEM = "Resource";
 
-    public ContentInnerDataAdapter(Context context, List<ContentTable> itemsList, Content_Fragment_Contract.ContentItemClicked itemClicked, int parentPos, String parentName) {
+    public ContentInnerDataAdapter(Context context, List<ContentTable> itemsList, int parentPos, String parentName) {
         this.itemsList = itemsList;
         this.mContext = context;
-        this.itemClicked = itemClicked;
         this.parentPos = parentPos;
         this.parentName = parentName;
     }
@@ -95,7 +94,7 @@ public class ContentInnerDataAdapter extends RecyclerView.Adapter {
                 //folder
                 FolderHolder folderHolder = (FolderHolder) viewHolder;
                 folderHolder.card_main.setBackground(mContext.getResources().getDrawable(getRandomCardColor()));
-                folderHolder.tvTitle.setTextColor(mContext.getResources().getColor(R.color.colorText));
+//                folderHolder.tvTitle.setTextColor(mContext.getResources().getColor(R.color.colorText));
                 folderHolder.tvTitle.setText(itemsList.get(i).getNodeTitle());
                 folderHolder.progressLayout.setCurProgress(Integer.parseInt(itemsList.get(i).getNodePercentage()));
                 File f;
@@ -130,7 +129,7 @@ public class ContentInnerDataAdapter extends RecyclerView.Adapter {
                 folderHolder.rl_root.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        itemClicked.onContentClicked(itemsList.get(i),parentName);
+                        ContentHomeActivity.itemClicked.onContentClicked(itemsList.get(i),parentName);
                     }
                 });
 
@@ -155,7 +154,7 @@ public class ContentInnerDataAdapter extends RecyclerView.Adapter {
                     fileHolder.content_card_view.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            itemClicked.onContentOpenClicked(itemsList.get(i));
+                            ContentHomeActivity.itemClicked.onContentOpenClicked(itemsList.get(i));
                         }
                     });
 
@@ -187,7 +186,7 @@ public class ContentInnerDataAdapter extends RecyclerView.Adapter {
                     fileHolder.content_card_view.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            itemClicked.onContentDownloadClicked(itemsList.get(i),parentPos,i,""+ FC_Constants.SINGLE_RES_DOWNLOAD);
+                            ContentHomeActivity.itemClicked.onContentDownloadClicked(itemsList.get(i),parentPos,i,""+ FC_Constants.SINGLE_RES_DOWNLOAD);
                         }
                     });
 
