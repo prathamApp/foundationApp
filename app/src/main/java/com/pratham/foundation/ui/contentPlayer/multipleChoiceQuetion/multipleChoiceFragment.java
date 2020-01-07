@@ -1,22 +1,12 @@
 package com.pratham.foundation.ui.contentPlayer.multipleChoiceQuetion;
 
-import android.app.Dialog;
 import android.content.Intent;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
-import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.support.design.card.MaterialCardView;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.CardView;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
-import android.view.Window;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.GridLayout;
@@ -30,90 +20,74 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 import com.pratham.foundation.ApplicationClass;
-import com.pratham.foundation.BaseActivity;
 import com.pratham.foundation.R;
 import com.pratham.foundation.customView.GifView;
 import com.pratham.foundation.customView.SansButton;
-import com.pratham.foundation.customView.display_image_dialog.CustomLodingDialog;
-import com.pratham.foundation.database.BackupDatabase;
-import com.pratham.foundation.database.domain.Assessment;
-import com.pratham.foundation.database.domain.ContentProgress;
-import com.pratham.foundation.database.domain.KeyWords;
-import com.pratham.foundation.database.domain.Score;
 import com.pratham.foundation.interfaces.OnGameClose;
 import com.pratham.foundation.modalclasses.EventMessage;
 import com.pratham.foundation.modalclasses.ScienceQuestion;
 import com.pratham.foundation.modalclasses.ScienceQuestionChoice;
-import com.pratham.foundation.services.shared_preferences.FastSave;
 import com.pratham.foundation.ui.contentPlayer.GameConstatnts;
 import com.pratham.foundation.ui.contentPlayer.pictionary.PictionaryResult;
-import com.pratham.foundation.ui.contentPlayer.pictionary.resultAdapter;
 import com.pratham.foundation.utility.FC_Constants;
 import com.pratham.foundation.utility.FC_Utility;
 
+import org.androidannotations.annotations.AfterViews;
+import org.androidannotations.annotations.Bean;
+import org.androidannotations.annotations.Click;
+import org.androidannotations.annotations.EFragment;
+import org.androidannotations.annotations.ViewById;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
-import org.json.JSONArray;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
-import java.lang.reflect.Type;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
-import java.util.Objects;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.OnClick;
-
-import static com.pratham.foundation.database.AppDatabase.appDatabase;
 import static com.pratham.foundation.utility.FC_Constants.gameFolderPath;
 import static com.pratham.foundation.utility.FC_Utility.showZoomDialog;
 
+@EFragment(R.layout.layout_mcq_fill_in_the_blanks_with_options_row)
+public class multipleChoiceFragment extends Fragment implements OnGameClose, MultipleChoiceContract.MultipleChoiceView {
 
-public class multipleChoiceFragment extends Fragment implements OnGameClose {
-
-    @BindView(R.id.tv_question)
+    @ViewById(R.id.tv_question)
     TextView question;
-    @BindView(R.id.iv_question_image)
+    @ViewById(R.id.iv_question_image)
     ImageView questionImage;
-    @BindView(R.id.iv_question_gif)
+    @ViewById(R.id.iv_question_gif)
     GifView questionGif;
-    @BindView(R.id.rg_mcq)
+    @ViewById(R.id.rg_mcq)
     RadioGroup radioGroupMcq;
-    @BindView(R.id.grid_mcq)
+    @ViewById(R.id.grid_mcq)
     GridLayout gridMcq;
 
 
-    @BindView(R.id.btn_prev)
+    @ViewById(R.id.btn_prev)
     ImageButton previous;
-    @BindView(R.id.btn_submit)
+    @ViewById(R.id.btn_submit)
     SansButton submitBtn;
-    @BindView(R.id.btn_next)
+    @ViewById(R.id.btn_next)
     ImageButton next;
-    @BindView(R.id.show_answer)
+    @ViewById(R.id.show_answer)
     SansButton show_answer;
-    @BindView(R.id.image_container)
+    @ViewById(R.id.image_container)
     MaterialCardView image_container;
-    @BindView(R.id.iv_view_img)
+    @ViewById(R.id.iv_view_img)
     ImageView iv_view_img;
+
+    @Bean(MultipleChoicePresenter.class)
+    MultipleChoiceContract.MultipleChoicePresenter presenter;
     private String readingContentPath, contentPath, contentTitle, StudentID, resId, resStartTime;
-    private int totalWordCount, learntWordCount;
     List<ScienceQuestionChoice> options;
     private ArrayList<ScienceQuestion> selectedFive;
-    private List<ScienceQuestion> dataList;
 
     private int imgCnt = 0, textCnt = 0, index = 0;
-    private ScienceQuestion scienceQuestion;
+    //private ScienceQuestion scienceQuestion;
     private boolean onSdCard;
-    private float perc;
-    private List<ScienceQuestionChoice> correctWordList, wrongWordList;
     private boolean showanswer = false;
     private Animation animFadein;
     View ansview;
@@ -123,9 +97,9 @@ public class multipleChoiceFragment extends Fragment implements OnGameClose {
     }
 
 
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+    @AfterViews
+    public void initiate() {
+        //   super.onCreate(savedInstanceState);
         if (getArguments() != null) {
             contentPath = getArguments().getString("contentPath");
             StudentID = getArguments().getString("StudentID");
@@ -139,139 +113,32 @@ public class multipleChoiceFragment extends Fragment implements OnGameClose {
 
             animFadein = AnimationUtils.loadAnimation(getActivity().getApplicationContext(),
                     R.anim.shake);
+            if (FC_Constants.isTest) {
+                show_answer.setVisibility(View.INVISIBLE);
+            }
             EventBus.getDefault().register(this);
             resStartTime = FC_Utility.getCurrentDateTime();
-            addScore(0, "", 0, 0, resStartTime, FC_Utility.getCurrentDateTime(), GameConstatnts.MULTIPLE_CHOICE + " " + GameConstatnts.START);
-            getData();
+            presenter.setView(this, resId);
+            presenter.addScore(0, "", 0, 0, resStartTime, FC_Utility.getCurrentDateTime(), GameConstatnts.MULTIPLE_CHOICE + " " + GameConstatnts.START);
+            presenter.getData(readingContentPath);
         }
     }
 
-    private void getData() {
-        try {
-            InputStream is = new FileInputStream(readingContentPath + "multiple_choice.json");
-            int size = is.available();
-            byte[] buffer = new byte[size];
-            is.read(buffer);
-            is.close();
-            String jsonStr = new String(buffer);
-            JSONArray jsonObj = new JSONArray(jsonStr);
 
-            // List instrumentNames = new ArrayList<>();
-            Gson gson = new Gson();
-            Type type = new TypeToken<List<ScienceQuestion>>() {
-            }.getType();
-            dataList = gson.fromJson(jsonObj.toString(), type);
-            getDataList();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
+    /* @Override
+     public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                              Bundle savedInstanceState) {
+         // Inflate the layout for this fragment
+         return inflater.inflate(R.layout.layout_mcq_fill_in_the_blanks_with_options_row, container, false);
+     }
 
-    public void setCompletionPercentage() {
-        try {
-            totalWordCount = dataList.size();
-            learntWordCount = getLearntWordsCount();
-            String Label = "resourceProgress";
-            if (learntWordCount > 0) {
-                perc = ((float) learntWordCount / (float) totalWordCount) * 100;
-                addContentProgress(perc, Label);
-            } else {
-                addContentProgress(0, Label);
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-    private void addContentProgress(float perc, String label) {
-        try {
-            ContentProgress contentProgress = new ContentProgress();
-            contentProgress.setProgressPercentage("" + perc);
-            contentProgress.setResourceId("" + resId);
-            contentProgress.setSessionId("" + FastSave.getInstance().getString(FC_Constants.CURRENT_SESSION, ""));
-            contentProgress.setStudentId("" + FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""));
-            contentProgress.setUpdatedDateTime("" + FC_Utility.getCurrentDateTime());
-            contentProgress.setLabel("" + label);
-            contentProgress.setSentFlag(0);
-            appDatabase.getContentProgressDao().insert(contentProgress);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-    private void getDataList() {
-        try {
-            selectedFive = new ArrayList<ScienceQuestion>();
-            perc = getPercentage();
-            Collections.shuffle(dataList);
-            for (int i = 0; i < dataList.size(); i++) {
-                if (perc < 95) {
-                    if (!checkWord("" + dataList.get(i).getAnswer()))
-                        selectedFive.add(dataList.get(i));
-                } else {
-                    selectedFive.add(dataList.get(i));
-                }
-                if (selectedFive.size() >= 5) {
-                    break;
-                }
-            }
-            Collections.shuffle(selectedFive);
-            for (ScienceQuestion scienceQuestion : selectedFive) {
-                ArrayList<ScienceQuestionChoice> list = scienceQuestion.getLstquestionchoice();
-                Collections.shuffle(list);
-                scienceQuestion.setLstquestionchoice(list);
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-    public float getPercentage() {
-        float perc = 0f;
-        try {
-            totalWordCount = dataList.size();
-            learntWordCount = getLearntWordsCount();
-            if (learntWordCount > 0) {
-                perc = ((float) learntWordCount / (float) totalWordCount) * 100;
-                return perc;
-            } else
-                return 0f;
-        } catch (Exception e) {
-            return 0f;
-        }
-    }
-
-    private int getLearntWordsCount() {
-        int count = 0;
-        // count = appDatabase.getKeyWordDao().checkWordCount(FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""), resId);
-        count = appDatabase.getKeyWordDao().checkUniqueWordCount(FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""), resId);
-        return count;
-    }
-
-    private boolean checkWord(String wordStr) {
-        try {
-            String word = appDatabase.getKeyWordDao().checkWord(FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""), resId, wordStr);
-            return word != null;
-        } catch (Exception e) {
-            e.printStackTrace();
-            return false;
-        }
-    }
-
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.layout_mcq_fill_in_the_blanks_with_options_row, container, false);
-    }
-
-    @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-        ButterKnife.bind(this, view);
-        if (FC_Constants.isTest) {
-            show_answer.setVisibility(View.INVISIBLE);
-        }
+     @Override
+     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+         super.onViewCreated(view, savedInstanceState);
+         ButterKnife.bind(this, view);
+     }*/
+    public void setData(ArrayList<ScienceQuestion> selectedFive) {
+        this.selectedFive = selectedFive;
         setMcqsQuestion();
     }
 
@@ -700,7 +567,11 @@ public class multipleChoiceFragment extends Fragment implements OnGameClose {
                 next.setVisibility(View.VISIBLE);
             }
 
-
+            if (!FC_Constants.isTest && !FC_Constants.isPractice) {
+                if (selectedFive.get(index).getUserAnswer() != null && selectedFive.get(index).getUserAnswer().isEmpty()) {
+                    show_answer.performClick();
+                }
+            }
         } else {
             Toast.makeText(getActivity(), "No data found", Toast.LENGTH_SHORT).show();
         }
@@ -764,7 +635,7 @@ public class multipleChoiceFragment extends Fragment implements OnGameClose {
 //        }
     }
 
-    @OnClick(R.id.btn_prev)
+    @Click(R.id.btn_prev)
     public void onPreviousClick() {
         if (selectedFive != null)
             if (index > 0) {
@@ -773,7 +644,7 @@ public class multipleChoiceFragment extends Fragment implements OnGameClose {
             }
     }
 
-    @OnClick(R.id.btn_next)
+    @Click(R.id.btn_next)
     public void onNextClick() {
         if (selectedFive != null)
             if (index < (selectedFive.size() - 1)) {
@@ -782,10 +653,10 @@ public class multipleChoiceFragment extends Fragment implements OnGameClose {
             }
     }
 
-    @OnClick(R.id.btn_submit)
+    @Click(R.id.btn_submit)
     public void onsubmitBtnClick() {
         if (selectedFive != null)
-            addLearntWords(selectedFive);
+            presenter.addLearntWords(selectedFive);
 
         //  GameConstatnts.playGameNext(getActivity());
         /*Bundle bundle = GameConstatnts.findGameData("110");
@@ -796,101 +667,14 @@ public class multipleChoiceFragment extends Fragment implements OnGameClose {
 
     }
 
-    private boolean checkAttemptedornot(List<ScienceQuestion> selectedAnsList) {
-        if (selectedAnsList != null) {
-            for (int i = 0; i < selectedAnsList.size(); i++) {
-                if (selectedAnsList.get(i).getUserAnswer() != null && !selectedAnsList.get(i).getUserAnswer().isEmpty()) {
-                    return true;
-                }
-            }
-        }
-        return false;
-    }
 
-    public void addLearntWords(ArrayList<ScienceQuestion> selectedAnsList) {
-        int correctCnt = 0;
-        correctWordList = new ArrayList<>();
-        wrongWordList = new ArrayList<>();
-        if (selectedAnsList != null && checkAttemptedornot(selectedAnsList)) {
-            for (int i = 0; i < selectedAnsList.size(); i++) {
-                String ans = getAnswer(selectedAnsList.get(i));
-                if (ans != null) {
-                    if (checkAnswer(selectedAnsList.get(i))) {
-                        correctCnt++;
-                        KeyWords keyWords = new KeyWords();
-                        keyWords.setResourceId(resId);
-                        keyWords.setSentFlag(0);
-                        keyWords.setStudentId(FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""));
-                        String key = selectedAnsList.get(i).getQuestion();
-                        keyWords.setKeyWord(key);
-                        keyWords.setWordType("word");
-                        appDatabase.getKeyWordDao().insert(keyWords);
-                        List<ScienceQuestionChoice> tempOptionList = selectedAnsList.get(i).getLstquestionchoice();
-                        for (int k = 0; k < tempOptionList.size(); k++) {
-                            if (tempOptionList.get(k).getQid().equalsIgnoreCase(selectedAnsList.get(i).getUserAnswer())) {
-                                correctWordList.add(tempOptionList.get(k));
-                            }
-                        }
-
-                        addScore(GameConstatnts.getInt(selectedAnsList.get(i).getQid().trim()), GameConstatnts.MULTIPLE_CHOICE, 10, 10, selectedAnsList.get(i).getStartTime(), selectedAnsList.get(i).getEndTime(), ans);
-                    } else {
-                        if (selectedAnsList.get(i).getUserAnswer() != null && !selectedAnsList.get(i).getUserAnswer().trim().equalsIgnoreCase("")) {
-                            List<ScienceQuestionChoice> tempOptionList = selectedAnsList.get(i).getLstquestionchoice();
-                            for (int k = 0; k < tempOptionList.size(); k++) {
-                                if (tempOptionList.get(k).getQid().equalsIgnoreCase(selectedAnsList.get(i).getUserAnswer())) {
-                                    wrongWordList.add(tempOptionList.get(k));
-                                }
-                            }
-                            addScore(GameConstatnts.getInt(selectedAnsList.get(i).getQid().trim()), GameConstatnts.MULTIPLE_CHOICE, 0, 10, selectedAnsList.get(i).getStartTime(), selectedAnsList.get(i).getEndTime(), ans);
-                        }
-                    }
-                }
-            }
-            setCompletionPercentage();
-            GameConstatnts.postScoreEvent(selectedAnsList.size(),correctCnt);
-            BaseActivity.correctSound.start();
-            if (!FC_Constants.isTest) {
-                // showResult(correctWordList, wrongWordList);
-                Intent intent = new Intent(getActivity(), PictionaryResult.class);
-                intent.putExtra("selectlist", selectedAnsList);
-                intent.putExtra("readingContentPath", readingContentPath);
-                intent.putExtra("resourceType", GameConstatnts.SHOW_ME_ANDROID);
-                startActivityForResult(intent, 111);
-            } else {
-                GameConstatnts.playGameNext(getActivity(), GameConstatnts.FALSE, this);
-            }
-        } else {
-            GameConstatnts.playGameNext(getActivity(), GameConstatnts.TRUE, this);
-        }
-        BackupDatabase.backup(getActivity());
-    }
-
-    private boolean checkAnswer(ScienceQuestion scienceQuestion) {
-        List<ScienceQuestionChoice> optionListlist = scienceQuestion.getLstquestionchoice();
-        for (int i = 0; i < optionListlist.size(); i++) {
-            if (optionListlist.get(i).getQid().equalsIgnoreCase(scienceQuestion.getUserAnswer()) && optionListlist.get(i).getCorrectAnswer().equalsIgnoreCase("true")) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    private String getAnswer(ScienceQuestion scienceQuestion) {
-        List<ScienceQuestionChoice> optionListlist = scienceQuestion.getLstquestionchoice();
-        for (int i = 0; i < optionListlist.size(); i++) {
-            if (optionListlist.get(i).getQid().equalsIgnoreCase(scienceQuestion.getUserAnswer())) {
-                if (optionListlist.get(i).getSubQues() != null && !optionListlist.get(i).getSubQues().isEmpty()) {
-                    return optionListlist.get(i).getSubQues();
-                } else {
-                    return optionListlist.get(i).getSubUrl().replace("Images/", "");
-                }
-            }
-        }
-        return null;
-    }
-
-    private void showResult(List<ScienceQuestionChoice> correctWord, List<ScienceQuestionChoice> wrongWord) {
-        if ((correctWord != null && !correctWord.isEmpty()) || (wrongWord != null && !wrongWord.isEmpty())) {
+    public void showResult() {
+        Intent intent = new Intent(getActivity(), PictionaryResult.class);
+        intent.putExtra("selectlist", selectedFive);
+        intent.putExtra("readingContentPath", readingContentPath);
+        intent.putExtra("resourceType", GameConstatnts.SHOW_ME_ANDROID);
+        startActivityForResult(intent, 111);
+        /*  if ((correctWord != null && !correctWord.isEmpty()) || (wrongWord != null && !wrongWord.isEmpty())) {
 
             final Dialog dialog = new CustomLodingDialog(getActivity());
             dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -920,53 +704,13 @@ public class multipleChoiceFragment extends Fragment implements OnGameClose {
             dialog.show();
         } else {
             GameConstatnts.playGameNext(getActivity(), GameConstatnts.TRUE, this);
-        }
+        }*/
     }
 
-    public void addScore(int wID, String Word, int scoredMarks, int totalMarks, String resStartTime, String resEndTime, String Label) {
-        try {
-            String deviceId = appDatabase.getStatusDao().getValue("DeviceId");
-            Score score = new Score();
-            score.setSessionID(FastSave.getInstance().getString(FC_Constants.CURRENT_SESSION, ""));
-            score.setResourceID(resId);
-            score.setQuestionId(wID);
-            score.setScoredMarks(scoredMarks);
-            score.setTotalMarks(totalMarks);
-            score.setStudentID(FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""));
-            score.setStartDateTime(resStartTime);
-            score.setDeviceID(deviceId.equals(null) ? "0000" : deviceId);
-            score.setEndDateTime(resEndTime);
-            score.setLevel(FC_Constants.currentLevel);
-            score.setLabel(Word + " - " + Label);
-            score.setSentFlag(0);
-            appDatabase.getScoreDao().insert(score);
-
-            if (FC_Constants.isTest) {
-                Assessment assessment = new Assessment();
-                assessment.setResourceIDa(resId);
-                assessment.setSessionIDa(FastSave.getInstance().getString(FC_Constants.ASSESSMENT_SESSION, ""));
-                assessment.setSessionIDm(FastSave.getInstance().getString(FC_Constants.CURRENT_SESSION, ""));
-                assessment.setQuestionIda(wID);
-                assessment.setScoredMarksa(scoredMarks);
-                assessment.setTotalMarksa(totalMarks);
-                assessment.setStudentIDa(FastSave.getInstance().getString(FC_Constants.CURRENT_ASSESSMENT_STUDENT_ID, ""));
-                assessment.setStartDateTimea(resStartTime);
-                assessment.setDeviceIDa(deviceId.equals(null) ? "0000" : deviceId);
-                assessment.setEndDateTime(resEndTime);
-                assessment.setLevela(FC_Constants.currentLevel);
-                assessment.setLabel("test: " + Label);
-                assessment.setSentFlag(0);
-                appDatabase.getAssessmentDao().insert(assessment);
-            }
-            BackupDatabase.backup(getActivity());
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
 
     @Override
     public void gameClose() {
-        addScore(0, "", 0, 0, resStartTime, FC_Utility.getCurrentDateTime(), GameConstatnts.MULTIPLE_CHOICE + " " + GameConstatnts.END);
+        presenter.addScore(0, "", 0, 0, resStartTime, FC_Utility.getCurrentDateTime(), GameConstatnts.MULTIPLE_CHOICE + " " + GameConstatnts.END);
     }
 
     @Override
@@ -985,11 +729,16 @@ public class multipleChoiceFragment extends Fragment implements OnGameClose {
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onMessageEvent(EventMessage event) {
-        if (!scienceQuestion.getInstruction().isEmpty())
-            GameConstatnts.showGameInfo(getActivity(), scienceQuestion.getInstruction(),readingContentPath+scienceQuestion.getInstructionUrl());
+        if (!selectedFive.get(index).getInstruction().isEmpty())
+            GameConstatnts.showGameInfo(getActivity(), selectedFive.get(index).getInstruction(),readingContentPath+selectedFive.get(index).getInstructionUrl());
     }
-
-    @OnClick(R.id.show_answer)
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onDilogCloseEvent(String msg) {
+        if(msg.equalsIgnoreCase(FC_Constants.DIALOG_CLOSED)){
+            setMcqsQuestion();
+        }
+    }
+    @Click(R.id.show_answer)
     public void showAnswer() {
         if (showanswer) {
             //hide answer
@@ -998,7 +747,7 @@ public class multipleChoiceFragment extends Fragment implements OnGameClose {
         } else {
             //show Answer
             showanswer = true;
-           // show_answer.setText("Hide Hint");
+            // show_answer.setText("Hide Hint");
             show_answer.setText(getResources().getString(R.string.hide_hint));
             if (ansview != null) {
                 ansview.startAnimation(animFadein);
@@ -1024,7 +773,7 @@ public class multipleChoiceFragment extends Fragment implements OnGameClose {
 
     private void clerAnimation() {
         showanswer = false;
-       // show_answer.setText("Hint");
+        // show_answer.setText("Hint");
         show_answer.setText(getResources().getString(R.string.hint));
     }
 }

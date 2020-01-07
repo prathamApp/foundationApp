@@ -17,6 +17,7 @@ import com.pratham.foundation.customView.display_image_dialog.CustomLodingDialog
 import com.pratham.foundation.database.domain.ContentTable;
 import com.pratham.foundation.interfaces.OnGameClose;
 import com.pratham.foundation.interfaces.ShowInstruction;
+import com.pratham.foundation.modalclasses.EventMessage;
 import com.pratham.foundation.modalclasses.ScoreEvent;
 import com.pratham.foundation.services.shared_preferences.FastSave;
 import com.pratham.foundation.ui.contentPlayer.dialogs.InstructionDialog;
@@ -29,6 +30,7 @@ import com.pratham.foundation.ui.contentPlayer.keywords_identification.KeywordsI
 import com.pratham.foundation.ui.contentPlayer.keywords_mapping.KeywordMappingFragment_;
 import com.pratham.foundation.ui.contentPlayer.listenAndWritting.ListeningAndWritting_;
 import com.pratham.foundation.ui.contentPlayer.multipleChoiceQuetion.multipleChoiceFragment;
+import com.pratham.foundation.ui.contentPlayer.multipleChoiceQuetion.multipleChoiceFragment_;
 import com.pratham.foundation.ui.contentPlayer.new_reading_fragment.ContentReadingFragment;
 import com.pratham.foundation.ui.contentPlayer.new_reading_fragment.ContentReadingFragment_;
 import com.pratham.foundation.ui.contentPlayer.new_vocab_reading.VocabReadingFragment;
@@ -48,6 +50,8 @@ import com.pratham.foundation.utility.FC_Utility;
 import org.greenrobot.eventbus.EventBus;
 
 import java.util.List;
+
+import static com.pratham.foundation.utility.FC_Constants.INFO_CLICKED;
 
 public class GameConstatnts implements ShowInstruction {
     public static final String KEYWORD_IDENTIFICATION = "IKWAndroid";
@@ -277,8 +281,8 @@ public class GameConstatnts implements ShowInstruction {
                         bundle, ListeningAndWritting_.class.getSimpleName());
                 break;
             case GameConstatnts.MULTIPLE_CHOICE:
-                FC_Utility.showFragment((Activity) context, new multipleChoiceFragment(), R.id.RL_CPA,
-                        bundle, multipleChoiceFragment.class.getSimpleName());
+                FC_Utility.showFragment((Activity) context, new multipleChoiceFragment_(), R.id.RL_CPA,
+                        bundle, multipleChoiceFragment_.class.getSimpleName());
                 break;
 
             case GameConstatnts.READING_STT:
@@ -364,9 +368,9 @@ public class GameConstatnts implements ShowInstruction {
                 default:
                     instructionsDialog.dismiss();
                     //  show instruction on game dstart uncomment bellow code
-                  /*  EventMessage eventMessage = new EventMessage();
-                    eventMessage.setMessage(INFO_CLICKED);
-                    EventBus.getDefault().post(eventMessage);*/
+                    //EventMessage eventMessage = new EventMessage();
+                   // eventMessage.setMessage(FC_Constants.DIALOG_CLOSED);
+                    EventBus.getDefault().post(FC_Constants.DIALOG_CLOSED);
                     break;
             }
         }

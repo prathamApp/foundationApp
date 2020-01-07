@@ -172,7 +172,20 @@ public class KeywordMappingFragment extends Fragment implements KeywordMappingCo
              submitBtn.setVisibility(View.INVISIBLE);
             submitBtn.setVisibility(View.VISIBLE);
         }*/
+        if (!FC_Constants.isTest && !FC_Constants.isPractice) {
+            if (!checkIsAttempted(optionList)) {
+                showAnswer.performClick();
+            }
+        }
+    }
 
+    private boolean checkIsAttempted(List<ScienceQuestionChoice> optionList) {
+        for (ScienceQuestionChoice scienceQuestionChoice : optionList) {
+            if (scienceQuestionChoice != null && scienceQuestionChoice.isIsclicked()) {
+                return true;
+            }
+        }
+        return false;
     }
 
     @Click(R.id.btn_next)
@@ -210,6 +223,7 @@ public class KeywordMappingFragment extends Fragment implements KeywordMappingCo
     public void showResult() {
 
         keywordOptionAdapter.setClickable(false);
+        keywordOptionAdapter.clearSelectedOptionList();
         keywordOptionAdapter.notifyDataSetChanged();
        /* for (int index = 0; index < recycler_view.getChildCount(); index++) {
             TextView textView = (TextView) recycler_view.getChildAt(index);
@@ -308,6 +322,7 @@ public class KeywordMappingFragment extends Fragment implements KeywordMappingCo
             previous.setVisibility(View.INVISIBLE);
         }
         keywordOptionAdapter.setShowAnswer(showanswer);
+        keywordOptionAdapter.clearSelectedOptionList();
         keywordOptionAdapter.notifyDataSetChanged();
     }
 }

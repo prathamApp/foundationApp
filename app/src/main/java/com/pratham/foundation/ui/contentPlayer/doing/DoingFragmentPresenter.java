@@ -1,7 +1,6 @@
-package com.pratham.foundation.ui.contentPlayer.keywords_identification;
+package com.pratham.foundation.ui.contentPlayer.doing;
 
 import android.content.Context;
-import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -12,62 +11,49 @@ import com.pratham.foundation.database.domain.KeyWords;
 import com.pratham.foundation.database.domain.Score;
 import com.pratham.foundation.interfaces.OnGameClose;
 import com.pratham.foundation.modalclasses.ScienceQuestion;
-import com.pratham.foundation.modalclasses.ScienceQuestionChoice;
 import com.pratham.foundation.services.shared_preferences.FastSave;
 import com.pratham.foundation.ui.contentPlayer.GameConstatnts;
 import com.pratham.foundation.utility.FC_Constants;
 import com.pratham.foundation.utility.FC_Utility;
 
 import org.androidannotations.annotations.EBean;
+import org.json.JSONArray;
+import org.json.JSONException;
 
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.lang.reflect.Type;
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-
 import static com.pratham.foundation.database.AppDatabase.appDatabase;
 
 @EBean
-public class KeywordsIdentificationPresenter implements KeywordsIdentificationContract.KeywordsPresenter {
-    private ScienceQuestion questionModel;
-    private KeywordsIdentificationContract.KeywordsView viewKeywords;
-    private Context context;
-    private float perc;
-    private List<ScienceQuestion> quetionModelList;
+public class DoingFragmentPresenter implements DoingFragmentContract.DoingFragmentPresenter {
+    private String jsonName;
+    private DoingFragmentContract.DoingFragmentView view;
+    private String resId;
     private int totalWordCount, learntWordCount;
-    private String gameName, resId, contentTitle, readingContentPath, resStartTime;
-    private List<String> correctWordList, wrongWordList;
-    private boolean isTest = false;
+    private List<ScienceQuestion> dataList;
+    private float perc;
+    private ScienceQuestion scienceQuestion;
+    private Context context;
 
-    public KeywordsIdentificationPresenter(Context context) {
+
+    public DoingFragmentPresenter(Context context) {
         this.context = context;
     }
 
     @Override
-    public void setView(KeywordsIdentificationContract.KeywordsView viewKeywords, String resId, String readingContentPath) {
-        this.viewKeywords = viewKeywords;
+    public void setView(DoingFragmentContract.DoingFragmentView doingFragmentView, String jsonName, String resId) {
+        this.view = doingFragmentView;
+        this.jsonName = jsonName;
         this.resId = resId;
-        this.readingContentPath = readingContentPath;
-    }
-
-    @Override
-    public void getData() {
-        String text = FC_Utility.loadJSONFromStorage(readingContentPath, "IKWAndroid.json");
-        if (text != null) {
-            Gson gson = new Gson();
-            Type type = new TypeToken<List<ScienceQuestion>>() {
-            }.getType();
-            quetionModelList = gson.fromJson(text, type);
-            getDataList();
-           // setCompletionPercentage();
-        } else {
-            Toast.makeText(context, "No data found", Toast.LENGTH_SHORT).show();
-        }
     }
 
     public void setCompletionPercentage() {
         try {
-            totalWordCount = quetionModelList.size();
+            totalWordCount = dataList.size();
             learntWordCount = getLearntWordsCount();
             String Label = "resourceProgress";
             if (learntWordCount > 0) {
@@ -96,24 +82,47 @@ public class KeywordsIdentificationPresenter implements KeywordsIdentificationCo
             e.printStackTrace();
         }
     }
-    public void getDataList() {
+
+    public void getData(String readingContentPath) {
+        try {
+            InputStream is = new FileInputStream(readingContentPath + jsonName + ".json");
+            int size = is.available();
+            byte[] buffer = new byte[size];
+            is.read(buffer);
+            is.close();
+            String jsonStr = new String(buffer);
+            JSONArray jsonObj = new JSONArray(jsonStr);
+
+            // List instrumentNames = new ArrayList<>();
+            Gson gson = new Gson();
+            Type type = new TypeToken<List<ScienceQuestion>>() {
+            }.getType();
+            dataList = gson.fromJson(jsonObj.toString(), type);
+            getDataList();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void getDataList() {
         try {
             perc = getPercentage();
-            Collections.shuffle(quetionModelList);
-            for (int i = 0; i < quetionModelList.size(); i++) {
+            Collections.shuffle(dataList);
+            for (int i = 0; i < dataList.size(); i++) {
                 if (perc < 95) {
-                    if (!checkWord("" + quetionModelList.get(i).getTitle())) {
-                        questionModel = quetionModelList.get(i);
+                    if (!checkWord("" + dataList.get(i).getTitle()) || dataList.get(i).getTitle().isEmpty()) {
+                        scienceQuestion = dataList.get(i);
                         break;
                     }
                 } else {
-                    questionModel = quetionModelList.get(i);
+                    scienceQuestion = dataList.get(i);
                     break;
                 }
-
             }
-            viewKeywords.showParagraph(questionModel);
-            viewKeywords.showAnswer();
+            //view.loadUI(listenAndWrittingModal);
+            view.setVideoQuestion(scienceQuestion);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -122,7 +131,7 @@ public class KeywordsIdentificationPresenter implements KeywordsIdentificationCo
     public float getPercentage() {
         float perc = 0f;
         try {
-            totalWordCount = quetionModelList.size();
+            totalWordCount = dataList.size();
             learntWordCount = getLearntWordsCount();
             if (learntWordCount > 0) {
                 perc = ((float) learntWordCount / (float) totalWordCount) * 100;
@@ -134,10 +143,9 @@ public class KeywordsIdentificationPresenter implements KeywordsIdentificationCo
         }
     }
 
-
     private int getLearntWordsCount() {
         int count = 0;
-       // count = appDatabase.getKeyWordDao().checkWordCount(FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""), resId);
+        // count = appDatabase.getKeyWordDao().checkWordCount(FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""), resId);
         count = appDatabase.getKeyWordDao().checkUniqueWordCount(FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""), resId);
         return count;
     }
@@ -151,51 +159,24 @@ public class KeywordsIdentificationPresenter implements KeywordsIdentificationCo
             return false;
         }
     }
-
-    public void addLearntWords(List<ScienceQuestionChoice> selectedAnsList) {
-        correctWordList = new ArrayList<>();
-        wrongWordList = new ArrayList<>();
-        int correctCnt = 0;
-       // int scoredMarks = (int) checkAnswer(selectedAnsList);
-        if (selectedAnsList != null && !selectedAnsList.isEmpty()) {
-
+    public void addLearntWords(ScienceQuestion questionModel, String imageName) {
+        if (imageName != null && !imageName.isEmpty()) {
             KeyWords keyWords = new KeyWords();
             keyWords.setResourceId(resId);
             keyWords.setSentFlag(0);
             keyWords.setStudentId(FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""));
-            String key = questionModel.getTitle();
-            keyWords.setKeyWord(key);
+            keyWords.setKeyWord(questionModel.getTitle());
             keyWords.setWordType("word");
+            addScore(GameConstatnts.getInt(questionModel.getQid()), jsonName, 0, 0, questionModel.getStartTime(),questionModel.getEndTime(), imageName);
             appDatabase.getKeyWordDao().insert(keyWords);
-
-            for (int i = 0; i < selectedAnsList.size(); i++) {
-                if (checkAnswerNew(questionModel.getLstquestionchoice(), selectedAnsList.get(i).getSubQues())) {
-                    correctCnt++;
-                    correctWordList.add(selectedAnsList.get(i).getSubQues());
-                    addScore(GameConstatnts.getInt(questionModel.getQid()), GameConstatnts.KEYWORD_IDENTIFICATION, 10, 10,selectedAnsList.get(i).getStartTime(),selectedAnsList.get(i).getEndTime(), selectedAnsList.get(i).getSubQues());
-                }else {
-                    addScore(GameConstatnts.getInt(questionModel.getQid()), GameConstatnts.KEYWORD_IDENTIFICATION, 0, 10, selectedAnsList.get(i).getStartTime(),selectedAnsList.get(i).getEndTime(), selectedAnsList.get(i).getSubQues());
-                }
-            }
             setCompletionPercentage();
-            GameConstatnts.postScoreEvent(selectedAnsList.size(),correctCnt);
-            if (!FC_Constants.isTest) {
-                viewKeywords.showResult(correctWordList, wrongWordList);
-            }
+            //Toast.makeText(context, "inserted successfully", Toast.LENGTH_LONG).show();
+            GameConstatnts.postScoreEvent(1,1);
+            GameConstatnts.playGameNext(context, GameConstatnts.FALSE, (OnGameClose) view);
         } else {
-            GameConstatnts.playGameNext(context, GameConstatnts.TRUE, (OnGameClose) viewKeywords);
+            GameConstatnts.playGameNext(context, GameConstatnts.TRUE, (OnGameClose) view);
         }
         BackupDatabase.backup(context);
-
-    }
-
-    private boolean checkAnswerNew(List<ScienceQuestionChoice> optionListlist, String word) {
-        for (int i = 0; i < optionListlist.size(); i++) {
-            if (optionListlist.get(i).getSubQues().replaceAll("\\p{Punct}","").trim().equalsIgnoreCase(word)) {
-                return true;
-            }
-        }
-        return false;
     }
 
     public void addScore(int wID, String Word, int scoredMarks, int totalMarks, String resStartTime,String resEndTime, String Label) {
@@ -212,7 +193,7 @@ public class KeywordsIdentificationPresenter implements KeywordsIdentificationCo
             score.setDeviceID(deviceId.equals(null) ? "0000" : deviceId);
             score.setEndDateTime(resEndTime);
             score.setLevel(FC_Constants.currentLevel);
-            score.setLabel(Word + " - " + Label);
+            score.setLabel(Word + "___" + Label);
             score.setSentFlag(0);
             appDatabase.getScoreDao().insert(score);
 
@@ -229,7 +210,7 @@ public class KeywordsIdentificationPresenter implements KeywordsIdentificationCo
                 assessment.setDeviceIDa(deviceId.equals(null) ? "0000" : deviceId);
                 assessment.setEndDateTime(resEndTime);
                 assessment.setLevela(FC_Constants.currentLevel);
-                assessment.setLabel("test: " + Label);
+                assessment.setLabel("test: ___" + Label);
                 assessment.setSentFlag(0);
                 appDatabase.getAssessmentDao().insert(assessment);
             }
@@ -239,20 +220,5 @@ public class KeywordsIdentificationPresenter implements KeywordsIdentificationCo
         }
     }
 
-    public float checkAnswer(List<ScienceQuestionChoice> selectedAnsList) {
-        if (questionModel != null) {
-            int correctCnt = 0;
-            for (int i = 0; i < selectedAnsList.size(); i++) {
-                if (checkAnswerNew(questionModel.getLstquestionchoice(), selectedAnsList.get(i).getSubQues())) {
-                    correctCnt++;
-                    correctWordList.add(selectedAnsList.get(i).getSubQues());
-                } else {
-                    wrongWordList.add(selectedAnsList.get(i).getSubQues());
-                }
-            }
-            return 10 * correctCnt / questionModel.getLstquestionchoice().size();
-        }
-        return 0;
-    }
-}
 
+}

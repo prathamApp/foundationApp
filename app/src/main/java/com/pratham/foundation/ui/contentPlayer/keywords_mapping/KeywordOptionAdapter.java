@@ -45,7 +45,6 @@ public class KeywordOptionAdapter extends RecyclerView.Adapter<KeywordOptionAdap
 
     @Override
     public void onBindViewHolder(@NonNull Myviewholder myviewholder, int position) {
-
         int pos = position + 1;
         int topMargin = pxFromDp(myviewholder.textView.getContext(), -35);
         int leftMargin = pxFromDp(myviewholder.textView.getContext(), 50); //3 times of 17
@@ -157,7 +156,9 @@ public class KeywordOptionAdapter extends RecyclerView.Adapter<KeywordOptionAdap
     public List getSelectedOptionList() {
         return selectedOption;
     }
-
+    public void clearSelectedOptionList(){
+        selectedOption.clear();
+    }
     public boolean isClickable() {
         return isClickable;
     }

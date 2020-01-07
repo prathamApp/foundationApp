@@ -142,6 +142,7 @@ public class FactRetrieval extends Fragment implements FactRetrievalContract.Fac
         getAnswersInPassage();
 
         showQuestion();
+        showAnswer();
      /*   final int SETANSWER = 0;
         final int CLEAR_ANSWER = 1;*/
        /* paragraph.setCustomSelectionActionModeCallback(new ActionMode.Callback() {
@@ -271,7 +272,7 @@ public class FactRetrieval extends Fragment implements FactRetrievalContract.Fac
         }
     }
 
-    @UiThread
+
     public void showQuestion() {
         try {
             mAdapter.deselectAll();
@@ -304,7 +305,13 @@ public class FactRetrieval extends Fragment implements FactRetrievalContract.Fac
 
         }
     }
-
+    void showAnswer(){
+        if (!FC_Constants.isTest && !FC_Constants.isPractice) {
+            if (selectedQuetion.get(index).getUserAns() != null && selectedQuetion.get(index).getUserAns().isEmpty()) {
+                show_answer();
+            }
+        }
+    }
     private void LoadRecyclerText() {
         String[] paragraphWords = questionModel.getQuestion().split(" ");
         sentences = questionModel.getQuestion().trim().split(REGEXF);
@@ -372,7 +379,7 @@ public class FactRetrieval extends Fragment implements FactRetrievalContract.Fac
     public void show_answer() {
         if (!mAdapter.isShowAnswerEnabled()) {
            // show_answer.setText("hide Answer");
-            show_answer.setText(getResources().getString(R.string.hide_hint));
+            show_answer.setText(getActivity().getResources().getString(R.string.hide_hint));
             bottom_control_container.setVisibility(View.INVISIBLE);
             clear_selection.setVisibility(View.INVISIBLE);
             mAdapter.deselectAll();
@@ -394,6 +401,7 @@ public class FactRetrieval extends Fragment implements FactRetrievalContract.Fac
                     int ansStart = Collections.indexOfSubList(mAdapter.datalist, tempList);
 
                     mAdapter.selectRange(ansStart, ansStart + tempList.size() - 1, true);
+                    paragraphRecycler.scrollToPosition(ansStart+ tempList.size() - 1);
                 }
             }
             mAdapter.setShowAnswerEnabled(true);
@@ -453,6 +461,7 @@ public class FactRetrieval extends Fragment implements FactRetrievalContract.Fac
                 //  setAnswer();
                 index--;
                 showQuestion();
+                showAnswer();
             }
     }
 
@@ -486,6 +495,7 @@ public class FactRetrieval extends Fragment implements FactRetrievalContract.Fac
                 //  setAnswer();
                 index++;
                 showQuestion();
+                showAnswer();
             }
     }
 

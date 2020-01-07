@@ -1,20 +1,22 @@
 package com.pratham.foundation.ui.contentPlayer.keywords_identification;
 
-import com.pratham.foundation.modalclasses.ScienceQuestionChoice;
 import com.pratham.foundation.modalclasses.ScienceQuestion;
+import com.pratham.foundation.modalclasses.ScienceQuestionChoice;
 
 import java.util.List;
 
 public interface KeywordsIdentificationContract {
 
-    public interface KeywordsView {
-        public void showParagraph(ScienceQuestion questionModel);
+    interface KeywordsView {
+        void showParagraph(ScienceQuestion questionModel);
 
-        public void showResult(List correctWord, List wrongWord);
+        void showAnswer();
+
+        void showResult(List correctWord, List wrongWord);
     }
 
-    public interface KeywordsPresenter {
-        public void getData();
+    interface KeywordsPresenter {
+        void getData();
 
         void setView(KeywordsIdentificationContract.KeywordsView viewKeywords, String resId,String readingContentPath);
 

@@ -114,6 +114,11 @@ public class KeywordsIdentificationFragment extends Fragment implements Keywords
         presenter.getData();
     }
 
+    public void showAnswer() {
+        if (!FC_Constants.isTest && !FC_Constants.isPractice) {
+            show_me_keywords.performClick();
+        }
+    }
     @Override
     public void showParagraph(ScienceQuestion questionModel) {
         this.questionModel = questionModel;
@@ -141,6 +146,7 @@ public class KeywordsIdentificationFragment extends Fragment implements Keywords
             final int temp_i = i;
             textView.setOnClickListener(v -> paragraphWordClicked("" + textView.getText().toString().replaceAll("\\p{Punct}", "").trim(), temp_i));
             paraghaph.addView(textView);
+
         }
 
     }
@@ -276,7 +282,6 @@ public class KeywordsIdentificationFragment extends Fragment implements Keywords
     }
 
     private void removeItem(String paraText) {
-
         Iterator<ScienceQuestionChoice> iterator = selectedKeywords.iterator();
         while (iterator.hasNext()) {
             ScienceQuestionChoice scienceQuestionChoice = iterator.next();
@@ -330,6 +335,7 @@ public class KeywordsIdentificationFragment extends Fragment implements Keywords
                 isKeyWordShowing = true;
               //  show_me_keywords.setText("hide keywords");
                show_me_keywords.setText(getResources().getString(R.string.hide_hint));
+                btn_submit.setVisibility(View.INVISIBLE);
                 for (int keywordIndex = 0; keywordIndex < keywordList.size(); keywordIndex++) {
                     List positions = positionMap.get(keywordList.get(keywordIndex).getSubQues().trim());
                     if (positions != null)
@@ -342,6 +348,7 @@ public class KeywordsIdentificationFragment extends Fragment implements Keywords
                 isKeyWordShowing = false;
                 //show_me_keywords.setText("show keywords");
                 show_me_keywords.setText(getResources().getString(R.string.hint));
+                btn_submit.setVisibility(View.VISIBLE);
                 for (int keywordIndex = 0; keywordIndex < keywordList.size(); keywordIndex++) {
                     List positions = positionMap.get(keywordList.get(keywordIndex).getSubQues().trim());
                     if (positions != null)
