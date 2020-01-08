@@ -125,8 +125,9 @@ public class ParagraphWritingFragment extends Fragment implements ParagraphWriti
         mediaPlayer = new MediaPlayer();
         presenter.setView(ParagraphWritingFragment.this, resId, readingContentPath, jsonName);
         presenter.getData();
-        if (!FastSave.getInstance().getString(FC_Constants.CURRENT_SUBJECT, "").equalsIgnoreCase("Science") && jsonName.equalsIgnoreCase(GameConstatnts.PARAGRAPH_WRITING)) {
-            play_button_control.setVisibility(View.GONE);
+        play_button_control.setVisibility(View.GONE);
+        if (FastSave.getInstance().getString(FC_Constants.CURRENT_SUBJECT, "").equalsIgnoreCase("Science") && jsonName.equalsIgnoreCase(GameConstatnts.PARAGRAPH_WRITING)) {
+            play_button_control.setVisibility(View.VISIBLE);
         }
         resStartTime = FC_Utility.getCurrentDateTime();
         presenter.addScore(0, "", 0, 0, resStartTime,FC_Utility.getCurrentDateTime(), jsonName + " " + GameConstatnts.START);
