@@ -122,7 +122,7 @@ public class KeywordsIdentificationFragment extends Fragment implements Keywords
     @Override
     public void showParagraph(ScienceQuestion questionModel) {
         this.questionModel = questionModel;
-        this.questionModel.setQuestion(questionModel.getQuestion().replace("\n", ""));
+        this.questionModel.setQuestion(questionModel.getQuestion().replace("\n", " "));
        /* if (questionModel.getInstruction() != null && !questionModel.getInstruction().isEmpty()) {
             tittle.setText(questionModel.getInstruction());
         }*/
