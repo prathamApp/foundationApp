@@ -29,7 +29,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import static com.pratham.foundation.ui.test.certificate.CertificateActivity.assessmentProfile;
-import static com.pratham.foundation.utility.FC_Constants.CURRENT_FOLDER_NAME;
+import static com.pratham.foundation.utility.FC_Utility.getSubjectName;
 
 
 public class CertificatePresenter implements CertificateContract.CertificatePresenter {
@@ -332,7 +332,6 @@ public class CertificatePresenter implements CertificateContract.CertificatePres
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
-
                 return null;
             }
         }.execute();
@@ -371,9 +370,10 @@ public class CertificatePresenter implements CertificateContract.CertificatePres
             is.close();
             String jsonStr = new String(buffer);
             JSONArray jsonArray = new JSONArray(jsonStr);
+            String  subjName = getSubjectName(assessmentProfile.getQuestionIda());
             for(int i=0; i<jsonArray.length(); i++) {
                 String subj = ((JSONObject) jsonArray.get(i)).get("storyLanguage").toString();
-                if (subj.equalsIgnoreCase(FastSave.getInstance().getString(CURRENT_FOLDER_NAME, ""))) {
+                if (subj.equalsIgnoreCase(subjName)) {
                     returnCodeList = ((JSONObject) jsonArray.get(i)).getJSONArray("CodeList");
                     return returnCodeList;
                 }

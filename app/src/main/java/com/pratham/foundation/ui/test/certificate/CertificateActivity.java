@@ -83,7 +83,7 @@ public class CertificateActivity extends BaseActivity implements CertificateCont
     String level_lbl = "", certificate_lbl = "", supervisorName_lbl, supervisorPhoto;
     String[] allCodes;
     String nodeId;
-    String CertiTitle;
+    String CertiTitle,CertiCode;
     String certiMode;
 
 
@@ -95,6 +95,7 @@ public class CertificateActivity extends BaseActivity implements CertificateCont
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
         nodeId = getIntent().getStringExtra("nodeId");
+        CertiCode = getIntent().getStringExtra("CertiCode");
         CertiTitle = getIntent().getStringExtra("CertiTitle");
         certiMode = getIntent().getStringExtra("display");
         assessmentProfile = (Assessment) getIntent().getSerializableExtra("assessment");

@@ -668,32 +668,36 @@ public class TestFragment extends Fragment implements TestContract.TestView,
 
     @SuppressLint("SetTextI18n")
     private void showTestCompleteDialog() {
-        CustomLodingDialog dialog = new CustomLodingDialog(getActivity()/*,R.style.ExitDialog*/);
-        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        dialog.setContentView(R.layout.fc_custom_dialog);
+        try {
+            CustomLodingDialog dialog = new CustomLodingDialog(Objects.requireNonNull(getActivity())/*,R.style.ExitDialog*/);
+            dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+            dialog.setContentView(R.layout.fc_custom_dialog);
 /*      Bitmap map=FC_Utility.takeScreenShot(getActivity());
         Bitmap fast=FC_Utility.fastblur(map, 20);
         final Drawable draw=new BitmapDrawable(getResources(),fast);
         dialog.getWindow().setBackgroundDrawable(draw);*/
-        Objects.requireNonNull(dialog.getWindow()).setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-        dialog.setCancelable(false);
-        dialog.setCanceledOnTouchOutside(false);
-        dialog.show();
+            Objects.requireNonNull(dialog.getWindow()).setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+            dialog.setCancelable(false);
+            dialog.setCanceledOnTouchOutside(false);
+            dialog.show();
 
-        TextView dia_title = dialog.findViewById(R.id.dia_title);
+            TextView dia_title = dialog.findViewById(R.id.dia_title);
 //        Button dia_btn_green = dialog.findViewById(R.id.dia_btn_green);
-        Button dia_btn_yellow = dialog.findViewById(R.id.dia_btn_yellow);
-        Button dia_btn_green = dialog.findViewById(R.id.dia_btn_green);
-        Button dia_btn_red = dialog.findViewById(R.id.dia_btn_red);
-        dia_btn_yellow.setVisibility(View.GONE);
-        dia_btn_red.setVisibility(View.GONE);
+            Button dia_btn_yellow = dialog.findViewById(R.id.dia_btn_yellow);
+            Button dia_btn_green = dialog.findViewById(R.id.dia_btn_green);
+            Button dia_btn_red = dialog.findViewById(R.id.dia_btn_red);
+            dia_btn_yellow.setVisibility(View.GONE);
+            dia_btn_red.setVisibility(View.GONE);
 
-        dia_title.setText(getResources().getString(R.string.Test_Complete_Dialog));
-        dia_btn_green.setText(getResources().getString(R.string.Okay));
+            dia_title.setText(getResources().getString(R.string.Test_Complete_Dialog));
+            dia_btn_green.setText(getResources().getString(R.string.Okay));
 
-        dia_btn_green.setOnClickListener(v -> {
-            dialog.dismiss();
-        });
+            dia_btn_green.setOnClickListener(v -> {
+                dialog.dismiss();
+            });
+        } catch (Resources.NotFoundException e) {
+            e.printStackTrace();
+        }
     }
 
     @UiThread
@@ -728,31 +732,35 @@ public class TestFragment extends Fragment implements TestContract.TestView,
 
     @Override
     public void showNoDataDownloadedDialog() {
-        final CustomLodingDialog dialog = new CustomLodingDialog(getActivity());
-        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        Objects.requireNonNull(dialog.getWindow()).setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-        dialog.setContentView(R.layout.fc_custom_dialog);
-        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-        dialog.setCancelable(false);
-        dialog.setCanceledOnTouchOutside(false);
-        TextView title = dialog.findViewById(R.id.dia_title);
-        dialog.show();
-        title.setText("Connect to Internet");
-        Button btn_gree = dialog.findViewById(R.id.dia_btn_green);
-        Button btn_yellow = dialog.findViewById(R.id.dia_btn_yellow);
-        Button btn_red = dialog.findViewById(R.id.dia_btn_red);
+        try {
+            final CustomLodingDialog dialog = new CustomLodingDialog(Objects.requireNonNull(getActivity()));
+            dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+            Objects.requireNonNull(dialog.getWindow()).setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+            dialog.setContentView(R.layout.fc_custom_dialog);
+            dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+            dialog.setCancelable(false);
+            dialog.setCanceledOnTouchOutside(false);
+            TextView title = dialog.findViewById(R.id.dia_title);
+            dialog.show();
+            title.setText("Connect to Internet");
+            Button btn_gree = dialog.findViewById(R.id.dia_btn_green);
+            Button btn_yellow = dialog.findViewById(R.id.dia_btn_yellow);
+            Button btn_red = dialog.findViewById(R.id.dia_btn_red);
 
-        btn_gree.setText("Ok");
-        btn_red.setVisibility(View.GONE);
-        btn_yellow.setVisibility(View.GONE);
+            btn_gree.setText("Ok");
+            btn_red.setVisibility(View.GONE);
+            btn_yellow.setVisibility(View.GONE);
 
-        btn_gree.setOnClickListener(v -> {
-            if (testAdapter != null) {
-                contentParentList.clear();
-                testAdapter.notifyDataSetChanged();
-            }
-            dialog.dismiss();
-        });
+            btn_gree.setOnClickListener(v -> {
+                if (testAdapter != null) {
+                    contentParentList.clear();
+                    testAdapter.notifyDataSetChanged();
+                }
+                dialog.dismiss();
+            });
+        } catch (Exception e) {
+                e.printStackTrace();
+        }
     }
 
     private boolean loaderVisible = false;

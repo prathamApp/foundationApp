@@ -164,9 +164,9 @@ public class FC_Utility {
     public static void setAppLocal(Context context, String selectedLang) {
         String language = "hi";
 
-        if(selectedLang.equalsIgnoreCase(FC_Constants.HINDI))
+        if (selectedLang.equalsIgnoreCase(FC_Constants.HINDI))
             language = "h                            i";
-        else if(selectedLang.equalsIgnoreCase(FC_Constants.MARATHI))
+        else if (selectedLang.equalsIgnoreCase(FC_Constants.MARATHI))
             language = "mr";
         else
             language = "hi";
@@ -825,7 +825,6 @@ public class FC_Utility {
     }
 
 
-
     public static int convertDpToPixels(float dp, Context context) {
         int px = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp, context.getResources().getDisplayMetrics());
         return px;
@@ -1350,6 +1349,22 @@ public class FC_Utility {
             no = 5;
 
         return no;
+    }
+
+    public static String getSubjectName(int subjCode) {
+        String subj = "NA";
+        if (subjCode == 1)
+            subj = "Science";
+        else if (subjCode == 2)
+            subj = "Maths";
+        else if (subjCode == 3)
+            subj = "English";
+        else if (subjCode == 4)
+            subj = "H_Science";
+        else if (subjCode == 5)
+            subj = "LS_Science";
+
+        return subj;
     }
 
     public static String getSubjectNameFromNum(int num) {
@@ -1993,11 +2008,13 @@ public class FC_Utility {
         DateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss", Locale.ENGLISH);
         return dateFormat.format(cal.getTime());
     }
+
     public static String GetCurrentDateTime() {
         Calendar cal = Calendar.getInstance();
         DateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss", Locale.ENGLISH);
         return dateFormat.format(cal.getTime());
     }
+
     public static void showZoomDialog(Context context, String path, String localPath) {
         path = path.replace(" ", "");
         localPath = localPath.replace(" ", "");

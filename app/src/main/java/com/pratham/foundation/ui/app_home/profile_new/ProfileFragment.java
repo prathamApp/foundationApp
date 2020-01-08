@@ -24,7 +24,7 @@ import com.pratham.foundation.customView.GridSpacingItemDecoration;
 import com.pratham.foundation.customView.display_image_dialog.CustomLodingDialog;
 import com.pratham.foundation.modalclasses.ModalTopCertificates;
 import com.pratham.foundation.services.shared_preferences.FastSave;
-import com.pratham.foundation.ui.home_screen_integrated.profile_new.certificate_display.CertificateDisplayActivity_;
+import com.pratham.foundation.ui.app_home.profile_new.certificate_display.CertificateDisplayActivity_;
 import com.pratham.foundation.utility.FC_Constants;
 
 import org.androidannotations.annotations.AfterViews;

@@ -143,6 +143,7 @@ public class CertificateDisplayActivity extends BaseActivity implements
         Toast.makeText(this, "gotoCertificate", Toast.LENGTH_SHORT).show();
         Intent intent = new Intent(this, CertificateActivity.class);
         intent.putExtra("nodeId", "na");
+        intent.putExtra("CertiCode", "" + assessment.getQuestionIda());
         intent.putExtra("CertiTitle", "" + assessment.getLevela());
         intent.putExtra("display", "display");
         intent.putExtra("assessment", assessment);
