@@ -17,11 +17,9 @@ import com.pratham.foundation.customView.display_image_dialog.CustomLodingDialog
 import com.pratham.foundation.database.domain.ContentTable;
 import com.pratham.foundation.interfaces.OnGameClose;
 import com.pratham.foundation.interfaces.ShowInstruction;
-import com.pratham.foundation.modalclasses.EventMessage;
 import com.pratham.foundation.modalclasses.ScoreEvent;
 import com.pratham.foundation.services.shared_preferences.FastSave;
 import com.pratham.foundation.ui.contentPlayer.dialogs.InstructionDialog;
-import com.pratham.foundation.ui.contentPlayer.doing.DoingFragment;
 import com.pratham.foundation.ui.contentPlayer.doing.DoingFragment_;
 import com.pratham.foundation.ui.contentPlayer.fact_retrieval_fragment.FactRetrieval_;
 import com.pratham.foundation.ui.contentPlayer.fact_retrival_selection.Fact_Retrieval_Fragment_;
@@ -29,7 +27,6 @@ import com.pratham.foundation.ui.contentPlayer.fillInTheBlanks.FillInTheBlanksFr
 import com.pratham.foundation.ui.contentPlayer.keywords_identification.KeywordsIdentificationFragment_;
 import com.pratham.foundation.ui.contentPlayer.keywords_mapping.KeywordMappingFragment_;
 import com.pratham.foundation.ui.contentPlayer.listenAndWritting.ListeningAndWritting_;
-import com.pratham.foundation.ui.contentPlayer.multipleChoiceQuetion.multipleChoiceFragment;
 import com.pratham.foundation.ui.contentPlayer.multipleChoiceQuetion.multipleChoiceFragment_;
 import com.pratham.foundation.ui.contentPlayer.new_reading_fragment.ContentReadingFragment;
 import com.pratham.foundation.ui.contentPlayer.new_reading_fragment.ContentReadingFragment_;
@@ -38,7 +35,6 @@ import com.pratham.foundation.ui.contentPlayer.new_vocab_reading.VocabReadingFra
 import com.pratham.foundation.ui.contentPlayer.paragraph_writing.ParagraphWritingFragment_;
 import com.pratham.foundation.ui.contentPlayer.pictionary.pictionaryFragment;
 import com.pratham.foundation.ui.contentPlayer.pictionary.pictionaryFragment_;
-import com.pratham.foundation.ui.contentPlayer.reading.ReadingFragment;
 import com.pratham.foundation.ui.contentPlayer.reading.ReadingFragment_;
 import com.pratham.foundation.ui.contentPlayer.sequenceLayout.SequenceLayout_;
 import com.pratham.foundation.ui.contentPlayer.trueFalse.TrueFalseFragment;
@@ -50,8 +46,6 @@ import com.pratham.foundation.utility.FC_Utility;
 import org.greenrobot.eventbus.EventBus;
 
 import java.util.List;
-
-import static com.pratham.foundation.utility.FC_Constants.INFO_CLICKED;
 
 public class GameConstatnts implements ShowInstruction {
     public static final String KEYWORD_IDENTIFICATION = "IKWAndroid";
@@ -253,8 +247,13 @@ public class GameConstatnts implements ShowInstruction {
                         bundle, KeywordMappingFragment_.class.getSimpleName());
                 break;
             case GameConstatnts.THINKANDWRITE:
-                FC_Utility.showFragment((Activity) context, new ParagraphWritingFragment_(), R.id.RL_CPA,
-                        bundle, ParagraphWritingFragment_.class.getSimpleName());
+                if (FastSave.getInstance().getString(FC_Constants.CURRENT_SUBJECT, "").equalsIgnoreCase("Science")) {
+                    FC_Utility.showFragment((Activity) context, new ParagraphWritingFragment_(), R.id.RL_CPA,
+                            bundle, ParagraphWritingFragment_.class.getSimpleName());
+                } else {
+                    FC_Utility.showFragment((Activity) context, new DoingFragment_(), R.id.RL_CPA,
+                            bundle, DoingFragment_.class.getSimpleName());
+                }
                 break;
             case GameConstatnts.PARAGRAPH_WRITING:
                 /*if (FastSave.getInstance().getString(FC_Constants.CURRENT_SUBJECT, "").equalsIgnoreCase("English")) {

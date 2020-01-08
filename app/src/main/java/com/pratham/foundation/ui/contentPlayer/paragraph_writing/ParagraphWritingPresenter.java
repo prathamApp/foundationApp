@@ -130,7 +130,6 @@ public class ParagraphWritingPresenter implements ParagraphWritingContract.Parag
             } else {
                 for (int i = 0; i < quetionModelList.size(); i++) {
                     if (perc < 95) {
-                        questionModel.add(quetionModelList.get(i));
                         if (!checkWord("" + quetionModelList.get(i).getTitle())) {
                             questionModel.add(quetionModelList.get(i));
                             break;
@@ -138,7 +137,7 @@ public class ParagraphWritingPresenter implements ParagraphWritingContract.Parag
                     } else {
                         questionModel.add(quetionModelList.get(i));
                     }
-                    if (questionModel != null) {
+                    if (questionModel != null && questionModel.size()>1) {
                         break;
                     }
                 }
