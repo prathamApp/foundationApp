@@ -21,7 +21,7 @@ import com.pratham.foundation.customView.GridSpacingItemDecoration;
 import com.pratham.foundation.customView.display_image_dialog.CustomLodingDialog;
 import com.pratham.foundation.database.domain.ContentTable;
 import com.pratham.foundation.services.shared_preferences.FastSave;
-import com.pratham.foundation.ui.home_screen.ContentHomeActivity_;
+import com.pratham.foundation.ui.app_home.HomeActivity_;
 import com.pratham.foundation.utility.FC_Constants;
 
 import org.androidannotations.annotations.AfterViews;
@@ -106,7 +106,8 @@ public class SelectSubject extends BaseActivity implements
         FastSave.getInstance().saveString(FC_Constants.CURRENT_SUBJECT, currentSubject);
         FastSave.getInstance().saveString(FC_Constants.CURRENT_FOLDER_NAME, currentSubjectFolder);
         FastSave.getInstance().saveString(FC_Constants.CURRENT_ROOT_NODE, contentTableObj.getNodeId());
-        Intent intent = new Intent(context, ContentHomeActivity_.class);
+        Intent intent = new Intent(context, HomeActivity_.class);
+//        Intent intent = new Intent(context, ContentHomeActivity_.class);
         intent.putExtra("nodeId", contentTableObj.getNodeId());
         intent.putExtra("nodeTitle", contentTableObj.getNodeTitle());
         context.startActivity(intent);

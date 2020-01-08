@@ -79,7 +79,7 @@
                     android:layout_width="@dimen/_150sdp"
                     android:layout_height="@dimen/_50sdp"
                     android:layout_marginVertical="@dimen/_10sdp"
-                    android:background="@drawable/button_yellow"
+                    android:background="@drawable/button_green"
                     android:text="Assign Groups"
                     android:textColor="@color/white"
                     android:textSize="@dimen/_12sdp" />
@@ -99,8 +99,9 @@
                     android:layout_width="@dimen/_150sdp"
                     android:layout_height="@dimen/_50sdp"
                     android:layout_marginVertical="@dimen/_10sdp"
-                    android:background="@drawable/button_green"
+                    android:background="@drawable/button_yellow"
                     android:text="Get Progress"
+                    android:visibility="gone"
                     android:textColor="@color/white"
                     android:textSize="@dimen/_12sdp" />
 

@@ -24,7 +24,7 @@
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
         android:layout_margin="10dp"
-        android:visibility="gone">
+        android:visibility="visible">
 
         <ImageView
             android:id="@+id/iv_image"
@@ -75,8 +75,9 @@
             android:layout_centerHorizontal="true"
             android:layout_marginRight="@dimen/_20sdp"
             android:layout_marginBottom="@dimen/_10sdp"
-            android:background="@drawable/ripple_effect"
+            android:background="@drawable/button_green"
             android:paddingHorizontal="@dimen/_20sdp"
+            android:textColor="@color/white"
             android:text="Submit"
             android:textSize="@dimen/_15sdp" />
 

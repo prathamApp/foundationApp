@@ -53,16 +53,25 @@
             android:name=".ui.test.certificate.CertificateActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".ui.home_screen.profile_new.certificate_display.CertificateDisplayActivity_"
+            android:name=".ui.app_home.profile_new.certificate_display.CertificateDisplayActivity_"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.home_screen_integrated.profile_new.certificate_display.CertificateDisplayActivity_"
             android:screenOrientation="portrait" />
         <activity
             android:name=".ui.admin_panel.group_selection.SelectGroupActivity_"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".ui.home_screen.ContentHomeActivity_"
+            android:name=".ui.home_screen_integrated.ContentHomeActivity_"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".ui.home_screen.display_content.ContentDisplay_"
+            android:name=".ui.app_home.HomeActivity_"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.home_screen_integrated.display_content.ContentDisplay_"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.app_home.display_content.ContentDisplay_"
             android:screenOrientation="portrait" />
         <activity
             android:name=".ui.admin_panel.fragment_admin_panel.PushOrAssign.PushDataActivity_"
@@ -78,7 +87,11 @@
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.Dialog" />
         <activity
-            android:name=".ui.home_screen.test_fragment.supervisor.SupervisedAssessmentActivity"
+            android:name=".ui.home_screen_integrated.test_fragment.supervisor.SupervisedAssessmentActivity"
+            android:screenOrientation="sensorPortrait"
+            android:theme="@style/Theme.AppCompat.Light.Dialog.MinWidth" />
+        <activity
+            android:name=".ui.app_home.test_fragment.supervisor.SupervisedAssessmentActivity"
             android:screenOrientation="sensorPortrait"
             android:theme="@style/Theme.AppCompat.Light.Dialog.MinWidth" />
 <!--        <activity-->

@@ -28,7 +28,7 @@ import com.pratham.foundation.database.AppDatabase;
 import com.pratham.foundation.database.domain.ContentProgress;
 import com.pratham.foundation.database.domain.ContentTable;
 import com.pratham.foundation.services.shared_preferences.FastSave;
-import com.pratham.foundation.ui.home_screen.ContentHomeActivity;
+import com.pratham.foundation.ui.home_screen_integrated.ContentHomeActivity;
 import com.pratham.foundation.ui.student_profile.discription_adapter.DiscriptionAdapter;
 import com.pratham.foundation.utility.FC_Constants;
 import com.pratham.foundation.utility.FC_Utility;
