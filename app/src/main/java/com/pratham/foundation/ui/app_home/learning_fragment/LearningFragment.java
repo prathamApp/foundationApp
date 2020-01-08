@@ -1,6 +1,7 @@
 package com.pratham.foundation.ui.app_home.learning_fragment;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
@@ -56,7 +57,6 @@ import org.greenrobot.eventbus.ThreadMode;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
 
@@ -84,6 +84,7 @@ public class LearningFragment extends Fragment implements LearningContract.Learn
     public List<ContentTable> contentParentList, contentDBList, contentApiList, childContentList;
     private String downloadNodeId, resName, resServerImageName, downloadType;
     private int childPos = 0, parentPos = 0, resumeCntr = 0;
+    Context context;
 
     @AfterViews
     public void initialize() {
@@ -93,6 +94,7 @@ public class LearningFragment extends Fragment implements LearningContract.Learn
         dwParentList = new ArrayList<>();
         childDwContentList = new ArrayList<>();
         contentParentList = new ArrayList<>();
+        context = getActivity();
         presenter.setView(LearningFragment.this);
         my_recycler_view.addOnScrollListener(new RetractableToolbarUtil
                 .ShowHideToolbarOnScrollingListener(header_rl));
@@ -115,10 +117,10 @@ public class LearningFragment extends Fragment implements LearningContract.Learn
         }catch (Exception e){e.printStackTrace();}
 
         if (adapterParent == null) {
-            adapterParent = new LearningOuterDataAdapter(getActivity(), contentParentList, this);
-            RecyclerView.LayoutManager mLayoutManager = new GridLayoutManager(getActivity(), 1);
+            adapterParent = new LearningOuterDataAdapter(context, contentParentList, this);
+            RecyclerView.LayoutManager mLayoutManager = new GridLayoutManager(context, 1);
             my_recycler_view.setLayoutManager(mLayoutManager);
-            my_recycler_view.addItemDecoration(new GridSpacingItemDecoration(1, dpToPx(getActivity()), true));
+            my_recycler_view.addItemDecoration(new GridSpacingItemDecoration(1, dpToPx(context), true));
             my_recycler_view.setItemAnimator(new DefaultItemAnimator());
             my_recycler_view.setAdapter(adapterParent);
         } else
@@ -140,12 +142,7 @@ public class LearningFragment extends Fragment implements LearningContract.Learn
     }
 
     public void sortAllList(List<ContentTable> contentParentList) {
-        Collections.sort(contentParentList, new Comparator<ContentTable>() {
-            @Override
-            public int compare(ContentTable o1, ContentTable o2) {
-                return o1.getNodeId().compareTo(o2.getNodeId());
-            }
-        });
+        Collections.sort(contentParentList, (o1, o2) -> o1.getNodeId().compareTo(o2.getNodeId()));
     }
 
     @UiThread
@@ -225,8 +222,8 @@ public class LearningFragment extends Fragment implements LearningContract.Learn
                             adapterParent.notifyItemChanged(parentPos, contentParentList.get(parentPos));
                         }, 500);
                     } else if (downloadType.equalsIgnoreCase(FC_Constants.SINGLE_RES_DOWNLOAD)) {
-                        folderPath = contentParentList.get(parentPos).getNodelist().get(childPos).getResourcePath();
-                        contentParentList.get(parentPos).getNodelist().get(childPos).setIsDownloaded("true");
+                        folderPath = Objects.requireNonNull(contentParentList.get(parentPos).getNodelist()).get(childPos).getResourcePath();
+                        Objects.requireNonNull(contentParentList.get(parentPos).getNodelist()).get(childPos).setIsDownloaded("true");
                         presenter.updateDownloads();
                         presenter.updateCurrentNode(contentParentList.get(parentPos));
                         new Handler().postDelayed(() -> {
@@ -275,9 +272,10 @@ public class LearningFragment extends Fragment implements LearningContract.Learn
         presenter.getDataForList();
     }
 
+    @SuppressLint("SetTextI18n")
     @Override
     public void showNoDataDownloadedDialog() {
-        final CustomLodingDialog dialog = new CustomLodingDialog(getActivity());
+        final CustomLodingDialog dialog = new CustomLodingDialog(context);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         Objects.requireNonNull(dialog.getWindow()).setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         dialog.setContentView(R.layout.fc_custom_dialog);
@@ -312,7 +310,7 @@ public class LearningFragment extends Fragment implements LearningContract.Learn
     public void showLoader() {
         if (!loaderVisible) {
             loaderVisible = true;
-            myLoadingDialog = new CustomLodingDialog(getActivity());
+            myLoadingDialog = new CustomLodingDialog(context);
             myLoadingDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
             Objects.requireNonNull(myLoadingDialog.getWindow()).
                     setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
@@ -335,6 +333,7 @@ public class LearningFragment extends Fragment implements LearningContract.Learn
         }
     }
 
+    @SuppressLint("SetTextI18n")
     @UiThread
     @Override
     public void setLevelprogress(int percent) {
@@ -348,7 +347,7 @@ public class LearningFragment extends Fragment implements LearningContract.Learn
 
     @SuppressLint("SetTextI18n")
     private void resourceDownloadDialog(Modal_FileDownloading modal_fileDownloading) {
-        downloadDialog = new CustomLodingDialog(getActivity());
+        downloadDialog = new CustomLodingDialog(context);
         downloadDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         Objects.requireNonNull(downloadDialog.getWindow()).setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         downloadDialog.setContentView(R.layout.dialog_file_downloading);
@@ -378,14 +377,14 @@ public class LearningFragment extends Fragment implements LearningContract.Learn
             e.printStackTrace();
         }
         if (singleItem.getNodeType().equalsIgnoreCase("category")) {
-            Intent intent = new Intent(getActivity(), ContentDisplay_.class);
+            Intent intent = new Intent(context, ContentDisplay_.class);
             intent.putExtra("nodeId", singleItem.getNodeId());
             intent.putExtra("parentName", parentName);
             intent.putExtra("contentTitle", singleItem.getNodeTitle());
             intent.putExtra("level", "" + currentLevel);
             startActivity(intent);
         } else if (singleItem.getNodeType().equalsIgnoreCase("preResource")) {
-            Intent mainNew = new Intent(getActivity(), ContentPlayerActivity_.class);
+            Intent mainNew = new Intent(context, ContentPlayerActivity_.class);
             mainNew.putExtra("nodeID", singleItem.getNodeId());
             mainNew.putExtra("title", singleItem.getNodeTitle());
             startActivity(mainNew);
@@ -407,7 +406,7 @@ public class LearningFragment extends Fragment implements LearningContract.Learn
         resName = contentList.getNodeTitle();
         if (contentList.getNodeType().equalsIgnoreCase("PreResource") ||
                 contentList.getResourceType().equalsIgnoreCase("PreResource")) {
-            Intent mainNew = new Intent(getActivity(), ContentPlayerActivity_.class);
+            Intent mainNew = new Intent(context, ContentPlayerActivity_.class);
             mainNew.putExtra("resId", contentList.getResourceId());
             mainNew.putExtra("StudentID", FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""));
             mainNew.putExtra("contentName", contentList.getNodeTitle());
@@ -424,7 +423,7 @@ public class LearningFragment extends Fragment implements LearningContract.Learn
                     resPath = ApplicationClass.foundationPath + gameFolderPath + "/" + contentList.getResourcePath();
                 File file = new File(resPath);
                 Uri path = Uri.fromFile(file);
-                Intent intent = new Intent(getActivity(), WebViewActivity.class);
+                Intent intent = new Intent(context, WebViewActivity.class);
                 intent.putExtra("resPath", path.toString());
                 intent.putExtra("resId", gameID);
                 intent.putExtra("mode", "normal");
@@ -436,7 +435,7 @@ public class LearningFragment extends Fragment implements LearningContract.Learn
             } else if (contentList.getResourceType().equalsIgnoreCase(FC_Constants.RC_RESOURCE)) {
 //                presenter.enterRCData(contentList);
             } else if (contentList.getResourceType().equalsIgnoreCase(FC_Constants.CONVO_RESOURCE)) {
-                Intent mainNew = new Intent(getActivity(), ConversationActivity_.class);
+                Intent mainNew = new Intent(context, ConversationActivity_.class);
                 mainNew.putExtra("storyId", contentList.getResourceId());
                 mainNew.putExtra("StudentID", FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""));
                 mainNew.putExtra("contentName", contentList.getNodeTitle());
@@ -445,7 +444,7 @@ public class LearningFragment extends Fragment implements LearningContract.Learn
                 mainNew.putExtra("contentPath", contentList.getResourcePath());
                 startActivity(mainNew);
             } else if (contentList.getResourceType().equalsIgnoreCase(FC_Constants.COMIC_CONVO_RESOURCE)) {
-                Intent mainNew = new Intent(getActivity(), ReadingCardsActivity_.class);
+                Intent mainNew = new Intent(context, ReadingCardsActivity_.class);
                 mainNew.putExtra("storyId", contentList.getResourceId());
                 mainNew.putExtra("StudentID", FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""));
                 mainNew.putExtra("contentName", contentList.getNodeTitle());
@@ -453,7 +452,7 @@ public class LearningFragment extends Fragment implements LearningContract.Learn
                 mainNew.putExtra("contentPath", contentList.getResourcePath());
                 startActivity(mainNew);
             } else if (contentList.getResourceType().equalsIgnoreCase(FC_Constants.RHYME_RESOURCE) || contentList.getResourceType().equalsIgnoreCase(FC_Constants.STORY_RESOURCE)) {
-                Intent mainNew = new Intent(getActivity(), ReadingStoryActivity_.class);
+                Intent mainNew = new Intent(context, ReadingStoryActivity_.class);
                 mainNew.putExtra("storyId", contentList.getResourceId());
                 mainNew.putExtra("StudentID", FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""));
                 mainNew.putExtra("storyPath", contentList.getResourcePath());
@@ -462,7 +461,7 @@ public class LearningFragment extends Fragment implements LearningContract.Learn
                 mainNew.putExtra("contentType", contentList.getResourceType());
                 startActivity(mainNew);
             } /*else if (contentList.getResourceType().equalsIgnoreCase(FC_Constants.WORD_ANDROID)) {
-                Intent mainNew = new Intent(getActivity(), ReadingWordScreenActivity.class);
+                Intent mainNew = new Intent(context, ReadingWordScreenActivity.class);
                 mainNew.putExtra("resId", contentList.getResourceId());
                 mainNew.putExtra("StudentID", FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""));
                 mainNew.putExtra("contentPath", contentList.getResourcePath());
@@ -470,7 +469,7 @@ public class LearningFragment extends Fragment implements LearningContract.Learn
                 mainNew.putExtra("contentTitle", contentList.getNodeTitle());
                 startActivity(mainNew);
             }*/ else if (contentList.getResourceType().equalsIgnoreCase(FC_Constants.PARA_ANDROID)) {
-                Intent mainNew = new Intent(getActivity(), ReadingParagraphsActivity_.class);
+                Intent mainNew = new Intent(context, ReadingParagraphsActivity_.class);
                 mainNew.putExtra("resId", contentList.getResourceId());
                 mainNew.putExtra("StudentID", FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""));
                 mainNew.putExtra("contentPath", contentList.getResourcePath());
@@ -478,7 +477,7 @@ public class LearningFragment extends Fragment implements LearningContract.Learn
                 mainNew.putExtra("contentTitle", contentList.getNodeTitle());
                 startActivity(mainNew);
             } else if (contentList.getResourceType().equalsIgnoreCase(FC_Constants.VOCAB_ANDROID)) {
-                Intent mainNew = new Intent(getActivity(), ReadingVocabularyActivity_.class);
+                Intent mainNew = new Intent(context, ReadingVocabularyActivity_.class);
                 mainNew.putExtra("resId", contentList.getResourceId());
                 mainNew.putExtra("StudentID", FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""));
                 mainNew.putExtra("contentPath", contentList.getResourcePath());
@@ -488,7 +487,7 @@ public class LearningFragment extends Fragment implements LearningContract.Learn
                 mainNew.putExtra("vocabCategory", contentList.getNodeKeywords());
                 startActivity(mainNew);
             } else if (contentList.getResourceType().equalsIgnoreCase(FC_Constants.RHYMING_WORD_ANDROID)) {
-                Intent mainNew = new Intent(getActivity(), ReadingRhymesActivity_.class);
+                Intent mainNew = new Intent(context, ReadingRhymesActivity_.class);
                 mainNew.putExtra("resId", contentList.getResourceId());
                 mainNew.putExtra("StudentID", FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""));
                 mainNew.putExtra("contentPath", contentList.getResourcePath());
@@ -497,7 +496,7 @@ public class LearningFragment extends Fragment implements LearningContract.Learn
                 mainNew.putExtra("rhymeLevel", contentList.getNodeDesc());
                 startActivity(mainNew);
             } else if (contentList.getResourceType().equalsIgnoreCase(FC_Constants.OPPOSITE_WORDS)) {
-                Intent mainNew = new Intent(getActivity(), OppositesActivity_.class);
+                Intent mainNew = new Intent(context, OppositesActivity_.class);
                 mainNew.putExtra("resId", contentList.getResourceId());
                 mainNew.putExtra("StudentID", FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""));
                 mainNew.putExtra("contentName", contentList.getNodeTitle());
@@ -505,7 +504,7 @@ public class LearningFragment extends Fragment implements LearningContract.Learn
                 mainNew.putExtra("contentPath", contentList.getResourcePath());
                 startActivity(mainNew);
             } else if (contentList.getResourceType().equalsIgnoreCase(FC_Constants.MATCH_THE_PAIR)) {
-                Intent mainNew = new Intent(getActivity(), MatchThePairGameActivity.class);
+                Intent mainNew = new Intent(context, MatchThePairGameActivity.class);
                 mainNew.putExtra("resId", contentList.getResourceId());
                 mainNew.putExtra("StudentID", FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""));
                 mainNew.putExtra("contentName", contentList.getNodeTitle());
@@ -529,18 +528,18 @@ public class LearningFragment extends Fragment implements LearningContract.Learn
         this.childPos = childPos;
         resName = contentList.getNodeTitle();
         resServerImageName = contentList.getNodeServerImage();
-        if (FC_Utility.isDataConnectionAvailable(getActivity()))
+        if (FC_Utility.isDataConnectionAvailable(context))
             presenter.downloadResource(downloadNodeId);
         else
-            Toast.makeText(getActivity(), "No Internet Connection", Toast.LENGTH_SHORT).show();
+            Toast.makeText(context, "No Internet Connection", Toast.LENGTH_SHORT).show();
 
     }
 
     @UiThread
     public void showDownloadErrorDialog() {
-        CustomLodingDialog errorDialog = new CustomLodingDialog(getActivity());
+        CustomLodingDialog errorDialog = new CustomLodingDialog(context);
         errorDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        errorDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        Objects.requireNonNull(errorDialog.getWindow()).setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         errorDialog.setContentView(R.layout.dialog_file_error_downloading);
         errorDialog.setCanceledOnTouchOutside(false);
         errorDialog.show();
@@ -555,7 +554,7 @@ public class LearningFragment extends Fragment implements LearningContract.Learn
             contentParentList.clear();
             presenter.getDataForList();
         } else {
-            getActivity().onBackPressed();
+            Objects.requireNonNull(getActivity()).onBackPressed();
         }
     }
 
@@ -566,7 +565,7 @@ public class LearningFragment extends Fragment implements LearningContract.Learn
     @Override
     public void seeMore(String nodeId, String nodeTitle) {
         FC_Constants.isTest = false;
-        Intent intent = new Intent(getActivity(), ContentDisplay_.class);
+        Intent intent = new Intent(context, ContentDisplay_.class);
         intent.putExtra("nodeId", nodeId);
         intent.putExtra("contentTitle", nodeTitle);
         intent.putExtra("parentName", sub_Name);

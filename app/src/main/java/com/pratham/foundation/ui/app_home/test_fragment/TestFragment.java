@@ -2,6 +2,7 @@ package com.pratham.foundation.ui.app_home.test_fragment;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.Color;
@@ -67,7 +68,6 @@ import org.json.JSONObject;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
 
@@ -103,6 +103,8 @@ public class TestFragment extends Fragment implements TestContract.TestView,
     private int childPos = 0, parentPos = 0, resumeCntr = 0;
     public static String language = "Hindi";
     String currLang="";
+    Context context;
+
 
     @AfterViews
     public void initialize() {
@@ -115,6 +117,7 @@ public class TestFragment extends Fragment implements TestContract.TestView,
         presenter.setView(TestFragment.this);
         testSessionEntered = false;
         testSessionEnded = false;
+        context = getActivity();
 //        ib_langChange.setVisibility(View.GONE);
         my_recycler_view.addOnScrollListener(new RetractableToolbarUtil
                 .ShowHideToolbarOnScrollingListener(header_rl));
@@ -130,8 +133,8 @@ public class TestFragment extends Fragment implements TestContract.TestView,
     public void notifyAdapter() {
 //        sortAllList(contentParentList);
         if (testAdapter == null) {
-            testAdapter = new TestAdapter(getActivity(), testList, TestFragment.this, TestFragment.this);
-            RecyclerView.LayoutManager myLayoutManager = new GridLayoutManager(getActivity(), 1);
+            testAdapter = new TestAdapter(context, testList, TestFragment.this, TestFragment.this);
+            RecyclerView.LayoutManager myLayoutManager = new GridLayoutManager(context, 1);
             my_recycler_view.setLayoutManager(myLayoutManager);
             my_recycler_view.setItemAnimator(new DefaultItemAnimator());
             my_recycler_view.setAdapter(testAdapter);
@@ -154,12 +157,7 @@ public class TestFragment extends Fragment implements TestContract.TestView,
     }
 
     public void sortAllList(List<ContentTable> contentParentList) {
-        Collections.sort(contentParentList, new Comparator<ContentTable>() {
-            @Override
-            public int compare(ContentTable o1, ContentTable o2) {
-                return o1.getNodeId().compareTo(o2.getNodeId());
-            }
-        });
+        Collections.sort(contentParentList, (o1, o2) -> o1.getNodeId().compareTo(o2.getNodeId()));
     }
 
     @Click(R.id.ib_langChange)
@@ -169,9 +167,9 @@ public class TestFragment extends Fragment implements TestContract.TestView,
 
     @SuppressLint("SetTextI18n")
     private void showLanguageSelectionDialog() {
-        final CustomLodingDialog dialog = new CustomLodingDialog(getActivity());
+        final CustomLodingDialog dialog = new CustomLodingDialog(context);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        Objects.requireNonNull(dialog.getWindow()).setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         dialog.setContentView(R.layout.fc_custom_language_dialog);
         dialog.setCancelable(false);
         dialog.setCanceledOnTouchOutside(false);
@@ -183,8 +181,8 @@ public class TestFragment extends Fragment implements TestContract.TestView,
         currLang = "" + FastSave.getInstance().getString(FC_Constants.LANGUAGE, "Hindi");
         dia_title.setText("Current Language : " + currLang);
 
-        ArrayAdapter<String> dataAdapter = new ArrayAdapter<>(getActivity(), R.layout.custom_spinner,
-                getActivity().getResources().getStringArray(R.array.certificate_Languages));
+        ArrayAdapter<String> dataAdapter = new ArrayAdapter<>(context, R.layout.custom_spinner,
+                context.getResources().getStringArray(R.array.certificate_Languages));
         dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         lang_spinner.setAdapter(dataAdapter);
         String[] languages = getResources().getStringArray(R.array.certificate_Languages);
@@ -431,7 +429,7 @@ public class TestFragment extends Fragment implements TestContract.TestView,
                 File file = new File(resPath);
                 if (file.exists()) {
                     Uri path = Uri.fromFile(file);
-                    Intent mainNew = new Intent(getActivity(), WebViewActivity.class);
+                    Intent mainNew = new Intent(context, WebViewActivity.class);
                     mainNew.putExtra("resPath", path.toString());
                     mainNew.putExtra("resId", gameID);
                     mainNew.putExtra("mode", "test");
@@ -442,10 +440,10 @@ public class TestFragment extends Fragment implements TestContract.TestView,
                     mainNew.putExtra("gameCategory", "" + testData.getNodeKeywords());
                     startActivityForResult(mainNew, 1);
                 } else {
-                    Toast.makeText(getActivity(), "Game not found", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(context, "Game not found", Toast.LENGTH_SHORT).show();
                 }
             } else if (testData.getResourceType().equalsIgnoreCase(FC_Constants.OPPOSITE_WORDS)) {
-                Intent mainNew = new Intent(getActivity(), FactRetrieval_.class);
+                Intent mainNew = new Intent(context, FactRetrieval_.class);
                 mainNew.putExtra("resId", testData.getResourceId());
                 mainNew.putExtra("StudentID", FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""));
                 mainNew.putExtra("contentName", testData.getNodeTitle());
@@ -456,7 +454,7 @@ public class TestFragment extends Fragment implements TestContract.TestView,
                 startActivityForResult(mainNew, 1);
             } else if (testData.getResourceType().equalsIgnoreCase(FC_Constants.CONVO_RESOURCE)) {
                 ContentTable randomTestData = presenter.getRandomData(testData.getResourceType(), testData.getNodeKeywords());
-                Intent mainNew = new Intent(getActivity(), ConversationActivity_.class);
+                Intent mainNew = new Intent(context, ConversationActivity_.class);
                 mainNew.putExtra("storyId", randomTestData.getResourceId());
                 mainNew.putExtra("StudentID", FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""));
                 mainNew.putExtra("contentName", randomTestData.getNodeTitle());
@@ -467,7 +465,7 @@ public class TestFragment extends Fragment implements TestContract.TestView,
                 startActivityForResult(mainNew, 1);
             } else if (testData.getResourceType().equalsIgnoreCase(FC_Constants.COMIC_CONVO_RESOURCE)) {
                 ContentTable randomTestData = presenter.getRandomData(testData.getResourceType(), testData.getNodeKeywords());
-                Intent mainNew = new Intent(getActivity(), ReadingCardsActivity_.class);
+                Intent mainNew = new Intent(context, ReadingCardsActivity_.class);
                 mainNew.putExtra("storyId", randomTestData.getResourceId());
                 mainNew.putExtra("StudentID", FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""));
                 mainNew.putExtra("contentName", randomTestData.getNodeTitle());
@@ -477,7 +475,7 @@ public class TestFragment extends Fragment implements TestContract.TestView,
                 mainNew.putExtra("contentPath", randomTestData.getResourcePath());
                 startActivityForResult(mainNew, 1);
             } else if (testData.getResourceType().equalsIgnoreCase(FC_Constants.OPPOSITE_WORDS)) {
-                Intent mainNew = new Intent(getActivity(), OppositesActivity_.class);
+                Intent mainNew = new Intent(context, OppositesActivity_.class);
                 mainNew.putExtra("resId", testData.getResourceId());
                 mainNew.putExtra("StudentID", FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""));
                 mainNew.putExtra("contentName", testData.getNodeTitle());
@@ -488,7 +486,7 @@ public class TestFragment extends Fragment implements TestContract.TestView,
                 startActivityForResult(mainNew, 1);
             } else if (testData.getResourceType().equalsIgnoreCase(FC_Constants.RHYME_RESOURCE) || testData.getResourceType().equalsIgnoreCase(FC_Constants.STORY_RESOURCE)) {
                 ContentTable randomTestData = presenter.getRandomData(testData.getResourceType(), testData.getNodeKeywords());
-                Intent mainNew = new Intent(getActivity(), ReadingStoryActivity_.class);
+                Intent mainNew = new Intent(context, ReadingStoryActivity_.class);
                 mainNew.putExtra("storyId", randomTestData.getResourceId());
                 mainNew.putExtra("StudentID", FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""));
                 mainNew.putExtra("storyPath", randomTestData.getResourcePath());
@@ -499,7 +497,7 @@ public class TestFragment extends Fragment implements TestContract.TestView,
                 mainNew.putExtra("contentType", randomTestData.getResourceType());
                 startActivityForResult(mainNew, 1);
             } /*else if (testData.getResourceType().equalsIgnoreCase(FC_Constants.WORD_ANDROID)) {
-                Intent mainNew = new Intent(getActivity(), ReadingWordScreenActivity.class);
+                Intent mainNew = new Intent(context, ReadingWordScreenActivity.class);
                 mainNew.putExtra("resId", testData.getResourceId());
                 mainNew.putExtra("StudentID", FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""));
                 mainNew.putExtra("contentPath", testData.getResourcePath());
@@ -509,7 +507,7 @@ public class TestFragment extends Fragment implements TestContract.TestView,
                 startActivityForResult(mainNew, 1);
             } */ else if (testData.getResourceType().equalsIgnoreCase(FC_Constants.PARA_ANDROID)) {
                 ContentTable randomTestData = presenter.getRandomData(testData.getResourceType(), testData.getNodeKeywords());
-                Intent mainNew = new Intent(getActivity(), ReadingParagraphsActivity_.class);
+                Intent mainNew = new Intent(context, ReadingParagraphsActivity_.class);
                 mainNew.putExtra("resId", randomTestData.getResourceId());
                 mainNew.putExtra("StudentID", FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""));
                 mainNew.putExtra("contentPath", randomTestData.getResourcePath());
@@ -521,7 +519,7 @@ public class TestFragment extends Fragment implements TestContract.TestView,
                 startActivityForResult(mainNew, 1);
             } else if (testData.getResourceType().equalsIgnoreCase(FC_Constants.PARA_VOCAB_ANDROID)) {
                 ContentTable randomTestData = presenter.getRandomData(testData.getResourceType(), testData.getNodeKeywords());
-                Intent mainNew = new Intent(getActivity(), ReadingParagraphsActivity_.class);
+                Intent mainNew = new Intent(context, ReadingParagraphsActivity_.class);
                 mainNew.putExtra("resId", randomTestData.getResourceId());
                 mainNew.putExtra("StudentID", FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""));
                 mainNew.putExtra("contentPath", randomTestData.getResourcePath());
@@ -532,7 +530,7 @@ public class TestFragment extends Fragment implements TestContract.TestView,
                 mainNew.putExtra("contentTitle", randomTestData.getNodeTitle());
                 startActivityForResult(mainNew, 1);
             } else if (testData.getResourceType().equalsIgnoreCase(FC_Constants.VOCAB_ANDROID)) {
-                Intent mainNew = new Intent(getActivity(), ReadingVocabularyActivity_.class);
+                Intent mainNew = new Intent(context, ReadingVocabularyActivity_.class);
                 mainNew.putExtra("resId", testData.getResourceId());
                 mainNew.putExtra("StudentID", FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""));
                 mainNew.putExtra("contentPath", testData.getResourcePath());
@@ -545,7 +543,7 @@ public class TestFragment extends Fragment implements TestContract.TestView,
                 startActivityForResult(mainNew, 1);
             } else if (testData.getResourceType().equalsIgnoreCase(FC_Constants.RHYMING_WORD_ANDROID)) {
                 ContentTable randomTestData = presenter.getRandomData(testData.getResourceType(), testData.getNodeKeywords());
-                Intent mainNew = new Intent(getActivity(), ReadingRhymesActivity_.class);
+                Intent mainNew = new Intent(context, ReadingRhymesActivity_.class);
                 mainNew.putExtra("resId", randomTestData.getResourceId());
                 mainNew.putExtra("StudentID", FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""));
                 mainNew.putExtra("contentPath", randomTestData.getResourcePath());
@@ -556,7 +554,7 @@ public class TestFragment extends Fragment implements TestContract.TestView,
                 mainNew.putExtra("rhymeLevel", randomTestData.getNodeDesc());
                 startActivityForResult(mainNew, 1);
             } else if (testData.getResourceType().equalsIgnoreCase(FC_Constants.MATCH_THE_PAIR)) {
-                Intent mainNew = new Intent(getActivity(), MatchThePairGameActivity.class);
+                Intent mainNew = new Intent(context, MatchThePairGameActivity.class);
                 mainNew.putExtra("resId", testData.getResourceId());
                 mainNew.putExtra("StudentID", FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""));
                 mainNew.putExtra("contentPath", testData.getResourcePath());
@@ -567,7 +565,7 @@ public class TestFragment extends Fragment implements TestContract.TestView,
                 mainNew.putExtra("rhymeLevel", testData.getNodeDesc());
                 startActivityForResult(mainNew, 1);
             } else {
-                Intent mainNew = new Intent(getActivity(), ContentPlayerActivity_.class);
+                Intent mainNew = new Intent(context, ContentPlayerActivity_.class);
                 mainNew.putExtra("testData",testData);
                 mainNew.putExtra("testcall", "true");
                 startActivityForResult(mainNew, 1);
@@ -594,8 +592,8 @@ public class TestFragment extends Fragment implements TestContract.TestView,
             my_recycler_view.removeAllViews();
             if (testList.size() > 0) {
                 if (testAdapter == null) {
-                    testAdapter = new TestAdapter(getActivity(), testList, TestFragment.this, TestFragment.this);
-                    RecyclerView.LayoutManager myLayoutManager = new GridLayoutManager(getActivity(), 1);
+                    testAdapter = new TestAdapter(context, testList, TestFragment.this, TestFragment.this);
+                    RecyclerView.LayoutManager myLayoutManager = new GridLayoutManager(context, 1);
                     my_recycler_view.setLayoutManager(myLayoutManager);
                     my_recycler_view.setItemAnimator(new DefaultItemAnimator());
                     my_recycler_view.setAdapter(testAdapter);
@@ -669,10 +667,10 @@ public class TestFragment extends Fragment implements TestContract.TestView,
     @SuppressLint("SetTextI18n")
     private void showTestCompleteDialog() {
         try {
-            CustomLodingDialog dialog = new CustomLodingDialog(Objects.requireNonNull(getActivity())/*,R.style.ExitDialog*/);
+            CustomLodingDialog dialog = new CustomLodingDialog(Objects.requireNonNull(context)/*,R.style.ExitDialog*/);
             dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
             dialog.setContentView(R.layout.fc_custom_dialog);
-/*      Bitmap map=FC_Utility.takeScreenShot(getActivity());
+/*      Bitmap map=FC_Utility.takeScreenShot(context);
         Bitmap fast=FC_Utility.fastblur(map, 20);
         final Drawable draw=new BitmapDrawable(getResources(),fast);
         dialog.getWindow().setBackgroundDrawable(draw);*/
@@ -733,7 +731,7 @@ public class TestFragment extends Fragment implements TestContract.TestView,
     @Override
     public void showNoDataDownloadedDialog() {
         try {
-            final CustomLodingDialog dialog = new CustomLodingDialog(Objects.requireNonNull(getActivity()));
+            final CustomLodingDialog dialog = new CustomLodingDialog(Objects.requireNonNull(context));
             dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
             Objects.requireNonNull(dialog.getWindow()).setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
             dialog.setContentView(R.layout.fc_custom_dialog);
@@ -772,7 +770,7 @@ public class TestFragment extends Fragment implements TestContract.TestView,
         try {
             if (!loaderVisible) {
                 loaderVisible = true;
-                myLoadingDialog = new CustomLodingDialog(getActivity());
+                myLoadingDialog = new CustomLodingDialog(context);
                 myLoadingDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
                 Objects.requireNonNull(myLoadingDialog.getWindow()).
                         setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
@@ -811,7 +809,7 @@ public class TestFragment extends Fragment implements TestContract.TestView,
 
     @SuppressLint("SetTextI18n")
     private void resourceDownloadDialog(Modal_FileDownloading modal_fileDownloading) {
-        downloadDialog = new CustomLodingDialog(getActivity());
+        downloadDialog = new CustomLodingDialog(context);
         downloadDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         Objects.requireNonNull(downloadDialog.getWindow()).setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         downloadDialog.setContentView(R.layout.dialog_file_downloading);
@@ -833,9 +831,9 @@ public class TestFragment extends Fragment implements TestContract.TestView,
 
     @UiThread
     public void showDownloadErrorDialog() {
-        CustomLodingDialog errorDialog = new CustomLodingDialog(getActivity());
+        CustomLodingDialog errorDialog = new CustomLodingDialog(context);
         errorDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        errorDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        Objects.requireNonNull(errorDialog.getWindow()).setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         errorDialog.setContentView(R.layout.dialog_file_error_downloading);
         errorDialog.setCanceledOnTouchOutside(false);
         errorDialog.show();
@@ -850,7 +848,7 @@ public class TestFragment extends Fragment implements TestContract.TestView,
             contentParentList.clear();
 //            presenter.getDataForList();
         } else {
-            getActivity().onBackPressed();
+            Objects.requireNonNull(getActivity()).onBackPressed();
         }
     }
 
@@ -858,8 +856,8 @@ public class TestFragment extends Fragment implements TestContract.TestView,
     public void onSpinnerLanguageChanged(String selectedLanguage) {
         language = selectedLanguage;
         if (testAdapter == null) {
-            testAdapter = new TestAdapter(getActivity(), testList, TestFragment.this, TestFragment.this);
-            RecyclerView.LayoutManager myLayoutManager = new GridLayoutManager(getActivity(), 1);
+            testAdapter = new TestAdapter(context, testList, TestFragment.this, TestFragment.this);
+            RecyclerView.LayoutManager myLayoutManager = new GridLayoutManager(context, 1);
             my_recycler_view.setLayoutManager(myLayoutManager);
             my_recycler_view.setItemAnimator(new DefaultItemAnimator());
             my_recycler_view.setAdapter(testAdapter);

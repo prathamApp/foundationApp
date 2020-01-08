@@ -1,5 +1,6 @@
 package com.pratham.foundation.ui.app_home.profile_new;
 
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
@@ -79,18 +80,20 @@ public class ProfileFragment extends Fragment implements ProfileContract.Profile
 //    String[] progressArray = {"Progress", "Share"};
     String[] progressArray = {"Progress"};
     private ProfileOuterDataAdapter adapterParent;
+    Context context;
 
     @AfterViews
     public void initialize() {
         FC_Constants.isTest = false;
         FC_Constants.isPractice = false;
+        context = getActivity();
         tv_studentName.setText(""+ FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_NAME,"Student"));
         presenter.setView(ProfileFragment.this);
         if (adapterParent == null) {
-            adapterParent = new ProfileOuterDataAdapter(getActivity(), progressArray, this);
-            RecyclerView.LayoutManager mLayoutManager = new GridLayoutManager(getActivity(), 1);
+            adapterParent = new ProfileOuterDataAdapter(context, progressArray, this);
+            RecyclerView.LayoutManager mLayoutManager = new GridLayoutManager(context, 1);
             my_recycler_view.setLayoutManager(mLayoutManager);
-            my_recycler_view.addItemDecoration(new GridSpacingItemDecoration(1, dpToPx(getActivity()), true));
+            my_recycler_view.addItemDecoration(new GridSpacingItemDecoration(1, dpToPx(context), true));
             my_recycler_view.setItemAnimator(new DefaultItemAnimator());
             my_recycler_view.setAdapter(adapterParent);
         }
@@ -164,11 +167,11 @@ public class ProfileFragment extends Fragment implements ProfileContract.Profile
     }
 
     private void showCertificates() {
-        startActivity(new Intent(getActivity(), CertificateDisplayActivity_.class));
+        startActivity(new Intent(context, CertificateDisplayActivity_.class));
     }
 
     private void showUsage() {
-        Toast.makeText(getActivity(), "Work In Progress", Toast.LENGTH_SHORT).show();
+        Toast.makeText(context, "Work In Progress", Toast.LENGTH_SHORT).show();
     }
 
     @Click(R.id.ib_langChange)
@@ -177,7 +180,7 @@ public class ProfileFragment extends Fragment implements ProfileContract.Profile
     }
 
     private void showLanguageSelectionDialog() {
-        final CustomLodingDialog dialog = new CustomLodingDialog(getActivity());
+        final CustomLodingDialog dialog = new CustomLodingDialog(context);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         dialog.setContentView(R.layout.fc_custom_language_dialog);
@@ -191,8 +194,8 @@ public class ProfileFragment extends Fragment implements ProfileContract.Profile
         String currLang = "" + FastSave.getInstance().getString(FC_Constants.LANGUAGE,"Hindi");
         dia_title.setText("Current Language : "+currLang);
 
-        ArrayAdapter<String> dataAdapter = new ArrayAdapter<>(getActivity(), R.layout.custom_spinner,
-                getActivity().getResources().getStringArray(R.array.app_Language));
+        ArrayAdapter<String> dataAdapter = new ArrayAdapter<>(context, R.layout.custom_spinner,
+                context.getResources().getStringArray(R.array.app_Language));
         dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         lang_spinner.setAdapter(dataAdapter);
         String[] languages = getResources().getStringArray(R.array.app_Language);
@@ -219,7 +222,7 @@ public class ProfileFragment extends Fragment implements ProfileContract.Profile
         dia_btn_green.setOnClickListener(v -> {
 //            HomeActivity.languageChanged = true;
             FastSave.getInstance().saveBoolean(FC_Constants.LANGUAGE_SPLASH_DIALOG, true);
-//            setAppLocal(getActivity(), FastSave.getInstance().
+//            setAppLocal(context, FastSave.getInstance().
 //                    getString(FC_Constants.LANGUAGE, FC_Constants.HINDI));
             dialog.dismiss();
         });
@@ -227,7 +230,7 @@ public class ProfileFragment extends Fragment implements ProfileContract.Profile
 
 //    @Click({R.id.rl_share_app, R.id.btn_share_app})
 //    public void share_app() {
-//        KotlinPermissions.with(getActivity())
+//        KotlinPermissions.with(context)
 //                .permissions(Manifest.permission.WRITE_EXTERNAL_STORAGE,
 //                        Manifest.permission.READ_EXTERNAL_STORAGE)
 //                .onAccepted(permissionResult -> {
@@ -236,7 +239,7 @@ public class ProfileFragment extends Fragment implements ProfileContract.Profile
 //                        PackageManager pm = ApplicationClass.getInstance().getPackageManager();
 //                        ApplicationInfo ai = pm.getApplicationInfo(ApplicationClass.getInstance().getPackageName(), 0);
 //                        File localFile = new File(ai.publicSourceDir);
-//                        Uri uri = FileProvider.getUriForFile(getActivity(),
+//                        Uri uri = FileProvider.getUriForFile(context,
 //                                BuildConfig.APPLICATION_ID + ".provider", localFile);
 //                        intentShareFile.setType("*/*");
 //                        intentShareFile.putExtra(Intent.EXTRA_STREAM, uri);
