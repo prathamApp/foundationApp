@@ -43,7 +43,7 @@ public class InstructionsDialog extends CustomLodingDialog {
         } else {
             dia_title.setText("");
         }
-        resorcetype = "mr_" + resorcetype;
+        resorcetype = "hi_" + resorcetype;
         int rawID = context.getResources().getIdentifier(resorcetype.toLowerCase(), "raw", context.getPackageName());
         if (rawID != 0) {
             mediaPlayer = MediaPlayer.create(context, rawID);
