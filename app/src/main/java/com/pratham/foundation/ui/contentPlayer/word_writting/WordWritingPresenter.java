@@ -11,16 +11,13 @@ import com.pratham.foundation.database.domain.ContentProgress;
 import com.pratham.foundation.database.domain.KeyWords;
 import com.pratham.foundation.database.domain.Score;
 import com.pratham.foundation.interfaces.OnGameClose;
-import com.pratham.foundation.modalclasses.EventMessage;
 import com.pratham.foundation.modalclasses.ScienceQuestion;
-import com.pratham.foundation.modalclasses.ScoreEvent;
 import com.pratham.foundation.services.shared_preferences.FastSave;
 import com.pratham.foundation.ui.contentPlayer.GameConstatnts;
 import com.pratham.foundation.utility.FC_Constants;
 import com.pratham.foundation.utility.FC_Utility;
 
 import org.androidannotations.annotations.EBean;
-import org.greenrobot.eventbus.EventBus;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -122,15 +119,12 @@ public class WordWritingPresenter implements WordWritingContract.WordWritingPres
             Collections.shuffle(quetionModelList);
             for (int i = 0; i < quetionModelList.size(); i++) {
                 if (perc < 95) {
-                    questionModel.add(quetionModelList.get(i));
-
-                    /*if (!checkWord("" + quetionModelList.get(i).getTitle())) {
-                        questionModel = quetionModelList.get(i);
-                        break;
-                    }*/
+                   // questionModel.add(quetionModelList.get(i));
+                    if (!checkWord("" + quetionModelList.get(i).getQuestion())) {
+                        questionModel.add(quetionModelList.get(i));
+                    }
                 } else {
                     questionModel.add(quetionModelList.get(i));
-
                 }
                 if (questionModel.size() == 5) {
                     break;
@@ -190,6 +184,7 @@ public class WordWritingPresenter implements WordWritingContract.WordWritingPres
     }
 
     public void addLearntWords(List<ScienceQuestion> questionModel, String imageName) {
+        String newResId;
         if (imageName != null && !imageName.isEmpty()) {
             if (questionModel != null && !questionModel.isEmpty()) {
                 for (int i = 0; i < questionModel.size(); i++) {
@@ -201,7 +196,10 @@ public class WordWritingPresenter implements WordWritingContract.WordWritingPres
                     keyWords.setKeyWord(key);
                     keyWords.setWordType("word");
                     appDatabase.getKeyWordDao().insert(keyWords);
-                    addScore(GameConstatnts.getInt(questionModel.get(i).getQid()), GameConstatnts.PARAGRAPH_WRITING, 0, 0, FC_Utility.getCurrentDateTime(), imageName);
+                    newResId = GameConstatnts.getString(resId, GameConstatnts.PARAGRAPH_WRITING, questionModel.get(i).getQid(), imageName, questionModel.get(i).getQuestion(), "");
+                    //old
+                    //  addScore(GameConstatnts.getInt(questionModel.get(i).getQid()), GameConstatnts.PARAGRAPH_WRITING, 0, 0, FC_Utility.getCurrentDateTime(), imageName,newResId);
+                    addScore(GameConstatnts.getInt(questionModel.get(i).getQid()), GameConstatnts.PARAGRAPH_WRITING, 0, 0, FC_Utility.getCurrentDateTime(), FC_Constants.IMG_LBL, newResId);
                 }
                 GameConstatnts.postScoreEvent(questionModel.size(),questionModel.size());
                 setCompletionPercentage();
@@ -214,8 +212,7 @@ public class WordWritingPresenter implements WordWritingContract.WordWritingPres
     }
 
 
-
-    public void addScore(int wID, String Word, int scoredMarks, int totalMarks, String resStartTime, String Label) {
+    public void addScore(int wID, String Word, int scoredMarks, int totalMarks, String resStartTime, String Label, String resId) {
         try {
             String deviceId = appDatabase.getStatusDao().getValue("DeviceId");
             Score score = new Score();

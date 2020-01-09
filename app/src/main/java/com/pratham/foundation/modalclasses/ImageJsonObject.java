@@ -8,6 +8,7 @@ public class ImageJsonObject {
     private String question;
     private String queImageName;
 
+
     public ImageJsonObject(String resId, String gameName, String qid, String ansImageName, String question, String queImageName) {
         this.resId = resId;
         this.gameName = gameName;
@@ -63,5 +64,17 @@ public class ImageJsonObject {
 
     public void setQuestion(String question) {
         this.question = question;
+    }
+
+    @Override
+    public String toString() {
+        return "{" +
+                "resId='" + resId + '\'' +
+                ", gameName='" + gameName + '\'' +
+                ", qid='" + qid + '\'' +
+                ", ansImageName='" + ansImageName + '\'' +
+                ", question='" + question + '\'' +
+                ", queImageName='" + queImageName + '\'' +
+                '}';
     }
 }
