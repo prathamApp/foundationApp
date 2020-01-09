@@ -188,7 +188,7 @@ public class DoingFragment extends Fragment implements STT_Result_New.sttView, O
         imageName = "" + ApplicationClass.getUniqueID() + ".jpg";
         presenter.setView(this, jsonName, resId);
         resStartTime = FC_Utility.getCurrentDateTime();
-        presenter.addScore(0, "", 0, 0, resStartTime, FC_Utility.getCurrentDateTime(), jsonName + " " + GameConstatnts.START);
+        presenter.addScore(0, "", 0, 0, resStartTime, FC_Utility.getCurrentDateTime(), jsonName + " " + GameConstatnts.START,resId);
         presenter.getData(readingContentPath);
     }
 
@@ -687,12 +687,12 @@ public class DoingFragment extends Fragment implements STT_Result_New.sttView, O
             for (int i = 0; i <scienceQuestionChoices.size() ; i++) {
                 if(scienceQuestionChoices.get(i).getUserAns()!=null && !scienceQuestionChoices.get(i).getUserAns().trim().isEmpty()){
                     count++;
-                    presenter.addScore(GameConstatnts.getInt(scienceQuestion.getQid()), jsonName, 0, 0, resStartTime, FC_Utility.getCurrentDateTime(), scienceQuestionChoices.get(i).toString());
+                    presenter.addScore(GameConstatnts.getInt(scienceQuestion.getQid()), jsonName, 0, 0, resStartTime, FC_Utility.getCurrentDateTime(), scienceQuestionChoices.get(i).toString(),resId);
                 }
             }
             returnScore(scienceQuestionChoices.size(),count);
         }
-        presenter.addScore(0, "", 0, 0, resStartTime, FC_Utility.getCurrentDateTime(), jsonName + " " + GameConstatnts.END);
+        presenter.addScore(0, "", 0, 0, resStartTime, FC_Utility.getCurrentDateTime(), jsonName + " " + GameConstatnts.END,resId);
     }
     private void returnScore(int totalscore,int scoredmarks){
         GameConstatnts.postScoreEvent(totalscore, scoredmarks);

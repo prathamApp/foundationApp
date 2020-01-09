@@ -137,6 +137,7 @@ public class ListeningAndWrittingPresenterImp implements ListeningAndWrittingCon
 
     @Override
     public void addLearntWords(List<ScienceQuestion> listenAndWrittingModal, String imageName) {
+        String newResId;
         if (imageName != null && !imageName.isEmpty()) {
             if (listenAndWrittingModal != null && !listenAndWrittingModal.isEmpty()) {
                 for (int i = 0; i < listenAndWrittingModal.size(); i++) {
@@ -148,7 +149,9 @@ public class ListeningAndWrittingPresenterImp implements ListeningAndWrittingCon
                     keyWords.setKeyWord(key);
                     keyWords.setWordType("word");
                     appDatabase.getKeyWordDao().insert(keyWords);
-                    addScore(GameConstatnts.getInt(listenAndWrittingModal.get(i).getQid()), GameConstatnts.LISTNING_AND_WRITTING, 0, 0, FC_Utility.getCurrentDateTime(), imageName);
+                    newResId = GameConstatnts.getString(resId, GameConstatnts.LISTNING_AND_WRITTING, listenAndWrittingModal.get(i).getQid(), imageName, listenAndWrittingModal.get(i).getQuestion(), "");
+                    //  addScore(GameConstatnts.getInt(listenAndWrittingModal.get(i).getQid()), GameConstatnts.LISTNING_AND_WRITTING, 0, 0, FC_Utility.getCurrentDateTime(), imageName,newResId);
+                    addScore(GameConstatnts.getInt(listenAndWrittingModal.get(i).getQid()), GameConstatnts.LISTNING_AND_WRITTING, 0, 0, FC_Utility.getCurrentDateTime(), FC_Constants.IMG_LBL, newResId);
                 }
                 setCompletionPercentage();
                 GameConstatnts.postScoreEvent(listenAndWrittingModal.size(),listenAndWrittingModal.size());
@@ -209,7 +212,7 @@ public class ListeningAndWrittingPresenterImp implements ListeningAndWrittingCon
     }
 
 
-    public void addScore(int wID, String Word, int scoredMarks, int totalMarks, String resStartTime, String Label) {
+    public void addScore(int wID, String Word, int scoredMarks, int totalMarks, String resStartTime, String Label, String resId) {
         try {
             String deviceId = appDatabase.getStatusDao().getValue("DeviceId");
             Score score = new Score();
@@ -223,7 +226,7 @@ public class ListeningAndWrittingPresenterImp implements ListeningAndWrittingCon
             score.setDeviceID(deviceId.equals(null) ? "0000" : deviceId);
             score.setEndDateTime(FC_Utility.getCurrentDateTime());
             score.setLevel(FC_Constants.currentLevel);
-            score.setLabel(Word + "___" + Label);
+            score.setLabel(Label);
             score.setSentFlag(0);
             appDatabase.getScoreDao().insert(score);
 
@@ -240,7 +243,7 @@ public class ListeningAndWrittingPresenterImp implements ListeningAndWrittingCon
                 assessment.setDeviceIDa(deviceId.equals(null) ? "0000" : deviceId);
                 assessment.setEndDateTime(FC_Utility.getCurrentDateTime());
                 assessment.setLevela(FC_Constants.currentLevel);
-                assessment.setLabel("test: ___" + Label);
+                assessment.setLabel("test:_" + Label);
                 assessment.setSentFlag(0);
                 appDatabase.getAssessmentDao().insert(assessment);
             }

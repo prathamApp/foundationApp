@@ -160,6 +160,7 @@ public class DoingFragmentPresenter implements DoingFragmentContract.DoingFragme
         }
     }
     public void addLearntWords(ScienceQuestion questionModel, String imageName) {
+        String newResId;
         if (imageName != null && !imageName.isEmpty()) {
             KeyWords keyWords = new KeyWords();
             keyWords.setResourceId(resId);
@@ -167,7 +168,9 @@ public class DoingFragmentPresenter implements DoingFragmentContract.DoingFragme
             keyWords.setStudentId(FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""));
             keyWords.setKeyWord(questionModel.getTitle());
             keyWords.setWordType("word");
-            addScore(GameConstatnts.getInt(questionModel.getQid()), jsonName, 0, 0, questionModel.getStartTime(),questionModel.getEndTime(), imageName);
+            newResId = GameConstatnts.getString(resId, jsonName, questionModel.getQid(), imageName, questionModel.getQuestion(), "");
+           // addScore(GameConstatnts.getInt(questionModel.getQid()), jsonName, 0, 0, questionModel.getStartTime(),questionModel.getEndTime(), imageName,newResId);
+            addScore(GameConstatnts.getInt(questionModel.getQid()), jsonName, 0, 0, questionModel.getStartTime(),questionModel.getEndTime(), FC_Constants.IMG_LBL,newResId);
             appDatabase.getKeyWordDao().insert(keyWords);
             setCompletionPercentage();
             //Toast.makeText(context, "inserted successfully", Toast.LENGTH_LONG).show();
@@ -179,7 +182,7 @@ public class DoingFragmentPresenter implements DoingFragmentContract.DoingFragme
         BackupDatabase.backup(context);
     }
 
-    public void addScore(int wID, String Word, int scoredMarks, int totalMarks, String resStartTime,String resEndTime, String Label) {
+    public void addScore(int wID, String Word, int scoredMarks, int totalMarks, String resStartTime,String resEndTime, String Label,String resId) {
         try {
             String deviceId = appDatabase.getStatusDao().getValue("DeviceId");
             Score score = new Score();
@@ -193,7 +196,7 @@ public class DoingFragmentPresenter implements DoingFragmentContract.DoingFragme
             score.setDeviceID(deviceId.equals(null) ? "0000" : deviceId);
             score.setEndDateTime(resEndTime);
             score.setLevel(FC_Constants.currentLevel);
-            score.setLabel(Word + "___" + Label);
+            score.setLabel(Label);
             score.setSentFlag(0);
             appDatabase.getScoreDao().insert(score);
 
@@ -210,7 +213,7 @@ public class DoingFragmentPresenter implements DoingFragmentContract.DoingFragme
                 assessment.setDeviceIDa(deviceId.equals(null) ? "0000" : deviceId);
                 assessment.setEndDateTime(resEndTime);
                 assessment.setLevela(FC_Constants.currentLevel);
-                assessment.setLabel("test: ___" + Label);
+                assessment.setLabel("test:_" + Label);
                 assessment.setSentFlag(0);
                 appDatabase.getAssessmentDao().insert(assessment);
             }

@@ -247,7 +247,7 @@ public class ParagraphWritingPresenter implements ParagraphWritingContract.Parag
             score.setDeviceID(deviceId.equals(null) ? "0000" : deviceId);
             score.setEndDateTime(resEndTime);
             score.setLevel(FC_Constants.currentLevel);
-            score.setLabel(Word + "___" + Label);
+            score.setLabel(Label);
             score.setSentFlag(0);
             appDatabase.getScoreDao().insert(score);
 
@@ -264,7 +264,7 @@ public class ParagraphWritingPresenter implements ParagraphWritingContract.Parag
                 assessment.setDeviceIDa(deviceId.equals(null) ? "0000" : deviceId);
                 assessment.setEndDateTime(resEndTime);
                 assessment.setLevela(FC_Constants.currentLevel);
-                assessment.setLabel("test: ___" + Label);
+                assessment.setLabel("test:_" + Label);
                 assessment.setSentFlag(0);
                 appDatabase.getAssessmentDao().insert(assessment);
             }
