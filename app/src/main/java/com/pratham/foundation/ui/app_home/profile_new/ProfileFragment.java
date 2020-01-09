@@ -157,13 +157,18 @@ public class ProfileFragment extends Fragment implements ProfileContract.Profile
             case "Usage":
                 showUsage();
                 break;
-            case "Badges":
+            case "ImageQues":
+                showImageQues();
                 break;
             case "Share Content":
                 break;
             case "Share App":
                 break;
         }
+    }
+
+    private void showImageQues() {
+//        startActivity(new Intent(context, DisplayImageQuesActivity_.class));
     }
 
     private void showCertificates() {

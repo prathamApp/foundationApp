@@ -26,10 +26,10 @@ public class ProfileOuterDataAdapter extends RecyclerView.Adapter {
 
     private Context mContext;
     String[] progressArray;
-//    String[] progressSubArray = {"Certificate", "Projects", "Usage", "Badges"};
-    String[] progressSubArray = {"Certificate"};
-//    String[] progressImgSubArray = {"Certificate", "Projects", "Usage", "Badges"};
-    String[] progressImgSubArray = {"Certificate"};
+//    String[] progressSubArray = {"Certificate", "Projects", "Usage", "ImageQues"};
+    String[] progressSubArray = {"Certificate", "ImageQues"};
+//    String[] progressImgSubArray = {"Certificate", "Projects", "Usage", "ImageQues"};
+    String[] progressImgSubArray = {"Certificate", "ImageQues"};
     String[] shareSubArray = {"Share App", "Share Content"};
     String[] shareImgSubArray = {"Share App", "Share Content"};
 
@@ -46,7 +46,6 @@ public class ProfileOuterDataAdapter extends RecyclerView.Adapter {
         public EmptyHolder(View view) {
             super(view);
         }
-
     }
 
     @NonNull

@@ -1,5 +1,6 @@
 package com.pratham.foundation.ui.app_home.profile_new.certificate_display;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.Handler;
 import android.support.annotation.NonNull;
@@ -17,6 +18,7 @@ import com.facebook.drawee.view.SimpleDraweeView;
 import com.pratham.foundation.R;
 import com.pratham.foundation.customView.progress_layout.ProgressLayout;
 import com.pratham.foundation.database.domain.Assessment;
+import com.pratham.foundation.utility.FC_Utility;
 
 import java.util.List;
 
@@ -58,11 +60,8 @@ public class CertificateAdapter extends RecyclerView.Adapter {
 
     public class FileHolder extends RecyclerView.ViewHolder {
 
-        public TextView title,tv_timestamp,tv_view;
+        TextView title, tv_timestamp, tv_view;
         RelativeLayout certi_root;
-//        public ImageView ib_action_btn;
-//        public MaterialCardView content_card_view;
-//        SimpleDraweeView thumbnail;
 
         public FileHolder(View view) {
             super(view);
@@ -71,20 +70,6 @@ public class CertificateAdapter extends RecyclerView.Adapter {
             tv_view = view.findViewById(R.id.tv_view);
             certi_root = view.findViewById(R.id.certi_root);
         }
-/*
-        protected TextView tvTitle;
-        protected ImageView actionBtn;
-        SimpleDraweeView itemImage;
-        protected RelativeLayout rl_root;
-
-        public FileHolder(View view) {
-            super(view);
-            this.tvTitle = view.findViewById(R.id.file_Title);
-            this.itemImage = view.findViewById(R.id.file_Image);
-            this.actionBtn = view.findViewById(R.id.btn_file_download);
-            this.rl_root = view.findViewById(R.id.file_card_view);
-        }
-*/
     }
 
     public class FolderHolder extends RecyclerView.ViewHolder {
@@ -117,9 +102,10 @@ public class CertificateAdapter extends RecyclerView.Adapter {
 //                    return 2;
 //            }
 //        } else
-            return 0;
+        return 0;
     }
 
+    @SuppressLint("SetTextI18n")
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder viewHolder, final int position) {
 
@@ -127,30 +113,21 @@ public class CertificateAdapter extends RecyclerView.Adapter {
         CertificateAdapter.FileHolder holder = (CertificateAdapter.FileHolder) viewHolder;
 
         String cLevel = "" + contentItem.getLevela();
-        String cTitle = "";
+        String cTitle = "" + FC_Utility.getSubjectNameFromNum(contentItem.getQuestionIda());
 
-        if (cLevel.equalsIgnoreCase("0")) {
-            cTitle = "Beginner";
-            holder.title.setText("Certificate Level 1");
-        } else if (cLevel.equalsIgnoreCase("1")) {
-            cTitle = "Sub junior";
-            holder.title.setText("Certificate Level 2");
-        } else if (cLevel.equalsIgnoreCase("2")) {
-            cTitle = "Junior";
-            holder.title.setText("Certificate Level 3");
-        } else if (cLevel.equalsIgnoreCase("3")) {
-            cTitle = "Sub Senior";
-            holder.title.setText("Certificate Level 4");
-        }
+        if (cLevel.equalsIgnoreCase("0"))
+            holder.title.setText(cTitle + " Level 1");
+        else if (cLevel.equalsIgnoreCase("1"))
+            holder.title.setText(cTitle + " Level 2");
+        else if (cLevel.equalsIgnoreCase("2"))
+            holder.title.setText(cTitle + " Level 3");
+        else if (cLevel.equalsIgnoreCase("3"))
+            holder.title.setText(cTitle + " Level 4");
+        else if (cLevel.equalsIgnoreCase("4"))
+            holder.title.setText(cTitle + " Level 5");
 
         holder.tv_timestamp.setText(contentItem.getEndDateTime());
-        int finalPosition = position;
-        holder.certi_root.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                CertificateItemClicked.gotoCertificate(assessmentList.get(finalPosition));
-            }
-        });
+        holder.certi_root.setOnClickListener(v -> CertificateItemClicked.gotoCertificate(assessmentList.get(position)));
         setAnimations(holder.certi_root, position);
     }
 
