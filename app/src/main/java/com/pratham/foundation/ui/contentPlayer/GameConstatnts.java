@@ -429,4 +429,8 @@ public class GameConstatnts implements ShowInstruction {
             gameConstatnts = new GameConstatnts();
         return gameConstatnts;
     }
+
+    public static String getString(String resId, String gameName, String qid, String ansImageName, String question, String queImageName) {
+        return "";
+    }
 }
