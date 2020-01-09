@@ -12,11 +12,13 @@ import android.view.Window;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.google.gson.Gson;
 import com.pratham.foundation.R;
 import com.pratham.foundation.customView.display_image_dialog.CustomLodingDialog;
 import com.pratham.foundation.database.domain.ContentTable;
 import com.pratham.foundation.interfaces.OnGameClose;
 import com.pratham.foundation.interfaces.ShowInstruction;
+import com.pratham.foundation.modalclasses.ImageJsonObject;
 import com.pratham.foundation.modalclasses.ScoreEvent;
 import com.pratham.foundation.services.shared_preferences.FastSave;
 import com.pratham.foundation.ui.contentPlayer.dialogs.InstructionDialog;
@@ -431,6 +433,9 @@ public class GameConstatnts implements ShowInstruction {
     }
 
     public static String getString(String resId, String gameName, String qid, String ansImageName, String question, String queImageName) {
-        return "";
+        Gson gson=new Gson();
+        ImageJsonObject imageJsonObject = new ImageJsonObject(resId, gameName, qid, ansImageName, question, queImageName);
+        String image= gson.toJson(imageJsonObject);
+        return image;
     }
 }
