@@ -27,8 +27,8 @@ import static com.pratham.foundation.utility.FC_Constants.LOGIN_MODE;
 @EBean
 public class ProfilePresenter implements ProfileContract.ProfilePresenter, API_Content_Result {
 
-    Context mContext;
-    ProfileContract.ProfileView profileView;
+    private Context mContext;
+    private ProfileContract.ProfileView profileView;
 
     public ProfilePresenter(Context mContext) {
         this.mContext = mContext;
@@ -39,7 +39,7 @@ public class ProfilePresenter implements ProfileContract.ProfilePresenter, API_C
         this.profileView = ProfileView;
     }
 
-    ArrayList<String> codesText;
+    private ArrayList<String> codesText;
 
     @Background
     @Override
@@ -69,7 +69,7 @@ public class ProfilePresenter implements ProfileContract.ProfilePresenter, API_C
         List<Assessment> assessmentList;
         List<ModalTopCertificates> modalTopCertificatesList = new ArrayList<>();
         String currStuID = FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, "");
-        if (LOGIN_MODE.equalsIgnoreCase(FC_Constants.GROUP_MODE))
+        if (FastSave.getInstance().getString(LOGIN_MODE,"").equalsIgnoreCase(FC_Constants.GROUP_MODE))
             assessmentList = AppDatabase.getDatabaseInstance(mContext).getAssessmentDao()
                     .getCertificatesGroups(currStuID, FC_Constants.CERTIFICATE_LBL);
         else
@@ -91,7 +91,7 @@ public class ProfilePresenter implements ProfileContract.ProfilePresenter, API_C
                     if(a>=0)
                         totPerc += a;
                 }
-                float fullPerc =0;
+                float fullPerc = 0f;
                 if(totPerc>0) {
                     fullPerc = (totPerc / j);
                     ModalTopCertificates modalTopCertificates = new ModalTopCertificates();

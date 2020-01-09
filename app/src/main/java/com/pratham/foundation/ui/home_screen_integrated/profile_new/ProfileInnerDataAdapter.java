@@ -94,9 +94,9 @@ public class ProfileInnerDataAdapter extends RecyclerView.Adapter {
                 itemHolder.item_Image.setImageResource(R.drawable.progress_report);
                 itemHolder.rl_root.setOnClickListener(v ->itemClicked.itemClicked("Usage"));
                 break;
-            case "Badges":
+            case "ImageQues":
                 itemHolder.item_Image.setImageResource(R.drawable.right_student_arrow);
-                itemHolder.rl_root.setOnClickListener(v ->itemClicked.itemClicked("Badges"));
+                itemHolder.rl_root.setOnClickListener(v ->itemClicked.itemClicked("ImageQues"));
                 break;
             case "Share Content":
                 itemHolder.item_Image.setImageResource(R.drawable.ic_share_receive);

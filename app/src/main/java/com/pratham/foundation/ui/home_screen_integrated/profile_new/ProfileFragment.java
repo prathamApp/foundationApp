@@ -154,7 +154,7 @@ public class ProfileFragment extends Fragment implements ProfileContract.Profile
             case "Usage":
                 showUsage();
                 break;
-            case "Badges":
+            case "ImageQues":
                 break;
             case "Share Content":
                 break;
