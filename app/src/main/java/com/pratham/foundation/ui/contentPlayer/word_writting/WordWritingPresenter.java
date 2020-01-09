@@ -122,12 +122,11 @@ public class WordWritingPresenter implements WordWritingContract.WordWritingPres
             Collections.shuffle(quetionModelList);
             for (int i = 0; i < quetionModelList.size(); i++) {
                 if (perc < 95) {
-                    questionModel.add(quetionModelList.get(i));
-
-                    /*if (!checkWord("" + quetionModelList.get(i).getTitle())) {
-                        questionModel = quetionModelList.get(i);
+                   // questionModel.add(quetionModelList.get(i));
+                    if (!checkWord("" + quetionModelList.get(i).getQuestion())) {
+                        questionModel.add(quetionModelList.get(i));
                         break;
-                    }*/
+                    }
                 } else {
                     questionModel.add(quetionModelList.get(i));
 
