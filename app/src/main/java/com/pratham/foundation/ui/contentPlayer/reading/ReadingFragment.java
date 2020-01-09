@@ -387,6 +387,7 @@ public class ReadingFragment extends Fragment implements STT_Result_New.sttView,
     public void resetClick() {
         myString = "";
         etAnswer.setText(myString);
+        scienceQuestionChoices.get(index).setUserAns(myString);
     }
 
     @Click(R.id.btn_next)
