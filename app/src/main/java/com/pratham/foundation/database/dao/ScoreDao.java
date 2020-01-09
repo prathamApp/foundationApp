@@ -73,7 +73,7 @@ public interface ScoreDao {
     @Query("select * from Score WHERE StudentID=:currentGroup AND Label LIKE :ImageQuesLbl ")
     List<Score> getImageQuesGroups(String currentGroup, String ImageQuesLbl);
 
-    @Query("select * from Score WHERE StudentID=:stdID AND Label LIKE : COS_Lbl ")
+    @Query("select * from Score WHERE StudentID=:stdID AND Label LIKE :COS_Lbl ")
     List<Score> getImageQues(String stdID, String COS_Lbl);
 
 

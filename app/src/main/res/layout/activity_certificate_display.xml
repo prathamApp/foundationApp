@@ -82,7 +82,8 @@
     <android.support.v7.widget.RecyclerView
         android:id="@+id/certificate_recycler_view"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/header_rl"
         android:gravity="center"
         android:layout_centerInParent="true"
         android:clipToPadding="false"

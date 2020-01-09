@@ -32,23 +32,22 @@ public class ImageQuesPresenter implements ImageQuesContract.ImageQuesPresenter 
     @Override
     public void showQuestion() {
         List<Score> scoreList;
+        String StudId = FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, "");
 //        if(GROUP_LOGIN)
 //            scoreList = AppDatabase.getDatabaseInstance(mContext).getScoreDao()
 //                    .getImageQuesGroups(FC_Constants.currentGroup, FC_Constants.CERTIFICATE_LBL);
 //        else
             scoreList = AppDatabase.getDatabaseInstance(mContext).getScoreDao()
-                    .getImageQues(FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""), FC_Constants.CERTIFICATE_LBL);
+                    .getImageQues(StudId, "%"+FC_Constants.IMG_LBL+"%");
 
         imageQuesView.addToAdapter(scoreList);
     }
 
     @Override
     public void receivedContent(String header, String response) {
-
     }
 
     @Override
     public void receivedError(String header) {
-
     }
 }

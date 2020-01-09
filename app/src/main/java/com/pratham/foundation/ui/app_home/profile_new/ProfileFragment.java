@@ -26,6 +26,7 @@ import com.pratham.foundation.customView.display_image_dialog.CustomLodingDialog
 import com.pratham.foundation.modalclasses.ModalTopCertificates;
 import com.pratham.foundation.services.shared_preferences.FastSave;
 import com.pratham.foundation.ui.app_home.profile_new.certificate_display.CertificateDisplayActivity_;
+import com.pratham.foundation.ui.app_home.profile_new.image_ques.DisplayImageQuesActivity_;
 import com.pratham.foundation.utility.FC_Constants;
 
 import org.androidannotations.annotations.AfterViews;
@@ -168,7 +169,7 @@ public class ProfileFragment extends Fragment implements ProfileContract.Profile
     }
 
     private void showImageQues() {
-//        startActivity(new Intent(context, DisplayImageQuesActivity_.class));
+        startActivity(new Intent(context, DisplayImageQuesActivity_.class));
     }
 
     private void showCertificates() {
