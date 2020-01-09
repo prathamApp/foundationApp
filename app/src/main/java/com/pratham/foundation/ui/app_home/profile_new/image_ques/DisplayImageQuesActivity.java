@@ -12,13 +12,9 @@ import com.pratham.foundation.BaseActivity;
 import com.pratham.foundation.R;
 import com.pratham.foundation.customView.GridSpacingItemDecoration;
 import com.pratham.foundation.database.AppDatabase;
-import com.pratham.foundation.database.domain.Assessment;
+import com.pratham.foundation.database.domain.Score;
 import com.pratham.foundation.services.shared_preferences.FastSave;
-import com.pratham.foundation.ui.app_home.profile_new.certificate_display.CertificateAdapter;
-import com.pratham.foundation.ui.app_home.profile_new.certificate_display.CertificateDisplayContract;
-import com.pratham.foundation.ui.app_home.profile_new.certificate_display.CertificateDisplayPresenter;
 import com.pratham.foundation.ui.student_profile.Student_profile_activity;
-import com.pratham.foundation.ui.test.certificate.CertificateActivity;
 import com.pratham.foundation.utility.FC_Constants;
 
 import org.androidannotations.annotations.AfterViews;
@@ -39,11 +35,11 @@ import static com.pratham.foundation.utility.FC_Utility.dpToPx;
 
 @EActivity(R.layout.activity_certificate_display)
 public class DisplayImageQuesActivity extends BaseActivity implements
-        CertificateDisplayContract.CertificateView,
-        CertificateDisplayContract.CertificateItemClicked{
+        ImageQuesContract.ImageQuesView,
+        ImageQuesContract.ImageQuesItemClicked{
 
-    @Bean(CertificateDisplayPresenter.class)
-    CertificateDisplayContract.CertificatePresenter presenter;
+    @Bean(ImageQuesPresenter.class)
+    ImageQuesContract.ImageQuesPresenter presenter;
 
     @ViewById(R.id.tv_Topic)
     TextView tv_Topic;
@@ -52,8 +48,8 @@ public class DisplayImageQuesActivity extends BaseActivity implements
     @ViewById(R.id.tv_Activity)
     TextView tv_Activity;
     String sub_Name;
-    CertificateAdapter certificateAdapter;
-    List<Assessment> assessmentMainList;
+    ImageQuesAdapter certificateAdapter;
+    List<Score> imgQuesMainList;
 
     @AfterViews
     public void initialize() {
@@ -62,15 +58,15 @@ public class DisplayImageQuesActivity extends BaseActivity implements
         presenter.setView(DisplayImageQuesActivity.this);
         displayProfileName();
         displayProfileImage();
-        presenter.showCertificates();
+        presenter.showQuestion();
     }
 
     @UiThread
     @Override
-    public void addToAdapter(List<Assessment> assessmentList) {
-        assessmentMainList = assessmentList;
+    public void addToAdapter(List<Score> assessmentList) {
+        imgQuesMainList = assessmentList;
         if(certificateAdapter==null) {
-            certificateAdapter = new CertificateAdapter(this, assessmentList,
+            certificateAdapter = new ImageQuesAdapter(this, imgQuesMainList,
                     DisplayImageQuesActivity.this);
             RecyclerView.LayoutManager mLayoutManager = new GridLayoutManager(this, 1);
             recycler_view.setLayoutManager(mLayoutManager);
@@ -142,15 +138,14 @@ public class DisplayImageQuesActivity extends BaseActivity implements
     }
 
     @Override
-    public void gotoCertificate(Assessment assessment) {
+    public void gotoQuestions(Score assessment) {
         Toast.makeText(this, "gotoCertificate", Toast.LENGTH_SHORT).show();
-        Intent intent = new Intent(this, CertificateActivity.class);
-        intent.putExtra("nodeId", "na");
-        intent.putExtra("CertiCode", "" + assessment.getQuestionIda());
-        intent.putExtra("CertiTitle", "" + assessment.getLevela());
-        intent.putExtra("display", "display");
-        intent.putExtra("assessment", assessment);
-
-        startActivity(intent);
+//        Intent intent = new Intent(this, CertificateActivity.class);
+//        intent.putExtra("nodeId", "na");
+//        intent.putExtra("CertiCode", "" + assessment.getQuestionIda());
+//        intent.putExtra("CertiTitle", "" + assessment.getLevela());
+//        intent.putExtra("display", "display");
+//        intent.putExtra("assessment", assessment);
+//        startActivity(intent);
     }
 }
