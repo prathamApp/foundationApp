@@ -226,7 +226,7 @@ public class WordWritingPresenter implements WordWritingContract.WordWritingPres
             score.setDeviceID(deviceId.equals(null) ? "0000" : deviceId);
             score.setEndDateTime(FC_Utility.getCurrentDateTime());
             score.setLevel(FC_Constants.currentLevel);
-            score.setLabel(Word + "___" + Label);
+            score.setLabel(Label);
             score.setSentFlag(0);
             appDatabase.getScoreDao().insert(score);
 
@@ -243,7 +243,7 @@ public class WordWritingPresenter implements WordWritingContract.WordWritingPres
                 assessment.setDeviceIDa(deviceId.equals(null) ? "0000" : deviceId);
                 assessment.setEndDateTime(FC_Utility.getCurrentDateTime());
                 assessment.setLevela(FC_Constants.currentLevel);
-                assessment.setLabel("test: ___" + Label);
+                assessment.setLabel("test:_" + Label);
                 assessment.setSentFlag(0);
                 appDatabase.getAssessmentDao().insert(assessment);
             }
