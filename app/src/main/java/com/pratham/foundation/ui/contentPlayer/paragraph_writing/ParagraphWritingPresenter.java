@@ -199,6 +199,7 @@ public class ParagraphWritingPresenter implements ParagraphWritingContract.Parag
      }
  */
     public void addLearntWords(List<ScienceQuestion> questionModel) {
+        String newResId;
         if (questionModel != null && !questionModel.isEmpty()) {
             for (int i = 0; i < questionModel.size(); i++) {
                 if (checkIsAttempted(questionModel.get(i))) {
@@ -208,7 +209,8 @@ public class ParagraphWritingPresenter implements ParagraphWritingContract.Parag
                     keyWords.setStudentId(FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""));
                     keyWords.setKeyWord(questionModel.get(i).getTitle());
                     keyWords.setWordType("word");
-                    addScore(GameConstatnts.getInt(questionModel.get(i).getQid()), jsonName, 0, 0, questionModel.get(i).getStartTime(),questionModel.get(i).getEndTime(), questionModel.get(i).getUserAnswer());
+                    newResId=GameConstatnts.getString(resId,GameConstatnts.PARAGRAPH_WRITING,questionModel.get(i).getQid(), questionModel.get(i).getUserAnswer(),questionModel.get(i).getQuestion(),questionModel.get(i).getPhotourl());
+                    addScore(GameConstatnts.getInt(questionModel.get(i).getQid()), jsonName, 0, 0, questionModel.get(i).getStartTime(),questionModel.get(i).getEndTime(), questionModel.get(i).getUserAnswer(),newResId);
                     appDatabase.getKeyWordDao().insert(keyWords);
                 }
             }
@@ -231,7 +233,7 @@ public class ParagraphWritingPresenter implements ParagraphWritingContract.Parag
         }
     }
 
-    public void addScore(int wID, String Word, int scoredMarks, int totalMarks, String resStartTime,String resEndTime, String Label) {
+    public void addScore(int wID, String Word, int scoredMarks, int totalMarks, String resStartTime,String resEndTime, String Label,String resId) {
         try {
             String deviceId = appDatabase.getStatusDao().getValue("DeviceId");
             Score score = new Score();
