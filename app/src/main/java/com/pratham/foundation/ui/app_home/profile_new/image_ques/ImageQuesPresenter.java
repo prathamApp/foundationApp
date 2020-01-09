@@ -1,0 +1,54 @@
+package com.pratham.foundation.ui.app_home.profile_new.image_ques;
+
+import android.content.Context;
+
+import com.pratham.foundation.database.AppDatabase;
+import com.pratham.foundation.database.domain.Score;
+import com.pratham.foundation.interfaces.API_Content_Result;
+import com.pratham.foundation.services.shared_preferences.FastSave;
+import com.pratham.foundation.utility.FC_Constants;
+
+import org.androidannotations.annotations.Background;
+import org.androidannotations.annotations.EBean;
+
+import java.util.List;
+
+@EBean
+public class ImageQuesPresenter implements ImageQuesContract.ImageQuesPresenter , API_Content_Result {
+
+    Context mContext;
+    ImageQuesContract.ImageQuesView imageQuesView;
+
+    public ImageQuesPresenter(Context mContext) {
+        this.mContext = mContext;
+    }
+
+    @Override
+    public void setView(ImageQuesContract.ImageQuesView imageQuesView) {
+        this.imageQuesView = imageQuesView;
+    }
+
+    @Background
+    @Override
+    public void showQuestion() {
+        List<Score> scoreList;
+//        if(GROUP_LOGIN)
+//            scoreList = AppDatabase.getDatabaseInstance(mContext).getScoreDao()
+//                    .getImageQuesGroups(FC_Constants.currentGroup, FC_Constants.CERTIFICATE_LBL);
+//        else
+            scoreList = AppDatabase.getDatabaseInstance(mContext).getScoreDao()
+                    .getImageQues(FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""), FC_Constants.CERTIFICATE_LBL);
+
+        imageQuesView.addToAdapter(scoreList);
+    }
+
+    @Override
+    public void receivedContent(String header, String response) {
+
+    }
+
+    @Override
+    public void receivedError(String header) {
+
+    }
+}
