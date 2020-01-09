@@ -540,7 +540,6 @@ public class DoingFragment extends Fragment implements STT_Result_New.sttView, O
     }
 
     String myAns="";
-
     @Click(R.id.previous)
     public void onPreviousClick() {
         if (scienceQuestionChoices != null)
