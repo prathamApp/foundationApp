@@ -186,7 +186,7 @@ public class DoingFragment extends Fragment implements STT_Result_New.sttView, O
 
 
         imageName = "" + ApplicationClass.getUniqueID() + ".jpg";
-        presenter.setView(this, jsonName, resId);
+        presenter.setView(this, jsonName, resId,contentTitle);
         resStartTime = FC_Utility.getCurrentDateTime();
         presenter.addScore(0, "", 0, 0, resStartTime, FC_Utility.getCurrentDateTime(), jsonName + " " + GameConstatnts.START,resId);
         presenter.getData(readingContentPath);

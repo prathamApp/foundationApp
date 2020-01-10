@@ -26,11 +26,12 @@ import java.io.InputStream;
 import java.lang.reflect.Type;
 import java.util.Collections;
 import java.util.List;
+
 import static com.pratham.foundation.database.AppDatabase.appDatabase;
 
 @EBean
 public class DoingFragmentPresenter implements DoingFragmentContract.DoingFragmentPresenter {
-    private String jsonName;
+    private String jsonName,contentTitle;
     private DoingFragmentContract.DoingFragmentView view;
     private String resId;
     private int totalWordCount, learntWordCount;
@@ -38,6 +39,7 @@ public class DoingFragmentPresenter implements DoingFragmentContract.DoingFragme
     private float perc;
     private ScienceQuestion scienceQuestion;
     private Context context;
+    private String readingContentPath;
 
 
     public DoingFragmentPresenter(Context context) {
@@ -45,10 +47,11 @@ public class DoingFragmentPresenter implements DoingFragmentContract.DoingFragme
     }
 
     @Override
-    public void setView(DoingFragmentContract.DoingFragmentView doingFragmentView, String jsonName, String resId) {
+    public void setView(DoingFragmentContract.DoingFragmentView doingFragmentView, String jsonName, String resId,String contentTitle) {
         this.view = doingFragmentView;
         this.jsonName = jsonName;
         this.resId = resId;
+        this.contentTitle = contentTitle;
     }
 
     public void setCompletionPercentage() {
@@ -85,6 +88,7 @@ public class DoingFragmentPresenter implements DoingFragmentContract.DoingFragme
 
     public void getData(String readingContentPath) {
         try {
+            this.readingContentPath = readingContentPath;
             InputStream is = new FileInputStream(readingContentPath + jsonName + ".json");
             int size = is.available();
             byte[] buffer = new byte[size];
@@ -161,6 +165,7 @@ public class DoingFragmentPresenter implements DoingFragmentContract.DoingFragme
     }
     public void addLearntWords(ScienceQuestion questionModel, String imageName) {
         String newResId;
+        String queImageName = "";
         if (imageName != null && !imageName.isEmpty()) {
             KeyWords keyWords = new KeyWords();
             keyWords.setResourceId(resId);
@@ -168,9 +173,12 @@ public class DoingFragmentPresenter implements DoingFragmentContract.DoingFragme
             keyWords.setStudentId(FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""));
             keyWords.setKeyWord(questionModel.getTitle());
             keyWords.setWordType("word");
-            newResId = GameConstatnts.getString(resId, jsonName, questionModel.getQid(), imageName, questionModel.getQuestion(), "");
+            if (questionModel.getPhotourl() != null && !questionModel.getPhotourl().isEmpty()) {
+                queImageName = readingContentPath + questionModel.getPhotourl();
+            }
+            newResId = GameConstatnts.getString(resId, contentTitle, questionModel.getQid(), imageName, questionModel.getQuestion(), queImageName);
            // addScore(GameConstatnts.getInt(questionModel.getQid()), jsonName, 0, 0, questionModel.getStartTime(),questionModel.getEndTime(), imageName,newResId);
-            addScore(GameConstatnts.getInt(questionModel.getQid()), jsonName, 0, 0, questionModel.getStartTime(),questionModel.getEndTime(), FC_Constants.IMG_LBL,newResId);
+            addScore(FC_Utility.getSubjectNo(), jsonName, 0, 0, questionModel.getStartTime(),questionModel.getEndTime(), FC_Constants.IMG_LBL,newResId);
             appDatabase.getKeyWordDao().insert(keyWords);
             setCompletionPercentage();
             //Toast.makeText(context, "inserted successfully", Toast.LENGTH_LONG).show();
@@ -213,7 +221,7 @@ public class DoingFragmentPresenter implements DoingFragmentContract.DoingFragme
                 assessment.setDeviceIDa(deviceId.equals(null) ? "0000" : deviceId);
                 assessment.setEndDateTime(resEndTime);
                 assessment.setLevela(FC_Constants.currentLevel);
-                assessment.setLabel("test:_" + Label);
+                assessment.setLabel("test: " + Label);
                 assessment.setSentFlag(0);
                 appDatabase.getAssessmentDao().insert(assessment);
             }

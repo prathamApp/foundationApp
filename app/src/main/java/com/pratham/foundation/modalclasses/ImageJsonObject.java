@@ -66,15 +66,4 @@ public class ImageJsonObject {
         this.question = question;
     }
 
-    @Override
-    public String toString() {
-        return "{" +
-                "resId='" + resId + '\'' +
-                ", gameName='" + gameName + '\'' +
-                ", qid='" + qid + '\'' +
-                ", ansImageName='" + ansImageName + '\'' +
-                ", question='" + question + '\'' +
-                ", queImageName='" + queImageName + '\'' +
-                '}';
-    }
 }

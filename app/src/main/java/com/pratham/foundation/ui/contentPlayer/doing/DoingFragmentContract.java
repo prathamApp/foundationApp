@@ -8,7 +8,7 @@ public interface DoingFragmentContract {
     }
 
     interface DoingFragmentPresenter {
-        void setView(DoingFragmentContract.DoingFragmentView doingFragmentView, String jsonName, String resId);
+        void setView(DoingFragmentContract.DoingFragmentView doingFragmentView, String jsonName, String resId,String contentTitle);
 
         void getData(String readingContentPath);
 

@@ -101,7 +101,7 @@ public class WordWritingFragment extends Fragment
         preview.setVisibility(View.GONE);
         imageName = "" + ApplicationClass.getUniqueID() + ".jpg";
 
-        presenter.setView(WordWritingFragment.this, resId, readingContentPath);
+        presenter.setView(WordWritingFragment.this, resId, readingContentPath,contentTitle);
         presenter.getData();
      /*   if (questionModel != null)
             GameConstatnts.showGameInfo(getActivity(), questionModel.get(index).getInstruction(), readingContentPath + questionModel.get(index).getInstructionUrl());

@@ -19,7 +19,7 @@ public interface ParagraphWritingContract {
 
         public void addLearntWords(List<ScienceQuestion> questionModel);
 
-        public void setView(ParagraphWritingView paragraphWritingView, String imageName, String readingContentPath,String jsonName);
+        public void setView(ParagraphWritingView paragraphWritingView, String imageName, String readingContentPath,String jsonName,String contentTitle);
 
         public boolean checkIsAttempted(ScienceQuestion scienceQuestion);
     }

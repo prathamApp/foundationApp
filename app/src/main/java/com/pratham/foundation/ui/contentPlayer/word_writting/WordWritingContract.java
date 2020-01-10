@@ -22,6 +22,6 @@ public interface WordWritingContract {
 
         public void addLearntWords(List<ScienceQuestion> questionModel, String imageName);
 
-        void setView(WordWritingContract.WordWritingView wordWritingView, String imageName, String readingContentPath);
+        void setView(WordWritingContract.WordWritingView wordWritingView, String imageName, String readingContentPath,String contentTitle);
     }
 }

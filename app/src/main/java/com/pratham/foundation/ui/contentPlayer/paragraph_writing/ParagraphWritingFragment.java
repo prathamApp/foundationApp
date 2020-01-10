@@ -123,7 +123,7 @@ public class ParagraphWritingFragment extends Fragment implements ParagraphWriti
 
         preview.setVisibility(View.GONE);
         mediaPlayer = new MediaPlayer();
-        presenter.setView(ParagraphWritingFragment.this, resId, readingContentPath, jsonName);
+        presenter.setView(ParagraphWritingFragment.this, resId, readingContentPath, jsonName,contentTitle);
         presenter.getData();
         play_button_control.setVisibility(View.GONE);
         if (FastSave.getInstance().getString(FC_Constants.CURRENT_SUBJECT, "").equalsIgnoreCase("Science") && jsonName.equalsIgnoreCase(GameConstatnts.PARAGRAPH_WRITING)) {
