@@ -393,11 +393,12 @@ public class GameConstatnts implements ShowInstruction {
             }
 
         } else {
-            if (FC_Constants.currentLevel < 2) {
+           /* if (FC_Constants.currentLevel < 2) {
                 return 5;
             } else {
                 return 1;
-            }
+            }*/
+           return 5;
         }
     }
 /*    public static void showInstructionDialog(ShowInstruction showInstruction, Activity context, String resorcetype) {

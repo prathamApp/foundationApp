@@ -128,7 +128,14 @@ public class ListeningAndWrittingPresenterImp implements ListeningAndWrittingCon
                     break;
                 }
             }
-
+            if (listenAndWrittingModal.size() == 0) {
+                for (int i = 0; i < dataList.size(); i++) {
+                    listenAndWrittingModal.add(dataList.get(i));
+                    if (listenAndWrittingModal.size() == count) {
+                        break;
+                    }
+                }
+            }
             view.loadUI(listenAndWrittingModal);
         } catch (Exception e) {
             e.printStackTrace();
@@ -149,9 +156,9 @@ public class ListeningAndWrittingPresenterImp implements ListeningAndWrittingCon
                     keyWords.setKeyWord(key);
                     keyWords.setWordType("word");
                     appDatabase.getKeyWordDao().insert(keyWords);
-                    newResId = GameConstatnts.getString(resId, GameConstatnts.LISTNING_AND_WRITTING, listenAndWrittingModal.get(i).getQid(), imageName, listenAndWrittingModal.get(i).getQuestion(), "");
+                    newResId = GameConstatnts.getString(resId, contentTitle, listenAndWrittingModal.get(i).getQid(), imageName, listenAndWrittingModal.get(i).getQuestion(), "");
                     //  addScore(GameConstatnts.getInt(listenAndWrittingModal.get(i).getQid()), GameConstatnts.LISTNING_AND_WRITTING, 0, 0, FC_Utility.getCurrentDateTime(), imageName,newResId);
-                    addScore(GameConstatnts.getInt(listenAndWrittingModal.get(i).getQid()), GameConstatnts.LISTNING_AND_WRITTING, 0, 0, FC_Utility.getCurrentDateTime(), FC_Constants.IMG_LBL, newResId);
+                    addScore(FC_Utility.getSubjectNo(), GameConstatnts.LISTNING_AND_WRITTING, 0, 0, FC_Utility.getCurrentDateTime(), FC_Constants.IMG_LBL, newResId);
                 }
                 setCompletionPercentage();
                 GameConstatnts.postScoreEvent(listenAndWrittingModal.size(),listenAndWrittingModal.size());
@@ -243,7 +250,7 @@ public class ListeningAndWrittingPresenterImp implements ListeningAndWrittingCon
                 assessment.setDeviceIDa(deviceId.equals(null) ? "0000" : deviceId);
                 assessment.setEndDateTime(FC_Utility.getCurrentDateTime());
                 assessment.setLevela(FC_Constants.currentLevel);
-                assessment.setLabel("test:_" + Label);
+                assessment.setLabel("test: " + Label);
                 assessment.setSentFlag(0);
                 appDatabase.getAssessmentDao().insert(assessment);
             }

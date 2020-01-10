@@ -44,10 +44,11 @@ public class WordWritingPresenter implements WordWritingContract.WordWritingPres
 
     }
 
-    public void setView(WordWritingContract.WordWritingView view, String resId, String readingContentPath) {
+    public void setView(WordWritingContract.WordWritingView view, String resId, String readingContentPath,String contentTitle) {
         this.view = view;
         this.resId = resId;
         this.readingContentPath = readingContentPath;
+        this.contentTitle = contentTitle;
     }
 
     @Override
@@ -196,10 +197,10 @@ public class WordWritingPresenter implements WordWritingContract.WordWritingPres
                     keyWords.setKeyWord(key);
                     keyWords.setWordType("word");
                     appDatabase.getKeyWordDao().insert(keyWords);
-                    newResId = GameConstatnts.getString(resId, GameConstatnts.PARAGRAPH_WRITING, questionModel.get(i).getQid(), imageName, questionModel.get(i).getQuestion(), "");
+                    newResId = GameConstatnts.getString(resId,contentTitle, questionModel.get(i).getQid(), imageName, questionModel.get(i).getQuestion(), "");
                     //old
                     //  addScore(GameConstatnts.getInt(questionModel.get(i).getQid()), GameConstatnts.PARAGRAPH_WRITING, 0, 0, FC_Utility.getCurrentDateTime(), imageName,newResId);
-                    addScore(GameConstatnts.getInt(questionModel.get(i).getQid()), GameConstatnts.PARAGRAPH_WRITING, 0, 0, FC_Utility.getCurrentDateTime(), FC_Constants.IMG_LBL, newResId);
+                    addScore(FC_Utility.getSubjectNo(), GameConstatnts.PARAGRAPH_WRITING, 0, 0, FC_Utility.getCurrentDateTime(), FC_Constants.IMG_LBL, newResId);
                 }
                 GameConstatnts.postScoreEvent(questionModel.size(),questionModel.size());
                 setCompletionPercentage();
@@ -243,7 +244,7 @@ public class WordWritingPresenter implements WordWritingContract.WordWritingPres
                 assessment.setDeviceIDa(deviceId.equals(null) ? "0000" : deviceId);
                 assessment.setEndDateTime(FC_Utility.getCurrentDateTime());
                 assessment.setLevela(FC_Constants.currentLevel);
-                assessment.setLabel("test:_" + Label);
+                assessment.setLabel("test: " + Label);
                 assessment.setSentFlag(0);
                 appDatabase.getAssessmentDao().insert(assessment);
             }
