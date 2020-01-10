@@ -64,9 +64,11 @@ import static com.pratham.foundation.ui.app_home.HomeActivity.header_rl;
 import static com.pratham.foundation.ui.app_home.HomeActivity.levelChanged;
 import static com.pratham.foundation.ui.app_home.HomeActivity.sub_Name;
 import static com.pratham.foundation.ui.app_home.HomeActivity.tv_header_progress;
+import static com.pratham.foundation.utility.FC_Constants.APP_SECTION;
 import static com.pratham.foundation.utility.FC_Constants.COMING_SOON;
 import static com.pratham.foundation.utility.FC_Constants.currentLevel;
 import static com.pratham.foundation.utility.FC_Constants.gameFolderPath;
+import static com.pratham.foundation.utility.FC_Constants.sec_Practice;
 import static com.pratham.foundation.utility.FC_Utility.dpToPx;
 import static com.pratham.foundation.utility.SplashSupportActivity.ButtonClickSound;
 
@@ -370,6 +372,7 @@ public class PracticeFragment extends Fragment implements PracticeContract.Pract
     public void onContentClicked(ContentTable singleItem, String parentName) {
         ButtonClickSound.start();
         FC_Constants.isPractice = true;
+        FastSave.getInstance().saveString(APP_SECTION, ""+sec_Practice);
         FC_Constants.isTest = false;
         if (singleItem.getNodeType().equalsIgnoreCase("category")) {
             Intent intent = new Intent(context, ContentDisplay_.class);
@@ -396,6 +399,7 @@ public class PracticeFragment extends Fragment implements PracticeContract.Pract
         //todo remove#
         ButtonClickSound.start();
         FC_Constants.isPractice = true;
+        FastSave.getInstance().saveString(APP_SECTION, ""+sec_Practice);
         FC_Constants.isTest = false;
         downloadNodeId = contentList.getNodeId();
         resName = contentList.getNodeTitle();
@@ -515,6 +519,7 @@ public class PracticeFragment extends Fragment implements PracticeContract.Pract
     public void onContentDownloadClicked(ContentTable contentList, int parentPos, int childPos, String downloadType) {
         this.downloadType = downloadType;
         FC_Constants.isPractice = true;
+        FastSave.getInstance().saveString(APP_SECTION, ""+sec_Practice);
         FC_Constants.isTest = false;
         downloadNodeId = contentList.getNodeId();
         ButtonClickSound.start();

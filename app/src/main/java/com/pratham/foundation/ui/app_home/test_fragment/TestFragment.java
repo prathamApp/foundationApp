@@ -72,11 +72,13 @@ import java.util.List;
 import java.util.Objects;
 
 import static com.pratham.foundation.ui.app_home.HomeActivity.header_rl;
+import static com.pratham.foundation.utility.FC_Constants.APP_SECTION;
 import static com.pratham.foundation.utility.FC_Constants.CLOSE_TEST_EVENTBUS;
 import static com.pratham.foundation.utility.FC_Constants.LEVEL_TEST_GIVEN;
 import static com.pratham.foundation.utility.FC_Constants.currentLevel;
 import static com.pratham.foundation.utility.FC_Constants.gameFolderPath;
 import static com.pratham.foundation.utility.FC_Constants.isTest;
+import static com.pratham.foundation.utility.FC_Constants.sec_Test;
 import static com.pratham.foundation.utility.FC_Constants.testSessionEnded;
 import static com.pratham.foundation.utility.FC_Constants.testSessionEntered;
 
@@ -416,6 +418,7 @@ public class TestFragment extends Fragment implements TestContract.TestView,
     public void testOpenData(ContentTable testData) {
         try {
             isTest = true;
+            FastSave.getInstance().saveString(APP_SECTION, ""+sec_Test);
             certi_Code = testData.getNodeDesc();
             if (testData.getResourceType().toLowerCase()
                     .contains(FC_Constants.HTML_GAME_RESOURCE)) {

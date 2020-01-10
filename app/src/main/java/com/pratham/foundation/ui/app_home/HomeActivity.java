@@ -52,6 +52,7 @@ import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.Objects;
 
+import static com.pratham.foundation.utility.FC_Constants.APP_SECTION;
 import static com.pratham.foundation.utility.FC_Constants.ASSESSMENT_SESSION;
 import static com.pratham.foundation.utility.FC_Constants.BACK_PRESSED;
 import static com.pratham.foundation.utility.FC_Constants.FRAGMENT_RESELECTED;
@@ -64,6 +65,7 @@ import static com.pratham.foundation.utility.FC_Constants.LEVEL_TEST_GIVEN;
 import static com.pratham.foundation.utility.FC_Constants.LOGIN_MODE;
 import static com.pratham.foundation.utility.FC_Constants.currentLevel;
 import static com.pratham.foundation.utility.FC_Constants.isTest;
+import static com.pratham.foundation.utility.FC_Constants.sec_Test;
 import static com.pratham.foundation.utility.FC_Constants.testSessionEnded;
 import static com.pratham.foundation.utility.FC_Constants.testSessionEntered;
 
@@ -351,6 +353,7 @@ public class HomeActivity extends BaseActivity implements LevelChanged {
                     FC_Constants.isTest = true;
                     String assessmentSession = "test-" + ApplicationClass.getUniqueID();
                     FastSave.getInstance().saveString(ASSESSMENT_SESSION, assessmentSession);
+                    FastSave.getInstance().saveString(APP_SECTION, ""+sec_Test);
                     showTestTypeSelectionDialog();
                 }else if (tab.getText().toString().equalsIgnoreCase(""+getResources().getString(R.string.Profile))) {
                     FC_Constants.isTest = false;

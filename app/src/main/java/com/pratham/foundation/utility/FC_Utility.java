@@ -107,6 +107,12 @@ import java.util.regex.Pattern;
 import javax.crypto.Mac;
 import javax.crypto.spec.SecretKeySpec;
 
+import static com.pratham.foundation.utility.FC_Constants.APP_SECTION;
+import static com.pratham.foundation.utility.FC_Constants.sec_Fun;
+import static com.pratham.foundation.utility.FC_Constants.sec_Learning;
+import static com.pratham.foundation.utility.FC_Constants.sec_Practice;
+import static com.pratham.foundation.utility.FC_Constants.sec_Test;
+
 
 public class FC_Utility {
 
@@ -1380,6 +1386,36 @@ public class FC_Utility {
             case 5:
                 return "Social Sci.";
             default:
+                return "NA";
+        }
+    }
+
+    public static int getSectionCode() {
+        switch (FastSave.getInstance().getString(APP_SECTION, "")) {
+            case sec_Learning:
+                return 1;
+            case sec_Practice:
+                return 2;
+            case sec_Fun:
+                return 3;
+            case sec_Test:
+                return 4;
+            default :
+                return 0;
+        }
+    }
+
+    public static String getSectionName(int num) {
+        switch (num){
+            case 1:
+                return sec_Learning;
+            case 2:
+                return sec_Practice;
+            case 3:
+                return sec_Fun;
+            case 4:
+                return sec_Test;
+            default :
                 return "NA";
         }
     }

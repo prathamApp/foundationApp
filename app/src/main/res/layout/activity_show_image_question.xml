@@ -1,0 +1,229 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/home_root_layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/activity_bkgd">
+
+    <RelativeLayout
+        android:id="@+id/header_rl"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true">
+
+        <ImageView
+            android:id="@+id/main_back"
+            android:layout_width="@dimen/_30sdp"
+            android:layout_height="@dimen/_30sdp"
+            android:layout_marginTop="@dimen/_5sdp"
+            android:layout_marginStart="@dimen/_5sdp"
+            android:scaleType="center"
+            app:srcCompat="@drawable/ic_left_arrow_white" />
+
+        <RelativeLayout
+            android:id="@+id/leftCol"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/main_back"
+            android:layout_marginEnd="@dimen/_15sdp"
+            android:layout_marginStart="@dimen/_15sdp">
+
+            <com.pratham.foundation.customView.SansTextViewBold
+                android:id="@+id/tv_Game_Name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Game Name"
+                android:duplicateParentState="true"
+                android:ellipsize="marquee"
+                android:fadingEdge="horizontal"
+                android:marqueeRepeatLimit="marquee_forever"
+                android:scrollHorizontally="true"
+                android:singleLine="true"
+                android:textColor="@color/colorBlack"
+                android:textSize="@dimen/_20sdp" />
+
+            <com.pratham.foundation.customView.SansTextView
+                android:id="@+id/tv_Question"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="@dimen/_10sdp"
+                android:layout_below="@+id/tv_Game_Name"
+                android:text="Question Text"
+                android:gravity="center_vertical"
+                android:textColor="@color/strokeColor"
+                android:textSize="@dimen/_18sdp" />
+
+        </RelativeLayout>
+
+    </RelativeLayout>
+
+    <ScrollView
+        android:layout_below="@+id/header_rl"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignParentBottom="true"
+        android:minHeight="@dimen/_250sdp"
+        android:layout_marginTop="@dimen/_10sdp"
+        android:layout_marginBottom="@dimen/_10sdp">
+
+    <LinearLayout
+        android:id="@+id/content_rl"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/_10sdp"
+        android:layout_marginBottom="@dimen/_10sdp"
+        android:orientation="vertical"
+        android:gravity="center">
+
+        <android.support.design.card.MaterialCardView
+            android:id="@+id/ques_card"
+            android:layout_width="@dimen/_220sdp"
+            android:layout_height="@dimen/_170sdp"
+            android:visibility="visible"
+            android:background="@drawable/ripple_rectangle_card"
+            android:layout_marginBottom="@dimen/_5sdp"
+            app:cardCornerRadius="@dimen/_15sdp">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <ImageView
+                    android:id="@+id/iv_question_image"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_above="@+id/bottom_bar1"
+                    android:layout_marginTop="@dimen/_5sdp"
+                    android:layout_marginStart="@dimen/_5sdp"
+                    android:layout_marginEnd="@dimen/_5sdp"
+                    android:scaleType="fitCenter"
+                    android:visibility="gone"
+                    android:src="@drawable/img_3_6_yrs" />
+
+                <com.pratham.foundation.customView.GifView
+                    android:id="@+id/iv_question_gif"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_above="@+id/bottom_bar1"
+                    android:layout_marginTop="@dimen/_5sdp"
+                    android:layout_marginStart="@dimen/_5sdp"
+                    android:layout_marginEnd="@dimen/_5sdp"
+                    android:scaleType="fitCenter"
+                    android:visibility="gone"
+                    android:src="@drawable/img_8_14_yrs" />
+
+                <RelativeLayout
+                    android:id="@+id/rl_videoView"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:visibility="gone"
+                    android:layout_above="@+id/bottom_bar1">
+
+                    <VideoView
+                        android:id="@+id/ques_videoView"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_centerInParent="true" />
+
+                    <com.pratham.foundation.customView.media_controller.PlayerControlView
+                        android:id="@+id/player_control_view"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentBottom="true"
+                        app:pcv_fast_forward_ms="1000"
+                        app:pcv_fast_rewind_ms="500"
+                        app:pcv_show_timeout_ms="5000" />
+
+                </RelativeLayout>
+
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:id="@+id/bottom_bar1"
+                    android:layout_alignParentBottom="true"
+                    android:background="@color/colorAccentDark"
+                    android:layout_height="@dimen/_35sdp">
+
+                    <com.pratham.foundation.customView.SansTextViewBold
+                        android:id="@id/tv_card1"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:gravity="center_vertical"
+                        android:layout_marginStart="@dimen/_10sdp"
+                        android:text="Question Image"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/_13sdp" />
+
+                    <ImageView
+                        android:layout_width="@dimen/_25sdp"
+                        android:layout_height="@dimen/_25sdp"
+                        android:gravity="center_vertical"
+                        android:layout_marginEnd="@dimen/_10sdp"
+                        android:layout_alignParentEnd="true"
+                        android:layout_centerVertical="true"
+                        android:src="@drawable/ic_eye"/>
+
+                </RelativeLayout>
+
+            </RelativeLayout>
+
+        </android.support.design.card.MaterialCardView>
+
+        <android.support.design.card.MaterialCardView
+            android:id="@+id/ans_card"
+            android:layout_width="@dimen/_220sdp"
+            android:layout_height="@dimen/_170sdp"
+            android:layout_marginTop="@dimen/_5sdp"
+            android:background="@drawable/ripple_rectangle_card"
+            app:cardCornerRadius="@dimen/_15sdp">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <ImageView
+                    android:id="@+id/iv_ans_image"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_above="@+id/bottom_bar2"
+                    android:layout_marginTop="@dimen/_5sdp"
+                    android:layout_marginStart="@dimen/_5sdp"
+                    android:layout_marginEnd="@dimen/_5sdp"
+                    android:scaleType="fitCenter"
+                    android:src="@drawable/img_8_14_yrs" />
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:id="@+id/bottom_bar2"
+                    android:layout_alignParentBottom="true"
+                    android:background="@color/colorBtnGreenDark"
+                    android:layout_height="@dimen/_35sdp">
+
+                    <com.pratham.foundation.customView.SansTextViewBold
+                        android:id="@+id/tv_ans"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:gravity="center_vertical"
+                        android:layout_marginStart="@dimen/_10sdp"
+                        android:text="Answer"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/_13sdp" />
+
+                    <ImageView
+                        android:layout_width="@dimen/_25sdp"
+                        android:layout_height="@dimen/_25sdp"
+                        android:gravity="center_vertical"
+                        android:layout_marginEnd="@dimen/_10sdp"
+                        android:layout_alignParentEnd="true"
+                        android:layout_centerVertical="true"
+                        android:src="@drawable/ic_eye"/>
+
+                </RelativeLayout>
+
+            </RelativeLayout>
+        </android.support.design.card.MaterialCardView>
+
+    </LinearLayout>
+    </ScrollView>
+</RelativeLayout>

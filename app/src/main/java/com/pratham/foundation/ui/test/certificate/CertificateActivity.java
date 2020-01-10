@@ -99,8 +99,6 @@ public class CertificateActivity extends BaseActivity implements CertificateCont
         CertiTitle = getIntent().getStringExtra("CertiTitle");
         certiMode = getIntent().getStringExtra("display");
         assessmentProfile = (Assessment) getIntent().getSerializableExtra("assessment");
-        //  tv_certi_level.setText(CertiTitle);
-
         certificateLanguage = "English";
 
         ContentTableList = new ArrayList<>();

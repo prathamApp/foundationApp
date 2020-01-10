@@ -6,7 +6,6 @@ import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.pratham.foundation.BaseActivity;
 import com.pratham.foundation.R;
@@ -14,6 +13,7 @@ import com.pratham.foundation.customView.GridSpacingItemDecoration;
 import com.pratham.foundation.database.AppDatabase;
 import com.pratham.foundation.database.domain.Score;
 import com.pratham.foundation.services.shared_preferences.FastSave;
+import com.pratham.foundation.ui.app_home.profile_new.show_image_question.ShowImgQuestionActivity_;
 import com.pratham.foundation.ui.student_profile.Student_profile_activity;
 import com.pratham.foundation.utility.FC_Constants;
 
@@ -138,14 +138,10 @@ public class DisplayImageQuesActivity extends BaseActivity implements
     }
 
     @Override
-    public void gotoQuestions(Score assessment) {
-        Toast.makeText(this, "gotoCertificate", Toast.LENGTH_SHORT).show();
-//        Intent intent = new Intent(this, CertificateActivity.class);
-//        intent.putExtra("nodeId", "na");
-//        intent.putExtra("CertiCode", "" + assessment.getQuestionIda());
-//        intent.putExtra("CertiTitle", "" + assessment.getLevela());
-//        intent.putExtra("display", "display");
-//        intent.putExtra("assessment", assessment);
-//        startActivity(intent);
+    public void gotoQuestions(Score scoreDisp) {
+//        Toast.makeText(this, "gotoCertificate", Toast.LENGTH_SHORT).show();
+        Intent intent = new Intent(this, ShowImgQuestionActivity_.class);
+        intent.putExtra("scoreDisp", scoreDisp);
+        startActivity(intent);
     }
 }

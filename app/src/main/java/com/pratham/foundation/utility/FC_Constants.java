@@ -148,7 +148,13 @@ public class FC_Constants {
     public static final String CURRENT_ASSESSMENT_STUDENT_ID = "current_assessment_student_id";
     public static final String CURRENT_SUPERVISOR_ID = "current_supervisor_id";
     public static final String ASSESSMENT_SESSION = "assessment_session";
+    public static final String APP_SECTION = "APP_SECTION";
     public static final String CURRENT_FOLDER_NAME = "current_folder_name";
+
+    public static final String sec_Learning = "Learning";
+    public static final String sec_Practice = "Practice";
+    public static final String sec_Fun = "Fun";
+    public static final String sec_Test = "Test";
 
 /*    public static String currentStudentID;
     public static String currentAssessmentStudentID;

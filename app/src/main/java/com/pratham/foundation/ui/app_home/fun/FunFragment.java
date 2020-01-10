@@ -64,9 +64,11 @@ import static com.pratham.foundation.ui.app_home.HomeActivity.header_rl;
 import static com.pratham.foundation.ui.app_home.HomeActivity.levelChanged;
 import static com.pratham.foundation.ui.app_home.HomeActivity.sub_Name;
 import static com.pratham.foundation.ui.app_home.HomeActivity.tv_header_progress;
+import static com.pratham.foundation.utility.FC_Constants.APP_SECTION;
 import static com.pratham.foundation.utility.FC_Constants.COMING_SOON;
 import static com.pratham.foundation.utility.FC_Constants.currentLevel;
 import static com.pratham.foundation.utility.FC_Constants.gameFolderPath;
+import static com.pratham.foundation.utility.FC_Constants.sec_Fun;
 import static com.pratham.foundation.utility.FC_Utility.dpToPx;
 import static com.pratham.foundation.utility.SplashSupportActivity.ButtonClickSound;
 
@@ -362,6 +364,8 @@ public class FunFragment extends Fragment implements FunContract.FunView,
         ButtonClickSound.start();
         FC_Constants.isPractice=false;
         FC_Constants.isTest = false;
+        FastSave.getInstance().saveString(APP_SECTION, ""+sec_Fun);
+
         if (singleItem.getNodeType().equalsIgnoreCase("category")) {
             Intent intent = new Intent(context, ContentDisplay_.class);
             intent.putExtra("nodeId", singleItem.getNodeId());
@@ -387,6 +391,7 @@ public class FunFragment extends Fragment implements FunContract.FunView,
         //todo remove#
         FC_Constants.isPractice=false;        ButtonClickSound.start();
         FC_Constants.isTest = false;
+        FastSave.getInstance().saveString(APP_SECTION, ""+sec_Fun);
         downloadNodeId = contentList.getNodeId();
         resName = contentList.getNodeTitle();
         if(contentList.getNodeType().equalsIgnoreCase("PreResource")||

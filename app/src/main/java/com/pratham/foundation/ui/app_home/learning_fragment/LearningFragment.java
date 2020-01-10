@@ -64,9 +64,11 @@ import static com.pratham.foundation.ui.app_home.HomeActivity.header_rl;
 import static com.pratham.foundation.ui.app_home.HomeActivity.levelChanged;
 import static com.pratham.foundation.ui.app_home.HomeActivity.sub_Name;
 import static com.pratham.foundation.ui.app_home.HomeActivity.tv_header_progress;
+import static com.pratham.foundation.utility.FC_Constants.APP_SECTION;
 import static com.pratham.foundation.utility.FC_Constants.COMING_SOON;
 import static com.pratham.foundation.utility.FC_Constants.currentLevel;
 import static com.pratham.foundation.utility.FC_Constants.gameFolderPath;
+import static com.pratham.foundation.utility.FC_Constants.sec_Learning;
 import static com.pratham.foundation.utility.FC_Utility.dpToPx;
 import static com.pratham.foundation.utility.SplashSupportActivity.ButtonClickSound;
 
@@ -371,6 +373,7 @@ public class LearningFragment extends Fragment implements LearningContract.Learn
     public void onContentClicked(ContentTable singleItem, String parentName) {
         FC_Constants.isPractice = false;
         FC_Constants.isTest = false;
+        FastSave.getInstance().saveString(APP_SECTION, ""+sec_Learning);
         try {
             ButtonClickSound.start();
         } catch (IllegalStateException e) {
@@ -522,6 +525,7 @@ public class LearningFragment extends Fragment implements LearningContract.Learn
         downloadNodeId = contentList.getNodeId();
         FC_Constants.isPractice = false;
         FC_Constants.isTest = false;
+        FastSave.getInstance().saveString(APP_SECTION, ""+sec_Learning);
         ButtonClickSound.start();
 //        downloadNodeId = "" + 1371;
         this.parentPos = parentPos;

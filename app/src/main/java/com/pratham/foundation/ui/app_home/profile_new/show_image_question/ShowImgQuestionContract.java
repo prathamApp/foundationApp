@@ -1,4 +1,4 @@
-package com.pratham.foundation.ui.app_home.profile_new.show_image_question_fragment;
+package com.pratham.foundation.ui.app_home.profile_new.show_image_question;
 
 
 public interface ShowImgQuestionContract {
