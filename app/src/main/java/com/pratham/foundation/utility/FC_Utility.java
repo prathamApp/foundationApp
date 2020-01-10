@@ -1455,11 +1455,6 @@ public class FC_Utility {
         FastSave.getInstance().getString(FC_Constants.LANGUAGE, FC_Constants.HINDI)= FastSave.getInstance().getString(FC_Constants.LANGUAGE, FC_Constants.HINDI);
     }*/
 
-    /**
-     * calculates age from birth date
-     *
-     * @param DOB
-     */
     public boolean isAdult(String DOB) {
 
         try {
@@ -1486,25 +1481,10 @@ public class FC_Utility {
         return false;
     }
 
-//
-//    /**
-//     * Function to update Header (Heading) of active activity
-//     *
-//     * @param activity
-//     * @param str_Heading
-//     */
 //    public static void SetHeading(FragmentActivity activity, String str_Heading) {
 //        TextView txt_Heading = (TextView) activity.findViewById(R.id.txt_heading);
 //        txt_Heading.setText(str_Heading.toUpperCase());
 //    }
-
-
-    /**
-     * Function to get Byte array fom bitmap
-     *
-     * @param mBitmap
-     * @return
-     */
     public static byte[] getByteArray(Bitmap mBitmap) {
         ByteArrayOutputStream stream = new ByteArrayOutputStream();
         mBitmap.compress(Bitmap.CompressFormat.JPEG, 90, stream);
@@ -1512,13 +1492,6 @@ public class FC_Utility {
         return mArray;
     }
 
-
-    /**
-     * Function to get formatted meeting date "EEE dd, yyyy"
-     *
-     * @param str_Date
-     * @return
-     */
     public static String getFormattedDate(String str_Date) {
 
         SimpleDateFormat Meeting_Date_SDF = new SimpleDateFormat("dd-MM-yyyy",
