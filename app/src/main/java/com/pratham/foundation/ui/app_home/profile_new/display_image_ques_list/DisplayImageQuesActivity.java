@@ -1,4 +1,4 @@
-package com.pratham.foundation.ui.app_home.profile_new.image_ques;
+package com.pratham.foundation.ui.app_home.profile_new.display_image_ques_list;
 
 import android.content.Intent;
 import android.content.res.Configuration;

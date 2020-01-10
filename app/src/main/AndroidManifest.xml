@@ -71,7 +71,7 @@
             android:name=".ui.home_screen_integrated.display_content.ContentDisplay_"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".ui.app_home.profile_new.image_ques.DisplayImageQuesActivity_"
+            android:name=".ui.app_home.profile_new.display_image_ques_list.DisplayImageQuesActivity_"
             android:screenOrientation="portrait" />
         <activity
             android:name=".ui.app_home.display_content.ContentDisplay_"

@@ -1,4 +1,4 @@
-package com.pratham.foundation.ui.app_home.profile_new.image_ques;
+package com.pratham.foundation.ui.app_home.profile_new.display_image_ques_list;
 import com.pratham.foundation.database.domain.Score;
 
 import java.util.List;
