@@ -1,4 +1,4 @@
-package com.pratham.foundation.ui.contentPlayer.chit_chat.level_1;
+package com.pratham.foundation.ui.contentPlayer.old_cos.conversation;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
@@ -39,7 +39,7 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.ViewHold
 
         public ViewHolder(RelativeLayout v) {
             super(v);
-            ButterKnife.bind(this, v);
+            ButterKnife.bind(this,v);
         }
     }
 
@@ -58,16 +58,16 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.ViewHold
 
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
-        holder.mTextView.setText(((Message) messageList.get(holder.getAdapterPosition())).getMessage());
+        holder.mTextView.setText(((Message)messageList.get(holder.getAdapterPosition())).getMessage());
         holder.mTextView.setMaxWidth(650);
-        if (position > lastPos) {
+        if(position>lastPos) {
             ImageViewAnimatedChange(context, holder);
-            lastPos = position;
+            lastPos=position;
         }
         holder.mTextView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ConversationActivity_.playChat("" + ((Message) messageList.get(holder.getAdapterPosition())).getSenderAudio());
+                ConversationActivity_.playChat(""+((Message)messageList.get(holder.getAdapterPosition())).getSenderAudio());
             }
         });
     }

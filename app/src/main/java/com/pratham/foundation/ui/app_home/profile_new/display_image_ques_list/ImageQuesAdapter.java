@@ -17,12 +17,14 @@ import com.google.gson.Gson;
 import com.pratham.foundation.R;
 import com.pratham.foundation.database.domain.Score;
 import com.pratham.foundation.modalclasses.ImageJsonObject;
-import com.pratham.foundation.utility.FC_Utility;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.List;
+
+import static com.pratham.foundation.utility.FC_Utility.getSectionName;
+import static com.pratham.foundation.utility.FC_Utility.getSubjectNameFromNum;
 
 public class ImageQuesAdapter extends RecyclerView.Adapter {
 
@@ -95,7 +97,8 @@ public class ImageQuesAdapter extends RecyclerView.Adapter {
             else if (cLevel.equalsIgnoreCase("4"))
                 level = "L-5";
 
-            String section = FC_Utility.getSubjectNameFromNum(contentItem.getQuestionId()) +" "+level+ " Section";
+            String section = getSubjectNameFromNum(contentItem.getQuestionId()) +
+                    " " + level + " "+getSectionName(contentItem.getScoredMarks());
 
             holder.title.setText(cTitle);
             holder.tv_section.setText(section);

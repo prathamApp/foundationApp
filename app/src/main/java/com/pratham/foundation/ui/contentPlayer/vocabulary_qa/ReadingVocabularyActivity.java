@@ -37,6 +37,7 @@ import com.pratham.foundation.modalclasses.Message;
 import com.pratham.foundation.modalclasses.ModalVocabulary;
 import com.pratham.foundation.services.stt.ContinuousSpeechService_New;
 import com.pratham.foundation.services.stt.STT_Result_New;
+import com.pratham.foundation.ui.contentPlayer.old_cos.conversation.ConversationActivity;
 import com.pratham.foundation.utility.FC_Constants;
 import com.pratham.foundation.utility.FC_Utility;
 import com.pratham.foundation.utility.MediaPlayerUtil;
@@ -54,7 +55,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import static com.pratham.foundation.ui.contentPlayer.chit_chat.level_1.ConversationActivity.mediaPlayerUtil;
 import static com.pratham.foundation.utility.FC_Constants.dialog_btn_cancel;
 import static com.pratham.foundation.utility.FC_Constants.gameFolderPath;
 import static com.pratham.foundation.utility.FC_Constants.isTest;
@@ -155,8 +155,8 @@ public class ReadingVocabularyActivity extends BaseActivity implements MediaCall
         continuousSpeechService = new ContinuousSpeechService_New(mContext, ReadingVocabularyActivity.this, sttLang);
 
         correctSound = MediaPlayer.create(this, R.raw.correct_ans);
-        mediaPlayerUtil = new MediaPlayerUtil(ReadingVocabularyActivity.this);
-        mediaPlayerUtil.initCallback(ReadingVocabularyActivity.this);
+        ConversationActivity.mediaPlayerUtil = new MediaPlayerUtil(ReadingVocabularyActivity.this);
+        ConversationActivity.mediaPlayerUtil.initCallback(ReadingVocabularyActivity.this);
         sendClikChanger(0);
 
         currentPageNo = 0;
@@ -374,7 +374,7 @@ public class ReadingVocabularyActivity extends BaseActivity implements MediaCall
         try {
             if (!readingFlg) {
                 setMute(0);
-                mediaPlayerUtil.playMedia(readingContentPath + "sounds/" + audioPath);
+                ConversationActivity.mediaPlayerUtil.playMedia(readingContentPath + "sounds/" + audioPath);
             }
         } catch (Exception e) {
             e.printStackTrace();

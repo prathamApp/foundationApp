@@ -1,15 +1,15 @@
-package com.pratham.foundation.ui.contentPlayer.chit_chat.level_1;
+package com.pratham.foundation.ui.contentPlayer.old_cos.conversation;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.media.MediaPlayer;
-import android.os.Bundle;
 import android.os.Handler;
 import android.speech.RecognitionListener;
 import android.support.design.widget.FloatingActionButton;
-import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -27,6 +27,7 @@ import android.widget.TextView;
 
 import com.nex3z.flowlayout.FlowLayout;
 import com.pratham.foundation.ApplicationClass;
+import com.pratham.foundation.BaseActivity;
 import com.pratham.foundation.R;
 import com.pratham.foundation.customView.SansTextViewBold;
 import com.pratham.foundation.customView.display_image_dialog.CustomLodingDialog;
@@ -41,7 +42,7 @@ import com.pratham.foundation.utility.MediaPlayerUtil;
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Bean;
 import org.androidannotations.annotations.Click;
-import org.androidannotations.annotations.EFragment;
+import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.UiThread;
 import org.androidannotations.annotations.ViewById;
 import org.json.JSONArray;
@@ -54,8 +55,8 @@ import static com.pratham.foundation.utility.FC_Constants.gameFolderPath;
 import static com.pratham.foundation.utility.SplashSupportActivity.ButtonClickSound;
 
 
-@EFragment(R.layout.activity_conversation)
-public class ConversationActivity extends Fragment
+@EActivity(R.layout.activity_conversation)
+public class ConversationActivity extends BaseActivity
         implements ConversationContract.ConversationView, STT_Result_New.sttView, MediaCallbacks {
 
     @ViewById(R.id.recyclerView)
@@ -103,7 +104,6 @@ public class ConversationActivity extends Fragment
     boolean myMsg, onSdCard;
     float[] msgPercentage;
     ContinuousSpeechService_New continuousSpeechService;
-    Context context;
 //    AnimationDrawable animationDrawable;
 
 
@@ -113,31 +113,29 @@ public class ConversationActivity extends Fragment
         silence_outer_layout.setVisibility(View.GONE);
         floating_back.setImageResource(R.drawable.ic_left_arrow_white);
         floating_info.setImageResource(R.drawable.ic_info_outline_white);
-        context = getActivity();
+
 //        animationDrawable = (AnimationDrawable) ll_convo_mainw.getBackground();
 //        animationDrawable.setEnterFadeDuration(4500);
 //        animationDrawable.setExitFadeDuration(4500);
 //        animationDrawable.start();
-        continuousSpeechService = new ContinuousSpeechService_New(context, ConversationActivity.this, FC_Constants.ENGLISH);
-        correctSound = MediaPlayer.create(context, R.raw.correct_ans);
+        continuousSpeechService = new ContinuousSpeechService_New(this, ConversationActivity.this, FC_Constants.ENGLISH);
+        correctSound = MediaPlayer.create(this, R.raw.correct_ans);
 
         presenter.setView(ConversationActivity.this);
 
         sendClikChanger(0);
-        mediaPlayerUtil = new MediaPlayerUtil(context);
+        mediaPlayerUtil = new MediaPlayerUtil(ConversationActivity.this);
         mediaPlayerUtil.initCallback(ConversationActivity.this);
 
         selectedLanguage = "english";
-        Bundle bundle = getArguments();
-        if (bundle != null) {
-            contentId = bundle.getString("storyId");
-            studentID = bundle.getString("StudentID");
-            contentName = bundle.getString("contentName");
-            convoMode = bundle.getString("convoMode");
-            contentPath = bundle.getString("contentPath");
-            certiCode = bundle.getString("certiCode");
-            onSdCard = bundle.getBoolean("onSdCard", false);
-        }
+        contentId = getIntent().getStringExtra("storyId");
+        studentID = getIntent().getStringExtra("StudentID");
+        contentName = getIntent().getStringExtra("contentName");
+        convoMode = getIntent().getStringExtra("convoMode");
+        contentPath = getIntent().getStringExtra("contentPath");
+        certiCode = getIntent().getStringExtra("certiCode");
+        onSdCard = getIntent().getBooleanExtra("onSdCard", false);
+
         presenter.setContentId(contentId);
         convoMode = "A";
 
@@ -165,10 +163,10 @@ public class ConversationActivity extends Fragment
         if (conversation != null) {
             msgPercentage = new float[conversation.length()];
             recyclerView.setHasFixedSize(true);
-            final LinearLayoutManager linearLayoutManager = new LinearLayoutManager(context);
+            final LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
             linearLayoutManager.setStackFromEnd(true);
             recyclerView.setLayoutManager(linearLayoutManager);
-            mAdapter = new MessageAdapter(messageList, context);
+            mAdapter = new MessageAdapter(messageList, this);
             recyclerView.setAdapter(mAdapter);
             for(int i =0; i<msgPercentage.length; i++)
                 msgPercentage[1] = 0;
@@ -378,7 +376,7 @@ public class ConversationActivity extends Fragment
         //readChatFlow.removeAllViews();
         String[] splittedAnswer = answerText.split(" ");
         for (String word : splittedAnswer) {
-            final SansTextViewBold myTextView = new SansTextViewBold(context);
+            final SansTextViewBold myTextView = new SansTextViewBold(this);
             myTextView.setText(word);
             myTextView.setOnClickListener(v -> {
                 if (!FC_Constants.isTest) {
@@ -495,7 +493,7 @@ public class ConversationActivity extends Fragment
     public void showLoader() {
         if (!dialogFlg) {
             dialogFlg = true;
-            myLoadingDialog = new CustomLodingDialog(context);
+            myLoadingDialog = new CustomLodingDialog(this);
             myLoadingDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
             myLoadingDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
             myLoadingDialog.setContentView(R.layout.loading_dialog);
@@ -527,7 +525,7 @@ public class ConversationActivity extends Fragment
     @Override
     public void Stt_onResult(ArrayList<String> sttServerResult) {
         iv_monk.setVisibility(View.VISIBLE);
-        iv_monk.startAnimation(AnimationUtils.loadAnimation(context, R.anim.float_anim));
+        iv_monk.startAnimation(AnimationUtils.loadAnimation(ConversationActivity.this, R.anim.float_anim));
         presenter.sttResultProcess(sttServerResult, answer);
     }
 
@@ -545,8 +543,8 @@ public class ConversationActivity extends Fragment
             continuousSpeechService.resetHandler(true);
             silence_outer_layout.setVisibility(View.VISIBLE);
             silenceViewHandler = new Handler();
-            silence_iv.startAnimation(AnimationUtils.loadAnimation(context, R.anim.rotate_continuous_shake));
-            AnimateTextView(context, silence_main_layout);
+            silence_iv.startAnimation(AnimationUtils.loadAnimation(this, R.anim.rotate_continuous_shake));
+            AnimateTextView(this, silence_main_layout);
         }
     }
 
@@ -600,7 +598,7 @@ public class ConversationActivity extends Fragment
 
     @SuppressLint("SetTextI18n")
     private void ConvoEndDialog() {
-        final CustomLodingDialog dialog = new CustomLodingDialog(context);
+        final CustomLodingDialog dialog = new CustomLodingDialog(this);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         dialog.setContentView(R.layout.fc_custom_dialog);
@@ -626,12 +624,12 @@ public class ConversationActivity extends Fragment
             if (FC_Constants.isTest) {
                 int pages = getCompletionPages();
                 int msgPercLength = msgPercentage.length;
-                //todo add
-            /*    Intent returnIntent = new Intent();
+
+                Intent returnIntent = new Intent();
                 returnIntent.putExtra("cCode", certiCode);
                 returnIntent.putExtra("sMarks", pages);
                 returnIntent.putExtra("tMarks", msgPercLength);
-                setResult(Activity.RESULT_OK, returnIntent);*/
+                setResult(Activity.RESULT_OK, returnIntent);
             }
             closeConvo();
         });
@@ -663,22 +661,21 @@ public class ConversationActivity extends Fragment
 
     @Click (R.id.floating_back)
     public void pressedBackBtn(){
-        //todo onBackPressed
-        //  onBackPressed();
+        onBackPressed();
     }
-    //todo onBackPressed
-   /* @Override
+
+    @Override
     public void onBackPressed() {
         if (voiceStart)
             btn_reading.performClick();
-        showExitDialog(context);
-    }*/
+        showExitDialog(this);
+    }
 
     int correctCnt = 0, total = 0;
 
     private void showStars(boolean diaComplete) {
 
-        final CustomLodingDialog dialog = new CustomLodingDialog(context);
+        final CustomLodingDialog dialog = new CustomLodingDialog(this);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         dialog.setContentView(R.layout.fc_custom_test_star_dialog);
@@ -720,12 +717,11 @@ public class ConversationActivity extends Fragment
 
         dia_btn_green.setOnClickListener(v -> {
             dialog.dismiss();
-            //todo add event bus
-            /*Intent returnIntent = new Intent();
+            Intent returnIntent = new Intent();
             returnIntent.putExtra("cCode", certiCode);
             returnIntent.putExtra("sMarks", correctCnt);
             returnIntent.putExtra("tMarks", total);
-            setResult(Activity.RESULT_OK, returnIntent);*/
+            setResult(Activity.RESULT_OK, returnIntent);
             closeConvo();
         });
     }
@@ -748,14 +744,13 @@ public class ConversationActivity extends Fragment
 
     @UiThread
     public void closeConvo() {
-        //todo closeConvo
-        //finish();
+        finish();
     }
 
     @SuppressLint("SetTextI18n")
     public void showExitDialog(Context context) {
 
-        final CustomLodingDialog dialog = new CustomLodingDialog(context);
+        final CustomLodingDialog dialog = new CustomLodingDialog(this);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         dialog.setContentView(R.layout.fc_custom_dialog);
@@ -787,12 +782,11 @@ public class ConversationActivity extends Fragment
                 } catch (Exception e) {
                     msgPercLength = 0;
                 }
-                //todo closeConvo
-               /* Intent returnIntent = new Intent();
+                Intent returnIntent = new Intent();
                 returnIntent.putExtra("cCode", certiCode);
                 returnIntent.putExtra("sMarks", pages);
                 returnIntent.putExtra("tMarks", msgPercLength);
-                setResult(Activity.RESULT_OK, returnIntent);*/
+                setResult(Activity.RESULT_OK, returnIntent);
             }
             closeConvo();
         });
