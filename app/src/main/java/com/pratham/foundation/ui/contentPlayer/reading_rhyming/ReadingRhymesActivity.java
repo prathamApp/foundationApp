@@ -26,7 +26,6 @@ import com.pratham.foundation.database.AppDatabase;
 import com.pratham.foundation.interfaces.MediaCallbacks;
 import com.pratham.foundation.modalclasses.ModalRhymingWords;
 import com.pratham.foundation.services.shared_preferences.FastSave;
-import com.pratham.foundation.ui.contentPlayer.old_cos.conversation.ConversationActivity;
 import com.pratham.foundation.utility.FC_Constants;
 import com.pratham.foundation.utility.FC_Utility;
 import com.pratham.foundation.utility.MediaPlayerUtil;
@@ -108,8 +107,8 @@ public class ReadingRhymesActivity extends BaseActivity
         mContext = ReadingRhymesActivity.this;
         testFlg = false;
         correctSound = MediaPlayer.create(this, R.raw.correct_ans);
-        ConversationActivity.mediaPlayerUtil = new MediaPlayerUtil(ReadingRhymesActivity.this);
-        ConversationActivity.mediaPlayerUtil.initCallback(ReadingRhymesActivity.this);
+        mediaPlayerUtil = new MediaPlayerUtil(ReadingRhymesActivity.this);
+        mediaPlayerUtil.initCallback(ReadingRhymesActivity.this);
 
         floating_back.setImageResource(R.drawable.ic_left_arrow_white);
         floating_info.setImageResource(R.drawable.ic_info_outline_white);
@@ -518,7 +517,7 @@ public class ReadingRhymesActivity extends BaseActivity
         try {
             if (!readingFlg) {
                 setMute(0);
-                ConversationActivity.mediaPlayerUtil.playMedia(readingContentPath + "Sound/" + audioPath);
+                mediaPlayerUtil.playMedia(readingContentPath + "Sound/" + audioPath);
             }
         } catch (Exception e) {
             e.printStackTrace();

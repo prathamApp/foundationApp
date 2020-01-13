@@ -32,6 +32,7 @@ import com.pratham.foundation.modalclasses.EventMessage;
 import com.pratham.foundation.services.TTSService;
 import com.pratham.foundation.utility.FC_Constants;
 import com.pratham.foundation.utility.FC_Utility;
+import com.pratham.foundation.utility.MediaPlayerUtil;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -64,6 +65,7 @@ public class BaseActivity extends AppCompatActivity {
     CustomLodingDialog pushDialog;
     CustomLodingDialog sd_builder;
     public static MediaPlayer correctSound;
+    public static MediaPlayerUtil mediaPlayerUtil;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

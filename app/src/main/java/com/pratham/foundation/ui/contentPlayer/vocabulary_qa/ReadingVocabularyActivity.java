@@ -37,7 +37,6 @@ import com.pratham.foundation.modalclasses.Message;
 import com.pratham.foundation.modalclasses.ModalVocabulary;
 import com.pratham.foundation.services.stt.ContinuousSpeechService_New;
 import com.pratham.foundation.services.stt.STT_Result_New;
-import com.pratham.foundation.ui.contentPlayer.old_cos.conversation.ConversationActivity;
 import com.pratham.foundation.utility.FC_Constants;
 import com.pratham.foundation.utility.FC_Utility;
 import com.pratham.foundation.utility.MediaPlayerUtil;
@@ -155,8 +154,8 @@ public class ReadingVocabularyActivity extends BaseActivity implements MediaCall
         continuousSpeechService = new ContinuousSpeechService_New(mContext, ReadingVocabularyActivity.this, sttLang);
 
         correctSound = MediaPlayer.create(this, R.raw.correct_ans);
-        ConversationActivity.mediaPlayerUtil = new MediaPlayerUtil(ReadingVocabularyActivity.this);
-        ConversationActivity.mediaPlayerUtil.initCallback(ReadingVocabularyActivity.this);
+        mediaPlayerUtil = new MediaPlayerUtil(ReadingVocabularyActivity.this);
+        mediaPlayerUtil.initCallback(ReadingVocabularyActivity.this);
         sendClikChanger(0);
 
         currentPageNo = 0;
@@ -374,7 +373,7 @@ public class ReadingVocabularyActivity extends BaseActivity implements MediaCall
         try {
             if (!readingFlg) {
                 setMute(0);
-                ConversationActivity.mediaPlayerUtil.playMedia(readingContentPath + "sounds/" + audioPath);
+                mediaPlayerUtil.playMedia(readingContentPath + "sounds/" + audioPath);
             }
         } catch (Exception e) {
             e.printStackTrace();

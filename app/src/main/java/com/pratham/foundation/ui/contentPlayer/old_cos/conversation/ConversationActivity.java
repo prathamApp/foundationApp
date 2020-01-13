@@ -88,7 +88,6 @@ public class ConversationActivity extends BaseActivity
     JSONArray conversation;
     private RecyclerView.Adapter mAdapter;
     private List messageList = new ArrayList();
-    public static MediaPlayerUtil mediaPlayerUtil;
     String question;
     String answer, ansForCheck;
     String questionAudio;
