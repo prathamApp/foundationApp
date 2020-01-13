@@ -1,16 +1,14 @@
-package com.pratham.foundation.ui.contentPlayer.chit_chat.level_1;
+package com.pratham.foundation.ui.contentPlayer.chit_chat.level_3;
 
 import org.json.JSONArray;
-
-import java.util.ArrayList;
 
 /**
  * Created by Ketan on 23-Nov-17.
  */
 
-public interface ConversationContract_1 {
+public interface ConversationContract_3 {
 
-    interface ConversationView_1{
+    interface ConversationView_3{
         void setConvoJson(JSONArray returnStoryNavigate);
         void setAnsCorrect(boolean[] ansCorrect);
 
@@ -21,8 +19,8 @@ public interface ConversationContract_1 {
         void clearMonkAnimation();
     }
 
-    interface ConversationPresenter_1 {
-        void setView(ConversationView_1 ConversationView);
+    interface ConversationPresenter_3 {
+        void setView(ConversationView_3 ConversationView);
 
         void fetchStory(String convoPath);
 

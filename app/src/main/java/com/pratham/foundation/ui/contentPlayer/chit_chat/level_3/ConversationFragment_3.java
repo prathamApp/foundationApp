@@ -1,4 +1,4 @@
-package com.pratham.foundation.ui.contentPlayer.chit_chat.level_1;
+package com.pratham.foundation.ui.contentPlayer.chit_chat.level_3;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -11,6 +11,7 @@ import android.os.Handler;
 import android.speech.RecognitionListener;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -51,9 +52,9 @@ import static com.pratham.foundation.utility.FC_Constants.gameFolderPath;
 import static com.pratham.foundation.utility.SplashSupportActivity.ButtonClickSound;
 
 
-@EFragment(R.layout.activity_conversation)
-public class ConversationFragment_1 extends Fragment
-        implements ConversationContract_1.ConversationView_1, MediaCallbacks {
+@EFragment(R.layout.chitchat_level_3)
+public class ConversationFragment_3 extends Fragment
+        implements ConversationContract_3.ConversationView_3, MediaCallbacks {
 
     @ViewById(R.id.recyclerView)
     RecyclerView recyclerView;
@@ -78,8 +79,13 @@ public class ConversationFragment_1 extends Fragment
     @ViewById(R.id.floating_info)
     FloatingActionButton floating_info;
 
-    @Bean(ConversationPresenter_1.class)
-    ConversationContract_1.ConversationPresenter_1 presenter;
+    @Bean(ConversationPresenter_3.class)
+    ConversationContract_3.ConversationPresenter_3 presenter;
+
+    @ViewById(R.id.person_A)
+    ImageView person_A;
+    @ViewById(R.id.person_B)
+    ImageView person_B;
 
     JSONArray conversation;
     private RecyclerView.Adapter mAdapter;
@@ -118,11 +124,11 @@ public class ConversationFragment_1 extends Fragment
         // continuousSpeechService = new ContinuousSpeechService_New(context, ConversationFragment_1.this, FC_Constants.ENGLISH);
         correctSound = MediaPlayer.create(context, R.raw.correct_ans);
 
-        presenter.setView(ConversationFragment_1.this);
+        presenter.setView(ConversationFragment_3.this);
 
         sendClikChanger(0);
         mediaPlayerUtil = new MediaPlayerUtil(context);
-        mediaPlayerUtil.initCallback(ConversationFragment_1.this);
+        mediaPlayerUtil.initCallback(ConversationFragment_3.this);
         Bundle bundle = getArguments();
         selectedLanguage = "english";
         contentId = bundle.getString("storyId");
@@ -150,6 +156,23 @@ public class ConversationFragment_1 extends Fragment
         tv_title.setText(contentName);
         presenter.fetchStory(convoPath);
     }
+
+
+    @Click(R.id.person_B)
+    public void onPersonB(){
+        person_B.setBackground(ContextCompat.getDrawable(context, R.drawable.ripple_rectangle_transparent_dark));
+        person_A.setBackground(ContextCompat.getDrawable(context, R.drawable.ripple_rectangle_green_selected));
+
+    }
+
+    @Click(R.id.person_A)
+    public void onPersonA(){
+        person_B.setBackground(ContextCompat.getDrawable(context, R.drawable.ripple_rectangle_green_selected));
+        person_A.setBackground(ContextCompat.getDrawable(context, R.drawable.ripple_rectangle_transparent_dark));
+    }
+
+
+
 
     @UiThread
     @Override
@@ -382,7 +405,7 @@ public class ConversationFragment_1 extends Fragment
                 if (!FC_Constants.isTest) {
                     if (voiceStart)
                         //  btn_reading.performClick();
-                    playChat("" + answerAudio);
+                        playChat("" + answerAudio);
                 }
             });
             myTextView.setTextSize(25);

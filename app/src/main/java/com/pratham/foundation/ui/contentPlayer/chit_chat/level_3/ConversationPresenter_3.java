@@ -1,4 +1,4 @@
-package com.pratham.foundation.ui.contentPlayer.chit_chat.level_1;
+package com.pratham.foundation.ui.contentPlayer.chit_chat.level_3;
 
 import android.content.Context;
 
@@ -8,6 +8,7 @@ import com.pratham.foundation.database.domain.Assessment;
 import com.pratham.foundation.database.domain.ContentProgress;
 import com.pratham.foundation.database.domain.Score;
 import com.pratham.foundation.services.shared_preferences.FastSave;
+import com.pratham.foundation.ui.contentPlayer.chit_chat.level_1.ConversationContract_1;
 import com.pratham.foundation.utility.FC_Constants;
 import com.pratham.foundation.utility.FC_Utility;
 
@@ -23,17 +24,17 @@ import static com.pratham.foundation.database.AppDatabase.appDatabase;
 
 
 @EBean
-public class ConversationPresenter_1 implements ConversationContract_1.ConversationPresenter_1 {
+public class ConversationPresenter_3 implements ConversationContract_3.ConversationPresenter_3 {
 
     Context context;
-    ConversationContract_1.ConversationView_1 conversationView_1;
+    ConversationContract_3.ConversationView_3 conversationView_3;
 
     @Override
-    public void setView(ConversationContract_1.ConversationView_1 ConversationView) {
-        this.conversationView_1 = ConversationView;
+    public void setView(ConversationContract_3.ConversationView_3 ConversationView) {
+        this.conversationView_3 = ConversationView;
     }
 
-    public ConversationPresenter_1(Context context) {
+    public ConversationPresenter_3(Context context) {
         this.context = context;
     }
 
@@ -54,7 +55,7 @@ public class ConversationPresenter_1 implements ConversationContract_1.Conversat
             e.printStackTrace();
         }
 
-        conversationView_1.setConvoJson(returnStoryNavigate);
+        conversationView_3.setConvoJson(returnStoryNavigate);
     }
 
     boolean[] correctArr;
