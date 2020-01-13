@@ -71,6 +71,9 @@ public class GameConstatnts implements ShowInstruction {
     public static final String MULTIPLE_CHOICE = "multiple_choice";
     public static final String READING_STT = "reading_stt";
     public static final String WATCHING_VIDEO = "watching_video";
+    public static final String NEW_CHIT_CHAT_1 = "new_chit_chat_1";
+    public static final String NEW_CHIT_CHAT_2 = "new_chit_chat_2";
+    public static final String NEW_CHIT_CHAT_3 = "new_chit_chat_3";
     public static final boolean TRUE = true;
     public static final boolean FALSE = false;
     public static final String START = "start";
