@@ -21,6 +21,7 @@ import com.pratham.foundation.interfaces.ShowInstruction;
 import com.pratham.foundation.modalclasses.ImageJsonObject;
 import com.pratham.foundation.modalclasses.ScoreEvent;
 import com.pratham.foundation.services.shared_preferences.FastSave;
+import com.pratham.foundation.ui.contentPlayer.chit_chat.level_1.ConversationFragment_1_;
 import com.pratham.foundation.ui.contentPlayer.dialogs.InstructionDialog;
 import com.pratham.foundation.ui.contentPlayer.doing.DoingFragment_;
 import com.pratham.foundation.ui.contentPlayer.fact_retrieval_fragment.FactRetrieval_;
@@ -312,6 +313,11 @@ public class GameConstatnts implements ShowInstruction {
             case GameConstatnts.WATCHING_VIDEO:
                 FC_Utility.showFragment((Activity) context, new DoingFragment_(), R.id.RL_CPA,
                         bundle, DoingFragment_.class.getSimpleName());
+                break;
+
+            case GameConstatnts.NEW_CHIT_CHAT_1:
+                FC_Utility.showFragment((Activity) context, new ConversationFragment_1_(), R.id.RL_CPA,
+                        bundle, ConversationFragment_1_.class.getSimpleName());
                 break;
         }
     }
