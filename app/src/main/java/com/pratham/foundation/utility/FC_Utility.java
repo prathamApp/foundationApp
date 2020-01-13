@@ -1391,7 +1391,7 @@ public class FC_Utility {
     }
 
     public static int getSectionCode() {
-        switch (FastSave.getInstance().getString(APP_SECTION, "")) {
+        switch (FastSave.getInstance().getString(APP_SECTION, ""+sec_Learning)) {
             case sec_Learning:
                 return 1;
             case sec_Practice:
@@ -1407,6 +1407,8 @@ public class FC_Utility {
 
     public static String getSectionName(int num) {
         switch (num){
+            case 0:
+                return "NA";
             case 1:
                 return sec_Learning;
             case 2:
