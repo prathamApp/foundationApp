@@ -178,7 +178,7 @@ public class DoingFragmentPresenter implements DoingFragmentContract.DoingFragme
             }
             newResId = GameConstatnts.getString(resId, contentTitle, questionModel.getQid(), imageName, questionModel.getQuestion(), queImageName);
            // addScore(GameConstatnts.getInt(questionModel.getQid()), jsonName, 0, 0, questionModel.getStartTime(),questionModel.getEndTime(), imageName,newResId);
-            addScore(FC_Utility.getSubjectNo(), jsonName, 0, 0, questionModel.getStartTime(),questionModel.getEndTime(), FC_Constants.IMG_LBL,newResId);
+            addScore(FC_Utility.getSubjectNo(), jsonName, FC_Utility.getSectionCode(), 0, questionModel.getStartTime(), questionModel.getEndTime(), FC_Constants.IMG_LBL, newResId);
             appDatabase.getKeyWordDao().insert(keyWords);
             setCompletionPercentage();
             //Toast.makeText(context, "inserted successfully", Toast.LENGTH_LONG).show();

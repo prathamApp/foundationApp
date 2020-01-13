@@ -200,7 +200,7 @@ public class WordWritingPresenter implements WordWritingContract.WordWritingPres
                     newResId = GameConstatnts.getString(resId,contentTitle, questionModel.get(i).getQid(), imageName, questionModel.get(i).getQuestion(), "");
                     //old
                     //  addScore(GameConstatnts.getInt(questionModel.get(i).getQid()), GameConstatnts.PARAGRAPH_WRITING, 0, 0, FC_Utility.getCurrentDateTime(), imageName,newResId);
-                    addScore(FC_Utility.getSubjectNo(), GameConstatnts.PARAGRAPH_WRITING, 0, 0, FC_Utility.getCurrentDateTime(), FC_Constants.IMG_LBL, newResId);
+                    addScore(FC_Utility.getSubjectNo(), GameConstatnts.PARAGRAPH_WRITING, FC_Utility.getSectionCode(), 0, FC_Utility.getCurrentDateTime(), FC_Constants.IMG_LBL, newResId);
                 }
                 GameConstatnts.postScoreEvent(questionModel.size(),questionModel.size());
                 setCompletionPercentage();

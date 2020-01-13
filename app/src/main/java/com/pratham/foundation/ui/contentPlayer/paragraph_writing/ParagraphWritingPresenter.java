@@ -211,7 +211,7 @@ public class ParagraphWritingPresenter implements ParagraphWritingContract.Parag
                     keyWords.setKeyWord(questionModel.get(i).getTitle());
                     keyWords.setWordType("word");
                     newResId = GameConstatnts.getString(resId, contentTitle, questionModel.get(i).getQid(), questionModel.get(i).getUserAnswer(), questionModel.get(i).getQuestion(),"");
-                    addScore(FC_Utility.getSubjectNo(), jsonName, 0, 0, questionModel.get(i).getStartTime(),questionModel.get(i).getEndTime(),FC_Constants.IMG_LBL,newResId);
+                    addScore(FC_Utility.getSubjectNo(), jsonName, FC_Utility.getSectionCode(), 0, questionModel.get(i).getStartTime(),questionModel.get(i).getEndTime(),FC_Constants.IMG_LBL,newResId);
                     appDatabase.getKeyWordDao().insert(keyWords);
                 }
             }

@@ -42,7 +42,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
-import static com.pratham.foundation.ui.contentPlayer.old_cos.conversation.ConversationActivity.mediaPlayerUtil;
+import static com.pratham.foundation.ui.contentPlayer.chit_chat.level_1.ConversationActivity.mediaPlayerUtil;
 import static com.pratham.foundation.utility.FC_Constants.dialog_btn_cancel;
 import static com.pratham.foundation.utility.FC_Constants.gameFolderPath;
 

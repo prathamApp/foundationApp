@@ -1,4 +1,4 @@
-package com.pratham.foundation.ui.contentPlayer.old_cos.conversation;
+package com.pratham.foundation.ui.contentPlayer.chit_chat.level_1;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
@@ -14,6 +14,7 @@ import com.pratham.foundation.R;
 import com.pratham.foundation.modalclasses.Message;
 
 import java.util.List;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
@@ -38,12 +39,12 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.ViewHold
 
         public ViewHolder(RelativeLayout v) {
             super(v);
-            ButterKnife.bind(this,v);
+            ButterKnife.bind(this, v);
         }
     }
 
     @Override
-    public MessageAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         if (viewType == 1) {
             View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.chat_item_received, parent, false);
             ViewHolder vh = new ViewHolder((RelativeLayout) v);
@@ -57,16 +58,16 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.ViewHold
 
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
-        holder.mTextView.setText(((Message)messageList.get(holder.getAdapterPosition())).getMessage());
+        holder.mTextView.setText(((Message) messageList.get(holder.getAdapterPosition())).getMessage());
         holder.mTextView.setMaxWidth(650);
-        if(position>lastPos) {
+        if (position > lastPos) {
             ImageViewAnimatedChange(context, holder);
-            lastPos=position;
+            lastPos = position;
         }
         holder.mTextView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ConversationActivity_.playChat(""+((Message)messageList.get(holder.getAdapterPosition())).getSenderAudio());
+                ConversationActivity_.playChat("" + ((Message) messageList.get(holder.getAdapterPosition())).getSenderAudio());
             }
         });
     }

@@ -1,4 +1,4 @@
-package com.pratham.foundation.ui.contentPlayer.old_cos.conversation;
+package com.pratham.foundation.ui.contentPlayer.chit_chat.level_1;
 
 import org.json.JSONArray;
 
@@ -22,7 +22,7 @@ public interface ConversationContract {
     }
 
     interface ConversationPresenter {
-        void setView(ConversationContract.ConversationView ConversationView);
+        void setView(ConversationView ConversationView);
 
         void fetchStory(String convoPath);
 
