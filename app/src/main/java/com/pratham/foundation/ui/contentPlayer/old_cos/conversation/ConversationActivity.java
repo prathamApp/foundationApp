@@ -106,14 +106,12 @@ public class ConversationActivity extends BaseActivity
     ContinuousSpeechService_New continuousSpeechService;
 //    AnimationDrawable animationDrawable;
 
-
     @AfterViews
     public void initialize() {
         iv_monk.setVisibility(View.GONE);
         silence_outer_layout.setVisibility(View.GONE);
         floating_back.setImageResource(R.drawable.ic_left_arrow_white);
         floating_info.setImageResource(R.drawable.ic_info_outline_white);
-
 //        animationDrawable = (AnimationDrawable) ll_convo_mainw.getBackground();
 //        animationDrawable.setEnterFadeDuration(4500);
 //        animationDrawable.setExitFadeDuration(4500);
@@ -151,7 +149,6 @@ public class ConversationActivity extends BaseActivity
 //            iv_ConvoMode.setImageResource(R.drawable.mode_c);
 
         tv_title.setText(contentName);
-
         presenter.fetchStory(convoPath);
     }
 
