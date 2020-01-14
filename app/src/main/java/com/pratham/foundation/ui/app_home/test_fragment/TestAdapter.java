@@ -3,7 +3,6 @@ package com.pratham.foundation.ui.app_home.test_fragment;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Typeface;
-import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -310,13 +309,9 @@ public class TestAdapter extends RecyclerView.Adapter {
         final Animation animation;
         animation = AnimationUtils.loadAnimation(mContext, R.anim.item_fall_down);
         animation.setDuration(500);
-
-        new Handler().postDelayed(() -> {
             content_card_view.setVisibility(View.VISIBLE);
             content_card_view.setAnimation(animation);
             lastPos = position;
-        }, (long) (20));
-
     }
 
 }

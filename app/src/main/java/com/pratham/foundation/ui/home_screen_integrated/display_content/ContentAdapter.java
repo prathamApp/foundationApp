@@ -2,7 +2,6 @@ package com.pratham.foundation.ui.home_screen_integrated.display_content;
 
 import android.content.Context;
 import android.net.Uri;
-import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.design.card.MaterialCardView;
 import android.support.v7.widget.RecyclerView;
@@ -166,9 +165,9 @@ public class ContentAdapter extends RecyclerView.Adapter {
                     holder.ib_action_btn.setVisibility(View.VISIBLE);
                     holder.ib_action_btn.setImageResource(R.drawable.ic_joystick);
                     holder.ib_action_btn.setClickable(true);
-                    if(contentList.getResourceType().equalsIgnoreCase(FC_Constants.VIDEO))
+                    if (contentList.getResourceType().equalsIgnoreCase(FC_Constants.VIDEO))
                         holder.ib_action_btn.setImageResource(R.drawable.ic_video);
-                    else if(contentList.getResourceType().toLowerCase().contains(FC_Constants.GAME))
+                    else if (contentList.getResourceType().toLowerCase().contains(FC_Constants.GAME))
                         holder.ib_action_btn.setImageResource(R.drawable.ic_joystick);
                     else
                         holder.ib_action_btn.setImageResource(R.drawable.ic_android_act);
@@ -215,7 +214,7 @@ public class ContentAdapter extends RecyclerView.Adapter {
                         }
                     }
                 });
-                holder.content_card_view.setVisibility(View.GONE);
+//                holder.content_card_view.setVisibility(View.GONE);
                 setAnimations(holder.content_card_view, position);
                 break;
             case 2:
@@ -281,18 +280,9 @@ public class ContentAdapter extends RecyclerView.Adapter {
         final Animation animation;
         animation = AnimationUtils.loadAnimation(mContext, R.anim.item_fall_down);
         animation.setDuration(500);
-
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                /*                if (position > lastPos) {*/
-                content_card_view.setVisibility(View.VISIBLE);
-                content_card_view.setAnimation(animation);
-                lastPos = position;
-//                }
-            }
-        }, (long) (20));
-
+        content_card_view.setVisibility(View.VISIBLE);
+        content_card_view.setAnimation(animation);
+        lastPos = position;
     }
 
     @Override

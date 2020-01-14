@@ -35,15 +35,15 @@ import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EFragment;
 import org.androidannotations.annotations.ViewById;
 
+import java.text.DecimalFormat;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 
 import static com.pratham.foundation.utility.FC_Utility.dpToPx;
 
 
 @EFragment(R.layout.fragment_profile)
-public class ProfileFragment extends Fragment implements ProfileContract.ProfileView, ProfileContract.ProfileItemClicked{
+public class ProfileFragment extends Fragment implements ProfileContract.ProfileView, ProfileContract.ProfileItemClicked {
 
     @Bean(ProfilePresenter.class)
     ProfileContract.ProfilePresenter presenter;
@@ -78,7 +78,7 @@ public class ProfileFragment extends Fragment implements ProfileContract.Profile
     ImageButton ib_langChange;
 
 
-//    String[] progressArray = {"Progress", "Share"};
+    //    String[] progressArray = {"Progress", "Share"};
     String[] progressArray = {"Progress"};
     private ProfileOuterDataAdapter adapterParent;
     Context context;
@@ -88,7 +88,7 @@ public class ProfileFragment extends Fragment implements ProfileContract.Profile
         FC_Constants.isTest = false;
         FC_Constants.isPractice = false;
         context = getActivity();
-        tv_studentName.setText(""+ FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_NAME,"Student"));
+        tv_studentName.setText("" + FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_NAME, "Student"));
         presenter.setView(ProfileFragment.this);
         if (adapterParent == null) {
             adapterParent = new ProfileOuterDataAdapter(context, progressArray, this);
@@ -111,45 +111,50 @@ public class ProfileFragment extends Fragment implements ProfileContract.Profile
     @UiThread
     @Override
     public void setDays(int size) {
-        tv_days.setText(""+size);
+        try {
+            tv_days.setText("" + size);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
+    @UiThread
     @Override
     public void setCertificateCount(List<ModalTopCertificates> modalTopCertificatesList) {
-        Collections.sort(modalTopCertificatesList, new Comparator<ModalTopCertificates>() {
-            @Override
-            public int compare(ModalTopCertificates o1, ModalTopCertificates o2) {
-                return o1.getTotalPerc().compareTo(o2.getTotalPerc());
-            }
-        });
-
+        Collections.sort(modalTopCertificatesList, (o1, o2) -> o1.getTotalPerc().compareTo(o2.getTotalPerc()));
         Collections.reverse(modalTopCertificatesList);
+        DecimalFormat decimalFormat = new DecimalFormat("#.00");
 
-        for(int i=0 ; i<modalTopCertificatesList.size() && i<3; i++){
-            switch (i) {
-                case 0:
-                    rl_certi1.setVisibility(View.VISIBLE);
-                    certi1_subj.setText(modalTopCertificatesList.get(i).getCertiName());
-                    certi1_perc.setText(modalTopCertificatesList.get(i).getTotalPerc());
-                    break;
-                case 1:
-                    rl_certi2.setVisibility(View.VISIBLE);
-                    certi2_subj.setText(modalTopCertificatesList.get(i).getCertiName());
-                    certi2_perc.setText(modalTopCertificatesList.get(i).getTotalPerc());
-                    break;
-                case 2:
-                    rl_certi3.setVisibility(View.VISIBLE);
-                    certi3_subj.setText(modalTopCertificatesList.get(i).getCertiName());
-                    certi3_perc.setText(modalTopCertificatesList.get(i).getTotalPerc());
-                    break;
+        try {
+            for (int i = 0; i < modalTopCertificatesList.size() && i < 3; i++) {
+                float num = Float.parseFloat(modalTopCertificatesList.get(i).getTotalPerc());
+                String numStr = decimalFormat.format(num) + "%";
+                switch (i) {
+                    case 0:
+                        rl_certi1.setVisibility(View.VISIBLE);
+                        certi1_subj.setText(modalTopCertificatesList.get(i).getCertiName());
+                        certi1_perc.setText(numStr);
+                        break;
+                    case 1:
+                        rl_certi2.setVisibility(View.VISIBLE);
+                        certi2_subj.setText(modalTopCertificatesList.get(i).getCertiName());
+                        certi2_perc.setText(numStr);
+                        break;
+                    case 2:
+                        rl_certi3.setVisibility(View.VISIBLE);
+                        certi3_subj.setText(modalTopCertificatesList.get(i).getCertiName());
+                        certi3_perc.setText(numStr);
+                        break;
+                }
             }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-//        tv_usage.setText(" Name: "+modalTopCertificatesList.get(0).getCertiName()+" Perc: "+modalTopCertificatesList.get(0).getTotalPerc());
     }
 
     @Override
     public void itemClicked(String usage) {
-        switch (usage){
+        switch (usage) {
             case "Certificate":
                 showCertificates();
                 break;
@@ -197,15 +202,15 @@ public class ProfileFragment extends Fragment implements ProfileContract.Profile
         Spinner lang_spinner = dialog.findViewById(R.id.lang_spinner);
         dia_btn_green.setText("OK");
         dialog.show();
-        String currLang = "" + FastSave.getInstance().getString(FC_Constants.LANGUAGE,"Hindi");
-        dia_title.setText("Current Language : "+currLang);
+        String currLang = "" + FastSave.getInstance().getString(FC_Constants.LANGUAGE, "Hindi");
+        dia_title.setText("Current Language : " + currLang);
 
         ArrayAdapter<String> dataAdapter = new ArrayAdapter<>(context, R.layout.custom_spinner,
                 context.getResources().getStringArray(R.array.app_Language));
         dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         lang_spinner.setAdapter(dataAdapter);
         String[] languages = getResources().getStringArray(R.array.app_Language);
-        for(int i = 0 ; i<languages.length ; i++) {
+        for (int i = 0; i < languages.length; i++) {
             if (currLang.equalsIgnoreCase(languages[i])) {
                 lang_spinner.setSelection(i);
                 break;

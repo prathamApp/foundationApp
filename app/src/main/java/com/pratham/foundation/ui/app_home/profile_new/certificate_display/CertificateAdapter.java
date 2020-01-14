@@ -2,7 +2,6 @@ package com.pratham.foundation.ui.app_home.profile_new.certificate_display;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
-import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.design.card.MaterialCardView;
 import android.support.v7.widget.RecyclerView;
@@ -135,18 +134,9 @@ public class CertificateAdapter extends RecyclerView.Adapter {
         final Animation animation;
         animation = AnimationUtils.loadAnimation(mContext, R.anim.item_fall_down);
         animation.setDuration(500);
-
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                /*                if (position > lastPos) {*/
-                content_card_view.setVisibility(View.VISIBLE);
-                content_card_view.setAnimation(animation);
-                lastPos = position;
-//                }
-            }
-        }, (long) (20));
-
+        content_card_view.setVisibility(View.VISIBLE);
+        content_card_view.setAnimation(animation);
+        lastPos = position;
     }
 
     @Override

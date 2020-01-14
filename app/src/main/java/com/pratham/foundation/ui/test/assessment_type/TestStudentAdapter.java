@@ -1,7 +1,6 @@
 package com.pratham.foundation.ui.test.assessment_type;
 
 import android.content.Context;
-import android.os.Handler;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -83,17 +82,9 @@ public class TestStudentAdapter extends RecyclerView.Adapter<TestStudentAdapter.
         animation = AnimationUtils.loadAnimation(mContext, R.anim.item_fall_down);
         animation.setDuration(500);
 
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                /*                if (position > lastPos) {*/
-                content_card_view.setVisibility(View.VISIBLE);
-                content_card_view.setAnimation(animation);
-                lastPos = position;
-//                }
-            }
-        }, (long) (20));
-
+        content_card_view.setVisibility(View.VISIBLE);
+        content_card_view.setAnimation(animation);
+        lastPos = position;
     }
 
     @Override

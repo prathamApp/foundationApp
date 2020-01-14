@@ -102,66 +102,6 @@ public class ProfileOuterDataAdapter extends RecyclerView.Adapter {
         } catch (Exception e) {
             e.printStackTrace();
         }
-
-/*
-        switch (viewHolder.getItemViewType()) {
-            case 1:
-            case 2:
-                FolderHolder itemRowHolder = (FolderHolder) viewHolder;
-                contentTable = dataList.get(i);
-                sublistList = new ArrayList<>();
-                final String sectionName = contentTable.getNodeTitle();
-                if (contentTable.getContentType() != null && contentTable.getResourceType() != null) {
-                    if ((contentTable.getContentType().equalsIgnoreCase("FullDownload") ||
-                            contentTable.getResourceType().equalsIgnoreCase("FullDownload"))
-                            && (contentTable.isDownloaded.equalsIgnoreCase("false"))) {
-                        itemRowHolder.btnMore.setVisibility(View.GONE);
-                        itemRowHolder.actionBtn.setVisibility(View.VISIBLE);
-                        itemRowHolder.actionBtn.setOnClickListener(v -> tempItemClicked.onContentDownloadClicked(dataList.get(i),
-                                i, 0, "" + FC_Constants.FULL_DOWNLOAD));
-                    } else {
-                        int size = dataList.get(i).getNodelist().size() - 2;
-                        itemRowHolder.btnMore.setText("SEE ALL " + size);
-                        itemRowHolder.btnMore.setVisibility(View.GONE);
-                        if (size > 6) {
-                            itemRowHolder.btnMore.setVisibility(View.VISIBLE);
-                            itemRowHolder.btnMore.setOnClickListener(v -> tempItemClicked.seeMore(dataList.get(i).getNodeId(),
-                                    dataList.get(i).getNodeTitle()));
-                        }
-                        itemRowHolder.actionBtn.setVisibility(View.GONE);
-                    }
-                } else {
-                    int size = dataList.get(i).getNodelist().size() - 2;
-                    itemRowHolder.btnMore.setText("SEE ALL " + size);
-                    itemRowHolder.btnMore.setVisibility(View.GONE);
-                    if (size > 6) {
-                        itemRowHolder.btnMore.setVisibility(View.VISIBLE);
-                        itemRowHolder.btnMore.setOnClickListener(v -> tempItemClicked.seeMore(dataList.get(i).getNodeId(),
-                                dataList.get(i).getNodeTitle()));
-                    }
-                    itemRowHolder.actionBtn.setVisibility(View.GONE);
-                }
-                sublistList = getList(dataList.get(i).getNodelist());
-*/
-/*            if (sublistList.size()>4)
-                itemRowHolder.next_nav_btn.setVisibility(View.VISIBLE);
-            else
-                itemRowHolder.next_nav_btn.setVisibility(View.GONE);*//*
-
-
-                try {
-                    itemRowHolder.itemTitle.setText(sectionName);
-                    LearningInnerDataAdapter learningInnerDataAdapter = new LearningInnerDataAdapter(mContext, sublistList, tempItemClicked, i,sectionName);
-                    itemRowHolder.recycler_view_list.setLayoutManager(new LinearLayoutManager(mContext, LinearLayoutManager.HORIZONTAL, false));
-                    itemRowHolder.recycler_view_list.setAdapter(learningInnerDataAdapter);
-                    childCounter += 1;
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-
-        }
-*/
-
     }
 
     private List<ContentTable> getList(List<ContentTable> nodelist) {

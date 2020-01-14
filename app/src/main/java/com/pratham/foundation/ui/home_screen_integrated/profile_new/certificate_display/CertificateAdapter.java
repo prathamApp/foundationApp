@@ -1,7 +1,6 @@
 package com.pratham.foundation.ui.home_screen_integrated.profile_new.certificate_display;
 
 import android.content.Context;
-import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.design.card.MaterialCardView;
 import android.support.v7.widget.RecyclerView;
@@ -58,7 +57,7 @@ public class CertificateAdapter extends RecyclerView.Adapter {
 
     public class FileHolder extends RecyclerView.ViewHolder {
 
-        public TextView title,tv_timestamp,tv_view;
+        public TextView title, tv_timestamp, tv_view;
         RelativeLayout certi_root;
 //        public ImageView ib_action_btn;
 //        public MaterialCardView content_card_view;
@@ -117,7 +116,7 @@ public class CertificateAdapter extends RecyclerView.Adapter {
 //                    return 2;
 //            }
 //        } else
-            return 0;
+        return 0;
     }
 
     @Override
@@ -159,17 +158,9 @@ public class CertificateAdapter extends RecyclerView.Adapter {
         animation = AnimationUtils.loadAnimation(mContext, R.anim.item_fall_down);
         animation.setDuration(500);
 
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                /*                if (position > lastPos) {*/
-                content_card_view.setVisibility(View.VISIBLE);
-                content_card_view.setAnimation(animation);
-                lastPos = position;
-//                }
-            }
-        }, (long) (20));
-
+        content_card_view.setVisibility(View.VISIBLE);
+        content_card_view.setAnimation(animation);
+        lastPos = position;
     }
 
     @Override

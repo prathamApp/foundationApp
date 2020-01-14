@@ -13,7 +13,6 @@ import android.widget.RatingBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-
 import com.pratham.foundation.R;
 import com.pratham.foundation.modalclasses.CertificateModelClass;
 
@@ -42,9 +41,9 @@ public class CertificateAdapter extends RecyclerView.Adapter<CertificateAdapter.
 
         public MyViewHolder(View view) {
             super(view);
-            certificate_card = (RelativeLayout) view.findViewById(R.id.certificate_card_view);
-            title = (TextView) view.findViewById(R.id.assess_data);
-            ratingStars = (RatingBar) view.findViewById(R.id.ratingStars);
+            certificate_card = view.findViewById(R.id.certificate_card_view);
+            title = view.findViewById(R.id.assess_data);
+            ratingStars = view.findViewById(R.id.ratingStars);
         }
     }
 
@@ -188,8 +187,8 @@ public class CertificateAdapter extends RecyclerView.Adapter<CertificateAdapter.
 
             }
         });
-        holder.game_card_view.setVisibility(View.GONE);
-        setAnimations(holder.game_card_view, position);*/
+        holder.game_card_view.setVisibility(View.GONE);*/
+//        setAnimations(holder.game_card_view, position);
 
     }
 

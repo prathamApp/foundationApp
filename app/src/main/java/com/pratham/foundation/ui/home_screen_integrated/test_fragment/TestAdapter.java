@@ -3,7 +3,6 @@ package com.pratham.foundation.ui.home_screen_integrated.test_fragment;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Typeface;
-import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -110,6 +109,7 @@ public class TestAdapter extends RecyclerView.Adapter {
 
     public class TestSpinnerHolder extends RecyclerView.ViewHolder {
         Spinner spinner;
+
         TestSpinnerHolder(View view) {
             super(view);
             spinner = view.findViewById(R.id.test_lang_spinner);
@@ -246,7 +246,7 @@ public class TestAdapter extends RecyclerView.Adapter {
                 break;
             case 2:
                 TestSpinnerHolder testSpinnerHolder = (TestSpinnerHolder) viewitemRowHolder;
-                if(dataAdapter == null) {
+                if (dataAdapter == null) {
                     dataAdapter = new ArrayAdapter<>(mContext,
                             R.layout.custom_spinner, mContext.getResources().getStringArray(R.array.certificate_Languages));
                     dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -311,12 +311,9 @@ public class TestAdapter extends RecyclerView.Adapter {
         animation = AnimationUtils.loadAnimation(mContext, R.anim.item_fall_down);
         animation.setDuration(500);
 
-        new Handler().postDelayed(() -> {
-            content_card_view.setVisibility(View.VISIBLE);
-            content_card_view.setAnimation(animation);
-            lastPos = position;
-        }, (long) (20));
-
+        content_card_view.setVisibility(View.VISIBLE);
+        content_card_view.setAnimation(animation);
+        lastPos = position;
     }
 
 }
