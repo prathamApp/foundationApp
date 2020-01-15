@@ -111,11 +111,6 @@ public class ConversationFragment_1 extends Fragment
         floating_back.setImageResource(R.drawable.ic_left_arrow_white);
         floating_info.setImageResource(R.drawable.ic_info_outline_white);
         context = getActivity();
-//        animationDrawable = (AnimationDrawable) ll_convo_mainw.getBackground();
-//        animationDrawable.setEnterFadeDuration(4500);
-//        animationDrawable.setExitFadeDuration(4500);
-//        animationDrawable.start();
-        // continuousSpeechService = new ContinuousSpeechService_New(context, ConversationFragment_1.this, FC_Constants.ENGLISH);
         correctSound = MediaPlayer.create(context, R.raw.correct_ans);
 
         presenter.setView(ConversationFragment_1.this);
