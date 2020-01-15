@@ -130,7 +130,7 @@ public class ParagraphWritingFragment extends Fragment implements ParagraphWriti
             play_button_control.setVisibility(View.VISIBLE);
         }
         resStartTime = FC_Utility.getCurrentDateTime();
-        presenter.addScore(0, "", 0, 0, resStartTime,FC_Utility.getCurrentDateTime(), jsonName + " " + GameConstatnts.START,resId);
+        presenter.addScore(0, "", 0, 0, resStartTime,FC_Utility.getCurrentDateTime(), jsonName + " " + GameConstatnts.START,resId,true);
     }
 
     @Override
@@ -342,7 +342,7 @@ public class ParagraphWritingFragment extends Fragment implements ParagraphWriti
 
     @Override
     public void gameClose() {
-        presenter.addScore(0, "", 0, 0, resStartTime,FC_Utility.getCurrentDateTime(), jsonName + " " + GameConstatnts.END,resId);
+        presenter.addScore(0, "", 0, 0, resStartTime,FC_Utility.getCurrentDateTime(), jsonName + " " + GameConstatnts.END,resId,true);
     }
 
     @Override

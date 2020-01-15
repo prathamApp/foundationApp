@@ -214,7 +214,7 @@
         android:layout_marginEnd="10dp">
 
         <RelativeLayout
-            android:id="@+id/rl_person1"
+            android:id="@+id/rl_personA"
             android:layout_width="0dp"
             android:layout_marginBottom="@dimen/_5sdp"
             android:layout_height="@dimen/_30sdp"
@@ -228,7 +228,7 @@
                 android:layout_alignParentStart="true"
                 android:layout_width="@dimen/_25sdp"
                 android:layout_height="@dimen/_25sdp"
-                android:src="@drawable/b1" />
+                android:src="@drawable/robot" />
 
             <com.pratham.foundation.customView.SansTextViewBold
                 android:id="@+id/person_A"
@@ -244,7 +244,7 @@
         </RelativeLayout>
 
         <RelativeLayout
-            android:id="@+id/rl_person2"
+            android:id="@+id/rl_personB"
             android:layout_width="0dp"
             android:layout_height="@dimen/_30sdp"
             android:layout_marginStart="@dimen/_3sdp"
@@ -257,7 +257,7 @@
                 android:layout_alignParentStart="true"
                 android:layout_width="@dimen/_25sdp"
                 android:layout_height="@dimen/_25sdp"
-                android:src="@drawable/b1" />
+                android:src="@drawable/student" />
 
             <com.pratham.foundation.customView.SansTextViewBold
                 android:id="@+id/person_B"

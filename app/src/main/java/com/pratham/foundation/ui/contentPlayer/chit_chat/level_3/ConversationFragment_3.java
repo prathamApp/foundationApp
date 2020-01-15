@@ -80,10 +80,10 @@ public class ConversationFragment_3 extends Fragment
     @Bean(ConversationPresenter_3.class)
     ConversationContract_3.ConversationPresenter_3 presenter;
 
-    @ViewById(R.id.person_A)
-    ImageView person_A;
-    @ViewById(R.id.person_B)
-    ImageView person_B;
+    @ViewById(R.id.rl_personA)
+    RelativeLayout person_A;
+    @ViewById(R.id.rl_personB)
+    RelativeLayout person_B;
 
     private RecyclerView.Adapter mAdapter;
     private List messageList = new ArrayList();
@@ -107,7 +107,7 @@ public class ConversationFragment_3 extends Fragment
     @AfterViews
     public void initialize() {
         iv_monk.setVisibility(View.GONE);
-        btn_reading.setVisibility(View.GONE);
+        btn_reading.setVisibility(View.INVISIBLE);
         btn_imgsend.setVisibility(View.GONE);
         clear.setVisibility(View.GONE);
         floating_back.setImageResource(R.drawable.ic_left_arrow_white);
@@ -168,18 +168,18 @@ public class ConversationFragment_3 extends Fragment
     }
 
 
-    @Click(R.id.person_B)
+    @Click(R.id.rl_personB)
     public void onPersonB(){
-        person_B.setBackground(ContextCompat.getDrawable(context, R.drawable.ripple_rectangle_transparent_dark));
-        person_A.setBackground(ContextCompat.getDrawable(context, R.drawable.ripple_rectangle_green_selected));
+        person_B.setBackground(ContextCompat.getDrawable(context, R.drawable.convo_correct_bg));
+        person_A.setBackground(ContextCompat.getDrawable(context, R.drawable.dialog_bg));
         user = userB;
         btn_reading.setVisibility(View.VISIBLE);
     }
 
-    @Click(R.id.person_A)
+    @Click(R.id.rl_personA)
     public void onPersonA(){
-        person_B.setBackground(ContextCompat.getDrawable(context, R.drawable.ripple_rectangle_green_selected));
-        person_A.setBackground(ContextCompat.getDrawable(context, R.drawable.ripple_rectangle_transparent_dark));
+        person_B.setBackground(ContextCompat.getDrawable(context, R.drawable.dialog_bg));
+        person_A.setBackground(ContextCompat.getDrawable(context, R.drawable.convo_correct_bg));
         user = userA;
         btn_reading.setVisibility(View.VISIBLE);
     }

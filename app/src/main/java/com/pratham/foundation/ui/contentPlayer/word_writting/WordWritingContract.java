@@ -16,7 +16,7 @@ public interface WordWritingContract {
     public interface WordWritingPresenter {
         public void getData();
 
-        public void addScore(int wID, String Word, int scoredMarks, int totalMarks, String resStartTime, String Label,String resId);
+        public void addScore(int wID, String Word, int scoredMarks, int totalMarks, String resStartTime, String Label,String resId,boolean addInAssessment);
 
         public void createDirectoryAndSaveFile(Bitmap imageToSave, String fileName);
 

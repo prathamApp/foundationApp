@@ -157,8 +157,8 @@ public class ListeningAndWrittingPresenterImp implements ListeningAndWrittingCon
                     keyWords.setWordType("word");
                     appDatabase.getKeyWordDao().insert(keyWords);
                     newResId = GameConstatnts.getString(resId, contentTitle, listenAndWrittingModal.get(i).getQid(), imageName, listenAndWrittingModal.get(i).getQuestion(), "");
-                    //  addScore(GameConstatnts.getInt(listenAndWrittingModal.get(i).getQid()), GameConstatnts.LISTNING_AND_WRITTING, 0, 0, FC_Utility.getCurrentDateTime(), imageName,newResId);
-                    addScore(FC_Utility.getSubjectNo(), GameConstatnts.LISTNING_AND_WRITTING, FC_Utility.getSectionCode(), 0, FC_Utility.getCurrentDateTime(), FC_Constants.IMG_LBL, newResId);
+                    addScore(GameConstatnts.getInt(listenAndWrittingModal.get(i).getQid()), GameConstatnts.LISTNING_AND_WRITTING, 0, 0, FC_Utility.getCurrentDateTime(), imageName, resId, true);
+                    addScore(FC_Utility.getSubjectNo(), GameConstatnts.LISTNING_AND_WRITTING, FC_Utility.getSectionCode(), 0, FC_Utility.getCurrentDateTime(), FC_Constants.IMG_LBL, newResId, false);
                 }
                 setCompletionPercentage();
                 GameConstatnts.postScoreEvent(listenAndWrittingModal.size(),listenAndWrittingModal.size());
@@ -219,7 +219,7 @@ public class ListeningAndWrittingPresenterImp implements ListeningAndWrittingCon
     }
 
 
-    public void addScore(int wID, String Word, int scoredMarks, int totalMarks, String resStartTime, String Label, String resId) {
+    public void addScore(int wID, String Word, int scoredMarks, int totalMarks, String resStartTime, String Label, String resId, boolean addInAssessment) {
         try {
             String deviceId = appDatabase.getStatusDao().getValue("DeviceId");
             Score score = new Score();
@@ -237,7 +237,7 @@ public class ListeningAndWrittingPresenterImp implements ListeningAndWrittingCon
             score.setSentFlag(0);
             appDatabase.getScoreDao().insert(score);
 
-            if (FC_Constants.isTest) {
+            if (FC_Constants.isTest && addInAssessment) {
                 Assessment assessment = new Assessment();
                 assessment.setResourceIDa(resId);
                 assessment.setSessionIDa(FastSave.getInstance().getString(FC_Constants.ASSESSMENT_SESSION, ""));

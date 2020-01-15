@@ -162,7 +162,7 @@ public class ListeningAndWritting extends Fragment implements ListeningAndWritti
         });
        */
         resStartTime = FC_Utility.getCurrentDateTime();
-        presenter.addScore(0, "", 0, 0, resStartTime, GameConstatnts.LISTNING_AND_WRITTING + " " + GameConstatnts.START,resId);
+        presenter.addScore(0, "", 0, 0, resStartTime, GameConstatnts.LISTNING_AND_WRITTING + " " + GameConstatnts.START,resId,true);
         tickMarkLabelsRelativeLayout.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
             @Override
             public void onGlobalLayout() {
@@ -520,7 +520,7 @@ public class ListeningAndWritting extends Fragment implements ListeningAndWritti
 
     @Override
     public void gameClose() {
-        presenter.addScore(0, "", 0, 0, resStartTime, GameConstatnts.LISTNING_AND_WRITTING + " " + GameConstatnts.END,resId);
+        presenter.addScore(0, "", 0, 0, resStartTime, GameConstatnts.LISTNING_AND_WRITTING + " " + GameConstatnts.END,resId,true);
     }
 
     @Override

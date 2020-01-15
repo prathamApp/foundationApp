@@ -211,7 +211,8 @@ public class ParagraphWritingPresenter implements ParagraphWritingContract.Parag
                     keyWords.setKeyWord(questionModel.get(i).getTitle());
                     keyWords.setWordType("word");
                     newResId = GameConstatnts.getString(resId, contentTitle, questionModel.get(i).getQid(), questionModel.get(i).getUserAnswer(), questionModel.get(i).getQuestion(),"");
-                    addScore(FC_Utility.getSubjectNo(), jsonName, FC_Utility.getSectionCode(), 0, questionModel.get(i).getStartTime(),questionModel.get(i).getEndTime(),FC_Constants.IMG_LBL,newResId);
+                    addScore(GameConstatnts.getInt(questionModel.get(i).getQid()), jsonName, 0, 0, questionModel.get(i).getStartTime(), questionModel.get(i).getEndTime(), questionModel.get(i).getUserAnswer(), resId, true);
+                    addScore(FC_Utility.getSubjectNo(), jsonName, FC_Utility.getSectionCode(), 0, questionModel.get(i).getStartTime(), questionModel.get(i).getEndTime(), FC_Constants.IMG_LBL, newResId, false);
                     appDatabase.getKeyWordDao().insert(keyWords);
                 }
             }
@@ -234,7 +235,7 @@ public class ParagraphWritingPresenter implements ParagraphWritingContract.Parag
         }
     }
 
-    public void addScore(int wID, String Word, int scoredMarks, int totalMarks, String resStartTime,String resEndTime, String Label,String resId) {
+    public void addScore(int wID, String Word, int scoredMarks, int totalMarks, String resStartTime, String resEndTime, String Label, String resId, boolean addInAssessment) {
         try {
             String deviceId = appDatabase.getStatusDao().getValue("DeviceId");
             Score score = new Score();
@@ -252,7 +253,7 @@ public class ParagraphWritingPresenter implements ParagraphWritingContract.Parag
             score.setSentFlag(0);
             appDatabase.getScoreDao().insert(score);
 
-            if (FC_Constants.isTest) {
+            if (FC_Constants.isTest && addInAssessment) {
                 Assessment assessment = new Assessment();
                 assessment.setResourceIDa(resId);
                 assessment.setSessionIDa(FastSave.getInstance().getString(FC_Constants.ASSESSMENT_SESSION, ""));
