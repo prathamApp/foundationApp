@@ -1,7 +1,5 @@
 package com.pratham.foundation.ui.contentPlayer.chit_chat.level_3;
 
-import org.json.JSONArray;
-
 /**
  * Created by Ketan on 23-Nov-17.
  */
@@ -20,7 +18,7 @@ public interface ConversationContract_3 {
     }
 
     interface ConversationPresenter_3 {
-        void setView(ConversationView_3 ConversationView);
+        void setView(ConversationView_3 ConversationView,String resId);
 
       //  void fetchStory(String convoPath);
 
@@ -30,11 +28,9 @@ public interface ConversationContract_3 {
 
       //  float getPercentage();
 
-        void addScore(int i, String s, int i1, int i2, String convo_end);
+        public void addScore(int wID, String Word, int scoredMarks, int totalMarks, String resStartTime, String resEndTime, String Label, String resId, boolean addInAssessment);
 
         void setStartTime(String currentDateTime);
-
-       void setContentId(String contentId);
 
         void addCompletion(float perc);
     }

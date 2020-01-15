@@ -116,7 +116,6 @@ public class ConversationFragment_3 extends Fragment
         continuousSpeechService = new ContinuousSpeechService_New(context, ConversationFragment_3.this, FC_Constants.ENGLISH);
         correctSound = MediaPlayer.create(context, R.raw.correct_ans);
 
-        presenter.setView(ConversationFragment_3.this);
 
         sendClikChanger(0);
         mediaPlayerUtil = new MediaPlayerUtil(context);
@@ -131,7 +130,8 @@ public class ConversationFragment_3 extends Fragment
         certiCode = bundle.getString("certiCode");
         onSdCard = bundle.getBoolean("onSdCard", false);
 
-        presenter.setContentId(contentId);
+        presenter.setView(ConversationFragment_3.this,contentId);
+
         convoMode = "A";
 
         if (onSdCard)
