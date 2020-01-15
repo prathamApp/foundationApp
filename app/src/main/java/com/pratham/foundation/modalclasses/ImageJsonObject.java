@@ -1,5 +1,7 @@
 package com.pratham.foundation.modalclasses;
 
+import com.pratham.foundation.utility.FC_Constants;
+
 public class ImageJsonObject {
     private String resId;
     private String gameName;
@@ -7,6 +9,7 @@ public class ImageJsonObject {
     private String ansImageName;
     private String question;
     private String queImageName;
+    private boolean isTest;
 
 
     public ImageJsonObject(String resId, String gameName, String qid, String ansImageName, String question, String queImageName) {
@@ -16,6 +19,7 @@ public class ImageJsonObject {
         this.ansImageName = ansImageName;
         this.question = question;
         this.queImageName = queImageName;
+        this.isTest= FC_Constants.isTest;
     }
 
     public String getResId() {
@@ -66,4 +70,11 @@ public class ImageJsonObject {
         this.question = question;
     }
 
+    public boolean isTest() {
+        return isTest;
+    }
+
+    public void setTest(boolean test) {
+        isTest = test;
+    }
 }

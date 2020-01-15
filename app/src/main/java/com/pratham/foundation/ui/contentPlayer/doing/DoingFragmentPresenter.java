@@ -177,8 +177,8 @@ public class DoingFragmentPresenter implements DoingFragmentContract.DoingFragme
                 queImageName = readingContentPath + questionModel.getPhotourl();
             }
             newResId = GameConstatnts.getString(resId, contentTitle, questionModel.getQid(), imageName, questionModel.getQuestion(), queImageName);
-           // addScore(GameConstatnts.getInt(questionModel.getQid()), jsonName, 0, 0, questionModel.getStartTime(),questionModel.getEndTime(), imageName,newResId);
-            addScore(FC_Utility.getSubjectNo(), jsonName, FC_Utility.getSectionCode(), 0, questionModel.getStartTime(), questionModel.getEndTime(), FC_Constants.IMG_LBL, newResId);
+            addScore(GameConstatnts.getInt(questionModel.getQid()), jsonName, 0, 0, questionModel.getStartTime(), questionModel.getEndTime(), imageName, resId, true);
+            addScore(FC_Utility.getSubjectNo(), jsonName, FC_Utility.getSectionCode(), 0, questionModel.getStartTime(), questionModel.getEndTime(), FC_Constants.IMG_LBL, newResId, false);
             appDatabase.getKeyWordDao().insert(keyWords);
             setCompletionPercentage();
             //Toast.makeText(context, "inserted successfully", Toast.LENGTH_LONG).show();
@@ -190,7 +190,7 @@ public class DoingFragmentPresenter implements DoingFragmentContract.DoingFragme
         BackupDatabase.backup(context);
     }
 
-    public void addScore(int wID, String Word, int scoredMarks, int totalMarks, String resStartTime,String resEndTime, String Label,String resId) {
+    public void addScore(int wID, String Word, int scoredMarks, int totalMarks, String resStartTime, String resEndTime, String Label, String resId, boolean addInAssessment) {
         try {
             String deviceId = appDatabase.getStatusDao().getValue("DeviceId");
             Score score = new Score();
@@ -208,7 +208,7 @@ public class DoingFragmentPresenter implements DoingFragmentContract.DoingFragme
             score.setSentFlag(0);
             appDatabase.getScoreDao().insert(score);
 
-            if (FC_Constants.isTest) {
+            if (FC_Constants.isTest && addInAssessment) {
                 Assessment assessment = new Assessment();
                 assessment.setResourceIDa(resId);
                 assessment.setSessionIDa(FastSave.getInstance().getString(FC_Constants.ASSESSMENT_SESSION, ""));

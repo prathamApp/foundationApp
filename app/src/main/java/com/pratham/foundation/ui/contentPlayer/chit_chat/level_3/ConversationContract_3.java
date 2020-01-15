@@ -9,32 +9,32 @@ import org.json.JSONArray;
 public interface ConversationContract_3 {
 
     interface ConversationView_3{
-        void setConvoJson(JSONArray returnStoryNavigate);
-        void setAnsCorrect(boolean[] ansCorrect);
+      //  void setConvoJson(JSONArray returnStoryNavigate);
+       // void setAnsCorrect(boolean[] ansCorrect);
 
         void sendClikChanger(int i);
 
-        void submitAns(String[] splitQues);
+      //  void submitAns(String[] splitQues);
 
-        void clearMonkAnimation();
+       // void clearMonkAnimation();
     }
 
     interface ConversationPresenter_3 {
         void setView(ConversationView_3 ConversationView);
 
-        void fetchStory(String convoPath);
+      //  void fetchStory(String convoPath);
 
-        void setCorrectArray(int length);
+       // void setCorrectArray(int length);
 
       //  void sttResultProcess(ArrayList<String> sttServerResult, String answer);
 
-        float getPercentage();
+      //  float getPercentage();
 
         void addScore(int i, String s, int i1, int i2, String convo_end);
 
         void setStartTime(String currentDateTime);
 
-        void setContentId(String contentId);
+       void setContentId(String contentId);
 
         void addCompletion(float perc);
     }
