@@ -129,7 +129,7 @@ public class ConversationFragment_2 extends Fragment
 
         selectedLanguage = "english";
         Bundle bundle = getArguments();
-        contentId = bundle.getString("storyId");
+        contentId = bundle.getString("resId");
         studentID = bundle.getString("StudentID");
         contentName = bundle.getString("contentName");
         convoMode = bundle.getString("convoMode");

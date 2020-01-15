@@ -715,4 +715,5 @@ public class DoingFragment extends Fragment implements STT_Result_New.sttView, O
         if (!scienceQuestion.getInstruction().isEmpty())
             GameConstatnts.showGameInfo(getActivity(), scienceQuestion.getInstruction(),readingContentPath+scienceQuestion.getInstructionUrl());
     }
+
 }

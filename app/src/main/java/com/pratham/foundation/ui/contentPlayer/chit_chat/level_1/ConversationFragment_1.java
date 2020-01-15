@@ -29,7 +29,9 @@ import com.pratham.foundation.R;
 import com.pratham.foundation.customView.SansTextViewBold;
 import com.pratham.foundation.customView.display_image_dialog.CustomLodingDialog;
 import com.pratham.foundation.interfaces.MediaCallbacks;
+import com.pratham.foundation.interfaces.OnGameClose;
 import com.pratham.foundation.modalclasses.Message;
+import com.pratham.foundation.ui.contentPlayer.GameConstatnts;
 import com.pratham.foundation.ui.contentPlayer.old_cos.conversation.MessageAdapter;
 import com.pratham.foundation.utility.FC_Constants;
 import com.pratham.foundation.utility.FC_Utility;
@@ -53,7 +55,7 @@ import static com.pratham.foundation.utility.SplashSupportActivity.ButtonClickSo
 
 @EFragment(R.layout.activity_conversation)
 public class ConversationFragment_1 extends Fragment
-        implements ConversationContract_1.ConversationView_1, MediaCallbacks {
+        implements ConversationContract_1.ConversationView_1, MediaCallbacks, OnGameClose {
 
     @ViewById(R.id.recyclerView)
     RecyclerView recyclerView;
@@ -102,6 +104,8 @@ public class ConversationFragment_1 extends Fragment
     float[] msgPercentage;
     // ContinuousSpeechService_New continuousSpeechService;
     boolean isUser = false;
+    private String resStartTime;
+    String resId;
 //    AnimationDrawable animationDrawable;
 
     @AfterViews
@@ -113,14 +117,14 @@ public class ConversationFragment_1 extends Fragment
         context = getActivity();
         correctSound = MediaPlayer.create(context, R.raw.correct_ans);
 
-        presenter.setView(ConversationFragment_1.this);
+
 
         sendClikChanger(0);
         mediaPlayerUtil = new MediaPlayerUtil(context);
         mediaPlayerUtil.initCallback(ConversationFragment_1.this);
         Bundle bundle = getArguments();
         selectedLanguage = "english";
-        contentId = bundle.getString("storyId");
+        resId = bundle.getString("resId");
         studentID = bundle.getString("StudentID");
         contentName = bundle.getString("contentName");
         convoMode = bundle.getString("convoMode");
@@ -128,13 +132,19 @@ public class ConversationFragment_1 extends Fragment
         certiCode = bundle.getString("certiCode");
         onSdCard = bundle.getBoolean("onSdCard", false);
 
-        presenter.setContentId(contentId);
+
         convoMode = "A";
 
         if (onSdCard)
             convoPath = ApplicationClass.contentSDPath + gameFolderPath + "/" + contentPath + "/";
         else
             convoPath = ApplicationClass.foundationPath + gameFolderPath + "/" + contentPath + "/";
+        resStartTime = FC_Utility.getCurrentDateTime();
+        presenter.setView(ConversationFragment_1.this,resId);
+        presenter.addScore(0, "", 0, 0, resStartTime, FC_Utility.getCurrentDateTime(), GameConstatnts.NEW_CHIT_CHAT_1 + " " + GameConstatnts.START, contentId, true);
+
+
+
         //        if (convoMode.equals("A"))
 //            iv_ConvoMode.setImageResource(R.drawable.mode_a);
 //        else if (convoMode.equals("B"))
@@ -211,9 +221,7 @@ public class ConversationFragment_1 extends Fragment
     @Click(R.id.btn_imgsend)
     public void sendMessage() {
         sendClikChanger(0);
-        int correctAnswerCount = setBooleanGetCounter();
         float perc = presenter.getPercentage();
-        presenter.addScore(0, "perc - " + perc, correctAnswerCount, correctArr.length, " Convo ");
         ButtonClickSound.start();
         btn_reading.setImageResource(R.drawable.ic_mic_black);
       /*  if (voiceStart)
@@ -618,22 +626,23 @@ public class ConversationFragment_1 extends Fragment
 
         dia_btn_green.setOnClickListener(v -> {
             ButtonClickSound.start();
-            presenter.addScore(0, "", 0, 0, "Convo End");
             float perc = getCompletionPercentage();
             presenter.addCompletion(perc);
             dialog.dismiss();
-            if (FC_Constants.isTest) {
+       /*     if (FC_Constants.isTest) {
                 int pages = getCompletionPages();
                 int msgPercLength = msgPercentage.length;
 
-                Intent returnIntent = new Intent();
+             *//*   Intent returnIntent = new Intent();
                 returnIntent.putExtra("cCode", certiCode);
                 returnIntent.putExtra("sMarks", pages);
-                returnIntent.putExtra("tMarks", msgPercLength);
+                returnIntent.putExtra("tMarks", msgPercLength);*//*
                 //todo #
                 //setResult(Activity.RESULT_OK, returnIntent);
-            }
-            closeConvo();
+            }*/
+            GameConstatnts.playGameNext(context, GameConstatnts.TRUE, this);
+
+           // closeConvo();
         });
     }
 
@@ -750,6 +759,12 @@ public class ConversationFragment_1 extends Fragment
     public void closeConvo() {
         //todo #
         //finish();
+    }
+
+    @Override
+    public void gameClose() {
+        presenter.addScore(0, "", 0, 0, resStartTime, FC_Utility.getCurrentDateTime(), GameConstatnts.NEW_CHIT_CHAT_1 + " " + GameConstatnts.END, contentId, true);
+
     }
 
  /*   @SuppressLint("SetTextI18n")

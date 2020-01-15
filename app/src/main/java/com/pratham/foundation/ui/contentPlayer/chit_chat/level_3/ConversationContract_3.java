@@ -30,8 +30,6 @@ public interface ConversationContract_3 {
 
         public void addScore(int wID, String Word, int scoredMarks, int totalMarks, String resStartTime, String resEndTime, String Label, String resId, boolean addInAssessment);
 
-        void setStartTime(String currentDateTime);
-
         void addCompletion(float perc);
     }
 
