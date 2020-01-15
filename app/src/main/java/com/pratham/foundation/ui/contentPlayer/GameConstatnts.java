@@ -22,6 +22,7 @@ import com.pratham.foundation.modalclasses.ImageJsonObject;
 import com.pratham.foundation.modalclasses.ScoreEvent;
 import com.pratham.foundation.services.shared_preferences.FastSave;
 import com.pratham.foundation.ui.contentPlayer.chit_chat.level_1.ConversationFragment_1_;
+import com.pratham.foundation.ui.contentPlayer.chit_chat.level_2.ConversationFragment_2_;
 import com.pratham.foundation.ui.contentPlayer.chit_chat.level_3.ConversationFragment_3_;
 import com.pratham.foundation.ui.contentPlayer.dialogs.InstructionDialog;
 import com.pratham.foundation.ui.contentPlayer.doing.DoingFragment_;
@@ -376,6 +377,17 @@ public class GameConstatnts implements ShowInstruction {
                 case GameConstatnts.NEW_CHIT_CHAT_1:
                     FC_Utility.showFragment((Activity) context, new ConversationFragment_1_(), R.id.RL_CPA,
                             bundle, ConversationFragment_1_.class.getSimpleName());
+                    handler.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            instructionsDialog.dismiss();
+                            //Do something after 100ms
+                        }
+                    }, 100);
+                    break;
+                case GameConstatnts.NEW_CHIT_CHAT_2:
+                    FC_Utility.showFragment((Activity) context, new ConversationFragment_2_(), R.id.RL_CPA,
+                            bundle, ConversationFragment_2_.class.getSimpleName());
                     handler.postDelayed(new Runnable() {
                         @Override
                         public void run() {
