@@ -53,6 +53,8 @@ import java.util.Random;
 
 import static com.pratham.foundation.BaseActivity.mediaPlayerUtil;
 import static com.pratham.foundation.utility.FC_Constants.gameFolderPath;
+import static com.pratham.foundation.utility.FC_Constants.sec_Practice;
+import static com.pratham.foundation.utility.FC_Constants.sec_Test;
 import static com.pratham.foundation.utility.SplashSupportActivity.ButtonClickSound;
 
 
@@ -89,17 +91,13 @@ public class ConversationFragment_2 extends Fragment
     JSONArray conversation;
     private RecyclerView.Adapter mAdapter;
     private List messageList = new ArrayList();
-    String question;
-    String answer, ansForCheck;
-    String questionAudio;
-    String answerAudio, startTime;
+    String question, answer, questionAudio, convoMode, answerAudio, LOG_TAG = "VoiceRecognitionActivity";
+    String contentId, studentID, contentName, contentPath, certiCode, app_sec, recordedTextMsg = "";
+    public static String convoPath;
     MediaPlayer correctSound;
     int currentQueNos = 0, randomNumA, randomNumB, currentMsgNo = 0;
     static boolean voiceStart = false;
     public RecognitionListener listener;
-    String selectedLanguage, contentData, contentId, studentID, contentName, contentPath, certiCode;
-    public static String convoMode, convoPath;
-    private String LOG_TAG = "VoiceRecognitionActivity";
     boolean[] correctArr;
     boolean myMsg, onSdCard;
     float[] msgPercentage;
@@ -114,11 +112,15 @@ public class ConversationFragment_2 extends Fragment
         floating_back.setImageResource(R.drawable.ic_left_arrow_white);
         floating_info.setImageResource(R.drawable.ic_info_outline_white);
         context = getActivity();
+//        app_sec = FastSave.getInstance().getString(APP_SECTION, "" + sec_Learning);
+        app_sec = sec_Practice;
+
 //        animationDrawable = (AnimationDrawable) ll_convo_mainw.getBackground();
 //        animationDrawable.setEnterFadeDuration(4500);
 //        animationDrawable.setExitFadeDuration(4500);
 //        animationDrawable.start();
-        continuousSpeechService = new ContinuousSpeechService_New(context, ConversationFragment_2.this, FC_Constants.ENGLISH);
+        continuousSpeechService = new ContinuousSpeechService_New(context,
+                ConversationFragment_2.this, FC_Constants.ENGLISH);
         correctSound = MediaPlayer.create(context, R.raw.correct_ans);
 
         presenter.setView(ConversationFragment_2.this);
@@ -127,7 +129,6 @@ public class ConversationFragment_2 extends Fragment
         mediaPlayerUtil = new MediaPlayerUtil(context);
         mediaPlayerUtil.initCallback(ConversationFragment_2.this);
 
-        selectedLanguage = "english";
         Bundle bundle = getArguments();
         contentId = bundle.getString("storyId");
         studentID = bundle.getString("StudentID");
@@ -144,13 +145,12 @@ public class ConversationFragment_2 extends Fragment
             convoPath = ApplicationClass.contentSDPath + gameFolderPath + "/" + contentPath + "/";
         else
             convoPath = ApplicationClass.foundationPath + gameFolderPath + "/" + contentPath + "/";
-        //        if (convoMode.equals("A"))
+//        if (convoMode.equals("A"))
 //            iv_ConvoMode.setImageResource(R.drawable.mode_a);
 //        else if (convoMode.equals("B"))
 //            iv_ConvoMode.setImageResource(R.drawable.mode_b);
 //        if (convoMode.equals("C"))
 //            iv_ConvoMode.setImageResource(R.drawable.mode_c);
-
         tv_title.setText(contentName);
         presenter.fetchStory(convoPath);
     }
@@ -168,7 +168,7 @@ public class ConversationFragment_2 extends Fragment
             recyclerView.setLayoutManager(linearLayoutManager);
             mAdapter = new MessageAdapter_2(messageList, context);
             recyclerView.setAdapter(mAdapter);
-            for(int i =0; i<msgPercentage.length; i++)
+            for (int i = 0; i < msgPercentage.length; i++)
                 msgPercentage[1] = 0;
             new Handler().postDelayed(() -> displayNextQuestion(currentQueNos), (long) (800));
         }
@@ -177,16 +177,7 @@ public class ConversationFragment_2 extends Fragment
     @UiThread
     @Override
     public void sendClikChanger(int clickOn) {
-        if (!FC_Constants.isTest) {
-            if (clickOn == 0) {
-                btn_imgsend.setVisibility(View.GONE);
-                btn_speaker.setVisibility(View.VISIBLE);
-            } else {
-                btn_imgsend.setVisibility(View.VISIBLE);
-                btn_imgsend.setClickable(true);
-                btn_speaker.setVisibility(View.GONE);
-            }
-        } else {
+        if (app_sec.equalsIgnoreCase(sec_Test)) {
             btn_speaker.setVisibility(View.GONE);
             btn_imgsend.setVisibility(View.VISIBLE);
             if (clickOn == 0) {
@@ -195,6 +186,25 @@ public class ConversationFragment_2 extends Fragment
             } else {
                 btn_imgsend.setClickable(true);
                 btn_imgsend.setBackgroundResource(R.drawable.button_yellow);
+            }
+        } else if(app_sec.equalsIgnoreCase(sec_Practice)){
+            btn_speaker.setVisibility(View.GONE);
+            btn_imgsend.setVisibility(View.VISIBLE);
+            if (clickOn == 0) {
+                btn_imgsend.setClickable(false);
+                btn_imgsend.setBackgroundResource(R.drawable.convo_send_disable);
+            } else {
+                btn_imgsend.setClickable(true);
+                btn_imgsend.setBackgroundResource(R.drawable.button_yellow);
+            }
+        } else {
+            if (clickOn == 0) {
+                btn_imgsend.setVisibility(View.GONE);
+                btn_speaker.setVisibility(View.VISIBLE);
+            } else {
+                btn_imgsend.setVisibility(View.VISIBLE);
+                btn_imgsend.setClickable(true);
+                btn_speaker.setVisibility(View.GONE);
             }
         }
     }
@@ -220,16 +230,21 @@ public class ConversationFragment_2 extends Fragment
     @Click(R.id.btn_imgsend)
     public void sendMessage() {
         sendClikChanger(0);
-        int correctAnswerCount = setBooleanGetCounter();
-        float perc = presenter.getPercentage();
-        presenter.addScore(0, "perc - " + perc, correctAnswerCount, correctArr.length, " Convo ");
-        ButtonClickSound.start();
-        btn_reading.setImageResource(R.drawable.ic_mic_black);
         if (voiceStart)
             btn_reading.performClick();
+        if(app_sec.equalsIgnoreCase(sec_Practice)){
+            presenter.addScore(0, "perc - NA" , 0, 0, " Convo ");
+            addItemInConvo(recordedTextMsg, "NA", true);
+        }else {
+            int correctAnswerCount = setBooleanGetCounter();
+            float perc = presenter.getPercentage();
+            presenter.addScore(0, "perc - " + perc, correctAnswerCount, correctArr.length, " Convo ");
+            addItemInConvo(answer, answerAudio, true);
+        }
+        btn_reading.setImageResource(R.drawable.ic_mic_black);
+        ButtonClickSound.start();
         readChatFlow.removeAllViews();
 
-        addItemInConvo(answer, answerAudio, true);
         currentQueNos += 1;
         new Handler().postDelayed(() -> displayNextQuestion(currentQueNos), (long) (1000));
 
@@ -288,7 +303,9 @@ public class ConversationFragment_2 extends Fragment
                 answerAudio = conversation.getJSONObject(currentQueNo).getJSONArray("PersonB").getJSONObject(randomNumB).getString("audio");
                 addItemInConvo(question, questionAudio, false);
                 playChat("" + questionAudio);
-                setAnswerText(answer);
+                recordedTextMsg="";
+                if(!app_sec.equalsIgnoreCase(sec_Practice))
+                    setAnswerText(answer);
 /*                switch (convoMode) {
                     case "A":
                         randomNumA = getRandomNum(conversation.getJSONObject(currentQueNo).getJSONArray("PersonA").length());
@@ -384,6 +401,24 @@ public class ConversationFragment_2 extends Fragment
                         btn_reading.performClick();
                     playChat("" + answerAudio);
                 }
+            });
+            myTextView.setTextSize(25);
+            myTextView.setTextColor(getResources().getColor(R.color.colorAccentDark));
+            readChatFlow.addView(myTextView);
+        }
+    }
+
+    private void setContinuousAnswer(String answerText) {
+        String[] splittedAnswer = answerText.split(" ");
+        recordedTextMsg = " "+recordedTextMsg+" "+answerText;
+        sendClikChanger(1);
+        for (String word : splittedAnswer) {
+            final SansTextViewBold myTextView = new SansTextViewBold(context);
+            myTextView.setText(word);
+            myTextView.setOnClickListener(v -> {
+                if (voiceStart)
+                    btn_reading.performClick();
+                playChat("NA");
             });
             myTextView.setTextSize(25);
             myTextView.setTextColor(getResources().getColor(R.color.colorAccentDark));
@@ -524,9 +559,13 @@ public class ConversationFragment_2 extends Fragment
 
     @Override
     public void Stt_onResult(ArrayList<String> sttServerResult) {
-        iv_monk.setVisibility(View.VISIBLE);
-        iv_monk.startAnimation(AnimationUtils.loadAnimation(context, R.anim.float_anim));
-        presenter.sttResultProcess(sttServerResult, answer);
+        if (!app_sec.equalsIgnoreCase(sec_Practice)) {
+            iv_monk.setVisibility(View.VISIBLE);
+            iv_monk.startAnimation(AnimationUtils.loadAnimation(context, R.anim.float_anim));
+            presenter.sttResultProcess(sttServerResult, answer);
+        } else {
+            setContinuousAnswer(sttServerResult.get(0));
+        }
     }
 
     @ViewById(R.id.silence_outer)
@@ -610,7 +649,7 @@ public class ConversationFragment_2 extends Fragment
         Button dia_btn_red = dialog.findViewById(R.id.dia_btn_red);
 
         dia_title.setText("Nice chatting with you.\nBye-bye!");
-        dia_btn_green.setText(""+getResources().getString(R.string.Okay));
+        dia_btn_green.setText("" + getResources().getString(R.string.Okay));
         dia_btn_red.setVisibility(View.GONE);
         dia_btn_yellow.setVisibility(View.GONE);
         dialog.show();
@@ -706,8 +745,8 @@ public class ConversationFragment_2 extends Fragment
         dia_ratingBar.setRating(rating);
 
         dia_btn_red.setVisibility(View.GONE);
-        dia_btn_green.setText(""+getResources().getString(R.string.Next));
-        dia_btn_yellow.setText(""+getResources().getString(R.string.Cancel));
+        dia_btn_green.setText("" + getResources().getString(R.string.Next));
+        dia_btn_yellow.setText("" + getResources().getString(R.string.Cancel));
         if (diaComplete)
             dia_btn_yellow.setVisibility(View.GONE);
 
