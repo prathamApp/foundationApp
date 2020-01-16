@@ -27,10 +27,11 @@ public class ConversationPresenter_1 implements ConversationContract_1.Conversat
 
     Context context;
     ConversationContract_1.ConversationView_1 conversationView_1;
-
+    String resId;
     @Override
-    public void setView(ConversationContract_1.ConversationView_1 ConversationView) {
+    public void setView(ConversationContract_1.ConversationView_1 ConversationView,String resId) {
         this.conversationView_1 = ConversationView;
+        this.resId = resId;
     }
 
     public ConversationPresenter_1(Context context) {
@@ -149,7 +150,7 @@ public class ConversationPresenter_1 implements ConversationContract_1.Conversat
         try {
             ContentProgress contentProgress = new ContentProgress();
             contentProgress.setProgressPercentage("" + perc);
-            contentProgress.setResourceId("" + contentId);
+            contentProgress.setResourceId("" +resId);
             contentProgress.setSessionId("" + FastSave.getInstance().getString(FC_Constants.CURRENT_SESSION, ""));
             contentProgress.setStudentId("" + FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""));
             contentProgress.setUpdatedDateTime("" + FC_Utility.getCurrentDateTime());
@@ -169,52 +170,39 @@ public class ConversationPresenter_1 implements ConversationContract_1.Conversat
         startTime = currentDateTime;
     }
 
-    private String contentId;
-
-    @Override
-    public void setContentId(String currentContentId) {
-        contentId = currentContentId;
-    }
 
     @Background
     @Override
-    public void addScore(final int wID, final String Word, final int scoredMarks, final int totalMarks, final String Label) {
-/*
-        _addScore(wID, Word, scoredMarks, totalMarks, Label);
-    }
-
-    @Background
-    public void _addScore(final int wID, final String Word, final int scoredMarks, final int totalMarks, final String Label) {
-*/
+    public void addScore(int wID, String Word, int scoredMarks, int totalMarks, String resStartTime, String resEndTime, String Label, String resId, boolean addInAssessment) {
         try {
-            String deviceId = AppDatabase.appDatabase.getStatusDao().getValue("DeviceId");
+            String deviceId = appDatabase.getStatusDao().getValue("DeviceId");
             Score score = new Score();
             score.setSessionID(FastSave.getInstance().getString(FC_Constants.CURRENT_SESSION, ""));
-            score.setResourceID(contentId);
+            score.setResourceID(resId);
             score.setQuestionId(wID);
             score.setScoredMarks(scoredMarks);
             score.setTotalMarks(totalMarks);
             score.setStudentID(FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""));
-            score.setStartDateTime(startTime);
+            score.setStartDateTime(resStartTime);
             score.setDeviceID(deviceId.equals(null) ? "0000" : deviceId);
-            score.setEndDateTime(FC_Utility.getCurrentDateTime());
-            score.setLevel(0);
+            score.setEndDateTime(resEndTime);
+            score.setLevel(FC_Constants.currentLevel);
+            score.setLabel(Label);
             score.setSentFlag(0);
-            score.setLabel(Word + " - " + Label);
-            AppDatabase.appDatabase.getScoreDao().insert(score);
+            appDatabase.getScoreDao().insert(score);
 
-            if (FC_Constants.isTest) {
+            if (FC_Constants.isTest && addInAssessment) {
                 Assessment assessment = new Assessment();
-                assessment.setResourceIDa(contentId);
+                assessment.setResourceIDa(resId);
                 assessment.setSessionIDa(FastSave.getInstance().getString(FC_Constants.ASSESSMENT_SESSION, ""));
                 assessment.setSessionIDm(FastSave.getInstance().getString(FC_Constants.CURRENT_SESSION, ""));
                 assessment.setQuestionIda(wID);
                 assessment.setScoredMarksa(scoredMarks);
                 assessment.setTotalMarksa(totalMarks);
                 assessment.setStudentIDa(FastSave.getInstance().getString(FC_Constants.CURRENT_ASSESSMENT_STUDENT_ID, ""));
-                assessment.setStartDateTimea(startTime);
+                assessment.setStartDateTimea(resStartTime);
                 assessment.setDeviceIDa(deviceId.equals(null) ? "0000" : deviceId);
-                assessment.setEndDateTime(FC_Utility.getCurrentDateTime());
+                assessment.setEndDateTime(resEndTime);
                 assessment.setLevela(FC_Constants.currentLevel);
                 assessment.setLabel("test: " + Label);
                 assessment.setSentFlag(0);
@@ -222,7 +210,6 @@ public class ConversationPresenter_1 implements ConversationContract_1.Conversat
             }
             BackupDatabase.backup(context);
         } catch (Exception e) {
-            BackupDatabase.backup(context);
             e.printStackTrace();
         }
     }

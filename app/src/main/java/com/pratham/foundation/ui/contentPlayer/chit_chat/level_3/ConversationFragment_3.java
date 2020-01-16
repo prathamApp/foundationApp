@@ -25,11 +25,14 @@ import com.pratham.foundation.ApplicationClass;
 import com.pratham.foundation.R;
 import com.pratham.foundation.customView.display_image_dialog.CustomLodingDialog;
 import com.pratham.foundation.interfaces.MediaCallbacks;
+import com.pratham.foundation.interfaces.OnGameClose;
 import com.pratham.foundation.modalclasses.Message;
 import com.pratham.foundation.services.stt.ContinuousSpeechService_New;
 import com.pratham.foundation.services.stt.STT_Result_New;
+import com.pratham.foundation.ui.contentPlayer.GameConstatnts;
 import com.pratham.foundation.ui.contentPlayer.old_cos.conversation.MessageAdapter;
 import com.pratham.foundation.utility.FC_Constants;
+import com.pratham.foundation.utility.FC_Utility;
 import com.pratham.foundation.utility.MediaPlayerUtil;
 
 import org.androidannotations.annotations.AfterViews;
@@ -48,7 +51,7 @@ import static com.pratham.foundation.utility.SplashSupportActivity.ButtonClickSo
 
 @EFragment(R.layout.chitchat_level_3)
 public class ConversationFragment_3 extends Fragment
-        implements ConversationContract_3.ConversationView_3, STT_Result_New.sttView, MediaCallbacks {
+        implements ConversationContract_3.ConversationView_3, STT_Result_New.sttView, MediaCallbacks, OnGameClose {
 
     @ViewById(R.id.recyclerView)
     RecyclerView recyclerView;
@@ -103,6 +106,7 @@ public class ConversationFragment_3 extends Fragment
     String userAnswer = "";
     public CustomLodingDialog myLoadingDialog;
     boolean dialogFlg = false;
+    private String resStartTime;
 
     @AfterViews
     public void initialize() {
@@ -122,7 +126,7 @@ public class ConversationFragment_3 extends Fragment
         mediaPlayerUtil.initCallback(ConversationFragment_3.this);
         Bundle bundle = getArguments();
         selectedLanguage = "english";
-        contentId = bundle.getString("storyId");
+        contentId = bundle.getString("resId");
         studentID = bundle.getString("StudentID");
         contentName = bundle.getString("contentName");
         convoMode = bundle.getString("convoMode");
@@ -139,6 +143,9 @@ public class ConversationFragment_3 extends Fragment
         else
             convoPath = ApplicationClass.foundationPath + gameFolderPath + "/" + contentPath + "/";
 
+
+        resStartTime = FC_Utility.getCurrentDateTime();
+        presenter.addScore(0, "", 0, 0, resStartTime, FC_Utility.getCurrentDateTime(), GameConstatnts.NEW_CHIT_CHAT_3 + " " + GameConstatnts.START, contentId, true);
 
         tv_title.setText(contentName);
         //  presenter.fetchStory(convoPath);
@@ -344,5 +351,16 @@ public class ConversationFragment_3 extends Fragment
     public void closeConvo() {
         //todo #
         //finish();
+
+    }
+
+    @Click(R.id.btn_submit)
+    public void onSubmitClick() {
+        GameConstatnts.playGameNext(context, GameConstatnts.TRUE, this);
+    }
+
+    @Override
+    public void gameClose() {
+        presenter.addScore(0, "", 0, 0, resStartTime, FC_Utility.getCurrentDateTime(), GameConstatnts.NEW_CHIT_CHAT_3 + " " + GameConstatnts.END, contentId, true);
     }
 }

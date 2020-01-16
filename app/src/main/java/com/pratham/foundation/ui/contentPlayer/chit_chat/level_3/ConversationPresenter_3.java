@@ -60,13 +60,6 @@ public class ConversationPresenter_3 implements ConversationContract_3.Conversat
         }
     }
 
-    private String startTime;
-
-    @Override
-    public void setStartTime(String currentDateTime) {
-        startTime = currentDateTime;
-    }
-
 
     public void addScore(int wID, String Word, int scoredMarks, int totalMarks, String resStartTime, String resEndTime, String Label, String resId, boolean addInAssessment) {
         try {
