@@ -86,8 +86,8 @@ public class BaseActivity extends AppCompatActivity {
         correctSound = MediaPlayer.create(this, R.raw.correct_ans);
         muteFlg = false;
 
-        Catcho.Builder(this)
-                .activity(CatchoTransparentActivity.class).build();
+  //      Catcho.Builder(this)
+ //               .activity(CatchoTransparentActivity.class).build();
 //                .recipients("abc@domain.com").build();
     }
 

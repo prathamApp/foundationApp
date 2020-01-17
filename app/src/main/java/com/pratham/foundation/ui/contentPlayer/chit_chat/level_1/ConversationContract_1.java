@@ -33,12 +33,12 @@ public interface ConversationContract_1 {
         float getPercentage();
 
         void addScore(int wID, String Word, int scoredMarks, int totalMarks, String resStartTime, String resEndTime, String Label, String resId, boolean addInAssessment);
-
-        void setStartTime(String currentDateTime);
+        void setCompletionPercentage(int totalWordCount, int learntWordCount);
+        //void setStartTime(String currentDateTime);
 
       //  void setContentId(String contentId);
 
-        void addCompletion(float perc);
+       // void addCompletion(float perc);
     }
 
 }

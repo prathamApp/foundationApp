@@ -2,7 +2,6 @@ package com.pratham.foundation.ui.contentPlayer.chit_chat.level_1;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
-import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.media.MediaPlayer;
@@ -88,9 +87,9 @@ public class ConversationFragment_1 extends Fragment
     private List messageList = new ArrayList();
     public static MediaPlayerUtil mediaPlayerUtil;
     String question;
-    String answer, ansForCheck;
+    String answer;
     String questionAudio;
-    String answerAudio, startTime;
+    String answerAudio;
     Context context;
     MediaPlayer correctSound;
     int currentQueNos = 0, randomNumA, randomNumB, currentMsgNo = 0;
@@ -107,6 +106,7 @@ public class ConversationFragment_1 extends Fragment
     private String resStartTime;
     String resId;
 //    AnimationDrawable animationDrawable;
+Handler handler;
 
     @AfterViews
     public void initialize() {
@@ -116,8 +116,6 @@ public class ConversationFragment_1 extends Fragment
         floating_info.setImageResource(R.drawable.ic_info_outline_white);
         context = getActivity();
         correctSound = MediaPlayer.create(context, R.raw.correct_ans);
-
-
 
         sendClikChanger(0);
         mediaPlayerUtil = new MediaPlayerUtil(context);
@@ -132,8 +130,8 @@ public class ConversationFragment_1 extends Fragment
         certiCode = bundle.getString("certiCode");
         onSdCard = bundle.getBoolean("onSdCard", false);
 
-
         convoMode = "A";
+        handler = new Handler();
 
         if (onSdCard)
             convoPath = ApplicationClass.contentSDPath + gameFolderPath + "/" + contentPath + "/";
@@ -200,9 +198,9 @@ public class ConversationFragment_1 extends Fragment
         }
     }
 
-    @Click(R.id.btn_reading)
+   /* @Click(R.id.btn_reading)
     public void startRecognition() {
-       /* if (!voiceStart) {
+       *//* if (!voiceStart) {
             //showLoader();
             // ButtonClickSound.start();
             voiceStart = true;
@@ -215,13 +213,13 @@ public class ConversationFragment_1 extends Fragment
             btn_reading.setBackgroundResource(R.drawable.button_green);
            // continuousSpeechService.stopSpeechInput();
             //ButtonClickSound.start();
-        }*/
-    }
+        }*//*
+    }*/
 
     @Click(R.id.btn_imgsend)
     public void sendMessage() {
         sendClikChanger(0);
-        float perc = presenter.getPercentage();
+        // float perc = presenter.getPercentage();
         ButtonClickSound.start();
         btn_reading.setImageResource(R.drawable.ic_mic_black);
       /*  if (voiceStart)
@@ -276,7 +274,7 @@ public class ConversationFragment_1 extends Fragment
 
     public void displayNextQuestion(int currentQueNo) {
         try {
-            presenter.setStartTime(FC_Utility.getCurrentDateTime());
+            // presenter.setStartTime(FC_Utility.getCurrentDateTime());
             if (currentQueNo < conversation.length()) {
                 iv_monk.clearAnimation();
                 iv_monk.setVisibility(View.GONE);
@@ -428,6 +426,9 @@ public class ConversationFragment_1 extends Fragment
     @Override
     public void onStop() {
         Log.d(LOG_TAG, "stop");
+        handler.removeCallbacks(null);
+        handler.removeCallbacksAndMessages(null);
+        //handler = null;
         super.onStop();
     }
 
@@ -475,7 +476,7 @@ public class ConversationFragment_1 extends Fragment
         }
     }
 
-    public int setBooleanGetCounter() {
+   /* public int setBooleanGetCounter() {
         int counter = 0;
         try {
             for (int x = 0; x < correctArr.length; x++)
@@ -487,10 +488,10 @@ public class ConversationFragment_1 extends Fragment
             e.printStackTrace();
         }
         return counter;
-    }
+    }*/
 
     public CustomLodingDialog myLoadingDialog;
-    boolean dialogFlg = false;
+    //boolean dialogFlg = false;
 
 /*    @UiThread
     public void showLoader() {
@@ -598,10 +599,9 @@ public class ConversationFragment_1 extends Fragment
     public void onComplete() {
         // btn_reading.performClick();
         if (isUser) {
-            new Handler().postDelayed(() -> displayNextQuestion(currentQueNos), (long) (1000));
+            handler.postDelayed(() -> displayNextQuestion(currentQueNos), (long) (1000));
         } else {
-
-            new Handler().postDelayed(() -> sendMessage(), (long) (1200));
+            handler.postDelayed(() -> sendMessage(), (long) (1200));
         }
     }
 
@@ -626,8 +626,8 @@ public class ConversationFragment_1 extends Fragment
 
         dia_btn_green.setOnClickListener(v -> {
             ButtonClickSound.start();
-            float perc = getCompletionPercentage();
-            presenter.addCompletion(perc);
+            //   float perc = getCompletionPercentage();
+            //      presenter.addCompletion(perc);
             dialog.dismiss();
        /*     if (FC_Constants.isTest) {
                 int pages = getCompletionPages();
@@ -646,7 +646,7 @@ public class ConversationFragment_1 extends Fragment
         });
     }
 
-    private float getCompletionPercentage() {
+  /*  private float getCompletionPercentage() {
         float tot = 0f, perc = 0f;
         try {
             for (float v : msgPercentage) tot += v;
@@ -656,9 +656,9 @@ public class ConversationFragment_1 extends Fragment
             e.printStackTrace();
         }
         return perc;
-    }
+    }*/
 
-    private int getCompletionPages() {
+   /* private int getCompletionPages() {
         int tot = 0;
         try {
             for (float v : msgPercentage)
@@ -668,7 +668,7 @@ public class ConversationFragment_1 extends Fragment
             e.printStackTrace();
         }
         return tot;
-    }
+    }*/
     //todo #
   /*  @Click(R.id.floating_back)
     public void pressedBackBtn() {
@@ -763,8 +763,8 @@ public class ConversationFragment_1 extends Fragment
 
     @Override
     public void gameClose() {
+        presenter.setCompletionPercentage(conversation.length(), messageList.size());
         presenter.addScore(0, "", 0, 0, resStartTime, FC_Utility.getCurrentDateTime(), GameConstatnts.NEW_CHIT_CHAT_1 + " " + GameConstatnts.END, contentId, true);
-
     }
 
  /*   @SuppressLint("SetTextI18n")

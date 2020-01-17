@@ -2,7 +2,6 @@ package com.pratham.foundation.ui.contentPlayer.chit_chat.level_1;
 
 import android.content.Context;
 
-import com.pratham.foundation.database.AppDatabase;
 import com.pratham.foundation.database.BackupDatabase;
 import com.pratham.foundation.database.domain.Assessment;
 import com.pratham.foundation.database.domain.ContentProgress;
@@ -28,6 +27,8 @@ public class ConversationPresenter_1 implements ConversationContract_1.Conversat
     Context context;
     ConversationContract_1.ConversationView_1 conversationView_1;
     String resId;
+    String convoTitle;
+    int questionID;
     @Override
     public void setView(ConversationContract_1.ConversationView_1 ConversationView,String resId) {
         this.conversationView_1 = ConversationView;
@@ -50,11 +51,12 @@ public class ConversationPresenter_1 implements ConversationContract_1.Conversat
             is.close();
             String jsonStr = new String(buffer);
             JSONObject jsonObj = new JSONObject(jsonStr);
+            convoTitle=jsonObj.getString("convoTitle");
+            questionID=jsonObj.getInt("nodeId");
             returnStoryNavigate = jsonObj.getJSONArray("convoList");
         } catch (Exception e) {
             e.printStackTrace();
         }
-
         conversationView_1.setConvoJson(returnStoryNavigate);
     }
 
@@ -144,7 +146,7 @@ public class ConversationPresenter_1 implements ConversationContract_1.Conversat
         return perc;
     }
 
-    @Background
+  /*  @Background
     @Override
     public void addCompletion(float perc) {
         try {
@@ -161,16 +163,47 @@ public class ConversationPresenter_1 implements ConversationContract_1.Conversat
         } catch (Exception e) {
             e.printStackTrace();
         }
-    }
+    }*/
 
-    private String startTime;
+    // private String startTime;
 
-    @Override
+   /* @Override
     public void setStartTime(String currentDateTime) {
         startTime = currentDateTime;
+    }*/
+
+    public void setCompletionPercentage(int totalWordCount, int learntWordCount) {
+        float perc;
+        try {
+            // totalWordCount = quetionModelList.size();
+            // learntWordCount = getLearntWordsCount();
+            String Label = "resourceProgress";
+            if (learntWordCount > 0) {
+                perc = ((float) learntWordCount / (float) totalWordCount) * 100;
+                addContentProgress(perc, Label);
+            } else {
+                addContentProgress(0, Label);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
-
+    private void addContentProgress(float perc, String label) {
+        try {
+            ContentProgress contentProgress = new ContentProgress();
+            contentProgress.setProgressPercentage("" + perc);
+            contentProgress.setResourceId("" + resId);
+            contentProgress.setSessionId("" + FastSave.getInstance().getString(FC_Constants.CURRENT_SESSION, ""));
+            contentProgress.setStudentId("" + FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""));
+            contentProgress.setUpdatedDateTime("" + FC_Utility.getCurrentDateTime());
+            contentProgress.setLabel("" + label);
+            contentProgress.setSentFlag(0);
+            appDatabase.getContentProgressDao().insert(contentProgress);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
     @Background
     @Override
     public void addScore(int wID, String Word, int scoredMarks, int totalMarks, String resStartTime, String resEndTime, String Label, String resId, boolean addInAssessment) {
