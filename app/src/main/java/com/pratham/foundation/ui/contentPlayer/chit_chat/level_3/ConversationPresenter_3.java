@@ -2,19 +2,16 @@ package com.pratham.foundation.ui.contentPlayer.chit_chat.level_3;
 
 import android.content.Context;
 
-import com.pratham.foundation.database.AppDatabase;
 import com.pratham.foundation.database.BackupDatabase;
 import com.pratham.foundation.database.domain.Assessment;
 import com.pratham.foundation.database.domain.ContentProgress;
 import com.pratham.foundation.database.domain.Score;
 import com.pratham.foundation.services.shared_preferences.FastSave;
-import com.pratham.foundation.ui.contentPlayer.chit_chat.level_1.ConversationContract_1;
 import com.pratham.foundation.utility.FC_Constants;
 import com.pratham.foundation.utility.FC_Utility;
 
 import org.androidannotations.annotations.Background;
 import org.androidannotations.annotations.EBean;
-import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.io.FileInputStream;
@@ -60,7 +57,34 @@ public class ConversationPresenter_3 implements ConversationContract_3.Conversat
         }
     }
 
-
+    @Background
+    @Override
+    public void fetchStory(String convoPath) {
+        String convoTitle = null;
+        int questionID;
+        // JSONArray returnStoryNavigate = null, levelJSONArray;
+        try {
+            InputStream is = new FileInputStream(convoPath + "Data.json");
+            int size = is.available();
+            byte[] buffer = new byte[size];
+            is.read(buffer);
+            is.close();
+            String jsonStr = new String(buffer);
+            JSONObject jsonObj = new JSONObject(jsonStr);
+            convoTitle = jsonObj.getString("convoTitle");
+            questionID = jsonObj.getInt("nodeId");
+            if (convoTitle != null && !convoTitle.isEmpty())
+                conversationView_3.setConvoJson(convoTitle, questionID);
+            else {
+                conversationView_3.dataNotFound();
+            }
+            //returnStoryNavigate = jsonObj.getJSONArray("convoList");
+        } catch (Exception e) {
+            e.printStackTrace();
+            conversationView_3.dataNotFound();
+        }
+        //Toast.makeText(context, "Tittle not found", Toast.LENGTH_SHORT).show();
+    }
     public void addScore(int wID, String Word, int scoredMarks, int totalMarks, String resStartTime, String resEndTime, String Label, String resId, boolean addInAssessment) {
         try {
             String deviceId = appDatabase.getStatusDao().getValue("DeviceId");

@@ -7,11 +7,12 @@ package com.pratham.foundation.ui.contentPlayer.chit_chat.level_3;
 public interface ConversationContract_3 {
 
     interface ConversationView_3{
-      //  void setConvoJson(JSONArray returnStoryNavigate);
+        void setConvoJson(String returnStoryNavigate, int quetionID);
        // void setAnsCorrect(boolean[] ansCorrect);
 
         void sendClikChanger(int i);
 
+        void dataNotFound();
       //  void submitAns(String[] splitQues);
 
        // void clearMonkAnimation();
@@ -20,7 +21,7 @@ public interface ConversationContract_3 {
     interface ConversationPresenter_3 {
         void setView(ConversationView_3 ConversationView,String resId);
 
-      //  void fetchStory(String convoPath);
+        void fetchStory(String convoPath);
 
        // void setCorrectArray(int length);
 

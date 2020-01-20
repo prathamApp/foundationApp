@@ -21,6 +21,7 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.google.gson.Gson;
 import com.pratham.foundation.ApplicationClass;
 import com.pratham.foundation.R;
 import com.pratham.foundation.customView.display_image_dialog.CustomLodingDialog;
@@ -106,8 +107,8 @@ public class ConversationFragment_3 extends Fragment
     String userAnswer = "";
     public CustomLodingDialog myLoadingDialog;
     boolean dialogFlg = false;
-    private String resStartTime;
-
+    private String resStartTime, question;
+    private int questionID;
     @AfterViews
     public void initialize() {
         iv_monk.setVisibility(View.GONE);
@@ -119,7 +120,6 @@ public class ConversationFragment_3 extends Fragment
         context = getActivity();
         continuousSpeechService = new ContinuousSpeechService_New(context, ConversationFragment_3.this, FC_Constants.ENGLISH);
         correctSound = MediaPlayer.create(context, R.raw.correct_ans);
-
 
         sendClikChanger(0);
         mediaPlayerUtil = new MediaPlayerUtil(context);
@@ -147,9 +147,7 @@ public class ConversationFragment_3 extends Fragment
         resStartTime = FC_Utility.getCurrentDateTime();
         presenter.addScore(0, "", 0, 0, resStartTime, FC_Utility.getCurrentDateTime(), GameConstatnts.NEW_CHIT_CHAT_3 + " " + GameConstatnts.START, contentId, true);
 
-        tv_title.setText(contentName);
-        //  presenter.fetchStory(convoPath);
-        setConvoJson();
+        // setConvoJson();
         readchat.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -172,6 +170,7 @@ public class ConversationFragment_3 extends Fragment
                 }
             }
         });
+        presenter.fetchStory(convoPath);
     }
 
 
@@ -198,14 +197,26 @@ public class ConversationFragment_3 extends Fragment
     }
 
     @UiThread
-    public void setConvoJson() {
+    public void setConvoJson(String contentName, int questionID) {
+        if (recyclerView != null) {
             recyclerView.setHasFixedSize(true);
             final LinearLayoutManager linearLayoutManager = new LinearLayoutManager(context);
             linearLayoutManager.setStackFromEnd(true);
             recyclerView.setLayoutManager(linearLayoutManager);
-            mAdapter = new MessageAdapter(messageList, context);
+            mAdapter = new MessageAdapter_3(messageList, context);
             recyclerView.setAdapter(mAdapter);
+            question = contentName;
+            tv_title.setText(question);
+            this.questionID = questionID;
+        }
     }
+
+    @UiThread
+    public void dataNotFound() {
+        ll_convo_mainw.setVisibility(View.GONE);
+    }
+
+
 
     @UiThread
     @Override
@@ -265,9 +276,9 @@ public class ConversationFragment_3 extends Fragment
 
     private void addItemInConvo(String text, String audio, boolean user) {
         if (user)
-            messageList.add(new Message(text, "user", audio));
+            messageList.add(new Message(text, userB, audio));//user
         else
-            messageList.add(new Message(text, "bot", audio));
+            messageList.add(new Message(text, userA, audio));//bot
         mAdapter.notifyDataSetChanged();
         recyclerView.scrollToPosition(mAdapter.getItemCount() - 1);
     }
@@ -361,6 +372,15 @@ public class ConversationFragment_3 extends Fragment
 
     @Override
     public void gameClose() {
+        if (messageList != null && messageList.size() > 0) {
+            Gson gson = new Gson();
+            String json = gson.toJson(messageList);
+            if (json != null && !json.isEmpty()) {
+                String newResId = GameConstatnts.getString(contentId, contentName, "" + questionID, json, question, "");
+                presenter.addScore(questionID, GameConstatnts.NEW_CHIT_CHAT_3, 0, 0, resStartTime, FC_Utility.getCurrentDateTime(),GameConstatnts.NEW_CHIT_CHAT_3+"_"+ json, contentId, true);
+                presenter.addScore(FC_Utility.getSubjectNo(), GameConstatnts.NEW_CHIT_CHAT_3, FC_Utility.getSectionCode(), 0, resStartTime, FC_Utility.getCurrentDateTime(), FC_Constants.CHIT_CHAT_LBL, newResId, false);
+            }
+        }
         presenter.addScore(0, "", 0, 0, resStartTime, FC_Utility.getCurrentDateTime(), GameConstatnts.NEW_CHIT_CHAT_3 + " " + GameConstatnts.END, contentId, true);
     }
 }

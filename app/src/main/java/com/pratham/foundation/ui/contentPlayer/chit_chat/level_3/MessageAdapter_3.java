@@ -25,7 +25,8 @@ public class MessageAdapter_3 extends RecyclerView.Adapter<MessageAdapter_3.View
     private List messageList;
     Context context;
     int lastPos = -1;
-
+    final String userA = "USER_A";
+    final String userB = "USER_B";
     public static final int SENDER = 0;
     public static final int RECEIVER = 1;
 
@@ -124,7 +125,7 @@ public class MessageAdapter_3 extends RecyclerView.Adapter<MessageAdapter_3.View
     public int getItemViewType(int position) {
         Message message = (Message) messageList.get(position);
 
-        if (message.getSenderName().equals("user")) {
+        if (message.getSenderName().equals(userB)) {
             return SENDER;
         } else {
             return RECEIVER;

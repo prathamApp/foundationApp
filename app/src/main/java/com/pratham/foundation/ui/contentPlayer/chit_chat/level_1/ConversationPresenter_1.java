@@ -39,7 +39,6 @@ public class ConversationPresenter_1 implements ConversationContract_1.Conversat
         this.context = context;
     }
 
-    @Background
     @Override
     public void fetchStory(String convoPath) {
         JSONArray returnStoryNavigate = null, levelJSONArray;

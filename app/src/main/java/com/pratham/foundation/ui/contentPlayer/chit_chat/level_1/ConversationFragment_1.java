@@ -218,18 +218,20 @@ Handler handler;
 
     @Click(R.id.btn_imgsend)
     public void sendMessage() {
-        sendClikChanger(0);
-        // float perc = presenter.getPercentage();
-        ButtonClickSound.start();
-        btn_reading.setImageResource(R.drawable.ic_mic_black);
+        if (handler != null) {
+            sendClikChanger(0);
+            // float perc = presenter.getPercentage();
+            ButtonClickSound.start();
+            btn_reading.setImageResource(R.drawable.ic_mic_black);
       /*  if (voiceStart)
             btn_reading.performClick();*/
-        readChatFlow.removeAllViews();
+            readChatFlow.removeAllViews();
 
-        addItemInConvo(answer, answerAudio, true);
-        currentQueNos += 1;
-        isUser = true;
-        playChat(answerAudio);
+            addItemInConvo(answer, answerAudio, true);
+            currentQueNos += 1;
+            isUser = true;
+            playChat(answerAudio);
+        }
         // new Handler().postDelayed(() -> displayNextQuestion(currentQueNos), (long) (1000));
 
 /*        switch (convoMode) {
@@ -428,6 +430,7 @@ Handler handler;
         Log.d(LOG_TAG, "stop");
         handler.removeCallbacks(null);
         handler.removeCallbacksAndMessages(null);
+        handler = null;
         //handler = null;
         super.onStop();
     }
@@ -598,10 +601,12 @@ Handler handler;
     @Override
     public void onComplete() {
         // btn_reading.performClick();
-        if (isUser) {
-            handler.postDelayed(() -> displayNextQuestion(currentQueNos), (long) (1000));
-        } else {
-            handler.postDelayed(() -> sendMessage(), (long) (1200));
+        if (handler != null) {
+            if (isUser) {
+                handler.postDelayed(() -> displayNextQuestion(currentQueNos), (long) (1000));
+            } else {
+                handler.postDelayed(() -> sendMessage(), (long) (1200));
+            }
         }
     }
 

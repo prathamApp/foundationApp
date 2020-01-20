@@ -53,6 +53,7 @@ public class FC_Constants {
     public static final String INFO_CLICKED = "info_clicked";
     public static final String DIALOG_CLOSED = "dialog_closed";
     public static final String IMG_LBL = "LBL_IMAGE_QUESTION";
+    public static final String CHIT_CHAT_LBL = "CHIT_CHAT_LBL";
     public static final String RETURNSCORE = "returnScore";
     public static final String BACK_PRESSED= "back_pressed";
     public static final String FRAGMENT_BACK_PRESSED= "fragment_back_pressed";
