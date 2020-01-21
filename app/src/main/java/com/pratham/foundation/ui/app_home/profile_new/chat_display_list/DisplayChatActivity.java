@@ -1,4 +1,4 @@
-package com.pratham.foundation.ui.app_home.profile_new.display_image_ques_list;
+package com.pratham.foundation.ui.app_home.profile_new.chat_display_list;
 
 import android.content.Intent;
 import android.content.res.Configuration;
@@ -33,12 +33,12 @@ import static com.pratham.foundation.utility.FC_Constants.QR_GROUP_MODE;
 import static com.pratham.foundation.utility.FC_Utility.dpToPx;
 
 @EActivity(R.layout.activity_certificate_display)
-public class DisplayImageQuesActivity extends BaseActivity implements
-        ImageQuesContract.ImageQuesView,
-        ImageQuesContract.ImageQuesItemClicked{
+public class DisplayChatActivity extends BaseActivity implements
+        ChatQuesContract.ChatQuesView,
+        ChatQuesContract.ChatQuesItemClicked{
 
-    @Bean(ImageQuesPresenter.class)
-    ImageQuesContract.ImageQuesPresenter presenter;
+    @Bean(ChatQuesPresenter.class)
+    ChatQuesContract.ChatQuesPresenter presenter;
 
     @ViewById(R.id.tv_Topic)
     TextView tv_Topic;
@@ -47,14 +47,14 @@ public class DisplayImageQuesActivity extends BaseActivity implements
     @ViewById(R.id.tv_Activity)
     TextView tv_Activity;
     String sub_Name;
-    ImageQuesAdapter certificateAdapter;
+    ChatQuesAdapter certificateAdapter;
     List<Score> imgQuesMainList;
 
     @AfterViews
     public void initialize() {
         Configuration config = getResources().getConfiguration();
         FC_Constants.TAB_LAYOUT = config.smallestScreenWidthDp > 425;
-        presenter.setView(DisplayImageQuesActivity.this);
+        presenter.setView(DisplayChatActivity.this);
         displayProfileName();
         displayProfileImage();
         presenter.showQuestion();
@@ -65,8 +65,8 @@ public class DisplayImageQuesActivity extends BaseActivity implements
     public void addToAdapter(List<Score> assessmentList) {
         imgQuesMainList = assessmentList;
         if(certificateAdapter==null) {
-            certificateAdapter = new ImageQuesAdapter(this, imgQuesMainList,
-                    DisplayImageQuesActivity.this);
+            certificateAdapter = new ChatQuesAdapter(this, imgQuesMainList,
+                    DisplayChatActivity.this);
             RecyclerView.LayoutManager mLayoutManager = new GridLayoutManager(this, 1);
             recycler_view.setLayoutManager(mLayoutManager);
             recycler_view.addItemDecoration(new GridSpacingItemDecoration(1, dpToPx(this), true));
@@ -91,7 +91,7 @@ public class DisplayImageQuesActivity extends BaseActivity implements
         }
         setStudentProfileImage(sImage);
     }
-
+    
     @UiThread
     public void setStudentProfileImage(String sImage) {
     }

@@ -77,6 +77,9 @@
             android:name=".ui.app_home.display_content.ContentDisplay_"
             android:screenOrientation="portrait" />
         <activity
+            android:name=".ui.app_home.profile_new.chat_display_list.DisplayChatActivity_"
+            android:screenOrientation="portrait" />
+        <activity
             android:name=".ui.app_home.profile_new.show_image_question.ShowImgQuestionActivity_"
             android:screenOrientation="portrait" />
         <activity
