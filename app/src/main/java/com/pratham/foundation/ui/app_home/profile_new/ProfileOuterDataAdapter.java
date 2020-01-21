@@ -27,9 +27,9 @@ public class ProfileOuterDataAdapter extends RecyclerView.Adapter {
     private Context mContext;
     String[] progressArray;
 //    String[] progressSubArray = {"Certificate", "Projects", "Usage", "ImageQues"};
-    String[] progressSubArray = {"Certificate", "ImageQues"};
+    String[] progressSubArray = {"Certificate", "ImageQues", "Chat L-5"};
 //    String[] progressImgSubArray = {"Certificate", "Projects", "Usage", "ImageQues"};
-    String[] progressImgSubArray = {"Certificate", "ImageQues"};
+    String[] progressImgSubArray = {"Certificate", "ImageQues", "ChitChat"};
     String[] shareSubArray = {"Share App", "Share Content"};
     String[] shareImgSubArray = {"Share App", "Share Content"};
 

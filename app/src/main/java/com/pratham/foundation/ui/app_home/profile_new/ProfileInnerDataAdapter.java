@@ -81,7 +81,7 @@ public class ProfileInnerDataAdapter extends RecyclerView.Adapter {
 
         ItemHolder itemHolder = (ItemHolder) viewHolder;
         itemHolder.tvTitle.setText(itemsList[i]);
-        switch (itemsList[i]) {
+        switch (itemsImgList[i]) {
             case "Certificate":
                 itemHolder.item_Image.setImageResource(R.drawable.certificates);
                 itemHolder.rl_root.setOnClickListener(v -> itemClicked.itemClicked("Certificate"));
@@ -95,8 +95,12 @@ public class ProfileInnerDataAdapter extends RecyclerView.Adapter {
                 itemHolder.rl_root.setOnClickListener(v -> itemClicked.itemClicked("Usage"));
                 break;
             case "ImageQues":
-                itemHolder.item_Image.setImageResource(R.drawable.ic_photo_camera);
+                itemHolder.item_Image.setImageResource(R.drawable.camera);
                 itemHolder.rl_root.setOnClickListener(v -> itemClicked.itemClicked("ImageQues"));
+                break;
+            case "ChitChat":
+                itemHolder.item_Image.setImageResource(R.drawable.chat);
+                itemHolder.rl_root.setOnClickListener(v -> itemClicked.itemClicked("ChitChat"));
                 break;
             case "Share Content":
                 itemHolder.item_Image.setImageResource(R.drawable.ic_share_receive);

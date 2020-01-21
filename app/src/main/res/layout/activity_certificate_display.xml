@@ -90,4 +90,12 @@
         android:layoutAnimation="@anim/layout_fall_down"
         android:scrollbars="vertical" />
     </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/display_chat"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone">
+    </RelativeLayout>
+
 </RelativeLayout>

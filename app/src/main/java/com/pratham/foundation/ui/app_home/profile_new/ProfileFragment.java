@@ -26,6 +26,7 @@ import com.pratham.foundation.customView.display_image_dialog.CustomLodingDialog
 import com.pratham.foundation.modalclasses.ModalTopCertificates;
 import com.pratham.foundation.services.shared_preferences.FastSave;
 import com.pratham.foundation.ui.app_home.profile_new.certificate_display.CertificateDisplayActivity_;
+import com.pratham.foundation.ui.app_home.profile_new.chat_display_list.DisplayChatActivity_;
 import com.pratham.foundation.ui.app_home.profile_new.display_image_ques_list.DisplayImageQuesActivity_;
 import com.pratham.foundation.utility.FC_Constants;
 
@@ -165,12 +166,17 @@ public class ProfileFragment extends Fragment implements ProfileContract.Profile
                 break;
             case "ImageQues":
                 showImageQues();
-                break;
+            case "ChitChat":
+                showChitChat();
             case "Share Content":
                 break;
             case "Share App":
                 break;
         }
+    }
+
+    private void showChitChat() {
+        startActivity(new Intent(context, DisplayChatActivity_.class));
     }
 
     private void showImageQues() {

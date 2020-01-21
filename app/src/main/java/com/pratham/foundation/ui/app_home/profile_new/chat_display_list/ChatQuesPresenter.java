@@ -17,15 +17,15 @@ import java.util.List;
 public class ChatQuesPresenter implements ChatQuesContract.ChatQuesPresenter , API_Content_Result {
 
     Context mContext;
-    ChatQuesContract.ChatQuesView imageQuesView;
+    ChatQuesContract.ChatQuesView chatQuesView;
 
     public ChatQuesPresenter(Context mContext) {
         this.mContext = mContext;
     }
 
     @Override
-    public void setView(ChatQuesContract.ChatQuesView imageQuesView) {
-        this.imageQuesView = imageQuesView;
+    public void setView(ChatQuesContract.ChatQuesView chatQuesView) {
+        this.chatQuesView = chatQuesView;
     }
 
     @Background
@@ -38,9 +38,9 @@ public class ChatQuesPresenter implements ChatQuesContract.ChatQuesPresenter , A
 //                    .getImageQuesGroups(FC_Constants.currentGroup, FC_Constants.CERTIFICATE_LBL);
 //        else
             scoreList = AppDatabase.getDatabaseInstance(mContext).getScoreDao()
-                    .getImageQues(StudId, "%"+FC_Constants.IMG_LBL+"%");
+                    .getImageQues(StudId, "%"+FC_Constants.CHIT_CHAT_LBL+"%");
 
-        imageQuesView.addToAdapter(scoreList);
+        chatQuesView.addToAdapter(scoreList);
     }
 
     @Override

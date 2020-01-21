@@ -1,6 +1,5 @@
 package com.pratham.foundation.ui.app_home.profile_new.chat_display_list;
 
-import android.content.Intent;
 import android.content.res.Configuration;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.GridLayoutManager;
@@ -13,7 +12,6 @@ import com.pratham.foundation.customView.GridSpacingItemDecoration;
 import com.pratham.foundation.database.AppDatabase;
 import com.pratham.foundation.database.domain.Score;
 import com.pratham.foundation.services.shared_preferences.FastSave;
-import com.pratham.foundation.ui.app_home.profile_new.show_image_question.ShowImgQuestionActivity_;
 import com.pratham.foundation.utility.FC_Constants;
 
 import org.androidannotations.annotations.AfterViews;
@@ -133,9 +131,10 @@ public class DisplayChatActivity extends BaseActivity implements
 
     @Override
     public void gotoQuestions(Score scoreDisp) {
+        //TODO OPEN Fragment and show data
 //        Toast.makeText(this, "gotoCertificate", Toast.LENGTH_SHORT).show();
-        Intent intent = new Intent(this, ShowImgQuestionActivity_.class);
-        intent.putExtra("scoreDisp", scoreDisp);
-        startActivity(intent);
+//        Intent intent = new Intent(this, ShowImgQuestionActivity_.class);
+//        intent.putExtra("scoreDisp", scoreDisp);
+//        startActivity(intent);
     }
 }
