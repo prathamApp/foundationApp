@@ -1,17 +1,26 @@
 package com.pratham.foundation.ui.app_home.profile_new.chat_display_list;
 
+import android.content.Context;
 import android.content.res.Configuration;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.View;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.pratham.foundation.BaseActivity;
 import com.pratham.foundation.R;
 import com.pratham.foundation.customView.GridSpacingItemDecoration;
 import com.pratham.foundation.database.AppDatabase;
 import com.pratham.foundation.database.domain.Score;
+import com.pratham.foundation.modalclasses.ImageJsonObject;
+import com.pratham.foundation.modalclasses.Message;
 import com.pratham.foundation.services.shared_preferences.FastSave;
+import com.pratham.foundation.ui.contentPlayer.chit_chat.level_3.MessageAdapter_3;
 import com.pratham.foundation.utility.FC_Constants;
 
 import org.androidannotations.annotations.AfterViews;
@@ -22,6 +31,8 @@ import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.UiThread;
 import org.androidannotations.annotations.ViewById;
 
+import java.lang.reflect.Type;
+import java.util.ArrayList;
 import java.util.List;
 
 import static com.pratham.foundation.utility.FC_Constants.GROUP_LOGIN;
@@ -42,17 +53,26 @@ public class DisplayChatActivity extends BaseActivity implements
     TextView tv_Topic;
     @ViewById(R.id.certificate_recycler_view)
     RecyclerView recycler_view;
+    @ViewById(R.id.display_chat)
+    RelativeLayout display_chat;
+
+    @ViewById(R.id.chat_recycler_view)
+    RecyclerView chat_recycler_view;
     @ViewById(R.id.tv_Activity)
     TextView tv_Activity;
+    @ViewById(R.id.list_display)
+    RelativeLayout list_display;
     String sub_Name;
     ChatQuesAdapter certificateAdapter;
     List<Score> imgQuesMainList;
-
+    Context context;
+    private boolean showCertificate = false;
     @AfterViews
     public void initialize() {
         Configuration config = getResources().getConfiguration();
         FC_Constants.TAB_LAYOUT = config.smallestScreenWidthDp > 425;
         presenter.setView(DisplayChatActivity.this);
+        context=DisplayChatActivity.this;
         displayProfileName();
         displayProfileImage();
         presenter.showQuestion();
@@ -120,7 +140,11 @@ public class DisplayChatActivity extends BaseActivity implements
 
     @Override
     public void onBackPressed() {
-        super.onBackPressed();
+        if (!showCertificate) {
+            super.onBackPressed();
+        } else {
+            showCertificates();
+        }
     }
 
     @UiThread
@@ -136,5 +160,31 @@ public class DisplayChatActivity extends BaseActivity implements
 //        Intent intent = new Intent(this, ShowImgQuestionActivity_.class);
 //        intent.putExtra("scoreDisp", scoreDisp);
 //        startActivity(intent);
+        showCertificate = true;
+        hideCertificates(scoreDisp);
     }
+
+    private void hideCertificates(Score scoreDisp) {
+        list_display.setVisibility(View.GONE);
+        display_chat.setVisibility(View.VISIBLE);
+        String json = scoreDisp.getResourceID();
+        Gson gson = new Gson();
+        ImageJsonObject imageJsonObject = gson.fromJson(json, ImageJsonObject.class);
+        Type listType = new TypeToken<ArrayList<Message>>() {
+        }.getType();
+        List list=gson.fromJson(imageJsonObject.getAnsImageName(),listType);
+        chat_recycler_view.setHasFixedSize(true);
+        final LinearLayoutManager linearLayoutManager = new LinearLayoutManager(context);
+        linearLayoutManager.setStackFromEnd(true);
+        chat_recycler_view.setLayoutManager(linearLayoutManager);
+        MessageAdapter_3 mAdapter = new MessageAdapter_3(list, context);
+        chat_recycler_view.setAdapter(mAdapter);
+    }
+
+    private void showCertificates() {
+        showCertificate=true;
+        list_display.setVisibility(View.VISIBLE);
+        display_chat.setVisibility(View.GONE);
+    }
+
 }
