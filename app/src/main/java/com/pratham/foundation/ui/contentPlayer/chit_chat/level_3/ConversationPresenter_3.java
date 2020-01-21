@@ -2,11 +2,16 @@ package com.pratham.foundation.ui.contentPlayer.chit_chat.level_3;
 
 import android.content.Context;
 
+import com.pratham.foundation.BaseActivity;
 import com.pratham.foundation.database.BackupDatabase;
 import com.pratham.foundation.database.domain.Assessment;
 import com.pratham.foundation.database.domain.ContentProgress;
+import com.pratham.foundation.database.domain.KeyWords;
 import com.pratham.foundation.database.domain.Score;
+import com.pratham.foundation.interfaces.OnGameClose;
+import com.pratham.foundation.modalclasses.ScienceQuestionChoice;
 import com.pratham.foundation.services.shared_preferences.FastSave;
+import com.pratham.foundation.ui.contentPlayer.GameConstatnts;
 import com.pratham.foundation.utility.FC_Constants;
 import com.pratham.foundation.utility.FC_Utility;
 
@@ -16,6 +21,8 @@ import org.json.JSONObject;
 
 import java.io.FileInputStream;
 import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.List;
 
 import static com.pratham.foundation.database.AppDatabase.appDatabase;
 
@@ -85,6 +92,51 @@ public class ConversationPresenter_3 implements ConversationContract_3.Conversat
         }
         //Toast.makeText(context, "Tittle not found", Toast.LENGTH_SHORT).show();
     }
+
+
+    /*public void addLearntWords(ArrayList<ScienceQuestionChoice> selectedAnsList) {
+        if (selectedAnsList != null && checkAttemptedornot(selectedAnsList)) {
+            int correctCnt=0;
+            List<KeyWords> learntWords = new ArrayList<>();
+            int scoredMarks;
+            KeyWords keyWords = new KeyWords();
+            keyWords.setResourceId(resId);
+            keyWords.setSentFlag(0);
+            keyWords.setStudentId(FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""));
+            keyWords.setKeyWord(questionModel.getTitle());
+            keyWords.setWordType("word");
+            learntWords.add(keyWords);
+            for (int i = 0; i < selectedAnsList.size(); i++) {
+                if (selectedAnsList.get(i).getUserAns() != null && !selectedAnsList.get(i).getUserAns().isEmpty()) {
+                    if (checkAnswer(selectedAnsList.get(i)) > 70) {
+                        scoredMarks = 10;
+                        correctCnt++;
+                        selectedAnsList.get(i).setTrue(true);
+                    } else {
+                        scoredMarks = 0;
+                        selectedAnsList.get(i).setTrue(false);
+                    }
+                    // addScore(GameConstatnts.getInt(selectedAnsList.get(i).getQid()), GameConstatnts.FACTRETRIEVAL, scoredMarks, 10, FC_Utility.getCurrentDateTime(), selectedAnsList.get(i).toString());
+                    addScore(GameConstatnts.getInt(questionModel.getQid()), GameConstatnts.FACTRETRIEVAL, scoredMarks, 10, selectedAnsList.get(i).getStartTime(), selectedAnsList.get(i).getEndTime(), selectedAnsList.get(i).toString());
+                }
+            }
+            appDatabase.getKeyWordDao().insertAllWord(learntWords);
+            setCompletionPercentage();
+            GameConstatnts.postScoreEvent(selectedAnsList.size(),correctCnt);
+            BaseActivity.correctSound.start();
+            if (!FC_Constants.isTest) {
+                view.showResult(selectedAnsList);
+            }else {
+                GameConstatnts.playGameNext(context, GameConstatnts.FALSE, (OnGameClose) view);
+            }
+            //GameConstatnts.playGameNext(context, GameConstatnts.FALSE, (OnGameClose) view);
+        } else {
+            GameConstatnts.playGameNext(context, GameConstatnts.TRUE, (OnGameClose) view);
+        }
+        BackupDatabase.backup(context);
+    }*/
+
+
     public void addScore(int wID, String Word, int scoredMarks, int totalMarks, String resStartTime, String resEndTime, String Label, String resId, boolean addInAssessment) {
         try {
             String deviceId = appDatabase.getStatusDao().getValue("DeviceId");
