@@ -90,7 +90,6 @@ public class ConversationPresenter_3 implements ConversationContract_3.Conversat
             e.printStackTrace();
             conversationView_3.dataNotFound();
         }
-
         //Toast.makeText(context, "Tittle not found", Toast.LENGTH_SHORT).show();
     }
 
