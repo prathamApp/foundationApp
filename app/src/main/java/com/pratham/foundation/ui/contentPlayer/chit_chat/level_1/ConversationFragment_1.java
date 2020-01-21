@@ -138,7 +138,7 @@ Handler handler;
         else
             convoPath = ApplicationClass.foundationPath + gameFolderPath + "/" + contentPath + "/";
         resStartTime = FC_Utility.getCurrentDateTime();
-        presenter.setView(ConversationFragment_1.this,resId);
+        presenter.setView(ConversationFragment_1.this,resId,contentName,resStartTime);
         presenter.addScore(0, "", 0, 0, resStartTime, FC_Utility.getCurrentDateTime(), GameConstatnts.NEW_CHIT_CHAT_1 + " " + GameConstatnts.START, contentId, true);
 
 
@@ -768,7 +768,8 @@ Handler handler;
 
     @Override
     public void gameClose() {
-        presenter.setCompletionPercentage(conversation.length(), messageList.size());
+        presenter.addLearntWords(messageList);
+       // presenter.setCompletionPercentage(conversation.length(), messageList.size());
         presenter.addScore(0, "", 0, 0, resStartTime, FC_Utility.getCurrentDateTime(), GameConstatnts.NEW_CHIT_CHAT_1 + " " + GameConstatnts.END, contentId, true);
     }
 

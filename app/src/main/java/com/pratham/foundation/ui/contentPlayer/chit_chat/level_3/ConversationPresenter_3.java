@@ -2,6 +2,7 @@ package com.pratham.foundation.ui.contentPlayer.chit_chat.level_3;
 
 import android.content.Context;
 
+import com.google.gson.Gson;
 import com.pratham.foundation.BaseActivity;
 import com.pratham.foundation.database.BackupDatabase;
 import com.pratham.foundation.database.domain.Assessment;
@@ -9,7 +10,7 @@ import com.pratham.foundation.database.domain.ContentProgress;
 import com.pratham.foundation.database.domain.KeyWords;
 import com.pratham.foundation.database.domain.Score;
 import com.pratham.foundation.interfaces.OnGameClose;
-import com.pratham.foundation.modalclasses.ScienceQuestionChoice;
+import com.pratham.foundation.modalclasses.Message;
 import com.pratham.foundation.services.shared_preferences.FastSave;
 import com.pratham.foundation.ui.contentPlayer.GameConstatnts;
 import com.pratham.foundation.utility.FC_Constants;
@@ -30,23 +31,24 @@ import static com.pratham.foundation.database.AppDatabase.appDatabase;
 @EBean
 public class ConversationPresenter_3 implements ConversationContract_3.ConversationPresenter_3 {
 
-    Context context;
-    ConversationContract_3.ConversationView_3 conversationView_3;
-    String resId;
-
+    private Context context;
+    private ConversationContract_3.ConversationView_3 conversationView_3;
+    private String resId;
+    private String convoTitle;
+    private int questionID;
+    private String gameName, resStartTime;
     @Override
-    public void setView(ConversationContract_3.ConversationView_3 ConversationView,String resId) {
+    public void setView(ConversationContract_3.ConversationView_3 ConversationView, String resId, String gameName, String resStartTime) {
         this.conversationView_3 = ConversationView;
         this.resId=resId;
+        this.gameName = gameName;
+        this.resStartTime = resStartTime;
     }
 
     public ConversationPresenter_3(Context context) {
         this.context = context;
     }
 
-
-    @Background
-    @Override
     public void addCompletion(float perc) {
         try {
             ContentProgress contentProgress = new ContentProgress();
@@ -67,8 +69,6 @@ public class ConversationPresenter_3 implements ConversationContract_3.Conversat
     @Background
     @Override
     public void fetchStory(String convoPath) {
-        String convoTitle = null;
-        int questionID;
         // JSONArray returnStoryNavigate = null, levelJSONArray;
         try {
             InputStream is = new FileInputStream(convoPath + "Data.json");
@@ -93,49 +93,35 @@ public class ConversationPresenter_3 implements ConversationContract_3.Conversat
         //Toast.makeText(context, "Tittle not found", Toast.LENGTH_SHORT).show();
     }
 
-
-    /*public void addLearntWords(ArrayList<ScienceQuestionChoice> selectedAnsList) {
-        if (selectedAnsList != null && checkAttemptedornot(selectedAnsList)) {
-            int correctCnt=0;
+    public void addLearntWords(List<Message> messageList) {
+        if (messageList != null && messageList.size() > 0) {
             List<KeyWords> learntWords = new ArrayList<>();
-            int scoredMarks;
             KeyWords keyWords = new KeyWords();
             keyWords.setResourceId(resId);
             keyWords.setSentFlag(0);
             keyWords.setStudentId(FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""));
-            keyWords.setKeyWord(questionModel.getTitle());
+            keyWords.setKeyWord(convoTitle);
             keyWords.setWordType("word");
             learntWords.add(keyWords);
-            for (int i = 0; i < selectedAnsList.size(); i++) {
-                if (selectedAnsList.get(i).getUserAns() != null && !selectedAnsList.get(i).getUserAns().isEmpty()) {
-                    if (checkAnswer(selectedAnsList.get(i)) > 70) {
-                        scoredMarks = 10;
-                        correctCnt++;
-                        selectedAnsList.get(i).setTrue(true);
-                    } else {
-                        scoredMarks = 0;
-                        selectedAnsList.get(i).setTrue(false);
-                    }
-                    // addScore(GameConstatnts.getInt(selectedAnsList.get(i).getQid()), GameConstatnts.FACTRETRIEVAL, scoredMarks, 10, FC_Utility.getCurrentDateTime(), selectedAnsList.get(i).toString());
-                    addScore(GameConstatnts.getInt(questionModel.getQid()), GameConstatnts.FACTRETRIEVAL, scoredMarks, 10, selectedAnsList.get(i).getStartTime(), selectedAnsList.get(i).getEndTime(), selectedAnsList.get(i).toString());
-                }
-            }
             appDatabase.getKeyWordDao().insertAllWord(learntWords);
-            setCompletionPercentage();
-            GameConstatnts.postScoreEvent(selectedAnsList.size(),correctCnt);
-            BaseActivity.correctSound.start();
-            if (!FC_Constants.isTest) {
-                view.showResult(selectedAnsList);
-            }else {
-                GameConstatnts.playGameNext(context, GameConstatnts.FALSE, (OnGameClose) view);
+            //setCompletionPercentage();
+
+            Gson gson = new Gson();
+            String json = gson.toJson(messageList);
+            if (json != null && !json.isEmpty()) {
+                String newResId = GameConstatnts.getString(resId, gameName, "" + questionID, json, convoTitle, "");
+                addScore(questionID, GameConstatnts.NEW_CHIT_CHAT_3, 0, 0, resStartTime, FC_Utility.getCurrentDateTime(), GameConstatnts.NEW_CHIT_CHAT_3 + "_" + json, resId, true);
+                addScore(FC_Utility.getSubjectNo(), GameConstatnts.NEW_CHIT_CHAT_3, FC_Utility.getSectionCode(), 0, resStartTime, FC_Utility.getCurrentDateTime(), FC_Constants.CHIT_CHAT_LBL, newResId, false);
             }
-            //GameConstatnts.playGameNext(context, GameConstatnts.FALSE, (OnGameClose) view);
+            addCompletion(100);
+            GameConstatnts.postScoreEvent(1, 1);
+            BaseActivity.correctSound.start();
+            GameConstatnts.playGameNext(context, GameConstatnts.FALSE, (OnGameClose) conversationView_3);
         } else {
-            GameConstatnts.playGameNext(context, GameConstatnts.TRUE, (OnGameClose) view);
+            GameConstatnts.playGameNext(context, GameConstatnts.TRUE, (OnGameClose) conversationView_3);
         }
         BackupDatabase.backup(context);
-    }*/
-
+    }
 
     public void addScore(int wID, String Word, int scoredMarks, int totalMarks, String resStartTime, String resEndTime, String Label, String resId, boolean addInAssessment) {
         try {
@@ -177,5 +163,4 @@ public class ConversationPresenter_3 implements ConversationContract_3.Conversat
             e.printStackTrace();
         }
     }
-
 }
