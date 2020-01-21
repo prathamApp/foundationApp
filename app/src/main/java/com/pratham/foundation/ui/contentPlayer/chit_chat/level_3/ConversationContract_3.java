@@ -1,5 +1,9 @@
 package com.pratham.foundation.ui.contentPlayer.chit_chat.level_3;
 
+import com.pratham.foundation.modalclasses.Message;
+
+import java.util.List;
+
 /**
  * Created by Ketan on 23-Nov-17.
  */
@@ -19,10 +23,10 @@ public interface ConversationContract_3 {
     }
 
     interface ConversationPresenter_3 {
-        void setView(ConversationView_3 ConversationView,String resId);
+        void setView(ConversationView_3 ConversationView,String resId,String gameName,String resStartTime);
 
         void fetchStory(String convoPath);
-
+        void addLearntWords(List<Message> messageList);
        // void setCorrectArray(int length);
 
       //  void sttResultProcess(ArrayList<String> sttServerResult, String answer);
@@ -31,7 +35,7 @@ public interface ConversationContract_3 {
 
         public void addScore(int wID, String Word, int scoredMarks, int totalMarks, String resStartTime, String resEndTime, String Label, String resId, boolean addInAssessment);
 
-        void addCompletion(float perc);
+       // void addCompletion(float perc);
     }
 
 }

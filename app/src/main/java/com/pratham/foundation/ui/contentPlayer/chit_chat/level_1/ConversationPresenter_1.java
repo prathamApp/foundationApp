@@ -2,11 +2,17 @@ package com.pratham.foundation.ui.contentPlayer.chit_chat.level_1;
 
 import android.content.Context;
 
+import com.google.gson.Gson;
+import com.pratham.foundation.BaseActivity;
 import com.pratham.foundation.database.BackupDatabase;
 import com.pratham.foundation.database.domain.Assessment;
 import com.pratham.foundation.database.domain.ContentProgress;
+import com.pratham.foundation.database.domain.KeyWords;
 import com.pratham.foundation.database.domain.Score;
+import com.pratham.foundation.interfaces.OnGameClose;
+import com.pratham.foundation.modalclasses.Message;
 import com.pratham.foundation.services.shared_preferences.FastSave;
+import com.pratham.foundation.ui.contentPlayer.GameConstatnts;
 import com.pratham.foundation.utility.FC_Constants;
 import com.pratham.foundation.utility.FC_Utility;
 
@@ -17,6 +23,8 @@ import org.json.JSONObject;
 
 import java.io.FileInputStream;
 import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.List;
 
 import static com.pratham.foundation.database.AppDatabase.appDatabase;
 
@@ -24,15 +32,20 @@ import static com.pratham.foundation.database.AppDatabase.appDatabase;
 @EBean
 public class ConversationPresenter_1 implements ConversationContract_1.ConversationPresenter_1 {
 
-    Context context;
-    ConversationContract_1.ConversationView_1 conversationView_1;
-    String resId;
-    String convoTitle;
+    private Context context;
+    private ConversationContract_1.ConversationView_1 conversationView_1;
+    private String resId;
+    private String convoTitle;
     int questionID;
+    private String gameName,resStartTime;
+    private JSONArray returnStoryNavigate = null;
+
     @Override
-    public void setView(ConversationContract_1.ConversationView_1 ConversationView,String resId) {
+    public void setView(ConversationContract_1.ConversationView_1 ConversationView,String resId,String gameName,String resStartTime) {
         this.conversationView_1 = ConversationView;
         this.resId = resId;
+        this.gameName = gameName;
+        this.resStartTime = resStartTime;
     }
 
     public ConversationPresenter_1(Context context) {
@@ -41,7 +54,7 @@ public class ConversationPresenter_1 implements ConversationContract_1.Conversat
 
     @Override
     public void fetchStory(String convoPath) {
-        JSONArray returnStoryNavigate = null, levelJSONArray;
+       // JSONArray levelJSONArray;
         try {
             InputStream is = new FileInputStream(convoPath + "Data.json");
             int size = is.available();
@@ -203,6 +216,30 @@ public class ConversationPresenter_1 implements ConversationContract_1.Conversat
             e.printStackTrace();
         }
     }
+
+    public void addLearntWords(List<Message> messageList) {
+        if (messageList != null && messageList.size() > 0) {
+            List<KeyWords> learntWords = new ArrayList<>();
+            KeyWords keyWords = new KeyWords();
+            keyWords.setResourceId(resId);
+            keyWords.setSentFlag(0);
+            keyWords.setStudentId(FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""));
+            keyWords.setKeyWord(convoTitle);
+            keyWords.setWordType("word");
+            learntWords.add(keyWords);
+            appDatabase.getKeyWordDao().insertAllWord(learntWords);
+            //setCompletionPercentage();
+            setCompletionPercentage(returnStoryNavigate.length(), messageList.size());
+            //addCompletion(100);
+            GameConstatnts.postScoreEvent(1, 1);
+            BaseActivity.correctSound.start();
+//            GameConstatnts.playGameNext(context, GameConstatnts.FALSE, (OnGameClose) conversationView_1);
+        } else {
+       //     GameConstatnts.playGameNext(context, GameConstatnts.TRUE, (OnGameClose) conversationView_1);
+        }
+        BackupDatabase.backup(context);
+    }
+
     @Background
     @Override
     public void addScore(int wID, String Word, int scoredMarks, int totalMarks, String resStartTime, String resEndTime, String Label, String resId, boolean addInAssessment) {
@@ -245,5 +282,4 @@ public class ConversationPresenter_1 implements ConversationContract_1.Conversat
             e.printStackTrace();
         }
     }
-
 }

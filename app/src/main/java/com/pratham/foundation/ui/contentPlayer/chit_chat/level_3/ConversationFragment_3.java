@@ -90,7 +90,7 @@ public class ConversationFragment_3 extends Fragment
     RelativeLayout person_B;
 
     private RecyclerView.Adapter mAdapter;
-    private List messageList = new ArrayList();
+    private List<Message> messageList = new ArrayList();
     public static MediaPlayerUtil mediaPlayerUtil;
     Context context;
     MediaPlayer correctSound;
@@ -134,7 +134,6 @@ public class ConversationFragment_3 extends Fragment
         certiCode = bundle.getString("certiCode");
         onSdCard = bundle.getBoolean("onSdCard", false);
 
-        presenter.setView(ConversationFragment_3.this,contentId);
 
         convoMode = "A";
 
@@ -145,6 +144,7 @@ public class ConversationFragment_3 extends Fragment
 
 
         resStartTime = FC_Utility.getCurrentDateTime();
+        presenter.setView(ConversationFragment_3.this,contentId,contentName,resStartTime);
         presenter.addScore(0, "", 0, 0, resStartTime, FC_Utility.getCurrentDateTime(), GameConstatnts.NEW_CHIT_CHAT_3 + " " + GameConstatnts.START, contentId, true);
 
         // setConvoJson();
@@ -367,20 +367,11 @@ public class ConversationFragment_3 extends Fragment
 
     @Click(R.id.btn_submit)
     public void onSubmitClick() {
-        GameConstatnts.playGameNext(context, GameConstatnts.TRUE, this);
+        presenter.addLearntWords(messageList);
     }
 
     @Override
     public void gameClose() {
-        if (messageList != null && messageList.size() > 0) {
-            Gson gson = new Gson();
-            String json = gson.toJson(messageList);
-            if (json != null && !json.isEmpty()) {
-                String newResId = GameConstatnts.getString(contentId, contentName, "" + questionID, json, question, "");
-                presenter.addScore(questionID, GameConstatnts.NEW_CHIT_CHAT_3, 0, 0, resStartTime, FC_Utility.getCurrentDateTime(),GameConstatnts.NEW_CHIT_CHAT_3+"_"+ json, contentId, true);
-                presenter.addScore(FC_Utility.getSubjectNo(), GameConstatnts.NEW_CHIT_CHAT_3, FC_Utility.getSectionCode(), 0, resStartTime, FC_Utility.getCurrentDateTime(), FC_Constants.CHIT_CHAT_LBL, newResId, false);
-            }
-        }
         presenter.addScore(0, "", 0, 0, resStartTime, FC_Utility.getCurrentDateTime(), GameConstatnts.NEW_CHIT_CHAT_3 + " " + GameConstatnts.END, contentId, true);
     }
 }
