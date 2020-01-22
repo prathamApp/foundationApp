@@ -182,7 +182,7 @@ public class DisplayChatActivity extends BaseActivity implements
     }
 
     private void showCertificates() {
-        showCertificate=true;
+        showCertificate=false;
         list_display.setVisibility(View.VISIBLE);
         display_chat.setVisibility(View.GONE);
     }

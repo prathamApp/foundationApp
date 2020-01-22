@@ -95,7 +95,7 @@ public class ConversationFragment_1 extends Fragment
     int currentQueNos = 0, randomNumA, randomNumB, currentMsgNo = 0;
     static boolean voiceStart = false;
     public RecognitionListener listener;
-    String selectedLanguage, contentData, contentId, studentID, contentName, contentPath, certiCode;
+    String selectedLanguage, studentID, contentName, contentPath, certiCode;
     public static String convoMode, convoPath;
     private String LOG_TAG = "VoiceRecognitionActivity";
     boolean[] correctArr;
@@ -139,7 +139,7 @@ Handler handler;
             convoPath = ApplicationClass.foundationPath + gameFolderPath + "/" + contentPath + "/";
         resStartTime = FC_Utility.getCurrentDateTime();
         presenter.setView(ConversationFragment_1.this,resId,contentName,resStartTime);
-        presenter.addScore(0, "", 0, 0, resStartTime, FC_Utility.getCurrentDateTime(), GameConstatnts.NEW_CHIT_CHAT_1 + " " + GameConstatnts.START, contentId, true);
+        presenter.addScore(0, "", 0, 0, resStartTime, FC_Utility.getCurrentDateTime(), GameConstatnts.NEW_CHIT_CHAT_1 + " " + GameConstatnts.START, resId, true);
 
 
 
@@ -770,7 +770,7 @@ Handler handler;
     public void gameClose() {
         presenter.addLearntWords(messageList);
        // presenter.setCompletionPercentage(conversation.length(), messageList.size());
-        presenter.addScore(0, "", 0, 0, resStartTime, FC_Utility.getCurrentDateTime(), GameConstatnts.NEW_CHIT_CHAT_1 + " " + GameConstatnts.END, contentId, true);
+        presenter.addScore(0, "", 0, 0, resStartTime, FC_Utility.getCurrentDateTime(), GameConstatnts.NEW_CHIT_CHAT_1 + " " + GameConstatnts.END, resId, true);
     }
 
  /*   @SuppressLint("SetTextI18n")

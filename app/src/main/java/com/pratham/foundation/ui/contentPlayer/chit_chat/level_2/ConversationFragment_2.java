@@ -26,6 +26,7 @@ import android.widget.RatingBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.google.gson.Gson;
 import com.nex3z.flowlayout.FlowLayout;
 import com.pratham.foundation.ApplicationClass;
 import com.pratham.foundation.R;
@@ -35,6 +36,7 @@ import com.pratham.foundation.interfaces.MediaCallbacks;
 import com.pratham.foundation.modalclasses.Message;
 import com.pratham.foundation.services.stt.ContinuousSpeechService_New;
 import com.pratham.foundation.services.stt.STT_Result_New;
+import com.pratham.foundation.ui.contentPlayer.GameConstatnts;
 import com.pratham.foundation.utility.FC_Constants;
 import com.pratham.foundation.utility.FC_Utility;
 import com.pratham.foundation.utility.MediaPlayerUtil;
@@ -104,7 +106,7 @@ public class ConversationFragment_2 extends Fragment
     Context context;
     ContinuousSpeechService_New continuousSpeechService;
 //    AnimationDrawable animationDrawable;
-
+private String topicName;
     @AfterViews
     public void initialize() {
         iv_monk.setVisibility(View.GONE);
@@ -157,8 +159,9 @@ public class ConversationFragment_2 extends Fragment
 
     @UiThread
     @Override
-    public void setConvoJson(JSONArray returnStoryNavigate) {
+    public void setConvoJson(JSONArray returnStoryNavigate, String topicName) {
         conversation = returnStoryNavigate;
+        this.topicName = topicName;
         myMsg = true;
         if (conversation != null) {
             msgPercentage = new float[conversation.length()];
@@ -656,6 +659,13 @@ public class ConversationFragment_2 extends Fragment
 
         dia_btn_green.setOnClickListener(v -> {
             ButtonClickSound.start();
+            Gson gson = new Gson();
+            String json = gson.toJson(messageList);
+            if (json != null && !json.isEmpty()) {
+                String newResId = GameConstatnts.getString(contentId, contentName, "" + 0, json, topicName, "");
+                // addScore(0, GameConstatnts.NEW_CHIT_CHAT_3, 0, 0, resStartTime, FC_Utility.getCurrentDateTime(), GameConstatnts.NEW_CHIT_CHAT_3 + "_" + json, resId, true);
+                presenter.addExtraScoreEntry(FC_Utility.getSubjectNo(), GameConstatnts.NEW_CHIT_CHAT_3, FC_Utility.getSectionCode(), 0, FC_Utility.getCurrentDateTime(), FC_Utility.getCurrentDateTime(), FC_Constants.CHIT_CHAT_LBL, newResId);
+            }
             presenter.addScore(0, "", 0, 0, "Convo End");
             float perc = getCompletionPercentage();
             presenter.addCompletion(perc);

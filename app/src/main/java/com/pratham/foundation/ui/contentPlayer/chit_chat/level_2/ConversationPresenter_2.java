@@ -45,6 +45,7 @@ public class ConversationPresenter_2 implements ConversationContract_2.Conversat
     @Background
     @Override
     public void fetchStory(String convoPath) {
+        String tittle;
         JSONArray returnStoryNavigate = null, levelJSONArray;
         try {
             InputStream is = new FileInputStream(convoPath + "Data.json");
@@ -55,11 +56,12 @@ public class ConversationPresenter_2 implements ConversationContract_2.Conversat
             String jsonStr = new String(buffer);
             JSONObject jsonObj = new JSONObject(jsonStr);
             returnStoryNavigate = jsonObj.getJSONArray("convoList");
+            tittle = jsonObj.getString("convoTitle");
+            conversationView.setConvoJson(returnStoryNavigate, tittle);
         } catch (Exception e) {
             e.printStackTrace();
         }
 
-        conversationView.setConvoJson(returnStoryNavigate);
     }
 
     boolean[] correctArr;
@@ -232,4 +234,28 @@ public class ConversationPresenter_2 implements ConversationContract_2.Conversat
         }
     }
 
+
+    public void addExtraScoreEntry(int wID, String Word, int scoredMarks, int totalMarks, String resStartTime, String resEndTime, String Label, String resId) {
+        try {
+            String deviceId = appDatabase.getStatusDao().getValue("DeviceId");
+            Score score = new Score();
+            score.setSessionID(FastSave.getInstance().getString(FC_Constants.CURRENT_SESSION, ""));
+            score.setResourceID(resId);
+            score.setQuestionId(wID);
+            score.setScoredMarks(scoredMarks);
+            score.setTotalMarks(totalMarks);
+            score.setStudentID(FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""));
+            score.setStartDateTime(resStartTime);
+            score.setDeviceID(deviceId.equals(null) ? "0000" : deviceId);
+            score.setEndDateTime(resEndTime);
+            score.setLevel(FC_Constants.currentLevel);
+            score.setLabel(Label);
+            score.setSentFlag(0);
+            appDatabase.getScoreDao().insert(score);
+
+            BackupDatabase.backup(context);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 }

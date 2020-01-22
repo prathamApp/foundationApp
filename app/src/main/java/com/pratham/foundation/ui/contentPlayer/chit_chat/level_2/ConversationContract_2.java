@@ -11,7 +11,7 @@ import java.util.ArrayList;
 public interface ConversationContract_2 {
 
     interface ConversationView{
-        void setConvoJson(JSONArray returnStoryNavigate);
+        void setConvoJson(JSONArray returnStoryNavigate,String topicName);
         void setAnsCorrect(boolean[] ansCorrect);
 
         void sendClikChanger(int i);
@@ -34,6 +34,7 @@ public interface ConversationContract_2 {
         float getPercentage();
 
         void addScore(int i, String s, int i1, int i2, String convo_end);
+        void addExtraScoreEntry(int wID, String Word, int scoredMarks, int totalMarks, String resStartTime, String resEndTime, String Label, String resId);
 
         void setStartTime(String currentDateTime);
 

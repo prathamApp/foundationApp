@@ -34,7 +34,6 @@ public interface ConversationContract_3 {
       //  float getPercentage();
 
         public void addScore(int wID, String Word, int scoredMarks, int totalMarks, String resStartTime, String resEndTime, String Label, String resId, boolean addInAssessment);
-
        // void addCompletion(float perc);
     }
 

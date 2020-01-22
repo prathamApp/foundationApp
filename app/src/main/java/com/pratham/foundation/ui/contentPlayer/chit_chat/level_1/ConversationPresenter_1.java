@@ -191,7 +191,7 @@ public class ConversationPresenter_1 implements ConversationContract_1.Conversat
             // learntWordCount = getLearntWordsCount();
             String Label = "resourceProgress";
             if (learntWordCount > 0) {
-                perc = ((float) learntWordCount / (float) totalWordCount) * 100;
+                perc = ((float) (learntWordCount/2) / (float) totalWordCount) * 100;
                 addContentProgress(perc, Label);
             } else {
                 addContentProgress(0, Label);
@@ -233,6 +233,8 @@ public class ConversationPresenter_1 implements ConversationContract_1.Conversat
             //addCompletion(100);
             GameConstatnts.postScoreEvent(1, 1);
             BaseActivity.correctSound.start();
+            int perc = (int) (((float) (messageList.size()/2) / (float) returnStoryNavigate.length()) * 10);
+            addScore(0, "", perc, 10, resStartTime, FC_Utility.getCurrentDateTime(),convoTitle , resId, true);
 //            GameConstatnts.playGameNext(context, GameConstatnts.FALSE, (OnGameClose) conversationView_1);
         } else {
        //     GameConstatnts.playGameNext(context, GameConstatnts.TRUE, (OnGameClose) conversationView_1);

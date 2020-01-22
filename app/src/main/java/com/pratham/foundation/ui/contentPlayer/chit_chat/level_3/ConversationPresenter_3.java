@@ -35,7 +35,7 @@ public class ConversationPresenter_3 implements ConversationContract_3.Conversat
     private ConversationContract_3.ConversationView_3 conversationView_3;
     private String resId;
     private String convoTitle;
-    private int questionID;
+    // private int questionID;
     private String gameName, resStartTime;
     @Override
     public void setView(ConversationContract_3.ConversationView_3 ConversationView, String resId, String gameName, String resStartTime) {
@@ -79,9 +79,9 @@ public class ConversationPresenter_3 implements ConversationContract_3.Conversat
             String jsonStr = new String(buffer);
             JSONObject jsonObj = new JSONObject(jsonStr);
             convoTitle = jsonObj.getString("convoTitle");
-            questionID = jsonObj.getInt("nodeId");
+            //questionID = jsonObj.getInt("nodeId");
             if (convoTitle != null && !convoTitle.isEmpty())
-                conversationView_3.setConvoJson(convoTitle, questionID);
+                conversationView_3.setConvoJson(convoTitle, 0);
             else {
                 conversationView_3.dataNotFound();
             }
@@ -109,8 +109,8 @@ public class ConversationPresenter_3 implements ConversationContract_3.Conversat
             Gson gson = new Gson();
             String json = gson.toJson(messageList);
             if (json != null && !json.isEmpty()) {
-                String newResId = GameConstatnts.getString(resId, gameName, "" + questionID, json, convoTitle, "");
-                addScore(questionID, GameConstatnts.NEW_CHIT_CHAT_3, 0, 0, resStartTime, FC_Utility.getCurrentDateTime(), GameConstatnts.NEW_CHIT_CHAT_3 + "_" + json, resId, true);
+                String newResId = GameConstatnts.getString(resId, gameName, "" + 0, json, convoTitle, "");
+                addScore(0, GameConstatnts.NEW_CHIT_CHAT_3, 0, 0, resStartTime, FC_Utility.getCurrentDateTime(), GameConstatnts.NEW_CHIT_CHAT_3 + "_" + json, resId, true);
                 addScore(FC_Utility.getSubjectNo(), GameConstatnts.NEW_CHIT_CHAT_3, FC_Utility.getSectionCode(), 0, resStartTime, FC_Utility.getCurrentDateTime(), FC_Constants.CHIT_CHAT_LBL, newResId, false);
             }
             addCompletion(100);
