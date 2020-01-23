@@ -183,7 +183,6 @@ public class ReadingParagraphsPresenter implements ReadingParagraphsContract.Rea
         String[] splitRes = sttRes.split(" ");
         String word = " ";
         Log.d("Punctu", "onResults: " + sttRes);
-
         for (int j = 0; j < splitRes.length; j++) {
             if(!FastSave.getInstance().getString(CURRENT_FOLDER_NAME,"").equalsIgnoreCase("English"))
                 splitRes[j] = splitRes[j].replaceAll("[^a-zA-Z ]", "").toLowerCase();

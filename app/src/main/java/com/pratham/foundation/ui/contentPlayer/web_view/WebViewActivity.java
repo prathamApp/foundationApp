@@ -65,18 +65,15 @@ public class WebViewActivity extends BaseActivity implements WebViewInterface {
         gameType = getIntent().getStringExtra("gameType");
         gameName = getIntent().getStringExtra("gameName");
         gameCategory = getIntent().getStringExtra("gameCategory");
-
         sMarks = 0;
         tMarks = 0;
         cCode = "NA";
-
         Log.d("WevViewLevel", "onCreate: " + gameLevel);
 
         tts = new TextToSpeechCustom(this, 0.6f);
         gameCounter = 0;
         resStartTime = FC_Utility.getCurrentDateTime();
         createWebView(gamePath);
-
         learntWordsList = new ArrayList<>();
         certificateModelClassList = new ArrayList<>();
 

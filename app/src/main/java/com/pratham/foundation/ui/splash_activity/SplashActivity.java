@@ -57,6 +57,7 @@ import org.androidannotations.annotations.ViewById;
 import org.greenrobot.eventbus.EventBus;
 
 import java.io.File;
+import java.util.Objects;
 
 import static com.pratham.foundation.utility.FC_Constants.activityPhotoPath;
 import static com.pratham.foundation.utility.FC_Utility.setAppLocal;
@@ -375,7 +376,7 @@ public class SplashActivity extends SplashSupportActivity implements SplashContr
     public void showExitDialog() {
         final CustomLodingDialog dialog = new CustomLodingDialog(context);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        Objects.requireNonNull(dialog.getWindow()).setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         dialog.setContentView(R.layout.fc_custom_dialog);
         dialog.setCancelable(false);
         dialog.setCanceledOnTouchOutside(false);

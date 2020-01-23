@@ -48,6 +48,7 @@ import org.androidannotations.annotations.ViewById;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 
 import static com.pratham.foundation.utility.FC_Constants.CURRENT_FOLDER_NAME;
 import static com.pratham.foundation.utility.FC_Constants.STT_REGEX;
@@ -546,7 +547,7 @@ public class ReadingParagraphsActivity extends BaseActivity
     public void showAcknowledgeDialog(boolean diaComplete) {
         final CustomLodingDialog dialog = new CustomLodingDialog(this);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        Objects.requireNonNull(dialog.getWindow()).setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         dialog.setContentView(R.layout.fc_custom_dialog);
         dialog.setCanceledOnTouchOutside(false);
 
@@ -626,7 +627,7 @@ public class ReadingParagraphsActivity extends BaseActivity
 
         final CustomLodingDialog dialog = new CustomLodingDialog(this);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        Objects.requireNonNull(dialog.getWindow()).setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         dialog.setContentView(R.layout.fc_custom_test_star_dialog);
         dialog.setCanceledOnTouchOutside(false);
         dialog.setCancelable(false);
@@ -718,7 +719,7 @@ public class ReadingParagraphsActivity extends BaseActivity
             dialogFlg = true;
             myLoadingDialog = new CustomLodingDialog(this);
             myLoadingDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-            myLoadingDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+            Objects.requireNonNull(myLoadingDialog.getWindow()).setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
             myLoadingDialog.setContentView(R.layout.loading_dialog);
             myLoadingDialog.setCanceledOnTouchOutside(false);
             myLoadingDialog.show();
