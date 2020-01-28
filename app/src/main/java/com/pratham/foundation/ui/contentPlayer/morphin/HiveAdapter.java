@@ -62,11 +62,14 @@ public class HiveAdapter extends RecyclerView.Adapter<ImageViewHolder> {
             HiveDrawable drawable = new HiveDrawable(HiveLayoutManager.HORIZONTAL, bitmap);
             holder.imageView.setImageDrawable(drawable);
             holder.hindiText.setText(scienceQuestionChoice.getSubQues());
+            holder.hindiText.setSelected(true);
             if (showanswer) {
                 holder.englishText.setText(scienceQuestionChoice.getEnglish());
+                holder.englishText.setSelected(true);
             } else {
                 if (language.equalsIgnoreCase("English")) {
                     holder.englishText.setText(scienceQuestionChoice.getUserAns());
+                    holder.englishText.setSelected(true);
                     holder.remove.setVisibility(View.GONE);
                 } else {
                     holder.englishText.setText("");

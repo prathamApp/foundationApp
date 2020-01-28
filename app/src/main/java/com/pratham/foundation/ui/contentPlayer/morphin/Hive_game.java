@@ -196,7 +196,7 @@ public class Hive_game extends Fragment implements Hive_game_contract.Hive_game_
         recyclerAdapter = new RecyclerAdapter(optionList, getActivity(), this);
         recyclerAdapter.setLanguage(language);
         adapter.setLanguage(language);
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false);
         optionListRecycler.setLayoutManager(linearLayoutManager);
         optionListRecycler.setAdapter(recyclerAdapter);
         adapter.notifyDataSetChanged();
