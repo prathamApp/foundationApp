@@ -1,26 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/rl_img"
-    android:layout_width="match_parent"
+    android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:padding="4dp">
+    android:padding="4dp"
+    android:background="@drawable/border"
+    android:layout_margin="@dimen/_2sdp">
 
     <TextView
         android:id="@+id/hindiText"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
-        android:layout_toLeftOf="@id/sound"
         android:text="@string/Next"
         android:textAlignment="center"
         android:textColor="@color/colorBlack"
         android:textSize="@dimen/_15sdp"
-        android:textStyle="bold" />
+        android:textStyle="bold"
+        android:layout_marginRight="@dimen/_64sdp"
+        />
 
     <ImageView
         android:id="@+id/sound"
         android:layout_width="@dimen/_20sdp"
         android:layout_height="@dimen/_30sdp"
-        android:layout_alignParentEnd="true"
+        android:layout_toRightOf="@id/hindiText"
         android:src="@drawable/ic_speaker_black" />
 </RelativeLayout>
