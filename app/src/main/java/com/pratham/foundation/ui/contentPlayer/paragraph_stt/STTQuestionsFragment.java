@@ -123,6 +123,7 @@ public class STTQuestionsFragment extends Fragment implements
 
         if (contentType.equalsIgnoreCase(FC_Constants.RHYME_RESOURCE))
             btn_Mic.setVisibility(View.GONE);
+        submit.setVisibility(View.GONE);
 
         readSounds.add(R.raw.tap_the_mic);
         readSounds.add(R.raw.your_turn_to_read);
@@ -208,7 +209,7 @@ public class STTQuestionsFragment extends Fragment implements
         }
         if (currentPage == totalPages - 1 ) {
             lastPgFlag = true;
-            submit.setVisibility(View.VISIBLE);
+//            submit.setVisibility(View.VISIBLE);
             btn_prev.setVisibility(View.VISIBLE);
             btn_next.setVisibility(View.GONE);
         }
@@ -221,6 +222,12 @@ public class STTQuestionsFragment extends Fragment implements
     @Click(R.id.btn_Stop)
     void stopBtn() {
         btn_Mic.performClick();
+    }
+
+    @Click(R.id.reset_btn)
+    void resetBtn() {
+        sttAnswers[currentPage] = "";
+        stt_ans_tv.setText(""+sttAnswers[currentPage]);
     }
 
     @Click(R.id.hint_btn)
@@ -300,9 +307,13 @@ public class STTQuestionsFragment extends Fragment implements
 
     @Click(R.id.submit)
     public void submitTest() {
+        if(voiceStart)
+            btn_Mic.performClick();
+
         for(int i=0; i<totalPages; i++)
             presenter.addScore(0,""+sttAnswers[i],currentPage,totalPages,""+quesStartTime,"Stt_QA Submit");
-//        showStars(false);
+
+        super.onStop();
     }
 
     @Click(R.id.btn_next)
@@ -310,7 +321,7 @@ public class STTQuestionsFragment extends Fragment implements
         stt_ans_tv.setText("");
         if (currentPage < totalPages - 1) {
             wordCounter = 0;
-            presenter.addScore(0,""+sttAnswers[currentPage],currentPage,totalPages,""+quesStartTime,"Stt_QA");
+//            presenter.addScore(0,""+sttAnswers[currentPage],currentPage,totalPages,""+quesStartTime,"Stt_QA");
             if (voiceStart) {
                 btn_Mic.performClick();
                 setMute(0);
@@ -463,7 +474,9 @@ public class STTQuestionsFragment extends Fragment implements
             else if (message.getMessage().equalsIgnoreCase(FC_Constants.BACK_PRESSED)){
                 if(voiceStart)
                     btn_Mic.performClick();
-                presenter.addScore(0,""+sttAnswers[currentPage],currentPage,totalPages,""+quesStartTime,"Stt_QA");
+                for(int i=0; i<totalPages; i++)
+                    presenter.addScore(0,""+sttAnswers[i],currentPage,totalPages,""+startTime,"Stt_QA Submit");
+//                presenter.addScore(0,""+sttAnswers[currentPage],currentPage,totalPages,""+quesStartTime,"Stt_QA");
             }
         }
     }
