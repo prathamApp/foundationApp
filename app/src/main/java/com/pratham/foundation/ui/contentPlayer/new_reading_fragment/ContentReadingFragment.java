@@ -72,6 +72,7 @@ import java.util.List;
 
 import static com.pratham.foundation.BaseActivity.setMute;
 import static com.pratham.foundation.ui.contentPlayer.ContentPlayerActivity.floating_info;
+import static com.pratham.foundation.ui.contentPlayer.GameConstatnts.readingImgPath;
 import static com.pratham.foundation.utility.FC_Constants.STT_REGEX;
 import static com.pratham.foundation.utility.FC_Constants.dialog_btn_cancel;
 import static com.pratham.foundation.utility.FC_Constants.gameFolderPath;
@@ -284,8 +285,6 @@ public class ContentReadingFragment extends Fragment implements
     public void setParaAudio(String paraAudio) {
         storyAudio = paraAudio;
     }
-
-    public static String readingImgPath = "";
 
 
     @UiThread

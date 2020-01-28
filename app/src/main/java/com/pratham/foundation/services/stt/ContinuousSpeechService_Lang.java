@@ -27,43 +27,21 @@ import static com.pratham.foundation.BaseActivity.setMute;
  * Created by Ameya on 12-03-2019.
  */
 
-public class ContinuousSpeechService_New implements RecognitionListener, STT_Result_New.sttService {
-    public static Intent recognizerIntent;
-    public static SpeechRecognizer speech = null;
+public class ContinuousSpeechService_Lang implements RecognitionListener, STT_Result_Lang.sttService {
+    public static Intent recognizerIntent_Lang;
+    public static SpeechRecognizer speech_Lang = null;
     public Context context;
     boolean voiceStart = false, silenceDetectionFlg = false, resetFlg = false;
-    STT_Result_New.sttView stt_result;
+    STT_Result_Lang.sttView stt_result;
     Handler silenceHandler;
     String LOG_TAG = "ContinuousSpeechService : ", sttResult, language, myLocal = "en-IN";
 
-    public ContinuousSpeechService_New(Context context, STT_Result_New.sttView stt_result, String language) {
+    public ContinuousSpeechService_Lang(Context context, STT_Result_Lang.sttView stt_result, String language) {
         this.context = context;
         this.stt_result = stt_result;
         resetFlg = false;
         this.language = language;
-        if (FastSave.getInstance().getString(FC_Constants.CURRENT_FOLDER_NAME, "").equalsIgnoreCase("English"))
-            myLocal = "en-IN";
-        else
-            myLocal = "hi-IN";
-        resetSpeechRecognizer();
-    }
-
-    public void setRecogniserIntent() {
-        recognizerIntent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
-        recognizerIntent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_PREFERENCE, myLocal);
-        recognizerIntent.putExtra(RecognizerIntent.EXTRA_LANGUAGE, myLocal);
-        recognizerIntent.putExtra(RecognizerIntent.EXTRA_SPEECH_INPUT_POSSIBLY_COMPLETE_SILENCE_LENGTH_MILLIS, 10000);
-        recognizerIntent.putExtra(RecognizerIntent.EXTRA_SPEECH_INPUT_COMPLETE_SILENCE_LENGTH_MILLIS, 20000);
-        recognizerIntent.putExtra(RecognizerIntent.EXTRA_PARTIAL_RESULTS, true);
-        recognizerIntent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
-        recognizerIntent.putExtra(RecognizerIntent.EXTRA_MAX_RESULTS, 5);
-    }
-
-    public void stopSpeechService(){
-        speech.destroy();
-    }
-
-    public void setMyLocal(String language) {
+//        if (FastSave.getInstance().getString(FC_Constants.CURRENT_FOLDER_NAME, "").equalsIgnoreCase("English"))
         if (language.equalsIgnoreCase("English"))
             myLocal = "en-IN";
         else
@@ -71,20 +49,34 @@ public class ContinuousSpeechService_New implements RecognitionListener, STT_Res
         resetSpeechRecognizer();
     }
 
+    public void setRecogniserIntent() {
+        recognizerIntent_Lang = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
+        recognizerIntent_Lang.putExtra(RecognizerIntent.EXTRA_LANGUAGE_PREFERENCE, myLocal);
+        recognizerIntent_Lang.putExtra(RecognizerIntent.EXTRA_LANGUAGE, myLocal);
+        recognizerIntent_Lang.putExtra(RecognizerIntent.EXTRA_SPEECH_INPUT_POSSIBLY_COMPLETE_SILENCE_LENGTH_MILLIS, 10000);
+        recognizerIntent_Lang.putExtra(RecognizerIntent.EXTRA_SPEECH_INPUT_COMPLETE_SILENCE_LENGTH_MILLIS, 20000);
+        recognizerIntent_Lang.putExtra(RecognizerIntent.EXTRA_PARTIAL_RESULTS, true);
+        recognizerIntent_Lang.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
+        recognizerIntent_Lang.putExtra(RecognizerIntent.EXTRA_MAX_RESULTS, 5);
+    }
+
+    public void stopSpeechService(){
+        speech_Lang.destroy();
+    }
 
     public void resetSpeechRecognizer() {
         try {
-            if (speech != null) {
-                speech.destroy();
+            if (speech_Lang != null) {
+                speech_Lang.destroy();
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
         try {
-            speech = SpeechRecognizer.createSpeechRecognizer(context);
+            speech_Lang = SpeechRecognizer.createSpeechRecognizer(context);
             Log.i(LOG_TAG, "isRecognitionAvailable: " + SpeechRecognizer.isRecognitionAvailable(context));
             if (SpeechRecognizer.isRecognitionAvailable(context))
-                speech.setRecognitionListener(this);
+                speech_Lang.setRecognitionListener(this);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -100,7 +92,7 @@ public class ContinuousSpeechService_New implements RecognitionListener, STT_Res
         } catch (Exception e) {
         }
         logDBEntry("Stopped");
-        speech.stopListening();
+        speech_Lang.stopListening();
         stt_result.stoppedPressed();
     }
 
@@ -108,7 +100,7 @@ public class ContinuousSpeechService_New implements RecognitionListener, STT_Res
         try {
             voiceStart = true;
             setRecogniserIntent();
-            speech.startListening(recognizerIntent);
+            speech_Lang.startListening(recognizerIntent_Lang);
             logDBEntry("Started");
             Log.d(LOG_TAG, "onReadyForSpeech");
         } catch (Exception e) {
@@ -177,7 +169,7 @@ public class ContinuousSpeechService_New implements RecognitionListener, STT_Res
     @Override
     public void onEndOfSpeech() {
         Log.d(LOG_TAG, "onEndOfSpeech");
-        speech.stopListening();
+        speech_Lang.stopListening();
     }
 
     @Override
@@ -185,7 +177,7 @@ public class ContinuousSpeechService_New implements RecognitionListener, STT_Res
         Log.d(LOG_TAG, "onError");
         if (voiceStart) {
             resetSpeechRecognizer();
-            speech.startListening(recognizerIntent);
+            speech_Lang.startListening(recognizerIntent_Lang);
         } else
             setMute(0);
     }
@@ -208,14 +200,14 @@ public class ContinuousSpeechService_New implements RecognitionListener, STT_Res
         sttResult = matches.get(0);
         Log.d("STT-Res", "\n");
         for (int i = 0; i < matches.size(); i++)
-            Log.d("STT-Res", "STT-Res: " + matches.get(0) + "\n");
+            Log.d("STT-Res", "STT-Res: " + matches.get(i) + "\n");
 
         stt_result.Stt_onResult(matches);
 
         if (!voiceStart) {
             resetSpeechRecognizer();
         } else
-            speech.startListening(recognizerIntent);
+            speech_Lang.startListening(recognizerIntent_Lang);
     }
 
     @Override

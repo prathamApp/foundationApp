@@ -35,6 +35,7 @@ import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
+import static com.pratham.foundation.utility.FC_Constants.BACK_PRESSED;
 import static com.pratham.foundation.utility.FC_Constants.INFO_CLICKED;
 
 @EActivity(R.layout.activity_content_player)
@@ -157,32 +158,33 @@ public class ContentPlayerActivity extends BaseActivity implements ShowInstructi
         dia_btn_yellow.setText(getResources().getString(R.string.Cancel));
         dia_title.setText(getResources().getString(R.string.exit_dialog_msg));
         dialog.show();
-        dia_btn_green.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dialog.dismiss();
-                //if backpress when game list is shown then finish activity othewise popbackstack all fragmets Exclusive (sequence fdragment)
-                Fragment fragment = getSupportFragmentManager().findFragmentByTag(SequenceLayout_.class.getSimpleName());
-                if (fragment != null && fragment.isVisible()) {
-                    finish();
-                } else {
-                    Fragment f = getSupportFragmentManager().findFragmentById(R.id.RL_CPA);
-                    if (f instanceof OnGameClose) {
-                        ((OnGameClose) f).gameClose();
-                    }
-                    //if game opened from test
-                    if (FC_Constants.isTest) {
-                        if (f.getActivity() instanceof ContentPlayerActivity) {
-                            finish();
-                        } else {
-                            getSupportFragmentManager().popBackStack(SequenceLayout_.class.getSimpleName(), 0);
-                        }
-                    }else {
+        EventMessage eventMessage = new EventMessage();
+        eventMessage.setMessage(BACK_PRESSED);
+        EventBus.getDefault().post(eventMessage);
+
+        dia_btn_green.setOnClickListener(v -> {
+            dialog.dismiss();
+            //if backpress when game list is shown then finish activity othewise popbackstack all fragmets Exclusive (sequence fdragment)
+            Fragment fragment = getSupportFragmentManager().findFragmentByTag(SequenceLayout_.class.getSimpleName());
+            if (fragment != null && fragment.isVisible()) {
+                finish();
+            } else {
+                Fragment f = getSupportFragmentManager().findFragmentById(R.id.RL_CPA);
+                if (f instanceof OnGameClose) {
+                    ((OnGameClose) f).gameClose();
+                }
+                //if game opened from test
+                if (FC_Constants.isTest) {
+                    if (f.getActivity() instanceof ContentPlayerActivity) {
+                        finish();
+                    } else {
                         getSupportFragmentManager().popBackStack(SequenceLayout_.class.getSimpleName(), 0);
                     }
+                }else {
+                    getSupportFragmentManager().popBackStack(SequenceLayout_.class.getSimpleName(), 0);
                 }
-
             }
+
         });
 
         dia_btn_red.setOnClickListener(new View.OnClickListener() {

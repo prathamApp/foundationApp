@@ -37,6 +37,10 @@ import com.pratham.foundation.ui.contentPlayer.new_reading_fragment.ContentReadi
 import com.pratham.foundation.ui.contentPlayer.new_reading_fragment.ContentReadingFragment_;
 import com.pratham.foundation.ui.contentPlayer.new_vocab_reading.VocabReadingFragment;
 import com.pratham.foundation.ui.contentPlayer.new_vocab_reading.VocabReadingFragment_;
+import com.pratham.foundation.ui.contentPlayer.paragraph_stt.ParaSttReadingFragment;
+import com.pratham.foundation.ui.contentPlayer.paragraph_stt.ParaSttReadingFragment_;
+import com.pratham.foundation.ui.contentPlayer.paragraph_stt.STTQuestionsFragment;
+import com.pratham.foundation.ui.contentPlayer.paragraph_stt.STTQuestionsFragment_;
 import com.pratham.foundation.ui.contentPlayer.paragraph_writing.ParagraphWritingFragment_;
 import com.pratham.foundation.ui.contentPlayer.pictionary.pictionaryFragment;
 import com.pratham.foundation.ui.contentPlayer.pictionary.pictionaryFragment_;
@@ -77,12 +81,15 @@ public class GameConstatnts implements ShowInstruction {
     public static final String NEW_CHIT_CHAT_1 = "new_chit_chat_1";
     public static final String NEW_CHIT_CHAT_2 = "new_chit_chat_2";
     public static final String NEW_CHIT_CHAT_3 = "new_chit_chat_3";
+    public static final String PARAREADQUES = "ParaReadQues";
+    public static final String PARAQA = "paraqa";
     public static final boolean TRUE = true;
     public static final boolean FALSE = false;
     public static final String START = "start";
     public static final String END = "end";
     public static final String VIDEO = "Video";
 
+    public static String readingImgPath = "";
     public static boolean playInsequence = false;
     public static ContentTable contentTable1;
     public static InstructionsDialog instructionsDialog;
@@ -309,7 +316,10 @@ public class GameConstatnts implements ShowInstruction {
                 FC_Utility.showFragment((Activity) context, new pictionaryFragment_(), R.id.RL_CPA,
                         bundle, pictionaryFragment.class.getSimpleName());
                 break;
-            // case GameConstatnts.DOING_ACT_VIDEO:
+            case GameConstatnts.PARAQA:
+                FC_Utility.showFragment((Activity) context, new STTQuestionsFragment_(), R.id.RL_CPA,
+                        bundle, STTQuestionsFragment.class.getSimpleName());
+                break;            // case GameConstatnts.DOING_ACT_VIDEO:
             case GameConstatnts.DOING_ACT_READ:
             case GameConstatnts.LetterWriting:
             case GameConstatnts.WATCHING_VIDEO:
@@ -354,6 +364,13 @@ public class GameConstatnts implements ShowInstruction {
                             instructionsDialog.dismiss();
                             //Do something after 100ms
                         }
+                    }, 100);
+                    break;
+                case GameConstatnts.PARAREADQUES:
+                    FC_Utility.showFragment((Activity) context, new ParaSttReadingFragment_(), R.id.RL_CPA,
+                            bundle, ParaSttReadingFragment.class.getSimpleName());
+                    handler.postDelayed(() -> {
+                        instructionsDialog.dismiss();
                     }, 100);
                     break;
                 case GameConstatnts.VIDEO:

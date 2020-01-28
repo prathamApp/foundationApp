@@ -148,6 +148,10 @@
             android:name=".services.AppExitService"
             android:enabled="true"
             android:stopWithTask="false" />
+
+        <service
+            android:name=".services.stt.ContinuousSpeechService_New"
+            android:enabled="true"/>
         <receiver
             android:name=".services.OTGListener"
             android:enabled="true">

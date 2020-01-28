@@ -1,4 +1,4 @@
-package com.pratham.foundation.ui.paragraph_stt;
+package com.pratham.foundation.ui.contentPlayer.paragraph_stt;
 
 import android.content.Context;
 
@@ -24,16 +24,16 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static com.pratham.foundation.database.AppDatabase.appDatabase;
-import static com.pratham.foundation.ui.paragraph_stt.ParaSttFragment.correctArr;
-import static com.pratham.foundation.ui.paragraph_stt.ParaSttFragment.lineBreakCounter;
-import static com.pratham.foundation.ui.paragraph_stt.ParaSttFragment.testCorrectArr;
+import static com.pratham.foundation.ui.contentPlayer.paragraph_stt.ParaSttReadingFragment.correctArr;
+import static com.pratham.foundation.ui.contentPlayer.paragraph_stt.ParaSttReadingFragment.lineBreakCounter;
+import static com.pratham.foundation.ui.contentPlayer.paragraph_stt.ParaSttReadingFragment.testCorrectArr;
 import static com.pratham.foundation.utility.FC_Constants.STT_REGEX;
 
 
 @EBean
-public class ParaSttPresenter implements ParaSttContract.ParaSttPresenter {
+public class ParaSttReadingPresenter implements ParaSttReadingContract.ParaSttReadingPresenter {
 
-    ParaSttContract.ParaSttView readingView;
+    ParaSttReadingContract.ParaSttReadingView readingView;
 
     Context context;
     ModalParaMainMenu modalParaMainMenu;
@@ -45,12 +45,13 @@ public class ParaSttPresenter implements ParaSttContract.ParaSttPresenter {
     String resId, resStartTime;
     public ArrayList<String> remainingResult;
 
-    public ParaSttPresenter(Context context) {
+
+    public ParaSttReadingPresenter(Context context) {
         this.context = context;
     }
 
     @Override
-    public void setView(ParaSttContract.ParaSttView readingView) {
+    public void setView(ParaSttReadingContract.ParaSttReadingView readingView) {
         this.readingView = readingView;
         learntWordsList = new ArrayList<>();
         remainingResult = new ArrayList<>();
@@ -115,7 +116,6 @@ public class ParaSttPresenter implements ParaSttContract.ParaSttPresenter {
             if(i > 0 && i < 3)
                 remainingResult.add(stt_Result.get(i));
         }
-
         try {
             Score score = new Score();
             score.setSessionID(FastSave.getInstance().getString(FC_Constants.CURRENT_SESSION, ""));
@@ -135,53 +135,6 @@ public class ParaSttPresenter implements ParaSttContract.ParaSttPresenter {
         } catch (Exception e) {
             e.printStackTrace();
         }
-    }
-
-    @Background
-    @Override
-    public void micStopped(List<String> splitWordsPunct, List<String> wordsResIdList) {
-        float perc;
-        String word = " ";
-        for(int k =0; k<remainingResult.size(); k++) {
-            String[] splitRes = remainingResult.get(k).split("");
-            for (int j = 0; j < splitRes.length; j++) {
-                splitRes[j] = splitRes[j].replaceAll(STT_REGEX, "");
-                for (int i = 0; i < splitWordsPunct.size(); i++) {
-                    if ((splitRes[j].equalsIgnoreCase(splitWordsPunct.get(i))) && !correctArr[i]) {
-                        correctArr[i] = true;
-                        word = word + splitWordsPunct.get(i) + "(" + wordsResIdList.get(i) + "),";
-                        break;
-                    }
-                }
-            }
-        }
-        remainingResult.clear();
-        List<String> learntWords_List = new ArrayList<>();
-        List<String> wordResId_List = new ArrayList<>();
-        for (int i = 0; i < splitWordsPunct.size(); i++) {
-            if (correctArr[i]) {
-                learntWords_List.add(splitWordsPunct.get(i));
-                wordResId_List.add(wordsResIdList.get(i));
-            }
-        }
-
-        addLearntWords(learntWords_List, wordResId_List);
-        int correctWordCount = getCorrectCounter();
-        perc = getPercentage(correctWordCount);
-
-        addScore(0, "Words:" + word, correctWordCount, correctArr.length, FC_Utility.getCurrentDateTime(), " ");
-
-        if (pagePercentage[pgNo] < perc) {
-            pagePercentage[pgNo] = perc;
-        }
-        if (FC_Constants.isTest)
-            if (perc >= 75)
-                testCorrectArr[pgNo] = true;
-
-        if (perc >= 75)
-            readingView.allCorrectAnswer();
-        else
-            readingView.dismissLoadingDialog();
     }
 
     @Background
@@ -208,7 +161,64 @@ public class ParaSttPresenter implements ParaSttContract.ParaSttPresenter {
         String wordTime = FC_Utility.getCurrentDateTime();
 //        addLearntWords(splitWordsPunct, wordsResIdList);
         addScore(0, "Words:" + word, correctWordCount, correctArr.length, wordTime, " ");
-        readingView.setCorrectViewColor();
+            readingView.setCorrectViewColor();
+
+    }
+
+    @Background
+    @Override
+    public void micStopped(List<String> splitWordsPunct, List<String> wordsResIdList) {
+        float perc;
+        String word = " ";
+        try {
+            for(int k =0; k<remainingResult.size(); k++) {
+                String[] splitRes = remainingResult.get(k).split("");
+                for (int j = 0; j < splitRes.length; j++) {
+                    splitRes[j] = splitRes[j].replaceAll(STT_REGEX, "");
+                    for (int i = 0; i < splitWordsPunct.size(); i++) {
+                        if ((splitRes[j].equalsIgnoreCase(splitWordsPunct.get(i))) && !correctArr[i]) {
+                            correctArr[i] = true;
+                            word = word + splitWordsPunct.get(i) + "(" + wordsResIdList.get(i) + "),";
+                            break;
+                        }
+                    }
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        remainingResult.clear();
+        List<String> learntWords_List = new ArrayList<>();
+        List<String> wordResId_List = new ArrayList<>();
+        try {
+            for (int i = 0; i < splitWordsPunct.size(); i++) {
+                if (correctArr[i]) {
+                    learntWords_List.add(splitWordsPunct.get(i));
+                    wordResId_List.add(wordsResIdList.get(i));
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        addLearntWords(learntWords_List, wordResId_List);
+        int correctWordCount = getCorrectCounter();
+        perc = getPercentage(correctWordCount);
+
+        addScore(0, "Words:" + word, correctWordCount, correctArr.length, FC_Utility.getCurrentDateTime(), " ");
+
+        if (pagePercentage[pgNo] < perc) {
+            pagePercentage[pgNo] = perc;
+        }
+        if (FC_Constants.isTest)
+            if (perc >= 75)
+                testCorrectArr[pgNo] = true;
+
+        if (perc >= 75)
+            readingView.allCorrectAnswer();
+        else
+            readingView.dismissLoadingDialog();
     }
 
     public boolean checkLearnt(String wordCheck) {

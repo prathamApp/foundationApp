@@ -96,7 +96,6 @@ public class FunInnerDataAdapter extends RecyclerView.Adapter {
                 //folder
                 FolderHolder folderHolder = (FolderHolder) viewHolder;
                 folderHolder.card_main.setBackground(mContext.getResources().getDrawable(getRandomCardColor()));
-                folderHolder.tvTitle.setTextColor(mContext.getResources().getColor(R.color.colorText));
                 folderHolder.tvTitle.setText(itemsList.get(i).getNodeTitle());
                 folderHolder.progressLayout.setCurProgress(Integer.parseInt(itemsList.get(i).getNodePercentage()));
                 File f;

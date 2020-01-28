@@ -1,5 +1,6 @@
-package com.pratham.foundation.ui.paragraph_stt;
+package com.pratham.foundation.ui.contentPlayer.paragraph_stt;
 import com.pratham.foundation.modalclasses.ModalParaSubMenu;
+import com.pratham.foundation.modalclasses.ParaSttQuestionListModel;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -8,9 +9,9 @@ import java.util.List;
  * Created by Ameya on 23-Nov-17.
  **/
 
-public interface ParaSttContract {
+public interface ParaSttReadingContract {
 
-    interface ParaSttView {
+    interface ParaSttReadingView {
         void setListData(List<ModalParaSubMenu> paraDataList);
 
         void setCategoryTitle(String title);
@@ -28,7 +29,7 @@ public interface ParaSttContract {
         void showLoader();
     }
 
-    interface ParaSttPresenter {
+    interface ParaSttReadingPresenter {
         void fetchJsonData(String contentPath);
 
         void getDataList();
@@ -45,9 +46,41 @@ public interface ParaSttContract {
 
         void addProgress();
 
-        void setView(ParaSttContract.ParaSttView ParaSttView);
+        void setView(ParaSttReadingView readingView);
 
         void micStopped(List<String> splitWordsPunct, List<String> wordsResIdList);
+    }
+
+
+    interface STTQuestionsView {
+        void setListData(List<ParaSttQuestionListModel> paraDataList);
+
+        void setCategoryTitle(String title);
+
+        void initializeContent(int pageNo);
+
+        void dismissLoadingDialog();
+
+        void showLoader();
+    }
+
+    interface STTQuestionsPresenter {
+
+        void fetchJsonData(String contentPath);
+
+        void getDataList();
+
+        void getPage(int pgNo);
+
+        void addScore(int wID, String Word, int scoredMarks, int totalMarks, String resStartTime, String Label);
+
+        void addExitScore(float perc, String Label);
+
+        void setResId(String resId);
+
+        void addProgress(String[] sttAnswers);
+
+        void setView(STTQuestionsView readingView);
     }
 
 }

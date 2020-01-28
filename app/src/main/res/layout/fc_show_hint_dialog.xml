@@ -1,0 +1,64 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/full_transparent"
+    android:layout_gravity="center">
+
+    <RelativeLayout
+        android:layout_width="@dimen/_250sdp"
+        android:layout_height="@dimen/_390sdp"
+        android:gravity="center"
+        android:id="@+id/dialog_main"
+        android:layout_gravity="center"
+        android:background="@color/full_transparent">
+
+        <ImageButton
+            android:id="@+id/dia_btn_cross"
+            android:layout_width="@dimen/_80sdp"
+            android:layout_height="@dimen/_35sdp"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:elevation="5dp"
+            android:layout_marginBottom="8dp"
+            android:padding="5dp"
+            android:background="@drawable/button_green"
+            android:scaleType="fitCenter"
+            android:src="@drawable/ic_check_white" />
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginBottom="@dimen/_18sdp"
+            android:background="@drawable/dialog_bg"
+            android:gravity="center">
+
+            <ScrollView
+                android:id="@+id/myScrollView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginStart="@dimen/_10sdp"
+                android:layout_marginEnd="@dimen/_10sdp"
+                android:layout_marginTop="10dp"
+                android:fadeScrollbars="false"
+                android:scrollbarSize="6dp"
+                android:scrollbarThumbVertical="@drawable/card_color_bg4"
+                android:scrollbarTrackVertical="@drawable/scroll_bg"
+                android:layout_marginBottom="@dimen/_10sdp"
+                android:elevation="5dp"
+                android:padding="@dimen/_5sdp">
+
+                <com.pratham.foundation.customView.SansTextView
+                    android:id="@+id/dialog_hint_tv"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/dark_blue"
+                    android:textSize="@dimen/_15sdp"
+                    android:text=""/>
+
+            </ScrollView>
+
+        </RelativeLayout>
+
+    </RelativeLayout>
+
+</FrameLayout>

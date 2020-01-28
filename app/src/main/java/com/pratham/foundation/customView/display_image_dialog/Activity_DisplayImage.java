@@ -26,7 +26,7 @@ import org.androidannotations.annotations.ViewById;
 import java.io.File;
 import java.io.FileInputStream;
 
-import static com.pratham.foundation.ui.contentPlayer.new_reading_fragment.ContentReadingFragment.readingImgPath;
+import static com.pratham.foundation.ui.contentPlayer.GameConstatnts.readingImgPath;
 
 @EActivity(R.layout.fc_show_image_dialog)
 public class Activity_DisplayImage extends BaseActivity {
