@@ -21,6 +21,10 @@ public class ScienceQuestionChoice implements Serializable {
     private String subQues;
     private String correctAnswer;
     private String subUrl;
+    private String english;
+    private String isQuestion;
+    private String englishURL;
+    private boolean isPlaying=false;
     @Ignore
     private String ansInPassage;
 
@@ -40,6 +44,7 @@ public class ScienceQuestionChoice implements Serializable {
 
     @Ignore
     private String endTime;
+
 
     public List getStt_result() {
         return stt_result;
@@ -175,7 +180,35 @@ public class ScienceQuestionChoice implements Serializable {
         isTrue = aTrue;
     }
 
+    public String getEnglish() {
+        return english;
+    }
 
+    public void setEnglish(String english) {
+        this.english = english;
+    }
 
+    public String getIsQuestion() {
+        return isQuestion;
+    }
 
+    public void setIsQuestion(String isQuestion) {
+        this.isQuestion = isQuestion;
+    }
+
+    public boolean isPlaying() {
+        return isPlaying;
+    }
+
+    public void setPlaying(boolean playing) {
+        isPlaying = playing;
+    }
+
+    public String getEnglishURL() {
+        return englishURL;
+    }
+
+    public void setEnglishURL(String englishURL) {
+        this.englishURL = englishURL;
+    }
 }

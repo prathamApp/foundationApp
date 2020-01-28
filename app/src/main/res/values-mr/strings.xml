@@ -73,7 +73,7 @@
     <string name="Paragraph">परिच्छेद : </string>
     <string name="Keyword">महत्वाचा शब्द : </string>
     <string name="usermessage">आता मुख्य शब्द निवडण्याची तुमची पाळी आहे.</string>
-
+    <string name="alertmessage">some options are remaining</string>
     <string name="yes">होय</string>
     <string name="no">नाही</string>
     <string name="fact_retrieval_click">जवाब देने के लिएअनुच्छेद से सही शब्द या वाक्य चुनिए|</string>

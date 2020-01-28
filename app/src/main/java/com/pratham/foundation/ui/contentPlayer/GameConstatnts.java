@@ -32,6 +32,7 @@ import com.pratham.foundation.ui.contentPlayer.fillInTheBlanks.FillInTheBlanksFr
 import com.pratham.foundation.ui.contentPlayer.keywords_identification.KeywordsIdentificationFragment_;
 import com.pratham.foundation.ui.contentPlayer.keywords_mapping.KeywordMappingFragment_;
 import com.pratham.foundation.ui.contentPlayer.listenAndWritting.ListeningAndWritting_;
+import com.pratham.foundation.ui.contentPlayer.morphin.Hive_game_;
 import com.pratham.foundation.ui.contentPlayer.multipleChoiceQuetion.multipleChoiceFragment_;
 import com.pratham.foundation.ui.contentPlayer.new_reading_fragment.ContentReadingFragment;
 import com.pratham.foundation.ui.contentPlayer.new_reading_fragment.ContentReadingFragment_;
@@ -81,6 +82,7 @@ public class GameConstatnts implements ShowInstruction {
     public static final String NEW_CHIT_CHAT_1 = "new_chit_chat_1";
     public static final String NEW_CHIT_CHAT_2 = "new_chit_chat_2";
     public static final String NEW_CHIT_CHAT_3 = "new_chit_chat_3";
+    public static final String HIVELAYOUT_GAME = "hivelayout_game";
     public static final String PARAREADQUES = "ParaReadQues";
     public static final String PARAQA = "paraqa";
     public static final boolean TRUE = true;
@@ -326,7 +328,10 @@ public class GameConstatnts implements ShowInstruction {
                 FC_Utility.showFragment((Activity) context, new DoingFragment_(), R.id.RL_CPA,
                         bundle, DoingFragment_.class.getSimpleName());
                 break;
-
+            case GameConstatnts.HIVELAYOUT_GAME:
+                FC_Utility.showFragment((Activity) context, new Hive_game_(), R.id.RL_CPA,
+                        bundle, Hive_game_.class.getSimpleName());
+                break;
 
         }
     }

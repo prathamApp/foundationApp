@@ -32,7 +32,7 @@
     <string name="yes">हाँ</string>
     <string name="no">नहीं</string>
     <string name="Test_Complete_Dialog">आप प्रोफाइल विभाग में प्रमाण पत्र देख सकते हैं</string>
-
+    <string name="alertmessage">some options are remaining</string>
     <string name="selectGroup" >ग्रुप का चयन करें</string>
     <string name="select_Age" >आयु वर्ग का चयन करें</string>
     <string name="select_Name" >अपना नाम चुनें</string>
