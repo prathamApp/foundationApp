@@ -45,7 +45,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<ListItem> {
         if (rowIndex == holder.getAdapterPosition()) {
             holder.itemView.setBackground(ContextCompat.getDrawable(context, R.drawable.grad_layer_rounded));
         } else {
-            holder.itemView.setBackground(ContextCompat.getDrawable(context, R.drawable.dialog_bg));
+            holder.itemView.setBackground(ContextCompat.getDrawable(context, R.drawable.border));
         }
         if(scienceQuestionChoice.isPlaying()){
             holder.sound.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.ic_speaker_color));

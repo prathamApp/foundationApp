@@ -30,7 +30,6 @@ public class HiveAdapter extends RecyclerView.Adapter<ImageViewHolder> {
         isSubmited = submited;
     }
 
-
     public HiveAdapter(List<ScienceQuestionChoice> datalist, Context context, OptionRecyclerInterface optionRecyclerInterface) {
         this.datalist = datalist;
         this.context = context;
@@ -45,18 +44,25 @@ public class HiveAdapter extends RecyclerView.Adapter<ImageViewHolder> {
 
     @Override
     public void onBindViewHolder(ImageViewHolder holder, int position) {
-        ScienceQuestionChoice scienceQuestionChoice = datalist.get(holder.getAdapterPosition());
         Bitmap bitmap;
+        ScienceQuestionChoice scienceQuestionChoice = datalist.get(holder.getAdapterPosition());
         if(!isSubmited) {
             if (scienceQuestionChoice.getIsQuestion() != null && scienceQuestionChoice.getIsQuestion().equalsIgnoreCase("True")) {
                 bitmap = BitmapCache.INSTANCE.getBitmap(R.drawable.yellow);
                 holder.remove.setVisibility(View.INVISIBLE);
+                if (showanswer) {
+                    holder.play.setVisibility(View.INVISIBLE);
+                } else {
+                    holder.play.setVisibility(View.VISIBLE);
+                }
             } else {
                 bitmap = BitmapCache.INSTANCE.getBitmap(R.drawable.grey_img);
                 if (showanswer) {
                     holder.remove.setVisibility(View.INVISIBLE);
+                    holder.play.setVisibility(View.INVISIBLE);
                 } else {
                     holder.remove.setVisibility(View.VISIBLE);
+                    holder.play.setVisibility(View.VISIBLE);
                 }
             }
             HiveDrawable drawable = new HiveDrawable(HiveLayoutManager.HORIZONTAL, bitmap);
@@ -98,6 +104,12 @@ public class HiveAdapter extends RecyclerView.Adapter<ImageViewHolder> {
             HiveDrawable drawable = new HiveDrawable(HiveLayoutManager.HORIZONTAL, bitmap);
             holder.imageView.setImageDrawable(drawable);
         }
+        holder.play.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                optionRecyclerInterface.onItemClick(datalist.get(holder.getAdapterPosition()), "play_hive");
+            }
+        });
     }
 
     @Override

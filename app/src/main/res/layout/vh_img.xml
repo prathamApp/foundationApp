@@ -21,9 +21,18 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 
-    </com.pratham.foundation.customView.shape_of_view.ShadowLayout>\
+    </com.pratham.foundation.customView.shape_of_view.ShadowLayout>
 
+    <ImageView
+        android:id="@+id/play"
+        android:layout_width="@dimen/_20sdp"
+        android:layout_height="@dimen/_20sdp"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="@dimen/_20sdp"
+        android:elevation="3dp"
+        android:src="@drawable/ic_speaker_black" />
     <RelativeLayout
+        android:layout_below="@id/play"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
