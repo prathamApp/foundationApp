@@ -32,10 +32,25 @@
             android:background="@drawable/dialog_bg"
             android:gravity="center">
 
+            <com.pratham.foundation.customView.SansTextView
+                android:id="@+id/dialog_hint_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:layout_marginStart="@dimen/_10sdp"
+                android:layout_marginEnd="@dimen/_10sdp"
+                android:layout_marginBottom="@dimen/_5sdp"
+                android:textColor="@color/dark_blue"
+                android:textSize="@dimen/_15sdp"
+                android:textAlignment="center"
+                android:text="@string/hint"/>
+
+
             <ScrollView
                 android:id="@+id/myScrollView"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:layout_below="@+id/dialog_hint_title"
                 android:layout_marginStart="@dimen/_10sdp"
                 android:layout_marginEnd="@dimen/_10sdp"
                 android:layout_marginTop="10dp"

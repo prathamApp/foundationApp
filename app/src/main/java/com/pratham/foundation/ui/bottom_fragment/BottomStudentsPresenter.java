@@ -11,7 +11,6 @@ import android.database.sqlite.SQLiteDatabase;
 import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
 import android.os.Build;
-import android.os.Handler;
 import android.provider.Settings;
 import android.util.Log;
 
@@ -207,13 +206,12 @@ public class BottomStudentsPresenter implements BottomStudentsContract.BottomStu
     @Override
     public void populateDB() {
         try {
+            Log.d("pushorassign", "populateDB() FC_Constants.INITIAL_ENTRIES : " + FastSave.getInstance().getBoolean(FC_Constants.INITIAL_ENTRIES, false));
             if (!FastSave.getInstance().getBoolean(FC_Constants.INITIAL_ENTRIES, false))
                 doInitialEntries(AppDatabase.appDatabase);
             populateMenu();
 
-            new Handler().postDelayed(() -> {
-                    myView.dismissProgressDialog2();
-            }, 1000);
+            myView.dismissProgressDialog2();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -278,6 +276,9 @@ public class BottomStudentsPresenter implements BottomStudentsContract.BottomStu
                     }
                 }
                 context.startService(new Intent(context, AppExitService.class));
+                Log.d("pushorassign", "populateDB() FC_Constants.KEY_MENU_COPIED : " + FastSave.getInstance().getBoolean(FC_Constants.KEY_MENU_COPIED, false));
+                FastSave.getInstance().saveBoolean(FC_Constants.KEY_MENU_COPIED, true);
+                Log.d("pushorassign", "populateDB() FC_Constants.KEY_MENU_COPIED : " + FastSave.getInstance().getBoolean(FC_Constants.KEY_MENU_COPIED, false));
                 BackupDatabase.backup(context);
             } catch (Exception e) {
                 e.printStackTrace();
@@ -431,12 +432,8 @@ public class BottomStudentsPresenter implements BottomStudentsContract.BottomStu
                 BackupDatabase.backup(context);
 
                 addStartTime();
-//            getSdCardPath();
                 requestLocation();
-
                 FastSave.getInstance().saveBoolean(FC_Constants.INITIAL_ENTRIES, true);
-
-
             } catch (Exception e) {
                 e.printStackTrace();
             }

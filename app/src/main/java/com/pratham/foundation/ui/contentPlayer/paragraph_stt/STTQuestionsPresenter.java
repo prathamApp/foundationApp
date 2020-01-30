@@ -138,7 +138,7 @@ public class STTQuestionsPresenter implements ParaSttReadingContract.STTQuestion
 
     @Background
     @Override
-    public void addProgress(String[] sttAnswers) {
+    public void addProgress(String[] sttAnswers, String[] sttAnswersTime) {
         float perc = getCompletionPercentage(sttAnswers);
         String Label = "resourceProgress";
         addExitScore(perc, Label);

@@ -244,8 +244,10 @@ public class BottomStudentsFragment extends BottomSheetDialogFragment
     @Override
     public void dismissProgressDialog2() {
         try {
+            new Handler().postDelayed(() -> {
             if (progress != null)
                 progress.dismiss();
+        }, 1000);
         } catch (Exception e) {
             e.printStackTrace();
         }

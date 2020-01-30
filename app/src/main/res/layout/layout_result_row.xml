@@ -49,8 +49,8 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:gravity="center"
-                android:layout_gravity="center"
+                android:gravity="center|top"
+                android:layout_gravity="center|top"
                 android:orientation="vertical">
 
                 <com.pratham.foundation.customView.SansTextViewBold
@@ -58,7 +58,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_margin="@dimen/_5sdp"
-                    android:gravity="center"
+                    android:gravity="center|top"
                     android:textColor="@color/colorAccentDark"
                     android:text="@string/You_answered"
                     android:textSize="@dimen/_15sdp" />
@@ -67,7 +67,7 @@
                 <com.pratham.foundation.customView.SansTextView
                     android:id="@+id/tv_you_answered"
                     android:layout_width="match_parent"
-                    android:layout_height="@dimen/_100sdp"
+                    android:layout_height="wrap_content"
                     android:layout_margin="@dimen/_5sdp"
                     android:gravity="center"
                     android:text="@string/Skipped"
@@ -93,8 +93,8 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:gravity="center"
-                android:layout_gravity="center"
+                android:gravity="center|top"
+                android:layout_gravity="center|top"
                 android:orientation="vertical">
 
                 <com.pratham.foundation.customView.SansTextViewBold
@@ -103,14 +103,14 @@
                     android:textColor="@color/colorBtnGreenDark"
                     android:layout_height="wrap_content"
                     android:layout_margin="@dimen/_5sdp"
-                    android:gravity="center"
+                    android:gravity="center|top"
                     android:text="@string/Correct_Answer"
                     android:textSize="@dimen/_15sdp" />
 
                 <com.pratham.foundation.customView.SansTextView
                     android:id="@+id/tv_correct_answer"
                     android:layout_width="match_parent"
-                    android:layout_height="@dimen/_100sdp"
+                    android:layout_height="wrap_content"
                     android:layout_margin="@dimen/_5sdp"
                     android:textColor="@color/dark_blue"
                     android:gravity="center"

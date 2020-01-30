@@ -209,7 +209,7 @@ public class PushOrAssignFragment extends Fragment {
                     @Override
                     public void run() {
                         dialog_file_name.setText("Loading Data..");
-                        Log.d("pushorassign", "Loading Data..");
+                        Log.d("pushorassign", "in handler : Loading Data..");
                         populateDB();
                     }
                 }, 1000);
@@ -239,9 +239,11 @@ public class PushOrAssignFragment extends Fragment {
             @Override
             protected Void doInBackground(Void... voids) {
                 try {
+                    Log.d("pushorassign", "INITIAL_ENTRIES: "+FastSave.getInstance().getBoolean(FC_Constants.INITIAL_ENTRIES, false));
+                    Log.d("pushorassign", "KEY_MENU_COPIED: "+FastSave.getInstance().getBoolean(FC_Constants.KEY_MENU_COPIED, false));
                     if (!FastSave.getInstance().getBoolean(FC_Constants.INITIAL_ENTRIES, false))
                         doInitialEntries(appDatabase);
-                    if (!FastSave.getInstance().getBoolean(FC_Constants.KEY_MENU_COPIED, false))
+//                    if (!FastSave.getInstance().getBoolean(FC_Constants.KEY_MENU_COPIED, false))
                         populateMenu();
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -268,8 +270,9 @@ public class PushOrAssignFragment extends Fragment {
             File folder_file, db_file;
             folder_file = new File(ApplicationClass.foundationPath + "/.FCA/");
             if (folder_file.exists()) {
-                Log.d("-CT-", "doInBackground ApplicationClass.contentSDPath: " + ApplicationClass.contentSDPath);
+                Log.d("pushorassign", "doInBackground ApplicationClass.contentSDPath: " + ApplicationClass.contentSDPath);
                 db_file = new File(folder_file + "/" + AppDatabase.DB_NAME);
+                Log.d("pushorassign", "doInBackground ApplicationClass.contentSDPath: " + db_file.toString());
 //                    db_file = new File(folder_file.getAbsolutePath() + "/" + AppDatabase.DB_NAME);
                 if (db_file.exists()) {
                     SQLiteDatabase db = SQLiteDatabase.openDatabase(db_file.getAbsolutePath(), null, SQLiteDatabase.OPEN_READONLY);
@@ -312,7 +315,7 @@ public class PushOrAssignFragment extends Fragment {
                     }
                 }
             }
-            getActivity().startService(new Intent(getActivity(), AppExitService.class));
+            Objects.requireNonNull(getActivity()).startService(new Intent(getActivity(), AppExitService.class));
             BackupDatabase.backup(getActivity());
         } catch (Exception e) {
             e.printStackTrace();
@@ -321,6 +324,7 @@ public class PushOrAssignFragment extends Fragment {
 
     public void doInitialEntries(AppDatabase appDatabase) {
         try {
+            Log.d("pushorassign", "doInitialEntries 1;");
             com.pratham.foundation.database.domain.Status status;
             status = new com.pratham.foundation.database.domain.Status();
             status.setStatusKey("DeviceId");
@@ -468,10 +472,9 @@ public class PushOrAssignFragment extends Fragment {
             addStartTime();
 //            getSdCardPath();
             requestLocation();
-
+            Log.d("pushorassign", "doInitialEntries 2 " + FastSave.getInstance().getBoolean(FC_Constants.INITIAL_ENTRIES, true) );
             FastSave.getInstance().saveBoolean(FC_Constants.INITIAL_ENTRIES, true);
-
-
+            Log.d("pushorassign", "doInitialEntries 3 " + FastSave.getInstance().getBoolean(FC_Constants.INITIAL_ENTRIES, true) );
         } catch (Exception e) {
             e.printStackTrace();
         }

@@ -78,7 +78,7 @@ public interface ParaSttReadingContract {
 
         void setResId(String resId);
 
-        void addProgress(String[] sttAnswers);
+        void addProgress(String[] sttAnswers, String[] sttAnswersTime);
 
         void setView(STTQuestionsView readingView);
     }

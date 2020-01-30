@@ -365,6 +365,7 @@ public class SplashPresenter implements SplashContract.SplashPresenter {
     @Override
     public void doInitialEntries(AppDatabase appDatabase) {
         try {
+            Log.d("pushorassign", "Splash doInitialEntries : KEY_MENU_COPIED: "+FastSave.getInstance().getBoolean(FC_Constants.INITIAL_ENTRIES, false));
             com.pratham.foundation.database.domain.Status status;
             status = new com.pratham.foundation.database.domain.Status();
             status.setStatusKey("DeviceId");
@@ -510,7 +511,9 @@ public class SplashPresenter implements SplashContract.SplashPresenter {
             BackupDatabase.backup(context);
             addStartTime();
             requestLocation();
+            Log.d("pushorassign", "Splash 2 doInitialEntries : KEY_MENU_COPIED: "+FastSave.getInstance().getBoolean(FC_Constants.INITIAL_ENTRIES, false));
             FastSave.getInstance().saveBoolean(FC_Constants.INITIAL_ENTRIES, true);
+            Log.d("pushorassign", "Splash 3 doInitialEntries : KEY_MENU_COPIED: "+FastSave.getInstance().getBoolean(FC_Constants.INITIAL_ENTRIES, false));
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -536,14 +539,17 @@ public class SplashPresenter implements SplashContract.SplashPresenter {
                         if (!mydir.exists()) mydir.mkdirs();
 
                         String path = ApplicationClass.foundationPath + "/.FCA/";
-                        copyFile(context, path);
+                        Log.d("pushorassign", "doInBackground: ");path = ApplicationClass.foundationPath + "/.FCA/";
+                        if(new File(path).exists()) {
+                            copyFile(context, path);
 
-                        FastSave.getInstance().saveBoolean(FC_Constants.KEY_ASSET_COPIED, true);
+                            FastSave.getInstance().saveBoolean(FC_Constants.KEY_ASSET_COPIED, true);
 
-                        if (!FastSave.getInstance().getBoolean(FC_Constants.INITIAL_ENTRIES, false))
-                            doInitialEntries(AppDatabase.appDatabase);
-                        if (!FastSave.getInstance().getBoolean(FC_Constants.KEY_MENU_COPIED, false))
-                            populateMenu();
+                            if (!FastSave.getInstance().getBoolean(FC_Constants.INITIAL_ENTRIES, false))
+                                doInitialEntries(AppDatabase.appDatabase);
+                            if (!FastSave.getInstance().getBoolean(FC_Constants.KEY_MENU_COPIED, false))
+                                populateMenu();
+                        }
 
                     }
                 } catch (Exception e) {

@@ -68,8 +68,8 @@
                     android:layout_width="@dimen/_150sdp"
                     android:layout_height="@dimen/_50sdp"
                     android:layout_marginVertical="@dimen/_10sdp"
-                    android:background="@drawable/button_purple"
-                    android:visibility="gone"
+                    android:background="@drawable/button_yellow"
+                    android:visibility="visible"
                     android:text="Download all data"
                     android:textColor="@color/white"
                     android:textSize="@dimen/_12sdp" />

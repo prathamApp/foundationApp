@@ -35,7 +35,6 @@ import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
-import static com.pratham.foundation.utility.FC_Constants.BACK_PRESSED;
 import static com.pratham.foundation.utility.FC_Constants.INFO_CLICKED;
 
 @EActivity(R.layout.activity_content_player)
@@ -158,9 +157,6 @@ public class ContentPlayerActivity extends BaseActivity implements ShowInstructi
         dia_btn_yellow.setText(getResources().getString(R.string.Cancel));
         dia_title.setText(getResources().getString(R.string.exit_dialog_msg));
         dialog.show();
-        EventMessage eventMessage = new EventMessage();
-        eventMessage.setMessage(BACK_PRESSED);
-        EventBus.getDefault().post(eventMessage);
 
         dia_btn_green.setOnClickListener(v -> {
             dialog.dismiss();

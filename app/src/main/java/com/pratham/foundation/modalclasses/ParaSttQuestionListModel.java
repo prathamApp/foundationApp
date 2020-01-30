@@ -1,15 +1,23 @@
 package com.pratham.foundation.modalclasses;
 
+import android.support.annotation.Nullable;
+
 import com.google.gson.annotations.SerializedName;
 
+import java.io.Serializable;
 
-public class ParaSttQuestionListModel {
+
+public class ParaSttQuestionListModel implements Serializable {
 
     @SerializedName("quesText")
     String quesText;
 
     @SerializedName("answerText")
     String answerText;
+
+    @Nullable
+    @SerializedName("studentText")
+    String studentText;
 
 
     public String getQuesText() {
@@ -26,5 +34,13 @@ public class ParaSttQuestionListModel {
 
     public void setAnswerText(String answerText) {
         this.answerText = answerText;
+    }
+
+    public String getStudentText() {
+        return studentText;
+    }
+
+    public void setStudentText(String studentText) {
+        this.studentText = studentText;
     }
 }

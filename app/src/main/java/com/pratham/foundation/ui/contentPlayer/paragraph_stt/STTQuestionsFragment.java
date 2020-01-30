@@ -2,6 +2,7 @@ package com.pratham.foundation.ui.contentPlayer.paragraph_stt;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.media.MediaPlayer;
@@ -31,6 +32,8 @@ import com.pratham.foundation.modalclasses.ParaSttQuestionListModel;
 import com.pratham.foundation.services.TTSService;
 import com.pratham.foundation.services.stt.ContinuousSpeechService_Lang;
 import com.pratham.foundation.services.stt.STT_Result_Lang;
+import com.pratham.foundation.ui.contentPlayer.GameConstatnts;
+import com.pratham.foundation.ui.contentPlayer.pictionary.PictionaryResult;
 import com.pratham.foundation.utility.FC_Constants;
 import com.pratham.foundation.utility.FC_Utility;
 
@@ -45,6 +48,7 @@ import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -77,7 +81,7 @@ public class STTQuestionsFragment extends Fragment implements
     @ViewById(R.id.btn_next)
     ImageButton btn_next;
     @ViewById(R.id.ib_mic)
-    ImageButton btn_Mic;
+    ImageButton ib_mic;
     @ViewById(R.id.myScrollView)
     ScrollView myScrollView;
     @ViewById(R.id.submit)
@@ -93,6 +97,7 @@ public class STTQuestionsFragment extends Fragment implements
 
     List<ParaSttQuestionListModel> paraSttQuestionList;
     String[] sttAnswers;
+    String[] sttAnswersTime;
     String contentType, storyPath, storyName, pageTitle, sttLang, quesStartTime;
     static int currentPage;
     boolean lastPgFlag = false;
@@ -122,7 +127,7 @@ public class STTQuestionsFragment extends Fragment implements
         continuousSpeechService = new ContinuousSpeechService_Lang(context, STTQuestionsFragment.this, HINDI);
 
         if (contentType.equalsIgnoreCase(FC_Constants.RHYME_RESOURCE))
-            btn_Mic.setVisibility(View.GONE);
+            ib_mic.setVisibility(View.GONE);
         submit.setVisibility(View.GONE);
 
         readSounds.add(R.raw.tap_the_mic);
@@ -156,8 +161,12 @@ public class STTQuestionsFragment extends Fragment implements
         this.paraSttQuestionList = paraSttQuestionList;
         totalPages = paraSttQuestionList.size();
         sttAnswers = new String[totalPages];
-        for(int i=0;i<totalPages;i++)
-            sttAnswers[i]="";
+        sttAnswersTime = new String[totalPages];
+        for(int i=0;i<totalPages;i++) {
+            sttAnswers[i] = "";
+            paraSttQuestionList.get(i).setStudentText("");
+            sttAnswersTime[i] = "NA";
+        }
     }
 
     public CustomLodingDialog myLoadingDialog;
@@ -216,24 +225,26 @@ public class STTQuestionsFragment extends Fragment implements
         pageTitle = paraSttQuestionList.get(currentPage).getQuesText();
         startTime = FC_Utility.getCurrentDateTime();
         story_title.setText(pageTitle);
+        showHint();
         dismissLoadingDialog();
     }
 
     @Click(R.id.btn_Stop)
     void stopBtn() {
-        btn_Mic.performClick();
+        ib_mic.performClick();
     }
 
     @Click(R.id.reset_btn)
     void resetBtn() {
         sttAnswers[currentPage] = "";
+        paraSttQuestionList.get(currentPage).setStudentText("");
         stt_ans_tv.setText(""+sttAnswers[currentPage]);
     }
 
     @Click(R.id.hint_btn)
     void showHint() {
         if(voiceStart)
-            btn_Mic.performClick();
+            ib_mic.performClick();
         showDialog();
     }
 
@@ -257,13 +268,16 @@ public class STTQuestionsFragment extends Fragment implements
 
     @Click(R.id.ib_mic)
     void sttMethod() {
-        quesStartTime = ""+FC_Utility.getCurrentDateTime();
+        if(sttAnswersTime[currentPage] == "NA") {
+            quesStartTime = ""+FC_Utility.getCurrentDateTime();
+            sttAnswersTime[currentPage] = quesStartTime;
+        }
     if (!voiceStart) {
             try {
                 voiceStart = true;
                 showLoader();
-                btn_Mic.setImageResource(R.drawable.ic_stop_black);
-                btn_Mic.setBackgroundResource(R.drawable.button_red);
+                ib_mic.setImageResource(R.drawable.ic_stop_black);
+                ib_mic.setBackgroundResource(R.drawable.button_red);
                 continuousSpeechService.startSpeechInput();
             } catch (Exception e) {
                 e.printStackTrace();
@@ -271,8 +285,8 @@ public class STTQuestionsFragment extends Fragment implements
         } else {
             try {
                 voiceStart = false;
-                btn_Mic.setImageResource(R.drawable.ic_mic_black);
-                btn_Mic.setBackgroundResource(R.drawable.button_green);
+                ib_mic.setImageResource(R.drawable.ic_mic_black);
+                ib_mic.setBackgroundResource(R.drawable.button_green);
                 continuousSpeechService.stopSpeechInput();
             } catch (Exception e) {
                 e.printStackTrace();
@@ -285,7 +299,7 @@ public class STTQuestionsFragment extends Fragment implements
         stt_ans_tv.setText("");
         if (currentPage > 0) {
             if (voiceStart) {
-                btn_Mic.performClick();
+                ib_mic.performClick();
                 setMute(0);
             }
             wordCounter = 0;
@@ -308,10 +322,10 @@ public class STTQuestionsFragment extends Fragment implements
     @Click(R.id.submit)
     public void submitTest() {
         if(voiceStart)
-            btn_Mic.performClick();
+            ib_mic.performClick();
 
         for(int i=0; i<totalPages; i++)
-            presenter.addScore(0,""+sttAnswers[i],currentPage,totalPages,""+quesStartTime,"Stt_QA Submit");
+            presenter.addScore(0,""+sttAnswers[i],currentPage,totalPages,""+sttAnswersTime[i],"Stt_QA Submit");
 
         super.onStop();
     }
@@ -323,7 +337,7 @@ public class STTQuestionsFragment extends Fragment implements
             wordCounter = 0;
 //            presenter.addScore(0,""+sttAnswers[currentPage],currentPage,totalPages,""+quesStartTime,"Stt_QA");
             if (voiceStart) {
-                btn_Mic.performClick();
+                ib_mic.performClick();
                 setMute(0);
             }
             ButtonClickSound.start();
@@ -343,11 +357,14 @@ public class STTQuestionsFragment extends Fragment implements
 
     public void exitDBEntry() {
         try {
-            presenter.addScore(0, "", 0, 0, startTime, contentType + " End");
+            for(int i=0; i<totalPages; i++) {
+                presenter.addScore(0, "" + sttAnswers[i], currentPage, totalPages, "" + sttAnswersTime[i], "Stt_QA Submit");
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }
-        presenter.addProgress(sttAnswers);
+        presenter.addScore(0, "", 0, 0, startTime, contentType + " End");
+        presenter.addProgress(sttAnswers,sttAnswersTime);
     }
 
     int correctCnt = 0, total = 0;
@@ -355,7 +372,7 @@ public class STTQuestionsFragment extends Fragment implements
     public void onPause() {
         super.onPause();
         if (voiceStart) {
-            btn_Mic.performClick();
+            ib_mic.performClick();
             voiceStart = false;
             setMute(0);
         }
@@ -382,6 +399,7 @@ public class STTQuestionsFragment extends Fragment implements
     public void setAnswerToView(ArrayList<String> sttResult) {
         String tempText = sttAnswers[currentPage] + " "+ sttResult.get(0);
         sttAnswers[currentPage] = tempText;
+        paraSttQuestionList.get(currentPage).setStudentText(tempText);
         stt_ans_tv.setText(tempText);
     }
 
@@ -449,7 +467,16 @@ public class STTQuestionsFragment extends Fragment implements
 
     @Override
     public void gameClose() {
+        Log.d("gameClose", "gameClose: gameClose: ");
         exitDBEntry();
+        showCompareDialog();
+    }
+
+    private void showCompareDialog() {
+        Intent intent = new Intent(getActivity(), PictionaryResult.class);
+        intent.putExtra("paraSttQuestionList", (Serializable) paraSttQuestionList);
+        intent.putExtra("resourceType", GameConstatnts.PARAQA);
+        startActivityForResult(intent, 111);
     }
 
     @Override
@@ -473,9 +500,9 @@ public class STTQuestionsFragment extends Fragment implements
             }
             else if (message.getMessage().equalsIgnoreCase(FC_Constants.BACK_PRESSED)){
                 if(voiceStart)
-                    btn_Mic.performClick();
+                    ib_mic.performClick();
                 for(int i=0; i<totalPages; i++)
-                    presenter.addScore(0,""+sttAnswers[i],currentPage,totalPages,""+startTime,"Stt_QA Submit");
+                    presenter.addScore(0,""+sttAnswers[i],currentPage,totalPages,""+sttAnswersTime[i],"Stt_QA Submit");
 //                presenter.addScore(0,""+sttAnswers[currentPage],currentPage,totalPages,""+quesStartTime,"Stt_QA");
             }
         }

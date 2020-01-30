@@ -318,10 +318,6 @@ public class GameConstatnts implements ShowInstruction {
                 FC_Utility.showFragment((Activity) context, new pictionaryFragment_(), R.id.RL_CPA,
                         bundle, pictionaryFragment.class.getSimpleName());
                 break;
-            case GameConstatnts.PARAQA:
-                FC_Utility.showFragment((Activity) context, new STTQuestionsFragment_(), R.id.RL_CPA,
-                        bundle, STTQuestionsFragment.class.getSimpleName());
-                break;            // case GameConstatnts.DOING_ACT_VIDEO:
             case GameConstatnts.DOING_ACT_READ:
             case GameConstatnts.LetterWriting:
             case GameConstatnts.WATCHING_VIDEO:
@@ -371,6 +367,13 @@ public class GameConstatnts implements ShowInstruction {
                         }
                     }, 100);
                     break;
+                case GameConstatnts.PARAQA:
+                    FC_Utility.showFragment((Activity) context, new STTQuestionsFragment_(), R.id.RL_CPA,
+                            bundle, STTQuestionsFragment.class.getSimpleName());
+                    handler.postDelayed(() -> {
+                        instructionsDialog.dismiss();
+                    }, 100);
+                    break;            // case GameConstatnts.DOING_ACT_VIDEO:
                 case GameConstatnts.PARAREADQUES:
                     FC_Utility.showFragment((Activity) context, new ParaSttReadingFragment_(), R.id.RL_CPA,
                             bundle, ParaSttReadingFragment.class.getSimpleName());
@@ -390,7 +393,6 @@ public class GameConstatnts implements ShowInstruction {
                         @Override
                         public void run() {
                             instructionsDialog.dismiss();
-                            //Do something after 100ms
                         }
                     }, 100);
 //                FC_Utility.showFragment((Activity) context, new ActivityVideoView_(), R.id.RL_CPA,
