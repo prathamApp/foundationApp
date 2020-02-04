@@ -30,8 +30,8 @@ import com.pratham.foundation.interfaces.OnGameClose;
 import com.pratham.foundation.modalclasses.EventMessage;
 import com.pratham.foundation.modalclasses.ParaSttQuestionListModel;
 import com.pratham.foundation.services.TTSService;
-import com.pratham.foundation.services.stt.ContinuousSpeechService_New;
-import com.pratham.foundation.services.stt.STT_Result_New;
+import com.pratham.foundation.services.stt.ContinuousSpeechService_Lang;
+import com.pratham.foundation.services.stt.STT_Result_Lang;
 import com.pratham.foundation.ui.contentPlayer.GameConstatnts;
 import com.pratham.foundation.ui.contentPlayer.pictionary.PictionaryResult;
 import com.pratham.foundation.utility.FC_Constants;
@@ -60,8 +60,8 @@ import static com.pratham.foundation.utility.SplashSupportActivity.ButtonClickSo
 
 
 @EFragment(R.layout.fragment_stt_questions)
-public class STTQuestionsFragment extends Fragment implements
-        /*RecognitionListener, */STT_Result_New.sttView,
+public class STTSummaryFragment extends Fragment implements
+        /*RecognitionListener, */STT_Result_Lang.sttView,
         ParaSttReadingContract.STTQuestionsView, OnGameClose {
 
     @Bean(STTQuestionsPresenter.class)
@@ -89,7 +89,7 @@ public class STTQuestionsFragment extends Fragment implements
     @ViewById(R.id.story_ll)
     RelativeLayout story_ll;
 
-    ContinuousSpeechService_New continuousSpeechService;
+    ContinuousSpeechService_Lang continuousSpeechService;
 
     public static String storyId, StudentID = "", readingContentPath;
     TTSService ttsService;
@@ -123,8 +123,8 @@ public class STTQuestionsFragment extends Fragment implements
         ttsService = ApplicationClass.ttsService;
         contentType = "Stt QA";
 
-        presenter.setView(STTQuestionsFragment.this);
-        continuousSpeechService = new ContinuousSpeechService_New(context, STTQuestionsFragment.this, HINDI);
+        presenter.setView(STTSummaryFragment.this);
+        continuousSpeechService = new ContinuousSpeechService_Lang(context, STTSummaryFragment.this, HINDI);
 
         if (contentType.equalsIgnoreCase(FC_Constants.RHYME_RESOURCE))
             ib_mic.setVisibility(View.GONE);
@@ -150,7 +150,7 @@ public class STTQuestionsFragment extends Fragment implements
         continuousSpeechService.resetSpeechRecognizer();
 
         try {
-            presenter.fetchJsonData(readingContentPath,"ParaSttQuesData.json");
+            presenter.fetchJsonData(readingContentPath,"summaryQues.json");
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -210,17 +210,26 @@ public class STTQuestionsFragment extends Fragment implements
         if (currentPage == 0) {
             lastPgFlag = false;
             btn_prev.setVisibility(View.GONE);
+            if (currentPage == totalPages - 1 ) {
+                lastPgFlag = true;
+//            submit.setVisibility(View.VISIBLE);
+                btn_prev.setVisibility(View.GONE);
+                btn_next.setVisibility(View.GONE);
+            }
         }
-        if (currentPage < totalPages - 1 && currentPage > 0) {
+        else if (currentPage < totalPages - 1 && currentPage > 0) {
             lastPgFlag = false;
             btn_prev.setVisibility(View.VISIBLE);
             btn_next.setVisibility(View.VISIBLE);
         }
-        if (currentPage == totalPages - 1 ) {
-            lastPgFlag = true;
-//            submit.setVisibility(View.VISIBLE);
-            btn_prev.setVisibility(View.VISIBLE);
-            btn_next.setVisibility(View.GONE);
+        else{
+            if (currentPage == totalPages - 1 ) {
+                lastPgFlag = true;
+                btn_prev.setVisibility(View.VISIBLE);
+                btn_next.setVisibility(View.GONE);
+            }
+            if(totalPages - 1 == 0)
+                btn_prev.setVisibility(View.GONE);
         }
         pageTitle = paraSttQuestionList.get(currentPage).getQuesText();
         startTime = FC_Utility.getCurrentDateTime();

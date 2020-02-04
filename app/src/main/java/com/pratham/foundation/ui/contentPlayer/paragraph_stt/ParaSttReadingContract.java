@@ -66,7 +66,7 @@ public interface ParaSttReadingContract {
 
     interface STTQuestionsPresenter {
 
-        void fetchJsonData(String contentPath);
+        void fetchJsonData(String contentPath, String jsonName);
 
         void getDataList();
 
