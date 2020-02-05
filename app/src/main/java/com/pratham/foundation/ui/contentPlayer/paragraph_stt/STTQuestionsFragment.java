@@ -210,17 +210,26 @@ public class STTQuestionsFragment extends Fragment implements
         if (currentPage == 0) {
             lastPgFlag = false;
             btn_prev.setVisibility(View.GONE);
+            if (currentPage == totalPages - 1 ) {
+                lastPgFlag = true;
+//            submit.setVisibility(View.VISIBLE);
+                btn_prev.setVisibility(View.GONE);
+                btn_next.setVisibility(View.GONE);
+            }
         }
-        if (currentPage < totalPages - 1 && currentPage > 0) {
+        else if (currentPage < totalPages - 1 && currentPage > 0) {
             lastPgFlag = false;
             btn_prev.setVisibility(View.VISIBLE);
             btn_next.setVisibility(View.VISIBLE);
         }
-        if (currentPage == totalPages - 1 ) {
-            lastPgFlag = true;
-//            submit.setVisibility(View.VISIBLE);
-            btn_prev.setVisibility(View.VISIBLE);
-            btn_next.setVisibility(View.GONE);
+        else{
+            if (currentPage == totalPages - 1 ) {
+                lastPgFlag = true;
+                btn_prev.setVisibility(View.VISIBLE);
+                btn_next.setVisibility(View.GONE);
+            }
+            if(totalPages - 1 == 0)
+                btn_prev.setVisibility(View.GONE);
         }
         pageTitle = paraSttQuestionList.get(currentPage).getQuesText();
         startTime = FC_Utility.getCurrentDateTime();
