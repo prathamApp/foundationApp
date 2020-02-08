@@ -637,7 +637,11 @@ private String topicName;
 
     @Override
     public void onComplete() {
-        btn_reading.performClick();
+        try {
+            btn_reading.performClick();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     @SuppressLint("SetTextI18n")
