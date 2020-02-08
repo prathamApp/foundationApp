@@ -16,7 +16,7 @@ import com.pratham.foundation.modalclasses.ScienceQuestionChoice;
  * Created by zjchai on 16/9/10.
  */
 public class ImageViewHolder extends RecyclerView.ViewHolder {
-    ImageView imageView,remove;
+    ImageView imageView,remove,play;
     TextView englishText, hindiText;
 
     public ImageViewHolder(View itemView) {
@@ -25,5 +25,6 @@ public class ImageViewHolder extends RecyclerView.ViewHolder {
         englishText = (TextView) itemView.findViewById(R.id.englishText);
         hindiText = (TextView) itemView.findViewById(R.id.hindiText);
         remove = (ImageView) itemView.findViewById(R.id.remove);
+        play = (ImageView) itemView.findViewById(R.id.play);
     }
 }

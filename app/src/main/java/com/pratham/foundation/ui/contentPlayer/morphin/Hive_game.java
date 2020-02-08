@@ -22,12 +22,15 @@ import com.pratham.foundation.R;
 import com.pratham.foundation.customView.SansButton;
 import com.pratham.foundation.customView.display_image_dialog.CustomLodingDialog;
 import com.pratham.foundation.customView.hive.HiveLayoutManager;
+import com.pratham.foundation.interfaces.MediaCallbacks;
 import com.pratham.foundation.interfaces.OnGameClose;
 import com.pratham.foundation.modalclasses.EventMessage;
 import com.pratham.foundation.modalclasses.ScienceQuestion;
 import com.pratham.foundation.modalclasses.ScienceQuestionChoice;
 import com.pratham.foundation.ui.contentPlayer.GameConstatnts;
+import com.pratham.foundation.utility.FC_Constants;
 import com.pratham.foundation.utility.FC_Utility;
+import com.pratham.foundation.utility.MediaPlayerUtil;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Bean;
@@ -46,7 +49,7 @@ import java.util.Objects;
 import static com.pratham.foundation.utility.FC_Constants.gameFolderPath;
 
 @EFragment(R.layout.activity_main_morphin)
-public class Hive_game extends Fragment implements Hive_game_contract.Hive_game_view, OptionRecyclerInterface, OnGameClose {
+public class Hive_game extends Fragment implements Hive_game_contract.Hive_game_view, OptionRecyclerInterface, OnGameClose, MediaCallbacks {
     @Bean(Hive_game_presenter.class)
     Hive_game_contract.Hive_game_presenter presenter;
 
@@ -106,11 +109,12 @@ public class Hive_game extends Fragment implements Hive_game_contract.Hive_game_
     private List<ScienceQuestionChoice> hivelist, hiveTemp, optionList;
     private String language = "locale";
     private RecyclerAdapter recyclerAdapter;
-    private ScienceQuestionChoice scienceChoiceEnglish;
+    private ScienceQuestionChoice scienceChoiceEnglish, play_hive_audio;
     private boolean issubmitted = false;
     private Animation animFadein;
-    MediaPlayer mediaPlayer;
-
+    private MediaPlayer mediaPlayer;
+    public static MediaPlayerUtil mediaPlayerUtil;
+    private boolean play_hive = false;
     @AfterViews
     public void init() {
         // super.onCreate(savedInstanceState);
@@ -144,6 +148,8 @@ public class Hive_game extends Fragment implements Hive_game_contract.Hive_game_
         animFadein = AnimationUtils.loadAnimation(getActivity().getApplicationContext(),
                 R.anim.bounce_new);
         mediaPlayer = new MediaPlayer();
+        mediaPlayerUtil = new MediaPlayerUtil(getActivity());
+        mediaPlayerUtil.initCallback(this);
         initObjects();
         previous.setVisibility(View.INVISIBLE);
         //afterViews();
@@ -174,6 +180,9 @@ public class Hive_game extends Fragment implements Hive_game_contract.Hive_game_
     private void showQuestion() {
         afterViews();
         loadOptions();
+        if (!FC_Constants.isTest && !FC_Constants.isPractice) {
+            showAnswer.performClick();
+        }
     }
 
     private void loadOptions() {
@@ -270,7 +279,7 @@ public class Hive_game extends Fragment implements Hive_game_contract.Hive_game_
 //        layoutManager.setGravity(HiveLayoutManager.ALIGN_LEFT | HiveLayoutManager.ALIGN_BOTTOM);
 //        layoutManager.setGravity(HiveLayoutManager.ALIGN_RIGHT | HiveLayoutManager.ALIGN_TOP);
 //        layoutManager.setGravity(HiveLayoutManager.ALIGN_RIGHT | HiveLayoutManager.ALIGN_BOTTOM);
-        layoutManager.setPadding(300, 400, 500, 600);
+        layoutManager.setPadding(0, 0, 0, 0);
     }
 
     @Click(R.id.showAnswer)
@@ -330,6 +339,11 @@ public class Hive_game extends Fragment implements Hive_game_contract.Hive_game_
                 optionList.add(scienceQuestionChoice);
             } else if (operation.equalsIgnoreCase("play")) {
                 try {
+                    if (mediaPlayerUtil != null) {
+                        mediaPlayerUtil.stopMedia();
+                    }
+                    play_hive = false;
+                    play_hive_audio = null;
                     mediaPlayer.reset();
                     mediaPlayer.setDataSource(readingContentPath + "/" + scienceQuestionChoice.getSubUrl());
                     mediaPlayer.prepare();
@@ -372,6 +386,11 @@ public class Hive_game extends Fragment implements Hive_game_contract.Hive_game_
                 scienceChoiceEnglish = null;
             } else if (operation.equalsIgnoreCase("play")) {
                 try {
+                    if (mediaPlayerUtil != null) {
+                        mediaPlayerUtil.stopMedia();
+                    }
+                    play_hive = false;
+                    play_hive_audio = null;
                     mediaPlayer.reset();
                     mediaPlayer.setDataSource(readingContentPath + "/" + scienceQuestionChoice.getEnglishURL());
                     mediaPlayer.prepare();
@@ -380,6 +399,17 @@ public class Hive_game extends Fragment implements Hive_game_contract.Hive_game_
                     e.printStackTrace();
                 }
             }
+        }
+        if (operation.equalsIgnoreCase("play_hive")) {
+            if (mediaPlayer != null) {
+                mediaPlayer.stop();
+            }
+            play_hive = true;
+            play_hive_audio = scienceQuestionChoice;
+            mediaPlayerUtil.playMedia(readingContentPath + "/" + scienceQuestionChoice.getSubUrl());
+            // mediaPlayer.prepare();
+            //  mediaPlayer.start();
+
         }
         adapter.notifyDataSetChanged();
         if (recyclerAdapter != null) {
@@ -476,5 +506,21 @@ public class Hive_game extends Fragment implements Hive_game_contract.Hive_game_
         Toast.makeText(getActivity(), "Data not found", Toast.LENGTH_LONG).show();
         bottom_control_container.setVisibility(View.INVISIBLE);
         showAnswer.setVisibility(View.INVISIBLE);
+    }
+
+    @Override
+    public void onComplete() {
+        if (play_hive_audio != null && play_hive_audio.getUserAns() != null && !play_hive_audio.getUserAns().isEmpty()) {
+            if (mediaPlayer != null) {
+                mediaPlayer.stop();
+            }
+            for (ScienceQuestionChoice scienceQuestionChoice : questionModel.get(index).getLstquestionchoice()) {
+                if (scienceQuestionChoice.getEnglish().equalsIgnoreCase(play_hive_audio.getUserAns())) {
+                    play_hive_audio=null;
+                    mediaPlayerUtil.playMedia(readingContentPath + "/" + scienceQuestionChoice.getEnglishURL());
+                    break;
+                }
+            }
+        }
     }
 }
