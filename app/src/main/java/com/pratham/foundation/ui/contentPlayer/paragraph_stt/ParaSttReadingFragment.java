@@ -77,7 +77,7 @@ import static com.pratham.foundation.utility.SplashSupportActivity.ButtonClickSo
 
 
 //@EFragment(R.layout.reading_layout_xml_file)
-@EFragment(R.layout.fragment_story_reading)
+@EFragment(R.layout.fragment_para_reading)
 public class ParaSttReadingFragment extends Fragment implements
         STT_Result_New.sttView, OnGameClose,
         ParaSttReadingContract.ParaSttReadingView{
