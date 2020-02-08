@@ -54,7 +54,7 @@ import java.util.Collections;
 import java.util.List;
 
 import static com.pratham.foundation.BaseActivity.setMute;
-import static com.pratham.foundation.utility.FC_Constants.HINDI;
+import static com.pratham.foundation.utility.FC_Constants.ENGLISH;
 import static com.pratham.foundation.utility.FC_Constants.gameFolderPath;
 import static com.pratham.foundation.utility.SplashSupportActivity.ButtonClickSound;
 
@@ -124,7 +124,7 @@ public class STTQuestionsFragment extends Fragment implements
         contentType = "Stt QA";
 
         presenter.setView(STTQuestionsFragment.this);
-        continuousSpeechService = new ContinuousSpeechService_New(context, STTQuestionsFragment.this, HINDI);
+        continuousSpeechService = new ContinuousSpeechService_New(context, STTQuestionsFragment.this, ENGLISH);
 
         if (contentType.equalsIgnoreCase(FC_Constants.RHYME_RESOURCE))
             ib_mic.setVisibility(View.GONE);

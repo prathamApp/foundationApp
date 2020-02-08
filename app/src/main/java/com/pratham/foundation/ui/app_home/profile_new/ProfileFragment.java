@@ -166,8 +166,10 @@ public class ProfileFragment extends Fragment implements ProfileContract.Profile
                 break;
             case "ImageQues":
                 showImageQues();
+                break;
             case "ChitChat":
                 showChitChat();
+                break;
             case "Share Content":
                 break;
             case "Share App":

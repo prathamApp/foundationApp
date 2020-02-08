@@ -471,10 +471,14 @@ public class ParaSttReadingFragment extends Fragment implements
                 isScrollBelowVisible(myNextView);
             myView.setTextColor(getResources().getColor(R.color.colorRedDark));
             myView.setBackgroundColor(getResources().getColor(R.color.yellow_text_bg));
-            colorChangeHandler.postDelayed(() -> {
-                myView.setTextColor(getResources().getColor(R.color.colorText));
-                myView.setBackgroundColor(getResources().getColor(R.color.full_transparent));
-            }, 350);
+            try {
+                colorChangeHandler.postDelayed(() -> {
+                    myView.setTextColor(getResources().getColor(R.color.colorText));
+                    myView.setBackgroundColor(getResources().getColor(R.color.full_transparent));
+                }, 350);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
             if (index == wordsDurationList.size() - 1) {
                 try {
                     handler.postDelayed(() -> {
