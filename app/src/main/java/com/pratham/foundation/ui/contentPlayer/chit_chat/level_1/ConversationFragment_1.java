@@ -157,6 +157,10 @@ Handler handler;
     @Override
     public void onStart() {
         super.onStart();
+        if (handler == null) {
+            handler = new Handler();
+            new Handler().postDelayed(() -> displayNextQuestion(currentQueNos), (long) (800));
+        }
     }
 
     @UiThread
@@ -433,9 +437,11 @@ Handler handler;
     @Override
     public void onStop() {
         Log.d(LOG_TAG, "stop");
-        handler.removeCallbacks(null);
-        handler.removeCallbacksAndMessages(null);
-        handler = null;
+        if (handler != null) {
+            handler.removeCallbacks(null);
+            handler.removeCallbacksAndMessages(null);
+            handler = null;
+        }
         //handler = null;
         super.onStop();
     }

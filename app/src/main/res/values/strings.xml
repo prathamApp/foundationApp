@@ -84,7 +84,9 @@
     <string name="ParaReadQues">प्ले बटन पर क्लिक कीजिए और सुनिए। फिर माइक बटन पर क्लिक कीजिए और अनुच्छेद पढ़िए।|</string>
     <string name="parasummary">कहानी को हिंदी में दोहराएं</string>
     <string name="paraqa">माइक बटन पर क्लिक कीजिए। जवाब रिकॉर्ड करके सबमिट कीजिए।</string>
-
+    <string name="new_chit_chat_1">स्क्रीन पर दिए गए संभाषण को सुनो|</string>
+    <string name="new_chit_chat_2">स्क्रीन पर दिए संभाषण का जवाब अंग्रेजी में रिकॉर्ड करें।</string>
+    <string name="new_chit_chat_3">यह गेम दो लोग खेलें। एक-एक करके अपनी बात रिकॉर्ड करें।</string>
     <string name="Next_activity">अगली गतिविधि?</string>
     <string name="Do_you_want_to_exit">क्या आप निकास करना चाहते हैं?</string>
     <string name="activity_completed">गतिविधि पूरी हुई</string>
