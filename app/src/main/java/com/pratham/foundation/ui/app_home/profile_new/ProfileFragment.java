@@ -78,7 +78,6 @@ public class ProfileFragment extends Fragment implements ProfileContract.Profile
     @ViewById(R.id.ib_langChange)
     ImageButton ib_langChange;
 
-
     //    String[] progressArray = {"Progress", "Share"};
     String[] progressArray = {"Progress"};
     private ProfileOuterDataAdapter adapterParent;
@@ -103,11 +102,6 @@ public class ProfileFragment extends Fragment implements ProfileContract.Profile
         presenter.getCertificateCount();
         presenter.getActiveData();
     }
-
-//    @Click(R.id.card_img)
-//    public void getCertiData(){
-//        presenter.getActiveData();
-//    }
 
     @UiThread
     @Override
