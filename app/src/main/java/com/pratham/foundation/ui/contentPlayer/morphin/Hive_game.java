@@ -132,7 +132,6 @@ public class Hive_game extends Fragment implements Hive_game_contract.Hive_game_
             else
                 readingContentPath = ApplicationClass.foundationPath + gameFolderPath + "/" + contentPath + "/";
         }
-        EventBus.getDefault().register(this);
         hivelist = new ArrayList<>();
         hiveTemp = new ArrayList<>();
         optionList = new ArrayList<>();
@@ -153,6 +152,12 @@ public class Hive_game extends Fragment implements Hive_game_contract.Hive_game_
         initObjects();
         previous.setVisibility(View.INVISIBLE);
         //afterViews();
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        EventBus.getDefault().register(this);
     }
 
     private void initObjects() {

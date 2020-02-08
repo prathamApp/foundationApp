@@ -116,7 +116,6 @@ public class FactRetrieval extends Fragment implements FactRetrievalContract.Fac
 //            paragraph.setMovementMethod(new ScrollingMovementMethod());
             quetion.setMovementMethod(new ScrollingMovementMethod());
         }
-        EventBus.getDefault().register(this);
         presenter.setView(FactRetrieval.this, contentTitle, resId);
         presenter.getData(readingContentPath);
         resStartTime = FC_Utility.getCurrentDateTime();
@@ -124,6 +123,12 @@ public class FactRetrieval extends Fragment implements FactRetrievalContract.Fac
         if (FC_Constants.isTest) {
             show_answer.setVisibility(View.GONE);
         }
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        EventBus.getDefault().register(this);
     }
 
     @Override

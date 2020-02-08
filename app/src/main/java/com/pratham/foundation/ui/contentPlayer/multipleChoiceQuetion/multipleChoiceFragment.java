@@ -116,7 +116,6 @@ public class multipleChoiceFragment extends Fragment implements OnGameClose, Mul
             if (FC_Constants.isTest) {
                 show_answer.setVisibility(View.INVISIBLE);
             }
-            EventBus.getDefault().register(this);
             resStartTime = FC_Utility.getCurrentDateTime();
             presenter.setView(this, resId);
             presenter.addScore(0, "", 0, 0, resStartTime, FC_Utility.getCurrentDateTime(), GameConstatnts.MULTIPLE_CHOICE + " " + GameConstatnts.START);
@@ -124,19 +123,24 @@ public class multipleChoiceFragment extends Fragment implements OnGameClose, Mul
         }
     }
 
+    @Override
+    public void onStart() {
+        super.onStart();
+        EventBus.getDefault().register(this);
+    }
 
     /* @Override
-     public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                              Bundle savedInstanceState) {
-         // Inflate the layout for this fragment
-         return inflater.inflate(R.layout.layout_mcq_fill_in_the_blanks_with_options_row, container, false);
-     }
+         public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                                  Bundle savedInstanceState) {
+             // Inflate the layout for this fragment
+             return inflater.inflate(R.layout.layout_mcq_fill_in_the_blanks_with_options_row, container, false);
+         }
 
-     @Override
-     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-         super.onViewCreated(view, savedInstanceState);
-         ButterKnife.bind(this, view);
-     }*/
+         @Override
+         public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+             super.onViewCreated(view, savedInstanceState);
+             ButterKnife.bind(this, view);
+         }*/
     public void setData(ArrayList<ScienceQuestion> selectedFive) {
         this.selectedFive = selectedFive;
         setMcqsQuestion();

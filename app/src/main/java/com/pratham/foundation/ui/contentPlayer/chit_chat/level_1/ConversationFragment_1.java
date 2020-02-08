@@ -154,6 +154,11 @@ Handler handler;
         presenter.fetchStory(convoPath);
     }
 
+    @Override
+    public void onStart() {
+        super.onStart();
+    }
+
     @UiThread
     @Override
     public void setConvoJson(JSONArray returnStoryNavigate) {

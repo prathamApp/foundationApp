@@ -173,7 +173,6 @@ public class DoingFragment extends Fragment implements STT_Result_New.sttView, O
             readingContentPath = ApplicationClass.contentSDPath + gameFolderPath + "/" + contentPath + "/";
         else
             readingContentPath = ApplicationClass.foundationPath + gameFolderPath + "/" + contentPath + "/";
-        EventBus.getDefault().register(this);
 
         if (!GameConstatnts.WATCHING_VIDEO.equalsIgnoreCase(jsonName)) {
             camera_controll.setVisibility(View.VISIBLE);
@@ -192,13 +191,11 @@ public class DoingFragment extends Fragment implements STT_Result_New.sttView, O
         presenter.getData(readingContentPath);
     }
 
-
-
-
-
-
-
-
+    @Override
+    public void onStart() {
+        super.onStart();
+        EventBus.getDefault().register(this);
+    }
 
     /*@Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,

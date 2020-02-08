@@ -97,7 +97,6 @@ public class WordWritingFragment extends Fragment
             else
                 readingContentPath = ApplicationClass.foundationPath + gameFolderPath + "/" + contentPath + "/";
         }
-        EventBus.getDefault().register(this);
         preview.setVisibility(View.GONE);
         imageName = "" + ApplicationClass.getUniqueID() + ".jpg";
 
@@ -115,6 +114,12 @@ public class WordWritingFragment extends Fragment
         } else {
             TextViewCompat.setAutoSizeTextTypeWithDefaults(text, TextViewCompat.AUTO_SIZE_TEXT_TYPE_UNIFORM);
         }
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        EventBus.getDefault().register(this);
     }
 
     @Override

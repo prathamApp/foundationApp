@@ -118,13 +118,18 @@ public class ReadingFragment extends Fragment implements STT_Result_New.sttView,
             else
                 readingContentPath = ApplicationClass.foundationPath + gameFolderPath + "/" + contentPath + "/";
             etAnswer.setMovementMethod(new ScrollingMovementMethod());
-            EventBus.getDefault().register(this);
             resStartTime = FC_Utility.getCurrentDateTime();
             presenter.setView(this,jsonName,resId,resStartTime);
             presenter.addScore(0, "", 0, 0, resStartTime, jsonName + " " + GameConstatnts.START);
             //getData();
             presenter.getData(readingContentPath);
         }
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        EventBus.getDefault().register(this);
     }
 
     public void showLoader() {

@@ -92,7 +92,6 @@ public class KeywordsIdentificationFragment extends Fragment implements Keywords
         }
         animFadein = AnimationUtils.loadAnimation(getActivity().getApplicationContext(),
                 R.anim.bounce_new);
-        EventBus.getDefault().register(this);
         presenter.setView(KeywordsIdentificationFragment.this, resId, readingContentPath);
         selectedKeywords = new ArrayList<>();
         positionMap = new HashMap<>();
@@ -112,6 +111,12 @@ public class KeywordsIdentificationFragment extends Fragment implements Keywords
             show_me_keywords.setVisibility(View.GONE);
         }
         presenter.getData();
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        EventBus.getDefault().register(this);
     }
 
     public void showAnswer() {

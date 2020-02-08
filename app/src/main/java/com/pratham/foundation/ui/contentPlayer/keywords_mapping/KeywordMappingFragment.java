@@ -90,7 +90,6 @@ public class KeywordMappingFragment extends Fragment implements KeywordMappingCo
         }
         animFadein = AnimationUtils.loadAnimation(getActivity().getApplicationContext(),
                 R.anim.bounce_new);
-        EventBus.getDefault().register(this);
         presenter.setView(KeywordMappingFragment.this, resId, readingContentPath);
         presenter.getData();
         resStartTime = FC_Utility.getCurrentDateTime();
@@ -100,6 +99,11 @@ public class KeywordMappingFragment extends Fragment implements KeywordMappingCo
         }
     }
 
+    @Override
+    public void onStart() {
+        super.onStart();
+        EventBus.getDefault().register(this);
+    }
 
     @UiThread
     @Override

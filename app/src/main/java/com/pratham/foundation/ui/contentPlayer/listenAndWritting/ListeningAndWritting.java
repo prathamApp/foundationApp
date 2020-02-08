@@ -133,7 +133,6 @@ public class ListeningAndWritting extends Fragment implements ListeningAndWritti
 
         imageName = "" + ApplicationClass.getUniqueID() + ".jpg";
         preview.setVisibility(View.GONE);
-        EventBus.getDefault().register(this);
         presenter.setView(ListeningAndWritting.this, contentTitle, resId);
         presenter.fetchJsonData(readingContentPath);
        /* if (listenAndWrittingModal != null)
@@ -174,6 +173,13 @@ public class ListeningAndWritting extends Fragment implements ListeningAndWritti
         if (FC_Constants.isTest) {
             show_answer.setVisibility(View.GONE);
         }
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        EventBus.getDefault().register(this);
+
     }
 
     private void addTickMarkTextLabels() {

@@ -118,7 +118,6 @@ public class pictionaryFragment extends Fragment implements OnGameClose, Piction
             else
                 readingContentPath = ApplicationClass.foundationPath + gameFolderPath + "/" + contentPath + "/";
 
-            EventBus.getDefault().register(this);
             if (FC_Constants.isTest) {
                 show_answer.setVisibility(View.INVISIBLE);
             }
@@ -129,19 +128,17 @@ public class pictionaryFragment extends Fragment implements OnGameClose, Piction
             presenter.getData(readingContentPath);
 
         }
+
     }
 
+    @Override
+    public void onStart() {
+        super.onStart();
+        EventBus.getDefault().register(this);
 
+    }
 
-
-
-
-
-
-
-
-
-   /* private boolean checkWord(String wordStr) {
+    /* private boolean checkWord(String wordStr) {
         try {
             String word = appDatabase.getKeyWordDao().checkWord(FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""), resId, wordStr);
             return word != null;

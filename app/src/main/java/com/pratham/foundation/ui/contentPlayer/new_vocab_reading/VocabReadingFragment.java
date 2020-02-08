@@ -211,6 +211,11 @@ public class VocabReadingFragment extends Fragment implements
     }
 
     @Override
+    public void onStart() {
+        super.onStart();
+    }
+
+    @Override
     public void setListData(List<ModalParaSubMenu> paraDataList) {
         modalPagesList = paraDataList;
         totalPages = modalPagesList.size();

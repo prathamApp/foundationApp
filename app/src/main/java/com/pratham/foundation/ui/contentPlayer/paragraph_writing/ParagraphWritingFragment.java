@@ -101,7 +101,7 @@ public class ParagraphWritingFragment extends Fragment implements ParagraphWriti
     private boolean onSdCard;
     private List<ScienceQuestion> questionModel;
     private String jsonName;
-    MediaPlayer mediaPlayer;
+    private static MediaPlayer mediaPlayer;
     private boolean isPlaying = false;
     private String REGEXF = "(?<=\\.\\s)|(?<=[?!]\\s)|(?<=।)|(?<=\\|)";
     @AfterViews
@@ -119,7 +119,7 @@ public class ParagraphWritingFragment extends Fragment implements ParagraphWriti
             else
                 readingContentPath = ApplicationClass.foundationPath + gameFolderPath + "/" + contentPath + "/";
         }
-        EventBus.getDefault().register(this);
+
 
         preview.setVisibility(View.GONE);
         mediaPlayer = new MediaPlayer();
@@ -131,6 +131,24 @@ public class ParagraphWritingFragment extends Fragment implements ParagraphWriti
         }
         resStartTime = FC_Utility.getCurrentDateTime();
         presenter.addScore(0, "", 0, 0, resStartTime,FC_Utility.getCurrentDateTime(), jsonName + " " + GameConstatnts.START,resId,true);
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        EventBus.getDefault().register(this);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        try {
+            mediaPlayer.reset();
+            mediaPlayer.setDataSource(readingContentPath + "/" + questionModel.get(index).getPhotourl());
+            mediaPlayer.prepare();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
@@ -331,13 +349,17 @@ public class ParagraphWritingFragment extends Fragment implements ParagraphWriti
     }
 
     private void setPlayImage() {
-        play.setImageDrawable(getActivity().getDrawable(R.drawable.ic_play_arrow_black));
-        play.setBackground(getActivity().getResources().getDrawable(R.drawable.button_green));
+        if (getActivity() != null) {
+            play.setImageDrawable(getActivity().getDrawable(R.drawable.ic_play_arrow_black));
+            play.setBackground(getActivity().getResources().getDrawable(R.drawable.button_green));
+        }
     }
 
     private void setPauseImage() {
-        play.setImageDrawable(getActivity().getDrawable(R.drawable.ic_pause_black));
-        play.setBackground(getActivity().getResources().getDrawable(R.drawable.button_yellow));
+        if (getActivity() != null) {
+            play.setImageDrawable(getActivity().getDrawable(R.drawable.ic_pause_black));
+            play.setBackground(getActivity().getResources().getDrawable(R.drawable.button_yellow));
+        }
     }
 
     @Override
