@@ -1,6 +1,7 @@
 package com.pratham.foundation.ui.contentPlayer.fact_retrieval_fragment;
 
 import android.content.Intent;
+import android.content.res.Resources;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -21,9 +22,9 @@ import com.pratham.foundation.customView.flexbox.FlexboxLayoutManager;
 import com.pratham.foundation.customView.flexbox.JustifyContent;
 import com.pratham.foundation.interfaces.OnGameClose;
 import com.pratham.foundation.modalclasses.EventMessage;
+import com.pratham.foundation.modalclasses.ScienceQuestion;
 import com.pratham.foundation.modalclasses.ScienceQuestionChoice;
 import com.pratham.foundation.ui.contentPlayer.GameConstatnts;
-import com.pratham.foundation.modalclasses.ScienceQuestion;
 import com.pratham.foundation.ui.contentPlayer.pictionary.PictionaryResult;
 import com.pratham.foundation.utility.FC_Constants;
 import com.pratham.foundation.utility.FC_Utility;
@@ -32,7 +33,6 @@ import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Bean;
 import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EFragment;
-import org.androidannotations.annotations.UiThread;
 import org.androidannotations.annotations.ViewById;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -379,32 +379,36 @@ public class FactRetrieval extends Fragment implements FactRetrievalContract.Fac
     public void show_answer() {
         if (!mAdapter.isShowAnswerEnabled()) {
            // show_answer.setText("hide Answer");
-            show_answer.setText(getActivity().getResources().getString(R.string.hide_hint));
-            bottom_control_container.setVisibility(View.INVISIBLE);
-            clear_selection.setVisibility(View.INVISIBLE);
-            mAdapter.deselectAll();
-            String correctAns = selectedQuetion.get(index).getAnsInPassage().trim().replace("\n", " ");
-            String[] correctAnsArr = correctAns.trim().split(REGEXF);
-            for (int correctIndex = 0; correctIndex < correctAnsArr.length; correctIndex++) {
-                float max, temp = 0;
-                int start = -1;
-                max = checkAnswer(sentences[0], correctAnsArr[correctIndex]);
-                for (int sentenceIndx = 0; sentenceIndx < sentences.length; sentenceIndx++) {
-                    temp = checkAnswer(sentences[sentenceIndx], correctAnsArr[correctIndex]);
-                    if (temp >= max) {
-                        start = sentenceIndx;
-                        max = temp;
+            try {
+                show_answer.setText(getActivity().getResources().getString(R.string.hide_hint));
+                bottom_control_container.setVisibility(View.INVISIBLE);
+                clear_selection.setVisibility(View.INVISIBLE);
+                mAdapter.deselectAll();
+                String correctAns = selectedQuetion.get(index).getAnsInPassage().trim().replace("\n", " ");
+                String[] correctAnsArr = correctAns.trim().split(REGEXF);
+                for (int correctIndex = 0; correctIndex < correctAnsArr.length; correctIndex++) {
+                    float max, temp = 0;
+                    int start = -1;
+                    max = checkAnswer(sentences[0], correctAnsArr[correctIndex]);
+                    for (int sentenceIndx = 0; sentenceIndx < sentences.length; sentenceIndx++) {
+                        temp = checkAnswer(sentences[sentenceIndx], correctAnsArr[correctIndex]);
+                        if (temp >= max) {
+                            start = sentenceIndx;
+                            max = temp;
+                        }
+                    }
+                    if (start > -1) {
+                        List tempList = Arrays.asList(sentences[start].replace("”","").trim().split(" "));
+                        int ansStart = Collections.indexOfSubList(mAdapter.datalist, tempList);
+
+                        mAdapter.selectRange(ansStart, ansStart + tempList.size() - 1, true);
+                        paragraphRecycler.scrollToPosition(ansStart+ tempList.size() - 1);
                     }
                 }
-                if (start > -1) {
-                    List tempList = Arrays.asList(sentences[start].replace("”","").trim().split(" "));
-                    int ansStart = Collections.indexOfSubList(mAdapter.datalist, tempList);
-
-                    mAdapter.selectRange(ansStart, ansStart + tempList.size() - 1, true);
-                    paragraphRecycler.scrollToPosition(ansStart+ tempList.size() - 1);
-                }
+                mAdapter.setShowAnswerEnabled(true);
+            } catch (Resources.NotFoundException e) {
+                e.printStackTrace();
             }
-            mAdapter.setShowAnswerEnabled(true);
         } else {
            // show_answer.setText("show Answer");
             show_answer.setText(getResources().getString(R.string.hint));

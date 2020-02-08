@@ -77,9 +77,9 @@ public class STTQuestionsPresenter implements ParaSttReadingContract.STTQuestion
 
     @Background
     @Override
-    public void fetchJsonData(String contentPath) {
+    public void fetchJsonData(String contentPath, String jsonName) {
         try {
-            InputStream is = new FileInputStream(contentPath + "/ParaSttQuesData.json");
+            InputStream is = new FileInputStream(contentPath + "/"+jsonName);
             int size = is.available();
             byte[] buffer = new byte[size];
             is.read(buffer);

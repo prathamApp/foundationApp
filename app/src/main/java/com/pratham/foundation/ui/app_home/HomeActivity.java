@@ -7,9 +7,11 @@ import android.content.res.Configuration;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
+import android.os.Environment;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.Window;
@@ -50,11 +52,13 @@ import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
+import java.io.File;
 import java.util.Objects;
 
 import static com.pratham.foundation.utility.FC_Constants.APP_SECTION;
 import static com.pratham.foundation.utility.FC_Constants.ASSESSMENT_SESSION;
 import static com.pratham.foundation.utility.FC_Constants.BACK_PRESSED;
+import static com.pratham.foundation.utility.FC_Constants.CURRENT_STUDENT_ID;
 import static com.pratham.foundation.utility.FC_Constants.FRAGMENT_RESELECTED;
 import static com.pratham.foundation.utility.FC_Constants.FRAGMENT_SELECTED;
 import static com.pratham.foundation.utility.FC_Constants.GROUP_LOGIN;
@@ -63,6 +67,7 @@ import static com.pratham.foundation.utility.FC_Constants.INDIVIDUAL_MODE;
 import static com.pratham.foundation.utility.FC_Constants.LEVEL_CHANGED;
 import static com.pratham.foundation.utility.FC_Constants.LEVEL_TEST_GIVEN;
 import static com.pratham.foundation.utility.FC_Constants.LOGIN_MODE;
+import static com.pratham.foundation.utility.FC_Constants.activityPhotoPath;
 import static com.pratham.foundation.utility.FC_Constants.currentLevel;
 import static com.pratham.foundation.utility.FC_Constants.isTest;
 import static com.pratham.foundation.utility.FC_Constants.sec_Test;
@@ -133,16 +138,15 @@ public class HomeActivity extends BaseActivity implements LevelChanged {
         floating_info.setImageResource(R.drawable.ic_info_outline_white);
         setupViewPager(viewpager);
         tv_header_progress.setText("0%");
-//        tv_progress.setCurProgress(0);
         levelChanged = HomeActivity.this;
         count = 0;
+        activityPhotoPath = Environment.getExternalStorageDirectory().toString() + "/.FCAInternal/ActivityPhotos/"+FastSave.getInstance().getString(CURRENT_STUDENT_ID,"")+"/";
+        Log.d("activityPhotoPath", "initialize activityPhotoPath: "+activityPhotoPath);
+        File direct = new File(activityPhotoPath);
+        if (!direct.exists())
+            direct.mkdir();
         tabLayout.setupWithViewPager(viewpager);
         setupTabIcons();
-/*        IconForm iconForm = new IconForm.Builder(this)
-                .setIconSize(45)
-                .setIconTint(ContextCompat.getColor(this, R.color.colorPrimary))
-                .setIconScaleType(ImageView.ScaleType.CENTER)
-                .build();*/
         setLevel();
         displayProfileName();
         displayProfileImage();

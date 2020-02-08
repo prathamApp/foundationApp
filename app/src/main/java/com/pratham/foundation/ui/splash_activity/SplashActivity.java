@@ -59,7 +59,6 @@ import org.greenrobot.eventbus.EventBus;
 import java.io.File;
 import java.util.Objects;
 
-import static com.pratham.foundation.utility.FC_Constants.activityPhotoPath;
 import static com.pratham.foundation.utility.FC_Utility.setAppLocal;
 
 
@@ -514,11 +513,11 @@ public class SplashActivity extends SplashSupportActivity implements SplashContr
         direct = new File(Environment.getExternalStorageDirectory().toString() + "/.FCAInternal/ActivityPhotos");
         if (!direct.exists())
             direct.mkdir();
-        direct = new File(Environment.getExternalStorageDirectory().toString() + "/.FCAInternal/SupervisorPhotos");
+        direct = new File(Environment.getExternalStorageDirectory().toString() + "/.FCAInternal/SupervisorImages");
         if (!direct.exists())
             direct.mkdir();
 
-        activityPhotoPath = Environment.getExternalStorageDirectory().toString() + "/.FCAInternal/ActivityPhotos/";
+//        activityPhotoPath = Environment.getExternalStorageDirectory().toString() + "/.FCAInternal/ActivityPhotos/";
 
         if (!FastSave.getInstance().getBoolean(FC_Constants.INITIAL_ENTRIES, false))
             splashPresenter.doInitialEntries(AppDatabase.appDatabase);

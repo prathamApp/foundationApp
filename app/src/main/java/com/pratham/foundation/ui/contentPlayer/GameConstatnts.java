@@ -42,6 +42,8 @@ import com.pratham.foundation.ui.contentPlayer.paragraph_stt.ParaSttReadingFragm
 import com.pratham.foundation.ui.contentPlayer.paragraph_stt.ParaSttReadingFragment_;
 import com.pratham.foundation.ui.contentPlayer.paragraph_stt.STTQuestionsFragment;
 import com.pratham.foundation.ui.contentPlayer.paragraph_stt.STTQuestionsFragment_;
+import com.pratham.foundation.ui.contentPlayer.paragraph_stt.STTSummaryFragment;
+import com.pratham.foundation.ui.contentPlayer.paragraph_stt.STTSummaryFragment_;
 import com.pratham.foundation.ui.contentPlayer.paragraph_writing.ParagraphWritingFragment_;
 import com.pratham.foundation.ui.contentPlayer.pictionary.pictionaryFragment;
 import com.pratham.foundation.ui.contentPlayer.pictionary.pictionaryFragment_;
@@ -85,6 +87,7 @@ public class GameConstatnts implements ShowInstruction {
     public static final String HIVELAYOUT_GAME = "hivelayout_game";
     public static final String PARAREADQUES = "ParaReadQues";
     public static final String PARAQA = "paraqa";
+    public static final String PARASUMMARY = "parasummary";
     public static final boolean TRUE = true;
     public static final boolean FALSE = false;
     public static final String START = "start";
@@ -370,6 +373,13 @@ public class GameConstatnts implements ShowInstruction {
                 case GameConstatnts.PARAQA:
                     FC_Utility.showFragment((Activity) context, new STTQuestionsFragment_(), R.id.RL_CPA,
                             bundle, STTQuestionsFragment.class.getSimpleName());
+                    handler.postDelayed(() -> {
+                        instructionsDialog.dismiss();
+                    }, 100);
+                    break;            // case GameConstatnts.DOING_ACT_VIDEO:
+                case GameConstatnts.PARASUMMARY:
+                    FC_Utility.showFragment((Activity) context, new STTSummaryFragment_(), R.id.RL_CPA,
+                            bundle, STTSummaryFragment.class.getSimpleName());
                     handler.postDelayed(() -> {
                         instructionsDialog.dismiss();
                     }, 100);
