@@ -28,6 +28,7 @@ import com.pratham.foundation.modalclasses.EventMessage;
 import com.pratham.foundation.modalclasses.ScienceQuestion;
 import com.pratham.foundation.modalclasses.ScienceQuestionChoice;
 import com.pratham.foundation.ui.contentPlayer.GameConstatnts;
+import com.pratham.foundation.utility.FC_Constants;
 import com.pratham.foundation.utility.FC_Utility;
 import com.pratham.foundation.utility.MediaPlayerUtil;
 
@@ -179,6 +180,9 @@ public class Hive_game extends Fragment implements Hive_game_contract.Hive_game_
     private void showQuestion() {
         afterViews();
         loadOptions();
+        if (!FC_Constants.isTest && !FC_Constants.isPractice) {
+            showAnswer.performClick();
+        }
     }
 
     private void loadOptions() {
@@ -335,6 +339,9 @@ public class Hive_game extends Fragment implements Hive_game_contract.Hive_game_
                 optionList.add(scienceQuestionChoice);
             } else if (operation.equalsIgnoreCase("play")) {
                 try {
+                    if (mediaPlayerUtil != null) {
+                        mediaPlayerUtil.stopMedia();
+                    }
                     play_hive = false;
                     play_hive_audio = null;
                     mediaPlayer.reset();
@@ -379,6 +386,9 @@ public class Hive_game extends Fragment implements Hive_game_contract.Hive_game_
                 scienceChoiceEnglish = null;
             } else if (operation.equalsIgnoreCase("play")) {
                 try {
+                    if (mediaPlayerUtil != null) {
+                        mediaPlayerUtil.stopMedia();
+                    }
                     play_hive = false;
                     play_hive_audio = null;
                     mediaPlayer.reset();
@@ -391,6 +401,9 @@ public class Hive_game extends Fragment implements Hive_game_contract.Hive_game_
             }
         }
         if (operation.equalsIgnoreCase("play_hive")) {
+            if (mediaPlayer != null) {
+                mediaPlayer.stop();
+            }
             play_hive = true;
             play_hive_audio = scienceQuestionChoice;
             mediaPlayerUtil.playMedia(readingContentPath + "/" + scienceQuestionChoice.getSubUrl());
@@ -498,6 +511,9 @@ public class Hive_game extends Fragment implements Hive_game_contract.Hive_game_
     @Override
     public void onComplete() {
         if (play_hive_audio != null && play_hive_audio.getUserAns() != null && !play_hive_audio.getUserAns().isEmpty()) {
+            if (mediaPlayer != null) {
+                mediaPlayer.stop();
+            }
             for (ScienceQuestionChoice scienceQuestionChoice : questionModel.get(index).getLstquestionchoice()) {
                 if (scienceQuestionChoice.getEnglish().equalsIgnoreCase(play_hive_audio.getUserAns())) {
                     play_hive_audio=null;

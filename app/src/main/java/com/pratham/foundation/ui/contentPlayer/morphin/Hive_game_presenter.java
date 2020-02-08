@@ -1,7 +1,8 @@
 package com.pratham.foundation.ui.contentPlayer.morphin;
 
 import android.content.Context;
-import android.widget.Toast;
+import android.widget.CheckBox;
+import android.widget.TextView;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -178,7 +179,6 @@ public class Hive_game_presenter implements Hive_game_contract.Hive_game_present
                 }
             }
             //  totalCount = +totalCount + selectedAnsList.size();
-            //
             if (!FC_Constants.isTest) {
                 view.showResult();
             }
@@ -189,7 +189,7 @@ public class Hive_game_presenter implements Hive_game_contract.Hive_game_present
     }
 
     private boolean checkAnswerNew(ScienceQuestionChoice scienceQuestionChoice) {
-        if (scienceQuestionChoice.getEnglish().equalsIgnoreCase(scienceQuestionChoice.getUserAns())) {
+        if (scienceQuestionChoice.getCorrectAnswer().equalsIgnoreCase("True") && scienceQuestionChoice.getUserAns() != null && scienceQuestionChoice.getEnglish().equalsIgnoreCase(scienceQuestionChoice.getUserAns())) {
             return true;
         } else {
             return false;

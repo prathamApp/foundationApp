@@ -52,7 +52,6 @@
                 android:layout_marginStart="@dimen/_8sdp"
                 android:layout_marginEnd="@dimen/_8sdp"
                 android:singleLine="true"
-                android:text="@string/common_google_play_services_wear_update_text"
                 android:textColor="@color/red"
                 android:textSize="@dimen/_15sdp"
                 android:textStyle="bold" />
@@ -71,7 +70,6 @@
                 android:scrollHorizontally="true"
                 android:singleLine="true"
                 android:layout_marginTop="@dimen/_3sdp"
-                android:text="Next"
                 android:textColor="@color/blue"
                 android:textSize="@dimen/_15sdp"
                 android:textStyle="bold" />

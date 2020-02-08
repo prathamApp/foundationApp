@@ -94,7 +94,9 @@ public class HiveAdapter extends RecyclerView.Adapter<ImageViewHolder> {
                 }
             });
         }else {
-            if (scienceQuestionChoice.getUserAns() != null && scienceQuestionChoice.getEnglish().equalsIgnoreCase(scienceQuestionChoice.getUserAns())) {
+            holder.hindiText.setText(scienceQuestionChoice.getSubQues());
+            holder.englishText.setText(scienceQuestionChoice.getUserAns());
+            if (scienceQuestionChoice.isTrue()) {
                 bitmap = BitmapCache.INSTANCE.getBitmap(R.drawable.greenimg);
                 holder.remove.setVisibility(View.INVISIBLE);
             } else {

@@ -48,9 +48,10 @@ public class RecyclerAdapter extends RecyclerView.Adapter<ListItem> {
             holder.itemView.setBackground(ContextCompat.getDrawable(context, R.drawable.border));
         }
         if(scienceQuestionChoice.isPlaying()){
-            holder.sound.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.ic_speaker_color));
+          //  holder.sound.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.ic_speaker_color));
+            holder.itemView.setBackground(ContextCompat.getDrawable(context, R.drawable.border_yellow));
         }else {
-            holder.sound.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.ic_speaker_black));
+            holder.sound.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.border));
         }
          /*Bitmap bitmap;
        if (scienceQuestionChoice.getIsQuestion() != null && scienceQuestionChoice.getIsQuestion().equalsIgnoreCase("True")) {
