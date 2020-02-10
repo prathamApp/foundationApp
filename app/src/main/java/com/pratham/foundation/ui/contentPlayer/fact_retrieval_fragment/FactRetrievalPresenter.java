@@ -107,7 +107,6 @@ public class FactRetrievalPresenter implements FactRetrievalContract.FactRetriev
     }
 
 
-    @Background
     @Override
     public void getDataList() {
         try {

@@ -110,7 +110,8 @@ public class KeywordMappingPresenterImp implements KeywordMappingContract.Keywor
             selectedFive = new ArrayList<ScienceQuestion>();
             perc = getPercentage();
             Collections.shuffle(quetionModelList);
-            for (int i = 0; i < quetionModelList.size(); i++) {
+            if (FastSave.getInstance().getString(FC_Constants.CURRENT_SUBJECT, "").equalsIgnoreCase("Science")) {
+                for (int i = 0; i < quetionModelList.size(); i++) {
                 /*if (perc < 95) {
                     if (!checkWord("" + quetionModelList.get(i).getQuestion()))
                         selectedFive.add(quetionModelList.get(i));
@@ -120,7 +121,21 @@ public class KeywordMappingPresenterImp implements KeywordMappingContract.Keywor
                 if (selectedFive.size() >= 1) {
                     break;
                 }*/
-                selectedFive.add(quetionModelList.get(i));
+                    selectedFive.add(quetionModelList.get(i));
+                }
+            } else {
+                for (int i = 0; i < quetionModelList.size(); i++) {
+                    if (perc < 95) {
+                        if (!checkWord("" + quetionModelList.get(i).getQuestion()))
+                            selectedFive.add(quetionModelList.get(i));
+                    } else {
+                        selectedFive.add(quetionModelList.get(i));
+                    }
+                    if (selectedFive.size() >= 5) {
+                        break;
+                    }
+                    selectedFive.add(quetionModelList.get(i));
+                }
             }
             Collections.shuffle(selectedFive);
             view.loadUI(selectedFive);
