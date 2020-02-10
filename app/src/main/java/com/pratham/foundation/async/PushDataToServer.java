@@ -270,11 +270,11 @@ public class PushDataToServer {
                             isConnectedToRasp = true;
                             pushDataToRaspberry("" + FC_Constants.URL.DATASTORE_RASPBERY_URL.toString(),
                                     "" + requestString, programID, FC_Constants.USAGEDATA);
-                            try {
-                                getRaspImageList();
-                            } catch (Exception e) {
-                                e.printStackTrace();
-                            }
+//                            try {
+//                                getRaspImageList();
+//                            } catch (Exception e) {
+//                                e.printStackTrace();
+//                            }
                         }
 
                         @Override
