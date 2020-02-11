@@ -156,6 +156,7 @@
                         android:textSize="@dimen/_13sdp" />
 
                     <ImageView
+                        android:id="@+id/zoom_image_que"
                         android:layout_width="@dimen/_25sdp"
                         android:layout_height="@dimen/_25sdp"
                         android:gravity="center_vertical"
@@ -211,6 +212,7 @@
                         android:textSize="@dimen/_13sdp" />
 
                     <ImageView
+                        android:id="@+id/zoom_image_ans"
                         android:layout_width="@dimen/_25sdp"
                         android:layout_height="@dimen/_25sdp"
                         android:gravity="center_vertical"
