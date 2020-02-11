@@ -183,12 +183,7 @@ public class ContentPlayerActivity extends BaseActivity implements ShowInstructi
 
         });
 
-        dia_btn_red.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dialog.dismiss();
-            }
-        });
+        dia_btn_red.setOnClickListener(v -> dialog.dismiss());
 
         dia_btn_yellow.setOnClickListener(new View.OnClickListener() {
             @Override
