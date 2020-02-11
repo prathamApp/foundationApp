@@ -3,13 +3,13 @@ package com.pratham.foundation.ui.contentPlayer.chit_chat.level_2;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.Resources;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.Handler;
 import android.speech.RecognitionListener;
-import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -21,7 +21,6 @@ import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.RatingBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -33,6 +32,7 @@ import com.pratham.foundation.R;
 import com.pratham.foundation.customView.SansTextViewBold;
 import com.pratham.foundation.customView.display_image_dialog.CustomLodingDialog;
 import com.pratham.foundation.interfaces.MediaCallbacks;
+import com.pratham.foundation.interfaces.OnGameClose;
 import com.pratham.foundation.modalclasses.Message;
 import com.pratham.foundation.services.shared_preferences.FastSave;
 import com.pratham.foundation.services.stt.ContinuousSpeechService_New;
@@ -57,15 +57,16 @@ import java.util.Random;
 import static com.pratham.foundation.BaseActivity.mediaPlayerUtil;
 import static com.pratham.foundation.utility.FC_Constants.APP_SECTION;
 import static com.pratham.foundation.utility.FC_Constants.gameFolderPath;
+import static com.pratham.foundation.utility.FC_Constants.isPractice;
 import static com.pratham.foundation.utility.FC_Constants.sec_Learning;
 import static com.pratham.foundation.utility.FC_Constants.sec_Practice;
 import static com.pratham.foundation.utility.FC_Constants.sec_Test;
 import static com.pratham.foundation.utility.SplashSupportActivity.ButtonClickSound;
 
 
-@EFragment(R.layout.activity_conversation)
+@EFragment(R.layout.fragment_conversation)
 public class ConversationFragment_2 extends Fragment
-        implements ConversationContract_2.ConversationView, STT_Result_New.sttView, MediaCallbacks {
+        implements ConversationContract_2.ConversationView, STT_Result_New.sttView, MediaCallbacks, OnGameClose {
 
     @ViewById(R.id.recyclerView)
     RecyclerView recyclerView;
@@ -82,13 +83,11 @@ public class ConversationFragment_2 extends Fragment
     @ViewById(R.id.tv_title)
     TextView tv_title;
     @ViewById(R.id.lin_layout)
-    LinearLayout lin_layout;
+    RelativeLayout lin_layout;
     @ViewById(R.id.iv_monk)
     ImageView iv_monk;
-    @ViewById(R.id.floating_back)
-    FloatingActionButton floating_back;
-    @ViewById(R.id.floating_info)
-    FloatingActionButton floating_info;
+    @ViewById(R.id.clear)
+    ImageView clear;
 
     @Bean(ConversationPresenter_2.class)
     ConversationContract_2.ConversationPresenter presenter;
@@ -114,8 +113,8 @@ private String topicName;
     public void initialize() {
         iv_monk.setVisibility(View.GONE);
         silence_outer_layout.setVisibility(View.GONE);
-        floating_back.setImageResource(R.drawable.ic_left_arrow_white);
-        floating_info.setImageResource(R.drawable.ic_info_outline_white);
+/*        floating_back.setImageResource(R.drawable.ic_left_arrow_white);
+        floating_info.setImageResource(R.drawable.ic_info_outline_white);*/
         context = getActivity();
         app_sec = FastSave.getInstance().getString(APP_SECTION, "" + sec_Learning);
 //        app_sec = sec_Practice;
@@ -144,6 +143,11 @@ private String topicName;
 
         presenter.setContentId(contentId);
         convoMode = "A";
+
+        if(isPractice)
+            clear.setVisibility(View.VISIBLE);
+        else
+            clear.setVisibility(View.GONE);
 
         if (onSdCard)
             convoPath = ApplicationClass.contentSDPath + gameFolderPath + "/" + contentPath + "/";
@@ -212,6 +216,11 @@ private String topicName;
                 btn_speaker.setVisibility(View.GONE);
             }
         }
+    }
+
+    @Click(R.id.clear)
+    public void clearText() {
+        readChatFlow.removeAllViews();
     }
 
     @Click(R.id.btn_reading)
@@ -564,12 +573,16 @@ private String topicName;
 
     @Override
     public void Stt_onResult(ArrayList<String> sttServerResult) {
-        if (!app_sec.equalsIgnoreCase(sec_Practice)) {
-            iv_monk.setVisibility(View.VISIBLE);
-            iv_monk.startAnimation(AnimationUtils.loadAnimation(context, R.anim.float_anim));
-            presenter.sttResultProcess(sttServerResult, answer);
-        } else {
-            setContinuousAnswer(sttServerResult.get(0));
+        try {
+            if (!app_sec.equalsIgnoreCase(sec_Practice)) {
+                iv_monk.setVisibility(View.VISIBLE);
+                iv_monk.startAnimation(AnimationUtils.loadAnimation(context, R.anim.float_anim));
+                presenter.sttResultProcess(sttServerResult, answer);
+            } else {
+                setContinuousAnswer(sttServerResult.get(0));
+            }
+        } catch (Resources.NotFoundException e) {
+            e.printStackTrace();
         }
     }
 
@@ -797,6 +810,11 @@ private String topicName;
             ratings = (float) 5;
 
         return ratings;
+    }
+
+    @Override
+    public void gameClose() {
+
     }
 
     /*

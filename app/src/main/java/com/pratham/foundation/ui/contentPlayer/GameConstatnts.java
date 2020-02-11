@@ -237,7 +237,7 @@ public class GameConstatnts implements ShowInstruction {
 
     public static void plaPrevGame(Context context) {
         contentTable1 = null;
-        if (gameList != null && (currentGameAdapterposition > 1)) {
+        if (gameList != null && (currentGameAdapterposition > 0)) {
             //currentGameAdapterposition is initialized in adapter when game is played
             currentGameAdapterposition--;
             contentTable1 = gameList.get(currentGameAdapterposition);

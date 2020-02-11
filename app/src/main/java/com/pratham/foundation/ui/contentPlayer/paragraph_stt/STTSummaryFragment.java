@@ -234,7 +234,7 @@ public class STTSummaryFragment extends Fragment implements
         pageTitle = paraSttQuestionList.get(currentPage).getQuesText();
         startTime = FC_Utility.getCurrentDateTime();
         story_title.setText(pageTitle);
-        showHint();
+//        showHint();
         dismissLoadingDialog();
     }
 

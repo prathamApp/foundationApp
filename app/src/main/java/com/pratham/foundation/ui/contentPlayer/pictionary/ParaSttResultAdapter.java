@@ -40,8 +40,7 @@ public class ParaSttResultAdapter extends RecyclerView.Adapter<ParaSttResultAdap
         final ParaSttQuestionListModel paraSttQuestionListModel = optionList.get(i);
         myViewHolder.question.setText(paraSttQuestionListModel.getQuesText());
         myViewHolder.questionImg.setVisibility(View.GONE);
-        myViewHolder.iv_correct_wrong_indicator.setImageResource(R.drawable.ic_check_white);
-        myViewHolder.iv_correct_wrong_indicator.setBackgroundColor(context.getResources().getColor(R.color.colorBtnGreenDark));
+        myViewHolder.iv_correct_wrong_indicator.setVisibility(View.GONE);
         myViewHolder.correctAnswer.setText(""+paraSttQuestionListModel.getAnswerText());
         myViewHolder.userAnswer.setText(""+paraSttQuestionListModel.getStudentText());
     }
