@@ -29,6 +29,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 
 import static com.pratham.foundation.utility.FC_Constants.activityPhotoPath;
+import static com.pratham.foundation.utility.FC_Utility.showZoomDialog;
 
 
 @EActivity(R.layout.activity_show_image_question)
@@ -58,6 +59,12 @@ public class ShowImgQuestionActivity extends BaseActivity implements ShowImgQues
     VideoView ques_videoView;
     @ViewById(R.id.player_control_view)
     PlayerControlView player_control_view;
+
+    @ViewById(R.id.zoom_image_ans)
+    ImageView zoom_image_ans;
+
+    @ViewById(R.id.zoom_image_que)
+    ImageView zoom_image_que;
 
     Score scoreDisp;
 
@@ -104,6 +111,16 @@ public class ShowImgQuestionActivity extends BaseActivity implements ShowImgQues
             Bitmap bmImg = BitmapFactory.decodeFile(activityPhotoPath+""+ansImageName);
             BitmapFactory.decodeStream(new FileInputStream(activityPhotoPath+""+ansImageName));
             iv_ans_image.setImageBitmap(bmImg);
+
+
+            zoom_image_ans.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    String localPath = activityPhotoPath + ansImageName;
+                    showZoomDialog(ShowImgQuestionActivity.this,localPath, localPath);
+                }
+            });
+
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
@@ -121,6 +138,13 @@ public class ShowImgQuestionActivity extends BaseActivity implements ShowImgQues
                 Bitmap bmImg = BitmapFactory.decodeFile(questionMedia);
                 BitmapFactory.decodeStream(new FileInputStream(questionMedia));
                 question_image.setImageBitmap(bmImg);
+                zoom_image_que.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        String localPath = questionMedia;
+                        showZoomDialog(ShowImgQuestionActivity.this,localPath, localPath);
+                    }
+                });
             }
             if(questionMedia.contains(".mp4") || questionMedia.contains(".3gp")){
                 ques_card.setVisibility(View.VISIBLE);
