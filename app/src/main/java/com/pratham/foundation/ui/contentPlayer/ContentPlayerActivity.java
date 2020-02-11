@@ -151,7 +151,7 @@ public class ContentPlayerActivity extends BaseActivity implements ShowInstructi
         Button dia_btn_green = dialog.findViewById(R.id.dia_btn_green);
         Button dia_btn_red = dialog.findViewById(R.id.dia_btn_red);
 
-        dia_btn_green.setText(getResources().getString(R.string.Okay));
+        dia_btn_green.setText(getResources().getString(R.string.yes));
         //dia_btn_red.setText("No");
         dia_btn_red.setVisibility(View.GONE);
         dia_btn_yellow.setText(getResources().getString(R.string.Cancel));

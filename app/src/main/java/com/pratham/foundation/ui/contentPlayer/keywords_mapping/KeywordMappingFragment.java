@@ -176,11 +176,11 @@ public class KeywordMappingFragment extends Fragment implements KeywordMappingCo
              submitBtn.setVisibility(View.INVISIBLE);
             submitBtn.setVisibility(View.VISIBLE);
         }*/
-        if (!FC_Constants.isTest && !FC_Constants.isPractice) {
+/*        if (!FC_Constants.isTest && !FC_Constants.isPractice) {
             if (!checkIsAttempted(optionList)) {
                 showAnswer.performClick();
             }
-        }
+        }*/
     }
 
     private boolean checkIsAttempted(List<ScienceQuestionChoice> optionList) {
