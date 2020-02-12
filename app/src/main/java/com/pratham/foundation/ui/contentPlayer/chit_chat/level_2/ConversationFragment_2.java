@@ -10,6 +10,7 @@ import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.Handler;
 import android.speech.RecognitionListener;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -88,6 +89,10 @@ public class ConversationFragment_2 extends Fragment
     ImageView iv_monk;
     @ViewById(R.id.clear)
     ImageView clear;
+    @ViewById(R.id.floating_back)
+    FloatingActionButton floating_back;
+    @ViewById(R.id.floating_info)
+    FloatingActionButton floating_info;
 
     @Bean(ConversationPresenter_2.class)
     ConversationContract_2.ConversationPresenter presenter;
@@ -107,14 +112,15 @@ public class ConversationFragment_2 extends Fragment
     float[] msgPercentage;
     Context context;
     ContinuousSpeechService_New continuousSpeechService;
-//    AnimationDrawable animationDrawable;
-private String topicName;
+    //    AnimationDrawable animationDrawable;
+    private String topicName;
+
     @AfterViews
     public void initialize() {
         iv_monk.setVisibility(View.GONE);
         silence_outer_layout.setVisibility(View.GONE);
-/*        floating_back.setImageResource(R.drawable.ic_left_arrow_white);
-        floating_info.setImageResource(R.drawable.ic_info_outline_white);*/
+        floating_back.setImageResource(R.drawable.ic_left_arrow_white);
+        floating_info.setImageResource(R.drawable.ic_info_outline_white);
         context = getActivity();
         app_sec = FastSave.getInstance().getString(APP_SECTION, "" + sec_Learning);
 //        app_sec = sec_Practice;
@@ -144,7 +150,7 @@ private String topicName;
         presenter.setContentId(contentId);
         convoMode = "A";
 
-        if(isPractice)
+        if (isPractice)
             clear.setVisibility(View.VISIBLE);
         else
             clear.setVisibility(View.GONE);
@@ -196,7 +202,7 @@ private String topicName;
                 btn_imgsend.setClickable(true);
                 btn_imgsend.setBackgroundResource(R.drawable.button_yellow);
             }
-        } else if(app_sec.equalsIgnoreCase(sec_Practice)){
+        } else if (app_sec.equalsIgnoreCase(sec_Practice)) {
             btn_speaker.setVisibility(View.GONE);
             btn_imgsend.setVisibility(View.VISIBLE);
             if (clickOn == 0) {
@@ -220,6 +226,7 @@ private String topicName;
 
     @Click(R.id.clear)
     public void clearText() {
+        recordedTextMsg = "";
         readChatFlow.removeAllViews();
     }
 
@@ -246,10 +253,10 @@ private String topicName;
         sendClikChanger(0);
         if (voiceStart)
             btn_reading.performClick();
-        if(app_sec.equalsIgnoreCase(sec_Practice)){
-            presenter.addScore(0, "perc - NA" , 0, 0, " Convo ");
+        if (app_sec.equalsIgnoreCase(sec_Practice)) {
+            presenter.addScore(0, "perc - NA", 0, 0, " Convo ");
             addItemInConvo(recordedTextMsg, "NA", true);
-        }else {
+        } else {
             int correctAnswerCount = setBooleanGetCounter();
             float perc = presenter.getPercentage();
             presenter.addScore(0, "perc - " + perc, correctAnswerCount, correctArr.length, " Convo ");
@@ -317,8 +324,8 @@ private String topicName;
                 answerAudio = conversation.getJSONObject(currentQueNo).getJSONArray("PersonB").getJSONObject(randomNumB).getString("audio");
                 addItemInConvo(question, questionAudio, false);
                 playChat("" + questionAudio);
-                recordedTextMsg="";
-                if(!app_sec.equalsIgnoreCase(sec_Practice))
+                recordedTextMsg = "";
+                if (!app_sec.equalsIgnoreCase(sec_Practice))
                     setAnswerText(answer);
 /*                switch (convoMode) {
                     case "A":
@@ -424,7 +431,7 @@ private String topicName;
 
     private void setContinuousAnswer(String answerText) {
         String[] splittedAnswer = answerText.split(" ");
-        recordedTextMsg = " "+recordedTextMsg+" "+answerText;
+        recordedTextMsg = " " + recordedTextMsg + " " + answerText;
         sendClikChanger(1);
         for (String word : splittedAnswer) {
             final SansTextViewBold myTextView = new SansTextViewBold(context);

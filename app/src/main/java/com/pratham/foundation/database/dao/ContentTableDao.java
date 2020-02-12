@@ -40,7 +40,7 @@ public interface ContentTableDao {
     @Query("SELECT * FROM ContentTable WHERE parentid ISNULL or parentid = 0 or parentid=''and contentLanguage=:language")
     List<ContentTable> getParentsHeaders(String language);
 
-    @Query("SELECT * FROM ContentTable WHERE parentid=:id")
+    @Query("SELECT * FROM ContentTable WHERE parentid=:id ORDER BY nodeId")
     List<ContentTable> getChildsOfParent(String id);
 
     @Query("SELECT * FROM ContentTable WHERE parentid=:id AND nodeId!='4033'")
