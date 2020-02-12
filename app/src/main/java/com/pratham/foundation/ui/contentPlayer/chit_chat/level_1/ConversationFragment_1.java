@@ -31,7 +31,6 @@ import com.pratham.foundation.interfaces.MediaCallbacks;
 import com.pratham.foundation.interfaces.OnGameClose;
 import com.pratham.foundation.modalclasses.Message;
 import com.pratham.foundation.ui.contentPlayer.GameConstatnts;
-import com.pratham.foundation.ui.contentPlayer.old_cos.conversation.MessageAdapter;
 import com.pratham.foundation.utility.FC_Constants;
 import com.pratham.foundation.utility.FC_Utility;
 import com.pratham.foundation.utility.MediaPlayerUtil;
@@ -52,7 +51,7 @@ import static com.pratham.foundation.utility.FC_Constants.gameFolderPath;
 import static com.pratham.foundation.utility.SplashSupportActivity.ButtonClickSound;
 
 
-@EFragment(R.layout.activity_conversation)
+@EFragment(R.layout.activity_conversation_1)
 public class ConversationFragment_1 extends Fragment
         implements ConversationContract_1.ConversationView_1, MediaCallbacks, OnGameClose {
 
@@ -66,8 +65,8 @@ public class ConversationFragment_1 extends Fragment
     ImageButton btn_reading;
     @ViewById(R.id.btn_imgsend)
     ImageButton btn_imgsend;
-    @ViewById(R.id.btn_speaker)
-    ImageButton btn_speaker;
+    @ViewById(R.id.btn_reload)
+    ImageButton btn_reload;
     @ViewById(R.id.tv_title)
     TextView tv_title;
     @ViewById(R.id.lin_layout)
@@ -99,7 +98,7 @@ public class ConversationFragment_1 extends Fragment
     public static String convoMode, convoPath;
     private String LOG_TAG = "VoiceRecognitionActivity";
     boolean[] correctArr;
-    boolean myMsg, onSdCard;
+    boolean isPlaying, onSdCard;
     float[] msgPercentage;
     // ContinuousSpeechService_New continuousSpeechService;
     boolean isUser = false;
@@ -129,7 +128,7 @@ Handler handler;
         contentPath = bundle.getString("contentPath");
         certiCode = bundle.getString("certiCode");
         onSdCard = bundle.getBoolean("onSdCard", false);
-
+        isPlaying = true;
         convoMode = "A";
         handler = new Handler();
 
@@ -167,14 +166,18 @@ Handler handler;
     @Override
     public void setConvoJson(JSONArray returnStoryNavigate) {
         conversation = returnStoryNavigate;
-        myMsg = true;
         if (conversation != null) {
+            if (handler == null) {
+                handler = new Handler();
+            }
+            isPlaying = false;
+            paly_pause();
             msgPercentage = new float[conversation.length()];
             recyclerView.setHasFixedSize(true);
             final LinearLayoutManager linearLayoutManager = new LinearLayoutManager(context);
             linearLayoutManager.setStackFromEnd(true);
             recyclerView.setLayoutManager(linearLayoutManager);
-            mAdapter = new MessageAdapter(messageList, context);
+            mAdapter = new MessageAdapter_1(messageList, context);
             recyclerView.setAdapter(mAdapter);
             for (int i = 0; i < msgPercentage.length; i++)
                 msgPercentage[1] = 0;
@@ -188,14 +191,14 @@ Handler handler;
         if (!FC_Constants.isTest) {
             if (clickOn == 0) {
                 btn_imgsend.setVisibility(View.GONE);
-                btn_speaker.setVisibility(View.VISIBLE);
+                //btn_speaker.setVisibility(View.VISIBLE);
             } else {
                 btn_imgsend.setVisibility(View.VISIBLE);
                 btn_imgsend.setClickable(true);
-                btn_speaker.setVisibility(View.GONE);
+                // btn_speaker.setVisibility(View.GONE);
             }
         } else {
-            btn_speaker.setVisibility(View.GONE);
+            //  btn_speaker.setVisibility(View.GONE);
             btn_imgsend.setVisibility(View.VISIBLE);
             if (clickOn == 0) {
                 btn_imgsend.setClickable(false);
@@ -231,7 +234,7 @@ Handler handler;
             sendClikChanger(0);
             // float perc = presenter.getPercentage();
             ButtonClickSound.start();
-            btn_reading.setImageResource(R.drawable.ic_mic_black);
+            //   btn_reading.setImageResource(R.drawable.ic_mic_black);
       /*  if (voiceStart)
             btn_reading.performClick();*/
             readChatFlow.removeAllViews();
@@ -287,6 +290,7 @@ Handler handler;
         try {
             // presenter.setStartTime(FC_Utility.getCurrentDateTime());
             if (currentQueNo < conversation.length()) {
+                btn_reload.setVisibility(View.VISIBLE);
                 iv_monk.clearAnimation();
                 iv_monk.setVisibility(View.GONE);
                 currentMsgNo = currentQueNo;
@@ -446,6 +450,63 @@ Handler handler;
         super.onStop();
     }
 
+    @Click(R.id.btn_reload)
+    public void realod() {
+        btn_reload.setVisibility(View.INVISIBLE);
+        if (handler != null) {
+            handler.removeCallbacks(null);
+            handler.removeCallbacksAndMessages(null);
+            handler = null;
+        }
+        mediaPlayerUtil.stopMedia();
+        currentQueNos = 0;
+        messageList.clear();
+        readChatFlow.removeAllViews();
+        setConvoJson(conversation);
+    }
+
+    @Click(R.id.btn_reading)
+    public void paly_pause() {
+        if (isPlaying) {
+            //pause audio
+            if (handler != null) {
+                handler.removeCallbacks(null);
+                handler.removeCallbacksAndMessages(null);
+                handler = null;
+                mediaPlayerUtil.stopMedia();
+            }
+            isPlaying = false;
+            setPlayImage();
+        } else {
+            //play audio
+            isPlaying = true;
+            if (handler == null) {
+                handler = new Handler();
+                if (handler != null) {
+                    if (isUser) {
+                        handler.postDelayed(() -> displayNextQuestion(currentQueNos), (long) (1000));
+                    } else {
+                        handler.postDelayed(() -> sendMessage(), (long) (1200));
+                    }
+                }
+            }
+            setPauseImage();
+        }
+    }
+
+    private void setPlayImage() {
+        if (getActivity() != null) {
+            btn_reading.setImageDrawable(getActivity().getDrawable(R.drawable.ic_play_arrow_black));
+            btn_reading.setBackground(getActivity().getResources().getDrawable(R.drawable.button_green));
+        }
+    }
+
+    private void setPauseImage() {
+        if (getActivity() != null) {
+            btn_reading.setImageDrawable(getActivity().getDrawable(R.drawable.ic_pause_black));
+            btn_reading.setBackground(getActivity().getResources().getDrawable(R.drawable.button_yellow));
+        }
+    }
     @UiThread
     @Override
     public void submitAns(String[] splitQues) {
@@ -783,6 +844,9 @@ Handler handler;
        // presenter.setCompletionPercentage(conversation.length(), messageList.size());
         presenter.addScore(0, "", 0, 0, resStartTime, FC_Utility.getCurrentDateTime(), GameConstatnts.NEW_CHIT_CHAT_1 + " " + GameConstatnts.END, resId, true);
     }
+
+
+
 
  /*   @SuppressLint("SetTextI18n")
     public void showExitDialog(Context context) {

@@ -113,7 +113,8 @@ public class KeywordsIdentificationPresenter implements KeywordsIdentificationCo
 
             }
             viewKeywords.showParagraph(questionModel);
-            viewKeywords.showAnswer();
+            //uncomment to show answer in learning
+           // viewKeywords.showAnswer();
         } catch (Exception e) {
             e.printStackTrace();
         }

@@ -606,11 +606,12 @@ public class pictionaryFragment extends Fragment implements OnGameClose, Piction
                 submitBtn.setVisibility(View.INVISIBLE);
                 next.setVisibility(View.VISIBLE);
             }
-            if (!FC_Constants.isTest && !FC_Constants.isPractice) {
+            //UNCOMMENT TO SHOW ANSWER IN LEARNING
+           /* if (!FC_Constants.isTest && !FC_Constants.isPractice) {
                 if (selectedFive.get(index).getUserAnswer() != null && selectedFive.get(index).getUserAnswer().isEmpty()) {
                     show_answer.performClick();
                 }
-            }
+            }*/
 
         } else {
             Toast.makeText(getActivity(), "No data found", Toast.LENGTH_SHORT).show();

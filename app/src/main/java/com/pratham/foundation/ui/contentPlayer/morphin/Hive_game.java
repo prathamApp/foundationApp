@@ -185,9 +185,10 @@ public class Hive_game extends Fragment implements Hive_game_contract.Hive_game_
     private void showQuestion() {
         afterViews();
         loadOptions();
-        if (!FC_Constants.isTest && !FC_Constants.isPractice) {
+        //UNCOMMENT to show answer in learning
+       /* if (!FC_Constants.isTest && !FC_Constants.isPractice) {
             showAnswer.performClick();
-        }
+        }*/
     }
 
     private void loadOptions() {

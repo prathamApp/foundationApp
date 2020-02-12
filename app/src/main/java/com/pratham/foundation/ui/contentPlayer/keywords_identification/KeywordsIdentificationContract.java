@@ -10,7 +10,7 @@ public interface KeywordsIdentificationContract {
     interface KeywordsView {
         void showParagraph(ScienceQuestion questionModel);
 
-        void showAnswer();
+      //  void showAnswer();
 
         void showResult(List correctWord, List wrongWord);
     }

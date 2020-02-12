@@ -119,11 +119,11 @@ public class KeywordsIdentificationFragment extends Fragment implements Keywords
         EventBus.getDefault().register(this);
     }
 
-    public void showAnswer() {
+    /*public void showAnswer() {
         if (!FC_Constants.isTest && !FC_Constants.isPractice) {
             show_me_keywords.performClick();
         }
-    }
+    }*/
     @Override
     public void showParagraph(ScienceQuestion questionModel) {
         this.questionModel = questionModel;

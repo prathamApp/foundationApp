@@ -147,7 +147,8 @@ public class FactRetrieval extends Fragment implements FactRetrievalContract.Fac
         getAnswersInPassage();
 
         showQuestion();
-        showAnswer();
+
+       // showAnswer();
      /*   final int SETANSWER = 0;
         final int CLEAR_ANSWER = 1;*/
        /* paragraph.setCustomSelectionActionModeCallback(new ActionMode.Callback() {
@@ -310,13 +311,13 @@ public class FactRetrieval extends Fragment implements FactRetrievalContract.Fac
 
         }
     }
-    void showAnswer(){
+   /* void showAnswer(){
         if (!FC_Constants.isTest && !FC_Constants.isPractice) {
             if (selectedQuetion.get(index).getUserAns() != null && selectedQuetion.get(index).getUserAns().isEmpty()) {
                 show_answer();
             }
         }
-    }
+    }*/
     private void LoadRecyclerText() {
         String[] paragraphWords = questionModel.getQuestion().split(" ");
         sentences = questionModel.getQuestion().trim().split(REGEXF);
@@ -470,7 +471,7 @@ public class FactRetrieval extends Fragment implements FactRetrievalContract.Fac
                 //  setAnswer();
                 index--;
                 showQuestion();
-                showAnswer();
+               // showAnswer();
             }
     }
 
@@ -504,7 +505,7 @@ public class FactRetrieval extends Fragment implements FactRetrievalContract.Fac
                 //  setAnswer();
                 index++;
                 showQuestion();
-                showAnswer();
+                //showAnswer();
             }
     }
 
