@@ -147,7 +147,7 @@ public class FactRetrieval extends Fragment implements FactRetrievalContract.Fac
         getAnswersInPassage();
 
         showQuestion();
-        //uncomment to show answer in learning  mode
+        //uncomment to show answer in learning mode
        // showAnswer();
      /*   final int SETANSWER = 0;
         final int CLEAR_ANSWER = 1;*/
