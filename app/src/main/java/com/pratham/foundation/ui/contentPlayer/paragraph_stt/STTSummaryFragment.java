@@ -150,7 +150,7 @@ public class STTSummaryFragment extends Fragment implements
         continuousSpeechService.resetSpeechRecognizer();
 
         try {
-            presenter.fetchJsonData(readingContentPath,"summaryQues.json");
+            presenter.fetchJsonData(readingContentPath, "summaryQues.json");
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -162,7 +162,7 @@ public class STTSummaryFragment extends Fragment implements
         totalPages = paraSttQuestionList.size();
         sttAnswers = new String[totalPages];
         sttAnswersTime = new String[totalPages];
-        for(int i=0;i<totalPages;i++) {
+        for (int i = 0; i < totalPages; i++) {
             sttAnswers[i] = "";
             paraSttQuestionList.get(i).setStudentText("");
             sttAnswersTime[i] = "NA";
@@ -210,31 +210,30 @@ public class STTSummaryFragment extends Fragment implements
         if (currentPage == 0) {
             lastPgFlag = false;
             btn_prev.setVisibility(View.GONE);
-            if (currentPage == totalPages - 1 ) {
+            if (currentPage == totalPages - 1) {
                 lastPgFlag = true;
-//            submit.setVisibility(View.VISIBLE);
+                submit.setVisibility(View.VISIBLE);
                 btn_prev.setVisibility(View.GONE);
-                btn_next.setVisibility(View.GONE);
+                btn_next.setVisibility(View.VISIBLE);
             }
-        }
-        else if (currentPage < totalPages - 1 && currentPage > 0) {
+        } else if (currentPage < totalPages - 1 && currentPage > 0) {
             lastPgFlag = false;
+            submit.setVisibility(View.GONE);
             btn_prev.setVisibility(View.VISIBLE);
             btn_next.setVisibility(View.VISIBLE);
         }
-        else{
-            if (currentPage == totalPages - 1 ) {
-                lastPgFlag = true;
-                btn_prev.setVisibility(View.VISIBLE);
-                btn_next.setVisibility(View.GONE);
-            }
-            if(totalPages - 1 == 0)
-                btn_prev.setVisibility(View.GONE);
+        if (currentPage == totalPages - 1) {
+            lastPgFlag = true;
+            submit.setVisibility(View.VISIBLE);
+            btn_prev.setVisibility(View.VISIBLE);
+            btn_next.setVisibility(View.VISIBLE);
         }
+            if (totalPages - 1 == 0)
+                btn_prev.setVisibility(View.GONE);
         pageTitle = paraSttQuestionList.get(currentPage).getQuesText();
         startTime = FC_Utility.getCurrentDateTime();
         story_title.setText(pageTitle);
-        showHint();
+//        showHint();
         dismissLoadingDialog();
     }
 
@@ -247,19 +246,19 @@ public class STTSummaryFragment extends Fragment implements
     void resetBtn() {
         sttAnswers[currentPage] = "";
         paraSttQuestionList.get(currentPage).setStudentText("");
-        stt_ans_tv.setText(""+sttAnswers[currentPage]);
+        stt_ans_tv.setText("" + sttAnswers[currentPage]);
     }
 
     @Click(R.id.hint_btn)
     void showHint() {
-        if(voiceStart)
+        if (voiceStart)
             ib_mic.performClick();
         showDialog();
     }
 
     private void showDialog() {
         final CustomLodingDialog dialog = new CustomLodingDialog(context);
-        final View dialogView = View.inflate(getActivity(),R.layout.fc_show_hint_dialog,null);
+        final View dialogView = View.inflate(getActivity(), R.layout.fc_show_hint_dialog, null);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         dialog.setContentView(dialogView);
@@ -267,7 +266,7 @@ public class STTSummaryFragment extends Fragment implements
         TextView dialog_hint_tv = dialog.findViewById(R.id.dialog_hint_tv);
         ImageButton dia_btn_cross = dialog.findViewById(R.id.dia_btn_cross);
 
-        dialog_hint_tv.setText(""+paraSttQuestionList.get(currentPage).getAnswerText());
+        dialog_hint_tv.setText("" + paraSttQuestionList.get(currentPage).getAnswerText());
 
         dialog.show();
         dia_btn_cross.setOnClickListener(v -> {
@@ -277,11 +276,11 @@ public class STTSummaryFragment extends Fragment implements
 
     @Click(R.id.ib_mic)
     void sttMethod() {
-        if(sttAnswersTime[currentPage] == "NA") {
-            quesStartTime = ""+FC_Utility.getCurrentDateTime();
+        if (sttAnswersTime[currentPage] == "NA") {
+            quesStartTime = "" + FC_Utility.getCurrentDateTime();
             sttAnswersTime[currentPage] = quesStartTime;
         }
-    if (!voiceStart) {
+        if (!voiceStart) {
             try {
                 voiceStart = true;
                 showLoader();
@@ -320,7 +319,7 @@ public class STTSummaryFragment extends Fragment implements
                 playFlg = false;
                 pauseFlg = true;
                 flgPerMarked = false;
-                stt_ans_tv.setText(""+sttAnswers[currentPage]);
+                stt_ans_tv.setText("" + sttAnswers[currentPage]);
                 presenter.getPage(currentPage);
             } catch (Exception e) {
                 e.printStackTrace();
@@ -330,13 +329,14 @@ public class STTSummaryFragment extends Fragment implements
 
     @Click(R.id.submit)
     public void submitTest() {
-        if(voiceStart)
+        if (voiceStart)
             ib_mic.performClick();
 
-        for(int i=0; i<totalPages; i++)
-            presenter.addScore(0,""+sttAnswers[i],currentPage,totalPages,""+sttAnswersTime[i],"Stt_QA Submit");
+        for (int i = 0; i < totalPages; i++)
+            presenter.addScore(0, "" + sttAnswers[i], currentPage, totalPages, "" + sttAnswersTime[i], "Stt_QA Submit");
 
-        super.onStop();
+        showCompareDialog();
+//        super.onStop();
     }
 
     @Click(R.id.btn_next)
@@ -356,27 +356,28 @@ public class STTSummaryFragment extends Fragment implements
             flgPerMarked = true;
             playFlg = false;
             pauseFlg = true;
-            stt_ans_tv.setText(""+sttAnswers[currentPage]);
+            stt_ans_tv.setText("" + sttAnswers[currentPage]);
             presenter.getPage(currentPage);
             Log.d("click", "NextBtn - totalPages: " + totalPages + "  currentPage: " + currentPage);
         } else {
-//            GameConstatnts.playGameNext(getActivity(), true, this);
+            GameConstatnts.playGameNext(getActivity(), true, this);
         }
     }
 
     public void exitDBEntry() {
-        try {
-            for(int i=0; i<totalPages; i++) {
-                presenter.addScore(0, "" + sttAnswers[i], currentPage, totalPages, "" + sttAnswersTime[i], "Stt_QA Submit");
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+//        try {
+//            for(int i=0; i<totalPages; i++) {
+//                presenter.addScore(0, "" + sttAnswers[i], currentPage, totalPages, "" + sttAnswersTime[i], "Stt_QA Submit");
+//            }
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
         presenter.addScore(0, "", 0, 0, startTime, contentType + " End");
-        presenter.addProgress(sttAnswers,sttAnswersTime);
+        presenter.addProgress(sttAnswers, sttAnswersTime);
     }
 
     int correctCnt = 0, total = 0;
+
     @Override
     public void onPause() {
         super.onPause();
@@ -406,7 +407,7 @@ public class STTSummaryFragment extends Fragment implements
 
     @UiThread
     public void setAnswerToView(ArrayList<String> sttResult) {
-        String tempText = sttAnswers[currentPage] + " "+ sttResult.get(0);
+        String tempText = sttAnswers[currentPage] + " " + sttResult.get(0);
         sttAnswers[currentPage] = tempText;
         paraSttQuestionList.get(currentPage).setStudentText(tempText);
         stt_ans_tv.setText(tempText);
@@ -478,7 +479,6 @@ public class STTSummaryFragment extends Fragment implements
     public void gameClose() {
         Log.d("gameClose", "gameClose: gameClose: ");
         exitDBEntry();
-        showCompareDialog();
     }
 
     private void showCompareDialog() {
@@ -495,6 +495,13 @@ public class STTSummaryFragment extends Fragment implements
     }
 
     @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == 111)
+            GameConstatnts.playGameNext(getActivity(), true, this);
+    }
+
+    @Override
     public void onStart() {
         EventBus.getDefault().register(this);
         super.onStart();
@@ -504,14 +511,13 @@ public class STTSummaryFragment extends Fragment implements
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void messageReceived(EventMessage message) {
         if (message != null) {
-            if (message.getMessage().equalsIgnoreCase(FC_Constants.INFO_CLICKED)){
+            if (message.getMessage().equalsIgnoreCase(FC_Constants.INFO_CLICKED)) {
 //                showAnswer();
-            }
-            else if (message.getMessage().equalsIgnoreCase(FC_Constants.BACK_PRESSED)){
-                if(voiceStart)
+            } else if (message.getMessage().equalsIgnoreCase(FC_Constants.BACK_PRESSED)) {
+                if (voiceStart)
                     ib_mic.performClick();
-                for(int i=0; i<totalPages; i++)
-                    presenter.addScore(0,""+sttAnswers[i],currentPage,totalPages,""+sttAnswersTime[i],"Stt_QA Submit");
+                for (int i = 0; i < totalPages; i++)
+                    presenter.addScore(0, "" + sttAnswers[i], currentPage, totalPages, "" + sttAnswersTime[i], "Stt_QA Submit");
 //                presenter.addScore(0,""+sttAnswers[currentPage],currentPage,totalPages,""+quesStartTime,"Stt_QA");
             }
         }

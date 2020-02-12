@@ -3,6 +3,7 @@ package com.pratham.foundation.ui.contentPlayer.chit_chat.level_2;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.Resources;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.media.MediaPlayer;
@@ -21,7 +22,6 @@ import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.RatingBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -33,6 +33,7 @@ import com.pratham.foundation.R;
 import com.pratham.foundation.customView.SansTextViewBold;
 import com.pratham.foundation.customView.display_image_dialog.CustomLodingDialog;
 import com.pratham.foundation.interfaces.MediaCallbacks;
+import com.pratham.foundation.interfaces.OnGameClose;
 import com.pratham.foundation.modalclasses.Message;
 import com.pratham.foundation.services.shared_preferences.FastSave;
 import com.pratham.foundation.services.stt.ContinuousSpeechService_New;
@@ -57,15 +58,16 @@ import java.util.Random;
 import static com.pratham.foundation.BaseActivity.mediaPlayerUtil;
 import static com.pratham.foundation.utility.FC_Constants.APP_SECTION;
 import static com.pratham.foundation.utility.FC_Constants.gameFolderPath;
+import static com.pratham.foundation.utility.FC_Constants.isPractice;
 import static com.pratham.foundation.utility.FC_Constants.sec_Learning;
 import static com.pratham.foundation.utility.FC_Constants.sec_Practice;
 import static com.pratham.foundation.utility.FC_Constants.sec_Test;
 import static com.pratham.foundation.utility.SplashSupportActivity.ButtonClickSound;
 
 
-@EFragment(R.layout.activity_conversation)
+@EFragment(R.layout.fragment_conversation)
 public class ConversationFragment_2 extends Fragment
-        implements ConversationContract_2.ConversationView, STT_Result_New.sttView, MediaCallbacks {
+        implements ConversationContract_2.ConversationView, STT_Result_New.sttView, MediaCallbacks, OnGameClose {
 
     @ViewById(R.id.recyclerView)
     RecyclerView recyclerView;
@@ -82,9 +84,11 @@ public class ConversationFragment_2 extends Fragment
     @ViewById(R.id.tv_title)
     TextView tv_title;
     @ViewById(R.id.lin_layout)
-    LinearLayout lin_layout;
+    RelativeLayout lin_layout;
     @ViewById(R.id.iv_monk)
     ImageView iv_monk;
+    @ViewById(R.id.clear)
+    ImageView clear;
     @ViewById(R.id.floating_back)
     FloatingActionButton floating_back;
     @ViewById(R.id.floating_info)
@@ -108,8 +112,9 @@ public class ConversationFragment_2 extends Fragment
     float[] msgPercentage;
     Context context;
     ContinuousSpeechService_New continuousSpeechService;
-//    AnimationDrawable animationDrawable;
-private String topicName;
+    //    AnimationDrawable animationDrawable;
+    private String topicName;
+
     @AfterViews
     public void initialize() {
         iv_monk.setVisibility(View.GONE);
@@ -144,6 +149,11 @@ private String topicName;
 
         presenter.setContentId(contentId);
         convoMode = "A";
+
+        if (isPractice)
+            clear.setVisibility(View.VISIBLE);
+        else
+            clear.setVisibility(View.GONE);
 
         if (onSdCard)
             convoPath = ApplicationClass.contentSDPath + gameFolderPath + "/" + contentPath + "/";
@@ -192,7 +202,7 @@ private String topicName;
                 btn_imgsend.setClickable(true);
                 btn_imgsend.setBackgroundResource(R.drawable.button_yellow);
             }
-        } else if(app_sec.equalsIgnoreCase(sec_Practice)){
+        } else if (app_sec.equalsIgnoreCase(sec_Practice)) {
             btn_speaker.setVisibility(View.GONE);
             btn_imgsend.setVisibility(View.VISIBLE);
             if (clickOn == 0) {
@@ -212,6 +222,12 @@ private String topicName;
                 btn_speaker.setVisibility(View.GONE);
             }
         }
+    }
+
+    @Click(R.id.clear)
+    public void clearText() {
+        recordedTextMsg = "";
+        readChatFlow.removeAllViews();
     }
 
     @Click(R.id.btn_reading)
@@ -237,10 +253,10 @@ private String topicName;
         sendClikChanger(0);
         if (voiceStart)
             btn_reading.performClick();
-        if(app_sec.equalsIgnoreCase(sec_Practice)){
-            presenter.addScore(0, "perc - NA" , 0, 0, " Convo ");
+        if (app_sec.equalsIgnoreCase(sec_Practice)) {
+            presenter.addScore(0, "perc - NA", 0, 0, " Convo ");
             addItemInConvo(recordedTextMsg, "NA", true);
-        }else {
+        } else {
             int correctAnswerCount = setBooleanGetCounter();
             float perc = presenter.getPercentage();
             presenter.addScore(0, "perc - " + perc, correctAnswerCount, correctArr.length, " Convo ");
@@ -308,8 +324,8 @@ private String topicName;
                 answerAudio = conversation.getJSONObject(currentQueNo).getJSONArray("PersonB").getJSONObject(randomNumB).getString("audio");
                 addItemInConvo(question, questionAudio, false);
                 playChat("" + questionAudio);
-                recordedTextMsg="";
-                if(!app_sec.equalsIgnoreCase(sec_Practice))
+                recordedTextMsg = "";
+                if (!app_sec.equalsIgnoreCase(sec_Practice))
                     setAnswerText(answer);
 /*                switch (convoMode) {
                     case "A":
@@ -415,7 +431,7 @@ private String topicName;
 
     private void setContinuousAnswer(String answerText) {
         String[] splittedAnswer = answerText.split(" ");
-        recordedTextMsg = " "+recordedTextMsg+" "+answerText;
+        recordedTextMsg = " " + recordedTextMsg + " " + answerText;
         sendClikChanger(1);
         for (String word : splittedAnswer) {
             final SansTextViewBold myTextView = new SansTextViewBold(context);
@@ -564,12 +580,16 @@ private String topicName;
 
     @Override
     public void Stt_onResult(ArrayList<String> sttServerResult) {
-        if (!app_sec.equalsIgnoreCase(sec_Practice)) {
-            iv_monk.setVisibility(View.VISIBLE);
-            iv_monk.startAnimation(AnimationUtils.loadAnimation(context, R.anim.float_anim));
-            presenter.sttResultProcess(sttServerResult, answer);
-        } else {
-            setContinuousAnswer(sttServerResult.get(0));
+        try {
+            if (!app_sec.equalsIgnoreCase(sec_Practice)) {
+                iv_monk.setVisibility(View.VISIBLE);
+                iv_monk.startAnimation(AnimationUtils.loadAnimation(context, R.anim.float_anim));
+                presenter.sttResultProcess(sttServerResult, answer);
+            } else {
+                setContinuousAnswer(sttServerResult.get(0));
+            }
+        } catch (Resources.NotFoundException e) {
+            e.printStackTrace();
         }
     }
 
@@ -797,6 +817,11 @@ private String topicName;
             ratings = (float) 5;
 
         return ratings;
+    }
+
+    @Override
+    public void gameClose() {
+
     }
 
     /*

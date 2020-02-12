@@ -12,12 +12,13 @@ import android.widget.TextView;
 
 import com.pratham.foundation.R;
 import com.pratham.foundation.modalclasses.Message;
-import com.pratham.foundation.ui.contentPlayer.old_cos.conversation.ConversationActivity_;
 
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+
+import static com.pratham.foundation.ui.contentPlayer.chit_chat.level_2.ConversationFragment_2.playChat;
 
 
 public class MessageAdapter_2 extends RecyclerView.Adapter<MessageAdapter_2.ViewHolder> {
@@ -65,12 +66,7 @@ public class MessageAdapter_2 extends RecyclerView.Adapter<MessageAdapter_2.View
             ImageViewAnimatedChange(context, holder);
             lastPos=position;
         }
-        holder.mTextView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                ConversationActivity_.playChat(""+((Message)messageList.get(holder.getAdapterPosition())).getSenderAudio());
-            }
-        });
+        holder.mTextView.setOnClickListener(v -> playChat(""+((Message)messageList.get(holder.getAdapterPosition())).getSenderAudio()));
     }
 
     public void ImageViewAnimatedChange(Context c, final ViewHolder holder) {

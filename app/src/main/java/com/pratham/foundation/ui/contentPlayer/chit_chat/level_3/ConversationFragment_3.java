@@ -21,7 +21,6 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.google.gson.Gson;
 import com.pratham.foundation.ApplicationClass;
 import com.pratham.foundation.R;
 import com.pratham.foundation.customView.display_image_dialog.CustomLodingDialog;
@@ -31,7 +30,6 @@ import com.pratham.foundation.modalclasses.Message;
 import com.pratham.foundation.services.stt.ContinuousSpeechService_New;
 import com.pratham.foundation.services.stt.STT_Result_New;
 import com.pratham.foundation.ui.contentPlayer.GameConstatnts;
-import com.pratham.foundation.ui.contentPlayer.old_cos.conversation.MessageAdapter;
 import com.pratham.foundation.utility.FC_Constants;
 import com.pratham.foundation.utility.FC_Utility;
 import com.pratham.foundation.utility.MediaPlayerUtil;
@@ -176,6 +174,7 @@ public class ConversationFragment_3 extends Fragment
 
     @Click(R.id.rl_personB)
     public void onPersonB(){
+        btn_reading.performClick();
         person_B.setBackground(ContextCompat.getDrawable(context, R.drawable.convo_correct_bg));
         person_A.setBackground(ContextCompat.getDrawable(context, R.drawable.dialog_bg));
         user = userB;
@@ -184,6 +183,7 @@ public class ConversationFragment_3 extends Fragment
 
     @Click(R.id.rl_personA)
     public void onPersonA(){
+        btn_reading.performClick();
         person_B.setBackground(ContextCompat.getDrawable(context, R.drawable.dialog_bg));
         person_A.setBackground(ContextCompat.getDrawable(context, R.drawable.convo_correct_bg));
         user = userA;

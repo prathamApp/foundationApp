@@ -171,8 +171,8 @@ public class STTQuestionsPresenter implements ParaSttReadingContract.STTQuestion
             score.setScoredMarks(scoredMarks);
             score.setTotalMarks(totalMarks);
             score.setStudentID(FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""));
-            score.setStartDateTime(resStartTime);
-            score.setDeviceID(deviceId.equals(null) ? "0000" : deviceId);
+            score.setStartDateTime(resStartTime.equals("NA") ? ""+FC_Utility.getCurrentDateTime() : resStartTime);
+            score.setDeviceID(deviceId == null ? "0000" : deviceId);
             score.setEndDateTime(FC_Utility.getCurrentDateTime());
             score.setLevel(0);
             score.setLabel(Word + " - " + Label);

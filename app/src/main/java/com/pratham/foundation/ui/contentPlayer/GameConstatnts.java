@@ -5,7 +5,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
-import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.View;
@@ -224,6 +223,23 @@ public class GameConstatnts implements ShowInstruction {
         if (gameList != null && (currentGameAdapterposition < (gameList.size() - 1))) {
             //currentGameAdapterposition is initialized in adapter when game is played
             currentGameAdapterposition++;
+            contentTable1 = gameList.get(currentGameAdapterposition);
+            if (contentTable1 != null) {
+                gameSelector(context, contentTable1);
+            }
+        } else {
+            if (FC_Constants.isTest) {
+                ((ContentPlayerActivity) context).finish();
+            }
+            ((ContentPlayerActivity) context).getSupportFragmentManager().popBackStack(SequenceLayout_.class.getSimpleName(), 0);
+        }
+    }
+
+    public static void plaPrevGame(Context context) {
+        contentTable1 = null;
+        if (gameList != null && (currentGameAdapterposition > 0)) {
+            //currentGameAdapterposition is initialized in adapter when game is played
+            currentGameAdapterposition--;
             contentTable1 = gameList.get(currentGameAdapterposition);
             if (contentTable1 != null) {
                 gameSelector(context, contentTable1);

@@ -210,31 +210,31 @@ public class STTQuestionsFragment extends Fragment implements
         if (currentPage == 0) {
             lastPgFlag = false;
             btn_prev.setVisibility(View.GONE);
-            if (currentPage == totalPages - 1 ) {
+            if (currentPage == totalPages - 1) {
                 lastPgFlag = true;
-//            submit.setVisibility(View.VISIBLE);
+                submit.setVisibility(View.VISIBLE);
                 btn_prev.setVisibility(View.GONE);
-                btn_next.setVisibility(View.GONE);
+                btn_next.setVisibility(View.VISIBLE);
             }
-        }
-        else if (currentPage < totalPages - 1 && currentPage > 0) {
+        } else if (currentPage < totalPages - 1 && currentPage > 0) {
             lastPgFlag = false;
+            submit.setVisibility(View.GONE);
             btn_prev.setVisibility(View.VISIBLE);
             btn_next.setVisibility(View.VISIBLE);
         }
-        else{
-            if (currentPage == totalPages - 1 ) {
-                lastPgFlag = true;
-                btn_prev.setVisibility(View.VISIBLE);
-                btn_next.setVisibility(View.GONE);
-            }
-            if(totalPages - 1 == 0)
-                btn_prev.setVisibility(View.GONE);
+        if (currentPage == totalPages - 1) {
+            lastPgFlag = true;
+            submit.setVisibility(View.VISIBLE);
+            btn_prev.setVisibility(View.VISIBLE);
+            btn_next.setVisibility(View.VISIBLE);
         }
+        if (totalPages - 1 == 0)
+            btn_prev.setVisibility(View.GONE);
+
         pageTitle = paraSttQuestionList.get(currentPage).getQuesText();
         startTime = FC_Utility.getCurrentDateTime();
         story_title.setText(pageTitle);
-        showHint();
+//        showHint();
         dismissLoadingDialog();
     }
 
@@ -336,8 +336,12 @@ public class STTQuestionsFragment extends Fragment implements
         for(int i=0; i<totalPages; i++)
             presenter.addScore(0,""+sttAnswers[i],currentPage,totalPages,""+sttAnswersTime[i],"Stt_QA Submit");
 
-        super.onStop();
-    }
+        Intent intent = new Intent(getActivity(), PictionaryResult.class);
+        intent.putExtra("paraSttQuestionList", (Serializable) paraSttQuestionList);
+        intent.putExtra("resourceType", GameConstatnts.PARAQA);
+        startActivityForResult(intent, 111);
+//        super.onStop();
+        }
 
     @Click(R.id.btn_next)
     void gotoNextPage() {
@@ -360,18 +364,18 @@ public class STTQuestionsFragment extends Fragment implements
             presenter.getPage(currentPage);
             Log.d("click", "NextBtn - totalPages: " + totalPages + "  currentPage: " + currentPage);
         } else {
-//            GameConstatnts.playGameNext(getActivity(), true, this);
+            GameConstatnts.playGameNext(getActivity(), true, this);
         }
     }
 
     public void exitDBEntry() {
-        try {
-            for(int i=0; i<totalPages; i++) {
-                presenter.addScore(0, "" + sttAnswers[i], currentPage, totalPages, "" + sttAnswersTime[i], "Stt_QA Submit");
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+//        try {
+//            for(int i=0; i<totalPages; i++) {
+//                presenter.addScore(0, "" + sttAnswers[i], currentPage, totalPages, "" + sttAnswersTime[i], "Stt_QA Submit");
+//            }
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
         presenter.addScore(0, "", 0, 0, startTime, contentType + " End");
         presenter.addProgress(sttAnswers,sttAnswersTime);
     }
@@ -478,20 +482,19 @@ public class STTQuestionsFragment extends Fragment implements
     public void gameClose() {
         Log.d("gameClose", "gameClose: gameClose: ");
         exitDBEntry();
-        showCompareDialog();
-    }
-
-    private void showCompareDialog() {
-        Intent intent = new Intent(getActivity(), PictionaryResult.class);
-        intent.putExtra("paraSttQuestionList", (Serializable) paraSttQuestionList);
-        intent.putExtra("resourceType", GameConstatnts.PARAQA);
-        startActivityForResult(intent, 111);
     }
 
     @Override
     public void onStop() {
         EventBus.getDefault().unregister(this);
         super.onStop();
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(requestCode == 111 )
+            GameConstatnts.playGameNext(getActivity(), true, this);
     }
 
     @Override
