@@ -69,7 +69,7 @@ public class ConversationPresenter_1 implements ConversationContract_1.Conversat
         } catch (Exception e) {
             e.printStackTrace();
         }
-        conversationView_1.setConvoJson(returnStoryNavigate);
+        conversationView_1.setConvoJson(returnStoryNavigate,convoTitle);
     }
 
     boolean[] correctArr;

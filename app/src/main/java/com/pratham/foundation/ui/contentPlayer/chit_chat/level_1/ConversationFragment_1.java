@@ -108,7 +108,7 @@ public class ConversationFragment_1 extends Fragment
     // ContinuousSpeechService_New continuousSpeechService;
     boolean isUser = false;
     private String resStartTime;
-    String resId;
+    String resId,convoTitle;
 //    AnimationDrawable animationDrawable;
 Handler handler;
 
@@ -155,7 +155,6 @@ Handler handler;
 //            iv_ConvoMode.setImageResource(R.drawable.mode_c);
         btn_prev.setVisibility(View.GONE);
         btn_reload.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.ic_refresh));
-        tv_title.setText(contentName);
         presenter.fetchStory(convoPath);
     }
 
@@ -174,9 +173,12 @@ Handler handler;
 
     @UiThread
     @Override
-    public void setConvoJson(JSONArray returnStoryNavigate) {
+    public void setConvoJson(JSONArray returnStoryNavigate,String convoTitle) {
         conversation = returnStoryNavigate;
         if (conversation != null) {
+            if(convoTitle!=null){
+                tv_title.setText(convoTitle);
+            }
             if (handler == null) {
                 handler = new Handler();
             }
@@ -485,7 +487,7 @@ Handler handler;
         currentQueNos = 0;
         messageList.clear();
         readChatFlow.removeAllViews();
-        setConvoJson(conversation);
+        setConvoJson(conversation,convoTitle);
     }
 
     @Click(R.id.btn_play)
@@ -863,6 +865,8 @@ Handler handler;
 
     @Click(R.id.btn_next)
     public void nextGame() {
+        isPlaying = true;
+        paly_pause();
         GameConstatnts.playGameNext(context, GameConstatnts.TRUE, this);
     }
     @Override
