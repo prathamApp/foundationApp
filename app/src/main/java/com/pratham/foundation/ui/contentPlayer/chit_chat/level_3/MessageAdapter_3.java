@@ -66,12 +66,12 @@ public class MessageAdapter_3 extends RecyclerView.Adapter<MessageAdapter_3.View
             ImageViewAnimatedChange(context, holder);
             lastPos=position;
         }
-        holder.mTextView.setOnClickListener(new View.OnClickListener() {
+       /* holder.mTextView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 ConversationFragment_1.playChat(""+((Message)messageList.get(holder.getAdapterPosition())).getSenderAudio());
             }
-        });
+        });*/
     }
 
     public void ImageViewAnimatedChange(Context c, final ViewHolder holder) {

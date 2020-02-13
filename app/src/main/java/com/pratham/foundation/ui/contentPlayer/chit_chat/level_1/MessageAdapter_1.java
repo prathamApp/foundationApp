@@ -27,10 +27,11 @@ public class MessageAdapter_1 extends RecyclerView.Adapter<MessageAdapter_1.View
 
     public static final int SENDER = 0;
     public static final int RECEIVER = 1;
-
-    public MessageAdapter_1(List messages, Context context) {
+    ConversationFragment_1 conversationFragment_1;
+    public MessageAdapter_1(List messages, Context context,ConversationFragment_1 conversationFragment_1) {
         messageList = messages;
         this.context = context;
+        this.conversationFragment_1 = conversationFragment_1;
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
@@ -67,7 +68,7 @@ public class MessageAdapter_1 extends RecyclerView.Adapter<MessageAdapter_1.View
         holder.mTextView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ConversationFragment_1.playChat(""+((Message)messageList.get(holder.getAdapterPosition())).getSenderAudio());
+                conversationFragment_1.playChat(""+((Message)messageList.get(holder.getAdapterPosition())).getSenderAudio());
             }
         });
     }
