@@ -10,6 +10,7 @@ import android.os.Handler;
 import android.speech.RecognitionListener;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -61,11 +62,11 @@ public class ConversationFragment_1 extends Fragment
     RelativeLayout ll_convo_mainw;
     @ViewById(R.id.readChatFlow)
     FlowLayout readChatFlow;
-    @ViewById(R.id.btn_reading)
+    @ViewById(R.id.btn_play)
     ImageButton btn_reading;
     @ViewById(R.id.btn_imgsend)
     ImageButton btn_imgsend;
-    @ViewById(R.id.btn_reload)
+    @ViewById(R.id.btn_read_mic)
     ImageButton btn_reload;
     @ViewById(R.id.tv_title)
     TextView tv_title;
@@ -77,6 +78,10 @@ public class ConversationFragment_1 extends Fragment
     FloatingActionButton floating_back;
     @ViewById(R.id.floating_info)
     FloatingActionButton floating_info;
+    @ViewById(R.id.btn_prev)
+    ImageButton btn_prev;
+   /* @ViewById(R.id.btn_read_mic)
+    ImageButton btn_read_mic;*/
 
     @Bean(ConversationPresenter_1.class)
     ConversationContract_1.ConversationPresenter_1 presenter;
@@ -148,7 +153,8 @@ Handler handler;
 //            iv_ConvoMode.setImageResource(R.drawable.mode_b);
 //        if (convoMode.equals("C"))
 //            iv_ConvoMode.setImageResource(R.drawable.mode_c);
-
+        btn_prev.setVisibility(View.GONE);
+        btn_reload.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.ic_refresh));
         tv_title.setText(contentName);
         presenter.fetchStory(convoPath);
     }
@@ -467,7 +473,7 @@ Handler handler;
         super.onStop();
     }
 
-    @Click(R.id.btn_reload)
+    @Click(R.id.btn_read_mic)
     public void realod() {
         btn_reload.setVisibility(View.INVISIBLE);
         if (handler != null) {
@@ -482,7 +488,7 @@ Handler handler;
         setConvoJson(conversation);
     }
 
-    @Click(R.id.btn_reading)
+    @Click(R.id.btn_play)
     public void paly_pause() {
         if (isPlaying) {
             //pause audio
@@ -736,8 +742,6 @@ Handler handler;
                 //todo #
                 //setResult(Activity.RESULT_OK, returnIntent);
             }*/
-            GameConstatnts.playGameNext(context, GameConstatnts.TRUE, this);
-
            // closeConvo();
         });
     }
@@ -857,6 +861,10 @@ Handler handler;
         //finish();
     }
 
+    @Click(R.id.btn_next)
+    public void nextGame() {
+        GameConstatnts.playGameNext(context, GameConstatnts.TRUE, this);
+    }
     @Override
     public void gameClose() {
         presenter.addLearntWords(messageList);
