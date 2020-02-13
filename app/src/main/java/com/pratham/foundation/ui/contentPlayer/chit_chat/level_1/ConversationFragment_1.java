@@ -158,7 +158,11 @@ Handler handler;
         super.onStart();
         if (handler == null) {
             handler = new Handler();
-            new Handler().postDelayed(() -> displayNextQuestion(currentQueNos), (long) (800));
+        }
+        if (isUser) {
+            handler.postDelayed(() -> displayNextQuestion(currentQueNos), (long) (1000));
+        } else {
+            handler.postDelayed(() -> sendMessage(), (long) (1200));
         }
     }
 
@@ -177,7 +181,7 @@ Handler handler;
             final LinearLayoutManager linearLayoutManager = new LinearLayoutManager(context);
             linearLayoutManager.setStackFromEnd(true);
             recyclerView.setLayoutManager(linearLayoutManager);
-            mAdapter = new MessageAdapter_1(messageList, context);
+            mAdapter = new MessageAdapter_1(messageList, context, this);
             recyclerView.setAdapter(mAdapter);
             for (int i = 0; i < msgPercentage.length; i++)
                 msgPercentage[1] = 0;
@@ -416,9 +420,21 @@ Handler handler;
         }*/
     }
 
-    public static void playChat(String fileName) {
+    public void playChat(String fileName) {
         try {
-            mediaPlayerUtil.playMedia(convoPath + fileName);
+            if (fileName != null && !fileName.isEmpty()) {
+                mediaPlayerUtil.playMedia(convoPath + fileName);
+            } else {
+                if (handler != null) {
+                    if (isUser) {
+                        handler.postDelayed(() ->
+                                displayNextQuestion(currentQueNos), (long) (1000));
+                    } else {
+                        handler.postDelayed(() ->
+                                sendMessage(), (long) (1200));
+                    }
+                }
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -446,6 +462,7 @@ Handler handler;
             handler.removeCallbacksAndMessages(null);
             handler = null;
         }
+        mediaPlayerUtil.stopMedia();
         //handler = null;
         super.onStop();
     }
@@ -675,9 +692,11 @@ Handler handler;
         // btn_reading.performClick();
         if (handler != null) {
             if (isUser) {
-                handler.postDelayed(() -> displayNextQuestion(currentQueNos), (long) (1000));
+                handler.postDelayed(() ->
+                        displayNextQuestion(currentQueNos), (long) (1000));
             } else {
-                handler.postDelayed(() -> sendMessage(), (long) (1200));
+                handler.postDelayed(() ->
+                        sendMessage(), (long) (1200));
             }
         }
     }

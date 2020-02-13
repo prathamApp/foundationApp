@@ -305,6 +305,8 @@ public class ConversationFragment_3 extends Fragment
     @Override
     public void onStop() {
         Log.d(LOG_TAG, "stop");
+        voiceStart = false;
+        continuousSpeechService.stopSpeechInput();
         super.onStop();
     }
 
