@@ -14,7 +14,7 @@ import java.util.List;
 public interface ConversationContract_1 {
 
     interface ConversationView_1{
-        void setConvoJson(JSONArray returnStoryNavigate);
+        void setConvoJson(JSONArray returnStoryNavigate,String convoTitle);
         void setAnsCorrect(boolean[] ansCorrect);
 
         void sendClikChanger(int i);
