@@ -164,11 +164,11 @@ Handler handler;
         super.onStart();
         if (handler == null) {
             handler = new Handler();
-        }
-        if (isUser) {
-            handler.postDelayed(() -> displayNextQuestion(currentQueNos), (long) (1000));
-        } else {
-            handler.postDelayed(() -> sendMessage(), (long) (1200));
+            if (isUser) {
+                handler.postDelayed(() -> displayNextQuestion(currentQueNos), (long) (1000));
+            } else {
+                handler.postDelayed(() -> sendMessage(), (long) (1200));
+            }
         }
     }
 
@@ -870,6 +870,12 @@ Handler handler;
         presenter.addLearntWords(messageList);
        // presenter.setCompletionPercentage(conversation.length(), messageList.size());
         presenter.addScore(0, "", 0, 0, resStartTime, FC_Utility.getCurrentDateTime(), GameConstatnts.NEW_CHIT_CHAT_1 + " " + GameConstatnts.END, resId, true);
+        if (handler != null) {
+            handler.removeCallbacks(null);
+            handler.removeCallbacksAndMessages(null);
+            handler = null;
+        }
+        mediaPlayerUtil.stopMedia();
     }
 
 
