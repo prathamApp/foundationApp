@@ -1,5 +1,6 @@
 package com.pratham.foundation.ui.contentPlayer.keywords_mapping;
 
+import android.content.res.Resources;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
@@ -302,32 +303,36 @@ public class KeywordMappingFragment extends Fragment implements KeywordMappingCo
 
     @Click(R.id.showAnswer)
     public void showAnswer() {
-        if (showanswer) {
-            //hide answer
-           // showAnswer.setText("Hint");
-           showAnswer.setText(getResources().getString(R.string.hint));
-            showanswer = false;
-            keywordOptionAdapter.setClickable(true);
-            submitBtn.setVisibility(View.VISIBLE);
-            next.setVisibility(View.VISIBLE);
-            if (index == 0) {
-                previous.setVisibility(View.INVISIBLE);
-            } else {
-                previous.setVisibility(View.VISIBLE);
-            }
+        try {
+            if (showanswer) {
+                //hide answer
+               // showAnswer.setText("Hint");
+               showAnswer.setText(getResources().getString(R.string.hint));
+                showanswer = false;
+                keywordOptionAdapter.setClickable(true);
+                submitBtn.setVisibility(View.VISIBLE);
+                next.setVisibility(View.VISIBLE);
+                if (index == 0) {
+                    previous.setVisibility(View.INVISIBLE);
+                } else {
+                    previous.setVisibility(View.VISIBLE);
+                }
 
-        } else {
-            //show Answer
-            //showAnswer.setText("Hide Hint");
-            showAnswer.setText(getResources().getString(R.string.hide_hint));
-            showanswer = true;
-            keywordOptionAdapter.setClickable(false);
-            submitBtn.setVisibility(View.INVISIBLE);
-            next.setVisibility(View.INVISIBLE);
-            previous.setVisibility(View.INVISIBLE);
+            } else {
+                //show Answer
+                //showAnswer.setText("Hide Hint");
+                showAnswer.setText(getResources().getString(R.string.hide_hint));
+                showanswer = true;
+                keywordOptionAdapter.setClickable(false);
+                submitBtn.setVisibility(View.INVISIBLE);
+                next.setVisibility(View.INVISIBLE);
+                previous.setVisibility(View.INVISIBLE);
+            }
+            keywordOptionAdapter.setShowAnswer(showanswer);
+            keywordOptionAdapter.clearSelectedOptionList();
+            keywordOptionAdapter.notifyDataSetChanged();
+        } catch (Resources.NotFoundException e) {
+            e.printStackTrace();
         }
-        keywordOptionAdapter.setShowAnswer(showanswer);
-        keywordOptionAdapter.clearSelectedOptionList();
-        keywordOptionAdapter.notifyDataSetChanged();
     }
 }
