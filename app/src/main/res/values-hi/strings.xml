@@ -64,7 +64,8 @@
 
     <string name="fact_retrieval_click">जवाब देने के लिएअनुच्छेद से सही शब्द या वाक्य चुनिए|</string>
     <string name="factRetrieval">जवाब देने के लिए अनुच्छेद से सही शब्द या वाक्य चुनिए|</string>
-    <string name="IKWAndroid">दिए गए अनुच्छेद में वैज्ञानिक शब्दों को दिखाइए|</string>
+    <!--<string name="IKWAndroid">दिए गए अनुच्छेद में वैज्ञानिक शब्दों को दिखाइए|</string>-->
+    <string name="IKWAndroid">दिए गए अनुच्छेद में विषय से संबंधित शब्दों को चुनें।</string>
     <string name="CopyWriting">दिए गए शब्द और जानकारी को अपनी कॉपी में लिखिए और उसकी फोटो सबमिट कीजिए|</string>
     <string name="chKeywords">दिए गए शब्दों में से करीबी शब्द चुनिए|</string>
     <string name="ShowMeAndroid">सही विकल्प चुनें|</string>
