@@ -75,12 +75,14 @@ public class ConversationFragment_2 extends Fragment
     RelativeLayout ll_convo_mainw;
     @ViewById(R.id.readChatFlow)
     FlowLayout readChatFlow;
-    @ViewById(R.id.btn_reading)
-    ImageButton btn_reading;
+    @ViewById(R.id.btn_read_mic)
+    ImageButton btn_read_mic;
     @ViewById(R.id.btn_imgsend)
     ImageButton btn_imgsend;
-    @ViewById(R.id.btn_speaker)
-    ImageButton btn_speaker;
+    @ViewById(R.id.btn_play)
+    ImageButton btn_play;
+    @ViewById(R.id.btn_prev)
+    ImageButton btn_prev;
     @ViewById(R.id.tv_title)
     TextView tv_title;
     @ViewById(R.id.lin_layout)
@@ -105,7 +107,7 @@ public class ConversationFragment_2 extends Fragment
     public static String convoPath;
     MediaPlayer correctSound;
     int currentQueNos = 0, randomNumA, randomNumB, currentMsgNo = 0;
-    static boolean voiceStart = false;
+    static boolean voiceStart = false, audioFlg = false;
     public RecognitionListener listener;
     boolean[] correctArr;
     boolean myMsg, onSdCard;
@@ -133,7 +135,7 @@ public class ConversationFragment_2 extends Fragment
         correctSound = MediaPlayer.create(context, R.raw.correct_ans);
 
         presenter.setView(ConversationFragment_2.this);
-
+        audioFlg = false;
         sendClikChanger(0);
         mediaPlayerUtil = new MediaPlayerUtil(context);
         mediaPlayerUtil.initCallback(ConversationFragment_2.this);
@@ -165,7 +167,10 @@ public class ConversationFragment_2 extends Fragment
 //            iv_ConvoMode.setImageResource(R.drawable.mode_b);
 //        if (convoMode.equals("C"))
 //            iv_ConvoMode.setImageResource(R.drawable.mode_c);
+        btn_prev.setVisibility(View.GONE);
         tv_title.setText(contentName);
+        presenter.addExtraScoreEntry(0, "", 0, 0,
+                FC_Utility.getCurrentDateTime(), FC_Utility.getCurrentDateTime(), "Convo Start", contentId);
         presenter.fetchStory(convoPath);
     }
 
@@ -193,33 +198,24 @@ public class ConversationFragment_2 extends Fragment
     @Override
     public void sendClikChanger(int clickOn) {
         if (app_sec.equalsIgnoreCase(sec_Test)) {
-            btn_speaker.setVisibility(View.GONE);
-            btn_imgsend.setVisibility(View.VISIBLE);
+            btn_play.setBackgroundResource(R.drawable.convo_send_disable);
+            btn_play.setClickable(false);
             if (clickOn == 0) {
                 btn_imgsend.setClickable(false);
                 btn_imgsend.setBackgroundResource(R.drawable.convo_send_disable);
             } else {
                 btn_imgsend.setClickable(true);
-                btn_imgsend.setBackgroundResource(R.drawable.button_yellow);
-            }
-        } else if (app_sec.equalsIgnoreCase(sec_Practice)) {
-            btn_speaker.setVisibility(View.GONE);
-            btn_imgsend.setVisibility(View.VISIBLE);
-            if (clickOn == 0) {
-                btn_imgsend.setClickable(false);
-                btn_imgsend.setBackgroundResource(R.drawable.convo_send_disable);
-            } else {
-                btn_imgsend.setClickable(true);
-                btn_imgsend.setBackgroundResource(R.drawable.button_yellow);
+                btn_imgsend.setBackgroundResource(R.drawable.button_green);
             }
         } else {
+            btn_play.setBackgroundResource(R.drawable.button_green);
+            btn_play.setClickable(true);
             if (clickOn == 0) {
-                btn_imgsend.setVisibility(View.GONE);
-                btn_speaker.setVisibility(View.VISIBLE);
+                btn_imgsend.setClickable(false);
+                btn_imgsend.setBackgroundResource(R.drawable.convo_send_disable);
             } else {
-                btn_imgsend.setVisibility(View.VISIBLE);
                 btn_imgsend.setClickable(true);
-                btn_speaker.setVisibility(View.GONE);
+                btn_imgsend.setBackgroundResource(R.drawable.button_green);
             }
         }
     }
@@ -230,19 +226,34 @@ public class ConversationFragment_2 extends Fragment
         readChatFlow.removeAllViews();
     }
 
-    @Click(R.id.btn_reading)
+    @Click(R.id.btn_next)
+    public void nextPressed() {
+        try {
+            if(voiceStart)
+                btn_read_mic.performClick();
+            if (audioFlg) {
+                audioFlg = false;
+                mediaPlayerUtil.stopMedia();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        GameConstatnts.playGameNext(getActivity(), true, this);
+    }
+
+    @Click(R.id.btn_read_mic)
     public void startRecognition() {
         if (!voiceStart) {
             showLoader();
             // ButtonClickSound.start();
             voiceStart = true;
-            btn_reading.setImageResource(R.drawable.ic_stop_black);
-            btn_reading.setBackgroundResource(R.drawable.button_red);
+            btn_read_mic.setImageResource(R.drawable.ic_stop_black);
+            btn_read_mic.setBackgroundResource(R.drawable.button_red);
             continuousSpeechService.startSpeechInput();
         } else {
             voiceStart = false;
-            btn_reading.setImageResource(R.drawable.ic_mic_black);
-            btn_reading.setBackgroundResource(R.drawable.button_green);
+            btn_read_mic.setImageResource(R.drawable.ic_mic_black);
+            btn_read_mic.setBackgroundResource(R.drawable.button_green);
             continuousSpeechService.stopSpeechInput();
             //ButtonClickSound.start();
         }
@@ -252,7 +263,7 @@ public class ConversationFragment_2 extends Fragment
     public void sendMessage() {
         sendClikChanger(0);
         if (voiceStart)
-            btn_reading.performClick();
+            btn_read_mic.performClick();
         if (app_sec.equalsIgnoreCase(sec_Practice)) {
             presenter.addScore(0, "perc - NA", 0, 0, " Convo ");
             addItemInConvo(recordedTextMsg, "NA", true);
@@ -262,7 +273,7 @@ public class ConversationFragment_2 extends Fragment
             presenter.addScore(0, "perc - " + perc, correctAnswerCount, correctArr.length, " Convo ");
             addItemInConvo(answer, answerAudio, true);
         }
-        btn_reading.setImageResource(R.drawable.ic_mic_black);
+        btn_read_mic.setImageResource(R.drawable.ic_mic_black);
         ButtonClickSound.start();
         readChatFlow.removeAllViews();
 
@@ -372,7 +383,7 @@ public class ConversationFragment_2 extends Fragment
                 }*/
             } else {
                 btn_imgsend.setClickable(false);
-                btn_reading.setClickable(false);
+                btn_read_mic.setClickable(false);
                 readChatFlow.removeAllViews();
                 new Handler().postDelayed(() -> {
                     if (FC_Constants.isTest)
@@ -419,7 +430,7 @@ public class ConversationFragment_2 extends Fragment
             myTextView.setOnClickListener(v -> {
                 if (!FC_Constants.isTest) {
                     if (voiceStart)
-                        btn_reading.performClick();
+                        btn_read_mic.performClick();
                     playChat("" + answerAudio);
                 }
             });
@@ -438,7 +449,7 @@ public class ConversationFragment_2 extends Fragment
             myTextView.setText(word);
             myTextView.setOnClickListener(v -> {
                 if (voiceStart)
-                    btn_reading.performClick();
+                    btn_read_mic.performClick();
                 playChat("NA");
             });
             myTextView.setTextSize(25);
@@ -447,7 +458,7 @@ public class ConversationFragment_2 extends Fragment
         }
     }
 
-    @Click(R.id.btn_speaker)
+    @Click(R.id.btn_play)
     public void chatAnswer() {
         if (!FC_Constants.isTest) {
             if (voiceStart)
@@ -458,7 +469,10 @@ public class ConversationFragment_2 extends Fragment
 
     public static void playChat(String fileName) {
         try {
-            mediaPlayerUtil.playMedia(convoPath + fileName);
+            if (!audioFlg) {
+                audioFlg = true;
+                mediaPlayerUtil.playMedia(convoPath + fileName);
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -475,7 +489,7 @@ public class ConversationFragment_2 extends Fragment
         Log.d(LOG_TAG, "pause");
         super.onPause();
         if (voiceStart)
-            btn_reading.performClick();
+            btn_read_mic.performClick();
     }
 
     @Override
@@ -658,7 +672,8 @@ public class ConversationFragment_2 extends Fragment
     @Override
     public void onComplete() {
         try {
-            btn_reading.performClick();
+            audioFlg = false;
+            btn_read_mic.performClick();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -821,7 +836,11 @@ public class ConversationFragment_2 extends Fragment
 
     @Override
     public void gameClose() {
-
+        if(audioFlg)
+            mediaPlayerUtil.stopMedia();
+//        aaaaa
+        presenter.addScore(0, "", 0, 0, "Convo End");
+//        ConvoEndDialog();
     }
 
     /*
