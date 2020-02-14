@@ -134,7 +134,6 @@ public class KeywordMappingPresenterImp implements KeywordMappingContract.Keywor
                     if (selectedFive.size() >= 5) {
                         break;
                     }
-                    selectedFive.add(quetionModelList.get(i));
                 }
             }
             Collections.shuffle(selectedFive);

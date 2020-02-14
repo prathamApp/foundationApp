@@ -696,7 +696,7 @@ public class TestFragment extends Fragment implements TestContract.TestView,
             dia_btn_green.setOnClickListener(v -> {
                 dialog.dismiss();
             });
-        } catch (Resources.NotFoundException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
