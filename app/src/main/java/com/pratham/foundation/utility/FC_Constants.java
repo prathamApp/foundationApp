@@ -151,6 +151,7 @@ public class FC_Constants {
     public static final String ASSESSMENT_SESSION = "assessment_session";
     public static final String APP_SECTION = "APP_SECTION";
     public static final String CURRENT_FOLDER_NAME = "current_folder_name";
+    public static final String CERTI_CODE = "certi_code";
 
     public static final String sec_Learning = "Learning";
     public static final String sec_Practice = "Practice";

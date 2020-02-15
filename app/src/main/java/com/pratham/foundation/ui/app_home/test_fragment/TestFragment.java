@@ -73,6 +73,7 @@ import java.util.Objects;
 
 import static com.pratham.foundation.ui.app_home.HomeActivity.header_rl;
 import static com.pratham.foundation.utility.FC_Constants.APP_SECTION;
+import static com.pratham.foundation.utility.FC_Constants.CERTI_CODE;
 import static com.pratham.foundation.utility.FC_Constants.CLOSE_TEST_EVENTBUS;
 import static com.pratham.foundation.utility.FC_Constants.LEVEL_TEST_GIVEN;
 import static com.pratham.foundation.utility.FC_Constants.currentLevel;
@@ -104,7 +105,7 @@ public class TestFragment extends Fragment implements TestContract.TestView,
     private String downloadNodeId, resName, resServerImageName, downloadType, certi_Code = "";
     private int childPos = 0, parentPos = 0, resumeCntr = 0;
     public static String language = "Hindi";
-    String currLang="";
+    String currLang = "";
     Context context;
 
 
@@ -240,9 +241,8 @@ public class TestFragment extends Fragment implements TestContract.TestView,
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void messageReceived(EventMessage message) {
         if (message != null) {
-            if (message.getMessage().contains(LEVEL_TEST_GIVEN)) {
+            if (message.getMessage().contains(LEVEL_TEST_GIVEN))
                 addTestStarResult(message.getMessage());
-            }
             if (message.getMessage().contains(CLOSE_TEST_EVENTBUS)) {
                 eventBusFlg = false;
                 EventBus.getDefault().unregister(this);
@@ -293,24 +293,25 @@ public class TestFragment extends Fragment implements TestContract.TestView,
                 testList.get(clicked_Pos).setAsessmentGiven(true);
                 testList.get(clicked_Pos).setTotalMarks(tMarks);
                 testList.get(clicked_Pos).setScoredMarks(sMarks);
-                float perc =0f;
-                if(tMarks>0 && sMarks<=tMarks)
-                    perc = ((float) sMarks / (float) tMarks) * 100;
-                testList.get(clicked_Pos).setStudentPercentage("" + perc);
-                testList.get(clicked_Pos).setCertificateRating(presenter.getStarRating(perc));
-                testAdapter.notifyItemChanged(clicked_Pos, testList.get(clicked_Pos));
-            }else{
-                //TODO Remove After Testing.
-                testList.get(clicked_Pos).setAsessmentGiven(true);
-                testList.get(clicked_Pos).setTotalMarks(tMarks);
-                testList.get(clicked_Pos).setScoredMarks(sMarks);
-                float perc =0f;
-                if(tMarks>0 && sMarks<=tMarks)
+                float perc = 0f;
+                if (tMarks > 0 && sMarks <= tMarks)
                     perc = ((float) sMarks / (float) tMarks) * 100;
                 testList.get(clicked_Pos).setStudentPercentage("" + perc);
                 testList.get(clicked_Pos).setCertificateRating(presenter.getStarRating(perc));
                 testAdapter.notifyItemChanged(clicked_Pos, testList.get(clicked_Pos));
             }
+//            } else {
+//                //TODO Remove After Testing.
+//                testList.get(clicked_Pos).setAsessmentGiven(true);
+//                testList.get(clicked_Pos).setTotalMarks(tMarks);
+//                testList.get(clicked_Pos).setScoredMarks(sMarks);
+//                float perc = 0f;
+//                if (tMarks > 0 && sMarks <= tMarks)
+//                    perc = ((float) sMarks / (float) tMarks) * 100;
+//                testList.get(clicked_Pos).setStudentPercentage("" + perc);
+//                testList.get(clicked_Pos).setCertificateRating(presenter.getStarRating(perc));
+//                testAdapter.notifyItemChanged(clicked_Pos, testList.get(clicked_Pos));
+//            }
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -326,7 +327,9 @@ public class TestFragment extends Fragment implements TestContract.TestView,
             String jsonName = getLevelWiseJson();
             JSONArray testData = presenter.getTestData(jsonName);
             presenter.generateTestData(testData, rootLevelList.get(currentLevel).getNodeId());
-        }catch (Exception e){e.printStackTrace();}
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     public void onLevelChanged() {
@@ -418,8 +421,11 @@ public class TestFragment extends Fragment implements TestContract.TestView,
     public void testOpenData(ContentTable testData) {
         try {
             isTest = true;
-            FastSave.getInstance().saveString(APP_SECTION, ""+sec_Test);
+            FastSave.getInstance().saveString(APP_SECTION, "" + sec_Test);
+
             certi_Code = testData.getNodeDesc();
+            FastSave.getInstance().saveString(CERTI_CODE, "" + certi_Code);
+
             if (testData.getResourceType().toLowerCase()
                     .contains(FC_Constants.HTML_GAME_RESOURCE)) {
                 ContentTable testDataSplit = splitResouces(testData);
@@ -569,7 +575,7 @@ public class TestFragment extends Fragment implements TestContract.TestView,
                 startActivityForResult(mainNew, 1);
             } else {
                 Intent mainNew = new Intent(context, ContentPlayerActivity_.class);
-                mainNew.putExtra("testData",testData);
+                mainNew.putExtra("testData", testData);
                 mainNew.putExtra("testcall", "true");
                 startActivityForResult(mainNew, 1);
             }
@@ -626,13 +632,13 @@ public class TestFragment extends Fragment implements TestContract.TestView,
             int sMarks = data.getIntExtra("sMarks", 0);
             try {
                 if (cCode.equalsIgnoreCase(certi_Code)) {
-                    testList.get(clicked_Pos).setAsessmentGiven(true);
-                    testList.get(clicked_Pos).setTotalMarks(tMarks);
-                    testList.get(clicked_Pos).setScoredMarks(sMarks);
-                    float perc = ((float) sMarks / (float) tMarks) * 100;
-                    testList.get(clicked_Pos).setStudentPercentage("" + perc);
-                    testList.get(clicked_Pos).setCertificateRating(presenter.getStarRating(perc));
-                    testAdapter.notifyItemChanged(clicked_Pos, testList.get(clicked_Pos));
+                testList.get(clicked_Pos).setAsessmentGiven(true);
+                testList.get(clicked_Pos).setTotalMarks(tMarks);
+                testList.get(clicked_Pos).setScoredMarks(sMarks);
+                float perc = ((float) sMarks / (float) tMarks) * 100;
+                testList.get(clicked_Pos).setStudentPercentage("" + perc);
+                testList.get(clicked_Pos).setCertificateRating(presenter.getStarRating(perc));
+                testAdapter.notifyItemChanged(clicked_Pos, testList.get(clicked_Pos));
                 }
             } catch (Exception e) {
                 e.printStackTrace();
@@ -649,7 +655,8 @@ public class TestFragment extends Fragment implements TestContract.TestView,
             try {
                 if (!testList.get(i).getContentType().equalsIgnoreCase("header")) {
                     if (testList.get(i).isAsessmentGiven()) {
-                        jsonObjectAssessment.put("CertCode" + i + "_" + testList.get(i).getCertiCode(), "" + testList.get(i).getStudentPercentage());
+                        jsonObjectAssessment.put("CertCode" + i + "_" + testList.get(i).getCertiCode(),
+                                "" + testList.get(i).getStudentPercentage());
                     } else {
                         testGiven = false;
                         break;
@@ -760,7 +767,7 @@ public class TestFragment extends Fragment implements TestContract.TestView,
                 dialog.dismiss();
             });
         } catch (Exception e) {
-                e.printStackTrace();
+            e.printStackTrace();
         }
     }
 

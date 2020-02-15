@@ -49,6 +49,7 @@ import org.json.JSONArray;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Random;
 
 import static com.pratham.foundation.utility.FC_Constants.gameFolderPath;
@@ -487,14 +488,18 @@ public class ConversationActivity extends BaseActivity
 
     @UiThread
     public void showLoader() {
-        if (!dialogFlg) {
-            dialogFlg = true;
-            myLoadingDialog = new CustomLodingDialog(this);
-            myLoadingDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-            myLoadingDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-            myLoadingDialog.setContentView(R.layout.loading_dialog);
-            myLoadingDialog.setCanceledOnTouchOutside(false);
-            myLoadingDialog.show();
+        try {
+            if (!dialogFlg) {
+                dialogFlg = true;
+                myLoadingDialog = new CustomLodingDialog(this);
+                myLoadingDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+                Objects.requireNonNull(myLoadingDialog.getWindow()).setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+                myLoadingDialog.setContentView(R.layout.loading_dialog);
+                myLoadingDialog.setCanceledOnTouchOutside(false);
+                myLoadingDialog.show();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 
@@ -589,7 +594,11 @@ public class ConversationActivity extends BaseActivity
 
     @Override
     public void onComplete() {
-        btn_reading.performClick();
+        try {
+            btn_reading.performClick();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     @SuppressLint("SetTextI18n")

@@ -496,13 +496,13 @@ public class HomeActivity extends BaseActivity implements LevelChanged {
                 }
             }
         } else if (requestCode == 10) {
-            if (resultCode == Activity.RESULT_OK) {
+/*            if (resultCode == Activity.RESULT_OK) {
             } else if (resultCode == Activity.RESULT_CANCELED) {
                 try {
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
-            }
+            }*/
         }
     }
 
