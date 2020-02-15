@@ -28,7 +28,7 @@ import com.pratham.foundation.database.AppDatabase;
 import com.pratham.foundation.database.domain.ContentProgress;
 import com.pratham.foundation.database.domain.ContentTable;
 import com.pratham.foundation.services.shared_preferences.FastSave;
-import com.pratham.foundation.ui.home_screen_integrated.ContentHomeActivity;
+import com.pratham.foundation.ui.app_home.HomeActivity;
 import com.pratham.foundation.ui.student_profile.discription_adapter.DiscriptionAdapter;
 import com.pratham.foundation.utility.FC_Constants;
 import com.pratham.foundation.utility.FC_Utility;
@@ -74,7 +74,7 @@ public class Student_profile_activity extends Fragment implements Student_profil
         presenter.setView(Student_profile_activity.this);
         context = getActivity();
         displayStudentProfileNameAndImage();
-        ContentHomeActivity.languageChanged = false;
+        HomeActivity.languageChanged = false;
 //        ib_langChange.setVisibility(View.GONE);
         // student_profile_presenter.calculateStudentProgress();
         loadRecycler();
@@ -121,7 +121,7 @@ public class Student_profile_activity extends Fragment implements Student_profil
         });
 
         dia_btn_green.setOnClickListener(v -> {
-            ContentHomeActivity.languageChanged = true;
+            HomeActivity.languageChanged = true;
 //            setAppLocal(context, FastSave.getInstance().getString(FC_Constants.LANGUAGE, FC_Constants.HINDI));
             dialog.dismiss();
         });

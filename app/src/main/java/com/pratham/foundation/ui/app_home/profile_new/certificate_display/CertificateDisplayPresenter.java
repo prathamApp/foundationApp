@@ -13,8 +13,6 @@ import org.androidannotations.annotations.EBean;
 
 import java.util.List;
 
-import static com.pratham.foundation.utility.FC_Constants.GROUP_LOGIN;
-
 @EBean
 public class CertificateDisplayPresenter implements CertificateDisplayContract.CertificatePresenter, API_Content_Result {
 
@@ -33,13 +31,14 @@ public class CertificateDisplayPresenter implements CertificateDisplayContract.C
     @Background
     @Override
     public void showCertificates() {
-        List<Assessment> assessmentList;
-        if(GROUP_LOGIN)
-            assessmentList = AppDatabase.getDatabaseInstance(mContext).getAssessmentDao()
-                    .getCertificatesGroups(FC_Constants.currentGroup, FC_Constants.CERTIFICATE_LBL);
-        else
-            assessmentList = AppDatabase.getDatabaseInstance(mContext).getAssessmentDao()
-                    .getCertificates(FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""), FC_Constants.CERTIFICATE_LBL);
+//        if(FastSave.getInstance().getString(FC_Constants.LOGIN_MODE,"").equalsIgnoreCase(GROUP_MODE))
+//            assessmentList = AppDatabase.getDatabaseInstance(mContext).getAssessmentDao()
+//                    .getCertificatesGroups(FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""),
+//                            FC_Constants.CERTIFICATE_LBL);
+//        else
+        List<Assessment> assessmentList = AppDatabase.getDatabaseInstance(mContext).getAssessmentDao()
+                    .getCertificates(FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""),
+                            FC_Constants.CERTIFICATE_LBL);
 
         certificateView.addToAdapter(assessmentList);
     }

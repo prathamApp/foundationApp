@@ -39,7 +39,7 @@ public interface AssessmentDao {
     @Query("DELETE FROM Assessment")
     void deleteAllAssessment();
 
-    @Query("select * from Assessment WHERE StudentIDa=:stdID AND Labela=:COS_Lbl ORDER BY EndDateTimea DESC")
+    @Query("select * from Assessment WHERE StartDateTimea=:stdID AND Labela=:COS_Lbl ORDER BY EndDateTimea DESC")
     List<Assessment> getCertificates(String stdID, String COS_Lbl);
 
     @Query("select count(*) from Assessment WHERE StudentIDa=:stdID")

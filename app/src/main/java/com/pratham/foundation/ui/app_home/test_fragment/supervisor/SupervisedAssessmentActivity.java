@@ -68,7 +68,7 @@ public class SupervisedAssessmentActivity extends Activity implements TestStuden
     String imageName = "";
     boolean isPhotoSaved = false, attendenceFlg = false;
     String supervisorId = "";
-    String nodeId = "", testMode = "unsupervised";
+    String nodeId = "", testMode = "unsupervised", appLoginMode;
     private static final int CAMERA_REQUEST = 1888;
     TestStudentAdapter testStudentAdapter;
     List<Student> studentTableList;
@@ -88,15 +88,18 @@ public class SupervisedAssessmentActivity extends Activity implements TestStuden
         studentTableList = new ArrayList<>();
         setTitle("");
 
+        appLoginMode = FastSave.getInstance().getString(FC_Constants.LOGIN_MODE,
+                "");
+
         if (testMode.equalsIgnoreCase("unsupervised")) {
             if (isTablet) {
-                if (FastSave.getInstance().getString(FC_Constants.LOGIN_MODE, FC_Constants.GROUP_MODE).equalsIgnoreCase(GROUP_MODE)) {
+                if (appLoginMode.equalsIgnoreCase(GROUP_MODE)) {
                     attendence_layout.setVisibility(View.VISIBLE);
                     getStudents();
                 } else {
                     FastSave.getInstance().saveString(CURRENT_ASSESSMENT_STUDENT_ID,
                             FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""));
-                    submitSupervisorData();
+                    goToAssessment();
                 }
             } else {
                 FastSave.getInstance().saveString(CURRENT_ASSESSMENT_STUDENT_ID,
@@ -152,10 +155,11 @@ public class SupervisedAssessmentActivity extends Activity implements TestStuden
         if (isPhotoSaved) {
             if (sName.length() != 0) {
                 FC_Constants.supervisedAssessment = true;
-                if (FC_Constants.GROUP_LOGIN) {
+                if (appLoginMode.equalsIgnoreCase(GROUP_MODE)) {
                     getStudents();
                 }else {
-                    FastSave.getInstance().saveString(FC_Constants.CURRENT_ASSESSMENT_STUDENT_ID, FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""));
+                    FastSave.getInstance().saveString(FC_Constants.CURRENT_ASSESSMENT_STUDENT_ID,
+                            FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""));
                     submitSupervisorData();
                 }
             } else Toast.makeText(this, "Enter supervisor name", Toast.LENGTH_SHORT).show();
@@ -207,7 +211,7 @@ public class SupervisedAssessmentActivity extends Activity implements TestStuden
             @Override
             protected Object doInBackground(Object[] objects) {
                 try {
-                    if (isTablet && FastSave.getInstance().getString(FC_Constants.LOGIN_MODE, FC_Constants.GROUP_MODE).equalsIgnoreCase(GROUP_MODE)) {
+                    if (isTablet && appLoginMode.equalsIgnoreCase(GROUP_MODE)) {
                         studentList = AppDatabase.appDatabase.getStudentDao().getGroupwiseStudents(FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""));
                     } else {
                         studentList = AppDatabase.appDatabase.getStudentDao().getAllStudents();
