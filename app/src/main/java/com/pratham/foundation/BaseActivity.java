@@ -30,12 +30,9 @@ import com.pratham.foundation.database.AppDatabase;
 import com.pratham.foundation.database.BackupDatabase;
 import com.pratham.foundation.modalclasses.EventMessage;
 import com.pratham.foundation.services.TTSService;
-import com.pratham.foundation.utility.CatchoTransparentActivity;
 import com.pratham.foundation.utility.FC_Constants;
 import com.pratham.foundation.utility.FC_Utility;
 import com.pratham.foundation.utility.MediaPlayerUtil;
-
-import net.alhazmy13.catcho.library.Catcho;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -86,8 +83,8 @@ public class BaseActivity extends AppCompatActivity {
         correctSound = MediaPlayer.create(this, R.raw.correct_ans);
         muteFlg = false;
 
-        Catcho.Builder(this)
-                .activity(CatchoTransparentActivity.class).build();
+//        Catcho.Builder(this)
+//                .activity(CatchoTransparentActivity.class).build();
              //   .recipients("abc@domain.com").build();
     }
 

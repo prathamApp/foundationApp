@@ -1,6 +1,5 @@
 package com.pratham.foundation.ui.contentPlayer.keywords_mapping;
 
-import android.content.res.Resources;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
@@ -331,7 +330,7 @@ public class KeywordMappingFragment extends Fragment implements KeywordMappingCo
             keywordOptionAdapter.setShowAnswer(showanswer);
             keywordOptionAdapter.clearSelectedOptionList();
             keywordOptionAdapter.notifyDataSetChanged();
-        } catch (Resources.NotFoundException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
