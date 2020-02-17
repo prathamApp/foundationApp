@@ -480,6 +480,7 @@ public class HomeActivity extends BaseActivity implements LevelChanged {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+//        if(resultCode == 1)
         if (isTest) {
             if (resultCode == Activity.RESULT_OK) {
                 String cCode = data.getStringExtra("cCode");
