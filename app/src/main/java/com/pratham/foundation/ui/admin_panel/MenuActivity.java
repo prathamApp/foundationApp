@@ -11,10 +11,14 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.pratham.foundation.BaseActivity;
 import com.pratham.foundation.R;
 import com.pratham.foundation.customView.display_image_dialog.CustomLodingDialog;
+import com.pratham.foundation.database.AppDatabase;
+import com.pratham.foundation.database.domain.Groups;
+import com.pratham.foundation.database.domain.Student;
 import com.pratham.foundation.services.shared_preferences.FastSave;
 import com.pratham.foundation.ui.admin_panel.group_selection.SelectGroupActivity_;
 import com.pratham.foundation.ui.qr_scan.QRScanActivity_;
@@ -25,15 +29,18 @@ import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.ViewById;
 
+import java.util.ArrayList;
 import java.util.Objects;
 
+import static com.pratham.foundation.utility.FC_Constants.GROUP_MODE;
+import static com.pratham.foundation.utility.FC_Constants.INDIVIDUAL_MODE;
 import static com.pratham.foundation.utility.SplashSupportActivity.ButtonClickSound;
 
 
 @EActivity(R.layout.activity_menu)
 public class MenuActivity extends BaseActivity {
 
-//    @ViewById(R.id.mcv_qr)
+    //    @ViewById(R.id.mcv_qr)
 //    ImageButton btn_qr;
 //    @ViewById(R.id.mcv_group)
 //    ImageButton btn_grp;
@@ -123,26 +130,61 @@ public class MenuActivity extends BaseActivity {
     @Click(R.id.mcv_ind)
     public void gotoIndividualLogin() {
         ButtonClickSound.start();
-        FastSave.getInstance().saveString(FC_Constants.LOGIN_MODE, FC_Constants.INDIVIDUAL_MODE);
-        startActivity(new Intent(this, SelectGroupActivity_.class));
-        finish();
+        checkGroupAssigned(INDIVIDUAL_MODE);
 //        showLoginDialog("QRScan");
     }
 
     @Click(R.id.mcv_group)
     public void gotoGroupLogin() {
         ButtonClickSound.start();
-        FastSave.getInstance().saveString(FC_Constants.LOGIN_MODE, FC_Constants.GROUP_MODE);
-        startActivity(new Intent(this, SelectGroupActivity_.class));
-        finish();
+        checkGroupAssigned(GROUP_MODE);
 //        showLoginDialog("SelectGroup");
     }
 
+    public void checkGroupAssigned(String loginMode) {
+        ArrayList<Groups> groups = new ArrayList<>();
+
+//        Toast.makeText(getActivity(), "No groups assigned", Toast.LENGTH_SHORT).show();
+        ArrayList<String> allGroups = new ArrayList<>();
+        allGroups.add(AppDatabase.getDatabaseInstance(this).getStatusDao().getValue(FC_Constants.GROUPID1));
+        allGroups.add(AppDatabase.getDatabaseInstance(this).getStatusDao().getValue(FC_Constants.GROUPID2));
+        allGroups.add(AppDatabase.getDatabaseInstance(this).getStatusDao().getValue(FC_Constants.GROUPID3));
+        allGroups.add(AppDatabase.getDatabaseInstance(this).getStatusDao().getValue(FC_Constants.GROUPID4));
+        allGroups.add(AppDatabase.getDatabaseInstance(this).getStatusDao().getValue(FC_Constants.GROUPID5));
+
+        for (String grID : allGroups) {
+            // ArrayList<Student> students = (ArrayList<Student>) BaseActivity.studentDao.getGroupwiseStudents(grID);
+            ArrayList<Student> students = (ArrayList<Student>) AppDatabase.getDatabaseInstance(this).getStudentDao().getGroupwiseStudents(grID);
+            for (Student stu : students) {
+                if (stu.getAge() >= 7) {
+                    //Groups group = BaseActivity.groupDao.getGroupByGrpID(grID);
+                    Groups group = AppDatabase.getDatabaseInstance(this).getGroupsDao().getGroupByGrpID(grID);
+                    groups.add(group);
+                    break;
+                }
+            }
+        }
+        if (groups.size() > 0) {
+            if (loginMode.equalsIgnoreCase(INDIVIDUAL_MODE)) {
+                FastSave.getInstance().saveString(FC_Constants.LOGIN_MODE, INDIVIDUAL_MODE);
+                startActivity(new Intent(this, SelectGroupActivity_.class));
+                finish();
+            } else {
+                FastSave.getInstance().saveString(FC_Constants.LOGIN_MODE, GROUP_MODE);
+                startActivity(new Intent(this, SelectGroupActivity_.class));
+                finish();
+            }
+        } else {
+            Toast.makeText(this, "No groups assigned..", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+
     private void gotoNext(String nextActivity) {
-        if(nextActivity.equalsIgnoreCase("SelectGroup")) {
+        if (nextActivity.equalsIgnoreCase("SelectGroup")) {
             startActivity(new Intent(this, SelectGroupActivity_.class));
             finish();
-        }else {
+        } else {
             startActivity(new Intent(this, QRScanActivity_.class));
             finish();
         }
@@ -160,7 +202,7 @@ public class MenuActivity extends BaseActivity {
     }*/
 
     @Click(R.id.btn_back)
-    public void pressedBackButton(){
+    public void pressedBackButton() {
         showExitDialog();
     }
 
