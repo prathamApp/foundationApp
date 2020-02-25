@@ -272,6 +272,69 @@
     <string-array name="no_data">
         <item>Sorry ... No Data Available ...</item>
     </string-array>
+
+    <string name="pref_auto_filter" translatable="false">pref_auto_filter</string>
+    <string name="pref_log_level" translatable="false">pref_log_level</string>
+    <string name="pref_tag_filter" translatable="false">pref_tag_filter</string>
+    <string name="pref_tag_filter_set" translatable="false">pref_tag_filter_set</string>
+    <string name="pref_text_opacity" translatable="false">pref_text_opacity</string>
+    <string name="pref_bg_opacity" translatable="false">pref_bg_opacity</string>
+    <string name="pref_text_size" translatable="false">pref_text_size</string>
+    <string name="pref_info_open_source" translatable="false">pref_info_open_source</string>
+    <string name="pref_version" translatable="false">pref_version</string>
+    <string name="pref_root_fail_count" translatable="false">pref_root_fail_count</string>
+    <string name="permission_read_logs_description" translatable="false">Allows an application to read the logcat output for Ghost Log integrated apps. This allows it to discover general information about integrated apps that is being written to the log.</string>
+    <string name="permission_read_logs_label" translatable="false">read logcat output for Ghost Log integrated apps</string>
+    <string name="share_subject" translatable="false">Logcat Output</string>
+    <string name="canned_integration_log_line" translatable="false">I GhostLog: Running in Integration Mode</string>
+    <string name="notification_title_log" translatable="false">Log service is active</string>
+    <string name="play" translatable="false">Play</string>
+    <string name="pause" translatable="false">Pause</string>
+    <string name="share_share" translatable="false">Share</string>
+    <string name="log_level" translatable="false">Log Level</string>
+    <string name="tag_filter" translatable="false">Tag Filter</string>
+    <string name="no_filter" translatable="false">No Filter</string>
+    <string name="auto_filter" translatable="false">Auto Filter</string>
+    <string name="auto_filter_summary" translatable="false">Show foreground process only</string>
+    <string name="off" translatable="false">Off</string>
+    <string name="none" translatable="false">None</string>
+    <string name="add_tag_filter" translatable="false">Add Tag Filter</string>
+    <string name="new_tag_filter" translatable="false">New Tag Filter</string>
+    <string name="enter_log_tag" translatable="false">Enter log tag</string>
+    <string name="delete" translatable="false">Delete</string>
+    <string name="ok" translatable="false">OK</string>
+    <string name="cancel" translatable="false">Cancel</string>
+    <string name="_selected" translatable="false">" selected"</string>
+    <string name="information" translatable="false">Application Info</string>
+    <string name="open_source_licences" translatable="false">Open Source Licences</string>
+    <string name="about" translatable="false">About</string>
+    <string name="toast_no_root" translatable="false">Failed to obtain root access - integration mode only</string>
+    <string name="github" translatable="false">GitHub</string>
+    <string name="repo_url" translatable="false">https://github.com/jgilfelt/GhostLog</string>
+    <string name="no_root" translatable="false">No Root Access</string>
+    <string name="no_root_dialog" translatable="false">Ghost Log requires device root privileges to read system logs. It will run in integration mode on this device. Visit the GitHub project page to learn how to integrate your own apps.</string>
+    <string name="version" translatable="false">Version</string>
+    <string name="copyright" translatable="false">&#169; readyState Software Ltd</string>
+    <string name="by_author" translatable="false">by Pratham Education Foundation</string>
+    <string name="no_data_generated" >No data generated for this section.</string>
+
+    <string-array name="levels_values">
+        <item>V</item>
+        <item>D</item>
+        <item>I</item>
+        <item>W</item>
+        <item>E</item>
+        <item>A</item>
+    </string-array>
+    <string-array name="levels_entries">
+        <item>Verbose</item>
+        <item>Debug</item>
+        <item>Info</item>
+        <item>Warn</item>
+        <item>Error</item>
+        <item>Assert</item>
+    </string-array>
+
     <string-array name="dummy_data">
         <item>Sample Entry One</item>
         <item>Sample Entry Two</item>

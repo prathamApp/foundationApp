@@ -40,7 +40,10 @@ public class ImageQuesPresenter implements ImageQuesContract.ImageQuesPresenter 
             scoreList = AppDatabase.getDatabaseInstance(mContext).getScoreDao()
                     .getImageQues(StudId, "%"+FC_Constants.IMG_LBL+"%");
 
-        imageQuesView.addToAdapter(scoreList);
+        if(scoreList!=null && scoreList.size()>0)
+            imageQuesView.addToAdapter(scoreList);
+        else
+            imageQuesView.showNoData();
     }
 
     @Override

@@ -5,6 +5,8 @@ import android.content.res.Configuration;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.View;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -78,6 +80,14 @@ public class CertificateDisplayActivity extends BaseActivity implements
             certificateAdapter.notifyDataSetChanged();
     }
 
+    @ViewById(R.id.rl_no_data)
+    RelativeLayout rl_no_data;
+    @UiThread
+    @Override
+    public void showNoData() {
+        recycler_view.setVisibility(View.GONE);
+        rl_no_data.setVisibility(View.VISIBLE);
+    }
 
     @Background
     public void displayProfileImage() {

@@ -11,6 +11,8 @@ public interface ImageQuesContract {
 
     interface ImageQuesView {
         void addToAdapter(List<Score> scoreList);
+
+        void showNoData();
     }
 
     interface ImageQuesPresenter {

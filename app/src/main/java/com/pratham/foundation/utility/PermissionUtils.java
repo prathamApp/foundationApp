@@ -5,6 +5,7 @@ import android.Manifest;
 public class PermissionUtils {
 
     public static final String Manifest_BODY_SENSORS = Manifest.permission.BODY_SENSORS;
+    public static final String Manifest_READ_LOGS = Manifest.permission.READ_LOGS;
     public static final String WRITE_PERMISSION = "write_permission";
     public static final String Manifest_BLUETOOTH = Manifest.permission.BLUETOOTH;
     public static final String Manifest_BLUETOOTH_ADMIN = Manifest.permission.BLUETOOTH_ADMIN;

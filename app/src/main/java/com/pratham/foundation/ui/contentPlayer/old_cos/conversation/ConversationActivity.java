@@ -204,12 +204,20 @@ public class ConversationActivity extends BaseActivity
             voiceStart = true;
             btn_reading.setImageResource(R.drawable.ic_stop_black);
             btn_reading.setBackgroundResource(R.drawable.button_red);
-            continuousSpeechService.startSpeechInput();
+            try {
+                continuousSpeechService.startSpeechInput();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         } else {
             voiceStart = false;
             btn_reading.setImageResource(R.drawable.ic_mic_black);
             btn_reading.setBackgroundResource(R.drawable.button_green);
-            continuousSpeechService.stopSpeechInput();
+            try {
+                continuousSpeechService.stopSpeechInput();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
             //ButtonClickSound.start();
         }
     }
@@ -673,6 +681,11 @@ public class ConversationActivity extends BaseActivity
     public void onBackPressed() {
         if (voiceStart)
             btn_reading.performClick();
+        try {
+            mediaPlayerUtil.stopMedia();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         showExitDialog(this);
     }
 

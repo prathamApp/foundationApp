@@ -33,6 +33,7 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
+
     lintOptions {
         checkReleaseBuilds false
         // Or, if you prefer, you can continue to check for errors in release builds,
@@ -117,7 +118,6 @@ dependencies {
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:1.1.1"
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:1.0.1"
 
-
     //Level Wheel
     implementation 'github.hellocsl:CursorWheelLayout:1.1.0'
 
@@ -125,4 +125,9 @@ dependencies {
     implementation 'com.github.lawloretienne:discreteslider:0.0.9'
     implementation 'com.hanks:htextview-base:0.1.6'
     implementation 'com.hanks:htextview-typer:0.1.6'
+
+    //
+    //noinspection GradleDynamicVersion
+//    implementation  'com.readystatesoftware.ghostlog:ghostlog-integration:+@aar'
+
 }

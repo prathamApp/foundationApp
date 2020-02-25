@@ -3,30 +3,32 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/home_root_layout"
     android:layout_width="match_parent"
-    android:background="@drawable/science_bkgd"
     android:layout_height="match_parent"
+    android:background="@drawable/science_bkgd"
     android:orientation="vertical">
-<!--    android:background="#F9FCFE"-->
+    <!--    android:background="#F9FCFE"-->
 
     <RelativeLayout
         android:id="@+id/list_display"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
+
         <RelativeLayout
             android:id="@+id/header_rl"
             android:layout_width="match_parent"
             android:layout_height="@dimen/_80sdp">
+
             <ImageView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent" />
-    <!--        android:scaleType="centerCrop"-->
-    <!--        app:srcCompat="@drawable/science_bkgd"-->
+            <!--        android:scaleType="centerCrop"-->
+            <!--        app:srcCompat="@drawable/science_bkgd"-->
             <ImageView
                 android:id="@+id/main_back"
                 android:layout_width="@dimen/_30sdp"
                 android:layout_height="@dimen/_30sdp"
-                android:layout_marginTop="@dimen/_5sdp"
                 android:layout_marginStart="@dimen/_5sdp"
+                android:layout_marginTop="@dimen/_5sdp"
                 android:scaleType="center"
                 app:srcCompat="@drawable/ic_left_arrow_white" />
 
@@ -52,15 +54,16 @@
                     android:layout_height="match_parent"
                     android:layout_below="@+id/tv_Topic"
                     android:layout_toStartOf="@+id/level_shadow"
-                    android:visibility="gone"
-                    android:orientation="horizontal">
+                    android:orientation="horizontal"
+                    android:visibility="gone">
+
                     <com.pratham.foundation.customView.SansTextView
                         android:id="@+id/tv_Activity"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginEnd="@dimen/_10sdp"
-                        android:text="Topic"
                         android:gravity="center"
+                        android:text="Topic"
                         android:textColor="@color/oslo_grey"
                         android:textSize="@dimen/_18sdp" />
 
@@ -84,11 +87,41 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_below="@+id/header_rl"
-            android:gravity="center"
             android:layout_centerInParent="true"
             android:clipToPadding="false"
+            android:gravity="center"
             android:layoutAnimation="@anim/layout_fall_down"
             android:scrollbars="vertical" />
+
+        <RelativeLayout
+            android:id="@+id/rl_no_data"
+            android:visibility="gone"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@+id/header_rl"
+            android:layout_centerInParent="true">
+
+            <ImageView
+                android:id="@+id/nodata_img"
+                android:layout_width="@dimen/_250sdp"
+                android:layout_height="@dimen/_250sdp"
+                android:layout_alignParentTop="true"
+                android:layout_centerHorizontal="true"
+                android:src="@drawable/no_usage_data" />
+
+            <com.pratham.foundation.customView.SansTextViewBold
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/nodata_img"
+                android:textAlignment="center"
+                android:layout_marginStart="@dimen/_20sdp"
+                android:layout_marginEnd="@dimen/_20sdp"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:layout_marginBottom="@dimen/_10sdp"
+                android:textSize="@dimen/_15sdp"
+                android:textColor="@color/dark_blue"
+                android:text="@string/no_data_generated" />
+        </RelativeLayout>
     </RelativeLayout>
 
     <RelativeLayout
@@ -96,13 +129,14 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:visibility="gone">
+
         <android.support.v7.widget.RecyclerView
             android:id="@+id/chat_recycler_view"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:gravity="center"
             android:layout_centerInParent="true"
             android:clipToPadding="false"
+            android:gravity="center"
             android:layoutAnimation="@anim/layout_fall_down"
             android:scrollbars="vertical" />
     </RelativeLayout>

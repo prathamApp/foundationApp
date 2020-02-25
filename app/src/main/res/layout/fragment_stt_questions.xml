@@ -107,7 +107,7 @@
         android:id="@+id/myScrollView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_above="@+id/hint_btn"
+        android:layout_above="@+id/parent_hint"
         android:layout_below="@+id/tv_story_title"
         android:layout_marginStart="@dimen/_10sdp"
         android:layout_marginEnd="@dimen/_10sdp"
@@ -131,15 +131,21 @@
 
     </ScrollView>
 
-    <com.pratham.foundation.customView.SansButton
-        android:id="@+id/hint_btn"
+    <RelativeLayout
+        android:id="@+id/parent_hint"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_above="@+id/bottom_bar"
+        android:layout_centerHorizontal="true">
+    <com.pratham.foundation.customView.SansButton
+        android:id="@+id/hint_btn"
+        android:layout_width="150dp"
+        android:layout_height="80dp"
         android:layout_marginBottom="@dimen/_5sdp"
+        android:layout_toRightOf="@id/btn_speaker"
+        android:layout_marginStart="@dimen/_10sdp"
         android:background="@drawable/button_green"
         android:text="@string/hint"
-        android:layout_centerHorizontal="true"
         android:textColor="@color/white"
         android:textSize="@dimen/_10sdp"
         android:paddingTop="@dimen/_7sdp"
@@ -148,6 +154,20 @@
         android:paddingEnd="@dimen/_20sdp"
         android:elevation="@dimen/_3sdp"/>
 
+        <ImageButton
+            android:id="@+id/btn_speaker"
+            android:layout_width="150dp"
+            android:layout_height="80dp"
+            android:layout_marginBottom="@dimen/_5sdp"
+            android:background="@drawable/button_green"
+            android:elevation="@dimen/_3sdp"
+            android:paddingStart="@dimen/_20sdp"
+            android:paddingTop="@dimen/_7sdp"
+            android:paddingEnd="@dimen/_20sdp"
+            android:paddingBottom="@dimen/_7sdp"
+            android:scaleType="centerInside"
+            android:src="@drawable/ic_volume_up" />
+    </RelativeLayout>
     <include
         android:id="@+id/bottom_bar"
         layout="@layout/bottom_control_panel_v5"

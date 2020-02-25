@@ -11,6 +11,8 @@ public interface ChatQuesContract {
 
     interface ChatQuesView {
         void addToAdapter(List<Score> scoreList);
+
+        void showNoData();
     }
 
     interface ChatQuesPresenter {

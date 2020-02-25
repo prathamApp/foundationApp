@@ -40,7 +40,10 @@ public class CertificateDisplayPresenter implements CertificateDisplayContract.C
                     .getCertificates(FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""),
                             FC_Constants.CERTIFICATE_LBL);
 
-        certificateView.addToAdapter(assessmentList);
+        if(assessmentList!=null && assessmentList.size()>0)
+            certificateView.addToAdapter(assessmentList);
+        else
+            certificateView.showNoData();
     }
 
     @Override

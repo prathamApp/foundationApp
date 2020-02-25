@@ -675,9 +675,10 @@ public class TestFragment extends Fragment implements TestContract.TestView,
     }
 
     @SuppressLint("SetTextI18n")
-    private void showTestCompleteDialog() {
+    @UiThread
+    public void showTestCompleteDialog() {
         try {
-            CustomLodingDialog dialog = new CustomLodingDialog(Objects.requireNonNull(context)/*,R.style.ExitDialog*/);
+            CustomLodingDialog dialog = new CustomLodingDialog(context/*,R.style.ExitDialog*/);
             dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
             dialog.setContentView(R.layout.fc_custom_dialog);
 /*      Bitmap map=FC_Utility.takeScreenShot(context);

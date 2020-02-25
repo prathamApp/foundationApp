@@ -56,7 +56,9 @@ import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.ViewById;
 import org.greenrobot.eventbus.EventBus;
 
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.InputStreamReader;
 import java.util.Objects;
 
 import static com.pratham.foundation.utility.FC_Utility.setAppLocal;
@@ -106,6 +108,19 @@ public class SplashActivity extends SplashSupportActivity implements SplashContr
         context = SplashActivity.this;
         bgMusic = MediaPlayer.create(this, R.raw.bg_sound);
         bgMusic.setLooping(true);
+
+/*        Switch mainSwitch = new Switch(this);
+        mainSwitch.setChecked(LogService.isRunning());
+        mainSwitch.setOnCheckedChangeListener((compoundButton, b) -> {
+            Intent intent = new Intent(context, LogService.class);
+            if (b) {
+                if (!LogService.isRunning()) {
+                    startService(intent);
+                }
+            } else {
+                stopService(intent);
+            }
+        });*/
         /*Bundle b = getIntent().getExtras();
         if (b != null) {
             String myString = b.getString("KEY_DATA");
@@ -123,8 +138,8 @@ public class SplashActivity extends SplashSupportActivity implements SplashContr
                 PermissionUtils.Manifest_ACCESS_COARSE_LOCATION,
                 PermissionUtils.Manifest_ACCESS_FINE_LOCATION
         };
-        File sd = new File(Environment.getExternalStorageDirectory()+"/PrathamBackups");
-        if(!sd.exists())
+        File sd = new File(Environment.getExternalStorageDirectory() + "/PrathamBackups");
+        if (!sd.exists())
             sd.mkdir();
 
         new Handler().postDelayed(() -> {
@@ -264,6 +279,11 @@ public class SplashActivity extends SplashSupportActivity implements SplashContr
 
     @Override
     public void startApp() {
+//        context.startService(new Intent(context, LogService.class));
+//        context.startService(new Intent(context, IntegrationService.class));
+        getLogs();
+        Log.d("SplashLog", "\nStartApp Method: ");
+
         FastSave.getInstance().saveString(FC_Constants.LANGUAGE, FC_Constants.HINDI);
         setAppLocal(this, FC_Constants.HINDI);
         createDataBase();
@@ -273,6 +293,26 @@ public class SplashActivity extends SplashSupportActivity implements SplashContr
             setAppLocal(this, FastSave.getInstance().getString(FC_Constants.LANGUAGE, FC_Constants.HINDI));
             createDataBase();
         }*/
+    }
+
+    private void getLogs() {
+        Process logcat;
+//        Log.d("SplashLog", "In getLogs\n\n");
+        final StringBuilder log = new StringBuilder();
+        try {
+            logcat = Runtime.getRuntime().exec(new String[]{"logcat", "-d"});
+            BufferedReader br = new BufferedReader(new InputStreamReader(logcat.getInputStream()), 4 * 1024);
+            String line;
+            String separator = System.getProperty("line.separator");
+            while ((line = br.readLine()) != null) {
+                log.append(line);
+                log.append(separator);
+                Log.d("New Logs::::::", "\ngetLogs: "+line);
+            }
+            Log.d("New Logs::::::", "\n\n\n\n\n\nLogs:\n\n\n"+log);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     @SuppressLint("SetTextI18n")
@@ -308,9 +348,9 @@ public class SplashActivity extends SplashSupportActivity implements SplashContr
         });
 
         dia_btn_green.setOnClickListener(v -> {
-                FastSave.getInstance().saveBoolean(FC_Constants.LANGUAGE_SPLASH_DIALOG, true);
+            FastSave.getInstance().saveBoolean(FC_Constants.LANGUAGE_SPLASH_DIALOG, true);
 //                setAppLocal(this, FastSave.getInstance().getString(FC_Constants.LANGUAGE, FC_Constants.HINDI));
-                createDataBase();
+            createDataBase();
             dialog.dismiss();
         });
     }

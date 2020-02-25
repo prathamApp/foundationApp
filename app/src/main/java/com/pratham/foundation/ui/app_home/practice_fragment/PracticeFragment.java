@@ -328,8 +328,10 @@ public class PracticeFragment extends Fragment implements PracticeContract.Pract
     @Override
     public void dismissLoadingDialog() {
         if (myLoadingDialog != null) {
-            loaderVisible = false;
-            myLoadingDialog.dismiss();
+            if(loaderVisible && myLoadingDialog.isShowing()) {
+                loaderVisible = false;
+                myLoadingDialog.dismiss();
+            }
         }
     }
 

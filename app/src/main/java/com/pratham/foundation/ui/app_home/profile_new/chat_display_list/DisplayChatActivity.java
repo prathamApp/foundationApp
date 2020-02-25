@@ -94,6 +94,15 @@ public class DisplayChatActivity extends BaseActivity implements
             certificateAdapter.notifyDataSetChanged();
     }
 
+    @ViewById(R.id.rl_no_data)
+    RelativeLayout rl_no_data;
+    @UiThread
+    @Override
+    public void showNoData() {
+        recycler_view.setVisibility(View.GONE);
+        rl_no_data.setVisibility(View.VISIBLE);
+    }
+
 
     @Background
     public void displayProfileImage() {

@@ -10,7 +10,6 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-
 import com.pratham.foundation.R;
 import com.pratham.foundation.database.domain.Student;
 
@@ -54,12 +53,9 @@ public class ChildAdapter extends RecyclerView.Adapter<ChildAdapter.ChildHolder>
         else
             viewHolder.child_avatar.setImageResource(female_avatar.get(pos));
 
-        viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                    attendanceView.childItemClicked(datalist.get(viewHolder.getAdapterPosition()), viewHolder.getAdapterPosition());
-            }
-        });
+        viewHolder.itemView.setOnClickListener(v -> attendanceView.
+                childItemClicked(datalist.get(viewHolder.getAdapterPosition()),
+                        viewHolder.getAdapterPosition()));
         if (datalist.get(viewHolder.getAdapterPosition()).isChecked()) {
             viewHolder.itemView.setBackground(context.getResources().getDrawable(R.drawable.ripple_rectangle_transparent_dark));
             viewHolder.child_name.setTextColor(context.getResources().getColor(R.color.white));

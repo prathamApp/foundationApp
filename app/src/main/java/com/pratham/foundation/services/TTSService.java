@@ -14,6 +14,9 @@ import android.speech.tts.TextToSpeech;
 import android.speech.tts.UtteranceProgressListener;
 import android.util.Log;
 
+import com.pratham.foundation.services.shared_preferences.FastSave;
+import com.pratham.foundation.utility.FC_Constants;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
@@ -90,9 +93,7 @@ public class TTSService implements TextToSpeech.OnInitListener {
         public void onDone(String utteranceId) {
             if (detectAndRun(utteranceId, onDoneRunnables)) {
                 // because either onDone or onError will be called for an utteranceId, cleanup other
-                if (onErrorRunnables.containsKey(utteranceId)) {
-                    onErrorRunnables.remove(utteranceId);
-                }
+                onErrorRunnables.remove(utteranceId);
             }
         }
 
@@ -100,9 +101,7 @@ public class TTSService implements TextToSpeech.OnInitListener {
         public void onError(String utteranceId) {
             if (detectAndRun(utteranceId, onErrorRunnables)) {
                 // because either onDone or onError will be called for an utteranceId, cleanup other
-                if (onDoneRunnables.containsKey(utteranceId)) {
-                    onDoneRunnables.remove(utteranceId);
-                }
+                onDoneRunnables.remove(utteranceId);
             }
         }
     };
@@ -253,14 +252,21 @@ public class TTSService implements TextToSpeech.OnInitListener {
         if (muted) {
             return;
         }
+        String ttsLang,ttsCountry;
+        ttsCountry = "IN";
         Log.d(TAG, "Playing:  " + text + " ");
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            textToSpeech.setLanguage(new Locale("en", "IN"));
+        if (FastSave.getInstance().getString(FC_Constants.CURRENT_FOLDER_NAME, "").equalsIgnoreCase("English"))
+            ttsLang = "en";
+        else
+            ttsLang = "hi";
+
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            textToSpeech.setLanguage(new Locale(ttsLang , ttsCountry));
             textToSpeech.speak(text, queueMode, null, utteranceId);
         } else {
             final HashMap<String, String> params = new HashMap<>();
             params.put(TextToSpeech.Engine.KEY_PARAM_UTTERANCE_ID, utteranceId);
-            textToSpeech.setLanguage(new Locale("en", "IN"));
+            textToSpeech.setLanguage(new Locale(ttsLang , ttsCountry));
             textToSpeech.speak(text, queueMode, params);
         }
     }

@@ -40,7 +40,11 @@ public class ChatQuesPresenter implements ChatQuesContract.ChatQuesPresenter , A
             scoreList = AppDatabase.getDatabaseInstance(mContext).getScoreDao()
                     .getImageQues(StudId, "%"+FC_Constants.CHIT_CHAT_LBL+"%");
 
-        chatQuesView.addToAdapter(scoreList);
+        if(scoreList!=null && scoreList.size()>0)
+            chatQuesView.addToAdapter(scoreList);
+        else
+            chatQuesView.showNoData();
+
     }
 
     @Override

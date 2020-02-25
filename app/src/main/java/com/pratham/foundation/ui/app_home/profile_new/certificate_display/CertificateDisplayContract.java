@@ -13,6 +13,8 @@ public interface CertificateDisplayContract {
 
     interface CertificateView {
         void addToAdapter(List<Assessment> assessmentList);
+
+        void showNoData();
     }
 
     interface CertificatePresenter {

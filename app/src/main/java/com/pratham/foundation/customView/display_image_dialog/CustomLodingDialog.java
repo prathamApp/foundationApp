@@ -30,7 +30,7 @@ public class CustomLodingDialog extends Dialog {
 
         // Show the dialog with NavBar hidden.
         hideSystemUI();
-    super.show();
+        super.show();
 
         // Set the dialog to focusable again.
         getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE);
