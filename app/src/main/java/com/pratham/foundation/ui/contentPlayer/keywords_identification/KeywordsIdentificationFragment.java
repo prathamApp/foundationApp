@@ -26,8 +26,8 @@ import com.pratham.foundation.interfaces.OnGameClose;
 import com.pratham.foundation.modalclasses.EventMessage;
 import com.pratham.foundation.modalclasses.ScienceQuestion;
 import com.pratham.foundation.modalclasses.ScienceQuestionChoice;
+import com.pratham.foundation.services.shared_preferences.FastSave;
 import com.pratham.foundation.ui.contentPlayer.GameConstatnts;
-import com.pratham.foundation.utility.FC_Constants;
 import com.pratham.foundation.utility.FC_Utility;
 
 import org.androidannotations.annotations.AfterViews;
@@ -44,7 +44,9 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 
+import static com.pratham.foundation.utility.FC_Constants.APP_SECTION;
 import static com.pratham.foundation.utility.FC_Constants.gameFolderPath;
+import static com.pratham.foundation.utility.FC_Constants.sec_Test;
 
 @EFragment(R.layout.fragment_keywords_identification)
 public class KeywordsIdentificationFragment extends Fragment implements KeywordsIdentificationContract.KeywordsView, OnGameClose {
@@ -107,7 +109,7 @@ public class KeywordsIdentificationFragment extends Fragment implements Keywords
                 RelativeLayout.LayoutParams.WRAP_CONTENT,
                 RelativeLayout.LayoutParams.WRAP_CONTENT);
         lp.setMargins(10, 5, 10, 5);
-        if (FC_Constants.isTest) {
+        if (FastSave.getInstance().getString(APP_SECTION,"").equalsIgnoreCase(sec_Test)) {
             show_me_keywords.setVisibility(View.GONE);
         }
         presenter.getData();
@@ -120,7 +122,7 @@ public class KeywordsIdentificationFragment extends Fragment implements Keywords
     }
 
     /*public void showAnswer() {
-        if (!FC_Constants.isTest && !FC_Constants.isPractice) {
+        if (!FastSave.getInstance().getString(APP_SECTION,"").equalsIgnoreCase(sec_Test) && !FC_Constants.isPractice) {
             show_me_keywords.performClick();
         }
     }*/

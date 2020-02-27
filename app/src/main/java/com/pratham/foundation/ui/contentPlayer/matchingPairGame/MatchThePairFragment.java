@@ -157,7 +157,7 @@ public class MatchThePairFragment extends Fragment implements StartDragListener 
         }
 
     }
-      /*  } else if (COS_Constants.isTest) {
+      /*  } else if (FastSave.getInstance().getString(APP_SECTION,"").equalsIgnoreCase(sec_Test)) {
         if (draggedList.size() > 0) {
             for (int i = 0; i < draggedList.size(); i++) {
                 if (draggedList.get(i).getLangText().equalsIgnoreCase(englishList.get(i).getLangText()))

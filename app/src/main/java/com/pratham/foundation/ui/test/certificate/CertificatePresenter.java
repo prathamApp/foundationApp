@@ -29,6 +29,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import static com.pratham.foundation.ui.test.certificate.CertificateActivity.assessmentProfile;
+import static com.pratham.foundation.utility.FC_Constants.supervisedAssessment;
 import static com.pratham.foundation.utility.FC_Utility.getSubjectName;
 
 
@@ -320,7 +321,7 @@ public class CertificatePresenter implements CertificateContract.CertificatePres
 //                    else
 //                        assessment.setStartDateTimea("" + certiTitle);
                     assessment.setEndDateTime(FC_Utility.getCurrentDateTime());
-                    if (FC_Constants.supervisedAssessment)
+                    if (FastSave.getInstance().getBoolean(supervisedAssessment, false))
                         assessment.setDeviceIDa("" + FastSave.getInstance().getString(FC_Constants.CURRENT_SUPERVISOR_ID, ""));
                     else
                         assessment.setDeviceIDa("na");

@@ -140,7 +140,6 @@ public class SupervisedAssessmentActivity extends Activity implements TestStuden
         String sName = "" + supervisor_name.getText();
         if (isPhotoSaved) {
             if (sName.length() != 0) {
-                FC_Constants.supervisedAssessment = true;
                 AddSupervisorToDB(supervisorId, sName, imageName);
             }
         } else {
@@ -154,7 +153,6 @@ public class SupervisedAssessmentActivity extends Activity implements TestStuden
         String sName = "" + supervisor_name.getText();
         if (isPhotoSaved) {
             if (sName.length() != 0) {
-                FC_Constants.supervisedAssessment = true;
                 if (appLoginMode.equalsIgnoreCase(GROUP_MODE)) {
                     getStudents();
                 }else {

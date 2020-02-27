@@ -27,7 +27,10 @@ import java.util.List;
 import static com.pratham.foundation.database.AppDatabase.appDatabase;
 import static com.pratham.foundation.ui.contentPlayer.vocabulary_qa.ReadingVocabularyActivity.currentPageNo;
 import static com.pratham.foundation.ui.contentPlayer.vocabulary_qa.ReadingVocabularyActivity.testCorrectArr;
+import static com.pratham.foundation.utility.FC_Constants.APP_SECTION;
 import static com.pratham.foundation.utility.FC_Constants.STT_REGEX;
+import static com.pratham.foundation.utility.FC_Constants.sec_Practice;
+import static com.pratham.foundation.utility.FC_Constants.sec_Test;
 
 
 @EBean
@@ -110,7 +113,9 @@ public class ReadingVocabularyPresenter implements ReadingVocabularyContract.Rea
             modalSubVocabList = new ArrayList<>();
             float perc = getPercentage(learntWordCount, totalWordCount);
             for (int i = 0; i < modalMainVocabCatList.get(randomCategory).getDataList().size(); i++) {
-                if (perc < 99.5 || FC_Constants.isPractice || FC_Constants.isTest) {
+                if (perc < 99.5 ||
+                        FastSave.getInstance().getString(APP_SECTION,"").equalsIgnoreCase(sec_Practice)||
+                        FastSave.getInstance().getString(APP_SECTION,"").equalsIgnoreCase(sec_Test)) {
                     if (!checkWord("" + modalMainVocabCatList.get(randomCategory).getDataList().get(i).getQuestion1Text()))
                         modalSubVocabList.add(modalMainVocabCatList.get(randomCategory).getDataList().get(i));
                 } else
@@ -249,7 +254,7 @@ public class ReadingVocabularyPresenter implements ReadingVocabularyContract.Rea
         }
 
         try {
-            if ((perc > 50) && !FC_Constants.isTest) {
+            if ((perc > 50) && !FastSave.getInstance().getString(APP_SECTION,"").equalsIgnoreCase(sec_Test)) {
                 readingView.sendClikChanger(1);
                 readingView.setCorrectViewColor();
             }
@@ -341,7 +346,7 @@ public class ReadingVocabularyPresenter implements ReadingVocabularyContract.Rea
             score.setSentFlag(0);
             appDatabase.getScoreDao().insert(score);
 
-            if (FC_Constants.isTest) {
+            if (FastSave.getInstance().getString(APP_SECTION,"").equalsIgnoreCase(sec_Test)) {
                 Assessment assessment = new Assessment();
                 assessment.setResourceIDa(resId);
                 assessment.setSessionIDa(FastSave.getInstance().getString(FC_Constants.ASSESSMENT_SESSION, ""));

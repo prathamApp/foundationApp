@@ -92,7 +92,6 @@ public class PracticeFragment extends Fragment implements PracticeContract.Pract
 
     @AfterViews
     public void initialize() {
-        FC_Constants.isTest = false;
         rootList = new ArrayList<>();
         rootLevelList = new ArrayList<>();
         dwParentList = new ArrayList<>();
@@ -374,9 +373,7 @@ public class PracticeFragment extends Fragment implements PracticeContract.Pract
     @Override
     public void onContentClicked(ContentTable singleItem, String parentName) {
         ButtonClickSound.start();
-        FC_Constants.isPractice = true;
         FastSave.getInstance().saveString(APP_SECTION, ""+sec_Practice);
-        FC_Constants.isTest = false;
         if (singleItem.getNodeType().equalsIgnoreCase("category")) {
             Intent intent = new Intent(context, ContentDisplay_.class);
             intent.putExtra("nodeId", singleItem.getNodeId());
@@ -399,11 +396,8 @@ public class PracticeFragment extends Fragment implements PracticeContract.Pract
     @Override
     public void onContentOpenClicked(ContentTable contentList) {
         //Toast.makeText(this, "ContentOpen : Work In Progress", Toast.LENGTH_SHORT).show();
-        //todo remove#
         ButtonClickSound.start();
-        FC_Constants.isPractice = true;
         FastSave.getInstance().saveString(APP_SECTION, ""+sec_Practice);
-        FC_Constants.isTest = false;
         downloadNodeId = contentList.getNodeId();
         resName = contentList.getNodeTitle();
         if (contentList.getNodeType().equalsIgnoreCase("PreResource") ||
@@ -521,9 +515,7 @@ public class PracticeFragment extends Fragment implements PracticeContract.Pract
     @Override
     public void onContentDownloadClicked(ContentTable contentList, int parentPos, int childPos, String downloadType) {
         this.downloadType = downloadType;
-        FC_Constants.isPractice = true;
         FastSave.getInstance().saveString(APP_SECTION, ""+sec_Practice);
-        FC_Constants.isTest = false;
         downloadNodeId = contentList.getNodeId();
         ButtonClickSound.start();
 //        downloadNodeId = "" + 1371;
@@ -567,7 +559,7 @@ public class PracticeFragment extends Fragment implements PracticeContract.Pract
 
     @Override
     public void seeMore(String nodeId, String nodeTitle) {
-        FC_Constants.isTest = false;
+        FastSave.getInstance().saveString(APP_SECTION, sec_Practice);
         Intent intent = new Intent(context, ContentDisplay_.class);
         intent.putExtra("nodeId", nodeId);
         intent.putExtra("contentTitle", nodeTitle);

@@ -31,8 +31,8 @@ import com.pratham.foundation.customView.display_image_dialog.CustomLodingDialog
 import com.pratham.foundation.interfaces.MediaCallbacks;
 import com.pratham.foundation.interfaces.OnGameClose;
 import com.pratham.foundation.modalclasses.Message;
+import com.pratham.foundation.services.shared_preferences.FastSave;
 import com.pratham.foundation.ui.contentPlayer.GameConstatnts;
-import com.pratham.foundation.utility.FC_Constants;
 import com.pratham.foundation.utility.FC_Utility;
 import com.pratham.foundation.utility.MediaPlayerUtil;
 
@@ -49,8 +49,9 @@ import java.util.List;
 import java.util.Random;
 
 import static com.pratham.foundation.ApplicationClass.ButtonClickSound;
+import static com.pratham.foundation.utility.FC_Constants.APP_SECTION;
 import static com.pratham.foundation.utility.FC_Constants.gameFolderPath;
-
+import static com.pratham.foundation.utility.FC_Constants.sec_Test;
 
 
 @EFragment(R.layout.activity_conversation_1)
@@ -201,7 +202,7 @@ Handler handler;
     @UiThread
     @Override
     public void sendClikChanger(int clickOn) {
-        if (!FC_Constants.isTest) {
+        if (!FastSave.getInstance().getString(APP_SECTION,"").equalsIgnoreCase(sec_Test)) {
             if (clickOn == 0) {
                 btn_imgsend.setVisibility(View.GONE);
                 //btn_speaker.setVisibility(View.VISIBLE);
@@ -366,7 +367,7 @@ Handler handler;
                 btn_reading.setClickable(false);*/
                 readChatFlow.removeAllViews();
                 /*new Handler().postDelayed(() -> {
-                    if (FC_Constants.isTest)
+                    if (FastSave.getInstance().getString(APP_SECTION,"").equalsIgnoreCase(sec_Test))
                         //showStars(true);
                     else
                         ConvoEndDialog();
@@ -408,7 +409,7 @@ Handler handler;
             final SansTextViewBold myTextView = new SansTextViewBold(context);
             myTextView.setText(word);
             myTextView.setOnClickListener(v -> {
-                if (!FC_Constants.isTest) {
+                if (!FastSave.getInstance().getString(APP_SECTION,"").equalsIgnoreCase(sec_Test)) {
                     if (voiceStart)
                         //  btn_reading.performClick();
                     playChat("" + answerAudio);
@@ -422,7 +423,7 @@ Handler handler;
 
     @Click(R.id.btn_speaker)
     public void chatAnswer() {
-       /* if (!FC_Constants.isTest) {
+       /* if (!FastSave.getInstance().getString(APP_SECTION,"").equalsIgnoreCase(sec_Test)) {
             if (voiceStart)
                 startRecognition();
             new Handler().postDelayed(() -> playChat("" + answerAudio), 100);
@@ -734,7 +735,7 @@ Handler handler;
             //   float perc = getCompletionPercentage();
             //      presenter.addCompletion(perc);
             dialog.dismiss();
-       /*     if (FC_Constants.isTest) {
+       /*     if (FastSave.getInstance().getString(APP_SECTION,"").equalsIgnoreCase(sec_Test)) {
                 int pages = getCompletionPages();
                 int msgPercLength = msgPercentage.length;
 
@@ -742,7 +743,6 @@ Handler handler;
                 returnIntent.putExtra("cCode", certiCode);
                 returnIntent.putExtra("sMarks", pages);
                 returnIntent.putExtra("tMarks", msgPercLength);*//*
-                //todo #
                 //setResult(Activity.RESULT_OK, returnIntent);
             }*/
            // closeConvo();
@@ -772,13 +772,11 @@ Handler handler;
         }
         return tot;
     }*/
-    //todo #
   /*  @Click(R.id.floating_back)
     public void pressedBackBtn() {
         onBackPressed();
     }
 */
-    //todo #
    /* @Override
     public void onBackPressed() {
         if (voiceStart)
@@ -836,7 +834,6 @@ Handler handler;
             returnIntent.putExtra("cCode", certiCode);
             returnIntent.putExtra("sMarks", correctCnt);
             returnIntent.putExtra("tMarks", total);
-            //todo #
             //setResult(Activity.RESULT_OK, returnIntent);
             closeConvo();
         });
@@ -860,7 +857,6 @@ Handler handler;
 
     @UiThread
     public void closeConvo() {
-        //todo #
         //finish();
     }
 
@@ -912,7 +908,7 @@ Handler handler;
             float perc = getCompletionPercentage();
             presenter.addCompletion(perc);
             dialog.dismiss();
-            if (FC_Constants.isTest) {
+            if (FastSave.getInstance().getString(APP_SECTION,"").equalsIgnoreCase(sec_Test)) {
                 int pages = getCompletionPages();
                 int msgPercLength = 0;
                 try {
@@ -925,7 +921,6 @@ Handler handler;
                 returnIntent.putExtra("cCode", certiCode);
                 returnIntent.putExtra("sMarks", pages);
                 returnIntent.putExtra("tMarks", msgPercLength);
-                //todo #
                 //setResult(Activity.RESULT_OK, returnIntent);
             }
              closeConvo();

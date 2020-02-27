@@ -2,14 +2,12 @@ package com.pratham.foundation.ui.contentPlayer.chit_chat.level_1;
 
 import android.content.Context;
 
-import com.google.gson.Gson;
 import com.pratham.foundation.BaseActivity;
 import com.pratham.foundation.database.BackupDatabase;
 import com.pratham.foundation.database.domain.Assessment;
 import com.pratham.foundation.database.domain.ContentProgress;
 import com.pratham.foundation.database.domain.KeyWords;
 import com.pratham.foundation.database.domain.Score;
-import com.pratham.foundation.interfaces.OnGameClose;
 import com.pratham.foundation.modalclasses.Message;
 import com.pratham.foundation.services.shared_preferences.FastSave;
 import com.pratham.foundation.ui.contentPlayer.GameConstatnts;
@@ -27,6 +25,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static com.pratham.foundation.database.AppDatabase.appDatabase;
+import static com.pratham.foundation.utility.FC_Constants.APP_SECTION;
+import static com.pratham.foundation.utility.FC_Constants.sec_Test;
 
 
 @EBean
@@ -262,7 +262,7 @@ public class ConversationPresenter_1 implements ConversationContract_1.Conversat
             score.setSentFlag(0);
             appDatabase.getScoreDao().insert(score);
 
-            if (FC_Constants.isTest && addInAssessment) {
+            if (FastSave.getInstance().getString(APP_SECTION,"").equalsIgnoreCase(sec_Test) && addInAssessment) {
                 Assessment assessment = new Assessment();
                 assessment.setResourceIDa(resId);
                 assessment.setSessionIDa(FastSave.getInstance().getString(FC_Constants.ASSESSMENT_SESSION, ""));

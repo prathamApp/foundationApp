@@ -50,6 +50,7 @@ import static com.pratham.foundation.ui.app_home.HomeActivity.sub_nodeId;
 import static com.pratham.foundation.utility.FC_Constants.CURRENT_FOLDER_NAME;
 import static com.pratham.foundation.utility.FC_Constants.currentLevel;
 import static com.pratham.foundation.utility.FC_Constants.gameFolderPath;
+import static com.pratham.foundation.utility.FC_Constants.supervisedAssessment;
 import static com.pratham.foundation.utility.FC_Constants.testSessionEntered;
 
 @EBean
@@ -332,7 +333,7 @@ public class TestPresenter implements TestContract.TestPresenter, API_Content_Re
             assessment.setStudentIDa(FastSave.getInstance().getString(FC_Constants.CURRENT_ASSESSMENT_STUDENT_ID, ""));
             assessment.setStartDateTimea(""+FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""));
             assessment.setEndDateTime(FC_Utility.GetCurrentDateTime());
-            if (FC_Constants.supervisedAssessment)
+            if (FastSave.getInstance().getBoolean(supervisedAssessment, false))
                 assessment.setDeviceIDa("" + FastSave.getInstance().getString(FC_Constants.CURRENT_SUPERVISOR_ID, ""));
             else
                 assessment.setDeviceIDa("na");

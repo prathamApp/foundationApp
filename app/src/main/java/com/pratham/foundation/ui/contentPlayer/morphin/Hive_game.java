@@ -28,7 +28,6 @@ import com.pratham.foundation.modalclasses.EventMessage;
 import com.pratham.foundation.modalclasses.ScienceQuestion;
 import com.pratham.foundation.modalclasses.ScienceQuestionChoice;
 import com.pratham.foundation.ui.contentPlayer.GameConstatnts;
-import com.pratham.foundation.utility.FC_Constants;
 import com.pratham.foundation.utility.FC_Utility;
 import com.pratham.foundation.utility.MediaPlayerUtil;
 
@@ -140,7 +139,7 @@ public class Hive_game extends Fragment implements Hive_game_contract.Hive_game_
         presenter.getData(readingContentPath);
         resStartTime = FC_Utility.getCurrentDateTime();
         presenter.addScore(0, "", 0, 0, resStartTime, FC_Utility.getCurrentDateTime(), GameConstatnts.HIVELAYOUT_GAME + " " + GameConstatnts.START);
-        /*if (FC_Constants.isTest) {
+        /*if (FastSave.getInstance().getString(APP_SECTION,"").equalsIgnoreCase(sec_Test)) {
             show_answer.setVisibility(View.GONE);
         }*/
         // hiveList = questionModel.get(index).getLstquestionchoice();
@@ -186,7 +185,7 @@ public class Hive_game extends Fragment implements Hive_game_contract.Hive_game_
         afterViews();
         loadOptions();
         //UNCOMMENT to show answer in learning
-       /* if (!FC_Constants.isTest && !FC_Constants.isPractice) {
+       /* if (!FastSave.getInstance().getString(APP_SECTION,"").equalsIgnoreCase(sec_Test) && !FC_Constants.isPractice) {
             showAnswer.performClick();
         }*/
     }

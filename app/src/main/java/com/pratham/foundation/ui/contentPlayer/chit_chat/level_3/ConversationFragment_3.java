@@ -27,6 +27,7 @@ import com.pratham.foundation.customView.display_image_dialog.CustomLodingDialog
 import com.pratham.foundation.interfaces.MediaCallbacks;
 import com.pratham.foundation.interfaces.OnGameClose;
 import com.pratham.foundation.modalclasses.Message;
+import com.pratham.foundation.services.shared_preferences.FastSave;
 import com.pratham.foundation.services.stt.ContinuousSpeechService_New;
 import com.pratham.foundation.services.stt.STT_Result_New;
 import com.pratham.foundation.ui.contentPlayer.GameConstatnts;
@@ -45,8 +46,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static com.pratham.foundation.ApplicationClass.ButtonClickSound;
+import static com.pratham.foundation.utility.FC_Constants.APP_SECTION;
 import static com.pratham.foundation.utility.FC_Constants.gameFolderPath;
-
+import static com.pratham.foundation.utility.FC_Constants.sec_Test;
 
 
 @EFragment(R.layout.chitchat_level_3)
@@ -222,7 +224,7 @@ public class ConversationFragment_3 extends Fragment
     @UiThread
     @Override
     public void sendClikChanger(int clickOn) {
-        if (!FC_Constants.isTest) {
+        if (!FastSave.getInstance().getString(APP_SECTION,"").equalsIgnoreCase(sec_Test)) {
 
         } else {
             btn_imgsend.setVisibility(View.VISIBLE);
@@ -363,9 +365,7 @@ public class ConversationFragment_3 extends Fragment
     }
     @UiThread
     public void closeConvo() {
-        //todo #
         //finish();
-
     }
 
     @Click(R.id.btn_submit)

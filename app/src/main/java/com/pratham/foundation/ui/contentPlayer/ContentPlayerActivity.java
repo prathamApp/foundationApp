@@ -22,6 +22,7 @@ import com.pratham.foundation.interfaces.OnGameClose;
 import com.pratham.foundation.interfaces.ShowInstruction;
 import com.pratham.foundation.modalclasses.EventMessage;
 import com.pratham.foundation.modalclasses.ScoreEvent;
+import com.pratham.foundation.services.shared_preferences.FastSave;
 import com.pratham.foundation.ui.contentPlayer.sequenceLayout.SequenceLayout_;
 import com.pratham.foundation.utility.FC_Constants;
 import com.pratham.foundation.utility.FC_Utility;
@@ -35,7 +36,9 @@ import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
+import static com.pratham.foundation.utility.FC_Constants.APP_SECTION;
 import static com.pratham.foundation.utility.FC_Constants.INFO_CLICKED;
+import static com.pratham.foundation.utility.FC_Constants.sec_Test;
 
 @EActivity(R.layout.activity_content_player)
 public class ContentPlayerActivity extends BaseActivity implements ShowInstruction {
@@ -64,7 +67,7 @@ public class ContentPlayerActivity extends BaseActivity implements ShowInstructi
             // GameConstatnts.currentGameAdapterposition=myViewHolder.getAdapterPosition();
             GameConstatnts.playInsequence = false;
             GameConstatnts.gameSelector(this, testData);
-            if (FC_Constants.isTest) {
+            if (FastSave.getInstance().getString(APP_SECTION,"").equalsIgnoreCase(sec_Test)) {
                 returnIntent = new Intent();
                 returnIntent.putExtra("cCode", cCode);
                 returnIntent.putExtra("tMarks", 0);
@@ -121,7 +124,7 @@ public class ContentPlayerActivity extends BaseActivity implements ShowInstructi
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void scoreEventReceived(ScoreEvent scoreEvent) {
         if (scoreEvent != null) {
-            if (FC_Constants.isTest) {
+            if (FastSave.getInstance().getString(APP_SECTION,"").equalsIgnoreCase(sec_Test)) {
                 if (scoreEvent.getMessage().equalsIgnoreCase(FC_Constants.RETURNSCORE)) {
                     returnIntent.putExtra("tMarks", scoreEvent.getTotalCount());
                     returnIntent.putExtra("sMarks", scoreEvent.getScoredMarks());
@@ -170,7 +173,7 @@ public class ContentPlayerActivity extends BaseActivity implements ShowInstructi
                     ((OnGameClose) f).gameClose();
                 }
                 //if game opened from test
-                if (FC_Constants.isTest) {
+                if (FastSave.getInstance().getString(APP_SECTION,"").equalsIgnoreCase(sec_Test)) {
                     if (f.getActivity() instanceof ContentPlayerActivity) {
                         finish();
                     } else {

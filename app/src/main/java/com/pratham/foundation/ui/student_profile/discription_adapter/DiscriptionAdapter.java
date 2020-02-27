@@ -292,7 +292,6 @@ public class DiscriptionAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
     }
 
     private void gotoCertificate(Assessment assessment) {
-        //todo remove#
        /* Intent intent = new Intent(context, CertificateActivity.class);
         intent.putExtra("nodeId", "na");
         intent.putExtra("CertiTitle", "" + assessment.getLevela());

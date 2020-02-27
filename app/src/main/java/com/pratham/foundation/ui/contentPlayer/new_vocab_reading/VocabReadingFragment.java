@@ -63,10 +63,11 @@ import java.util.List;
 
 import static com.pratham.foundation.ApplicationClass.ButtonClickSound;
 import static com.pratham.foundation.BaseActivity.setMute;
+import static com.pratham.foundation.utility.FC_Constants.APP_SECTION;
 import static com.pratham.foundation.utility.FC_Constants.STT_REGEX;
 import static com.pratham.foundation.utility.FC_Constants.dialog_btn_cancel;
 import static com.pratham.foundation.utility.FC_Constants.gameFolderPath;
-
+import static com.pratham.foundation.utility.FC_Constants.sec_Test;
 
 
 @EFragment(R.layout.fragment_story_reading)
@@ -347,7 +348,7 @@ public class VocabReadingFragment extends Fragment implements
         }
 
         new Handler().postDelayed(() -> {
-            if (!FC_Constants.isTest)
+            if (!FastSave.getInstance().getString(APP_SECTION,"").equalsIgnoreCase(sec_Test))
                 btn_Play.performClick();
             else {
                 btn_Mic.performClick();
@@ -369,7 +370,7 @@ public class VocabReadingFragment extends Fragment implements
         new Handler().postDelayed(() -> {
             //setMute(0);
             if (lastPgFlag) {
-                if (FC_Constants.isTest)
+                if (FastSave.getInstance().getString(APP_SECTION,"").equalsIgnoreCase(sec_Test))
                     showStars(true);
                 else
                     showAcknowledgeDialog(true);
@@ -422,7 +423,7 @@ public class VocabReadingFragment extends Fragment implements
 
     private void playClickedWord(int id) {
         try {
-            if (!FC_Constants.isTest && !clickFlag) {
+            if (!FastSave.getInstance().getString(APP_SECTION,"").equalsIgnoreCase(sec_Test) && !clickFlag) {
                 clickFlag = true;
                 Log.d("ReadingPara", "wordCounter : " + wordCounter);
                 float end = Float.parseFloat(modalPagesList.get(currentPage).getReadList().get(id).getWordDuration());
@@ -561,7 +562,7 @@ public class VocabReadingFragment extends Fragment implements
         if (voiceStart) {
             voiceStart = false;
             btn_Stop.setVisibility(View.GONE);
-            if (!FC_Constants.isTest && !playHideFlg)
+            if (!FastSave.getInstance().getString(APP_SECTION,"").equalsIgnoreCase(sec_Test) && !playHideFlg)
                 btn_Play.setVisibility(View.VISIBLE);
             btn_Mic.setVisibility(View.VISIBLE);
             continuousSpeechService.stopSpeechInput();
@@ -624,7 +625,7 @@ public class VocabReadingFragment extends Fragment implements
         continuousSpeechService.startSpeechInput();
 //        } else {
 //            voiceStart = false;
-//            if (!FC_Constants.isTest && !playHideFlg)
+//            if (!FastSave.getInstance().getString(APP_SECTION,"").equalsIgnoreCase(sec_Test) && !playHideFlg)
 //                btn_Play.setVisibility(View.VISIBLE);
 //            btn_Mic.setImageResource(R.drawable.ic_mic_black);
 ////            layout_mic_ripple.startRippleAnimation();
@@ -791,7 +792,7 @@ public class VocabReadingFragment extends Fragment implements
 
             if (voiceStart) {
                 voiceStart = false;
-                if (!FC_Constants.isTest && !playHideFlg)
+                if (!FastSave.getInstance().getString(APP_SECTION,"").equalsIgnoreCase(sec_Test) && !playHideFlg)
                     btn_Play.setVisibility(View.VISIBLE);
                 btn_Mic.setImageResource(R.drawable.ic_mic_black);
                 continuousSpeechService.stopSpeechInput();
@@ -868,7 +869,7 @@ public class VocabReadingFragment extends Fragment implements
             }
             if (voiceStart) {
                 voiceStart = false;
-                if (!FC_Constants.isTest && !playHideFlg)
+                if (!FastSave.getInstance().getString(APP_SECTION,"").equalsIgnoreCase(sec_Test) && !playHideFlg)
                     btn_Play.setVisibility(View.VISIBLE);
                 btn_Mic.setImageResource(R.drawable.ic_mic_black);
                 continuousSpeechService.stopSpeechInput();
@@ -931,7 +932,7 @@ public class VocabReadingFragment extends Fragment implements
         dia_btn_yellow.setOnClickListener(v -> dialog.dismiss());
         dia_btn_green.setOnClickListener(v -> {
             dialog.dismiss();
-            if (FC_Constants.isTest) {
+            if (FastSave.getInstance().getString(APP_SECTION,"").equalsIgnoreCase(sec_Test)) {
                 float correctCnt = getPercentage();
                 Intent returnIntent = new Intent();
                 returnIntent.putExtra("cCode", certiCode);
@@ -1001,7 +1002,7 @@ public class VocabReadingFragment extends Fragment implements
         if (voiceStart) {
             btn_Mic.performClick();
             voiceStart = false;
-            if (!FC_Constants.isTest)
+            if (!FastSave.getInstance().getString(APP_SECTION,"").equalsIgnoreCase(sec_Test))
                 ll_btn_play.setVisibility(View.VISIBLE);
             setMute(0);
         }
@@ -1111,7 +1112,7 @@ public class VocabReadingFragment extends Fragment implements
         if (voiceStart) {
             btn_Mic.performClick();
             voiceStart = false;
-            if (!FC_Constants.isTest && !playHideFlg)
+            if (!FastSave.getInstance().getString(APP_SECTION,"").equalsIgnoreCase(sec_Test) && !playHideFlg)
                 btn_Play.setVisibility(View.VISIBLE);
             setMute(0);
         }
@@ -1233,7 +1234,7 @@ public class VocabReadingFragment extends Fragment implements
 
     @Override
     public void gameClose() {
-        if (FC_Constants.isTest) {
+        if (FastSave.getInstance().getString(APP_SECTION,"").equalsIgnoreCase(sec_Test)) {
             float correctCnt = getPercentage();
             Intent returnIntent = new Intent();
             returnIntent.putExtra("cCode", certiCode);

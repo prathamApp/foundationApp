@@ -59,6 +59,9 @@ import org.greenrobot.eventbus.EventBus;
 
 import java.util.List;
 
+import static com.pratham.foundation.utility.FC_Constants.APP_SECTION;
+import static com.pratham.foundation.utility.FC_Constants.sec_Test;
+
 public class GameConstatnts implements ShowInstruction {
     public static final String KEYWORD_IDENTIFICATION = "IKWAndroid";
     public static final String KEYWORD_MAPPING = "chKeywords";
@@ -185,7 +188,7 @@ public class GameConstatnts implements ShowInstruction {
                 dialog.dismiss();
                 onGameClose.gameClose();
 
-                if (FC_Constants.isTest) {
+                if (FastSave.getInstance().getString(APP_SECTION,"").equalsIgnoreCase(sec_Test)) {
                     ((ContentPlayerActivity) context).finish();
                 }
                 if (playInsequence) {
@@ -202,7 +205,7 @@ public class GameConstatnts implements ShowInstruction {
             public void onClick(View v) {
                 //Exit game
                 onGameClose.gameClose();
-                if (FC_Constants.isTest) {
+                if (FastSave.getInstance().getString(APP_SECTION,"").equalsIgnoreCase(sec_Test)) {
                     ((ContentPlayerActivity) context).finish();
                 }
                 ((ContentPlayerActivity) context).getSupportFragmentManager().popBackStack(SequenceLayout_.class.getSimpleName(), 0);
@@ -228,7 +231,7 @@ public class GameConstatnts implements ShowInstruction {
                 gameSelector(context, contentTable1);
             }
         } else {
-            if (FC_Constants.isTest) {
+            if (FastSave.getInstance().getString(APP_SECTION,"").equalsIgnoreCase(sec_Test)) {
                 ((ContentPlayerActivity) context).finish();
             }
             ((ContentPlayerActivity) context).getSupportFragmentManager().popBackStack(SequenceLayout_.class.getSimpleName(), 0);
@@ -245,7 +248,7 @@ public class GameConstatnts implements ShowInstruction {
                 gameSelector(context, contentTable1);
             }
         } else {
-            if (FC_Constants.isTest) {
+            if (FastSave.getInstance().getString(APP_SECTION,"").equalsIgnoreCase(sec_Test)) {
                 ((ContentPlayerActivity) context).finish();
             }
             ((ContentPlayerActivity) context).getSupportFragmentManager().popBackStack(SequenceLayout_.class.getSimpleName(), 0);

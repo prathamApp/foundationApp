@@ -1,6 +1,5 @@
 package com.pratham.foundation.ui.contentPlayer.trueFalse;
 
-import android.app.Dialog;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -52,7 +51,9 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 import static com.pratham.foundation.database.AppDatabase.appDatabase;
+import static com.pratham.foundation.utility.FC_Constants.APP_SECTION;
 import static com.pratham.foundation.utility.FC_Constants.gameFolderPath;
+import static com.pratham.foundation.utility.FC_Constants.sec_Test;
 
 
 public class TrueFalseFragment extends Fragment {
@@ -110,13 +111,12 @@ public class TrueFalseFragment extends Fragment {
                 resId = getArguments().getString("resId");
                 contentTitle = getArguments().getString("contentName");
                 onSdCard = getArguments().getBoolean("onSdCard", false);
-
-
-
                 if (onSdCard)
                     readingContentPath = ApplicationClass.contentSDPath + gameFolderPath + "/" + contentPath + "/";
                 else
                     readingContentPath = ApplicationClass.foundationPath + gameFolderPath + "/" + contentPath + "/";
+                isTest= FastSave.getInstance().getString(APP_SECTION, "").equalsIgnoreCase(sec_Test);
+
                 getData();
             }
         }
@@ -429,7 +429,7 @@ public class TrueFalseFragment extends Fragment {
             score.setSentFlag(0);
             appDatabase.getScoreDao().insert(score);
 
-            if (FC_Constants.isTest) {
+            if (FastSave.getInstance().getString(APP_SECTION,"").equalsIgnoreCase(sec_Test)) {
                 Assessment assessment = new Assessment();
                 assessment.setResourceIDa(resId);
                 assessment.setSessionIDa(FastSave.getInstance().getString(FC_Constants.ASSESSMENT_SESSION, ""));

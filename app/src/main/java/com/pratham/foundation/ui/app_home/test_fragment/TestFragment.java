@@ -78,7 +78,6 @@ import static com.pratham.foundation.utility.FC_Constants.CLOSE_TEST_EVENTBUS;
 import static com.pratham.foundation.utility.FC_Constants.LEVEL_TEST_GIVEN;
 import static com.pratham.foundation.utility.FC_Constants.currentLevel;
 import static com.pratham.foundation.utility.FC_Constants.gameFolderPath;
-import static com.pratham.foundation.utility.FC_Constants.isTest;
 import static com.pratham.foundation.utility.FC_Constants.sec_Test;
 import static com.pratham.foundation.utility.FC_Constants.testSessionEnded;
 import static com.pratham.foundation.utility.FC_Constants.testSessionEntered;
@@ -223,7 +222,7 @@ public class TestFragment extends Fragment implements TestContract.TestView,
 
     @Override
     public void onStart() {
-        isTest = true;
+        FastSave.getInstance().saveString(APP_SECTION, ""+sec_Test);
         super.onStart();
         if (!eventBusFlg) {
             eventBusFlg = true;
@@ -301,7 +300,6 @@ public class TestFragment extends Fragment implements TestContract.TestView,
                 testAdapter.notifyItemChanged(clicked_Pos, testList.get(clicked_Pos));
             }
 //            } else {
-//                //TODO Remove After Testing.
 //                testList.get(clicked_Pos).setAsessmentGiven(true);
 //                testList.get(clicked_Pos).setTotalMarks(tMarks);
 //                testList.get(clicked_Pos).setScoredMarks(sMarks);
@@ -389,7 +387,6 @@ public class TestFragment extends Fragment implements TestContract.TestView,
     @Click(R.id.btn_test_dw)
     void onDownLoadClick() {
         try {
-            FC_Constants.isPractice = false;
             resName = rootLevelList.get(currentLevel).getNodeTitle();
             resServerImageName = rootLevelList.get(currentLevel).getNodeServerImage();
             downloadType = FC_Constants.TEST_DOWNLOAD;
@@ -406,7 +403,6 @@ public class TestFragment extends Fragment implements TestContract.TestView,
     @Override
     public void onCertificateOpenGame(int position, String nodeId) {
         try {
-            FC_Constants.isPractice = false;
             clicked_Pos = position;
             presenter.getTempData("" + nodeId);
             if (!testSessionEntered) {
@@ -420,7 +416,6 @@ public class TestFragment extends Fragment implements TestContract.TestView,
     @Override
     public void testOpenData(ContentTable testData) {
         try {
-            isTest = true;
             FastSave.getInstance().saveString(APP_SECTION, "" + sec_Test);
 
             certi_Code = testData.getNodeDesc();

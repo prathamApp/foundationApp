@@ -33,6 +33,7 @@ import com.pratham.foundation.customView.SansTextViewBold;
 import com.pratham.foundation.customView.display_image_dialog.CustomLodingDialog;
 import com.pratham.foundation.interfaces.MediaCallbacks;
 import com.pratham.foundation.modalclasses.Message;
+import com.pratham.foundation.services.shared_preferences.FastSave;
 import com.pratham.foundation.services.stt.ContinuousSpeechService_New;
 import com.pratham.foundation.services.stt.STT_Result_New;
 import com.pratham.foundation.utility.FC_Constants;
@@ -53,8 +54,9 @@ import java.util.Objects;
 import java.util.Random;
 
 import static com.pratham.foundation.ApplicationClass.ButtonClickSound;
+import static com.pratham.foundation.utility.FC_Constants.APP_SECTION;
 import static com.pratham.foundation.utility.FC_Constants.gameFolderPath;
-
+import static com.pratham.foundation.utility.FC_Constants.sec_Test;
 
 
 @EActivity(R.layout.activity_conversation)
@@ -175,7 +177,7 @@ public class ConversationActivity extends BaseActivity
     @UiThread
     @Override
     public void sendClikChanger(int clickOn) {
-        if (!FC_Constants.isTest) {
+        if (!FastSave.getInstance().getString(APP_SECTION,"").equalsIgnoreCase(sec_Test)) {
             if (clickOn == 0) {
                 btn_imgsend.setVisibility(View.GONE);
                 btn_speaker.setVisibility(View.VISIBLE);
@@ -343,7 +345,7 @@ public class ConversationActivity extends BaseActivity
                 btn_reading.setClickable(false);
                 readChatFlow.removeAllViews();
                 new Handler().postDelayed(() -> {
-                    if (FC_Constants.isTest)
+                    if (FastSave.getInstance().getString(APP_SECTION,"").equalsIgnoreCase(sec_Test))
                         showStars(true);
                     else
                         ConvoEndDialog();
@@ -385,7 +387,7 @@ public class ConversationActivity extends BaseActivity
             final SansTextViewBold myTextView = new SansTextViewBold(this);
             myTextView.setText(word);
             myTextView.setOnClickListener(v -> {
-                if (!FC_Constants.isTest) {
+                if (!FastSave.getInstance().getString(APP_SECTION,"").equalsIgnoreCase(sec_Test)) {
                     if (voiceStart)
                         btn_reading.performClick();
                     playChat("" + answerAudio);
@@ -399,7 +401,7 @@ public class ConversationActivity extends BaseActivity
 
     @Click(R.id.btn_speaker)
     public void chatAnswer() {
-        if (!FC_Constants.isTest) {
+        if (!FastSave.getInstance().getString(APP_SECTION,"").equalsIgnoreCase(sec_Test)) {
             if (voiceStart)
                 startRecognition();
             new Handler().postDelayed(() -> playChat("" + answerAudio), 100);
@@ -635,7 +637,7 @@ public class ConversationActivity extends BaseActivity
             float perc = getCompletionPercentage();
             presenter.addCompletion(perc);
             dialog.dismiss();
-            if (FC_Constants.isTest) {
+            if (FastSave.getInstance().getString(APP_SECTION,"").equalsIgnoreCase(sec_Test)) {
                 int pages = getCompletionPages();
                 int msgPercLength = msgPercentage.length;
 
@@ -792,7 +794,7 @@ public class ConversationActivity extends BaseActivity
             float perc = getCompletionPercentage();
             presenter.addCompletion(perc);
             dialog.dismiss();
-            if (FC_Constants.isTest) {
+            if (FastSave.getInstance().getString(APP_SECTION,"").equalsIgnoreCase(sec_Test)) {
                 int pages = getCompletionPages();
                 int msgPercLength = 0;
                 try {

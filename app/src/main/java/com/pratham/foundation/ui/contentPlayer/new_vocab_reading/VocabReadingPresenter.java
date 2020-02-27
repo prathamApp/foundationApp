@@ -27,7 +27,9 @@ import static com.pratham.foundation.database.AppDatabase.appDatabase;
 import static com.pratham.foundation.ui.contentPlayer.new_vocab_reading.VocabReadingFragment.correctArr;
 import static com.pratham.foundation.ui.contentPlayer.new_vocab_reading.VocabReadingFragment.lineBreakCounter;
 import static com.pratham.foundation.ui.contentPlayer.new_vocab_reading.VocabReadingFragment.testCorrectArr;
+import static com.pratham.foundation.utility.FC_Constants.APP_SECTION;
 import static com.pratham.foundation.utility.FC_Constants.STT_REGEX;
+import static com.pratham.foundation.utility.FC_Constants.sec_Test;
 
 
 @EBean
@@ -174,7 +176,7 @@ public class VocabReadingPresenter implements VocabReadingContract.VocabReadingP
         if (pagePercentage[pgNo] < perc) {
             pagePercentage[pgNo] = perc;
         }
-        if (FC_Constants.isTest)
+        if (FastSave.getInstance().getString(APP_SECTION,"").equalsIgnoreCase(sec_Test))
             if (perc >= 75)
                 testCorrectArr[pgNo] = true;
 
@@ -314,7 +316,7 @@ public class VocabReadingPresenter implements VocabReadingContract.VocabReadingP
             score.setSentFlag(0);
             appDatabase.getScoreDao().insert(score);
 
-            if (FC_Constants.isTest) {
+            if (FastSave.getInstance().getString(APP_SECTION,"").equalsIgnoreCase(sec_Test)) {
                 Assessment assessment = new Assessment();
                 assessment.setResourceIDa(resId);
                 assessment.setSessionIDa(FastSave.getInstance().getString(FC_Constants.ASSESSMENT_SESSION, ""));

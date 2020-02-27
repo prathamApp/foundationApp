@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/home_root_layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/catcho_img_bg"
+    android:orientation="vertical">
+<!--    android:background="#80e3ff"-->
+
+    <com.pratham.foundation.customView.SansTextViewBold
+        android:id="@+id/tv_Topic"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:textAlignment="center"
+        android:layout_marginTop="@dimen/_10sdp"
+        android:layout_marginStart="@dimen/_10sdp"
+        android:layout_marginEnd="@dimen/_10sdp"
+        android:text="Oops, Something went wrong!!"
+        android:textColor="@color/dark_blue"
+        android:textSize="@dimen/_18sdp" />
+
+    <com.pratham.foundation.customView.SansTextViewBold
+        android:id="@+id/tv_Topic_"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textAlignment="center"
+        android:layout_below="@id/tv_Topic"
+        android:layout_marginStart="@dimen/_20sdp"
+        android:layout_marginEnd="@dimen/_20sdp"
+        android:text="Sorry about that. Press the report button to send the error to us."
+        android:textColor="@color/colorBtnRedLight"
+        android:textSize="@dimen/_12sdp" />
+
+    <com.pratham.foundation.customView.SansButton
+        android:id="@+id/catcho_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:elevation="@dimen/_5sdp"
+        android:paddingStart="@dimen/_15sdp"
+        android:paddingEnd="@dimen/_15sdp"
+        android:textSize="@dimen/_10sdp"
+        android:layout_below="@+id/tv_Topic_"
+        android:textColor="@color/white"
+        android:text="@string/SendReport"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="70dp"
+        android:background="@drawable/button_green"/>
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="600dp"
+        android:layout_alignParentBottom="true"
+        android:background="@drawable/catcho_img">
+    </RelativeLayout>
+
+</RelativeLayout>

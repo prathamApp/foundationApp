@@ -90,7 +90,6 @@ public class LearningFragment extends Fragment implements LearningContract.Learn
 
     @AfterViews
     public void initialize() {
-        FC_Constants.isTest = false;
         rootList = new ArrayList<>();
         rootLevelList = new ArrayList<>();
         dwParentList = new ArrayList<>();
@@ -372,8 +371,6 @@ public class LearningFragment extends Fragment implements LearningContract.Learn
 
     @Override
     public void onContentClicked(ContentTable singleItem, String parentName) {
-        FC_Constants.isPractice = false;
-        FC_Constants.isTest = false;
         FastSave.getInstance().saveString(APP_SECTION, ""+sec_Learning);
         try {
             ButtonClickSound.start();
@@ -402,9 +399,7 @@ public class LearningFragment extends Fragment implements LearningContract.Learn
     @Override
     public void onContentOpenClicked(ContentTable contentList) {
         //Toast.makeText(this, "ContentOpen : Work In Progress", Toast.LENGTH_SHORT).show();
-        //todo remove#
-        FC_Constants.isPractice = false;
-        FC_Constants.isTest = false;
+        FastSave.getInstance().saveString(APP_SECTION, sec_Learning);
         ButtonClickSound.start();
         downloadNodeId = contentList.getNodeId();
         resName = contentList.getNodeTitle();
@@ -525,8 +520,6 @@ public class LearningFragment extends Fragment implements LearningContract.Learn
     public void onContentDownloadClicked(ContentTable contentList, int parentPos, int childPos, String downloadType) {
         this.downloadType = downloadType;
         downloadNodeId = contentList.getNodeId();
-        FC_Constants.isPractice = false;
-        FC_Constants.isTest = false;
         FastSave.getInstance().saveString(APP_SECTION, ""+sec_Learning);
         ButtonClickSound.start();
 //        downloadNodeId = "" + 1371;
@@ -569,7 +562,7 @@ public class LearningFragment extends Fragment implements LearningContract.Learn
 
     @Override
     public void seeMore(String nodeId, String nodeTitle) {
-        FC_Constants.isTest = false;
+        FastSave.getInstance().saveString(APP_SECTION, sec_Learning);
         Intent intent = new Intent(context, ContentDisplay_.class);
         intent.putExtra("nodeId", nodeId);
         intent.putExtra("contentTitle", nodeTitle);

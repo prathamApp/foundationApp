@@ -85,8 +85,6 @@ public class ProfileFragment extends Fragment implements ProfileContract.Profile
 
     @AfterViews
     public void initialize() {
-        FC_Constants.isTest = false;
-        FC_Constants.isPractice = false;
         context = getActivity();
         tv_studentName.setText("" + FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_NAME, "Student"));
         presenter.setView(ProfileFragment.this);

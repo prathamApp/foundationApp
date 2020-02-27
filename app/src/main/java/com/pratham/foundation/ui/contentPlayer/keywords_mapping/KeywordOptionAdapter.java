@@ -15,11 +15,14 @@ import android.widget.TextView;
 
 import com.pratham.foundation.R;
 import com.pratham.foundation.modalclasses.ScienceQuestionChoice;
-import com.pratham.foundation.utility.FC_Constants;
+import com.pratham.foundation.services.shared_preferences.FastSave;
 import com.pratham.foundation.utility.FC_Utility;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static com.pratham.foundation.utility.FC_Constants.APP_SECTION;
+import static com.pratham.foundation.utility.FC_Constants.sec_Test;
 
 public class KeywordOptionAdapter extends RecyclerView.Adapter<KeywordOptionAdapter.Myviewholder> {
     Context context;
@@ -80,9 +83,7 @@ public class KeywordOptionAdapter extends RecyclerView.Adapter<KeywordOptionAdap
             public void onClick(View v) {
                 if (isClickable) {
                     if (datalist.get(myviewholder.getAdapterPosition()).isIsclicked()) {
-                        if (selectedOption.contains(datalist.get(myviewholder.getAdapterPosition()))) {
-                            selectedOption.remove(datalist.get(myviewholder.getAdapterPosition()));
-                        }
+                        selectedOption.remove(datalist.get(myviewholder.getAdapterPosition()));
                         datalist.get(myviewholder.getAdapterPosition()).setIsclicked(false);
                         myviewholder.itemView.setBackground(ContextCompat.getDrawable(context, R.drawable.hexagon));
                     } else {
@@ -98,7 +99,7 @@ public class KeywordOptionAdapter extends RecyclerView.Adapter<KeywordOptionAdap
             }
         });
         //SHOW ANSWER
-        if (!FC_Constants.isTest) {
+        if (!FastSave.getInstance().getString(APP_SECTION,"").equalsIgnoreCase(sec_Test)) {
             if(!isClickable && !showAnswer){
            /* if (!presenter.checkAnswerNew(datalist,  myviewholder.textView.getText().toString())) {
                 myviewholder.textView.setTextColor(Color.RED);

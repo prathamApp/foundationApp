@@ -1,6 +1,9 @@
 package com.pratham.foundation.modalclasses;
 
-import com.pratham.foundation.utility.FC_Constants;
+import com.pratham.foundation.services.shared_preferences.FastSave;
+
+import static com.pratham.foundation.utility.FC_Constants.APP_SECTION;
+import static com.pratham.foundation.utility.FC_Constants.sec_Test;
 
 public class ImageJsonObject {
     private String resId;
@@ -19,7 +22,7 @@ public class ImageJsonObject {
         this.ansImageName = ansImageName;
         this.question = question;
         this.queImageName = queImageName;
-        this.isTest= FC_Constants.isTest;
+        this.isTest= FastSave.getInstance().getString(APP_SECTION, "").equalsIgnoreCase(sec_Test);
     }
 
     public String getResId() {

@@ -668,7 +668,6 @@ public class FC_Utility {
                     .addToBackStack(TAG)
                     .commit();
         } else */
-        //todo remove#
        /* if (mActivity instanceof ReadingStoryActivity) {
             ((ReadingStoryActivity) mActivity).getSupportFragmentManager()
                     .beginTransaction()
@@ -707,7 +706,6 @@ public class FC_Utility {
                     .addToBackStack(TAG)
                     .commit();
         }
-        //todo remove#
         /*else if (mActivity instanceof ActivityShareReceive_) {
             ((ActivityShareReceive_) mActivity).getSupportFragmentManager()
                     .beginTransaction()

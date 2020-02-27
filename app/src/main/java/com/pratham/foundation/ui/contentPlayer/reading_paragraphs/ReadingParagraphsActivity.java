@@ -50,11 +50,12 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
+import static com.pratham.foundation.utility.FC_Constants.APP_SECTION;
 import static com.pratham.foundation.utility.FC_Constants.CURRENT_FOLDER_NAME;
 import static com.pratham.foundation.utility.FC_Constants.STT_REGEX;
 import static com.pratham.foundation.utility.FC_Constants.dialog_btn_cancel;
 import static com.pratham.foundation.utility.FC_Constants.gameFolderPath;
-import static com.pratham.foundation.utility.FC_Constants.isTest;
+import static com.pratham.foundation.utility.FC_Constants.sec_Test;
 
 
 @EActivity(R.layout.activity_paragraphs_reading)
@@ -155,7 +156,7 @@ public class ReadingParagraphsActivity extends BaseActivity
         continuousSpeechService.resetSpeechRecognizer();
 
         try {
-            if (isTest) {
+            if (FastSave.getInstance().getString(APP_SECTION,"").equalsIgnoreCase(sec_Test)) {
                 ll_btn_play.setVisibility(View.GONE);
                 ll_btn_submit.setVisibility(View.VISIBLE);
             }
@@ -231,7 +232,7 @@ public class ReadingParagraphsActivity extends BaseActivity
                     myTextView.setId(i);
                     myTextView.setOnClickListener(v -> {
                         if (!FastSave.getInstance().getString(FC_Constants.CURRENT_FOLDER_NAME, "").equalsIgnoreCase("maths"))
-                            if (!readingFlg && !playingFlg && !isTest) {
+                            if (!readingFlg && !playingFlg && !FastSave.getInstance().getString(APP_SECTION,"").equalsIgnoreCase(sec_Test)) {
                                 myTextView.setTextColor(getResources().getColor(R.color.colorRed));
                                 Animation animation = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.reading_zoom_in_and_out);
                                 myTextView.startAnimation(animation);
@@ -252,7 +253,7 @@ public class ReadingParagraphsActivity extends BaseActivity
 
     private void playClickedWord(int id) {
         try {
-            if (!isTest && !clickFlag) {
+            if (!FastSave.getInstance().getString(APP_SECTION,"").equalsIgnoreCase(sec_Test) && !clickFlag) {
                 clickFlag = true;
                 Log.d("ReadingPara", "wordCounter : " + wordCounter);
                 float end = Float.parseFloat(modalParaWordList.get(id).getWordDuration());
@@ -394,7 +395,7 @@ public class ReadingParagraphsActivity extends BaseActivity
             btn_Mic.setBackgroundResource(R.drawable.button_red);
         } else {
             readingFlg = false;
-            if (!isTest)
+            if (!FastSave.getInstance().getString(APP_SECTION,"").equalsIgnoreCase(sec_Test))
                 ll_btn_play.setVisibility(View.VISIBLE);
             continuousSpeechService.stopSpeechInput();
             btn_Mic.setImageResource(R.drawable.ic_mic_black);
@@ -563,7 +564,7 @@ public class ReadingParagraphsActivity extends BaseActivity
 
         if (!diaComplete)
             dia_title.setText("'" + contentTitle + "'");
-        else if (isTest) {
+        else if (FastSave.getInstance().getString(APP_SECTION,"").equalsIgnoreCase(sec_Test)) {
             dia_title.setText("Good Job\nRead another one???");
         } else {
             dia_title.setText("Good Job\nRead another one???");
@@ -573,7 +574,7 @@ public class ReadingParagraphsActivity extends BaseActivity
 
         dia_btn_green.setOnClickListener(v -> {
             dialog.dismiss();
-            if (isTest) {
+            if (FastSave.getInstance().getString(APP_SECTION,"").equalsIgnoreCase(sec_Test)) {
                 Intent returnIntent = new Intent();
                 returnIntent.putExtra("cCode", certiCode);
                 returnIntent.putExtra("sMarks", presenter.getCorrectCounter());
@@ -610,7 +611,7 @@ public class ReadingParagraphsActivity extends BaseActivity
             btn_Mic.performClick();
         iv_monk.clearAnimation();
         iv_monk.setVisibility(View.GONE);
-        if (!isTest)
+        if (!FastSave.getInstance().getString(APP_SECTION,"").equalsIgnoreCase(sec_Test))
             showAcknowledgeDialog(true);
         else
             showStars(true);
@@ -660,7 +661,7 @@ public class ReadingParagraphsActivity extends BaseActivity
 
         dia_btn_green.setOnClickListener(v -> {
             dialog.dismiss();
-            if (isTest) {
+            if (FastSave.getInstance().getString(APP_SECTION,"").equalsIgnoreCase(sec_Test)) {
                 Intent returnIntent = new Intent();
                 returnIntent.putExtra("cCode", certiCode);
                 returnIntent.putExtra("sMarks", presenter.getCorrectCounter());
@@ -729,10 +730,13 @@ public class ReadingParagraphsActivity extends BaseActivity
     @UiThread
     @Override
     public void dismissLoadingDialog() {
-        if (dialogFlg) {
-            dialogFlg = false;
-            if (myLoadingDialog != null)
-                myLoadingDialog.dismiss();
+        try {
+            if (myLoadingDialog != null && myLoadingDialog.isShowing()) {
+                dialogFlg = false;
+                    myLoadingDialog.dismiss();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 

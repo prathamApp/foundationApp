@@ -35,9 +35,9 @@ import com.pratham.foundation.customView.display_image_dialog.CustomLodingDialog
 import com.pratham.foundation.interfaces.MediaCallbacks;
 import com.pratham.foundation.modalclasses.Message;
 import com.pratham.foundation.modalclasses.ModalVocabulary;
+import com.pratham.foundation.services.shared_preferences.FastSave;
 import com.pratham.foundation.services.stt.ContinuousSpeechService_New;
 import com.pratham.foundation.services.stt.STT_Result_New;
-import com.pratham.foundation.utility.FC_Constants;
 import com.pratham.foundation.utility.FC_Utility;
 import com.pratham.foundation.utility.MediaPlayerUtil;
 
@@ -54,9 +54,11 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import static com.pratham.foundation.utility.FC_Constants.APP_SECTION;
 import static com.pratham.foundation.utility.FC_Constants.dialog_btn_cancel;
 import static com.pratham.foundation.utility.FC_Constants.gameFolderPath;
-import static com.pratham.foundation.utility.FC_Constants.isTest;
+import static com.pratham.foundation.utility.FC_Constants.sec_Practice;
+import static com.pratham.foundation.utility.FC_Constants.sec_Test;
 
 
 @EActivity(R.layout.activity_vocabulary_reading)
@@ -146,7 +148,7 @@ public class ReadingVocabularyActivity extends BaseActivity implements MediaCall
         sttLang = intent.getStringExtra("sttLang");
         onSdCard = getIntent().getBooleanExtra("onSdCard", false);
 
-        if (!isTest)
+        if (!FastSave.getInstance().getString(APP_SECTION,"").equalsIgnoreCase(sec_Test))
             tv_title.setText("" + contentTitle);
         else
             tv_title.setText("" + getResources().getString(R.string.Test));
@@ -363,7 +365,9 @@ public class ReadingVocabularyActivity extends BaseActivity implements MediaCall
             myTextView.setTextSize(25);
             myTextView.setTextColor(getResources().getColor(R.color.colorAccentDark));
             vocabChatFlow.addView(myTextView);
-            if (testFlg || FC_Constants.isPractice || isTest)
+            if (testFlg ||
+                    FastSave.getInstance().getString(APP_SECTION,"").equalsIgnoreCase(sec_Test) ||
+                    FastSave.getInstance().getString(APP_SECTION,"").equalsIgnoreCase(sec_Practice))
                 myTextView.setVisibility(View.INVISIBLE);
         }
         sendClikChanger(0);
@@ -413,7 +417,7 @@ public class ReadingVocabularyActivity extends BaseActivity implements MediaCall
     }
 
     private void startAudioReading(String audioFilePath) {
-        if (!testFlg && !isTest) {
+        if (!testFlg && !FastSave.getInstance().getString(APP_SECTION,"").equalsIgnoreCase(sec_Test)) {
             if (readingFlg)
                 startReading();
             try {
@@ -433,30 +437,33 @@ public class ReadingVocabularyActivity extends BaseActivity implements MediaCall
 
     @Click(R.id.btn_next)
     public void nextBtnPressed() {
-        if (readingFlg)
-            startReading();
-        if (playingFlg)
-            mp.stop();
-        if (currentPageNo < modalVocabularyList.size() - 1) {
-            currentPageNo++;
-            currentQueNo = 0;
-            messageList.clear();
-            //TODO java.lang.NullPointerException: Attempt to invoke interface method 'int java.util.List.size()' on a null object reference\n\tat com.pratham.foundation.ui.contentPlayer.vocabulary_qa.ReadingVocabularyActivity.nextBtnPressed(ReadingVocabularyActivity.java:447)\n\tat com.pratham.foundation.ui.contentPlayer.vocabulary_qa.ReadingVocabularyActivity_$3.onClick(ReadingVocabularyActivity_.java:128)\n\tat android.view.View.performClick(View.java:6603)\n\tat android.view.View.performClickInternal(View.java:6576)\n\tat android.view.View.access$3100(View.java:780)\n\tat android.view.View$PerformClick.run(View.java:26090)\n\tat android.os.Handler.handleCallback(Handler.java:873)\n\tat android.os.Handler.dispatchMessage(Handler.java:99)\n\tat android.os.Looper.loop(Looper.java:193)\n\tat android.app.ActivityThread.main(ActivityThread.java:6702)\n\tat java.lang.reflect.Method.invoke(Native Method)\n\tat com.android.internal.os.RuntimeInit$MethodAndArgsCaller.run(RuntimeInit.java:493)\n\tat com.android.internal.os.ZygoteInit.main(ZygoteInit.java:911)\n
-            try {
-                vocabChatFlow.removeAllViews();
-            } catch (Exception e) {
-                e.printStackTrace();
+        try {
+            if (readingFlg)
+                startReading();
+            if (playingFlg)
+                mp.stop();
+            if (currentPageNo < modalVocabularyList.size() - 1) {
+                currentPageNo++;
+                currentQueNo = 0;
+                messageList.clear();
+                try {
+                    vocabChatFlow.removeAllViews();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                setData();
+            } else {
+                LoadNext();
             }
-            setData();
-        } else {
-            LoadNext();
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 
     private void LoadNext() {
         if (!dilogOpen) {
             dilogOpen = true;
-            if (isTest)
+            if (FastSave.getInstance().getString(APP_SECTION,"").equalsIgnoreCase(sec_Test))
                 showStars(true);
             else
                 showWordNextDialog(this);
@@ -515,7 +522,7 @@ public class ReadingVocabularyActivity extends BaseActivity implements MediaCall
         dia_btn_exit.setOnClickListener(v -> {
             dilogOpen = false;
             presenter.setCompletionPercentage();
-            if (isTest) {
+            if (FastSave.getInstance().getString(APP_SECTION,"").equalsIgnoreCase(sec_Test)) {
                 int correctCnt = 0, total = 0;
                 try {
                     total = correctArr.length;
@@ -690,7 +697,7 @@ public class ReadingVocabularyActivity extends BaseActivity implements MediaCall
 
     @Click(R.id.btn_speaker)
     public void chatAnswer() {
-        if (!isTest) {
+        if (!FastSave.getInstance().getString(APP_SECTION,"").equalsIgnoreCase(sec_Test)) {
             if (readingFlg)
                 startReading();
             new Handler().postDelayed(() -> startAudioReading("" + ansAudio), 100);
@@ -700,7 +707,7 @@ public class ReadingVocabularyActivity extends BaseActivity implements MediaCall
     @UiThread
     @Override
     public void sendClikChanger(int clickOn) {
-        if (!isTest) {
+        if (!FastSave.getInstance().getString(APP_SECTION,"").equalsIgnoreCase(sec_Test)) {
             if (clickOn == 0) {
                 btn_imgsend.setVisibility(View.GONE);
                 btn_speaker.setVisibility(View.VISIBLE);
@@ -922,7 +929,7 @@ public class ReadingVocabularyActivity extends BaseActivity implements MediaCall
             dilogOpen = false;
             presenter.setCompletionPercentage();
             dialog.dismiss();
-            if (isTest) {
+            if (FastSave.getInstance().getString(APP_SECTION,"").equalsIgnoreCase(sec_Test)) {
                 int correctCnt = 0, total = 0;
                 try {
                     total = correctArr.length;

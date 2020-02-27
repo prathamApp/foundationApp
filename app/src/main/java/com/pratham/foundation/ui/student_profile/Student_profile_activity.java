@@ -430,7 +430,6 @@ public class Student_profile_activity extends Fragment implements Student_profil
 
     }
 
-    //todo remove#
    /* @OnClick(R.id.btn_share_receive)
     public void goto_share_receive() {
         startActivity(new Intent(this, ActivityShareReceive_.class));
@@ -441,8 +440,7 @@ public class Student_profile_activity extends Fragment implements Student_profil
         showLanguageSelectionDialog();
     }
 
-    //todo  remove#
-//    @OnClick({R.id.rl_share_app, R.id.btn_share_app})
+    //    @OnClick({R.id.rl_share_app, R.id.btn_share_app})
 //    public void share_app() {
 //        KotlinPermissions.with(Student_profile_activity.this)
 //                .permissions(Manifest.permission.WRITE_EXTERNAL_STORAGE,

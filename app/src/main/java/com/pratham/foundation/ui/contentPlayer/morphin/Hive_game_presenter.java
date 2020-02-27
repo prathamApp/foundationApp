@@ -1,8 +1,6 @@
 package com.pratham.foundation.ui.contentPlayer.morphin;
 
 import android.content.Context;
-import android.widget.CheckBox;
-import android.widget.TextView;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -26,6 +24,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static com.pratham.foundation.database.AppDatabase.appDatabase;
+import static com.pratham.foundation.utility.FC_Constants.APP_SECTION;
+import static com.pratham.foundation.utility.FC_Constants.sec_Test;
 
 @EBean
 public class Hive_game_presenter implements Hive_game_contract.Hive_game_presenter {
@@ -179,7 +179,7 @@ public class Hive_game_presenter implements Hive_game_contract.Hive_game_present
                 }
             }
             //  totalCount = +totalCount + selectedAnsList.size();
-            if (!FC_Constants.isTest) {
+            if (!FastSave.getInstance().getString(APP_SECTION,"").equalsIgnoreCase(sec_Test)) {
                 view.showResult();
             }
         } else {
@@ -189,11 +189,7 @@ public class Hive_game_presenter implements Hive_game_contract.Hive_game_present
     }
 
     private boolean checkAnswerNew(ScienceQuestionChoice scienceQuestionChoice) {
-        if (scienceQuestionChoice.getCorrectAnswer().equalsIgnoreCase("True") && scienceQuestionChoice.getUserAns() != null && scienceQuestionChoice.getEnglish().equalsIgnoreCase(scienceQuestionChoice.getUserAns())) {
-            return true;
-        } else {
-            return false;
-        }
+        return scienceQuestionChoice.getCorrectAnswer().equalsIgnoreCase("True") && scienceQuestionChoice.getUserAns() != null && scienceQuestionChoice.getEnglish().equalsIgnoreCase(scienceQuestionChoice.getUserAns());
     }
 
 
@@ -225,7 +221,7 @@ public class Hive_game_presenter implements Hive_game_contract.Hive_game_present
             score.setSentFlag(0);
             appDatabase.getScoreDao().insert(score);
 
-            if (FC_Constants.isTest) {
+            if (FastSave.getInstance().getString(APP_SECTION,"").equalsIgnoreCase(sec_Test)) {
                 Assessment assessment = new Assessment();
                 assessment.setResourceIDa(resId);
                 assessment.setSessionIDa(FastSave.getInstance().getString(FC_Constants.ASSESSMENT_SESSION, ""));

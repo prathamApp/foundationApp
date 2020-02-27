@@ -27,7 +27,9 @@ import static com.pratham.foundation.database.AppDatabase.appDatabase;
 import static com.pratham.foundation.ui.contentPlayer.new_reading_fragment.ContentReadingFragment.correctArr;
 import static com.pratham.foundation.ui.contentPlayer.new_reading_fragment.ContentReadingFragment.lineBreakCounter;
 import static com.pratham.foundation.ui.contentPlayer.new_reading_fragment.ContentReadingFragment.testCorrectArr;
+import static com.pratham.foundation.utility.FC_Constants.APP_SECTION;
 import static com.pratham.foundation.utility.FC_Constants.STT_REGEX;
+import static com.pratham.foundation.utility.FC_Constants.sec_Test;
 
 
 @EBean
@@ -202,7 +204,7 @@ public class ContentReadingPresenter implements ContentReadingContract.ContentRe
         if (pagePercentage[pgNo] < perc) {
             pagePercentage[pgNo] = perc;
         }
-        if (FC_Constants.isTest)
+        if (FastSave.getInstance().getString(APP_SECTION,"").equalsIgnoreCase(sec_Test))
             if (perc >= 75)
                 testCorrectArr[pgNo] = true;
 
@@ -315,7 +317,7 @@ public class ContentReadingPresenter implements ContentReadingContract.ContentRe
             score.setSentFlag(0);
             appDatabase.getScoreDao().insert(score);
 
-            if (FC_Constants.isTest) {
+            if (FastSave.getInstance().getString(APP_SECTION,"").equalsIgnoreCase(sec_Test)) {
                 Assessment assessment = new Assessment();
                 assessment.setResourceIDa(resId);
                 assessment.setSessionIDa(FastSave.getInstance().getString(FC_Constants.ASSESSMENT_SESSION, ""));

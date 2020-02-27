@@ -504,8 +504,6 @@ public class SplashActivity extends SplashSupportActivity implements SplashContr
                     protected Void doInBackground(Void... voids) {
                         try {
                             AppDatabase.getDatabaseInstance(SplashActivity.this);
-                            //todo remove#
-                            // ApplicationClass.contentProgressDao = AppDatabase.appDatabase.getContentProgressDao();
                             if (new File(Environment.getExternalStorageDirectory().getAbsolutePath() + "/PrathamBackups/foundation_db").exists()) {
                                 try {
                                     copyDb = true;
@@ -532,8 +530,6 @@ public class SplashActivity extends SplashSupportActivity implements SplashContr
                 }.execute();
             } else {
                 AppDatabase.getDatabaseInstance(SplashActivity.this);
-                //todo remove#
-                // ApplicationClass.contentProgressDao = AppDatabase.appDatabase.getContentProgressDao();
                 splashPresenter.getSdCardPath();
                 new Handler().postDelayed(() -> showButton(), 2000);
             }

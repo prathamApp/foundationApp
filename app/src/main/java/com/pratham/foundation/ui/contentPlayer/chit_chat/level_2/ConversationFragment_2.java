@@ -59,7 +59,6 @@ import static com.pratham.foundation.ApplicationClass.ButtonClickSound;
 import static com.pratham.foundation.BaseActivity.mediaPlayerUtil;
 import static com.pratham.foundation.utility.FC_Constants.APP_SECTION;
 import static com.pratham.foundation.utility.FC_Constants.gameFolderPath;
-import static com.pratham.foundation.utility.FC_Constants.isPractice;
 import static com.pratham.foundation.utility.FC_Constants.sec_Learning;
 import static com.pratham.foundation.utility.FC_Constants.sec_Practice;
 import static com.pratham.foundation.utility.FC_Constants.sec_Test;
@@ -153,7 +152,7 @@ public class ConversationFragment_2 extends Fragment
         presenter.setContentId(contentId);
         convoMode = "A";
 
-        if (isPractice)
+        if (FastSave.getInstance().getString(APP_SECTION,"").equalsIgnoreCase(sec_Practice))
             clear.setVisibility(View.VISIBLE);
         else
             clear.setVisibility(View.GONE);
@@ -387,7 +386,7 @@ public class ConversationFragment_2 extends Fragment
                 btn_read_mic.setClickable(false);
                 readChatFlow.removeAllViews();
                 new Handler().postDelayed(() -> {
-                    if (FC_Constants.isTest)
+                    if (FastSave.getInstance().getString(APP_SECTION,"").equalsIgnoreCase(sec_Test))
                         showStars(true);
                     else
                         ConvoEndDialog();
@@ -429,7 +428,7 @@ public class ConversationFragment_2 extends Fragment
             final SansTextViewBold myTextView = new SansTextViewBold(context);
             myTextView.setText(word);
             myTextView.setOnClickListener(v -> {
-                if (!FC_Constants.isTest) {
+                if (!FastSave.getInstance().getString(APP_SECTION,"").equalsIgnoreCase(sec_Test)) {
                     if (voiceStart)
                         btn_read_mic.performClick();
                     playChat("" + answerAudio);
@@ -461,7 +460,7 @@ public class ConversationFragment_2 extends Fragment
 
     @Click(R.id.btn_play)
     public void chatAnswer() {
-        if (!FC_Constants.isTest) {
+        if (!FastSave.getInstance().getString(APP_SECTION,"").equalsIgnoreCase(sec_Test)) {
             if (voiceStart)
                 startRecognition();
             new Handler().postDelayed(() -> playChat("" + answerAudio), 100);
@@ -712,7 +711,7 @@ public class ConversationFragment_2 extends Fragment
             float perc = getCompletionPercentage();
             presenter.addCompletion(perc);
             dialog.dismiss();
-            if (FC_Constants.isTest) {
+            if (FastSave.getInstance().getString(APP_SECTION,"").equalsIgnoreCase(sec_Test)) {
                 int pages = getCompletionPages();
                 int msgPercLength = msgPercentage.length;
 
@@ -871,7 +870,7 @@ public class ConversationFragment_2 extends Fragment
             float perc = getCompletionPercentage();
             presenter.addCompletion(perc);
             dialog.dismiss();
-            if (FC_Constants.isTest) {
+            if (FastSave.getInstance().getString(APP_SECTION,"").equalsIgnoreCase(sec_Test)) {
                 int pages = getCompletionPages();
                 int msgPercLength = 0;
                 try {

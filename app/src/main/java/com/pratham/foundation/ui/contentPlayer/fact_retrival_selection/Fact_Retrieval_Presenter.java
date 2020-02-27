@@ -30,6 +30,8 @@ import java.util.Collections;
 import java.util.List;
 
 import static com.pratham.foundation.database.AppDatabase.appDatabase;
+import static com.pratham.foundation.utility.FC_Constants.APP_SECTION;
+import static com.pratham.foundation.utility.FC_Constants.sec_Test;
 
 @EBean
 public class Fact_Retrieval_Presenter implements Fact_Retrieval_Contract.Fact_retrival_Presenter {
@@ -41,7 +43,6 @@ public class Fact_Retrieval_Presenter implements Fact_Retrieval_Contract.Fact_re
     private int totalWordCount, learntWordCount;
     private String gameName, resId, readingContentPath, contentTitle;
     private List<String> correctWordList, wrongWordList;
-    private boolean isTest = false;
 
     public Fact_Retrieval_Presenter(Context context) {
         this.context = context;
@@ -200,7 +201,7 @@ public class Fact_Retrieval_Presenter implements Fact_Retrieval_Contract.Fact_re
             }
             setCompletionPercentage();
             GameConstatnts.postScoreEvent(selectedAnsList.size(),correctCnt);
-            if (!FC_Constants.isTest) {
+            if (!FastSave.getInstance().getString(APP_SECTION,"").equalsIgnoreCase(sec_Test)) {
                 viewKeywords.showResult(selectedAnsList);
             } else {
                 GameConstatnts.playGameNext(context, GameConstatnts.FALSE, (OnGameClose) viewKeywords);
@@ -239,7 +240,7 @@ public class Fact_Retrieval_Presenter implements Fact_Retrieval_Contract.Fact_re
             score.setSentFlag(0);
             appDatabase.getScoreDao().insert(score);
 
-            if (FC_Constants.isTest) {
+            if (FastSave.getInstance().getString(APP_SECTION,"").equalsIgnoreCase(sec_Test)) {
                 Assessment assessment = new Assessment();
                 assessment.setResourceIDa(resId);
                 assessment.setSessionIDa(FastSave.getInstance().getString(FC_Constants.ASSESSMENT_SESSION, ""));

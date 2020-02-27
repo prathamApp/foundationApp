@@ -24,6 +24,7 @@ import com.pratham.foundation.R;
 import com.pratham.foundation.customView.GridSpacingItemDecoration;
 import com.pratham.foundation.database.domain.Assessment;
 import com.pratham.foundation.modalclasses.CertificateModelClass;
+import com.pratham.foundation.services.shared_preferences.FastSave;
 import com.pratham.foundation.ui.contentPlayer.web_view.WebViewActivity;
 import com.pratham.foundation.utility.FC_Constants;
 
@@ -42,6 +43,7 @@ import butterknife.OnClick;
 
 import static com.pratham.foundation.ui.contentPlayer.web_view.WebViewActivity.gameLevel;
 import static com.pratham.foundation.utility.FC_Constants.gameFolderPath;
+import static com.pratham.foundation.utility.FC_Constants.supervisedAssessment;
 import static com.pratham.foundation.utility.FC_Utility.dpToPx;
 
 
@@ -114,7 +116,7 @@ public class CertificateActivity extends BaseActivity implements CertificateCont
 
         presenter.getStudentName(certiMode);
 
-        if (FC_Constants.supervisedAssessment)
+        if (FastSave.getInstance().getBoolean(supervisedAssessment, false))
             presenter.getSupervisorData(certiMode);
         else {
             rl_supervisedby.setVisibility(View.GONE);

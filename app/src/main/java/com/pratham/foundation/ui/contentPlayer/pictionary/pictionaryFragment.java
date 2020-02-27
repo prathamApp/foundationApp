@@ -29,6 +29,7 @@ import com.pratham.foundation.interfaces.OnGameClose;
 import com.pratham.foundation.modalclasses.EventMessage;
 import com.pratham.foundation.modalclasses.ScienceQuestion;
 import com.pratham.foundation.modalclasses.ScienceQuestionChoice;
+import com.pratham.foundation.services.shared_preferences.FastSave;
 import com.pratham.foundation.ui.contentPlayer.GameConstatnts;
 import com.pratham.foundation.utility.FC_Constants;
 import com.pratham.foundation.utility.FC_Utility;
@@ -48,7 +49,9 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.pratham.foundation.utility.FC_Constants.APP_SECTION;
 import static com.pratham.foundation.utility.FC_Constants.gameFolderPath;
+import static com.pratham.foundation.utility.FC_Constants.sec_Test;
 import static com.pratham.foundation.utility.FC_Utility.showZoomDialog;
 
 @EFragment(R.layout.layout_mcq_fill_in_the_blanks_with_options_row)
@@ -118,7 +121,7 @@ public class pictionaryFragment extends Fragment implements OnGameClose, Piction
             else
                 readingContentPath = ApplicationClass.foundationPath + gameFolderPath + "/" + contentPath + "/";
 
-            if (FC_Constants.isTest) {
+            if (FastSave.getInstance().getString(APP_SECTION,"").equalsIgnoreCase(sec_Test)) {
                 show_answer.setVisibility(View.INVISIBLE);
             }
             animFadein = AnimationUtils.loadAnimation(getActivity().getApplicationContext(), R.anim.shake);
@@ -159,7 +162,7 @@ public class pictionaryFragment extends Fragment implements OnGameClose, Piction
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
       //  ButterKnife.bind(this, view);
-        if (FC_Constants.isTest) {
+        if (FastSave.getInstance().getString(APP_SECTION,"").equalsIgnoreCase(sec_Test)) {
             show_answer.setVisibility(View.INVISIBLE);
         }
         setMcqsQuestion();
@@ -407,7 +410,6 @@ public class pictionaryFragment extends Fragment implements OnGameClose, Piction
                             }*/
                                 List<ScienceQuestionChoice> ans = new ArrayList<>();
                                 ans.add(options.get(finalR));
-                                //todo
                                 selectedFive.get(index).setUserAnswer(options.get(finalR).getQid());
                                 selectedFive.get(index).setStartTime(FC_Utility.getCurrentDateTime());
                                 selectedFive.get(index).setEndTime(FC_Utility.getCurrentDateTime());
@@ -607,7 +609,7 @@ public class pictionaryFragment extends Fragment implements OnGameClose, Piction
                 next.setVisibility(View.VISIBLE);
             }
             //UNCOMMENT TO SHOW ANSWER IN LEARNING
-           /* if (!FC_Constants.isTest && !FC_Constants.isPractice) {
+           /* if (!FastSave.getInstance().getString(APP_SECTION,"").equalsIgnoreCase(sec_Test) && !FC_Constants.isPractice) {
                 if (selectedFive.get(index).getUserAnswer() != null && selectedFive.get(index).getUserAnswer().isEmpty()) {
                     show_answer.performClick();
                 }

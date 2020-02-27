@@ -26,6 +26,8 @@ import java.util.Collections;
 import java.util.List;
 
 import static com.pratham.foundation.database.AppDatabase.appDatabase;
+import static com.pratham.foundation.utility.FC_Constants.APP_SECTION;
+import static com.pratham.foundation.utility.FC_Constants.sec_Test;
 
 @EBean
 public class KeywordsIdentificationPresenter implements KeywordsIdentificationContract.KeywordsPresenter {
@@ -180,7 +182,7 @@ public class KeywordsIdentificationPresenter implements KeywordsIdentificationCo
             }
             setCompletionPercentage();
             GameConstatnts.postScoreEvent(selectedAnsList.size(),correctCnt);
-            if (!FC_Constants.isTest) {
+            if (!FastSave.getInstance().getString(APP_SECTION,"").equalsIgnoreCase(sec_Test)) {
                 viewKeywords.showResult(correctWordList, wrongWordList);
             }
         } else {
@@ -217,7 +219,7 @@ public class KeywordsIdentificationPresenter implements KeywordsIdentificationCo
             score.setSentFlag(0);
             appDatabase.getScoreDao().insert(score);
 
-            if (FC_Constants.isTest) {
+            if (FastSave.getInstance().getString(APP_SECTION,"").equalsIgnoreCase(sec_Test)) {
                 Assessment assessment = new Assessment();
                 assessment.setResourceIDa(resId);
                 assessment.setSessionIDa(FastSave.getInstance().getString(FC_Constants.ASSESSMENT_SESSION, ""));

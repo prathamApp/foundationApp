@@ -37,6 +37,8 @@ import java.util.List;
 import butterknife.ButterKnife;
 
 import static com.pratham.foundation.database.AppDatabase.appDatabase;
+import static com.pratham.foundation.utility.FC_Constants.APP_SECTION;
+import static com.pratham.foundation.utility.FC_Constants.sec_Test;
 
 //TODO ADD ANNOTATIONS
 public class WebViewActivity extends BaseActivity implements WebViewInterface {
@@ -158,9 +160,9 @@ public class WebViewActivity extends BaseActivity implements WebViewInterface {
         dia_btn_green.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (!FC_Constants.isTest)
+                if (!FastSave.getInstance().getString(APP_SECTION,"").equalsIgnoreCase(sec_Test))
                     addGameProgress();
-                if(FC_Constants.isTest){
+                if(FastSave.getInstance().getString(APP_SECTION,"").equalsIgnoreCase(sec_Test)){
                     Intent returnIntent = new Intent();
                     returnIntent.putExtra("cCode", cCode);
                     returnIntent.putExtra("tMarks", tMarks);

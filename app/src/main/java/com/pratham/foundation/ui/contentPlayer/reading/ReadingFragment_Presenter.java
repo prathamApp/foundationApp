@@ -25,6 +25,8 @@ import java.util.Collections;
 import java.util.List;
 
 import static com.pratham.foundation.database.AppDatabase.appDatabase;
+import static com.pratham.foundation.utility.FC_Constants.APP_SECTION;
+import static com.pratham.foundation.utility.FC_Constants.sec_Test;
 
 @EBean
 public class ReadingFragment_Presenter implements ReadingFragment_Contract.ReadingFragmentPresenter {
@@ -173,7 +175,7 @@ public class ReadingFragment_Presenter implements ReadingFragment_Contract.Readi
             }
             GameConstatnts.postScoreEvent(scienceQuestionChoices.size(), correctCnt);
             setCompletionPercentage();
-            if (!FC_Constants.isTest) {
+            if (!FastSave.getInstance().getString(APP_SECTION,"").equalsIgnoreCase(sec_Test)) {
                 view.showResult();
             }
             BackupDatabase.backup(context);
@@ -200,7 +202,7 @@ public class ReadingFragment_Presenter implements ReadingFragment_Contract.Readi
             score.setSentFlag(0);
             appDatabase.getScoreDao().insert(score);
 
-            if (FC_Constants.isTest) {
+            if (FastSave.getInstance().getString(APP_SECTION,"").equalsIgnoreCase(sec_Test)) {
                 Assessment assessment = new Assessment();
                 assessment.setResourceIDa(resId);
                 assessment.setSessionIDa(FastSave.getInstance().getString(FC_Constants.ASSESSMENT_SESSION, ""));

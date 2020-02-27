@@ -29,8 +29,10 @@ import java.util.List;
 import static com.pratham.foundation.database.AppDatabase.appDatabase;
 import static com.pratham.foundation.ui.contentPlayer.reading_paragraphs.ReadingParagraphsActivity.correctArr;
 import static com.pratham.foundation.ui.contentPlayer.reading_paragraphs.ReadingParagraphsActivity.lineBreakCounter;
+import static com.pratham.foundation.utility.FC_Constants.APP_SECTION;
 import static com.pratham.foundation.utility.FC_Constants.CURRENT_FOLDER_NAME;
 import static com.pratham.foundation.utility.FC_Constants.STT_REGEX;
+import static com.pratham.foundation.utility.FC_Constants.sec_Test;
 
 
 @EBean
@@ -60,7 +62,6 @@ public class ReadingParagraphsPresenter implements ReadingParagraphsContract.Rea
 
     @Override
     public void micStopped(List<String> splitWordsPunct, List<String> wordsResIdList) {
-        //TODO Add The Logic
         readingView.dismissLoadingDialog();
     }
 
@@ -326,7 +327,7 @@ public class ReadingParagraphsPresenter implements ReadingParagraphsContract.Rea
             score.setSentFlag(0);
             appDatabase.getScoreDao().insert(score);
 
-            if (FC_Constants.isTest) {
+            if (FastSave.getInstance().getString(APP_SECTION,"").equalsIgnoreCase(sec_Test)) {
                 Assessment assessment = new Assessment();
                 assessment.setResourceIDa(resId);
                 assessment.setSessionIDa(FastSave.getInstance().getString(FC_Constants.ASSESSMENT_SESSION, ""));

@@ -31,6 +31,8 @@ import java.util.ArrayList;
 
 import static com.pratham.foundation.ui.contentPlayer.web_view.WebViewActivity.gameCategory;
 import static com.pratham.foundation.ui.contentPlayer.web_view.WebViewActivity.webResId;
+import static com.pratham.foundation.utility.FC_Constants.APP_SECTION;
+import static com.pratham.foundation.utility.FC_Constants.sec_Practice;
 
 
 public class JSInterface implements RecognitionListener {
@@ -342,14 +344,13 @@ public class JSInterface implements RecognitionListener {
     @SuppressLint("StaticFieldLeak")
     @JavascriptInterface
     public boolean isPractice() {
-        return FC_Constants.isPractice;
+        return FastSave.getInstance().getString(APP_SECTION, "").equalsIgnoreCase(sec_Practice);
     }
 
     @JavascriptInterface
     public String getLevel() {
         return WebViewActivity.gameLevel;
     }
-
 
     @JavascriptInterface
     public void addScore(String resId, final int questionId, final int scorefromGame, final int totalMarks, final int level, final String startTime, final String Label) {

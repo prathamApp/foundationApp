@@ -236,7 +236,7 @@ public final class SDCardUtil {
 
                 if (Build.VERSION.SDK_INT > 20) {
                     //getExternalMediaDirs() added in API 21
-                    File extenal[] = context.getExternalMediaDirs();
+                    File[] extenal = context.getExternalMediaDirs();
                     if (extenal.length > 1) {
                         filePath = extenal[1].getAbsolutePath();
                         filePath = filePath.substring(0, filePath.indexOf("Android")) + split[1];
@@ -357,7 +357,6 @@ public final class SDCardUtil {
                 if ("primary".equalsIgnoreCase(type)) {
                     return Environment.getExternalStorageDirectory() + "/" + split[1];
                 }
-                // TODO handle non-primary volumes
             }
             // DownloadsProvider
             else if (isDownloadsDocument(uri)) {

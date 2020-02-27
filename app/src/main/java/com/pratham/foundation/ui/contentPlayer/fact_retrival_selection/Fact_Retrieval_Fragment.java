@@ -19,9 +19,9 @@ import com.pratham.foundation.customView.SansTextView;
 import com.pratham.foundation.interfaces.OnGameClose;
 import com.pratham.foundation.modalclasses.ScienceQuestion;
 import com.pratham.foundation.modalclasses.ScienceQuestionChoice;
+import com.pratham.foundation.services.shared_preferences.FastSave;
 import com.pratham.foundation.ui.contentPlayer.GameConstatnts;
 import com.pratham.foundation.ui.contentPlayer.pictionary.PictionaryResult;
-import com.pratham.foundation.utility.FC_Constants;
 import com.pratham.foundation.utility.FC_Utility;
 
 import org.androidannotations.annotations.AfterViews;
@@ -34,7 +34,9 @@ import org.androidannotations.annotations.ViewById;
 import java.util.ArrayList;
 import java.util.Collections;
 
+import static com.pratham.foundation.utility.FC_Constants.APP_SECTION;
 import static com.pratham.foundation.utility.FC_Constants.gameFolderPath;
+import static com.pratham.foundation.utility.FC_Constants.sec_Test;
 
 @EFragment(R.layout.fact_retrival_selection)
 public class Fact_Retrieval_Fragment extends Fragment implements Fact_Retrieval_Contract.Fact_retrival_View, OnGameClose {
@@ -108,7 +110,7 @@ public class Fact_Retrieval_Fragment extends Fragment implements Fact_Retrieval_
         presenter.getData();
         resStartTime = FC_Utility.getCurrentDateTime();
         presenter.addScore(0, "", 0, 0, resStartTime,FC_Utility.getCurrentDateTime(), GameConstatnts.FACT_RETRIAL_CLICK + " " + GameConstatnts.START);
-        if (FC_Constants.isTest) {
+        if (FastSave.getInstance().getString(APP_SECTION,"").equalsIgnoreCase(sec_Test)) {
             show_answer.setVisibility(View.GONE);
         }
     }

@@ -59,6 +59,7 @@ import static com.pratham.foundation.utility.FC_Constants.APP_SECTION;
 import static com.pratham.foundation.utility.FC_Constants.ASSESSMENT_SESSION;
 import static com.pratham.foundation.utility.FC_Constants.BACK_PRESSED;
 import static com.pratham.foundation.utility.FC_Constants.CURRENT_STUDENT_ID;
+import static com.pratham.foundation.utility.FC_Constants.CURRENT_SUPERVISOR_ID;
 import static com.pratham.foundation.utility.FC_Constants.FRAGMENT_RESELECTED;
 import static com.pratham.foundation.utility.FC_Constants.FRAGMENT_SELECTED;
 import static com.pratham.foundation.utility.FC_Constants.GROUP_LOGIN;
@@ -69,8 +70,11 @@ import static com.pratham.foundation.utility.FC_Constants.LEVEL_TEST_GIVEN;
 import static com.pratham.foundation.utility.FC_Constants.LOGIN_MODE;
 import static com.pratham.foundation.utility.FC_Constants.activityPhotoPath;
 import static com.pratham.foundation.utility.FC_Constants.currentLevel;
-import static com.pratham.foundation.utility.FC_Constants.isTest;
+import static com.pratham.foundation.utility.FC_Constants.sec_Learning;
+import static com.pratham.foundation.utility.FC_Constants.sec_Practice;
+import static com.pratham.foundation.utility.FC_Constants.sec_Profile;
 import static com.pratham.foundation.utility.FC_Constants.sec_Test;
+import static com.pratham.foundation.utility.FC_Constants.supervisedAssessment;
 import static com.pratham.foundation.utility.FC_Constants.testSessionEnded;
 import static com.pratham.foundation.utility.FC_Constants.testSessionEntered;
 
@@ -350,22 +354,28 @@ public class HomeActivity extends BaseActivity implements LevelChanged {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
 /*                if (tab.getText().toString().equalsIgnoreCase("Learning")) {
-                    FC_Constants.isTest = true;
+                    FastSave.getInstance().getString(APP_SECTION,"").equalsIgnoreCase(sec_Test) = true;
                 }if (tab.getText().toString().equalsIgnoreCase("Practice")) {
                 }*/
                 if (tab.getText().toString().equalsIgnoreCase(""+getResources().getString(R.string.Test))) {
-                    FC_Constants.isTest = true;
+                    FastSave.getInstance().saveString(APP_SECTION, sec_Test);
                     String assessmentSession = "test-" + ApplicationClass.getUniqueID();
                     FastSave.getInstance().saveString(ASSESSMENT_SESSION, assessmentSession);
                     FastSave.getInstance().saveString(APP_SECTION, ""+sec_Test);
                     showTestTypeSelectionDialog();
                 }else if (tab.getText().toString().equalsIgnoreCase(""+getResources().getString(R.string.Profile))) {
-                    FC_Constants.isTest = false;
+                    FastSave.getInstance().saveString(APP_SECTION,sec_Profile);
+                    FastSave.getInstance().saveBoolean(supervisedAssessment,false);
                     if(testSessionEntered && !testSessionEnded)
                         endTestSession();
                     header_rl.setVisibility(View.GONE);
                 } else {
-                    FC_Constants.isTest = false;
+                    if (tab.getText().toString().equalsIgnoreCase(""+getResources().getString(R.string.Learning)))
+                        FastSave.getInstance().saveString(APP_SECTION, sec_Learning);
+                    else if (tab.getText().toString().equalsIgnoreCase(""+getResources().getString(R.string.Practice)))
+                        FastSave.getInstance().saveString(APP_SECTION, sec_Practice);
+
+                    FastSave.getInstance().saveBoolean(supervisedAssessment,false);
                     if(testSessionEntered && !testSessionEnded)
                         endTestSession();
                     EventMessage eventMessage = new EventMessage();
@@ -383,13 +393,16 @@ public class HomeActivity extends BaseActivity implements LevelChanged {
             public void onTabReselected(TabLayout.Tab tab) {
 
                 if (tab.getText().toString().equalsIgnoreCase(""+getResources().getString(R.string.Test))) {
-                    FC_Constants.isTest = true;
+                    FastSave.getInstance().saveString(APP_SECTION, sec_Test);
                     showTestTypeSelectionDialog();
                 }else if (tab.getText().toString().equalsIgnoreCase(""+getResources().getString(R.string.Profile))) {
-                    FC_Constants.isTest = false;
+                    FastSave.getInstance().saveString(APP_SECTION, sec_Profile);
                     header_rl.setVisibility(View.GONE);
                 } else {
-                    FC_Constants.isTest = false;
+                    if (tab.getText().toString().equalsIgnoreCase(""+getResources().getString(R.string.Learning)))
+                        FastSave.getInstance().saveString(APP_SECTION, sec_Learning);
+                    else if (tab.getText().toString().equalsIgnoreCase(""+getResources().getString(R.string.Practice)))
+                        FastSave.getInstance().saveString(APP_SECTION, sec_Practice);
                     EventMessage eventMessage = new EventMessage();
                     eventMessage.setMessage(FRAGMENT_RESELECTED);
                     EventBus.getDefault().post(eventMessage);
@@ -422,6 +435,9 @@ public class HomeActivity extends BaseActivity implements LevelChanged {
 
     @SuppressLint("SetTextI18n")
     private void showTestTypeSelectionDialog() {
+        FastSave.getInstance().saveString(CURRENT_SUPERVISOR_ID, "NA");
+        FastSave.getInstance().saveBoolean(supervisedAssessment, false);
+
         final CustomLodingDialog dialog = new CustomLodingDialog(this);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         Objects.requireNonNull(dialog.getWindow()).setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
@@ -440,6 +456,7 @@ public class HomeActivity extends BaseActivity implements LevelChanged {
 
         dia_btn_red.setOnClickListener(v -> {
             dialog.dismiss();
+            FastSave.getInstance().saveBoolean(supervisedAssessment, false);
             Intent intent = new Intent(HomeActivity.this, SupervisedAssessmentActivity.class);
             intent.putExtra("testMode", "unsupervised");
             startActivity(intent);
@@ -447,6 +464,7 @@ public class HomeActivity extends BaseActivity implements LevelChanged {
 
         dia_btn_yellow.setOnClickListener(v -> {
             dialog.dismiss();
+            FastSave.getInstance().saveBoolean(supervisedAssessment, true);
             Intent intent = new Intent(HomeActivity.this, SupervisedAssessmentActivity.class);
             intent.putExtra("testMode", "supervised");
             startActivity(intent);
@@ -481,7 +499,7 @@ public class HomeActivity extends BaseActivity implements LevelChanged {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 //        if(resultCode == 1)
-        if (isTest) {
+        if (FastSave.getInstance().getString(APP_SECTION,"").equalsIgnoreCase(sec_Test)) {
             if (resultCode == Activity.RESULT_OK) {
                 String cCode = data.getStringExtra("cCode");
                 int tMarks = data.getIntExtra("tMarks", 0);

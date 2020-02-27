@@ -34,8 +34,8 @@ import com.pratham.foundation.customView.display_image_dialog.CustomLodingDialog
 import com.pratham.foundation.interfaces.OnGameClose;
 import com.pratham.foundation.modalclasses.EventMessage;
 import com.pratham.foundation.modalclasses.ScienceQuestion;
+import com.pratham.foundation.services.shared_preferences.FastSave;
 import com.pratham.foundation.ui.contentPlayer.GameConstatnts;
-import com.pratham.foundation.utility.FC_Constants;
 import com.pratham.foundation.utility.FC_Utility;
 
 import org.androidannotations.annotations.AfterViews;
@@ -53,8 +53,10 @@ import java.util.List;
 
 import static android.app.Activity.RESULT_OK;
 import static android.widget.TextView.AUTO_SIZE_TEXT_TYPE_UNIFORM;
+import static com.pratham.foundation.utility.FC_Constants.APP_SECTION;
 import static com.pratham.foundation.utility.FC_Constants.activityPhotoPath;
 import static com.pratham.foundation.utility.FC_Constants.gameFolderPath;
+import static com.pratham.foundation.utility.FC_Constants.sec_Test;
 
 @EFragment(R.layout.fragment_list_and_writting)
 public class ListeningAndWritting extends Fragment implements ListeningAndWrittingContract.ListeningAndWrittingView, OnGameClose {
@@ -87,7 +89,7 @@ public class ListeningAndWritting extends Fragment implements ListeningAndWritti
     @ViewById(R.id.preview)
     SansButton preview;
     @ViewById(R.id.count)
-    SansTextViewBold  count;
+    SansTextViewBold count;
     @ViewById(R.id.submit)
     SansButton submitBtn;
 
@@ -161,7 +163,7 @@ public class ListeningAndWritting extends Fragment implements ListeningAndWritti
         });
        */
         resStartTime = FC_Utility.getCurrentDateTime();
-        presenter.addScore(0, "", 0, 0, resStartTime, GameConstatnts.LISTNING_AND_WRITTING + " " + GameConstatnts.START,resId,true);
+        presenter.addScore(0, "", 0, 0, resStartTime, GameConstatnts.LISTNING_AND_WRITTING + " " + GameConstatnts.START, resId, true);
         tickMarkLabelsRelativeLayout.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
             @Override
             public void onGlobalLayout() {
@@ -170,7 +172,7 @@ public class ListeningAndWritting extends Fragment implements ListeningAndWritti
                 addTickMarkTextLabels();
             }
         });
-        if (FC_Constants.isTest) {
+        if (FastSave.getInstance().getString(APP_SECTION, "").equalsIgnoreCase(sec_Test)) {
             show_answer.setVisibility(View.GONE);
         }
     }
@@ -290,7 +292,7 @@ public class ListeningAndWritting extends Fragment implements ListeningAndWritti
             duration = mediaPlayer.getDuration();
 
             if (rate == 0.8f) {
-                setCountDown((duration /0.8));
+                setCountDown((duration / 0.8));
             } else if (rate == 1f) {
                 setCountDown((duration));
             } else if (rate == 1.2f) {
@@ -419,9 +421,7 @@ public class ListeningAndWritting extends Fragment implements ListeningAndWritti
 
             });
 
-        } catch (
-                Exception e) {
-            // TODO Auto-generated catch block
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
@@ -526,7 +526,7 @@ public class ListeningAndWritting extends Fragment implements ListeningAndWritti
 
     @Override
     public void gameClose() {
-        presenter.addScore(0, "", 0, 0, resStartTime, GameConstatnts.LISTNING_AND_WRITTING + " " + GameConstatnts.END,resId,true);
+        presenter.addScore(0, "", 0, 0, resStartTime, GameConstatnts.LISTNING_AND_WRITTING + " " + GameConstatnts.END, resId, true);
     }
 
     @Override

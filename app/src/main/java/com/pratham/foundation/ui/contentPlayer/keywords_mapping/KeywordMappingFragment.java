@@ -19,8 +19,8 @@ import com.pratham.foundation.interfaces.OnGameClose;
 import com.pratham.foundation.modalclasses.EventMessage;
 import com.pratham.foundation.modalclasses.ScienceQuestion;
 import com.pratham.foundation.modalclasses.ScienceQuestionChoice;
+import com.pratham.foundation.services.shared_preferences.FastSave;
 import com.pratham.foundation.ui.contentPlayer.GameConstatnts;
-import com.pratham.foundation.utility.FC_Constants;
 import com.pratham.foundation.utility.FC_Utility;
 
 import org.androidannotations.annotations.AfterViews;
@@ -36,7 +36,9 @@ import org.greenrobot.eventbus.ThreadMode;
 import java.util.Collections;
 import java.util.List;
 
+import static com.pratham.foundation.utility.FC_Constants.APP_SECTION;
 import static com.pratham.foundation.utility.FC_Constants.gameFolderPath;
+import static com.pratham.foundation.utility.FC_Constants.sec_Test;
 
 @EFragment(R.layout.fragment_keyword_mapping)
 public class KeywordMappingFragment extends Fragment implements KeywordMappingContract.KeywordMappingView, OnGameClose {
@@ -94,7 +96,7 @@ public class KeywordMappingFragment extends Fragment implements KeywordMappingCo
         presenter.getData();
         resStartTime = FC_Utility.getCurrentDateTime();
         presenter.addScore(0, "", 0, 0, resStartTime, FC_Utility.getCurrentDateTime(), GameConstatnts.KEYWORD_MAPPING + " " + GameConstatnts.START);
-        if (FC_Constants.isTest) {
+        if (FastSave.getInstance().getString(APP_SECTION, "").equalsIgnoreCase(sec_Test)) {
             showAnswer.setVisibility(View.INVISIBLE);
         }
     }
@@ -136,40 +138,45 @@ public class KeywordMappingFragment extends Fragment implements KeywordMappingCo
     }
 
     private void LoadItemsToRecycler() {
-        //TODO java.lang.NullPointerException: Attempt to invoke virtual method 'void android.widget.TextView.setText(java.lang.CharSequence)' on a null object reference\n\tat com.pratham.foundation.ui.contentPlayer.keywords_mapping.KeywordMappingFragment.LoadItemsToRecycler(KeywordMappingFragment.java:138)\n\tat com.pratham.foundation.ui.contentPlayer.keywords_mapping.KeywordMappingFragment.loadUI(KeywordMappingFragment.java:133)\n\tat com.pratham.foundation.ui.contentPlayer.keywords_mapping.KeywordMappingFragment_.access$001(KeywordMappingFragment_.java:24)\n\tat com.pratham.foundation.ui.contentPlayer.keywords_mapping.KeywordMappingFragment_$5.run(KeywordMappingFragment_.java:137)\n\tat android.os.Handler.handleCallback(Handler.java:873)\n\tat android.os.Handler.dispatchMessage(Handler.java:99)\n\tat android.os.Looper.loop(Looper.java:193)\n\tat android.app.ActivityThread.main(ActivityThread.java:6702)\n\tat java.lang.reflect.Method.invoke(Native Method)\n\tat com.android.internal.os.RuntimeInit$MethodAndArgsCaller.run(RuntimeInit.java:493)\n\tat com.android.internal.os.ZygoteInit.main(ZygoteInit.java:911)\n
 
-        keyword.setText(keywordmapping.get(index).getQuestion());
-        optionList = keywordmapping.get(index).getLstquestionchoice();
-        //Collections.shuffle(optionList);
-        //  List temp =
+        //TODO Remove
+        //TODO java.lang.NullPointerException: Attempt to invoke virtual method 'void android.widget.TextView.setText(java.lang.CharSequence)' on a null object reference\n\tat com.pratham.foundation.ui.contentPlayer.keywords_mapping.KeywordMappingFragment.LoadItemsToRecycler(KeywordMappingFragment.java:138)\n\tat com.pratham.foundation.ui.contentPlayer.keywords_mapping.KeywordMappingFragment.loadUI(KeywordMappingFragment.java:133)\n\tat com.pratham.foundation.ui.contentPlayer.keywords_mapping.KeywordMappingFragment_.access$001(KeywordMappingFragment_.java:24)\n\tat com.pratham.foundation.ui.contentPlayer.keywords_mapping.KeywordMappingFragment_$5.run(KeywordMappingFragment_.java:137)\n\tat android.os.Handler.handleCallback(Handler.java:873)\n\tat android.os.Handler.dispatchMessage(Handler.java:99)\n\tat android.os.Looper.loop(Looper.java:193)\n\tat android.app.ActivityThread.main(ActivityThread.java:6702)\n\tat java.lang.reflect.Method.invoke(Native Method)\n\tat com.android.internal.os.RuntimeInit$MethodAndArgsCaller.run(RuntimeInit.java:493)\n\tat com.android.internal.os.ZygoteInit.main(ZygoteInit.java:911)\n
+        try {
+            keyword.setText(keywordmapping.get(index).getQuestion());
+            optionList = keywordmapping.get(index).getLstquestionchoice();
+            //Collections.shuffle(optionList);
+            //  List temp =
        /* for (int i = 0; i < temp.size(); i++) {
             optionList.add(new OptionKeyMap(temp.get(i).toString(), false));
         }*/
-        keywordOptionAdapter = new KeywordOptionAdapter(getActivity(), optionList, getCorrectCnt(optionList), presenter);
-        recycler_view.setAdapter(keywordOptionAdapter);
-        recycler_view.setLayoutManager(gridLayoutManager);
-        if (keywordmapping.get(index).isSubmitted()) {
-            if (!FC_Constants.isTest) {
-                showResult();
-            }else {
-                keywordOptionAdapter.setClickable(false);
-                keywordOptionAdapter.setShowAnswer(true);
-            }
-            submitBtn.setVisibility(View.INVISIBLE);
-            showAnswer.setVisibility(View.INVISIBLE);
-        } else {
-            submitBtn.setVisibility(View.VISIBLE);
-            if (FC_Constants.isTest) {
+            keywordOptionAdapter = new KeywordOptionAdapter(getActivity(), optionList, getCorrectCnt(optionList), presenter);
+            recycler_view.setAdapter(keywordOptionAdapter);
+            recycler_view.setLayoutManager(gridLayoutManager);
+            if (keywordmapping.get(index).isSubmitted()) {
+                if (!FastSave.getInstance().getString(APP_SECTION, "").equalsIgnoreCase(sec_Test)) {
+                    showResult();
+                } else {
+                    keywordOptionAdapter.setClickable(false);
+                    keywordOptionAdapter.setShowAnswer(true);
+                }
+                submitBtn.setVisibility(View.INVISIBLE);
                 showAnswer.setVisibility(View.INVISIBLE);
             } else {
-                showAnswer.setVisibility(View.VISIBLE);
+                submitBtn.setVisibility(View.VISIBLE);
+                if (FastSave.getInstance().getString(APP_SECTION, "").equalsIgnoreCase(sec_Test)) {
+                    showAnswer.setVisibility(View.INVISIBLE);
+                } else {
+                    showAnswer.setVisibility(View.VISIBLE);
+                }
             }
-        }
 
-        if (index == 0) {
-            previous.setVisibility(View.INVISIBLE);
-        } else {
-            previous.setVisibility(View.VISIBLE);
+            if (index == 0) {
+                previous.setVisibility(View.INVISIBLE);
+            } else {
+                previous.setVisibility(View.VISIBLE);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
       /*  if (index == (keywordmapping.size() - 1)) {
            submitBtn.setVisibility(View.VISIBLE);
@@ -178,8 +185,8 @@ public class KeywordMappingFragment extends Fragment implements KeywordMappingCo
              submitBtn.setVisibility(View.INVISIBLE);
             submitBtn.setVisibility(View.VISIBLE);
         }*/
-      //uncomment to show answer in learning mode
-       /* if (!FC_Constants.isTest && !FC_Constants.isPractice) {
+        //uncomment to show answer in learning mode
+       /* if (!FastSave.getInstance().getString(APP_SECTION,"").equalsIgnoreCase(sec_Test) && !FC_Constants.isPractice) {
             if (!checkIsAttempted(optionList)) {
                 showAnswer.performClick();
             }
@@ -202,7 +209,7 @@ public class KeywordMappingFragment extends Fragment implements KeywordMappingCo
                 index++;
                 LoadItemsToRecycler();
             } else {
-                    GameConstatnts.playGameNext(getActivity(), GameConstatnts.TRUE, this);
+                GameConstatnts.playGameNext(getActivity(), GameConstatnts.TRUE, this);
             }
     }
 
@@ -307,8 +314,8 @@ public class KeywordMappingFragment extends Fragment implements KeywordMappingCo
         try {
             if (showanswer) {
                 //hide answer
-               // showAnswer.setText("Hint");
-               showAnswer.setText(getResources().getString(R.string.hint));
+                // showAnswer.setText("Hint");
+                showAnswer.setText(getResources().getString(R.string.hint));
                 showanswer = false;
                 keywordOptionAdapter.setClickable(true);
                 submitBtn.setVisibility(View.VISIBLE);

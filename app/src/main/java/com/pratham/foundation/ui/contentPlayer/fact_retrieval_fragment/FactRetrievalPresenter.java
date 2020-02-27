@@ -14,15 +14,12 @@ import com.pratham.foundation.database.domain.Score;
 import com.pratham.foundation.interfaces.OnGameClose;
 import com.pratham.foundation.modalclasses.ScienceQuestion;
 import com.pratham.foundation.modalclasses.ScienceQuestionChoice;
-import com.pratham.foundation.modalclasses.ScoreEvent;
 import com.pratham.foundation.services.shared_preferences.FastSave;
 import com.pratham.foundation.ui.contentPlayer.GameConstatnts;
 import com.pratham.foundation.utility.FC_Constants;
 import com.pratham.foundation.utility.FC_Utility;
 
-import org.androidannotations.annotations.Background;
 import org.androidannotations.annotations.EBean;
-import org.greenrobot.eventbus.EventBus;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
@@ -30,7 +27,9 @@ import java.util.Collections;
 import java.util.List;
 
 import static com.pratham.foundation.database.AppDatabase.appDatabase;
+import static com.pratham.foundation.utility.FC_Constants.APP_SECTION;
 import static com.pratham.foundation.utility.FC_Constants.STT_REGEX;
+import static com.pratham.foundation.utility.FC_Constants.sec_Test;
 
 @EBean
 public class FactRetrievalPresenter implements FactRetrievalContract.FactRetrievalPresenter {
@@ -193,7 +192,7 @@ public class FactRetrievalPresenter implements FactRetrievalContract.FactRetriev
             setCompletionPercentage();
             GameConstatnts.postScoreEvent(selectedAnsList.size(),correctCnt);
             BaseActivity.correctSound.start();
-            if (!FC_Constants.isTest) {
+            if (!FastSave.getInstance().getString(APP_SECTION,"").equalsIgnoreCase(sec_Test)) {
                 view.showResult(selectedAnsList);
             }else {
                 GameConstatnts.playGameNext(context, GameConstatnts.FALSE, (OnGameClose) view);
@@ -233,7 +232,7 @@ public class FactRetrievalPresenter implements FactRetrievalContract.FactRetriev
             score.setSentFlag(0);
             appDatabase.getScoreDao().insert(score);
 
-            if (FC_Constants.isTest) {
+            if (FastSave.getInstance().getString(APP_SECTION,"").equalsIgnoreCase(sec_Test)) {
                 Assessment assessment = new Assessment();
                 assessment.setResourceIDa(resId);
                 assessment.setSessionIDa(FastSave.getInstance().getString(FC_Constants.ASSESSMENT_SESSION, ""));

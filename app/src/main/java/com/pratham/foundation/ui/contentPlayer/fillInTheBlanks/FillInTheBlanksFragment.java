@@ -59,8 +59,10 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 import static com.pratham.foundation.database.AppDatabase.appDatabase;
+import static com.pratham.foundation.utility.FC_Constants.APP_SECTION;
 import static com.pratham.foundation.utility.FC_Constants.STT_REGEX;
 import static com.pratham.foundation.utility.FC_Constants.gameFolderPath;
+import static com.pratham.foundation.utility.FC_Constants.sec_Test;
 
 
 public class FillInTheBlanksFragment extends Fragment implements STT_Result {
@@ -118,7 +120,7 @@ public class FillInTheBlanksFragment extends Fragment implements STT_Result {
             StudentID = FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, "");
             contentTitle = "b";
             onSdCard = true;
-
+            isTest= FastSave.getInstance().getString(APP_SECTION, "").equalsIgnoreCase(sec_Test);
 
             if (onSdCard)
                 readingContentPath = ApplicationClass.contentSDPath + gameFolderPath + "/" + contentPath + "/";
@@ -467,7 +469,7 @@ public class FillInTheBlanksFragment extends Fragment implements STT_Result {
             score.setSentFlag(0);
             appDatabase.getScoreDao().insert(score);
 
-            if (FC_Constants.isTest) {
+            if (FastSave.getInstance().getString(APP_SECTION,"").equalsIgnoreCase(sec_Test)) {
                 Assessment assessment = new Assessment();
                 assessment.setResourceIDa(resId);
                 assessment.setSessionIDa(FastSave.getInstance().getString(FC_Constants.ASSESSMENT_SESSION, ""));

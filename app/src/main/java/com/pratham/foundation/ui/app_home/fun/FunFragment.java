@@ -91,7 +91,6 @@ public class FunFragment extends Fragment implements FunContract.FunView,
 
     @AfterViews
     public void initialize() {
-        FC_Constants.isTest = false;
         rootList = new ArrayList<>();
         rootLevelList = new ArrayList<>();
         dwParentList = new ArrayList<>();
@@ -110,7 +109,7 @@ public class FunFragment extends Fragment implements FunContract.FunView,
             adapterParent = new FunOuterDataAdapter(context, contentParentList, this);
             RecyclerView.LayoutManager mLayoutManager = new GridLayoutManager(context, 1);
             my_recycler_view.setLayoutManager(mLayoutManager);
-            my_recycler_view.addItemDecoration(new GridSpacingItemDecoration(1,dpToPx(context),true));
+            my_recycler_view.addItemDecoration(new GridSpacingItemDecoration(1, dpToPx(context), true));
             my_recycler_view.setItemAnimator(new DefaultItemAnimator());
             my_recycler_view.setAdapter(adapterParent);
         } else
@@ -258,7 +257,7 @@ public class FunFragment extends Fragment implements FunContract.FunView,
     @Override
     public void setSelectedLevel(List<ContentTable> contentTable) {
         rootLevelList = contentTable;
-        if(rootLevelList!=null)
+        if (rootLevelList != null)
             levelChanged.setActualLevel(rootLevelList.size());
         presenter.insertNodeId(contentTable.get(currentLevel).getNodeId());
         presenter.getDataForList();
@@ -363,9 +362,7 @@ public class FunFragment extends Fragment implements FunContract.FunView,
     @Override
     public void onContentClicked(ContentTable singleItem, String parentName) {
         ButtonClickSound.start();
-        FC_Constants.isPractice=false;
-        FC_Constants.isTest = false;
-        FastSave.getInstance().saveString(APP_SECTION, ""+sec_Fun);
+        FastSave.getInstance().saveString(APP_SECTION, "" + sec_Fun);
 
         if (singleItem.getNodeType().equalsIgnoreCase("category")) {
             Intent intent = new Intent(context, ContentDisplay_.class);
@@ -374,7 +371,7 @@ public class FunFragment extends Fragment implements FunContract.FunView,
             intent.putExtra("parentName", parentName);
             intent.putExtra("level", "" + currentLevel);
             startActivity(intent);
-        } else if(singleItem.getNodeType().equalsIgnoreCase("preResource")){
+        } else if (singleItem.getNodeType().equalsIgnoreCase("preResource")) {
             Intent mainNew = new Intent(context, ContentPlayerActivity_.class);
             mainNew.putExtra("nodeID", singleItem.getNodeId());
             startActivity(mainNew);
@@ -390,13 +387,11 @@ public class FunFragment extends Fragment implements FunContract.FunView,
     @Override
     public void onContentOpenClicked(ContentTable contentList) {
         //Toast.makeText(this, "ContentOpen : Work In Progress", Toast.LENGTH_SHORT).show();
-        FC_Constants.isPractice=false;
         ButtonClickSound.start();
-        FC_Constants.isTest = false;
-        FastSave.getInstance().saveString(APP_SECTION, ""+sec_Fun);
+        FastSave.getInstance().saveString(APP_SECTION, "" + sec_Fun);
         downloadNodeId = contentList.getNodeId();
         resName = contentList.getNodeTitle();
-        if(contentList.getNodeType().equalsIgnoreCase("PreResource")||
+        if (contentList.getNodeType().equalsIgnoreCase("PreResource") ||
                 contentList.getResourceType().equalsIgnoreCase("PreResource")) {
             Intent mainNew = new Intent(context, ContentPlayerActivity_.class);
             mainNew.putExtra("resId", contentList.getResourceId());
@@ -405,7 +400,7 @@ public class FunFragment extends Fragment implements FunContract.FunView,
             mainNew.putExtra("onSdCard", contentList.isOnSDCard());
             mainNew.putExtra("contentPath", contentList.getResourcePath());
             startActivity(mainNew);
-        }else {
+        } else {
             if (contentList.getResourceType().toLowerCase().contains(FC_Constants.HTML_GAME_RESOURCE)) {
                 String resPath;
                 String gameID = contentList.getResourceId();
@@ -512,7 +507,7 @@ public class FunFragment extends Fragment implements FunContract.FunView,
     public void onContentDownloadClicked(ContentTable contentList, int parentPos, int childPos, String downloadType) {
         this.downloadType = downloadType;
         downloadNodeId = contentList.getNodeId();
-        FC_Constants.isTest = false;
+        FastSave.getInstance().saveString(APP_SECTION, sec_Fun);
         ButtonClickSound.start();
 //        downloadNodeId = "" + 1371;
         this.parentPos = parentPos;
@@ -555,7 +550,7 @@ public class FunFragment extends Fragment implements FunContract.FunView,
 
     @Override
     public void seeMore(String nodeId, String nodeTitle) {
-        FC_Constants.isTest = false;
+        FastSave.getInstance().saveString(APP_SECTION, sec_Fun);
         Intent intent = new Intent(context, ContentDisplay_.class);
         intent.putExtra("nodeId", nodeId);
         intent.putExtra("contentTitle", nodeTitle);

@@ -1,7 +1,6 @@
 package com.pratham.foundation.ui.contentPlayer.pictionary;
 
 import android.content.Context;
-import android.content.Intent;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -32,6 +31,8 @@ import java.util.Collections;
 import java.util.List;
 
 import static com.pratham.foundation.database.AppDatabase.appDatabase;
+import static com.pratham.foundation.utility.FC_Constants.APP_SECTION;
+import static com.pratham.foundation.utility.FC_Constants.sec_Test;
 
 @EBean
 public class PictionaryPresenter implements PictionaryContract.PictionaryPresenter {
@@ -201,7 +202,7 @@ public class PictionaryPresenter implements PictionaryContract.PictionaryPresent
             GameConstatnts.postScoreEvent(selectedAnsList.size(), correctCnt);
             BaseActivity.correctSound.start();
             setCompletionPercentage();
-            if (!FC_Constants.isTest) {
+            if (!FastSave.getInstance().getString(APP_SECTION,"").equalsIgnoreCase(sec_Test)) {
                  pictionaryView.showResult();
             } else {
                 GameConstatnts.playGameNext(context, GameConstatnts.FALSE, (OnGameClose) pictionaryView);
@@ -252,7 +253,7 @@ public class PictionaryPresenter implements PictionaryContract.PictionaryPresent
             score.setSentFlag(0);
             appDatabase.getScoreDao().insert(score);
 
-            if (FC_Constants.isTest) {
+            if (FastSave.getInstance().getString(APP_SECTION,"").equalsIgnoreCase(sec_Test)) {
                 Assessment assessment = new Assessment();
                 assessment.setResourceIDa(resId);
                 assessment.setSessionIDa(FastSave.getInstance().getString(FC_Constants.ASSESSMENT_SESSION, ""));

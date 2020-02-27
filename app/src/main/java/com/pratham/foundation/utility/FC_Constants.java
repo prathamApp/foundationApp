@@ -165,6 +165,7 @@ public class FC_Constants {
     public static final String sec_Practice = "Practice";
     public static final String sec_Fun = "Fun";
     public static final String sec_Test = "Test";
+    public static final String sec_Profile = "Profile";
 
 /*    public static String currentStudentID;
     public static String currentAssessmentStudentID;
@@ -173,8 +174,8 @@ public class FC_Constants {
     public static String assessmentSession;*/
     public static String STORING_IN;
     public static boolean assessmentFlag;
-    public static boolean supervisedAssessment;
     public static boolean GROUP_LOGIN = false;
+    public static final String supervisedAssessment = "supervisedAssessment";
 
 //  public static final String INTERNET_DOWNLOAD_API = "http://www.prodigi.openiscool.org/api/pos/Get?id=";
     public static final String INTERNET_DOWNLOAD = "prathmApp";
@@ -256,8 +257,6 @@ public class FC_Constants {
     public static String CONTENT_DOWNLOAD_CLICKED = "content_download_clicked";
     public static String CONTENT_DELETE_CLICKED= "content_delete_clicked";
     public static String SEE_MORE_CLICKED= "see_more_clicked";
-    public static boolean isPractice;
-    public static boolean isTest;
     public static int currentLevel;
     public static boolean testSessionEntered = false;
     public static boolean testSessionEnded = true;

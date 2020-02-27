@@ -24,9 +24,9 @@ import com.pratham.foundation.interfaces.OnGameClose;
 import com.pratham.foundation.modalclasses.EventMessage;
 import com.pratham.foundation.modalclasses.ScienceQuestion;
 import com.pratham.foundation.modalclasses.ScienceQuestionChoice;
+import com.pratham.foundation.services.shared_preferences.FastSave;
 import com.pratham.foundation.ui.contentPlayer.GameConstatnts;
 import com.pratham.foundation.ui.contentPlayer.pictionary.PictionaryResult;
-import com.pratham.foundation.utility.FC_Constants;
 import com.pratham.foundation.utility.FC_Utility;
 
 import org.androidannotations.annotations.AfterViews;
@@ -44,8 +44,10 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 
+import static com.pratham.foundation.utility.FC_Constants.APP_SECTION;
 import static com.pratham.foundation.utility.FC_Constants.STT_REGEX;
 import static com.pratham.foundation.utility.FC_Constants.gameFolderPath;
+import static com.pratham.foundation.utility.FC_Constants.sec_Test;
 
 @EFragment(R.layout.fragment_fact_retrival)
 public class FactRetrieval extends Fragment implements FactRetrievalContract.FactRetrievalView, OnGameClose {
@@ -120,7 +122,7 @@ public class FactRetrieval extends Fragment implements FactRetrievalContract.Fac
         presenter.getData(readingContentPath);
         resStartTime = FC_Utility.getCurrentDateTime();
         presenter.addScore(0, "", 0, 0, resStartTime, FC_Utility.getCurrentDateTime(), GameConstatnts.FACTRETRIEVAL + " " + GameConstatnts.START);
-        if (FC_Constants.isTest) {
+        if (FastSave.getInstance().getString(APP_SECTION,"").equalsIgnoreCase(sec_Test)) {
             show_answer.setVisibility(View.GONE);
         }
     }
@@ -194,7 +196,7 @@ public class FactRetrieval extends Fragment implements FactRetrievalContract.Fac
                             selectedQuetion.get(index).setUserAns(answer);
                         }
                         // Log.d("tag :::", answer);
-                        if (!FC_Constants.isTest) {
+                        if (!FastSave.getInstance().getString(APP_SECTION,"").equalsIgnoreCase(sec_Test)) {
                             float pertc = presenter.checkAnswer(selectedQuetion.get(index));
                             if (pertc > 75) {
                                 final Dialog dialog = new Dialog(getActivity());
@@ -312,7 +314,7 @@ public class FactRetrieval extends Fragment implements FactRetrievalContract.Fac
         }
     }
    /* void showAnswer(){
-        if (!FC_Constants.isTest && !FC_Constants.isPractice) {
+        if (!FastSave.getInstance().getString(APP_SECTION,"").equalsIgnoreCase(sec_Test) && !FC_Constants.isPractice) {
             if (selectedQuetion.get(index).getUserAns() != null && selectedQuetion.get(index).getUserAns().isEmpty()) {
                 show_answer();
             }

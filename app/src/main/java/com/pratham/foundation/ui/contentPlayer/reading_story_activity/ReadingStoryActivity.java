@@ -57,9 +57,11 @@ import java.util.Collections;
 import java.util.List;
 
 import static com.pratham.foundation.ApplicationClass.ButtonClickSound;
+import static com.pratham.foundation.utility.FC_Constants.APP_SECTION;
 import static com.pratham.foundation.utility.FC_Constants.STT_REGEX;
 import static com.pratham.foundation.utility.FC_Constants.dialog_btn_cancel;
 import static com.pratham.foundation.utility.FC_Constants.gameFolderPath;
+import static com.pratham.foundation.utility.FC_Constants.sec_Test;
 
 
 //@EActivity(R.layout.activity_story_reading)
@@ -309,7 +311,7 @@ public class ReadingStoryActivity extends BaseActivity implements
             btn_Play.setVisibility(View.GONE);
         startTime = FC_Utility.getCurrentDateTime();
         new Handler().postDelayed(() -> {
-            if (!FC_Constants.isTest)
+            if (!FastSave.getInstance().getString(APP_SECTION,"").equalsIgnoreCase(sec_Test))
                 btn_Play.performClick();
             else {
                 btn_Mic.performClick();
@@ -330,7 +332,7 @@ public class ReadingStoryActivity extends BaseActivity implements
         new Handler().postDelayed(() -> {
             //setMute(0);
             if (lastPgFlag) {
-                if (FC_Constants.isTest)
+                if (FastSave.getInstance().getString(APP_SECTION,"").equalsIgnoreCase(sec_Test))
                     showStars(true);
                 else
                     showAcknowledgeDialog(true);
@@ -381,7 +383,7 @@ public class ReadingStoryActivity extends BaseActivity implements
     Boolean clickFlag = false;
     private void playClickedWord(int id) {
         try {
-            if (!FC_Constants.isTest && !clickFlag) {
+            if (!FastSave.getInstance().getString(APP_SECTION,"").equalsIgnoreCase(sec_Test) && !clickFlag) {
                 clickFlag = true;
                 Log.d("ReadingPara", "wordCounter : " + wordCounter);
                 float end = Float.parseFloat(modalPagesList.get(currentPage).getReadList().get(id).getWordDuration());
@@ -519,7 +521,7 @@ public class ReadingStoryActivity extends BaseActivity implements
         if (voiceStart) {
             voiceStart = false;
             btn_Stop.setVisibility(View.GONE);
-            if (!FC_Constants.isTest && !playHideFlg)
+            if (!FastSave.getInstance().getString(APP_SECTION,"").equalsIgnoreCase(sec_Test) && !playHideFlg)
                 btn_Play.setVisibility(View.VISIBLE);
             btn_Mic.setVisibility(View.VISIBLE);
             continuousSpeechService.stopSpeechInput();
@@ -581,7 +583,7 @@ public class ReadingStoryActivity extends BaseActivity implements
         continuousSpeechService.startSpeechInput();
 //        } else {
 //            voiceStart = false;
-//            if (!FC_Constants.isTest && !playHideFlg)
+//            if (!FastSave.getInstance().getString(APP_SECTION,"").equalsIgnoreCase(sec_Test) && !playHideFlg)
 //                btn_Play.setVisibility(View.VISIBLE);
 //            btn_Mic.setImageResource(R.drawable.ic_mic_black);
 ////            layout_mic_ripple.startRippleAnimation();
@@ -748,7 +750,7 @@ public class ReadingStoryActivity extends BaseActivity implements
 
             if (voiceStart) {
                 voiceStart = false;
-                if (!FC_Constants.isTest && !playHideFlg)
+                if (!FastSave.getInstance().getString(APP_SECTION,"").equalsIgnoreCase(sec_Test) && !playHideFlg)
                     btn_Play.setVisibility(View.VISIBLE);
                 btn_Mic.setImageResource(R.drawable.ic_mic_black);
                 continuousSpeechService.stopSpeechInput();
@@ -824,7 +826,7 @@ public class ReadingStoryActivity extends BaseActivity implements
             }
             if (voiceStart) {
                 voiceStart = false;
-                if (!FC_Constants.isTest && !playHideFlg)
+                if (!FastSave.getInstance().getString(APP_SECTION,"").equalsIgnoreCase(sec_Test) && !playHideFlg)
                     btn_Play.setVisibility(View.VISIBLE);
                 btn_Mic.setImageResource(R.drawable.ic_mic_black);
                 continuousSpeechService.stopSpeechInput();
@@ -887,7 +889,7 @@ public class ReadingStoryActivity extends BaseActivity implements
         dia_btn_yellow.setOnClickListener(v -> dialog.dismiss());
         dia_btn_green.setOnClickListener(v -> {
             dialog.dismiss();
-            if (FC_Constants.isTest) {
+            if (FastSave.getInstance().getString(APP_SECTION,"").equalsIgnoreCase(sec_Test)) {
                 float correctCnt = getPercentage();
                 Intent returnIntent = new Intent();
                 returnIntent.putExtra("cCode", certiCode);
@@ -1048,7 +1050,7 @@ public class ReadingStoryActivity extends BaseActivity implements
         if (voiceStart) {
             btn_Mic.performClick();
             voiceStart = false;
-            if (!FC_Constants.isTest && !playHideFlg)
+            if (!FastSave.getInstance().getString(APP_SECTION,"").equalsIgnoreCase(sec_Test) && !playHideFlg)
                 btn_Play.setVisibility(View.VISIBLE);
             setMute(0);
         }
