@@ -60,6 +60,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
+import static com.pratham.foundation.ApplicationClass.ButtonClickSound;
 import static com.pratham.foundation.ui.app_home.HomeActivity.header_rl;
 import static com.pratham.foundation.ui.app_home.HomeActivity.levelChanged;
 import static com.pratham.foundation.ui.app_home.HomeActivity.sub_Name;
@@ -70,7 +71,6 @@ import static com.pratham.foundation.utility.FC_Constants.currentLevel;
 import static com.pratham.foundation.utility.FC_Constants.gameFolderPath;
 import static com.pratham.foundation.utility.FC_Constants.sec_Learning;
 import static com.pratham.foundation.utility.FC_Utility.dpToPx;
-import static com.pratham.foundation.utility.SplashSupportActivity.ButtonClickSound;
 
 @EFragment(R.layout.fragment_tab_one)
 public class LearningFragment extends Fragment implements LearningContract.LearningView,
@@ -363,9 +363,10 @@ public class LearningFragment extends Fragment implements LearningContract.Learn
         progressLayout.setCurProgress(modal_fileDownloading.getProgress());
     }
 
+    @UiThread
     @Override
     public void dismissDownloadDialog() {
-        if (downloadDialog != null)
+        if (downloadDialog != null && downloadDialog.isShowing())
             downloadDialog.dismiss();
     }
 
@@ -519,6 +520,7 @@ public class LearningFragment extends Fragment implements LearningContract.Learn
         resServerImageName = contentList.getNodeServerImage();
     }
 
+    @UiThread
     @Override
     public void onContentDownloadClicked(ContentTable contentList, int parentPos, int childPos, String downloadType) {
         this.downloadType = downloadType;
@@ -548,7 +550,6 @@ public class LearningFragment extends Fragment implements LearningContract.Learn
         errorDialog.setCanceledOnTouchOutside(false);
         errorDialog.show();
         Button ok_btn = errorDialog.findViewById(R.id.dialog_error_btn);
-
         ok_btn.setOnClickListener(v -> errorDialog.dismiss());
     }
 

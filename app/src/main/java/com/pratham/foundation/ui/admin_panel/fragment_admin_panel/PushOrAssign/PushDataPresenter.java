@@ -206,17 +206,13 @@ public class PushDataPresenter implements PushDataContract.PushDataPresenter {
             JSONObject jsonObject = new JSONObject(requestString);
             JSONObject jsonObjectSession = jsonObject.getJSONObject("session");
 
-            if (jsonObjectSession.getJSONArray("scoreData").length() > 0 ||
+            return jsonObjectSession.getJSONArray("scoreData").length() > 0 ||
                     jsonObjectSession.getJSONArray("attendanceData").length() > 0 ||
                     jsonObjectSession.getJSONArray("sessionsData").length() > 0 ||
                     jsonObjectSession.getJSONArray("learntWordsData").length() > 0 ||
                     jsonObjectSession.getJSONArray("logsData").length() > 0 ||
                     jsonObjectSession.getJSONArray("assessmentData").length() > 0 ||
-                    jsonObjectSession.getJSONArray("supervisor").length() > 0) {
-                return true;
-            } else {
-                return false;
-            }
+                    jsonObjectSession.getJSONArray("supervisor").length() > 0;
         } catch (JSONException e) {
             e.printStackTrace();
             Log.d("error : ", "JSON Parsing error");
@@ -324,6 +320,7 @@ public class PushDataPresenter implements PushDataContract.PushDataPresenter {
             metaDataObj.put("ActivatedDate", AppDatabase.appDatabase.getStatusDao().getValue("ActivatedDate"));
             metaDataObj.put("village", AppDatabase.appDatabase.getStatusDao().getValue("village"));
             metaDataObj.put("ActivatedForGroups", AppDatabase.appDatabase.getStatusDao().getValue("ActivatedForGroups"));
+            metaDataObj.put("AndroidVersion", AppDatabase.appDatabase.getStatusDao().getValue("AndroidVersion"));
             metaDataObj.put("SerialID", AppDatabase.appDatabase.getStatusDao().getValue("SerialID"));
             metaDataObj.put("gpsFixDuration", AppDatabase.appDatabase.getStatusDao().getValue("gpsFixDuration"));
             metaDataObj.put("prathamCode", AppDatabase.appDatabase.getStatusDao().getValue("prathamCode"));

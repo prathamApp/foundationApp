@@ -48,8 +48,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+import static com.pratham.foundation.ApplicationClass.ButtonClickSound;
 import static com.pratham.foundation.utility.FC_Constants.gameFolderPath;
-import static com.pratham.foundation.utility.SplashSupportActivity.ButtonClickSound;
+
 
 
 @EFragment(R.layout.activity_conversation_1)

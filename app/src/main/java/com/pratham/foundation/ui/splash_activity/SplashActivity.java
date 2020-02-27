@@ -56,9 +56,7 @@ import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.ViewById;
 import org.greenrobot.eventbus.EventBus;
 
-import java.io.BufferedReader;
 import java.io.File;
-import java.io.InputStreamReader;
 import java.util.Objects;
 
 import static com.pratham.foundation.utility.FC_Utility.setAppLocal;
@@ -131,6 +129,19 @@ public class SplashActivity extends SplashSupportActivity implements SplashContr
     }
 
     public void initiateApp() {
+//        String a = "" + context.getResources().getConfiguration().screenLayout;
+//        String b = "" + Configuration.SCREENLAYOUT_SIZE_MASK;
+//        StatFs stat = new StatFs(Environment.getExternalStorageDirectory().getPath());
+
+/*        long bytesAvailable;
+        bytesAvailable = (long) stat.getBlockSize() * (long) stat.getAvailableBlocks();
+        long megAvailable = bytesAvailable / (1024 * 1024);
+
+        Log.e("", "Available MB : " + megAvailable);
+        Log.d("initiateApp", "\n\n\n\n\n\nmegAvailable : " + megAvailable +
+                "\nchargePlug: " + "" +
+                "\nstatus: " + "" +
+                "\nchargePlug: " + "\n\n\n\n\n\n\n");*/
         FastSave.getInstance().saveString(FC_Constants.LOGIN_MODE, "NA");
         String[] permissionArray = new String[]{PermissionUtils.Manifest_CAMERA,
                 PermissionUtils.Manifest_WRITE_EXTERNAL_STORAGE,
@@ -296,9 +307,9 @@ public class SplashActivity extends SplashSupportActivity implements SplashContr
     }
 
     private void getLogs() {
-        Process logcat;
+//        Process logcat;
 //        Log.d("SplashLog", "In getLogs\n\n");
-        final StringBuilder log = new StringBuilder();
+/*        final StringBuilder log = new StringBuilder();
         try {
             logcat = Runtime.getRuntime().exec(new String[]{"logcat", "-d"});
             BufferedReader br = new BufferedReader(new InputStreamReader(logcat.getInputStream()), 4 * 1024);
@@ -312,7 +323,7 @@ public class SplashActivity extends SplashSupportActivity implements SplashContr
             Log.d("New Logs::::::", "\n\n\n\n\n\nLogs:\n\n\n"+log);
         } catch (Exception e) {
             e.printStackTrace();
-        }
+        }*/
     }
 
     @SuppressLint("SetTextI18n")

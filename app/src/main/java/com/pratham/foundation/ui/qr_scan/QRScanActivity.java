@@ -52,9 +52,10 @@ import java.util.UUID;
 
 import me.dm7.barcodescanner.zxing.ZXingScannerView;
 
+import static com.pratham.foundation.ApplicationClass.ButtonClickSound;
 import static com.pratham.foundation.database.AppDatabase.appDatabase;
 import static com.pratham.foundation.utility.FC_Constants.QR_GROUP_MODE;
-import static com.pratham.foundation.utility.SplashSupportActivity.ButtonClickSound;
+
 
 
 @EActivity(R.layout.activity_qrscan)

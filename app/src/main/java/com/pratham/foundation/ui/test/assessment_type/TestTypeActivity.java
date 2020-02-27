@@ -36,9 +36,10 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
+import static com.pratham.foundation.ApplicationClass.ButtonClickSound;
 import static com.pratham.foundation.utility.FC_Constants.CURRENT_ASSESSMENT_STUDENT_ID;
 import static com.pratham.foundation.utility.FC_Utility.dpToPx;
-import static com.pratham.foundation.utility.SplashSupportActivity.ButtonClickSound;
+
 
 
 public class TestTypeActivity extends BaseActivity implements TestTypeContract.TestTypeView, TestStudentClicked {

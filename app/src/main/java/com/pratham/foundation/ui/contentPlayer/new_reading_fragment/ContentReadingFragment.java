@@ -70,13 +70,14 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import static com.pratham.foundation.ApplicationClass.ButtonClickSound;
 import static com.pratham.foundation.BaseActivity.setMute;
 import static com.pratham.foundation.ui.contentPlayer.ContentPlayerActivity.floating_info;
 import static com.pratham.foundation.ui.contentPlayer.GameConstatnts.readingImgPath;
 import static com.pratham.foundation.utility.FC_Constants.STT_REGEX;
 import static com.pratham.foundation.utility.FC_Constants.dialog_btn_cancel;
 import static com.pratham.foundation.utility.FC_Constants.gameFolderPath;
-import static com.pratham.foundation.utility.SplashSupportActivity.ButtonClickSound;
+
 
 
 //@EFragment(R.layout.reading_layout_xml_file)

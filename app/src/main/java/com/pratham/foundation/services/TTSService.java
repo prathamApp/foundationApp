@@ -255,7 +255,8 @@ public class TTSService implements TextToSpeech.OnInitListener {
         String ttsLang,ttsCountry;
         ttsCountry = "IN";
         Log.d(TAG, "Playing:  " + text + " ");
-        if (FastSave.getInstance().getString(FC_Constants.CURRENT_FOLDER_NAME, "").equalsIgnoreCase("English"))
+        if (FastSave.getInstance().getString(FC_Constants.CURRENT_FOLDER_NAME, "")
+                .equalsIgnoreCase("English"))
             ttsLang = "en";
         else
             ttsLang = "hi";

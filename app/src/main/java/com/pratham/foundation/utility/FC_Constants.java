@@ -2,6 +2,14 @@ package com.pratham.foundation.utility;
 
 public class FC_Constants {
 
+
+//    ActivatedDate
+//    village
+//    ActivatedForGroups
+
+//    Internal storage status.
+//    device features - , , , , ,
+
     public static final String FTP_CLIENT_CONNECTED = "ftp_client_connected";
     public static final String TOPIC = "topic";
     public static final String RESOURCE = "resource";

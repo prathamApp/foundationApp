@@ -440,6 +440,16 @@ public class SplashPresenter implements SplashContract.SplashPresenter {
             appDatabase.getStatusDao().insert(status);
 
             status = new com.pratham.foundation.database.domain.Status();
+            status.setStatusKey("AndroidVersion");
+            status.setValue(FC_Utility.getAndroidOSVersion());
+            appDatabase.getStatusDao().insert(status);
+
+            status = new com.pratham.foundation.database.domain.Status();
+            status.setStatusKey("ScreenResolution");
+            status.setValue(FC_Utility.getScreenResolution(context));
+            appDatabase.getStatusDao().insert(status);
+
+            status = new com.pratham.foundation.database.domain.Status();
             status.setStatusKey("programId");
             status.setValue("1");
             appDatabase.getStatusDao().insert(status);
@@ -498,6 +508,7 @@ public class SplashPresenter implements SplashContract.SplashPresenter {
             status.setStatusKey("SerialID");
             status.setValue(FC_Utility.getDeviceSerialID());
             appDatabase.getStatusDao().insert(status);
+
 
             WifiManager wifiManager = (WifiManager) context.getSystemService(Context.WIFI_SERVICE);
             WifiInfo wInfo = wifiManager.getConnectionInfo();

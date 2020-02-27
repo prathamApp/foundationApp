@@ -52,8 +52,9 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Random;
 
+import static com.pratham.foundation.ApplicationClass.ButtonClickSound;
 import static com.pratham.foundation.utility.FC_Constants.gameFolderPath;
-import static com.pratham.foundation.utility.SplashSupportActivity.ButtonClickSound;
+
 
 
 @EActivity(R.layout.activity_conversation)
@@ -496,7 +497,7 @@ public class ConversationActivity extends BaseActivity
 
     @UiThread
     public void showLoader() {
-        try {
+//        try {
             if (!dialogFlg) {
                 dialogFlg = true;
                 myLoadingDialog = new CustomLodingDialog(this);
@@ -506,9 +507,9 @@ public class ConversationActivity extends BaseActivity
                 myLoadingDialog.setCanceledOnTouchOutside(false);
                 myLoadingDialog.show();
             }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
     }
 
     @UiThread
@@ -602,11 +603,11 @@ public class ConversationActivity extends BaseActivity
 
     @Override
     public void onComplete() {
-        try {
+//        try {
             btn_reading.performClick();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
     }
 
     @SuppressLint("SetTextI18n")
@@ -679,13 +680,13 @@ public class ConversationActivity extends BaseActivity
 
     @Override
     public void onBackPressed() {
-        if (voiceStart)
-            btn_reading.performClick();
-        try {
-            mediaPlayerUtil.stopMedia();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+//        if (voiceStart)
+//            btn_reading.performClick();
+//        try {
+//            mediaPlayerUtil.stopMedia();
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
         showExitDialog(this);
     }
 

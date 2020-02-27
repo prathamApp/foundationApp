@@ -3,7 +3,6 @@ package com.pratham.foundation.utility;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Build;
@@ -15,7 +14,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.view.WindowManager;
 
-import com.pratham.foundation.R;
 import com.pratham.foundation.interfaces.PermissionResult;
 import com.pratham.foundation.services.STTService;
 import com.pratham.foundation.services.TTSService;
@@ -43,16 +41,10 @@ public class SplashSupportActivity extends AppCompatActivity implements MediaPla
     private final int KEY_PERMISSION = 200;
     private PermissionResult permissionResult;
     private String[] permissionsAsk;
-    private static AudioManager audioManager;
-    public static MediaPlayer ButtonClickSound;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        audioManager = (AudioManager) getSystemService(AUDIO_SERVICE);
-        ButtonClickSound = MediaPlayer.create(this, R.raw.click);//new MediaPlayer instance
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         hideSystemUI();
     }

@@ -28,7 +28,6 @@ import com.pratham.foundation.ApplicationClass;
 import com.pratham.foundation.database.AppDatabase;
 import com.pratham.foundation.database.domain.Status;
 
-
 import org.json.JSONObject;
 
 import java.text.DateFormat;
@@ -117,6 +116,7 @@ public class LocationService implements GoogleApiClient.ConnectionCallbacks, Goo
             metaDataObj.put("ActivatedDate", AppDatabase.getDatabaseInstance(context).getStatusDao().getValue("ActivatedDate"));
             metaDataObj.put("village", AppDatabase.getDatabaseInstance(context).getStatusDao().getValue("village"));
             metaDataObj.put("ActivatedForGroups", AppDatabase.getDatabaseInstance(context).getStatusDao().getValue("ActivatedForGroups"));
+            metaDataObj.put("AndroidVersion", AppDatabase.getDatabaseInstance(context).getStatusDao().getValue("AndroidVersion"));
             metaDataObj.put("SerialID", AppDatabase.getDatabaseInstance(context).getStatusDao().getValue("SerialID"));
             metaDataObj.put("gpsFixDuration", AppDatabase.getDatabaseInstance(context).getStatusDao().getValue("gpsFixDuration"));
             metaDataObj.put("prathamCode", AppDatabase.getDatabaseInstance(context).getStatusDao().getValue("prathamCode"));
@@ -248,8 +248,6 @@ public class LocationService implements GoogleApiClient.ConnectionCallbacks, Goo
 
     public boolean checkLocationEnabled() {
         LocationManager locationManager = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
-        if (locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
-            return true;
-        } else return false;
+        return locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
     }
 }

@@ -38,9 +38,10 @@ import java.io.FileInputStream;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.pratham.foundation.ApplicationClass.ButtonClickSound;
 import static com.pratham.foundation.utility.FC_Constants.dialog_btn_cancel;
 import static com.pratham.foundation.utility.FC_Constants.gameFolderPath;
-import static com.pratham.foundation.utility.SplashSupportActivity.ButtonClickSound;
+
 
 
 @EActivity(R.layout.activity_card_reading)

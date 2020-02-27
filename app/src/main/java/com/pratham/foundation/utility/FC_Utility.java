@@ -9,6 +9,8 @@ import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.PackageManager.NameNotFoundException;
@@ -29,9 +31,11 @@ import android.location.Geocoder;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
+import android.os.BatteryManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
+import android.os.StatFs;
 import android.provider.MediaStore;
 import android.provider.Settings;
 import android.support.annotation.ColorInt;
@@ -107,6 +111,7 @@ import java.util.regex.Pattern;
 import javax.crypto.Mac;
 import javax.crypto.spec.SecretKeySpec;
 
+import static android.content.Context.BATTERY_SERVICE;
 import static com.pratham.foundation.utility.FC_Constants.APP_SECTION;
 import static com.pratham.foundation.utility.FC_Constants.sec_Fun;
 import static com.pratham.foundation.utility.FC_Constants.sec_Learning;
@@ -1484,6 +1489,51 @@ public class FC_Utility {
         }
         return list;
     }
+
+    public static String getAndroidOSVersion() {
+        return Build.VERSION.RELEASE;
+    }
+
+    public static String getScreenResolution(Context context) {
+        Configuration config = context.getResources().getConfiguration();
+        String res = "width:"+config.screenWidthDp+" height:"+config.screenHeightDp+" dpi:"+config.densityDpi;
+        return ""+res;
+    }
+
+    public static String getInternalStorageStatus(Context context) {
+        StatFs stat = new StatFs(Environment.getExternalStorageDirectory().getPath());
+        long bytesAvailable;
+        if (android.os.Build.VERSION.SDK_INT >=
+                android.os.Build.VERSION_CODES.JELLY_BEAN_MR2) {
+            bytesAvailable = stat.getBlockSizeLong() * stat.getAvailableBlocksLong();
+        }
+        else {
+            bytesAvailable = (long)stat.getBlockSize() * (long)stat.getAvailableBlocks();
+        }
+        long megAvailable = bytesAvailable / (1024 * 1024);
+        return ""+megAvailable+"Mb";
+    }
+
+    public static int getBatteryPercentage(Context context) {
+
+        if (Build.VERSION.SDK_INT >= 21) {
+            BatteryManager bm = (BatteryManager) context.getSystemService(BATTERY_SERVICE);
+            return bm.getIntProperty(BatteryManager.BATTERY_PROPERTY_CAPACITY);
+
+        } else {
+
+            IntentFilter iFilter = new IntentFilter(Intent.ACTION_BATTERY_CHANGED);
+            Intent batteryStatus = context.registerReceiver(null, iFilter);
+
+            int level = batteryStatus != null ? batteryStatus.getIntExtra(BatteryManager.EXTRA_LEVEL, -1) : -1;
+            int scale = batteryStatus != null ? batteryStatus.getIntExtra(BatteryManager.EXTRA_SCALE, -1) : -1;
+
+            double batteryPct = level / (double) scale;
+
+            return (int) (batteryPct * 100);
+        }
+    }
+
 
 /*    public static void setLanguage() {
         if(FastSave.getInstance().getString(FC_Constants.LANGUAGE, FC_Constants.HINDI)

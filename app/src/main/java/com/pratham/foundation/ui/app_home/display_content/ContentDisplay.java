@@ -62,12 +62,13 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import static com.pratham.foundation.ApplicationClass.ButtonClickSound;
 import static com.pratham.foundation.ui.app_home.HomeActivity.languageChanged;
 import static com.pratham.foundation.utility.FC_Constants.LOGIN_MODE;
 import static com.pratham.foundation.utility.FC_Constants.QR_GROUP_MODE;
 import static com.pratham.foundation.utility.FC_Constants.gameFolderPath;
 import static com.pratham.foundation.utility.FC_Utility.dpToPx;
-import static com.pratham.foundation.utility.SplashSupportActivity.ButtonClickSound;
+
 
 
 @EActivity(R.layout.activity_content_display)

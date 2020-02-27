@@ -32,9 +32,10 @@ import org.androidannotations.annotations.ViewById;
 import java.util.ArrayList;
 import java.util.Objects;
 
+import static com.pratham.foundation.ApplicationClass.ButtonClickSound;
 import static com.pratham.foundation.utility.FC_Constants.GROUP_MODE;
 import static com.pratham.foundation.utility.FC_Constants.INDIVIDUAL_MODE;
-import static com.pratham.foundation.utility.SplashSupportActivity.ButtonClickSound;
+
 
 
 @EActivity(R.layout.activity_menu)
@@ -58,6 +59,7 @@ public class MenuActivity extends BaseActivity {
         if (!FastSave.getInstance().getBoolean(FC_Constants.VOICES_DOWNLOAD_INTENT, false))
             show_STT_Dialog();
     }
+
 
 /*    private void showLoginDialog(String nextActivity) {
         Dialog dialog = new Dialog(MenuActivity.this);

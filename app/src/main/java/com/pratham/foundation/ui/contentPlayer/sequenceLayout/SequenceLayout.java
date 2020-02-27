@@ -95,16 +95,17 @@ public class SequenceLayout extends Fragment implements SequeanceLayoutContract.
     @UiThread
     public void loadUI() {
         GameConstatnts.gameList = contentTableList;
+        int dp = 12;
+        if (FC_Constants.TAB_LAYOUT) {
+            dp = 20;
+        }
         SequenceGameAdapter sequenceGameAdapter = new SequenceGameAdapter(getActivity(),
                 contentTableList, SequenceLayout.this);
         RecyclerView.LayoutManager mLayoutManager = new GridLayoutManager(getActivity(), 2);
-        recyclerView.setLayoutManager(mLayoutManager);
-        int dp = 12;
-        if (FC_Constants.TAB_LAYOUT)
-            dp = 20;
         recyclerView.addItemDecoration(new GridSpacingItemDecoration(2,
                 dpToPx(getActivity(), dp), true));
         recyclerView.setItemAnimator(new DefaultItemAnimator());
+        recyclerView.setLayoutManager(mLayoutManager);
 //        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
         recyclerView.setAdapter(sequenceGameAdapter);
     }

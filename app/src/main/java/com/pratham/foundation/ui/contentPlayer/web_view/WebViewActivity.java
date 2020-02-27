@@ -38,6 +38,7 @@ import butterknife.ButterKnife;
 
 import static com.pratham.foundation.database.AppDatabase.appDatabase;
 
+//TODO ADD ANNOTATIONS
 public class WebViewActivity extends BaseActivity implements WebViewInterface {
 
     public static int tMarks, sMarks;
@@ -70,7 +71,11 @@ public class WebViewActivity extends BaseActivity implements WebViewInterface {
         cCode = "NA";
         Log.d("WevViewLevel", "onCreate: " + gameLevel);
 
-        tts = new TextToSpeechCustom(this, 0.6f);
+        try {
+            tts = new TextToSpeechCustom(this, 0.6f);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         gameCounter = 0;
         resStartTime = FC_Utility.getCurrentDateTime();
         createWebView(gamePath);

@@ -3,6 +3,7 @@ package com.pratham.foundation;
 import android.app.Application;
 import android.content.Context;
 import android.media.AudioManager;
+import android.media.MediaPlayer;
 import android.os.StrictMode;
 import android.util.Log;
 
@@ -40,6 +41,7 @@ public class ApplicationClass extends Application {
     public static String path;
     public static TTSService ttsService;
     public static AudioManager audioManager;
+    public static MediaPlayer ButtonClickSound;
 
     @Override
     public void onCreate() {
@@ -52,6 +54,8 @@ public class ApplicationClass extends Application {
             applicationClass = this;
         }
         FastSave.init(getApplicationContext());
+
+        ButtonClickSound = MediaPlayer.create(this, R.raw.click);
 
         foundationPath = FC_Utility.getInternalPath(this);
         if (foundationPath != null) {

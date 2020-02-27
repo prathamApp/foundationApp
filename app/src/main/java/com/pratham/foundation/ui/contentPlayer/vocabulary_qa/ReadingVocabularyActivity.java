@@ -441,6 +441,7 @@ public class ReadingVocabularyActivity extends BaseActivity implements MediaCall
             currentPageNo++;
             currentQueNo = 0;
             messageList.clear();
+            //TODO java.lang.NullPointerException: Attempt to invoke interface method 'int java.util.List.size()' on a null object reference\n\tat com.pratham.foundation.ui.contentPlayer.vocabulary_qa.ReadingVocabularyActivity.nextBtnPressed(ReadingVocabularyActivity.java:447)\n\tat com.pratham.foundation.ui.contentPlayer.vocabulary_qa.ReadingVocabularyActivity_$3.onClick(ReadingVocabularyActivity_.java:128)\n\tat android.view.View.performClick(View.java:6603)\n\tat android.view.View.performClickInternal(View.java:6576)\n\tat android.view.View.access$3100(View.java:780)\n\tat android.view.View$PerformClick.run(View.java:26090)\n\tat android.os.Handler.handleCallback(Handler.java:873)\n\tat android.os.Handler.dispatchMessage(Handler.java:99)\n\tat android.os.Looper.loop(Looper.java:193)\n\tat android.app.ActivityThread.main(ActivityThread.java:6702)\n\tat java.lang.reflect.Method.invoke(Native Method)\n\tat com.android.internal.os.RuntimeInit$MethodAndArgsCaller.run(RuntimeInit.java:493)\n\tat com.android.internal.os.ZygoteInit.main(ZygoteInit.java:911)\n
             try {
                 vocabChatFlow.removeAllViews();
             } catch (Exception e) {
@@ -602,7 +603,11 @@ public class ReadingVocabularyActivity extends BaseActivity implements MediaCall
 
     @Override
     public void Stt_onResult(ArrayList<String> sttResults) {
-        presenter.sttResultProcess(sttResults, modalVocabularyList.get(currentPageNo), ansCheck, ans);
+        try {
+            presenter.sttResultProcess(sttResults, modalVocabularyList.get(currentPageNo), ansCheck, ans);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     @ViewById(R.id.silence_outer)

@@ -53,10 +53,11 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import static com.pratham.foundation.ApplicationClass.ButtonClickSound;
 import static com.pratham.foundation.BaseActivity.setMute;
 import static com.pratham.foundation.utility.FC_Constants.HINDI;
 import static com.pratham.foundation.utility.FC_Constants.gameFolderPath;
-import static com.pratham.foundation.utility.SplashSupportActivity.ButtonClickSound;
+
 
 
 @EFragment(R.layout.fragment_stt_questions)

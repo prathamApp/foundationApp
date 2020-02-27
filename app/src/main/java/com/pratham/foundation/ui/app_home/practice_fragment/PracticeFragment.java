@@ -60,6 +60,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
+import static com.pratham.foundation.ApplicationClass.ButtonClickSound;
 import static com.pratham.foundation.ui.app_home.HomeActivity.header_rl;
 import static com.pratham.foundation.ui.app_home.HomeActivity.levelChanged;
 import static com.pratham.foundation.ui.app_home.HomeActivity.sub_Name;
@@ -70,7 +71,7 @@ import static com.pratham.foundation.utility.FC_Constants.currentLevel;
 import static com.pratham.foundation.utility.FC_Constants.gameFolderPath;
 import static com.pratham.foundation.utility.FC_Constants.sec_Practice;
 import static com.pratham.foundation.utility.FC_Utility.dpToPx;
-import static com.pratham.foundation.utility.SplashSupportActivity.ButtonClickSound;
+
 
 
 @EFragment(R.layout.fragment_tab_one)

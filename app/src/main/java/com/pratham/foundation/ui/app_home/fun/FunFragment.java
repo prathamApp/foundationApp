@@ -60,6 +60,7 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
 
+import static com.pratham.foundation.ApplicationClass.ButtonClickSound;
 import static com.pratham.foundation.ui.app_home.HomeActivity.header_rl;
 import static com.pratham.foundation.ui.app_home.HomeActivity.levelChanged;
 import static com.pratham.foundation.ui.app_home.HomeActivity.sub_Name;
@@ -70,7 +71,7 @@ import static com.pratham.foundation.utility.FC_Constants.currentLevel;
 import static com.pratham.foundation.utility.FC_Constants.gameFolderPath;
 import static com.pratham.foundation.utility.FC_Constants.sec_Fun;
 import static com.pratham.foundation.utility.FC_Utility.dpToPx;
-import static com.pratham.foundation.utility.SplashSupportActivity.ButtonClickSound;
+
 
 @EFragment(R.layout.fragment_tab_one)
 public class FunFragment extends Fragment implements FunContract.FunView,
@@ -385,11 +386,12 @@ public class FunFragment extends Fragment implements FunContract.FunView,
 
     }
 
+    @UiThread
     @Override
     public void onContentOpenClicked(ContentTable contentList) {
         //Toast.makeText(this, "ContentOpen : Work In Progress", Toast.LENGTH_SHORT).show();
-        //todo remove#
-        FC_Constants.isPractice=false;        ButtonClickSound.start();
+        FC_Constants.isPractice=false;
+        ButtonClickSound.start();
         FC_Constants.isTest = false;
         FastSave.getInstance().saveString(APP_SECTION, ""+sec_Fun);
         downloadNodeId = contentList.getNodeId();

@@ -702,6 +702,7 @@ public class TestFragment extends Fragment implements TestContract.TestView,
             dia_btn_green.setText(getResources().getString(R.string.Okay));
 
             dia_btn_green.setOnClickListener(v -> {
+                onLevelChanged();
                 dialog.dismiss();
             });
         } catch (Exception e) {

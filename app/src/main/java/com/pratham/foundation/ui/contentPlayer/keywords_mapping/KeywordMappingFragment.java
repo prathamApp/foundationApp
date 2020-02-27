@@ -136,6 +136,8 @@ public class KeywordMappingFragment extends Fragment implements KeywordMappingCo
     }
 
     private void LoadItemsToRecycler() {
+        //TODO java.lang.NullPointerException: Attempt to invoke virtual method 'void android.widget.TextView.setText(java.lang.CharSequence)' on a null object reference\n\tat com.pratham.foundation.ui.contentPlayer.keywords_mapping.KeywordMappingFragment.LoadItemsToRecycler(KeywordMappingFragment.java:138)\n\tat com.pratham.foundation.ui.contentPlayer.keywords_mapping.KeywordMappingFragment.loadUI(KeywordMappingFragment.java:133)\n\tat com.pratham.foundation.ui.contentPlayer.keywords_mapping.KeywordMappingFragment_.access$001(KeywordMappingFragment_.java:24)\n\tat com.pratham.foundation.ui.contentPlayer.keywords_mapping.KeywordMappingFragment_$5.run(KeywordMappingFragment_.java:137)\n\tat android.os.Handler.handleCallback(Handler.java:873)\n\tat android.os.Handler.dispatchMessage(Handler.java:99)\n\tat android.os.Looper.loop(Looper.java:193)\n\tat android.app.ActivityThread.main(ActivityThread.java:6702)\n\tat java.lang.reflect.Method.invoke(Native Method)\n\tat com.android.internal.os.RuntimeInit$MethodAndArgsCaller.run(RuntimeInit.java:493)\n\tat com.android.internal.os.ZygoteInit.main(ZygoteInit.java:911)\n
+
         keyword.setText(keywordmapping.get(index).getQuestion());
         optionList = keywordmapping.get(index).getLstquestionchoice();
         //Collections.shuffle(optionList);

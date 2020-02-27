@@ -361,6 +361,11 @@ public class BottomStudentsPresenter implements BottomStudentsContract.BottomStu
                 appDatabase.getStatusDao().insert(status);
 
                 status = new com.pratham.foundation.database.domain.Status();
+                status.setStatusKey("AndroidVersion");
+                status.setValue(FC_Utility.getAndroidOSVersion());
+                appDatabase.getStatusDao().insert(status);
+
+                status = new com.pratham.foundation.database.domain.Status();
                 status.setStatusKey("programId");
                 status.setValue("1");
                 appDatabase.getStatusDao().insert(status);

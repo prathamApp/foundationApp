@@ -248,14 +248,18 @@ public class ReadingVocabularyPresenter implements ReadingVocabularyContract.Rea
             e.printStackTrace();
         }
 
-        if ((perc > 50) && !FC_Constants.isTest) {
-            readingView.sendClikChanger(1);
-            readingView.setCorrectViewColor();
-        }
-        if (allCorrect) {
-            readingView.sendClikChanger(0);
-            readingView.setCorrectViewColor();
-            readingView.allCorrectAnswer();
+        try {
+            if ((perc > 50) && !FC_Constants.isTest) {
+                readingView.sendClikChanger(1);
+                readingView.setCorrectViewColor();
+            }
+            if (allCorrect) {
+                readingView.sendClikChanger(0);
+                readingView.setCorrectViewColor();
+                readingView.allCorrectAnswer();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 
