@@ -219,11 +219,8 @@
     <string name="dummy_content" translatable="false">DUMMY\nCONTENT</string>
     <string name="default_notification_channel_id" translatable="false">fcm_default_channel</string>
     <string name="fcm_message" translatable="false">City of Stories - PraDigi</string>
-
     <string name="read_india" translatable="false">Read India</string>
-
     <string name="hybrid_learning" translatable="false">Hybrid Learning</string>
-
     <string name="second_chance" translatable="false">Second Chance</string>
     <string name="ECE" translatable="false">ECE</string>
     <string name="pratham_institute" translatable="false">Pratham Institute</string>
