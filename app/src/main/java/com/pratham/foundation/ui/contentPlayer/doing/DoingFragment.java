@@ -49,6 +49,7 @@ import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Bean;
 import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EFragment;
+import org.androidannotations.annotations.UiThread;
 import org.androidannotations.annotations.ViewById;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -442,11 +443,15 @@ public class DoingFragment extends Fragment implements STT_Result_New.sttView, O
     }
 
 
+    @UiThread
     public void dismissLoadingDialog() {
-        if (dialogFlg) {
-            dialogFlg = false;
-            if (myLoadingDialog != null)
+        try {
+            if (myLoadingDialog != null && myLoadingDialog.isShowing()) {
+                dialogFlg = false;
                 myLoadingDialog.dismiss();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 

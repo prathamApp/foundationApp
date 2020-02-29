@@ -160,8 +160,12 @@ public class ReadingCardsActivity extends BaseActivity implements
     @UiThread
     @Override
     public void dismissLoadingDialog() {
-        if (myLoadingDialog != null) {
-            myLoadingDialog.dismiss();
+        try {
+            if (myLoadingDialog != null && myLoadingDialog.isShowing()) {
+                myLoadingDialog.dismiss();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 

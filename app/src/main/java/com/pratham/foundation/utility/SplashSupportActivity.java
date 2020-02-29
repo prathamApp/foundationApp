@@ -97,7 +97,6 @@ public class SplashSupportActivity extends AppCompatActivity implements MediaPla
         return granted;
     }
 
-
     private void internalRequestPermission(String[] permissionAsk) {
         String[] arrayPermissionNotGranted;
         ArrayList<String> permissionsNotGranted = new ArrayList<>();

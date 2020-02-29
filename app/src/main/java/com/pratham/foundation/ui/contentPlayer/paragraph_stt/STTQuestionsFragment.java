@@ -192,10 +192,13 @@ public class STTQuestionsFragment extends Fragment implements
     @UiThread
     @Override
     public void dismissLoadingDialog() {
-        if (dialogFlg) {
-            dialogFlg = false;
-            if (myLoadingDialog != null)
+        try {
+            if (myLoadingDialog != null && myLoadingDialog.isShowing()) {
+                dialogFlg = false;
                 myLoadingDialog.dismiss();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 

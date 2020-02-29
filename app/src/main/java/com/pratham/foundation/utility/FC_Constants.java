@@ -61,6 +61,7 @@ public class FC_Constants {
     public static final String INFO_CLICKED = "info_clicked";
     public static final String DIALOG_CLOSED = "dialog_closed";
     public static final String IMG_LBL = "LBL_IMAGE_QUESTION";
+    public static final String IMG_PUSH_LBL = "img_push_lbl";
     public static final String CHIT_CHAT_LBL = "CHIT_CHAT_LBL";
     public static final String RETURNSCORE = "returnScore";
     public static final String BACK_PRESSED= "back_pressed";
@@ -119,6 +120,7 @@ public class FC_Constants {
     public static final String BACKUP_DB_COPIED = "BACKUP_DB_COPIED";
     public static final String BACKUP_DB_NOT_COPIED = "backup_db_not_copied";
     public static final String CURRENT_SUBJECT = "current_subject";
+    public static final String SCR_RES = "scr_res";
     public static String RECEIVED_FOLDER_PATH = "";
     public static boolean TAB_LAYOUT = false;
     public static int FTP_HOTSPOT_KEYMGMT = -11;
@@ -271,6 +273,7 @@ public class FC_Constants {
     public static String currentSubjectFolder = "";
     public static String gameFolderPath = "";
     public static String activityPhotoPath = "";
+    public static String StudentPhotoPath = "";
     public static int TransferedImages = 0;
 
     public enum URL {

@@ -321,6 +321,10 @@ public class PushDataPresenter implements PushDataContract.PushDataPresenter {
             metaDataObj.put("village", AppDatabase.appDatabase.getStatusDao().getValue("village"));
             metaDataObj.put("ActivatedForGroups", AppDatabase.appDatabase.getStatusDao().getValue("ActivatedForGroups"));
             metaDataObj.put("AndroidVersion", AppDatabase.appDatabase.getStatusDao().getValue("AndroidVersion"));
+            metaDataObj.put("InternalAvailableStorage", AppDatabase.appDatabase.getStatusDao().getValue("InternalAvailableStorage"));
+            metaDataObj.put("DeviceManufacturer", AppDatabase.appDatabase.getStatusDao().getValue("DeviceManufacturer"));
+            metaDataObj.put("DeviceModel", AppDatabase.appDatabase.getStatusDao().getValue("DeviceModel"));
+            metaDataObj.put("ScreenResolution", AppDatabase.appDatabase.getStatusDao().getValue("ScreenResolution"));
             metaDataObj.put("SerialID", AppDatabase.appDatabase.getStatusDao().getValue("SerialID"));
             metaDataObj.put("gpsFixDuration", AppDatabase.appDatabase.getStatusDao().getValue("gpsFixDuration"));
             metaDataObj.put("prathamCode", AppDatabase.appDatabase.getStatusDao().getValue("prathamCode"));
@@ -332,6 +336,11 @@ public class PushDataPresenter implements PushDataContract.PushDataPresenter {
             metaDataObj.put("GPSDateTime", AppDatabase.appDatabase.getStatusDao().getValue("GPSDateTime"));
             metaDataObj.put("Latitude", AppDatabase.appDatabase.getStatusDao().getValue("Latitude"));
             metaDataObj.put("Longitude", AppDatabase.appDatabase.getStatusDao().getValue("Longitude"));
+            metaDataObj.put("AndroidVersion", AppDatabase.getDatabaseInstance(context).getStatusDao().getValue("AndroidVersion"));
+            metaDataObj.put("InternalAvailableStorage", AppDatabase.getDatabaseInstance(context).getStatusDao().getValue("InternalAvailableStorage"));
+            metaDataObj.put("DeviceManufacturer", AppDatabase.getDatabaseInstance(context).getStatusDao().getValue("DeviceManufacturer"));
+            metaDataObj.put("DeviceModel", AppDatabase.getDatabaseInstance(context).getStatusDao().getValue("DeviceModel"));
+            metaDataObj.put("ScreenResolution", AppDatabase.getDatabaseInstance(context).getStatusDao().getValue("ScreenResolution"));
 
             sessionObj.put("scoreData", scoreData);
             sessionObj.put("studentData", studentData);

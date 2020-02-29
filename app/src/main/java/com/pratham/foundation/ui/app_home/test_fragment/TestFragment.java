@@ -794,7 +794,7 @@ public class TestFragment extends Fragment implements TestContract.TestView,
     @Override
     public void dismissLoadingDialog() {
         try {
-            if (myLoadingDialog != null) {
+            if (myLoadingDialog != null && myLoadingDialog.isShowing()) {
                 loaderVisible = false;
                 myLoadingDialog.dismiss();
             }

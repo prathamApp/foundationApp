@@ -590,18 +590,18 @@ public class ReadingVocabularyActivity extends BaseActivity implements MediaCall
 
     @UiThread
     public void dismissLoadingDialog() {
-        if (dialogFlg) {
-            dialogFlg = false;
-            if (myLoadingDialog != null)
+        try {
+            if (myLoadingDialog != null && myLoadingDialog.isShowing()) {
+                dialogFlg = false;
                 myLoadingDialog.dismiss();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 
     @Override
-    public void stoppedPressed() {
-//        showLoader();
-//        presenter.micStopped(splitWordsPunct, wordsResIdList);
-    }
+    public void stoppedPressed() { }
 
     @Override
     public void sttEngineReady() {

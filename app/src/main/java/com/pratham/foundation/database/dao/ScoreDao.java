@@ -49,8 +49,17 @@ public interface ScoreDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     void addScoreList(List<Score> contentList);
 
-    @Query("update Score set sentFlag=1 where sentFlag=0")
+    @Query("update Score set sentFlag=1 where sentFlag=0 AND Label!='img_push_lbl'")
     void setSentFlag();
+
+    @Query("Select sentFlag from Score where StartDateTime=:imgName AND Label='img_push_lbl'")
+    int getSentFlag(String imgName);
+
+    @Query("Select COUNT(sentFlag) from Score where sentFlag=0 AND Label='img_push_lbl'")
+    int getUnpushedImageCount();
+
+    @Query("update Score set sentFlag=1 where StartDateTime=:imgName AND Label='img_push_lbl'")
+    void setImgSentFlag(String imgName);
 
     @Query("Select MAX(ScoredMarks) from Score where StudentID=:stdID AND Label='RC-sessionTotalScore '")
     int getRCHighScore(String stdID);

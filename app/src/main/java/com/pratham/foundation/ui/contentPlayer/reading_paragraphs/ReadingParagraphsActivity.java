@@ -592,10 +592,14 @@ public class ReadingParagraphsActivity extends BaseActivity
     @UiThread
     @Override
     public void setCorrectViewColor() {
-        for (int x = 0; x < correctArr.length; x++) {
-            if (correctArr[x]) {
-                ((SansTextView) myFlowLayout.getChildAt(x)).setTextColor(getResources().getColor(R.color.readingGreen));
+        try {
+            for (int x = 0; x < correctArr.length; x++) {
+                if (correctArr[x]) {
+                    ((SansTextView) myFlowLayout.getChildAt(x)).setTextColor(getResources().getColor(R.color.readingGreen));
+                }
             }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
         iv_monk.clearAnimation();
         iv_monk.setVisibility(View.GONE);

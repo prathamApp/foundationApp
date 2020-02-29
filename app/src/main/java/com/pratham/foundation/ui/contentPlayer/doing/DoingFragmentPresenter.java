@@ -16,6 +16,7 @@ import com.pratham.foundation.ui.contentPlayer.GameConstatnts;
 import com.pratham.foundation.utility.FC_Constants;
 import com.pratham.foundation.utility.FC_Utility;
 
+import org.androidannotations.annotations.Background;
 import org.androidannotations.annotations.EBean;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -29,6 +30,7 @@ import java.util.List;
 
 import static com.pratham.foundation.database.AppDatabase.appDatabase;
 import static com.pratham.foundation.utility.FC_Constants.APP_SECTION;
+import static com.pratham.foundation.utility.FC_Constants.IMG_PUSH_LBL;
 import static com.pratham.foundation.utility.FC_Constants.sec_Test;
 
 @EBean
@@ -181,6 +183,7 @@ public class DoingFragmentPresenter implements DoingFragmentContract.DoingFragme
             newResId = GameConstatnts.getString(resId, contentTitle, questionModel.getQid(), imageName, questionModel.getQuestion(), queImageName);
             addScore(GameConstatnts.getInt(questionModel.getQid()), jsonName, 0, 0, questionModel.getStartTime(), questionModel.getEndTime(), imageName, resId, true);
             addScore(FC_Utility.getSubjectNo(), jsonName, FC_Utility.getSectionCode(), 0, questionModel.getStartTime(), questionModel.getEndTime(), FC_Constants.IMG_LBL, newResId, false);
+            addImageOnly(resId, imageName);
             appDatabase.getKeyWordDao().insert(keyWords);
             setCompletionPercentage();
             //Toast.makeText(context, "inserted successfully", Toast.LENGTH_LONG).show();
@@ -227,6 +230,30 @@ public class DoingFragmentPresenter implements DoingFragmentContract.DoingFragme
                 assessment.setSentFlag(0);
                 appDatabase.getAssessmentDao().insert(assessment);
             }
+            BackupDatabase.backup(context);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Background
+    public void addImageOnly(String resId, String imageName) {
+        try {
+            String deviceId = appDatabase.getStatusDao().getValue("DeviceId");
+            Score score = new Score();
+            score.setSessionID(FastSave.getInstance().getString(FC_Constants.CURRENT_SESSION, ""));
+            score.setResourceID(resId);
+            score.setQuestionId(0);
+            score.setScoredMarks(0);
+            score.setTotalMarks(0);
+            score.setStudentID(FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""));
+            score.setStartDateTime(imageName);
+            score.setDeviceID(deviceId.equals(null) ? "0000" : deviceId);
+            score.setEndDateTime(FC_Utility.getCurrentDateTime());
+            score.setLevel(FC_Constants.currentLevel);
+            score.setLabel(IMG_PUSH_LBL);
+            score.setSentFlag(0);
+            appDatabase.getScoreDao().insert(score);
             BackupDatabase.backup(context);
         } catch (Exception e) {
             e.printStackTrace();

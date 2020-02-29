@@ -46,9 +46,11 @@ import com.pratham.foundation.modalclasses.MatchThePair;
         ContentProgress.class, KeyWords.class, WordEnglish.class, MatchThePair.class }, version = 1, exportSchema = false)
 
 public abstract class AppDatabase extends RoomDatabase {
+
     public static AppDatabase appDatabase;
 
     public static final String DB_NAME = "foundation_db";
+    public static final String DB_VERSION = "1";
 
     public abstract CrlDao getCrlDao();
 

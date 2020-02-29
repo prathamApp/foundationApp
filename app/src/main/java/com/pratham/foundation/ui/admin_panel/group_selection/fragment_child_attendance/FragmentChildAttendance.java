@@ -2,6 +2,7 @@ package com.pratham.foundation.ui.admin_panel.group_selection.fragment_child_att
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -32,6 +33,7 @@ import com.pratham.foundation.ui.selectSubject.SelectSubject_;
 import com.pratham.foundation.utility.FC_Constants;
 import com.pratham.foundation.utility.FC_Utility;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Objects;
 import java.util.UUID;
@@ -40,7 +42,9 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
+import static android.app.Activity.RESULT_OK;
 import static com.pratham.foundation.utility.FC_Constants.GROUP_MODE;
+import static com.pratham.foundation.utility.FC_Constants.StudentPhotoPath;
 import static com.pratham.foundation.utility.FC_Utility.dpToPx;
 
 public class FragmentChildAttendance extends Fragment implements ContractChildAttendance.attendanceView {
@@ -56,6 +60,9 @@ public class FragmentChildAttendance extends Fragment implements ContractChildAt
     ArrayList<Integer> avatarsMale;
     ArrayList<Integer> avatarsFemale;
     private String groupID = "";
+    private Uri capturedImageUri;
+    String imageName = "NA";
+    private static final int CAMERA_REQUEST = 1;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -77,17 +84,17 @@ public class FragmentChildAttendance extends Fragment implements ContractChildAt
         avatarsFemale = new ArrayList<>();
         avatarsMale = new ArrayList<>();
         if (ApplicationClass.isTablet) {
-                btn_attendance_next.setVisibility(View.VISIBLE);
-                //add_child.setVisibility(View.GONE);
-                groupID = getArguments().getString(FC_Constants.GROUPID);
-                FC_Constants.GROUP_LOGIN = true;
-                FC_Constants.currentGroup = "" + groupID;
-                if(FastSave.getInstance().getString(FC_Constants.LOGIN_MODE, FC_Constants.GROUP_MODE).equalsIgnoreCase(GROUP_MODE))
-                    FastSave.getInstance().saveString(FC_Constants.CURRENT_STUDENT_ID, ""+groupID);
-                for (Student stu : students) {
-                    avatarsMale.add(FC_Utility.getRandomMaleAvatar(getActivity()));
-                    avatarsFemale.add(FC_Utility.getRandomFemaleAvatar(getActivity()));
-                }
+            btn_attendance_next.setVisibility(View.VISIBLE);
+            //add_child.setVisibility(View.GONE);
+            groupID = getArguments().getString(FC_Constants.GROUPID);
+            FC_Constants.GROUP_LOGIN = true;
+            FC_Constants.currentGroup = "" + groupID;
+            if (FastSave.getInstance().getString(FC_Constants.LOGIN_MODE, FC_Constants.GROUP_MODE).equalsIgnoreCase(GROUP_MODE))
+                FastSave.getInstance().saveString(FC_Constants.CURRENT_STUDENT_ID, "" + groupID);
+            for (Student stu : students) {
+                avatarsMale.add(FC_Utility.getRandomMaleAvatar(getActivity()));
+                avatarsFemale.add(FC_Utility.getRandomFemaleAvatar(getActivity()));
+            }
         } else {
             btn_attendance_next.setVisibility(View.GONE);
             // add_child.setVisibility(View.VISIBLE);
@@ -109,7 +116,7 @@ public class FragmentChildAttendance extends Fragment implements ContractChildAt
             rv_child.setHasFixedSize(true);
             RecyclerView.LayoutManager mLayoutManager = new GridLayoutManager(getActivity(), 2);
             rv_child.setLayoutManager(mLayoutManager);
-            rv_child.addItemDecoration(new GridSpacingItemDecoration(2, dpToPx(getActivity(),15), true));
+            rv_child.addItemDecoration(new GridSpacingItemDecoration(2, dpToPx(getActivity(), 15), true));
             rv_child.setItemAnimator(new DefaultItemAnimator());
             // rv_child.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false));
             rv_child.setAdapter(childAdapter);
@@ -118,27 +125,64 @@ public class FragmentChildAttendance extends Fragment implements ContractChildAt
         }
     }
 
+    int childItemPos;
+
+    @Override
+    public void clickPhoto(String studentID, int pos) {
+        childItemPos = pos;
+        imageName = studentID + ".jpg";
+        Intent cameraIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
+        File imagesFolder = new File(StudentPhotoPath);
+        if (!imagesFolder.exists()) imagesFolder.mkdirs();
+        File image = new File(imagesFolder, imageName);
+        capturedImageUri = Uri.fromFile(image);
+        cameraIntent.putExtra(android.provider.MediaStore.EXTRA_OUTPUT, capturedImageUri);
+        startActivityForResult(cameraIntent, CAMERA_REQUEST);
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        Log.d("codes", String.valueOf(requestCode) + resultCode);
+        try {
+            if (requestCode == CAMERA_REQUEST) {
+                if (resultCode == RESULT_OK) {
+                    childAdapter.notifyItemChanged(childItemPos);
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+
     @Override
     public void childItemClicked(Student student, int position) {
         Log.d("ooo", "" + position);
-        if(FastSave.getInstance().getString(FC_Constants.LOGIN_MODE, FC_Constants.GROUP_MODE).equalsIgnoreCase(GROUP_MODE))
-        for (Student stu : students) {
-            if (stu.getStudentID().equalsIgnoreCase(student.getStudentID())) {
-                if (stu.isChecked()) {
-                    stu.setChecked(false);
-                } else {
-                    stu.setChecked(true);
+        if (FastSave.getInstance().getString(FC_Constants.LOGIN_MODE, FC_Constants.GROUP_MODE).equalsIgnoreCase(GROUP_MODE)) {
+/*
+            for (Student stu : students) {
+                if (stu.getStudentID().equalsIgnoreCase(student.getStudentID())) {
+                    if (stu.isChecked()) {
+                        stu.setChecked(false);
+                    } else {
+                        stu.setChecked(true);
+                    }
+                    break;
                 }
-                break;
             }
-        }
-        else{
-            for(int i=0; i<students.size(); i++){
+*/
+            if(student.isChecked())
+                students.get(position).setChecked(false);
+            else
+                students.get(position).setChecked(true);
+            childAdapter.notifyItemChanged(position);
+        } else {
+            for (int i = 0; i < students.size(); i++) {
                 students.get(i).setChecked(false);
             }
             students.get(position).setChecked(true);
+            childAdapter.notifyDataSetChanged();
         }
-        childAdapter.notifyDataSetChanged();
         // setChilds(students);
     }
 
@@ -193,7 +237,7 @@ public class FragmentChildAttendance extends Fragment implements ContractChildAt
                     startSesion.setToDate("NA");
                     startSesion.setSentFlag(0);
                     AppDatabase.getDatabaseInstance(getContext()).getSessionDao().insert(startSesion);
-                    Log.d("ChildAttendence","Student Count: " + stud.size());
+                    Log.d("ChildAttendence", "Student Count: " + stud.size());
 
                     Attendance attendance = new Attendance();
                     for (int i = 0; i < stud.size(); i++) {
@@ -203,18 +247,18 @@ public class FragmentChildAttendance extends Fragment implements ContractChildAt
                         attendance.setGroupID(groupID);
                         attendance.setSentFlag(0);
                         AppDatabase.getDatabaseInstance(getContext()).getAttendanceDao().insert(attendance);
-                        Log.d("ChildAttendence", "currentSession : " + FastSave.getInstance().getString(FC_Constants.CURRENT_SESSION, "")+ "  StudentId: " + stud.get(i).getStudentID());
+                        Log.d("ChildAttendence", "currentSession : " + FastSave.getInstance().getString(FC_Constants.CURRENT_SESSION, "") + "  StudentId: " + stud.get(i).getStudentID());
                     }
 
                     String currentStudentID = "";
-                    if(FastSave.getInstance().getString(FC_Constants.LOGIN_MODE, FC_Constants.GROUP_MODE).equalsIgnoreCase(GROUP_MODE))
+                    if (FastSave.getInstance().getString(FC_Constants.LOGIN_MODE, FC_Constants.GROUP_MODE).equalsIgnoreCase(GROUP_MODE))
                         currentStudentID = groupID;
                     else {
                         currentStudentID = stud.get(0).getStudentID();
                         String currentStudName = stud.get(0).getFullName();
-                        FastSave.getInstance().saveString(FC_Constants.CURRENT_STUDENT_NAME , currentStudName);
+                        FastSave.getInstance().saveString(FC_Constants.CURRENT_STUDENT_NAME, currentStudName);
                     }
-                    FastSave.getInstance().saveString(FC_Constants.CURRENT_STUDENT_ID , currentStudentID);
+                    FastSave.getInstance().saveString(FC_Constants.CURRENT_STUDENT_ID, currentStudentID);
                     BackupDatabase.backup(getContext());
                     return null;
                 } catch (Exception e) {
@@ -237,7 +281,7 @@ public class FragmentChildAttendance extends Fragment implements ContractChildAt
             attendance.setSentFlag(0);
             FastSave.getInstance().saveString(FC_Constants.GROUPID, groupID);
             attendances.add(attendance);
-            FastSave.getInstance().saveString(FC_Constants.CURRENT_STUDENT_ID , groupID);
+            FastSave.getInstance().saveString(FC_Constants.CURRENT_STUDENT_ID, groupID);
         }
         AppDatabase.getDatabaseInstance(getActivity()).getAttendanceDao().insertAll(attendances);
         Session s = new Session();

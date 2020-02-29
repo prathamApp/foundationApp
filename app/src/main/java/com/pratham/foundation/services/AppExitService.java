@@ -43,7 +43,7 @@ public class AppExitService extends Service {
                             Log.d("AppExitService:  ", "4]  toDateTemp If NA: "+toDateTemp);
                             appDatabase.getSessionDao().UpdateToDate(FastSave.getInstance().getString(FC_Constants.CURRENT_SESSION, ""), FC_Utility.getCurrentDateTime());
                         }
-                        if(FC_Constants.assessmentFlag || FastSave.getInstance().getString(APP_SECTION,"").equalsIgnoreCase(sec_Test)) {
+                        if(FastSave.getInstance().getString(APP_SECTION,"").equalsIgnoreCase(sec_Test)) {
                             Log.d("AppExitService:  ", "5]  Assessment Flg: ");
                             String toDateAssessment = appDatabase.getSessionDao().getToDate(FastSave.getInstance().getString(FC_Constants.ASSESSMENT_SESSION, ""));
                             Log.d("AppExitService:  ", "6]  Assessment toDate: "+toDateAssessment);

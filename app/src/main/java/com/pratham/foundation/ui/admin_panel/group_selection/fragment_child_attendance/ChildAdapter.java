@@ -1,6 +1,7 @@
 package com.pratham.foundation.ui.admin_panel.group_selection.fragment_child_attendance;
 
 import android.content.Context;
+import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -10,13 +11,18 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.facebook.drawee.backends.pipeline.Fresco;
+import com.facebook.drawee.view.SimpleDraweeView;
 import com.pratham.foundation.R;
 import com.pratham.foundation.database.domain.Student;
 
+import java.io.File;
 import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+
+import static com.pratham.foundation.utility.FC_Constants.StudentPhotoPath;
 
 public class ChildAdapter extends RecyclerView.Adapter<ChildAdapter.ChildHolder> {
     private ArrayList<Student> datalist;
@@ -48,20 +54,33 @@ public class ChildAdapter extends RecyclerView.Adapter<ChildAdapter.ChildHolder>
     public void onBindViewHolder(@NonNull final ChildHolder viewHolder, int pos) {
         // pos = viewHolder.getAdapterPosition();
         viewHolder.child_name.setText(datalist.get(pos).getFullName());
-        if(datalist.get(pos).getGender().equalsIgnoreCase("male"))
-            viewHolder.child_avatar.setImageResource(male_avatar.get(pos));
-        else
-            viewHolder.child_avatar.setImageResource(female_avatar.get(pos));
-
+        datalist.get(pos).getStudentID();
+        File file;
+        file = new File(StudentPhotoPath + "" + datalist.get(pos).getStudentID() + ".jpg");
+        Fresco.getImagePipeline().clearCaches();
+        Fresco.getImagePipeline().clearDiskCaches();
+        Fresco.getImagePipeline().clearMemoryCaches();
+        if (file.exists()) {
+            viewHolder.child_avatar.setImageURI(Uri.fromFile(file));
+        } else {
+            if (datalist.get(pos).getGender().equalsIgnoreCase("male"))
+                viewHolder.child_avatar.setImageResource(male_avatar.get(pos));
+            else
+                viewHolder.child_avatar.setImageResource(female_avatar.get(pos));
+        }
         viewHolder.itemView.setOnClickListener(v -> attendanceView.
                 childItemClicked(datalist.get(viewHolder.getAdapterPosition()),
                         viewHolder.getAdapterPosition()));
+        viewHolder.iv_camera.setOnClickListener(v -> attendanceView.
+                clickPhoto(datalist.get(pos).getStudentID(), pos));
         if (datalist.get(viewHolder.getAdapterPosition()).isChecked()) {
             viewHolder.itemView.setBackground(context.getResources().getDrawable(R.drawable.ripple_rectangle_transparent_dark));
             viewHolder.child_name.setTextColor(context.getResources().getColor(R.color.white));
+            viewHolder.iv_camera.setImageDrawable(context.getResources().getDrawable(R.drawable.ic_photo_camera_black));
         } else {
+            viewHolder.iv_camera.setImageDrawable(context.getResources().getDrawable(R.drawable.ic_photo_camera));
             viewHolder.itemView.setBackground(context.getResources().getDrawable(R.drawable.rounded_rectangle_stroke_bg));
-            viewHolder.child_name.setTextColor(context.getResources().getColor(R.color.colorBlack));
+            viewHolder.child_name.setTextColor(context.getResources().getColor(R.color.dark_blue));
         }
     }
 
@@ -74,7 +93,9 @@ public class ChildAdapter extends RecyclerView.Adapter<ChildAdapter.ChildHolder>
         @BindView(R.id.child_name)
         TextView child_name;
         @BindView(R.id.iv_child)
-        ImageView child_avatar;
+        SimpleDraweeView child_avatar;
+        @BindView(R.id.iv_camera)
+        ImageView iv_camera;
         @BindView(R.id.rl_child_attendance)
         RelativeLayout main_layout;
 

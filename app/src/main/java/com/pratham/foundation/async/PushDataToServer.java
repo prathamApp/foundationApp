@@ -6,7 +6,6 @@ import android.content.Context;
 import android.os.Environment;
 import android.util.Base64;
 import android.util.Log;
-import android.widget.Toast;
 
 import com.androidnetworking.AndroidNetworking;
 import com.androidnetworking.common.Priority;
@@ -30,7 +29,6 @@ import com.pratham.foundation.database.domain.Student;
 import com.pratham.foundation.database.domain.SupervisorData;
 import com.pratham.foundation.services.shared_preferences.FastSave;
 import com.pratham.foundation.utility.FC_Constants;
-import com.pratham.foundation.utility.FC_Utility;
 
 import org.androidannotations.annotations.Background;
 import org.androidannotations.annotations.EBean;
@@ -60,14 +58,14 @@ public class PushDataToServer {
     private JSONArray contentProgress;
     private JSONArray keyWordsData;
     private JSONArray logsData;
-    private boolean pushSuccessfull = false;
-    private int totalImages, imageUploadCnt, totalActivityFolders;
+    private boolean pushSuccessfull = false, pushImageSuccessfull = false;
+    private int totalImages, imageUploadCnt, totalActivityFolders, scoreLen=0;
     private String actPhotoPath = "";
     private File[] imageFilesArray;
-    private Boolean isConnectedToRasp = false, imageDialogFlg = false;
+    private Boolean isConnectedToRasp = false;
     boolean isRaspberry = false;
     private String programID = "";
-    ProgressDialog dialog;
+    ProgressDialog imageDialog, dataDialog;
 
     public PushDataToServer(Context context) {
         this.context = context;
@@ -110,28 +108,75 @@ public class PushDataToServer {
             List<KeyWords> keyWordsList = AppDatabase.getDatabaseInstance(context).getKeyWordDao().getAllData();
             keyWordsData = fillkeyWordsData(keyWordsList);
 
-            JSONObject pushDataJsonObject = new JSONObject();
-            pushDataJsonObject = generateRequestString(scoreData, attendanceData, sessionData, supervisorData, logsData, assessmentData, studentData, contentProgress, keyWordsData);
+            JSONObject pushDataJsonObject = generateRequestString(scoreData, attendanceData, sessionData, supervisorData, logsData, assessmentData, studentData, contentProgress, keyWordsData);
             pushSuccessfull = false;
             Gson gson = new Gson();
             //iterate through all new sessions
             JSONObject metadataJson = new JSONObject();
+            totalImages = AppDatabase.getDatabaseInstance(context).getScoreDao().getUnpushedImageCount();
+            imageUploadCnt = 0;
             if (ApplicationClass.wiseF.isDeviceConnectedToWifiNetwork()) {
                 if (ApplicationClass.wiseF.isDeviceConnectedToSSID(FC_Constants.PRATHAM_KOLIBRI_HOTSPOT)) {
                     getFacilityId(pushDataJsonObject);
                 } else {
                     isConnectedToRasp = false;
-                    getImageList();
                     pushDataToServer(context, pushDataJsonObject, ApplicationClass.uploadDataUrl);
                 }
             } else {
                 isConnectedToRasp = false;
-                getImageList();
                 pushDataToServer(context, pushDataJsonObject, ApplicationClass.uploadDataUrl);
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    @UiThread
+    public void pushDataToServer(Context context, JSONObject data, String url) {
+        try {
+            AndroidNetworking.post(url)
+                    .addHeaders("Content-Type", "application/json")
+                    .addJSONObjectBody(data)
+                    .setPriority(Priority.HIGH)
+                    .build()
+                    .getAsString(new StringRequestListener() {
+                        @Override
+                        public void onResponse(String response) {
+                            if (response.equalsIgnoreCase("success")) {
+                                Log.d("PUSH_STATUS", "Data pushed successfully");
+                                if (!autoPush)
+                                    pushSuccessfull = true;
+                                setPushFlag();
+                            }
+                        }
+
+                        @Override
+                        public void onError(ANError anError) {
+                            Log.d("PUSH_STATUS", "Data push failed");
+                            if (!autoPush)
+                                pushSuccessfull = false;
+                            onPostExecute();
+                        }
+                    });
+//            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Background
+    public void setPushFlag() {
+        AppDatabase.getDatabaseInstance(context).getLogsDao().setSentFlag();
+        AppDatabase.getDatabaseInstance(context).getSessionDao().setSentFlag();
+        AppDatabase.getDatabaseInstance(context).getAttendanceDao().setSentFlag();
+        AppDatabase.getDatabaseInstance(context).getScoreDao().setSentFlag();
+        AppDatabase.getDatabaseInstance(context).getAssessmentDao().setSentFlag();
+        AppDatabase.getDatabaseInstance(context).getSupervisorDataDao().setSentFlag();
+        AppDatabase.getDatabaseInstance(context).getStudentDao().setSentFlag();
+        AppDatabase.getDatabaseInstance(context).getKeyWordDao().setSentFlag();
+        AppDatabase.getDatabaseInstance(context).getContentProgressDao().setSentFlag();
+        AppDatabase.getDatabaseInstance(context).getLogsDao().deletePushedLogs();
+        onPostExecute();
     }
 
     public void getImageList() {
@@ -145,20 +190,69 @@ public class PushDataToServer {
         }
 
         totalActivityFolders = imageFilesArray.length;
-        totalImages = 0;
-        imageUploadCnt = 0;
-        imageDialogFlg = false;
-        showImgDialog();
-        if (totalActivityFolders > 0)
+        if (totalActivityFolders > 0) {
             pushImagesToServer(0);
+        }
     }
 
     @UiThread
-    public void showImgDialog() {
-        if(!imageDialogFlg) {
-            imageDialogFlg = true;
-            dialog = new ProgressDialog(context);
-            FC_Utility.showDialogInApiCalling(dialog, context, "Uploading Image(s)..");
+    public void showImgDialog(int counter) {
+        try {
+            if (!autoPush) {
+                if (imageDialog == null) {
+                    imageDialog = new ProgressDialog(context);
+                    imageDialog.setTitle("Uploading "+counter+"/"+totalImages);
+                    imageDialog.setCancelable(true);
+                    imageDialog.setCanceledOnTouchOutside(true);
+                    imageDialog.show();
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    @UiThread
+    public void dismissImageDialog() {
+        try {
+            if (!autoPush) {
+                if (imageDialog.isShowing()) {
+                    imageDialog.dismiss();
+                    imageDialog = null;
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    @UiThread
+    public void showDataDialog() {
+        try {
+            if (!autoPush) {
+                if (dataDialog == null) {
+                    dataDialog = new ProgressDialog(context);
+                    dataDialog.setTitle("Uploading Data");
+                    dataDialog.setCancelable(false);
+                    dataDialog.setCanceledOnTouchOutside(false);
+                    dataDialog.show();
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    @UiThread
+    public void dismissDataDialog() {
+        try {
+            if (!autoPush) {
+                if (dataDialog.isShowing())
+                    dataDialog.dismiss();
+                dataDialog = null;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 
@@ -166,6 +260,7 @@ public class PushDataToServer {
     public void pushImagesToServer(final int jsonIndex) {
 
         if (jsonIndex < totalActivityFolders) {
+            showImgDialog(imageUploadCnt+1);
             if (imageFilesArray[jsonIndex].exists() && imageFilesArray[jsonIndex].isDirectory()) {
                 File activityPhotosFile = new File(imageFilesArray[jsonIndex].getAbsolutePath());
                 File[] file = activityPhotosFile.listFiles();
@@ -173,34 +268,38 @@ public class PushDataToServer {
                     for (int i = 0; i < file.length; i++) {
                         if (file[i].exists() && file[i].isFile()) {
                             String fName = file[i].getName();
-                            AndroidNetworking.upload(FC_Constants.PUSH_IMAGE_API)
-                                    .addMultipartFile(fName, file[i])
-                                    .addHeaders("Content-Type", "images")
-                                    .build()
-                                    .getAsString(new StringRequestListener() {
-                                        @Override
-                                        public void onResponse(String response) {
-                                            try {
-                                                if (response.equalsIgnoreCase("success")) {
-                                                    imageUploadCnt++;
+                            if(AppDatabase.getDatabaseInstance(context).getScoreDao().getSentFlag(fName)==0) {
+                                AndroidNetworking.upload(FC_Constants.PUSH_IMAGE_API)
+                                        .addMultipartFile(fName, file[i])
+                                        .addHeaders("Content-Type", "images")
+                                        .build()
+                                        .getAsString(new StringRequestListener() {
+                                            @Override
+                                            public void onResponse(String response) {
+                                                try {
+                                                    Log.d("PushData", "Image onResponse: " + response);
+                                                    if (response.equalsIgnoreCase("success")) {
+                                                        imageUploadCnt+=1;
+                                                        AppDatabase.getDatabaseInstance(context).getScoreDao().setImgSentFlag(fName);
+                                                        dismissImageDialog();
+                                                        pushImagesToServer(jsonIndex + 1);
+                                                    }
+                                                } catch (Exception e) {
+                                                    e.printStackTrace();
                                                 }
-                                            } catch (Exception e) {
-                                                e.printStackTrace();
                                             }
-                                        }
 
-                                        @Override
-                                        public void onError(ANError anError) {
-                                            Toast.makeText(context, "Image push failed", Toast.LENGTH_SHORT).show();
-                                            FC_Utility.dismissDialog(dialog);
-                                            if (!autoPush)
-                                                pushSuccessfull = false;
-                                            onPostExecute();
-                                        }
-                                    });
+                                            @Override
+                                            public void onError(ANError anError) {
+                                                Log.d("PushData", "Image push failed");
+                                                pushImagesToServer(jsonIndex + 1);
+                                                dismissImageDialog();
+//                                            Toast.makeText(context, "Image push failed", Toast.LENGTH_SHORT).show();
+                                            }
+                                        });
+                            }
                         }
                     }
-                    pushImagesToServer(jsonIndex + 1);
                 } else
                     pushImagesToServer(jsonIndex + 1);
 
@@ -208,8 +307,8 @@ public class PushDataToServer {
 
                 imageFilesArray[jsonIndex].getPath();
                 File file = new File(imageFilesArray[jsonIndex].getAbsolutePath());
-                if (file.exists() && file.isFile()) {
-                    String fName = file.getName();
+                String fName = file.getName();
+                if(AppDatabase.getDatabaseInstance(context).getScoreDao().getSentFlag(fName)==0) {
                     AndroidNetworking.upload(FC_Constants.PUSH_IMAGE_API)
                             .addMultipartFile(fName, file)
                             .addHeaders("Content-Type", "images")
@@ -218,35 +317,32 @@ public class PushDataToServer {
                                 @Override
                                 public void onResponse(String response) {
                                     try {
+                                        Log.d("PushData", "Image onResponse: " + response);
                                         if (response.equalsIgnoreCase("success")) {
-                                            /*jsonIndex++;*/
-                                            if (!autoPush)
-                                                pushSuccessfull = true;
-                                            imageUploadCnt++;
-                                            pushImagesToServer(jsonIndex+1);
+                                            imageUploadCnt += 1;
+                                            dismissImageDialog();
+                                            try {
+                                                AppDatabase.getDatabaseInstance(context).getScoreDao().setImgSentFlag(fName);
+                                            } catch (Exception e) {
+                                                e.printStackTrace();
+                                            }
+                                            pushImagesToServer(jsonIndex + 1);
                                         }
                                     } catch (Exception e) {
-                                        FC_Utility.dismissDialog(dialog);
                                         e.printStackTrace();
                                     }
                                 }
 
                                 @Override
                                 public void onError(ANError anError) {
-                                    Toast.makeText(context, "Image push failed", Toast.LENGTH_SHORT).show();
-                                    FC_Utility.dismissDialog(dialog);
-                                    pushSuccessfull = false;
-                                    onPostExecute();
+                                    dismissImageDialog();
+                                    pushImagesToServer(jsonIndex + 1);
                                 }
                             });
-                } else {
-                    pushImagesToServer(jsonIndex + 1);
                 }
             }
-        }
-        else{
-            FC_Utility.dismissDialog(dialog);
-            onPostExecute();
+        } else {
+            onPostImageExecute();
         }
     }
 
@@ -299,8 +395,8 @@ public class PushDataToServer {
         for (int i = 0; i < files.length; i++) {
             Log.d("Files", "FileName:" + files[i].getName());
         }
-        totalImages = files.length;
-        imageUploadCnt = 0;
+//        totalImages = files.length;
+//        imageUploadCnt = 0;
 //        pushImagesToRaspberry("" + FC_Constants.URL.DATASTORE_RASPBERY_URL.toString(),
 //                files, programID, FC_Constants.PUSH_IMAGE);
 
@@ -356,8 +452,8 @@ public class PushDataToServer {
             imageFilesArray[jsonIndex].getPath();
             File file = new File(imageFilesArray[jsonIndex].getAbsolutePath());
             if (file.exists()) {
-                final ProgressDialog dialog = new ProgressDialog(context);
-                FC_Utility.showDialogInApiCalling(dialog, context, "Uploading Image(s)..");
+                final ProgressDialog imageDialog = new ProgressDialog(context);
+                FC_Utility.showDialogInApiCalling(imageDialog, context, "Uploading Image(s)..");
                 String fName = file.getName();
                 AndroidNetworking.post(url)
                         .addHeaders("Content-Type", "images")
@@ -371,7 +467,7 @@ public class PushDataToServer {
                         .getAsString(new StringRequestListener() {
                             @Override
                             public void onResponse(String response) {
-                                FC_Utility.dismissDialog(dialog);
+                                FC_Utility.dismissDialog(imageDialog);
                                 try {
                                     if (response.equalsIgnoreCase("success")) {
                                         file.delete();
@@ -384,7 +480,7 @@ public class PushDataToServer {
                                         }
                                     }
                                 } catch (Exception e) {
-                                    FC_Utility.dismissDialog(dialog);
+                                    FC_Utility.dismissDialog(imageDialog);
                                     e.printStackTrace();
                                 }
                             }
@@ -392,7 +488,7 @@ public class PushDataToServer {
                             @Override
                             public void onError(ANError anError) {
                                 Toast.makeText(context, "Image push failed", Toast.LENGTH_SHORT).show();
-                                FC_Utility.dismissDialog(dialog);
+                                FC_Utility.dismissDialog(imageDialog);
                             }
                         });
             }else {
@@ -408,22 +504,40 @@ public class PushDataToServer {
     public void onPostExecute() {
         if (!autoPush) {
             if (pushSuccessfull) {
+                scoreLen = scoreData.length();
                 new AlertDialog.Builder(context)
-                        .setMessage("Data pushed successfully\n Score Count : " + scoreData.length()+"\nImage Count : "+imageUploadCnt)
+                        .setMessage("Data pushed successfully\n Score Count : " + scoreData.length() +
+                                "\nTotal Image : " + totalImages + ".")
                         .setCancelable(false)
                         .setPositiveButton("ok", (dialog, which) -> {
+                            getImageList();
                             dialog.dismiss();
-//                            ((AdminControlsActivity_) context).onResponseGet();
                         }).create().show();
             } else {
                 new AlertDialog.Builder(context)
                         .setMessage("Data push failed")
                         .setCancelable(false)
                         .setPositiveButton("ok", (dialog, which) -> {
+                            getImageList();
                             dialog.dismiss();
-//                            ((AdminControlsActivity_) context).onResponseGet();
                         }).create().show();
             }
+        }
+        else
+            getImageList();
+    }
+
+    @UiThread
+    public void onPostImageExecute() {
+        if (!autoPush) {
+/*            new AlertDialog.Builder(context)
+                    .setMessage("Data pushed successfully\n Score Count : " + scoreLen +
+                            "\nImage : " + imageUploadCnt + "/" + totalImages + ".")
+                    .setCancelable(false)
+                    .setPositiveButton("ok", (dialog, which) -> {
+                        dialog.dismiss();
+//                            ((AdminControlsActivity_) context).onResponseGet();
+                    }).create().show();*/
         }
     }
 
@@ -461,6 +575,11 @@ public class PushDataToServer {
             metaDataObj.put("GPSDateTime", AppDatabase.getDatabaseInstance(context).getStatusDao().getValue("GPSDateTime"));
             metaDataObj.put("Latitude", AppDatabase.getDatabaseInstance(context).getStatusDao().getValue("Latitude"));
             metaDataObj.put("Longitude", AppDatabase.getDatabaseInstance(context).getStatusDao().getValue("Longitude"));
+            metaDataObj.put("AndroidVersion", AppDatabase.getDatabaseInstance(context).getStatusDao().getValue("AndroidVersion"));
+            metaDataObj.put("InternalAvailableStorage", AppDatabase.getDatabaseInstance(context).getStatusDao().getValue("InternalAvailableStorage"));
+            metaDataObj.put("DeviceManufacturer", AppDatabase.getDatabaseInstance(context).getStatusDao().getValue("DeviceManufacturer"));
+            metaDataObj.put("DeviceModel", AppDatabase.getDatabaseInstance(context).getStatusDao().getValue("DeviceModel"));
+            metaDataObj.put("ScreenResolution", AppDatabase.getDatabaseInstance(context).getStatusDao().getValue("ScreenResolution"));
 
             sessionObj.put("scoreData", scoreData);
             if (!ApplicationClass.isTablet)
@@ -750,57 +869,5 @@ public class PushDataToServer {
             return null;
         }
         return keyWordsArr;
-    }
-
-    @UiThread
-    public void pushDataToServer(Context context, JSONObject data, String url) {
-        try {
-            AndroidNetworking.post(url)
-                    .addHeaders("Content-Type", "application/json")
-                    .addJSONObjectBody(data)
-                    .setPriority(Priority.HIGH)
-                    .build()
-                    .getAsString(new StringRequestListener() {
-                        @Override
-                        public void onResponse(String response) {
-                            if (response.equalsIgnoreCase("success")) {
-                                Log.d("PUSH_STATUS", "Data pushed successfully");
-                                if (!autoPush)
-                                    pushSuccessfull = true;
-                                setPushFlag();
-                            }
-//                            onPostExecute();
-                        }
-
-                        @Override
-                        public void onError(ANError anError) {
-                            Log.d("PUSH_STATUS", "Data push failed");
-                            if (!autoPush)
-                                pushSuccessfull = false;
-                            onPostExecute();
-                        }
-                    });
-//            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-    @Background
-    public void setPushFlag() {
-        AppDatabase.getDatabaseInstance(context).getLogsDao().setSentFlag();
-        AppDatabase.getDatabaseInstance(context).getSessionDao().setSentFlag();
-        AppDatabase.getDatabaseInstance(context).getAttendanceDao().setSentFlag();
-        AppDatabase.getDatabaseInstance(context).getScoreDao().setSentFlag();
-        AppDatabase.getDatabaseInstance(context).getAssessmentDao().setSentFlag();
-        AppDatabase.getDatabaseInstance(context).getSupervisorDataDao().setSentFlag();
-        AppDatabase.getDatabaseInstance(context).getStudentDao().setSentFlag();
-        AppDatabase.getDatabaseInstance(context).getKeyWordDao().setSentFlag();
-        AppDatabase.getDatabaseInstance(context).getContentProgressDao().setSentFlag();
-
-        AppDatabase.getDatabaseInstance(context).getLogsDao().deletePushedLogs();
-//        AppDatabase.getDatabaseInstance(context).getScoreDao().deletePushedScore();
-//        AppDatabase.getDatabaseInstance(context).getAssessmentDao().deletePushedAssessment();
-//        AppDatabase.getDatabaseInstance(context).getSupervisorDataDao().deletePushedSupervisorData();
     }
 }

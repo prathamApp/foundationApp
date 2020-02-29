@@ -140,6 +140,10 @@
             android:stopWithTask="false" />
 
         <service
+            android:name=".services.LocationService"
+            android:enabled="true" />
+
+        <service
             android:name=".services.stt.ContinuousSpeechService_New"
             android:enabled="true"/>
         <receiver

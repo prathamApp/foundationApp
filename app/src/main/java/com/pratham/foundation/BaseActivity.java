@@ -3,7 +3,9 @@ package com.pratham.foundation;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.graphics.Color;
+import android.graphics.Point;
 import android.graphics.drawable.ColorDrawable;
 import android.hardware.usb.UsbDevice;
 import android.media.AudioManager;
@@ -16,6 +18,7 @@ import android.os.Handler;
 import android.os.Message;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+import android.view.Display;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -98,6 +101,20 @@ public class BaseActivity extends AppCompatActivity {
         super.onAttachedToWindow();
     }
 */
+
+    public String getScreenResolution(Context context) {
+        Display display = getWindowManager().getDefaultDisplay();
+        Point size = new Point();
+        display.getSize(size);
+        display.getSize(size);
+        int width = size.x;
+        int height = size.y;
+        String strwidth = String.valueOf(width);
+        String strheight = String.valueOf(height);
+        Configuration config = context.getResources().getConfiguration();
+        String resolution = "W "+strwidth+" x H "+strheight+" pixels dpi: "+config.densityDpi;
+        return ""+resolution;
+    }
 
 
     @Override

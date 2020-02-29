@@ -3,7 +3,6 @@ package com.pratham.foundation.async;
 import android.os.AsyncTask;
 import android.util.Log;
 
-
 import com.pratham.foundation.ui.splash_activity.SplashContract;
 
 import org.jsoup.Jsoup;
@@ -20,7 +19,7 @@ public class GetLatestVersion extends AsyncTask<String, String, String> {
     @Override
     protected void onPreExecute() {
         super.onPreExecute();
-//        FC_Utility.showDialogInApiCalling(dialog, SplashActivity.this, "Checking if new version is available!");
+//        FC_Utility.showDialogInApiCalling(imageDialog, SplashActivity.this, "Checking if new version is available!");
     }
 
 
@@ -37,7 +36,7 @@ public class GetLatestVersion extends AsyncTask<String, String, String> {
                     .ownText();
             Log.d("latest::", latestVersion);
         } catch (Exception e) {
-//            FC_Utility.dismissDialog(dialog);
+//            FC_Utility.dismissDialog(imageDialog);
             e.printStackTrace();
         }
         return latestVersion;

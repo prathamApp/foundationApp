@@ -72,6 +72,7 @@ import java.util.List;
 import java.util.Objects;
 
 import static android.content.Context.ACTIVITY_SERVICE;
+import static com.pratham.foundation.database.AppDatabase.DB_VERSION;
 import static com.pratham.foundation.database.AppDatabase.appDatabase;
 
 
@@ -404,6 +405,26 @@ public class PushOrAssignFragment extends Fragment {
             appDatabase.getStatusDao().insert(status);
 
             status = new com.pratham.foundation.database.domain.Status();
+            status.setStatusKey("InternalAvailableStorage");
+            status.setValue(FC_Utility.getInternalStorageStatus());
+            appDatabase.getStatusDao().insert(status);
+
+            status = new com.pratham.foundation.database.domain.Status();
+            status.setStatusKey("DeviceManufacturer");
+            status.setValue(FC_Utility.getDeviceManufacturer());
+            appDatabase.getStatusDao().insert(status);
+
+            status = new com.pratham.foundation.database.domain.Status();
+            status.setStatusKey("DeviceModel");
+            status.setValue(FC_Utility.getDeviceModel());
+            appDatabase.getStatusDao().insert(status);
+
+            status = new com.pratham.foundation.database.domain.Status();
+            status.setStatusKey("ScreenResolution");
+            status.setValue(FastSave.getInstance().getString(FC_Constants.SCR_RES, ""));
+            appDatabase.getStatusDao().insert(status);
+
+            status = new com.pratham.foundation.database.domain.Status();
             status.setStatusKey("programId");
             status.setValue("1");
             appDatabase.getStatusDao().insert(status);
@@ -455,7 +476,7 @@ public class PushOrAssignFragment extends Fragment {
 
             status = new com.pratham.foundation.database.domain.Status();
             status.setStatusKey("DBVersion");
-            status.setValue("NA");
+            status.setValue(DB_VERSION);
             appDatabase.getStatusDao().insert(status);
 
             status = new com.pratham.foundation.database.domain.Status();

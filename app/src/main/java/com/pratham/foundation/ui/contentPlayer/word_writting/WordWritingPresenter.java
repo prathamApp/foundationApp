@@ -17,6 +17,7 @@ import com.pratham.foundation.ui.contentPlayer.GameConstatnts;
 import com.pratham.foundation.utility.FC_Constants;
 import com.pratham.foundation.utility.FC_Utility;
 
+import org.androidannotations.annotations.Background;
 import org.androidannotations.annotations.EBean;
 
 import java.io.File;
@@ -28,6 +29,7 @@ import java.util.List;
 
 import static com.pratham.foundation.database.AppDatabase.appDatabase;
 import static com.pratham.foundation.utility.FC_Constants.APP_SECTION;
+import static com.pratham.foundation.utility.FC_Constants.IMG_PUSH_LBL;
 import static com.pratham.foundation.utility.FC_Constants.activityPhotoPath;
 import static com.pratham.foundation.utility.FC_Constants.sec_Test;
 
@@ -203,6 +205,7 @@ public class WordWritingPresenter implements WordWritingContract.WordWritingPres
 
                     addScore(GameConstatnts.getInt(questionModel.get(i).getQid()), GameConstatnts.PARAGRAPH_WRITING, 0, 0, FC_Utility.getCurrentDateTime(), imageName, resId, true);
                     addScore(FC_Utility.getSubjectNo(), GameConstatnts.PARAGRAPH_WRITING, FC_Utility.getSectionCode(), 0, FC_Utility.getCurrentDateTime(), FC_Constants.IMG_LBL, newResId, false);
+                    addImageOnly(resId, imageName);
                 }
                 GameConstatnts.postScoreEvent(questionModel.size(),questionModel.size());
                 setCompletionPercentage();
@@ -214,6 +217,29 @@ public class WordWritingPresenter implements WordWritingContract.WordWritingPres
         BackupDatabase.backup(context);
     }
 
+    @Background
+    public void addImageOnly(String resId, String imageName) {
+        try {
+            String deviceId = appDatabase.getStatusDao().getValue("DeviceId");
+            Score score = new Score();
+            score.setSessionID(FastSave.getInstance().getString(FC_Constants.CURRENT_SESSION, ""));
+            score.setResourceID(resId);
+            score.setQuestionId(0);
+            score.setScoredMarks(0);
+            score.setTotalMarks(0);
+            score.setStudentID(FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""));
+            score.setStartDateTime(imageName);
+            score.setDeviceID(deviceId.equals(null) ? "0000" : deviceId);
+            score.setEndDateTime(FC_Utility.getCurrentDateTime());
+            score.setLevel(FC_Constants.currentLevel);
+            score.setLabel(IMG_PUSH_LBL);
+            score.setSentFlag(0);
+            appDatabase.getScoreDao().insert(score);
+            BackupDatabase.backup(context);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 
     public void addScore(int wID, String Word, int scoredMarks, int totalMarks, String resStartTime, String Label, String resId, boolean addInAssessment) {
         try {

@@ -14,5 +14,6 @@
         android:layout_marginVertical="@dimen/_2sdp"
         android:layout_height="wrap_content"
         android:textAlignment="center"
+        android:textColor="@color/dark_blue"
         android:textSize="40sp"/>
 </RelativeLayout>

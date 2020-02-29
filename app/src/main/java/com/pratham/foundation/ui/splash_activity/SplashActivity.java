@@ -8,8 +8,10 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
+import android.graphics.Point;
 import android.graphics.Typeface;
 import android.graphics.drawable.ColorDrawable;
 import android.media.MediaPlayer;
@@ -19,6 +21,7 @@ import android.os.Build;
 import android.os.Environment;
 import android.os.Handler;
 import android.util.Log;
+import android.view.Display;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.Window;
@@ -290,11 +293,17 @@ public class SplashActivity extends SplashSupportActivity implements SplashContr
 
     @Override
     public void startApp() {
-//        context.startService(new Intent(context, LogService.class));
-//        context.startService(new Intent(context, IntegrationService.class));
-        getLogs();
-        Log.d("SplashLog", "\nStartApp Method: ");
-
+        Display display = getWindowManager().getDefaultDisplay();
+        Point size = new Point();
+        display.getSize(size);
+        display.getSize(size);
+        int width = size.x;
+        int height = size.y;
+        String strwidth = String.valueOf(width);
+        String strheight = String.valueOf(height);
+        Configuration config = context.getResources().getConfiguration();
+        String resolution = "W " + strwidth + " x H " + strheight + " pixels dpi: " + config.densityDpi;
+        FastSave.getInstance().saveString(FC_Constants.SCR_RES, ""+resolution);
         FastSave.getInstance().saveString(FC_Constants.LANGUAGE, FC_Constants.HINDI);
         setAppLocal(this, FC_Constants.HINDI);
         createDataBase();
@@ -303,26 +312,6 @@ public class SplashActivity extends SplashSupportActivity implements SplashContr
         else {
             setAppLocal(this, FastSave.getInstance().getString(FC_Constants.LANGUAGE, FC_Constants.HINDI));
             createDataBase();
-        }*/
-    }
-
-    private void getLogs() {
-//        Process logcat;
-//        Log.d("SplashLog", "In getLogs\n\n");
-/*        final StringBuilder log = new StringBuilder();
-        try {
-            logcat = Runtime.getRuntime().exec(new String[]{"logcat", "-d"});
-            BufferedReader br = new BufferedReader(new InputStreamReader(logcat.getInputStream()), 4 * 1024);
-            String line;
-            String separator = System.getProperty("line.separator");
-            while ((line = br.readLine()) != null) {
-                log.append(line);
-                log.append(separator);
-                Log.d("New Logs::::::", "\ngetLogs: "+line);
-            }
-            Log.d("New Logs::::::", "\n\n\n\n\n\nLogs:\n\n\n"+log);
-        } catch (Exception e) {
-            e.printStackTrace();
         }*/
     }
 
@@ -382,7 +371,7 @@ public class SplashActivity extends SplashSupportActivity implements SplashContr
     @Override
     public void dismissProgressDialog() {
         try {
-            if (progressDialog != null)
+            if (progressDialog != null && progressDialog.isShowing())
                 progressDialog.dismiss();
         } catch (Exception e) {
             e.printStackTrace();
@@ -504,15 +493,10 @@ public class SplashActivity extends SplashSupportActivity implements SplashContr
                     protected Void doInBackground(Void... voids) {
                         try {
                             AppDatabase.getDatabaseInstance(SplashActivity.this);
-                            if (new File(Environment.getExternalStorageDirectory().getAbsolutePath() + "/PrathamBackups/foundation_db").exists()) {
-                                try {
-                                    copyDb = true;
-                                } catch (Exception e) {
-                                    e.printStackTrace();
-                                }
-                            } else {
+                            if (new File(Environment.getExternalStorageDirectory().getAbsolutePath() + "/PrathamBackups/foundation_db").exists())
+                                copyDb = true;
+                            else
                                 splashPresenter.getSdCardPath();
-                            }
                         } catch (Exception e) {
                             e.printStackTrace();
                         }
@@ -531,7 +515,7 @@ public class SplashActivity extends SplashSupportActivity implements SplashContr
             } else {
                 AppDatabase.getDatabaseInstance(SplashActivity.this);
                 splashPresenter.getSdCardPath();
-                new Handler().postDelayed(() -> showButton(), 2000);
+                new Handler().postDelayed(this::showButton, 2000);
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -543,6 +527,7 @@ public class SplashActivity extends SplashSupportActivity implements SplashContr
         try {
             checkDB = SQLiteDatabase.openDatabase(getDatabasePath(AppDatabase.DB_NAME).getAbsolutePath(), null, SQLiteDatabase.OPEN_READONLY);
         } catch (Exception e) {
+            e.printStackTrace();
         }
         if (checkDB != null) {
             checkDB.close();
@@ -568,7 +553,8 @@ public class SplashActivity extends SplashSupportActivity implements SplashContr
 
         if (!FastSave.getInstance().getBoolean(FC_Constants.INITIAL_ENTRIES, false))
             splashPresenter.doInitialEntries(AppDatabase.appDatabase);
-//        if(FastSave.getInstance().getBoolean(FC_Constants.newDataLanguageInserted, false))
+        splashPresenter.requestLocation();
+    //        if(FastSave.getInstance().getBoolean(FC_Constants.newDataLanguageInserted, false))
 //            splashPresenter.insertNewData();
         splashPresenter.updateVersionApp();
         if (!ApplicationClass.isTablet) {
@@ -610,26 +596,20 @@ public class SplashActivity extends SplashSupportActivity implements SplashContr
         dia_btn_red.setText(getResources().getString(R.string.Skip));
         dia_btn_yellow.setVisibility(View.GONE);
 
-        dia_btn_green.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                showBottomFragment();
-                FastSave.getInstance().saveBoolean(FC_Constants.VOICES_DOWNLOAD_INTENT, true);
-                Intent intent = new Intent(Intent.ACTION_MAIN);
-                intent.setComponent(new ComponentName("com.google.android.googlequicksearchbox",
-                        "com.google.android.voicesearch.greco3.languagepack.InstallActivity"));
-                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                startActivity(intent);
-                dialog.dismiss();
-            }
+        dia_btn_green.setOnClickListener(v -> {
+            showBottomFragment();
+            FastSave.getInstance().saveBoolean(FC_Constants.VOICES_DOWNLOAD_INTENT, true);
+            Intent intent = new Intent(Intent.ACTION_MAIN);
+            intent.setComponent(new ComponentName("com.google.android.googlequicksearchbox",
+                    "com.google.android.voicesearch.greco3.languagepack.InstallActivity"));
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(intent);
+            dialog.dismiss();
         });
 
-        dia_btn_red.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                showBottomFragment();
-                dialog.dismiss();
-            }
+        dia_btn_red.setOnClickListener(v -> {
+            showBottomFragment();
+            dialog.dismiss();
         });
     }
 
@@ -658,20 +638,13 @@ public class SplashActivity extends SplashSupportActivity implements SplashContr
     protected void onResume() {
         super.onResume();
         try {
-            if (!bgMusic.isPlaying()) {
+            if (bgMusic == null || !bgMusic.isPlaying()) {
                 bgMusic = MediaPlayer.create(this, R.raw.bg_sound);
                 bgMusic.setLooping(true);
                 bgMusic.start();
             }
         } catch (Exception e) {
-        }
-        try {
-            if (bgMusic.equals(null)) {
-                bgMusic = MediaPlayer.create(this, R.raw.bg_sound);
-                bgMusic.setLooping(true);
-                bgMusic.start();
-            }
-        } catch (Exception e) {
+            e.printStackTrace();
         }
         EventMessage message = new EventMessage();
         message.setMessage("reload");
@@ -689,16 +662,4 @@ public class SplashActivity extends SplashSupportActivity implements SplashContr
     @Override
     public void failedCopyingExisting() {
     }
-
-
 }
-
-/*<!--    <com.cunoraz.gifview.library.GifView
-        android:id="@+id/gif1"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_below="@+id/iv_pratham_logo"
-        android:layout_centerHorizontal="true"
-        custom:gif="@drawable/splash_gif_animation"
-        android:scaleType="centerInside"/>-->*/

@@ -319,10 +319,15 @@ public class FunFragment extends Fragment implements FunContract.FunView,
     }
 
     @Override
+    @UiThread
     public void dismissLoadingDialog() {
-        if (myLoadingDialog != null) {
-            loaderVisible = false;
-            myLoadingDialog.dismiss();
+        try {
+            if (myLoadingDialog != null && myLoadingDialog.isShowing()) {
+                loaderVisible = false;
+                myLoadingDialog.dismiss();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 

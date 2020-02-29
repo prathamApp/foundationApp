@@ -40,6 +40,8 @@ import io.nlopez.smartlocation.SmartLocation;
 import io.nlopez.smartlocation.location.config.LocationAccuracy;
 import io.nlopez.smartlocation.location.config.LocationParams;
 
+import static com.pratham.foundation.database.AppDatabase.appDatabase;
+
 
 public class LocationService implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
     private static final String TAG = LocationService.class.getSimpleName();
@@ -68,10 +70,10 @@ public class LocationService implements GoogleApiClient.ConnectionCallbacks, Goo
                         try {
                             Status statusObj = new Status();
 
-                            AppDatabase.getDatabaseInstance(ApplicationClass.getInstance()).getStatusDao().updateValue("Latitude", ""+location.getLatitude());
+                            appDatabase.getStatusDao().updateValue("Latitude", ""+location.getLatitude());
 //                        BaseActivity.statusDao.insert(statusObj);
 
-                            AppDatabase.getDatabaseInstance(ApplicationClass.getInstance()).getStatusDao().updateValue("Longitude","" + location.getLongitude());
+                            appDatabase.getStatusDao().updateValue("Longitude","" + location.getLongitude());
 
 //                        BaseActivity.statusDao.insert(statusObj);
 
@@ -117,6 +119,10 @@ public class LocationService implements GoogleApiClient.ConnectionCallbacks, Goo
             metaDataObj.put("village", AppDatabase.getDatabaseInstance(context).getStatusDao().getValue("village"));
             metaDataObj.put("ActivatedForGroups", AppDatabase.getDatabaseInstance(context).getStatusDao().getValue("ActivatedForGroups"));
             metaDataObj.put("AndroidVersion", AppDatabase.getDatabaseInstance(context).getStatusDao().getValue("AndroidVersion"));
+            metaDataObj.put("InternalAvailableStorage", appDatabase.getStatusDao().getValue("InternalAvailableStorage"));
+            metaDataObj.put("DeviceManufacturer", appDatabase.getStatusDao().getValue("DeviceManufacturer"));
+            metaDataObj.put("DeviceModel", appDatabase.getStatusDao().getValue("DeviceModel"));
+            metaDataObj.put("ScreenResolution", appDatabase.getStatusDao().getValue("ScreenResolution"));
             metaDataObj.put("SerialID", AppDatabase.getDatabaseInstance(context).getStatusDao().getValue("SerialID"));
             metaDataObj.put("gpsFixDuration", AppDatabase.getDatabaseInstance(context).getStatusDao().getValue("gpsFixDuration"));
             metaDataObj.put("prathamCode", AppDatabase.getDatabaseInstance(context).getStatusDao().getValue("prathamCode"));
@@ -128,6 +134,11 @@ public class LocationService implements GoogleApiClient.ConnectionCallbacks, Goo
             metaDataObj.put("GPSDateTime", AppDatabase.getDatabaseInstance(context).getStatusDao().getValue("GPSDateTime"));
             metaDataObj.put("Latitude", AppDatabase.getDatabaseInstance(context).getStatusDao().getValue("Latitude"));
             metaDataObj.put("Longitude", AppDatabase.getDatabaseInstance(context).getStatusDao().getValue("Longitude"));
+            metaDataObj.put("AndroidVersion", AppDatabase.getDatabaseInstance(context).getStatusDao().getValue("AndroidVersion"));
+            metaDataObj.put("InternalAvailableStorage", AppDatabase.getDatabaseInstance(context).getStatusDao().getValue("InternalAvailableStorage"));
+            metaDataObj.put("DeviceManufacturer", AppDatabase.getDatabaseInstance(context).getStatusDao().getValue("DeviceManufacturer"));
+            metaDataObj.put("DeviceModel", AppDatabase.getDatabaseInstance(context).getStatusDao().getValue("DeviceModel"));
+            metaDataObj.put("ScreenResolution", AppDatabase.getDatabaseInstance(context).getStatusDao().getValue("ScreenResolution"));
 
             sessionObj.put("scoreData", "[]");
             sessionObj.put("studentData", "[]");

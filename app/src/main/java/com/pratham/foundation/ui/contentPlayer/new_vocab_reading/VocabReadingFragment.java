@@ -3,6 +3,7 @@ package com.pratham.foundation.ui.contentPlayer.new_vocab_reading;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
@@ -243,10 +244,13 @@ public class VocabReadingFragment extends Fragment implements
     @UiThread
     @Override
     public void dismissLoadingDialog() {
-        if (dialogFlg) {
-            dialogFlg = false;
-            if (myLoadingDialog != null)
+        try {
+            if (myLoadingDialog != null && myLoadingDialog.isShowing()) {
+                dialogFlg = false;
                 myLoadingDialog.dismiss();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 
@@ -363,9 +367,13 @@ public class VocabReadingFragment extends Fragment implements
     @Override
     public void allCorrectAnswer() {
         dismissLoadingDialog();
-        for (int i = 0; i < splitWordsPunct.size(); i++) {
-            ((SansTextView) wordFlowLayout.getChildAt(i)).setTextColor(getResources().getColor(R.color.level_1_color));
-            correctArr[i] = true;
+        try {
+            for (int i = 0; i < splitWordsPunct.size(); i++) {
+                ((SansTextView) wordFlowLayout.getChildAt(i)).setTextColor(getResources().getColor(R.color.level_1_color));
+                correctArr[i] = true;
+            }
+        } catch (Resources.NotFoundException e) {
+            e.printStackTrace();
         }
         new Handler().postDelayed(() -> {
             //setMute(0);
@@ -536,10 +544,14 @@ public class VocabReadingFragment extends Fragment implements
     @UiThread
     @Override
     public void setCorrectViewColor() {
-        for (int x = 0; x < correctArr.length; x++) {
-            if (correctArr[x]) {
-                ((SansTextView) wordFlowLayout.getChildAt(x)).setTextColor(getResources().getColor(R.color.level_1_color));
+        try {
+            for (int x = 0; x < correctArr.length; x++) {
+                if (correctArr[x]) {
+                    ((SansTextView) wordFlowLayout.getChildAt(x)).setTextColor(getResources().getColor(R.color.level_1_color));
+                }
             }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
 //        if (voiceStart)
 //            sttMethod();

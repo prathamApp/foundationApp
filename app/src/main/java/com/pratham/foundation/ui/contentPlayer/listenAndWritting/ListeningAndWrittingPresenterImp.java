@@ -29,6 +29,7 @@ import java.util.List;
 
 import static com.pratham.foundation.database.AppDatabase.appDatabase;
 import static com.pratham.foundation.utility.FC_Constants.APP_SECTION;
+import static com.pratham.foundation.utility.FC_Constants.IMG_PUSH_LBL;
 import static com.pratham.foundation.utility.FC_Constants.sec_Test;
 
 @EBean
@@ -161,6 +162,7 @@ public class ListeningAndWrittingPresenterImp implements ListeningAndWrittingCon
                     newResId = GameConstatnts.getString(resId, contentTitle, listenAndWrittingModal.get(i).getQid(), imageName, listenAndWrittingModal.get(i).getQuestion(), "");
                     addScore(GameConstatnts.getInt(listenAndWrittingModal.get(i).getQid()), GameConstatnts.LISTNING_AND_WRITTING, 0, 0, FC_Utility.getCurrentDateTime(), imageName, resId, true);
                     addScore(FC_Utility.getSubjectNo(), GameConstatnts.LISTNING_AND_WRITTING, FC_Utility.getSectionCode(), 0, FC_Utility.getCurrentDateTime(), FC_Constants.IMG_LBL, newResId, false);
+                    addImageOnly(resId, imageName);
                 }
                 setCompletionPercentage();
                 GameConstatnts.postScoreEvent(listenAndWrittingModal.size(),listenAndWrittingModal.size());
@@ -170,6 +172,30 @@ public class ListeningAndWrittingPresenterImp implements ListeningAndWrittingCon
             GameConstatnts.playGameNext(context, GameConstatnts.TRUE, (OnGameClose) view);
         }
         BackupDatabase.backup(context);
+    }
+
+    @Background
+    public void addImageOnly(String resId, String imageName) {
+        try {
+            String deviceId = appDatabase.getStatusDao().getValue("DeviceId");
+            Score score = new Score();
+            score.setSessionID(FastSave.getInstance().getString(FC_Constants.CURRENT_SESSION, ""));
+            score.setResourceID(resId);
+            score.setQuestionId(0);
+            score.setScoredMarks(0);
+            score.setTotalMarks(0);
+            score.setStudentID(FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""));
+            score.setStartDateTime(imageName);
+            score.setDeviceID(deviceId.equals(null) ? "0000" : deviceId);
+            score.setEndDateTime(FC_Utility.getCurrentDateTime());
+            score.setLevel(FC_Constants.currentLevel);
+            score.setLabel(IMG_PUSH_LBL);
+            score.setSentFlag(0);
+            appDatabase.getScoreDao().insert(score);
+            BackupDatabase.backup(context);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
    /* public void createDirectoryAndSaveFile(Bitmap imageToSave, String fileName) {

@@ -46,6 +46,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import static android.content.Context.ACTIVITY_SERVICE;
+import static com.pratham.foundation.database.AppDatabase.DB_VERSION;
 
 @EBean
 public class BottomStudentsPresenter implements BottomStudentsContract.BottomStudentsPresenter {
@@ -366,6 +367,26 @@ public class BottomStudentsPresenter implements BottomStudentsContract.BottomStu
                 appDatabase.getStatusDao().insert(status);
 
                 status = new com.pratham.foundation.database.domain.Status();
+                status.setStatusKey("InternalAvailableStorage");
+                status.setValue(FC_Utility.getInternalStorageStatus());
+                appDatabase.getStatusDao().insert(status);
+
+                status = new com.pratham.foundation.database.domain.Status();
+                status.setStatusKey("DeviceManufacturer");
+                status.setValue(FC_Utility.getDeviceManufacturer());
+                appDatabase.getStatusDao().insert(status);
+
+                status = new com.pratham.foundation.database.domain.Status();
+                status.setStatusKey("DeviceModel");
+                status.setValue(FC_Utility.getDeviceModel());
+                appDatabase.getStatusDao().insert(status);
+
+                status = new com.pratham.foundation.database.domain.Status();
+                status.setStatusKey("ScreenResolution");
+                status.setValue(FastSave.getInstance().getString(FC_Constants.SCR_RES, ""));
+                appDatabase.getStatusDao().insert(status);
+
+                status = new com.pratham.foundation.database.domain.Status();
                 status.setStatusKey("programId");
                 status.setValue("1");
                 appDatabase.getStatusDao().insert(status);
@@ -417,7 +438,7 @@ public class BottomStudentsPresenter implements BottomStudentsContract.BottomStu
 
                 status = new com.pratham.foundation.database.domain.Status();
                 status.setStatusKey("DBVersion");
-                status.setValue("NA");
+                status.setValue(DB_VERSION);
                 appDatabase.getStatusDao().insert(status);
 
                 status = new com.pratham.foundation.database.domain.Status();

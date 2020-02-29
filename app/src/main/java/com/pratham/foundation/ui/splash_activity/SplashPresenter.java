@@ -55,6 +55,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import static android.content.Context.ACTIVITY_SERVICE;
+import static com.pratham.foundation.database.AppDatabase.DB_VERSION;
 import static com.pratham.foundation.ui.splash_activity.SplashActivity.exitDialogOpen;
 import static com.pratham.foundation.utility.FC_Constants.CURRENT_VERSION;
 
@@ -269,8 +270,8 @@ public class SplashPresenter implements SplashContract.SplashPresenter {
                                         KeyWords detail = new KeyWords();
                                         detail.setKeyWordId(content_cursor.getInt(content_cursor.getColumnIndex("learntWordId")));
                                         detail.setStudentId(content_cursor.getString(content_cursor.getColumnIndex("studentId")));
-                                      //  detail.setSessionId(content_cursor.getString(content_cursor.getColumnIndex("sessionId")));
-                                      //  detail.setSynId(content_cursor.getString(content_cursor.getColumnIndex("synId")));
+                                        //  detail.setSessionId(content_cursor.getString(content_cursor.getColumnIndex("sessionId")));
+                                        //  detail.setSynId(content_cursor.getString(content_cursor.getColumnIndex("synId")));
                                         detail.setResourceId(content_cursor.getString(content_cursor.getColumnIndex("wordUUId")));
                                         detail.setKeyWord(content_cursor.getString(content_cursor.getColumnIndex("word")));
                                         detail.setWordType(content_cursor.getString(content_cursor.getColumnIndex("wordType")));
@@ -294,8 +295,8 @@ public class SplashPresenter implements SplashContract.SplashPresenter {
                                         KeyWords detail = new KeyWords();
                                         detail.setKeyWordId(content_cursor.getInt(content_cursor.getColumnIndex("learntWordId")));
                                         detail.setStudentId(content_cursor.getString(content_cursor.getColumnIndex("studentId")));
-                                      //  detail.setSessionId(content_cursor.getString(content_cursor.getColumnIndex("sessionId")));
-                                      //  detail.setSynId(content_cursor.getString(content_cursor.getColumnIndex("synId")));
+                                        //  detail.setSessionId(content_cursor.getString(content_cursor.getColumnIndex("sessionId")));
+                                        //  detail.setSynId(content_cursor.getString(content_cursor.getColumnIndex("synId")));
                                         detail.setResourceId(content_cursor.getString(content_cursor.getColumnIndex("wordUUId")));
                                         detail.setKeyWord(content_cursor.getString(content_cursor.getColumnIndex("word")));
                                         detail.setWordType(content_cursor.getString(content_cursor.getColumnIndex("wordType")));
@@ -365,7 +366,7 @@ public class SplashPresenter implements SplashContract.SplashPresenter {
     @Override
     public void doInitialEntries(AppDatabase appDatabase) {
         try {
-            Log.d("pushorassign", "Splash doInitialEntries : KEY_MENU_COPIED: "+FastSave.getInstance().getBoolean(FC_Constants.INITIAL_ENTRIES, false));
+            Log.d("pushorassign", "Splash doInitialEntries : KEY_MENU_COPIED: " + FastSave.getInstance().getBoolean(FC_Constants.INITIAL_ENTRIES, false));
             com.pratham.foundation.database.domain.Status status;
             status = new com.pratham.foundation.database.domain.Status();
             status.setStatusKey("DeviceId");
@@ -445,8 +446,23 @@ public class SplashPresenter implements SplashContract.SplashPresenter {
             appDatabase.getStatusDao().insert(status);
 
             status = new com.pratham.foundation.database.domain.Status();
+            status.setStatusKey("InternalAvailableStorage");
+            status.setValue(FC_Utility.getInternalStorageStatus());
+            appDatabase.getStatusDao().insert(status);
+
+            status = new com.pratham.foundation.database.domain.Status();
+            status.setStatusKey("DeviceManufacturer");
+            status.setValue(FC_Utility.getDeviceManufacturer());
+            appDatabase.getStatusDao().insert(status);
+
+            status = new com.pratham.foundation.database.domain.Status();
+            status.setStatusKey("DeviceModel");
+            status.setValue(FC_Utility.getDeviceModel());
+            appDatabase.getStatusDao().insert(status);
+
+            status = new com.pratham.foundation.database.domain.Status();
             status.setStatusKey("ScreenResolution");
-            status.setValue(FC_Utility.getScreenResolution(context));
+            status.setValue(FastSave.getInstance().getString(FC_Constants.SCR_RES, ""));
             appDatabase.getStatusDao().insert(status);
 
             status = new com.pratham.foundation.database.domain.Status();
@@ -501,7 +517,7 @@ public class SplashPresenter implements SplashContract.SplashPresenter {
 
             status = new com.pratham.foundation.database.domain.Status();
             status.setStatusKey("DBVersion");
-            status.setValue("NA");
+            status.setValue(DB_VERSION);
             appDatabase.getStatusDao().insert(status);
 
             status = new com.pratham.foundation.database.domain.Status();
@@ -522,9 +538,9 @@ public class SplashPresenter implements SplashContract.SplashPresenter {
             BackupDatabase.backup(context);
             addStartTime();
             requestLocation();
-            Log.d("pushorassign", "Splash 2 doInitialEntries : KEY_MENU_COPIED: "+FastSave.getInstance().getBoolean(FC_Constants.INITIAL_ENTRIES, false));
+            Log.d("pushorassign", "Splash 2 doInitialEntries : KEY_MENU_COPIED: " + FastSave.getInstance().getBoolean(FC_Constants.INITIAL_ENTRIES, false));
             FastSave.getInstance().saveBoolean(FC_Constants.INITIAL_ENTRIES, true);
-            Log.d("pushorassign", "Splash 3 doInitialEntries : KEY_MENU_COPIED: "+FastSave.getInstance().getBoolean(FC_Constants.INITIAL_ENTRIES, false));
+            Log.d("pushorassign", "Splash 3 doInitialEntries : KEY_MENU_COPIED: " + FastSave.getInstance().getBoolean(FC_Constants.INITIAL_ENTRIES, false));
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -550,8 +566,9 @@ public class SplashPresenter implements SplashContract.SplashPresenter {
                         if (!mydir.exists()) mydir.mkdirs();
 
                         String path = ApplicationClass.foundationPath + "/.FCA/";
-                        Log.d("pushorassign", "doInBackground: ");path = ApplicationClass.foundationPath + "/.FCA/";
-                        if(new File(path).exists()) {
+                        Log.d("pushorassign", "doInBackground: ");
+                        path = ApplicationClass.foundationPath + "/.FCA/";
+                        if (new File(path).exists()) {
                             copyFile(context, path);
 
                             FastSave.getInstance().saveBoolean(FC_Constants.KEY_ASSET_COPIED, true);
@@ -756,7 +773,8 @@ public class SplashPresenter implements SplashContract.SplashPresenter {
         }
     }
 
-    private void requestLocation() {
+    @Override
+    public void requestLocation() {
         new LocationService(context).checkLocation();
     }
 

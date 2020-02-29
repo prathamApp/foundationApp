@@ -405,29 +405,33 @@ public class ReadingRhymesActivity extends BaseActivity
 
     public void setCorrectViewColor(int correctCounter) {
         boolean allCorrect = true;
-        if (rhymingWordsList.get(correctCounter).isCorrectRead() && !correctArr[correctCounter]) {
-            correctArr[correctCounter] = true;
-            presenter.addScore(0, "Word:" + rhymingWordsList.get(correctCounter).getWord(),
-                    getCorrectCounter(), correctArr.length, FC_Utility.getCurrentDateTime(), "RhymingWords");
-            changeViewColor(correctCounter);
-//          mAdapter.notifyItemChanged(correctCounter, rhymingWordsList.get(correctCounter));
-            for (int i = 0; i < rhymingWordsList.size(); i++) {
-                if (!correctArr[i])
-                    allCorrect = false;
+        try {
+            if (rhymingWordsList.get(correctCounter).isCorrectRead() && !correctArr[correctCounter]) {
+                correctArr[correctCounter] = true;
+                presenter.addScore(0, "Word:" + rhymingWordsList.get(correctCounter).getWord(),
+                        getCorrectCounter(), correctArr.length, FC_Utility.getCurrentDateTime(), "RhymingWords");
+                changeViewColor(correctCounter);
+    //          mAdapter.notifyItemChanged(correctCounter, rhymingWordsList.get(correctCounter));
+                for (int i = 0; i < rhymingWordsList.size(); i++) {
+                    if (!correctArr[i])
+                        allCorrect = false;
+                }
+                if (allCorrect && correctDone < 1) {
+                    correctDone++;
+                    handler.postDelayed(this::nextBtnPressed, 1000);
+                }
+            } else {
+                for (int i = 0; i < rhymingWordsList.size(); i++) {
+                    if (!correctArr[i])
+                        allCorrect = false;
+                }
+                if (allCorrect && correctDone < 1) {
+                    correctDone++;
+                    handler.postDelayed(this::nextBtnPressed, 1000);
+                }
             }
-            if (allCorrect && correctDone < 1) {
-                correctDone++;
-                handler.postDelayed(this::nextBtnPressed, 1000);
-            }
-        } else {
-            for (int i = 0; i < rhymingWordsList.size(); i++) {
-                if (!correctArr[i])
-                    allCorrect = false;
-            }
-            if (allCorrect && correctDone < 1) {
-                correctDone++;
-                handler.postDelayed(this::nextBtnPressed, 1000);
-            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 

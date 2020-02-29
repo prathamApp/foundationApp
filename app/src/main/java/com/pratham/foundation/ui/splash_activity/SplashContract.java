@@ -51,6 +51,8 @@ public interface SplashContract {
         void insertNewData();
 
         void updateVersionApp();
+
+        void requestLocation();
     }
 
 }

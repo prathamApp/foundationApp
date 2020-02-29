@@ -5,6 +5,31 @@
         <attr name="b_max" format="integer" />
     </declare-styleable>
 
+    <declare-styleable name="MasaccioImageView">
+        <attr name="activate_face_detection">
+            <flag name="portraitImage" value="0x1"/>
+            <flag name="landscapeImage" value="0x2"/>
+            <flag name="squareImage" value="0x4"/>
+        </attr>
+        <attr name="activate_matrix">
+            <flag name="portraitImage" value="0x1"/>
+            <flag name="landscapeImage" value="0x2"/>
+            <flag name="squareImage" value="0x4"/>
+            <flag name="ifNoFace" value="0x8"/>
+            <flag name="ifFace" value="0x10"/>
+        </attr>
+        <attr name="center_face" format="reference|boolean"/>
+        <attr name="pre_scale" format="reference|float"/>
+        <attr name="pre_translate_x" format="reference|float"/>
+        <attr name="pre_translate_y" format="reference|float"/>
+        <attr name="scale" format="reference|float"/>
+        <attr name="translate_x" format="reference|float"/>
+        <attr name="translate_y" format="reference|float"/>
+        <attr name="animation_duration" format="reference|integer"/>
+        <attr name="animation_interpolator" format="reference"/>
+        <attr name="cyclic_animation" format="reference|boolean"/>
+    </declare-styleable>
+
     <declare-styleable name="LoadingDots">
         <attr name="LoadingDots_auto_play" format="boolean" />
         <attr name="LoadingDots_dots_color" format="color" />

@@ -5,6 +5,7 @@ import android.content.ComponentName;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.os.Environment;
 import android.view.View;
 import android.view.Window;
 import android.widget.Button;
@@ -29,13 +30,14 @@ import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.ViewById;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Objects;
 
 import static com.pratham.foundation.ApplicationClass.ButtonClickSound;
 import static com.pratham.foundation.utility.FC_Constants.GROUP_MODE;
 import static com.pratham.foundation.utility.FC_Constants.INDIVIDUAL_MODE;
-
+import static com.pratham.foundation.utility.FC_Constants.StudentPhotoPath;
 
 
 @EActivity(R.layout.activity_menu)
@@ -56,6 +58,10 @@ public class MenuActivity extends BaseActivity {
 
     @AfterViews
     public void initialize() {
+        StudentPhotoPath = Environment.getExternalStorageDirectory().toString() + "/.FCAInternal/StudentProfilePhotos/";
+        File direct = new File(StudentPhotoPath);
+        if (!direct.exists())
+            direct.mkdir();
         if (!FastSave.getInstance().getBoolean(FC_Constants.VOICES_DOWNLOAD_INTENT, false))
             show_STT_Dialog();
     }

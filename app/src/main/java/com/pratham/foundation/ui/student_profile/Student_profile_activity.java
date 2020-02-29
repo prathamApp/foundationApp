@@ -39,6 +39,7 @@ import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Bean;
 import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EFragment;
+import org.androidannotations.annotations.UiThread;
 import org.androidannotations.annotations.ViewById;
 
 import java.util.ArrayList;
@@ -314,7 +315,8 @@ public class Student_profile_activity extends Fragment implements Student_profil
 
     public CustomLodingDialog myLoadingDialog;
 
-    private void showLoader() {
+    @UiThread
+    public void showLoader() {
         myLoadingDialog = new CustomLodingDialog(getActivity());
         myLoadingDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         myLoadingDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
@@ -324,9 +326,14 @@ public class Student_profile_activity extends Fragment implements Student_profil
         myLoadingDialog.show();
     }
 
+    @UiThread
     public void dismissLoadingDialog() {
-        if (myLoadingDialog != null) {
-            myLoadingDialog.dismiss();
+        try {
+            if (myLoadingDialog != null && myLoadingDialog.isShowing()) {
+                myLoadingDialog.dismiss();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 

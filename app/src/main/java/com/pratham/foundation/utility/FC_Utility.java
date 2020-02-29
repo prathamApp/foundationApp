@@ -1492,25 +1492,31 @@ public class FC_Utility {
         return Build.VERSION.RELEASE;
     }
 
-    public static String getScreenResolution(Context context) {
-        Configuration config = context.getResources().getConfiguration();
-        String res = "width:"+config.screenWidthDp+" height:"+config.screenHeightDp+" dpi:"+config.densityDpi;
-        return ""+res;
+    public static String getInternalStorageStatus() {
+        StatFs stat = new StatFs(Environment.getDataDirectory().getPath());
+        long bytesAvailable,internalStorageSize;
+        bytesAvailable = stat.getBlockSizeLong() * stat.getAvailableBlocksLong();
+        internalStorageSize = bytesAvailable / (1024 * 1024);
+        String storage = String.valueOf(internalStorageSize);
+        return ""+storage+" MB";
     }
 
-    public static String getInternalStorageStatus(Context context) {
-        StatFs stat = new StatFs(Environment.getExternalStorageDirectory().getPath());
-        long bytesAvailable;
-        if (android.os.Build.VERSION.SDK_INT >=
-                android.os.Build.VERSION_CODES.JELLY_BEAN_MR2) {
-            bytesAvailable = stat.getBlockSizeLong() * stat.getAvailableBlocksLong();
-        }
-        else {
-            bytesAvailable = (long)stat.getBlockSize() * (long)stat.getAvailableBlocks();
-        }
-        long megAvailable = bytesAvailable / (1024 * 1024);
-        return ""+megAvailable+"Mb";
+    public static String getDeviceManufacturer() {
+        return ""+Build.MANUFACTURER;
     }
+
+    public static String getDeviceModel() {
+        return ""+Build.MODEL;
+    }
+
+/*    public static String getInternalStorageStatus(Context context) {
+        StatFs stat = new StatFs(Environment.getDataDirectory().getPath());
+        long bytesAvailable,internalStorageSize;
+        bytesAvailable = stat.getBlockSizeLong() * stat.getAvailableBlocksLong();
+        internalStorageSize = bytesAvailable / (1024 * 1024);
+        String storage = String.valueOf(internalStorageSize);
+        return ""+storage+" MB";
+    }*/
 
     public static int getBatteryPercentage(Context context) {
 
@@ -1993,7 +1999,6 @@ public class FC_Utility {
     public static void dismissDialog(Dialog dialog) {
         if (dialog != null) {
             dialog.dismiss();
-            dialog = null;
         }
     }
 

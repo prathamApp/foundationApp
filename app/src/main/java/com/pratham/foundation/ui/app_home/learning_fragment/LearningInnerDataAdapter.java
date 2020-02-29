@@ -117,6 +117,7 @@ public class LearningInnerDataAdapter extends RecyclerView.Adapter {
                             .newBuilderWithSource(Uri.parse(itemsList.get(i).getNodeServerImage()))
                             .setResizeOptions(new ResizeOptions(300, 200))
                             .setLocalThumbnailPreviewsEnabled(true)
+                            .setLocalThumbnailPreviewsEnabled(true)
                             .build();
                     DraweeController controller = Fresco.newDraweeControllerBuilder()
                             .setImageRequest(imageRequest)

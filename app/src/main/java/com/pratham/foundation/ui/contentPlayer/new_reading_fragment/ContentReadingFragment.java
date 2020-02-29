@@ -269,9 +269,13 @@ public class ContentReadingFragment extends Fragment implements
     @UiThread
     @Override
     public void dismissLoadingDialog() {
-        if (myLoadingDialog != null && myLoadingDialog.isShowing()) {
-            dialogFlg = false;
-            myLoadingDialog.dismiss();
+        try {
+            if (myLoadingDialog != null && myLoadingDialog.isShowing()) {
+                dialogFlg = false;
+                myLoadingDialog.dismiss();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 
@@ -614,10 +618,14 @@ public class ContentReadingFragment extends Fragment implements
     @UiThread
     @Override
     public void setCorrectViewColor() {
-        for (int x = 0; x < correctArr.length; x++) {
-            if (correctArr[x]) {
-                ((SansTextView) wordFlowLayout.getChildAt(x)).setTextColor(getResources().getColor(R.color.colorBtnGreenDark));
+        try {
+            for (int x = 0; x < correctArr.length; x++) {
+                if (correctArr[x]) {
+                    ((SansTextView) wordFlowLayout.getChildAt(x)).setTextColor(getResources().getColor(R.color.colorBtnGreenDark));
+                }
             }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
 //        if (voiceStart)
 //            sttMethod();

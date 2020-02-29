@@ -70,7 +70,6 @@ import static com.pratham.foundation.utility.FC_Constants.gameFolderPath;
 import static com.pratham.foundation.utility.FC_Utility.dpToPx;
 
 
-
 @EActivity(R.layout.activity_content_display)
 public class ContentDisplay extends BaseActivity implements ContentContract.ContentView, ContentClicked {
 
@@ -102,7 +101,7 @@ public class ContentDisplay extends BaseActivity implements ContentContract.Cont
     RelativeLayout homeRoot;
     @ViewById(R.id.header_rl)
     RelativeLayout header_rl;
-//    @ViewById(R.id.tv_progress)
+    //    @ViewById(R.id.tv_progress)
 //    TextView tv_progress;
     @ViewById(R.id.card_progressLayout)
     ProgressLayout level_progress;
@@ -117,10 +116,10 @@ public class ContentDisplay extends BaseActivity implements ContentContract.Cont
     Drawable homeHeader3;
     @DrawableRes(R.drawable.home_header_4_bg)
     Drawable homeHeader4;
-/*    @ViewById(R.id.floating_back)
-    FloatingActionButton floating_back;
-    @ViewById(R.id.floating_info)
-    FloatingActionButton floating_info;*/
+    /*    @ViewById(R.id.floating_back)
+        FloatingActionButton floating_back;
+        @ViewById(R.id.floating_info)
+        FloatingActionButton floating_info;*/
     @ViewById(R.id.main_back)
     ImageView main_back;
 
@@ -147,11 +146,11 @@ public class ContentDisplay extends BaseActivity implements ContentContract.Cont
         if (FC_Constants.TAB_LAYOUT)
             dp = 20;
 
-        recyclerView.addItemDecoration(new GridSpacingItemDecoration(2, dpToPx(this,dp), true));
+        recyclerView.addItemDecoration(new GridSpacingItemDecoration(2, dpToPx(this, dp), true));
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setAdapter(contentAdapter);
         presenter.displayProfileImage();
-        if(!LOGIN_MODE.equalsIgnoreCase(QR_GROUP_MODE))
+        if (!LOGIN_MODE.equalsIgnoreCase(QR_GROUP_MODE))
             presenter.getPerc(nodeId);
         tv_Topic.setText("" + contentTitle);
         tv_Topic.setSelected(true);
@@ -228,7 +227,7 @@ public class ContentDisplay extends BaseActivity implements ContentContract.Cont
     @UiThread
     @Override
     public void setHeaderProgress(int percent) {
-        tv_header_progress.setText(""+percent+"%");
+        tv_header_progress.setText("" + percent + "%");
 //        level_progress.setCurProgress(percent);
     }
 
@@ -278,8 +277,8 @@ public class ContentDisplay extends BaseActivity implements ContentContract.Cont
             else {
                 hideSystemUI();
                 showLoader();
-                if(!LOGIN_MODE.equalsIgnoreCase(QR_GROUP_MODE))
-                presenter.getPerc(nodeId);
+                if (!LOGIN_MODE.equalsIgnoreCase(QR_GROUP_MODE))
+                    presenter.getPerc(nodeId);
                 notifyAdapter();
             }
         } else
@@ -287,7 +286,7 @@ public class ContentDisplay extends BaseActivity implements ContentContract.Cont
     }
 
     @Click(R.id.main_back)
-    public void backClicked(){
+    public void backClicked() {
         onBackPressed();
     }
 
@@ -347,16 +346,16 @@ public class ContentDisplay extends BaseActivity implements ContentContract.Cont
             e.printStackTrace();
         }
         resName = ContentTableList.get(position).getNodeTitle();
-        if(ContentTableList.get(position).getNodeType().equalsIgnoreCase("PreResource")||
-                ContentTableList.get(position).getResourceType().equalsIgnoreCase("PreResource")){
-                Intent mainNew = new Intent(ContentDisplay.this, ContentPlayerActivity_.class);
-                mainNew.putExtra("resId", ContentTableList.get(position).getResourceId());
-                mainNew.putExtra("StudentID", FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""));
-                mainNew.putExtra("contentName", ContentTableList.get(position).getNodeTitle());
-                mainNew.putExtra("onSdCard", ContentTableList.get(position).isOnSDCard());
-                mainNew.putExtra("contentPath", ContentTableList.get(position).getResourcePath());
-                startActivity(mainNew);
-        }else {
+        if (ContentTableList.get(position).getNodeType().equalsIgnoreCase("PreResource") ||
+                ContentTableList.get(position).getResourceType().equalsIgnoreCase("PreResource")) {
+            Intent mainNew = new Intent(ContentDisplay.this, ContentPlayerActivity_.class);
+            mainNew.putExtra("resId", ContentTableList.get(position).getResourceId());
+            mainNew.putExtra("StudentID", FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""));
+            mainNew.putExtra("contentName", ContentTableList.get(position).getNodeTitle());
+            mainNew.putExtra("onSdCard", ContentTableList.get(position).isOnSDCard());
+            mainNew.putExtra("contentPath", ContentTableList.get(position).getResourcePath());
+            startActivity(mainNew);
+        } else {
             if (ContentTableList.get(position).getResourceType().toLowerCase()
                     .contains(FC_Constants.HTML_GAME_RESOURCE)) {
                 String resPath = null;
@@ -613,20 +612,28 @@ public class ContentDisplay extends BaseActivity implements ContentContract.Cont
     @UiThread
     @Override
     public void showLoader() {
-        myLoadingDialog = new CustomLodingDialog(this);
-        myLoadingDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        myLoadingDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-        myLoadingDialog.setContentView(R.layout.loading_dialog);
-        myLoadingDialog.setCanceledOnTouchOutside(false);
+        try {
+            myLoadingDialog = new CustomLodingDialog(this);
+            myLoadingDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+            myLoadingDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+            myLoadingDialog.setContentView(R.layout.loading_dialog);
+            myLoadingDialog.setCanceledOnTouchOutside(false);
 //        myLoadingDialog.setCancelable(false);
-        myLoadingDialog.show();
+            myLoadingDialog.show();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     @UiThread
     @Override
     public void dismissLoadingDialog() {
-        if (myLoadingDialog != null) {
-            myLoadingDialog.dismiss();
+        try {
+            if (myLoadingDialog != null && myLoadingDialog.isShowing()) {
+                myLoadingDialog.dismiss();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 

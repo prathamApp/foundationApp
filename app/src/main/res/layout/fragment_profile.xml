@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/home_root_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -9,41 +8,35 @@
     <RelativeLayout
         android:id="@+id/header_rl"
         android:layout_width="match_parent"
-        android:layout_marginTop="@dimen/_15sdp"
+        android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/_10sdp"
+        android:layout_marginTop="@dimen/_15sdp"
         android:layout_marginEnd="@dimen/_10sdp"
         android:layout_marginBottom="@dimen/_5sdp"
-        android:paddingEnd="10dp"
-        android:layout_height="wrap_content">
+        android:paddingEnd="10dp">
 
-        <android.support.design.card.MaterialCardView
+        <ImageView
             android:id="@+id/card_img"
             android:layout_width="@dimen/_80sdp"
             android:layout_height="@dimen/_100sdp"
-            android:layout_marginTop="10dp"
-            android:layout_marginBottom="10dp"
-            android:layout_marginStart="10dp"
             android:layout_centerVertical="true"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="10dp"
             android:layout_marginEnd="15dp"
-            app:cardCornerRadius="20dp"
-            app:cardBackgroundColor="@color/CardTransparentBg"
-            app:cardElevation="5dp">
-
-            <ImageView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:src="@drawable/b3"
-                android:scaleType="centerInside"/>
-        </android.support.design.card.MaterialCardView>
+            android:layout_marginBottom="10dp"
+            android:scaleType="centerInside"
+            android:elevation="3dp"
+            android:background="@drawable/card_gradiance_bg"
+            android:src="@drawable/b3" />
 
         <RelativeLayout
             android:id="@+id/profile_header"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
             android:layout_marginTop="10dp"
             android:layout_marginBottom="10dp"
-            android:layout_toEndOf="@+id/card_img"
-            android:layout_alignParentTop="true">
+            android:layout_toEndOf="@+id/card_img">
 
             <com.pratham.foundation.customView.SansTextViewBold
                 android:id="@+id/tv_studentName"
@@ -63,15 +56,15 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/tv_studentName"
                 android:layout_alignParentStart="true"
-                android:gravity="center_vertical"
                 android:layout_marginTop="4dp"
-                android:paddingBottom="2dp"
-                android:visibility="visible"
+                android:gravity="center_vertical"
                 android:paddingTop="2dp"
+                android:paddingBottom="2dp"
                 android:text="@string/usage"
                 android:textAllCaps="true"
                 android:textColor="@color/colorText"
-                android:textSize="@dimen/_12sdp" />
+                android:textSize="@dimen/_12sdp"
+                android:visibility="visible" />
 
             <RelativeLayout
                 android:id="@+id/usage_2"
@@ -79,19 +72,21 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/tv_usage"
                 android:layout_marginTop="4dp"
-                android:visibility="visible"
-                android:paddingBottom="2dp">
+                android:paddingBottom="2dp"
+                android:visibility="visible">
+
                 <com.pratham.foundation.customView.SansTextView
                     android:id="@+id/tv_days"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentStart="true"
-                    android:gravity="center_vertical"
                     android:layout_marginEnd="5dp"
+                    android:gravity="center_vertical"
                     android:text="20"
                     android:textAllCaps="true"
                     android:textColor="@color/colorText"
                     android:textSize="@dimen/_12sdp" />
+
                 <com.pratham.foundation.customView.SansTextView
                     android:id="@+id/lbl_days"
                     android:layout_width="wrap_content"
@@ -103,14 +98,16 @@
                     android:textAllCaps="true"
                     android:textColor="@color/colorText"
                     android:textSize="@dimen/_12sdp" />
-        </RelativeLayout>
+            </RelativeLayout>
+
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/usage_2"
                 android:layout_marginTop="4dp"
-                android:visibility="visible"
-                android:paddingBottom="2dp">
+                android:paddingBottom="2dp"
+                android:visibility="visible">
+
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -120,41 +117,43 @@
                         android:id="@+id/rl_certi1"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:visibility="gone"
                         android:layout_marginStart="@dimen/_2sdp"
                         android:layout_marginEnd="@dimen/_2sdp"
                         android:layout_marginBottom="5dp"
+                        android:layout_weight="1"
+                        android:background="@drawable/certificate_bg"
                         android:elevation="3dp"
                         android:padding="3dp"
-                        android:background="@drawable/certificate_bg">
+                        android:visibility="gone">
+
                         <com.pratham.foundation.customView.SansTextView
                             android:id="@+id/certi1_subj"
-                            android:layout_centerHorizontal="true"
-                            android:layout_height="wrap_content"
-                            android:paddingTop="@dimen/_2sdp"
-                            android:paddingStart="@dimen/_2sdp"
-                            android:paddingEnd="@dimen/_2sdp"
                             android:layout_width="wrap_content"
-                            android:textSize="@dimen/_12sdp"
-                            android:text="English"/>
+                            android:layout_height="wrap_content"
+                            android:layout_centerHorizontal="true"
+                            android:paddingStart="@dimen/_2sdp"
+                            android:paddingTop="@dimen/_2sdp"
+                            android:paddingEnd="@dimen/_2sdp"
+                            android:text="English"
+                            android:textSize="@dimen/_12sdp" />
+
                         <com.pratham.foundation.customView.SansTextViewBold
                             android:id="@+id/certi1_perc"
-                            android:layout_centerHorizontal="true"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:textColor="@color/white"
-                            android:textAlignment="center"
-                            android:text="40%"
-                            android:textSize="@dimen/_10sdp"
-                            android:layout_marginTop="@dimen/_3sdp"
+                            android:layout_below="@+id/certi1_subj"
+                            android:layout_centerHorizontal="true"
                             android:layout_marginStart="@dimen/_5sdp"
+                            android:layout_marginTop="@dimen/_3sdp"
                             android:layout_marginEnd="@dimen/_5sdp"
                             android:layout_marginBottom="@dimen/_5sdp"
+                            android:background="@drawable/card_color_bg1"
                             android:paddingStart="@dimen/_2sdp"
                             android:paddingEnd="@dimen/_2sdp"
-                            android:background="@drawable/card_color_bg1"
-                            android:layout_below="@+id/certi1_subj"/>
+                            android:text="40%"
+                            android:textAlignment="center"
+                            android:textColor="@color/white"
+                            android:textSize="@dimen/_10sdp" />
                     </RelativeLayout>
 
                     <RelativeLayout
@@ -163,39 +162,41 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="@dimen/_2sdp"
                         android:layout_marginEnd="@dimen/_2sdp"
-                        android:visibility="gone"
                         android:layout_marginBottom="5dp"
+                        android:layout_weight="1"
+                        android:background="@drawable/certificate_bg"
                         android:elevation="3dp"
                         android:padding="3dp"
-                        android:layout_weight="1"
-                        android:background="@drawable/certificate_bg">
+                        android:visibility="gone">
+
                         <com.pratham.foundation.customView.SansTextView
                             android:id="@+id/certi2_subj"
-                            android:layout_centerHorizontal="true"
-                            android:layout_height="wrap_content"
-                            android:paddingTop="@dimen/_2sdp"
-                            android:paddingStart="@dimen/_2sdp"
-                            android:paddingEnd="@dimen/_2sdp"
                             android:layout_width="wrap_content"
-                            android:textSize="@dimen/_12sdp"
-                            android:text="English"/>
+                            android:layout_height="wrap_content"
+                            android:layout_centerHorizontal="true"
+                            android:paddingStart="@dimen/_2sdp"
+                            android:paddingTop="@dimen/_2sdp"
+                            android:paddingEnd="@dimen/_2sdp"
+                            android:text="English"
+                            android:textSize="@dimen/_12sdp" />
+
                         <com.pratham.foundation.customView.SansTextViewBold
                             android:id="@+id/certi2_perc"
-                            android:layout_centerHorizontal="true"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:textColor="@color/white"
-                            android:textSize="@dimen/_10sdp"
-                            android:textAlignment="center"
-                            android:layout_marginTop="@dimen/_3sdp"
+                            android:layout_below="@+id/certi2_subj"
+                            android:layout_centerHorizontal="true"
                             android:layout_marginStart="@dimen/_5sdp"
+                            android:layout_marginTop="@dimen/_3sdp"
                             android:layout_marginEnd="@dimen/_5sdp"
                             android:layout_marginBottom="@dimen/_5sdp"
-                            android:text="40%"
+                            android:background="@drawable/card_color_bg4"
                             android:paddingStart="@dimen/_2sdp"
                             android:paddingEnd="@dimen/_2sdp"
-                            android:background="@drawable/card_color_bg4"
-                            android:layout_below="@+id/certi2_subj"/>
+                            android:text="40%"
+                            android:textAlignment="center"
+                            android:textColor="@color/white"
+                            android:textSize="@dimen/_10sdp" />
                     </RelativeLayout>
 
                     <RelativeLayout
@@ -204,43 +205,45 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="@dimen/_2sdp"
                         android:layout_marginEnd="@dimen/_2sdp"
-                        android:visibility="gone"
-                        android:layout_weight="1"
                         android:layout_marginBottom="5dp"
+                        android:layout_weight="1"
+                        android:background="@drawable/certificate_bg"
                         android:elevation="3dp"
                         android:padding="3dp"
-                        android:background="@drawable/certificate_bg">
+                        android:visibility="gone">
+
                         <com.pratham.foundation.customView.SansTextView
                             android:id="@+id/certi3_subj"
-                            android:layout_centerHorizontal="true"
-                            android:layout_height="wrap_content"
-                            android:paddingTop="@dimen/_2sdp"
-                            android:paddingStart="@dimen/_2sdp"
-                            android:paddingEnd="@dimen/_2sdp"
-                            android:textSize="@dimen/_12sdp"
                             android:layout_width="wrap_content"
-                            android:text="English"/>
+                            android:layout_height="wrap_content"
+                            android:layout_centerHorizontal="true"
+                            android:paddingStart="@dimen/_2sdp"
+                            android:paddingTop="@dimen/_2sdp"
+                            android:paddingEnd="@dimen/_2sdp"
+                            android:text="English"
+                            android:textSize="@dimen/_12sdp" />
+
                         <com.pratham.foundation.customView.SansTextViewBold
                             android:id="@+id/certi3_perc"
-                            android:layout_centerHorizontal="true"
                             android:layout_width="match_parent"
-                            android:textSize="@dimen/_10sdp"
                             android:layout_height="wrap_content"
-                            android:textColor="@color/white"
-                            android:textAlignment="center"
-                            android:layout_marginTop="@dimen/_3sdp"
+                            android:layout_below="@+id/certi3_subj"
+                            android:layout_centerHorizontal="true"
                             android:layout_marginStart="@dimen/_5sdp"
+                            android:layout_marginTop="@dimen/_3sdp"
                             android:layout_marginEnd="@dimen/_5sdp"
                             android:layout_marginBottom="@dimen/_5sdp"
-                            android:text="40%"
+                            android:background="@drawable/card_color_bg5"
                             android:paddingStart="@dimen/_2sdp"
                             android:paddingEnd="@dimen/_2sdp"
-                            android:background="@drawable/card_color_bg5"
-                            android:layout_below="@+id/certi3_subj"/>
+                            android:text="40%"
+                            android:textAlignment="center"
+                            android:textColor="@color/white"
+                            android:textSize="@dimen/_10sdp" />
                     </RelativeLayout>
 
                 </LinearLayout>
-        </RelativeLayout>
+            </RelativeLayout>
 
         </RelativeLayout>
 
@@ -248,129 +251,128 @@
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/my_recycler_view"
-        android:layout_below="@+id/header_rl"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent"
+        android:layout_below="@+id/header_rl" />
 
     <ImageButton
         android:id="@+id/ib_langChange"
         android:layout_width="80dp"
         android:layout_height="80dp"
-        android:elevation="5dp"
-        android:layout_alignParentBottom="true"
         android:layout_alignParentRight="true"
+        android:layout_alignParentBottom="true"
         android:layout_marginEnd="20dp"
         android:layout_marginBottom="20dp"
-        android:scaleType="centerInside"
         android:background="@drawable/dialog_image_bg"
-        android:src="@drawable/language_icon"
-        />
+        android:elevation="5dp"
+        android:scaleType="centerInside"
+        android:src="@drawable/language_icon" />
 </RelativeLayout>
 
-<!--<ScrollView-->
-<!--android:layout_width="match_parent"-->
-<!--android:layout_height="match_parent"-->
-<!--android:layout_below="@+id/header_rl">-->
+    <!--<ScrollView-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="match_parent"-->
+    <!--android:layout_below="@+id/header_rl">-->
 
-<!--<RelativeLayout-->
-<!--    android:layout_width="match_parent"-->
-<!--    android:layout_height="match_parent">-->
+    <!--<RelativeLayout-->
+    <!--    android:layout_width="match_parent"-->
+    <!--    android:layout_height="match_parent">-->
 
-<!--    <RelativeLayout-->
-<!--        android:id="@+id/lbl_Progreess_layout1"-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:layout_below="@+id/lbl_Progreess_layout"-->
-<!--        android:background="@drawable/dialog_bg"-->
-<!--        android:elevation="5dp"-->
-<!--        android:paddingStart="15dp"-->
-<!--        android:paddingEnd="15dp"-->
-<!--        android:layout_marginTop="3dp"-->
-<!--        android:layout_marginBottom="8dp"-->
-<!--        android:layout_marginStart="10dp"-->
-<!--        android:layout_marginEnd="10dp">-->
+    <!--    <RelativeLayout-->
+    <!--        android:id="@+id/lbl_Progreess_layout1"-->
+    <!--        android:layout_width="match_parent"-->
+    <!--        android:layout_height="wrap_content"-->
+    <!--        android:layout_below="@+id/lbl_Progreess_layout"-->
+    <!--        android:background="@drawable/dialog_bg"-->
+    <!--        android:elevation="5dp"-->
+    <!--        android:paddingStart="15dp"-->
+    <!--        android:paddingEnd="15dp"-->
+    <!--        android:layout_marginTop="3dp"-->
+    <!--        android:layout_marginBottom="8dp"-->
+    <!--        android:layout_marginStart="10dp"-->
+    <!--        android:layout_marginEnd="10dp">-->
 
-<!--        <com.pratham.foundation.customView.SansTextViewBold-->
-<!--            android:id="@+id/lbl_Progreess_Header1"-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:gravity="center_vertical"-->
-<!--            android:paddingTop="2dp"-->
-<!--            android:paddingBottom="2dp"-->
-<!--            android:layout_marginTop="5dp"-->
-<!--            android:text="@string/progress"-->
-<!--            android:textAllCaps="true"-->
-<!--            android:textColor="@color/colorBtnGreenDark"-->
-<!--            android:textSize="@dimen/_14sdp" />-->
+    <!--        <com.pratham.foundation.customView.SansTextViewBold-->
+    <!--            android:id="@+id/lbl_Progreess_Header1"-->
+    <!--            android:layout_width="match_parent"-->
+    <!--            android:layout_height="wrap_content"-->
+    <!--            android:gravity="center_vertical"-->
+    <!--            android:paddingTop="2dp"-->
+    <!--            android:paddingBottom="2dp"-->
+    <!--            android:layout_marginTop="5dp"-->
+    <!--            android:text="@string/progress"-->
+    <!--            android:textAllCaps="true"-->
+    <!--            android:textColor="@color/colorBtnGreenDark"-->
+    <!--            android:textSize="@dimen/_14sdp" />-->
 
-<!--        <android.support.design.card.MaterialCardView-->
-<!--            android:layout_width="155dp"-->
-<!--            android:layout_below="@id/lbl_Progreess_Header1"-->
-<!--            android:layout_height="200dp"-->
-<!--            android:layout_marginTop="10dp"-->
-<!--            android:layout_marginBottom="10dp"-->
-<!--            android:layout_marginStart="10dp"-->
-<!--            android:layout_marginEnd="10dp"-->
-<!--            app:cardCornerRadius="20dp"-->
-<!--            app:cardElevation="5dp">-->
+    <!--        <android.support.design.card.MaterialCardView-->
+    <!--            android:layout_width="155dp"-->
+    <!--            android:layout_below="@id/lbl_Progreess_Header1"-->
+    <!--            android:layout_height="200dp"-->
+    <!--            android:layout_marginTop="10dp"-->
+    <!--            android:layout_marginBottom="10dp"-->
+    <!--            android:layout_marginStart="10dp"-->
+    <!--            android:layout_marginEnd="10dp"-->
+    <!--            app:cardCornerRadius="20dp"-->
+    <!--            app:cardElevation="5dp">-->
 
-<!--            <ImageView-->
-<!--                android:layout_width="match_parent"-->
-<!--                android:layout_height="match_parent"-->
-<!--                android:src="@drawable/b3"-->
-<!--                android:scaleType="fitCenter"/>-->
-<!--        </android.support.design.card.MaterialCardView>-->
-
-
-<!--    </RelativeLayout>-->
-
-<!--    <RelativeLayout-->
-<!--        android:id="@+id/lbl_Progreess_layout2"-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:background="@drawable/dialog_bg"-->
-<!--        android:layout_below="@+id/lbl_Progreess_layout1"-->
-<!--        android:elevation="5dp"-->
-<!--        android:paddingStart="15dp"-->
-<!--        android:paddingEnd="15dp"-->
-<!--        android:layout_marginTop="3dp"-->
-<!--        android:layout_marginBottom="8dp"-->
-<!--        android:layout_marginStart="10dp"-->
-<!--        android:layout_marginEnd="10dp">-->
-
-<!--        <com.pratham.foundation.customView.SansTextViewBold-->
-<!--            android:id="@+id/lbl_Progreess_header2"-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:gravity="center_vertical"-->
-<!--            android:paddingTop="2dp"-->
-<!--            android:paddingBottom="2dp"-->
-<!--            android:layout_marginTop="5dp"-->
-<!--            android:text="@string/progress"-->
-<!--            android:textAllCaps="true"-->
-<!--            android:textColor="@color/colorBtnGreenDark"-->
-<!--            android:textSize="@dimen/_14sdp" />-->
-
-<!--        <android.support.design.card.MaterialCardView-->
-<!--            android:layout_width="155dp"-->
-<!--            android:layout_below="@id/lbl_Progreess_header2"-->
-<!--            android:layout_height="200dp"-->
-<!--            android:layout_marginTop="10dp"-->
-<!--            android:layout_marginBottom="10dp"-->
-<!--            android:layout_marginStart="10dp"-->
-<!--            android:layout_marginEnd="10dp"-->
-<!--            app:cardCornerRadius="20dp"-->
-<!--            app:cardElevation="5dp">-->
-
-<!--            <ImageView-->
-<!--                android:layout_width="match_parent"-->
-<!--                android:layout_height="match_parent"-->
-<!--                android:src="@drawable/b3"-->
-<!--                android:scaleType="fitCenter"/>-->
-<!--        </android.support.design.card.MaterialCardView>-->
+    <!--            <ImageView-->
+    <!--                android:layout_width="match_parent"-->
+    <!--                android:layout_height="match_parent"-->
+    <!--                android:src="@drawable/b3"-->
+    <!--                android:scaleType="fitCenter"/>-->
+    <!--        </android.support.design.card.MaterialCardView>-->
 
 
-<!--    </RelativeLayout>-->
+    <!--    </RelativeLayout>-->
 
-<!--</RelativeLayout>-->
-<!--</ScrollView>-->
+    <!--    <RelativeLayout-->
+    <!--        android:id="@+id/lbl_Progreess_layout2"-->
+    <!--        android:layout_width="match_parent"-->
+    <!--        android:layout_height="wrap_content"-->
+    <!--        android:background="@drawable/dialog_bg"-->
+    <!--        android:layout_below="@+id/lbl_Progreess_layout1"-->
+    <!--        android:elevation="5dp"-->
+    <!--        android:paddingStart="15dp"-->
+    <!--        android:paddingEnd="15dp"-->
+    <!--        android:layout_marginTop="3dp"-->
+    <!--        android:layout_marginBottom="8dp"-->
+    <!--        android:layout_marginStart="10dp"-->
+    <!--        android:layout_marginEnd="10dp">-->
+
+    <!--        <com.pratham.foundation.customView.SansTextViewBold-->
+    <!--            android:id="@+id/lbl_Progreess_header2"-->
+    <!--            android:layout_width="match_parent"-->
+    <!--            android:layout_height="wrap_content"-->
+    <!--            android:gravity="center_vertical"-->
+    <!--            android:paddingTop="2dp"-->
+    <!--            android:paddingBottom="2dp"-->
+    <!--            android:layout_marginTop="5dp"-->
+    <!--            android:text="@string/progress"-->
+    <!--            android:textAllCaps="true"-->
+    <!--            android:textColor="@color/colorBtnGreenDark"-->
+    <!--            android:textSize="@dimen/_14sdp" />-->
+
+    <!--        <android.support.design.card.MaterialCardView-->
+    <!--            android:layout_width="155dp"-->
+    <!--            android:layout_below="@id/lbl_Progreess_header2"-->
+    <!--            android:layout_height="200dp"-->
+    <!--            android:layout_marginTop="10dp"-->
+    <!--            android:layout_marginBottom="10dp"-->
+    <!--            android:layout_marginStart="10dp"-->
+    <!--            android:layout_marginEnd="10dp"-->
+    <!--            app:cardCornerRadius="20dp"-->
+    <!--            app:cardElevation="5dp">-->
+
+    <!--            <ImageView-->
+    <!--                android:layout_width="match_parent"-->
+    <!--                android:layout_height="match_parent"-->
+    <!--                android:src="@drawable/b3"-->
+    <!--                android:scaleType="fitCenter"/>-->
+    <!--        </android.support.design.card.MaterialCardView>-->
+
+
+    <!--    </RelativeLayout>-->
+
+    <!--</RelativeLayout>-->
+    <!--</ScrollView>-->
