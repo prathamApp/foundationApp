@@ -36,7 +36,7 @@ public interface ScoreDao {
     @Query("select * from Score")
     List<Score> getAllScores();
 
-    @Query("select * from Score where sentFlag=0")
+    @Query("select * from Score where sentFlag=0  AND Label!='img_push_lbl'")
     List<Score> getAllPushScores();
 
 

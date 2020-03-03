@@ -305,16 +305,20 @@ public class FunFragment extends Fragment implements FunContract.FunView,
     @UiThread
     @Override
     public void showLoader() {
-        if (!loaderVisible) {
-            loaderVisible = true;
-            myLoadingDialog = new CustomLodingDialog(context);
-            myLoadingDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-            Objects.requireNonNull(myLoadingDialog.getWindow()).
-                    setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-            myLoadingDialog.setContentView(R.layout.loading_dialog);
-            myLoadingDialog.setCanceledOnTouchOutside(false);
-//        myLoadingDialog.setCancelable(false);
-            myLoadingDialog.show();
+        try {
+            if (!loaderVisible) {
+                loaderVisible = true;
+                myLoadingDialog = new CustomLodingDialog(context);
+                myLoadingDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+                Objects.requireNonNull(myLoadingDialog.getWindow()).
+                        setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+                myLoadingDialog.setContentView(R.layout.loading_dialog);
+                myLoadingDialog.setCanceledOnTouchOutside(false);
+    //        myLoadingDialog.setCancelable(false);
+                myLoadingDialog.show();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 

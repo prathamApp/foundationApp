@@ -17,6 +17,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.annotation.Nullable;
+import android.support.annotation.UiThread;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Display;
 import android.view.View;
@@ -33,12 +34,9 @@ import com.pratham.foundation.database.AppDatabase;
 import com.pratham.foundation.database.BackupDatabase;
 import com.pratham.foundation.modalclasses.EventMessage;
 import com.pratham.foundation.services.TTSService;
-import com.pratham.foundation.utility.CatchoTransparentActivity;
 import com.pratham.foundation.utility.FC_Constants;
 import com.pratham.foundation.utility.FC_Utility;
 import com.pratham.foundation.utility.MediaPlayerUtil;
-
-import net.alhazmy13.catcho.library.Catcho;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -89,8 +87,8 @@ public class BaseActivity extends AppCompatActivity {
         correctSound = MediaPlayer.create(this, R.raw.correct_ans);
         muteFlg = false;
 
-        Catcho.Builder(this)
-                .activity(CatchoTransparentActivity.class).build();
+//        Catcho.Builder(this)
+//                .activity(CatchoTransparentActivity.class).build();
              //   .recipients("abc@domain.com").build();
     }
 
@@ -219,7 +217,7 @@ public class BaseActivity extends AppCompatActivity {
                     rl_btn.setVisibility(View.GONE);
                     break;
                 case HIDE_OTG_TRANSFER_DIALOG_SUCCESS:
-                    push_lottie.setAnimation("success.json");
+                    push_lottie.setAnimation("lottie_correct.json");
                     push_lottie.playAnimation();
                     int days = appDatabase.getScoreDao().getTotalActiveDeviceDays();
                     txt_push_dialog_msg.setText("Data of "+days+" days and\n"+TransferedImages+" Images\nCopied Successfully!!");
@@ -237,7 +235,9 @@ public class BaseActivity extends AppCompatActivity {
         }
     };
 
-    private void ShowOTGPushDialog() {
+    @SuppressLint("CutPasteId")
+    @UiThread
+    public void ShowOTGPushDialog() {
         pushDialog = new CustomLodingDialog(this);
         pushDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         pushDialog.setContentView(R.layout.app_send_success_dialog);
@@ -248,7 +248,6 @@ public class BaseActivity extends AppCompatActivity {
 
         push_lottie = pushDialog.findViewById(R.id.push_lottie);
         txt_push_dialog_msg = pushDialog.findViewById(R.id.txt_push_dialog_msg);
-        txt_push_error = pushDialog.findViewById(R.id.txt_push_error);
         txt_push_error = pushDialog.findViewById(R.id.txt_push_error);
         rl_btn = pushDialog.findViewById(R.id.rl_btn);
         ok_btn = pushDialog.findViewById(R.id.ok_btn);

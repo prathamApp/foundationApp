@@ -25,15 +25,19 @@ public class CustomLodingDialog extends Dialog {
     @Override
     public void show() {
         // Set the dialog to not focusable.
-        getWindow().setFlags(WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE,
-                WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE);
+        try {
+            getWindow().setFlags(WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE,
+                    WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE);
 
-        // Show the dialog with NavBar hidden.
-        hideSystemUI();
-        super.show();
+            // Show the dialog with NavBar hidden.
+            hideSystemUI();
+            super.show();
 
-        // Set the dialog to focusable again.
-        getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE);
+            // Set the dialog to focusable again.
+            getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     private void hideSystemUI() {

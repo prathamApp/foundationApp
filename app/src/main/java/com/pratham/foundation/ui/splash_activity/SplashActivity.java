@@ -102,10 +102,6 @@ public class SplashActivity extends SplashSupportActivity implements SplashContr
             tv_typer.setAnimationListener(hTextView -> initiateApp());
         }, 500);
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
-        dialog = new ProgressDialog(this);
-        fpath = "";
-        appname = "";
-        splashPresenter.setView(this);
         context = SplashActivity.this;
         bgMusic = MediaPlayer.create(this, R.raw.bg_sound);
         bgMusic.setLooping(true);
@@ -145,6 +141,11 @@ public class SplashActivity extends SplashSupportActivity implements SplashContr
                 "\nchargePlug: " + "" +
                 "\nstatus: " + "" +
                 "\nchargePlug: " + "\n\n\n\n\n\n\n");*/
+        dialog = new ProgressDialog(this);
+        fpath = "";
+        appname = "";
+        splashPresenter.setView(this);
+
         FastSave.getInstance().saveString(FC_Constants.LOGIN_MODE, "NA");
         String[] permissionArray = new String[]{PermissionUtils.Manifest_CAMERA,
                 PermissionUtils.Manifest_WRITE_EXTERNAL_STORAGE,

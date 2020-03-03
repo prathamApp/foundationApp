@@ -36,7 +36,7 @@ import com.google.gson.reflect.TypeToken;
 import com.pratham.foundation.ApplicationClass;
 import com.pratham.foundation.R;
 import com.pratham.foundation.async.DownloadData;
-import com.pratham.foundation.async.PushDataToServer;
+import com.pratham.foundation.async.PushDataToServer_New;
 import com.pratham.foundation.customView.display_image_dialog.CustomLodingDialog;
 import com.pratham.foundation.customView.progress_layout.ProgressLayout;
 import com.pratham.foundation.database.AppDatabase;
@@ -93,8 +93,8 @@ public class PushOrAssignFragment extends Fragment {
     ArrayList<String> present_groups;
     CustomLodingDialog progress;
 
-    @Bean(PushDataToServer.class)
-    PushDataToServer pushDataToServer;
+    @Bean(PushDataToServer_New.class)
+    PushDataToServer_New pushDataToServer;
 
     public PushOrAssignFragment() {
         // Required empty public constructor
@@ -124,7 +124,7 @@ public class PushOrAssignFragment extends Fragment {
 
     @Click(R.id.btn_push)
     public void onPushClick() {
-        pushDataToServer.doInBackground(false);
+        pushDataToServer.startDataPush(getActivity());
     }
 
     @Click(R.id.btn_Usage)
