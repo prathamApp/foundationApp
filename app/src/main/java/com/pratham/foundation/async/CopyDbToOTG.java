@@ -14,7 +14,6 @@ import org.greenrobot.eventbus.EventBus;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.IOException;
 import java.io.OutputStream;
 
 import static com.pratham.foundation.database.AppDatabase.DB_NAME;
@@ -25,6 +24,7 @@ public class CopyDbToOTG extends AsyncTask {
 
     String actPhotoPath;
     DocumentFile mediaFolder;
+    DocumentFile newMediaFolder;
     int totalActivityFolders;
     File[] files;
 
@@ -73,8 +73,9 @@ public class CopyDbToOTG extends AsyncTask {
             File activityPhotosFile = new File(actPhotoPath);
             files = activityPhotosFile.listFiles();
             totalActivityFolders = files.length;
-            if(totalActivityFolders>0)
-                CopyPhotos( 0);
+//            if(totalActivityFolders>0)
+//                CopyPhotos( 0);
+            copyActivityData(activityPhotosFile, mediaFolder);
             return true;
 
         } catch (Exception e) {
@@ -83,6 +84,38 @@ public class CopyDbToOTG extends AsyncTask {
         }
     }
 
+    private void copyActivityData(File activityPhotosFile, DocumentFile parentFolder) {
+        try {
+            DocumentFile currentFolder = parentFolder.findFile(activityPhotosFile.getName());
+            if (currentFolder == null)
+                currentFolder = parentFolder.createDirectory(activityPhotosFile.getName());
+            File[] files = activityPhotosFile.listFiles();
+            for (File file : files) {
+                if (file.isDirectory()) {
+                    Log.d("Files", "\nDirectory : " + file.getName());//CanonicalPath());
+                    copyActivityData(file, currentFolder);
+                } else {
+                    Log.d("Files", "\nFile : " + file.getName());//CanonicalPath());
+                    DocumentFile dFile = currentFolder.createFile("image", file.getName());
+                    OutputStream out = ApplicationClass.getInstance().getContentResolver().openOutputStream(dFile.getUri());
+                    FileInputStream in = new FileInputStream(file.getAbsolutePath());
+                    byte[] buffer = new byte[1024];
+                    int read;
+                    while ((read = in.read(buffer)) != -1) {
+                        out.write(buffer, 0, read);
+                    }
+                    in.close();
+                    out.flush();
+                    out.close();
+                    FC_Constants.TransferedImages++;
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+/*
     private void CopyPhotos(int no) {
         try {
             if(no<totalActivityFolders) {
@@ -134,6 +167,7 @@ public class CopyDbToOTG extends AsyncTask {
             e.printStackTrace();
         }
     }
+*/
 
     @Override
     protected void onPostExecute(Object o) {

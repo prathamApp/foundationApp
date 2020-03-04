@@ -58,8 +58,8 @@ public class ChildAdapter extends RecyclerView.Adapter<ChildAdapter.ChildHolder>
         File file;
         file = new File(StudentPhotoPath + "" + datalist.get(pos).getStudentID() + ".jpg");
         Fresco.getImagePipeline().clearCaches();
-        Fresco.getImagePipeline().clearDiskCaches();
-        Fresco.getImagePipeline().clearMemoryCaches();
+//        Fresco.getImagePipeline().clearDiskCaches();
+//        Fresco.getImagePipeline().clearMemoryCaches();
         if (file.exists()) {
             viewHolder.child_avatar.setImageURI(Uri.fromFile(file));
         } else {

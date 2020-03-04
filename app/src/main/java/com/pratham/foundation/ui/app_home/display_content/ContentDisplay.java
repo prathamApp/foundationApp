@@ -126,6 +126,10 @@ public class ContentDisplay extends BaseActivity implements ContentContract.Cont
 
     @AfterViews
     public void initialize() {
+        Runtime rs = Runtime.getRuntime();
+        rs.freeMemory();
+        rs.gc();
+        rs.freeMemory();
         resumeCntr = 0;
         nodeId = getIntent().getStringExtra("nodeId");
         contentTitle = getIntent().getStringExtra("contentTitle");

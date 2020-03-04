@@ -110,6 +110,10 @@ public class TestFragment extends Fragment implements TestContract.TestView,
 
     @AfterViews
     public void initialize() {
+        Runtime rs = Runtime.getRuntime();
+        rs.freeMemory();
+        rs.gc();
+        rs.freeMemory();
         rootList = new ArrayList<>();
         rootLevelList = new ArrayList<>();
         dwParentList = new ArrayList<>();

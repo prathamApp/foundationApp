@@ -128,6 +128,11 @@ public class HomeActivity extends BaseActivity implements LevelChanged {
 
     @AfterViews
     public void initialize() {
+        Runtime rs = Runtime.getRuntime();
+        rs.freeMemory();
+        rs.gc();
+        rs.freeMemory();
+
         Configuration config = getResources().getConfiguration();
         FC_Constants.TAB_LAYOUT = config.smallestScreenWidthDp > 425;
         sub_nodeId = getIntent().getStringExtra("nodeId");

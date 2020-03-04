@@ -92,6 +92,11 @@ public class PracticeFragment extends Fragment implements PracticeContract.Pract
 
     @AfterViews
     public void initialize() {
+        Runtime rs = Runtime.getRuntime();
+        rs.freeMemory();
+        rs.gc();
+        rs.freeMemory();
+
         rootList = new ArrayList<>();
         rootLevelList = new ArrayList<>();
         dwParentList = new ArrayList<>();

@@ -91,6 +91,10 @@ public class FunFragment extends Fragment implements FunContract.FunView,
 
     @AfterViews
     public void initialize() {
+        Runtime rs = Runtime.getRuntime();
+        rs.freeMemory();
+        rs.gc();
+        rs.freeMemory();
         rootList = new ArrayList<>();
         rootLevelList = new ArrayList<>();
         dwParentList = new ArrayList<>();

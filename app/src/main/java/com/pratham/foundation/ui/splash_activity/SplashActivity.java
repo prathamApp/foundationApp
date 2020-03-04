@@ -94,6 +94,10 @@ public class SplashActivity extends SplashSupportActivity implements SplashContr
 
     @AfterViews
     public void init() {
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        context = SplashActivity.this;
+        bgMusic = MediaPlayer.create(this, R.raw.bg_sound);
+        bgMusic.setLooping(true);
         new Handler().postDelayed(() -> {
             final Typeface title_font = Typeface.createFromAsset(getAssets(), "fonts/Sarala_Bold.ttf");
             tv_typer.setTypeface(title_font);
@@ -101,10 +105,6 @@ public class SplashActivity extends SplashSupportActivity implements SplashContr
             tv_typer.animateText("Foundation\nCourse");
             tv_typer.setAnimationListener(hTextView -> initiateApp());
         }, 500);
-        getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
-        context = SplashActivity.this;
-        bgMusic = MediaPlayer.create(this, R.raw.bg_sound);
-        bgMusic.setLooping(true);
 
 /*        Switch mainSwitch = new Switch(this);
         mainSwitch.setChecked(LogService.isRunning());
@@ -127,6 +127,23 @@ public class SplashActivity extends SplashSupportActivity implements SplashContr
 //        initiateApp();
     }
 
+    public static void displayDirectoryContents(File dir) {
+        try {
+            File[] files = dir.listFiles();
+            for (File file : files) {
+                if (file.isDirectory()) {
+                    Log.d("Files", "\nDirectory : " + file.getName());//CanonicalPath());
+                    displayDirectoryContents(file);
+                } else {
+                    Log.d("Files", "\nFile : " + file.getName());//CanonicalPath());
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+
     public void initiateApp() {
 //        String a = "" + context.getResources().getConfiguration().screenLayout;
 //        String b = "" + Configuration.SCREENLAYOUT_SIZE_MASK;
@@ -141,6 +158,12 @@ public class SplashActivity extends SplashSupportActivity implements SplashContr
                 "\nchargePlug: " + "" +
                 "\nstatus: " + "" +
                 "\nchargePlug: " + "\n\n\n\n\n\n\n");*/
+
+        String actPhotoPath = Environment.getExternalStorageDirectory().toString() + "/.FCAInternal/ActivityPhotos/";
+        File directory = new File(actPhotoPath);
+        Log.d("Files", "Path: " + directory.getName());
+        displayDirectoryContents(directory);
+
         dialog = new ProgressDialog(this);
         fpath = "";
         appname = "";
