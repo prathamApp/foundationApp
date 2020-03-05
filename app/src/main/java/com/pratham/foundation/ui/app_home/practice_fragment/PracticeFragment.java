@@ -344,9 +344,8 @@ public class PracticeFragment extends Fragment implements PracticeContract.Pract
     @UiThread
     @Override
     public void setLevelprogress(int percent) {
-        tv_header_progress.setText(percent + "%");
-//        tv_progress.setCurProgress(percent);
-//        level_progress.setCurProgress(percent);
+        if(FastSave.getInstance().getString(APP_SECTION,"").equalsIgnoreCase(sec_Practice))
+            tv_header_progress.setText(percent + "%");
     }
 
     private CustomLodingDialog downloadDialog;

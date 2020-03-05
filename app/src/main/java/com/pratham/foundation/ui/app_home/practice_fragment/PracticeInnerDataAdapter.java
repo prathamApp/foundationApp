@@ -103,19 +103,14 @@ public class PracticeInnerDataAdapter extends RecyclerView.Adapter {
                 File f;
                 if (itemsList.get(i).getIsDownloaded().equalsIgnoreCase("1") ||
                         itemsList.get(i).getIsDownloaded().equalsIgnoreCase("true")) {
-                    if (itemsList.get(i).isOnSDCard()) {
+                    if (itemsList.get(i).isOnSDCard())
                         f = new File(ApplicationClass.contentSDPath +
                                 "" + App_Thumbs_Path + itemsList.get(i).getNodeImage());
-                        if (f.exists()) {
-                            folderHolder.itemImage.setImageURI(Uri.fromFile(f));
-                        }
-                    } else {
+                    else
                         f = new File(ApplicationClass.foundationPath +
                                 "" + App_Thumbs_Path + itemsList.get(i).getNodeImage());
-                        if (f.exists()) {
-                            folderHolder.itemImage.setImageURI(Uri.fromFile(f));
-                        }
-                    }
+                    if (f.exists())
+                        folderHolder.itemImage.setImageURI(Uri.fromFile(f));
                 } else {
                     ImageRequest imageRequest = ImageRequestBuilder
                             .newBuilderWithSource(Uri.parse(itemsList.get(i).getNodeServerImage()))
@@ -129,12 +124,8 @@ public class PracticeInnerDataAdapter extends RecyclerView.Adapter {
                     folderHolder.itemImage.setController(controller);
 
                 }
-                folderHolder.rl_root.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                            itemClicked.onContentClicked(itemsList.get(i),parentName);
-                    }
-                });
+                folderHolder.rl_root.setOnClickListener(v -> itemClicked.onContentClicked(
+                        itemsList.get(i),parentName));
 
                 break;
             case 2:
@@ -154,34 +145,25 @@ public class PracticeInnerDataAdapter extends RecyclerView.Adapter {
                     else
                         fileHolder.actionBtn.setImageResource(R.drawable.ic_android_act);
 
-                    fileHolder.content_card_view.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            itemClicked.onContentOpenClicked(itemsList.get(i));
-                        }
-                    });
+                    fileHolder.content_card_view.setOnClickListener(v -> itemClicked.onContentOpenClicked(
+                            itemsList.get(i)));
 
                     try {
-                        if (itemsList.get(i).isOnSDCard()) {
+                        if (itemsList.get(i).isOnSDCard())
                             file = new File(ApplicationClass.contentSDPath +
                                     "" + App_Thumbs_Path + itemsList.get(i).getNodeImage());
-                            if (file.exists()) {
-                                fileHolder.itemImage.setImageURI(Uri.fromFile(file));
-                            }
-                        } else {
+                        else
                             file = new File(ApplicationClass.foundationPath +
                                     "" + App_Thumbs_Path + itemsList.get(i).getNodeImage());
-                            if (file.exists()) {
-                                fileHolder.itemImage.setImageURI(Uri.fromFile(file));
-                            }
-                        }
+                        if (file.exists())
+                            fileHolder.itemImage.setImageURI(Uri.fromFile(file));
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
                 }else {
                     ImageRequest imageRequest = ImageRequestBuilder
                             .newBuilderWithSource(Uri.parse(itemsList.get(i).getNodeServerImage()))
-                            .setResizeOptions(new ResizeOptions(300, 200))
+                            .setResizeOptions(new ResizeOptions(250, 170))
                             .setLocalThumbnailPreviewsEnabled(true)
                             .build();
                     DraweeController controller = Fresco.newDraweeControllerBuilder()
@@ -190,27 +172,13 @@ public class PracticeInnerDataAdapter extends RecyclerView.Adapter {
                             .build();
                     fileHolder.itemImage.setController(controller);
 
-                    fileHolder.content_card_view.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            itemClicked.onContentDownloadClicked(itemsList.get(i),parentPos,i,""+ FC_Constants.SINGLE_RES_DOWNLOAD);
-                        }
-                    });
+                    fileHolder.content_card_view.setOnClickListener(v -> itemClicked.onContentDownloadClicked(
+                            itemsList.get(i),parentPos,i,""+ FC_Constants.SINGLE_RES_DOWNLOAD));
 
                 }
                 break;
         }
     }
-//    ImageRequest imageRequest = ImageRequestBuilder
-//            .newBuilderWithSource(Uri.parse(singleItem.getNodeServerImage()))
-//            .setResizeOptions(new ResizeOptions(300, 200))
-//            .setLocalThumbnailPreviewsEnabled(true)
-//            .build();
-//    DraweeController controller = Fresco.newDraweeControllerBuilder()
-//            .setImageRequest(imageRequest)
-//            .setOldController(holder.itemImage.getController())
-//            .build();
-//                        holder.itemImage.setController(controller);
 
     @Override
     public int getItemCount() {
@@ -239,7 +207,6 @@ public class PracticeInnerDataAdapter extends RecyclerView.Adapter {
         protected TextView tvTitle;
         SimpleDraweeView itemImage;
         protected RelativeLayout rl_root;
-//        protected ProgressLayout progressLayout;
         protected TextView progressLayout;
         MaterialCardView card_main;
 
@@ -251,14 +218,11 @@ public class PracticeInnerDataAdapter extends RecyclerView.Adapter {
             this.card_main = view.findViewById(R.id.card_main);
             progressLayout = view.findViewById(R.id.tv_progress);
         }
-
     }
 
     public class EmptyHolder extends RecyclerView.ViewHolder {
         public EmptyHolder(View view) {
             super(view);
         }
-
     }
-
 }

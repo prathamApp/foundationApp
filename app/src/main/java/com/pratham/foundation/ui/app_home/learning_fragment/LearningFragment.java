@@ -343,7 +343,8 @@ public class LearningFragment extends Fragment implements LearningContract.Learn
     @UiThread
     @Override
     public void setLevelprogress(int percent) {
-        tv_header_progress.setText(percent + "%");
+        if(FastSave.getInstance().getString(APP_SECTION,"").equalsIgnoreCase(sec_Learning))
+            tv_header_progress.setText(percent + "%");
 //        tv_progress.setCurProgress(percent);
     }
 

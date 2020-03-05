@@ -99,23 +99,18 @@ public class LearningInnerDataAdapter extends RecyclerView.Adapter {
                 File f;
                 if (itemsList.get(i).getIsDownloaded().equalsIgnoreCase("1") ||
                         itemsList.get(i).getIsDownloaded().equalsIgnoreCase("true")) {
-                    if (itemsList.get(i).isOnSDCard()) {
+                    if (itemsList.get(i).isOnSDCard())
                         f = new File(ApplicationClass.contentSDPath +
                                 "" + App_Thumbs_Path + itemsList.get(i).getNodeImage());
-                        if (f.exists()) {
-                            folderHolder.itemImage.setImageURI(Uri.fromFile(f));
-                        }
-                    } else {
+                    else
                         f = new File(ApplicationClass.foundationPath +
                                 "" + App_Thumbs_Path + itemsList.get(i).getNodeImage());
-                        if (f.exists()) {
-                            folderHolder.itemImage.setImageURI(Uri.fromFile(f));
-                        }
-                    }
+                    if (f.exists())
+                        folderHolder.itemImage.setImageURI(Uri.fromFile(f));
                 } else {
                     ImageRequest imageRequest = ImageRequestBuilder
                             .newBuilderWithSource(Uri.parse(itemsList.get(i).getNodeServerImage()))
-                            .setResizeOptions(new ResizeOptions(300, 200))
+                            .setResizeOptions(new ResizeOptions(300, 300))
                             .setLocalThumbnailPreviewsEnabled(true)
                             .build();
                     DraweeController controller = Fresco.newDraweeControllerBuilder()
@@ -146,52 +141,25 @@ public class LearningInnerDataAdapter extends RecyclerView.Adapter {
                     else
                         fileHolder.actionBtn.setImageResource(R.drawable.ic_android_act);
 
-                    fileHolder.content_card_view.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            itemClicked.onContentOpenClicked(itemsList.get(i));
-                        }
-                    });
+                    fileHolder.content_card_view.setOnClickListener(v -> itemClicked.onContentOpenClicked(
+                            itemsList.get(i)));
 
                     try {
-                        if (itemsList.get(i).isOnSDCard()) {
+                        if (itemsList.get(i).isOnSDCard())
                             file = new File(ApplicationClass.contentSDPath +
                                     "" + App_Thumbs_Path + itemsList.get(i).getNodeImage());
-                            if (file.exists()) {
-                                ImageRequest imageRequest = ImageRequestBuilder
-                                        .newBuilderWithSource(Uri.parse(file.toString()))
-                                        .setResizeOptions(new ResizeOptions(300, 200))
-                                        .setLocalThumbnailPreviewsEnabled(true)
-                                        .build();
-                                DraweeController controller = Fresco.newDraweeControllerBuilder()
-                                        .setImageRequest(imageRequest)
-                                        .setOldController(fileHolder.itemImage.getController())
-                                        .build();
-                                fileHolder.itemImage.setController(controller);
-                            }
-                        } else {
+                        else
                             file = new File(ApplicationClass.foundationPath +
                                     "" + App_Thumbs_Path + itemsList.get(i).getNodeImage());
-                            if (file.exists()) {
-                                ImageRequest imageRequest = ImageRequestBuilder
-                                        .newBuilderWithSource(Uri.parse(file.toString()))
-                                        .setResizeOptions(new ResizeOptions(300, 200))
-                                        .setLocalThumbnailPreviewsEnabled(true)
-                                        .build();
-                                DraweeController controller = Fresco.newDraweeControllerBuilder()
-                                        .setImageRequest(imageRequest)
-                                        .setOldController(fileHolder.itemImage.getController())
-                                        .build();
-                                fileHolder.itemImage.setController(controller);
-                            }
-                        }
+                        if (file.exists())
+                            fileHolder.itemImage.setImageURI(Uri.fromFile(file));
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
                 }else {
                     ImageRequest imageRequest = ImageRequestBuilder
                             .newBuilderWithSource(Uri.parse(itemsList.get(i).getNodeServerImage()))
-                            .setResizeOptions(new ResizeOptions(300, 200))
+                            .setResizeOptions(new ResizeOptions(250, 170))
                             .setLocalThumbnailPreviewsEnabled(true)
                             .build();
                     DraweeController controller = Fresco.newDraweeControllerBuilder()
@@ -203,21 +171,10 @@ public class LearningInnerDataAdapter extends RecyclerView.Adapter {
                     fileHolder.content_card_view.setOnClickListener(v ->
                             itemClicked.onContentDownloadClicked(itemsList.get(i),
                                     parentPos,i,""+ FC_Constants.SINGLE_RES_DOWNLOAD));
-
                 }
                 break;
         }
     }
-//    ImageRequest imageRequest = ImageRequestBuilder
-//            .newBuilderWithSource(Uri.parse(singleItem.getNodeServerImage()))
-//            .setResizeOptions(new ResizeOptions(300, 200))
-//            .setLocalThumbnailPreviewsEnabled(true)
-//            .build();
-//    DraweeController controller = Fresco.newDraweeControllerBuilder()
-//            .setImageRequest(imageRequest)
-//            .setOldController(holder.itemImage.getController())
-//            .build();
-//                        holder.itemImage.setController(controller);
 
     @Override
     public int getItemCount() {
@@ -246,7 +203,6 @@ public class LearningInnerDataAdapter extends RecyclerView.Adapter {
         protected TextView tv_progress;
         SimpleDraweeView itemImage;
         RelativeLayout rl_root;
-//        protected ProgressLayout progressLayout;
         MaterialCardView card_main;
 
         FolderHolder(View view) {
@@ -256,7 +212,6 @@ public class LearningInnerDataAdapter extends RecyclerView.Adapter {
             this.itemImage = view.findViewById(R.id.item_Image);
             this.rl_root = view.findViewById(R.id.rl_root);
             this.card_main = view.findViewById(R.id.card_main);
-//            progressLayout = view.findViewById(R.id.card_progressLayout);
         }
 
     }
@@ -265,7 +220,5 @@ public class LearningInnerDataAdapter extends RecyclerView.Adapter {
         EmptyHolder(View view) {
             super(view);
         }
-
     }
-
 }

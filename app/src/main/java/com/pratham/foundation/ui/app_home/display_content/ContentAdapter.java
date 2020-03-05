@@ -40,19 +40,6 @@ public class ContentAdapter extends RecyclerView.Adapter {
     private int lastPos = -1;
     private List<ContentTable> contentViewList;
     ContentClicked contentClicked;
-/*    public class MyViewHolder extends RecyclerView.ViewHolder {
-        public TextView title;
-        public ImageView *//*thumbnail,*//* ib_action_btn;
-        public MaterialCardView content_card_view;
-
-        public MyViewHolder(View view) {
-            super(view);
-            title = view.findViewById(R.id.content_title);
-//            thumbnail = view.findViewById(R.id.content_thumbnail);
-            content_card_view = view.findViewById(R.id.content_card_view);
-            ib_action_btn = view.findViewById(R.id.ib_action_btn);
-        }
-    }*/
 
     public ContentAdapter(Context mContext, List<ContentTable> contentViewList, ContentClicked contentClicked) {
         this.mContext = mContext;
@@ -92,20 +79,6 @@ public class ContentAdapter extends RecyclerView.Adapter {
             content_card_view = view.findViewById(R.id.content_card_view);
             ib_action_btn = view.findViewById(R.id.ib_action_btn);
         }
-/*
-        protected TextView tvTitle;
-        protected ImageView actionBtn;
-        SimpleDraweeView itemImage;
-        protected RelativeLayout rl_root;
-
-        public FileHolder(View view) {
-            super(view);
-            this.tvTitle = view.findViewById(R.id.file_Title);
-            this.itemImage = view.findViewById(R.id.file_Image);
-            this.actionBtn = view.findViewById(R.id.btn_file_download);
-            this.rl_root = view.findViewById(R.id.file_card_view);
-        }
-*/
     }
 
     public class FolderHolder extends RecyclerView.ViewHolder {
@@ -176,23 +149,18 @@ public class ContentAdapter extends RecyclerView.Adapter {
                 File f;
                 if (contentList.getIsDownloaded().equalsIgnoreCase("1") ||
                         contentList.getIsDownloaded().equalsIgnoreCase("true")) {
-                    if (contentList.isOnSDCard()) {
+                    if (contentList.isOnSDCard())
                         f = new File(ApplicationClass.contentSDPath +
                                 "" + App_Thumbs_Path + contentList.getNodeImage());
-                        if (f.exists()) {
-                            holder.thumbnail.setImageURI(Uri.fromFile(f));
-                        }
-                    } else {
+                    else
                         f = new File(ApplicationClass.foundationPath +
                                 "" + App_Thumbs_Path + contentList.getNodeImage());
-                        if (f.exists()) {
-                            holder.thumbnail.setImageURI(Uri.fromFile(f));
-                        }
-                    }
+                    if (f.exists())
+                        holder.thumbnail.setImageURI(Uri.fromFile(f));
                 } else {
                     ImageRequest imageRequest = ImageRequestBuilder
                             .newBuilderWithSource(Uri.parse(contentList.getNodeServerImage()))
-                            .setResizeOptions(new ResizeOptions(300, 200))
+                            .setResizeOptions(new ResizeOptions(250, 170))
                             .setLocalThumbnailPreviewsEnabled(true)
                             .build();
                     DraweeController controller = Fresco.newDraweeControllerBuilder()
@@ -229,23 +197,18 @@ public class ContentAdapter extends RecyclerView.Adapter {
                 File file;
                 if (contentList.getIsDownloaded().equalsIgnoreCase("1") ||
                         contentList.getIsDownloaded().equalsIgnoreCase("true")) {
-                    if (contentList.isOnSDCard()) {
+                    if (contentList.isOnSDCard())
                         file = new File(ApplicationClass.contentSDPath +
                                 "" + App_Thumbs_Path + contentList.getNodeImage());
-                        if (file.exists()) {
-                            folderHolder.itemImage.setImageURI(Uri.fromFile(file));
-                        }
-                    } else {
+                    else
                         file = new File(ApplicationClass.foundationPath +
                                 "" + App_Thumbs_Path + contentList.getNodeImage());
-                        if (file.exists()) {
-                            folderHolder.itemImage.setImageURI(Uri.fromFile(file));
-                        }
-                    }
+                    if (file.exists())
+                        folderHolder.itemImage.setImageURI(Uri.fromFile(file));
                 } else {
                     ImageRequest imageRequest = ImageRequestBuilder
                             .newBuilderWithSource(Uri.parse(contentList.getNodeServerImage()))
-                            .setResizeOptions(new ResizeOptions(300, 200))
+                            .setResizeOptions(new ResizeOptions(300, 300))
                             .setLocalThumbnailPreviewsEnabled(true)
                             .build();
                     DraweeController controller = Fresco.newDraweeControllerBuilder()
@@ -253,20 +216,16 @@ public class ContentAdapter extends RecyclerView.Adapter {
                             .setOldController(folderHolder.itemImage.getController())
                             .build();
                     folderHolder.itemImage.setController(controller);
-
                 }
-                folderHolder.card_main.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        if (contentList.getNodeType() != null) {
-                            if (contentList.getNodeType().equalsIgnoreCase("PreResource")) {
-                                if (contentList.getIsDownloaded().equalsIgnoreCase("true")) {
-                                    contentClicked.onPreResOpenClicked(position, contentList.getNodeId(), contentList.getNodeTitle());
-                                } else if (contentList.getIsDownloaded().equalsIgnoreCase("false"))
-                                    contentClicked.onContentDownloadClicked(position, contentList.nodeId);
-                            } else
-                                contentClicked.onContentClicked(position, contentList.nodeId);
-                        }
+                folderHolder.card_main.setOnClickListener(v -> {
+                    if (contentList.getNodeType() != null) {
+                        if (contentList.getNodeType().equalsIgnoreCase("PreResource")) {
+                            if (contentList.getIsDownloaded().equalsIgnoreCase("true")) {
+                                contentClicked.onPreResOpenClicked(position, contentList.getNodeId(), contentList.getNodeTitle());
+                            } else if (contentList.getIsDownloaded().equalsIgnoreCase("false"))
+                                contentClicked.onContentDownloadClicked(position, contentList.nodeId);
+                        } else
+                            contentClicked.onContentClicked(position, contentList.nodeId);
                     }
                 });
                 setAnimations(folderHolder.card_main, position);
@@ -278,7 +237,6 @@ public class ContentAdapter extends RecyclerView.Adapter {
         final Animation animation;
         animation = AnimationUtils.loadAnimation(mContext, R.anim.item_fall_down);
         animation.setDuration(500);
-        /*                if (position > lastPos) {*/
         content_card_view.setVisibility(View.VISIBLE);
         content_card_view.setAnimation(animation);
         lastPos = position;

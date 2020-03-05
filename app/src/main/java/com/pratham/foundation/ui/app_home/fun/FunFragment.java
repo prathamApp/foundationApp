@@ -342,6 +342,7 @@ public class FunFragment extends Fragment implements FunContract.FunView,
     @UiThread
     @Override
     public void setLevelprogress(int percent) {
+        if(FastSave.getInstance().getString(APP_SECTION,"").equalsIgnoreCase(sec_Fun))
         tv_header_progress.setText(percent + "%");
 //        tv_progress.setCurProgress(percent);
     }
