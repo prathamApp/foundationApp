@@ -192,6 +192,8 @@ public class LearningFragment extends Fragment implements LearningContract.Learn
     @SuppressLint("SetTextI18n")
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void messageReceived(EventMessage message) {
+//            else if (message.getMessage().equalsIgnoreCase(FC_Constants.SECTION_COMPLETION_PERC))
+//            getCompletionPercAgain();
         if (message != null) {
             if (message.getMessage().equalsIgnoreCase(FC_Constants.LEVEL_CHANGED))
                 onLevelChanged();
@@ -246,6 +248,17 @@ public class LearningFragment extends Fragment implements LearningContract.Learn
                     e.printStackTrace();
                 }
             }
+        }
+    }
+
+    private void getCompletionPercAgain() {
+        String currentNodeID = presenter.getcurrentNodeID();
+        Log.d("getCompletion", "getCompletionPercAgain: "+currentNodeID);
+        try {
+            if (!currentNodeID.equalsIgnoreCase("na"))
+                presenter.findMaxScore("" + currentNodeID);
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 

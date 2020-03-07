@@ -1,6 +1,5 @@
 package com.pratham.foundation.async;
 
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
@@ -22,7 +21,6 @@ import com.google.gson.Gson;
 import com.pratham.foundation.ApplicationClass;
 import com.pratham.foundation.R;
 import com.pratham.foundation.customView.display_image_dialog.CustomLodingDialog;
-import com.pratham.foundation.customView.progress_layout.ProgressLayout;
 import com.pratham.foundation.database.AppDatabase;
 import com.pratham.foundation.database.BackupDatabase;
 import com.pratham.foundation.database.domain.Assessment;
@@ -76,9 +74,6 @@ public class PushDataToServer_New {
     private Boolean isConnectedToRasp = false;
     boolean isRaspberry = false;
     private String programID = "";
-    ProgressDialog dataDialog;
-    private CustomLodingDialog imageDialog;
-    private ProgressLayout progressLayout;
     public TextView dialog_file_name;
     CustomLodingDialog pushDialog;
     LottieAnimationView push_lottie;
@@ -106,7 +101,8 @@ public class PushDataToServer_New {
     @Background
     public void startDataPush(Context context) {
         this.context = context;
-        showPushDialog(context);
+        if (!ApplicationClass.isTablet)
+            showPushDialog(context);
         try {
             setMainTextToDialog("Collecting Data...");
             List<Score> scoreList = AppDatabase.getDatabaseInstance(context).getScoreDao().getAllPushScores();
@@ -134,9 +130,7 @@ public class PushDataToServer_New {
 
             JSONObject pushDataJsonObject = generateRequestString(scoreData, attendanceData, sessionData, supervisorData, logsData, assessmentData, studentData, contentProgress, keyWordsData);
             pushSuccessfull = false;
-            Gson gson = new Gson();
             //iterate through all new sessions
-            JSONObject metadataJson = new JSONObject();
             totalImages = AppDatabase.getDatabaseInstance(context).getScoreDao().getUnpushedImageCount();
             imageUploadCnt = 0;
             imageUploadList = new ArrayList<>();
@@ -159,47 +153,52 @@ public class PushDataToServer_New {
 
     @UiThread
     public void setMainTextToDialog(String dialogMsg) {
-        txt_push_dialog_msg.setText("" + dialogMsg);
+        if (!ApplicationClass.isTablet)
+            txt_push_dialog_msg.setText("" + dialogMsg);
     }
 
     @UiThread
     public void setSubTextToDialog(String dialogMsg) {
-        txt_push_error.setVisibility(View.VISIBLE);
-        txt_push_error.setText("" + dialogMsg);
+        if (!ApplicationClass.isTablet) {
+            txt_push_error.setVisibility(View.VISIBLE);
+            txt_push_error.setText("" + dialogMsg);
+        }
     }
 
     @UiThread
     public void showPushDialog(Context context) {
-        pushDialog = new CustomLodingDialog(context);
-        pushDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        pushDialog.setContentView(R.layout.app_send_success_dialog);
-        Objects.requireNonNull(pushDialog.getWindow()).setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-        pushDialog.setCancelable(false);
-        pushDialog.setCanceledOnTouchOutside(false);
-        pushDialog.show();
+        if (!ApplicationClass.isTablet) {
+            pushDialog = new CustomLodingDialog(context);
+            pushDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+            pushDialog.setContentView(R.layout.app_send_success_dialog);
+            Objects.requireNonNull(pushDialog.getWindow()).setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+            pushDialog.setCancelable(false);
+            pushDialog.setCanceledOnTouchOutside(false);
+            pushDialog.show();
 
-        push_lottie = pushDialog.findViewById(R.id.push_lottie);
-        txt_push_dialog_msg = pushDialog.findViewById(R.id.txt_push_dialog_msg);
-        txt_push_error = pushDialog.findViewById(R.id.txt_push_error);
-        rl_btn = pushDialog.findViewById(R.id.rl_btn);
-        ok_btn = pushDialog.findViewById(R.id.ok_btn);
-        eject_btn = pushDialog.findViewById(R.id.eject_btn);
+            push_lottie = pushDialog.findViewById(R.id.push_lottie);
+            txt_push_dialog_msg = pushDialog.findViewById(R.id.txt_push_dialog_msg);
+            txt_push_error = pushDialog.findViewById(R.id.txt_push_error);
+            rl_btn = pushDialog.findViewById(R.id.rl_btn);
+            ok_btn = pushDialog.findViewById(R.id.ok_btn);
+            eject_btn = pushDialog.findViewById(R.id.eject_btn);
 
-        txt_push_error.setText("");
-        txt_push_error.setVisibility(View.GONE);
-        ok_btn.setVisibility(View.GONE);
-        eject_btn.setVisibility(View.GONE);
+            txt_push_error.setText("");
+            txt_push_error.setVisibility(View.GONE);
+            ok_btn.setVisibility(View.GONE);
+            eject_btn.setVisibility(View.GONE);
 
-        ok_btn.setOnClickListener(v -> {
-            if (!isConnectedToRasp)
-                getImageList();
-            else
+            ok_btn.setOnClickListener(v -> {
+                if (!isConnectedToRasp)
+                    getImageList();
+                else
+                    pushDialog.dismiss();
+            });
+
+            eject_btn.setOnClickListener(v -> {
                 pushDialog.dismiss();
-        });
-
-        eject_btn.setOnClickListener(v -> {
-            pushDialog.dismiss();
-        });
+            });
+        }
     }
 
     public void pushDataToServer(Context context, JSONObject data, String url) {
@@ -236,29 +235,39 @@ public class PushDataToServer_New {
 
     @UiThread
     public void setDataPushSuccessfull() {
-        setPushFlag();
-        setMainTextToDialog("Data pushed successfully\n Score Count : " + scoreData.length() +
-                "\n\nNow Upload Media..");
-        ok_btn.setText("OK");
-        ok_btn.setVisibility(View.VISIBLE);
+        if (ApplicationClass.isTablet) {
+            setPushFlag();
+            setMainTextToDialog("Data pushed successfully\n Score Count : " + scoreData.length() +
+                    "\n\nNow Upload Media..");
+            ok_btn.setText("OK");
+            ok_btn.setVisibility(View.VISIBLE);
+        } else {
+            if (!isConnectedToRasp)
+                getImageList();
+        }
     }
 
     @UiThread
-    public void hideOKBtn(){
-        ok_btn.setText("OK");
-        ok_btn.setVisibility(View.GONE);
+    public void hideOKBtn() {
+        if (ApplicationClass.isTablet) {
+            ok_btn.setText("OK");
+            ok_btn.setVisibility(View.GONE);
+        }
     }
 
     @UiThread
     public void setDataPushFailed() {
-        setMainTextToDialog("OOPS...");
-        setSubTextToDialog("Data pushed failed");
-        push_lottie.setAnimation("error_cross.json");
-        push_lottie.playAnimation();
-        ok_btn.setText("OK");
-        ok_btn.setVisibility(View.VISIBLE);
-//        eject_btn.setText("Close");
-//        eject_btn.setVisibility(View.VISIBLE);
+        if (ApplicationClass.isTablet) {
+            setMainTextToDialog("OOPS...");
+            setSubTextToDialog("Data pushed failed");
+            push_lottie.setAnimation("error_cross.json");
+            push_lottie.playAnimation();
+            ok_btn.setText("OK");
+            ok_btn.setVisibility(View.VISIBLE);
+        } else {
+            if (!isConnectedToRasp)
+                getImageList();
+        }
     }
 
     @Background
@@ -326,14 +335,15 @@ public class PushDataToServer_New {
         if (imageUploadList.size() > 0) {
             setMainTextToDialog("Uploading " + totalImages + " images.");
             pushImagesToServer(0);
-        }else{
+        } else {
             showTotalImgStatus();
         }
     }
 
     @UiThread
     public void updateCntr(int imgCtr) {
-        dialog_file_name.setText("Uploading " + imgCtr + "/" + totalImages);
+        if (!ApplicationClass.isTablet)
+            dialog_file_name.setText("Uploading " + imgCtr + "/" + totalImages);
     }
 
     @UiThread
@@ -375,6 +385,7 @@ public class PushDataToServer_New {
     @UiThread
     public void showTotalImgStatus() {
         int successfulCntr = 0, failedCntr = 0;
+
         for (int i = 0; i < imageUploadList.size(); i++) {
             if (imageUploadList.get(i).isUploadStatus()) {
                 AppDatabase.getDatabaseInstance(context).getScoreDao().setImgSentFlag(imageUploadList.get(i).getFileName());
@@ -382,15 +393,18 @@ public class PushDataToServer_New {
             } else
                 failedCntr++;
         }
-        ok_btn.setVisibility(View.GONE);
-        eject_btn.setText("Close");
-        eject_btn.setVisibility(View.VISIBLE);
 
-        push_lottie.setAnimation("lottie_correct.json");
-        push_lottie.playAnimation();
-        setMainTextToDialog("Upload Complete");
-        setSubTextToDialog("Score Count : " + scoreData.length() + "\nImages Successful : "
-                + successfulCntr + "\nImages Failed : " + failedCntr);
+        if (ApplicationClass.isTablet) {
+            ok_btn.setVisibility(View.GONE);
+            eject_btn.setText("Close");
+            eject_btn.setVisibility(View.VISIBLE);
+
+            push_lottie.setAnimation("lottie_correct.json");
+            push_lottie.playAnimation();
+            setMainTextToDialog("Upload Complete");
+            setSubTextToDialog("Score Count : " + scoreData.length() + "\nImages Successful : "
+                    + successfulCntr + "\nImages Failed : " + failedCntr);
+        }
     }
 
     @Background

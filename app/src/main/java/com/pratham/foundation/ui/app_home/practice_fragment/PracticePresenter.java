@@ -230,7 +230,7 @@ public class PracticePresenter implements PracticeContract.PracticePresenter, AP
         return nodeId;
     }
 
-    @UiThread
+    @Background
     public void getWholePercentage(List maxScore) {
         double totalScore = 0;
         try {

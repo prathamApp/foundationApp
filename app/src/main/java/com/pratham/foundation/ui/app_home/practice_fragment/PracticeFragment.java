@@ -204,6 +204,8 @@ public class PracticeFragment extends Fragment implements PracticeContract.Pract
     @SuppressLint("SetTextI18n")
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void messageReceived(EventMessage message) {
+//            else if (message.getMessage().equalsIgnoreCase(FC_Constants.SECTION_COMPLETION_PERC))
+//            getCompletionPercAgain();
         if (message != null) {
             if (message.getMessage().equalsIgnoreCase(FC_Constants.LEVEL_CHANGED))
                 onLevelChanged();
@@ -260,6 +262,18 @@ public class PracticeFragment extends Fragment implements PracticeContract.Pract
             }
         }
     }
+
+    private void getCompletionPercAgain() {
+        String currentNodeID = presenter.getcurrentNodeID();
+        Log.d("getCompletion", "getCompletionPercAgain: "+currentNodeID);
+        try {
+            if (!currentNodeID.equalsIgnoreCase("na"))
+                presenter.findMaxScore("" + currentNodeID);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
 
     @Override
     public void setSelectedLevel(List<ContentTable> contentTable) {

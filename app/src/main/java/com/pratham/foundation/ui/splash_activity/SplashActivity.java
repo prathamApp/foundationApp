@@ -21,13 +21,10 @@ import android.os.Build;
 import android.os.Environment;
 import android.os.Handler;
 import android.util.Log;
-import android.view.Display;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -56,6 +53,7 @@ import com.pratham.foundation.utility.SplashSupportActivity;
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Bean;
 import org.androidannotations.annotations.EActivity;
+import org.androidannotations.annotations.UiThread;
 import org.androidannotations.annotations.ViewById;
 import org.greenrobot.eventbus.EventBus;
 
@@ -73,14 +71,9 @@ public class SplashActivity extends SplashSupportActivity implements SplashContr
     RelativeLayout splash_root;
     @ViewById(R.id.tv_typer)
     TyperTextView tv_typer;
-    //    @ViewById(R.id.iv_splash)
-//    ImageView iv_splash;
-//    @ViewById(R.id.gifcomplete)
-//    TextView gifcomplete;
     static String fpath, appname;
     public static MediaPlayer bgMusic;
     public ProgressDialog progressDialog;
-
 
     @Bean(SplashPresenter.class)
     SplashPresenter splashPresenter;
@@ -90,7 +83,6 @@ public class SplashActivity extends SplashSupportActivity implements SplashContr
     public static boolean firstPause = true, fragmentBottomOpenFlg = false,
             fragmentBottomPauseFlg = false, fragmentAddStudentPauseFlg = false,
             fragmentAddStudentOpenFlg = false, exitDialogOpen = false;
-
 
     @AfterViews
     public void init() {
@@ -105,65 +97,9 @@ public class SplashActivity extends SplashSupportActivity implements SplashContr
             tv_typer.animateText("Foundation\nCourse");
             tv_typer.setAnimationListener(hTextView -> initiateApp());
         }, 500);
-
-/*        Switch mainSwitch = new Switch(this);
-        mainSwitch.setChecked(LogService.isRunning());
-        mainSwitch.setOnCheckedChangeListener((compoundButton, b) -> {
-            Intent intent = new Intent(context, LogService.class);
-            if (b) {
-                if (!LogService.isRunning()) {
-                    startService(intent);
-                }
-            } else {
-                stopService(intent);
-            }
-        });*/
-        /*Bundle b = getIntent().getExtras();
-        if (b != null) {
-            String myString = b.getString("KEY_DATA");
-            Toast.makeText(this, "" + myString, Toast.LENGTH_SHORT).show();
-        }*/
-//        ImageViewAnimatedChange(this, gifcomplete);
-//        initiateApp();
     }
-
-    public static void displayDirectoryContents(File dir) {
-        try {
-            File[] files = dir.listFiles();
-            for (File file : files) {
-                if (file.isDirectory()) {
-                    Log.d("Files", "\nDirectory : " + file.getName());//CanonicalPath());
-                    displayDirectoryContents(file);
-                } else {
-                    Log.d("Files", "\nFile : " + file.getName());//CanonicalPath());
-                }
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
 
     public void initiateApp() {
-//        String a = "" + context.getResources().getConfiguration().screenLayout;
-//        String b = "" + Configuration.SCREENLAYOUT_SIZE_MASK;
-//        StatFs stat = new StatFs(Environment.getExternalStorageDirectory().getPath());
-
-/*        long bytesAvailable;
-        bytesAvailable = (long) stat.getBlockSize() * (long) stat.getAvailableBlocks();
-        long megAvailable = bytesAvailable / (1024 * 1024);
-
-        Log.e("", "Available MB : " + megAvailable);
-        Log.d("initiateApp", "\n\n\n\n\n\nmegAvailable : " + megAvailable +
-                "\nchargePlug: " + "" +
-                "\nstatus: " + "" +
-                "\nchargePlug: " + "\n\n\n\n\n\n\n");*/
-
-        String actPhotoPath = Environment.getExternalStorageDirectory().toString() + "/.FCAInternal/ActivityPhotos/";
-        File directory = new File(actPhotoPath);
-        Log.d("Files", "Path: " + directory.getName());
-        displayDirectoryContents(directory);
-
         dialog = new ProgressDialog(this);
         fpath = "";
         appname = "";
@@ -176,9 +112,8 @@ public class SplashActivity extends SplashSupportActivity implements SplashContr
                 PermissionUtils.Manifest_ACCESS_COARSE_LOCATION,
                 PermissionUtils.Manifest_ACCESS_FINE_LOCATION
         };
-        File sd = new File(Environment.getExternalStorageDirectory() + "/PrathamBackups");
-        if (!sd.exists())
-            sd.mkdir();
+        if (!new File(Environment.getExternalStorageDirectory() + "/PrathamBackups").exists())
+            new File(Environment.getExternalStorageDirectory() + "/PrathamBackups").mkdir();
 
         new Handler().postDelayed(() -> {
             if ((Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)) {
@@ -190,86 +125,6 @@ public class SplashActivity extends SplashSupportActivity implements SplashContr
                 startApp();
         }, 500);
     }
-
-    public void ImageViewAnimatedChange(Context c, final TextView iv_logo) {
-        final Animation anim_in = AnimationUtils.loadAnimation(c, R.anim.zoom_in_new);
-        anim_in.setAnimationListener(new Animation.AnimationListener() {
-            @Override
-            public void onAnimationStart(Animation animation) {
-            }
-
-            @Override
-            public void onAnimationRepeat(Animation animation) {
-            }
-
-            @Override
-            public void onAnimationEnd(Animation animation) {
-                ImageViewAnimatedChangeSecond(c, iv_logo);
-//                iv_splash.setVisibility(View.VISIBLE);
-            }
-        });
-        iv_logo.setAnimation(anim_in);
-    }
-
-    public void ImageViewAnimatedChangeSecond(Context c, final TextView iv_logo) {
-        final Animation anim_out = AnimationUtils.loadAnimation(c, R.anim.zoom_out_new);
-        iv_logo.setAnimation(anim_out);
-        anim_out.setAnimationListener(new Animation.AnimationListener() {
-            @Override
-            public void onAnimationStart(Animation animation) {
-            }
-
-            @Override
-            public void onAnimationRepeat(Animation animation) {
-            }
-
-            @Override
-            public void onAnimationEnd(Animation animation) {
-                initiateApp();
-//                pradigiAnimation(c, iv_logo_pradigi);
-            }
-        });
-    }
-/*
-
-    public void pradigiAnimation(Context c, final ImageView iv_logo_pradigi) {
-        final Animation anim_in = AnimationUtils.loadAnimation(c, R.anim.item_animation_from_bottom);
-        iv_logo_pradigi.setVisibility(View.VISIBLE);
-
-        anim_in.setAnimationListener(new Animation.AnimationListener() {
-            @Override
-            public void onAnimationStart(Animation animation) {
-            }
-
-            @Override
-            public void onAnimationRepeat(Animation animation) {
-            }
-
-            @Override
-            public void onAnimationEnd(Animation animation) {
-                String[] permissionArray = new String[]{PermissionUtils.Manifest_CAMERA,
-                        PermissionUtils.Manifest_WRITE_EXTERNAL_STORAGE,
-                        PermissionUtils.Manifest_RECORD_AUDIO,
-                        PermissionUtils.Manifest_ACCESS_COARSE_LOCATION,
-                        PermissionUtils.Manifest_ACCESS_FINE_LOCATION
-                };
-
-                if ((Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)) {
-                    if (!isPermissionsGranted(SplashActivity.this, permissionArray)) {
-                        askCompactPermissions(permissionArray, SplashActivity.this);
-                    } else {
-                        startApp();
-//                        splashPresenter.checkVersion();
-                    }
-                } else {
-                    startApp();
-//                    splashPresenter.checkVersion();
-                }
-            }
-        });
-        iv_logo_pradigi.setAnimation(anim_in);
-    }
-*/
 
     @Override
     public void showButton() {
@@ -317,17 +172,14 @@ public class SplashActivity extends SplashSupportActivity implements SplashContr
 
     @Override
     public void startApp() {
-        Display display = getWindowManager().getDefaultDisplay();
         Point size = new Point();
-        display.getSize(size);
-        display.getSize(size);
         int width = size.x;
         int height = size.y;
         String strwidth = String.valueOf(width);
         String strheight = String.valueOf(height);
         Configuration config = context.getResources().getConfiguration();
         String resolution = "W " + strwidth + " x H " + strheight + " pixels dpi: " + config.densityDpi;
-        FastSave.getInstance().saveString(FC_Constants.SCR_RES, ""+resolution);
+        FastSave.getInstance().saveString(FC_Constants.SCR_RES, "" + resolution);
         FastSave.getInstance().saveString(FC_Constants.LANGUAGE, FC_Constants.HINDI);
         setAppLocal(this, FC_Constants.HINDI);
         createDataBase();
@@ -384,6 +236,7 @@ public class SplashActivity extends SplashSupportActivity implements SplashContr
 //    }
 
     @Override
+    @UiThread
     public void showProgressDialog() {
         progressDialog = new ProgressDialog(SplashActivity.this);
         progressDialog.setCanceledOnTouchOutside(false);
@@ -393,6 +246,7 @@ public class SplashActivity extends SplashSupportActivity implements SplashContr
     }
 
     @Override
+    @UiThread
     public void dismissProgressDialog() {
         try {
             if (progressDialog != null && progressDialog.isShowing())
@@ -452,7 +306,6 @@ public class SplashActivity extends SplashSupportActivity implements SplashContr
         dia_btn_green.setText(getResources().getString(R.string.Restart));
         dia_btn_red.setText(getResources().getString(R.string.Exit));
         dia_btn_yellow.setText(getResources().getString(R.string.Cancel));
-
         dialog.show();
 
         Handler backHandler = new Handler();
@@ -466,8 +319,7 @@ public class SplashActivity extends SplashSupportActivity implements SplashContr
         dia_btn_green.setOnClickListener(v -> {
             if (!ApplicationClass.isTablet)
                 gotoNextActivity();
-            if (backHandler != null)
-                backHandler.removeCallbacksAndMessages(null);
+            backHandler.removeCallbacksAndMessages(null);
             exitDialogOpen = false;
             dialog.dismiss();
         });
@@ -475,15 +327,13 @@ public class SplashActivity extends SplashSupportActivity implements SplashContr
         dia_btn_yellow.setOnClickListener(v -> {
             if (!ApplicationClass.isTablet)
                 gotoNextActivity();
-            if (backHandler != null)
-                backHandler.removeCallbacksAndMessages(null);
+            backHandler.removeCallbacksAndMessages(null);
             exitDialogOpen = false;
             dialog.dismiss();
         });
 
         dia_btn_red.setOnClickListener(v -> {
-            if (backHandler != null)
-                backHandler.removeCallbacksAndMessages(null);
+            backHandler.removeCallbacksAndMessages(null);
             finishAffinity();
             dialog.dismiss();
         });
@@ -491,9 +341,7 @@ public class SplashActivity extends SplashSupportActivity implements SplashContr
 
     @Override
     public void permissionGranted() {
-//        Log.d("Splash", "permissionGranted: HAHAHAHAHAHA");
         startApp();
-//        splashPresenter.checkVersion();
     }
 
     @Override
@@ -546,6 +394,11 @@ public class SplashActivity extends SplashSupportActivity implements SplashContr
         }
     }
 
+    @UiThread
+    public void preShowBtn() {
+        new Handler().postDelayed(this::showButton, 2000);
+    }
+
     private boolean checkDataBase() {
         SQLiteDatabase checkDB = null;
         try {
@@ -561,7 +414,6 @@ public class SplashActivity extends SplashSupportActivity implements SplashContr
 
     @Override
     public void gotoNextActivity() {
-
         File direct;
         direct = new File(Environment.getExternalStorageDirectory().toString() + "/.FCAInternal");
         if (!direct.exists())
@@ -573,14 +425,11 @@ public class SplashActivity extends SplashSupportActivity implements SplashContr
         if (!direct.exists())
             direct.mkdir();
 
-//        activityPhotoPath = Environment.getExternalStorageDirectory().toString() + "/.FCAInternal/ActivityPhotos/";
-
         if (!FastSave.getInstance().getBoolean(FC_Constants.INITIAL_ENTRIES, false))
             splashPresenter.doInitialEntries(AppDatabase.appDatabase);
         splashPresenter.requestLocation();
-    //        if(FastSave.getInstance().getBoolean(FC_Constants.newDataLanguageInserted, false))
+        //        if(FastSave.getInstance().getBoolean(FC_Constants.newDataLanguageInserted, false))
 //            splashPresenter.insertNewData();
-        splashPresenter.updateVersionApp();
         if (!ApplicationClass.isTablet) {
             splashPresenter.pushData();
             dismissProgressDialog();
@@ -609,12 +458,16 @@ public class SplashActivity extends SplashSupportActivity implements SplashContr
 
         dialog.show();
 
+        int dp = 12;
+        if (FC_Constants.TAB_LAYOUT)
+            dp = 20;
+
         TextView dia_title = dialog.findViewById(R.id.dia_title);
         Button dia_btn_green = dialog.findViewById(R.id.dia_btn_green);
         Button dia_btn_yellow = dialog.findViewById(R.id.dia_btn_yellow);
         Button dia_btn_red = dialog.findViewById(R.id.dia_btn_red);
 
-        dia_title.setTextSize(14);
+        dia_title.setTextSize(dp);
         dia_title.setText(getResources().getString(R.string.Stt_Dialog_Msg));
         dia_btn_green.setText(getResources().getString(R.string.Okay));
         dia_btn_red.setText(getResources().getString(R.string.Skip));

@@ -11,6 +11,7 @@ import android.support.v4.app.Fragment;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.widget.Button;
@@ -201,6 +202,8 @@ public class FunFragment extends Fragment implements FunContract.FunView,
     @SuppressLint("SetTextI18n")
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void messageReceived(EventMessage message) {
+//            else if (message.getMessage().equalsIgnoreCase(FC_Constants.SECTION_COMPLETION_PERC))
+//                getCompletionPercAgain();
         if (message != null) {
             if (message.getMessage().equalsIgnoreCase(FC_Constants.LEVEL_CHANGED))
                 onLevelChanged();
@@ -255,6 +258,17 @@ public class FunFragment extends Fragment implements FunContract.FunView,
                     e.printStackTrace();
                 }
             }
+        }
+    }
+
+    private void getCompletionPercAgain() {
+        String currentNodeID = presenter.getcurrentNodeID();
+        Log.d("getCompletion", "getCompletionPercAgain: "+currentNodeID);
+        try {
+            if (!currentNodeID.equalsIgnoreCase("na"))
+                presenter.findMaxScore("" + currentNodeID);
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 
@@ -318,7 +332,7 @@ public class FunFragment extends Fragment implements FunContract.FunView,
                         setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
                 myLoadingDialog.setContentView(R.layout.loading_dialog);
                 myLoadingDialog.setCanceledOnTouchOutside(false);
-    //        myLoadingDialog.setCancelable(false);
+                //        myLoadingDialog.setCancelable(false);
                 myLoadingDialog.show();
             }
         } catch (Exception e) {
@@ -342,8 +356,8 @@ public class FunFragment extends Fragment implements FunContract.FunView,
     @UiThread
     @Override
     public void setLevelprogress(int percent) {
-        if(FastSave.getInstance().getString(APP_SECTION,"").equalsIgnoreCase(sec_Fun))
-        tv_header_progress.setText(percent + "%");
+        if (FastSave.getInstance().getString(APP_SECTION, "").equalsIgnoreCase(sec_Fun))
+            tv_header_progress.setText(percent + "%");
 //        tv_progress.setCurProgress(percent);
     }
 

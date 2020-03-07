@@ -227,7 +227,7 @@ public class FunPresenter implements FunContract.FunPresenter, API_Content_Resul
         return nodeId;
     }
 
-    @UiThread
+    @Background
     public void getWholePercentage(List maxScore) {
         double totalScore = 0;
         try {

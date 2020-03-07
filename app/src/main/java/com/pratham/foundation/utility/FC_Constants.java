@@ -54,6 +54,7 @@ public class FC_Constants {
     public static final String FILE_DOWNLOAD_COMPLETE = "file_download_complete";
     public static final String LEVEL_CHANGED = "level_changed";
     public static final String LEVEL_TEST_GIVEN = "level_test_given";
+    public static final String SECTION_COMPLETION_PERC = "section_completion_perc";
     public static final String COMING_SOON= "coming_soon";
     public static final String FRAGMENT_SELECTED = "fragment_selected";
     public static final String FRAGMENT_RESELECTED = "fragment_reselected";

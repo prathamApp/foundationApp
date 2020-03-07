@@ -10,7 +10,6 @@ import android.graphics.drawable.ColorDrawable;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.DisplayMetrics;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.TextView;
@@ -64,7 +63,8 @@ public class SelectSubject extends BaseActivity implements
         if (FastSave.getInstance().getString(FC_Constants.LOGIN_MODE, FC_Constants.GROUP_MODE).contains("group"))
             studName = FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_NAME, "");
         else
-            studName = FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_NAME, "").split(" ")[0];
+            studName = FastSave.getInstance().getString(
+                    FC_Constants.CURRENT_STUDENT_NAME, "").split(" ")[0];
         name.setText(/*getResources().getString(R.string.Welcome) + " " + */studName + ".");
         subjectAdapter = new SelectSubjectAdapter(this, subjectList);
         RecyclerView.LayoutManager mLayoutManager = new GridLayoutManager(this, 1);
@@ -79,10 +79,6 @@ public class SelectSubject extends BaseActivity implements
         subject_recycler.setAdapter(subjectAdapter);
     }
 
-    private int getScreenWidthDp() {
-        DisplayMetrics displayMetrics = getResources().getDisplayMetrics();
-        return (int) (displayMetrics.widthPixels / displayMetrics.density);
-    }
 
     @Override
     public void onItemClicked(ContentTable contentTableObj) {
@@ -97,7 +93,7 @@ public class SelectSubject extends BaseActivity implements
                 contentTableObj.getNodeKeywords().equals("English")) {
             currentSubjectFolder = "English";
         } else if (contentTableObj.getNodeTitle().equals("H Science") ||
-                contentTableObj.getNodeTitle().equals("H Science")) {
+                contentTableObj.getNodeKeywords().equals("H Science")) {
             currentSubjectFolder = "H_Science";
         } else
             currentSubjectFolder = "LS_Science";

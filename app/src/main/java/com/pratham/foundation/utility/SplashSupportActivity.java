@@ -1,13 +1,10 @@
 package com.pratham.foundation.utility;
 
 import android.content.Context;
-import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.media.MediaPlayer;
-import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.CountDownTimer;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -15,8 +12,6 @@ import android.view.View;
 import android.view.WindowManager;
 
 import com.pratham.foundation.interfaces.PermissionResult;
-import com.pratham.foundation.services.STTService;
-import com.pratham.foundation.services.TTSService;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -28,15 +23,6 @@ import java.util.List;
  */
 
 public class SplashSupportActivity extends AppCompatActivity implements MediaPlayer.OnCompletionListener {
-
-    public static TTSService ttsService;
-    public static STTService sttService;
-
-    static CountDownTimer cd;
-    static Long timeout = (long) 20000 * 60;
-    static Long duration = timeout;
-    static Boolean setTimer = false;
-    static String pauseTime;
 
     private final int KEY_PERMISSION = 200;
     private PermissionResult permissionResult;
@@ -86,14 +72,10 @@ public class SplashSupportActivity extends AppCompatActivity implements MediaPla
     public boolean isPermissionsGranted(Context context, String[] permissions) {
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M)
             return true;
-
         boolean granted = true;
-
-        for (String permission : permissions) {
+        for (String permission : permissions)
             if (!(ActivityCompat.checkSelfPermission(context, permission) == PackageManager.PERMISSION_GRANTED))
                 granted = false;
-        }
-
         return granted;
     }
 
@@ -101,46 +83,34 @@ public class SplashSupportActivity extends AppCompatActivity implements MediaPla
         String[] arrayPermissionNotGranted;
         ArrayList<String> permissionsNotGranted = new ArrayList<>();
 
-        for (int i = 0; i < permissionAsk.length; i++) {
-            if (!isPermissionGranted(SplashSupportActivity.this, permissionAsk[i])) {
+        for (int i = 0; i < permissionAsk.length; i++)
+            if (!isPermissionGranted(SplashSupportActivity.this, permissionAsk[i]))
                 permissionsNotGranted.add(permissionAsk[i]);
-            }
-        }
-
 
         if (permissionsNotGranted.isEmpty()) {
-
             if (permissionResult != null)
                 permissionResult.permissionGranted();
-
         } else {
-
             arrayPermissionNotGranted = new String[permissionsNotGranted.size()];
             arrayPermissionNotGranted = permissionsNotGranted.toArray(arrayPermissionNotGranted);
             ActivityCompat.requestPermissions(SplashSupportActivity.this, arrayPermissionNotGranted, KEY_PERMISSION);
-
         }
-
-
     }
 
     @Override
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
 
-        if (requestCode != KEY_PERMISSION) {
+        if (requestCode != KEY_PERMISSION)
             return;
-        }
 
         List<String> permissionDenied = new LinkedList<>();
         boolean granted = true;
 
         for (int i = 0; i < grantResults.length; i++) {
-
             if (!(grantResults[i] == PackageManager.PERMISSION_GRANTED)) {
                 granted = false;
                 permissionDenied.add(permissions[i]);
             }
-
         }
 
         if (permissionResult != null) {
@@ -153,13 +123,9 @@ public class SplashSupportActivity extends AppCompatActivity implements MediaPla
                         return;
                     }
                 }
-
-                permissionResult.permissionDenied();
-
-
+            permissionResult.permissionDenied();
             }
         }
-
     }
 
     /**
@@ -170,7 +136,6 @@ public class SplashSupportActivity extends AppCompatActivity implements MediaPla
         permissionsAsk = new String[]{permission};
         this.permissionResult = permissionResult;
         internalRequestPermission(permissionsAsk);
-
     }
 
     /**
@@ -181,17 +146,6 @@ public class SplashSupportActivity extends AppCompatActivity implements MediaPla
         permissionsAsk = permissions;
         this.permissionResult = permissionResult;
         internalRequestPermission(permissionsAsk);
-
-    }
-
-    public void openSettingsApp(Context context) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.GINGERBREAD) {
-            Intent intent = new Intent(android.provider.Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
-            intent.setData(Uri.parse("package:" + context.getPackageName()));
-            startActivity(intent);
-        }
-
-
     }
 
     @Override

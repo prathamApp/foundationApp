@@ -95,7 +95,8 @@ public class CopyDbToOTG extends AsyncTask {
                     Log.d("Files", "\nDirectory : " + file.getName());//CanonicalPath());
                     copyActivityData(file, currentFolder);
                 } else {
-                    Log.d("Files", "\nFile : " + file.getName());//CanonicalPath());
+                    Log.d("Files", "\nFile : " + file.getName()/*.split(".")[0]*/);//CanonicalPath());
+//                    DocumentFile dFile = currentFolder.createFile("image", file.getName().split(".")[0]);
                     DocumentFile dFile = currentFolder.createFile("image", file.getName());
                     OutputStream out = ApplicationClass.getInstance().getContentResolver().openOutputStream(dFile.getUri());
                     FileInputStream in = new FileInputStream(file.getAbsolutePath());
