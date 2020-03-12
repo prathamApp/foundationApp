@@ -8,6 +8,8 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -126,7 +128,7 @@ public class PracticeInnerDataAdapter extends RecyclerView.Adapter {
                 }
                 folderHolder.rl_root.setOnClickListener(v -> itemClicked.onContentClicked(
                         itemsList.get(i),parentName));
-
+                setAnimations(folderHolder.card_main);
                 break;
             case 2:
                 //file
@@ -176,8 +178,17 @@ public class PracticeInnerDataAdapter extends RecyclerView.Adapter {
                             itemsList.get(i),parentPos,i,""+ FC_Constants.SINGLE_RES_DOWNLOAD));
 
                 }
+                setAnimations(fileHolder.content_card_view);
                 break;
         }
+    }
+
+    private void setAnimations(final View content_card_view) {
+        final Animation animation;
+        animation = AnimationUtils.loadAnimation(mContext, R.anim.slide_list);
+        animation.setDuration(500);
+        content_card_view.setVisibility(View.VISIBLE);
+        content_card_view.setAnimation(animation);
     }
 
     @Override

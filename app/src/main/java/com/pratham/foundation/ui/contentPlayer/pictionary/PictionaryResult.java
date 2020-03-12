@@ -39,6 +39,7 @@ public class PictionaryResult extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_pictionary_result);
+        //overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
         ButterKnife.bind(this);
         paraSttQuestionList = (ArrayList<ParaSttQuestionListModel>) getIntent()
                 .getSerializableExtra("paraSttQuestionList");

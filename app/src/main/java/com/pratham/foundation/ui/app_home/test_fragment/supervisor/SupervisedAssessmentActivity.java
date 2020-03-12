@@ -78,6 +78,7 @@ public class SupervisedAssessmentActivity extends Activity implements TestStuden
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_supervised_assessment);
+        //overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
         ButterKnife.bind(this);
         this.setFinishOnTouchOutside(false);
 //        this.getSupportActionBar().hide();

@@ -27,6 +27,7 @@ public class FullScreenVideo extends BaseActivity {
 
     @AfterViews
     public void initialize() {
+        //overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
         Intent intent = getIntent();
         videoPath = intent.getStringExtra("questionPath");
         initializePlayer(videoPath);

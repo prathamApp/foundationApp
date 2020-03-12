@@ -13,7 +13,6 @@ import android.support.v4.app.Fragment;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.util.TypedValue;
 import android.view.View;
 import android.view.Window;
@@ -75,7 +74,6 @@ import static com.pratham.foundation.ui.app_home.HomeActivity.header_rl;
 import static com.pratham.foundation.utility.FC_Constants.APP_SECTION;
 import static com.pratham.foundation.utility.FC_Constants.CERTI_CODE;
 import static com.pratham.foundation.utility.FC_Constants.CLOSE_TEST_EVENTBUS;
-import static com.pratham.foundation.utility.FC_Constants.LEVEL_TEST_GIVEN;
 import static com.pratham.foundation.utility.FC_Constants.currentLevel;
 import static com.pratham.foundation.utility.FC_Constants.gameFolderPath;
 import static com.pratham.foundation.utility.FC_Constants.sec_Test;
@@ -226,7 +224,7 @@ public class TestFragment extends Fragment implements TestContract.TestView,
 
     @Override
     public void onStart() {
-        FastSave.getInstance().saveString(APP_SECTION, ""+sec_Test);
+        FastSave.getInstance().saveString(APP_SECTION, "" + sec_Test);
         super.onStart();
         if (!eventBusFlg) {
             eventBusFlg = true;
@@ -244,8 +242,8 @@ public class TestFragment extends Fragment implements TestContract.TestView,
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void messageReceived(EventMessage message) {
         if (message != null) {
-            if (message.getMessage().contains(LEVEL_TEST_GIVEN))
-                addTestStarResult(message.getMessage());
+//            if (message.getMessage().contains(LEVEL_TEST_GIVEN))
+//                addTestStarResult(message.getMessage());
             if (message.getMessage().contains(CLOSE_TEST_EVENTBUS)) {
                 eventBusFlg = false;
                 EventBus.getDefault().unregister(this);
@@ -283,27 +281,16 @@ public class TestFragment extends Fragment implements TestContract.TestView,
         }
     }
 
-    private void addTestStarResult(String levelTestGiven) {
-        try {
-            String[] splitRes = levelTestGiven.split(":");
-            for (int i = 0; i < splitRes.length; i++) {
-                Log.d("splitRes", "addTestStarResult: " + splitRes[i]);
-            }
-            String cCode = levelTestGiven.split(":")[1];
-            int tMarks = Integer.parseInt(levelTestGiven.split(":")[2]);
-            int sMarks = Integer.parseInt(levelTestGiven.split(":")[3]);
-            if (cCode.equalsIgnoreCase(certi_Code)) {
-                testList.get(clicked_Pos).setAsessmentGiven(true);
-                testList.get(clicked_Pos).setTotalMarks(tMarks);
-                testList.get(clicked_Pos).setScoredMarks(sMarks);
-                float perc = 0f;
-                if (tMarks > 0 && sMarks <= tMarks)
-                    perc = ((float) sMarks / (float) tMarks) * 100;
-                testList.get(clicked_Pos).setStudentPercentage("" + perc);
-                testList.get(clicked_Pos).setCertificateRating(presenter.getStarRating(perc));
-                testAdapter.notifyItemChanged(clicked_Pos, testList.get(clicked_Pos));
-            }
-//            } else {
+//    private void addTestStarResult(String levelTestGiven) {
+//        try {
+//            String[] splitRes = levelTestGiven.split(":");
+//            for (int i = 0; i < splitRes.length; i++) {
+//                Log.d("splitRes", "addTestStarResult: " + splitRes[i]);
+//            }
+//            String cCode = levelTestGiven.split(":")[1];
+//            int tMarks = Integer.parseInt(levelTestGiven.split(":")[2]);
+//            int sMarks = Integer.parseInt(levelTestGiven.split(":")[3]);
+//            if (cCode.equalsIgnoreCase(certi_Code)) {
 //                testList.get(clicked_Pos).setAsessmentGiven(true);
 //                testList.get(clicked_Pos).setTotalMarks(tMarks);
 //                testList.get(clicked_Pos).setScoredMarks(sMarks);
@@ -314,11 +301,22 @@ public class TestFragment extends Fragment implements TestContract.TestView,
 //                testList.get(clicked_Pos).setCertificateRating(presenter.getStarRating(perc));
 //                testAdapter.notifyItemChanged(clicked_Pos, testList.get(clicked_Pos));
 //            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        checkAllAssessmentsDone();
-    }
+////            } else {
+////                testList.get(clicked_Pos).setAsessmentGiven(true);
+////                testList.get(clicked_Pos).setTotalMarks(tMarks);
+////                testList.get(clicked_Pos).setScoredMarks(sMarks);
+////                float perc = 0f;
+////                if (tMarks > 0 && sMarks <= tMarks)
+////                    perc = ((float) sMarks / (float) tMarks) * 100;
+////                testList.get(clicked_Pos).setStudentPercentage("" + perc);
+////                testList.get(clicked_Pos).setCertificateRating(presenter.getStarRating(perc));
+////                testAdapter.notifyItemChanged(clicked_Pos, testList.get(clicked_Pos));
+////            }
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+//        checkAllAssessmentsDone();
+//    }
 
     @UiThread
     @Override
@@ -446,7 +444,7 @@ public class TestFragment extends Fragment implements TestContract.TestView,
                     mainNew.putExtra("gameType", "" + testData.getResourceType());
                     mainNew.putExtra("sttLang", "English");
                     mainNew.putExtra("gameCategory", "" + testData.getNodeKeywords());
-                    startActivityForResult(mainNew, 1);
+                    startActivityForResult(mainNew, 1461);
                 } else {
                     Toast.makeText(context, "Game not found", Toast.LENGTH_SHORT).show();
                 }
@@ -459,7 +457,7 @@ public class TestFragment extends Fragment implements TestContract.TestView,
                 mainNew.putExtra("onSdCard", testData.isOnSDCard());
                 mainNew.putExtra("certiCode", testData.getNodeDesc());
                 mainNew.putExtra("contentPath", testData.getResourcePath());
-                startActivityForResult(mainNew, 1);
+                startActivityForResult(mainNew, 1461);
             } else if (testData.getResourceType().equalsIgnoreCase(FC_Constants.CONVO_RESOURCE)) {
                 ContentTable randomTestData = presenter.getRandomData(testData.getResourceType(), testData.getNodeKeywords());
                 Intent mainNew = new Intent(context, ConversationActivity_.class);
@@ -470,7 +468,7 @@ public class TestFragment extends Fragment implements TestContract.TestView,
                 mainNew.putExtra("contentPath", randomTestData.getResourcePath());
                 mainNew.putExtra("sttLang", "English");
                 mainNew.putExtra("certiCode", testData.getNodeDesc());
-                startActivityForResult(mainNew, 1);
+                startActivityForResult(mainNew, 1461);
             } else if (testData.getResourceType().equalsIgnoreCase(FC_Constants.COMIC_CONVO_RESOURCE)) {
                 ContentTable randomTestData = presenter.getRandomData(testData.getResourceType(), testData.getNodeKeywords());
                 Intent mainNew = new Intent(context, ReadingCardsActivity_.class);
@@ -481,7 +479,7 @@ public class TestFragment extends Fragment implements TestContract.TestView,
                 mainNew.putExtra("sttLang", "English");
                 mainNew.putExtra("certiCode", testData.getNodeDesc());
                 mainNew.putExtra("contentPath", randomTestData.getResourcePath());
-                startActivityForResult(mainNew, 1);
+                startActivityForResult(mainNew, 1461);
             } else if (testData.getResourceType().equalsIgnoreCase(FC_Constants.OPPOSITE_WORDS)) {
                 Intent mainNew = new Intent(context, OppositesActivity_.class);
                 mainNew.putExtra("resId", testData.getResourceId());
@@ -491,7 +489,7 @@ public class TestFragment extends Fragment implements TestContract.TestView,
                 mainNew.putExtra("certiCode", testData.getNodeDesc());
                 mainNew.putExtra("sttLang", "English");
                 mainNew.putExtra("contentPath", testData.getResourcePath());
-                startActivityForResult(mainNew, 1);
+                startActivityForResult(mainNew, 1461);
             } else if (testData.getResourceType().equalsIgnoreCase(FC_Constants.RHYME_RESOURCE) || testData.getResourceType().equalsIgnoreCase(FC_Constants.STORY_RESOURCE)) {
                 ContentTable randomTestData = presenter.getRandomData(testData.getResourceType(), testData.getNodeKeywords());
                 Intent mainNew = new Intent(context, ReadingStoryActivity_.class);
@@ -503,7 +501,7 @@ public class TestFragment extends Fragment implements TestContract.TestView,
                 mainNew.putExtra("onSdCard", randomTestData.isOnSDCard());
                 mainNew.putExtra("certiCode", testData.getNodeDesc());
                 mainNew.putExtra("contentType", randomTestData.getResourceType());
-                startActivityForResult(mainNew, 1);
+                startActivityForResult(mainNew, 1461);
             } /*else if (testData.getResourceType().equalsIgnoreCase(FC_Constants.WORD_ANDROID)) {
                 Intent mainNew = new Intent(context, ReadingWordScreenActivity.class);
                 mainNew.putExtra("resId", testData.getResourceId());
@@ -524,7 +522,7 @@ public class TestFragment extends Fragment implements TestContract.TestView,
                 mainNew.putExtra("certiCode", testData.getNodeDesc());
                 mainNew.putExtra("sttLang", "English");
                 mainNew.putExtra("contentTitle", randomTestData.getNodeTitle());
-                startActivityForResult(mainNew, 1);
+                startActivityForResult(mainNew, 1461);
             } else if (testData.getResourceType().equalsIgnoreCase(FC_Constants.PARA_VOCAB_ANDROID)) {
                 ContentTable randomTestData = presenter.getRandomData(testData.getResourceType(), testData.getNodeKeywords());
                 Intent mainNew = new Intent(context, ReadingParagraphsActivity_.class);
@@ -536,7 +534,7 @@ public class TestFragment extends Fragment implements TestContract.TestView,
                 mainNew.putExtra("sttLang", "English");
                 mainNew.putExtra("certiCode", testData.getNodeDesc());
                 mainNew.putExtra("contentTitle", randomTestData.getNodeTitle());
-                startActivityForResult(mainNew, 1);
+                startActivityForResult(mainNew, 1461);
             } else if (testData.getResourceType().equalsIgnoreCase(FC_Constants.VOCAB_ANDROID)) {
                 Intent mainNew = new Intent(context, ReadingVocabularyActivity_.class);
                 mainNew.putExtra("resId", testData.getResourceId());
@@ -548,7 +546,7 @@ public class TestFragment extends Fragment implements TestContract.TestView,
                 mainNew.putExtra("onSdCard", testData.isOnSDCard());
                 mainNew.putExtra("certiCode", testData.getNodeDesc());
                 mainNew.putExtra("vocabCategory", "$$$");
-                startActivityForResult(mainNew, 1);
+                startActivityForResult(mainNew, 1461);
             } else if (testData.getResourceType().equalsIgnoreCase(FC_Constants.RHYMING_WORD_ANDROID)) {
                 ContentTable randomTestData = presenter.getRandomData(testData.getResourceType(), testData.getNodeKeywords());
                 Intent mainNew = new Intent(context, ReadingRhymesActivity_.class);
@@ -560,7 +558,7 @@ public class TestFragment extends Fragment implements TestContract.TestView,
                 mainNew.putExtra("certiCode", testData.getNodeDesc());
                 mainNew.putExtra("sttLang", "English");
                 mainNew.putExtra("rhymeLevel", randomTestData.getNodeDesc());
-                startActivityForResult(mainNew, 1);
+                startActivityForResult(mainNew, 1461);
             } else if (testData.getResourceType().equalsIgnoreCase(FC_Constants.MATCH_THE_PAIR)) {
                 Intent mainNew = new Intent(context, MatchThePairGameActivity.class);
                 mainNew.putExtra("resId", testData.getResourceId());
@@ -571,12 +569,12 @@ public class TestFragment extends Fragment implements TestContract.TestView,
                 mainNew.putExtra("sttLang", "English");
                 mainNew.putExtra("certiCode", testData.getNodeDesc());
                 mainNew.putExtra("rhymeLevel", testData.getNodeDesc());
-                startActivityForResult(mainNew, 1);
+                startActivityForResult(mainNew, 1461);
             } else {
                 Intent mainNew = new Intent(context, ContentPlayerActivity_.class);
                 mainNew.putExtra("testData", testData);
                 mainNew.putExtra("testcall", "true");
-                startActivityForResult(mainNew, 1);
+                startActivityForResult(mainNew, 1461);
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -625,24 +623,27 @@ public class TestFragment extends Fragment implements TestContract.TestView,
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (resultCode == Activity.RESULT_OK) {
-            String cCode = data.getStringExtra("cCode");
-            int tMarks = data.getIntExtra("tMarks", 0);
-            int sMarks = data.getIntExtra("sMarks", 0);
-            try {
-                if (cCode.equalsIgnoreCase(certi_Code)) {
-                testList.get(clicked_Pos).setAsessmentGiven(true);
-                testList.get(clicked_Pos).setTotalMarks(tMarks);
-                testList.get(clicked_Pos).setScoredMarks(sMarks);
-                float perc = ((float) sMarks / (float) tMarks) * 100;
-                testList.get(clicked_Pos).setStudentPercentage("" + perc);
-                testList.get(clicked_Pos).setCertificateRating(presenter.getStarRating(perc));
-                testAdapter.notifyItemChanged(clicked_Pos, testList.get(clicked_Pos));
+        if (requestCode == 1461)
+            if (resultCode == Activity.RESULT_OK) {
+                String cCode = data.getStringExtra("cCode");
+                int tMarks = data.getIntExtra("tMarks", 0);
+                int sMarks = data.getIntExtra("sMarks", 0);
+                try {
+                    if (cCode.equalsIgnoreCase(certi_Code)) {
+                        testList.get(clicked_Pos).setAsessmentGiven(true);
+                        testList.get(clicked_Pos).setTotalMarks(tMarks);
+                        testList.get(clicked_Pos).setScoredMarks(sMarks);
+                        float perc = 0f;
+                        if (tMarks > 0 && sMarks <= tMarks)
+                            perc = ((float) sMarks / (float) tMarks) * 100;
+                        testList.get(clicked_Pos).setStudentPercentage("" + perc);
+                        testList.get(clicked_Pos).setCertificateRating(presenter.getStarRating(perc));
+                        testAdapter.notifyItemChanged(clicked_Pos, testList.get(clicked_Pos));
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
-            } catch (Exception e) {
-                e.printStackTrace();
             }
-        }
         checkAllAssessmentsDone();
     }
 

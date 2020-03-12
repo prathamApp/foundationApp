@@ -93,6 +93,7 @@ public class CertificateActivity extends BaseActivity implements CertificateCont
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_certificate);
+        //overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
         ButterKnife.bind(this);
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
@@ -277,13 +278,13 @@ public class CertificateActivity extends BaseActivity implements CertificateCont
         intent.putExtra("mode", "test");
         intent.putExtra("gameLevel", gameLevel);
 
-        startActivityForResult(intent, 1);
+        startActivityForResult(intent, 1461);
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 
-        if (requestCode == 1) {
+        if (requestCode == 1461) {
             if (resultCode == Activity.RESULT_OK) {
                 String cCode = data.getStringExtra("cCode");
                 int tMarks = data.getIntExtra("tMarks", 0);

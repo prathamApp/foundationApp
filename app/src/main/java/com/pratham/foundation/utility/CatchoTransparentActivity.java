@@ -19,6 +19,7 @@ public class CatchoTransparentActivity extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_catcho);
+        //overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
 
         CatchoError error = (CatchoError) getIntent().getSerializableExtra(Catcho.ERROR);
         Modal_Log log = new Modal_Log();

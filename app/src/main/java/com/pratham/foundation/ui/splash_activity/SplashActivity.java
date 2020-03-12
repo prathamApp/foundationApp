@@ -86,6 +86,7 @@ public class SplashActivity extends SplashSupportActivity implements SplashContr
 
     @AfterViews
     public void init() {
+        //overridePendingTransition(R.anim.slide_in_right,R.anim.slide_out_left);
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
         context = SplashActivity.this;
         bgMusic = MediaPlayer.create(this, R.raw.bg_sound);
@@ -136,13 +137,13 @@ public class SplashActivity extends SplashSupportActivity implements SplashContr
             } else {
                 ApplicationClass.foundationPath = FC_Utility.getInternalPath(SplashActivity.this);
                 Log.d("old_cos.pradigiPath", "old_cos.pradigiPath: " + ApplicationClass.foundationPath);
-                if (splashPresenter.getSdCardPath()) {
+                splashPresenter.getSdCardPath();
                     ApplicationClass.contentExistOnSD = true;
                     splashPresenter.populateSDCardMenu();
-                } else {
-                    ApplicationClass.contentExistOnSD = false;
-                    splashPresenter.copyZipAndPopulateMenu();
-                }
+//                } else {
+//                    ApplicationClass.contentExistOnSD = false;
+//                    splashPresenter.copyZipAndPopulateMenu();
+//                }
             }
         } else
             gotoNextActivity();
@@ -430,6 +431,7 @@ public class SplashActivity extends SplashSupportActivity implements SplashContr
         splashPresenter.requestLocation();
         //        if(FastSave.getInstance().getBoolean(FC_Constants.newDataLanguageInserted, false))
 //            splashPresenter.insertNewData();
+        splashPresenter.updateVersionApp();
         if (!ApplicationClass.isTablet) {
             splashPresenter.pushData();
             dismissProgressDialog();

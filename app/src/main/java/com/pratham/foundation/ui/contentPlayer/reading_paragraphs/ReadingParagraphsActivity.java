@@ -115,6 +115,7 @@ public class ReadingParagraphsActivity extends BaseActivity
     @SuppressLint("SetTextI18n")
     @AfterViews
     public void initialize() {
+        //overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
 
         iv_monk.setVisibility(View.GONE);
         mContext = ReadingParagraphsActivity.this;

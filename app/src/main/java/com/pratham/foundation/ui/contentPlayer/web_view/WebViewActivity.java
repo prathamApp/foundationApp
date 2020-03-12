@@ -57,6 +57,7 @@ public class WebViewActivity extends BaseActivity implements WebViewInterface {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_web_view);
+        //overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
         ButterKnife.bind(this);
         webView = findViewById(R.id.loadPage);
@@ -151,42 +152,28 @@ public class WebViewActivity extends BaseActivity implements WebViewInterface {
         Button dia_btn_green = dialog.findViewById(R.id.dia_btn_green);
         Button dia_btn_red = dialog.findViewById(R.id.dia_btn_red);
 
-        dia_btn_green.setText (""+getResources().getString(R.string.yes));
-        dia_btn_red.setText   (""+getResources().getString(R.string.no));
-        dia_btn_yellow.setText(""+getResources().getString(R.string.Cancel));
-        dia_title.setText(""+getResources().getString(R.string.exit_dialog_msg));
+        dia_btn_green.setText("" + getResources().getString(R.string.yes));
+        dia_btn_red.setText("" + getResources().getString(R.string.no));
+        dia_btn_yellow.setText("" + getResources().getString(R.string.Cancel));
+        dia_title.setText("" + getResources().getString(R.string.exit_dialog_msg));
         dialog.show();
 
-        dia_btn_green.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (!FastSave.getInstance().getString(APP_SECTION,"").equalsIgnoreCase(sec_Test))
-                    addGameProgress();
-                if(FastSave.getInstance().getString(APP_SECTION,"").equalsIgnoreCase(sec_Test)){
-                    Intent returnIntent = new Intent();
-                    returnIntent.putExtra("cCode", cCode);
-                    returnIntent.putExtra("tMarks", tMarks);
-                    returnIntent.putExtra("sMarks", sMarks);
-                    setResult(Activity.RESULT_OK, returnIntent);
-                }
-                finish();
-                dialog.dismiss();
-            }
+        dia_btn_green.setOnClickListener(v -> {
+            if (FastSave.getInstance().getString(APP_SECTION, "").equalsIgnoreCase(sec_Test)) {
+                Intent returnIntent = new Intent();
+                returnIntent.putExtra("cCode", cCode);
+                returnIntent.putExtra("tMarks", tMarks);
+                returnIntent.putExtra("sMarks", sMarks);
+                setResult(Activity.RESULT_OK, returnIntent);
+            } else
+                addGameProgress();
+            dialog.dismiss();
+            finish();
         });
 
-        dia_btn_red.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dialog.dismiss();
-            }
-        });
+        dia_btn_red.setOnClickListener(v -> dialog.dismiss());
 
-        dia_btn_yellow.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dialog.dismiss();
-            }
-        });
+        dia_btn_yellow.setOnClickListener(v -> dialog.dismiss());
     }
 
     @SuppressLint("StaticFieldLeak")
@@ -204,9 +191,9 @@ public class WebViewActivity extends BaseActivity implements WebViewInterface {
                             learntWords.setResourceId(webResId);
                             learntWords.setSentFlag(0);
                             learntWords.setStudentId(FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""));
-                           // learntWords.setSessionId(FastSave.getInstance().getString(FC_Constants.CURRENT_SESSION, ""));
+                            // learntWords.setSessionId(FastSave.getInstance().getString(FC_Constants.CURRENT_SESSION, ""));
                             learntWords.setKeyWord(learntWordsList.get(i).getKeyWord().toLowerCase());
-                           // learntWords.setSynId("" + gameName);
+                            // learntWords.setSynId("" + gameName);
                             learntWords.setWordType("" + learntWordsList.get(i).getWordType());
                             appDatabase.getKeyWordDao().insert(learntWords);
                         }
@@ -256,7 +243,7 @@ public class WebViewActivity extends BaseActivity implements WebViewInterface {
     @Override
     public void onNextGame(final WebView w) {
         showExitDialog();
-    //        webView.loadUrl("about:blank");
+        //        webView.loadUrl("about:blank");
 //        finish();
 
         /*gameCounter += 1;
@@ -298,8 +285,6 @@ public class WebViewActivity extends BaseActivity implements WebViewInterface {
         if (webView != null) {
             webView.loadUrl(gamePath);
         }
-
     }
-
 }
 

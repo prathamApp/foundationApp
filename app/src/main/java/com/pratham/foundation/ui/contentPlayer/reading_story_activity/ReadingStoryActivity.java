@@ -58,6 +58,7 @@ import java.util.List;
 
 import static com.pratham.foundation.ApplicationClass.ButtonClickSound;
 import static com.pratham.foundation.utility.FC_Constants.APP_SECTION;
+import static com.pratham.foundation.utility.FC_Constants.CURRENT_FOLDER_NAME;
 import static com.pratham.foundation.utility.FC_Constants.STT_REGEX;
 import static com.pratham.foundation.utility.FC_Constants.dialog_btn_cancel;
 import static com.pratham.foundation.utility.FC_Constants.gameFolderPath;
@@ -139,6 +140,7 @@ public class ReadingStoryActivity extends BaseActivity implements
 
     @AfterViews
     public void initialize() {
+        //overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
         silence_outer_layout.setVisibility(View.GONE);
         Intent intent = getIntent();
         floating_back.setImageResource(R.drawable.ic_left_arrow_white);
@@ -304,7 +306,10 @@ public class ReadingStoryActivity extends BaseActivity implements
             if (modalPagesList.get(currentPage).getReadList().get(i).getWord().equalsIgnoreCase("#"))
                 lineBreakCounter += 1;
             correctArr[i] = false;
-            splitWordsPunct.add(splitWords.get(i).replaceAll(STT_REGEX, ""));
+            if (FastSave.getInstance().getString(CURRENT_FOLDER_NAME, "").equalsIgnoreCase("English"))
+                splitWordsPunct.add(modalPagesList.get(currentPage).getReadList().get(i).getWord().replaceAll("[^a-zA-Z ]", "").toLowerCase());
+            else
+                splitWordsPunct.add(splitWords.get(i).replaceAll(STT_REGEX, ""));
             wordsDurationList.add(modalPagesList.get(currentPage).getReadList().get(i).getWordDuration());
             wordsResIdList.add(modalPagesList.get(currentPage).getReadList().get(i).getWordId());
         }

@@ -70,6 +70,7 @@ public class ShowImgQuestionActivity extends BaseActivity implements ShowImgQues
 
     @AfterViews
     public void initialize() {
+        //overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
         scoreDisp = (Score) getIntent().getSerializableExtra("scoreDisp");
         presenter.setView(ShowImgQuestionActivity.this);
         ques_card.setVisibility(View.GONE);

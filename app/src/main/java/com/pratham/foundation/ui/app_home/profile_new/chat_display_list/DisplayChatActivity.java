@@ -69,6 +69,7 @@ public class DisplayChatActivity extends BaseActivity implements
     private boolean showCertificate = false;
     @AfterViews
     public void initialize() {
+        //overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
         Configuration config = getResources().getConfiguration();
         FC_Constants.TAB_LAYOUT = config.smallestScreenWidthDp > 425;
         presenter.setView(DisplayChatActivity.this);

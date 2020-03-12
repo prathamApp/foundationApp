@@ -28,7 +28,7 @@
         android:layout_below="@id/tv_Topic"
         android:layout_marginStart="@dimen/_20sdp"
         android:layout_marginEnd="@dimen/_20sdp"
-        android:text="Sorry about that. Press the report button to send the error to us."
+        android:text="Sorry about that. Press the register report button to send us the error."
         android:textColor="@color/colorBtnRedLight"
         android:textSize="@dimen/_12sdp" />
 
@@ -42,7 +42,7 @@
         android:textSize="@dimen/_10sdp"
         android:layout_below="@+id/tv_Topic_"
         android:textColor="@color/white"
-        android:text="@string/SendReport"
+        android:text="@string/RegisterReport"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="70dp"
         android:background="@drawable/button_green"/>

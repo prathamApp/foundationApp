@@ -37,7 +37,6 @@ import static com.pratham.foundation.utility.FC_Utility.getRandomCardColor;
 public class ContentAdapter extends RecyclerView.Adapter {
 
     private Context mContext;
-    private int lastPos = -1;
     private List<ContentTable> contentViewList;
     ContentClicked contentClicked;
 
@@ -239,7 +238,6 @@ public class ContentAdapter extends RecyclerView.Adapter {
         animation.setDuration(500);
         content_card_view.setVisibility(View.VISIBLE);
         content_card_view.setAnimation(animation);
-        lastPos = position;
     }
 
     @Override

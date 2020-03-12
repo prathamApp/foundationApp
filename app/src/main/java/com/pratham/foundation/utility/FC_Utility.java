@@ -89,7 +89,6 @@ import java.io.InputStreamReader;
 import java.net.URL;
 import java.net.URLConnection;
 import java.nio.charset.StandardCharsets;
-import java.security.InvalidKeyException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.text.DateFormat;
@@ -678,6 +677,8 @@ public class FC_Utility {
         if (mActivity instanceof AdminControlsActivity_) {
             ((AdminControlsActivity_) mActivity).getSupportFragmentManager()
                     .beginTransaction()
+                    .setCustomAnimations(R.anim.enter_right_to_left, R.anim.exit_right_to_left,
+                            R.anim.enter_left_to_right, R.anim.exit_left_to_right )
                     .replace(frame, mFragment, TAG)
                     .addToBackStack(TAG)
                     .commit();
@@ -690,18 +691,24 @@ public class FC_Utility {
         } else if (mActivity instanceof SelectGroupActivity_) {
             ((SelectGroupActivity_) mActivity).getSupportFragmentManager()
                     .beginTransaction()
+                    .setCustomAnimations(R.anim.enter_right_to_left, R.anim.exit_right_to_left,
+                            R.anim.enter_left_to_right, R.anim.exit_left_to_right )
                     .replace(frame, mFragment, TAG)
                     .addToBackStack(TAG)
                     .commit();
         } else if (mActivity instanceof SplashActivity) {
             ((SplashActivity) mActivity).getSupportFragmentManager()
                     .beginTransaction()
+                    .setCustomAnimations(R.anim.enter_right_to_left, R.anim.exit_right_to_left,
+                            R.anim.enter_left_to_right, R.anim.exit_left_to_right )
                     .replace(frame, mFragment, TAG)
                     .addToBackStack(TAG)
                     .commit();
         } else if (mActivity instanceof ContentPlayerActivity_) {
             ((ContentPlayerActivity_) mActivity).getSupportFragmentManager()
                     .beginTransaction()
+                    .setCustomAnimations(R.anim.enter_right_to_left, R.anim.exit_right_to_left,
+                            R.anim.enter_left_to_right, R.anim.exit_left_to_right )
                     .replace(frame, mFragment, TAG)
                     .addToBackStack(TAG)
                     .commit();
@@ -854,8 +861,8 @@ public class FC_Utility {
         ArrayList<String> sdcard_path = SDCardUtil.getExtSdCardPaths(context);
         for (String path : sdcard_path) {
             String final_sd_path = path;
-            if (new File(final_sd_path + "/.AOP_External").exists()) {
-                sdCardPath = final_sd_path + "/.AOP_External/";
+            if (new File(final_sd_path + "/.FCA").exists()) {
+                sdCardPath = final_sd_path + "/.FCA/";
                 break;
             }
         }
@@ -980,8 +987,7 @@ public class FC_Utility {
                 hash.append(hex);
             }
             digest = hash.toString();
-        } catch (InvalidKeyException e) {
-        } catch (NoSuchAlgorithmException e) {
+        } catch (Exception e) {
         }
         return digest;
     }

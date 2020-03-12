@@ -103,6 +103,7 @@ public class ReadingRhymesActivity extends BaseActivity
 
     @AfterViews
     public void initialize() {
+        //overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
 
         mContext = ReadingRhymesActivity.this;
         testFlg = false;

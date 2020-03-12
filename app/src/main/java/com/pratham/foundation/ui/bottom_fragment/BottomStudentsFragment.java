@@ -2,6 +2,7 @@ package com.pratham.foundation.ui.bottom_fragment;
 
 import android.app.Dialog;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
@@ -45,6 +46,7 @@ import org.greenrobot.eventbus.Subscribe;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.UUID;
 
 
@@ -67,6 +69,7 @@ public class BottomStudentsFragment extends BottomSheetDialogFragment
     private List<Student> studentList;
     StudentsAdapter adapter;
     Gson gson;
+    Context context;
 
     @AfterViews
     public void initialize() {
@@ -74,6 +77,8 @@ public class BottomStudentsFragment extends BottomSheetDialogFragment
         btn_download_all_data.setVisibility(View.GONE);
         studentList = new ArrayList<>();
         gson = new Gson();
+
+        context = getActivity();
 
         if (ApplicationClass.wiseF.isDeviceConnectedToWifiNetwork())
             if (ApplicationClass.wiseF.isDeviceConnectedToSSID(FC_Constants.PRATHAM_KOLIBRI_HOTSPOT)) {
@@ -111,7 +116,7 @@ public class BottomStudentsFragment extends BottomSheetDialogFragment
     public void onDismiss(DialogInterface dialog) {
         super.onDismiss(dialog);
         try {
-            getActivity().onBackPressed();
+            Objects.requireNonNull(getActivity()).onBackPressed();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -137,9 +142,9 @@ public class BottomStudentsFragment extends BottomSheetDialogFragment
 
     @UiThread
     public void setProgressDailog() {
-        progress = new Dialog(getActivity());
+        progress = new Dialog(context);
         progress.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        progress.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        Objects.requireNonNull(progress.getWindow()).setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         progress.setContentView(R.layout.dialog_file_downloading);
         progress.setCanceledOnTouchOutside(false);
         progress.setCancelable(false);
@@ -233,7 +238,7 @@ public class BottomStudentsFragment extends BottomSheetDialogFragment
     @Override
     public void dismissProgressDialog() {
         try {
-            if (progressDialog != null)
+            if (progressDialog != null && progressDialog.isShowing())
                 progressDialog.dismiss();
         } catch (Exception e) {
             e.printStackTrace();
@@ -245,7 +250,7 @@ public class BottomStudentsFragment extends BottomSheetDialogFragment
     public void dismissProgressDialog2() {
         try {
             new Handler().postDelayed(() -> {
-            if (progress != null)
+            if (progress != null && progress.isShowing())
                 progress.dismiss();
         }, 1000);
         } catch (Exception e) {
@@ -278,7 +283,7 @@ public class BottomStudentsFragment extends BottomSheetDialogFragment
         } catch (Exception e) {
             e.printStackTrace();
         }*/
-        getActivity().finish();
+        Objects.requireNonNull(getActivity()).finish();
     }
 
     @Override

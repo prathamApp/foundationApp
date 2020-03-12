@@ -25,6 +25,7 @@ public class SelectGroupActivity extends BaseActivity {
 
     @AfterViews
     public void initialize() {
+        //overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
         Bundle bundle = new Bundle();
         bundle.putBoolean(FC_Constants.GROUP_AGE_ABOVE_7, true);
         FC_Utility.showFragment(this, new FragmentSelectGroup_(), R.id.frame_group,

@@ -44,6 +44,7 @@ import net.lingala.zip4j.exception.ZipException;
 import org.androidannotations.annotations.Background;
 import org.androidannotations.annotations.Bean;
 import org.androidannotations.annotations.EBean;
+import org.androidannotations.annotations.UiThread;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -114,7 +115,8 @@ public class SplashPresenter implements SplashContract.SplashPresenter {
         splashView.showProgressDialog();
         try {
 //                        ArrayList<String> sdPath = FileUtils.getExtSdCardPaths(context);
-            SQLiteDatabase db = SQLiteDatabase.openDatabase(Environment.getExternalStorageDirectory().getAbsolutePath() + "/PrathamBackups/foundation_db", null, SQLiteDatabase.OPEN_READONLY);
+            SQLiteDatabase db = SQLiteDatabase.openDatabase(Environment.getExternalStorageDirectory()
+                    .getAbsolutePath() + "/PrathamBackups/foundation_db", null, SQLiteDatabase.OPEN_READONLY);
             if (db != null) {
                 try {
                     Cursor content_cursor;
@@ -246,31 +248,6 @@ public class SplashPresenter implements SplashContract.SplashPresenter {
                         }
                     }
                     AppDatabase.appDatabase.getAssessmentDao().addAssessmentList(contents);
-                    content_cursor.close();
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-
-                try {
-                    Cursor content_cursor;
-                    content_cursor = db.rawQuery("SELECT * FROM KeyWords", null);
-                    List<KeyWords> contents = new ArrayList<>();
-                    if (content_cursor.moveToFirst()) {
-                        while (!content_cursor.isAfterLast()) {
-                            KeyWords detail = new KeyWords();
-                            detail.setKeyWordId(content_cursor.getInt(content_cursor.getColumnIndex("learntWordId")));
-                            detail.setStudentId(content_cursor.getString(content_cursor.getColumnIndex("studentId")));
-                            //  detail.setSessionId(content_cursor.getString(content_cursor.getColumnIndex("sessionId")));
-                            //  detail.setSynId(content_cursor.getString(content_cursor.getColumnIndex("synId")));
-                            detail.setResourceId(content_cursor.getString(content_cursor.getColumnIndex("wordUUId")));
-                            detail.setKeyWord(content_cursor.getString(content_cursor.getColumnIndex("word")));
-                            detail.setWordType(content_cursor.getString(content_cursor.getColumnIndex("wordType")));
-                            detail.setSentFlag(content_cursor.getInt(content_cursor.getColumnIndex("sentFlag")));
-                            contents.add(detail);
-                            content_cursor.moveToNext();
-                        }
-                    }
-                    AppDatabase.appDatabase.getKeyWordDao().insertWord(contents);
                     content_cursor.close();
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -600,7 +577,18 @@ public class SplashPresenter implements SplashContract.SplashPresenter {
         }
     }
 
-    private void copyDBFile() {
+    @UiThread
+    public void copyDBFile() {
+
+        try {
+            File internalDB = new File(Environment.getExternalStorageDirectory().toString() + "/.FCAInternal/" + AppDatabase.DB_NAME);
+            if(internalDB.exists()){
+                internalDB.delete();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
         try {
             File direct = new File(Environment.getExternalStorageDirectory().toString() + "/.FCAInternal");
             if (!direct.exists()) direct.mkdir();
@@ -694,7 +682,8 @@ public class SplashPresenter implements SplashContract.SplashPresenter {
             File folder_file, db_file;
             if (!FastSave.getInstance().getBoolean(FC_Constants.KEY_MENU_COPIED, false)) {
                 if (ApplicationClass.isTablet) {
-                    folder_file = new File(ApplicationClass.contentSDPath);
+                    copyDBFile();
+                    folder_file = new File(Environment.getExternalStorageDirectory().toString() + "/.FCAInternal");
                 } else
                     folder_file = new File(ApplicationClass.foundationPath + "/.FCA/");
                 if (folder_file.exists()) {
@@ -892,10 +881,12 @@ public class SplashPresenter implements SplashContract.SplashPresenter {
             file = new File(fpath + "/.FCA/foundation_db");
             if (file.exists()) {
                 ApplicationClass.contentSDPath = fpath;
+                ApplicationClass.contentExistOnSD = true;
                 Log.d("getSD", "getSdCardPath: " + ApplicationClass.contentSDPath);
 //            FC_Constants.SD_CARD_Content = true;
                 return true;
             } else {
+                ApplicationClass.contentExistOnSD = false;
 //            FC_Constants.SD_CARD_Content = false;
                 return false;
             }

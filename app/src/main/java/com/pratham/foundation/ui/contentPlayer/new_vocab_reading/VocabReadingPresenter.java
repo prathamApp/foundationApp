@@ -28,7 +28,9 @@ import static com.pratham.foundation.ui.contentPlayer.new_vocab_reading.VocabRea
 import static com.pratham.foundation.ui.contentPlayer.new_vocab_reading.VocabReadingFragment.lineBreakCounter;
 import static com.pratham.foundation.ui.contentPlayer.new_vocab_reading.VocabReadingFragment.testCorrectArr;
 import static com.pratham.foundation.utility.FC_Constants.APP_SECTION;
+import static com.pratham.foundation.utility.FC_Constants.CURRENT_FOLDER_NAME;
 import static com.pratham.foundation.utility.FC_Constants.STT_REGEX;
+import static com.pratham.foundation.utility.FC_Constants.STT_REGEX_2;
 import static com.pratham.foundation.utility.FC_Constants.sec_Test;
 
 
@@ -191,12 +193,18 @@ public class VocabReadingPresenter implements VocabReadingContract.VocabReadingP
     public void sttResultProcess(ArrayList<String> sttResult, List<String> splitWordsPunct, List<String> wordsResIdList) {
 
         String sttRes = sttResult.get(0);
-        String[] splitRes = sttRes.split(" ");
+        String[] splitRes;
         String word = " ";
         addSttResultDB(sttResult);
 
+        if (FastSave.getInstance().getString(CURRENT_FOLDER_NAME, "").equalsIgnoreCase("English"))
+            splitRes = sttRes.replaceAll("[^a-zA-Z ]", "").toLowerCase().split("\\s+");
+        else {
+            String answer2 = sttRes.replaceAll(STT_REGEX_2, "");
+            splitRes = answer2.split(" ");
+        }
+
         for (int j = 0; j < splitRes.length; j++) {
-            splitRes[j] = splitRes[j].replaceAll(STT_REGEX, "");
             for (int i = 0; i < splitWordsPunct.size(); i++) {
                 if ((splitRes[j].equalsIgnoreCase(splitWordsPunct.get(i))) && !correctArr[i]) {
                     correctArr[i] = true;

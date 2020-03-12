@@ -106,11 +106,13 @@ public class ConversationActivity extends BaseActivity
     boolean[] correctArr;
     boolean myMsg, onSdCard;
     float[] msgPercentage;
+    Context context;
     ContinuousSpeechService_New continuousSpeechService;
 //    AnimationDrawable animationDrawable;
 
     @AfterViews
     public void initialize() {
+        //overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
         iv_monk.setVisibility(View.GONE);
         silence_outer_layout.setVisibility(View.GONE);
         floating_back.setImageResource(R.drawable.ic_left_arrow_white);
@@ -119,13 +121,15 @@ public class ConversationActivity extends BaseActivity
 //        animationDrawable.setEnterFadeDuration(4500);
 //        animationDrawable.setExitFadeDuration(4500);
 //        animationDrawable.start();
-        continuousSpeechService = new ContinuousSpeechService_New(this, ConversationActivity.this, FC_Constants.ENGLISH);
-        correctSound = MediaPlayer.create(this, R.raw.correct_ans);
+
+        context = ConversationActivity.this;
+        continuousSpeechService = new ContinuousSpeechService_New(context, ConversationActivity.this, FC_Constants.ENGLISH);
+        correctSound = MediaPlayer.create(context, R.raw.correct_ans);
 
         presenter.setView(ConversationActivity.this);
 
         sendClikChanger(0);
-        mediaPlayerUtil = new MediaPlayerUtil(ConversationActivity.this);
+        mediaPlayerUtil = new MediaPlayerUtil(context);
         mediaPlayerUtil.initCallback(ConversationActivity.this);
 
         selectedLanguage = "english";
@@ -139,6 +143,7 @@ public class ConversationActivity extends BaseActivity
 
         presenter.setContentId(contentId);
         convoMode = "A";
+        voiceStart = false;
 
         if (onSdCard)
             convoPath = ApplicationClass.contentSDPath + gameFolderPath + "/" + contentPath + "/";
@@ -163,10 +168,10 @@ public class ConversationActivity extends BaseActivity
         if (conversation != null) {
             msgPercentage = new float[conversation.length()];
             recyclerView.setHasFixedSize(true);
-            final LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
+            final LinearLayoutManager linearLayoutManager = new LinearLayoutManager(context);
             linearLayoutManager.setStackFromEnd(true);
             recyclerView.setLayoutManager(linearLayoutManager);
-            mAdapter = new MessageAdapter(messageList, this);
+            mAdapter = new MessageAdapter(messageList, context);
             recyclerView.setAdapter(mAdapter);
             for(int i =0; i<msgPercentage.length; i++)
                 msgPercentage[1] = 0;
@@ -384,7 +389,7 @@ public class ConversationActivity extends BaseActivity
         //readChatFlow.removeAllViews();
         String[] splittedAnswer = answerText.split(" ");
         for (String word : splittedAnswer) {
-            final SansTextViewBold myTextView = new SansTextViewBold(this);
+            final SansTextViewBold myTextView = new SansTextViewBold(context);
             myTextView.setText(word);
             myTextView.setOnClickListener(v -> {
                 if (!FastSave.getInstance().getString(APP_SECTION,"").equalsIgnoreCase(sec_Test)) {
@@ -502,7 +507,7 @@ public class ConversationActivity extends BaseActivity
         try {
             if (!dialogFlg) {
                 dialogFlg = true;
-                myLoadingDialog = new CustomLodingDialog(this);
+                myLoadingDialog = new CustomLodingDialog(context);
                 myLoadingDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
                 Objects.requireNonNull(myLoadingDialog.getWindow()).setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
                 myLoadingDialog.setContentView(R.layout.loading_dialog);
@@ -540,7 +545,7 @@ public class ConversationActivity extends BaseActivity
     @Override
     public void Stt_onResult(ArrayList<String> sttServerResult) {
         iv_monk.setVisibility(View.VISIBLE);
-        iv_monk.startAnimation(AnimationUtils.loadAnimation(ConversationActivity.this, R.anim.float_anim));
+        iv_monk.startAnimation(AnimationUtils.loadAnimation(context, R.anim.float_anim));
         presenter.sttResultProcess(sttServerResult, answer);
     }
 
@@ -558,8 +563,8 @@ public class ConversationActivity extends BaseActivity
             continuousSpeechService.resetHandler(true);
             silence_outer_layout.setVisibility(View.VISIBLE);
             silenceViewHandler = new Handler();
-            silence_iv.startAnimation(AnimationUtils.loadAnimation(this, R.anim.rotate_continuous_shake));
-            AnimateTextView(this, silence_main_layout);
+            silence_iv.startAnimation(AnimationUtils.loadAnimation(context, R.anim.rotate_continuous_shake));
+            AnimateTextView(context, silence_main_layout);
         }
     }
 
@@ -617,7 +622,7 @@ public class ConversationActivity extends BaseActivity
 
     @SuppressLint("SetTextI18n")
     private void ConvoEndDialog() {
-        final CustomLodingDialog dialog = new CustomLodingDialog(this);
+        final CustomLodingDialog dialog = new CustomLodingDialog(context);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         dialog.setContentView(R.layout.fc_custom_dialog);
@@ -692,14 +697,14 @@ public class ConversationActivity extends BaseActivity
         } catch (Exception e) {
             e.printStackTrace();
         }
-        showExitDialog(this);
+        showExitDialog(context);
     }
 
     int correctCnt = 0, total = 0;
 
     private void showStars(boolean diaComplete) {
 
-        final CustomLodingDialog dialog = new CustomLodingDialog(this);
+        final CustomLodingDialog dialog = new CustomLodingDialog(context);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         dialog.setContentView(R.layout.fc_custom_test_star_dialog);
@@ -774,7 +779,7 @@ public class ConversationActivity extends BaseActivity
     @SuppressLint("SetTextI18n")
     public void showExitDialog(Context context) {
 
-        final CustomLodingDialog dialog = new CustomLodingDialog(this);
+        final CustomLodingDialog dialog = new CustomLodingDialog(context);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         dialog.setContentView(R.layout.fc_custom_dialog);
@@ -806,6 +811,7 @@ public class ConversationActivity extends BaseActivity
                 } catch (Exception e) {
                     msgPercLength = 0;
                 }
+
                 Intent returnIntent = new Intent();
                 returnIntent.putExtra("cCode", certiCode);
                 returnIntent.putExtra("sMarks", pages);
@@ -815,5 +821,4 @@ public class ConversationActivity extends BaseActivity
             closeConvo();
         });
     }
-
 }

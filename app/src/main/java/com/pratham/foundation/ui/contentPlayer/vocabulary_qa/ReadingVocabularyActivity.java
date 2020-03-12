@@ -123,6 +123,7 @@ public class ReadingVocabularyActivity extends BaseActivity implements MediaCall
 
     @AfterViews
     public void initialize() {
+        //overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
 
         silence_outer_layout.setVisibility(View.GONE);
         mContext = ReadingVocabularyActivity.this;

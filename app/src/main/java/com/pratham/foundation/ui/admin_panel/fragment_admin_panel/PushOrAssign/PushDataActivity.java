@@ -36,6 +36,7 @@ public class PushDataActivity extends BaseActivity implements PushDataContract.P
 
     @AfterViews
     public void initialize() {
+        //overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
         checkConnectivity();
         presenter.createJsonForTransfer();
     }

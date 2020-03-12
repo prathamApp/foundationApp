@@ -11,7 +11,6 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.Rect;
-import android.graphics.drawable.AnimationDrawable;
 import android.graphics.drawable.ColorDrawable;
 import android.media.MediaPlayer;
 import android.os.Bundle;
@@ -69,12 +68,14 @@ import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 
 import static com.pratham.foundation.ApplicationClass.ButtonClickSound;
 import static com.pratham.foundation.BaseActivity.setMute;
 import static com.pratham.foundation.ui.contentPlayer.ContentPlayerActivity.floating_info;
 import static com.pratham.foundation.ui.contentPlayer.GameConstatnts.readingImgPath;
 import static com.pratham.foundation.utility.FC_Constants.APP_SECTION;
+import static com.pratham.foundation.utility.FC_Constants.CURRENT_FOLDER_NAME;
 import static com.pratham.foundation.utility.FC_Constants.STT_REGEX;
 import static com.pratham.foundation.utility.FC_Constants.dialog_btn_cancel;
 import static com.pratham.foundation.utility.FC_Constants.gameFolderPath;
@@ -161,7 +162,7 @@ public class ContentReadingFragment extends Fragment implements
     boolean voiceStart = false, flgPerMarked = false, onSdCard;
     static boolean[] correctArr;
     static boolean[] testCorrectArr;
-    AnimationDrawable animationDrawable;
+//    AnimationDrawable animationDrawable;
 
 /*
         bundle.putString("nodeID", nodeID);
@@ -259,7 +260,8 @@ public class ContentReadingFragment extends Fragment implements
             dialogFlg = true;
             myLoadingDialog = new CustomLodingDialog(context);
             myLoadingDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-            myLoadingDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+            Objects.requireNonNull(myLoadingDialog.getWindow()).setBackgroundDrawable(
+                    new ColorDrawable(Color.TRANSPARENT));
             myLoadingDialog.setContentView(R.layout.loading_dialog);
             myLoadingDialog.setCanceledOnTouchOutside(false);
             myLoadingDialog.show();
@@ -332,7 +334,10 @@ public class ContentReadingFragment extends Fragment implements
             if (modalPagesList.get(currentPage).getReadList().get(i).getWord().equalsIgnoreCase("#"))
                 lineBreakCounter += 1;
             correctArr[i] = false;
-            splitWordsPunct.add(splitWords.get(i).replaceAll(STT_REGEX, ""));
+            if (FastSave.getInstance().getString(CURRENT_FOLDER_NAME, "").equalsIgnoreCase("English"))
+                splitWordsPunct.add(modalPagesList.get(currentPage).getReadList().get(i).getWord().replaceAll("[^a-zA-Z ]", "").toLowerCase());
+            else
+                splitWordsPunct.add(splitWords.get(i).replaceAll(STT_REGEX, ""));
             wordsDurationList.add(modalPagesList.get(currentPage).getReadList().get(i).getWordDuration());
             wordsResIdList.add(modalPagesList.get(currentPage).getReadList().get(i).getWordId());
         }
@@ -612,7 +617,6 @@ public class ContentReadingFragment extends Fragment implements
                 }
             }
         }, (long) (wordDuration * 1000));
-
     }
 
     @UiThread
@@ -919,11 +923,6 @@ public class ContentReadingFragment extends Fragment implements
         showStars(false);
     }
 
-//    @Click(R.id.ib_back)
-//    public void backPressed() {
-//        getActivity().onBackPressed();
-//    }
-
     @Click(R.id.btn_next)
     void gotoNextPage() {
         if (currentPage < totalPages - 1) {
@@ -999,7 +998,7 @@ public class ContentReadingFragment extends Fragment implements
     public void showAcknowledgeDialog(boolean diaComplete) {
         final CustomLodingDialog dialog = new CustomLodingDialog(context);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        Objects.requireNonNull(dialog.getWindow()).setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         dialog.setContentView(R.layout.fc_custom_dialog);
         dialog.setCanceledOnTouchOutside(false);
         TextView dia_title = dialog.findViewById(R.id.dia_title);

@@ -38,6 +38,7 @@ public class ActivityVideoView extends BaseActivity {
 
     @AfterViews
     public void initialize() {
+        //overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
 //        getActivity().setRequestedOrientation(
 //                ActivityInfo.SCREEN_ORIENTATION_SENSOR_LANDSCAPE);
         Intent intent = getIntent();

@@ -27,6 +27,7 @@ import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Bean;
 import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EActivity;
+import org.androidannotations.annotations.UiThread;
 import org.androidannotations.annotations.ViewById;
 
 import java.util.List;
@@ -55,6 +56,7 @@ public class SelectSubject extends BaseActivity implements
 
     @AfterViews
     protected void initiate() {
+        //overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
         context = SelectSubject.this;
         Configuration config = getResources().getConfiguration();
         FC_Constants.TAB_LAYOUT = config.smallestScreenWidthDp > 425;
@@ -73,18 +75,24 @@ public class SelectSubject extends BaseActivity implements
         int dp = 12;
         if (FC_Constants.TAB_LAYOUT)
             dp = 20;
+
         subject_recycler.addItemDecoration(new GridSpacingItemDecoration(
-                2, dpToPx(this, dp), true));
+                1, dpToPx(this, dp), true));
         subject_recycler.setItemAnimator(new DefaultItemAnimator());
         subject_recycler.setAdapter(subjectAdapter);
     }
 
+    @Override
+    public void finish() {
+        super.finish();
+        //overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
+    }
 
     @Override
     public void onItemClicked(ContentTable contentTableObj) {
         currentLevel = 0;
         String currentSubject = contentTableObj.getNodeKeywords();
-        if(contentTableObj.getNodeKeywords().equals("Science")) {
+        if (contentTableObj.getNodeKeywords().equals("Science")) {
             currentSubjectFolder = "Science";
         } else if (contentTableObj.getNodeTitle().equals("Maths") ||
                 contentTableObj.getNodeKeywords().equals("Maths")) {
@@ -103,7 +111,6 @@ public class SelectSubject extends BaseActivity implements
         FastSave.getInstance().saveString(FC_Constants.CURRENT_FOLDER_NAME, currentSubjectFolder);
         FastSave.getInstance().saveString(FC_Constants.CURRENT_ROOT_NODE, contentTableObj.getNodeId());
         Intent intent = new Intent(context, HomeActivity_.class);
-//        Intent intent = new Intent(context, ContentHomeActivity_.class);
         intent.putExtra("nodeId", contentTableObj.getNodeId());
         intent.putExtra("nodeTitle", contentTableObj.getNodeTitle());
         context.startActivity(intent);
@@ -119,34 +126,19 @@ public class SelectSubject extends BaseActivity implements
         exitDialog();
     }
 
+    @UiThread
     @SuppressLint("SetTextI18n")
-    private void exitDialog() {
+    public void exitDialog() {
         CustomLodingDialog dialog = new CustomLodingDialog(SelectSubject.this, R.style.ExitDialog);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setContentView(R.layout.lottie_exit_dialog);
-/*      Bitmap map=FC_Utility.takeScreenShot(HomeActivity.this);
-        Bitmap fast=FC_Utility.fastblur(map, 20);
-        final Drawable draw=new BitmapDrawable(getResources(),fast);
-        dialog.getWindow().setBackgroundDrawable(draw);*/
         Objects.requireNonNull(dialog.getWindow()).setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         dialog.setCancelable(true);
         dialog.setCanceledOnTouchOutside(true);
         dialog.show();
 
-//        TextView dia_title = dialog.findViewById(R.id.dia_title);
-//        Button dia_btn_green = dialog.findViewById(R.id.dia_btn_green);
-          Button dia_btn_no = dialog.findViewById(R.id.dia_btn_no);
-          TextView dia_btn_yes = dialog.findViewById(R.id.dia_btn_yes);
-
-//        dia_btn_green.setText (getResources().getString(R.string.Restart));
-//        dia_btn_yes.setText   (getResources().getString(R.string.Exit));
-//        dia_btn_no.setText(getResources().getString(R.string.Cancel));
-
-//        dia_btn_green.setOnClickListener(v -> {
-//            finishAffinity();
-//            context.startActivity(new Intent(context, SplashActivity_.class));
-//            dialog.dismiss();
-//        });
+        Button dia_btn_no = dialog.findViewById(R.id.dia_btn_no);
+        TextView dia_btn_yes = dialog.findViewById(R.id.dia_btn_yes);
 
         dia_btn_yes.setOnClickListener(v -> {
             endSession(this);

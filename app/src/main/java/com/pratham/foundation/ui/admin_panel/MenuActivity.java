@@ -58,6 +58,7 @@ public class MenuActivity extends BaseActivity {
 
     @AfterViews
     public void initialize() {
+        //overridePendingTransition(R.anim.slide_in_right,R.anim.slide_out_left);
         StudentPhotoPath = Environment.getExternalStorageDirectory().toString() + "/.FCAInternal/StudentProfilePhotos/";
         File direct = new File(StudentPhotoPath);
         if (!direct.exists())

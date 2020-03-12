@@ -140,10 +140,6 @@ public class TestAdapter extends RecyclerView.Adapter {
 
 //                itemRowHolder.certificate_card.setBackground(mContext.getResources().getDrawable(getRandomCardColor()));
                 //final ContentView gamesList = gamesViewList.get(position);
-                Animation animation = null;
-                animation = AnimationUtils.loadAnimation(mContext, R.anim.item_fall_down);
-                animation.setDuration(500);
-
                 String ques = "";
 
                 if (testList.get(position).getCodeCount() > 1) {
@@ -242,6 +238,7 @@ public class TestAdapter extends RecyclerView.Adapter {
                     }
                     itemRowHolder.ratingStars.setRating(testList.get(position).getCertificateRating());
                 }
+                setAnimations(itemRowHolder.certificate_card);
                 break;
             case 2:
                 TestSpinnerHolder testSpinnerHolder = (TestSpinnerHolder) viewitemRowHolder;
@@ -305,13 +302,12 @@ public class TestAdapter extends RecyclerView.Adapter {
         return jsonName;
     }
 
-    private void setAnimations(final View content_card_view, final int position) {
+    private void setAnimations(final View content_card_view) {
         final Animation animation;
         animation = AnimationUtils.loadAnimation(mContext, R.anim.item_fall_down);
         animation.setDuration(500);
             content_card_view.setVisibility(View.VISIBLE);
             content_card_view.setAnimation(animation);
-            lastPos = position;
     }
 
 }

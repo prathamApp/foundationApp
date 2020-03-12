@@ -56,6 +56,7 @@ public class CertificateDisplayActivity extends BaseActivity implements
 
     @AfterViews
     public void initialize() {
+        //overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
         Configuration config = getResources().getConfiguration();
         FC_Constants.TAB_LAYOUT = config.smallestScreenWidthDp > 425;
         presenter.setView(CertificateDisplayActivity.this);

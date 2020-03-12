@@ -76,6 +76,7 @@ public class OppositesActivity extends BaseActivity
 
     @AfterViews
     public void initialize() {
+        //overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
         mContext = OppositesActivity.this;
         mhandler = new Handler();
         Intent intent = getIntent();

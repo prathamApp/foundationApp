@@ -53,6 +53,7 @@ public class ContentPlayerActivity extends BaseActivity implements ShowInstructi
 
     @AfterViews
     public void initialize() {
+        //overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
         Intent intent = getIntent();
         nodeID = intent.getStringExtra("nodeID");
         title = intent.getStringExtra("title");
@@ -75,6 +76,12 @@ public class ContentPlayerActivity extends BaseActivity implements ShowInstructi
                 setResult(Activity.RESULT_OK, returnIntent);
             }
         }
+    }
+
+    @Override
+    public void finish() {
+        super.finish();
+        //overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
     }
 
     public void loadFragment() {

@@ -1,7 +1,6 @@
 package com.pratham.foundation.ui.app_home;
 
 import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
@@ -65,7 +64,6 @@ import static com.pratham.foundation.utility.FC_Constants.GROUP_LOGIN;
 import static com.pratham.foundation.utility.FC_Constants.GROUP_MODE;
 import static com.pratham.foundation.utility.FC_Constants.INDIVIDUAL_MODE;
 import static com.pratham.foundation.utility.FC_Constants.LEVEL_CHANGED;
-import static com.pratham.foundation.utility.FC_Constants.LEVEL_TEST_GIVEN;
 import static com.pratham.foundation.utility.FC_Constants.LOGIN_MODE;
 import static com.pratham.foundation.utility.FC_Constants.activityPhotoPath;
 import static com.pratham.foundation.utility.FC_Constants.currentLevel;
@@ -132,6 +130,8 @@ public class HomeActivity extends BaseActivity implements LevelChanged {
         rs.gc();
         rs.freeMemory();
 
+        //overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
+
 //        Configuration config = getResources().getConfiguration();
 //        FC_Constants.TAB_LAYOUT = config.smallestScreenWidthDp > 425;
         sub_nodeId = getIntent().getStringExtra("nodeId");
@@ -177,14 +177,6 @@ public class HomeActivity extends BaseActivity implements LevelChanged {
 //    }
 
     private void changeBackground(String sub_name) {
-//        if(sub_name.toLowerCase().contains("science"))
-//            home_root_layout.setBackground(getDrawable(R.drawable.science_bkgd));
-//        if(sub_name.toLowerCase().contains("english"))
-//            home_root_layout.setBackground(getDrawable(R.drawable.science_bkgd));
-//        if(sub_name.toLowerCase().contains("math"))
-//            home_root_layout.setBackground(getDrawable(R.drawable.science_bkgd));
-//        if(sub_name.toLowerCase().contains("language"))
-//            home_root_layout.setBackground(getDrawable(R.drawable.science_bkgd));
     }
 
     @Background
@@ -522,10 +514,11 @@ public class HomeActivity extends BaseActivity implements LevelChanged {
 
     boolean comngSoonFlg = false;
 
+/*
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-//        if(resultCode == 1)
-        if (FastSave.getInstance().getString(APP_SECTION, "").equalsIgnoreCase(sec_Test)) {
+        if(resultCode == 1461){
+//        if (FastSave.getInstance().getString(APP_SECTION, "").equalsIgnoreCase(sec_Test)) {
             if (resultCode == Activity.RESULT_OK) {
                 String cCode = data.getStringExtra("cCode");
                 int tMarks = data.getIntExtra("tMarks", 0);
@@ -541,15 +534,18 @@ public class HomeActivity extends BaseActivity implements LevelChanged {
                 }
             }
         } else if (requestCode == 10) {
+*/
 /*            if (resultCode == Activity.RESULT_OK) {
             } else if (resultCode == Activity.RESULT_CANCELED) {
                 try {
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
-            }*/
+            }*//*
+
         }
     }
+*/
 
     @Click(R.id.iv_level)
     public void levelChange() {

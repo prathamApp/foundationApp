@@ -130,6 +130,7 @@ public class ContentDisplay extends BaseActivity implements ContentContract.Cont
         rs.freeMemory();
         rs.gc();
         rs.freeMemory();
+        //overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
         resumeCntr = 0;
         nodeId = getIntent().getStringExtra("nodeId");
         contentTitle = getIntent().getStringExtra("contentTitle");
@@ -160,6 +161,12 @@ public class ContentDisplay extends BaseActivity implements ContentContract.Cont
         tv_Topic.setSelected(true);
         ll_topic_parent.setSelected(true);
         tv_Activity.setText("" + parentName);
+    }
+
+    @Override
+    public void finish() {
+        super.finish();
+        //overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
     }
 
     @SuppressLint("SetTextI18n")
