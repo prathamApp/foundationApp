@@ -115,6 +115,8 @@ public class SplashActivity extends SplashSupportActivity implements SplashContr
         };
         if (!new File(Environment.getExternalStorageDirectory() + "/PrathamBackups").exists())
             new File(Environment.getExternalStorageDirectory() + "/PrathamBackups").mkdir();
+        if(!new File(Environment.getExternalStorageDirectory().toString() + "/.FCAInternal").exists())
+            new File(Environment.getExternalStorageDirectory().toString() + "/.FCAInternal").mkdir();
 
         new Handler().postDelayed(() -> {
             if ((Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)) {

@@ -583,9 +583,12 @@ public class SplashPresenter implements SplashContract.SplashPresenter {
         try {
             File internalDB = new File(Environment.getExternalStorageDirectory().toString() + "/.FCAInternal/" + AppDatabase.DB_NAME);
             if(internalDB.exists()){
+                Log.d("copyDBFile", "copyDBFile: ");
                 internalDB.delete();
+                Log.d("copyDBFile", "delete: ");
             }
         } catch (Exception e) {
+            Log.d("copyDBFile", "Exception : ");
             e.printStackTrace();
         }
 
@@ -600,7 +603,9 @@ public class SplashPresenter implements SplashContract.SplashPresenter {
                 out.write(buffer, 0, read);
                 read = in.read(buffer);
             }
+            Log.d("copyDBFile", "CopyDone : ");
         } catch (Exception e) {
+            Log.d("copyDBFile", "Exception : ");
             e.printStackTrace();
         }
     }
@@ -610,10 +615,18 @@ public class SplashPresenter implements SplashContract.SplashPresenter {
     public void populateSDCardMenu() {
         new AsyncTask<Void, Integer, Void>() {
             @Override
+            protected void onPreExecute() {
+                super.onPreExecute();
+                splashView.showProgressDialog();
+                Log.d("copyDBFile", "Before Copy : ");
+                copyDBFile();
+                Log.d("copyDBFile", "Aft Copy : ");
+            }
+
+            @Override
             protected Void doInBackground(Void... voids) {
                 if (!FastSave.getInstance().getBoolean(FC_Constants.INITIAL_ENTRIES, false)) {
                     doInitialEntries(AppDatabase.appDatabase);
-                    copyDBFile();
                     try {
                         File db_file;
                         db_file = new File(Environment.getExternalStorageDirectory().toString() + "/.FCAInternal/" + AppDatabase.DB_NAME);
@@ -622,8 +635,10 @@ public class SplashPresenter implements SplashContract.SplashPresenter {
                             if (db != null) {
                                 Cursor content_cursor;
                                 try {
+                                    Log.d("copyDBFile", "Content Data Copy Start: ");
                                     content_cursor = db.rawQuery("SELECT * FROM ContentTable", null);
                                     //populate contents
+                                    Log.d("copyDBFile", "Content Data Copy Start: "+content_cursor.getCount());
                                     List<ContentTable> contents = new ArrayList<>();
                                     if (content_cursor.moveToFirst()) {
                                         while (!content_cursor.isAfterLast()) {
@@ -652,7 +667,10 @@ public class SplashPresenter implements SplashContract.SplashPresenter {
                                     AppDatabase.appDatabase.getContentTableDao().addContentList(contents);
                                     ApplicationClass.contentExistOnSD = true;
                                     content_cursor.close();
+                                    FastSave.getInstance().saveBoolean(FC_Constants.KEY_MENU_COPIED, true);
+                                    Log.d("copyDBFile", "Content Data Copy complete: ");
                                 } catch (Exception e) {
+                                    Log.d("copyDBFile", "Excep: ");
                                     e.printStackTrace();
                                 }
                             }
@@ -670,6 +688,7 @@ public class SplashPresenter implements SplashContract.SplashPresenter {
             @Override
             protected void onPostExecute(Void aVoid) {
                 super.onPostExecute(aVoid);
+                splashView.dismissProgressDialog();
                 BackupDatabase.backup(context);
                 if (!exitDialogOpen)
                     splashView.gotoNextActivity();
@@ -681,7 +700,9 @@ public class SplashPresenter implements SplashContract.SplashPresenter {
         try {
             File folder_file, db_file;
             if (!FastSave.getInstance().getBoolean(FC_Constants.KEY_MENU_COPIED, false)) {
+                Log.d("copyDBFile", "Populatemenu: ");
                 if (ApplicationClass.isTablet) {
+                    Log.d("copyDBFile", "Exception : ");
                     copyDBFile();
                     folder_file = new File(Environment.getExternalStorageDirectory().toString() + "/.FCAInternal");
                 } else
@@ -695,8 +716,10 @@ public class SplashPresenter implements SplashContract.SplashPresenter {
                         if (db != null) {
                             Cursor content_cursor;
                             try {
+                                Log.d("copyDBFile", "Content Data Copy Start: ");
                                 content_cursor = db.rawQuery("SELECT * FROM ContentTable", null);
                                 //populate contents
+                                Log.d("copyDBFile", "Content Data Copy Start: "+content_cursor.getCount());
                                 List<ContentTable> contents = new ArrayList<>();
                                 if (content_cursor.moveToFirst()) {
                                     while (!content_cursor.isAfterLast()) {
@@ -724,14 +747,16 @@ public class SplashPresenter implements SplashContract.SplashPresenter {
                                 }
                                 AppDatabase.appDatabase.getContentTableDao().addContentList(contents);
                                 content_cursor.close();
+                                FastSave.getInstance().saveBoolean(FC_Constants.KEY_MENU_COPIED, true);
+                                Log.d("copyDBFile", "Content Data Copy complete: ");
                             } catch (Exception e) {
+                                Log.d("copyDBFile", "Content excep: ");
                                 e.printStackTrace();
                             }
                         }
                     }
                 }
             }
-            FastSave.getInstance().saveBoolean(FC_Constants.KEY_MENU_COPIED, true);
             context.startService(new Intent(context, AppExitService.class));
             BackupDatabase.backup(context);
         } catch (Exception e) {

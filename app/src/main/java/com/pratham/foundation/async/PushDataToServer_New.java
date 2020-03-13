@@ -101,7 +101,7 @@ public class PushDataToServer_New {
     @Background
     public void startDataPush(Context context) {
         this.context = context;
-        if (!ApplicationClass.isTablet)
+        if (ApplicationClass.isTablet)
             showPushDialog(context);
         try {
             setMainTextToDialog("Collecting Data...");
@@ -153,13 +153,13 @@ public class PushDataToServer_New {
 
     @UiThread
     public void setMainTextToDialog(String dialogMsg) {
-        if (!ApplicationClass.isTablet)
+        if (ApplicationClass.isTablet)
             txt_push_dialog_msg.setText("" + dialogMsg);
     }
 
     @UiThread
     public void setSubTextToDialog(String dialogMsg) {
-        if (!ApplicationClass.isTablet) {
+        if (ApplicationClass.isTablet) {
             txt_push_error.setVisibility(View.VISIBLE);
             txt_push_error.setText("" + dialogMsg);
         }
@@ -167,7 +167,7 @@ public class PushDataToServer_New {
 
     @UiThread
     public void showPushDialog(Context context) {
-        if (!ApplicationClass.isTablet) {
+        if (ApplicationClass.isTablet) {
             pushDialog = new CustomLodingDialog(context);
             pushDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
             pushDialog.setContentView(R.layout.app_send_success_dialog);
@@ -342,7 +342,7 @@ public class PushDataToServer_New {
 
     @UiThread
     public void updateCntr(int imgCtr) {
-        if (!ApplicationClass.isTablet)
+        if (ApplicationClass.isTablet)
             dialog_file_name.setText("Uploading " + imgCtr + "/" + totalImages);
     }
 
