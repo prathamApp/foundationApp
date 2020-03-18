@@ -78,6 +78,7 @@ public class SplashActivity extends SplashSupportActivity implements SplashContr
     @Bean(SplashPresenter.class)
     SplashPresenter splashPresenter;
 
+    @SuppressLint("StaticFieldLeak")
     static Context context;
     Dialog dialog;
     public static boolean firstPause = true, fragmentBottomOpenFlg = false,

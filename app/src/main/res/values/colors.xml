@@ -83,6 +83,7 @@
     <color name="colorBlueLight">#aaf3ff</color>
     <color name="colorWhiteLight">#fafafa</color>
     <color name="colorWhiteDark">#d4d4d4</color>
+    <color name="colorWhiteDark2">#F1EEEE</color>
     <color name="colorButtonPressedBg">#dedede</color>
     <color name="bg_grey">#F7F7F7</color>
     <color name="whiteButtonPressedBg">#b5999999</color>

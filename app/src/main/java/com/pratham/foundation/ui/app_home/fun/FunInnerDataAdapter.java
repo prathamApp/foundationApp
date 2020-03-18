@@ -101,6 +101,8 @@ public class FunInnerDataAdapter extends RecyclerView.Adapter {
                 folderHolder.card_main.setBackground(mContext.getResources().getDrawable(getRandomCardColor()));
                 folderHolder.tvTitle.setText(itemsList.get(i).getNodeTitle());
                 folderHolder.progressLayout.setCurProgress(Integer.parseInt(itemsList.get(i).getNodePercentage()));
+//                folderHolder.card_main.setBackgroundColor(mContext.getResources().getColor(getRandomCardColor()));
+//                folderHolder.card_main.setRadius(mContext.getResources().getDimension(R.dimen._10sdp));
                 File f;
                 if (itemsList.get(i).getIsDownloaded().equalsIgnoreCase("1") ||
                         itemsList.get(i).getIsDownloaded().equalsIgnoreCase("true")) {
@@ -135,6 +137,8 @@ public class FunInnerDataAdapter extends RecyclerView.Adapter {
                 fileHolder.content_card_view.setBackground(mContext.getResources().getDrawable(getRandomCardColor()));
                 fileHolder.tvTitle.setText(itemsList.get(i).getNodeTitle());
                 fileHolder.tvTitle.setSelected(true);
+//                fileHolder.content_card_view.setBackgroundColor(mContext.getResources().getColor(getRandomCardColor()));
+//                fileHolder.content_card_view.setRadius(mContext.getResources().getDimension(R.dimen._10sdp));
                 File file;
                 if (itemsList.get(i).getIsDownloaded().equalsIgnoreCase("1") ||
                         itemsList.get(i).getIsDownloaded().equalsIgnoreCase("true")) {

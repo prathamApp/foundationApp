@@ -14,19 +14,6 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme.NoActionBar"
         tools:ignore="GoogleAppIndexingWarning">
-
-        <activity
-            android:name=".ui.contentPlayer.pictionary.PictionaryResult"
-            android:screenOrientation="portrait"/>
-        <activity
-            android:name=".ui.selectSubject.SelectSubject_"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name=".ui.admin_panel.fragment_admin_panel.tab_usage.TabUsageActivity_"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name=".BaseActivity"
-            android:screenOrientation="portrait" />
         <activity
             android:name=".ui.splash_activity.SplashActivity_"
             android:screenOrientation="portrait"
@@ -37,14 +24,24 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <activity
+            android:name=".ui.contentPlayer.pictionary.PictionaryResult"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.selectSubject.SelectSubject_"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.admin_panel.fragment_admin_panel.tab_usage.TabUsageActivity_"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".BaseActivity"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".ui.admin_panel.AdminControlsActivity_"
             android:screenOrientation="portrait" />
         <activity
             android:name=".ui.admin_panel.MenuActivity_"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name=".ui.qr_scan.QRScanActivity_"
             android:screenOrientation="portrait" />
         <activity
             android:name=".ui.admin_panel.assign_groups.Activity_AssignGroups_"
@@ -90,9 +87,9 @@
             android:name=".ui.app_home.test_fragment.supervisor.SupervisedAssessmentActivity"
             android:screenOrientation="sensorPortrait"
             android:theme="@style/Theme.AppCompat.Light.Dialog.MinWidth" />
-<!--        <activity-->
-<!--            android:name=".ui.student_profile.Student_profile_activity"-->
-<!--            android:screenOrientation="portrait" />-->
+        <!--        <activity-->
+        <!--            android:name=".ui.student_profile.Student_profile_activity"-->
+        <!--            android:screenOrientation="portrait" />-->
         <activity
             android:name=".ui.contentPlayer.web_view.WebViewActivity"
             android:screenOrientation="sensorLandscape" />
@@ -145,7 +142,8 @@
 
         <service
             android:name=".services.stt.ContinuousSpeechService_New"
-            android:enabled="true"/>
+            android:enabled="true" />
+
         <receiver
             android:name=".services.OTGListener"
             android:enabled="true">
@@ -168,6 +166,7 @@
 
 
     </application>
+
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />

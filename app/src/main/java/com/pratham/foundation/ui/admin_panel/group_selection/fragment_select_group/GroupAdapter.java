@@ -2,13 +2,12 @@ package com.pratham.foundation.ui.admin_panel.group_selection.fragment_select_gr
 
 import android.content.Context;
 import android.support.annotation.NonNull;
+import android.support.design.card.MaterialCardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
-
 
 import com.pratham.foundation.R;
 import com.pratham.foundation.database.domain.Groups;
@@ -42,11 +41,11 @@ public class GroupAdapter extends RecyclerView.Adapter<GroupAdapter.ViewHolder> 
         pos = viewHolder.getAdapterPosition();
         viewHolder.group_name.setText(datalist.get(pos).getGroupName());
         if (datalist.get(pos).isSelected()) {
-            viewHolder.group_card.setBackground(context.getResources().getDrawable(R.drawable.ripple_rectangle_transparent_dark));
+            viewHolder.group_card.setBackground(context.getResources().getDrawable(R.drawable.card_color_bg1));
             viewHolder.group_name.setTextColor(context.getResources().getColor(R.color.white));
         } else {
-            viewHolder.group_card.setBackground(context.getResources().getDrawable(R.drawable.rounded_rectangle_stroke_bg));
-            viewHolder.group_name.setTextColor(context.getResources().getColor(R.color.colorBlack));
+            viewHolder.group_card.setBackground(context.getResources().getDrawable(R.drawable.card_color_bg6));
+            viewHolder.group_name.setTextColor(context.getResources().getColor(R.color.dark_blue));
         }
         viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -68,7 +67,7 @@ public class GroupAdapter extends RecyclerView.Adapter<GroupAdapter.ViewHolder> 
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         @BindView(R.id.group_card)
-        RelativeLayout group_card;
+        MaterialCardView group_card;
         @BindView(R.id.group_name)
         TextView group_name;
 

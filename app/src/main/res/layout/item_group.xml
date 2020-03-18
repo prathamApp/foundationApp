@@ -1,37 +1,41 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/group_card"
+<android.support.design.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:background="@drawable/rounded_rectangle_stroke_bg"
-    android:layout_gravity="center">
+    android:id="@+id/group_card"
+    android:layout_height="@dimen/_120sdp"
+    android:layout_marginBottom="@dimen/_5sdp"
+    android:layout_marginStart="@dimen/_5sdp"
+    android:layout_marginEnd="@dimen/_5sdp"
+    app:cardElevation="@dimen/_4sdp"
+    app:cardBackgroundColor="@color/ghost_white"
+    app:cardCornerRadius="@dimen/_10sdp">
 
     <RelativeLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="8dp"
-        android:layout_centerInParent="true">
+        android:id="@+id/rl_root"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
-        <ImageView
-            android:id="@+id/iv_grp"
-            android:layout_width="@dimen/_80sdp"
-            android:layout_height="@dimen/_80sdp"
-            android:layout_centerHorizontal="true"
-            android:gravity="center"
-            android:src="@drawable/ic_grp_btn" />
-
-        <com.pratham.foundation.customView.SansTextView
+        <com.pratham.foundation.customView.SansTextViewBold
             android:id="@+id/group_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@id/iv_grp"
-            android:layout_marginTop="5dp"
-            android:layout_centerHorizontal="true"
-            android:gravity="center"
-            android:text="asanksjdnaks"
-            android:textColor="@android:color/black"
-            android:textSize="@dimen/_13sdp" />
+            android:layout_marginStart="@dimen/_5sdp"
+            android:layout_marginTop="@dimen/_5sdp"
+            android:text="Colors and Shape"
+            android:textColor="@color/dark_blue"
+            android:textSize="@dimen/_12sdp" />
+        <com.facebook.drawee.view.SimpleDraweeView
+            android:id="@+id/iv_grp"
+            android:layout_width="@dimen/_60sdp"
+            android:layout_height="@dimen/_60sdp"
+            android:layout_alignParentEnd="true"
+            android:layout_marginEnd="@dimen/_5sdp"
+            android:layout_marginBottom="@dimen/_5sdp"
+            android:background="@android:color/transparent"
+            android:layout_alignParentBottom="true"
+            app:actualImageScaleType="centerInside"
+            app:placeholderImage="@drawable/ic_grp_btn"/>
 
     </RelativeLayout>
-
-</RelativeLayout>
+</android.support.design.card.MaterialCardView>

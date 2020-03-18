@@ -42,8 +42,13 @@ public class FragmentSelectGroup extends Fragment implements ContractGroup {
     ArrayList<Groups> groups;
     Groups groupSelected;
 
+
     @AfterViews
     public void initialize() {
+        showGrps();
+    }
+
+    private void showGrps() {
         try {
             ArrayList<String> present_groups = new ArrayList<>();
             String groupId1 = AppDatabase.appDatabase.getStatusDao().getValue(FC_Constants.GROUPID1);
@@ -109,6 +114,33 @@ public class FragmentSelectGroup extends Fragment implements ContractGroup {
     @Override
     public void onResume() {
         super.onResume();
+        try {
+            ArrayList<String> present_groups = new ArrayList<>();
+            String groupId1 = AppDatabase.appDatabase.getStatusDao().getValue(FC_Constants.GROUPID1);
+
+            if (!groupId1.equalsIgnoreCase("0")) present_groups.add(groupId1);
+            String groupId2 = AppDatabase.appDatabase.getStatusDao().getValue(FC_Constants.GROUPID2);
+
+            if (!groupId2.equalsIgnoreCase("0")) present_groups.add(groupId2);
+            String groupId3 = AppDatabase.appDatabase.getStatusDao().getValue(FC_Constants.GROUPID3);
+
+            if (!groupId3.equalsIgnoreCase("0")) present_groups.add(groupId3);
+            String groupId4 = AppDatabase.appDatabase.getStatusDao().getValue(FC_Constants.GROUPID4);
+
+            if (!groupId4.equalsIgnoreCase("0")) present_groups.add(groupId4);
+            String groupId5 = AppDatabase.appDatabase.getStatusDao().getValue(FC_Constants.GROUPID5);
+
+            if (!groupId5.equalsIgnoreCase("0")) present_groups.add(groupId5);
+
+            if (getArguments().getBoolean(FC_Constants.GROUP_AGE_BELOW_7)) {
+                get3to6Groups(present_groups);
+            } else {
+                get8to14Groups(present_groups);
+            }
+            setGroups(groups);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     public void setGroups(ArrayList<Groups> groups) {
@@ -164,12 +196,4 @@ public class FragmentSelectGroup extends Fragment implements ContractGroup {
         Objects.requireNonNull(getActivity()).onBackPressed();
     }
 
-
-    //    public void presentActivity(View view) {
-//        ActivityOptionsCompat options = ActivityOptionsCompat.makeSceneTransitionAnimation((Activity) getActivity(), view, "transition");
-//        Intent intent = new Intent(getActivity(), ActivityMain.class);
-//        intent.putExtra(ActivityMain.EXTRA_CIRCULAR_REVEAL_X, revealX);
-//        intent.putExtra(ActivityMain.EXTRA_CIRCULAR_REVEAL_Y, revealY);
-//        ActivityCompat.startActivity(getActivity(), intent, options.toBundle());
-//    }
 }

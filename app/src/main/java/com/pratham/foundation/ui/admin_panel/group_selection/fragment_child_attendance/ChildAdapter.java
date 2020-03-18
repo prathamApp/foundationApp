@@ -3,12 +3,12 @@ package com.pratham.foundation.ui.admin_panel.group_selection.fragment_child_att
 import android.content.Context;
 import android.net.Uri;
 import android.support.annotation.NonNull;
+import android.support.design.card.MaterialCardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.facebook.drawee.backends.pipeline.Fresco;
@@ -74,12 +74,12 @@ public class ChildAdapter extends RecyclerView.Adapter<ChildAdapter.ChildHolder>
         viewHolder.iv_camera.setOnClickListener(v -> attendanceView.
                 clickPhoto(datalist.get(pos).getStudentID(), pos));
         if (datalist.get(viewHolder.getAdapterPosition()).isChecked()) {
-            viewHolder.itemView.setBackground(context.getResources().getDrawable(R.drawable.ripple_rectangle_transparent_dark));
+            viewHolder.itemView.setBackground(context.getResources().getDrawable(R.drawable.card_color_bg1));
             viewHolder.child_name.setTextColor(context.getResources().getColor(R.color.white));
             viewHolder.iv_camera.setImageDrawable(context.getResources().getDrawable(R.drawable.ic_photo_camera_black));
         } else {
             viewHolder.iv_camera.setImageDrawable(context.getResources().getDrawable(R.drawable.ic_photo_camera));
-            viewHolder.itemView.setBackground(context.getResources().getDrawable(R.drawable.rounded_rectangle_stroke_bg));
+            viewHolder.itemView.setBackground(context.getResources().getDrawable(R.drawable.card_color_bg6));
             viewHolder.child_name.setTextColor(context.getResources().getColor(R.color.dark_blue));
         }
     }
@@ -97,7 +97,7 @@ public class ChildAdapter extends RecyclerView.Adapter<ChildAdapter.ChildHolder>
         @BindView(R.id.iv_camera)
         ImageView iv_camera;
         @BindView(R.id.rl_child_attendance)
-        RelativeLayout main_layout;
+        MaterialCardView main_layout;
 
         public ChildHolder(@NonNull View itemView) {
             super(itemView);

@@ -22,7 +22,6 @@ import com.pratham.foundation.database.domain.Groups;
 import com.pratham.foundation.database.domain.Student;
 import com.pratham.foundation.services.shared_preferences.FastSave;
 import com.pratham.foundation.ui.admin_panel.group_selection.SelectGroupActivity_;
-import com.pratham.foundation.ui.qr_scan.QRScanActivity_;
 import com.pratham.foundation.utility.FC_Constants;
 
 import org.androidannotations.annotations.AfterViews;
@@ -190,13 +189,8 @@ public class MenuActivity extends BaseActivity {
 
 
     private void gotoNext(String nextActivity) {
-        if (nextActivity.equalsIgnoreCase("SelectGroup")) {
-            startActivity(new Intent(this, SelectGroupActivity_.class));
-            finish();
-        } else {
-            startActivity(new Intent(this, QRScanActivity_.class));
-            finish();
-        }
+        startActivity(new Intent(this, SelectGroupActivity_.class));
+        finish();
     }
 
     @Click({R.id.btn_admin, R.id.rl_admin})

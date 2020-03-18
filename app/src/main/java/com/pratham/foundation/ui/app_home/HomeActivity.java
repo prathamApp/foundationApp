@@ -76,6 +76,7 @@ import static com.pratham.foundation.utility.FC_Constants.testSessionEnded;
 import static com.pratham.foundation.utility.FC_Constants.testSessionEntered;
 
 @EActivity(R.layout.activity_home)
+@SuppressLint("StaticFieldLeak")
 public class HomeActivity extends BaseActivity implements LevelChanged {
 
     @ViewById(R.id.tv_header_progress)
@@ -175,9 +176,6 @@ public class HomeActivity extends BaseActivity implements LevelChanged {
 //            getNewCompletion();
 //        }, 10500);
 //    }
-
-    private void changeBackground(String sub_name) {
-    }
 
     @Background
     public void displayProfileImage() {

@@ -159,7 +159,10 @@ public class FC_Utility {
 
     private static int[] cord_color_bg = new int[]{
             R.drawable.card_color_bg1, R.drawable.card_color_bg2, R.drawable.card_color_bg3,
-            R.drawable.card_color_bg4, R.drawable.card_color_bg5};
+            R.drawable.card_color_bg4, R.drawable.card_color_bg5
+//            R.color.colorBtnGreenDark, R.color.colorRedDark, R.color.deep_teal,
+//            R.color.ratingFilled, R.color.blue};
+    };
 
     public static int getRandomDrawableGradiant() {
         int bg_grad = gradiant_bg[new Random().nextInt(gradiant_bg.length)];
