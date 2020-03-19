@@ -301,7 +301,8 @@ public class PushDataToServer_New {
                 File[] file = activityPhotosFile.listFiles();
                 if (file.length > 0) {
                     for (int i = 0; i < file.length; i++) {
-                        if (file[i].exists() && file[i].isFile()) {
+                        if (file[i].exists() && file[i].isFile()
+                                && !file[i].getName().equalsIgnoreCase(".nomedia")) {
                             String fName = file[i].getName();
                             File fPath = new File(file[i].getAbsolutePath());
                             Log.d("PushData", "FileName:" + fName);
@@ -315,7 +316,8 @@ public class PushDataToServer_New {
                         }
                     }
                 }
-            } else if (imageFilesArray[index].exists() && imageFilesArray[index].isFile()) {
+            } else if (imageFilesArray[index].exists() && imageFilesArray[index].isFile()
+                   && !imageFilesArray[index].getName().equalsIgnoreCase(".nomedia")) {
                 File fPath = new File(imageFilesArray[index].getAbsolutePath());
                 String fName = imageFilesArray[index].getName();
                 if (AppDatabase.getDatabaseInstance(context).getScoreDao().getSentFlag(fName) == 0) {
@@ -330,8 +332,8 @@ public class PushDataToServer_New {
         }
 
         imageUploadCnt = 0;
-        totalImages = imageUploadList.size() - 1;
-        Log.d("PushData", "Size: " + imageFilesArray.length);
+        totalImages = imageUploadList.size();
+        Log.d("PushData", "Size: " + imageUploadList.size());
         if (imageUploadList.size() > 0) {
             setMainTextToDialog("Uploading " + totalImages + " images.");
             pushImagesToServer(0);
@@ -348,7 +350,7 @@ public class PushDataToServer_New {
 
     @UiThread
     public void pushImagesToServer(final int jsonIndex) {
-        Log.d("PushData", "Image onResponse : " + jsonIndex);
+        Log.d("PushData", "Image jsonIndex : " + jsonIndex);
         if (jsonIndex < imageUploadList.size()) {
             AndroidNetworking.upload(FC_Constants.PUSH_IMAGE_API)
                     .addMultipartFile(imageUploadList.get(jsonIndex).getFileName(),
@@ -360,6 +362,7 @@ public class PushDataToServer_New {
                         public void onResponse(String response) {
                             try {
                                 Log.d("PushData", "Image onResponse : " + response);
+                                Log.d("PushData", "Image onResponse File name : " + imageUploadList.get(jsonIndex).getFileName());
                                 if (response.equalsIgnoreCase("success")) {
                                     imageUploadCnt++;
                                     Log.d("PushData", "imageUploadCnt : " + imageUploadCnt);
@@ -373,6 +376,7 @@ public class PushDataToServer_New {
 
                         @Override
                         public void onError(ANError anError) {
+                            Log.d("PushData", "Image onError : " + imageUploadList.get(jsonIndex).getFileName());
                             pushImagesToServer(jsonIndex + 1);
                         }
                     });

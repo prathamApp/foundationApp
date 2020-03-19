@@ -200,6 +200,13 @@ public class HomeActivity extends BaseActivity implements LevelChanged {
             Log.d("activityPhotoPath", "initialize activityPhotoPath: "+activityPhotoPath);
             if (!new File(activityPhotoPath).exists())
                 new File(activityPhotoPath).mkdir();
+            try {
+                File direct = new File(activityPhotoPath + ".nomedia");
+                if (!direct.exists())
+                    direct.createNewFile();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
 
             if (FastSave.getInstance().getString(LOGIN_MODE, "").equalsIgnoreCase(GROUP_MODE))
                 profileName = AppDatabase.getDatabaseInstance(this)

@@ -429,6 +429,8 @@ public class SplashActivity extends SplashSupportActivity implements SplashContr
         if (!direct.exists())
             direct.mkdir();
 
+        createNoMediaForFCInternal(new File(Environment.getExternalStorageDirectory().toString() + "/.FCAInternal"));
+
         if (!FastSave.getInstance().getBoolean(FC_Constants.INITIAL_ENTRIES, false))
             splashPresenter.doInitialEntries(AppDatabase.appDatabase);
         splashPresenter.requestLocation();
@@ -446,6 +448,28 @@ public class SplashActivity extends SplashSupportActivity implements SplashContr
             dismissProgressDialog();
             startActivity(new Intent(context, MenuActivity_.class));
             finish();
+        }
+    }
+
+    private void createNoMediaForFCInternal(File myFile) {
+        try {
+            File[] files = myFile.listFiles();
+            try {
+                File direct = new File(myFile.getPath() + "/.nomedia");
+                if (!direct.exists()) {
+                    Log.d("Files", "\nFirst Directory : " + myFile.getName());//CanonicalPath());
+                    direct.createNewFile();
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            for (File file : files) {
+                if (file.isDirectory()) {
+                    createNoMediaForFCInternal(file);
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 
