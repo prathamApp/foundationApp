@@ -89,23 +89,49 @@ public class SplashActivity extends SplashSupportActivity implements SplashContr
     public void init() {
         //overridePendingTransition(R.anim.slide_in_right,R.anim.slide_out_left);
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
-        context = SplashActivity.this;
-        bgMusic = MediaPlayer.create(this, R.raw.bg_sound);
-        bgMusic.setLooping(true);
         new Handler().postDelayed(() -> {
-            final Typeface title_font = Typeface.createFromAsset(getAssets(), "fonts/Sarala_Bold.ttf");
-            tv_typer.setTypeface(title_font);
-            tv_typer.setVisibility(View.VISIBLE);
-            tv_typer.animateText("Foundation\nCourse");
-            tv_typer.setAnimationListener(hTextView -> initiateApp());
-        }, 500);
+            startTextAud();
+        }, 300);
+    }
+
+    private void startTextAud() {
+        final Typeface title_font = Typeface.createFromAsset(getAssets(), "fonts/Sarala_Bold.ttf");
+        tv_typer.setTypeface(title_font);
+        tv_typer.setVisibility(View.VISIBLE);
+        tv_typer.animateText("Foundation\nCourse");
+        tv_typer.setAnimationListener(hTextView -> initiateApp());
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        new Handler().postDelayed(() -> {
+//            try {
+//                if (bgMusic == null || !bgMusic.isPlaying()) {
+//                    bgMusic = MediaPlayer.create(this, R.raw.bg_sound);
+//                    bgMusic.setLooping(true);
+//                    bgMusic.start();
+//                }
+//                else if(bgMusic!=null){
+//                    bgMusic.start();
+//                }
+//            } catch (Exception e) {
+//                e.printStackTrace();
+//            }
+            if (!ApplicationClass.isTablet) {
+                EventMessage message = new EventMessage();
+                message.setMessage("reload");
+                EventBus.getDefault().post(message);
+            }
+        }, 300);
     }
 
     public void initiateApp() {
+        splashPresenter.setView(this);
+        context = SplashActivity.this;
         dialog = new ProgressDialog(this);
         fpath = "";
         appname = "";
-        splashPresenter.setView(this);
 
         FastSave.getInstance().saveString(FC_Constants.LOGIN_MODE, "NA");
         String[] permissionArray = new String[]{PermissionUtils.Manifest_CAMERA,
@@ -116,7 +142,7 @@ public class SplashActivity extends SplashSupportActivity implements SplashContr
         };
         if (!new File(Environment.getExternalStorageDirectory() + "/PrathamBackups").exists())
             new File(Environment.getExternalStorageDirectory() + "/PrathamBackups").mkdir();
-        if(!new File(Environment.getExternalStorageDirectory().toString() + "/.FCAInternal").exists())
+        if (!new File(Environment.getExternalStorageDirectory().toString() + "/.FCAInternal").exists())
             new File(Environment.getExternalStorageDirectory().toString() + "/.FCAInternal").mkdir();
 
         new Handler().postDelayed(() -> {
@@ -141,8 +167,8 @@ public class SplashActivity extends SplashSupportActivity implements SplashContr
                 ApplicationClass.foundationPath = FC_Utility.getInternalPath(SplashActivity.this);
                 Log.d("old_cos.pradigiPath", "old_cos.pradigiPath: " + ApplicationClass.foundationPath);
                 splashPresenter.getSdCardPath();
-                    ApplicationClass.contentExistOnSD = true;
-                    splashPresenter.populateSDCardMenu();
+                ApplicationClass.contentExistOnSD = true;
+                splashPresenter.populateSDCardMenu();
 //                } else {
 //                    ApplicationClass.contentExistOnSD = false;
 //                    splashPresenter.copyZipAndPopulateMenu();
@@ -540,22 +566,6 @@ public class SplashActivity extends SplashSupportActivity implements SplashContr
         return super.onKeyUp(keyCode, objEvent);
     }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-        try {
-            if (bgMusic == null || !bgMusic.isPlaying()) {
-                bgMusic = MediaPlayer.create(this, R.raw.bg_sound);
-                bgMusic.setLooping(true);
-                bgMusic.start();
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        EventMessage message = new EventMessage();
-        message.setMessage("reload");
-        EventBus.getDefault().post(message);
-    }
 
     @Override
     public void copyingExisting() {

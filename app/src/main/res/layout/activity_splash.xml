@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/splash_root"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -13,7 +13,8 @@
         android:layout_height="@dimen/_300sdp"
         android:layout_alignParentBottom="true"
         android:scaleType="centerCrop"
-        app:srcCompat="@drawable/ic_splash_bkgd"/>
+        app:srcCompat="@drawable/ic_splash_bkgd" />
+
     <ImageView
         android:id="@+id/iv_pratham_logo"
         android:layout_width="@dimen/_50sdp"
@@ -22,48 +23,18 @@
         android:scaleType="fitCenter"
         android:src="@drawable/pratham_logo" />
 
-<!--    <com.pratham.foundation.customView.SansTextViewBold-->
-<!--        android:id="@+id/gifcomplete"-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:layout_centerHorizontal="true"-->
-<!--        android:layout_marginTop="@dimen/_100sdp"-->
-<!--        android:gravity="center"-->
-<!--        android:padding="@dimen/_20sdp"-->
-<!--        android:scaleType="fitCenter"-->
-<!--        android:text="Foundation\nCourse"-->
-<!--        android:textAllCaps="true"-->
-<!--        android:textColor="@color/gradianceStartColor"-->
-<!--        android:textSize="@dimen/_25sdp" />-->
-
     <com.hanks.htextview.typer.TyperTextView
+        android:id="@+id/tv_typer"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/_60sdp"
         android:layout_centerHorizontal="true"
-        app:charIncrease="1"
-        android:textColor="@color/dark_blue"
+        android:layout_marginTop="@dimen/_60sdp"
         android:gravity="center"
-        android:id="@+id/tv_typer"
-        android:visibility="gone"
-        android:textSize="@dimen/_35sdp"
         android:lineSpacingMultiplier="1"
-        app:typerSpeed="100"/>
-
-<!--    <ImageView-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="@dimen/_100sdp"-->
-<!--        android:layout_alignParentBottom="true"-->
-<!--        android:scaleType="fitXY"-->
-<!--        android:src="@drawable/splash_bottom_bg" />-->
-
-<!--    <ImageView-->
-<!--        android:id="@+id/iv_splash"-->
-<!--        android:layout_width="wrap_content"-->
-<!--        android:layout_height="@dimen/_130sdp"-->
-<!--        android:layout_alignParentBottom="true"-->
-<!--        android:layout_centerHorizontal="true"-->
-<!--        android:layout_marginBottom="@dimen/_10sdp"-->
-<!--        android:src="@drawable/splash_group" />-->
+        android:textColor="@color/dark_blue"
+        android:textSize="@dimen/_35sdp"
+        android:visibility="gone"
+        app:charIncrease="1"
+        app:typerSpeed="100" />
 
 </RelativeLayout>

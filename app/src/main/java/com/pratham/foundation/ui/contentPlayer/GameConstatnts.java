@@ -34,8 +34,8 @@ import com.pratham.foundation.ui.contentPlayer.keywords_mapping.KeywordMappingFr
 import com.pratham.foundation.ui.contentPlayer.listenAndWritting.ListeningAndWritting_;
 import com.pratham.foundation.ui.contentPlayer.morphin.Hive_game_;
 import com.pratham.foundation.ui.contentPlayer.multipleChoiceQuetion.multipleChoiceFragment_;
-import com.pratham.foundation.ui.contentPlayer.new_reading_fragment.ContentReadingFragment;
-import com.pratham.foundation.ui.contentPlayer.new_reading_fragment.ContentReadingFragment_;
+import com.pratham.foundation.ui.contentPlayer.new_reading_fragment_2.ScrollReadingFragment;
+import com.pratham.foundation.ui.contentPlayer.new_reading_fragment_2.ScrollReadingFragment_;
 import com.pratham.foundation.ui.contentPlayer.new_vocab_reading.VocabReadingFragment;
 import com.pratham.foundation.ui.contentPlayer.new_vocab_reading.VocabReadingFragment_;
 import com.pratham.foundation.ui.contentPlayer.paragraph_stt.ParaSttReadingFragment;
@@ -341,6 +341,12 @@ public class GameConstatnts implements ShowInstruction {
                 FC_Utility.showFragment((Activity) context, new pictionaryFragment_(), R.id.RL_CPA,
                         bundle, pictionaryFragment.class.getSimpleName());
                 break;
+            case GameConstatnts.READING_ANDROID:
+                FC_Utility.showFragment((Activity) context, new ScrollReadingFragment_(), R.id.RL_CPA,
+                        bundle, ScrollReadingFragment.class.getSimpleName());
+//                    FC_Utility.showFragment((Activity) context, new ContentReadingFragment_(), R.id.RL_CPA,
+//                            bundle, ContentReadingFragment.class.getSimpleName());
+                break;
             case GameConstatnts.DOING_ACT_READ:
             case GameConstatnts.LetterWriting:
             case GameConstatnts.WATCHING_VIDEO:
@@ -379,9 +385,12 @@ public class GameConstatnts implements ShowInstruction {
                         }
                     }, 100);
                     break;
+/*
                 case GameConstatnts.READING_ANDROID:
-                    FC_Utility.showFragment((Activity) context, new ContentReadingFragment_(), R.id.RL_CPA,
-                            bundle, ContentReadingFragment.class.getSimpleName());
+                    FC_Utility.showFragment((Activity) context, new ScrollReadingFragment_(), R.id.RL_CPA,
+                            bundle, ScrollReadingFragment.class.getSimpleName());
+//                    FC_Utility.showFragment((Activity) context, new ContentReadingFragment_(), R.id.RL_CPA,
+//                            bundle, ContentReadingFragment.class.getSimpleName());
                     handler.postDelayed(new Runnable() {
                         @Override
                         public void run() {
@@ -390,6 +399,7 @@ public class GameConstatnts implements ShowInstruction {
                         }
                     }, 100);
                     break;
+*/
                 case GameConstatnts.PARAQA:
                     FC_Utility.showFragment((Activity) context, new STTQuestionsFragment_(), R.id.RL_CPA,
                             bundle, STTQuestionsFragment.class.getSimpleName());

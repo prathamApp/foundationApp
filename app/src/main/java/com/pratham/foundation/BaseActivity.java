@@ -19,6 +19,7 @@ import android.os.Message;
 import android.support.annotation.Nullable;
 import android.support.annotation.UiThread;
 import android.support.v7.app.AppCompatActivity;
+import android.transition.Slide;
 import android.view.Display;
 import android.view.View;
 import android.view.Window;
@@ -34,12 +35,9 @@ import com.pratham.foundation.database.AppDatabase;
 import com.pratham.foundation.database.BackupDatabase;
 import com.pratham.foundation.modalclasses.EventMessage;
 import com.pratham.foundation.services.TTSService;
-import com.pratham.foundation.utility.CatchoTransparentActivity;
 import com.pratham.foundation.utility.FC_Constants;
 import com.pratham.foundation.utility.FC_Utility;
 import com.pratham.foundation.utility.MediaPlayerUtil;
-
-import net.alhazmy13.catcho.library.Catcho;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -68,7 +66,7 @@ public class BaseActivity extends AppCompatActivity {
     TextView txt_push_dialog_msg;
     TextView txt_push_error;
     RelativeLayout rl_btn;
-    Button ok_btn,eject_btn;
+    Button ok_btn, eject_btn;
     CustomLodingDialog pushDialog;
     CustomLodingDialog sd_builder;
     public static MediaPlayer correctSound;
@@ -81,6 +79,19 @@ public class BaseActivity extends AppCompatActivity {
                 WindowManager.LayoutParams.FLAG_HARDWARE_ACCELERATED);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+
+//        Window window = getWindow();
+//        Slide slide = new Slide();
+//        slide.setInterpolator(new LinearInterpolator());
+//        slide.setSlideEdge(Gravity.LEFT);
+//        window.setExitTransition(slide); // The Transition to use to move Views out of the scene when calling a new Activity.
+//        window.setReenterTransition(slide); // The Transition to use to move Views into the scene when reentering from a previously-started Activity.
+
+//         inside your activity (if you did not enable transitions in your theme)
+        getWindow().requestFeature(Window.FEATURE_CONTENT_TRANSITIONS);
+        // set an exit transition
+        getWindow().setExitTransition(new Slide());
+
         hideSystemUI();
         super.onCreate(savedInstanceState);
         mDecorView = getWindow().getDecorView();
@@ -90,9 +101,9 @@ public class BaseActivity extends AppCompatActivity {
         correctSound = MediaPlayer.create(this, R.raw.correct_ans);
         muteFlg = false;
 
-        Catcho.Builder(this)
-                .activity(CatchoTransparentActivity.class).build();
-             //   .recipients("abc@domain.com").build();
+//        Catcho.Builder(this)
+//                .activity(CatchoTransparentActivity.class).build();
+        //   .recipients("abc@domain.com").build();
     }
 
 /*
@@ -120,8 +131,8 @@ public class BaseActivity extends AppCompatActivity {
         String strwidth = String.valueOf(width);
         String strheight = String.valueOf(height);
         Configuration config = context.getResources().getConfiguration();
-        String resolution = "W "+strwidth+" x H "+strheight+" pixels dpi: "+config.densityDpi;
-        return ""+resolution;
+        String resolution = "W " + strwidth + " x H " + strheight + " pixels dpi: " + config.densityDpi;
+        return "" + resolution;
     }
 
 
@@ -230,7 +241,7 @@ public class BaseActivity extends AppCompatActivity {
                     push_lottie.setAnimation("lottie_correct.json");
                     push_lottie.playAnimation();
                     int days = appDatabase.getScoreDao().getTotalActiveDeviceDays();
-                    txt_push_dialog_msg.setText("Data of "+days+" days and\n"+TransferedImages+" Images\nCopied Successfully!!");
+                    txt_push_dialog_msg.setText("Data of " + days + " days and\n" + TransferedImages + " Images\nCopied Successfully!!");
                     rl_btn.setVisibility(View.VISIBLE);
                     break;
                 case HIDE_OTG_TRANSFER_DIALOG_FAILED:

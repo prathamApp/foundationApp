@@ -23,6 +23,21 @@
         <item name="android:shadowRadius">1</item>
     </style>
 
+    <style name="BaseAppTheme" parent="android:Theme.Material">
+        <!-- enable window content transitions -->
+        <item name="android:windowActivityTransitions">true</item>
+
+        <!-- specify enter and exit transitions -->
+        <item name="android:windowEnterTransition">@transition/explode</item>
+        <item name="android:windowExitTransition">@transition/explode</item>
+
+        <!-- specify shared element transitions -->
+        <item name="android:windowSharedElementEnterTransition">
+            @transition/change_image_transform</item>
+        <item name="android:windowSharedElementExitTransition">
+            @transition/change_image_transform</item>
+    </style>
+
     <!--
     <style name="shadoweffect">
         <item name="android:padding">5dp</item>
@@ -74,8 +89,8 @@
         <item name="android:windowBackground">@color/white</item>
 
         <!-- Additionally if you want animations when dialog opening -->
-        <item name="android:windowEnterAnimation">@anim/slide_up</item>
-        <item name="android:windowExitAnimation">@anim/slide_down</item>
+        <item name="android:windowEnterAnimation">@anim/window_slide_up</item>
+        <item name="android:windowExitAnimation">@anim/window_slide_down</item>
     </style>
 
     <style name="Transparent" parent="AppTheme">
@@ -173,6 +188,18 @@
         <item name="colorAccent">@color/colorAccent</item>
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
+
+<!--        &lt;!&ndash; enable window content transitions &ndash;&gt;
+        <item name="android:windowActivityTransitions">true</item>
+        &lt;!&ndash; specify enter and exit transitions &ndash;&gt;
+        <item name="android:windowEnterTransition">@transition/explode</item>
+        <item name="android:windowExitTransition">@transition/explode</item>
+        &lt;!&ndash; specify shared element transitions &ndash;&gt;
+        <item name="android:windowSharedElementEnterTransition">
+            @transition/change_image_transform</item>
+        <item name="android:windowSharedElementExitTransition">
+            @transition/change_image_transform</item>-->
+
 <!--        <item name="android:windowAnimationStyle">CustomActivityAnimation</item>-->
     </style>
 

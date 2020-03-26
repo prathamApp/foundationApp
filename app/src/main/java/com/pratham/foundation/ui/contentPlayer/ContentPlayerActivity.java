@@ -7,11 +7,11 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.view.View;
 import android.view.Window;
 import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.pratham.foundation.BaseActivity;
@@ -47,9 +47,9 @@ public class ContentPlayerActivity extends BaseActivity implements ShowInstructi
     private Intent returnIntent;
 
     @ViewById(R.id.floating_back)
-    public static ImageView floating_back;
+    public static FloatingActionButton floating_back;
     @ViewById(R.id.floating_info)
-    public static ImageView floating_info;
+    public static FloatingActionButton floating_info;
 
     @AfterViews
     public void initialize() {
@@ -58,6 +58,9 @@ public class ContentPlayerActivity extends BaseActivity implements ShowInstructi
         nodeID = intent.getStringExtra("nodeID");
         title = intent.getStringExtra("title");
         String testcall = intent.getStringExtra("testcall");
+
+        floating_back.setImageResource(R.drawable.ic_left_arrow_white);
+        floating_info.setImageResource(R.drawable.ic_info_outline_white);
 
         if (testcall == null) {
             loadFragment();

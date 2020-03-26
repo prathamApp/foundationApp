@@ -1,4 +1,4 @@
-package com.pratham.foundation.ui.contentPlayer.reading_story_activity;
+package com.pratham.foundation.ui.contentPlayer.new_reading_fragment_2;
 
 import android.content.Context;
 
@@ -24,9 +24,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static com.pratham.foundation.database.AppDatabase.appDatabase;
-import static com.pratham.foundation.ui.contentPlayer.reading_story_activity.ReadingStoryActivity.correctArr;
-import static com.pratham.foundation.ui.contentPlayer.reading_story_activity.ReadingStoryActivity.lineBreakCounter;
-import static com.pratham.foundation.ui.contentPlayer.reading_story_activity.ReadingStoryActivity.testCorrectArr;
+import static com.pratham.foundation.ui.contentPlayer.new_reading_fragment_2.ScrollReadingFragment.correctArr;
+import static com.pratham.foundation.ui.contentPlayer.new_reading_fragment_2.ScrollReadingFragment.lineBreakCounter;
+import static com.pratham.foundation.ui.contentPlayer.new_reading_fragment_2.ScrollReadingFragment.testCorrectArr;
 import static com.pratham.foundation.utility.FC_Constants.APP_SECTION;
 import static com.pratham.foundation.utility.FC_Constants.CURRENT_FOLDER_NAME;
 import static com.pratham.foundation.utility.FC_Constants.STT_REGEX;
@@ -35,9 +35,9 @@ import static com.pratham.foundation.utility.FC_Constants.sec_Test;
 
 
 @EBean
-public class ReadingStoryActivityPresenter implements ReadingStoryActivityContract.ReadingStoryActivityPresenter {
+public class ScrollReadingPresenter implements ScrollReadingContract.ScrollReadingPresenter {
 
-    ReadingStoryActivityContract.ReadingStoryView readingView;
+    ScrollReadingContract.ScrollReadingView readingView;
 
     Context context;
     ModalParaMainMenu modalParaMainMenu;
@@ -49,12 +49,13 @@ public class ReadingStoryActivityPresenter implements ReadingStoryActivityContra
     String resId, resStartTime;
     public ArrayList<String> remainingResult;
 
-    public ReadingStoryActivityPresenter(Context context) {
+
+    public ScrollReadingPresenter(Context context) {
         this.context = context;
     }
 
     @Override
-    public void setView(ReadingStoryActivityContract.ReadingStoryView readingView) {
+    public void setView(ScrollReadingContract.ScrollReadingView readingView) {
         this.readingView = readingView;
         learntWordsList = new ArrayList<>();
         remainingResult = new ArrayList<>();
@@ -95,7 +96,7 @@ public class ReadingStoryActivityPresenter implements ReadingStoryActivityContra
     @Override
     public void fetchJsonData(String contentPath) {
         try {
-            InputStream is = new FileInputStream(contentPath + "/Data.json");
+            InputStream is = new FileInputStream(contentPath + "/StoryReadingData.json");
             int size = is.available();
             byte[] buffer = new byte[size];
             is.read(buffer);
@@ -113,9 +114,12 @@ public class ReadingStoryActivityPresenter implements ReadingStoryActivityContra
     private void addSttResultDB(ArrayList<String> stt_Result) {
         String deviceId = appDatabase.getStatusDao().getValue("DeviceId");
         StringBuilder strWord = new StringBuilder("STT_ALL_RESULT - ");
-        for(int i =0 ; i<stt_Result.size(); i++)
+        for(int i =0 ; i<stt_Result.size(); i++) {
             strWord.append(stt_Result.get(i)).append(" - ");
-
+            stt_Result.size();
+            if(i > 0 && i < 3)
+                remainingResult.add(stt_Result.get(i));
+        }
         try {
             Score score = new Score();
             score.setSessionID(FastSave.getInstance().getString(FC_Constants.CURRENT_SESSION, ""));
@@ -162,8 +166,13 @@ public class ReadingStoryActivityPresenter implements ReadingStoryActivityContra
                 }
             }
         }
-        readingView.setCorrectViewColor();
-        addScore(0, "Words:" + word, getCorrectCounter(), correctArr.length,  FC_Utility.getCurrentDateTime(), " ");
+
+        int correctWordCount = getCorrectCounter();
+        String wordTime = FC_Utility.getCurrentDateTime();
+//        addLearntWords(splitWordsPunct, wordsResIdList);
+        addScore(0, "Words:" + word, correctWordCount, correctArr.length, wordTime, " ");
+            readingView.setCorrectViewColor();
+
     }
 
     @Background
@@ -234,7 +243,7 @@ public class ReadingStoryActivityPresenter implements ReadingStoryActivityContra
                         learntWords.setStudentId(FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""));
                         learntWords.setResourceId(resId);
                         learntWords.setKeyWord(splitWordsPunct.get(i).toLowerCase());
-                        learntWords.setWordType("Story word");
+                        learntWords.setWordType("word");
                         learntWords.setTopic("Topic");
                         appDatabase.getKeyWordDao().insert(learntWords);
                     }

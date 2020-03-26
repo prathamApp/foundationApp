@@ -36,7 +36,6 @@ import com.pratham.foundation.modalclasses.CertificateModelClass;
 import com.pratham.foundation.modalclasses.EventMessage;
 import com.pratham.foundation.modalclasses.Modal_FileDownloading;
 import com.pratham.foundation.services.shared_preferences.FastSave;
-import com.pratham.foundation.ui.app_home.HomeActivity;
 import com.pratham.foundation.ui.contentPlayer.ContentPlayerActivity_;
 import com.pratham.foundation.ui.contentPlayer.fact_retrieval_fragment.FactRetrieval_;
 import com.pratham.foundation.ui.contentPlayer.matchingPairGame.MatchThePairGameActivity;
@@ -811,7 +810,7 @@ public class TestFragment extends Fragment implements TestContract.TestView,
     @UiThread
     @Override
     public void setLevelprogress(int percent) {
-        HomeActivity.tv_progress.setCurProgress(percent);
+//        HomeActivity.tv_progress.setCurProgress(percent);
 //        level_progress.setCurProgress(percent);
     }
 

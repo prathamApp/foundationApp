@@ -113,7 +113,8 @@ public class SelectSubject extends BaseActivity implements
         Intent intent = new Intent(context, HomeActivity_.class);
         intent.putExtra("nodeId", contentTableObj.getNodeId());
         intent.putExtra("nodeTitle", contentTableObj.getNodeTitle());
-        context.startActivity(intent);
+        startActivity(intent);
+//        context.startActivity(intent, ActivityOptions.makeSceneTransitionAnimation(SelectSubject.this).toBundle());
     }
 
     @Click(R.id.btn_back)

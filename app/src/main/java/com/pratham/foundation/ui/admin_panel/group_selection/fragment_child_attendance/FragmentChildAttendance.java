@@ -208,6 +208,7 @@ public class FragmentChildAttendance extends Fragment implements ContractChildAt
             startSession(checkedStds);
             //todo remove#
             //startActivity(new Intent(getActivity(), HomeActivity_.class));
+//            startActivity(new Intent(getActivity(), SelectSubject_.class), ActivityOptions.makeSceneTransitionAnimation(getActivity()).toBundle());
             startActivity(new Intent(getActivity(), SelectSubject_.class));
             getActivity().finish();
         } else {

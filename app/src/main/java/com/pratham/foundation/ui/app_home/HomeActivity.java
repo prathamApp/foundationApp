@@ -6,6 +6,7 @@ import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Environment;
+import android.os.Handler;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
@@ -22,7 +23,6 @@ import com.pratham.foundation.ApplicationClass;
 import com.pratham.foundation.BaseActivity;
 import com.pratham.foundation.R;
 import com.pratham.foundation.customView.display_image_dialog.CustomLodingDialog;
-import com.pratham.foundation.customView.progress_layout.ProgressLayout;
 import com.pratham.foundation.customView.submarine_view.SubmarineItem;
 import com.pratham.foundation.customView.submarine_view.SubmarineView;
 import com.pratham.foundation.database.AppDatabase;
@@ -60,11 +60,11 @@ import static com.pratham.foundation.utility.FC_Constants.CURRENT_STUDENT_ID;
 import static com.pratham.foundation.utility.FC_Constants.CURRENT_SUPERVISOR_ID;
 import static com.pratham.foundation.utility.FC_Constants.FRAGMENT_RESELECTED;
 import static com.pratham.foundation.utility.FC_Constants.FRAGMENT_SELECTED;
-import static com.pratham.foundation.utility.FC_Constants.GROUP_LOGIN;
 import static com.pratham.foundation.utility.FC_Constants.GROUP_MODE;
 import static com.pratham.foundation.utility.FC_Constants.INDIVIDUAL_MODE;
 import static com.pratham.foundation.utility.FC_Constants.LEVEL_CHANGED;
 import static com.pratham.foundation.utility.FC_Constants.LOGIN_MODE;
+import static com.pratham.foundation.utility.FC_Constants.SECTION_COMPLETION_PERC;
 import static com.pratham.foundation.utility.FC_Constants.activityPhotoPath;
 import static com.pratham.foundation.utility.FC_Constants.currentLevel;
 import static com.pratham.foundation.utility.FC_Constants.sec_Learning;
@@ -89,8 +89,6 @@ public class HomeActivity extends BaseActivity implements LevelChanged {
     TextView tv_Topic;
     @ViewById(R.id.tv_Activity)
     TextView tv_Activity;
-    @ViewById(R.id.card_progressLayout)
-    public static ProgressLayout tv_progress;
     @ViewById(R.id.tabs)
     TabLayout tabLayout;
     @ViewById(R.id.header_rl)
@@ -101,6 +99,7 @@ public class HomeActivity extends BaseActivity implements LevelChanged {
     public static ImageView iv_level;
     //    @ViewById(R.id.level_circle)
 //    CursorWheelLayout level_circle;
+
     @ViewById(R.id.profileImage)
     ImageView profileImage;
     @DrawableRes(R.drawable.home_header_0_bg)
@@ -126,45 +125,50 @@ public class HomeActivity extends BaseActivity implements LevelChanged {
 
     @AfterViews
     public void initialize() {
-        Runtime rs = Runtime.getRuntime();
-        rs.freeMemory();
-        rs.gc();
-        rs.freeMemory();
-
         //overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
-
 //        Configuration config = getResources().getConfiguration();
 //        FC_Constants.TAB_LAYOUT = config.smallestScreenWidthDp > 425;
         sub_nodeId = getIntent().getStringExtra("nodeId");
         sub_Name = getIntent().getStringExtra("nodeTitle");
+//        changeBackground(sub_Name);
+        showLoader();
+        new Handler().postDelayed(() -> {
+        startActivityAndTabSetup();
+        }, 200);
+    }
+
+    private void startActivityAndTabSetup() {
+        Runtime rs = Runtime.getRuntime();
+        rs.freeMemory();
+        rs.gc();
+        rs.freeMemory();
+        changeBGNew(0);
         sub_nodeId = FastSave.getInstance().getString(FC_Constants.CURRENT_ROOT_NODE, "");
         FastSave.getInstance().saveInt(FC_Constants.CURRENT_LEVEL, 0);
         currentLevel = FastSave.getInstance().getInt(FC_Constants.CURRENT_LEVEL, 0);
-//        changeBackground(sub_Name);
-        changeBGNew(0);
+        tv_header_progress.setText("0%");
+        floating_info.setImageResource(R.drawable.ic_info_outline_white);
         currSubj = FastSave.getInstance().getString(FC_Constants.CURRENT_SUBJECT, "");
         //        floating_back.setImageResource(R.drawable.ic_left_arrow_white);
-        floating_info.setImageResource(R.drawable.ic_info_outline_white);
-        setupViewPager(viewpager);
-        tv_header_progress.setText("0%");
         levelChanged = HomeActivity.this;
         count = 0;
+        displayProfileName();
+        setupViewPager(viewpager);
+//        displayProfileImage();
         tabLayout.setupWithViewPager(viewpager);
         setupTabIcons();
         setLevel();
-        displayProfileName();
-        displayProfileImage();
-//        getCompletion();
+        new Handler().postDelayed(() -> {
+            getCompletion();
+        }, 2000);
     }
 
-//    private void getCompletion() {
+    private void getCompletion() {
 //        getNewCompletion();
-//        new Handler().postDelayed(() -> {
-//            EventMessage eventMessage = new EventMessage();
-//            eventMessage.setMessage(SECTION_COMPLETION_PERC);
-//            EventBus.getDefault().post(eventMessage);
-//        }, 2000);
-//    }
+            EventMessage eventMessage = new EventMessage();
+            eventMessage.setMessage(SECTION_COMPLETION_PERC);
+            EventBus.getDefault().post(eventMessage);
+    }
 //
 //    private void getNewCompletion() {
 //        new Handler().postDelayed(() -> {
@@ -177,20 +181,48 @@ public class HomeActivity extends BaseActivity implements LevelChanged {
 //        }, 10500);
 //    }
 
-    @Background
-    public void displayProfileImage() {
-        String sImage;
-        try {
-            if (!GROUP_LOGIN)
-                sImage = AppDatabase.getDatabaseInstance(this).getStudentDao().getStudentAvatar(FastSave.getInstance().getString(CURRENT_STUDENT_ID, ""));
-            else
-                sImage = "group_icon";
-        } catch (Exception e) {
-            e.printStackTrace();
-            sImage = "group_icon";
+//    @Background
+//    public void displayProfileImage() {
+//        String sImage;
+//        try {
+//            if (!GROUP_LOGIN)
+//                sImage = AppDatabase.getDatabaseInstance(this).getStudentDao().getStudentAvatar(FastSave.getInstance().getString(CURRENT_STUDENT_ID, ""));
+//            else
+//                sImage = "group_icon";
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//            sImage = "group_icon";
+//        }
+//    }
+
+
+    private CustomLodingDialog myLoadingDialog;
+    @UiThread
+    public void showLoader() {
+        if (myLoadingDialog == null) {
+            myLoadingDialog = new CustomLodingDialog(this);
+            myLoadingDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+            Objects.requireNonNull(myLoadingDialog.getWindow()).
+                    setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+            myLoadingDialog.setContentView(R.layout.loading_dialog);
+            myLoadingDialog.setCanceledOnTouchOutside(true);
+            myLoadingDialog.setCancelable(true);
+            myLoadingDialog.show();
         }
+        else
+            myLoadingDialog.show();
     }
 
+    @UiThread
+    public void dismissLoadingDialog() {
+        try {
+            if (myLoadingDialog != null && myLoadingDialog.isShowing()) {
+                myLoadingDialog.dismiss();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 
     @Background
     public void displayProfileName() {
@@ -352,9 +384,11 @@ public class HomeActivity extends BaseActivity implements LevelChanged {
         testTab.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.ic_test, 0, 0);
 
         if (FastSave.getInstance().getString(FC_Constants.LOGIN_MODE, FC_Constants.GROUP_MODE).contains("group")) {
+            FastSave.getInstance().saveString(APP_SECTION, sec_Learning);
             tabLayout.getTabAt(0).setCustomView(learningTab);
             tabLayout.getTabAt(1).setCustomView(practiceTab);
         } else {
+            FastSave.getInstance().saveString(APP_SECTION, sec_Practice);
             tabLayout.getTabAt(0).setCustomView(practiceTab);
             tabLayout.getTabAt(1).setCustomView(learningTab);
         }
@@ -431,6 +465,7 @@ public class HomeActivity extends BaseActivity implements LevelChanged {
                     EventBus.getDefault().post(eventMessage);
                     header_rl.setVisibility(View.VISIBLE);
                 }
+                getCompletion();
             }
         });
     }
@@ -582,6 +617,9 @@ public class HomeActivity extends BaseActivity implements LevelChanged {
             adapter.addFrag(new ProfileFragment_(), "" + getResources().getString(R.string.Profile));
         }
         viewpager.setAdapter(adapter);
+        new Handler().postDelayed(() -> {
+            dismissLoadingDialog();
+        }, 300);
     }
 
     @SuppressLint("SetTextI18n")

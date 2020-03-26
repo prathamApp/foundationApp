@@ -94,7 +94,6 @@ public class LearningFragment extends Fragment implements LearningContract.Learn
         rs.freeMemory();
         rs.gc();
         rs.freeMemory();
-
         rootList = new ArrayList<>();
         rootLevelList = new ArrayList<>();
         dwParentList = new ArrayList<>();
@@ -402,11 +401,13 @@ public class LearningFragment extends Fragment implements LearningContract.Learn
             intent.putExtra("parentName", parentName);
             intent.putExtra("contentTitle", singleItem.getNodeTitle());
             intent.putExtra("level", "" + currentLevel);
+//            startActivity(intent, ActivityOptions.makeSceneTransitionAnimation(getActivity()).toBundle());
             startActivity(intent);
         } else if (singleItem.getNodeType().equalsIgnoreCase("preResource")) {
             Intent mainNew = new Intent(context, ContentPlayerActivity_.class);
             mainNew.putExtra("nodeID", singleItem.getNodeId());
             mainNew.putExtra("title", singleItem.getNodeTitle());
+//            startActivity(mainNew, ActivityOptions.makeSceneTransitionAnimation(getActivity()).toBundle());
             startActivity(mainNew);
         } else {
             contentParentList.clear();
@@ -430,6 +431,7 @@ public class LearningFragment extends Fragment implements LearningContract.Learn
             mainNew.putExtra("contentName", contentList.getNodeTitle());
             mainNew.putExtra("onSdCard", contentList.isOnSDCard());
             mainNew.putExtra("contentPath", contentList.getResourcePath());
+//            startActivity(mainNew, ActivityOptions.makeSceneTransitionAnimation(getActivity()).toBundle());
             startActivity(mainNew);
         } else {
             if (contentList.getResourceType().toLowerCase().contains(FC_Constants.HTML_GAME_RESOURCE)) {
@@ -449,6 +451,7 @@ public class LearningFragment extends Fragment implements LearningContract.Learn
                 intent.putExtra("gameType", "" + contentList.getResourceType());
                 intent.putExtra("certiCode", contentList.getNodeDesc());
                 intent.putExtra("gameCategory", "" + contentList.getNodeKeywords());
+//                startActivity(intent, ActivityOptions.makeSceneTransitionAnimation(getActivity()).toBundle());
                 startActivity(intent);
             } else if (contentList.getResourceType().equalsIgnoreCase(FC_Constants.RC_RESOURCE)) {
 //                presenter.enterRCData(contentList);
@@ -460,6 +463,7 @@ public class LearningFragment extends Fragment implements LearningContract.Learn
                 mainNew.putExtra("onSdCard", contentList.isOnSDCard());
                 mainNew.putExtra("certiCode", contentList.getNodeDesc());
                 mainNew.putExtra("contentPath", contentList.getResourcePath());
+//                startActivity(mainNew, ActivityOptions.makeSceneTransitionAnimation(getActivity()).toBundle());
                 startActivity(mainNew);
             } else if (contentList.getResourceType().equalsIgnoreCase(FC_Constants.COMIC_CONVO_RESOURCE)) {
                 Intent mainNew = new Intent(context, ReadingCardsActivity_.class);
@@ -468,6 +472,7 @@ public class LearningFragment extends Fragment implements LearningContract.Learn
                 mainNew.putExtra("contentName", contentList.getNodeTitle());
                 mainNew.putExtra("onSdCard", contentList.isOnSDCard());
                 mainNew.putExtra("contentPath", contentList.getResourcePath());
+//                startActivity(mainNew, ActivityOptions.makeSceneTransitionAnimation(getActivity()).toBundle());
                 startActivity(mainNew);
             } else if (contentList.getResourceType().equalsIgnoreCase(FC_Constants.RHYME_RESOURCE) || contentList.getResourceType().equalsIgnoreCase(FC_Constants.STORY_RESOURCE)) {
                 Intent mainNew = new Intent(context, ReadingStoryActivity_.class);
@@ -477,6 +482,7 @@ public class LearningFragment extends Fragment implements LearningContract.Learn
                 mainNew.putExtra("storyTitle", contentList.getNodeTitle());
                 mainNew.putExtra("onSdCard", contentList.isOnSDCard());
                 mainNew.putExtra("contentType", contentList.getResourceType());
+//                startActivity(mainNew, ActivityOptions.makeSceneTransitionAnimation(getActivity()).toBundle());
                 startActivity(mainNew);
             } /*else if (contentList.getResourceType().equalsIgnoreCase(FC_Constants.WORD_ANDROID)) {
                 Intent mainNew = new Intent(context, ReadingWordScreenActivity.class);
@@ -493,6 +499,7 @@ public class LearningFragment extends Fragment implements LearningContract.Learn
                 mainNew.putExtra("contentPath", contentList.getResourcePath());
                 mainNew.putExtra("onSdCard", contentList.isOnSDCard());
                 mainNew.putExtra("contentTitle", contentList.getNodeTitle());
+//                startActivity(mainNew, ActivityOptions.makeSceneTransitionAnimation(getActivity()).toBundle());
                 startActivity(mainNew);
             } else if (contentList.getResourceType().equalsIgnoreCase(FC_Constants.VOCAB_ANDROID)) {
                 Intent mainNew = new Intent(context, ReadingVocabularyActivity_.class);
@@ -503,6 +510,7 @@ public class LearningFragment extends Fragment implements LearningContract.Learn
                 mainNew.putExtra("vocabLevel", contentList.getNodeDesc());
                 mainNew.putExtra("onSdCard", contentList.isOnSDCard());
                 mainNew.putExtra("vocabCategory", contentList.getNodeKeywords());
+//                startActivity(mainNew, ActivityOptions.makeSceneTransitionAnimation(getActivity()).toBundle());
                 startActivity(mainNew);
             } else if (contentList.getResourceType().equalsIgnoreCase(FC_Constants.RHYMING_WORD_ANDROID)) {
                 Intent mainNew = new Intent(context, ReadingRhymesActivity_.class);
@@ -512,6 +520,7 @@ public class LearningFragment extends Fragment implements LearningContract.Learn
                 mainNew.putExtra("contentTitle", contentList.getNodeTitle());
                 mainNew.putExtra("onSdCard", contentList.isOnSDCard());
                 mainNew.putExtra("rhymeLevel", contentList.getNodeDesc());
+//                startActivity(mainNew, ActivityOptions.makeSceneTransitionAnimation(getActivity()).toBundle());
                 startActivity(mainNew);
             } else if (contentList.getResourceType().equalsIgnoreCase(FC_Constants.OPPOSITE_WORDS)) {
                 Intent mainNew = new Intent(context, OppositesActivity_.class);
@@ -520,6 +529,7 @@ public class LearningFragment extends Fragment implements LearningContract.Learn
                 mainNew.putExtra("contentName", contentList.getNodeTitle());
                 mainNew.putExtra("onSdCard", contentList.isOnSDCard());
                 mainNew.putExtra("contentPath", contentList.getResourcePath());
+//                startActivity(mainNew, ActivityOptions.makeSceneTransitionAnimation(getActivity()).toBundle());
                 startActivity(mainNew);
             } else if (contentList.getResourceType().equalsIgnoreCase(FC_Constants.MATCH_THE_PAIR)) {
                 Intent mainNew = new Intent(context, MatchThePairGameActivity.class);
@@ -528,6 +538,7 @@ public class LearningFragment extends Fragment implements LearningContract.Learn
                 mainNew.putExtra("contentName", contentList.getNodeTitle());
                 mainNew.putExtra("onSdCard", contentList.isOnSDCard());
                 mainNew.putExtra("contentPath", contentList.getResourcePath());
+//                startActivity(mainNew, ActivityOptions.makeSceneTransitionAnimation(getActivity()).toBundle());
                 startActivity(mainNew);
             }
         }
@@ -587,6 +598,7 @@ public class LearningFragment extends Fragment implements LearningContract.Learn
         intent.putExtra("contentTitle", nodeTitle);
         intent.putExtra("parentName", sub_Name);
         intent.putExtra("level", "" + currentLevel);
+//        startActivity(intent, ActivityOptions.makeSceneTransitionAnimation(getActivity()).toBundle());
         startActivity(intent);
     }
 
