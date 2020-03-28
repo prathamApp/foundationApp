@@ -36,6 +36,7 @@ import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
+import static com.pratham.foundation.ApplicationClass.BackBtnSound;
 import static com.pratham.foundation.utility.FC_Constants.APP_SECTION;
 import static com.pratham.foundation.utility.FC_Constants.INFO_CLICKED;
 import static com.pratham.foundation.utility.FC_Constants.sec_Test;
@@ -116,6 +117,11 @@ public class ContentPlayerActivity extends BaseActivity implements ShowInstructi
     @UiThread
     @Click(R.id.floating_info)
     public void pressedFloatingInfo() {
+        try {
+            BackBtnSound.start();
+        } catch (IllegalStateException e) {
+            e.printStackTrace();
+        }
         EventMessage eventMessage = new EventMessage();
         eventMessage.setMessage(INFO_CLICKED);
         EventBus.getDefault().post(eventMessage);
@@ -146,6 +152,11 @@ public class ContentPlayerActivity extends BaseActivity implements ShowInstructi
 
     @Override
     public void onBackPressed() {
+        try {
+            BackBtnSound.start();
+        } catch (IllegalStateException e) {
+            e.printStackTrace();
+        }
         Fragment fragment = getSupportFragmentManager().findFragmentByTag(SequenceLayout_.class.getSimpleName());
         if (fragment != null && fragment.isVisible())
             finish();

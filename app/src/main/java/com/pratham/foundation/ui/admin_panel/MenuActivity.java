@@ -33,6 +33,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.Objects;
 
+import static com.pratham.foundation.ApplicationClass.BackBtnSound;
 import static com.pratham.foundation.ApplicationClass.ButtonClickSound;
 import static com.pratham.foundation.utility.FC_Constants.GROUP_MODE;
 import static com.pratham.foundation.utility.FC_Constants.INDIVIDUAL_MODE;
@@ -206,6 +207,11 @@ public class MenuActivity extends BaseActivity {
 
     @Click(R.id.btn_back)
     public void pressedBackButton() {
+        try {
+            BackBtnSound.start();
+        } catch (IllegalStateException e) {
+            e.printStackTrace();
+        }
         showExitDialog();
     }
 
@@ -241,8 +247,8 @@ public class MenuActivity extends BaseActivity {
 //        });
 
         dia_btn_yes.setOnClickListener(v -> {
-            finishAffinity();
             dialog.dismiss();
+            finishAffinity();
         });
 
         dia_btn_no.setOnClickListener(v -> {

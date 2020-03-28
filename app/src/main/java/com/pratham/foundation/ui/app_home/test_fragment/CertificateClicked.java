@@ -1,4 +1,4 @@
-package com.pratham.foundation.ui.test.certificate;
+package com.pratham.foundation.ui.app_home.test_fragment;
 
 public interface CertificateClicked {
 

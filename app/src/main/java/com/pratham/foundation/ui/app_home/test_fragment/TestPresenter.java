@@ -294,7 +294,9 @@ public class TestPresenter implements TestContract.TestPresenter, API_Content_Re
 
     @Override
     public ContentTable getRandomData(String resourceType, String nodeId) {
-        List<ContentTable> List = AppDatabase.getDatabaseInstance(mContext).getContentTableDao().getContentData(nodeId);
+//        List<ContentTable> List = AppDatabase.appDatabase.getDatabaseInstance(mContext).getContentTableDao().getContentData(nodeId);
+        List<ContentTable> List = AppDatabase.getDatabaseInstance(mContext)
+                .getContentTableDao().getTestContentData(nodeId,resourceType);
         if (List.size() > 0) {
             int random = FC_Utility.generateRandomNum(List.size());
             ContentTable contentTable = List.get(random);

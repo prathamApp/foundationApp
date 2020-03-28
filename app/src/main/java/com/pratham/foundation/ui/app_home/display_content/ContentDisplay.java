@@ -61,6 +61,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import static com.pratham.foundation.ApplicationClass.BackBtnSound;
 import static com.pratham.foundation.ApplicationClass.ButtonClickSound;
 import static com.pratham.foundation.ui.app_home.HomeActivity.languageChanged;
 import static com.pratham.foundation.utility.FC_Constants.LOGIN_MODE;
@@ -563,6 +564,11 @@ public class ContentDisplay extends BaseActivity implements ContentContract.Cont
 
     @Override
     public void onBackPressed() {
+        try {
+            BackBtnSound.start();
+        } catch (IllegalStateException e) {
+            e.printStackTrace();
+        }
         if (presenter.removeLastNodeId()) {
             ContentTableList.clear();
             presenter.getListData();

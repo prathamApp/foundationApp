@@ -51,7 +51,6 @@ import org.androidannotations.annotations.ViewById;
 import java.io.File;
 import java.io.FileInputStream;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import static com.pratham.foundation.utility.FC_Constants.APP_SECTION;
@@ -103,7 +102,6 @@ public class ReadingVocabularyActivity extends BaseActivity implements MediaCall
 
     ContinuousSpeechService_New continuousSpeechService;
 
-    List<Integer> readSounds = new ArrayList<>();
     public static MediaPlayer mp, correctSound;
     Context mContext;
     static int currentPageNo, currentQueNo;
@@ -132,12 +130,6 @@ public class ReadingVocabularyActivity extends BaseActivity implements MediaCall
         testFlg = false;
 
         presenter.setView(ReadingVocabularyActivity.this);
-/*        ViewGroup.MarginLayoutParams params = (ViewGroup.MarginLayoutParams) layout_ripplepulse_right.getLayoutParams();
-        params.rightMargin = -(int) getResources().getDimension(R.dimen._25sdp);
-        params.bottomMargin = -(int) getResources().getDimension(R.dimen._25sdp);
-        params = (ViewGroup.MarginLayoutParams) layout_ripplepulse_left.getLayoutParams();
-        params.leftMargin = -(int) getResources().getDimension(R.dimen._25sdp);
-        params.bottomMargin = -(int) getResources().getDimension(R.dimen._25sdp);*/
 
         Intent intent = getIntent();
         contentTitle = intent.getStringExtra("contentTitle");
@@ -166,12 +158,6 @@ public class ReadingVocabularyActivity extends BaseActivity implements MediaCall
         vocabLevel = 0;
 
         presenter.setResIdAndStartTime(resId);
-
-        readSounds.add(R.raw.tap_the_mic);
-        readSounds.add(R.raw.your_turn_to_read);
-        readSounds.add(R.raw.would_you_like_to_read);
-        readSounds.add(R.raw.tap_the_mic_to_read_out);
-        Collections.shuffle(readSounds);
 
         if (onSdCard)
             readingContentPath = ApplicationClass.contentSDPath + gameFolderPath + "/" + contentPath + "/";
@@ -223,6 +209,8 @@ public class ReadingVocabularyActivity extends BaseActivity implements MediaCall
     public void setListData(List<ModalVocabulary> wordsDataList) {
         modalVocabularyList = wordsDataList;
         testCorrectArr = new boolean[modalVocabularyList.size()];
+        for (int i=0;i<testCorrectArr.length;i++)
+            testCorrectArr[i]=false;
         setData();
     }
 
@@ -242,11 +230,11 @@ public class ReadingVocabularyActivity extends BaseActivity implements MediaCall
                 }
                 if (showDataHandler == null)
                     showDataHandler = new Handler();
-                showDataHandler.postDelayed(() -> displayNextQuestion(currentQueNo), (long) (800));
+                showDataHandler.postDelayed(() -> displayNextQuestion(currentQueNo), 800);
             } catch (Exception e) {
                 e.printStackTrace();
             }
-        }, (long) (800));
+        }, 800);
     }
 
     private void displayNextQuestion(int currQueNo) {
@@ -292,7 +280,7 @@ public class ReadingVocabularyActivity extends BaseActivity implements MediaCall
                         } else {
                             LoadNext();
                         }
-                    }, (long) (1200));
+                    }, 1200);
                 }
             } else {
                 btn_imgsend.setClickable(false);
@@ -309,7 +297,7 @@ public class ReadingVocabularyActivity extends BaseActivity implements MediaCall
                     } else {
                         LoadNext();
                     }
-                }, (long) (1200));
+                }, 1200);
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -352,7 +340,10 @@ public class ReadingVocabularyActivity extends BaseActivity implements MediaCall
         currentQueNo += 1;
         if (sendMessageHandler == null)
             sendMessageHandler = new Handler();
-        sendMessageHandler.postDelayed(() -> displayNextQuestion(currentQueNo), (long) (1000));
+        sendMessageHandler.postDelayed(() -> {
+            displayNextQuestion(currentQueNo);
+            allCorrectFlg = false;
+        }, 1000);
     }
 
     private void setAnswerText(String answerText) {
@@ -409,6 +400,7 @@ public class ReadingVocabularyActivity extends BaseActivity implements MediaCall
             mp.start();
             mp.setOnCompletionListener(mp -> {
                 playingFlg = false;
+//                if (!testFlg && !FastSave.getInstance().getString(APP_SECTION,"").equalsIgnoreCase(sec_Test))
                 setAnswerText(ansStr);
                 startReading();
             });
@@ -730,29 +722,33 @@ public class ReadingVocabularyActivity extends BaseActivity implements MediaCall
         }
     }
 
+    boolean allCorrectFlg =false;
     @UiThread
     @Override
     public void allCorrectAnswer() {
-        if (readingFlg)
-            startReading();
-        btn_imgsend.setClickable(false);
-        btn_next.setClickable(false);
-        btn_prev.setClickable(false);
-        lin_layout.setBackgroundResource(R.drawable.convo_correct_bg);
-        correctSound.start();
-        if (setBackgroundHandler == null)
-            setBackgroundHandler = new Handler();
-        setBackgroundHandler.postDelayed(() -> {
-            lin_layout.setBackgroundResource(R.drawable.dialog_bg);
-            sendMessage();
-        }, 1200);
+        if(!allCorrectFlg) {
+            allCorrectFlg = true;
+            if (readingFlg)
+                btn_reading.performClick();
+            btn_imgsend.setClickable(false);
+            btn_next.setClickable(false);
+            btn_prev.setClickable(false);
+            lin_layout.setBackgroundResource(R.drawable.convo_correct_bg);
+            correctSound.start();
+            if (setBackgroundHandler == null)
+                setBackgroundHandler = new Handler();
+            setBackgroundHandler.postDelayed(() -> {
+                lin_layout.setBackgroundResource(R.drawable.dialog_bg);
+                sendMessage();
+            }, 1200);
+        }
     }
 
     @Override
     protected void onPause() {
         super.onPause();
         if (readingFlg)
-            startReading();
+            btn_reading.performClick();
         try {
             if (playingFlg)
                 mp.stop();
@@ -769,16 +765,24 @@ public class ReadingVocabularyActivity extends BaseActivity implements MediaCall
     @Override
     public void onBackPressed() {
         if (readingFlg)
-            startReading();
+            btn_reading.performClick();
         try {
             if (playingFlg)
                 mp.stop();
         } catch (Exception e) {
             e.printStackTrace();
         }
-        if (!dilogOpen) {
-            dilogOpen = true;
-            showExitDialog(this);
+
+        if (FastSave.getInstance().getString(APP_SECTION,"").equalsIgnoreCase(sec_Test)) {
+            if (!dilogOpen) {
+                dilogOpen = true;
+                showStars(false);
+            }
+        }else{
+            if (!dilogOpen) {
+                dilogOpen = true;
+                showExitDialog(this);
+            }
         }
     }
 
@@ -818,7 +822,7 @@ public class ReadingVocabularyActivity extends BaseActivity implements MediaCall
         dia_ratingBar.setRating(rating);
 
         dia_btn_red.setVisibility(View.GONE);
-        dia_btn_green.setText("Next");
+        dia_btn_green.setText("Submit");
         dia_btn_yellow.setText("" + dialog_btn_cancel);
         if (diaComplete)
             dia_btn_yellow.setVisibility(View.GONE);
@@ -850,7 +854,7 @@ public class ReadingVocabularyActivity extends BaseActivity implements MediaCall
     public void disableHandlers() {
         try {
             if (readingFlg)
-                startReading();
+                btn_reading.performClick();
             if (playingFlg)
                 mp.stop();
         } catch (IllegalStateException e) {
@@ -966,6 +970,6 @@ public class ReadingVocabularyActivity extends BaseActivity implements MediaCall
     @Override
     public void onComplete() {
         if (readingFlg)
-            startReading();
+            btn_reading.performClick();
     }
 }

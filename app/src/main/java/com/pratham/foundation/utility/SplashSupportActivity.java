@@ -32,6 +32,7 @@ public class SplashSupportActivity extends AppCompatActivity implements MediaPla
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
         hideSystemUI();
     }
 

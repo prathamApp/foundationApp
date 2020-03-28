@@ -10,7 +10,6 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-
 import com.pratham.foundation.R;
 import com.pratham.foundation.database.domain.Student;
 
@@ -34,8 +33,8 @@ public class StudentsAdapter extends RecyclerView.Adapter<StudentsAdapter.MyView
 
         public MyViewHolder(View itemView) {
             super(itemView);
-            studentName = itemView.findViewById(R.id.content_title);
-            avatar = itemView.findViewById(R.id.content_thumbnail);
+            studentName = itemView.findViewById(R.id.child_name);
+            avatar = itemView.findViewById(R.id.iv_child);
             rl_card = itemView.findViewById(R.id.rl_card);
         }
     }
@@ -56,6 +55,7 @@ public class StudentsAdapter extends RecyclerView.Adapter<StudentsAdapter.MyView
     @Override
     public void onBindViewHolder(MyViewHolder holder, int position) {
         Student studentAvatar = studentAvatarList.get(position);
+        holder.studentName.setSelected(true);
         holder.studentName.setText(studentAvatar.getFullName());
 
         if (studentAvatar.getAvatarName() != null)

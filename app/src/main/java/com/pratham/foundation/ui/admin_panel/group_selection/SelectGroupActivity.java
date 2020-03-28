@@ -24,6 +24,8 @@ import org.androidannotations.annotations.ViewById;
 
 import java.util.Objects;
 
+import static com.pratham.foundation.ApplicationClass.BackBtnSound;
+
 @EActivity(R.layout.activity_select_group)
 public class SelectGroupActivity extends BaseActivity {
 
@@ -83,6 +85,11 @@ public class SelectGroupActivity extends BaseActivity {
 //        Log.d("Grp_Log", "onBackPressed: ");
 //        int fragments = getSupportFragmentManager().getBackStackEntryCount();
 //        Log.d("Grp_Log", "onBackPressed: "+fragments);
+        try {
+            BackBtnSound.start();
+        } catch (IllegalStateException e) {
+            e.printStackTrace();
+        }
         showExitDialog();
 /*        if (fragments == 1) {
             Log.d("Grp_Log", "onBackPressed: "+fragments);

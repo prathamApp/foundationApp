@@ -27,6 +27,7 @@ import org.androidannotations.annotations.ViewById;
 import java.util.ArrayList;
 import java.util.Objects;
 
+import static com.pratham.foundation.ApplicationClass.ButtonClickSound;
 import static com.pratham.foundation.utility.FC_Utility.dpToPx;
 
 
@@ -162,6 +163,11 @@ public class FragmentSelectGroup extends Fragment implements ContractGroup {
 
     @Click(R.id.btn_group_next)
     public void setNext(View v) {
+        try {
+            ButtonClickSound.start();
+        } catch (IllegalStateException e) {
+            e.printStackTrace();
+        }
         if (groupSelected != null) {
             //todo remove comment
           //  ApplicationClass.bubble_mp.start();

@@ -175,7 +175,7 @@ public class ConversationActivity extends BaseActivity
             recyclerView.setAdapter(mAdapter);
             for(int i =0; i<msgPercentage.length; i++)
                 msgPercentage[1] = 0;
-            new Handler().postDelayed(() -> displayNextQuestion(currentQueNos), (long) (800));
+            new Handler().postDelayed(() -> displayNextQuestion(currentQueNos), 800);
         }
     }
 
@@ -244,7 +244,7 @@ public class ConversationActivity extends BaseActivity
 
         addItemInConvo(answer, answerAudio, true);
         currentQueNos += 1;
-        new Handler().postDelayed(() -> displayNextQuestion(currentQueNos), (long) (1000));
+        new Handler().postDelayed(() -> displayNextQuestion(currentQueNos), 1000);
 
 /*        switch (convoMode) {
             case "A":
@@ -354,7 +354,7 @@ public class ConversationActivity extends BaseActivity
                         showStars(true);
                     else
                         ConvoEndDialog();
-                }, (long) (1200));
+                }, 1200);
                 /*                currentQueNos = 0;
                 displayNextQuestion(currentQueNos);*/
             }
@@ -640,7 +640,6 @@ public class ConversationActivity extends BaseActivity
         dialog.show();
 
         dia_btn_green.setOnClickListener(v -> {
-            ButtonClickSound.start();
             presenter.addScore(0, "", 0, 0, "Convo End");
             float perc = getCompletionPercentage();
             presenter.addCompletion(perc);

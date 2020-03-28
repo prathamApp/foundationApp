@@ -73,6 +73,7 @@ public class ChildAdapter extends RecyclerView.Adapter<ChildAdapter.ChildHolder>
                         viewHolder.getAdapterPosition()));
         viewHolder.iv_camera.setOnClickListener(v -> attendanceView.
                 clickPhoto(datalist.get(pos).getStudentID(), pos));
+        viewHolder.child_name.setSelected(true);
         if (datalist.get(viewHolder.getAdapterPosition()).isChecked()) {
             viewHolder.itemView.setBackground(context.getResources().getDrawable(R.drawable.card_color_bg1));
             viewHolder.child_name.setTextColor(context.getResources().getColor(R.color.white));

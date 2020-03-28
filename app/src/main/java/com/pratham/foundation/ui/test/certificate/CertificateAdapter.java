@@ -15,6 +15,7 @@ import android.widget.TextView;
 
 import com.pratham.foundation.R;
 import com.pratham.foundation.modalclasses.CertificateModelClass;
+import com.pratham.foundation.ui.app_home.test_fragment.CertificateClicked;
 
 import java.util.List;
 
@@ -207,7 +208,7 @@ public class CertificateAdapter extends RecyclerView.Adapter<CertificateAdapter.
                 lastPos = position;
 //                }
             }
-        }, (long) (20));
+        }, 20);
 
     }
 

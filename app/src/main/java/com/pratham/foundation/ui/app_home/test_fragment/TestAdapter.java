@@ -19,7 +19,6 @@ import android.widget.TextView;
 
 import com.pratham.foundation.R;
 import com.pratham.foundation.modalclasses.CertificateModelClass;
-import com.pratham.foundation.ui.test.certificate.CertificateClicked;
 
 import org.json.JSONArray;
 import org.json.JSONObject;

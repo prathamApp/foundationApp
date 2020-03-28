@@ -24,7 +24,6 @@ import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.Window;
-import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -88,10 +87,13 @@ public class SplashActivity extends SplashSupportActivity implements SplashContr
     @AfterViews
     public void init() {
         //overridePendingTransition(R.anim.slide_in_right,R.anim.slide_out_left);
-        getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
+//        bgMusic = MediaPlayer.create(this, R.raw.bg_sound);
+//        bgMusic.setLooping(true);
+//        bgMusic.start();
+
         new Handler().postDelayed(() -> {
             startTextAud();
-        }, 300);
+        }, 500);
     }
 
     private void startTextAud() {
@@ -106,18 +108,18 @@ public class SplashActivity extends SplashSupportActivity implements SplashContr
     protected void onResume() {
         super.onResume();
         new Handler().postDelayed(() -> {
-//            try {
-//                if (bgMusic == null || !bgMusic.isPlaying()) {
-//                    bgMusic = MediaPlayer.create(this, R.raw.bg_sound);
-//                    bgMusic.setLooping(true);
-//                    bgMusic.start();
-//                }
-//                else if(bgMusic!=null){
-//                    bgMusic.start();
-//                }
-//            } catch (Exception e) {
-//                e.printStackTrace();
-//            }
+            try {
+                if (bgMusic == null || !bgMusic.isPlaying()) {
+                    bgMusic = MediaPlayer.create(this, R.raw.bg_sound);
+                    bgMusic.setLooping(true);
+                    bgMusic.start();
+                }
+                else if(bgMusic!=null){
+                    bgMusic.start();
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
             if (!ApplicationClass.isTablet) {
                 EventMessage message = new EventMessage();
                 message.setMessage("reload");

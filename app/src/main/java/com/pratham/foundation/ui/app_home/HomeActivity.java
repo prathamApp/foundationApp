@@ -53,6 +53,8 @@ import org.greenrobot.eventbus.ThreadMode;
 import java.io.File;
 import java.util.Objects;
 
+import static com.pratham.foundation.ApplicationClass.BackBtnSound;
+import static com.pratham.foundation.ApplicationClass.ButtonClickSound;
 import static com.pratham.foundation.utility.FC_Constants.APP_SECTION;
 import static com.pratham.foundation.utility.FC_Constants.ASSESSMENT_SESSION;
 import static com.pratham.foundation.utility.FC_Constants.BACK_PRESSED;
@@ -250,7 +252,8 @@ public class HomeActivity extends BaseActivity implements LevelChanged {
                                 .getString(FC_Constants.CURRENT_STUDENT_ID, ""));
             }*/
             if (FastSave.getInstance().getString(LOGIN_MODE, "").equalsIgnoreCase(INDIVIDUAL_MODE))
-                profileName = FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_NAME, "").split(" ")[0];
+                profileName = FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_NAME, "")
+                        .split(" ")[0];
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -280,6 +283,11 @@ public class HomeActivity extends BaseActivity implements LevelChanged {
         SubmarineItem item5 = new SubmarineItem(getDrawable(R.drawable.level_5), null);
 
         submarine.setSubmarineItemClickListener((position, submarineItem) -> {
+            try {
+                ButtonClickSound.start();
+            } catch (IllegalStateException e) {
+                e.printStackTrace();
+            }
             FC_Constants.currentLevel = position;
             FastSave.getInstance().saveInt(FC_Constants.CURRENT_LEVEL, position);
             switch (position) {
@@ -307,6 +315,11 @@ public class HomeActivity extends BaseActivity implements LevelChanged {
         });
 
         submarine.setSubmarineCircleClickListener(() -> {
+            try {
+                BackBtnSound.start();
+            } catch (IllegalStateException e) {
+                e.printStackTrace();
+            }
             submarine.dip();
         });
 
@@ -413,7 +426,12 @@ public class HomeActivity extends BaseActivity implements LevelChanged {
 /*                if (tab.getText().toString().equalsIgnoreCase("Learning")) {
                     FastSave.getInstance().getString(APP_SECTION,"").equalsIgnoreCase(sec_Test) = true;
                 }if (tab.getText().toString().equalsIgnoreCase("Practice")) {
-                }*/
+                }*/        try {
+                    BackBtnSound.start();
+                } catch (IllegalStateException e) {
+                    e.printStackTrace();
+                }
+
                 if (tab.getText().toString().equalsIgnoreCase("" + getResources().getString(R.string.Test))) {
                     FastSave.getInstance().saveString(APP_SECTION, sec_Test);
                     String assessmentSession = "test-" + ApplicationClass.getUniqueID();
@@ -448,6 +466,11 @@ public class HomeActivity extends BaseActivity implements LevelChanged {
 
             @Override
             public void onTabReselected(TabLayout.Tab tab) {
+                try {
+                    BackBtnSound.start();
+                } catch (IllegalStateException e) {
+                    e.printStackTrace();
+                }
 
                 if (tab.getText().toString().equalsIgnoreCase("" + getResources().getString(R.string.Test))) {
                     FastSave.getInstance().saveString(APP_SECTION, sec_Test);
@@ -513,18 +536,18 @@ public class HomeActivity extends BaseActivity implements LevelChanged {
         dialog.show();
 
         dia_btn_red.setOnClickListener(v -> {
-            dialog.dismiss();
             FastSave.getInstance().saveBoolean(supervisedAssessment, false);
             Intent intent = new Intent(HomeActivity.this, SupervisedAssessmentActivity.class);
             intent.putExtra("testMode", "unsupervised");
+            dialog.dismiss();
             startActivity(intent);
         });
 
         dia_btn_yellow.setOnClickListener(v -> {
-            dialog.dismiss();
             FastSave.getInstance().saveBoolean(supervisedAssessment, true);
             Intent intent = new Intent(HomeActivity.this, SupervisedAssessmentActivity.class);
             intent.putExtra("testMode", "supervised");
+            dialog.dismiss();
             startActivity(intent);
         });
 
@@ -589,6 +612,11 @@ public class HomeActivity extends BaseActivity implements LevelChanged {
 
     @Click(R.id.iv_level)
     public void levelChange() {
+        try {
+            ButtonClickSound.start();
+        } catch (IllegalStateException e) {
+            e.printStackTrace();
+        }
         submarine.show();
     }
 
@@ -637,6 +665,11 @@ public class HomeActivity extends BaseActivity implements LevelChanged {
 
     @Click(R.id.main_back)
     public void backBtnPressed() {
+        try {
+            BackBtnSound.start();
+        } catch (IllegalStateException e) {
+            e.printStackTrace();
+        }
         EventMessage eventMessage = new EventMessage();
         eventMessage.setMessage(BACK_PRESSED);
         EventBus.getDefault().post(eventMessage);
@@ -650,47 +683,62 @@ public class HomeActivity extends BaseActivity implements LevelChanged {
         finish();
     }
 
-    @SuppressLint("SetTextI18n")
-    private void exitDialog() {
-        CustomLodingDialog dialog = new CustomLodingDialog(HomeActivity.this);
-        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        dialog.setContentView(R.layout.fc_custom_dialog);
-/*      Bitmap map=FC_Utility.takeScreenShot(HomeActivity.this);
-        Bitmap fast=FC_Utility.fastblur(map, 20);
-        final Drawable draw=new BitmapDrawable(getResources(),fast);
-        dialog.getWindow().setBackgroundDrawable(draw);*/
-        Objects.requireNonNull(dialog.getWindow()).setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-        dialog.setCancelable(false);
-        dialog.setCanceledOnTouchOutside(false);
-        dialog.show();
-
-        TextView dia_title = dialog.findViewById(R.id.dia_title);
-        Button next_btn = dialog.findViewById(R.id.dia_btn_green);
-        Button test_btn = dialog.findViewById(R.id.dia_btn_yellow);
-        Button revise_btn = dialog.findViewById(R.id.dia_btn_red);
-
-        dia_title.setText("" + getResources().getString(R.string.change_subj));
-        revise_btn.setText("" + getResources().getString(R.string.Exit));
-        test_btn.setText("" + getResources().getString(R.string.Cancel));
-        next_btn.setText("" + getResources().getString(R.string.Okay));
-
-        next_btn.setOnClickListener(v -> {
-            finish();
-            dialogFlg = false;
-            dialog.dismiss();
-        });
-
-        revise_btn.setOnClickListener(v -> {
-            endSession(HomeActivity.this);
-            finishAffinity();
-            dialogFlg = false;
-            dialog.dismiss();
-        });
-
-        test_btn.setOnClickListener(v -> {
-            dialogFlg = false;
-            dialog.dismiss();
-        });
-    }
+//    @SuppressLint("SetTextI18n")
+//    private void exitDialog() {
+//        CustomLodingDialog dialog = new CustomLodingDialog(HomeActivity.this);
+//        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+//        dialog.setContentView(R.layout.fc_custom_dialog);
+///*      Bitmap map=FC_Utility.takeScreenShot(HomeActivity.this);
+//        Bitmap fast=FC_Utility.fastblur(map, 20);
+//        final Drawable draw=new BitmapDrawable(getResources(),fast);
+//        dialog.getWindow().setBackgroundDrawable(draw);*/
+//        Objects.requireNonNull(dialog.getWindow()).setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+//        dialog.setCancelable(false);
+//        dialog.setCanceledOnTouchOutside(false);
+//        dialog.show();
+//
+//        TextView dia_title = dialog.findViewById(R.id.dia_title);
+//        Button next_btn = dialog.findViewById(R.id.dia_btn_green);
+//        Button test_btn = dialog.findViewById(R.id.dia_btn_yellow);
+//        Button revise_btn = dialog.findViewById(R.id.dia_btn_red);
+//
+//        dia_title.setText("" + getResources().getString(R.string.change_subj));
+//        revise_btn.setText("" + getResources().getString(R.string.Exit));
+//        test_btn.setText("" + getResources().getString(R.string.Cancel));
+//        next_btn.setText("" + getResources().getString(R.string.Okay));
+//
+//        next_btn.setOnClickListener(v -> {
+//            try {
+//                ButtonClickSound.start();
+//            } catch (IllegalStateException e) {
+//                e.printStackTrace();
+//            }
+//            dialogFlg = false;
+//            dialog.dismiss();
+//            finish();
+//        });
+//
+//        revise_btn.setOnClickListener(v -> {
+//            try {
+//                ButtonClickSound.start();
+//            } catch (IllegalStateException e) {
+//                e.printStackTrace();
+//            }
+//            endSession(HomeActivity.this);
+//            dialogFlg = false;
+//            dialog.dismiss();
+//            finishAffinity();
+//        });
+//
+//        test_btn.setOnClickListener(v -> {
+//            try {
+//                ButtonClickSound.start();
+//            } catch (IllegalStateException e) {
+//                e.printStackTrace();
+//            }
+//            dialogFlg = false;
+//            dialog.dismiss();
+//        });
+//    }
 
 }

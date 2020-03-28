@@ -84,7 +84,7 @@ public interface TestContract {
 
         void generateTestData(JSONArray testData, String nodeId);
 
-        void getTempData(String s);
+        void getTempData(String nodeId);
 
         void endTestSession();
 

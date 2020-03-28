@@ -84,7 +84,7 @@ public class ReadingStoryActivity extends BaseActivity implements
     @ViewById(R.id.btn_prev)
     ImageButton btn_previouspage;
     @ViewById(R.id.btn_next)
-    ImageButton btn_nextpage;
+    ImageButton btn_next;
     @ViewById(R.id.btn_play)
     ImageButton btn_Play;
     @ViewById(R.id.btn_read_mic)
@@ -259,7 +259,7 @@ public class ReadingStoryActivity extends BaseActivity implements
         if (currentPage < totalPages - 1 && currentPage > 0) {
             lastPgFlag = false;
             btn_previouspage.setVisibility(View.VISIBLE);
-            btn_nextpage.setVisibility(View.VISIBLE);
+            btn_next.setVisibility(View.VISIBLE);
         }
 
         wordFlowLayout.removeAllViews();
@@ -344,10 +344,11 @@ public class ReadingStoryActivity extends BaseActivity implements
                     showStars(true);
                 else
                     showAcknowledgeDialog(true);
-            } else {
+            } /*else {
                 btn_nextpage.performClick();
-            }
+            }*/
         }, 1000);
+        dismissLoadingDialog();
     }
 
     private void setWordsToLayout() {
@@ -464,7 +465,7 @@ public class ReadingStoryActivity extends BaseActivity implements
                                     Collections.shuffle(readSounds);
                                     mPlayer = MediaPlayer.create(context, readSounds.get(0));
                                     mPlayer.start();
-                                }, (long) (5000));
+                                }, 5000);
                             }
                             btn_Stop.performClick();
 //                            layout_mic_ripple.startRippleAnimation();
@@ -531,12 +532,12 @@ public class ReadingStoryActivity extends BaseActivity implements
     @Click(R.id.btn_Stop)
     void stopBtn() {
         if (voiceStart) {
+            continuousSpeechService.stopSpeechInput();
             voiceStart = false;
             btn_Stop.setVisibility(View.GONE);
             if (!FastSave.getInstance().getString(APP_SECTION,"").equalsIgnoreCase(sec_Test) && !playHideFlg)
                 btn_Play.setVisibility(View.VISIBLE);
             btn_Mic.setVisibility(View.VISIBLE);
-            continuousSpeechService.stopSpeechInput();
         } else if (playFlg || pauseFlg) {
             btn_Stop.setVisibility(View.GONE);
             btn_Play.setVisibility(View.VISIBLE);
@@ -545,18 +546,18 @@ public class ReadingStoryActivity extends BaseActivity implements
             btn_Play.setImageResource(R.drawable.ic_play_arrow_black);
             startPlayBack = Float.parseFloat(modalPagesList.get(currentPage).getReadList().get(0).getWordFrom());
             wordCounter = 0;
+            playFlg = false;
+            pauseFlg = true;
             try {
-                playFlg = false;
-                pauseFlg = true;
-                try {
-                    if (mp.isPlaying()) {
-                        mp.stop();
-                        mp.reset();
-                        mp.release();
-                    }
-                } catch (Exception e) {
-                    e.printStackTrace();
+                if (mp.isPlaying()) {
+                    mp.stop();
+                    mp.reset();
+                    mp.release();
                 }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            try {
                 if (startReadingHandler != null)
                     startReadingHandler.removeCallbacksAndMessages(null);
                 if (soundStopHandler != null)
@@ -804,72 +805,91 @@ public class ReadingStoryActivity extends BaseActivity implements
         showStars(false);
     }
 
+    boolean nextPressedFlg = false;
     @Click(R.id.btn_next)
     void gotoNextPage() {
-        if (currentPage < totalPages - 1) {
+        if (currentPage < totalPages - 1 && !nextPressedFlg) {
+            nextPressedFlg = true;
 //            layout_ripplepulse_right.startRippleAnimation();
             wordCounter = 0;
-            setMute(0);
-            try {
-                if (audioHandler != null)
-                    audioHandler.removeCallbacksAndMessages(null);
-                if (handler != null)
-                    handler.removeCallbacksAndMessages(null);
-                if (colorChangeHandler != null)
-                    colorChangeHandler.removeCallbacksAndMessages(null);
-                if (quesReadHandler != null) {
-                    quesReadHandler.removeCallbacksAndMessages(null);
-                    try {
-                        if (mPlayer.isPlaying() && mPlayer != null) {
-                            mPlayer.stop();
-                            mPlayer.reset();
-                            mPlayer.release();
-                        }
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                }
-                if (soundStopHandler != null)
-                    soundStopHandler.removeCallbacksAndMessages(null);
-                if (startReadingHandler != null)
-                    startReadingHandler.removeCallbacksAndMessages(null);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
+            ButtonClickSound.start();
             if (voiceStart) {
-                voiceStart = false;
+                btn_Stop.performClick();
                 if (!FastSave.getInstance().getString(APP_SECTION,"").equalsIgnoreCase(sec_Test) && !playHideFlg)
                     btn_Play.setVisibility(View.VISIBLE);
                 btn_Mic.setImageResource(R.drawable.ic_mic_black);
-                continuousSpeechService.stopSpeechInput();
                 setMute(0);
-            }
-            ButtonClickSound.start();
-            Log.d("click", "totalPages: NextBtn: " + totalPages + "  currentPage: " + currentPage);
-            try {
-                if (mp != null && mp.isPlaying()) {
-                    mp.stop();
-                    mp.reset();
-                    mp.release();
+                if (!flgPerMarked) {
+                    flgPerMarked = true;
+                    correctAnswerCount = setBooleanGetCounter();
+                    float perc = getPercentage();
+                    presenter.addScore(0, "perc - " + perc, correctAnswerCount, correctArr.length, startTime, "" + contentType);
                 }
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
 
-            if (!flgPerMarked) {
+                currentPage++;
+                pageNo++;
                 flgPerMarked = true;
-                correctAnswerCount = setBooleanGetCounter();
-                float perc = getPercentage();
-                presenter.addScore(0, "perc - " + perc, correctAnswerCount, correctArr.length, startTime, "" + contentType);
+                playFlg = false;
+                pauseFlg = true;
+                new Handler().postDelayed(() -> {presenter.getPage(currentPage);
+                    nextPressedFlg = false;
+                },300);
+                Log.d("click", "NextBtn - totalPages: " + totalPages + "  currentPage: " + currentPage);
+            }else {
+                try {
+                    if (audioHandler != null)
+                        audioHandler.removeCallbacksAndMessages(null);
+                    if (handler != null)
+                        handler.removeCallbacksAndMessages(null);
+                    if (colorChangeHandler != null)
+                        colorChangeHandler.removeCallbacksAndMessages(null);
+                    if (quesReadHandler != null) {
+                        quesReadHandler.removeCallbacksAndMessages(null);
+                        try {
+                            if (mPlayer.isPlaying() && mPlayer != null) {
+                                mPlayer.stop();
+                                mPlayer.reset();
+                                mPlayer.release();
+                            }
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+                    if (soundStopHandler != null)
+                        soundStopHandler.removeCallbacksAndMessages(null);
+                    if (startReadingHandler != null)
+                        startReadingHandler.removeCallbacksAndMessages(null);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                Log.d("click", "totalPages: NextBtn: " + totalPages + "  currentPage: " + currentPage);
+                try {
+                    if (mp != null && mp.isPlaying()) {
+                        mp.stop();
+                        mp.reset();
+                        mp.release();
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                if (!flgPerMarked) {
+                    flgPerMarked = true;
+                    correctAnswerCount = setBooleanGetCounter();
+                    float perc = getPercentage();
+                    presenter.addScore(0, "perc - " + perc, correctAnswerCount, correctArr.length, startTime, "" + contentType);
+                }
+
+                currentPage++;
+                pageNo++;
+                flgPerMarked = true;
+                playFlg = false;
+                pauseFlg = true;
+                new Handler().postDelayed(() -> {presenter.getPage(currentPage);
+                    nextPressedFlg = false;
+                },300);
+                Log.d("click", "NextBtn - totalPages: " + totalPages + "  currentPage: " + currentPage);
             }
 
-            currentPage++;
-            pageNo++;
-            flgPerMarked = true;
-            playFlg = false;
-            pauseFlg = true;
-            presenter.getPage(currentPage);
-            Log.d("click", "NextBtn - totalPages: " + totalPages + "  currentPage: " + currentPage);
         }/* else {
             GameConstatnts.playGameNext(getActivity(), true, this);
         }*/

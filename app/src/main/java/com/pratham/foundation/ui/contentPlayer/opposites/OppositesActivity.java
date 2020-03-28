@@ -32,7 +32,7 @@ import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.UiThread;
 import org.androidannotations.annotations.ViewById;
 
-import static com.pratham.foundation.ApplicationClass.ButtonClickSound;
+import static com.pratham.foundation.ApplicationClass.BackBtnSound;
 import static com.pratham.foundation.utility.FC_Constants.gameFolderPath;
 
 
@@ -227,7 +227,7 @@ public class OppositesActivity extends BaseActivity
     public void onBackPressed() {
         try {
             mediaPlayerUtil.stopMedia();
-            ButtonClickSound.start();
+            BackBtnSound.start();
             if (isAudioPlaying) {
                 isAudioPlaying = false;
             }

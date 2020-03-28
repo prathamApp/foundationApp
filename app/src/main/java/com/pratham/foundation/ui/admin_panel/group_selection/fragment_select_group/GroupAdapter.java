@@ -40,6 +40,7 @@ public class GroupAdapter extends RecyclerView.Adapter<GroupAdapter.ViewHolder> 
     public void onBindViewHolder(@NonNull final ViewHolder viewHolder, int pos) {
         pos = viewHolder.getAdapterPosition();
         viewHolder.group_name.setText(datalist.get(pos).getGroupName());
+        viewHolder.group_name.setSelected(true);
         if (datalist.get(pos).isSelected()) {
             viewHolder.group_card.setBackground(context.getResources().getDrawable(R.drawable.card_color_bg1));
             viewHolder.group_name.setTextColor(context.getResources().getColor(R.color.white));

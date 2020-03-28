@@ -43,6 +43,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 import static android.app.Activity.RESULT_OK;
+import static com.pratham.foundation.ApplicationClass.ButtonClickSound;
 import static com.pratham.foundation.utility.FC_Constants.GROUP_MODE;
 import static com.pratham.foundation.utility.FC_Constants.StudentPhotoPath;
 import static com.pratham.foundation.utility.FC_Utility.dpToPx;
@@ -197,6 +198,11 @@ public class FragmentChildAttendance extends Fragment implements ContractChildAt
 
     @OnClick(R.id.btn_attendance_next)
     public void setNext(View v) {
+        try {
+            ButtonClickSound.start();
+        } catch (IllegalStateException e) {
+            e.printStackTrace();
+        }
         ArrayList<Student> checkedStds = new ArrayList<>();
         for (int i = 0; i < students.size(); i++) {
             if (students.get(i).isChecked())

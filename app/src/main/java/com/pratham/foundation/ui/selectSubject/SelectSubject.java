@@ -33,6 +33,8 @@ import org.androidannotations.annotations.ViewById;
 import java.util.List;
 import java.util.Objects;
 
+import static com.pratham.foundation.ApplicationClass.BackBtnSound;
+import static com.pratham.foundation.ApplicationClass.ButtonClickSound;
 import static com.pratham.foundation.utility.FC_Constants.currentLevel;
 import static com.pratham.foundation.utility.FC_Constants.currentSubjectFolder;
 import static com.pratham.foundation.utility.FC_Constants.gameFolderPath;
@@ -90,6 +92,11 @@ public class SelectSubject extends BaseActivity implements
 
     @Override
     public void onItemClicked(ContentTable contentTableObj) {
+        try {
+            ButtonClickSound.start();
+        } catch (IllegalStateException e) {
+            e.printStackTrace();
+        }
         currentLevel = 0;
         String currentSubject = contentTableObj.getNodeKeywords();
         if (contentTableObj.getNodeKeywords().equals("Science")) {
@@ -124,6 +131,11 @@ public class SelectSubject extends BaseActivity implements
 
     @Override
     public void onBackPressed() {
+        try {
+            BackBtnSound.start();
+        } catch (IllegalStateException e) {
+            e.printStackTrace();
+        }
         exitDialog();
     }
 
@@ -143,8 +155,8 @@ public class SelectSubject extends BaseActivity implements
 
         dia_btn_yes.setOnClickListener(v -> {
             endSession(this);
-            finishAffinity();
             dialog.dismiss();
+            finishAffinity();
         });
 
         dia_btn_no.setOnClickListener(v -> {

@@ -182,6 +182,15 @@
         <item name="android:background">@color/black_overlay</item>
     </style>
 
+    <style name="MyLaunchActivityTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="colorPrimary">@color/splash_bg</item>
+        <item name="colorPrimaryDark">@color/splash_bg</item>
+        <item name="colorAccent">@color/splash_bg</item>
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+        <item name="android:windowBackground">@color/splash_bg</item>
+    </style>
+
     <style name="AppTheme.NoActionBar">
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>

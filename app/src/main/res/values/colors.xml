@@ -89,6 +89,7 @@
     <color name="whiteButtonPressedBg">#b5999999</color>
     <color name="colorLightBlack">#757575</color>
     <color name="full_transparent">#00ffffff</color>
+    <color name="splash_bg">#FEFEFE</color>
     <color name="transparent_white_btn">#c8ffffff</color>
     <color name="transparent_white_dark">#60ffffff</color>
     <color name="colorBlack">#000</color>

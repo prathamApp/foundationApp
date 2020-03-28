@@ -23,10 +23,9 @@
     <ScrollView
         android:layout_below="@+id/btn_download_all_data"
         android:fadeScrollbars="false"
-                android:scrollbarSize="6dp"
+        android:scrollbarSize="6dp"
         android:scrollbarThumbVertical="@drawable/card_color_bg4"
         android:scrollbarTrackVertical="@drawable/scroll_bg"
-
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 

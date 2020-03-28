@@ -41,7 +41,7 @@ public class ApplicationClass extends Application {
     public static String path;
     public static TTSService ttsService;
     public static AudioManager audioManager;
-    public static MediaPlayer ButtonClickSound;
+    public static MediaPlayer ButtonClickSound,BackBtnSound;
 
     @Override
     public void onCreate() {
@@ -56,6 +56,7 @@ public class ApplicationClass extends Application {
         FastSave.init(getApplicationContext());
 
         ButtonClickSound = MediaPlayer.create(this, R.raw.click);
+        BackBtnSound = MediaPlayer.create(this, R.raw.click2);
 
         foundationPath = FC_Utility.getInternalPath(this);
         if (foundationPath != null) {

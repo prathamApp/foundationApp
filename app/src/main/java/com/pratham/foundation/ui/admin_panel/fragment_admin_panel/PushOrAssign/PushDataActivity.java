@@ -23,8 +23,6 @@ import org.androidannotations.annotations.Bean;
 import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.UiThread;
 
-import static com.pratham.foundation.ApplicationClass.ButtonClickSound;
-
 
 @EActivity(R.layout.activity_push_data)
 public class PushDataActivity extends BaseActivity implements PushDataContract.PushDataView {
@@ -67,7 +65,6 @@ public class PushDataActivity extends BaseActivity implements PushDataContract.P
         dialog.show();
 
         dia_btn_green.setOnClickListener(v -> {
-            ButtonClickSound.start();
             dialog.dismiss();
             finishActivity();
         });

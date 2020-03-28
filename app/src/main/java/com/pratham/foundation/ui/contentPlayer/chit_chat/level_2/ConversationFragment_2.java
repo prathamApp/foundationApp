@@ -190,7 +190,7 @@ public class ConversationFragment_2 extends Fragment
             recyclerView.setAdapter(mAdapter);
             for (int i = 0; i < msgPercentage.length; i++)
                 msgPercentage[1] = 0;
-            new Handler().postDelayed(() -> displayNextQuestion(currentQueNos), (long) (800));
+            new Handler().postDelayed(() -> displayNextQuestion(currentQueNos), 800);
         }
     }
 
@@ -278,7 +278,7 @@ public class ConversationFragment_2 extends Fragment
         readChatFlow.removeAllViews();
 
         currentQueNos += 1;
-        new Handler().postDelayed(() -> displayNextQuestion(currentQueNos), (long) (1000));
+        new Handler().postDelayed(() -> displayNextQuestion(currentQueNos), 1000);
 
 /*        switch (convoMode) {
             case "A":
@@ -390,7 +390,7 @@ public class ConversationFragment_2 extends Fragment
                         showStars(true);
                     else
                         ConvoEndDialog();
-                }, (long) (1200));
+                }, 1200);
                 /*                currentQueNos = 0;
                 displayNextQuestion(currentQueNos);*/
             }
@@ -699,7 +699,6 @@ public class ConversationFragment_2 extends Fragment
         dialog.show();
 
         dia_btn_green.setOnClickListener(v -> {
-            ButtonClickSound.start();
             Gson gson = new Gson();
             String json = gson.toJson(messageList);
             if (json != null && !json.isEmpty()) {

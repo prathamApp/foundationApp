@@ -36,6 +36,8 @@ import org.androidannotations.annotations.ViewById;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.pratham.foundation.ApplicationClass.BackBtnSound;
+import static com.pratham.foundation.ApplicationClass.ButtonClickSound;
 import static com.pratham.foundation.ui.contentPlayer.GameConstatnts.playInsequence;
 import static com.pratham.foundation.utility.FC_Utility.dpToPx;
 
@@ -112,6 +114,11 @@ public class SequenceLayout extends Fragment implements SequeanceLayoutContract.
 
     @Click(R.id.playFromStart)
     public void playFromStartClick() {
+        try {
+            ButtonClickSound.start();
+        } catch (IllegalStateException e) {
+            e.printStackTrace();
+        }
         GameConstatnts.currentGameAdapterposition = -1;
         playInsequence = true;
         GameConstatnts.plaGame(getActivity());
@@ -124,6 +131,11 @@ public class SequenceLayout extends Fragment implements SequeanceLayoutContract.
 
     @Override
     public void contentClicked(ContentTable contentTable) {
+        try {
+            ButtonClickSound.start();
+        } catch (IllegalStateException e) {
+            e.printStackTrace();
+        }
         onConentClickeditem = contentTable;
         // GameConstatnts.showInstructionDialog(this, getActivity(), contentTable.getResourceType());
 //        if (!contentTable.getResourceType().equalsIgnoreCase(GameConstatnts.READ_VOCAB_ANDROID)) {
@@ -135,6 +147,11 @@ public class SequenceLayout extends Fragment implements SequeanceLayoutContract.
 
     @Click(R.id.btn_back)
     public void arrowBackpresses() {
+        try {
+            BackBtnSound.start();
+        } catch (IllegalStateException e) {
+            e.printStackTrace();
+        }
         getActivity().onBackPressed();
     }
 
@@ -264,9 +281,7 @@ public class SequenceLayout extends Fragment implements SequeanceLayoutContract.
     }
 
     @Override
-    public void exit() {
-
-    }
+    public void exit() { }
 
     @Override
     public void onStop() {

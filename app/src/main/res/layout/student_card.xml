@@ -1,48 +1,106 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/content_card_view"
+<android.support.design.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/rl_child_attendance"
     android:layout_width="@dimen/_100sdp"
     android:layout_height="wrap_content"
-    android:layout_marginHorizontal="@dimen/_10sdp"
-    android:layout_marginVertical="@dimen/_10sdp"
-    android:background="@drawable/ripple_rectangle_card"
-    android:elevation="5dp"
-    android:padding="5dp">
+    android:background="@color/full_transparent"
+    android:layout_margin="@dimen/_3sdp"
+    app:cardCornerRadius="@dimen/_10sdp">
 
     <RelativeLayout
         android:id="@+id/rl_card"
+        android:background="@drawable/card_color_bg6"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
         <ImageView
-            android:id="@+id/content_thumbnail"
+            android:id="@+id/iv_camera"
+            android:layout_width="@dimen/_20sdp"
+            android:visibility="gone"
+            android:layout_height="@dimen/_20sdp"
+            android:layout_marginTop="@dimen/_2sdp"
+            android:layout_marginStart="@dimen/_2sdp"
+            android:src="@drawable/ic_photo_camera" />
+
+        <com.facebook.drawee.view.SimpleDraweeView
+            android:id="@+id/iv_child"
+            android:layout_width="@dimen/_65sdp"
+            android:layout_height="@dimen/_65sdp"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="@dimen/_5sdp"
+            android:layout_marginBottom="@dimen/_5sdp"
+            android:background="@android:color/transparent"
+            app:actualImageScaleType="centerInside"
+            app:placeholderImage="@drawable/b2"
+            app:roundedCornerRadius="@dimen/_33sdp"
+            app:roundingBorderColor="@color/white"
+            app:roundingBorderWidth="@dimen/_2sdp"/>
+
+        <com.pratham.foundation.customView.SansTextViewBold
+            android:id="@+id/child_name"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/_80sdp"
-            android:layout_marginHorizontal="5dp"
-            android:foregroundGravity="center"
-            android:src="@drawable/pratham_logo"
-            android:scaleType="fitCenter" />
-
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_below="@id/content_thumbnail">
-
-            <com.pratham.foundation.customView.SansTextView
-                android:id="@+id/content_title"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:gravity="center"
-                android:paddingBottom="5dp"
-                android:paddingLeft="2dp"
-                android:paddingRight="2dp"
-                android:text="@string/app_name"
-                android:paddingTop="5dp"
-                android:textColor="@color/colorBlack"
-                android:textSize="@dimen/_12sdp" />
-
-        </RelativeLayout>
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:text="@string/app_name"
+            android:layout_below="@id/iv_child"
+            android:layout_marginEnd="@dimen/_5sdp"
+            android:layout_marginTop="@dimen/_2sdp"
+            android:layout_marginBottom="@dimen/_5sdp"
+            android:layout_marginStart="@dimen/_5sdp"                android:duplicateParentState="true"
+            android:ellipsize="marquee"
+            android:fadingEdge="horizontal"
+            android:marqueeRepeatLimit="marquee_forever"
+            android:scrollHorizontally="true"
+            android:singleLine="true"
+            android:textColor="@color/dark_blue"
+            android:textSize="@dimen/_12sdp" />
 
     </RelativeLayout>
 
-</LinearLayout>
+</android.support.design.card.MaterialCardView>
+    <!--
+
+        <?xml version="1.0" encoding="utf-8"?>
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/rl_child_attendance"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/rounded_rectangle_stroke_bg"
+        android:padding="8dp"
+        android:clickable="true">
+
+        <com.facebook.drawee.view.SimpleDraweeView
+            android:id="@+id/iv_child"
+            android:layout_width="@dimen/_60sdp"
+            android:layout_height="@dimen/_60sdp"
+            android:layout_marginEnd="@dimen/_5sdp"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="@dimen/_5sdp"
+            android:background="@android:color/transparent"
+            app:roundingBorderColor="@color/colorAccent"
+            app:roundingBorderWidth="@dimen/_2sdp"
+            app:roundedCornerRadius="@dimen/_30sdp"
+            app:actualImageScaleType="centerInside"
+            app:placeholderImage="@drawable/b1"/>
+
+        <ImageView
+            android:id="@+id/iv_camera"
+            android:layout_width="@dimen/_30sdp"
+            android:layout_height="@dimen/_30sdp"
+            android:src="@drawable/ic_photo_camera" />
+
+        <com.pratham.foundation.customView.SansTextView
+            android:id="@+id/child_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/_5sdp"
+            android:layout_below="@+id/iv_child"
+            android:layout_centerHorizontal="true"
+            android:gravity="center"
+            android:layout_marginTop="5dp"
+            android:text="aasdldsd"
+            android:textColor="#000"
+            android:textSize="@dimen/_12sdp" />
+    </RelativeLayout>&lt;!&ndash;</android.support.design.card.MaterialCardView>&ndash;&gt;-->

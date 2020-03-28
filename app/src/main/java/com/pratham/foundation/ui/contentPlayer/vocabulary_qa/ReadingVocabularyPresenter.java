@@ -226,7 +226,7 @@ public class ReadingVocabularyPresenter implements ReadingVocabularyContract.Rea
                 }
             }
 
-            if (!allCorrect)
+            if (!allCorrect) {
                 for (int k = 0; k < sttResults.size(); k++) {
                     String sttResult = sttResults.get(k);
                     String[] splitRes = sttResult.split(" ");
@@ -238,31 +238,26 @@ public class ReadingVocabularyPresenter implements ReadingVocabularyContract.Rea
                                 break;
                             }
                 }
-            else if (allCorrect) {
+                int correctCnt = getCorrectCounter();
+                perc = getPercentage(correctCnt, ReadingVocabularyActivity.correctArr.length);
+                if ((perc > 50) && !FastSave.getInstance().getString(APP_SECTION,"").equalsIgnoreCase(sec_Test)) {
+                    readingView.sendClikChanger(1);
+                    readingView.setCorrectViewColor();
+                }
+            }else if (allCorrect) {
                 for (int i = 0; i < ReadingVocabularyActivity.correctArr.length; i++)
                     ReadingVocabularyActivity.correctArr[i] = true;
+                readingView.sendClikChanger(0);
+                readingView.setCorrectViewColor();
+                readingView.allCorrectAnswer();
                 testCorrectArr[currentPageNo] = true;
             }
 
             int correctCnt = getCorrectCounter();
             addScore(0, "Words:" + words, correctCnt, ReadingVocabularyActivity.correctArr.length,
                     "" + FC_Utility.getCurrentDateTime(), "Vocab" + keyWordCorrect);
-            perc = getPercentage(correctCnt, ReadingVocabularyActivity.correctArr.length);
+//            perc = getPercentage(correctCnt, ReadingVocabularyActivity.correctArr.length);
 
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        try {
-            if ((perc > 50) && !FastSave.getInstance().getString(APP_SECTION,"").equalsIgnoreCase(sec_Test)) {
-                readingView.sendClikChanger(1);
-                readingView.setCorrectViewColor();
-            }
-            if (allCorrect) {
-                readingView.sendClikChanger(0);
-                readingView.setCorrectViewColor();
-                readingView.allCorrectAnswer();
-            }
         } catch (Exception e) {
             e.printStackTrace();
         }

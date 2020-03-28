@@ -166,9 +166,9 @@ Handler handler;
         if (handler == null) {
             handler = new Handler();
             if (isUser) {
-                handler.postDelayed(() -> displayNextQuestion(currentQueNos), (long) (1000));
+                handler.postDelayed(() -> displayNextQuestion(currentQueNos), 1000);
             } else {
-                handler.postDelayed(() -> sendMessage(), (long) (1200));
+                handler.postDelayed(() -> sendMessage(), 1200);
             }
         }
     }
@@ -195,7 +195,7 @@ Handler handler;
             recyclerView.setAdapter(mAdapter);
             for (int i = 0; i < msgPercentage.length; i++)
                 msgPercentage[1] = 0;
-            new Handler().postDelayed(() -> displayNextQuestion(currentQueNos), (long) (800));
+            new Handler().postDelayed(() -> displayNextQuestion(currentQueNos), 800);
         }
     }
 
@@ -438,10 +438,10 @@ Handler handler;
                 if (handler != null) {
                     if (isUser) {
                         handler.postDelayed(() ->
-                                displayNextQuestion(currentQueNos), (long) (1000));
+                                displayNextQuestion(currentQueNos), 1000);
                     } else {
                         handler.postDelayed(() ->
-                                sendMessage(), (long) (1200));
+                                sendMessage(), 1200);
                     }
                 }
             }
@@ -511,9 +511,9 @@ Handler handler;
                 handler = new Handler();
                 if (handler != null) {
                     if (isUser) {
-                        handler.postDelayed(() -> displayNextQuestion(currentQueNos), (long) (1000));
+                        handler.postDelayed(() -> displayNextQuestion(currentQueNos), 1000);
                     } else {
-                        handler.postDelayed(() -> sendMessage(), (long) (1200));
+                        handler.postDelayed(() -> sendMessage(), 1200);
                     }
                 }
             }
@@ -703,10 +703,10 @@ Handler handler;
         if (handler != null) {
             if (isUser) {
                 handler.postDelayed(() ->
-                        displayNextQuestion(currentQueNos), (long) (1000));
+                        displayNextQuestion(currentQueNos), 1000);
             } else {
                 handler.postDelayed(() ->
-                        sendMessage(), (long) (1200));
+                        sendMessage(), 1200);
             }
         }
     }
@@ -731,7 +731,6 @@ Handler handler;
         dialog.show();
 
         dia_btn_green.setOnClickListener(v -> {
-            ButtonClickSound.start();
             //   float perc = getCompletionPercentage();
             //      presenter.addCompletion(perc);
             dialog.dismiss();
