@@ -680,7 +680,7 @@ public class multipleChoiceFragment extends Fragment implements OnGameClose, Mul
         startActivityForResult(intent, 111);
         /*  if ((correctWord != null && !correctWord.isEmpty()) || (wrongWord != null && !wrongWord.isEmpty())) {
 
-            final Dialog dialog = new CustomLodingDialog(getActivity());
+            final Dialog dialog = new CustomLodingDialog(getActivity(), R.style.FC_DialogStyle);
             dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
             dialog.setContentView(R.layout.show_result_pictionary);
             dialog.setCancelable(false);

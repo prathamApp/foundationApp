@@ -279,7 +279,7 @@ public class MatchThePairGameActivity extends BaseActivity implements MatchThePa
     private void showCorrectDialog(String msg) {
 
         if (correctDialog == null) {
-            correctDialog = new CustomLodingDialog(MatchThePairGameActivity.this);
+            correctDialog = new CustomLodingDialog(MatchThePairGameActivity.this, R.style.FC_DialogStyle);
             correctDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
             correctDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
             correctDialog.setContentView(R.layout.show_word_next_dialog);
@@ -333,7 +333,7 @@ public class MatchThePairGameActivity extends BaseActivity implements MatchThePa
 
     public void showNextDialog() {
 
-        CustomLodingDialog nextDialog = new CustomLodingDialog(this);
+        CustomLodingDialog nextDialog = new CustomLodingDialog(this, R.style.FC_DialogStyle);
         nextDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         nextDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         nextDialog.setContentView(R.layout.show_word_next_dialog);
@@ -466,7 +466,7 @@ public class MatchThePairGameActivity extends BaseActivity implements MatchThePa
 
     @SuppressLint("StaticFieldLeak")
     private void showExitDialog() {
-        final CustomLodingDialog dialog = new CustomLodingDialog(this);
+        final CustomLodingDialog dialog = new CustomLodingDialog(this, R.style.FC_DialogStyle);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         dialog.setContentView(R.layout.fc_custom_dialog);

@@ -186,7 +186,7 @@ public class OppositesActivity extends BaseActivity
                 mhandler.removeCallbacksAndMessages(null);
             }
             mediaPlayerUtil.stopMedia();
-            nextDialog = new CustomLodingDialog(this);
+            nextDialog = new CustomLodingDialog(this, R.style.FC_DialogStyle);
             nextDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
             nextDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
             nextDialog.setContentView(R.layout.fc_custom_dialog);
@@ -246,7 +246,7 @@ public class OppositesActivity extends BaseActivity
         } catch (Exception e) {
             e.printStackTrace();
         }
-        final CustomLodingDialog dialog = new CustomLodingDialog(this);
+        final CustomLodingDialog dialog = new CustomLodingDialog(this, R.style.FC_DialogStyle);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         dialog.setContentView(R.layout.fc_custom_dialog);

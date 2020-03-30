@@ -165,7 +165,7 @@ public class ContentPlayerActivity extends BaseActivity implements ShowInstructi
     }
 
     private void showExitDialog() {
-        final CustomLodingDialog dialog = new CustomLodingDialog(this);
+        final CustomLodingDialog dialog = new CustomLodingDialog(this, R.style.FC_DialogStyle);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         dialog.setContentView(R.layout.fc_custom_dialog);
@@ -218,11 +218,11 @@ public class ContentPlayerActivity extends BaseActivity implements ShowInstructi
     }
 
     public void hideFloating_info() {
-        floating_info./*hide()*/setVisibility(View.GONE);
+        floating_info.hide();
     }
 
     public void showFloating_info() {
-        floating_info./*show()*/setVisibility(View.VISIBLE);
+        floating_info.show();
     }
 
     @Override

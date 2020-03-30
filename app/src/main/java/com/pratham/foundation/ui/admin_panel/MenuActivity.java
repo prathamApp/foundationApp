@@ -71,7 +71,7 @@ public class MenuActivity extends BaseActivity {
 /*    private void showLoginDialog(String nextActivity) {
         Dialog dialog = new Dialog(MenuActivity.this);
     private void showLoginDialog(String nextActivity) {
-        Dialog dialog = new CustomLodingDialog(MenuActivity.this);
+        Dialog dialog = new CustomLodingDialog(MenuActivity.this, R.style.FC_DialogStyle);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setContentView(R.layout.fc_custom_dialog);
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
@@ -106,7 +106,7 @@ public class MenuActivity extends BaseActivity {
     }*/
 
     private void show_STT_Dialog() {
-        CustomLodingDialog dialog = new CustomLodingDialog(MenuActivity.this);
+        CustomLodingDialog dialog = new CustomLodingDialog(MenuActivity.this, R.style.FC_DialogStyle);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setContentView(R.layout.fc_custom_dialog);
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
@@ -223,7 +223,7 @@ public class MenuActivity extends BaseActivity {
 
     @SuppressLint("SetTextI18n")
     private void showExitDialog() {
-        CustomLodingDialog dialog = new CustomLodingDialog(this, R.style.ExitDialog);
+        CustomLodingDialog dialog = new CustomLodingDialog(this, R.style.ExitDialogStyle);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setContentView(R.layout.lottie_exit_dialog);
         Objects.requireNonNull(dialog.getWindow()).setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));

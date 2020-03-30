@@ -172,7 +172,8 @@ public class ReadingVocabularyActivity extends BaseActivity implements MediaCall
         mAdapter = new QA_Adapter(messageList, this);
         recyclerView.setAdapter(mAdapter);
         tv_title.setSelected(true);
-
+        btn_next.setClickable(false);
+        btn_prev.setClickable(false);
         if (FC_Utility.isDataConnectionAvailable(this)) {
             presenter.fetchJsonData(readingContentPath, vocabCategory);
         } else {
@@ -182,7 +183,7 @@ public class ReadingVocabularyActivity extends BaseActivity implements MediaCall
 
     @SuppressLint("SetTextI18n")
     private void showReadFullDialog() {
-        final CustomLodingDialog dialog = new CustomLodingDialog(this);
+        final CustomLodingDialog dialog = new CustomLodingDialog(this, R.style.FC_DialogStyle);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         dialog.setContentView(R.layout.fc_custom_dialog);
@@ -241,10 +242,10 @@ public class ReadingVocabularyActivity extends BaseActivity implements MediaCall
         try {
 //            startTime = ApplicationClass.getCurrentDateTime();
             setMute(0);
-            btn_imgsend.setClickable(true);
-            btn_reading.setClickable(true);
-            btn_next.setClickable(true);
-            btn_prev.setClickable(true);
+            btn_imgsend.setClickable(false);
+            btn_reading.setClickable(false);
+            btn_next.setClickable(false);
+            btn_prev.setClickable(false);
             if (currQueNo == 0) {
                 ques = modalVocabularyList.get(currentPageNo).getQuestion1Text();
                 quesAudio = modalVocabularyList.get(currentPageNo).getQuestion1Aud();
@@ -334,7 +335,7 @@ public class ReadingVocabularyActivity extends BaseActivity implements MediaCall
         vocabChatFlow.removeAllViews();
         sendClikChanger(0);
         if (readingFlg) {
-            startReading();
+            btn_reading.performClick();
         }
         addItemInConvo(ans, ansAudio, true);
         currentQueNo += 1;
@@ -400,27 +401,37 @@ public class ReadingVocabularyActivity extends BaseActivity implements MediaCall
             mp.start();
             mp.setOnCompletionListener(mp -> {
                 playingFlg = false;
+                btn_imgsend.setClickable(true);
+                btn_reading.setClickable(true);
+                btn_next.setClickable(true);
+                btn_prev.setClickable(true);
 //                if (!testFlg && !FastSave.getInstance().getString(APP_SECTION,"").equalsIgnoreCase(sec_Test))
                 setAnswerText(ansStr);
-                startReading();
+                btn_reading.performClick();
             });
         } catch (Exception e) {
+            btn_imgsend.setClickable(true);
+            btn_reading.setClickable(true);
+            btn_next.setClickable(true);
+            btn_prev.setClickable(true);
             e.printStackTrace();
         }
     }
 
     private void startAudioReading(String audioFilePath) {
         if (!testFlg && !FastSave.getInstance().getString(APP_SECTION,"").equalsIgnoreCase(sec_Test)) {
-            if (readingFlg)
-                startReading();
             try {
                 mp = new MediaPlayer();
                 mp.setDataSource(readingContentPath + "sounds/" + audioFilePath);
                 mp.prepare();
                 mp.start();
                 mp.setOnCompletionListener(mp -> {
+                    btn_imgsend.setClickable(true);
+                    btn_reading.setClickable(true);
+                    btn_next.setClickable(true);
+                    btn_prev.setClickable(true);
                     playingFlg = false;
-                    startReading();
+                    btn_reading.performClick();
                 });
             } catch (Exception e) {
                 e.printStackTrace();
@@ -431,8 +442,10 @@ public class ReadingVocabularyActivity extends BaseActivity implements MediaCall
     @Click(R.id.btn_next)
     public void nextBtnPressed() {
         try {
+            btn_next.setClickable(false);
+            btn_prev.setClickable(false);
             if (readingFlg)
-                startReading();
+                btn_reading.performClick();
             if (playingFlg)
                 mp.stop();
             if (currentPageNo < modalVocabularyList.size() - 1) {
@@ -465,8 +478,10 @@ public class ReadingVocabularyActivity extends BaseActivity implements MediaCall
 
     @Click(R.id.btn_prev)
     public void prevBtnPressed() {
+        btn_next.setClickable(false);
+        btn_prev.setClickable(false);
         if (readingFlg)
-            startReading();
+            btn_reading.performClick();
         if (playingFlg)
             mp.stop();
         if (currentPageNo > 0) {
@@ -485,7 +500,7 @@ public class ReadingVocabularyActivity extends BaseActivity implements MediaCall
     @SuppressLint("SetTextI18n")
     public void showWordNextDialog(Context context) {
 
-        nextDialog = new CustomLodingDialog(context);
+        nextDialog = new CustomLodingDialog(context, R.style.FC_DialogStyle);
         nextDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         nextDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         nextDialog.setContentView(R.layout.fc_next_word_dialog);
@@ -569,7 +584,7 @@ public class ReadingVocabularyActivity extends BaseActivity implements MediaCall
         try {
             if (!dialogFlg) {
                 dialogFlg = true;
-                myLoadingDialog = new CustomLodingDialog(this);
+                myLoadingDialog = new CustomLodingDialog(this, R.style.FC_DialogStyle);
                 myLoadingDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
                 myLoadingDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
                 myLoadingDialog.setContentView(R.layout.loading_dialog);
@@ -691,8 +706,12 @@ public class ReadingVocabularyActivity extends BaseActivity implements MediaCall
     @Click(R.id.btn_speaker)
     public void chatAnswer() {
         if (!FastSave.getInstance().getString(APP_SECTION,"").equalsIgnoreCase(sec_Test)) {
+            btn_imgsend.setClickable(false);
+            btn_reading.setClickable(false);
+            btn_next.setClickable(false);
+            btn_prev.setClickable(false);
             if (readingFlg)
-                startReading();
+                btn_reading.performClick();
             new Handler().postDelayed(() -> startAudioReading("" + ansAudio), 100);
         }
     }
@@ -791,7 +810,7 @@ public class ReadingVocabularyActivity extends BaseActivity implements MediaCall
     @SuppressLint("SetTextI18n")
     private void showStars(boolean diaComplete) {
 
-        final CustomLodingDialog dialog = new CustomLodingDialog(this);
+        final CustomLodingDialog dialog = new CustomLodingDialog(this, R.style.FC_DialogStyle);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         dialog.setContentView(R.layout.fc_custom_test_star_dialog);
@@ -912,7 +931,7 @@ public class ReadingVocabularyActivity extends BaseActivity implements MediaCall
     @SuppressLint("SetTextI18n")
     public void showExitDialog(Context context) {
 
-        final CustomLodingDialog dialog = new CustomLodingDialog(this);
+        final CustomLodingDialog dialog = new CustomLodingDialog(this, R.style.FC_DialogStyle);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         dialog.setContentView(R.layout.fc_custom_dialog);

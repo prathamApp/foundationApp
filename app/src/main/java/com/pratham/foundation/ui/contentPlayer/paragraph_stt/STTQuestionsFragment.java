@@ -180,7 +180,7 @@ public class STTQuestionsFragment extends Fragment implements
     public void showLoader() {
         if (!dialogFlg) {
             dialogFlg = true;
-            myLoadingDialog = new CustomLodingDialog(context);
+            myLoadingDialog = new CustomLodingDialog(context, R.style.FC_DialogStyle);
             myLoadingDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
             myLoadingDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
             myLoadingDialog.setContentView(R.layout.loading_dialog);
@@ -281,7 +281,7 @@ public class STTQuestionsFragment extends Fragment implements
     }
 
     private void showDialog() {
-        final CustomLodingDialog dialog = new CustomLodingDialog(context);
+        final CustomLodingDialog dialog = new CustomLodingDialog(context, R.style.FC_DialogStyle);
         final View dialogView = View.inflate(getActivity(), R.layout.fc_show_hint_dialog, null);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));

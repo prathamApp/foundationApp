@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name" translatable="false">Foundation App</string>
-
-    <string name="Login">लॉग इन करें</string>
+<!--Hindi-->
+<!--    <string name="Login">लॉग इन करें</string>
     <string name="Stt_Dialog_Msg">बेहतर प्रदर्शन के लिए कृपया ऑफलाइन भाषा पैक डाउनलोड करें.</string>
     <string name="Okay">ठीक है</string>
     <string name="Skip">छोड़कर आगे बढ़े</string>
@@ -65,7 +65,7 @@
 
     <string name="fact_retrieval_click">जवाब देने के लिएअनुच्छेद से सही शब्द या वाक्य चुनिए|</string>
     <string name="factRetrieval">जवाब देने के लिए अनुच्छेद से सही शब्द या वाक्य चुनिए|</string>
-    <!--<string name="IKWAndroid">दिए गए अनुच्छेद में वैज्ञानिक शब्दों को दिखाइए|</string>-->
+    &lt;!&ndash;<string name="IKWAndroid">दिए गए अनुच्छेद में वैज्ञानिक शब्दों को दिखाइए|</string>&ndash;&gt;
     <string name="IKWAndroid">ददिए गए अनुच्छेद में विषय से संबंधित शब्दों को चुनें ।</string>
     <string name="CopyWriting">दिए गए शब्द और जानकारी को अपनी कॉपी में लिखिए और उसकी फोटो सबमिट कीजिए|</string>
     <string name="chKeywords">दिए गए शब्दों में से करीबी शब्द चुनिए|</string>
@@ -82,12 +82,6 @@
     <string name="multiple_choice">जवाब देने के लिए दिए गए शब्दों में से सही विकल्प चुनिए|</string>
     <string name="Video">विडियो देखें</string>
     <string name="watching_video">माइक बटन पर क्लिक करके अपना उत्तर रिकॉर्ड कीजिए और सबमिट कीजिए|</string>
-    <string name="ParaReadQues">प्ले बटन पर क्लिक कीजिए और सुनिए। फिर माइक बटन पर क्लिक कीजिए और अनुच्छेद पढ़िए।|</string>
-    <string name="parasummary">कहानी को हिंदी में दोहराएं</string>
-    <string name="paraqa">माइक बटन पर क्लिक कीजिए। जवाब रिकॉर्ड करके सबमिट कीजिए।</string>
-    <string name="new_chit_chat_1">स्क्रीन पर दिए गए संभाषण को सुनो|</string>
-    <string name="new_chit_chat_2">स्क्रीन पर दिए संभाषण का जवाब अंग्रेजी में रिकॉर्ड करें।</string>
-    <string name="new_chit_chat_3">यह गेम दो लोग खेलें। एक-एक करके अपनी बात रिकॉर्ड करें।</string>
     <string name="Next_activity">अगली गतिविधि?</string>
     <string name="Do_you_want_to_exit">क्या आप निकास करना चाहते हैं?</string>
     <string name="activity_completed">गतिविधि पूरी हुई</string>
@@ -105,9 +99,17 @@
     <string name="Read">पढ़ें</string>
     <string name="Paragraph">अनुच्छेद : </string>
     <string name="Keyword">संकेत शब्द : </string>
-    <string name="usermessage">अब कीवर्ड चुनने के लिए आपकी बारी है</string>
+    <string name="usermessage">अब कीवर्ड चुनने के लिए आपकी बारी है</string>-->
 
-<!--  MARATHI
+    <string name="alertmessage">some options are remaining</string>
+    <string name="ParaReadQues">प्ले बटन पर क्लिक कीजिए और सुनिए। फिर माइक बटन पर क्लिक कीजिए और अनुच्छेद पढ़िए।|</string>
+    <string name="parasummary">कहानी को हिंदी में दोहराएं</string>
+    <string name="paraqa">माइक बटन पर क्लिक कीजिए। जवाब रिकॉर्ड करके सबमिट कीजिए।</string>
+    <string name="new_chit_chat_1">स्क्रीन पर दिए गए संभाषण को सुनो|</string>
+    <string name="new_chit_chat_2">स्क्रीन पर दिए संभाषण का जवाब अंग्रेजी में रिकॉर्ड करें।</string>
+    <string name="new_chit_chat_3">यह गेम दो लोग खेलें। एक-एक करके अपनी बात रिकॉर्ड करें।</string>
+
+<!--  MARATHI-->
     <string name="Login">लॉगिन करा</string>
     <string name="Stt_Dialog_Msg">चांगला प्रतिसाद मिळवण्यासाठी कृपया ऑफलाइन भाषा पॅक डाउनलोड करा.</string>
     <string name="Okay">ठीक आहे</string>
@@ -201,7 +203,7 @@
     <string name="reading_stt">माइक बटणावर क्लिक करा. उत्तर रेकॉर्ड करा आणि सबमिट करा.</string>
     <string name="multiple_choice">उत्तर देण्यासाठी दिलेल्या शब्दांमधून योग्य पर्याय निवडा.</string>
     <string name="Video">व्हिडीओ पहा.</string>
-    <string name="watching_video">माइक बटणावर क्लिक करून आपले उत्तर रेकॉर्ड करा आणि सबमिट करा.</string>-->
+    <string name="watching_video">माइक बटणावर क्लिक करून आपले उत्तर रेकॉर्ड करा आणि सबमिट करा.</string>
 
 
 

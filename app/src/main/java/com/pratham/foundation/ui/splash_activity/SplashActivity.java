@@ -107,19 +107,15 @@ public class SplashActivity extends SplashSupportActivity implements SplashContr
     @Override
     protected void onResume() {
         super.onResume();
+        try {
+            bgMusic = MediaPlayer.create(this, R.raw.bg_sound);
+            bgMusic.setLooping(true);
+            bgMusic.start();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
         new Handler().postDelayed(() -> {
-            try {
-                if (bgMusic == null || !bgMusic.isPlaying()) {
-                    bgMusic = MediaPlayer.create(this, R.raw.bg_sound);
-                    bgMusic.setLooping(true);
-                    bgMusic.start();
-                }
-                else if(bgMusic!=null){
-                    bgMusic.start();
-                }
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
             if (!ApplicationClass.isTablet) {
                 EventMessage message = new EventMessage();
                 message.setMessage("reload");
@@ -225,7 +221,7 @@ public class SplashActivity extends SplashSupportActivity implements SplashContr
 
     @SuppressLint("SetTextI18n")
     private void showLanguageSelectionDialog() {
-        final CustomLodingDialog dialog = new CustomLodingDialog(context);
+        final CustomLodingDialog dialog = new CustomLodingDialog(context, R.style.FC_DialogStyle);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         dialog.setContentView(R.layout.fc_custom_language_dialog);
@@ -323,7 +319,7 @@ public class SplashActivity extends SplashSupportActivity implements SplashContr
     }
 
     public void showExitDialog() {
-        final CustomLodingDialog dialog = new CustomLodingDialog(context);
+        final CustomLodingDialog dialog = new CustomLodingDialog(context, R.style.FC_DialogStyle);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         Objects.requireNonNull(dialog.getWindow()).setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         dialog.setContentView(R.layout.fc_custom_dialog);
@@ -502,7 +498,7 @@ public class SplashActivity extends SplashSupportActivity implements SplashContr
     }
 
     private void show_STT_Dialog() {
-        CustomLodingDialog dialog = new CustomLodingDialog(this);
+        CustomLodingDialog dialog = new CustomLodingDialog(this, R.style.FC_DialogStyle);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setContentView(R.layout.fc_custom_dialog);
 /*        Bitmap map=FC_Utility.takeScreenShot(HomeActivity.this);

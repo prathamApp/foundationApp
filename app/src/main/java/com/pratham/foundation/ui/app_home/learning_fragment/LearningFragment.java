@@ -293,7 +293,7 @@ public class LearningFragment extends Fragment implements LearningContract.Learn
     @SuppressLint("SetTextI18n")
     @Override
     public void showNoDataDownloadedDialog() {
-        final CustomLodingDialog dialog = new CustomLodingDialog(context);
+        final CustomLodingDialog dialog = new CustomLodingDialog(context, R.style.FC_DialogStyle);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         Objects.requireNonNull(dialog.getWindow()).setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         dialog.setContentView(R.layout.fc_custom_dialog);
@@ -328,7 +328,7 @@ public class LearningFragment extends Fragment implements LearningContract.Learn
     public void showLoader() {
         if (!loaderVisible) {
             loaderVisible = true;
-            myLoadingDialog = new CustomLodingDialog(context);
+            myLoadingDialog = new CustomLodingDialog(context, R.style.FC_DialogStyle);
             myLoadingDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
             Objects.requireNonNull(myLoadingDialog.getWindow()).
                     setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
@@ -366,7 +366,7 @@ public class LearningFragment extends Fragment implements LearningContract.Learn
 
     @SuppressLint("SetTextI18n")
     private void resourceDownloadDialog(Modal_FileDownloading modal_fileDownloading) {
-        downloadDialog = new CustomLodingDialog(context);
+        downloadDialog = new CustomLodingDialog(context, R.style.FC_DialogStyle);
         downloadDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         Objects.requireNonNull(downloadDialog.getWindow()).setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         downloadDialog.setContentView(R.layout.dialog_file_downloading);
@@ -566,7 +566,7 @@ public class LearningFragment extends Fragment implements LearningContract.Learn
 
     @UiThread
     public void showDownloadErrorDialog() {
-        CustomLodingDialog errorDialog = new CustomLodingDialog(context);
+        CustomLodingDialog errorDialog = new CustomLodingDialog(context, R.style.FC_DialogStyle);
         errorDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         Objects.requireNonNull(errorDialog.getWindow()).setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         errorDialog.setContentView(R.layout.dialog_file_error_downloading);

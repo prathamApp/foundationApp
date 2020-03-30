@@ -215,7 +215,7 @@ public class WordWritingFragment extends Fragment
     }
 
     private void ShowPreviewDialog(File path) {
-        final CustomLodingDialog dialog = new CustomLodingDialog(getActivity());
+        final CustomLodingDialog dialog = new CustomLodingDialog(getActivity(), R.style.FC_DialogStyle);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         dialog.setContentView(R.layout.fc_image_preview_dialog);

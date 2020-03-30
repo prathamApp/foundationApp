@@ -168,7 +168,7 @@ public class PushDataToServer_New {
     @UiThread
     public void showPushDialog(Context context) {
         if (ApplicationClass.isTablet) {
-            pushDialog = new CustomLodingDialog(context);
+            pushDialog = new CustomLodingDialog(context, R.style.FC_DialogStyle);
             pushDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
             pushDialog.setContentView(R.layout.app_send_success_dialog);
             Objects.requireNonNull(pushDialog.getWindow()).setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));

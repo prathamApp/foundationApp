@@ -171,7 +171,7 @@ public class PushOrAssignFragment extends Fragment {
 
     @SuppressLint("InvalidWakeLockTag")
     private void setProgressDailog() {
-        progress = new CustomLodingDialog(getActivity());
+        progress = new CustomLodingDialog(getActivity(), R.style.FC_DialogStyle);
         progress.requestWindowFeature(Window.FEATURE_NO_TITLE);
         progress.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         progress.setContentView(R.layout.dialog_file_downloading);
@@ -651,7 +651,7 @@ public class PushOrAssignFragment extends Fragment {
     }
 
     private void showLoader() {
-        myLoadingDialog = new CustomLodingDialog(getActivity());
+        myLoadingDialog = new CustomLodingDialog(getActivity(), R.style.FC_DialogStyle);
         myLoadingDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         myLoadingDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         myLoadingDialog.setContentView(R.layout.loading_dialog);

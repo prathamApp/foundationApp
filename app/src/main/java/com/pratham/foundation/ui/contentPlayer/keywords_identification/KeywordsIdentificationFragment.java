@@ -364,7 +364,7 @@ public class KeywordsIdentificationFragment extends Fragment implements Keywords
                             textViewTemp.setBackground(null);
                         }
                 }
-                final Dialog dialog = new CustomLodingDialog(getActivity());
+                final Dialog dialog = new CustomLodingDialog(getActivity(), R.style.FC_DialogStyle);
                 dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
                 dialog.setContentView(R.layout.app_success_dialog);
                 dialog.setCancelable(false);

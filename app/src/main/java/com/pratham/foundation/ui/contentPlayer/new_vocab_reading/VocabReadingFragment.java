@@ -233,7 +233,7 @@ public class VocabReadingFragment extends Fragment implements
     public void showLoader() {
         if (!dialogFlg) {
             dialogFlg = true;
-            myLoadingDialog = new CustomLodingDialog(context);
+            myLoadingDialog = new CustomLodingDialog(context, R.style.FC_DialogStyle);
             myLoadingDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
             myLoadingDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
             myLoadingDialog.setContentView(R.layout.loading_dialog);
@@ -508,7 +508,7 @@ public class VocabReadingFragment extends Fragment implements
                                     Collections.shuffle(readSounds);
                                     mPlayer = MediaPlayer.create(context, readSounds.get(0));
                                     mPlayer.start();
-                                }, (long) (5000));
+                                }, 5000);
                             }
                             btn_Stop.performClick();
 //                            layout_mic_ripple.startRippleAnimation();
@@ -924,7 +924,7 @@ public class VocabReadingFragment extends Fragment implements
 
     @SuppressLint("SetTextI18n")
     public void showAcknowledgeDialog(boolean diaComplete) {
-        final CustomLodingDialog dialog = new CustomLodingDialog(context);
+        final CustomLodingDialog dialog = new CustomLodingDialog(context, R.style.FC_DialogStyle);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         dialog.setContentView(R.layout.fc_custom_dialog);
@@ -1053,7 +1053,7 @@ public class VocabReadingFragment extends Fragment implements
 
     @SuppressLint("SetTextI18n")
     private void showStars(boolean diaComplete) {
-        final CustomLodingDialog dialog = new CustomLodingDialog(context);
+        final CustomLodingDialog dialog = new CustomLodingDialog(context, R.style.FC_DialogStyle);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         dialog.setContentView(R.layout.fc_custom_test_star_dialog);

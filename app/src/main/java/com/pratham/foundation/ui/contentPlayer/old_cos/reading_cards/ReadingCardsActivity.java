@@ -148,7 +148,7 @@ public class ReadingCardsActivity extends BaseActivity implements
     @UiThread
     @Override
     public void showLoader() {
-        myLoadingDialog = new CustomLodingDialog(this);
+        myLoadingDialog = new CustomLodingDialog(this, R.style.FC_DialogStyle);
         myLoadingDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         myLoadingDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         myLoadingDialog.setContentView(R.layout.loading_dialog);
@@ -310,7 +310,7 @@ public class ReadingCardsActivity extends BaseActivity implements
 
     @SuppressLint("SetTextI18n")
     public void showExitDialog() {
-        final CustomLodingDialog dialog = new CustomLodingDialog(this);
+        final CustomLodingDialog dialog = new CustomLodingDialog(this, R.style.FC_DialogStyle);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         dialog.setContentView(R.layout.fc_custom_dialog);
@@ -370,7 +370,7 @@ public class ReadingCardsActivity extends BaseActivity implements
                         if (mp1.isPlaying())
                             mp1.stop();
                         if (currentPageNo == totalPages - 1) {
-                            endHandler.postDelayed(this::showExitDialog, (long) (1200));
+                            endHandler.postDelayed(this::showExitDialog, 1200);
                         }
                     } catch (Exception e) {
                         e.printStackTrace();

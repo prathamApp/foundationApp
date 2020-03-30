@@ -47,7 +47,7 @@ public class SelectGroupActivity extends BaseActivity {
 
     @SuppressLint("SetTextI18n")
     private void showExitDialog() {
-        CustomLodingDialog dialog = new CustomLodingDialog(this, R.style.ExitDialog);
+        CustomLodingDialog dialog = new CustomLodingDialog(this, R.style.ExitDialogStyle);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setContentView(R.layout.lottie_exit_dialog);
         Objects.requireNonNull(dialog.getWindow()).setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));

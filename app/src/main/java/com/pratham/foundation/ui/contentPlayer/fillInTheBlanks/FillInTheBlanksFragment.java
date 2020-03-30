@@ -494,7 +494,7 @@ public class FillInTheBlanksFragment extends Fragment implements STT_Result {
 
 
     public void showResult(List<String> correctWord, List<String> wrongWord) {
-        final CustomLodingDialog dialog = new CustomLodingDialog(getActivity());
+        final CustomLodingDialog dialog = new CustomLodingDialog(getActivity(), R.style.FC_DialogStyle);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setContentView(R.layout.show_result);
         dialog.setCancelable(false);

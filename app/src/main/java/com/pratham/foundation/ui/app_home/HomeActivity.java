@@ -202,7 +202,7 @@ public class HomeActivity extends BaseActivity implements LevelChanged {
     @UiThread
     public void showLoader() {
         if (myLoadingDialog == null) {
-            myLoadingDialog = new CustomLodingDialog(this);
+            myLoadingDialog = new CustomLodingDialog(this, R.style.FC_DialogStyle);
             myLoadingDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
             Objects.requireNonNull(myLoadingDialog.getWindow()).
                     setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
@@ -519,7 +519,7 @@ public class HomeActivity extends BaseActivity implements LevelChanged {
         FastSave.getInstance().saveString(CURRENT_SUPERVISOR_ID, "NA");
         FastSave.getInstance().saveBoolean(supervisedAssessment, false);
 
-        final CustomLodingDialog dialog = new CustomLodingDialog(this);
+        final CustomLodingDialog dialog = new CustomLodingDialog(this, R.style.FC_DialogStyle);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         Objects.requireNonNull(dialog.getWindow()).setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         dialog.setContentView(R.layout.test_type_dialog);
@@ -561,7 +561,7 @@ public class HomeActivity extends BaseActivity implements LevelChanged {
     @UiThread
     @SuppressLint("SetTextI18n")
     void showComingSoonDia() {
-        final CustomLodingDialog dialog = new CustomLodingDialog(this, R.style.ExitDialog);
+        final CustomLodingDialog dialog = new CustomLodingDialog(this, R.style.ExitDialogStyle);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         Objects.requireNonNull(dialog.getWindow()).setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         dialog.setContentView(R.layout.lottie_coming_soon);

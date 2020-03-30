@@ -303,7 +303,7 @@ public class ContentDisplay extends BaseActivity implements ContentContract.Cont
     @SuppressLint("SetTextI18n")
     @Override
     public void showNoDataDownloadedDialog() {
-        final CustomLodingDialog dialog = new CustomLodingDialog(this);
+        final CustomLodingDialog dialog = new CustomLodingDialog(this, R.style.FC_DialogStyle);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         dialog.setCanceledOnTouchOutside(false);
@@ -535,7 +535,7 @@ public class ContentDisplay extends BaseActivity implements ContentContract.Cont
 
     @SuppressLint("SetTextI18n")
     private void showDeleteDialog(int deletePos, ContentTable contentTableItem) {
-        final CustomLodingDialog dialog = new CustomLodingDialog(this);
+        final CustomLodingDialog dialog = new CustomLodingDialog(this, R.style.FC_DialogStyle);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         dialog.setContentView(R.layout.exit_dialog);
@@ -579,7 +579,7 @@ public class ContentDisplay extends BaseActivity implements ContentContract.Cont
     }
 
     private void resourceDownloadDialog(Modal_FileDownloading modal_fileDownloading) {
-        downloadDialog = new CustomLodingDialog(this);
+        downloadDialog = new CustomLodingDialog(this, R.style.FC_DialogStyle);
         downloadDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         downloadDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         downloadDialog.setContentView(R.layout.dialog_file_downloading);
@@ -641,7 +641,7 @@ public class ContentDisplay extends BaseActivity implements ContentContract.Cont
     @Override
     public void showLoader() {
         try {
-            myLoadingDialog = new CustomLodingDialog(this);
+            myLoadingDialog = new CustomLodingDialog(this, R.style.FC_DialogStyle);
             myLoadingDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
             myLoadingDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
             myLoadingDialog.setContentView(R.layout.loading_dialog);
@@ -668,7 +668,7 @@ public class ContentDisplay extends BaseActivity implements ContentContract.Cont
 
     @UiThread
     public void showDownloadErrorDialog() {
-        CustomLodingDialog errorDialog = new CustomLodingDialog(this);
+        CustomLodingDialog errorDialog = new CustomLodingDialog(this, R.style.FC_DialogStyle);
         errorDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         errorDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         errorDialog.setContentView(R.layout.dialog_file_error_downloading);

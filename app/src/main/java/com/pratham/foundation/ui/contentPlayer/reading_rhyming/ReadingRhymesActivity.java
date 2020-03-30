@@ -144,7 +144,7 @@ public class ReadingRhymesActivity extends BaseActivity
     }
 
     private void showViewDialog() {
-        final CustomLodingDialog dialog = new CustomLodingDialog(this);
+        final CustomLodingDialog dialog = new CustomLodingDialog(this, R.style.FC_DialogStyle);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         Objects.requireNonNull(dialog.getWindow()).setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         dialog.setContentView(R.layout.fc_custom_dialog);
@@ -295,7 +295,7 @@ public class ReadingRhymesActivity extends BaseActivity
     @SuppressLint("SetTextI18n")
     public void showExitDialog() {
 
-        final CustomLodingDialog dialog = new CustomLodingDialog(this);
+        final CustomLodingDialog dialog = new CustomLodingDialog(this, R.style.FC_DialogStyle);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         Objects.requireNonNull(dialog.getWindow()).setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         dialog.setContentView(R.layout.fc_custom_dialog);
@@ -328,7 +328,7 @@ public class ReadingRhymesActivity extends BaseActivity
     @SuppressLint("SetTextI18n")
     public void showWordNextDialog(Context context) {
 
-        nextDialog = new CustomLodingDialog(context);
+        nextDialog = new CustomLodingDialog(context, R.style.FC_DialogStyle);
         nextDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         Objects.requireNonNull(nextDialog.getWindow()).setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         nextDialog.setContentView(R.layout.fc_custom_dialog);

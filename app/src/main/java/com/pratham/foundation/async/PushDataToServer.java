@@ -213,7 +213,7 @@ public class PushDataToServer {
     public void showImgDialog(int counter) {
         try {
 //            if (imageDialog == null) {
-                imageDialog = new CustomLodingDialog(context);
+                imageDialog = new CustomLodingDialog(context, R.style.FC_DialogStyle);
                 imageDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
                 Objects.requireNonNull(imageDialog.getWindow()).setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
                 imageDialog.setContentView(R.layout.dialog_image_pushing);

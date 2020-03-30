@@ -142,7 +142,7 @@ public class SelectSubject extends BaseActivity implements
     @UiThread
     @SuppressLint("SetTextI18n")
     public void exitDialog() {
-        CustomLodingDialog dialog = new CustomLodingDialog(SelectSubject.this, R.style.ExitDialog);
+        CustomLodingDialog dialog = new CustomLodingDialog(SelectSubject.this, R.style.ExitDialogStyle);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setContentView(R.layout.lottie_exit_dialog);
         Objects.requireNonNull(dialog.getWindow()).setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));

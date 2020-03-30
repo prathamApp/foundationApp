@@ -327,7 +327,7 @@ public class ReadingParagraphsActivity extends BaseActivity
                                 Collections.shuffle(readSounds);
                                 mPlayer = MediaPlayer.create(ReadingParagraphsActivity.this, readSounds.get(0));
                                 mPlayer.start();
-                            }, (long) (5000));
+                            }, 5000);
                             if (mp != null && mp.isPlaying())
                                 mp.stop();
                             ll_btn_stop.setVisibility(View.GONE);
@@ -547,7 +547,7 @@ public class ReadingParagraphsActivity extends BaseActivity
 
     @SuppressLint("SetTextI18n")
     public void showAcknowledgeDialog(boolean diaComplete) {
-        final CustomLodingDialog dialog = new CustomLodingDialog(this);
+        final CustomLodingDialog dialog = new CustomLodingDialog(this, R.style.FC_DialogStyle);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         Objects.requireNonNull(dialog.getWindow()).setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         dialog.setContentView(R.layout.fc_custom_dialog);
@@ -631,7 +631,7 @@ public class ReadingParagraphsActivity extends BaseActivity
     @SuppressLint("SetTextI18n")
     private void showStars(boolean diaComplete) {
 
-        final CustomLodingDialog dialog = new CustomLodingDialog(this);
+        final CustomLodingDialog dialog = new CustomLodingDialog(this, R.style.FC_DialogStyle);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         Objects.requireNonNull(dialog.getWindow()).setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         dialog.setContentView(R.layout.fc_custom_test_star_dialog);
@@ -723,7 +723,7 @@ public class ReadingParagraphsActivity extends BaseActivity
     public void showLoader() {
         if (!dialogFlg) {
             dialogFlg = true;
-            myLoadingDialog = new CustomLodingDialog(this);
+            myLoadingDialog = new CustomLodingDialog(this, R.style.FC_DialogStyle);
             myLoadingDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
             Objects.requireNonNull(myLoadingDialog.getWindow()).setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
             myLoadingDialog.setContentView(R.layout.loading_dialog);

@@ -264,7 +264,7 @@ public class ParagraphWritingFragment extends Fragment implements ParagraphWriti
     }
 
     private void ShowPreviewDialog(File path) {
-        final Dialog dialog = new CustomLodingDialog(getActivity());
+        final Dialog dialog = new CustomLodingDialog(getActivity(), R.style.FC_DialogStyle);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         dialog.setContentView(R.layout.fc_image_preview_dialog);

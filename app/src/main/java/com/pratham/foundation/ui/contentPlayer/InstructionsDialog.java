@@ -43,11 +43,18 @@ public class InstructionsDialog extends CustomLodingDialog {
         } else {
             dia_title.setText("");
         }
-        resorcetype = "hi_" + resorcetype;
+        resorcetype = "mr_" + resorcetype;
         int rawID = context.getResources().getIdentifier(resorcetype.toLowerCase(), "raw", context.getPackageName());
         if (rawID != 0) {
             mediaPlayer = MediaPlayer.create(context, rawID);
             mediaPlayer.start();
+        }else{
+            resorcetype = "hi_" + resorcetype;
+            rawID = context.getResources().getIdentifier(resorcetype.toLowerCase(), "raw", context.getPackageName());
+            if (rawID != 0) {
+                mediaPlayer = MediaPlayer.create(context, rawID);
+                mediaPlayer.start();
+            }
         }
     }
 

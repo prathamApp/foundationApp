@@ -231,7 +231,7 @@ public class BaseActivity extends AppCompatActivity {
             super.handleMessage(msg);
             switch (msg.what) {
                 case SHOW_OTG_TRANSFER_DIALOG:
-                    showSDBuilderDialog();
+                        showSDBuilderDialog();
                     break;
                 case SHOW_OTG_SELECT_DIALOG:
                     ShowOTGPushDialog();
@@ -259,7 +259,7 @@ public class BaseActivity extends AppCompatActivity {
     @SuppressLint("CutPasteId")
     @UiThread
     public void ShowOTGPushDialog() {
-        pushDialog = new CustomLodingDialog(this);
+        pushDialog = new CustomLodingDialog(this, R.style.FC_DialogStyle);
         pushDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         pushDialog.setContentView(R.layout.app_send_success_dialog);
         Objects.requireNonNull(pushDialog.getWindow()).setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
@@ -289,7 +289,7 @@ public class BaseActivity extends AppCompatActivity {
     }
 
     private void showSDBuilderDialog() {
-        CustomLodingDialog dialog = new CustomLodingDialog(this);
+        CustomLodingDialog dialog = new CustomLodingDialog(this, R.style.FC_DialogStyle);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setContentView(R.layout.dialog_alert_sd_card);
         Objects.requireNonNull(dialog.getWindow()).setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
