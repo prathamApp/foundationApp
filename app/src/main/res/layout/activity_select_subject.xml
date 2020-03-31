@@ -2,7 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:background="@drawable/science_bkgd"
+    android:background="@drawable/new_bg"
     android:layout_height="match_parent">
 
     <com.pratham.foundation.customView.shape_of_view.ShadowLayout

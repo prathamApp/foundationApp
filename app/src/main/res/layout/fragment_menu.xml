@@ -5,7 +5,7 @@
     android:id="@+id/main_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/science_bkgd"
+    android:background="@drawable/new_bg"
     tools:context=".ui.admin_panel.group_selection.SelectGroupActivity">
 
     <RelativeLayout

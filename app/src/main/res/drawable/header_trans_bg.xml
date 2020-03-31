@@ -2,8 +2,14 @@
 <shape xmlns:android="http://schemas.android.com/apk/res/android"
     android:shape="rectangle"
     android:thickness="5dp">
-    <solid android:color="#c8ffffff" />
-<!--    <solid android:color="@color/transparent_white_btn" />-->
+    <solid android:color="#FCFDFA" />
+<!--    <gradient-->
+<!--        android:angle="225"-->
+<!--        android:startColor="#E8A8A1F7"-->
+<!--        android:endColor="#E68458C1"-->
+<!--        android:type="linear"/>-->
+
+    <!--    <solid android:color="@color/transparent_white_btn" />-->
     <corners
         android:bottomLeftRadius="@dimen/_10sdp"
         android:bottomRightRadius="@dimen/_10sdp" />

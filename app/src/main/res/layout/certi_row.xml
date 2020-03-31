@@ -10,7 +10,7 @@
     android:layout_marginEnd="@dimen/_15sdp"
     android:gravity="center"
     android:layout_gravity="center"
-    android:background="@drawable/test_item_bg">
+    android:background="@drawable/card_color_bg6">
 
     <com.pratham.foundation.customView.SansTextViewBold
         android:id="@+id/assess_data"

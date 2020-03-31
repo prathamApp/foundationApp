@@ -3,7 +3,7 @@
     xmlns:grid="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@drawable/science_bkgd"
+    android:background="@drawable/new_bg"
     android:weightSum="3">
 
 

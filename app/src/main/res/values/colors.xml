@@ -7,9 +7,9 @@
 -->
     <color name="colorPrimaryDark">#98CEA7</color>
     <color name="colorPrimary">#B8DFC4</color>
-    <color name="test_item">#E8FAEF</color>
+    <color name="test_item">#FFFDF7EC</color>
     <color name="colorAccent">#FFA001</color>
-    <color name="colorParent">#E7F2E9</color>
+    <color name="colorParent">#F2F1E7</color>
     <color name="colorText">#262B4B</color>
 
     <color name="strokeColor">#344955</color>
@@ -115,7 +115,8 @@
     <color name="yellow_sand_new">#befff1b9</color>
     <color name="yellow_sand_dark">#FFFFEBA2</color>
     <color name="light_green">#39b54a</color>
-    <color name="oslo_grey">#eb828786</color>
+<!--    <color name="oslo_grey">#EB5D6161</color>-->
+    <color name="oslo_grey">#EB5D6161</color>
     <color name="golden">#D8C372</color>
     <color name="ttl_item_grey">#c1c4c6</color>
     <color name="vanilla">#A8A1F7</color>

@@ -9,30 +9,36 @@
 
     <android.support.v7.widget.CardView
         android:layout_width="match_parent"
-        android:layout_height="100dp"
+        android:layout_height="wrap_content"
         android:layout_margin="10dp"
-        app:cardCornerRadius="8dp"
+        app:cardCornerRadius="@dimen/_10sdp"
         app:cardElevation="5dp">
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <ImageView
+            <com.facebook.drawee.view.SimpleDraweeView
                 android:id="@+id/test_student_img"
-                android:layout_width="90dp"
-                android:layout_height="90dp"
-                android:layout_margin="5dp"
-                android:layout_centerVertical="true"
+                android:layout_width="@dimen/_65sdp"
+                android:layout_height="@dimen/_65sdp"
+                android:layout_centerHorizontal="true"
+                android:layout_margin="@dimen/_5sdp"
                 android:layout_alignParentLeft="true"
                 android:layout_gravity="center"
-                android:src="@drawable/b1" />
+                android:src="@drawable/g1"
+                android:background="@android:color/transparent"
+                app:actualImageScaleType="centerInside"
+                app:placeholderImage="@drawable/g3"
+                app:roundedCornerRadius="@dimen/_33sdp"
+                app:roundingBorderColor="@color/white"
+                app:roundingBorderWidth="@dimen/_2sdp" />
 
-            <com.pratham.foundation.customView.SansTextView
+            <com.pratham.foundation.customView.SansTextViewBold
                 android:id="@+id/tv_studentName"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
                 android:gravity="center"
                 android:layout_toRightOf="@+id/test_student_img"

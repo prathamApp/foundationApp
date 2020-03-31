@@ -61,7 +61,6 @@ public class WebViewActivity extends BaseActivity implements WebViewInterface {
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
         ButterKnife.bind(this);
         webView = findViewById(R.id.loadPage);
-
         webResId = getIntent().getStringExtra("resId");
         gamePath = getIntent().getStringExtra("resPath");
         mode = getIntent().getStringExtra("mode");
@@ -69,22 +68,8 @@ public class WebViewActivity extends BaseActivity implements WebViewInterface {
         gameType = getIntent().getStringExtra("gameType");
         gameName = getIntent().getStringExtra("gameName");
         gameCategory = getIntent().getStringExtra("gameCategory");
-        sMarks = 0;
-        tMarks = 0;
-        cCode = "NA";
-        Log.d("WevViewLevel", "onCreate: " + gameLevel);
 
-        try {
-            tts = new TextToSpeechCustom(this, 0.6f);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        gameCounter = 0;
-        resStartTime = FC_Utility.getCurrentDateTime();
-        createWebView(gamePath);
-        learntWordsList = new ArrayList<>();
-        certificateModelClassList = new ArrayList<>();
-
+        startWebViewAct();
 /*
         CertificateModelClass certificateModelClass=new CertificateModelClass();
         certificateModelClass.setScoredMarks(50);
@@ -108,6 +93,24 @@ public class WebViewActivity extends BaseActivity implements WebViewInterface {
         certificateModelClassList.add(certificateModelClass);
 */
         //startActivity(new Intent(this,CertificateActivity.class));
+    }
+
+    private void startWebViewAct() {
+        sMarks = 0;
+        tMarks = 0;
+        cCode = "NA";
+        Log.d("WevViewLevel", "onCreate: " + gameLevel);
+
+        try {
+            tts = new TextToSpeechCustom(this, 0.6f);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        gameCounter = 0;
+        resStartTime = FC_Utility.getCurrentDateTime();
+        createWebView(gamePath);
+        learntWordsList = new ArrayList<>();
+        certificateModelClassList = new ArrayList<>();
     }
 
     @SuppressLint("JavascriptInterface")

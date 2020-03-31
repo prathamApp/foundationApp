@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_gravity="center"
-    android:background="@drawable/science_bkgd"
+    android:background="@drawable/new_bg"
     tools:context="com.pratham.foundation.ui.admin_panel.MenuActivity">
 
     <RelativeLayout

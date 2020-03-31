@@ -64,7 +64,6 @@ import static com.pratham.foundation.utility.FC_Constants.dialog_btn_cancel;
 import static com.pratham.foundation.utility.FC_Constants.gameFolderPath;
 import static com.pratham.foundation.utility.FC_Constants.sec_Test;
 
-
 //@EActivity(R.layout.activity_story_reading)
 @EActivity(R.layout.story_reading_activity)
 public class ReadingStoryActivity extends BaseActivity implements
@@ -126,7 +125,7 @@ public class ReadingStoryActivity extends BaseActivity implements
     List<String> splitWordsPunct = new ArrayList<String>();
     List<String> wordsDurationList = new ArrayList<String>();
     List<String> wordsResIdList = new ArrayList<String>();
-    boolean fragFlg = false, lastPgFlag = false;
+    boolean fragFlg = false, lastPgFlag = false, stopFlg = true;
     boolean playFlg = false, mediaPauseFlag = false, pauseFlg = false, playHideFlg = false;
     int wordCounter = 0, totalPages = 0, correctAnswerCount, pageNo = 1, quesNo = 0, quesPgNo = 0;
     float stopPlayBack = 0f, startPlayBack = 0f;
@@ -180,9 +179,7 @@ public class ReadingStoryActivity extends BaseActivity implements
         Collections.shuffle(readSounds);
         startTime = FC_Utility.getCurrentDateTime();
         presenter.setResId(storyId);
-
         currentPage = 0;
-
         presenter.addScore(0, "", 0, 0, startTime, contentType + " start");
         if (onSdCard)
             readingContentPath = ApplicationClass.contentSDPath + gameFolderPath + "/" + storyPath + "/";
@@ -190,6 +187,7 @@ public class ReadingStoryActivity extends BaseActivity implements
             readingContentPath = ApplicationClass.foundationPath + gameFolderPath + "/" + storyPath + "/";
 
         continuousSpeechService.resetSpeechRecognizer();
+        stopFlg = true;
 
         try {
             story_title.setText(Html.fromHtml(storyName));
@@ -531,6 +529,7 @@ public class ReadingStoryActivity extends BaseActivity implements
 
     @Click(R.id.btn_Stop)
     void stopBtn() {
+        stopFlg = true;
         if (voiceStart) {
             continuousSpeechService.stopSpeechInput();
             voiceStart = false;
@@ -551,8 +550,6 @@ public class ReadingStoryActivity extends BaseActivity implements
             try {
                 if (mp.isPlaying()) {
                     mp.stop();
-                    mp.reset();
-                    mp.release();
                 }
             } catch (Exception e) {
                 e.printStackTrace();
@@ -566,6 +563,7 @@ public class ReadingStoryActivity extends BaseActivity implements
                 e.printStackTrace();
             }
         }
+        new Handler().postDelayed(() ->wordCounter = 0 ,200);
     }
 
     @Click(R.id.btn_read_mic)
@@ -657,6 +655,10 @@ public class ReadingStoryActivity extends BaseActivity implements
                     soundStopHandler.removeCallbacksAndMessages(null);
 //            layout_ripplepulse_right.stopRippleAnimation();
                 setMute(0);
+                if (stopFlg) {
+                    wordCounter = 0;
+                }
+                stopFlg = false;
                 startAudioReading(wordCounter);
             } else {
                 playFlg = false;

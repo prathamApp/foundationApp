@@ -1,21 +1,26 @@
 package com.pratham.foundation.ui.test.assessment_type;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
+import android.net.Uri;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
-import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
+import com.facebook.drawee.view.SimpleDraweeView;
 import com.pratham.foundation.R;
 import com.pratham.foundation.database.domain.Student;
+import com.pratham.foundation.utility.FC_Utility;
 
+import java.io.File;
 import java.util.List;
+
+import static com.pratham.foundation.utility.FC_Constants.StudentPhotoPath;
 
 
 public class TestStudentAdapter extends RecyclerView.Adapter<TestStudentAdapter.MyViewHolder> {
@@ -27,7 +32,7 @@ public class TestStudentAdapter extends RecyclerView.Adapter<TestStudentAdapter.
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
         public TextView title;
-        public ImageView thumbnail;
+        public SimpleDraweeView thumbnail;
         public RelativeLayout content_card_view;
 
         public MyViewHolder(View view) {
@@ -52,22 +57,18 @@ public class TestStudentAdapter extends RecyclerView.Adapter<TestStudentAdapter.
     }
 
     @Override
-    public void onBindViewHolder(final MyViewHolder holder, final int position) {
+    public void onBindViewHolder(final MyViewHolder holder, @SuppressLint("RecyclerView") final int position) {
         final Student studentList = studentViewList.get(position);
         holder.title.setText(studentList.getFullName());
-        if (studentList.getGender() != null) {
-            if (studentList.getGender().equalsIgnoreCase("male"))
-                Glide.with(mContext).load(R.drawable.b2/* ApplicationClass.contentSDPath + "/.FCA/"+
-                        FastSave.getInstance().getString(FC_Constants.LANGUAGE, FC_Constants.HINDI)+"/App_Thumbs/b2.png"*/)
-                        .into(holder.thumbnail);
+        File file = new File(StudentPhotoPath + "" + studentList.getStudentID() + ".jpg");
+        if (file.exists()) {
+            holder.thumbnail.setImageURI(Uri.fromFile(file));
+        } else{
+            if(studentList.getGender() != null && studentList.getGender().equalsIgnoreCase("male"))
+                holder.thumbnail.setImageResource(FC_Utility.getRandomMaleAvatar(mContext));
             else
-                Glide.with(mContext).load(R.drawable.g1/*2ApplicationClass.contentSDPath + "/.FCA/"+
-                        FastSave.getInstance().getString(FC_Constants.LANGUAGE, FC_Constants.HINDI)+"/App_Thumbs/g1.png"*/)
-                        .into(holder.thumbnail);
-        } else
-            Glide.with(mContext).load(R.drawable.g1/*ApplicationClass.contentSDPath + "/.FCA/"+
-                    FastSave.getInstance().getString(FC_Constants.LANGUAGE, FC_Constants.HINDI)+"/App_Thumbs/g1.png"*/)
-                    .into(holder.thumbnail);
+                holder.thumbnail.setImageResource(FC_Utility.getRandomFemaleAvatar(mContext));
+        }
         holder.content_card_view.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

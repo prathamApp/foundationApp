@@ -3,7 +3,7 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:layout_gravity="center"
-    android:background="@drawable/dialog_bg">
+    android:background="@android:color/transparent">
 <!--    android:background="@null">-->
 
     <!--  <TextView
@@ -24,6 +24,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
+        android:background="@drawable/dialog_bg"
         android:layout_margin="10dp"
         android:visibility="visible">
 

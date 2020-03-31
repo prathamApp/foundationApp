@@ -2,7 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/science_bkgd">
+    android:background="@drawable/new_bg">
 
     <RelativeLayout
         android:id="@+id/topPanel"
@@ -59,7 +59,6 @@
             android:layout_margin="10dp"
             android:autofillHints="Select State"
             android:background="@drawable/gradient_spinner"
-            android:popupBackground="@drawable/dialog_bg"
             android:visibility="visible" />
 
         <Spinner
@@ -67,7 +66,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:paddingTop="@dimen/_3sdp"
-            android:popupBackground="@drawable/dialog_bg"
             android:paddingBottom="@dimen/_3sdp"
             android:layout_margin="10dp"
             android:autofillHints="Select State"
@@ -77,7 +75,6 @@
         <Spinner
             android:id="@+id/blockSpinner"
             android:layout_width="match_parent"
-            android:popupBackground="@drawable/dialog_bg"
             android:layout_height="wrap_content"
             android:paddingTop="@dimen/_3sdp"
             android:paddingBottom="@dimen/_3sdp"
