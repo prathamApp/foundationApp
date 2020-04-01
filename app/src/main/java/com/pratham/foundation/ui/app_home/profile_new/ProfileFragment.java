@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.net.Uri;
 import android.support.annotation.UiThread;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.DefaultItemAnimator;
@@ -20,6 +21,8 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.facebook.drawee.view.SimpleDraweeView;
+import com.pratham.foundation.ApplicationClass;
 import com.pratham.foundation.R;
 import com.pratham.foundation.customView.GridSpacingItemDecoration;
 import com.pratham.foundation.customView.display_image_dialog.CustomLodingDialog;
@@ -36,11 +39,21 @@ import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EFragment;
 import org.androidannotations.annotations.ViewById;
 
+import java.io.File;
 import java.text.DecimalFormat;
 import java.util.Collections;
 import java.util.List;
 
+import static com.pratham.foundation.ApplicationClass.App_Thumbs_Path;
+import static com.pratham.foundation.ApplicationClass.isTablet;
+import static com.pratham.foundation.database.AppDatabase.appDatabase;
+import static com.pratham.foundation.utility.FC_Constants.GROUP_MODE;
+import static com.pratham.foundation.utility.FC_Constants.INDIVIDUAL_MODE;
+import static com.pratham.foundation.utility.FC_Constants.LOGIN_MODE;
+import static com.pratham.foundation.utility.FC_Constants.StudentPhotoPath;
 import static com.pratham.foundation.utility.FC_Utility.dpToPx;
+import static com.pratham.foundation.utility.FC_Utility.getRandomFemaleAvatar;
+import static com.pratham.foundation.utility.FC_Utility.getRandomMaleAvatar;
 
 
 @EFragment(R.layout.fragment_profile)
@@ -77,6 +90,8 @@ public class ProfileFragment extends Fragment implements ProfileContract.Profile
     RelativeLayout rl_certi3;
     @ViewById(R.id.ib_langChange)
     ImageButton ib_langChange;
+    @ViewById(R.id.card_img)
+    SimpleDraweeView card_img;
 
     //    String[] progressArray = {"Progress", "Share"};
     String[] progressArray = {"Progress"};
@@ -96,9 +111,39 @@ public class ProfileFragment extends Fragment implements ProfileContract.Profile
             my_recycler_view.setItemAnimator(new DefaultItemAnimator());
             my_recycler_view.setAdapter(adapterParent);
         }
+        setImage();
         ib_langChange.setVisibility(View.GONE);
         presenter.getCertificateCount();
         presenter.getActiveData();
+    }
+
+    private void setImage() {
+        String profileName;
+        if (FastSave.getInstance().getString(LOGIN_MODE, "").equalsIgnoreCase(GROUP_MODE))
+            card_img.setImageResource(R.drawable.ic_grp_btn);
+        else if (FastSave.getInstance().getString(LOGIN_MODE, "").equalsIgnoreCase(INDIVIDUAL_MODE)) {
+            File file;
+            file = new File(StudentPhotoPath + "" + FastSave.getInstance()
+                    .getString(FC_Constants.CURRENT_STUDENT_ID, "") + ".jpg");
+            if (file.exists()) {
+                card_img.setImageURI(Uri.fromFile(file));
+            } else {
+                if(!isTablet){
+                   String gender = appDatabase.getStudentDao().
+                        getStudentAvatar(FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""));
+                    file = new File( ApplicationClass.foundationPath +
+                            "" + App_Thumbs_Path +""+gender);
+                    card_img.setImageURI(Uri.fromFile(file));
+                }else{
+                    String gender = appDatabase.getStudentDao().getStudentGender(
+                            FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""));
+                    if(gender.equalsIgnoreCase("male"))
+                        card_img.setImageResource(getRandomMaleAvatar(context));
+                    else
+                        card_img.setImageResource(getRandomFemaleAvatar(context));
+                }
+            }
+        }
     }
 
     @UiThread

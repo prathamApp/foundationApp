@@ -41,7 +41,8 @@ public class ProfileInnerDataAdapter extends RecyclerView.Adapter {
         LayoutInflater header = LayoutInflater.from(viewGroup.getContext());
         view = header.inflate(R.layout.profile_item_card, viewGroup, false);
         return new ItemHolder(view);
-/*        switch (viewtype) {
+/*
+        switch (viewtype) {
             case 0:
                 LayoutInflater header = LayoutInflater.from(viewGroup.getContext());
                 view = header.inflate(R.layout.content_item_file_header, viewGroup, false);
@@ -56,7 +57,8 @@ public class ProfileInnerDataAdapter extends RecyclerView.Adapter {
                 return new FileHolder(view);
             default:
                 return null;
-        }*/
+        }
+*/
     }
 
     @Override

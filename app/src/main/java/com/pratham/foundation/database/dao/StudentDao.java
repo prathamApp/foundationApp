@@ -33,7 +33,7 @@ public interface StudentDao {
       void deleteAll(Student... students);
   */
     @Query("DELETE FROM Student")
-    public void deleteAll();
+    void deleteAll();
 
     @Query("select * from Student where StudentID = :studentID")
     Student getStudent(String studentID);
@@ -45,7 +45,7 @@ public interface StudentDao {
     List<Student> getAllStudents();
 
     @Query("SELECT * FROM Student WHERE GroupId=:gID")
-    public List<Student> getGroupwiseStudents(String gID);
+    List<Student> getGroupwiseStudents(String gID);
 
     /*@Query("select * from Student where newFlag = 1")
     List<Student> getAllNewStudents();*/
@@ -74,12 +74,15 @@ public interface StudentDao {
     @Query("select avatarName from Student where StudentID = :studentID")
     String getStudentAvatar(String studentID);
 
+    @Query("select Gender from Student where StudentID = :studentID")
+    String getStudentGender(String studentID);
+
     @Query("DELETE FROM Student WHERE GroupID=:grpID")
-    public void deleteDeletedGrpsStdRecords(String grpID);
+    void deleteDeletedGrpsStdRecords(String grpID);
 
     @Query("DELETE FROM Student WHERE Gender='Deleted'")
-    public void deleteDeletedStdRecords();
+    void deleteDeletedStdRecords();
 
     @Query("update Student set newFlag=1 where newFlag=0")
-    public void setSentFlag();
+    void setSentFlag();
 }

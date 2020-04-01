@@ -293,8 +293,8 @@ public class BottomStudentsFragment extends BottomSheetDialogFragment
             e.printStackTrace();
         }
         showProgressDialog();
-        FastSave.getInstance().saveString(FC_Constants.LOGIN_MODE, INDIVIDUAL_MODE);
         String currentSession = "" + UUID.randomUUID().toString();
+        FastSave.getInstance().saveString(FC_Constants.LOGIN_MODE, INDIVIDUAL_MODE);
         FastSave.getInstance().saveString(FC_Constants.CURRENT_SESSION, ""+currentSession);
         FastSave.getInstance().saveString(FC_Constants.CURRENT_STUDENT_ID, ""+studentId);
         FastSave.getInstance().saveString(FC_Constants.CURRENT_STUDENT_NAME, ""+studentName);

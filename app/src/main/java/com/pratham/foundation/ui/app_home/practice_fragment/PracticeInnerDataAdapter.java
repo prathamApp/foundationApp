@@ -69,7 +69,7 @@ public class PracticeInnerDataAdapter extends RecyclerView.Adapter {
                 return new FolderHolder(view);
             case 2:
                 LayoutInflater file = LayoutInflater.from(viewGroup.getContext());
-                view = file.inflate(R.layout.content_card, viewGroup, false);
+                view = file.inflate(R.layout.content_item_file_card, viewGroup, false);
                 return new FileHolder(view);
             default:
                 return null;
