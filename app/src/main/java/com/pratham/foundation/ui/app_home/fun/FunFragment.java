@@ -582,5 +582,4 @@ public class FunFragment extends Fragment implements FunContract.FunView,
         intent.putExtra("level", "" + currentLevel);
         startActivity(intent);
     }
-
 }
