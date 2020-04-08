@@ -1,7 +1,6 @@
 package com.pratham.foundation.async;
 
 import android.content.Context;
-import android.os.AsyncTask;
 import android.support.v4.provider.DocumentFile;
 import android.util.Log;
 
@@ -18,6 +17,7 @@ import java.io.File;
 import java.util.ArrayList;
 
 import static com.pratham.foundation.ApplicationClass.App_Thumbs_Path;
+import static com.pratham.foundation.ui.app_home.HomeActivity.contentDownloadingTask;
 import static com.pratham.foundation.utility.FC_Constants.currentSubjectFolder;
 
 /**
@@ -48,6 +48,9 @@ public class ZipDownloader {
                                               ContentTable contentDetail,
                                               Context context,
                                               ArrayList<ContentTable> levelContents) {
+
+        currentSubjectFolder = FastSave.getInstance().getString(FC_Constants.CURRENT_FOLDER_NAME, currentSubjectFolder);
+
         File mydir = null;
         mydir = new File(ApplicationClass.foundationPath + "/.FCA");
         if (!mydir.exists()) mydir.mkdirs();
@@ -66,8 +69,8 @@ public class ZipDownloader {
                 mydir = temp_dir;
             }
         }
-        Log.d("internal_file", mydir.getAbsolutePath());
 
+        Log.d("internal_file", mydir.getAbsolutePath());
         Modal_Download modal_download = new Modal_Download();
         modal_download.setUrl(url);
         modal_download.setDir_path(mydir.getAbsolutePath());
@@ -75,7 +78,8 @@ public class ZipDownloader {
         modal_download.setFolder_name(foldername);
         modal_download.setContent(contentDetail);
         modal_download.setLevelContents(levelContents);
-        new DownloadingTask().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, modal_download);
+        contentDownloadingTask.startContentDownload(modal_download);
+//        new DownloadingTask().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, modal_download);
     }
 
 
@@ -106,6 +110,7 @@ public class ZipDownloader {
         modal_download.setFolder_name(foldername);
         modal_download.setContent(contentDetail);
         modal_download.setLevelContents(levelContents);
-        new DownloadingTask().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, modal_download);
+        contentDownloadingTask.startContentDownload(modal_download);
+//        new DownloadingTask().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, modal_download);
     }
 }

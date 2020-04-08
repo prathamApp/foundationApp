@@ -6,6 +6,8 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Environment;
+import android.os.Handler;
+import android.view.Gravity;
 import android.view.View;
 import android.view.Window;
 import android.widget.Button;
@@ -16,6 +18,7 @@ import android.widget.Toast;
 
 import com.pratham.foundation.BaseActivity;
 import com.pratham.foundation.R;
+import com.pratham.foundation.customView.BlurPopupDialog.BlurPopupWindow;
 import com.pratham.foundation.customView.display_image_dialog.CustomLodingDialog;
 import com.pratham.foundation.database.AppDatabase;
 import com.pratham.foundation.database.domain.Groups;
@@ -27,11 +30,11 @@ import com.pratham.foundation.utility.FC_Constants;
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EActivity;
+import org.androidannotations.annotations.UiThread;
 import org.androidannotations.annotations.ViewById;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.Objects;
 
 import static com.pratham.foundation.ApplicationClass.BackBtnSound;
 import static com.pratham.foundation.ApplicationClass.ButtonClickSound;
@@ -212,7 +215,7 @@ public class MenuActivity extends BaseActivity {
         } catch (IllegalStateException e) {
             e.printStackTrace();
         }
-        showExitDialog();
+        exitDialog();
     }
 
     @Override
@@ -221,39 +224,29 @@ public class MenuActivity extends BaseActivity {
     }
 
 
+    BlurPopupWindow exitDialog;
+
+    @UiThread
     @SuppressLint("SetTextI18n")
-    private void showExitDialog() {
-        CustomLodingDialog dialog = new CustomLodingDialog(this, R.style.ExitDialogStyle);
-        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        dialog.setContentView(R.layout.lottie_exit_dialog);
-        Objects.requireNonNull(dialog.getWindow()).setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-        dialog.setCancelable(true);
-        dialog.setCanceledOnTouchOutside(true);
-        dialog.show();
-
-//        TextView dia_title = dialog.findViewById(R.id.dia_title);
-//        Button dia_btn_green = dialog.findViewById(R.id.dia_btn_green);
-        Button dia_btn_no = dialog.findViewById(R.id.dia_btn_no);
-        TextView dia_btn_yes = dialog.findViewById(R.id.dia_btn_yes);
-
-//        dia_btn_green.setText (getResources().getString(R.string.Restart));
-//        dia_btn_yes.setText   (getResources().getString(R.string.Exit));
-//        dia_btn_no.setText(getResources().getString(R.string.Cancel));
-
-//        dia_btn_green.setOnClickListener(v -> {
-//            finishAffinity();
-//            context.startActivity(new Intent(context, SplashActivity_.class));
-//            dialog.dismiss();
-//        });
-
-        dia_btn_yes.setOnClickListener(v -> {
-            dialog.dismiss();
-            finishAffinity();
-        });
-
-        dia_btn_no.setOnClickListener(v -> {
-            dialog.dismiss();
-        });
+    public void exitDialog() {
+        exitDialog = new BlurPopupWindow.Builder(this)
+                .setContentView(R.layout.lottie_exit_dialog)
+                .bindClickListener(v -> {
+                    new Handler().postDelayed(() -> {
+                        exitDialog.dismiss();
+                        finishAffinity();
+                    }, 200);
+                }, R.id.dia_btn_yes)
+                .bindClickListener(v -> new Handler().postDelayed(() -> {
+                    exitDialog.dismiss();
+                }, 200), R.id.dia_btn_no)
+                .setGravity(Gravity.CENTER)
+                .setDismissOnTouchBackground(true)
+                .setDismissOnClickBack(true)
+                .setScaleRatio(0.2f)
+                .setBlurRadius(10)
+                .setTintColor(0x30000000)
+                .build();
+        exitDialog.show();
     }
-
 }

@@ -104,6 +104,7 @@ public class FunFragment extends Fragment implements FunContract.FunView,
         context = getActivity();
         presenter.setView(FunFragment.this);
         my_recycler_view.addOnScrollListener(new RetractableToolbarUtil.ShowHideToolbarOnScrollingListener(header_rl));
+        showLoader();
         presenter.getBottomNavId(currentLevel, "Fun");
     }
 
@@ -204,58 +205,60 @@ public class FunFragment extends Fragment implements FunContract.FunView,
     public void messageReceived(EventMessage message) {
 //            else if (message.getMessage().equalsIgnoreCase(FC_Constants.SECTION_COMPLETION_PERC))
 //                getCompletionPercAgain();
-        if (message != null) {
-            if (message.getMessage().equalsIgnoreCase(FC_Constants.LEVEL_CHANGED))
-                onLevelChanged();
-            else if (message.getMessage().equalsIgnoreCase(FC_Constants.BACK_PRESSED))
-                backBtnPressed();
-            else if (message.getMessage().equalsIgnoreCase(FC_Constants.FILE_DOWNLOAD_STARTED)) {
-                resourceDownloadDialog(message.getModal_fileDownloading());
-            } else if (message.getMessage().equalsIgnoreCase(FC_Constants.FILE_DOWNLOAD_UPDATE)) {
-                if (progressLayout != null)
-                    progressLayout.setCurProgress(message.getModal_fileDownloading().getProgress());
-            } else if (message.getMessage().equalsIgnoreCase(FC_Constants.FRAGMENT_SELECTED)) {
-                fragmentSelected();
-            } else if (message.getMessage().equalsIgnoreCase(FC_Constants.FRAGMENT_RESELECTED)) {
-                fragmentSelected();
-            } else if (message.getMessage().equalsIgnoreCase(FC_Constants.FILE_DOWNLOAD_ERROR)) {
-                downloadDialog.dismiss();
-                showDownloadErrorDialog();
-            } else if (message.getMessage().equalsIgnoreCase(FC_Constants.UNZIPPING_ERROR)) {
-                downloadDialog.dismiss();
-                showDownloadErrorDialog();
-            } else if (message.getMessage().equalsIgnoreCase(FC_Constants.UNZIPPING_DATA_FILE))
-                dialog_file_name.setText("Unzipping...\nPlease wait" + resName);
-            else if (message.getMessage().equalsIgnoreCase(FC_Constants.FILE_DOWNLOAD_COMPLETE)) {
-                dialog_file_name.setText("Updating Data");
-                String folderPath = "";
-                try {
-                    if (downloadType.equalsIgnoreCase(FC_Constants.FULL_DOWNLOAD)) {
-                        folderPath = contentParentList.get(parentPos).getResourcePath();
-                        contentParentList.get(parentPos).setIsDownloaded("true");
-                        presenter.updateDownloads();
-                        presenter.updateCurrentNode(contentParentList.get(parentPos));
-                        new Handler().postDelayed(() -> {
-                            downloadDialog.dismiss();
-                            adapterParent.notifyItemChanged(parentPos, contentParentList.get(parentPos));
-                        }, 500);
-                    } else if (downloadType.equalsIgnoreCase(FC_Constants.SINGLE_RES_DOWNLOAD)) {
-                        folderPath = contentParentList.get(parentPos).getNodelist().get(childPos).getResourcePath();
-                        contentParentList.get(parentPos).getNodelist().get(childPos).setIsDownloaded("true");
-                        presenter.updateDownloads();
-                        presenter.updateCurrentNode(contentParentList.get(parentPos));
-                        new Handler().postDelayed(() -> {
-                            downloadDialog.dismiss();
-                            adapterParent.notifyItemChanged(parentPos, contentParentList.get(parentPos));
-                        }, 500);
-                    }
-                    resName = "";
-                    if (downloadType.equalsIgnoreCase(FC_Constants.TEST_DOWNLOAD))
-                        presenter.updateDownloadJson(folderPath);
-                } catch (Exception e) {
+        if (FastSave.getInstance().getString(APP_SECTION, "").equalsIgnoreCase(sec_Fun)) {
+            if (message != null) {
+                if (message.getMessage().equalsIgnoreCase(FC_Constants.LEVEL_CHANGED))
+                    onLevelChanged();
+                else if (message.getMessage().equalsIgnoreCase(FC_Constants.BACK_PRESSED))
+                    backBtnPressed();
+                else if (message.getMessage().equalsIgnoreCase(FC_Constants.FILE_DOWNLOAD_STARTED)) {
+                    resourceDownloadDialog(message.getModal_fileDownloading());
+                } else if (message.getMessage().equalsIgnoreCase(FC_Constants.FILE_DOWNLOAD_UPDATE)) {
+                    if (progressLayout != null)
+                        progressLayout.setCurProgress(message.getModal_fileDownloading().getProgress());
+                } else if (message.getMessage().equalsIgnoreCase(FC_Constants.FRAGMENT_SELECTED)) {
+                    fragmentSelected();
+                } else if (message.getMessage().equalsIgnoreCase(FC_Constants.FRAGMENT_RESELECTED)) {
+                    fragmentSelected();
+                } else if (message.getMessage().equalsIgnoreCase(FC_Constants.FILE_DOWNLOAD_ERROR)) {
                     downloadDialog.dismiss();
-                    dismissLoadingDialog();
-                    e.printStackTrace();
+                    showDownloadErrorDialog();
+                } else if (message.getMessage().equalsIgnoreCase(FC_Constants.UNZIPPING_ERROR)) {
+                    downloadDialog.dismiss();
+                    showDownloadErrorDialog();
+                } else if (message.getMessage().equalsIgnoreCase(FC_Constants.UNZIPPING_DATA_FILE))
+                    dialog_file_name.setText("Unzipping...\nPlease wait" + resName);
+                else if (message.getMessage().equalsIgnoreCase(FC_Constants.FILE_DOWNLOAD_COMPLETE)) {
+                    dialog_file_name.setText("Updating Data");
+                    String folderPath = "";
+                    try {
+                        if (downloadType.equalsIgnoreCase(FC_Constants.FULL_DOWNLOAD)) {
+                            folderPath = contentParentList.get(parentPos).getResourcePath();
+                            contentParentList.get(parentPos).setIsDownloaded("true");
+                            presenter.updateDownloads();
+                            presenter.updateCurrentNode(contentParentList.get(parentPos));
+                            new Handler().postDelayed(() -> {
+                                downloadDialog.dismiss();
+                                adapterParent.notifyItemChanged(parentPos, contentParentList.get(parentPos));
+                            }, 500);
+                        } else if (downloadType.equalsIgnoreCase(FC_Constants.SINGLE_RES_DOWNLOAD)) {
+                            folderPath = contentParentList.get(parentPos).getNodelist().get(childPos).getResourcePath();
+                            contentParentList.get(parentPos).getNodelist().get(childPos).setIsDownloaded("true");
+                            presenter.updateDownloads();
+                            presenter.updateCurrentNode(contentParentList.get(parentPos));
+                            new Handler().postDelayed(() -> {
+                                downloadDialog.dismiss();
+                                adapterParent.notifyItemChanged(parentPos, contentParentList.get(parentPos));
+                            }, 500);
+                        }
+                        resName = "";
+                        if (downloadType.equalsIgnoreCase(FC_Constants.TEST_DOWNLOAD))
+                            presenter.updateDownloadJson(folderPath);
+                    } catch (Exception e) {
+                        downloadDialog.dismiss();
+                        dismissLoadingDialog();
+                        e.printStackTrace();
+                    }
                 }
             }
         }
@@ -263,7 +266,7 @@ public class FunFragment extends Fragment implements FunContract.FunView,
 
     private void getCompletionPercAgain() {
         String currentNodeID = presenter.getcurrentNodeID();
-        Log.d("getCompletion", "getCompletionPercAgain: "+currentNodeID);
+        Log.d("getCompletion", "getCompletionPercAgain: " + currentNodeID);
         try {
             if (!currentNodeID.equalsIgnoreCase("na"))
                 presenter.findMaxScore("" + currentNodeID);
@@ -275,7 +278,7 @@ public class FunFragment extends Fragment implements FunContract.FunView,
     @Override
     public void setSelectedLevel(List<ContentTable> contentTable) {
         rootLevelList = contentTable;
-        if (rootLevelList != null)
+        if (rootLevelList != null )
             levelChanged.setActualLevel(rootLevelList.size());
         presenter.insertNodeId(contentTable.get(currentLevel).getNodeId());
         presenter.getDataForList();
@@ -326,7 +329,7 @@ public class FunFragment extends Fragment implements FunContract.FunView,
         try {
             if (!loaderVisible) {
                 loaderVisible = true;
-                myLoadingDialog = new CustomLodingDialog(context, R.style.FC_DialogStyle);
+                myLoadingDialog = new CustomLodingDialog(context);
                 myLoadingDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
                 Objects.requireNonNull(myLoadingDialog.getWindow()).
                         setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
@@ -344,10 +347,11 @@ public class FunFragment extends Fragment implements FunContract.FunView,
     @UiThread
     public void dismissLoadingDialog() {
         try {
-            if (myLoadingDialog != null && myLoadingDialog.isShowing()) {
-                loaderVisible = false;
-                myLoadingDialog.dismiss();
-            }
+            loaderVisible = false;
+            new Handler().postDelayed(() -> {
+                if (myLoadingDialog != null && myLoadingDialog.isShowing())
+                    myLoadingDialog.dismiss();
+            }, 300);
         } catch (Exception e) {
             e.printStackTrace();
         }

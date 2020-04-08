@@ -5,7 +5,7 @@
 
     <RelativeLayout
         android:layout_width="@dimen/_240sdp"
-        android:layout_height="@dimen/_220sdp"
+        android:layout_height="@dimen/_270sdp"
         android:layout_centerInParent="true"
         android:background="@color/full_transparent">
 
@@ -39,6 +39,7 @@
             android:layout_height="match_parent"
             android:layout_marginTop="@dimen/_45sdp"
             android:layout_marginBottom="@dimen/_35sdp"
+            android:paddingBottom="@dimen/_20sdp"
             android:background="@drawable/dialog_bg">
 
             <com.pratham.foundation.customView.SansTextViewBold
@@ -58,20 +59,41 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/dia_title"
-                android:layout_marginBottom="@dimen/_10sdp"
+                android:layout_marginBottom="@dimen/_5sdp"
                 android:gravity="center">
 
+                <RelativeLayout
+                    android:id="@+id/btn_supervised"
+                    android:layout_width="@dimen/_70sdp"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true"
+                    android:elevation="3dp"
+                    android:layout_marginBottom="5dp"
+                    android:padding="3dp"
+                    android:background="@drawable/card_color_bg1"
+                    android:layout_marginStart="@dimen/_20sdp">
+
                     <ImageView
-                        android:id="@+id/btn_supervised"
+                        android:id="@+id/iv_supervised"
                         android:layout_width="@dimen/_50sdp"
                         android:layout_height="@dimen/_50sdp"
                         android:layout_centerHorizontal="true"
-                        android:layout_alignParentLeft="true"
-                        android:layout_marginLeft="@dimen/_20sdp"
-                        android:background="@drawable/ripple_rectangle_transparent"
                         android:padding="@dimen/_5sdp"
+                        android:layout_alignParentTop="true"
                         android:scaleType="centerInside"
                         android:src="@drawable/supervised_test_icon" />
+                    <com.pratham.foundation.customView.SansTextViewBold
+                        android:id="@+id/dia_btn_yellow"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/iv_supervised"
+                        android:layout_centerHorizontal="true"
+                        android:layout_marginTop="@dimen/_2sdp"
+                        android:text="@string/Supervised"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/_12sdp" />
+
+                </RelativeLayout>
                 <com.pratham.foundation.customView.SansTextViewBold
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -80,17 +102,38 @@
                     android:textSize="@dimen/_15sdp"
                     android:layout_centerHorizontal="true"
                     android:layout_centerVertical="true"/>
+
+                <RelativeLayout
+                    android:id="@+id/btn_unsupervised"
+                    android:layout_width="@dimen/_70sdp"
+                    android:layout_height="wrap_content"
+                    android:padding="3dp"
+                    android:elevation="3dp"
+                    android:layout_marginBottom="5dp"
+                    android:background="@drawable/card_color_bg1"
+                    android:layout_alignParentEnd="true"
+                    android:layout_marginEnd="@dimen/_20sdp">
+
                     <ImageView
-                        android:id="@+id/btn_unsupervised"
+                        android:id="@+id/iv_unsupervised"
                         android:layout_width="@dimen/_50sdp"
                         android:layout_height="@dimen/_50sdp"
                         android:layout_centerHorizontal="true"
-                        android:layout_alignParentRight="true"
-                        android:layout_marginRight="@dimen/_20sdp"
-                        android:background="@drawable/ripple_rectangle_transparent"
                         android:padding="@dimen/_5sdp"
                         android:scaleType="centerInside"
                         android:src="@drawable/unsupervised_test_icon" />
+
+                    <com.pratham.foundation.customView.SansTextViewBold
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/iv_unsupervised"
+                        android:layout_centerHorizontal="true"
+                        android:layout_marginTop="@dimen/_2sdp"
+                        android:text="@string/Unsupervised"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/_12sdp" />
+
+                </RelativeLayout>
 
             </RelativeLayout>
 
@@ -107,20 +150,6 @@
 
 
             <com.pratham.foundation.customView.SansButton
-                android:id="@+id/dia_btn_yellow"
-                android:layout_width="@dimen/_70sdp"
-                android:layout_height="@dimen/_40sdp"
-                android:layout_centerHorizontal="true"
-                android:layout_marginBottom="@dimen/_15sdp"
-                android:layout_toLeftOf="@id/dia_btn_green"
-                android:background="@drawable/button_yellow"
-                android:elevation="5dp"
-                android:text="yellow"
-                android:visibility="visible"
-                android:textColor="@color/white"
-                android:textSize="@dimen/_8sdp" />
-
-            <com.pratham.foundation.customView.SansButton
                 android:id="@+id/dia_btn_green"
                 android:layout_width="@dimen/_70sdp"
                 android:layout_height="@dimen/_40sdp"
@@ -129,22 +158,9 @@
                 android:layout_marginBottom="@dimen/_15sdp"
                 android:background="@drawable/button_red"
                 android:elevation="5dp"
-                android:text="green"
+                android:text="@string/Cancel"
                 android:textColor="@color/white"
                 android:textSize="@dimen/_8sdp" />
-
-            <com.pratham.foundation.customView.SansButton
-                android:id="@+id/dia_btn_red"
-                android:layout_width="@dimen/_70sdp"
-                android:layout_height="@dimen/_40sdp"
-                android:layout_marginBottom="@dimen/_15sdp"
-                android:layout_toRightOf="@id/dia_btn_green"
-                android:background="@drawable/button_green"
-                android:elevation="5dp"
-                android:text="red"
-                android:textColor="@color/white"
-                android:textSize="@dimen/_8sdp" />
-
 
         </RelativeLayout>
 

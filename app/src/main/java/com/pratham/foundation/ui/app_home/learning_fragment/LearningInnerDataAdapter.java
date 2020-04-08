@@ -159,16 +159,20 @@ public class LearningInnerDataAdapter extends RecyclerView.Adapter {
                         e.printStackTrace();
                     }
                 }else {
-                    ImageRequest imageRequest = ImageRequestBuilder
-                            .newBuilderWithSource(Uri.parse(itemsList.get(i).getNodeServerImage()))
-                            .setResizeOptions(new ResizeOptions(250, 170))
-                            .setLocalThumbnailPreviewsEnabled(true)
-                            .build();
-                    DraweeController controller = Fresco.newDraweeControllerBuilder()
-                            .setImageRequest(imageRequest)
-                            .setOldController(fileHolder.itemImage.getController())
-                            .build();
-                    fileHolder.itemImage.setController(controller);
+                    try {
+                        ImageRequest imageRequest = ImageRequestBuilder
+                                .newBuilderWithSource(Uri.parse(itemsList.get(i).getNodeServerImage()))
+                                .setResizeOptions(new ResizeOptions(250, 170))
+                                .setLocalThumbnailPreviewsEnabled(true)
+                                .build();
+                        DraweeController controller = Fresco.newDraweeControllerBuilder()
+                                .setImageRequest(imageRequest)
+                                .setOldController(fileHolder.itemImage.getController())
+                                .build();
+                        fileHolder.itemImage.setController(controller);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
 
                     fileHolder.content_card_view.setOnClickListener(v ->
                             itemClicked.onContentDownloadClicked(itemsList.get(i),

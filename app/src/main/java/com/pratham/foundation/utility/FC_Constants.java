@@ -140,6 +140,7 @@ public class FC_Constants {
     public static final String MALAYALAM = "Malayalam";
     public static final String ASSAMESE = "Assamese";
     public static final String LANGUAGE = "language";
+    public static final String TEST_DISPLAY_LANGUAGE = "test display language";
     public static int READ_BUFFER_SIZE = 1024 * 4;
     public static String jsonFolderPath = "JsonFiles/";
     public static final String APK = "apk";

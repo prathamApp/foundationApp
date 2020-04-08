@@ -148,7 +148,7 @@ public class ReadingCardsActivity extends BaseActivity implements
     @UiThread
     @Override
     public void showLoader() {
-        myLoadingDialog = new CustomLodingDialog(this, R.style.FC_DialogStyle);
+        myLoadingDialog = new CustomLodingDialog(this);
         myLoadingDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         myLoadingDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         myLoadingDialog.setContentView(R.layout.loading_dialog);
@@ -161,9 +161,10 @@ public class ReadingCardsActivity extends BaseActivity implements
     @Override
     public void dismissLoadingDialog() {
         try {
-            if (myLoadingDialog != null && myLoadingDialog.isShowing()) {
-                myLoadingDialog.dismiss();
-            }
+            new Handler().postDelayed(() -> {
+                if (myLoadingDialog != null && myLoadingDialog.isShowing())
+                    myLoadingDialog.dismiss();
+            }, 300);
         } catch (Exception e) {
             e.printStackTrace();
         }

@@ -144,6 +144,7 @@ public class ContentPresenter implements ContentContract.ContentPresenter, API_C
     @Override
     public void getListData() {
         try {
+            contentView.showLoader();
             downloadedContentTableList = AppDatabase.appDatabase.getContentTableDao().getContentData("" + nodeIds.get(nodeIds.size() - 1));
             sortAllList(downloadedContentTableList);
             contentView.clearContentList();
@@ -185,9 +186,9 @@ public class ContentPresenter implements ContentContract.ContentPresenter, API_C
     @UiThread
     public void updateUI() {
         try {
-//            if (FC_Utility.isDataConnectionAvailable(context))
-//                api_content.getAPIContent(FC_Constants.INTERNET_DOWNLOAD, FC_Constants.INTERNET_DOWNLOAD_NEW_API, nodeIds.get(nodeIds.size() - 1));
-//            else {
+            if (FC_Utility.isDataConnectionAvailable(context))
+                api_content.getAPIContent(FC_Constants.INTERNET_DOWNLOAD, FC_Constants.INTERNET_DOWNLOAD_NEW_API, nodeIds.get(nodeIds.size() - 1));
+            else {
 //                if (downloadedContentTableList.size() == 0 && !FC_Utility.isDataConnectionAvailable(context)) {
                 if (downloadedContentTableList.size() == 0 ) {
                     contentView.showNoDataDownloadedDialog();
@@ -196,7 +197,7 @@ public class ContentPresenter implements ContentContract.ContentPresenter, API_C
                     contentView.notifyAdapter();
                     contentView.dismissLoadingDialog();
                 }
-//            }
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -205,7 +206,7 @@ public class ContentPresenter implements ContentContract.ContentPresenter, API_C
     @Override
     public void downloadResource(String downloadId) {
         downloadNodeId = downloadId;
-//        api_content.getAPIContent(FC_Constants.INTERNET_DOWNLOAD_RESOURCE, FC_Constants.INTERNET_DOWNLOAD_RESOURCE_API, downloadNodeId);
+        api_content.getAPIContent(FC_Constants.INTERNET_DOWNLOAD_RESOURCE, FC_Constants.INTERNET_DOWNLOAD_RESOURCE_API, downloadNodeId);
     }
 
     @Override
@@ -243,6 +244,7 @@ public class ContentPresenter implements ContentContract.ContentPresenter, API_C
                             contentTableTemp.setParentId("" + serverContentList.get(i).getParentId());
                             contentTableTemp.setLevel("" + serverContentList.get(i).getLevel());
                             contentTableTemp.setVersion("" + serverContentList.get(i).getVersion());
+                            contentTableTemp.setNodePercentage("0");
                             contentTableTemp.setContentType("" + serverContentList.get(i).getContentType());
                             contentTableTemp.setContentLanguage("" + serverContentList.get(i).getContentLanguage());
                             contentTableTemp.setIsDownloaded("false");

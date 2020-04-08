@@ -584,7 +584,7 @@ public class ReadingVocabularyActivity extends BaseActivity implements MediaCall
         try {
             if (!dialogFlg) {
                 dialogFlg = true;
-                myLoadingDialog = new CustomLodingDialog(this, R.style.FC_DialogStyle);
+                myLoadingDialog = new CustomLodingDialog(this);
                 myLoadingDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
                 myLoadingDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
                 myLoadingDialog.setContentView(R.layout.loading_dialog);
@@ -599,10 +599,11 @@ public class ReadingVocabularyActivity extends BaseActivity implements MediaCall
     @UiThread
     public void dismissLoadingDialog() {
         try {
-            if (myLoadingDialog != null && myLoadingDialog.isShowing()) {
-                dialogFlg = false;
-                myLoadingDialog.dismiss();
-            }
+            dialogFlg = false;
+            new Handler().postDelayed(() -> {
+                if (myLoadingDialog != null && myLoadingDialog.isShowing())
+                    myLoadingDialog.dismiss();
+            }, 300);
         } catch (Exception e) {
             e.printStackTrace();
         }

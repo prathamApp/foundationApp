@@ -4,9 +4,7 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
-import android.graphics.Color;
 import android.graphics.Point;
-import android.graphics.drawable.ColorDrawable;
 import android.hardware.usb.UsbDevice;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
@@ -21,6 +19,7 @@ import android.support.annotation.UiThread;
 import android.support.v7.app.AppCompatActivity;
 import android.transition.Slide;
 import android.view.Display;
+import android.view.Gravity;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -30,6 +29,7 @@ import android.widget.TextView;
 
 import com.airbnb.lottie.LottieAnimationView;
 import com.pratham.foundation.async.CopyDbToOTG;
+import com.pratham.foundation.customView.BlurPopupDialog.BlurPopupWindow;
 import com.pratham.foundation.customView.display_image_dialog.CustomLodingDialog;
 import com.pratham.foundation.database.AppDatabase;
 import com.pratham.foundation.database.BackupDatabase;
@@ -43,7 +43,6 @@ import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
 import java.util.Locale;
-import java.util.Objects;
 
 import static com.pratham.foundation.ApplicationClass.audioManager;
 import static com.pratham.foundation.ApplicationClass.ttsService;
@@ -67,7 +66,7 @@ public class BaseActivity extends AppCompatActivity {
     TextView txt_push_error;
     RelativeLayout rl_btn;
     Button ok_btn, eject_btn;
-    CustomLodingDialog pushDialog;
+    BlurPopupWindow pushDialog;
     CustomLodingDialog sd_builder;
     public static MediaPlayer correctSound;
     public static MediaPlayerUtil mediaPlayerUtil;
@@ -103,7 +102,7 @@ public class BaseActivity extends AppCompatActivity {
 
 //        Catcho.Builder(this)
 //                .activity(CatchoTransparentActivity.class).build();
-        //   .recipients("abc@domain.com").build();
+//                .recipients("abc@domain.com").build();
     }
 
 /*
@@ -231,17 +230,20 @@ public class BaseActivity extends AppCompatActivity {
             super.handleMessage(msg);
             switch (msg.what) {
                 case SHOW_OTG_TRANSFER_DIALOG:
-                        showSDBuilderDialog();
+                    showSDBuilderDialog();
                     break;
                 case SHOW_OTG_SELECT_DIALOG:
-                    ShowOTGPushDialog();
-                    rl_btn.setVisibility(View.GONE);
+                    new Handler().postDelayed(() -> {
+                        ShowOTGPushDialog();
+                        rl_btn.setVisibility(View.GONE);
+                    }, 300);
                     break;
                 case HIDE_OTG_TRANSFER_DIALOG_SUCCESS:
                     push_lottie.setAnimation("lottie_correct.json");
                     push_lottie.playAnimation();
                     int days = appDatabase.getScoreDao().getTotalActiveDeviceDays();
-                    txt_push_dialog_msg.setText("Data of " + days + " days and\n" + TransferedImages + " Images\nCopied Successfully!!");
+                    txt_push_dialog_msg.setText("Data of " + days + " days and\n"
+                            + TransferedImages + " Images\nCopied Successfully!!");
                     rl_btn.setVisibility(View.VISIBLE);
                     break;
                 case HIDE_OTG_TRANSFER_DIALOG_FAILED:
@@ -259,13 +261,26 @@ public class BaseActivity extends AppCompatActivity {
     @SuppressLint("CutPasteId")
     @UiThread
     public void ShowOTGPushDialog() {
-        pushDialog = new CustomLodingDialog(this, R.style.FC_DialogStyle);
-        pushDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        pushDialog.setContentView(R.layout.app_send_success_dialog);
-        Objects.requireNonNull(pushDialog.getWindow()).setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-        pushDialog.setCancelable(false);
-        pushDialog.setCanceledOnTouchOutside(false);
-        pushDialog.show();
+        pushDialog = new BlurPopupWindow.Builder(this)
+                .setContentView(R.layout.app_send_success_dialog)
+                .setGravity(Gravity.CENTER)
+                .setDismissOnTouchBackground(false)
+                .setDismissOnClickBack(false)
+                .setScaleRatio(0.2f)
+                .bindClickListener(v -> {
+                    new Handler().postDelayed(() -> {
+                        pushDialog.dismiss();
+                    }, 200);
+                }, R.id.ok_btn)
+                .bindClickListener(v -> {
+                    new Handler().postDelayed(() -> {
+                        ejectOTG();
+                        pushDialog.dismiss();
+                    }, 200);
+                }, R.id.eject_btn)
+                .setBlurRadius(10)
+                .setTintColor(0x30000000)
+                .build();
 
         push_lottie = pushDialog.findViewById(R.id.push_lottie);
         txt_push_dialog_msg = pushDialog.findViewById(R.id.txt_push_dialog_msg);
@@ -273,14 +288,7 @@ public class BaseActivity extends AppCompatActivity {
         rl_btn = pushDialog.findViewById(R.id.rl_btn);
         ok_btn = pushDialog.findViewById(R.id.ok_btn);
         eject_btn = pushDialog.findViewById(R.id.eject_btn);
-
-        ok_btn.setOnClickListener(v -> {
-            pushDialog.dismiss();
-        });
-        eject_btn.setOnClickListener(v -> {
-            ejectOTG();
-            pushDialog.dismiss();
-        });
+        pushDialog.show();
     }
 
     private void ejectOTG() {
@@ -288,23 +296,27 @@ public class BaseActivity extends AppCompatActivity {
         startActivity(i);
     }
 
+    BlurPopupWindow sdBuilderDialog;
+
     private void showSDBuilderDialog() {
-        CustomLodingDialog dialog = new CustomLodingDialog(this, R.style.FC_DialogStyle);
-        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        dialog.setContentView(R.layout.dialog_alert_sd_card);
-        Objects.requireNonNull(dialog.getWindow()).setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-        dialog.setCancelable(false);
-        dialog.setCanceledOnTouchOutside(false);
-        dialog.show();
-        Button txt_choose_sd_card = dialog.findViewById(R.id.txt_choose_sd_card);
-        txt_choose_sd_card.setOnClickListener(v -> {
-            new Handler().postDelayed(() -> {
-                Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT_TREE);
-                intent.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
-                startActivityForResult(intent, SDCARD_LOCATION_CHOOSER);
-            }, 200);
-            dialog.dismiss();
-        });
+        sdBuilderDialog = new BlurPopupWindow.Builder(this)
+                .setContentView(R.layout.dialog_alert_sd_card)
+                .setGravity(Gravity.CENTER)
+                .setDismissOnTouchBackground(false)
+                .setDismissOnClickBack(true)
+                .setScaleRatio(0.2f)
+                .bindClickListener(v -> {
+                    sdBuilderDialog.dismiss();
+                    new Handler().postDelayed(() -> {
+                        Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT_TREE);
+                        intent.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
+                        startActivityForResult(intent, SDCARD_LOCATION_CHOOSER);
+                    }, 200);
+                }, R.id.txt_choose_sd_card)
+                .setBlurRadius(10)
+                .setTintColor(0x30000000)
+                .build();
+        sdBuilderDialog.show();
     }
 
     @SuppressLint("StaticFieldLeak")
@@ -344,7 +356,9 @@ public class BaseActivity extends AppCompatActivity {
                         | Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
                 ApplicationClass.getInstance().getContentResolver().takePersistableUriPermission(treeUri, takeFlags);
                 mHandler.sendEmptyMessage(SHOW_OTG_SELECT_DIALOG);
-                new CopyDbToOTG().execute(treeUri);
+                new Handler().postDelayed(() -> {
+                    new CopyDbToOTG().execute(treeUri);
+                }, 500);
             }
         }
     }

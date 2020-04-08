@@ -125,7 +125,7 @@ public class ContentAdapter extends RecyclerView.Adapter {
                 holder.title.setText(contentList.getNodeTitle());
                 holder.title.setSelected(true);
                 RequestOptions requestOptions = new RequestOptions();
-                requestOptions.placeholder(R.drawable.download_icon);
+                requestOptions.placeholder(R.drawable.ic_download);
                 requestOptions.error(R.drawable.warning);
 
                 holder.ib_action_btn.setVisibility(View.GONE);
@@ -190,7 +190,7 @@ public class ContentAdapter extends RecyclerView.Adapter {
                 folderHolder.card_main.setBackground(mContext.getResources().getDrawable(getRandomCardColor()));
                 folderHolder.tvTitle.setText(contentList.getNodeTitle());
                 RequestOptions requestOptions2 = new RequestOptions();
-                requestOptions2.placeholder(R.drawable.download_icon);
+                requestOptions2.placeholder(R.drawable.ic_download);
                 requestOptions2.error(R.drawable.warning);
 
                 File file;

@@ -5,19 +5,17 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
+import android.os.Handler;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.view.Window;
-import android.widget.Button;
+import android.view.Gravity;
 import android.widget.TextView;
 
 import com.pratham.foundation.BaseActivity;
 import com.pratham.foundation.R;
+import com.pratham.foundation.customView.BlurPopupDialog.BlurPopupWindow;
 import com.pratham.foundation.customView.GridSpacingItemDecoration;
-import com.pratham.foundation.customView.display_image_dialog.CustomLodingDialog;
 import com.pratham.foundation.database.domain.ContentTable;
 import com.pratham.foundation.services.shared_preferences.FastSave;
 import com.pratham.foundation.ui.app_home.HomeActivity_;
@@ -31,7 +29,6 @@ import org.androidannotations.annotations.UiThread;
 import org.androidannotations.annotations.ViewById;
 
 import java.util.List;
-import java.util.Objects;
 
 import static com.pratham.foundation.ApplicationClass.BackBtnSound;
 import static com.pratham.foundation.ApplicationClass.ButtonClickSound;
@@ -39,7 +36,6 @@ import static com.pratham.foundation.utility.FC_Constants.currentLevel;
 import static com.pratham.foundation.utility.FC_Constants.currentSubjectFolder;
 import static com.pratham.foundation.utility.FC_Constants.gameFolderPath;
 import static com.pratham.foundation.utility.FC_Utility.dpToPx;
-
 
 @EActivity(R.layout.activity_select_subject)
 public class SelectSubject extends BaseActivity implements
@@ -139,29 +135,26 @@ public class SelectSubject extends BaseActivity implements
         exitDialog();
     }
 
+    BlurPopupWindow exitDialog;
+
     @UiThread
     @SuppressLint("SetTextI18n")
     public void exitDialog() {
-        CustomLodingDialog dialog = new CustomLodingDialog(SelectSubject.this, R.style.ExitDialogStyle);
-        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        dialog.setContentView(R.layout.lottie_exit_dialog);
-        Objects.requireNonNull(dialog.getWindow()).setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-        dialog.setCancelable(true);
-        dialog.setCanceledOnTouchOutside(true);
-        dialog.show();
-
-        Button dia_btn_no = dialog.findViewById(R.id.dia_btn_no);
-        TextView dia_btn_yes = dialog.findViewById(R.id.dia_btn_yes);
-
-        dia_btn_yes.setOnClickListener(v -> {
-            endSession(this);
-            dialog.dismiss();
-            finishAffinity();
-        });
-
-        dia_btn_no.setOnClickListener(v -> {
-            dialog.dismiss();
-        });
+        exitDialog = new BlurPopupWindow.Builder(this)
+                .setContentView(R.layout.lottie_exit_dialog)
+                .bindClickListener(v -> {
+                    endSession(this);
+                    exitDialog.dismiss();
+                    new Handler().postDelayed(this::finishAffinity, 200);
+                }, R.id.dia_btn_yes)
+                .bindClickListener(v -> exitDialog.dismiss(), R.id.dia_btn_no)
+                .setGravity(Gravity.CENTER)
+                .setDismissOnTouchBackground(true)
+                .setDismissOnClickBack(true)
+                .setScaleRatio(0.2f)
+                .setBlurRadius(10)
+                .setTintColor(0x30000000)
+                .build();
+        exitDialog.show();
     }
-
 }

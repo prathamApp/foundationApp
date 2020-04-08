@@ -599,7 +599,7 @@ Handler handler;
     public void showLoader() {
         if (!dialogFlg) {
             dialogFlg = true;
-            myLoadingDialog = new CustomLodingDialog(context, R.style.FC_DialogStyle);
+            myLoadingDialog = new CustomLodingDialog(context);
             myLoadingDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
             myLoadingDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
             myLoadingDialog.setContentView(R.layout.loading_dialog);
@@ -610,10 +610,14 @@ Handler handler;
 
  /*   @UiThread
     public void dismissLoadingDialog() {
-        if (dialogFlg) {
+        try {
             dialogFlg = false;
-            if (myLoadingDialog != null)
-                myLoadingDialog.dismiss();
+            new Handler().postDelayed(() -> {
+                if (myLoadingDialog != null && myLoadingDialog.isShowing())
+                    myLoadingDialog.dismiss();
+            }, 300);
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }*/
 

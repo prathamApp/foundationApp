@@ -723,7 +723,7 @@ public class ReadingParagraphsActivity extends BaseActivity
     public void showLoader() {
         if (!dialogFlg) {
             dialogFlg = true;
-            myLoadingDialog = new CustomLodingDialog(this, R.style.FC_DialogStyle);
+            myLoadingDialog = new CustomLodingDialog(this);
             myLoadingDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
             Objects.requireNonNull(myLoadingDialog.getWindow()).setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
             myLoadingDialog.setContentView(R.layout.loading_dialog);
@@ -736,10 +736,11 @@ public class ReadingParagraphsActivity extends BaseActivity
     @Override
     public void dismissLoadingDialog() {
         try {
-            if (myLoadingDialog != null && myLoadingDialog.isShowing()) {
-                dialogFlg = false;
+            dialogFlg = false;
+            new Handler().postDelayed(() -> {
+                if (myLoadingDialog != null && myLoadingDialog.isShowing())
                     myLoadingDialog.dismiss();
-            }
+            }, 300);
         } catch (Exception e) {
             e.printStackTrace();
         }

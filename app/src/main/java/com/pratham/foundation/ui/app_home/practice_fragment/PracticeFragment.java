@@ -73,7 +73,6 @@ import static com.pratham.foundation.utility.FC_Constants.sec_Practice;
 import static com.pratham.foundation.utility.FC_Utility.dpToPx;
 
 
-
 @EFragment(R.layout.fragment_tab_one)
 public class PracticeFragment extends Fragment implements PracticeContract.PracticeView,
         PracticeContract.PracticeItemClicked {
@@ -105,7 +104,8 @@ public class PracticeFragment extends Fragment implements PracticeContract.Pract
         context = getActivity();
         presenter.setView(PracticeFragment.this);
         my_recycler_view.addOnScrollListener(new RetractableToolbarUtil.ShowHideToolbarOnScrollingListener(header_rl));
-        presenter.getBottomNavId(currentLevel, "Practice");
+        showLoader();
+           presenter.getBottomNavId(currentLevel, "Practice");
     }
 
     @UiThread
@@ -206,58 +206,60 @@ public class PracticeFragment extends Fragment implements PracticeContract.Pract
     public void messageReceived(EventMessage message) {
 //            else if (message.getMessage().equalsIgnoreCase(FC_Constants.SECTION_COMPLETION_PERC))
 //            getCompletionPercAgain();
-        if (message != null) {
-            if (message.getMessage().equalsIgnoreCase(FC_Constants.LEVEL_CHANGED))
-                onLevelChanged();
-            else if (message.getMessage().equalsIgnoreCase(FC_Constants.BACK_PRESSED))
-                backBtnPressed();
-            else if (message.getMessage().equalsIgnoreCase(FC_Constants.FILE_DOWNLOAD_STARTED)) {
-                resourceDownloadDialog(message.getModal_fileDownloading());
-            } else if (message.getMessage().equalsIgnoreCase(FC_Constants.FILE_DOWNLOAD_UPDATE)) {
-                if (progressLayout != null)
-                    progressLayout.setCurProgress(message.getModal_fileDownloading().getProgress());
-            } else if (message.getMessage().equalsIgnoreCase(FC_Constants.FRAGMENT_SELECTED)) {
-                fragmentSelected();
-            } else if (message.getMessage().equalsIgnoreCase(FC_Constants.FRAGMENT_RESELECTED)) {
-                fragmentSelected();
-            } else if (message.getMessage().equalsIgnoreCase(FC_Constants.FILE_DOWNLOAD_ERROR)) {
-                downloadDialog.dismiss();
-                showDownloadErrorDialog();
-            } else if (message.getMessage().equalsIgnoreCase(FC_Constants.UNZIPPING_ERROR)) {
-                downloadDialog.dismiss();
-                showDownloadErrorDialog();
-            } else if (message.getMessage().equalsIgnoreCase(FC_Constants.UNZIPPING_DATA_FILE))
-                dialog_file_name.setText("Unzipping...\nPlease wait" + resName);
-            else if (message.getMessage().equalsIgnoreCase(FC_Constants.FILE_DOWNLOAD_COMPLETE)) {
-                dialog_file_name.setText("Updating Data");
-                String folderPath = "";
-                try {
-                    if (downloadType.equalsIgnoreCase(FC_Constants.FULL_DOWNLOAD)) {
-                        folderPath = contentParentList.get(parentPos).getResourcePath();
-                        contentParentList.get(parentPos).setIsDownloaded("true");
-                        presenter.updateDownloads();
-                        presenter.updateCurrentNode(contentParentList.get(parentPos));
-                        new Handler().postDelayed(() -> {
-                            downloadDialog.dismiss();
-                            adapterParent.notifyItemChanged(parentPos, contentParentList.get(parentPos));
-                        }, 500);
-                    } else if (downloadType.equalsIgnoreCase(FC_Constants.SINGLE_RES_DOWNLOAD)) {
-                        folderPath = Objects.requireNonNull(contentParentList.get(parentPos).getNodelist()).get(childPos).getResourcePath();
-                        Objects.requireNonNull(contentParentList.get(parentPos).getNodelist()).get(childPos).setIsDownloaded("true");
-                        presenter.updateDownloads();
-                        presenter.updateCurrentNode(contentParentList.get(parentPos));
-                        new Handler().postDelayed(() -> {
-                            downloadDialog.dismiss();
-                            adapterParent.notifyItemChanged(parentPos, contentParentList.get(parentPos));
-                        }, 500);
-                    }
-                    resName = "";
-                    if (downloadType.equalsIgnoreCase(FC_Constants.TEST_DOWNLOAD))
-                        presenter.updateDownloadJson(folderPath);
-                } catch (Exception e) {
+        if(FastSave.getInstance().getString(APP_SECTION, "").equalsIgnoreCase(sec_Practice)) {
+            if (message != null) {
+                if (message.getMessage().equalsIgnoreCase(FC_Constants.LEVEL_CHANGED))
+                    onLevelChanged();
+                else if (message.getMessage().equalsIgnoreCase(FC_Constants.BACK_PRESSED))
+                    backBtnPressed();
+                else if (message.getMessage().equalsIgnoreCase(FC_Constants.FILE_DOWNLOAD_STARTED)) {
+                    resourceDownloadDialog(message.getModal_fileDownloading());
+                } else if (message.getMessage().equalsIgnoreCase(FC_Constants.FILE_DOWNLOAD_UPDATE)) {
+                    if (progressLayout != null)
+                        progressLayout.setCurProgress(message.getModal_fileDownloading().getProgress());
+                } else if (message.getMessage().equalsIgnoreCase(FC_Constants.FRAGMENT_SELECTED)) {
+                    fragmentSelected();
+                } else if (message.getMessage().equalsIgnoreCase(FC_Constants.FRAGMENT_RESELECTED)) {
+                    fragmentSelected();
+                } else if (message.getMessage().equalsIgnoreCase(FC_Constants.FILE_DOWNLOAD_ERROR)) {
                     downloadDialog.dismiss();
-                    dismissLoadingDialog();
-                    e.printStackTrace();
+                    showDownloadErrorDialog();
+                } else if (message.getMessage().equalsIgnoreCase(FC_Constants.UNZIPPING_ERROR)) {
+                    downloadDialog.dismiss();
+                    showDownloadErrorDialog();
+                } else if (message.getMessage().equalsIgnoreCase(FC_Constants.UNZIPPING_DATA_FILE))
+                    dialog_file_name.setText("Unzipping...\nPlease wait" + resName);
+                else if (message.getMessage().equalsIgnoreCase(FC_Constants.FILE_DOWNLOAD_COMPLETE)) {
+                    dialog_file_name.setText("Updating Data");
+                    String folderPath = "";
+                    try {
+                        if (downloadType.equalsIgnoreCase(FC_Constants.FULL_DOWNLOAD)) {
+                            folderPath = contentParentList.get(parentPos).getResourcePath();
+                            contentParentList.get(parentPos).setIsDownloaded("true");
+                            presenter.updateDownloads();
+                            presenter.updateCurrentNode(contentParentList.get(parentPos));
+                            new Handler().postDelayed(() -> {
+                                downloadDialog.dismiss();
+                                adapterParent.notifyItemChanged(parentPos, contentParentList.get(parentPos));
+                            }, 500);
+                        } else if (downloadType.equalsIgnoreCase(FC_Constants.SINGLE_RES_DOWNLOAD)) {
+                            folderPath = Objects.requireNonNull(contentParentList.get(parentPos).getNodelist()).get(childPos).getResourcePath();
+                            Objects.requireNonNull(contentParentList.get(parentPos).getNodelist()).get(childPos).setIsDownloaded("true");
+                            presenter.updateDownloads();
+                            presenter.updateCurrentNode(contentParentList.get(parentPos));
+                            new Handler().postDelayed(() -> {
+                                downloadDialog.dismiss();
+                                adapterParent.notifyItemChanged(parentPos, contentParentList.get(parentPos));
+                            }, 500);
+                        }
+                        resName = "";
+                        if (downloadType.equalsIgnoreCase(FC_Constants.TEST_DOWNLOAD))
+                            presenter.updateDownloadJson(folderPath);
+                    } catch (Exception e) {
+                        downloadDialog.dismiss();
+                        dismissLoadingDialog();
+                        e.printStackTrace();
+                    }
                 }
             }
         }
@@ -265,7 +267,7 @@ public class PracticeFragment extends Fragment implements PracticeContract.Pract
 
     private void getCompletionPercAgain() {
         String currentNodeID = presenter.getcurrentNodeID();
-        Log.d("getCompletion", "getCompletionPercAgain: "+currentNodeID);
+        Log.d("getCompletion", "getCompletionPercAgain: " + currentNodeID);
         try {
             if (!currentNodeID.equalsIgnoreCase("na"))
                 presenter.findMaxScore("" + currentNodeID);
@@ -278,7 +280,7 @@ public class PracticeFragment extends Fragment implements PracticeContract.Pract
     @Override
     public void setSelectedLevel(List<ContentTable> contentTable) {
         rootLevelList = contentTable;
-        if (rootLevelList != null)
+        if (rootLevelList != null )
             levelChanged.setActualLevel(rootLevelList.size());
         presenter.insertNodeId(contentTable.get(currentLevel).getNodeId());
         presenter.getDataForList();
@@ -330,7 +332,7 @@ public class PracticeFragment extends Fragment implements PracticeContract.Pract
         if (!loaderVisible) {
             try {
                 loaderVisible = true;
-                myLoadingDialog = new CustomLodingDialog(context, R.style.FC_DialogStyle);
+                myLoadingDialog = new CustomLodingDialog(context);
                 myLoadingDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
                 Objects.requireNonNull(myLoadingDialog.getWindow()).
                         setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
@@ -346,11 +348,14 @@ public class PracticeFragment extends Fragment implements PracticeContract.Pract
 
     @Override
     public void dismissLoadingDialog() {
-        if (myLoadingDialog != null) {
-            if(loaderVisible && myLoadingDialog.isShowing()) {
-                loaderVisible = false;
-                myLoadingDialog.dismiss();
-            }
+        try {
+            loaderVisible = false;
+            new Handler().postDelayed(() -> {
+                if (myLoadingDialog != null && myLoadingDialog.isShowing())
+                    myLoadingDialog.dismiss();
+            }, 300);
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 
@@ -358,7 +363,7 @@ public class PracticeFragment extends Fragment implements PracticeContract.Pract
     @UiThread
     @Override
     public void setLevelprogress(int percent) {
-        if(FastSave.getInstance().getString(APP_SECTION,"").equalsIgnoreCase(sec_Practice))
+        if (FastSave.getInstance().getString(APP_SECTION, "").equalsIgnoreCase(sec_Practice))
             tv_header_progress.setText(percent + "%");
     }
 
@@ -391,7 +396,7 @@ public class PracticeFragment extends Fragment implements PracticeContract.Pract
     @Override
     public void onContentClicked(ContentTable singleItem, String parentName) {
         ButtonClickSound.start();
-        FastSave.getInstance().saveString(APP_SECTION, ""+sec_Practice);
+        FastSave.getInstance().saveString(APP_SECTION, "" + sec_Practice);
         if (singleItem.getNodeType().equalsIgnoreCase("category")) {
             Intent intent = new Intent(context, ContentDisplay_.class);
             intent.putExtra("nodeId", singleItem.getNodeId());
@@ -415,7 +420,7 @@ public class PracticeFragment extends Fragment implements PracticeContract.Pract
     public void onContentOpenClicked(ContentTable contentList) {
         //Toast.makeText(this, "ContentOpen : Work In Progress", Toast.LENGTH_SHORT).show();
         ButtonClickSound.start();
-        FastSave.getInstance().saveString(APP_SECTION, ""+sec_Practice);
+        FastSave.getInstance().saveString(APP_SECTION, "" + sec_Practice);
         downloadNodeId = contentList.getNodeId();
         resName = contentList.getNodeTitle();
         if (contentList.getNodeType().equalsIgnoreCase("PreResource") ||
@@ -533,7 +538,7 @@ public class PracticeFragment extends Fragment implements PracticeContract.Pract
     @Override
     public void onContentDownloadClicked(ContentTable contentList, int parentPos, int childPos, String downloadType) {
         this.downloadType = downloadType;
-        FastSave.getInstance().saveString(APP_SECTION, ""+sec_Practice);
+        FastSave.getInstance().saveString(APP_SECTION, "" + sec_Practice);
         downloadNodeId = contentList.getNodeId();
         ButtonClickSound.start();
 //        downloadNodeId = "" + 1371;

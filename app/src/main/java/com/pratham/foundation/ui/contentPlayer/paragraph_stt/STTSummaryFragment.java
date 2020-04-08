@@ -178,7 +178,7 @@ public class STTSummaryFragment extends Fragment implements
     public void showLoader() {
         if (!dialogFlg) {
             dialogFlg = true;
-            myLoadingDialog = new CustomLodingDialog(context, R.style.FC_DialogStyle);
+            myLoadingDialog = new CustomLodingDialog(context);
             myLoadingDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
             myLoadingDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
             myLoadingDialog.setContentView(R.layout.loading_dialog);
@@ -191,10 +191,11 @@ public class STTSummaryFragment extends Fragment implements
     @Override
     public void dismissLoadingDialog() {
         try {
-            if (myLoadingDialog != null && myLoadingDialog.isShowing()) {
-                dialogFlg = false;
-                myLoadingDialog.dismiss();
-            }
+            dialogFlg = false;
+            new Handler().postDelayed(() -> {
+                if (myLoadingDialog != null && myLoadingDialog.isShowing())
+                    myLoadingDialog.dismiss();
+            }, 300);
         } catch (Exception e) {
             e.printStackTrace();
         }

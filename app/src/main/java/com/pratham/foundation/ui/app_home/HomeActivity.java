@@ -11,17 +11,20 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.Window;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.facebook.drawee.view.SimpleDraweeView;
 import com.pratham.foundation.ApplicationClass;
 import com.pratham.foundation.BaseActivity;
 import com.pratham.foundation.R;
+import com.pratham.foundation.async.ContentDownloadingTask;
+import com.pratham.foundation.customView.BlurPopupDialog.BlurPopupWindow;
 import com.pratham.foundation.customView.display_image_dialog.CustomLodingDialog;
 import com.pratham.foundation.customView.submarine_view.SubmarineItem;
 import com.pratham.foundation.customView.submarine_view.SubmarineView;
@@ -41,6 +44,7 @@ import com.pratham.foundation.utility.FC_Utility;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Background;
+import org.androidannotations.annotations.Bean;
 import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.UiThread;
@@ -124,6 +128,9 @@ public class HomeActivity extends BaseActivity implements LevelChanged {
     static int count = 0;
     public static LevelChanged levelChanged;
     String currSubj;
+    SimpleDraweeView test_dialog_img;
+    @Bean(ContentDownloadingTask.class)
+    public static ContentDownloadingTask contentDownloadingTask;
 
     @AfterViews
     public void initialize() {
@@ -135,7 +142,7 @@ public class HomeActivity extends BaseActivity implements LevelChanged {
 //        changeBackground(sub_Name);
         showLoader();
         new Handler().postDelayed(() -> {
-        startActivityAndTabSetup();
+            startActivityAndTabSetup();
         }, 200);
     }
 
@@ -167,9 +174,9 @@ public class HomeActivity extends BaseActivity implements LevelChanged {
 
     private void getCompletion() {
 //        getNewCompletion();
-            EventMessage eventMessage = new EventMessage();
-            eventMessage.setMessage(SECTION_COMPLETION_PERC);
-            EventBus.getDefault().post(eventMessage);
+        EventMessage eventMessage = new EventMessage();
+        eventMessage.setMessage(SECTION_COMPLETION_PERC);
+        EventBus.getDefault().post(eventMessage);
     }
 //
 //    private void getNewCompletion() {
@@ -199,10 +206,11 @@ public class HomeActivity extends BaseActivity implements LevelChanged {
 
 
     private CustomLodingDialog myLoadingDialog;
+
     @UiThread
     public void showLoader() {
         if (myLoadingDialog == null) {
-            myLoadingDialog = new CustomLodingDialog(this, R.style.FC_DialogStyle);
+            myLoadingDialog = new CustomLodingDialog(this);
             myLoadingDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
             Objects.requireNonNull(myLoadingDialog.getWindow()).
                     setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
@@ -210,17 +218,17 @@ public class HomeActivity extends BaseActivity implements LevelChanged {
             myLoadingDialog.setCanceledOnTouchOutside(true);
             myLoadingDialog.setCancelable(true);
             myLoadingDialog.show();
-        }
-        else
+        } else
             myLoadingDialog.show();
     }
 
     @UiThread
     public void dismissLoadingDialog() {
         try {
-            if (myLoadingDialog != null && myLoadingDialog.isShowing()) {
-                myLoadingDialog.dismiss();
-            }
+            new Handler().postDelayed(() -> {
+                if (myLoadingDialog != null && myLoadingDialog.isShowing())
+                    myLoadingDialog.dismiss();
+            }, 300);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -230,8 +238,8 @@ public class HomeActivity extends BaseActivity implements LevelChanged {
     public void displayProfileName() {
         String profileName = "";
         try {
-            activityPhotoPath = Environment.getExternalStorageDirectory().toString() + "/.FCAInternal/ActivityPhotos/"+FastSave.getInstance().getString(CURRENT_STUDENT_ID,"")+"/";
-            Log.d("activityPhotoPath", "initialize activityPhotoPath: "+activityPhotoPath);
+            activityPhotoPath = Environment.getExternalStorageDirectory().toString() + "/.FCAInternal/ActivityPhotos/" + FastSave.getInstance().getString(CURRENT_STUDENT_ID, "") + "/";
+            Log.d("activityPhotoPath", "initialize activityPhotoPath: " + activityPhotoPath);
             if (!new File(activityPhotoPath).exists())
                 new File(activityPhotoPath).mkdir();
             try {
@@ -426,7 +434,8 @@ public class HomeActivity extends BaseActivity implements LevelChanged {
 /*                if (tab.getText().toString().equalsIgnoreCase("Learning")) {
                     FastSave.getInstance().getString(APP_SECTION,"").equalsIgnoreCase(sec_Test) = true;
                 }if (tab.getText().toString().equalsIgnoreCase("Practice")) {
-                }*/        try {
+                }*/
+                try {
                     BackBtnSound.start();
                 } catch (IllegalStateException e) {
                     e.printStackTrace();
@@ -514,69 +523,81 @@ public class HomeActivity extends BaseActivity implements LevelChanged {
         }
     }
 
+    BlurPopupWindow myDialog;
     @SuppressLint("SetTextI18n")
     private void showTestTypeSelectionDialog() {
         FastSave.getInstance().saveString(CURRENT_SUPERVISOR_ID, "NA");
         FastSave.getInstance().saveBoolean(supervisedAssessment, false);
-
-        final CustomLodingDialog dialog = new CustomLodingDialog(this, R.style.FC_DialogStyle);
-        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        Objects.requireNonNull(dialog.getWindow()).setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-        dialog.setContentView(R.layout.test_type_dialog);
-        dialog.setCancelable(false);
-        dialog.setCanceledOnTouchOutside(false);
-
-        Button dia_btn_green = dialog.findViewById(R.id.dia_btn_green);
-        Button dia_btn_yellow = dialog.findViewById(R.id.dia_btn_yellow);
-        Button dia_btn_red = dialog.findViewById(R.id.dia_btn_red);
-
-        dia_btn_red.setText("" + getResources().getString(R.string.Unsupervised));
-        dia_btn_green.setText("" + getResources().getString(R.string.Cancel));
-        dia_btn_yellow.setText("" + getResources().getString(R.string.Supervised));
-        dialog.show();
-
-        dia_btn_red.setOnClickListener(v -> {
-            FastSave.getInstance().saveBoolean(supervisedAssessment, false);
-            Intent intent = new Intent(HomeActivity.this, SupervisedAssessmentActivity.class);
-            intent.putExtra("testMode", "unsupervised");
-            dialog.dismiss();
-            startActivity(intent);
-        });
-
-        dia_btn_yellow.setOnClickListener(v -> {
-            FastSave.getInstance().saveBoolean(supervisedAssessment, true);
-            Intent intent = new Intent(HomeActivity.this, SupervisedAssessmentActivity.class);
-            intent.putExtra("testMode", "supervised");
-            dialog.dismiss();
-            startActivity(intent);
-        });
-
-        dia_btn_green.setOnClickListener(v -> {
-            dialog.dismiss();
-            tabLayout.getTabAt(0).select();
-        });
+        myDialog = new BlurPopupWindow.Builder(this)
+                .setContentView(R.layout.test_type_dialog)
+                .bindClickListener(v -> {
+                    FastSave.getInstance().saveBoolean(supervisedAssessment, false);
+                    Intent intent = new Intent(HomeActivity.this, SupervisedAssessmentActivity.class);
+                    intent.putExtra("testMode", "unsupervised");
+                    new Handler().postDelayed(() -> {
+                        myDialog.dismiss();
+                        startActivity(intent);
+                    }, 200);
+                }, R.id.btn_unsupervised)
+                .bindClickListener(v -> {
+                    FastSave.getInstance().saveBoolean(supervisedAssessment, true);
+                    Intent intent = new Intent(HomeActivity.this, SupervisedAssessmentActivity.class);
+                    intent.putExtra("testMode", "supervised");
+                    new Handler().postDelayed(() -> {
+                        myDialog.dismiss();
+                        startActivity(intent);
+                    }, 200);
+                }, R.id.btn_supervised)
+                .bindClickListener(v -> {
+                    tabLayout.getTabAt(0).select();
+                    new Handler().postDelayed(() -> {
+                        myDialog.dismiss();
+                    }, 200);
+                }, R.id.dia_btn_green)
+                .setGravity(Gravity.CENTER)
+                .setDismissOnTouchBackground(false)
+                .setDismissOnClickBack(false)
+                .setScaleRatio(0.2f)
+                .setBlurRadius(10)
+                .setTintColor(0x30000000)
+                .build();
+        myDialog.show();
+/*        test_dialog_img = myDialog.findViewById(R.id.test_dialog_img);
+        ImageRequest imageRequest = ImageRequestBuilder
+                .newBuilderWithSource(Uri.parse("http://www.prodigi.openiscool.org/repository/Images/SoundOutPhonemes.png"))
+                .setLocalThumbnailPreviewsEnabled(false)
+                .build();
+        if(imageRequest !=null ) {
+            DraweeController controller = Fresco.newDraweeControllerBuilder()
+                    .setImageRequest(imageRequest)
+                    .build();
+            test_dialog_img.setController(controller);
+        }*/
     }
 
+
+    boolean comngSoonFlg = false;
 
     @UiThread
     @SuppressLint("SetTextI18n")
     void showComingSoonDia() {
-        final CustomLodingDialog dialog = new CustomLodingDialog(this, R.style.ExitDialogStyle);
-        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        Objects.requireNonNull(dialog.getWindow()).setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-        dialog.setContentView(R.layout.lottie_coming_soon);
-        dialog.setCancelable(false);
-        dialog.setCanceledOnTouchOutside(false);
-        dialog.show();
-        TextView dia_btn_yes = dialog.findViewById(R.id.dia_btn_yes);
-        dia_btn_yes.setOnClickListener(v -> {
-            comngSoonFlg = false;
-            dialog.dismiss();
-        });
+        myDialog = new BlurPopupWindow.Builder(this)
+                .setContentView(R.layout.lottie_coming_soon)
+                .bindClickListener(v -> {
+                    comngSoonFlg = false;
+                    new Handler().postDelayed(() -> {
+                        myDialog.dismiss();
+                    }, 200);
+                }, R.id.dia_btn_yes)
+                .setGravity(Gravity.CENTER)
+                .setDismissOnTouchBackground(false)
+                .setDismissOnClickBack(false)
+                .setScaleRatio(0.2f)
+                .setBlurRadius(10)
+                .setTintColor(0x30000000)
+                .build();
+        myDialog.show();
     }
-
-    boolean comngSoonFlg = false;
-
 /*
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {

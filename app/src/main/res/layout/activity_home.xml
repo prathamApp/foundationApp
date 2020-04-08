@@ -128,6 +128,28 @@
         android:elevation="0dp"
         app:layout_behavior="@string/appbar_scrolling_view_behavior" />
 
+<!--
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginStart="@dimen/_8sdp"
+        android:layout_marginBottom="?attr/actionBarSize">
+
+    <com.airbnb.lottie.LottieAnimationView
+        android:id="@+id/download_lottieView"
+        android:visibility="gone"
+        android:layout_width="@dimen/_40sdp"
+        android:layout_height="@dimen/_40sdp"
+        android:elevation="@dimen/_3sdp"
+        android:layout_marginBottom="@dimen/_8sdp"
+        android:background="@drawable/dialog_image_bg"
+        app:lottie_autoPlay="true"
+        app:lottie_fileName="downloading_lottie.json"
+        app:lottie_loop="true" />
+    </RelativeLayout>
+-->
+
     <com.pratham.foundation.customView.submarine_view.SubmarineView
         android:id="@+id/submarine"
         android:layout_width="wrap_content"

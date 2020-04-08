@@ -143,14 +143,14 @@ public class LearningPresenter implements LearningContract.LearningPresenter, AP
         String botID;
 //        String rootID = FC_Utility.getRootNode(FastSave.getInstance().getString(FC_Constants.LANGUAGE, FC_Constants.HINDI));
         String rootID = sub_nodeId;
+//        String rootID = "4030";
         botID = AppDatabase.appDatabase.getContentTableDao().getContentDataByTitle("" + rootID, cosSection);
-//        if (botID != null && !FC_Utility.isDataConnectionAvailable(mContext))
-        if (botID != null)
+        if (botID == null && !FC_Utility.isDataConnectionAvailable(mContext))
+            learningView.showComingSoonDiaog();
+        else if (botID != null && !FC_Utility.isDataConnectionAvailable(mContext))
             getLevelDataForList(currentLevelNo, botID);
         else
-            learningView.showComingSoonDiaog();
-//            getRootData(rootID);
-
+            getRootData(rootID);
     }
 
     @Background
@@ -163,15 +163,14 @@ public class LearningPresenter implements LearningContract.LearningPresenter, AP
     @Override
     public void getLevelDataForList(int currentLevelNo, String bottomNavNodeId) {
         rootList = AppDatabase.appDatabase.getContentTableDao().getContentData("" + bottomNavNodeId);
-//        if (FC_Utility.isDataConnectionAvailable(mContext))
-//            getLevelDataFromApi(currentLevelNo, bottomNavNodeId);
-//        else
-        learningView.setSelectedLevel(rootList);
+        if (FC_Utility.isDataConnectionAvailable(mContext))
+            getLevelDataFromApi(currentLevelNo, bottomNavNodeId);
+        else
+            learningView.setSelectedLevel(rootList);
     }
 
     public void getLevelDataFromApi(int currentLevelNo, String botNodeId) {
-        if (FC_Utility.isDataConnectionAvailable(mContext))
-            api_content.getAPIContent(FC_Constants.INTERNET_LEVEL, FC_Constants.INTERNET_DOWNLOAD_NEW_API, botNodeId);
+        api_content.getAPIContent(FC_Constants.INTERNET_LEVEL, FC_Constants.INTERNET_DOWNLOAD_NEW_API, botNodeId);
     }
 
     @Background
@@ -389,23 +388,26 @@ public class LearningPresenter implements LearningContract.LearningPresenter, AP
     @UiThread
     public void updateUI() {
         maxScore.clear();
-        try {
-            if (!LOGIN_MODE.equalsIgnoreCase(QR_GROUP_MODE))
-                findMaxScore("" + nodeIds.get(nodeIds.size() - 1));
-        } catch (Exception e) {
-            e.printStackTrace();
+//        try {
+//            findMaxScore("" + nodeIds.get(nodeIds.size() - 1));
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+        //TODO add Use this code for API.
+        if (FC_Utility.isDataConnectionAvailable(mContext)) {
+            api_content.getAPIContent(FC_Constants.INTERNET_DOWNLOAD,
+                    FC_Constants.INTERNET_DOWNLOAD_NEW_API, nodeIds.get(nodeIds.size() - 1));
+        } else {
+            if (contentParentList.size() == 0 && !FC_Utility.isDataConnectionAvailable(mContext)) {
+                learningView.showNoDataDownloadedDialog();
+            } else {
+                learningView.addContentToViewList(contentParentList);
+                learningView.notifyAdapter();
+            }
         }
-//        if (FC_Utility.isDataConnectionAvailable(mContext)) {
-//            api_content.getAPIContent(FC_Constants.INTERNET_DOWNLOAD, FC_Constants.INTERNET_DOWNLOAD_NEW_API, nodeIds.get(nodeIds.size() - 1));
-//        } else {
-//            if (contentParentList.size() == 0 && !FC_Utility.isDataConnectionAvailable(mContext)) {
-//        if (contentParentList.size() == 0) {
-//            learningView.showNoDataDownloadedDialog();
-//        } else {
-        learningView.addContentToViewList(contentParentList);
-        learningView.notifyAdapter();
-//        }
-//        }
+//        learningView.addContentToViewList(contentParentList);
+//        learningView.notifyAdapter();
+
     }
 
     public void sortAllList(List<ContentTable> contentParentList) {
@@ -568,6 +570,19 @@ public class LearningPresenter implements LearningContract.LearningPresenter, AP
                 Type listType = new TypeToken<ArrayList<ContentTable>>() {
                 }.getType();
                 List<ContentTable> serverContentList = gson.fromJson(response, listType);
+
+                List<ContentTable> resourceSerList = new ArrayList<>();
+                List<ContentTable> tempSerList2 = new ArrayList<>();
+                ContentTable resContentTableSer = new ContentTable();
+
+                ContentTable contentTableServerRes = new ContentTable();
+                contentTableServerRes.setNodeId("0");
+                contentTableServerRes.setNodeType("Header");
+                tempSerList2.add(contentTableServerRes);
+                resContentTableSer.setNodelist(tempSerList2);
+                resourceSerList.add(contentTableServerRes);
+                contentDBList.add(contentTableServerRes);
+
                 for (int i = 0; i < serverContentList.size(); i++) {
                     parentFound = false;
                     List<ContentTable> tempList;
@@ -610,6 +625,7 @@ public class LearningPresenter implements LearningContract.LearningPresenter, AP
                                             contentTableTemp.setResourcePath("" + serverContentList.get(i).getNodelist().get(k).getResourcePath());
                                             contentTableTemp.setParentId("" + serverContentList.get(i).getNodelist().get(k).getParentId());
                                             contentTableTemp.setLevel("" + serverContentList.get(i).getNodelist().get(k).getLevel());
+                                            contentTableTemp.setNodePercentage("0");
                                             contentTableTemp.setVersion("" + serverContentList.get(i).getNodelist().get(k).getVersion());
                                             contentTableTemp.setContentType("" + serverContentList.get(i).getNodelist().get(k).getContentType());
                                             contentTableTemp.setIsDownloaded("false");
@@ -636,6 +652,7 @@ public class LearningPresenter implements LearningContract.LearningPresenter, AP
                                             contentTableChildTemp.setResourceType("" + serverContentList.get(i).getNodelist().get(f).getResourceType());
                                             contentTableChildTemp.setResourcePath("" + serverContentList.get(i).getNodelist().get(f).getResourcePath());
                                             contentTableChildTemp.setParentId("" + serverContentList.get(i).getNodelist().get(f).getParentId());
+                                            contentTableTemp.setNodePercentage("0");
                                             contentTableChildTemp.setLevel("" + serverContentList.get(i).getNodelist().get(f).getLevel());
                                             contentTableChildTemp.setVersion("" + serverContentList.get(i).getNodelist().get(f).getVersion());
                                             contentTableChildTemp.setContentType("" + serverContentList.get(i).getNodelist().get(f).getContentType());
@@ -674,6 +691,7 @@ public class LearningPresenter implements LearningContract.LearningPresenter, AP
                         contentTable.setResourceType("" + serverContentList.get(i).getResourceType());
                         contentTable.setResourcePath("" + serverContentList.get(i).getResourcePath());
                         contentTable.setParentId("" + serverContentList.get(i).getParentId());
+                        contentTable.setNodePercentage("0");
                         contentTable.setLevel("" + serverContentList.get(i).getLevel());
                         contentTable.setVersion("" + serverContentList.get(i).getVersion());
                         contentTable.setContentType("" + serverContentList.get(i).getContentType());
@@ -804,7 +822,8 @@ public class LearningPresenter implements LearningContract.LearningPresenter, AP
                     if (serverContentList.get(i).getNodeTitle().equalsIgnoreCase(cosSection))
                         botNodeId = serverContentList.get(i).getNodeId();
 //                learningView.setBotNodeId(botNodeId);
-                getLevelDataFromApi(currentLevelNo, botNodeId);
+                if (FC_Utility.isDataConnectionAvailable(mContext))
+                    getLevelDataForList(currentLevelNo, botNodeId);
             } catch (Exception e) {
                 e.printStackTrace();
             }

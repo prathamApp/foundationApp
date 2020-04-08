@@ -12,16 +12,22 @@ import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.View;
 import android.view.Window;
 import android.widget.Button;
-import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.bumptech.glide.Glide;
+import com.facebook.drawee.backends.pipeline.Fresco;
+import com.facebook.drawee.interfaces.DraweeController;
+import com.facebook.drawee.view.SimpleDraweeView;
+import com.facebook.imagepipeline.request.ImageRequest;
+import com.facebook.imagepipeline.request.ImageRequestBuilder;
 import com.pratham.foundation.ApplicationClass;
 import com.pratham.foundation.R;
+import com.pratham.foundation.customView.BlurPopupDialog.BlurPopupWindow;
 import com.pratham.foundation.customView.GridSpacingItemDecoration;
 import com.pratham.foundation.customView.collapsingView.RetractableToolbarUtil;
 import com.pratham.foundation.customView.display_image_dialog.CustomLodingDialog;
@@ -103,6 +109,7 @@ public class LearningFragment extends Fragment implements LearningContract.Learn
         presenter.setView(LearningFragment.this);
         my_recycler_view.addOnScrollListener(new RetractableToolbarUtil
                 .ShowHideToolbarOnScrollingListener(header_rl));
+        showLoader();
         presenter.getBottomNavId(currentLevel, "Learning");
     }
 
@@ -119,7 +126,9 @@ public class LearningFragment extends Fragment implements LearningContract.Learn
         try {
             for (int i = 0; i < contentParentList.size(); i++)
                 Log.d("Practice List", "" + contentParentList.get(i).getNodeTitle());
-        }catch (Exception e){e.printStackTrace();}
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
         if (adapterParent == null) {
             adapterParent = new LearningOuterDataAdapter(context, contentParentList, this);
@@ -131,19 +140,13 @@ public class LearningFragment extends Fragment implements LearningContract.Learn
         } else
             adapterParent.notifyDataSetChanged();
         long delay;
-        if (ApplicationClass.isTablet)
-            delay = 500L;
-        else
-            delay = 300L;
-        new Handler().postDelayed(() -> {
-            dismissLoadingDialog();
-            try {
-                if (progressLayout != null)
-                    downloadDialog.dismiss();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }, delay);
+        dismissLoadingDialog();
+        try {
+            if (progressLayout != null)
+                downloadDialog.dismiss();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     public void sortAllList(List<ContentTable> contentParentList) {
@@ -193,66 +196,75 @@ public class LearningFragment extends Fragment implements LearningContract.Learn
     public void messageReceived(EventMessage message) {
 //            else if (message.getMessage().equalsIgnoreCase(FC_Constants.SECTION_COMPLETION_PERC))
 //            getCompletionPercAgain();
-        if (message != null) {
-            if (message.getMessage().equalsIgnoreCase(FC_Constants.LEVEL_CHANGED))
-                onLevelChanged();
-            else if (message.getMessage().equalsIgnoreCase(FC_Constants.BACK_PRESSED))
-                backBtnPressed();
-            else if (message.getMessage().equalsIgnoreCase(FC_Constants.FILE_DOWNLOAD_STARTED)) {
-                resourceDownloadDialog(message.getModal_fileDownloading());
-            } else if (message.getMessage().equalsIgnoreCase(FC_Constants.FILE_DOWNLOAD_UPDATE)) {
-                if (progressLayout != null)
-                    progressLayout.setCurProgress(message.getModal_fileDownloading().getProgress());
-            } else if (message.getMessage().equalsIgnoreCase(FC_Constants.FRAGMENT_SELECTED)) {
-                fragmentSelected();
-            } else if (message.getMessage().equalsIgnoreCase(FC_Constants.FRAGMENT_RESELECTED)) {
-                fragmentSelected();
-            } else if (message.getMessage().equalsIgnoreCase(FC_Constants.FILE_DOWNLOAD_ERROR)) {
-                downloadDialog.dismiss();
-                showDownloadErrorDialog();
-            } else if (message.getMessage().equalsIgnoreCase(FC_Constants.UNZIPPING_ERROR)) {
-                downloadDialog.dismiss();
-                showDownloadErrorDialog();
-            } else if (message.getMessage().equalsIgnoreCase(FC_Constants.UNZIPPING_DATA_FILE))
-                dialog_file_name.setText("Unzipping...\nPlease wait" + resName);
-            else if (message.getMessage().equalsIgnoreCase(FC_Constants.FILE_DOWNLOAD_COMPLETE)) {
-                dialog_file_name.setText("Updating Data");
-                String folderPath = "";
-                try {
-                    if (downloadType.equalsIgnoreCase(FC_Constants.FULL_DOWNLOAD)) {
-                        folderPath = contentParentList.get(parentPos).getResourcePath();
-                        contentParentList.get(parentPos).setIsDownloaded("true");
-                        presenter.updateDownloads();
-                        presenter.updateCurrentNode(contentParentList.get(parentPos));
-                        new Handler().postDelayed(() -> {
-                            downloadDialog.dismiss();
-                            adapterParent.notifyItemChanged(parentPos, contentParentList.get(parentPos));
-                        }, 500);
-                    } else if (downloadType.equalsIgnoreCase(FC_Constants.SINGLE_RES_DOWNLOAD)) {
-                        folderPath = Objects.requireNonNull(contentParentList.get(parentPos).getNodelist()).get(childPos).getResourcePath();
-                        Objects.requireNonNull(contentParentList.get(parentPos).getNodelist()).get(childPos).setIsDownloaded("true");
-                        presenter.updateDownloads();
-                        presenter.updateCurrentNode(contentParentList.get(parentPos));
-                        new Handler().postDelayed(() -> {
-                            downloadDialog.dismiss();
-                            adapterParent.notifyItemChanged(parentPos, contentParentList.get(parentPos));
-                        }, 500);
-                    }
-                    resName = "";
-                    if (downloadType.equalsIgnoreCase(FC_Constants.TEST_DOWNLOAD))
-                        presenter.updateDownloadJson(folderPath);
-                } catch (Exception e) {
+        if (FastSave.getInstance().getString(APP_SECTION, "").equalsIgnoreCase(sec_Learning)) {
+            if (message != null) {
+                if (message.getMessage().equalsIgnoreCase(FC_Constants.LEVEL_CHANGED))
+                    onLevelChanged();
+                else if (message.getMessage().equalsIgnoreCase(FC_Constants.BACK_PRESSED))
+                    backBtnPressed();
+                else if (message.getMessage().equalsIgnoreCase(FC_Constants.FILE_DOWNLOAD_STARTED)) {
+                    resourceDownloadDialog(message.getModal_fileDownloading());
+                } else if (message.getMessage().equalsIgnoreCase(FC_Constants.FILE_DOWNLOAD_UPDATE)) {
+                    if (progressLayout != null)
+                        progressLayout.setCurProgress(message.getModal_fileDownloading().getProgress());
+                } else if (message.getMessage().equalsIgnoreCase(FC_Constants.FRAGMENT_SELECTED)) {
+                    fragmentSelected();
+                } else if (message.getMessage().equalsIgnoreCase(FC_Constants.FRAGMENT_RESELECTED)) {
+                    fragmentSelected();
+                } else if (message.getMessage().equalsIgnoreCase(FC_Constants.FILE_DOWNLOAD_ERROR)) {
                     downloadDialog.dismiss();
-                    dismissLoadingDialog();
-                    e.printStackTrace();
+                    showDownloadErrorDialog();
+                } else if (message.getMessage().equalsIgnoreCase(FC_Constants.UNZIPPING_ERROR)) {
+                    downloadDialog.dismiss();
+                    showDownloadErrorDialog();
+                } else if (message.getMessage().equalsIgnoreCase(FC_Constants.UNZIPPING_DATA_FILE))
+                    showZipLoader();
+                else if (message.getMessage().equalsIgnoreCase(FC_Constants.FILE_DOWNLOAD_COMPLETE)) {
+                    dialog_file_name.setText("Updating Data");
+                    String folderPath = "";
+                    try {
+                        if (downloadType.equalsIgnoreCase(FC_Constants.FULL_DOWNLOAD)) {
+                            folderPath = contentParentList.get(parentPos).getResourcePath();
+                            contentParentList.get(parentPos).setIsDownloaded("true");
+                            presenter.updateDownloads();
+                            presenter.updateCurrentNode(contentParentList.get(parentPos));
+                            new Handler().postDelayed(() -> {
+                                downloadDialog.dismiss();
+                                adapterParent.notifyItemChanged(parentPos, contentParentList.get(parentPos));
+                            }, 500);
+                        } else if (downloadType.equalsIgnoreCase(FC_Constants.SINGLE_RES_DOWNLOAD)) {
+                            folderPath = Objects.requireNonNull(contentParentList.get(parentPos).getNodelist()).get(childPos).getResourcePath();
+                            Objects.requireNonNull(contentParentList.get(parentPos).getNodelist()).get(childPos).setIsDownloaded("true");
+                            presenter.updateDownloads();
+                            presenter.updateCurrentNode(contentParentList.get(parentPos));
+                            new Handler().postDelayed(() -> {
+                                downloadDialog.dismiss();
+                                adapterParent.notifyItemChanged(parentPos, contentParentList.get(parentPos));
+                            }, 500);
+                        }
+                        resName = "";
+                        if (downloadType.equalsIgnoreCase(FC_Constants.TEST_DOWNLOAD))
+                            presenter.updateDownloadJson(folderPath);
+                    } catch (Exception e) {
+                        downloadDialog.dismiss();
+                        dismissLoadingDialog();
+                        e.printStackTrace();
+                    }
                 }
             }
         }
     }
 
+    @UiThread
+    public void showZipLoader() {
+        dialog_file_name.setText("Unzipping...\nPlease wait" + resName);
+        progressLayout.setVisibility(View.GONE);
+        dialog_roundProgress.setVisibility(View.VISIBLE);
+    }
+
     private void getCompletionPercAgain() {
         String currentNodeID = presenter.getcurrentNodeID();
-        Log.d("getCompletion", "getCompletionPercAgain: "+currentNodeID);
+        Log.d("getCompletion", "getCompletionPercAgain: " + currentNodeID);
         try {
             if (!currentNodeID.equalsIgnoreCase("na"))
                 presenter.findMaxScore("" + currentNodeID);
@@ -276,7 +288,7 @@ public class LearningFragment extends Fragment implements LearningContract.Learn
     @Override
     public void setSelectedLevel(List<ContentTable> contentTable) {
         rootLevelList = contentTable;
-        if (rootLevelList != null) {
+        if (rootLevelList != null ) {
             levelChanged.setActualLevel(rootLevelList.size());
         }
         presenter.insertNodeId(contentTable.get(currentLevel).getNodeId());
@@ -292,32 +304,36 @@ public class LearningFragment extends Fragment implements LearningContract.Learn
 
     @SuppressLint("SetTextI18n")
     @Override
+    @UiThread
     public void showNoDataDownloadedDialog() {
-        final CustomLodingDialog dialog = new CustomLodingDialog(context, R.style.FC_DialogStyle);
-        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        Objects.requireNonNull(dialog.getWindow()).setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-        dialog.setContentView(R.layout.fc_custom_dialog);
-        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-        dialog.setCancelable(false);
-        dialog.setCanceledOnTouchOutside(false);
-        TextView title = dialog.findViewById(R.id.dia_title);
-        dialog.show();
-        title.setText("No Data Found");
-        Button btn_gree = dialog.findViewById(R.id.dia_btn_green);
-        Button btn_yellow = dialog.findViewById(R.id.dia_btn_yellow);
-        Button btn_red = dialog.findViewById(R.id.dia_btn_red);
+        errorDialog = new BlurPopupWindow.Builder(context)
+                .setContentView(R.layout.fc_custom_dialog)
+                .setGravity(Gravity.CENTER)
+                .setDismissOnTouchBackground(false)
+                .setDismissOnClickBack(true)
+                .setScaleRatio(0.2f)
+                .bindClickListener(v -> {
+                    new Handler().postDelayed(() -> {
+                        if (adapterParent != null) {
+                            contentParentList.clear();
+                            adapterParent.notifyDataSetChanged();
+                        }
+                        errorDialog.dismiss();
+                    }, 200);
+                }, R.id.dia_btn_green)
+                .setBlurRadius(10)
+                .setTintColor(0x30000000)
+                .build();
 
+        TextView title = errorDialog.findViewById(R.id.dia_title);
+        Button btn_gree = errorDialog.findViewById(R.id.dia_btn_green);
+        Button btn_yellow = errorDialog.findViewById(R.id.dia_btn_yellow);
+        Button btn_red = errorDialog.findViewById(R.id.dia_btn_red);
         btn_gree.setText("Ok");
+        title.setText("Connect to Internet");
         btn_red.setVisibility(View.GONE);
         btn_yellow.setVisibility(View.GONE);
-
-        btn_gree.setOnClickListener(v -> {
-            if (adapterParent != null) {
-                contentParentList.clear();
-                adapterParent.notifyDataSetChanged();
-            }
-            dialog.dismiss();
-        });
+        errorDialog.show();
     }
 
     private boolean loaderVisible = false;
@@ -328,7 +344,7 @@ public class LearningFragment extends Fragment implements LearningContract.Learn
     public void showLoader() {
         if (!loaderVisible) {
             loaderVisible = true;
-            myLoadingDialog = new CustomLodingDialog(context, R.style.FC_DialogStyle);
+            myLoadingDialog = new CustomLodingDialog(context);
             myLoadingDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
             Objects.requireNonNull(myLoadingDialog.getWindow()).
                     setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
@@ -342,10 +358,11 @@ public class LearningFragment extends Fragment implements LearningContract.Learn
     @Override
     public void dismissLoadingDialog() {
         try {
-            if (myLoadingDialog != null && myLoadingDialog.isShowing()) {
-                loaderVisible = false;
-                myLoadingDialog.dismiss();
-            }
+            loaderVisible = false;
+            new Handler().postDelayed(() -> {
+                if (myLoadingDialog != null && myLoadingDialog.isShowing())
+                    myLoadingDialog.dismiss();
+            }, 300);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -355,47 +372,87 @@ public class LearningFragment extends Fragment implements LearningContract.Learn
     @UiThread
     @Override
     public void setLevelprogress(int percent) {
-        if(FastSave.getInstance().getString(APP_SECTION,"").equalsIgnoreCase(sec_Learning))
+        if (FastSave.getInstance().getString(APP_SECTION, "").equalsIgnoreCase(sec_Learning))
             tv_header_progress.setText(percent + "%");
-//        tv_progress.setCurProgress(percent);
     }
 
-    private CustomLodingDialog downloadDialog;
+    private BlurPopupWindow downloadDialog = null;
+    //    private CustomLodingDialog downloadDialog;
     private ProgressLayout progressLayout;
     private TextView dialog_file_name;
 
+//    @SuppressLint("SetTextI18n")
+//    private void resourceDownloadDialog(Modal_FileDownloading modal_fileDownloading) {
+//        downloadDialog = new CustomLodingDialog(context, R.style.FC_DialogStyle);
+//        downloadDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+//        Objects.requireNonNull(downloadDialog.getWindow()).setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+//        downloadDialog.setContentView(R.layout.dialog_file_downloading);
+//        downloadDialog.setCanceledOnTouchOutside(false);
+//        downloadDialog.show();
+//        progressLayout = downloadDialog.findViewById(R.id.dialog_progressLayout);
+//        dialog_file_name = downloadDialog.findViewById(R.id.dialog_file_name);
+//        SimpleDraweeView iv_file_trans = downloadDialog.findViewById(R.id.iv_file_trans);
+//        Glide.with(this).load(resServerImageName).into(iv_file_trans);
+//        dialog_file_name.setText("" + resName);
+//        progressLayout.setCurProgress(modal_fileDownloading.getProgress());
+//    }
+
+    ProgressBar dialog_roundProgress;
     @SuppressLint("SetTextI18n")
-    private void resourceDownloadDialog(Modal_FileDownloading modal_fileDownloading) {
-        downloadDialog = new CustomLodingDialog(context, R.style.FC_DialogStyle);
-        downloadDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        Objects.requireNonNull(downloadDialog.getWindow()).setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-        downloadDialog.setContentView(R.layout.dialog_file_downloading);
-        downloadDialog.setCanceledOnTouchOutside(false);
-        downloadDialog.show();
-        progressLayout = downloadDialog.findViewById(R.id.dialog_progressLayout);
-        dialog_file_name = downloadDialog.findViewById(R.id.dialog_file_name);
-        ImageView iv_file_trans = downloadDialog.findViewById(R.id.iv_file_trans);
-        Glide.with(this).load(resServerImageName).into(iv_file_trans);
-        dialog_file_name.setText("" + resName);
-        progressLayout.setCurProgress(modal_fileDownloading.getProgress());
+    @UiThread
+    public void resourceDownloadDialog(Modal_FileDownloading modal_fileDownloading) {
+        if (downloadDialog == null) {
+            downloadDialog = new BlurPopupWindow.Builder(context)
+                    .setContentView(R.layout.dialog_file_downloading)
+                    .setGravity(Gravity.CENTER)
+                    .setDismissOnTouchBackground(false)
+                    .setDismissOnClickBack(true)
+                    .setScaleRatio(0.2f)
+                    .setBlurRadius(10)
+                    .setTintColor(0x30000000)
+                    .build();
+
+            SimpleDraweeView iv_file_trans = downloadDialog.findViewById(R.id.iv_file_trans);
+            dialog_file_name = downloadDialog.findViewById(R.id.dialog_file_name);
+            progressLayout = downloadDialog.findViewById(R.id.dialog_progressLayout);
+            dialog_roundProgress = downloadDialog.findViewById(R.id.dialog_roundProgress);
+            ImageRequest imageRequest = ImageRequestBuilder
+                    .newBuilderWithSource(Uri.parse("" + resServerImageName))
+                    .setLocalThumbnailPreviewsEnabled(false)
+                    .build();
+            if (imageRequest != null) {
+                DraweeController controller = Fresco.newDraweeControllerBuilder()
+                        .setImageRequest(imageRequest)
+                        .setOldController(iv_file_trans.getController())
+                        .build();
+                iv_file_trans.setController(controller);
+            }
+            dialog_file_name.setText("" + resName);
+            progressLayout.setCurProgress(modal_fileDownloading.getProgress());
+            downloadDialog.show();
+        }
     }
+
 
     @UiThread
     @Override
     public void dismissDownloadDialog() {
-        if (downloadDialog != null && downloadDialog.isShowing())
-            downloadDialog.dismiss();
+        if (downloadDialog != null)
+            new Handler().postDelayed(() -> {
+                downloadDialog.dismiss();
+                downloadDialog = null;
+            }, 300);
     }
 
     @Override
     public void onContentClicked(ContentTable singleItem, String parentName) {
-        FastSave.getInstance().saveString(APP_SECTION, ""+sec_Learning);
+        FastSave.getInstance().saveString(APP_SECTION, "" + sec_Learning);
         try {
             ButtonClickSound.start();
         } catch (IllegalStateException e) {
             e.printStackTrace();
         }
-        if (singleItem.getNodeType().equalsIgnoreCase("category")) {
+        if (singleItem.getNodeType().equalsIgnoreCase("category") || singleItem.getResourceType().equalsIgnoreCase("category")) {
             Intent intent = new Intent(context, ContentDisplay_.class);
             intent.putExtra("nodeId", singleItem.getNodeId());
             intent.putExtra("parentName", parentName);
@@ -550,30 +607,47 @@ public class LearningFragment extends Fragment implements LearningContract.Learn
     public void onContentDownloadClicked(ContentTable contentList, int parentPos, int childPos, String downloadType) {
         this.downloadType = downloadType;
         downloadNodeId = contentList.getNodeId();
-        FastSave.getInstance().saveString(APP_SECTION, ""+sec_Learning);
+        FastSave.getInstance().saveString(APP_SECTION, "" + sec_Learning);
         ButtonClickSound.start();
 //        downloadNodeId = "" + 1371;
         this.parentPos = parentPos;
         this.childPos = childPos;
         resName = contentList.getNodeTitle();
         resServerImageName = contentList.getNodeServerImage();
-        if (FC_Utility.isDataConnectionAvailable(context))
-            presenter.downloadResource(downloadNodeId);
-        else
-            Toast.makeText(context, "No Internet Connection", Toast.LENGTH_SHORT).show();
+        if (FastSave.getInstance().getString(APP_SECTION, "").equalsIgnoreCase(sec_Learning)) {
+            if (FC_Utility.isDataConnectionAvailable(context))
+                presenter.downloadResource(downloadNodeId);
+            else
+                Toast.makeText(context, "No Internet Connection", Toast.LENGTH_SHORT).show();
+        }
 
     }
 
+    BlurPopupWindow errorDialog;
     @UiThread
     public void showDownloadErrorDialog() {
-        CustomLodingDialog errorDialog = new CustomLodingDialog(context, R.style.FC_DialogStyle);
+        errorDialog = new BlurPopupWindow.Builder(context)
+                .setContentView(R.layout.dialog_file_error_downloading)
+                .setGravity(Gravity.CENTER)
+                .setDismissOnTouchBackground(false)
+                .setDismissOnClickBack(true)
+                .bindClickListener(v -> {
+                    new Handler().postDelayed(() ->
+                            errorDialog.dismiss(), 200);
+                }, R.id.dialog_error_btn)
+                .setScaleRatio(0.2f)
+                .setBlurRadius(10)
+                .setTintColor(0x30000000)
+                .build();
+        errorDialog.show();
+/*        CustomLodingDialog errorDialog = new CustomLodingDialog(context, R.style.FC_DialogStyle);
         errorDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         Objects.requireNonNull(errorDialog.getWindow()).setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         errorDialog.setContentView(R.layout.dialog_file_error_downloading);
         errorDialog.setCanceledOnTouchOutside(false);
         errorDialog.show();
         Button ok_btn = errorDialog.findViewById(R.id.dialog_error_btn);
-        ok_btn.setOnClickListener(v -> errorDialog.dismiss());
+        ok_btn.setOnClickListener(v -> errorDialog.dismiss());*/
     }
 
     @Click(R.id.btn_back)

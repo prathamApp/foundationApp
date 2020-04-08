@@ -2,13 +2,13 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginTop="5dp"
-    android:layout_marginBottom="5dp">
+    android:layout_marginTop="5dp">
 
     <RelativeLayout
         android:id="@+id/topPanel"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/_5sdp">
 
         <com.pratham.foundation.customView.SansButton
             android:id="@+id/btnMore"
@@ -26,14 +26,15 @@
 
         <com.pratham.foundation.customView.SansButton
             android:id="@+id/ib_action_btn"
-            android:layout_width="wrap_content"
-            android:layout_height="@dimen/_20sdp"
-            android:layout_alignParentRight="true"
-            android:layout_marginRight="@dimen/_10sdp"
+            android:layout_width="@dimen/_105sdp"
+            android:layout_height="@dimen/_30sdp"
+            android:layout_alignParentEnd="true"
+            android:layout_marginEnd="@dimen/_10sdp"
             android:background="@drawable/temp_button"
-            android:drawableLeft="@drawable/ic_download"
+            android:drawableEnd="@drawable/ic_download_2"
             android:drawablePadding="@dimen/_5sdp"
             android:elevation="@dimen/_2sdp"
+            android:layout_marginBottom="@dimen/_5sdp"
             android:paddingHorizontal="@dimen/_10sdp"
             android:text="Download"
             android:textColor="@color/colorText"
@@ -47,6 +48,7 @@
             android:layout_marginStart="@dimen/_15sdp"
             android:layout_marginBottom="@dimen/_3sdp"
             android:maxLines="1"
+            android:layout_centerVertical="true"
             android:text="City Of Stories"
             android:textColor="@color/colorText"
             android:textSize="@dimen/_15sdp" />
@@ -57,7 +59,7 @@
         android:id="@+id/recycler_view_list"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingBottom="@dimen/_10sdp"
+        android:layout_marginBottom="@dimen/_5sdp"
         android:layout_below="@+id/topPanel" />
 
 </RelativeLayout>

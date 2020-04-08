@@ -317,7 +317,7 @@ public class Student_profile_activity extends Fragment implements Student_profil
 
     @UiThread
     public void showLoader() {
-        myLoadingDialog = new CustomLodingDialog(getActivity(), R.style.FC_DialogStyle);
+        myLoadingDialog = new CustomLodingDialog(getActivity());
         myLoadingDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         myLoadingDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         myLoadingDialog.setContentView(R.layout.loading_dialog);
@@ -329,9 +329,10 @@ public class Student_profile_activity extends Fragment implements Student_profil
     @UiThread
     public void dismissLoadingDialog() {
         try {
-            if (myLoadingDialog != null && myLoadingDialog.isShowing()) {
-                myLoadingDialog.dismiss();
-            }
+            new Handler().postDelayed(() -> {
+                if (myLoadingDialog != null && myLoadingDialog.isShowing())
+                    myLoadingDialog.dismiss();
+            }, 300);
         } catch (Exception e) {
             e.printStackTrace();
         }

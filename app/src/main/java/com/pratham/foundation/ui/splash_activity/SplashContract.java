@@ -53,6 +53,8 @@ public interface SplashContract {
         void updateVersionApp();
 
         void requestLocation();
+
+        void copyZipAndPopulateMenu_New();
     }
 
 }

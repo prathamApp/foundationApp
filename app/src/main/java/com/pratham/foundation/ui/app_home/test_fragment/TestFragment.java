@@ -14,20 +14,25 @@ import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.TypedValue;
+import android.view.Gravity;
 import android.view.View;
 import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageButton;
-import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.bumptech.glide.Glide;
+import com.facebook.drawee.backends.pipeline.Fresco;
+import com.facebook.drawee.interfaces.DraweeController;
+import com.facebook.drawee.view.SimpleDraweeView;
+import com.facebook.imagepipeline.request.ImageRequest;
+import com.facebook.imagepipeline.request.ImageRequestBuilder;
 import com.pratham.foundation.ApplicationClass;
 import com.pratham.foundation.R;
+import com.pratham.foundation.customView.BlurPopupDialog.BlurPopupWindow;
 import com.pratham.foundation.customView.collapsingView.RetractableToolbarUtil;
 import com.pratham.foundation.customView.display_image_dialog.CustomLodingDialog;
 import com.pratham.foundation.customView.progress_layout.ProgressLayout;
@@ -124,6 +129,7 @@ public class TestFragment extends Fragment implements TestContract.TestView,
 //        ib_langChange.setVisibility(View.GONE);
         my_recycler_view.addOnScrollListener(new RetractableToolbarUtil
                 .ShowHideToolbarOnScrollingListener(header_rl));
+        showLoader();
         presenter.getBottomNavId(currentLevel, "Test");
     }
 
@@ -168,22 +174,33 @@ public class TestFragment extends Fragment implements TestContract.TestView,
         showLanguageSelectionDialog();
     }
 
+    BlurPopupWindow langDialog;
+
     @SuppressLint("SetTextI18n")
     private void showLanguageSelectionDialog() {
-        final CustomLodingDialog dialog = new CustomLodingDialog(context, R.style.FC_DialogStyle);
-        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        Objects.requireNonNull(dialog.getWindow()).setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-        dialog.setContentView(R.layout.fc_custom_language_dialog);
-        dialog.setCancelable(false);
-        dialog.setCanceledOnTouchOutside(false);
-        TextView dia_title = dialog.findViewById(R.id.dia_title);
-        Button dia_btn_green = dialog.findViewById(R.id.dia_btn_green);
-        Spinner lang_spinner = dialog.findViewById(R.id.lang_spinner);
-        dia_btn_green.setText("OK");
-        dialog.show();
-        currLang = "" + FastSave.getInstance().getString(FC_Constants.LANGUAGE, "Hindi");
-        dia_title.setText("Current Language : " + currLang);
+        langDialog = new BlurPopupWindow.Builder(context)
+                .setContentView(R.layout.fc_custom_language_dialog)
+                .setGravity(Gravity.CENTER)
+                .setDismissOnTouchBackground(false)
+                .setDismissOnClickBack(false)
+                .bindClickListener(v -> {
+                    new Handler().postDelayed(() -> {
+                        onSpinnerLanguageChanged(language);
+                        langDialog.dismiss();
+                    }, 200);
+                }, R.id.dia_btn_green)
+                .setScaleRatio(0.2f)
+                .setBlurRadius(10)
+                .setTintColor(0x30000000)
+                .build();
 
+        TextView dia_title = langDialog.findViewById(R.id.dia_title);
+        Button dia_btn_green = langDialog.findViewById(R.id.dia_btn_green);
+        Spinner lang_spinner = langDialog.findViewById(R.id.lang_spinner);
+        dia_btn_green.setText("OK");
+
+        currLang = "" + FastSave.getInstance().getString(FC_Constants.TEST_DISPLAY_LANGUAGE, "Hindi");
+//        dia_title.setText("Current Language : " + currLang);
         ArrayAdapter<String> dataAdapter = new ArrayAdapter<>(context, R.layout.custom_spinner,
                 context.getResources().getStringArray(R.array.certificate_Languages));
         dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -207,10 +224,7 @@ public class TestFragment extends Fragment implements TestContract.TestView,
             }
         });
 
-        dia_btn_green.setOnClickListener(v -> {
-            onSpinnerLanguageChanged(language);
-            dialog.dismiss();
-        });
+        langDialog.show();
     }
 
     @UiThread
@@ -240,41 +254,43 @@ public class TestFragment extends Fragment implements TestContract.TestView,
     @SuppressLint("SetTextI18n")
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void messageReceived(EventMessage message) {
-        if (message != null) {
+        if(FastSave.getInstance().getString(APP_SECTION, "").equalsIgnoreCase(sec_Test)) {
+            if (message != null) {
 //            if (message.getMessage().contains(LEVEL_TEST_GIVEN))
 //                addTestStarResult(message.getMessage());
-            if (message.getMessage().contains(CLOSE_TEST_EVENTBUS)) {
-                eventBusFlg = false;
-                EventBus.getDefault().unregister(this);
-            }
-            if (message.getMessage().equalsIgnoreCase(FC_Constants.LEVEL_CHANGED))
-                onLevelChanged();
-            else if (message.getMessage().equalsIgnoreCase(FC_Constants.BACK_PRESSED))
-                backBtnPressed();
-            else if (message.getMessage().equalsIgnoreCase(FC_Constants.FILE_DOWNLOAD_STARTED)) {
-                resourceDownloadDialog(message.getModal_fileDownloading());
-            } else if (message.getMessage().equalsIgnoreCase(FC_Constants.FILE_DOWNLOAD_UPDATE)) {
-                if (progressLayout != null)
-                    progressLayout.setCurProgress(message.getModal_fileDownloading().getProgress());
-            } else if (message.getMessage().equalsIgnoreCase(FC_Constants.FILE_DOWNLOAD_ERROR)) {
-                downloadDialog.dismiss();
-                showDownloadErrorDialog();
-            } else if (message.getMessage().equalsIgnoreCase(FC_Constants.UNZIPPING_ERROR)) {
-                downloadDialog.dismiss();
-                showDownloadErrorDialog();
-            } else if (message.getMessage().equalsIgnoreCase(FC_Constants.UNZIPPING_DATA_FILE))
-                dialog_file_name.setText("Unzipping...\nPlease wait" + resName);
-            else if (message.getMessage().equalsIgnoreCase(FC_Constants.FILE_DOWNLOAD_COMPLETE)) {
-                dialog_file_name.setText("Updating Data");
-                String folderPath = "";
-                try {
-                    resName = "";
-                    if (downloadType.equalsIgnoreCase(FC_Constants.TEST_DOWNLOAD))
-                        presenter.updateDownloadJson(folderPath);
-                } catch (Exception e) {
+                if (message.getMessage().contains(CLOSE_TEST_EVENTBUS)) {
+                    eventBusFlg = false;
+                    EventBus.getDefault().unregister(this);
+                }
+                if (message.getMessage().equalsIgnoreCase(FC_Constants.LEVEL_CHANGED))
+                    onLevelChanged();
+                else if (message.getMessage().equalsIgnoreCase(FC_Constants.BACK_PRESSED))
+                    backBtnPressed();
+                else if (message.getMessage().equalsIgnoreCase(FC_Constants.FILE_DOWNLOAD_STARTED)) {
+                    resourceDownloadDialog(message.getModal_fileDownloading());
+                } else if (message.getMessage().equalsIgnoreCase(FC_Constants.FILE_DOWNLOAD_UPDATE)) {
+                    if (progressLayout != null)
+                        progressLayout.setCurProgress(message.getModal_fileDownloading().getProgress());
+                } else if (message.getMessage().equalsIgnoreCase(FC_Constants.FILE_DOWNLOAD_ERROR)) {
                     downloadDialog.dismiss();
-                    dismissLoadingDialog();
-                    e.printStackTrace();
+                    showDownloadErrorDialog();
+                } else if (message.getMessage().equalsIgnoreCase(FC_Constants.UNZIPPING_ERROR)) {
+                    downloadDialog.dismiss();
+                    showDownloadErrorDialog();
+                } else if (message.getMessage().equalsIgnoreCase(FC_Constants.UNZIPPING_DATA_FILE))
+                    dialog_file_name.setText("Unzipping...\nPlease wait" + resName);
+                else if (message.getMessage().equalsIgnoreCase(FC_Constants.FILE_DOWNLOAD_COMPLETE)) {
+                    dialog_file_name.setText("Updating Data");
+                    String folderPath = "";
+                    try {
+                        resName = "";
+                        if (downloadType.equalsIgnoreCase(FC_Constants.TEST_DOWNLOAD))
+                            presenter.updateDownloadJson(folderPath);
+                    } catch (Exception e) {
+                        downloadDialog.dismiss();
+                        dismissLoadingDialog();
+                        e.printStackTrace();
+                    }
                 }
             }
         }
@@ -332,7 +348,6 @@ public class TestFragment extends Fragment implements TestContract.TestView,
     }
 
     public void onLevelChanged() {
-
         contentParentList.clear();
         testList.clear();
         presenter.removeLastNodeId();
@@ -678,37 +693,40 @@ public class TestFragment extends Fragment implements TestContract.TestView,
 //        }
     }
 
+    BlurPopupWindow fcDialog;
+
     @SuppressLint("SetTextI18n")
     @UiThread
     public void showTestCompleteDialog() {
         try {
-            CustomLodingDialog dialog = new CustomLodingDialog(context/*,R.style.ExitDialogStyle*/);
-            dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-            dialog.setContentView(R.layout.fc_custom_dialog);
-/*      Bitmap map=FC_Utility.takeScreenShot(context);
-        Bitmap fast=FC_Utility.fastblur(map, 20);
-        final Drawable draw=new BitmapDrawable(getResources(),fast);
-        dialog.getWindow().setBackgroundDrawable(draw);*/
-            Objects.requireNonNull(dialog.getWindow()).setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-            dialog.setCancelable(false);
-            dialog.setCanceledOnTouchOutside(false);
-            dialog.show();
+            fcDialog = new BlurPopupWindow.Builder(context)
+                    .setContentView(R.layout.fc_custom_dialog)
+                    .setGravity(Gravity.CENTER)
+                    .setDismissOnTouchBackground(false)
+                    .setDismissOnClickBack(false)
+                    .bindClickListener(v -> {
+                        new Handler().postDelayed(() -> {
+                            onLevelChanged();
+                            fcDialog.dismiss();
+                        }, 200);
+                    }, R.id.dia_btn_green)
+                    .setScaleRatio(0.2f)
+                    .setBlurRadius(10)
+                    .setTintColor(0x30000000)
+                    .build();
 
-            TextView dia_title = dialog.findViewById(R.id.dia_title);
-//        Button dia_btn_green = dialog.findViewById(R.id.dia_btn_green);
-            Button dia_btn_yellow = dialog.findViewById(R.id.dia_btn_yellow);
-            Button dia_btn_green = dialog.findViewById(R.id.dia_btn_green);
-            Button dia_btn_red = dialog.findViewById(R.id.dia_btn_red);
+            TextView dia_title = fcDialog.findViewById(R.id.dia_title);
+            Button dia_btn_yellow = fcDialog.findViewById(R.id.dia_btn_yellow);
+            Button dia_btn_green = fcDialog.findViewById(R.id.dia_btn_green);
+            Button dia_btn_red = fcDialog.findViewById(R.id.dia_btn_red);
             dia_btn_yellow.setVisibility(View.GONE);
             dia_btn_red.setVisibility(View.GONE);
 
             dia_title.setText(getResources().getString(R.string.Test_Complete_Dialog));
             dia_btn_green.setText(getResources().getString(R.string.Okay));
 
-            dia_btn_green.setOnClickListener(v -> {
-                onLevelChanged();
-                dialog.dismiss();
-            });
+            fcDialog.show();
+
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -747,31 +765,34 @@ public class TestFragment extends Fragment implements TestContract.TestView,
     @Override
     public void showNoDataDownloadedDialog() {
         try {
-            final CustomLodingDialog dialog = new CustomLodingDialog(Objects.requireNonNull(context), R.style.FC_DialogStyle);
-            dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-            Objects.requireNonNull(dialog.getWindow()).setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-            dialog.setContentView(R.layout.fc_custom_dialog);
-            dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-            dialog.setCancelable(false);
-            dialog.setCanceledOnTouchOutside(false);
-            TextView title = dialog.findViewById(R.id.dia_title);
-            dialog.show();
-            title.setText("Connect to Internet");
-            Button btn_gree = dialog.findViewById(R.id.dia_btn_green);
-            Button btn_yellow = dialog.findViewById(R.id.dia_btn_yellow);
-            Button btn_red = dialog.findViewById(R.id.dia_btn_red);
+            fcDialog = new BlurPopupWindow.Builder(context)
+                    .setContentView(R.layout.fc_custom_dialog)
+                    .setGravity(Gravity.CENTER)
+                    .setDismissOnTouchBackground(false)
+                    .setDismissOnClickBack(true)
+                    .setScaleRatio(0.2f)
+                    .bindClickListener(v -> {
+                        new Handler().postDelayed(() -> {
+                            if (testAdapter != null) {
+                                contentParentList.clear();
+                                testAdapter.notifyDataSetChanged();
+                            }
+                            fcDialog.dismiss();
+                        }, 200);
+                    }, R.id.dia_btn_green)
+                    .setBlurRadius(10)
+                    .setTintColor(0x30000000)
+                    .build();
 
+            TextView title = fcDialog.findViewById(R.id.dia_title);
+            Button btn_gree = fcDialog.findViewById(R.id.dia_btn_green);
+            Button btn_yellow = fcDialog.findViewById(R.id.dia_btn_yellow);
+            Button btn_red = fcDialog.findViewById(R.id.dia_btn_red);
             btn_gree.setText("Ok");
+            title.setText("Connect to Internet");
             btn_red.setVisibility(View.GONE);
             btn_yellow.setVisibility(View.GONE);
-
-            btn_gree.setOnClickListener(v -> {
-                if (testAdapter != null) {
-                    contentParentList.clear();
-                    testAdapter.notifyDataSetChanged();
-                }
-                dialog.dismiss();
-            });
+            fcDialog.show();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -786,7 +807,7 @@ public class TestFragment extends Fragment implements TestContract.TestView,
         try {
             if (!loaderVisible) {
                 loaderVisible = true;
-                myLoadingDialog = new CustomLodingDialog(context, R.style.FC_DialogStyle);
+                myLoadingDialog = new CustomLodingDialog(context);
                 myLoadingDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
                 Objects.requireNonNull(myLoadingDialog.getWindow()).
                         setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
@@ -803,10 +824,11 @@ public class TestFragment extends Fragment implements TestContract.TestView,
     @Override
     public void dismissLoadingDialog() {
         try {
-            if (myLoadingDialog != null && myLoadingDialog.isShowing()) {
-                loaderVisible = false;
-                myLoadingDialog.dismiss();
-            }
+            loaderVisible = false;
+            new Handler().postDelayed(() -> {
+                if (myLoadingDialog != null && myLoadingDialog.isShowing())
+                    myLoadingDialog.dismiss();
+            }, 300);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -819,22 +841,37 @@ public class TestFragment extends Fragment implements TestContract.TestView,
 //        level_progress.setCurProgress(percent);
     }
 
-    private CustomLodingDialog downloadDialog;
+    private BlurPopupWindow downloadDialog;
     private ProgressLayout progressLayout;
     private TextView dialog_file_name;
 
     @SuppressLint("SetTextI18n")
     private void resourceDownloadDialog(Modal_FileDownloading modal_fileDownloading) {
-        downloadDialog = new CustomLodingDialog(context, R.style.FC_DialogStyle);
-        downloadDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        Objects.requireNonNull(downloadDialog.getWindow()).setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-        downloadDialog.setContentView(R.layout.dialog_file_downloading);
-        downloadDialog.setCanceledOnTouchOutside(false);
+        downloadDialog = new BlurPopupWindow.Builder(context)
+                .setContentView(R.layout.dialog_file_downloading)
+                .setGravity(Gravity.CENTER)
+                .setDismissOnTouchBackground(false)
+                .setDismissOnClickBack(true)
+                .setScaleRatio(0.2f)
+                .setBlurRadius(10)
+                .setTintColor(0x30000000)
+                .build();
+
         downloadDialog.show();
-        progressLayout = downloadDialog.findViewById(R.id.dialog_progressLayout);
+
+        SimpleDraweeView iv_file_trans = downloadDialog.findViewById(R.id.iv_file_trans);
         dialog_file_name = downloadDialog.findViewById(R.id.dialog_file_name);
-        ImageView iv_file_trans = downloadDialog.findViewById(R.id.iv_file_trans);
-        Glide.with(this).load(resServerImageName).into(iv_file_trans);
+        progressLayout = downloadDialog.findViewById(R.id.dialog_progressLayout);
+        ImageRequest imageRequest = ImageRequestBuilder
+                .newBuilderWithSource(Uri.parse(""+resServerImageName))
+                .setLocalThumbnailPreviewsEnabled(false)
+                .build();
+        if(imageRequest !=null ) {
+            DraweeController controller = Fresco.newDraweeControllerBuilder()
+                    .setImageRequest(imageRequest)
+                    .build();
+            iv_file_trans.setController(controller);
+        }
         dialog_file_name.setText("" + resName);
         progressLayout.setCurProgress(modal_fileDownloading.getProgress());
     }
@@ -845,17 +882,23 @@ public class TestFragment extends Fragment implements TestContract.TestView,
             downloadDialog.dismiss();
     }
 
+    BlurPopupWindow errorDialog;
     @UiThread
     public void showDownloadErrorDialog() {
-        CustomLodingDialog errorDialog = new CustomLodingDialog(context, R.style.FC_DialogStyle);
-        errorDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        Objects.requireNonNull(errorDialog.getWindow()).setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-        errorDialog.setContentView(R.layout.dialog_file_error_downloading);
-        errorDialog.setCanceledOnTouchOutside(false);
+        errorDialog = new BlurPopupWindow.Builder(context)
+                .setContentView(R.layout.dialog_file_error_downloading)
+                .setGravity(Gravity.CENTER)
+                .setDismissOnTouchBackground(false)
+                .setDismissOnClickBack(true)
+                .bindClickListener(v -> {
+                    new Handler().postDelayed(() ->
+                            errorDialog.dismiss(), 200);
+                }, R.id.dialog_error_btn)
+                .setScaleRatio(0.2f)
+                .setBlurRadius(10)
+                .setTintColor(0x30000000)
+                .build();
         errorDialog.show();
-        Button ok_btn = errorDialog.findViewById(R.id.dialog_error_btn);
-
-        ok_btn.setOnClickListener(v -> errorDialog.dismiss());
     }
 
     @Click(R.id.btn_back)

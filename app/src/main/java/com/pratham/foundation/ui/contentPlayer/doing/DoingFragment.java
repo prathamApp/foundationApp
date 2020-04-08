@@ -10,6 +10,7 @@ import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.media.ThumbnailUtils;
 import android.net.Uri;
+import android.os.Handler;
 import android.provider.MediaStore;
 import android.support.v4.app.Fragment;
 import android.text.Editable;
@@ -83,9 +84,9 @@ public class DoingFragment extends Fragment implements STT_Result_New.sttView, O
     ImageView capture;
     @ViewById(R.id.reset_btn)
     SansButton reset_btn;
-   /* @BindView(R.id.RelativeLayout)
-    RelativeLayout RelativeLayout;*/
-   @ViewById(R.id.preview)
+    /* @BindView(R.id.RelativeLayout)
+     RelativeLayout RelativeLayout;*/
+    @ViewById(R.id.preview)
     SansButton preview;
     @ViewById(R.id.submit)
     SansButton submitBtn;
@@ -186,9 +187,9 @@ public class DoingFragment extends Fragment implements STT_Result_New.sttView, O
 
 
         imageName = "" + ApplicationClass.getUniqueID() + ".jpg";
-        presenter.setView(this, jsonName, resId,contentTitle);
+        presenter.setView(this, jsonName, resId, contentTitle);
         resStartTime = FC_Utility.getCurrentDateTime();
-        presenter.addScore(0, "", 0, 0, resStartTime, FC_Utility.getCurrentDateTime(), jsonName + " " + GameConstatnts.START,resId,true);
+        presenter.addScore(0, "", 0, 0, resStartTime, FC_Utility.getCurrentDateTime(), jsonName + " " + GameConstatnts.START, resId, true);
         presenter.getData(readingContentPath);
     }
 
@@ -227,7 +228,7 @@ public class DoingFragment extends Fragment implements STT_Result_New.sttView, O
             fileName = scienceQuestion.getPhotourl();
             //getFileName(scienceQuestion.getQid(), scienceQuestion.getPhotourl());
 
-      //questionPath = Environment.getExternalStorageDirectory().toString() + "/.Assessment/Content/Downloaded" + "/" + fileName;
+            //questionPath = Environment.getExternalStorageDirectory().toString() + "/.Assessment/Content/Downloaded" + "/" + fileName;
             questionImage.setVisibility(View.GONE);
             questionGif.setVisibility(View.GONE);
             relativeLayout.setVisibility(View.GONE);
@@ -239,7 +240,7 @@ public class DoingFragment extends Fragment implements STT_Result_New.sttView, O
           /*  if (!scienceQuestion.getInstruction().isEmpty())
                 tittle.setText(scienceQuestion.getInstruction());*/
             if (fileName != null && !fileName.isEmpty()) {
-               // RelativeLayout.setVisibility(View.VISIBLE);
+                // RelativeLayout.setVisibility(View.VISIBLE);
                 if (fileName.toLowerCase().endsWith(".jpeg") || fileName.toLowerCase().endsWith(".jpg") || fileName.toLowerCase().endsWith(".png")) {
                     questionPath = readingContentPath + fileName;
                     Glide.with(getActivity())
@@ -277,12 +278,12 @@ public class DoingFragment extends Fragment implements STT_Result_New.sttView, O
 
                 }
             }
-            scienceQuestionChoices=scienceQuestion.getLstquestionchoice();
-            if(scienceQuestionChoices!=null&& !scienceQuestionChoices.isEmpty()){
+            scienceQuestionChoices = scienceQuestion.getLstquestionchoice();
+            if (scienceQuestionChoices != null && !scienceQuestionChoices.isEmpty()) {
                 continuousSpeechService = new ContinuousSpeechService_New(context, DoingFragment.this, FastSave.getInstance().getString(FC_Constants.LANGUAGE, FC_Constants.HINDI));
                 continuousSpeechService.resetSpeechRecognizer();
                 loadSubQuestions();
-            }else {
+            } else {
                 sub_questions_container.setVisibility(View.GONE);
                 previous.setVisibility(View.INVISIBLE);
                 next.setVisibility(View.INVISIBLE);
@@ -303,11 +304,11 @@ public class DoingFragment extends Fragment implements STT_Result_New.sttView, O
         subQuestion.setText(scienceQuestionChoices.get(index).getSubQues());
         subQuestion.setMovementMethod(new ScrollingMovementMethod());
         etAnswer.setMovementMethod(new ScrollingMovementMethod());
-        if(scienceQuestionChoices.get(index).getUserAns().trim()!=null && !scienceQuestionChoices.get(index).getUserAns().isEmpty()){
-            myAns=scienceQuestionChoices.get(index).getUserAns();
+        if (scienceQuestionChoices.get(index).getUserAns().trim() != null && !scienceQuestionChoices.get(index).getUserAns().isEmpty()) {
+            myAns = scienceQuestionChoices.get(index).getUserAns();
             etAnswer.setText(myAns);
-        }else {
-            myAns="";
+        } else {
+            myAns = "";
             etAnswer.setText(myAns);
         }
         etAnswer.addTextChangedListener(new TextWatcher() {
@@ -353,7 +354,7 @@ public class DoingFragment extends Fragment implements STT_Result_New.sttView, O
     public void showLoader() {
         if (!dialogFlg) {
             dialogFlg = true;
-            myLoadingDialog = new CustomLodingDialog(context, R.style.FC_DialogStyle);
+            myLoadingDialog = new CustomLodingDialog(context);
             myLoadingDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
             myLoadingDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
             myLoadingDialog.setContentView(R.layout.loading_dialog);
@@ -374,7 +375,7 @@ public class DoingFragment extends Fragment implements STT_Result_New.sttView, O
             voiceStart = true;
             micPressed(1);
             showLoader();
-            speechStartTime= FC_Utility.getCurrentDateTime();
+            speechStartTime = FC_Utility.getCurrentDateTime();
             continuousSpeechService.startSpeechInput();
             // speechService.startSpeechInput();
         } else {
@@ -396,6 +397,7 @@ public class DoingFragment extends Fragment implements STT_Result_New.sttView, O
             hideButtons();
         }
     }
+
     private void hideButtons() {
         previous.setVisibility(View.INVISIBLE);
         next.setVisibility(View.INVISIBLE);
@@ -426,6 +428,7 @@ public class DoingFragment extends Fragment implements STT_Result_New.sttView, O
         }
         reset_btn.setVisibility(View.VISIBLE);
     }
+
     @Override
     public void silenceDetected() {
 
@@ -446,17 +449,15 @@ public class DoingFragment extends Fragment implements STT_Result_New.sttView, O
     @UiThread
     public void dismissLoadingDialog() {
         try {
-            if (myLoadingDialog != null && myLoadingDialog.isShowing()) {
-                dialogFlg = false;
-                myLoadingDialog.dismiss();
-            }
+            dialogFlg = false;
+            new Handler().postDelayed(() -> {
+                if (myLoadingDialog != null && myLoadingDialog.isShowing())
+                    myLoadingDialog.dismiss();
+            }, 300);
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
-
-
-
 
 
     @Override
@@ -474,7 +475,7 @@ public class DoingFragment extends Fragment implements STT_Result_New.sttView, O
 
     @Override
     public void Stt_onResult(ArrayList<String> matches) {
-      //  micPressed(0);
+        //  micPressed(0);
 //        ib_mic.stopRecording();
 
         System.out.println("LogTag" + " onResults");
@@ -530,18 +531,19 @@ public class DoingFragment extends Fragment implements STT_Result_New.sttView, O
 
 //            scrollView.setBackgroundResource(R.drawable.convo_correct_bg);
         }
-        myAns += " "+sttResult;
+        myAns += " " + sttResult;
         etAnswer.setText(myAns);
         scienceQuestionChoices.get(index).setUserAns(myAns);
-       // scienceQuestionChoices.get(index).setStartTime(speechStartTime);
-       // scienceQuestionChoices.get(index).setEndTime( FC_Utility.getCurrentDateTime());
+        // scienceQuestionChoices.get(index).setStartTime(speechStartTime);
+        // scienceQuestionChoices.get(index).setEndTime( FC_Utility.getCurrentDateTime());
 
 //        voiceStart = false;
 //        micPressed(0);
 //        continuousSpeechService.stopSpeechInput();
     }
 
-    String myAns="";
+    String myAns = "";
+
     @Click(R.id.previous)
     public void onPreviousClick() {
         if (scienceQuestionChoices != null)
@@ -552,12 +554,12 @@ public class DoingFragment extends Fragment implements STT_Result_New.sttView, O
     }
 
     @Click(R.id.reset_btn)
-    public void reset(){
-        myAns="";
+    public void reset() {
+        myAns = "";
         etAnswer.setText(myAns);
         scienceQuestionChoices.get(index).setUserAns(myAns);
-       // scienceQuestionChoices.get(index).setStartTime("");
-      //  scienceQuestionChoices.get(index).setEndTime("");
+        // scienceQuestionChoices.get(index).setStartTime("");
+        //  scienceQuestionChoices.get(index).setEndTime("");
     }
 
     @Click(R.id.next)
@@ -684,21 +686,23 @@ public class DoingFragment extends Fragment implements STT_Result_New.sttView, O
     @Override
     public void gameClose() {
         //add questions only attempted (correct or wrong any)
-        if(scienceQuestionChoices!=null && !scienceQuestionChoices.isEmpty()) {
-            int count=0;
-            for (int i = 0; i <scienceQuestionChoices.size() ; i++) {
-                if(scienceQuestionChoices.get(i).getUserAns()!=null && !scienceQuestionChoices.get(i).getUserAns().trim().isEmpty()){
+        if (scienceQuestionChoices != null && !scienceQuestionChoices.isEmpty()) {
+            int count = 0;
+            for (int i = 0; i < scienceQuestionChoices.size(); i++) {
+                if (scienceQuestionChoices.get(i).getUserAns() != null && !scienceQuestionChoices.get(i).getUserAns().trim().isEmpty()) {
                     count++;
-                    presenter.addScore(GameConstatnts.getInt(scienceQuestion.getQid()), jsonName, 0, 0, resStartTime, FC_Utility.getCurrentDateTime(), scienceQuestionChoices.get(i).toString(),resId,true);
+                    presenter.addScore(GameConstatnts.getInt(scienceQuestion.getQid()), jsonName, 0, 0, resStartTime, FC_Utility.getCurrentDateTime(), scienceQuestionChoices.get(i).toString(), resId, true);
                 }
             }
-            returnScore(scienceQuestionChoices.size(),count);
+            returnScore(scienceQuestionChoices.size(), count);
         }
-        presenter.addScore(0, "", 0, 0, resStartTime, FC_Utility.getCurrentDateTime(), jsonName + " " + GameConstatnts.END,resId,true);
+        presenter.addScore(0, "", 0, 0, resStartTime, FC_Utility.getCurrentDateTime(), jsonName + " " + GameConstatnts.END, resId, true);
     }
-    private void returnScore(int totalscore,int scoredmarks){
+
+    private void returnScore(int totalscore, int scoredmarks) {
         GameConstatnts.postScoreEvent(totalscore, scoredmarks);
     }
+
     @Override
     public void onStop() {
         EventBus.getDefault().unregister(this);
@@ -715,7 +719,7 @@ public class DoingFragment extends Fragment implements STT_Result_New.sttView, O
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onMessageEvent(EventMessage event) {
         if (!scienceQuestion.getInstruction().isEmpty())
-            GameConstatnts.showGameInfo(getActivity(), scienceQuestion.getInstruction(),readingContentPath+scienceQuestion.getInstructionUrl());
+            GameConstatnts.showGameInfo(getActivity(), scienceQuestion.getInstruction(), readingContentPath + scienceQuestion.getInstructionUrl());
     }
 
 }

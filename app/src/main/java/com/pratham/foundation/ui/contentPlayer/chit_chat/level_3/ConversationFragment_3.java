@@ -5,6 +5,7 @@ import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.media.MediaPlayer;
 import android.os.Bundle;
+import android.os.Handler;
 import android.speech.RecognitionListener;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
@@ -318,7 +319,7 @@ public class ConversationFragment_3 extends Fragment
     public void showLoader() {
         if (!dialogFlg) {
             dialogFlg = true;
-            myLoadingDialog = new CustomLodingDialog(context, R.style.FC_DialogStyle);
+            myLoadingDialog = new CustomLodingDialog(context);
             myLoadingDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
             myLoadingDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
             myLoadingDialog.setContentView(R.layout.loading_dialog);
@@ -330,10 +331,11 @@ public class ConversationFragment_3 extends Fragment
     @UiThread
     public void dismissLoadingDialog() {
         try {
-            if (myLoadingDialog != null && myLoadingDialog.isShowing()) {
-                dialogFlg = false;
-                myLoadingDialog.dismiss();
-            }
+            dialogFlg = false;
+            new Handler().postDelayed(() -> {
+                if (myLoadingDialog != null && myLoadingDialog.isShowing())
+                    myLoadingDialog.dismiss();
+            }, 300);
         } catch (Exception e) {
             e.printStackTrace();
         }

@@ -2,148 +2,80 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:card_view="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:layout_gravity="center">
-
-    <RelativeLayout
-        android:layout_width="@dimen/_240sdp"
-        android:layout_height="@dimen/_190sdp"
-        android:layout_centerInParent="true"
-        android:background="@color/full_transparent">
-
-        <android.support.design.card.MaterialCardView
-            android:layout_width="@dimen/_110sdp"
-            android:layout_height="@dimen/_70sdp"
-            android:layout_alignParentTop="true"
-            android:layout_centerHorizontal="true"
-            app:cardCornerRadius="@dimen/_10sdp"
-            android:elevation="5dp"
-            app:cardBackgroundColor="@color/splash_background">
-
-            <ImageView
-                android:id="@+id/iv_file_trans"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:scaleType="fitXY"
-                android:src="@drawable/fc_logo" />
-        </android.support.design.card.MaterialCardView>
-
-
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginTop="@dimen/_45sdp"
-            android:background="@drawable/dialog_bg">
-
-            <com.pratham.foundation.customView.SansTextViewBold
-                android:id="@+id/dialog_file_name"
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/_70sdp"
-                android:layout_alignParentTop="true"
-                android:layout_marginVertical="@dimen/_15sdp"
-                android:gravity="center"
-                android:lines="2"
-                android:paddingHorizontal="@dimen/_2sdp"
-                android:text=""
-                android:textColor="@color/gradianceCardStartColor"
-                android:textSize="@dimen/_15sdp" />
-
-            <ProgressBar
-                android:id="@+id/dialog_roundProgress"
-                android:layout_width="@dimen/_36sdp"
-                android:layout_height="@dimen/_36sdp"
-                android:layout_alignParentBottom="true"
-                android:layout_centerHorizontal="true"
-                android:progressBackgroundTint="@color/colorGreen"
-                android:layout_marginBottom="@dimen/_10sdp"
-                android:visibility="gone"
-                android:elevation="@dimen/_5sdp"
-                android:layout_gravity="center" />
-
-            <com.pratham.foundation.customView.progress_layout.ProgressLayout
-                android:id="@+id/dialog_progressLayout"
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/_15sdp"
-                android:layout_alignParentBottom="true"
-                android:layout_marginLeft="@dimen/_15sdp"
-                android:layout_marginRight="@dimen/_15sdp"
-                android:layout_marginBottom="@dimen/_15sdp"
-                app:c_progress="0"
-                app:c_progressRadius="@dimen/_8sdp"
-                card_view:c_borderWidth="5dp"
-                card_view:c_isShowDesc="false"
-                card_view:c_max="100"
-                card_view:c_progressColor="@color/green" />
-
-
-        </RelativeLayout>
-
-    </RelativeLayout>
-
-</RelativeLayout><!--
-<android.support.design.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:card_view="http://schemas.android.com/tools"
-    android:layout_width="@dimen/_250sdp"
-    android:layout_height="@dimen/_230sdp"
+    android:layout_width="@dimen/_240sdp"
+    android:layout_height="@dimen/_190sdp"
     android:layout_gravity="center"
-    android:gravity="center_horizontal"
-    android:orientation="vertical"
-    app:cardBackgroundColor="@color/white"
-    app:cardCornerRadius="@dimen/_10sdp">
+    android:background="@color/full_transparent">
+
+    <com.facebook.drawee.view.SimpleDraweeView
+        android:id="@+id/iv_file_trans"
+        android:layout_width="@dimen/_100sdp"
+        android:layout_height="@dimen/_70sdp"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:elevation="5dp"
+        android:background="@android:color/transparent"
+        app:roundingBorderColor="@color/colorBtnGreenDark"
+        app:roundingBorderWidth="@dimen/_2sdp"
+        app:roundedCornerRadius="@dimen/_15sdp"
+        app:actualImageScaleType="fitXY"
+        app:placeholderImage="@drawable/fc_logo"/>
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_margin="@dimen/_5sdp"
-        android:background="@drawable/download_dialog_bg">
+        android:layout_marginTop="@dimen/_45sdp"
+        android:background="@drawable/dialog_bg">
 
-        <ImageView
-            android:id="@+id/iv_file_trans"
+        <com.pratham.foundation.customView.SansTextViewBold
+            android:id="@+id/dialog_file_name"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/_120sdp"
-            android:layout_marginHorizontal="@dimen/_20sdp"
+            android:layout_height="@dimen/_70sdp"
+            android:layout_alignParentTop="true"
             android:layout_marginTop="@dimen/_20sdp"
-            android:background="@android:color/transparent"
-            android:scaleType="fitCenter"
-            app:srcCompat="@drawable/ic_download" />
+            android:layout_marginBottom="@dimen/_15sdp"
+            android:gravity="center"
+            android:lines="2"
+            android:paddingHorizontal="@dimen/_2sdp"
+            android:text=""
+            android:textColor="@color/dark_blue"
+            android:textSize="@dimen/_15sdp" />
 
-        <RelativeLayout
+        <ProgressBar
+            android:id="@+id/dialog_roundProgress"
+            android:layout_width="@dimen/_36sdp"
+            android:layout_height="@dimen/_36sdp"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:layout_gravity="center"
+            android:layout_marginBottom="@dimen/_10sdp"
+            android:elevation="@dimen/_5sdp"
+            android:indeterminateTint="@color/colorBtnGreenDark"
+            android:visibility="gone" />
+
+        <com.pratham.foundation.customView.progress_layout.ProgressLayout
+            android:id="@+id/dialog_progressLayout"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_below="@+id/iv_file_trans">
-
-            <customView.SansTextView
-                android:id="@+id/dialog_file_name"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerHorizontal="true"
-                android:layout_marginLeft="@dimen/_15sdp"
-                android:layout_marginTop="@dimen/_10sdp"
-                android:layout_marginRight="@dimen/_15sdp"
-                android:gravity="center"
-                android:maxLines="3"
-                android:text="asdasdasdasdasda"
-                android:textColor="@color/charcoal"
-                android:textSize="@dimen/_18sdp"
-                android:textStyle="bold" />
-
-            <com.pratham.cityofstories.custom.progress_layout.ProgressLayout
-                android:id="@+id/dialog_progressLayout"
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/_15sdp"
-                android:layout_alignParentBottom="true"
-                android:layout_marginLeft="@dimen/_15sdp"
-                android:layout_marginRight="@dimen/_15sdp"
-                android:layout_marginBottom="@dimen/_15sdp"
-                app:c_progress="5"
-                app:c_progressRadius="@dimen/_8sdp"
-                card_view:c_borderWidth="3dp"
-                card_view:c_isShowDesc="false"
-                card_view:c_max="100"
-                card_view:c_progressColor="@color/green" />
-
-        </RelativeLayout>
+            android:layout_height="@dimen/_15sdp"
+            android:layout_alignParentBottom="true"
+            android:layout_marginLeft="@dimen/_15sdp"
+            android:layout_marginRight="@dimen/_15sdp"
+            android:layout_marginBottom="@dimen/_15sdp"
+            app:c_progress="0"
+            app:c_progressRadius="@dimen/_8sdp"
+            app:c_progressColor="@color/colorBtnGreenDark"
+            card_view:c_borderWidth="5dp"
+            card_view:c_isShowDesc="false"
+            card_view:c_max="100" />
     </RelativeLayout>
-</android.support.design.card.MaterialCardView>-->
+<!--    </RelativeLayout>-->
+</RelativeLayout>
+
+<!--
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+xmlns:app="http://schemas.android.com/apk/res-auto"
+xmlns:card_view="http://schemas.android.com/tools"
+android:layout_width="match_parent"
+android:layout_height="match_parent"
+android:layout_gravity="center">
+-->

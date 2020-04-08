@@ -59,6 +59,7 @@ import org.greenrobot.eventbus.EventBus;
 import java.io.File;
 import java.util.Objects;
 
+import static com.pratham.foundation.utility.FC_Constants.CURRENT_VERSION;
 import static com.pratham.foundation.utility.FC_Utility.setAppLocal;
 
 
@@ -86,11 +87,10 @@ public class SplashActivity extends SplashSupportActivity implements SplashContr
 
     @AfterViews
     public void init() {
-        //overridePendingTransition(R.anim.slide_in_right,R.anim.slide_out_left);
+//        overridePendingTransition(R.anim.slide_in_right,R.anim.slide_out_left);
 //        bgMusic = MediaPlayer.create(this, R.raw.bg_sound);
 //        bgMusic.setLooping(true);
 //        bgMusic.start();
-
         new Handler().postDelayed(() -> {
             startTextAud();
         }, 500);
@@ -100,6 +100,7 @@ public class SplashActivity extends SplashSupportActivity implements SplashContr
         final Typeface title_font = Typeface.createFromAsset(getAssets(), "fonts/Sarala_Bold.ttf");
         tv_typer.setTypeface(title_font);
         tv_typer.setVisibility(View.VISIBLE);
+        tv_typer.setTextColor(getResources().getColor(R.color.dark_blue));
         tv_typer.animateText("Foundation\nCourse");
         tv_typer.setAnimationListener(hTextView -> initiateApp());
     }
@@ -464,10 +465,17 @@ public class SplashActivity extends SplashSupportActivity implements SplashContr
         if (!ApplicationClass.isTablet) {
             splashPresenter.pushData();
             dismissProgressDialog();
-            if (!FastSave.getInstance().getBoolean(FC_Constants.VOICES_DOWNLOAD_INTENT, false))
-                show_STT_Dialog();
-            else
-                showBottomFragment();
+            Log.d("-CT-", "Before insert new  :::::CURRENT_VERSION::::: " +FastSave.getInstance().getString(CURRENT_VERSION, "NA"));
+            Log.d("-CT-", "Before insert new  ::::getCurrentVersion:::: " +FC_Utility.getCurrentVersion(context));
+            if (!FastSave.getInstance().getString(CURRENT_VERSION, "NA").equalsIgnoreCase(FC_Utility.getCurrentVersion(context))) {
+                Log.d("-CT-", "insertNewData in IFFFFFFFFFFFFFFFFFFFFFFFFFFFF");
+                splashPresenter.copyZipAndPopulateMenu_New();
+            }
+            else {
+                if (!FastSave.getInstance().getBoolean(FC_Constants.VOICES_DOWNLOAD_INTENT, false))
+                    show_STT_Dialog();
+                else showBottomFragment();
+            }
         } else {
             dismissProgressDialog();
             startActivity(new Intent(context, MenuActivity_.class));

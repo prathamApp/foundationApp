@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
+import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -304,10 +305,14 @@ public class ReadingFragment extends Fragment implements STT_Result_New.sttView,
 
 
     public void dismissLoadingDialog() {
-        if (dialogFlg) {
+        try {
             dialogFlg = false;
-            if (myLoadingDialog != null)
-                myLoadingDialog.dismiss();
+            new Handler().postDelayed(() -> {
+                if (myLoadingDialog != null && myLoadingDialog.isShowing())
+                    myLoadingDialog.dismiss();
+            }, 300);
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 

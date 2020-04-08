@@ -1,6 +1,6 @@
 package com.pratham.foundation.async;
 
-import android.os.AsyncTask;
+import android.content.Context;
 import android.util.Log;
 
 import com.androidnetworking.AndroidNetworking;
@@ -19,6 +19,8 @@ import com.pratham.foundation.utility.FC_Constants;
 import net.lingala.zip4j.core.ZipFile;
 import net.lingala.zip4j.exception.ZipException;
 
+import org.androidannotations.annotations.Background;
+import org.androidannotations.annotations.EBean;
 import org.greenrobot.eventbus.EventBus;
 
 import java.io.File;
@@ -33,9 +35,10 @@ import java.util.concurrent.Executors;
 import static com.pratham.foundation.ApplicationClass.App_Thumbs_Path;
 import static com.pratham.foundation.utility.FC_Constants.FILE_DOWNLOAD_STARTED;
 
+@EBean
+public class ContentDownloadingTask {
 
-public class DownloadingTask extends AsyncTask {
-    private static final String TAG = DownloadingTask.class.getSimpleName();
+    private static final String TAG = ContentDownloadingTask.class.getSimpleName();
     String url;
     String dir_path;
     String f_name;
@@ -43,12 +46,16 @@ public class DownloadingTask extends AsyncTask {
     ContentTable content;
     String downloadID;
     boolean unziping_error = false;
+    Context context;
     //GamesDisplay gamesDisplay;
     //    DownloadService downloadService;
     ArrayList<ContentTable> levelContents;
 
+    public ContentDownloadingTask (Context context){
+        this.context = context;
+    }
 
-    private void initialize(Modal_Download download) {
+    public void initialize(Modal_Download download) {
         this.url = download.getUrl();
         this.dir_path = download.getDir_path();
         this.f_name = download.getF_name();
@@ -72,10 +79,9 @@ public class DownloadingTask extends AsyncTask {
         //gamesDisplay.fileDownloadStarted(downloadID, modal_fileDownloading);
     }
 
-    @Override
-    protected Object doInBackground(Object... params) {
+    @Background
+    public void startContentDownload(Modal_Download download) {
         Log.d(TAG, "doInBackground: " + url);
-        Modal_Download download = (Modal_Download) params[0];
         initialize(download);
         afterInit();
         InputStream input = null;
@@ -90,9 +96,7 @@ public class DownloadingTask extends AsyncTask {
             // expect HTTP 200 OK, so we don't mistakenly save error report
             // instead of the file
             Log.d(TAG, "doInBackground:" + connection.getResponseCode());
-            if (connection.getResponseCode() != HttpURLConnection.HTTP_OK) {
-                return false;
-            }
+            if (connection.getResponseCode() == HttpURLConnection.HTTP_OK) {
             // getting file length
             dowloadImages();
             int lenghtOfFile = connection.getContentLength();
@@ -107,33 +111,30 @@ public class DownloadingTask extends AsyncTask {
 //                long download_percentage_old = 00;
             int count;
             while ((count = input.read(data)) != -1) {
-                if (isCancelled()) {
+/*                if (isCancelled()) {
                     input.close();
                     return false;
-                }
+                }*/
                 total += count;
                 // writing data to file
                 output.write(data, 0, count);
                 long download_percentage_new = (100 * total) / lenghtOfFile;
                 updateProgress(download_percentage_new);
             }
-            // flushing output
-            if (output != null)
+            // flushing output AND closing streams
                 output.close();
-            // closing streams/**/
-            if (input != null)
                 input.close();
+
 //            if (folder_name.equalsIgnoreCase(FC_Constants.GAME)) {
-            unzipFile(dir_path + "/" + f_name, dir_path);
+                unziping_error = unzipFile(dir_path + "/" + f_name, dir_path);
 //            }
             if (unziping_error)
                 unzipingError();
             else
                 downloadCompleted();
-            return true;
+            }
         } catch (Exception e) {
             e.printStackTrace();
-            return false;
         }
     }
 
@@ -141,12 +142,10 @@ public class DownloadingTask extends AsyncTask {
         EventMessage eventMessage = new EventMessage();
         eventMessage.setMessage(FC_Constants.UNZIPPING_ERROR);
         EventBus.getDefault().post(eventMessage);
+        onCompleteContentDownloadTase(false);
     }
 
     private void downloadCompleted() {
-        EventMessage eventMessage = new EventMessage();
-        eventMessage.setMessage(FC_Constants.UNZIPPING_DATA_FILE);
-        EventBus.getDefault().post(eventMessage);
         Log.d(TAG, "updateFileProgress: " + downloadID);
 //        content.setContentType("file");
         ArrayList<ContentTable> temp = new ArrayList<>();
@@ -167,6 +166,7 @@ public class DownloadingTask extends AsyncTask {
             d.setOnSDCard(false);
         }
         AppDatabase.appDatabase.getContentTableDao().addContentList(temp);
+        onCompleteContentDownloadTase(true);
     }
 
     private void updateProgress(long download_percentage_new) {
@@ -177,7 +177,7 @@ public class DownloadingTask extends AsyncTask {
             modal_fileDownloading.setFilename(content.getNodeTitle());
             modal_fileDownloading.setProgress((int) download_percentage_new);
             modal_fileDownloading.setContentDetail(content);
-            publishProgress(modal_fileDownloading);
+            onProgressUpdate(modal_fileDownloading);
         }
     }
 
@@ -216,35 +216,34 @@ public class DownloadingTask extends AsyncTask {
                 });
     }
 
-    private void unzipFile(String source, String destination) {
-        unziping_error = false;
+    private boolean unzipFile(String source, String destination) {
+        EventMessage eventMessage = new EventMessage();
+        eventMessage.setMessage(FC_Constants.UNZIPPING_DATA_FILE);
+        EventBus.getDefault().post(eventMessage);
         ZipFile zipFile = null;
         try {
             zipFile = new ZipFile(source);
             zipFile.extractAll(destination);
             new File(source).delete();
+            return false;
         } catch (ZipException e) {
-            unziping_error = true;
             e.printStackTrace();
+            return false;
         }
     }
 
-    @Override
-    protected void onProgressUpdate(Object... values) {
-        super.onProgressUpdate(values);
-        Modal_FileDownloading mfd = (Modal_FileDownloading) values[0];
-        Log.d(TAG, "onProgressUpdate: " + downloadID + ":::" + f_name + ":::" + mfd.getProgress());
+    public void onProgressUpdate(Modal_FileDownloading modal_fileDownloading) {
+//        Modal_FileDownloading mfd = (Modal_FileDownloading) values[0];
+        Log.d(TAG, "onProgressUpdate: " + downloadID + ":::" + f_name + ":::" + modal_fileDownloading.getProgress());
         EventMessage eventMessage = new EventMessage();
-        eventMessage.setModal_fileDownloading(mfd);
+        eventMessage.setModal_fileDownloading(modal_fileDownloading);
         eventMessage.setMessage(FC_Constants.FILE_DOWNLOAD_UPDATE);
         EventBus.getDefault().post(eventMessage);
     }
 
-    @Override
-    protected void onPostExecute(Object r) {
+    protected void onCompleteContentDownloadTase(boolean success) {
         Log.d(TAG, "onPostExecute");
-        boolean result = (boolean) r;
-        if (result) {
+        if (success) {
             EventMessage eventMessage = new EventMessage();
             eventMessage.setMessage(FC_Constants.FILE_DOWNLOAD_COMPLETE);
             EventBus.getDefault().post(eventMessage);

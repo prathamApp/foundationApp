@@ -297,11 +297,10 @@ public class FC_Utility {
         Bitmap b1 = view.getDrawingCache();
         Rect frame = new Rect();
         activity.getWindow().getDecorView().getWindowVisibleDisplayFrame(frame);
-        int statusBarHeight = frame.top;
         int width = activity.getWindowManager().getDefaultDisplay().getWidth();
         int height = activity.getWindowManager().getDefaultDisplay().getHeight();
 
-        Bitmap b = Bitmap.createBitmap(b1, 0, statusBarHeight, width, height - statusBarHeight);
+        Bitmap b = Bitmap.createBitmap(b1, 0, 0, width, height);
         view.destroyDrawingCache();
         return b;
     }
@@ -505,7 +504,6 @@ public class FC_Utility {
 
         Log.e("pix", w + " " + h + " " + pix.length);
         bitmap.setPixels(pix, 0, w, 0, 0, w, h);
-
         return (bitmap);
     }
 

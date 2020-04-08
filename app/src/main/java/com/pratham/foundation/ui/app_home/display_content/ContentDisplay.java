@@ -11,20 +11,27 @@ import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.bumptech.glide.Glide;
+import com.facebook.drawee.backends.pipeline.Fresco;
+import com.facebook.drawee.interfaces.DraweeController;
+import com.facebook.drawee.view.SimpleDraweeView;
+import com.facebook.imagepipeline.request.ImageRequest;
+import com.facebook.imagepipeline.request.ImageRequestBuilder;
 import com.pratham.foundation.ApplicationClass;
 import com.pratham.foundation.BaseActivity;
 import com.pratham.foundation.R;
+import com.pratham.foundation.customView.BlurPopupDialog.BlurPopupWindow;
 import com.pratham.foundation.customView.GridSpacingItemDecoration;
 import com.pratham.foundation.customView.display_image_dialog.CustomLodingDialog;
 import com.pratham.foundation.customView.progress_layout.ProgressLayout;
@@ -81,7 +88,8 @@ public class ContentDisplay extends BaseActivity implements ContentContract.Cont
     int tempDownloadPos, resumeCntr = 0;
     String downloadNodeId, resName, resServerImageName, parentName;
     List<ContentTable> ContentTableList;
-    public CustomLodingDialog downloadDialog;
+    public BlurPopupWindow downloadDialog;
+    ProgressBar dialog_roundProgress;
     ProgressLayout progressLayout;
     TextView dialog_file_name;
     ImageView iv_file_trans;
@@ -153,9 +161,11 @@ public class ContentDisplay extends BaseActivity implements ContentContract.Cont
         recyclerView.addItemDecoration(new GridSpacingItemDecoration(2, dpToPx(this, dp), true));
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setAdapter(contentAdapter);
+
+        showLoader();
+
         presenter.displayProfileImage();
-        if (!LOGIN_MODE.equalsIgnoreCase(QR_GROUP_MODE))
-            presenter.getPerc(nodeId);
+        presenter.getPerc(nodeId);
         tv_Topic.setText("" + contentTitle);
         tv_Topic.setSelected(true);
         ll_topic_parent.setSelected(true);
@@ -197,7 +207,6 @@ public class ContentDisplay extends BaseActivity implements ContentContract.Cont
     @UiThread
     @Override
     public void setStudentProfileImage(String sImage) {
-        showLoader();
 /*        if (sImage != null) {
             if (sImage.equalsIgnoreCase("group_icon"))
                 profileImage.setImageResource(R.drawable.ic_grp_btn);
@@ -246,6 +255,7 @@ public class ContentDisplay extends BaseActivity implements ContentContract.Cont
         ContentTableList.clear();
     }
 
+    @UiThread
     @Override
     public void addContentToViewList(List<ContentTable> contentTable) {
         ContentTableList.addAll(contentTable);
@@ -256,6 +266,7 @@ public class ContentDisplay extends BaseActivity implements ContentContract.Cont
 //        startActivity(new Intent(ContentDisplay.this, Student_profile_activity.class), ActivityOptions.makeSceneTransitionAnimation(ContentDisplay.this).toBundle());
     }
 
+    @UiThread
     @Override
     public void notifyAdapter() {
         Collections.sort(ContentTableList, (o1, o2) -> o1.getNodeId().compareTo(o2.getNodeId()));
@@ -300,34 +311,35 @@ public class ContentDisplay extends BaseActivity implements ContentContract.Cont
         onBackPressed();
     }
 
+    @UiThread
     @SuppressLint("SetTextI18n")
     @Override
     public void showNoDataDownloadedDialog() {
-        final CustomLodingDialog dialog = new CustomLodingDialog(this, R.style.FC_DialogStyle);
-        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-        dialog.setCanceledOnTouchOutside(false);
-        dialog.setContentView(R.layout.fc_custom_dialog);
-        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-        dialog.setCancelable(false);
-        dialog.setCanceledOnTouchOutside(false);
+        errorDialog = new BlurPopupWindow.Builder(ContentDisplay.this)
+                .setContentView(R.layout.fc_custom_dialog)
+                .setGravity(Gravity.CENTER)
+                .setDismissOnTouchBackground(false)
+                .setDismissOnClickBack(true)
+                .setScaleRatio(0.2f)
+                .bindClickListener(v -> {
+                    new Handler().postDelayed(() -> {
+                        main_back.performClick();
+                        errorDialog.dismiss();
+                    }, 200);
+                }, R.id.dia_btn_green)
+                .setBlurRadius(10)
+                .setTintColor(0x30000000)
+                .build();
 
-        dialog.show();
-
-        TextView dia_tv = dialog.findViewById(R.id.dia_title);
-        Button btn_gree = dialog.findViewById(R.id.dia_btn_green);
-        Button btn_yellow = dialog.findViewById(R.id.dia_btn_yellow);
-        Button btn_red = dialog.findViewById(R.id.dia_btn_red);
-
+        TextView title = errorDialog.findViewById(R.id.dia_title);
+        Button btn_gree = errorDialog.findViewById(R.id.dia_btn_green);
+        Button btn_yellow = errorDialog.findViewById(R.id.dia_btn_yellow);
+        Button btn_red = errorDialog.findViewById(R.id.dia_btn_red);
         btn_gree.setText("Ok");
-        dia_tv.setText("Connect to Internet");
+        title.setText("Connect to Internet");
         btn_red.setVisibility(View.GONE);
         btn_yellow.setVisibility(View.GONE);
-
-        btn_gree.setOnClickListener(v -> {
-            finish();
-            dialog.dismiss();
-        });
+        errorDialog.show();
     }
 
     @Override
@@ -578,19 +590,39 @@ public class ContentDisplay extends BaseActivity implements ContentContract.Cont
         }
     }
 
-    private void resourceDownloadDialog(Modal_FileDownloading modal_fileDownloading) {
-        downloadDialog = new CustomLodingDialog(this, R.style.FC_DialogStyle);
-        downloadDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        downloadDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-        downloadDialog.setContentView(R.layout.dialog_file_downloading);
-        downloadDialog.setCanceledOnTouchOutside(false);
-        downloadDialog.show();
-        progressLayout = downloadDialog.findViewById(R.id.dialog_progressLayout);
-        dialog_file_name = downloadDialog.findViewById(R.id.dialog_file_name);
-        iv_file_trans = downloadDialog.findViewById(R.id.iv_file_trans);
-        Glide.with(this).load(resServerImageName).into(iv_file_trans);
-        dialog_file_name.setText(resName);
-        progressLayout.setCurProgress(modal_fileDownloading.getProgress());
+    @SuppressLint("SetTextI18n")
+    @UiThread
+    public void resourceDownloadDialog(Modal_FileDownloading modal_fileDownloading) {
+        if (downloadDialog == null) {
+            downloadDialog = new BlurPopupWindow.Builder(ContentDisplay.this)
+                    .setContentView(R.layout.dialog_file_downloading)
+                    .setGravity(Gravity.CENTER)
+                    .setDismissOnTouchBackground(false)
+                    .setDismissOnClickBack(true)
+                    .setScaleRatio(0.2f)
+                    .setBlurRadius(10)
+                    .setTintColor(0x30000000)
+                    .build();
+
+            SimpleDraweeView iv_file_trans = downloadDialog.findViewById(R.id.iv_file_trans);
+            dialog_file_name = downloadDialog.findViewById(R.id.dialog_file_name);
+            progressLayout = downloadDialog.findViewById(R.id.dialog_progressLayout);
+            dialog_roundProgress = downloadDialog.findViewById(R.id.dialog_roundProgress);
+            ImageRequest imageRequest = ImageRequestBuilder
+                    .newBuilderWithSource(Uri.parse("" + resServerImageName))
+                    .setLocalThumbnailPreviewsEnabled(false)
+                    .build();
+            if (imageRequest != null) {
+                DraweeController controller = Fresco.newDraweeControllerBuilder()
+                        .setImageRequest(imageRequest)
+                        .setOldController(iv_file_trans.getController())
+                        .build();
+                iv_file_trans.setController(controller);
+            }
+            dialog_file_name.setText("" + resName);
+            progressLayout.setCurProgress(modal_fileDownloading.getProgress());
+            downloadDialog.show();
+        }
     }
 
 /*    @Override
@@ -615,24 +647,38 @@ public class ContentDisplay extends BaseActivity implements ContentContract.Cont
                 if (progressLayout != null)
                     progressLayout.setCurProgress(message.getModal_fileDownloading().getProgress());
             } else if (message.getMessage().equalsIgnoreCase(FC_Constants.FILE_DOWNLOAD_ERROR)) {
-                downloadDialog.dismiss();
+                dismissDownloadDialog();
                 showDownloadErrorDialog();
             } else if (message.getMessage().equalsIgnoreCase(FC_Constants.UNZIPPING_ERROR)) {
-                downloadDialog.dismiss();
                 showDownloadErrorDialog();
             } else if (message.getMessage().equalsIgnoreCase(FC_Constants.UNZIPPING_DATA_FILE)) {
-                dialog_file_name.setText("Unzipping...\nPlease wait" + resName);
+                showZipLoader();
             } else if (message.getMessage().equalsIgnoreCase(FC_Constants.FILE_DOWNLOAD_COMPLETE)) {
                 dialog_file_name.setText("Updating Data");
                 resName = "";
                 ContentTableList.get(tempDownloadPos).setIsDownloaded("true");
                 new Handler().postDelayed(() -> {
-                    downloadDialog.dismiss();
+                    dismissDownloadDialog();
                     contentAdapter.notifyItemChanged(tempDownloadPos, ContentTableList.get(tempDownloadPos));
                 }, 500);
             }
 
         }
+    }
+
+    @UiThread
+    public void dismissDownloadDialog() {
+        if(downloadDialog.isShown()) {
+            downloadDialog.dismiss();
+            downloadDialog = null;
+        }
+    }
+
+    @UiThread
+    public void showZipLoader() {
+        dialog_file_name.setText("Unzipping...\nPlease wait" + resName);
+        progressLayout.setVisibility(View.GONE);
+        dialog_roundProgress.setVisibility(View.VISIBLE);
     }
 
     public CustomLodingDialog myLoadingDialog;
@@ -641,13 +687,16 @@ public class ContentDisplay extends BaseActivity implements ContentContract.Cont
     @Override
     public void showLoader() {
         try {
-            myLoadingDialog = new CustomLodingDialog(this, R.style.FC_DialogStyle);
-            myLoadingDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-            myLoadingDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-            myLoadingDialog.setContentView(R.layout.loading_dialog);
-            myLoadingDialog.setCanceledOnTouchOutside(false);
-//        myLoadingDialog.setCancelable(false);
-            myLoadingDialog.show();
+            if (myLoadingDialog == null) {
+                myLoadingDialog = new CustomLodingDialog(this);
+                myLoadingDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+                myLoadingDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+                myLoadingDialog.setContentView(R.layout.loading_dialog);
+                myLoadingDialog.setCanceledOnTouchOutside(false);
+                myLoadingDialog.show();
+            } else if (!myLoadingDialog.isShowing())
+                myLoadingDialog.show();
+
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -657,25 +706,33 @@ public class ContentDisplay extends BaseActivity implements ContentContract.Cont
     @Override
     public void dismissLoadingDialog() {
         try {
-            if (myLoadingDialog != null && myLoadingDialog.isShowing()) {
-                myLoadingDialog.dismiss();
-            }
+            new Handler().postDelayed(() -> {
+                if (myLoadingDialog != null && myLoadingDialog.isShowing())
+                    myLoadingDialog.dismiss();
+            }, 300);
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
 
+    BlurPopupWindow errorDialog;
+
     @UiThread
     public void showDownloadErrorDialog() {
-        CustomLodingDialog errorDialog = new CustomLodingDialog(this, R.style.FC_DialogStyle);
-        errorDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        errorDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-        errorDialog.setContentView(R.layout.dialog_file_error_downloading);
-        errorDialog.setCanceledOnTouchOutside(false);
+        errorDialog = new BlurPopupWindow.Builder(ContentDisplay.this)
+                .setContentView(R.layout.dialog_file_error_downloading)
+                .setGravity(Gravity.CENTER)
+                .setDismissOnTouchBackground(false)
+                .setDismissOnClickBack(true)
+                .bindClickListener(v -> {
+                    new Handler().postDelayed(() ->
+                            errorDialog.dismiss(), 200);
+                }, R.id.dialog_error_btn)
+                .setScaleRatio(0.2f)
+                .setBlurRadius(10)
+                .setTintColor(0x30000000)
+                .build();
         errorDialog.show();
-        Button ok_btn = errorDialog.findViewById(R.id.dialog_error_btn);
-
-        ok_btn.setOnClickListener(v -> errorDialog.dismiss());
     }
 }

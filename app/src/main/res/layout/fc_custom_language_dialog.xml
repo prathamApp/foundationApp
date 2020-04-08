@@ -48,9 +48,9 @@
                 android:layout_marginTop="@dimen/_19sdp"
                 android:gravity="center"
                 android:lines="2"
-                android:visibility="invisible"
+                android:visibility="visible"
                 android:paddingHorizontal="@dimen/_7sdp"
-                android:text="Current Language : "
+                android:text="Select Certificate Language"
                 android:textColor="@color/gradianceCardStartColor"
                 android:textSize="@dimen/_15sdp" />
 

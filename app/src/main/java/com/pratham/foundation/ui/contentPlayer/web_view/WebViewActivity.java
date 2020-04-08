@@ -120,7 +120,8 @@ public class WebViewActivity extends BaseActivity implements WebViewInterface {
         webView.loadUrl(myPath);
         webView.getSettings().setJavaScriptEnabled(true);
         webView.getSettings().setMediaPlaybackRequiresUserGesture(false);
-        webView.addJavascriptInterface(new JSInterface(this, webView, tts, this, WebViewActivity.this), "Android");
+        webView.addJavascriptInterface(new JSInterface(this, webView, tts,
+                this, WebViewActivity.this), "Android");
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
             if (0 != (getApplicationInfo().flags & ApplicationInfo.FLAG_DEBUGGABLE)) {
@@ -157,7 +158,8 @@ public class WebViewActivity extends BaseActivity implements WebViewInterface {
 
         dia_btn_green.setText("" + getResources().getString(R.string.yes));
         dia_btn_red.setText("" + getResources().getString(R.string.no));
-        dia_btn_yellow.setText("" + getResources().getString(R.string.Cancel));
+        dia_btn_yellow.setVisibility(View.GONE);
+//        setText("" + getResources().getString(R.string.Cancel));
         dia_title.setText("" + getResources().getString(R.string.exit_dialog_msg));
         dialog.show();
 
@@ -186,23 +188,28 @@ public class WebViewActivity extends BaseActivity implements WebViewInterface {
             @Override
             protected Void doInBackground(Void... voids) {
 
-                if (learntWordsList.size() > 0) {
-                    for (int i = 0; i < learntWordsList.size(); i++) {
-                        boolean wordPresent = checkWord(learntWordsList.get(i).getKeyWord().toLowerCase());
-                        if (!wordPresent) {
-                            KeyWords learntWords = new KeyWords();
-                            learntWords.setResourceId(webResId);
-                            learntWords.setSentFlag(0);
-                            learntWords.setStudentId(FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""));
-                            // learntWords.setSessionId(FastSave.getInstance().getString(FC_Constants.CURRENT_SESSION, ""));
-                            learntWords.setKeyWord(learntWordsList.get(i).getKeyWord().toLowerCase());
-                            // learntWords.setSynId("" + gameName);
-                            learntWords.setWordType("" + learntWordsList.get(i).getWordType());
-                            appDatabase.getKeyWordDao().insert(learntWords);
+                try {
+                    if (learntWordsList.size() > 0) {
+                        for (int i = 0; i < learntWordsList.size(); i++) {
+                            boolean wordPresent = checkWord(learntWordsList.get(i).getKeyWord().toLowerCase());
+                            if (!wordPresent) {
+                                KeyWords learntWords = new KeyWords();
+                                learntWords.setResourceId(webResId);
+                                learntWords.setSentFlag(0);
+                                learntWords.setStudentId(FastSave
+                                        .getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""));
+                                learntWords.setKeyWord(learntWordsList.get(i).getKeyWord().toLowerCase());
+                                learntWords.setWordType("" + learntWordsList.get(i).getWordType());
+                                appDatabase.getKeyWordDao().insert(learntWords);
+                            }
                         }
                     }
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
-                int scoredMarks = appDatabase.getKeyWordDao().checkWebWordCount(FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""), "" + webResId);
+
+                int scoredMarks = appDatabase.getKeyWordDao().checkWebWordCount(FastSave.getInstance()
+                        .getString(FC_Constants.CURRENT_STUDENT_ID, ""), "" + webResId);
                 float perc = 0f;
                 try {
                     if (scoredMarks > 0 && dataTotalLength > 0) {
@@ -216,8 +223,10 @@ public class WebViewActivity extends BaseActivity implements WebViewInterface {
                     ContentProgress contentProgress = new ContentProgress();
                     contentProgress.setProgressPercentage("" + perc);
                     contentProgress.setResourceId("" + webResId);
-                    contentProgress.setSessionId("" + FastSave.getInstance().getString(FC_Constants.CURRENT_SESSION, ""));
-                    contentProgress.setStudentId("" + FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""));
+                    contentProgress.setSessionId("" + FastSave
+                            .getInstance().getString(FC_Constants.CURRENT_SESSION, ""));
+                    contentProgress.setStudentId("" + FastSave
+                            .getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""));
                     contentProgress.setUpdatedDateTime("" + FC_Utility.getCurrentDateTime());
                     contentProgress.setLabel("resourceProgress");
                     contentProgress.setSentFlag(0);
@@ -234,7 +243,8 @@ public class WebViewActivity extends BaseActivity implements WebViewInterface {
 
     private boolean checkWord(String checkWord) {
         try {
-            String word = appDatabase.getKeyWordDao().checkWord(FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""), "" + webResId, checkWord);
+            String word = appDatabase.getKeyWordDao().checkWord(FastSave.getInstance()
+                    .getString(FC_Constants.CURRENT_STUDENT_ID, ""), "" + webResId, checkWord);
             return word != null;
         } catch (Exception e) {
             e.printStackTrace();
@@ -273,13 +283,6 @@ public class WebViewActivity extends BaseActivity implements WebViewInterface {
             webView.loadUrl("");
         }
         super.onPause();
-/*        try {
-            Class.forName("android.webkit.WebView")
-                    .getMethod("onPause", (Class[]) null)
-                    .invoke(webView, (Object[]) null);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }*/
     }
 
     @Override
