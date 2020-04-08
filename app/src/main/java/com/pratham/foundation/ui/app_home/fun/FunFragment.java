@@ -479,15 +479,7 @@ public class FunFragment extends Fragment implements FunContract.FunView,
                 mainNew.putExtra("onSdCard", contentList.isOnSDCard());
                 mainNew.putExtra("contentType", contentList.getResourceType());
                 startActivity(mainNew);
-            } /*else if (contentList.getResourceType().equalsIgnoreCase(FC_Constants.WORD_ANDROID)) {
-                Intent mainNew = new Intent(context, ReadingWordScreenActivity.class);
-                mainNew.putExtra("resId", contentList.getResourceId());
-                mainNew.putExtra("StudentID", FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""));
-                mainNew.putExtra("contentPath", contentList.getResourcePath());
-                mainNew.putExtra("onSdCard", contentList.isOnSDCard());
-                mainNew.putExtra("contentTitle", contentList.getNodeTitle());
-                startActivity(mainNew);
-            }*/ else if (contentList.getResourceType().equalsIgnoreCase(FC_Constants.PARA_ANDROID)) {
+            } else if (contentList.getResourceType().equalsIgnoreCase(FC_Constants.PARA_ANDROID)) {
                 Intent mainNew = new Intent(context, ReadingParagraphsActivity_.class);
                 mainNew.putExtra("resId", contentList.getResourceId());
                 mainNew.putExtra("StudentID", FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""));
