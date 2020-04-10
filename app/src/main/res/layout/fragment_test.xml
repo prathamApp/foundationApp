@@ -19,7 +19,7 @@
         android:layout_width="190dp"
         android:layout_height="50dp"
         android:background="@drawable/button_green"
-        android:drawableStart="@drawable/ic_download"
+        android:drawableStart="@drawable/ic_download_2"
         android:drawablePadding="5dp"
         android:layout_centerHorizontal="true"
         android:layout_alignParentBottom="true"

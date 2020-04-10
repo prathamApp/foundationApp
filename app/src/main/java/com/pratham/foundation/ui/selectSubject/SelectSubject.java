@@ -10,7 +10,13 @@ import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.Gravity;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.pratham.foundation.BaseActivity;
 import com.pratham.foundation.R;
@@ -28,6 +34,7 @@ import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.UiThread;
 import org.androidannotations.annotations.ViewById;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static com.pratham.foundation.ApplicationClass.BackBtnSound;
@@ -39,10 +46,11 @@ import static com.pratham.foundation.utility.FC_Utility.dpToPx;
 
 @EActivity(R.layout.activity_select_subject)
 public class SelectSubject extends BaseActivity implements
-        SelectSubjectContract.View, SelectSubjectContract.itemClicked {
+        SelectSubjectContract.SubjectView, SelectSubjectContract.ItemClicked,
+        SelectSubjectContract.AppLanguageSpinnerListner {
 
     @Bean(SelectSubjectPresenter.class)
-    SelectSubjectContract.Presenter presenter;
+    SelectSubjectContract.SubjectPresenter presenter;
 
     @ViewById(R.id.subject_recycler)
     RecyclerView subject_recycler;
@@ -59,6 +67,8 @@ public class SelectSubject extends BaseActivity implements
         Configuration config = getResources().getConfiguration();
         FC_Constants.TAB_LAYOUT = config.smallestScreenWidthDp > 425;
         List<ContentTable> subjectList = presenter.getSubjectList();
+
+        presenter.setView(SelectSubject.this);
 
         if (FastSave.getInstance().getString(FC_Constants.LOGIN_MODE, FC_Constants.GROUP_MODE).contains("group"))
             studName = FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_NAME, "");
@@ -134,6 +144,84 @@ public class SelectSubject extends BaseActivity implements
         }
         exitDialog();
     }
+
+    @Click(R.id.ib_langChange)
+    public void langChangeButtonClick() {
+        presenter.getLanguageFromApi();
+    }
+
+    BlurPopupWindow langDialog;
+    String language, currLang;
+
+    @SuppressLint("SetTextI18n")
+    @Override
+    @UiThread
+    public void showLanguageSelectionDialog(List<ContentTable> serverContentList) {
+        langDialog = new BlurPopupWindow.Builder(context)
+                .setContentView(R.layout.fc_custom_language_dialog)
+                .setGravity(Gravity.CENTER)
+                .setDismissOnTouchBackground(false)
+                .setDismissOnClickBack(false)
+                .bindClickListener(v -> {
+                    new Handler().postDelayed(() -> {
+                        onAppSpinnerLanguageChanged(language);
+                        langDialog.dismiss();
+                        langDialog = null;
+                    }, 200);
+                }, R.id.dia_btn_green)
+                .setScaleRatio(0.2f)
+                .setBlurRadius(10)
+                .setTintColor(0x30000000)
+                .build();
+
+        TextView dia_title = langDialog.findViewById(R.id.dia_title);
+        Button dia_btn_green = langDialog.findViewById(R.id.dia_btn_green);
+        Spinner lang_spinner = langDialog.findViewById(R.id.lang_spinner);
+        dia_btn_green.setText("OK");
+
+        currLang = "" + FastSave.getInstance().getString(FC_Constants.APP_LANGUAGE, "Hindi");
+        dia_title.setText("Current Language : " + currLang);
+
+        ArrayList<String> langStrings =new ArrayList<>();
+        for(int j=0; j<serverContentList.size(); j++)
+        langStrings.add(""+serverContentList.get(j).getNodeTitle());
+        ArrayAdapter<String> dataAdapter = new ArrayAdapter<>(context, R.layout.custom_spinner,
+                langStrings);
+//                context.getResources().getStringArray(R.array.certificate_Languages));
+        dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        lang_spinner.setAdapter(dataAdapter);
+//        String[] languages = getResources().getStringArray(R.array.certificate_Languages);
+//        for (int i = 0; i < languages.length; i++) {
+//            if (currLang.equalsIgnoreCase(languages[i])) {
+//                lang_spinner.setSelection(i);
+//                break;
+//            }
+//        }
+
+        lang_spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                language = serverContentList.get(position).getNodeTitle();
+                String nodeId = serverContentList.get(position).getNodeId();
+                Toast.makeText(context, "nodeId : "+nodeId, Toast.LENGTH_SHORT).show();
+                FastSave.getInstance().saveString(FC_Constants.APP_LANGUAGE, ""+language);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+            }
+        });
+        langDialog.show();
+    }
+
+
+
+    @Override
+    public void onAppSpinnerLanguageChanged(String selectedLanguage) {
+        language = selectedLanguage;
+    }
+
+
 
     BlurPopupWindow exitDialog;
 

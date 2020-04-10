@@ -69,4 +69,17 @@
         android:layout_height="match_parent"
         android:layout_below="@id/subject"/>
 
+    <ImageButton
+        android:id="@+id/ib_langChange"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:elevation="5dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginEnd="20dp"
+        android:layout_marginBottom="20dp"
+        android:scaleType="centerInside"
+        android:background="@drawable/dialog_image_bg"
+        android:src="@drawable/language_icon" />
+
 </RelativeLayout>

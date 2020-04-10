@@ -239,7 +239,8 @@ public class JSInterface implements RecognitionListener {
 
     @SuppressLint("StaticFieldLeak")
     @JavascriptInterface
-    public void addScore(String resId, final int questionId, final int scorefromGame, final int totalMarks, final int level, final String startTime) {
+    public void addScore(String resId, final int questionId, final int scorefromGame,
+                         final int totalMarks, final int level, final String startTime) {
         boolean _wasSuccessful = false;
 
         new AsyncTask<Object, Void, Object>() {

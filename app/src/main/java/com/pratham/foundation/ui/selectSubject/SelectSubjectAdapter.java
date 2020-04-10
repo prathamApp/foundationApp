@@ -18,13 +18,13 @@ public class SelectSubjectAdapter extends RecyclerView.Adapter<SelectSubjectAdap
     Context context;
     List<ContentTable> datalist;
     List selectedOption = new ArrayList();
-    SelectSubjectContract.itemClicked itemClicked;
+    SelectSubjectContract.ItemClicked itemClicked;
 
 
     public SelectSubjectAdapter(Context context, List<ContentTable> datalist) {
         this.context = context;
         this.datalist = datalist;
-        itemClicked = (SelectSubjectContract.itemClicked) context;
+        itemClicked = (SelectSubjectContract.ItemClicked) context;
     }
 
     @NonNull

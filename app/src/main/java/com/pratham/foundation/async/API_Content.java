@@ -63,6 +63,38 @@ public class API_Content {
         }
     }
 
+    public void getAPILanguage(final String requestType, String url) {
+        try {
+            String url_id;
+            url_id = url + "" + 4030;
+            Log.d("API_Content_LOG", "getAPIContent: "+url_id);
+            AndroidNetworking.get(url_id)
+                    .addHeaders("Content-Type", "application/json")
+                    .build()
+                    .getAsString(new StringRequestListener() {
+                        @Override
+                        public void onResponse(String response) {
+                            if (apiContentResult != null)
+                                apiContentResult.receivedContent(requestType, response);
+                        }
+
+                        @Override
+                        public void onError(ANError anError) {
+                            try {
+                                Log.d("Error:", anError.getErrorDetail());
+                                // Log.d("Error::", anError.getResponse().toString());
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
+                            if (apiContentResult != null)
+                                apiContentResult.receivedError(requestType);
+                        }
+                    });
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
     private String getAuthHeader() {
         String encoded = Base64.encodeToString(("pratham" + ":" + "pratham").getBytes(), Base64.NO_WRAP);
         return "Basic " + encoded;

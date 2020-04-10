@@ -2,21 +2,28 @@ package com.pratham.foundation.ui.selectSubject;
 
 import com.pratham.foundation.database.domain.ContentTable;
 
-import org.androidannotations.annotations.EBean;
-
 import java.util.List;
 
 public interface SelectSubjectContract {
 
-    interface itemClicked {
+    interface ItemClicked {
         void onItemClicked(ContentTable contentTableObj);
     }
 
-    public interface View {
-
+    interface AppLanguageSpinnerListner{
+        void onAppSpinnerLanguageChanged(String language);
     }
 
-    public interface Presenter {
-        public List getSubjectList();
+    interface SubjectView {
+        void showLanguageSelectionDialog(List<ContentTable> serverContentList);
+    }
+
+    interface SubjectPresenter {
+
+        void  setView(SelectSubjectContract.SubjectView subjectView);
+            
+        List getSubjectList();
+        
+        void getLanguageFromApi();
     }
 }
