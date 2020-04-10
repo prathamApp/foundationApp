@@ -31,6 +31,12 @@ import com.pratham.foundation.services.shared_preferences.FastSave;
 import com.pratham.foundation.utility.FC_Constants;
 import com.pratham.foundation.utility.FC_Utility;
 
+import org.androidannotations.annotations.AfterViews;
+import org.androidannotations.annotations.Background;
+import org.androidannotations.annotations.EActivity;
+import org.androidannotations.annotations.UiThread;
+import org.androidannotations.annotations.ViewById;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -41,9 +47,11 @@ import static com.pratham.foundation.utility.FC_Constants.APP_SECTION;
 import static com.pratham.foundation.utility.FC_Constants.sec_Test;
 
 //TODO ADD ANNOTATIONS
+@EActivity(R.layout.activity_web_view)
 public class WebViewActivity extends BaseActivity implements WebViewInterface {
 
     public static int tMarks, sMarks;
+    @ViewById(R.id.loadPage)
     WebView webView;
     String gamePath, currentGameName, webViewLang = "NA", resStartTime;
     public static String webResId, gameLevel, mode, cCode, gameType, gameCategory, gameName;
@@ -53,14 +61,10 @@ public class WebViewActivity extends BaseActivity implements WebViewInterface {
     public static List<CertificateModelClass> certificateModelClassList;
     public static List<KeyWords> learntWordsList;
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_web_view);
-        //overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
+    @AfterViews
+    public void initialize(){
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
-        ButterKnife.bind(this);
-        webView = findViewById(R.id.loadPage);
+
         webResId = getIntent().getStringExtra("resId");
         gamePath = getIntent().getStringExtra("resPath");
         mode = getIntent().getStringExtra("mode");
@@ -70,7 +74,7 @@ public class WebViewActivity extends BaseActivity implements WebViewInterface {
         gameCategory = getIntent().getStringExtra("gameCategory");
 
         startWebViewAct();
-/*
+        /*
         CertificateModelClass certificateModelClass=new CertificateModelClass();
         certificateModelClass.setScoredMarks(50);
         certificateModelClass.setTotalMarks(100);
@@ -92,8 +96,8 @@ public class WebViewActivity extends BaseActivity implements WebViewInterface {
         certificateModelClass.setCertiCode("3");
         certificateModelClassList.add(certificateModelClass);
 */
-        //startActivity(new Intent(this,CertificateActivity.class));
     }
+
 
     private void startWebViewAct() {
         sMarks = 0;
@@ -113,6 +117,7 @@ public class WebViewActivity extends BaseActivity implements WebViewInterface {
         certificateModelClassList = new ArrayList<>();
     }
 
+    @UiThread
     @SuppressLint("JavascriptInterface")
     public void createWebView(String GamePath) {
 
@@ -145,7 +150,8 @@ public class WebViewActivity extends BaseActivity implements WebViewInterface {
         showExitDialog();
     }
 
-    private void showExitDialog() {
+    @UiThread
+    public void showExitDialog() {
         final CustomLodingDialog dialog = new CustomLodingDialog(this, R.style.FC_DialogStyle);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
@@ -181,14 +187,10 @@ public class WebViewActivity extends BaseActivity implements WebViewInterface {
         dia_btn_yellow.setOnClickListener(v -> dialog.dismiss());
     }
 
+    @Background
     @SuppressLint("StaticFieldLeak")
-    private void addGameProgress() {
-
-        new AsyncTask<Void, Integer, Void>() {
-            @Override
-            protected Void doInBackground(Void... voids) {
-
-                try {
+    public void addGameProgress() {
+         try {
                     if (learntWordsList.size() > 0) {
                         for (int i = 0; i < learntWordsList.size(); i++) {
                             boolean wordPresent = checkWord(learntWordsList.get(i).getKeyWord().toLowerCase());
@@ -235,11 +237,7 @@ public class WebViewActivity extends BaseActivity implements WebViewInterface {
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
-                return null;
             }
-        }.execute();
-
-    }
 
     private boolean checkWord(String checkWord) {
         try {
@@ -253,6 +251,7 @@ public class WebViewActivity extends BaseActivity implements WebViewInterface {
     }
 
 
+    @UiThread
     @Override
     public void onNextGame(final WebView w) {
         showExitDialog();

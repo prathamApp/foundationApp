@@ -50,6 +50,7 @@ import com.pratham.foundation.ui.contentPlayer.reading_story_activity.ReadingSto
 import com.pratham.foundation.ui.contentPlayer.video_view.ActivityVideoView_;
 import com.pratham.foundation.ui.contentPlayer.vocabulary_qa.ReadingVocabularyActivity_;
 import com.pratham.foundation.ui.contentPlayer.web_view.WebViewActivity;
+import com.pratham.foundation.ui.contentPlayer.web_view.WebViewActivity_;
 import com.pratham.foundation.utility.FC_Constants;
 import com.pratham.foundation.utility.FC_Utility;
 
@@ -393,7 +394,7 @@ public class ContentDisplay extends BaseActivity implements ContentContract.Cont
                 File file = new File(resPath);
                 if (file.exists()) {
                     Uri path = Uri.fromFile(file);
-                    Intent mainNew = new Intent(ContentDisplay.this, WebViewActivity.class);
+                    Intent mainNew = new Intent(ContentDisplay.this, WebViewActivity_.class);
                     mainNew.putExtra("resPath", path.toString());
                     mainNew.putExtra("resId", gameID);
                     mainNew.putExtra("mode", "normal");

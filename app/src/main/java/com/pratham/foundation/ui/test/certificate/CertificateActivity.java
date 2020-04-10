@@ -27,6 +27,7 @@ import com.pratham.foundation.modalclasses.CertificateModelClass;
 import com.pratham.foundation.services.shared_preferences.FastSave;
 import com.pratham.foundation.ui.app_home.test_fragment.CertificateClicked;
 import com.pratham.foundation.ui.contentPlayer.web_view.WebViewActivity;
+import com.pratham.foundation.ui.contentPlayer.web_view.WebViewActivity_;
 import com.pratham.foundation.utility.FC_Constants;
 
 import org.json.JSONArray;
@@ -273,7 +274,7 @@ public class CertificateActivity extends BaseActivity implements CertificateCont
         File file = new File(resPath);
         Uri path = Uri.fromFile(file);
 
-        Intent intent = new Intent(this, WebViewActivity.class);
+        Intent intent = new Intent(this, WebViewActivity_.class);
         intent.putExtra("resPath", path.toString());
         intent.putExtra("resId", gameID);
         intent.putExtra("mode", "test");
