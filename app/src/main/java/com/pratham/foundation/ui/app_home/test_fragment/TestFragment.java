@@ -52,6 +52,7 @@ import com.pratham.foundation.ui.contentPlayer.reading_rhyming.ReadingRhymesActi
 import com.pratham.foundation.ui.contentPlayer.reading_story_activity.ReadingStoryActivity_;
 import com.pratham.foundation.ui.contentPlayer.vocabulary_qa.ReadingVocabularyActivity_;
 import com.pratham.foundation.ui.contentPlayer.web_view.WebViewActivity;
+import com.pratham.foundation.ui.contentPlayer.web_view.WebViewActivity_;
 import com.pratham.foundation.utility.FC_Constants;
 import com.pratham.foundation.utility.FC_Utility;
 
@@ -454,7 +455,7 @@ public class TestFragment extends Fragment implements TestContract.TestView,
                 File file = new File(resPath);
                 if (file.exists()) {
                     Uri path = Uri.fromFile(file);
-                    Intent mainNew = new Intent(context, WebViewActivity.class);
+                    Intent mainNew = new Intent(context, WebViewActivity_.class);
                     mainNew.putExtra("resPath", path.toString());
                     mainNew.putExtra("resId", gameID);
                     mainNew.putExtra("mode", "test");

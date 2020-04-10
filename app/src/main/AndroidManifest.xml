@@ -92,7 +92,7 @@
         <!--            android:name=".ui.student_profile.Student_profile_activity"-->
         <!--            android:screenOrientation="portrait" />-->
         <activity
-            android:name=".ui.contentPlayer.web_view.WebViewActivity"
+            android:name=".ui.contentPlayer.web_view.WebViewActivity_"
             android:screenOrientation="sensorLandscape" />
         <activity
             android:name=".ui.contentPlayer.old_cos.conversation.ConversationActivity_"

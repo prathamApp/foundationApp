@@ -41,6 +41,7 @@ import com.pratham.foundation.ui.contentPlayer.reading_rhyming.ReadingRhymesActi
 import com.pratham.foundation.ui.contentPlayer.reading_story_activity.ReadingStoryActivity_;
 import com.pratham.foundation.ui.contentPlayer.vocabulary_qa.ReadingVocabularyActivity_;
 import com.pratham.foundation.ui.contentPlayer.web_view.WebViewActivity;
+import com.pratham.foundation.ui.contentPlayer.web_view.WebViewActivity_;
 import com.pratham.foundation.utility.FC_Constants;
 import com.pratham.foundation.utility.FC_Utility;
 
@@ -442,7 +443,7 @@ public class FunFragment extends Fragment implements FunContract.FunView,
                     resPath = ApplicationClass.foundationPath + gameFolderPath + "/" + contentList.getResourcePath();
                 File file = new File(resPath);
                 Uri path = Uri.fromFile(file);
-                Intent intent = new Intent(context, WebViewActivity.class);
+                Intent intent = new Intent(context, WebViewActivity_.class);
                 intent.putExtra("resPath", path.toString());
                 intent.putExtra("resId", gameID);
                 intent.putExtra("mode", "normal");
