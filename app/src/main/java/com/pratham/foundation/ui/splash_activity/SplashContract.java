@@ -28,6 +28,8 @@ public interface SplashContract {
         void dismissProgressDialog();
 
         void gotoNextActivity();
+
+        void preShowBtn();
     }
 
     interface SplashPresenter {

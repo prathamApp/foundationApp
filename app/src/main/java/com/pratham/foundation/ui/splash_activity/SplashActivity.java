@@ -22,11 +22,8 @@ import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.Window;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.RelativeLayout;
-import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.hanks.htextview.typer.TyperTextView;
@@ -156,20 +153,20 @@ public class SplashActivity extends SplashSupportActivity implements SplashContr
     @UiThread
     @Override
     public void showButton() {
-        context.startService(new Intent(context, AppExitService.class));
-        if (!FastSave.getInstance().getBoolean(FC_Constants.KEY_MENU_COPIED, false)) {
-            if (!ApplicationClass.isTablet) {
-                ApplicationClass.contentExistOnSD = false;
-                splashPresenter.copyZipAndPopulateMenu();
-            } else {
-                ApplicationClass.foundationPath = FC_Utility.getInternalPath(SplashActivity.this);
-                Log.d("old_cos.pradigiPath", "old_cos.pradigiPath: " + ApplicationClass.foundationPath);
-                splashPresenter.getSdCardPath();
-                ApplicationClass.contentExistOnSD = true;
-                splashPresenter.populateSDCardMenu();
-            }
-        } else
-            gotoNextActivity();
+            context.startService(new Intent(context, AppExitService.class));
+            if (!FastSave.getInstance().getBoolean(FC_Constants.KEY_MENU_COPIED, false)) {
+                if (!ApplicationClass.isTablet) {
+                    ApplicationClass.contentExistOnSD = false;
+                    splashPresenter.copyZipAndPopulateMenu();
+                } else {
+                    ApplicationClass.foundationPath = FC_Utility.getInternalPath(SplashActivity.this);
+                    Log.d("old_cos.pradigiPath", "old_cos.pradigiPath: " + ApplicationClass.foundationPath);
+                    splashPresenter.getSdCardPath();
+                    ApplicationClass.contentExistOnSD = true;
+                    splashPresenter.populateSDCardMenu();
+                }
+            } else
+                gotoNextActivity();
     }
 
     @UiThread
@@ -335,6 +332,7 @@ public class SplashActivity extends SplashSupportActivity implements SplashContr
     public void permissionForeverDenied() {
     }
 
+    @Override
     @UiThread
     public void preShowBtn() {
         new Handler().postDelayed(this::showButton, 2000);

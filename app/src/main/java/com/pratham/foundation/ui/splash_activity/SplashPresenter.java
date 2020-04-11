@@ -144,7 +144,7 @@ public class SplashPresenter implements SplashContract.SplashPresenter {
             } else {
                 AppDatabase.getDatabaseInstance(context);
                 getSdCardPath();
-                new Handler().postDelayed(() -> splashView.showButton(), 2000);
+                splashView.preShowBtn();
             }
         } catch (Exception e) {
             e.printStackTrace();
