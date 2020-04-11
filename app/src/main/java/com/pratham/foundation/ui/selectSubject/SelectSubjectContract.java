@@ -16,13 +16,19 @@ public interface SelectSubjectContract {
 
     interface SubjectView {
         void showLanguageSelectionDialog(List<ContentTable> serverContentList);
+
+        void showLoader();
+
+        void dismissLoadingDialog();
+
+        void initializeSubjectList(List<ContentTable> subjectList);
     }
 
     interface SubjectPresenter {
 
         void  setView(SelectSubjectContract.SubjectView subjectView);
             
-        List getSubjectList();
+        void getSubjectList();
         
         void getLanguageFromApi();
     }

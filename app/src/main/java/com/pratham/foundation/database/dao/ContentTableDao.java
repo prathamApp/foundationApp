@@ -66,6 +66,9 @@ public interface ContentTableDao {
 
     @Query("SELECT nodeTitle FROM ContentTable WHERE resourceId=:resourceID")
     String getContentTitleById(String resourceID);
+
+    @Query("SELECT nodeId FROM ContentTable WHERE parentId=:nid and nodeTitle=:nodeTitle")
+    String getRootData(String nid, String nodeTitle);
 //
 //    @Query("SELECT * FROM ContentTable WHERE parentid ISNULL or parentid = 0 or parentid=''and contentLanguage=:language")
 //    public List<ContentTable> getParentsHeadersNew(String language);

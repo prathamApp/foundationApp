@@ -5,12 +5,15 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Handler;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.Gravity;
 import android.view.View;
+import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -22,6 +25,7 @@ import com.pratham.foundation.BaseActivity;
 import com.pratham.foundation.R;
 import com.pratham.foundation.customView.BlurPopupDialog.BlurPopupWindow;
 import com.pratham.foundation.customView.GridSpacingItemDecoration;
+import com.pratham.foundation.customView.display_image_dialog.CustomLodingDialog;
 import com.pratham.foundation.database.domain.ContentTable;
 import com.pratham.foundation.services.shared_preferences.FastSave;
 import com.pratham.foundation.ui.app_home.HomeActivity_;
@@ -36,6 +40,7 @@ import org.androidannotations.annotations.ViewById;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import static com.pratham.foundation.ApplicationClass.BackBtnSound;
 import static com.pratham.foundation.ApplicationClass.ButtonClickSound;
@@ -59,6 +64,7 @@ public class SelectSubject extends BaseActivity implements
     private Context context;
     SelectSubjectAdapter subjectAdapter;
     String studName;
+    List<ContentTable> subjectList;
 
     @AfterViews
     protected void initiate() {
@@ -66,9 +72,9 @@ public class SelectSubject extends BaseActivity implements
         context = SelectSubject.this;
         Configuration config = getResources().getConfiguration();
         FC_Constants.TAB_LAYOUT = config.smallestScreenWidthDp > 425;
-        List<ContentTable> subjectList = presenter.getSubjectList();
-
         presenter.setView(SelectSubject.this);
+
+        showLoader();
 
         if (FastSave.getInstance().getString(FC_Constants.LOGIN_MODE, FC_Constants.GROUP_MODE).contains("group"))
             studName = FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_NAME, "");
@@ -76,6 +82,14 @@ public class SelectSubject extends BaseActivity implements
             studName = FastSave.getInstance().getString(
                     FC_Constants.CURRENT_STUDENT_NAME, "").split(" ")[0];
         name.setText(/*getResources().getString(R.string.Welcome) + " " + */studName + ".");
+
+        startActivity();
+    }
+
+    private void startActivity() {
+
+        presenter.getSubjectList();
+
         subjectAdapter = new SelectSubjectAdapter(this, subjectList);
         RecyclerView.LayoutManager mLayoutManager = new GridLayoutManager(this, 1);
         subject_recycler.setLayoutManager(mLayoutManager);
@@ -84,10 +98,46 @@ public class SelectSubject extends BaseActivity implements
         if (FC_Constants.TAB_LAYOUT)
             dp = 20;
 
-        subject_recycler.addItemDecoration(new GridSpacingItemDecoration(
-                1, dpToPx(this, dp), true));
+        subject_recycler.addItemDecoration(new GridSpacingItemDecoration(1, dpToPx(this, dp), true));
         subject_recycler.setItemAnimator(new DefaultItemAnimator());
         subject_recycler.setAdapter(subjectAdapter);
+    }
+
+    @Override
+    public void initializeSubjectList( List<ContentTable> subjectList){
+        this.subjectList = subjectList;
+    }
+
+    private boolean loaderVisible = false;
+    private CustomLodingDialog myLoadingDialog;
+    @UiThread
+    @Override
+    public void showLoader() {
+        if (!loaderVisible) {
+            loaderVisible = true;
+            myLoadingDialog = new CustomLodingDialog(context);
+            myLoadingDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+            Objects.requireNonNull(myLoadingDialog.getWindow()).
+                    setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+            myLoadingDialog.setContentView(R.layout.loading_dialog);
+            myLoadingDialog.setCanceledOnTouchOutside(false);
+//        myLoadingDialog.setCancelable(false);
+            myLoadingDialog.show();
+        }
+    }
+
+    @UiThread
+    @Override
+    public void dismissLoadingDialog() {
+        try {
+            loaderVisible = false;
+            new Handler().postDelayed(() -> {
+                if (myLoadingDialog != null && myLoadingDialog.isShowing())
+                    myLoadingDialog.dismiss();
+            }, 300);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
