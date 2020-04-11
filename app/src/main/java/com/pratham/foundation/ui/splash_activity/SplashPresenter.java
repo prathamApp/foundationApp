@@ -14,6 +14,7 @@ import android.net.wifi.WifiManager;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Environment;
+import android.os.Handler;
 import android.provider.Settings;
 import android.util.Log;
 
@@ -67,6 +68,7 @@ public class SplashPresenter implements SplashContract.SplashPresenter {
     static String fpath, appname;
     Context context;
     SplashContract.SplashView splashView;
+    boolean copyDb = false;
 
     @Bean(PushDataToServer_New.class)
     PushDataToServer_New pushDataToServer;
@@ -107,6 +109,54 @@ public class SplashPresenter implements SplashContract.SplashPresenter {
         } else {
             splashView.startApp();
         }
+    }
+
+    private boolean checkDataBase() {
+        SQLiteDatabase checkDB = null;
+        try {
+            checkDB = SQLiteDatabase.openDatabase(context.getDatabasePath(AppDatabase.DB_NAME).getAbsolutePath(), null, SQLiteDatabase.OPEN_READONLY);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        if (checkDB != null) {
+            checkDB.close();
+        }
+        return checkDB != null;
+    }
+
+    @Background
+    @Override
+    @SuppressLint("StaticFieldLeak")
+    public void createDatabase() {
+        try {
+            boolean dbExist = checkDataBase();
+            if (!dbExist) {
+                        try {
+                            AppDatabase.getDatabaseInstance(context);
+                            if (new File(Environment.getExternalStorageDirectory().getAbsolutePath() + "/PrathamBackups/foundation_db").exists())
+                                copyDb = true;
+                            else
+                                getSdCardPath();
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                callCopyDB();
+            } else {
+                AppDatabase.getDatabaseInstance(context);
+                getSdCardPath();
+                new Handler().postDelayed(() -> splashView.showButton(), 2000);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    @UiThread
+    public void callCopyDB(){
+        if (copyDb)
+            copyDataBase();
+        else
+            new Handler().postDelayed(() -> splashView.showButton(), 2000);
     }
 
     @Background
@@ -590,6 +640,29 @@ public class SplashPresenter implements SplashContract.SplashPresenter {
                 splashView.dismissProgressDialog();
             }
         }.execute();
+    }
+
+    @Override
+    public void createNoMediaForFCInternal(File myFile) {
+        try {
+            File[] files = myFile.listFiles();
+            try {
+                File direct = new File(myFile.getPath() + "/.nomedia");
+                if (!direct.exists()) {
+                    Log.d("Files", "\nFirst Directory : " + myFile.getName());//CanonicalPath());
+                    direct.createNewFile();
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            for (File file : files) {
+                if (file.isDirectory()) {
+                    createNoMediaForFCInternal(file);
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     public void populateMenu_New() {

@@ -9,14 +9,12 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Configuration;
-import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.graphics.Point;
 import android.graphics.Typeface;
 import android.graphics.drawable.ColorDrawable;
 import android.media.MediaPlayer;
 import android.net.Uri;
-import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Environment;
 import android.os.Handler;
@@ -155,6 +153,7 @@ public class SplashActivity extends SplashSupportActivity implements SplashContr
         }, 500);
     }
 
+    @UiThread
     @Override
     public void showButton() {
         context.startService(new Intent(context, AppExitService.class));
@@ -168,15 +167,12 @@ public class SplashActivity extends SplashSupportActivity implements SplashContr
                 splashPresenter.getSdCardPath();
                 ApplicationClass.contentExistOnSD = true;
                 splashPresenter.populateSDCardMenu();
-//                } else {
-//                    ApplicationClass.contentExistOnSD = false;
-//                    splashPresenter.copyZipAndPopulateMenu();
-//                }
             }
         } else
             gotoNextActivity();
     }
 
+    @UiThread
     @Override
     public void showUpdateDialog() {
         final AlertDialog.Builder builder = new AlertDialog.Builder(context);
@@ -199,6 +195,7 @@ public class SplashActivity extends SplashSupportActivity implements SplashContr
         builder.show();
     }
 
+    @UiThread
     @Override
     public void startApp() {
         Point size = new Point();
@@ -211,7 +208,7 @@ public class SplashActivity extends SplashSupportActivity implements SplashContr
         FastSave.getInstance().saveString(FC_Constants.SCR_RES, "" + resolution);
         FastSave.getInstance().saveString(FC_Constants.LANGUAGE, FC_Constants.HINDI);
         setAppLocal(this, FC_Constants.HINDI);
-        createDataBase();
+        splashPresenter.createDatabase();
 /*        if (!FastSave.getInstance().getBoolean(FC_Constants.LANGUAGE_SPLASH_DIALOG, false))
             showLanguageSelectionDialog();
         else {
@@ -219,50 +216,6 @@ public class SplashActivity extends SplashSupportActivity implements SplashContr
             createDataBase();
         }*/
     }
-
-    @SuppressLint("SetTextI18n")
-    private void showLanguageSelectionDialog() {
-        final CustomLodingDialog dialog = new CustomLodingDialog(context, R.style.FC_DialogStyle);
-        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-        dialog.setContentView(R.layout.fc_custom_language_dialog);
-        dialog.setCancelable(false);
-        dialog.setCanceledOnTouchOutside(false);
-        TextView dia_title = dialog.findViewById(R.id.dia_title);
-        Button dia_btn_green = dialog.findViewById(R.id.dia_btn_green);
-        Spinner lang_spinner = dialog.findViewById(R.id.lang_spinner);
-        dia_btn_green.setText("OK");
-        dialog.show();
-
-        dia_title.setText("Current Language : " + FastSave.getInstance().getString(FC_Constants.LANGUAGE, "Hindi"));
-        ArrayAdapter<String> dataAdapter = new ArrayAdapter<>(this, R.layout.custom_spinner,
-                getResources().getStringArray(R.array.app_Language));
-        dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        lang_spinner.setAdapter(dataAdapter);
-
-        lang_spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-//                FC_Constants.currentSelectedLanguage = lang_spinner.getSelectedItem().toString();
-//                FastSave.getInstance().saveString(FC_Constants.LANGUAGE, FC_Constants.currentSelectedLanguage);
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-            }
-        });
-
-        dia_btn_green.setOnClickListener(v -> {
-            FastSave.getInstance().saveBoolean(FC_Constants.LANGUAGE_SPLASH_DIALOG, true);
-//                setAppLocal(this, FastSave.getInstance().getString(FC_Constants.LANGUAGE, FC_Constants.HINDI));
-            createDataBase();
-            dialog.dismiss();
-        });
-    }
-
-//    private void showComingSoonToast() {
-//        showLanguageSelectionDialog();
-//    }
 
     @Override
     @UiThread
@@ -319,6 +272,7 @@ public class SplashActivity extends SplashSupportActivity implements SplashContr
             showExitDialog();
     }
 
+    @UiThread
     public void showExitDialog() {
         final CustomLodingDialog dialog = new CustomLodingDialog(context, R.style.FC_DialogStyle);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -381,66 +335,12 @@ public class SplashActivity extends SplashSupportActivity implements SplashContr
     public void permissionForeverDenied() {
     }
 
-    boolean copyDb = false;
-
-    @SuppressLint("StaticFieldLeak")
-    public void createDataBase() {
-        try {
-            boolean dbExist = checkDataBase();
-            if (!dbExist) {
-                new AsyncTask<Void, Integer, Void>() {
-
-                    @Override
-                    protected Void doInBackground(Void... voids) {
-                        try {
-                            AppDatabase.getDatabaseInstance(SplashActivity.this);
-                            if (new File(Environment.getExternalStorageDirectory().getAbsolutePath() + "/PrathamBackups/foundation_db").exists())
-                                copyDb = true;
-                            else
-                                splashPresenter.getSdCardPath();
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                        }
-                        return null;
-                    }
-
-                    @Override
-                    protected void onPostExecute(Void aVoid) {
-                        super.onPostExecute(aVoid);
-                        if (copyDb)
-                            splashPresenter.copyDataBase();
-                        else
-                            new Handler().postDelayed(() -> showButton(), 2000);
-                    }
-                }.execute();
-            } else {
-                AppDatabase.getDatabaseInstance(SplashActivity.this);
-                splashPresenter.getSdCardPath();
-                new Handler().postDelayed(this::showButton, 2000);
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
     @UiThread
     public void preShowBtn() {
         new Handler().postDelayed(this::showButton, 2000);
     }
 
-    private boolean checkDataBase() {
-        SQLiteDatabase checkDB = null;
-        try {
-            checkDB = SQLiteDatabase.openDatabase(getDatabasePath(AppDatabase.DB_NAME).getAbsolutePath(), null, SQLiteDatabase.OPEN_READONLY);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        if (checkDB != null) {
-            checkDB.close();
-        }
-        return checkDB != null;
-    }
-
+    @UiThread
     @Override
     public void gotoNextActivity() {
         File direct;
@@ -454,7 +354,7 @@ public class SplashActivity extends SplashSupportActivity implements SplashContr
         if (!direct.exists())
             direct.mkdir();
 
-        createNoMediaForFCInternal(new File(Environment.getExternalStorageDirectory().toString() + "/.FCAInternal"));
+        splashPresenter.createNoMediaForFCInternal(new File(Environment.getExternalStorageDirectory().toString() + "/.FCAInternal"));
 
         if (!FastSave.getInstance().getBoolean(FC_Constants.INITIAL_ENTRIES, false))
             splashPresenter.doInitialEntries(AppDatabase.appDatabase);
@@ -483,29 +383,8 @@ public class SplashActivity extends SplashSupportActivity implements SplashContr
         }
     }
 
-    private void createNoMediaForFCInternal(File myFile) {
-        try {
-            File[] files = myFile.listFiles();
-            try {
-                File direct = new File(myFile.getPath() + "/.nomedia");
-                if (!direct.exists()) {
-                    Log.d("Files", "\nFirst Directory : " + myFile.getName());//CanonicalPath());
-                    direct.createNewFile();
-                }
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-            for (File file : files) {
-                if (file.isDirectory()) {
-                    createNoMediaForFCInternal(file);
-                }
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-    private void show_STT_Dialog() {
+    @UiThread
+    public void show_STT_Dialog() {
         CustomLodingDialog dialog = new CustomLodingDialog(this, R.style.FC_DialogStyle);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setContentView(R.layout.fc_custom_dialog);
@@ -551,6 +430,7 @@ public class SplashActivity extends SplashSupportActivity implements SplashContr
         });
     }
 
+    @UiThread
     @Override
     public void showBottomFragment() {
         try {
@@ -585,3 +465,50 @@ public class SplashActivity extends SplashSupportActivity implements SplashContr
     public void failedCopyingExisting() {
     }
 }
+
+// unused code
+/*
+    @SuppressLint("SetTextI18n")
+    private void showLanguageSelectionDialog() {
+        final CustomLodingDialog dialog = new CustomLodingDialog(context, R.style.FC_DialogStyle);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        dialog.setContentView(R.layout.fc_custom_language_dialog);
+        dialog.setCancelable(false);
+        dialog.setCanceledOnTouchOutside(false);
+        TextView dia_title = dialog.findViewById(R.id.dia_title);
+        Button dia_btn_green = dialog.findViewById(R.id.dia_btn_green);
+        Spinner lang_spinner = dialog.findViewById(R.id.lang_spinner);
+        dia_btn_green.setText("OK");
+        dialog.show();
+
+        dia_title.setText("Current Language : " + FastSave.getInstance().getString(FC_Constants.LANGUAGE, "Hindi"));
+        ArrayAdapter<String> dataAdapter = new ArrayAdapter<>(this, R.layout.custom_spinner,
+                getResources().getStringArray(R.array.app_Language));
+        dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        lang_spinner.setAdapter(dataAdapter);
+
+        lang_spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+//                FC_Constants.currentSelectedLanguage = lang_spinner.getSelectedItem().toString();
+//                FastSave.getInstance().saveString(FC_Constants.LANGUAGE, FC_Constants.currentSelectedLanguage);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+            }
+        });
+
+        dia_btn_green.setOnClickListener(v -> {
+            FastSave.getInstance().saveBoolean(FC_Constants.LANGUAGE_SPLASH_DIALOG, true);
+//                setAppLocal(this, FastSave.getInstance().getString(FC_Constants.LANGUAGE, FC_Constants.HINDI));
+            createDataBase();
+            dialog.dismiss();
+        });
+    }
+
+//    private void showComingSoonToast() {
+//        showLanguageSelectionDialog();
+//    }
+*/
