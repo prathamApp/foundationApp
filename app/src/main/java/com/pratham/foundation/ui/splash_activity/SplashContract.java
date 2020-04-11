@@ -3,6 +3,8 @@ package com.pratham.foundation.ui.splash_activity;
 
 import com.pratham.foundation.database.AppDatabase;
 
+import java.io.File;
+
 /**
  * Created by Ameya on 23-Nov-17.
  */
@@ -32,6 +34,8 @@ public interface SplashContract {
 
         void checkVersion();
 
+        void createDatabase();
+
         void pushData();
 
         void doInitialEntries(AppDatabase appDatabase);
@@ -55,6 +59,8 @@ public interface SplashContract {
         void requestLocation();
 
         void copyZipAndPopulateMenu_New();
+
+        void createNoMediaForFCInternal(File myFile);
     }
 
 }
