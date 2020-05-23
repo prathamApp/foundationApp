@@ -52,23 +52,33 @@
             app:roundingBorderWidth="@dimen/_2sdp"
             app:roundedCornerRadius="@dimen/_30sdp"
             android:layout_alignParentBottom="true"
-            app:actualImageScaleType="centerInside"
-            app:placeholderImage="@drawable/pratham_logo"/>
+            app:actualImageScaleType="fitXY"
+            app:placeholderImageScaleType="fitCenter"
+            app:placeholderImage="@drawable/khelbadi_thumb"/>
 
-        <com.pratham.foundation.customView.progress_layout.ProgressLayout
-            android:id="@+id/card_progressLayout"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/_6sdp"
-            android:layout_alignParentBottom="true"
-            android:layout_margin="@dimen/_5sdp"
-            app:c_borderWidth="1dp"
-            app:c_isShowDesc="true"
-            app:c_progress="40"
+        <ImageView
+            android:id="@+id/ib_update_btn"
+            android:layout_width="@dimen/_35sdp"
+            android:layout_height="@dimen/_35sdp"
+            android:layout_alignParentEnd="true"
+            android:src="@drawable/ic_update"
+            android:paddingStart="@dimen/_10sdp"
+            android:paddingTop="@dimen/_5sdp"
+            android:paddingEnd="@dimen/_5sdp"
+            android:paddingBottom="@dimen/_10sdp"
+            android:scaleType="centerInside"
+            android:background="@drawable/card_update_bg"
+            android:visibility="gone" />
+
+        <ImageView
+            android:id="@+id/iv_downld"
             android:visibility="gone"
-            app:c_progressColor="@color/colorBtnGreenDark"
-            app:c_progressDescColor="@color/oslo_grey"
-            app:c_progressRadius="@dimen/_3sdp" />
-
+            android:layout_width="@dimen/_25sdp"
+            android:layout_height="@dimen/_25sdp"
+            android:src="@drawable/ic_download_2"
+            android:layout_alignParentBottom="true"
+            android:layout_marginStart="@dimen/_5sdp"
+            android:layout_marginBottom="@dimen/_5sdp"/>
     </RelativeLayout>
 
 </android.support.design.card.MaterialCardView>

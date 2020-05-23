@@ -4,8 +4,6 @@ import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.res.Resources;
-import android.graphics.Rect;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -14,7 +12,6 @@ import android.support.v4.app.DialogFragment;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.TypedValue;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -32,7 +29,6 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-
 import com.pratham.foundation.ApplicationClass;
 import com.pratham.foundation.R;
 import com.pratham.foundation.customView.GridSpacingItemDecoration;
@@ -42,7 +38,6 @@ import com.pratham.foundation.database.domain.AvatarModal;
 import com.pratham.foundation.database.domain.Student;
 import com.pratham.foundation.interfaces.SplashInterface;
 import com.pratham.foundation.ui.splash_activity.SplashActivity;
-
 
 import java.util.ArrayList;
 
@@ -335,7 +330,6 @@ public class AddStudentFragment extends DialogFragment implements AvatarClickLis
                 student.setAvatarName("g3");
 */
             new AsyncTask<Object, Void, Object>() {
-
                 @Override
                 protected Object doInBackground(Object[] objects) {
 

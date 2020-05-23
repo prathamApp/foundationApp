@@ -166,8 +166,6 @@ public class ReadingRhymesActivity extends BaseActivity
             presenter.fetchJsonData(readingContentPath);
             dialog.dismiss();
         });
-        dia_btn_red.setOnClickListener(v -> dialog.dismiss());
-        dia_btn_yellow.setOnClickListener(v -> dialog.dismiss());
     }
 
     @UiThread

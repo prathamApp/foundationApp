@@ -106,6 +106,7 @@ public class ReadingVocabularyActivity extends BaseActivity implements MediaCall
     Context mContext;
     static int currentPageNo, currentQueNo;
     int vocabLevel;
+    static boolean active = false;
     CustomLodingDialog nextDialog;
     private RecyclerView.Adapter mAdapter;
     static boolean[] correctArr;
@@ -141,7 +142,7 @@ public class ReadingVocabularyActivity extends BaseActivity implements MediaCall
         sttLang = intent.getStringExtra("sttLang");
         onSdCard = getIntent().getBooleanExtra("onSdCard", false);
 
-        if (!FastSave.getInstance().getString(APP_SECTION,"").equalsIgnoreCase(sec_Test))
+        if (!FastSave.getInstance().getString(APP_SECTION, "").equalsIgnoreCase(sec_Test))
             tv_title.setText("" + contentTitle);
         else
             tv_title.setText("" + getResources().getString(R.string.Test));
@@ -210,8 +211,8 @@ public class ReadingVocabularyActivity extends BaseActivity implements MediaCall
     public void setListData(List<ModalVocabulary> wordsDataList) {
         modalVocabularyList = wordsDataList;
         testCorrectArr = new boolean[modalVocabularyList.size()];
-        for (int i=0;i<testCorrectArr.length;i++)
-            testCorrectArr[i]=false;
+        for (int i = 0; i < testCorrectArr.length; i++)
+            testCorrectArr[i] = false;
         setData();
     }
 
@@ -359,8 +360,8 @@ public class ReadingVocabularyActivity extends BaseActivity implements MediaCall
             myTextView.setTextColor(getResources().getColor(R.color.colorAccentDark));
             vocabChatFlow.addView(myTextView);
             if (testFlg ||
-                    FastSave.getInstance().getString(APP_SECTION,"").equalsIgnoreCase(sec_Test) ||
-                    FastSave.getInstance().getString(APP_SECTION,"").equalsIgnoreCase(sec_Practice))
+                    FastSave.getInstance().getString(APP_SECTION, "").equalsIgnoreCase(sec_Test) ||
+                    FastSave.getInstance().getString(APP_SECTION, "").equalsIgnoreCase(sec_Practice))
                 myTextView.setVisibility(View.INVISIBLE);
         }
         sendClikChanger(0);
@@ -419,7 +420,7 @@ public class ReadingVocabularyActivity extends BaseActivity implements MediaCall
     }
 
     private void startAudioReading(String audioFilePath) {
-        if (!testFlg && !FastSave.getInstance().getString(APP_SECTION,"").equalsIgnoreCase(sec_Test)) {
+        if (!testFlg && !FastSave.getInstance().getString(APP_SECTION, "").equalsIgnoreCase(sec_Test)) {
             try {
                 mp = new MediaPlayer();
                 mp.setDataSource(readingContentPath + "sounds/" + audioFilePath);
@@ -469,7 +470,7 @@ public class ReadingVocabularyActivity extends BaseActivity implements MediaCall
     private void LoadNext() {
         if (!dilogOpen) {
             dilogOpen = true;
-            if (FastSave.getInstance().getString(APP_SECTION,"").equalsIgnoreCase(sec_Test))
+            if (FastSave.getInstance().getString(APP_SECTION, "").equalsIgnoreCase(sec_Test))
                 showStars(true);
             else
                 showWordNextDialog(this);
@@ -530,7 +531,7 @@ public class ReadingVocabularyActivity extends BaseActivity implements MediaCall
         dia_btn_exit.setOnClickListener(v -> {
             dilogOpen = false;
             presenter.setCompletionPercentage();
-            if (FastSave.getInstance().getString(APP_SECTION,"").equalsIgnoreCase(sec_Test)) {
+            if (FastSave.getInstance().getString(APP_SECTION, "").equalsIgnoreCase(sec_Test)) {
                 int correctCnt = 0, total = 0;
                 try {
                     total = correctArr.length;
@@ -599,18 +600,21 @@ public class ReadingVocabularyActivity extends BaseActivity implements MediaCall
     @UiThread
     public void dismissLoadingDialog() {
         try {
-            dialogFlg = false;
-            new Handler().postDelayed(() -> {
-                if (myLoadingDialog != null && myLoadingDialog.isShowing())
-                    myLoadingDialog.dismiss();
-            }, 300);
+            if (active) {
+                if (dialogFlg) {
+                    dialogFlg = false;
+                    if (myLoadingDialog != null && myLoadingDialog.isShowing())
+                        myLoadingDialog.dismiss();
+                }
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
     @Override
-    public void stoppedPressed() { }
+    public void stoppedPressed() {
+    }
 
     @Override
     public void sttEngineReady() {
@@ -624,6 +628,18 @@ public class ReadingVocabularyActivity extends BaseActivity implements MediaCall
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        active = true;
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        active = false;
     }
 
     @ViewById(R.id.silence_outer)
@@ -706,7 +722,7 @@ public class ReadingVocabularyActivity extends BaseActivity implements MediaCall
 
     @Click(R.id.btn_speaker)
     public void chatAnswer() {
-        if (!FastSave.getInstance().getString(APP_SECTION,"").equalsIgnoreCase(sec_Test)) {
+        if (!FastSave.getInstance().getString(APP_SECTION, "").equalsIgnoreCase(sec_Test)) {
             btn_imgsend.setClickable(false);
             btn_reading.setClickable(false);
             btn_next.setClickable(false);
@@ -720,7 +736,7 @@ public class ReadingVocabularyActivity extends BaseActivity implements MediaCall
     @UiThread
     @Override
     public void sendClikChanger(int clickOn) {
-        if (!FastSave.getInstance().getString(APP_SECTION,"").equalsIgnoreCase(sec_Test)) {
+        if (!FastSave.getInstance().getString(APP_SECTION, "").equalsIgnoreCase(sec_Test)) {
             if (clickOn == 0) {
                 btn_imgsend.setVisibility(View.GONE);
                 btn_speaker.setVisibility(View.VISIBLE);
@@ -742,11 +758,12 @@ public class ReadingVocabularyActivity extends BaseActivity implements MediaCall
         }
     }
 
-    boolean allCorrectFlg =false;
+    boolean allCorrectFlg = false;
+
     @UiThread
     @Override
     public void allCorrectAnswer() {
-        if(!allCorrectFlg) {
+        if (!allCorrectFlg) {
             allCorrectFlg = true;
             if (readingFlg)
                 btn_reading.performClick();
@@ -793,12 +810,12 @@ public class ReadingVocabularyActivity extends BaseActivity implements MediaCall
             e.printStackTrace();
         }
 
-        if (FastSave.getInstance().getString(APP_SECTION,"").equalsIgnoreCase(sec_Test)) {
+        if (FastSave.getInstance().getString(APP_SECTION, "").equalsIgnoreCase(sec_Test)) {
             if (!dilogOpen) {
                 dilogOpen = true;
                 showStars(false);
             }
-        }else{
+        } else {
             if (!dilogOpen) {
                 dilogOpen = true;
                 showExitDialog(this);
@@ -954,7 +971,7 @@ public class ReadingVocabularyActivity extends BaseActivity implements MediaCall
             dilogOpen = false;
             presenter.setCompletionPercentage();
             dialog.dismiss();
-            if (FastSave.getInstance().getString(APP_SECTION,"").equalsIgnoreCase(sec_Test)) {
+            if (FastSave.getInstance().getString(APP_SECTION, "").equalsIgnoreCase(sec_Test)) {
                 int correctCnt = 0, total = 0;
                 try {
                     total = correctArr.length;

@@ -106,6 +106,7 @@ public class ReadingStoryActivityPresenter implements ReadingStoryActivityContra
             modalParaMainMenu = gson.fromJson(jsonObj.toString(), ModalParaMainMenu.class);
             getDataList();
         } catch (Exception e) {
+            readingView.dismissLoadingDialog();
             e.printStackTrace();
         }
     }
@@ -278,9 +279,13 @@ public class ReadingStoryActivityPresenter implements ReadingStoryActivityContra
     @Background
     @Override
     public void addProgress() {
-        float perc = getCompletionPercentage();
-        String Label = "resourceProgress";
-        addExitScore(perc, Label);
+        try {
+            float perc = getCompletionPercentage();
+            String Label = "resourceProgress";
+            addExitScore(perc, Label);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     private float getCompletionPercentage() {

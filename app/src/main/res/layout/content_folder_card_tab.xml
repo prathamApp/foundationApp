@@ -30,14 +30,14 @@
             android:layout_height="@dimen/_30sdp"
             android:layout_alignParentEnd="true"
             android:layout_marginEnd="@dimen/_10sdp"
-            android:background="@drawable/temp_button"
+            android:background="@drawable/button_yellow"
             android:drawableEnd="@drawable/ic_download_2"
             android:drawablePadding="@dimen/_5sdp"
             android:elevation="@dimen/_2sdp"
             android:layout_marginBottom="@dimen/_5sdp"
             android:paddingHorizontal="@dimen/_10sdp"
             android:text="Download"
-            android:textColor="@color/colorText"
+            android:textColor="@color/white"
             android:textSize="@dimen/_8sdp"
             android:visibility="gone" />
 

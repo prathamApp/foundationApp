@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/home_root_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -14,8 +15,17 @@
         android:layout_marginTop="@dimen/_15sdp"
         android:layout_marginEnd="@dimen/_10sdp"
         android:layout_marginBottom="@dimen/_5sdp"
-        android:paddingEnd="10dp">
-        contentCardColor
+        android:paddingEnd="10dp"
+        tools:ignore="RtlSymmetry">
+
+        <ImageView
+            android:layout_width="@dimen/_20sdp"
+            android:layout_height="@dimen/_20sdp"
+            android:layout_marginStart="@dimen/_70sdp"
+            android:layout_marginTop="@dimen/_60sdp"
+            android:elevation="@dimen/_5sdp"
+            android:src="@drawable/click_icon"
+            tools:ignore="ContentDescription" />
 
         <com.facebook.drawee.view.SimpleDraweeView
             android:id="@+id/card_img"
@@ -30,7 +40,7 @@
             app:placeholderImage="@drawable/ic_grp_btn"
             app:roundedCornerRadius="@dimen/_40sdp"
             app:roundingBorderColor="@color/contentCardColor"
-            app:roundingBorderWidth="@dimen/_2sdp"/>
+            app:roundingBorderWidth="@dimen/_2sdp" />
 
         <RelativeLayout
             android:id="@+id/profile_header"

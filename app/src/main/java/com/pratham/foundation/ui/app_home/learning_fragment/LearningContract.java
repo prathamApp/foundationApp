@@ -9,18 +9,20 @@ import java.util.List;
 
 public interface LearningContract {
 
-    interface LearningItemClicked {
-
-        void onContentClicked(ContentTable singleItem, String parentName);
-
-        void onContentOpenClicked(ContentTable contentList);
-
-        void onContentDownloadClicked(ContentTable contentList, int parentPos, int childPos, String downloadType);
-
-        void onContentDeleteClicked(ContentTable contentList);
-
-        void seeMore(String nodeId, String nodeTitle);
-    }
+//    interface LearningItemClicked {
+//
+//        void onContentClicked(ContentTable singleItem, String parentName);
+//
+//        void onContentOpenClicked(ContentTable contentList);
+//
+//        void onPreResOpenClicked(int position, String nId, String title, boolean onSDCard);
+//
+//        void onContentDownloadClicked(ContentTable contentList, int parentPos, int childPos, String downloadType);
+//
+//        void onContentDeleteClicked(ContentTable contentList);
+//
+//        void seeMore(String nodeId, String nodeTitle);
+//    }
 
     interface LearningView {
 
@@ -41,6 +43,10 @@ public interface LearningContract {
         void dismissDownloadDialog();
 
         void showComingSoonDiaog();
+
+        void showNoDataLayout();
+
+        void showRecyclerLayout();
 
 //        void setBotNodeId(String botID);
     }

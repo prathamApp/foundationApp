@@ -1,9 +1,12 @@
 package com.pratham.foundation.database;
 
+import android.arch.persistence.db.SupportSQLiteDatabase;
 import android.arch.persistence.room.Database;
 import android.arch.persistence.room.Room;
 import android.arch.persistence.room.RoomDatabase;
+import android.arch.persistence.room.migration.Migration;
 import android.content.Context;
+import android.util.Log;
 
 import com.pratham.foundation.ApplicationClass;
 import com.pratham.foundation.database.dao.AssessmentDao;
@@ -43,14 +46,14 @@ import com.pratham.foundation.modalclasses.MatchThePair;
 @Database(entities = {Crl.class, Student.class, Score.class, Session.class,
         Attendance.class, Status.class, Village.class, Groups.class,
         SupervisorData.class, Assessment.class, Modal_Log.class, ContentTable.class,
-        ContentProgress.class, KeyWords.class, WordEnglish.class, MatchThePair.class }, version = 1, exportSchema = false)
+        ContentProgress.class, KeyWords.class, WordEnglish.class, MatchThePair.class }, version = 2, exportSchema = false)
 
 public abstract class AppDatabase extends RoomDatabase {
 
     public static AppDatabase appDatabase;
 
     public static final String DB_NAME = "foundation_db";
-    public static final String DB_VERSION = "1";
+    public static final String DB_VERSION = "2";
 
     public abstract CrlDao getCrlDao();
 
@@ -89,10 +92,23 @@ public abstract class AppDatabase extends RoomDatabase {
         if (appDatabase == null) {
             appDatabase = Room.databaseBuilder(ApplicationClass.getInstance(), AppDatabase.class, DB_NAME)
                     .allowMainThreadQueries()
+                    .addMigrations(MIGRATION_1_2)
                     .build();
             return appDatabase;
         } else
             return appDatabase;
     }
+
+    static final Migration MIGRATION_1_2 = new Migration(1, 2) {
+        @Override
+        public void migrate(SupportSQLiteDatabase database) {
+            Log.d("AppDatabase", "MIGRATION_1_2:                                  1");
+            database.execSQL("ALTER TABLE 'ContentTable' ADD COLUMN 'nodeEnglishTitle' Text");
+            database.execSQL("ALTER TABLE 'ContentTable' ADD COLUMN 'origNodeVersion' Text");
+            database.execSQL("ALTER TABLE 'ContentTable' ADD COLUMN 'seq_no' Integer");
+            database.execSQL("ALTER TABLE 'ContentTable' ADD COLUMN 'subject' Text");
+        }
+    };
+
 
 }

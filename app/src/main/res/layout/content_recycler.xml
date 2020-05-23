@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.home_screen_integrated.display_content.ContentDisplay"
+    tools:context=".ui.app_home.display_content.ContentDisplay"
     tools:showIn="@layout/activity_content_display">
 
     <android.support.v7.widget.RecyclerView
@@ -11,9 +11,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
-        android:layout_centerInParent="true"
         android:clipToPadding="false"
         android:layoutAnimation="@anim/layout_fall_down"
         android:scrollbars="vertical" />
-
+<!--    android:layout_centerInParent="true"-->
 </RelativeLayout>

@@ -2,63 +2,42 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:paddingBottom="@dimen/_10sdp"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:background="@drawable/dialog_top">
+    style="@style/AppModalStyle">
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/students_recyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/_5sdp"
+        android:paddingTop="@dimen/_5sdp"
+        android:paddingBottom="@dimen/_5sdp" />
+
+    <com.pratham.foundation.customView.SansButton
+        android:id="@+id/add_student"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_marginHorizontal="@dimen/_10sdp"
+        android:layout_marginTop="@dimen/_5sdp"
+        android:layout_marginBottom="@dimen/_10sdp"
+        android:background="@drawable/button_green"
+        android:elevation="@dimen/_3sdp"
+        android:text="Create Profile"
+        android:textColor="@color/white"
+        android:textSize="@dimen/_15sdp"
+        android:layout_below="@id/students_recyclerView" />
 
     <com.pratham.foundation.customView.SansButton
         android:id="@+id/btn_download_all_data"
         android:layout_width="match_parent"
         android:layout_height="60dp"
-        android:visibility="gone"
-        android:layout_marginVertical="@dimen/_5sdp"
-        android:layout_marginHorizontal="@dimen/_10sdp"
         android:layout_centerHorizontal="true"
-        android:textColor="@color/white"
-        android:textSize="@dimen/_11sdp"
+        android:layout_marginHorizontal="@dimen/_10sdp"
+        android:layout_marginBottom="@dimen/_10sdp"
+        android:background="@drawable/button_yellow"
         android:text="Download all data from local repository"
-        android:background="@drawable/button_yellow" />
-
-
-    <ScrollView
-        android:layout_below="@+id/btn_download_all_data"
-        android:fadeScrollbars="false"
-        android:scrollbarSize="6dp"
-        android:scrollbarThumbVertical="@drawable/card_color_bg4"
-        android:scrollbarTrackVertical="@drawable/scroll_bg"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-        <android.support.constraint.ConstraintLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/_10sdp">
-
-            <android.support.v7.widget.RecyclerView
-                android:id="@+id/students_recyclerView"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:layout_constraintTop_toTopOf="parent"
-                android:layout_marginHorizontal="@dimen/_10sdp"
-                android:padding="@dimen/_5sdp" />
-
-            <com.pratham.foundation.customView.SansButton
-                android:id="@+id/add_student"
-                android:layout_width="match_parent"
-                android:layout_height="60dp"
-                app:layout_constraintTop_toBottomOf="@id/students_recyclerView"
-                android:layout_marginHorizontal="@dimen/_10sdp"
-                android:layout_marginTop="@dimen/_5sdp"
-                android:layout_marginBottom="@dimen/_15sdp"
-                android:background="@drawable/button_green"
-                android:text="Create Profile"
-                android:elevation="@dimen/_3sdp"
-                android:textColor="@color/white"
-                android:textSize="@dimen/_15sdp" />
-
-        </android.support.constraint.ConstraintLayout>
-
-    </ScrollView>
-
+        android:textColor="@color/white"
+        android:layout_below="@+id/add_student"
+        android:textSize="@dimen/_11sdp"
+        android:visibility="gone" />
 
 </RelativeLayout>

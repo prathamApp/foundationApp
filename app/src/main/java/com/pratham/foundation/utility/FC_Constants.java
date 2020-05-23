@@ -50,12 +50,15 @@ public class FC_Constants {
     public static final String DOWNLOAD_STARTED = "download_started";
     public static final String DOWNLOAD_UPDATE = "download_update";
     public static final String FOLDER_NAME = "folder_name";
-    public static final String FILE_DOWNLOAD_ERROR= "file_download_error";
+    public static final String FILE_DOWNLOAD_ERROR = "file_download_error";
+    public static final String RESPONSE_CODE_ERROR = "response_code_error";
+    public static final String BOTTOM_FRAGMENT_CLOSED = "bottom_fragment_closed";
+    public static final String BOTTOM_FRAGMENT_END_SESSION = "bottom_fragment_end_session";
     public static final String FILE_DOWNLOAD_COMPLETE = "file_download_complete";
     public static final String LEVEL_CHANGED = "level_changed";
     public static final String LEVEL_TEST_GIVEN = "level_test_given";
     public static final String SECTION_COMPLETION_PERC = "section_completion_perc";
-    public static final String COMING_SOON= "coming_soon";
+    public static final String COMING_SOON = "coming_soon";
     public static final String FRAGMENT_SELECTED = "fragment_selected";
     public static final String FRAGMENT_RESELECTED = "fragment_reselected";
     public static final String CLOSE_TEST_EVENTBUS = "close_test_eventbus";
@@ -65,25 +68,25 @@ public class FC_Constants {
     public static final String IMG_PUSH_LBL = "img_push_lbl";
     public static final String CHIT_CHAT_LBL = "CHIT_CHAT_LBL";
     public static final String RETURNSCORE = "returnScore";
-    public static final String BACK_PRESSED= "back_pressed";
-    public static final String FRAGMENT_BACK_PRESSED= "fragment_back_pressed";
+    public static final String BACK_PRESSED = "back_pressed";
+    public static final String FRAGMENT_BACK_PRESSED = "fragment_back_pressed";
     public static final String DOWNLOAD_COMPLETE = "download_complete";
     public static final String API_PARENT = "api_parent";
     public static final String API_CHILD = "api_child";
     public static final String HTML_GAME_RESOURCE = "game";
-    public static final String RHYME_RESOURCE = "rhyme" ;
+    public static final String RHYME_RESOURCE = "rhyme";
     public static final String STORY_RESOURCE = "story";
-    public static final String RC_RESOURCE="rc";
-    public static final String CONVO_RESOURCE="convo";
+    public static final String RC_RESOURCE = "rc";
+    public static final String CONVO_RESOURCE = "convo";
     public static final String WORD_ANDROID = "wordAndroid";
     public static final String PARA_ANDROID = "paraAndroid";
     public static final String PARA_VOCAB_ANDROID = "paraVocabAndroid";
     public static final String VOCAB_ANDROID = "vocabAndroid";
     public static final String FOLDER = "folder";
     public static final String OPPOSITE_WORDS = "oppositeWords";
-    public static final String IDENTIFY_KEYWORDS= "identifyKeywords";
-    public static final String FACT_RETRIVAL= "factRetrival";
-    public static final String KEY_WORD_MAPPING= "keyWordMapping";
+    public static final String IDENTIFY_KEYWORDS = "identifyKeywords";
+    public static final String FACT_RETRIVAL = "factRetrival";
+    public static final String KEY_WORD_MAPPING = "keyWordMapping";
     public static final String MATCH_THE_PAIR = "matchThePair";
     public static final String COMIC_CONVO_RESOURCE = "comicConvo";
     public static final String RHYMING_WORD_ANDROID = "rhymingWordAndroid";
@@ -122,6 +125,7 @@ public class FC_Constants {
     public static final String BACKUP_DB_NOT_COPIED = "backup_db_not_copied";
     public static final String CURRENT_SUBJECT = "current_subject";
     public static final String SCR_RES = "scr_res";
+    public static boolean SPLASH_OPEN = false;
     public static String RECEIVED_FOLDER_PATH = "";
     public static boolean TAB_LAYOUT = false;
     public static int FTP_HOTSPOT_KEYMGMT = -11;
@@ -151,7 +155,7 @@ public class FC_Constants {
     public static final String INITIAL_ENTRIES = "initial_entries";
     public static final String SDCARD_URI = "sdcard_uri";
     public static final String STT_REGEX = "[\"\\-+.'^?!@#%-_;&*,:|।<>()]";
-    public static final String STT_REGEX_2 = "[\"\\-+.'^?!@#%-_;&*,:<>()]";
+    public static final String STT_REGEX_2 = "[\\-+.\"'^?!@#%-_;&*,:<>()]";
 
     public static final String CURRENT_STUDENT_ID = "current_student_id";
     public static final String CURRENT_STUDENT_NAME = "current_student_name";
@@ -164,6 +168,7 @@ public class FC_Constants {
     public static final String APP_SECTION = "APP_SECTION";
     public static final String CURRENT_FOLDER_NAME = "current_folder_name";
     public static final String CERTI_CODE = "certi_code";
+    public static final String ACTIVITY_RESUMED = "activity_resumed";
 
     public static final String sec_Learning = "Learning";
     public static final String sec_Practice = "Practice";
@@ -171,33 +176,44 @@ public class FC_Constants {
     public static final String sec_Test = "Test";
     public static final String sec_Profile = "Profile";
 
-/*    public static String currentStudentID;
-    public static String currentAssessmentStudentID;
-    public static String currentsupervisorID;
-    public static String currentSession;
-    public static String assessmentSession;*/
+    public static final String TYPE_HEADER = "Header";
+    public static final String TYPE_ITEM = "Resource";
+    public static final String TYPE_FOOTER = "Footer";
+
+    /*    public static String currentStudentID;
+        public static String currentAssessmentStudentID;
+        public static String currentsupervisorID;
+        public static String currentSession;
+        public static String assessmentSession;*/
     public static String STORING_IN;
     public static boolean assessmentFlag;
     public static boolean GROUP_LOGIN = false;
     public static final String supervisedAssessment = "supervisedAssessment";
 
-//  public static final String INTERNET_DOWNLOAD_API = "http://www.prodigi.openiscool.org/api/pos/Get?id=";
-    public static final String INTERNET_DOWNLOAD = "prathmApp";
+    //  public static final String INTERNET_DOWNLOAD_API = "http://www.prodigi.openiscool.org/api/pos/Get?id=";
+    public static final String rootParentId = "50001";
+    public static final String INTERNET_BROWSE = "internet_browse";
     public static final String INTERNET_LEVEL = "internet_level";
     public static final String INTERNET_DOWNLOAD_RESOURCE = "downloadResource";
-    public static final String STUDENT_PROGRESS_INTERNET= "student_progress_internet";
-    public static final String LEARNT_WORDS_INTERNET= "learnt_words_internet";
-    public static final String PUSH_IMAGE= "push_image";
+    public static final String STUDENT_PROGRESS_INTERNET = "student_progress_internet";
+    public static final String LEARNT_WORDS_INTERNET = "learnt_words_internet";
+    public static final String PUSH_IMAGE = "push_image";
     public static final String APP_LANGUAGE_STRING = "app_language_string";
     public static final String APP_LANGUAGE = "app_language";
+    public static final String APP_LANGUAGE_NODE_ID = "app_language_node_id";
     public static final String DEVICE_ID_STR = "&deviceid=";
+    public static final String APP_LANGUAGE_SELECTED = "app_language_selected";
 
-//    PRATHAM APIS
+    //    PRATHAM APIS
     public static final String PUSH_IMAGE_API = "http://devprodigi.openiscool.org/api/Foundation/PostImage";
-//    public static final String INTERNET_LANGUAGE_API = "http://devposapi.prathamopenschool.org/api/content/browse?id=";
-    public static final String INTERNET_LANGUAGE_API = "http://devposapi.prathamopenschool.org/api/content/browse?id=1000001";
-    public static final String INTERNET_DOWNLOAD_NEW_API = "http://prodigi.openiscool.org/api/POSV2/Get2LevelChild?id=";
-    public static final String INTERNET_DOWNLOAD_RESOURCE_API = "http://prodigi.openiscool.org/api/posv2/DownloadResourceCOS?resid=";
+    //    public static final String INTERNET_LANGUAGE_API = "http://devposapi.prathamopenschool.org/api/content/browse?id=";
+    public static final String INTERNET_LANGUAGE_API = "http://devposapi.prathamopenschool.org/api/content/browse?id=";
+//    public static final String INTERNET_DOWNLOAD_NEW_API = "http://prodigi.openiscool.org/api/POSV2/Get2LevelChild?id=";
+    public static final String INTERNET_BROWSE_API = "http://devposapi.prathamopenschool.org/api/content/BrowseLevel2?id=";
+//    public static final String INTERNET_DOWNLOAD_RESOURCE_API = "http://prodigi.openiscool.org/api/posv2/DownloadResourceCOS?resid=";
+//    public static final String INTERNET_DOWNLOAD_RESOURCE_API = "http://devposapi.prathamopenschool.org/api/content/download?id=";
+    public static final String INTERNET_DOWNLOAD_RESOURCE_API = "http://devposapi.prathamopenschool.org/api/content/downloadv2?id=";
+    public static final String INTERNET_DOWNLOAD_TEST_API = "http://devposapi.prathamopenschool.org/api/content/downloadv3?id=";
     public static final String STUDENT_PROGRESS_API = "http://prodigi.openiscool.org/api/cosv2/GetProgress?id=";
     public static final String LEARNT_WORDS_API = "http://prodigi.openiscool.org/api/cosv2/GetKeyWords?id=";
 
@@ -238,7 +254,7 @@ public class FC_Constants {
     public static String RASP_IP = "http://192.168.4.1:8080";
     public static final String SUCCESSFULLYPUSHED = "successfully_pushed";
     public static final String PUSHFAILED = "push_failed";
-    public static  String FACILITY_ID = "facility_id";
+    public static String FACILITY_ID = "facility_id";
     public static String pradigiObbPath = "";
     public static String FTP_USERNAME = "pratham";
     public static String FTP_PASSWORD = "pratham";
@@ -251,8 +267,8 @@ public class FC_Constants {
     public static final String IS_GOOGLE_SIGNED_IN = "IS_GOOGLE_SIGNED_IN";
     public static final String GOOGLE_TOKEN = "GOOGLE_TOKEN";
     public static final String FILE_DOWNLOAD_STARTED = "file_download_started";
-    public static final String FILE_DOWNLOAD_UPDATE= "file_download_update";
-//    public static String currentStudentName="";
+    public static final String FILE_DOWNLOAD_UPDATE = "file_download_update";
+    //    public static String currentStudentName="";
     public static String CERTIFICATE_LBL = "certificate_lbl";
     public static final String PREFS_VERSION = "com.pratham.foundation.database";
     public static final String CURRENT_VERSION = "App Version";
@@ -264,14 +280,15 @@ public class FC_Constants {
     public static String CONTENT_CLICKED = "content_clicked";
     public static String CONTENT_OPEN_CLICKED = "content_open_clicked";
     public static String CONTENT_DOWNLOAD_CLICKED = "content_download_clicked";
-    public static String CONTENT_DELETE_CLICKED= "content_delete_clicked";
-    public static String SEE_MORE_CLICKED= "see_more_clicked";
+    public static String CONTENT_DELETE_CLICKED = "content_delete_clicked";
+    public static String SEE_MORE_CLICKED = "see_more_clicked";
     public static int currentLevel;
+    public static int currentLevelPosition;
     public static boolean testSessionEntered = false;
     public static boolean testSessionEnded = true;
     public static String currentGroup;
     public static String newDataLanguageInserted = "newDataLanguageInserted";
-//    public static boolean GROUP_QR = false;
+    //    public static boolean GROUP_QR = false;
     public static boolean levelSet = false;
     public static final String LOGIN_MODE = "login_mode";
     public static final String GROUP_MODE = "group_mode";

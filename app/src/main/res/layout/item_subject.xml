@@ -4,29 +4,18 @@
     android:layout_width="match_parent"
     android:layout_height="@dimen/_100sdp"
     app:sl_shadow_angle="30"
+    android:layout_marginStart="@dimen/_10sdp"
+    android:layout_marginEnd="@dimen/_10sdp"
     app:sl_shadow_color="@color/colorBlackTransparentLight"
     app:sl_shadow_distance="@dimen/_5sdp"
     app:sl_shadow_radius="@dimen/_3sdp"
     app:sl_shadowed="true">
-    <!--
 
-        <com.pratham.foundation.customView.shape_of_view.ShapeOfView
-            android:id="@+id/content_card_view"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/_100sdp"
-            android:background="@color/blue"
-            android:elevation="@dimen/_10sdp"
-            app:clip_drawable="@drawable/eng_01">
-    -->
-
-    <ImageView
+    <com.facebook.drawee.view.SimpleDraweeView
         android:id="@+id/content_thumbnail"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:scaleType="fitCenter"
-        android:src="@drawable/eng_01" />
+        android:background="@android:color/transparent"
+        app:actualImageScaleType="fitCenter" />
 
-    <!--    </com.pratham.foundation.customView.shape_of_view.ShapeOfView>-->
 </com.pratham.foundation.customView.shape_of_view.ShadowLayout>
-
-    <!--    android:background="@drawable/ripple_rectangle_card"-->

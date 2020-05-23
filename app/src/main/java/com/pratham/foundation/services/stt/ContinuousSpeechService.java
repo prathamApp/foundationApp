@@ -9,9 +9,10 @@ import android.speech.RecognizerIntent;
 import android.speech.SpeechRecognizer;
 import android.util.Log;
 
-import java.util.ArrayList;
+import com.pratham.foundation.services.shared_preferences.FastSave;
+import com.pratham.foundation.utility.FC_Constants;
 
-import static com.pratham.foundation.utility.FC_Constants.currentSubjectFolder;
+import java.util.ArrayList;
 
 
 /**
@@ -48,7 +49,7 @@ public class ContinuousSpeechService implements RecognitionListener {
 
     private String getSelectedLanguageCode() {
         String lang_code;
-        if (currentSubjectFolder.equalsIgnoreCase("English")) {
+        if (FastSave.getInstance().getString(FC_Constants.CURRENT_SUBJECT, "").equalsIgnoreCase("English")) {
             lang_code = "en";
         } else {
             lang_code = "hi";

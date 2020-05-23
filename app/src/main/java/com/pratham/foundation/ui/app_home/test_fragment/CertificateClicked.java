@@ -6,4 +6,6 @@ public interface CertificateClicked {
 
     void onCertificateOpenGame(int position, String nodeId);
 
+    void onCertificateUpdate();
+
 }

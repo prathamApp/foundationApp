@@ -7,7 +7,6 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 import com.google.gson.stream.JsonReader;
-import com.pratham.foundation.ApplicationClass;
 import com.pratham.foundation.async.API_Content;
 import com.pratham.foundation.async.ZipDownloader;
 import com.pratham.foundation.database.AppDatabase;
@@ -19,7 +18,6 @@ import com.pratham.foundation.database.domain.Session;
 import com.pratham.foundation.database.domain.WordEnglish;
 import com.pratham.foundation.interfaces.API_Content_Result;
 import com.pratham.foundation.modalclasses.CertificateModelClass;
-import com.pratham.foundation.modalclasses.Modal_DownloadAssessment;
 import com.pratham.foundation.modalclasses.Modal_DownloadContent;
 import com.pratham.foundation.services.shared_preferences.FastSave;
 import com.pratham.foundation.ui.contentPlayer.web_view.WebViewActivity;
@@ -34,7 +32,6 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -48,8 +45,8 @@ import java.util.List;
 
 import static com.pratham.foundation.ui.app_home.HomeActivity.sub_nodeId;
 import static com.pratham.foundation.utility.FC_Constants.CURRENT_FOLDER_NAME;
+import static com.pratham.foundation.utility.FC_Constants.GAME;
 import static com.pratham.foundation.utility.FC_Constants.currentLevel;
-import static com.pratham.foundation.utility.FC_Constants.gameFolderPath;
 import static com.pratham.foundation.utility.FC_Constants.supervisedAssessment;
 import static com.pratham.foundation.utility.FC_Constants.testSessionEntered;
 
@@ -150,12 +147,14 @@ public class TestPresenter implements TestContract.TestPresenter, API_Content_Re
         String botID;
 //        String rootID = FC_Utility.getRootNode(FastSave.getInstance().getString(FC_Constants.LANGUAGE, FC_Constants.HINDI));
         String rootID = sub_nodeId;
+//        String rootID = "4030";
         botID = AppDatabase.appDatabase.getContentTableDao().getContentDataByTitle("" + rootID, cosSection);
-        if (botID != null && !FC_Utility.isDataConnectionAvailable(mContext))
+        if (botID == null && !FC_Utility.isDataConnectionAvailable(mContext))
+            myView.showNoDataDownloadedDialog();
+        else if (botID != null && !FC_Utility.isDataConnectionAvailable(mContext))
             getLevelDataForList(currentLevelNo, botID);
         else
-            getLevelDataForList(currentLevelNo, botID);
-//            getRootData(rootID);
+            getRootData(rootID);
 
 //        myView.setBotNodeId(botID);
 /*      if (FC_Utility.isDataConnectionAvailable(mContext)) {
@@ -180,16 +179,38 @@ public class TestPresenter implements TestContract.TestPresenter, API_Content_Re
     @Background
     public void getRootData(String rootID) {
         if (FC_Utility.isDataConnectionAvailable(mContext))
-            api_content.getAPIContent(FC_Constants.BOTTOM_NODE, FC_Constants.INTERNET_DOWNLOAD_NEW_API, rootID);
+            api_content.getAPIContent(FC_Constants.BOTTOM_NODE, FC_Constants.INTERNET_BROWSE_API, rootID);
     }
 
     private void sortTestList(List<ContentTable> contentParentList) {
         Collections.sort(contentParentList, (o1, o2) -> o1.getNodeId().compareTo(o2.getNodeId()));
     }
 
+    private String getLevelWiseTestName() {
+        String jsonName = "TestBeginnerJson";
+        switch (currentLevel) {
+            case 0:
+                jsonName = "Beginner Test";
+                break;
+            case 1:
+                jsonName = "SubJunior Test";
+                break;
+            case 2:
+                jsonName = "Junior Test";
+                break;
+            case 3:
+                jsonName = "SubSenior Test";
+                break;
+            case 4:
+                jsonName = "SeniorTest";
+                break;
+        }
+        return jsonName;
+    }
+
     @Background
     @Override
-    public void generateTestData(JSONArray testData, String bottomNavNodeId) {
+    public void generateTestData(JSONArray testData, String bottomNavNodeId, boolean isUpdate) {
         myView.showLoader();
         testList.clear();
         testList = AppDatabase.appDatabase.getContentTableDao().getContentData(bottomNavNodeId);
@@ -200,6 +221,7 @@ public class TestPresenter implements TestContract.TestPresenter, API_Content_Re
         BackupDatabase.backup(mContext);
         codesText = new ArrayList<>();
         codesText.clear();
+        myView.clearTestList();
 
         CertificateModelClass contentTableHeader = new CertificateModelClass();
         contentTableHeader.setNodeId("0");
@@ -208,7 +230,16 @@ public class TestPresenter implements TestContract.TestPresenter, API_Content_Re
         contentTableHeader.setAsessmentGiven(true);
         contentTableHeader.setContentType("Header");
         myView.addContentToViewTestList(contentTableHeader);
-
+        if (isUpdate) {
+            contentTableHeader = new CertificateModelClass();
+            contentTableHeader.setNodeId("1");
+            contentTableHeader.setResourceId("01");
+            contentTableHeader.setEnglishQues(""+getLevelWiseTestName());
+            contentTableHeader.setResourcePath("path");
+            contentTableHeader.setAsessmentGiven(true);
+            contentTableHeader.setContentType("Update");
+            myView.addContentToViewTestList(contentTableHeader);
+        }
 /*        contentTableHeader = new CertificateModelClass();
         contentTableHeader.setNodeId("1");
         contentTableHeader.setResourceId("1");
@@ -235,7 +266,10 @@ public class TestPresenter implements TestContract.TestPresenter, API_Content_Re
                 contentTable.setTotalMarks(0);
                 contentTable.setCertificateRating(0.0f);
                 contentTable.setStudentPercentage("");
-                contentTable.setContentType(testList.get(j).getContentType());
+                if (testList.get(j).getContentType() != null)
+                    contentTable.setContentType(testList.get(j).getContentType());
+                else
+                    contentTable.setContentType(GAME);
                 contentTable.setIsDownloaded(testList.get(j).getIsDownloaded());
 
                 for (int i = 0; i < testData.length(); i++) {
@@ -287,7 +321,7 @@ public class TestPresenter implements TestContract.TestPresenter, API_Content_Re
         } catch (Exception e) {
             e.printStackTrace();
         }
-        if (testList.size() > 0)
+        if (testList.size() > 1)
             myView.hideTestDownloadBtn();
         myView.initializeTheIndex();
     }
@@ -296,7 +330,7 @@ public class TestPresenter implements TestContract.TestPresenter, API_Content_Re
     public ContentTable getRandomData(String resourceType, String nodeId) {
 //        List<ContentTable> List = AppDatabase.appDatabase.getDatabaseInstance(mContext).getContentTableDao().getContentData(nodeId);
         List<ContentTable> List = AppDatabase.getDatabaseInstance(mContext)
-                .getContentTableDao().getTestContentData(nodeId,resourceType);
+                .getContentTableDao().getTestContentData(nodeId, resourceType);
         if (List.size() > 0) {
             int random = FC_Utility.generateRandomNum(List.size());
             ContentTable contentTable = List.get(random);
@@ -333,7 +367,7 @@ public class TestPresenter implements TestContract.TestPresenter, API_Content_Re
             assessment.setScoredMarksa(0);
             assessment.setTotalMarksa(0);
             assessment.setStudentIDa(FastSave.getInstance().getString(FC_Constants.CURRENT_ASSESSMENT_STUDENT_ID, ""));
-            assessment.setStartDateTimea(""+FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""));
+            assessment.setStartDateTimea("" + FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""));
             assessment.setEndDateTime(FC_Utility.GetCurrentDateTime());
             if (FastSave.getInstance().getBoolean(supervisedAssessment, false))
                 assessment.setDeviceIDa("" + FastSave.getInstance().getString(FC_Constants.CURRENT_SUPERVISOR_ID, ""));
@@ -352,6 +386,7 @@ public class TestPresenter implements TestContract.TestPresenter, API_Content_Re
     @Override
     public JSONArray getTestData(String jsonName) {
         JSONArray returnCodeList = null;
+        String[] languagesArray;
         try {
             InputStream is = mContext.getAssets().open(jsonName);
 //            InputStream is = new FileInputStream(ApplicationClass.pradigiPath + "/.FCA/"+FastSave.getInstance().getString(FC_Constants.LANGUAGE, FC_Constants.HINDI)+"/Game/CertificateData.json");
@@ -361,11 +396,11 @@ public class TestPresenter implements TestContract.TestPresenter, API_Content_Re
             is.close();
             String jsonStr = new String(buffer);
             JSONArray jsonArray = new JSONArray(jsonStr);
-            for(int i=0; i<jsonArray.length(); i++) {
+            for (int i = 0; i < jsonArray.length(); i++) {
                 String subj = ((JSONObject) jsonArray.get(i)).get("storyLanguage").toString();
-                if (subj.equalsIgnoreCase(FastSave.getInstance().getString(CURRENT_FOLDER_NAME,""))) {
+                if (subj.equalsIgnoreCase(FastSave.getInstance().getString(CURRENT_FOLDER_NAME, ""))) {
                     returnCodeList = ((JSONObject) jsonArray.get(i)).getJSONArray("CodeList");
-                    return  returnCodeList;
+                    break;
                 }
 /*
                 } else if (subj.equalsIgnoreCase("Maths")) {
@@ -378,13 +413,19 @@ public class TestPresenter implements TestContract.TestPresenter, API_Content_Re
                     currentSubjectFolder = "LS_Science";
 */
             }
-//            JSONObject jsonObj = new JSONObject(jsonStr);
-//            returnCodeList = jsonObj.getJSONArray("CodeList");
+            languagesArray = new String[returnCodeList.length()];
+            for (int i = 0; i < returnCodeList.length(); i++) {
+                Log.d("languagesArray", "languagesArray : " + i + " : " + ((JSONObject) returnCodeList.get(i)).get("lang").toString());
+                languagesArray[i] = ((JSONObject) returnCodeList.get(i)).get("lang").toString();
+            }
+            myView.setQuesTranslateLang(languagesArray);
+
+            return returnCodeList;
+
         } catch (Exception e) {
             e.printStackTrace();
             return null;
         }
-        return null;
     }
 
     @Override
@@ -424,15 +465,22 @@ public class TestPresenter implements TestContract.TestPresenter, API_Content_Re
     @Override
     public void getLevelDataForList(int currentLevelNo, String bottomNavNodeId) {
         rootList = AppDatabase.appDatabase.getContentTableDao().getContentData("" + bottomNavNodeId);
-//        if (FC_Utility.isDataConnectionAvailable(mContext))
-//            getLevelDataFromApi(currentLevelNo, bottomNavNodeId);
-//        else
+
+        if (rootList.size()>0)
+            for (int i = 0; i < rootList.size(); i++)
+                rootList.get(i).setNodeUpdate(false);
+
+        if (FC_Utility.isDataConnectionAvailable(mContext))
+            getLevelDataFromApi(currentLevelNo, bottomNavNodeId);
+        else {
+            sortAllList(rootList);
             myView.setSelectedLevel(rootList);
+        }
     }
 
     public void getLevelDataFromApi(int currentLevelNo, String botNodeId) {
         if (FC_Utility.isDataConnectionAvailable(mContext))
-            api_content.getAPIContent(FC_Constants.INTERNET_LEVEL, FC_Constants.INTERNET_DOWNLOAD_NEW_API, botNodeId);
+            api_content.getAPIContent(FC_Constants.INTERNET_LEVEL, FC_Constants.INTERNET_BROWSE_API, botNodeId);
     }
 
     @Background
@@ -524,17 +572,11 @@ public class TestPresenter implements TestContract.TestPresenter, API_Content_Re
             resContentTable.setNodeType("resList");
 
             ContentTable contentTableRes = new ContentTable();
-            contentTableRes.setNodeId("0");
-            contentTableRes.setNodeType("Header");
-            tempList2.add(contentTableRes);
-            resContentTable.setNodelist(tempList2);
-            resourceList.add(contentTableRes);
-            resourceList.add(contentTableRes);
 
             dwParentList = AppDatabase.appDatabase.getContentTableDao().getContentData("" + nodeIds.get(nodeIds.size() - 1));
             sortContentList(dwParentList);
             contentParentList.clear();
-            contentParentList.add(contentTableRes);
+//            contentParentList.add(contentTableRes);
             try {
                 for (int j = 0; j < dwParentList.size(); j++) {
                     if (dwParentList.get(j).getNodeType().equalsIgnoreCase("Resource")) {
@@ -662,12 +704,12 @@ public class TestPresenter implements TestContract.TestPresenter, API_Content_Re
 //        if (FC_Utility.isDataConnectionAvailable(mContext)) {
 //            api_content.getAPIContent(FC_Constants.INTERNET_DOWNLOAD, FC_Constants.INTERNET_DOWNLOAD_NEW_API, nodeIds.get(nodeIds.size() - 1));
 //        } else {
-            if (contentParentList.size() == 0 && !FC_Utility.isDataConnectionAvailable(mContext)) {
-                myView.showNoDataDownloadedDialog();
-            } else {
-                myView.addContentToViewList(contentParentList);
-                myView.notifyAdapter();
-            }
+        if (contentParentList.size() == 0 && !FC_Utility.isDataConnectionAvailable(mContext)) {
+            myView.showNoDataDownloadedDialog();
+        } else {
+            myView.addContentToViewList(contentParentList);
+            myView.notifyAdapter();
+        }
 //        }
     }
 
@@ -768,37 +810,37 @@ public class TestPresenter implements TestContract.TestPresenter, API_Content_Re
     public void downloadResource(String downloadId) {
         downloadNodeId = downloadId;
         if (FC_Utility.isDataConnectionAvailable(mContext)) {
-            api_content.getAPIContent(FC_Constants.INTERNET_DOWNLOAD_RESOURCE, FC_Constants.INTERNET_DOWNLOAD_RESOURCE_API, downloadNodeId);
+            api_content.getAPIContent(FC_Constants.INTERNET_DOWNLOAD_RESOURCE, FC_Constants.INTERNET_DOWNLOAD_TEST_API, downloadNodeId);
         } else {
             myView.showNoDataDownloadedDialog();
         }
-//        getAPIContent(FC_Constants.INTERNET_DOWNLOAD_RESOURCE, FC_Constants.INTERNET_DOWNLOAD_RESOURCE_API);
+//        getAPIContent(FC_Constants.INTERNET_DOWNLOAD_RESOURCE, FC_Constants.INTERNET_DOWNLOAD_TEST_API);
     }
 
     @Background
     @Override
     public void updateDownloadJson(String folderPath) {
-        String path = ApplicationClass.foundationPath + "" + gameFolderPath + folderPath;
-        try {
-            InputStream is = new FileInputStream(path + "/gameinfo.json");
-            int size = is.available();
-            byte[] buffer = new byte[size];
-            is.read(buffer);
-            is.close();
-            String jsonStr = new String(buffer);
-            JSONObject jsonObj = new JSONObject(jsonStr);
-            Gson gson = new Gson();
-            Modal_DownloadAssessment download_content = gson.fromJson(jsonObj.toString(), Modal_DownloadAssessment.class);
-            List<ContentTable> contentTableList = new ArrayList<>();
-            contentTableList = download_content.getNodelist();
-            for (int i = 0; i < contentTableList.size(); i++) {
-                API_Content.downloadImage(contentTableList.get(i).nodeServerImage, contentTableList.get(i).getNodeImage());
-                contentTableList.get(i).setIsDownloaded("true");
-            }
-            AppDatabase.getDatabaseInstance(mContext).getContentTableDao().addContentList(contentTableList);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+//        String path = ApplicationClass.foundationPath + "" + gameFolderPath + folderPath;
+//        try {
+//            InputStream is = new FileInputStream(path + "/gameinfo.json");
+//            int size = is.available();
+//            byte[] buffer = new byte[size];
+//            is.read(buffer);
+//            is.close();
+//            String jsonStr = new String(buffer);
+//            JSONObject jsonObj = new JSONObject(jsonStr);
+//            Gson gson = new Gson();
+//            Modal_DownloadAssessment download_content = gson.fromJson(jsonObj.toString(), Modal_DownloadAssessment.class);
+//            List<ContentTable> contentTableList = new ArrayList<>();
+//            contentTableList = download_content.getNodelist();
+//            for (int i = 0; i < contentTableList.size(); i++) {
+//                API_Content.downloadImage(contentTableList.get(i).nodeServerImage, contentTableList.get(i).getNodeImage());
+//                contentTableList.get(i).setIsDownloaded("true");
+//            }
+//            AppDatabase.getDatabaseInstance(mContext).getContentTableDao().addContentList(contentTableList);
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
         BackupDatabase.backup(mContext);
         myView.dismissDownloadDialog();
         myView.hideTestDownloadBtn();
@@ -831,7 +873,7 @@ public class TestPresenter implements TestContract.TestPresenter, API_Content_Re
     @Background
     @Override
     public void receivedContent(String header, String response) {
-        if (header.equalsIgnoreCase(FC_Constants.INTERNET_DOWNLOAD)) {
+        if (header.equalsIgnoreCase(FC_Constants.INTERNET_BROWSE)) {
             boolean parentFound = false, childFound = false;
             try {
                 contentDBList.clear();
@@ -1006,12 +1048,9 @@ public class TestPresenter implements TestContract.TestPresenter, API_Content_Re
                 JSONObject jsonObject = new JSONObject(response);
                 download_content = gson.fromJson(jsonObject.toString(), Modal_DownloadContent.class);
                 contentDetail = download_content.getNodelist().get(download_content.getNodelist().size() - 1);
-                pos.clear();
 
-                for (int i = 0; i < download_content.getNodelist().size(); i++) {
-                    ContentTable contentTableTemp = download_content.getNodelist().get(i);
-                    pos.add(contentTableTemp);
-                }
+                pos.clear();
+                pos.addAll(download_content.getNodelist());
 
                 fileName = download_content.getDownloadurl()
                         .substring(download_content.getDownloadurl().lastIndexOf('/') + 1);
@@ -1031,10 +1070,15 @@ public class TestPresenter implements TestContract.TestPresenter, API_Content_Re
                 boolean itemFound = false;
 
                 for (int i = 0; i < serverContentList.size(); i++) {
+                    itemFound = false;
                     for (int j = 0; j < rootList.size(); j++) {
                         if (serverContentList.get(i).getNodeId().equalsIgnoreCase(rootList.get(j).getNodeId())) {
+                            if (!serverContentList.get(i).getVersion().equalsIgnoreCase(rootList.get(j).getVersion())) {
+                                rootList.get(j).setNodeUpdate(true);
+                            }
                             rootLevelList.add(rootList.get(j));
                             itemFound = true;
+                            break;
                         }
                     }
                     if (!itemFound) {
@@ -1053,6 +1097,7 @@ public class TestPresenter implements TestContract.TestPresenter, API_Content_Re
                         contentTableTemp.setParentId("" + serverContentList.get(i).getParentId());
                         contentTableTemp.setLevel("" + serverContentList.get(i).getLevel());
                         contentTableTemp.setVersion("" + serverContentList.get(i).getVersion());
+                        contentTableTemp.setSeq_no(serverContentList.get(i).getSeq_no());
                         contentTableTemp.setContentType("" + serverContentList.get(i).getContentType());
                         contentTableTemp.setIsDownloaded("false");
                         contentTableTemp.setOnSDCard(false);
@@ -1074,7 +1119,8 @@ public class TestPresenter implements TestContract.TestPresenter, API_Content_Re
                     if (serverContentList.get(i).getNodeTitle().equalsIgnoreCase(cosSection))
                         botNodeId = serverContentList.get(i).getNodeId();
 //                myView.setBotNodeId(botNodeId);
-                getLevelDataFromApi(currentLevelNo, botNodeId);
+                getLevelDataForList(currentLevelNo, botNodeId);
+//                getLevelDataFromApi(currentLevelNo, botNodeId);
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -1098,8 +1144,9 @@ public class TestPresenter implements TestContract.TestPresenter, API_Content_Re
     @Override
     public void receivedError(String header) {
         if (header.equalsIgnoreCase(FC_Constants.INTERNET_LEVEL)) {
+            sortAllList(rootList);
             myView.setSelectedLevel(rootList);
-        } else if (header.equalsIgnoreCase(FC_Constants.INTERNET_DOWNLOAD)) {
+        } else if (header.equalsIgnoreCase(FC_Constants.INTERNET_BROWSE)) {
             myView.addContentToViewList(contentParentList);
             myView.notifyAdapter();
         }

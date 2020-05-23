@@ -21,6 +21,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -36,6 +37,7 @@ import com.pratham.foundation.customView.BlurPopupDialog.BlurPopupWindow;
 import com.pratham.foundation.customView.collapsingView.RetractableToolbarUtil;
 import com.pratham.foundation.customView.display_image_dialog.CustomLodingDialog;
 import com.pratham.foundation.customView.progress_layout.ProgressLayout;
+import com.pratham.foundation.database.BackupDatabase;
 import com.pratham.foundation.database.domain.ContentTable;
 import com.pratham.foundation.modalclasses.CertificateModelClass;
 import com.pratham.foundation.modalclasses.EventMessage;
@@ -51,7 +53,6 @@ import com.pratham.foundation.ui.contentPlayer.reading_paragraphs.ReadingParagra
 import com.pratham.foundation.ui.contentPlayer.reading_rhyming.ReadingRhymesActivity_;
 import com.pratham.foundation.ui.contentPlayer.reading_story_activity.ReadingStoryActivity_;
 import com.pratham.foundation.ui.contentPlayer.vocabulary_qa.ReadingVocabularyActivity_;
-import com.pratham.foundation.ui.contentPlayer.web_view.WebViewActivity;
 import com.pratham.foundation.ui.contentPlayer.web_view.WebViewActivity_;
 import com.pratham.foundation.utility.FC_Constants;
 import com.pratham.foundation.utility.FC_Utility;
@@ -76,9 +77,11 @@ import java.util.Objects;
 
 import static com.pratham.foundation.ApplicationClass.ButtonClickSound;
 import static com.pratham.foundation.ui.app_home.HomeActivity.header_rl;
+import static com.pratham.foundation.ui.app_home.HomeActivity.levelChanged;
 import static com.pratham.foundation.utility.FC_Constants.APP_SECTION;
 import static com.pratham.foundation.utility.FC_Constants.CERTI_CODE;
 import static com.pratham.foundation.utility.FC_Constants.CLOSE_TEST_EVENTBUS;
+import static com.pratham.foundation.utility.FC_Constants.HINDI;
 import static com.pratham.foundation.utility.FC_Constants.currentLevel;
 import static com.pratham.foundation.utility.FC_Constants.gameFolderPath;
 import static com.pratham.foundation.utility.FC_Constants.sec_Test;
@@ -109,6 +112,7 @@ public class TestFragment extends Fragment implements TestContract.TestView,
     public static String language = "Hindi";
     String currLang = "";
     Context context;
+    private String[] languagesArray;
 
 
     @AfterViews
@@ -130,14 +134,29 @@ public class TestFragment extends Fragment implements TestContract.TestView,
 //        ib_langChange.setVisibility(View.GONE);
         my_recycler_view.addOnScrollListener(new RetractableToolbarUtil
                 .ShowHideToolbarOnScrollingListener(header_rl));
-        showLoader();
-        presenter.getBottomNavId(currentLevel, "Test");
+        ib_langChange.setVisibility(View.GONE);
+        if (FastSave.getInstance().getString(APP_SECTION, "").equalsIgnoreCase(sec_Test)) {
+            showLoader();
+            presenter.getBottomNavId(currentLevel, sec_Test);
+        }
     }
 
     private int dpToPx() {
         Resources r = getResources();
         return Math.round(TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 1, r.getDisplayMetrics()));
     }
+
+    @UiThread
+    public void fragmentSelected() {
+        try {
+            ib_langChange.setVisibility(View.GONE);
+            showLoader();
+            presenter.getBottomNavId(currentLevel, "" + sec_Test);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
 
     @UiThread
     public void notifyAdapter() {
@@ -155,8 +174,8 @@ public class TestFragment extends Fragment implements TestContract.TestView,
             delay = 500L;
         else
             delay = 300L;
+        dismissLoadingDialog();
         new Handler().postDelayed(() -> {
-            dismissLoadingDialog();
             try {
                 if (progressLayout != null)
                     downloadDialog.dismiss();
@@ -175,58 +194,76 @@ public class TestFragment extends Fragment implements TestContract.TestView,
         showLanguageSelectionDialog();
     }
 
-    BlurPopupWindow langDialog;
-
-    @SuppressLint("SetTextI18n")
-    private void showLanguageSelectionDialog() {
-        langDialog = new BlurPopupWindow.Builder(context)
-                .setContentView(R.layout.fc_custom_language_dialog)
-                .setGravity(Gravity.CENTER)
-                .setDismissOnTouchBackground(false)
-                .setDismissOnClickBack(false)
-                .bindClickListener(v -> {
-                    new Handler().postDelayed(() -> {
-                        onSpinnerLanguageChanged(language);
-                        langDialog.dismiss();
-                    }, 200);
-                }, R.id.dia_btn_green)
-                .setScaleRatio(0.2f)
-                .setBlurRadius(10)
-                .setTintColor(0x30000000)
-                .build();
-
-        TextView dia_title = langDialog.findViewById(R.id.dia_title);
-        Button dia_btn_green = langDialog.findViewById(R.id.dia_btn_green);
-        Spinner lang_spinner = langDialog.findViewById(R.id.lang_spinner);
-        dia_btn_green.setText("OK");
-
-        currLang = "" + FastSave.getInstance().getString(FC_Constants.TEST_DISPLAY_LANGUAGE, "Hindi");
-//        dia_title.setText("Current Language : " + currLang);
-        ArrayAdapter<String> dataAdapter = new ArrayAdapter<>(context, R.layout.custom_spinner,
-                context.getResources().getStringArray(R.array.certificate_Languages));
-        dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        lang_spinner.setAdapter(dataAdapter);
-        String[] languages = getResources().getStringArray(R.array.certificate_Languages);
-        for (int i = 0; i < languages.length; i++) {
-            if (currLang.equalsIgnoreCase(languages[i])) {
-                lang_spinner.setSelection(i);
-                break;
-            }
-        }
-
-        lang_spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                language = lang_spinner.getSelectedItem().toString();
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-            }
-        });
-
-        langDialog.show();
+    @Override
+    public void setQuesTranslateLang(String[] languagesArray) {
+        this.languagesArray = languagesArray;
     }
+
+    BlurPopupWindow langDialog;
+    Spinner lang_spinner;
+
+    @UiThread
+    @SuppressLint("SetTextI18n")
+    public void showLanguageSelectionDialog() {
+        try {
+            langDialog = new BlurPopupWindow.Builder(context)
+                    .setContentView(R.layout.fc_custom_language_dialog)
+                    .setGravity(Gravity.CENTER)
+                    .setDismissOnTouchBackground(false)
+                    .setDismissOnClickBack(false)
+                    .bindClickListener(v -> {
+                        new Handler().postDelayed(() -> {
+                            onSpinnerLanguageChanged(language);
+                            langDialog.dismiss();
+                        }, 200);
+                    }, R.id.dia_btn_green)
+                    .setScaleRatio(0.2f)
+                    .setBlurRadius(10)
+                    .setTintColor(0x30000000)
+                    .build();
+
+            TextView dia_title = langDialog.findViewById(R.id.dia_title);
+            Button dia_btn_green = langDialog.findViewById(R.id.dia_btn_green);
+            lang_spinner = langDialog.findViewById(R.id.lang_spinner);
+            dia_btn_green.setText("OK");
+
+            currLang = "" + HINDI;// + FastSave.getInstance().getString(FC_Constants.TEST_DISPLAY_LANGUAGE, "Hindi");
+//        dia_title.setText("Current Language : " + currLang);
+            ArrayAdapter<String> dataAdapter = new ArrayAdapter<>(context, R.layout.custom_spinner,
+                    languagesArray);
+//                context.getResources().getStringArray(R.array.certificate_Languages));
+            dataAdapter.setDropDownViewResource(R.layout.custom_spinner);
+            lang_spinner.setAdapter(dataAdapter);
+            String[] languages = languagesArray;
+            for (int i = 0; i < languages.length; i++) {
+                if (currLang.equalsIgnoreCase(languages[i])) {
+                    lang_spinner.setSelection(i);
+                    break;
+                }
+            }
+
+            lang_spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                @Override
+                public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                    language = lang_spinner.getSelectedItem().toString();
+                }
+
+                @Override
+                public void onNothingSelected(AdapterView<?> parent) {
+                }
+            });
+
+            langDialog.show();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+//    private Array getLanguages() {
+//        Array array;
+//        String jsonName = getLevelWiseJson();
+//        JSONArray testData = presenter.getLanguages(jsonName);
+//    }
 
     @UiThread
     public void addContentToViewList(List<ContentTable> contentParentList) {
@@ -238,7 +275,6 @@ public class TestFragment extends Fragment implements TestContract.TestView,
 
     @Override
     public void onStart() {
-        FastSave.getInstance().saveString(APP_SECTION, "" + sec_Test);
         super.onStart();
         if (!eventBusFlg) {
             eventBusFlg = true;
@@ -255,7 +291,7 @@ public class TestFragment extends Fragment implements TestContract.TestView,
     @SuppressLint("SetTextI18n")
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void messageReceived(EventMessage message) {
-        if(FastSave.getInstance().getString(APP_SECTION, "").equalsIgnoreCase(sec_Test)) {
+        if (FastSave.getInstance().getString(APP_SECTION, "").equalsIgnoreCase(sec_Test)) {
             if (message != null) {
 //            if (message.getMessage().contains(LEVEL_TEST_GIVEN))
 //                addTestStarResult(message.getMessage());
@@ -268,34 +304,51 @@ public class TestFragment extends Fragment implements TestContract.TestView,
                 else if (message.getMessage().equalsIgnoreCase(FC_Constants.BACK_PRESSED))
                     backBtnPressed();
                 else if (message.getMessage().equalsIgnoreCase(FC_Constants.FILE_DOWNLOAD_STARTED)) {
+                    dismissLoadingDialog();
                     resourceDownloadDialog(message.getModal_fileDownloading());
+                } else if (message.getMessage().equalsIgnoreCase(FC_Constants.FRAGMENT_SELECTED) ||
+                        message.getMessage().equalsIgnoreCase(FC_Constants.FRAGMENT_RESELECTED)) {
+                    fragmentSelected();
                 } else if (message.getMessage().equalsIgnoreCase(FC_Constants.FILE_DOWNLOAD_UPDATE)) {
                     if (progressLayout != null)
                         progressLayout.setCurProgress(message.getModal_fileDownloading().getProgress());
-                } else if (message.getMessage().equalsIgnoreCase(FC_Constants.FILE_DOWNLOAD_ERROR)) {
-                    downloadDialog.dismiss();
-                    showDownloadErrorDialog();
-                } else if (message.getMessage().equalsIgnoreCase(FC_Constants.UNZIPPING_ERROR)) {
-                    downloadDialog.dismiss();
+                } else if (message.getMessage().equalsIgnoreCase(FC_Constants.FILE_DOWNLOAD_ERROR) ||
+                        message.getMessage().equalsIgnoreCase(FC_Constants.UNZIPPING_ERROR) ||
+                        message.getMessage().equalsIgnoreCase(FC_Constants.RESPONSE_CODE_ERROR)) {
+                    dismissDownloadDialog();
                     showDownloadErrorDialog();
                 } else if (message.getMessage().equalsIgnoreCase(FC_Constants.UNZIPPING_DATA_FILE))
-                    dialog_file_name.setText("Unzipping...\nPlease wait" + resName);
+                    showZipLoader();
                 else if (message.getMessage().equalsIgnoreCase(FC_Constants.FILE_DOWNLOAD_COMPLETE)) {
                     dialog_file_name.setText("Updating Data");
                     String folderPath = "";
                     try {
+                        rootLevelList.get(currentLevel).setNodeUpdate(false);
+                        isUpdate = false;
                         resName = "";
-                        if (downloadType.equalsIgnoreCase(FC_Constants.TEST_DOWNLOAD))
-                            presenter.updateDownloadJson(folderPath);
+                        BackupDatabase.backup(context);
+                        dismissDownloadDialog();
+                        hideTestDownloadBtn();
+                        displayCurrentDownloadedTest();
+//                        if (downloadType.equalsIgnoreCase(FC_Constants.TEST_DOWNLOAD))
+//                            presenter.updateDownloadJson(folderPath);
                     } catch (Exception e) {
                         downloadDialog.dismiss();
-                        dismissLoadingDialog();
+//                        dismissLoadingDialog();
                         e.printStackTrace();
                     }
                 }
             }
         }
     }
+
+    @UiThread
+    public void showZipLoader() {
+        dialog_file_name.setText("Loading\n" + resName + "\nPlease wait...");
+        progressLayout.setVisibility(View.GONE);
+        dialog_roundProgress.setVisibility(View.VISIBLE);
+    }
+
 
 //    private void addTestStarResult(String levelTestGiven) {
 //        try {
@@ -334,29 +387,122 @@ public class TestFragment extends Fragment implements TestContract.TestView,
 //        checkAllAssessmentsDone();
 //    }
 
+    boolean isUpdate = false;
+
     @UiThread
     @Override
     public void setSelectedLevel(List<ContentTable> contentTable) {
         try {
-            rootLevelList = contentTable;
-            presenter.insertNodeId(contentTable.get(currentLevel).getNodeId());
-            String jsonName = getLevelWiseJson();
-            JSONArray testData = presenter.getTestData(jsonName);
-            presenter.generateTestData(testData, rootLevelList.get(currentLevel).getNodeId());
+            testList.clear();
         } catch (Exception e) {
             e.printStackTrace();
         }
+        try {
+            rootLevelList = contentTable;
+            contentParentList.clear();
+            presenter.removeLastNodeId();
+            int i = 0;
+            boolean found = false;
+            for (i = 0; i < rootLevelList.size(); i++)
+                if (rootLevelList.get(i).getNodeTitle().contains("" + currentLevel)) {
+                    found = true;
+                    break;
+                }
+            if (rootLevelList != null && found) {
+                if (rootLevelList.size() > i) {
+                    levelChanged.setActualLevel(rootLevelList, rootLevelList.get(i).getNodeTitle());
+                    presenter.removeLastNodeId();
+                    presenter.insertNodeId(rootLevelList.get(i).getNodeId());
+                    String jsonName = getLevelWiseJson(Integer.parseInt(rootLevelList.get(i).getNodeTitle()));
+                    isUpdate = rootLevelList.get(i).isNodeUpdate();
+                    JSONArray testData = presenter.getTestData(jsonName);
+                    presenter.generateTestData(testData, rootLevelList.get(i).getNodeId(), isUpdate);
+                }
+            } else if (rootLevelList != null) {
+                if (rootLevelList.size() > 0) {
+                    i = 0;
+                    levelChanged.setActualLevel(rootLevelList, rootLevelList.get(i).getNodeTitle());
+                    presenter.removeLastNodeId();
+                    presenter.insertNodeId(rootLevelList.get(i).getNodeId());
+                    String jsonName = getLevelWiseJson(Integer.parseInt(rootLevelList.get(i).getNodeTitle()));
+                    isUpdate = rootLevelList.get(i).isNodeUpdate();
+                    JSONArray testData = presenter.getTestData(jsonName);
+                    presenter.generateTestData(testData, rootLevelList.get(i).getNodeId(), isUpdate);
+                } else {
+                    testAdapter.notifyDataSetChanged();
+                    dismissLoadingDialog();
+                }
+            } else {
+                testAdapter.notifyDataSetChanged();
+                dismissLoadingDialog();
+            }
+
+        } catch (Exception e) {
+            dismissLoadingDialog();
+            e.printStackTrace();
+        }
+/*
+        try {
+            rootLevelList = contentTable;
+            if (rootLevelList != null) {
+                levelChanged.setActualLevel(rootLevelList.size());
+            }
+            presenter.insertNodeId(contentTable.get(currentLevel).getNodeId());
+            String jsonName = getLevelWiseJson();
+            isUpdate = rootLevelList.get(currentLevel).isNodeUpdate();
+            JSONArray testData = presenter.getTestData(jsonName);
+            presenter.generateTestData(testData, rootLevelList.get(currentLevel).getNodeId(), isUpdate);
+        } catch (Exception e) {
+            dismissLoadingDialog();
+            e.printStackTrace();
+        }
+*/
     }
 
     public void onLevelChanged() {
-        contentParentList.clear();
+        try {
+            contentParentList.clear();
+            testList.clear();
+            ib_langChange.setVisibility(View.GONE);
+            int i = 0;
+            boolean found = false;
+            for (i = 0; i < rootLevelList.size(); i++)
+                if (rootLevelList.get(i).getNodeTitle().contains("" + currentLevel)) {
+                    found = true;
+                    break;
+                }
+            if (rootLevelList != null) {
+                if (rootLevelList.size() > i) {
+                    levelChanged.setActualLevel(rootLevelList, rootLevelList.get(i).getNodeTitle());
+                    presenter.removeLastNodeId();
+                    presenter.insertNodeId(rootLevelList.get(i).getNodeId());
+                    String jsonName = getLevelWiseJson(Integer.parseInt(rootLevelList.get(i).getNodeTitle()));
+                    isUpdate = rootLevelList.get(i).isNodeUpdate();
+                    JSONArray testData = presenter.getTestData(jsonName);
+                    presenter.generateTestData(testData, rootLevelList.get(i).getNodeId(), isUpdate);
+                }
+            }
+
+        } catch (Exception e) {
+            dismissLoadingDialog();
+            e.printStackTrace();
+        }
+
+/*        contentParentList.clear();
         testList.clear();
+        ib_langChange.setVisibility(View.GONE);
         presenter.removeLastNodeId();
         presenter.insertNodeId(rootLevelList.get(currentLevel).getNodeId());
         String jsonName = getLevelWiseJson();
+        isUpdate = rootLevelList.get(currentLevel).isNodeUpdate();
         JSONArray testData = presenter.getTestData(jsonName);
-        presenter.generateTestData(testData, rootLevelList.get(currentLevel).getNodeId());
-//        presenter.getDataForList();
+        presenter.generateTestData(testData, rootLevelList.get(currentLevel).getNodeId(), isUpdate);*/
+    }
+
+    @UiThread
+    @Override
+    public void clearTestList() {
+        testList.clear();
     }
 
     @UiThread
@@ -401,13 +547,26 @@ public class TestFragment extends Fragment implements TestContract.TestView,
         }
     }
 
+    @UiThread
+    @Override
+    public void onCertificateUpdate() {
+        btn_test_dw.performClick();
+    }
+
     @Click(R.id.btn_test_dw)
     void onDownLoadClick() {
         try {
-            resName = rootLevelList.get(currentLevel).getNodeTitle();
-            resServerImageName = rootLevelList.get(currentLevel).getNodeServerImage();
+            showLoader();
+            int i = 0;
+            for (i = 0; i < rootLevelList.size(); i++)
+                if (rootLevelList.get(i).getNodeTitle().contains("" + currentLevel)) {
+                    break;
+                }
+//            resName = rootLevelList.get(currentLevel).getNodeTitle();
+            resName = getLevelWiseTestName(Integer.parseInt(rootLevelList.get(i).getNodeTitle()));
+            resServerImageName = rootLevelList.get(i).getNodeServerImage();
             downloadType = FC_Constants.TEST_DOWNLOAD;
-            presenter.downloadResource(rootLevelList.get(currentLevel).getNodeId());
+            presenter.downloadResource(rootLevelList.get(i).getNodeId());
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -468,7 +627,7 @@ public class TestFragment extends Fragment implements TestContract.TestView,
                 } else {
                     Toast.makeText(context, "Game not found", Toast.LENGTH_SHORT).show();
                 }
-            } else if (testData.getResourceType().equalsIgnoreCase(FC_Constants.OPPOSITE_WORDS)) {
+            } else if (testData.getResourceType().equalsIgnoreCase(FC_Constants.FACT_RETRIVAL)) {
                 Intent mainNew = new Intent(context, FactRetrieval_.class);
                 mainNew.putExtra("resId", testData.getResourceId());
                 mainNew.putExtra("StudentID", FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""));
@@ -606,6 +765,7 @@ public class TestFragment extends Fragment implements TestContract.TestView,
     public void hideTestDownloadBtn() {
         try {
             btn_test_dw.setVisibility(View.GONE);
+            ib_langChange.setVisibility(View.VISIBLE);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -615,8 +775,10 @@ public class TestFragment extends Fragment implements TestContract.TestView,
     @Override
     public void initializeTheIndex() {
         try {
+            dismissLoadingDialog();
             my_recycler_view.removeAllViews();
-            if (testList.size() > 0) {
+            if (testList.size() > 1) {
+                ib_langChange.setVisibility(View.VISIBLE);
                 if (testAdapter == null) {
                     testAdapter = new TestAdapter(context, testList, TestFragment.this, TestFragment.this);
                     RecyclerView.LayoutManager myLayoutManager = new GridLayoutManager(context, 1);
@@ -625,20 +787,13 @@ public class TestFragment extends Fragment implements TestContract.TestView,
                     my_recycler_view.setAdapter(testAdapter);
                 } else
                     testAdapter.notifyDataSetChanged();
-            } else
+            } else {
                 btn_test_dw.setVisibility(View.VISIBLE);
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }
-        dismissLoadingDialog();
         //        testAdapter.initializeIndex();
-    }
-
-    private void hideTestDownloadBtnOnComplete() {
-        if (rootLevelList.get(currentLevel).isDownloaded.equalsIgnoreCase("true"))
-            btn_test_dw.setVisibility(View.GONE);
-        else
-            btn_test_dw.setVisibility(View.VISIBLE);
     }
 
     @Override
@@ -736,28 +891,56 @@ public class TestFragment extends Fragment implements TestContract.TestView,
     @UiThread
     @Override
     public void displayCurrentDownloadedTest() {
-        String jsonName = getLevelWiseJson();
+        int i = 0;
+        for (i = 0; i < rootLevelList.size(); i++)
+            if (rootLevelList.get(i).getNodeTitle().contains("" + currentLevel)) {
+                break;
+            }
+//            resName = rootLevelList.get(currentLevel).getNodeTitle();
+        String jsonName = getLevelWiseJson(Integer.parseInt(rootLevelList.get(i).getNodeTitle()));
         JSONArray testData = presenter.getTestData(jsonName);
-        presenter.generateTestData(testData, rootLevelList.get(currentLevel).getNodeId());
+        presenter.generateTestData(testData, rootLevelList.get(i).getNodeId(), isUpdate);
     }
 
-    private String getLevelWiseJson() {
+    private String getLevelWiseJson(int pos) {
         String jsonName = "TestBeginnerJson.json";
-        switch (currentLevel) {
-            case 0:
+        switch (pos) {
+            case 1:
                 jsonName = "TestBeginnerJson.json";
                 break;
-            case 1:
+            case 2:
                 jsonName = "TestSubJuniorJson.json";
                 break;
-            case 2:
+            case 3:
                 jsonName = "TestJuniorJson.json";
                 break;
-            case 3:
+            case 4:
                 jsonName = "TestSubSeniorJson.json";
                 break;
-            case 4:
+            case 5:
                 jsonName = "TestSeniorJson.json";
+                break;
+        }
+        return jsonName;
+    }
+
+    private String getLevelWiseTestName(int pos) {
+        String jsonName = "TestBeginnerJson";
+        switch (pos) {
+            case 1:
+                jsonName = "Beginner Test";
+                break;
+            case 2:
+                jsonName = "SubJunior Test";
+                break;
+            case 3:
+                jsonName = "Junior Test";
+                break;
+            case 4:
+                jsonName = "SubSenior Test";
+                break;
+            case 5:
+                jsonName = "Senior Test";
                 break;
         }
         return jsonName;
@@ -823,6 +1006,7 @@ public class TestFragment extends Fragment implements TestContract.TestView,
     }
 
     @Override
+    @UiThread
     public void dismissLoadingDialog() {
         try {
             loaderVisible = false;
@@ -845,61 +1029,83 @@ public class TestFragment extends Fragment implements TestContract.TestView,
     private BlurPopupWindow downloadDialog;
     private ProgressLayout progressLayout;
     private TextView dialog_file_name;
+    ProgressBar dialog_roundProgress;
 
     @SuppressLint("SetTextI18n")
-    private void resourceDownloadDialog(Modal_FileDownloading modal_fileDownloading) {
-        downloadDialog = new BlurPopupWindow.Builder(context)
-                .setContentView(R.layout.dialog_file_downloading)
-                .setGravity(Gravity.CENTER)
-                .setDismissOnTouchBackground(false)
-                .setDismissOnClickBack(true)
-                .setScaleRatio(0.2f)
-                .setBlurRadius(10)
-                .setTintColor(0x30000000)
-                .build();
-
-        downloadDialog.show();
-
-        SimpleDraweeView iv_file_trans = downloadDialog.findViewById(R.id.iv_file_trans);
-        dialog_file_name = downloadDialog.findViewById(R.id.dialog_file_name);
-        progressLayout = downloadDialog.findViewById(R.id.dialog_progressLayout);
-        ImageRequest imageRequest = ImageRequestBuilder
-                .newBuilderWithSource(Uri.parse(""+resServerImageName))
-                .setLocalThumbnailPreviewsEnabled(false)
-                .build();
-        if(imageRequest !=null ) {
-            DraweeController controller = Fresco.newDraweeControllerBuilder()
-                    .setImageRequest(imageRequest)
+    @UiThread
+    public void resourceDownloadDialog(Modal_FileDownloading modal_fileDownloading) {
+        if (downloadDialog != null)
+            downloadDialog = null;
+        try {
+            downloadDialog = new BlurPopupWindow.Builder(context)
+                    .setContentView(R.layout.dialog_file_downloading)
+                    .setGravity(Gravity.CENTER)
+                    .setDismissOnTouchBackground(false)
+                    .setDismissOnClickBack(true)
+                    .setScaleRatio(0.2f)
+                    .setBlurRadius(10)
+                    .setTintColor(0x30000000)
                     .build();
-            iv_file_trans.setController(controller);
+
+            SimpleDraweeView iv_file_trans = downloadDialog.findViewById(R.id.iv_file_trans);
+            dialog_file_name = downloadDialog.findViewById(R.id.dialog_file_name);
+            progressLayout = downloadDialog.findViewById(R.id.dialog_progressLayout);
+            dialog_roundProgress = downloadDialog.findViewById(R.id.dialog_roundProgress);
+            ImageRequest imageRequest = ImageRequestBuilder
+                    .newBuilderWithSource(Uri.parse("" + resServerImageName))
+                    .setLocalThumbnailPreviewsEnabled(false)
+                    .build();
+            if (imageRequest != null) {
+                DraweeController controller = Fresco.newDraweeControllerBuilder()
+                        .setImageRequest(imageRequest)
+                        .setOldController(iv_file_trans.getController())
+                        .build();
+                iv_file_trans.setController(controller);
+            }
+            dialog_file_name.setText("" + resName);
+            progressLayout.setCurProgress(modal_fileDownloading.getProgress());
+            downloadDialog.show();
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-        dialog_file_name.setText("" + resName);
-        progressLayout.setCurProgress(modal_fileDownloading.getProgress());
     }
 
+    @UiThread
     @Override
     public void dismissDownloadDialog() {
-        if (downloadDialog != null)
-            downloadDialog.dismiss();
+        try {
+            if (downloadDialog != null)
+                new Handler().postDelayed(() -> {
+                    downloadDialog.dismiss();
+                    downloadDialog = null;
+                }, 300);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     BlurPopupWindow errorDialog;
+
     @UiThread
     public void showDownloadErrorDialog() {
-        errorDialog = new BlurPopupWindow.Builder(context)
-                .setContentView(R.layout.dialog_file_error_downloading)
-                .setGravity(Gravity.CENTER)
-                .setDismissOnTouchBackground(false)
-                .setDismissOnClickBack(true)
-                .bindClickListener(v -> {
-                    new Handler().postDelayed(() ->
-                            errorDialog.dismiss(), 200);
-                }, R.id.dialog_error_btn)
-                .setScaleRatio(0.2f)
-                .setBlurRadius(10)
-                .setTintColor(0x30000000)
-                .build();
-        errorDialog.show();
+        try {
+            errorDialog = new BlurPopupWindow.Builder(context)
+                    .setContentView(R.layout.dialog_file_error_downloading)
+                    .setGravity(Gravity.CENTER)
+                    .setDismissOnTouchBackground(false)
+                    .setDismissOnClickBack(true)
+                    .bindClickListener(v -> {
+                        new Handler().postDelayed(() ->
+                                errorDialog.dismiss(), 200);
+                    }, R.id.dialog_error_btn)
+                    .setScaleRatio(0.2f)
+                    .setBlurRadius(10)
+                    .setTintColor(0x30000000)
+                    .build();
+            errorDialog.show();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     @Click(R.id.btn_back)

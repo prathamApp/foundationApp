@@ -12,6 +12,7 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.RatingBar;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
@@ -40,6 +41,7 @@ public class TestAdapter extends RecyclerView.Adapter {
     public int quesIndex = 0;
     private final String TYPE_HEADER = "Header";
     private final String TYPE_SPINNER = "Spinner";
+    private final String TYPE_UPDATE = "Update";
     ArrayAdapter<String> dataAdapter;
 
     public void initializeIndex() {
@@ -74,6 +76,10 @@ public class TestAdapter extends RecyclerView.Adapter {
                 LayoutInflater spinner_layout = LayoutInflater.from(viewGroup.getContext());
                 view = spinner_layout.inflate(R.layout.certi_spinner, viewGroup, false);
                 return new TestSpinnerHolder(view);
+            case 3:
+                LayoutInflater update_layout = LayoutInflater.from(viewGroup.getContext());
+                view = update_layout.inflate(R.layout.certi_update, viewGroup, false);
+                return new TestUpdateHolder(view);
             default:
                 return null;
 
@@ -114,6 +120,14 @@ public class TestAdapter extends RecyclerView.Adapter {
         }
     }
 
+    public class TestUpdateHolder extends RecyclerView.ViewHolder {
+        Button btn_test_update;
+        TestUpdateHolder(View view) {
+            super(view);
+            btn_test_update = view.findViewById(R.id.btn_test_update);
+        }
+    }
+
     @Override
     public int getItemViewType(int position) {
         if (testList.get(position).getContentType() != null) {
@@ -122,6 +136,8 @@ public class TestAdapter extends RecyclerView.Adapter {
                     return 0;
                 case TYPE_SPINNER:
                     return 2;
+                case TYPE_UPDATE:
+                    return 3;
                 default:
                     return 1;
             }
@@ -258,6 +274,11 @@ public class TestAdapter extends RecyclerView.Adapter {
                     public void onNothingSelected(AdapterView<?> parent) {
                     }
                 });
+                break;
+            case 3:
+                TestUpdateHolder testUpdateHolder = (TestUpdateHolder) viewitemRowHolder;
+                testUpdateHolder.btn_test_update.setText("UPDATE "+testList.get(position).getEnglishQues());
+                testUpdateHolder.btn_test_update.setOnClickListener(v ->certificateClicked.onCertificateUpdate() );
                 break;
         }
 

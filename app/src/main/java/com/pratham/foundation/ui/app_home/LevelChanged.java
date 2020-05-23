@@ -1,6 +1,9 @@
 package com.pratham.foundation.ui.app_home;
 
-public interface LevelChanged {
+import com.pratham.foundation.database.domain.ContentTable;
 
-    void setActualLevel(int levelCount);
+import java.util.List;
+
+public interface LevelChanged {
+    void setActualLevel(List<ContentTable> level_List, String titleContent);
 }

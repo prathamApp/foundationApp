@@ -93,6 +93,8 @@ public class GameConstatnts implements ShowInstruction {
     public static final String PARASUMMARY = "parasummary";
     public static final boolean TRUE = true;
     public static final boolean FALSE = false;
+    public boolean onSdCard = false;
+    public static boolean onSdCard2 = false;
     public static final String START = "start";
     public static final String END = "end";
     public static final String VIDEO = "Video";
@@ -192,7 +194,7 @@ public class GameConstatnts implements ShowInstruction {
                     ((ContentPlayerActivity) context).finish();
                 }
                 if (playInsequence) {
-                    plaGame(context);
+                    plaGame(context,onSdCard2);
                 } else {
                     ((ContentPlayerActivity) context).getSupportFragmentManager().popBackStack(SequenceLayout_.class.getSimpleName(), 0);
                 }
@@ -221,14 +223,15 @@ public class GameConstatnts implements ShowInstruction {
         });
     }
 
-    public static void plaGame(Context context) {
+    public static void plaGame(Context context,boolean onSdCard) {
+        onSdCard2 = onSdCard;
         contentTable1 = null;
         if (gameList != null && (currentGameAdapterposition < (gameList.size() - 1))) {
             //currentGameAdapterposition is initialized in adapter when game is played
             currentGameAdapterposition++;
             contentTable1 = gameList.get(currentGameAdapterposition);
             if (contentTable1 != null) {
-                gameSelector(context, contentTable1);
+                gameSelector(context, contentTable1,onSdCard);
             }
         } else {
             if (FastSave.getInstance().getString(APP_SECTION,"").equalsIgnoreCase(sec_Test)) {
@@ -238,14 +241,14 @@ public class GameConstatnts implements ShowInstruction {
         }
     }
 
-    public static void plaPrevGame(Context context) {
+    public static void plaPrevGame(Context context, boolean onSdCard) {
         contentTable1 = null;
         if (gameList != null && (currentGameAdapterposition > 0)) {
             //currentGameAdapterposition is initialized in adapter when game is played
             currentGameAdapterposition--;
             contentTable1 = gameList.get(currentGameAdapterposition);
             if (contentTable1 != null) {
-                gameSelector(context, contentTable1);
+                gameSelector(context, contentTable1,onSdCard);
             }
         } else {
             if (FastSave.getInstance().getString(APP_SECTION,"").equalsIgnoreCase(sec_Test)) {
@@ -255,7 +258,7 @@ public class GameConstatnts implements ShowInstruction {
         }
     }
 
-    public static void gameSelector(Context context, ContentTable contentTable) {
+    public static void gameSelector(Context context, ContentTable contentTable, boolean onSdCard) {
         contentTable1 = contentTable;
         instructionsDialog = new InstructionsDialog(getGameConstantInstance(), context, contentTable1.getResourceType());
         instructionsDialog.show();
@@ -266,7 +269,7 @@ public class GameConstatnts implements ShowInstruction {
         bundle.putString("resId", contentTable1.getResourceId());
         bundle.putString("contentName", contentTable1.getNodeTitle());
         bundle.putString("sttLang", contentTable1.getContentLanguage());
-        bundle.putBoolean("onSdCard", true);
+        bundle.putBoolean("onSdCard", onSdCard);
         bundle.putString("jsonName", contentTable1.getResourceType());
 
         switch (contentTable1.getResourceType()) {
@@ -364,7 +367,7 @@ public class GameConstatnts implements ShowInstruction {
             bundle.putString("resId", contentTable1.getResourceId());
             bundle.putString("contentName", contentTable1.getNodeTitle());
             bundle.putString("sttLang", contentTable1.getContentLanguage());
-            bundle.putBoolean("onSdCard", true);
+            bundle.putBoolean("onSdCard", onSdCard);
             bundle.putString("jsonName", contentTable1.getResourceType());
             final Handler handler = new Handler();
             switch (contentTable1.getResourceType()) {
@@ -419,7 +422,7 @@ public class GameConstatnts implements ShowInstruction {
                     intent.putExtra("StudentID", FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""));
                     intent.putExtra("resId", contentTable1.getResourceId());
                     intent.putExtra("contentName", contentTable1.getNodeTitle());
-                    intent.putExtra("onSdCard", true);
+                    intent.putExtra("onSdCard", onSdCard);
                     context.startActivity(intent);
                     handler.postDelayed(new Runnable() {
                         @Override

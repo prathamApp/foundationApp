@@ -47,6 +47,10 @@ public interface TestContract {
 
         void testOpenData(ContentTable testData);
 
+        void clearTestList();
+
+        void setQuesTranslateLang(String[] languagesArray);
+
 //        void setBotNodeId(String botID);
     }
 
@@ -82,7 +86,7 @@ public interface TestContract {
 
         JSONArray getTestData(String jsonName);
 
-        void generateTestData(JSONArray testData, String nodeId);
+        void generateTestData(JSONArray testData, String nodeId, boolean isUpdate);
 
         void getTempData(String nodeId);
 
@@ -95,5 +99,6 @@ public interface TestContract {
         ContentTable getRandomData(String resourceType, String nodeKeywords);
 
         void insertTestSession();
+
     }
 }

@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
+<RelativeLayout android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:id="@+id/certificate_card_view"
     android:layout_marginTop="@dimen/_5sdp"
@@ -10,7 +9,8 @@
     android:layout_marginEnd="@dimen/_15sdp"
     android:gravity="center"
     android:layout_gravity="center"
-    android:background="@drawable/card_color_bg6">
+    android:background="@drawable/card_color_bg6"
+    xmlns:android="http://schemas.android.com/apk/res/android">
 
     <com.pratham.foundation.customView.SansTextViewBold
         android:id="@+id/assess_data"
@@ -26,14 +26,15 @@
 
     <RatingBar
         android:id="@+id/ratingStars"
-        android:theme="@style/Widget.AppCompat.RatingBar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/assess_data"
-        android:visibility="visible"
         android:layout_centerInParent="true"
-        android:numStars="5"
-        android:stepSize="1"
+        android:layout_marginVertical="@dimen/_10sdp"
         android:isIndicator="true"
-        android:progressTint="@color/colorAccentDark" />
+        android:numStars="5"
+        android:progressTint="@color/ratingFilled"
+        android:stepSize="1"
+        android:theme="@style/Widget.AppCompat.RatingBar"
+        android:visibility="visible"/>
 </RelativeLayout>

@@ -30,6 +30,8 @@ public interface SplashContract {
         void gotoNextActivity();
 
         void preShowBtn();
+
+        void show_STT_Dialog();
     }
 
     interface SplashPresenter {

@@ -426,7 +426,7 @@ public class Hive_game extends Fragment implements Hive_game_contract.Hive_game_
     public void next() {
         int diff = checkAllOptionsSelected();
         if (diff > 0) {
-            CustomLodingDialog dialog = new CustomLodingDialog(getActivity()/*,R.style.ExitDialogStyle*/);
+            CustomLodingDialog dialog = new CustomLodingDialog(getActivity(), R.style.FC_DialogStyle);
             dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
             dialog.setContentView(R.layout.fc_custom_dialog);
             Objects.requireNonNull(dialog.getWindow()).setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));

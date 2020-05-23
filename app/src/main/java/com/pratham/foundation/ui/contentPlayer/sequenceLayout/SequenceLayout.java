@@ -72,6 +72,7 @@ public class SequenceLayout extends Fragment implements SequeanceLayoutContract.
         if (bundle != null) {
             nodeID = bundle.getString("nodeID");
             title = bundle.getString("title");
+            onSdCard = bundle.getBoolean("onSdCard");
             getListResData(nodeID);
             sequenceLayoutPresenter.setView(this);
             txt_seq_title.setText(title);
@@ -121,7 +122,7 @@ public class SequenceLayout extends Fragment implements SequeanceLayoutContract.
         }
         GameConstatnts.currentGameAdapterposition = -1;
         playInsequence = true;
-        GameConstatnts.plaGame(getActivity());
+        GameConstatnts.plaGame(getActivity(),onSdCard);
     }
 
     @Override
@@ -158,7 +159,7 @@ public class SequenceLayout extends Fragment implements SequeanceLayoutContract.
 
     public void playGamesAfterDialog() {
         if (onConentClickeditem != null) {
-            GameConstatnts.gameSelector(getActivity(), onConentClickeditem);
+            GameConstatnts.gameSelector(getActivity(), onConentClickeditem,onSdCard);
            /* Bundle bundle = new Bundle();
             bundle.putString("contentPath", onConentClickeditem.getResourcePath());
             bundle.putString("StudentID", FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""));
@@ -265,7 +266,7 @@ public class SequenceLayout extends Fragment implements SequeanceLayoutContract.
             bundle.putString("resId", onConentClickeditem.getResourceId());
             bundle.putString("contentName", onConentClickeditem.getNodeTitle());
             bundle.putString("sttLang", onConentClickeditem.getContentLanguage());
-            bundle.putBoolean("onSdCard", true);
+            bundle.putBoolean("onSdCard", onSdCard);
             bundle.putString("jsonName", onConentClickeditem.getResourceType());
             switch (onConentClickeditem.getResourceType()) {
                 case GameConstatnts.READ_VOCAB_ANDROID:

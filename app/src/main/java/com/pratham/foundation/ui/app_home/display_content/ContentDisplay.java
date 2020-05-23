@@ -35,6 +35,7 @@ import com.pratham.foundation.customView.BlurPopupDialog.BlurPopupWindow;
 import com.pratham.foundation.customView.GridSpacingItemDecoration;
 import com.pratham.foundation.customView.display_image_dialog.CustomLodingDialog;
 import com.pratham.foundation.customView.progress_layout.ProgressLayout;
+import com.pratham.foundation.database.BackupDatabase;
 import com.pratham.foundation.database.domain.ContentTable;
 import com.pratham.foundation.modalclasses.EventMessage;
 import com.pratham.foundation.modalclasses.Modal_FileDownloading;
@@ -49,7 +50,6 @@ import com.pratham.foundation.ui.contentPlayer.reading_rhyming.ReadingRhymesActi
 import com.pratham.foundation.ui.contentPlayer.reading_story_activity.ReadingStoryActivity_;
 import com.pratham.foundation.ui.contentPlayer.video_view.ActivityVideoView_;
 import com.pratham.foundation.ui.contentPlayer.vocabulary_qa.ReadingVocabularyActivity_;
-import com.pratham.foundation.ui.contentPlayer.web_view.WebViewActivity;
 import com.pratham.foundation.ui.contentPlayer.web_view.WebViewActivity_;
 import com.pratham.foundation.utility.FC_Constants;
 import com.pratham.foundation.utility.FC_Utility;
@@ -182,24 +182,24 @@ public class ContentDisplay extends BaseActivity implements ContentContract.Cont
     @SuppressLint("SetTextI18n")
     private void changeBG(int levelNo) {
         switch (levelNo) {
-            case 0:
-                header_rl.setBackground(homeHeader0);
+            case 1:
+//                header_rl.setBackground(homeHeader0);
                 iv_level.setImageResource(R.drawable.level_1);
                 break;
-            case 1:
-                header_rl.setBackground(homeHeader1);
+            case 2:
+//                header_rl.setBackground(homeHeader1);
                 iv_level.setImageResource(R.drawable.level_2);
                 break;
-            case 2:
-                header_rl.setBackground(homeHeader2);
+            case 3:
+//                header_rl.setBackground(homeHeader2);
                 iv_level.setImageResource(R.drawable.level_3);
                 break;
-            case 3:
-                header_rl.setBackground(homeHeader3);
+            case 4:
+//                header_rl.setBackground(homeHeader3);
                 iv_level.setImageResource(R.drawable.level_4);
                 break;
-            case 4:
-                header_rl.setBackground(homeHeader4);
+            case 5:
+//                header_rl.setBackground(homeHeader4);
                 iv_level.setImageResource(R.drawable.level_5);
                 break;
         }
@@ -353,11 +353,12 @@ public class ContentDisplay extends BaseActivity implements ContentContract.Cont
 
     @UiThread
     @Override
-    public void onPreResOpenClicked(int position, String nId, String title) {
+    public void onPreResOpenClicked(int position, String nId, String title, boolean onSDCard) {
         ButtonClickSound.start();
         Intent mainNew = new Intent(ContentDisplay.this, ContentPlayerActivity_.class);
         mainNew.putExtra("nodeID", nId);
         mainNew.putExtra("title", title);
+        mainNew.putExtra("onSDCard", onSDCard);
         startActivity(mainNew);
 //        startActivity(mainNew, ActivityOptions.makeSceneTransitionAnimation(ContentDisplay.this).toBundle());
     }
@@ -515,7 +516,7 @@ public class ContentDisplay extends BaseActivity implements ContentContract.Cont
                 intent.putExtra("StudentID", FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""));
                 intent.putExtra("resId", ContentTableList.get(position).getResourceId());
                 intent.putExtra("contentName", ContentTableList.get(position).getNodeTitle());
-                intent.putExtra("onSdCard", true);
+                intent.putExtra("onSdCard", ContentTableList.get(position).isOnSDCard());
 //                startActivity(intent, ActivityOptions.makeSceneTransitionAnimation(ContentDisplay.this).toBundle());
                 startActivity(intent);
             } /*else if (ContentTableList.get(position).getResourceType().equalsIgnoreCase(FC_Constants.CHATBOT_ANDROID)) {
@@ -594,36 +595,36 @@ public class ContentDisplay extends BaseActivity implements ContentContract.Cont
     @SuppressLint("SetTextI18n")
     @UiThread
     public void resourceDownloadDialog(Modal_FileDownloading modal_fileDownloading) {
-        if (downloadDialog == null) {
-            downloadDialog = new BlurPopupWindow.Builder(ContentDisplay.this)
-                    .setContentView(R.layout.dialog_file_downloading)
-                    .setGravity(Gravity.CENTER)
-                    .setDismissOnTouchBackground(false)
-                    .setDismissOnClickBack(true)
-                    .setScaleRatio(0.2f)
-                    .setBlurRadius(10)
-                    .setTintColor(0x30000000)
-                    .build();
+        if (downloadDialog != null)
+            downloadDialog = null;
+        downloadDialog = new BlurPopupWindow.Builder(ContentDisplay.this)
+                .setContentView(R.layout.dialog_file_downloading)
+                .setGravity(Gravity.CENTER)
+                .setDismissOnTouchBackground(false)
+                .setDismissOnClickBack(true)
+                .setScaleRatio(0.2f)
+                .setBlurRadius(10)
+                .setTintColor(0x30000000)
+                .build();
 
-            SimpleDraweeView iv_file_trans = downloadDialog.findViewById(R.id.iv_file_trans);
-            dialog_file_name = downloadDialog.findViewById(R.id.dialog_file_name);
-            progressLayout = downloadDialog.findViewById(R.id.dialog_progressLayout);
-            dialog_roundProgress = downloadDialog.findViewById(R.id.dialog_roundProgress);
-            ImageRequest imageRequest = ImageRequestBuilder
-                    .newBuilderWithSource(Uri.parse("" + resServerImageName))
-                    .setLocalThumbnailPreviewsEnabled(false)
+        SimpleDraweeView iv_file_trans = downloadDialog.findViewById(R.id.iv_file_trans);
+        dialog_file_name = downloadDialog.findViewById(R.id.dialog_file_name);
+        progressLayout = downloadDialog.findViewById(R.id.dialog_progressLayout);
+        dialog_roundProgress = downloadDialog.findViewById(R.id.dialog_roundProgress);
+        ImageRequest imageRequest = ImageRequestBuilder
+                .newBuilderWithSource(Uri.parse("" + resServerImageName))
+                .setLocalThumbnailPreviewsEnabled(false)
+                .build();
+        if (imageRequest != null) {
+            DraweeController controller = Fresco.newDraweeControllerBuilder()
+                    .setImageRequest(imageRequest)
+                    .setOldController(iv_file_trans.getController())
                     .build();
-            if (imageRequest != null) {
-                DraweeController controller = Fresco.newDraweeControllerBuilder()
-                        .setImageRequest(imageRequest)
-                        .setOldController(iv_file_trans.getController())
-                        .build();
-                iv_file_trans.setController(controller);
-            }
-            dialog_file_name.setText("" + resName);
-            progressLayout.setCurProgress(modal_fileDownloading.getProgress());
-            downloadDialog.show();
+            iv_file_trans.setController(controller);
         }
+        dialog_file_name.setText("" + resName);
+        progressLayout.setCurProgress(modal_fileDownloading.getProgress());
+        downloadDialog.show();
     }
 
 /*    @Override
@@ -647,10 +648,10 @@ public class ContentDisplay extends BaseActivity implements ContentContract.Cont
             } else if (message.getMessage().equalsIgnoreCase(FC_Constants.FILE_DOWNLOAD_UPDATE)) {
                 if (progressLayout != null)
                     progressLayout.setCurProgress(message.getModal_fileDownloading().getProgress());
-            } else if (message.getMessage().equalsIgnoreCase(FC_Constants.FILE_DOWNLOAD_ERROR)) {
+            } else if (message.getMessage().equalsIgnoreCase(FC_Constants.FILE_DOWNLOAD_ERROR) ||
+                    message.getMessage().equalsIgnoreCase(FC_Constants.UNZIPPING_ERROR) ||
+                    message.getMessage().equalsIgnoreCase(FC_Constants.RESPONSE_CODE_ERROR)) {
                 dismissDownloadDialog();
-                showDownloadErrorDialog();
-            } else if (message.getMessage().equalsIgnoreCase(FC_Constants.UNZIPPING_ERROR)) {
                 showDownloadErrorDialog();
             } else if (message.getMessage().equalsIgnoreCase(FC_Constants.UNZIPPING_DATA_FILE)) {
                 showZipLoader();
@@ -658,10 +659,12 @@ public class ContentDisplay extends BaseActivity implements ContentContract.Cont
                 dialog_file_name.setText("Updating Data");
                 resName = "";
                 ContentTableList.get(tempDownloadPos).setIsDownloaded("true");
+                ContentTableList.get(tempDownloadPos).setNodeUpdate(false);
                 new Handler().postDelayed(() -> {
                     dismissDownloadDialog();
                     contentAdapter.notifyItemChanged(tempDownloadPos, ContentTableList.get(tempDownloadPos));
                 }, 500);
+                BackupDatabase.backup(this);
             }
 
         }
@@ -669,17 +672,26 @@ public class ContentDisplay extends BaseActivity implements ContentContract.Cont
 
     @UiThread
     public void dismissDownloadDialog() {
-        if(downloadDialog.isShown()) {
-            downloadDialog.dismiss();
-            downloadDialog = null;
+        try {
+            if (downloadDialog != null)
+                new Handler().postDelayed(() -> {
+                    downloadDialog.dismiss();
+                    downloadDialog = null;
+                }, 300);
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 
     @UiThread
     public void showZipLoader() {
-        dialog_file_name.setText("Unzipping...\nPlease wait" + resName);
-        progressLayout.setVisibility(View.GONE);
-        dialog_roundProgress.setVisibility(View.VISIBLE);
+        try {
+            dialog_file_name.setText("Unzipping...\n" + resName + "\nPlease wait");
+            progressLayout.setVisibility(View.GONE);
+            dialog_roundProgress.setVisibility(View.VISIBLE);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     public CustomLodingDialog myLoadingDialog;

@@ -12,6 +12,7 @@ import com.androidnetworking.interfaces.JSONArrayRequestListener;
 import com.androidnetworking.interfaces.StringRequestListener;
 import com.pratham.foundation.ApplicationClass;
 import com.pratham.foundation.interfaces.API_Content_Result;
+import com.pratham.foundation.utility.FC_Utility;
 
 import org.json.JSONArray;
 
@@ -19,6 +20,8 @@ import java.io.File;
 import java.util.concurrent.Executors;
 
 import static com.pratham.foundation.ApplicationClass.App_Thumbs_Path;
+import static com.pratham.foundation.utility.FC_Constants.DEVICE_ID_STR;
+import static com.pratham.foundation.utility.FC_Constants.rootParentId;
 
 public class API_Content {
 
@@ -34,8 +37,9 @@ public class API_Content {
     public void getAPIContent(final String requestType, String url, String nodeId) {
         try {
             String url_id;
-            url_id = url + "" + nodeId;
+            url_id = url + nodeId +DEVICE_ID_STR+ FC_Utility.getDeviceID();
             Log.d("API_Content_LOG", "getAPIContent: "+nodeId);
+            Log.d("API_Content_LOG", "url_id: "+url_id);
             AndroidNetworking.get(url_id)
                     .addHeaders("Content-Type", "application/json")
                     .build()
@@ -63,10 +67,43 @@ public class API_Content {
         }
     }
 
+//    public void getAPIContentTemp(final String requestType, String url, String nodeId) {
+//        try {
+//            String url_id;
+////            url_id = url + nodeId +DEVICE_ID_STR+ FC_Utility.getDeviceID();
+//            url_id =  "http://devposapi.prathamopenschool.org/api/content/downloadv3?id=55262&deviceid=1";
+//            Log.d("API_Content_LOG", "getAPIContent: "+nodeId);
+//            AndroidNetworking.get(url_id)
+//                    .addHeaders("Content-Type", "application/json")
+//                    .build()
+//                    .getAsString(new StringRequestListener() {
+//                        @Override
+//                        public void onResponse(String response) {
+//                            if (apiContentResult != null)
+//                                apiContentResult.receivedContent(requestType, response);
+//                        }
+//
+//                        @Override
+//                        public void onError(ANError anError) {
+//                            try {
+//                                Log.d("Error:", anError.getErrorDetail());
+//                                // Log.d("Error::", anError.getResponse().toString());
+//                            } catch (Exception e) {
+//                                e.printStackTrace();
+//                            }
+//                            if (apiContentResult != null)
+//                                apiContentResult.receivedError(requestType);
+//                        }
+//                    });
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+//    }
+
     public void getAPILanguage(final String requestType, String url) {
         try {
             String url_id;
-            url_id = url + "" + 4030;
+            url_id = url + rootParentId +DEVICE_ID_STR+ FC_Utility.getDeviceID();
             Log.d("API_Content_LOG", "getAPIContent: "+url_id);
             AndroidNetworking.get(url_id)
                     .addHeaders("Content-Type", "application/json")

@@ -1,5 +1,6 @@
 package com.pratham.foundation.ui.bottom_fragment;
 
+import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -27,6 +28,8 @@ import com.pratham.foundation.ApplicationClass;
 import com.pratham.foundation.R;
 import com.pratham.foundation.async.DownloadData;
 import com.pratham.foundation.customView.progress_layout.ProgressLayout;
+import com.pratham.foundation.database.AppDatabase;
+import com.pratham.foundation.database.BackupDatabase;
 import com.pratham.foundation.database.domain.Student;
 import com.pratham.foundation.interfaces.SplashInterface;
 import com.pratham.foundation.modalclasses.EventMessage;
@@ -35,6 +38,7 @@ import com.pratham.foundation.ui.bottom_fragment.add_student.AddStudentFragment;
 import com.pratham.foundation.ui.selectSubject.SelectSubject_;
 import com.pratham.foundation.ui.splash_activity.SplashActivity;
 import com.pratham.foundation.utility.FC_Constants;
+import com.pratham.foundation.utility.FC_Utility;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Bean;
@@ -52,6 +56,7 @@ import java.util.UUID;
 
 import static com.pratham.foundation.ApplicationClass.ButtonClickSound;
 import static com.pratham.foundation.utility.FC_Constants.INDIVIDUAL_MODE;
+import static com.pratham.foundation.utility.FC_Constants.SPLASH_OPEN;
 
 
 @EFragment(R.layout.student_list_fragment)
@@ -77,6 +82,8 @@ public class BottomStudentsFragment extends BottomSheetDialogFragment
 
     @AfterViews
     public void initialize() {
+        getActivity().getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        getActivity().getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_HIDE_NAVIGATION);
         presenter.setView(BottomStudentsFragment.this);
         btn_download_all_data.setVisibility(View.GONE);
         studentList = new ArrayList<>();
@@ -91,7 +98,7 @@ public class BottomStudentsFragment extends BottomSheetDialogFragment
     }
 
     private void hideSystemUI() {
-        getActivity().getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
+        Objects.requireNonNull(getActivity()).getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
         getActivity().getWindow().getDecorView().setSystemUiVisibility(
                 View.SYSTEM_UI_FLAG_FULLSCREEN
@@ -132,7 +139,10 @@ public class BottomStudentsFragment extends BottomSheetDialogFragment
     public void onDismiss(DialogInterface dialog) {
         super.onDismiss(dialog);
         try {
-            Objects.requireNonNull(getActivity()).onBackPressed();
+            EventMessage eventMessage = new EventMessage();
+            eventMessage.setMessage(FC_Constants.BOTTOM_FRAGMENT_CLOSED);
+            EventBus.getDefault().post(eventMessage);
+//            Objects.requireNonNull(getActivity()).onBackPressed();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -161,6 +171,7 @@ public class BottomStudentsFragment extends BottomSheetDialogFragment
         }
     }
 
+    @SuppressLint("SetTextI18n")
     @UiThread
     public void setProgressDailog() {
         progress = new Dialog(context);
@@ -179,6 +190,7 @@ public class BottomStudentsFragment extends BottomSheetDialogFragment
         progress.show();
     }
 
+    @SuppressLint("SetTextI18n")
     @UiThread
     @Subscribe
     public void messageRecieved(EventMessage message) {
@@ -218,7 +230,8 @@ public class BottomStudentsFragment extends BottomSheetDialogFragment
         }
         SplashActivity.fragmentAddStudentOpenFlg = true;
         AddStudentFragment addStudentFragment = AddStudentFragment.newInstance(this);
-        addStudentFragment.show(getActivity().getSupportFragmentManager(), AddStudentFragment.class.getSimpleName());
+        addStudentFragment.show(Objects.requireNonNull(getActivity()).getSupportFragmentManager(),
+                AddStudentFragment.class.getSimpleName());
     }
 
     @Override
@@ -250,7 +263,7 @@ public class BottomStudentsFragment extends BottomSheetDialogFragment
 
     @UiThread
     public void showProgressDialog() {
-        if(progressDialog == null) {
+        if (progressDialog == null) {
             progressDialog = new ProgressDialog(getActivity());
             progressDialog.setCanceledOnTouchOutside(false);
             progressDialog.setMessage("Loading... Please wait...");
@@ -276,10 +289,25 @@ public class BottomStudentsFragment extends BottomSheetDialogFragment
     public void dismissProgressDialog2() {
         try {
             new Handler().postDelayed(() -> {
-            if (progress != null && progress.isShowing())
-                progress.dismiss();
-        }, 1000);
+                if (progress != null && progress.isShowing())
+                    progress.dismiss();
+            }, 1000);
         } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void endSession() {
+        try {
+            String curSession = AppDatabase.appDatabase.getStatusDao().getValue("CurrentSession");
+            String toDateTemp = AppDatabase.appDatabase.getSessionDao().getToDate(curSession);
+            if (toDateTemp.equalsIgnoreCase("na")) {
+                AppDatabase.appDatabase.getSessionDao().UpdateToDate(curSession, FC_Utility.getCurrentDateTime());
+            }
+            BackupDatabase.backup(getActivity());
+        } catch (Exception e) {
+            String curSession = AppDatabase.appDatabase.getStatusDao().getValue("CurrentSession");
+            AppDatabase.appDatabase.getSessionDao().UpdateToDate(curSession, FC_Utility.getCurrentDateTime());
             e.printStackTrace();
         }
     }
@@ -292,13 +320,19 @@ public class BottomStudentsFragment extends BottomSheetDialogFragment
         } catch (IllegalStateException e) {
             e.printStackTrace();
         }
+        if (!SPLASH_OPEN)
+            endSession();
+//        EventMessage eventMessage = new EventMessage();
+//        eventMessage.setMessage(FC_Constants.BOTTOM_FRAGMENT_END_SESSION);
+//        EventBus.getDefault().post(eventMessage);
         showProgressDialog();
         String currentSession = "" + UUID.randomUUID().toString();
         FastSave.getInstance().saveString(FC_Constants.LOGIN_MODE, INDIVIDUAL_MODE);
-        FastSave.getInstance().saveString(FC_Constants.CURRENT_SESSION, ""+currentSession);
-        FastSave.getInstance().saveString(FC_Constants.CURRENT_STUDENT_ID, ""+studentId);
-        FastSave.getInstance().saveString(FC_Constants.CURRENT_STUDENT_NAME, ""+studentName);
+        FastSave.getInstance().saveString(FC_Constants.CURRENT_SESSION, "" + currentSession);
+        FastSave.getInstance().saveString(FC_Constants.CURRENT_STUDENT_ID, "" + studentId);
+        FastSave.getInstance().saveString(FC_Constants.CURRENT_STUDENT_NAME, "" + studentName);
         presenter.updateStudentData();
+        SPLASH_OPEN = false;
     }
 
     @UiThread

@@ -86,7 +86,7 @@ public class PullDataFragment extends Fragment implements PullDataContract.PullD
                 prgrms.add(mp.getProgramName());
             }
             ArrayAdapter arrayStateAdapter = new ArrayAdapter(Objects.requireNonNull(Objects.requireNonNull(getActivity())), android.R.layout.simple_spinner_item, prgrms);
-            arrayStateAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+            arrayStateAdapter.setDropDownViewResource(R.layout.custom_spinner);
             programSpinner.setAdapter(arrayStateAdapter);
             programSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                 @Override

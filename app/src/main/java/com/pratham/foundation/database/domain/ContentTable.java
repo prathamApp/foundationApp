@@ -18,7 +18,7 @@ public class ContentTable implements Serializable {
     @PrimaryKey
     @SerializedName("nodeid")
     public String nodeId;
-    @SerializedName("level")
+    @SerializedName("contentlevel")
     public String level;
     @SerializedName("resourceid")
     public String resourceId;
@@ -28,6 +28,8 @@ public class ContentTable implements Serializable {
     public String nodeDesc;
     @SerializedName("nodetype")
     public String nodeType;
+    @SerializedName("cont_engtitle")
+    public String nodeEnglishTitle;
     @SerializedName("nodetitle")
     public String nodeTitle;
     @SerializedName("resourcepath")
@@ -40,33 +42,37 @@ public class ContentTable implements Serializable {
     public String nodeImage;
     @SerializedName("nodeage")
     public String nodeAge;
+    @SerializedName("nodelang")
+    public String contentLanguage;
     @SerializedName("version")
     public String version;
+    @SerializedName("orignodeversion")
+    public String origNodeVersion;
+    @SerializedName("subject")
+    public String subject;
+    @SerializedName("seq_no")
+    public int seq_no;
+    @SerializedName("nodeKeyword")
+    public String nodeKeywords;
     public String isDownloaded;
     public String contentType;
-    public String contentLanguage;
-    public String nodeKeywords;
     @Ignore
     public String nodePercentage;
+    @Ignore
+    public boolean nodeUpdate = false;
     private boolean onSDCard = false;
 
     @Nullable
     @Ignore
-    public List<ContentTable> nodelist = null;
+    public List<ContentTable> contentlist = null;
 
-    public String getVersion() {
-        return version;
-    }
 
-    public void setVersion(String version) {
-        this.version = version;
-    }
-
+    @NonNull
     public String getNodeId() {
         return nodeId;
     }
 
-    public void setNodeId(String nodeId) {
+    public void setNodeId(@NonNull String nodeId) {
         this.nodeId = nodeId;
     }
 
@@ -108,6 +114,14 @@ public class ContentTable implements Serializable {
 
     public void setNodeType(String nodeType) {
         this.nodeType = nodeType;
+    }
+
+    public String getNodeEnglishTitle() {
+        return nodeEnglishTitle;
+    }
+
+    public void setNodeEnglishTitle(String nodeEnglishTitle) {
+        this.nodeEnglishTitle = nodeEnglishTitle;
     }
 
     public String getNodeTitle() {
@@ -158,6 +172,48 @@ public class ContentTable implements Serializable {
         this.nodeAge = nodeAge;
     }
 
+    public String getContentLanguage() {
+        return contentLanguage;
+    }
+
+    public void setContentLanguage(String contentLanguage) {
+        this.contentLanguage = contentLanguage;
+    }
+
+    public String getVersion() {
+        return version;
+    }
+
+    public void setVersion(String version) {
+        this.version = version;
+    }
+
+    public String getOrigNodeVersion() {
+        return origNodeVersion;
+    }
+
+    public void setOrigNodeVersion(String origNodeVersion) { this.origNodeVersion = origNodeVersion; }
+
+    public String getSubject() { return subject; }
+
+    public void setSubject(String subject) { this.subject = subject; }
+
+    public int getSeq_no() {
+        return seq_no;
+    }
+
+    public void setSeq_no(int seq_no) {
+        this.seq_no = seq_no;
+    }
+
+    public String getNodeKeywords() {
+        return nodeKeywords;
+    }
+
+    public void setNodeKeywords(String nodeKeywords) {
+        this.nodeKeywords = nodeKeywords;
+    }
+
     public String getIsDownloaded() {
         return isDownloaded;
     }
@@ -174,18 +230,12 @@ public class ContentTable implements Serializable {
         this.contentType = contentType;
     }
 
-    public String getContentLanguage() {
-        return contentLanguage;
+    public String getNodePercentage() {
+        return nodePercentage;
     }
 
-    public void setContentLanguage(String contentLanguage) { this.contentLanguage = contentLanguage;    }
-
-    public String getNodeKeywords() {
-        return nodeKeywords;
-    }
-
-    public void setNodeKeywords(String nodeKeywords) {
-        this.nodeKeywords = nodeKeywords;
+    public void setNodePercentage(String nodePercentage) {
+        this.nodePercentage = nodePercentage;
     }
 
     public boolean isOnSDCard() {
@@ -196,19 +246,20 @@ public class ContentTable implements Serializable {
         this.onSDCard = onSDCard;
     }
 
+    public boolean isNodeUpdate() {
+        return nodeUpdate;
+    }
+
+    public void setNodeUpdate(boolean nodeUpdate) {
+        this.nodeUpdate = nodeUpdate;
+    }
+
+    @Nullable
     public List<ContentTable> getNodelist() {
-        return nodelist;
+        return contentlist;
     }
 
-    public void setNodelist(List<ContentTable> nodelist) {
-        this.nodelist = nodelist;
-    }
-
-    public String getNodePercentage() {
-        return nodePercentage;
-    }
-
-    public void setNodePercentage(String nodePercentage) {
-        this.nodePercentage = nodePercentage;
+    public void setNodelist(@Nullable List<ContentTable> contentlist) {
+        this.contentlist = contentlist;
     }
 }

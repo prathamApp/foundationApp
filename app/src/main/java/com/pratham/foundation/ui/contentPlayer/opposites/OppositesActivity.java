@@ -12,6 +12,7 @@ import android.view.Window;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -59,6 +60,8 @@ public class OppositesActivity extends BaseActivity
     CardView bottomContainer;
     @ViewById(R.id.topContainer)
     CardView topContainer;
+    @ViewById(R.id.btn_back)
+    ImageButton btn_back;
 
     CustomLodingDialog nextDialog;
     Context mContext;
@@ -97,6 +100,7 @@ public class OppositesActivity extends BaseActivity
             readingContentPath = ApplicationClass.foundationPath + gameFolderPath + "/" + contentPath + "/";
 
         tvContentTitle.setText("" + contentTitle);
+        tvContentTitle.setSelected(true);
 
         try {
             presenter.fetchJsonData(readingContentPath);
@@ -221,6 +225,11 @@ public class OppositesActivity extends BaseActivity
                 nextDialog.dismiss();
             });
         }
+    }
+
+    @Click(R.id.btn_back)
+    public void backArrowPressed(){
+        onBackPressed();
     }
 
     @Override

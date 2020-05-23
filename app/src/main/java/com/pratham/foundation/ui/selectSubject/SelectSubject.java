@@ -5,23 +5,26 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Handler;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.Gravity;
 import android.view.View;
+import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.pratham.foundation.BaseActivity;
 import com.pratham.foundation.R;
 import com.pratham.foundation.customView.BlurPopupDialog.BlurPopupWindow;
 import com.pratham.foundation.customView.GridSpacingItemDecoration;
+import com.pratham.foundation.customView.display_image_dialog.CustomLodingDialog;
 import com.pratham.foundation.database.domain.ContentTable;
 import com.pratham.foundation.services.shared_preferences.FastSave;
 import com.pratham.foundation.ui.app_home.HomeActivity_;
@@ -36,9 +39,11 @@ import org.androidannotations.annotations.ViewById;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import static com.pratham.foundation.ApplicationClass.BackBtnSound;
 import static com.pratham.foundation.ApplicationClass.ButtonClickSound;
+import static com.pratham.foundation.utility.FC_Constants.APP_LANGUAGE_SELECTED;
 import static com.pratham.foundation.utility.FC_Constants.currentLevel;
 import static com.pratham.foundation.utility.FC_Constants.currentSubjectFolder;
 import static com.pratham.foundation.utility.FC_Constants.gameFolderPath;
@@ -59,16 +64,18 @@ public class SelectSubject extends BaseActivity implements
     private Context context;
     SelectSubjectAdapter subjectAdapter;
     String studName;
+    List<ContentTable> subjectList;
 
     @AfterViews
     protected void initiate() {
         //overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
         context = SelectSubject.this;
+        subjectList = new ArrayList<>();
         Configuration config = getResources().getConfiguration();
         FC_Constants.TAB_LAYOUT = config.smallestScreenWidthDp > 425;
-        List<ContentTable> subjectList = presenter.getSubjectList();
-
         presenter.setView(SelectSubject.this);
+
+        showLoader();
 
         if (FastSave.getInstance().getString(FC_Constants.LOGIN_MODE, FC_Constants.GROUP_MODE).contains("group"))
             studName = FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_NAME, "");
@@ -76,18 +83,77 @@ public class SelectSubject extends BaseActivity implements
             studName = FastSave.getInstance().getString(
                     FC_Constants.CURRENT_STUDENT_NAME, "").split(" ")[0];
         name.setText(/*getResources().getString(R.string.Welcome) + " " + */studName + ".");
-        subjectAdapter = new SelectSubjectAdapter(this, subjectList);
-        RecyclerView.LayoutManager mLayoutManager = new GridLayoutManager(this, 1);
-        subject_recycler.setLayoutManager(mLayoutManager);
 
-        int dp = 12;
-        if (FC_Constants.TAB_LAYOUT)
-            dp = 20;
+//        startActivity();
+    }
 
-        subject_recycler.addItemDecoration(new GridSpacingItemDecoration(
-                1, dpToPx(this, dp), true));
-        subject_recycler.setItemAnimator(new DefaultItemAnimator());
-        subject_recycler.setAdapter(subjectAdapter);
+    private void startActivity() {
+        subjectList = new ArrayList<>();
+        if(!FastSave.getInstance().getBoolean(APP_LANGUAGE_SELECTED, false))
+            langChangeButtonClick();
+        presenter.getSubjectList();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        subjectList.clear();
+        if(!FastSave.getInstance().getBoolean(APP_LANGUAGE_SELECTED, false))
+            langChangeButtonClick();
+        presenter.getSubjectList();
+    }
+
+    @Override
+    public void initializeSubjectList(List<ContentTable> subjectList) {
+        this.subjectList.clear();
+        this.subjectList.addAll(subjectList);
+    }
+
+    @UiThread
+    @Override
+    public void notifySubjAdapter() {
+        if (subjectAdapter == null) {
+            subjectAdapter = new SelectSubjectAdapter(this, subjectList);
+            RecyclerView.LayoutManager mLayoutManager = new GridLayoutManager(this, 1);
+            subject_recycler.setLayoutManager(mLayoutManager);
+            subject_recycler.addItemDecoration(new GridSpacingItemDecoration(1, dpToPx(this, 14), true));
+            subject_recycler.setItemAnimator(new DefaultItemAnimator());
+            subject_recycler.setAdapter(subjectAdapter);
+        } else
+            subjectAdapter.notifyDataSetChanged();
+    }
+
+    private boolean loaderVisible = false;
+    private CustomLodingDialog myLoadingDialog;
+
+    @UiThread
+    @Override
+    public void showLoader() {
+        if (!loaderVisible) {
+            loaderVisible = true;
+            myLoadingDialog = new CustomLodingDialog(context);
+            myLoadingDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+            Objects.requireNonNull(myLoadingDialog.getWindow()).
+                    setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+            myLoadingDialog.setContentView(R.layout.loading_dialog);
+            myLoadingDialog.setCanceledOnTouchOutside(false);
+//        myLoadingDialog.setCancelable(false);
+            myLoadingDialog.show();
+        }
+    }
+
+    @UiThread
+    @Override
+    public void dismissLoadingDialog() {
+        try {
+            loaderVisible = false;
+            new Handler().postDelayed(() -> {
+                if (myLoadingDialog != null && myLoadingDialog.isShowing())
+                    myLoadingDialog.dismiss();
+            }, 150);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
@@ -104,7 +170,12 @@ public class SelectSubject extends BaseActivity implements
             e.printStackTrace();
         }
         currentLevel = 0;
-        String currentSubject = contentTableObj.getNodeKeywords();
+        String currentSubject;
+        if(contentTableObj.getSubject()!=null)
+            currentSubject = contentTableObj.getSubject();
+        else
+            currentSubject = "English";
+/*
         if (contentTableObj.getNodeKeywords().equals("Science")) {
             currentSubjectFolder = "Science";
         } else if (contentTableObj.getNodeTitle().equals("Maths") ||
@@ -118,7 +189,9 @@ public class SelectSubject extends BaseActivity implements
             currentSubjectFolder = "H_Science";
         } else
             currentSubjectFolder = "LS_Science";
+*/
 
+        currentSubjectFolder = ""+currentSubject;
         gameFolderPath = "/.FCA/" + currentSubjectFolder + "/Game";
         FastSave.getInstance().saveString(FC_Constants.CURRENT_SUBJECT, currentSubject);
         FastSave.getInstance().saveString(FC_Constants.CURRENT_FOLDER_NAME, currentSubjectFolder);
@@ -147,11 +220,12 @@ public class SelectSubject extends BaseActivity implements
 
     @Click(R.id.ib_langChange)
     public void langChangeButtonClick() {
-        presenter.getLanguageFromApi();
+        showLoader();
+        presenter.getLanguage();
     }
 
     BlurPopupWindow langDialog;
-    String language, currLang;
+    String language, currLang, languageNodeId;
 
     @SuppressLint("SetTextI18n")
     @Override
@@ -163,10 +237,13 @@ public class SelectSubject extends BaseActivity implements
                 .setDismissOnTouchBackground(false)
                 .setDismissOnClickBack(false)
                 .bindClickListener(v -> {
-                    onAppSpinnerLanguageChanged(language);
+                    FastSave.getInstance().saveBoolean(APP_LANGUAGE_SELECTED, true);
                     new Handler().postDelayed(() -> {
+                        onAppSpinnerLanguageChanged(language);
                         langDialog.dismiss();
                         langDialog = null;
+                        presenter.clearSubjList();
+                        presenter.getSubjectList();
                     }, 200);
                 }, R.id.dia_btn_green)
                 .setScaleRatio(0.2f)
@@ -182,13 +259,13 @@ public class SelectSubject extends BaseActivity implements
         currLang = "" + FastSave.getInstance().getString(FC_Constants.APP_LANGUAGE, "Hindi");
         dia_title.setText("Current Language : " + currLang);
 
-        ArrayList<String> langStrings =new ArrayList<>();
-        for(int j=0; j<serverContentList.size(); j++)
-        langStrings.add(""+serverContentList.get(j).getNodeTitle());
+        ArrayList<String> langStrings = new ArrayList<>();
+        for (int j = 0; j < serverContentList.size(); j++)
+            langStrings.add("" + serverContentList.get(j).getNodeTitle());
         ArrayAdapter<String> dataAdapter = new ArrayAdapter<>(context, R.layout.custom_spinner,
                 langStrings);
 //                context.getResources().getStringArray(R.array.certificate_Languages));
-        dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        dataAdapter.setDropDownViewResource(R.layout.custom_spinner);
         lang_spinner.setAdapter(dataAdapter);
 //        String[] languages = getResources().getStringArray(R.array.certificate_Languages);
 //        for (int i = 0; i < languages.length; i++) {
@@ -202,18 +279,18 @@ public class SelectSubject extends BaseActivity implements
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 language = serverContentList.get(position).getNodeTitle();
-                String nodeId = serverContentList.get(position).getNodeId();
-                Toast.makeText(context, "nodeId : "+nodeId, Toast.LENGTH_SHORT).show();
-                FastSave.getInstance().saveString(FC_Constants.APP_LANGUAGE, ""+language);
+                languageNodeId = serverContentList.get(position).getNodeId();
+                FastSave.getInstance().saveString(FC_Constants.APP_LANGUAGE, "" + language);
+                FastSave.getInstance().saveString(FC_Constants.APP_LANGUAGE_NODE_ID, "" + languageNodeId);
             }
 
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
             }
         });
+        dismissLoadingDialog();
         langDialog.show();
     }
-
 
 
     @Override
@@ -222,9 +299,7 @@ public class SelectSubject extends BaseActivity implements
     }
 
 
-
     BlurPopupWindow exitDialog;
-
     @UiThread
     @SuppressLint("SetTextI18n")
     public void exitDialog() {

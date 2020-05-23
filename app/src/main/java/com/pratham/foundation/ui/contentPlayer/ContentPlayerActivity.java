@@ -46,6 +46,7 @@ public class ContentPlayerActivity extends BaseActivity implements ShowInstructi
 
     private String nodeID, title, cCode;
     private Intent returnIntent;
+    boolean onSdCard;
 
     @ViewById(R.id.floating_back)
     public static FloatingActionButton floating_back;
@@ -58,6 +59,7 @@ public class ContentPlayerActivity extends BaseActivity implements ShowInstructi
         Intent intent = getIntent();
         nodeID = intent.getStringExtra("nodeID");
         title = intent.getStringExtra("title");
+        onSdCard = intent.getBooleanExtra("onSdCard", false);
         String testcall = intent.getStringExtra("testcall");
 
         floating_back.setImageResource(R.drawable.ic_left_arrow_white);
@@ -71,7 +73,7 @@ public class ContentPlayerActivity extends BaseActivity implements ShowInstructi
             //  GameConstatnts.gameList = contentTableList;
             // GameConstatnts.currentGameAdapterposition=myViewHolder.getAdapterPosition();
             GameConstatnts.playInsequence = false;
-            GameConstatnts.gameSelector(this, testData);
+            GameConstatnts.gameSelector(this, testData,onSdCard);
             if (FastSave.getInstance().getString(APP_SECTION,"").equalsIgnoreCase(sec_Test)) {
                 returnIntent = new Intent();
                 returnIntent.putExtra("cCode", cCode);
@@ -92,6 +94,7 @@ public class ContentPlayerActivity extends BaseActivity implements ShowInstructi
         Bundle bundle = new Bundle();
         bundle.putString("nodeID", nodeID);
         bundle.putString("title", title);
+        bundle.putBoolean("onSdCard", onSdCard);
         FC_Utility.showFragment(ContentPlayerActivity.this, new SequenceLayout_(), R.id.RL_CPA,
                 bundle, SequenceLayout_.class.getSimpleName());
     }

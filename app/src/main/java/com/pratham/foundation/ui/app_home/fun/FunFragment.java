@@ -12,16 +12,23 @@ import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.View;
 import android.view.Window;
 import android.widget.Button;
-import android.widget.ImageView;
+import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.bumptech.glide.Glide;
+import com.facebook.drawee.backends.pipeline.Fresco;
+import com.facebook.drawee.interfaces.DraweeController;
+import com.facebook.drawee.view.SimpleDraweeView;
+import com.facebook.imagepipeline.request.ImageRequest;
+import com.facebook.imagepipeline.request.ImageRequestBuilder;
 import com.pratham.foundation.ApplicationClass;
 import com.pratham.foundation.R;
+import com.pratham.foundation.customView.BlurPopupDialog.BlurPopupWindow;
 import com.pratham.foundation.customView.GridSpacingItemDecoration;
 import com.pratham.foundation.customView.collapsingView.RetractableToolbarUtil;
 import com.pratham.foundation.customView.display_image_dialog.CustomLodingDialog;
@@ -30,6 +37,7 @@ import com.pratham.foundation.database.domain.ContentTable;
 import com.pratham.foundation.modalclasses.EventMessage;
 import com.pratham.foundation.modalclasses.Modal_FileDownloading;
 import com.pratham.foundation.services.shared_preferences.FastSave;
+import com.pratham.foundation.ui.app_home.FragmentItemClicked;
 import com.pratham.foundation.ui.app_home.display_content.ContentDisplay_;
 import com.pratham.foundation.ui.contentPlayer.ContentPlayerActivity_;
 import com.pratham.foundation.ui.contentPlayer.matchingPairGame.MatchThePairGameActivity;
@@ -40,7 +48,6 @@ import com.pratham.foundation.ui.contentPlayer.reading_paragraphs.ReadingParagra
 import com.pratham.foundation.ui.contentPlayer.reading_rhyming.ReadingRhymesActivity_;
 import com.pratham.foundation.ui.contentPlayer.reading_story_activity.ReadingStoryActivity_;
 import com.pratham.foundation.ui.contentPlayer.vocabulary_qa.ReadingVocabularyActivity_;
-import com.pratham.foundation.ui.contentPlayer.web_view.WebViewActivity;
 import com.pratham.foundation.ui.contentPlayer.web_view.WebViewActivity_;
 import com.pratham.foundation.utility.FC_Constants;
 import com.pratham.foundation.utility.FC_Utility;
@@ -58,7 +65,6 @@ import org.greenrobot.eventbus.ThreadMode;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
 
@@ -77,13 +83,16 @@ import static com.pratham.foundation.utility.FC_Utility.dpToPx;
 
 @EFragment(R.layout.fragment_tab_one)
 public class FunFragment extends Fragment implements FunContract.FunView,
-        FunContract.FunItemClicked {
+        FragmentItemClicked {
+//        FunContract.FunItemClicked {
 
     @Bean(FunPresenter.class)
     FunContract.FunPresenter presenter;
 
     @ViewById(R.id.my_recycler_view)
     RecyclerView my_recycler_view;
+    @ViewById(R.id.rl_no_data)
+    RelativeLayout rl_no_data;
     private FunOuterDataAdapter adapterParent;
     public List<ContentTable> rootList, rootLevelList, dwParentList, childDwContentList;
     public List<ContentTable> contentParentList, contentDBList, contentApiList, childContentList;
@@ -105,37 +114,12 @@ public class FunFragment extends Fragment implements FunContract.FunView,
         context = getActivity();
         presenter.setView(FunFragment.this);
         my_recycler_view.addOnScrollListener(new RetractableToolbarUtil.ShowHideToolbarOnScrollingListener(header_rl));
-        showLoader();
-        presenter.getBottomNavId(currentLevel, "Fun");
+        if (FastSave.getInstance().getString(APP_SECTION, "").equalsIgnoreCase(sec_Fun)) {
+            showLoader();
+            presenter.getBottomNavId(currentLevel, sec_Fun);
+        }
     }
 
-    @UiThread
-    public void notifyAdapter() {
-        sortAllList(contentParentList);
-        if (adapterParent == null) {
-            adapterParent = new FunOuterDataAdapter(context, contentParentList, this);
-            RecyclerView.LayoutManager mLayoutManager = new GridLayoutManager(context, 1);
-            my_recycler_view.setLayoutManager(mLayoutManager);
-            my_recycler_view.addItemDecoration(new GridSpacingItemDecoration(1, dpToPx(context), true));
-            my_recycler_view.setItemAnimator(new DefaultItemAnimator());
-            my_recycler_view.setAdapter(adapterParent);
-        } else
-            adapterParent.notifyDataSetChanged();
-        long delay;
-        if (ApplicationClass.isTablet)
-            delay = 500L;
-        else
-            delay = 300L;
-        new Handler().postDelayed(() -> {
-            dismissLoadingDialog();
-            try {
-                if (progressLayout != null)
-                    downloadDialog.dismiss();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }, delay);
-    }
 
     @Override
     public void showComingSoonDiaog() {
@@ -144,13 +128,42 @@ public class FunFragment extends Fragment implements FunContract.FunView,
         EventBus.getDefault().post(eventMessage);
     }
 
-    public void sortAllList(List<ContentTable> contentParentList) {
-        Collections.sort(contentParentList, new Comparator<ContentTable>() {
-            @Override
-            public int compare(ContentTable o1, ContentTable o2) {
-                return o1.getNodeId().compareTo(o2.getNodeId());
+    @UiThread
+    public void notifyAdapter() {
+//        sortAllList(contentParentList);
+        try {
+            for (int i = 0; i < contentParentList.size(); i++)
+                Log.d("Fun List", "" + contentParentList.get(i).getNodeTitle());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        showRecyclerLayout();
+        if (adapterParent == null) {
+            try {
+                adapterParent = new FunOuterDataAdapter(context, contentParentList, this);
+                RecyclerView.LayoutManager mLayoutManager = new GridLayoutManager(context, 1);
+                my_recycler_view.setLayoutManager(mLayoutManager);
+                my_recycler_view.addItemDecoration(new GridSpacingItemDecoration(1, dpToPx(context), true));
+                my_recycler_view.setItemAnimator(new DefaultItemAnimator());
+                my_recycler_view.setAdapter(adapterParent);
+            } catch (Exception e) {
+                e.printStackTrace();
             }
-        });
+        } else
+            adapterParent.notifyDataSetChanged();
+        long delay;
+        dismissLoadingDialog();
+        try {
+            if (progressLayout != null)
+                downloadDialog.dismiss();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void sortAllList(List<ContentTable> contentParentList) {
+        Collections.sort(contentParentList, (o1, o2) -> o1.getNodeId().compareTo(o2.getNodeId()));
     }
 
     @UiThread
@@ -165,23 +178,25 @@ public class FunFragment extends Fragment implements FunContract.FunView,
         EventBus.getDefault().register(this);
     }
 
-//    @Override
-//    public void onResume() {
-//        super.onResume();
-//        if (resumeCntr == 0)
-//            resumeCntr = 1;
-//        else {
-//            showLoader();
-//            presenter.getDataForList();
-//            String currentNodeID = presenter.getcurrentNodeID();
-//            try {
-//                if (!currentNodeID.equalsIgnoreCase("na"))
-//                    presenter.findMaxScore("" + currentNodeID);
-//            } catch (Exception e) {
-//                e.printStackTrace();
-//            }
-//        }
-//    }
+/*
+    @Override
+    public void onResume() {
+        super.onResume();
+        if (resumeCntr == 0)
+            resumeCntr = 1;
+        else {
+            showLoader();
+            presenter.getDataForList();
+            String currentNodeID = presenter.getcurrentNodeID();
+            try {
+                if (!currentNodeID.equalsIgnoreCase("na"))
+                    presenter.findMaxScore("" + currentNodeID);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
+*/
 
     @Override
     public void onStop() {
@@ -189,24 +204,13 @@ public class FunFragment extends Fragment implements FunContract.FunView,
         EventBus.getDefault().unregister(this);
     }
 
-    private void fragmentSelected() {
-        showLoader();
-        presenter.getDataForList();
-        String currentNodeID = presenter.getcurrentNodeID();
-        try {
-            if (!currentNodeID.equalsIgnoreCase("na"))
-                presenter.findMaxScore("" + currentNodeID);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
     @SuppressLint("SetTextI18n")
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void messageReceived(EventMessage message) {
 //            else if (message.getMessage().equalsIgnoreCase(FC_Constants.SECTION_COMPLETION_PERC))
-//                getCompletionPercAgain();
-        if (FastSave.getInstance().getString(APP_SECTION, "").equalsIgnoreCase(sec_Fun)) {
+//            getCompletionPercAgain();
+        String appSec = FastSave.getInstance().getString(APP_SECTION, "");
+        if (appSec.equalsIgnoreCase(sec_Fun)) {
             if (message != null) {
                 if (message.getMessage().equalsIgnoreCase(FC_Constants.LEVEL_CHANGED))
                     onLevelChanged();
@@ -217,18 +221,17 @@ public class FunFragment extends Fragment implements FunContract.FunView,
                 } else if (message.getMessage().equalsIgnoreCase(FC_Constants.FILE_DOWNLOAD_UPDATE)) {
                     if (progressLayout != null)
                         progressLayout.setCurProgress(message.getModal_fileDownloading().getProgress());
-                } else if (message.getMessage().equalsIgnoreCase(FC_Constants.FRAGMENT_SELECTED)) {
+                } else if (message.getMessage().equalsIgnoreCase(FC_Constants.FRAGMENT_SELECTED) ||
+                        message.getMessage().equalsIgnoreCase(FC_Constants.FRAGMENT_RESELECTED) ||
+                        message.getMessage().equalsIgnoreCase(FC_Constants.ACTIVITY_RESUMED)) {
                     fragmentSelected();
-                } else if (message.getMessage().equalsIgnoreCase(FC_Constants.FRAGMENT_RESELECTED)) {
-                    fragmentSelected();
-                } else if (message.getMessage().equalsIgnoreCase(FC_Constants.FILE_DOWNLOAD_ERROR)) {
-                    downloadDialog.dismiss();
-                    showDownloadErrorDialog();
-                } else if (message.getMessage().equalsIgnoreCase(FC_Constants.UNZIPPING_ERROR)) {
-                    downloadDialog.dismiss();
+                } else if (message.getMessage().equalsIgnoreCase(FC_Constants.FILE_DOWNLOAD_ERROR) ||
+                        message.getMessage().equalsIgnoreCase(FC_Constants.UNZIPPING_ERROR) ||
+                        message.getMessage().equalsIgnoreCase(FC_Constants.RESPONSE_CODE_ERROR)) {
+                    dismissDownloadDialog();
                     showDownloadErrorDialog();
                 } else if (message.getMessage().equalsIgnoreCase(FC_Constants.UNZIPPING_DATA_FILE))
-                    dialog_file_name.setText("Unzipping...\nPlease wait" + resName);
+                    showZipLoader();
                 else if (message.getMessage().equalsIgnoreCase(FC_Constants.FILE_DOWNLOAD_COMPLETE)) {
                     dialog_file_name.setText("Updating Data");
                     String folderPath = "";
@@ -236,21 +239,23 @@ public class FunFragment extends Fragment implements FunContract.FunView,
                         if (downloadType.equalsIgnoreCase(FC_Constants.FULL_DOWNLOAD)) {
                             folderPath = contentParentList.get(parentPos).getResourcePath();
                             contentParentList.get(parentPos).setIsDownloaded("true");
-                            presenter.updateDownloads();
-                            presenter.updateCurrentNode(contentParentList.get(parentPos));
+                            contentParentList.get(parentPos).setNodeUpdate(false);
+//                            presenter.updateDownloads();
+//                            presenter.updateCurrentNode(contentParentList.get(parentPos));
                             new Handler().postDelayed(() -> {
                                 downloadDialog.dismiss();
                                 adapterParent.notifyItemChanged(parentPos, contentParentList.get(parentPos));
-                            }, 500);
+                            }, 200);
                         } else if (downloadType.equalsIgnoreCase(FC_Constants.SINGLE_RES_DOWNLOAD)) {
-                            folderPath = contentParentList.get(parentPos).getNodelist().get(childPos).getResourcePath();
-                            contentParentList.get(parentPos).getNodelist().get(childPos).setIsDownloaded("true");
-                            presenter.updateDownloads();
-                            presenter.updateCurrentNode(contentParentList.get(parentPos));
+                            folderPath = Objects.requireNonNull(contentParentList.get(parentPos).getNodelist()).get(childPos).getResourcePath();
+                            Objects.requireNonNull(contentParentList.get(parentPos).getNodelist()).get(childPos).setIsDownloaded("true");
+                            Objects.requireNonNull(contentParentList.get(parentPos).getNodelist()).get(childPos).setNodeUpdate(false);
+//                            presenter.updateDownloads();
+//                            presenter.updateCurrentNode(contentParentList.get(parentPos));
                             new Handler().postDelayed(() -> {
                                 downloadDialog.dismiss();
                                 adapterParent.notifyItemChanged(parentPos, contentParentList.get(parentPos));
-                            }, 500);
+                            }, 200);
                         }
                         resName = "";
                         if (downloadType.equalsIgnoreCase(FC_Constants.TEST_DOWNLOAD))
@@ -265,6 +270,17 @@ public class FunFragment extends Fragment implements FunContract.FunView,
         }
     }
 
+    @UiThread
+    public void showZipLoader() {
+        try {
+            dialog_file_name.setText("Loading\n"+resName+"\nPlease wait...");
+            progressLayout.setVisibility(View.GONE);
+            dialog_roundProgress.setVisibility(View.VISIBLE);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
     private void getCompletionPercAgain() {
         String currentNodeID = presenter.getcurrentNodeID();
         Log.d("getCompletion", "getCompletionPercAgain: " + currentNodeID);
@@ -276,49 +292,135 @@ public class FunFragment extends Fragment implements FunContract.FunView,
         }
     }
 
+    private void fragmentSelected() {
+        showLoader();
+        presenter.getBottomNavId(currentLevel, "Fun");
+//        presenter.getDataForList();
+        String currentNodeID = presenter.getcurrentNodeID();
+        try {
+            if (!currentNodeID.equalsIgnoreCase("na"))
+                presenter.findMaxScore("" + currentNodeID);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
     @Override
     public void setSelectedLevel(List<ContentTable> contentTable) {
-        rootLevelList = contentTable;
-        if (rootLevelList != null )
-            levelChanged.setActualLevel(rootLevelList.size());
-        presenter.insertNodeId(contentTable.get(currentLevel).getNodeId());
-        presenter.getDataForList();
+        try {
+            rootLevelList = contentTable;
+            contentParentList.clear();
+            presenter.removeLastNodeId();
+            int i = 0;
+            boolean found = false;
+            for (i = 0; i < rootLevelList.size(); i++)
+                if (rootLevelList.get(i).getNodeTitle().contains("" + currentLevel)) {
+                    found = true;
+                    break;
+                }
+            if (rootLevelList != null && found) {
+                if (rootLevelList.size() > i) {
+                    levelChanged.setActualLevel(rootLevelList, rootLevelList.get(i).getNodeTitle());
+                    presenter.insertNodeId(rootLevelList.get(i).getNodeId());
+                    presenter.getDataForList();
+                }else
+                    showNoDataLayout();
+            }else if(rootLevelList != null){
+                if(rootLevelList.size()>0) {
+                    i = 0;
+                    levelChanged.setActualLevel(rootLevelList, rootLevelList.get(i).getNodeTitle());
+                    presenter.insertNodeId(rootLevelList.get(i).getNodeId());
+                    presenter.getDataForList();
+                }else
+                    showNoDataLayout();
+            }else
+                showNoDataLayout();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            showNoDataLayout();
+        }
     }
 
     public void onLevelChanged() {
-        contentParentList.clear();
-        presenter.removeLastNodeId();
-        presenter.insertNodeId(rootLevelList.get(currentLevel).getNodeId());
-        presenter.getDataForList();
+        try {
+            contentParentList.clear();
+            presenter.removeLastNodeId();
+            int i = 0;
+            boolean found = false;
+            for (i = 0; i < rootLevelList.size(); i++)
+                if (rootLevelList.get(i).getNodeTitle().contains("" + currentLevel)) {
+                    found = true;
+                    break;
+                }
+
+            if (found) {
+                presenter.insertNodeId(rootLevelList.get(i).getNodeId());
+                presenter.getDataForList();
+            } else showNoDataLayout();
+
+        } catch (Exception e) {
+            showNoDataLayout();
+            e.printStackTrace();
+        }
     }
 
+    @UiThread
     @Override
-    public void showNoDataDownloadedDialog() {
-        final CustomLodingDialog dialog = new CustomLodingDialog(context, R.style.FC_DialogStyle);
-        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        Objects.requireNonNull(dialog.getWindow()).setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-        dialog.setContentView(R.layout.fc_custom_dialog);
-        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-        dialog.setCancelable(false);
-        dialog.setCanceledOnTouchOutside(false);
-        TextView title = dialog.findViewById(R.id.dia_title);
-        dialog.show();
-        title.setText("Connect to Internet");
-        Button btn_gree = dialog.findViewById(R.id.dia_btn_green);
-        Button btn_yellow = dialog.findViewById(R.id.dia_btn_yellow);
-        Button btn_red = dialog.findViewById(R.id.dia_btn_red);
+    public void showNoDataLayout() {
+        try {
+            dismissLoadingDialog();
+            my_recycler_view.setVisibility(View.GONE);
+            rl_no_data.setVisibility(View.VISIBLE);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 
+    @UiThread
+    @Override
+    public void showRecyclerLayout() {
+        try {
+            my_recycler_view.setVisibility(View.VISIBLE);
+            rl_no_data.setVisibility(View.GONE);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    @SuppressLint("SetTextI18n")
+    @Override
+    @UiThread
+    public void showNoDataDownloadedDialog() {
+        errorDialog = new BlurPopupWindow.Builder(context)
+                .setContentView(R.layout.fc_custom_dialog)
+                .setGravity(Gravity.CENTER)
+                .setDismissOnTouchBackground(false)
+                .setDismissOnClickBack(true)
+                .setScaleRatio(0.2f)
+                .bindClickListener(v -> {
+                    new Handler().postDelayed(() -> {
+                        if (adapterParent != null) {
+                            contentParentList.clear();
+                            adapterParent.notifyDataSetChanged();
+                        }
+                        errorDialog.dismiss();
+                    }, 200);
+                    dismissLoadingDialog();
+                }, R.id.dia_btn_green)
+                .setBlurRadius(10)
+                .setTintColor(0x30000000)
+                .build();
+
+        TextView title = errorDialog.findViewById(R.id.dia_title);
+        Button btn_gree = errorDialog.findViewById(R.id.dia_btn_green);
+        Button btn_yellow = errorDialog.findViewById(R.id.dia_btn_yellow);
+        Button btn_red = errorDialog.findViewById(R.id.dia_btn_red);
         btn_gree.setText("Ok");
+        title.setText("No Data Found");
         btn_red.setVisibility(View.GONE);
         btn_yellow.setVisibility(View.GONE);
-
-        btn_gree.setOnClickListener(v -> {
-            if (adapterParent != null) {
-                contentParentList.clear();
-                adapterParent.notifyDataSetChanged();
-            }
-            dialog.dismiss();
-        });
+        errorDialog.show();
     }
 
     private boolean loaderVisible = false;
@@ -327,101 +429,96 @@ public class FunFragment extends Fragment implements FunContract.FunView,
     @UiThread
     @Override
     public void showLoader() {
-        try {
-            if (!loaderVisible) {
-                loaderVisible = true;
-                myLoadingDialog = new CustomLodingDialog(context);
-                myLoadingDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-                Objects.requireNonNull(myLoadingDialog.getWindow()).
-                        setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-                myLoadingDialog.setContentView(R.layout.loading_dialog);
-                myLoadingDialog.setCanceledOnTouchOutside(false);
-                //        myLoadingDialog.setCancelable(false);
-                myLoadingDialog.show();
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
+        if (!loaderVisible) {
+            loaderVisible = true;
+            myLoadingDialog = new CustomLodingDialog(context);
+            myLoadingDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+            Objects.requireNonNull(myLoadingDialog.getWindow()).
+                    setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+            myLoadingDialog.setContentView(R.layout.loading_dialog);
+            myLoadingDialog.setCanceledOnTouchOutside(false);
+//        myLoadingDialog.setCancelable(false);
+            myLoadingDialog.show();
         }
     }
 
     @Override
-    @UiThread
     public void dismissLoadingDialog() {
         try {
             loaderVisible = false;
             new Handler().postDelayed(() -> {
                 if (myLoadingDialog != null && myLoadingDialog.isShowing())
                     myLoadingDialog.dismiss();
-            }, 300);
+            }, 150);
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
+    @SuppressLint("SetTextI18n")
     @UiThread
     @Override
     public void setLevelprogress(int percent) {
         if (FastSave.getInstance().getString(APP_SECTION, "").equalsIgnoreCase(sec_Fun))
             tv_header_progress.setText(percent + "%");
-//        tv_progress.setCurProgress(percent);
     }
 
-    private CustomLodingDialog downloadDialog;
-    private ProgressLayout progressLayout;
-    private TextView dialog_file_name;
+//    @SuppressLint("SetTextI18n")
+//    private void resourceDownloadDialog(Modal_FileDownloading modal_fileDownloading) {
+//        downloadDialog = new CustomLodingDialog(context, R.style.FC_DialogStyle);
+//        downloadDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+//        Objects.requireNonNull(downloadDialog.getWindow()).setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+//        downloadDialog.setContentView(R.layout.dialog_file_downloading);
+//        downloadDialog.setCanceledOnTouchOutside(false);
+//        downloadDialog.show();
+//        progressLayout = downloadDialog.findViewById(R.id.dialog_progressLayout);
+//        dialog_file_name = downloadDialog.findViewById(R.id.dialog_file_name);
+//        SimpleDraweeView iv_file_trans = downloadDialog.findViewById(R.id.iv_file_trans);
+//        Glide.with(this).load(resServerImageName).into(iv_file_trans);
+//        dialog_file_name.setText("" + resName);
+//        progressLayout.setCurProgress(modal_fileDownloading.getProgress());
+//    }
 
-    @SuppressLint("SetTextI18n")
-    private void resourceDownloadDialog(Modal_FileDownloading modal_fileDownloading) {
-        downloadDialog = new CustomLodingDialog(context, R.style.FC_DialogStyle);
-        downloadDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        Objects.requireNonNull(downloadDialog.getWindow()).setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-        downloadDialog.setContentView(R.layout.dialog_file_downloading);
-        downloadDialog.setCanceledOnTouchOutside(false);
-        downloadDialog.show();
-        progressLayout = downloadDialog.findViewById(R.id.dialog_progressLayout);
-        dialog_file_name = downloadDialog.findViewById(R.id.dialog_file_name);
-        ImageView iv_file_trans = downloadDialog.findViewById(R.id.iv_file_trans);
-        Glide.with(this).load(resServerImageName).into(iv_file_trans);
-        dialog_file_name.setText("" + resName);
-        progressLayout.setCurProgress(modal_fileDownloading.getProgress());
-    }
-
+    @UiThread
     @Override
-    public void dismissDownloadDialog() {
-        if (downloadDialog != null)
-            downloadDialog.dismiss();
+    public void onPreResOpenClicked(int position, String nId, String title, boolean onSDCard) {
+        ButtonClickSound.start();
+        Intent mainNew = new Intent(context, ContentPlayerActivity_.class);
+        mainNew.putExtra("nodeID", nId);
+        mainNew.putExtra("title", title);
+        mainNew.putExtra("onSDCard", onSDCard);
+        startActivity(mainNew);
+//        startActivity(mainNew, ActivityOptions.makeSceneTransitionAnimation(ContentDisplay.this).toBundle());
     }
 
     @Override
     public void onContentClicked(ContentTable singleItem, String parentName) {
-        ButtonClickSound.start();
         FastSave.getInstance().saveString(APP_SECTION, "" + sec_Fun);
-
-        if (singleItem.getNodeType().equalsIgnoreCase("category")) {
+        try {
+            ButtonClickSound.start();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        if (singleItem.getNodeType().equalsIgnoreCase("category") || singleItem.getResourceType().equalsIgnoreCase("category")) {
             Intent intent = new Intent(context, ContentDisplay_.class);
             intent.putExtra("nodeId", singleItem.getNodeId());
-            intent.putExtra("contentTitle", singleItem.getNodeTitle());
             intent.putExtra("parentName", parentName);
+            intent.putExtra("contentTitle", singleItem.getNodeTitle());
             intent.putExtra("level", "" + currentLevel);
+//            startActivity(intent, ActivityOptions.makeSceneTransitionAnimation(getActivity()).toBundle());
             startActivity(intent);
-        } else if (singleItem.getNodeType().equalsIgnoreCase("preResource")) {
-            Intent mainNew = new Intent(context, ContentPlayerActivity_.class);
-            mainNew.putExtra("nodeID", singleItem.getNodeId());
-            startActivity(mainNew);
         } else {
             contentParentList.clear();
             presenter.insertNodeId(singleItem.nodeId);
             presenter.getDataForList();
         }
-
     }
 
-    @UiThread
     @Override
     public void onContentOpenClicked(ContentTable contentList) {
         //Toast.makeText(this, "ContentOpen : Work In Progress", Toast.LENGTH_SHORT).show();
+        FastSave.getInstance().saveString(APP_SECTION, sec_Fun);
         ButtonClickSound.start();
-        FastSave.getInstance().saveString(APP_SECTION, "" + sec_Fun);
         downloadNodeId = contentList.getNodeId();
         resName = contentList.getNodeTitle();
         if (contentList.getNodeType().equalsIgnoreCase("PreResource") ||
@@ -432,6 +529,7 @@ public class FunFragment extends Fragment implements FunContract.FunView,
             mainNew.putExtra("contentName", contentList.getNodeTitle());
             mainNew.putExtra("onSdCard", contentList.isOnSDCard());
             mainNew.putExtra("contentPath", contentList.getResourcePath());
+//            startActivity(mainNew, ActivityOptions.makeSceneTransitionAnimation(getActivity()).toBundle());
             startActivity(mainNew);
         } else {
             if (contentList.getResourceType().toLowerCase().contains(FC_Constants.HTML_GAME_RESOURCE)) {
@@ -451,6 +549,7 @@ public class FunFragment extends Fragment implements FunContract.FunView,
                 intent.putExtra("gameType", "" + contentList.getResourceType());
                 intent.putExtra("certiCode", contentList.getNodeDesc());
                 intent.putExtra("gameCategory", "" + contentList.getNodeKeywords());
+//                startActivity(intent, ActivityOptions.makeSceneTransitionAnimation(getActivity()).toBundle());
                 startActivity(intent);
             } else if (contentList.getResourceType().equalsIgnoreCase(FC_Constants.RC_RESOURCE)) {
 //                presenter.enterRCData(contentList);
@@ -462,6 +561,7 @@ public class FunFragment extends Fragment implements FunContract.FunView,
                 mainNew.putExtra("onSdCard", contentList.isOnSDCard());
                 mainNew.putExtra("certiCode", contentList.getNodeDesc());
                 mainNew.putExtra("contentPath", contentList.getResourcePath());
+//                startActivity(mainNew, ActivityOptions.makeSceneTransitionAnimation(getActivity()).toBundle());
                 startActivity(mainNew);
             } else if (contentList.getResourceType().equalsIgnoreCase(FC_Constants.COMIC_CONVO_RESOURCE)) {
                 Intent mainNew = new Intent(context, ReadingCardsActivity_.class);
@@ -470,6 +570,7 @@ public class FunFragment extends Fragment implements FunContract.FunView,
                 mainNew.putExtra("contentName", contentList.getNodeTitle());
                 mainNew.putExtra("onSdCard", contentList.isOnSDCard());
                 mainNew.putExtra("contentPath", contentList.getResourcePath());
+//                startActivity(mainNew, ActivityOptions.makeSceneTransitionAnimation(getActivity()).toBundle());
                 startActivity(mainNew);
             } else if (contentList.getResourceType().equalsIgnoreCase(FC_Constants.RHYME_RESOURCE) || contentList.getResourceType().equalsIgnoreCase(FC_Constants.STORY_RESOURCE)) {
                 Intent mainNew = new Intent(context, ReadingStoryActivity_.class);
@@ -479,14 +580,24 @@ public class FunFragment extends Fragment implements FunContract.FunView,
                 mainNew.putExtra("storyTitle", contentList.getNodeTitle());
                 mainNew.putExtra("onSdCard", contentList.isOnSDCard());
                 mainNew.putExtra("contentType", contentList.getResourceType());
+//                startActivity(mainNew, ActivityOptions.makeSceneTransitionAnimation(getActivity()).toBundle());
                 startActivity(mainNew);
-            } else if (contentList.getResourceType().equalsIgnoreCase(FC_Constants.PARA_ANDROID)) {
+            } /*else if (contentList.getResourceType().equalsIgnoreCase(FC_Constants.WORD_ANDROID)) {
+                Intent mainNew = new Intent(context, ReadingWordScreenActivity.class);
+                mainNew.putExtra("resId", contentList.getResourceId());
+                mainNew.putExtra("StudentID", FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""));
+                mainNew.putExtra("contentPath", contentList.getResourcePath());
+                mainNew.putExtra("onSdCard", contentList.isOnSDCard());
+                mainNew.putExtra("contentTitle", contentList.getNodeTitle());
+                startActivity(mainNew);
+            }*/ else if (contentList.getResourceType().equalsIgnoreCase(FC_Constants.PARA_ANDROID)) {
                 Intent mainNew = new Intent(context, ReadingParagraphsActivity_.class);
                 mainNew.putExtra("resId", contentList.getResourceId());
                 mainNew.putExtra("StudentID", FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""));
                 mainNew.putExtra("contentPath", contentList.getResourcePath());
                 mainNew.putExtra("onSdCard", contentList.isOnSDCard());
                 mainNew.putExtra("contentTitle", contentList.getNodeTitle());
+//                startActivity(mainNew, ActivityOptions.makeSceneTransitionAnimation(getActivity()).toBundle());
                 startActivity(mainNew);
             } else if (contentList.getResourceType().equalsIgnoreCase(FC_Constants.VOCAB_ANDROID)) {
                 Intent mainNew = new Intent(context, ReadingVocabularyActivity_.class);
@@ -497,6 +608,7 @@ public class FunFragment extends Fragment implements FunContract.FunView,
                 mainNew.putExtra("vocabLevel", contentList.getNodeDesc());
                 mainNew.putExtra("onSdCard", contentList.isOnSDCard());
                 mainNew.putExtra("vocabCategory", contentList.getNodeKeywords());
+//                startActivity(mainNew, ActivityOptions.makeSceneTransitionAnimation(getActivity()).toBundle());
                 startActivity(mainNew);
             } else if (contentList.getResourceType().equalsIgnoreCase(FC_Constants.RHYMING_WORD_ANDROID)) {
                 Intent mainNew = new Intent(context, ReadingRhymesActivity_.class);
@@ -506,6 +618,7 @@ public class FunFragment extends Fragment implements FunContract.FunView,
                 mainNew.putExtra("contentTitle", contentList.getNodeTitle());
                 mainNew.putExtra("onSdCard", contentList.isOnSDCard());
                 mainNew.putExtra("rhymeLevel", contentList.getNodeDesc());
+//                startActivity(mainNew, ActivityOptions.makeSceneTransitionAnimation(getActivity()).toBundle());
                 startActivity(mainNew);
             } else if (contentList.getResourceType().equalsIgnoreCase(FC_Constants.OPPOSITE_WORDS)) {
                 Intent mainNew = new Intent(context, OppositesActivity_.class);
@@ -514,6 +627,7 @@ public class FunFragment extends Fragment implements FunContract.FunView,
                 mainNew.putExtra("contentName", contentList.getNodeTitle());
                 mainNew.putExtra("onSdCard", contentList.isOnSDCard());
                 mainNew.putExtra("contentPath", contentList.getResourcePath());
+//                startActivity(mainNew, ActivityOptions.makeSceneTransitionAnimation(getActivity()).toBundle());
                 startActivity(mainNew);
             } else if (contentList.getResourceType().equalsIgnoreCase(FC_Constants.MATCH_THE_PAIR)) {
                 Intent mainNew = new Intent(context, MatchThePairGameActivity.class);
@@ -522,41 +636,112 @@ public class FunFragment extends Fragment implements FunContract.FunView,
                 mainNew.putExtra("contentName", contentList.getNodeTitle());
                 mainNew.putExtra("onSdCard", contentList.isOnSDCard());
                 mainNew.putExtra("contentPath", contentList.getResourcePath());
+//                startActivity(mainNew, ActivityOptions.makeSceneTransitionAnimation(getActivity()).toBundle());
                 startActivity(mainNew);
             }
         }
         resServerImageName = contentList.getNodeServerImage();
     }
 
+    @UiThread
     @Override
     public void onContentDownloadClicked(ContentTable contentList, int parentPos, int childPos, String downloadType) {
         this.downloadType = downloadType;
         downloadNodeId = contentList.getNodeId();
-        FastSave.getInstance().saveString(APP_SECTION, sec_Fun);
+        FastSave.getInstance().saveString(APP_SECTION, "" + sec_Fun);
         ButtonClickSound.start();
 //        downloadNodeId = "" + 1371;
         this.parentPos = parentPos;
         this.childPos = childPos;
         resName = contentList.getNodeTitle();
         resServerImageName = contentList.getNodeServerImage();
-        if (FC_Utility.isDataConnectionAvailable(context))
-            presenter.downloadResource(downloadNodeId);
-        else
-            Toast.makeText(context, "No Internet Connection", Toast.LENGTH_SHORT).show();
+        if (FastSave.getInstance().getString(APP_SECTION, "").equalsIgnoreCase(sec_Fun)) {
+            if (FC_Utility.isDataConnectionAvailable(context))
+                presenter.downloadResource(downloadNodeId);
+            else
+                Toast.makeText(context, "No Internet Connection", Toast.LENGTH_SHORT).show();
+        }
 
     }
 
+    private BlurPopupWindow downloadDialog;
+    private ProgressLayout progressLayout;
+    private TextView dialog_file_name;
+    ProgressBar dialog_roundProgress;
+    @SuppressLint("SetTextI18n")
+    @UiThread
+    public void resourceDownloadDialog(Modal_FileDownloading modal_fileDownloading) {
+        if (downloadDialog != null)
+            downloadDialog = null;
+        try {
+            downloadDialog = new BlurPopupWindow.Builder(context)
+                    .setContentView(R.layout.dialog_file_downloading)
+                    .setGravity(Gravity.CENTER)
+                    .setDismissOnTouchBackground(false)
+                    .setDismissOnClickBack(true)
+                    .setScaleRatio(0.2f)
+                    .setBlurRadius(10)
+                    .setTintColor(0x30000000)
+                    .build();
+
+            SimpleDraweeView iv_file_trans = downloadDialog.findViewById(R.id.iv_file_trans);
+            dialog_file_name = downloadDialog.findViewById(R.id.dialog_file_name);
+            progressLayout = downloadDialog.findViewById(R.id.dialog_progressLayout);
+            dialog_roundProgress = downloadDialog.findViewById(R.id.dialog_roundProgress);
+            ImageRequest imageRequest = ImageRequestBuilder
+                    .newBuilderWithSource(Uri.parse("" + resServerImageName))
+                    .setLocalThumbnailPreviewsEnabled(false)
+                    .build();
+            if (imageRequest != null) {
+                DraweeController controller = Fresco.newDraweeControllerBuilder()
+                        .setImageRequest(imageRequest)
+                        .setOldController(iv_file_trans.getController())
+                        .build();
+                iv_file_trans.setController(controller);
+            }
+            dialog_file_name.setText("" + resName);
+            progressLayout.setCurProgress(modal_fileDownloading.getProgress());
+            downloadDialog.show();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    @UiThread
+    @Override
+    public void dismissDownloadDialog() {
+        try {
+            if (downloadDialog != null)
+                new Handler().postDelayed(() -> {
+                    downloadDialog.dismiss();
+                    downloadDialog = null;
+                }, 300);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    BlurPopupWindow errorDialog;
     @UiThread
     public void showDownloadErrorDialog() {
-        CustomLodingDialog errorDialog = new CustomLodingDialog(context, R.style.FC_DialogStyle);
-        errorDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        errorDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-        errorDialog.setContentView(R.layout.dialog_file_error_downloading);
-        errorDialog.setCanceledOnTouchOutside(false);
-        errorDialog.show();
-        Button ok_btn = errorDialog.findViewById(R.id.dialog_error_btn);
-
-        ok_btn.setOnClickListener(v -> errorDialog.dismiss());
+        try {
+            errorDialog = new BlurPopupWindow.Builder(context)
+                    .setContentView(R.layout.dialog_file_error_downloading)
+                    .setGravity(Gravity.CENTER)
+                    .setDismissOnTouchBackground(false)
+                    .setDismissOnClickBack(true)
+                    .bindClickListener(v -> {
+                        new Handler().postDelayed(() ->
+                                errorDialog.dismiss(), 200);
+                    }, R.id.dialog_error_btn)
+                    .setScaleRatio(0.2f)
+                    .setBlurRadius(10)
+                    .setTintColor(0x30000000)
+                    .build();
+            errorDialog.show();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     @Click(R.id.btn_back)
@@ -565,7 +750,7 @@ public class FunFragment extends Fragment implements FunContract.FunView,
             contentParentList.clear();
             presenter.getDataForList();
         } else {
-            getActivity().onBackPressed();
+            Objects.requireNonNull(getActivity()).onBackPressed();
         }
     }
 
@@ -581,6 +766,7 @@ public class FunFragment extends Fragment implements FunContract.FunView,
         intent.putExtra("contentTitle", nodeTitle);
         intent.putExtra("parentName", sub_Name);
         intent.putExtra("level", "" + currentLevel);
+//        startActivity(intent, ActivityOptions.makeSceneTransitionAnimation(getActivity()).toBundle());
         startActivity(intent);
     }
 }

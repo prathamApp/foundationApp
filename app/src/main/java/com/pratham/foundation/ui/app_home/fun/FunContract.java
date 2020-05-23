@@ -6,11 +6,14 @@ import java.util.List;
 
 public interface FunContract {
 
+/*
     interface FunItemClicked {
 
         void onContentClicked(ContentTable singleItem, String parentName);
 
         void onContentOpenClicked(ContentTable contentList);
+
+        void onPreResOpenClicked(int position, String nId, String title, boolean onSDCard);
 
         void onContentDownloadClicked(ContentTable contentList, int parentPos, int childPos, String downloadType);
 
@@ -18,6 +21,7 @@ public interface FunContract {
 
         void seeMore(String nodeId, String nodeTitle);
     }
+*/
 
     interface FunView {
 
@@ -38,6 +42,10 @@ public interface FunContract {
         void dismissDownloadDialog();
 
         void showComingSoonDiaog();
+
+        void showNoDataLayout();
+
+        void showRecyclerLayout();
 
 //        void setBotNodeId(String botID);
     }

@@ -20,10 +20,6 @@ import java.util.List;
 
 public class ProfileOuterDataAdapter extends RecyclerView.Adapter {
 
-    private static final String TYPE_HEADER = "Header";
-    private static final String TYPE_ITEM = "Resource";
-    private static final String TYPE_FOOTER = "Footer";
-
     private Context mContext;
     String[] progressArray;
 //    String[] progressSubArray = {"Certificate", "Projects", "Usage", "ImageQues"};
@@ -117,11 +113,10 @@ public class ProfileOuterDataAdapter extends RecyclerView.Adapter {
         if (dataList.get(position).getNodeType() != null) {
             switch (dataList.get(position).getNodeType()) {
                 case TYPE_HEADER:
+                case TYPE_FOOTER:
                     return 0;
                 case TYPE_ITEM:
                     return 2;
-                case TYPE_FOOTER:
-                    return 3;
                 default:
                     return 1;
             }

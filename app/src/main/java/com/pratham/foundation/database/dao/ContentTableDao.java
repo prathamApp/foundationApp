@@ -22,7 +22,7 @@ public interface ContentTableDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     long insert(ContentTable contentTableList);
 
-    @Query("select * from ContentTable where parentId= :parentId")
+    @Query("select * from ContentTable where parentId= :parentId order by seq_no")
     List<ContentTable> getContentData(String parentId);
 
     @Query("SELECT * FROM ContentTable WHERE parentId=:parentId AND resourceType=:contentType")
@@ -69,6 +69,9 @@ public interface ContentTableDao {
 
     @Query("SELECT nodeId FROM ContentTable WHERE parentId=:nid and nodeTitle=:nodeTitle")
     String getRootData(String nid, String nodeTitle);
+
+    @Query("SELECT * FROM ContentTable WHERE parentId=:nid")
+    List<ContentTable> getLanguages(String nid);
 //
 //    @Query("SELECT * FROM ContentTable WHERE parentid ISNULL or parentid = 0 or parentid=''and contentLanguage=:language")
 //    public List<ContentTable> getParentsHeadersNew(String language);

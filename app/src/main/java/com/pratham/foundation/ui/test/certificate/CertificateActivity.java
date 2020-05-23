@@ -26,7 +26,6 @@ import com.pratham.foundation.database.domain.Assessment;
 import com.pratham.foundation.modalclasses.CertificateModelClass;
 import com.pratham.foundation.services.shared_preferences.FastSave;
 import com.pratham.foundation.ui.app_home.test_fragment.CertificateClicked;
-import com.pratham.foundation.ui.contentPlayer.web_view.WebViewActivity;
 import com.pratham.foundation.ui.contentPlayer.web_view.WebViewActivity_;
 import com.pratham.foundation.utility.FC_Constants;
 
@@ -205,6 +204,12 @@ public class CertificateActivity extends BaseActivity implements CertificateCont
         }
 
     }
+
+    @Override
+    public void onCertificateUpdate() {
+
+    }
+
 /*    public float[] getAllPercentages() {
         float starRatings[];
         starRatings = new float[certificateModelClassList.size()];

@@ -317,6 +317,7 @@
     <string name="copyright" translatable="false">&#169; readyState Software Ltd</string>
     <string name="by_author" translatable="false">by Pratham Education Foundation</string>
     <string name="no_data_generated" >No data generated for this section.</string>
+    <string name="no_data_in_sec" >No data in this section.</string>
     <string name="RegisterReport">Register Report</string>
 
     <string-array name="levels_values">

@@ -6,9 +6,8 @@ import android.content.Intent;
 import android.content.pm.ApplicationInfo;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
-import android.os.AsyncTask;
 import android.os.Build;
-import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.View;
 import android.view.Window;
@@ -39,8 +38,6 @@ import org.androidannotations.annotations.ViewById;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import butterknife.ButterKnife;
 
 import static com.pratham.foundation.database.AppDatabase.appDatabase;
 import static com.pratham.foundation.utility.FC_Constants.APP_SECTION;
@@ -179,7 +176,8 @@ public class WebViewActivity extends BaseActivity implements WebViewInterface {
             } else
                 addGameProgress();
             dialog.dismiss();
-            finish();
+//            this.finishAfterTransition();
+            new Handler().postDelayed(() -> finish(),150);
         });
 
         dia_btn_red.setOnClickListener(v -> dialog.dismiss());

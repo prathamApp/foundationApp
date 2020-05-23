@@ -41,7 +41,7 @@
                 android:layout_alignParentRight="true"
                 android:layout_marginRight="@dimen/_20sdp"
                 android:background="@drawable/temp_button"
-                android:drawableLeft="@drawable/ic_download"
+                android:drawableLeft="@drawable/ic_download_2"
                 android:drawablePadding="@dimen/_5sdp"
                 android:elevation="@dimen/_2sdp"
                 android:paddingHorizontal="@dimen/_10sdp"

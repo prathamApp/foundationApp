@@ -13,27 +13,6 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <!--
-                <android.support.v7.widget.CardView
-                    android:id="@+id/card_img"
-                    android:layout_width="match_parent"
-                    android:layout_height="@dimen/_85sdp"
-                    android:layout_centerHorizontal="true"
-                    android:layout_margin="5dp"
-                    app:cardCornerRadius="13dp">
-
-                    <ImageView
-                        android:id="@+id/content_thumbnail"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_alignStart="@+id/card_img"
-                        android:layout_alignTop="@+id/card_img"
-                        android:foregroundGravity="center"
-                        android:scaleType="fitXY"
-                        android:src="@drawable/pratham_logo" />
-                </android.support.v7.widget.CardView>
-        -->
-
         <com.facebook.drawee.view.SimpleDraweeView
             android:id="@+id/content_image"
             android:layout_width="match_parent"
@@ -43,48 +22,60 @@
             android:layout_marginEnd="@dimen/_5sdp"
             android:background="@android:color/transparent"
             app:actualImageScaleType="fitCenter"
-            app:placeholderImage="@drawable/pratham_logo"
+            app:placeholderImageScaleType="fitCenter"
+            app:placeholderImage="@drawable/khelbadi_thumb"
             app:roundedCornerRadius="@dimen/_10sdp"
             app:roundingBorderColor="@color/white"
             app:roundingBorderWidth="@dimen/_2sdp"/>
 
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+        <ImageView
+            android:id="@+id/ib_update_btn"
+            android:layout_width="@dimen/_35sdp"
+            android:layout_height="@dimen/_35sdp"
+            android:layout_alignParentEnd="true"
+            android:src="@drawable/ic_update"
+            android:paddingStart="@dimen/_10sdp"
+            android:paddingTop="@dimen/_5sdp"
+            android:paddingEnd="@dimen/_5sdp"
+            android:paddingBottom="@dimen/_10sdp"
+            android:scaleType="centerInside"
+            android:background="@drawable/card_update_bg"
+            android:visibility="gone" />
+
+        <ImageView
+            android:id="@+id/ib_action_btn"
+            android:layout_width="@dimen/_23sdp"
+            android:layout_height="@dimen/_23sdp"
             android:layout_below="@id/content_image"
-            android:layout_marginEnd="@dimen/_5sdp"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="@dimen/_5sdp"
             android:layout_marginTop="@dimen/_2sdp"
-            android:layout_marginBottom="@dimen/_2sdp"
-            android:layout_marginStart="@dimen/_5sdp">
+            android:layout_marginEnd="@dimen/_5sdp"
+            android:layout_marginBottom="@dimen/_3sdp"
+            android:scaleType="centerInside"
+            android:src="@drawable/ic_download_2"
+            android:visibility="visible" />
 
-            <ImageView
-                android:id="@+id/ib_action_btn"
-                android:layout_width="@dimen/_23sdp"
-                android:layout_height="@dimen/_23sdp"
-                android:layout_alignParentEnd="true"
-                android:scaleType="centerInside"
-                android:layout_centerVertical="true"
-                android:src="@drawable/ic_download"
-                android:visibility="visible" />
-
-            <com.pratham.foundation.customView.SansTextViewBold
-                android:id="@+id/content_title"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_toLeftOf="@+id/ib_action_btn"
-                android:layout_centerVertical="true"
-                android:text="@string/app_name"
-                android:duplicateParentState="true"
-                android:ellipsize="marquee"
-                android:fadingEdge="horizontal"
-                android:marqueeRepeatLimit="marquee_forever"
-                android:scrollHorizontally="true"
-                android:singleLine="true"
-                android:textColor="@color/white"
-                android:textSize="@dimen/_12sdp" />
-
-        </RelativeLayout>
+        <com.pratham.foundation.customView.SansTextViewBold
+            android:id="@+id/content_title"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_23sdp"
+            android:layout_below="@id/content_image"
+            android:layout_toStartOf="@+id/ib_action_btn"
+            android:layout_marginStart="@dimen/_5sdp"
+            android:layout_marginTop="@dimen/_2sdp"
+            android:layout_marginBottom="@dimen/_3sdp"
+            android:duplicateParentState="true"
+            android:gravity="center_vertical"
+            android:ellipsize="marquee"
+            android:fadingEdge="horizontal"
+            android:marqueeRepeatLimit="marquee_forever"
+            android:scrollHorizontally="true"
+            android:singleLine="true"
+            android:text="@string/app_name"
+            android:textColor="@color/white"
+            android:textSize="@dimen/_12sdp" />
 
     </RelativeLayout>
-
 </android.support.design.card.MaterialCardView>

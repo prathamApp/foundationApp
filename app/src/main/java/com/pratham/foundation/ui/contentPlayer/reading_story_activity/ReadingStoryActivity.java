@@ -226,10 +226,11 @@ public class ReadingStoryActivity extends BaseActivity implements
     @Override
     public void dismissLoadingDialog() {
         try {
-            dialogFlg = false;
             new Handler().postDelayed(() -> {
-                if (myLoadingDialog != null && myLoadingDialog.isShowing())
+                if (dialogFlg) {
                     myLoadingDialog.dismiss();
+                    dialogFlg = false;
+                }
             }, 300);
         } catch (Exception e) {
             e.printStackTrace();
@@ -317,8 +318,9 @@ public class ReadingStoryActivity extends BaseActivity implements
         if (playHideFlg)
             btn_Play.setVisibility(View.GONE);
         startTime = FC_Utility.getCurrentDateTime();
+        dismissLoadingDialog();
         new Handler().postDelayed(() -> {
-            if (!FastSave.getInstance().getString(APP_SECTION,"").equalsIgnoreCase(sec_Test))
+            if (!FastSave.getInstance().getString(APP_SECTION, "").equalsIgnoreCase(sec_Test))
                 btn_Play.performClick();
             else {
                 btn_Mic.performClick();
@@ -339,7 +341,7 @@ public class ReadingStoryActivity extends BaseActivity implements
         new Handler().postDelayed(() -> {
             //setMute(0);
             if (lastPgFlag) {
-                if (FastSave.getInstance().getString(APP_SECTION,"").equalsIgnoreCase(sec_Test))
+                if (FastSave.getInstance().getString(APP_SECTION, "").equalsIgnoreCase(sec_Test))
                     showStars(true);
                 else
                     showAcknowledgeDialog(true);
@@ -389,9 +391,10 @@ public class ReadingStoryActivity extends BaseActivity implements
     }
 
     Boolean clickFlag = false;
+
     private void playClickedWord(int id) {
         try {
-            if (!FastSave.getInstance().getString(APP_SECTION,"").equalsIgnoreCase(sec_Test) && !clickFlag) {
+            if (!FastSave.getInstance().getString(APP_SECTION, "").equalsIgnoreCase(sec_Test) && !clickFlag) {
                 clickFlag = true;
                 Log.d("ReadingPara", "wordCounter : " + wordCounter);
                 float end = Float.parseFloat(modalPagesList.get(currentPage).getReadList().get(id).getWordDuration());
@@ -535,7 +538,7 @@ public class ReadingStoryActivity extends BaseActivity implements
             continuousSpeechService.stopSpeechInput();
             voiceStart = false;
             btn_Stop.setVisibility(View.GONE);
-            if (!FastSave.getInstance().getString(APP_SECTION,"").equalsIgnoreCase(sec_Test) && !playHideFlg)
+            if (!FastSave.getInstance().getString(APP_SECTION, "").equalsIgnoreCase(sec_Test) && !playHideFlg)
                 btn_Play.setVisibility(View.VISIBLE);
             btn_Mic.setVisibility(View.VISIBLE);
         } else if (playFlg || pauseFlg) {
@@ -564,7 +567,7 @@ public class ReadingStoryActivity extends BaseActivity implements
                 e.printStackTrace();
             }
         }
-        new Handler().postDelayed(() ->wordCounter = 0 ,200);
+        new Handler().postDelayed(() -> wordCounter = 0, 200);
     }
 
     @Click(R.id.btn_read_mic)
@@ -716,8 +719,8 @@ public class ReadingStoryActivity extends BaseActivity implements
     public float getPercentage() {
         int counter = 0;
         float perc = 0f;
-        int totLen = correctArr.length - lineBreakCounter;
         try {
+            int totLen = correctArr.length - lineBreakCounter;
             for (int x = 0; x < correctArr.length; x++) {
                 if (correctArr[x]) {
                     ((SansTextView) wordFlowLayout.getChildAt(x)).setTextColor(getResources().getColor(R.color.colorBtnGreenDark));
@@ -766,7 +769,7 @@ public class ReadingStoryActivity extends BaseActivity implements
 
             if (voiceStart) {
                 voiceStart = false;
-                if (!FastSave.getInstance().getString(APP_SECTION,"").equalsIgnoreCase(sec_Test) && !playHideFlg)
+                if (!FastSave.getInstance().getString(APP_SECTION, "").equalsIgnoreCase(sec_Test) && !playHideFlg)
                     btn_Play.setVisibility(View.VISIBLE);
                 btn_Mic.setImageResource(R.drawable.ic_mic_black);
                 continuousSpeechService.stopSpeechInput();
@@ -809,6 +812,7 @@ public class ReadingStoryActivity extends BaseActivity implements
     }
 
     boolean nextPressedFlg = false;
+
     @Click(R.id.btn_next)
     void gotoNextPage() {
         if (currentPage < totalPages - 1 && !nextPressedFlg) {
@@ -818,7 +822,7 @@ public class ReadingStoryActivity extends BaseActivity implements
             ButtonClickSound.start();
             if (voiceStart) {
                 btn_Stop.performClick();
-                if (!FastSave.getInstance().getString(APP_SECTION,"").equalsIgnoreCase(sec_Test) && !playHideFlg)
+                if (!FastSave.getInstance().getString(APP_SECTION, "").equalsIgnoreCase(sec_Test) && !playHideFlg)
                     btn_Play.setVisibility(View.VISIBLE);
                 btn_Mic.setImageResource(R.drawable.ic_mic_black);
                 setMute(0);
@@ -834,11 +838,12 @@ public class ReadingStoryActivity extends BaseActivity implements
                 flgPerMarked = true;
                 playFlg = false;
                 pauseFlg = true;
-                new Handler().postDelayed(() -> {presenter.getPage(currentPage);
+                new Handler().postDelayed(() -> {
+                    presenter.getPage(currentPage);
                     nextPressedFlg = false;
-                },300);
+                }, 300);
                 Log.d("click", "NextBtn - totalPages: " + totalPages + "  currentPage: " + currentPage);
-            }else {
+            } else {
                 try {
                     if (audioHandler != null)
                         audioHandler.removeCallbacksAndMessages(null);
@@ -887,9 +892,10 @@ public class ReadingStoryActivity extends BaseActivity implements
                 flgPerMarked = true;
                 playFlg = false;
                 pauseFlg = true;
-                new Handler().postDelayed(() -> {presenter.getPage(currentPage);
+                new Handler().postDelayed(() -> {
+                    presenter.getPage(currentPage);
                     nextPressedFlg = false;
-                },300);
+                }, 300);
                 Log.d("click", "NextBtn - totalPages: " + totalPages + "  currentPage: " + currentPage);
             }
 
@@ -924,12 +930,14 @@ public class ReadingStoryActivity extends BaseActivity implements
         dia_btn_yellow.setOnClickListener(v -> dialog.dismiss());
         dia_btn_green.setOnClickListener(v -> {
             dialog.dismiss();
-            if (FastSave.getInstance().getString(APP_SECTION,"").equalsIgnoreCase(sec_Test)) {
+            if (FastSave.getInstance().getString(APP_SECTION, "").equalsIgnoreCase(sec_Test)) {
                 float correctCnt = getPercentage();
                 Intent returnIntent = new Intent();
                 returnIntent.putExtra("cCode", certiCode);
                 returnIntent.putExtra("sMarks", correctCnt);
-                returnIntent.putExtra("tMarks", correctArr.length);
+                if (correctArr != null)
+                    returnIntent.putExtra("tMarks", correctArr.length);
+                returnIntent.putExtra("tMarks", 0);
 //                setResult(Activity.RESULT_OK, returnIntent);
             }
             exitDBEntry();
@@ -1085,7 +1093,7 @@ public class ReadingStoryActivity extends BaseActivity implements
         if (voiceStart) {
             btn_Mic.performClick();
             voiceStart = false;
-            if (!FastSave.getInstance().getString(APP_SECTION,"").equalsIgnoreCase(sec_Test) && !playHideFlg)
+            if (!FastSave.getInstance().getString(APP_SECTION, "").equalsIgnoreCase(sec_Test) && !playHideFlg)
                 btn_Play.setVisibility(View.VISIBLE);
             setMute(0);
         }

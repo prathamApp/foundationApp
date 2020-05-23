@@ -78,9 +78,9 @@ public class AvatarAdapter extends RecyclerView.Adapter<AvatarAdapter.MyViewHold
                 break;
         }
         if (studentAvatar.getClickFlag())
-            holder.avatar.setBackground(context.getResources().getDrawable(R.drawable.ripple_rectangle_transparent_dark));
+            holder.avatar.setBackground(context.getResources().getDrawable(R.drawable.card_color_bg1));
         else
-            holder.avatar.setBackground(context.getResources().getDrawable(R.drawable.ripple_rectangle_card));
+            holder.avatar.setBackground(context.getResources().getDrawable(R.drawable.card_color_bg6));
 
         holder.avatar.setOnClickListener(v -> avatarClickListener.onAvatarClick(position, studentAvatar.getAvatarName()));
     }

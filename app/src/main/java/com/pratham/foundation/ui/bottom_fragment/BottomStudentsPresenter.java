@@ -75,6 +75,12 @@ public class BottomStudentsPresenter implements BottomStudentsContract.BottomStu
             studentList.clear();
             studentDBList = AppDatabase.appDatabase.getStudentDao().getAllStudents();
             if (studentDBList != null) {
+                Student studentHeader = new Student();
+                studentHeader.setStudentID("#####");
+                studentHeader.setFullName("");
+                studentHeader.setAvatarName("");
+                studentList.add(studentHeader);
+
                 for (int i = 0; i < studentDBList.size(); i++) {
                     Student studentAvatar = new Student();
                     studentAvatar.setStudentID(studentDBList.get(i).getStudentID());
@@ -83,6 +89,12 @@ public class BottomStudentsPresenter implements BottomStudentsContract.BottomStu
                     studentList.add(studentAvatar);
                 }
             }
+            Student studentHeader = new Student();
+            studentHeader.setStudentID("#####");
+            studentHeader.setFullName("");
+            studentHeader.setAvatarName("");
+
+            studentList.add(studentHeader);
             BackupDatabase.backup(context);
             myView.setStudentList(studentList);
             myView.notifyStudentAdapter();

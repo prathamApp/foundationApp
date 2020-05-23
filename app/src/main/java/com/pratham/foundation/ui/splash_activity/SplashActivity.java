@@ -9,27 +9,23 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Configuration;
-import android.graphics.Color;
 import android.graphics.Point;
 import android.graphics.Typeface;
-import android.graphics.drawable.ColorDrawable;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Environment;
 import android.os.Handler;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.View;
-import android.view.Window;
-import android.widget.Button;
 import android.widget.RelativeLayout;
-import android.widget.TextView;
 
 import com.hanks.htextview.typer.TyperTextView;
 import com.pratham.foundation.ApplicationClass;
 import com.pratham.foundation.R;
-import com.pratham.foundation.customView.display_image_dialog.CustomLodingDialog;
+import com.pratham.foundation.customView.BlurPopupDialog.BlurPopupWindow;
 import com.pratham.foundation.database.AppDatabase;
 import com.pratham.foundation.interfaces.Interface_copying;
 import com.pratham.foundation.interfaces.PermissionResult;
@@ -50,11 +46,13 @@ import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.UiThread;
 import org.androidannotations.annotations.ViewById;
 import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
 
 import java.io.File;
-import java.util.Objects;
 
+import static com.pratham.foundation.utility.FC_Constants.BOTTOM_FRAGMENT_CLOSED;
 import static com.pratham.foundation.utility.FC_Constants.CURRENT_VERSION;
+import static com.pratham.foundation.utility.FC_Constants.SPLASH_OPEN;
 import static com.pratham.foundation.utility.FC_Utility.setAppLocal;
 
 
@@ -86,12 +84,11 @@ public class SplashActivity extends SplashSupportActivity implements SplashContr
 //        bgMusic = MediaPlayer.create(this, R.raw.bg_sound);
 //        bgMusic.setLooping(true);
 //        bgMusic.start();
-        new Handler().postDelayed(() -> {
-            startTextAud();
-        }, 500);
+        new Handler().postDelayed(this::startTextAud, 500);
     }
 
     private void startTextAud() {
+        SPLASH_OPEN = true;
         final Typeface title_font = Typeface.createFromAsset(getAssets(), "fonts/Sarala_Bold.ttf");
         tv_typer.setTypeface(title_font);
         tv_typer.setVisibility(View.VISIBLE);
@@ -153,20 +150,20 @@ public class SplashActivity extends SplashSupportActivity implements SplashContr
     @UiThread
     @Override
     public void showButton() {
-            context.startService(new Intent(context, AppExitService.class));
-            if (!FastSave.getInstance().getBoolean(FC_Constants.KEY_MENU_COPIED, false)) {
-                if (!ApplicationClass.isTablet) {
-                    ApplicationClass.contentExistOnSD = false;
-                    splashPresenter.copyZipAndPopulateMenu();
-                } else {
-                    ApplicationClass.foundationPath = FC_Utility.getInternalPath(SplashActivity.this);
-                    Log.d("old_cos.pradigiPath", "old_cos.pradigiPath: " + ApplicationClass.foundationPath);
-                    splashPresenter.getSdCardPath();
-                    ApplicationClass.contentExistOnSD = true;
-                    splashPresenter.populateSDCardMenu();
-                }
-            } else
-                gotoNextActivity();
+        context.startService(new Intent(context, AppExitService.class));
+        if (!FastSave.getInstance().getBoolean(FC_Constants.KEY_MENU_COPIED, false)) {
+            if (!ApplicationClass.isTablet) {
+                ApplicationClass.contentExistOnSD = false;
+                splashPresenter.copyZipAndPopulateMenu();
+            } else {
+                ApplicationClass.foundationPath = FC_Utility.getInternalPath(SplashActivity.this);
+                Log.d("old_cos.pradigiPath", "old_cos.pradigiPath: " + ApplicationClass.foundationPath);
+                splashPresenter.getSdCardPath();
+                ApplicationClass.contentExistOnSD = true;
+                splashPresenter.populateSDCardMenu();
+            }
+        } else
+            gotoNextActivity();
     }
 
     @UiThread
@@ -217,11 +214,15 @@ public class SplashActivity extends SplashSupportActivity implements SplashContr
     @Override
     @UiThread
     public void showProgressDialog() {
-        progressDialog = new ProgressDialog(SplashActivity.this);
-        progressDialog.setCanceledOnTouchOutside(false);
-        progressDialog.setMessage(getResources().getString(R.string.loding_please_wait));
-        progressDialog.setCancelable(false);
-        progressDialog.show();
+        try {
+            progressDialog = new ProgressDialog(SplashActivity.this);
+            progressDialog.setCanceledOnTouchOutside(false);
+            progressDialog.setMessage(getResources().getString(R.string.loding_please_wait));
+            progressDialog.setCancelable(false);
+            progressDialog.show();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
@@ -238,8 +239,7 @@ public class SplashActivity extends SplashSupportActivity implements SplashContr
     @Override
     protected void onPause() {
         super.onPause();
-        if ((fragmentBottomOpenFlg && fragmentBottomPauseFlg) ||
-                (fragmentBottomOpenFlg && fragmentAddStudentOpenFlg && fragmentBottomPauseFlg && fragmentAddStudentPauseFlg)) {
+        if (fragmentBottomOpenFlg && fragmentBottomPauseFlg) {
             try {
                 if (bgMusic != null && bgMusic.isPlaying()) {
                     bgMusic.setLooping(false);
@@ -269,7 +269,45 @@ public class SplashActivity extends SplashSupportActivity implements SplashContr
             showExitDialog();
     }
 
+    BlurPopupWindow exitDialog;
+    Handler backHandler;
+
     @UiThread
+    @SuppressLint("SetTextI18n")
+    public void showExitDialog() {
+        exitDialog = new BlurPopupWindow.Builder(this)
+                .setContentView(R.layout.lottie_exit_dialog)
+                .bindClickListener(v -> {
+                    exitDialog.dismiss();
+                    backHandler.removeCallbacksAndMessages(null);
+                    new Handler().postDelayed(this::finishAffinity, 200);
+                }, R.id.dia_btn_yes)
+                .bindClickListener(v -> {
+                    if (!ApplicationClass.isTablet)
+                        gotoNextActivity();
+                    backHandler.removeCallbacksAndMessages(null);
+                    exitDialogOpen = false;
+                    new Handler().postDelayed(() -> exitDialog.dismiss(), 200);
+                }, R.id.dia_btn_no)
+                .setGravity(Gravity.CENTER)
+                .setDismissOnTouchBackground(true)
+                .setDismissOnClickBack(true)
+                .setScaleRatio(0.2f)
+                .setBlurRadius(10)
+                .setTintColor(0x30000000)
+                .build();
+        exitDialog.show();
+        exitDialogOpen = true;
+        backHandler = new Handler();
+        backHandler.postDelayed(() -> {
+            if (!ApplicationClass.isTablet)
+                gotoNextActivity();
+            exitDialogOpen = false;
+            exitDialog.dismiss();
+        }, 5000);
+    }
+
+/*    @UiThread
     public void showExitDialog() {
         final CustomLodingDialog dialog = new CustomLodingDialog(context, R.style.FC_DialogStyle);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -317,7 +355,7 @@ public class SplashActivity extends SplashSupportActivity implements SplashContr
             finishAffinity();
             dialog.dismiss();
         });
-    }
+    }*/
 
     @Override
     public void permissionGranted() {
@@ -363,16 +401,17 @@ public class SplashActivity extends SplashSupportActivity implements SplashContr
         if (!ApplicationClass.isTablet) {
             splashPresenter.pushData();
             dismissProgressDialog();
-            Log.d("-CT-", "Before insert new  :::::CURRENT_VERSION::::: " +FastSave.getInstance().getString(CURRENT_VERSION, "NA"));
-            Log.d("-CT-", "Before insert new  ::::getCurrentVersion:::: " +FC_Utility.getCurrentVersion(context));
+            Log.d("-CT-", "Before insert new  :::::CURRENT_VERSION::::: " + FastSave.getInstance().getString(CURRENT_VERSION, "NA"));
+            Log.d("-CT-", "Before insert new  ::::getCurrentVersion:::: " + FC_Utility.getCurrentVersion(context));
             if (!FastSave.getInstance().getString(CURRENT_VERSION, "NA").equalsIgnoreCase(FC_Utility.getCurrentVersion(context))) {
                 Log.d("-CT-", "insertNewData in IFFFFFFFFFFFFFFFFFFFFFFFFFFFF");
                 splashPresenter.copyZipAndPopulateMenu_New();
-            }
-            else {
+            } else {
+                Log.d("-CT-", "Before insert new  :::::VOICES_DOWNLOAD_INTENT::::: " + FastSave.getInstance().getBoolean(FC_Constants.VOICES_DOWNLOAD_INTENT, false));
                 if (!FastSave.getInstance().getBoolean(FC_Constants.VOICES_DOWNLOAD_INTENT, false))
                     show_STT_Dialog();
-                else showBottomFragment();
+                else
+                    showBottomFragment();
             }
         } else {
             dismissProgressDialog();
@@ -382,34 +421,44 @@ public class SplashActivity extends SplashSupportActivity implements SplashContr
     }
 
     @UiThread
+    @Override
     public void show_STT_Dialog() {
-        CustomLodingDialog dialog = new CustomLodingDialog(this, R.style.FC_DialogStyle);
+        exitDialog = new BlurPopupWindow.Builder(this)
+                .setContentView(R.layout.lottie_stt_dialog)
+                .bindClickListener(v -> {
+                    FastSave.getInstance().saveBoolean(FC_Constants.VOICES_DOWNLOAD_INTENT, true);
+                    Intent intent = new Intent(Intent.ACTION_MAIN);
+                    intent.setComponent(new ComponentName("com.google.android.googlequicksearchbox",
+                            "com.google.android.voicesearch.greco3.languagepack.InstallActivity"));
+                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    startActivity(intent);
+                    new Handler().postDelayed(() -> {
+                        showBottomFragment();
+                        exitDialog.dismiss();
+                    }, 200);
+                }, R.id.dia_btn_ok)
+                .bindClickListener(v -> {
+                    showBottomFragment();
+                    new Handler().postDelayed(() -> exitDialog.dismiss(), 200);
+                }, R.id.dia_btn_skip)
+                .setGravity(Gravity.CENTER)
+                .setDismissOnTouchBackground(false)
+                .setDismissOnClickBack(false)
+                .setScaleRatio(0.2f)
+                .setBlurRadius(10)
+                .setTintColor(0x30000000)
+                .build();
+        exitDialog.show();
+
+/*        CustomLodingDialog dialog = new CustomLodingDialog(this, R.style.FC_DialogStyle);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setContentView(R.layout.fc_custom_dialog);
-/*        Bitmap map=FC_Utility.takeScreenShot(HomeActivity.this);
-        Bitmap fast=FC_Utility.fastblur(map, 20);
-        final Drawable draw=new BitmapDrawable(getResources(),fast);
-        dialog.getWindow().setBackgroundDrawable(draw);*/
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         dialog.setCancelable(false);
         dialog.setCanceledOnTouchOutside(false);
 
         dialog.show();
 
-        int dp = 12;
-        if (FC_Constants.TAB_LAYOUT)
-            dp = 20;
-
-        TextView dia_title = dialog.findViewById(R.id.dia_title);
-        Button dia_btn_green = dialog.findViewById(R.id.dia_btn_green);
-        Button dia_btn_yellow = dialog.findViewById(R.id.dia_btn_yellow);
-        Button dia_btn_red = dialog.findViewById(R.id.dia_btn_red);
-
-        dia_title.setTextSize(dp);
-        dia_title.setText(getResources().getString(R.string.Stt_Dialog_Msg));
-        dia_btn_green.setText(getResources().getString(R.string.Okay));
-        dia_btn_red.setText(getResources().getString(R.string.Skip));
-        dia_btn_yellow.setVisibility(View.GONE);
 
         dia_btn_green.setOnClickListener(v -> {
             showBottomFragment();
@@ -425,7 +474,29 @@ public class SplashActivity extends SplashSupportActivity implements SplashContr
         dia_btn_red.setOnClickListener(v -> {
             showBottomFragment();
             dialog.dismiss();
-        });
+        });*/
+    }
+
+    @SuppressLint("SetTextI18n")
+    @UiThread
+    @Subscribe
+    public void messageRecieved(EventMessage message) {
+        if (message != null) {
+            if (message.getMessage().equalsIgnoreCase(BOTTOM_FRAGMENT_CLOSED))
+                onBackPressed();
+        }
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        EventBus.getDefault().register(this);
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        EventBus.getDefault().unregister(this);
     }
 
     @UiThread

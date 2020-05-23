@@ -3,13 +3,10 @@ package com.pratham.foundation.ui.admin_panel;
 import android.annotation.SuppressLint;
 import android.content.ComponentName;
 import android.content.Intent;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
 import android.os.Environment;
 import android.os.Handler;
 import android.view.Gravity;
 import android.view.View;
-import android.view.Window;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.RelativeLayout;
@@ -19,7 +16,6 @@ import android.widget.Toast;
 import com.pratham.foundation.BaseActivity;
 import com.pratham.foundation.R;
 import com.pratham.foundation.customView.BlurPopupDialog.BlurPopupWindow;
-import com.pratham.foundation.customView.display_image_dialog.CustomLodingDialog;
 import com.pratham.foundation.database.AppDatabase;
 import com.pratham.foundation.database.domain.Groups;
 import com.pratham.foundation.database.domain.Student;
@@ -109,34 +105,45 @@ public class MenuActivity extends BaseActivity {
     }*/
 
     private void show_STT_Dialog() {
-        CustomLodingDialog dialog = new CustomLodingDialog(MenuActivity.this, R.style.FC_DialogStyle);
-        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        dialog.setContentView(R.layout.fc_custom_dialog);
-        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-        dialog.setCancelable(false);
-        dialog.setCanceledOnTouchOutside(false);
-        dialog.show();
-        TextView dia_title = dialog.findViewById(R.id.dia_title);
-        Button dia_btn_green = dialog.findViewById(R.id.dia_btn_green);
-        Button dia_btn_yellow = dialog.findViewById(R.id.dia_btn_yellow);
-        Button dia_btn_red = dialog.findViewById(R.id.dia_btn_red);
+        exitDialog = new BlurPopupWindow.Builder(this)
+                .setContentView(R.layout.fc_custom_dialog)
+                .bindClickListener(v -> {
+                    FastSave.getInstance().saveBoolean(FC_Constants.VOICES_DOWNLOAD_INTENT, true);
+                    Intent intent = new Intent(Intent.ACTION_MAIN);
+                    intent.setComponent(new ComponentName("com.google.android.googlequicksearchbox",
+                            "com.google.android.voicesearch.greco3.languagepack.InstallActivity"));
+                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    startActivity(intent);
+                    new Handler().postDelayed(() -> {
+                        exitDialog.dismiss();
+                    }, 200);
+                }, R.id.dia_btn_green)
+                .bindClickListener(v -> {
+                    new Handler().postDelayed(() -> exitDialog.dismiss(), 200);
+                }, R.id.dia_btn_red)
+                .setGravity(Gravity.CENTER)
+                .setDismissOnTouchBackground(true)
+                .setDismissOnClickBack(true)
+                .setScaleRatio(0.2f)
+                .setBlurRadius(10)
+                .setTintColor(0x30000000)
+                .build();
 
-        dia_title.setTextSize(getResources().getDimension(R.dimen._10sdp));
+        int dp = 12;
+        if (FC_Constants.TAB_LAYOUT)
+            dp = 20;
+
+        TextView dia_title = exitDialog.findViewById(R.id.dia_title);
+        Button dia_btn_green = exitDialog.findViewById(R.id.dia_btn_green);
+        Button dia_btn_yellow = exitDialog.findViewById(R.id.dia_btn_yellow);
+        Button dia_btn_red = exitDialog.findViewById(R.id.dia_btn_red);
+
+        dia_title.setTextSize(dp);
         dia_title.setText(getResources().getString(R.string.Stt_Dialog_Msg));
         dia_btn_green.setText(getResources().getString(R.string.Okay));
         dia_btn_red.setText(getResources().getString(R.string.Skip));
         dia_btn_yellow.setVisibility(View.GONE);
-
-        dia_btn_green.setOnClickListener(v -> {
-            FastSave.getInstance().saveBoolean(FC_Constants.VOICES_DOWNLOAD_INTENT, true);
-            Intent intent = new Intent(Intent.ACTION_MAIN);
-            intent.setComponent(new ComponentName("com.google.android.googlequicksearchbox",
-                    "com.google.android.voicesearch.greco3.languagepack.InstallActivity"));
-            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            startActivity(intent);
-            dialog.dismiss();
-        });
-        dia_btn_red.setOnClickListener(v -> dialog.dismiss());
+        exitDialog.show();
     }
 
     @Click(R.id.mcv_ind)

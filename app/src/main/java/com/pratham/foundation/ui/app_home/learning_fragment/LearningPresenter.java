@@ -7,7 +7,6 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 import com.google.gson.stream.JsonReader;
-import com.pratham.foundation.ApplicationClass;
 import com.pratham.foundation.async.API_Content;
 import com.pratham.foundation.async.ZipDownloader;
 import com.pratham.foundation.database.AppDatabase;
@@ -16,7 +15,6 @@ import com.pratham.foundation.database.domain.ContentProgress;
 import com.pratham.foundation.database.domain.ContentTable;
 import com.pratham.foundation.database.domain.WordEnglish;
 import com.pratham.foundation.interfaces.API_Content_Result;
-import com.pratham.foundation.modalclasses.Modal_DownloadAssessment;
 import com.pratham.foundation.modalclasses.Modal_DownloadContent;
 import com.pratham.foundation.services.shared_preferences.FastSave;
 import com.pratham.foundation.utility.FC_Constants;
@@ -30,22 +28,18 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.FileInputStream;
-import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.io.UnsupportedEncodingException;
 import java.lang.reflect.Type;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 
 import static com.pratham.foundation.ui.app_home.HomeActivity.sub_nodeId;
-import static com.pratham.foundation.utility.FC_Constants.LOGIN_MODE;
-import static com.pratham.foundation.utility.FC_Constants.QR_GROUP_MODE;
-import static com.pratham.foundation.utility.FC_Constants.gameFolderPath;
+import static com.pratham.foundation.utility.FC_Constants.TYPE_FOOTER;
+import static com.pratham.foundation.utility.FC_Constants.TYPE_HEADER;
+
 
 @EBean
 public class LearningPresenter implements LearningContract.LearningPresenter, API_Content_Result {
@@ -88,29 +82,6 @@ public class LearningPresenter implements LearningContract.LearningPresenter, AP
         api_content = new API_Content(mContext, LearningPresenter.this);
     }
 
-/*    @Background
-    @Override
-    public void displayProfileName() {
-        String profileName;
-        if (!GROUP_LOGIN)
-            profileName = AppDatabase.getDatabaseInstance(mContext).getStudentDao().getFullName(FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""));
-        else
-            profileName = AppDatabase.getDatabaseInstance(mContext).getGroupsDao().getGroupNameByGrpID(FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""));
-
-        learningView.setProfileName(profileName);
-    }
-
-    @Background
-    @Override
-    public void displayProfileImage() {
-        String sImage;
-        if (!GROUP_LOGIN)
-            sImage = AppDatabase.getDatabaseInstance(mContext).getStudentDao().getStudentAvatar(FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""));
-        else
-            sImage = "group_icon";
-        learningView.setStudentProfileImage(sImage);
-    }*/
-
     @Override
     public void insertNodeId(String nodeId) {
         nodeIds.add(nodeId);
@@ -146,7 +117,7 @@ public class LearningPresenter implements LearningContract.LearningPresenter, AP
 //        String rootID = "4030";
         botID = AppDatabase.appDatabase.getContentTableDao().getContentDataByTitle("" + rootID, cosSection);
         if (botID == null && !FC_Utility.isDataConnectionAvailable(mContext))
-            learningView.showComingSoonDiaog();
+            learningView.showNoDataLayout();
         else if (botID != null && !FC_Utility.isDataConnectionAvailable(mContext))
             getLevelDataForList(currentLevelNo, botID);
         else
@@ -156,7 +127,7 @@ public class LearningPresenter implements LearningContract.LearningPresenter, AP
     @Background
     public void getRootData(String rootID) {
         if (FC_Utility.isDataConnectionAvailable(mContext))
-            api_content.getAPIContent(FC_Constants.BOTTOM_NODE, FC_Constants.INTERNET_DOWNLOAD_NEW_API, rootID);
+            api_content.getAPIContent(FC_Constants.BOTTOM_NODE, FC_Constants.INTERNET_BROWSE_API, rootID);
     }
 
     @Background
@@ -170,7 +141,7 @@ public class LearningPresenter implements LearningContract.LearningPresenter, AP
     }
 
     public void getLevelDataFromApi(int currentLevelNo, String botNodeId) {
-        api_content.getAPIContent(FC_Constants.INTERNET_LEVEL, FC_Constants.INTERNET_DOWNLOAD_NEW_API, botNodeId);
+        api_content.getAPIContent(FC_Constants.INTERNET_LEVEL, FC_Constants.INTERNET_BROWSE_API, botNodeId);
     }
 
     @Background
@@ -254,20 +225,11 @@ public class LearningPresenter implements LearningContract.LearningPresenter, AP
         learningView.showLoader();
         try {
             dwParentList = AppDatabase.appDatabase.getContentTableDao().getContentData("" + nodeIds.get(nodeIds.size() - 1));
-            sortContentList(dwParentList);
             contentParentList.clear();
             ContentTable resContentTable = new ContentTable();
             List<ContentTable> resourceList = new ArrayList<>();
             List<ContentTable> tempList2 = new ArrayList<>();
-
             ContentTable contentTableRes = new ContentTable();
-            contentTableRes.setNodeId("0");
-            contentTableRes.setNodeType("Header");
-            tempList2.add(contentTableRes);
-            resContentTable.setNodelist(tempList2);
-            resourceList.add(contentTableRes);
-            contentParentList.add(contentTableRes);
-
             try {
                 for (int j = 0; j < dwParentList.size(); j++) {
                     if (dwParentList.get(j).getNodeType().equalsIgnoreCase("Resource")) {
@@ -286,17 +248,19 @@ public class LearningPresenter implements LearningContract.LearningPresenter, AP
                         contentTableRes.setResourcePath("" + dwParentList.get(j).getResourcePath());
                         contentTableRes.setParentId("" + dwParentList.get(j).getParentId());
                         contentTableRes.setLevel("" + dwParentList.get(j).getLevel());
+                        contentTableRes.setSeq_no(dwParentList.get(j).getSeq_no());
                         contentTableRes.setContentType("" + dwParentList.get(j).getContentType());
+                        contentTableRes.setVersion("" + dwParentList.get(j).getVersion());
                         contentTableRes.setIsDownloaded("" + dwParentList.get(j).getIsDownloaded());
                         contentTableRes.setOnSDCard(dwParentList.get(j).isOnSDCard());
                         contentTableRes.setNodelist(tempList2);
+                        contentTableRes.setNodeUpdate(false);
                         resourceList.add(contentTableRes);
                     } else {
                         List<ContentTable> tempList;
                         ContentTable contentTable = new ContentTable();
                         tempList = new ArrayList<>();
                         childDwContentList = AppDatabase.appDatabase.getContentTableDao().getContentData("" + dwParentList.get(j).getNodeId());
-                        sortContentList(childDwContentList);
                         contentTable.setNodeId("" + dwParentList.get(j).getNodeId());
                         contentTable.setNodeType("" + dwParentList.get(j).getNodeType());
                         contentTable.setNodeTitle("" + dwParentList.get(j).getNodeTitle());
@@ -310,16 +274,16 @@ public class LearningPresenter implements LearningContract.LearningPresenter, AP
                         contentTable.setResourcePath("" + dwParentList.get(j).getResourcePath());
                         contentTable.setParentId("" + dwParentList.get(j).getParentId());
                         contentTable.setLevel("" + dwParentList.get(j).getLevel());
+                        contentTable.setSeq_no(dwParentList.get(j).getSeq_no());
                         contentTable.setContentType(dwParentList.get(j).getContentType());
                         contentTable.setIsDownloaded("" + dwParentList.get(j).getIsDownloaded());
+                        contentTable.setVersion("" + dwParentList.get(j).getVersion());
+                        contentTable.setNodeUpdate(false);
                         contentTable.setOnSDCard(dwParentList.get(j).isOnSDCard());
 
                         int childListSize = childDwContentList.size();
                         if (childDwContentList.size() > 0) {
                             ContentTable contentChild = new ContentTable();
-                            contentChild.setNodeId("0");
-                            contentChild.setNodeType("Header");
-                            tempList.add(contentChild);
                             for (int i = 0; i < childListSize; i++) {
                                 contentChild = new ContentTable();
                                 contentChild.setNodeId("" + childDwContentList.get(i).getNodeId());
@@ -335,13 +299,15 @@ public class LearningPresenter implements LearningContract.LearningPresenter, AP
                                 contentChild.setResourcePath("" + childDwContentList.get(i).getResourcePath());
                                 contentChild.setParentId("" + childDwContentList.get(i).getParentId());
                                 contentChild.setLevel("" + childDwContentList.get(i).getLevel());
+                                contentChild.setSeq_no(childDwContentList.get(i).getSeq_no());
                                 contentChild.setContentType(childDwContentList.get(i).getContentType());
                                 contentChild.setIsDownloaded("" + childDwContentList.get(i).getIsDownloaded());
                                 contentChild.setOnSDCard(childDwContentList.get(i).isOnSDCard());
+                                contentChild.setVersion(childDwContentList.get(i).getVersion());
+                                contentChild.setNodeUpdate(false);
                                 contentChild.setNodelist(null);
                                 maxScoreChild = new ArrayList();
-                                if (!LOGIN_MODE.equalsIgnoreCase(QR_GROUP_MODE))
-                                    findMaxScoreNew(childDwContentList.get(i).getNodeId());
+                                findMaxScoreNew(childDwContentList.get(i).getNodeId());
                                 double totalScore = 0;
                                 for (int q = 0; maxScoreChild.size() > q; q++) {
                                     totalScore = totalScore + Double.parseDouble(maxScoreChild.get(q).toString());
@@ -354,27 +320,14 @@ public class LearningPresenter implements LearningContract.LearningPresenter, AP
                                 }
                                 tempList.add(contentChild);
                             }
-                            contentChild = new ContentTable();
-                            contentChild.setNodeId("999999");
-                            contentChild.setNodeType("Header");
-                            tempList.add(contentChild);
                         }
-                        sortAllList(tempList);
                         contentTable.setNodelist(tempList);
                         contentParentList.add(contentTable);
                     }
                 }
                 if (resourceList.size() > 1) {
-                    contentTableRes = new ContentTable();
-                    contentTableRes.setNodeId("999999");
-                    contentTableRes.setNodeType("Header");
-                    tempList2.add(contentTableRes);
-                    resContentTable.setNodelist(tempList2);
-                    resourceList.add(contentTableRes);
-
                     resContentTable.setNodelist(resourceList);
                     contentParentList.add(resContentTable);
-
                 }
             } catch (Exception e) {
                 e.printStackTrace();
@@ -388,35 +341,19 @@ public class LearningPresenter implements LearningContract.LearningPresenter, AP
     @UiThread
     public void updateUI() {
         maxScore.clear();
-//        try {
-//            findMaxScore("" + nodeIds.get(nodeIds.size() - 1));
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
-        //TODO add Use this code for API.
+        try {
+            findMaxScore("" + nodeIds.get(nodeIds.size() - 1));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         if (FC_Utility.isDataConnectionAvailable(mContext)) {
-            api_content.getAPIContent(FC_Constants.INTERNET_DOWNLOAD,
-                    FC_Constants.INTERNET_DOWNLOAD_NEW_API, nodeIds.get(nodeIds.size() - 1));
+            api_content.getAPIContent(FC_Constants.INTERNET_BROWSE,
+                    FC_Constants.INTERNET_BROWSE_API, nodeIds.get(nodeIds.size() - 1));
         } else {
-            if (contentParentList.size() == 0 && !FC_Utility.isDataConnectionAvailable(mContext)) {
-                learningView.showNoDataDownloadedDialog();
-            } else {
-                learningView.addContentToViewList(contentParentList);
-                learningView.notifyAdapter();
-            }
+            addHeadersAndNotifyAdapter(contentParentList);
         }
 //        learningView.addContentToViewList(contentParentList);
 //        learningView.notifyAdapter();
-
-    }
-
-    public void sortAllList(List<ContentTable> contentParentList) {
-        Collections.sort(contentParentList, new Comparator<ContentTable>() {
-            @Override
-            public int compare(ContentTable o1, ContentTable o2) {
-                return o1.getNodeId().compareTo(o2.getNodeId());
-            }
-        });
     }
 
     private void insertEnglishWords(List<WordEnglish> wordGameDataEnglish) {
@@ -470,17 +407,14 @@ public class LearningPresenter implements LearningContract.LearningPresenter, AP
             while (reader.hasNext()) {
                 // Read data into object model
                 WordEnglish person = gson.fromJson(reader, WordEnglish.class);
-               /* if (person.getWord() == 0 ) {
+/*                if (person.getWord() == 0 ) {
                     System.out.println("Stream mode: " + person);
                 }*/
                 arrayList.add(person);
             }
             reader.close();
-        } catch (UnsupportedEncodingException ex) {
+        } catch (Exception ex) {
             ex.printStackTrace();
-        } catch (IOException ex) {
-            ex.printStackTrace();
-
         }
         return arrayList;
     }
@@ -508,8 +442,9 @@ public class LearningPresenter implements LearningContract.LearningPresenter, AP
         downloadNodeId = downloadId;
         if (FC_Utility.isDataConnectionAvailable(mContext)) {
             api_content.getAPIContent(FC_Constants.INTERNET_DOWNLOAD_RESOURCE, FC_Constants.INTERNET_DOWNLOAD_RESOURCE_API, downloadNodeId);
+//            api_content.getAPIContentTemp(FC_Constants.INTERNET_DOWNLOAD_RESOURCE, FC_Constants.INTERNET_DOWNLOAD_RESOURCE_API, downloadNodeId);
         } else {
-            learningView.showNoDataDownloadedDialog();
+            learningView.showNoDataLayout();
         }
 //        getAPIContent(FC_Constants.INTERNET_DOWNLOAD_RESOURCE, FC_Constants.INTERNET_DOWNLOAD_RESOURCE_API);
     }
@@ -517,31 +452,29 @@ public class LearningPresenter implements LearningContract.LearningPresenter, AP
     @Background
     @Override
     public void updateDownloadJson(String folderPath) {
-        String path = ApplicationClass.foundationPath + "" + gameFolderPath + folderPath;
-        try {
-            InputStream is = new FileInputStream(path + "/gameinfo.json");
-            int size = is.available();
-            byte[] buffer = new byte[size];
-            is.read(buffer);
-            is.close();
-            String jsonStr = new String(buffer);
-            JSONObject jsonObj = new JSONObject(jsonStr);
-            Gson gson = new Gson();
-            Modal_DownloadAssessment download_content = gson.fromJson(jsonObj.toString(), Modal_DownloadAssessment.class);
-            List<ContentTable> contentTableList = new ArrayList<>();
-            contentTableList = download_content.getNodelist();
-            for (int i = 0; i < contentTableList.size(); i++) {
-                API_Content.downloadImage(contentTableList.get(i).nodeServerImage, contentTableList.get(i).getNodeImage());
-                contentTableList.get(i).setIsDownloaded("true");
-            }
-            AppDatabase.getDatabaseInstance(mContext).getContentTableDao().addContentList(contentTableList);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+//        String path = ApplicationClass.foundationPath + "" + gameFolderPath + folderPath;
+//        try {
+//            InputStream is = new FileInputStream(path + "/gameinfo.json");
+//            int size = is.available();
+//            byte[] buffer = new byte[size];
+//            is.read(buffer);
+//            is.close();
+//            String jsonStr = new String(buffer);
+//            JSONObject jsonObj = new JSONObject(jsonStr);
+//            Gson gson = new Gson();
+//            Modal_DownloadAssessment download_content = gson.fromJson(jsonObj.toString(), Modal_DownloadAssessment.class);
+//            List<ContentTable> contentTableList = new ArrayList<>();
+//            contentTableList = download_content.getNodelist();
+//            for (int i = 0; i < contentTableList.size(); i++) {
+//                API_Content.downloadImage(contentTableList.get(i).nodeServerImage, contentTableList.get(i).getNodeImage());
+//                contentTableList.get(i).setIsDownloaded("true");
+//            }
+//            AppDatabase.getDatabaseInstance(mContext).getContentTableDao().addContentList(contentTableList);
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
         BackupDatabase.backup(mContext);
         learningView.dismissDownloadDialog();
-//        learningView.hideTestDownloadBtn();
-//        learningView.displayCurrentDownloadedTest();
     }
 
     @Background
@@ -557,31 +490,19 @@ public class LearningPresenter implements LearningContract.LearningPresenter, AP
     }
 
     private void sortContentList(List<ContentTable> contentParentList) {
-        Collections.sort(contentParentList, (o1, o2) -> o1.getNodeId().compareTo(o2.getNodeId()));
+        Collections.sort(contentParentList, (o1, o2) -> o1.getSeq_no() - (o2.getSeq_no()));
     }
 
     @Background
     @Override
     public void receivedContent(String header, String response) {
-        if (header.equalsIgnoreCase(FC_Constants.INTERNET_DOWNLOAD)) {
+        if (header.equalsIgnoreCase(FC_Constants.INTERNET_BROWSE)) {
             boolean parentFound = false, childFound = false;
             try {
                 contentDBList.clear();
                 Type listType = new TypeToken<ArrayList<ContentTable>>() {
                 }.getType();
                 List<ContentTable> serverContentList = gson.fromJson(response, listType);
-
-                List<ContentTable> resourceSerList = new ArrayList<>();
-                List<ContentTable> tempSerList2 = new ArrayList<>();
-                ContentTable resContentTableSer = new ContentTable();
-
-                ContentTable contentTableServerRes = new ContentTable();
-                contentTableServerRes.setNodeId("0");
-                contentTableServerRes.setNodeType("Header");
-                tempSerList2.add(contentTableServerRes);
-                resContentTableSer.setNodelist(tempSerList2);
-                resourceSerList.add(contentTableServerRes);
-                contentDBList.add(contentTableServerRes);
 
                 for (int i = 0; i < serverContentList.size(); i++) {
                     parentFound = false;
@@ -592,21 +513,24 @@ public class LearningPresenter implements LearningContract.LearningPresenter, AP
                                 contentParentList.get(j).getNodeId())) {
                             parentFound = true;
                             tempList = new ArrayList<>();
+                            if (!serverContentList.get(i).getVersion().equalsIgnoreCase(
+                                    contentParentList.get(j).getVersion()))
+                                contentParentList.get(j).setNodeUpdate(true);
                             contentDBList.add(contentParentList.get(j));
-                            if (serverContentList.get(i).getNodelist().size() > 0)
+                            if (serverContentList.get(i).getNodelist().size() > 0) {
                                 for (int k = 0; k < serverContentList.get(i).getNodelist().size(); k++) {
                                     ContentTable contentTableTemp = new ContentTable();
                                     childFound = false;
-                                    int listChild = 0;
                                     childContentList = new ArrayList<>();
                                     childContentList = contentParentList.get(j).getNodelist();
                                     if (childContentList.size() > 0) {
                                         for (int l = 0; l < childContentList.size(); l++) {
                                             if (serverContentList.get(i).getNodelist().get(k).getNodeId().equalsIgnoreCase(
                                                     childContentList.get(l).getNodeId())) {
+                                                if (!serverContentList.get(i).getNodelist().get(k).getVersion().equalsIgnoreCase(
+                                                        childContentList.get(l).getVersion()))
+                                                    contentParentList.get(j).getNodelist().get(l).setNodeUpdate(true);
                                                 childFound = true;
-//                                                contentDBList.get(j).getNodelist().add(childContentList.get(l));
-                                                listChild = l;
                                                 break;
                                             }
                                         }
@@ -620,22 +544,24 @@ public class LearningPresenter implements LearningContract.LearningPresenter, AP
                                             contentTableTemp.setNodeDesc("" + serverContentList.get(i).getNodelist().get(k).getNodeDesc());
                                             contentTableTemp.setNodeServerImage("" + serverContentList.get(i).getNodelist().get(k).getNodeServerImage());
                                             contentTableTemp.setNodeImage("" + serverContentList.get(i).getNodelist().get(k).getNodeImage());
+//                                            contentTableTemp.setNodeImage("" + serverContentList.get(i).getNodelist().get(k).getNodeServerImage()
+//                                                    .substring(serverContentList.get(i).getNodelist().get(k).getNodeServerImage().lastIndexOf('/') + 1));
                                             contentTableTemp.setResourceId("" + serverContentList.get(i).getNodelist().get(k).getResourceId());
                                             contentTableTemp.setResourceType("" + serverContentList.get(i).getNodelist().get(k).getResourceType());
                                             contentTableTemp.setResourcePath("" + serverContentList.get(i).getNodelist().get(k).getResourcePath());
                                             contentTableTemp.setParentId("" + serverContentList.get(i).getNodelist().get(k).getParentId());
                                             contentTableTemp.setLevel("" + serverContentList.get(i).getNodelist().get(k).getLevel());
+                                            contentTableTemp.setSeq_no(serverContentList.get(i).getNodelist().get(k).getSeq_no());
                                             contentTableTemp.setNodePercentage("0");
                                             contentTableTemp.setVersion("" + serverContentList.get(i).getNodelist().get(k).getVersion());
                                             contentTableTemp.setContentType("" + serverContentList.get(i).getNodelist().get(k).getContentType());
                                             contentTableTemp.setIsDownloaded("false");
                                             contentTableTemp.setOnSDCard(false);
+                                            contentTableTemp.setNodeUpdate(false);
 
                                             contentDBList.get(i).getNodelist().add(contentTableTemp);
                                             tempList.add(contentTableTemp);
                                             contentTable.setNodelist(tempList);
-//                                        contentParentList.get(j).getNodelist().add(contentTable);
-//                                        contentParentList.get(j).getNodelist().add();
                                         }
                                     } else {
                                         for (int f = 0; f < serverContentList.get(i).getNodelist().size(); f++) {
@@ -648,33 +574,26 @@ public class LearningPresenter implements LearningContract.LearningPresenter, AP
                                             contentTableChildTemp.setNodeDesc("" + serverContentList.get(i).getNodelist().get(f).getNodeDesc());
                                             contentTableChildTemp.setNodeServerImage("" + serverContentList.get(i).getNodelist().get(f).getNodeServerImage());
                                             contentTableChildTemp.setNodeImage("" + serverContentList.get(i).getNodelist().get(f).getNodeImage());
+//                                            contentTableChildTemp.setNodeImage("" +serverContentList.get(i).getNodelist().get(f).getNodeServerImage()
+//                                                    .substring(serverContentList.get(i).getNodelist().get(f).getNodeServerImage().lastIndexOf('/') + 1));
                                             contentTableChildTemp.setResourceId("" + serverContentList.get(i).getNodelist().get(f).getResourceId());
                                             contentTableChildTemp.setResourceType("" + serverContentList.get(i).getNodelist().get(f).getResourceType());
                                             contentTableChildTemp.setResourcePath("" + serverContentList.get(i).getNodelist().get(f).getResourcePath());
                                             contentTableChildTemp.setParentId("" + serverContentList.get(i).getNodelist().get(f).getParentId());
-                                            contentTableTemp.setNodePercentage("0");
+                                            contentTableChildTemp.setSeq_no(serverContentList.get(i).getNodelist().get(f).getSeq_no());
+                                            contentTableChildTemp.setNodePercentage("0");
                                             contentTableChildTemp.setLevel("" + serverContentList.get(i).getNodelist().get(f).getLevel());
                                             contentTableChildTemp.setVersion("" + serverContentList.get(i).getNodelist().get(f).getVersion());
                                             contentTableChildTemp.setContentType("" + serverContentList.get(i).getNodelist().get(f).getContentType());
                                             contentTableChildTemp.setIsDownloaded("false");
                                             contentTableChildTemp.setOnSDCard(false);
+                                            contentTableChildTemp.setNodeUpdate(false);
                                             tempList.add(contentTableChildTemp);
                                         }
-//                                        contentTable.setNodelist(tempList);
-                                        //Added whole child.
-                                        contentTableTemp = new ContentTable();
-                                        contentTableTemp.setNodeId("0");
-                                        contentTableTemp.setNodeType("Header");
-                                        tempList.add(contentTableTemp);
-
-                                        contentTableTemp = new ContentTable();
-                                        contentTableTemp.setNodeId("999999");
-                                        contentTableTemp.setNodeType("Header");
-                                        tempList.add(contentTableTemp);
-                                        sortAllList(tempList);
                                         contentDBList.get(i).setNodelist(tempList);
                                     }
                                 }
+                            }
                             break;
                         }
                     }
@@ -687,24 +606,24 @@ public class LearningPresenter implements LearningContract.LearningPresenter, AP
                         contentTable.setNodeDesc("" + serverContentList.get(i).getNodeDesc());
                         contentTable.setNodeServerImage("" + serverContentList.get(i).getNodeServerImage());
                         contentTable.setNodeImage("" + serverContentList.get(i).getNodeImage());
+//                        contentTable.setNodeImage("" + serverContentList.get(i).getNodeServerImage()
+//                                .substring(serverContentList.get(i).getNodeServerImage().lastIndexOf('/') + 1));
                         contentTable.setResourceId("" + serverContentList.get(i).getResourceId());
                         contentTable.setResourceType("" + serverContentList.get(i).getResourceType());
                         contentTable.setResourcePath("" + serverContentList.get(i).getResourcePath());
                         contentTable.setParentId("" + serverContentList.get(i).getParentId());
                         contentTable.setNodePercentage("0");
                         contentTable.setLevel("" + serverContentList.get(i).getLevel());
+                        contentTable.setSeq_no(serverContentList.get(i).getSeq_no());
                         contentTable.setVersion("" + serverContentList.get(i).getVersion());
                         contentTable.setContentType("" + serverContentList.get(i).getContentType());
                         contentTable.setIsDownloaded("false");
                         contentTable.setOnSDCard(false);
+                        contentTable.setNodeUpdate(false);
 
                         if (serverContentList.get(i).getNodelist().size() > 0) {
                             tempList = new ArrayList<>();
                             ContentTable contentTableRes = new ContentTable();
-                            contentTableRes.setNodeId("0");
-                            contentTableRes.setNodeType("Header");
-                            tempList.add(contentTableRes);
-
                             for (int f = 0; f < serverContentList.get(i).getNodelist().size(); f++) {
                                 ContentTable contentTableTemp = new ContentTable();
                                 contentTableTemp.setNodeId("" + serverContentList.get(i).getNodelist().get(f).getNodeId());
@@ -715,51 +634,39 @@ public class LearningPresenter implements LearningContract.LearningPresenter, AP
                                 contentTableTemp.setNodeDesc("" + serverContentList.get(i).getNodelist().get(f).getNodeDesc());
                                 contentTableTemp.setNodeServerImage("" + serverContentList.get(i).getNodelist().get(f).getNodeServerImage());
                                 contentTableTemp.setNodeImage("" + serverContentList.get(i).getNodelist().get(f).getNodeImage());
+//                                contentTableTemp.setNodeImage("" +serverContentList.get(i).getNodelist().get(f).getNodeServerImage()
+//                                        .substring(serverContentList.get(i).getNodelist().get(f).getNodeServerImage().lastIndexOf('/') + 1));
                                 contentTableTemp.setResourceId("" + serverContentList.get(i).getNodelist().get(f).getResourceId());
                                 contentTableTemp.setResourceType("" + serverContentList.get(i).getNodelist().get(f).getResourceType());
                                 contentTableTemp.setResourcePath("" + serverContentList.get(i).getNodelist().get(f).getResourcePath());
                                 contentTableTemp.setParentId("" + serverContentList.get(i).getNodelist().get(f).getParentId());
                                 contentTableTemp.setLevel("" + serverContentList.get(i).getNodelist().get(f).getLevel());
+                                contentTableTemp.setSeq_no(serverContentList.get(i).getNodelist().get(f).getSeq_no());
+                                contentTableTemp.setNodePercentage("0");
                                 contentTableTemp.setVersion("" + serverContentList.get(i).getNodelist().get(f).getVersion());
                                 contentTableTemp.setContentType("" + serverContentList.get(i).getNodelist().get(f).getContentType());
                                 contentTableTemp.setIsDownloaded("false");
                                 contentTableTemp.setOnSDCard(false);
+                                contentTableTemp.setNodeUpdate(false);
                                 tempList.add(contentTableTemp);
                             }
-                            contentTableRes = new ContentTable();
-                            contentTableRes.setNodeId("0");
-                            contentTableRes.setNodeType("Header");
-                            tempList.add(contentTableRes);
-
-                            contentTableRes = new ContentTable();
-                            contentTableRes.setNodeId("9999999");
-                            contentTableRes.setNodeType("Header");
-                            tempList.add(contentTableRes);
-                            sortAllList(tempList);
                             contentTable.setNodelist(tempList);
                             contentDBList.add(contentTable);
                         }
                     }
                 }
-                //learningView.addContentToViewList(contentParentList);
             } catch (Exception e) {
                 e.printStackTrace();
             }
-//            contentParentList = contentDBList;
-            learningView.addContentToViewList(contentDBList);
-            learningView.notifyAdapter();
-
+            addHeadersAndNotifyAdapter(contentDBList);
         } else if (header.equalsIgnoreCase(FC_Constants.INTERNET_DOWNLOAD_RESOURCE)) {
             try {
                 JSONObject jsonObject = new JSONObject(response);
                 download_content = gson.fromJson(jsonObject.toString(), Modal_DownloadContent.class);
                 contentDetail = download_content.getNodelist().get(download_content.getNodelist().size() - 1);
-                pos.clear();
 
-                for (int i = 0; i < download_content.getNodelist().size(); i++) {
-                    ContentTable contentTableTemp = download_content.getNodelist().get(i);
-                    pos.add(contentTableTemp);
-                }
+                pos.clear();
+                pos.addAll(download_content.getNodelist());
 
                 fileName = download_content.getDownloadurl()
                         .substring(download_content.getDownloadurl().lastIndexOf('/') + 1);
@@ -779,10 +686,12 @@ public class LearningPresenter implements LearningContract.LearningPresenter, AP
                 boolean itemFound = false;
 
                 for (int i = 0; i < serverContentList.size(); i++) {
+                    itemFound = false;
                     for (int j = 0; j < rootList.size(); j++) {
                         if (serverContentList.get(i).getNodeId().equalsIgnoreCase(rootList.get(j).getNodeId())) {
                             rootLevelList.add(rootList.get(j));
                             itemFound = true;
+                            break;
                         }
                     }
                     if (!itemFound) {
@@ -795,12 +704,15 @@ public class LearningPresenter implements LearningContract.LearningPresenter, AP
                         contentTableTemp.setNodeDesc("" + serverContentList.get(i).getNodeDesc());
                         contentTableTemp.setNodeServerImage("" + serverContentList.get(i).getNodeServerImage());
                         contentTableTemp.setNodeImage("" + serverContentList.get(i).getNodeImage());
+//                        contentTableTemp.setNodeImage("" + serverContentList.get(i).getNodeServerImage()
+//                                .substring(serverContentList.get(i).getNodeServerImage().lastIndexOf('/') + 1));
                         contentTableTemp.setResourceId("" + serverContentList.get(i).getResourceId());
                         contentTableTemp.setResourceType("" + serverContentList.get(i).getResourceType());
                         contentTableTemp.setResourcePath("" + serverContentList.get(i).getResourcePath());
                         contentTableTemp.setParentId("" + serverContentList.get(i).getParentId());
                         contentTableTemp.setLevel("" + serverContentList.get(i).getLevel());
                         contentTableTemp.setVersion("" + serverContentList.get(i).getVersion());
+                        contentTableTemp.setSeq_no(serverContentList.get(i).getSeq_no());
                         contentTableTemp.setContentType("" + serverContentList.get(i).getContentType());
                         contentTableTemp.setIsDownloaded("false");
                         contentTableTemp.setOnSDCard(false);
@@ -830,6 +742,37 @@ public class LearningPresenter implements LearningContract.LearningPresenter, AP
         }
     }
 
+    private void addHeadersAndNotifyAdapter(List<ContentTable> contentDBList) {
+
+        if (contentDBList.size() > 0) {
+            ContentTable contentTableHeader = new ContentTable();
+            contentTableHeader.setNodeId(TYPE_HEADER);
+            contentTableHeader.setSeq_no(0);
+            contentTableHeader.setNodeType(TYPE_HEADER);
+
+            ContentTable contentTableFooter = new ContentTable();
+            contentTableFooter.setNodeId(TYPE_FOOTER);
+            contentTableFooter.setSeq_no(100);
+            contentTableFooter.setNodeType(TYPE_FOOTER);
+
+            contentDBList.add(contentTableHeader);
+            sortContentList(contentDBList);
+
+            for (int i = 0; i < contentDBList.size(); i++) {
+                if (!contentDBList.get(i).getNodeType().equalsIgnoreCase(TYPE_HEADER) &&
+                        !contentDBList.get(i).getNodeType().equalsIgnoreCase(TYPE_FOOTER)) {
+                    contentDBList.get(i).getNodelist().add(contentTableHeader);
+                    contentDBList.get(i).getNodelist().add(contentTableFooter);
+                    sortContentList(contentDBList.get(i).getNodelist());
+                }
+            }
+            learningView.showRecyclerLayout();
+            learningView.addContentToViewList(contentDBList);
+            learningView.notifyAdapter();
+        } else
+            learningView.showNoDataLayout();
+    }
+
     @Background
     @Override
     public void updateDownloads() {
@@ -848,9 +791,11 @@ public class LearningPresenter implements LearningContract.LearningPresenter, AP
     public void receivedError(String header) {
         if (header.equalsIgnoreCase(FC_Constants.INTERNET_LEVEL)) {
             learningView.setSelectedLevel(rootList);
-        } else if (header.equalsIgnoreCase(FC_Constants.INTERNET_DOWNLOAD)) {
-            learningView.addContentToViewList(contentParentList);
-            learningView.notifyAdapter();
+        } else if (header.equalsIgnoreCase(FC_Constants.INTERNET_BROWSE)) {
+            addHeadersAndNotifyAdapter(contentParentList);
+//            learningView.addContentToViewList(contentParentList);
+//            learningView.notifyAdapter();
         }
     }
+
 }

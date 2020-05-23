@@ -6,12 +6,12 @@ import com.pratham.foundation.database.domain.ContentTable;
 import java.util.List;
 
 public class Modal_DownloadContent {
-   
-   @SerializedName("nodelist")
+
+    @SerializedName("contentlist")
     List<ContentTable> nodelist;
     @SerializedName("downloadurl")
     String downloadurl;
-    @SerializedName("foldername")
+    @SerializedName("resourcetype")
     String foldername;
 
     @Override

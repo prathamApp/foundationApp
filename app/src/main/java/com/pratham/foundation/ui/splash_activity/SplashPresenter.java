@@ -61,7 +61,9 @@ import static com.pratham.foundation.database.AppDatabase.DB_NAME;
 import static com.pratham.foundation.database.AppDatabase.DB_VERSION;
 import static com.pratham.foundation.database.AppDatabase.appDatabase;
 import static com.pratham.foundation.ui.splash_activity.SplashActivity.exitDialogOpen;
+import static com.pratham.foundation.utility.FC_Constants.APP_LANGUAGE;
 import static com.pratham.foundation.utility.FC_Constants.CURRENT_VERSION;
+import static com.pratham.foundation.utility.FC_Constants.HINDI;
 
 @EBean
 public class SplashPresenter implements SplashContract.SplashPresenter {
@@ -133,7 +135,7 @@ public class SplashPresenter implements SplashContract.SplashPresenter {
             if (!dbExist) {
                         try {
                             AppDatabase.getDatabaseInstance(context);
-                            if (new File(Environment.getExternalStorageDirectory().getAbsolutePath() + "/PrathamBackups/foundation_db").exists())
+                            if (new File(Environment.getExternalStorageDirectory().getAbsolutePath() + "/PrathamBackups/"+DB_NAME).exists())
                                 copyDb = true;
                             else
                                 getSdCardPath();
@@ -146,6 +148,8 @@ public class SplashPresenter implements SplashContract.SplashPresenter {
                 getSdCardPath();
                 splashView.preShowBtn();
             }
+            if(FastSave.getInstance().getString(APP_LANGUAGE, "").equalsIgnoreCase(""))
+                FastSave.getInstance().saveString(APP_LANGUAGE, HINDI);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -636,8 +640,12 @@ public class SplashPresenter implements SplashContract.SplashPresenter {
                 Log.d("-CT-", "insertNewData ENDDDDDDDDDDDDD");
                 Log.d("-CT-", "insert END  :::::CURRENT_VERSION::::: " +FastSave.getInstance().getString(CURRENT_VERSION, "NA"));
                 Log.d("-CT-", "insert END  ::::getCurrentVersion:::: " +FC_Utility.getCurrentVersion(context));
-                splashView.showBottomFragment();
+                Log.d("-CT-", "Before insert new  :::::VOICES_DOWNLOAD_INTENT::::: " +FastSave.getInstance().getBoolean(FC_Constants.VOICES_DOWNLOAD_INTENT, false));
                 splashView.dismissProgressDialog();
+                if (!FastSave.getInstance().getBoolean(FC_Constants.VOICES_DOWNLOAD_INTENT, false))
+                    splashView.show_STT_Dialog();
+                else
+                    splashView.showBottomFragment();
             }
         }.execute();
     }

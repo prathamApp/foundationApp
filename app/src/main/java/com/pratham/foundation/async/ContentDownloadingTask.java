@@ -13,7 +13,6 @@ import com.pratham.foundation.database.domain.ContentTable;
 import com.pratham.foundation.modalclasses.EventMessage;
 import com.pratham.foundation.modalclasses.Modal_Download;
 import com.pratham.foundation.modalclasses.Modal_FileDownloading;
-import com.pratham.foundation.services.shared_preferences.FastSave;
 import com.pratham.foundation.utility.FC_Constants;
 
 import net.lingala.zip4j.core.ZipFile;
@@ -34,6 +33,7 @@ import java.util.concurrent.Executors;
 
 import static com.pratham.foundation.ApplicationClass.App_Thumbs_Path;
 import static com.pratham.foundation.utility.FC_Constants.FILE_DOWNLOAD_STARTED;
+import static com.pratham.foundation.utility.FC_Constants.VIDEO;
 
 @EBean
 public class ContentDownloadingTask {
@@ -51,7 +51,7 @@ public class ContentDownloadingTask {
     //    DownloadService downloadService;
     ArrayList<ContentTable> levelContents;
 
-    public ContentDownloadingTask (Context context){
+    public ContentDownloadingTask(Context context) {
         this.context = context;
     }
 
@@ -97,44 +97,51 @@ public class ContentDownloadingTask {
             // instead of the file
             Log.d(TAG, "doInBackground:" + connection.getResponseCode());
             if (connection.getResponseCode() == HttpURLConnection.HTTP_OK) {
-            // getting file length
-            dowloadImages();
-            int lenghtOfFile = connection.getContentLength();
-            if (lenghtOfFile < 0)
-                lenghtOfFile = (Integer.parseInt(content.getLevel()) > 0) ? Integer.parseInt(content.getLevel()) : 1;
-            // input stream to read file - with 8k buffer
-            input = connection.getInputStream();
-            // Output stream to write file
-            output = new FileOutputStream(dir_path + "/" + f_name);
-            byte[] data = new byte[4096];
-            long total = 0;
+                // getting file length
+                dowloadImages();
+                int lenghtOfFile = connection.getContentLength();
+                if (lenghtOfFile < 0)
+                    lenghtOfFile = (Integer.parseInt(content.getLevel()) > 0) ? Integer.parseInt(content.getLevel()) : 1;
+                // input stream to read file - with 8k buffer
+                input = connection.getInputStream();
+                // Output stream to write file
+                output = new FileOutputStream(dir_path + "/" + f_name);
+                byte[] data = new byte[4096];
+                long total = 0;
 //                long download_percentage_old = 00;
-            int count;
-            while ((count = input.read(data)) != -1) {
+                int count;
+                while ((count = input.read(data)) != -1) {
 /*                if (isCancelled()) {
                     input.close();
                     return false;
                 }*/
-                total += count;
-                // writing data to file
-                output.write(data, 0, count);
-                long download_percentage_new = (100 * total) / lenghtOfFile;
-                updateProgress(download_percentage_new);
-            }
-            // flushing output AND closing streams
+                    total += count;
+                    // writing data to file
+                    output.write(data, 0, count);
+                    long download_percentage_new = (100 * total) / lenghtOfFile;
+                    updateProgress(download_percentage_new);
+                }
+                // flushing output AND closing streams
                 output.close();
                 input.close();
 
-//            if (folder_name.equalsIgnoreCase(FC_Constants.GAME)) {
                 unziping_error = unzipFile(dir_path + "/" + f_name, dir_path);
-//            }
-            if (unziping_error)
-                unzipingError();
-            else
-                downloadCompleted();
+
+                if (unziping_error)
+                    unzipingError();
+                else
+                    downloadCompleted();
+
+            } else {
+                EventMessage eventMessage = new EventMessage();
+                eventMessage.setMessage(FC_Constants.RESPONSE_CODE_ERROR);
+                EventBus.getDefault().post(eventMessage);
             }
         } catch (Exception e) {
             e.printStackTrace();
+            EventMessage eventMessage = new EventMessage();
+            eventMessage.setMessage(FC_Constants.FILE_DOWNLOAD_ERROR);
+            EventBus.getDefault().post(eventMessage);
         }
     }
 
@@ -145,32 +152,31 @@ public class ContentDownloadingTask {
         onCompleteContentDownloadTase(false);
     }
 
-    private void downloadCompleted() {
+    @Background
+    public void downloadCompleted() {
         Log.d(TAG, "updateFileProgress: " + downloadID);
 //        content.setContentType("file");
-        ArrayList<ContentTable> temp = new ArrayList<>();
-        temp.addAll(levelContents);
+        ArrayList<ContentTable> temp = new ArrayList<>(levelContents);
         temp.add(content);
         for (int i = 0; i < temp.size(); i++) {
             temp.get(i).setIsDownloaded("" + true);
             temp.get(i).setOnSDCard(false);
         }
 
-        for (ContentTable d : temp) {
+ /*       for (ContentTable d : temp) {
             if (d.getNodeImage() != null) {
                 String img_name = d.getNodeImage().substring(d.getNodeImage().lastIndexOf('/') + 1);
                 d.setNodeImage(img_name);
             }
-            d.setContentLanguage(FastSave.getInstance().getString(FC_Constants.LANGUAGE, FC_Constants.HINDI));
+            d.setContentLanguage(FastSave.getInstance().getString(FC_Constants.APP_LANGUAGE, FC_Constants.HINDI));
             d.isDownloaded = "" + true;
             d.setOnSDCard(false);
-        }
+        }*/
         AppDatabase.appDatabase.getContentTableDao().addContentList(temp);
         onCompleteContentDownloadTase(true);
     }
 
     private void updateProgress(long download_percentage_new) {
-        Log.d(TAG, "updateFileProgress: " + downloadID + ":::" + f_name + ":::" + download_percentage_new);
         if (downloadID != null) {
             Modal_FileDownloading modal_fileDownloading = new Modal_FileDownloading();
             modal_fileDownloading.setDownloadId(downloadID);
@@ -197,7 +203,7 @@ public class ContentDownloadingTask {
     }
 
     public static void downloadImage(String url, String filename) {
-        File dir = new File(ApplicationClass.foundationPath + "" + App_Thumbs_Path ); //Creating an internal dir;
+        File dir = new File(ApplicationClass.foundationPath + "" + App_Thumbs_Path); //Creating an internal dir;
         if (!dir.exists()) dir.mkdirs();
         AndroidNetworking.download(url, dir.getAbsolutePath(), filename)
                 .setPriority(Priority.HIGH)
@@ -228,8 +234,12 @@ public class ContentDownloadingTask {
             return false;
         } catch (ZipException e) {
             e.printStackTrace();
-            return false;
+            if (folder_name.equalsIgnoreCase(VIDEO))
+                unziping_error = false;
+            else
+                return true;
         }
+        return false;
     }
 
     public void onProgressUpdate(Modal_FileDownloading modal_fileDownloading) {

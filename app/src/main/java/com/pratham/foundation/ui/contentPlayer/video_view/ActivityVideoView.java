@@ -32,7 +32,7 @@ public class ActivityVideoView extends BaseActivity {
     @ViewById(R.id.player_control_view)
     PlayerControlView player_control_view;
 
-    String videoPath,startTime,resId,contentName;
+    String videoPath, startTime, resId, contentName;
     boolean onSdCard;
     long videoDuration = 0;
 
@@ -56,7 +56,7 @@ public class ActivityVideoView extends BaseActivity {
     }
 
     @Click(R.id.close_video)
-    public void closeVide(){
+    public void closeVide() {
         onBackPressed();
     }
 
@@ -72,17 +72,24 @@ public class ActivityVideoView extends BaseActivity {
             videoDuration = videoView.getDuration();
         });
         videoView.setOnCompletionListener(mp -> {
-        new Handler().postDelayed(() ->
-                onBackPressed(),1500);
+            try {
+                new Handler().postDelayed(this::onBackPressed, 1500);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         });
 //        new Handler().postDelayed(() -> videoView.start(),500);
     }
 
     @Override
     public void onBackPressed() {
-        addScore();
-        BackupDatabase.backup(this);
-        super.onBackPressed();
+        try {
+            addScore();
+            BackupDatabase.backup(this);
+            super.onBackPressed();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     @Background
@@ -91,7 +98,7 @@ public class ActivityVideoView extends BaseActivity {
             String endTime = FC_Utility.getCurrentDateTime();
             Score score = new Score();
             score.setSessionID(FastSave.getInstance().getString(FC_Constants.CURRENT_SESSION, ""));
-            score.setStudentID(""+FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""));
+            score.setStudentID("" + FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""));
             score.setDeviceID(FC_Utility.getDeviceID());
             score.setResourceID(resId);
             score.setQuestionId(0);

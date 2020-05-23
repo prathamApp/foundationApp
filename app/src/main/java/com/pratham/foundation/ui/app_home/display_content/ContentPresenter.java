@@ -170,6 +170,7 @@ public class ContentPresenter implements ContentContract.ContentPresenter, API_C
                     contentTable.setContentType(downloadedContentTableList.get(j).getContentType());
                     contentTable.setIsDownloaded("" + downloadedContentTableList.get(j).getIsDownloaded());
                     contentTable.setOnSDCard(downloadedContentTableList.get(j).isOnSDCard());
+                    contentTable.setNodeUpdate(false);
                     ListForContentTable1.add(contentTable);
                 }
             } catch (Exception e) {
@@ -187,10 +188,10 @@ public class ContentPresenter implements ContentContract.ContentPresenter, API_C
     public void updateUI() {
         try {
             if (FC_Utility.isDataConnectionAvailable(context))
-                api_content.getAPIContent(FC_Constants.INTERNET_DOWNLOAD, FC_Constants.INTERNET_DOWNLOAD_NEW_API, nodeIds.get(nodeIds.size() - 1));
+                api_content.getAPIContent(FC_Constants.INTERNET_BROWSE, FC_Constants.INTERNET_BROWSE_API, nodeIds.get(nodeIds.size() - 1));
             else {
 //                if (downloadedContentTableList.size() == 0 && !FC_Utility.isDataConnectionAvailable(context)) {
-                if (downloadedContentTableList.size() == 0 ) {
+                if (downloadedContentTableList.size() == 0) {
                     contentView.showNoDataDownloadedDialog();
                 } else {
                     contentView.addContentToViewList(ListForContentTable1);
@@ -212,7 +213,7 @@ public class ContentPresenter implements ContentContract.ContentPresenter, API_C
     @Override
     public void receivedContent(String header, String response) {
         try {
-            if (header.equalsIgnoreCase(FC_Constants.INTERNET_DOWNLOAD)) {
+            if (header.equalsIgnoreCase(FC_Constants.INTERNET_BROWSE)) {
                 boolean contentFound = false;
                 try {
                     ListForContentTable2.clear();
@@ -225,6 +226,10 @@ public class ContentPresenter implements ContentContract.ContentPresenter, API_C
                         for (int j = 0; j < downloadedContentTableList.size(); j++) {
                             if (serverContentList.get(i).getNodeId().equalsIgnoreCase(downloadedContentTableList.get(j).getNodeId())) {
                                 contentFound = true;
+                                if (!serverContentList.get(i).getVersion().equalsIgnoreCase(downloadedContentTableList.get(j).getVersion())) {
+                                    downloadedContentTableList.get(j).setNodeUpdate(true);
+                                }
+                                ListForContentTable2.add(downloadedContentTableList.get(j));
                                 break;
                             }
                         }
@@ -249,6 +254,7 @@ public class ContentPresenter implements ContentContract.ContentPresenter, API_C
                             contentTableTemp.setContentLanguage("" + serverContentList.get(i).getContentLanguage());
                             contentTableTemp.setIsDownloaded("false");
                             contentTableTemp.setOnSDCard(false);
+                            contentTableTemp.setNodeUpdate(false);
                             ListForContentTable2.add(contentTableTemp);
                         }
                     }
@@ -256,7 +262,7 @@ public class ContentPresenter implements ContentContract.ContentPresenter, API_C
                     contentView.dismissLoadingDialog();
                     e.printStackTrace();
                 }
-                contentView.addContentToViewList(ListForContentTable1);
+//                contentView.addContentToViewList(ListForContentTable1);
                 contentView.addContentToViewList(ListForContentTable2);
                 contentView.notifyAdapter();
                 contentView.dismissLoadingDialog();
@@ -266,14 +272,23 @@ public class ContentPresenter implements ContentContract.ContentPresenter, API_C
                     download_content = gson.fromJson(jsonObject.toString(), Modal_DownloadContent.class);
                     contentDetail = download_content.getNodelist().get(download_content.getNodelist().size() - 1);
                     for (int i = 0; i < download_content.getNodelist().size(); i++) {
+//                        download_content.getNodelist().get(i).setNodeImage(download_content.getNodelist().get(i).getNodeServerImage()
+//                                .substring( download_content.getNodelist().get(i).getNodeServerImage().lastIndexOf('/') + 1));
                         ContentTable contentTableTemp = download_content.getNodelist().get(i);
                         pos.add(contentTableTemp);
                     }
                     fileName = download_content.getDownloadurl()
                             .substring(download_content.getDownloadurl().lastIndexOf('/') + 1);
+                    Log.d("HP", "doInBackground: fileName : " + fileName);
+                    Log.d("HP", "doInBackground: folderName : " + download_content.getFoldername());
+                    Log.d("HP", "doInBackground: DW URL : " + download_content.getDownloadurl());
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
+//                if (download_content.getFoldername().equalsIgnoreCase("video"))
+//                    zipDownloader.initialize(context, "https://prathamopenschool.org/CourseContent/FCGames/OfftechVideos/5_Chatterbox.mp4",
+//                            download_content.getFoldername(), "5_Chatterbox.mp4", contentDetail, pos);
+//                else
                 zipDownloader.initialize(context, download_content.getDownloadurl(),
                         download_content.getFoldername(), fileName, contentDetail, pos);
             }

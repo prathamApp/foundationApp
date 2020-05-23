@@ -50,7 +50,7 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="600dp"
+        android:layout_height="@dimen/_300sdp"
         android:layout_alignParentBottom="true"
         android:background="@drawable/catcho_img">
     </RelativeLayout>

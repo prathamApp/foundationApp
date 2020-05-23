@@ -1,4 +1,5 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_gravity="center">
@@ -43,16 +44,16 @@
 
             <RatingBar
                 android:id="@+id/dia_ratingBar"
-                android:layout_marginVertical="@dimen/_10sdp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:theme="@style/Widget.AppCompat.RatingBar"
-                android:visibility="visible"
                 android:layout_centerHorizontal="true"
-                android:numStars="5"
-                android:stepSize="1"
+                android:layout_marginVertical="@dimen/_10sdp"
                 android:isIndicator="true"
-                android:progressTint="@color/ratingFilled" />
+                android:numStars="5"
+                android:progressTint="@color/ratingFilled"
+                android:stepSize="1"
+                android:theme="@style/Widget.AppCompat.RatingBar"
+                android:visibility="visible" />
 
 
         </RelativeLayout>

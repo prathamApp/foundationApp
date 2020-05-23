@@ -31,6 +31,8 @@ import com.pratham.foundation.services.shared_preferences.FastSave;
 import com.pratham.foundation.ui.app_home.profile_new.certificate_display.CertificateDisplayActivity_;
 import com.pratham.foundation.ui.app_home.profile_new.chat_display_list.DisplayChatActivity_;
 import com.pratham.foundation.ui.app_home.profile_new.display_image_ques_list.DisplayImageQuesActivity_;
+import com.pratham.foundation.ui.bottom_fragment.BottomStudentsFragment;
+import com.pratham.foundation.ui.bottom_fragment.BottomStudentsFragment_;
 import com.pratham.foundation.utility.FC_Constants;
 
 import org.androidannotations.annotations.AfterViews;
@@ -43,6 +45,7 @@ import java.io.File;
 import java.text.DecimalFormat;
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 
 import static com.pratham.foundation.ApplicationClass.App_Thumbs_Path;
 import static com.pratham.foundation.ApplicationClass.isTablet;
@@ -50,6 +53,7 @@ import static com.pratham.foundation.database.AppDatabase.appDatabase;
 import static com.pratham.foundation.utility.FC_Constants.GROUP_MODE;
 import static com.pratham.foundation.utility.FC_Constants.INDIVIDUAL_MODE;
 import static com.pratham.foundation.utility.FC_Constants.LOGIN_MODE;
+import static com.pratham.foundation.utility.FC_Constants.SPLASH_OPEN;
 import static com.pratham.foundation.utility.FC_Constants.StudentPhotoPath;
 import static com.pratham.foundation.utility.FC_Utility.dpToPx;
 import static com.pratham.foundation.utility.FC_Utility.getRandomFemaleAvatar;
@@ -117,7 +121,8 @@ public class ProfileFragment extends Fragment implements ProfileContract.Profile
         presenter.getActiveData();
     }
 
-    private void setImage() {
+    @UiThread
+    public void setImage() {
         String profileName;
         if (FastSave.getInstance().getString(LOGIN_MODE, "").equalsIgnoreCase(GROUP_MODE))
             card_img.setImageResource(R.drawable.ic_grp_btn);
@@ -133,7 +138,10 @@ public class ProfileFragment extends Fragment implements ProfileContract.Profile
                         getStudentAvatar(FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""));
                     file = new File( ApplicationClass.foundationPath +
                             "" + App_Thumbs_Path +""+gender);
-                    card_img.setImageURI(Uri.fromFile(file));
+                    if(file.exists())
+                        card_img.setImageURI(Uri.fromFile(file));
+                    else
+                        card_img.setImageResource(getRandomFemaleAvatar(context));
                 }else{
                     String gender = appDatabase.getStudentDao().getStudentGender(
                             FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""));
@@ -144,6 +152,14 @@ public class ProfileFragment extends Fragment implements ProfileContract.Profile
                 }
             }
         }
+    }
+
+    @Click(R.id.card_img)
+    public void showBottomFragment(){
+        if(!isTablet)
+        SPLASH_OPEN = false;
+        BottomStudentsFragment_ bottomStudentsFragment = new BottomStudentsFragment_();
+        bottomStudentsFragment.show(Objects.requireNonNull(getActivity()).getSupportFragmentManager(), BottomStudentsFragment.class.getSimpleName());
     }
 
     @UiThread

@@ -441,21 +441,28 @@ public class ConversationActivity extends BaseActivity
         super.onStop();
     }
 
+    boolean submitPressed = false;
     @UiThread
     @Override
     public void submitAns(String[] splitQues) {
         try {
-            correctSound.start();
-            sendClikChanger(0);
-            for (int i = 0; i < splitQues.length; i++) {
-                ((SansTextViewBold) readChatFlow.getChildAt(i)).setTextColor(getResources().getColor(R.color.readingGreen));
-                correctArr[i] = true;
+            if(!submitPressed) {
+                submitPressed = true;
+                if (voiceStart)
+                    btn_reading.performClick();
+                sendClikChanger(0);
+                for (int i = 0; i < splitQues.length; i++) {
+                    ((SansTextViewBold) readChatFlow.getChildAt(i)).setTextColor(getResources().getColor(R.color.readingGreen));
+                    correctArr[i] = true;
+                }
+                lin_layout.setBackgroundResource(R.drawable.convo_correct_bg);
+                correctSound.start();
+                new Handler().postDelayed(() -> {
+                    lin_layout.setBackgroundResource(R.drawable.dialog_bg);
+                    sendMessage();
+                    submitPressed = false;
+                }, 1200);
             }
-            lin_layout.setBackgroundResource(R.drawable.convo_correct_bg);
-            new Handler().postDelayed(() -> {
-                lin_layout.setBackgroundResource(R.drawable.dialog_bg);
-                sendMessage();
-            }, 1200);
         } catch (Exception e) {
             e.printStackTrace();
         }

@@ -44,9 +44,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/_150sdp"
                 android:layout_centerHorizontal="true"
-                android:src="@drawable/ic_play_circle"
+                android:src="@drawable/vid_play"
                 style="@style/question"
-                android:padding="@dimen/_10sdp"
+                android:padding="@dimen/_40sdp"
                 android:visibility="visible" />
 
             <com.pratham.foundation.customView.GifView
@@ -83,7 +83,7 @@
                 android:layout_marginStart="@dimen/_10sdp"
                 android:layout_marginEnd="@dimen/_10sdp"
                 android:textSize="@dimen/_18sdp"
-                android:text="kjkjkjkj"
+                android:text="@string/app_name"
                 android:textColor="@color/colorText"
                 android:fadeScrollbars="false"
                 android:scrollbarSize="6dp"
@@ -105,7 +105,7 @@
                     android:fadeScrollbars="false"
                     android:padding="8dp"
                     android:textSize="@dimen/_15sdp"
-                    android:text="khopadi dikhao"
+                    android:text="@string/app_name"
                     android:gravity="center"
                     android:textAlignment="center"
                     android:background="@drawable/green_bg"

@@ -30,6 +30,7 @@
     <color name="colorBtnOrangeLight">#ffff00</color>
 <!--    <color name="colorBtnRedDark">#e57373</color>-->
 <!--    <color name="colorBtnRedLight">#ffcdd2</color>-->
+    <color name="orange">#F4511E</color>
     <color name="colorBtnRedDark">#d50000</color>
     <color name="colorBtnRedLight">#ff5252</color>
     <color name="colorBtnPurpleDark">#ba68c8</color>
@@ -68,9 +69,10 @@
     <color name="level_4_color">#452b50</color>
 -->
     <color name="level_0_color">#00d1a5</color>
-    <color name="level_1_color">#00a175</color>
+<!--    <color name="level_1_color">#00a175</color>-->
+    <color name="level_1_color">#00c853</color>
     <color name="level_2_color">#FFA001</color>
-    <color name="level_3_color">#ef6c00</color>
+    <color name="level_3_color">#EF4C00</color>
     <color name="level_4_color">#d50000</color>
     <color name="readingGreen">#45a716</color>
     <color name="colorRed">#EF5350</color>
