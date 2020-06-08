@@ -562,19 +562,24 @@ public class BlurPopupWindow extends FrameLayout {
 
         @Override
         protected Bitmap doInBackground(Void... params) {
-            Context context = mContextRef.get();
-            BlurPopupWindow popupWindow = mPopupWindowRef.get();
-            if (context == null || popupWindow == null) {
+            try {
+                Context context = mContextRef.get();
+                BlurPopupWindow popupWindow = mPopupWindowRef.get();
+                if (context == null || popupWindow == null) {
+                    return null;
+                }
+                float scaleRatio = popupWindow.getScaleRatio();
+                if (popupWindow.getBlurRadius() == 0) {
+                    return mSourceBitmap;
+                }
+                Bitmap scaledBitmap = Bitmap.createScaledBitmap(mSourceBitmap, (int) (mSourceBitmap.getWidth() * scaleRatio), (int) (mSourceBitmap.getHeight() * scaleRatio), false);
+                float radius = popupWindow.getBlurRadius();
+                Bitmap blurred = BlurUtils.blur(context, scaledBitmap, radius);
+                return Bitmap.createScaledBitmap(blurred, mSourceBitmap.getWidth(), mSourceBitmap.getHeight(), true);
+            } catch (Exception e) {
+                e.printStackTrace();
                 return null;
             }
-            float scaleRatio = popupWindow.getScaleRatio();
-            if (popupWindow.getBlurRadius() == 0) {
-                return mSourceBitmap;
-            }
-            Bitmap scaledBitmap = Bitmap.createScaledBitmap(mSourceBitmap, (int) (mSourceBitmap.getWidth() * scaleRatio), (int) (mSourceBitmap.getHeight() * scaleRatio), false);
-            float radius = popupWindow.getBlurRadius();
-            Bitmap blurred = BlurUtils.blur(context, scaledBitmap, radius);
-            return Bitmap.createScaledBitmap(blurred, mSourceBitmap.getWidth(), mSourceBitmap.getHeight(), true);
         }
 
         @Override

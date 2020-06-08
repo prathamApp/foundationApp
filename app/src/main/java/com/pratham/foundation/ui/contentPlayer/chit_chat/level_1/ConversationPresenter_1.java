@@ -3,6 +3,7 @@ package com.pratham.foundation.ui.contentPlayer.chit_chat.level_1;
 import android.content.Context;
 
 import com.pratham.foundation.BaseActivity;
+import com.pratham.foundation.database.AppDatabase;
 import com.pratham.foundation.database.BackupDatabase;
 import com.pratham.foundation.database.domain.Assessment;
 import com.pratham.foundation.database.domain.ContentProgress;
@@ -24,7 +25,6 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.pratham.foundation.database.AppDatabase.appDatabase;
 import static com.pratham.foundation.utility.FC_Constants.APP_SECTION;
 import static com.pratham.foundation.utility.FC_Constants.sec_Test;
 
@@ -211,7 +211,7 @@ public class ConversationPresenter_1 implements ConversationContract_1.Conversat
             contentProgress.setUpdatedDateTime("" + FC_Utility.getCurrentDateTime());
             contentProgress.setLabel("" + label);
             contentProgress.setSentFlag(0);
-            appDatabase.getContentProgressDao().insert(contentProgress);
+            AppDatabase.getDatabaseInstance(context).getContentProgressDao().insert(contentProgress);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -227,7 +227,7 @@ public class ConversationPresenter_1 implements ConversationContract_1.Conversat
             keyWords.setKeyWord(convoTitle);
             keyWords.setWordType("word");
             learntWords.add(keyWords);
-            appDatabase.getKeyWordDao().insertAllWord(learntWords);
+            AppDatabase.getDatabaseInstance(context).getKeyWordDao().insertAllWord(learntWords);
             //setCompletionPercentage();
             setCompletionPercentage(returnStoryNavigate.length(), messageList.size());
             //addCompletion(100);
@@ -246,7 +246,7 @@ public class ConversationPresenter_1 implements ConversationContract_1.Conversat
     @Override
     public void addScore(int wID, String Word, int scoredMarks, int totalMarks, String resStartTime, String resEndTime, String Label, String resId, boolean addInAssessment) {
         try {
-            String deviceId = appDatabase.getStatusDao().getValue("DeviceId");
+            String deviceId = AppDatabase.getDatabaseInstance(context).getStatusDao().getValue("DeviceId");
             Score score = new Score();
             score.setSessionID(FastSave.getInstance().getString(FC_Constants.CURRENT_SESSION, ""));
             score.setResourceID(resId);
@@ -260,7 +260,7 @@ public class ConversationPresenter_1 implements ConversationContract_1.Conversat
             score.setLevel(FC_Constants.currentLevel);
             score.setLabel(Label);
             score.setSentFlag(0);
-            appDatabase.getScoreDao().insert(score);
+            AppDatabase.getDatabaseInstance(context).getScoreDao().insert(score);
 
             if (FastSave.getInstance().getString(APP_SECTION,"").equalsIgnoreCase(sec_Test) && addInAssessment) {
                 Assessment assessment = new Assessment();
@@ -277,7 +277,7 @@ public class ConversationPresenter_1 implements ConversationContract_1.Conversat
                 assessment.setLevela(FC_Constants.currentLevel);
                 assessment.setLabel("test: " + Label);
                 assessment.setSentFlag(0);
-                appDatabase.getAssessmentDao().insert(assessment);
+                AppDatabase.getDatabaseInstance(context).getAssessmentDao().insert(assessment);
             }
             BackupDatabase.backup(context);
         } catch (Exception e) {

@@ -142,38 +142,21 @@ public class TestPresenter implements TestContract.TestPresenter, API_Content_Re
     @Background
     @Override
     public void getBottomNavId(int currentLevelNo, String cosSection) {
-        this.currentLevelNo = currentLevelNo;
-        this.cosSection = cosSection;
-        String botID;
-//        String rootID = FC_Utility.getRootNode(FastSave.getInstance().getString(FC_Constants.LANGUAGE, FC_Constants.HINDI));
-        String rootID = sub_nodeId;
-//        String rootID = "4030";
-        botID = AppDatabase.appDatabase.getContentTableDao().getContentDataByTitle("" + rootID, cosSection);
-        if (botID == null && !FC_Utility.isDataConnectionAvailable(mContext))
-            myView.showNoDataDownloadedDialog();
-        else if (botID != null && !FC_Utility.isDataConnectionAvailable(mContext))
-            getLevelDataForList(currentLevelNo, botID);
-        else
-            getRootData(rootID);
-
-//        myView.setBotNodeId(botID);
-/*      if (FC_Utility.isDataConnectionAvailable(mContext)) {
-            api_content.getAPIContent(FC_Constants.INTERNET_DOWNLOAD, FC_Constants.INTERNET_DOWNLOAD_NEW_API, rootID);
-        } else {
-            if (contentParentList.size() == 0 && !FC_Utility.isDataConnectionAvailable(mContext)) {
+        try {
+            this.currentLevelNo = currentLevelNo;
+            this.cosSection = cosSection;
+            String botID;
+            String rootID = sub_nodeId;
+            botID = AppDatabase.getDatabaseInstance(mContext).getContentTableDao().getContentDataByTitle("" + rootID, cosSection);
+            if (botID == null && !FC_Utility.isDataConnectionAvailable(mContext))
                 myView.showNoDataDownloadedDialog();
-            } else {
-                myView.addContentToViewList(contentParentList);
-                myView.notifyAdapter();
-            }
-        }*/
-
-/*      if (FastSave.getInstance().getString(FC_Constants.LANGUAGE, FC_Constants.HINDI).equalsIgnoreCase("Hindi"))
-            botID = AppDatabase.appDatabase.getContentTableDao().getBottomNavigationId("English", cosSection);
-        else
-            botID = AppDatabase.appDatabase.getContentTableDao().getBottomNavigationId(FastSave.getInstance().getString(FC_Constants.LANGUAGE, FC_Constants.HINDI), cosSection);
-        myView.setBotNodeId(botID);
-        getLevelDataForList(currentLevelNo, botID);*/
+            else if (botID != null && !FC_Utility.isDataConnectionAvailable(mContext))
+                getLevelDataForList(currentLevelNo, botID);
+            else
+                getRootData(rootID);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     @Background
@@ -213,7 +196,7 @@ public class TestPresenter implements TestContract.TestPresenter, API_Content_Re
     public void generateTestData(JSONArray testData, String bottomNavNodeId, boolean isUpdate) {
         myView.showLoader();
         testList.clear();
-        testList = AppDatabase.appDatabase.getContentTableDao().getContentData(bottomNavNodeId);
+        testList = AppDatabase.getDatabaseInstance(mContext).getContentTableDao().getContentData(bottomNavNodeId);
         sortTestList(testList);
 
         if (testList.size() > 0)
@@ -234,7 +217,7 @@ public class TestPresenter implements TestContract.TestPresenter, API_Content_Re
             contentTableHeader = new CertificateModelClass();
             contentTableHeader.setNodeId("1");
             contentTableHeader.setResourceId("01");
-            contentTableHeader.setEnglishQues(""+getLevelWiseTestName());
+            contentTableHeader.setEnglishQues("" + getLevelWiseTestName());
             contentTableHeader.setResourcePath("path");
             contentTableHeader.setAsessmentGiven(true);
             contentTableHeader.setContentType("Update");
@@ -344,11 +327,11 @@ public class TestPresenter implements TestContract.TestPresenter, API_Content_Re
     public void endTestSession() {
         try {
             Session startSesion = new Session();
-            String toDateTemp = AppDatabase.appDatabase.getSessionDao().getToDate(FastSave.getInstance().getString(FC_Constants.ASSESSMENT_SESSION, ""));
+            String toDateTemp = AppDatabase.getDatabaseInstance(mContext).getSessionDao().getToDate(FastSave.getInstance().getString(FC_Constants.ASSESSMENT_SESSION, ""));
             if (toDateTemp != null && toDateTemp.equalsIgnoreCase("na"))
-                AppDatabase.appDatabase.getSessionDao().UpdateToDate(FastSave.getInstance().getString(FC_Constants.ASSESSMENT_SESSION, ""), FC_Utility.getCurrentDateTime());
+                AppDatabase.getDatabaseInstance(mContext).getSessionDao().UpdateToDate(FastSave.getInstance().getString(FC_Constants.ASSESSMENT_SESSION, ""), FC_Utility.getCurrentDateTime());
             BackupDatabase.backup(mContext);
-            AppDatabase.appDatabase.getSessionDao().insert(startSesion);
+            AppDatabase.getDatabaseInstance(mContext).getSessionDao().insert(startSesion);
             FC_Constants.testSessionEnded = true;
         } catch (Exception e) {
             e.printStackTrace();
@@ -376,7 +359,7 @@ public class TestPresenter implements TestContract.TestPresenter, API_Content_Re
             assessment.setLevela(currentLevel);
             assessment.setLabel("" + FC_Constants.CERTIFICATE_LBL);
             assessment.setSentFlag(0);
-            AppDatabase.appDatabase.getAssessmentDao().insert(assessment);
+            AppDatabase.getDatabaseInstance(mContext).getAssessmentDao().insert(assessment);
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -454,7 +437,7 @@ public class TestPresenter implements TestContract.TestPresenter, API_Content_Re
             startSesion.setFromDate("" + FC_Utility.getCurrentDateTime());
             startSesion.setToDate("NA");
             startSesion.setSentFlag(0);
-            AppDatabase.appDatabase.getSessionDao().insert(startSesion);
+            AppDatabase.getDatabaseInstance(mContext).getSessionDao().insert(startSesion);
             testSessionEntered = true;
         } catch (Exception e) {
             e.printStackTrace();
@@ -464,9 +447,9 @@ public class TestPresenter implements TestContract.TestPresenter, API_Content_Re
     @Background
     @Override
     public void getLevelDataForList(int currentLevelNo, String bottomNavNodeId) {
-        rootList = AppDatabase.appDatabase.getContentTableDao().getContentData("" + bottomNavNodeId);
+        rootList = AppDatabase.getDatabaseInstance(mContext).getContentTableDao().getContentData("" + bottomNavNodeId);
 
-        if (rootList.size()>0)
+        if (rootList.size() > 0)
             for (int i = 0; i < rootList.size(); i++)
                 rootList.get(i).setNodeUpdate(false);
 
@@ -573,7 +556,7 @@ public class TestPresenter implements TestContract.TestPresenter, API_Content_Re
 
             ContentTable contentTableRes = new ContentTable();
 
-            dwParentList = AppDatabase.appDatabase.getContentTableDao().getContentData("" + nodeIds.get(nodeIds.size() - 1));
+            dwParentList = AppDatabase.getDatabaseInstance(mContext).getContentTableDao().getContentData("" + nodeIds.get(nodeIds.size() - 1));
             sortContentList(dwParentList);
             contentParentList.clear();
 //            contentParentList.add(contentTableRes);
@@ -604,7 +587,7 @@ public class TestPresenter implements TestContract.TestPresenter, API_Content_Re
                         List<ContentTable> tempList;
                         ContentTable contentTable = new ContentTable();
                         tempList = new ArrayList<>();
-                        childDwContentList = AppDatabase.appDatabase.getContentTableDao().getContentData("" + dwParentList.get(j).getNodeId());
+                        childDwContentList = AppDatabase.getDatabaseInstance(mContext).getContentTableDao().getContentData("" + dwParentList.get(j).getNodeId());
                         sortContentList(childDwContentList);
                         contentTable.setNodeId("" + dwParentList.get(j).getNodeId());
                         contentTable.setNodeType("" + dwParentList.get(j).getNodeType());
@@ -850,7 +833,7 @@ public class TestPresenter implements TestContract.TestPresenter, API_Content_Re
     @Background
     @Override
     public void getTempData(String nodeId) {
-        testData = AppDatabase.appDatabase.getContentTableDao().getContent("" + nodeId);
+        testData = AppDatabase.getDatabaseInstance(mContext).getContentTableDao().getContent("" + nodeId);
         myView.testOpenData(testData);
     }
 
@@ -1067,41 +1050,50 @@ public class TestPresenter implements TestContract.TestPresenter, API_Content_Re
                 Type listType = new TypeToken<ArrayList<ContentTable>>() {
                 }.getType();
                 List<ContentTable> serverContentList = gson.fromJson(response, listType);
-                boolean itemFound = false;
+                boolean itemFound = false, noContentList = false;
 
                 for (int i = 0; i < serverContentList.size(); i++) {
-                    itemFound = false;
-                    for (int j = 0; j < rootList.size(); j++) {
-                        if (serverContentList.get(i).getNodeId().equalsIgnoreCase(rootList.get(j).getNodeId())) {
-                            if (!serverContentList.get(i).getVersion().equalsIgnoreCase(rootList.get(j).getVersion())) {
-                                rootList.get(j).setNodeUpdate(true);
+                    if (serverContentList.get(i).getNodeTitle().equalsIgnoreCase("" + currentLevel)
+                            && (serverContentList.get(i).getNodelist().size() <= 0))
+                        noContentList = true;
+                }
+                if(noContentList)
+                    myView.showNoDataLayout();
+                else {
+                    for (int i = 0; i < serverContentList.size(); i++) {
+                        itemFound = false;
+                        for (int j = 0; j < rootList.size(); j++) {
+                            if (serverContentList.get(i).getNodeId().equalsIgnoreCase(rootList.get(j).getNodeId())) {
+                                if (!serverContentList.get(i).getVersion().equalsIgnoreCase(rootList.get(j).getVersion())) {
+                                    rootList.get(j).setNodeUpdate(true);
+                                }
+                                rootLevelList.add(rootList.get(j));
+                                itemFound = true;
+                                break;
                             }
-                            rootLevelList.add(rootList.get(j));
-                            itemFound = true;
-                            break;
                         }
-                    }
-                    if (!itemFound) {
-                        ContentTable contentTableTemp = new ContentTable();
-                        contentTableTemp.setNodeId("" + serverContentList.get(i).getNodeId());
-                        contentTableTemp.setNodeType("" + serverContentList.get(i).getNodeType());
-                        contentTableTemp.setNodeTitle("" + serverContentList.get(i).getNodeTitle());
-                        contentTableTemp.setNodeKeywords("" + serverContentList.get(i).getNodeKeywords());
-                        contentTableTemp.setNodeAge("" + serverContentList.get(i).getNodeAge());
-                        contentTableTemp.setNodeDesc("" + serverContentList.get(i).getNodeDesc());
-                        contentTableTemp.setNodeServerImage("" + serverContentList.get(i).getNodeServerImage());
-                        contentTableTemp.setNodeImage("" + serverContentList.get(i).getNodeImage());
-                        contentTableTemp.setResourceId("" + serverContentList.get(i).getResourceId());
-                        contentTableTemp.setResourceType("" + serverContentList.get(i).getResourceType());
-                        contentTableTemp.setResourcePath("" + serverContentList.get(i).getResourcePath());
-                        contentTableTemp.setParentId("" + serverContentList.get(i).getParentId());
-                        contentTableTemp.setLevel("" + serverContentList.get(i).getLevel());
-                        contentTableTemp.setVersion("" + serverContentList.get(i).getVersion());
-                        contentTableTemp.setSeq_no(serverContentList.get(i).getSeq_no());
-                        contentTableTemp.setContentType("" + serverContentList.get(i).getContentType());
-                        contentTableTemp.setIsDownloaded("false");
-                        contentTableTemp.setOnSDCard(false);
-                        rootLevelList.add(contentTableTemp);
+                        if (!itemFound) {
+                            ContentTable contentTableTemp = new ContentTable();
+                            contentTableTemp.setNodeId("" + serverContentList.get(i).getNodeId());
+                            contentTableTemp.setNodeType("" + serverContentList.get(i).getNodeType());
+                            contentTableTemp.setNodeTitle("" + serverContentList.get(i).getNodeTitle());
+                            contentTableTemp.setNodeKeywords("" + serverContentList.get(i).getNodeKeywords());
+                            contentTableTemp.setNodeAge("" + serverContentList.get(i).getNodeAge());
+                            contentTableTemp.setNodeDesc("" + serverContentList.get(i).getNodeDesc());
+                            contentTableTemp.setNodeServerImage("" + serverContentList.get(i).getNodeServerImage());
+                            contentTableTemp.setNodeImage("" + serverContentList.get(i).getNodeImage());
+                            contentTableTemp.setResourceId("" + serverContentList.get(i).getResourceId());
+                            contentTableTemp.setResourceType("" + serverContentList.get(i).getResourceType());
+                            contentTableTemp.setResourcePath("" + serverContentList.get(i).getResourcePath());
+                            contentTableTemp.setParentId("" + serverContentList.get(i).getParentId());
+                            contentTableTemp.setLevel("" + serverContentList.get(i).getLevel());
+                            contentTableTemp.setVersion("" + serverContentList.get(i).getVersion());
+                            contentTableTemp.setSeq_no(serverContentList.get(i).getSeq_no());
+                            contentTableTemp.setContentType("" + serverContentList.get(i).getContentType());
+                            contentTableTemp.setIsDownloaded("false");
+                            contentTableTemp.setOnSDCard(false);
+                            rootLevelList.add(contentTableTemp);
+                        }
                     }
                 }
             } catch (Exception e) {
@@ -1135,7 +1127,7 @@ public class TestPresenter implements TestContract.TestPresenter, API_Content_Re
                 pos.get(i).setIsDownloaded("" + true);
                 pos.get(i).setOnSDCard(false);
             }
-            AppDatabase.appDatabase.getContentTableDao().addContentList(pos);
+            AppDatabase.getDatabaseInstance(mContext).getContentTableDao().addContentList(pos);
         } catch (Exception e) {
             e.printStackTrace();
         }

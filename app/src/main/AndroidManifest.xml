@@ -132,6 +132,8 @@
             android:name=".customView.ProcessPhoenix"
             android:process=":phoenix"
             android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+        <activity android:name=".utility.SplashSupportActivity" />
+        <activity android:name=".ui.splash_activity.SplashActivity" />
 
         <service
             android:name=".services.AppExitService"

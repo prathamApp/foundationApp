@@ -65,27 +65,27 @@ public class PushDataPresenter implements PushDataContract.PushDataPresenter {
                     assessmentData = new JSONArray(),
                     logsData = new JSONArray();
 
-            List<Score> scoreList = AppDatabase.appDatabase.getScoreDao().getAllPushScores();
+            List<Score> scoreList = AppDatabase.getDatabaseInstance(context).getScoreDao().getAllPushScores();
             scoreData = fillScoreData(scoreList);
-            List<Attendance> attendanceList = AppDatabase.appDatabase.getAttendanceDao().getAllPushAttendanceEntries();
+            List<Attendance> attendanceList = AppDatabase.getDatabaseInstance(context).getAttendanceDao().getAllPushAttendanceEntries();
             attendanceData = fillAttendanceData(attendanceList);
-            List<Student> studentList = AppDatabase.appDatabase.getStudentDao().getAllStudents();
+            List<Student> studentList = AppDatabase.getDatabaseInstance(context).getStudentDao().getAllStudents();
             studentData = fillStudentData(studentList);
-            List<Crl> crlList = AppDatabase.appDatabase.getCrlDao().getAllCrls();
+            List<Crl> crlList = AppDatabase.getDatabaseInstance(context).getCrlDao().getAllCrls();
             crlData = fillCrlData(crlList);
                     /*List<Status> statusList = AppDatabase.appDatabase.getStatusDao().getAllStatuses();
                     statusData = fillStatusData(statusList);*/
-            List<Session> sessionList = AppDatabase.appDatabase.getSessionDao().getAllNewSessions();
+            List<Session> sessionList = AppDatabase.getDatabaseInstance(context).getSessionDao().getAllNewSessions();
             sessionData = fillSessionData(sessionList);
-            List<KeyWords> learntWordsList = AppDatabase.appDatabase.getKeyWordDao().getAllData();
+            List<KeyWords> learntWordsList = AppDatabase.getDatabaseInstance(context).getKeyWordDao().getAllData();
             learntWords = fillKeyWordsData(learntWordsList);
-            List<SupervisorData> supervisorDataList = AppDatabase.appDatabase.getSupervisorDataDao().getAllSupervisorData();
+            List<SupervisorData> supervisorDataList = AppDatabase.getDatabaseInstance(context).getSupervisorDataDao().getAllSupervisorData();
             supervisorData = fillSupervisorData(supervisorDataList);
-            List<Modal_Log> logsList = AppDatabase.appDatabase.getLogsDao().getPushAllLogs();
+            List<Modal_Log> logsList = AppDatabase.getDatabaseInstance(context).getLogsDao().getPushAllLogs();
             logsData = fillLogsData(logsList);
-            List<Assessment> assessmentList = AppDatabase.appDatabase.getAssessmentDao().getAllAssessment();
+            List<Assessment> assessmentList = AppDatabase.getDatabaseInstance(context).getAssessmentDao().getAllAssessment();
             assessmentData = fillAssessmentData(assessmentList);
-            List<Groups> groupsList = AppDatabase.appDatabase.getGroupsDao().getAllGroups();
+            List<Groups> groupsList = AppDatabase.getDatabaseInstance(context).getGroupsDao().getAllGroups();
             groupsData = fillGroupsData(groupsList);
 
 
@@ -95,22 +95,22 @@ public class PushDataPresenter implements PushDataContract.PushDataPresenter {
                 Gson gson = new Gson();
                 //iterate through all new sessions
                 JSONArray sessionArray = new JSONArray();
-                List<Session> newSessions = AppDatabase.appDatabase.getSessionDao().getAllNewSessions();
+                List<Session> newSessions = AppDatabase.getDatabaseInstance(context).getSessionDao().getAllNewSessions();
                 for (Session session : newSessions) {
                     //fetch all logs
                     JSONArray logArray = new JSONArray();
-                    List<Modal_Log> allLogs = AppDatabase.appDatabase.getLogsDao().getAllLogs(session.getSessionID());
+                    List<Modal_Log> allLogs = AppDatabase.getDatabaseInstance(context).getLogsDao().getAllLogs(session.getSessionID());
                     for (Modal_Log log : allLogs)
                         logArray.put(new JSONObject(gson.toJson(log)));
                     //fetch attendance
                     JSONArray attendanceArray = new JSONArray();
-                    List<Attendance> newAttendance = AppDatabase.appDatabase.getAttendanceDao().getNewAttendances(session.getSessionID());
+                    List<Attendance> newAttendance = AppDatabase.getDatabaseInstance(context).getAttendanceDao().getNewAttendances(session.getSessionID());
                     for (Attendance att : newAttendance) {
                         attendanceArray.put(new JSONObject(gson.toJson(att)));
                     }
                     //fetch Scores & convert to Json Array
                     JSONArray scoreArray = new JSONArray();
-                    List<Score> newScores = AppDatabase.appDatabase.getScoreDao().getAllNewScores(session.getSessionID());
+                    List<Score> newScores = AppDatabase.getDatabaseInstance(context).getScoreDao().getAllNewScores(session.getSessionID());
                     for (Score score : newScores) {
                         scoreArray.put(new JSONObject(gson.toJson(score)));
                     }
@@ -123,13 +123,13 @@ public class PushDataPresenter implements PushDataContract.PushDataPresenter {
 
                     JSONArray studentArray = new JSONArray();
                     if (!ApplicationClass.isTablet) {
-                        List<Student> newStudents = AppDatabase.appDatabase.getStudentDao().getAllNewStudents();
+                        List<Student> newStudents = AppDatabase.getDatabaseInstance(context).getStudentDao().getAllNewStudents();
                         for (Student std : newStudents)
                             studentArray.put(new JSONObject(gson.toJson(std)));
                     }
 
                     JSONObject metadataJson = new JSONObject();
-                    List<com.pratham.foundation.database.domain.Status> metadata = AppDatabase.appDatabase.getStatusDao().getAllStatuses();
+                    List<com.pratham.foundation.database.domain.Status> metadata = AppDatabase.getDatabaseInstance(context).getStatusDao().getAllStatuses();
                     for (com.pratham.foundation.database.domain.Status status : metadata) {
                         metadataJson.put(status.getStatusKey(), status.getValue());
                         if (status.getStatusKey().equalsIgnoreCase("programId"))
@@ -222,13 +222,13 @@ public class PushDataPresenter implements PushDataContract.PushDataPresenter {
 
     @Background
     public void setPushFlag() {
-        AppDatabase.appDatabase.getLogsDao().setSentFlag();
-        AppDatabase.appDatabase.getSessionDao().setSentFlag();
-        AppDatabase.appDatabase.getAttendanceDao().setSentFlag();
-        AppDatabase.appDatabase.getScoreDao().setSentFlag();
-        AppDatabase.appDatabase.getAssessmentDao().setSentFlag();
-        AppDatabase.appDatabase.getSupervisorDataDao().setSentFlag();
-        AppDatabase.appDatabase.getKeyWordDao().setSentFlag();
+        AppDatabase.getDatabaseInstance(context).getLogsDao().setSentFlag();
+        AppDatabase.getDatabaseInstance(context).getSessionDao().setSentFlag();
+        AppDatabase.getDatabaseInstance(context).getAttendanceDao().setSentFlag();
+        AppDatabase.getDatabaseInstance(context).getScoreDao().setSentFlag();
+        AppDatabase.getDatabaseInstance(context).getAssessmentDao().setSentFlag();
+        AppDatabase.getDatabaseInstance(context).getSupervisorDataDao().setSentFlag();
+        AppDatabase.getDatabaseInstance(context).getKeyWordDao().setSentFlag();
 
     }
 
@@ -309,33 +309,33 @@ public class PushDataPresenter implements PushDataContract.PushDataPresenter {
             JSONObject sessionObj = new JSONObject();
             JSONObject metaDataObj = new JSONObject();
             metaDataObj.put("ScoreCount", scoreData.length());
-            metaDataObj.put("CRLID", AppDatabase.appDatabase.getStatusDao().getValue("CRLID"));
-            metaDataObj.put("group1", AppDatabase.appDatabase.getStatusDao().getValue("group1"));
-            metaDataObj.put("group2", AppDatabase.appDatabase.getStatusDao().getValue("group2"));
-            metaDataObj.put("group3", AppDatabase.appDatabase.getStatusDao().getValue("group3"));
-            metaDataObj.put("group4", AppDatabase.appDatabase.getStatusDao().getValue("group4"));
-            metaDataObj.put("group5", AppDatabase.appDatabase.getStatusDao().getValue("group5"));
-            metaDataObj.put("DeviceId", AppDatabase.appDatabase.getStatusDao().getValue("DeviceId"));
-            metaDataObj.put("DeviceName", AppDatabase.appDatabase.getStatusDao().getValue("DeviceName"));
-            metaDataObj.put("ActivatedDate", AppDatabase.appDatabase.getStatusDao().getValue("ActivatedDate"));
-            metaDataObj.put("village", AppDatabase.appDatabase.getStatusDao().getValue("village"));
-            metaDataObj.put("ActivatedForGroups", AppDatabase.appDatabase.getStatusDao().getValue("ActivatedForGroups"));
-            metaDataObj.put("AndroidVersion", AppDatabase.appDatabase.getStatusDao().getValue("AndroidVersion"));
-            metaDataObj.put("InternalAvailableStorage", AppDatabase.appDatabase.getStatusDao().getValue("InternalAvailableStorage"));
-            metaDataObj.put("DeviceManufacturer", AppDatabase.appDatabase.getStatusDao().getValue("DeviceManufacturer"));
-            metaDataObj.put("DeviceModel", AppDatabase.appDatabase.getStatusDao().getValue("DeviceModel"));
-            metaDataObj.put("ScreenResolution", AppDatabase.appDatabase.getStatusDao().getValue("ScreenResolution"));
-            metaDataObj.put("SerialID", AppDatabase.appDatabase.getStatusDao().getValue("SerialID"));
-            metaDataObj.put("gpsFixDuration", AppDatabase.appDatabase.getStatusDao().getValue("gpsFixDuration"));
-            metaDataObj.put("prathamCode", AppDatabase.appDatabase.getStatusDao().getValue("prathamCode"));
-            metaDataObj.put("programId", AppDatabase.appDatabase.getStatusDao().getValue("programId"));
-            metaDataObj.put("WifiMAC", AppDatabase.appDatabase.getStatusDao().getValue("wifiMAC"));
-            metaDataObj.put("apkType", AppDatabase.appDatabase.getStatusDao().getValue("apkType"));
-            metaDataObj.put("appName", AppDatabase.appDatabase.getStatusDao().getValue("appName"));
-            metaDataObj.put("apkVersion", AppDatabase.appDatabase.getStatusDao().getValue("apkVersion"));
-            metaDataObj.put("GPSDateTime", AppDatabase.appDatabase.getStatusDao().getValue("GPSDateTime"));
-            metaDataObj.put("Latitude", AppDatabase.appDatabase.getStatusDao().getValue("Latitude"));
-            metaDataObj.put("Longitude", AppDatabase.appDatabase.getStatusDao().getValue("Longitude"));
+            metaDataObj.put("CRLID", AppDatabase.getDatabaseInstance(context).getStatusDao().getValue("CRLID"));
+            metaDataObj.put("group1", AppDatabase.getDatabaseInstance(context).getStatusDao().getValue("group1"));
+            metaDataObj.put("group2", AppDatabase.getDatabaseInstance(context).getStatusDao().getValue("group2"));
+            metaDataObj.put("group3", AppDatabase.getDatabaseInstance(context).getStatusDao().getValue("group3"));
+            metaDataObj.put("group4", AppDatabase.getDatabaseInstance(context).getStatusDao().getValue("group4"));
+            metaDataObj.put("group5", AppDatabase.getDatabaseInstance(context).getStatusDao().getValue("group5"));
+            metaDataObj.put("DeviceId", AppDatabase.getDatabaseInstance(context).getStatusDao().getValue("DeviceId"));
+            metaDataObj.put("DeviceName", AppDatabase.getDatabaseInstance(context).getStatusDao().getValue("DeviceName"));
+            metaDataObj.put("ActivatedDate", AppDatabase.getDatabaseInstance(context).getStatusDao().getValue("ActivatedDate"));
+            metaDataObj.put("village", AppDatabase.getDatabaseInstance(context).getStatusDao().getValue("village"));
+            metaDataObj.put("ActivatedForGroups", AppDatabase.getDatabaseInstance(context).getStatusDao().getValue("ActivatedForGroups"));
+            metaDataObj.put("AndroidVersion", AppDatabase.getDatabaseInstance(context).getStatusDao().getValue("AndroidVersion"));
+            metaDataObj.put("InternalAvailableStorage", AppDatabase.getDatabaseInstance(context).getStatusDao().getValue("InternalAvailableStorage"));
+            metaDataObj.put("DeviceManufacturer", AppDatabase.getDatabaseInstance(context).getStatusDao().getValue("DeviceManufacturer"));
+            metaDataObj.put("DeviceModel", AppDatabase.getDatabaseInstance(context).getStatusDao().getValue("DeviceModel"));
+            metaDataObj.put("ScreenResolution", AppDatabase.getDatabaseInstance(context).getStatusDao().getValue("ScreenResolution"));
+            metaDataObj.put("SerialID", AppDatabase.getDatabaseInstance(context).getStatusDao().getValue("SerialID"));
+            metaDataObj.put("gpsFixDuration", AppDatabase.getDatabaseInstance(context).getStatusDao().getValue("gpsFixDuration"));
+            metaDataObj.put("prathamCode", AppDatabase.getDatabaseInstance(context).getStatusDao().getValue("prathamCode"));
+            metaDataObj.put("programId", AppDatabase.getDatabaseInstance(context).getStatusDao().getValue("programId"));
+            metaDataObj.put("WifiMAC", AppDatabase.getDatabaseInstance(context).getStatusDao().getValue("wifiMAC"));
+            metaDataObj.put("apkType", AppDatabase.getDatabaseInstance(context).getStatusDao().getValue("apkType"));
+            metaDataObj.put("appName", AppDatabase.getDatabaseInstance(context).getStatusDao().getValue("appName"));
+            metaDataObj.put("apkVersion", AppDatabase.getDatabaseInstance(context).getStatusDao().getValue("apkVersion"));
+            metaDataObj.put("GPSDateTime", AppDatabase.getDatabaseInstance(context).getStatusDao().getValue("GPSDateTime"));
+            metaDataObj.put("Latitude", AppDatabase.getDatabaseInstance(context).getStatusDao().getValue("Latitude"));
+            metaDataObj.put("Longitude", AppDatabase.getDatabaseInstance(context).getStatusDao().getValue("Longitude"));
             metaDataObj.put("AndroidVersion", AppDatabase.getDatabaseInstance(context).getStatusDao().getValue("AndroidVersion"));
             metaDataObj.put("InternalAvailableStorage", AppDatabase.getDatabaseInstance(context).getStatusDao().getValue("InternalAvailableStorage"));
             metaDataObj.put("DeviceManufacturer", AppDatabase.getDatabaseInstance(context).getStatusDao().getValue("DeviceManufacturer"));

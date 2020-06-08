@@ -21,6 +21,7 @@ import android.widget.TextView;
 import com.pratham.foundation.BaseActivity;
 import com.pratham.foundation.R;
 import com.pratham.foundation.customView.display_image_dialog.CustomLodingDialog;
+import com.pratham.foundation.database.AppDatabase;
 import com.pratham.foundation.database.BackupDatabase;
 import com.pratham.foundation.database.domain.ContentProgress;
 import com.pratham.foundation.database.domain.KeyWords;
@@ -39,7 +40,6 @@ import org.androidannotations.annotations.ViewById;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.pratham.foundation.database.AppDatabase.appDatabase;
 import static com.pratham.foundation.utility.FC_Constants.APP_SECTION;
 import static com.pratham.foundation.utility.FC_Constants.sec_Test;
 
@@ -200,7 +200,7 @@ public class WebViewActivity extends BaseActivity implements WebViewInterface {
                                         .getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""));
                                 learntWords.setKeyWord(learntWordsList.get(i).getKeyWord().toLowerCase());
                                 learntWords.setWordType("" + learntWordsList.get(i).getWordType());
-                                appDatabase.getKeyWordDao().insert(learntWords);
+                                AppDatabase.getDatabaseInstance(WebViewActivity.this).getKeyWordDao().insert(learntWords);
                             }
                         }
                     }
@@ -208,7 +208,7 @@ public class WebViewActivity extends BaseActivity implements WebViewInterface {
                     e.printStackTrace();
                 }
 
-                int scoredMarks = appDatabase.getKeyWordDao().checkWebWordCount(FastSave.getInstance()
+                int scoredMarks = AppDatabase.getDatabaseInstance(WebViewActivity.this).getKeyWordDao().checkWebWordCount(FastSave.getInstance()
                         .getString(FC_Constants.CURRENT_STUDENT_ID, ""), "" + webResId);
                 float perc = 0f;
                 try {
@@ -230,7 +230,7 @@ public class WebViewActivity extends BaseActivity implements WebViewInterface {
                     contentProgress.setUpdatedDateTime("" + FC_Utility.getCurrentDateTime());
                     contentProgress.setLabel("resourceProgress");
                     contentProgress.setSentFlag(0);
-                    appDatabase.getContentProgressDao().insert(contentProgress);
+                    AppDatabase.getDatabaseInstance(WebViewActivity.this).getContentProgressDao().insert(contentProgress);
                     BackupDatabase.backup(WebViewActivity.this);
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -239,7 +239,7 @@ public class WebViewActivity extends BaseActivity implements WebViewInterface {
 
     private boolean checkWord(String checkWord) {
         try {
-            String word = appDatabase.getKeyWordDao().checkWord(FastSave.getInstance()
+            String word = AppDatabase.getDatabaseInstance(WebViewActivity.this).getKeyWordDao().checkWord(FastSave.getInstance()
                     .getString(FC_Constants.CURRENT_STUDENT_ID, ""), "" + webResId, checkWord);
             return word != null;
         } catch (Exception e) {

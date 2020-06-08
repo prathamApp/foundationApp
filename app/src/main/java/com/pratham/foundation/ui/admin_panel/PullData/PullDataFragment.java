@@ -19,6 +19,7 @@ import android.widget.Toast;
 import com.pratham.foundation.R;
 import com.pratham.foundation.customView.display_image_dialog.CustomLodingDialog;
 import com.pratham.foundation.database.domain.ModalProgram;
+import com.pratham.foundation.database.domain.ModalStates;
 import com.pratham.foundation.ui.admin_panel.fragment_admin_panel.AdminPanelFragment;
 import com.pratham.foundation.ui.admin_panel.fragment_admin_panel.AdminPanelFragment_;
 import com.pratham.foundation.utility.FC_Utility;
@@ -96,7 +97,7 @@ public class PullDataFragment extends Fragment implements PullDataContract.PullD
                         pullDataPresenter.clearLists();
                     } else {
                         selectedProgram = prgrmList.get(position).getProgramId();
-                        pullDataPresenter.loadSpinner();
+                        pullDataPresenter.loadSpinner(selectedProgram);
                     }
                 }
 
@@ -110,8 +111,11 @@ public class PullDataFragment extends Fragment implements PullDataContract.PullD
     }
 
     @Override
-    public void showStatesSpinner(String[] states) {
-        ArrayAdapter arrayStateAdapter = new ArrayAdapter(getActivity(), android.R.layout.simple_spinner_item, states);
+    public void showStatesSpinner(List<ModalStates> modalStates) {
+        String[] statesArr = new String[modalStates.size()];
+        for(int i=0;i<modalStates.size();i++)
+            statesArr[i]=modalStates.get(i).getStateName();
+        ArrayAdapter arrayStateAdapter = new ArrayAdapter(getActivity(), android.R.layout.simple_spinner_item, statesArr);
         arrayStateAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         stateSpinner.setAdapter(arrayStateAdapter);
         stateSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -120,7 +124,6 @@ public class PullDataFragment extends Fragment implements PullDataContract.PullD
                 disableSaveButton();
                 if (pos <= 0) {
                     clearBlockSpinner();
-
                 } else {
                     pullDataPresenter.loadBlockSpinner(pos, selectedProgram);
 /*                    int selectedRadioButtonId = radioGroupPrograms.getCheckedRadioButtonId();

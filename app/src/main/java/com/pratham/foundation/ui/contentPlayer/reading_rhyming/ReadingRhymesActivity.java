@@ -503,7 +503,9 @@ public class ReadingRhymesActivity extends BaseActivity
 
     private boolean checkWord(String wordStr) {
         try {
-            String word = AppDatabase.appDatabase.getKeyWordDao().checkWord(FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""), "" + resId, wordStr.toLowerCase());
+            String word = AppDatabase.getDatabaseInstance(ReadingRhymesActivity.this).getKeyWordDao().
+                    checkWord(FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""),
+                            "" + resId, wordStr.toLowerCase());
             return word != null;
         } catch (Exception e) {
             e.printStackTrace();

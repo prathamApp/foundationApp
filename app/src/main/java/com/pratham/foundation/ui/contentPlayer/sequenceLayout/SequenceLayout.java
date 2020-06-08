@@ -87,7 +87,7 @@ public class SequenceLayout extends Fragment implements SequeanceLayoutContract.
     public void getListResData(String nodeId) {
         try {
             contentTableList = new ArrayList<>();
-            contentTableList = AppDatabase.appDatabase.getContentTableDao().getContentData("" + nodeId);
+            contentTableList = AppDatabase.getDatabaseInstance(context).getContentTableDao().getContentData("" + nodeId);
             loadUI();
         } catch (Exception e) {
             e.printStackTrace();

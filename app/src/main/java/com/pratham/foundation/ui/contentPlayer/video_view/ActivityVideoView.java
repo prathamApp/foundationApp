@@ -8,6 +8,7 @@ import com.pratham.foundation.ApplicationClass;
 import com.pratham.foundation.BaseActivity;
 import com.pratham.foundation.R;
 import com.pratham.foundation.customView.media_controller.PlayerControlView;
+import com.pratham.foundation.database.AppDatabase;
 import com.pratham.foundation.database.BackupDatabase;
 import com.pratham.foundation.database.domain.Score;
 import com.pratham.foundation.services.shared_preferences.FastSave;
@@ -20,7 +21,6 @@ import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.ViewById;
 
-import static com.pratham.foundation.database.AppDatabase.appDatabase;
 import static com.pratham.foundation.utility.FC_Constants.gameFolderPath;
 
 
@@ -109,7 +109,7 @@ public class ActivityVideoView extends BaseActivity {
             score.setLevel(0);
             score.setLabel("video");
             score.setSentFlag(0);
-            appDatabase.getScoreDao().insert(score);
+            AppDatabase.getDatabaseInstance(ActivityVideoView.this).getScoreDao().insert(score);
         } catch (Exception e) {
             e.printStackTrace();
         }

@@ -1,6 +1,7 @@
 package com.pratham.foundation.ui.contentPlayer.matchingPairGame;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
@@ -48,7 +49,6 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-import static com.pratham.foundation.database.AppDatabase.appDatabase;
 import static com.pratham.foundation.utility.FC_Constants.APP_SECTION;
 import static com.pratham.foundation.utility.FC_Constants.gameFolderPath;
 import static com.pratham.foundation.utility.FC_Constants.sec_Test;
@@ -86,12 +86,14 @@ public class MatchThePairGameActivity extends BaseActivity implements MatchThePa
     FragmentManager fragmentManager;
     CustomLodingDialog correctDialog;
     TextView dia_title = null;
+    Context context;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_match_the_pair_game);
         ButterKnife.bind(this);
+        context = MatchThePairGameActivity.this;
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
         contentPath = getIntent().getStringExtra("contentPath");
         StudentID = getIntent().getStringExtra("StudentID");
@@ -390,7 +392,7 @@ public class MatchThePairGameActivity extends BaseActivity implements MatchThePa
 
     private boolean checkWord(String wordStr) {
         try {
-            String word = appDatabase.getKeyWordDao().checkWord(FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""), resId, wordStr);
+            String word = AppDatabase.getDatabaseInstance(context).getKeyWordDao().checkWord(FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""), resId, wordStr);
             return word != null;
         } catch (Exception e) {
             e.printStackTrace();
@@ -435,14 +437,14 @@ public class MatchThePairGameActivity extends BaseActivity implements MatchThePa
         contentProgress.setUpdatedDateTime("" + FC_Utility.getCurrentDateTime());
         contentProgress.setLabel("" + label);
         contentProgress.setSentFlag(0);
-        appDatabase.getContentProgressDao().insert(contentProgress);
+        AppDatabase.getDatabaseInstance(context).getContentProgressDao().insert(contentProgress);
     }
 
 
     //    @Background
     private int getLearntWordsCount() {
         int count = 0;
-        count = appDatabase.getKeyWordDao().checkWordCount(FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""), resId);
+        count = AppDatabase.getDatabaseInstance(context).getKeyWordDao().checkWordCount(FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""), resId);
         return count;
     }
 
@@ -454,7 +456,7 @@ public class MatchThePairGameActivity extends BaseActivity implements MatchThePa
         learntWords.setKeyWord(draggedList.get(0).getParaTitle().toLowerCase());
         learntWords.setTopic(FC_Constants.MATCH_THE_PAIR);
         learntWords.setWordType("word");
-        appDatabase.getKeyWordDao().insert(learntWords);
+        AppDatabase.getDatabaseInstance(context).getKeyWordDao().insert(learntWords);
         BackupDatabase.backup(this);
     }
 
@@ -500,7 +502,7 @@ public class MatchThePairGameActivity extends BaseActivity implements MatchThePa
 
     public void addScore(List<MatchThePair> draggedList) {
         try {
-            String deviceId = appDatabase.getStatusDao().getValue("DeviceId");
+            String deviceId = AppDatabase.getDatabaseInstance(context).getStatusDao().getValue("DeviceId");
             Score score = new Score();
             score.setSessionID(FastSave.getInstance().getString(FC_Constants.CURRENT_SESSION, ""));
             score.setResourceID(resId);
@@ -514,7 +516,7 @@ public class MatchThePairGameActivity extends BaseActivity implements MatchThePa
             score.setLevel(4);
             score.setLabel(draggedList.get(0).getParaTitle() + " - " + contentPath);
             score.setSentFlag(0);
-            appDatabase.getScoreDao().insert(score);
+            AppDatabase.getDatabaseInstance(context).getScoreDao().insert(score);
 
             if (FastSave.getInstance().getString(APP_SECTION,"").equalsIgnoreCase(sec_Test)) {
                 Assessment assessment = new Assessment();
@@ -531,7 +533,7 @@ public class MatchThePairGameActivity extends BaseActivity implements MatchThePa
                 assessment.setLevela(FC_Constants.currentLevel);
                 assessment.setLabel("test: " + contentPath);
                 assessment.setSentFlag(0);
-                appDatabase.getAssessmentDao().insert(assessment);
+                AppDatabase.getDatabaseInstance(context).getAssessmentDao().insert(assessment);
             }
 
             BackupDatabase.backup(this);

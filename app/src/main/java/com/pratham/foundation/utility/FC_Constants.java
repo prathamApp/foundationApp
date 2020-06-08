@@ -310,10 +310,10 @@ public class FC_Constants {
         GET_RASPBERRY_HEADER(RASP_IP + "/api/contentnode?content_id=f9da12749d995fa197f8b4c0192e7b2c"),
         POST_SMART_INTERNET_URL("http://www.rpi.prathamskills.org/api/pushdatasmartphone/post/"),
         POST_TAB_INTERNET_URL("http://www.rpi.prathamskills.org/api/pushdatapradigi/post/"),
+        PULL_STATES("http://swap.prathamcms.org/api/state?progid="),
         DOWNLOAD_RESOURCE(BASE_URL + "DownloadResource?resid="),
         DATASTORE_RASPBERY_PROGRAM_STATE_URL(RASP_IP + "/pratham/datastore/?table_name=ProgramState"),
         PULL_PROGRAMS("http://swap.prathamcms.org/api/program");
-
 
         private final String name;
 

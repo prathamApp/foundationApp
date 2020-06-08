@@ -22,6 +22,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -102,6 +103,9 @@ public class TestFragment extends Fragment implements TestContract.TestView,
     Button btn_test_dw;
     @ViewById(R.id.ib_langChange)
     ImageButton ib_langChange;
+    @ViewById(R.id.rl_no_data)
+    RelativeLayout rl_no_data;
+
 
     private TestAdapter testAdapter;
     private int clicked_Pos = 0;
@@ -134,10 +138,36 @@ public class TestFragment extends Fragment implements TestContract.TestView,
 //        ib_langChange.setVisibility(View.GONE);
         my_recycler_view.addOnScrollListener(new RetractableToolbarUtil
                 .ShowHideToolbarOnScrollingListener(header_rl));
+
         ib_langChange.setVisibility(View.GONE);
         if (FastSave.getInstance().getString(APP_SECTION, "").equalsIgnoreCase(sec_Test)) {
             showLoader();
             presenter.getBottomNavId(currentLevel, sec_Test);
+        }
+    }
+
+    @UiThread
+    @Override
+    public void showNoDataLayout() {
+        try {
+            dismissLoadingDialog();
+            my_recycler_view.setVisibility(View.GONE);
+            rl_no_data.setVisibility(View.VISIBLE);
+            btn_test_dw.setVisibility(View.GONE);
+            ib_langChange.setVisibility(View.GONE);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    @UiThread
+    @Override
+    public void showRecyclerLayout() {
+        try {
+            my_recycler_view.setVisibility(View.VISIBLE);
+            rl_no_data.setVisibility(View.GONE);
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 
@@ -149,6 +179,7 @@ public class TestFragment extends Fragment implements TestContract.TestView,
     @UiThread
     public void fragmentSelected() {
         try {
+            showRecyclerLayout();
             ib_langChange.setVisibility(View.GONE);
             showLoader();
             presenter.getBottomNavId(currentLevel, "" + sec_Test);
@@ -300,7 +331,7 @@ public class TestFragment extends Fragment implements TestContract.TestView,
                     EventBus.getDefault().unregister(this);
                 }
                 if (message.getMessage().equalsIgnoreCase(FC_Constants.LEVEL_CHANGED))
-                    onLevelChanged();
+                    fragmentSelected(); //onLevelChanged();
                 else if (message.getMessage().equalsIgnoreCase(FC_Constants.BACK_PRESSED))
                     backBtnPressed();
                 else if (message.getMessage().equalsIgnoreCase(FC_Constants.FILE_DOWNLOAD_STARTED)) {
@@ -461,6 +492,7 @@ public class TestFragment extends Fragment implements TestContract.TestView,
 
     public void onLevelChanged() {
         try {
+            showRecyclerLayout();
             contentParentList.clear();
             testList.clear();
             ib_langChange.setVisibility(View.GONE);
@@ -804,7 +836,7 @@ public class TestFragment extends Fragment implements TestContract.TestView,
                 int tMarks = data.getIntExtra("tMarks", 0);
                 int sMarks = data.getIntExtra("sMarks", 0);
                 try {
-                    if (cCode.equalsIgnoreCase(certi_Code)) {
+//                    if (cCode.equalsIgnoreCase(certi_Code)) {
                         testList.get(clicked_Pos).setAsessmentGiven(true);
                         testList.get(clicked_Pos).setTotalMarks(tMarks);
                         testList.get(clicked_Pos).setScoredMarks(sMarks);
@@ -814,7 +846,7 @@ public class TestFragment extends Fragment implements TestContract.TestView,
                         testList.get(clicked_Pos).setStudentPercentage("" + perc);
                         testList.get(clicked_Pos).setCertificateRating(presenter.getStarRating(perc));
                         testAdapter.notifyItemChanged(clicked_Pos, testList.get(clicked_Pos));
-                    }
+//                    }
                 } catch (Exception e) {
                     e.printStackTrace();
                 }

@@ -73,7 +73,7 @@ public class BottomStudentsPresenter implements BottomStudentsContract.BottomStu
     public void showStudents() {
         try {
             studentList.clear();
-            studentDBList = AppDatabase.appDatabase.getStudentDao().getAllStudents();
+            studentDBList = AppDatabase.getDatabaseInstance(context).getStudentDao().getAllStudents();
             if (studentDBList != null) {
                 Student studentHeader = new Student();
                 studentHeader.setStudentID("#####");
@@ -106,21 +106,21 @@ public class BottomStudentsPresenter implements BottomStudentsContract.BottomStu
     @Background
     @Override
     public void updateStudentData() {
-        AppDatabase.appDatabase.getStatusDao().updateValue("CurrentSession", "" + FastSave.getInstance().getString(FC_Constants.CURRENT_SESSION, ""));
+        AppDatabase.getDatabaseInstance(context).getStatusDao().updateValue("CurrentSession", "" + FastSave.getInstance().getString(FC_Constants.CURRENT_SESSION, ""));
         Attendance attendance = new Attendance();
         attendance.setSessionID(FastSave.getInstance().getString(FC_Constants.CURRENT_SESSION, ""));
         attendance.setStudentID(FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""));
         attendance.setDate(FC_Utility.getCurrentDateTime());
         attendance.setGroupID("SP");
         attendance.setSentFlag(0);
-        AppDatabase.appDatabase.getAttendanceDao().insert(attendance);
+        AppDatabase.getDatabaseInstance(context).getAttendanceDao().insert(attendance);
 
         Session startSesion = new Session();
         startSesion.setSessionID("" + FastSave.getInstance().getString(FC_Constants.CURRENT_SESSION, ""));
         startSesion.setFromDate("" + FC_Utility.getCurrentDateTime());
         startSesion.setToDate("NA");
         startSesion.setSentFlag(0);
-        AppDatabase.appDatabase.getSessionDao().insert(startSesion);
+        AppDatabase.getDatabaseInstance(context).getSessionDao().insert(startSesion);
 
         myView.gotoNext();
         if (FC_Utility.isDataConnectionAvailable(context))
@@ -176,7 +176,7 @@ public class BottomStudentsPresenter implements BottomStudentsContract.BottomStu
                         contentProgressList.get(i).setSentFlag(1);
                         contentProgressList.get(i).setLabel("" + FC_Constants.RESOURCE_PROGRESS);
                     }
-                    AppDatabase.appDatabase.getContentProgressDao().addContentProgressList(contentProgressList);
+                    AppDatabase.getDatabaseInstance(context).getContentProgressDao().addContentProgressList(contentProgressList);
                     BackupDatabase.backup(context);
                 }
             } catch (Exception e) {
@@ -205,7 +205,7 @@ public class BottomStudentsPresenter implements BottomStudentsContract.BottomStu
                         learntWordsList.get(i).setSentFlag(1);
                         learntWordsList.get(i).setKeyWord("" + learntWordsList.get(i).getKeyWord().toLowerCase());
                         if (!checkWord(learntWordsList.get(i).getStudentId(), learntWordsList.get(i).getResourceId(), learntWordsList.get(i).getKeyWord(), learntWordsList.get(i).getWordType()))
-                            AppDatabase.appDatabase.getKeyWordDao().insert(learntWordsList.get(i));
+                            AppDatabase.getDatabaseInstance(context).getKeyWordDao().insert(learntWordsList.get(i));
                     }
                     BackupDatabase.backup(context);
                 }
@@ -221,7 +221,7 @@ public class BottomStudentsPresenter implements BottomStudentsContract.BottomStu
         try {
             Log.d("pushorassign", "populateDB() FC_Constants.INITIAL_ENTRIES : " + FastSave.getInstance().getBoolean(FC_Constants.INITIAL_ENTRIES, false));
             if (!FastSave.getInstance().getBoolean(FC_Constants.INITIAL_ENTRIES, false))
-                doInitialEntries(AppDatabase.appDatabase);
+                doInitialEntries(AppDatabase.getDatabaseInstance(context));
             populateMenu();
 
             myView.dismissProgressDialog2();
@@ -232,7 +232,7 @@ public class BottomStudentsPresenter implements BottomStudentsContract.BottomStu
 
     private boolean checkWord(String studentId, String wordUUId, String wordCheck, String wordType) {
         try {
-            String word = AppDatabase.appDatabase.getKeyWordDao().checkLearntData(studentId, "" + wordUUId, wordCheck.toLowerCase(), wordType);
+            String word = AppDatabase.getDatabaseInstance(context).getKeyWordDao().checkLearntData(studentId, "" + wordUUId, wordCheck.toLowerCase(), wordType);
             return word != null;
         } catch (Exception e) {
             e.printStackTrace();
@@ -280,7 +280,7 @@ public class BottomStudentsPresenter implements BottomStudentsContract.BottomStu
                                         content_cursor.moveToNext();
                                     }
                                 }
-                                AppDatabase.appDatabase.getContentTableDao().addContentList(contents);
+                                AppDatabase.getDatabaseInstance(context).getContentTableDao().addContentList(contents);
                                 content_cursor.close();
                             } catch (Exception e) {
                                 e.printStackTrace();
@@ -496,7 +496,7 @@ public class BottomStudentsPresenter implements BottomStudentsContract.BottomStu
                 status = new Status();
                 status.setStatusKey("appName");
                 status.setValue(appname);
-                AppDatabase.appDatabase.getStatusDao().insert(status);
+                AppDatabase.getDatabaseInstance(context).getStatusDao().insert(status);
 
             } else {
                 CharSequence c = "";
@@ -514,7 +514,7 @@ public class BottomStudentsPresenter implements BottomStudentsContract.BottomStu
                 status = new Status();
                 status.setStatusKey("appName");
                 status.setValue(appname);
-                AppDatabase.appDatabase.getStatusDao().insert(status);
+                AppDatabase.getDatabaseInstance(context).getStatusDao().insert(status);
             }
         }
 
@@ -536,7 +536,7 @@ public class BottomStudentsPresenter implements BottomStudentsContract.BottomStu
                     e.printStackTrace();
                 }
                 status.setValue(verCode);
-                AppDatabase.appDatabase.getStatusDao().insert(status);
+                AppDatabase.getDatabaseInstance(context).getStatusDao().insert(status);
 
             } else {
                 status.setStatusKey("apkVersion");
@@ -550,7 +550,7 @@ public class BottomStudentsPresenter implements BottomStudentsContract.BottomStu
                     e.printStackTrace();
                 }
                 status.setValue(verCode);
-                AppDatabase.appDatabase.getStatusDao().insert(status);
+                AppDatabase.getDatabaseInstance(context).getStatusDao().insert(status);
 
             }
         }
@@ -559,7 +559,7 @@ public class BottomStudentsPresenter implements BottomStudentsContract.BottomStu
         public void addStartTime() {
             try {
                 String appStartTime = FC_Utility.getCurrentDateTime();
-                StatusDao statusDao = AppDatabase.appDatabase.getStatusDao();
+                StatusDao statusDao = AppDatabase.getDatabaseInstance(context).getStatusDao();
                 statusDao.updateValue("AppStartDateTime", appStartTime);
                 BackupDatabase.backup(context);
             } catch (Exception e) {

@@ -255,7 +255,7 @@ public class JSInterface implements RecognitionListener {
                     String customDate;
                     String customTime;
 
-                    String deviceId = AppDatabase.appDatabase.getStatusDao().getValue("DeviceId");
+                    String deviceId = AppDatabase.getDatabaseInstance(mContext).getStatusDao().getValue("DeviceId");
 
 
                     Score score = new Score();
@@ -278,7 +278,7 @@ public class JSInterface implements RecognitionListener {
                     score.setLevel(level);
                     score.setLabel("");
                     score.setSentFlag(0);
-                    AppDatabase.appDatabase.getScoreDao().insert(score);
+                    AppDatabase.getDatabaseInstance(mContext).getScoreDao().insert(score);
 
                     if (WebViewActivity.mode.equalsIgnoreCase("test")) {
 
@@ -296,7 +296,7 @@ public class JSInterface implements RecognitionListener {
                         assessment.setLevela(level);
                         assessment.setLabel("");
                         assessment.setSentFlag(0);
-                        AppDatabase.appDatabase.getAssessmentDao().insert(assessment);
+                        AppDatabase.getDatabaseInstance(mContext).getAssessmentDao().insert(assessment);
                     }
 
                     BackupDatabase.backup(mContext);
@@ -367,7 +367,7 @@ public class JSInterface implements RecognitionListener {
                     String customDate;
                     String customTime;
 
-                    String deviceId = AppDatabase.appDatabase.getStatusDao().getValue("DeviceId");
+                    String deviceId = AppDatabase.getDatabaseInstance(mContext).getStatusDao().getValue("DeviceId");
 
                     Score score = new Score();
                     score.setSessionID(FastSave.getInstance().getString(FC_Constants.CURRENT_SESSION, ""));
@@ -390,7 +390,7 @@ public class JSInterface implements RecognitionListener {
                     score.setLabel(Label);
                     score.setSentFlag(0);
 
-                    AppDatabase.appDatabase.getScoreDao().insert(score);
+                    AppDatabase.getDatabaseInstance(mContext).getScoreDao().insert(score);
 
                     if (WebViewActivity.mode.equalsIgnoreCase("test")) {
 
@@ -408,7 +408,7 @@ public class JSInterface implements RecognitionListener {
                         assessment.setLevela(level);
                         assessment.setLabel("test: " + Label);
                         assessment.setSentFlag(0);
-                        AppDatabase.appDatabase.getAssessmentDao().insert(assessment);
+                        AppDatabase.getDatabaseInstance(mContext).getAssessmentDao().insert(assessment);
                     }
                     BackupDatabase.backup(mContext);
                 } catch (Exception e) {

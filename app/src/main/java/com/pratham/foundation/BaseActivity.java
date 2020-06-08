@@ -49,7 +49,6 @@ import java.util.Locale;
 
 import static com.pratham.foundation.ApplicationClass.audioManager;
 import static com.pratham.foundation.ApplicationClass.ttsService;
-import static com.pratham.foundation.database.AppDatabase.appDatabase;
 import static com.pratham.foundation.utility.FC_Constants.TransferedImages;
 
 
@@ -244,7 +243,7 @@ public class BaseActivity extends AppCompatActivity {
                 case HIDE_OTG_TRANSFER_DIALOG_SUCCESS:
                     push_lottie.setAnimation("lottie_correct.json");
                     push_lottie.playAnimation();
-                    int days = appDatabase.getScoreDao().getTotalActiveDeviceDays();
+                    int days = AppDatabase.getDatabaseInstance(ApplicationClass.getInstance()).getScoreDao().getTotalActiveDeviceDays();
                     txt_push_dialog_msg.setText("Data of " + days + " days and\n"
                             + TransferedImages + " Images\nCopied Successfully!!");
                     rl_btn.setVisibility(View.VISIBLE);
@@ -329,15 +328,15 @@ public class BaseActivity extends AppCompatActivity {
                 @Override
                 protected Object doInBackground(Object[] objects) {
                     try {
-                        String curSession = AppDatabase.appDatabase.getStatusDao().getValue("CurrentSession");
-                        String toDateTemp = AppDatabase.appDatabase.getSessionDao().getToDate(curSession);
+                        String curSession = AppDatabase.getDatabaseInstance(context).getStatusDao().getValue("CurrentSession");
+                        String toDateTemp = AppDatabase.getDatabaseInstance(context).getSessionDao().getToDate(curSession);
                         if (toDateTemp.equalsIgnoreCase("na")) {
-                            AppDatabase.appDatabase.getSessionDao().UpdateToDate(curSession, FC_Utility.getCurrentDateTime());
+                            AppDatabase.getDatabaseInstance(context).getSessionDao().UpdateToDate(curSession, FC_Utility.getCurrentDateTime());
                         }
                         BackupDatabase.backup(context);
                     } catch (Exception e) {
-                        String curSession = AppDatabase.appDatabase.getStatusDao().getValue("CurrentSession");
-                        AppDatabase.appDatabase.getSessionDao().UpdateToDate(curSession, FC_Utility.getCurrentDateTime());
+                        String curSession = AppDatabase.getDatabaseInstance(context).getStatusDao().getValue("CurrentSession");
+                        AppDatabase.getDatabaseInstance(context).getSessionDao().UpdateToDate(curSession, FC_Utility.getCurrentDateTime());
                         e.printStackTrace();
                     }
                     return null;

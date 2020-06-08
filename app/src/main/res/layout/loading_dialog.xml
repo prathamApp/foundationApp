@@ -1,4 +1,24 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.design.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="@dimen/_150sdp"
+    android:layout_height="@dimen/_150sdp"
+    android:layout_gravity="center"
+    app:cardBackgroundColor="@color/white"
+    app:strokeWidth="@dimen/_3sdp"
+    app:strokeColor="@color/colorBtnRedLight"
+    app:cardCornerRadius="@dimen/_20sdp">
+
+    <com.airbnb.lottie.LottieAnimationView
+        android:layout_centerHorizontal="true"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_margin="@dimen/_5sdp"
+        app:lottie_autoPlay="true"
+        app:lottie_fileName="hand_wash.json"
+        app:lottie_loop="true" />
+
+</android.support.design.card.MaterialCardView>
+<!--<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="@dimen/_120sdp"
     android:layout_height="@dimen/_120sdp"
@@ -12,4 +32,4 @@
         app:loader_color="@color/red"
         app:loader_type="Sharingan" />
 
-</RelativeLayout>
+</RelativeLayout>-->

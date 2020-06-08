@@ -107,7 +107,7 @@ public class ReadingRhymesPresenter implements ReadingRhymesContract.ReadingRhym
             contentProgress.setUpdatedDateTime("" + FC_Utility.getCurrentDateTime());
             contentProgress.setLabel("" + label);
             contentProgress.setSentFlag(0);
-            AppDatabase.appDatabase.getContentProgressDao().insert(contentProgress);
+            AppDatabase.getDatabaseInstance(context).getContentProgressDao().insert(contentProgress);
             BackupDatabase.backup(context);
         } catch (Exception e) {
             e.printStackTrace();
@@ -130,7 +130,7 @@ public class ReadingRhymesPresenter implements ReadingRhymesContract.ReadingRhym
             score.setLevel(0);
             score.setLabel("" + Label);
             score.setSentFlag(0);
-            AppDatabase.appDatabase.getScoreDao().insert(score);
+            AppDatabase.getDatabaseInstance(context).getScoreDao().insert(score);
             BackupDatabase.backup(context);
         } catch (Exception e) {
             e.printStackTrace();
@@ -183,7 +183,7 @@ public class ReadingRhymesPresenter implements ReadingRhymesContract.ReadingRhym
 
     @Background
     public void getLearntWordsCount() {
-        learntWordCount = AppDatabase.appDatabase.getKeyWordDao().checkWordCount(FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""), "" + resId);
+        learntWordCount = AppDatabase.getDatabaseInstance(context).getKeyWordDao().checkWordCount(FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""), "" + resId);
     }
 
     @Background
@@ -204,7 +204,7 @@ public class ReadingRhymesPresenter implements ReadingRhymesContract.ReadingRhym
 
     private boolean checkWord(String wordStr) {
         try {
-            String word = AppDatabase.appDatabase.getKeyWordDao().checkWord(FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""), "" + resId, wordStr.toLowerCase());
+            String word = AppDatabase.getDatabaseInstance(context).getKeyWordDao().checkWord(FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""), "" + resId, wordStr.toLowerCase());
             return word != null;
         } catch (Exception e) {
             e.printStackTrace();
@@ -265,7 +265,7 @@ public class ReadingRhymesPresenter implements ReadingRhymesContract.ReadingRhym
     @Override
     public void addScore(int wID, String Word, int scoredMarks, int totalMarks, String resStartTime, String Label) {
         try {
-            String deviceId = AppDatabase.appDatabase.getStatusDao().getValue("DeviceId");
+            String deviceId = AppDatabase.getDatabaseInstance(context).getStatusDao().getValue("DeviceId");
             Score score = new Score();
             score.setSessionID(FastSave.getInstance().getString(FC_Constants.CURRENT_SESSION, ""));
             score.setResourceID(resId);
@@ -279,7 +279,7 @@ public class ReadingRhymesPresenter implements ReadingRhymesContract.ReadingRhym
             score.setLevel(0);
             score.setLabel(Word + " - " + Label);
             score.setSentFlag(0);
-            AppDatabase.appDatabase.getScoreDao().insert(score);
+            AppDatabase.getDatabaseInstance(context).getScoreDao().insert(score);
             BackupDatabase.backup(context);
         } catch (Exception e) {
             e.printStackTrace();
@@ -298,7 +298,7 @@ public class ReadingRhymesPresenter implements ReadingRhymesContract.ReadingRhym
                 learntWords.setKeyWord(rhymingWords.getWord().toLowerCase());
                 learntWords.setTopic("Rhyming Words");
                 learntWords.setWordType("word");
-                AppDatabase.appDatabase.getKeyWordDao().insert(learntWords);
+                AppDatabase.getDatabaseInstance(context).getKeyWordDao().insert(learntWords);
                 BackupDatabase.backup(context);
             }
         } catch (Exception e) {

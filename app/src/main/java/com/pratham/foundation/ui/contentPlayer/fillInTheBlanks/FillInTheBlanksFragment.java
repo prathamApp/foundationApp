@@ -31,6 +31,7 @@ import com.pratham.foundation.customView.SansButton;
 import com.pratham.foundation.customView.SansTextView;
 import com.pratham.foundation.customView.SansTextViewBold;
 import com.pratham.foundation.customView.display_image_dialog.CustomLodingDialog;
+import com.pratham.foundation.database.AppDatabase;
 import com.pratham.foundation.database.BackupDatabase;
 import com.pratham.foundation.database.domain.Assessment;
 import com.pratham.foundation.database.domain.KeyWords;
@@ -58,7 +59,6 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-import static com.pratham.foundation.database.AppDatabase.appDatabase;
 import static com.pratham.foundation.utility.FC_Constants.APP_SECTION;
 import static com.pratham.foundation.utility.FC_Constants.STT_REGEX;
 import static com.pratham.foundation.utility.FC_Constants.gameFolderPath;
@@ -194,13 +194,13 @@ public class FillInTheBlanksFragment extends Fragment implements STT_Result {
 
     private int getLearntWordsCount() {
         int count = 0;
-        count = appDatabase.getKeyWordDao().checkWordCount(FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""), resId);
+        count = AppDatabase.getDatabaseInstance(context).getKeyWordDao().checkWordCount(FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""), resId);
         return count;
     }
 
     private boolean checkWord(String wordStr) {
         try {
-            String word = appDatabase.getKeyWordDao().checkWord(FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""), resId, wordStr);
+            String word = AppDatabase.getDatabaseInstance(context).getKeyWordDao().checkWord(FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""), resId, wordStr);
             return word != null;
         } catch (Exception e) {
             e.printStackTrace();
@@ -432,7 +432,7 @@ public class FillInTheBlanksFragment extends Fragment implements STT_Result {
                     String key = selectedAnsList.get(i).getUserAnswer();
                     keyWords.setKeyWord(key);
                     keyWords.setWordType("word");
-                    appDatabase.getKeyWordDao().insert(keyWords);
+                    AppDatabase.getDatabaseInstance(context).getKeyWordDao().insert(keyWords);
                     correctWordList.add(selectedAnsList.get(i).getUserAnswer());
                     addScore(GameConstatnts.getInt(selectedAnsList.get(i).getQid()), GameConstatnts.FILL_IN_THE_BLANKS, 10, 10, FC_Utility.getCurrentDateTime(), selectedAnsList.get(i).getUserAnswer());
 
@@ -453,7 +453,7 @@ public class FillInTheBlanksFragment extends Fragment implements STT_Result {
 
     public void addScore(int wID, String Word, int scoredMarks, int totalMarks, String resStartTime, String Label) {
         try {
-            String deviceId = appDatabase.getStatusDao().getValue("DeviceId");
+            String deviceId = AppDatabase.getDatabaseInstance(context).getStatusDao().getValue("DeviceId");
             Score score = new Score();
             score.setSessionID(FastSave.getInstance().getString(FC_Constants.CURRENT_SESSION, ""));
             score.setResourceID(resId);
@@ -467,7 +467,7 @@ public class FillInTheBlanksFragment extends Fragment implements STT_Result {
             score.setLevel(4);
             score.setLabel(Word + " - " + Label);
             score.setSentFlag(0);
-            appDatabase.getScoreDao().insert(score);
+            AppDatabase.getDatabaseInstance(context).getScoreDao().insert(score);
 
             if (FastSave.getInstance().getString(APP_SECTION,"").equalsIgnoreCase(sec_Test)) {
                 Assessment assessment = new Assessment();
@@ -484,7 +484,7 @@ public class FillInTheBlanksFragment extends Fragment implements STT_Result {
                 assessment.setLevela(FC_Constants.currentLevel);
                 assessment.setLabel("test: " + Label);
                 assessment.setSentFlag(0);
-                appDatabase.getAssessmentDao().insert(assessment);
+                AppDatabase.getDatabaseInstance(context).getAssessmentDao().insert(assessment);
             }
             BackupDatabase.backup(context);
         } catch (Exception e) {

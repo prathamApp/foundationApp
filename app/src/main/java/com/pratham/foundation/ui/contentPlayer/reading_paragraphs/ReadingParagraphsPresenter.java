@@ -4,6 +4,7 @@ import android.content.Context;
 import android.util.Log;
 
 import com.google.gson.Gson;
+import com.pratham.foundation.database.AppDatabase;
 import com.pratham.foundation.database.BackupDatabase;
 import com.pratham.foundation.database.domain.Assessment;
 import com.pratham.foundation.database.domain.ContentProgress;
@@ -26,7 +27,6 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.pratham.foundation.database.AppDatabase.appDatabase;
 import static com.pratham.foundation.ui.contentPlayer.reading_paragraphs.ReadingParagraphsActivity.correctArr;
 import static com.pratham.foundation.ui.contentPlayer.reading_paragraphs.ReadingParagraphsActivity.lineBreakCounter;
 import static com.pratham.foundation.utility.FC_Constants.APP_SECTION;
@@ -112,7 +112,7 @@ public class ReadingParagraphsPresenter implements ReadingParagraphsContract.Rea
 
     private int getLearntWordsCount() {
         int count = 0;
-        count = appDatabase.getKeyWordDao().checkWordCount(FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""), "" + resId);
+        count = AppDatabase.getDatabaseInstance(context).getKeyWordDao().checkWordCount(FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""), "" + resId);
         return count;
     }
 
@@ -125,7 +125,7 @@ public class ReadingParagraphsPresenter implements ReadingParagraphsContract.Rea
 
     private boolean checkLearnt(String wordCheck) {
         try {
-            String word = appDatabase.getKeyWordDao().checkWord(FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""), "" + resId, wordCheck.toLowerCase());
+            String word = AppDatabase.getDatabaseInstance(context).getKeyWordDao().checkWord(FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""), "" + resId, wordCheck.toLowerCase());
             return word != null;
         } catch (Exception e) {
             e.printStackTrace();
@@ -220,7 +220,7 @@ public class ReadingParagraphsPresenter implements ReadingParagraphsContract.Rea
                     learntWords.setKeyWord(splitWordsPunct.get(i).toLowerCase());
                     learntWords.setWordType("word");
                     learntWords.setTopic("Para Words");
-                    appDatabase.getKeyWordDao().insert(learntWords);
+                    AppDatabase.getDatabaseInstance(context).getKeyWordDao().insert(learntWords);
                 }
             }
         }
@@ -277,7 +277,7 @@ public class ReadingParagraphsPresenter implements ReadingParagraphsContract.Rea
             learntWordss.setKeyWord(word.toLowerCase());
             learntWordss.setTopic("" + resType);
             learntWordss.setWordType("word");
-            appDatabase.getKeyWordDao().insert(learntWordss);
+            AppDatabase.getDatabaseInstance(context).getKeyWordDao().insert(learntWordss);
         }
         BackupDatabase.backup(context);
     }
@@ -301,7 +301,7 @@ public class ReadingParagraphsPresenter implements ReadingParagraphsContract.Rea
             contentProgress.setUpdatedDateTime("" + FC_Utility.getCurrentDateTime());
             contentProgress.setLabel("" + label);
             contentProgress.setSentFlag(0);
-            appDatabase.getContentProgressDao().insert(contentProgress);
+            AppDatabase.getDatabaseInstance(context).getContentProgressDao().insert(contentProgress);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -311,7 +311,7 @@ public class ReadingParagraphsPresenter implements ReadingParagraphsContract.Rea
     @Override
     public void addScore(int wID, String Word, int scoredMarks, int totalMarks, String resStartTime, String Label) {
         try {
-            String deviceId = appDatabase.getStatusDao().getValue("DeviceId");
+            String deviceId = AppDatabase.getDatabaseInstance(context).getStatusDao().getValue("DeviceId");
             Score score = new Score();
             score.setSessionID(FastSave.getInstance().getString(FC_Constants.CURRENT_SESSION, ""));
             score.setResourceID(resId);
@@ -325,7 +325,7 @@ public class ReadingParagraphsPresenter implements ReadingParagraphsContract.Rea
             score.setLevel(0);
             score.setLabel(Word + " - " + Label);
             score.setSentFlag(0);
-            appDatabase.getScoreDao().insert(score);
+            AppDatabase.getDatabaseInstance(context).getScoreDao().insert(score);
 
             if (FastSave.getInstance().getString(APP_SECTION,"").equalsIgnoreCase(sec_Test)) {
                 Assessment assessment = new Assessment();
@@ -342,7 +342,7 @@ public class ReadingParagraphsPresenter implements ReadingParagraphsContract.Rea
                 assessment.setLevela(FC_Constants.currentLevel);
                 assessment.setLabel("test: " + Label);
                 assessment.setSentFlag(0);
-                appDatabase.getAssessmentDao().insert(assessment);
+                AppDatabase.getDatabaseInstance(context).getAssessmentDao().insert(assessment);
             }
             BackupDatabase.backup(context);
         } catch (Exception e) {

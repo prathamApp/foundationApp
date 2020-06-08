@@ -172,7 +172,7 @@ public class ContentDownloadingTask {
             d.isDownloaded = "" + true;
             d.setOnSDCard(false);
         }*/
-        AppDatabase.appDatabase.getContentTableDao().addContentList(temp);
+        AppDatabase.getDatabaseInstance(context).getContentTableDao().addContentList(temp);
         onCompleteContentDownloadTase(true);
     }
 

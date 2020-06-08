@@ -26,6 +26,7 @@ import com.pratham.foundation.ApplicationClass;
 import com.pratham.foundation.R;
 import com.pratham.foundation.customView.GridSpacingItemDecoration;
 import com.pratham.foundation.customView.display_image_dialog.CustomLodingDialog;
+import com.pratham.foundation.database.AppDatabase;
 import com.pratham.foundation.modalclasses.ModalTopCertificates;
 import com.pratham.foundation.services.shared_preferences.FastSave;
 import com.pratham.foundation.ui.app_home.profile_new.certificate_display.CertificateDisplayActivity_;
@@ -49,7 +50,6 @@ import java.util.Objects;
 
 import static com.pratham.foundation.ApplicationClass.App_Thumbs_Path;
 import static com.pratham.foundation.ApplicationClass.isTablet;
-import static com.pratham.foundation.database.AppDatabase.appDatabase;
 import static com.pratham.foundation.utility.FC_Constants.GROUP_MODE;
 import static com.pratham.foundation.utility.FC_Constants.INDIVIDUAL_MODE;
 import static com.pratham.foundation.utility.FC_Constants.LOGIN_MODE;
@@ -134,7 +134,7 @@ public class ProfileFragment extends Fragment implements ProfileContract.Profile
                 card_img.setImageURI(Uri.fromFile(file));
             } else {
                 if(!isTablet){
-                   String gender = appDatabase.getStudentDao().
+                   String gender = AppDatabase.getDatabaseInstance(context).getStudentDao().
                         getStudentAvatar(FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""));
                     file = new File( ApplicationClass.foundationPath +
                             "" + App_Thumbs_Path +""+gender);
@@ -143,7 +143,7 @@ public class ProfileFragment extends Fragment implements ProfileContract.Profile
                     else
                         card_img.setImageResource(getRandomFemaleAvatar(context));
                 }else{
-                    String gender = appDatabase.getStudentDao().getStudentGender(
+                    String gender = AppDatabase.getDatabaseInstance(context).getStudentDao().getStudentGender(
                             FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""));
                     if(gender.equalsIgnoreCase("male"))
                         card_img.setImageResource(getRandomMaleAvatar(context));

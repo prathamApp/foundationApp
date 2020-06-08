@@ -59,7 +59,7 @@ public class CertificatePresenter implements CertificateContract.CertificatePres
                 try {
                     Student student;
                     String sId = assessmentProfile.getStudentIDa();
-                    student = AppDatabase.appDatabase.getStudentDao().getStudent(sId);
+                    student = AppDatabase.getDatabaseInstance(context).getStudentDao().getStudent(sId);
                     studName = "" + student.getFullName();
                     return null;
                 } catch (Exception e) {
@@ -83,7 +83,7 @@ public class CertificatePresenter implements CertificateContract.CertificatePres
                 @Override
                 protected Object doInBackground(Object[] objects) {
                     try {
-                        certiGameList = AppDatabase.appDatabase.getContentTableDao().getContentData(nodeId);
+                        certiGameList = AppDatabase.getDatabaseInstance(context).getContentTableDao().getContentData(nodeId);
                         WebViewActivity.gameLevel = certiGameList.get(0).getNodeAge();
                         BackupDatabase.backup(context);
                         codesText = new ArrayList<>();
@@ -328,7 +328,7 @@ public class CertificatePresenter implements CertificateContract.CertificatePres
                     assessment.setLevela(Integer.parseInt(WebViewActivity.gameLevel));
                     assessment.setLabel("" + FC_Constants.CERTIFICATE_LBL);
                     assessment.setSentFlag(0);
-                    AppDatabase.appDatabase.getAssessmentDao().insert(assessment);
+                    AppDatabase.getDatabaseInstance(context).getAssessmentDao().insert(assessment);
 
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -401,9 +401,9 @@ public class CertificatePresenter implements CertificateContract.CertificatePres
                 try {
                     SupervisorData supervisorData;
                     if (!certiMode.equalsIgnoreCase("display")) {
-                        supervisorData = AppDatabase.appDatabase.getSupervisorDataDao().getSupervisorById(FastSave.getInstance().getString(FC_Constants.CURRENT_SUPERVISOR_ID, ""));
+                        supervisorData = AppDatabase.getDatabaseInstance(context).getSupervisorDataDao().getSupervisorById(FastSave.getInstance().getString(FC_Constants.CURRENT_SUPERVISOR_ID, ""));
                     } else
-                        supervisorData = AppDatabase.appDatabase.getSupervisorDataDao().getSupervisorById("" + assessmentProfile.getDeviceIDa());
+                        supervisorData = AppDatabase.getDatabaseInstance(context).getSupervisorDataDao().getSupervisorById("" + assessmentProfile.getDeviceIDa());
 
                     certificateView.setSupervisorData("" + supervisorData.getSupervisorName(), "" +
                             Environment.getExternalStorageDirectory().toString() + "/.FCAInternal/supervisorImages/" +

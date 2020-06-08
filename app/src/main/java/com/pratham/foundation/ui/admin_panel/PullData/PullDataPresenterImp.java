@@ -16,6 +16,7 @@ import com.pratham.foundation.database.BackupDatabase;
 import com.pratham.foundation.database.domain.Crl;
 import com.pratham.foundation.database.domain.Groups;
 import com.pratham.foundation.database.domain.ModalProgram;
+import com.pratham.foundation.database.domain.ModalStates;
 import com.pratham.foundation.database.domain.RaspCrl;
 import com.pratham.foundation.database.domain.RaspGroup;
 import com.pratham.foundation.database.domain.RaspProgram;
@@ -53,6 +54,7 @@ public class PullDataPresenterImp implements PullDataContract.PullDataPresenter,
     List<Student> studentList = new ArrayList();
     List<Groups> groupList = new ArrayList();
     List<String> villageIDList = new ArrayList();
+    List<ModalStates> modalStates = new ArrayList();
     Boolean isConnectedToRasp = false;
     API_Content api_content;
 
@@ -133,9 +135,40 @@ public class PullDataPresenterImp implements PullDataContract.PullDataPresenter,
     }
 
     @Override
-    public void loadSpinner() {
-        String[] states = context.getResources().getStringArray(R.array.india_states);
-        pullDataView.showStatesSpinner(states);
+    public void loadSpinner(String selectedProgramId) {
+        if (isConnectedToRasp) {
+            String[] states = context.getResources().getStringArray(R.array.india_states);
+            String[] codes = context.getResources().getStringArray(R.array.india_states_shortcode);
+            modalStates.clear();
+            for(int i = 0 ; i < context.getResources().getStringArray(R.array.india_states).length ; i++) {
+                modalStates.get(i).setProgramId(Integer.parseInt(selectedProgramId));
+                modalStates.get(i).setStateCode(codes[i]);
+                modalStates.get(i).setStateName(states[i]);
+            }
+            pullDataView.showStatesSpinner(modalStates);
+        }else{
+            AndroidNetworking.get(FC_Constants.URL.PULL_STATES.toString()+""+selectedProgramId).build().getAsJSONArray(new JSONArrayRequestListener() {
+                @Override
+                public void onResponse(JSONArray response) {
+                    // do anything with response
+                    Gson gson = new Gson();
+                    Type listType = new TypeToken<List<ModalStates>>() {
+                    }.getType();
+                    ArrayList<ModalStates> modalStatesTemp = gson.fromJson(response.toString(), listType);
+                    modalStates.clear();
+                    modalStates.addAll(modalStatesTemp);
+                    pullDataView.closeProgressDialog();
+                    pullDataView.showStatesSpinner(modalStates);
+                }
+
+                @Override
+                public void onError(ANError error) {
+                    // handle error
+                    pullDataView.closeProgressDialog();
+                    pullDataView.showErrorToast();
+                }
+            });
+        }
     }
 
     @Override
@@ -164,9 +197,7 @@ public class PullDataPresenterImp implements PullDataContract.PullDataPresenter,
     public void loadBlockSpinner(int pos, String selectedProgram) {
 
         pullDataView.showProgressDialog("loading Blocks");
-
-        String[] statesCodes = context.getResources().getStringArray(R.array.india_states_shortcode);
-        selectedBlock = statesCodes[pos];
+        selectedBlock = modalStates.get(pos).getStateCode();
         this.selectedProgram = selectedProgram;
         String url;
         if (isConnectedToRasp) {

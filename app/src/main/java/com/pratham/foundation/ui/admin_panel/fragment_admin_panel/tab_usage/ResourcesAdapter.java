@@ -1,5 +1,6 @@
 package com.pratham.foundation.ui.admin_panel.fragment_admin_panel.tab_usage;
 
+import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -8,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.pratham.foundation.R;
+import com.pratham.foundation.database.AppDatabase;
 import com.pratham.foundation.modalclasses.Modal_ResourcePlayedByGroups;
 
 import java.util.List;
@@ -15,14 +17,15 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-import static com.pratham.foundation.database.AppDatabase.appDatabase;
 
 public class ResourcesAdapter extends RecyclerView.Adapter<ResourcesAdapter.ViewHolder> {
 
     private List<Modal_ResourcePlayedByGroups> datalist;
+    Context context;
 
-    public ResourcesAdapter(List<Modal_ResourcePlayedByGroups> datalist) {
+    public ResourcesAdapter(Context context, List<Modal_ResourcePlayedByGroups> datalist) {
         this.datalist = datalist;
+        this.context = context;
     }
 
     @NonNull
@@ -35,7 +38,7 @@ public class ResourcesAdapter extends RecyclerView.Adapter<ResourcesAdapter.View
 
     @Override
     public void onBindViewHolder(@NonNull ResourcesAdapter.ViewHolder viewHolder, int i) {
-        viewHolder.stat_res_name.setText(appDatabase.getContentTableDao().
+        viewHolder.stat_res_name.setText(AppDatabase.getDatabaseInstance(context).getContentTableDao().
                 getContentTitleById(datalist.get(viewHolder.getAdapterPosition()).getResourceID()));
     }
 

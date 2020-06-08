@@ -145,7 +145,7 @@ public class ContentPresenter implements ContentContract.ContentPresenter, API_C
     public void getListData() {
         try {
             contentView.showLoader();
-            downloadedContentTableList = AppDatabase.appDatabase.getContentTableDao().getContentData("" + nodeIds.get(nodeIds.size() - 1));
+            downloadedContentTableList = AppDatabase.getDatabaseInstance(context).getContentTableDao().getContentData("" + nodeIds.get(nodeIds.size() - 1));
             sortAllList(downloadedContentTableList);
             contentView.clearContentList();
             ListForContentTable1.clear();
@@ -314,7 +314,7 @@ public class ContentPresenter implements ContentContract.ContentPresenter, API_C
     }
 
     private void checkAndDeleteParent(ContentTable contentItem) {
-        AppDatabase.appDatabase.getContentTableDao().deleteContent(contentItem.getNodeId());
+        AppDatabase.getDatabaseInstance(context).getContentTableDao().deleteContent(contentItem.getNodeId());
     }
 
     @Override
@@ -328,7 +328,7 @@ public class ContentPresenter implements ContentContract.ContentPresenter, API_C
     @Override
     public void starContentEntry(final String contentID, final String Label) {
         try {
-            String deviceId = AppDatabase.appDatabase.getStatusDao().getValue("DeviceId");
+            String deviceId = AppDatabase.getDatabaseInstance(context).getStatusDao().getValue("DeviceId");
             Score score = new Score();
             score.setSessionID(FastSave.getInstance().getString(FC_Constants.CURRENT_SESSION, ""));
             score.setResourceID("" + contentID);
@@ -342,7 +342,7 @@ public class ContentPresenter implements ContentContract.ContentPresenter, API_C
             score.setLevel(0);
             score.setLabel(Label);
             score.setSentFlag(0);
-            AppDatabase.appDatabase.getScoreDao().insert(score);
+            AppDatabase.getDatabaseInstance(context).getScoreDao().insert(score);
             BackupDatabase.backup(context);
 
         } catch (Exception e) {

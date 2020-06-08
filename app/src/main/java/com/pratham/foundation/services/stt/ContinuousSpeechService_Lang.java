@@ -118,7 +118,7 @@ public class ContinuousSpeechService_Lang implements RecognitionListener, STT_Re
                     modal_log.setCurrentDateTime(FC_Utility.getCurrentDateTime());
                     modal_log.setSessionId(FastSave.getInstance().getString(FC_Constants.CURRENT_SESSION, ""));
                     modal_log.setLogDetail("Stt Intent Fired - " + sttString);
-                    AppDatabase.appDatabase.getLogsDao().insertLog(modal_log);
+                    AppDatabase.getDatabaseInstance(context).getLogsDao().insertLog(modal_log);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }

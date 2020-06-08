@@ -3,6 +3,7 @@ package com.pratham.foundation.ui.admin_panel.PullData;
 
 
 import com.pratham.foundation.database.domain.ModalProgram;
+import com.pratham.foundation.database.domain.ModalStates;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -12,30 +13,30 @@ import java.util.List;
  */
 
 public interface PullDataContract {
-    public interface PullDataView {
-        public void showStatesSpinner(String[] states);
+    interface PullDataView {
+        void showStatesSpinner(List<ModalStates> Modalstates);
 
-        public void showProgressDialog(String msg);
+        void showProgressDialog(String msg);
 
-        public void shoConfermationDialog(int crlListCnt, int studentListcnt, int groupListCnt, int villageIDListCnt);
+        void shoConfermationDialog(int crlListCnt, int studentListcnt, int groupListCnt, int villageIDListCnt);
 
-        public void closeProgressDialog();
+        void closeProgressDialog();
 
-        public void clearBlockSpinner();
+        void clearBlockSpinner();
 
-        public void clearStateSpinner();
+        void clearStateSpinner();
 
-        public void showBlocksSpinner(List blocks);
+        void showBlocksSpinner(List blocks);
 
-        public void showVillageDialog(List villageList);
+        void showVillageDialog(List villageList);
 
-        public void disableSaveButton();
+        void disableSaveButton();
 
-        public void enableSaveButton();
+        void enableSaveButton();
 
-        public void showErrorToast();
+        void showErrorToast();
 
-        public void openLoginActivity();
+        void openLoginActivity();
 
 
         void showNoConnectivity();
@@ -43,20 +44,20 @@ public interface PullDataContract {
         void showProgram(List<ModalProgram> prgrmList);
     }
 
-    public interface PullDataPresenter {
-        public void loadSpinner();
+    interface PullDataPresenter {
+        void loadSpinner(String selectedProgramId);
 
-        public void proccessVillageData(String respnce);
+        void proccessVillageData(String respnce);
 
-        public void loadBlockSpinner(int pos, String selectedprogram);
+        void loadBlockSpinner(int pos, String selectedprogram);
 
-        public void downloadStudentAndGroup(ArrayList<String> villageIDList);
+        void downloadStudentAndGroup(ArrayList<String> villageIDList);
 
-        public void saveData();
+        void saveData();
 
-        public void clearLists();
+        void clearLists();
 
-        public void onSaveClick();
+        void onSaveClick();
 
         void checkConnectivity();
 

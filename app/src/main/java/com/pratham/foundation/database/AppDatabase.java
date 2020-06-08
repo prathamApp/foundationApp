@@ -50,7 +50,7 @@ import com.pratham.foundation.modalclasses.MatchThePair;
 
 public abstract class AppDatabase extends RoomDatabase {
 
-    public static AppDatabase appDatabase;
+    public static AppDatabase appDBInstance;
 
     public static final String DB_NAME = "foundation_db";
     public static final String DB_VERSION = "2";
@@ -87,16 +87,15 @@ public abstract class AppDatabase extends RoomDatabase {
 
     public abstract MatchThePairDao getMatchThePairDao();
 
-
     public static AppDatabase getDatabaseInstance(Context context) {
-        if (appDatabase == null) {
-            appDatabase = Room.databaseBuilder(ApplicationClass.getInstance(), AppDatabase.class, DB_NAME)
+        if (appDBInstance == null) {
+            appDBInstance = Room.databaseBuilder(ApplicationClass.getInstance(), AppDatabase.class, DB_NAME)
                     .allowMainThreadQueries()
                     .addMigrations(MIGRATION_1_2)
                     .build();
-            return appDatabase;
+            return appDBInstance;
         } else
-            return appDatabase;
+            return appDBInstance;
     }
 
     static final Migration MIGRATION_1_2 = new Migration(1, 2) {

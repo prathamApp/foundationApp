@@ -211,9 +211,10 @@ public class SupervisedAssessmentActivity extends Activity implements TestStuden
             protected Object doInBackground(Object[] objects) {
                 try {
                     if (isTablet && appLoginMode.equalsIgnoreCase(GROUP_MODE)) {
-                        studentList = AppDatabase.appDatabase.getStudentDao().getGroupwiseStudents(FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""));
+                        studentList = AppDatabase.getDatabaseInstance(SupervisedAssessmentActivity.this).getStudentDao()
+                                .getGroupwiseStudents(FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""));
                     } else {
-                        studentList = AppDatabase.appDatabase.getStudentDao().getAllStudents();
+                        studentList = AppDatabase.getDatabaseInstance(SupervisedAssessmentActivity.this).getStudentDao().getAllStudents();
                     }
                     return null;
                 } catch (Exception e) {

@@ -299,15 +299,15 @@ public class BottomStudentsFragment extends BottomSheetDialogFragment
 
     public void endSession() {
         try {
-            String curSession = AppDatabase.appDatabase.getStatusDao().getValue("CurrentSession");
-            String toDateTemp = AppDatabase.appDatabase.getSessionDao().getToDate(curSession);
+            String curSession = AppDatabase.getDatabaseInstance(context).getStatusDao().getValue("CurrentSession");
+            String toDateTemp = AppDatabase.getDatabaseInstance(context).getSessionDao().getToDate(curSession);
             if (toDateTemp.equalsIgnoreCase("na")) {
-                AppDatabase.appDatabase.getSessionDao().UpdateToDate(curSession, FC_Utility.getCurrentDateTime());
+                AppDatabase.getDatabaseInstance(context).getSessionDao().UpdateToDate(curSession, FC_Utility.getCurrentDateTime());
             }
             BackupDatabase.backup(getActivity());
         } catch (Exception e) {
-            String curSession = AppDatabase.appDatabase.getStatusDao().getValue("CurrentSession");
-            AppDatabase.appDatabase.getSessionDao().UpdateToDate(curSession, FC_Utility.getCurrentDateTime());
+            String curSession = AppDatabase.getDatabaseInstance(context).getStatusDao().getValue("CurrentSession");
+            AppDatabase.getDatabaseInstance(context).getSessionDao().UpdateToDate(curSession, FC_Utility.getCurrentDateTime());
             e.printStackTrace();
         }
     }

@@ -3,6 +3,7 @@ package com.pratham.foundation.ui.contentPlayer.new_vocab_reading;
 import android.content.Context;
 
 import com.google.gson.Gson;
+import com.pratham.foundation.database.AppDatabase;
 import com.pratham.foundation.database.BackupDatabase;
 import com.pratham.foundation.database.domain.Assessment;
 import com.pratham.foundation.database.domain.ContentProgress;
@@ -23,7 +24,6 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.pratham.foundation.database.AppDatabase.appDatabase;
 import static com.pratham.foundation.ui.contentPlayer.new_vocab_reading.VocabReadingFragment.correctArr;
 import static com.pratham.foundation.ui.contentPlayer.new_vocab_reading.VocabReadingFragment.lineBreakCounter;
 import static com.pratham.foundation.ui.contentPlayer.new_vocab_reading.VocabReadingFragment.testCorrectArr;
@@ -111,7 +111,7 @@ public class VocabReadingPresenter implements VocabReadingContract.VocabReadingP
     }
 
     private void addSttResultDB(ArrayList<String> stt_Result) {
-        String deviceId = appDatabase.getStatusDao().getValue("DeviceId");
+        String deviceId = AppDatabase.getDatabaseInstance(context).getStatusDao().getValue("DeviceId");
         StringBuilder strWord = new StringBuilder("STT_ALL_RESULT - ");
         for(int i =0 ; i<stt_Result.size(); i++) {
             strWord.append(stt_Result.get(i)).append(" - ");
@@ -134,7 +134,7 @@ public class VocabReadingPresenter implements VocabReadingContract.VocabReadingP
             score.setLevel(0);
             score.setLabel(""+strWord);
             score.setSentFlag(0);
-            appDatabase.getScoreDao().insert(score);
+            AppDatabase.getDatabaseInstance(context).getScoreDao().insert(score);
             BackupDatabase.backup(context);
         } catch (Exception e) {
             e.printStackTrace();
@@ -223,7 +223,7 @@ public class VocabReadingPresenter implements VocabReadingContract.VocabReadingP
 
     public boolean checkLearnt(String wordCheck) {
         try {
-            String word = appDatabase.getKeyWordDao().checkWord(FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""), "" + resId, wordCheck.toLowerCase());
+            String word = AppDatabase.getDatabaseInstance(context).getKeyWordDao().checkWord(FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""), "" + resId, wordCheck.toLowerCase());
             return word != null;
         } catch (Exception e) {
             e.printStackTrace();
@@ -244,7 +244,7 @@ public class VocabReadingPresenter implements VocabReadingContract.VocabReadingP
                         learntWords.setKeyWord(splitWordsPunct.get(i).toLowerCase());
                         learntWords.setWordType("word");
                         learntWords.setTopic("Topic");
-                        appDatabase.getKeyWordDao().insert(learntWords);
+                        AppDatabase.getDatabaseInstance(context).getKeyWordDao().insert(learntWords);
                     }
                 }
             }
@@ -308,7 +308,7 @@ public class VocabReadingPresenter implements VocabReadingContract.VocabReadingP
     @Override
     public void addScore(int wID, String Word, int scoredMarks, int totalMarks, String resStartTime, String Label) {
         try {
-            String deviceId = appDatabase.getStatusDao().getValue("DeviceId");
+            String deviceId = AppDatabase.getDatabaseInstance(context).getStatusDao().getValue("DeviceId");
             Score score = new Score();
             score.setSessionID(FastSave.getInstance().getString(FC_Constants.CURRENT_SESSION, ""));
             score.setResourceID(resId);
@@ -322,7 +322,7 @@ public class VocabReadingPresenter implements VocabReadingContract.VocabReadingP
             score.setLevel(0);
             score.setLabel(Word + " - " + Label);
             score.setSentFlag(0);
-            appDatabase.getScoreDao().insert(score);
+            AppDatabase.getDatabaseInstance(context).getScoreDao().insert(score);
 
             if (FastSave.getInstance().getString(APP_SECTION,"").equalsIgnoreCase(sec_Test)) {
                 Assessment assessment = new Assessment();
@@ -339,7 +339,7 @@ public class VocabReadingPresenter implements VocabReadingContract.VocabReadingP
                 assessment.setLevela(FC_Constants.currentLevel);
                 assessment.setLabel("test: " + Label);
                 assessment.setSentFlag(0);
-                appDatabase.getAssessmentDao().insert(assessment);
+                AppDatabase.getDatabaseInstance(context).getAssessmentDao().insert(assessment);
             }
 
             BackupDatabase.backup(context);
@@ -360,7 +360,7 @@ public class VocabReadingPresenter implements VocabReadingContract.VocabReadingP
             contentProgress.setUpdatedDateTime("" + FC_Utility.getCurrentDateTime());
             contentProgress.setLabel("" + Label);
             contentProgress.setSentFlag(0);
-            appDatabase.getContentProgressDao().insert(contentProgress);
+            AppDatabase.getDatabaseInstance(context).getContentProgressDao().insert(contentProgress);
             BackupDatabase.backup(context);
         } catch (Exception e) {
             e.printStackTrace();

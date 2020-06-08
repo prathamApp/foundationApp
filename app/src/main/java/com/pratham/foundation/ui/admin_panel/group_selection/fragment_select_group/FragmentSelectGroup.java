@@ -1,5 +1,6 @@
 package com.pratham.foundation.ui.admin_panel.group_selection.fragment_select_group;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.DefaultItemAnimator;
@@ -42,29 +43,30 @@ public class FragmentSelectGroup extends Fragment implements ContractGroup {
     GroupAdapter groupAdapter;
     ArrayList<Groups> groups;
     Groups groupSelected;
-
+    Context context;
 
     @AfterViews
     public void initialize() {
+        context = getActivity();
         showGrps();
     }
 
     private void showGrps() {
         try {
             ArrayList<String> present_groups = new ArrayList<>();
-            String groupId1 = AppDatabase.appDatabase.getStatusDao().getValue(FC_Constants.GROUPID1);
+            String groupId1 = AppDatabase.getDatabaseInstance(context).getStatusDao().getValue(FC_Constants.GROUPID1);
 
             if (!groupId1.equalsIgnoreCase("0")) present_groups.add(groupId1);
-            String groupId2 = AppDatabase.appDatabase.getStatusDao().getValue(FC_Constants.GROUPID2);
+            String groupId2 = AppDatabase.getDatabaseInstance(context).getStatusDao().getValue(FC_Constants.GROUPID2);
 
             if (!groupId2.equalsIgnoreCase("0")) present_groups.add(groupId2);
-            String groupId3 = AppDatabase.appDatabase.getStatusDao().getValue(FC_Constants.GROUPID3);
+            String groupId3 = AppDatabase.getDatabaseInstance(context).getStatusDao().getValue(FC_Constants.GROUPID3);
 
             if (!groupId3.equalsIgnoreCase("0")) present_groups.add(groupId3);
-            String groupId4 = AppDatabase.appDatabase.getStatusDao().getValue(FC_Constants.GROUPID4);
+            String groupId4 = AppDatabase.getDatabaseInstance(context).getStatusDao().getValue(FC_Constants.GROUPID4);
 
             if (!groupId4.equalsIgnoreCase("0")) present_groups.add(groupId4);
-            String groupId5 = AppDatabase.appDatabase.getStatusDao().getValue(FC_Constants.GROUPID5);
+            String groupId5 = AppDatabase.getDatabaseInstance(context).getStatusDao().getValue(FC_Constants.GROUPID5);
 
             if (!groupId5.equalsIgnoreCase("0")) present_groups.add(groupId5);
 
@@ -83,11 +85,11 @@ public class FragmentSelectGroup extends Fragment implements ContractGroup {
         groups = new ArrayList<>();
         for (String grID : allGroups) {
             // ArrayList<Student> students = (ArrayList<Student>) BaseActivity.studentDao.getGroupwiseStudents(grID);
-            ArrayList<Student> students = (ArrayList<Student>) AppDatabase.appDatabase.getStudentDao().getGroupwiseStudents(grID);
+            ArrayList<Student> students = (ArrayList<Student>) AppDatabase.getDatabaseInstance(context).getStudentDao().getGroupwiseStudents(grID);
             for (Student stu : students) {
                 if (stu.getAge() < 7) {
                     //Groups group = BaseActivity.groupDao.getGroupByGrpID(grID);
-                    Groups group = AppDatabase.appDatabase.getGroupsDao().getGroupByGrpID(grID);
+                    Groups group = AppDatabase.getDatabaseInstance(context).getGroupsDao().getGroupByGrpID(grID);
                     groups.add(group);
                     break;
                 }
@@ -99,12 +101,12 @@ public class FragmentSelectGroup extends Fragment implements ContractGroup {
         groups = new ArrayList<>();
         for (String grID : allGroups) {
             //ArrayList<Student> students = (ArrayList<Student>) BaseActivity.studentDao.getGroupwiseStudents(grID);
-            ArrayList<Student> students = (ArrayList<Student>) AppDatabase.appDatabase.getStudentDao().getGroupwiseStudents(grID);
+            ArrayList<Student> students = (ArrayList<Student>) AppDatabase.getDatabaseInstance(context).getStudentDao().getGroupwiseStudents(grID);
 
             for (Student stu : students) {
                 if (stu.getAge() >= 7) {
                     // group = BaseActivity.groupDao.getGroupByGrpID(grID);
-                    Groups group = AppDatabase.appDatabase.getGroupsDao().getGroupByGrpID(grID);
+                    Groups group = AppDatabase.getDatabaseInstance(context).getGroupsDao().getGroupByGrpID(grID);
                     groups.add(group);
                     break;
                 }
@@ -117,19 +119,19 @@ public class FragmentSelectGroup extends Fragment implements ContractGroup {
         super.onResume();
         try {
             ArrayList<String> present_groups = new ArrayList<>();
-            String groupId1 = AppDatabase.appDatabase.getStatusDao().getValue(FC_Constants.GROUPID1);
+            String groupId1 = AppDatabase.getDatabaseInstance(context).getStatusDao().getValue(FC_Constants.GROUPID1);
 
             if (!groupId1.equalsIgnoreCase("0")) present_groups.add(groupId1);
-            String groupId2 = AppDatabase.appDatabase.getStatusDao().getValue(FC_Constants.GROUPID2);
+            String groupId2 = AppDatabase.getDatabaseInstance(context).getStatusDao().getValue(FC_Constants.GROUPID2);
 
             if (!groupId2.equalsIgnoreCase("0")) present_groups.add(groupId2);
-            String groupId3 = AppDatabase.appDatabase.getStatusDao().getValue(FC_Constants.GROUPID3);
+            String groupId3 = AppDatabase.getDatabaseInstance(context).getStatusDao().getValue(FC_Constants.GROUPID3);
 
             if (!groupId3.equalsIgnoreCase("0")) present_groups.add(groupId3);
-            String groupId4 = AppDatabase.appDatabase.getStatusDao().getValue(FC_Constants.GROUPID4);
+            String groupId4 = AppDatabase.getDatabaseInstance(context).getStatusDao().getValue(FC_Constants.GROUPID4);
 
             if (!groupId4.equalsIgnoreCase("0")) present_groups.add(groupId4);
-            String groupId5 = AppDatabase.appDatabase.getStatusDao().getValue(FC_Constants.GROUPID5);
+            String groupId5 = AppDatabase.getDatabaseInstance(context).getStatusDao().getValue(FC_Constants.GROUPID5);
 
             if (!groupId5.equalsIgnoreCase("0")) present_groups.add(groupId5);
 
@@ -174,7 +176,7 @@ public class FragmentSelectGroup extends Fragment implements ContractGroup {
             ArrayList<Student> students = new ArrayList<>();
             String currentStudName = groupSelected.GroupName;
             FastSave.getInstance().saveString(FC_Constants.CURRENT_STUDENT_NAME , currentStudName);
-            students.addAll(AppDatabase.appDatabase.getStudentDao().getGroupwiseStudents(groupSelected.getGroupId()));
+            students.addAll(AppDatabase.getDatabaseInstance(context).getStudentDao().getGroupwiseStudents(groupSelected.getGroupId()));
             Bundle bundle = new Bundle();
             bundle.putParcelableArrayList(FC_Constants.STUDENT_LIST, students);
             bundle.putString(FC_Constants.GROUPID, groupSelected.getGroupId());

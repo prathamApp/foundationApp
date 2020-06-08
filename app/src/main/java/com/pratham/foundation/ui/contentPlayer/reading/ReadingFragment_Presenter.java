@@ -5,6 +5,7 @@ import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import com.pratham.foundation.database.AppDatabase;
 import com.pratham.foundation.database.BackupDatabase;
 import com.pratham.foundation.database.domain.Assessment;
 import com.pratham.foundation.database.domain.ContentProgress;
@@ -24,7 +25,6 @@ import java.lang.reflect.Type;
 import java.util.Collections;
 import java.util.List;
 
-import static com.pratham.foundation.database.AppDatabase.appDatabase;
 import static com.pratham.foundation.utility.FC_Constants.APP_SECTION;
 import static com.pratham.foundation.utility.FC_Constants.sec_Test;
 
@@ -109,7 +109,7 @@ public class ReadingFragment_Presenter implements ReadingFragment_Contract.Readi
 
     private boolean checkWord(String wordStr) {
         try {
-            String word = appDatabase.getKeyWordDao().checkWord(FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""), resId, wordStr);
+            String word = AppDatabase.getDatabaseInstance(context).getKeyWordDao().checkWord(FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""), resId, wordStr);
             return word != null;
         } catch (Exception e) {
             e.printStackTrace();
@@ -121,7 +121,7 @@ public class ReadingFragment_Presenter implements ReadingFragment_Contract.Readi
     private int getLearntWordsCount() {
         int count = 0;
         //  count = appDatabase.getKeyWordDao().checkWordCount(FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""), resId);
-        count = appDatabase.getKeyWordDao().checkUniqueWordCount(FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""), resId);
+        count = AppDatabase.getDatabaseInstance(context).getKeyWordDao().checkUniqueWordCount(FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""), resId);
         return count;
     }
 
@@ -151,7 +151,7 @@ public class ReadingFragment_Presenter implements ReadingFragment_Contract.Readi
             contentProgress.setUpdatedDateTime("" + FC_Utility.getCurrentDateTime());
             contentProgress.setLabel("" + label);
             contentProgress.setSentFlag(0);
-            appDatabase.getContentProgressDao().insert(contentProgress);
+            AppDatabase.getDatabaseInstance(context).getContentProgressDao().insert(contentProgress);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -166,7 +166,7 @@ public class ReadingFragment_Presenter implements ReadingFragment_Contract.Readi
             keyWords.setStudentId(FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""));
             keyWords.setKeyWord(scienceQuestion.getTitle());
             keyWords.setWordType("word");
-            appDatabase.getKeyWordDao().insert(keyWords);
+            AppDatabase.getDatabaseInstance(context).getKeyWordDao().insert(keyWords);
             for (int i = 0; i < scienceQuestionChoices.size(); i++) {
                 if (scienceQuestionChoices.get(i).getUserAns() != null && !scienceQuestionChoices.get(i).getUserAns().isEmpty()) {
                     correctCnt++;
@@ -186,7 +186,7 @@ public class ReadingFragment_Presenter implements ReadingFragment_Contract.Readi
 
     public void addScore(int wID, String Word, int scoredMarks, int totalMarks, String resStartTime, String Label) {
         try {
-            String deviceId = appDatabase.getStatusDao().getValue("DeviceId");
+            String deviceId = AppDatabase.getDatabaseInstance(context).getStatusDao().getValue("DeviceId");
             Score score = new Score();
             score.setSessionID(FastSave.getInstance().getString(FC_Constants.CURRENT_SESSION, ""));
             score.setResourceID(resId);
@@ -200,7 +200,7 @@ public class ReadingFragment_Presenter implements ReadingFragment_Contract.Readi
             score.setLevel(FC_Constants.currentLevel);
             score.setLabel(Word + " - " + Label);
             score.setSentFlag(0);
-            appDatabase.getScoreDao().insert(score);
+            AppDatabase.getDatabaseInstance(context).getScoreDao().insert(score);
 
             if (FastSave.getInstance().getString(APP_SECTION,"").equalsIgnoreCase(sec_Test)) {
                 Assessment assessment = new Assessment();
@@ -217,7 +217,7 @@ public class ReadingFragment_Presenter implements ReadingFragment_Contract.Readi
                 assessment.setLevela(FC_Constants.currentLevel);
                 assessment.setLabel("test: " + Label);
                 assessment.setSentFlag(0);
-                appDatabase.getAssessmentDao().insert(assessment);
+                AppDatabase.getDatabaseInstance(context).getAssessmentDao().insert(assessment);
             }
             BackupDatabase.backup(context);
         } catch (Exception e) {

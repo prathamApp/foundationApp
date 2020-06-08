@@ -73,7 +73,6 @@ import java.util.Objects;
 
 import static android.content.Context.ACTIVITY_SERVICE;
 import static com.pratham.foundation.database.AppDatabase.DB_VERSION;
-import static com.pratham.foundation.database.AppDatabase.appDatabase;
 
 
 @EFragment(R.layout.fragment_push_or_assign)
@@ -95,6 +94,7 @@ public class PushOrAssignFragment extends Fragment {
 
     @Bean(PushDataToServer_New.class)
     PushDataToServer_New pushDataToServer;
+    Context context;
 
     public PushOrAssignFragment() {
         // Required empty public constructor
@@ -102,6 +102,7 @@ public class PushOrAssignFragment extends Fragment {
 
     @AfterViews
     public void initialize() {
+        context = getActivity();
         gson = new Gson();
     }
 
@@ -114,12 +115,12 @@ public class PushOrAssignFragment extends Fragment {
 
     // Delete Groups with Students
     private void deleteGroupsWithStudents() {
-        List<Groups> deletedGroupsList = AppDatabase.getDatabaseInstance(getActivity()).getGroupsDao().GetAllDeletedGroups();
+        List<Groups> deletedGroupsList = AppDatabase.getDatabaseInstance(context).getGroupsDao().GetAllDeletedGroups();
         for (int i = 0; i < deletedGroupsList.size(); i++) {
-            AppDatabase.getDatabaseInstance(getActivity()).getStudentDao().deleteDeletedGrpsStdRecords(deletedGroupsList.get(i).GroupId);
-            AppDatabase.getDatabaseInstance(getActivity()).getGroupsDao().deleteGroupByGrpID(deletedGroupsList.get(i).GroupId);
+            AppDatabase.getDatabaseInstance(context).getStudentDao().deleteDeletedGrpsStdRecords(deletedGroupsList.get(i).GroupId);
+            AppDatabase.getDatabaseInstance(context).getGroupsDao().deleteGroupByGrpID(deletedGroupsList.get(i).GroupId);
         }
-        AppDatabase.getDatabaseInstance(getActivity()).getStudentDao().deleteDeletedStdRecords();
+        AppDatabase.getDatabaseInstance(context).getStudentDao().deleteDeletedStdRecords();
     }
 
     @Click(R.id.btn_push)
@@ -243,7 +244,7 @@ public class PushOrAssignFragment extends Fragment {
                     Log.d("pushorassign", "INITIAL_ENTRIES: "+FastSave.getInstance().getBoolean(FC_Constants.INITIAL_ENTRIES, false));
                     Log.d("pushorassign", "KEY_MENU_COPIED: "+FastSave.getInstance().getBoolean(FC_Constants.KEY_MENU_COPIED, false));
                     if (!FastSave.getInstance().getBoolean(FC_Constants.INITIAL_ENTRIES, false))
-                        doInitialEntries(appDatabase);
+                        doInitialEntries(AppDatabase.getDatabaseInstance(context));
 //                    if (!FastSave.getInstance().getBoolean(FC_Constants.KEY_MENU_COPIED, false))
                         populateMenu();
                 } catch (Exception e) {
@@ -308,7 +309,7 @@ public class PushOrAssignFragment extends Fragment {
                                     content_cursor.moveToNext();
                                 }
                             }
-                            appDatabase.getContentTableDao().addContentList(contents);
+                            AppDatabase.getDatabaseInstance(context).getContentTableDao().addContentList(contents);
                             content_cursor.close();
                         } catch (Exception e) {
                             e.printStackTrace();
@@ -508,7 +509,7 @@ public class PushOrAssignFragment extends Fragment {
 
     private void setAppName(Status status) {
         String appname = "";
-        if (AppDatabase.getDatabaseInstance(getActivity()).getStatusDao().getKey("appName") == null) {
+        if (AppDatabase.getDatabaseInstance(context).getStatusDao().getKey("appName") == null) {
             CharSequence c = "";
             ActivityManager am = (ActivityManager) getActivity().getSystemService(ACTIVITY_SERVICE);
             List l = am.getRunningAppProcesses();
@@ -525,7 +526,7 @@ public class PushOrAssignFragment extends Fragment {
             status = new Status();
             status.setStatusKey("appName");
             status.setValue(appname);
-            appDatabase.getStatusDao().insert(status);
+            AppDatabase.getDatabaseInstance(context).getStatusDao().insert(status);
 
         } else {
             CharSequence c = "";
@@ -543,7 +544,7 @@ public class PushOrAssignFragment extends Fragment {
             status = new Status();
             status.setStatusKey("appName");
             status.setValue(appname);
-            appDatabase.getStatusDao().insert(status);
+            AppDatabase.getDatabaseInstance(context).getStatusDao().insert(status);
         }
     }
 
@@ -565,7 +566,7 @@ public class PushOrAssignFragment extends Fragment {
                 e.printStackTrace();
             }
             status.setValue(verCode);
-            appDatabase.getStatusDao().insert(status);
+            AppDatabase.getDatabaseInstance(context).getStatusDao().insert(status);
 
         } else {
             status.setStatusKey("apkVersion");
@@ -579,7 +580,7 @@ public class PushOrAssignFragment extends Fragment {
                 e.printStackTrace();
             }
             status.setValue(verCode);
-            appDatabase.getStatusDao().insert(status);
+            AppDatabase.getDatabaseInstance(context).getStatusDao().insert(status);
 
         }
     }
@@ -590,7 +591,7 @@ public class PushOrAssignFragment extends Fragment {
             protected Object doInBackground(Object[] objects) {
                 try {
                     String appStartTime = FC_Utility.getCurrentDateTime();
-                    StatusDao statusDao = appDatabase.getStatusDao();
+                    StatusDao statusDao = AppDatabase.getDatabaseInstance(context).getStatusDao();
                     statusDao.updateValue("AppStartDateTime", appStartTime);
                     BackupDatabase.backup(getActivity());
                     return null;
@@ -705,7 +706,7 @@ public class PushOrAssignFragment extends Fragment {
                                 contentProgressList.get(i).setSentFlag(1);
                                 contentProgressList.get(i).setLabel("" + FC_Constants.RESOURCE_PROGRESS);
                             }
-                            appDatabase.getContentProgressDao().addContentProgressList(contentProgressList);
+                            AppDatabase.getDatabaseInstance(context).getContentProgressDao().addContentProgressList(contentProgressList);
                             BackupDatabase.backup(getActivity());
                         }
                     } catch (Exception e) {
@@ -735,7 +736,7 @@ public class PushOrAssignFragment extends Fragment {
                                 learntWordsList.get(i).setSentFlag(1);
                                 learntWordsList.get(i).setKeyWord("" + learntWordsList.get(i).getKeyWord().toLowerCase());
                                 if (!checkWord(learntWordsList.get(i).getStudentId(), learntWordsList.get(i).getResourceId(), learntWordsList.get(i).getKeyWord(), learntWordsList.get(i).getWordType()))
-                                    appDatabase.getKeyWordDao().insert(learntWordsList.get(i));
+                                    AppDatabase.getDatabaseInstance(context).getKeyWordDao().insert(learntWordsList.get(i));
                             }
                             BackupDatabase.backup(getActivity());
                         }
@@ -757,7 +758,7 @@ public class PushOrAssignFragment extends Fragment {
 
     private boolean checkWord(String studentId, String wordUUId, String wordCheck, String wordType) {
         try {
-            String word = appDatabase.getKeyWordDao().checkLearntData(studentId, "" + wordUUId, wordCheck.toLowerCase(), wordType);
+            String word = AppDatabase.getDatabaseInstance(context).getKeyWordDao().checkLearntData(studentId, "" + wordUUId, wordCheck.toLowerCase(), wordType);
             return word != null;
         } catch (Exception e) {
             e.printStackTrace();

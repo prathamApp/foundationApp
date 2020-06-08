@@ -1,5 +1,6 @@
 package com.pratham.foundation.ui.contentPlayer.trueFalse;
 
+import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -25,6 +26,7 @@ import com.pratham.foundation.customView.GifView;
 import com.pratham.foundation.customView.SansButton;
 import com.pratham.foundation.customView.SansTextViewBold;
 import com.pratham.foundation.customView.display_image_dialog.CustomLodingDialog;
+import com.pratham.foundation.database.AppDatabase;
 import com.pratham.foundation.database.BackupDatabase;
 import com.pratham.foundation.database.domain.Assessment;
 import com.pratham.foundation.database.domain.KeyWords;
@@ -50,7 +52,6 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-import static com.pratham.foundation.database.AppDatabase.appDatabase;
 import static com.pratham.foundation.utility.FC_Constants.APP_SECTION;
 import static com.pratham.foundation.utility.FC_Constants.gameFolderPath;
 import static com.pratham.foundation.utility.FC_Constants.sec_Test;
@@ -83,6 +84,7 @@ public class TrueFalseFragment extends Fragment {
     private List<ScienceQuestion> selectedFive;
     private List<String> correctWordList, wrongWordList;
     private boolean isTest = false;
+    Context context;
 
     public TrueFalseFragment() {
         // Required empty public constructor
@@ -104,21 +106,19 @@ public class TrueFalseFragment extends Fragment {
             //   pos = getArguments().getInt(POS, 0);
             //scienceQuestion = (ScienceQuestion) getArguments().getSerializable(SCIENCE_QUESTION);
             //assessmentAnswerListener = (ScienceAssessmentActivity) getActivity();
-            if (getArguments() != null) {
+            contentPath = getArguments().getString("contentPath");
+            StudentID = getArguments().getString("StudentID");
+            resId = getArguments().getString("resId");
+            contentTitle = getArguments().getString("contentName");
+            onSdCard = getArguments().getBoolean("onSdCard", false);
+            context = getActivity();
+            if (onSdCard)
+                readingContentPath = ApplicationClass.contentSDPath + gameFolderPath + "/" + contentPath + "/";
+            else
+                readingContentPath = ApplicationClass.foundationPath + gameFolderPath + "/" + contentPath + "/";
+            isTest = FastSave.getInstance().getString(APP_SECTION, "").equalsIgnoreCase(sec_Test);
 
-                contentPath = getArguments().getString("contentPath");
-                StudentID = getArguments().getString("StudentID");
-                resId = getArguments().getString("resId");
-                contentTitle = getArguments().getString("contentName");
-                onSdCard = getArguments().getBoolean("onSdCard", false);
-                if (onSdCard)
-                    readingContentPath = ApplicationClass.contentSDPath + gameFolderPath + "/" + contentPath + "/";
-                else
-                    readingContentPath = ApplicationClass.foundationPath + gameFolderPath + "/" + contentPath + "/";
-                isTest= FastSave.getInstance().getString(APP_SECTION, "").equalsIgnoreCase(sec_Test);
-
-                getData();
-            }
+            getData();
         }
     }
 
@@ -185,13 +185,13 @@ public class TrueFalseFragment extends Fragment {
 
     private int getLearntWordsCount() {
         int count = 0;
-        count = appDatabase.getKeyWordDao().checkWordCount(FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""), resId);
+        count = AppDatabase.getDatabaseInstance(context).getKeyWordDao().checkWordCount(FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""), resId);
         return count;
     }
 
     private boolean checkWord(String wordStr) {
         try {
-            String word = appDatabase.getKeyWordDao().checkWord(FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""), resId, wordStr);
+            String word = AppDatabase.getDatabaseInstance(context).getKeyWordDao().checkWord(FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""), resId, wordStr);
             return word != null;
         } catch (Exception e) {
             e.printStackTrace();
@@ -392,7 +392,7 @@ public class TrueFalseFragment extends Fragment {
                     String key = selectedAnsList.get(i).getQuestion();
                     keyWords.setKeyWord(key);
                     keyWords.setWordType("word");
-                    appDatabase.getKeyWordDao().insert(keyWords);
+                    AppDatabase.getDatabaseInstance(context).getKeyWordDao().insert(keyWords);
                     correctWordList.add("\n\n" + selectedAnsList.get(i).getQuestion());
                     addScore(GameConstatnts.getInt(selectedAnsList.get(i).getQid()), GameConstatnts.TRUE_FALSE, 10, 10, FC_Utility.getCurrentDateTime(), selectedAnsList.get(i).getUserAnswer());
 
@@ -413,7 +413,7 @@ public class TrueFalseFragment extends Fragment {
 
     public void addScore(int wID, String Word, int scoredMarks, int totalMarks, String resStartTime, String Label) {
         try {
-            String deviceId = appDatabase.getStatusDao().getValue("DeviceId");
+            String deviceId = AppDatabase.getDatabaseInstance(context).getStatusDao().getValue("DeviceId");
             Score score = new Score();
             score.setSessionID(FastSave.getInstance().getString(FC_Constants.CURRENT_SESSION, ""));
             score.setResourceID(resId);
@@ -427,9 +427,9 @@ public class TrueFalseFragment extends Fragment {
             score.setLevel(4);
             score.setLabel(Word + " - " + Label);
             score.setSentFlag(0);
-            appDatabase.getScoreDao().insert(score);
+            AppDatabase.getDatabaseInstance(context).getScoreDao().insert(score);
 
-            if (FastSave.getInstance().getString(APP_SECTION,"").equalsIgnoreCase(sec_Test)) {
+            if (FastSave.getInstance().getString(APP_SECTION, "").equalsIgnoreCase(sec_Test)) {
                 Assessment assessment = new Assessment();
                 assessment.setResourceIDa(resId);
                 assessment.setSessionIDa(FastSave.getInstance().getString(FC_Constants.ASSESSMENT_SESSION, ""));
@@ -444,7 +444,7 @@ public class TrueFalseFragment extends Fragment {
                 assessment.setLevela(FC_Constants.currentLevel);
                 assessment.setLabel("test: " + Label);
                 assessment.setSentFlag(0);
-                appDatabase.getAssessmentDao().insert(assessment);
+                AppDatabase.getDatabaseInstance(context).getAssessmentDao().insert(assessment);
             }
             BackupDatabase.backup(getActivity());
         } catch (Exception e) {

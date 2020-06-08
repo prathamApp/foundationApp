@@ -235,8 +235,8 @@ public class PushDataToServer_New {
 
     @UiThread
     public void setDataPushSuccessfull() {
+        setPushFlag();
         if (ApplicationClass.isTablet) {
-            setPushFlag();
             setMainTextToDialog("Data pushed successfully\n Score Count : " + scoreData.length() +
                     "\n\nNow Upload Media..");
             ok_btn.setText("OK");

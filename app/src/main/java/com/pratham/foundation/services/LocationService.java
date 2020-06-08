@@ -40,8 +40,6 @@ import io.nlopez.smartlocation.SmartLocation;
 import io.nlopez.smartlocation.location.config.LocationAccuracy;
 import io.nlopez.smartlocation.location.config.LocationParams;
 
-import static com.pratham.foundation.database.AppDatabase.appDatabase;
-
 
 public class LocationService implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
     private static final String TAG = LocationService.class.getSimpleName();
@@ -70,10 +68,10 @@ public class LocationService implements GoogleApiClient.ConnectionCallbacks, Goo
                         try {
                             Status statusObj = new Status();
 
-                            appDatabase.getStatusDao().updateValue("Latitude", ""+location.getLatitude());
+                            AppDatabase.getDatabaseInstance(context).getStatusDao().updateValue("Latitude", ""+location.getLatitude());
 //                        BaseActivity.statusDao.insert(statusObj);
 
-                            appDatabase.getStatusDao().updateValue("Longitude","" + location.getLongitude());
+                            AppDatabase.getDatabaseInstance(context).getStatusDao().updateValue("Longitude","" + location.getLongitude());
 
 //                        BaseActivity.statusDao.insert(statusObj);
 
@@ -119,10 +117,10 @@ public class LocationService implements GoogleApiClient.ConnectionCallbacks, Goo
             metaDataObj.put("village", AppDatabase.getDatabaseInstance(context).getStatusDao().getValue("village"));
             metaDataObj.put("ActivatedForGroups", AppDatabase.getDatabaseInstance(context).getStatusDao().getValue("ActivatedForGroups"));
             metaDataObj.put("AndroidVersion", AppDatabase.getDatabaseInstance(context).getStatusDao().getValue("AndroidVersion"));
-            metaDataObj.put("InternalAvailableStorage", appDatabase.getStatusDao().getValue("InternalAvailableStorage"));
-            metaDataObj.put("DeviceManufacturer", appDatabase.getStatusDao().getValue("DeviceManufacturer"));
-            metaDataObj.put("DeviceModel", appDatabase.getStatusDao().getValue("DeviceModel"));
-            metaDataObj.put("ScreenResolution", appDatabase.getStatusDao().getValue("ScreenResolution"));
+            metaDataObj.put("InternalAvailableStorage", AppDatabase.getDatabaseInstance(context).getStatusDao().getValue("InternalAvailableStorage"));
+            metaDataObj.put("DeviceManufacturer", AppDatabase.getDatabaseInstance(context).getStatusDao().getValue("DeviceManufacturer"));
+            metaDataObj.put("DeviceModel", AppDatabase.getDatabaseInstance(context).getStatusDao().getValue("DeviceModel"));
+            metaDataObj.put("ScreenResolution", AppDatabase.getDatabaseInstance(context).getStatusDao().getValue("ScreenResolution"));
             metaDataObj.put("SerialID", AppDatabase.getDatabaseInstance(context).getStatusDao().getValue("SerialID"));
             metaDataObj.put("gpsFixDuration", AppDatabase.getDatabaseInstance(context).getStatusDao().getValue("gpsFixDuration"));
             metaDataObj.put("prathamCode", AppDatabase.getDatabaseInstance(context).getStatusDao().getValue("prathamCode"));

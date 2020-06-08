@@ -174,6 +174,8 @@ public class HomeActivity extends BaseActivity implements LevelChanged {
         tabLayout.setupWithViewPager(viewpager);
         setupTabIcons();
         setLevel();
+        if(!isTablet)
+            submarine.setCircleSize(getResources().getDimension(R.dimen._20sdp));
         new Handler().postDelayed(() -> {
             getCompletion();
         }, 2000);
@@ -266,7 +268,7 @@ public class HomeActivity extends BaseActivity implements LevelChanged {
             }
 
             if (FastSave.getInstance().getString(LOGIN_MODE, "").equalsIgnoreCase(GROUP_MODE))
-                profileName = AppDatabase.getDatabaseInstance(this)
+                profileName = AppDatabase.getDatabaseInstance(HomeActivity.this)
                         .getGroupsDao().getGroupNameByGrpID(FastSave.getInstance()
                                 .getString(CURRENT_STUDENT_ID, ""));
 /*            else if (!LOGIN_MODE.equalsIgnoreCase(QR_GROUP_MODE)) {
@@ -577,15 +579,15 @@ public class HomeActivity extends BaseActivity implements LevelChanged {
     public void endTestSession() {
         try {
             Session startSesion = new Session();
-            String toDateTemp = AppDatabase.appDatabase.getSessionDao().
+            String toDateTemp = AppDatabase.getDatabaseInstance(HomeActivity.this).getSessionDao().
                     getToDate(FastSave.getInstance().getString(FC_Constants.ASSESSMENT_SESSION, ""));
             if (toDateTemp != null && toDateTemp.equalsIgnoreCase("na")) {
-                AppDatabase.appDatabase.getSessionDao().UpdateToDate(FastSave.getInstance()
+                AppDatabase.getDatabaseInstance(HomeActivity.this).getSessionDao().UpdateToDate(FastSave.getInstance()
                                 .getString(FC_Constants.ASSESSMENT_SESSION, ""),
                         FC_Utility.getCurrentDateTime());
             }
             BackupDatabase.backup(this);
-            AppDatabase.appDatabase.getSessionDao().insert(startSesion);
+            AppDatabase.getDatabaseInstance(HomeActivity.this).getSessionDao().insert(startSesion);
             FastSave.getInstance().saveString(FC_Constants.ASSESSMENT_SESSION, "NA");
             testSessionEntered = false;
             testSessionEnded = true;
@@ -762,15 +764,15 @@ public class HomeActivity extends BaseActivity implements LevelChanged {
     @Background
     public void endSession() {
         try {
-            String curSession = AppDatabase.appDatabase.getStatusDao().getValue("CurrentSession");
-            String toDateTemp = AppDatabase.appDatabase.getSessionDao().getToDate(curSession);
+            String curSession = AppDatabase.getDatabaseInstance(HomeActivity.this).getStatusDao().getValue("CurrentSession");
+            String toDateTemp = AppDatabase.getDatabaseInstance(HomeActivity.this).getSessionDao().getToDate(curSession);
             if (toDateTemp.equalsIgnoreCase("na")) {
-                AppDatabase.appDatabase.getSessionDao().UpdateToDate(curSession, FC_Utility.getCurrentDateTime());
+                AppDatabase.getDatabaseInstance(HomeActivity.this).getSessionDao().UpdateToDate(curSession, FC_Utility.getCurrentDateTime());
             }
             BackupDatabase.backup(HomeActivity.this);
         } catch (Exception e) {
-            String curSession = AppDatabase.appDatabase.getStatusDao().getValue("CurrentSession");
-            AppDatabase.appDatabase.getSessionDao().UpdateToDate(curSession, FC_Utility.getCurrentDateTime());
+            String curSession = AppDatabase.getDatabaseInstance(HomeActivity.this).getStatusDao().getValue("CurrentSession");
+            AppDatabase.getDatabaseInstance(HomeActivity.this).getSessionDao().UpdateToDate(curSession, FC_Utility.getCurrentDateTime());
             e.printStackTrace();
         }
     }

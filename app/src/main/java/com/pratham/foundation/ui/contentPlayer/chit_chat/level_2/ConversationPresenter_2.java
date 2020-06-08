@@ -21,7 +21,6 @@ import java.io.FileInputStream;
 import java.io.InputStream;
 import java.util.ArrayList;
 
-import static com.pratham.foundation.database.AppDatabase.appDatabase;
 import static com.pratham.foundation.utility.FC_Constants.APP_SECTION;
 import static com.pratham.foundation.utility.FC_Constants.CURRENT_FOLDER_NAME;
 import static com.pratham.foundation.utility.FC_Constants.STT_REGEX;
@@ -164,7 +163,7 @@ public class ConversationPresenter_2 implements ConversationContract_2.Conversat
             contentProgress.setUpdatedDateTime("" + FC_Utility.getCurrentDateTime());
             contentProgress.setLabel("resourceProgress");
             contentProgress.setSentFlag(0);
-            appDatabase.getContentProgressDao().insert(contentProgress);
+            AppDatabase.getDatabaseInstance(context).getContentProgressDao().insert(contentProgress);
             BackupDatabase.backup(context);
         } catch (Exception e) {
             e.printStackTrace();
@@ -196,7 +195,7 @@ public class ConversationPresenter_2 implements ConversationContract_2.Conversat
     public void _addScore(final int wID, final String Word, final int scoredMarks, final int totalMarks, final String Label) {
 */
         try {
-            String deviceId = AppDatabase.appDatabase.getStatusDao().getValue("DeviceId");
+            String deviceId = AppDatabase.getDatabaseInstance(context).getStatusDao().getValue("DeviceId");
             Score score = new Score();
             score.setSessionID(FastSave.getInstance().getString(FC_Constants.CURRENT_SESSION, ""));
             score.setResourceID(contentId);
@@ -210,7 +209,7 @@ public class ConversationPresenter_2 implements ConversationContract_2.Conversat
             score.setLevel(0);
             score.setSentFlag(0);
             score.setLabel(Word + " - " + Label);
-            AppDatabase.appDatabase.getScoreDao().insert(score);
+            AppDatabase.getDatabaseInstance(context).getScoreDao().insert(score);
 
             if (FastSave.getInstance().getString(APP_SECTION,"").equalsIgnoreCase(sec_Test)) {
                 Assessment assessment = new Assessment();
@@ -227,7 +226,7 @@ public class ConversationPresenter_2 implements ConversationContract_2.Conversat
                 assessment.setLevela(FC_Constants.currentLevel);
                 assessment.setLabel("test: " + Label);
                 assessment.setSentFlag(0);
-                appDatabase.getAssessmentDao().insert(assessment);
+                AppDatabase.getDatabaseInstance(context).getAssessmentDao().insert(assessment);
             }
             BackupDatabase.backup(context);
         } catch (Exception e) {
@@ -239,7 +238,7 @@ public class ConversationPresenter_2 implements ConversationContract_2.Conversat
 
     public void addExtraScoreEntry(int wID, String Word, int scoredMarks, int totalMarks, String resStartTime, String resEndTime, String Label, String resId) {
         try {
-            String deviceId = appDatabase.getStatusDao().getValue("DeviceId");
+            String deviceId = AppDatabase.getDatabaseInstance(context).getStatusDao().getValue("DeviceId");
             Score score = new Score();
             score.setSessionID(FastSave.getInstance().getString(FC_Constants.CURRENT_SESSION, ""));
             score.setResourceID(resId);
@@ -253,7 +252,7 @@ public class ConversationPresenter_2 implements ConversationContract_2.Conversat
             score.setLevel(FC_Constants.currentLevel);
             score.setLabel(Label);
             score.setSentFlag(0);
-            appDatabase.getScoreDao().insert(score);
+            AppDatabase.getDatabaseInstance(context).getScoreDao().insert(score);
 
             BackupDatabase.backup(context);
         } catch (Exception e) {

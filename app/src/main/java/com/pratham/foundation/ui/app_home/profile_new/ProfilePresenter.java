@@ -20,7 +20,6 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import static com.pratham.foundation.database.AppDatabase.appDatabase;
 import static com.pratham.foundation.utility.FC_Constants.LOGIN_MODE;
 
 
@@ -45,7 +44,8 @@ public class ProfilePresenter implements ProfileContract.ProfilePresenter, API_C
     @Override
     public void getActiveData() {
         String studId = ""+FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID,"");
-        List<Modal_TotalDaysStudentsPlayed> modal_totalDaysStudentsPlayeds1 = appDatabase.getScoreDao().getTotalDaysByStudentID(studId);
+        List<Modal_TotalDaysStudentsPlayed> modal_totalDaysStudentsPlayeds1 =
+                AppDatabase.getDatabaseInstance(mContext).getScoreDao().getTotalDaysByStudentID(studId);
 //        List<Modal_TotalDaysStudentsPlayed> modal_totalDaysStudentsPlayeds2 = appDatabase.getScoreDao().getTotalDaysStudentPlayed();
         Log.d("getActiveData: ", "1 : "+modal_totalDaysStudentsPlayeds1.size());
         List <String> dateList = new ArrayList<>();

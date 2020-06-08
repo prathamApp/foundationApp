@@ -7,6 +7,7 @@ import android.support.v4.provider.DocumentFile;
 import android.util.Log;
 
 import com.pratham.foundation.ApplicationClass;
+import com.pratham.foundation.database.AppDatabase;
 import com.pratham.foundation.modalclasses.EventMessage;
 import com.pratham.foundation.utility.FC_Constants;
 
@@ -17,7 +18,6 @@ import java.io.FileInputStream;
 import java.io.OutputStream;
 
 import static com.pratham.foundation.database.AppDatabase.DB_NAME;
-import static com.pratham.foundation.database.AppDatabase.appDatabase;
 
 
 public class CopyDbToOTG extends AsyncTask {
@@ -42,7 +42,7 @@ public class CopyDbToOTG extends AsyncTask {
             if (fca_backup_file == null)
                 fca_backup_file = rootFile.createDirectory("FCA_DBs");
 
-            String thisdeviceFolderName = "DeviceId_" + appDatabase.getStatusDao().getValue("DeviceId");
+            String thisdeviceFolderName = "DeviceId_" + AppDatabase.getDatabaseInstance(ApplicationClass.getInstance()).getStatusDao().getValue("DeviceId");
             DocumentFile thisTabletFolder = fca_backup_file.findFile(thisdeviceFolderName);
             if (thisTabletFolder == null)
                 thisTabletFolder = fca_backup_file.createDirectory(thisdeviceFolderName);

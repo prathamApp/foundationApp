@@ -34,7 +34,7 @@ public class AdminPanelPresenter implements AdminPanelContract.AdminPanelPresent
             adminPanelView.openPullDataFragment();
         } else {
             // assign push logic
-            Crl loggedCrl = AppDatabase.appDatabase.getCrlDao().checkUserValidation(userName, password);
+            Crl loggedCrl = AppDatabase.getDatabaseInstance(context).getCrlDao().checkUserValidation(userName, password);
             if (loggedCrl != null) {
                 adminPanelView.onLoginSuccess();
             } else {

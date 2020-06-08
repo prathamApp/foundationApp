@@ -51,6 +51,10 @@ public interface TestContract {
 
         void setQuesTranslateLang(String[] languagesArray);
 
+        void showNoDataLayout();
+
+        void showRecyclerLayout();
+
 //        void setBotNodeId(String botID);
     }
 

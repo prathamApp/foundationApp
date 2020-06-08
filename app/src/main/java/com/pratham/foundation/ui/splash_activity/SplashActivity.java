@@ -9,13 +9,13 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Configuration;
-import android.graphics.Point;
 import android.graphics.Typeface;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Environment;
 import android.os.Handler;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.KeyEvent;
@@ -192,13 +192,14 @@ public class SplashActivity extends SplashSupportActivity implements SplashContr
     @UiThread
     @Override
     public void startApp() {
-        Point size = new Point();
-        int width = size.x;
-        int height = size.y;
+        DisplayMetrics displayMetrics = new DisplayMetrics();
+        getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
+        int height = displayMetrics.heightPixels;
+        int width = displayMetrics.widthPixels;
+        Configuration config = context.getResources().getConfiguration();
         String strwidth = String.valueOf(width);
         String strheight = String.valueOf(height);
-        Configuration config = context.getResources().getConfiguration();
-        String resolution = "W " + strwidth + " x H " + strheight + " pixels dpi: " + config.densityDpi;
+        String resolution = strwidth + "x" + strheight + "px (" + config.densityDpi+")dpi";
         FastSave.getInstance().saveString(FC_Constants.SCR_RES, "" + resolution);
         FastSave.getInstance().saveString(FC_Constants.LANGUAGE, FC_Constants.HINDI);
         setAppLocal(this, FC_Constants.HINDI);
@@ -393,7 +394,7 @@ public class SplashActivity extends SplashSupportActivity implements SplashContr
         splashPresenter.createNoMediaForFCInternal(new File(Environment.getExternalStorageDirectory().toString() + "/.FCAInternal"));
 
         if (!FastSave.getInstance().getBoolean(FC_Constants.INITIAL_ENTRIES, false))
-            splashPresenter.doInitialEntries(AppDatabase.appDatabase);
+            splashPresenter.doInitialEntries(AppDatabase.getDatabaseInstance(context));
         splashPresenter.requestLocation();
         //        if(FastSave.getInstance().getBoolean(FC_Constants.newDataLanguageInserted, false))
 //            splashPresenter.insertNewData();

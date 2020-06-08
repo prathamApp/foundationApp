@@ -109,19 +109,23 @@ public class PracticePresenter implements PracticeContract.PracticePresenter, AP
     @Background
     @Override
     public void getBottomNavId(int currentLevelNo, String cosSection) {
-        this.currentLevelNo = currentLevelNo;
-        this.cosSection = cosSection;
-        String botID;
+        try {
+            this.currentLevelNo = currentLevelNo;
+            this.cosSection = cosSection;
+            String botID;
 //        String rootID = FC_Utility.getRootNode(FastSave.getInstance().getString(FC_Constants.LANGUAGE, FC_Constants.HINDI));
-        String rootID = sub_nodeId;
+            String rootID = sub_nodeId;
 //        String rootID = "4030";
-        botID = AppDatabase.appDatabase.getContentTableDao().getContentDataByTitle("" + rootID, cosSection);
-        if (botID == null && !FC_Utility.isDataConnectionAvailable(mContext))
-            practiceView.showNoDataLayout();
-        else if (botID != null && !FC_Utility.isDataConnectionAvailable(mContext))
-            getLevelDataForList(currentLevelNo, botID);
-        else
-            getRootData(rootID);
+            botID = AppDatabase.getDatabaseInstance(mContext).getContentTableDao().getContentDataByTitle("" + rootID, cosSection);
+            if (botID == null && !FC_Utility.isDataConnectionAvailable(mContext))
+                practiceView.showNoDataLayout();
+            else if (botID != null && !FC_Utility.isDataConnectionAvailable(mContext))
+                getLevelDataForList(currentLevelNo, botID);
+            else
+                getRootData(rootID);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     @Background
@@ -133,7 +137,7 @@ public class PracticePresenter implements PracticeContract.PracticePresenter, AP
     @Background
     @Override
     public void getLevelDataForList(int currentLevelNo, String bottomNavNodeId) {
-        rootList = AppDatabase.appDatabase.getContentTableDao().getContentData("" + bottomNavNodeId);
+        rootList = AppDatabase.getDatabaseInstance(mContext).getContentTableDao().getContentData("" + bottomNavNodeId);
         if (FC_Utility.isDataConnectionAvailable(mContext))
             getLevelDataFromApi(currentLevelNo, bottomNavNodeId);
         else
@@ -224,7 +228,7 @@ public class PracticePresenter implements PracticeContract.PracticePresenter, AP
     public void getDataForList() {
         practiceView.showLoader();
         try {
-            dwParentList = AppDatabase.appDatabase.getContentTableDao().getContentData("" + nodeIds.get(nodeIds.size() - 1));
+            dwParentList = AppDatabase.getDatabaseInstance(mContext).getContentTableDao().getContentData("" + nodeIds.get(nodeIds.size() - 1));
             contentParentList.clear();
             ContentTable resContentTable = new ContentTable();
             List<ContentTable> resourceList = new ArrayList<>();
@@ -260,7 +264,7 @@ public class PracticePresenter implements PracticeContract.PracticePresenter, AP
                         List<ContentTable> tempList;
                         ContentTable contentTable = new ContentTable();
                         tempList = new ArrayList<>();
-                        childDwContentList = AppDatabase.appDatabase.getContentTableDao().getContentData("" + dwParentList.get(j).getNodeId());
+                        childDwContentList = AppDatabase.getDatabaseInstance(mContext).getContentTableDao().getContentData("" + dwParentList.get(j).getNodeId());
                         contentTable.setNodeId("" + dwParentList.get(j).getNodeId());
                         contentTable.setNodeType("" + dwParentList.get(j).getNodeType());
                         contentTable.setNodeTitle("" + dwParentList.get(j).getNodeTitle());
@@ -781,7 +785,7 @@ public class PracticePresenter implements PracticeContract.PracticePresenter, AP
                 pos.get(i).setIsDownloaded("" + true);
                 pos.get(i).setOnSDCard(false);
             }
-            AppDatabase.appDatabase.getContentTableDao().addContentList(pos);
+            AppDatabase.getDatabaseInstance(mContext).getContentTableDao().addContentList(pos);
         } catch (Exception e) {
             e.printStackTrace();
         }

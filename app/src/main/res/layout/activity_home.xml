@@ -168,7 +168,7 @@
         app:submarine_circleDrawable="@drawable/ic_close_white"
         app:submarine_circleSize="@dimen/_30sdp"
         app:submarine_color="@color/colorText"
-        app:submarine_duration="300"
+        app:submarine_duration="250"
         app:submarine_orientation="vertical" />
 
     <android.support.design.widget.TabLayout

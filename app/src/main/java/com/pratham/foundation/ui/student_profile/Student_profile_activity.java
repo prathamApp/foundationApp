@@ -260,15 +260,15 @@ public class Student_profile_activity extends Fragment implements Student_profil
                     maxScore = new ArrayList();
                     switch (pos) {
                         case 0:
-                            findMaxScore(""+AppDatabase.appDatabase.getContentTableDao()
+                            findMaxScore(""+AppDatabase.getDatabaseInstance(context).getContentTableDao()
                                     .getContentDataByTitle(rootNodeId,"Learning"));
                             break;
                         case 1:
-                            findMaxScore(""+AppDatabase.appDatabase.getContentTableDao()
+                            findMaxScore(""+AppDatabase.getDatabaseInstance(context).getContentTableDao()
                                     .getContentDataByTitle(rootNodeId,"Practice"));
                             break;
                         case 2:
-                            findMaxScore(""+AppDatabase.appDatabase.getContentTableDao()
+                            findMaxScore(""+AppDatabase.getDatabaseInstance(context).getContentTableDao()
                                     .getContentDataByTitle(rootNodeId,"Fun"));
                             break;
 

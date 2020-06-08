@@ -23,7 +23,6 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.pratham.foundation.database.AppDatabase.appDatabase;
 import static com.pratham.foundation.ui.contentPlayer.old_cos.reading_cards.ReadingCardsActivity.correctArr;
 
 
@@ -82,7 +81,7 @@ public class ReadingCardPresenter implements ReadingCardContract.ReadingCardPres
     @Background
     public void addScore(String comicConvo) {
         try {
-            String deviceId = AppDatabase.appDatabase.getStatusDao().getValue("DeviceId");
+            String deviceId = AppDatabase.getDatabaseInstance(context).getStatusDao().getValue("DeviceId");
             Score score = new Score();
             score.setSessionID(FastSave.getInstance().getString(FC_Constants.CURRENT_SESSION, ""));
             score.setResourceID(resId);
@@ -96,7 +95,7 @@ public class ReadingCardPresenter implements ReadingCardContract.ReadingCardPres
             score.setLevel(0);
             score.setSentFlag(0);
             score.setLabel("comicConvo - " + comicConvo);
-            AppDatabase.appDatabase.getScoreDao().insert(score);
+            AppDatabase.getDatabaseInstance(context).getScoreDao().insert(score);
             BackupDatabase.backup(context);
         } catch (Exception e) {
             BackupDatabase.backup(context);
@@ -138,7 +137,7 @@ public class ReadingCardPresenter implements ReadingCardContract.ReadingCardPres
             contentProgress.setUpdatedDateTime("" + FC_Utility.getCurrentDateTime());
             contentProgress.setLabel("resourceProgress");
             contentProgress.setSentFlag(0);
-            appDatabase.getContentProgressDao().insert(contentProgress);
+            AppDatabase.getDatabaseInstance(context).getContentProgressDao().insert(contentProgress);
             BackupDatabase.backup(context);
         } catch (Exception e) {
             e.printStackTrace();

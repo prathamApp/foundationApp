@@ -552,18 +552,16 @@ public class ContentDisplay extends BaseActivity implements ContentContract.Cont
         final CustomLodingDialog dialog = new CustomLodingDialog(this, R.style.FC_DialogStyle);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-        dialog.setContentView(R.layout.exit_dialog);
+        dialog.setContentView(R.layout.lottie_exit_dialog);
         TextView tv_title = dialog.findViewById(R.id.dia_title);
-        Button exit_btn = dialog.findViewById(R.id.dia_btn_exit);
-        Button restart_btn = dialog.findViewById(R.id.dia_btn_restart);
+        Button dia_btn_yes = dialog.findViewById(R.id.dia_btn_yes);
+        Button dia_btn_no = dialog.findViewById(R.id.dia_btn_no);
         dialog.show();
         tv_title.setText("Delete\n" + contentTableItem.getNodeTitle());
-        exit_btn.setText("NO");
-        restart_btn.setText("YES");
 
-        exit_btn.setOnClickListener(v -> dialog.dismiss());
+        dia_btn_no.setOnClickListener(v -> dialog.dismiss());
 
-        restart_btn.setOnClickListener(v -> {
+        dia_btn_yes.setOnClickListener(v -> {
             presenter.deleteContent(deletePos, contentTableItem);
             dialog.dismiss();
         });

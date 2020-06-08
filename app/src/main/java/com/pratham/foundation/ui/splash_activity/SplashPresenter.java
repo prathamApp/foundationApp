@@ -59,7 +59,6 @@ import java.util.List;
 import static android.content.Context.ACTIVITY_SERVICE;
 import static com.pratham.foundation.database.AppDatabase.DB_NAME;
 import static com.pratham.foundation.database.AppDatabase.DB_VERSION;
-import static com.pratham.foundation.database.AppDatabase.appDatabase;
 import static com.pratham.foundation.ui.splash_activity.SplashActivity.exitDialogOpen;
 import static com.pratham.foundation.utility.FC_Constants.APP_LANGUAGE;
 import static com.pratham.foundation.utility.FC_Constants.CURRENT_VERSION;
@@ -197,7 +196,7 @@ public class SplashPresenter implements SplashContract.SplashPresenter {
                             content_cursor.moveToNext();
                         }
                     }
-                    appDatabase.getScoreDao().addScoreList(contents);
+                    AppDatabase.getDatabaseInstance(context).getScoreDao().addScoreList(contents);
                     content_cursor.close();
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -218,7 +217,7 @@ public class SplashPresenter implements SplashContract.SplashPresenter {
                             content_cursor.moveToNext();
                         }
                     }
-                    appDatabase.getSessionDao().addSessionList(contents);
+                    AppDatabase.getDatabaseInstance(context).getSessionDao().addSessionList(contents);
                     content_cursor.close();
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -240,7 +239,7 @@ public class SplashPresenter implements SplashContract.SplashPresenter {
                             content_cursor.moveToNext();
                         }
                     }
-                    appDatabase.getAttendanceDao().addAttendanceList(contents);
+                    AppDatabase.getDatabaseInstance(context).getAttendanceDao().addAttendanceList(contents);
                     content_cursor.close();
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -271,7 +270,7 @@ public class SplashPresenter implements SplashContract.SplashPresenter {
                             content_cursor.moveToNext();
                         }
                     }
-                    appDatabase.getAssessmentDao().addAssessmentList(contents);
+                    AppDatabase.getDatabaseInstance(context).getAssessmentDao().addAssessmentList(contents);
                     content_cursor.close();
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -302,7 +301,7 @@ public class SplashPresenter implements SplashContract.SplashPresenter {
                             content_cursor.moveToNext();
                         }
                     }
-                    appDatabase.getAssessmentDao().addAssessmentList(contents);
+                    AppDatabase.getDatabaseInstance(context).getAssessmentDao().addAssessmentList(contents);
                     content_cursor.close();
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -327,7 +326,7 @@ public class SplashPresenter implements SplashContract.SplashPresenter {
                             content_cursor.moveToNext();
                         }
                     }
-                    appDatabase.getKeyWordDao().insertWord(contents);
+                    AppDatabase.getDatabaseInstance(context).getKeyWordDao().insertWord(contents);
                     content_cursor.close();
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -351,7 +350,7 @@ public class SplashPresenter implements SplashContract.SplashPresenter {
                             content_cursor.moveToNext();
                         }
                     }
-                    appDatabase.getContentProgressDao().addContentProgressList(contents);
+                    AppDatabase.getDatabaseInstance(context).getContentProgressDao().addContentProgressList(contents);
                     content_cursor.close();
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -583,7 +582,7 @@ public class SplashPresenter implements SplashContract.SplashPresenter {
                             FastSave.getInstance().saveBoolean(FC_Constants.KEY_ASSET_COPIED, true);
 
                             if (!FastSave.getInstance().getBoolean(FC_Constants.INITIAL_ENTRIES, false))
-                                doInitialEntries(appDatabase);
+                                doInitialEntries(AppDatabase.getDatabaseInstance(context));
                             if (!FastSave.getInstance().getBoolean(FC_Constants.KEY_MENU_COPIED, false))
                                 populateMenu();
                         }
@@ -713,7 +712,7 @@ public class SplashPresenter implements SplashContract.SplashPresenter {
                                     content_cursor.moveToNext();
                                 }
                             }
-                            appDatabase.getContentTableDao().addContentList(contents);
+                            AppDatabase.getDatabaseInstance(context).getContentTableDao().addContentList(contents);
                             FastSave.getInstance().saveString(CURRENT_VERSION, ""+FC_Utility.getCurrentVersion(context));
                             Log.d("-CT-", "populateMenu_New END");
                             content_cursor.close();
@@ -807,7 +806,7 @@ public class SplashPresenter implements SplashContract.SplashPresenter {
             @Override
             protected Void doInBackground(Void... voids) {
                 if (!FastSave.getInstance().getBoolean(FC_Constants.INITIAL_ENTRIES, false)) {
-                    doInitialEntries(appDatabase);
+                    doInitialEntries(AppDatabase.getDatabaseInstance(context));
                     try {
                         File db_file;
                         db_file = new File(Environment.getExternalStorageDirectory().toString() + "/.FCAInternal/" + DB_NAME);
@@ -845,7 +844,7 @@ public class SplashPresenter implements SplashContract.SplashPresenter {
                                             content_cursor.moveToNext();
                                         }
                                     }
-                                    appDatabase.getContentTableDao().addContentList(contents);
+                                    AppDatabase.getDatabaseInstance(context).getContentTableDao().addContentList(contents);
                                     ApplicationClass.contentExistOnSD = true;
                                     content_cursor.close();
                                     FastSave.getInstance().saveBoolean(FC_Constants.KEY_MENU_COPIED, true);
@@ -926,7 +925,7 @@ public class SplashPresenter implements SplashContract.SplashPresenter {
                                         content_cursor.moveToNext();
                                     }
                                 }
-                                appDatabase.getContentTableDao().addContentList(contents);
+                                AppDatabase.getDatabaseInstance(context).getContentTableDao().addContentList(contents);
                                 content_cursor.close();
                                 FastSave.getInstance().saveBoolean(FC_Constants.KEY_MENU_COPIED, true);
                                 FastSave.getInstance().saveString(CURRENT_VERSION, ""+FC_Utility.getCurrentVersion(context));
@@ -965,7 +964,7 @@ public class SplashPresenter implements SplashContract.SplashPresenter {
                 e.printStackTrace();
             }
             status.setValue(verCode);
-            appDatabase.getStatusDao().insert(status);
+            AppDatabase.getDatabaseInstance(context).getStatusDao().insert(status);
 
         } else {
             status.setStatusKey("apkVersion");
@@ -979,7 +978,7 @@ public class SplashPresenter implements SplashContract.SplashPresenter {
                 e.printStackTrace();
             }
             status.setValue(verCode);
-            appDatabase.getStatusDao().insert(status);
+            AppDatabase.getDatabaseInstance(context).getStatusDao().insert(status);
 
         }
     }
@@ -995,7 +994,7 @@ public class SplashPresenter implements SplashContract.SplashPresenter {
             } catch (PackageManager.NameNotFoundException e) {
                 e.printStackTrace();
             }
-            appDatabase.getStatusDao().updateValue("apkVersion", verCode);
+            AppDatabase.getDatabaseInstance(context).getStatusDao().updateValue("apkVersion", verCode);
         }
     }
 
@@ -1018,7 +1017,7 @@ public class SplashPresenter implements SplashContract.SplashPresenter {
             status = new Status();
             status.setStatusKey("appName");
             status.setValue(appname);
-            appDatabase.getStatusDao().insert(status);
+            AppDatabase.getDatabaseInstance(context).getStatusDao().insert(status);
         } else {
             CharSequence c = "";
             ActivityManager am = (ActivityManager) context.getSystemService(ACTIVITY_SERVICE);
@@ -1035,7 +1034,7 @@ public class SplashPresenter implements SplashContract.SplashPresenter {
             status = new Status();
             status.setStatusKey("appName");
             status.setValue(appname);
-            appDatabase.getStatusDao().insert(status);
+            AppDatabase.getDatabaseInstance(context).getStatusDao().insert(status);
         }
     }
 
@@ -1047,7 +1046,7 @@ public class SplashPresenter implements SplashContract.SplashPresenter {
             protected Object doInBackground(Object[] objects) {
                 try {
                     String appStartTime = FC_Utility.getCurrentDateTime();
-                    StatusDao statusDao = appDatabase.getStatusDao();
+                    StatusDao statusDao = AppDatabase.getDatabaseInstance(context).getStatusDao();
                     statusDao.updateValue("AppStartDateTime", appStartTime);
                     BackupDatabase.backup(context);
                     return null;
@@ -1155,7 +1154,7 @@ public class SplashPresenter implements SplashContract.SplashPresenter {
                                     content_cursor.moveToNext();
                                 }
                             }
-                            appDatabase.getContentTableDao().addNewContentList(contents);
+                            AppDatabase.getDatabaseInstance(context).getContentTableDao().addNewContentList(contents);
                             content_cursor.close();
                         } catch (Exception e) {
                             e.printStackTrace();

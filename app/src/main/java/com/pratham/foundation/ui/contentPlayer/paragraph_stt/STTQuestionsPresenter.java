@@ -3,6 +3,7 @@ package com.pratham.foundation.ui.contentPlayer.paragraph_stt;
 import android.content.Context;
 
 import com.google.gson.Gson;
+import com.pratham.foundation.database.AppDatabase;
 import com.pratham.foundation.database.BackupDatabase;
 import com.pratham.foundation.database.domain.Assessment;
 import com.pratham.foundation.database.domain.ContentProgress;
@@ -22,7 +23,6 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.pratham.foundation.database.AppDatabase.appDatabase;
 import static com.pratham.foundation.ui.contentPlayer.paragraph_stt.ParaSttReadingFragment.correctArr;
 import static com.pratham.foundation.ui.contentPlayer.paragraph_stt.ParaSttReadingFragment.lineBreakCounter;
 import static com.pratham.foundation.utility.FC_Constants.APP_SECTION;
@@ -97,7 +97,7 @@ public class STTQuestionsPresenter implements ParaSttReadingContract.STTQuestion
     }
 
     private void addSttResultDB(ArrayList<String> stt_Result) {
-        String deviceId = appDatabase.getStatusDao().getValue("DeviceId");
+        String deviceId = AppDatabase.getDatabaseInstance(context).getStatusDao().getValue("DeviceId");
         StringBuilder strWord = new StringBuilder("STT_ALL_RESULT - ");
         for (int i = 0; i < stt_Result.size(); i++) {
             strWord.append(stt_Result.get(i)).append(" - ");
@@ -119,7 +119,7 @@ public class STTQuestionsPresenter implements ParaSttReadingContract.STTQuestion
             score.setLevel(0);
             score.setLabel("" + strWord);
             score.setSentFlag(0);
-            appDatabase.getScoreDao().insert(score);
+            AppDatabase.getDatabaseInstance(context).getScoreDao().insert(score);
             BackupDatabase.backup(context);
         } catch (Exception e) {
             e.printStackTrace();
@@ -165,7 +165,7 @@ public class STTQuestionsPresenter implements ParaSttReadingContract.STTQuestion
     @Override
     public void addScore(int wID, String Word, int scoredMarks, int totalMarks, String resStartTime, String Label) {
         try {
-            String deviceId = appDatabase.getStatusDao().getValue("DeviceId");
+            String deviceId = AppDatabase.getDatabaseInstance(context).getStatusDao().getValue("DeviceId");
             Score score = new Score();
             score.setSessionID(FastSave.getInstance().getString(FC_Constants.CURRENT_SESSION, ""));
             score.setResourceID(resId);
@@ -179,7 +179,7 @@ public class STTQuestionsPresenter implements ParaSttReadingContract.STTQuestion
             score.setLevel(0);
             score.setLabel(Word + " - " + Label);
             score.setSentFlag(0);
-            appDatabase.getScoreDao().insert(score);
+            AppDatabase.getDatabaseInstance(context).getScoreDao().insert(score);
 
             if (FastSave.getInstance().getString(APP_SECTION,"").equalsIgnoreCase(sec_Test)) {
                 Assessment assessment = new Assessment();
@@ -196,7 +196,7 @@ public class STTQuestionsPresenter implements ParaSttReadingContract.STTQuestion
                 assessment.setLevela(FC_Constants.currentLevel);
                 assessment.setLabel("test: " + Label);
                 assessment.setSentFlag(0);
-                appDatabase.getAssessmentDao().insert(assessment);
+                AppDatabase.getDatabaseInstance(context).getAssessmentDao().insert(assessment);
             }
 
             BackupDatabase.backup(context);
@@ -217,7 +217,7 @@ public class STTQuestionsPresenter implements ParaSttReadingContract.STTQuestion
             contentProgress.setUpdatedDateTime("" + FC_Utility.getCurrentDateTime());
             contentProgress.setLabel("" + Label);
             contentProgress.setSentFlag(0);
-            appDatabase.getContentProgressDao().insert(contentProgress);
+            AppDatabase.getDatabaseInstance(context).getContentProgressDao().insert(contentProgress);
             BackupDatabase.backup(context);
         } catch (Exception e) {
             e.printStackTrace();
