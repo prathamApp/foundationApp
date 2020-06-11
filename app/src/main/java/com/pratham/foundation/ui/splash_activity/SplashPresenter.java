@@ -57,12 +57,15 @@ import java.util.Iterator;
 import java.util.List;
 
 import static android.content.Context.ACTIVITY_SERVICE;
+import static com.pratham.foundation.ApplicationClass.isTablet;
 import static com.pratham.foundation.database.AppDatabase.DB_NAME;
 import static com.pratham.foundation.database.AppDatabase.DB_VERSION;
 import static com.pratham.foundation.ui.splash_activity.SplashActivity.exitDialogOpen;
 import static com.pratham.foundation.utility.FC_Constants.APP_LANGUAGE;
 import static com.pratham.foundation.utility.FC_Constants.CURRENT_VERSION;
 import static com.pratham.foundation.utility.FC_Constants.HINDI;
+import static com.pratham.foundation.utility.FC_Constants.apkSP;
+import static com.pratham.foundation.utility.FC_Constants.apkTab;
 
 @EBean
 public class SplashPresenter implements SplashContract.SplashPresenter {
@@ -132,22 +135,22 @@ public class SplashPresenter implements SplashContract.SplashPresenter {
         try {
             boolean dbExist = checkDataBase();
             if (!dbExist) {
-                        try {
-                            AppDatabase.getDatabaseInstance(context);
-                            if (new File(Environment.getExternalStorageDirectory().getAbsolutePath() + "/PrathamBackups/"+DB_NAME).exists())
-                                copyDb = true;
-                            else
-                                getSdCardPath();
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                        }
+                try {
+                    AppDatabase.getDatabaseInstance(context);
+                    if (new File(Environment.getExternalStorageDirectory().getAbsolutePath() + "/PrathamBackups/" + DB_NAME).exists())
+                        copyDb = true;
+                    else
+                        getSdCardPath();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
                 callCopyDB();
             } else {
                 AppDatabase.getDatabaseInstance(context);
                 getSdCardPath();
                 splashView.preShowBtn();
             }
-            if(FastSave.getInstance().getString(APP_LANGUAGE, "").equalsIgnoreCase(""))
+            if (FastSave.getInstance().getString(APP_LANGUAGE, "").equalsIgnoreCase(""))
                 FastSave.getInstance().saveString(APP_LANGUAGE, HINDI);
         } catch (Exception e) {
             e.printStackTrace();
@@ -155,7 +158,7 @@ public class SplashPresenter implements SplashContract.SplashPresenter {
     }
 
     @UiThread
-    public void callCopyDB(){
+    public void callCopyDB() {
         if (copyDb)
             copyDataBase();
         else
@@ -404,7 +407,10 @@ public class SplashPresenter implements SplashContract.SplashPresenter {
 
             status = new com.pratham.foundation.database.domain.Status();
             status.setStatusKey("apkType");
-            status.setValue("");
+            if (isTablet)
+                status.setValue("" + apkTab);
+            else
+                status.setValue("" + apkSP);
             appDatabase.getStatusDao().insert(status);
 
             status = new com.pratham.foundation.database.domain.Status();
@@ -637,9 +643,9 @@ public class SplashPresenter implements SplashContract.SplashPresenter {
             protected void onPostExecute(Void aVoid) {
                 super.onPostExecute(aVoid);
                 Log.d("-CT-", "insertNewData ENDDDDDDDDDDDDD");
-                Log.d("-CT-", "insert END  :::::CURRENT_VERSION::::: " +FastSave.getInstance().getString(CURRENT_VERSION, "NA"));
-                Log.d("-CT-", "insert END  ::::getCurrentVersion:::: " +FC_Utility.getCurrentVersion(context));
-                Log.d("-CT-", "Before insert new  :::::VOICES_DOWNLOAD_INTENT::::: " +FastSave.getInstance().getBoolean(FC_Constants.VOICES_DOWNLOAD_INTENT, false));
+                Log.d("-CT-", "insert END  :::::CURRENT_VERSION::::: " + FastSave.getInstance().getString(CURRENT_VERSION, "NA"));
+                Log.d("-CT-", "insert END  ::::getCurrentVersion:::: " + FC_Utility.getCurrentVersion(context));
+                Log.d("-CT-", "Before insert new  :::::VOICES_DOWNLOAD_INTENT::::: " + FastSave.getInstance().getBoolean(FC_Constants.VOICES_DOWNLOAD_INTENT, false));
                 splashView.dismissProgressDialog();
                 if (!FastSave.getInstance().getBoolean(FC_Constants.VOICES_DOWNLOAD_INTENT, false))
                     splashView.show_STT_Dialog();
@@ -713,7 +719,7 @@ public class SplashPresenter implements SplashContract.SplashPresenter {
                                 }
                             }
                             AppDatabase.getDatabaseInstance(context).getContentTableDao().addContentList(contents);
-                            FastSave.getInstance().saveString(CURRENT_VERSION, ""+FC_Utility.getCurrentVersion(context));
+                            FastSave.getInstance().saveString(CURRENT_VERSION, "" + FC_Utility.getCurrentVersion(context));
                             Log.d("-CT-", "populateMenu_New END");
                             content_cursor.close();
                         } catch (Exception e) {
@@ -762,7 +768,7 @@ public class SplashPresenter implements SplashContract.SplashPresenter {
 
         try {
             File internalDB = new File(Environment.getExternalStorageDirectory().toString() + "/.FCAInternal/" + DB_NAME);
-            if(internalDB.exists()){
+            if (internalDB.exists()) {
                 Log.d("copyDBFile", "copyDBFile: ");
                 internalDB.delete();
                 Log.d("copyDBFile", "delete: ");
@@ -818,7 +824,7 @@ public class SplashPresenter implements SplashContract.SplashPresenter {
                                     Log.d("copyDBFile", "Content Data Copy Start: ");
                                     content_cursor = db.rawQuery("SELECT * FROM ContentTable", null);
                                     //populate contents
-                                    Log.d("copyDBFile", "Content Data Copy Start: "+content_cursor.getCount());
+                                    Log.d("copyDBFile", "Content Data Copy Start: " + content_cursor.getCount());
                                     List<ContentTable> contents = new ArrayList<>();
                                     if (content_cursor.moveToFirst()) {
                                         while (!content_cursor.isAfterLast()) {
@@ -881,7 +887,7 @@ public class SplashPresenter implements SplashContract.SplashPresenter {
             File folder_file, db_file;
             if (!FastSave.getInstance().getBoolean(FC_Constants.KEY_MENU_COPIED, false)) {
                 Log.d("copyDBFile", "Populatemenu: ");
-                if (ApplicationClass.isTablet) {
+                if (isTablet) {
                     Log.d("copyDBFile", "Exception : ");
                     copyDBFile();
                     folder_file = new File(Environment.getExternalStorageDirectory().toString() + "/.FCAInternal");
@@ -899,7 +905,7 @@ public class SplashPresenter implements SplashContract.SplashPresenter {
                                 Log.d("copyDBFile", "Content Data Copy Start: ");
                                 content_cursor = db.rawQuery("SELECT * FROM ContentTable", null);
                                 //populate contents
-                                Log.d("copyDBFile", "Content Data Copy Start: "+content_cursor.getCount());
+                                Log.d("copyDBFile", "Content Data Copy Start: " + content_cursor.getCount());
                                 List<ContentTable> contents = new ArrayList<>();
                                 if (content_cursor.moveToFirst()) {
                                     while (!content_cursor.isAfterLast()) {
@@ -928,7 +934,7 @@ public class SplashPresenter implements SplashContract.SplashPresenter {
                                 AppDatabase.getDatabaseInstance(context).getContentTableDao().addContentList(contents);
                                 content_cursor.close();
                                 FastSave.getInstance().saveBoolean(FC_Constants.KEY_MENU_COPIED, true);
-                                FastSave.getInstance().saveString(CURRENT_VERSION, ""+FC_Utility.getCurrentVersion(context));
+                                FastSave.getInstance().saveString(CURRENT_VERSION, "" + FC_Utility.getCurrentVersion(context));
                                 Log.d("copyDBFile", "Content Data Copy complete: ");
                             } catch (Exception e) {
                                 Log.d("copyDBFile", "Content excep: ");
@@ -1083,7 +1089,7 @@ public class SplashPresenter implements SplashContract.SplashPresenter {
             fpath = Environment.getExternalStorageDirectory().getAbsolutePath();
 
         File file;
-        if (ApplicationClass.isTablet) {
+        if (isTablet) {
             file = new File(fpath + "/.FCA/foundation_db");
             if (file.exists()) {
                 ApplicationClass.contentSDPath = fpath;

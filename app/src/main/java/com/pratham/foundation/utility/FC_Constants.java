@@ -175,6 +175,8 @@ public class FC_Constants {
     public static final String sec_Fun = "Fun";
     public static final String sec_Test = "Test";
     public static final String sec_Profile = "Profile";
+    public static final String apkSP = "Smart Phone";
+    public static final String apkTab = "Tab";
 
     public static final String TYPE_HEADER = "Header";
     public static final String TYPE_ITEM = "Resource";

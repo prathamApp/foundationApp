@@ -1,5 +1,6 @@
 package com.pratham.foundation.ui.app_home.profile_new;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
@@ -102,6 +103,7 @@ public class ProfileFragment extends Fragment implements ProfileContract.Profile
     private ProfileOuterDataAdapter adapterParent;
     Context context;
 
+    @SuppressLint("SetTextI18n")
     @AfterViews
     public void initialize() {
         context = getActivity();

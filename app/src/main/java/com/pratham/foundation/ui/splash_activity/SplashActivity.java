@@ -199,7 +199,7 @@ public class SplashActivity extends SplashSupportActivity implements SplashContr
         Configuration config = context.getResources().getConfiguration();
         String strwidth = String.valueOf(width);
         String strheight = String.valueOf(height);
-        String resolution = strwidth + "x" + strheight + "px (" + config.densityDpi+")dpi";
+        String resolution = strwidth + "px x " + strheight + "px (" + config.densityDpi+" dpi)";
         FastSave.getInstance().saveString(FC_Constants.SCR_RES, "" + resolution);
         FastSave.getInstance().saveString(FC_Constants.LANGUAGE, FC_Constants.HINDI);
         setAppLocal(this, FC_Constants.HINDI);
