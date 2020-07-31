@@ -14,7 +14,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true">
 
-        <com.pratham.foundation.customView.SansTextView
+        <com.pratham.foundation.customView.fontsview.SansTextView
             android:id="@+id/txt_login"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -24,7 +24,7 @@
             android:textColor="@color/dark_blue"
             android:textSize="@dimen/_22sdp" />
 
-        <com.pratham.foundation.customView.SansTextView
+        <com.pratham.foundation.customView.fontsview.SansTextView
             android:id="@+id/txt_using"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -117,7 +117,7 @@
                     android:background="@drawable/dialog_bg"
                     android:layout_below="@id/wall_view">
 
-                    <com.pratham.foundation.customView.SansTextView
+                    <com.pratham.foundation.customView.fontsview.SansTextView
                         android:id="@+id/tv_stud_one"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -134,7 +134,7 @@
                         android:background="@drawable/qr_student_bg"
                         android:gravity="center"
                         android:textSize="25sp" />
-                    <com.pratham.foundation.customView.SansTextView
+                    <com.pratham.foundation.customView.fontsview.SansTextView
                         android:id="@+id/tv_stud_two"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -152,7 +152,7 @@
                         android:background="@drawable/qr_student_bg"
                         android:gravity="center"
                         android:textSize="25sp" />
-                    <com.pratham.foundation.customView.SansTextView
+                    <com.pratham.foundation.customView.fontsview.SansTextView
                         android:id="@+id/tv_stud_three"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -170,7 +170,7 @@
                         android:background="@drawable/qr_student_bg"
                         android:gravity="center"
                         android:textSize="25sp" />
-                    <com.pratham.foundation.customView.SansTextView
+                    <com.pratham.foundation.customView.fontsview.SansTextView
                         android:id="@+id/tv_stud_four"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -188,7 +188,7 @@
                         android:background="@drawable/qr_student_bg"
                         android:gravity="center"
                         android:textSize="25sp" />
-                    <com.pratham.foundation.customView.SansTextView
+                    <com.pratham.foundation.customView.fontsview.SansTextView
                         android:id="@+id/tv_stud_five"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -219,7 +219,7 @@
                         android:visibility="visible"
                         android:layout_marginBottom="@dimen/_2sdp" >
 
-                        <com.pratham.foundation.customView.SansButton
+                        <com.pratham.foundation.customView.fontsview.SansButton
                             android:id="@+id/btn_reset_btn"
                             android:layout_width="@dimen/_90sdp"
                             android:layout_height="@dimen/_60sdp"
@@ -231,7 +231,7 @@
                             android:background="@drawable/button_red"
                             android:text="@string/Reset"/>
 
-                        <com.pratham.foundation.customView.SansButton
+                        <com.pratham.foundation.customView.fontsview.SansButton
                             android:id="@+id/btn_get_progress"
                             android:layout_width="@dimen/_95sdp"
                             android:layout_height="@dimen/_60sdp"
@@ -246,7 +246,7 @@
                             android:background="@drawable/button_yellow"
                             android:text="@string/Get_Progress"/>
 
-                        <com.pratham.foundation.customView.SansButton
+                        <com.pratham.foundation.customView.fontsview.SansButton
                             android:id="@+id/btn_start_game"
                             android:layout_width="@dimen/_90sdp"
                             android:layout_height="@dimen/_60sdp"

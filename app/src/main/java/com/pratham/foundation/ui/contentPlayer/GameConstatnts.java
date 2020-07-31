@@ -44,6 +44,7 @@ import com.pratham.foundation.ui.contentPlayer.paragraph_stt.STTQuestionsFragmen
 import com.pratham.foundation.ui.contentPlayer.paragraph_stt.STTQuestionsFragment_;
 import com.pratham.foundation.ui.contentPlayer.paragraph_stt.STTSummaryFragment;
 import com.pratham.foundation.ui.contentPlayer.paragraph_stt.STTSummaryFragment_;
+import com.pratham.foundation.ui.contentPlayer.paragraph_writing.ParagraphWritingFragment;
 import com.pratham.foundation.ui.contentPlayer.paragraph_writing.ParagraphWritingFragment_;
 import com.pratham.foundation.ui.contentPlayer.pictionary.pictionaryFragment;
 import com.pratham.foundation.ui.contentPlayer.pictionary.pictionaryFragment_;
@@ -304,7 +305,7 @@ public class GameConstatnts implements ShowInstruction {
                             bundle, WordWritingFragment_.class.getSimpleName());
                 } else*/ if (FastSave.getInstance().getString(FC_Constants.CURRENT_SUBJECT, "").equalsIgnoreCase("Science")) {
                     FC_Utility.showFragment((Activity) context, new ParagraphWritingFragment_(), R.id.RL_CPA,
-                            bundle, ParagraphWritingFragment_.class.getSimpleName());
+                            bundle, ParagraphWritingFragment.class.getSimpleName());
                 } else {
                     FC_Utility.showFragment((Activity) context, new WordWritingFragment_(), R.id.RL_CPA,
                             bundle, WordWritingFragment_.class.getSimpleName());

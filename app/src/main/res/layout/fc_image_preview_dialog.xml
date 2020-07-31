@@ -14,7 +14,7 @@
             android:layout_alignParentBottom="true"
             android:elevation="5dp"
             android:orientation="horizontal">
-            <com.pratham.foundation.customView.SansButton
+            <com.pratham.foundation.customView.fontsview.SansButton
                 android:id="@+id/dia_btn_cross"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"

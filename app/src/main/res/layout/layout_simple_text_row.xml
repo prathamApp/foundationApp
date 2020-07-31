@@ -22,7 +22,7 @@
 
         android:layout_height="match_parent">
 
-        <com.pratham.foundation.customView.SansTextView
+        <com.pratham.foundation.customView.fontsview.SansTextView
             android:id="@+id/tv_text"
             android:layout_width="match_parent"
             android:layout_height="match_parent"

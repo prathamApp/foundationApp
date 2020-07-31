@@ -247,14 +247,17 @@ public class OppositesPresenter implements OppositesContract.OppositesPresenter 
     }
 
     private void addLearntWords(ModalReadingVocabulary modalReadingVocabulary) {
-        KeyWords learntWords = new KeyWords();
-        learntWords.setResourceId(resId);
-        learntWords.setSentFlag(0);
-        learntWords.setStudentId(FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""));
-        learntWords.setKeyWord(modalReadingVocabulary.getConvoTitle());
-        learntWords.setWordType("word");
-        learntWords.setTopic(gameName);
-        AppDatabase.getDatabaseInstance(context).getKeyWordDao().insert(learntWords);
+        boolean wordPresent = checkWord(modalReadingVocabulary.getConvoTitle());
+        if (!wordPresent) {
+            KeyWords learntWords = new KeyWords();
+            learntWords.setResourceId(resId);
+            learntWords.setSentFlag(0);
+            learntWords.setStudentId(FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""));
+            learntWords.setKeyWord(modalReadingVocabulary.getConvoTitle());
+            learntWords.setWordType("word");
+            learntWords.setTopic(gameName);
+            AppDatabase.getDatabaseInstance(context).getKeyWordDao().insert(learntWords);
+        }
         BackupDatabase.backup(context);
     }
 

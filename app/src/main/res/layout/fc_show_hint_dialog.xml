@@ -32,7 +32,7 @@
             android:background="@drawable/dialog_bg"
             android:gravity="center">
 
-            <com.pratham.foundation.customView.SansTextView
+            <com.pratham.foundation.customView.fontsview.SansTextView
                 android:id="@+id/dialog_hint_title"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -62,7 +62,7 @@
                 android:elevation="5dp"
                 android:padding="@dimen/_5sdp">
 
-                <com.pratham.foundation.customView.SansTextView
+                <com.pratham.foundation.customView.fontsview.SansTextView
                     android:id="@+id/dialog_hint_tv"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"

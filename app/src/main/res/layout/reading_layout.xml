@@ -5,128 +5,207 @@
     android:layout_height="match_parent"
     android:background="@drawable/activity_bkgd"
     app:cardElevation="0dp">
+
+    <LinearLayout
+        android:id="@+id/ll_edit_text"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/colorBlackTransparentLight"
+        android:elevation="@dimen/_20sdp"
+        android:orientation="vertical"
+        android:visibility="gone"
+        android:weightSum="1">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_marginStart="@dimen/_10sdp"
+            android:layout_marginTop="65dp"
+            android:layout_marginEnd="@dimen/_10sdp"
+            android:layout_weight=".48"
+            android:background="@drawable/dialog_bg">
+
+            <com.pratham.foundation.customView.fontsview.SansEditText
+                android:id="@+id/et_edit_ans"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_above="@id/bt_edit_ok"
+                android:layout_margin="@dimen/_5sdp"
+                android:overScrollMode="always"
+                android:scrollbarStyle="insideInset"
+                android:scrollbars="vertical"
+                android:textAlignment="center"
+                android:textColor="@color/dark_blue" />
+
+            <com.pratham.foundation.customView.fontsview.SansButton
+                android:id="@+id/bt_edit_ok"
+                android:layout_width="@dimen/_100sdp"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="@dimen/_5sdp"
+                android:layout_marginBottom="@dimen/_10sdp"
+                android:background="@drawable/button_green"
+                android:text="@string/Okay"
+                android:textColor="@color/white"
+                android:textSize="@dimen/_10sdp" />
+        </RelativeLayout>
+    </LinearLayout>
+
     <Space
         android:id="@+id/space"
         android:layout_width="match_parent"
         android:layout_height="60dp" />
 
     <LinearLayout
-        android:layout_below="@id/space"
-        android:layout_above="@id/bottom_panel"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_above="@id/bottom_panel"
+        android:layout_below="@id/space"
         android:layout_margin="@dimen/_2sdp"
         android:orientation="vertical">
 
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="1"
-            android:layout_marginStart="@dimen/_10sdp"
-            android:layout_marginEnd="@dimen/_10sdp">
+            android:layout_weight="1">
 
-            <com.pratham.foundation.customView.SansTextViewBold
+            <com.pratham.foundation.customView.fontsview.SansTextViewBold
                 android:id="@+id/lbl_ques"
-                android:layout_height="wrap_content"
                 android:layout_width="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_alignParentTop="true"
+                android:layout_marginStart="@dimen/_10sdp"
+                android:layout_marginEnd="@dimen/_10sdp"
                 android:gravity="center_horizontal"
+                android:text="@string/Read"
                 android:textColor="@color/dark_blue"
-                android:textSize="@dimen/_20sdp"
-                android:text="@string/Read"/>
+                android:textSize="@dimen/_20sdp" />
 
             <ScrollView
+                style="@style/paragraph"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_below="@+id/lbl_ques"
                 android:layout_marginTop="5dp"
                 android:layout_marginBottom="5dp"
+                android:layout_marginStart="@dimen/_10sdp"
+                android:layout_marginEnd="@dimen/_10sdp"
                 android:fadeScrollbars="false"
                 android:scrollbarSize="6dp"
                 android:scrollbarThumbVertical="@drawable/card_color_bg4"
                 android:scrollbarTrackVertical="@drawable/scroll_bg">
-                <com.pratham.foundation.customView.SansTextView
+
+                <com.pratham.foundation.customView.fontsview.SansTextView
                     android:id="@+id/tv_question"
-                    style="@style/paragraph"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text=""
-                    android:textSize="@dimen/_18sdp"
-                    android:textColor="@color/colorText"
                     android:gravity="center"
-                    android:scrollbars="vertical" />
+                    android:scrollbars="vertical"
+                    android:text=""
+                    android:textColor="@color/colorText"
+                    android:textSize="@dimen/_18sdp" />
             </ScrollView>
         </RelativeLayout>
+
         <ImageView
             android:id="@+id/iv_question_image"
-           android:layout_height="0dp"
-            android:layout_weight="1"
             android:layout_width="match_parent"
+            android:layout_height="0dp"
             android:layout_gravity="center"
+            android:layout_weight="1"
             android:src="@drawable/warning"
-            android:visibility="gone"/>
+            android:visibility="gone" />
 
         <com.pratham.foundation.customView.GifView
             android:id="@+id/iv_question_gif"
-            android:layout_height="0dp"
             android:layout_width="match_parent"
+            android:layout_height="0dp"
             android:layout_gravity="center"
             android:layout_weight="1"
-            android:visibility="gone"/>
+            android:visibility="gone" />
 
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="1"
-            android:layout_marginStart="@dimen/_10sdp"
-            android:layout_marginEnd="@dimen/_10sdp">
+            android:layout_weight="1">
 
-            <com.pratham.foundation.customView.SansTextViewBold
-                android:id="@+id/lbl_ans"
+            <RelativeLayout
+                android:id="@+id/rl_bar"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/_5sdp"
-                android:gravity="center_horizontal"
-                android:textColor="@color/dark_blue"
-                android:textSize="@dimen/_20sdp"
-                android:text="@string/Your_answer"/>
-        <ScrollView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_below="@+id/lbl_ans"
-            android:fadeScrollbars="false"
-            android:scrollbarSize="6dp"
-            android:scrollbarThumbVertical="@drawable/card_color_bg4"
-            android:scrollbarTrackVertical="@drawable/scroll_bg">
+                android:layout_marginStart="@dimen/_10sdp"
+                android:layout_marginEnd="@dimen/_10sdp"
+                android:layout_marginTop="@dimen/_3sdp"
+                android:layout_alignParentTop="true">
 
-        <com.pratham.foundation.customView.SansTextView
-            android:id="@+id/et_answer"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/_5sdp"
-            android:layout_marginBottom="@dimen/_5sdp"
-            android:layout_below="@+id/lbl_ans"
-            android:scrollbars="vertical"
-            style="@style/paragraph"
-            android:textColor="@color/colorText"
-            android:gravity="center"
-            android:hint="@string/Enter_answer"
-            android:padding="@dimen/_8sdp"
-            android:textSize="@dimen/_18sdp" />
-        </ScrollView>
+                <com.pratham.foundation.customView.fontsview.SansTextViewBold
+                    android:id="@+id/lbl_ans"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/_5sdp"
+                    android:layout_marginTop="@dimen/_5sdp"
+                    android:layout_toStartOf="@+id/btn_edit"
+                    android:gravity="center_vertical"
+                    android:text="@string/Your_answer"
+                    android:textColor="@color/dark_blue"
+                    android:textSize="@dimen/_20sdp" />
+
+                <ImageButton
+                    android:id="@+id/btn_edit"
+                    style="@style/edit_btn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentTop="true"
+                    android:layout_alignParentEnd="true"
+                    android:layout_marginTop="@dimen/_5sdp"
+                    android:paddingStart="@dimen/_20sdp"
+                    android:paddingTop="@dimen/_5sdp"
+                    android:paddingEnd="@dimen/_20sdp"
+                    android:paddingBottom="@dimen/_5sdp"
+                    android:src="@drawable/ic_edit_white" />
+            </RelativeLayout>
+
+            <ScrollView
+                style="@style/paragraph"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_below="@+id/rl_bar"
+                android:layout_marginTop="@dimen/_5sdp"
+                android:layout_marginStart="@dimen/_10sdp"
+                android:layout_marginEnd="@dimen/_10sdp"
+                android:layout_marginBottom="5dp"
+                android:fadeScrollbars="false"
+                android:scrollbarSize="6dp"
+                android:scrollbarThumbVertical="@drawable/card_color_bg4"
+                android:scrollbarTrackVertical="@drawable/scroll_bg">
+
+                <com.pratham.foundation.customView.fontsview.SansTextView
+                    android:id="@+id/et_answer"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_2sdp"
+                    android:layout_marginBottom="@dimen/_2sdp"
+                    android:gravity="center"
+                    android:hint="@string/Enter_answer"
+                    android:padding="@dimen/_8sdp"
+                    android:scrollbars="vertical"
+                    android:textColor="@color/dark_blue"
+                    android:textSize="@dimen/_18sdp" />
+            </ScrollView>
         </RelativeLayout>
     </LinearLayout>
-   <!-- <ImageButton
-        android:id="@+id/ib_mic"
-        android:layout_above="@id/submit"
-        android:layout_width="@dimen/_80sdp"
-        android:layout_height="@dimen/_80sdp"
-        android:layout_gravity="center"
-        android:background="@drawable/ripple_rectangle"
-        android:padding="@dimen/_5sdp"
-        android:layout_centerHorizontal="true"
-        android:scaleType="fitXY"
-        android:src="@drawable/ic_mic_24dp" />-->
+    <!-- <ImageButton
+         android:id="@+id/ib_mic"
+         android:layout_above="@id/submit"
+         android:layout_width="@dimen/_80sdp"
+         android:layout_height="@dimen/_80sdp"
+         android:layout_gravity="center"
+         android:background="@drawable/ripple_rectangle"
+         android:padding="@dimen/_5sdp"
+         android:layout_centerHorizontal="true"
+         android:scaleType="fitXY"
+         android:src="@drawable/ic_mic_24dp" />-->
     <include
         android:id="@+id/bottom_panel"
         layout="@layout/bottom_control_panel_v5"

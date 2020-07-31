@@ -2,6 +2,7 @@ package com.pratham.foundation.ui.selectSubject;
 
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
@@ -14,10 +15,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.Gravity;
 import android.view.View;
 import android.view.Window;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.Button;
-import android.widget.Spinner;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.pratham.foundation.BaseActivity;
@@ -26,9 +24,13 @@ import com.pratham.foundation.customView.BlurPopupDialog.BlurPopupWindow;
 import com.pratham.foundation.customView.GridSpacingItemDecoration;
 import com.pratham.foundation.customView.display_image_dialog.CustomLodingDialog;
 import com.pratham.foundation.database.domain.ContentTable;
+import com.pratham.foundation.modalclasses.EventMessage;
 import com.pratham.foundation.services.shared_preferences.FastSave;
 import com.pratham.foundation.ui.app_home.HomeActivity_;
+import com.pratham.foundation.ui.select_language_fragment.SelectLanguageFragment;
+import com.pratham.foundation.ui.select_language_fragment.SelectLanguageFragment_;
 import com.pratham.foundation.utility.FC_Constants;
+import com.pratham.foundation.utility.FC_Utility;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Bean;
@@ -36,6 +38,9 @@ import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.UiThread;
 import org.androidannotations.annotations.ViewById;
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -44,6 +49,7 @@ import java.util.Objects;
 import static com.pratham.foundation.ApplicationClass.BackBtnSound;
 import static com.pratham.foundation.ApplicationClass.ButtonClickSound;
 import static com.pratham.foundation.utility.FC_Constants.APP_LANGUAGE_SELECTED;
+import static com.pratham.foundation.utility.FC_Constants.UPDATE_AVAILABLE;
 import static com.pratham.foundation.utility.FC_Constants.currentLevel;
 import static com.pratham.foundation.utility.FC_Constants.currentSubjectFolder;
 import static com.pratham.foundation.utility.FC_Constants.gameFolderPath;
@@ -51,16 +57,21 @@ import static com.pratham.foundation.utility.FC_Utility.dpToPx;
 
 @EActivity(R.layout.activity_select_subject)
 public class SelectSubject extends BaseActivity implements
-        SelectSubjectContract.SubjectView, SelectSubjectContract.ItemClicked,
-        SelectSubjectContract.AppLanguageSpinnerListner {
+        SelectSubjectContract.SubjectView, SelectSubjectContract.ItemClicked{
 
     @Bean(SelectSubjectPresenter.class)
     SelectSubjectContract.SubjectPresenter presenter;
 
     @ViewById(R.id.subject_recycler)
     RecyclerView subject_recycler;
+    @ViewById(R.id.rl_ss_main)
+    RelativeLayout rl_ss_main;
+    @ViewById(R.id.rl_act)
+    RelativeLayout rl_act;
     @ViewById(R.id.name)
     TextView name;
+    @ViewById(R.id.tv_update)
+    TextView tv_update;
     private Context context;
     SelectSubjectAdapter subjectAdapter;
     String studName;
@@ -74,7 +85,7 @@ public class SelectSubject extends BaseActivity implements
         Configuration config = getResources().getConfiguration();
         FC_Constants.TAB_LAYOUT = config.smallestScreenWidthDp > 425;
         presenter.setView(SelectSubject.this);
-
+        tv_update.setVisibility(View.GONE);
         showLoader();
 
         if (FastSave.getInstance().getString(FC_Constants.LOGIN_MODE, FC_Constants.GROUP_MODE).contains("group"))
@@ -84,21 +95,17 @@ public class SelectSubject extends BaseActivity implements
                     FC_Constants.CURRENT_STUDENT_NAME, "").split(" ")[0];
         name.setText(/*getResources().getString(R.string.Welcome) + " " + */studName + ".");
 
-//        startActivity();
-    }
-
-    private void startActivity() {
-        subjectList = new ArrayList<>();
-        if(!FastSave.getInstance().getBoolean(APP_LANGUAGE_SELECTED, false))
-            langChangeButtonClick();
-        presenter.getSubjectList();
     }
 
     @Override
     protected void onResume() {
         super.onResume();
         subjectList.clear();
-        if(!FastSave.getInstance().getBoolean(APP_LANGUAGE_SELECTED, false))
+        EventMessage eventMessage = new EventMessage();
+        eventMessage.setMessage(FC_Constants.CHECK_UPDATE);
+        EventBus.getDefault().post(eventMessage);
+
+        if (!FastSave.getInstance().getBoolean(APP_LANGUAGE_SELECTED, false))
             langChangeButtonClick();
         presenter.getSubjectList();
     }
@@ -150,7 +157,7 @@ public class SelectSubject extends BaseActivity implements
             new Handler().postDelayed(() -> {
                 if (myLoadingDialog != null && myLoadingDialog.isShowing())
                     myLoadingDialog.dismiss();
-            }, 150);
+            }, 950);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -162,6 +169,13 @@ public class SelectSubject extends BaseActivity implements
         //overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
     }
 
+    @Click(R.id.tv_update)
+    public void updateClicked(){
+        EventMessage eventMessage = new EventMessage();
+        eventMessage.setMessage(FC_Constants.START_UPDATE);
+        EventBus.getDefault().post(eventMessage);
+    }
+
     @Override
     public void onItemClicked(ContentTable contentTableObj) {
         try {
@@ -171,7 +185,7 @@ public class SelectSubject extends BaseActivity implements
         }
         currentLevel = 0;
         String currentSubject;
-        if(contentTableObj.getSubject()!=null)
+        if (contentTableObj.getSubject() != null)
             currentSubject = contentTableObj.getSubject();
         else
             currentSubject = "English";
@@ -191,7 +205,7 @@ public class SelectSubject extends BaseActivity implements
             currentSubjectFolder = "LS_Science";
 */
 
-        currentSubjectFolder = ""+currentSubject;
+        currentSubjectFolder = "" + currentSubject;
         gameFolderPath = "/.FCA/" + currentSubjectFolder + "/Game";
         FastSave.getInstance().saveString(FC_Constants.CURRENT_SUBJECT, currentSubject);
         FastSave.getInstance().saveString(FC_Constants.CURRENT_FOLDER_NAME, currentSubjectFolder);
@@ -215,91 +229,45 @@ public class SelectSubject extends BaseActivity implements
         } catch (IllegalStateException e) {
             e.printStackTrace();
         }
-        exitDialog();
+        int fragments = getSupportFragmentManager().getBackStackEntryCount();
+        if (fragments > 0) {
+            getSupportFragmentManager().popBackStack();
+            if(fragments==1){
+                rl_act.setVisibility(View.VISIBLE);
+                onAppSpinnerLanguageChanged(FastSave.getInstance().getString(FC_Constants.APP_LANGUAGE, ""));
+                presenter.clearSubjList();
+                presenter.getSubjectList();
+            }
+        } else {
+            exitDialog();
+        }
     }
 
     @Click(R.id.ib_langChange)
     public void langChangeButtonClick() {
-        showLoader();
-        presenter.getLanguage();
+        rl_act.setVisibility(View.GONE);
+        FC_Utility.showFragment((Activity) context, new SelectLanguageFragment_(), R.id.rl_ss_main,
+                null, SelectLanguageFragment.class.getSimpleName());
+//        showLoader();
+//        presenter.getLanguage();
     }
-
-    BlurPopupWindow langDialog;
-    String language, currLang, languageNodeId;
 
     @SuppressLint("SetTextI18n")
-    @Override
-    @UiThread
-    public void showLanguageSelectionDialog(List<ContentTable> serverContentList) {
-        langDialog = new BlurPopupWindow.Builder(context)
-                .setContentView(R.layout.fc_custom_language_dialog)
-                .setGravity(Gravity.CENTER)
-                .setDismissOnTouchBackground(false)
-                .setDismissOnClickBack(false)
-                .bindClickListener(v -> {
-                    FastSave.getInstance().saveBoolean(APP_LANGUAGE_SELECTED, true);
-                    new Handler().postDelayed(() -> {
-                        onAppSpinnerLanguageChanged(language);
-                        langDialog.dismiss();
-                        langDialog = null;
-                        presenter.clearSubjList();
-                        presenter.getSubjectList();
-                    }, 200);
-                }, R.id.dia_btn_green)
-                .setScaleRatio(0.2f)
-                .setBlurRadius(10)
-                .setTintColor(0x30000000)
-                .build();
-
-        TextView dia_title = langDialog.findViewById(R.id.dia_title);
-        Button dia_btn_green = langDialog.findViewById(R.id.dia_btn_green);
-        Spinner lang_spinner = langDialog.findViewById(R.id.lang_spinner);
-        dia_btn_green.setText("OK");
-
-        currLang = "" + FastSave.getInstance().getString(FC_Constants.APP_LANGUAGE, "Hindi");
-        dia_title.setText("Current Language : " + currLang);
-
-        ArrayList<String> langStrings = new ArrayList<>();
-        for (int j = 0; j < serverContentList.size(); j++)
-            langStrings.add("" + serverContentList.get(j).getNodeTitle());
-        ArrayAdapter<String> dataAdapter = new ArrayAdapter<>(context, R.layout.custom_spinner,
-                langStrings);
-//                context.getResources().getStringArray(R.array.certificate_Languages));
-        dataAdapter.setDropDownViewResource(R.layout.custom_spinner);
-        lang_spinner.setAdapter(dataAdapter);
-//        String[] languages = getResources().getStringArray(R.array.certificate_Languages);
-//        for (int i = 0; i < languages.length; i++) {
-//            if (currLang.equalsIgnoreCase(languages[i])) {
-//                lang_spinner.setSelection(i);
-//                break;
-//            }
-//        }
-
-        lang_spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                language = serverContentList.get(position).getNodeTitle();
-                languageNodeId = serverContentList.get(position).getNodeId();
-                FastSave.getInstance().saveString(FC_Constants.APP_LANGUAGE, "" + language);
-                FastSave.getInstance().saveString(FC_Constants.APP_LANGUAGE_NODE_ID, "" + languageNodeId);
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-            }
-        });
-        dismissLoadingDialog();
-        langDialog.show();
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void messageReceived(EventMessage message) {
+        if (message.getMessage().equalsIgnoreCase(UPDATE_AVAILABLE)) {
+            tv_update.setVisibility(View.VISIBLE);
+        }
     }
+            BlurPopupWindow langDialog;
+    String language, currLang, languageNodeId;
 
-
-    @Override
     public void onAppSpinnerLanguageChanged(String selectedLanguage) {
         language = selectedLanguage;
     }
 
-
     BlurPopupWindow exitDialog;
+
     @UiThread
     @SuppressLint("SetTextI18n")
     public void exitDialog() {

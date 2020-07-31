@@ -6,7 +6,7 @@
     android:background="@drawable/activity_bkgd"
     tools:context=".ui.contentPlayer.pictionary.PictionaryResult">
 
-        <com.pratham.foundation.customView.SansTextViewBold
+        <com.pratham.foundation.customView.fontsview.SansTextViewBold
             android:id="@+id/tittle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -25,7 +25,7 @@
             android:layout_marginTop="@dimen/_5sdp"
             android:layout_above="@id/dia_btn_green"/>
 
-        <com.pratham.foundation.customView.SansButton
+        <com.pratham.foundation.customView.fontsview.SansButton
             android:id="@+id/dia_btn_green"
             android:layout_width="@dimen/_70sdp"
             android:layout_height="@dimen/_30sdp"

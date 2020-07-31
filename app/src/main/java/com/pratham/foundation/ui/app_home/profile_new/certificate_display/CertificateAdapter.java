@@ -114,15 +114,15 @@ public class CertificateAdapter extends RecyclerView.Adapter {
         String cLevel = "" + contentItem.getLevela();
         String cTitle = "" + FC_Utility.getSubjectNameFromNum(contentItem.getQuestionIda());
 
-        if (cLevel.equalsIgnoreCase("0"))
+        if (cLevel.equalsIgnoreCase("1"))
             holder.title.setText(cTitle + " Level 1");
-        else if (cLevel.equalsIgnoreCase("1"))
-            holder.title.setText(cTitle + " Level 2");
         else if (cLevel.equalsIgnoreCase("2"))
-            holder.title.setText(cTitle + " Level 3");
+            holder.title.setText(cTitle + " Level 2");
         else if (cLevel.equalsIgnoreCase("3"))
-            holder.title.setText(cTitle + " Level 4");
+            holder.title.setText(cTitle + " Level 3");
         else if (cLevel.equalsIgnoreCase("4"))
+            holder.title.setText(cTitle + " Level 4");
+        else if (cLevel.equalsIgnoreCase("5"))
             holder.title.setText(cTitle + " Level 5");
 
         holder.tv_timestamp.setText(contentItem.getEndDateTime());

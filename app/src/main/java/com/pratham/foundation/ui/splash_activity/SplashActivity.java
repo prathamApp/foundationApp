@@ -1,6 +1,7 @@
 package com.pratham.foundation.ui.splash_activity;
 
 import android.annotation.SuppressLint;
+import android.app.ActivityManager;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.ProgressDialog;
@@ -31,6 +32,7 @@ import com.pratham.foundation.interfaces.Interface_copying;
 import com.pratham.foundation.interfaces.PermissionResult;
 import com.pratham.foundation.modalclasses.EventMessage;
 import com.pratham.foundation.services.AppExitService;
+import com.pratham.foundation.services.background_service.BackgroundPushService;
 import com.pratham.foundation.services.shared_preferences.FastSave;
 import com.pratham.foundation.ui.admin_panel.MenuActivity_;
 import com.pratham.foundation.ui.bottom_fragment.BottomStudentsFragment;
@@ -52,6 +54,7 @@ import java.io.File;
 
 import static com.pratham.foundation.utility.FC_Constants.BOTTOM_FRAGMENT_CLOSED;
 import static com.pratham.foundation.utility.FC_Constants.CURRENT_VERSION;
+import static com.pratham.foundation.utility.FC_Constants.IS_SERVICE_STOPED;
 import static com.pratham.foundation.utility.FC_Constants.SPLASH_OPEN;
 import static com.pratham.foundation.utility.FC_Utility.setAppLocal;
 
@@ -74,6 +77,7 @@ public class SplashActivity extends SplashSupportActivity implements SplashContr
     @SuppressLint("StaticFieldLeak")
     static Context context;
     Dialog dialog;
+    private int startCheck = 0;
     public static boolean firstPause = true, fragmentBottomOpenFlg = false,
             fragmentBottomPauseFlg = false, fragmentAddStudentPauseFlg = false,
             fragmentAddStudentOpenFlg = false, exitDialogOpen = false;
@@ -84,12 +88,13 @@ public class SplashActivity extends SplashSupportActivity implements SplashContr
 //        bgMusic = MediaPlayer.create(this, R.raw.bg_sound);
 //        bgMusic.setLooping(true);
 //        bgMusic.start();
+        startCheck = 0;
         new Handler().postDelayed(this::startTextAud, 500);
     }
 
     private void startTextAud() {
         SPLASH_OPEN = true;
-        final Typeface title_font = Typeface.createFromAsset(getAssets(), "fonts/Sarala_Bold.ttf");
+        final Typeface title_font = Typeface.createFromAsset(getAssets(), "fonts/GlacialIndifference-Bold.otf");
         tv_typer.setTypeface(title_font);
         tv_typer.setVisibility(View.VISIBLE);
         tv_typer.setTextColor(getResources().getColor(R.color.dark_blue));
@@ -109,10 +114,14 @@ public class SplashActivity extends SplashSupportActivity implements SplashContr
         }
 
         new Handler().postDelayed(() -> {
-            if (!ApplicationClass.isTablet) {
+            if (!ApplicationClass.getAppMode()) {
                 EventMessage message = new EventMessage();
                 message.setMessage("reload");
                 EventBus.getDefault().post(message);
+            }
+            else {
+                if(startCheck>0)
+                gotoNextActivity();
             }
         }, 300);
     }
@@ -152,7 +161,7 @@ public class SplashActivity extends SplashSupportActivity implements SplashContr
     public void showButton() {
         context.startService(new Intent(context, AppExitService.class));
         if (!FastSave.getInstance().getBoolean(FC_Constants.KEY_MENU_COPIED, false)) {
-            if (!ApplicationClass.isTablet) {
+            if (!ApplicationClass.getAppMode()) {
                 ApplicationClass.contentExistOnSD = false;
                 splashPresenter.copyZipAndPopulateMenu();
             } else {
@@ -199,17 +208,40 @@ public class SplashActivity extends SplashSupportActivity implements SplashContr
         Configuration config = context.getResources().getConfiguration();
         String strwidth = String.valueOf(width);
         String strheight = String.valueOf(height);
-        String resolution = strwidth + "px x " + strheight + "px (" + config.densityDpi+" dpi)";
+        String resolution = strwidth + "px x " + strheight + "px (" + config.densityDpi + " dpi)";
         FastSave.getInstance().saveString(FC_Constants.SCR_RES, "" + resolution);
         FastSave.getInstance().saveString(FC_Constants.LANGUAGE, FC_Constants.HINDI);
         setAppLocal(this, FC_Constants.HINDI);
+        FastSave.getInstance().saveBoolean(IS_SERVICE_STOPED, false);
         splashPresenter.createDatabase();
-/*        if (!FastSave.getInstance().getBoolean(FC_Constants.LANGUAGE_SPLASH_DIALOG, false))
-            showLanguageSelectionDialog();
-        else {
-            setAppLocal(this, FastSave.getInstance().getString(FC_Constants.LANGUAGE, FC_Constants.HINDI));
-            createDataBase();
-        }*/
+    }
+
+
+    Intent mServiceIntent;
+    private BackgroundPushService bgPushService;
+
+    @Override
+    protected void onDestroy() {
+        try {
+            stopService(mServiceIntent);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        Log.i("MAINACT", "onDestroy!");
+        super.onDestroy();
+
+    }
+
+    private boolean isMyServiceRunning(Class<?> serviceClass) {
+        ActivityManager manager = (ActivityManager) getSystemService(Context.ACTIVITY_SERVICE);
+        for (ActivityManager.RunningServiceInfo service : manager.getRunningServices(Integer.MAX_VALUE)) {
+            if (serviceClass.getName().equals(service.service.getClassName())) {
+                Log.i("MAINACT", "isMyServiceRunning?  " + true);
+                return true;
+            }
+        }
+        Log.i("MAINACT", "isMyServiceRunning?  " + false);
+        return false;
     }
 
     @Override
@@ -266,7 +298,7 @@ public class SplashActivity extends SplashSupportActivity implements SplashContr
 
     @Override
     public void onBackPressed() {
-        if (!ApplicationClass.isTablet)
+        if (!ApplicationClass.getAppMode())
             showExitDialog();
     }
 
@@ -284,7 +316,7 @@ public class SplashActivity extends SplashSupportActivity implements SplashContr
                     new Handler().postDelayed(this::finishAffinity, 200);
                 }, R.id.dia_btn_yes)
                 .bindClickListener(v -> {
-                    if (!ApplicationClass.isTablet)
+                    if (!ApplicationClass.getAppMode())
                         gotoNextActivity();
                     backHandler.removeCallbacksAndMessages(null);
                     exitDialogOpen = false;
@@ -301,7 +333,7 @@ public class SplashActivity extends SplashSupportActivity implements SplashContr
         exitDialogOpen = true;
         backHandler = new Handler();
         backHandler.postDelayed(() -> {
-            if (!ApplicationClass.isTablet)
+            if (!ApplicationClass.getAppMode())
                 gotoNextActivity();
             exitDialogOpen = false;
             exitDialog.dismiss();
@@ -329,14 +361,14 @@ public class SplashActivity extends SplashSupportActivity implements SplashContr
 
         Handler backHandler = new Handler();
         backHandler.postDelayed(() -> {
-            if (!ApplicationClass.isTablet)
+            if (!ApplicationClass.getAppMode())
                 gotoNextActivity();
             exitDialogOpen = false;
             dialog.dismiss();
         }, 5000);
 
         dia_btn_green.setOnClickListener(v -> {
-            if (!ApplicationClass.isTablet)
+            if (!ApplicationClass.getAppMode())
                 gotoNextActivity();
             backHandler.removeCallbacksAndMessages(null);
             exitDialogOpen = false;
@@ -344,7 +376,7 @@ public class SplashActivity extends SplashSupportActivity implements SplashContr
         });
 
         dia_btn_yellow.setOnClickListener(v -> {
-            if (!ApplicationClass.isTablet)
+            if (!ApplicationClass.getAppMode())
                 gotoNextActivity();
             backHandler.removeCallbacksAndMessages(null);
             exitDialogOpen = false;
@@ -380,6 +412,7 @@ public class SplashActivity extends SplashSupportActivity implements SplashContr
     @UiThread
     @Override
     public void gotoNextActivity() {
+        startCheck++;
         File direct;
         direct = new File(Environment.getExternalStorageDirectory().toString() + "/.FCAInternal");
         if (!direct.exists())
@@ -399,8 +432,14 @@ public class SplashActivity extends SplashSupportActivity implements SplashContr
         //        if(FastSave.getInstance().getBoolean(FC_Constants.newDataLanguageInserted, false))
 //            splashPresenter.insertNewData();
         splashPresenter.updateVersionApp();
-        if (!ApplicationClass.isTablet) {
-            splashPresenter.pushData();
+        if (!ApplicationClass.getAppMode()) {
+//            Temporary
+            bgPushService = new BackgroundPushService();
+            mServiceIntent = new Intent(this, bgPushService.getClass());
+            if (!isMyServiceRunning(bgPushService.getClass())) {
+                startService(mServiceIntent);
+            }
+//            splashPresenter.pushData();
             dismissProgressDialog();
             Log.d("-CT-", "Before insert new  :::::CURRENT_VERSION::::: " + FastSave.getInstance().getString(CURRENT_VERSION, "NA"));
             Log.d("-CT-", "Before insert new  ::::getCurrentVersion:::: " + FC_Utility.getCurrentVersion(context));
@@ -415,8 +454,13 @@ public class SplashActivity extends SplashSupportActivity implements SplashContr
                     showBottomFragment();
             }
         } else {
+            bgPushService = new BackgroundPushService();
+            mServiceIntent = new Intent(this, bgPushService.getClass());
+            if (!isMyServiceRunning(bgPushService.getClass())) {
+                startService(mServiceIntent);
+            }
             dismissProgressDialog();
-            startActivity(new Intent(context, MenuActivity_.class));
+            startActivity(new Intent(this, MenuActivity_.class));
             finish();
         }
     }

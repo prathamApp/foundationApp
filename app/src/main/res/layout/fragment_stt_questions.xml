@@ -47,7 +47,7 @@
                 android:layout_marginTop="@dimen/_80sdp"
                 android:background="@drawable/ripple_rectangle_card">
 
-                <com.pratham.foundation.customView.SansTextViewBold
+                <com.pratham.foundation.customView.fontsview.SansTextViewBold
                     android:id="@+id/silence_tv"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
@@ -77,7 +77,7 @@
     <!--            android:layout_width="match_parent"-->
     <!--            android:layout_height="match_parent">-->
 
-    <!--            <com.pratham.foundation.customView.SansTextViewBold-->
+    <!--            <com.pratham.foundation.customView.fontsview.SansTextViewBold-->
     <!--                android:id="@+id/tv_story_title"-->
     <!--                android:layout_width="match_parent"-->
     <!--                android:layout_height="match_parent"-->
@@ -90,7 +90,7 @@
     <!--        </RelativeLayout>-->
     <!--    </android.support.design.card.MaterialCardView>-->
 
-    <com.pratham.foundation.customView.SansTextViewBold
+    <com.pratham.foundation.customView.fontsview.SansTextViewBold
         android:id="@+id/tv_story_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -121,7 +121,7 @@
         android:elevation="5dp"
         android:padding="@dimen/_5sdp">
 
-        <com.pratham.foundation.customView.SansTextView
+        <com.pratham.foundation.customView.fontsview.SansTextView
             android:id="@+id/stt_ans_tv"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -137,7 +137,7 @@
         android:layout_height="wrap_content"
         android:layout_above="@+id/bottom_bar"
         android:layout_centerHorizontal="true">
-    <com.pratham.foundation.customView.SansButton
+    <com.pratham.foundation.customView.fontsview.SansButton
         android:id="@+id/hint_btn"
         android:layout_width="150dp"
         android:layout_height="80dp"

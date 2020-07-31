@@ -25,7 +25,7 @@
             android:scaleType="center"
             app:srcCompat="@drawable/ic_left_arrow_white" />
 
-        <com.pratham.foundation.customView.SansTextView
+        <com.pratham.foundation.customView.fontsview.SansTextView
             android:id="@+id/txt_level"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -43,7 +43,7 @@
             android:layout_below="@+id/main_back"
             android:layout_marginStart="@dimen/_15sdp">
 
-            <com.pratham.foundation.customView.SansTextViewBold
+            <com.pratham.foundation.customView.fontsview.SansTextViewBold
                 android:id="@+id/tv_Topic"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -81,7 +81,7 @@
                 android:marqueeRepeatLimit="marquee_forever"
                 android:scrollHorizontally="true"
                 android:orientation="horizontal">
-                <com.pratham.foundation.customView.SansTextView
+                <com.pratham.foundation.customView.fontsview.SansTextView
                     android:id="@+id/tv_Activity"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -92,7 +92,7 @@
                     android:textColor="@color/oslo_grey"
                     android:textSize="@dimen/_18sdp" />
 
-                <com.pratham.foundation.customView.SansTextViewBold
+                <com.pratham.foundation.customView.fontsview.SansTextViewBold
                     android:id="@+id/tv_header_progress"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -139,7 +139,7 @@
 <!--            android:scaleType="center"-->
 <!--            app:srcCompat="@drawable/ic_left_arrow_white" />-->
 
-<!--        <com.pratham.foundation.customView.SansTextView-->
+<!--        <com.pratham.foundation.customView.fontsview.SansTextView-->
 <!--            android:id="@+id/txt_level"-->
 <!--            android:layout_width="wrap_content"-->
 <!--            android:layout_height="wrap_content"-->
@@ -165,7 +165,7 @@
 <!--                android:layout_marginEnd="@dimen/_15sdp"-->
 <!--                android:src="@drawable/level_1" />-->
 
-<!--            <com.pratham.foundation.customView.SansTextViewBold-->
+<!--            <com.pratham.foundation.customView.fontsview.SansTextViewBold-->
 <!--                android:id="@+id/tv_Topic"-->
 <!--                android:layout_width="match_parent"-->
 <!--                android:layout_height="wrap_content"-->
@@ -175,7 +175,7 @@
 <!--                android:textColor="@color/colorBlack"-->
 <!--                android:textSize="@dimen/_22sdp" />-->
 
-<!--            <com.pratham.foundation.customView.SansTextView-->
+<!--            <com.pratham.foundation.customView.fontsview.SansTextView-->
 <!--                android:id="@+id/tv_Activity"-->
 <!--                android:layout_width="wrap_content"-->
 <!--                android:layout_height="wrap_content"-->
@@ -186,7 +186,7 @@
 <!--                android:textColor="@color/oslo_grey"-->
 <!--                android:textSize="@dimen/_18sdp" />-->
 
-<!--            <com.pratham.foundation.customView.SansTextViewBold-->
+<!--            <com.pratham.foundation.customView.fontsview.SansTextViewBold-->
 <!--                android:id="@+id/tv_header_progress"-->
 <!--                android:layout_width="wrap_content"-->
 <!--                android:layout_height="wrap_content"-->
@@ -266,7 +266,7 @@
                 android:layout_marginStart="60dp"
                 android:layout_alignParentTop="true">
 
-                <com.pratham.foundation.customView.SansTextView
+                <com.pratham.foundation.customView.fontsview.SansTextView
                     android:id="@+id/tv_Topic"
                     android:layout_width="match_parent"
                     android:layout_height="43dp"
@@ -278,7 +278,7 @@
                     android:text="Topic"
                     android:textSize="32dp" />
 
-                <com.pratham.foundation.customView.SansTextView
+                <com.pratham.foundation.customView.fontsview.SansTextView
                     android:id="@+id/tv_Activity"
                     android:layout_width="match_parent"
                     android:layout_height="33dp"

@@ -149,7 +149,7 @@ public class Student_profile_activity extends Fragment implements Student_profil
                 if (sImage != null) {
                     if (sImage.equalsIgnoreCase("group_icon"))
                         profileImage.setImageResource(R.drawable.ic_grp_btn);
-                    else if (!FC_Constants.GROUP_LOGIN && ApplicationClass.isTablet)
+                    else if (!FC_Constants.GROUP_LOGIN && ApplicationClass.getAppMode())
                         profileImage.setImageResource(R.drawable.b2);
                     else {
                         profileImage.setImageResource(R.drawable.b2);

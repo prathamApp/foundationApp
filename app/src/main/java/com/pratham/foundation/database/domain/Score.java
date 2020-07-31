@@ -12,7 +12,6 @@ public class Score implements Serializable {
 
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "ScoreId")
-	
     private int ScoreId;
     @ColumnInfo(name = "SessionID")
     private String SessionID;

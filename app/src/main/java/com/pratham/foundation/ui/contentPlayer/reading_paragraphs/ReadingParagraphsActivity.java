@@ -29,8 +29,8 @@ import com.pratham.foundation.ApplicationClass;
 import com.pratham.foundation.BaseActivity;
 import com.pratham.foundation.R;
 import com.pratham.foundation.customView.RipplePulseLayout;
-import com.pratham.foundation.customView.SansTextView;
 import com.pratham.foundation.customView.display_image_dialog.CustomLodingDialog;
+import com.pratham.foundation.customView.fontsview.SansTextView;
 import com.pratham.foundation.modalclasses.ModalParaWord;
 import com.pratham.foundation.services.shared_preferences.FastSave;
 import com.pratham.foundation.services.stt.ContinuousSpeechService_New;
@@ -107,7 +107,7 @@ public class ReadingParagraphsActivity extends BaseActivity
     Handler handler, colorChangeHandler, quesReadHandler, endhandler;
     CustomLodingDialog nextDialog;
     static boolean[] correctArr;
-    boolean readingFlg, playingFlg, fragFlg = false, onSdCard;
+    boolean readingFlg, playingFlg, fragFlg = false, onSdCard,diaOpen=false;
     List<ModalParaWord> modalParaWordList;
     String readingContentPath, contentPath, contentTitle, StudentID, resId, paraAudio,
             useText, englishWord, startPlayBack, resStartTime, certiCode, resType;
@@ -547,47 +547,55 @@ public class ReadingParagraphsActivity extends BaseActivity
 
     @SuppressLint("SetTextI18n")
     public void showAcknowledgeDialog(boolean diaComplete) {
-        final CustomLodingDialog dialog = new CustomLodingDialog(this, R.style.FC_DialogStyle);
-        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        Objects.requireNonNull(dialog.getWindow()).setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-        dialog.setContentView(R.layout.fc_custom_dialog);
-        dialog.setCanceledOnTouchOutside(false);
+        if(!diaOpen) {
+            diaOpen = true;
+            final CustomLodingDialog dialog = new CustomLodingDialog(this, R.style.FC_DialogStyle);
+            dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+            Objects.requireNonNull(dialog.getWindow()).setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+            dialog.setContentView(R.layout.fc_custom_dialog);
+            dialog.setCanceledOnTouchOutside(false);
 
-        TextView dia_title = dialog.findViewById(R.id.dia_title);
-        Button dia_btn_yellow = dialog.findViewById(R.id.dia_btn_yellow);
-        Button dia_btn_green = dialog.findViewById(R.id.dia_btn_green);
-        Button dia_btn_red = dialog.findViewById(R.id.dia_btn_red);
+            TextView dia_title = dialog.findViewById(R.id.dia_title);
+            Button dia_btn_yellow = dialog.findViewById(R.id.dia_btn_yellow);
+            Button dia_btn_green = dialog.findViewById(R.id.dia_btn_green);
+            Button dia_btn_red = dialog.findViewById(R.id.dia_btn_red);
 
-        dia_btn_green.setText("Yes");
-        dia_btn_red.setText("No");
-        dia_btn_yellow.setText("" + dialog_btn_cancel);
-        dialog.show();
+            dia_btn_green.setText("Yes");
+            dia_btn_red.setText("No");
+            dia_btn_yellow.setText("" + dialog_btn_cancel);
+            dialog.show();
 
-        if (!diaComplete)
-            dia_title.setText("'" + contentTitle + "'");
-        else if (FastSave.getInstance().getString(APP_SECTION,"").equalsIgnoreCase(sec_Test)) {
-            dia_title.setText("Good Job\nRead another one???");
-        } else {
-            dia_title.setText("Good Job\nRead another one???");
-        }
-        dia_btn_yellow.setOnClickListener(v -> dialog.dismiss());
-        dia_btn_red.setOnClickListener(v -> dialog.dismiss());
-
-        dia_btn_green.setOnClickListener(v -> {
-            dialog.dismiss();
-            if (FastSave.getInstance().getString(APP_SECTION,"").equalsIgnoreCase(sec_Test)) {
-                Intent returnIntent = new Intent();
-                returnIntent.putExtra("cCode", certiCode);
-                returnIntent.putExtra("sMarks", presenter.getCorrectCounter());
-                returnIntent.putExtra("tMarks", presenter.getTotalCount());
-                setResult(Activity.RESULT_OK, returnIntent);
+            if (!diaComplete)
+                dia_title.setText("Exit\n'" + contentTitle + "'");
+            else if (FastSave.getInstance().getString(APP_SECTION, "").equalsIgnoreCase(sec_Test)) {
+                dia_title.setText("Good Job\nRead another one???");
+            } else {
+                dia_title.setText("Good Job\nRead another one???");
             }
-            if (resType.equalsIgnoreCase(FC_Constants.PARA_VOCAB_ANDROID))
-                presenter.addParaVocabProgress();
-            else
-                presenter.exitDBEntry();
-            finish();
-        });
+            dia_btn_yellow.setOnClickListener(v -> {dialog.dismiss();
+                diaOpen = false;
+            });
+            dia_btn_red.setOnClickListener(v -> {dialog.dismiss();
+                diaOpen = false;
+            });
+
+            dia_btn_green.setOnClickListener(v -> {
+                diaOpen = false;
+                if (FastSave.getInstance().getString(APP_SECTION, "").equalsIgnoreCase(sec_Test)) {
+                    Intent returnIntent = new Intent();
+                    returnIntent.putExtra("cCode", certiCode);
+                    returnIntent.putExtra("sMarks", presenter.getCorrectCounter());
+                    returnIntent.putExtra("tMarks", presenter.getTotalCount());
+                    setResult(Activity.RESULT_OK, returnIntent);
+                }
+                if (resType.equalsIgnoreCase(FC_Constants.PARA_VOCAB_ANDROID))
+                    presenter.addParaVocabProgress();
+                else
+                    presenter.exitDBEntry();
+                dialog.dismiss();
+                finish();
+            });
+        }
     }
 
     @UiThread

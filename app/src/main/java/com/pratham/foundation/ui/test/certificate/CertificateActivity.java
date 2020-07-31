@@ -130,14 +130,17 @@ public class CertificateActivity extends BaseActivity implements CertificateCont
             presenter.proceed(certiData, nodeId);
         } else {
 
-            if (CertiTitle.equalsIgnoreCase("0"))
+            if (CertiTitle.equalsIgnoreCase("1"))
                 tv_certi_level.setText("Beginner");
-            else if (CertiTitle.equalsIgnoreCase("1"))
-                tv_certi_level.setText("Sub junior");
             else if (CertiTitle.equalsIgnoreCase("2"))
-                tv_certi_level.setText("Junior");
+                tv_certi_level.setText("Sub junior");
             else if (CertiTitle.equalsIgnoreCase("3"))
+                tv_certi_level.setText("Junior");
+            else if (CertiTitle.equalsIgnoreCase("4"))
                 tv_certi_level.setText("Sub Senior");
+            else if (CertiTitle.equalsIgnoreCase("5"))
+                tv_certi_level.setText("Sub Senior");
+
             if (!assessmentProfile.getDeviceIDa().equalsIgnoreCase("na")) {
                 rl_supervisedby.setVisibility(View.VISIBLE);
                 presenter.getSupervisorData(certiMode);
@@ -270,7 +273,7 @@ public class CertificateActivity extends BaseActivity implements CertificateCont
         clicked_Pos = position;
         String gameID = ContentTableList.get(position).getResourceId();
         gameLevel = ContentTableList.get(position).getNodeAge();
-        if (!ApplicationClass.isTablet)
+        if (!ApplicationClass.getAppMode())
             resPath = ApplicationClass.foundationPath + gameFolderPath + "/" +
                     ContentTableList.get(position).getResourcePath();
         else

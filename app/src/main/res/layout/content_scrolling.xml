@@ -7,17 +7,17 @@
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:showIn="@layout/fragment_story_reading_2">
 
-            <com.nex3z.flowlayout.FlowLayout xmlns:app="http://schemas.android.com/apk/res-auto"
-                android:id="@+id/myflowlayout"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/_10sdp"
-                android:layout_marginEnd="@dimen/_10sdp"
-                android:elevation="5dp"
-                android:layout_marginTop="10dp"
-                style="@style/paragraph"
-                android:layout_below="@+id/image_container"
-                android:paddingHorizontal="10dp"
-                app:flChildSpacing="10dp" />
+    <com.nex3z.flowlayout.FlowLayout xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/myflowlayout"
+        style="@style/paragraph"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/image_container"
+        android:layout_marginStart="@dimen/_10sdp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="@dimen/_10sdp"
+        android:elevation="5dp"
+        android:paddingHorizontal="10dp"
+        app:flChildSpacing="10dp" />
 
 </android.support.v4.widget.NestedScrollView>

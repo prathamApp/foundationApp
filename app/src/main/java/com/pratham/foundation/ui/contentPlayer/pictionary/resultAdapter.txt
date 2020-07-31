@@ -13,7 +13,7 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.pratham.foundation.R;
 import com.pratham.foundation.customView.GifView;
-import com.pratham.foundation.customView.SansTextView;
+import com.pratham.foundation.customView.fontsview.SansTextView;
 import com.pratham.foundation.modalclasses.ScienceQuestionChoice;
 
 import java.io.FileInputStream;

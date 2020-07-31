@@ -1,0 +1,123 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/new_bg"
+    tools:context=".ui.admin_panel.fragment_admin_panel.PushOrAssign.PushOrAssignFragment">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <RelativeLayout
+            android:id="@+id/topPanel"
+            android:layout_width="match_parent"
+            android:layout_height="70dp"
+            android:layout_alignParentTop="true">
+
+            <ImageButton
+                android:id="@+id/btn_back"
+                android:layout_width="50dp"
+                android:layout_height="match_parent"
+                android:layout_centerVertical="true"
+                android:background="?android:selectableItemBackground"
+                android:padding="@dimen/_5sdp"
+                android:src="@drawable/ic_left_arrow_white" />
+
+            <com.pratham.foundation.customView.fontsview.SansTextViewBold
+                android:id="@+id/title"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_centerInParent="true"
+                android:layout_marginStart="@dimen/_10sdp"
+                android:layout_marginEnd="@dimen/_5sdp"
+                android:layout_toStartOf="@+id/just_view"
+                android:layout_toEndOf="@+id/btn_back"
+                android:text="Menu"
+                android:gravity="center_vertical"
+                android:textColor="@color/colorText"
+                android:textSize="@dimen/_18sdp"
+                android:textStyle="bold" />
+
+            <View
+                android:id="@+id/just_view"
+                android:layout_width="50dp"
+                android:layout_height="match_parent"
+                android:layout_alignParentEnd="true" />
+        </RelativeLayout>
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:fadeScrollbars="false"
+                    android:scrollbarSize="6dp"
+        android:scrollbarThumbVertical="@drawable/card_color_bg4"
+        android:scrollbarTrackVertical="@drawable/scroll_bg"
+
+            android:layout_below="@id/topPanel">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <com.pratham.foundation.customView.fontsview.SansButton
+                    android:id="@+id/btn_download_all_data"
+                    android:layout_width="@dimen/_150sdp"
+                    android:layout_height="@dimen/_50sdp"
+                    android:layout_marginVertical="@dimen/_10sdp"
+                    android:background="@drawable/button_yellow"
+                    android:visibility="gone"
+                    android:text="Download all data"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/_12sdp" />
+
+                <com.pratham.foundation.customView.fontsview.SansButton
+                    android:id="@+id/btn_assign"
+                    android:layout_width="@dimen/_150sdp"
+                    android:layout_height="@dimen/_50sdp"
+                    android:layout_marginVertical="@dimen/_10sdp"
+                    android:background="@drawable/button_green"
+                    android:text="Assign Groups"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/_12sdp" />
+
+                <com.pratham.foundation.customView.fontsview.SansButton
+                    android:id="@+id/btn_push"
+                    android:layout_width="@dimen/_150sdp"
+                    android:layout_height="@dimen/_50sdp"
+                    android:layout_marginVertical="@dimen/_10sdp"
+                    android:background="@drawable/button_yellow"
+                    android:text="Push Data"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/_12sdp" />
+
+                <com.pratham.foundation.customView.fontsview.SansButton
+                    android:id="@+id/btn_clearData"
+                    android:layout_width="@dimen/_150sdp"
+                    android:layout_height="@dimen/_50sdp"
+                    android:layout_marginVertical="@dimen/_10sdp"
+                    android:background="@drawable/button_blue"
+                    android:text="Clear Data (Smart Phone View)"
+                    android:visibility="visible"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/_12sdp" />
+
+                <com.pratham.foundation.customView.fontsview.SansButton
+                    android:id="@+id/btn_Usage"
+                    android:layout_width="@dimen/_150sdp"
+                    android:layout_height="@dimen/_50sdp"
+                    android:layout_marginVertical="@dimen/_10sdp"
+                    android:background="@drawable/button_purple"
+                    android:visibility="visible"
+                    android:text="Device Usage"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/_12sdp" />
+
+            </LinearLayout>
+        </ScrollView>
+    </RelativeLayout>
+
+</FrameLayout>

@@ -291,7 +291,7 @@ public class ReadingVocabularyPresenter implements ReadingVocabularyContract.Rea
     }
 
     public void addLearntWords(String word) {
-        boolean wordPresent = checkWord(word);
+        boolean wordPresent = checkWord(word.toLowerCase());
         if (!wordPresent) {
             KeyWords learntWords = new KeyWords();
             learntWords.setResourceId(resId);

@@ -1,6 +1,9 @@
 package com.pratham.foundation.async;
 
+import android.annotation.SuppressLint;
+import android.app.ActivityManager;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Environment;
@@ -36,8 +39,10 @@ import com.pratham.foundation.database.domain.Session;
 import com.pratham.foundation.database.domain.Student;
 import com.pratham.foundation.database.domain.SupervisorData;
 import com.pratham.foundation.modalclasses.Image_Upload;
+import com.pratham.foundation.services.background_service.BackgroundPushService;
 import com.pratham.foundation.services.shared_preferences.FastSave;
 import com.pratham.foundation.utility.FC_Constants;
+import com.pratham.foundation.utility.FC_Utility;
 
 import org.androidannotations.annotations.Background;
 import org.androidannotations.annotations.EBean;
@@ -50,6 +55,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.Executors;
+
+import static com.pratham.foundation.utility.FC_Constants.IS_SERVICE_STOPED;
+import static com.pratham.foundation.utility.FC_Constants.failed_ImageLength;
+import static com.pratham.foundation.utility.FC_Constants.pushedScoreLength;
+import static com.pratham.foundation.utility.FC_Constants.successful_ImageLength;
+import static com.pratham.foundation.utility.FC_Constants.syncTime;
 
 @EBean
 public class PushDataToServer_New {
@@ -72,7 +83,7 @@ public class PushDataToServer_New {
     private File[] imageFilesArray;
     private List<Image_Upload> imageUploadList;
     private Boolean isConnectedToRasp = false;
-    boolean isRaspberry = false;
+    boolean isRaspberry = false, showUi = false;
     private String programID = "";
     public TextView dialog_file_name;
     CustomLodingDialog pushDialog;
@@ -96,12 +107,14 @@ public class PushDataToServer_New {
         assessmentData = new JSONArray();
         contentProgress = new JSONArray();
         imageUploadList = new ArrayList<>();
+        showUi = false;
     }
 
     @Background
-    public void startDataPush(Context context) {
+    public void startDataPush(Context context, boolean showUi) {
         this.context = context;
-        if (ApplicationClass.isTablet)
+        this.showUi = showUi;
+        if (showUi)
             showPushDialog(context);
         try {
             setMainTextToDialog("Collecting Data...");
@@ -153,13 +166,13 @@ public class PushDataToServer_New {
 
     @UiThread
     public void setMainTextToDialog(String dialogMsg) {
-        if (ApplicationClass.isTablet)
+        if (showUi)
             txt_push_dialog_msg.setText("" + dialogMsg);
     }
 
     @UiThread
     public void setSubTextToDialog(String dialogMsg) {
-        if (ApplicationClass.isTablet) {
+        if (showUi) {
             txt_push_error.setVisibility(View.VISIBLE);
             txt_push_error.setText("" + dialogMsg);
         }
@@ -167,7 +180,7 @@ public class PushDataToServer_New {
 
     @UiThread
     public void showPushDialog(Context context) {
-        if (ApplicationClass.isTablet) {
+        if (showUi) {
             pushDialog = new CustomLodingDialog(context, R.style.FC_DialogStyle);
             pushDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
             pushDialog.setContentView(R.layout.app_send_success_dialog);
@@ -201,9 +214,10 @@ public class PushDataToServer_New {
         }
     }
 
-    public void pushDataToServer(Context context, JSONObject data, String url) {
+    // Call only this method, do the data collection before
+    public void pushDataToServer(Context context, JSONObject data, String... url) {
         try {
-            AndroidNetworking.post(url)
+            AndroidNetworking.post(url[0])
                     .addHeaders("Content-Type", "application/json")
                     .addJSONObjectBody(data)
                     .setPriority(Priority.HIGH)
@@ -212,7 +226,7 @@ public class PushDataToServer_New {
                         @Override
                         public void onResponse(String response) {
                             if (response.equalsIgnoreCase("success")) {
-                                Log.d("PushData", "Data pushed successfully");
+                                Log.d("PushData", "DATA PUSH SUCCESS");
                                 pushSuccessfull = true;
                                 setDataPushSuccessfull();
                             } else {
@@ -223,7 +237,7 @@ public class PushDataToServer_New {
 
                         @Override
                         public void onError(ANError anError) {
-                            Log.d("PushData", "Data push failed");
+                            Log.d("PushData", "Data push FAIL");
                             pushSuccessfull = false;
                             setDataPushFailed();
                         }
@@ -236,7 +250,7 @@ public class PushDataToServer_New {
     @UiThread
     public void setDataPushSuccessfull() {
         setPushFlag();
-        if (ApplicationClass.isTablet) {
+        if (showUi) {
             setMainTextToDialog("Data pushed successfully\n Score Count : " + scoreData.length() +
                     "\n\nNow Upload Media..");
             ok_btn.setText("OK");
@@ -249,7 +263,7 @@ public class PushDataToServer_New {
 
     @UiThread
     public void hideOKBtn() {
-        if (ApplicationClass.isTablet) {
+        if (showUi) {
             ok_btn.setText("OK");
             ok_btn.setVisibility(View.GONE);
         }
@@ -257,7 +271,7 @@ public class PushDataToServer_New {
 
     @UiThread
     public void setDataPushFailed() {
-        if (ApplicationClass.isTablet) {
+        if (showUi) {
             setMainTextToDialog("OOPS...");
             setSubTextToDialog("Data pushed failed");
             push_lottie.setAnimation("error_cross.json");
@@ -281,7 +295,7 @@ public class PushDataToServer_New {
         AppDatabase.getDatabaseInstance(context).getStudentDao().setSentFlag();
         AppDatabase.getDatabaseInstance(context).getKeyWordDao().setSentFlag();
         AppDatabase.getDatabaseInstance(context).getContentProgressDao().setSentFlag();
-        AppDatabase.getDatabaseInstance(context).getLogsDao().deletePushedLogs();
+//        AppDatabase.getDatabaseInstance(context).getLogsDao().deletePushedLogs();
     }
 
     @Background
@@ -289,14 +303,14 @@ public class PushDataToServer_New {
         setMainTextToDialog("Collecting Media");
         hideOKBtn();
         actPhotoPath = Environment.getExternalStorageDirectory().toString() + "/.FCAInternal/ActivityPhotos/";
-        Log.d("PushData", "Path: " + actPhotoPath);
+//        Log.d("PushData", "Path: " + actPhotoPath);
         File directory = new File(actPhotoPath);
         imageFilesArray = directory.listFiles();
-        Log.d("PushData", "Size: " + imageFilesArray.length);
+//        Log.d("PushData", "Size: " + imageFilesArray.length);
 
         for (int index = 0; index < imageFilesArray.length; index++) {
             if (imageFilesArray[index].exists() && imageFilesArray[index].isDirectory()) {
-                Log.d("PushData", "FolderName:" + imageFilesArray[index].getName());
+//                Log.d("PushData", "FolderName:" + imageFilesArray[index].getName());
                 File activityPhotosFile = new File(imageFilesArray[index].getAbsolutePath());
                 File[] file = activityPhotosFile.listFiles();
                 if (file.length > 0) {
@@ -305,7 +319,7 @@ public class PushDataToServer_New {
                                 && !file[i].getName().equalsIgnoreCase(".nomedia")) {
                             String fName = file[i].getName();
                             File fPath = new File(file[i].getAbsolutePath());
-                            Log.d("PushData", "FileName:" + fName);
+//                            Log.d("PushData", "FileName:" + fName);
                             if (AppDatabase.getDatabaseInstance(context).getScoreDao().getSentFlag(fName) == 0) {
                                 Image_Upload image_upload = new Image_Upload();
                                 image_upload.setFileName(fName);
@@ -321,7 +335,7 @@ public class PushDataToServer_New {
                 File fPath = new File(imageFilesArray[index].getAbsolutePath());
                 String fName = imageFilesArray[index].getName();
                 if (AppDatabase.getDatabaseInstance(context).getScoreDao().getSentFlag(fName) == 0) {
-                    Log.d("PushData", "FileName:" + imageFilesArray[index].getName());
+//                    Log.d("PushData", "FileName:" + imageFilesArray[index].getName());
                     Image_Upload image_upload = new Image_Upload();
                     image_upload.setFileName(fName);
                     image_upload.setFilePath(fPath);
@@ -333,7 +347,7 @@ public class PushDataToServer_New {
 
         imageUploadCnt = 0;
         totalImages = imageUploadList.size();
-        Log.d("PushData", "Size: " + imageUploadList.size());
+//        Log.d("PushData", "Size: " + imageUploadList.size());
         if (imageUploadList.size() > 0) {
             setMainTextToDialog("Uploading " + totalImages + " images.");
             pushImagesToServer(0);
@@ -344,13 +358,13 @@ public class PushDataToServer_New {
 
     @UiThread
     public void updateCntr(int imgCtr) {
-        if (ApplicationClass.isTablet)
+        if (showUi)
             dialog_file_name.setText("Uploading " + imgCtr + "/" + totalImages);
     }
 
     @UiThread
     public void pushImagesToServer(final int jsonIndex) {
-        Log.d("PushData", "Image jsonIndex : " + jsonIndex);
+//        Log.d("PushData", "Image jsonIndex : " + jsonIndex);
         if (jsonIndex < imageUploadList.size()) {
             AndroidNetworking.upload(FC_Constants.PUSH_IMAGE_API)
                     .addMultipartFile(imageUploadList.get(jsonIndex).getFileName(),
@@ -362,7 +376,7 @@ public class PushDataToServer_New {
                         public void onResponse(String response) {
                             try {
                                 Log.d("PushData", "Image onResponse : " + response);
-                                Log.d("PushData", "Image onResponse File name : " + imageUploadList.get(jsonIndex).getFileName());
+//                                Log.d("PushData", "Image onResponse File name : " + imageUploadList.get(jsonIndex).getFileName());
                                 if (response.equalsIgnoreCase("success")) {
                                     imageUploadCnt++;
                                     Log.d("PushData", "imageUploadCnt : " + imageUploadCnt);
@@ -376,19 +390,21 @@ public class PushDataToServer_New {
 
                         @Override
                         public void onError(ANError anError) {
-                            Log.d("PushData", "Image onError : " + imageUploadList.get(jsonIndex).getFileName());
+                            Log.d("PushData", "IMAGE onError : " + imageUploadList.get(jsonIndex).getFileName());
                             pushImagesToServer(jsonIndex + 1);
                         }
                     });
         } else {
-            Log.d("PushData", "Before onPostImageExecute");
+            Log.d("PushData", "IMAGES COMPLETE");
             showTotalImgStatus();
         }
     }
 
+    @SuppressLint("SetTextI18n")
     @UiThread
     public void showTotalImgStatus() {
         int successfulCntr = 0, failedCntr = 0;
+        Log.d("PushData", "IMAGES COMPLETE");
 
         for (int i = 0; i < imageUploadList.size(); i++) {
             if (imageUploadList.get(i).isUploadStatus()) {
@@ -398,7 +414,19 @@ public class PushDataToServer_New {
                 failedCntr++;
         }
 
-        if (ApplicationClass.isTablet) {
+        if(pushSuccessfull)
+            pushedScoreLength = ""+scoreData.length();
+        else
+            pushedScoreLength = "0";
+        successful_ImageLength = ""+successfulCntr;
+        failed_ImageLength = ""+failedCntr;
+        syncTime = FC_Utility.getCurrentDateTime();
+
+        FastSave.getInstance().saveString(FC_Constants.SYNC_TIME, syncTime);
+        FastSave.getInstance().saveString(FC_Constants.SYNC_DATA_LENGTH, pushedScoreLength);
+        FastSave.getInstance().saveString(FC_Constants.SYNC_MEDIA_LENGTH, successful_ImageLength);
+
+        if (showUi) {
             ok_btn.setVisibility(View.GONE);
             eject_btn.setText("Close");
             eject_btn.setVisibility(View.VISIBLE);
@@ -409,6 +437,27 @@ public class PushDataToServer_New {
             setSubTextToDialog("Score Count : " + scoreData.length() + "\nImages Successful : "
                     + successfulCntr + "\nImages Failed : " + failedCntr);
         }
+
+        BackgroundPushService mYourService;
+        mYourService = new BackgroundPushService();
+        Intent mServiceIntent;
+        mServiceIntent = new Intent(context, mYourService.getClass());
+        FastSave.getInstance().saveBoolean(IS_SERVICE_STOPED, true);
+        Log.d("PushData", "End Service  IS_STOPPED : " + FastSave.getInstance().getBoolean(IS_SERVICE_STOPED, false));
+        if (isMyServiceRunning(mYourService.getClass())) context.stopService(mServiceIntent);
+
+    }
+
+    private boolean isMyServiceRunning(Class<?> serviceClass) {
+        ActivityManager manager = (ActivityManager) context.getSystemService(Context.ACTIVITY_SERVICE);
+        for (ActivityManager.RunningServiceInfo service : manager.getRunningServices(Integer.MAX_VALUE)) {
+            if (serviceClass.getName().equals(service.service.getClassName())) {
+                Log.i ("MAINACT", "isMyServiceRunning?  " + true);
+                return true;
+            }
+        }
+        Log.i ("MAINACT", "isMyServiceRunning?  " + false);
+        return false;
     }
 
     @Background
@@ -521,7 +570,7 @@ public class PushDataToServer_New {
             metaDataObj.put("prathamCode", AppDatabase.getDatabaseInstance(context).getStatusDao().getValue("prathamCode"));
             metaDataObj.put("programId", AppDatabase.getDatabaseInstance(context).getStatusDao().getValue("programId"));
             metaDataObj.put("WifiMAC", AppDatabase.getDatabaseInstance(context).getStatusDao().getValue("wifiMAC"));
-            if (ApplicationClass.isTablet)
+            if (showUi)
                 metaDataObj.put("apkType", "Tablet");
             else
                 metaDataObj.put("apkType", "SmartPhone");
@@ -537,7 +586,7 @@ public class PushDataToServer_New {
             metaDataObj.put("ScreenResolution", AppDatabase.getDatabaseInstance(context).getStatusDao().getValue("ScreenResolution"));
 
             sessionObj.put("scoreData", scoreData);
-            if (!ApplicationClass.isTablet)
+            if (!showUi)
                 sessionObj.put("studentData", studentData);
             sessionObj.put("attendanceData", attendanceData);
             sessionObj.put("sessionsData", sessionData);

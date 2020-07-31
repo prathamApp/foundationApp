@@ -14,7 +14,7 @@
         android:layout_height="match_parent"
         android:layout_below="@id/space">
 
-        <com.pratham.foundation.customView.SansTextViewBold
+        <com.pratham.foundation.customView.fontsview.SansTextViewBold
             android:id="@+id/keyword"
             style="@style/tittle"
             android:layout_width="match_parent"

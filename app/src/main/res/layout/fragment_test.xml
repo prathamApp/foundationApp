@@ -15,7 +15,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 
-    <com.pratham.foundation.customView.SansButton
+    <com.pratham.foundation.customView.fontsview.SansButton
         android:id="@+id/btn_test_dw"
         android:layout_width="190dp"
         android:layout_height="50dp"
@@ -63,7 +63,7 @@
             android:layout_centerHorizontal="true"
             android:src="@drawable/no_usage_data" />
 
-        <com.pratham.foundation.customView.SansTextViewBold
+        <com.pratham.foundation.customView.fontsview.SansTextViewBold
             android:id="@+id/nodata_tv"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

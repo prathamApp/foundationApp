@@ -20,7 +20,7 @@
             android:padding="@dimen/_5sdp"
             android:src="@drawable/ic_left_arrow_white" />
 
-        <com.pratham.foundation.customView.SansTextViewBold
+        <com.pratham.foundation.customView.fontsview.SansTextViewBold
             android:id="@+id/cat_title"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
@@ -60,7 +60,7 @@
                 android:scrollbarThumbVertical="@drawable/card_color_bg4"
                 android:scrollbarTrackVertical="@drawable/scroll_bg">
 
-                <com.pratham.foundation.customView.SansTextView
+                <com.pratham.foundation.customView.fontsview.SansTextView
                     android:id="@+id/text_intro"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"

@@ -24,7 +24,7 @@
                 android:padding="@dimen/_5sdp"
                 android:src="@drawable/ic_left_arrow_white" />
 
-            <com.pratham.foundation.customView.SansTextViewBold
+            <com.pratham.foundation.customView.fontsview.SansTextViewBold
                 android:id="@+id/title"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
@@ -63,7 +63,7 @@
                 android:gravity="center"
                 android:orientation="vertical">
 
-                <com.pratham.foundation.customView.SansButton
+                <com.pratham.foundation.customView.fontsview.SansButton
                     android:id="@+id/btn_download_all_data"
                     android:layout_width="@dimen/_150sdp"
                     android:layout_height="@dimen/_50sdp"
@@ -74,7 +74,7 @@
                     android:textColor="@color/white"
                     android:textSize="@dimen/_12sdp" />
 
-                <com.pratham.foundation.customView.SansButton
+                <com.pratham.foundation.customView.fontsview.SansButton
                     android:id="@+id/btn_assign"
                     android:layout_width="@dimen/_150sdp"
                     android:layout_height="@dimen/_50sdp"
@@ -84,7 +84,7 @@
                     android:textColor="@color/white"
                     android:textSize="@dimen/_12sdp" />
 
-                <com.pratham.foundation.customView.SansButton
+                <com.pratham.foundation.customView.fontsview.SansButton
                     android:id="@+id/btn_push"
                     android:layout_width="@dimen/_150sdp"
                     android:layout_height="@dimen/_50sdp"
@@ -94,7 +94,7 @@
                     android:textColor="@color/white"
                     android:textSize="@dimen/_12sdp" />
 
-                <com.pratham.foundation.customView.SansButton
+                <com.pratham.foundation.customView.fontsview.SansButton
                     android:id="@+id/btn_progress"
                     android:layout_width="@dimen/_150sdp"
                     android:layout_height="@dimen/_50sdp"
@@ -105,7 +105,7 @@
                     android:textColor="@color/white"
                     android:textSize="@dimen/_12sdp" />
 
-                <com.pratham.foundation.customView.SansButton
+                <com.pratham.foundation.customView.fontsview.SansButton
                     android:id="@+id/btn_Usage"
                     android:layout_width="@dimen/_150sdp"
                     android:layout_height="@dimen/_50sdp"

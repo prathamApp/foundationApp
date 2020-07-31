@@ -118,7 +118,9 @@ public class MatchThePairGameActivity extends BaseActivity implements MatchThePa
             @Override
             protected Object doInBackground(Object... objects) {
 //                matchThePairList=new ArrayList<>();
-                matchThePairList = AppDatabase.getDatabaseInstance(MatchThePairGameActivity.this).getMatchThePairDao().getQuestions(FastSave.getInstance().getString(FC_Constants.LANGUAGE, FC_Constants.HINDI));
+                matchThePairList = AppDatabase.getDatabaseInstance(MatchThePairGameActivity.this)
+                        .getMatchThePairDao()
+                        .getQuestions(FastSave.getInstance().getString(FC_Constants.APP_LANGUAGE, FC_Constants.HINDI));
                 return null;
             }
 
@@ -153,7 +155,8 @@ public class MatchThePairGameActivity extends BaseActivity implements MatchThePa
                     matchThePairList = getDataFromJson();
                     for (int i = 0; i < matchThePairList.size(); i++) {
                         String[] splittedHinList;
-                        if (FastSave.getInstance().getString(FC_Constants.LANGUAGE, FC_Constants.HINDI).equalsIgnoreCase(FC_Constants.HINDI)) {
+                        if (FastSave.getInstance().getString(FC_Constants.APP_LANGUAGE, FC_Constants.HINDI)
+                                .equalsIgnoreCase(FC_Constants.HINDI)) {
                             splittedHinList = splitSentence(matchThePairList.get(i).getLangText(), ("(?<=\\|\\s)|(?<=[?!]\\s)"));
                         } else {
                             splittedHinList = splitSentence(matchThePairList.get(i).getLangText(), ("(?<=\\.\\s)|(?<=[?!]\\s)"));
@@ -175,31 +178,35 @@ public class MatchThePairGameActivity extends BaseActivity implements MatchThePa
 
 
     private void generateQuestions(MatchThePair randomQuestion) {
-        if (questionCnt == 0) {
-            prev.setVisibility(View.GONE);
-        } else prev.setVisibility(View.VISIBLE);
+        try {
+            if (questionCnt == 0) {
+                prev.setVisibility(View.GONE);
+            } else prev.setVisibility(View.VISIBLE);
 
-        englishList.clear();
-        hindiList.clear();
-        String[] splittedHinList;
+            englishList.clear();
+            hindiList.clear();
+            String[] splittedHinList;
 
-        String[] splittedEngList = splitSentence(randomQuestion.getParaText(), ("(?<=\\.\\s)|(?<=[?!]\\s)"));
-        if (FastSave.getInstance().getString(FC_Constants.LANGUAGE, FC_Constants.HINDI).equalsIgnoreCase(FC_Constants.HINDI)) {
-            splittedHinList = splitSentence(randomQuestion.getLangText(), ("(?<=\\|\\s)|(?<=[?!]\\s)"));
-        } else {
-            splittedHinList = splitSentence(randomQuestion.getLangText(), ("(?<=\\.\\s)|(?<=[?!]\\s)"));
-        }
-        if (splittedEngList.length > 0) {
-            for (int splitCnt = 0; splitCnt < splittedEngList.length; splitCnt++) {
-                MatchThePair matchThePair = new MatchThePair();
-                matchThePair.setId(randomQuestion.getId());
-                matchThePair.setParaText(splittedEngList[splitCnt].trim());
-                matchThePair.setLangText(splittedHinList[splitCnt].trim());
-                matchThePair.setParaTitle(randomQuestion.getParaTitle());
-                englishList.add(matchThePair);
+            String[] splittedEngList = splitSentence(randomQuestion.getParaText(), "[!.?|।]+");
+            String langTemp = FastSave.getInstance().getString(FC_Constants.APP_LANGUAGE, FC_Constants.HINDI);
+            if (langTemp.equalsIgnoreCase(FC_Constants.HINDI)) {
+                splittedHinList = splitSentence(randomQuestion.getLangText(), "[!.?|।]+");
+            } else {
+                splittedHinList = splitSentence(randomQuestion.getLangText(), "[!.?|।]+");
             }
-        }
-        hindiList.addAll(englishList);
+            assert splittedEngList != null;
+            if (splittedEngList.length > 0) {
+                for (int splitCnt = 0; splitCnt < splittedEngList.length; splitCnt++) {
+                    MatchThePair matchThePair = new MatchThePair();
+                    matchThePair.setId(randomQuestion.getId());
+                    matchThePair.setParaText(splittedEngList[splitCnt].trim());
+                    assert splittedHinList != null;
+                    matchThePair.setLangText(splittedHinList[splitCnt].trim());
+                    matchThePair.setParaTitle(randomQuestion.getParaTitle());
+                    englishList.add(matchThePair);
+                }
+            }
+            hindiList.addAll(englishList);
         /*if (splittedHinList.length > 0) {
             for (int splitCnt = 0; splitCnt < splittedHinList.length; splitCnt++) {
                 MatchThePair matchThePair = new MatchThePair();
@@ -208,10 +215,12 @@ public class MatchThePairGameActivity extends BaseActivity implements MatchThePa
                 hindiList.add(matchThePair);
             }
         }*/
-        title.setText(randomQuestion.getParaTitle());
-        Collections.shuffle(hindiList);
-        setListsToRecycler(englishList, hindiList);
-
+            title.setText(randomQuestion.getParaTitle());
+            Collections.shuffle(hindiList);
+            setListsToRecycler(englishList, hindiList);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     private void setListsToRecycler(ArrayList<MatchThePair> englishList, ArrayList<MatchThePair> hindiList) {
@@ -270,7 +279,7 @@ public class MatchThePairGameActivity extends BaseActivity implements MatchThePa
             }.getType();
             matchThePairsList = gson.fromJson(jsonStr, type);
             for (int i = 0; i < matchThePairsList.size(); i++)
-                matchThePairsList.get(i).setParaLang(FastSave.getInstance().getString(FC_Constants.LANGUAGE, FC_Constants.HINDI));
+                matchThePairsList.get(i).setParaLang(FastSave.getInstance().getString(FC_Constants.APP_LANGUAGE, FC_Constants.HINDI));
         } catch (Exception e) {
             e.printStackTrace();
         }

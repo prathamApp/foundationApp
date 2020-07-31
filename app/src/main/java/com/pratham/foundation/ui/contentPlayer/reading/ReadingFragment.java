@@ -14,8 +14,12 @@ import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
 import android.view.View;
 import android.view.Window;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
@@ -23,8 +27,8 @@ import com.bumptech.glide.request.RequestOptions;
 import com.pratham.foundation.ApplicationClass;
 import com.pratham.foundation.R;
 import com.pratham.foundation.customView.GifView;
-import com.pratham.foundation.customView.SansButton;
-import com.pratham.foundation.customView.SansTextView;
+import com.pratham.foundation.customView.fontsview.SansButton;
+import com.pratham.foundation.customView.fontsview.SansTextView;
 import com.pratham.foundation.interfaces.OnGameClose;
 import com.pratham.foundation.modalclasses.EventMessage;
 import com.pratham.foundation.modalclasses.ScienceQuestion;
@@ -72,9 +76,17 @@ public class ReadingFragment extends Fragment implements STT_Result_New.sttView,
     ImageButton next;
     @ViewById(R.id.submit)
     SansButton submitBtn;
-
     @ViewById(R.id.reset_btn)
     SansButton reset_btn;
+
+    @ViewById(R.id.btn_edit)
+    ImageButton btn_edit;
+    @ViewById(R.id.ll_edit_text)
+    LinearLayout ll_edit_text;
+    @ViewById(R.id.et_edit_ans)
+    EditText et_edit_ans;
+    @ViewById(R.id.bt_edit_ok)
+    Button bt_edit_ok;
 
     @Bean(ReadingFragment_Presenter.class)
     ReadingFragment_Contract.ReadingFragmentPresenter presenter;
@@ -123,6 +135,7 @@ public class ReadingFragment extends Fragment implements STT_Result_New.sttView,
             presenter.setView(this,jsonName,resId,resStartTime);
             presenter.addScore(0, "", 0, 0, resStartTime, jsonName + " " + GameConstatnts.START);
             //getData();
+            ll_edit_text.setVisibility(View.GONE);
             presenter.getData(readingContentPath);
         }
     }
@@ -225,7 +238,7 @@ public class ReadingFragment extends Fragment implements STT_Result_New.sttView,
                 submitBtn.setVisibility(View.VISIBLE);
                 next.setVisibility(View.INVISIBLE);
             } else {
-                submitBtn.setVisibility(View.INVISIBLE);
+                submitBtn.setVisibility(View.GONE);
                 next.setVisibility(View.VISIBLE);
             }
         } else {
@@ -266,8 +279,8 @@ public class ReadingFragment extends Fragment implements STT_Result_New.sttView,
     private void hideButtons() {
         previous.setVisibility(View.INVISIBLE);
         next.setVisibility(View.INVISIBLE);
-        reset_btn.setVisibility(View.INVISIBLE);
-        submitBtn.setVisibility(View.INVISIBLE);
+        reset_btn.setVisibility(View.GONE);
+        submitBtn.setVisibility(View.GONE);
     }
 
     private void showButtons() {
@@ -280,7 +293,7 @@ public class ReadingFragment extends Fragment implements STT_Result_New.sttView,
             submitBtn.setVisibility(View.VISIBLE);
             next.setVisibility(View.INVISIBLE);
         } else {
-            submitBtn.setVisibility(View.INVISIBLE);
+            submitBtn.setVisibility(View.GONE);
             next.setVisibility(View.VISIBLE);
         }
         if (index == (scienceQuestionChoices.size() - 1)) {
@@ -418,6 +431,25 @@ public class ReadingFragment extends Fragment implements STT_Result_New.sttView,
                 index--;
                 setFillInTheBlanksQuestion();
             }
+    }
+
+    @Click(R.id.btn_edit)
+    public void editBtnPressed() {
+        et_edit_ans.setText(myString);
+        ll_edit_text.setVisibility(View.VISIBLE);
+        // scienceQuestionChoices.get(index).setStartTime("");
+        //  scienceQuestionChoices.get(index).setEndTime("");
+    }
+
+    @Click(R.id.bt_edit_ok)
+    public void editOKClicked(){
+        myString = ""+et_edit_ans.getText();
+        etAnswer.setText(myString);
+        scienceQuestionChoices.get(index).setUserAns(myString);
+        InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(getActivity().INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(ll_edit_text.getWindowToken(), 0);
+        ll_edit_text.setVisibility(View.GONE);
+//        hideSystemUI();
     }
 
 

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.pratham.foundation.customView.SansTextViewBold xmlns:android="http://schemas.android.com/apk/res/android"
+<com.pratham.foundation.customView.fontsview.SansTextViewBold xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/stat_res_name"
     android:layout_width="@dimen/_170sdp"
     android:layout_height="wrap_content"

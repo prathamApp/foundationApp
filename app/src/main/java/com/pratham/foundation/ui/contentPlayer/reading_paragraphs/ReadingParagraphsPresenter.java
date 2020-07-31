@@ -52,7 +52,9 @@ public class ReadingParagraphsPresenter implements ReadingParagraphsContract.Rea
     public int randomCategory, GLC, totalVocabSize, learntWordsCount;
     public String resId, resStartTime, resType, paraAudio;
 
-    public ReadingParagraphsPresenter(Context context) { this.context = context; }
+    public ReadingParagraphsPresenter(Context context) {
+        this.context = context;
+    }
 
     @Override
     public void setView(ReadingParagraphsContract.ReadingParagraphsView readingView) {
@@ -176,32 +178,69 @@ public class ReadingParagraphsPresenter implements ReadingParagraphsContract.Rea
             getDataList();
     }
 
+    private void addSttResultDB(ArrayList<String> stt_Result) {
+        String deviceId = AppDatabase.getDatabaseInstance(context).getStatusDao().getValue("DeviceId");
+        StringBuilder strWord = new StringBuilder("STT_ALL_RESULT - ");
+        for(int i =0 ; i<stt_Result.size(); i++)
+            strWord.append(stt_Result.get(i)).append(" - ");
+
+        try {
+            Score score = new Score();
+            score.setSessionID(FastSave.getInstance().getString(FC_Constants.CURRENT_SESSION, ""));
+            score.setResourceID(resId);
+            score.setQuestionId(0);
+            score.setScoredMarks(0);
+            score.setTotalMarks(0);
+            score.setStudentID(FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""));
+            score.setStartDateTime(resStartTime);
+            score.setDeviceID(deviceId.equals(null) ? "0000" : deviceId);
+            score.setEndDateTime(FC_Utility.getCurrentDateTime());
+            score.setLevel(0);
+            score.setLabel(""+strWord);
+            score.setSentFlag(0);
+            AppDatabase.getDatabaseInstance(context).getScoreDao().insert(score);
+            BackupDatabase.backup(context);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
     @Background
     @Override
     public void sttResultProcess(ArrayList<String> sttResult, List<String> splitWordsPunct, List<String> wordsResIdList) {
         int correctWordCount = 0;
-        String sttRes = sttResult.get(0);
-        String[] splitRes = sttRes.split(" ");
-        String word = " ";
-        Log.d("Punctu", "onResults: " + sttRes);
-        for (int j = 0; j < splitRes.length; j++) {
-            if(!FastSave.getInstance().getString(CURRENT_FOLDER_NAME,"").equalsIgnoreCase("English"))
-                splitRes[j] = splitRes[j].replaceAll("[^a-zA-Z ]", "").toLowerCase();
-            else
-                splitRes[j] = splitRes[j].replaceAll(STT_REGEX, "").toLowerCase();
-            for (int i = 0; i < splitWordsPunct.size(); i++) {
-                if ((splitRes[j].equalsIgnoreCase(splitWordsPunct.get(i))) && !correctArr[i]) {
-                    correctArr[i] = true;
-                    word = word + splitWordsPunct.get(i) + "(" + wordsResIdList.get(i) + "),";
-                    break;
+        addSttResultDB(sttResult);
+        for (int k = 0; k < sttResult.size(); k++) {
+            String sttRes = sttResult.get(k);
+            String[] splitRes = sttRes.split(" ");
+            String word = " ";
+            Log.d("Punctu", "onResults: " + sttRes);
+            if (FastSave.getInstance().getString(CURRENT_FOLDER_NAME, "").equalsIgnoreCase("English"))
+                splitRes = sttRes.replaceAll("[^a-zA-Z ]", "").toLowerCase().split("\\s+");
+            else {
+                String answer2 = sttRes.replaceAll(STT_REGEX, "");
+                splitRes = answer2.split(" ");
+            }
+            for (int j = 0; j < splitRes.length; j++) {
+//            if(!FastSave.getInstance().getString(CURRENT_FOLDER_NAME,"").equalsIgnoreCase("English"))
+//                splitRes[j] = splitRes[j].replaceAll("[^a-zA-Z ]", "").toLowerCase();
+//            else
+//                splitRes[j] = splitRes[j].replaceAll(STT_REGEX, "").toLowerCase();
+                for (int i = 0; i < splitWordsPunct.size(); i++) {
+                    if ((splitRes[j].equalsIgnoreCase(splitWordsPunct.get(i))) && !correctArr[i]) {
+                        correctArr[i] = true;
+                        word = word + splitWordsPunct.get(i) + "(" + wordsResIdList.get(i) + "),";
+                        break;
+                    }
                 }
             }
-        }
 
-        correctWordCount = getCorrectCounter();
-        String wordTime = FC_Utility.getCurrentDateTime();
-        addLearntWords(splitWordsPunct, wordsResIdList);
-        addScore(0, "Words:" + word, correctWordCount, correctArr.length, wordTime, " ");
+            correctWordCount = getCorrectCounter();
+            String wordTime = FC_Utility.getCurrentDateTime();
+            addLearntWords(splitWordsPunct, wordsResIdList);
+            addScore(0, "Words:" + word, correctWordCount, correctArr.length, wordTime, " ");
+
+        }
 
         readingView.setCorrectViewColor();
         pagePerc = getPercentage(correctWordCount);
@@ -327,7 +366,7 @@ public class ReadingParagraphsPresenter implements ReadingParagraphsContract.Rea
             score.setSentFlag(0);
             AppDatabase.getDatabaseInstance(context).getScoreDao().insert(score);
 
-            if (FastSave.getInstance().getString(APP_SECTION,"").equalsIgnoreCase(sec_Test)) {
+            if (FastSave.getInstance().getString(APP_SECTION, "").equalsIgnoreCase(sec_Test)) {
                 Assessment assessment = new Assessment();
                 assessment.setResourceIDa(resId);
                 assessment.setSessionIDa(FastSave.getInstance().getString(FC_Constants.ASSESSMENT_SESSION, ""));

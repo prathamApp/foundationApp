@@ -6,8 +6,8 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 
 import com.pratham.foundation.R;
-import com.pratham.foundation.customView.SansTextViewBold;
 import com.pratham.foundation.customView.display_image_dialog.CustomLodingDialog;
+import com.pratham.foundation.customView.fontsview.SansTextViewBold;
 import com.pratham.foundation.interfaces.ShowInstruction;
 
 import butterknife.BindView;

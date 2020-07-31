@@ -5,6 +5,7 @@ import android.graphics.drawable.Drawable;
 import android.support.design.card.MaterialCardView;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.CardView;
+import android.text.method.ScrollingMovementMethod;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.animation.Animation;
@@ -23,7 +24,7 @@ import com.bumptech.glide.request.RequestOptions;
 import com.pratham.foundation.ApplicationClass;
 import com.pratham.foundation.R;
 import com.pratham.foundation.customView.GifView;
-import com.pratham.foundation.customView.SansButton;
+import com.pratham.foundation.customView.fontsview.SansButton;
 import com.pratham.foundation.interfaces.OnGameClose;
 import com.pratham.foundation.modalclasses.EventMessage;
 import com.pratham.foundation.modalclasses.ScienceQuestion;
@@ -67,8 +68,6 @@ public class multipleChoiceFragment extends Fragment implements OnGameClose, Mul
     RadioGroup radioGroupMcq;
     @ViewById(R.id.grid_mcq)
     GridLayout gridMcq;
-
-
     @ViewById(R.id.btn_prev)
     ImageButton previous;
     @ViewById(R.id.btn_submit)
@@ -153,6 +152,7 @@ public class multipleChoiceFragment extends Fragment implements OnGameClose, Mul
         clerAnimation();
         if (selectedFive != null) {
             options = new ArrayList<>();
+            question.setMovementMethod(new ScrollingMovementMethod());
             question.setText(selectedFive.get(index).getQuestion());
             if (!selectedFive.get(index).getPhotourl().equalsIgnoreCase("")) {
                 questionImage.setVisibility(View.VISIBLE);

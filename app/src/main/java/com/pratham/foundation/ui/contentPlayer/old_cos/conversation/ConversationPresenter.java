@@ -70,6 +70,33 @@ public class ConversationPresenter implements ConversationContract.ConversationP
         correctArr = new boolean[arrlength];
     }
 
+    private void addSttResultDB(ArrayList<String> stt_Result) {
+        String deviceId = AppDatabase.getDatabaseInstance(context).getStatusDao().getValue("DeviceId");
+        StringBuilder strWord = new StringBuilder("STT_ALL_RESULT - ");
+        for(int i =0 ; i<stt_Result.size(); i++)
+            strWord.append(stt_Result.get(i)).append(" - ");
+
+        try {
+            Score score = new Score();
+            score.setSessionID(FastSave.getInstance().getString(FC_Constants.CURRENT_SESSION, ""));
+            score.setResourceID(contentId);
+            score.setQuestionId(0);
+            score.setScoredMarks(0);
+            score.setTotalMarks(0);
+            score.setStudentID(FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""));
+            score.setStartDateTime(FC_Utility.getCurrentDateTime());
+            score.setDeviceID(deviceId.equals(null) ? "0000" : deviceId);
+            score.setEndDateTime(FC_Utility.getCurrentDateTime());
+            score.setLevel(0);
+            score.setLabel(""+strWord);
+            score.setSentFlag(0);
+            AppDatabase.getDatabaseInstance(context).getScoreDao().insert(score);
+            BackupDatabase.backup(context);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
     @Background
     @Override
     public void sttResultProcess(ArrayList<String> sttServerResult, String answer) {
@@ -82,6 +109,8 @@ public class ConversationPresenter implements ConversationContract.ConversationP
             splitQues = answer2.split(" ");
         }
         String words = " ";
+
+        addSttResultDB(sttServerResult);
 
         try {
             for (int k = 0; k < sttServerResult.size(); k++) {

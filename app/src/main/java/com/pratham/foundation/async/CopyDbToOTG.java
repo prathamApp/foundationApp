@@ -32,7 +32,7 @@ public class CopyDbToOTG extends AsyncTask {
     protected Object doInBackground(Object[] objects) {
         try {
             actPhotoPath = Environment.getExternalStorageDirectory().toString() + "/.FCAInternal/ActivityPhotos/";
-            FC_Constants.TransferedImages = 0;
+            FC_Constants.transferredImages = 0;
             totalActivityFolders = 0;
 
             Uri treeUri = (Uri) objects[0];
@@ -108,7 +108,7 @@ public class CopyDbToOTG extends AsyncTask {
                     in.close();
                     out.flush();
                     out.close();
-                    FC_Constants.TransferedImages++;
+                    FC_Constants.transferredImages++;
                 }
             }
         } catch (Exception e) {

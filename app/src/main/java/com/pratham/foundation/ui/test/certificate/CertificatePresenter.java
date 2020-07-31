@@ -345,17 +345,20 @@ public class CertificatePresenter implements CertificateContract.CertificatePres
             InputStream is;
             String jsonName = "TestBeginnerJson.json";
             switch (level) {
-                case "0":
+                case "1":
                     jsonName = "TestBeginnerJson.json";
                     break;
-                case "1":
+                case "2":
                     jsonName = "TestSubJuniorJson.json";
                     break;
-                case "2":
+                case "3":
                     jsonName = "TestJuniorJson.json";
                     break;
-                case "3":
+                case "4":
                     jsonName = "TestSubSeniorJson.json";
+                    break;
+                case "5":
+                    jsonName = "TestSeniorJson.json";
                     break;
             }
 

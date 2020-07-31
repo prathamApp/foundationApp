@@ -84,7 +84,7 @@ public class FragmentChildAttendance extends Fragment implements ContractChildAt
         students = getArguments().getParcelableArrayList(FC_Constants.STUDENT_LIST);
         avatarsFemale = new ArrayList<>();
         avatarsMale = new ArrayList<>();
-        if (ApplicationClass.isTablet) {
+        if (ApplicationClass.getAppMode()) {
             btn_attendance_next.setVisibility(View.VISIBLE);
             //add_child.setVisibility(View.GONE);
             groupID = getArguments().getString(FC_Constants.GROUPID);

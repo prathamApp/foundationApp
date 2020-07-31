@@ -27,6 +27,19 @@
             </intent-filter>
         </activity>
 
+        <service
+            android:name=".services.background_service.BackgroundPushService"
+            android:enabled="true" >
+        </service>
+        <receiver
+            android:name=".services.background_service.BackgroundServiceRestarter"
+            android:enabled="true"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="BackgroundServiceRestarter" />
+            </intent-filter>
+        </receiver>
+
         <activity
             android:name=".ui.contentPlayer.pictionary.PictionaryResult"
             android:screenOrientation="portrait" />
@@ -41,6 +54,9 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".ui.admin_panel.AdminControlsActivity_"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.admin_panel.andmin_login_new.AdminConsoleActivityNew_"
             android:screenOrientation="portrait" />
         <activity
             android:name=".ui.admin_panel.MenuActivity_"
@@ -115,7 +131,7 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".ui.contentPlayer.matchingPairGame.MatchThePairGameActivity"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="sensorLandscape" />
         <activity
             android:name=".ui.contentPlayer.video_view.ActivityVideoView_"
             android:screenOrientation="sensorLandscape" />

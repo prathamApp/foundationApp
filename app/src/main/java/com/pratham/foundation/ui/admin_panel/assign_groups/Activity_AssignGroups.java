@@ -19,7 +19,7 @@ import android.widget.Toast;
 
 import com.pratham.foundation.BaseActivity;
 import com.pratham.foundation.R;
-import com.pratham.foundation.customView.SansCheckBox;
+import com.pratham.foundation.customView.fontsview.SansCheckBox;
 import com.pratham.foundation.database.domain.Groups;
 import com.pratham.foundation.database.domain.Village;
 import com.pratham.foundation.ui.admin_panel.AdminControlsActivity_;

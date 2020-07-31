@@ -20,7 +20,6 @@ import android.util.Log;
 
 import com.pratham.foundation.ApplicationClass;
 import com.pratham.foundation.async.GetLatestVersion;
-import com.pratham.foundation.async.PushDataToServer_New;
 import com.pratham.foundation.database.AppDatabase;
 import com.pratham.foundation.database.BackupDatabase;
 import com.pratham.foundation.database.dao.StatusDao;
@@ -43,7 +42,6 @@ import net.lingala.zip4j.core.ZipFile;
 import net.lingala.zip4j.exception.ZipException;
 
 import org.androidannotations.annotations.Background;
-import org.androidannotations.annotations.Bean;
 import org.androidannotations.annotations.EBean;
 import org.androidannotations.annotations.UiThread;
 
@@ -57,7 +55,6 @@ import java.util.Iterator;
 import java.util.List;
 
 import static android.content.Context.ACTIVITY_SERVICE;
-import static com.pratham.foundation.ApplicationClass.isTablet;
 import static com.pratham.foundation.database.AppDatabase.DB_NAME;
 import static com.pratham.foundation.database.AppDatabase.DB_VERSION;
 import static com.pratham.foundation.ui.splash_activity.SplashActivity.exitDialogOpen;
@@ -74,8 +71,8 @@ public class SplashPresenter implements SplashContract.SplashPresenter {
     SplashContract.SplashView splashView;
     boolean copyDb = false;
 
-    @Bean(PushDataToServer_New.class)
-    PushDataToServer_New pushDataToServer;
+//    @Bean(PushDataToServer_New.class)
+//    PushDataToServer_New pushDataToServer;
 
     public SplashPresenter(Context context) {
         this.context = context;
@@ -371,7 +368,7 @@ public class SplashPresenter implements SplashContract.SplashPresenter {
 
     @Override
     public void pushData() {
-        pushDataToServer.startDataPush(context);
+//        pushDataToServer.startDataPush(context, false);
     }
 
     @Override
@@ -407,7 +404,7 @@ public class SplashPresenter implements SplashContract.SplashPresenter {
 
             status = new com.pratham.foundation.database.domain.Status();
             status.setStatusKey("apkType");
-            if (isTablet)
+            if (ApplicationClass.getAppMode())
                 status.setValue("" + apkTab);
             else
                 status.setValue("" + apkSP);
@@ -887,7 +884,7 @@ public class SplashPresenter implements SplashContract.SplashPresenter {
             File folder_file, db_file;
             if (!FastSave.getInstance().getBoolean(FC_Constants.KEY_MENU_COPIED, false)) {
                 Log.d("copyDBFile", "Populatemenu: ");
-                if (isTablet) {
+                if (ApplicationClass.getAppMode()) {
                     Log.d("copyDBFile", "Exception : ");
                     copyDBFile();
                     folder_file = new File(Environment.getExternalStorageDirectory().toString() + "/.FCAInternal");
@@ -1089,7 +1086,7 @@ public class SplashPresenter implements SplashContract.SplashPresenter {
             fpath = Environment.getExternalStorageDirectory().getAbsolutePath();
 
         File file;
-        if (isTablet) {
+        if (ApplicationClass.getAppMode()) {
             file = new File(fpath + "/.FCA/foundation_db");
             if (file.exists()) {
                 ApplicationClass.contentSDPath = fpath;

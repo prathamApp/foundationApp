@@ -6,7 +6,7 @@
     android:paddingHorizontal="@dimen/_10sdp"
     android:paddingTop="@dimen/_15sdp">
 
-    <com.pratham.foundation.customView.SansTextView
+    <com.pratham.foundation.customView.fontsview.SansTextView
         android:id="@+id/dia_title"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -30,7 +30,7 @@
         android:layout_alignParentBottom="true"
         android:gravity="center">
 
-        <com.pratham.foundation.customView.SansButton
+        <com.pratham.foundation.customView.fontsview.SansButton
             android:id="@+id/dia_btn_revise"
             android:layout_width="@dimen/_60sdp"
             android:layout_height="@dimen/_30sdp"
@@ -40,7 +40,7 @@
             android:textColor="@color/white"
             android:textSize="@dimen/_12sdp" />
 
-        <com.pratham.foundation.customView.SansButton
+        <com.pratham.foundation.customView.fontsview.SansButton
             android:id="@+id/dia_btn_test"
             android:layout_width="@dimen/_60sdp"
             android:layout_height="@dimen/_30sdp"
@@ -52,7 +52,7 @@
             android:text="Test"
             android:textSize="@dimen/_12sdp" />
 
-        <com.pratham.foundation.customView.SansButton
+        <com.pratham.foundation.customView.fontsview.SansButton
             android:id="@+id/dia_btn_next"
             android:layout_width="@dimen/_60sdp"
             android:layout_height="@dimen/_30sdp"

@@ -18,7 +18,7 @@
         android:layout_height="match_parent"
         android:padding="10dp">
 
-        <com.pratham.foundation.customView.SansTextViewBold
+        <com.pratham.foundation.customView.fontsview.SansTextViewBold
             android:id="@+id/lbl_Progreess_header"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -28,6 +28,7 @@
             android:layout_marginTop="5dp"
             android:text="@string/progress"
             android:textAllCaps="true"
+            android:textStyle="bold"
             android:textColor="@color/colorBtnGreenDark"
             android:textSize="@dimen/_14sdp" />
 

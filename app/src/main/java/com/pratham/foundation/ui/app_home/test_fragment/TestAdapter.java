@@ -42,6 +42,7 @@ public class TestAdapter extends RecyclerView.Adapter {
     private final String TYPE_HEADER = "Header";
     private final String TYPE_SPINNER = "Spinner";
     private final String TYPE_UPDATE = "Update";
+    private final String TYPE_FOOTER = "Footer";
     ArrayAdapter<String> dataAdapter;
 
     public void initializeIndex() {
@@ -67,6 +68,10 @@ public class TestAdapter extends RecyclerView.Adapter {
             case 0:
                 LayoutInflater header = LayoutInflater.from(viewGroup.getContext());
                 view = header.inflate(R.layout.list_header, viewGroup, false);
+                return new EmptyitemRowHolder(view);
+            case 4:
+                LayoutInflater footer = LayoutInflater.from(viewGroup.getContext());
+                view = footer.inflate(R.layout.test_list_footer, viewGroup, false);
                 return new EmptyitemRowHolder(view);
             case 1:
                 LayoutInflater folder = LayoutInflater.from(viewGroup.getContext());
@@ -138,6 +143,8 @@ public class TestAdapter extends RecyclerView.Adapter {
                     return 2;
                 case TYPE_UPDATE:
                     return 3;
+                case TYPE_FOOTER:
+                    return 4;
                 default:
                     return 1;
             }
@@ -165,7 +172,7 @@ public class TestAdapter extends RecyclerView.Adapter {
                     ques = "";
                 }
 
-                itemRowHolder.title.setTypeface(null, Typeface.NORMAL);
+//                itemRowHolder.title.setTypeface(null, Typeface.NORMAL);
 
                 if (!testList.get(position).isAsessmentGiven()) {
                     itemRowHolder.certificate_card.setClickable(true);

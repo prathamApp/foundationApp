@@ -3,6 +3,7 @@ package com.pratham.foundation;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentSender;
 import android.content.res.Configuration;
 import android.graphics.Point;
 import android.hardware.usb.UsbDevice;
@@ -18,6 +19,7 @@ import android.support.annotation.Nullable;
 import android.support.annotation.UiThread;
 import android.support.v7.app.AppCompatActivity;
 import android.transition.Slide;
+import android.util.Log;
 import android.view.Display;
 import android.view.Gravity;
 import android.view.View;
@@ -28,6 +30,16 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.airbnb.lottie.LottieAnimationView;
+import com.google.android.play.core.appupdate.AppUpdateInfo;
+import com.google.android.play.core.appupdate.AppUpdateManager;
+import com.google.android.play.core.appupdate.AppUpdateManagerFactory;
+import com.google.android.play.core.install.InstallState;
+import com.google.android.play.core.install.InstallStateUpdatedListener;
+import com.google.android.play.core.install.model.ActivityResult;
+import com.google.android.play.core.install.model.AppUpdateType;
+import com.google.android.play.core.install.model.InstallStatus;
+import com.google.android.play.core.install.model.UpdateAvailability;
+import com.google.android.play.core.tasks.Task;
 import com.pratham.foundation.async.CopyDbToOTG;
 import com.pratham.foundation.customView.BlurPopupDialog.BlurPopupWindow;
 import com.pratham.foundation.customView.display_image_dialog.CustomLodingDialog;
@@ -49,13 +61,21 @@ import java.util.Locale;
 
 import static com.pratham.foundation.ApplicationClass.audioManager;
 import static com.pratham.foundation.ApplicationClass.ttsService;
-import static com.pratham.foundation.utility.FC_Constants.TransferedImages;
+import static com.pratham.foundation.utility.FC_Constants.transferredImages;
 
 
 public class BaseActivity extends AppCompatActivity {
 
-    public static boolean muteFlg = false;
+    //Add these Variables, declare it globally
+    private AppUpdateManager appUpdateManager;
+    private Task<AppUpdateInfo> appUpdateInfoTask;
+    private int APP_UPDATE_TYPE_SUPPORTED = AppUpdateType.FLEXIBLE;
+    private final int REQUEST_UPDATE = 100;
+    private final int CHECK_UPDATE_C = 101;
+    private final int UPDATE_CONNECTION = 102;
+
     View mDecorView;
+    public static boolean muteFlg = false;
     private static final String TAG = BaseActivity.class.getSimpleName();
     private static final int SHOW_OTG_TRANSFER_DIALOG = 9;
     private static final int SHOW_OTG_SELECT_DIALOG = 11;
@@ -220,6 +240,10 @@ public class BaseActivity extends AppCompatActivity {
                 mHandler.sendEmptyMessage(HIDE_OTG_TRANSFER_DIALOG_SUCCESS);
             } else if (message.getMessage().equalsIgnoreCase(FC_Constants.BACKUP_DB_NOT_COPIED)) {
                 mHandler.sendEmptyMessage(HIDE_OTG_TRANSFER_DIALOG_FAILED);
+            } else if (message.getMessage().equalsIgnoreCase(FC_Constants.CHECK_UPDATE)) {
+                mHandler.sendEmptyMessage(CHECK_UPDATE_C);
+            } else if (message.getMessage().equalsIgnoreCase(FC_Constants.START_UPDATE)) {
+                startUpdate();
             }
         }
     }
@@ -231,6 +255,9 @@ public class BaseActivity extends AppCompatActivity {
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
             switch (msg.what) {
+                case CHECK_UPDATE_C:
+                    checkForUpdate();
+                    break;
                 case SHOW_OTG_TRANSFER_DIALOG:
                     showSDBuilderDialog();
                     break;
@@ -245,7 +272,7 @@ public class BaseActivity extends AppCompatActivity {
                     push_lottie.playAnimation();
                     int days = AppDatabase.getDatabaseInstance(ApplicationClass.getInstance()).getScoreDao().getTotalActiveDeviceDays();
                     txt_push_dialog_msg.setText("Data of " + days + " days and\n"
-                            + TransferedImages + " Images\nCopied Successfully!!");
+                            + transferredImages + " Images\nCopied Successfully!!");
                     rl_btn.setVisibility(View.VISIBLE);
                     break;
                 case HIDE_OTG_TRANSFER_DIALOG_FAILED:
@@ -347,6 +374,86 @@ public class BaseActivity extends AppCompatActivity {
         }
     }
 
+    // UPDATE APP CODE
+    //Flexible Update
+    private void checkForUpdate() {
+/*
+        if (BuildConfig.DEBUG) {
+            appUpdateManager = new FakeAppUpdateManager(this);
+            ((FakeAppUpdateManager) appUpdateManager).setUpdateAvailable(0);
+            Log.d("##########  ->", "Fake");
+        } else {
+*/
+        appUpdateManager = AppUpdateManagerFactory.create(this);
+        Log.d("##########  ->", "Original");
+//        }
+        // Before starting an update, register a listener for updates.
+        appUpdateManager.registerListener(installStateUpdatedListener);
+
+        appUpdateInfoTask = appUpdateManager.getAppUpdateInfo();
+        Log.d("########## 1 ->", String.valueOf(appUpdateInfoTask));
+        appUpdateInfoTask.addOnSuccessListener(appUpdateInfo -> {
+            Log.d("########## 2 ->", "SuccessListener");
+            if ((appUpdateInfo.updateAvailability() == UpdateAvailability.UPDATE_AVAILABLE ||
+                    appUpdateInfo.updateAvailability() == UpdateAvailability.DEVELOPER_TRIGGERED_UPDATE_IN_PROGRESS) &&
+                    appUpdateInfo.isUpdateTypeAllowed(AppUpdateType.FLEXIBLE)) {
+
+                //send message if update is available
+                EventMessage updateAvailable = new EventMessage();
+                updateAvailable.setMessage(FC_Constants.UPDATE_AVAILABLE);
+                EventBus.getDefault().post(updateAvailable);
+            } else {
+                Log.d("########## 5 ->", "No Update available");
+            }
+        });
+    }
+    //Listener for checking Install Status
+    InstallStateUpdatedListener installStateUpdatedListener = new
+            InstallStateUpdatedListener() {
+                @Override
+                public void onStateUpdate(InstallState state) {
+                    if (state.installStatus() == InstallStatus.DOWNLOADED){
+                        //CHECK THIS if AppUpdateType.FLEXIBLE, otherwise you can skip
+                        //send message if update is downloaded
+                        Log.d("#", "InstallStateUpdated: state: " + state.installStatus());
+                        appUpdateManager.completeUpdate();
+                    } else if (state.installStatus() == InstallStatus.INSTALLED){
+                        Log.d("#", "InstallStateInstalled: state: " + state.installStatus());
+                        if (appUpdateManager != null){
+                            appUpdateManager.unregisterListener(installStateUpdatedListener);
+                        }
+
+                    } else {
+                        Log.d("#", "InstallStateUpdatedListener: state: " + state.installStatus());
+                    }
+                }
+            };
+
+    public void startUpdate(){
+        // Start an update.
+        try {
+            appUpdateManager.startUpdateFlowForResult(
+                    appUpdateInfoTask.getResult(),
+                    AppUpdateType.FLEXIBLE,
+                    this,
+                    REQUEST_UPDATE);
+            Log.d("########## 3 ->", "All Condition true");
+        } catch (IntentSender.SendIntentException e) {
+            e.printStackTrace();
+        }
+/*        if (BuildConfig.DEBUG) {
+            FakeAppUpdateManager fakeAppUpdate = (FakeAppUpdateManager) appUpdateManager;
+            if (fakeAppUpdate.isConfirmationDialogVisible()) {
+                fakeAppUpdate.userAcceptsUpdate();
+                fakeAppUpdate.downloadStarts();
+                fakeAppUpdate.downloadCompletes();
+                fakeAppUpdate.completeUpdate();
+                fakeAppUpdate.installCompletes();
+            }
+        }*/
+
+    }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -361,6 +468,21 @@ public class BaseActivity extends AppCompatActivity {
                 new Handler().postDelayed(() -> {
                     new CopyDbToOTG().execute(treeUri);
                 }, 500);
+            }
+        } else if (requestCode == REQUEST_UPDATE) {
+            Log.d("########## 4 ->", "Activity Result");
+            switch (requestCode) {
+                case RESULT_OK:
+                    if (APP_UPDATE_TYPE_SUPPORTED == AppUpdateType.FLEXIBLE) {
+                        Log.d("#", "App Updated Successfully");
+                    } else {
+                        Log.d("#", "Update Started");
+                    }
+                case RESULT_CANCELED:
+                    Log.d("#", "Update Cancelled");
+                case ActivityResult.RESULT_IN_APP_UPDATE_FAILED:
+                    Log.d("#", "Update Failed");
+
             }
         }
     }

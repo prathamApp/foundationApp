@@ -10,7 +10,7 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="@dimen/_5sdp">
 
-        <com.pratham.foundation.customView.SansButton
+        <com.pratham.foundation.customView.fontsview.SansButton
             android:id="@+id/btnMore"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -24,7 +24,7 @@
             android:textColor="@color/colorText"
             android:textSize="@dimen/_8sdp" />
 
-        <com.pratham.foundation.customView.SansButton
+        <com.pratham.foundation.customView.fontsview.SansButton
             android:id="@+id/ib_action_btn"
             android:layout_width="@dimen/_105sdp"
             android:layout_height="@dimen/_30sdp"
@@ -41,7 +41,7 @@
             android:textSize="@dimen/_8sdp"
             android:visibility="gone" />
 
-        <com.pratham.foundation.customView.SansTextViewBold
+        <com.pratham.foundation.customView.fontsview.SansTextViewBold
             android:id="@+id/itemTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

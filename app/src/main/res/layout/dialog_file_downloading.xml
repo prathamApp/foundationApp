@@ -28,7 +28,7 @@
         android:layout_marginTop="@dimen/_45sdp"
         android:background="@drawable/dialog_bg">
 
-        <com.pratham.foundation.customView.SansTextViewBold
+        <com.pratham.foundation.customView.fontsview.SansTextViewBold
             android:id="@+id/dialog_file_name"
             android:layout_width="match_parent"
             android:layout_height="@dimen/_70sdp"

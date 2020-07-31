@@ -19,6 +19,10 @@ import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
 import android.view.View;
 import android.view.Window;
+import android.view.WindowManager;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -32,9 +36,9 @@ import com.bumptech.glide.request.RequestOptions;
 import com.pratham.foundation.ApplicationClass;
 import com.pratham.foundation.R;
 import com.pratham.foundation.customView.GifView;
-import com.pratham.foundation.customView.SansButton;
-import com.pratham.foundation.customView.SansTextView;
 import com.pratham.foundation.customView.display_image_dialog.CustomLodingDialog;
+import com.pratham.foundation.customView.fontsview.SansButton;
+import com.pratham.foundation.customView.fontsview.SansTextView;
 import com.pratham.foundation.interfaces.OnGameClose;
 import com.pratham.foundation.modalclasses.EventMessage;
 import com.pratham.foundation.modalclasses.ScienceQuestion;
@@ -83,7 +87,7 @@ public class DoingFragment extends Fragment implements STT_Result_New.sttView, O
     @ViewById(R.id.capture)
     ImageView capture;
     @ViewById(R.id.reset_btn)
-    SansButton reset_btn;
+    ImageButton reset_btn;
     /* @BindView(R.id.RelativeLayout)
      RelativeLayout RelativeLayout;*/
     @ViewById(R.id.preview)
@@ -103,9 +107,15 @@ public class DoingFragment extends Fragment implements STT_Result_New.sttView, O
     @ViewById(R.id.subQuestion)
     SansTextView subQuestion;
     @ViewById(R.id.answer)
-    SansTextView etAnswer;
+    TextView etAnswer;
     @ViewById(R.id.btn_read_mic)
     ImageButton ib_mic;
+    @ViewById(R.id.ll_edit_text)
+    LinearLayout ll_edit_text;
+    @ViewById(R.id.et_edit_ans)
+    EditText et_edit_ans;
+    @ViewById(R.id.bt_edit_ok)
+    Button bt_edit_ok;
 
     @Bean(DoingFragmentPresenter.class)
     DoingFragmentContract.DoingFragmentPresenter presenter;
@@ -184,6 +194,7 @@ public class DoingFragment extends Fragment implements STT_Result_New.sttView, O
             capture.setVisibility(View.GONE);
         }
         preview.setVisibility(View.GONE);
+        ll_edit_text.setVisibility(View.GONE);
 
 
         imageName = "" + ApplicationClass.getUniqueID() + ".jpg";
@@ -555,11 +566,34 @@ public class DoingFragment extends Fragment implements STT_Result_New.sttView, O
 
     @Click(R.id.reset_btn)
     public void reset() {
-        myAns = "";
-        etAnswer.setText(myAns);
-        scienceQuestionChoices.get(index).setUserAns(myAns);
+        et_edit_ans.setText(myAns);
+        ll_edit_text.setVisibility(View.VISIBLE);
         // scienceQuestionChoices.get(index).setStartTime("");
         //  scienceQuestionChoices.get(index).setEndTime("");
+    }
+
+    @Click(R.id.bt_edit_ok)
+    public void editOKClicked(){
+        myAns = ""+et_edit_ans.getText();
+        etAnswer.setText(myAns);
+        scienceQuestionChoices.get(index).setUserAns(myAns);
+        InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(getActivity().INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(ll_edit_text.getWindowToken(), 0);
+        ll_edit_text.setVisibility(View.GONE);
+        hideSystemUI();
+    }
+
+    private void hideSystemUI() {
+        getActivity().getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
+                WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        getActivity().getWindow().getDecorView().setSystemUiVisibility(
+                View.SYSTEM_UI_FLAG_FULLSCREEN
+                        | View.SYSTEM_UI_FLAG_LOW_PROFILE
+                        | View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+                        | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY
+                        | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
+                        | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
+        );
     }
 
     @Click(R.id.next)

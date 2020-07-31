@@ -88,7 +88,7 @@
                     android:layout_marginTop="@dimen/_80sdp"
                     android:background="@drawable/ripple_rectangle_card">
 
-                    <com.pratham.foundation.customView.SansTextViewBold
+                    <com.pratham.foundation.customView.fontsview.SansTextViewBold
                         android:id="@+id/silence_tv"
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
@@ -235,7 +235,7 @@
     &lt;!&ndash;                        android:background="@drawable/red_ripple_round"&ndash;&gt;
     &lt;!&ndash;                        android:src="@drawable/ic_left_arrow_white" />&ndash;&gt;
 
-    &lt;!&ndash;                    <com.pratham.foundation.customView.SansTextViewBold&ndash;&gt;
+    &lt;!&ndash;                    <com.pratham.foundation.customView.fontsview.SansTextViewBold&ndash;&gt;
     &lt;!&ndash;                        android:id="@+id/tv_story_title"&ndash;&gt;
     &lt;!&ndash;                        android:layout_width="match_parent"&ndash;&gt;
     &lt;!&ndash;                        android:layout_height="wrap_content"&ndash;&gt;
@@ -350,7 +350,7 @@
 <!--                    android:scaleType="centerInside"-->
 <!--                    android:src="@drawable/ic_stop_black_24dp" />-->
 
-<!--                <com.pratham.foundation.customView.SansButton-->
+<!--                <com.pratham.foundation.customView.fontsview.SansButton-->
 <!--                    android:id="@+id/btn_submit"-->
 <!--                    android:layout_width="0dp"-->
 <!--                    android:layout_height="match_parent"-->

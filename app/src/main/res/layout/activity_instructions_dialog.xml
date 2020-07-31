@@ -5,7 +5,7 @@
     android:layout_gravity="center"
     android:background="@drawable/activity_bkgd">
 
-    <com.pratham.foundation.customView.SansTextViewBold
+    <com.pratham.foundation.customView.fontsview.SansTextViewBold
         android:id="@+id/dia_title"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -29,7 +29,7 @@
         android:layout_marginBottom="@dimen/_5sdp"
         android:elevation="5dp">
 
-        <com.pratham.foundation.customView.SansButton
+        <com.pratham.foundation.customView.fontsview.SansButton
             android:id="@+id/dia_btn_green"
             style="@style/submitbtn"
             android:layout_width="@dimen/_70sdp"

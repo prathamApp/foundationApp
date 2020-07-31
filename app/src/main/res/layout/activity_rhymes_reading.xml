@@ -30,15 +30,14 @@
             android:layout_marginEnd="@dimen/_12sdp"
             android:layout_marginStart="@dimen/_12sdp"
             android:layout_marginTop="35dp"
-            android:fadeScrollbars="false"
-                    android:scrollbarSize="6dp"
-        android:scrollbarThumbVertical="@drawable/card_color_bg4"
-        android:scrollbarTrackVertical="@drawable/scroll_bg"
-
+            android:layout_above="@+id/btn_next"
             android:layout_marginBottom="@dimen/_10sdp"
-            android:layout_above="@+id/btn_next">
+            android:fadeScrollbars="false"
+            android:scrollbarSize="6dp"
+            android:scrollbarThumbVertical="@drawable/card_color_bg4"
+            android:scrollbarTrackVertical="@drawable/scroll_bg">
 
-            <RelativeLayout
+        <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
@@ -51,7 +50,7 @@
                     android:elevation="2dp"
                     android:visibility="gone">
 
-                    <com.pratham.foundation.customView.SansTextView
+                    <com.pratham.foundation.customView.fontsview.SansTextView
                         android:id="@+id/rhyming_card_word1"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
@@ -75,7 +74,7 @@
                     android:elevation="2dp"
                     android:visibility="gone">
 
-                    <com.pratham.foundation.customView.SansTextView
+                    <com.pratham.foundation.customView.fontsview.SansTextView
                         android:id="@+id/rhyming_card_word2"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
@@ -99,7 +98,7 @@
                     android:elevation="2dp"
                     android:visibility="gone">
 
-                    <com.pratham.foundation.customView.SansTextView
+                    <com.pratham.foundation.customView.fontsview.SansTextView
                         android:id="@+id/rhyming_card_word3"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
@@ -124,7 +123,7 @@
                     android:elevation="2dp"
                     android:visibility="gone">
 
-                    <com.pratham.foundation.customView.SansTextView
+                    <com.pratham.foundation.customView.fontsview.SansTextView
                         android:id="@+id/rhyming_card_word4"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
@@ -148,7 +147,7 @@
                     android:elevation="2dp"
                     android:visibility="gone">
 
-                    <com.pratham.foundation.customView.SansTextView
+                    <com.pratham.foundation.customView.fontsview.SansTextView
                         android:id="@+id/rhyming_card_word5"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"

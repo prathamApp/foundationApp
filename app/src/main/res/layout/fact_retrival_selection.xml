@@ -6,7 +6,7 @@
     android:background="@drawable/activity_bkgd"
     android:orientation="vertical">
 
-   <!-- <com.pratham.foundation.customView.SansTextView
+   <!-- <com.pratham.foundation.customView.fontsview.SansTextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Identifiy Keywords"
@@ -24,7 +24,7 @@
         android:layout_weight="1"
         android:elevation="5dp">
 
-        <com.pratham.foundation.customView.SansTextViewBold
+        <com.pratham.foundation.customView.fontsview.SansTextViewBold
             android:id="@+id/quetion"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -65,7 +65,7 @@
                 app:flChildSpacing="10dp" />
         </ScrollView>
 
-        <com.pratham.foundation.customView.SansTextViewBold
+        <com.pratham.foundation.customView.fontsview.SansTextViewBold
             android:id="@+id/para_tv"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -97,7 +97,7 @@
                 app:flRowSpacing="2dp" />
         </ScrollView>
 
-        <com.pratham.foundation.customView.SansTextView
+        <com.pratham.foundation.customView.fontsview.SansTextView
             android:id="@+id/keywords_tv"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -115,7 +115,7 @@
         android:layout_marginHorizontal="20dp"
         android:orientation="horizontal">
 
-        <com.pratham.foundation.customView.SansButton
+        <com.pratham.foundation.customView.fontsview.SansButton
             android:id="@+id/previous"
             android:layout_width="100dp"
             android:layout_height="50dp"
@@ -124,7 +124,7 @@
             android:background="@drawable/red_button"
             android:text="previous" />
 
-        <com.pratham.foundation.customView.SansButton
+        <com.pratham.foundation.customView.fontsview.SansButton
             android:id="@+id/submitBtn"
             android:layout_width="100dp"
             android:layout_height="50dp"
@@ -133,7 +133,7 @@
             android:layout_centerInParent="true"
             android:text="Submit" />
 
-        <com.pratham.foundation.customView.SansButton
+        <com.pratham.foundation.customView.fontsview.SansButton
             android:id="@+id/next"
             android:layout_width="100dp"
             android:layout_height="50dp"
@@ -148,7 +148,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal">
-        <com.pratham.foundation.customView.SansButton
+        <com.pratham.foundation.customView.fontsview.SansButton
             android:id="@+id/clear_selection"
             android:layout_width="0dp"
             android:layout_height="50dp"
@@ -160,7 +160,7 @@
             android:background="@drawable/button_red"
             android:text="clear"
             style="@style/submitbtn"/>
-        <com.pratham.foundation.customView.SansButton
+        <com.pratham.foundation.customView.fontsview.SansButton
             android:id="@+id/show_answer"
             android:layout_width="0dp"
             android:layout_height="50dp"

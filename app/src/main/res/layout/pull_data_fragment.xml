@@ -19,7 +19,7 @@
             android:padding="@dimen/_5sdp"
             android:src="@drawable/ic_left_arrow_white" />
 
-        <com.pratham.foundation.customView.SansTextViewBold
+        <com.pratham.foundation.customView.fontsview.SansTextViewBold
             android:id="@+id/title"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
@@ -83,7 +83,7 @@
             android:background="@drawable/gradient_spinner" />
     </LinearLayout>
 
-    <com.pratham.foundation.customView.SansButton
+    <com.pratham.foundation.customView.fontsview.SansButton
         android:id="@+id/save_button"
         android:layout_width="249dp"
         android:layout_height="wrap_content"

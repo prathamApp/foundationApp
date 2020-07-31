@@ -35,6 +35,7 @@ import static com.pratham.foundation.utility.FC_Constants.sec_Test;
 
 @EBean
 public class Fact_Retrieval_Presenter implements Fact_Retrieval_Contract.Fact_retrival_Presenter {
+
     private ScienceQuestion questionModel;
     private Fact_Retrieval_Contract.Fact_retrival_View viewKeywords;
     private Context context;

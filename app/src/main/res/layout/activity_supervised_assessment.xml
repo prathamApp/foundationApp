@@ -55,7 +55,7 @@
             android:scaleType="centerInside"
             android:src="@drawable/ic_photo_camera_black" />
 
-        <com.pratham.foundation.customView.SansEditText
+        <com.pratham.foundation.customView.fontsview.SansEditText
             android:id="@+id/supervisor_name"
             android:layout_width="match_parent"
             android:layout_height="@dimen/_60sdp"

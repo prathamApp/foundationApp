@@ -15,8 +15,6 @@ public interface SelectSubjectContract {
     }
 
     interface SubjectView {
-        void showLanguageSelectionDialog(List<ContentTable> serverContentList);
-
         void showLoader();
 
         void dismissLoadingDialog();
@@ -31,8 +29,6 @@ public interface SelectSubjectContract {
         void  setView(SubjectView subjectView);
             
         void getSubjectList();
-
-        void getLanguage();
 
         void clearSubjList();
     }

@@ -32,8 +32,8 @@ import com.pratham.foundation.ApplicationClass;
 import com.pratham.foundation.BaseActivity;
 import com.pratham.foundation.R;
 import com.pratham.foundation.customView.GifView;
-import com.pratham.foundation.customView.SansTextView;
 import com.pratham.foundation.customView.display_image_dialog.CustomLodingDialog;
+import com.pratham.foundation.customView.fontsview.SansTextView;
 import com.pratham.foundation.customView.shape_of_view.ShadowLayout;
 import com.pratham.foundation.modalclasses.ModalParaSubMenu;
 import com.pratham.foundation.services.TTSService;
@@ -227,7 +227,7 @@ public class ReadingStoryActivity extends BaseActivity implements
     public void dismissLoadingDialog() {
         try {
             new Handler().postDelayed(() -> {
-                if (dialogFlg) {
+                if (dialogFlg && myLoadingDialog!=null) {
                     myLoadingDialog.dismiss();
                     dialogFlg = false;
                 }
@@ -609,15 +609,39 @@ public class ReadingStoryActivity extends BaseActivity implements
 
     @Click(R.id.btn_play)
     void playReading() {
-        if (!storyAudio.equalsIgnoreCase("NA")) {
-            if (!playFlg) {
-                btn_Mic.setVisibility(View.GONE);
-                btn_Play.setVisibility(View.VISIBLE);
-                btn_Stop.setVisibility(View.VISIBLE);
-                btn_Play.setImageResource(R.drawable.ic_pause_black);
-                playFlg = true;
-                pauseFlg = false;
-                try {
+        try {
+            if (!storyAudio.equalsIgnoreCase("NA")) {
+                if (!playFlg) {
+                    btn_Mic.setVisibility(View.GONE);
+                    btn_Play.setVisibility(View.VISIBLE);
+                    btn_Stop.setVisibility(View.VISIBLE);
+                    btn_Play.setImageResource(R.drawable.ic_pause_black);
+                    playFlg = true;
+                    pauseFlg = false;
+                    try {
+                        if (quesReadHandler != null) {
+                            quesReadHandler.removeCallbacksAndMessages(null);
+                            try {
+                                if (mPlayer.isPlaying() && mPlayer != null) {
+                                    mPlayer.stop();
+                                    mPlayer.reset();
+                                    mPlayer.release();
+                                }
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+    //            btn_Play.setImageResource(R.drawable.ic_stop_black_24dp);
+    //            btn_Play.setText("Stop");
+                    if (audioHandler != null)
+                        audioHandler.removeCallbacksAndMessages(null);
+                    if (handler != null)
+                        handler.removeCallbacksAndMessages(null);
+                    if (colorChangeHandler != null)
+                        colorChangeHandler.removeCallbacksAndMessages(null);
                     if (quesReadHandler != null) {
                         quesReadHandler.removeCallbacksAndMessages(null);
                         try {
@@ -630,78 +654,34 @@ public class ReadingStoryActivity extends BaseActivity implements
                             e.printStackTrace();
                         }
                     }
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-//            btn_Play.setImageResource(R.drawable.ic_stop_black_24dp);
-//            btn_Play.setText("Stop");
-                if (audioHandler != null)
-                    audioHandler.removeCallbacksAndMessages(null);
-                if (handler != null)
-                    handler.removeCallbacksAndMessages(null);
-                if (colorChangeHandler != null)
-                    colorChangeHandler.removeCallbacksAndMessages(null);
-                if (quesReadHandler != null) {
-                    quesReadHandler.removeCallbacksAndMessages(null);
+                    if (startReadingHandler != null)
+                        startReadingHandler.removeCallbacksAndMessages(null);
+                    if (soundStopHandler != null)
+                        soundStopHandler.removeCallbacksAndMessages(null);
+    //            layout_ripplepulse_right.stopRippleAnimation();
+                    setMute(0);
+                    if (stopFlg) {
+                        wordCounter = 0;
+                    }
+                    stopFlg = false;
+                    startAudioReading(wordCounter);
+                } else {
+                    playFlg = false;
+                    pauseFlg = true;
+                    btn_Play.setImageResource(R.drawable.ic_play_arrow_black);
+                    if (wordCounter > 1)
+                        wordCounter--;
                     try {
-                        if (mPlayer.isPlaying() && mPlayer != null) {
-                            mPlayer.stop();
-                            mPlayer.reset();
-                            mPlayer.release();
+                        if (mp.isPlaying()) {
+                            mp.pause();
                         }
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
                 }
-                if (startReadingHandler != null)
-                    startReadingHandler.removeCallbacksAndMessages(null);
-                if (soundStopHandler != null)
-                    soundStopHandler.removeCallbacksAndMessages(null);
-//            layout_ripplepulse_right.stopRippleAnimation();
-                setMute(0);
-                if (stopFlg) {
-                    wordCounter = 0;
-                }
-                stopFlg = false;
-                startAudioReading(wordCounter);
-            } else {
-                playFlg = false;
-                pauseFlg = true;
-                btn_Play.setImageResource(R.drawable.ic_play_arrow_black);
-                if (wordCounter > 1)
-                    wordCounter--;
-                try {
-                    if (mp.isPlaying()) {
-                        mp.pause();
-                    }
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-
-/*            btn_Play.setImageResource(R.drawable.ic_play_arrow_black);
-            if (!contentType.equalsIgnoreCase(FC_Constants.RHYME_RESOURCE))
-                btn_Mic.setVisibility(View.VISIBLE);
-            wordCounter = 0;
-            try {
-                playFlg = false;
-                pauseFlg = true;
-                try {
-                    if (mp.isPlaying()) {
-                        mp.stop();
-                        mp.reset();
-                        mp.release();
-                    }
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-                if (startReadingHandler != null)
-                    startReadingHandler.removeCallbacksAndMessages(null);
-                if (soundStopHandler != null)
-                    soundStopHandler.removeCallbacksAndMessages(null);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }*/
             }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 

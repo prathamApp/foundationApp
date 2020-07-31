@@ -9,7 +9,7 @@
     android:orientation="vertical"
     android:padding="@dimen/_12sdp">
 
-    <com.pratham.foundation.customView.SansTextView
+    <com.pratham.foundation.customView.fontsview.SansTextView
         android:id="@+id/title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -18,11 +18,10 @@
         android:textColor="@color/dark_yellow"
         android:textSize="@dimen/_20sdp" />
 
-    <TextView
+    <com.pratham.foundation.customView.fontsview.SansTextView
         android:id="@+id/count"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:fontFamily="@font/actor"
         android:gravity="center"
         android:textColor="@color/dark_yellow"
         android:textSize="@dimen/_15sdp" />

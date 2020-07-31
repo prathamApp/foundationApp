@@ -6,7 +6,7 @@ import android.support.v7.widget.RecyclerView;
 
 import com.pratham.foundation.BaseActivity;
 import com.pratham.foundation.R;
-import com.pratham.foundation.customView.SansButton;
+import com.pratham.foundation.customView.fontsview.SansButton;
 import com.pratham.foundation.modalclasses.ParaSttQuestionListModel;
 import com.pratham.foundation.modalclasses.ScienceQuestion;
 import com.pratham.foundation.modalclasses.ScienceQuestionChoice;

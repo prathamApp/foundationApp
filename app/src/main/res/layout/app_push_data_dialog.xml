@@ -24,7 +24,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-    <com.pratham.foundation.customView.SansTextViewBold
+    <com.pratham.foundation.customView.fontsview.SansTextViewBold
         android:id="@+id/txt_push_dialog_msg"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -36,7 +36,7 @@
         android:textColor="@color/colorSignBoard"
         android:textSize="@dimen/_12sdp" />
 
-    <com.pratham.foundation.customView.SansTextViewBold
+    <com.pratham.foundation.customView.fontsview.SansTextViewBold
         android:id="@+id/txt_push_error"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -59,7 +59,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content">
 
-    <com.pratham.foundation.customView.SansButton
+    <com.pratham.foundation.customView.fontsview.SansButton
         android:id="@+id/ok_btn"
         android:layout_width="@dimen/_80sdp"
         android:layout_height="wrap_content"
@@ -77,7 +77,7 @@
         android:textColor="@color/white"
         android:textSize="@dimen/_10sdp"/>
 
-    <com.pratham.foundation.customView.SansButton
+    <com.pratham.foundation.customView.fontsview.SansButton
         android:id="@+id/eject_btn"
         android:layout_width="@dimen/_80sdp"
         android:layout_height="wrap_content"

@@ -17,7 +17,7 @@
         android:layout_marginBottom="@dimen/_5sdp"
         android:src="@drawable/sd_operate_step" />
 
-    <com.pratham.foundation.customView.SansButton
+    <com.pratham.foundation.customView.fontsview.SansButton
         android:id="@+id/txt_choose_sd_card"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

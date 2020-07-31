@@ -48,7 +48,7 @@
                 android:layout_marginTop="@dimen/_80sdp"
                 android:background="@drawable/ripple_rectangle_card">
 
-                <com.pratham.foundation.customView.SansTextViewBold
+                <com.pratham.foundation.customView.fontsview.SansTextViewBold
                     android:id="@+id/silence_tv"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
@@ -78,7 +78,7 @@
     <!--            android:layout_width="match_parent"-->
     <!--            android:layout_height="match_parent">-->
 
-    <!--            <com.pratham.foundation.customView.SansTextViewBold-->
+    <!--            <com.pratham.foundation.customView.fontsview.SansTextViewBold-->
     <!--                android:id="@+id/tv_story_title"-->
     <!--                android:layout_width="match_parent"-->
     <!--                android:layout_height="match_parent"-->
@@ -91,12 +91,14 @@
     <!--        </RelativeLayout>-->
     <!--    </android.support.design.card.MaterialCardView>-->
 
-    <com.pratham.foundation.customView.SansTextViewBold
+    <com.pratham.foundation.customView.fontsview.SansTextViewBold
         android:id="@+id/tv_story_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="@dimen/_5sdp"
+        android:layout_marginStart="@dimen/_15sdp"
+        android:layout_marginEnd="@dimen/_15sdp"
+        android:layout_marginTop="45dp"
         android:text="Story"
         android:textColor="@color/dark_blue"
         android:textSize="@dimen/_25sdp" />

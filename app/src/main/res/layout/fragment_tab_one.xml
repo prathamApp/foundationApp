@@ -27,7 +27,7 @@
             android:layout_centerHorizontal="true"
             android:src="@drawable/no_usage_data" />
 
-        <com.pratham.foundation.customView.SansTextViewBold
+        <com.pratham.foundation.customView.fontsview.SansTextViewBold
             android:id="@+id/nodata_tv"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

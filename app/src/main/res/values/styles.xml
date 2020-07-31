@@ -296,6 +296,15 @@
         <item name="android:elevation">@dimen/_3sdp</item>
         <item name="android:background">@drawable/button_green</item>
     </style>
+    <style name="edit_btn">
+        <item name="android:layout_marginStart">@dimen/_8sdp</item>
+        <item name="android:layout_marginEnd">@dimen/_8sdp</item>
+        <item name="android:layout_marginBottom">@dimen/_5sdp</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="android:textSize">@dimen/_13sdp</item>
+        <item name="android:elevation">@dimen/_3sdp</item>
+        <item name="android:background">@drawable/button_yellow</item>
+    </style>
     <style name="capturebtn">
         <item name="android:layout_marginStart">@dimen/_5sdp</item>
         <item name="android:layout_marginEnd">@dimen/_5sdp</item>
@@ -325,7 +334,7 @@
     </style>
     <style name="paragraph">
         <item name="android:background">@drawable/trans_dialog_bg</item>
-        <item name="android:elevation">5dp</item>
+        <item name="android:elevation">3dp</item>
         <item name="android:padding"> @dimen/_10sdp</item>
         <item name="android:textSize">@dimen/_10sdp</item>
         <item name="android:textAlignment">center</item>

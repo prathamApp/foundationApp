@@ -27,16 +27,16 @@
         android:paddingLeft="@dimen/_10sdp"
         android:paddingRight="@dimen/_10sdp"
         android:textStyle="bold" />
-    <com.pratham.foundation.customView.SansTextView
+    <com.pratham.foundation.customView.fontsview.SansTextView
         android:id="@+id/correctAns"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textSize="@dimen/_14sdp"
         android:paddingLeft="@dimen/_10sdp"
         android:paddingRight="@dimen/_10sdp"
-        android:textColor="@android:color/holo_green_dark"
+        android:textColor="@color/colorSignBoard"
         android:text="correct ans is"/>
-    <com.pratham.foundation.customView.SansButton
+    <com.pratham.foundation.customView.fontsview.SansButton
         android:id="@+id/dia_btn_yellow"
         android:layout_width="@dimen/_70sdp"
         android:layout_height="@dimen/_30sdp"

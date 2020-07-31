@@ -23,7 +23,7 @@
             android:padding="@dimen/_5sdp"
             android:src="@drawable/ic_left_arrow_white" />
 
-        <com.pratham.foundation.customView.SansTextViewBold
+        <com.pratham.foundation.customView.fontsview.SansTextViewBold
             android:id="@+id/cat_title"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -87,7 +87,7 @@
                         android:layout_alignParentBottom="true"
                         android:background="@color/colorBtnGreenDark">
 
-                        <com.pratham.foundation.customView.SansTextViewBold
+                        <com.pratham.foundation.customView.fontsview.SansTextViewBold
                             android:id="@+id/texttop"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
@@ -129,7 +129,7 @@
                         android:layout_alignParentBottom="true"
                         android:background="@color/colorBtnGreenDark">
 
-                        <com.pratham.foundation.customView.SansTextViewBold
+                        <com.pratham.foundation.customView.fontsview.SansTextViewBold
                             android:id="@+id/textbottom"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"

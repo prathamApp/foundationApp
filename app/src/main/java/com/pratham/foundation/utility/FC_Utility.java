@@ -70,8 +70,10 @@ import com.pratham.foundation.customView.ZoomImageDialog;
 import com.pratham.foundation.modalclasses.StorageInfo;
 import com.pratham.foundation.services.shared_preferences.FastSave;
 import com.pratham.foundation.ui.admin_panel.AdminControlsActivity_;
+import com.pratham.foundation.ui.admin_panel.andmin_login_new.AdminConsoleActivityNew_;
 import com.pratham.foundation.ui.admin_panel.group_selection.SelectGroupActivity_;
 import com.pratham.foundation.ui.contentPlayer.ContentPlayerActivity_;
+import com.pratham.foundation.ui.selectSubject.SelectSubject_;
 import com.pratham.foundation.ui.splash_activity.SplashActivity;
 
 import java.io.BufferedReader;
@@ -678,8 +680,8 @@ public class FC_Utility {
         if (mActivity instanceof AdminControlsActivity_) {
             ((AdminControlsActivity_) mActivity).getSupportFragmentManager()
                     .beginTransaction()
-                    .setCustomAnimations(R.anim.enter_right_to_left, R.anim.exit_right_to_left,
-                            R.anim.enter_left_to_right, R.anim.exit_left_to_right )
+//                    .setCustomAnimations(R.anim.enter_right_to_left, R.anim.exit_right_to_left,
+//                            R.anim.enter_left_to_right, R.anim.exit_left_to_right )
                     .replace(frame, mFragment, TAG)
                     .addToBackStack(TAG)
                     .commit();
@@ -692,24 +694,38 @@ public class FC_Utility {
         } else if (mActivity instanceof SelectGroupActivity_) {
             ((SelectGroupActivity_) mActivity).getSupportFragmentManager()
                     .beginTransaction()
-                    .setCustomAnimations(R.anim.enter_right_to_left, R.anim.exit_right_to_left,
-                            R.anim.enter_left_to_right, R.anim.exit_left_to_right )
+//                    .setCustomAnimations(R.anim.enter_right_to_left, R.anim.exit_right_to_left,
+//                            R.anim.enter_left_to_right, R.anim.exit_left_to_right )
+                    .replace(frame, mFragment, TAG)
+                    .addToBackStack(TAG)
+                    .commit();
+        } else if (mActivity instanceof SelectSubject_) {
+            ((SelectSubject_) mActivity).getSupportFragmentManager()
+                    .beginTransaction()
+                    .replace(frame, mFragment, TAG)
+                    .addToBackStack(TAG)
+                    .commit();
+        } else if (mActivity instanceof AdminConsoleActivityNew_) {
+            ((AdminConsoleActivityNew_) mActivity).getSupportFragmentManager()
+                    .beginTransaction()
+//                    .setCustomAnimations(R.anim.enter_right_to_left, R.anim.exit_right_to_left,
+//                            R.anim.enter_left_to_right, R.anim.exit_left_to_right )
                     .replace(frame, mFragment, TAG)
                     .addToBackStack(TAG)
                     .commit();
         } else if (mActivity instanceof SplashActivity) {
             ((SplashActivity) mActivity).getSupportFragmentManager()
                     .beginTransaction()
-                    .setCustomAnimations(R.anim.enter_right_to_left, R.anim.exit_right_to_left,
-                            R.anim.enter_left_to_right, R.anim.exit_left_to_right )
+//                    .setCustomAnimations(R.anim.enter_right_to_left, R.anim.exit_right_to_left,
+//                            R.anim.enter_left_to_right, R.anim.exit_left_to_right )
                     .replace(frame, mFragment, TAG)
                     .addToBackStack(TAG)
                     .commit();
         } else if (mActivity instanceof ContentPlayerActivity_) {
             ((ContentPlayerActivity_) mActivity).getSupportFragmentManager()
                     .beginTransaction()
-                    .setCustomAnimations(R.anim.enter_right_to_left, R.anim.exit_right_to_left,
-                            R.anim.enter_left_to_right, R.anim.exit_left_to_right )
+//                    .setCustomAnimations(R.anim.enter_right_to_left, R.anim.exit_right_to_left,
+//                            R.anim.enter_left_to_right, R.anim.exit_left_to_right )
                     .replace(frame, mFragment, TAG)
                     .addToBackStack(TAG)
                     .commit();

@@ -29,7 +29,7 @@
             android:layout_marginEnd="@dimen/_15sdp"
             android:layout_marginStart="@dimen/_15sdp">
 
-            <com.pratham.foundation.customView.SansTextViewBold
+            <com.pratham.foundation.customView.fontsview.SansTextViewBold
                 android:id="@+id/tv_Game_Name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -43,7 +43,7 @@
                 android:textColor="@color/colorBlack"
                 android:textSize="@dimen/_20sdp" />
 
-            <com.pratham.foundation.customView.SansTextView
+            <com.pratham.foundation.customView.fontsview.SansTextView
                 android:id="@+id/tv_Question"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -98,7 +98,7 @@
                     android:layout_marginStart="@dimen/_5sdp"
                     android:layout_marginEnd="@dimen/_5sdp"
                     android:scaleType="fitCenter"
-                    android:visibility="gone"
+                    android:visibility="visible"
                     android:src="@drawable/img_3_6_yrs" />
 
                 <com.pratham.foundation.customView.GifView
@@ -145,8 +145,8 @@
                     android:background="@color/colorAccentDark"
                     android:layout_height="@dimen/_35sdp">
 
-                    <com.pratham.foundation.customView.SansTextViewBold
-                        android:id="@id/tv_card1"
+                    <com.pratham.foundation.customView.fontsview.SansTextViewBold
+                        android:id="@+id/tv_card1"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:gravity="center_vertical"
@@ -201,7 +201,7 @@
                     android:background="@color/colorBtnGreenDark"
                     android:layout_height="@dimen/_35sdp">
 
-                    <com.pratham.foundation.customView.SansTextViewBold
+                    <com.pratham.foundation.customView.fontsview.SansTextViewBold
                         android:id="@+id/tv_ans"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"

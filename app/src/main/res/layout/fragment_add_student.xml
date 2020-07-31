@@ -1,5 +1,4 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/form_root"
     android:layout_width="match_parent"
@@ -7,7 +6,7 @@
     android:background="@drawable/new_bg"
     tools:context="com.pratham.foundation.ui.bottom_fragment.add_student.AddStudentFragment">
 
-    <com.pratham.foundation.customView.SansTextViewBold
+    <com.pratham.foundation.customView.fontsview.SansTextViewBold
         android:id="@+id/tv_title"
         android:layout_width="match_parent"
         android:layout_height="@dimen/_35sdp"
@@ -30,7 +29,7 @@
             android:layout_height="@dimen/_45sdp"
             android:layout_alignParentBottom="true">
 
-            <com.pratham.foundation.customView.SansButton
+            <com.pratham.foundation.customView.fontsview.SansButton
                 android:id="@+id/btn_add_new_student"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -61,7 +60,7 @@
                 android:layout_marginTop="@dimen/_10sdp"
                 android:layout_marginBottom="@dimen/_10sdp">
 
-                <com.an.customfontview.CustomEditText
+                <com.pratham.foundation.customView.fontsview.SansEditText
                     android:id="@+id/et_studentName"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/_30sdp"
@@ -71,12 +70,13 @@
                     android:focusableInTouchMode="true"
                     android:hint="Enter Name"
                     android:paddingVertical="@dimen/_1sdp"
-                    android:paddingLeft="@dimen/_8sdp"
+                    android:paddingStart="@dimen/_8sdp"
+                    android:paddingEnd="@dimen/_8sdp"
                     android:singleLine="true"
                     android:textColor="@color/colorBlack"
                     android:textColorHint="@color/black_overlay"
                     android:textSize="@dimen/_15sdp"
-                    app:editFontPath="fonts/GlacialIndifference-Regular.otf" />
+                    tools:ignore="HardcodedText,KeyboardInaccessibleWidget" />
 
                 <LinearLayout
                     android:id="@+id/ll_age"
@@ -87,7 +87,7 @@
                     android:background="@drawable/ripple_rectangle_card"
                     android:orientation="horizontal">
 
-                    <com.pratham.foundation.customView.SansTextView
+                    <com.pratham.foundation.customView.fontsview.SansTextView
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="2"
@@ -118,7 +118,7 @@
                     android:background="@drawable/ripple_rectangle_card"
                     android:gravity="center_vertical">
 
-                    <com.pratham.foundation.customView.SansTextView
+                    <com.pratham.foundation.customView.fontsview.SansTextView
                         android:id="@+id/tv_gender"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
@@ -137,7 +137,7 @@
                         android:gravity="center_vertical"
                         android:orientation="horizontal">
 
-                        <com.pratham.foundation.customView.SansRadioBtn
+                        <com.pratham.foundation.customView.fontsview.SansRadioBtn
                             android:id="@+id/rb_male"
                             android:layout_width="wrap_content"
                             android:layout_height="match_parent"
@@ -148,7 +148,7 @@
                             android:textColor="@color/light_black"
                             android:textSize="@dimen/_12sdp" />
 
-                        <com.pratham.foundation.customView.SansRadioBtn
+                        <com.pratham.foundation.customView.fontsview.SansRadioBtn
                             android:id="@+id/rb_female"
                             android:layout_width="wrap_content"
                             android:layout_height="match_parent"
@@ -169,7 +169,7 @@
                     android:layout_gravity="center"
                     android:orientation="vertical">
 
-                    <com.pratham.foundation.customView.SansTextView
+                    <com.pratham.foundation.customView.fontsview.SansTextView
                         android:id="@+id/tv_select_avatar"
                         android:layout_width="match_parent"
                         android:layout_height="@dimen/_30sdp"

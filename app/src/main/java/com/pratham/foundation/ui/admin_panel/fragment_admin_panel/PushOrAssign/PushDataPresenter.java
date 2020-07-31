@@ -122,7 +122,7 @@ public class PushDataPresenter implements PushDataContract.PushDataPresenter {
                     sessionArray.put(sessionJson);
 
                     JSONArray studentArray = new JSONArray();
-                    if (!ApplicationClass.isTablet) {
+                    if (!ApplicationClass.getAppMode()) {
                         List<Student> newStudents = AppDatabase.getDatabaseInstance(context).getStudentDao().getAllNewStudents();
                         for (Student std : newStudents)
                             studentArray.put(new JSONObject(gson.toJson(std)));
@@ -136,7 +136,7 @@ public class PushDataPresenter implements PushDataContract.PushDataPresenter {
                             programID = status.getValue();
                     }
                     metadataJson.put(FC_Constants.SCORE_COUNT, (metadata.size() > 0) ? metadata.size() : 0);
-                    if (!ApplicationClass.isTablet)
+                    if (!ApplicationClass.getAppMode())
                         rootJson.put(FC_Constants.STUDENTS, studentArray);
                     rootJson.put(FC_Constants.SESSION, sessionArray);
                     rootJson.put(FC_Constants.METADATA, metadataJson);
@@ -160,7 +160,7 @@ public class PushDataPresenter implements PushDataContract.PushDataPresenter {
                     e.printStackTrace();
                 }
             } else if (ApplicationClass.wiseF.isDeviceConnectedToMobileNetwork() || ApplicationClass.wiseF.isDeviceConnectedToWifiNetwork()) {
-                if (ApplicationClass.isTablet) {
+                if (ApplicationClass.getAppMode()) {
                     String requestString = generateRequestString(scoreData, attendanceData, sessionData, learntWords, supervisorData, logsData, assessmentData, studentData);
 
                     if (checkEmptyness(requestString))

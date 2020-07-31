@@ -211,7 +211,7 @@ public class ContentDisplay extends BaseActivity implements ContentContract.Cont
 /*        if (sImage != null) {
             if (sImage.equalsIgnoreCase("group_icon"))
                 profileImage.setImageResource(R.drawable.ic_grp_btn);
-            else if (!FC_Constants.GROUP_LOGIN && ApplicationClass.isTablet)
+            else if (!FC_Constants.GROUP_LOGIN && ApplicationClass.getAppMode())
                 profileImage.setImageResource(R.drawable.b2);
             else {
                 profileImage.setImageResource(R.drawable.b3);

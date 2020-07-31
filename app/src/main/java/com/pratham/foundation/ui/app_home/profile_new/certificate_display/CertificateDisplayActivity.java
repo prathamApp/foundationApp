@@ -8,7 +8,6 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.pratham.foundation.BaseActivity;
 import com.pratham.foundation.R;
@@ -151,7 +150,7 @@ public class CertificateDisplayActivity extends BaseActivity implements
 
     @Override
     public void gotoCertificate(Assessment assessment) {
-        Toast.makeText(this, "gotoCertificate", Toast.LENGTH_SHORT).show();
+//        Toast.makeText(this, "gotoCertificate", Toast.LENGTH_SHORT).show();
         Intent intent = new Intent(this, CertificateActivity.class);
         intent.putExtra("nodeId", "na");
         intent.putExtra("CertiCode", "" + assessment.getQuestionIda());

@@ -142,40 +142,20 @@ public class ReadingStoryActivityPresenter implements ReadingStoryActivityContra
     @Override
     public void sttResultProcess(ArrayList<String> sttResult, List<String> splitWordsPunct, List<String> wordsResIdList) {
 
-        String sttRes = sttResult.get(0);
-        String[] splitRes;
-        String word = " ";
-        addSttResultDB(sttResult);
+        try {
+            String sttRes = sttResult.get(0);
+            String[] splitRes;
+            String word = " ";
+            addSttResultDB(sttResult);
 
-        if (FastSave.getInstance().getString(CURRENT_FOLDER_NAME, "").equalsIgnoreCase("English"))
-            splitRes = sttRes.replaceAll("[^a-zA-Z ]", "").toLowerCase().split("\\s+");
-        else {
-            String answer2 = sttRes.replaceAll(STT_REGEX_2, "");
-            splitRes = answer2.split(" ");
-        }
-
-        for (int j = 0; j < splitRes.length; j++) {
-            for (int i = 0; i < splitWordsPunct.size(); i++) {
-                if ((splitRes[j].equalsIgnoreCase(splitWordsPunct.get(i))) && !correctArr[i]) {
-                    correctArr[i] = true;
-                    word = word + splitWordsPunct.get(i) + "(" + wordsResIdList.get(i) + "),";
-                    break;
-                }
+            if (FastSave.getInstance().getString(CURRENT_FOLDER_NAME, "").equalsIgnoreCase("English"))
+                splitRes = sttRes.replaceAll("[^a-zA-Z ]", "").toLowerCase().split("\\s+");
+            else {
+                String answer2 = sttRes.replaceAll(STT_REGEX_2, "");
+                splitRes = answer2.split(" ");
             }
-        }
-        readingView.setCorrectViewColor();
-        addScore(0, "Words:" + word, getCorrectCounter(), correctArr.length,  FC_Utility.getCurrentDateTime(), " ");
-    }
 
-    @Background
-    @Override
-    public void micStopped(List<String> splitWordsPunct, List<String> wordsResIdList) {
-        float perc;
-        String word = " ";
-        for(int k =0; k<remainingResult.size(); k++) {
-            String[] splitRes = remainingResult.get(k).split("");
             for (int j = 0; j < splitRes.length; j++) {
-                splitRes[j] = splitRes[j].replaceAll(STT_REGEX, "");
                 for (int i = 0; i < splitWordsPunct.size(); i++) {
                     if ((splitRes[j].equalsIgnoreCase(splitWordsPunct.get(i))) && !correctArr[i]) {
                         correctArr[i] = true;
@@ -184,34 +164,62 @@ public class ReadingStoryActivityPresenter implements ReadingStoryActivityContra
                     }
                 }
             }
+            readingView.setCorrectViewColor();
+            addScore(0, "Words:" + word, getCorrectCounter(), correctArr.length,  FC_Utility.getCurrentDateTime(), " ");
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-        remainingResult.clear();
-        List<String> learntWords_List = new ArrayList<>();
-        List<String> wordResId_List = new ArrayList<>();
-        for (int i = 0; i < splitWordsPunct.size(); i++) {
-            if (correctArr[i]) {
-                learntWords_List.add(splitWordsPunct.get(i));
-                wordResId_List.add(wordsResIdList.get(i));
+    }
+
+    @Background
+    @Override
+    public void micStopped(List<String> splitWordsPunct, List<String> wordsResIdList) {
+        try {
+            float perc;
+            String word = " ";
+            for(int k =0; k<remainingResult.size(); k++) {
+                String[] splitRes = remainingResult.get(k).split("");
+                for (int j = 0; j < splitRes.length; j++) {
+                    splitRes[j] = splitRes[j].replaceAll(STT_REGEX, "");
+                    for (int i = 0; i < splitWordsPunct.size(); i++) {
+                        if ((splitRes[j].equalsIgnoreCase(splitWordsPunct.get(i))) && !correctArr[i]) {
+                            correctArr[i] = true;
+                            word = word + splitWordsPunct.get(i) + "(" + wordsResIdList.get(i) + "),";
+                            break;
+                        }
+                    }
+                }
             }
-        }
+            remainingResult.clear();
+            List<String> learntWords_List = new ArrayList<>();
+            List<String> wordResId_List = new ArrayList<>();
+            for (int i = 0; i < splitWordsPunct.size(); i++) {
+                if (correctArr[i]) {
+                    learntWords_List.add(splitWordsPunct.get(i));
+                    wordResId_List.add(wordsResIdList.get(i));
+                }
+            }
 
-        addLearntWords(learntWords_List, wordResId_List);
-        int correctWordCount = getCorrectCounter();
-        perc = getPercentage(correctWordCount);
+            addLearntWords(learntWords_List, wordResId_List);
+            int correctWordCount = getCorrectCounter();
+            perc = getPercentage(correctWordCount);
 
-        addScore(0, "Words:" + word, correctWordCount, correctArr.length, FC_Utility.getCurrentDateTime(), " ");
+            addScore(0, "Words:" + word, correctWordCount, correctArr.length, FC_Utility.getCurrentDateTime(), " ");
 
-        if (pagePercentage[pgNo] < perc) {
-            pagePercentage[pgNo] = perc;
-        }
-        if (FastSave.getInstance().getString(APP_SECTION,"").equalsIgnoreCase(sec_Test))
+            if (pagePercentage[pgNo] < perc) {
+                pagePercentage[pgNo] = perc;
+            }
+            if (FastSave.getInstance().getString(APP_SECTION,"").equalsIgnoreCase(sec_Test))
+                if (perc >= 75)
+                    testCorrectArr[pgNo] = true;
+
             if (perc >= 75)
-                testCorrectArr[pgNo] = true;
-
-        if (perc >= 75)
-            readingView.allCorrectAnswer();
-        else
-            readingView.dismissLoadingDialog();
+                readingView.allCorrectAnswer();
+            else
+                readingView.dismissLoadingDialog();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     public boolean checkLearnt(String wordCheck) {
@@ -259,12 +267,16 @@ public class ReadingStoryActivityPresenter implements ReadingStoryActivityContra
     }
 
     public int getCorrectCounter() {
-        int counter = 0;
-
-        for (int x = 0; x < correctArr.length; x++)
-            if (correctArr[x])
-                counter++;
-        return counter;
+        try {
+            int counter = 0;
+            for (int x = 0; x < correctArr.length; x++)
+                if (correctArr[x])
+                    counter++;
+            return counter;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return 0;
+        }
     }
 
 /*    @Background

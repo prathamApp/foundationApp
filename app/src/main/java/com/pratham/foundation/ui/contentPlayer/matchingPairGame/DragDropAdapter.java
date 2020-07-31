@@ -2,7 +2,6 @@ package com.pratham.foundation.ui.contentPlayer.matchingPairGame;
 
 
 import android.content.Context;
-import android.graphics.Typeface;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -12,8 +11,6 @@ import android.widget.TextView;
 
 import com.pratham.foundation.R;
 import com.pratham.foundation.modalclasses.MatchThePair;
-import com.pratham.foundation.services.shared_preferences.FastSave;
-import com.pratham.foundation.utility.FC_Constants;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -64,6 +61,7 @@ public class DragDropAdapter extends RecyclerView.Adapter<DragDropAdapter.MyView
     @Override
     public void onBindViewHolder(final MyViewHolder holder, int position) {
 
+/*
         if (FastSave.getInstance().getString(FC_Constants.LANGUAGE, FC_Constants.HINDI).equalsIgnoreCase("Gujarati")) {
             Typeface face = Typeface.createFromAsset(context.getAssets(), "fonts/muktavaani_gujarati.ttf");
             holder.mTitle.setTypeface(face);
@@ -77,6 +75,7 @@ public class DragDropAdapter extends RecyclerView.Adapter<DragDropAdapter.MyView
             holder.mTitle.setTypeface(face);
             holder.mTitle.setText(data.get(position).getLangText());
         } else
+*/
             holder.mTitle.setText(data.get(position).getLangText());
 
             holder.rowView.setTag(data.get(position).getLangText());

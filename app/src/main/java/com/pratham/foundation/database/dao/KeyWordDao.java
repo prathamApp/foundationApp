@@ -7,7 +7,6 @@ import android.arch.persistence.room.OnConflictStrategy;
 import android.arch.persistence.room.Query;
 import android.arch.persistence.room.Update;
 
-
 import com.pratham.foundation.database.domain.KeyWords;
 
 import java.util.List;
@@ -22,10 +21,10 @@ public interface KeyWordDao {
     long[] insertAll(KeyWords... LearntWord);
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
-    public void insertWord(List<KeyWords> wordList);
+    void insertWord(List<KeyWords> wordList);
 
     @Insert
-    public void insertAllWord(List<KeyWords> wordList);
+    void insertAllWord(List<KeyWords> wordList);
 
     @Update
     int update(KeyWords word);
@@ -54,6 +53,9 @@ public interface KeyWordDao {
     @Query("select keyWord from KeyWords WHERE studentId=:stdID AND wordType='word' AND resourceId=:resId AND keyWord=:checkWord")
     String checkWord(String stdID, String resId, String checkWord);
 
+    @Query("select keyWord from KeyWords WHERE studentId=:stdID AND wordType=:type AND resourceId=:resId AND keyWord=:checkWord")
+    String checkEntry(String stdID, String resId, String checkWord, String type);
+
     @Query("select keyWord from KeyWords WHERE studentId=:stdID AND wordType=:wordType AND resourceId=:resId AND keyWord=:checkWord")
     String checkLearntData(String stdID, String resId, String checkWord, String wordType);
 
@@ -79,6 +81,6 @@ public interface KeyWordDao {
     int getLearntWordCount(String stdID);
 
     @Query("update KeyWords set sentFlag=1 where sentFlag=0")
-    public void setSentFlag();
+    void setSentFlag();
 
 }

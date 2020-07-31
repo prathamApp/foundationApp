@@ -223,7 +223,7 @@ public class TestPresenter implements TestContract.TestPresenter, API_Content_Re
             contentTableHeader.setContentType("Update");
             myView.addContentToViewTestList(contentTableHeader);
         }
-/*        contentTableHeader = new CertificateModelClass();
+/*      contentTableHeader = new CertificateModelClass();
         contentTableHeader.setNodeId("1");
         contentTableHeader.setResourceId("1");
         contentTableHeader.setResourcePath("path");
@@ -300,6 +300,14 @@ public class TestPresenter implements TestContract.TestPresenter, API_Content_Re
                 }
                 myView.addContentToViewTestList(contentTable);
             }
+            CertificateModelClass contentTableFooter = new CertificateModelClass();
+            contentTableFooter.setNodeId("0");
+            contentTableFooter.setResourceId("0");
+            contentTableFooter.setResourcePath("path");
+            contentTableFooter.setAsessmentGiven(true);
+            contentTableFooter.setContentType("Footer");
+            myView.addContentToViewTestList(contentTableFooter);
+
             myView.doubleQuestionCheck();
         } catch (Exception e) {
             e.printStackTrace();

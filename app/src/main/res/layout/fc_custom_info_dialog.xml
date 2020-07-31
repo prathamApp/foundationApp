@@ -4,7 +4,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_gravity="center">
 
-    <com.pratham.foundation.customView.SansButton
+    <com.pratham.foundation.customView.fontsview.SansButton
         android:id="@+id/dia_btn_exit"
         android:layout_width="@dimen/_40sdp"
         android:layout_height="@dimen/_40sdp"
@@ -38,7 +38,7 @@
             app:lottie_loop="true" />
 
 
-            <com.pratham.foundation.customView.SansTextViewBold
+            <com.pratham.foundation.customView.fontsview.SansTextViewBold
                 android:id="@+id/info"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

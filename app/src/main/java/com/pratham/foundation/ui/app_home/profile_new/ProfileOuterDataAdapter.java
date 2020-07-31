@@ -21,13 +21,15 @@ import java.util.List;
 public class ProfileOuterDataAdapter extends RecyclerView.Adapter {
 
     private Context mContext;
-    String[] progressArray;
+    private String[] progressArray;
 //    String[] progressSubArray = {"Certificate", "Projects", "Usage", "ImageQues"};
-    String[] progressSubArray = {"Certificate", "ImageQues", "Chat L-5"};
+private String[] progressSubArray = {"Certificate", "ImageQues", "Chat L-5"};
 //    String[] progressImgSubArray = {"Certificate", "Projects", "Usage", "ImageQues"};
-    String[] progressImgSubArray = {"Certificate", "ImageQues", "ChitChat"};
-    String[] shareSubArray = {"Share App", "Share Content"};
-    String[] shareImgSubArray = {"Share App", "Share Content"};
+private String[] progressImgSubArray = {"Certificate", "ImageQues", "ChitChat"};
+    private String[] statusSubArray = {"Last sync status"};
+    private String[] statusImgSubArray = {"syncImg"};
+//    String[] shareSubArray = {"Share App", "Share Content"};
+//    String[] shareImgSubArray = {"Share App", "Share Content"};
 
     public int childCounter = 0;
     ProfileContract.ProfileItemClicked profileItemClicked;
@@ -85,9 +87,9 @@ public class ProfileOuterDataAdapter extends RecyclerView.Adapter {
             if(progressArray[i].equalsIgnoreCase("Progress")){
                 sublistList = progressSubArray;
                 subImgList = progressImgSubArray;
-            } else if(progressArray[i].equalsIgnoreCase("Share")){
-                sublistList = shareSubArray;
-                subImgList = shareImgSubArray;
+            } else if(progressArray[i].equalsIgnoreCase("Status")){
+                sublistList = statusSubArray;
+                subImgList = statusImgSubArray;
             }
 
             ProfileInnerDataAdapter ProfileInnerDataAdapter = new ProfileInnerDataAdapter(mContext,

@@ -34,6 +34,7 @@ import com.pratham.foundation.database.domain.Student;
 import com.pratham.foundation.interfaces.SplashInterface;
 import com.pratham.foundation.modalclasses.EventMessage;
 import com.pratham.foundation.services.shared_preferences.FastSave;
+import com.pratham.foundation.ui.admin_panel.andmin_login_new.AdminConsoleActivityNew_;
 import com.pratham.foundation.ui.bottom_fragment.add_student.AddStudentFragment;
 import com.pratham.foundation.ui.selectSubject.SelectSubject_;
 import com.pratham.foundation.ui.splash_activity.SplashActivity;
@@ -73,6 +74,8 @@ public class BottomStudentsFragment extends BottomSheetDialogFragment
     Button add_student;
     @ViewById(R.id.btn_download_all_data)
     Button btn_download_all_data;
+    @ViewById(R.id.pratham_login)
+    Button pratham_login;
 
     private ArrayList avatars = new ArrayList();
     private List<Student> studentList;
@@ -232,6 +235,20 @@ public class BottomStudentsFragment extends BottomSheetDialogFragment
         AddStudentFragment addStudentFragment = AddStudentFragment.newInstance(this);
         addStudentFragment.show(Objects.requireNonNull(getActivity()).getSupportFragmentManager(),
                 AddStudentFragment.class.getSimpleName());
+    }
+
+    @Click(R.id.pratham_login)
+    public void openPrathamLogin() {
+        try {
+            ButtonClickSound.start();
+        } catch (IllegalStateException e) {
+            e.printStackTrace();
+        }
+        startActivity(new Intent(context, AdminConsoleActivityNew_.class));
+//        SplashActivity.fragmentAddStudentOpenFlg = true;
+//        AddStudentFragment addStudentFragment = AddStudentFragment.newInstance(this);
+//        addStudentFragment.show(Objects.requireNonNull(getActivity()).getSupportFragmentManager(),
+//                AddStudentFragment.class.getSimpleName());
     }
 
     @Override

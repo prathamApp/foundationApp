@@ -57,7 +57,7 @@
             android:src="@drawable/ic_download_2"
             android:visibility="visible" />
 
-        <com.pratham.foundation.customView.SansTextViewBold
+        <com.pratham.foundation.customView.fontsview.SansTextViewBold
             android:id="@+id/content_title"
             android:layout_width="match_parent"
             android:layout_height="@dimen/_23sdp"

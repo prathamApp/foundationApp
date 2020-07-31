@@ -559,7 +559,7 @@ public class PushDataToServer {
             metaDataObj.put("prathamCode", AppDatabase.getDatabaseInstance(context).getStatusDao().getValue("prathamCode"));
             metaDataObj.put("programId", AppDatabase.getDatabaseInstance(context).getStatusDao().getValue("programId"));
             metaDataObj.put("WifiMAC", AppDatabase.getDatabaseInstance(context).getStatusDao().getValue("wifiMAC"));
-            if (ApplicationClass.isTablet)
+            if (ApplicationClass.getAppMode())
                 metaDataObj.put("apkType", "Tablet");
             else
                 metaDataObj.put("apkType", "SmartPhone");
@@ -575,7 +575,7 @@ public class PushDataToServer {
             metaDataObj.put("ScreenResolution", AppDatabase.getDatabaseInstance(context).getStatusDao().getValue("ScreenResolution"));
 
             sessionObj.put("scoreData", scoreData);
-            if (!ApplicationClass.isTablet)
+            if (!ApplicationClass.getAppMode())
                 sessionObj.put("studentData", studentData);
             sessionObj.put("attendanceData", attendanceData);
             sessionObj.put("sessionsData", sessionData);

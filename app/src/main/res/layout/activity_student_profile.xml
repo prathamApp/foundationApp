@@ -86,7 +86,7 @@
                 app:border_width="2dp"
                 app:shadow="true" />
 
-            <com.pratham.foundation.customView.SansTextView
+            <com.pratham.foundation.customView.fontsview.SansTextView
                 android:id="@+id/tv_studentName"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -134,7 +134,7 @@
 <!--                    app:border_width="2dp"-->
 <!--                    app:shadow="true" />-->
 
-<!--                <com.pratham.foundation.customView.SansTextView-->
+<!--                <com.pratham.foundation.customView.fontsview.SansTextView-->
 <!--                    android:id="@+id/tv_studentNamel"-->
 <!--                    android:layout_width="match_parent"-->
 <!--                    android:layout_height="wrap_content"-->

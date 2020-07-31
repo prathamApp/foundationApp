@@ -24,6 +24,7 @@ import com.pratham.foundation.database.AppDatabase;
 import com.pratham.foundation.database.domain.Groups;
 import com.pratham.foundation.database.domain.Student;
 import com.pratham.foundation.services.shared_preferences.FastSave;
+import com.pratham.foundation.ui.admin_panel.andmin_login_new.AdminConsoleActivityNew_;
 import com.pratham.foundation.ui.admin_panel.group_selection.SelectGroupActivity_;
 import com.pratham.foundation.utility.FC_Constants;
 
@@ -236,7 +237,8 @@ public class MenuActivity extends BaseActivity {
     @Click({R.id.btn_admin, R.id.rl_admin})
     public void goto_btn_admin() {
         ButtonClickSound.start();
-        startActivity(new Intent(this, AdminControlsActivity_.class));
+        startActivity(new Intent(this, AdminConsoleActivityNew_.class));
+//        startActivity(new Intent(this, AdminControlsActivity_.class));
     }
    /* @Click(R.id.btn_share_receive)
     public void goto_share_receive() {

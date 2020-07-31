@@ -1,85 +1,112 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/rl_ss_main"
     android:layout_width="match_parent"
-    android:background="@drawable/new_bg"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@drawable/new_bg">
 
-    <com.pratham.foundation.customView.shape_of_view.ShadowLayout
-        android:id="@+id/shadow_close"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentEnd="true"
-        android:layout_margin="@dimen/_10sdp"
-        app:sl_shadow_angle="30"
-        app:sl_shadow_color="@color/colorBlackTransparentLight"
-        app:sl_shadow_distance="4dp"
-        app:sl_shadow_radius="5dp"
-        app:sl_shadowed="true">
+    <RelativeLayout
+        android:id="@+id/rl_act"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <com.pratham.foundation.customView.shape_of_view.ShadowLayout
+            android:id="@+id/shadow_close"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_margin="@dimen/_8sdp"
+            app:sl_shadow_angle="30"
+            app:sl_shadow_color="@color/colorBlackTransparentLight"
+            app:sl_shadow_distance="4dp"
+            app:sl_shadow_radius="5dp"
+            app:sl_shadowed="true">
+
+            <ImageButton
+                android:id="@+id/btn_back"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:layout_centerVertical="true"
+                android:background="?android:selectableItemBackground"
+                android:scaleType="fitXY"
+                android:src="@drawable/ic_close_red" />
+        </com.pratham.foundation.customView.shape_of_view.ShadowLayout>
+
+        <com.pratham.foundation.customView.fontsview.SansTextViewBold
+            android:id="@+id/name_welcome"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/_12sdp"
+            android:layout_marginTop="@dimen/_15sdp"
+            android:gravity="center_vertical"
+            android:text="@string/Welcome"
+            android:textColor="@color/colorText"
+            android:textSize="@dimen/_20sdp"
+            android:textStyle="bold" />
+
+        <com.pratham.foundation.customView.fontsview.SansTextViewBold
+            android:id="@+id/name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/name_welcome"
+            android:layout_marginStart="@dimen/_12sdp"
+            android:layout_marginTop="@dimen/_2sdp"
+            android:gravity="center_vertical"
+            android:text="@string/Welcome"
+            android:textColor="@color/colorText"
+            android:textSize="@dimen/_18sdp"
+            android:textStyle="bold" />
+
+        <com.pratham.foundation.customView.fontsview.SansTextView
+            android:id="@+id/subject"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/name"
+            android:layout_marginStart="@dimen/_12sdp"
+            android:layout_marginTop="@dimen/_5sdp"
+            android:text="@string/select_subject"
+            android:textColor="@color/colorBlackTransparentLight"
+            android:textSize="@dimen/_15sdp" />
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/subject_recycler"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@id/subject" />
 
         <ImageButton
-            android:id="@+id/btn_back"
-            android:layout_width="60dp"
-            android:layout_height="60dp"
-            android:layout_centerVertical="true"
-            android:background="?android:selectableItemBackground"
-            android:scaleType="fitXY"
-            android:src="@drawable/ic_close_red" />
-    </com.pratham.foundation.customView.shape_of_view.ShadowLayout>
+            android:id="@+id/ib_langChange"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginEnd="20dp"
+            android:layout_marginBottom="20dp"
+            android:background="@drawable/dialog_image_bg"
+            android:elevation="5dp"
+            android:scaleType="centerInside"
+            android:src="@drawable/language_icon" />
 
-    <com.pratham.foundation.customView.SansTextViewBold
-        android:id="@+id/name_welcome"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:gravity="center_vertical"
-        android:text="@string/Welcome"
-        android:layout_marginTop="@dimen/_10sdp"
-        android:layout_marginStart="@dimen/_10sdp"
-        android:textColor="@color/colorText"
-        android:textSize="@dimen/_16sdp"
-        android:textStyle="bold" />
-
-    <com.pratham.foundation.customView.SansTextViewBold
-        android:id="@+id/name"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:gravity="center_vertical"
-        android:layout_below="@id/name_welcome"
-        android:text="@string/Welcome"
-        android:layout_marginTop="@dimen/_2sdp"
-        android:layout_marginStart="@dimen/_10sdp"
-        android:textColor="@color/colorText"
-        android:textSize="@dimen/_16sdp"
-        android:textStyle="bold" />
-
-    <com.pratham.foundation.customView.SansTextView
-        android:id="@+id/subject"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/name"
-        android:layout_marginStart="@dimen/_10sdp"
-        android:layout_marginTop="@dimen/_5sdp"
-        android:text="@string/select_subject"
-        android:textColor="@color/colorBlackTransparentLight"
-        android:textSize="@dimen/_14sdp" />
-
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/subject_recycler"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_below="@id/subject"/>
-
-    <ImageButton
-        android:id="@+id/ib_langChange"
-        android:layout_width="80dp"
-        android:layout_height="80dp"
-        android:elevation="5dp"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentRight="true"
-        android:layout_marginEnd="20dp"
-        android:layout_marginBottom="20dp"
-        android:scaleType="centerInside"
-        android:background="@drawable/dialog_image_bg"
-        android:src="@drawable/language_icon" />
-
+        <com.pratham.foundation.customView.fontsview.SansTextViewBold
+            android:id="@+id/tv_update"
+            android:layout_width="match_parent"
+            android:layout_height="80dp"
+            android:layout_alignParentBottom="true"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="20dp"
+            android:layout_toStartOf="@id/ib_langChange"
+            android:layout_marginBottom="20dp"
+            android:background="@drawable/button_purple"
+            android:drawableStart="@drawable/ic_update2"
+            android:drawablePadding="5dp"
+            android:elevation="5dp"
+            android:gravity="center"
+            android:paddingStart="15dp"
+            android:paddingEnd="15dp"
+            android:text="New Version Available, Click To Update"
+            android:textColor="@color/white"
+            android:textSize="18sp"
+            android:visibility="gone" />
+    </RelativeLayout>
 </RelativeLayout>

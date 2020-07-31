@@ -27,10 +27,10 @@ import com.etiennelawlor.discreteslider.library.ui.DiscreteSlider;
 import com.etiennelawlor.discreteslider.library.utilities.DisplayUtility;
 import com.pratham.foundation.ApplicationClass;
 import com.pratham.foundation.R;
-import com.pratham.foundation.customView.SansButton;
-import com.pratham.foundation.customView.SansTextView;
-import com.pratham.foundation.customView.SansTextViewBold;
 import com.pratham.foundation.customView.display_image_dialog.CustomLodingDialog;
+import com.pratham.foundation.customView.fontsview.SansButton;
+import com.pratham.foundation.customView.fontsview.SansTextView;
+import com.pratham.foundation.customView.fontsview.SansTextViewBold;
 import com.pratham.foundation.interfaces.OnGameClose;
 import com.pratham.foundation.modalclasses.EventMessage;
 import com.pratham.foundation.modalclasses.ScienceQuestion;
@@ -72,7 +72,7 @@ public class ListeningAndWritting extends Fragment implements ListeningAndWritti
     RadioGroup radiogroup;*/
 
  /*   @ViewById(R.id.title)
-    com.pratham.foundation.customView.SansTextView title;*/
+    com.pratham.foundation.customView.fontsview.SansTextView title;*/
 
     @ViewById(R.id.previous)
     ImageButton previous;

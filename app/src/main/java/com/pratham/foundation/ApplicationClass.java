@@ -1,9 +1,12 @@
 package com.pratham.foundation;
 
 import android.app.Application;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
 import android.content.Context;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
+import android.os.Build;
 import android.os.StrictMode;
 import android.util.Log;
 
@@ -12,6 +15,7 @@ import com.facebook.drawee.backends.pipeline.Fresco;
 import com.isupatches.wisefy.WiseFy;
 import com.pratham.foundation.services.TTSService;
 import com.pratham.foundation.services.shared_preferences.FastSave;
+import com.pratham.foundation.utility.FC_Constants;
 import com.pratham.foundation.utility.FC_Utility;
 
 import java.io.File;
@@ -28,7 +32,7 @@ public class ApplicationClass extends Application {
 
     //    public static String uploadDataUrl = "http://prodigi.openiscool.org/api/cosv2/pushdata";
     public static String uploadDataUrl = "http://devprodigi.openiscool.org/api/Foundation/PushData";
-    public static final boolean isTablet = false;
+    public static boolean isTablet = false;
     public static boolean contentExistOnSD = false, LocationFlg = false;
     public static String contentSDPath = "";
     public static String foundationPath = "";
@@ -75,6 +79,26 @@ public class ApplicationClass extends Application {
                 .build();
         AndroidNetworking.initialize(getApplicationContext(), okHttpClient);
     }
+
+    public static boolean getAppMode(){
+//        isTablet = false;
+        isTablet = FastSave.getInstance().getBoolean(FC_Constants.PRATHAM_LOGIN, false);
+        return isTablet;
+    }
+
+    private void createNotificationChannel() {
+        String NOTIFICATION_CHANNEL_ID = "push.service";
+        String channelName = "Sync Service";
+
+        if(Build.VERSION.SDK_INT>=Build.VERSION_CODES.O) {
+            NotificationChannel serviceChannel = new NotificationChannel(NOTIFICATION_CHANNEL_ID,
+                    channelName, NotificationManager.IMPORTANCE_NONE);
+
+            NotificationManager manager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+            manager.createNotificationChannel(serviceChannel);
+        }
+    }
+
 
     @Override
     protected void attachBaseContext(Context base) {

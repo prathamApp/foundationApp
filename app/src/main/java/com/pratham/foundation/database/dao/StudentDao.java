@@ -44,6 +44,9 @@ public interface StudentDao {
     @Query("select * from Student")
     List<Student> getAllStudents();
 
+    @Query("select * from Student where GroupId='PS'")
+    List<Student> getAllPSStudents();
+
     @Query("SELECT * FROM Student WHERE GroupId=:gID")
     List<Student> getGroupwiseStudents(String gID);
 
@@ -85,4 +88,7 @@ public interface StudentDao {
 
     @Query("update Student set newFlag=1 where newFlag=0")
     void setSentFlag();
+
+    @Query("DELETE FROM Student WHERE GroupID != 'PS'")
+    void deletePrathamAll();
 }

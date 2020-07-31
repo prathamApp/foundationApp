@@ -31,7 +31,7 @@ public class ContinuousSpeechService_New implements RecognitionListener, STT_Res
     public static Intent recognizerIntent;
     public static SpeechRecognizer speech = null;
     public Context context;
-    boolean voiceStart = false, silenceDetectionFlg = false, resetFlg = false;
+    private boolean stopClicked = false, voiceStart = false, silenceDetectionFlg = false, resetFlg = false;
     STT_Result_New.sttView stt_result;
     Handler silenceHandler;
     String LOG_TAG = "ContinuousSpeechService : ", sttResult, language, myLocal = "en-IN";
@@ -60,7 +60,9 @@ public class ContinuousSpeechService_New implements RecognitionListener, STT_Res
     }
 
     public void stopSpeechService(){
+        setMute(0);
         speech.destroy();
+        stt_result.stoppedPressed();
     }
 
     public void setMyLocal(String language) {
@@ -92,16 +94,21 @@ public class ContinuousSpeechService_New implements RecognitionListener, STT_Res
 
     public void stopSpeechInput() {
         Log.d(LOG_TAG, "stopSpeechInput");
+        setMute(0);
         voiceStart = false;
+        speech.stopListening();
         setMute(0);
         try {
-            if (silenceHandler != null)
+            if (silenceHandler != null) {
                 silenceHandler.removeCallbacksAndMessages(null);
+            }
         } catch (Exception e) {
+            e.printStackTrace();
         }
-        logDBEntry("Stopped");
-        speech.stopListening();
+        logDBEntry("STT Stopped");
+        setMute(0);
         stt_result.stoppedPressed();
+        setMute(0);
     }
 
     public void startSpeechInput() {

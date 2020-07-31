@@ -17,7 +17,7 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
-        <com.pratham.foundation.customView.SansTextViewBold
+        <com.pratham.foundation.customView.fontsview.SansTextViewBold
             android:id="@+id/tv_result_question"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -53,7 +53,7 @@
                 android:layout_gravity="center|top"
                 android:orientation="vertical">
 
-                <com.pratham.foundation.customView.SansTextViewBold
+                <com.pratham.foundation.customView.fontsview.SansTextViewBold
                     android:id="@+id/tv_you_answered_label"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -64,7 +64,7 @@
                     android:textSize="@dimen/_15sdp" />
 
 
-                <com.pratham.foundation.customView.SansTextView
+                <com.pratham.foundation.customView.fontsview.SansTextView
                     android:id="@+id/tv_you_answered"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -97,7 +97,7 @@
                 android:layout_gravity="center|top"
                 android:orientation="vertical">
 
-                <com.pratham.foundation.customView.SansTextViewBold
+                <com.pratham.foundation.customView.fontsview.SansTextViewBold
                     android:id="@+id/tv_correct_answer_label"
                     android:layout_width="match_parent"
                     android:textColor="@color/colorBtnGreenDark"
@@ -107,7 +107,7 @@
                     android:text="@string/Correct_Answer"
                     android:textSize="@dimen/_15sdp" />
 
-                <com.pratham.foundation.customView.SansTextView
+                <com.pratham.foundation.customView.fontsview.SansTextView
                     android:id="@+id/tv_correct_answer"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"

@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:background="@color/mustord_yellow"
+    android:layout_height="112dp">
+
+    <ImageView
+        android:id="@+id/img"
+        android:layout_width="88dp"
+        android:layout_height="88dp"
+        android:layout_centerVertical="true"
+        android:layout_marginStart="12dp"
+        android:src="@drawable/fc_logo_round"/>
+
+    <com.pratham.foundation.customView.fontsview.SansTextViewBold
+        android:id="@+id/appname"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_marginTop="12dp"
+        android:text="@string/app_name"
+        android:textSize="30sp"
+        android:textColor="@color/dark_blue"
+        android:layout_marginStart="20dp"
+        android:layout_toEndOf="@+id/img"/>
+
+    <com.pratham.foundation.customView.fontsview.SansTextViewBold
+        android:id="@+id/pushing"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="12dp"
+        android:text="Pushing data, please wait..."
+        android:textSize="20sp"
+        android:textColor="@color/dark_blue"
+        android:layout_marginStart="20dp"
+        android:layout_toEndOf="@+id/img"
+        android:layout_below="@+id/appname"
+        tools:ignore="HardcodedText" />
+
+</RelativeLayout>

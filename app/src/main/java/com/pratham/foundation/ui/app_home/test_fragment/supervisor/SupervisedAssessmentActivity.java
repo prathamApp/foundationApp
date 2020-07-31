@@ -44,7 +44,6 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-import static com.pratham.foundation.ApplicationClass.isTablet;
 import static com.pratham.foundation.utility.FC_Constants.CURRENT_ASSESSMENT_STUDENT_ID;
 import static com.pratham.foundation.utility.FC_Constants.GROUP_MODE;
 
@@ -93,7 +92,7 @@ public class SupervisedAssessmentActivity extends Activity implements TestStuden
                 "");
 
         if (testMode.equalsIgnoreCase("unsupervised")) {
-            if (isTablet) {
+            if (ApplicationClass.getAppMode()) {
                 if (appLoginMode.equalsIgnoreCase(GROUP_MODE)) {
                     attendence_layout.setVisibility(View.VISIBLE);
                     getStudents();
@@ -210,7 +209,7 @@ public class SupervisedAssessmentActivity extends Activity implements TestStuden
             @Override
             protected Object doInBackground(Object[] objects) {
                 try {
-                    if (isTablet && appLoginMode.equalsIgnoreCase(GROUP_MODE)) {
+                    if (ApplicationClass.getAppMode() && appLoginMode.equalsIgnoreCase(GROUP_MODE)) {
                         studentList = AppDatabase.getDatabaseInstance(SupervisedAssessmentActivity.this).getStudentDao()
                                 .getGroupwiseStudents(FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""));
                     } else {

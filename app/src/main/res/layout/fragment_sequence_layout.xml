@@ -13,7 +13,7 @@
     <!--        android:layout_width="match_parent"-->
     <!--        android:layout_height="60dp" />-->
 
-    <com.pratham.foundation.customView.SansTextViewBold
+    <com.pratham.foundation.customView.fontsview.SansTextViewBold
         android:id="@+id/txt_seq_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -41,7 +41,7 @@
             android:layout_margin="@dimen/_5sdp"
             android:background="@drawable/gradient_one_rounded">
 
-            <com.pratham.foundation.customView.SansTextViewBold
+            <com.pratham.foundation.customView.fontsview.SansTextViewBold
                 android:id="@+id/tv_top_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -53,7 +53,7 @@
                 android:textColor="@color/white"
                 android:textSize="@dimen/_18sdp" />
 
-            <com.pratham.foundation.customView.SansButton
+            <com.pratham.foundation.customView.fontsview.SansButton
                 android:id="@+id/playFromStart"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

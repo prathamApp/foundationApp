@@ -96,6 +96,7 @@ public class TestFragment extends Fragment implements TestContract.TestView,
     @Bean(TestPresenter.class)
     TestContract.TestPresenter presenter;
     private List<CertificateModelClass> testList;
+    private CertificateModelClass testOBJ;
 
     @ViewById(R.id.my_recycler_view)
     RecyclerView my_recycler_view;
@@ -201,7 +202,7 @@ public class TestFragment extends Fragment implements TestContract.TestView,
         } else
             testAdapter.notifyDataSetChanged();
         long delay;
-        if (ApplicationClass.isTablet)
+        if (ApplicationClass.getAppMode())
             delay = 500L;
         else
             delay = 300L;
@@ -354,7 +355,8 @@ public class TestFragment extends Fragment implements TestContract.TestView,
                     dialog_file_name.setText("Updating Data");
                     String folderPath = "";
                     try {
-                        rootLevelList.get(currentLevel).setNodeUpdate(false);
+                        int testIndex = currentLevel - 1;
+                        rootLevelList.get(testIndex).setNodeUpdate(false);
                         isUpdate = false;
                         resName = "";
                         BackupDatabase.backup(context);
@@ -570,12 +572,16 @@ public class TestFragment extends Fragment implements TestContract.TestView,
 
     @Override
     public void doubleQuestionCheck() {
-        for (int i = 0; i < testList.size(); i++) {
-            for (int j = i + 1; j < testList.size(); j++) {
-                if (testList.get(i).getCertiCode().equalsIgnoreCase(testList.get(j).getCertiCode())) {
-                    testList.get(i).setCodeCount(testList.get(i).getCodeCount() + 1);
+        try {
+            for (int i = 0; i < testList.size(); i++) {
+                for (int j = i + 1; j < testList.size(); j++) {
+                    if (testList.get(i).getCertiCode().equalsIgnoreCase(testList.get(j).getCertiCode())) {
+                        testList.get(i).setCodeCount(testList.get(i).getCodeCount() + 1);
+                    }
                 }
             }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 
@@ -701,7 +707,8 @@ public class TestFragment extends Fragment implements TestContract.TestView,
                 mainNew.putExtra("sttLang", "English");
                 mainNew.putExtra("contentPath", testData.getResourcePath());
                 startActivityForResult(mainNew, 1461);
-            } else if (testData.getResourceType().equalsIgnoreCase(FC_Constants.RHYME_RESOURCE) || testData.getResourceType().equalsIgnoreCase(FC_Constants.STORY_RESOURCE)) {
+            } else if (testData.getResourceType().equalsIgnoreCase(FC_Constants.RHYME_RESOURCE) ||
+                    testData.getResourceType().equalsIgnoreCase(FC_Constants.STORY_RESOURCE)) {
                 ContentTable randomTestData = presenter.getRandomData(testData.getResourceType(), testData.getNodeKeywords());
                 Intent mainNew = new Intent(context, ReadingStoryActivity_.class);
                 mainNew.putExtra("storyId", randomTestData.getResourceId());
@@ -809,8 +816,9 @@ public class TestFragment extends Fragment implements TestContract.TestView,
         try {
             dismissLoadingDialog();
             my_recycler_view.removeAllViews();
-            if (testList.size() > 1) {
+            if (testList.size() > 2) {
                 ib_langChange.setVisibility(View.VISIBLE);
+                btn_test_dw.setVisibility(View.GONE);
                 if (testAdapter == null) {
                     testAdapter = new TestAdapter(context, testList, TestFragment.this, TestFragment.this);
                     RecyclerView.LayoutManager myLayoutManager = new GridLayoutManager(context, 1);
@@ -821,6 +829,7 @@ public class TestFragment extends Fragment implements TestContract.TestView,
                     testAdapter.notifyDataSetChanged();
             } else {
                 btn_test_dw.setVisibility(View.VISIBLE);
+                ib_langChange.setVisibility(View.GONE);
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -837,15 +846,15 @@ public class TestFragment extends Fragment implements TestContract.TestView,
                 int sMarks = data.getIntExtra("sMarks", 0);
                 try {
 //                    if (cCode.equalsIgnoreCase(certi_Code)) {
-                        testList.get(clicked_Pos).setAsessmentGiven(true);
-                        testList.get(clicked_Pos).setTotalMarks(tMarks);
-                        testList.get(clicked_Pos).setScoredMarks(sMarks);
-                        float perc = 0f;
-                        if (tMarks > 0 && sMarks <= tMarks)
-                            perc = ((float) sMarks / (float) tMarks) * 100;
-                        testList.get(clicked_Pos).setStudentPercentage("" + perc);
-                        testList.get(clicked_Pos).setCertificateRating(presenter.getStarRating(perc));
-                        testAdapter.notifyItemChanged(clicked_Pos, testList.get(clicked_Pos));
+                    testList.get(clicked_Pos).setAsessmentGiven(true);
+                    testList.get(clicked_Pos).setTotalMarks(tMarks);
+                    testList.get(clicked_Pos).setScoredMarks(sMarks);
+                    float perc = 0f;
+                    if (tMarks > 0 && sMarks <= tMarks)
+                        perc = ((float) sMarks / (float) tMarks) * 100;
+                    testList.get(clicked_Pos).setStudentPercentage("" + perc);
+                    testList.get(clicked_Pos).setCertificateRating(presenter.getStarRating(perc));
+                    testAdapter.notifyItemChanged(clicked_Pos, testList.get(clicked_Pos));
 //                    }
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -860,10 +869,13 @@ public class TestFragment extends Fragment implements TestContract.TestView,
         JSONObject jsonObjectAssessment = new JSONObject();
         for (int i = 0; i < testList.size(); i++) {
             try {
-                if (!testList.get(i).getContentType().equalsIgnoreCase("header")) {
-                    if (testList.get(i).isAsessmentGiven()) {
-                        jsonObjectAssessment.put("CertCode" + i + "_" + testList.get(i).getCertiCode(),
-                                "" + testList.get(i).getStudentPercentage());
+                testOBJ = testList.get(i);
+                String cType = testOBJ.getContentType();
+                if (!cType.equalsIgnoreCase("header") &&
+                        !cType.equalsIgnoreCase("footer")) {
+                    if (testOBJ.isAsessmentGiven()) {
+                        jsonObjectAssessment.put("CertCode" + i + "_" + testOBJ.getCertiCode(),
+                                "" + testOBJ.getStudentPercentage());
                     } else {
                         testGiven = false;
                         break;
@@ -1025,8 +1037,7 @@ public class TestFragment extends Fragment implements TestContract.TestView,
                 loaderVisible = true;
                 myLoadingDialog = new CustomLodingDialog(context);
                 myLoadingDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-                Objects.requireNonNull(myLoadingDialog.getWindow()).
-                        setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+                Objects.requireNonNull(myLoadingDialog.getWindow()).setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
                 myLoadingDialog.setContentView(R.layout.loading_dialog);
                 myLoadingDialog.setCanceledOnTouchOutside(false);
 //        myLoadingDialog.setCancelable(false);

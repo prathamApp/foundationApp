@@ -36,6 +36,7 @@ import static com.pratham.foundation.utility.FC_Constants.sec_Practice;
 
 
 public class JSInterface implements RecognitionListener {
+
     static Context mContext;
     String sdCardPath, sttJSResult;
     AudioPlayer recordAudio;
@@ -353,6 +354,7 @@ public class JSInterface implements RecognitionListener {
         return WebViewActivity.gameLevel;
     }
 
+    @SuppressLint("StaticFieldLeak")
     @JavascriptInterface
     public void addScore(String resId, final int questionId, final int scorefromGame, final int totalMarks, final int level, final String startTime, final String Label) {
         boolean _wasSuccessful = false;

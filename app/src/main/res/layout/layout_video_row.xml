@@ -4,6 +4,50 @@
     android:layout_height="match_parent"
     android:background="@drawable/activity_bkgd">
 
+    <LinearLayout
+        android:id="@+id/ll_edit_text"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:elevation="@dimen/_20sdp"
+        android:orientation="vertical"
+        android:visibility="gone"
+        android:weightSum="1"
+        android:background="@color/colorBlackTransparentLight">
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight=".48"
+            android:layout_marginTop="65dp"
+            android:layout_marginStart="@dimen/_10sdp"
+            android:layout_marginEnd="@dimen/_10sdp"
+            android:background="@drawable/dialog_bg">
+        <com.pratham.foundation.customView.fontsview.SansEditText
+            android:id="@+id/et_edit_ans"
+            android:layout_width="match_parent"
+            android:layout_margin="@dimen/_5sdp"
+            android:layout_above="@id/bt_edit_ok"
+            android:overScrollMode="always"
+            android:textAlignment="center"
+            android:scrollbarStyle="insideInset"
+            android:scrollbars="vertical"
+            android:textColor="@color/dark_blue"
+            android:layout_height="match_parent"/>
+
+            <com.pratham.foundation.customView.fontsview.SansButton
+                android:id="@+id/bt_edit_ok"
+                android:layout_alignParentBottom="true"
+                android:layout_width="@dimen/_100sdp"
+                android:layout_height="wrap_content"
+                android:text="@string/Okay"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="@dimen/_5sdp"
+                android:textSize="@dimen/_10sdp"
+                android:textColor="@color/white"
+                android:layout_marginBottom="@dimen/_10sdp"
+                android:background="@drawable/button_green"/>
+        </RelativeLayout>
+    </LinearLayout>
+
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -14,7 +58,7 @@
             android:id="@+id/space"
             android:layout_width="match_parent"
             android:layout_height="60dp"/>
-        <com.pratham.foundation.customView.SansTextViewBold
+        <com.pratham.foundation.customView.fontsview.SansTextViewBold
             android:id="@+id/tv_question"
             android:scrollbars="vertical"
             android:fadeScrollbars="false"
@@ -76,7 +120,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_weight="1.5">
-            <com.pratham.foundation.customView.SansTextView
+            <com.pratham.foundation.customView.fontsview.SansTextView
                 android:id="@+id/subQuestion"
                 android:layout_width="match_parent"
                 style="@style/paragraph"
@@ -97,48 +141,47 @@
                 android:layout_weight="1"
                 android:layout_margin="@dimen/_10sdp"
                 android:orientation="horizontal">
-                <com.pratham.foundation.customView.SansTextView
+                <com.pratham.foundation.customView.fontsview.SansTextView
                     android:id="@+id/answer"
                     android:layout_width="0dp"
                     android:layout_weight="3"
                     android:scrollbars="vertical"
                     android:fadeScrollbars="false"
-                    android:padding="8dp"
+                    android:padding="10dp"
                     android:textSize="@dimen/_15sdp"
                     android:text="@string/app_name"
                     android:gravity="center"
+                    android:textColor="@color/dark_blue"
                     android:textAlignment="center"
                     android:background="@drawable/green_bg"
                     android:layout_height="match_parent"/>
-                <RelativeLayout
+                <LinearLayout
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
                     android:orientation="vertical">
                     <ImageButton
                         android:id="@+id/btn_read_mic"
-                        android:layout_width="@dimen/_100sdp"
-                        android:layout_height="@dimen/_40sdp"
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="1"
+                        android:layout_marginTop="@dimen/_5sdp"
                         android:scaleType="centerInside"
-                        android:elevation="5dp"
+                        android:elevation="@dimen/_2sdp"
                         style="@style/submitbtn"
                         android:padding="@dimen/_5sdp"
                         android:src="@drawable/ic_mic_black"/>
-                    <com.pratham.foundation.customView.SansButton
+                    <ImageButton
                         android:id="@+id/reset_btn"
-                        android:layout_width="@dimen/_100sdp"
-                        android:layout_height="@dimen/_35sdp"
-                        android:layout_below="@+id/btn_read_mic"
-                        android:layout_marginBottom="@dimen/_10sdp"
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="1"
                         android:layout_marginTop="@dimen/_5sdp"
-                        android:layout_marginStart="@dimen/_2sdp"
-                        android:layout_marginEnd="@dimen/_2sdp"
-                        android:elevation="@dimen/_5sdp"
-                        android:text="@string/Reset"
-                        android:background="@drawable/button_yellow"
-                        android:textColor="@color/white"
-                        android:textSize="@dimen/_12sdp"/>
-                </RelativeLayout>
+                        android:scaleType="centerInside"
+                        android:elevation="@dimen/_2sdp"
+                        style="@style/edit_btn"
+                        android:src="@drawable/ic_edit_white"/>
+                </LinearLayout>
 
             </LinearLayout>
 
@@ -172,7 +215,7 @@
                 android:layout_height="50dp"
                 android:layout_margin="@dimen/_2sdp"
                 android:layout_weight="1" />
-            <com.pratham.foundation.customView.SansButton
+            <com.pratham.foundation.customView.fontsview.SansButton
                 android:id="@+id/preview"
                 style="@style/submitbtn"
                 android:layout_width="0dp"
@@ -188,7 +231,7 @@
             android:layout_marginTop="@dimen/_5sdp"
             android:layout_height="wrap_content">
 
-            <com.pratham.foundation.customView.SansButton
+            <com.pratham.foundation.customView.fontsview.SansButton
                 android:id="@+id/submit"
                 style="@style/submitbtn"
                 android:layout_width="0dp"

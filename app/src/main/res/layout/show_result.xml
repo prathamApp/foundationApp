@@ -29,19 +29,19 @@
             android:background="@drawable/dialog_bg"
             android:gravity="center">
 
-            <com.pratham.foundation.customView.SansTextViewBold
+            <com.pratham.foundation.customView.fontsview.SansTextViewBold
                 android:id="@+id/dia_title"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:gravity="center"
                 android:layout_marginBottom="@dimen/_10sdp"
+                android:gravity="center"
                 android:paddingStart="@dimen/_7sdp"
                 android:paddingEnd="@dimen/_7sdp"
                 android:text="Correct Words:"
-                android:textColor="@color/colorProgress"
+                android:textColor="@color/colorBtnGreenDark"
                 android:textSize="@dimen/_18sdp" />
 
-            <com.pratham.foundation.customView.SansTextViewBold
+            <com.pratham.foundation.customView.fontsview.SansTextViewBold
                 android:id="@+id/correct_keywords"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -50,7 +50,7 @@
                 android:paddingHorizontal="@dimen/_20sdp"
                 android:textSize="@dimen/_15sdp" />
 
-            <com.pratham.foundation.customView.SansTextViewBold
+            <com.pratham.foundation.customView.fontsview.SansTextViewBold
                 android:id="@+id/dia_title_wrong"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -64,7 +64,7 @@
                 android:textColor="@color/colorRedDark"
                 android:textSize="@dimen/_18sdp" />
 
-            <com.pratham.foundation.customView.SansTextViewBold
+            <com.pratham.foundation.customView.fontsview.SansTextViewBold
                 android:id="@+id/wrong_keywords"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -86,7 +86,7 @@
             android:gravity="center">
 
 
-            <com.pratham.foundation.customView.SansButton
+            <com.pratham.foundation.customView.fontsview.SansButton
                 android:id="@+id/dia_btn_yellow"
                 android:layout_width="@dimen/_70sdp"
                 android:layout_height="@dimen/_40sdp"

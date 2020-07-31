@@ -35,7 +35,7 @@
             app:roundingBorderColor="@color/white"
             app:roundingBorderWidth="@dimen/_2sdp"/>
 
-            <com.pratham.foundation.customView.SansTextViewBold
+            <com.pratham.foundation.customView.fontsview.SansTextViewBold
                 android:id="@+id/child_name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -89,7 +89,7 @@
         android:layout_height="@dimen/_30sdp"
         android:src="@drawable/ic_photo_camera" />
 
-    <com.pratham.foundation.customView.SansTextView
+    <com.pratham.foundation.customView.fontsview.SansTextView
         android:id="@+id/child_name"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

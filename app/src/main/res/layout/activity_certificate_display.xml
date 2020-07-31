@@ -39,7 +39,7 @@
                 android:layout_below="@+id/main_back"
                 android:layout_marginStart="@dimen/_15sdp">
 
-                <com.pratham.foundation.customView.SansTextViewBold
+                <com.pratham.foundation.customView.fontsview.SansTextViewBold
                     android:id="@+id/tv_Topic"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -57,7 +57,7 @@
                     android:orientation="horizontal"
                     android:visibility="gone">
 
-                    <com.pratham.foundation.customView.SansTextView
+                    <com.pratham.foundation.customView.fontsview.SansTextView
                         android:id="@+id/tv_Activity"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -67,7 +67,7 @@
                         android:textColor="@color/oslo_grey"
                         android:textSize="@dimen/_18sdp" />
 
-                    <com.pratham.foundation.customView.SansTextViewBold
+                    <com.pratham.foundation.customView.fontsview.SansTextViewBold
                         android:id="@+id/tv_header_progress"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -109,7 +109,7 @@
                 android:layout_centerHorizontal="true"
                 android:src="@drawable/no_usage_data" />
 
-            <com.pratham.foundation.customView.SansTextViewBold
+            <com.pratham.foundation.customView.fontsview.SansTextViewBold
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/nodata_img"

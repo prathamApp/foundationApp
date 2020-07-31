@@ -39,8 +39,8 @@ import android.widget.TextView;
 import com.nex3z.flowlayout.FlowLayout;
 import com.pratham.foundation.ApplicationClass;
 import com.pratham.foundation.R;
-import com.pratham.foundation.customView.SansTextView;
 import com.pratham.foundation.customView.display_image_dialog.CustomLodingDialog;
+import com.pratham.foundation.customView.fontsview.SansTextView;
 import com.pratham.foundation.interfaces.OnGameClose;
 import com.pratham.foundation.modalclasses.EventMessage;
 import com.pratham.foundation.modalclasses.ModalParaSubMenu;
@@ -228,7 +228,7 @@ public class ScrollReadingFragment extends Fragment implements
     }
 
     private void startFrag() {
-        final Typeface tf = Typeface.createFromAsset(context.getAssets(), "fonts/Sarala_Bold.ttf");
+        final Typeface tf = Typeface.createFromAsset(context.getAssets(), "fonts/GlacialIndifference-Bold.otf");
         collapsingToolbarLayout.setCollapsedTitleTypeface(tf);
         collapsingToolbarLayout.setExpandedTitleTypeface(tf);
         readSounds.add(R.raw.tap_the_mic);

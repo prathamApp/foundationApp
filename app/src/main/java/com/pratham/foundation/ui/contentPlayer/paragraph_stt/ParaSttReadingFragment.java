@@ -2,7 +2,6 @@ package com.pratham.foundation.ui.contentPlayer.paragraph_stt;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
-import android.app.ActivityOptions;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -34,9 +33,9 @@ import android.widget.TextView;
 import com.nex3z.flowlayout.FlowLayout;
 import com.pratham.foundation.ApplicationClass;
 import com.pratham.foundation.R;
-import com.pratham.foundation.customView.SansTextView;
 import com.pratham.foundation.customView.display_image_dialog.Activity_DisplayImage_;
 import com.pratham.foundation.customView.display_image_dialog.CustomLodingDialog;
+import com.pratham.foundation.customView.fontsview.SansTextView;
 import com.pratham.foundation.customView.shape_of_view.ShadowLayout;
 import com.pratham.foundation.interfaces.OnGameClose;
 import com.pratham.foundation.modalclasses.EventMessage;
@@ -69,7 +68,6 @@ import java.util.List;
 
 import static com.pratham.foundation.ApplicationClass.ButtonClickSound;
 import static com.pratham.foundation.BaseActivity.setMute;
-import static com.pratham.foundation.ui.contentPlayer.ContentPlayerActivity.floating_info;
 import static com.pratham.foundation.ui.contentPlayer.GameConstatnts.readingImgPath;
 import static com.pratham.foundation.utility.FC_Constants.APP_SECTION;
 import static com.pratham.foundation.utility.FC_Constants.STT_REGEX;
@@ -1287,9 +1285,9 @@ public class ParaSttReadingFragment extends Fragment implements
         File f = new File(readingImgPath);
         if (f.exists()) {
             Intent intent = new Intent(getActivity(), Activity_DisplayImage_.class);
-            ActivityOptions options = ActivityOptions.makeSceneTransitionAnimation(getActivity(),
-                    floating_info, "transition_dialog");
-            startActivityForResult(intent, 11, options.toBundle());
+/*            ActivityOptions options = ActivityOptions.makeSceneTransitionAnimation(getActivity(),
+                    floating_info, "transition_dialog");*/
+            startActivityForResult(intent, 11/*, options.toBundle()*/);
         }
     }
 
@@ -1298,9 +1296,9 @@ public class ParaSttReadingFragment extends Fragment implements
         btn_Stop.performClick();
         readingImgPath = readingContentPath + storyBg;
         Intent intent = new Intent(getActivity(), Activity_DisplayImage_.class);
-        ActivityOptions options = ActivityOptions.makeSceneTransitionAnimation(getActivity(),
-                floating_info, "transition_dialog");
-        startActivityForResult(intent, 11, options.toBundle());
+/*        ActivityOptions options = ActivityOptions.makeSceneTransitionAnimation(getActivity(),
+                floating_info, "transition_dialog");*/
+        startActivityForResult(intent, 11/*, options.toBundle()*/);
     }
 
     @Override

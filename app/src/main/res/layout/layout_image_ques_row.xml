@@ -17,7 +17,7 @@
         android:layout_height="wrap_content"
         android:layout_toLeftOf="@+id/tv_view">
 
-        <com.pratham.foundation.customView.SansTextViewBold
+        <com.pratham.foundation.customView.fontsview.SansTextViewBold
             android:id="@+id/tv_res_title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -30,7 +30,7 @@
             android:textColor="@color/colorAccentDark"
             android:textSize="@dimen/_15sdp" />
 
-        <com.pratham.foundation.customView.SansTextView
+        <com.pratham.foundation.customView.fontsview.SansTextView
             android:id="@+id/tv_section"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -39,7 +39,7 @@
             android:textColor="@color/colorBtnRedLight"
             android:textSize="@dimen/_10sdp" />
 
-        <com.pratham.foundation.customView.SansTextView
+        <com.pratham.foundation.customView.fontsview.SansTextView
             android:id="@+id/tv_timestamp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -49,7 +49,7 @@
             android:textSize="@dimen/_8sdp" />
     </RelativeLayout>
 
-    <com.pratham.foundation.customView.SansTextViewBold
+    <com.pratham.foundation.customView.fontsview.SansTextViewBold
         android:id="@+id/tv_view"
         android:layout_width="@dimen/_60sdp"
         android:layout_height="wrap_content"

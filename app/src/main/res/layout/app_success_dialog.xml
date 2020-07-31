@@ -15,17 +15,17 @@
         app:lottie_fileName="success.json"
         app:lottie_loop="true" />
 
-    <com.pratham.foundation.customView.SansTextViewBold
+    <com.pratham.foundation.customView.fontsview.SansTextViewBold
         android:id="@+id/message"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/_12sdp"
         android:gravity="center"
         android:text="Correct Answer"
-        android:textColor="@android:color/holo_green_dark"
+        android:textColor="@color/colorSignBoard"
         android:textSize="@dimen/_12sdp" />
 
-    <com.pratham.foundation.customView.SansButton
+    <com.pratham.foundation.customView.fontsview.SansButton
         android:id="@+id/dia_btn_yellow"
         android:layout_width="@dimen/_70sdp"
         android:layout_height="@dimen/_30sdp"

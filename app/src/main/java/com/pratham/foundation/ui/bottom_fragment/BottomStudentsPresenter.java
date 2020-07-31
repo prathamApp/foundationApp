@@ -73,7 +73,7 @@ public class BottomStudentsPresenter implements BottomStudentsContract.BottomStu
     public void showStudents() {
         try {
             studentList.clear();
-            studentDBList = AppDatabase.getDatabaseInstance(context).getStudentDao().getAllStudents();
+            studentDBList = AppDatabase.getDatabaseInstance(context).getStudentDao().getAllPSStudents();
             if (studentDBList != null) {
                 Student studentHeader = new Student();
                 studentHeader.setStudentID("#####");

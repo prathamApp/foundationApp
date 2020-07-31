@@ -8,6 +8,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.media.MediaMetadataRetriever;
 import android.media.MediaPlayer;
 import android.os.Handler;
 import android.support.design.widget.FloatingActionButton;
@@ -30,8 +31,8 @@ import com.nex3z.flowlayout.FlowLayout;
 import com.pratham.foundation.ApplicationClass;
 import com.pratham.foundation.BaseActivity;
 import com.pratham.foundation.R;
-import com.pratham.foundation.customView.SansTextView;
 import com.pratham.foundation.customView.display_image_dialog.CustomLodingDialog;
+import com.pratham.foundation.customView.fontsview.SansTextView;
 import com.pratham.foundation.interfaces.MediaCallbacks;
 import com.pratham.foundation.modalclasses.Message;
 import com.pratham.foundation.modalclasses.ModalVocabulary;
@@ -355,7 +356,7 @@ public class ReadingVocabularyActivity extends BaseActivity implements MediaCall
         for (String word : splittedAnswer) {
             final SansTextView myTextView = new SansTextView(this);
             myTextView.setText(word);
-            myTextView.setOnClickListener(v -> startAudioReading("" + ansAudio));
+            myTextView.setOnClickListener(v -> btn_speaker.performClick());
             myTextView.setTextSize(25);
             myTextView.setTextColor(getResources().getColor(R.color.colorAccentDark));
             vocabChatFlow.addView(myTextView);
@@ -394,7 +395,8 @@ public class ReadingVocabularyActivity extends BaseActivity implements MediaCall
         }
     }
 
-    private void startAudioReading(String audioFilePath, String ansStr) {
+    @UiThread
+    public void startAudioReading(String audioFilePath, String ansStr) {
         try {
             mp = new MediaPlayer();
             mp.setDataSource(readingContentPath + "sounds/" + audioFilePath);
@@ -416,27 +418,6 @@ public class ReadingVocabularyActivity extends BaseActivity implements MediaCall
             btn_next.setClickable(true);
             btn_prev.setClickable(true);
             e.printStackTrace();
-        }
-    }
-
-    private void startAudioReading(String audioFilePath) {
-        if (!testFlg && !FastSave.getInstance().getString(APP_SECTION, "").equalsIgnoreCase(sec_Test)) {
-            try {
-                mp = new MediaPlayer();
-                mp.setDataSource(readingContentPath + "sounds/" + audioFilePath);
-                mp.prepare();
-                mp.start();
-                mp.setOnCompletionListener(mp -> {
-                    btn_imgsend.setClickable(true);
-                    btn_reading.setClickable(true);
-                    btn_next.setClickable(true);
-                    btn_prev.setClickable(true);
-                    playingFlg = false;
-                    btn_reading.performClick();
-                });
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
         }
     }
 
@@ -614,6 +595,11 @@ public class ReadingVocabularyActivity extends BaseActivity implements MediaCall
 
     @Override
     public void stoppedPressed() {
+        if (speakerFlg)
+            new Handler().postDelayed(() -> {
+                setMute(0);
+                startAudioReading("" + ansAudio);
+            }, 500);
     }
 
     @Override
@@ -720,16 +706,56 @@ public class ReadingVocabularyActivity extends BaseActivity implements MediaCall
         }
     }
 
+    boolean speakerFlg = false;
+
+    @UiThread
     @Click(R.id.btn_speaker)
     public void chatAnswer() {
         if (!FastSave.getInstance().getString(APP_SECTION, "").equalsIgnoreCase(sec_Test)) {
-            btn_imgsend.setClickable(false);
-            btn_reading.setClickable(false);
-            btn_next.setClickable(false);
-            btn_prev.setClickable(false);
-            if (readingFlg)
-                btn_reading.performClick();
-            new Handler().postDelayed(() -> startAudioReading("" + ansAudio), 100);
+            if (!speakerFlg) {
+                speakerFlg = true;
+                btn_imgsend.setClickable(false);
+                btn_reading.setClickable(false);
+                btn_next.setClickable(false);
+                btn_prev.setClickable(false);
+                if (readingFlg)
+                    btn_reading.performClick();
+                else
+                    new Handler().postDelayed(() -> startAudioReading("" + ansAudio), 200);
+            }
+        }
+    }
+
+    @UiThread
+    public void startAudioReading(String audioFilePath) {
+        if (!testFlg && !FastSave.getInstance().getString(APP_SECTION, "").equalsIgnoreCase(sec_Test)) {
+            try {
+                speakerFlg = false;
+                MediaMetadataRetriever mmr = new MediaMetadataRetriever();
+                mmr.setDataSource(readingContentPath + "sounds/" + audioFilePath);
+                String duration = mmr.extractMetadata(MediaMetadataRetriever.METADATA_KEY_DURATION);
+                mmr.release();
+                MediaPlayer mp = new MediaPlayer();
+                mp.setDataSource(readingContentPath + "sounds/" + audioFilePath);
+                mp.prepare();
+                setMute(0);
+                new Handler().postDelayed(mp::start, 200);
+                mp.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+                    @Override
+                    public void onCompletion(MediaPlayer mp) {
+                        new Handler().postDelayed(() -> {
+                            btn_imgsend.setClickable(true);
+                            btn_reading.setClickable(true);
+                            btn_next.setClickable(true);
+                            btn_prev.setClickable(true);
+                            playingFlg = false;
+//                            btn_reading.performClick();
+                        }, 200);
+                    }
+                });
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
     }
 

@@ -76,7 +76,7 @@
     <string name="alertmessage">some options are remaining</string>
     <string name="yes">होय</string>
     <string name="no">नाही</string>
-    <string name="fact_retrieval_click">जवाब देने के लिएअनुच्छेद से सही शब्द या वाक्य चुनिए|</string>
+    <string name="fact_retrieval_click">जवाब देने के लिए अनुच्छेद से सही शब्द या वाक्य चुनिए|</string>
     <string name="factRetrieval">उत्तर देण्यासाठी परिच्छेदामधील योग्य शब्द किंवा वाक्य निवडा.</string>
     <string name="IKWAndroid">दिलेल्या परिच्छेदामधले वैज्ञानिक शब्द दाखवा.</string>
     <string name="CopyWriting">दिलेले शब्द आणि त्यांची माहिती वहीत लिहा आणि त्याचा फोटो सबमिट करा.</string>

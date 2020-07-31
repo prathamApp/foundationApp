@@ -125,6 +125,10 @@ public class FC_Constants {
     public static final String BACKUP_DB_NOT_COPIED = "backup_db_not_copied";
     public static final String CURRENT_SUBJECT = "current_subject";
     public static final String SCR_RES = "scr_res";
+    public static final String PRATHAM_LOGIN = "pratham_login";
+    public static final String CHECK_UPDATE = "check_update";
+    public static final String UPDATE_AVAILABLE = "update_available";
+    public static final String START_UPDATE = "start_update";
     public static boolean SPLASH_OPEN = false;
     public static String RECEIVED_FOLDER_PATH = "";
     public static boolean TAB_LAYOUT = false;
@@ -212,12 +216,23 @@ public class FC_Constants {
     public static final String INTERNET_LANGUAGE_API = "http://devposapi.prathamopenschool.org/api/content/browse?id=";
 //    public static final String INTERNET_DOWNLOAD_NEW_API = "http://prodigi.openiscool.org/api/POSV2/Get2LevelChild?id=";
     public static final String INTERNET_BROWSE_API = "http://devposapi.prathamopenschool.org/api/content/BrowseLevel2?id=";
-//    public static final String INTERNET_DOWNLOAD_RESOURCE_API = "http://prodigi.openiscool.org/api/posv2/DownloadResourceCOS?resid=";
-//    public static final String INTERNET_DOWNLOAD_RESOURCE_API = "http://devposapi.prathamopenschool.org/api/content/download?id=";
+    //    public static final String INTERNET_DOWNLOAD_RESOURCE_API = "http://prodigi.openiscool.org/api/posv2/DownloadResourceCOS?resid=";
     public static final String INTERNET_DOWNLOAD_RESOURCE_API = "http://devposapi.prathamopenschool.org/api/content/downloadv2?id=";
+    //    public static final String INTERNET_DOWNLOAD_RESOURCE_API = "http://devposapi.prathamopenschool.org/api/content/download?id=";
     public static final String INTERNET_DOWNLOAD_TEST_API = "http://devposapi.prathamopenschool.org/api/content/downloadv3?id=";
     public static final String STUDENT_PROGRESS_API = "http://prodigi.openiscool.org/api/cosv2/GetProgress?id=";
     public static final String LEARNT_WORDS_API = "http://prodigi.openiscool.org/api/cosv2/GetKeyWords?id=";
+
+/*
+    //    DEV APIS
+    public static final String PUSH_IMAGE_API = "http://devprodigi.openiscool.org/api/Foundation/PostImage";
+    public static final String INTERNET_LANGUAGE_API = "http://fcapp.openiscool.org/api/content/browse?id=";
+    public static final String INTERNET_BROWSE_API = "http://fcapp.openiscool.org/api/content/BrowseLevel2?id=";
+    public static final String INTERNET_DOWNLOAD_RESOURCE_API = "http://fcapp.openiscool.org/api/content/downloadv2?id=";
+    public static final String INTERNET_DOWNLOAD_TEST_API = "http://fcapp.openiscool.org/api/content/downloadv3?id=";
+    public static final String STUDENT_PROGRESS_API = "http://prodigi.openiscool.org/api/cosv2/GetProgress?id=";
+    public static final String LEARNT_WORDS_API = "http://prodigi.openiscool.org/api/cosv2/GetKeyWords?id=";
+*/
 
     //AZURE http://api.pradigi.org/api/POSV2/get?id=
 //    public static final String INTERNET_DOWNLOAD_NEW_API = "http://api.pradigi.org/api/POSV2/Get2LevelChild?id=";
@@ -284,6 +299,7 @@ public class FC_Constants {
     public static String CONTENT_DOWNLOAD_CLICKED = "content_download_clicked";
     public static String CONTENT_DELETE_CLICKED = "content_delete_clicked";
     public static String SEE_MORE_CLICKED = "see_more_clicked";
+    public static String IS_SERVICE_STOPED = "is_service_stoped";
     public static int currentLevel;
     public static int currentLevelPosition;
     public static boolean testSessionEntered = false;
@@ -296,11 +312,20 @@ public class FC_Constants {
     public static final String GROUP_MODE = "group_mode";
     public static final String QR_GROUP_MODE = "qr_group_mode";
     public static final String INDIVIDUAL_MODE = "individual_mode";
+    public static final String NOTIFICATION_CHANNEL_ID = "foundation.data_sync";
     public static String currentSubjectFolder = "";
     public static String gameFolderPath = "";
     public static String activityPhotoPath = "";
     public static String StudentPhotoPath = "";
-    public static int TransferedImages = 0;
+    public static int transferredImages = 0;
+
+    public static String pushedScoreLength = "0";
+    public static String successful_ImageLength = "0";
+    public static String failed_ImageLength = "0";
+    public static String syncTime = "NA";
+    public static final String SYNC_TIME = "sync_time";
+    public static final String SYNC_DATA_LENGTH = "sync_data_length";
+    public static final String SYNC_MEDIA_LENGTH = "sync_media_length";
 
     public enum URL {
         BROWSE_BY_ID(BASE_URL + "get?id="),
@@ -319,16 +344,16 @@ public class FC_Constants {
 
         private final String name;
 
-        URL(String s) {
-            name = s;
-        }
+            URL(String s) {
+                name = s;
+            }
 
-        public boolean equalsName(String otherName) {
-            return (otherName != null) && name.equals(otherName);
-        }
+            public boolean equalsName(String otherName) {
+                return (otherName != null) && name.equals(otherName);
+            }
 
-        public String toString() {
-            return name;
+            public String toString() {
+                return name;
         }
 
     }

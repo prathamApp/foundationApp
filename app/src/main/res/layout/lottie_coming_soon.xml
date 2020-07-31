@@ -12,7 +12,7 @@
         android:layout_centerHorizontal="true"
         android:src="@drawable/coming_soon"/>
 
-    <com.pratham.foundation.customView.SansButton
+    <com.pratham.foundation.customView.fontsview.SansButton
         android:id="@+id/dia_btn_yes"
         android:layout_width="match_parent"
         android:layout_height="@dimen/_30sdp"

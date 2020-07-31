@@ -7,7 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.pratham.foundation.R;
-import com.pratham.foundation.customView.SansTextView;
+import com.pratham.foundation.customView.fontsview.SansTextView;
 
 import java.util.HashSet;
 import java.util.List;

@@ -1,6 +1,5 @@
 package com.pratham.foundation.ui.admin_panel.PullData;
 
-import android.app.Dialog;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -9,8 +8,8 @@ import android.widget.GridLayout;
 import android.widget.TextView;
 
 import com.pratham.foundation.R;
-import com.pratham.foundation.customView.SansCheckBox;
 import com.pratham.foundation.customView.display_image_dialog.CustomLodingDialog;
+import com.pratham.foundation.customView.fontsview.SansCheckBox;
 import com.pratham.foundation.database.domain.Village;
 
 import java.util.ArrayList;

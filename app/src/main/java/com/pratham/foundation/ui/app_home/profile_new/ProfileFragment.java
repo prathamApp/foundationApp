@@ -11,6 +11,7 @@ import android.support.v4.app.Fragment;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.Gravity;
 import android.view.View;
 import android.view.Window;
 import android.widget.AdapterView;
@@ -25,19 +26,24 @@ import android.widget.Toast;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.pratham.foundation.ApplicationClass;
 import com.pratham.foundation.R;
+import com.pratham.foundation.customView.BlurPopupDialog.BlurPopupWindow;
 import com.pratham.foundation.customView.GridSpacingItemDecoration;
 import com.pratham.foundation.customView.display_image_dialog.CustomLodingDialog;
 import com.pratham.foundation.database.AppDatabase;
+import com.pratham.foundation.database.BackupDatabase;
 import com.pratham.foundation.modalclasses.ModalTopCertificates;
 import com.pratham.foundation.services.shared_preferences.FastSave;
+import com.pratham.foundation.ui.admin_panel.MenuActivity_;
 import com.pratham.foundation.ui.app_home.profile_new.certificate_display.CertificateDisplayActivity_;
 import com.pratham.foundation.ui.app_home.profile_new.chat_display_list.DisplayChatActivity_;
 import com.pratham.foundation.ui.app_home.profile_new.display_image_ques_list.DisplayImageQuesActivity_;
 import com.pratham.foundation.ui.bottom_fragment.BottomStudentsFragment;
 import com.pratham.foundation.ui.bottom_fragment.BottomStudentsFragment_;
 import com.pratham.foundation.utility.FC_Constants;
+import com.pratham.foundation.utility.FC_Utility;
 
 import org.androidannotations.annotations.AfterViews;
+import org.androidannotations.annotations.Background;
 import org.androidannotations.annotations.Bean;
 import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EFragment;
@@ -50,7 +56,6 @@ import java.util.List;
 import java.util.Objects;
 
 import static com.pratham.foundation.ApplicationClass.App_Thumbs_Path;
-import static com.pratham.foundation.ApplicationClass.isTablet;
 import static com.pratham.foundation.utility.FC_Constants.GROUP_MODE;
 import static com.pratham.foundation.utility.FC_Constants.INDIVIDUAL_MODE;
 import static com.pratham.foundation.utility.FC_Constants.LOGIN_MODE;
@@ -99,7 +104,7 @@ public class ProfileFragment extends Fragment implements ProfileContract.Profile
     SimpleDraweeView card_img;
 
     //    String[] progressArray = {"Progress", "Share"};
-    String[] progressArray = {"Progress"};
+    String[] progressArray = {"Progress", "Status"};
     private ProfileOuterDataAdapter adapterParent;
     Context context;
 
@@ -135,19 +140,19 @@ public class ProfileFragment extends Fragment implements ProfileContract.Profile
             if (file.exists()) {
                 card_img.setImageURI(Uri.fromFile(file));
             } else {
-                if(!isTablet){
-                   String gender = AppDatabase.getDatabaseInstance(context).getStudentDao().
-                        getStudentAvatar(FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""));
-                    file = new File( ApplicationClass.foundationPath +
-                            "" + App_Thumbs_Path +""+gender);
-                    if(file.exists())
+                if (!ApplicationClass.getAppMode()) {
+                    String gender = AppDatabase.getDatabaseInstance(context).getStudentDao().
+                            getStudentAvatar(FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""));
+                    file = new File(ApplicationClass.foundationPath +
+                            "" + App_Thumbs_Path + "" + gender);
+                    if (file.exists())
                         card_img.setImageURI(Uri.fromFile(file));
                     else
                         card_img.setImageResource(getRandomFemaleAvatar(context));
-                }else{
+                } else {
                     String gender = AppDatabase.getDatabaseInstance(context).getStudentDao().getStudentGender(
                             FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""));
-                    if(gender.equalsIgnoreCase("male"))
+                    if (gender.equalsIgnoreCase("male"))
                         card_img.setImageResource(getRandomMaleAvatar(context));
                     else
                         card_img.setImageResource(getRandomFemaleAvatar(context));
@@ -157,11 +162,33 @@ public class ProfileFragment extends Fragment implements ProfileContract.Profile
     }
 
     @Click(R.id.card_img)
-    public void showBottomFragment(){
-        if(!isTablet)
-        SPLASH_OPEN = false;
-        BottomStudentsFragment_ bottomStudentsFragment = new BottomStudentsFragment_();
-        bottomStudentsFragment.show(Objects.requireNonNull(getActivity()).getSupportFragmentManager(), BottomStudentsFragment.class.getSimpleName());
+    public void showBottomFragment() {
+        if (!ApplicationClass.getAppMode()) {
+            SPLASH_OPEN = false;
+            BottomStudentsFragment_ bottomStudentsFragment = new BottomStudentsFragment_();
+            bottomStudentsFragment.show(Objects.requireNonNull(getActivity()).getSupportFragmentManager(),
+                    BottomStudentsFragment.class.getSimpleName());
+        } else {
+            endSession();
+            startActivity(new Intent(getActivity(), MenuActivity_.class));
+            getActivity().finish();
+        }
+    }
+
+    @Background
+    public void endSession() {
+        try {
+            String curSession = AppDatabase.getDatabaseInstance(context).getStatusDao().getValue("CurrentSession");
+            String toDateTemp = AppDatabase.getDatabaseInstance(context).getSessionDao().getToDate(curSession);
+            if (toDateTemp.equalsIgnoreCase("na")) {
+                AppDatabase.getDatabaseInstance(context).getSessionDao().UpdateToDate(curSession, FC_Utility.getCurrentDateTime());
+            }
+            BackupDatabase.backup(getActivity());
+        } catch (Exception e) {
+            String curSession = AppDatabase.getDatabaseInstance(context).getStatusDao().getValue("CurrentSession");
+            AppDatabase.getDatabaseInstance(context).getSessionDao().UpdateToDate(curSession, FC_Utility.getCurrentDateTime());
+            e.printStackTrace();
+        }
     }
 
     @UiThread
@@ -222,6 +249,9 @@ public class ProfileFragment extends Fragment implements ProfileContract.Profile
             case "ImageQues":
                 showImageQues();
                 break;
+            case "sync status":
+                showSyncStatus();
+                break;
             case "ChitChat":
                 showChitChat();
                 break;
@@ -230,6 +260,34 @@ public class ProfileFragment extends Fragment implements ProfileContract.Profile
             case "Share App":
                 break;
         }
+    }
+
+    BlurPopupWindow exitDialog;
+    TextView dia_title;
+
+    @SuppressLint("SetTextI18n")
+    @UiThread
+    public void showSyncStatus() {
+        exitDialog = new BlurPopupWindow.Builder(getActivity())
+                .setContentView(R.layout.sync_status_dialog)
+                .bindClickListener(v -> {
+                    exitDialog.dismiss();
+                }, R.id.dia_btn_ok)
+                .setGravity(Gravity.CENTER)
+                .setDismissOnTouchBackground(true)
+                .setDismissOnClickBack(true)
+                .setScaleRatio(0.2f)
+                .setBlurRadius(10)
+                .setTintColor(0x30000000)
+                .build();
+
+        dia_title = exitDialog.findViewById(R.id.dia_title);
+
+        dia_title.setText("Sync Time : " + FastSave.getInstance().getString(FC_Constants.SYNC_TIME, "NA")
+                        + "\nData synced : " + FastSave.getInstance().getString(FC_Constants.SYNC_DATA_LENGTH, "0")
+                        + "\nMedia synced : " + FastSave.getInstance().getString(FC_Constants.SYNC_MEDIA_LENGTH, "0")
+                /*+"Media failed : "+failed_ImageLength*/);
+        exitDialog.show();
     }
 
     private void showChitChat() {

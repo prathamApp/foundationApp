@@ -4,24 +4,28 @@
     android:id="@+id/certificate_card_view"
     android:layout_marginTop="@dimen/_5sdp"
     android:layout_marginBottom="@dimen/_5sdp"
-    android:layout_marginStart="@dimen/_15sdp"
-    android:elevation="@dimen/_3sdp"
-    android:layout_marginEnd="@dimen/_15sdp"
+    android:layout_marginStart="@dimen/_10sdp"
+    android:layout_marginEnd="@dimen/_10sdp"
+    android:elevation="@dimen/_2sdp"
     android:gravity="center"
     android:layout_gravity="center"
     android:background="@drawable/card_color_bg6"
     xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <com.pratham.foundation.customView.SansTextViewBold
+    <com.pratham.foundation.customView.fontsview.SansTextViewBold
         android:id="@+id/assess_data"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
         android:layout_alignParentTop="true"
-        android:padding="@dimen/_7sdp"
-        android:text="Student Knows "
+        android:paddingTop="@dimen/_7sdp"
+        android:paddingBottom="@dimen/_7sdp"
+        android:layout_marginTop="@dimen/_5sdp"
+        android:paddingStart="@dimen/_10sdp"
+        android:paddingEnd="@dimen/_10sdp"
+        android:text="Student Knows ASSFASDFASFADF "
         android:textColor="@color/colorText"
-        android:textSize="@dimen/_13sdp"
+        android:textSize="@dimen/_16sdp"
         android:textStyle="bold" />
 
     <RatingBar
@@ -30,7 +34,8 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/assess_data"
         android:layout_centerInParent="true"
-        android:layout_marginVertical="@dimen/_10sdp"
+        android:layout_marginTop="@dimen/_2sdp"
+        android:layout_marginBottom="@dimen/_5sdp"
         android:isIndicator="true"
         android:numStars="5"
         android:progressTint="@color/ratingFilled"

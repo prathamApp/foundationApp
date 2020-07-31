@@ -54,7 +54,7 @@
                 android:src="@drawable/ic_photo_camera_black"
                 android:visibility="gone" />
 
-            <com.pratham.foundation.customView.SansButton
+            <com.pratham.foundation.customView.fontsview.SansButton
                 android:id="@+id/btn_submit"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"

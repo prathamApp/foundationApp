@@ -125,7 +125,7 @@ public class PushOrAssignFragment extends Fragment {
 
     @Click(R.id.btn_push)
     public void onPushClick() {
-        pushDataToServer.startDataPush(getActivity());
+        pushDataToServer.startDataPush(getActivity(), true);
     }
 
     @Click(R.id.btn_Usage)

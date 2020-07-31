@@ -10,6 +10,7 @@ import com.pratham.foundation.R;
 import com.pratham.foundation.customView.media_controller.PlayerControlView;
 import com.pratham.foundation.database.AppDatabase;
 import com.pratham.foundation.database.BackupDatabase;
+import com.pratham.foundation.database.domain.ContentProgress;
 import com.pratham.foundation.database.domain.Score;
 import com.pratham.foundation.services.shared_preferences.FastSave;
 import com.pratham.foundation.utility.FC_Constants;
@@ -19,11 +20,12 @@ import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Background;
 import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EActivity;
+import org.androidannotations.annotations.Fullscreen;
 import org.androidannotations.annotations.ViewById;
 
 import static com.pratham.foundation.utility.FC_Constants.gameFolderPath;
 
-
+@Fullscreen
 @EActivity(R.layout.fragment_video_view)
 public class ActivityVideoView extends BaseActivity {
 
@@ -53,6 +55,22 @@ public class ActivityVideoView extends BaseActivity {
             videoPath = ApplicationClass.foundationPath + gameFolderPath + "/" + videoPath;
 
         initializePlayer(videoPath);
+    }
+
+    private void addContentProgress(float perc, String label) {
+        try {
+            ContentProgress contentProgress = new ContentProgress();
+            contentProgress.setProgressPercentage("" + perc);
+            contentProgress.setResourceId("" + resId);
+            contentProgress.setSessionId("" + FastSave.getInstance().getString(FC_Constants.CURRENT_SESSION, ""));
+            contentProgress.setStudentId("" + FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""));
+            contentProgress.setUpdatedDateTime("" + FC_Utility.getCurrentDateTime());
+            contentProgress.setLabel("" + label);
+            contentProgress.setSentFlag(0);
+            AppDatabase.getDatabaseInstance(this).getContentProgressDao().insert(contentProgress);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     @Click(R.id.close_video)
@@ -96,6 +114,7 @@ public class ActivityVideoView extends BaseActivity {
     public void addScore() {
         try {
             String endTime = FC_Utility.getCurrentDateTime();
+            float scoredMarksInt = (float) FC_Utility.getTimeDifference(startTime, endTime);
             Score score = new Score();
             score.setSessionID(FastSave.getInstance().getString(FC_Constants.CURRENT_SESSION, ""));
             score.setStudentID("" + FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""));
@@ -110,6 +129,9 @@ public class ActivityVideoView extends BaseActivity {
             score.setLabel("video");
             score.setSentFlag(0);
             AppDatabase.getDatabaseInstance(ActivityVideoView.this).getScoreDao().insert(score);
+            float perc = 0f;
+            perc = (scoredMarksInt/(float) videoDuration)*100;
+            addContentProgress(perc,"resourceProgress");
         } catch (Exception e) {
             e.printStackTrace();
         }

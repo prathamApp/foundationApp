@@ -22,9 +22,7 @@ import java.util.List;
 
 import static com.pratham.foundation.utility.FC_Constants.APP_LANGUAGE;
 import static com.pratham.foundation.utility.FC_Constants.APP_LANGUAGE_NODE_ID;
-import static com.pratham.foundation.utility.FC_Constants.APP_LANGUAGE_STRING;
 import static com.pratham.foundation.utility.FC_Constants.HINDI;
-import static com.pratham.foundation.utility.FC_Constants.INTERNET_LANGUAGE_API;
 import static com.pratham.foundation.utility.FC_Constants.rootParentId;
 
 @EBean
@@ -35,6 +33,7 @@ public class SelectSubjectPresenter implements SelectSubjectContract.SubjectPres
     Gson gson;
     SelectSubjectContract.SubjectView subjectView;
     List<ContentTable> subjectList, langList;
+    boolean parentFound = false;
 
     SelectSubjectPresenter(Context context) {
         this.context = context;
@@ -59,8 +58,8 @@ public class SelectSubjectPresenter implements SelectSubjectContract.SubjectPres
     public void getSubjectList() {
         subjectView.showLoader();
         String currLang = FastSave.getInstance().getString(APP_LANGUAGE, HINDI);
-        String currLangNodeId = FastSave.getInstance().getString(APP_LANGUAGE_NODE_ID,"");
-        Log.d("currLang", "getSubjectList: "+currLang);
+        String currLangNodeId = FastSave.getInstance().getString(APP_LANGUAGE_NODE_ID, "");
+        Log.d("currLang", "getSubjectList: " + currLang);
         String rootID = AppDatabase.getDatabaseInstance(context).getContentTableDao().getRootData(rootParentId, currLang);
         if (rootID != null)
             subjectList = AppDatabase.getDatabaseInstance(context).getContentTableDao().getChildsOfParent(rootID);
@@ -74,50 +73,9 @@ public class SelectSubjectPresenter implements SelectSubjectContract.SubjectPres
         }
     }
 
-    @Background
-    @Override
-    public void getLanguage() {
-        langList = AppDatabase.getDatabaseInstance(context).getContentTableDao().getLanguages(rootParentId);
-        if (FC_Utility.isDataConnectionAvailable(context))
-            api_content.getAPILanguage(APP_LANGUAGE_STRING, INTERNET_LANGUAGE_API);
-        else {
-            if (langList.size() > 0)
-                subjectView.showLanguageSelectionDialog(langList);
-        }
-
-    }
-
-    boolean parentFound = false;
-
     @Override
     public void receivedContent(String header, String response) {
-        if (header.equalsIgnoreCase(APP_LANGUAGE_STRING)) {
-            try {
-                Type listType = new TypeToken<ArrayList<ContentTable>>() {
-                }.getType();
-
-                List<ContentTable> serverContentList = gson.fromJson(response, listType);
-
-                for (int i = 0; i < serverContentList.size(); i++) {
-                    parentFound = false;
-                    List<ContentTable> tempList;
-                    ContentTable contentTable = new ContentTable();
-                    for (int j = 0; j < langList.size(); j++) {
-                        if (serverContentList.get(i).getNodeId().equalsIgnoreCase(
-                                langList.get(j).getNodeId())) {
-                            parentFound = true;
-                        }
-                    }
-                    if (!parentFound) {
-                        langList.add(serverContentList.get(i));
-                    }
-                }
-                subjectView.showLanguageSelectionDialog(langList);
-
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        } else if (header.equalsIgnoreCase(FC_Constants.INTERNET_BROWSE)) {
+        if (header.equalsIgnoreCase(FC_Constants.INTERNET_BROWSE)) {
             try {
                 Type listType = new TypeToken<ArrayList<ContentTable>>() {
                 }.getType();
@@ -149,7 +107,6 @@ public class SelectSubjectPresenter implements SelectSubjectContract.SubjectPres
                 subjectView.dismissLoadingDialog();
             }
         }
-
     }
 
     @Override

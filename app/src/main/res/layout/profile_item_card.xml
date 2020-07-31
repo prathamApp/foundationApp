@@ -21,7 +21,7 @@
             android:src="@drawable/b3"
             android:layout_margin="@dimen/_2sdp"/>
 
-        <com.pratham.foundation.customView.SansTextView
+        <com.pratham.foundation.customView.fontsview.SansTextView
             android:id="@+id/tv_title"
             android:layout_width="match_parent"
             android:layout_height="match_parent"

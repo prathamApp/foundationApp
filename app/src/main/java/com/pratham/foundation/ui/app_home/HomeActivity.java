@@ -63,7 +63,7 @@ import java.util.Objects;
 
 import static com.pratham.foundation.ApplicationClass.BackBtnSound;
 import static com.pratham.foundation.ApplicationClass.ButtonClickSound;
-import static com.pratham.foundation.ApplicationClass.isTablet;
+import static com.pratham.foundation.ApplicationClass.getAppMode;
 import static com.pratham.foundation.utility.FC_Constants.ACTIVITY_RESUMED;
 import static com.pratham.foundation.utility.FC_Constants.APP_SECTION;
 import static com.pratham.foundation.utility.FC_Constants.ASSESSMENT_SESSION;
@@ -174,7 +174,7 @@ public class HomeActivity extends BaseActivity implements LevelChanged {
         tabLayout.setupWithViewPager(viewpager);
         setupTabIcons();
         setLevel();
-        if(!isTablet)
+        if(!getAppMode())
             submarine.setCircleSize(getResources().getDimension(R.dimen._20sdp));
         new Handler().postDelayed(() -> {
             getCompletion();
@@ -468,7 +468,7 @@ public class HomeActivity extends BaseActivity implements LevelChanged {
         testTab.setText("" + getResources().getString(R.string.Test));
         testTab.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.ic_test, 0, 0);
 
-        if (FastSave.getInstance().getString(FC_Constants.LOGIN_MODE, FC_Constants.GROUP_MODE).contains("group") || !isTablet) {
+        if (FastSave.getInstance().getString(FC_Constants.LOGIN_MODE, FC_Constants.GROUP_MODE).contains("group") || !getAppMode()) {
             FastSave.getInstance().saveString(APP_SECTION, sec_Learning);
             tabLayout.getTabAt(0).setCustomView(learningTab);
             tabLayout.getTabAt(1).setCustomView(practiceTab);
@@ -718,7 +718,7 @@ public class HomeActivity extends BaseActivity implements LevelChanged {
     private void setupViewPager(ViewPager viewpager) {
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
         viewpager.setOffscreenPageLimit(5);
-        if (FastSave.getInstance().getString(FC_Constants.LOGIN_MODE, FC_Constants.GROUP_MODE).contains("group") || !isTablet) {
+        if (FastSave.getInstance().getString(FC_Constants.LOGIN_MODE, FC_Constants.GROUP_MODE).contains("group") || !getAppMode()) {
             adapter.addFrag(new LearningFragment_(), "" + getResources().getString(R.string.Learning));
             adapter.addFrag(new PracticeFragment_(), "" + getResources().getString(R.string.Practice));
             if (currSubj.equalsIgnoreCase("LS_Science") || currSubj.equalsIgnoreCase("Maths")) {
