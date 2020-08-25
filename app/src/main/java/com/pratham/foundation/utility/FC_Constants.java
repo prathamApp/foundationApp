@@ -326,6 +326,7 @@ public class FC_Constants {
     public static final String SYNC_TIME = "sync_time";
     public static final String SYNC_DATA_LENGTH = "sync_data_length";
     public static final String SYNC_MEDIA_LENGTH = "sync_media_length";
+    public static final String AssessmentApp = "AssessmentApp";
 
     public enum URL {
         BROWSE_BY_ID(BASE_URL + "get?id="),

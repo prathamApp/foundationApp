@@ -318,7 +318,6 @@ public class TestFragment extends Fragment implements TestContract.TestView,
     }
 
     boolean eventBusFlg = false;
-
     @Override
     public void onStart() {
         super.onStart();
@@ -395,7 +394,6 @@ public class TestFragment extends Fragment implements TestContract.TestView,
         progressLayout.setVisibility(View.GONE);
         dialog_roundProgress.setVisibility(View.VISIBLE);
     }
-
 
 //    private void addTestStarResult(String levelTestGiven) {
 //        try {
@@ -658,6 +656,21 @@ public class TestFragment extends Fragment implements TestContract.TestView,
         btn_test_dw.performClick();
     }
 
+    @UiThread
+    @Override
+    public void openAssessmentApp() {
+        Toast.makeText(context, "Opening Assessment App", Toast.LENGTH_SHORT).show();
+        try {
+            Intent launchIntent = Objects.requireNonNull(getActivity()).getPackageManager()
+                    .getLaunchIntentForPackage("com.pratham.assessment");
+//            Intent launchIntent = new Intent("com.pratham.assessment.ui.splash_activity");
+            startActivity(launchIntent);//null pointer check in case package name was not found
+
+        }catch (Exception e){
+            Toast.makeText(context, "Install Assessment App", Toast.LENGTH_SHORT).show();
+        }
+    }
+
     @Click(R.id.btn_test_dw)
     void onDownLoadClick() {
         try {
@@ -899,7 +912,7 @@ public class TestFragment extends Fragment implements TestContract.TestView,
         try {
             dismissLoadingDialog();
             my_recycler_view.removeAllViews();
-            if (testList.size() > 2) {
+            if (testList.size() > 3) {
                 hideTestDownloadBtn();
                 if (testAdapter == null) {
                     testAdapter = new TestAdapter(context, testList, TestFragment.this, TestFragment.this);

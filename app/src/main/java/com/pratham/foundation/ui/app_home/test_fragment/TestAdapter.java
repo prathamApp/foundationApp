@@ -18,6 +18,7 @@ import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import com.pratham.foundation.ApplicationClass;
 import com.pratham.foundation.R;
 import com.pratham.foundation.modalclasses.CertificateModelClass;
 import com.pratham.foundation.services.shared_preferences.FastSave;
@@ -27,10 +28,11 @@ import com.pratham.foundation.utility.FC_Utility;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import java.io.FileInputStream;
 import java.io.InputStream;
 import java.util.List;
 
-import static com.pratham.foundation.utility.FC_Constants.currentLevel;
+import static com.pratham.foundation.utility.FC_Constants.AssessmentApp;
 
 
 public class TestAdapter extends RecyclerView.Adapter {
@@ -87,6 +89,10 @@ public class TestAdapter extends RecyclerView.Adapter {
             case 3:
                 LayoutInflater update_layout = LayoutInflater.from(viewGroup.getContext());
                 view = update_layout.inflate(R.layout.certi_update, viewGroup, false);
+                return new TestUpdateHolder(view);
+            case 5:
+                LayoutInflater assessment_layout = LayoutInflater.from(viewGroup.getContext());
+                view = assessment_layout.inflate(R.layout.certi_assessment_app_open, viewGroup, false);
                 return new TestUpdateHolder(view);
             default:
                 return null;
@@ -148,6 +154,8 @@ public class TestAdapter extends RecyclerView.Adapter {
                     return 3;
                 case TYPE_FOOTER:
                     return 4;
+                case AssessmentApp:
+                    return 5;
                 default:
                     return 1;
             }
@@ -292,6 +300,12 @@ public class TestAdapter extends RecyclerView.Adapter {
                 testUpdateHolder.btn_test_update.setText("UPDATE "+ level);
                 testUpdateHolder.btn_test_update.setOnClickListener(v ->certificateClicked.onCertificateUpdate() );
                 break;
+            case 5:
+                TestUpdateHolder openAssessment = (TestUpdateHolder) viewitemRowHolder;
+                String currlevel = FC_Utility.getLevelWiseTestName(FastSave.getInstance().getInt(
+                        FC_Constants.CURRENT_LEVEL, 1));
+                openAssessment.btn_test_update.setOnClickListener(v ->certificateClicked.openAssessmentApp() );
+                break;
         }
 
     }
@@ -299,8 +313,8 @@ public class TestAdapter extends RecyclerView.Adapter {
     private JSONArray getTestData(String jsonName) {
         JSONArray returnCodeList = null;
         try {
-            InputStream is = mContext.getAssets().open(jsonName);
-//            InputStream is = new FileInputStream(ApplicationClass.pradigiPath + "/.FCA/"+FastSave.getInstance().getString(FC_Constants.LANGUAGE, FC_Constants.HINDI)+"/Game/CertificateData.json");
+            InputStream is = new FileInputStream(ApplicationClass.foundationPath + "/.FCA/"+jsonName);
+//            InputStream is = mContext.getAssets().open(jsonName);
             int size = is.available();
             byte[] buffer = new byte[size];
             is.read(buffer);
@@ -313,25 +327,6 @@ public class TestAdapter extends RecyclerView.Adapter {
             return null;
         }
         return returnCodeList;
-    }
-
-    private String getLevelWiseJson() {
-        String jsonName = "TestBeginnerJson.json";
-        switch (currentLevel) {
-            case 0:
-                jsonName = "TestBeginnerJson.json";
-                break;
-            case 1:
-                jsonName = "TestSubJuniorJson.json";
-                break;
-            case 2:
-                jsonName = "TestJuniorJson.json";
-                break;
-            case 3:
-                jsonName = "TestSubSeniorJson.json";
-                break;
-        }
-        return jsonName;
     }
 
     private void setAnimations(final View content_card_view) {

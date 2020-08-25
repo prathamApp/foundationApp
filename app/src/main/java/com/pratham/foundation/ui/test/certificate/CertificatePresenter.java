@@ -6,6 +6,7 @@ import android.os.AsyncTask;
 import android.os.Environment;
 import android.util.Log;
 
+import com.pratham.foundation.ApplicationClass;
 import com.pratham.foundation.database.AppDatabase;
 import com.pratham.foundation.database.BackupDatabase;
 import com.pratham.foundation.database.domain.Assessment;
@@ -22,6 +23,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.FileInputStream;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -30,6 +32,7 @@ import java.util.List;
 
 import static com.pratham.foundation.ui.test.certificate.CertificateActivity.assessmentProfile;
 import static com.pratham.foundation.utility.FC_Constants.supervisedAssessment;
+import static com.pratham.foundation.utility.FC_Utility.getLevelWiseJson;
 import static com.pratham.foundation.utility.FC_Utility.getSubjectName;
 
 
@@ -315,7 +318,7 @@ public class CertificatePresenter implements CertificateContract.CertificatePres
                     assessment.setScoredMarksa(0);
                     assessment.setTotalMarksa(0);
                     assessment.setStudentIDa(FastSave.getInstance().getString(FC_Constants.CURRENT_ASSESSMENT_STUDENT_ID, ""));
-                    assessment.setStartDateTimea(""+FastSave.getInstance().getString(FC_Constants.CURRENT_FOLDER_NAME, ""));
+                    assessment.setStartDateTimea("" + FastSave.getInstance().getString(FC_Constants.CURRENT_FOLDER_NAME, ""));
 //                    if (FC_Constants.GROUP_LOGIN)
 //                        assessment.setStartDateTimea(FastSave.getInstance().getString(FC_Constants.CURRENT_ASSESSMENT_STUDENT_ID, "") + "_" + certiTitle);
 //                    else
@@ -342,31 +345,13 @@ public class CertificatePresenter implements CertificateContract.CertificatePres
     public JSONArray fetchAssessmentList(String level) {
         JSONArray returnCodeList = null;
         try {
-            InputStream is;
-            String jsonName = "TestBeginnerJson.json";
-            switch (level) {
-                case "1":
-                    jsonName = "TestBeginnerJson.json";
-                    break;
-                case "2":
-                    jsonName = "TestSubJuniorJson.json";
-                    break;
-                case "3":
-                    jsonName = "TestJuniorJson.json";
-                    break;
-                case "4":
-                    jsonName = "TestSubSeniorJson.json";
-                    break;
-                case "5":
-                    jsonName = "TestSeniorJson.json";
-                    break;
-            }
+            String jsonName = getLevelWiseJson(Integer.parseInt(level));
 
             Log.d("CertiPresenter", "fetchAssessmentList: " + jsonName);
 
-            is = context.getAssets().open("" + jsonName);
+//            InputStream is = context.getAssets().open("" + jsonName);
 //            InputStream is = context.getAssets().open("CertificateData.json");
-//            InputStream is = new FileInputStream(ApplicationClass.pradigiPath + "/.FCA/"+
+            InputStream is = new FileInputStream(ApplicationClass.foundationPath + "/.FCA/"+jsonName);
 //            FastSave.getInstance().getString(FC_Constants.LANGUAGE, FC_Constants.HINDI)+"/Game/CertificateData.json");
             int size = is.available();
             byte[] buffer = new byte[size];
@@ -374,8 +359,8 @@ public class CertificatePresenter implements CertificateContract.CertificatePres
             is.close();
             String jsonStr = new String(buffer);
             JSONArray jsonArray = new JSONArray(jsonStr);
-            String  subjName = getSubjectName(assessmentProfile.getQuestionIda());
-            for(int i=0; i<jsonArray.length(); i++) {
+            String subjName = getSubjectName(assessmentProfile.getQuestionIda());
+            for (int i = 0; i < jsonArray.length(); i++) {
                 String subj = ((JSONObject) jsonArray.get(i)).get("storyLanguage").toString();
                 if (subj.equalsIgnoreCase(subjName)) {
                     returnCodeList = ((JSONObject) jsonArray.get(i)).getJSONArray("CodeList");

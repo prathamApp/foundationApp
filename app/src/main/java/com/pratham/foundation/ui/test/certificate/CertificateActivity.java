@@ -214,6 +214,11 @@ public class CertificateActivity extends BaseActivity implements CertificateCont
 
     }
 
+    @Override
+    public void openAssessmentApp() {
+
+    }
+
 /*    public float[] getAllPercentages() {
         float starRatings[];
         starRatings = new float[certificateModelClassList.size()];

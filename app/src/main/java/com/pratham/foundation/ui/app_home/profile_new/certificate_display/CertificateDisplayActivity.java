@@ -151,7 +151,6 @@ public class CertificateDisplayActivity extends BaseActivity implements
         intent.putExtra("CertiTitle", "" + assessment.getLevela());
         intent.putExtra("display", "display");
         intent.putExtra("assessment", assessment);
-
         startActivity(intent);
     }
 }

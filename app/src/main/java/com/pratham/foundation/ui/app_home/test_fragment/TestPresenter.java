@@ -311,6 +311,15 @@ public class TestPresenter implements TestContract.TestPresenter, API_Content_Re
         } catch (Exception e) {
             e.printStackTrace();
         }
+        CertificateModelClass openAssessmentBtn = new CertificateModelClass();
+        openAssessmentBtn.setNodeId("0");
+        openAssessmentBtn.setResourceId("0");
+        openAssessmentBtn.setResourcePath("path");
+        openAssessmentBtn.setAsessmentGiven(true);
+        openAssessmentBtn.setContentType(""+FC_Constants.AssessmentApp);
+        openAssessmentBtn.setSeq_no(100);
+        myView.addContentToViewTestList(openAssessmentBtn);
+
         CertificateModelClass contentTableFooter = new CertificateModelClass();
         contentTableFooter.setNodeId("0");
         contentTableFooter.setResourceId("0");

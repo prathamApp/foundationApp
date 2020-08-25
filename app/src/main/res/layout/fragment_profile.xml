@@ -152,7 +152,7 @@
 
                         <com.pratham.foundation.customView.fontsview.SansTextViewBold
                             android:id="@+id/certi1_perc"
-                            android:layout_width="match_parent"
+                            android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_below="@+id/certi1_subj"
                             android:layout_centerHorizontal="true"
@@ -195,7 +195,7 @@
 
                         <com.pratham.foundation.customView.fontsview.SansTextViewBold
                             android:id="@+id/certi2_perc"
-                            android:layout_width="match_parent"
+                            android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_below="@+id/certi2_subj"
                             android:layout_centerHorizontal="true"
@@ -238,7 +238,7 @@
 
                         <com.pratham.foundation.customView.fontsview.SansTextViewBold
                             android:id="@+id/certi3_perc"
-                            android:layout_width="match_parent"
+                            android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_below="@+id/certi3_subj"
                             android:layout_centerHorizontal="true"

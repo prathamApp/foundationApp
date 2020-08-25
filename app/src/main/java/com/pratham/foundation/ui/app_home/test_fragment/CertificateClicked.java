@@ -8,4 +8,5 @@ public interface CertificateClicked {
 
     void onCertificateUpdate();
 
+    void openAssessmentApp();
 }

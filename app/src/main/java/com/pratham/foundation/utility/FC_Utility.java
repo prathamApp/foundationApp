@@ -198,7 +198,7 @@ public class FC_Utility {
     }
 
     public static String getLevelWiseTestName(int pos) {
-        String jsonName = "TestBeginnerJson";
+        String jsonName = "Beginner Test";
         switch (pos) {
             case 1:
                 jsonName = "Beginner Test";
