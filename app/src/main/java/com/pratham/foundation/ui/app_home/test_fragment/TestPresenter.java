@@ -376,7 +376,6 @@ public class TestPresenter implements TestContract.TestPresenter, API_Content_Re
             assessment.setLabel("" + FC_Constants.CERTIFICATE_LBL);
             assessment.setSentFlag(0);
             AppDatabase.getDatabaseInstance(mContext).getAssessmentDao().insert(assessment);
-
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -418,7 +417,6 @@ public class TestPresenter implements TestContract.TestPresenter, API_Content_Re
                 languagesArray[i] = ((JSONObject) returnCodeList.get(i)).get("lang").toString();
             }
             myView.setQuesTranslateLang(languagesArray);
-
             return returnCodeList;
 
         } catch (Exception e) {

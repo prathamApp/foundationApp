@@ -230,7 +230,6 @@ public class SplashActivity extends SplashSupportActivity implements SplashContr
         }
         Log.i("MAINACT", "onDestroy!");
         super.onDestroy();
-
     }
 
     private boolean isMyServiceRunning(Class<?> serviceClass) {
