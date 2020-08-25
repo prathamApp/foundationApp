@@ -1,13 +1,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_width="@dimen/_250sdp"
+    android:layout_height="wrap_content"
     android:layout_gravity="center">
-
-    <RelativeLayout
-        android:layout_width="@dimen/_240sdp"
-        android:layout_height="@dimen/_270sdp"
-        android:layout_centerInParent="true"
-        android:background="@color/full_transparent">
 
         <ImageView
             android:layout_width="@dimen/_70sdp"
@@ -15,31 +9,16 @@
             android:layout_alignParentTop="true"
             android:layout_centerHorizontal="true"
             android:background="@drawable/dialog_image_bg_test"
-            android:elevation="5dp"
+            android:elevation="3dp"
             android:padding="@dimen/_15sdp"
             android:src="@drawable/ic_test"
             android:tint="@color/white" />
 
-        <ImageButton
-            android:id="@+id/dia_btn_cross"
-            android:layout_width="@dimen/_30sdp"
-            android:layout_height="@dimen/_30sdp"
-            android:layout_alignParentTop="true"
-            android:layout_alignParentRight="true"
-            android:layout_marginTop="@dimen/_30sdp"
-            android:background="@drawable/button_red"
-            android:elevation="5dp"
-            android:padding="5dp"
-            android:scaleType="fitCenter"
-            android:src="@drawable/ic_close_red"
-            android:visibility="gone" />
-
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/_45sdp"
             android:layout_marginBottom="@dimen/_35sdp"
-            android:paddingBottom="@dimen/_20sdp"
             android:background="@drawable/dialog_bg">
 
             <com.pratham.foundation.customView.fontsview.SansTextViewBold
@@ -47,15 +26,17 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_alignParentTop="true"
-                android:layout_marginTop="@dimen/_20sdp"
+                android:layout_marginTop="@dimen/_35sdp"
+                android:layout_marginBottom="@dimen/_10sdp"
                 android:gravity="center"
-                android:lines="2"
-                android:paddingHorizontal="@dimen/_7sdp"
+                android:layout_marginStart="@dimen/_7sdp"
+                android:layout_marginEnd="@dimen/_7sdp"
                 android:text="Choose Test Type"
-                android:textColor="@color/material_blue_grey_80"
-                android:textSize="@dimen/_15sdp" />
+                android:textColor="@color/dark_blue"
+                android:textSize="@dimen/_18sdp" />
 
             <RelativeLayout
+                android:id="@+id/btns"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/dia_title"
@@ -64,7 +45,7 @@
 
                 <RelativeLayout
                     android:id="@+id/btn_supervised"
-                    android:layout_width="@dimen/_70sdp"
+                    android:layout_width="@dimen/_75sdp"
                     android:layout_height="wrap_content"
                     android:layout_alignParentStart="true"
                     android:elevation="3dp"
@@ -105,7 +86,7 @@
 
                 <RelativeLayout
                     android:id="@+id/btn_unsupervised"
-                    android:layout_width="@dimen/_70sdp"
+                    android:layout_width="@dimen/_75sdp"
                     android:layout_height="wrap_content"
                     android:padding="3dp"
                     android:elevation="3dp"
@@ -137,32 +118,22 @@
 
             </RelativeLayout>
 
-
-        </RelativeLayout>
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/_50sdp"
-            android:layout_alignParentBottom="true"
-            android:layout_centerHorizontal="true"
-            android:layout_marginBottom="@dimen/_5sdp"
-            android:gravity="center"
-            android:elevation="5dp">
-
-
             <com.pratham.foundation.customView.fontsview.SansButton
                 android:id="@+id/dia_btn_green"
-                android:layout_width="@dimen/_70sdp"
+                android:layout_width="match_parent"
                 android:layout_height="@dimen/_40sdp"
+                android:layout_below="@+id/btns"
                 android:layout_centerHorizontal="true"
-                android:layout_marginHorizontal="@dimen/_10sdp"
+                android:layout_marginStart="@dimen/_20sdp"
+                android:layout_marginEnd="@dimen/_20sdp"
+                android:layout_marginTop="@dimen/_5sdp"
                 android:layout_marginBottom="@dimen/_15sdp"
                 android:background="@drawable/button_red"
                 android:elevation="5dp"
                 android:text="@string/Cancel"
                 android:textColor="@color/white"
-                android:textSize="@dimen/_8sdp" />
+                android:textSize="@dimen/_15sdp" />
 
         </RelativeLayout>
 
-    </RelativeLayout>
 </RelativeLayout>

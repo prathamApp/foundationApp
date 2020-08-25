@@ -12,7 +12,6 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.bumptech.glide.request.RequestOptions;
 import com.facebook.drawee.backends.pipeline.Fresco;
 import com.facebook.drawee.interfaces.DraweeController;
 import com.facebook.drawee.view.SimpleDraweeView;
@@ -83,9 +82,6 @@ public class ContentFolderViewHolder extends RecyclerView.ViewHolder {
     public void setFolderItem(ContentTable contentList, int position) {
         Objects.requireNonNull(card_main).setBackground(ApplicationClass.getInstance().getResources().getDrawable(getRandomCardColor()));
         Objects.requireNonNull(tvTitle).setText(contentList.getNodeTitle());
-        RequestOptions requestOptions2 = new RequestOptions();
-        requestOptions2.placeholder(R.drawable.ic_download_2);
-        requestOptions2.error(R.drawable.warning);
 
         File file;
         if (contentList.getIsDownloaded().equalsIgnoreCase("1") ||
@@ -112,6 +108,7 @@ public class ContentFolderViewHolder extends RecyclerView.ViewHolder {
             itemImage.setController(controller);
         }
         if (contentList.getNodeType().equalsIgnoreCase("PreResource")) {
+            Objects.requireNonNull(tv_progress).setVisibility(View.GONE);
             if (contentList.getIsDownloaded().equalsIgnoreCase("true")) {
                 Objects.requireNonNull(iv_downld).setVisibility(View.GONE);
             } else if (contentList.getIsDownloaded().equalsIgnoreCase("false"))
@@ -196,10 +193,11 @@ public class ContentFolderViewHolder extends RecyclerView.ViewHolder {
         }
 
         if (contentTable.getNodeType().equalsIgnoreCase("PreResource")) {
+            Objects.requireNonNull(tv_progress).setVisibility(View.GONE);
             if (contentTable.isNodeUpdate())
-                ib_update_btn.setVisibility(View.VISIBLE);
+                Objects.requireNonNull(ib_update_btn).setVisibility(View.VISIBLE);
             else
-                ib_update_btn.setVisibility(View.GONE);
+                Objects.requireNonNull(ib_update_btn).setVisibility(View.GONE);
 
             ib_update_btn.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -208,11 +206,11 @@ public class ContentFolderViewHolder extends RecyclerView.ViewHolder {
                             parentPos,posi,""+ SINGLE_RES_DOWNLOAD);                        }
             });
             if (contentTable.getIsDownloaded().equalsIgnoreCase("true")) {
-                iv_downld.setVisibility(View.GONE);
+                Objects.requireNonNull(iv_downld).setVisibility(View.GONE);
             } else if (contentTable.getIsDownloaded().equalsIgnoreCase("false"))
-                iv_downld.setVisibility(View.VISIBLE);
+                Objects.requireNonNull(iv_downld).setVisibility(View.VISIBLE);
         } else
-            iv_downld.setVisibility(View.GONE);
+            Objects.requireNonNull(iv_downld).setVisibility(View.GONE);
 
         card_main.setOnClickListener(v -> {
             if (contentTable.getNodeType() != null) {

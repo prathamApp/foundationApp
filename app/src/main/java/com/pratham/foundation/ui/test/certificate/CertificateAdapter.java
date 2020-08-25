@@ -80,8 +80,6 @@ public class CertificateAdapter extends RecyclerView.Adapter<CertificateAdapter.
             ques="";
         }
 
-        holder.title.setTypeface(null, Typeface.NORMAL);
-
         if(!certiList.isAsessmentGiven()){
             holder.ratingStars.setVisibility(View.GONE);
             if(CertificateActivity.certificateLanguage.equalsIgnoreCase("English"))

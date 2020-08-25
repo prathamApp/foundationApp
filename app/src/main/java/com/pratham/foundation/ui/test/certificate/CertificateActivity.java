@@ -43,6 +43,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 import static com.pratham.foundation.ui.contentPlayer.web_view.WebViewActivity.gameLevel;
+import static com.pratham.foundation.utility.FC_Constants.HINDI;
 import static com.pratham.foundation.utility.FC_Constants.gameFolderPath;
 import static com.pratham.foundation.utility.FC_Constants.supervisedAssessment;
 import static com.pratham.foundation.utility.FC_Utility.dpToPx;
@@ -103,7 +104,7 @@ public class CertificateActivity extends BaseActivity implements CertificateCont
         CertiTitle = getIntent().getStringExtra("CertiTitle");
         certiMode = getIntent().getStringExtra("display");
         assessmentProfile = (Assessment) getIntent().getSerializableExtra("assessment");
-        certificateLanguage = "English";
+        certificateLanguage = FastSave.getInstance().getString(FC_Constants.APP_LANGUAGE, HINDI);
 
         ContentTableList = new ArrayList<>();
 
@@ -156,7 +157,7 @@ public class CertificateActivity extends BaseActivity implements CertificateCont
         // Creating adapter for spinner
         ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(this, R.layout.custom_spinner, getResources().getStringArray(R.array.certificate_Languages));
         // Drop down layout style - list view with radio button
-        dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        dataAdapter.setDropDownViewResource(R.layout.custom_spinner);
         // attaching data adapter to spinner
         lang_certi_spinner.setAdapter(dataAdapter);
 
@@ -330,7 +331,7 @@ public class CertificateActivity extends BaseActivity implements CertificateCont
     @Override
     public void onNothingSelected(AdapterView<?> parent) {
         iv_certificate.setImageResource(R.drawable.certifcate_eng);
-        certificateLanguage = "English";
+        certificateLanguage = FastSave.getInstance().getString(FC_Constants.APP_LANGUAGE, HINDI);
         certificateAdapter.initializeIndex();
         certificateAdapter.notifyDataSetChanged();
     }

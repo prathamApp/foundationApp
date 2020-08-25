@@ -7,6 +7,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 import com.google.gson.stream.JsonReader;
+import com.pratham.foundation.ApplicationClass;
 import com.pratham.foundation.async.API_Content;
 import com.pratham.foundation.async.ZipDownloader;
 import com.pratham.foundation.database.AppDatabase;
@@ -32,6 +33,9 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -40,7 +44,6 @@ import java.lang.reflect.Type;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 
 import static com.pratham.foundation.ui.app_home.HomeActivity.sub_nodeId;
@@ -166,11 +169,11 @@ public class TestPresenter implements TestContract.TestPresenter, API_Content_Re
     }
 
     private void sortTestList(List<ContentTable> contentParentList) {
-        Collections.sort(contentParentList, (o1, o2) -> o1.getNodeId().compareTo(o2.getNodeId()));
+        Collections.sort(contentParentList, (o1, o2) -> o1.getSeq_no() - o2.getSeq_no());
     }
 
     private String getLevelWiseTestName() {
-        String jsonName = "TestBeginnerJson";
+        String jsonName = "Beginner Test";
         switch (currentLevel) {
             case 0:
                 jsonName = "Beginner Test";
@@ -185,7 +188,7 @@ public class TestPresenter implements TestContract.TestPresenter, API_Content_Re
                 jsonName = "SubSenior Test";
                 break;
             case 4:
-                jsonName = "SeniorTest";
+                jsonName = "Senior Test";
                 break;
         }
         return jsonName;
@@ -197,11 +200,12 @@ public class TestPresenter implements TestContract.TestPresenter, API_Content_Re
         myView.showLoader();
         testList.clear();
         testList = AppDatabase.getDatabaseInstance(mContext).getContentTableDao().getContentData(bottomNavNodeId);
-        sortTestList(testList);
 
-        if (testList.size() > 0)
+        if (testList.size() > 0) {
+            sortTestList(testList);
             WebViewActivity.gameLevel = testList.get(0).getNodeAge();
-        BackupDatabase.backup(mContext);
+        }
+            BackupDatabase.backup(mContext);
         codesText = new ArrayList<>();
         codesText.clear();
         myView.clearTestList();
@@ -212,6 +216,7 @@ public class TestPresenter implements TestContract.TestPresenter, API_Content_Re
         contentTableHeader.setResourcePath("path");
         contentTableHeader.setAsessmentGiven(true);
         contentTableHeader.setContentType("Header");
+        contentTableHeader.setSeq_no(-1);
         myView.addContentToViewTestList(contentTableHeader);
         if (isUpdate) {
             contentTableHeader = new CertificateModelClass();
@@ -221,6 +226,7 @@ public class TestPresenter implements TestContract.TestPresenter, API_Content_Re
             contentTableHeader.setResourcePath("path");
             contentTableHeader.setAsessmentGiven(true);
             contentTableHeader.setContentType("Update");
+            contentTableHeader.setSeq_no(0);
             myView.addContentToViewTestList(contentTableHeader);
         }
 /*      contentTableHeader = new CertificateModelClass();
@@ -248,6 +254,7 @@ public class TestPresenter implements TestContract.TestPresenter, API_Content_Re
                 contentTable.setScoredMarks(0);
                 contentTable.setTotalMarks(0);
                 contentTable.setCertificateRating(0.0f);
+                contentTable.setSeq_no(testList.get(j).getSeq_no());
                 contentTable.setStudentPercentage("");
                 if (testList.get(j).getContentType() != null)
                     contentTable.setContentType(testList.get(j).getContentType());
@@ -300,18 +307,19 @@ public class TestPresenter implements TestContract.TestPresenter, API_Content_Re
                 }
                 myView.addContentToViewTestList(contentTable);
             }
-            CertificateModelClass contentTableFooter = new CertificateModelClass();
-            contentTableFooter.setNodeId("0");
-            contentTableFooter.setResourceId("0");
-            contentTableFooter.setResourcePath("path");
-            contentTableFooter.setAsessmentGiven(true);
-            contentTableFooter.setContentType("Footer");
-            myView.addContentToViewTestList(contentTableFooter);
-
             myView.doubleQuestionCheck();
         } catch (Exception e) {
             e.printStackTrace();
         }
+        CertificateModelClass contentTableFooter = new CertificateModelClass();
+        contentTableFooter.setNodeId("0");
+        contentTableFooter.setResourceId("0");
+        contentTableFooter.setResourcePath("path");
+        contentTableFooter.setAsessmentGiven(true);
+        contentTableFooter.setContentType("Footer");
+        contentTableFooter.setSeq_no(99);
+        myView.addContentToViewTestList(contentTableFooter);
+
         if (testList.size() > 1)
             myView.hideTestDownloadBtn();
         myView.initializeTheIndex();
@@ -379,8 +387,8 @@ public class TestPresenter implements TestContract.TestPresenter, API_Content_Re
         JSONArray returnCodeList = null;
         String[] languagesArray;
         try {
-            InputStream is = mContext.getAssets().open(jsonName);
-//            InputStream is = new FileInputStream(ApplicationClass.pradigiPath + "/.FCA/"+FastSave.getInstance().getString(FC_Constants.LANGUAGE, FC_Constants.HINDI)+"/Game/CertificateData.json");
+//            InputStream is = mContext.getAssets().open(jsonName);
+            InputStream is = new FileInputStream(ApplicationClass.foundationPath + "/.FCA/"+jsonName);
             int size = is.available();
             byte[] buffer = new byte[size];
             is.read(buffer);
@@ -705,12 +713,7 @@ public class TestPresenter implements TestContract.TestPresenter, API_Content_Re
     }
 
     public void sortAllList(List<ContentTable> contentParentList) {
-        Collections.sort(contentParentList, new Comparator<ContentTable>() {
-            @Override
-            public int compare(ContentTable o1, ContentTable o2) {
-                return o1.getNodeId().compareTo(o2.getNodeId());
-            }
-        });
+        Collections.sort(contentParentList, (o1, o2) -> o1.getSeq_no() - o2.getSeq_no());
     }
 
     private void insertEnglishWords(List<WordEnglish> wordGameDataEnglish) {
@@ -808,6 +811,18 @@ public class TestPresenter implements TestContract.TestPresenter, API_Content_Re
 //        getAPIContent(FC_Constants.INTERNET_DOWNLOAD_RESOURCE, FC_Constants.INTERNET_DOWNLOAD_TEST_API);
     }
 
+
+    @Override
+    public void downloadTestJson(int level) {
+        currentLevelNo = level;
+        String jsonName = FC_Utility.getLevelWiseJson(level);
+        if (FC_Utility.isDataConnectionAvailable(mContext)) {
+            api_content.getAPITest(FC_Constants.TEST_JSON_DW, FC_Constants.TEST_JSON_API, jsonName);
+        } else {
+            myView.showNoDataDownloadedDialog();
+        }
+    }
+
     @Background
     @Override
     public void updateDownloadJson(String folderPath) {
@@ -858,7 +873,7 @@ public class TestPresenter implements TestContract.TestPresenter, API_Content_Re
     }
 
     private void sortContentList(List<ContentTable> contentParentList) {
-        Collections.sort(contentParentList, (o1, o2) -> o1.getNodeId().compareTo(o2.getNodeId()));
+        Collections.sort(contentParentList, (o1, o2) -> o1.getSeq_no() - o2.getSeq_no());
     }
 
     @Background
@@ -1121,6 +1136,17 @@ public class TestPresenter implements TestContract.TestPresenter, API_Content_Re
 //                myView.setBotNodeId(botNodeId);
                 getLevelDataForList(currentLevelNo, botNodeId);
 //                getLevelDataFromApi(currentLevelNo, botNodeId);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        } else if (header.equalsIgnoreCase(FC_Constants.TEST_JSON_DW)) {
+            try {
+                String Jname = FC_Utility.getLevelWiseJson(currentLevelNo);
+                File filepath = new File(ApplicationClass.foundationPath + "/.FCA/", Jname); // file path to save
+                FileWriter writer = new FileWriter(filepath);
+                writer.write(response);
+                writer.flush();
+                writer.close();
             } catch (Exception e) {
                 e.printStackTrace();
             }

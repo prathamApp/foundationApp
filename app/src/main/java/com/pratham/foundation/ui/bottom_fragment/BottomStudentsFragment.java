@@ -22,7 +22,6 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.bumptech.glide.Glide;
 import com.google.gson.Gson;
 import com.pratham.foundation.ApplicationClass;
 import com.pratham.foundation.R;
@@ -187,7 +186,7 @@ public class BottomStudentsFragment extends BottomSheetDialogFragment
         roundProgress = progress.findViewById(R.id.dialog_roundProgress);
         dialog_file_name = progress.findViewById(R.id.dialog_file_name);
         iv_file_trans = progress.findViewById(R.id.iv_file_trans);
-        Glide.with(this).load(R.drawable.splash_group).into(iv_file_trans);
+        iv_file_trans.setImageResource(R.drawable.splash_group);
         dialog_file_name.setText("Downloading please wait");
         progressLayout.setCurProgress(0);
         progress.show();

@@ -62,6 +62,10 @@
                 android:layout_height="wrap_content"
                 android:paddingHorizontal="10dp"
                 android:scrollbars="vertical"
+                android:fadeScrollbars="false"
+                android:scrollbarSize="6dp"
+                android:scrollbarThumbVertical="@drawable/card_color_bg4"
+                android:scrollbarTrackVertical="@drawable/scroll_bg"
                 app:flChildSpacing="10dp" />
         </ScrollView>
 

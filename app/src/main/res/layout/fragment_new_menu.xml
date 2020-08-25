@@ -100,7 +100,7 @@
                     android:layout_height="@dimen/_50sdp"
                     android:layout_marginVertical="@dimen/_10sdp"
                     android:background="@drawable/button_blue"
-                    android:text="Clear Data (Smart Phone View)"
+                    android:text="Clear Data\n(Smart Phone Mode)"
                     android:visibility="visible"
                     android:textColor="@color/white"
                     android:textSize="@dimen/_12sdp" />

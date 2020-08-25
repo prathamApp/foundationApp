@@ -3,8 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/story_ll"
     android:layout_width="match_parent"
-    android:background="@drawable/activity_bkgd"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@drawable/activity_bkgd">
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/floating_img"
@@ -97,8 +97,8 @@
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:layout_marginStart="@dimen/_15sdp"
-        android:layout_marginEnd="@dimen/_15sdp"
         android:layout_marginTop="45dp"
+        android:layout_marginEnd="@dimen/_15sdp"
         android:text="Story"
         android:textColor="@color/dark_blue"
         android:textSize="@dimen/_25sdp" />
@@ -149,9 +149,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/tv_story_title"
-        android:layout_marginEnd="@dimen/_5sdp"
-        android:layout_marginStart="@dimen/_5sdp"
         android:layout_centerHorizontal="true"
+        android:layout_marginStart="@dimen/_5sdp"
+        android:layout_marginEnd="@dimen/_5sdp"
         app:sl_shadow_angle="60"
         app:sl_shadow_color="@color/colorBlackTransparentLight"
         app:sl_shadow_distance="5dp"
@@ -168,21 +168,21 @@
 
     <ScrollView
         android:id="@+id/myScrollView"
+        style="@style/paragraph"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_above="@+id/bottom_bar"
         android:layout_below="@+id/image_container"
         android:layout_marginStart="@dimen/_10sdp"
         android:layout_marginTop="10dp"
-        android:fadeScrollbars="false"
-        android:scrollbarSize="6dp"
-        android:scrollbarThumbVertical="@drawable/card_color_bg4"
-        android:scrollbarTrackVertical="@drawable/scroll_bg"
         android:layout_marginEnd="@dimen/_10sdp"
         android:layout_marginBottom="10dp"
-        style="@style/paragraph"
         android:elevation="5dp"
-        android:padding="@dimen/_5sdp">
+        android:fadeScrollbars="false"
+        android:padding="@dimen/_5sdp"
+        android:scrollbarSize="6dp"
+        android:scrollbarThumbVertical="@drawable/card_color_bg4"
+        android:scrollbarTrackVertical="@drawable/scroll_bg">
 
         <com.nex3z.flowlayout.FlowLayout xmlns:app="http://schemas.android.com/apk/res-auto"
             android:id="@+id/myflowlayout"

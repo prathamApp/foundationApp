@@ -23,7 +23,7 @@
         android:layout_marginTop="@dimen/_5sdp"
         android:paddingStart="@dimen/_10sdp"
         android:paddingEnd="@dimen/_10sdp"
-        android:text="Student Knows ASSFASDFASFADF "
+        android:text="Test Question"
         android:textColor="@color/colorText"
         android:textSize="@dimen/_16sdp"
         android:textStyle="bold" />

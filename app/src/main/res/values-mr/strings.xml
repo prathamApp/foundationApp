@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="Login">लॉगिन करा</string>
-    <string name="Stt_Dialog_Msg">चांगला प्रतिसाद मिळवण्यासाठी कृपया ऑफलाइन भाषा पॅक डाउनलोड करा.</string>
+    <string name="Stt_Dialog_Msg">चांगला प्रतिसाद मिळवण्यासाठी कृपया ऑफलाइन भाषा पॅक English(India) आणि हिंदी(भारत) डाउनलोड करा.</string>
     <string name="Okay">ठीक आहे</string>
     <string name="Skip">वगळा</string>
     <string name="loding_please_wait">लोड होत आहे. कृपया प्रतिक्षा करा...</string>
@@ -93,9 +93,15 @@
     <string name="reading_stt">माइक बटणावर क्लिक करा. उत्तर रेकॉर्ड करा आणि सबमिट करा.</string>
     <string name="multiple_choice">उत्तर देण्यासाठी दिलेल्या शब्दांमधून योग्य पर्याय निवडा.</string>
     <string name="Video">व्हिडीओ पहा.</string>
-    <string name="new_chit_chat_1">स्क्रीन पर दिए गए संभाषण को सुनो|</string>
-    <string name="new_chit_chat_2">स्क्रीन पर दिए संभाषण का जवाब अंग्रेजी में रिकॉर्ड करें।</string>
-    <string name="new_chit_chat_3">यह गेम दो लोग खेलें। एक-एक करके अपनी बात रिकॉर्ड करें।</string>
     <string name="watching_video">माइक बटणावर क्लिक करून आपले उत्तर रेकॉर्ड करा आणि सबमिट करा.</string>-->
+    <string name="select_language">भाषा निवडा -</string>
+
+    <!--Need Translation-->
+    <string name="ParaReadQues">प्ले बटणावर क्लिक करा आणि ऐका. नंतर माइक बटणावर क्लिक करा आणि परिच्छेद वाचा.</string>
+    <string name="parasummary">कहानी को हिंदी में दोहराएं|</string>
+    <string name="paraqa">माइक बटणावर क्लिक करा. उत्तर रेकॉर्ड करून सबमिट करा.</string>
+    <string name="new_chit_chat_1">स्क्रीनवर दिलेले संभाषण ऐका.</string>
+    <string name="new_chit_chat_2">स्क्रीनवर दिलेल्या संभाषणाचे उत्तर इंग्रजीत रेकॉर्ड करा.</string>
+    <string name="new_chit_chat_3">हा गेम दोन जणांनी खेळा. एक-एक करून रेकॉर्डिंग करा.</string>
 
 </resources>

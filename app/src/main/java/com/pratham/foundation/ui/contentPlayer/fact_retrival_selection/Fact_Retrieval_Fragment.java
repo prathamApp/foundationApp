@@ -52,8 +52,6 @@ public class Fact_Retrieval_Fragment extends Fragment implements Fact_Retrieval_
     RelativeLayout keyword_selected;
     @ViewById(R.id.quetion)
     TextView quetion;
-
-
     @ViewById(R.id.btn_prev)
     ImageButton previous;
     @ViewById(R.id.btn_submit)

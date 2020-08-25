@@ -194,7 +194,7 @@ public class ListeningAndWritting extends Fragment implements ListeningAndWritti
                     if (i == position)
                         tv.setTextColor(getResources().getColor(R.color.colorBtnGreenDark));
                     else
-                        tv.setTextColor(getResources().getColor(R.color.colorRed));
+                        tv.setTextColor(getResources().getColor(R.color.oslo_grey));
 
                 }
                 switch (position) {
@@ -239,7 +239,7 @@ public class ListeningAndWritting extends Fragment implements ListeningAndWritti
         int interval = (width - (discreteSliderBackdropLeftMargin + discreteSliderBackdropRightMargin) - ((int) (firstTickMarkRadius + lastTickMarkRadius)))
                 / (tickMarkCount - 1);
 
-        String[] tickMarkLabels = {" Slow ", "Normal", " Fast "};
+        String[] tickMarkLabels = {"Slow", "Normal", "Fast"};
         int tickMarkLabelWidth = DisplayUtility.dp2px(getContext(), 40);
 
         for (int i = 0; i < tickMarkCount; i++) {
@@ -253,7 +253,7 @@ public class ListeningAndWritting extends Fragment implements ListeningAndWritti
             if (i == discreteSlider.getPosition())
                 tv.setTextColor(getResources().getColor(R.color.colorBtnGreenDark));
             else
-                tv.setTextColor(getResources().getColor(R.color.colorRed));
+                tv.setTextColor(getResources().getColor(R.color.oslo_grey));
 
 //                    tv.setBackgroundColor(getResources().getColor(android.R.color.holo_blue_dark));
 

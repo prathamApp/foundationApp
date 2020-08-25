@@ -49,23 +49,24 @@
                 android:marqueeRepeatLimit="marquee_forever"
                 android:scrollHorizontally="true"
                 android:singleLine="true"
-                android:textColor="@color/colorBlack"
+                android:textColor="@color/dark_blue"
                 android:textSize="@dimen/_20sdp" />
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_below="@+id/tv_Topic"
+                android:gravity="center_vertical"
                 android:orientation="horizontal">
                 <com.pratham.foundation.customView.fontsview.SansTextView
                     android:id="@+id/tv_Activity"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="@dimen/_10sdp"
-                    android:text=""
+                    android:text="Name"
                     android:gravity="center"
                     android:textColor="@color/oslo_grey"
-                    android:textSize="@dimen/_18sdp" />
+                    android:textSize="@dimen/_16sdp" />
                 <com.pratham.foundation.customView.fontsview.SansTextViewBold
                     android:id="@+id/tv_header_progress"
                     android:layout_width="wrap_content"
@@ -94,13 +95,13 @@
                 android:layout_marginTop="@dimen/_25sdp"
                 android:layout_height="wrap_content"
                 android:text="@string/Level"
-                android:textColor="@color/colorBlack"
+                android:textColor="@color/dark_blue"
                 android:textSize="@dimen/_12sdp" />
 
             <com.pratham.foundation.customView.shape_of_view.ShadowLayout
                 android:id="@+id/level_shadow"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="@dimen/_46sdp"
+                android:layout_height="@dimen/_46sdp"
                 android:layout_below="@+id/txt_level"
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="@dimen/_2sdp"
@@ -112,8 +113,8 @@
 
                 <ImageView
                     android:id="@+id/iv_level"
-                    android:layout_width="wrap_content"
-                    android:layout_height="47dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
                     android:background="@drawable/red_ripple_round"
                     android:padding="2dp"
                     android:src="@drawable/level_1" />

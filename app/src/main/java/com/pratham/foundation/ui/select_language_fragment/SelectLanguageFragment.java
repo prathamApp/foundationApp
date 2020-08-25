@@ -24,6 +24,7 @@ import com.pratham.foundation.database.domain.ContentTable;
 import com.pratham.foundation.services.shared_preferences.FastSave;
 import com.pratham.foundation.ui.app_home.display_content.ContentAdapter;
 import com.pratham.foundation.utility.FC_Constants;
+import com.pratham.foundation.utility.FC_Utility;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Bean;
@@ -94,6 +95,7 @@ public class SelectLanguageFragment extends Fragment implements SelectLangContra
         String languageNodeId = contentItem.getNodeId();
         FastSave.getInstance().saveString(FC_Constants.APP_LANGUAGE, "" + language);
         FastSave.getInstance().saveString(FC_Constants.APP_LANGUAGE_NODE_ID, "" + languageNodeId);
+        FC_Utility.setAppLocal(context,language);
         btn_back.performClick();
     }
 

@@ -1,6 +1,8 @@
 package com.pratham.foundation.ui.contentPlayer.keywords_identification;
 
 import android.app.Dialog;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
@@ -43,6 +45,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Objects;
 
 import static com.pratham.foundation.utility.FC_Constants.APP_SECTION;
 import static com.pratham.foundation.utility.FC_Constants.gameFolderPath;
@@ -78,6 +81,7 @@ public class KeywordsIdentificationFragment extends Fragment implements Keywords
     private boolean isKeyWordShowing = false;
     private boolean issubmitted = false;
     private Animation animFadein;
+
     @AfterViews
     public void initiate() {
         Bundle bundle = getArguments();
@@ -109,7 +113,7 @@ public class KeywordsIdentificationFragment extends Fragment implements Keywords
                 RelativeLayout.LayoutParams.WRAP_CONTENT,
                 RelativeLayout.LayoutParams.WRAP_CONTENT);
         lp.setMargins(10, 5, 10, 5);
-        if (FastSave.getInstance().getString(APP_SECTION,"").equalsIgnoreCase(sec_Test)) {
+        if (FastSave.getInstance().getString(APP_SECTION, "").equalsIgnoreCase(sec_Test)) {
             show_me_keywords.setVisibility(View.GONE);
         }
         presenter.getData();
@@ -165,7 +169,7 @@ public class KeywordsIdentificationFragment extends Fragment implements Keywords
                 LinearLayout linearLayout = (LinearLayout) keywords.getChildAt(i);
                 String text = ((SansTextView) linearLayout.getChildAt(0)).getText().toString();
                 if (correctWord.contains(text)) {
-                    linearLayout.setBackground(ContextCompat.getDrawable(getActivity(), R.drawable.convo_correct_bg));
+                    linearLayout.setBackground(ContextCompat.getDrawable(getActivity(), R.drawable.card_color_bg1));
                 }
 
             }
@@ -212,8 +216,7 @@ public class KeywordsIdentificationFragment extends Fragment implements Keywords
                         for (int i = 0; i < positions.size(); i++) {
                             SansTextView textViewTemp = (SansTextView) paraghaph.getChildAt((int) positions.get(i));
                             // textViewTemp.setBackgroundColor(ContextCompat.getColor(getActivity(), R.color.colorGreenCorrect));
-                            textViewTemp.setBackground(ContextCompat.getDrawable(getActivity(), R.drawable.tag_view));
-                            textViewTemp.setTextColor(ContextCompat.getColor(getActivity(), R.color.white));
+                            textViewTemp.setBackground(ContextCompat.getDrawable(getActivity(), R.drawable.dialog_bg_blue));
                         }
 
                     LinearLayout linearLayout = new LinearLayout(getActivity());
@@ -221,7 +224,7 @@ public class KeywordsIdentificationFragment extends Fragment implements Keywords
                     linearLayout.setLayoutParams(viewParam);
                     linearLayout.setGravity(Gravity.CENTER);
                     linearLayout.setElevation(3);
-                    linearLayout.setBackgroundDrawable(ContextCompat.getDrawable(getActivity(), R.drawable.dialog_bg));
+                    linearLayout.setBackgroundDrawable(ContextCompat.getDrawable(getActivity(), R.drawable.choose_level_bg));
 
                     SansTextView textViewkey = new SansTextView(getActivity());
                     textViewkey.setText(paraText);
@@ -340,8 +343,8 @@ public class KeywordsIdentificationFragment extends Fragment implements Keywords
             showParagraph(questionModel);
             if (!isKeyWordShowing) {
                 isKeyWordShowing = true;
-              //  show_me_keywords.setText("hide keywords");
-               show_me_keywords.setText(getResources().getString(R.string.hide_hint));
+                //  show_me_keywords.setText("hide keywords");
+                show_me_keywords.setText(getResources().getString(R.string.hide_hint));
                 btn_submit.setVisibility(View.INVISIBLE);
                 for (int keywordIndex = 0; keywordIndex < keywordList.size(); keywordIndex++) {
                     List positions = positionMap.get(keywordList.get(keywordIndex).getSubQues().trim());
@@ -367,6 +370,8 @@ public class KeywordsIdentificationFragment extends Fragment implements Keywords
                 final Dialog dialog = new CustomLodingDialog(getActivity(), R.style.FC_DialogStyle);
                 dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
                 dialog.setContentView(R.layout.app_success_dialog);
+                Objects.requireNonNull(dialog.getWindow()).
+                        setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
                 dialog.setCancelable(false);
                 dialog.setCanceledOnTouchOutside(false);
                 SansButton dia_btn_yellow = dialog.findViewById(R.id.dia_btn_yellow);
@@ -383,6 +388,7 @@ public class KeywordsIdentificationFragment extends Fragment implements Keywords
     public void gameClose() {
         presenter.addScore(0, "", 0, 0, resStartTime, FC_Utility.getCurrentDateTime(), GameConstatnts.KEYWORD_IDENTIFICATION + " " + GameConstatnts.END);
     }
+
     @Override
     public void onStop() {
         EventBus.getDefault().unregister(this);
@@ -391,6 +397,6 @@ public class KeywordsIdentificationFragment extends Fragment implements Keywords
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onMessageEvent(EventMessage event) {
-        GameConstatnts.showGameInfo(getActivity(),questionModel.getInstruction(),readingContentPath+questionModel.getInstructionUrl());
+        GameConstatnts.showGameInfo(getActivity(), questionModel.getInstruction(), readingContentPath + questionModel.getInstructionUrl());
     }
 }

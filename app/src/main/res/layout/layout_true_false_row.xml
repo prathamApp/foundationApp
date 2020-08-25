@@ -13,7 +13,7 @@
         android:background="@null"
         android:orientation="vertical">
 
-        <TextView
+        <com.pratham.foundation.customView.fontsview.SansTextView
             android:id="@+id/tv_question"
             style="@style/CustomQuestionStyle"
             android:layout_margin="@dimen/_5sdp"

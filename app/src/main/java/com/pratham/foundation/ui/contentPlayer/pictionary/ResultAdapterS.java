@@ -1,7 +1,8 @@
 package com.pratham.foundation.ui.contentPlayer.pictionary;
 
 import android.content.Context;
-import android.graphics.drawable.Drawable;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
@@ -12,8 +13,6 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.request.RequestOptions;
 import com.pratham.foundation.R;
 import com.pratham.foundation.customView.GifView;
 import com.pratham.foundation.modalclasses.ScienceQuestion;
@@ -156,12 +155,14 @@ public class ResultAdapterS extends RecyclerView.Adapter<ResultAdapterS.MyViewHo
                 e.printStackTrace();
             }
         } else {
-            ImageView imageView = (ImageView) view;
-            Glide.with(context)
-                    .load(path)
-                    .apply(new RequestOptions()
-                            .placeholder(Drawable.createFromPath(placeholder)))
-                    .into(imageView);
+            try {
+                ImageView imageView = (ImageView) view;
+                Bitmap bmImg = BitmapFactory.decodeFile(placeholder);
+                BitmapFactory.decodeStream(new FileInputStream(placeholder));
+                imageView.setImageBitmap(bmImg);
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            }
         }
     }
 }

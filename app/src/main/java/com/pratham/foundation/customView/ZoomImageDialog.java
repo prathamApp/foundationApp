@@ -1,10 +1,10 @@
 package com.pratham.foundation.customView;
 
-import android.app.Dialog;
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.view.View;
@@ -12,19 +12,20 @@ import android.widget.ImageButton;
 import android.widget.MediaController;
 import android.widget.VideoView;
 
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.engine.DiskCacheStrategy;
-import com.bumptech.glide.request.RequestOptions;
 import com.pratham.foundation.R;
 import com.pratham.foundation.customView.display_image_dialog.CustomLodingDialog;
 
-
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.InputStream;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+
+/*import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.request.RequestOptions;*/
 
 
 public class ZoomImageDialog extends CustomLodingDialog {
@@ -114,29 +115,19 @@ public class ZoomImageDialog extends CustomLodingDialog {
                         }
                   //  }
                 } else {
-
                     /*File imgFile = new File(path);
-
                     if(imgFile.exists()){
-
                         Bitmap myBitmap = BitmapFactory.decodeFile(imgFile.getAbsolutePath());
-
-
                         zoomImg.setImageBitmap(myBitmap);
-
                     }*/
-
-                    zoomImg.setVisibility(View.VISIBLE);
-//                    Glide.get(context).clearDiskCache();
-
-                    Glide.with(context)
-                            .load(path)
-//                            .apply(new RequestOptions().diskCacheStrategy(DiskCacheStrategy.NONE))
-                            .apply(new RequestOptions()
-                                    .diskCacheStrategy(DiskCacheStrategy.NONE)
-                                    .skipMemoryCache(true)
-                                    .placeholder(Drawable.createFromPath(localPath)))
-                            .into(zoomImg);
+                    try {
+                        zoomImg.setVisibility(View.VISIBLE);
+                        Bitmap bmImg = BitmapFactory.decodeFile(localPath);
+                        BitmapFactory.decodeStream(new FileInputStream(localPath));
+                        zoomImg.setImageBitmap(bmImg);
+                    } catch (FileNotFoundException e) {
+                        e.printStackTrace();
+                    }
                     gifView.setVisibility(View.GONE);
 
                 }

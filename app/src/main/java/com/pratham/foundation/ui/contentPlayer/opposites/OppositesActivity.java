@@ -2,6 +2,8 @@ package com.pratham.foundation.ui.contentPlayer.opposites;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
@@ -16,7 +18,6 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
 import com.pratham.foundation.ApplicationClass;
 import com.pratham.foundation.BaseActivity;
 import com.pratham.foundation.R;
@@ -32,6 +33,8 @@ import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.UiThread;
 import org.androidannotations.annotations.ViewById;
+
+import java.io.FileInputStream;
 
 import static com.pratham.foundation.ApplicationClass.BackBtnSound;
 import static com.pratham.foundation.utility.FC_Constants.gameFolderPath;
@@ -129,11 +132,15 @@ public class OppositesActivity extends BaseActivity
     public void loadUi(ModalReadingVocabulary modalReadingVocabulary) {
         try {
             texttop.setText(modalReadingVocabulary.getSentence().getText());
-            Glide.with(this).load(readingContentPath + "Images/" + modalReadingVocabulary.getSentence().getImage()).into(imagettop);
             topContainer.setTag(modalReadingVocabulary.getSentence().getSound());
+            Bitmap bmImg = BitmapFactory.decodeFile(readingContentPath + "Images/" + modalReadingVocabulary.getSentence().getImage());
+            BitmapFactory.decodeStream(new FileInputStream(readingContentPath + "Images/" + modalReadingVocabulary.getSentence().getImage()));
+            imagettop.setImageBitmap(bmImg);
 
             textbottom.setText(modalReadingVocabulary.getOpposite().getText());
-            Glide.with(this).load(readingContentPath + "Images/" + modalReadingVocabulary.getOpposite().getImage()).into(imagetbottom);
+            bmImg = BitmapFactory.decodeFile(readingContentPath + "Images/" + modalReadingVocabulary.getOpposite().getImage());
+            BitmapFactory.decodeStream(new FileInputStream(readingContentPath + "Images/" + modalReadingVocabulary.getOpposite().getImage()));
+            imagetbottom.setImageBitmap(bmImg);
             bottomContainer.setTag((modalReadingVocabulary.getOpposite().getSound()));
 
             mhandler.postDelayed(() -> {

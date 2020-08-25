@@ -896,9 +896,10 @@ public class ReadingStoryActivity extends BaseActivity implements
         Button dia_btn_green = dialog.findViewById(R.id.dia_btn_green);
         Button dia_btn_red = dialog.findViewById(R.id.dia_btn_red);
 
-        dia_btn_green.setText("Yes");
-        dia_btn_red.setText("No");
-        dia_btn_yellow.setText("" + dialog_btn_cancel);
+        dia_btn_green.setText(""+ getResources().getString(R.string.yes));
+        dia_btn_red.setText(""+ getResources().getString(R.string.no));
+        dia_btn_yellow.setText("" + getResources().getString(R.string.cancel));
+        dia_btn_yellow.setVisibility(View.GONE);
         dialog.show();
 
         if (!diaComplete)
@@ -907,7 +908,6 @@ public class ReadingStoryActivity extends BaseActivity implements
             dia_title.setText("Good Job\nRead another one???");
         }
         dia_btn_red.setOnClickListener(v -> dialog.dismiss());
-        dia_btn_yellow.setOnClickListener(v -> dialog.dismiss());
         dia_btn_green.setOnClickListener(v -> {
             dialog.dismiss();
             if (FastSave.getInstance().getString(APP_SECTION, "").equalsIgnoreCase(sec_Test)) {

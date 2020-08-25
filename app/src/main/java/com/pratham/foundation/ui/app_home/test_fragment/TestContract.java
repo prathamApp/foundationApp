@@ -104,5 +104,6 @@ public interface TestContract {
 
         void insertTestSession();
 
+        void downloadTestJson(int level);
     }
 }

@@ -11,18 +11,31 @@
         android:padding="@dimen/_5sdp"
         android:background="@drawable/dialog_bg">
 
-        <TextView
+        <com.pratham.foundation.customView.fontsview.SansTextView
+            android:id="@+id/title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:scrollbars="vertical"
+            android:paddingHorizontal="@dimen/_7sdp"
+            android:text="@string/hint"
+            android:autoSizeTextType="uniform"
+            android:textColor="@color/dark_blue"
+            android:autoSizeMaxTextSize="@dimen/_30sdp"
+            android:textSize="@dimen/_15sdp" />
+        <com.pratham.foundation.customView.fontsview.SansTextView
             android:id="@+id/info"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:gravity="center"
+            android:layout_below="@+id/title"
             android:scrollbars="vertical"
             android:paddingHorizontal="@dimen/_7sdp"
             android:text="jjfglkjlk"
             android:autoSizeTextType="uniform"
-            android:textColor="@color/colorLightBlack"
+            android:textColor="@color/dark_blue"
             android:autoSizeMaxTextSize="@dimen/_30sdp"
-            android:textSize="@dimen/_15sdp" />
+            android:textSize="@dimen/_12sdp" />
     </RelativeLayout>
 
 </RelativeLayout>

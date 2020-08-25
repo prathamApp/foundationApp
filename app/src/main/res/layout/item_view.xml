@@ -7,7 +7,7 @@
     android:background="@drawable/border"
     android:layout_margin="@dimen/_2sdp">
 
-    <TextView
+    <com.pratham.foundation.customView.fontsview.SansTextView
         android:id="@+id/hindiText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

@@ -45,6 +45,7 @@ public class CertificateModelClass {
     int codeCount = 0;
     String isDownloaded;
     String ContentType;
+    public int seq_no;
 
 
     public String getContentType() {
@@ -349,5 +350,13 @@ public class CertificateModelClass {
 
     public void setIsDownloaded(String downloaded) {
         isDownloaded = downloaded;
+    }
+
+    public int getSeq_no() {
+        return seq_no;
+    }
+
+    public void setSeq_no(int seq_no) {
+        this.seq_no = seq_no;
     }
 }

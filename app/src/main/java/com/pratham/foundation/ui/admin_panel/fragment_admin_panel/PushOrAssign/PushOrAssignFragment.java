@@ -30,7 +30,6 @@ import android.widget.Toast;
 import com.androidnetworking.AndroidNetworking;
 import com.androidnetworking.error.ANError;
 import com.androidnetworking.interfaces.StringRequestListener;
-import com.bumptech.glide.Glide;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.pratham.foundation.ApplicationClass;
@@ -184,7 +183,7 @@ public class PushOrAssignFragment extends Fragment {
         roundProgress = progress.findViewById(R.id.dialog_roundProgress);
         dialog_file_name = progress.findViewById(R.id.dialog_file_name);
         iv_file_trans = progress.findViewById(R.id.iv_file_trans);
-        Glide.with(this).load(R.drawable.splash_group).into(iv_file_trans);
+        iv_file_trans.setImageResource(R.drawable.splash_group);
         dialog_file_name.setText("Downloading please wait");
         progressLayout.setCurProgress(0);
         progress.show();

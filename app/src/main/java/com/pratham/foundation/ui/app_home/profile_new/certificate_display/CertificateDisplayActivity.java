@@ -15,7 +15,6 @@ import com.pratham.foundation.customView.GridSpacingItemDecoration;
 import com.pratham.foundation.database.AppDatabase;
 import com.pratham.foundation.database.domain.Assessment;
 import com.pratham.foundation.services.shared_preferences.FastSave;
-import com.pratham.foundation.ui.student_profile.Student_profile_activity;
 import com.pratham.foundation.ui.test.certificate.CertificateActivity;
 import com.pratham.foundation.utility.FC_Constants;
 
@@ -103,12 +102,7 @@ public class CertificateDisplayActivity extends BaseActivity implements
         }
         setStudentProfileImage(sImage);
     }
-
-    @Click(R.id.profileImage)
-    public void loadProfile() {
-        startActivity(new Intent(this, Student_profile_activity.class));
-    }
-
+    
     @UiThread
     public void setStudentProfileImage(String sImage) {
     }

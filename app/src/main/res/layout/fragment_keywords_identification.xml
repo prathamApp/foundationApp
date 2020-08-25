@@ -6,36 +6,36 @@
     android:background="@drawable/activity_bkgd"
     android:orientation="vertical">
 
-   <!-- <com.pratham.foundation.customView.fontsview.SansTextView
-        android:id="@+id/tittle"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Identifiy Keywords"
-        android:background="@color/red"
-        android:padding="@dimen/_5sdp"
-        android:textAlignment="center"
-        android:textColor="@color/white"
-        android:textSize="30sp" />-->
+    <!-- <com.pratham.foundation.customView.fontsview.SansTextView
+         android:id="@+id/tittle"
+         android:layout_width="match_parent"
+         android:layout_height="wrap_content"
+         android:text="Identifiy Keywords"
+         android:background="@color/red"
+         android:padding="@dimen/_5sdp"
+         android:textAlignment="center"
+         android:textColor="@color/white"
+         android:textSize="30sp" />-->
     <Space
         android:layout_width="match_parent"
-        android:layout_height="60dp"/>
+        android:layout_height="60dp" />
+
     <RelativeLayout
+        style="@style/paragraph"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_margin="20dp"
         android:layout_marginTop="@dimen/_10sdp"
-        android:layout_weight="3"
-        style="@style/paragraph">
+        android:layout_weight="3">
 
         <ScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:layout_below="@+id/para_tv"
             android:fadeScrollbars="false"
-                    android:scrollbarSize="6dp"
-        android:scrollbarThumbVertical="@drawable/card_color_bg4"
-        android:scrollbarTrackVertical="@drawable/scroll_bg"
-
-            android:layout_below="@+id/para_tv" >
+            android:scrollbarSize="6dp"
+            android:scrollbarThumbVertical="@drawable/card_color_bg4"
+            android:scrollbarTrackVertical="@drawable/scroll_bg">
 
             <com.nex3z.flowlayout.FlowLayout xmlns:app="http://schemas.android.com/apk/res-auto"
                 android:id="@+id/paragraph"
@@ -58,11 +58,11 @@
 
     <RelativeLayout
         android:id="@+id/resultLayout"
+        style="@style/paragraph"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_marginHorizontal="20dp"
         android:layout_marginTop="@dimen/_10sdp"
-        style="@style/paragraph"
         android:layout_weight="1.5">
 
         <ScrollView
@@ -96,24 +96,26 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_gravity="center"
-        android:layout_weight=".5"
         android:layout_margin="@dimen/_10sdp"
+        android:layout_weight=".5"
         android:orientation="horizontal">
+
         <com.pratham.foundation.customView.fontsview.SansButton
             android:id="@+id/show_me_keywords"
+            style="@style/submitbtn"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:background="@drawable/button_yellow"
-            style="@style/submitbtn"
-            android:text="@string/hint"            />
+            android:text="@string/hint" />
+
         <com.pratham.foundation.customView.fontsview.SansButton
             android:id="@+id/btn_submit"
+            style="@style/submitbtn"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:text="@string/submit"
-            style="@style/submitbtn" />
+            android:text="@string/submit" />
 
     </LinearLayout>
 

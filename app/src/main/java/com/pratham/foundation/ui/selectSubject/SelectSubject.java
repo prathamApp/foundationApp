@@ -12,6 +12,7 @@ import android.os.Handler;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.view.Window;
@@ -70,6 +71,10 @@ public class SelectSubject extends BaseActivity implements
     RelativeLayout rl_act;
     @ViewById(R.id.name)
     TextView name;
+    @ViewById(R.id.name_welcome)
+    TextView name_welcome;
+    @ViewById(R.id.subject)
+    TextView subject;
     @ViewById(R.id.tv_update)
     TextView tv_update;
     private Context context;
@@ -95,11 +100,15 @@ public class SelectSubject extends BaseActivity implements
                     FC_Constants.CURRENT_STUDENT_NAME, "").split(" ")[0];
         name.setText(/*getResources().getString(R.string.Welcome) + " " + */studName + ".");
 
+//        for (Locale locale : Locale.getAvailableLocales()) {
+//            Log.d("LOCALES", locale.getLanguage() + "_" + locale.getCountry() + " [" + locale.getDisplayName() + "]");
+//        }
     }
 
     @Override
     protected void onResume() {
         super.onResume();
+        FC_Utility.setAppLocal(this,FastSave.getInstance().getString(FC_Constants.APP_LANGUAGE, FC_Constants.HINDI));
         subjectList.clear();
         EventMessage eventMessage = new EventMessage();
         eventMessage.setMessage(FC_Constants.CHECK_UPDATE);
@@ -128,6 +137,8 @@ public class SelectSubject extends BaseActivity implements
             subject_recycler.setAdapter(subjectAdapter);
         } else
             subjectAdapter.notifyDataSetChanged();
+//        name_welcome.setText(getResources().getString(R.string.Welcome).toString());
+//        subject.setText(getResources().getString(R.string.select_subject).toString());
     }
 
     private boolean loaderVisible = false;
@@ -214,6 +225,10 @@ public class SelectSubject extends BaseActivity implements
         intent.putExtra("nodeId", contentTableObj.getNodeId());
         intent.putExtra("nodeTitle", contentTableObj.getNodeTitle());
         startActivity(intent);
+//        FastSave.getInstance().saveString(FC_Constants.APP_LANGUAGE, FC_Constants.MARATHI);
+        String a = FastSave.getInstance().getString(FC_Constants.APP_LANGUAGE, FC_Constants.HINDI);
+        Log.d("INSTRUCTIONFRAG", "Select Subj: "+a);
+        FC_Utility.setAppLocal(this,a);
 //        context.startActivity(intent, ActivityOptions.makeSceneTransitionAnimation(SelectSubject.this).toBundle());
     }
 
@@ -235,8 +250,11 @@ public class SelectSubject extends BaseActivity implements
             if(fragments==1){
                 rl_act.setVisibility(View.VISIBLE);
                 onAppSpinnerLanguageChanged(FastSave.getInstance().getString(FC_Constants.APP_LANGUAGE, ""));
+                FC_Utility.setAppLocal(this,FastSave.getInstance().getString(FC_Constants.APP_LANGUAGE, FC_Constants.HINDI));
                 presenter.clearSubjList();
                 presenter.getSubjectList();
+                name_welcome.setText(getResources().getString(R.string.Welcome));
+                subject.setText(getResources().getString(R.string.select_subject));
             }
         } else {
             exitDialog();

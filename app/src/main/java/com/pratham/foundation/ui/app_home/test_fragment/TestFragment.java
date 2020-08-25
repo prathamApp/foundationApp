@@ -13,6 +13,7 @@ import android.support.v4.app.Fragment;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.View;
@@ -68,6 +69,7 @@ import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.File;
@@ -88,6 +90,8 @@ import static com.pratham.foundation.utility.FC_Constants.gameFolderPath;
 import static com.pratham.foundation.utility.FC_Constants.sec_Test;
 import static com.pratham.foundation.utility.FC_Constants.testSessionEnded;
 import static com.pratham.foundation.utility.FC_Constants.testSessionEntered;
+import static com.pratham.foundation.utility.FC_Utility.getLevelWiseJson;
+import static com.pratham.foundation.utility.FC_Utility.getLevelWiseTestName;
 
 @EFragment(R.layout.fragment_test)
 public class TestFragment extends Fragment implements TestContract.TestView,
@@ -140,6 +144,9 @@ public class TestFragment extends Fragment implements TestContract.TestView,
         my_recycler_view.addOnScrollListener(new RetractableToolbarUtil
                 .ShowHideToolbarOnScrollingListener(header_rl));
 
+        language = FastSave.getInstance().getString(FC_Constants.APP_LANGUAGE, HINDI);
+        Log.d("LANGUAGE TEST", "LANGUAGE TEST: "+language);
+
         ib_langChange.setVisibility(View.GONE);
         if (FastSave.getInstance().getString(APP_SECTION, "").equalsIgnoreCase(sec_Test)) {
             showLoader();
@@ -152,8 +159,8 @@ public class TestFragment extends Fragment implements TestContract.TestView,
     public void showNoDataLayout() {
         try {
             dismissLoadingDialog();
-            my_recycler_view.setVisibility(View.GONE);
             rl_no_data.setVisibility(View.VISIBLE);
+            my_recycler_view.setVisibility(View.GONE);
             btn_test_dw.setVisibility(View.GONE);
             ib_langChange.setVisibility(View.GONE);
         } catch (Exception e) {
@@ -183,6 +190,7 @@ public class TestFragment extends Fragment implements TestContract.TestView,
             showRecyclerLayout();
             ib_langChange.setVisibility(View.GONE);
             showLoader();
+            language = FastSave.getInstance().getString(FC_Constants.APP_LANGUAGE, HINDI);
             presenter.getBottomNavId(currentLevel, "" + sec_Test);
         } catch (Exception e) {
             e.printStackTrace();
@@ -192,7 +200,7 @@ public class TestFragment extends Fragment implements TestContract.TestView,
 
     @UiThread
     public void notifyAdapter() {
-//        sortAllList(contentParentList);
+        sortTestList(testList);
         if (testAdapter == null) {
             testAdapter = new TestAdapter(context, testList, TestFragment.this, TestFragment.this);
             RecyclerView.LayoutManager myLayoutManager = new GridLayoutManager(context, 1);
@@ -209,7 +217,7 @@ public class TestFragment extends Fragment implements TestContract.TestView,
         dismissLoadingDialog();
         new Handler().postDelayed(() -> {
             try {
-                if (progressLayout != null)
+                if (downloadDialog != null)
                     downloadDialog.dismiss();
             } catch (Exception e) {
                 e.printStackTrace();
@@ -218,7 +226,13 @@ public class TestFragment extends Fragment implements TestContract.TestView,
     }
 
     public void sortAllList(List<ContentTable> contentParentList) {
-        Collections.sort(contentParentList, (o1, o2) -> o1.getNodeId().compareTo(o2.getNodeId()));
+        Collections.sort(contentParentList, (o1, o2) -> o1.getSeq_no() - o2.getSeq_no());
+//        Collections.sort(contentParentList, (o1, o2) -> o1.getNodeId().compareTo(o2.getNodeId()));
+    }
+
+    public void sortTestList(List<CertificateModelClass> contentParentList) {
+        Collections.sort(contentParentList, (o1, o2) -> o1.getSeq_no() - o2.getSeq_no());
+//        Collections.sort(contentParentList, (o1, o2) -> o1.getNodeId().compareTo(o2.getNodeId()));
     }
 
     @Click(R.id.ib_langChange)
@@ -449,7 +463,30 @@ public class TestFragment extends Fragment implements TestContract.TestView,
                     String jsonName = getLevelWiseJson(Integer.parseInt(rootLevelList.get(i).getNodeTitle()));
                     isUpdate = rootLevelList.get(i).isNodeUpdate();
                     JSONArray testData = presenter.getTestData(jsonName);
-                    presenter.generateTestData(testData, rootLevelList.get(i).getNodeId(), isUpdate);
+                    if(testData!= null) {
+                        boolean langFlg = false;
+                        try {
+                            for (int x = 0; x < testData.length(); x++) {
+                                String lang = testData.getJSONObject(x).getString("lang");
+                                if (lang.equalsIgnoreCase(FastSave.getInstance().getString(FC_Constants.APP_LANGUAGE, HINDI)))
+                                    langFlg = true;
+                            }
+                            if (!langFlg)
+                                language = testData.getJSONObject(0).getString("lang");
+                            else
+                                language = FastSave.getInstance().getString(FC_Constants.APP_LANGUAGE, HINDI);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                        presenter.generateTestData(testData, rootLevelList.get(i).getNodeId(), isUpdate);
+                    }
+                    else {
+                        clearTestList();
+                        my_recycler_view.removeAllViews();
+                        testAdapter.notifyDataSetChanged();
+                        dismissLoadingDialog();
+                        ShowTestDownloadBtn();
+                    }
                 }
             } else if (rootLevelList != null) {
                 if (rootLevelList.size() > 0) {
@@ -460,12 +497,28 @@ public class TestFragment extends Fragment implements TestContract.TestView,
                     String jsonName = getLevelWiseJson(Integer.parseInt(rootLevelList.get(i).getNodeTitle()));
                     isUpdate = rootLevelList.get(i).isNodeUpdate();
                     JSONArray testData = presenter.getTestData(jsonName);
+                    boolean langFlg = false;
+                    try {
+                        for (int x = 0; x < testData.length(); x++) {
+                            String lang = testData.getJSONObject(x).getString("lang");
+                            if(lang.equalsIgnoreCase(FastSave.getInstance().getString(FC_Constants.APP_LANGUAGE, HINDI)))
+                                langFlg=true;
+                        }
+                        if (!langFlg)
+                            language = testData.getJSONObject(0).getString("lang");
+                        else
+                            language = FastSave.getInstance().getString(FC_Constants.APP_LANGUAGE, HINDI);
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
                     presenter.generateTestData(testData, rootLevelList.get(i).getNodeId(), isUpdate);
                 } else {
                     testAdapter.notifyDataSetChanged();
                     dismissLoadingDialog();
                 }
             } else {
+                clearTestList();
+                my_recycler_view.removeAllViews();
                 testAdapter.notifyDataSetChanged();
                 dismissLoadingDialog();
             }
@@ -513,6 +566,20 @@ public class TestFragment extends Fragment implements TestContract.TestView,
                     String jsonName = getLevelWiseJson(Integer.parseInt(rootLevelList.get(i).getNodeTitle()));
                     isUpdate = rootLevelList.get(i).isNodeUpdate();
                     JSONArray testData = presenter.getTestData(jsonName);
+                    boolean langFlg = false;
+                    try {
+                        for (int x = 0; x < testData.length(); x++) {
+                            String lang = testData.getJSONObject(x).getString("lang");
+                            if(lang.equalsIgnoreCase(FastSave.getInstance().getString(FC_Constants.APP_LANGUAGE, HINDI)))
+                                langFlg=true;
+                        }
+                        if (!langFlg)
+                            language = testData.getJSONObject(0).getString("lang");
+                        else
+                            language = FastSave.getInstance().getString(FC_Constants.APP_LANGUAGE, HINDI);
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
                     presenter.generateTestData(testData, rootLevelList.get(i).getNodeId(), isUpdate);
                 }
             }
@@ -604,6 +671,7 @@ public class TestFragment extends Fragment implements TestContract.TestView,
             resName = getLevelWiseTestName(Integer.parseInt(rootLevelList.get(i).getNodeTitle()));
             resServerImageName = rootLevelList.get(i).getNodeServerImage();
             downloadType = FC_Constants.TEST_DOWNLOAD;
+            presenter.downloadTestJson(Integer.parseInt(rootLevelList.get(i).getNodeTitle()));
             presenter.downloadResource(rootLevelList.get(i).getNodeId());
         } catch (Exception e) {
             e.printStackTrace();
@@ -663,7 +731,7 @@ public class TestFragment extends Fragment implements TestContract.TestView,
                     mainNew.putExtra("gameCategory", "" + testData.getNodeKeywords());
                     startActivityForResult(mainNew, 1461);
                 } else {
-                    Toast.makeText(context, "Game not found", Toast.LENGTH_SHORT).show();
+                    showGameNotFoundToast();
                 }
             } else if (testData.getResourceType().equalsIgnoreCase(FC_Constants.FACT_RETRIVAL)) {
                 Intent mainNew = new Intent(context, FactRetrieval_.class);
@@ -800,11 +868,26 @@ public class TestFragment extends Fragment implements TestContract.TestView,
     }
 
     @UiThread
+    public void showGameNotFoundToast() {
+        Toast.makeText(context, "Game not found", Toast.LENGTH_SHORT).show();
+    }
+
+    @UiThread
     @Override
     public void hideTestDownloadBtn() {
         try {
             btn_test_dw.setVisibility(View.GONE);
             ib_langChange.setVisibility(View.VISIBLE);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    @UiThread
+    public void ShowTestDownloadBtn() {
+        try {
+            btn_test_dw.setVisibility(View.VISIBLE);
+            ib_langChange.setVisibility(View.GONE);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -817,8 +900,7 @@ public class TestFragment extends Fragment implements TestContract.TestView,
             dismissLoadingDialog();
             my_recycler_view.removeAllViews();
             if (testList.size() > 2) {
-                ib_langChange.setVisibility(View.VISIBLE);
-                btn_test_dw.setVisibility(View.GONE);
+                hideTestDownloadBtn();
                 if (testAdapter == null) {
                     testAdapter = new TestAdapter(context, testList, TestFragment.this, TestFragment.this);
                     RecyclerView.LayoutManager myLayoutManager = new GridLayoutManager(context, 1);
@@ -836,6 +918,8 @@ public class TestFragment extends Fragment implements TestContract.TestView,
         }
         //        testAdapter.initializeIndex();
     }
+
+
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -943,51 +1027,21 @@ public class TestFragment extends Fragment implements TestContract.TestView,
 //            resName = rootLevelList.get(currentLevel).getNodeTitle();
         String jsonName = getLevelWiseJson(Integer.parseInt(rootLevelList.get(i).getNodeTitle()));
         JSONArray testData = presenter.getTestData(jsonName);
+        boolean langFlg = false;
+        try {
+            for (int x = 0; x < testData.length(); x++) {
+                String lang = testData.getJSONObject(x).getString("lang");
+                if(lang.equalsIgnoreCase(FastSave.getInstance().getString(FC_Constants.APP_LANGUAGE, HINDI)))
+                    langFlg=true;
+            }
+            if (!langFlg)
+                language = testData.getJSONObject(0).getString("lang");
+            else
+                language = FastSave.getInstance().getString(FC_Constants.APP_LANGUAGE, HINDI);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
         presenter.generateTestData(testData, rootLevelList.get(i).getNodeId(), isUpdate);
-    }
-
-    private String getLevelWiseJson(int pos) {
-        String jsonName = "TestBeginnerJson.json";
-        switch (pos) {
-            case 1:
-                jsonName = "TestBeginnerJson.json";
-                break;
-            case 2:
-                jsonName = "TestSubJuniorJson.json";
-                break;
-            case 3:
-                jsonName = "TestJuniorJson.json";
-                break;
-            case 4:
-                jsonName = "TestSubSeniorJson.json";
-                break;
-            case 5:
-                jsonName = "TestSeniorJson.json";
-                break;
-        }
-        return jsonName;
-    }
-
-    private String getLevelWiseTestName(int pos) {
-        String jsonName = "TestBeginnerJson";
-        switch (pos) {
-            case 1:
-                jsonName = "Beginner Test";
-                break;
-            case 2:
-                jsonName = "SubJunior Test";
-                break;
-            case 3:
-                jsonName = "Junior Test";
-                break;
-            case 4:
-                jsonName = "SubSenior Test";
-                break;
-            case 5:
-                jsonName = "Senior Test";
-                break;
-        }
-        return jsonName;
     }
 
     @Override
@@ -1069,7 +1123,8 @@ public class TestFragment extends Fragment implements TestContract.TestView,
 //        level_progress.setCurProgress(percent);
     }
 
-    private BlurPopupWindow downloadDialog;
+//    private BlurPopupWindow downloadDialog;
+    private CustomLodingDialog downloadDialog;
     private ProgressLayout progressLayout;
     private TextView dialog_file_name;
     ProgressBar dialog_roundProgress;
@@ -1080,15 +1135,21 @@ public class TestFragment extends Fragment implements TestContract.TestView,
         if (downloadDialog != null)
             downloadDialog = null;
         try {
-            downloadDialog = new BlurPopupWindow.Builder(context)
-                    .setContentView(R.layout.dialog_file_downloading)
-                    .setGravity(Gravity.CENTER)
-                    .setDismissOnTouchBackground(false)
-                    .setDismissOnClickBack(true)
-                    .setScaleRatio(0.2f)
-                    .setBlurRadius(10)
-                    .setTintColor(0x30000000)
-                    .build();
+//            downloadDialog = new BlurPopupWindow.Builder(context)
+//                    .setContentView(R.layout.dialog_file_downloading)
+//                    .setGravity(Gravity.CENTER)
+//                    .setDismissOnTouchBackground(false)
+//                    .setDismissOnClickBack(true)
+//                    .setScaleRatio(0.2f)
+//                    .setBlurRadius(10)
+//                    .setTintColor(0x30000000)
+//                    .build();
+            downloadDialog = new CustomLodingDialog(context, R.style.FC_DialogStyle);
+            downloadDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+            Objects.requireNonNull(downloadDialog.getWindow()).setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+            downloadDialog.setContentView(R.layout.dialog_file_downloading);
+            downloadDialog.setCanceledOnTouchOutside(false);
+            downloadDialog.show();
 
             SimpleDraweeView iv_file_trans = downloadDialog.findViewById(R.id.iv_file_trans);
             dialog_file_name = downloadDialog.findViewById(R.id.dialog_file_name);
@@ -1127,24 +1188,33 @@ public class TestFragment extends Fragment implements TestContract.TestView,
         }
     }
 
-    BlurPopupWindow errorDialog;
-
+//    BlurPopupWindow errorDialog;
+    CustomLodingDialog errorDialog;
     @UiThread
     public void showDownloadErrorDialog() {
         try {
-            errorDialog = new BlurPopupWindow.Builder(context)
-                    .setContentView(R.layout.dialog_file_error_downloading)
-                    .setGravity(Gravity.CENTER)
-                    .setDismissOnTouchBackground(false)
-                    .setDismissOnClickBack(true)
-                    .bindClickListener(v -> {
-                        new Handler().postDelayed(() ->
-                                errorDialog.dismiss(), 200);
-                    }, R.id.dialog_error_btn)
-                    .setScaleRatio(0.2f)
-                    .setBlurRadius(10)
-                    .setTintColor(0x30000000)
-                    .build();
+//            errorDialog = new BlurPopupWindow.Builder(context)
+//                    .setContentView(R.layout.dialog_file_error_downloading)
+//                    .setGravity(Gravity.CENTER)
+//                    .setDismissOnTouchBackground(false)
+//                    .setDismissOnClickBack(true)
+//                    .bindClickListener(v -> {
+//                        new Handler().postDelayed(() ->
+//                                errorDialog.dismiss(), 200);
+//                    }, R.id.dialog_error_btn)
+//                    .setScaleRatio(0.2f)
+//                    .setBlurRadius(10)
+//                    .setTintColor(0x30000000)
+//                    .build();
+//            errorDialog.show();
+            errorDialog = new CustomLodingDialog(context, R.style.FC_DialogStyle);
+            errorDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+            Objects.requireNonNull(errorDialog.getWindow()).setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+            errorDialog.setContentView(R.layout.dialog_file_error_downloading);
+            errorDialog.setCanceledOnTouchOutside(false);
+            Button dialog_error_btn = errorDialog.findViewById(R.id.dialog_error_btn);
+            dialog_error_btn.setOnClickListener(v -> new Handler().postDelayed(() ->
+                    errorDialog.dismiss(), 200));
             errorDialog.show();
         } catch (Exception e) {
             e.printStackTrace();

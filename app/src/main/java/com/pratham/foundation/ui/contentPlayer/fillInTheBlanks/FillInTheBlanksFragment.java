@@ -2,7 +2,8 @@ package com.pratham.foundation.ui.contentPlayer.fillInTheBlanks;
 
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.drawable.Drawable;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.speech.SpeechRecognizer;
 import android.support.annotation.NonNull;
@@ -20,8 +21,6 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.request.RequestOptions;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.pratham.foundation.ApplicationClass;
@@ -48,6 +47,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.Type;
@@ -259,11 +259,13 @@ public class FillInTheBlanksFragment extends Fragment implements STT_Result {
                     e.printStackTrace();
                 }
             } else {
-                Glide.with(getActivity())
-                        .load(path)
-                        .apply(new RequestOptions()
-                                .placeholder(Drawable.createFromPath(localPath)))
-                        .into(questionImage);
+                try {
+                    Bitmap bmImg = BitmapFactory.decodeFile(localPath);
+                    BitmapFactory.decodeStream(new FileInputStream(localPath));
+                    questionImage.setImageBitmap(bmImg);
+                } catch (FileNotFoundException e) {
+                    e.printStackTrace();
+                }
             }
 
         } else questionImage.setVisibility(View.GONE);

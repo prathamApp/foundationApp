@@ -20,6 +20,9 @@ import android.widget.TextView;
 
 import com.pratham.foundation.R;
 import com.pratham.foundation.modalclasses.CertificateModelClass;
+import com.pratham.foundation.services.shared_preferences.FastSave;
+import com.pratham.foundation.utility.FC_Constants;
+import com.pratham.foundation.utility.FC_Utility;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -284,7 +287,9 @@ public class TestAdapter extends RecyclerView.Adapter {
                 break;
             case 3:
                 TestUpdateHolder testUpdateHolder = (TestUpdateHolder) viewitemRowHolder;
-                testUpdateHolder.btn_test_update.setText("UPDATE "+testList.get(position).getEnglishQues());
+                String level = FC_Utility.getLevelWiseTestName(FastSave.getInstance().getInt(
+                        FC_Constants.CURRENT_LEVEL, 1));
+                testUpdateHolder.btn_test_update.setText("UPDATE "+ level);
                 testUpdateHolder.btn_test_update.setOnClickListener(v ->certificateClicked.onCertificateUpdate() );
                 break;
         }

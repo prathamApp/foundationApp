@@ -1,7 +1,8 @@
 package com.pratham.foundation.ui.contentPlayer.trueFalse;
 
 import android.content.Context;
-import android.graphics.drawable.Drawable;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -16,8 +17,6 @@ import android.widget.ImageView;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.request.RequestOptions;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.pratham.foundation.ApplicationClass;
@@ -41,6 +40,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.Type;
@@ -252,11 +252,13 @@ public class TrueFalseFragment extends Fragment {
                     e.printStackTrace();
                 }
             } else {
-                Glide.with(getActivity())
-                        .load(path)
-                        .apply(new RequestOptions()
-                                .placeholder(Drawable.createFromPath(localPath)))
-                        .into(questionImage);
+                try {
+                    Bitmap bmImg = BitmapFactory.decodeFile(localPath);
+                    BitmapFactory.decodeStream(new FileInputStream(localPath));
+                    questionImage.setImageBitmap(bmImg);
+                } catch (FileNotFoundException e) {
+                    e.printStackTrace();
+                }
             }
 /*            } else {
                 String fileName = getFileName(scienceQuestion.getQid(), scienceQuestion.getPhotourl());

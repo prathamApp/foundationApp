@@ -35,6 +35,7 @@ import org.androidannotations.annotations.ViewById;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import static com.pratham.foundation.ApplicationClass.BackBtnSound;
 import static com.pratham.foundation.ApplicationClass.ButtonClickSound;
@@ -150,10 +151,10 @@ public class SequenceLayout extends Fragment implements SequeanceLayoutContract.
     public void arrowBackpresses() {
         try {
             BackBtnSound.start();
-        } catch (IllegalStateException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
-        getActivity().onBackPressed();
+        Objects.requireNonNull(getActivity()).onBackPressed();
     }
 
 

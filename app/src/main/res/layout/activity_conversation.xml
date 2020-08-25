@@ -1,43 +1,43 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout android:id="@+id/ll_convo_main"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/ll_convo_main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/activity_bkgd"
     android:elevation="@dimen/_5sdp"
-    android:orientation="vertical"
-    xmlns:android="http://schemas.android.com/apk/res/android">
+    android:orientation="vertical">
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/floating_back"
-        android:layout_alignParentStart="true"
         android:layout_width="60dp"
         android:layout_height="60dp"
-        android:layout_marginTop="@dimen/_5sdp"
-        android:layout_marginStart="@dimen/_5sdp" />
+        android:layout_alignParentStart="true"
+        android:layout_marginStart="@dimen/_5sdp"
+        android:layout_marginTop="@dimen/_5sdp" />
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/floating_info"
-        android:layout_alignParentEnd="true"
         android:layout_width="60dp"
         android:layout_height="60dp"
-        android:visibility="gone"
+        android:layout_alignParentEnd="true"
         android:layout_marginTop="@dimen/_5sdp"
-        android:layout_marginEnd="@dimen/_5sdp" />
+        android:layout_marginEnd="@dimen/_5sdp"
+        android:visibility="gone" />
 
     <RelativeLayout
         android:id="@+id/silence_outer"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/black_20"
-        android:visibility="gone"
-        android:elevation="50dp">
+        android:elevation="50dp"
+        android:visibility="gone">
 
         <RelativeLayout
             android:id="@+id/silence_main_layout"
             android:layout_width="match_parent"
             android:layout_height="@dimen/_150sdp"
-            android:layout_marginHorizontal="@dimen/_30sdp"
             android:layout_centerInParent="true"
+            android:layout_marginHorizontal="@dimen/_30sdp"
             android:padding="@dimen/_10sdp">
 
             <ImageView
@@ -45,27 +45,27 @@
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/_90sdp"
                 android:layout_alignParentTop="true"
-                android:elevation="@dimen/_20sdp"
                 android:layout_centerHorizontal="true"
-                android:src="@drawable/stt_listener"/>
+                android:elevation="@dimen/_20sdp"
+                android:src="@drawable/stt_listener" />
 
             <RelativeLayout
                 android:layout_width="@dimen/_150sdp"
                 android:layout_height="@dimen/_60sdp"
-                android:layout_marginTop="@dimen/_80sdp"
                 android:layout_centerHorizontal="true"
+                android:layout_marginTop="@dimen/_80sdp"
                 android:background="@drawable/ripple_rectangle_card">
 
                 <com.pratham.foundation.customView.fontsview.SansTextViewBold
                     android:id="@+id/silence_tv"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
-                    android:gravity="center"
                     android:layout_alignParentBottom="true"
                     android:layout_centerHorizontal="true"
+                    android:gravity="center"
+                    android:text="I am listening..."
                     android:textColor="@color/red"
-                    android:textSize="@dimen/_15sdp"
-                    android:text="I am listening..."/>
+                    android:textSize="@dimen/_15sdp" />
 
             </RelativeLayout>
         </RelativeLayout>
@@ -75,17 +75,17 @@
         android:id="@+id/iv_monk"
         android:layout_width="@dimen/_120sdp"
         android:layout_height="250dp"
-        android:elevation="20dp"
         android:layout_centerInParent="true"
-        android:src="@drawable/monk_char"/>
+        android:elevation="20dp"
+        android:src="@drawable/monk_char" />
 
     <com.pratham.foundation.customView.fontsview.SansTextViewBold
         android:id="@+id/tv_title"
         android:layout_width="match_parent"
         android:layout_height="@dimen/_40sdp"
         android:layout_alignParentTop="true"
-        android:layout_marginTop="30dp"
         android:layout_marginStart="@dimen/_10sdp"
+        android:layout_marginTop="35dp"
         android:layout_marginEnd="@dimen/_10sdp"
         android:gravity="center"
         android:text="Chat"
@@ -114,8 +114,9 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_marginHorizontal="10dp"
-            android:layout_marginVertical="10dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"
+            android:layout_marginTop="10dp"
             android:layout_weight="1.5"
             android:orientation="horizontal"
             android:weightSum="10">
@@ -125,33 +126,29 @@
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1.5"
+                android:layout_marginBottom="10dp"
                 android:background="@drawable/button_green"
                 android:elevation="2dp"
                 android:scaleType="fitCenter"
                 android:src="@drawable/ic_mic_black" />
 
-            <LinearLayout
-                android:id="@+id/lin_layout"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_gravity="center"
-                android:layout_marginHorizontal="@dimen/_5sdp"
-                android:layout_weight="7"
-                android:background="@drawable/dialog_bg"
-                android:elevation="2dp"
-                android:gravity="center"
-                android:orientation="horizontal">
-
                 <ScrollView
                     android:id="@+id/scroll_ll"
-                    android:layout_width="match_parent"
+                    android:layout_width="0dp"
                     android:layout_height="match_parent"
+                    android:layout_gravity="center"
+                    android:layout_marginStart="@dimen/_5sdp"
+                    android:layout_marginEnd="@dimen/_5sdp"
+                    android:layout_weight="7"
+                    android:background="@drawable/dialog_bg"
+                    android:elevation="2dp"
+                    android:layout_marginBottom="10dp"
+                    android:gravity="center"
                     android:fadeScrollbars="false"
-                            android:scrollbarSize="6dp"
-        android:scrollbarThumbVertical="@drawable/card_color_bg4"
-        android:scrollbarTrackVertical="@drawable/scroll_bg"
+                    android:scrollbarSize="6dp"
+                    android:scrollbarThumbVertical="@drawable/card_color_bg4"
+                    android:scrollbarTrackVertical="@drawable/scroll_bg">
 
-                    android:layout_marginHorizontal="@dimen/_5sdp">
                     <com.nex3z.flowlayout.FlowLayout xmlns:app="http://schemas.android.com/apk/res-auto"
                         android:id="@+id/readChatFlow"
                         android:layout_width="wrap_content"
@@ -159,7 +156,6 @@
                         android:layout_gravity="center"
                         app:flChildSpacing="10dp" />
                 </ScrollView>
-            </LinearLayout>
 
             <ImageButton
                 android:id="@+id/btn_imgsend"
@@ -167,15 +163,18 @@
                 android:layout_height="match_parent"
                 android:layout_weight="1.5"
                 android:background="@drawable/button_green"
+                android:layout_marginBottom="10dp"
                 android:elevation="2dp"
-                android:visibility="gone"
                 android:scaleType="fitCenter"
-                android:src="@drawable/enter" />
+                android:src="@drawable/enter"
+                android:visibility="gone" />
+
             <ImageButton
                 android:id="@+id/btn_speaker"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1.5"
+                android:layout_marginBottom="10dp"
                 android:background="@drawable/button_yellow"
                 android:elevation="2dp"
                 android:padding="@dimen/_5sdp"

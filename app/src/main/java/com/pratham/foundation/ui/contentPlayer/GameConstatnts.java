@@ -26,11 +26,15 @@ import com.pratham.foundation.ui.contentPlayer.chit_chat.level_2.ConversationFra
 import com.pratham.foundation.ui.contentPlayer.chit_chat.level_3.ConversationFragment_3_;
 import com.pratham.foundation.ui.contentPlayer.dialogs.InstructionDialog;
 import com.pratham.foundation.ui.contentPlayer.doing.DoingFragment_;
+import com.pratham.foundation.ui.contentPlayer.fact_retrieval_fragment.FactRetrieval;
 import com.pratham.foundation.ui.contentPlayer.fact_retrieval_fragment.FactRetrieval_;
+import com.pratham.foundation.ui.contentPlayer.fact_retrival_selection.Fact_Retrieval_Fragment;
 import com.pratham.foundation.ui.contentPlayer.fact_retrival_selection.Fact_Retrieval_Fragment_;
 import com.pratham.foundation.ui.contentPlayer.fillInTheBlanks.FillInTheBlanksFragment;
+import com.pratham.foundation.ui.contentPlayer.keywords_identification.KeywordsIdentificationFragment;
 import com.pratham.foundation.ui.contentPlayer.keywords_identification.KeywordsIdentificationFragment_;
 import com.pratham.foundation.ui.contentPlayer.keywords_mapping.KeywordMappingFragment_;
+import com.pratham.foundation.ui.contentPlayer.listenAndWritting.ListeningAndWritting;
 import com.pratham.foundation.ui.contentPlayer.listenAndWritting.ListeningAndWritting_;
 import com.pratham.foundation.ui.contentPlayer.morphin.Hive_game_;
 import com.pratham.foundation.ui.contentPlayer.multipleChoiceQuetion.multipleChoiceFragment_;
@@ -52,6 +56,7 @@ import com.pratham.foundation.ui.contentPlayer.reading.ReadingFragment_;
 import com.pratham.foundation.ui.contentPlayer.sequenceLayout.SequenceLayout_;
 import com.pratham.foundation.ui.contentPlayer.trueFalse.TrueFalseFragment;
 import com.pratham.foundation.ui.contentPlayer.video_view.ActivityVideoView_;
+import com.pratham.foundation.ui.contentPlayer.word_writting.WordWritingFragment;
 import com.pratham.foundation.ui.contentPlayer.word_writting.WordWritingFragment_;
 import com.pratham.foundation.utility.FC_Constants;
 import com.pratham.foundation.utility.FC_Utility;
@@ -276,15 +281,15 @@ public class GameConstatnts implements ShowInstruction {
         switch (contentTable1.getResourceType()) {
             case GameConstatnts.FACTRETRIEVAL:
                 FC_Utility.showFragment((Activity) context, new FactRetrieval_(), R.id.RL_CPA,
-                        bundle, FactRetrieval_.class.getSimpleName());
+                        bundle, FactRetrieval.class.getSimpleName());
                 break;
             case GameConstatnts.FACT_RETRIAL_CLICK:
                 FC_Utility.showFragment((Activity) context, new Fact_Retrieval_Fragment_(), R.id.RL_CPA,
-                        bundle, FactRetrieval_.class.getSimpleName());
+                        bundle, Fact_Retrieval_Fragment.class.getSimpleName());
                 break;
             case GameConstatnts.KEYWORD_IDENTIFICATION:
                 FC_Utility.showFragment((Activity) context, new KeywordsIdentificationFragment_(), R.id.RL_CPA,
-                        bundle, KeywordsIdentificationFragment_.class.getSimpleName());
+                        bundle, KeywordsIdentificationFragment.class.getSimpleName());
                 break;
             case GameConstatnts.KEYWORD_MAPPING:
                 FC_Utility.showFragment((Activity) context, new KeywordMappingFragment_(), R.id.RL_CPA,
@@ -308,7 +313,7 @@ public class GameConstatnts implements ShowInstruction {
                             bundle, ParagraphWritingFragment.class.getSimpleName());
                 } else {
                     FC_Utility.showFragment((Activity) context, new WordWritingFragment_(), R.id.RL_CPA,
-                            bundle, WordWritingFragment_.class.getSimpleName());
+                            bundle, WordWritingFragment.class.getSimpleName());
 
                   /*  if (FC_Constants.currentLevel <= 2) {
                         FC_Utility.showFragment((Activity) context, new WordWritingFragment_(), R.id.RL_CPA,
@@ -321,7 +326,7 @@ public class GameConstatnts implements ShowInstruction {
                 break;
             case GameConstatnts.LISTNING_AND_WRITTING:
                 FC_Utility.showFragment((Activity) context, new ListeningAndWritting_(), R.id.RL_CPA,
-                        bundle, ListeningAndWritting_.class.getSimpleName());
+                        bundle, ListeningAndWritting.class.getSimpleName());
                 break;
             case GameConstatnts.MULTIPLE_CHOICE:
                 FC_Utility.showFragment((Activity) context, new multipleChoiceFragment_(), R.id.RL_CPA,

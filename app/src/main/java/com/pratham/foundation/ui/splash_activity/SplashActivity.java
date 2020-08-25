@@ -56,7 +56,6 @@ import static com.pratham.foundation.utility.FC_Constants.BOTTOM_FRAGMENT_CLOSED
 import static com.pratham.foundation.utility.FC_Constants.CURRENT_VERSION;
 import static com.pratham.foundation.utility.FC_Constants.IS_SERVICE_STOPED;
 import static com.pratham.foundation.utility.FC_Constants.SPLASH_OPEN;
-import static com.pratham.foundation.utility.FC_Utility.setAppLocal;
 
 
 @EActivity(R.layout.activity_splash)
@@ -118,10 +117,9 @@ public class SplashActivity extends SplashSupportActivity implements SplashContr
                 EventMessage message = new EventMessage();
                 message.setMessage("reload");
                 EventBus.getDefault().post(message);
-            }
-            else {
-                if(startCheck>0)
-                gotoNextActivity();
+            } else {
+                if (startCheck > 0)
+                    gotoNextActivity();
             }
         }, 300);
     }
@@ -154,6 +152,9 @@ public class SplashActivity extends SplashSupportActivity implements SplashContr
             } else
                 startApp();
         }, 500);
+        String a = FastSave.getInstance().getString(FC_Constants.APP_LANGUAGE, FC_Constants.HINDI);
+        Log.d("INSTRUCTIONFRAG", "Splash Act: " + a);
+        FC_Utility.setAppLocal(this, a);
     }
 
     @UiThread
@@ -211,7 +212,7 @@ public class SplashActivity extends SplashSupportActivity implements SplashContr
         String resolution = strwidth + "px x " + strheight + "px (" + config.densityDpi + " dpi)";
         FastSave.getInstance().saveString(FC_Constants.SCR_RES, "" + resolution);
         FastSave.getInstance().saveString(FC_Constants.LANGUAGE, FC_Constants.HINDI);
-        setAppLocal(this, FC_Constants.HINDI);
+//        setAppLocal(this, FC_Constants.HINDI);
         FastSave.getInstance().saveBoolean(IS_SERVICE_STOPED, false);
         splashPresenter.createDatabase();
     }

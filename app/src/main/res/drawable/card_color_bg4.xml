@@ -6,6 +6,6 @@
     <gradient
         android:angle="135"
         android:endColor="@color/ratingFilled"
-        android:startColor="@color/yellow_sand_dark"
+        android:startColor="@color/ratingFilledlight"
         android:type="linear" />
 </shape>

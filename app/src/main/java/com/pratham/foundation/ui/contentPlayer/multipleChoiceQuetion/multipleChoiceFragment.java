@@ -1,7 +1,8 @@
 package com.pratham.foundation.ui.contentPlayer.multipleChoiceQuetion;
 
 import android.content.Intent;
-import android.graphics.drawable.Drawable;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.support.design.card.MaterialCardView;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.CardView;
@@ -19,8 +20,6 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.request.RequestOptions;
 import com.pratham.foundation.ApplicationClass;
 import com.pratham.foundation.R;
 import com.pratham.foundation.customView.GifView;
@@ -195,11 +194,13 @@ public class multipleChoiceFragment extends Fragment implements OnGameClose, Mul
                         .into(questionImage);*/
 //                    zoomImg.setVisibility(View.VISIBLE);
                 } else {
-                    Glide.with(getActivity())
-                            .load(path)
-                            .apply(new RequestOptions()
-                                    .placeholder(Drawable.createFromPath(localPath)))
-                            .into(questionImage);
+                    try {
+                        Bitmap bmImg = BitmapFactory.decodeFile(localPath);
+                        BitmapFactory.decodeStream(new FileInputStream(localPath));
+                        questionImage.setImageBitmap(bmImg);
+                    } catch (FileNotFoundException e) {
+                        e.printStackTrace();
+                    }
                 }
 
                 iv_view_img.setOnClickListener(new View.OnClickListener() {
@@ -627,15 +628,15 @@ public class multipleChoiceFragment extends Fragment implements OnGameClose, Mul
                             .placeholder(Drawable.createFromPath(placeholder)))
                     .into(imageView);*/
         } else {
-            ImageView imageView = (ImageView) view;
-            Glide.with(getActivity())
-                    .load(path)
-                    .apply(new RequestOptions()
-                            .placeholder(Drawable.createFromPath(placeholder)))
-                    .into(imageView);
+            try {
+                ImageView imageView = (ImageView) view;
+                Bitmap bmImg = BitmapFactory.decodeFile(placeholder);
+                BitmapFactory.decodeStream(new FileInputStream(placeholder));
+                imageView.setImageBitmap(bmImg);
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            }
         }
-
-
 //        }
     }
 

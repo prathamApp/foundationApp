@@ -155,7 +155,7 @@ public class PracticeFragment extends Fragment implements PracticeContract.Pract
         long delay;
         dismissLoadingDialog();
         try {
-            if (progressLayout != null)
+            if (downloadDialog != null)
                 downloadDialog.dismiss();
         } catch (Exception e) {
             e.printStackTrace();
@@ -163,7 +163,8 @@ public class PracticeFragment extends Fragment implements PracticeContract.Pract
     }
 
     public void sortAllList(List<ContentTable> contentParentList) {
-        Collections.sort(contentParentList, (o1, o2) -> o1.getNodeId().compareTo(o2.getNodeId()));
+        Collections.sort(contentParentList, (o1, o2) -> o1.getSeq_no() - o2.getSeq_no());
+//        Collections.sort(contentParentList, (o1, o2) -> o1.getNodeId().compareTo(o2.getNodeId()));
     }
 
     @UiThread
@@ -386,11 +387,12 @@ public class PracticeFragment extends Fragment implements PracticeContract.Pract
         }
     }
 
+    BlurPopupWindow noDataDlg;
     @SuppressLint("SetTextI18n")
     @Override
     @UiThread
     public void showNoDataDownloadedDialog() {
-        errorDialog = new BlurPopupWindow.Builder(context)
+        noDataDlg = new BlurPopupWindow.Builder(context)
                 .setContentView(R.layout.fc_custom_dialog)
                 .setGravity(Gravity.CENTER)
                 .setDismissOnTouchBackground(false)
@@ -402,7 +404,7 @@ public class PracticeFragment extends Fragment implements PracticeContract.Pract
                             contentParentList.clear();
                             adapterParent.notifyDataSetChanged();
                         }
-                        errorDialog.dismiss();
+                        noDataDlg.dismiss();
                     }, 200);
                     dismissLoadingDialog();
                 }, R.id.dia_btn_green)
@@ -410,15 +412,15 @@ public class PracticeFragment extends Fragment implements PracticeContract.Pract
                 .setTintColor(0x30000000)
                 .build();
 
-        TextView title = errorDialog.findViewById(R.id.dia_title);
-        Button btn_gree = errorDialog.findViewById(R.id.dia_btn_green);
-        Button btn_yellow = errorDialog.findViewById(R.id.dia_btn_yellow);
-        Button btn_red = errorDialog.findViewById(R.id.dia_btn_red);
+        TextView title = noDataDlg.findViewById(R.id.dia_title);
+        Button btn_gree = noDataDlg.findViewById(R.id.dia_btn_green);
+        Button btn_yellow = noDataDlg.findViewById(R.id.dia_btn_yellow);
+        Button btn_red = noDataDlg.findViewById(R.id.dia_btn_red);
         btn_gree.setText("Ok");
         title.setText("No Data Found");
         btn_red.setVisibility(View.GONE);
         btn_yellow.setVisibility(View.GONE);
-        errorDialog.show();
+        noDataDlg.show();
     }
 
     private boolean loaderVisible = false;
@@ -662,7 +664,8 @@ public class PracticeFragment extends Fragment implements PracticeContract.Pract
 
     }
 
-    private BlurPopupWindow downloadDialog;
+//    private BlurPopupWindow downloadDialog;
+    private CustomLodingDialog downloadDialog;
     private ProgressLayout progressLayout;
     private TextView dialog_file_name;
     ProgressBar dialog_roundProgress;
@@ -672,15 +675,21 @@ public class PracticeFragment extends Fragment implements PracticeContract.Pract
         if (downloadDialog != null)
             downloadDialog = null;
         try {
-            downloadDialog = new BlurPopupWindow.Builder(context)
-                    .setContentView(R.layout.dialog_file_downloading)
-                    .setGravity(Gravity.CENTER)
-                    .setDismissOnTouchBackground(false)
-                    .setDismissOnClickBack(true)
-                    .setScaleRatio(0.2f)
-                    .setBlurRadius(10)
-                    .setTintColor(0x30000000)
-                    .build();
+//            downloadDialog = new BlurPopupWindow.Builder(context)
+//                    .setContentView(R.layout.dialog_file_downloading)
+//                    .setGravity(Gravity.CENTER)
+//                    .setDismissOnTouchBackground(false)
+//                    .setDismissOnClickBack(true)
+//                    .setScaleRatio(0.2f)
+//                    .setBlurRadius(10)
+//                    .setTintColor(0x30000000)
+//                    .build();
+            downloadDialog = new CustomLodingDialog(context, R.style.FC_DialogStyle);
+            downloadDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+            Objects.requireNonNull(downloadDialog.getWindow()).setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+            downloadDialog.setContentView(R.layout.dialog_file_downloading);
+            downloadDialog.setCanceledOnTouchOutside(false);
+            downloadDialog.show();
 
             SimpleDraweeView iv_file_trans = downloadDialog.findViewById(R.id.iv_file_trans);
             dialog_file_name = downloadDialog.findViewById(R.id.dialog_file_name);
@@ -719,23 +728,33 @@ public class PracticeFragment extends Fragment implements PracticeContract.Pract
         }
     }
 
-    BlurPopupWindow errorDialog;
+//    BlurPopupWindow errorDialog;
+    CustomLodingDialog errorDialog;
     @UiThread
     public void showDownloadErrorDialog() {
         try {
-            errorDialog = new BlurPopupWindow.Builder(context)
-                    .setContentView(R.layout.dialog_file_error_downloading)
-                    .setGravity(Gravity.CENTER)
-                    .setDismissOnTouchBackground(false)
-                    .setDismissOnClickBack(true)
-                    .bindClickListener(v -> {
-                        new Handler().postDelayed(() ->
-                                errorDialog.dismiss(), 200);
-                    }, R.id.dialog_error_btn)
-                    .setScaleRatio(0.2f)
-                    .setBlurRadius(10)
-                    .setTintColor(0x30000000)
-                    .build();
+//            errorDialog = new BlurPopupWindow.Builder(context)
+//                    .setContentView(R.layout.dialog_file_error_downloading)
+//                    .setGravity(Gravity.CENTER)
+//                    .setDismissOnTouchBackground(false)
+//                    .setDismissOnClickBack(true)
+//                    .bindClickListener(v -> {
+//                        new Handler().postDelayed(() ->
+//                                errorDialog.dismiss(), 200);
+//                    }, R.id.dialog_error_btn)
+//                    .setScaleRatio(0.2f)
+//                    .setBlurRadius(10)
+//                    .setTintColor(0x30000000)
+//                    .build();
+//            errorDialog.show();
+            errorDialog = new CustomLodingDialog(context, R.style.FC_DialogStyle);
+            errorDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+            Objects.requireNonNull(errorDialog.getWindow()).setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+            errorDialog.setContentView(R.layout.dialog_file_error_downloading);
+            errorDialog.setCanceledOnTouchOutside(false);
+            Button dialog_error_btn = errorDialog.findViewById(R.id.dialog_error_btn);
+            dialog_error_btn.setOnClickListener(v -> new Handler().postDelayed(() ->
+                    errorDialog.dismiss(), 200));
             errorDialog.show();
         } catch (Exception e) {
             e.printStackTrace();

@@ -69,7 +69,7 @@
             android:textSize="@dimen/_25sdp"
             android:textStyle="bold" />
 
-        <Button
+        <com.pratham.foundation.customView.fontsview.SansButton
             android:id="@+id/submitBtn"
             android:layout_width="@dimen/_120sdp"
             android:layout_height="@dimen/_40sdp"

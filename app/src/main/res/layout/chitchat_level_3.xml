@@ -169,7 +169,7 @@
                          android:layout_height="wrap_content"
                          android:layout_gravity="center"
                          app:flChildSpacing="10dp" />-->
-                    <TextView
+                    <com.pratham.foundation.customView.fontsview.SansTextView
                         android:id="@+id/readchat"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"

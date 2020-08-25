@@ -169,12 +169,15 @@ public class HomeActivity extends BaseActivity implements LevelChanged {
         levelChanged = HomeActivity.this;
         rootList = new ArrayList<>();
         displayProfileName();
+        String a = FastSave.getInstance().getString(FC_Constants.APP_LANGUAGE, FC_Constants.HINDI);
+        Log.d("INSTRUCTIONFRAG", "Select Subj: " + a);
+        FC_Utility.setAppLocal(this, a);
         setupViewPager(viewpager);
 //        displayProfileImage();
         tabLayout.setupWithViewPager(viewpager);
         setupTabIcons();
         setLevel();
-        if(!getAppMode())
+        if (!getAppMode())
             submarine.setCircleSize(getResources().getDimension(R.dimen._20sdp));
         new Handler().postDelayed(() -> {
             getCompletion();
@@ -486,12 +489,14 @@ public class HomeActivity extends BaseActivity implements LevelChanged {
             tabLayout.getTabAt(2).setCustomView(testTab);
             tabLayout.getTabAt(3).setCustomView(funTab);
             tabLayout.getTabAt(4).setCustomView(profileTab);
-        } else if (currSubj.equalsIgnoreCase("LS_Science") || currSubj.equalsIgnoreCase("Maths")) {
+        } else /*if (currSubj.equalsIgnoreCase("LS_Science") || currSubj.equalsIgnoreCase("Maths"))*/ {
             tabLayout.getTabAt(2).setCustomView(testTab);
             tabLayout.getTabAt(3).setCustomView(profileTab);
-        } else {
+        }  /*else {
             tabLayout.getTabAt(2).setCustomView(profileTab);
-        }
+//            tabLayout.getTabAt(2).setCustomView(testTab);
+//            tabLayout.getTabAt(3).setCustomView(profileTab);
+        }*/
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
@@ -672,38 +677,6 @@ public class HomeActivity extends BaseActivity implements LevelChanged {
                 .build();
         myDialog.show();
     }
-/*
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if(resultCode == 1461){
-//        if (FastSave.getInstance().getString(APP_SECTION, "").equalsIgnoreCase(sec_Test)) {
-            if (resultCode == Activity.RESULT_OK) {
-                String cCode = data.getStringExtra("cCode");
-                int tMarks = data.getIntExtra("tMarks", 0);
-                int sMarks = data.getIntExtra("sMarks", 0);
-                try {
-//                    new Handler().postDelayed(() -> {
-                    EventMessage eventMessage = new EventMessage();
-                    eventMessage.setMessage(LEVEL_TEST_GIVEN + ":" + cCode + ":" + tMarks + ":" + sMarks);
-                    EventBus.getDefault().post(eventMessage);
-//                    }, 1000);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-        } else if (requestCode == 10) {
-*/
-/*            if (resultCode == Activity.RESULT_OK) {
-            } else if (resultCode == Activity.RESULT_CANCELED) {
-                try {
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }*//*
-
-        }
-    }
-*/
 
     @Click(R.id.iv_level)
     public void levelChange() {
@@ -721,21 +694,21 @@ public class HomeActivity extends BaseActivity implements LevelChanged {
         if (FastSave.getInstance().getString(FC_Constants.LOGIN_MODE, FC_Constants.GROUP_MODE).contains("group") || !getAppMode()) {
             adapter.addFrag(new LearningFragment_(), "" + getResources().getString(R.string.Learning));
             adapter.addFrag(new PracticeFragment_(), "" + getResources().getString(R.string.Practice));
-            if (currSubj.equalsIgnoreCase("LS_Science") || currSubj.equalsIgnoreCase("Maths")) {
-                adapter.addFrag(new TestFragment_(), "" + getResources().getString(R.string.Test));
-            } else if (currSubj.equalsIgnoreCase("english")) {
+            if (currSubj.equalsIgnoreCase("english")) {
                 adapter.addFrag(new TestFragment_(), "" + getResources().getString(R.string.Test));
                 adapter.addFrag(new FunFragment_(), "" + getResources().getString(R.string.Fun));
+            } else /*if (currSubj.equalsIgnoreCase("LS_Science") || currSubj.equalsIgnoreCase("Maths"))*/ {
+                adapter.addFrag(new TestFragment_(), "" + getResources().getString(R.string.Test));
             }
             adapter.addFrag(new ProfileFragment_(), "" + getResources().getString(R.string.Profile));
         } else {
             adapter.addFrag(new PracticeFragment_(), "" + getResources().getString(R.string.Practice));
             adapter.addFrag(new LearningFragment_(), "" + getResources().getString(R.string.Learning));
-            if (currSubj.equalsIgnoreCase("LS_Science") || currSubj.equalsIgnoreCase("Maths")) {
-                adapter.addFrag(new TestFragment_(), "" + getResources().getString(R.string.Test));
-            } else if (currSubj.equalsIgnoreCase("english")) {
+            if (currSubj.equalsIgnoreCase("english")) {
                 adapter.addFrag(new TestFragment_(), "" + getResources().getString(R.string.Test));
                 adapter.addFrag(new FunFragment_(), "" + getResources().getString(R.string.Fun));
+            } else /*if (currSubj.equalsIgnoreCase("LS_Science") || currSubj.equalsIgnoreCase("Maths"))*/ {
+                adapter.addFrag(new TestFragment_(), "" + getResources().getString(R.string.Test));
             }
             adapter.addFrag(new ProfileFragment_(), "" + getResources().getString(R.string.Profile));
         }
@@ -796,63 +769,4 @@ public class HomeActivity extends BaseActivity implements LevelChanged {
         super.onBackPressed();
         finish();
     }
-
-//    @SuppressLint("SetTextI18n")
-//    private void exitDialog() {
-//        CustomLodingDialog dialog = new CustomLodingDialog(HomeActivity.this);
-//        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-//        dialog.setContentView(R.layout.fc_custom_dialog);
-///*      Bitmap map=FC_Utility.takeScreenShot(HomeActivity.this);
-//        Bitmap fast=FC_Utility.fastblur(map, 20);
-//        final Drawable draw=new BitmapDrawable(getResources(),fast);
-//        dialog.getWindow().setBackgroundDrawable(draw);*/
-//        Objects.requireNonNull(dialog.getWindow()).setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-//        dialog.setCancelable(false);
-//        dialog.setCanceledOnTouchOutside(false);
-//        dialog.show();
-//
-//        TextView dia_title = dialog.findViewById(R.id.dia_title);
-//        Button next_btn = dialog.findViewById(R.id.dia_btn_green);
-//        Button test_btn = dialog.findViewById(R.id.dia_btn_yellow);
-//        Button revise_btn = dialog.findViewById(R.id.dia_btn_red);
-//
-//        dia_title.setText("" + getResources().getString(R.string.change_subj));
-//        revise_btn.setText("" + getResources().getString(R.string.Exit));
-//        test_btn.setText("" + getResources().getString(R.string.Cancel));
-//        next_btn.setText("" + getResources().getString(R.string.Okay));
-//
-//        next_btn.setOnClickListener(v -> {
-//            try {
-//                ButtonClickSound.start();
-//            } catch (IllegalStateException e) {
-//                e.printStackTrace();
-//            }
-//            dialogFlg = false;
-//            dialog.dismiss();
-//            finish();
-//        });
-//
-//        revise_btn.setOnClickListener(v -> {
-//            try {
-//                ButtonClickSound.start();
-//            } catch (IllegalStateException e) {
-//                e.printStackTrace();
-//            }
-//            endSession(HomeActivity.this);
-//            dialogFlg = false;
-//            dialog.dismiss();
-//            finishAffinity();
-//        });
-//
-//        test_btn.setOnClickListener(v -> {
-//            try {
-//                ButtonClickSound.start();
-//            } catch (IllegalStateException e) {
-//                e.printStackTrace();
-//            }
-//            dialogFlg = false;
-//            dialog.dismiss();
-//        });
-//    }
-
 }

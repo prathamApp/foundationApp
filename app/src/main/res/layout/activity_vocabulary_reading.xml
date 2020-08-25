@@ -9,20 +9,20 @@
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/floating_back"
-        android:layout_alignParentStart="true"
         android:layout_width="60dp"
         android:layout_height="60dp"
-        android:layout_marginTop="@dimen/_5sdp"
-        android:layout_marginStart="@dimen/_5sdp" />
+        android:layout_alignParentStart="true"
+        android:layout_marginStart="@dimen/_5sdp"
+        android:layout_marginTop="@dimen/_5sdp" />
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/floating_info"
-        android:layout_alignParentEnd="true"
         android:layout_width="60dp"
         android:layout_height="60dp"
-        android:visibility="gone"
+        android:layout_alignParentEnd="true"
         android:layout_marginTop="@dimen/_5sdp"
-        android:layout_marginEnd="@dimen/_5sdp" />
+        android:layout_marginEnd="@dimen/_5sdp"
+        android:visibility="gone" />
 
 
     <RelativeLayout
@@ -30,15 +30,15 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/black_20"
-        android:visibility="gone"
-        android:elevation="50dp">
+        android:elevation="50dp"
+        android:visibility="gone">
 
         <RelativeLayout
             android:id="@+id/silence_main_layout"
             android:layout_width="match_parent"
             android:layout_height="@dimen/_150sdp"
-            android:layout_marginHorizontal="@dimen/_30sdp"
             android:layout_centerInParent="true"
+            android:layout_marginHorizontal="@dimen/_30sdp"
             android:padding="@dimen/_10sdp">
 
             <ImageView
@@ -46,27 +46,27 @@
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/_90sdp"
                 android:layout_alignParentTop="true"
-                android:elevation="@dimen/_20sdp"
                 android:layout_centerHorizontal="true"
-                android:src="@drawable/stt_listener"/>
+                android:elevation="@dimen/_20sdp"
+                android:src="@drawable/stt_listener" />
 
             <RelativeLayout
                 android:layout_width="@dimen/_150sdp"
                 android:layout_height="@dimen/_60sdp"
-                android:layout_marginTop="@dimen/_80sdp"
                 android:layout_centerHorizontal="true"
+                android:layout_marginTop="@dimen/_80sdp"
                 android:background="@drawable/ripple_rectangle_card">
 
                 <com.pratham.foundation.customView.fontsview.SansTextViewBold
                     android:id="@+id/silence_tv"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
-                    android:gravity="center"
                     android:layout_alignParentBottom="true"
                     android:layout_centerHorizontal="true"
+                    android:gravity="center"
+                    android:text="I am listening..."
                     android:textColor="@color/red"
-                    android:textSize="@dimen/_15sdp"
-                    android:text="I am listening..."/>
+                    android:textSize="@dimen/_15sdp" />
 
             </RelativeLayout>
         </RelativeLayout>
@@ -142,50 +142,52 @@
             android:layout_height="0dp"
             android:layout_weight="7.5">
 
-                    <ImageButton
-                        android:id="@+id/btn_prev"
-                        android:layout_width="@dimen/_30sdp"
-                        android:layout_height="@dimen/_40sdp"
-                        android:background="@drawable/arrow_left_bg"
-                        android:layout_marginTop="@dimen/_8sdp"
-                        android:layout_alignParentStart="true"
-                        android:elevation="5dp"
-                        android:scaleType="centerInside"
-                        android:src="@drawable/ic_navigate_before_black_24dp" />
-             <ImageButton
-                        android:id="@+id/btn_next"
-                        android:layout_height="@dimen/_40sdp"
-                        android:layout_width="@dimen/_30sdp"
-                        android:layout_marginTop="@dimen/_8sdp"
-                        android:background="@drawable/arrow_right_bg"
-                        android:layout_alignParentEnd="true"
-                        android:elevation="5dp"
-                        android:scaleType="centerInside"
-                        android:src="@drawable/ic_navigate_next_black_24dp" />
+            <ImageButton
+                android:id="@+id/btn_prev"
+                android:layout_width="@dimen/_30sdp"
+                android:layout_height="@dimen/_40sdp"
+                android:layout_alignParentStart="true"
+                android:layout_marginTop="@dimen/_8sdp"
+                android:background="@drawable/arrow_left_bg"
+                android:elevation="5dp"
+                android:scaleType="centerInside"
+                android:src="@drawable/ic_navigate_before_black_24dp" />
+
+            <ImageButton
+                android:id="@+id/btn_next"
+                android:layout_width="@dimen/_30sdp"
+                android:layout_height="@dimen/_40sdp"
+                android:layout_alignParentEnd="true"
+                android:layout_marginTop="@dimen/_8sdp"
+                android:background="@drawable/arrow_right_bg"
+                android:elevation="5dp"
+                android:scaleType="centerInside"
+                android:src="@drawable/ic_navigate_next_black_24dp" />
 
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/recyclerView"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginTop="@dimen/_10sdp"
-                android:layout_marginBottom="@dimen/_10sdp"
                 android:layout_marginStart="@dimen/_10sdp"
+                android:layout_marginTop="@dimen/_10sdp"
                 android:layout_marginEnd="@dimen/_10sdp"
-                android:fadeScrollbars="false"
-                android:scrollbarSize="6dp"
-                android:scrollbarThumbVertical="@drawable/card_color_bg4"
-                android:scrollbarTrackVertical="@drawable/scroll_bg"
+                android:layout_marginBottom="@dimen/_10sdp"
                 android:background="@null"
                 android:clipToPadding="false"
+                android:fadeScrollbars="false"
                 android:paddingTop="10dp"
-                android:paddingBottom="60dp" />
+                android:paddingBottom="60dp"
+                android:scrollbarSize="6dp"
+                android:scrollbarThumbVertical="@drawable/card_color_bg4"
+                android:scrollbarTrackVertical="@drawable/scroll_bg" />
         </RelativeLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_marginHorizontal="10dp"
-            android:layout_marginVertical="10dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="10dp"
             android:layout_weight="2.5"
             android:orientation="horizontal"
             android:weightSum="10">
@@ -194,6 +196,7 @@
                 android:id="@+id/btn_reading"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
+                android:layout_marginBottom="10dp"
                 android:layout_weight="1.5"
                 android:background="@drawable/button_green"
                 android:elevation="2dp"
@@ -207,6 +210,7 @@
                 android:layout_height="match_parent"
                 android:layout_gravity="center"
                 android:layout_marginHorizontal="@dimen/_5sdp"
+                android:layout_marginBottom="10dp"
                 android:layout_weight="7"
                 android:background="@drawable/dialog_bg"
                 android:elevation="2dp"
@@ -217,12 +221,11 @@
                     android:id="@+id/scroll_ll"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
+                    android:layout_marginHorizontal="@dimen/_5sdp"
                     android:fadeScrollbars="false"
-                            android:scrollbarSize="6dp"
-        android:scrollbarThumbVertical="@drawable/card_color_bg4"
-        android:scrollbarTrackVertical="@drawable/scroll_bg"
-
-                    android:layout_marginHorizontal="@dimen/_5sdp">
+                    android:scrollbarSize="6dp"
+                    android:scrollbarThumbVertical="@drawable/card_color_bg4"
+                    android:scrollbarTrackVertical="@drawable/scroll_bg">
 
                     <com.nex3z.flowlayout.FlowLayout xmlns:app="http://schemas.android.com/apk/res-auto"
                         android:id="@+id/vocabChatFlow"
@@ -237,18 +240,20 @@
                 android:id="@+id/btn_imgsend"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
+                android:layout_marginBottom="10dp"
                 android:layout_weight="1.5"
                 android:background="@drawable/button_yellow"
                 android:elevation="2dp"
                 android:padding="@dimen/_5sdp"
-                android:visibility="gone"
                 android:scaleType="fitCenter"
-                android:src="@drawable/ic_navigate_next_white" />
+                android:src="@drawable/ic_navigate_next_white"
+                android:visibility="gone" />
 
             <ImageButton
                 android:id="@+id/btn_speaker"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
+                android:layout_marginBottom="10dp"
                 android:layout_weight="1.5"
                 android:background="@drawable/button_yellow"
                 android:elevation="2dp"

@@ -16,7 +16,7 @@
         android:layout_margin="5dp"
         android:clickable="true">
 
-        <TextView
+        <com.pratham.foundation.customView.fontsview.SansTextViewBold
             android:id="@+id/city_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

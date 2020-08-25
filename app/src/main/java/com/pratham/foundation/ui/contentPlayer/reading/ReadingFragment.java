@@ -3,9 +3,10 @@ package com.pratham.foundation.ui.contentPlayer.reading;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
-import android.graphics.drawable.Drawable;
 import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.text.Editable;
@@ -22,8 +23,6 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.request.RequestOptions;
 import com.pratham.foundation.ApplicationClass;
 import com.pratham.foundation.R;
 import com.pratham.foundation.customView.GifView;
@@ -50,6 +49,7 @@ import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
@@ -203,11 +203,13 @@ public class ReadingFragment extends Fragment implements STT_Result_New.sttView,
                         e.printStackTrace();
                     }
                 } else {
-                    Glide.with(getActivity())
-                            .load(path)
-                            .apply(new RequestOptions()
-                                    .placeholder(Drawable.createFromPath(localPath)))
-                            .into(questionImage);
+                    try {
+                        Bitmap bmImg = BitmapFactory.decodeFile(localPath);
+                        BitmapFactory.decodeStream(new FileInputStream(localPath));
+                        questionImage.setImageBitmap(bmImg);
+                    } catch (FileNotFoundException e) {
+                        e.printStackTrace();
+                    }
                 }
             } else
                 questionImage.setVisibility(View.GONE);

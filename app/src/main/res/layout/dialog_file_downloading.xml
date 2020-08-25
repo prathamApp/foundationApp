@@ -51,6 +51,7 @@
             android:layout_gravity="center"
             android:layout_marginBottom="@dimen/_10sdp"
             android:elevation="@dimen/_5sdp"
+            android:theme="@style/AppTheme.RoundProgress"
             android:indeterminateTint="@color/colorBtnGreenDark"
             android:visibility="gone" />
 

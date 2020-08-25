@@ -415,7 +415,7 @@ Handler handler;
                     playChat("" + answerAudio);
                 }
             });
-            myTextView.setTextSize(25);
+            myTextView.setTextSize(20);
             myTextView.setTextColor(getResources().getColor(R.color.colorAccentDark));
             readChatFlow.addView(myTextView);
         }

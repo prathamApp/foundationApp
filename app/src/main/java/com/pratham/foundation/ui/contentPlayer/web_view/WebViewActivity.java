@@ -70,6 +70,10 @@ public class WebViewActivity extends BaseActivity implements WebViewInterface {
         gameName = getIntent().getStringExtra("gameName");
         gameCategory = getIntent().getStringExtra("gameCategory");
 
+        String a = FastSave.getInstance().getString(FC_Constants.APP_LANGUAGE, FC_Constants.HINDI);
+        Log.d("INSTRUCTIONFRAG", "Select Subj: "+a);
+        FC_Utility.setAppLocal(this, a);
+
         startWebViewAct();
         /*
         CertificateModelClass certificateModelClass=new CertificateModelClass();
@@ -162,21 +166,24 @@ public class WebViewActivity extends BaseActivity implements WebViewInterface {
 
     @UiThread
     public void showExitDialog() {
-        final CustomLodingDialog dialog = new CustomLodingDialog(this, R.style.FC_DialogStyle);
+        CustomLodingDialog dialog = new CustomLodingDialog(this, R.style.FC_DialogStyle);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-        dialog.setContentView(R.layout.fc_custom_dialog);
+        dialog.setContentView(R.layout.fc_custom_exit_dialog);
         dialog.setCanceledOnTouchOutside(false);
         TextView dia_title = dialog.findViewById(R.id.dia_title);
-        Button dia_btn_yellow = dialog.findViewById(R.id.dia_btn_yellow);
         Button dia_btn_green = dialog.findViewById(R.id.dia_btn_green);
         Button dia_btn_red = dialog.findViewById(R.id.dia_btn_red);
 
-        dia_btn_green.setText("" + getResources().getString(R.string.yes));
-        dia_btn_red.setText("" + getResources().getString(R.string.no));
-        dia_btn_yellow.setVisibility(View.GONE);
-//        setText("" + getResources().getString(R.string.Cancel));
-        dia_title.setText("" + getResources().getString(R.string.exit_dialog_msg));
+        String txt = getResources().getString(R.string.yes);
+        Log.d("INSTRUCTIONFRAG", "ExitDilg: "+txt);
+        dia_btn_green.setText(txt);
+        txt = getResources().getString(R.string.no);
+        Log.d("INSTRUCTIONFRAG", "ExitDilg: "+txt);
+        dia_btn_red.setText(txt);
+        txt = getResources().getString(R.string.exit_dialog_msg);
+        Log.d("INSTRUCTIONFRAG", "ExitDilg: "+txt);
+        dia_title.setText(txt);
         dialog.show();
 
         dia_btn_green.setOnClickListener(v -> {
@@ -189,13 +196,9 @@ public class WebViewActivity extends BaseActivity implements WebViewInterface {
             } else
                 addGameProgress();
             dialog.dismiss();
-//            this.finishAfterTransition();
             new Handler().postDelayed(() -> finish(),150);
         });
-
         dia_btn_red.setOnClickListener(v -> dialog.dismiss());
-
-        dia_btn_yellow.setOnClickListener(v -> dialog.dismiss());
     }
 
     @Background

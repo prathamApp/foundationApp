@@ -11,7 +11,6 @@ import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.bumptech.glide.request.RequestOptions;
 import com.facebook.drawee.backends.pipeline.Fresco;
 import com.facebook.drawee.interfaces.DraweeController;
 import com.facebook.drawee.view.SimpleDraweeView;
@@ -77,9 +76,6 @@ public class ContentFileViewHolder extends RecyclerView.ViewHolder {
         Objects.requireNonNull(content_card_view).setBackground(ApplicationClass.getInstance().getResources().getDrawable(getRandomCardColor()));
         Objects.requireNonNull(title).setText(contentList.getNodeTitle());
         title.setSelected(true);
-        RequestOptions requestOptions = new RequestOptions();
-        requestOptions.placeholder(R.drawable.ic_download_2);
-        requestOptions.error(R.drawable.warning);
 
         Objects.requireNonNull(ib_action_btn).setVisibility(View.GONE);
         if (contentList.getIsDownloaded().equalsIgnoreCase("false")) {

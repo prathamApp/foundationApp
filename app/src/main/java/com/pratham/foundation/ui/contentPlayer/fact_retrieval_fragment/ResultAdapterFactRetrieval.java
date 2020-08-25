@@ -44,7 +44,7 @@ public class ResultAdapterFactRetrieval extends RecyclerView.Adapter<ResultAdapt
         myViewHolder.questionImg.setVisibility(View.GONE);
         if (scienceQuestionChoice.isTrue()) {
             myViewHolder.iv_correct_wrong_indicator.setImageResource(R.drawable.ic_check_white);
-            myViewHolder.iv_correct_wrong_indicator.setBackgroundColor(context.getResources().getColor(R.color.colorGreenDark));
+            myViewHolder.iv_correct_wrong_indicator.setBackgroundColor(context.getResources().getColor(R.color.colorBtnGreenDark));
         } else {
             myViewHolder.iv_correct_wrong_indicator.setImageResource(R.drawable.ic_close_white_24dp);
             myViewHolder.iv_correct_wrong_indicator.setBackgroundColor(context.getResources().getColor(R.color.colorRed));

@@ -15,7 +15,6 @@ import android.widget.TextView;
 
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.pratham.foundation.R;
-import com.pratham.foundation.customView.progress_layout.ProgressLayout;
 import com.pratham.foundation.database.domain.Assessment;
 import com.pratham.foundation.utility.FC_Utility;
 
@@ -77,7 +76,7 @@ public class CertificateAdapter extends RecyclerView.Adapter {
         protected TextView tv_progress;
         SimpleDraweeView itemImage;
         protected RelativeLayout rl_root;
-        protected ProgressLayout progressLayout;
+//        protected ProgressLayout progressLayout;
         MaterialCardView card_main;
 
         public FolderHolder(View view) {
@@ -87,7 +86,7 @@ public class CertificateAdapter extends RecyclerView.Adapter {
             this.itemImage = view.findViewById(R.id.item_Image);
             this.rl_root = view.findViewById(R.id.rl_root);
             this.card_main = view.findViewById(R.id.card_main);
-            progressLayout = view.findViewById(R.id.card_progressLayout);
+//            progressLayout = view.findViewById(R.id.card_progressLayout);
         }
     }
 

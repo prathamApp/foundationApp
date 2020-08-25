@@ -7,7 +7,6 @@ import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.ColorDrawable;
-import android.graphics.drawable.Drawable;
 import android.media.ThumbnailUtils;
 import android.net.Uri;
 import android.os.Handler;
@@ -31,8 +30,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.VideoView;
 
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.request.RequestOptions;
 import com.pratham.foundation.ApplicationClass;
 import com.pratham.foundation.R;
 import com.pratham.foundation.customView.GifView;
@@ -253,14 +250,16 @@ public class DoingFragment extends Fragment implements STT_Result_New.sttView, O
             if (fileName != null && !fileName.isEmpty()) {
                 // RelativeLayout.setVisibility(View.VISIBLE);
                 if (fileName.toLowerCase().endsWith(".jpeg") || fileName.toLowerCase().endsWith(".jpg") || fileName.toLowerCase().endsWith(".png")) {
-                    questionPath = readingContentPath + fileName;
-                    Glide.with(getActivity())
-                            .load(questionPath)
-                            .apply(new RequestOptions()
-                                    .placeholder(Drawable.createFromPath(questionPath)))
-                            .into(questionImage);
-                    questionImage.setVisibility(View.VISIBLE);
-                    relativeLayout.setVisibility(View.VISIBLE);
+                    try {
+                        questionPath = readingContentPath + fileName;
+                        Bitmap bmImg = BitmapFactory.decodeFile(questionPath);
+                        BitmapFactory.decodeStream(new FileInputStream(questionPath));
+                        questionImage.setImageBitmap(bmImg);
+                        questionImage.setVisibility(View.VISIBLE);
+                        relativeLayout.setVisibility(View.VISIBLE);
+                    } catch (FileNotFoundException e) {
+                        e.printStackTrace();
+                    }
                 } else if (fileName.toLowerCase().endsWith(".gif")) {
                     questionPath = readingContentPath + fileName;
                     InputStream gif;

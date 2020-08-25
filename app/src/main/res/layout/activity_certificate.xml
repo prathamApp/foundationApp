@@ -103,6 +103,7 @@
                     android:layout_below="@id/iv_certificate"
                     android:gravity="center"
                     android:text="Name"
+                    android:textColor="@color/dark_blue"
                     android:textAllCaps="true"
                     android:textSize="@dimen/_12sdp"
                     android:textStyle="bold" />
@@ -114,6 +115,7 @@
                     android:layout_below="@id/tv_level"
                     android:gravity="center"
                     android:text="Name"
+                    android:textColor="@color/dark_blue"
                     android:textAllCaps="true"
                     android:textSize="@dimen/_15sdp"
                     android:textStyle="bold" />

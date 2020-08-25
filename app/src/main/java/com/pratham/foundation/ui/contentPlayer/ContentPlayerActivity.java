@@ -9,6 +9,7 @@ import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.widget.Button;
@@ -64,6 +65,9 @@ public class ContentPlayerActivity extends BaseActivity implements ShowInstructi
 
         floating_back.setImageResource(R.drawable.ic_left_arrow_white);
         floating_info.setImageResource(R.drawable.ic_info_outline_white);
+        String a = FastSave.getInstance().getString(FC_Constants.APP_LANGUAGE, FC_Constants.HINDI);
+        Log.d("INSTRUCTIONFRAG", "Select Subj: "+a);
+        FC_Utility.setAppLocal(this, a);
 
         if (testcall == null) {
             loadFragment();

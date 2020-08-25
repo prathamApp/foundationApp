@@ -41,7 +41,8 @@ public class SelectLangPresenter implements SelectLangContract.SelectLangPresent
     }
 
     private void sortAllList(List<ContentTable> contentParentList) {
-        Collections.sort(contentParentList, (o1, o2) -> o1.getNodeId().compareTo(o2.getNodeId()));
+        Collections.sort(contentParentList, (o1, o2) -> o1.getSeq_no() - o2.getSeq_no());
+//        Collections.sort(contentParentList, (o1, o2) -> o1.getNodeId().compareTo(o2.getNodeId()));
     }
 
     public SelectLangPresenter(Context context) {

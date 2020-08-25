@@ -34,6 +34,39 @@ public class API_Content {
         this.apiContentResult = apiContentResult;
     }
 
+    public void getAPITest(final String requestType, String url, String nodeId) {
+        try {
+            String url_id;
+            url_id = url + nodeId;
+            Log.d("API_Content_LOG", "getAPIContent: "+nodeId);
+            Log.d("API_Content_LOG", "url_id: "+url_id);
+            AndroidNetworking.get(url_id)
+                    .addHeaders("Content-Type", "application/json")
+                    .build()
+                    .getAsString(new StringRequestListener() {
+                        @Override
+                        public void onResponse(String response) {
+                            if (apiContentResult != null)
+                                apiContentResult.receivedContent(requestType, response);
+                        }
+
+                        @Override
+                        public void onError(ANError anError) {
+                            try {
+                                Log.d("Error:", anError.getErrorDetail());
+                                // Log.d("Error::", anError.getResponse().toString());
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
+                            if (apiContentResult != null)
+                                apiContentResult.receivedError(requestType);
+                        }
+                    });
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
     public void getAPIContent(final String requestType, String url, String nodeId) {
         try {
             String url_id;

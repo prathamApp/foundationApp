@@ -155,53 +155,114 @@ public class FC_Utility {
         return jsonStr;
     }
 
+    public static String getLevelWiseJson(int pos) {
+        String jsonName = "Test_1.json";
+        switch (pos) {
+            case 1:
+                jsonName = "Test_1.json";
+                break;
+            case 2:
+                jsonName = "Test_2.json";
+                break;
+            case 3:
+                jsonName = "Test_3.json";
+                break;
+            case 4:
+                jsonName = "Test_4.json";
+                break;
+            case 5:
+                jsonName = "Test_5.json";
+                break;
+        }
+/*
+        String jsonName = "TestBeginnerJson.json";
+        switch (pos) {
+            case 1:
+                jsonName = "TestBeginnerJson.json";
+                break;
+            case 2:
+                jsonName = "TestSubJuniorJson.json";
+                break;
+            case 3:
+                jsonName = "TestJuniorJson.json";
+                break;
+            case 4:
+                jsonName = "TestSubSeniorJson.json";
+                break;
+            case 5:
+                jsonName = "TestSeniorJson.json";
+                break;
+        }
+*/
+        return jsonName;
+    }
+
+    public static String getLevelWiseTestName(int pos) {
+        String jsonName = "TestBeginnerJson";
+        switch (pos) {
+            case 1:
+                jsonName = "Beginner Test";
+                break;
+            case 2:
+                jsonName = "SubJunior Test";
+                break;
+            case 3:
+                jsonName = "Junior Test";
+                break;
+            case 4:
+                jsonName = "SubSenior Test";
+                break;
+            case 5:
+                jsonName = "Senior Test";
+                break;
+        }
+        return jsonName;
+    }
+
     private static int[] gradiant_bg = new int[]{
             R.drawable.card_color_bg1, R.drawable.card_color_bg2, R.drawable.card_color_bg3,
-            R.drawable.card_color_bg4, R.drawable.card_color_bg5};
+            R.drawable.card_color_bg4, R.drawable.card_color_bg5, R.drawable.card_color_bg7,
+            R.drawable.card_color_bg8};
 
     private static int[] cord_color_bg = new int[]{
             R.drawable.card_color_bg1, R.drawable.card_color_bg2, R.drawable.card_color_bg3,
-            R.drawable.card_color_bg4, R.drawable.card_color_bg5
+            R.drawable.card_color_bg4, R.drawable.card_color_bg5, R.drawable.card_color_bg7,
+            R.drawable.card_color_bg8
 //            R.color.colorBtnGreenDark, R.color.colorRedDark, R.color.deep_teal,
 //            R.color.ratingFilled, R.color.blue};
     };
 
     public static int getRandomDrawableGradiant() {
-        int bg_grad = gradiant_bg[new Random().nextInt(gradiant_bg.length)];
-        return bg_grad;
+        return gradiant_bg[new Random().nextInt(gradiant_bg.length)];
     }
 
     public static int getRandomCardColor() {
-        int bg_grad = cord_color_bg[new Random().nextInt(cord_color_bg.length)];
-        return bg_grad;
+        return cord_color_bg[new Random().nextInt(cord_color_bg.length)];
     }
 
     public static void setAppLocal(Context context, String selectedLang) {
         String language = "hi";
 
-        if (selectedLang.equalsIgnoreCase(FC_Constants.HINDI))
-            language = "h                            i";
-        else if (selectedLang.equalsIgnoreCase(FC_Constants.MARATHI))
+        if (selectedLang.equalsIgnoreCase(FC_Constants.MARATHI))
             language = "mr";
-        else
+        else if(selectedLang.equalsIgnoreCase(FC_Constants.HINDI))
             language = "hi";
 
+/*
         Locale myLocale = new Locale(language);
         Resources res = context.getResources();
         DisplayMetrics dm = res.getDisplayMetrics();
         Configuration conf = res.getConfiguration();
         conf.locale = myLocale;
         res.updateConfiguration(conf, dm);
+*/
+        Log.d("INSTRUCTIONFRAG", "Lang $$$: "+language);
 
-//        Resources resources = context.getResources();
-//        DisplayMetrics dm = resources.getDisplayMetrics();
-//        Configuration config = resources.getConfiguration();
-//        if (Build.VERSION.SDK_INT>=Build.VERSION_CODES.JELLY_BEAN_MR1){
-//            config.setLocale(new Locale(language));
-//        } else {
-//            config.locale = new Locale(language);
-//        }
-//        resources.updateConfiguration(config, dm);
+        Resources resources = context.getResources();
+        DisplayMetrics dm = resources.getDisplayMetrics();
+        Configuration config = resources.getConfiguration();
+        config.setLocale(new Locale(language));
+        resources.updateConfiguration(config, dm);
     }
 
     public static StateListDrawable createStateListDrawable(Drawable drawable, @ColorInt int drawableColor) {
@@ -1417,7 +1478,7 @@ public class FC_Utility {
     }
 
     public static int getSectionCode() {
-        switch (FastSave.getInstance().getString(APP_SECTION, ""+sec_Learning)) {
+        switch (FastSave.getInstance().getString(APP_SECTION, "" + sec_Learning)) {
             case sec_Learning:
                 return 1;
             case sec_Practice:
@@ -1426,13 +1487,13 @@ public class FC_Utility {
                 return 3;
             case sec_Test:
                 return 4;
-            default :
+            default:
                 return 0;
         }
     }
 
     public static String getSectionName(int num) {
-        switch (num){
+        switch (num) {
             case 0:
                 return "NA";
             case 1:
@@ -1443,7 +1504,7 @@ public class FC_Utility {
                 return sec_Fun;
             case 4:
                 return sec_Test;
-            default :
+            default:
                 return "NA";
         }
     }
@@ -1517,19 +1578,19 @@ public class FC_Utility {
 
     public static String getInternalStorageStatus() {
         StatFs stat = new StatFs(Environment.getDataDirectory().getPath());
-        long bytesAvailable,internalStorageSize;
+        long bytesAvailable, internalStorageSize;
         bytesAvailable = stat.getBlockSizeLong() * stat.getAvailableBlocksLong();
         internalStorageSize = bytesAvailable / (1024 * 1024);
         String storage = String.valueOf(internalStorageSize);
-        return ""+storage+" MB";
+        return "" + storage + " MB";
     }
 
     public static String getDeviceManufacturer() {
-        return ""+Build.MANUFACTURER;
+        return "" + Build.MANUFACTURER;
     }
 
     public static String getDeviceModel() {
-        return ""+Build.MODEL;
+        return "" + Build.MODEL;
     }
 
 /*    public static String getInternalStorageStatus(Context context) {
@@ -1596,7 +1657,7 @@ public class FC_Utility {
         return false;
     }
 
-//    public static void SetHeading(FragmentActivity activity, String str_Heading) {
+    //    public static void SetHeading(FragmentActivity activity, String str_Heading) {
 //        TextView txt_Heading = (TextView) activity.findViewById(R.id.txt_heading);
 //        txt_Heading.setText(str_Heading.toUpperCase());
 //    }

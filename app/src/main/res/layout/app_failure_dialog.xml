@@ -15,7 +15,7 @@
         app:lottie_fileName="error_cross.json"
         app:lottie_loop="true" />
 
-    <TextView
+    <com.pratham.foundation.customView.fontsview.SansTextViewBold
         android:id="@+id/dia_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

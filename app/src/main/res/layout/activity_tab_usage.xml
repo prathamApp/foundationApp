@@ -67,7 +67,7 @@
             android:layout_alignParentBottom="true"
             android:layout_centerHorizontal="true"
             android:layout_marginBottom="@dimen/_25sdp"
-            android:text="No usage on this device!"
+            android:text="No group usage on this device!"
             android:textColor="@color/dark_blue"
             android:textSize="@dimen/_25sdp"
             tools:ignore="HardcodedText" />

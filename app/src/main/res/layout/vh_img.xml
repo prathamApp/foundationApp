@@ -39,7 +39,7 @@
         android:paddingStart="@dimen/_2sdp"
         android:paddingEnd="@dimen/_2sdp"
         android:layout_centerInParent="true">
-            <TextView
+            <com.pratham.foundation.customView.fontsview.SansTextViewBold
                 android:id="@+id/hindiText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -55,7 +55,7 @@
                 android:textColor="@color/red"
                 android:textSize="@dimen/_15sdp"
                 android:textStyle="bold" />
-            <TextView
+            <com.pratham.foundation.customView.fontsview.SansTextViewBold
                 android:id="@+id/englishText"
                 android:layout_below="@+id/hindiText"
                 android:textAlignment="center"

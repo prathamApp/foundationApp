@@ -20,9 +20,9 @@ import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.RatingBar;
 import android.widget.RelativeLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.nex3z.flowlayout.FlowLayout;
@@ -77,8 +77,8 @@ public class ConversationActivity extends BaseActivity
     ImageButton btn_speaker;
     @ViewById(R.id.tv_title)
     TextView tv_title;
-    @ViewById(R.id.lin_layout)
-    LinearLayout lin_layout;
+    @ViewById(R.id.scroll_ll)
+    ScrollView lin_layout;
     @ViewById(R.id.iv_monk)
     ImageView iv_monk;
     @ViewById(R.id.floating_back)
@@ -398,7 +398,7 @@ public class ConversationActivity extends BaseActivity
                     playChat("" + answerAudio);
                 }
             });
-            myTextView.setTextSize(25);
+            myTextView.setTextSize(15);
             myTextView.setTextColor(getResources().getColor(R.color.colorAccentDark));
             readChatFlow.addView(myTextView);
         }
@@ -531,12 +531,19 @@ public class ConversationActivity extends BaseActivity
         try {
             dialogFlg = false;
             new Handler().postDelayed(() -> {
-                if (myLoadingDialog != null && myLoadingDialog.isShowing())
+                if (myLoadingDialog != null && myLoadingDialog.isShowing() && !desFlag)
                     myLoadingDialog.dismiss();
             }, 300);
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    boolean desFlag = false;
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        desFlag = true;
     }
 
     @Override
