@@ -82,6 +82,7 @@ import static com.pratham.foundation.utility.FC_Utility.dpToPx;
 @EActivity(R.layout.activity_content_display)
 public class ContentDisplay extends BaseActivity implements ContentContract.ContentView, ContentClicked {
 
+    //initialize the presenter.
     @Bean(ContentPresenter.class)
     ContentContract.ContentPresenter presenter;
 
@@ -125,10 +126,6 @@ public class ContentDisplay extends BaseActivity implements ContentContract.Cont
     Drawable homeHeader3;
     @DrawableRes(R.drawable.home_header_4_bg)
     Drawable homeHeader4;
-    /*    @ViewById(R.id.floating_back)
-        FloatingActionButton floating_back;
-        @ViewById(R.id.floating_info)
-        FloatingActionButton floating_info;*/
     @ViewById(R.id.main_back)
     ImageView main_back;
 
@@ -138,18 +135,14 @@ public class ContentDisplay extends BaseActivity implements ContentContract.Cont
         rs.freeMemory();
         rs.gc();
         rs.freeMemory();
-        //overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
         resumeCntr = 0;
         nodeId = getIntent().getStringExtra("nodeId");
         contentTitle = getIntent().getStringExtra("contentTitle");
         parentName = getIntent().getStringExtra("parentName");
         level = getIntent().getStringExtra("level");
         changeBG(Integer.parseInt(level));
-/*        floating_back.setImageResource(R.drawable.ic_left_arrow_white);
-        floating_info.setImageResource(R.drawable.ic_info_outline_white);*/
+        //Setting the instance of view in the presenter.
         presenter.setView(ContentDisplay.this);
-//        presenter.getPerc(nodeId);
-
         ContentTableList = new ArrayList<>();
         recyclerView = findViewById(R.id.attendnce_recycler_view);
         contentAdapter = new ContentAdapter(this, ContentTableList, this);
@@ -158,23 +151,28 @@ public class ContentDisplay extends BaseActivity implements ContentContract.Cont
         int dp = 12;
         if (FC_Constants.TAB_LAYOUT)
             dp = 20;
-
         recyclerView.addItemDecoration(new GridSpacingItemDecoration(2, dpToPx(this, dp), true));
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setAdapter(contentAdapter);
 
         showLoader();
 
+        // Setting the app local to ensure that the instruction and other strings come in the specified language.
         String a = FastSave.getInstance().getString(FC_Constants.APP_LANGUAGE, FC_Constants.HINDI);
         Log.d("INSTRUCTIONFRAG", "Select Subj: " + a);
         FC_Utility.setAppLocal(this, a);
 
-        presenter.displayProfileImage();
+//        presenter.displayProfileImage();
         presenter.getPerc(nodeId);
         tv_Topic.setText("" + contentTitle);
         tv_Topic.setSelected(true);
         ll_topic_parent.setSelected(true);
         tv_Activity.setText("" + parentName);
+//        add node for maintaining list
+        presenter.addNodeIdToList(nodeId);
+//        get child node and display
+        presenter.getListData();
+
     }
 
     @Override
@@ -185,25 +183,21 @@ public class ContentDisplay extends BaseActivity implements ContentContract.Cont
 
     @SuppressLint("SetTextI18n")
     private void changeBG(int levelNo) {
+//        set level no
         switch (levelNo) {
             case 1:
-//                header_rl.setBackground(homeHeader0);
                 iv_level.setImageResource(R.drawable.level_1);
                 break;
             case 2:
-//                header_rl.setBackground(homeHeader1);
                 iv_level.setImageResource(R.drawable.level_2);
                 break;
             case 3:
-//                header_rl.setBackground(homeHeader2);
                 iv_level.setImageResource(R.drawable.level_3);
                 break;
             case 4:
-//                header_rl.setBackground(homeHeader3);
                 iv_level.setImageResource(R.drawable.level_4);
                 break;
             case 5:
-//                header_rl.setBackground(homeHeader4);
                 iv_level.setImageResource(R.drawable.level_5);
                 break;
         }
@@ -212,40 +206,8 @@ public class ContentDisplay extends BaseActivity implements ContentContract.Cont
     @UiThread
     @Override
     public void setStudentProfileImage(String sImage) {
-/*        if (sImage != null) {
-            if (sImage.equalsIgnoreCase("group_icon"))
-                profileImage.setImageResource(R.drawable.ic_grp_btn);
-            else if (!FC_Constants.GROUP_LOGIN && ApplicationClass.getAppMode())
-                profileImage.setImageResource(R.drawable.b2);
-            else {
-                profileImage.setImageResource(R.drawable.b3);
-                switch (sImage) {
-                    case "b1.png":
-                        profileImage.setImageResource(R.drawable.b1);
-                        break;
-                    case "b2.png":
-                        profileImage.setImageResource(R.drawable.b2);
-                        break;
-                    case "b3.png":
-                        profileImage.setImageResource(R.drawable.b3);
-                        break;
-                    case "g1.png":
-                        profileImage.setImageResource(R.drawable.g1);
-                        break;
-                    case "g2.png":
-                        profileImage.setImageResource(R.drawable.g2);
-                        break;
-                    case "g3.png":
-                        profileImage.setImageResource(R.drawable.g3);
-                        break;
-                }
-            }
-        } else
-            profileImage.setImageResource(R.drawable.b2);*/
-
         presenter.addNodeIdToList(nodeId);
         presenter.getListData();
-
     }
 
     @UiThread
@@ -274,6 +236,7 @@ public class ContentDisplay extends BaseActivity implements ContentContract.Cont
     @UiThread
     @Override
     public void notifyAdapter() {
+//        sort the list by seq no
         Collections.sort(ContentTableList, (o1, o2) -> o1.getSeq_no() - o2.getSeq_no());
         contentAdapter.notifyDataSetChanged();
         new Handler().postDelayed(this::dismissLoadingDialog, 300);
@@ -380,6 +343,8 @@ public class ContentDisplay extends BaseActivity implements ContentContract.Cont
 
     @Override
     public void onContentOpenClicked(int position, String nodeId) {
+//        contentopenClicked
+//        check the type of resource and open the respective activity
         try {
             ButtonClickSound.start();
         } catch (IllegalStateException e) {
@@ -544,12 +509,14 @@ public class ContentDisplay extends BaseActivity implements ContentContract.Cont
 
     @Override
     public void onContentDownloadClicked(int position, String nodeId) {
+//        content download clicked
         try {
             ButtonClickSound.start();
         } catch (IllegalStateException e) {
             e.printStackTrace();
         }
 
+//        gather info
         downloadNodeId = "" + nodeId;
         resName = ContentTableList.get(position).getNodeTitle();
         resServerImageName = ContentTableList.get(position).getNodeServerImage();
@@ -615,7 +582,6 @@ public class ContentDisplay extends BaseActivity implements ContentContract.Cont
         }
     }
 
-    //    public BlurPopupWindow downloadDialog;
     public CustomLodingDialog downloadDialog;
 
     @SuppressLint("SetTextI18n")
@@ -650,35 +616,28 @@ public class ContentDisplay extends BaseActivity implements ContentContract.Cont
         downloadDialog.show();
     }
 
-/*    @Override
-    public void onStart() {
-        super.onStart();
-        EventBus.getDefault().register(this);
-    }
-
-    @Override
-    public void onStop() {
-        EventBus.getDefault().unregister(this);
-        super.onStop();
-    }*/
-
     @SuppressLint("SetTextI18n")
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void messageReceived(EventMessage message) {
         if (message != null) {
             if (message.getMessage().equalsIgnoreCase(FC_Constants.FILE_DOWNLOAD_STARTED)) {
+//                show download dialog with progress bar
                 resourceDownloadDialog(message.getModal_fileDownloading());
             } else if (message.getMessage().equalsIgnoreCase(FC_Constants.FILE_DOWNLOAD_UPDATE)) {
+//                SET progress bar value
                 if (progressLayout != null)
                     progressLayout.setCurProgress(message.getModal_fileDownloading().getProgress());
             } else if (message.getMessage().equalsIgnoreCase(FC_Constants.FILE_DOWNLOAD_ERROR) ||
                     message.getMessage().equalsIgnoreCase(FC_Constants.UNZIPPING_ERROR) ||
                     message.getMessage().equalsIgnoreCase(FC_Constants.RESPONSE_CODE_ERROR)) {
+//                show error dialog if download failed
                 dismissDownloadDialog();
                 showDownloadErrorDialog();
             } else if (message.getMessage().equalsIgnoreCase(FC_Constants.UNZIPPING_DATA_FILE)) {
+//                after download is completed show loader while unzipping the contents of the downloaded zip
                 showZipLoader();
             } else if (message.getMessage().equalsIgnoreCase(FC_Constants.FILE_DOWNLOAD_COMPLETE)) {
+//                after unzipping update the DB and refresh the adapter
                 dialog_file_name.setText("Updating Data");
                 resName = "";
                 ContentTableList.get(tempDownloadPos).setIsDownloaded("true");
@@ -760,25 +719,9 @@ public class ContentDisplay extends BaseActivity implements ContentContract.Cont
         desFlag = true;
     }
 
-    //    BlurPopupWindow errorDialog;
     CustomLodingDialog errorDialog;
-
     @UiThread
     public void showDownloadErrorDialog() {
-//        errorDialog = new BlurPopupWindow.Builder(ContentDisplay.this)
-//                .setContentView(R.layout.dialog_file_error_downloading)
-//                .setGravity(Gravity.CENTER)
-//                .setDismissOnTouchBackground(false)
-//                .setDismissOnClickBack(true)
-//                .bindClickListener(v -> {
-//                    new Handler().postDelayed(() ->
-//                            errorDialog.dismiss(), 200);
-//                }, R.id.dialog_error_btn)
-//                .setScaleRatio(0.2f)
-//                .setBlurRadius(10)
-//                .setTintColor(0x30000000)
-//                .build();
-//        errorDialog.show();
         errorDialog = new CustomLodingDialog(ContentDisplay.this, R.style.FC_DialogStyle);
         errorDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         Objects.requireNonNull(errorDialog.getWindow()).setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));

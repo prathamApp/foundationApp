@@ -33,6 +33,11 @@ import static com.pratham.foundation.utility.FC_Utility.getRandomCardColor;
 
 public class ContentFileViewHolder extends RecyclerView.ViewHolder {
 
+    /**
+     * Created common holder which is used for cards.
+     * Folder and file type of cards have different views
+     */
+
     @Nullable
     TextView title;
     @Nullable
@@ -49,7 +54,7 @@ public class ContentFileViewHolder extends RecyclerView.ViewHolder {
 
     public ContentFileViewHolder(View itemView, final ContentClicked contentClicked) {
         super(itemView);
-
+//        contentClicked interface initilized for click events
         title = itemView.findViewById(R.id.content_title);
         thumbnail = itemView.findViewById(R.id.content_image);
         content_card_view = itemView.findViewById(R.id.content_card_view);
@@ -61,7 +66,7 @@ public class ContentFileViewHolder extends RecyclerView.ViewHolder {
 
     public ContentFileViewHolder(View itemView, FragmentItemClicked itemClicked) {
         super(itemView);
-
+//        itemClicked interface initilized for click events
         title = itemView.findViewById(R.id.content_title);
         thumbnail = itemView.findViewById(R.id.content_image);
         content_card_view = itemView.findViewById(R.id.content_card_view);
@@ -73,6 +78,8 @@ public class ContentFileViewHolder extends RecyclerView.ViewHolder {
 
     @SuppressLint("CheckResult")
     public void setFileItem(ContentTable contentList, int position) {
+
+//        add card and its click listners
         Objects.requireNonNull(content_card_view).setBackground(ApplicationClass.getInstance().getResources().getDrawable(getRandomCardColor()));
         Objects.requireNonNull(title).setText(contentList.getNodeTitle());
         title.setSelected(true);

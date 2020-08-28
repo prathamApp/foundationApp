@@ -33,6 +33,11 @@ import static com.pratham.foundation.utility.FC_Utility.getRandomCardColor;
 
 public class ContentFolderViewHolder extends RecyclerView.ViewHolder {
 
+    /**
+     * Created common holder which is used for cards.
+     * Folder and file type of cards have different views
+     */
+
     @Nullable
     TextView tvTitle;
     @Nullable
@@ -54,7 +59,7 @@ public class ContentFolderViewHolder extends RecyclerView.ViewHolder {
 
     public ContentFolderViewHolder(View itemView, final ContentClicked contentClicked) {
         super(itemView);
-
+//        contentClicked interface initilized for click events
         tvTitle = itemView.findViewById(R.id.tvTitle);
         tv_progress = itemView.findViewById(R.id.tv_progress);
         itemImage = itemView.findViewById(R.id.item_Image);
@@ -67,7 +72,7 @@ public class ContentFolderViewHolder extends RecyclerView.ViewHolder {
 
     public ContentFolderViewHolder(View itemView, final FragmentItemClicked itemClicked) {
         super(itemView);
-
+//        itemClicked interface initilized for click events
         tvTitle = itemView.findViewById(R.id.tvTitle);
         tv_progress = itemView.findViewById(R.id.tv_progress);
         itemImage = itemView.findViewById(R.id.item_Image);
@@ -80,6 +85,7 @@ public class ContentFolderViewHolder extends RecyclerView.ViewHolder {
 
     @SuppressLint("CheckResult")
     public void setFolderItem(ContentTable contentList, int position) {
+//        add card and its click listners
         Objects.requireNonNull(card_main).setBackground(ApplicationClass.getInstance().getResources().getDrawable(getRandomCardColor()));
         Objects.requireNonNull(tvTitle).setText(contentList.getNodeTitle());
 
@@ -176,13 +182,9 @@ public class ContentFolderViewHolder extends RecyclerView.ViewHolder {
             if (f.exists())
                 itemImage.setImageURI(Uri.fromFile(f));
         } else {
-//                    String myUrl = "http://devpos.prathamopenschool.org/CourseContent/images/posLogo.png";
-//                    String myUrl2 = ""+myUrl.lastIndexOf('/');
 
             ImageRequest imageRequest = ImageRequestBuilder
                     .newBuilderWithSource(Uri.parse(contentTable.getNodeServerImage()))
-//                    ImageRequest imageRequest = ImageRequestBuilder
-//                            .newBuilderWithSource(Uri.parse(myUrl))
                     .setResizeOptions(new ResizeOptions(300, 300))
                     .build();
             DraweeController controller = Fresco.newDraweeControllerBuilder()

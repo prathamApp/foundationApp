@@ -141,13 +141,9 @@ public class HomeActivity extends BaseActivity implements LevelChanged {
 
     @AfterViews
     public void initialize() {
-        //overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
-//        Configuration config = getResources().getConfiguration();
-//        FC_Constants.TAB_LAYOUT = config.smallestScreenWidthDp > 425;
         sub_nodeId = getIntent().getStringExtra("nodeId");
         sub_Name = getIntent().getStringExtra("nodeTitle");
         this.overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
-//        changeBackground(sub_Name);
         showLoader();
         new Handler().postDelayed(this::startActivityAndTabSetup, 200);
     }
@@ -174,14 +170,13 @@ public class HomeActivity extends BaseActivity implements LevelChanged {
         FC_Utility.setAppLocal(this, a);
         setupViewPager(viewpager);
 //        displayProfileImage();
+        // Setup the bottom tabs accordingly
         tabLayout.setupWithViewPager(viewpager);
         setupTabIcons();
         setLevel();
         if (!getAppMode())
             submarine.setCircleSize(getResources().getDimension(R.dimen._20sdp));
-        new Handler().postDelayed(() -> {
-            getCompletion();
-        }, 2000);
+        new Handler().postDelayed(this::getCompletion, 2000);
     }
 
     private void getCompletion() {
@@ -215,7 +210,6 @@ public class HomeActivity extends BaseActivity implements LevelChanged {
 //            sImage = "group_icon";
 //        }
 //    }
-
 
     @Override
     protected void onResume() {
@@ -256,6 +250,7 @@ public class HomeActivity extends BaseActivity implements LevelChanged {
 
     @Background
     public void displayProfileName() {
+        //Fetching information form DB and Displaying
         String profileName = "";
         try {
             activityPhotoPath = Environment.getExternalStorageDirectory().toString() + "/.FCAInternal/ActivityPhotos/" + FastSave.getInstance().getString(CURRENT_STUDENT_ID, "") + "/";
@@ -274,11 +269,6 @@ public class HomeActivity extends BaseActivity implements LevelChanged {
                 profileName = AppDatabase.getDatabaseInstance(HomeActivity.this)
                         .getGroupsDao().getGroupNameByGrpID(FastSave.getInstance()
                                 .getString(CURRENT_STUDENT_ID, ""));
-/*            else if (!LOGIN_MODE.equalsIgnoreCase(QR_GROUP_MODE)) {
-                profileName = AppDatabase.getDatabaseInstance(this)
-                        .getStudentDao().getFullName(FastSave.getInstance()
-                                .getString(FC_Constants.CURRENT_STUDENT_ID, ""));
-            }*/
             if (FastSave.getInstance().getString(LOGIN_MODE, "").equalsIgnoreCase(INDIVIDUAL_MODE))
                 profileName = FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_NAME, "")
                         .split(" ")[0];
@@ -347,26 +337,9 @@ public class HomeActivity extends BaseActivity implements LevelChanged {
                 e.printStackTrace();
             }
 
+            //Setting image depending on the level
             FC_Constants.currentLevel = Integer.parseInt(rootList.get(position).getNodeTitle());
             FastSave.getInstance().saveInt(FC_Constants.CURRENT_LEVEL, Integer.parseInt(rootList.get(position).getNodeTitle()));
-/*
-            if (levelTitle.contains("1")) {
-                iv_level.setImageResource(R.drawable.level_1);
-                changeBGNew(0);
-            } else if (levelTitle.contains("2")) {
-                iv_level.setImageResource(R.drawable.level_2);
-                changeBGNew(1);
-            } else if (levelTitle.contains("3")) {
-                iv_level.setImageResource(R.drawable.level_3);
-                changeBGNew(2);
-            } else if (levelTitle.contains("4")) {
-                iv_level.setImageResource(R.drawable.level_4);
-                changeBGNew(3);
-            } else if (levelTitle.contains("5")) {
-                iv_level.setImageResource(R.drawable.level_5);
-                changeBGNew(4);
-            }
-*/
             switch (currentLevel) {
                 case 1:
                     iv_level.setImageResource(R.drawable.level_1);
@@ -426,6 +399,7 @@ public class HomeActivity extends BaseActivity implements LevelChanged {
     }
 
     private void changeBGNew(int currentLevel) {
+//        Change Background to distinguish it by different color.
         switch (currentLevel) {
             case 1:
 //                header_rl.setBackground(homeHeader0);
@@ -456,6 +430,7 @@ public class HomeActivity extends BaseActivity implements LevelChanged {
 
     @SuppressLint("SetTextI18n")
     private void setupTabIcons() {
+//        Add Tab Icons
         TextView learningTab = (TextView) LayoutInflater.from(this).inflate(R.layout.custom_tab_text, null);
         learningTab.setText("" + getResources().getString(R.string.Learning));
         learningTab.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.ic_learning, 0, 0);
@@ -583,6 +558,7 @@ public class HomeActivity extends BaseActivity implements LevelChanged {
 
     @Background
     public void endTestSession() {
+        //End Test Session when the test is over or tab is changed
         try {
             Session startSesion = new Session();
             String toDateTemp = AppDatabase.getDatabaseInstance(HomeActivity.this).getSessionDao().
@@ -606,6 +582,7 @@ public class HomeActivity extends BaseActivity implements LevelChanged {
 
     @SuppressLint("SetTextI18n")
     private void showTestTypeSelectionDialog() {
+//       Select Test Type - Supervised or Unsupervised
         FastSave.getInstance().saveString(CURRENT_SUPERVISOR_ID, "NA");
         FastSave.getInstance().saveBoolean(supervisedAssessment, false);
         myDialog = new BlurPopupWindow.Builder(this)
@@ -690,6 +667,7 @@ public class HomeActivity extends BaseActivity implements LevelChanged {
     }
 
     private void setupViewPager(ViewPager viewpager) {
+//        Loading fragments (learning, practice, test, fun, profile) on the viewPager.
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
         viewpager.setOffscreenPageLimit(5);
         if (FastSave.getInstance().getString(FC_Constants.LOGIN_MODE, FC_Constants.GROUP_MODE).contains("group") || !getAppMode()) {
@@ -722,6 +700,7 @@ public class HomeActivity extends BaseActivity implements LevelChanged {
     @SuppressLint("SetTextI18n")
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void messageReceived(EventMessage message) {
+        // Event Message Receiver
         if (message != null) {
             if (message.getMessage().equalsIgnoreCase(FC_Constants.COMING_SOON)) {
                 if (!comngSoonFlg) {
@@ -737,6 +716,7 @@ public class HomeActivity extends BaseActivity implements LevelChanged {
     @SuppressLint("StaticFieldLeak")
     @Background
     public void endSession() {
+        //Ending main session
         try {
             String curSession = AppDatabase.getDatabaseInstance(HomeActivity.this).getStatusDao().getValue("CurrentSession");
             String toDateTemp = AppDatabase.getDatabaseInstance(HomeActivity.this).getSessionDao().getToDate(curSession);
@@ -758,6 +738,7 @@ public class HomeActivity extends BaseActivity implements LevelChanged {
         } catch (IllegalStateException e) {
             e.printStackTrace();
         }
+        //Fire event bus to trigger backpress event on the fragment.
         EventMessage eventMessage = new EventMessage();
         eventMessage.setMessage(BACK_PRESSED);
         EventBus.getDefault().post(eventMessage);

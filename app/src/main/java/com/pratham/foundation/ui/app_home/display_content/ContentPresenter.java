@@ -74,6 +74,7 @@ public class ContentPresenter implements ContentContract.ContentPresenter, API_C
     @Background
     @Override
     public void displayProfileImage() {
+        // old un used code
         String sImage;
         if (!FC_Constants.GROUP_LOGIN)
             sImage = AppDatabase.getDatabaseInstance(context).getStudentDao().getStudentAvatar(FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""));
@@ -145,6 +146,7 @@ public class ContentPresenter implements ContentContract.ContentPresenter, API_C
     public void getListData() {
         try {
             contentView.showLoader();
+//            fetch downloaded data from DB
             downloadedContentTableList = AppDatabase.getDatabaseInstance(context).getContentTableDao().getContentData("" + nodeIds.get(nodeIds.size() - 1));
             sortAllList(downloadedContentTableList);
             contentView.clearContentList();
@@ -187,10 +189,12 @@ public class ContentPresenter implements ContentContract.ContentPresenter, API_C
     @UiThread
     public void updateUI() {
         try {
+//            check for connection and hit api for getting all data from server
+//            if there no internet connection the display the downloaded data
             if (FC_Utility.isDataConnectionAvailable(context))
                 api_content.getAPIContent(FC_Constants.INTERNET_BROWSE, FC_Constants.INTERNET_BROWSE_API, nodeIds.get(nodeIds.size() - 1));
             else {
-//                if (downloadedContentTableList.size() == 0 && !FC_Utility.isDataConnectionAvailable(context)) {
+//                if downloaded list is empty show no downloaded data
                 if (downloadedContentTableList.size() == 0) {
                     contentView.showNoDataDownloadedDialog();
                 } else {
@@ -206,16 +210,19 @@ public class ContentPresenter implements ContentContract.ContentPresenter, API_C
 
     @Override
     public void downloadResource(String downloadId) {
+//        call download api
         downloadNodeId = downloadId;
         api_content.getAPIContent(FC_Constants.INTERNET_DOWNLOAD_RESOURCE, FC_Constants.INTERNET_DOWNLOAD_RESOURCE_API, downloadNodeId);
     }
 
+    // API result
     @Override
     public void receivedContent(String header, String response) {
         try {
             if (header.equalsIgnoreCase(FC_Constants.INTERNET_BROWSE)) {
                 boolean contentFound = false;
                 try {
+//                    compair response form server and downloaded data, then show all the data.
                     ListForContentTable2.clear();
                     Type listType = new TypeToken<ArrayList<ContentTable>>() {
                     }.getType();
@@ -263,17 +270,17 @@ public class ContentPresenter implements ContentContract.ContentPresenter, API_C
                     e.printStackTrace();
                 }
 //                contentView.addContentToViewList(ListForContentTable1);
+//                add final list to view and then notify adapter
                 contentView.addContentToViewList(ListForContentTable2);
                 contentView.notifyAdapter();
                 contentView.dismissLoadingDialog();
             } else if (header.equalsIgnoreCase(FC_Constants.INTERNET_DOWNLOAD_RESOURCE)) {
                 try {
+//                    get response from server and hit download url
                     JSONObject jsonObject = new JSONObject(response);
                     download_content = gson.fromJson(jsonObject.toString(), Modal_DownloadContent.class);
                     contentDetail = download_content.getNodelist().get(download_content.getNodelist().size() - 1);
                     for (int i = 0; i < download_content.getNodelist().size(); i++) {
-//                        download_content.getNodelist().get(i).setNodeImage(download_content.getNodelist().get(i).getNodeServerImage()
-//                                .substring( download_content.getNodelist().get(i).getNodeServerImage().lastIndexOf('/') + 1));
                         ContentTable contentTableTemp = download_content.getNodelist().get(i);
                         pos.add(contentTableTemp);
                     }
@@ -285,10 +292,14 @@ public class ContentPresenter implements ContentContract.ContentPresenter, API_C
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
-//                if (download_content.getFoldername().equalsIgnoreCase("video"))
-//                    zipDownloader.initialize(context, "https://prathamopenschool.org/CourseContent/FCGames/OfftechVideos/5_Chatterbox.mp4",
-//                            download_content.getFoldername(), "5_Chatterbox.mp4", contentDetail, pos);
-//                else
+/*
+                if (download_content.getFoldername().equalsIgnoreCase("video"))
+                    zipDownloader.initialize(context, "https://prathamopenschool.org/CourseContent/FCGames/OfftechVideos/5_Chatterbox.mp4",
+                            download_content.getFoldername(), "5_Chatterbox.mp4", contentDetail, pos);
+                else
+*/
+
+//                    start the download process
                 zipDownloader.initialize(context, download_content.getDownloadurl(),
                         download_content.getFoldername(), fileName, contentDetail, pos);
             }

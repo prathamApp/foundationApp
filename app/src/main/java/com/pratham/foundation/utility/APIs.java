@@ -86,45 +86,45 @@ public class APIs {
 //
 //    //NewPushURL
 //    /*  public static final String HLpushToServerURL = "http://www.hlearning.openiscool.org/api/datapush/pushusage";*/
-    public static final String HLpushToServerURL = "http://www.swap.prathamcms.org/api/QRSwap/SwapData";
-    public static final String RIpushToServerURL = "http://www.readindia.openiscool.org/api/datapush/pushusage";
-    public static final String SCpushToServerURL = "http://www.hlearning.openiscool.org/api/datapush/pushusage";
-    public static final String PIpushToServerURL = "http://www.tabdata.prathaminstitute.org/api/datapush/pushusage";
+//    public static final String HLpushToServerURL = "http://www.swap.prathamcms.org/api/QRSwap/SwapData";
+//    public static final String RIpushToServerURL = "http://www.readindia.openiscool.org/api/datapush/pushusage";
+//    public static final String SCpushToServerURL = "http://www.hlearning.openiscool.org/api/datapush/pushusage";
+//    public static final String PIpushToServerURL = "http://www.tabdata.prathaminstitute.org/api/datapush/pushusage";
 
     // Device Tracking Push API
-    public static final String TabTrackPushAPI = "http://www.swap.prathamcms.org/api/QRPush/QRPushData";
+//    public static final String TabTrackPushAPI = "http://www.swap.prathamcms.org/api/QRPush/QRPushData";
 
     // Pull Courses
-    public static final String PullCourses = "http://www.swap.prathamcms.org/api/course/get";
+//    public static final String PullCourses = "http://www.swap.prathamcms.org/api/course/get";
 
     // Pull HLCourseCommunity
     // public static final String PullHLCourseCommunity = "http://swap.prathamcms.org/api/HLCoach/GetHLCourseCommunity/?villageid=1&programid=1";
-    public static final String PullHLCourseCommunity = "http://swap.prathamcms.org/api/HLCoach/GetHLCourseCommunity/?";
+//    public static final String PullHLCourseCommunity = "http://swap.prathamcms.org/api/HLCoach/GetHLCourseCommunity/?";
 
     // Pull HLCourseCompletion
     // public static final String PullHLCourseCompletion = "http://swap.prathamcms.org/api/HLCoach/GetHLCourseCompletion/?villageid=1&programid=1";
-    public static final String PullHLCourseCompletion = "http://swap.prathamcms.org/api/HLCoach/GetHLCourseCompletion/?";
+//    public static final String PullHLCourseCompletion = "http://swap.prathamcms.org/api/HLCoach/GetHLCourseCompletion/?";
 
     // Pull Coaches
     // public static final String PullCoaches = "http://swap.prathamcms.org/api/HLCoach/GetHLCoachInfo/?villageid=1&programid=1";
-    public static final String PullCoaches = "http://swap.prathamcms.org/api/HLCoach/GetHLCoachInfo/?";
+//    public static final String PullCoaches = "http://swap.prathamcms.org/api/HLCoach/GetHLCoachInfo/?";
 
     // Push API of Forms
-    public static final String PushForms = "http://www.swap.prathamcms.org/api/crlvisit/crlvisitpushdata";
+//    public static final String PushForms = "http://www.swap.prathamcms.org/api/crlvisit/crlvisitpushdata";
 
     // Assign/ Return Admin App API
-    public static final String AssignReturn = "http://swap.prathamcms.org/api/AssignReturn/pushdata";
+//    public static final String AssignReturn = "http://swap.prathamcms.org/api/AssignReturn/pushdata";
 
     // Device List API
-    public static final String DeviceList = "http://swap.prathamcms.org/api/tablist?userid=";
+//    public static final String DeviceList = "http://swap.prathamcms.org/api/tablist?userid=";
 
     //Store person AOI
-    public static final String storePersonAPI = "http://www.swap.prathamcms.org/api/Vendor?programId=17&statecode=";
+//    public static final String storePersonAPI = "http://www.swap.prathamcms.org/api/Vendor?programId=17&statecode=";
 
     // Get Leaderboard Scores
     //public static final String getLeaderBoardScores = "http://rpi.prathamskills.org/Api/LLAHighestScore/23";
 
     // High Score Push API & Leaderboard Pull API
-    public static String highScoreUrl = "http://www.swap.prathamcms.org/api/KksHighScore/KksPushData";
+//    public static String highScoreUrl = "http://www.swap.prathamcms.org/api/KksHighScore/KksPushData";
 
 }

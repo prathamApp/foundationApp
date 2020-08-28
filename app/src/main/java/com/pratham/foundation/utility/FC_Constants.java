@@ -211,7 +211,17 @@ public class FC_Constants {
     public static final String APP_LANGUAGE_SELECTED = "app_language_selected";
     public static final String TEST_JSON_DW = "test_json_dw";
 
-//    PRATHAM APIS
+//    DELHI APIS
+    public static final String TEST_JSON_API = "http://delhigovt.centralindia.cloudapp.azure.com:8084/fcapptestjson/";
+    public static final String PUSH_IMAGE_API = "http://devprodigi.openiscool.org/api/Foundation/PostImage";
+    public static final String INTERNET_LANGUAGE_API = "http://delhigovt.centralindia.cloudapp.azure.com:8084/api/content/browse?id=";
+    public static final String INTERNET_BROWSE_API = " http://delhigovt.centralindia.cloudapp.azure.com:8084/api/content/BrowseLevel2?id=";
+    public static final String INTERNET_DOWNLOAD_RESOURCE_API = " http://delhigovt.centralindia.cloudapp.azure.com:8084/api/content/downloadv2?id=";
+    public static final String INTERNET_DOWNLOAD_TEST_API = " http://delhigovt.centralindia.cloudapp.azure.com:8084/api/content/downloadv3?id=";
+    public static final String STUDENT_PROGRESS_API = "http://delhigovt.centralindia.cloudapp.azure.com:8084/api/cosv2/GetProgress?id=";
+    public static final String LEARNT_WORDS_API = "http://delhigovt.centralindia.cloudapp.azure.com:8084/api/cosv2/GetKeyWords?id=";
+
+/*    //    PRATHAM APIS
     public static final String TEST_JSON_API = "http://devposapi.prathamopenschool.org/fcapptestjson/";
     public static final String PUSH_IMAGE_API = "http://devprodigi.openiscool.org/api/Foundation/PostImage";
     public static final String INTERNET_LANGUAGE_API = "http://devposapi.prathamopenschool.org/api/content/browse?id=";
@@ -219,7 +229,7 @@ public class FC_Constants {
     public static final String INTERNET_DOWNLOAD_RESOURCE_API = "http://devposapi.prathamopenschool.org/api/content/downloadv2?id=";
     public static final String INTERNET_DOWNLOAD_TEST_API = "http://devposapi.prathamopenschool.org/api/content/downloadv3?id=";
     public static final String STUDENT_PROGRESS_API = "http://prodigi.openiscool.org/api/cosv2/GetProgress?id=";
-    public static final String LEARNT_WORDS_API = "http://prodigi.openiscool.org/api/cosv2/GetKeyWords?id=";
+    public static final String LEARNT_WORDS_API = "http://prodigi.openiscool.org/api/cosv2/GetKeyWords?id=";*/
 
 /*    //    DEV APIS
     public static final String TEST_JSON_API = "http://fcapp.openiscool.org/fcapptestjson/";
@@ -264,8 +274,6 @@ public class FC_Constants {
     public static final String METADATA = "metadata";
     public static final String USAGEDATA = "USAGEDATA";
     public static final String DOWNLOAD_URL = "download_url";
-    public static final String BASE_URL = "http://prodigi.openiscool.org/api/pos/";
-    public static String RASP_IP = "http://192.168.4.1:8080";
     public static final String SUCCESSFULLYPUSHED = "successfully_pushed";
     public static final String PUSHFAILED = "push_failed";
     public static String FACILITY_ID = "facility_id";
@@ -325,6 +333,9 @@ public class FC_Constants {
     public static final String SYNC_MEDIA_LENGTH = "sync_media_length";
     public static final String AssessmentApp = "AssessmentApp";
 
+    public static final String BASE_URL = "http://prodigi.openiscool.org/api/pos/";
+    public static String RASP_IP = "http://192.168.4.1:8080";
+
     public enum URL {
         BROWSE_BY_ID(BASE_URL + "get?id="),
         SEARCH_BY_KEYWORD(BASE_URL + "GetSearchList?"),
@@ -341,18 +352,13 @@ public class FC_Constants {
         PULL_PROGRAMS("http://swap.prathamcms.org/api/program");
 
         private final String name;
-
-            URL(String s) {
-                name = s;
-            }
+            URL(String s) { name = s; }
 
             public boolean equalsName(String otherName) {
                 return (otherName != null) && name.equals(otherName);
             }
-
             public String toString() {
                 return name;
         }
-
     }
 }
