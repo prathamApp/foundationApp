@@ -111,6 +111,7 @@ public class ConversationFragment_3 extends Fragment
     boolean dialogFlg = false;
     private String resStartTime, question;
     private int questionID;
+
     @AfterViews
     public void initialize() {
         iv_monk.setVisibility(View.GONE);
@@ -146,7 +147,7 @@ public class ConversationFragment_3 extends Fragment
 
 
         resStartTime = FC_Utility.getCurrentDateTime();
-        presenter.setView(ConversationFragment_3.this,contentId,contentName,resStartTime);
+        presenter.setView(ConversationFragment_3.this, contentId, contentName, resStartTime);
         presenter.addScore(0, "", 0, 0, resStartTime, FC_Utility.getCurrentDateTime(), GameConstatnts.NEW_CHIT_CHAT_3 + " " + GameConstatnts.START, contentId, true);
 
         // setConvoJson();
@@ -177,7 +178,7 @@ public class ConversationFragment_3 extends Fragment
 
 
     @Click(R.id.rl_personB)
-    public void onPersonB(){
+    public void onPersonB() {
         btn_reading.performClick();
         person_B.setBackground(ContextCompat.getDrawable(context, R.drawable.convo_correct_bg));
         person_A.setBackground(ContextCompat.getDrawable(context, R.drawable.dialog_bg));
@@ -186,7 +187,7 @@ public class ConversationFragment_3 extends Fragment
     }
 
     @Click(R.id.rl_personA)
-    public void onPersonA(){
+    public void onPersonA() {
         btn_reading.performClick();
         person_B.setBackground(ContextCompat.getDrawable(context, R.drawable.dialog_bg));
         person_A.setBackground(ContextCompat.getDrawable(context, R.drawable.convo_correct_bg));
@@ -221,11 +222,10 @@ public class ConversationFragment_3 extends Fragment
     }
 
 
-
     @UiThread
     @Override
     public void sendClikChanger(int clickOn) {
-        if (!FastSave.getInstance().getString(APP_SECTION,"").equalsIgnoreCase(sec_Test)) {
+        if (!FastSave.getInstance().getString(APP_SECTION, "").equalsIgnoreCase(sec_Test)) {
 
         } else {
             btn_imgsend.setVisibility(View.VISIBLE);
@@ -243,7 +243,12 @@ public class ConversationFragment_3 extends Fragment
     public void startRecognition() {
         if (!voiceStart) {
             showLoader();
-            // ButtonClickSound.start();
+            try {
+                ButtonClickSound.start();
+            } catch (IllegalStateException e) {
+                e.printStackTrace();
+            }
+
             voiceStart = true;
             btn_reading.setImageResource(R.drawable.ic_stop_black);
             btn_reading.setBackgroundResource(R.drawable.button_red);
@@ -253,8 +258,14 @@ public class ConversationFragment_3 extends Fragment
             btn_reading.setImageResource(R.drawable.ic_mic_black);
             btn_reading.setBackgroundResource(R.drawable.button_green);
             continuousSpeechService.stopSpeechInput();
-            //  ButtonClickSound.start();
+            try {
+                ButtonClickSound.start();
+            } catch (IllegalStateException e) {
+                e.printStackTrace();
+            }
+
         }
+
     }
 
     @Click(R.id.btn_imgsend)
@@ -269,13 +280,17 @@ public class ConversationFragment_3 extends Fragment
             }
             userAnswer = "";
 
-            ButtonClickSound.start();
+            try {
+                ButtonClickSound.start();
+            } catch (IllegalStateException e) {
+                e.printStackTrace();
+            }
+
             btn_reading.setImageResource(R.drawable.ic_mic_black);
             if (voiceStart)
                 btn_reading.performClick();
         }
     }
-
 
 
     private void addItemInConvo(String text, String audio, boolean user) {
@@ -353,7 +368,7 @@ public class ConversationFragment_3 extends Fragment
     }
 
     @Override
-     public void Stt_onResult(ArrayList<String> sttServerResult) {
+    public void Stt_onResult(ArrayList<String> sttServerResult) {
         if (sttServerResult.get(0) != null) {
             userAnswer = userAnswer + " " + sttServerResult.get(0);
             setAnswerText(userAnswer);
@@ -368,6 +383,7 @@ public class ConversationFragment_3 extends Fragment
     public void onComplete() {
 
     }
+
     @UiThread
     public void closeConvo() {
         //finish();

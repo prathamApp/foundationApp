@@ -5,7 +5,7 @@
 
     <RelativeLayout
         android:layout_width="@dimen/_240sdp"
-        android:layout_height="@dimen/_190sdp"
+        android:layout_height="@dimen/_195sdp"
         android:layout_centerInParent="true"
         android:background="@color/full_transparent">
 

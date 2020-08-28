@@ -172,7 +172,7 @@ public class FragmentChildAttendance extends Fragment implements ContractChildAt
                 }
             }
 */
-            if(student.isChecked())
+            if (student.isChecked())
                 students.get(position).setChecked(false);
             else
                 students.get(position).setChecked(true);
@@ -203,6 +203,7 @@ public class FragmentChildAttendance extends Fragment implements ContractChildAt
         } catch (IllegalStateException e) {
             e.printStackTrace();
         }
+
         ArrayList<Student> checkedStds = new ArrayList<>();
         for (int i = 0; i < students.size(); i++) {
             if (students.get(i).isChecked())

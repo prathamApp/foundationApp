@@ -123,7 +123,7 @@ public class SequenceLayout extends Fragment implements SequeanceLayoutContract.
         }
         GameConstatnts.currentGameAdapterposition = -1;
         playInsequence = true;
-        GameConstatnts.plaGame(getActivity(),onSdCard);
+        GameConstatnts.plaGame(getActivity(), onSdCard);
     }
 
     @Override
@@ -141,9 +141,9 @@ public class SequenceLayout extends Fragment implements SequeanceLayoutContract.
         onConentClickeditem = contentTable;
         // GameConstatnts.showInstructionDialog(this, getActivity(), contentTable.getResourceType());
 //        if (!contentTable.getResourceType().equalsIgnoreCase(GameConstatnts.READ_VOCAB_ANDROID)) {
-            //todo playInsequence assing false to play game one by one
-             playInsequence = true;
-             playGamesAfterDialog();
+        //todo playInsequence assing false to play game one by one
+        playInsequence = true;
+        playGamesAfterDialog();
 //        }
     }
 
@@ -160,7 +160,7 @@ public class SequenceLayout extends Fragment implements SequeanceLayoutContract.
 
     public void playGamesAfterDialog() {
         if (onConentClickeditem != null) {
-            GameConstatnts.gameSelector(getActivity(), onConentClickeditem,onSdCard);
+            GameConstatnts.gameSelector(getActivity(), onConentClickeditem, onSdCard);
            /* Bundle bundle = new Bundle();
             bundle.putString("contentPath", onConentClickeditem.getResourcePath());
             bundle.putString("StudentID", FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""));
@@ -283,7 +283,8 @@ public class SequenceLayout extends Fragment implements SequeanceLayoutContract.
     }
 
     @Override
-    public void exit() { }
+    public void exit() {
+    }
 
     @Override
     public void onStop() {

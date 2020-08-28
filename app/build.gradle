@@ -8,9 +8,9 @@ android {
         applicationId "com.pratham.foundation"
         minSdkVersion 21
         targetSdkVersion 28
-        versionCode 22
+        versionCode 24
         multiDexEnabled true
-        versionName "1.0.23"
+        versionName "1.0.24"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
 

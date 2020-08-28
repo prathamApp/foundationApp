@@ -58,7 +58,7 @@ import static com.pratham.foundation.utility.FC_Utility.dpToPx;
 
 @EActivity(R.layout.activity_select_subject)
 public class SelectSubject extends BaseActivity implements
-        SelectSubjectContract.SubjectView, SelectSubjectContract.ItemClicked{
+        SelectSubjectContract.SubjectView, SelectSubjectContract.ItemClicked {
 
     @Bean(SelectSubjectPresenter.class)
     SelectSubjectContract.SubjectPresenter presenter;
@@ -108,7 +108,7 @@ public class SelectSubject extends BaseActivity implements
     @Override
     protected void onResume() {
         super.onResume();
-        FC_Utility.setAppLocal(this,FastSave.getInstance().getString(FC_Constants.APP_LANGUAGE, FC_Constants.HINDI));
+        FC_Utility.setAppLocal(this, FastSave.getInstance().getString(FC_Constants.APP_LANGUAGE, FC_Constants.HINDI));
         subjectList.clear();
         EventMessage eventMessage = new EventMessage();
         eventMessage.setMessage(FC_Constants.CHECK_UPDATE);
@@ -181,7 +181,7 @@ public class SelectSubject extends BaseActivity implements
     }
 
     @Click(R.id.tv_update)
-    public void updateClicked(){
+    public void updateClicked() {
         EventMessage eventMessage = new EventMessage();
         eventMessage.setMessage(FC_Constants.START_UPDATE);
         EventBus.getDefault().post(eventMessage);
@@ -227,8 +227,8 @@ public class SelectSubject extends BaseActivity implements
         startActivity(intent);
 //        FastSave.getInstance().saveString(FC_Constants.APP_LANGUAGE, FC_Constants.MARATHI);
         String a = FastSave.getInstance().getString(FC_Constants.APP_LANGUAGE, FC_Constants.HINDI);
-        Log.d("INSTRUCTIONFRAG", "Select Subj: "+a);
-        FC_Utility.setAppLocal(this,a);
+        Log.d("INSTRUCTIONFRAG", "Select Subj: " + a);
+        FC_Utility.setAppLocal(this, a);
 //        context.startActivity(intent, ActivityOptions.makeSceneTransitionAnimation(SelectSubject.this).toBundle());
     }
 
@@ -247,10 +247,10 @@ public class SelectSubject extends BaseActivity implements
         int fragments = getSupportFragmentManager().getBackStackEntryCount();
         if (fragments > 0) {
             getSupportFragmentManager().popBackStack();
-            if(fragments==1){
+            if (fragments == 1) {
                 rl_act.setVisibility(View.VISIBLE);
                 onAppSpinnerLanguageChanged(FastSave.getInstance().getString(FC_Constants.APP_LANGUAGE, ""));
-                FC_Utility.setAppLocal(this,FastSave.getInstance().getString(FC_Constants.APP_LANGUAGE, FC_Constants.HINDI));
+                FC_Utility.setAppLocal(this, FastSave.getInstance().getString(FC_Constants.APP_LANGUAGE, FC_Constants.HINDI));
                 presenter.clearSubjList();
                 presenter.getSubjectList();
                 name_welcome.setText(getResources().getString(R.string.Welcome));
@@ -277,7 +277,8 @@ public class SelectSubject extends BaseActivity implements
             tv_update.setVisibility(View.VISIBLE);
         }
     }
-            BlurPopupWindow langDialog;
+
+    BlurPopupWindow langDialog;
     String language, currLang, languageNodeId;
 
     public void onAppSpinnerLanguageChanged(String selectedLanguage) {

@@ -346,6 +346,7 @@ public class HomeActivity extends BaseActivity implements LevelChanged {
             } catch (IllegalStateException e) {
                 e.printStackTrace();
             }
+
             FC_Constants.currentLevel = Integer.parseInt(rootList.get(position).getNodeTitle());
             FastSave.getInstance().saveInt(FC_Constants.CURRENT_LEVEL, Integer.parseInt(rootList.get(position).getNodeTitle()));
 /*

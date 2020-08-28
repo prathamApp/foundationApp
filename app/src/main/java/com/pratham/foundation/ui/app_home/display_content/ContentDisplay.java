@@ -166,7 +166,7 @@ public class ContentDisplay extends BaseActivity implements ContentContract.Cont
         showLoader();
 
         String a = FastSave.getInstance().getString(FC_Constants.APP_LANGUAGE, FC_Constants.HINDI);
-        Log.d("INSTRUCTIONFRAG", "Select Subj: "+a);
+        Log.d("INSTRUCTIONFRAG", "Select Subj: " + a);
         FC_Utility.setAppLocal(this, a);
 
         presenter.displayProfileImage();
@@ -317,6 +317,7 @@ public class ContentDisplay extends BaseActivity implements ContentContract.Cont
     }
 
     BlurPopupWindow noDataDlg;
+
     @UiThread
     @SuppressLint("SetTextI18n")
     @Override
@@ -350,7 +351,11 @@ public class ContentDisplay extends BaseActivity implements ContentContract.Cont
 
     @Override
     public void onContentClicked(int position, String nId) {
-        ButtonClickSound.start();
+        try {
+            ButtonClickSound.start();
+        } catch (IllegalStateException e) {
+            e.printStackTrace();
+        }
         ContentTableList.clear();
         presenter.addNodeIdToList(nId);
         presenter.getListData();
@@ -359,7 +364,12 @@ public class ContentDisplay extends BaseActivity implements ContentContract.Cont
     @UiThread
     @Override
     public void onPreResOpenClicked(int position, String nId, String title, boolean onSDCard) {
-        ButtonClickSound.start();
+        try {
+            ButtonClickSound.start();
+        } catch (IllegalStateException e) {
+            e.printStackTrace();
+        }
+
         Intent mainNew = new Intent(ContentDisplay.this, ContentPlayerActivity_.class);
         mainNew.putExtra("nodeID", nId);
         mainNew.putExtra("title", title);
@@ -534,7 +544,12 @@ public class ContentDisplay extends BaseActivity implements ContentContract.Cont
 
     @Override
     public void onContentDownloadClicked(int position, String nodeId) {
-        ButtonClickSound.start();
+        try {
+            ButtonClickSound.start();
+        } catch (IllegalStateException e) {
+            e.printStackTrace();
+        }
+
         downloadNodeId = "" + nodeId;
         resName = ContentTableList.get(position).getNodeTitle();
         resServerImageName = ContentTableList.get(position).getNodeServerImage();
@@ -547,7 +562,12 @@ public class ContentDisplay extends BaseActivity implements ContentContract.Cont
 
     @Override
     public void onContentDeleteClicked(int position, ContentTable contentList) {
-        ButtonClickSound.start();
+        try {
+            ButtonClickSound.start();
+        } catch (IllegalStateException e) {
+            e.printStackTrace();
+        }
+
         Log.d("Delete_Clicked", "onClick: G_Activity");
         showDeleteDialog(position, contentList);
     }
@@ -595,8 +615,9 @@ public class ContentDisplay extends BaseActivity implements ContentContract.Cont
         }
     }
 
-//    public BlurPopupWindow downloadDialog;
+    //    public BlurPopupWindow downloadDialog;
     public CustomLodingDialog downloadDialog;
+
     @SuppressLint("SetTextI18n")
     @UiThread
     public void resourceDownloadDialog(Modal_FileDownloading modal_fileDownloading) {
@@ -732,6 +753,7 @@ public class ContentDisplay extends BaseActivity implements ContentContract.Cont
     }
 
     boolean desFlag = false;
+
     @Override
     protected void onDestroy() {
         super.onDestroy();
@@ -765,5 +787,6 @@ public class ContentDisplay extends BaseActivity implements ContentContract.Cont
         Button dialog_error_btn = errorDialog.findViewById(R.id.dialog_error_btn);
         dialog_error_btn.setOnClickListener(v -> new Handler().postDelayed(() ->
                 errorDialog.dismiss(), 200));
-        errorDialog.show();    }
+        errorDialog.show();
+    }
 }

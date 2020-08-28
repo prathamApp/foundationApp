@@ -163,6 +163,7 @@ public class BottomStudentsFragment extends BottomSheetDialogFragment
         } catch (IllegalStateException e) {
             e.printStackTrace();
         }
+
         if (ApplicationClass.wiseF.isDeviceConnectedToWifiNetwork()) {
             if (ApplicationClass.wiseF.isDeviceConnectedToSSID(FC_Constants.PRATHAM_KOLIBRI_HOTSPOT)) {
                 setProgressDailog();

@@ -43,7 +43,6 @@ import static com.pratham.foundation.utility.FC_Constants.dialog_btn_cancel;
 import static com.pratham.foundation.utility.FC_Constants.gameFolderPath;
 
 
-
 @EActivity(R.layout.activity_card_reading)
 public class ReadingCardsActivity extends BaseActivity implements
         ReadingCardContract.ReadingCardView {
@@ -76,7 +75,7 @@ public class ReadingCardsActivity extends BaseActivity implements
     static boolean[] correctArr;
     boolean isAudioPlaying = false, onSdCard, gotoNext = false;
     String readingContentPath, contentPath, contentTitle, StudentID, resId, cardAudio, resStartTime;
-//    AnimationDrawable animationDrawable;
+    //    AnimationDrawable animationDrawable;
     public CustomLodingDialog myLoadingDialog;
 
 
@@ -216,7 +215,12 @@ public class ReadingCardsActivity extends BaseActivity implements
                 e.printStackTrace();
             }
 
-            ButtonClickSound.start();
+            try {
+                ButtonClickSound.start();
+            } catch (IllegalStateException e) {
+                e.printStackTrace();
+            }
+
             if (isAudioPlaying) {
                 isAudioPlaying = false;
                 stopAudio();
@@ -241,7 +245,12 @@ public class ReadingCardsActivity extends BaseActivity implements
             } catch (Exception e) {
                 e.printStackTrace();
             }
-            ButtonClickSound.start();
+            try {
+                ButtonClickSound.start();
+            } catch (IllegalStateException e) {
+                e.printStackTrace();
+            }
+
             if (isAudioPlaying) {
                 isAudioPlaying = false;
                 stopAudio();
@@ -287,7 +296,7 @@ public class ReadingCardsActivity extends BaseActivity implements
     }
 
     @Click(R.id.btn_back)
-    public void pressedBack(){
+    public void pressedBack() {
         onBackPressed();
     }
 
@@ -300,7 +309,12 @@ public class ReadingCardsActivity extends BaseActivity implements
         } catch (Exception e) {
             e.printStackTrace();
         }
-        ButtonClickSound.start();
+        try {
+            ButtonClickSound.start();
+        } catch (IllegalStateException e) {
+            e.printStackTrace();
+        }
+
         if (isAudioPlaying) {
             isAudioPlaying = false;
             stopAudio();
@@ -321,9 +335,9 @@ public class ReadingCardsActivity extends BaseActivity implements
         Button dia_btn_green = dialog.findViewById(R.id.dia_btn_green);
         Button dia_btn_red = dialog.findViewById(R.id.dia_btn_red);
 
-        dia_btn_green.setText ("YES");
-        dia_btn_red.setText   ("NO");
-        dia_btn_yellow.setText(""+dialog_btn_cancel);
+        dia_btn_green.setText("YES");
+        dia_btn_red.setText("NO");
+        dia_btn_yellow.setText("" + dialog_btn_cancel);
 
         dia_title.setText("Exit the game?");
         dialog.show();
@@ -333,7 +347,7 @@ public class ReadingCardsActivity extends BaseActivity implements
             finish();
             dialog.dismiss();
         });
-        
+
         dia_btn_red.setOnClickListener(v -> dialog.dismiss());
 
         dia_btn_yellow.setOnClickListener(v -> dialog.dismiss());

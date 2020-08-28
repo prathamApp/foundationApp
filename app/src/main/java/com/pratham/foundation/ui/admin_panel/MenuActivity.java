@@ -111,6 +111,7 @@ public class MenuActivity extends BaseActivity {
     }*/
 
     CustomLodingDialog sttDialog;
+
     @UiThread
     public void show_STT_Dialog() {
 
@@ -178,14 +179,24 @@ public class MenuActivity extends BaseActivity {
 
     @Click(R.id.mcv_ind)
     public void gotoIndividualLogin() {
-        ButtonClickSound.start();
+        try {
+            ButtonClickSound.start();
+        } catch (IllegalStateException e) {
+            e.printStackTrace();
+        }
+
         checkGroupAssigned(INDIVIDUAL_MODE);
 //        showLoginDialog("QRScan");
     }
 
     @Click(R.id.mcv_group)
     public void gotoGroupLogin() {
-        ButtonClickSound.start();
+        try {
+            ButtonClickSound.start();
+        } catch (IllegalStateException e) {
+            e.printStackTrace();
+        }
+
         checkGroupAssigned(GROUP_MODE);
 //        showLoginDialog("SelectGroup");
     }
@@ -236,13 +247,23 @@ public class MenuActivity extends BaseActivity {
 
     @Click({R.id.btn_admin, R.id.rl_admin})
     public void goto_btn_admin() {
-        ButtonClickSound.start();
+        try {
+            ButtonClickSound.start();
+        } catch (IllegalStateException e) {
+            e.printStackTrace();
+        }
+
         startActivity(new Intent(this, AdminConsoleActivityNew_.class));
 //        startActivity(new Intent(this, AdminControlsActivity_.class));
     }
    /* @Click(R.id.btn_share_receive)
     public void goto_share_receive() {
-        ButtonClickSound.start();
+                try {
+            ButtonClickSound.start();
+        } catch (IllegalStateException e) {
+            e.printStackTrace();
+        }
+
         startActivity(new Intent(this, ActivityShareReceive_.class));
     }*/
 

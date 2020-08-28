@@ -180,7 +180,7 @@ public class AddStudentFragment extends DialogFragment implements AvatarClickLis
         avatarAdapter = new AvatarAdapter(getActivity(), this, avatarList);
         RecyclerView.LayoutManager mLayoutManager = new GridLayoutManager(getActivity(), 2);
         recyclerView.setLayoutManager(mLayoutManager);
-        recyclerView.addItemDecoration(new GridSpacingItemDecoration(2, dpToPx(getActivity(),10), true));
+        recyclerView.addItemDecoration(new GridSpacingItemDecoration(2, dpToPx(getActivity(), 10), true));
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setAdapter(avatarAdapter);
         avatarAdapter.notifyDataSetChanged();
@@ -291,7 +291,12 @@ public class AddStudentFragment extends DialogFragment implements AvatarClickLis
 
     @OnClick(R.id.rb_male)
     public void maleGenderClicked() {
-        //ButtonClickSound.start();
+//        try {
+//            ButtonClickSound.start();
+//        } catch (IllegalStateException e) {
+//            e.printStackTrace();
+//        }
+
         // rb_male.setBackground(getResources().getDrawable(R.drawable.correct_bg));
         // rb_female.setBackground(getResources().getDrawable(R.drawable.ripple_rectangle));
         gender = "Male";
@@ -299,7 +304,12 @@ public class AddStudentFragment extends DialogFragment implements AvatarClickLis
 
     @OnClick(R.id.rb_female)
     public void femaleGenderClicked() {
-        //ButtonClickSound.start();
+//        try {
+//            ButtonClickSound.start();
+//        } catch (IllegalStateException e) {
+//            e.printStackTrace();
+//        }
+
         //rb_female.setBackground(getResources().getDrawable(R.drawable.correct_bg));
         //rb_male.setBackground(getResources().getDrawable(R.drawable.ripple_rectangle));
         gender = "Female";
@@ -308,11 +318,24 @@ public class AddStudentFragment extends DialogFragment implements AvatarClickLis
     @SuppressLint("StaticFieldLeak")
     @OnClick(R.id.btn_add_new_student)
     public void onAddNewClick() {
-        //ButtonClickSound.start();
+//        try {
+//            ButtonClickSound.start();
+//        } catch (
+//                IllegalStateException e) {
+//            e.printStackTrace();
+//        }
 
-        if (et_studentName.getText().toString().equalsIgnoreCase("") ||
+        if (et_studentName.getText().
+
+                toString().
+
+                equalsIgnoreCase("") ||
                 /*spinner_class.getSelectedItem().toString().equalsIgnoreCase("select class") ||*/
-                spinner_age.getSelectedItem().toString().equalsIgnoreCase("select age") ||
+                spinner_age.getSelectedItem().
+
+                        toString().
+
+                        equalsIgnoreCase("select age") ||
                 gender.equalsIgnoreCase("") || avatarName == null) {
             Toast.makeText(getActivity(), "Please fill all the details..", Toast.LENGTH_SHORT).show();
         } else {
@@ -350,6 +373,7 @@ public class AddStudentFragment extends DialogFragment implements AvatarClickLis
 //                    bundle, StudentsFragment.class.getSimpleName());
 
         }
+
     }
 
 

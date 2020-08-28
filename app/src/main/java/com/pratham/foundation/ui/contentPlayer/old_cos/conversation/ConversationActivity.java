@@ -173,7 +173,7 @@ public class ConversationActivity extends BaseActivity
             recyclerView.setLayoutManager(linearLayoutManager);
             mAdapter = new MessageAdapter(messageList, context);
             recyclerView.setAdapter(mAdapter);
-            for(int i =0; i<msgPercentage.length; i++)
+            for (int i = 0; i < msgPercentage.length; i++)
                 msgPercentage[1] = 0;
             new Handler().postDelayed(() -> displayNextQuestion(currentQueNos), 800);
         }
@@ -182,7 +182,7 @@ public class ConversationActivity extends BaseActivity
     @UiThread
     @Override
     public void sendClikChanger(int clickOn) {
-        if (!FastSave.getInstance().getString(APP_SECTION,"").equalsIgnoreCase(sec_Test)) {
+        if (!FastSave.getInstance().getString(APP_SECTION, "").equalsIgnoreCase(sec_Test)) {
             if (clickOn == 0) {
                 btn_imgsend.setVisibility(View.GONE);
                 btn_speaker.setVisibility(View.VISIBLE);
@@ -208,7 +208,12 @@ public class ConversationActivity extends BaseActivity
     public void startRecognition() {
         if (!voiceStart) {
             showLoader();
-            // ButtonClickSound.start();
+            try {
+                ButtonClickSound.start();
+            } catch (IllegalStateException e) {
+                e.printStackTrace();
+            }
+
             voiceStart = true;
             btn_reading.setImageResource(R.drawable.ic_stop_black);
             btn_reading.setBackgroundResource(R.drawable.button_red);
@@ -226,7 +231,11 @@ public class ConversationActivity extends BaseActivity
             } catch (Exception e) {
                 e.printStackTrace();
             }
-            //ButtonClickSound.start();
+            try {
+                ButtonClickSound.start();
+            } catch (IllegalStateException e) {
+                e.printStackTrace();
+            }
         }
     }
 
@@ -236,7 +245,12 @@ public class ConversationActivity extends BaseActivity
         int correctAnswerCount = setBooleanGetCounter();
         float perc = presenter.getPercentage();
         presenter.addScore(0, "perc - " + perc, correctAnswerCount, correctArr.length, " Convo ");
-        ButtonClickSound.start();
+        try {
+            ButtonClickSound.start();
+        } catch (IllegalStateException e) {
+            e.printStackTrace();
+        }
+
         btn_reading.setImageResource(R.drawable.ic_mic_black);
         if (voiceStart)
             btn_reading.performClick();
@@ -350,7 +364,7 @@ public class ConversationActivity extends BaseActivity
                 btn_reading.setClickable(false);
                 readChatFlow.removeAllViews();
                 new Handler().postDelayed(() -> {
-                    if (FastSave.getInstance().getString(APP_SECTION,"").equalsIgnoreCase(sec_Test))
+                    if (FastSave.getInstance().getString(APP_SECTION, "").equalsIgnoreCase(sec_Test))
                         showStars(true);
                     else
                         ConvoEndDialog();
@@ -392,7 +406,7 @@ public class ConversationActivity extends BaseActivity
             final SansTextViewBold myTextView = new SansTextViewBold(context);
             myTextView.setText(word);
             myTextView.setOnClickListener(v -> {
-                if (!FastSave.getInstance().getString(APP_SECTION,"").equalsIgnoreCase(sec_Test)) {
+                if (!FastSave.getInstance().getString(APP_SECTION, "").equalsIgnoreCase(sec_Test)) {
                     if (voiceStart)
                         btn_reading.performClick();
                     playChat("" + answerAudio);
@@ -406,7 +420,7 @@ public class ConversationActivity extends BaseActivity
 
     @Click(R.id.btn_speaker)
     public void chatAnswer() {
-        if (!FastSave.getInstance().getString(APP_SECTION,"").equalsIgnoreCase(sec_Test)) {
+        if (!FastSave.getInstance().getString(APP_SECTION, "").equalsIgnoreCase(sec_Test)) {
             if (voiceStart)
                 startRecognition();
             new Handler().postDelayed(() -> playChat("" + answerAudio), 100);
@@ -442,11 +456,12 @@ public class ConversationActivity extends BaseActivity
     }
 
     boolean submitPressed = false;
+
     @UiThread
     @Override
     public void submitAns(String[] splitQues) {
         try {
-            if(!submitPressed) {
+            if (!submitPressed) {
                 submitPressed = true;
                 if (voiceStart)
                     btn_reading.performClick();
@@ -540,6 +555,7 @@ public class ConversationActivity extends BaseActivity
     }
 
     boolean desFlag = false;
+
     @Override
     protected void onDestroy() {
         super.onDestroy();
@@ -649,7 +665,7 @@ public class ConversationActivity extends BaseActivity
         Button dia_btn_red = dialog.findViewById(R.id.dia_btn_red);
 
         dia_title.setText("Nice chatting with you.\nBye-bye!");
-        dia_btn_green.setText(""+getResources().getString(R.string.Okay));
+        dia_btn_green.setText("" + getResources().getString(R.string.Okay));
         dia_btn_red.setVisibility(View.GONE);
         dia_btn_yellow.setVisibility(View.GONE);
         dialog.show();
@@ -659,7 +675,7 @@ public class ConversationActivity extends BaseActivity
             float perc = getCompletionPercentage();
             presenter.addCompletion(perc);
             dialog.dismiss();
-            if (FastSave.getInstance().getString(APP_SECTION,"").equalsIgnoreCase(sec_Test)) {
+            if (FastSave.getInstance().getString(APP_SECTION, "").equalsIgnoreCase(sec_Test)) {
                 int pages = getCompletionPages();
                 int msgPercLength = msgPercentage.length;
 
@@ -697,8 +713,8 @@ public class ConversationActivity extends BaseActivity
         return tot;
     }
 
-    @Click (R.id.floating_back)
-    public void pressedBackBtn(){
+    @Click(R.id.floating_back)
+    public void pressedBackBtn() {
         onBackPressed();
     }
 
@@ -747,8 +763,8 @@ public class ConversationActivity extends BaseActivity
         dia_ratingBar.setRating(rating);
 
         dia_btn_red.setVisibility(View.GONE);
-        dia_btn_green.setText(""+getResources().getString(R.string.Next));
-        dia_btn_yellow.setText(""+getResources().getString(R.string.Cancel));
+        dia_btn_green.setText("" + getResources().getString(R.string.Next));
+        dia_btn_yellow.setText("" + getResources().getString(R.string.Cancel));
         if (diaComplete)
             dia_btn_yellow.setVisibility(View.GONE);
 
@@ -804,10 +820,10 @@ public class ConversationActivity extends BaseActivity
         Button dia_btn_green = dialog.findViewById(R.id.dia_btn_green);
         Button dia_btn_red = dialog.findViewById(R.id.dia_btn_red);
 
-        dia_title.setText(""+getResources().getString(R.string.Exit));
-        dia_btn_green.setText(""+getResources().getString(R.string.yes));
-        dia_btn_red.setText(""+getResources().getString(R.string.no));
-        dia_btn_yellow.setText(""+getResources().getString(R.string.Cancel));
+        dia_title.setText("" + getResources().getString(R.string.Exit));
+        dia_btn_green.setText("" + getResources().getString(R.string.yes));
+        dia_btn_red.setText("" + getResources().getString(R.string.no));
+        dia_btn_yellow.setText("" + getResources().getString(R.string.Cancel));
         dialog.show();
 
         dia_btn_red.setOnClickListener(v -> dialog.dismiss());
@@ -816,7 +832,7 @@ public class ConversationActivity extends BaseActivity
             float perc = getCompletionPercentage();
             presenter.addCompletion(perc);
             dialog.dismiss();
-            if (FastSave.getInstance().getString(APP_SECTION,"").equalsIgnoreCase(sec_Test)) {
+            if (FastSave.getInstance().getString(APP_SECTION, "").equalsIgnoreCase(sec_Test)) {
                 int pages = getCompletionPages();
                 int msgPercLength = 0;
                 try {

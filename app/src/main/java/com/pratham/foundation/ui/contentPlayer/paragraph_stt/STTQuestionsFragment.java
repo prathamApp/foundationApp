@@ -59,7 +59,6 @@ import static com.pratham.foundation.utility.FC_Constants.ENGLISH;
 import static com.pratham.foundation.utility.FC_Constants.gameFolderPath;
 
 
-
 @EFragment(R.layout.fragment_stt_questions)
 public class STTQuestionsFragment extends Fragment implements
         /*RecognitionListener, */STT_Result_New.sttView,
@@ -339,7 +338,12 @@ public class STTQuestionsFragment extends Fragment implements
                 setMute(0);
             }
             wordCounter = 0;
-            ButtonClickSound.start();
+            try {
+                ButtonClickSound.start();
+            } catch (IllegalStateException e) {
+                e.printStackTrace();
+            }
+
             Log.d("click", "totalPages: PreviousBtn: " + totalPages + "  currentPage: " + currentPage);
             try {
                 currentPage--;
@@ -382,7 +386,12 @@ public class STTQuestionsFragment extends Fragment implements
                 ib_mic.performClick();
                 setMute(0);
             }
-            ButtonClickSound.start();
+            try {
+                ButtonClickSound.start();
+            } catch (IllegalStateException e) {
+                e.printStackTrace();
+            }
+
             Log.d("click", "totalPages: NextBtn: " + totalPages + "  currentPage: " + currentPage);
             currentPage++;
             pageNo++;

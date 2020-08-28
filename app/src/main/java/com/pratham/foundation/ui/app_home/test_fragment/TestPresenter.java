@@ -204,31 +204,30 @@ public class TestPresenter implements TestContract.TestPresenter, API_Content_Re
         if (testList.size() > 0) {
             sortTestList(testList);
             WebViewActivity.gameLevel = testList.get(0).getNodeAge();
-        }
             BackupDatabase.backup(mContext);
-        codesText = new ArrayList<>();
-        codesText.clear();
-        myView.clearTestList();
+            codesText = new ArrayList<>();
+            codesText.clear();
+            myView.clearTestList();
 
-        CertificateModelClass contentTableHeader = new CertificateModelClass();
-        contentTableHeader.setNodeId("0");
-        contentTableHeader.setResourceId("0");
-        contentTableHeader.setResourcePath("path");
-        contentTableHeader.setAsessmentGiven(true);
-        contentTableHeader.setContentType("Header");
-        contentTableHeader.setSeq_no(-1);
-        myView.addContentToViewTestList(contentTableHeader);
-        if (isUpdate) {
-            contentTableHeader = new CertificateModelClass();
-            contentTableHeader.setNodeId("1");
-            contentTableHeader.setResourceId("01");
-            contentTableHeader.setEnglishQues("" + getLevelWiseTestName());
+            CertificateModelClass contentTableHeader = new CertificateModelClass();
+            contentTableHeader.setNodeId("0");
+            contentTableHeader.setResourceId("0");
             contentTableHeader.setResourcePath("path");
             contentTableHeader.setAsessmentGiven(true);
-            contentTableHeader.setContentType("Update");
-            contentTableHeader.setSeq_no(0);
+            contentTableHeader.setContentType("Header");
+            contentTableHeader.setSeq_no(-1);
             myView.addContentToViewTestList(contentTableHeader);
-        }
+            if (isUpdate) {
+                contentTableHeader = new CertificateModelClass();
+                contentTableHeader.setNodeId("1");
+                contentTableHeader.setResourceId("01");
+                contentTableHeader.setEnglishQues("" + getLevelWiseTestName());
+                contentTableHeader.setResourcePath("path");
+                contentTableHeader.setAsessmentGiven(true);
+                contentTableHeader.setContentType("Update");
+                contentTableHeader.setSeq_no(0);
+                myView.addContentToViewTestList(contentTableHeader);
+            }
 /*      contentTableHeader = new CertificateModelClass();
         contentTableHeader.setNodeId("1");
         contentTableHeader.setResourceId("1");
@@ -236,99 +235,99 @@ public class TestPresenter implements TestContract.TestPresenter, API_Content_Re
         contentTableHeader.setContentType("Spinner");
         myView.addContentToViewTestList(contentTableHeader);*/
 
-        try {
-            for (int j = 0; j < testList.size(); j++) {
+            try {
+                for (int j = 0; j < testList.size(); j++) {
 
-                codesText.add(testList.get(j).getNodeDesc());
+                    codesText.add(testList.get(j).getNodeDesc());
 
-                CertificateModelClass contentTable = new CertificateModelClass();
-                contentTable.setCodeCount(Collections.frequency(codesText, testList.get(j).getNodeDesc()));
+                    CertificateModelClass contentTable = new CertificateModelClass();
+                    contentTable.setCodeCount(Collections.frequency(codesText, testList.get(j).getNodeDesc()));
 
-                contentTable.setNodeId("" + testList.get(j).getNodeId());
-                contentTable.setCertiCode("" + testList.get(j).getNodeDesc());
-                contentTable.setNodeAge("" + testList.get(j).getNodeAge());
-                contentTable.setResourceId("" + testList.get(j).getResourceId());
-                contentTable.setResourcePath("" + testList.get(j).getResourcePath());
-                contentTable.setAsessmentGiven(false);
-                contentTable.setStudentId(FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""));
-                contentTable.setScoredMarks(0);
-                contentTable.setTotalMarks(0);
-                contentTable.setCertificateRating(0.0f);
-                contentTable.setSeq_no(testList.get(j).getSeq_no());
-                contentTable.setStudentPercentage("");
-                if (testList.get(j).getContentType() != null)
-                    contentTable.setContentType(testList.get(j).getContentType());
-                else
-                    contentTable.setContentType(GAME);
-                contentTable.setIsDownloaded(testList.get(j).getIsDownloaded());
+                    contentTable.setNodeId("" + testList.get(j).getNodeId());
+                    contentTable.setCertiCode("" + testList.get(j).getNodeDesc());
+                    contentTable.setNodeAge("" + testList.get(j).getNodeAge());
+                    contentTable.setResourceId("" + testList.get(j).getResourceId());
+                    contentTable.setResourcePath("" + testList.get(j).getResourcePath());
+                    contentTable.setAsessmentGiven(false);
+                    contentTable.setStudentId(FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""));
+                    contentTable.setScoredMarks(0);
+                    contentTable.setTotalMarks(0);
+                    contentTable.setCertificateRating(0.0f);
+                    contentTable.setSeq_no(testList.get(j).getSeq_no());
+                    contentTable.setStudentPercentage("");
+                    if (testList.get(j).getContentType() != null)
+                        contentTable.setContentType(testList.get(j).getContentType());
+                    else
+                        contentTable.setContentType(GAME);
+                    contentTable.setIsDownloaded(testList.get(j).getIsDownloaded());
 
-                for (int i = 0; i < testData.length(); i++) {
-                    String lang = testData.getJSONObject(i).getString("lang");
-                    String questionList = testData.getJSONObject(i).getJSONObject("questionList").getString("" + testList.get(j).getNodeDesc());
-                    String answerList = testData.getJSONObject(i).getJSONObject("answerList").getString("" + testList.get(j).getNodeDesc());
-                    if (lang.equalsIgnoreCase("english")) {
-                        contentTable.setEnglishQues("" + questionList);
-                        contentTable.setEnglishAnsw("" + answerList);
-                    } else if (lang.equalsIgnoreCase("hindi")) {
-                        contentTable.setHindiQues("" + questionList);
-                        contentTable.setHindiAnsw("" + answerList);
-                    } else if (lang.equalsIgnoreCase("marathi")) {
-                        contentTable.setMarathiQues("" + questionList);
-                        contentTable.setMarathiAnsw("" + answerList);
-                    } else if (lang.equalsIgnoreCase("Gujarati")) {
-                        contentTable.setGujaratiQues("" + questionList);
-                        contentTable.setGujaratiAnsw("" + answerList);
-                    } else if (lang.equalsIgnoreCase("Kannada")) {
-                        contentTable.setKannadaQues("" + questionList);
-                        contentTable.setKannadaAnsw("" + answerList);
-                    } else if (lang.equalsIgnoreCase("Bengali")) {
-                        contentTable.setBengaliQues("" + questionList);
-                        contentTable.setBengaliAnsw("" + answerList);
-                    } else if (lang.equalsIgnoreCase("Assamese")) {
-                        contentTable.setAssameseQues("" + questionList);
-                        contentTable.setAssameseAnsw("" + answerList);
-                    } else if (lang.equalsIgnoreCase("Telugu")) {
-                        contentTable.setTeluguQues("" + questionList);
-                        contentTable.setTeluguAnsw("" + answerList);
-                    } else if (lang.equalsIgnoreCase("Tamil")) {
-                        contentTable.setTamilQues("" + questionList);
-                        contentTable.setTamilAnsw("" + answerList);
-                    } else if (lang.equalsIgnoreCase("Odia")) {
-                        contentTable.setOdiaQues("" + questionList);
-                        contentTable.setOdiaAnsw("" + answerList);
-                    } else if (lang.equalsIgnoreCase("Malayalam")) {
-                        contentTable.setUrduQues("" + questionList);
-                        contentTable.setUrduAnsw("" + answerList);
-                    } else if (lang.equalsIgnoreCase("Punjabi")) {
-                        contentTable.setPunjabiQues("" + questionList);
-                        contentTable.setPunjabiAnsw("" + answerList);
+                    for (int i = 0; i < testData.length(); i++) {
+                        String lang = testData.getJSONObject(i).getString("lang");
+                        String questionList = testData.getJSONObject(i).getJSONObject("questionList").getString("" + testList.get(j).getNodeDesc());
+                        String answerList = testData.getJSONObject(i).getJSONObject("answerList").getString("" + testList.get(j).getNodeDesc());
+                        if (lang.equalsIgnoreCase("english")) {
+                            contentTable.setEnglishQues("" + questionList);
+                            contentTable.setEnglishAnsw("" + answerList);
+                        } else if (lang.equalsIgnoreCase("hindi")) {
+                            contentTable.setHindiQues("" + questionList);
+                            contentTable.setHindiAnsw("" + answerList);
+                        } else if (lang.equalsIgnoreCase("marathi")) {
+                            contentTable.setMarathiQues("" + questionList);
+                            contentTable.setMarathiAnsw("" + answerList);
+                        } else if (lang.equalsIgnoreCase("Gujarati")) {
+                            contentTable.setGujaratiQues("" + questionList);
+                            contentTable.setGujaratiAnsw("" + answerList);
+                        } else if (lang.equalsIgnoreCase("Kannada")) {
+                            contentTable.setKannadaQues("" + questionList);
+                            contentTable.setKannadaAnsw("" + answerList);
+                        } else if (lang.equalsIgnoreCase("Bengali")) {
+                            contentTable.setBengaliQues("" + questionList);
+                            contentTable.setBengaliAnsw("" + answerList);
+                        } else if (lang.equalsIgnoreCase("Assamese")) {
+                            contentTable.setAssameseQues("" + questionList);
+                            contentTable.setAssameseAnsw("" + answerList);
+                        } else if (lang.equalsIgnoreCase("Telugu")) {
+                            contentTable.setTeluguQues("" + questionList);
+                            contentTable.setTeluguAnsw("" + answerList);
+                        } else if (lang.equalsIgnoreCase("Tamil")) {
+                            contentTable.setTamilQues("" + questionList);
+                            contentTable.setTamilAnsw("" + answerList);
+                        } else if (lang.equalsIgnoreCase("Odia")) {
+                            contentTable.setOdiaQues("" + questionList);
+                            contentTable.setOdiaAnsw("" + answerList);
+                        } else if (lang.equalsIgnoreCase("Malayalam")) {
+                            contentTable.setUrduQues("" + questionList);
+                            contentTable.setUrduAnsw("" + answerList);
+                        } else if (lang.equalsIgnoreCase("Punjabi")) {
+                            contentTable.setPunjabiQues("" + questionList);
+                            contentTable.setPunjabiAnsw("" + answerList);
+                        }
+
                     }
-
+                    myView.addContentToViewTestList(contentTable);
                 }
-                myView.addContentToViewTestList(contentTable);
+                myView.doubleQuestionCheck();
+            } catch (Exception e) {
+                e.printStackTrace();
             }
-            myView.doubleQuestionCheck();
-        } catch (Exception e) {
-            e.printStackTrace();
+            CertificateModelClass openAssessmentBtn = new CertificateModelClass();
+            openAssessmentBtn.setNodeId("0");
+            openAssessmentBtn.setResourceId("0");
+            openAssessmentBtn.setResourcePath("path");
+            openAssessmentBtn.setAsessmentGiven(true);
+            openAssessmentBtn.setContentType("" + FC_Constants.AssessmentApp);
+            openAssessmentBtn.setSeq_no(100);
+            myView.addContentToViewTestList(openAssessmentBtn);
+
+            CertificateModelClass contentTableFooter = new CertificateModelClass();
+            contentTableFooter.setNodeId("0");
+            contentTableFooter.setResourceId("0");
+            contentTableFooter.setResourcePath("path");
+            contentTableFooter.setAsessmentGiven(true);
+            contentTableFooter.setContentType("Footer");
+            contentTableFooter.setSeq_no(99);
+            myView.addContentToViewTestList(contentTableFooter);
         }
-        CertificateModelClass openAssessmentBtn = new CertificateModelClass();
-        openAssessmentBtn.setNodeId("0");
-        openAssessmentBtn.setResourceId("0");
-        openAssessmentBtn.setResourcePath("path");
-        openAssessmentBtn.setAsessmentGiven(true);
-        openAssessmentBtn.setContentType(""+FC_Constants.AssessmentApp);
-        openAssessmentBtn.setSeq_no(100);
-        myView.addContentToViewTestList(openAssessmentBtn);
-
-        CertificateModelClass contentTableFooter = new CertificateModelClass();
-        contentTableFooter.setNodeId("0");
-        contentTableFooter.setResourceId("0");
-        contentTableFooter.setResourcePath("path");
-        contentTableFooter.setAsessmentGiven(true);
-        contentTableFooter.setContentType("Footer");
-        contentTableFooter.setSeq_no(99);
-        myView.addContentToViewTestList(contentTableFooter);
-
         if (testList.size() > 1)
             myView.hideTestDownloadBtn();
         myView.initializeTheIndex();
@@ -396,7 +395,7 @@ public class TestPresenter implements TestContract.TestPresenter, API_Content_Re
         String[] languagesArray;
         try {
 //            InputStream is = mContext.getAssets().open(jsonName);
-            InputStream is = new FileInputStream(ApplicationClass.foundationPath + "/.FCA/"+jsonName);
+            InputStream is = new FileInputStream(ApplicationClass.foundationPath + "/.FCA/" + jsonName);
             int size = is.available();
             byte[] buffer = new byte[size];
             is.read(buffer);
@@ -1087,7 +1086,7 @@ public class TestPresenter implements TestContract.TestPresenter, API_Content_Re
                             && (serverContentList.get(i).getNodelist().size() <= 0))
                         noContentList = true;
                 }
-                if(noContentList)
+                if (noContentList)
                     myView.showNoDataLayout();
                 else {
                     for (int i = 0; i < serverContentList.size(); i++) {
@@ -1125,23 +1124,26 @@ public class TestPresenter implements TestContract.TestPresenter, API_Content_Re
                             rootLevelList.add(contentTableTemp);
                         }
                     }
+                    sortContentList(rootLevelList);
+                    myView.setSelectedLevel(rootLevelList);
                 }
             } catch (Exception e) {
                 e.printStackTrace();
             }
-            sortContentList(rootLevelList);
-            myView.setSelectedLevel(rootLevelList);
         } else if (header.equalsIgnoreCase(FC_Constants.BOTTOM_NODE)) {
             try {
                 Type listType = new TypeToken<ArrayList<ContentTable>>() {
                 }.getType();
                 List<ContentTable> serverContentList = gson.fromJson(response, listType);
-                String botNodeId = serverContentList.get(0).getNodeId();
+                String botNodeId = null;/* serverContentList.get(0).getNodeId();*/
                 for (int i = 0; i < serverContentList.size(); i++)
                     if (serverContentList.get(i).getNodeTitle().equalsIgnoreCase(cosSection))
                         botNodeId = serverContentList.get(i).getNodeId();
 //                myView.setBotNodeId(botNodeId);
-                getLevelDataForList(currentLevelNo, botNodeId);
+                if (botNodeId == null)
+                    myView.showNoDataLayout();
+                else
+                    getLevelDataForList(currentLevelNo, botNodeId);
 //                getLevelDataFromApi(currentLevelNo, botNodeId);
             } catch (Exception e) {
                 e.printStackTrace();
@@ -1150,6 +1152,8 @@ public class TestPresenter implements TestContract.TestPresenter, API_Content_Re
             try {
                 String Jname = FC_Utility.getLevelWiseJson(currentLevelNo);
                 File filepath = new File(ApplicationClass.foundationPath + "/.FCA/", Jname); // file path to save
+                if (filepath.exists())
+                    filepath.delete();
                 FileWriter writer = new FileWriter(filepath);
                 writer.write(response);
                 writer.flush();

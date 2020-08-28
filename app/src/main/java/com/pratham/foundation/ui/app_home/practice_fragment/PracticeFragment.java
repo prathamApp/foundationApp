@@ -273,7 +273,7 @@ public class PracticeFragment extends Fragment implements PracticeContract.Pract
     @UiThread
     public void showZipLoader() {
         try {
-            dialog_file_name.setText("Loading\n"+resName+"\nPlease wait...");
+            dialog_file_name.setText("Loading\n" + resName + "\nPlease wait...");
             progressLayout.setVisibility(View.GONE);
             dialog_roundProgress.setVisibility(View.VISIBLE);
         } catch (Exception e) {
@@ -323,16 +323,16 @@ public class PracticeFragment extends Fragment implements PracticeContract.Pract
                     levelChanged.setActualLevel(rootLevelList, rootLevelList.get(i).getNodeTitle());
                     presenter.insertNodeId(rootLevelList.get(i).getNodeId());
                     presenter.getDataForList();
-                }else
+                } else
                     showNoDataLayout();
-            }else if(rootLevelList != null){
-                if(rootLevelList.size()>0) {
+            } else if (rootLevelList != null) {
+                if (rootLevelList.size() > 0) {
                     i = 0;
                     levelChanged.setActualLevel(rootLevelList, rootLevelList.get(i).getNodeTitle());
                     presenter.insertNodeId(rootLevelList.get(i).getNodeId());
                     presenter.getDataForList();
                 }
-            }else
+            } else
                 showNoDataLayout();
 
         } catch (Exception e) {
@@ -388,6 +388,7 @@ public class PracticeFragment extends Fragment implements PracticeContract.Pract
     }
 
     BlurPopupWindow noDataDlg;
+
     @SuppressLint("SetTextI18n")
     @Override
     @UiThread
@@ -482,7 +483,12 @@ public class PracticeFragment extends Fragment implements PracticeContract.Pract
     @UiThread
     @Override
     public void onPreResOpenClicked(int position, String nId, String title, boolean onSDCard) {
-        ButtonClickSound.start();
+        try {
+            ButtonClickSound.start();
+        } catch (IllegalStateException e) {
+            e.printStackTrace();
+        }
+
         Intent mainNew = new Intent(context, ContentPlayerActivity_.class);
         mainNew.putExtra("nodeID", nId);
         mainNew.putExtra("title", title);
@@ -496,7 +502,7 @@ public class PracticeFragment extends Fragment implements PracticeContract.Pract
         FastSave.getInstance().saveString(APP_SECTION, "" + sec_Practice);
         try {
             ButtonClickSound.start();
-        } catch (Exception e) {
+        } catch (IllegalStateException e) {
             e.printStackTrace();
         }
         if (singleItem.getNodeType().equalsIgnoreCase("category") || singleItem.getResourceType().equalsIgnoreCase("category")) {
@@ -518,7 +524,12 @@ public class PracticeFragment extends Fragment implements PracticeContract.Pract
     public void onContentOpenClicked(ContentTable contentList) {
         //Toast.makeText(this, "ContentOpen : Work In Progress", Toast.LENGTH_SHORT).show();
         FastSave.getInstance().saveString(APP_SECTION, sec_Practice);
-        ButtonClickSound.start();
+        try {
+            ButtonClickSound.start();
+        } catch (IllegalStateException e) {
+            e.printStackTrace();
+        }
+
         downloadNodeId = contentList.getNodeId();
         resName = contentList.getNodeTitle();
         if (contentList.getNodeType().equalsIgnoreCase("PreResource") ||
@@ -649,7 +660,12 @@ public class PracticeFragment extends Fragment implements PracticeContract.Pract
         this.downloadType = downloadType;
         downloadNodeId = contentList.getNodeId();
         FastSave.getInstance().saveString(APP_SECTION, "" + sec_Practice);
-        ButtonClickSound.start();
+        try {
+            ButtonClickSound.start();
+        } catch (IllegalStateException e) {
+            e.printStackTrace();
+        }
+
 //        downloadNodeId = "" + 1371;
         this.parentPos = parentPos;
         this.childPos = childPos;
@@ -664,11 +680,12 @@ public class PracticeFragment extends Fragment implements PracticeContract.Pract
 
     }
 
-//    private BlurPopupWindow downloadDialog;
+    //    private BlurPopupWindow downloadDialog;
     private CustomLodingDialog downloadDialog;
     private ProgressLayout progressLayout;
     private TextView dialog_file_name;
     ProgressBar dialog_roundProgress;
+
     @SuppressLint("SetTextI18n")
     @UiThread
     public void resourceDownloadDialog(Modal_FileDownloading modal_fileDownloading) {
@@ -728,8 +745,9 @@ public class PracticeFragment extends Fragment implements PracticeContract.Pract
         }
     }
 
-//    BlurPopupWindow errorDialog;
+    //    BlurPopupWindow errorDialog;
     CustomLodingDialog errorDialog;
+
     @UiThread
     public void showDownloadErrorDialog() {
         try {
@@ -777,6 +795,12 @@ public class PracticeFragment extends Fragment implements PracticeContract.Pract
 
     @Override
     public void seeMore(String nodeId, String nodeTitle) {
+        try {
+            ButtonClickSound.start();
+        } catch (IllegalStateException e) {
+            e.printStackTrace();
+        }
+
         FastSave.getInstance().saveString(APP_SECTION, sec_Practice);
         Intent intent = new Intent(context, ContentDisplay_.class);
         intent.putExtra("nodeId", nodeId);

@@ -64,7 +64,6 @@ import static com.pratham.foundation.utility.FC_Constants.sec_Practice;
 import static com.pratham.foundation.utility.FC_Constants.sec_Test;
 
 
-
 @EFragment(R.layout.fragment_conversation)
 public class ConversationFragment_2 extends Fragment
         implements ConversationContract_2.ConversationView, STT_Result_New.sttView, MediaCallbacks, OnGameClose {
@@ -152,7 +151,7 @@ public class ConversationFragment_2 extends Fragment
         presenter.setContentId(contentId);
         convoMode = "A";
 
-        if (FastSave.getInstance().getString(APP_SECTION,"").equalsIgnoreCase(sec_Practice))
+        if (FastSave.getInstance().getString(APP_SECTION, "").equalsIgnoreCase(sec_Practice))
             clear.setVisibility(View.VISIBLE);
         else
             clear.setVisibility(View.GONE);
@@ -229,7 +228,7 @@ public class ConversationFragment_2 extends Fragment
     @Click(R.id.btn_next)
     public void nextPressed() {
         try {
-            if(voiceStart)
+            if (voiceStart)
                 btn_read_mic.performClick();
             if (audioFlg) {
                 audioFlg = false;
@@ -245,7 +244,12 @@ public class ConversationFragment_2 extends Fragment
     public void startRecognition() {
         if (!voiceStart) {
             showLoader();
-            // ButtonClickSound.start();
+            try {
+                ButtonClickSound.start();
+            } catch (IllegalStateException e) {
+                e.printStackTrace();
+            }
+
             voiceStart = true;
             btn_read_mic.setImageResource(R.drawable.ic_stop_black);
             btn_read_mic.setBackgroundResource(R.drawable.button_red);
@@ -255,7 +259,11 @@ public class ConversationFragment_2 extends Fragment
             btn_read_mic.setImageResource(R.drawable.ic_mic_black);
             btn_read_mic.setBackgroundResource(R.drawable.button_green);
             continuousSpeechService.stopSpeechInput();
-            //ButtonClickSound.start();
+            try {
+                ButtonClickSound.start();
+            } catch (IllegalStateException e) {
+                e.printStackTrace();
+            }
         }
     }
 
@@ -274,7 +282,12 @@ public class ConversationFragment_2 extends Fragment
             addItemInConvo(answer, answerAudio, true);
         }
         btn_read_mic.setImageResource(R.drawable.ic_mic_black);
-        ButtonClickSound.start();
+        try {
+            ButtonClickSound.start();
+        } catch (IllegalStateException e) {
+            e.printStackTrace();
+        }
+
         readChatFlow.removeAllViews();
 
         currentQueNos += 1;
@@ -386,7 +399,7 @@ public class ConversationFragment_2 extends Fragment
                 btn_read_mic.setClickable(false);
                 readChatFlow.removeAllViews();
                 new Handler().postDelayed(() -> {
-                    if (FastSave.getInstance().getString(APP_SECTION,"").equalsIgnoreCase(sec_Test))
+                    if (FastSave.getInstance().getString(APP_SECTION, "").equalsIgnoreCase(sec_Test))
                         showStars(true);
                     else
                         ConvoEndDialog();
@@ -428,7 +441,7 @@ public class ConversationFragment_2 extends Fragment
             final SansTextViewBold myTextView = new SansTextViewBold(context);
             myTextView.setText(word);
             myTextView.setOnClickListener(v -> {
-                if (!FastSave.getInstance().getString(APP_SECTION,"").equalsIgnoreCase(sec_Test)) {
+                if (!FastSave.getInstance().getString(APP_SECTION, "").equalsIgnoreCase(sec_Test)) {
                     if (voiceStart)
                         btn_read_mic.performClick();
                     playChat("" + answerAudio);
@@ -460,7 +473,7 @@ public class ConversationFragment_2 extends Fragment
 
     @Click(R.id.btn_play)
     public void chatAnswer() {
-        if (!FastSave.getInstance().getString(APP_SECTION,"").equalsIgnoreCase(sec_Test)) {
+        if (!FastSave.getInstance().getString(APP_SECTION, "").equalsIgnoreCase(sec_Test)) {
             if (voiceStart)
                 startRecognition();
             new Handler().postDelayed(() -> playChat("" + answerAudio), 100);
@@ -586,7 +599,8 @@ public class ConversationFragment_2 extends Fragment
     }
 
     @Override
-    public void stoppedPressed() { }
+    public void stoppedPressed() {
+    }
 
     @Override
     public void sttEngineReady() {
@@ -711,7 +725,7 @@ public class ConversationFragment_2 extends Fragment
             float perc = getCompletionPercentage();
             presenter.addCompletion(perc);
             dialog.dismiss();
-            if (FastSave.getInstance().getString(APP_SECTION,"").equalsIgnoreCase(sec_Test)) {
+            if (FastSave.getInstance().getString(APP_SECTION, "").equalsIgnoreCase(sec_Test)) {
                 int pages = getCompletionPages();
                 int msgPercLength = msgPercentage.length;
 
@@ -836,7 +850,7 @@ public class ConversationFragment_2 extends Fragment
 
     @Override
     public void gameClose() {
-        if(audioFlg)
+        if (audioFlg)
             mediaPlayerUtil.stopMedia();
 //        aaaaa
         presenter.addScore(0, "", 0, 0, "Convo End");

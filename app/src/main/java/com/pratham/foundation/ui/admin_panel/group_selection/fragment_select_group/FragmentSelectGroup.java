@@ -153,7 +153,7 @@ public class FragmentSelectGroup extends Fragment implements ContractGroup {
             // rv_group.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false));
             RecyclerView.LayoutManager mLayoutManager = new GridLayoutManager(getActivity(), 2);
             rv_group.setLayoutManager(mLayoutManager);
-            rv_group.addItemDecoration(new GridSpacingItemDecoration(2, dpToPx(getActivity(),10), true));
+            rv_group.addItemDecoration(new GridSpacingItemDecoration(2, dpToPx(getActivity(), 10), true));
             rv_group.setItemAnimator(new DefaultItemAnimator());
             //recyclerView.setAdapter(adapter);
 
@@ -172,10 +172,10 @@ public class FragmentSelectGroup extends Fragment implements ContractGroup {
         }
         if (groupSelected != null) {
             //todo remove comment
-          //  ApplicationClass.bubble_mp.start();
+            //  ApplicationClass.bubble_mp.start();
             ArrayList<Student> students = new ArrayList<>();
             String currentStudName = groupSelected.GroupName;
-            FastSave.getInstance().saveString(FC_Constants.CURRENT_STUDENT_NAME , currentStudName);
+            FastSave.getInstance().saveString(FC_Constants.CURRENT_STUDENT_NAME, currentStudName);
             students.addAll(AppDatabase.getDatabaseInstance(context).getStudentDao().getGroupwiseStudents(groupSelected.getGroupId()));
             Bundle bundle = new Bundle();
             bundle.putParcelableArrayList(FC_Constants.STUDENT_LIST, students);

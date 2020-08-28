@@ -29,6 +29,15 @@ public class API_Content {
     API_Content_Result apiContentResult;
     static String responseAPI = "";
 
+    /**
+     * @param context
+     * @param apiContentResult This contains the fetching of data from API and giving the result.
+     *                         Instance from the calling method is used to return the result back.
+     * @param apiContentResult is used to return the result back to the calling class.
+     *                         if success - requestType and response is sent to receivedContent() method.
+     *                         else only requestType is sent to receivedError() method.
+     */
+
     public API_Content(Context context, API_Content_Result apiContentResult) {
         this.mContext = context;
         this.apiContentResult = apiContentResult;
@@ -38,14 +47,15 @@ public class API_Content {
         try {
             String url_id;
             url_id = url + nodeId;
-            Log.d("API_Content_LOG", "getAPIContent: "+nodeId);
-            Log.d("API_Content_LOG", "url_id: "+url_id);
+            Log.d("API_Content_LOG", "getAPIContent: " + nodeId);
+            Log.d("API_Content_LOG", "url_id: " + url_id);
             AndroidNetworking.get(url_id)
                     .addHeaders("Content-Type", "application/json")
                     .build()
                     .getAsString(new StringRequestListener() {
                         @Override
                         public void onResponse(String response) {
+                            //Success - Send requestType and response to the calling class.
                             if (apiContentResult != null)
                                 apiContentResult.receivedContent(requestType, response);
                         }
@@ -58,6 +68,7 @@ public class API_Content {
                             } catch (Exception e) {
                                 e.printStackTrace();
                             }
+                            //Error - Send requestType to the calling class.
                             if (apiContentResult != null)
                                 apiContentResult.receivedError(requestType);
                         }
@@ -70,15 +81,16 @@ public class API_Content {
     public void getAPIContent(final String requestType, String url, String nodeId) {
         try {
             String url_id;
-            url_id = url + nodeId +DEVICE_ID_STR+ FC_Utility.getDeviceID();
-            Log.d("API_Content_LOG", "getAPIContent: "+nodeId);
-            Log.d("API_Content_LOG", "url_id: "+url_id);
+            url_id = url + nodeId + DEVICE_ID_STR + FC_Utility.getDeviceID();
+            Log.d("API_Content_LOG", "getAPIContent: " + nodeId);
+            Log.d("API_Content_LOG", "url_id: " + url_id);
             AndroidNetworking.get(url_id)
                     .addHeaders("Content-Type", "application/json")
                     .build()
                     .getAsString(new StringRequestListener() {
                         @Override
                         public void onResponse(String response) {
+                            //Success - Send requestType and response to the calling class.
                             if (apiContentResult != null)
                                 apiContentResult.receivedContent(requestType, response);
                         }
@@ -91,6 +103,7 @@ public class API_Content {
                             } catch (Exception e) {
                                 e.printStackTrace();
                             }
+                            //Success - Send requestType and response to the calling class.
                             if (apiContentResult != null)
                                 apiContentResult.receivedError(requestType);
                         }
@@ -100,50 +113,18 @@ public class API_Content {
         }
     }
 
-//    public void getAPIContentTemp(final String requestType, String url, String nodeId) {
-//        try {
-//            String url_id;
-////            url_id = url + nodeId +DEVICE_ID_STR+ FC_Utility.getDeviceID();
-//            url_id =  "http://devposapi.prathamopenschool.org/api/content/downloadv3?id=55262&deviceid=1";
-//            Log.d("API_Content_LOG", "getAPIContent: "+nodeId);
-//            AndroidNetworking.get(url_id)
-//                    .addHeaders("Content-Type", "application/json")
-//                    .build()
-//                    .getAsString(new StringRequestListener() {
-//                        @Override
-//                        public void onResponse(String response) {
-//                            if (apiContentResult != null)
-//                                apiContentResult.receivedContent(requestType, response);
-//                        }
-//
-//                        @Override
-//                        public void onError(ANError anError) {
-//                            try {
-//                                Log.d("Error:", anError.getErrorDetail());
-//                                // Log.d("Error::", anError.getResponse().toString());
-//                            } catch (Exception e) {
-//                                e.printStackTrace();
-//                            }
-//                            if (apiContentResult != null)
-//                                apiContentResult.receivedError(requestType);
-//                        }
-//                    });
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
-//    }
-
     public void getAPILanguage(final String requestType, String url) {
         try {
             String url_id;
-            url_id = url + rootParentId +DEVICE_ID_STR+ FC_Utility.getDeviceID();
-            Log.d("API_Content_LOG", "getAPIContent: "+url_id);
+            url_id = url + rootParentId + DEVICE_ID_STR + FC_Utility.getDeviceID();
+            Log.d("API_Content_LOG", "getAPIContent: " + url_id);
             AndroidNetworking.get(url_id)
                     .addHeaders("Content-Type", "application/json")
                     .build()
                     .getAsString(new StringRequestListener() {
                         @Override
                         public void onResponse(String response) {
+                            //Success - Send requestType and response to the calling class.
                             if (apiContentResult != null)
                                 apiContentResult.receivedContent(requestType, response);
                         }
@@ -156,6 +137,7 @@ public class API_Content {
                             } catch (Exception e) {
                                 e.printStackTrace();
                             }
+                            //Success - Send requestType and response to the calling class.
                             if (apiContentResult != null)
                                 apiContentResult.receivedError(requestType);
                         }
@@ -178,12 +160,14 @@ public class API_Content {
                 .getAsJSONArray(new JSONArrayRequestListener() {
                     @Override
                     public void onResponse(JSONArray response) {
+                        //Success - Send requestType and response to the calling class.
                         if (apiContentResult != null)
                             apiContentResult.receivedContent(header, response.toString());
                     }
 
                     @Override
                     public void onError(ANError error) {
+                        //Success - Send requestType and response to the calling class.
                         if (apiContentResult != null)
                             apiContentResult.receivedError(header);
                     }
@@ -198,56 +182,22 @@ public class API_Content {
                 .getAsJSONArray(new JSONArrayRequestListener() {
                     @Override
                     public void onResponse(JSONArray response) {
+                        //Success - Send requestType and response to the calling class.
                         if (apiContentResult != null)
                             apiContentResult.receivedContent(header, response.toString());
                     }
 
                     @Override
                     public void onError(ANError error) {
+                        //Success - Send requestType and response to the calling class.
                         if (apiContentResult != null)
                             apiContentResult.receivedError(header);
                     }
                 });
     }
 
-    public static String getAPIContentResult(String url, String nodeId) {
-        try {
-            String url_id;
-            url_id = url + "" + nodeId;
-            AndroidNetworking.get(url_id)
-                    .addHeaders("Content-Type", "application/json")
-                    .build()
-                    .getAsString(new StringRequestListener() {
-                        @Override
-                        public void onResponse(String response) {
-                            responseAPI = response;
-/*                            if (apiContentResult != null)
-                                apiContentResult.receivedContent(requestType, response);*/
-                        }
-
-                        @Override
-                        public void onError(ANError anError) {
-                            responseAPI = "";
-                            try {
-                                Log.d("Error:", anError.getErrorDetail());
-                                // Log.d("Error::", anError.getResponse().toString());
-                            } catch (Exception e) {
-                                e.printStackTrace();
-                            }
-/*                            if (apiContentResult != null)
-                                apiContentResult.receivedError(requestType);*/
-                        }
-
-                    });
-            return responseAPI;
-        } catch (Exception e) {
-            e.printStackTrace();
-            return "";
-        }
-    }
-
     public static void downloadImage(String url, String filename) {
-        File dir = new File(ApplicationClass.foundationPath +  "" + App_Thumbs_Path ); //Creating an internal dir;
+        File dir = new File(ApplicationClass.foundationPath + "" + App_Thumbs_Path); //Creating an internal dir;
         if (!dir.exists()) dir.mkdirs();
         AndroidNetworking.download(url, dir.getAbsolutePath(), filename)
                 .setPriority(Priority.HIGH)
@@ -265,7 +215,5 @@ public class API_Content {
                     }
                 });
     }
-
-
 
 }

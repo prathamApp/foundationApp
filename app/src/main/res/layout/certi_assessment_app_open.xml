@@ -14,7 +14,7 @@
         android:id="@+id/btn_test_update"
         android:layout_width="wrap_content"
         android:layout_height="50dp"
-        android:background="@drawable/button_green"
+        android:background="@drawable/button_blue"
         android:drawableEnd="@drawable/assessment_logo"
         android:drawablePadding="5dp"
         android:layout_centerHorizontal="true"

@@ -383,6 +383,7 @@ public class LearningFragment extends Fragment implements LearningContract.Learn
     }
 
     BlurPopupWindow noDataDlg;
+
     @SuppressLint("SetTextI18n")
     @Override
     @UiThread
@@ -478,7 +479,12 @@ public class LearningFragment extends Fragment implements LearningContract.Learn
     @UiThread
     @Override
     public void onPreResOpenClicked(int position, String nId, String title, boolean onSDCard) {
-        ButtonClickSound.start();
+        try {
+            ButtonClickSound.start();
+        } catch (IllegalStateException e) {
+            e.printStackTrace();
+        }
+
         Intent mainNew = new Intent(context, ContentPlayerActivity_.class);
         mainNew.putExtra("nodeID", nId);
         mainNew.putExtra("title", title);
@@ -492,7 +498,7 @@ public class LearningFragment extends Fragment implements LearningContract.Learn
         FastSave.getInstance().saveString(APP_SECTION, "" + sec_Learning);
         try {
             ButtonClickSound.start();
-        } catch (Exception e) {
+        } catch (IllegalStateException e) {
             e.printStackTrace();
         }
         if (singleItem.getNodeType().equalsIgnoreCase("category") || singleItem.getResourceType().equalsIgnoreCase("category")) {
@@ -514,7 +520,12 @@ public class LearningFragment extends Fragment implements LearningContract.Learn
     public void onContentOpenClicked(ContentTable contentList) {
         //Toast.makeText(this, "ContentOpen : Work In Progress", Toast.LENGTH_SHORT).show();
         FastSave.getInstance().saveString(APP_SECTION, sec_Learning);
-        ButtonClickSound.start();
+        try {
+            ButtonClickSound.start();
+        } catch (IllegalStateException e) {
+            e.printStackTrace();
+        }
+
         downloadNodeId = contentList.getNodeId();
         resName = contentList.getNodeTitle();
         if (contentList.getNodeType().equalsIgnoreCase("PreResource") ||
@@ -645,7 +656,12 @@ public class LearningFragment extends Fragment implements LearningContract.Learn
         this.downloadType = downloadType;
         downloadNodeId = contentList.getNodeId();
         FastSave.getInstance().saveString(APP_SECTION, "" + sec_Learning);
-        ButtonClickSound.start();
+        try {
+            ButtonClickSound.start();
+        } catch (IllegalStateException e) {
+            e.printStackTrace();
+        }
+
 //        downloadNodeId = "" + 1371;
         this.parentPos = parentPos;
         this.childPos = childPos;
@@ -775,6 +791,12 @@ public class LearningFragment extends Fragment implements LearningContract.Learn
 
     @Override
     public void seeMore(String nodeId, String nodeTitle) {
+        try {
+            ButtonClickSound.start();
+        } catch (IllegalStateException e) {
+            e.printStackTrace();
+        }
+
         FastSave.getInstance().saveString(APP_SECTION, sec_Learning);
         Intent intent = new Intent(context, ContentDisplay_.class);
         intent.putExtra("nodeId", nodeId);

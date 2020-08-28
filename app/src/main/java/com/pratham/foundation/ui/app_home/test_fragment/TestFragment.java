@@ -106,6 +106,8 @@ public class TestFragment extends Fragment implements TestContract.TestView,
     RecyclerView my_recycler_view;
     @ViewById(R.id.btn_test_dw)
     Button btn_test_dw;
+    @ViewById(R.id.btn_open_assessment)
+    Button btn_open_assessment;
     @ViewById(R.id.ib_langChange)
     ImageButton ib_langChange;
     @ViewById(R.id.rl_no_data)
@@ -145,7 +147,7 @@ public class TestFragment extends Fragment implements TestContract.TestView,
                 .ShowHideToolbarOnScrollingListener(header_rl));
 
         language = FastSave.getInstance().getString(FC_Constants.APP_LANGUAGE, HINDI);
-        Log.d("LANGUAGE TEST", "LANGUAGE TEST: "+language);
+        Log.d("LANGUAGE TEST", "LANGUAGE TEST: " + language);
 
         ib_langChange.setVisibility(View.GONE);
         if (FastSave.getInstance().getString(APP_SECTION, "").equalsIgnoreCase(sec_Test)) {
@@ -159,6 +161,7 @@ public class TestFragment extends Fragment implements TestContract.TestView,
     public void showNoDataLayout() {
         try {
             dismissLoadingDialog();
+            btn_open_assessment.setVisibility(View.VISIBLE);
             rl_no_data.setVisibility(View.VISIBLE);
             my_recycler_view.setVisibility(View.GONE);
             btn_test_dw.setVisibility(View.GONE);
@@ -237,6 +240,12 @@ public class TestFragment extends Fragment implements TestContract.TestView,
 
     @Click(R.id.ib_langChange)
     public void langChangeButtonClick() {
+        try {
+            ButtonClickSound.start();
+        } catch (IllegalStateException e) {
+            e.printStackTrace();
+        }
+
         showLanguageSelectionDialog();
     }
 
@@ -318,6 +327,7 @@ public class TestFragment extends Fragment implements TestContract.TestView,
     }
 
     boolean eventBusFlg = false;
+
     @Override
     public void onStart() {
         super.onStart();
@@ -461,7 +471,7 @@ public class TestFragment extends Fragment implements TestContract.TestView,
                     String jsonName = getLevelWiseJson(Integer.parseInt(rootLevelList.get(i).getNodeTitle()));
                     isUpdate = rootLevelList.get(i).isNodeUpdate();
                     JSONArray testData = presenter.getTestData(jsonName);
-                    if(testData!= null) {
+                    if (testData != null) {
                         boolean langFlg = false;
                         try {
                             for (int x = 0; x < testData.length(); x++) {
@@ -477,11 +487,11 @@ public class TestFragment extends Fragment implements TestContract.TestView,
                             e.printStackTrace();
                         }
                         presenter.generateTestData(testData, rootLevelList.get(i).getNodeId(), isUpdate);
-                    }
-                    else {
+                    } else {
                         clearTestList();
                         my_recycler_view.removeAllViews();
-                        testAdapter.notifyDataSetChanged();
+                        if (testAdapter != null)
+                            testAdapter.notifyDataSetChanged();
                         dismissLoadingDialog();
                         ShowTestDownloadBtn();
                     }
@@ -499,8 +509,8 @@ public class TestFragment extends Fragment implements TestContract.TestView,
                     try {
                         for (int x = 0; x < testData.length(); x++) {
                             String lang = testData.getJSONObject(x).getString("lang");
-                            if(lang.equalsIgnoreCase(FastSave.getInstance().getString(FC_Constants.APP_LANGUAGE, HINDI)))
-                                langFlg=true;
+                            if (lang.equalsIgnoreCase(FastSave.getInstance().getString(FC_Constants.APP_LANGUAGE, HINDI)))
+                                langFlg = true;
                         }
                         if (!langFlg)
                             language = testData.getJSONObject(0).getString("lang");
@@ -568,8 +578,8 @@ public class TestFragment extends Fragment implements TestContract.TestView,
                     try {
                         for (int x = 0; x < testData.length(); x++) {
                             String lang = testData.getJSONObject(x).getString("lang");
-                            if(lang.equalsIgnoreCase(FastSave.getInstance().getString(FC_Constants.APP_LANGUAGE, HINDI)))
-                                langFlg=true;
+                            if (lang.equalsIgnoreCase(FastSave.getInstance().getString(FC_Constants.APP_LANGUAGE, HINDI)))
+                                langFlg = true;
                         }
                         if (!langFlg)
                             language = testData.getJSONObject(0).getString("lang");
@@ -656,24 +666,122 @@ public class TestFragment extends Fragment implements TestContract.TestView,
         btn_test_dw.performClick();
     }
 
+    BlurPopupWindow myDialog;
+    @UiThread
+    @SuppressLint("SetTextI18n")
+    void showComingSoonDia() {
+        myDialog = new BlurPopupWindow.Builder(context)
+                .setContentView(R.layout.lottie_coming_soon)
+                .bindClickListener(v -> {
+                    new Handler().postDelayed(() -> {
+                        myDialog.dismiss();
+                    }, 200);
+                }, R.id.dia_btn_yes)
+                .setGravity(Gravity.CENTER)
+                .setDismissOnTouchBackground(false)
+                .setDismissOnClickBack(false)
+                .setScaleRatio(0.2f)
+                .setBlurRadius(10)
+                .setTintColor(0x30000000)
+                .build();
+        myDialog.show();
+    }
+
+    @Click(R.id.btn_open_assessment)
+    public void openAssessmentAppBtnClick() {
+        openAssessmentApp();
+    }
+
     @UiThread
     @Override
     public void openAssessmentApp() {
-        Toast.makeText(context, "Opening Assessment App", Toast.LENGTH_SHORT).show();
         try {
-            Intent launchIntent = Objects.requireNonNull(getActivity()).getPackageManager()
-                    .getLaunchIntentForPackage("com.pratham.assessment");
-//            Intent launchIntent = new Intent("com.pratham.assessment.ui.splash_activity");
+            ButtonClickSound.start();
+        } catch (IllegalStateException e) {
+            e.printStackTrace();
+        }
+        showComingSoonDia();
+//        Toast.makeText(context, "Opening Assessment App", Toast.LENGTH_SHORT).show();
+/*        try {
+            String profileName = "";
+            if (FastSave.getInstance().getString(FC_Constants.LOGIN_MODE, FC_Constants.GROUP_MODE).equalsIgnoreCase(GROUP_MODE))
+                profileName = AppDatabase.getDatabaseInstance(context).getGroupsDao().getGroupNameByGrpID(FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""));
+            else if (!FastSave.getInstance().getString(FC_Constants.LOGIN_MODE, FC_Constants.GROUP_MODE).equalsIgnoreCase(QR_GROUP_MODE)) {
+                profileName = AppDatabase.getDatabaseInstance(context).getStudentDao().getFullName(FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""));
+            }
+
+            Bundle bundle = new Bundle();
+            FastSave.getInstance().getString(FC_Constants.CURRENT_FOLDER_NAME, currentSubjectFolder);
+
+            bundle.putString("appName", "" + getResources().getString(R.string.app_name));
+            bundle.putString("studentId", "" + FastSave.getInstance().getString(FC_Constants.CURRENT_ASSESSMENT_STUDENT_ID, ""));
+            bundle.putString("studentName", "" + profileName);
+            bundle.putString("subjectName", "" + FastSave.getInstance().getString(FC_Constants.CURRENT_SUBJECT, ""));
+            bundle.putString("subjectLanguage", "" + FastSave.getInstance().getString(FC_Constants.APP_LANGUAGE, FC_Constants.HINDI));
+            bundle.putString("subjectLevel", "" + currentLevel);
+            Intent launchIntent = new Intent("com.pratham.assessment.ui.choose_assessment.ChooseAssessmentActivity_");
+//            Intent launchIntent = Objects.requireNonNull(getActivity()).getPackageManager()
+//                    .getLaunchIntentForPackage("com.pratham.assessment");
+            Objects.requireNonNull(launchIntent).putExtras(bundle);
             startActivity(launchIntent);//null pointer check in case package name was not found
 
-        }catch (Exception e){
-            Toast.makeText(context, "Install Assessment App", Toast.LENGTH_SHORT).show();
+        } catch (Exception e) {
+            downloadAssessmentAppDialog();
+//            Toast.makeText(context, "Install Assessment App", Toast.LENGTH_SHORT).show();
+        }*/
+    }
+
+    @SuppressLint("SetTextI18n")
+    @UiThread
+    public void downloadAssessmentAppDialog() {
+        try {
+            fcDialog = new BlurPopupWindow.Builder(context)
+                    .setContentView(R.layout.fc_custom_dialog)
+                    .setGravity(Gravity.CENTER)
+                    .setDismissOnTouchBackground(false)
+                    .setDismissOnClickBack(false)
+                    .bindClickListener(v -> {
+                        new Handler().postDelayed(() -> {
+                            startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=com.pratham.assessment")));
+                            fcDialog.dismiss();
+                        }, 200);
+                    }, R.id.dia_btn_green)
+                    .bindClickListener(v -> {
+                        new Handler().postDelayed(() -> {
+                            fcDialog.dismiss();
+                        }, 200);
+                    }, R.id.dia_btn_red)
+                    .setScaleRatio(0.2f)
+                    .setBlurRadius(10)
+                    .setTintColor(0x30000000)
+                    .build();
+
+            TextView dia_title = fcDialog.findViewById(R.id.dia_title);
+            Button dia_btn_yellow = fcDialog.findViewById(R.id.dia_btn_yellow);
+            Button dia_btn_green = fcDialog.findViewById(R.id.dia_btn_green);
+            Button dia_btn_red = fcDialog.findViewById(R.id.dia_btn_red);
+            dia_btn_yellow.setVisibility(View.GONE);
+
+            dia_btn_red.setText(context.getResources().getString(R.string.Cancel));
+            dia_title.setText("Please Download Assessment App From Google Play Store");
+            dia_btn_green.setText(getResources().getString(R.string.Okay));
+
+            fcDialog.show();
+
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 
     @Click(R.id.btn_test_dw)
     void onDownLoadClick() {
         try {
+            try {
+                ButtonClickSound.start();
+            } catch (IllegalStateException e) {
+                e.printStackTrace();
+            }
+
             showLoader();
             int i = 0;
             for (i = 0; i < rootLevelList.size(); i++)
@@ -890,6 +998,7 @@ public class TestFragment extends Fragment implements TestContract.TestView,
     public void hideTestDownloadBtn() {
         try {
             btn_test_dw.setVisibility(View.GONE);
+            btn_open_assessment.setVisibility(View.GONE);
             ib_langChange.setVisibility(View.VISIBLE);
         } catch (Exception e) {
             e.printStackTrace();
@@ -899,6 +1008,7 @@ public class TestFragment extends Fragment implements TestContract.TestView,
     @UiThread
     public void ShowTestDownloadBtn() {
         try {
+            btn_open_assessment.setVisibility(View.VISIBLE);
             btn_test_dw.setVisibility(View.VISIBLE);
             ib_langChange.setVisibility(View.GONE);
         } catch (Exception e) {
@@ -923,6 +1033,12 @@ public class TestFragment extends Fragment implements TestContract.TestView,
                 } else
                     testAdapter.notifyDataSetChanged();
             } else {
+                clearTestList();
+                my_recycler_view.removeAllViews();
+//                my_recycler_view.setVisibility(View.GONE);
+                if (testAdapter != null)
+                    testAdapter.notifyDataSetChanged();
+                btn_open_assessment.setVisibility(View.VISIBLE);
                 btn_test_dw.setVisibility(View.VISIBLE);
                 ib_langChange.setVisibility(View.GONE);
             }
@@ -931,7 +1047,6 @@ public class TestFragment extends Fragment implements TestContract.TestView,
         }
         //        testAdapter.initializeIndex();
     }
-
 
 
     @Override
@@ -1044,8 +1159,8 @@ public class TestFragment extends Fragment implements TestContract.TestView,
         try {
             for (int x = 0; x < testData.length(); x++) {
                 String lang = testData.getJSONObject(x).getString("lang");
-                if(lang.equalsIgnoreCase(FastSave.getInstance().getString(FC_Constants.APP_LANGUAGE, HINDI)))
-                    langFlg=true;
+                if (lang.equalsIgnoreCase(FastSave.getInstance().getString(FC_Constants.APP_LANGUAGE, HINDI)))
+                    langFlg = true;
             }
             if (!langFlg)
                 language = testData.getJSONObject(0).getString("lang");
@@ -1136,7 +1251,7 @@ public class TestFragment extends Fragment implements TestContract.TestView,
 //        level_progress.setCurProgress(percent);
     }
 
-//    private BlurPopupWindow downloadDialog;
+    //    private BlurPopupWindow downloadDialog;
     private CustomLodingDialog downloadDialog;
     private ProgressLayout progressLayout;
     private TextView dialog_file_name;
@@ -1201,8 +1316,9 @@ public class TestFragment extends Fragment implements TestContract.TestView,
         }
     }
 
-//    BlurPopupWindow errorDialog;
+    //    BlurPopupWindow errorDialog;
     CustomLodingDialog errorDialog;
+
     @UiThread
     public void showDownloadErrorDialog() {
         try {

@@ -80,7 +80,7 @@ import static com.pratham.foundation.utility.FC_Constants.sec_Test;
 @EFragment(R.layout.fragment_para_reading)
 public class ParaSttReadingFragment extends Fragment implements
         STT_Result_New.sttView, OnGameClose,
-        ParaSttReadingContract.ParaSttReadingView{
+        ParaSttReadingContract.ParaSttReadingView {
 
     @Bean(ParaSttReadingPresenter.class)
     ParaSttReadingContract.ParaSttReadingPresenter presenter;
@@ -369,7 +369,7 @@ public class ParaSttReadingFragment extends Fragment implements
         new Handler().postDelayed(() -> {
             //setMute(0);
             if (lastPgFlag) {
-                if (FastSave.getInstance().getString(APP_SECTION,"").equalsIgnoreCase(sec_Test))
+                if (FastSave.getInstance().getString(APP_SECTION, "").equalsIgnoreCase(sec_Test))
                     showStars(true);
                 else
                     showAcknowledgeDialog(true);
@@ -421,7 +421,7 @@ public class ParaSttReadingFragment extends Fragment implements
 
     private void playClickedWord(int id) {
         try {
-            if (!FastSave.getInstance().getString(APP_SECTION,"").equalsIgnoreCase(sec_Test) && !clickFlag) {
+            if (!FastSave.getInstance().getString(APP_SECTION, "").equalsIgnoreCase(sec_Test) && !clickFlag) {
                 clickFlag = true;
                 Log.d("ReadingPara", "wordCounter : " + wordCounter);
                 float end = Float.parseFloat(modalPagesList.get(currentPage).getReadList().get(id).getWordDuration());
@@ -568,7 +568,7 @@ public class ParaSttReadingFragment extends Fragment implements
         if (voiceStart) {
             voiceStart = false;
             btn_Stop.setVisibility(View.GONE);
-            if (!FastSave.getInstance().getString(APP_SECTION,"").equalsIgnoreCase(sec_Test) && !playHideFlg)
+            if (!FastSave.getInstance().getString(APP_SECTION, "").equalsIgnoreCase(sec_Test) && !playHideFlg)
                 btn_Play.setVisibility(View.VISIBLE);
             btn_Mic.setVisibility(View.VISIBLE);
             continuousSpeechService.stopSpeechInput();
@@ -771,7 +771,12 @@ public class ParaSttReadingFragment extends Fragment implements
                 setMute(0);
             }
             wordCounter = 0;
-            ButtonClickSound.start();
+            try {
+                ButtonClickSound.start();
+            } catch (IllegalStateException e) {
+                e.printStackTrace();
+            }
+
             try {
                 if (audioHandler != null)
                     audioHandler.removeCallbacksAndMessages(null);
@@ -845,7 +850,12 @@ public class ParaSttReadingFragment extends Fragment implements
             btn_Mic.performClick();
             setMute(0);
         }
-        ButtonClickSound.start();
+        try {
+            ButtonClickSound.start();
+        } catch (IllegalStateException e) {
+            e.printStackTrace();
+        }
+
         if (currentPage < totalPages - 1) {
 //            layout_ripplepulse_right.startRippleAnimation();
             wordCounter = 0;
@@ -944,7 +954,7 @@ public class ParaSttReadingFragment extends Fragment implements
         dia_btn_yellow.setOnClickListener(v -> dialog.dismiss());
         dia_btn_green.setOnClickListener(v -> {
             dialog.dismiss();
-            if (FastSave.getInstance().getString(APP_SECTION,"").equalsIgnoreCase(sec_Test)) {
+            if (FastSave.getInstance().getString(APP_SECTION, "").equalsIgnoreCase(sec_Test)) {
                 float correctCnt = getPercentage();
                 Intent returnIntent = new Intent();
                 returnIntent.putExtra("cCode", certiCode);
@@ -1123,7 +1133,7 @@ public class ParaSttReadingFragment extends Fragment implements
         if (voiceStart) {
             btn_Mic.performClick();
             voiceStart = false;
-            if (!FastSave.getInstance().getString(APP_SECTION,"").equalsIgnoreCase(sec_Test) && !playHideFlg)
+            if (!FastSave.getInstance().getString(APP_SECTION, "").equalsIgnoreCase(sec_Test) && !playHideFlg)
                 btn_Play.setVisibility(View.VISIBLE);
             setMute(0);
         }
@@ -1246,7 +1256,7 @@ public class ParaSttReadingFragment extends Fragment implements
 
     @Override
     public void gameClose() {
-        if (FastSave.getInstance().getString(APP_SECTION,"").equalsIgnoreCase(sec_Test)) {
+        if (FastSave.getInstance().getString(APP_SECTION, "").equalsIgnoreCase(sec_Test)) {
             float correctCnt = getPercentage();
             Intent returnIntent = new Intent();
             returnIntent.putExtra("cCode", certiCode);
@@ -1307,7 +1317,7 @@ public class ParaSttReadingFragment extends Fragment implements
         if (requestCode == 11) {
             if (resultCode == Activity.RESULT_OK) {
                 new Handler().postDelayed(() -> {
-                    if (!FastSave.getInstance().getString(APP_SECTION,"").equalsIgnoreCase(sec_Test))
+                    if (!FastSave.getInstance().getString(APP_SECTION, "").equalsIgnoreCase(sec_Test))
                         btn_Play.performClick();
                     else {
                         btn_Mic.performClick();

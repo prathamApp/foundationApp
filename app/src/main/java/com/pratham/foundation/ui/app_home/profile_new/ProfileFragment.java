@@ -56,6 +56,7 @@ import java.util.List;
 import java.util.Objects;
 
 import static com.pratham.foundation.ApplicationClass.App_Thumbs_Path;
+import static com.pratham.foundation.ApplicationClass.ButtonClickSound;
 import static com.pratham.foundation.utility.FC_Constants.GROUP_MODE;
 import static com.pratham.foundation.utility.FC_Constants.INDIVIDUAL_MODE;
 import static com.pratham.foundation.utility.FC_Constants.LOGIN_MODE;
@@ -163,6 +164,11 @@ public class ProfileFragment extends Fragment implements ProfileContract.Profile
 
     @Click(R.id.card_img)
     public void showBottomFragment() {
+        try {
+            ButtonClickSound.start();
+        } catch (IllegalStateException e) {
+            e.printStackTrace();
+        }
         if (!ApplicationClass.getAppMode()) {
             SPLASH_OPEN = false;
             BottomStudentsFragment_ bottomStudentsFragment = new BottomStudentsFragment_();
@@ -237,6 +243,11 @@ public class ProfileFragment extends Fragment implements ProfileContract.Profile
 
     @Override
     public void itemClicked(String usage) {
+        try {
+            ButtonClickSound.start();
+        } catch (IllegalStateException e) {
+            e.printStackTrace();
+        }
         switch (usage) {
             case "Certificate":
                 showCertificates();

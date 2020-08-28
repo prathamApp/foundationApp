@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name" translatable="false">Foundation App</string>
+    <string name="app_name" translatable="false">Foundation Course</string>
 
     <string name="Login">Login</string>
     <string name="Stt_Dialog_Msg">Please download language packs English(India) and हिंदी(भारत) offline for better performance</string>
@@ -43,7 +43,7 @@
     <string name="Next_activity">Next activity?</string>
     <string name="Do_you_want_to_exit">Do you want to exit?</string>
     <string name="activity_completed">Activity completed</string>
-    <string name="hint">hint</string>
+    <string name="hint">Hint</string>
     <string name="clear">clear</string>
     <string name="submit">submit</string>
     <string name="hide_hint">Hide Hint</string>

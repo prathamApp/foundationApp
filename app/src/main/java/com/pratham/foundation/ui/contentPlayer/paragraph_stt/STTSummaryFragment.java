@@ -59,7 +59,6 @@ import static com.pratham.foundation.utility.FC_Constants.HINDI;
 import static com.pratham.foundation.utility.FC_Constants.gameFolderPath;
 
 
-
 @EFragment(R.layout.fragment_stt_questions)
 public class STTSummaryFragment extends Fragment implements
         /*RecognitionListener, */STT_Result_Lang.sttView,
@@ -233,8 +232,8 @@ public class STTSummaryFragment extends Fragment implements
             btn_prev.setVisibility(View.VISIBLE);
             btn_next.setVisibility(View.VISIBLE);
         }
-            if (totalPages - 1 == 0)
-                btn_prev.setVisibility(View.GONE);
+        if (totalPages - 1 == 0)
+            btn_prev.setVisibility(View.GONE);
         pageTitle = paraSttQuestionList.get(currentPage).getQuesText();
         startTime = FC_Utility.getCurrentDateTime();
         story_title.setText(pageTitle);
@@ -316,7 +315,12 @@ public class STTSummaryFragment extends Fragment implements
                 setMute(0);
             }
             wordCounter = 0;
-            ButtonClickSound.start();
+            try {
+                ButtonClickSound.start();
+            } catch (IllegalStateException e) {
+                e.printStackTrace();
+            }
+
             Log.d("click", "totalPages: PreviousBtn: " + totalPages + "  currentPage: " + currentPage);
             try {
                 currentPage--;
@@ -354,7 +358,12 @@ public class STTSummaryFragment extends Fragment implements
                 ib_mic.performClick();
                 setMute(0);
             }
-            ButtonClickSound.start();
+            try {
+                ButtonClickSound.start();
+            } catch (IllegalStateException e) {
+                e.printStackTrace();
+            }
+
             Log.d("click", "totalPages: NextBtn: " + totalPages + "  currentPage: " + currentPage);
             currentPage++;
             pageNo++;

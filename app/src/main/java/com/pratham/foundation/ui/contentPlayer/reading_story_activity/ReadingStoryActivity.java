@@ -227,7 +227,7 @@ public class ReadingStoryActivity extends BaseActivity implements
     public void dismissLoadingDialog() {
         try {
             new Handler().postDelayed(() -> {
-                if (dialogFlg && myLoadingDialog!=null) {
+                if (dialogFlg && myLoadingDialog != null) {
                     myLoadingDialog.dismiss();
                     dialogFlg = false;
                 }
@@ -634,8 +634,8 @@ public class ReadingStoryActivity extends BaseActivity implements
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
-    //            btn_Play.setImageResource(R.drawable.ic_stop_black_24dp);
-    //            btn_Play.setText("Stop");
+                    //            btn_Play.setImageResource(R.drawable.ic_stop_black_24dp);
+                    //            btn_Play.setText("Stop");
                     if (audioHandler != null)
                         audioHandler.removeCallbacksAndMessages(null);
                     if (handler != null)
@@ -658,7 +658,7 @@ public class ReadingStoryActivity extends BaseActivity implements
                         startReadingHandler.removeCallbacksAndMessages(null);
                     if (soundStopHandler != null)
                         soundStopHandler.removeCallbacksAndMessages(null);
-    //            layout_ripplepulse_right.stopRippleAnimation();
+                    //            layout_ripplepulse_right.stopRippleAnimation();
                     setMute(0);
                     if (stopFlg) {
                         wordCounter = 0;
@@ -719,7 +719,12 @@ public class ReadingStoryActivity extends BaseActivity implements
     void gotoPrevPage() {
         if (currentPage > 0) {
             wordCounter = 0;
-            ButtonClickSound.start();
+            try {
+                ButtonClickSound.start();
+            } catch (IllegalStateException e) {
+                e.printStackTrace();
+            }
+
             try {
                 if (audioHandler != null)
                     audioHandler.removeCallbacksAndMessages(null);
@@ -799,7 +804,12 @@ public class ReadingStoryActivity extends BaseActivity implements
             nextPressedFlg = true;
 //            layout_ripplepulse_right.startRippleAnimation();
             wordCounter = 0;
-            ButtonClickSound.start();
+            try {
+                ButtonClickSound.start();
+            } catch (IllegalStateException e) {
+                e.printStackTrace();
+            }
+
             if (voiceStart) {
                 btn_Stop.performClick();
                 if (!FastSave.getInstance().getString(APP_SECTION, "").equalsIgnoreCase(sec_Test) && !playHideFlg)
@@ -896,8 +906,8 @@ public class ReadingStoryActivity extends BaseActivity implements
         Button dia_btn_green = dialog.findViewById(R.id.dia_btn_green);
         Button dia_btn_red = dialog.findViewById(R.id.dia_btn_red);
 
-        dia_btn_green.setText(""+ getResources().getString(R.string.yes));
-        dia_btn_red.setText(""+ getResources().getString(R.string.no));
+        dia_btn_green.setText("" + getResources().getString(R.string.yes));
+        dia_btn_red.setText("" + getResources().getString(R.string.no));
         dia_btn_yellow.setText("" + getResources().getString(R.string.cancel));
         dia_btn_yellow.setVisibility(View.GONE);
         dialog.show();

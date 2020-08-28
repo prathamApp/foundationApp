@@ -110,9 +110,9 @@ public class ConversationFragment_1 extends Fragment
     // ContinuousSpeechService_New continuousSpeechService;
     boolean isUser = false;
     private String resStartTime;
-    String resId,convoTitle;
-//    AnimationDrawable animationDrawable;
-Handler handler;
+    String resId, convoTitle;
+    //    AnimationDrawable animationDrawable;
+    Handler handler;
 
     @AfterViews
     public void initialize() {
@@ -144,9 +144,8 @@ Handler handler;
         else
             convoPath = ApplicationClass.foundationPath + gameFolderPath + "/" + contentPath + "/";
         resStartTime = FC_Utility.getCurrentDateTime();
-        presenter.setView(ConversationFragment_1.this,resId,contentName,resStartTime);
+        presenter.setView(ConversationFragment_1.this, resId, contentName, resStartTime);
         presenter.addScore(0, "", 0, 0, resStartTime, FC_Utility.getCurrentDateTime(), GameConstatnts.NEW_CHIT_CHAT_1 + " " + GameConstatnts.START, resId, true);
-
 
 
         //        if (convoMode.equals("A"))
@@ -175,10 +174,10 @@ Handler handler;
 
     @UiThread
     @Override
-    public void setConvoJson(JSONArray returnStoryNavigate,String convoTitle) {
+    public void setConvoJson(JSONArray returnStoryNavigate, String convoTitle) {
         conversation = returnStoryNavigate;
         if (conversation != null) {
-            if(convoTitle!=null){
+            if (convoTitle != null) {
                 tv_title.setText(convoTitle);
             }
             if (handler == null) {
@@ -202,7 +201,7 @@ Handler handler;
     @UiThread
     @Override
     public void sendClikChanger(int clickOn) {
-        if (!FastSave.getInstance().getString(APP_SECTION,"").equalsIgnoreCase(sec_Test)) {
+        if (!FastSave.getInstance().getString(APP_SECTION, "").equalsIgnoreCase(sec_Test)) {
             if (clickOn == 0) {
                 btn_imgsend.setVisibility(View.GONE);
                 //btn_speaker.setVisibility(View.VISIBLE);
@@ -228,7 +227,12 @@ Handler handler;
     public void startRecognition() {
        *//* if (!voiceStart) {
             //showLoader();
-            // ButtonClickSound.start();
+            //         try {
+            ButtonClickSound.start();
+        } catch (IllegalStateException e) {
+            e.printStackTrace();
+        }
+
             voiceStart = true;
             btn_reading.setImageResource(R.drawable.ic_stop_black);
             btn_reading.setBackgroundResource(R.drawable.button_red);
@@ -238,7 +242,12 @@ Handler handler;
             btn_reading.setImageResource(R.drawable.ic_mic_black);
             btn_reading.setBackgroundResource(R.drawable.button_green);
            // continuousSpeechService.stopSpeechInput();
-            //ButtonClickSound.start();
+            //        try {
+            ButtonClickSound.start();
+        } catch (IllegalStateException e) {
+            e.printStackTrace();
+        }
+
         }*//*
     }*/
 
@@ -247,7 +256,12 @@ Handler handler;
         if (handler != null) {
             sendClikChanger(0);
             // float perc = presenter.getPercentage();
-            ButtonClickSound.start();
+            try {
+                ButtonClickSound.start();
+            } catch (IllegalStateException e) {
+                e.printStackTrace();
+            }
+
             //   btn_reading.setImageResource(R.drawable.ic_mic_black);
       /*  if (voiceStart)
             btn_reading.performClick();*/
@@ -409,10 +423,10 @@ Handler handler;
             final SansTextViewBold myTextView = new SansTextViewBold(context);
             myTextView.setText(word);
             myTextView.setOnClickListener(v -> {
-                if (!FastSave.getInstance().getString(APP_SECTION,"").equalsIgnoreCase(sec_Test)) {
+                if (!FastSave.getInstance().getString(APP_SECTION, "").equalsIgnoreCase(sec_Test)) {
                     if (voiceStart)
                         //  btn_reading.performClick();
-                    playChat("" + answerAudio);
+                        playChat("" + answerAudio);
                 }
             });
             myTextView.setTextSize(20);
@@ -489,7 +503,7 @@ Handler handler;
         currentQueNos = 0;
         messageList.clear();
         readChatFlow.removeAllViews();
-        setConvoJson(conversation,convoTitle);
+        setConvoJson(conversation, convoTitle);
     }
 
     @Click(R.id.btn_play)
@@ -534,6 +548,7 @@ Handler handler;
             btn_reading.setBackground(getActivity().getResources().getDrawable(R.drawable.button_yellow));
         }
     }
+
     @UiThread
     @Override
     public void submitAns(String[] splitQues) {
@@ -748,7 +763,7 @@ Handler handler;
                 returnIntent.putExtra("tMarks", msgPercLength);*//*
                 //setResult(Activity.RESULT_OK, returnIntent);
             }*/
-           // closeConvo();
+            // closeConvo();
         });
     }
 
@@ -869,10 +884,11 @@ Handler handler;
         paly_pause();
         GameConstatnts.playGameNext(context, GameConstatnts.TRUE, this);
     }
+
     @Override
     public void gameClose() {
         presenter.addLearntWords(messageList);
-       // presenter.setCompletionPercentage(conversation.length(), messageList.size());
+        // presenter.setCompletionPercentage(conversation.length(), messageList.size());
         presenter.addScore(0, "", 0, 0, resStartTime, FC_Utility.getCurrentDateTime(), GameConstatnts.NEW_CHIT_CHAT_1 + " " + GameConstatnts.END, resId, true);
         if (handler != null) {
             handler.removeCallbacks(null);
