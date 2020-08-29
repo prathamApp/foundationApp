@@ -70,13 +70,16 @@ public class PullDataPresenterImp implements PullDataContract.PullDataPresenter,
 
     @Override
     public void loadPrgramsSpinner() {
+        //fetch programs and add to list
         if (isConnectedToRasp) {
+            //fetch from raspberry pie device
             AndroidNetworking.get(FC_Constants.URL.DATASTORE_RASPBERY_PROGRAM_STATE_URL.toString())
                     .addHeaders("Content-Type", "application/json")
                     .addHeaders("Authorization", getAuthHeader("pratham", "pratham")).build()
                     .getAsJSONArray(new JSONArrayRequestListener() {
                         @Override
                         public void onResponse(JSONArray response) {
+                            //Success - Add programs to list
                             prgrmList.clear();
                             Type listType = new TypeToken<List<RaspProgram>>() {
                             }.getType();
@@ -105,11 +108,13 @@ public class PullDataPresenterImp implements PullDataContract.PullDataPresenter,
                         }
                     });
         } else {
+            //fetch from server
             AndroidNetworking.get(FC_Constants.URL.PULL_PROGRAMS.toString())
                     .addHeaders("Content-Type", "application/json").build()
                     .getAsJSONArray(new JSONArrayRequestListener() {
                         @Override
                         public void onResponse(JSONArray response) {
+                            //Success - Add programs to list
                             prgrmList.clear();
                             Type listType = new TypeToken<List<ModalProgram>>() {
                             }.getType();
@@ -136,7 +141,9 @@ public class PullDataPresenterImp implements PullDataContract.PullDataPresenter,
 
     @Override
     public void loadSpinner(String selectedProgramId) {
+        //fetch states and add it to list
         if (isConnectedToRasp) {
+            //fetch from raspberry pie device
             String[] states = context.getResources().getStringArray(R.array.india_states);
             String[] codes = context.getResources().getStringArray(R.array.india_states_shortcode);
             modalStates.clear();
@@ -147,10 +154,11 @@ public class PullDataPresenterImp implements PullDataContract.PullDataPresenter,
             }
             pullDataView.showStatesSpinner(modalStates);
         }else{
+            //fetch from server as per selected program
             AndroidNetworking.get(FC_Constants.URL.PULL_STATES.toString()+""+selectedProgramId).build().getAsJSONArray(new JSONArrayRequestListener() {
                 @Override
                 public void onResponse(JSONArray response) {
-                    // do anything with response
+                    //Success - Add programs to list
                     Gson gson = new Gson();
                     Type listType = new TypeToken<List<ModalStates>>() {
                     }.getType();
@@ -195,151 +203,21 @@ public class PullDataPresenterImp implements PullDataContract.PullDataPresenter,
 
     @Override
     public void loadBlockSpinner(int pos, String selectedProgram) {
-
+        //fetch blocks and add it to list
         pullDataView.showProgressDialog("loading Blocks");
         selectedBlock = modalStates.get(pos).getStateCode();
         this.selectedProgram = selectedProgram;
         String url;
         if (isConnectedToRasp) {
+            //fetch from raspberry device as per selected program and selected state
             url = APIs.pullVillagesKolibriURL + selectedProgram + APIs.KOLIBRI_STATE + selectedBlock;
             api_content.pullFromKolibri(FC_Constants.KOLIBRI_BLOCK, url);
         } else {
+            //fetch from server as per selected program and selected state
             url = APIs.pullVillagesServerURL + selectedProgram + APIs.SERVER_STATE + selectedBlock;
             api_content.pullFromInternet(FC_Constants.SERVER_BLOCK, url);
         }
-//        StatusDao statusDao = AppDatabase.getDatabaseInstance(context).getStatusDao();
-//        statusDao.updateValue("programId", "" + selectedProgram);
-
-/*        switch (selectedProgram) {
-            case APIs.HL:
-                if (isConnectedToRasp)
-                    url = APIs.RaspHLpullVillagesURL + selectedBlock;
-                else
-                    url = APIs.HLpullVillagesURL + selectedBlock;
-                downloadblock(url);
-                break;
-            case APIs.UP:
-                if (isConnectedToRasp)
-                    url = APIs.RaspUPpullVillagesURL + selectedBlock;
-                else
-                    url = APIs.UPpullVillagesURL + selectedBlock;
-                downloadblock(url);
-                break;
-            case APIs.ECE:
-                url = APIs.ECEpullVillagesURL + selectedBlock;
-                downloadblock(url);
-                break;
-            case RI:
-                if (isConnectedToRasp)
-                    url = APIs.RaspRIpullVillagesURL + selectedBlock;
-                else
-                    url = APIs.RIpullVillagesURL + selectedBlock;
-                downloadblock(url);
-                break;
-            case SC:
-                if (isConnectedToRasp)
-                    url = APIs.RaspSCpullVillagesURL + selectedBlock;
-                else
-                    url = APIs.SCpullVillagesURL + selectedBlock;
-                downloadblock(url);
-                break;
-            case PI:
-                if (isConnectedToRasp)
-                    url = APIs.RaspPIpullVillagesURL + selectedBlock;
-                else
-                    url = APIs.PIpullVillagesURL + selectedBlock;
-                downloadblock(url);
-                break;
-        }*/
     }
-
-/*
-    private void downloadblock(String url) {
-        if (isConnectedToRasp) {
-
-            AndroidNetworking.get(url)
-                    .addHeaders("Content-Type", "application/json")
-                    .addHeaders("Authorization", getAuthHeader("pratham", "pratham")).build()
-                    .getAsJSONArray(new JSONArrayRequestListener() {
-                        @Override
-                        public void onResponse(JSONArray response) {
-                            // do anything with response
-                            List<String> blockList = new ArrayList<>();
-                            Gson gson = new Gson();
-                            Type listType = new TypeToken<List<RaspVillage>>() {
-                            }.getType();
-                            raspVillageList = gson.fromJson(response.toString(), listType);
-                            if (raspVillageList != null) {
-                                if (raspVillageList.isEmpty()) {
-                                    blockList.add("NO BLOCKS");
-                                } else {
-                                    blockList.add("Select block");
-                                    for (RaspVillage raspVillage : raspVillageList) {
-                                        Village village = raspVillage.getData();
-                                        blockList.add(village.getBlock());
-
-                                    }
-
-                                }
-                                LinkedHashSet hs = new LinkedHashSet(blockList);
-                                blockList.clear();
-                                blockList.addAll(hs);
-                                pullDataView.showBlocksSpinner(blockList);
-                            }
-                            pullDataView.closeProgressDialog();
-                        }
-
-                        @Override
-                        public void onError(ANError error) {
-                            // handle error
-                            pullDataView.closeProgressDialog();
-                            pullDataView.clearBlockSpinner();
-                            pullDataView.showErrorToast();
-                        }
-                    });
-
-        } else {
-            AndroidNetworking.get(url)
-                    .addHeaders("Content-Type", "application/json")
-                    .addHeaders("Authorization", getAuthHeader("pratham", "pratham")).build()
-                    .getAsJSONArray(new JSONArrayRequestListener() {
-                        @Override
-                        public void onResponse(JSONArray response) {
-                            // do anything with response
-                            List<String> blockList = new ArrayList<>();
-                            Gson gson = new Gson();
-                            Type listType = new TypeToken<List<Village>>() {
-                            }.getType();
-                            villageList = gson.fromJson(response.toString(), listType);
-                            if (villageList != null) {
-                                if (villageList.isEmpty()) {
-                                    blockList.add("NO BLOCKS");
-                                } else {
-                                    blockList.add("Select block");
-                                    for (Village village : villageList) {
-                                        blockList.add(village.getBlock());
-                                    }
-                                }
-                                LinkedHashSet hs = new LinkedHashSet(blockList);
-                                blockList.clear();
-                                blockList.addAll(hs);
-                                pullDataView.showBlocksSpinner(blockList);
-                            }
-                            pullDataView.closeProgressDialog();
-                        }
-
-                        @Override
-                        public void onError(ANError error) {
-                            // handle error
-                            pullDataView.closeProgressDialog();
-                            pullDataView.clearBlockSpinner();
-                            pullDataView.showErrorToast();
-                        }
-                    });
-        }
-    }
-*/
-
 
     private String getAuthHeader(String ID, String pass) {
         String encoded = Base64.encodeToString((ID + ":" + pass).getBytes(), Base64.NO_WRAP);
@@ -358,60 +236,18 @@ public class PullDataPresenterImp implements PullDataContract.PullDataPresenter,
         count = 0;
         String url;
         if (isConnectedToRasp) {
+            //fetch student from raspberry device as per selected program and selected village
             for (String id : villageIDList) {
                 url = APIs.pullStudentsKolibriURL + selectedProgram + APIs.KOLIBRI_VILLAGE + id;
                 api_content.pullFromKolibri(FC_Constants.KOLIBRI_STU, url);
             }
         } else {
+            //fetch student from server as per selected program and selected village
             for (String id : villageIDList) {
                 url = APIs.pullStudentsServerURL + selectedProgram + APIs.SERVER_VILLAGE + id;
                 api_content.pullFromInternet(FC_Constants.SERVER_STU, url);
             }
         }
-        /*for (String id : villageIDList) {
-            String url;
-            switch (selectedProgram) {
-                case APIs.HL:
-                    if (isConnectedToRasp)
-                        url = APIs.RaspHLpullStudentsURL + id;
-                    else
-                        url = APIs.HLpullStudentsURL + id;
-                    loadStudent(url);
-                    break;
-                case APIs.UP:
-                    if (isConnectedToRasp)
-                        url = APIs.RaspUPpullStudentsURL + id;
-                    else
-                        url = APIs.UPpullStudentsURL + id;
-                    loadStudent(url);
-                    break;
-                case APIs.ECE:
-                    url = APIs.ECEpullStudentsURL + id;
-                    loadStudent(url);
-                    break;
-                case RI:
-                    if (isConnectedToRasp)
-                        url = APIs.RaspRIpullStudentsURL + id;
-                    else
-                        url = APIs.RIpullStudentsURL + id;
-                    loadStudent(url);
-                    break;
-                case SC:
-                    if (isConnectedToRasp)
-                        url = APIs.RaspSCpullStudentsURL + id;
-                    else
-                        url = APIs.SCpullStudentsURL + id;
-                    loadStudent(url);
-                    break;
-                case PI:
-                    if (isConnectedToRasp)
-                        url = APIs.RaspPIpullStudentsURL + id;
-                    else
-                        url = APIs.PIpullStudentsURL + id;
-                    loadStudent(url);
-                    break;
-            }
-        }*/
     }
 
     private void loadStudent(String url) {
@@ -473,64 +309,24 @@ public class PullDataPresenterImp implements PullDataContract.PullDataPresenter,
     }
 
     private void loadGroups() {
+        //fetch groups and add it to list
         if (count >= villageIDList.size()) {
             groupCount = 0;
             groupList.clear();
             String urlgroup;
             if (isConnectedToRasp) {
+                //fetch groups from raspberry pie device
                 for (String id : villageIDList) {
                     urlgroup = APIs.pullGroupsKolibriURL + selectedProgram + APIs.KOLIBRI_VILLAGE + id;
                     api_content.pullFromKolibri(FC_Constants.KOLIBRI_GRP, urlgroup);
                 }
             } else {
+                //fetch groups from server
                 for (String id : villageIDList) {
                     urlgroup = APIs.pullGroupsServerURL + selectedProgram + APIs.SERVER_VILLAGE + id;
                     api_content.pullFromInternet(FC_Constants.SERVER_GRP, urlgroup);
                 }
             }
-/*            for (String id : villageIDList) {
-                switch (selectedProgram) {
-                    case APIs.HL:
-                        if (isConnectedToRasp)
-                            urlgroup = APIs.RaspHLpullGroupsURL + id;
-                        else
-                            urlgroup = APIs.HLpullGroupsURL + id;
-                        downloadGroups(urlgroup);
-                        break;
-                    case APIs.UP:
-                        if (isConnectedToRasp)
-                            urlgroup = APIs.RaspUPpullGroupsURL + id;
-                        else
-                            urlgroup = APIs.UPpullGroupsURL + id;
-                        downloadGroups(urlgroup);
-                        break;
-                    case APIs.ECE:
-                        urlgroup = APIs.ECEpullGroupsURL + id;
-                        downloadGroups(urlgroup);
-                        break;
-                    case RI:
-                        if (isConnectedToRasp)
-                            urlgroup = APIs.RaspRIpullGroupsURL + id;
-                        else
-                            urlgroup = APIs.RIpullGroupsURL + id;
-                        downloadGroups(urlgroup);
-                        break;
-                    case SC:
-                        if (isConnectedToRasp)
-                            urlgroup = APIs.RaspSCpullGroupsURL + id;
-                        else
-                            urlgroup = APIs.SCpullGroupsURL + id;
-                        downloadGroups(urlgroup);
-                        break;
-                    case PI:
-                        if (isConnectedToRasp)
-                            urlgroup = APIs.RaspPIpullGroupsURL + id;
-                        else
-                            urlgroup = APIs.PIpullGroupsURL + id;
-                        downloadGroups(urlgroup);
-                        break;
-                }
-            }*/
         }
     }
 
@@ -595,59 +391,21 @@ public class PullDataPresenterImp implements PullDataContract.PullDataPresenter,
     }
 
     private void loadCRL() {
+        //fetch crl and add it to list
         if (groupCount >= villageIDList.size()) {
             String crlURL;
             if (crlList != null) {
                 crlList.clear();
             }
             if (isConnectedToRasp) {
+                //fetch crl's from raspberry pie device
                 crlURL = APIs.pullCrlsKolibriURL + selectedProgram + APIs.KOLIBRI_STATE + selectedBlock;
                 api_content.pullFromKolibri(FC_Constants.KOLIBRI_CRL, crlURL);
             } else {
+                //fetch crl's from server
                 crlURL = APIs.pullCrlsServerURL + selectedProgram + APIs.SERVER_STATECODE + selectedBlock;
                 api_content.pullFromInternet(FC_Constants.SERVER_CRL, crlURL);
             }
-/*            switch (selectedProgram) {
-                case APIs.HL:
-                    if (isConnectedToRasp)
-                        crlURL = APIs.RaspHLpullCrlsURL + selectedBlock;
-                    else
-                        crlURL = APIs.HLpullCrlsURL + selectedBlock;
-                    downloadCRL(crlURL);
-                    break;
-                case APIs.UP:
-                    if (isConnectedToRasp)
-                        crlURL = APIs.RaspUPpullCrlsURL + selectedBlock;
-                    else
-                        crlURL = APIs.UPpullCrlsURL + selectedBlock;
-                    downloadCRL(crlURL);
-                    break;
-                case APIs.ECE:
-                    crlURL = APIs.ECEpullCrlsURL + selectedBlock;
-                    downloadCRL(crlURL);
-                    break;
-                case RI:
-                    if (isConnectedToRasp)
-                        crlURL = APIs.RaspRIpullCrlsURL + selectedBlock;
-                    else
-                        crlURL = APIs.RIpullCrlsURL + selectedBlock;
-                    downloadCRL(crlURL);
-                    break;
-                case SC:
-                    if (isConnectedToRasp)
-                        crlURL = APIs.RaspSCpullCrlsURL + selectedBlock;
-                    else
-                        crlURL = APIs.SCpullCrlsURL + selectedBlock;
-                    downloadCRL(crlURL);
-                    break;
-                case PI:
-                    if (isConnectedToRasp)
-                        crlURL = APIs.RaspPIpullCrlsURL + selectedBlock;
-                    else
-                        crlURL = APIs.PIpullCrlsURL + selectedBlock;
-                    downloadCRL(crlURL);
-                    break;
-            }*/
         }
     }
 
@@ -715,6 +473,7 @@ public class PullDataPresenterImp implements PullDataContract.PullDataPresenter,
         BaseActivity.villageDao.insertAllVillages(villageList.get(0).getData());
        */
 
+       //insert data to database
         AppDatabase.getDatabaseInstance(context).getCrlDao().insertAll(crlList);
         Iterator<Student> i = studentList.iterator();
         while (i.hasNext()) {

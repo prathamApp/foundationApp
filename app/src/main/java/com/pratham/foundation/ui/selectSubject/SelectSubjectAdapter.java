@@ -79,6 +79,8 @@ public class SelectSubjectAdapter extends RecyclerView.Adapter {
 //                    Log.d("prathamschool", "onBindViewHolder : "+myUrl2);
 //                    ImageRequest imageRequest = ImageRequestBuilder
 //                            .newBuilderWithSource(Uri.parse(myUrl))
+
+                    //Set name and image of subject
                     myviewholder.content_title.setText(datalist.get(i).getNodeTitle());
                     ImageRequest imageRequest = ImageRequestBuilder
                             .newBuilderWithSource(Uri.parse(datalist.get(i).getNodeServerImage()))

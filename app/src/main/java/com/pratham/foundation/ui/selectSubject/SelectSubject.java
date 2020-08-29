@@ -93,6 +93,7 @@ public class SelectSubject extends BaseActivity implements
         tv_update.setVisibility(View.GONE);
         showLoader();
 
+        //get student name
         if (FastSave.getInstance().getString(FC_Constants.LOGIN_MODE, FC_Constants.GROUP_MODE).contains("group"))
             studName = FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_NAME, "");
         else
@@ -110,6 +111,7 @@ public class SelectSubject extends BaseActivity implements
         super.onResume();
         FC_Utility.setAppLocal(this, FastSave.getInstance().getString(FC_Constants.APP_LANGUAGE, FC_Constants.HINDI));
         subjectList.clear();
+        //Fire event bus to check update event.
         EventMessage eventMessage = new EventMessage();
         eventMessage.setMessage(FC_Constants.CHECK_UPDATE);
         EventBus.getDefault().post(eventMessage);
@@ -129,6 +131,7 @@ public class SelectSubject extends BaseActivity implements
     @Override
     public void notifySubjAdapter() {
         if (subjectAdapter == null) {
+            //Populate subject list to recyclerview
             subjectAdapter = new SelectSubjectAdapter(this, subjectList);
             RecyclerView.LayoutManager mLayoutManager = new GridLayoutManager(this, 1);
             subject_recycler.setLayoutManager(mLayoutManager);
@@ -182,6 +185,7 @@ public class SelectSubject extends BaseActivity implements
 
     @Click(R.id.tv_update)
     public void updateClicked() {
+        //Fire event bus to update event.
         EventMessage eventMessage = new EventMessage();
         eventMessage.setMessage(FC_Constants.START_UPDATE);
         EventBus.getDefault().post(eventMessage);
@@ -189,6 +193,7 @@ public class SelectSubject extends BaseActivity implements
 
     @Override
     public void onItemClicked(ContentTable contentTableObj) {
+        //Get the selected subject and set to app
         try {
             ButtonClickSound.start();
         } catch (IllegalStateException e) {
@@ -218,6 +223,7 @@ public class SelectSubject extends BaseActivity implements
 
         currentSubjectFolder = "" + currentSubject;
         gameFolderPath = "/.FCA/" + currentSubjectFolder + "/Game";
+        //add selected subject to shared preference
         FastSave.getInstance().saveString(FC_Constants.CURRENT_SUBJECT, currentSubject);
         FastSave.getInstance().saveString(FC_Constants.CURRENT_FOLDER_NAME, currentSubjectFolder);
         FastSave.getInstance().saveString(FC_Constants.CURRENT_ROOT_NODE, contentTableObj.getNodeId());

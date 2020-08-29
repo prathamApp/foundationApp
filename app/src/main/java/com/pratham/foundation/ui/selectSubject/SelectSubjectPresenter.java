@@ -65,6 +65,7 @@ public class SelectSubjectPresenter implements SelectSubjectContract.SubjectPres
             subjectList = AppDatabase.getDatabaseInstance(context).getContentTableDao().getChildsOfParent(rootID);
 
         if (FC_Utility.isDataConnectionAvailable(context))
+            //fetch subjects from API
             api_content.getAPIContent(FC_Constants.INTERNET_BROWSE, FC_Constants.INTERNET_BROWSE_API, currLangNodeId);
         else {
             subjectView.initializeSubjectList(subjectList);
@@ -97,6 +98,7 @@ public class SelectSubjectPresenter implements SelectSubjectContract.SubjectPres
                         subjectList.add(serverContentList.get(i));
                     }
                 }
+                //Set recieved subject and notifyadapter
                 subjectView.initializeSubjectList(subjectList);
                 subjectView.notifySubjAdapter();
                 subjectView.dismissLoadingDialog();

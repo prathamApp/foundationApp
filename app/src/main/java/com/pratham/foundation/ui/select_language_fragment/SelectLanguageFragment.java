@@ -105,7 +105,7 @@ public class SelectLanguageFragment extends Fragment implements SelectLangContra
     @Override
     public void notifyAdapter() {
         if (languageAdapter == null) {
-            //Ppolate language list to recyclerview
+            //Populate language list to recyclerview
             try {
                 languageAdapter = new LanguageAdapter(getActivity(), contentTableList, SelectLanguageFragment.this);
                 RecyclerView.LayoutManager mLayoutManager = new GridLayoutManager(context, 2);

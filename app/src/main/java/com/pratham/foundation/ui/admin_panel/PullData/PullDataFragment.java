@@ -67,19 +67,13 @@ public class PullDataFragment extends Fragment implements PullDataContract.PullD
         ButterKnife.bind(this, view);
         pullDataPresenter = new PullDataPresenterImp(getActivity(), this);
         pullDataPresenter.loadPrgramsSpinner();
-/*        radioGroupPrograms.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(RadioGroup group, int checkedId) {
-                pullDataPresenter.clearLists();
-            }
-        });*/
-        //pullDataPresenter.checkConnectivity();
     }
 
     String selectedProgram;
 
     @Override
     public void showProgram(List<ModalProgram> prgrmList) {
+        //Get all programs from list and add it to spinner
         try {
             this.prgrmList = prgrmList;
             List<String> prgrms = new ArrayList<>();
@@ -112,6 +106,7 @@ public class PullDataFragment extends Fragment implements PullDataContract.PullD
 
     @Override
     public void showStatesSpinner(List<ModalStates> modalStates) {
+        //Get all States from list and add it to spinner
         String[] statesArr = new String[modalStates.size()];
         for(int i=0;i<modalStates.size();i++)
             statesArr[i]=modalStates.get(i).getStateName();
@@ -126,14 +121,6 @@ public class PullDataFragment extends Fragment implements PullDataContract.PullD
                     clearBlockSpinner();
                 } else {
                     pullDataPresenter.loadBlockSpinner(pos, selectedProgram);
-/*                    int selectedRadioButtonId = radioGroupPrograms.getCheckedRadioButtonId();
-                    if (selectedRadioButtonId == -1) {
-                        Toast.makeText(getContext(), "Please Select Program", Toast.LENGTH_SHORT).show();
-                    } else {
-                        RadioButton radioButton = radioGroupPrograms.findViewById(selectedRadioButtonId);
-                        String selectedProgram = radioButton.getText().toString();
-                        pullDataPresenter.loadBlockSpinner(pos, selectedProgram);
-                    }*/
                 }
             }
 
@@ -146,6 +133,7 @@ public class PullDataFragment extends Fragment implements PullDataContract.PullD
 
     @Override
     public void showProgressDialog(String msg) {
+        //Show while loading data
         if (progressDialog == null) {
             progressDialog = new ProgressDialog(getActivity());
         }
@@ -194,6 +182,7 @@ public class PullDataFragment extends Fragment implements PullDataContract.PullD
 
     @Override
     public void showBlocksSpinner(List blocks) {
+        //Get all blocks from list and add it to spinner
         blockSpinner.setEnabled(true);
         ArrayAdapter arrayBlockAdapter = new ArrayAdapter(getActivity(), android.R.layout.simple_spinner_item, blocks);
         arrayBlockAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
