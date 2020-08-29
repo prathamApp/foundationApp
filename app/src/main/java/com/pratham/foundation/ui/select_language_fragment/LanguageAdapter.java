@@ -29,6 +29,7 @@ public class LanguageAdapter extends RecyclerView.Adapter {
     @NonNull
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int viewtype) {
+        // select view based on item type
         View view;
         switch (viewtype) {
             case 1:

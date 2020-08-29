@@ -110,12 +110,18 @@ public class PushDataToServer_New {
         showUi = false;
     }
 
+    /** This method begins the process of pushing data to server.
+     * Locally stored data is collected and added to its respective JsonArray defined globally above.
+     * @param showUi is used to show the push Dialog.
+     * */
     @Background
     public void startDataPush(Context context, boolean showUi) {
         this.context = context;
         this.showUi = showUi;
+        //Show Dialog
         if (showUi)
             showPushDialog(context);
+        //Here data is fetched from local database and added to a list and then passed to JsonArray.
         try {
             setMainTextToDialog("Collecting Data...");
             List<Score> scoreList = AppDatabase.getDatabaseInstance(context).getScoreDao().getAllPushScores();
@@ -148,7 +154,9 @@ public class PushDataToServer_New {
             imageUploadCnt = 0;
             imageUploadList = new ArrayList<>();
             isConnectedToRasp = false;
+            //Checks if device is connected to wifi
             if (ApplicationClass.wiseF.isDeviceConnectedToWifiNetwork()) {
+                //Checks if device is connected to raspberry pie
                 if (ApplicationClass.wiseF.isDeviceConnectedToSSID(FC_Constants.PRATHAM_KOLIBRI_HOTSPOT)) {
                     getFacilityId(pushDataJsonObject);
                 } else {
@@ -164,12 +172,14 @@ public class PushDataToServer_New {
         }
     }
 
+    //Set heading text of Dialog
     @UiThread
     public void setMainTextToDialog(String dialogMsg) {
         if (showUi)
             txt_push_dialog_msg.setText("" + dialogMsg);
     }
 
+    //Set sub text of dialog
     @UiThread
     public void setSubTextToDialog(String dialogMsg) {
         if (showUi) {
@@ -178,6 +188,7 @@ public class PushDataToServer_New {
         }
     }
 
+    //Custom loading dialog is shown
     @UiThread
     public void showPushDialog(Context context) {
         if (showUi) {
@@ -225,6 +236,7 @@ public class PushDataToServer_New {
                     .getAsString(new StringRequestListener() {
                         @Override
                         public void onResponse(String response) {
+                            //Success - Show dialog with success message.
                             if (response.equalsIgnoreCase("success")) {
                                 Log.d("PushData", "DATA PUSH SUCCESS");
                                 pushSuccessfull = true;
@@ -237,6 +249,7 @@ public class PushDataToServer_New {
 
                         @Override
                         public void onError(ANError anError) {
+                            //Fail - Show dialog with failure message.
                             Log.d("PushData", "Data push FAIL");
                             pushSuccessfull = false;
                             setDataPushFailed();
@@ -247,6 +260,7 @@ public class PushDataToServer_New {
         }
     }
 
+    //Method shows success dialog
     @UiThread
     public void setDataPushSuccessfull() {
         setPushFlag();
@@ -269,6 +283,7 @@ public class PushDataToServer_New {
         }
     }
 
+    //Method shows failure dialog
     @UiThread
     public void setDataPushFailed() {
         if (showUi) {
@@ -284,6 +299,7 @@ public class PushDataToServer_New {
         }
     }
 
+    //This method sets setFlag value to 1 in local database if data is successfully pushed to server.
     @Background
     public void setPushFlag() {
         AppDatabase.getDatabaseInstance(context).getLogsDao().setSentFlag();
@@ -362,6 +378,9 @@ public class PushDataToServer_New {
             dialog_file_name.setText("Uploading " + imgCtr + "/" + totalImages);
     }
 
+    /** This method is to push the list of the image to server.
+     * @param jsonIndex is always passed zero and incremented on success push.
+     * */
     @UiThread
     public void pushImagesToServer(final int jsonIndex) {
 //        Log.d("PushData", "Image jsonIndex : " + jsonIndex);
@@ -473,6 +492,7 @@ public class PushDataToServer_New {
                     .getAsString(new StringRequestListener() {
                         @Override
                         public void onResponse(String response) {
+                            //Success - push method is called and data is passes.
                             Gson gson = new Gson();
                             Modal_RaspFacility facility = gson.fromJson(response, Modal_RaspFacility.class);
                             FastSave.getInstance().saveString(FC_Constants.FACILITY_ID, facility.getFacilityId());
@@ -490,6 +510,7 @@ public class PushDataToServer_New {
                         @Override
                         public void onError(ANError anError) {
 //                            apiResult.notifyError(requestType/*, null*/);
+                            // Fail - Show dialog with failure message.
                             setDataPushFailed();
                             isConnectedToRasp = false;
                             Log.d("Error::", anError.getErrorDetail());
@@ -507,6 +528,7 @@ public class PushDataToServer_New {
         return "Basic " + encoded;
     }
 
+    //This method is used to push the data to raspberry device.
     public void pushDataToRaspberry(String url, String data, String filter_name, String table_name) {
         String authHeader = getAuthHeader();
         AndroidNetworking.post(url)
@@ -522,6 +544,7 @@ public class PushDataToServer_New {
                 .getAsString(new StringRequestListener() {
                     @Override
                     public void onResponse(String response) {
+                        //Success - Shows dialog with success message.
                         Log.d("Raspberry Success : ", "onResponse: " + response);
                         if (response.equalsIgnoreCase("success")) {
                             pushSuccessfull = true;
@@ -536,6 +559,7 @@ public class PushDataToServer_New {
 
                     @Override
                     public void onError(ANError anError) {
+                        //Fail - Show dialog with failure message.
                         pushSuccessfull = false;
                         setDataPushFailed();
                         Log.d("Raspberry Error::", anError.getErrorDetail());
@@ -545,6 +569,7 @@ public class PushDataToServer_New {
                 });
     }
 
+    //In this method data from json array and from local database is fetched and passed to jsonobject.
     private JSONObject generateRequestString(JSONArray scoreData, JSONArray attendanceData, JSONArray sessionData, JSONArray supervisorData, JSONArray logsData, JSONArray assessmentData, JSONArray studentData, JSONArray contentProgress, JSONArray keyWordsData) {
 //        String requestString = "";
         JSONObject pushJsonObject = new JSONObject();

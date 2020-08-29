@@ -78,19 +78,23 @@ public class SplashPresenter implements SplashContract.SplashPresenter {
         this.context = context;
     }
 
+    //Sets View(UI)
     @Override
     public void setView(SplashContract.SplashView splashView) {
         this.splashView = splashView;
     }
 
+    //Checks the current version of app and gets the latest version for app
     @Override
     public void checkVersion() {
+        //get current version of app
         String currentVersion = FC_Utility.getCurrentVersion(context);
         String updatedVersion = FastSave.getInstance().getString(CURRENT_VERSION, "-1");
         if (updatedVersion.equalsIgnoreCase("-1")) {
             if (FC_Utility.isDataConnectionAvailable(context)) {
+                //checks if new version is avalible on playstore
                 try {
-                    new GetLatestVersion(this).execute().get();
+                    new GetLatestVersion(this).execute().get();//method returns latest version
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -132,6 +136,7 @@ public class SplashPresenter implements SplashContract.SplashPresenter {
         try {
             boolean dbExist = checkDataBase();
             if (!dbExist) {
+                //check for specific folder and create database
                 try {
                     AppDatabase.getDatabaseInstance(context);
                     if (new File(Environment.getExternalStorageDirectory().getAbsolutePath() + "/PrathamBackups/" + DB_NAME).exists())
@@ -172,6 +177,7 @@ public class SplashPresenter implements SplashContract.SplashPresenter {
             SQLiteDatabase db = SQLiteDatabase.openDatabase(Environment.getExternalStorageDirectory()
                     .getAbsolutePath() + "/PrathamBackups/foundation_db", null, SQLiteDatabase.OPEN_READONLY);
             if (db != null) {
+                //Get all data and insert it in database
                 try {
                     Cursor content_cursor;
                     content_cursor = db.rawQuery("SELECT * FROM Score Where sentFlag=0", null);
@@ -373,6 +379,7 @@ public class SplashPresenter implements SplashContract.SplashPresenter {
 
     @Override
     public void doInitialEntries(AppDatabase appDatabase) {
+        //General info is inserted to database like deviceid, device name etc
         try {
             Log.d("pushorassign", "Splash doInitialEntries : KEY_MENU_COPIED: " + FastSave.getInstance().getBoolean(FC_Constants.INITIAL_ENTRIES, false));
             com.pratham.foundation.database.domain.Status status;
@@ -618,6 +625,7 @@ public class SplashPresenter implements SplashContract.SplashPresenter {
 
             @Override
             protected Void doInBackground(Void... voids) {
+                //check if data is present in folder and copy
                 try {
                     File mydir = null;
                     mydir = new File(ApplicationClass.foundationPath + "/.FCA");
@@ -676,6 +684,7 @@ public class SplashPresenter implements SplashContract.SplashPresenter {
     }
 
     public void populateMenu_New() {
+        //Get all data from the SD_Card and populate the menu
         try {
             Log.d("-CT-", "populateMenu_New in IFFFFFFFFFFFFFFFFFFFFFFFFFFFF");
             File folder_file, db_file;
@@ -732,6 +741,7 @@ public class SplashPresenter implements SplashContract.SplashPresenter {
         }
     }
 
+    //Extract data from the zip file
     private void unzipFile(String source, String destination) {
         ZipFile zipFile = null;
         try {
@@ -743,6 +753,7 @@ public class SplashPresenter implements SplashContract.SplashPresenter {
         }
     }
 
+    //copy and unzip the file
     private void copyFile(Context context, String path) {
         AssetManager assetManager = context.getAssets();
         try {
@@ -948,6 +959,7 @@ public class SplashPresenter implements SplashContract.SplashPresenter {
         }
     }
 
+    //get current location
     @Override
     public void requestLocation() {
         new LocationService(context).checkLocation();
@@ -1042,6 +1054,7 @@ public class SplashPresenter implements SplashContract.SplashPresenter {
     }
 
 
+    //add start time of app
     @SuppressLint("StaticFieldLeak")
     private void addStartTime() {
         new AsyncTask<Object, Void, Object>() {
@@ -1062,6 +1075,7 @@ public class SplashPresenter implements SplashContract.SplashPresenter {
     }
 
 
+    //checks current version and playstore version
     private boolean isCurrentVersionEqualsPlayStoreVersion(String currentVersion, String
             playStoreVersion) {
         float cVersion, pVersion;

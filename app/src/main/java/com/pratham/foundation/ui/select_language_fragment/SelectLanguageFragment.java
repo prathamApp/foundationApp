@@ -61,6 +61,7 @@ public class SelectLanguageFragment extends Fragment implements SelectLangContra
 
     @AfterViews
     public void initialize() {
+        //get runtime objects and clear the unused
         Runtime rs = Runtime.getRuntime();
         rs.freeMemory();
         rs.gc();
@@ -90,6 +91,7 @@ public class SelectLanguageFragment extends Fragment implements SelectLangContra
 
     @Override
     public void itemClicked(ContentTable contentItem, int pos) {
+        //Get the selected langauge and set to app
         FastSave.getInstance().saveBoolean(APP_LANGUAGE_SELECTED, true);
         String language = contentItem.getNodeTitle();
         String languageNodeId = contentItem.getNodeId();
@@ -103,6 +105,7 @@ public class SelectLanguageFragment extends Fragment implements SelectLangContra
     @Override
     public void notifyAdapter() {
         if (languageAdapter == null) {
+            //Ppolate language list to recyclerview
             try {
                 languageAdapter = new LanguageAdapter(getActivity(), contentTableList, SelectLanguageFragment.this);
                 RecyclerView.LayoutManager mLayoutManager = new GridLayoutManager(context, 2);
