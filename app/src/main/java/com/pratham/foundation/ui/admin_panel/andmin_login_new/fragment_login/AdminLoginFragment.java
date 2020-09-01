@@ -45,8 +45,10 @@ public class AdminLoginFragment extends Fragment implements AdminLoginContract.A
     @AfterViews
     public void initialize() {
         presenter.setView(AdminLoginFragment.this);
-        userNameET.setText("");
-        passwordET.setText("");
+//        userNameET.setText("");
+//        passwordET.setText("");
+        userNameET.setText("Pratham1234");
+        passwordET.setText("Pratham@1234");
 /*          userNameET.setText("pravinthorat");
         passwordET.setText("pratham123");*/
     }

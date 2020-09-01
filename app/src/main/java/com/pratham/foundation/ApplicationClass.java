@@ -30,8 +30,9 @@ import okhttp3.OkHttpClient;
 
 public class ApplicationClass extends Application {
 
-    //    public static String uploadDataUrl = "http://prodigi.openiscool.org/api/cosv2/pushdata";
-    public static String uploadDataUrl = "http://devprodigi.openiscool.org/api/Foundation/PushData";
+//    public static String uploadDataUrl = "http://devprodigi.openiscool.org/api/Foundation/PushData";
+//    DelhiGov
+    public static String uploadDataUrl = "http://delhigovt.centralindia.cloudapp.azure.com:8087/api/Foundation/PushData";
     public static boolean isTablet = false;
     public static boolean contentExistOnSD = false, LocationFlg = false;
     public static String contentSDPath = "";

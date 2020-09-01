@@ -61,6 +61,7 @@ public class FunPresenter implements FunContract.FunPresenter, API_Content_Resul
     @Bean(ZipDownloader.class)
     ZipDownloader zipDownloader;
     private String cosSection;
+    String botID;
 
     public FunPresenter(Context mContext) {
         this.mContext = mContext;
@@ -111,7 +112,6 @@ public class FunPresenter implements FunContract.FunPresenter, API_Content_Resul
         try {
             this.currentLevelNo = currentLevelNo;
             this.cosSection = cosSection;
-            String botID;
 //        String rootID = FC_Utility.getRootNode(FastSave.getInstance().getString(FC_Constants.LANGUAGE, FC_Constants.HINDI));
             String rootID = sub_nodeId;
 //        String rootID = "4030";
@@ -794,6 +794,8 @@ public class FunPresenter implements FunContract.FunPresenter, API_Content_Resul
     public void receivedError(String header) {
         if (header.equalsIgnoreCase(FC_Constants.INTERNET_LEVEL)) {
             funView.setSelectedLevel(rootList);
+        } else if (header.equalsIgnoreCase(FC_Constants.BOTTOM_NODE)) {
+            getLevelDataForList(currentLevelNo, botID);
         } else if (header.equalsIgnoreCase(FC_Constants.INTERNET_BROWSE)) {
             addHeadersAndNotifyAdapter(contentParentList);
 //            funView.addContentToViewList(contentParentList);

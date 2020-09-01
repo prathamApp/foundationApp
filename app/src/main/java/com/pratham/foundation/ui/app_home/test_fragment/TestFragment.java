@@ -8,6 +8,7 @@ import android.content.res.Resources;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
+import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.DefaultItemAnimator;
@@ -39,6 +40,7 @@ import com.pratham.foundation.customView.BlurPopupDialog.BlurPopupWindow;
 import com.pratham.foundation.customView.collapsingView.RetractableToolbarUtil;
 import com.pratham.foundation.customView.display_image_dialog.CustomLodingDialog;
 import com.pratham.foundation.customView.progress_layout.ProgressLayout;
+import com.pratham.foundation.database.AppDatabase;
 import com.pratham.foundation.database.BackupDatabase;
 import com.pratham.foundation.database.domain.ContentTable;
 import com.pratham.foundation.modalclasses.CertificateModelClass;
@@ -84,8 +86,11 @@ import static com.pratham.foundation.ui.app_home.HomeActivity.levelChanged;
 import static com.pratham.foundation.utility.FC_Constants.APP_SECTION;
 import static com.pratham.foundation.utility.FC_Constants.CERTI_CODE;
 import static com.pratham.foundation.utility.FC_Constants.CLOSE_TEST_EVENTBUS;
+import static com.pratham.foundation.utility.FC_Constants.GROUP_MODE;
 import static com.pratham.foundation.utility.FC_Constants.HINDI;
+import static com.pratham.foundation.utility.FC_Constants.QR_GROUP_MODE;
 import static com.pratham.foundation.utility.FC_Constants.currentLevel;
+import static com.pratham.foundation.utility.FC_Constants.currentSubjectFolder;
 import static com.pratham.foundation.utility.FC_Constants.gameFolderPath;
 import static com.pratham.foundation.utility.FC_Constants.sec_Test;
 import static com.pratham.foundation.utility.FC_Constants.testSessionEnded;
@@ -700,13 +705,13 @@ public class TestFragment extends Fragment implements TestContract.TestView,
         } catch (IllegalStateException e) {
             e.printStackTrace();
         }
-        showComingSoonDia();
+//        showComingSoonDia();
 //        Toast.makeText(context, "Opening Assessment App", Toast.LENGTH_SHORT).show();
-/*        try {
+        try {
             String profileName = "";
-            if (FastSave.getInstance().getString(FC_Constants.LOGIN_MODE, FC_Constants.GROUP_MODE).equalsIgnoreCase(GROUP_MODE))
+            if (FastSave.getInstance().getString(FC_Constants.LOGIN_MODE, GROUP_MODE).equalsIgnoreCase(GROUP_MODE))
                 profileName = AppDatabase.getDatabaseInstance(context).getGroupsDao().getGroupNameByGrpID(FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""));
-            else if (!FastSave.getInstance().getString(FC_Constants.LOGIN_MODE, FC_Constants.GROUP_MODE).equalsIgnoreCase(QR_GROUP_MODE)) {
+            else if (!FastSave.getInstance().getString(FC_Constants.LOGIN_MODE, GROUP_MODE).equalsIgnoreCase(QR_GROUP_MODE)) {
                 profileName = AppDatabase.getDatabaseInstance(context).getStudentDao().getFullName(FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""));
             }
 
@@ -720,15 +725,15 @@ public class TestFragment extends Fragment implements TestContract.TestView,
             bundle.putString("subjectLanguage", "" + FastSave.getInstance().getString(FC_Constants.APP_LANGUAGE, FC_Constants.HINDI));
             bundle.putString("subjectLevel", "" + currentLevel);
             Intent launchIntent = new Intent("com.pratham.assessment.ui.choose_assessment.ChooseAssessmentActivity_");
-//            Intent launchIntent = Objects.requireNonNull(getActivity()).getPackageManager()
-//                    .getLaunchIntentForPackage("com.pratham.assessment");
+            //Intent launchIntent = Objects.requireNonNull(getActivity()).getPackageManager()
+            //        .getLaunchIntentForPackage("com.pratham.assessment");
             Objects.requireNonNull(launchIntent).putExtras(bundle);
-            startActivity(launchIntent);//null pointer check in case package name was not found
-
+            startActivity(launchIntent);
+            // null pointer check in case package name was not found
         } catch (Exception e) {
             downloadAssessmentAppDialog();
 //            Toast.makeText(context, "Install Assessment App", Toast.LENGTH_SHORT).show();
-        }*/
+        }
     }
 
     @SuppressLint("SetTextI18n")

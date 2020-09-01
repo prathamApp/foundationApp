@@ -140,12 +140,12 @@ public class PullAndAssign_Fragment extends Fragment implements PullAndAssign_Co
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int pos, long l) {
 //                disableSaveButton();
-                if (pos <= 0) {
-                    clearBlockSpinner();
-                } else {
+//                if (pos <= 0) {
+//                    clearBlockSpinner();
+//                } else {
                     showProgressDialog("Please wait");
                     presenter.loadBlockSpinner(pos, selectedProgram);
-                }
+//                }
             }
 
             @Override

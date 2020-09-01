@@ -62,6 +62,7 @@ public class PracticePresenter implements PracticeContract.PracticePresenter, AP
     @Bean(ZipDownloader.class)
     ZipDownloader zipDownloader;
     private String cosSection;
+    String botID;
 
     public PracticePresenter(Context mContext) {
         this.mContext = mContext;
@@ -112,8 +113,7 @@ public class PracticePresenter implements PracticeContract.PracticePresenter, AP
         try {
             this.currentLevelNo = currentLevelNo;
             this.cosSection = cosSection;
-            String botID;
-//        String rootID = FC_Utility.getRootNode(FastSave.getInstance().getString(FC_Constants.LANGUAGE, FC_Constants.HINDI));
+            //        String rootID = FC_Utility.getRootNode(FastSave.getInstance().getString(FC_Constants.LANGUAGE, FC_Constants.HINDI));
             String rootID = sub_nodeId;
 //        String rootID = "4030";
             botID = AppDatabase.getDatabaseInstance(mContext).getContentTableDao().getContentDataByTitle("" + rootID, cosSection);
@@ -795,7 +795,9 @@ public class PracticePresenter implements PracticeContract.PracticePresenter, AP
     public void receivedError(String header) {
         if (header.equalsIgnoreCase(FC_Constants.INTERNET_LEVEL)) {
             practiceView.setSelectedLevel(rootList);
-        } else if (header.equalsIgnoreCase(FC_Constants.INTERNET_BROWSE)) {
+        }  else if (header.equalsIgnoreCase(FC_Constants.BOTTOM_NODE)) {
+            getLevelDataForList(currentLevelNo, botID);
+        }else if (header.equalsIgnoreCase(FC_Constants.INTERNET_BROWSE)) {
             addHeadersAndNotifyAdapter(contentParentList);
 //            practiceView.addContentToViewList(contentParentList);
 //            practiceView.notifyAdapter();

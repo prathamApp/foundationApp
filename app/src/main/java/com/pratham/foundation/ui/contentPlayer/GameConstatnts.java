@@ -50,6 +50,8 @@ import com.pratham.foundation.ui.contentPlayer.paragraph_stt.STTSummaryFragment;
 import com.pratham.foundation.ui.contentPlayer.paragraph_stt.STTSummaryFragment_;
 import com.pratham.foundation.ui.contentPlayer.paragraph_writing.ParagraphWritingFragment;
 import com.pratham.foundation.ui.contentPlayer.paragraph_writing.ParagraphWritingFragment_;
+import com.pratham.foundation.ui.contentPlayer.pdf_display.Fragment_PdfViewer;
+import com.pratham.foundation.ui.contentPlayer.pdf_display.Fragment_PdfViewer_;
 import com.pratham.foundation.ui.contentPlayer.pictionary.pictionaryFragment;
 import com.pratham.foundation.ui.contentPlayer.pictionary.pictionaryFragment_;
 import com.pratham.foundation.ui.contentPlayer.reading.ReadingFragment_;
@@ -196,11 +198,11 @@ public class GameConstatnts implements ShowInstruction {
                 dialog.dismiss();
                 onGameClose.gameClose();
 
-                if (FastSave.getInstance().getString(APP_SECTION,"").equalsIgnoreCase(sec_Test)) {
+                if (FastSave.getInstance().getString(APP_SECTION, "").equalsIgnoreCase(sec_Test)) {
                     ((ContentPlayerActivity) context).finish();
                 }
                 if (playInsequence) {
-                    plaGame(context,onSdCard2);
+                    plaGame(context, onSdCard2);
                 } else {
                     ((ContentPlayerActivity) context).getSupportFragmentManager().popBackStack(SequenceLayout_.class.getSimpleName(), 0);
                 }
@@ -213,9 +215,8 @@ public class GameConstatnts implements ShowInstruction {
             public void onClick(View v) {
                 //Exit game
                 onGameClose.gameClose();
-                if (FastSave.getInstance().getString(APP_SECTION,"").equalsIgnoreCase(sec_Test)) {
+                if (FastSave.getInstance().getString(APP_SECTION, "").equalsIgnoreCase(sec_Test))
                     ((ContentPlayerActivity) context).finish();
-                }
                 ((ContentPlayerActivity) context).getSupportFragmentManager().popBackStack(SequenceLayout_.class.getSimpleName(), 0);
                 dialog.dismiss();
             }
@@ -229,7 +230,7 @@ public class GameConstatnts implements ShowInstruction {
         });
     }
 
-    public static void plaGame(Context context,boolean onSdCard) {
+    public static void plaGame(Context context, boolean onSdCard) {
         onSdCard2 = onSdCard;
         contentTable1 = null;
         if (gameList != null && (currentGameAdapterposition < (gameList.size() - 1))) {
@@ -237,10 +238,10 @@ public class GameConstatnts implements ShowInstruction {
             currentGameAdapterposition++;
             contentTable1 = gameList.get(currentGameAdapterposition);
             if (contentTable1 != null) {
-                gameSelector(context, contentTable1,onSdCard);
+                gameSelector(context, contentTable1, onSdCard);
             }
         } else {
-            if (FastSave.getInstance().getString(APP_SECTION,"").equalsIgnoreCase(sec_Test)) {
+            if (FastSave.getInstance().getString(APP_SECTION, "").equalsIgnoreCase(sec_Test)) {
                 ((ContentPlayerActivity) context).finish();
             }
             ((ContentPlayerActivity) context).getSupportFragmentManager().popBackStack(SequenceLayout_.class.getSimpleName(), 0);
@@ -254,10 +255,10 @@ public class GameConstatnts implements ShowInstruction {
             currentGameAdapterposition--;
             contentTable1 = gameList.get(currentGameAdapterposition);
             if (contentTable1 != null) {
-                gameSelector(context, contentTable1,onSdCard);
+                gameSelector(context, contentTable1, onSdCard);
             }
         } else {
-            if (FastSave.getInstance().getString(APP_SECTION,"").equalsIgnoreCase(sec_Test)) {
+            if (FastSave.getInstance().getString(APP_SECTION, "").equalsIgnoreCase(sec_Test)) {
                 ((ContentPlayerActivity) context).finish();
             }
             ((ContentPlayerActivity) context).getSupportFragmentManager().popBackStack(SequenceLayout_.class.getSimpleName(), 0);
@@ -278,6 +279,10 @@ public class GameConstatnts implements ShowInstruction {
         bundle.putBoolean("onSdCard", onSdCard);
         bundle.putString("jsonName", contentTable1.getResourceType());
 
+//        FC_Utility.showFragment((Activity) context, new Fragment_PdfViewer_(), R.id.RL_CPA,
+//                bundle, Fragment_PdfViewer.class.getSimpleName());
+//        instructionsDialog.dismiss();
+
         switch (contentTable1.getResourceType()) {
             case GameConstatnts.FACTRETRIEVAL:
                 FC_Utility.showFragment((Activity) context, new FactRetrieval_(), R.id.RL_CPA,
@@ -295,6 +300,10 @@ public class GameConstatnts implements ShowInstruction {
                 FC_Utility.showFragment((Activity) context, new KeywordMappingFragment_(), R.id.RL_CPA,
                         bundle, KeywordMappingFragment_.class.getSimpleName());
                 break;
+            case FC_Constants.PDF:
+                FC_Utility.showFragment((Activity) context, new Fragment_PdfViewer_(), R.id.RL_CPA,
+                        bundle, Fragment_PdfViewer.class.getSimpleName());
+                break;
             case GameConstatnts.THINKANDWRITE:
                 if (FastSave.getInstance().getString(FC_Constants.CURRENT_SUBJECT, "").equalsIgnoreCase("Science")) {
                     FC_Utility.showFragment((Activity) context, new ParagraphWritingFragment_(), R.id.RL_CPA,
@@ -308,7 +317,8 @@ public class GameConstatnts implements ShowInstruction {
                 /*if (FastSave.getInstance().getString(FC_Constants.CURRENT_SUBJECT, "").equalsIgnoreCase("English")) {
                     FC_Utility.showFragment((Activity) context, new WordWritingFragment_(), R.id.RL_CPA,
                             bundle, WordWritingFragment_.class.getSimpleName());
-                } else*/ if (FastSave.getInstance().getString(FC_Constants.CURRENT_SUBJECT, "").equalsIgnoreCase("Science")) {
+                } else*/
+                if (FastSave.getInstance().getString(FC_Constants.CURRENT_SUBJECT, "").equalsIgnoreCase("Science")) {
                     FC_Utility.showFragment((Activity) context, new ParagraphWritingFragment_(), R.id.RL_CPA,
                             bundle, ParagraphWritingFragment.class.getSimpleName());
                 } else {
@@ -332,12 +342,10 @@ public class GameConstatnts implements ShowInstruction {
                 FC_Utility.showFragment((Activity) context, new multipleChoiceFragment_(), R.id.RL_CPA,
                         bundle, multipleChoiceFragment_.class.getSimpleName());
                 break;
-
             case GameConstatnts.READING_STT:
                 FC_Utility.showFragment((Activity) context, new ReadingFragment_(), R.id.RL_CPA,
                         bundle, ReadingFragment_.class.getSimpleName());
                 break;
-
             case "109":
                 FC_Utility.showFragment((Activity) context, new TrueFalseFragment(), R.id.RL_CPA,
                         bundle, TrueFalseFragment.class.getSimpleName());
@@ -360,7 +368,6 @@ public class GameConstatnts implements ShowInstruction {
                 FC_Utility.showFragment((Activity) context, new Hive_game_(), R.id.RL_CPA,
                         bundle, Hive_game_.class.getSimpleName());
                 break;
-
         }
     }
 
@@ -376,6 +383,11 @@ public class GameConstatnts implements ShowInstruction {
             bundle.putBoolean("onSdCard", onSdCard);
             bundle.putString("jsonName", contentTable1.getResourceType());
             final Handler handler = new Handler();
+
+//            FC_Utility.showFragment((Activity) context, new Fragment_PdfViewer_(), R.id.RL_CPA,
+//                    bundle, Fragment_PdfViewer.class.getSimpleName());
+//            instructionsDialog.dismiss();
+
             switch (contentTable1.getResourceType()) {
                 case GameConstatnts.READ_VOCAB_ANDROID:
                     FC_Utility.showFragment((Activity) context, new VocabReadingFragment_(), R.id.RL_CPA,
@@ -472,11 +484,22 @@ public class GameConstatnts implements ShowInstruction {
                         }
                     }, 100);
                     break;
+                case FC_Constants.PDF:
+                    FC_Utility.showFragment((Activity) context, new Fragment_PdfViewer_(), R.id.RL_CPA,
+                            bundle, Fragment_PdfViewer.class.getSimpleName());
+                    handler.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            instructionsDialog.dismiss();
+                            //Do something after 100ms
+                        }
+                    }, 100);
+                    break;
                 default:
                     instructionsDialog.dismiss();
                     //  show instruction on game dstart uncomment bellow code
                     //EventMessage eventMessage = new EventMessage();
-                   // eventMessage.setMessage(FC_Constants.DIALOG_CLOSED);
+                    // eventMessage.setMessage(FC_Constants.DIALOG_CLOSED);
                     EventBus.getDefault().post(FC_Constants.DIALOG_CLOSED);
                     break;
             }
@@ -504,14 +527,15 @@ public class GameConstatnts implements ShowInstruction {
             } else {
                 return 1;
             }*/
-           return 5;
+            return 5;
         }
     }
-/*    public static void showInstructionDialog(ShowInstruction showInstruction, Activity context, String resorcetype) {
-        InstructionsDialog instructionsDialog = new InstructionsDialog(context, resorcetype);
-        instructionsDialog.show();
 
-    }*/
+    /*    public static void showInstructionDialog(ShowInstruction showInstruction, Activity context, String resorcetype) {
+            InstructionsDialog instructionsDialog = new InstructionsDialog(context, resorcetype);
+            instructionsDialog.show();
+
+        }*/
     public static void showGameInfo(Context context, String info, String infoPath) {
         InstructionDialog instructionDialog = new InstructionDialog(context, info, infoPath);
         instructionDialog.show();
@@ -527,7 +551,8 @@ public class GameConstatnts implements ShowInstruction {
     }
 
     @Override
-    public void exit() { }
+    public void exit() {
+    }
 
     public static void postScoreEvent(int totalMarks, int scoredMarks) {
         EventBus.getDefault().post(new ScoreEvent(FC_Constants.RETURNSCORE, totalMarks, scoredMarks));
@@ -540,9 +565,9 @@ public class GameConstatnts implements ShowInstruction {
     }
 
     public static String getString(String resId, String gameName, String qid, String ansImageName, String question, String queImageName) {
-        Gson gson=new Gson();
+        Gson gson = new Gson();
         ImageJsonObject imageJsonObject = new ImageJsonObject(resId, gameName, qid, ansImageName, question, queImageName);
-        String image= gson.toJson(imageJsonObject);
+        String image = gson.toJson(imageJsonObject);
         return image;
     }
 }

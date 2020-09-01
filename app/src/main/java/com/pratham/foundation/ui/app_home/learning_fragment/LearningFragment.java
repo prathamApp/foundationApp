@@ -50,6 +50,7 @@ import com.pratham.foundation.ui.contentPlayer.opposites.OppositesActivity_;
 import com.pratham.foundation.ui.contentPlayer.reading_paragraphs.ReadingParagraphsActivity_;
 import com.pratham.foundation.ui.contentPlayer.reading_rhyming.ReadingRhymesActivity_;
 import com.pratham.foundation.ui.contentPlayer.reading_story_activity.ReadingStoryActivity_;
+import com.pratham.foundation.ui.contentPlayer.video_view.ActivityVideoView_;
 import com.pratham.foundation.ui.contentPlayer.vocabulary_qa.ReadingVocabularyActivity_;
 import com.pratham.foundation.ui.contentPlayer.web_view.WebViewActivity_;
 import com.pratham.foundation.utility.FC_Constants;
@@ -212,6 +213,7 @@ public class LearningFragment extends Fragment implements LearningContract.Learn
                 else if (message.getMessage().equalsIgnoreCase(FC_Constants.BACK_PRESSED))
                     backBtnPressed();
                 else if (message.getMessage().equalsIgnoreCase(FC_Constants.FILE_DOWNLOAD_STARTED)) {
+                    dismissLoadingDialog();
                     resourceDownloadDialog(message.getModal_fileDownloading());
                 } else if (message.getMessage().equalsIgnoreCase(FC_Constants.FILE_DOWNLOAD_UPDATE)) {
                     if (progressLayout != null)
@@ -645,6 +647,15 @@ public class LearningFragment extends Fragment implements LearningContract.Learn
                 mainNew.putExtra("contentPath", contentList.getResourcePath());
 //                startActivity(mainNew, ActivityOptions.makeSceneTransitionAnimation(getActivity()).toBundle());
                 startActivity(mainNew);
+            } else if (contentList.getResourceType().equalsIgnoreCase(FC_Constants.VIDEO)) {
+                Intent intent = new Intent(context, ActivityVideoView_.class);
+                intent.putExtra("contentPath", contentList.getResourcePath());
+                intent.putExtra("StudentID", FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""));
+                intent.putExtra("resId", contentList.getResourceId());
+                intent.putExtra("contentName", contentList.getNodeTitle());
+                intent.putExtra("onSdCard", contentList.isOnSDCard());
+//                startActivity(intent, ActivityOptions.makeSceneTransitionAnimation(ContentDisplay.this).toBundle());
+                startActivity(intent);
             }
         }
         resServerImageName = contentList.getNodeServerImage();
@@ -653,6 +664,7 @@ public class LearningFragment extends Fragment implements LearningContract.Learn
     @UiThread
     @Override
     public void onContentDownloadClicked(ContentTable contentList, int parentPos, int childPos, String downloadType) {
+        showLoader();
         this.downloadType = downloadType;
         downloadNodeId = contentList.getNodeId();
         FastSave.getInstance().saveString(APP_SECTION, "" + sec_Learning);

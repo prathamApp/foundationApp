@@ -236,7 +236,6 @@ public class PushDataToServer_New {
                     .getAsString(new StringRequestListener() {
                         @Override
                         public void onResponse(String response) {
-                            //Success - Show dialog with success message.
                             if (response.equalsIgnoreCase("success")) {
                                 Log.d("PushData", "DATA PUSH SUCCESS");
                                 pushSuccessfull = true;
@@ -395,8 +394,10 @@ public class PushDataToServer_New {
                         public void onResponse(String response) {
                             try {
                                 Log.d("PushData", "Image onResponse : " + response);
-//                                Log.d("PushData", "Image onResponse File name : " + imageUploadList.get(jsonIndex).getFileName());
-                                if (response.equalsIgnoreCase("success")) {
+//                                Gson gson = new Gson();
+//                                PushResponse pushResponse = gson.fromJson(response, PushResponse.class);
+                                if (response.equalsIgnoreCase("success")/*contains(",\"ErrorId\":\"1\",")*/) {
+//                                if (pushResponse.getErrorId().equalsIgnoreCase("1")/*contains(",\"ErrorId\":\"1\",")*/) {
                                     imageUploadCnt++;
                                     Log.d("PushData", "imageUploadCnt : " + imageUploadCnt);
                                     imageUploadList.get(jsonIndex).setUploadStatus(true);

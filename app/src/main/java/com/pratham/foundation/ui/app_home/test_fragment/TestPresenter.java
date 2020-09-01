@@ -74,6 +74,7 @@ public class TestPresenter implements TestContract.TestPresenter, API_Content_Re
     @Bean(ZipDownloader.class)
     ZipDownloader zipDownloader;
     private String cosSection;
+    String botID;
 
     public TestPresenter(Context mContext) {
         this.mContext = mContext;
@@ -148,7 +149,6 @@ public class TestPresenter implements TestContract.TestPresenter, API_Content_Re
         try {
             this.currentLevelNo = currentLevelNo;
             this.cosSection = cosSection;
-            String botID;
             String rootID = sub_nodeId;
             botID = AppDatabase.getDatabaseInstance(mContext).getContentTableDao().getContentDataByTitle("" + rootID, cosSection);
             if (botID == null && !FC_Utility.isDataConnectionAvailable(mContext))
@@ -1183,6 +1183,8 @@ public class TestPresenter implements TestContract.TestPresenter, API_Content_Re
         if (header.equalsIgnoreCase(FC_Constants.INTERNET_LEVEL)) {
             sortAllList(rootList);
             myView.setSelectedLevel(rootList);
+        } else if (header.equalsIgnoreCase(FC_Constants.BOTTOM_NODE)) {
+            getLevelDataForList(currentLevelNo, botID);
         } else if (header.equalsIgnoreCase(FC_Constants.INTERNET_BROWSE)) {
             myView.addContentToViewList(contentParentList);
             myView.notifyAdapter();

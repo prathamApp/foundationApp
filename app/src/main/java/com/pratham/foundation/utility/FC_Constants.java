@@ -129,6 +129,11 @@ public class FC_Constants {
     public static final String CHECK_UPDATE = "check_update";
     public static final String UPDATE_AVAILABLE = "update_available";
     public static final String START_UPDATE = "start_update";
+    public static final String SHOW_NEXT_BUTTON = "show_next_button";
+    public static final String CLOSE_CONTENT_ACTIVITY = "close_content_activity";
+    public static final String SHOW_COURSE_DETAIL = "show_course_detail";
+    public static final String CLOSE_CONTENT_PLAYER = "close_content_player";
+    public static final String YOUTUBE_LINK = "youtube";
     public static boolean SPLASH_OPEN = false;
     public static String RECEIVED_FOLDER_PATH = "";
     public static boolean TAB_LAYOUT = false;
@@ -211,16 +216,6 @@ public class FC_Constants {
     public static final String APP_LANGUAGE_SELECTED = "app_language_selected";
     public static final String TEST_JSON_DW = "test_json_dw";
 
-//    DELHI APIS
-    public static final String TEST_JSON_API = "http://delhigovt.centralindia.cloudapp.azure.com:8084/fcapptestjson/";
-    public static final String PUSH_IMAGE_API = "http://devprodigi.openiscool.org/api/Foundation/PostImage";
-    public static final String INTERNET_LANGUAGE_API = "http://delhigovt.centralindia.cloudapp.azure.com:8084/api/content/browse?id=";
-    public static final String INTERNET_BROWSE_API = " http://delhigovt.centralindia.cloudapp.azure.com:8084/api/content/BrowseLevel2?id=";
-    public static final String INTERNET_DOWNLOAD_RESOURCE_API = " http://delhigovt.centralindia.cloudapp.azure.com:8084/api/content/downloadv2?id=";
-    public static final String INTERNET_DOWNLOAD_TEST_API = " http://delhigovt.centralindia.cloudapp.azure.com:8084/api/content/downloadv3?id=";
-    public static final String STUDENT_PROGRESS_API = "http://delhigovt.centralindia.cloudapp.azure.com:8084/api/cosv2/GetProgress?id=";
-    public static final String LEARNT_WORDS_API = "http://delhigovt.centralindia.cloudapp.azure.com:8084/api/cosv2/GetKeyWords?id=";
-
 /*    //    PRATHAM APIS
     public static final String TEST_JSON_API = "http://devposapi.prathamopenschool.org/fcapptestjson/";
     public static final String PUSH_IMAGE_API = "http://devprodigi.openiscool.org/api/Foundation/PostImage";
@@ -231,15 +226,27 @@ public class FC_Constants {
     public static final String STUDENT_PROGRESS_API = "http://prodigi.openiscool.org/api/cosv2/GetProgress?id=";
     public static final String LEARNT_WORDS_API = "http://prodigi.openiscool.org/api/cosv2/GetKeyWords?id=";*/
 
-/*    //    DEV APIS
-    public static final String TEST_JSON_API = "http://fcapp.openiscool.org/fcapptestjson/";
+        //    DEV APIS
+        public static final String TEST_JSON_API = "http://fcapp.openiscool.org/fcapptestjson/";
+        public static final String PUSH_IMAGE_API = "http://devprodigi.openiscool.org/api/Foundation/PostImage";
+        public static final String INTERNET_LANGUAGE_API = "http://fcapp.openiscool.org/api/content/browse?id=";
+        public static final String INTERNET_BROWSE_API = "http://fcapp.openiscool.org/api/content/BrowseLevel2?id=";
+        public static final String INTERNET_DOWNLOAD_RESOURCE_API = "http://fcapp.openiscool.org/api/content/downloadv2?id=";
+        public static final String INTERNET_DOWNLOAD_TEST_API = "http://fcapp.openiscool.org/api/content/downloadv3?id=";
+        public static final String STUDENT_PROGRESS_API = "http://prodigi.openiscool.org/api/cosv2/GetProgress?id=";
+        public static final String LEARNT_WORDS_API = "http://prodigi.openiscool.org/api/cosv2/GetKeyWords?id=";
+
+/*
+    //    DELHI APIS
+    public static final String TEST_JSON_API = "http://delhigovt.centralindia.cloudapp.azure.com:8084/fcapptestjson/";
     public static final String PUSH_IMAGE_API = "http://devprodigi.openiscool.org/api/Foundation/PostImage";
-    public static final String INTERNET_LANGUAGE_API = "http://fcapp.openiscool.org/api/content/browse?id=";
-    public static final String INTERNET_BROWSE_API = "http://fcapp.openiscool.org/api/content/BrowseLevel2?id=";
-    public static final String INTERNET_DOWNLOAD_RESOURCE_API = "http://fcapp.openiscool.org/api/content/downloadv2?id=";
-    public static final String INTERNET_DOWNLOAD_TEST_API = "http://fcapp.openiscool.org/api/content/downloadv3?id=";
-    public static final String STUDENT_PROGRESS_API = "http://prodigi.openiscool.org/api/cosv2/GetProgress?id=";
-    public static final String LEARNT_WORDS_API = "http://prodigi.openiscool.org/api/cosv2/GetKeyWords?id=";*/
+    public static final String INTERNET_LANGUAGE_API = "http://delhigovt.centralindia.cloudapp.azure.com:8084/api/content/browse?id=";
+    public static final String INTERNET_BROWSE_API = " http://delhigovt.centralindia.cloudapp.azure.com:8084/api/content/BrowseLevel2?id=";
+    public static final String INTERNET_DOWNLOAD_RESOURCE_API = " http://delhigovt.centralindia.cloudapp.azure.com:8084/api/content/downloadv2?id=";
+    public static final String INTERNET_DOWNLOAD_TEST_API = " http://delhigovt.centralindia.cloudapp.azure.com:8084/api/content/downloadv3?id=";
+    public static final String STUDENT_PROGRESS_API = "http://delhigovt.centralindia.cloudapp.azure.com:8084/api/cosv2/GetProgress?id=";
+    public static final String LEARNT_WORDS_API = "http://delhigovt.centralindia.cloudapp.azure.com:8084/api/cosv2/GetKeyWords?id=";
+*/
 
 //    AZURE http://api.pradigi.org/api/POSV2/get?id=
 //    public static final String INTERNET_DOWNLOAD_NEW_API = "http://api.pradigi.org/api/POSV2/Get2LevelChild?id=";
@@ -333,10 +340,12 @@ public class FC_Constants {
     public static final String SYNC_MEDIA_LENGTH = "sync_media_length";
     public static final String AssessmentApp = "AssessmentApp";
 
-    public static final String BASE_URL = "http://prodigi.openiscool.org/api/pos/";
+        public static final String BASE_URL = "http://prodigi.openiscool.org/api/pos/";
+//    public static final String BASE_URL = "http://delhigovt.centralindia.cloudapp.azure.com:8087/api/pos/";
     public static String RASP_IP = "http://192.168.4.1:8080";
 
     public enum URL {
+
         BROWSE_BY_ID(BASE_URL + "get?id="),
         SEARCH_BY_KEYWORD(BASE_URL + "GetSearchList?"),
         POST_GOOGLE_DATA(BASE_URL + "PostGoogleSignIn"),
@@ -351,14 +360,33 @@ public class FC_Constants {
         DATASTORE_RASPBERY_PROGRAM_STATE_URL(RASP_IP + "/pratham/datastore/?table_name=ProgramState"),
         PULL_PROGRAMS("http://swap.prathamcms.org/api/program");
 
-        private final String name;
-            URL(String s) { name = s; }
+/*        //        DelhiGov
+        BROWSE_BY_ID(BASE_URL + "get?id="),
+        SEARCH_BY_KEYWORD(BASE_URL + "GetSearchList?"),
+        POST_GOOGLE_DATA(BASE_URL + "PostGoogleSignIn"),
+        GET_TOP_LEVEL_NODE(BASE_URL + "GetTopLevelNode?lang="),
+        DATASTORE_RASPBERY_URL(RASP_IP + "/pratham/datastore/"),
+        BROWSE_RASPBERRY_URL(RASP_IP + "/api/contentnode?parent="),
+        GET_RASPBERRY_HEADER(RASP_IP + "/api/contentnode?content_id=f9da12749d995fa197f8b4c0192e7b2c"),
+        POST_SMART_INTERNET_URL("http://www.rpi.prathamskills.org/api/pushdatasmartphone/post/"),
+        POST_TAB_INTERNET_URL("http://www.rpi.prathamskills.org/api/pushdatapradigi/post/"),
+        PULL_STATES("http://delhigovt.centralindia.cloudapp.azure.com:8087/api/state?progid="),
+        DOWNLOAD_RESOURCE(BASE_URL + "DownloadResource?resid="),
+        DATASTORE_RASPBERY_PROGRAM_STATE_URL(RASP_IP + "/pratham/datastore/?table_name=ProgramState"),
+        PULL_PROGRAMS("http://delhigovt.centralindia.cloudapp.azure.com:8087/api/program");*/
 
-            public boolean equalsName(String otherName) {
-                return (otherName != null) && name.equals(otherName);
-            }
-            public String toString() {
-                return name;
+        private final String name;
+
+        URL(String s) {
+            name = s;
+        }
+
+        public boolean equalsName(String otherName) {
+            return (otherName != null) && name.equals(otherName);
+        }
+
+        public String toString() {
+            return name;
         }
     }
 }

@@ -509,6 +509,7 @@ public class ContentDisplay extends BaseActivity implements ContentContract.Cont
 
     @Override
     public void onContentDownloadClicked(int position, String nodeId) {
+        showLoader();
 //        content download clicked
         try {
             ButtonClickSound.start();
@@ -621,6 +622,7 @@ public class ContentDisplay extends BaseActivity implements ContentContract.Cont
     public void messageReceived(EventMessage message) {
         if (message != null) {
             if (message.getMessage().equalsIgnoreCase(FC_Constants.FILE_DOWNLOAD_STARTED)) {
+                dismissLoadingDialog();
 //                show download dialog with progress bar
                 resourceDownloadDialog(message.getModal_fileDownloading());
             } else if (message.getMessage().equalsIgnoreCase(FC_Constants.FILE_DOWNLOAD_UPDATE)) {

@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.provider.Settings;
 import android.util.Base64;
+import android.util.Log;
 
 import com.androidnetworking.AndroidNetworking;
 import com.androidnetworking.error.ANError;
@@ -131,7 +132,8 @@ public class PullAndAssign_Presenter implements PullAndAssign_Contract.PullAndAs
                         }
                     });
         } else {
-            AndroidNetworking.get(FC_Constants.URL.PULL_PROGRAMS.toString())
+            String url = FC_Constants.URL.PULL_PROGRAMS.toString();
+            AndroidNetworking.get(url)
                     .addHeaders("Content-Type", "application/json").build()
                     .getAsJSONArray(new JSONArrayRequestListener() {
                         @Override
@@ -154,6 +156,9 @@ public class PullAndAssign_Presenter implements PullAndAssign_Contract.PullAndAs
 
                         @Override
                         public void onError(ANError error) {
+                            Log.d("PullAndAssign", "onError: "+error.getMessage());
+                            assignView.closeProgressDialog();
+                            assignView.showErrorToast();
                             // handle error
                         }
                     });
@@ -173,7 +178,10 @@ public class PullAndAssign_Presenter implements PullAndAssign_Contract.PullAndAs
             }
             assignView.showStatesSpinner(modalStates);
         } else {
-            AndroidNetworking.get(FC_Constants.URL.PULL_STATES.toString() + "" + selectedProgramId).build().getAsJSONArray(new JSONArrayRequestListener() {
+            String url = FC_Constants.URL.PULL_STATES.toString() + "" + selectedProgramId;
+            AndroidNetworking.get(url)
+                    .build()
+                    .getAsJSONArray(new JSONArrayRequestListener() {
                 @Override
                 public void onResponse(JSONArray response) {
                     // do anything with response
@@ -189,6 +197,7 @@ public class PullAndAssign_Presenter implements PullAndAssign_Contract.PullAndAs
 
                 @Override
                 public void onError(ANError error) {
+                    Log.d("PullAndAssign", "onError: "+error.getMessage());
                     // handle error
                     assignView.closeProgressDialog();
                     assignView.showErrorToast();
