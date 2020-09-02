@@ -56,7 +56,7 @@ public interface SplashContract {
 
         void setView(SplashContract.SplashView splashView);
 
-        void insertNewData();
+//        void insertNewData();
 
         void updateVersionApp();
 

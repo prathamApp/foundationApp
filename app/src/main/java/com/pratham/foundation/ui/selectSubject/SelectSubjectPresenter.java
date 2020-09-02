@@ -113,8 +113,12 @@ public class SelectSubjectPresenter implements SelectSubjectContract.SubjectPres
 
     @Override
     public void receivedError(String header) {
-        subjectView.initializeSubjectList(subjectList);
-        subjectView.notifySubjAdapter();
+        if(subjectList.size()>0) {
+            subjectView.initializeSubjectList(subjectList);
+            subjectView.notifySubjAdapter();
+        }else {
+            subjectView.serverIssueDialog();
+        }
         subjectView.dismissLoadingDialog();
     }
 }

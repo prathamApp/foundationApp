@@ -56,9 +56,10 @@ public class SelectLangPresenter implements SelectLangContract.SelectLangPresent
         if (FC_Utility.isDataConnectionAvailable(context))
             api_content.getAPILanguage(APP_LANGUAGE_STRING, INTERNET_LANGUAGE_API);
         else {
-            if (langList.size() > 0)
+            if (langList.size() > 0) {
                 view.updateLangList(langList);
-            else
+                view.notifyAdapter();
+            }else
                 view.connectToInternetDialog();
         }
 
@@ -99,8 +100,12 @@ public class SelectLangPresenter implements SelectLangContract.SelectLangPresent
 
     @Override
     public void receivedError(String header) {
-        view.updateLangList(langList);
-        view.notifyAdapter();
+        if(langList.size()>0) {
+            view.updateLangList(langList);
+            view.notifyAdapter();
+        }else {
+            view.serverIssueDialog();
+        }
         view.dismissLoadingDialog();
     }
 }

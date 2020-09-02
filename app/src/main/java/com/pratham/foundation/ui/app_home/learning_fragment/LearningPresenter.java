@@ -116,7 +116,8 @@ public class LearningPresenter implements LearningContract.LearningPresenter, AP
 //        String rootID = FC_Utility.getRootNode(FastSave.getInstance().getString(FC_Constants.LANGUAGE, FC_Constants.HINDI));
             String rootID = sub_nodeId;
 //        String rootID = "4030";
-            botID = AppDatabase.getDatabaseInstance(mContext).getContentTableDao().getContentDataByTitle("" + rootID, cosSection);
+            botID = AppDatabase.getDatabaseInstance(mContext).getContentTableDao().getContentDataByNodeAge("" + rootID, cosSection);
+//            botID = AppDatabase.getDatabaseInstance(mContext).getContentTableDao().getContentDataByTitle("" + rootID, cosSection);
             if (botID == null && !FC_Utility.isDataConnectionAvailable(mContext))
                 learningView.showNoDataLayout();
             else if (botID != null && !FC_Utility.isDataConnectionAvailable(mContext))
@@ -794,10 +795,17 @@ public class LearningPresenter implements LearningContract.LearningPresenter, AP
     @Override
     public void receivedError(String header) {
         if (header.equalsIgnoreCase(FC_Constants.INTERNET_LEVEL)) {
+//            if(rootList.size()>0)
+//                learningView.serverIssueDialog();
+            sortContentList(rootLevelList);
             learningView.setSelectedLevel(rootList);
         } else if (header.equalsIgnoreCase(FC_Constants.BOTTOM_NODE)) {
+//            if(botID==null)
+//                learningView.serverIssueDialog();
             getLevelDataForList(currentLevelNo, botID);
         } else if (header.equalsIgnoreCase(FC_Constants.INTERNET_BROWSE)) {
+//            if(contentParentList.size()>0)
+//                learningView.serverIssueDialog();
             addHeadersAndNotifyAdapter(contentParentList);
 //            learningView.addContentToViewList(contentParentList);
 //            learningView.notifyAdapter();

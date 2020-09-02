@@ -141,7 +141,6 @@ public class SplashPresenter implements SplashContract.SplashPresenter {
                     AppDatabase.getDatabaseInstance(context);
                     if (new File(Environment.getExternalStorageDirectory().getAbsolutePath() + "/PrathamBackups/" + DB_NAME).exists())
                         copyDb = true;
-                    else
                         getSdCardPath();
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -585,7 +584,6 @@ public class SplashPresenter implements SplashContract.SplashPresenter {
 
                         String path = ApplicationClass.foundationPath + "/.FCA/";
                         Log.d("pushorassign", "doInBackground: ");
-                        path = ApplicationClass.foundationPath + "/.FCA/";
                         if (new File(path).exists()) {
                             copyFile(context, path);
 
@@ -767,7 +765,7 @@ public class SplashPresenter implements SplashContract.SplashPresenter {
             }
             unzipFile(ApplicationClass.foundationPath + "/.FCA/English.zip", ApplicationClass.foundationPath + "/.FCA");
         } catch (Exception e) {
-            e.getMessage();
+            e.printStackTrace();
         }
     }
 
@@ -821,6 +819,7 @@ public class SplashPresenter implements SplashContract.SplashPresenter {
             protected Void doInBackground(Void... voids) {
                 if (!FastSave.getInstance().getBoolean(FC_Constants.INITIAL_ENTRIES, false)) {
                     doInitialEntries(AppDatabase.getDatabaseInstance(context));
+                }
                     try {
                         File db_file;
                         db_file = new File(Environment.getExternalStorageDirectory().toString() + "/.FCAInternal/" + DB_NAME);
@@ -875,7 +874,6 @@ public class SplashPresenter implements SplashContract.SplashPresenter {
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
-                }
                 return null;
             }
 
@@ -1098,11 +1096,13 @@ public class SplashPresenter implements SplashContract.SplashPresenter {
             fpath = path;
         } else
             fpath = Environment.getExternalStorageDirectory().getAbsolutePath();
+        FC_Constants.SD_DB = false;
 
         File file;
         if (ApplicationClass.getAppMode()) {
             file = new File(fpath + "/.FCA/foundation_db");
             if (file.exists()) {
+                FC_Constants.SD_DB = true;
                 ApplicationClass.contentSDPath = fpath;
                 ApplicationClass.contentExistOnSD = true;
                 Log.d("getSD", "getSdCardPath: " + ApplicationClass.contentSDPath);
@@ -1119,7 +1119,7 @@ public class SplashPresenter implements SplashContract.SplashPresenter {
         }
     }
 
-    @Background
+/*    @Background
     @Override
     public void insertNewData() {
         try {
@@ -1184,6 +1184,6 @@ public class SplashPresenter implements SplashContract.SplashPresenter {
         } catch (Exception e) {
             e.printStackTrace();
         }
-    }
+    }*/
 }
 

@@ -21,6 +21,8 @@ public interface SelectLangContract {
         void dismissLoadingDialog();
 
         void showLoader();
+
+        void serverIssueDialog();
     }
 
     interface SelectLangPresenter {

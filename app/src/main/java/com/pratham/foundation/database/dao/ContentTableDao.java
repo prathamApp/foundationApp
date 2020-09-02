@@ -31,6 +31,9 @@ public interface ContentTableDao {
     @Query("select nodeId from ContentTable where parentId= :parentId and nodeTitle=:nodetitle")
     String getContentDataByTitle(String parentId, String nodetitle);
 
+    @Query("select nodeId from ContentTable where parentId= :parentId and nodeAge=:nodeAge")
+    String getContentDataByNodeAge(String parentId, String nodeAge);
+
     @Query("select * from ContentTable where nodeId= :nodeId")
     List<ContentTable> getNodeData(String nodeId);
 

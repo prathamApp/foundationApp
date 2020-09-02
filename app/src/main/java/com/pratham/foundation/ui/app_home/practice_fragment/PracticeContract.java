@@ -50,6 +50,8 @@ public interface PracticeContract {
 
         void showRecyclerLayout();
 
+        void serverIssueDialog();
+
 //        void setBotNodeId(String botID);
     }
 

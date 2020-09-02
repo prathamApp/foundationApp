@@ -185,6 +185,26 @@ public class SelectLanguageFragment extends Fragment implements SelectLangContra
         }
     }
 
+    @UiThread
+    @SuppressLint("SetTextI18n")
+    @Override
+    public void serverIssueDialog() {
+        errorDialog = new BlurPopupWindow.Builder(getActivity())
+                .setContentView(R.layout.lottie_server_dialog)
+                .bindClickListener(v -> {
+                    btn_back.performClick();
+                    errorDialog.dismiss();
+                }, R.id.dia_btn_ok)
+                .setGravity(Gravity.CENTER)
+                .setDismissOnTouchBackground(true)
+                .setDismissOnClickBack(true)
+                .setScaleRatio(0.2f)
+                .setBlurRadius(10)
+                .setTintColor(0x30000000)
+                .build();
+        errorDialog.show();
+    }
+
     @Click(R.id.btn_back)
     public void selectedLangClicked(){
         getActivity().onBackPressed();

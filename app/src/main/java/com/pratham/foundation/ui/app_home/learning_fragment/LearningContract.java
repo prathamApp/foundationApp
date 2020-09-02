@@ -48,6 +48,8 @@ public interface LearningContract {
 
         void showRecyclerLayout();
 
+        void serverIssueDialog();
+
 //        void setBotNodeId(String botID);
     }
 

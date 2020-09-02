@@ -822,4 +822,28 @@ public class FunFragment extends Fragment implements FunContract.FunView,
 //        startActivity(intent, ActivityOptions.makeSceneTransitionAnimation(getActivity()).toBundle());
         startActivity(intent);
     }
+
+    BlurPopupWindow serverIssueDialog;
+    boolean issueDialogFlg = false;
+    @UiThread
+    @Override
+    public void serverIssueDialog() {
+        if(!issueDialogFlg) {
+            issueDialogFlg = true;
+            serverIssueDialog = new BlurPopupWindow.Builder(context)
+                    .setContentView(R.layout.lottie_server_dialog)
+                    .bindClickListener(v -> {
+                        issueDialogFlg = false;
+                        serverIssueDialog.dismiss();
+                    }, R.id.dia_btn_ok)
+                    .setGravity(Gravity.CENTER)
+                    .setDismissOnTouchBackground(true)
+                    .setDismissOnClickBack(true)
+                    .setScaleRatio(0.2f)
+                    .setBlurRadius(10)
+                    .setTintColor(0x30000000)
+                    .build();
+            serverIssueDialog.show();
+        }
+    }
 }

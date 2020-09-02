@@ -134,6 +134,7 @@ public class FC_Constants {
     public static final String SHOW_COURSE_DETAIL = "show_course_detail";
     public static final String CLOSE_CONTENT_PLAYER = "close_content_player";
     public static final String YOUTUBE_LINK = "youtube";
+    public static boolean SD_DB = false;
     public static boolean SPLASH_OPEN = false;
     public static String RECEIVED_FOLDER_PATH = "";
     public static boolean TAB_LAYOUT = false;

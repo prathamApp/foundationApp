@@ -81,6 +81,7 @@ public class SelectSubject extends BaseActivity implements
     SelectSubjectAdapter subjectAdapter;
     String studName;
     List<ContentTable> subjectList;
+    BlurPopupWindow errorDialog;
 
     @AfterViews
     protected void initiate() {
@@ -312,5 +313,24 @@ public class SelectSubject extends BaseActivity implements
                 .setTintColor(0x30000000)
                 .build();
         exitDialog.show();
+    }
+
+    BlurPopupWindow serverIssueDialog;
+    @UiThread
+    @Override
+    public void serverIssueDialog() {
+        serverIssueDialog = new BlurPopupWindow.Builder(this)
+                .setContentView(R.layout.lottie_server_dialog)
+                .bindClickListener(v -> {
+                    serverIssueDialog.dismiss();
+                 }, R.id.dia_btn_ok)
+                .setGravity(Gravity.CENTER)
+                .setDismissOnTouchBackground(true)
+                .setDismissOnClickBack(true)
+                .setScaleRatio(0.2f)
+                .setBlurRadius(10)
+                .setTintColor(0x30000000)
+                .build();
+        serverIssueDialog.show();
     }
 }

@@ -22,6 +22,8 @@ public interface SelectSubjectContract {
         void initializeSubjectList(List<ContentTable> subjectList);
 
         void notifySubjAdapter();
+
+        void serverIssueDialog();
     }
 
     interface SubjectPresenter {

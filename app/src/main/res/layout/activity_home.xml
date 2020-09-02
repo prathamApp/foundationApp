@@ -161,7 +161,7 @@
         android:layout_marginEnd="@dimen/_16sdp"
         android:alpha="0.9"
         android:animateLayoutChanges="true"
-        android:elevation="@dimen/_15sdp"
+        android:elevation="@dimen/_5sdp"
         app:submarine_animation="scale"
         app:submarine_autoDip="true"
         app:submarine_borderColor="@color/red"

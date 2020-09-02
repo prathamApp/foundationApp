@@ -217,6 +217,8 @@ public class SplashActivity extends SplashSupportActivity implements SplashContr
         Configuration config = context.getResources().getConfiguration();
         String strwidth = String.valueOf(width);
         String strheight = String.valueOf(height);
+        Log.d("COSLS", "initialize: COSLS - " +strwidth);
+
         String resolution = strwidth + "px x " + strheight + "px (" + config.densityDpi + " dpi)";
         FastSave.getInstance().saveString(FC_Constants.SCR_RES, "" + resolution);
         FastSave.getInstance().saveString(FC_Constants.LANGUAGE, FC_Constants.HINDI);
@@ -224,7 +226,6 @@ public class SplashActivity extends SplashSupportActivity implements SplashContr
         FastSave.getInstance().saveBoolean(IS_SERVICE_STOPED, false);
         splashPresenter.createDatabase();
     }
-
 
     Intent mServiceIntent;
     private BackgroundPushService bgPushService;

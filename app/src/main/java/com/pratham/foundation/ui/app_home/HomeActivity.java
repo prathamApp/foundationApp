@@ -175,7 +175,8 @@ public class HomeActivity extends BaseActivity implements LevelChanged {
         setupTabIcons();
         setLevel();
         if (!getAppMode())
-            submarine.setCircleSize(getResources().getDimension(R.dimen._20sdp));
+            submarine.setCircleSize(70);
+//            submarine.setCircleSize(getResources().getDimension(R.dimen._40sdp));
         new Handler().postDelayed(this::getCompletion, 2000);
     }
 
