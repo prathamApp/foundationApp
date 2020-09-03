@@ -83,6 +83,7 @@ public class ContinuousSpeechService_New implements RecognitionListener, STT_Res
             e.printStackTrace();
         }
         try {
+            //initialize speechrecognizer and set the listener
             speech = SpeechRecognizer.createSpeechRecognizer(context);
             Log.i(LOG_TAG, "isRecognitionAvailable: " + SpeechRecognizer.isRecognitionAvailable(context));
             if (SpeechRecognizer.isRecognitionAvailable(context))

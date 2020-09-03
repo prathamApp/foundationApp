@@ -51,6 +51,7 @@ public class LocationService implements GoogleApiClient.ConnectionCallbacks, Goo
     }
 
     private void startLocationListener() {
+        //Track location every 15 seconds
         long mLocTrackingInterval = 1000 * 15; // 15 sec
         float trackingDistance = 0;
         LocationAccuracy trackingAccuracy = LocationAccuracy.HIGH;
@@ -65,6 +66,7 @@ public class LocationService implements GoogleApiClient.ConnectionCallbacks, Goo
                 .start(new OnLocationUpdatedListener() {
                     @Override
                     public void onLocationUpdated(Location location) {
+                        //Get latest location value(i.e. Latitiude and Longitude) and update the database
                         try {
                             Status statusObj = new Status();
 
@@ -99,6 +101,7 @@ public class LocationService implements GoogleApiClient.ConnectionCallbacks, Goo
     }
 
     private String generateRequestString() {
+        //Get the data from database and assign it to a string
         String requestString = "";
         try {
             JSONObject sessionObj = new JSONObject();
@@ -157,6 +160,7 @@ public class LocationService implements GoogleApiClient.ConnectionCallbacks, Goo
         return requestString;
     }
 
+    //Pass the requestString(i.e Data) and url to this method for pushing data to server
     private void pushDataToServer(String data, String url) {
         try {
             JSONObject jsonArrayData = new JSONObject(data);
@@ -168,12 +172,14 @@ public class LocationService implements GoogleApiClient.ConnectionCallbacks, Goo
 
                         @Override
                         public void onResponse(String response) {
-                            Log.d("onLocationUpdated", "Data pushed successfully");
+                            //Success - Data push successs
+                            // Log.d("onLocationUpdated", "Data pushed successfully");
                             ApplicationClass.LocationFlg = true;
                         }
 
                         @Override
                         public void onError(ANError anError) {
+                            //Failure - Data push fail
                             Log.d("onLocationUpdated", "Data push failed");
                             ApplicationClass.LocationFlg = false;
                         }
@@ -184,10 +190,13 @@ public class LocationService implements GoogleApiClient.ConnectionCallbacks, Goo
     }
 
     public void checkLocation() {
+        //Check for current location
         LocationManager locationManager = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
         if (locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
+            //start fetching location
             startLocationListener();
         } else {
+            //Show setting dialog to enable location of device
             mGoogleApiClient = new GoogleApiClient.Builder(context)
                     .addApi(LocationServices.API).addConnectionCallbacks(LocationService.this)
                     .addOnConnectionFailedListener(LocationService.this)
@@ -197,6 +206,7 @@ public class LocationService implements GoogleApiClient.ConnectionCallbacks, Goo
         }
     }
 
+    //Location Setting Dialog
     private void showSettingDialog() {
         LocationRequest locationRequest = LocationRequest.create();
         locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);//Setting priotity of Location request to high

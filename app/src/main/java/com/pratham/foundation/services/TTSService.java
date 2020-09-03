@@ -252,6 +252,7 @@ public class TTSService implements TextToSpeech.OnInitListener {
         if (muted) {
             return;
         }
+        //Identify country and language and set accordingly
         String ttsLang,ttsCountry;
         ttsCountry = "IN";
         Log.d(TAG, "Playing:  " + text + " ");

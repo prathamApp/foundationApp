@@ -35,20 +35,24 @@ public class AppExitService extends Service {
                 @Override
                 protected Object doInBackground(Object[] objects) {
                     try {
+                        //Get current session
                         Log.d("AppExitService:  ", "1]  In Try");
                         Log.d("AppExitService:  ", "2]  toDateTemp : "+ FastSave.getInstance().getString(FC_Constants.CURRENT_SESSION, ""));
                         String toDateTemp = AppDatabase.getDatabaseInstance(AppExitService.this).getSessionDao().getToDate(FastSave.getInstance().getString(FC_Constants.CURRENT_SESSION, ""));
                         Log.d("AppExitService:  ", "3]  toDateTemp : "+toDateTemp);
                         if (toDateTemp.equalsIgnoreCase("na")) {
                             Log.d("AppExitService:  ", "4]  toDateTemp If NA: "+toDateTemp);
+                            //get current DateTime of current session
                             AppDatabase.getDatabaseInstance(AppExitService.this).getSessionDao().UpdateToDate(FastSave.getInstance().getString(FC_Constants.CURRENT_SESSION, ""), FC_Utility.getCurrentDateTime());
                         }
+                        //Get current assessment session
                         if(FastSave.getInstance().getString(APP_SECTION,"").equalsIgnoreCase(sec_Test)) {
                             Log.d("AppExitService:  ", "5]  Assessment Flg: ");
                             String toDateAssessment = AppDatabase.getDatabaseInstance(AppExitService.this).getSessionDao().getToDate(FastSave.getInstance().getString(FC_Constants.ASSESSMENT_SESSION, ""));
                             Log.d("AppExitService:  ", "6]  Assessment toDate: "+toDateAssessment);
                             if (toDateAssessment.equalsIgnoreCase("na")) {
                                 Log.d("AppExitService:  ", "7]  Assessment toDate If Na: "+toDateAssessment);
+                                //Get current DateTime for current assessment session
                                 AppDatabase.getDatabaseInstance(AppExitService.this).getSessionDao().UpdateToDate(FastSave.getInstance().getString(FC_Constants.ASSESSMENT_SESSION, ""), FC_Utility.getCurrentDateTime());
                             }
                         }

@@ -9,6 +9,9 @@ import com.google.gson.Gson;
 
 import java.util.Map;
 
+/**
+ * This class is used to store the data in Shared Prefernces.
+ * Shared Preferences allows to save and retrieve data in the form of key,value pair.*/
 public class FastSave {
 
     private static FastSave instance;
@@ -33,12 +36,14 @@ public class FastSave {
         return instance;
     }
 
+    //Integer value is stored
     public void saveInt(String key, int value) {
         SharedPreferences.Editor editor = mSharedPreferences.edit();
         editor.putInt(key, value);
         editor.apply();
     }
 
+    //Integer value is retrived
     public int getInt(String key, int defaultValue) {
         if (isKeyExists(key)) {
             return mSharedPreferences.getInt(key, defaultValue);
@@ -46,12 +51,14 @@ public class FastSave {
         return defaultValue;
     }
 
+    //Boolean value is stored
     public void saveBoolean(String key, boolean value) {
         SharedPreferences.Editor editor = mSharedPreferences.edit();
         editor.putBoolean(key, value);
         editor.apply();
     }
 
+    //Boolean value is retrived
     public boolean getBoolean(String key, boolean defaultValue) {
         if (isKeyExists(key)) {
             return mSharedPreferences.getBoolean(key, defaultValue);
@@ -59,13 +66,14 @@ public class FastSave {
         return defaultValue;
     }
 
-
+    //Float value is stored
     public void saveFloat(String key, float value) {
         SharedPreferences.Editor editor = mSharedPreferences.edit();
         editor.putFloat(key, value);
         editor.apply();
     }
 
+    //Float value is retrived
     public float getFloat(String key, float defaultValue) {
         if (isKeyExists(key)) {
             return mSharedPreferences.getFloat(key, defaultValue);
@@ -73,13 +81,14 @@ public class FastSave {
         return defaultValue;
     }
 
-
+    //Long value is stored
     public void saveLong(String key, long value) {
         SharedPreferences.Editor editor = mSharedPreferences.edit();
         editor.putLong(key, value);
         editor.apply();
     }
 
+    //Long value is retrived
     public long getLong(String key, long defaultValue) {
         if (isKeyExists(key)) {
             return mSharedPreferences.getLong(key, defaultValue);
@@ -87,13 +96,14 @@ public class FastSave {
         return defaultValue;
     }
 
-
+    //String value is stored
     public void saveString(String key, String value) {
         SharedPreferences.Editor editor = mSharedPreferences.edit();
         editor.putString(key, value);
         editor.apply();
     }
 
+    //String value is retrived
     public String getString(String key, String defaultValue) {
         if (isKeyExists(key)) {
             return mSharedPreferences.getString(key, defaultValue);
