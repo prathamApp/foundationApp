@@ -65,6 +65,8 @@ public interface SplashContract {
         void copyZipAndPopulateMenu_New();
 
         void createNoMediaForFCInternal(File myFile);
+
+        void populateAssetsMenu();
     }
 
 }

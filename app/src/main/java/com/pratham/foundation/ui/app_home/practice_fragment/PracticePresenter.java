@@ -116,8 +116,8 @@ public class PracticePresenter implements PracticeContract.PracticePresenter, AP
             //        String rootID = FC_Utility.getRootNode(FastSave.getInstance().getString(FC_Constants.LANGUAGE, FC_Constants.HINDI));
             String rootID = sub_nodeId;
 //        String rootID = "4030";
-//            botID = AppDatabase.getDatabaseInstance(mContext).getContentTableDao().getContentDataByTitle("" + rootID, cosSection);
-            botID = AppDatabase.getDatabaseInstance(mContext).getContentTableDao().getContentDataByNodeAge("" + rootID, cosSection);
+            botID = AppDatabase.getDatabaseInstance(mContext).getContentTableDao().getContentDataByTitle("" + rootID, cosSection);
+//            botID = AppDatabase.getDatabaseInstance(mContext).getContentTableDao().getContentDataByNodeAge("" + rootID, cosSection);
             if (botID == null && !FC_Utility.isDataConnectionAvailable(mContext))
                 practiceView.showNoDataLayout();
             else if (botID != null && !FC_Utility.isDataConnectionAvailable(mContext))

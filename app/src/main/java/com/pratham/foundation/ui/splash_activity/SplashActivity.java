@@ -52,6 +52,7 @@ import org.greenrobot.eventbus.Subscribe;
 
 import java.io.File;
 
+import static com.pratham.foundation.ApplicationClass.isAssets;
 import static com.pratham.foundation.utility.FC_Constants.BOTTOM_FRAGMENT_CLOSED;
 import static com.pratham.foundation.utility.FC_Constants.CURRENT_VERSION;
 import static com.pratham.foundation.utility.FC_Constants.IS_SERVICE_STOPED;
@@ -171,6 +172,10 @@ public class SplashActivity extends SplashSupportActivity implements SplashContr
             if (!ApplicationClass.getAppMode()) {
                 ApplicationClass.contentExistOnSD = false;
                 splashPresenter.copyZipAndPopulateMenu();
+                splashPresenter.getSdCardPath();
+                if(isAssets){
+                    splashPresenter.populateAssetsMenu();
+                }
             } else {
                 ApplicationClass.foundationPath = FC_Utility.getInternalPath(SplashActivity.this);
                 Log.d("old_cos.pradigiPath", "old_cos.pradigiPath: " + ApplicationClass.foundationPath);

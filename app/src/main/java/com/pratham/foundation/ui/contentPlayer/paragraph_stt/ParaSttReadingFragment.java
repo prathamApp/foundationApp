@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
@@ -362,21 +363,26 @@ public class ParaSttReadingFragment extends Fragment implements
     @Override
     public void allCorrectAnswer() {
         dismissLoadingDialog();
-        for (int i = 0; i < splitWordsPunct.size(); i++) {
-            ((SansTextView) wordFlowLayout.getChildAt(i)).setTextColor(getResources().getColor(R.color.colorBtnGreenDark));
-            correctArr[i] = true;
-        }
-        new Handler().postDelayed(() -> {
-            //setMute(0);
-            if (lastPgFlag) {
-                if (FastSave.getInstance().getString(APP_SECTION, "").equalsIgnoreCase(sec_Test))
-                    showStars(true);
-                else
-                    showAcknowledgeDialog(true);
-            } else {
-                btn_nextpage.performClick();
+        try {
+            for (int i = 0; i < splitWordsPunct.size(); i++) {
+                ((SansTextView) wordFlowLayout.getChildAt(i)).setTextColor(getResources().getColor(R.color.colorBtnGreenDark));
+                correctArr[i] = true;
             }
-        }, 1200);
+            new Handler().postDelayed(() -> {
+                //setMute(0);
+                if (lastPgFlag) {
+                    if (FastSave.getInstance().getString(APP_SECTION, "").equalsIgnoreCase(sec_Test))
+                        showStars(true);
+                    else
+                        showAcknowledgeDialog(true);
+                } else {
+                    btn_nextpage.performClick();
+                }
+            }, 1200);
+        } catch (Resources.NotFoundException e) {
+            btn_nextpage.performClick();
+            e.printStackTrace();
+        }
     }
 
     private void setWordsToLayout() {

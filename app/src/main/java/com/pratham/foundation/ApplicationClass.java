@@ -34,6 +34,7 @@ public class ApplicationClass extends Application {
 //    DelhiGov
     public static String uploadDataUrl = "http://delhigovt.centralindia.cloudapp.azure.com:8087/api/Foundation/PushData";
     public static boolean isTablet = false;
+    public static boolean isAssets = true;
     public static boolean contentExistOnSD = false, LocationFlg = false;
     public static String contentSDPath = "";
     public static String foundationPath = "";

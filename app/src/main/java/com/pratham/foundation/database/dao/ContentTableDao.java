@@ -75,6 +75,9 @@ public interface ContentTableDao {
 
     @Query("SELECT * FROM ContentTable WHERE parentId=:nid")
     List<ContentTable> getLanguages(String nid);
+
+    @Query("Delete from ContentTable")
+    void deleteAll();
 //
 //    @Query("SELECT * FROM ContentTable WHERE parentid ISNULL or parentid = 0 or parentid=''and contentLanguage=:language")
 //    public List<ContentTable> getParentsHeadersNew(String language);

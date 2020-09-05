@@ -125,31 +125,35 @@ public class SelectLanguageFragment extends Fragment implements SelectLangContra
     @SuppressLint("SetTextI18n")
     @Override
     public void connectToInternetDialog() {
-        errorDialog = new BlurPopupWindow.Builder(getActivity())
-                .setContentView(R.layout.fc_custom_dialog)
-                .setGravity(Gravity.CENTER)
-                .setDismissOnTouchBackground(false)
-                .setDismissOnClickBack(true)
-                .setScaleRatio(0.2f)
-                .bindClickListener(v -> {
-                    new Handler().postDelayed(() -> {
-                        btn_back.performClick();
-                        errorDialog.dismiss();
-                    }, 200);
-                }, R.id.dia_btn_green)
-                .setBlurRadius(10)
-                .setTintColor(0x30000000)
-                .build();
+        try {
+            errorDialog = new BlurPopupWindow.Builder(getActivity())
+                    .setContentView(R.layout.fc_custom_dialog)
+                    .setGravity(Gravity.CENTER)
+                    .setDismissOnTouchBackground(false)
+                    .setDismissOnClickBack(true)
+                    .setScaleRatio(0.2f)
+                    .bindClickListener(v -> {
+                        new Handler().postDelayed(() -> {
+                            btn_back.performClick();
+                            errorDialog.dismiss();
+                        }, 200);
+                    }, R.id.dia_btn_green)
+                    .setBlurRadius(10)
+                    .setTintColor(0x30000000)
+                    .build();
 
-        TextView title = errorDialog.findViewById(R.id.dia_title);
-        Button btn_gree = errorDialog.findViewById(R.id.dia_btn_green);
-        Button btn_yellow = errorDialog.findViewById(R.id.dia_btn_yellow);
-        Button btn_red = errorDialog.findViewById(R.id.dia_btn_red);
-        btn_gree.setText("Ok");
-        title.setText("Connect to Internet");
-        btn_red.setVisibility(View.GONE);
-        btn_yellow.setVisibility(View.GONE);
-        errorDialog.show();
+            TextView title = errorDialog.findViewById(R.id.dia_title);
+            Button btn_gree = errorDialog.findViewById(R.id.dia_btn_green);
+            Button btn_yellow = errorDialog.findViewById(R.id.dia_btn_yellow);
+            Button btn_red = errorDialog.findViewById(R.id.dia_btn_red);
+            btn_gree.setText("Ok");
+            title.setText("Connect to Internet");
+            btn_red.setVisibility(View.GONE);
+            btn_yellow.setVisibility(View.GONE);
+            errorDialog.show();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
 

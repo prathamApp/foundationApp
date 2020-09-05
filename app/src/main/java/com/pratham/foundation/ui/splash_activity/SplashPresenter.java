@@ -591,8 +591,8 @@ public class SplashPresenter implements SplashContract.SplashPresenter {
 
                             if (!FastSave.getInstance().getBoolean(FC_Constants.INITIAL_ENTRIES, false))
                                 doInitialEntries(AppDatabase.getDatabaseInstance(context));
-                            if (!FastSave.getInstance().getBoolean(FC_Constants.KEY_MENU_COPIED, false))
-                                populateMenu();
+//                            if (!FastSave.getInstance().getBoolean(FC_Constants.KEY_MENU_COPIED, false))
+//                                populateMenu();
                         }
 
                     }
@@ -701,22 +701,32 @@ public class SplashPresenter implements SplashContract.SplashPresenter {
                             if (content_cursor.moveToFirst()) {
                                 while (!content_cursor.isAfterLast()) {
                                     ContentTable detail = new ContentTable();
-                                    detail.setNodeId(content_cursor.getString(content_cursor.getColumnIndex("nodeId")));
-                                    detail.setNodeType(content_cursor.getString(content_cursor.getColumnIndex("nodeType")));
-                                    detail.setNodeTitle(content_cursor.getString(content_cursor.getColumnIndex("nodeTitle")));
-                                    detail.setNodeKeywords(content_cursor.getString(content_cursor.getColumnIndex("nodeKeywords")));
-                                    detail.setNodeAge(content_cursor.getString(content_cursor.getColumnIndex("nodeAge")));
-                                    detail.setNodeDesc(content_cursor.getString(content_cursor.getColumnIndex("nodeDesc")));
-                                    detail.setNodeServerImage(content_cursor.getString(content_cursor.getColumnIndex("nodeServerImage")));
-                                    detail.setNodeImage(content_cursor.getString(content_cursor.getColumnIndex("nodeImage")));
-                                    detail.setResourceId(content_cursor.getString(content_cursor.getColumnIndex("resourceId")));
-                                    detail.setResourceType(content_cursor.getString(content_cursor.getColumnIndex("resourceType")));
-                                    detail.setResourcePath(content_cursor.getString(content_cursor.getColumnIndex("resourcePath")));
+                                    detail.setNodeId("" + content_cursor.getString(content_cursor.getColumnIndex("nodeId")));
+                                    detail.setNodeType("" + content_cursor.getString(content_cursor.getColumnIndex("nodeType")));
+                                    detail.setNodeTitle("" + content_cursor.getString(content_cursor.getColumnIndex("nodeTitle")));
+                                    detail.setNodeKeywords("" + content_cursor.getString(content_cursor.getColumnIndex("nodeKeywords")));
+                                    detail.setNodeAge("" + content_cursor.getString(content_cursor.getColumnIndex("nodeAge")));
+                                    detail.setNodeDesc("" + content_cursor.getString(content_cursor.getColumnIndex("nodeDesc")));
+                                    detail.setNodeServerImage("" + content_cursor.getString(content_cursor.getColumnIndex("nodeServerImage")));
+                                    detail.setNodeImage("" + content_cursor.getString(content_cursor.getColumnIndex("nodeImage")));
+                                    detail.setResourceId("" + content_cursor.getString(content_cursor.getColumnIndex("resourceId")));
+                                    detail.setResourceType("" + content_cursor.getString(content_cursor.getColumnIndex("resourceType")));
+                                    detail.setResourcePath("" + content_cursor.getString(content_cursor.getColumnIndex("resourcePath")));
                                     detail.setLevel("" + content_cursor.getInt(content_cursor.getColumnIndex("level")));
-                                    detail.setContentLanguage(content_cursor.getString(content_cursor.getColumnIndex("contentLanguage")));
-                                    detail.setParentId(content_cursor.getString(content_cursor.getColumnIndex("parentId")));
-                                    detail.setContentType(content_cursor.getString(content_cursor.getColumnIndex("contentType")));
+                                    detail.setContentLanguage("" + content_cursor.getString(content_cursor.getColumnIndex("contentLanguage")));
+                                    detail.setParentId("" + content_cursor.getString(content_cursor.getColumnIndex("parentId")));
+                                    detail.setContentType("" + content_cursor.getString(content_cursor.getColumnIndex("contentType")));
                                     detail.setIsDownloaded("" + content_cursor.getString(content_cursor.getColumnIndex("isDownloaded")));
+                                    detail.setVersion("" + content_cursor.getString(content_cursor.getColumnIndex("version")));
+                                    try {
+                                        String origNodeId = "" + content_cursor.getString(content_cursor.getColumnIndex("origNodeVersion"));
+                                        detail.setOrigNodeVersion("" + origNodeId);
+                                    } catch (Exception e) {
+                                        detail.setOrigNodeVersion("");
+                                        e.printStackTrace();
+                                    }
+                                    detail.setSubject("" + content_cursor.getString(content_cursor.getColumnIndex("subject")));
+                                    detail.setSeq_no(content_cursor.getInt(content_cursor.getColumnIndex("seq_no")));
                                     detail.setOnSDCard(false);
                                     contents.add(detail);
                                     content_cursor.moveToNext();
@@ -753,6 +763,24 @@ public class SplashPresenter implements SplashContract.SplashPresenter {
 
     //copy and unzip the file
     private void copyFile(Context context, String path) {
+        AssetManager assetManager = context.getAssets();
+        try {
+            InputStream in = assetManager.open("English.zip");
+            OutputStream out = new FileOutputStream(path + "English.zip");
+            byte[] buffer = new byte[1024];
+            int read = in.read(buffer);
+            while (read != -1) {
+                out.write(buffer, 0, read);
+                read = in.read(buffer);
+            }
+            unzipFile(ApplicationClass.foundationPath + "/.FCA/English.zip", ApplicationClass.foundationPath + "/.FCA");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    //copy DB From The Assets And Populate Menu
+    private void copyAssetsFile(Context context, String path) {
         AssetManager assetManager = context.getAssets();
         try {
             InputStream in = assetManager.open("English.zip");
@@ -852,6 +880,10 @@ public class SplashPresenter implements SplashContract.SplashPresenter {
                                             detail.setParentId("" + content_cursor.getString(content_cursor.getColumnIndex("parentId")));
                                             detail.setContentType("" + content_cursor.getString(content_cursor.getColumnIndex("contentType")));
                                             detail.setIsDownloaded("" + content_cursor.getString(content_cursor.getColumnIndex("isDownloaded")));
+                                            detail.setVersion(content_cursor.getString(content_cursor.getColumnIndex("version")));
+                                            detail.setOrigNodeVersion(content_cursor.getString(content_cursor.getColumnIndex("origNodeVersion")));
+                                            detail.setSubject(content_cursor.getString(content_cursor.getColumnIndex("subject")));
+                                            detail.setSeq_no(content_cursor.getInt(content_cursor.getColumnIndex("seq_no")));
                                             detail.setOnSDCard(true);
                                             contents.add(detail);
                                             content_cursor.moveToNext();
@@ -932,6 +964,10 @@ public class SplashPresenter implements SplashContract.SplashPresenter {
                                         detail.setParentId(content_cursor.getString(content_cursor.getColumnIndex("parentId")));
                                         detail.setContentType(content_cursor.getString(content_cursor.getColumnIndex("contentType")));
                                         detail.setIsDownloaded("" + content_cursor.getString(content_cursor.getColumnIndex("isDownloaded")));
+                                        detail.setVersion(content_cursor.getString(content_cursor.getColumnIndex("version")));
+                                        detail.setOrigNodeVersion(content_cursor.getString(content_cursor.getColumnIndex("origNodeVersion")));
+                                        detail.setSubject(content_cursor.getString(content_cursor.getColumnIndex("subject")));
+                                        detail.setSeq_no(content_cursor.getInt(content_cursor.getColumnIndex("seq_no")));
                                         detail.setOnSDCard(false);
                                         contents.add(detail);
                                         content_cursor.moveToNext();
@@ -1119,7 +1155,79 @@ public class SplashPresenter implements SplashContract.SplashPresenter {
         }
     }
 
-/*    @Background
+    @Override
+    public void populateAssetsMenu() {
+        try {
+//            ApplicationClass.foundationPath + "/.FCA/"
+            AssetManager assetManager = context.getAssets();
+            InputStream in = assetManager.open("foundation_db_new");
+            OutputStream out = new FileOutputStream(ApplicationClass.foundationPath + "/.FCA/foundation_db_new");
+            byte[] buffer = new byte[1024];
+            int read = in.read(buffer);
+            while (read != -1) {
+                out.write(buffer, 0, read);
+                read = in.read(buffer);
+            }
+
+            File folder_file, db_file;
+            folder_file = new File(ApplicationClass.foundationPath + "/.FCA");
+            if (folder_file.exists()) {
+                Log.d("-CT-", "doInBackground ApplicationClass.contentSDPath: " + ApplicationClass.contentSDPath);
+                db_file = new File(folder_file + "/foundation_db_new");
+//                    db_file = new File(folder_file.getAbsolutePath() + "/" + AppDatabase.DB_NAME);
+                if (db_file.exists()) {
+                    SQLiteDatabase db = SQLiteDatabase.openDatabase(db_file.getAbsolutePath(), null, SQLiteDatabase.OPEN_READONLY);
+                    if (db != null) {
+                        Cursor newContent_cursor;
+                        try {
+                            newContent_cursor = db.rawQuery("SELECT * FROM ContentTable", null);
+                            //populate contents
+                            List<ContentTable> contents = new ArrayList<>();
+                            if (newContent_cursor.moveToFirst()) {
+                                while (!newContent_cursor.isAfterLast()) {
+                                    ContentTable detail = new ContentTable();
+                                    detail.setNodeId(newContent_cursor.getString(newContent_cursor.getColumnIndex("nodeId")));
+                                    detail.setNodeType(newContent_cursor.getString(newContent_cursor.getColumnIndex("nodeType")));
+                                    detail.setNodeTitle(newContent_cursor.getString(newContent_cursor.getColumnIndex("nodeTitle")));
+                                    detail.setNodeKeywords(newContent_cursor.getString(newContent_cursor.getColumnIndex("nodeKeywords")));
+                                    detail.setNodeAge(newContent_cursor.getString(newContent_cursor.getColumnIndex("nodeAge")));
+                                    detail.setNodeDesc(newContent_cursor.getString(newContent_cursor.getColumnIndex("nodeDesc")));
+                                    detail.setNodeServerImage(newContent_cursor.getString(newContent_cursor.getColumnIndex("nodeServerImage")));
+                                    detail.setNodeImage(newContent_cursor.getString(newContent_cursor.getColumnIndex("nodeImage")));
+                                    detail.setResourceId(newContent_cursor.getString(newContent_cursor.getColumnIndex("resourceId")));
+                                    detail.setResourceType(newContent_cursor.getString(newContent_cursor.getColumnIndex("resourceType")));
+                                    detail.setResourcePath(newContent_cursor.getString(newContent_cursor.getColumnIndex("resourcePath")));
+                                    detail.setLevel("" + newContent_cursor.getString(newContent_cursor.getColumnIndex("level")));
+                                    detail.setContentLanguage(newContent_cursor.getString(newContent_cursor.getColumnIndex("contentLanguage")));
+                                    detail.setParentId(newContent_cursor.getString(newContent_cursor.getColumnIndex("parentId")));
+                                    detail.setContentType(newContent_cursor.getString(newContent_cursor.getColumnIndex("contentType")));
+                                    detail.setIsDownloaded("" + newContent_cursor.getString(newContent_cursor.getColumnIndex("isDownloaded")));
+                                    detail.setVersion(newContent_cursor.getString(newContent_cursor.getColumnIndex("version")));
+//                                    detail.setOrigNodeVersion(newContent_cursor.getString(newContent_cursor.getColumnIndex("origNodeVersion")));
+//                                    detail.setSubject(newContent_cursor.getString(newContent_cursor.getColumnIndex("subject")));
+                                    detail.setSeq_no(newContent_cursor.getInt(newContent_cursor.getColumnIndex("seq_no")));
+                                    detail.setOnSDCard(true);
+                                    contents.add(detail);
+                                    newContent_cursor.moveToNext();
+                                }
+                            }
+                            AppDatabase.getDatabaseInstance(context).getContentTableDao().deleteAll();
+                            AppDatabase.getDatabaseInstance(context).getContentTableDao().addNewContentList(contents);
+                            newContent_cursor.close();
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }
+            }
+//            FastSave.getInstance().saveBoolean(FC_Constants.newDataLanguageInserted, true);
+            BackupDatabase.backup(context);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    /*    @Background
     @Override
     public void insertNewData() {
         try {
