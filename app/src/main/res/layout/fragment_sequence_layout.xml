@@ -70,7 +70,7 @@
         </RelativeLayout>
     </com.pratham.foundation.customView.shape_of_view.ShadowLayout>
 
-    <android.support.v7.widget.RecyclerView
+    <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recycler_view"
         android:layout_marginTop="@dimen/_10sdp"
         android:layout_width="match_parent"

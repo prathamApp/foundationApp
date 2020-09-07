@@ -182,7 +182,7 @@
                         android:textSize="@dimen/_15sdp"
                         android:textStyle="bold" />
 
-                    <android.support.v7.widget.RecyclerView
+                    <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/rv_Avatars"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
@@ -190,7 +190,7 @@
                         android:clipToPadding="false"
                         android:gravity="center"
                         android:layoutAnimation="@anim/layout_fall_down"
-                        android:scrollbars="vertical"></android.support.v7.widget.RecyclerView>
+                        android:scrollbars="vertical"></androidx.recyclerview.widget.RecyclerView>
 
                 </RelativeLayout>
 

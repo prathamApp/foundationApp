@@ -1,12 +1,14 @@
 package com.pratham.foundation.database.dao;
 
-import android.arch.persistence.room.Dao;
-import android.arch.persistence.room.Delete;
-import android.arch.persistence.room.Insert;
-import android.arch.persistence.room.OnConflictStrategy;
-import android.arch.persistence.room.Query;
-import android.arch.persistence.room.Update;
+import androidx.room.Dao;
+import androidx.room.Delete;
+import androidx.room.Insert;
+import androidx.room.OnConflictStrategy;
+import androidx.room.Query;
+import androidx.room.Update;
+
 import com.pratham.foundation.database.domain.Crl;
+
 import java.util.List;
 
 
@@ -32,7 +34,7 @@ public interface CrlDao {
     void deleteAll(Crl... crls);
 */
     @Query("DELETE FROM Crl")
-    public void deleteAll();
+    void deleteAll();
 
     @Query("select * from Crl where CRLId = :crlID")
     Crl getCrl(String crlID);
@@ -50,7 +52,7 @@ public interface CrlDao {
     String checkCrls(String uName, String uPass);
 
     @Query("SELECT * FROM CRL WHERE UserName=:user AND Password=:pass")
-    public Crl checkUserValidation(String user, String pass);
+    Crl checkUserValidation(String user, String pass);
 
     @Query("SELECT * FROM CRL")
     List<Crl> getAllCRLs();

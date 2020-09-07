@@ -1,8 +1,9 @@
 package com.pratham.foundation.ui.contentPlayer.pictionary;
 
 import android.os.Bundle;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
+
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.pratham.foundation.BaseActivity;
 import com.pratham.foundation.R;

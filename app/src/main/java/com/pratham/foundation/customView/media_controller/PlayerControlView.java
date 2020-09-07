@@ -4,8 +4,6 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.drawable.Drawable;
-import android.support.annotation.Nullable;
-import android.support.v4.content.ContextCompat;
 import android.util.AttributeSet;
 import android.view.Gravity;
 import android.view.KeyEvent;
@@ -16,6 +14,9 @@ import android.widget.LinearLayout;
 import android.widget.MediaController;
 import android.widget.RelativeLayout;
 import android.widget.SeekBar;
+
+import androidx.annotation.Nullable;
+import androidx.core.content.ContextCompat;
 
 import com.pratham.foundation.R;
 import com.pratham.foundation.utility.FC_Utility;
@@ -118,7 +119,7 @@ public class PlayerControlView extends FrameLayout {
     }
 
     public void attach(Activity activity) {
-        ViewGroup rootView = (ViewGroup) activity.findViewById(android.R.id.content);
+        ViewGroup rootView = activity.findViewById(android.R.id.content);
         attach(rootView);
     }
 
@@ -397,13 +398,13 @@ public class PlayerControlView extends FrameLayout {
 //        public final ImageButton skipPrevButton;
 
         private ViewHolder(View view) {
-            controlsBackground = (LinearLayout) view.findViewById(R.id.controls_background);
-            pausePlayButton = (PausePlayButton) view.findViewById(R.id.pause_play);
+            controlsBackground = view.findViewById(R.id.controls_background);
+            pausePlayButton = view.findViewById(R.id.pause_play);
 //            fastForwardButton = (ImageButton) view.findViewById(R.id.fast_forward);
 //            fastRewindButton = (ImageButton) view.findViewById(R.id.fast_rewind);
 //            skipNextButton = (ImageButton) view.findViewById(R.id.skip_next);
 //            skipPrevButton = (ImageButton) view.findViewById(R.id.skip_previous);
-            seekBar = (SeekBar) view.findViewById(R.id.seek_bar);
+            seekBar = view.findViewById(R.id.seek_bar);
 //            totalTimeText = (TextView) view.findViewById(R.id.total_time_text);
 //            currentTimeText = (TextView) view.findViewById(R.id.current_time_text);
         }

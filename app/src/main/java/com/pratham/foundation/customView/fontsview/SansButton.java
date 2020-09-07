@@ -9,7 +9,7 @@ import com.pratham.foundation.services.shared_preferences.FastSave;
 import com.pratham.foundation.utility.FC_Constants;
 
 @SuppressLint("AppCompatCustomView")
-public class SansButton extends android.support.v7.widget.AppCompatButton {
+public class SansButton extends androidx.appcompat.widget.AppCompatButton {
 
     public SansButton(Context context) {
         super(context);

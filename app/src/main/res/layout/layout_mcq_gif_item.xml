@@ -7,7 +7,7 @@
     android:layout_margin="@dimen/_5sdp"
     android:background="@drawable/custom_radio_button">
 
-    <android.support.design.card.MaterialCardView
+    <com.google.android.material.card.MaterialCardView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_margin="@dimen/_7sdp"
@@ -50,5 +50,5 @@
             android:padding="0dp"
             android:src="@drawable/ic_eye"
             android:visibility="visible" />
-    </android.support.design.card.MaterialCardView>
+    </com.google.android.material.card.MaterialCardView>
 </RelativeLayout>

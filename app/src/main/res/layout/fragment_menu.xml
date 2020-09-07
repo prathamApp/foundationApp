@@ -67,7 +67,7 @@
         android:layout_centerHorizontal="true"
         android:gravity="center">
 
-        <android.support.design.card.MaterialCardView
+        <com.google.android.material.card.MaterialCardView
             android:id="@+id/below_7"
             android:layout_centerHorizontal="true"
             android:layout_width="@dimen/_230sdp"
@@ -101,9 +101,9 @@
                     android:textColor="@color/white"
                     android:textSize="@dimen/_20sdp" />
             </RelativeLayout>
-        </android.support.design.card.MaterialCardView>
+        </com.google.android.material.card.MaterialCardView>
 
-        <android.support.design.card.MaterialCardView
+        <com.google.android.material.card.MaterialCardView
             android:id="@+id/above_7"
             android:layout_centerHorizontal="true"
             android:layout_width="@dimen/_230sdp"
@@ -139,7 +139,7 @@
                     android:textSize="@dimen/_20sdp" />
             </RelativeLayout>
 
-        </android.support.design.card.MaterialCardView>
+        </com.google.android.material.card.MaterialCardView>
     </RelativeLayout>
 
     <FrameLayout

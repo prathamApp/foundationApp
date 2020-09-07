@@ -1,6 +1,6 @@
 package com.pratham.foundation.modalclasses;
 
-import android.arch.persistence.room.ColumnInfo;
+import androidx.room.ColumnInfo;
 
 public class Modal_ResourcePlayedByGroups {
     @ColumnInfo(name = "dates")

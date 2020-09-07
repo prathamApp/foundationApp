@@ -1,9 +1,10 @@
 package com.pratham.foundation.database.dao;
 
-import android.arch.persistence.room.Dao;
-import android.arch.persistence.room.Insert;
-import android.arch.persistence.room.OnConflictStrategy;
-import android.arch.persistence.room.Query;
+import androidx.room.Dao;
+import androidx.room.Insert;
+import androidx.room.OnConflictStrategy;
+import androidx.room.Query;
+
 import com.pratham.foundation.modalclasses.MatchThePair;
 
 import java.util.List;
@@ -11,19 +12,19 @@ import java.util.List;
 @Dao
 public interface MatchThePairDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    public void insertAllParas(List<MatchThePair> modalClasses);
+    void insertAllParas(List<MatchThePair> modalClasses);
 
 //    @Insert(onConflict = OnConflictStrategy.REPLACE)
 //    public void insertVillage(Village modal_village);
 
     @Query("DELETE FROM MatchThePair")
-    public void deleteAllQuestions();
+    void deleteAllQuestions();
 
     @Query("SELECT * FROM MatchThePair where paraLang=:lang")
-    public List<MatchThePair> getQuestions(String lang);
+    List<MatchThePair> getQuestions(String lang);
 
     @Query("SELECT * FROM MatchThePair where paraLang=:lang order by random() limit 5")
-        public List<MatchThePair> getRandomQuestions(String lang);
+    List<MatchThePair> getRandomQuestions(String lang);
 
  /*   @Query("SELECT DISTINCT Block FROM Village WHERE State=:st ORDER BY Block ASC")
     public List<String> GetStatewiseBlock(String st);
@@ -32,5 +33,5 @@ public interface MatchThePairDao {
     public List<Village> GetVillages(String block);*/
 
     @Query("select * from MatchThePair where id=:id and paraLang=:lang")
-    public List<MatchThePair> GetQuestionById(String id, String lang);
+    List<MatchThePair> GetQuestionById(String id, String lang);
 }

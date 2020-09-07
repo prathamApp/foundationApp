@@ -6,11 +6,6 @@
     android:background="@color/colorBlack"
     android:screenOrientation="sensorLandscape">
 
-    <WebView
-        android:id="@+id/videoWebView"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
-
     <ImageButton
         android:id="@+id/close_video"
         android:layout_width="@dimen/_30sdp"
@@ -24,10 +19,6 @@
         android:background="@drawable/vid_ball"
         />
 
-    <RelativeLayout
-        android:id="@+id/videoWrapper"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
     <VideoView
         android:id="@+id/videoView"
         android:layout_centerInParent="true"
@@ -42,5 +33,4 @@
         app:pcv_fast_forward_ms="1000"
         app:pcv_fast_rewind_ms="500"
         app:pcv_show_timeout_ms="5000" />
-    </RelativeLayout>
 </RelativeLayout>

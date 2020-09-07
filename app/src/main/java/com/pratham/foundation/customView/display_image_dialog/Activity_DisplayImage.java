@@ -3,13 +3,14 @@ package com.pratham.foundation.customView.display_image_dialog;
 import android.app.Activity;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.support.v4.content.ContextCompat;
 import android.transition.ArcMotion;
 import android.view.View;
 import android.view.animation.AnimationUtils;
 import android.view.animation.Interpolator;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+
+import androidx.core.content.ContextCompat;
 
 import com.pratham.foundation.BaseActivity;
 import com.pratham.foundation.R;

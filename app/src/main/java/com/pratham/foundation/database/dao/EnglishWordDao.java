@@ -1,12 +1,11 @@
 package com.pratham.foundation.database.dao;
 
-import android.arch.persistence.room.Dao;
-import android.arch.persistence.room.Delete;
-import android.arch.persistence.room.Insert;
-import android.arch.persistence.room.OnConflictStrategy;
-import android.arch.persistence.room.Query;
-import android.arch.persistence.room.Update;
-
+import androidx.room.Dao;
+import androidx.room.Delete;
+import androidx.room.Insert;
+import androidx.room.OnConflictStrategy;
+import androidx.room.Query;
+import androidx.room.Update;
 
 import com.pratham.foundation.database.domain.WordEnglish;
 
@@ -22,10 +21,10 @@ public interface EnglishWordDao {
     long[] insertAll(WordEnglish... words);
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    public void insertWordList(List<WordEnglish> wordList);
+    void insertWordList(List<WordEnglish> wordList);
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    public void insertEnglishWordList(List<WordEnglish> wordList);
+    void insertEnglishWordList(List<WordEnglish> wordList);
 
     @Update
     int update(WordEnglish word);

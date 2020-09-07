@@ -2,14 +2,15 @@ package com.pratham.foundation.customView.dragselectrecyclerview;
 
 import android.content.Context;
 import android.content.res.Resources;
-import android.support.v4.view.MotionEventCompat;
-import android.support.v4.view.ViewCompat;
-import android.support.v4.widget.ScrollerCompat;
-import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.animation.LinearInterpolator;
+
+import androidx.core.view.MotionEventCompat;
+import androidx.core.view.ViewCompat;
+import androidx.core.widget.ScrollerCompat;
+import androidx.recyclerview.widget.RecyclerView;
 
 /**
  * Created by flisar on 24.01.2017.

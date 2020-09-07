@@ -1,11 +1,11 @@
 package com.pratham.foundation.database.dao;
 
-import android.arch.persistence.room.Dao;
-import android.arch.persistence.room.Delete;
-import android.arch.persistence.room.Insert;
-import android.arch.persistence.room.OnConflictStrategy;
-import android.arch.persistence.room.Query;
-import android.arch.persistence.room.Update;
+import androidx.room.Dao;
+import androidx.room.Delete;
+import androidx.room.Insert;
+import androidx.room.OnConflictStrategy;
+import androidx.room.Query;
+import androidx.room.Update;
 
 import com.pratham.foundation.database.domain.Attendance;
 
@@ -42,14 +42,14 @@ public interface AttendanceDao {
     String getStudentBySession(String sessionId);
 
     @Query("SELECT * FROM Attendance WHERE sentFlag=0 AND SessionID=:s_id")
-    public List<Attendance> getNewAttendances(String s_id);
+    List<Attendance> getNewAttendances(String s_id);
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    public void addAttendanceList(List<Attendance> contentList);
+    void addAttendanceList(List<Attendance> contentList);
 
     @Query("update Attendance set sentFlag=1 where sentFlag=0")
-    public void setSentFlag();
+    void setSentFlag();
 
     @Query("SELECT * FROM Attendance WHERE sentFlag=0")
-    public List<Attendance> getAllUnSentAttendances();
+    List<Attendance> getAllUnSentAttendances();
 }

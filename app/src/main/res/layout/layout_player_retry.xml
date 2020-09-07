@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center"
+    android:orientation="vertical">
+
+    <com.pratham.foundation.customView.fontsview.SansButton
+        android:id="@+id/appCompatButton_try_again"
+        android:layout_width="@dimen/_150sdp"
+        android:layout_height="@dimen/_40sdp"
+        android:background="@drawable/button_red"
+        android:drawableEnd="@drawable/ic_update2"
+        android:drawableRight="@drawable/ic_update2"
+        android:paddingEnd="@dimen/_8sdp"
+        android:paddingRight="@dimen/_8sdp"
+        android:text="Try Again!"
+        android:textColor="@color/white"
+        android:textSize="@dimen/_10sdp"
+        tools:ignore="HardcodedText" />
+
+</LinearLayout>

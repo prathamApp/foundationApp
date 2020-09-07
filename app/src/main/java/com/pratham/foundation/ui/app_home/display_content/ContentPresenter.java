@@ -172,6 +172,7 @@ public class ContentPresenter implements ContentContract.ContentPresenter, API_C
                     contentTable.setContentType(downloadedContentTableList.get(j).getContentType());
                     contentTable.setIsDownloaded("" + downloadedContentTableList.get(j).getIsDownloaded());
                     contentTable.setOnSDCard(downloadedContentTableList.get(j).isOnSDCard());
+                    contentTable.setSeq_no(downloadedContentTableList.get(j).getSeq_no());
                     contentTable.setNodeUpdate(false);
                     ListForContentTable1.add(contentTable);
                 }
@@ -259,6 +260,7 @@ public class ContentPresenter implements ContentContract.ContentPresenter, API_C
                             contentTableTemp.setNodePercentage("0");
                             contentTableTemp.setContentType("" + serverContentList.get(i).getContentType());
                             contentTableTemp.setContentLanguage("" + serverContentList.get(i).getContentLanguage());
+                            contentTableTemp.setSeq_no(serverContentList.get(i).getSeq_no());
                             contentTableTemp.setIsDownloaded("false");
                             contentTableTemp.setOnSDCard(false);
                             contentTableTemp.setNodeUpdate(false);

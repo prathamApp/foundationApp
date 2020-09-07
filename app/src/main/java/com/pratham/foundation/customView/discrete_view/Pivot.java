@@ -4,8 +4,9 @@ package com.pratham.foundation.customView.discrete_view;
  * Created by HP on 23-05-2018.
  */
 
-import android.support.annotation.IntDef;
 import android.view.View;
+
+import androidx.annotation.IntDef;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;

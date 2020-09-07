@@ -69,7 +69,7 @@
             android:textColor="@color/colorBlackTransparentLight"
             android:textSize="@dimen/_15sdp" />
 
-        <android.support.v7.widget.RecyclerView
+        <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/subject_recycler"
             android:layout_width="match_parent"
             android:layout_height="match_parent"

@@ -63,7 +63,7 @@
 
         </RelativeLayout>
 
-        <android.support.v7.widget.CardView
+        <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginHorizontal="@dimen/_8sdp"
@@ -73,7 +73,7 @@
             app:cardCornerRadius="@dimen/_5sdp"
             app:cardElevation="@dimen/_2sdp" />
 
-        <android.support.v7.widget.RecyclerView
+        <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recycler_view_list"
             android:layout_width="match_parent"
             android:layout_height="@dimen/_160sdp"

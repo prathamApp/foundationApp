@@ -1,19 +1,20 @@
 package com.pratham.foundation.customView.flexbox;
 
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.annotation.VisibleForTesting;
-import android.support.v4.view.MarginLayoutParamsCompat;
 import android.util.SparseIntArray;
 import android.view.View;
 import android.view.ViewGroup;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.annotation.VisibleForTesting;
+import androidx.core.view.MarginLayoutParamsCompat;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
-import static android.support.v7.widget.RecyclerView.NO_POSITION;
+import static androidx.recyclerview.widget.RecyclerView.NO_POSITION;
 import static com.pratham.foundation.customView.flexbox.FlexContainer.NOT_SET;
 import static com.pratham.foundation.customView.flexbox.FlexItem.FLEX_BASIS_PERCENT_DEFAULT;
 

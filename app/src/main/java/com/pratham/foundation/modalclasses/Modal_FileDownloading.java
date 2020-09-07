@@ -1,6 +1,6 @@
 package com.pratham.foundation.modalclasses;
 
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 import com.pratham.foundation.database.domain.ContentTable;
 

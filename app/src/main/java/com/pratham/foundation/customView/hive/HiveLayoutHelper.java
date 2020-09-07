@@ -1,6 +1,6 @@
 package com.pratham.foundation.customView.hive;
 
-import android.support.v7.widget.RecyclerView;
+import androidx.recyclerview.widget.RecyclerView;
 
 /**
  * Created by zjchai on 16/9/10.

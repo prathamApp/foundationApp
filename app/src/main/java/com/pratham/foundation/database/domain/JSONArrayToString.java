@@ -1,6 +1,6 @@
 package com.pratham.foundation.database.domain;
 
-import android.arch.persistence.room.TypeConverter;
+import androidx.room.TypeConverter;
 
 public class JSONArrayToString {
 	
@@ -11,7 +11,7 @@ public class JSONArrayToString {
             for (int i = 0; i < stringArray.length; i++)
                 str += stringArray[i] + ",";
         }
-        return stringArray == null ? null : str.toString();
+        return stringArray == null ? null : str;
     }
 
     @TypeConverter

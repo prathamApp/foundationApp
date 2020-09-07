@@ -6,9 +6,10 @@ import android.graphics.Canvas;
 import android.renderscript.Allocation;
 import android.renderscript.RenderScript;
 import android.renderscript.ScriptIntrinsicBlur;
-import android.support.annotation.FloatRange;
-import android.support.annotation.MainThread;
 import android.view.View;
+
+import androidx.annotation.FloatRange;
+import androidx.annotation.MainThread;
 
 public class BlurUtils {
     @MainThread

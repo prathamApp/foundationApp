@@ -2,11 +2,6 @@ package com.pratham.foundation.ui.contentPlayer.video_view;
 
 import android.content.Intent;
 import android.os.Handler;
-import android.view.View;
-import android.webkit.WebChromeClient;
-import android.webkit.WebSettings;
-import android.webkit.WebView;
-import android.widget.RelativeLayout;
 import android.widget.VideoView;
 
 import com.pratham.foundation.ApplicationClass;
@@ -34,10 +29,6 @@ import static com.pratham.foundation.utility.FC_Constants.gameFolderPath;
 @EActivity(R.layout.fragment_video_view)
 public class ActivityVideoView extends BaseActivity {
 
-    @ViewById(R.id.videoWebView)
-    WebView videoWebView;
-    @ViewById(R.id.videoWrapper)
-    RelativeLayout videoWrapper;
     @ViewById(R.id.videoView)
     VideoView videoView;
     @ViewById(R.id.player_control_view)
@@ -58,29 +49,17 @@ public class ActivityVideoView extends BaseActivity {
         contentName = intent.getStringExtra("contentName");
         contentType = intent.getStringExtra("contentType");
         onSdCard = intent.getBooleanExtra("onSdCard", false);
-
-        contentType = FC_Constants.YOUTUBE_LINK;
-        videoPath = "https://www.youtube.com/watch?v=UtF7H1RDyjE";
-
-        if(contentType!=null && contentType.equalsIgnoreCase(FC_Constants.YOUTUBE_LINK)) {
-            videoWebView.setVisibility(View.VISIBLE);
-            videoWrapper.setVisibility(View.GONE);
-            initializePlayer(videoPath, true);
-        }else {
-            videoWebView.setVisibility(View.GONE);
-            videoWrapper.setVisibility(View.VISIBLE);
-            if (onSdCard)
-                videoPath = ApplicationClass.contentSDPath + gameFolderPath + "/" + videoPath;
-            else
-                videoPath = ApplicationClass.foundationPath + gameFolderPath + "/" + videoPath;
-            initializePlayer(videoPath, false);
-        }
+        onSdCard = false;
+        if (onSdCard)
+            videoPath = ApplicationClass.contentSDPath + gameFolderPath + "/" + videoPath;
+        else
+            videoPath = ApplicationClass.foundationPath + gameFolderPath + "/" + videoPath;
+        initializePlayer(videoPath, false);
     }
 
-    private void initializePlayer(String videoPath,boolean youtubeLink) {
+    private void initializePlayer(String videoPath, boolean youtubeLink) {
 //        MediaController mediaController= new MediaController(getActivity());
 //        mediaController.setAnchorView(videoView);
-        if(!youtubeLink) {
             videoView.setMediaController(player_control_view.getMediaControllerWrapper());
             videoView.setVideoPath(videoPath);
             videoView.start();
@@ -96,19 +75,6 @@ public class ActivityVideoView extends BaseActivity {
                     e.printStackTrace();
                 }
             });
-        }else {
-            String[] videoID = videoPath.split("=");
-            videoWebView.getSettings().setJavaScriptEnabled(true);
-            videoWebView.getSettings().setPluginState(WebSettings.PluginState.ON);
-            videoWebView.loadUrl("http://www.youtube.com/embed/" + videoID[1] + "?autoplay=1&vq=small");
-            videoWebView.setWebChromeClient(new WebChromeClient());//            MediaController mediaController= new MediaController(this);
-//            mediaController.setAnchorView(videoView);
-//            Uri uri= Uri.parse("http://www.youtube.com/embed/" + videoID[1] + "?autoplay=1&vq=small");
-//            videoView.setMediaController(mediaController);
-//            videoView.setVideoURI(uri);
-//            videoView.requestFocus();
-//            videoView.start();
-        }
 //        new Handler().postDelayed(() -> videoView.start(),500);
     }
 

@@ -1,19 +1,19 @@
 package com.pratham.foundation.customView.submarine_view
 
-import android.arch.lifecycle.Lifecycle
-import android.arch.lifecycle.LifecycleObserver
-import android.arch.lifecycle.OnLifecycleEvent
-import android.support.annotation.LayoutRes
-import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.annotation.LayoutRes
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.LifecycleObserver
+import androidx.lifecycle.OnLifecycleEvent
+import androidx.recyclerview.widget.RecyclerView
 import java.util.*
 
 /** BaseAdapter is an abstract class for structuring the base adapter class. */
 @Suppress("unused", "MemberVisibilityCanBePrivate", "RedundantOverride", "RedundantVisibilityModifier")
 abstract class BaseAdapter :
-        RecyclerView.Adapter<BaseViewHolder>(), LifecycleObserver {
+        androidx.recyclerview.widget.RecyclerView.Adapter<BaseViewHolder>(), LifecycleObserver {
     /** data holding list attribute. */
     private val sections = ArrayList<MutableList<Any>>()
 

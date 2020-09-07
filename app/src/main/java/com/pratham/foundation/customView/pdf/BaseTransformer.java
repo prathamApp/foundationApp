@@ -1,7 +1,8 @@
 package com.pratham.foundation.customView.pdf;
 
-import android.support.v4.view.ViewPager;
 import android.view.View;
+
+import androidx.viewpager.widget.ViewPager;
 
 
 public abstract class BaseTransformer implements ViewPager.PageTransformer {

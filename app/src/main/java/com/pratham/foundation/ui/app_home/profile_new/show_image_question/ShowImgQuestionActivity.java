@@ -2,13 +2,13 @@ package com.pratham.foundation.ui.app_home.profile_new.show_image_question;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.support.design.card.MaterialCardView;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.VideoView;
 
+import com.google.android.material.card.MaterialCardView;
 import com.google.gson.Gson;
 import com.pratham.foundation.BaseActivity;
 import com.pratham.foundation.R;

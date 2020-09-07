@@ -222,7 +222,7 @@ public class SplashActivity extends SplashSupportActivity implements SplashContr
         Configuration config = context.getResources().getConfiguration();
         String strwidth = String.valueOf(width);
         String strheight = String.valueOf(height);
-        Log.d("COSLS", "initialize: COSLS - " +strwidth);
+        Log.d("COSLS", "initialize: COSLS - " + strwidth);
 
         String resolution = strwidth + "px x " + strheight + "px (" + config.densityDpi + " dpi)";
         FastSave.getInstance().saveString(FC_Constants.SCR_RES, "" + resolution);
@@ -373,15 +373,24 @@ public class SplashActivity extends SplashSupportActivity implements SplashContr
         new Handler().postDelayed(this::showButton, 2000);
     }
 
+    private boolean isExternalStorageWritable() {
+        return Environment.getExternalStorageState() == Environment.MEDIA_MOUNTED;
+    }
+
     @UiThread
     @Override
     public void gotoNextActivity() {
         startCheck++;
-        //Required folders are created if previously not exist
-        File direct;
+
+        File direct, internal;
+        boolean canWrite = false;
+        internal = new File(Environment.getExternalStorageDirectory().toString());
+        if (internal.canWrite())
+            canWrite = true;
         direct = new File(Environment.getExternalStorageDirectory().toString() + "/.FCAInternal");
         if (!direct.exists())
-            direct.mkdir();
+            if (canWrite)
+                direct.mkdir();
         direct = new File(Environment.getExternalStorageDirectory().toString() + "/.FCAInternal/ActivityPhotos");
         if (!direct.exists())
             direct.mkdir();

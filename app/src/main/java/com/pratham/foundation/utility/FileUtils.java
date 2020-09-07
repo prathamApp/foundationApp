@@ -8,11 +8,9 @@ import android.os.Build;
 import android.os.Environment;
 import android.provider.DocumentsContract;
 import android.provider.MediaStore;
-import android.support.v4.content.ContextCompat;
 import android.util.Log;
 
-
-import com.pratham.foundation.utility.SDCardUtil;
+import androidx.core.content.ContextCompat;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -106,7 +104,7 @@ public class FileUtils {
     public static void delFolder(String folderPath) {
         delAllFile(folderPath);
         String filePath = folderPath;
-        filePath = filePath.toString();
+        filePath = filePath;
         File myFilePath = new File(filePath);
         myFilePath.delete();
     }

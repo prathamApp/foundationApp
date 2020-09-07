@@ -1,7 +1,6 @@
 package com.pratham.foundation.ui.contentPlayer.chit_chat.level_3;
 
 import android.content.Context;
-import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,9 +9,10 @@ import android.view.animation.AnimationUtils;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.pratham.foundation.R;
 import com.pratham.foundation.modalclasses.Message;
-import com.pratham.foundation.ui.contentPlayer.chit_chat.level_1.ConversationFragment_1;
 
 import java.util.List;
 

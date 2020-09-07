@@ -7,7 +7,7 @@
     android:background="#C4FFFFFF"
     android:orientation="vertical">
 
-    <android.support.design.card.MaterialCardView
+    <com.google.android.material.card.MaterialCardView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/white"
@@ -64,7 +64,7 @@
         android:visibility="gone" />
     </RelativeLayout>
 
-    </android.support.design.card.MaterialCardView>
+    </com.google.android.material.card.MaterialCardView>
 
     <ImageButton
         android:id="@+id/btn_ok_img"

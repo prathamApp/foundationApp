@@ -323,6 +323,7 @@ public class PushDataToServer_New {
         imageFilesArray = directory.listFiles();
 //        Log.d("PushData", "Size: " + imageFilesArray.length);
 
+        if(imageFilesArray!=null)
         for (int index = 0; index < imageFilesArray.length; index++) {
             if (imageFilesArray[index].exists() && imageFilesArray[index].isDirectory()) {
 //                Log.d("PushData", "FolderName:" + imageFilesArray[index].getName());

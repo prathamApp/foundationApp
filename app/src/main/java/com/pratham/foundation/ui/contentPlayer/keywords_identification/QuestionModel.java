@@ -1,6 +1,6 @@
 package com.pratham.foundation.ui.contentPlayer.keywords_identification;
 
-import android.arch.persistence.room.Embedded;
+import androidx.room.Embedded;
 
 import com.google.gson.annotations.SerializedName;
 

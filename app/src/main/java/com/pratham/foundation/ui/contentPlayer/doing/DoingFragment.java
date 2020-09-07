@@ -11,7 +11,6 @@ import android.media.ThumbnailUtils;
 import android.net.Uri;
 import android.os.Handler;
 import android.provider.MediaStore;
-import android.support.v4.app.Fragment;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.text.method.ScrollingMovementMethod;
@@ -29,6 +28,8 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.VideoView;
+
+import androidx.fragment.app.Fragment;
 
 import com.pratham.foundation.ApplicationClass;
 import com.pratham.foundation.R;

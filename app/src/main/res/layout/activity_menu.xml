@@ -63,7 +63,7 @@
         android:layout_height="wrap_content"
         android:layout_centerInParent="true">
 
-        <android.support.design.card.MaterialCardView
+        <com.google.android.material.card.MaterialCardView
             android:id="@+id/mcv_ind"
             android:layout_width="match_parent"
             android:layout_height="@dimen/_120sdp"
@@ -97,9 +97,9 @@
                     android:textColor="@color/colorRed"
                     android:textSize="@dimen/_22sdp" />
             </LinearLayout>
-        </android.support.design.card.MaterialCardView>
+        </com.google.android.material.card.MaterialCardView>
 
-        <android.support.design.card.MaterialCardView
+        <com.google.android.material.card.MaterialCardView
             android:id="@+id/mcv_group"
             android:layout_width="match_parent"
             android:layout_height="@dimen/_120sdp"
@@ -137,7 +137,7 @@
                     app:srcCompat="@drawable/splash_group" />
 
             </LinearLayout>
-        </android.support.design.card.MaterialCardView>
+        </com.google.android.material.card.MaterialCardView>
     </RelativeLayout>
     <!--    <RelativeLayout-->
     <!--        android:id="@+id/topPanel"-->

@@ -1,13 +1,13 @@
 package com.pratham.foundation.customView.submarine_view
 
 import android.content.Context
-import android.support.v7.widget.RecyclerView
 import android.view.View
+import androidx.recyclerview.widget.RecyclerView
 
 /** BaseViewHolder is an abstract class for structuring the base view holder class. */
 @Suppress("unused", "LeakingThis")
 abstract class BaseViewHolder(private val view: View)
-    : RecyclerView.ViewHolder(view), View.OnClickListener, View.OnLongClickListener {
+    : androidx.recyclerview.widget.RecyclerView.ViewHolder(view), View.OnClickListener, View.OnLongClickListener {
 
     init {
         view.setOnClickListener(this)

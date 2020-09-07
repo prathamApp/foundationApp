@@ -1,7 +1,7 @@
 package com.pratham.foundation.database.domain;
 
-import android.arch.persistence.room.Ignore;
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
+import androidx.room.Ignore;
 
 import com.google.gson.annotations.SerializedName;
 

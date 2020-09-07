@@ -2,7 +2,6 @@ package com.pratham.foundation.ui.admin_panel.andmin_login_new.pull_and_asign;
 
 import android.app.ProgressDialog;
 import android.graphics.Color;
-import android.support.v4.app.Fragment;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
@@ -16,6 +15,8 @@ import android.widget.Spinner;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.Toast;
+
+import androidx.fragment.app.Fragment;
 
 import com.pratham.foundation.R;
 import com.pratham.foundation.customView.display_image_dialog.CustomLodingDialog;

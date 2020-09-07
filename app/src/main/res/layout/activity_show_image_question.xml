@@ -76,7 +76,7 @@
         android:orientation="vertical"
         android:gravity="center">
 
-        <android.support.design.card.MaterialCardView
+        <com.google.android.material.card.MaterialCardView
             android:id="@+id/ques_card"
             android:layout_width="@dimen/_220sdp"
             android:layout_height="@dimen/_170sdp"
@@ -169,9 +169,9 @@
 
             </RelativeLayout>
 
-        </android.support.design.card.MaterialCardView>
+        </com.google.android.material.card.MaterialCardView>
 
-        <android.support.design.card.MaterialCardView
+        <com.google.android.material.card.MaterialCardView
             android:id="@+id/ans_card"
             android:layout_width="@dimen/_220sdp"
             android:layout_height="@dimen/_170sdp"
@@ -224,7 +224,7 @@
                 </RelativeLayout>
 
             </RelativeLayout>
-        </android.support.design.card.MaterialCardView>
+        </com.google.android.material.card.MaterialCardView>
 
     </LinearLayout>
     </ScrollView>

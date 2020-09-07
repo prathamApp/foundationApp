@@ -1,7 +1,8 @@
 package com.pratham.foundation.ui.admin_panel;
 
 import android.content.Intent;
-import android.support.v4.app.FragmentManager;
+
+import androidx.fragment.app.FragmentManager;
 
 import com.pratham.foundation.BaseActivity;
 import com.pratham.foundation.R;

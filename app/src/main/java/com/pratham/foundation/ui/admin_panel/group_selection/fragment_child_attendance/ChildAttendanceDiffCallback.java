@@ -1,7 +1,7 @@
 package com.pratham.foundation.ui.admin_panel.group_selection.fragment_child_attendance;
 
-import android.support.annotation.Nullable;
-import android.support.v7.util.DiffUtil;
+import androidx.annotation.Nullable;
+import androidx.recyclerview.widget.DiffUtil;
 
 import com.pratham.foundation.database.domain.Student;
 
@@ -34,10 +34,7 @@ public class ChildAttendanceDiffCallback extends DiffUtil.Callback {
     @Override
     public boolean areContentsTheSame(int oldItemPosition, int newItemPosition) {
         int result = newLanguageList.get(newItemPosition).compareTo(oldLanguageList.get(oldItemPosition));
-        if (result == 0) {
-            return true;
-        }
-        return false;
+        return result == 0;
     }
 
     @Nullable

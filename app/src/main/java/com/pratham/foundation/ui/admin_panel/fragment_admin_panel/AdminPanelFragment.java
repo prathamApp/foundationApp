@@ -6,10 +6,12 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
-import android.support.v4.app.Fragment;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Toast;
 
+import androidx.fragment.app.Fragment;
+
+import com.google.android.material.textfield.TextInputEditText;
 import com.pratham.foundation.R;
 import com.pratham.foundation.ui.admin_panel.PullData.PullDataFragment;
 import com.pratham.foundation.ui.admin_panel.fragment_admin_panel.PushOrAssign.PushOrAssignFragment;
@@ -37,10 +39,10 @@ public class AdminPanelFragment extends Fragment implements AdminPanelContract.A
     AdminPanelContract.AdminPanelPresenter presenter;
 
     @ViewById(R.id.userName)
-    android.support.design.widget.TextInputEditText userNameET;
+    TextInputEditText userNameET;
 
     @ViewById(R.id.password)
-    android.support.design.widget.TextInputEditText passwordET;
+    TextInputEditText passwordET;
 
     @AfterViews
     public void initialize() {

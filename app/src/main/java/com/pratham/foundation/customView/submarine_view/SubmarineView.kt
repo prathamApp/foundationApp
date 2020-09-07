@@ -20,13 +20,12 @@ import android.content.Context
 import android.content.res.TypedArray
 import android.graphics.drawable.Drawable
 import android.graphics.drawable.GradientDrawable
-import android.support.v4.content.ContextCompat
-import android.support.v7.widget.LinearLayoutManager
-import android.support.v7.widget.RecyclerView
 import android.util.AttributeSet
 import android.view.ViewTreeObserver
 import android.widget.FrameLayout
 import android.widget.ImageView
+import androidx.core.content.ContextCompat
+import androidx.recyclerview.widget.RecyclerView
 import com.pratham.foundation.R
 import com.pratham.foundation.customView.CircularImageView
 
@@ -43,7 +42,7 @@ class SubmarineView : FrameLayout {
   private var orientation = SubmarineOrientation.HORIZONTAL
   private var circleAnchor = CircleAnchor.LEFT
   val circleIcon = CircularImageView(context)
-  val recyclerView = RecyclerView(context)
+  val recyclerView = androidx.recyclerview.widget.RecyclerView(context)
   var autoNavigate = true
   var autoDip = true
   var duration = 350L
@@ -279,7 +278,7 @@ class SubmarineView : FrameLayout {
   /** draws recyclerView horizontally. */
   private fun addHorizontalRecyclerView() {
     recyclerView.visible(false)
-    recyclerView.layoutManager = LinearLayoutManager(context, RecyclerView.HORIZONTAL, false)
+    recyclerView.layoutManager = androidx.recyclerview.widget.LinearLayoutManager(context, androidx.recyclerview.widget.RecyclerView.HORIZONTAL, false)
     recyclerView.adapter = adapter
     addView(recyclerView, getRecyclerViewSize(), dp2Px(circleSize))
   }
@@ -287,7 +286,7 @@ class SubmarineView : FrameLayout {
   /** draws recyclerView vertically. */
   private fun addVerticalRecyclerView() {
     recyclerView.visible(false)
-    recyclerView.layoutManager = LinearLayoutManager(context, RecyclerView.VERTICAL, false)
+    recyclerView.layoutManager = androidx.recyclerview.widget.LinearLayoutManager(context, androidx.recyclerview.widget.RecyclerView.VERTICAL, false)
     recyclerView.adapter = adapter
     addView(recyclerView, dp2Px(circleSize), getRecyclerViewSize())
   }

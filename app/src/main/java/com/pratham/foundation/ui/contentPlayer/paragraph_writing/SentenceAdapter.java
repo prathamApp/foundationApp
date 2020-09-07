@@ -1,14 +1,14 @@
 package com.pratham.foundation.ui.contentPlayer.paragraph_writing;
 
 import android.content.Context;
-import android.support.annotation.NonNull;
-import android.support.v4.content.ContextCompat;
-import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.pratham.foundation.R;
 
@@ -34,7 +34,7 @@ public class SentenceAdapter extends RecyclerView.Adapter<SentenceAdapter.Myview
     public void onBindViewHolder(@NonNull MyviewHolder myviewHolder, int position) {
         myviewHolder.textView.setText(datalist.get(position));
         if(datalist.size()==1){
-            ((TextView)myviewHolder.textView).setTextSize(75);
+            myviewHolder.textView.setTextSize(75);
         }
        /* myviewHolder.rl_main.setOnClickListener(new View.OnClickListener() {
             @Override

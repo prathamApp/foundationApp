@@ -1,4 +1,4 @@
-<android.support.design.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="@dimen/_150sdp"
     android:layout_height="@dimen/_150sdp"
@@ -17,7 +17,7 @@
         app:lottie_fileName="hand_wash.json"
         app:lottie_loop="true" />
 
-</android.support.design.card.MaterialCardView>
+</com.google.android.material.card.MaterialCardView>
 <!--<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="@dimen/_120sdp"

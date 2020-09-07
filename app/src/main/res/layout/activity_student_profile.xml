@@ -165,7 +165,7 @@
         android:layout_marginBottom="@dimen/_20sdp"
         android:layout_below="@+id/forecast_city_picker">
 
-        <android.support.v7.widget.RecyclerView
+        <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/discription"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />

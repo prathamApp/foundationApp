@@ -2,11 +2,13 @@ package com.pratham.foundation.customView.hive;
 
 import android.graphics.PointF;
 import android.graphics.RectF;
-import android.support.annotation.IntDef;
-import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
+
+import androidx.annotation.IntDef;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,7 +16,7 @@ import java.util.List;
 /**
  * A LayoutManager like hive for RV.
  * <p>
- * You can use it like {@link android.support.v7.widget.LinearLayoutManager}.Just execute
+ * You can use it like {@link LinearLayoutManager}.Just execute
  * {@link RecyclerView#setLayoutManager(RecyclerView.LayoutManager)}
  * with param.You must set one of the {@link Orientation} when you instance a HiveLayoutManager
  * and it don't support change after construct at present.

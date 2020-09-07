@@ -3,8 +3,9 @@ package com.pratham.foundation.customView.hive;
 import android.graphics.PointF;
 import android.graphics.Rect;
 import android.graphics.RectF;
-import android.support.annotation.IntRange;
-import android.support.annotation.NonNull;
+
+import androidx.annotation.IntRange;
+import androidx.annotation.NonNull;
 
 import java.util.List;
 

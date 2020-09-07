@@ -2,9 +2,10 @@ package com.pratham.foundation.ui.admin_panel.andmin_login_new.pull_and_asign;
 
 import android.content.Context;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.widget.GridLayout;
 import android.widget.TextView;
+
+import androidx.annotation.NonNull;
 
 import com.pratham.foundation.R;
 import com.pratham.foundation.customView.display_image_dialog.CustomLodingDialog;

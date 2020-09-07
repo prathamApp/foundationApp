@@ -17,9 +17,9 @@
 package com.pratham.foundation.customView.submarine_view
 
 import android.content.res.ColorStateList
-import android.support.v4.widget.ImageViewCompat
 import android.view.View
 import android.widget.RelativeLayout
+import androidx.core.widget.ImageViewCompat
 import kotlinx.android.synthetic.main.item_submarine.view.*
 
 /** SubmarineViewHolder is an implementation of [BaseViewHolder]  that has [SubmarineItemWrapper] as a data. */

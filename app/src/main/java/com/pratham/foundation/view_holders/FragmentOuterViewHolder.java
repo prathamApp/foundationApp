@@ -1,12 +1,13 @@
 package com.pratham.foundation.view_holders;
 
 import android.annotation.SuppressLint;
-import android.support.annotation.Nullable;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+
+import androidx.annotation.Nullable;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.pratham.foundation.ApplicationClass;
 import com.pratham.foundation.R;

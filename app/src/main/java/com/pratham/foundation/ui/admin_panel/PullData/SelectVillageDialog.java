@@ -2,10 +2,11 @@ package com.pratham.foundation.ui.admin_panel.PullData;
 
 import android.content.Context;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.view.Gravity;
 import android.widget.GridLayout;
 import android.widget.TextView;
+
+import androidx.annotation.NonNull;
 
 import com.pratham.foundation.R;
 import com.pratham.foundation.customView.display_image_dialog.CustomLodingDialog;

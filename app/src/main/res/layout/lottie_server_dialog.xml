@@ -1,4 +1,4 @@
-<android.support.design.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="@dimen/_200sdp"
     android:layout_height="wrap_content"
@@ -68,4 +68,4 @@
                 android:textSize="@dimen/_15sdp" />
         </LinearLayout>
     </RelativeLayout>
-</android.support.design.card.MaterialCardView>
+</com.google.android.material.card.MaterialCardView>

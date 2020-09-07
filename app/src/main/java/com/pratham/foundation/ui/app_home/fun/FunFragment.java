@@ -7,10 +7,6 @@ import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Handler;
-import android.support.v4.app.Fragment;
-import android.support.v7.widget.DefaultItemAnimator;
-import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
@@ -20,6 +16,11 @@ import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.DefaultItemAnimator;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.facebook.drawee.backends.pipeline.Fresco;
 import com.facebook.drawee.interfaces.DraweeController;
@@ -47,6 +48,7 @@ import com.pratham.foundation.ui.contentPlayer.opposites.OppositesActivity_;
 import com.pratham.foundation.ui.contentPlayer.reading_paragraphs.ReadingParagraphsActivity_;
 import com.pratham.foundation.ui.contentPlayer.reading_rhyming.ReadingRhymesActivity_;
 import com.pratham.foundation.ui.contentPlayer.reading_story_activity.ReadingStoryActivity_;
+import com.pratham.foundation.ui.contentPlayer.video_player.ActivityVideoPlayer_;
 import com.pratham.foundation.ui.contentPlayer.video_view.ActivityVideoView_;
 import com.pratham.foundation.ui.contentPlayer.vocabulary_qa.ReadingVocabularyActivity_;
 import com.pratham.foundation.ui.contentPlayer.web_view.WebViewActivity_;
@@ -652,6 +654,16 @@ public class FunFragment extends Fragment implements FunContract.FunView,
                 mainNew.putExtra("contentPath", contentList.getResourcePath());
 //                startActivity(mainNew, ActivityOptions.makeSceneTransitionAnimation(getActivity()).toBundle());
                 startActivity(mainNew);
+            } else if (contentList.getResourceType().equalsIgnoreCase(FC_Constants.YOUTUBE_LINK)) {
+                Intent intent = new Intent(context, ActivityVideoPlayer_.class);
+                intent.putExtra("contentPath", contentList.getResourcePath());
+                intent.putExtra("StudentID", FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""));
+                intent.putExtra("resId", contentList.getResourceId());
+                intent.putExtra("contentName", contentList.getNodeTitle());
+                intent.putExtra("onSdCard", contentList.isOnSDCard());
+                intent.putExtra("contentType", contentList.getResourceType());
+//                startActivity(intent, ActivityOptions.makeSceneTransitionAnimation(ContentDisplay.this).toBundle());
+                startActivity(intent);
             } else if (contentList.getResourceType().equalsIgnoreCase(FC_Constants.VIDEO)) {
                 Intent intent = new Intent(context, ActivityVideoView_.class);
                 intent.putExtra("contentPath", contentList.getResourcePath());
@@ -659,8 +671,14 @@ public class FunFragment extends Fragment implements FunContract.FunView,
                 intent.putExtra("resId", contentList.getResourceId());
                 intent.putExtra("contentName", contentList.getNodeTitle());
                 intent.putExtra("onSdCard", contentList.isOnSDCard());
+                intent.putExtra("contentType", contentList.getResourceType());
 //                startActivity(intent, ActivityOptions.makeSceneTransitionAnimation(ContentDisplay.this).toBundle());
                 startActivity(intent);
+            } else {
+                Intent mainNew = new Intent(context, ContentPlayerActivity_.class);
+                mainNew.putExtra("testData", contentList);
+                mainNew.putExtra("testcall", FC_Constants.INDIVIDUAL_MODE);
+                startActivityForResult(mainNew, 1461);
             }
         }
         resServerImageName = contentList.getNodeServerImage();

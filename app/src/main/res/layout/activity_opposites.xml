@@ -59,7 +59,7 @@
             android:layout_marginBottom="@dimen/_25sdp"
             android:orientation="vertical">
 
-            <android.support.v7.widget.CardView
+            <androidx.cardview.widget.CardView
                 android:id="@+id/topContainer"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
@@ -99,9 +99,9 @@
                     </FrameLayout>
 
                 </RelativeLayout>
-            </android.support.v7.widget.CardView>
+            </androidx.cardview.widget.CardView>
 
-            <android.support.v7.widget.CardView
+            <androidx.cardview.widget.CardView
                 android:id="@+id/bottomContainer"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
@@ -142,7 +142,7 @@
                     </FrameLayout>
 
                 </RelativeLayout>
-            </android.support.v7.widget.CardView>
+            </androidx.cardview.widget.CardView>
         </LinearLayout>
     </RelativeLayout>
 

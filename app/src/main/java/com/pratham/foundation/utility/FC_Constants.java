@@ -217,7 +217,7 @@ public class FC_Constants {
     public static final String APP_LANGUAGE_SELECTED = "app_language_selected";
     public static final String TEST_JSON_DW = "test_json_dw";
 
-/*    //    PRATHAM APIS
+    //    PRATHAM APIS
     public static final String TEST_JSON_API = "http://devposapi.prathamopenschool.org/fcapptestjson/";
     public static final String PUSH_IMAGE_API = "http://devprodigi.openiscool.org/api/Foundation/PostImage";
     public static final String INTERNET_LANGUAGE_API = "http://devposapi.prathamopenschool.org/api/content/browse?id=";
@@ -225,9 +225,9 @@ public class FC_Constants {
     public static final String INTERNET_DOWNLOAD_RESOURCE_API = "http://devposapi.prathamopenschool.org/api/content/downloadv2?id=";
     public static final String INTERNET_DOWNLOAD_TEST_API = "http://devposapi.prathamopenschool.org/api/content/downloadv3?id=";
     public static final String STUDENT_PROGRESS_API = "http://prodigi.openiscool.org/api/cosv2/GetProgress?id=";
-    public static final String LEARNT_WORDS_API = "http://prodigi.openiscool.org/api/cosv2/GetKeyWords?id=";*/
+    public static final String LEARNT_WORDS_API = "http://prodigi.openiscool.org/api/cosv2/GetKeyWords?id=";
 
-        //    DEV APIS
+/*        //    DEV APIS
         public static final String TEST_JSON_API = "http://fcapp.openiscool.org/fcapptestjson/";
         public static final String PUSH_IMAGE_API = "http://devprodigi.openiscool.org/api/Foundation/PostImage";
         public static final String INTERNET_LANGUAGE_API = "http://fcapp.openiscool.org/api/content/browse?id=";
@@ -235,7 +235,7 @@ public class FC_Constants {
         public static final String INTERNET_DOWNLOAD_RESOURCE_API = "http://fcapp.openiscool.org/api/content/downloadv2?id=";
         public static final String INTERNET_DOWNLOAD_TEST_API = "http://fcapp.openiscool.org/api/content/downloadv3?id=";
         public static final String STUDENT_PROGRESS_API = "http://prodigi.openiscool.org/api/cosv2/GetProgress?id=";
-        public static final String LEARNT_WORDS_API = "http://prodigi.openiscool.org/api/cosv2/GetKeyWords?id=";
+        public static final String LEARNT_WORDS_API = "http://prodigi.openiscool.org/api/cosv2/GetKeyWords?id=";*/
 
 /*
     //    DELHI APIS

@@ -19,8 +19,8 @@
 package com.pratham.foundation.customView.submarine_view
 
 import android.content.Context
-import android.support.v4.content.ContextCompat
 import android.widget.ImageView
+import androidx.core.content.ContextCompat
 import com.pratham.foundation.R
 
 @DslMarker

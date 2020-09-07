@@ -44,7 +44,7 @@
                     android:textAlignment="center"
                     android:textSize="@dimen/_20sdp" />
 
-                <android.support.design.card.MaterialCardView
+                <com.google.android.material.card.MaterialCardView
                     android:id="@+id/image_container"
                     android:layout_width="@dimen/_170sdp"
                     android:layout_height="wrap_content"
@@ -94,7 +94,7 @@
                         style="@style/CustomQuestionImageStyle"
                         android:layout_gravity="center_horizontal"/>
                 </RelativeLayout>
-                </android.support.design.card.MaterialCardView>
+                </com.google.android.material.card.MaterialCardView>
 
             </LinearLayout>
         </LinearLayout>

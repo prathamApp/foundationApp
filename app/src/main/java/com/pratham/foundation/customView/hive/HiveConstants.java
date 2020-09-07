@@ -1,6 +1,6 @@
 package com.pratham.foundation.customView.hive;
 
-import android.support.annotation.IntDef;
+import androidx.annotation.IntDef;
 
 /**
  * Created by zjchai on 16/9/11.

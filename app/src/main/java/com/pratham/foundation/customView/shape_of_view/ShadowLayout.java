@@ -10,9 +10,10 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.PorterDuff;
 import android.graphics.Rect;
-import android.support.annotation.FloatRange;
 import android.util.AttributeSet;
 import android.widget.FrameLayout;
+
+import androidx.annotation.FloatRange;
 
 import com.pratham.foundation.R;
 

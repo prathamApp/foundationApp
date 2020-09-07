@@ -7,14 +7,15 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.TextView;
 
+import androidx.fragment.app.Fragment;
+
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.pratham.foundation.BaseActivity;
 import com.pratham.foundation.R;
 import com.pratham.foundation.customView.display_image_dialog.CustomLodingDialog;
@@ -45,7 +46,7 @@ import static com.pratham.foundation.utility.FC_Constants.sec_Test;
 @EActivity(R.layout.activity_content_player)
 public class ContentPlayerActivity extends BaseActivity implements ShowInstruction {
 
-    private String nodeID, title, cCode;
+    private String nodeID, title, cCode,testcall;
     private Intent returnIntent;
     boolean onSdCard;
 
@@ -61,24 +62,24 @@ public class ContentPlayerActivity extends BaseActivity implements ShowInstructi
         nodeID = intent.getStringExtra("nodeID");
         title = intent.getStringExtra("title");
         onSdCard = intent.getBooleanExtra("onSdCard", false);
-        String testcall = intent.getStringExtra("testcall");
+        testcall = intent.getStringExtra("testcall");
 
         floating_back.setImageResource(R.drawable.ic_left_arrow_white);
         floating_info.setImageResource(R.drawable.ic_info_outline_white);
         String a = FastSave.getInstance().getString(FC_Constants.APP_LANGUAGE, FC_Constants.HINDI);
-        Log.d("INSTRUCTIONFRAG", "Select Subj: "+a);
+        Log.d("INSTRUCTIONFRAG", "Select Subj: " + a);
         FC_Utility.setAppLocal(this, a);
 
         if (testcall == null) {
             loadFragment();
-        } else {
+        } else if(testcall.equalsIgnoreCase(FC_Constants.INDIVIDUAL_MODE)) {
             ContentTable testData = (ContentTable) intent.getSerializableExtra("testData");
             cCode = testData.getNodeDesc();
             //  GameConstatnts.gameList = contentTableList;
             // GameConstatnts.currentGameAdapterposition=myViewHolder.getAdapterPosition();
             GameConstatnts.playInsequence = false;
-            GameConstatnts.gameSelector(this, testData,onSdCard);
-            if (FastSave.getInstance().getString(APP_SECTION,"").equalsIgnoreCase(sec_Test)) {
+            GameConstatnts.gameSelector(this, testData, onSdCard);
+            if (FastSave.getInstance().getString(APP_SECTION, "").equalsIgnoreCase(sec_Test)) {
                 returnIntent = new Intent();
                 returnIntent.putExtra("cCode", cCode);
                 returnIntent.putExtra("tMarks", 0);
@@ -147,7 +148,7 @@ public class ContentPlayerActivity extends BaseActivity implements ShowInstructi
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void scoreEventReceived(ScoreEvent scoreEvent) {
         if (scoreEvent != null) {
-            if (FastSave.getInstance().getString(APP_SECTION,"").equalsIgnoreCase(sec_Test)) {
+            if (FastSave.getInstance().getString(APP_SECTION, "").equalsIgnoreCase(sec_Test)) {
                 if (scoreEvent.getMessage().equalsIgnoreCase(FC_Constants.RETURNSCORE)) {
                     returnIntent.putExtra("tMarks", scoreEvent.getTotalCount());
                     returnIntent.putExtra("sMarks", scoreEvent.getScoredMarks());
@@ -201,14 +202,19 @@ public class ContentPlayerActivity extends BaseActivity implements ShowInstructi
                     ((OnGameClose) f).gameClose();
                 }
                 //if game opened from test
-                if (FastSave.getInstance().getString(APP_SECTION,"").equalsIgnoreCase(sec_Test)) {
+                if (FastSave.getInstance().getString(APP_SECTION, "").equalsIgnoreCase(sec_Test)) {
                     if (f.getActivity() instanceof ContentPlayerActivity) {
                         finish();
                     } else {
                         getSupportFragmentManager().popBackStack(SequenceLayout_.class.getSimpleName(), 0);
                     }
-                }else {
-                    getSupportFragmentManager().popBackStack(SequenceLayout_.class.getSimpleName(), 0);
+                } else if(testcall.equalsIgnoreCase(FC_Constants.INDIVIDUAL_MODE)) {
+                    if (f.getActivity() instanceof ContentPlayerActivity) {
+                        finish();
+                    } else {
+                        getSupportFragmentManager().popBackStack(SequenceLayout_.class.getSimpleName(), 0);
+                    }
+
                 }
             }
 

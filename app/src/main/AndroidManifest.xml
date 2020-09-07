@@ -13,6 +13,7 @@
         android:roundIcon="@drawable/fc_logo_round"
         android:supportsRtl="true"
         android:largeHeap="true"
+        android:requestLegacyExternalStorage="true"
         android:theme="@style/AppTheme.NoActionBar"
         tools:ignore="GoogleAppIndexingWarning">
         <activity
@@ -136,6 +137,12 @@
             android:name=".ui.contentPlayer.video_view.ActivityVideoView_"
             android:screenOrientation="sensorLandscape" />
         <activity
+            android:name=".ui.contentPlayer.video_player.ActivityVideoPlayer_"
+            android:screenOrientation="sensorLandscape" />
+        <activity
+            android:name="CustomExoPlayerView"
+            android:screenOrientation="sensorLandscape" />
+        <activity
             android:name=".ui.contentPlayer.doing.FullScreenVideo_"
             android:screenOrientation="sensorLandscape" />
 
@@ -175,7 +182,7 @@
 
 
         <provider
-            android:name="android.support.v4.content.FileProvider"
+            android:name="androidx.core.content.FileProvider"
             android:authorities="${applicationId}.provider"
             android:exported="false"
             android:grantUriPermissions="true">
@@ -187,7 +194,8 @@
 
     </application>
 
-    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE"
+        tools:ignore="ManifestOrder" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />

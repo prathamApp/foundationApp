@@ -1,10 +1,12 @@
 package com.pratham.foundation.database.dao;
 
-import android.arch.persistence.room.Dao;
-import android.arch.persistence.room.Insert;
-import android.arch.persistence.room.OnConflictStrategy;
-import android.arch.persistence.room.Query;
+import androidx.room.Dao;
+import androidx.room.Insert;
+import androidx.room.OnConflictStrategy;
+import androidx.room.Query;
+
 import com.pratham.foundation.database.domain.ContentProgress;
+
 import java.util.List;
 
 
@@ -21,10 +23,10 @@ public interface ContentProgressDao {
     List<ContentProgress> getAllContentNodeProgress();
 
     @Query("update ContentProgress set sentFlag=1 where sentFlag=0")
-    public void setSentFlag();
+    void setSentFlag();
 
     @Insert
-    public void addContentProgressList(List<ContentProgress> contentProgressList);
+    void addContentProgressList(List<ContentProgress> contentProgressList);
 
     @Query("select * from ContentProgress where studentId=:currentStudentID AND resourceId=:resourceId AND label=:resourceProgress")
     List<ContentProgress> getProgressByStudIDAndResID(String currentStudentID, String resourceId, String resourceProgress);

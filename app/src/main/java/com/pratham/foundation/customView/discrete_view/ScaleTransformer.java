@@ -4,8 +4,9 @@ package com.pratham.foundation.customView.discrete_view;
  * Created by HP on 23-05-2018.
  */
 
-import android.support.annotation.FloatRange;
 import android.view.View;
+
+import androidx.annotation.FloatRange;
 
 /**
  * Created by yarolegovich on 03.03.2017.

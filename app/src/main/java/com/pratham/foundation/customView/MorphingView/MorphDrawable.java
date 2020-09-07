@@ -5,8 +5,9 @@ import android.graphics.ColorFilter;
 import android.graphics.Outline;
 import android.graphics.Paint;
 import android.graphics.drawable.Drawable;
-import android.support.annotation.ColorInt;
 import android.util.Property;
+
+import androidx.annotation.ColorInt;
 
 /**
  * Created by HP on 17-08-2017.

@@ -57,7 +57,7 @@ import com.pratham.foundation.ui.contentPlayer.pictionary.pictionaryFragment_;
 import com.pratham.foundation.ui.contentPlayer.reading.ReadingFragment_;
 import com.pratham.foundation.ui.contentPlayer.sequenceLayout.SequenceLayout_;
 import com.pratham.foundation.ui.contentPlayer.trueFalse.TrueFalseFragment;
-import com.pratham.foundation.ui.contentPlayer.video_view.ActivityVideoView_;
+import com.pratham.foundation.ui.contentPlayer.video_player.ActivityVideoPlayer_;
 import com.pratham.foundation.ui.contentPlayer.word_writting.WordWritingFragment;
 import com.pratham.foundation.ui.contentPlayer.word_writting.WordWritingFragment_;
 import com.pratham.foundation.utility.FC_Constants;
@@ -435,7 +435,7 @@ public class GameConstatnts implements ShowInstruction {
                     }, 100);
                     break;
                 case GameConstatnts.VIDEO:
-                    Intent intent = new Intent(context, ActivityVideoView_.class);
+                    Intent intent = new Intent(context, ActivityVideoPlayer_.class);
                     intent.putExtra("contentPath", contentTable1.getResourcePath());
                     intent.putExtra("StudentID", FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""));
                     intent.putExtra("resId", contentTable1.getResourceId());

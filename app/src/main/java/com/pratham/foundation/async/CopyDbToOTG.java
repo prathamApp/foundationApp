@@ -3,8 +3,9 @@ package com.pratham.foundation.async;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Environment;
-import android.support.v4.provider.DocumentFile;
 import android.util.Log;
+
+import androidx.documentfile.provider.DocumentFile;
 
 import com.pratham.foundation.ApplicationClass;
 import com.pratham.foundation.database.AppDatabase;

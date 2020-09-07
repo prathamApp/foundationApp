@@ -74,6 +74,7 @@
     <string name="ReadVocabAndroid">Read the following in order to increase you vocabulary.</string>
     <string name="reading_stt">Answer the question by using the speech to text functionality.</string>
     <string name="multiple_choice">Select the correct answer from multiple answers and submit it</string>
+    <string name="pdf" translatable="false">Read the PDF</string>
     <string name="Video">Watch the video</string>
 
     <string name="restart_dialog_msg" >Do you want to restart?</string>

@@ -1,8 +1,9 @@
 package com.pratham.foundation.async;
 
 import android.content.Context;
-import android.support.v4.provider.DocumentFile;
 import android.util.Log;
+
+import androidx.documentfile.provider.DocumentFile;
 
 import com.pratham.foundation.ApplicationClass;
 import com.pratham.foundation.database.domain.ContentTable;

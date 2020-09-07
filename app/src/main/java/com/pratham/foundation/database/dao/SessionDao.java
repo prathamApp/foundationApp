@@ -1,15 +1,17 @@
 
 package com.pratham.foundation.database.dao;
 
-import android.arch.persistence.room.Dao;
-import android.arch.persistence.room.Delete;
-import android.arch.persistence.room.Insert;
-import android.arch.persistence.room.OnConflictStrategy;
-import android.arch.persistence.room.Query;
-import android.arch.persistence.room.Update;
 import android.database.Cursor;
 
+import androidx.room.Dao;
+import androidx.room.Delete;
+import androidx.room.Insert;
+import androidx.room.OnConflictStrategy;
+import androidx.room.Query;
+import androidx.room.Update;
+
 import com.pratham.foundation.database.domain.Session;
+
 import java.util.List;
 
 @Dao
@@ -46,10 +48,10 @@ public interface SessionDao {
     String getToDate(String SessionID);
 
     @Query("update Session set sentFlag=1 where sentFlag=0")
-    public void setSentFlag();
+    void setSentFlag();
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    public void addSessionList(List<Session> contentList);
+    void addSessionList(List<Session> contentList);
 
     /*    String query = "select FirstName,time from Student x INNER JOIN(select StudentID,sum(seconds) as time from(select b.StudentID, (strftime('%s',(substr(toDate, 7, 4)||'-'||substr(toDate, 4,2)||'-'||substr(toDate, 1,2)||' '||substr(toDate,11) )) - strftime('%s',(substr(fromDate, 7, 4)||'-'||substr(fromDate, 4,2)||'-'||substr(fromDate, 1,2)||' '||substr(fromDate,11))))" +
                 " as seconds from Session a left outer join Attendance b on a.SessionID = b.SessionID) group by StudentID) y on x.StudentID = y.StudentID order by time desc";*/
