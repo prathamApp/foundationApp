@@ -90,13 +90,11 @@ public class ContentFileViewHolder extends RecyclerView.ViewHolder {
             if (contentList.getResourceType().equalsIgnoreCase(FC_Constants.YOUTUBE_LINK)) {
                 ib_action_btn.setImageResource(R.drawable.ic_youtube);
                 ib_action_btn.setVisibility(View.VISIBLE);
-                ib_action_btn.setImageResource(R.drawable.ic_joystick);
                 ib_action_btn.setClickable(true);
-            }
-            else{
-            ib_action_btn.setVisibility(View.VISIBLE);
-            ib_action_btn.setImageResource(R.drawable.ic_download_2);//setVisibility(View.VISIBLE);
-            ib_action_btn.setClickable(false);
+            } else {
+                ib_action_btn.setVisibility(View.VISIBLE);
+                ib_action_btn.setImageResource(R.drawable.ic_download_2);//setVisibility(View.VISIBLE);
+                ib_action_btn.setClickable(false);
             }
         } else if (contentList.getIsDownloaded().equalsIgnoreCase("true")) {
             ib_action_btn.setVisibility(View.VISIBLE);
@@ -197,9 +195,9 @@ public class ContentFileViewHolder extends RecyclerView.ViewHolder {
                 ib_action_btn.setImageResource(R.drawable.ic_pdf);
             else if (contentTable.getResourceType().equalsIgnoreCase(FC_Constants.YOUTUBE_LINK))
                 ib_action_btn.setImageResource(R.drawable.ic_youtube);
-            else if(contentTable.getResourceType().equalsIgnoreCase(FC_Constants.VIDEO))
+            else if (contentTable.getResourceType().equalsIgnoreCase(FC_Constants.VIDEO))
                 ib_action_btn.setImageResource(R.drawable.ic_video);
-            else if(contentTable.getResourceType().toLowerCase().contains(FC_Constants.GAME))
+            else if (contentTable.getResourceType().toLowerCase().contains(FC_Constants.GAME))
                 ib_action_btn.setImageResource(R.drawable.ic_joystick);
             else
                 ib_action_btn.setImageResource(R.drawable.ic_android_act);
@@ -229,10 +227,11 @@ public class ContentFileViewHolder extends RecyclerView.ViewHolder {
                 @Override
                 public void onClick(View v) {
                     itemClicked.onContentDownloadClicked(contentTable,
-                            parentPos,i,""+ SINGLE_RES_DOWNLOAD);                        }
+                            parentPos, i, "" + SINGLE_RES_DOWNLOAD);
+                }
             });
 
-        }else {
+        } else {
             try {
                 ImageRequest imageRequest = ImageRequestBuilder
                         .newBuilderWithSource(Uri.parse(contentTable.getNodeServerImage()))
@@ -244,13 +243,13 @@ public class ContentFileViewHolder extends RecyclerView.ViewHolder {
                         .build();
                 thumbnail.setController(controller);
 
-                if (contentTable.getResourceType().equalsIgnoreCase(FC_Constants.YOUTUBE_LINK))
-                    content_card_view.setOnClickListener(v -> itemClicked.onContentOpenClicked(
-                            contentTable));
-                else
-                content_card_view.setOnClickListener(v ->
-                        itemClicked.onContentDownloadClicked(contentTable,
-                                parentPos,i,""+ SINGLE_RES_DOWNLOAD));
+                if (contentTable.getResourceType().equalsIgnoreCase(FC_Constants.YOUTUBE_LINK)) {
+                    ib_action_btn.setImageResource(R.drawable.ic_youtube);
+                    content_card_view.setOnClickListener(v -> itemClicked.onContentOpenClicked(contentTable));
+                }else
+                    content_card_view.setOnClickListener(v ->
+                            itemClicked.onContentDownloadClicked(contentTable,
+                                    parentPos, i, "" + SINGLE_RES_DOWNLOAD));
 
             } catch (Exception e) {
                 e.printStackTrace();

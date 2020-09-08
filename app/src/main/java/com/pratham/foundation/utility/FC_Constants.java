@@ -237,8 +237,7 @@ public class FC_Constants {
         public static final String STUDENT_PROGRESS_API = "http://prodigi.openiscool.org/api/cosv2/GetProgress?id=";
         public static final String LEARNT_WORDS_API = "http://prodigi.openiscool.org/api/cosv2/GetKeyWords?id=";*/
 
-/*
-    //    DELHI APIS
+/*    //    DELHI APIS
     public static final String TEST_JSON_API = "http://delhigovt.centralindia.cloudapp.azure.com:8084/fcapptestjson/";
     public static final String PUSH_IMAGE_API = "http://devprodigi.openiscool.org/api/Foundation/PostImage";
     public static final String INTERNET_LANGUAGE_API = "http://delhigovt.centralindia.cloudapp.azure.com:8084/api/content/browse?id=";
@@ -246,8 +245,7 @@ public class FC_Constants {
     public static final String INTERNET_DOWNLOAD_RESOURCE_API = " http://delhigovt.centralindia.cloudapp.azure.com:8084/api/content/downloadv2?id=";
     public static final String INTERNET_DOWNLOAD_TEST_API = " http://delhigovt.centralindia.cloudapp.azure.com:8084/api/content/downloadv3?id=";
     public static final String STUDENT_PROGRESS_API = "http://delhigovt.centralindia.cloudapp.azure.com:8084/api/cosv2/GetProgress?id=";
-    public static final String LEARNT_WORDS_API = "http://delhigovt.centralindia.cloudapp.azure.com:8084/api/cosv2/GetKeyWords?id=";
-*/
+    public static final String LEARNT_WORDS_API = "http://delhigovt.centralindia.cloudapp.azure.com:8084/api/cosv2/GetKeyWords?id=";*/
 
 //    AZURE http://api.pradigi.org/api/POSV2/get?id=
 //    public static final String INTERNET_DOWNLOAD_NEW_API = "http://api.pradigi.org/api/POSV2/Get2LevelChild?id=";
