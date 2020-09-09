@@ -171,8 +171,6 @@ public class ProfileFragment extends Fragment implements ProfileContract.Profile
     @SuppressLint("SetTextI18n")
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void messageReceived(EventMessage message) {
-//            else if (message.getMessage().equalsIgnoreCase(FC_Constants.SECTION_COMPLETION_PERC))
-//            getCompletionPercAgain();
         if (FastSave.getInstance().getString(APP_SECTION, "").equalsIgnoreCase(sec_Profile)) {
             if (message.getMessage().equalsIgnoreCase(FC_Constants.FRAGMENT_SELECTED) ||
                     message.getMessage().equalsIgnoreCase(FC_Constants.FRAGMENT_RESELECTED) ||
