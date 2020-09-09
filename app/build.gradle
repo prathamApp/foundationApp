@@ -131,6 +131,11 @@ dependencies {
 // VideoPlayer Youtube
     implementation 'com.google.android.exoplayer:exoplayer:2.11.3'
 
+//    LongScreenshot
+    implementation 'com.github.peter1492:LongScreenshot:1.0'
+//    showcaseview
+//    implementation 'com.github.mreram:showcaseview:1.1'
+
     //
     //noinspection GradleDynamicVersion
 //    implementation  'com.readystatesoftware.ghostlog:ghostlog-integration:+@aar'

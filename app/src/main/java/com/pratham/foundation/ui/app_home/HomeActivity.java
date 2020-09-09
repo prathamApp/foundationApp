@@ -27,6 +27,9 @@ import com.pratham.foundation.R;
 import com.pratham.foundation.async.ContentDownloadingTask;
 import com.pratham.foundation.customView.BlurPopupDialog.BlurPopupWindow;
 import com.pratham.foundation.customView.display_image_dialog.CustomLodingDialog;
+import com.pratham.foundation.customView.showcaseviewlib.GuideView;
+import com.pratham.foundation.customView.showcaseviewlib.config.DismissType;
+import com.pratham.foundation.customView.showcaseviewlib.listener.GuideListener;
 import com.pratham.foundation.customView.submarine_view.SubmarineItem;
 import com.pratham.foundation.customView.submarine_view.SubmarineView;
 import com.pratham.foundation.database.AppDatabase;
@@ -74,6 +77,7 @@ import static com.pratham.foundation.utility.FC_Constants.CURRENT_SUPERVISOR_ID;
 import static com.pratham.foundation.utility.FC_Constants.FRAGMENT_RESELECTED;
 import static com.pratham.foundation.utility.FC_Constants.FRAGMENT_SELECTED;
 import static com.pratham.foundation.utility.FC_Constants.GROUP_MODE;
+import static com.pratham.foundation.utility.FC_Constants.HOME_ACTIVITY_SHOWCASE;
 import static com.pratham.foundation.utility.FC_Constants.INDIVIDUAL_MODE;
 import static com.pratham.foundation.utility.FC_Constants.LEVEL_CHANGED;
 import static com.pratham.foundation.utility.FC_Constants.LOGIN_MODE;
@@ -103,7 +107,7 @@ public class HomeActivity extends BaseActivity implements LevelChanged {
     TextView tv_Topic;
     @ViewById(R.id.tv_Activity)
     TextView tv_Activity;
-    @ViewById(R.id.tabs)
+    @ViewById(R.id.tabLayout)
     TabLayout tabLayout;
     @ViewById(R.id.header_rl)
     public static RelativeLayout header_rl;
@@ -179,6 +183,54 @@ public class HomeActivity extends BaseActivity implements LevelChanged {
             submarine.setCircleSize(70);
 //            submarine.setCircleSize(getResources().getDimension(R.dimen._40sdp));
         new Handler().postDelayed(this::getCompletion, 2000);
+        if (!FastSave.getInstance().getBoolean(HOME_ACTIVITY_SHOWCASE, false))
+            setShowcaseView();
+    }
+
+    private GuideView.Builder builder;
+    private GuideView mGuideView;
+
+    @UiThread
+    public void setShowcaseView() {
+        builder = new GuideView.Builder(this)
+                .setTitle("Progress")
+                .setContentText("Your Progress will be shown here")
+                .setDismissType(DismissType.selfView) //optional - default dismissible by TargetView
+                .setTargetView(tv_header_progress)
+                .setGuideListener(new GuideListener() {
+                    @Override
+                    public void onDismiss(View view) {
+                        switch (view.getId()) {
+                            case R.id.tv_header_progress:
+                                builder.setTitle("LEVELS");
+                                builder.setContentText("Click here to switch levels");
+                                builder.setTargetView(iv_level).build();
+                                break;
+                            case R.id.iv_level:
+                                builder.setTitle("SECTIONS");
+                                builder.setContentText("Click here to switch Sections");
+                                builder.setTargetView(tabLayout).build();
+                                break;
+                            case R.id.tabLayout:
+                                return;
+                        }
+                        mGuideView = builder.build();
+                        mGuideView.show();
+                    }
+                });
+        mGuideView = builder.build();
+        mGuideView.show();
+        FastSave.getInstance().saveBoolean(HOME_ACTIVITY_SHOWCASE, true);
+//        updatingForDynamicLocationViews();
+    }
+
+    private void updatingForDynamicLocationViews() {
+        iv_level.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View view, boolean b) {
+                mGuideView.updateGuideViewLocation();
+            }
+        });
     }
 
     private void getCompletion() {
@@ -502,6 +554,9 @@ public class HomeActivity extends BaseActivity implements LevelChanged {
                     if (testSessionEntered && !testSessionEnded)
                         endTestSession();
                     header_rl.setVisibility(View.GONE);
+                    EventMessage eventMessage = new EventMessage();
+                    eventMessage.setMessage(FRAGMENT_SELECTED);
+                    EventBus.getDefault().post(eventMessage);
                 } else {
                     if (tab.getText().toString().equalsIgnoreCase("" + getResources().getString(R.string.Learning)))
                         FastSave.getInstance().saveString(APP_SECTION, sec_Learning);

@@ -97,6 +97,7 @@ public class FragmentOuterViewHolder extends RecyclerView.ViewHolder {
         }
         sublistList = getList(Objects.requireNonNull(contentTable.getNodelist()));
         Objects.requireNonNull(itemTitle).setText(sectionName);
+        itemTitle.setSelected(true);
         if (sec.equalsIgnoreCase(sec_Fun)) {
             try {
                 FunInnerDataAdapter learningInnerDataAdapter = new FunInnerDataAdapter(

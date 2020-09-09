@@ -1,15 +1,24 @@
 package com.pratham.foundation.ui.test.certificate;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
+import android.graphics.pdf.PdfDocument;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
+import android.os.Handler;
+import android.util.Log;
 import android.view.View;
+import android.view.Window;
 import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
@@ -19,10 +28,13 @@ import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.ezydev.bigscreenshot.BigScreenshot;
 import com.pratham.foundation.ApplicationClass;
 import com.pratham.foundation.BaseActivity;
 import com.pratham.foundation.R;
 import com.pratham.foundation.customView.GridSpacingItemDecoration;
+import com.pratham.foundation.customView.display_image_dialog.CustomLodingDialog;
+import com.pratham.foundation.customView.fontsview.SansButton;
 import com.pratham.foundation.database.domain.Assessment;
 import com.pratham.foundation.modalclasses.CertificateModelClass;
 import com.pratham.foundation.services.shared_preferences.FastSave;
@@ -36,21 +48,28 @@ import org.json.JSONObject;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 import static com.pratham.foundation.ui.contentPlayer.web_view.WebViewActivity.gameLevel;
+import static com.pratham.foundation.utility.FC_Constants.CURRENT_STUDENT_ID;
 import static com.pratham.foundation.utility.FC_Constants.HINDI;
+import static com.pratham.foundation.utility.FC_Constants.activityPDFPath;
 import static com.pratham.foundation.utility.FC_Constants.gameFolderPath;
 import static com.pratham.foundation.utility.FC_Constants.supervisedAssessment;
 import static com.pratham.foundation.utility.FC_Utility.dpToPx;
 
 
-public class CertificateActivity extends BaseActivity implements CertificateContract.CertificateView, CertificateClicked, AdapterView.OnItemSelectedListener {
+public class CertificateActivity extends BaseActivity implements CertificateContract.CertificateView,
+        CertificateClicked, AdapterView.OnItemSelectedListener,
+        BigScreenshot.ProcessScreenshot {
 
     /*
         @BindView(R.id.btn_english)
@@ -69,11 +88,15 @@ public class CertificateActivity extends BaseActivity implements CertificateCont
     ImageView iv_certificate;
     @BindView(R.id.rl_supervisedby)
     RelativeLayout rl_supervisedby;
+    @BindView(R.id.main_certi_layout)
+    RelativeLayout main_certi_layout;
 
     @BindView(R.id.tv_studentName)
     TextView tv_studentName;
     @BindView(R.id.tv_level)
     TextView tv_certi_level;
+    @BindView(R.id.share_pdf)
+    TextView share_pdf;
     @BindView(R.id.tv_supervisor_name)
     TextView tv_supervisor_name;
 
@@ -87,10 +110,8 @@ public class CertificateActivity extends BaseActivity implements CertificateCont
     static String certificateLanguage;
     String level_lbl = "", certificate_lbl = "", supervisorName_lbl, supervisorPhoto;
     String[] allCodes;
-    String nodeId;
-    String CertiTitle,CertiCode;
-    String certiMode;
-
+    String nodeId, CertiTitle, CertiCode, certiMode, timeStamp;
+    Context context;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -99,10 +120,11 @@ public class CertificateActivity extends BaseActivity implements CertificateCont
         //overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
         ButterKnife.bind(this);
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
-
+        context = CertificateActivity.this;
         nodeId = getIntent().getStringExtra("nodeId");
         CertiCode = getIntent().getStringExtra("CertiCode");
         CertiTitle = getIntent().getStringExtra("CertiTitle");
+        timeStamp = getIntent().getStringExtra("TimeStamp");
         certiMode = getIntent().getStringExtra("display");
         assessmentProfile = (Assessment) getIntent().getSerializableExtra("assessment");
         certificateLanguage = FastSave.getInstance().getString(FC_Constants.APP_LANGUAGE, HINDI);
@@ -240,6 +262,89 @@ public class CertificateActivity extends BaseActivity implements CertificateCont
     @OnClick(R.id.main_back)
     public void pressedBack(){
         onBackPressed();
+    }
+
+    @OnClick(R.id.share_pdf)
+    public void SharePDFClicked(){
+//        showLoader();
+        Log.d("SharePDF", "SharePDFClicked: AAAAAAAAAAAAAAAAAAAAAA");
+        activityPDFPath = Environment.getExternalStorageDirectory().toString() + "/.FCAInternal/ActivityPhotos/" + FastSave.getInstance().getString(CURRENT_STUDENT_ID, "") + "/";
+        if(!new File(activityPDFPath).exists())
+            new File(activityPDFPath).mkdir();
+        share_pdf.setVisibility(View.GONE);
+        BigScreenshot longScreenshot = new BigScreenshot(this, recyclerView, main_certi_layout);
+        longScreenshot.startScreenshot();
+    }
+
+    private boolean loaderVisible = false;
+    private CustomLodingDialog myLoadingDialog;
+
+    public void showLoader() {
+        if (!loaderVisible) {
+            loaderVisible = true;
+            myLoadingDialog = new CustomLodingDialog(context);
+            myLoadingDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+            Objects.requireNonNull(myLoadingDialog.getWindow()).
+                    setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+            myLoadingDialog.setContentView(R.layout.loading_dialog);
+            myLoadingDialog.setCanceledOnTouchOutside(false);
+//        myLoadingDialog.setCancelable(false);
+            myLoadingDialog.show();
+        }
+    }
+
+    public void dismissLoadingDialog() {
+        try {
+            loaderVisible = false;
+            new Handler().postDelayed(() -> {
+                if (myLoadingDialog != null && myLoadingDialog.isShowing())
+                    myLoadingDialog.dismiss();
+            }, 150);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void ShowPreviewDialog(Bitmap image) {
+        Log.d("SharePDF", "ShowPreviewDialog: CCCCCCCCCCCCCCCCCCCCCCCCC");
+        final CustomLodingDialog dialog = new CustomLodingDialog(context, R.style.FC_DialogStyle);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        dialog.setContentView(R.layout.fc_image_preview_dialog);
+        dialog.setCanceledOnTouchOutside(false);
+        ImageView iv_dia_preview = dialog.findViewById(R.id.iv_dia_preview);
+        SansButton dia_btn_cross = dialog.findViewById(R.id.dia_btn_cross);
+        ImageButton camera = dialog.findViewById(R.id.camera);
+
+        dialog.show();
+
+        iv_dia_preview.setImageBitmap(image);
+        dia_btn_cross.setOnClickListener(v -> {
+            dialog.dismiss();
+        });
+    }
+
+    @Override
+    public void getScreenshot(Bitmap bitmap) {
+//        dismissLoadingDialog();
+        Log.d("SharePDF", "getScreenshot: BBBBBBBBBBBBBBBBBBBBBBBBB");
+        ShowPreviewDialog(bitmap);
+        PdfDocument pdfDocument = new PdfDocument();
+        PdfDocument.PageInfo myPageInfo = new PdfDocument.PageInfo.Builder(960,1280,1).create();
+        PdfDocument.Page page = pdfDocument.startPage(myPageInfo);
+
+        page.getCanvas().drawBitmap(bitmap,0,0, null);
+        pdfDocument.finishPage(page);
+        activityPDFPath = activityPDFPath+""+timeStamp+".pdf";
+        File myPDFFile = new File(activityPDFPath);
+
+        try {
+            pdfDocument.writeTo(new FileOutputStream(myPDFFile));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        pdfDocument.close();
     }
 
     @Override

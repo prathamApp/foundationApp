@@ -150,6 +150,7 @@ public class CertificateDisplayActivity extends BaseActivity implements
         intent.putExtra("nodeId", "na");
         intent.putExtra("CertiCode", "" + assessment.getQuestionIda());
         intent.putExtra("CertiTitle", "" + assessment.getLevela());
+        intent.putExtra("TimeStamp", "" + assessment.getEndDateTime());
         intent.putExtra("display", "display");
         intent.putExtra("assessment", assessment);
         startActivity(intent);

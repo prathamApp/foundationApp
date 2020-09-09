@@ -13,6 +13,7 @@ import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.view.Window;
+import android.widget.ImageButton;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -25,6 +26,8 @@ import com.pratham.foundation.R;
 import com.pratham.foundation.customView.BlurPopupDialog.BlurPopupWindow;
 import com.pratham.foundation.customView.GridSpacingItemDecoration;
 import com.pratham.foundation.customView.display_image_dialog.CustomLodingDialog;
+import com.pratham.foundation.customView.showcaseviewlib.GuideView;
+import com.pratham.foundation.customView.showcaseviewlib.config.DismissType;
 import com.pratham.foundation.database.domain.ContentTable;
 import com.pratham.foundation.modalclasses.EventMessage;
 import com.pratham.foundation.services.shared_preferences.FastSave;
@@ -51,6 +54,7 @@ import java.util.Objects;
 import static com.pratham.foundation.ApplicationClass.BackBtnSound;
 import static com.pratham.foundation.ApplicationClass.ButtonClickSound;
 import static com.pratham.foundation.utility.FC_Constants.APP_LANGUAGE_SELECTED;
+import static com.pratham.foundation.utility.FC_Constants.SELECT_SUBJECT_SHOWCASE;
 import static com.pratham.foundation.utility.FC_Constants.UPDATE_AVAILABLE;
 import static com.pratham.foundation.utility.FC_Constants.currentLevel;
 import static com.pratham.foundation.utility.FC_Constants.currentSubjectFolder;
@@ -78,6 +82,8 @@ public class SelectSubject extends BaseActivity implements
     TextView subject;
     @ViewById(R.id.tv_update)
     TextView tv_update;
+    @ViewById(R.id.ib_langChange)
+    ImageButton ib_langChange;
     private Context context;
     SelectSubjectAdapter subjectAdapter;
     String studName;
@@ -93,7 +99,6 @@ public class SelectSubject extends BaseActivity implements
         FC_Constants.TAB_LAYOUT = config.smallestScreenWidthDp > 425;
         presenter.setView(SelectSubject.this);
         tv_update.setVisibility(View.GONE);
-        showLoader();
 
         //get student name
         if (FastSave.getInstance().getString(FC_Constants.LOGIN_MODE, FC_Constants.GROUP_MODE).contains("group"))
@@ -102,11 +107,33 @@ public class SelectSubject extends BaseActivity implements
             studName = FastSave.getInstance().getString(
                     FC_Constants.CURRENT_STUDENT_NAME, "").split(" ")[0];
         name.setText(/*getResources().getString(R.string.Welcome) + " " + */studName + ".");
-
 //        for (Locale locale : Locale.getAvailableLocales()) {
 //            Log.d("LOCALES", locale.getLanguage() + "_" + locale.getCountry() + " [" + locale.getDisplayName() + "]");
 //        }
     }
+
+    private GuideView.Builder builder;
+    private GuideView mGuideView;
+
+    @UiThread
+    public void setShowcaseView() {
+        builder = new GuideView.Builder(this)
+                .setTitle("Language")
+                .setContentText("Click Here to change the language\nof the content.")
+                .setDismissType(DismissType.selfView) //optional - default dismissible by TargetView
+                .setTargetView(ib_langChange)
+                .build()
+                .show();
+        FastSave.getInstance().saveBoolean(SELECT_SUBJECT_SHOWCASE, true);
+    }
+/*    private void updatingForDynamicLocationViews() {
+        iv_level.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View view, boolean b) {
+                mGuideView.updateGuideViewLocation();
+            }
+        });
+    }*/
 
     @Override
     protected void onResume() {
@@ -120,7 +147,10 @@ public class SelectSubject extends BaseActivity implements
 
         if (!FastSave.getInstance().getBoolean(APP_LANGUAGE_SELECTED, false))
             langChangeButtonClick();
-        presenter.getSubjectList();
+        else{
+            showLoader();
+            presenter.getSubjectList();
+        }
     }
 
     @Override
@@ -132,6 +162,7 @@ public class SelectSubject extends BaseActivity implements
     @UiThread
     @Override
     public void notifySubjAdapter() {
+
         if (subjectAdapter == null) {
             //Populate subject list to recyclerview
             subjectAdapter = new SelectSubjectAdapter(this, subjectList);
@@ -169,6 +200,8 @@ public class SelectSubject extends BaseActivity implements
     @Override
     public void dismissLoadingDialog() {
         try {
+            if (!FastSave.getInstance().getBoolean(SELECT_SUBJECT_SHOWCASE, false))
+                setShowcaseView();
             loaderVisible = false;
             new Handler().postDelayed(() -> {
                 if (myLoadingDialog != null && myLoadingDialog.isShowing())

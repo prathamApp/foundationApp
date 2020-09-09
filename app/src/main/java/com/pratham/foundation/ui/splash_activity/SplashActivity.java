@@ -394,6 +394,9 @@ public class SplashActivity extends SplashSupportActivity implements SplashContr
         direct = new File(Environment.getExternalStorageDirectory().toString() + "/.FCAInternal/ActivityPhotos");
         if (!direct.exists())
             direct.mkdir();
+        direct = new File(Environment.getExternalStorageDirectory().toString() + "/.FCAInternal/StudentPDFs");
+        if (!direct.exists())
+            direct.mkdir();
         direct = new File(Environment.getExternalStorageDirectory().toString() + "/.FCAInternal/SupervisorImages");
         if (!direct.exists())
             direct.mkdir();

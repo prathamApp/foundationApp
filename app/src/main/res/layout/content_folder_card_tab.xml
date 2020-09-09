@@ -43,13 +43,18 @@
 
         <com.pratham.foundation.customView.fontsview.SansTextViewBold
             android:id="@+id/itemTitle"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/_110sdp"
             android:layout_marginStart="@dimen/_15sdp"
             android:layout_marginBottom="@dimen/_3sdp"
-            android:maxLines="1"
+            android:ellipsize="marquee"
+            android:fadingEdge="horizontal"
+            android:marqueeRepeatLimit="marquee_forever"
+            android:scrollHorizontally="true"
+            android:singleLine="true"
             android:layout_centerVertical="true"
-            android:text="City Of Stories"
+            android:text=""
             android:textColor="@color/colorText"
             android:textSize="@dimen/_15sdp" />
 

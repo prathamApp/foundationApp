@@ -69,6 +69,7 @@
     </RelativeLayout>
 
     <RelativeLayout
+        android:id="@+id/main_certi_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@+id/rl_lang_buttons"
@@ -80,6 +81,15 @@
             android:layout_margin="15dp"
             android:background="@drawable/certificate_bg"
             android:padding="10dp">
+
+            <com.pratham.foundation.customView.fontsview.SansTextViewBold
+                android:id="@+id/share_pdf"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:text="share PDF"
+                android:textSize="@dimen/_10sdp"
+                android:textStyle="italic"/>
 
             <RelativeLayout
                 android:id="@+id/rl_studentHeader"

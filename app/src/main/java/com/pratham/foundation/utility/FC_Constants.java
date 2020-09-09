@@ -192,6 +192,10 @@ public class FC_Constants {
     public static final String TYPE_ITEM = "Resource";
     public static final String TYPE_FOOTER = "Footer";
 
+    public static final String SELECT_SUBJECT_SHOWCASE = "select_subject_showcase";
+    public static final String HOME_ACTIVITY_SHOWCASE = "home_activity_showcase";
+    public static final String PROFILE_FRAGMENT_SHOWCASE = "profile_fragment_showcase";
+
     /*    public static String currentStudentID;
         public static String currentAssessmentStudentID;
         public static String currentsupervisorID;
@@ -217,7 +221,7 @@ public class FC_Constants {
     public static final String APP_LANGUAGE_SELECTED = "app_language_selected";
     public static final String TEST_JSON_DW = "test_json_dw";
 
-    //    PRATHAM APIS
+/*    //    PRATHAM APIS
     public static final String TEST_JSON_API = "http://devposapi.prathamopenschool.org/fcapptestjson/";
     public static final String PUSH_IMAGE_API = "http://devprodigi.openiscool.org/api/Foundation/PostImage";
     public static final String INTERNET_LANGUAGE_API = "http://devposapi.prathamopenschool.org/api/content/browse?id=";
@@ -225,9 +229,9 @@ public class FC_Constants {
     public static final String INTERNET_DOWNLOAD_RESOURCE_API = "http://devposapi.prathamopenschool.org/api/content/downloadv2?id=";
     public static final String INTERNET_DOWNLOAD_TEST_API = "http://devposapi.prathamopenschool.org/api/content/downloadv3?id=";
     public static final String STUDENT_PROGRESS_API = "http://prodigi.openiscool.org/api/cosv2/GetProgress?id=";
-    public static final String LEARNT_WORDS_API = "http://prodigi.openiscool.org/api/cosv2/GetKeyWords?id=";
+    public static final String LEARNT_WORDS_API = "http://prodigi.openiscool.org/api/cosv2/GetKeyWords?id=";*/
 
-/*        //    DEV APIS
+        //    DEV APIS
         public static final String TEST_JSON_API = "http://fcapp.openiscool.org/fcapptestjson/";
         public static final String PUSH_IMAGE_API = "http://devprodigi.openiscool.org/api/Foundation/PostImage";
         public static final String INTERNET_LANGUAGE_API = "http://fcapp.openiscool.org/api/content/browse?id=";
@@ -235,7 +239,7 @@ public class FC_Constants {
         public static final String INTERNET_DOWNLOAD_RESOURCE_API = "http://fcapp.openiscool.org/api/content/downloadv2?id=";
         public static final String INTERNET_DOWNLOAD_TEST_API = "http://fcapp.openiscool.org/api/content/downloadv3?id=";
         public static final String STUDENT_PROGRESS_API = "http://prodigi.openiscool.org/api/cosv2/GetProgress?id=";
-        public static final String LEARNT_WORDS_API = "http://prodigi.openiscool.org/api/cosv2/GetKeyWords?id=";*/
+        public static final String LEARNT_WORDS_API = "http://prodigi.openiscool.org/api/cosv2/GetKeyWords?id=";
 
 /*    //    DELHI APIS
     public static final String TEST_JSON_API = "http://delhigovt.centralindia.cloudapp.azure.com:8084/fcapptestjson/";
@@ -327,6 +331,7 @@ public class FC_Constants {
     public static String currentSubjectFolder = "";
     public static String gameFolderPath = "";
     public static String activityPhotoPath = "";
+    public static String activityPDFPath = "";
     public static String StudentPhotoPath = "";
     public static int transferredImages = 0;
 

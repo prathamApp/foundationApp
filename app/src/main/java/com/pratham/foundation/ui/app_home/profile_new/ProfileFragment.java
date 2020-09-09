@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
+import android.os.Handler;
 import android.view.Gravity;
 import android.view.View;
 import android.view.Window;
@@ -30,8 +31,11 @@ import com.pratham.foundation.R;
 import com.pratham.foundation.customView.BlurPopupDialog.BlurPopupWindow;
 import com.pratham.foundation.customView.GridSpacingItemDecoration;
 import com.pratham.foundation.customView.display_image_dialog.CustomLodingDialog;
+import com.pratham.foundation.customView.showcaseviewlib.GuideView;
+import com.pratham.foundation.customView.showcaseviewlib.config.DismissType;
 import com.pratham.foundation.database.AppDatabase;
 import com.pratham.foundation.database.BackupDatabase;
+import com.pratham.foundation.modalclasses.EventMessage;
 import com.pratham.foundation.modalclasses.ModalTopCertificates;
 import com.pratham.foundation.services.shared_preferences.FastSave;
 import com.pratham.foundation.ui.admin_panel.MenuActivity_;
@@ -49,6 +53,9 @@ import org.androidannotations.annotations.Bean;
 import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EFragment;
 import org.androidannotations.annotations.ViewById;
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.io.File;
 import java.text.DecimalFormat;
@@ -58,11 +65,15 @@ import java.util.Objects;
 
 import static com.pratham.foundation.ApplicationClass.App_Thumbs_Path;
 import static com.pratham.foundation.ApplicationClass.ButtonClickSound;
+import static com.pratham.foundation.ui.app_home.HomeActivity.header_rl;
+import static com.pratham.foundation.utility.FC_Constants.APP_SECTION;
 import static com.pratham.foundation.utility.FC_Constants.GROUP_MODE;
 import static com.pratham.foundation.utility.FC_Constants.INDIVIDUAL_MODE;
 import static com.pratham.foundation.utility.FC_Constants.LOGIN_MODE;
+import static com.pratham.foundation.utility.FC_Constants.PROFILE_FRAGMENT_SHOWCASE;
 import static com.pratham.foundation.utility.FC_Constants.SPLASH_OPEN;
 import static com.pratham.foundation.utility.FC_Constants.StudentPhotoPath;
+import static com.pratham.foundation.utility.FC_Constants.sec_Profile;
 import static com.pratham.foundation.utility.FC_Utility.dpToPx;
 import static com.pratham.foundation.utility.FC_Utility.getRandomFemaleAvatar;
 import static com.pratham.foundation.utility.FC_Utility.getRandomMaleAvatar;
@@ -109,11 +120,72 @@ public class ProfileFragment extends Fragment implements ProfileContract.Profile
     String[] progressArray = {"Progress", "Status"};
     private ProfileOuterDataAdapter adapterParent;
     Context context;
+    private GuideView mGuideView;
+    private GuideView.Builder builder;
 
     @SuppressLint("SetTextI18n")
     @AfterViews
     public void initialize() {
         context = getActivity();
+        if (FastSave.getInstance().getString(APP_SECTION, "").equalsIgnoreCase(sec_Profile)) {
+            fragmentSelected();
+            if (!FastSave.getInstance().getBoolean(PROFILE_FRAGMENT_SHOWCASE, false))
+                new Handler().postDelayed(this::setShowcaseView, 1200);
+        }
+    }
+
+    @UiThread
+    public void setShowcaseView() {
+        builder = new GuideView.Builder(context)
+                .setTitle("Profile")
+                .setContentText("You can switch the profile\nby clicking on the icon.")
+                .setDismissType(DismissType.selfView) //optional - default dismissible by TargetView
+                .setTargetView(card_img)
+                .build()
+                .show();
+        FastSave.getInstance().saveBoolean(PROFILE_FRAGMENT_SHOWCASE, true);
+//        updatingForDynamicLocationViews();
+    }
+
+    private void updatingForDynamicLocationViews() {
+        card_img.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View view, boolean b) {
+                mGuideView.updateGuideViewLocation();
+            }
+        });
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        EventBus.getDefault().register(this);
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        EventBus.getDefault().unregister(this);
+    }
+
+    @SuppressLint("SetTextI18n")
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void messageReceived(EventMessage message) {
+//            else if (message.getMessage().equalsIgnoreCase(FC_Constants.SECTION_COMPLETION_PERC))
+//            getCompletionPercAgain();
+        if (FastSave.getInstance().getString(APP_SECTION, "").equalsIgnoreCase(sec_Profile)) {
+            if (message.getMessage().equalsIgnoreCase(FC_Constants.FRAGMENT_SELECTED) ||
+                    message.getMessage().equalsIgnoreCase(FC_Constants.FRAGMENT_RESELECTED) ||
+                    message.getMessage().equalsIgnoreCase(FC_Constants.ACTIVITY_RESUMED)) {
+                header_rl.setVisibility(View.GONE);
+                fragmentSelected();
+                if (!FastSave.getInstance().getBoolean(PROFILE_FRAGMENT_SHOWCASE, false))
+                    new Handler().postDelayed(this::setShowcaseView, 1000);
+            }
+        }
+    }
+
+    private void fragmentSelected() {
         tv_studentName.setText("" + FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_NAME, "Student"));
         presenter.setView(ProfileFragment.this);
         if (adapterParent == null) {
