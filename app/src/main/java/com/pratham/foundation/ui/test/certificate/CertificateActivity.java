@@ -4,20 +4,19 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.pdf.PdfDocument;
 import android.net.Uri;
-import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
+import android.text.Html;
 import android.util.Log;
 import android.view.View;
 import android.view.Window;
-import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -35,146 +34,100 @@ import com.pratham.foundation.R;
 import com.pratham.foundation.customView.GridSpacingItemDecoration;
 import com.pratham.foundation.customView.display_image_dialog.CustomLodingDialog;
 import com.pratham.foundation.customView.fontsview.SansButton;
+import com.pratham.foundation.database.AppDatabase;
 import com.pratham.foundation.database.domain.Assessment;
+import com.pratham.foundation.database.domain.Student;
 import com.pratham.foundation.modalclasses.CertificateModelClass;
 import com.pratham.foundation.services.shared_preferences.FastSave;
 import com.pratham.foundation.ui.app_home.test_fragment.CertificateClicked;
 import com.pratham.foundation.ui.contentPlayer.web_view.WebViewActivity_;
 import com.pratham.foundation.utility.FC_Constants;
 
-import org.json.JSONArray;
-import org.json.JSONObject;
+import org.androidannotations.annotations.AfterViews;
+import org.androidannotations.annotations.Bean;
+import org.androidannotations.annotations.Click;
+import org.androidannotations.annotations.EActivity;
+import org.androidannotations.annotations.ViewById;
 
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.OnClick;
-
 import static com.pratham.foundation.ui.contentPlayer.web_view.WebViewActivity.gameLevel;
 import static com.pratham.foundation.utility.FC_Constants.CURRENT_STUDENT_ID;
 import static com.pratham.foundation.utility.FC_Constants.HINDI;
 import static com.pratham.foundation.utility.FC_Constants.activityPDFPath;
 import static com.pratham.foundation.utility.FC_Constants.gameFolderPath;
-import static com.pratham.foundation.utility.FC_Constants.supervisedAssessment;
 import static com.pratham.foundation.utility.FC_Utility.dpToPx;
 
-
+@EActivity(R.layout.activity_certificate)
 public class CertificateActivity extends BaseActivity implements CertificateContract.CertificateView,
         CertificateClicked, AdapterView.OnItemSelectedListener,
         BigScreenshot.ProcessScreenshot {
 
-    /*
-        @BindView(R.id.btn_english)
-        Button btn_english;
-        @BindView(R.id.btn_hindi)
-        Button btn_hindi;
-        @BindView(R.id.btn_marathi)
-        Button btn_marathi;
-    */
-    @BindView(R.id.lang_certi_spinner)
-    Spinner lang_certi_spinner;
-    @BindView(R.id.iv_photo)
-    ImageView iv_photo;
+    @Bean(CertificatePresenter.class)
+    CertificateContract.CertificatePresenter presenter;
 
-    @BindView(R.id.iv_certificate)
+    @ViewById(R.id.lang_certi_spinner)
+    Spinner lang_certi_spinner;
+    @ViewById(R.id.iv_certificate)
     ImageView iv_certificate;
-    @BindView(R.id.rl_supervisedby)
-    RelativeLayout rl_supervisedby;
-    @BindView(R.id.main_certi_layout)
+    @ViewById(R.id.main_certi_layout)
     RelativeLayout main_certi_layout;
 
-    @BindView(R.id.tv_studentName)
+    @ViewById(R.id.tv_studentName)
     TextView tv_studentName;
-    @BindView(R.id.tv_level)
+    @ViewById(R.id.tv_level)
     TextView tv_certi_level;
-    @BindView(R.id.share_pdf)
-    TextView share_pdf;
-    @BindView(R.id.tv_supervisor_name)
+    @ViewById(R.id.pdf_page_btn)
+    Button pdf_page_btn;
+    @ViewById(R.id.tv_supervisor_name)
     TextView tv_supervisor_name;
+    @ViewById(R.id.assessment_recycler)
+    RecyclerView recyclerView;
 
-    CertificateContract.CertificatePresenter presenter;
     public static Assessment assessmentProfile;
     CertificateAdapter certificateAdapter;
-    private RecyclerView recyclerView;
     List<CertificateModelClass> ContentTableList;
-    JSONArray certiData;
     int clicked_Pos = 0;
-    static String certificateLanguage;
+    public static String certificateLanguage;
     String level_lbl = "", certificate_lbl = "", supervisorName_lbl, supervisorPhoto;
     String[] allCodes;
-    String nodeId, CertiTitle, CertiCode, certiMode, timeStamp;
+    String nodeId, CertiTitle, CertiCode, certiMode, timeStamp, cTitle, pdfName;
     Context context;
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_certificate);
-        //overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
-        ButterKnife.bind(this);
-        getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
+    @AfterViews
+    protected void initiate() {
+
         context = CertificateActivity.this;
         nodeId = getIntent().getStringExtra("nodeId");
         CertiCode = getIntent().getStringExtra("CertiCode");
         CertiTitle = getIntent().getStringExtra("CertiTitle");
+        cTitle = getIntent().getStringExtra("cTitle");
         timeStamp = getIntent().getStringExtra("TimeStamp");
         certiMode = getIntent().getStringExtra("display");
         assessmentProfile = (Assessment) getIntent().getSerializableExtra("assessment");
+
+        presenter.setView(CertificateActivity.this);
+
         certificateLanguage = FastSave.getInstance().getString(FC_Constants.APP_LANGUAGE, HINDI);
 
         ContentTableList = new ArrayList<>();
 
-        recyclerView = findViewById(R.id.assessment_recycler);
-        certificateAdapter = new CertificateAdapter(this, ContentTableList, this);
-        RecyclerView.LayoutManager mLayoutManager = new GridLayoutManager(this, 1);
-        recyclerView.setLayoutManager(mLayoutManager);
-        recyclerView.addItemDecoration(new GridSpacingItemDecoration(1, dpToPx(this,10), true));
-        recyclerView.setItemAnimator(new DefaultItemAnimator());
-        recyclerView.setAdapter(certificateAdapter);
-        presenter = new CertificatePresenter(CertificateActivity.this, this);
+        Student student;
+        String sId = assessmentProfile.getStudentIDa();
+        student = AppDatabase.getDatabaseInstance(context).getStudentDao().getStudent(sId);
+        String studName = "" + student.getFullName();
 
-        presenter.getStudentName(certiMode);
-
-        if (FastSave.getInstance().getBoolean(supervisedAssessment, false))
-            presenter.getSupervisorData(certiMode);
-        else {
-            rl_supervisedby.setVisibility(View.GONE);
-        }
-
-        certiData = presenter.fetchAssessmentList(CertiTitle);
-
-        if (!certiMode.equalsIgnoreCase("display")) {
-            presenter.proceed(certiData, nodeId);
-        } else {
-
-            if (CertiTitle.equalsIgnoreCase("1"))
-                tv_certi_level.setText("Beginner");
-            else if (CertiTitle.equalsIgnoreCase("2"))
-                tv_certi_level.setText("Sub junior");
-            else if (CertiTitle.equalsIgnoreCase("3"))
-                tv_certi_level.setText("Junior");
-            else if (CertiTitle.equalsIgnoreCase("4"))
-                tv_certi_level.setText("Sub Senior");
-            else if (CertiTitle.equalsIgnoreCase("5"))
-                tv_certi_level.setText("Sub Senior");
-
-            if (!assessmentProfile.getDeviceIDa().equalsIgnoreCase("na")) {
-                rl_supervisedby.setVisibility(View.VISIBLE);
-                presenter.getSupervisorData(certiMode);
-            } else
-                rl_supervisedby.setVisibility(View.GONE);
-
-            presenter.fillAdapter(assessmentProfile, certiData);
-        }
-        if (FC_Constants.GROUP_LOGIN) {
-        }
+        tv_certi_level.setText(Html.fromHtml("<b><i><u><font color=\"#5D76F6\">"
+                +studName+"</font></u></i></b> has completed<br><b>"+cTitle+"</b> successfully"));
+        String dateStamp = timeStamp.split(" ")[0];
+        tv_studentName.setText(Html.fromHtml("on "+dateStamp+" using<br>'"+getResources().getString(R.string.app_name)+"' app<br>"
+                +"by <i>Pratham Education Foundation</i>."));
+        pdfName = sId+"_"+cTitle+"_"+timeStamp+".pdf";
 
         lang_certi_spinner.setOnItemSelectedListener(this);
         // Creating adapter for spinner
@@ -184,11 +137,11 @@ public class CertificateActivity extends BaseActivity implements CertificateCont
         // attaching data adapter to spinner
         lang_certi_spinner.setAdapter(dataAdapter);
 
+        presenter.fillAdapter(assessmentProfile, CertiTitle);
     }
 
     @Override
     public void setStudentName(String studName) {
-        tv_studentName.setText("" + studName);
     }
 
     @Override
@@ -209,27 +162,22 @@ public class CertificateActivity extends BaseActivity implements CertificateCont
 
     @Override
     public void initializeTheIndex() {
-        certificateAdapter.initializeIndex();
     }
 
     @Override
     public void notifyAdapter() {
-        certificateAdapter.notifyDataSetChanged();
-    }
-
-    @Override
-    public void setSupervisorData(String sName, String sImage) {
-        supervisorName_lbl = sName;
-        supervisorPhoto = sImage;
-        try {
-            Bitmap bmImg = BitmapFactory.decodeFile(sImage);
-            BitmapFactory.decodeStream(new FileInputStream("" + sImage));
-            iv_photo.setImageBitmap(bmImg);
-            tv_supervisor_name.setText(supervisorName_lbl);
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
+        if(certificateAdapter==null){
+            certificateAdapter = new CertificateAdapter(this, ContentTableList, this);
+            certificateAdapter.initializeIndex();
+            RecyclerView.LayoutManager mLayoutManager = new GridLayoutManager(this, 1);
+            recyclerView.setLayoutManager(mLayoutManager);
+            recyclerView.addItemDecoration(new GridSpacingItemDecoration(1, dpToPx(this, 5), true));
+            recyclerView.setItemAnimator(new DefaultItemAnimator());
+            recyclerView.setAdapter(certificateAdapter);
+        }else {
+            certificateAdapter.initializeIndex();
+            certificateAdapter.notifyDataSetChanged();
         }
-
     }
 
     @Override
@@ -242,38 +190,34 @@ public class CertificateActivity extends BaseActivity implements CertificateCont
 
     }
 
-/*    public float[] getAllPercentages() {
-        float starRatings[];
-        starRatings = new float[certificateModelClassList.size()];
-        for (int i = 0; i < certificateModelClassList.size(); i++) {
-            starRatings[i] = getStarRating(((float) certificateModelClassList.get(i).getScoredMarks() / (float) certificateModelClassList.get(i).getTotalMarks()) * 100);
-        }
-        return starRatings;
-    }
-    public String[] getAllCodes() {
-        String allCodes[];
-        allCodes = new String[certificateModelClassList.size()];
-        for (int i = 0; i < certificateModelClassList.size(); i++) {
-            allCodes[i] = certificateModelClassList.get(i).getCertiCode();
-        }
-        return allCodes;
-    }*/
-
-    @OnClick(R.id.main_back)
-    public void pressedBack(){
+    @Click(R.id.main_back)
+    public void pressedBack() {
         onBackPressed();
     }
 
-    @OnClick(R.id.share_pdf)
-    public void SharePDFClicked(){
+    boolean pdfPressed = false;
+    BigScreenshot longScreenshot;
+
+    @Click(R.id.pdf_page_btn)
+    public void SharePDFClicked() {
+        if (!pdfPressed) {
 //        showLoader();
-        Log.d("SharePDF", "SharePDFClicked: AAAAAAAAAAAAAAAAAAAAAA");
-        activityPDFPath = Environment.getExternalStorageDirectory().toString() + "/.FCAInternal/ActivityPhotos/" + FastSave.getInstance().getString(CURRENT_STUDENT_ID, "") + "/";
-        if(!new File(activityPDFPath).exists())
-            new File(activityPDFPath).mkdir();
-        share_pdf.setVisibility(View.GONE);
-        BigScreenshot longScreenshot = new BigScreenshot(this, recyclerView, main_certi_layout);
-        longScreenshot.startScreenshot();
+            pdfPressed = true;
+            Log.d("SharePDF", "SharePDFClicked: AAAAAAAAAAAAAAAAAAAAAA");
+            activityPDFPath = Environment.getExternalStorageDirectory().toString() + "/.FCAInternal/StudentPDFs/"
+                    + FastSave.getInstance().getString(CURRENT_STUDENT_ID, "") + "/";
+            if (!new File(activityPDFPath).exists())
+                new File(activityPDFPath).mkdir();
+            pdf_page_btn.setText("STOP");
+//        takeSS(recyclerView);
+            longScreenshot = new BigScreenshot(this, recyclerView, main_certi_layout);
+            longScreenshot.startScreenshot();
+            new Handler().postDelayed(() -> pdf_page_btn.performClick(),45);
+        } else {
+            pdfPressed = false;
+            longScreenshot.stopScreenshot();
+            pdf_page_btn.setText("PDF");
+        }
     }
 
     private boolean loaderVisible = false;
@@ -326,53 +270,52 @@ public class CertificateActivity extends BaseActivity implements CertificateCont
 
     @Override
     public void getScreenshot(Bitmap bitmap) {
-//        dismissLoadingDialog();
         Log.d("SharePDF", "getScreenshot: BBBBBBBBBBBBBBBBBBBBBBBBB");
+/*
         ShowPreviewDialog(bitmap);
+        try {
+            Date now = new Date();
+            android.text.format.DateFormat.format("yyyy-MM-dd_hh:mm:ss", now);
+            String mPath = activityPDFPath + now + ".jpeg";
+            File imageFile = new File(mPath);
+            FileOutputStream outputStream = new FileOutputStream(imageFile);
+            int quality = 100;
+            bitmap.compress(Bitmap.CompressFormat.JPEG, quality, outputStream);
+            outputStream.flush();
+            outputStream.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+*/
+
         PdfDocument pdfDocument = new PdfDocument();
-        PdfDocument.PageInfo myPageInfo = new PdfDocument.PageInfo.Builder(960,1280,1).create();
+        PdfDocument.PageInfo myPageInfo = new PdfDocument.PageInfo.Builder(bitmap.getWidth(), bitmap.getHeight(), 1).create();
         PdfDocument.Page page = pdfDocument.startPage(myPageInfo);
 
-        page.getCanvas().drawBitmap(bitmap,0,0, null);
+        page.getCanvas().drawBitmap(bitmap, 0, 0, null);
         pdfDocument.finishPage(page);
-        activityPDFPath = activityPDFPath+""+timeStamp+".pdf";
+        activityPDFPath = activityPDFPath + "" + pdfName;
         File myPDFFile = new File(activityPDFPath);
-
         try {
             pdfDocument.writeTo(new FileOutputStream(myPDFFile));
         } catch (IOException e) {
             e.printStackTrace();
         }
-
         pdfDocument.close();
+
+        if (myPDFFile.exists()) {
+            Uri uri = Uri.fromFile(myPDFFile);
+            Intent share = new Intent();
+            share.setAction(Intent.ACTION_SEND);
+            share.setType("application/pdf");
+            share.putExtra(Intent.EXTRA_STREAM, uri);
+            startActivity(share);
+        }
     }
 
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-
-        boolean testGiven = true;
-
-        if (!certiMode.equalsIgnoreCase("display")) {
-            JSONObject jsonObjectAssessment = new JSONObject();
-            for (int i = 0; i < ContentTableList.size(); i++) {
-                try {
-                    if (ContentTableList.get(i).isAsessmentGiven()) {
-                        jsonObjectAssessment.put("CertCode" + i + "_" + ContentTableList.get(i).getCertiCode(), "" + ContentTableList.get(i).getStudentPercentage());
-                    } else {
-                        testGiven = false;
-                        break;
-                    }
-                    //question
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-
-            if (testGiven) {
-                presenter.recordTestData(jsonObjectAssessment, CertiTitle);
-            }
-        }
     }
 
     @Override

@@ -52,7 +52,6 @@ import com.pratham.foundation.ui.contentPlayer.reading_paragraphs.ReadingParagra
 import com.pratham.foundation.ui.contentPlayer.reading_rhyming.ReadingRhymesActivity_;
 import com.pratham.foundation.ui.contentPlayer.reading_story_activity.ReadingStoryActivity_;
 import com.pratham.foundation.ui.contentPlayer.video_player.ActivityVideoPlayer_;
-import com.pratham.foundation.ui.contentPlayer.video_view.ActivityVideoView_;
 import com.pratham.foundation.ui.contentPlayer.vocabulary_qa.ReadingVocabularyActivity_;
 import com.pratham.foundation.ui.contentPlayer.web_view.WebViewActivity_;
 import com.pratham.foundation.utility.FC_Constants;
@@ -488,11 +487,15 @@ public class LearningFragment extends Fragment implements LearningContract.Learn
         } catch (IllegalStateException e) {
             e.printStackTrace();
         }
+        String sdStatus = "F";
+        if(onSDCard)
+            sdStatus = "T";
 
         Intent mainNew = new Intent(context, ContentPlayerActivity_.class);
         mainNew.putExtra("nodeID", nId);
         mainNew.putExtra("title", title);
         mainNew.putExtra("onSDCard", onSDCard);
+        mainNew.putExtra("sdStatus", sdStatus);
         startActivity(mainNew);
 //        startActivity(mainNew, ActivityOptions.makeSceneTransitionAnimation(ContentDisplay.this).toBundle());
     }
@@ -649,7 +652,8 @@ public class LearningFragment extends Fragment implements LearningContract.Learn
                 mainNew.putExtra("contentPath", contentList.getResourcePath());
 //                startActivity(mainNew, ActivityOptions.makeSceneTransitionAnimation(getActivity()).toBundle());
                 startActivity(mainNew);
-            } else if (contentList.getResourceType().equalsIgnoreCase(FC_Constants.YOUTUBE_LINK)) {
+            } else if (contentList.getResourceType().equalsIgnoreCase(FC_Constants.YOUTUBE_LINK) ||
+                    contentList.getResourceType().equalsIgnoreCase(FC_Constants.VIDEO)) {
                 Intent intent = new Intent(context, ActivityVideoPlayer_.class);
                 intent.putExtra("contentPath", contentList.getResourcePath());
                 intent.putExtra("StudentID", FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""));
@@ -659,7 +663,7 @@ public class LearningFragment extends Fragment implements LearningContract.Learn
                 intent.putExtra("contentType", contentList.getResourceType());
 //                startActivity(intent, ActivityOptions.makeSceneTransitionAnimation(ContentDisplay.this).toBundle());
                 startActivity(intent);
-            } else if (contentList.getResourceType().equalsIgnoreCase(FC_Constants.VIDEO)) {
+            } /*else if (contentList.getResourceType().equalsIgnoreCase(FC_Constants.VIDEO)) {
                 Intent intent = new Intent(context, ActivityVideoView_.class);
                 intent.putExtra("contentPath", contentList.getResourcePath());
                 intent.putExtra("StudentID", FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""));
@@ -669,7 +673,7 @@ public class LearningFragment extends Fragment implements LearningContract.Learn
                 intent.putExtra("contentType", contentList.getResourceType());
 //                startActivity(intent, ActivityOptions.makeSceneTransitionAnimation(ContentDisplay.this).toBundle());
                 startActivity(intent);
-            }else {
+            }*/else {
                 Intent mainNew = new Intent(context, ContentPlayerActivity_.class);
                 mainNew.putExtra("testData", contentList);
                 mainNew.putExtra("testcall", FC_Constants.INDIVIDUAL_MODE);

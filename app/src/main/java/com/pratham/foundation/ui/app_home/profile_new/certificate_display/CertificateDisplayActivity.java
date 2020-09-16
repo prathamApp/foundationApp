@@ -16,7 +16,7 @@ import com.pratham.foundation.customView.GridSpacingItemDecoration;
 import com.pratham.foundation.database.AppDatabase;
 import com.pratham.foundation.database.domain.Assessment;
 import com.pratham.foundation.services.shared_preferences.FastSave;
-import com.pratham.foundation.ui.test.certificate.CertificateActivity;
+import com.pratham.foundation.ui.test.certificate.CertificateActivity_;
 import com.pratham.foundation.utility.FC_Constants;
 
 import org.androidannotations.annotations.AfterViews;
@@ -144,12 +144,13 @@ public class CertificateDisplayActivity extends BaseActivity implements
     }
 
     @Override
-    public void gotoCertificate(Assessment assessment) {
+    public void gotoCertificate(Assessment assessment, String cTitle) {
 //        Toast.makeText(this, "gotoCertificate", Toast.LENGTH_SHORT).show();
-        Intent intent = new Intent(this, CertificateActivity.class);
+        Intent intent = new Intent(this, CertificateActivity_.class);
         intent.putExtra("nodeId", "na");
         intent.putExtra("CertiCode", "" + assessment.getQuestionIda());
         intent.putExtra("CertiTitle", "" + assessment.getLevela());
+        intent.putExtra("cTitle", "" + cTitle);
         intent.putExtra("TimeStamp", "" + assessment.getEndDateTime());
         intent.putExtra("display", "display");
         intent.putExtra("assessment", assessment);

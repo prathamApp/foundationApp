@@ -50,7 +50,6 @@ import com.pratham.foundation.ui.contentPlayer.reading_paragraphs.ReadingParagra
 import com.pratham.foundation.ui.contentPlayer.reading_rhyming.ReadingRhymesActivity_;
 import com.pratham.foundation.ui.contentPlayer.reading_story_activity.ReadingStoryActivity_;
 import com.pratham.foundation.ui.contentPlayer.video_player.ActivityVideoPlayer_;
-import com.pratham.foundation.ui.contentPlayer.video_view.ActivityVideoView_;
 import com.pratham.foundation.ui.contentPlayer.vocabulary_qa.ReadingVocabularyActivity_;
 import com.pratham.foundation.ui.contentPlayer.web_view.WebViewActivity_;
 import com.pratham.foundation.utility.FC_Constants;
@@ -158,6 +157,7 @@ public class ContentDisplay extends BaseActivity implements ContentContract.Cont
         recyclerView.setAdapter(contentAdapter);
 
         showLoader();
+        presenter.addNodeIdToList(nodeId);
 
         // Setting the app local to ensure that the instruction and other strings come in the specified language.
         String a = FastSave.getInstance().getString(FC_Constants.APP_LANGUAGE, FC_Constants.HINDI);
@@ -171,7 +171,6 @@ public class ContentDisplay extends BaseActivity implements ContentContract.Cont
         ll_topic_parent.setSelected(true);
         tv_Activity.setText("" + parentName);
 //        add node for maintaining list
-        presenter.addNodeIdToList(nodeId);
 //        get child node and display
         presenter.getListData();
 
@@ -334,14 +333,19 @@ public class ContentDisplay extends BaseActivity implements ContentContract.Cont
         } catch (IllegalStateException e) {
             e.printStackTrace();
         }
+        String sdStatus = "F";
+        if(onSDCard)
+            sdStatus = "T";
 
         Intent mainNew = new Intent(ContentDisplay.this, ContentPlayerActivity_.class);
         mainNew.putExtra("nodeID", nId);
         mainNew.putExtra("title", title);
         mainNew.putExtra("onSDCard", onSDCard);
+        mainNew.putExtra("sdStatus", sdStatus);
         startActivity(mainNew);
 //        startActivity(mainNew, ActivityOptions.makeSceneTransitionAnimation(ContentDisplay.this).toBundle());
     }
+
 
     @Override
     public void onContentOpenClicked(int position, String nodeId) {
@@ -492,7 +496,8 @@ public class ContentDisplay extends BaseActivity implements ContentContract.Cont
                 mainNew.putExtra("rhymeLevel", ContentTableList.get(position).getNodeDesc());
 //                startActivity(mainNew, ActivityOptions.makeSceneTransitionAnimation(ContentDisplay.this).toBundle());
                 startActivity(mainNew);
-            } else if (ContentTableList.get(position).getResourceType().equalsIgnoreCase(FC_Constants.YOUTUBE_LINK)) {
+            } else if (ContentTableList.get(position).getResourceType().equalsIgnoreCase(FC_Constants.YOUTUBE_LINK) ||
+                    ContentTableList.get(position).getResourceType().equalsIgnoreCase(FC_Constants.VIDEO)) {
                 Intent intent = new Intent(ContentDisplay.this, ActivityVideoPlayer_.class);
                 intent.putExtra("contentPath", ContentTableList.get(position).getResourcePath());
                 intent.putExtra("StudentID", FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""));
@@ -502,7 +507,7 @@ public class ContentDisplay extends BaseActivity implements ContentContract.Cont
                 intent.putExtra("contentType", ContentTableList.get(position).getResourceType());
 //                startActivity(intent, ActivityOptions.makeSceneTransitionAnimation(ContentDisplay.this).toBundle());
                 startActivity(intent);
-            } else if (ContentTableList.get(position).getResourceType().equalsIgnoreCase(FC_Constants.VIDEO)) {
+            }/* else if (ContentTableList.get(position).getResourceType().equalsIgnoreCase(FC_Constants.VIDEO)) {
                 Intent intent = new Intent(ContentDisplay.this, ActivityVideoView_.class);
                 intent.putExtra("contentPath", ContentTableList.get(position).getResourcePath());
                 intent.putExtra("StudentID", FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""));
@@ -512,7 +517,7 @@ public class ContentDisplay extends BaseActivity implements ContentContract.Cont
                 intent.putExtra("contentType", ContentTableList.get(position).getResourceType());
 //                startActivity(intent, ActivityOptions.makeSceneTransitionAnimation(ContentDisplay.this).toBundle());
                 startActivity(intent);
-            } else {
+            }*/ else {
                 Intent mainNew = new Intent(ContentDisplay.this, ContentPlayerActivity_.class);
                 mainNew.putExtra("testData", ContentTableList.get(position));
                 mainNew.putExtra("testcall", FC_Constants.INDIVIDUAL_MODE);

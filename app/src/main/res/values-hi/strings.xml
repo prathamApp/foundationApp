@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:tools="http://schemas.android.com/tools">
-    <string name="app_name">Foundation App</string>
 
     <string name="Login">लॉग इन करें</string>
     <string name="Stt_Dialog_Msg">बेहतर प्रदर्शन के लिए कृपया ऑफलाइन भाषा पैक English(India) और हिंदी(भारत) डाउनलोड करें।</string>
@@ -32,18 +31,30 @@
     <string name="yes">हाँ</string>
     <string name="no">नहीं</string>
     <string name="Test_Complete_Dialog">आप प्रोफाइल विभाग में प्रमाण पत्र देख सकते हैं</string>
-    <string name="alertmessage">Some options are remaining</string>
     <string name="selectGroup" >ग्रुप का चयन करें</string>
     <string name="select_Age" >आयु वर्ग का चयन करें</string>
     <string name="select_Name" >अपना नाम चुनें</string>
     <string name="age_8_and_above">उम्र 8 साल और ऊपर</string>
     <string name="Summary">सारांश</string>
-    <string name="Progress">प्रगति</string>
     <string name="Certificates">प्रमाण पत्र</string>
-
+    <string name="Next_activity">अगली गतिविधि?</string>
+    <string name="Do_you_want_to_exit">क्या आप बाहर निकलना चाहते है?</string>
+    <string name="activity_completed">गतिविधि पूरी हुई|</string>
+    <string name="hint">संकेत</string>
+    <string name="clear">बदलाव हटाएँ</string>
+    <string name="submit">सबमिट</string>
+    <string name="hide_hint">संकेत छिपाएं</string>
+    <string name="Enter_answer">उत्तर दर्ज करें</string>
+    <string name="Your_answer">आपका उत्तर</string>
+    <string name="Result">परिणाम</string>
+    <string name="You_answered">आपका उत्तर</string>
+    <string name="Correct_Answer">सही उत्तर</string>
+    <string name="Skipped">छोड़ा गया</string>
+    <string name="Read">पढ़ें</string>
+    <string name="Paragraph">अनुच्छेद : </string>
+    <string name="Keyword">संकेत शब्द : </string>
     <string name="restart_dialog_msg" >क्या आप पुनः आरंभ करना चाहते हैं?</string>
     <string name="exit_dialog_msg" >क्या आप बाहर निकलना चाहते है?</string>
-
     <string name="read_full_sentence" >वाक्य को पूरा पढ़ें.</string>
     <string name="Click_group_name" >अपने समूह के नाम पर क्लिक करें।</string>
     <string name="mark_attendance" >अपनी उपस्थिति को चिह्नित करें।</string>
@@ -61,10 +72,13 @@
     <string name="Supervised">प्रशिक्षित</string>
     <string name="change_subj">विषय बदलें?</string>
     <string name="save">बचाएं</string>
+    <string name="alertmessage">Some options are remaining</string>
+    <string name="usermessage">अब कीवर्ड चुनने के लिए आपकी बारी है।</string>
+    <string name="select_language">भाषा चुनिए -</string>
 
+    <!--    &lt;!&ndash;    game Instructions&ndash;&gt;-->
     <string name="fact_retrieval_click">जवाब देने के लिए अनुच्छेद से सही शब्द या वाक्य चुनिए|</string>
     <string name="factRetrieval">जवाब देने के लिए अनुच्छेद से सही शब्द या वाक्य चुनिए|</string>
-    <!--<string name="IKWAndroid">दिए गए अनुच्छेद में वैज्ञानिक शब्दों को दिखाइए|</string>-->
     <string name="IKWAndroid">दिए गए अनुच्छेद में विषय से संबंधित शब्दों को चुनें।</string>
     <string name="CopyWriting">दिए गए शब्द और जानकारी को अपनी कॉपी में लिखिए और उसकी फोटो सबमिट कीजिए|</string>
     <string name="chKeywords">दिए गए शब्दों में से करीबी शब्द चुनिए|</string>
@@ -76,38 +90,17 @@
     <string name="doing_act">माइक बटन पर क्लिक करके अपना उत्तर रिकॉर्ड कीजिए और सबमिट कीजिए|</string>
     <string name="letter">दिए गए विषय पर पत्र लिखें और उसकी फोटो सबमिट कीजिए|</string>
     <string name="doing_act_video">माइक बटन पर क्लिक करके अपना उत्तर रिकॉर्ड कीजिए और सबमिट कीजिए|</string>
+    <string name="watching_video">माइक बटन पर क्लिक करके अपना उत्तर रिकॉर्ड कीजिए और सबमिट कीजिए|</string>
     <string name="ReadVocabAndroid">प्ले बटन पर क्लिक कीजिए और सुनिए| फिर माइक बटन पर क्लिक करके साफ़ आवाज में पढ़िए|</string>
     <string name="reading_stt">माइक बटन पर क्लिक कीजिए| जवाब रिकॉर्ड कर के सबमिट कीजिए।</string>
     <string name="multiple_choice">जवाब देने के लिए दिए गए शब्दों में से सही विकल्प चुनिए|</string>
+    <string name="pdf">Read the PDF</string>
     <string name="Video">विडियो देखें</string>
-    <string name="watching_video">माइक बटन पर क्लिक करके अपना उत्तर रिकॉर्ड कीजिए और सबमिट कीजिए|</string>
-
     <string name="ParaReadQues">प्ले बटन पर क्लिक कीजिए और सुनिए। फिर माइक बटन पर क्लिक कीजिए और अनुच्छेद पढ़िए।|</string>
     <string name="parasummary">कहानी को हिंदी में दोहराएं|</string>
     <string name="paraqa">माइक बटन पर क्लिक कीजिए। जवाब रिकॉर्ड करके सबमिट कीजिए।</string>
     <string name="new_chit_chat_1">स्क्रीन पर दिए गए संभाषण को सुनो|</string>
     <string name="new_chit_chat_2">स्क्रीन पर दिए संभाषण का जवाब अंग्रेजी में रिकॉर्ड करें।</string>
     <string name="new_chit_chat_3">यह गेम दो लोग खेलें। एक-एक करके अपनी बात रिकॉर्ड करें।</string>
-
-    <string name="Next_activity">अगली गतिविधि?</string>
-    <string name="Do_you_want_to_exit">क्या आप निकास करना चाहते हैं?</string>
-    <string name="activity_completed">गतिविधि पूरी हुई|</string>
-    <string name="hint">संकेत</string>
-    <string name="clear">बदलाव हटाएँ</string>
-
-    <string name="submit">सबमिट</string>
-    <string name="hide_hint">संकेत छिपाएं</string>
-    <string name="Enter_answer">उत्तर दर्ज करें</string>
-    <string name="Your_answer">आपका उत्तर</string>
-    <string name="Result">परिणाम</string>
-    <string name="You_answered">आपका उत्तर</string>
-    <string name="Correct_Answer">सही उत्तर</string>
-    <string name="Skipped">छोड़ा गया</string>
-    <string name="Read">पढ़ें</string>
-    <string name="Paragraph">अनुच्छेद : </string>
-    <string name="Keyword">संकेत शब्द : </string>
-    <string name="usermessage">अब कीवर्ड चुनने के लिए आपकी बारी है।</string>
-
-    <string name="select_language">भाषा चुनिए -</string>
 
 </resources>

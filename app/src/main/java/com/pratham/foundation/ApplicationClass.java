@@ -60,10 +60,8 @@ public class ApplicationClass extends Application {
             applicationClass = this;
         }
         FastSave.init(getApplicationContext());
-
         ButtonClickSound = MediaPlayer.create(this, R.raw.click2);
         BackBtnSound = MediaPlayer.create(this, R.raw.click);
-
         foundationPath = FC_Utility.getInternalPath(this);
         if (foundationPath != null) {
             File mydir = null;

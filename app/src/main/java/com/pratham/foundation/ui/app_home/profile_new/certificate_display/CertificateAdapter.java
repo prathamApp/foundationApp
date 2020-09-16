@@ -111,10 +111,12 @@ public class CertificateAdapter extends RecyclerView.Adapter {
         final Assessment contentItem = assessmentList.get(position);
         CertificateAdapter.FileHolder holder = (CertificateAdapter.FileHolder) viewHolder;
 
-        String cLevel = "" + contentItem.getLevela();
-        String cTitle = "" + FC_Utility.getSubjectNameFromNum(contentItem.getQuestionIda());
+//        String cLevel = "Level " + contentItem.getLevela();
+        String cTitle = "" + FC_Utility.getSubjectNameFromNum(contentItem.getQuestionIda())+ " Level " + contentItem.getLevela();
 
-        if (cLevel.equalsIgnoreCase("1"))
+        holder.title.setText(cTitle);
+
+/*        if (cLevel.equalsIgnoreCase("1"))
             holder.title.setText(cTitle + " Level 1");
         else if (cLevel.equalsIgnoreCase("2"))
             holder.title.setText(cTitle + " Level 2");
@@ -123,10 +125,10 @@ public class CertificateAdapter extends RecyclerView.Adapter {
         else if (cLevel.equalsIgnoreCase("4"))
             holder.title.setText(cTitle + " Level 4");
         else if (cLevel.equalsIgnoreCase("5"))
-            holder.title.setText(cTitle + " Level 5");
+            holder.title.setText(cTitle + " Level 5");*/
 
         holder.tv_timestamp.setText(contentItem.getEndDateTime());
-        holder.certi_root.setOnClickListener(v -> CertificateItemClicked.gotoCertificate(assessmentList.get(position)));
+        holder.certi_root.setOnClickListener(v -> CertificateItemClicked.gotoCertificate(assessmentList.get(position), cTitle));
         setAnimations(holder.certi_root, position);
     }
 

@@ -550,13 +550,13 @@ public class HomeActivity extends BaseActivity implements LevelChanged {
                     showTestTypeSelectionDialog();
                 } else if (tab.getText().toString().equalsIgnoreCase("" + getResources().getString(R.string.Profile))) {
                     FastSave.getInstance().saveString(APP_SECTION, sec_Profile);
-                    FastSave.getInstance().saveBoolean(supervisedAssessment, false);
-                    if (testSessionEntered && !testSessionEnded)
-                        endTestSession();
                     header_rl.setVisibility(View.GONE);
                     EventMessage eventMessage = new EventMessage();
                     eventMessage.setMessage(FRAGMENT_SELECTED);
                     EventBus.getDefault().post(eventMessage);
+                    FastSave.getInstance().saveBoolean(supervisedAssessment, false);
+                    if (testSessionEntered && !testSessionEnded)
+                        endTestSession();
                 } else {
                     if (tab.getText().toString().equalsIgnoreCase("" + getResources().getString(R.string.Learning)))
                         FastSave.getInstance().saveString(APP_SECTION, sec_Learning);

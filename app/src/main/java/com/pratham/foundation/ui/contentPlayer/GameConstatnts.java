@@ -267,7 +267,7 @@ public class GameConstatnts implements ShowInstruction {
 
     public static void gameSelector(Context context, ContentTable contentTable, boolean onSdCard) {
         contentTable1 = contentTable;
-        instructionsDialog = new InstructionsDialog(getGameConstantInstance(), context, contentTable1.getResourceType());
+        instructionsDialog = new InstructionsDialog(getGameConstantInstance(), context, contentTable1.getResourceType(), onSdCard);
         instructionsDialog.show();
         Bundle bundle = null;
         bundle = new Bundle();
@@ -372,7 +372,7 @@ public class GameConstatnts implements ShowInstruction {
     }
 
     @Override
-    public void play(Context context) {
+    public void play(Context context, boolean onSdCard) {
         if (contentTable1 != null) {
             Bundle bundle = new Bundle();
             bundle.putString("contentPath", contentTable1.getResourcePath());

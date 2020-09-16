@@ -119,9 +119,6 @@ dependencies {
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:1.1.1"
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:1.0.1"
 
-    //Level Wheel
-    implementation 'github.hellocsl:CursorWheelLayout:1.1.0'
-
     //DiscreteSlider Android Arsenal
     implementation 'com.github.lawloretienne:discreteslider:0.0.9'
     implementation 'com.hanks:htextview-base:0.1.6'

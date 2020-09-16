@@ -127,8 +127,9 @@ public class ProfileFragment extends Fragment implements ProfileContract.Profile
     @AfterViews
     public void initialize() {
         context = getActivity();
+        presenter.setView(ProfileFragment.this);
+        fragmentSelected();
         if (FastSave.getInstance().getString(APP_SECTION, "").equalsIgnoreCase(sec_Profile)) {
-            fragmentSelected();
             if (!FastSave.getInstance().getBoolean(PROFILE_FRAGMENT_SHOWCASE, false))
                 new Handler().postDelayed(this::setShowcaseView, 1200);
         }
@@ -176,7 +177,6 @@ public class ProfileFragment extends Fragment implements ProfileContract.Profile
                     message.getMessage().equalsIgnoreCase(FC_Constants.FRAGMENT_RESELECTED) ||
                     message.getMessage().equalsIgnoreCase(FC_Constants.ACTIVITY_RESUMED)) {
                 header_rl.setVisibility(View.GONE);
-                fragmentSelected();
                 if (!FastSave.getInstance().getBoolean(PROFILE_FRAGMENT_SHOWCASE, false))
                     new Handler().postDelayed(this::setShowcaseView, 1000);
             }
@@ -185,7 +185,6 @@ public class ProfileFragment extends Fragment implements ProfileContract.Profile
 
     private void fragmentSelected() {
         tv_studentName.setText("" + FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_NAME, "Student"));
-        presenter.setView(ProfileFragment.this);
         if (adapterParent == null) {
             adapterParent = new ProfileOuterDataAdapter(context, progressArray, this);
             RecyclerView.LayoutManager mLayoutManager = new GridLayoutManager(context, 1);

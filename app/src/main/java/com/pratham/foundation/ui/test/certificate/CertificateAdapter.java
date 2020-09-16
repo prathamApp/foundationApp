@@ -1,22 +1,21 @@
 package com.pratham.foundation.ui.test.certificate;
 
 import android.content.Context;
-import android.graphics.Typeface;
 import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
-import android.widget.RatingBar;
-import android.widget.RelativeLayout;
-import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.pratham.foundation.R;
 import com.pratham.foundation.modalclasses.CertificateModelClass;
 import com.pratham.foundation.ui.app_home.test_fragment.CertificateClicked;
+import com.pratham.foundation.view_holders.CertificateDisplayViewHolder;
+import com.pratham.foundation.view_holders.CertificateSupervisorViewHolder;
 
 import java.util.List;
 
@@ -24,29 +23,17 @@ import java.util.List;
  * Created by Abc on 10-Jul-17.
  */
 
-public class CertificateAdapter extends RecyclerView.Adapter<CertificateAdapter.MyViewHolder>  {
+public class CertificateAdapter extends RecyclerView.Adapter{
 
     private Context mContext;
     private int lastPos = -1;
     //private List<ContentView> gamesViewList;
     private List<CertificateModelClass> certiViewList;
     CertificateClicked certificateClicked;
-    public int quesIndex = 0;
+    public static int quesIndex = 0;
 
     public void initializeIndex(){
         quesIndex = 0;
-    }
-    public class MyViewHolder extends RecyclerView.ViewHolder {
-        public TextView title;
-        public RelativeLayout certificate_card;
-        public RatingBar ratingStars;
-
-        public MyViewHolder(View view) {
-            super(view);
-            certificate_card = view.findViewById(R.id.certificate_card_view);
-            title = view.findViewById(R.id.assess_data);
-            ratingStars = view.findViewById(R.id.ratingStars);
-        }
     }
 
     public CertificateAdapter(Context mContext, List<CertificateModelClass> certiViewList, CertificateClicked certificateClicked) {
@@ -55,141 +42,55 @@ public class CertificateAdapter extends RecyclerView.Adapter<CertificateAdapter.
         this.certificateClicked = certificateClicked;
     }
 
+    @NonNull
     @Override
-    public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View itemView = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.certi_row, parent, false);
-        return new MyViewHolder(itemView);
+    public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int viewtype) {
+        // select view based on item type
+        View view;
+        switch (viewtype) {
+            case 1:
+                LayoutInflater file = LayoutInflater.from(viewGroup.getContext());
+                view = file.inflate(R.layout.certi_row, viewGroup, false);
+                return new CertificateDisplayViewHolder(view, certificateClicked);
+            case 2:
+                LayoutInflater folder = LayoutInflater.from(viewGroup.getContext());
+                view = folder.inflate(R.layout.certi_supervisor_row, viewGroup, false);
+                return new CertificateSupervisorViewHolder(view);
+            default:
+                return null;
+        }
     }
 
     @Override
-    public void onBindViewHolder(final MyViewHolder holder, final int position) {
+    public int getItemViewType(int position) {
+        if (certiViewList.get(position).getNodeAge() != null) {
+            switch (certiViewList.get(position).getNodeAge()) {
+                case "SUP":
+                    return 2;
+                default:
+                    return 1;
+            }
+        } else
+            return 1;
+    }
+
+    @Override
+    public void onBindViewHolder(@NonNull RecyclerView.ViewHolder viewHolder, final int position) {
         //final ContentView gamesList = gamesViewList.get(position);
         final CertificateModelClass certiList = certiViewList.get(position);
-
-        Animation animation = null;
-        animation = AnimationUtils.loadAnimation(mContext, R.anim.item_fall_down);
-        animation.setDuration(500);
-
-        String ques="";
-
-        if(certiList.getCodeCount()>1) {
-            quesIndex += 1;
-            ques=""+quesIndex+". ";
-        }else {
-//            quesIndex = 0;
-            ques="";
+        switch (certiList.getNodeAge()) {
+            case "Q":
+                //file
+                CertificateDisplayViewHolder certificateDisplayViewHolder = (CertificateDisplayViewHolder) viewHolder;
+//                set view holder for file type item
+                certificateDisplayViewHolder.setItem(certiList, position);
+                break;
+            case "SUP":
+                CertificateSupervisorViewHolder certificateSupervisorViewHolder = (CertificateSupervisorViewHolder) viewHolder;
+//                set view holder for file type item
+                certificateSupervisorViewHolder.setItem(certiList, position);
+                break;
         }
-
-        if(!certiList.isAsessmentGiven()){
-            holder.ratingStars.setVisibility(View.GONE);
-            if(CertificateActivity.certificateLanguage.equalsIgnoreCase("English"))
-                holder.title.setText(ques+certiList.getEnglishQues());
-            if(CertificateActivity.certificateLanguage.equalsIgnoreCase("Hindi"))
-                holder.title.setText(ques+certiList.getHindiQues());
-            if(CertificateActivity.certificateLanguage.equalsIgnoreCase("Marathi"))
-                holder.title.setText(ques+certiList.getMarathiQues());
-            if(CertificateActivity.certificateLanguage.equalsIgnoreCase("Gujarati")) {
-                Typeface face= Typeface.createFromAsset(mContext.getAssets(), "fonts/muktavaani_gujarati.ttf");
-                holder.title.setTypeface(face);
-                holder.title.setText(ques + certiList.getGujaratiQues());
-            }
-            if(CertificateActivity.certificateLanguage.equalsIgnoreCase("Kannada"))
-                holder.title.setText(ques+certiList.getKannadaQues());
-            if(CertificateActivity.certificateLanguage.equalsIgnoreCase("Bengali"))
-                holder.title.setText(ques+certiList.getBengaliQues());
-            if(CertificateActivity.certificateLanguage.equalsIgnoreCase("Assamese")) {
-                Typeface face= Typeface.createFromAsset(mContext.getAssets(), "fonts/lohit_oriya.ttf");
-                holder.title.setTypeface(face);
-                holder.title.setText(ques + certiList.getAssameseQues());
-            }if(CertificateActivity.certificateLanguage.equalsIgnoreCase("Telugu"))
-                holder.title.setText(ques+certiList.getTeluguQues());
-            if(CertificateActivity.certificateLanguage.equalsIgnoreCase("Tamil"))
-                holder.title.setText(ques+certiList.getTamilQues());
-            if(CertificateActivity.certificateLanguage.equalsIgnoreCase("Odia")) {
-                Typeface  face= Typeface.createFromAsset(mContext.getAssets(), "fonts/lohit_oriya.ttf");
-                holder.title.setTypeface(face);
-                holder.title.setText(ques + certiList.getOdiaQues());
-            }if(CertificateActivity.certificateLanguage.equalsIgnoreCase("Urdu"))
-                holder.title.setText(ques+certiList.getUrduQues());
-            if(CertificateActivity.certificateLanguage.equalsIgnoreCase("Punjabi")) {
-                Typeface face= Typeface.createFromAsset(mContext.getAssets(), "fonts/raavi_punjabi.ttf");
-                holder.title.setTypeface(face);
-                holder.title.setText(ques + certiList.getPunjabiQues());
-            }
-
-            holder.certificate_card.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    certificateClicked.onCertificateOpenGame(position,certiList.getNodeId());
-                }
-            });
-        }else{
-            holder.ratingStars.setVisibility(View.VISIBLE);
-            if(CertificateActivity.certificateLanguage.equalsIgnoreCase("English"))
-                holder.title.setText(ques+certiList.getEnglishAnsw());
-            if(CertificateActivity.certificateLanguage.equalsIgnoreCase("Hindi"))
-                holder.title.setText(ques+certiList.getHindiAnsw());
-            if(CertificateActivity.certificateLanguage.equalsIgnoreCase("Marathi"))
-                holder.title.setText(ques+certiList.getMarathiAnsw());
-            if(CertificateActivity.certificateLanguage.equalsIgnoreCase("Gujarati")) {
-                Typeface face= Typeface.createFromAsset(mContext.getAssets(), "fonts/muktavaani_gujarati.ttf");
-                holder.title.setTypeface(face);
-                holder.title.setText(ques + certiList.getGujaratiAnsw());
-            }if(CertificateActivity.certificateLanguage.equalsIgnoreCase("Kannada"))
-                holder.title.setText(ques+certiList.getKannadaAnsw());
-            if(CertificateActivity.certificateLanguage.equalsIgnoreCase("Bengali"))
-                holder.title.setText(ques+certiList.getBengaliAnsw());
-            if(CertificateActivity.certificateLanguage.equalsIgnoreCase("Assamese")) {
-                Typeface face= Typeface.createFromAsset(mContext.getAssets(), "fonts/geetl_assamese.ttf");
-                holder.title.setTypeface(face);
-                holder.title.setText(ques + certiList.getAssameseAnsw());
-            }if(CertificateActivity.certificateLanguage.equalsIgnoreCase("Telugu"))
-                holder.title.setText(ques+certiList.getTeluguAnsw());
-            if(CertificateActivity.certificateLanguage.equalsIgnoreCase("Tamil"))
-                holder.title.setText(ques+certiList.getTamilAnsw());
-            if(CertificateActivity.certificateLanguage.equalsIgnoreCase("Odia")) {
-                Typeface face= Typeface.createFromAsset(mContext.getAssets(), "fonts/lohit_oriya.ttf");
-                holder.title.setTypeface(face);
-                holder.title.setText(ques + certiList.getOdiaAnsw());
-            }if(CertificateActivity.certificateLanguage.equalsIgnoreCase("Urdu"))
-                holder.title.setText(ques+certiList.getUrduAnsw());
-            if(CertificateActivity.certificateLanguage.equalsIgnoreCase("Punjabi")) {
-                Typeface face= Typeface.createFromAsset(mContext.getAssets(), "fonts/raavi_punjabi.ttf");
-                holder.title.setTypeface(face);
-                holder.title.setText(ques + certiList.getPunjabiAnsw());
-            }
-
-            holder.ratingStars.setRating(certiList.getCertificateRating());
-
-            holder.certificate_card.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    //certificateClicked.onCertificateOpenGame(position,certiList.getNodeId());
-                }
-            });
-
-        }
-
-
-/*        holder.iv_download.setVisibility(View.GONE);
-
-        if (gamesList.getNodeType().equalsIgnoreCase("Resource") && !gamesList.getIsDownloaded().equalsIgnoreCase("true")) {
-            holder.iv_download.setVisibility(View.VISIBLE);
-        }else if (gamesList.getNodeType().equalsIgnoreCase("Resource") && gamesList.getIsDownloaded().equalsIgnoreCase("true")) {
-            holder.iv_download.setVisibility(View.GONE);
-        }
-
-
-        holder.game_card_view.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-            }
-        });
-        holder.game_card_view.setVisibility(View.GONE);*/
-//        setAnimations(holder.game_card_view, position);
-
     }
 
     private void setAnimations(final View content_card_view, final int position) {

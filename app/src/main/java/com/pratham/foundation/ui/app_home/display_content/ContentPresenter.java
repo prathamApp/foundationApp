@@ -146,41 +146,53 @@ public class ContentPresenter implements ContentContract.ContentPresenter, API_C
     public void getListData() {
         try {
             contentView.showLoader();
-//            fetch downloaded data from DB
-            downloadedContentTableList = AppDatabase.getDatabaseInstance(context).getContentTableDao().getContentData("" + nodeIds.get(nodeIds.size() - 1));
-            sortAllList(downloadedContentTableList);
-            contentView.clearContentList();
-            ListForContentTable1.clear();
+            String nodeListIndex = "0";
             try {
-                for (int j = 0; j < downloadedContentTableList.size(); j++) {
-                    ContentTable contentTable = new ContentTable();
-                    contentTable.setNodeId("" + downloadedContentTableList.get(j).getNodeId());
-                    contentTable.setNodeType("" + downloadedContentTableList.get(j).getNodeType());
-                    contentTable.setNodeTitle("" + downloadedContentTableList.get(j).getNodeTitle());
-                    contentTable.setNodeKeywords("" + downloadedContentTableList.get(j).getNodeKeywords());
-                    contentTable.setNodeAge("" + downloadedContentTableList.get(j).getNodeAge());
-                    contentTable.setNodeDesc("" + downloadedContentTableList.get(j).getNodeDesc());
-                    contentTable.setNodeServerImage("" + downloadedContentTableList.get(j).getNodeServerImage());
-                    contentTable.setNodeImage("" + downloadedContentTableList.get(j).getNodeImage());
-                    contentTable.setResourceId("" + downloadedContentTableList.get(j).getResourceId());
-                    contentTable.setResourceType("" + downloadedContentTableList.get(j).getResourceType());
-                    contentTable.setResourcePath("" + downloadedContentTableList.get(j).getResourcePath());
-                    contentTable.setParentId("" + downloadedContentTableList.get(j).getParentId());
-                    contentTable.setLevel("" + downloadedContentTableList.get(j).getLevel());
-                    contentTable.setContentLanguage("" + downloadedContentTableList.get(j).getContentLanguage());
-                    contentTable.setVersion("" + downloadedContentTableList.get(j).getVersion());
-                    contentTable.setContentType(downloadedContentTableList.get(j).getContentType());
-                    contentTable.setIsDownloaded("" + downloadedContentTableList.get(j).getIsDownloaded());
-                    contentTable.setOnSDCard(downloadedContentTableList.get(j).isOnSDCard());
-                    contentTable.setSeq_no(downloadedContentTableList.get(j).getSeq_no());
-                    contentTable.setNodeUpdate(false);
-                    ListForContentTable1.add(contentTable);
-                }
+                nodeListIndex = nodeIds.get(nodeIds.size() - 1);
             } catch (Exception e) {
+                nodeListIndex = "0";
                 e.printStackTrace();
-                BackupDatabase.backup(context);
             }
-            updateUI();
+            if(nodeIds.size() < 1 || nodeListIndex.equalsIgnoreCase("0")) {
+                updateUI();
+            }else {
+//            fetch downloaded data from DB
+                downloadedContentTableList = AppDatabase.getDatabaseInstance(context).getContentTableDao().getContentData("" + nodeListIndex);
+                Log.d("NODE_ID", "Node downloadedContentTableList :  " + downloadedContentTableList.size());
+                sortAllList(downloadedContentTableList);
+                contentView.clearContentList();
+                ListForContentTable1.clear();
+                try {
+                    for (int j = 0; j < downloadedContentTableList.size(); j++) {
+                        ContentTable contentTable = new ContentTable();
+                        contentTable.setNodeId("" + downloadedContentTableList.get(j).getNodeId());
+                        contentTable.setNodeType("" + downloadedContentTableList.get(j).getNodeType());
+                        contentTable.setNodeTitle("" + downloadedContentTableList.get(j).getNodeTitle());
+                        contentTable.setNodeKeywords("" + downloadedContentTableList.get(j).getNodeKeywords());
+                        contentTable.setNodeAge("" + downloadedContentTableList.get(j).getNodeAge());
+                        contentTable.setNodeDesc("" + downloadedContentTableList.get(j).getNodeDesc());
+                        contentTable.setNodeServerImage("" + downloadedContentTableList.get(j).getNodeServerImage());
+                        contentTable.setNodeImage("" + downloadedContentTableList.get(j).getNodeImage());
+                        contentTable.setResourceId("" + downloadedContentTableList.get(j).getResourceId());
+                        contentTable.setResourceType("" + downloadedContentTableList.get(j).getResourceType());
+                        contentTable.setResourcePath("" + downloadedContentTableList.get(j).getResourcePath());
+                        contentTable.setParentId("" + downloadedContentTableList.get(j).getParentId());
+                        contentTable.setLevel("" + downloadedContentTableList.get(j).getLevel());
+                        contentTable.setContentLanguage("" + downloadedContentTableList.get(j).getContentLanguage());
+                        contentTable.setVersion("" + downloadedContentTableList.get(j).getVersion());
+                        contentTable.setContentType(downloadedContentTableList.get(j).getContentType());
+                        contentTable.setIsDownloaded("" + downloadedContentTableList.get(j).getIsDownloaded());
+                        contentTable.setOnSDCard(downloadedContentTableList.get(j).isOnSDCard());
+                        contentTable.setSeq_no(downloadedContentTableList.get(j).getSeq_no());
+                        contentTable.setNodeUpdate(false);
+                        ListForContentTable1.add(contentTable);
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    BackupDatabase.backup(context);
+                }
+                updateUI();
+            }
         } catch (Exception e) {
             e.printStackTrace();
             BackupDatabase.backup(context);

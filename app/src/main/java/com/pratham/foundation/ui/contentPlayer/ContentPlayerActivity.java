@@ -46,7 +46,7 @@ import static com.pratham.foundation.utility.FC_Constants.sec_Test;
 @EActivity(R.layout.activity_content_player)
 public class ContentPlayerActivity extends BaseActivity implements ShowInstruction {
 
-    private String nodeID, title, cCode,testcall;
+    private String nodeID, title, cCode, testcall;
     private Intent returnIntent;
     boolean onSdCard;
 
@@ -54,6 +54,7 @@ public class ContentPlayerActivity extends BaseActivity implements ShowInstructi
     public static FloatingActionButton floating_back;
     @ViewById(R.id.floating_info)
     public static FloatingActionButton floating_info;
+    String sdStatus = "F";
 
     @AfterViews
     public void initialize() {
@@ -61,9 +62,13 @@ public class ContentPlayerActivity extends BaseActivity implements ShowInstructi
         Intent intent = getIntent();
         nodeID = intent.getStringExtra("nodeID");
         title = intent.getStringExtra("title");
-        onSdCard = intent.getBooleanExtra("onSdCard", false);
+        sdStatus = intent.getStringExtra("sdStatus");
+//        onSdCard = intent.getBooleanExtra("onSdCard", false);
         testcall = intent.getStringExtra("testcall");
 
+        if (sdStatus != null) {
+            onSdCard = sdStatus.equalsIgnoreCase("T");
+        }
         floating_back.setImageResource(R.drawable.ic_left_arrow_white);
         floating_info.setImageResource(R.drawable.ic_info_outline_white);
         String a = FastSave.getInstance().getString(FC_Constants.APP_LANGUAGE, FC_Constants.HINDI);
@@ -72,7 +77,7 @@ public class ContentPlayerActivity extends BaseActivity implements ShowInstructi
 
         if (testcall == null) {
             loadFragment();
-        } else if(testcall.equalsIgnoreCase(FC_Constants.INDIVIDUAL_MODE)) {
+        } else if (testcall.equalsIgnoreCase(FC_Constants.INDIVIDUAL_MODE)) {
             ContentTable testData = (ContentTable) intent.getSerializableExtra("testData");
             cCode = testData.getNodeDesc();
             //  GameConstatnts.gameList = contentTableList;
@@ -208,13 +213,14 @@ public class ContentPlayerActivity extends BaseActivity implements ShowInstructi
                     } else {
                         getSupportFragmentManager().popBackStack(SequenceLayout_.class.getSimpleName(), 0);
                     }
-                } else if(testcall.equalsIgnoreCase(FC_Constants.INDIVIDUAL_MODE)) {
+                } else if (testcall != null && testcall.equalsIgnoreCase(FC_Constants.INDIVIDUAL_MODE)) {
                     if (f.getActivity() instanceof ContentPlayerActivity) {
                         finish();
                     } else {
                         getSupportFragmentManager().popBackStack(SequenceLayout_.class.getSimpleName(), 0);
                     }
-
+                } else {
+                    getSupportFragmentManager().popBackStack(SequenceLayout_.class.getSimpleName(), 0);
                 }
             }
 
@@ -239,7 +245,7 @@ public class ContentPlayerActivity extends BaseActivity implements ShowInstructi
     }
 
     @Override
-    public void play(Context context) {
+    public void play(Context context, boolean onSdCard) {
 
     }
 

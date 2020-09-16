@@ -38,7 +38,6 @@
     <string name="select_Name" >Select your name</string>
     <string name="age_8_and_above">Age 8 and above.</string>
     <string name="Summary">Summary</string>
-    <string name="Progress">Progress</string>
     <string name="Certificates">Certificates</string>
     <string name="Next_activity">Next activity?</string>
     <string name="Do_you_want_to_exit">Do you want to exit?</string>
@@ -56,30 +55,8 @@
     <string name="Read">Read</string>
     <string name="Paragraph">Paragraph : </string>
     <string name="Keyword">Keyword : </string>
-<!--    &lt;!&ndash;    game Instructions&ndash;&gt;-->
-    <string name="fact_retrieval_click">Answer the question by selecting the word and then submit it.</string>
-    <string name="factRetrieval">Answer the question by selecting the word by long pressing it and then submit the selected answer.</string>
-    <string name="IKWAndroid">Identify keywords from paragraph and submit </string>
-    <string name="CopyWriting">Write the text displayed in the app in your notebook and then submit the photo</string>
-    <string name="chKeywords">Select the words releted to the topic and submit your answers</string>
-    <string name="ShowMeAndroid">Give the answer by selecting the correct option form the given options.</string>
-    <string name="Dictation">Listen to the audio and write it in your notebook and then submit the photo.</string>
-    <string name="PictAndroid">Listen to a story</string>
-    <string name="ReadingAndroid">Listen to a story</string>
-    <string name="TAW">Write in your own words about the given topic in your notebook and sumbit its photo.</string>
-    <string name="doing_act">try to perform the activity.</string>
-    <string name="letter">Write a letter on the given subject in notebook and submit its photo.</string>
-    <string name="doing_act_video">Watch the video and try to perform the activity.</string>
-    <string name="watching_video">Watch the video and click on mike button to record answer </string>
-    <string name="ReadVocabAndroid">Read the following in order to increase you vocabulary.</string>
-    <string name="reading_stt">Answer the question by using the speech to text functionality.</string>
-    <string name="multiple_choice">Select the correct answer from multiple answers and submit it</string>
-    <string name="pdf" translatable="false">Read the PDF</string>
-    <string name="Video">Watch the video</string>
-
     <string name="restart_dialog_msg" >Do you want to restart?</string>
     <string name="exit_dialog_msg" >Do you want to exit?</string>
-
     <string name="read_full_sentence" >Read the full sentence.</string>
     <string name="Click_group_name" >Click your group name.</string>
     <string name="mark_attendance" >Mark your attendance.</string>
@@ -97,235 +74,41 @@
     <string name="Supervised">Supervised</string>
     <string name="change_subj">Change Subject?</string>
     <string name="save">Save</string>
-
     <string name="alertmessage">some options are remaining</string>
+    <string name="usermessage">Now its your turn to select the keyword.</string>
+    <string name="select_language">Select Language -</string>
+
+    <!--    &lt;!&ndash;    game Instructions&ndash;&gt;-->
+    <string name="fact_retrieval_click">Answer the question by selecting the word and then submit it.</string>
+    <string name="factRetrieval">Answer the question by selecting the word by long pressing it and then submit the selected answer.</string>
+    <string name="IKWAndroid">Identify keywords from paragraph and submit </string>
+    <string name="CopyWriting">Write the text displayed in the app in your notebook and then submit the photo</string>
+    <string name="chKeywords">Select the words releted to the topic and submit your answers</string>
+    <string name="ShowMeAndroid">Give the answer by selecting the correct option form the given options.</string>
+    <string name="Dictation">Listen to the audio and write it in your notebook and then submit the photo.</string>
+    <string name="PictAndroid">Listen to a story</string>
+    <string name="ReadingAndroid">Listen to a story</string>
+    <string name="TAW">Write in your own words about the given topic in your notebook and sumbit its photo.</string>
+    <string name="doing_act">try to perform the activity.</string>
+    <string name="letter">Write a letter on the given subject in notebook and submit its photo.</string>
+    <string name="doing_act_video">Watch the video and try to perform the activity.</string>
+    <string name="watching_video">Watch the video and click on mike button to record answer </string>
+    <string name="ReadVocabAndroid">Read the following in order to increase you vocabulary.</string>
+    <string name="reading_stt">Answer the question by using the speech to text functionality.</string>
+    <string name="multiple_choice">Select the correct answer from multiple answers and submit it</string>
+    <string name="pdf">Read the PDF</string>
+    <string name="Video">Watch the video</string>
     <string name="ParaReadQues">Press the play button to listen to the audio, then press the mic button and read the paragraph.</string>
     <string name="parasummary">Read the story in Hindi</string>
     <string name="paraqa">Press the mic button to record your answer and then submit.</string>
     <string name="new_chit_chat_1">Listen to the conversation shown on the screen.</string>
     <string name="new_chit_chat_2">Listen to the conversation shown on the screen and record your answer in English.</string>
     <string name="new_chit_chat_3">This is a 2 person activity. Take turns to record your audio</string>
-    <string name="usermessage">Now its your turn to select the keyword.</string>
-    <string name="select_language">Select Language -</string>
-
-
-    <!--Hindi-->
-<!--
-    <string name="Login">लॉग इन करें</string>
-    <string name="Stt_Dialog_Msg">बेहतर प्रदर्शन के लिए कृपया ऑफलाइन भाषा पैक डाउनलोड करें.</string>
-    <string name="Okay">ठीक है</string>
-    <string name="Skip">छोड़कर आगे बढ़े</string>
-    <string name="loding_please_wait">लोड हो रहा है कृपया प्रतीक्षा करें...</string>
-    <string name="Exit">बाहर</string>
-    <string name="Cancel">रद्द करें</string>
-    <string name="Restart">दोबारा शुरू करें</string>
-    <string name="login_mode">लॉगिन मोड</string>
-    <string name="Group">समूह लॉगिन</string>
-    <string name="Individual">व्यक्तिगत लॉगिन</string>
-    <string name="what_do_you_want_to_do">आप क्या करना चाहते हैं?</string>
-    <string name="Scan_QR_Code">क्यू आर कोड स्कैन करें</string>
-    <string name="Reset">रीसेट</string>
-    <string name="Get_Progress">प्रगति देखें</string>
-    <string name="Start">शुरू करें</string>
-    <string name="No_Internet_Connection">इंटरनेट कनेक्शन मौजूद नहीं है</string>
-    <string name="Invalid_QR_Code">अवैध क्यू आर कोड !!!</string>
-    <string name="Only_5_Students_Allowed">केवल पाँच छात्रों की अनुमति।</string>
-    <string name="Student_exists">यह छात्र पहले से मौजूद है</string>
-    <string name="Scan_new_QR">नया क्यू आर स्कैन करें।</string>
-    <string name="Welcome">आपका स्वागत है</string>
-    <string name="select_subject">कृपया किसी एक अध्ययन विषय का चयन करें…</string>
-    <string name="usage">प्रयोग</string>
-    <string name="days">दिन</string>
-    <string name="hours">घंटे</string>
-    <string name="progress">प्रगति</string>
-    <string name="yes">हाँ</string>
-    <string name="no">नहीं</string>
-    <string name="Test_Complete_Dialog">आप प्रोफाइल विभाग में प्रमाण पत्र देख सकते हैं</string>
-
-    <string name="selectGroup" >ग्रुप का चयन करें</string>
-    <string name="select_Age" >आयु वर्ग का चयन करें</string>
-    <string name="select_Name" >अपना नाम चुनें</string>
-    <string name="age_8_and_above">उम्र 8 साल और ऊपर</string>
-    <string name="Summary">सारांश</string>
-    <string name="Progress">प्रगति</string>
-    <string name="Certificates">प्रमाण पत्र</string>
-
-    <string name="restart_dialog_msg" >क्या आप पुनः आरंभ करना चाहते हैं?</string>
-    <string name="exit_dialog_msg" >क्या आप बाहर निकलना चाहते है?</string>
-
-    <string name="read_full_sentence" >वाक्य को पूरा पढ़ें.</string>
-    <string name="Click_group_name" >अपने समूह के नाम पर क्लिक करें.</string>
-    <string name="mark_attendance" >अपनी उपस्थिति को चिह्नित करें.</string>
-    <string name="Learning" >सीखना</string>
-    <string name="Practice" >अभ्यास</string>
-    <string name="Test" >परीक्षा</string>
-    <string name="Fun" >मज़ा</string>
-    <string name="Profile" >प्रोफ़ाइल</string>
-    <string name="Level" >स्तर</string>
-    <string name="Next" >अगला</string>
-    <string name="Revise" >संशोधन</string>
-    <string name="nice_chatting_with_you" >आपके साथ बात करके अच्छा लगा।</string>
-    <string name="byebye" >अलविदा!</string>
-    <string name="Unsupervised">अप्रशिक्षित</string>
-    <string name="Supervised">प्रशिक्षित</string>
-    <string name="change_subj">विषय बदलें?</string>
-    <string name="save">बचाएं</string>
-
-    <string name="fact_retrieval_click">जवाब देने के लिए अनुच्छेद से सही शब्द या वाक्य चुनिए|</string>
-    <string name="factRetrieval">जवाब देने के लिए अनुच्छेद से सही शब्द या वाक्य चुनिए|</string>
-    &lt;!&ndash;<string name="IKWAndroid">दिए गए अनुच्छेद में वैज्ञानिक शब्दों को दिखाइए|</string>&ndash;&gt;
-    <string name="IKWAndroid">दिए गए अनुच्छेद में विषय से संबंधित शब्दों को चुनें ।</string>
-    <string name="CopyWriting">दिए गए शब्द और जानकारी को अपनी कॉपी में लिखिए और उसकी फोटो सबमिट कीजिए|</string>
-    <string name="chKeywords">दिए गए शब्दों में से करीबी शब्द चुनिए|</string>
-    <string name="ShowMeAndroid">सही विकल्प चुनें|</string>
-    <string name="Dictation">ऑडियो सुनकर अपनी कॉपीमें लिखिए और उसकी फोटो सबमिट कीजिए|</string>
-    <string name="PictAndroid">प्ले बटन पर क्लिक कीजिए और सुनिए| फिर माइक बटन पर क्लिक करके साफ़ आवाज में पढ़िए|</string>
-    <string name="ReadingAndroid">प्ले बटन पर क्लिक कीजिए और सुनिए| फिर माइक बटन पर क्लिक करके साफ़ आवाज में पढ़िए|</string>
-    <string name="TAW">दिए गए शब्द या वाक्य पर अपने विचार कॉपी में लिखिए और उसकी फोटो सबमिट कीजिए|</string>
-    <string name="doing_act">माइक बटन पर क्लिक करके अपना उत्तर रिकॉर्ड कीजिए और सबमिट कीजिए|</string>
-    <string name="letter">दिए गए विषय पर पत्र लिखें और उसकी फोटो सबमिट कीजिए|</string>
-    <string name="doing_act_video">माइक बटन पर क्लिक करके अपना उत्तर रिकॉर्ड कीजिए और सबमिट कीजिए|</string>
-    <string name="ReadVocabAndroid">प्ले बटन पर क्लिक कीजिए और सुनिए| फिर माइक बटन पर क्लिक करके साफ़ आवाज में पढ़िए|</string>
-    <string name="reading_stt">माइक बटन पर क्लिक कीजिए| जवाब रिकॉर्ड कर के सबमिट कीजिए।</string>
-    <string name="multiple_choice">जवाब देने के लिए दिए गए शब्दों में से सही विकल्प चुनिए|</string>
-    <string name="Video">विडियो देखें</string>
-    <string name="watching_video">माइक बटन पर क्लिक करके अपना उत्तर रिकॉर्ड कीजिए और सबमिट कीजिए|</string>
-    <string name="Next_activity">अगली गतिविधि?</string>
-    <string name="Do_you_want_to_exit">क्या आप निकास करना चाहते हैं?</string>
-    <string name="activity_completed">गतिविधि पूरी हुई</string>
-    <string name="hint">संकेत</string>
-    <string name="clear">बदलाव हटाएँ</string>
-
-    <string name="submit">सबमिट</string>
-    <string name="hide_hint">संकेत छिपाएं</string>
-    <string name="Enter_answer">उत्तर दर्ज करें</string>
-    <string name="Your_answer">आपका उत्तर</string>
-    <string name="Result">परिणाम</string>
-    <string name="You_answered">आपका उत्तर</string>
-    <string name="Correct_Answer">सही उत्तर</string>
-    <string name="Skipped">छोड़ा गया</string>
-    <string name="Read">पढ़ें</string>
-    <string name="Paragraph">अनुच्छेद : </string>
-    <string name="Keyword">संकेत शब्द : </string>
-    <string name="usermessage">अब कीवर्ड चुनने के लिए आपकी बारी है</string>
-
-    <string name="alertmessage">some options are remaining</string>
-    <string name="ParaReadQues">प्ले बटन पर क्लिक कीजिए और सुनिए। फिर माइक बटन पर क्लिक कीजिए और अनुच्छेद पढ़िए।|</string>
-    <string name="parasummary">कहानी को हिंदी में दोहराएं</string>
-    <string name="paraqa">माइक बटन पर क्लिक कीजिए। जवाब रिकॉर्ड करके सबमिट कीजिए।</string>
-    <string name="new_chit_chat_1">स्क्रीन पर दिए गए संभाषण को सुनो|</string>
-    <string name="new_chit_chat_2">स्क्रीन पर दिए संभाषण का जवाब अंग्रेजी में रिकॉर्ड करें।</string>
-    <string name="new_chit_chat_3">यह गेम दो लोग खेलें। एक-एक करके अपनी बात रिकॉर्ड करें।</string>
--->
-
-<!--  MARATHI-->
-<!--
-    <string name="Stt_Dialog_Msg">चांगला प्रतिसाद मिळवण्यासाठी कृपया ऑफलाइन भाषा पॅक डाउनलोड करा.</string>
-    <string name="Login">लॉगिन करा</string>
-    <string name="Okay">ठीक आहे</string>
-    <string name="Skip">वगळा</string>
-    <string name="loding_please_wait">लोड होत आहे. कृपया प्रतिक्षा करा...</string>
-    <string name="Exit">बाहेर पडा</string>
-    <string name="Cancel">रद्द करा</string>
-    <string name="Restart">पुन्हा सुरू करा</string>
-    <string name="login_mode">लॉगिन मोड</string>
-    <string name="Group">गट लॉगिन</string>
-    <string name="Individual">वैयक्तिक लॉगिन</string>
-    <string name="what_do_you_want_to_do">तुम्हाला काय करायचे आहे?</string>
-    <string name="Scan_QR_Code">क्यू आर कोड स्कॅन करा.</string>
-    <string name="Reset">रीसेट</string>
-    <string name="Get_Progress">प्रगती तपासा</string>
-    <string name="Start">सुरु करा</string>
-    <string name="No_Internet_Connection">इंटरनेट जोडा.</string>
-    <string name="Invalid_QR_Code">अवैध क्यू आर कोड!!!</string>
-    <string name="Only_5_Students_Allowed">केवळ 5 विद्यार्थ्यांनाच परवानगी आहे.</string>
-    <string name="Student_exists">हा विद्यार्थी आधीपासून अस्तित्वात आहे</string>
-    <string name="Scan_new_QR">नवीन क्यू आर स्कॅन करा.</string>
-    <string name="Welcome">तुमचं स्वागत आहे.</string>
-    <string name="select_subject">कृपया कोणताही एक विषय निवडा.</string>
-    <string name="usage">वापर</string>
-    <string name="days">दिवस</string>
-    <string name="hours">तास</string>
-    <string name="progress">प्रगती</string>
-    <string name="Test_Complete_Dialog">तुम्ही प्रोफाइल या विभागात प्रमाणपत्रे पाहू शकता.</string>
-    <string name="selectGroup" >गट निवडा</string>
-    <string name="select_Age" >वयोगट निवडा</string>
-    <string name="select_Name" >स्वतःचे नाव निवडा</string>
-    <string name="age_8_and_above">वय वर्षे 8 आणि त्याहून अधिक.</string>
-    <string name="Summary">सारांश</string>
-    <string name="Progress">प्रगती</string>
-    <string name="Certificates">प्रमाणपत्रे</string>
-
-    <string name="Click_group_name" >तुमच्या गटाच्या नावावर क्लिक करा.</string>
-    <string name="mark_attendance" >आपली उपस्थिती नोंदवा.</string>
-    <string name="Learning" >शिकणे</string>
-    <string name="Practice" >सराव</string>
-    <string name="Test" >परीक्षा</string>
-    <string name="Fun" >मजा</string>
-    <string name="Profile" >प्रोफाइल</string>
-    <string name="Level" >स्तर</string>
-    <string name="read_full_sentence" >वाक्य पूर्ण वाचा. </string>
-    <string name="Revise" >सुधारणा करा.</string>
-    <string name="Next" >पुढे</string>
-    <string name="nice_chatting_with_you" >तुमच्याशी बोलून छान वाटले.</string>
-    <string name="byebye" >टाटा!</string>
-    <string name="Unsupervised">देखरेखीविना</string>
-    <string name="Supervised">देखरेखीखाली</string>
-    <string name="change_subj">विषय बदलायचा आहे का?</string>
-    <string name="save">जतन करा</string>
-    <string name="restart_dialog_msg" >तुम्हाला पुन्हा सुरु करायचे आहे का? </string>
-    <string name="exit_dialog_msg" >तुम्हाला बाहेर पडायचे आहे का? </string>
-
-    <string name="Next_activity">पुढील उपक्रम?</string>
-    <string name="Do_you_want_to_exit">तुम्हाला बाहेर पडायचे आहे का? </string>
-    <string name="activity_completed">उपक्रम पूर्ण झाला</string>
-    <string name="hint">इशारा</string>
-    <string name="clear">बदल रद्द करा.</string>
-    <string name="submit">सबमिट</string>
-    <string name="hide_hint">इशारा बंद करा</string>
-    <string name="Enter_answer">उत्तर नोंद करा.</string>
-    <string name="Your_answer">तुमचे उत्तर</string>
-    <string name="Result">निकाल</string>
-    <string name="You_answered">दिलेले उत्तर</string>
-    <string name="Correct_Answer">बरोबर उत्तर</string>
-    <string name="Skipped">वगळले</string>
-    <string name="Read">वाचा</string>
-    <string name="Paragraph">परिच्छेद : </string>
-    <string name="Keyword">महत्वाचा शब्द : </string>
-    <string name="usermessage">आता मुख्य शब्द निवडण्याची तुमची पाळी आहे.</string>
-
-    <string name="yes">होय</string>
-    <string name="no">नाही</string>
-    <string name="fact_retrieval_click">जवाब देने के लिएअनुच्छेद से सही शब्द या वाक्य चुनिए|</string>
-    <string name="factRetrieval">उत्तर देण्यासाठी परिच्छेदामधील योग्य शब्द किंवा वाक्य निवडा.</string>
-    <string name="IKWAndroid">दिलेल्या परिच्छेदामधले वैज्ञानिक शब्द दाखवा.</string>
-    <string name="CopyWriting">दिलेले शब्द आणि त्यांची माहिती वहीत लिहा आणि त्याचा फोटो सबमिट करा.</string>
-    <string name="chKeywords">दिलेल्या शब्दांमधून संबंधित शब्द निवडा.</string>
-    <string name="ShowMeAndroid">योग्य पर्याय निवडा.</string>
-    <string name="Dictation">ऑडिओ ऐकून वहीत लिहा आणि त्याचा फोटो सबमिट करा.</string>
-    <string name="PictAndroid">प्ले बटणावर क्लिक करा आणि ऐका. नंतर माइक बटणावर क्लिक करा आणि स्पष्ट आवाजात वाचा.</string>
-    <string name="ReadingAndroid">प्ले बटणावर क्लिक करा आणि ऐका. नंतर माइक बटणावर क्लिक करा आणि स्पष्ट आवाजात वाचा.</string>
-    <string name="TAW">दिलेला शब्द किंवा वाक्यावर आपली मते लिहा आणि त्याचा फोटो सबमिट करा.</string>
-    <string name="doing_act">माइक बटणावर क्लिक करून आपले उत्तर रेकॉर्ड करा आणि सबमिट करा.</string>
-    <string name="letter">दिलेल्या विषयावर पत्र लिहून त्याचा फोटो सबमिट करा.</string>
-    <string name="doing_act_video">माइक बटन पर क्लिक करके अपना उत्तर रिकॉर्ड कीजिए और सबमिट कीजिए|</string>
-    <string name="ReadVocabAndroid">प्ले बटणावर क्लिक करा आणि ऐका. नंतर माइक बटणावर क्लिक करा आणि स्पष्ट आवाजात वाचा.</string>
-    <string name="reading_stt">माइक बटणावर क्लिक करा. उत्तर रेकॉर्ड करा आणि सबमिट करा.</string>
-    <string name="multiple_choice">उत्तर देण्यासाठी दिलेल्या शब्दांमधून योग्य पर्याय निवडा.</string>
-    <string name="Video">व्हिडीओ पहा.</string>
-    <string name="watching_video">माइक बटणावर क्लिक करून आपले उत्तर रेकॉर्ड करा आणि सबमिट करा.</string>
--->
-
-
 
 
     <string name="Agent_name" translatable="false">Vernicula</string>
     <string name="talkbot" translatable="false">Talkbot</string>
     <string name="more" translatable="false">more</string>
-
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment" translatable="false">Hello blank fragment</string>
-    <string name="title_activity_level_wise_words" translatable="false">LevelWiseWordsActivity</string>
 
     <string name="title_activity_admin_panel" translatable="false">AdminPanelActivity</string>
     <string name="dummy_button" translatable="false">Dummy Button</string>
@@ -337,28 +120,12 @@
     <string name="second_chance" translatable="false">Second Chance</string>
     <string name="ECE" translatable="false">ECE</string>
     <string name="pratham_institute" translatable="false">Pratham Institute</string>
-    <!--<string-array name="avatars">
-        <item>avatars/dino_dance.json</item>
-        <item>avatars/green_monster.json</item>
-        <item>avatars/pumped_up.json</item>
-        <item>avatars/personal_character.json</item>
-        <item>avatars/rabbit.json</item>
-        <item>avatars/funky_chicken.json</item>
-        <item>avatars/techno_penguin.json</item>
-        <item>avatars/biking_is_cool.json</item>
-        <item>avatars/acrobatics.json</item>
-    </string-array>-->
 
     <string name="urbon_program" translatable="false">Urban programme</string>
-
     <string name="title_activity_push_data" translatable="false">PushDataActivity</string>
-
     <string name="top_sheet_behavior" translatable="false">com.pratham.prathamdigital.custom.topsheet.TopSheetBehavior</string>
-
     <string name="switch_off_mobile_hotspot" translatable="false">Please switch off the mobile data and try again.</string>
-
     <string name="change" translatable="false">Change</string>
-
     <string name="content_download_alert" translatable="false">Content will be downloaded in</string>
     <string name="nsd_servername_postfix" translatable="false">FTP Server</string>
     <string name="storage_warning" translatable="false">Warning: storage is not available. You may want to unmount it.</string>
@@ -669,41 +436,14 @@
         <item>Hindi     </item>
         <item>Marathi   </item>
     </string-array>
-    <!--    <item>Gujarati  </item>-->
-    <!--    <item>Kannada   </item>-->
-    <!--    <item>Bengali   </item>-->
-    <!--    <item>Assamese  </item>-->
-    <!--    <item>Telugu    </item>-->
-    <!--    <item>Tamil     </item>-->
-    <!--    <item>Odiya     </item>-->
-    <!--
-    <item>Malayalam</item>
-    <item>Punjabi</item>
-    <item>Urdu</item>
--->
     <string-array name="app_Language">
         <item>Hindi</item>
         <item>Marathi</item>
     </string-array>
-    <!--    <item>Gujarati</item>-->
-    <!--    <item>Kannada</item>-->
-    <!--    <item>Bengali</item>-->
-    <!--    <item>Assamese  </item>-->
-    <!--    <item>Telugu</item>-->
-    <!--    <item>Tamil</item>-->
-    <!--    <item>Odiya</item>-->
     <string-array name="translation_Languages">
         <item>Hindi</item>
         <item>Marathi</item>
     </string-array>
-    <!--    <item>English</item>-->
-    <!--    <item>Gujarati</item>-->
-    <!--    <item>Kannada</item>-->
-    <!--    <item>Bengali</item>-->
-    <!--    <item>Telugu</item>-->
-    <!--    <item>Tamil</item>-->
-    <!--    <item>Urdu</item>-->
-    <!--    <item>Punjabi</item>-->
     <string-array name="language_codes">
         <item>en</item>
         <item>hi</item>
@@ -716,40 +456,5 @@
         <item>ur</item>
         <item>pa</item>
     </string-array>
-
-    <!--
-<resources>
-    <string name="Agent_name">Vernicula</string>
-    <string name="talkbot">Talkbot</string>
-    <string name="more">more</string>
-
-    &lt;!&ndash; TODO: Remove or change this placeholder text &ndash;&gt;
-    <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="title_activity_level_wise_words">LevelWiseWordsActivity</string>
-
-    <string name="title_activity_admin_panel">AdminPanelActivity</string>
-    <string name="dummy_button">Dummy Button</string>
-    <string name="dummy_content">DUMMY\nCONTENT</string>
-    <string name="default_notification_channel_id">fcm_default_channel</string>
-    <string name="fcm_message">City of Stories - PraDigi</string>
-
-    <string name="read_india">Read India</string>
-
-    <string name="hybrid_learning">Hybrid Learning</string>
-
-    <string name="second_chance">Second Chance</string>
-    <string name="ECE">ECE</string>
-    <string name="pratham_institute">Pratham Institute</string>
-    &lt;!&ndash;<string-array name="avatars">
-        <item>avatars/dino_dance.json</item>
-        <item>avatars/green_monster.json</item>
-        <item>avatars/pumped_up.json</item>
-        <item>avatars/personal_character.json</item>
-        <item>avatars/rabbit.json</item>
-        <item>avatars/funky_chicken.json</item>
-        <item>avatars/techno_penguin.json</item>
-        <item>avatars/biking_is_cool.json</item>
-        <item>avatars/acrobatics.json</item>
-    </string-array>-->
 
 </resources>

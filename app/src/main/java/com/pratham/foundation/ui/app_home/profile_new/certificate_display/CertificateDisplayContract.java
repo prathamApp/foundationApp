@@ -8,7 +8,7 @@ import java.util.List;
 public interface CertificateDisplayContract {
 
     interface CertificateItemClicked {
-        void gotoCertificate(Assessment assessment);
+        void gotoCertificate(Assessment assessment, String cTitle);
     }
 
     interface CertificateView {

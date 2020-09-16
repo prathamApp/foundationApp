@@ -260,7 +260,7 @@ public class SequenceLayout extends Fragment implements SequeanceLayoutContract.
     }
 
     @Override
-    public void play(Context context) {
+    public void play(Context context, boolean onSdCard) {
         if (onConentClickeditem != null) {
             Bundle bundle = new Bundle();
             bundle.putString("contentPath", onConentClickeditem.getResourcePath());
@@ -268,7 +268,7 @@ public class SequenceLayout extends Fragment implements SequeanceLayoutContract.
             bundle.putString("resId", onConentClickeditem.getResourceId());
             bundle.putString("contentName", onConentClickeditem.getNodeTitle());
             bundle.putString("sttLang", onConentClickeditem.getContentLanguage());
-            bundle.putBoolean("onSdCard", onSdCard);
+            bundle.putBoolean("onSdCard", this.onSdCard);
             bundle.putString("jsonName", onConentClickeditem.getResourceType());
             switch (onConentClickeditem.getResourceType()) {
                 case GameConstatnts.READ_VOCAB_ANDROID:

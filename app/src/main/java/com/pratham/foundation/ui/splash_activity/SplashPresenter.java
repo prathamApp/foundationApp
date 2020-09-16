@@ -1203,8 +1203,8 @@ public class SplashPresenter implements SplashContract.SplashPresenter {
                                     detail.setContentType(newContent_cursor.getString(newContent_cursor.getColumnIndex("contentType")));
                                     detail.setIsDownloaded("" + newContent_cursor.getString(newContent_cursor.getColumnIndex("isDownloaded")));
                                     detail.setVersion(newContent_cursor.getString(newContent_cursor.getColumnIndex("version")));
-//                                    detail.setOrigNodeVersion(newContent_cursor.getString(newContent_cursor.getColumnIndex("origNodeVersion")));
-//                                    detail.setSubject(newContent_cursor.getString(newContent_cursor.getColumnIndex("subject")));
+                                    detail.setOrigNodeVersion(newContent_cursor.getString(newContent_cursor.getColumnIndex("origNodeVersion")));
+                                    detail.setSubject(newContent_cursor.getString(newContent_cursor.getColumnIndex("subject")));
                                     detail.setSeq_no(newContent_cursor.getInt(newContent_cursor.getColumnIndex("seq_no")));
                                     detail.setOnSDCard(true);
                                     contents.add(detail);
@@ -1220,7 +1220,7 @@ public class SplashPresenter implements SplashContract.SplashPresenter {
                     }
                 }
             }
-//            FastSave.getInstance().saveBoolean(FC_Constants.newDataLanguageInserted, true);
+            FastSave.getInstance().saveBoolean(FC_Constants.NEW_ASSET_DB, true);
             BackupDatabase.backup(context);
         } catch (Exception e) {
             e.printStackTrace();

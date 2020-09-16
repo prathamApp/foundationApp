@@ -81,7 +81,8 @@ public class ActivityVideoPlayer extends BaseActivity {
 
 //        contentType = FC_Constants.YOUTUBE_LINK;
 //        contentPath = "https://youtu.be/XsJTztRwem4";
-        onSdCard = false;
+//        contentPath =  Environment.getExternalStorageDirectory().toString() + "/.FCAInternal/fractions_with_shapes- video.m4v";
+//        onSdCard = false;
         if(contentType!=null && contentType.equalsIgnoreCase(FC_Constants.YOUTUBE_LINK)) {
 //            new YouTubeExtractor(Objects.requireNonNull(getActivity())) {
             new YouTubeExtractor(Objects.requireNonNull(context)) {
@@ -107,6 +108,7 @@ public class ActivityVideoPlayer extends BaseActivity {
                 contentPath = ApplicationClass.contentSDPath + gameFolderPath + "/" + contentPath;
             else
                 contentPath = ApplicationClass.foundationPath + gameFolderPath + "/" + contentPath;
+//            contentPath =  Environment.getExternalStorageDirectory().toString() + "/.FCAInternal/fractions_with_shapes- video.m4v";
             initializePlayer(contentPath);
         }
     }

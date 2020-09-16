@@ -27,12 +27,14 @@ public class InstructionsDialog extends CustomLodingDialog {
     private String resorcetype = "";
     private Context context;
     private MediaPlayer mediaPlayer;
+    private boolean onSdCard;
 
-    public InstructionsDialog(ShowInstruction showInstruction, @NonNull Context context, String resorcetype) {
+    public InstructionsDialog(ShowInstruction showInstruction, @NonNull Context context, String resorcetype, boolean onSdCard) {
         super(context, R.style.FullScreenCustomDialogStyle);
         this.resorcetype = resorcetype;
         this.context = context;
         this.showInstruction = showInstruction;
+        this.onSdCard = onSdCard;
     }
 
     @Override
@@ -79,7 +81,7 @@ public class InstructionsDialog extends CustomLodingDialog {
         if (mediaPlayer != null) {
             mediaPlayer.stop();
         }
-        showInstruction.play(context);
+        showInstruction.play(context, onSdCard);
     }
 
 

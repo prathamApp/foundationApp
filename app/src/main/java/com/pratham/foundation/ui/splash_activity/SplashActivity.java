@@ -174,7 +174,8 @@ public class SplashActivity extends SplashSupportActivity implements SplashContr
                 splashPresenter.copyZipAndPopulateMenu();
                 splashPresenter.getSdCardPath();
                 if(isAssets){
-                    splashPresenter.populateAssetsMenu();
+                    if (!FastSave.getInstance().getBoolean(FC_Constants.NEW_ASSET_DB, false))
+                        splashPresenter.populateAssetsMenu();
                 }
             } else {
                 ApplicationClass.foundationPath = FC_Utility.getInternalPath(SplashActivity.this);

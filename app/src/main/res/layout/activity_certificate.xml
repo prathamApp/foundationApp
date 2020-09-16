@@ -27,10 +27,25 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_toEndOf="@+id/main_back"
+            android:layout_toStartOf="@+id/pdf_page_btn"
             android:layout_marginBottom="@dimen/_2sdp"
             android:layout_marginStart="@dimen/_5sdp"
             android:background="@drawable/custom_spinner"
             android:popupBackground="@drawable/choose_level_bg" />
+
+        <com.pratham.foundation.customView.fontsview.SansButton
+            android:id="@+id/pdf_page_btn"
+            android:layout_width="@dimen/_100sdp"
+            android:layout_height="match_parent"
+            android:layout_alignParentEnd="true"
+            android:layout_margin="@dimen/_2sdp"
+            android:layout_marginStart="@dimen/_2sdp"
+            android:layout_marginTop="@dimen/_2sdp"
+            android:layout_marginEnd="@dimen/_2sdp"
+            android:background="@drawable/button_blue"
+            android:text="PDF"
+            android:textColor="@color/white"
+            android:textSize="@dimen/_15sdp" />
 
         <!--<Button
             android:id="@+id/btn_english"
@@ -67,14 +82,17 @@
             android:text="Marathi"
             android:textColor="@color/colorWhiteLight" />-->
     </RelativeLayout>
+<ScrollView
+    android:id="@+id/scroll_lo"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_below="@+id/rl_lang_buttons">
 
     <RelativeLayout
         android:id="@+id/main_certi_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@+id/rl_lang_buttons"
         android:background="@drawable/certificate_bg">
-
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -82,51 +100,48 @@
             android:background="@drawable/certificate_bg"
             android:padding="10dp">
 
-            <com.pratham.foundation.customView.fontsview.SansTextViewBold
-                android:id="@+id/share_pdf"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentEnd="true"
-                android:text="share PDF"
-                android:textSize="@dimen/_10sdp"
-                android:textStyle="italic"/>
-
             <RelativeLayout
                 android:id="@+id/rl_studentHeader"
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/_110sdp"
-                android:layout_marginHorizontal="@dimen/_10sdp"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
                 android:layout_marginVertical="@dimen/_2sdp">
 
+                <ImageView
+                    android:id="@+id/iv_logo"
+                    android:layout_width="@dimen/_35sdp"
+                    android:layout_height="@dimen/_35sdp"
+                    android:padding="@dimen/_2sdp"
+                    android:scaleType="centerInside"
+                    android:src="@drawable/pratham_logo" />
                 <ImageView
                     android:id="@+id/iv_certificate"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/_60sdp"
                     android:padding="@dimen/_2sdp"
                     android:scaleType="centerInside"
-                    android:src="@drawable/pratham_logo" />
+                    android:src="@drawable/certifcate_eng" />
 
                 <com.pratham.foundation.customView.fontsview.SansTextView
                     android:id="@+id/tv_level"
                     android:layout_width="match_parent"
-                    android:layout_height="@dimen/_20sdp"
+                    android:layout_height="wrap_content"
                     android:layout_below="@id/iv_certificate"
                     android:gravity="center"
-                    android:text="Name"
+                    android:layout_marginTop="@dimen/_3sdp"
+                    android:layout_marginStart="@dimen/_5sdp"
+                    android:layout_marginEnd="@dimen/_5sdp"
                     android:textColor="@color/dark_blue"
-                    android:textAllCaps="true"
-                    android:textSize="@dimen/_12sdp"
+                    android:textSize="@dimen/_18sdp"
                     android:textStyle="bold" />
 
                 <com.pratham.foundation.customView.fontsview.SansTextView
                     android:id="@+id/tv_studentName"
                     android:layout_width="match_parent"
-                    android:layout_height="@dimen/_30sdp"
+                    android:layout_height="wrap_content"
                     android:layout_below="@id/tv_level"
                     android:gravity="center"
-                    android:text="Name"
                     android:textColor="@color/dark_blue"
-                    android:textAllCaps="true"
                     android:textSize="@dimen/_15sdp"
                     android:textStyle="bold" />
 
@@ -135,9 +150,9 @@
             <ImageView
                 android:id="@+id/iv_separator"
                 android:layout_width="match_parent"
+                android:layout_marginTop="@dimen/_8sdp"
                 android:layout_height="@dimen/_10sdp"
                 android:layout_below="@+id/rl_studentHeader"
-                android:layout_marginVertical="2dp"
                 android:scaleType="centerInside"
                 android:src="@drawable/certi_separator" />
 
@@ -146,15 +161,14 @@
                 android:layout_height="match_parent"
                 android:layout_below="@+id/iv_separator"
                 android:layout_gravity="center"
-                android:layout_marginTop="@dimen/_10sdp"
+                android:layout_marginTop="@dimen/_8sdp"
                 android:orientation="vertical"
                 android:weightSum="10">
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/assessment_recycler"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_above="@+id/rl_supervisedby"
+                    android:layout_height="wrap_content"
                     android:layout_centerInParent="true"
                     android:layout_marginTop="5dp"
                     android:clipToPadding="false"
@@ -162,55 +176,10 @@
                     android:layoutAnimation="@anim/layout_fall_down"
                     android:paddingBottom="@dimen/_7sdp"
                     android:scrollbars="vertical" />
-
-                <RelativeLayout
-                    android:id="@+id/rl_supervisedby"
-                    android:layout_width="match_parent"
-                    android:layout_height="@dimen/_90sdp"
-                    android:layout_marginHorizontal="@dimen/_5sdp"
-                    android:layout_alignParentBottom="true"
-                    android:layout_weight="2.5"
-                    android:visibility="visible">
-
-                    <ImageView
-                        android:id="@+id/iv_photo"
-                        android:layout_width="@dimen/_90sdp"
-                        android:layout_height="match_parent" />
-
-                    <RelativeLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_toRightOf="@id/iv_photo"
-                        android:gravity="center">
-
-                        <com.pratham.foundation.customView.fontsview.SansTextView
-                            android:id="@+id/tv_sup"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:gravity="center"
-                            android:text="Supervised By"
-                            android:textColor="@color/colorBlack"
-                            android:textSize="@dimen/_13sdp" />
-
-                        <com.pratham.foundation.customView.fontsview.SansTextView
-                            android:id="@+id/tv_supervisor_name"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_below="@+id/tv_sup"
-                            android:layout_marginTop="@dimen/_5sdp"
-                            android:gravity="center"
-                            android:text=""
-                            android:textColor="@color/colorBlack"
-                            android:textSize="@dimen/_15sdp" />
-
-
-                    </RelativeLayout>
-
-                </RelativeLayout>
-
             </RelativeLayout>
 
         </RelativeLayout>
 
     </RelativeLayout>
+</ScrollView>
 </RelativeLayout>

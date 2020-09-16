@@ -757,7 +757,7 @@ public class LearningPresenter implements LearningContract.LearningPresenter, AP
 
             ContentTable contentTableFooter = new ContentTable();
             contentTableFooter.setNodeId(TYPE_FOOTER);
-            contentTableFooter.setSeq_no(100);
+            contentTableFooter.setSeq_no(9999);
             contentTableFooter.setNodeType(TYPE_FOOTER);
 
             contentDBList.add(contentTableHeader);

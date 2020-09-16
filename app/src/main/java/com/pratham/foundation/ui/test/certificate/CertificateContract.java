@@ -5,7 +5,6 @@ import com.pratham.foundation.database.domain.Assessment;
 import com.pratham.foundation.modalclasses.CertificateModelClass;
 
 import org.json.JSONArray;
-import org.json.JSONObject;
 
 /**
  * Created by Ameya on 23-Nov-17.
@@ -23,24 +22,17 @@ public interface CertificateContract {
         void initializeTheIndex();
 
         void notifyAdapter();
-
-        void setSupervisorData(String sName, String sImage);
     }
 
     interface CertificatePresenter {
-        void getStudentName(String certiMode);
 
-        void proceed(JSONArray certiData, String nodeId);
+        void setView(CertificateView certificateView);
 
-        void getSupervisorData(String certiMode);
-
-        void fillAdapter(Assessment assessmentProfile, JSONArray certiData);
+        void fillAdapter(Assessment assessmentProfile, String certiTitle);
 
         JSONArray fetchAssessmentList(String level);
 
         float getStarRating(float perc);
-
-        void recordTestData(JSONObject jsonObjectAssessment, String certiTitle);
     }
 
 }
