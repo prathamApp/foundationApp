@@ -33,6 +33,8 @@ public interface CertificateContract {
         JSONArray fetchAssessmentList(String level);
 
         float getStarRating(float perc);
+
+        String[] getTestData(String jsonName);
     }
 
 }

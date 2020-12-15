@@ -129,11 +129,11 @@ public class PushDataToServer {
                     getFacilityId(pushDataJsonObject);
                 } else {
                     isConnectedToRasp = false;
-                    pushDataToServer(context, pushDataJsonObject, ApplicationClass.uploadDataUrl);
+                    pushDataToServer(context, pushDataJsonObject, FC_Constants.uploadDataUrl);
                 }
             } else {
                 isConnectedToRasp = false;
-                pushDataToServer(context, pushDataJsonObject, ApplicationClass.uploadDataUrl);
+                pushDataToServer(context, pushDataJsonObject, FC_Constants.uploadDataUrl);
             }
         } catch (Exception e) {
             e.printStackTrace();

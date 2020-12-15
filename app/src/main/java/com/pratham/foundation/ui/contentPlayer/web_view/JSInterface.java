@@ -52,7 +52,8 @@ public class JSInterface implements RecognitionListener {
     private SpeechRecognizer speech = null;
 
 
-    JSInterface(Context mContext, WebView w, TextToSpeechCustom tts, WebViewActivity activity_instance, WebViewInterface webViewInterface) {
+    JSInterface(Context mContext, WebView w, TextToSpeechCustom tts, WebViewActivity activity_instance,
+                WebViewInterface webViewInterface) {
         JSInterface.mContext = mContext;
         this.activity_instance = activity_instance;
         sdCardPath = ApplicationClass.contentSDPath;

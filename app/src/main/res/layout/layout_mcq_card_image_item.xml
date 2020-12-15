@@ -2,9 +2,9 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/rl_mcq"
-    android:layout_width="@dimen/_100sdp"
-    android:layout_height="@dimen/_100sdp"
-    android:layout_margin="@dimen/_5sdp"
+    android:layout_width="@dimen/_120sdp"
+    android:layout_height="@dimen/_110sdp"
+    android:layout_margin="@dimen/_2sdp"
     android:padding="6dp"
     android:background="@drawable/custom_radio_button">
 
@@ -13,7 +13,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:maxHeight="@dimen/_150sdp"
-        android:minWidth="@dimen/_100sdp"
+        android:minWidth="@dimen/_150sdp"
         app:cardCornerRadius="@dimen/_5sdp"
         app:cardElevation="0dp">
 
@@ -21,7 +21,7 @@
             android:id="@+id/mcq_img"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:padding="@dimen/_15sdp"
+            android:scaleType="fitCenter"
             android:src="@drawable/ic_warning" />
 
         <ImageView
@@ -33,6 +33,7 @@
             android:elevation="@dimen/_2sdp"
             android:padding="0dp"
             android:src="@drawable/ic_check"
+            android:background="@drawable/dark_rounded_corner_dialog"
             android:visibility="gone" />
 
         <ImageView

@@ -43,7 +43,7 @@ public class ContentPresenter implements ContentContract.ContentPresenter, API_C
     public Gson gson;
     public Modal_DownloadContent download_content;
     public ArrayList<ContentTable> pos;
-    public ContentTable contentDetail;
+    public ContentTable contentDetail, dwContent;
     public List<ContentTable> downloadedContentTableList, ListForContentTable1, ListForContentTable2;
     public ArrayList<String> nodeIds;
     public API_Content api_content;
@@ -153,9 +153,9 @@ public class ContentPresenter implements ContentContract.ContentPresenter, API_C
                 nodeListIndex = "0";
                 e.printStackTrace();
             }
-            if(nodeIds.size() < 1 || nodeListIndex.equalsIgnoreCase("0")) {
+            if (nodeIds.size() < 1 || nodeListIndex.equalsIgnoreCase("0")) {
                 updateUI();
-            }else {
+            } else {
 //            fetch downloaded data from DB
                 downloadedContentTableList = AppDatabase.getDatabaseInstance(context).getContentTableDao().getContentData("" + nodeListIndex);
                 Log.d("NODE_ID", "Node downloadedContentTableList :  " + downloadedContentTableList.size());
@@ -222,9 +222,10 @@ public class ContentPresenter implements ContentContract.ContentPresenter, API_C
     }
 
     @Override
-    public void downloadResource(String downloadId) {
+    public void downloadResource(String downloadId, ContentTable contentTable) {
 //        call download api
         downloadNodeId = downloadId;
+        dwContent = contentTable;
         api_content.getAPIContent(FC_Constants.INTERNET_DOWNLOAD_RESOURCE, FC_Constants.INTERNET_DOWNLOAD_RESOURCE_API, downloadNodeId);
     }
 
@@ -293,7 +294,6 @@ public class ContentPresenter implements ContentContract.ContentPresenter, API_C
 //                    get response from server and hit download url
                     JSONObject jsonObject = new JSONObject(response);
                     download_content = gson.fromJson(jsonObject.toString(), Modal_DownloadContent.class);
-                    contentDetail = download_content.getNodelist().get(download_content.getNodelist().size() - 1);
                     for (int i = 0; i < download_content.getNodelist().size(); i++) {
                         ContentTable contentTableTemp = download_content.getNodelist().get(i);
                         pos.add(contentTableTemp);
@@ -312,10 +312,28 @@ public class ContentPresenter implements ContentContract.ContentPresenter, API_C
                             download_content.getFoldername(), "5_Chatterbox.mp4", contentDetail, pos);
                 else
 */
-
 //                    start the download process
-                zipDownloader.initialize(context, download_content.getDownloadurl(),
-                        download_content.getFoldername(), fileName, contentDetail, pos);
+//                boolean downloadingItem = false;
+//                Modal_FileDownloading modal_fileDownloading = new Modal_FileDownloading();
+//                modal_fileDownloading.setContentDetail(dwContent);
+//                modal_fileDownloading.setDownloadId(downloadNodeId);
+//                modal_fileDownloading.setFilename(dwContent.getNodeTitle());
+//                modal_fileDownloading.setProgress(0);
+//                if (fileDownloadingList.size() < 4) {
+//                    if (fileDownloadingList.size() > 0) {
+//                        for (int x = 0; x < fileDownloadingList.size(); x++) {
+//                            if (fileDownloadingList.get(x).getDownloadId().equalsIgnoreCase(downloadNodeId)) {
+//                                downloadingItem = true;
+//                            }
+//                        }
+//                    } else {
+//                        fileDownloadingList.add(modal_fileDownloading);
+//                    }
+                    zipDownloader.initialize(context, download_content.getDownloadurl(),
+                            download_content.getFoldername(), fileName, dwContent, pos);
+//                } else {
+//                    contentView.showToast("Only 4 allowed");
+//                }
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -344,6 +362,7 @@ public class ContentPresenter implements ContentContract.ContentPresenter, API_C
 
     @Override
     public void receivedError(String header) {
+        contentView.showToast("Connection Error");
         contentView.addContentToViewList(ListForContentTable1);
         contentView.notifyAdapter();
         contentView.dismissLoadingDialog();

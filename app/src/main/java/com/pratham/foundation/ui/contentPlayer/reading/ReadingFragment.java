@@ -274,7 +274,7 @@ public class ReadingFragment extends Fragment implements STT_Result_New.sttView,
             showButtons();
 
         } else if (micPressed == 1) {
-            ib_mic.setImageResource(R.drawable.ic_pause_black);
+            ib_mic.setImageResource(R.drawable.ic_stop_black);
             hideButtons();
         }
     }
@@ -438,6 +438,8 @@ public class ReadingFragment extends Fragment implements STT_Result_New.sttView,
 
     @Click(R.id.btn_edit)
     public void editBtnPressed() {
+        if(voiceStart)
+            ib_mic.performClick();
         et_edit_ans.setText(myString);
         ll_edit_text.setVisibility(View.VISIBLE);
         // scienceQuestionChoices.get(index).setStartTime("");

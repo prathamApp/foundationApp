@@ -51,7 +51,7 @@ public class ImageQuesAdapter extends RecyclerView.Adapter {
 
     public class FileHolder extends RecyclerView.ViewHolder {
 
-        TextView title, tv_timestamp, tv_view, tv_section;
+        TextView title, tv_timestamp, tv_section;
         RelativeLayout certi_root;
 
         public FileHolder(View view) {
@@ -59,7 +59,7 @@ public class ImageQuesAdapter extends RecyclerView.Adapter {
             title = view.findViewById(R.id.tv_res_title);
             tv_timestamp = view.findViewById(R.id.tv_timestamp);
             tv_section = view.findViewById(R.id.tv_section);
-            tv_view = view.findViewById(R.id.tv_view);
+//            tv_view = view.findViewById(R.id.tv_view);
             certi_root = view.findViewById(R.id.certi_root);
         }
     }
@@ -86,15 +86,15 @@ public class ImageQuesAdapter extends RecyclerView.Adapter {
             String level = "" + contentItem.getLevel();
             String cTitle = imageJsonObject.getGameName();
 
-            if (cLevel.equalsIgnoreCase("0"))
+            if (cLevel.equalsIgnoreCase("1"))
                 level = "L-1";
-            else if (cLevel.equalsIgnoreCase("1"))
-                level = "L-2";
             else if (cLevel.equalsIgnoreCase("2"))
-                level = "L-3";
+                level = "L-2";
             else if (cLevel.equalsIgnoreCase("3"))
-                level = "L-4";
+                level = "L-3";
             else if (cLevel.equalsIgnoreCase("4"))
+                level = "L-4";
+            else if (cLevel.equalsIgnoreCase("5"))
                 level = "L-5";
 
             String section = getSubjectNameFromNum(contentItem.getQuestionId()) +

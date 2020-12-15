@@ -164,7 +164,7 @@ public class PushDataPresenter implements PushDataContract.PushDataPresenter {
                     String requestString = generateRequestString(scoreData, attendanceData, sessionData, learntWords, supervisorData, logsData, assessmentData, studentData);
 
                     if (checkEmptyness(requestString))
-                        pushDataToServer(requestString, ApplicationClass.uploadDataUrl);
+                        pushDataToServer(requestString, FC_Constants.uploadDataUrl);
                 }
             }
         } catch (Exception e) {

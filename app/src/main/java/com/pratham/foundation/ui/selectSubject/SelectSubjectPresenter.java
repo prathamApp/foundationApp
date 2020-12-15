@@ -66,7 +66,7 @@ public class SelectSubjectPresenter implements SelectSubjectContract.SubjectPres
 
         if (FC_Utility.isDataConnectionAvailable(context))
             //fetch subjects from API
-            api_content.getAPIContent(FC_Constants.INTERNET_BROWSE, FC_Constants.INTERNET_BROWSE_API, currLangNodeId);
+            api_content.getAPIContent(FC_Constants.INTERNET_BROWSE, FC_Constants.INTERNET_LANGUAGE_API, currLangNodeId);
         else {
             subjectView.initializeSubjectList(subjectList);
             subjectView.notifySubjAdapter();

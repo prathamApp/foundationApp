@@ -49,6 +49,7 @@ public interface ReadingStoryActivityContract {
         void setView(ReadingStoryActivityContract.ReadingStoryView readingView);
 
         void micStopped(List<String> splitWordsPunct, List<String> wordsResIdList);
+
     }
 
 }

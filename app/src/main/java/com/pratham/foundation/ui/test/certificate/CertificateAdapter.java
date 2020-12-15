@@ -50,7 +50,7 @@ public class CertificateAdapter extends RecyclerView.Adapter{
         switch (viewtype) {
             case 1:
                 LayoutInflater file = LayoutInflater.from(viewGroup.getContext());
-                view = file.inflate(R.layout.certi_row, viewGroup, false);
+                view = file.inflate(R.layout.certi_row_new, viewGroup, false);
                 return new CertificateDisplayViewHolder(view, certificateClicked);
             case 2:
                 LayoutInflater folder = LayoutInflater.from(viewGroup.getContext());

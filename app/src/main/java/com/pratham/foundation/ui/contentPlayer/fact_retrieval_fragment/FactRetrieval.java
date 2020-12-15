@@ -57,28 +57,20 @@ public class FactRetrieval extends Fragment implements FactRetrievalContract.Fac
     FactRetrievalContract.FactRetrievalPresenter presenter;
     @ViewById(R.id.paragraphRecycler)
     RecyclerView paragraphRecycler;
-
     @ViewById(R.id.quetion)
     TextView quetion;
-
     @ViewById(R.id.btn_prev)
     ImageButton previous;
-
     @ViewById(R.id.btn_submit)
     SansButton submitBtn;
-
     @ViewById(R.id.btn_next)
     ImageButton next;
-
    /* @ViewById(R.id.tittle)
     SansTextView tittle;*/
-
     @ViewById(R.id.clear_selection)
     SansButton clear_selection;
-
     @ViewById(R.id.show_answer)
     SansButton show_answer;
-
     @ViewById(R.id.bottom_bar1)
     LinearLayout bottom_control_container;
 

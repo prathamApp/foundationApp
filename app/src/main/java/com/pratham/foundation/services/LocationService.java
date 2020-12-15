@@ -28,6 +28,7 @@ import com.google.android.gms.location.LocationSettingsStatusCodes;
 import com.pratham.foundation.ApplicationClass;
 import com.pratham.foundation.database.AppDatabase;
 import com.pratham.foundation.database.domain.Status;
+import com.pratham.foundation.utility.FC_Constants;
 
 import org.json.JSONObject;
 
@@ -88,7 +89,7 @@ public class LocationService implements GoogleApiClient.ConnectionCallbacks, Goo
 //                        BaseActivity.statusDao.insert(statusObj);
                             if(!ApplicationClass.LocationFlg) {
                                 String requestString = generateRequestString();
-                                pushDataToServer(requestString, ApplicationClass.uploadDataUrl);
+                                pushDataToServer(requestString, FC_Constants.uploadDataUrl);
                             }
                             Log.d(TAG, "onLocationUpdated:" + location.getLatitude() + ":::" + location.getLongitude());
 

@@ -19,6 +19,7 @@ import java.util.ArrayList;
 
 import static com.pratham.foundation.ApplicationClass.App_Thumbs_Path;
 import static com.pratham.foundation.ui.app_home.HomeActivity.contentDownloadingTask;
+import static com.pratham.foundation.utility.FC_Constants.IS_DOWNLOADING;
 import static com.pratham.foundation.utility.FC_Constants.currentSubjectFolder;
 
 /**
@@ -79,6 +80,7 @@ public class ZipDownloader {
         modal_download.setFolder_name(foldername);
         modal_download.setContent(contentDetail);
         modal_download.setLevelContents(levelContents);
+        IS_DOWNLOADING = true;
         contentDownloadingTask.startContentDownload(modal_download);
 //        new DownloadingTask().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, modal_download);
     }
@@ -111,6 +113,7 @@ public class ZipDownloader {
         modal_download.setFolder_name(foldername);
         modal_download.setContent(contentDetail);
         modal_download.setLevelContents(levelContents);
+        IS_DOWNLOADING = true;
         contentDownloadingTask.startContentDownload(modal_download);
 //        new DownloadingTask().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, modal_download);
     }

@@ -3,8 +3,7 @@
     android:id="@+id/form_root"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/new_bg"
-    tools:context="com.pratham.foundation.ui.bottom_fragment.add_student.AddStudentFragment">
+    android:background="@drawable/new_bg">
 
     <com.pratham.foundation.customView.fontsview.SansTextViewBold
         android:id="@+id/tv_title"

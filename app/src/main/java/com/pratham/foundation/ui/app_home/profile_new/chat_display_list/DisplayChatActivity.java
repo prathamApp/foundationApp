@@ -144,7 +144,7 @@ public class DisplayChatActivity extends BaseActivity implements
         setProfileName(profileName);
     }
 
-    @Click(R.id.main_back)
+    @Click({R.id.main_back, R.id.main_back2})
     public void pressedBack(){
         onBackPressed();
     }
@@ -181,8 +181,7 @@ public class DisplayChatActivity extends BaseActivity implements
         String json = scoreDisp.getResourceID();
         Gson gson = new Gson();
         ImageJsonObject imageJsonObject = gson.fromJson(json, ImageJsonObject.class);
-        Type listType = new TypeToken<ArrayList<Message>>() {
-        }.getType();
+        Type listType = new TypeToken<ArrayList<Message>>() {}.getType();
         List list=gson.fromJson(imageJsonObject.getAnsImageName(),listType);
         chat_recycler_view.setHasFixedSize(true);
         final LinearLayoutManager linearLayoutManager = new LinearLayoutManager(context);

@@ -1,15 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/certi_root"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@drawable/dialog_bg"
-    android:layout_marginStart="@dimen/_12sdp"
-    android:layout_marginEnd="@dimen/_12sdp"
-    android:layout_marginTop="@dimen/_5sdp"
-    android:layout_marginBottom="@dimen/_8sdp"
+    android:background="@drawable/ripple_list_card_bg"
+    android:layout_marginStart="@dimen/_10sdp"
+    android:layout_marginEnd="@dimen/_10sdp"
+    android:layout_marginTop="@dimen/_3sdp"
+    android:layout_marginBottom="@dimen/_5sdp"
     android:elevation="@dimen/_3sdp"
-    android:padding="@dimen/_12sdp">
+    android:padding="@dimen/_10sdp">
 
     <RelativeLayout
         android:id="@+id/rl_assess"
@@ -27,10 +28,10 @@
             android:marqueeRepeatLimit="marquee_forever"
             android:scrollHorizontally="true"
             android:singleLine="true"
-            android:textColor="@color/colorAccentDark"
+            android:textColor="@color/colorText"
             android:textSize="@dimen/_15sdp" />
 
-        <com.pratham.foundation.customView.fontsview.SansTextView
+        <com.pratham.foundation.customView.fontsview.SansTextViewBold
             android:id="@+id/tv_section"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -39,7 +40,7 @@
             android:textColor="@color/colorBtnRedLight"
             android:textSize="@dimen/_10sdp" />
 
-        <com.pratham.foundation.customView.fontsview.SansTextView
+        <com.pratham.foundation.customView.fontsview.SansTextViewBold
             android:id="@+id/tv_timestamp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -49,18 +50,30 @@
             android:textSize="@dimen/_8sdp" />
     </RelativeLayout>
 
-    <com.pratham.foundation.customView.fontsview.SansTextViewBold
+    <com.airbnb.lottie.LottieAnimationView
         android:id="@+id/tv_view"
-        android:layout_width="@dimen/_60sdp"
+        android:layout_centerHorizontal="true"
+        android:layout_width="@dimen/_45sdp"
+        android:layout_height="@dimen/_45sdp"
+        android:layout_alignParentEnd="true"
+        android:layout_centerVertical="true"
+        android:gravity="center"
+        app:lottie_autoPlay="true"
+        app:lottie_fileName="eye_lottie.json"
+        app:lottie_loop="true" />
+
+<!--    <com.pratham.foundation.customView.fontsview.SansTextViewBold
+        android:id="@+id/tv_view"
+        android:layout_width="@dimen/_55sdp"
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
         android:layout_centerVertical="true"
         android:background="@drawable/button_green"
         android:elevation="@dimen/_2sdp"
         android:gravity="center"
-        android:paddingVertical="@dimen/_3sdp"
-        android:text="View"
+        android:paddingVertical="@dimen/_5sdp"
+        android:text="@string/Open"
         android:textColor="@color/white"
-        android:textSize="@dimen/_12sdp" />
+        android:textSize="@dimen/_12sdp" />-->
 
 </RelativeLayout>

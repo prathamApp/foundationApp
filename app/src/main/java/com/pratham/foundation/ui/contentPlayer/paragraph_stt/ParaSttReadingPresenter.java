@@ -112,10 +112,10 @@ public class ParaSttReadingPresenter implements ParaSttReadingContract.ParaSttRe
     private void addSttResultDB(ArrayList<String> stt_Result) {
         String deviceId = AppDatabase.getDatabaseInstance(context).getStatusDao().getValue("DeviceId");
         StringBuilder strWord = new StringBuilder("STT_ALL_RESULT - ");
-        for(int i =0 ; i<stt_Result.size(); i++) {
+        for (int i = 0; i < stt_Result.size(); i++) {
             strWord.append(stt_Result.get(i)).append(" - ");
             stt_Result.size();
-            if(i > 0 && i < 3)
+            if (i > 0 && i < 3)
                 remainingResult.add(stt_Result.get(i));
         }
         try {
@@ -130,7 +130,7 @@ public class ParaSttReadingPresenter implements ParaSttReadingContract.ParaSttRe
             score.setDeviceID(deviceId.equals(null) ? "0000" : deviceId);
             score.setEndDateTime(FC_Utility.getCurrentDateTime());
             score.setLevel(0);
-            score.setLabel(""+strWord);
+            score.setLabel("" + strWord);
             score.setSentFlag(0);
             AppDatabase.getDatabaseInstance(context).getScoreDao().insert(score);
             BackupDatabase.backup(context);
@@ -163,7 +163,7 @@ public class ParaSttReadingPresenter implements ParaSttReadingContract.ParaSttRe
         String wordTime = FC_Utility.getCurrentDateTime();
 //        addLearntWords(splitWordsPunct, wordsResIdList);
         addScore(0, "Words:" + word, correctWordCount, correctArr.length, wordTime, " ");
-            readingView.setCorrectViewColor();
+        readingView.setCorrectViewColor();
 
     }
 
@@ -173,7 +173,7 @@ public class ParaSttReadingPresenter implements ParaSttReadingContract.ParaSttRe
         float perc;
         String word = " ";
         try {
-            for(int k =0; k<remainingResult.size(); k++) {
+            for (int k = 0; k < remainingResult.size(); k++) {
                 String[] splitRes = remainingResult.get(k).split("");
                 for (int j = 0; j < splitRes.length; j++) {
                     splitRes[j] = splitRes[j].replaceAll(STT_REGEX, "");
@@ -213,7 +213,7 @@ public class ParaSttReadingPresenter implements ParaSttReadingContract.ParaSttRe
         if (pagePercentage[pgNo] < perc) {
             pagePercentage[pgNo] = perc;
         }
-        if (FastSave.getInstance().getString(APP_SECTION,"").equalsIgnoreCase(sec_Test))
+        if (FastSave.getInstance().getString(APP_SECTION, "").equalsIgnoreCase(sec_Test))
             if (perc >= 75)
                 testCorrectArr[pgNo] = true;
 
@@ -236,19 +236,20 @@ public class ParaSttReadingPresenter implements ParaSttReadingContract.ParaSttRe
     public void addLearntWords(List<String> splitWordsPunct, List<String> wordsResIdList) {
         try {
             for (int i = 0; i < correctArr.length; i++) {
-                if (!checkLearnt(splitWordsPunct.get(i).toLowerCase())) {
-                    KeyWords learntWords = new KeyWords();
-                    if (correctArr[i]) {
-                        learntWords.setKeyWordId(Integer.parseInt(wordsResIdList.get(i)));
-                        learntWords.setSentFlag(0);
-                        learntWords.setStudentId(FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""));
-                        learntWords.setResourceId(resId);
-                        learntWords.setKeyWord(splitWordsPunct.get(i).toLowerCase());
-                        learntWords.setWordType("word");
-                        learntWords.setTopic("Topic");
-                        AppDatabase.getDatabaseInstance(context).getKeyWordDao().insert(learntWords);
+                if (i < splitWordsPunct.size())
+                    if (!checkLearnt(splitWordsPunct.get(i).toLowerCase())) {
+                        KeyWords learntWords = new KeyWords();
+                        if (correctArr[i]) {
+                            learntWords.setKeyWordId(Integer.parseInt(wordsResIdList.get(i)));
+                            learntWords.setSentFlag(0);
+                            learntWords.setStudentId(FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""));
+                            learntWords.setResourceId(resId);
+                            learntWords.setKeyWord(splitWordsPunct.get(i).toLowerCase());
+                            learntWords.setWordType("word");
+                            learntWords.setTopic("Topic");
+                            AppDatabase.getDatabaseInstance(context).getKeyWordDao().insert(learntWords);
+                        }
                     }
-                }
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -326,7 +327,7 @@ public class ParaSttReadingPresenter implements ParaSttReadingContract.ParaSttRe
             score.setSentFlag(0);
             AppDatabase.getDatabaseInstance(context).getScoreDao().insert(score);
 
-            if (FastSave.getInstance().getString(APP_SECTION,"").equalsIgnoreCase(sec_Test)) {
+            if (FastSave.getInstance().getString(APP_SECTION, "").equalsIgnoreCase(sec_Test)) {
                 Assessment assessment = new Assessment();
                 assessment.setResourceIDa(resId);
                 assessment.setSessionIDa(FastSave.getInstance().getString(FC_Constants.ASSESSMENT_SESSION, ""));

@@ -35,8 +35,8 @@ public class CertificateModelClass {
     String teluguAnsw;
     String tamilQues;
     String tamilAnsw;
-    String odiaQues;
-    String odiaAnsw;
+    String odiyaQues;
+    String odiyaAnsw;
     String urduQues;
     String urduAnsw;
     String punjabiQues;
@@ -288,20 +288,20 @@ public class CertificateModelClass {
         this.tamilAnsw = tamilAnsw;
     }
 
-    public String getOdiaQues() {
-        return odiaQues;
+    public String getOdiyaQues() {
+        return odiyaQues;
     }
 
-    public void setOdiaQues(String odiaQues) {
-        this.odiaQues = odiaQues;
+    public void setOdiyaQues(String odiyaQues) {
+        this.odiyaQues = odiyaQues;
     }
 
-    public String getOdiaAnsw() {
-        return odiaAnsw;
+    public String getOdiyaAnsw() {
+        return odiyaAnsw;
     }
 
-    public void setOdiaAnsw(String odiaAnsw) {
-        this.odiaAnsw = odiaAnsw;
+    public void setOdiyaAnsw(String odiyaAnsw) {
+        this.odiyaAnsw = odiyaAnsw;
     }
 
     public String getUrduQues() {

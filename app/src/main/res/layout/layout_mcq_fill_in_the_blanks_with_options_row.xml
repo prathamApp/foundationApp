@@ -5,114 +5,82 @@
     android:layout_height="match_parent"
     android:background="@drawable/activity_bkgd">
 
-    <Space
-        android:id="@+id/space"
-        android:layout_width="match_parent"
-        android:layout_height="60dp" />
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_above="@id/hint"
         android:layout_below="@+id/space"
-        android:layout_marginTop="@dimen/_5sdp"
+        android:layout_marginTop="70dp"
         android:orientation="vertical">
-        <LinearLayout
+
+        <RelativeLayout
+            android:id="@+id/topsec"
+            style="@style/paragraph"
             android:layout_width="match_parent"
-            android:layout_height="0dp"
+            android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_weight="0.7"
-            android:gravity="center"
-            android:orientation="vertical">
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/_10sdp"
-                android:layout_marginEnd="@dimen/_10sdp"
-                android:layout_marginBottom="@dimen/_10sdp"
-                style="@style/paragraph"
-                android:orientation="vertical">
-
-                <com.pratham.foundation.customView.fontsview.SansTextViewBold
-                    android:id="@+id/tv_question"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_marginTop="@dimen/_5sdp"
-                    android:layout_marginBottom="@dimen/_5sdp"
-                    android:textColor="@color/colorText"
-                    android:scrollbars="vertical"
-                    android:textAlignment="center"
-                    android:textSize="@dimen/_20sdp" />
-
-                <com.google.android.material.card.MaterialCardView
-                    android:id="@+id/image_container"
-                    android:layout_width="@dimen/_170sdp"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_marginBottom="@dimen/_5sdp"
-                    app:cardCornerRadius="@dimen/_10sdp"
-                    android:background="@color/white"
-                    app:strokeWidth="@dimen/_2sdp"
-                    app:strokeColor="@color/colorAccent">
-                <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
-
-                    <com.pratham.foundation.customView.shape_of_view.ShadowLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentEnd="true"
-                        android:layout_marginTop="@dimen/_5sdp"
-                        android:layout_marginEnd="@dimen/_5sdp"
-                        android:layout_centerHorizontal="true"
-                        android:elevation="@dimen/_2sdp"
-                        app:sl_shadow_angle="60"
-                        app:sl_shadow_color="@color/colorBlackTransparentLight"
-                        app:sl_shadow_distance="2dp"
-                        app:sl_shadow_radius="2dp"
-                        app:sl_shadowed="true">
-                    <ImageView
-                        android:id="@+id/iv_view_img"
-                        android:layout_width="@dimen/_25sdp"
-                        android:layout_height="@dimen/_25sdp"
-                        android:elevation="@dimen/_2sdp"
-                        android:background="@null"
-                        android:padding="0dp"
-                        android:src="@drawable/ic_eye"
-                        android:visibility="visible" />
-                    </com.pratham.foundation.customView.shape_of_view.ShadowLayout>
-
-                    <ImageView
-                        android:id="@+id/iv_question_image"
-                        style="@style/CustomQuestionImageStyle"
-                        android:layout_width="match_parent"
-                        android:layout_height="@dimen/_250sdp"
-                        android:padding="@dimen/_2sdp"
-                        android:visibility="visible" />
-                    <com.pratham.foundation.customView.GifView
-                        android:id="@+id/iv_question_gif"
-                        style="@style/CustomQuestionImageStyle"
-                        android:layout_gravity="center_horizontal"/>
-                </RelativeLayout>
-                </com.google.android.material.card.MaterialCardView>
-
-            </LinearLayout>
-        </LinearLayout>
-
-        <ScrollView
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
             android:layout_marginStart="@dimen/_10sdp"
             android:layout_marginEnd="@dimen/_10sdp"
             android:layout_marginBottom="@dimen/_10sdp"
-            android:layout_weight="0.7"
+            android:gravity="center">
+
+            <com.pratham.foundation.customView.fontsview.SansTextViewBold
+                android:id="@+id/tv_question"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="@dimen/_5sdp"
+                android:layout_marginBottom="@dimen/_5sdp"
+                android:scrollbars="vertical"
+                android:textAlignment="center"
+                android:textColor="@color/colorText"
+                android:textSize="@dimen/_20sdp" />
+
+            <RelativeLayout
+                android:id="@+id/image_container"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/_5sdp">
+
+                <ImageView
+                    android:id="@+id/iv_view_img"
+                    android:layout_width="@dimen/_25sdp"
+                    android:layout_height="@dimen/_25sdp"
+                    android:layout_alignParentEnd="true"
+                    android:layout_marginTop="@dimen/_5sdp"
+                    android:layout_marginEnd="@dimen/_5sdp"
+                    android:background="@null"
+                    android:elevation="@dimen/_2sdp"
+                    android:padding="0dp"
+                    android:src="@drawable/ic_eye"
+                    android:visibility="visible" />
+
+                <com.facebook.drawee.view.SimpleDraweeView
+                    android:id="@+id/iv_question_image"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/_130sdp"
+                    android:padding="@dimen/_2sdp"
+                    android:visibility="visible"
+                    app:actualImageScaleType="fitCenter"
+                    app:placeholderImageScaleType="fitCenter"
+                    app:roundedCornerRadius="@dimen/_10sdp" />
+            </RelativeLayout>
+        </RelativeLayout>
+
+        <ScrollView
+            style="@style/paragraph"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@+id/topsec"
+            android:layout_marginStart="@dimen/_10sdp"
+            android:layout_marginEnd="@dimen/_10sdp"
+            android:layout_marginBottom="@dimen/_10sdp"
             android:fadeScrollbars="false"
             android:scrollbarSize="6dp"
-            style="@style/paragraph"
             android:scrollbarThumbVertical="@drawable/card_color_bg4"
             android:scrollbarTrackVertical="@drawable/scroll_bg">
 
-        <RelativeLayout
+            <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
@@ -129,13 +97,13 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerInParent="true"
-                    android:layout_margin="@dimen/_5sdp"
+                    android:layout_margin="@dimen/_2sdp"
                     android:alignmentMode="alignMargins"
                     android:columnCount="2" />
             </RelativeLayout>
         </ScrollView>
 
-    </LinearLayout>
+    </RelativeLayout>
 
     <RelativeLayout
         android:id="@+id/hint"

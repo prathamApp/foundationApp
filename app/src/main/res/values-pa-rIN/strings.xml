@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<resources xmlns:tools="http://schemas.android.com/tools">
+
+    <string name="app_name" >Foundation Course</string>
+
+    <string name="Login">Login</string>
+    <string name="Stt_Dialog_Msg">Please download language packs English(India) and हिंदी(भारत) offline for better performance</string>
+    <string name="Okay">OK</string>
+    <string name="Skip">SKIP</string>
+    <string name="loding_please_wait" tools:ignore="TypographyEllipsis">Loading... Please wait...</string>
+    <string name="Exit">Exit</string>
+    <string name="Cancel">Cancel</string>
+    <string name="Restart">Restart</string>
+    <string name="login_mode">Login Mode</string>
+    <string name="Group">Group</string>
+    <string name="Individual">Individual</string>
+    <string name="what_do_you_want_to_do">What do you want to do?</string>
+    <string name="Scan_QR_Code">Scan QR Code</string>
+    <string name="Reset">Reset</string>
+    <string name="Get_Progress">Get Progress</string>
+    <string name="Start">Start</string>
+    <string name="No_Internet_Connection">No Internet Connection</string>
+    <string name="Invalid_QR_Code">Invalid QR Code !!!</string>
+    <string name="Only_5_Students_Allowed">Only 5 Students Allowed</string>
+    <string name="Student_exists">This Student already exists</string>
+    <string name="Scan_new_QR">Scan new QR.</string>
+    <string name="Welcome">Welcome </string>
+    <string name="select_subject">Please select a study subject...</string>
+    <string name="usage">Usage</string>
+    <string name="days">Days</string>
+    <string name="hours">Hours</string>
+    <string name="progress">Progress</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
+    <string name="Test_Complete_Dialog">You can view the certificates in the profile section</string>
+
+    <string name="selectGroup" >Select group</string>
+    <string name="select_Age" >Select age group</string>
+    <string name="select_Name" >Select your name</string>
+    <string name="age_8_and_above">Age 8 and above.</string>
+    <string name="Summary">Summary</string>
+    <string name="Certificates">Certificates</string>
+    <string name="Next_activity">Next activity?</string>
+    <string name="Do_you_want_to_exit">Do you want to exit?</string>
+    <string name="activity_completed">Activity completed</string>
+    <string name="hint">Hint</string>
+    <string name="clear">clear</string>
+    <string name="submit">submit</string>
+    <string name="hide_hint">Hide Hint</string>
+    <string name="Enter_answer">Enter Answer</string>
+    <string name="Your_answer">Your Answer</string>
+    <string name="Result">Result</string>
+    <string name="You_answered">You answered</string>
+    <string name="Correct_Answer">Correct Answer</string>
+    <string name="Skipped">Skipped</string>
+    <string name="Read">Read</string>
+    <string name="Paragraph">Paragraph : </string>
+    <string name="Keyword">Keyword : </string>
+    <string name="restart_dialog_msg" >Do you want to restart?</string>
+    <string name="exit_dialog_msg" >Do you want to exit?</string>
+    <string name="read_full_sentence" >Read the full sentence.</string>
+    <string name="Click_group_name" >Click your group name.</string>
+    <string name="mark_attendance" >Mark your attendance.</string>
+
+    <string name="Learning" >Learning</string>
+    <string name="Practice" >Practice</string>
+    <string name="Test" >Test</string>
+    <string name="Fun" >Fun</string>
+    <string name="Profile" >Profile</string>
+
+    <string name="Level" >Level</string>
+    <string name="Next" >Next</string>
+    <string name="Revise" >Revise</string>
+    <string name="nice_chatting_with_you" >Nice chatting with you.</string>
+    <string name="byebye" >Bye-bye!</string>
+    <string name="Unsupervised">Unsupervised</string>
+    <string name="Supervised">Supervised</string>
+    <string name="change_subj">Change Subject?</string>
+    <string name="save">Save</string>
+    <string name="alertmessage">some options are remaining</string>
+    <string name="usermessage">Now its your turn to select the keyword.</string>
+    <string name="select_language">Select Language -</string>
+
+    <!--    &lt;!&ndash;    game Instructions&ndash;&gt;-->
+    <string name="fact_retrieval_click">Answer the question by selecting the word and then submit it.</string>
+    <string name="factRetrieval">Answer the question by selecting the word by long pressing it and then submit the selected answer.</string>
+    <string name="IKWAndroid">Identify keywords from paragraph and submit </string>
+    <string name="CopyWriting">Write the text displayed in the app in your notebook and then submit the photo</string>
+    <string name="chKeywords">Select the words releted to the topic and submit your answers</string>
+    <string name="ShowMeAndroid">Give the answer by selecting the correct option form the given options.</string>
+    <string name="Dictation">Listen to the audio and write it in your notebook and then submit the photo.</string>
+    <string name="PictAndroid">Listen to a story</string>
+    <string name="ReadingAndroid">Listen to a story</string>
+    <string name="TAW">Write in your own words about the given topic in your notebook and sumbit its photo.</string>
+    <string name="doing_act">try to perform the activity.</string>
+    <string name="letter">Write a letter on the given subject in notebook and submit its photo.</string>
+    <string name="doing_act_video">Watch the video and try to perform the activity.</string>
+    <string name="watching_video">Watch the video and click on mike button to record answer </string>
+    <string name="ReadVocabAndroid">Read the following in order to increase you vocabulary.</string>
+    <string name="reading_stt">Answer the question by using the speech to text functionality.</string>
+    <string name="multiple_choice">Select the correct answer from multiple answers and submit it</string>
+    <string name="pdf">Read the PDF</string>
+    <string name="Video">Watch the video</string>
+    <string name="youtube">Watch the youtube video</string>
+    <string name="ParaReadQues">Press the play button to listen to the audio, then press the mic button and read the paragraph.</string>
+    <string name="parasummary">Read the story in Hindi</string>
+    <string name="paraqa">Press the mic button to record your answer and then submit.</string>
+    <string name="new_chit_chat_1">Listen to the conversation shown on the screen.</string>
+    <string name="new_chit_chat_2">Listen to the conversation shown on the screen and record your answer in English.</string>
+    <string name="new_chit_chat_3">This is a 2 person activity. Take turns to record your audio</string>
+
+</resources>

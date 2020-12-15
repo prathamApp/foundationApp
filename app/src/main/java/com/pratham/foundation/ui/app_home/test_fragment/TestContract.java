@@ -55,6 +55,8 @@ public interface TestContract {
 
         void showRecyclerLayout();
 
+        void showToast(String s);
+
 //        void setBotNodeId(String botID);
     }
 

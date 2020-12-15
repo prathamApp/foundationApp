@@ -2,6 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@drawable/activity_bkgd">
 
     <LinearLayout
@@ -52,12 +53,9 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_above="@+id/bottom_bar"
+        android:layout_marginTop="70dp"
         android:orientation="vertical">
 
-        <Space
-            android:id="@+id/space"
-            android:layout_width="match_parent"
-            android:layout_height="60dp"/>
         <com.pratham.foundation.customView.fontsview.SansTextViewBold
             android:id="@+id/tv_question"
             android:scrollbars="vertical"
@@ -68,6 +66,7 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:textSize="@dimen/_30sdp"
+            android:textColor="@color/colorText"
             android:gravity="center"
             style="@style/paragraph"
             android:layout_marginStart="@dimen/_10sdp"
@@ -84,25 +83,32 @@
             android:layout_gravity="center">
 
             <ImageView
-                android:id="@+id/iv_question_image"
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/_150sdp"
-                android:layout_centerHorizontal="true"
+                android:id="@+id/iv_playvid"
+                android:layout_width="@dimen/_50sdp"
+                android:layout_height="@dimen/_50sdp"
+                android:layout_centerInParent="true"
+                android:background="@null"
+                android:alpha=".60"
+                android:elevation="@dimen/_5sdp"
                 android:src="@drawable/vid_play"
-                style="@style/question"
-                android:padding="@dimen/_40sdp"
                 android:visibility="visible" />
 
-            <com.pratham.foundation.customView.GifView
-                android:id="@+id/iv_question_gif"
-                style="@style/CustomQuestionImageStyle"
-                android:layout_gravity="center_horizontal"
-                android:scaleType="fitXY" />
+            <com.facebook.drawee.view.SimpleDraweeView
+                android:id="@+id/iv_question_image"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_140sdp"
+                android:padding="@dimen/_2sdp"
+                android:visibility="visible"
+                android:layout_marginStart="@dimen/_10sdp"
+                android:layout_marginEnd="@dimen/_10sdp"
+                app:actualImageScaleType="fitCenter"
+                app:placeholderImageScaleType="fitCenter"
+                app:roundedCornerRadius="@dimen/_10sdp" />
 
             <VideoView
                 android:id="@+id/vv_question"
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/_150sdp"
+                android:layout_height="@dimen/_140sdp"
                 android:layout_centerHorizontal="true"
                 style="@style/question"
                 android:padding="@dimen/_10sdp"
@@ -110,6 +116,7 @@
 
 
         </RelativeLayout>
+
         <LinearLayout
             android:id="@+id/sub_questions_container"
             android:layout_width="match_parent"
@@ -182,11 +189,10 @@
                         style="@style/edit_btn"
                         android:src="@drawable/ic_edit_white"/>
                 </LinearLayout>
-
             </LinearLayout>
-
         </LinearLayout>
     </LinearLayout>
+
     <include
         android:id="@+id/bottom_bar"
         layout="@layout/bottom_control_panel_v4"
@@ -196,50 +202,5 @@
         android:layout_gravity="bottom|center_horizontal"
         android:layout_marginBottom="1dp"
         android:gravity="bottom|center_horizontal" />
-    <!--<RelativeLayout
-        android:id="@+id/bottom_bar"
-        android:layout_alignParentBottom="true"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
 
-     &lt;!&ndash;   <LinearLayout
-            android:id="@+id/controls_top"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:weightSum="3">
-            <ImageButton
-                android:id="@+id/capture"
-                style="@style/capturebtn"
-                android:layout_width="0dp"
-                android:layout_height="50dp"
-                android:layout_margin="@dimen/_2sdp"
-                android:layout_weight="1" />
-            <com.pratham.foundation.customView.fontsview.SansButton
-                android:id="@+id/preview"
-                style="@style/submitbtn"
-                android:layout_width="0dp"
-                android:layout_height="50dp"
-                android:layout_weight="1"
-                android:layout_margin="@dimen/_2sdp"
-                android:text="preview" />
-        </LinearLayout>
-        <LinearLayout
-            android:id="@+id/controls_bot"
-            android:layout_below="@id/controls_top"
-            android:layout_width="match_parent"
-            android:layout_marginTop="@dimen/_5sdp"
-            android:layout_height="wrap_content">
-
-            <com.pratham.foundation.customView.fontsview.SansButton
-                android:id="@+id/submit"
-                style="@style/submitbtn"
-                android:layout_width="0dp"
-                android:layout_height="50dp"
-                android:layout_weight="1"
-                android:text="submit" />
-
-        </LinearLayout>&ndash;&gt;
-
-    </RelativeLayout>-->
 </RelativeLayout>

@@ -33,6 +33,7 @@ import java.util.concurrent.Executors;
 
 import static com.pratham.foundation.ApplicationClass.App_Thumbs_Path;
 import static com.pratham.foundation.utility.FC_Constants.FILE_DOWNLOAD_STARTED;
+import static com.pratham.foundation.utility.FC_Constants.IS_DOWNLOADING;
 import static com.pratham.foundation.utility.FC_Constants.VIDEO;
 
 @EBean
@@ -133,12 +134,14 @@ public class ContentDownloadingTask {
                     downloadCompleted();
 
             } else {
+                IS_DOWNLOADING = false;
                 EventMessage eventMessage = new EventMessage();
                 eventMessage.setMessage(FC_Constants.RESPONSE_CODE_ERROR);
                 EventBus.getDefault().post(eventMessage);
             }
         } catch (Exception e) {
             e.printStackTrace();
+            IS_DOWNLOADING = false;
             EventMessage eventMessage = new EventMessage();
             eventMessage.setMessage(FC_Constants.FILE_DOWNLOAD_ERROR);
             EventBus.getDefault().post(eventMessage);
@@ -146,6 +149,7 @@ public class ContentDownloadingTask {
     }
 
     private void unzipingError() {
+        IS_DOWNLOADING = false;
         EventMessage eventMessage = new EventMessage();
         eventMessage.setMessage(FC_Constants.UNZIPPING_ERROR);
         EventBus.getDefault().post(eventMessage);
@@ -162,7 +166,7 @@ public class ContentDownloadingTask {
             temp.get(i).setIsDownloaded("" + true);
             temp.get(i).setOnSDCard(false);
         }
-
+        IS_DOWNLOADING = false;
  /*       for (ContentTable d : temp) {
             if (d.getNodeImage() != null) {
                 String img_name = d.getNodeImage().substring(d.getNodeImage().lastIndexOf('/') + 1);
@@ -227,6 +231,7 @@ public class ContentDownloadingTask {
         eventMessage.setMessage(FC_Constants.UNZIPPING_DATA_FILE);
         EventBus.getDefault().post(eventMessage);
         ZipFile zipFile = null;
+        IS_DOWNLOADING = false;
         try {
             zipFile = new ZipFile(source);
             zipFile.extractAll(destination);
@@ -253,6 +258,7 @@ public class ContentDownloadingTask {
 
     protected void onCompleteContentDownloadTase(boolean success) {
         Log.d(TAG, "onPostExecute");
+        IS_DOWNLOADING = false;
         if (success) {
             EventMessage eventMessage = new EventMessage();
             eventMessage.setMessage(FC_Constants.FILE_DOWNLOAD_COMPLETE);

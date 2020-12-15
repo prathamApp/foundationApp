@@ -62,6 +62,7 @@ import static com.pratham.foundation.utility.FC_Constants.HINDI;
 import static com.pratham.foundation.utility.FC_Constants.activityPDFPath;
 import static com.pratham.foundation.utility.FC_Constants.gameFolderPath;
 import static com.pratham.foundation.utility.FC_Utility.dpToPx;
+import static com.pratham.foundation.utility.FC_Utility.getLevelWiseJson;
 
 @EActivity(R.layout.activity_certificate)
 public class CertificateActivity extends BaseActivity implements CertificateContract.CertificateView,
@@ -87,7 +88,7 @@ public class CertificateActivity extends BaseActivity implements CertificateCont
     @ViewById(R.id.tv_supervisor_name)
     TextView tv_supervisor_name;
     @ViewById(R.id.assessment_recycler)
-    RecyclerView recyclerView;
+    RecyclerView assessment_recycler;
 
     public static Assessment assessmentProfile;
     CertificateAdapter certificateAdapter;
@@ -96,7 +97,7 @@ public class CertificateActivity extends BaseActivity implements CertificateCont
     public static String certificateLanguage;
     String level_lbl = "", certificate_lbl = "", supervisorName_lbl, supervisorPhoto;
     String[] allCodes;
-    String nodeId, CertiTitle, CertiCode, certiMode, timeStamp, cTitle, pdfName;
+    String nodeId, CertiTitle, CertiCode, certiMode, timeStamp, cTitle, pdfName,cLevel,cSubject;
     Context context;
 
     @AfterViews
@@ -107,6 +108,8 @@ public class CertificateActivity extends BaseActivity implements CertificateCont
         CertiCode = getIntent().getStringExtra("CertiCode");
         CertiTitle = getIntent().getStringExtra("CertiTitle");
         cTitle = getIntent().getStringExtra("cTitle");
+        cLevel = getIntent().getStringExtra("cLevel");
+        cSubject = getIntent().getStringExtra("cSubject");
         timeStamp = getIntent().getStringExtra("TimeStamp");
         certiMode = getIntent().getStringExtra("display");
         assessmentProfile = (Assessment) getIntent().getSerializableExtra("assessment");
@@ -122,16 +125,19 @@ public class CertificateActivity extends BaseActivity implements CertificateCont
         student = AppDatabase.getDatabaseInstance(context).getStudentDao().getStudent(sId);
         String studName = "" + student.getFullName();
 
-        tv_certi_level.setText(Html.fromHtml("<b><i><u><font color=\"#5D76F6\">"
-                +studName+"</font></u></i></b> has completed<br><b>"+cTitle+"</b> successfully"));
+        tv_certi_level.setText(Html.fromHtml("<b><i><font color=\"#00c853\">"
+                +studName+"</font></i></b> has completed<br><b>"+cTitle+"</b> successfully"));
         String dateStamp = timeStamp.split(" ")[0];
         tv_studentName.setText(Html.fromHtml("on "+dateStamp+" using<br>'"+getResources().getString(R.string.app_name)+"' app<br>"
                 +"by <i>Pratham Education Foundation</i>."));
         pdfName = sId+"_"+cTitle+"_"+timeStamp+".pdf";
+        String jsonName = getLevelWiseJson(Integer.parseInt(cLevel));
+        String[] testData = presenter.getTestData(jsonName);
 
         lang_certi_spinner.setOnItemSelectedListener(this);
         // Creating adapter for spinner
-        ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(this, R.layout.custom_spinner, getResources().getStringArray(R.array.certificate_Languages));
+        ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(this, R.layout.custom_spinner, testData);
+//                getResources().getStringArray(R.array.certificate_Languages));
         // Drop down layout style - list view with radio button
         dataAdapter.setDropDownViewResource(R.layout.custom_spinner);
         // attaching data adapter to spinner
@@ -170,10 +176,10 @@ public class CertificateActivity extends BaseActivity implements CertificateCont
             certificateAdapter = new CertificateAdapter(this, ContentTableList, this);
             certificateAdapter.initializeIndex();
             RecyclerView.LayoutManager mLayoutManager = new GridLayoutManager(this, 1);
-            recyclerView.setLayoutManager(mLayoutManager);
-            recyclerView.addItemDecoration(new GridSpacingItemDecoration(1, dpToPx(this, 5), true));
-            recyclerView.setItemAnimator(new DefaultItemAnimator());
-            recyclerView.setAdapter(certificateAdapter);
+            assessment_recycler.setLayoutManager(mLayoutManager);
+            assessment_recycler.addItemDecoration(new GridSpacingItemDecoration(1, dpToPx(this, 5), true));
+            assessment_recycler.setItemAnimator(new DefaultItemAnimator());
+            assessment_recycler.setAdapter(certificateAdapter);
         }else {
             certificateAdapter.initializeIndex();
             certificateAdapter.notifyDataSetChanged();
@@ -181,14 +187,10 @@ public class CertificateActivity extends BaseActivity implements CertificateCont
     }
 
     @Override
-    public void onCertificateUpdate() {
-
-    }
+    public void onCertificateUpdate() { }
 
     @Override
-    public void openAssessmentApp() {
-
-    }
+    public void openAssessmentApp() { }
 
     @Click(R.id.main_back)
     public void pressedBack() {
@@ -209,8 +211,10 @@ public class CertificateActivity extends BaseActivity implements CertificateCont
             if (!new File(activityPDFPath).exists())
                 new File(activityPDFPath).mkdir();
             pdf_page_btn.setText("STOP");
-//        takeSS(recyclerView);
-            longScreenshot = new BigScreenshot(this, recyclerView, main_certi_layout);
+//        takeSS(assessment_recycler);
+            // Main container which screenshot is to be taken - main_certi_layout
+            // assessment_recycler for scrolling screenshot.
+            longScreenshot = new BigScreenshot(this, assessment_recycler, main_certi_layout);
             longScreenshot.startScreenshot();
             new Handler().postDelayed(() -> pdf_page_btn.performClick(),45);
         } else {
@@ -294,7 +298,8 @@ public class CertificateActivity extends BaseActivity implements CertificateCont
 
         page.getCanvas().drawBitmap(bitmap, 0, 0, null);
         pdfDocument.finishPage(page);
-        activityPDFPath = activityPDFPath + "" + pdfName;
+//        activityPDFPath = activityPDFPath + "" + pdfName;
+        activityPDFPath = ApplicationClass.foundationPath + "" + pdfName;
         File myPDFFile = new File(activityPDFPath);
         try {
             pdfDocument.writeTo(new FileOutputStream(myPDFFile));
@@ -309,7 +314,7 @@ public class CertificateActivity extends BaseActivity implements CertificateCont
             share.setAction(Intent.ACTION_SEND);
             share.setType("application/pdf");
             share.putExtra(Intent.EXTRA_STREAM, uri);
-            startActivity(share);
+            startActivity(Intent.createChooser(share, "Share via"));
         }
     }
 

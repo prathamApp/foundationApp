@@ -49,15 +49,15 @@ public class AdminLoginFragment extends Fragment implements AdminLoginContract.A
         presenter.setView(AdminLoginFragment.this);
         userNameET.setText("");
         passwordET.setText("");
-//        userNameET.setText("Pratham1234");
-//        passwordET.setText("Pratham@1234");
+        userNameET.setText("Pratham1234");
+        passwordET.setText("Pratham@1234");
     }
 
     @Click(R.id.btn_login)
     public void loginCheck() {
         final InputMethodManager imm = (InputMethodManager) Objects.requireNonNull(getActivity()).
                 getSystemService(Context.INPUT_METHOD_SERVICE);
-        imm.hideSoftInputFromWindow(Objects.requireNonNull(getView()).getWindowToken(), 0);
+        Objects.requireNonNull(imm).hideSoftInputFromWindow(Objects.requireNonNull(getView()).getWindowToken(), 0);
         presenter.checkLogin(getUserName(), getPassword());
         Objects.requireNonNull(userNameET.getText()).clear();
         Objects.requireNonNull(passwordET.getText()).clear();

@@ -56,6 +56,7 @@ import java.util.Objects;
 import java.util.UUID;
 
 import static com.pratham.foundation.ApplicationClass.ButtonClickSound;
+import static com.pratham.foundation.ui.splash_activity.SplashActivity.fragmentBottomOpenFlg;
 import static com.pratham.foundation.utility.FC_Constants.INDIVIDUAL_MODE;
 import static com.pratham.foundation.utility.FC_Constants.SPLASH_OPEN;
 
@@ -142,6 +143,7 @@ public class BottomStudentsFragment extends BottomSheetDialogFragment
     public void onDismiss(DialogInterface dialog) {
         super.onDismiss(dialog);
         try {
+            fragmentBottomOpenFlg = false;
             EventMessage eventMessage = new EventMessage();
             eventMessage.setMessage(FC_Constants.BOTTOM_FRAGMENT_CLOSED);
             EventBus.getDefault().post(eventMessage);

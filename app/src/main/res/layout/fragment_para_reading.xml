@@ -11,9 +11,55 @@
         android:layout_width="60dp"
         android:layout_height="60dp"
         android:layout_alignParentEnd="true"
-        android:layout_marginTop="@dimen/_5sdp"
-        android:layout_marginEnd="@dimen/_5sdp"
+        android:layout_marginTop="5dp"
+        android:layout_marginEnd="5dp"
         android:visibility="gone" />
+
+    <LinearLayout
+        android:id="@+id/ll_edit_text"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/colorBlackTransparentLight"
+        android:elevation="@dimen/_20sdp"
+        android:orientation="vertical"
+        android:visibility="gone"
+        android:weightSum="1">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_marginStart="@dimen/_10sdp"
+            android:layout_marginTop="65dp"
+            android:layout_marginEnd="@dimen/_10sdp"
+            android:layout_weight=".48"
+            android:background="@drawable/dialog_bg">
+
+            <com.pratham.foundation.customView.fontsview.SansEditText
+                android:id="@+id/et_edit_ans"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_above="@id/bt_edit_ok"
+                android:layout_margin="@dimen/_5sdp"
+                android:overScrollMode="always"
+                android:scrollbarStyle="insideInset"
+                android:scrollbars="vertical"
+                android:textAlignment="center"
+                android:textColor="@color/dark_blue" />
+
+            <com.pratham.foundation.customView.fontsview.SansButton
+                android:id="@+id/bt_edit_ok"
+                android:layout_width="@dimen/_100sdp"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="@dimen/_5sdp"
+                android:layout_marginBottom="@dimen/_10sdp"
+                android:background="@drawable/button_green"
+                android:text="@string/Okay"
+                android:textColor="@color/white"
+                android:textSize="@dimen/_10sdp" />
+        </RelativeLayout>
+    </LinearLayout>
 
     <RelativeLayout
         android:id="@+id/silence_outer"
@@ -63,43 +109,25 @@
         </RelativeLayout>
     </RelativeLayout>
 
-    <!--    <android.support.design.card.MaterialCardView-->
-    <!--        android:id="@+id/topPanel"-->
-    <!--        android:layout_width="match_parent"-->
-    <!--        android:layout_height="@dimen/_40sdp"-->
-    <!--        android:layout_alignParentTop="true"-->
-    <!--        android:layout_marginStart="@dimen/_10sdp"-->
-    <!--        android:layout_marginTop="30dp"-->
-    <!--        android:layout_marginEnd="@dimen/_10sdp"-->
-    <!--        ripple:cardBackgroundColor="@color/colorBtnRedDark"-->
-    <!--        ripple:cardCornerRadius="@dimen/_8sdp">-->
-
-    <!--        <RelativeLayout-->
-    <!--            android:layout_width="match_parent"-->
-    <!--            android:layout_height="match_parent">-->
-
-    <!--            <com.pratham.foundation.customView.fontsview.SansTextViewBold-->
-    <!--                android:id="@+id/tv_story_title"-->
-    <!--                android:layout_width="match_parent"-->
-    <!--                android:layout_height="match_parent"-->
-    <!--                android:gravity="center"-->
-    <!--                android:text="Story"-->
-    <!--                android:textColor="@color/white"-->
-    <!--                android:textSize="@dimen/_25sdp"-->
-    <!--                android:textStyle="bold" />-->
-    <!--        </RelativeLayout>-->
-    <!--    </android.support.design.card.MaterialCardView>-->
-
     <com.pratham.foundation.customView.fontsview.SansTextViewBold
         android:id="@+id/tv_story_title"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="80dp"
-        android:text="Story"
+        android:layout_marginTop="5dp"
+        android:layout_marginBottom="5dp"
+        android:layout_marginStart="75dp"
+        android:layout_marginEnd="75dp"
+        android:gravity="center_vertical"
+        android:ellipsize="marquee"
+        android:fadingEdge="horizontal"
+        android:marqueeRepeatLimit="marquee_forever"
+        android:scrollHorizontally="true"
+        android:singleLine="true"
+        android:text="Chat"
         android:textColor="@color/dark_blue"
-        android:textSize="@dimen/_17sdp" />
-
+        android:textSize="@dimen/_20sdp"
+        android:textStyle="bold" />
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -136,60 +164,108 @@
                 android:scaleType="fitCenter"
                 android:src="@drawable/pratham_logo"
                 android:visibility="gone" />
-
         </RelativeLayout>
-
-
     </RelativeLayout>
 
-    <com.pratham.foundation.customView.shape_of_view.ShadowLayout
-        android:id="@+id/image_container"
+    <com.facebook.drawee.view.SimpleDraweeView
+        android:id="@+id/iv_image"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="@dimen/_110sdp"
         android:layout_below="@+id/tv_story_title"
-        android:layout_marginEnd="@dimen/_5sdp"
         android:layout_marginStart="@dimen/_5sdp"
-        android:layout_centerHorizontal="true"
-        app:sl_shadow_angle="60"
-        app:sl_shadow_color="@color/colorBlackTransparentLight"
-        app:sl_shadow_distance="5dp"
-        app:sl_shadow_radius="5dp"
-        app:sl_shadowed="true">
+        android:layout_marginBottom="@dimen/_5sdp"
+        android:layout_marginEnd="@dimen/_5sdp"
+        android:visibility="visible"
+        app:actualImageScaleType="fitCenter"
+        app:placeholderImageScaleType="fitCenter"
+        app:roundedCornerRadius="@dimen/_10sdp" />
 
-        <ImageView
-            android:id="@+id/iv_image"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/_180sdp"
-            android:scaleType="fitCenter"
-            android:visibility="visible" />
-    </com.pratham.foundation.customView.shape_of_view.ShadowLayout>
-
-    <ScrollView
-        android:id="@+id/myScrollView"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_above="@+id/bottom_bar"
-        android:layout_below="@+id/image_container"
-        android:layout_marginStart="@dimen/_10sdp"
-        android:layout_marginTop="10dp"
-        android:fadeScrollbars="false"
-        android:scrollbarSize="6dp"
-        android:scrollbarThumbVertical="@drawable/card_color_bg4"
-        android:scrollbarTrackVertical="@drawable/scroll_bg"
-        android:layout_marginEnd="@dimen/_10sdp"
-        android:layout_marginBottom="10dp"
-        style="@style/paragraph"
-        android:elevation="5dp"
-        android:padding="@dimen/_5sdp">
+        android:layout_below="@+id/iv_image"
+        android:orientation="vertical">
 
-        <com.nex3z.flowlayout.FlowLayout xmlns:app="http://schemas.android.com/apk/res-auto"
-            android:id="@+id/myflowlayout"
+        <ScrollView
+            android:id="@+id/myScrollView"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingHorizontal="10dp"
-            app:flChildSpacing="10dp" />
+            android:layout_height="0dp"
+            android:layout_weight="0.6"
+            android:layout_margin="@dimen/_5sdp"
+            android:fadeScrollbars="false"
+            android:scrollbarSize="6dp"
+            android:scrollbarThumbVertical="@drawable/card_color_bg4"
+            android:scrollbarTrackVertical="@drawable/scroll_bg"
+            style="@style/paragraph"
+            android:elevation="5dp"
+            android:padding="@dimen/_5sdp">
 
-    </ScrollView>
+            <com.nex3z.flowlayout.FlowLayout
+                xmlns:app="http://schemas.android.com/apk/res-auto"
+                android:id="@+id/myflowlayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingHorizontal="10dp"
+                app:flChildSpacing="10dp" />
+
+        </ScrollView>
+        <ScrollView
+            android:id="@+id/myScrollView2"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="0.4"
+            android:layout_marginTop="@dimen/_5sdp"
+            android:layout_marginStart="@dimen/_5sdp"
+            android:layout_marginEnd="@dimen/_5sdp"
+            android:layout_marginBottom="@dimen/_10sdp"
+            android:fadeScrollbars="false"
+            android:scrollbarSize="6dp"
+            android:scrollbarThumbVertical="@drawable/card_color_bg4"
+            android:scrollbarTrackVertical="@drawable/scroll_bg"
+            style="@style/paragraph2">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <com.pratham.foundation.customView.fontsview.SansTextViewBold
+                    android:id="@+id/stt_result_tv_lbl"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentTop="true"
+                    android:text="@string/Your_answer"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginTop="@dimen/_5sdp"
+                    android:layout_marginEnd="10dp"
+                    android:layout_marginBottom="@dimen/_2sdp"
+                    android:textColor="@color/dark_blue"
+                    android:textSize="@dimen/_15sdp" />
+                <com.pratham.foundation.customView.fontsview.SansTextView
+                    android:id="@+id/stt_result_tv"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/stt_result_tv_lbl"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginTop="@dimen/_1sdp"
+                    android:layout_marginEnd="10dp"
+                    android:layout_marginBottom="@dimen/_2sdp"
+                    android:textColor="@color/dark_blue"
+                    android:textSize="@dimen/_20sdp" />
+
+                <ImageView
+                    android:id="@+id/clean_stt"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_below="@+id/stt_result_tv"
+                    android:layout_alignParentBottom="true"
+                    android:layout_centerHorizontal="true"
+                    android:src="@drawable/edit_new"/>
+
+            </RelativeLayout>
+
+        </ScrollView>
+
+    </LinearLayout>
 
     <include
         android:id="@+id/bottom_bar"

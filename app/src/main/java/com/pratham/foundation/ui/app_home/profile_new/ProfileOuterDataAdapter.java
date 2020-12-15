@@ -18,19 +18,16 @@ import com.pratham.foundation.database.domain.ContentTable;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.pratham.foundation.utility.FC_Constants.progressImgSubArray;
+import static com.pratham.foundation.utility.FC_Constants.progressSubArray;
+import static com.pratham.foundation.utility.FC_Constants.statusImgSubArray;
+import static com.pratham.foundation.utility.FC_Constants.statusSubArray;
+
 
 public class ProfileOuterDataAdapter extends RecyclerView.Adapter {
 
     private Context mContext;
     private String[] progressArray;
-//    String[] progressSubArray = {"Certificate", "Projects", "Usage", "ImageQues"};
-private String[] progressSubArray = {"Certificate", "ImageQues", "Chat L-5"};
-//    String[] progressImgSubArray = {"Certificate", "Projects", "Usage", "ImageQues"};
-private String[] progressImgSubArray = {"Certificate", "ImageQues", "ChitChat"};
-    private String[] statusSubArray = {"Last sync status"};
-    private String[] statusImgSubArray = {"syncImg"};
-//    String[] shareSubArray = {"Share App", "Share Content"};
-//    String[] shareImgSubArray = {"Share App", "Share Content"};
 
     public int childCounter = 0;
     ProfileContract.ProfileItemClicked profileItemClicked;
@@ -85,10 +82,10 @@ private String[] progressImgSubArray = {"Certificate", "ImageQues", "ChitChat"};
         try {
 //            itemRowHolder.card_layout.setBackground(mContext.getResources().getDrawable(getRandomCardColor()));
             itemRowHolder.itemTitle.setText(progressArray[i]);
-            if(progressArray[i].equalsIgnoreCase("Progress")){
+            if (progressArray[i].equalsIgnoreCase("Progress")) {
                 sublistList = progressSubArray;
                 subImgList = progressImgSubArray;
-            } else if(progressArray[i].equalsIgnoreCase("Status")){
+            } else if (progressArray[i].equalsIgnoreCase("Status")) {
                 sublistList = statusSubArray;
                 subImgList = statusImgSubArray;
             }
@@ -125,7 +122,7 @@ private String[] progressImgSubArray = {"Certificate", "ImageQues", "ChitChat"};
             }
         } else
 */
-            return 1;
+        return 1;
     }
 
     @Override
@@ -142,7 +139,7 @@ private String[] progressImgSubArray = {"Certificate", "ImageQues", "ChitChat"};
             super(view);
             this.itemTitle = view.findViewById(R.id.lbl_Progreess_header);
             this.recycler_view_grid_list = view.findViewById(R.id.recycler_view_grid_list);
-            this.card_layout= view.findViewById(R.id.profile_card_layout);
+            this.card_layout = view.findViewById(R.id.profile_card_layout);
         }
 
     }

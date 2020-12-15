@@ -73,7 +73,10 @@ import java.util.Objects;
 
 import static com.pratham.foundation.ApplicationClass.BackBtnSound;
 import static com.pratham.foundation.ApplicationClass.ButtonClickSound;
+import static com.pratham.foundation.ApplicationClass.fileDownloadingList;
 import static com.pratham.foundation.ui.app_home.HomeActivity.languageChanged;
+import static com.pratham.foundation.utility.FC_Constants.DOWNLOAD_NODE_ID;
+import static com.pratham.foundation.utility.FC_Constants.IS_DOWNLOADING;
 import static com.pratham.foundation.utility.FC_Constants.LOGIN_MODE;
 import static com.pratham.foundation.utility.FC_Constants.QR_GROUP_MODE;
 import static com.pratham.foundation.utility.FC_Constants.gameFolderPath;
@@ -90,7 +93,7 @@ public class ContentDisplay extends BaseActivity implements ContentContract.Cont
     private RecyclerView recyclerView;
     private ContentAdapter contentAdapter;
     int tempDownloadPos, resumeCntr = 0;
-    String downloadNodeId, resName, resServerImageName, parentName;
+    String resName, resServerImageName, parentName;
     List<ContentTable> ContentTableList;
     ProgressBar dialog_roundProgress;
     ProgressLayout progressLayout;
@@ -280,6 +283,12 @@ public class ContentDisplay extends BaseActivity implements ContentContract.Cont
         onBackPressed();
     }
 
+    /*    @UiThread
+        @Click(R.id.dw_list_btn)
+        public void dwBtnClicked() {
+            DownloadBottomSheetFragment_ downloadBottomSheetFragment = new DownloadBottomSheetFragment_();
+            downloadBottomSheetFragment.show(getSupportFragmentManager(), DownloadBottomSheetFragment.class.getSimpleName());
+        }*/
     BlurPopupWindow noDataDlg;
 
     @UiThread
@@ -334,7 +343,7 @@ public class ContentDisplay extends BaseActivity implements ContentContract.Cont
             e.printStackTrace();
         }
         String sdStatus = "F";
-        if(onSDCard)
+        if (onSDCard)
             sdStatus = "T";
 
         Intent mainNew = new Intent(ContentDisplay.this, ContentPlayerActivity_.class);
@@ -532,23 +541,30 @@ public class ContentDisplay extends BaseActivity implements ContentContract.Cont
 
     @Override
     public void onContentDownloadClicked(int position, String nodeId) {
-        showLoader();
+        if (!IS_DOWNLOADING) {
+
+            showLoader();
 //        content download clicked
-        try {
-            ButtonClickSound.start();
-        } catch (IllegalStateException e) {
-            e.printStackTrace();
-        }
+            try {
+                ButtonClickSound.start();
+            } catch (IllegalStateException e) {
+                e.printStackTrace();
+            }
 
 //        gather info
-        downloadNodeId = "" + nodeId;
-        resName = ContentTableList.get(position).getNodeTitle();
-        resServerImageName = ContentTableList.get(position).getNodeServerImage();
-        tempDownloadPos = position;
-        if (FC_Utility.isDataConnectionAvailable(ContentDisplay.this))
-            presenter.downloadResource(downloadNodeId);
-        else
-            Toast.makeText(this, "No Internet Connection", Toast.LENGTH_SHORT).show();
+            DOWNLOAD_NODE_ID = "" + nodeId;
+//        ContentTableList.get(position).setIsDownloading("true");
+//        contentAdapter.notifyItemChanged(position, ContentTableList);
+
+            resName = ContentTableList.get(position).getNodeTitle();
+            resServerImageName = ContentTableList.get(position).getNodeServerImage();
+            tempDownloadPos = position;
+            if (FC_Utility.isDataConnectionAvailable(ContentDisplay.this)) {
+                presenter.downloadResource(DOWNLOAD_NODE_ID, ContentTableList.get(position));
+            } else
+                Toast.makeText(this, "No Internet Connection", Toast.LENGTH_SHORT).show();
+        } else
+            Toast.makeText(this, "Downloading other resource..", Toast.LENGTH_SHORT).show();
     }
 
     @Override
@@ -611,8 +627,7 @@ public class ContentDisplay extends BaseActivity implements ContentContract.Cont
     @SuppressLint("SetTextI18n")
     @UiThread
     public void resourceDownloadDialog(Modal_FileDownloading modal_fileDownloading) {
-        if (downloadDialog != null)
-            downloadDialog = null;
+        downloadDialog = null;
         downloadDialog = new CustomLodingDialog(ContentDisplay.this, R.style.FC_DialogStyle);
         downloadDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         Objects.requireNonNull(downloadDialog.getWindow()).setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
@@ -644,6 +659,7 @@ public class ContentDisplay extends BaseActivity implements ContentContract.Cont
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void messageReceived(EventMessage message) {
         if (message != null) {
+            Modal_FileDownloading modal_fileDownloading = message.getModal_fileDownloading();
             if (message.getMessage().equalsIgnoreCase(FC_Constants.FILE_DOWNLOAD_STARTED)) {
                 dismissLoadingDialog();
 //                show download dialog with progress bar
@@ -669,6 +685,7 @@ public class ContentDisplay extends BaseActivity implements ContentContract.Cont
                 ContentTableList.get(tempDownloadPos).setNodeUpdate(false);
                 new Handler().postDelayed(() -> {
                     dismissDownloadDialog();
+//                    removeItemFromList(modal_fileDownloading);
                     contentAdapter.notifyItemChanged(tempDownloadPos, ContentTableList.get(tempDownloadPos));
                 }, 500);
                 BackupDatabase.backup(this);
@@ -677,14 +694,26 @@ public class ContentDisplay extends BaseActivity implements ContentContract.Cont
         }
     }
 
+    private void removeItemFromList(Modal_FileDownloading modal_fileDownloading) {
+        int index = 0;
+        for (int x = 0; x < fileDownloadingList.size(); x++) {
+            if (fileDownloadingList.get(x).getDownloadId().equalsIgnoreCase(DOWNLOAD_NODE_ID)) {
+                index = x;
+                break;
+            }
+        }
+        fileDownloadingList.remove(index);
+    }
+
     @UiThread
     public void dismissDownloadDialog() {
         try {
-            if (downloadDialog != null)
-                new Handler().postDelayed(() -> {
-                    downloadDialog.dismiss();
-                    downloadDialog = null;
-                }, 300);
+            if (!desFlag) {
+                if (downloadDialog != null)
+                    new Handler().postDelayed(() -> {
+                        downloadDialog.dismiss();
+                    }, 300);
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -740,11 +769,18 @@ public class ContentDisplay extends BaseActivity implements ContentContract.Cont
 
     @Override
     protected void onDestroy() {
-        super.onDestroy();
         desFlag = true;
+        super.onDestroy();
+    }
+
+    @UiThread
+    @Override
+    public void showToast(String msg) {
+        Toast.makeText(this, "" + msg, Toast.LENGTH_SHORT).show();
     }
 
     CustomLodingDialog errorDialog;
+
     @UiThread
     public void showDownloadErrorDialog() {
         errorDialog = new CustomLodingDialog(ContentDisplay.this, R.style.FC_DialogStyle);
@@ -758,3 +794,18 @@ public class ContentDisplay extends BaseActivity implements ContentContract.Cont
         errorDialog.show();
     }
 }
+
+/*<com.airbnb.lottie.LottieAnimationView
+        android:id="@+id/dw_list_btn"
+        android:layout_width="70dp"
+        android:layout_height="70dp"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginEnd="20dp"
+        android:layout_marginBottom="20dp"
+        android:elevation="5dp"
+        android:padding="@dimen/_5sdp"
+        android:background="@drawable/dialog_image_bg"
+        app:lottie_autoPlay="true"
+        app:lottie_fileName="lottie_download.json"
+        app:lottie_loop="true" />*/

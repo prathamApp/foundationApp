@@ -25,6 +25,7 @@ import com.pratham.foundation.ui.contentPlayer.chit_chat.level_1.ConversationFra
 import com.pratham.foundation.ui.contentPlayer.chit_chat.level_2.ConversationFragment_2_;
 import com.pratham.foundation.ui.contentPlayer.chit_chat.level_3.ConversationFragment_3_;
 import com.pratham.foundation.ui.contentPlayer.dialogs.InstructionDialog;
+import com.pratham.foundation.ui.contentPlayer.doing.DoingFragment;
 import com.pratham.foundation.ui.contentPlayer.doing.DoingFragment_;
 import com.pratham.foundation.ui.contentPlayer.fact_retrieval_fragment.FactRetrieval;
 import com.pratham.foundation.ui.contentPlayer.fact_retrieval_fragment.FactRetrieval_;
@@ -36,6 +37,7 @@ import com.pratham.foundation.ui.contentPlayer.keywords_identification.KeywordsI
 import com.pratham.foundation.ui.contentPlayer.keywords_mapping.KeywordMappingFragment_;
 import com.pratham.foundation.ui.contentPlayer.listenAndWritting.ListeningAndWritting;
 import com.pratham.foundation.ui.contentPlayer.listenAndWritting.ListeningAndWritting_;
+import com.pratham.foundation.ui.contentPlayer.morphin.Hive_game;
 import com.pratham.foundation.ui.contentPlayer.morphin.Hive_game_;
 import com.pratham.foundation.ui.contentPlayer.multipleChoiceQuetion.multipleChoiceFragment_;
 import com.pratham.foundation.ui.contentPlayer.new_reading_fragment.ContentReadingFragment;
@@ -54,6 +56,7 @@ import com.pratham.foundation.ui.contentPlayer.pdf_display.Fragment_PdfViewer;
 import com.pratham.foundation.ui.contentPlayer.pdf_display.Fragment_PdfViewer_;
 import com.pratham.foundation.ui.contentPlayer.pictionary.pictionaryFragment;
 import com.pratham.foundation.ui.contentPlayer.pictionary.pictionaryFragment_;
+import com.pratham.foundation.ui.contentPlayer.reading.ReadingFragment;
 import com.pratham.foundation.ui.contentPlayer.reading.ReadingFragment_;
 import com.pratham.foundation.ui.contentPlayer.sequenceLayout.SequenceLayout_;
 import com.pratham.foundation.ui.contentPlayer.trueFalse.TrueFalseFragment;
@@ -344,7 +347,7 @@ public class GameConstatnts implements ShowInstruction {
                 break;
             case GameConstatnts.READING_STT:
                 FC_Utility.showFragment((Activity) context, new ReadingFragment_(), R.id.RL_CPA,
-                        bundle, ReadingFragment_.class.getSimpleName());
+                        bundle, ReadingFragment.class.getSimpleName());
                 break;
             case "109":
                 FC_Utility.showFragment((Activity) context, new TrueFalseFragment(), R.id.RL_CPA,
@@ -362,11 +365,11 @@ public class GameConstatnts implements ShowInstruction {
             case GameConstatnts.LetterWriting:
             case GameConstatnts.WATCHING_VIDEO:
                 FC_Utility.showFragment((Activity) context, new DoingFragment_(), R.id.RL_CPA,
-                        bundle, DoingFragment_.class.getSimpleName());
+                        bundle, DoingFragment.class.getSimpleName());
                 break;
             case GameConstatnts.HIVELAYOUT_GAME:
                 FC_Utility.showFragment((Activity) context, new Hive_game_(), R.id.RL_CPA,
-                        bundle, Hive_game_.class.getSimpleName());
+                        bundle, Hive_game.class.getSimpleName());
                 break;
         }
     }

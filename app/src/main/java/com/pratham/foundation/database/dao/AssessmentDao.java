@@ -53,4 +53,7 @@ public interface AssessmentDao {
 
     @Query("delete from Assessment where sentFlag = 1")
     void deletePushedAssessment();
+
+    @Query("select count(*) from Assessment WHERE Labela=:CERTIFICATE_LBL AND sentFlag=0")
+    int getUnpushedCertiCount(String CERTIFICATE_LBL);
 }

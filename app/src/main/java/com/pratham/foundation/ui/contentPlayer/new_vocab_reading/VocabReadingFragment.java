@@ -13,12 +13,15 @@ import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.Handler;
 import android.text.Html;
+import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -62,7 +65,9 @@ import java.io.FileInputStream;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 
+import static android.content.Context.INPUT_METHOD_SERVICE;
 import static com.pratham.foundation.ApplicationClass.ButtonClickSound;
 import static com.pratham.foundation.BaseActivity.setMute;
 import static com.pratham.foundation.utility.FC_Constants.APP_SECTION;
@@ -114,6 +119,18 @@ public class VocabReadingFragment extends Fragment implements
     FloatingActionButton floating_img;
     @ViewById(R.id.image_container)
     ShadowLayout image_container;
+
+    @ViewById(R.id.stt_result_tv)
+    TextView stt_result_tv;
+    @ViewById(R.id.clean_stt)
+    ImageView clean_stt;
+    @ViewById(R.id.ll_edit_text)
+    LinearLayout ll_edit_text;
+    @ViewById(R.id.et_edit_ans)
+    EditText et_edit_ans;
+    @ViewById(R.id.bt_edit_ok)
+    Button bt_edit_ok;
+    String [] attAnsList;
 
     ContinuousSpeechService_New continuousSpeechService;
 
@@ -207,6 +224,7 @@ public class VocabReadingFragment extends Fragment implements
 
         try {
             story_title.setText(Html.fromHtml("" + storyName));
+            story_title.setSelected(true);
             presenter.fetchJsonData(readingContentPath);
             //pageArray = presenter.fetchJsonData(storyName);
 //            getWordsOfStoryOfPage();
@@ -224,6 +242,7 @@ public class VocabReadingFragment extends Fragment implements
     public void setListData(List<ModalParaSubMenu> paraDataList) {
         modalPagesList = paraDataList;
         totalPages = modalPagesList.size();
+        attAnsList = new String[totalPages];
     }
 
     public CustomLodingDialog myLoadingDialog;
@@ -1185,17 +1204,45 @@ public class VocabReadingFragment extends Fragment implements
 
     @Override
     public void Stt_onResult(ArrayList<String> sttResult) {
-
         flgPerMarked = false;
+        setSttResult(sttResult);
         presenter.sttResultProcess(sttResult, splitWordsPunct, wordsResIdList);
+    }
 
-/*        if (!voiceStart) {
-            resetSpeechRecognizer();
-            btn_Play.setVisibility(View.VISIBLE);
-            btn_Mic.setImageResource(R.drawable.ic_mic_black);
-            setMute(0);
-        } else
-            speech.startListening(recognizerIntent);*/
+    @UiThread
+    public void setSttResult(ArrayList<String> sttResult) {
+        if(sttResult.size()>0) {
+            String txt = String.valueOf(stt_result_tv.getText());
+            String atxt = txt + sttResult.get(0)+ " ";
+            attAnsList[currentPage]=atxt;
+            stt_result_tv.setText("");
+            stt_result_tv.setTextSize(28);
+            stt_result_tv.setText(attAnsList[currentPage]);
+            stt_result_tv.setMovementMethod(new ScrollingMovementMethod());
+        }
+    }
+
+    @Click(R.id.clean_stt)
+    void sttClearClicked() {
+        if(voiceStart)
+            btn_Stop.performClick();
+        et_edit_ans.setText(attAnsList[currentPage]);
+        ll_edit_text.setVisibility(View.VISIBLE);
+//        stt_result_tv.setText("");
+//        attAnsList[currentPage]="";
+    }
+
+    @Click(R.id.bt_edit_ok)
+    public void editOKClicked(){
+        attAnsList[currentPage] = ""+et_edit_ans.getText();
+        stt_result_tv.setText(attAnsList[currentPage]);
+        ArrayList<String> sttResult = new ArrayList<>();
+        sttResult.add(attAnsList[currentPage]);
+        presenter.sttResultProcess(sttResult, splitWordsPunct, wordsResIdList);
+        InputMethodManager imm = (InputMethodManager) context.getSystemService(INPUT_METHOD_SERVICE);
+        Objects.requireNonNull(imm).hideSoftInputFromWindow(ll_edit_text.getWindowToken(), 0);
+        ll_edit_text.setVisibility(View.GONE);
+//        hideSystemUI();
     }
 
     @ViewById(R.id.silence_outer)

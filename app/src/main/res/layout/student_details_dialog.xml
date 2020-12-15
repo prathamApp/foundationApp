@@ -1,0 +1,163 @@
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="@dimen/_230sdp"
+    android:layout_height="wrap_content"
+    android:layout_centerInParent="true"
+    android:layout_gravity="center"
+    android:elevation="0dp"
+    app:cardBackgroundColor="@color/white"
+    app:cardCornerRadius="@dimen/_15sdp">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <com.pratham.foundation.customView.fontsview.SansTextViewBold
+            android:id="@+id/title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:textAlignment="center"
+            android:padding="@dimen/_5sdp"
+            android:textSize="@dimen/_15sdp"
+            android:textColor="@color/red"
+            android:text="Enrollment Details"/>
+
+        <ImageView
+            android:layout_below="@+id/title"
+            android:id="@+id/image_view"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_120sdp"
+            android:scaleType="centerInside"/>
+
+        <RelativeLayout
+            android:id="@+id/rl_body"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/image_view"
+            android:layout_marginStart="@dimen/_10sdp"
+            android:layout_marginEnd="@dimen/_10sdp">
+
+            <LinearLayout
+                android:id="@+id/ll_name"
+                android:layout_width="match_parent"
+                android:layout_marginTop="@dimen/_2sdp"
+                android:layout_marginBottom="@dimen/_2sdp"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+                <com.pratham.foundation.customView.fontsview.SansTextViewBold
+                    android:id="@+id/tv_name_lbl"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:textAlignment="center"
+                    android:text="Name : "
+                    android:textColor="@color/dark_blue"
+                    android:textSize="@dimen/_13sdp"
+                    android:layout_weight="1"/>
+
+                <com.pratham.foundation.customView.fontsview.SansTextView
+                    android:id="@+id/tv_name_str"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:text=""
+                    android:layout_weight="1"
+                    android:textAlignment="center"
+                    android:textColor="@color/colorSignBoard"
+                    android:textSize="@dimen/_13sdp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/ll_school"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_2sdp"
+                android:layout_marginBottom="@dimen/_2sdp"
+                android:layout_below="@+id/ll_name"
+                android:orientation="horizontal">
+                <com.pratham.foundation.customView.fontsview.SansTextViewBold
+                    android:id="@+id/tv_school_lbl"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:textAlignment="center"
+                    android:text="School : "
+                    android:textColor="@color/dark_blue"
+                    android:textSize="@dimen/_13sdp"
+                    android:layout_weight="1"/>
+
+                <com.pratham.foundation.customView.fontsview.SansTextView
+                    android:id="@+id/tv_school_str"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:text=""
+                    android:layout_weight="1"
+                    android:textAlignment="center"
+                    android:textColor="@color/colorSignBoard"
+                    android:textSize="@dimen/_13sdp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/ll_class"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_2sdp"
+                android:layout_marginBottom="@dimen/_2sdp"
+                android:layout_below="@+id/ll_school"
+                android:orientation="horizontal">
+                <com.pratham.foundation.customView.fontsview.SansTextViewBold
+                    android:id="@+id/tv_class_lbl"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:textAlignment="center"
+                    android:text="Class : "
+                    android:textColor="@color/dark_blue"
+                    android:textSize="@dimen/_13sdp"
+                    android:layout_weight="1"/>
+
+                <com.pratham.foundation.customView.fontsview.SansTextView
+                    android:id="@+id/tv_class_str"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:text=""
+                    android:layout_weight="1"
+                    android:textAlignment="center"
+                    android:textSize="@dimen/_13sdp"
+                    android:textColor="@color/colorSignBoard"/>
+            </LinearLayout>
+
+        </RelativeLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/rl_body"
+            android:layout_marginTop="@dimen/_15sdp"
+            android:gravity="center_vertical"
+            android:orientation="vertical">
+
+            <com.pratham.foundation.customView.fontsview.SansTextViewBold
+                android:id="@+id/dia_btn_cancel"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_30sdp"
+                android:layout_marginStart="@dimen/_10sdp"
+                android:layout_marginEnd="@dimen/_10sdp"
+                android:background="@android:color/transparent"
+                android:gravity="center"
+                android:text="@string/Cancel"
+                android:textColor="@color/strokeColor"
+                android:textSize="@dimen/_15sdp" />
+
+            <com.pratham.foundation.customView.fontsview.SansButton
+                android:id="@+id/dia_btn_save"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_40sdp"
+                android:layout_marginStart="@dimen/_10sdp"
+                android:layout_marginEnd="@dimen/_10sdp"
+                android:layout_marginBottom="@dimen/_8sdp"
+                android:background="@drawable/button_green"
+                android:elevation="@dimen/_3sdp"
+                android:text="@string/save"
+                android:textColor="@color/white"
+                android:textSize="@dimen/_15sdp" />
+        </LinearLayout>
+    </RelativeLayout>
+</com.google.android.material.card.MaterialCardView>

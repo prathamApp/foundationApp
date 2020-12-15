@@ -8,7 +8,6 @@ import android.content.res.Resources;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
-import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
 import android.util.TypedValue;
@@ -41,7 +40,6 @@ import com.pratham.foundation.customView.BlurPopupDialog.BlurPopupWindow;
 import com.pratham.foundation.customView.collapsingView.RetractableToolbarUtil;
 import com.pratham.foundation.customView.display_image_dialog.CustomLodingDialog;
 import com.pratham.foundation.customView.progress_layout.ProgressLayout;
-import com.pratham.foundation.database.AppDatabase;
 import com.pratham.foundation.database.BackupDatabase;
 import com.pratham.foundation.database.domain.ContentTable;
 import com.pratham.foundation.modalclasses.CertificateModelClass;
@@ -87,11 +85,9 @@ import static com.pratham.foundation.ui.app_home.HomeActivity.levelChanged;
 import static com.pratham.foundation.utility.FC_Constants.APP_SECTION;
 import static com.pratham.foundation.utility.FC_Constants.CERTI_CODE;
 import static com.pratham.foundation.utility.FC_Constants.CLOSE_TEST_EVENTBUS;
-import static com.pratham.foundation.utility.FC_Constants.GROUP_MODE;
 import static com.pratham.foundation.utility.FC_Constants.HINDI;
-import static com.pratham.foundation.utility.FC_Constants.QR_GROUP_MODE;
+import static com.pratham.foundation.utility.FC_Constants.IS_DOWNLOADING;
 import static com.pratham.foundation.utility.FC_Constants.currentLevel;
-import static com.pratham.foundation.utility.FC_Constants.currentSubjectFolder;
 import static com.pratham.foundation.utility.FC_Constants.gameFolderPath;
 import static com.pratham.foundation.utility.FC_Constants.sec_Test;
 import static com.pratham.foundation.utility.FC_Constants.testSessionEnded;
@@ -673,6 +669,7 @@ public class TestFragment extends Fragment implements TestContract.TestView,
     }
 
     BlurPopupWindow myDialog;
+
     @UiThread
     @SuppressLint("SetTextI18n")
     void showComingSoonDia() {
@@ -706,9 +703,9 @@ public class TestFragment extends Fragment implements TestContract.TestView,
         } catch (IllegalStateException e) {
             e.printStackTrace();
         }
-//        showComingSoonDia();
+        showComingSoonDia();
 //        Toast.makeText(context, "Opening Assessment App", Toast.LENGTH_SHORT).show();
-        try {
+/*        try {
             String profileName = "";
             if (FastSave.getInstance().getString(FC_Constants.LOGIN_MODE, GROUP_MODE).equalsIgnoreCase(GROUP_MODE))
                 profileName = AppDatabase.getDatabaseInstance(context).getGroupsDao().getGroupNameByGrpID(FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""));
@@ -726,15 +723,13 @@ public class TestFragment extends Fragment implements TestContract.TestView,
             bundle.putString("subjectLanguage", "" + FastSave.getInstance().getString(FC_Constants.APP_LANGUAGE, FC_Constants.HINDI));
             bundle.putString("subjectLevel", "" + currentLevel);
             Intent launchIntent = new Intent("com.pratham.assessment.ui.choose_assessment.ChooseAssessmentActivity_");
-            //Intent launchIntent = Objects.requireNonNull(getActivity()).getPackageManager()
-            //        .getLaunchIntentForPackage("com.pratham.assessment");
             Objects.requireNonNull(launchIntent).putExtras(bundle);
             startActivity(launchIntent);
             // null pointer check in case package name was not found
         } catch (Exception e) {
             downloadAssessmentAppDialog();
 //            Toast.makeText(context, "Install Assessment App", Toast.LENGTH_SHORT).show();
-        }
+        }*/
     }
 
     @SuppressLint("SetTextI18n")
@@ -781,28 +776,37 @@ public class TestFragment extends Fragment implements TestContract.TestView,
 
     @Click(R.id.btn_test_dw)
     void onDownLoadClick() {
-        try {
+        if (!IS_DOWNLOADING) {
             try {
-                ButtonClickSound.start();
-            } catch (IllegalStateException e) {
+                try {
+                    ButtonClickSound.start();
+                } catch (IllegalStateException e) {
+                    e.printStackTrace();
+                }
+
+                showLoader();
+                int i = 0;
+                for (i = 0; i < rootLevelList.size(); i++)
+                    if (rootLevelList.get(i).getNodeTitle().contains("" + currentLevel)) {
+                        break;
+                    }
+//            resName = rootLevelList.get(currentLevel).getNodeTitle();
+                resName = getLevelWiseTestName(Integer.parseInt(rootLevelList.get(i).getNodeTitle()));
+                resServerImageName = rootLevelList.get(i).getNodeServerImage();
+                downloadType = FC_Constants.TEST_DOWNLOAD;
+                presenter.downloadTestJson(Integer.parseInt(rootLevelList.get(i).getNodeTitle()));
+                presenter.downloadResource(rootLevelList.get(i).getNodeId());
+            } catch (Exception e) {
                 e.printStackTrace();
             }
+        } else
+            Toast.makeText(context, "Downloading other resource..", Toast.LENGTH_SHORT).show();
+    }
 
-            showLoader();
-            int i = 0;
-            for (i = 0; i < rootLevelList.size(); i++)
-                if (rootLevelList.get(i).getNodeTitle().contains("" + currentLevel)) {
-                    break;
-                }
-//            resName = rootLevelList.get(currentLevel).getNodeTitle();
-            resName = getLevelWiseTestName(Integer.parseInt(rootLevelList.get(i).getNodeTitle()));
-            resServerImageName = rootLevelList.get(i).getNodeServerImage();
-            downloadType = FC_Constants.TEST_DOWNLOAD;
-            presenter.downloadTestJson(Integer.parseInt(rootLevelList.get(i).getNodeTitle()));
-            presenter.downloadResource(rootLevelList.get(i).getNodeId());
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+    @UiThread
+    @Override
+    public void showToast(String msg) {
+        Toast.makeText(context, "" + msg, Toast.LENGTH_SHORT).show();
     }
 
     @Override
@@ -1090,7 +1094,8 @@ public class TestFragment extends Fragment implements TestContract.TestView,
                 testOBJ = testList.get(i);
                 String cType = testOBJ.getContentType();
                 if (!cType.equalsIgnoreCase("header") &&
-                        !cType.equalsIgnoreCase("footer")) {
+                        !cType.equalsIgnoreCase("footer") &&
+                        !cType.equalsIgnoreCase("AssessmentApp")) {
                     if (testOBJ.isAsessmentGiven()) {
                         jsonObjectAssessment.put("CertCode" + i + "_" + testOBJ.getCertiCode(),
                                 "" + testOBJ.getStudentPercentage());
@@ -1236,15 +1241,25 @@ public class TestFragment extends Fragment implements TestContract.TestView,
         }
     }
 
+    private boolean desFlag = false;
+
+    @Override
+    public void onDestroy() {
+        desFlag = true;
+        super.onDestroy();
+    }
+
     @Override
     @UiThread
     public void dismissLoadingDialog() {
         try {
-            loaderVisible = false;
-            new Handler().postDelayed(() -> {
-                if (myLoadingDialog != null && myLoadingDialog.isShowing())
-                    myLoadingDialog.dismiss();
-            }, 300);
+            if (!desFlag) {
+                loaderVisible = false;
+                new Handler().postDelayed(() -> {
+                    if (myLoadingDialog != null && myLoadingDialog.isShowing())
+                        myLoadingDialog.dismiss();
+                }, 150);
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -1266,8 +1281,6 @@ public class TestFragment extends Fragment implements TestContract.TestView,
     @SuppressLint("SetTextI18n")
     @UiThread
     public void resourceDownloadDialog(Modal_FileDownloading modal_fileDownloading) {
-        if (downloadDialog != null)
-            downloadDialog = null;
         try {
 //            downloadDialog = new BlurPopupWindow.Builder(context)
 //                    .setContentView(R.layout.dialog_file_downloading)
@@ -1312,11 +1325,12 @@ public class TestFragment extends Fragment implements TestContract.TestView,
     @Override
     public void dismissDownloadDialog() {
         try {
-            if (downloadDialog != null)
-                new Handler().postDelayed(() -> {
-                    downloadDialog.dismiss();
-                    downloadDialog = null;
-                }, 300);
+            if (!desFlag) {
+                if (downloadDialog != null)
+                    new Handler().postDelayed(() -> {
+                        downloadDialog.dismiss();
+                    }, 300);
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }

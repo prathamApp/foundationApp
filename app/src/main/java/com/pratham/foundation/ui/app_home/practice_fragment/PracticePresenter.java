@@ -808,6 +808,9 @@ public class PracticePresenter implements PracticeContract.PracticePresenter, AP
             addHeadersAndNotifyAdapter(contentParentList);
 //            practiceView.addContentToViewList(contentParentList);
 //            practiceView.notifyAdapter();
+        } else if (header.equalsIgnoreCase(FC_Constants.INTERNET_DOWNLOAD_RESOURCE)) {
+            practiceView.dismissLoadingDialog();
+            practiceView.showToast("Cannot connect.");
         }
     }
 

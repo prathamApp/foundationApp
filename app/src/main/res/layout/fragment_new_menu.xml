@@ -106,6 +106,17 @@
                     android:textSize="@dimen/_12sdp" />
 
                 <com.pratham.foundation.customView.fontsview.SansButton
+                    android:id="@+id/btn_Enrollment"
+                    android:layout_width="@dimen/_150sdp"
+                    android:layout_height="@dimen/_50sdp"
+                    android:layout_marginVertical="@dimen/_10sdp"
+                    android:background="@drawable/button_red"
+                    android:text="Enrollment Id"
+                    android:visibility="visible"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/_12sdp" />
+
+                <com.pratham.foundation.customView.fontsview.SansButton
                     android:id="@+id/btn_Usage"
                     android:layout_width="@dimen/_150sdp"
                     android:layout_height="@dimen/_50sdp"

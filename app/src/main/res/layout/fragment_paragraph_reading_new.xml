@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/story_ll"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/activity_bkgd">
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/floating_img"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_alignParentEnd="true"
+        android:layout_marginTop="5dp"
+        android:layout_marginEnd="5dp"
+        android:visibility="gone" />
+
+    <RelativeLayout
+        android:id="@+id/silence_outer"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/black_20"
+        android:elevation="50dp"
+        android:visibility="gone">
+
+        <RelativeLayout
+            android:id="@+id/silence_main_layout"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_150sdp"
+            android:layout_centerInParent="true"
+            android:layout_marginStart="@dimen/_30sdp"
+            android:layout_marginEnd="@dimen/_30sdp"
+            android:padding="@dimen/_10sdp">
+
+            <ImageView
+                android:id="@+id/silence_iv"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_90sdp"
+                android:layout_alignParentTop="true"
+                android:layout_centerHorizontal="true"
+                android:elevation="@dimen/_20sdp"
+                android:src="@drawable/stt_listener" />
+
+            <RelativeLayout
+                android:layout_width="@dimen/_150sdp"
+                android:layout_height="@dimen/_60sdp"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="@dimen/_80sdp"
+                android:background="@drawable/ripple_rectangle_card">
+
+                <com.pratham.foundation.customView.fontsview.SansTextViewBold
+                    android:id="@+id/silence_tv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_alignParentBottom="true"
+                    android:layout_centerHorizontal="true"
+                    android:gravity="center"
+                    android:text="I am listening..."
+                    android:textColor="@color/red"
+                    android:textSize="@dimen/_15sdp" />
+
+            </RelativeLayout>
+        </RelativeLayout>
+    </RelativeLayout>
+
+    <!--    <android.support.design.card.MaterialCardView-->
+    <!--        android:id="@+id/topPanel"-->
+    <!--        android:layout_width="match_parent"-->
+    <!--        android:layout_height="@dimen/_40sdp"-->
+    <!--        android:layout_alignParentTop="true"-->
+    <!--        android:layout_marginStart="@dimen/_10sdp"-->
+    <!--        android:layout_marginTop="30dp"-->
+    <!--        android:layout_marginEnd="@dimen/_10sdp"-->
+    <!--        ripple:cardBackgroundColor="@color/colorBtnRedDark"-->
+    <!--        ripple:cardCornerRadius="@dimen/_8sdp">-->
+
+    <!--        <RelativeLayout-->
+    <!--            android:layout_width="match_parent"-->
+    <!--            android:layout_height="match_parent">-->
+
+    <!--            <com.pratham.foundation.customView.fontsview.SansTextViewBold-->
+    <!--                android:id="@+id/tv_story_title"-->
+    <!--                android:layout_width="match_parent"-->
+    <!--                android:layout_height="match_parent"-->
+    <!--                android:gravity="center"-->
+    <!--                android:text="Story"-->
+    <!--                android:textColor="@color/white"-->
+    <!--                android:textSize="@dimen/_25sdp"-->
+    <!--                android:textStyle="bold" />-->
+
+    <!--        </RelativeLayout>-->
+    <!--    </android.support.design.card.MaterialCardView>-->
+
+    <com.pratham.foundation.customView.fontsview.SansTextViewBold
+        android:id="@+id/tv_story_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginStart="@dimen/_15sdp"
+        android:layout_marginTop="45dp"
+        android:layout_marginEnd="@dimen/_15sdp"
+        android:text="Story"
+        android:textColor="@color/dark_blue"
+        android:textSize="@dimen/_25sdp" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/bottom_bar"
+        android:layout_below="@+id/topPanel"
+        android:orientation="vertical"
+        android:visibility="gone">
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_200sdp"
+            android:layout_alignParentStart="true"
+            android:layout_gravity="center_horizontal|top"
+            android:layout_marginStart="@dimen/_10sdp"
+            android:layout_marginTop="@dimen/_8sdp"
+            android:layout_marginEnd="@dimen/_10sdp"
+            android:background="@drawable/dialog_bg"
+            android:elevation="5dp">
+            <com.pratham.foundation.customView.GifView
+                android:id="@+id/gif_view"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_200sdp"
+                android:layout_gravity="center_horizontal|top"
+                android:background="@drawable/dialog_bg"
+                android:scaleType="fitCenter"
+                android:visibility="gone" />
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@drawable/dialog_bg"
+                android:scaleType="fitCenter"
+                android:src="@drawable/pratham_logo"
+                android:visibility="gone" />
+        </RelativeLayout>
+    </RelativeLayout>
+
+    <ScrollView
+        android:id="@+id/myScrollView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/bottom_bar"
+        android:layout_below="@+id/tv_story_title"
+        android:layout_marginStart="@dimen/_10sdp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="@dimen/_10sdp"
+        android:layout_marginBottom="10dp"
+        android:background="@drawable/trans_dialog_bg"
+        android:elevation="5dp"
+        android:fadeScrollbars="false"
+        android:padding="@dimen/_5sdp"
+        android:scrollbarSize="6dp"
+        android:scrollbarThumbVertical="@drawable/card_color_bg4"
+        android:scrollbarTrackVertical="@drawable/scroll_bg">
+
+        <com.nex3z.flowlayout.FlowLayout xmlns:app="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/myflowlayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingHorizontal="10dp"
+            app:flChildSpacing="10dp" />
+
+    </ScrollView>
+
+    <include
+        android:id="@+id/bottom_bar"
+        layout="@layout/bottom_control_panel"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_gravity="bottom|center_horizontal"
+        android:gravity="bottom|center_horizontal" />
+
+</RelativeLayout>

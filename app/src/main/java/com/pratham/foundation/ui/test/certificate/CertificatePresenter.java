@@ -1,9 +1,9 @@
 package com.pratham.foundation.ui.test.certificate;
 
 import android.content.Context;
+import android.os.Environment;
 import android.util.Log;
 
-import com.pratham.foundation.ApplicationClass;
 import com.pratham.foundation.database.domain.Assessment;
 import com.pratham.foundation.database.domain.ContentTable;
 import com.pratham.foundation.modalclasses.CertificateModelClass;
@@ -24,6 +24,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import static com.pratham.foundation.ui.test.certificate.CertificateActivity.assessmentProfile;
+import static com.pratham.foundation.utility.FC_Constants.CURRENT_FOLDER_NAME;
 import static com.pratham.foundation.utility.FC_Utility.getLevelWiseJson;
 import static com.pratham.foundation.utility.FC_Utility.getSubjectName;
 
@@ -112,9 +113,9 @@ public class CertificatePresenter implements CertificateContract.CertificatePres
                         } else if (lang.equalsIgnoreCase("Tamil")) {
                             contentTable.setTamilQues("" + questionList);
                             contentTable.setTamilAnsw("" + answerList);
-                        } else if (lang.equalsIgnoreCase("Odia")) {
-                            contentTable.setOdiaQues("" + questionList);
-                            contentTable.setOdiaAnsw("" + answerList);
+                        } else if (lang.equalsIgnoreCase("Odiya")) {
+                            contentTable.setOdiyaQues("" + questionList);
+                            contentTable.setOdiyaAnsw("" + answerList);
                         } else if (lang.equalsIgnoreCase("Urdu")) {
                             contentTable.setUrduQues("" + questionList);
                             contentTable.setUrduAnsw("" + answerList);
@@ -140,6 +141,42 @@ public class CertificatePresenter implements CertificateContract.CertificatePres
             certificateView.addContentToViewList(contentTable);
         }
         certificateView.notifyAdapter();
+    }
+
+    @Override
+    public String[] getTestData(String jsonName) {
+        JSONArray returnCodeList = null;
+        String[] languagesArray;
+        try {
+//            InputStream is = mContext.getAssets().open(jsonName);
+            InputStream is = new FileInputStream(Environment.getExternalStorageDirectory().toString()
+                    + "/.FCAInternal/TestJsons/" + jsonName);
+            int size = is.available();
+            byte[] buffer = new byte[size];
+            is.read(buffer);
+            is.close();
+            String jsonStr = new String(buffer);
+            JSONArray jsonArray = new JSONArray(jsonStr);
+            for (int i = 0; i < jsonArray.length(); i++) {
+                String subj = ((JSONObject) jsonArray.get(i)).get("storyLanguage").toString();
+                if (subj.equalsIgnoreCase(FastSave.getInstance().getString(CURRENT_FOLDER_NAME, ""))) {
+                    returnCodeList = ((JSONObject) jsonArray.get(i)).getJSONArray("CodeList");
+                    break;
+                }
+            }
+            languagesArray = new String[returnCodeList.length()];
+            for (int i = 0; i < returnCodeList.length(); i++) {
+                Log.d("languagesArray", "languagesArray : " + i + " : " +
+                        ((JSONObject) returnCodeList.get(i)).get("lang").toString());
+                languagesArray[i] = ((JSONObject) returnCodeList.get(i)).get("lang").toString();
+            }
+//            myView.setQuesTranslateLang(languagesArray);
+            return languagesArray;
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 
     @Override
@@ -170,7 +207,8 @@ public class CertificatePresenter implements CertificateContract.CertificatePres
 
 //            InputStream is = context.getAssets().open("" + jsonName);
 //            InputStream is = context.getAssets().open("CertificateData.json");
-            InputStream is = new FileInputStream(ApplicationClass.foundationPath + "/.FCA/" + jsonName);
+            InputStream is = new FileInputStream(Environment.getExternalStorageDirectory().toString()
+                    + "/.FCAInternal/TestJsons/" + jsonName);
 //            FastSave.getInstance().getString(FC_Constants.LANGUAGE, FC_Constants.HINDI)+"/Game/CertificateData.json");
             int size = is.available();
             byte[] buffer = new byte[size];

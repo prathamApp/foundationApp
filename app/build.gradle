@@ -8,9 +8,9 @@ android {
         applicationId "com.pratham.foundation"
         minSdkVersion 21
         targetSdkVersion 29
-        versionCode 24
+        versionCode 26
         multiDexEnabled true
-        versionName "1.0.24"
+        versionName "1.0.26"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 
@@ -92,6 +92,8 @@ dependencies {
     implementation 'commons-net:commons-net:3.6'
     implementation 'org.jbundle.util.osgi.wrapped:org.jbundle.util.osgi.wrapped.org.apache.http.client:4.1.2'
     implementation 'com.airbnb.android:lottie:2.7.0'
+    //Dir Delete
+    implementation 'org.apache.commons:commons-io:1.3.2'
     //eventbus
     implementation 'org.greenrobot:eventbus:3.1.1'
     implementation 'io.github.storix:rxdiffutil:0.3.2'
@@ -116,6 +118,7 @@ dependencies {
 
     implementation 'org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.3.41'
     implementation 'com.facebook.fresco:fresco:1.13.0'
+    implementation 'com.facebook.fresco:animated-gif:0.14.1'
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:1.1.1"
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:1.0.1"
 
@@ -130,11 +133,4 @@ dependencies {
 
 //    LongScreenshot
     implementation 'com.github.peter1492:LongScreenshot:1.0'
-//    showcaseview
-//    implementation 'com.github.mreram:showcaseview:1.1'
-
-    //
-    //noinspection GradleDynamicVersion
-//    implementation  'com.readystatesoftware.ghostlog:ghostlog-integration:+@aar'
-
 }

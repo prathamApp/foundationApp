@@ -118,8 +118,9 @@ public class SelectSubject extends BaseActivity implements
     @UiThread
     public void setShowcaseView() {
         builder = new GuideView.Builder(this)
-                .setTitle("Language")
-                .setContentText("Click Here to change the language\nof the content.")
+                .setTitle(getResources().getString(R.string.select_language))
+                .setContentText(getResources().getString(R.string.change_the_language)+"\n"
+                        +getResources().getString(R.string.of_the_content))
                 .setDismissType(DismissType.selfView) //optional - default dismissible by TargetView
                 .setTargetView(ib_langChange)
                 .build()

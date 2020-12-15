@@ -1,6 +1,7 @@
 package com.pratham.foundation.ui.app_home.profile_new;
 
 import android.annotation.SuppressLint;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
@@ -25,9 +26,11 @@ import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.airbnb.lottie.LottieAnimationView;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.pratham.foundation.ApplicationClass;
 import com.pratham.foundation.R;
+import com.pratham.foundation.async.PushDataToServer_New;
 import com.pratham.foundation.customView.BlurPopupDialog.BlurPopupWindow;
 import com.pratham.foundation.customView.GridSpacingItemDecoration;
 import com.pratham.foundation.customView.display_image_dialog.CustomLodingDialog;
@@ -53,11 +56,13 @@ import org.androidannotations.annotations.Bean;
 import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EFragment;
 import org.androidannotations.annotations.ViewById;
+import org.apache.commons.io.FileUtils;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
 import java.io.File;
+import java.io.IOException;
 import java.text.DecimalFormat;
 import java.util.Collections;
 import java.util.List;
@@ -73,8 +78,11 @@ import static com.pratham.foundation.utility.FC_Constants.LOGIN_MODE;
 import static com.pratham.foundation.utility.FC_Constants.PROFILE_FRAGMENT_SHOWCASE;
 import static com.pratham.foundation.utility.FC_Constants.SPLASH_OPEN;
 import static com.pratham.foundation.utility.FC_Constants.StudentPhotoPath;
+import static com.pratham.foundation.utility.FC_Constants.progressArray;
 import static com.pratham.foundation.utility.FC_Constants.sec_Profile;
+import static com.pratham.foundation.utility.FC_Utility.decimalFormat;
 import static com.pratham.foundation.utility.FC_Utility.dpToPx;
+import static com.pratham.foundation.utility.FC_Utility.folderSize;
 import static com.pratham.foundation.utility.FC_Utility.getRandomFemaleAvatar;
 import static com.pratham.foundation.utility.FC_Utility.getRandomMaleAvatar;
 
@@ -117,7 +125,6 @@ public class ProfileFragment extends Fragment implements ProfileContract.Profile
     SimpleDraweeView card_img;
 
     //    String[] progressArray = {"Progress", "Share"};
-    String[] progressArray = {"Progress", "Status"};
     private ProfileOuterDataAdapter adapterParent;
     Context context;
     private GuideView mGuideView;
@@ -138,8 +145,9 @@ public class ProfileFragment extends Fragment implements ProfileContract.Profile
     @UiThread
     public void setShowcaseView() {
         builder = new GuideView.Builder(context)
-                .setTitle("Profile")
-                .setContentText("You can switch the profile\nby clicking on the icon.")
+                .setTitle(getResources().getString(R.string.Profile))
+                .setContentText(getResources().getString(R.string.Switch_Profile) + "\n"
+                        + getResources().getString(R.string.Clicking_icon))
                 .setDismissType(DismissType.selfView) //optional - default dismissible by TargetView
                 .setTargetView(card_img)
                 .build()
@@ -177,6 +185,7 @@ public class ProfileFragment extends Fragment implements ProfileContract.Profile
                     message.getMessage().equalsIgnoreCase(FC_Constants.FRAGMENT_RESELECTED) ||
                     message.getMessage().equalsIgnoreCase(FC_Constants.ACTIVITY_RESUMED)) {
                 header_rl.setVisibility(View.GONE);
+                fragmentSelected();
                 if (!FastSave.getInstance().getBoolean(PROFILE_FRAGMENT_SHOWCASE, false))
                     new Handler().postDelayed(this::setShowcaseView, 1000);
             }
@@ -319,6 +328,9 @@ public class ProfileFragment extends Fragment implements ProfileContract.Profile
             e.printStackTrace();
         }
         switch (usage) {
+            case "Sync Data":
+                pushData();
+                break;
             case "Certificate":
                 showCertificates();
                 break;
@@ -340,11 +352,121 @@ public class ProfileFragment extends Fragment implements ProfileContract.Profile
                 break;
             case "Share App":
                 break;
+            case "free space":
+                cleanStorage();
+                break;
+            case "Lang_ic":
+                show_STT_Dialog();
+                break;
         }
+    }
+
+    private void show_STT_Dialog() {
+        Intent intent = new Intent(Intent.ACTION_MAIN);
+        intent.setComponent(new ComponentName("com.google.android.googlequicksearchbox",
+                "com.google.android.voicesearch.greco3.languagepack.InstallActivity"));
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(intent);
+    }
+
+    @Bean(PushDataToServer_New.class)
+    PushDataToServer_New pushDataToServer;
+
+    private void pushData() {
+        pushDataToServer.startDataPush(context, true);
+    }
+
+    private void cleanStorage() {
+        File directory = new File(ApplicationClass.foundationPath + "/.FCA");
+        long full_size = folderSize(directory);
+
+        double sizeMB = (double) full_size / 1024 / 1024;
+        String s = " MB";
+        if (sizeMB < 1) {
+            sizeMB = (double) full_size / 1024;
+            s = " KB";
+        }
+        showDeletingDialog(sizeMB, s);
     }
 
     BlurPopupWindow exitDialog;
     TextView dia_title;
+    LottieAnimationView push_lottie;
+    TextView txt_push_dialog_msg;
+    TextView txt_push_error;
+    RelativeLayout rl_btn;
+    Button ok_btn, eject_btn;
+    BlurPopupWindow deleteDialog;
+
+    @SuppressLint("SetTextI18n")
+    @UiThread
+    public void showDeletingDialog(double full_size, String unit) {
+        deleteDialog = new BlurPopupWindow.Builder(context)
+                .setContentView(R.layout.app_send_success_dialog)
+                .setGravity(Gravity.CENTER)
+                .setDismissOnTouchBackground(false)
+                .setDismissOnClickBack(false)
+                .setScaleRatio(0.2f)
+                .bindClickListener(v -> {
+                    push_lottie.setAnimation("loading_new.json");
+                    push_lottie.playAnimation();
+                    eject_btn.setVisibility(View.GONE);
+                    ok_btn.setVisibility(View.GONE);
+                    txt_push_dialog_msg.setText(getResources().getString(R.string.deleting_data));
+//                    rl_btn.setVisibility(View.VISIBLE);
+                    deleteAppData();
+                }, R.id.ok_btn)
+                .bindClickListener(v -> {
+                    new Handler().postDelayed(() -> {
+                        deleteDialog.dismiss();
+                    }, 200);
+                }, R.id.eject_btn)
+                .setBlurRadius(10)
+                .setTintColor(0x30000000)
+                .build();
+
+        push_lottie = deleteDialog.findViewById(R.id.push_lottie);
+        push_lottie.setAnimation("loading_new.json");
+        push_lottie.playAnimation();
+        txt_push_dialog_msg = deleteDialog.findViewById(R.id.txt_push_dialog_msg);
+        txt_push_error = deleteDialog.findViewById(R.id.txt_push_error);
+        rl_btn = deleteDialog.findViewById(R.id.rl_btn);
+        ok_btn = deleteDialog.findViewById(R.id.ok_btn);
+        eject_btn = deleteDialog.findViewById(R.id.eject_btn);
+        txt_push_dialog_msg.setText(getResources().getString(R.string.free) + " " +
+                decimalFormat.format(full_size) + unit + "\n"
+                + getResources().getString(R.string.delete_data));
+        rl_btn.setVisibility(View.VISIBLE);
+        ok_btn.setText(getResources().getString(R.string.yes));
+        eject_btn.setText(getResources().getString(R.string.no));
+        deleteDialog.show();
+    }
+
+
+    private void deleteAppData() {
+        File directory = new File(ApplicationClass.foundationPath + "/.FCA");
+        File[] fileListArray = directory.listFiles();
+
+        for (int index = 0; index < fileListArray.length; index++) {
+            if (fileListArray[index].exists() && fileListArray[index].isDirectory()) {
+                try {
+                    FileUtils.deleteDirectory(fileListArray[index]);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            } else
+                fileListArray[index].delete();
+        }
+
+        AppDatabase.getDatabaseInstance(context).getContentTableDao().deleteAll();
+        txt_push_dialog_msg.setText(getResources().getString(R.string.deleted_data));
+        rl_btn.setVisibility(View.VISIBLE);
+        new Handler().postDelayed(() -> {
+            deleteDialog.dismiss();
+        }, 5000);
+
+    }
+
 
     @SuppressLint("SetTextI18n")
     @UiThread
@@ -364,9 +486,10 @@ public class ProfileFragment extends Fragment implements ProfileContract.Profile
 
         dia_title = exitDialog.findViewById(R.id.dia_title);
 
-        dia_title.setText("Sync Time : " + FastSave.getInstance().getString(FC_Constants.SYNC_TIME, "NA")
-                        + "\nData synced : " + FastSave.getInstance().getString(FC_Constants.SYNC_DATA_LENGTH, "0")
-                        + "\nMedia synced : " + FastSave.getInstance().getString(FC_Constants.SYNC_MEDIA_LENGTH, "0")
+        dia_title.setText(getResources().getString(R.string.Sync_Time) + " " + FastSave.getInstance().getString(FC_Constants.SYNC_TIME, "NA")
+                        + "\n" + getResources().getString(R.string.Data_synced) + " " + FastSave.getInstance().getString(FC_Constants.SYNC_DATA_LENGTH, "0")
+                        + "\n" + getResources().getString(R.string.Certificate_synced) + " " + FastSave.getInstance().getString(FC_Constants.SYNC_CERTI_LENGTH, "0")
+                        + "\n" + getResources().getString(R.string.Media_synced) + " " + FastSave.getInstance().getString(FC_Constants.SYNC_MEDIA_LENGTH, "0")
                 /*+"Media failed : "+failed_ImageLength*/);
         exitDialog.show();
     }
@@ -392,20 +515,21 @@ public class ProfileFragment extends Fragment implements ProfileContract.Profile
         showLanguageSelectionDialog();
     }
 
+    @SuppressLint("SetTextI18n")
     private void showLanguageSelectionDialog() {
         final CustomLodingDialog dialog = new CustomLodingDialog(context, R.style.FC_DialogStyle);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        Objects.requireNonNull(dialog.getWindow()).setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         dialog.setContentView(R.layout.fc_custom_language_dialog);
         dialog.setCancelable(false);
         dialog.setCanceledOnTouchOutside(false);
         TextView dia_title = dialog.findViewById(R.id.dia_title);
         Button dia_btn_green = dialog.findViewById(R.id.dia_btn_green);
         Spinner lang_spinner = dialog.findViewById(R.id.lang_spinner);
-        dia_btn_green.setText("OK");
+        dia_btn_green.setText(getResources().getString(R.string.Okay));
         dialog.show();
-        String currLang = "" + FastSave.getInstance().getString(FC_Constants.LANGUAGE, "Hindi");
-        dia_title.setText("Current Language : " + currLang);
+        String currLang = " " + FastSave.getInstance().getString(FC_Constants.LANGUAGE, "Hindi");
+        dia_title.setText(getResources().getString(R.string.curr_lang) + currLang);
 
         ArrayAdapter<String> dataAdapter = new ArrayAdapter<>(context, R.layout.custom_spinner,
                 context.getResources().getStringArray(R.array.app_Language));

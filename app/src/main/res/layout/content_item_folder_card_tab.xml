@@ -1,15 +1,52 @@
 <?xml version="1.0" encoding="utf-8"?>
 <com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/card_main"
     android:layout_width="@dimen/_100sdp"
     android:layout_height="@dimen/_120sdp"
-    android:id="@+id/card_main"
-    android:layout_marginBottom="@dimen/_5sdp"
     android:layout_marginStart="@dimen/_5sdp"
     android:layout_marginEnd="@dimen/_5sdp"
-    app:cardElevation="@dimen/_2sdp"
+    android:layout_marginBottom="@dimen/_5sdp"
     app:cardBackgroundColor="#488feb"
-    app:cardCornerRadius="@dimen/_8sdp">
+    app:cardCornerRadius="@dimen/_8sdp"
+    app:cardElevation="@dimen/_2sdp">
+
+    <RelativeLayout
+        android:id="@+id/rl_loader"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true">
+
+            <ProgressBar
+                android:id="@+id/card_roundProgress"
+                android:layout_width="@dimen/_36sdp"
+                android:layout_height="@dimen/_36sdp"
+                android:layout_alignParentTop="true"
+                android:layout_centerHorizontal="true"
+                android:layout_gravity="center"
+                android:layout_marginBottom="@dimen/_10sdp"
+                android:elevation="@dimen/_5sdp"
+                android:indeterminateTint="@color/white"
+                android:theme="@style/AppTheme.RoundProgress" />
+
+            <com.pratham.foundation.customView.fontsview.SansTextViewBold
+                android:id="@+id/tv_downloading"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/card_roundProgress"
+                android:layout_centerHorizontal="true"
+                android:layout_marginStart="@dimen/_5sdp"
+                android:layout_marginTop="@dimen/_5sdp"
+                android:text="@string/downloading"
+                android:textColor="@color/white"
+                android:textSize="@dimen/_12sdp" />
+        </RelativeLayout>
+    </RelativeLayout>
 
     <RelativeLayout
         android:id="@+id/rl_root"
@@ -29,13 +66,13 @@
         <com.pratham.foundation.customView.fontsview.SansTextViewBold
             android:id="@+id/tv_progress"
             android:layout_width="wrap_content"
-            android:layout_below="@+id/tvTitle"
             android:layout_height="wrap_content"
+            android:layout_below="@+id/tvTitle"
+            android:layout_marginStart="@dimen/_5sdp"
+            android:layout_marginTop="@dimen/_5sdp"
             android:background="@drawable/progress_background"
             android:paddingStart="@dimen/_8sdp"
             android:paddingEnd="@dimen/_8sdp"
-            android:layout_marginStart="@dimen/_5sdp"
-            android:layout_marginTop="@dimen/_5sdp"
             android:text="0%"
             android:textColor="@color/colorText"
             android:textSize="@dimen/_10sdp" />
@@ -45,39 +82,39 @@
             android:layout_width="@dimen/_60sdp"
             android:layout_height="@dimen/_60sdp"
             android:layout_alignParentEnd="true"
+            android:layout_alignParentBottom="true"
             android:layout_marginEnd="@dimen/_5sdp"
             android:layout_marginBottom="@dimen/_5sdp"
             android:background="@android:color/transparent"
-            android:layout_alignParentBottom="true"
-            app:roundingBorderColor="@color/white"
-            app:roundingBorderWidth="@dimen/_2sdp"
-            app:roundedCornerRadius="@dimen/_30sdp"
             app:actualImageScaleType="centerInside"
+            app:placeholderImage="@drawable/khelbadi_thumb"
             app:placeholderImageScaleType="fitCenter"
-            app:placeholderImage="@drawable/khelbadi_thumb"/>
+            app:roundedCornerRadius="@dimen/_30sdp"
+            app:roundingBorderColor="@color/white"
+            app:roundingBorderWidth="@dimen/_2sdp" />
 
         <ImageView
             android:id="@+id/ib_update_btn"
             android:layout_width="@dimen/_35sdp"
             android:layout_height="@dimen/_35sdp"
             android:layout_alignParentEnd="true"
-            android:src="@drawable/ic_update"
+            android:background="@drawable/card_update_bg"
             android:paddingStart="@dimen/_10sdp"
             android:paddingTop="@dimen/_5sdp"
             android:paddingEnd="@dimen/_5sdp"
             android:paddingBottom="@dimen/_10sdp"
             android:scaleType="centerInside"
-            android:background="@drawable/card_update_bg"
+            android:src="@drawable/ic_update"
             android:visibility="gone" />
 
         <ImageView
             android:id="@+id/iv_downld"
             android:layout_width="@dimen/_25sdp"
             android:layout_height="@dimen/_25sdp"
-            android:src="@drawable/ic_download_2"
             android:layout_alignParentBottom="true"
-            android:visibility="gone"
             android:layout_marginStart="@dimen/_5sdp"
-            android:layout_marginBottom="@dimen/_5sdp"/>
+            android:layout_marginBottom="@dimen/_5sdp"
+            android:src="@drawable/ic_download_2"
+            android:visibility="gone" />
     </RelativeLayout>
 </com.google.android.material.card.MaterialCardView>

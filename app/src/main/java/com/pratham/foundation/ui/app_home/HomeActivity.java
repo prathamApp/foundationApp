@@ -193,8 +193,8 @@ public class HomeActivity extends BaseActivity implements LevelChanged {
     @UiThread
     public void setShowcaseView() {
         builder = new GuideView.Builder(this)
-                .setTitle("Progress")
-                .setContentText("Your Progress will be shown here")
+                .setTitle(getResources().getString(R.string.progress))
+                .setContentText(getResources().getString(R.string.Your_Progress_will))
                 .setDismissType(DismissType.selfView) //optional - default dismissible by TargetView
                 .setTargetView(tv_header_progress)
                 .setGuideListener(new GuideListener() {
@@ -202,13 +202,13 @@ public class HomeActivity extends BaseActivity implements LevelChanged {
                     public void onDismiss(View view) {
                         switch (view.getId()) {
                             case R.id.tv_header_progress:
-                                builder.setTitle("LEVELS");
-                                builder.setContentText("Click here to switch levels");
+                                builder.setTitle(getResources().getString(R.string.Level));
+                                builder.setContentText(getResources().getString(R.string.Click_to_switch_levels));
                                 builder.setTargetView(iv_level).build();
                                 break;
                             case R.id.iv_level:
-                                builder.setTitle("SECTIONS");
-                                builder.setContentText("Click here to switch Sections");
+                                builder.setTitle(getResources().getString(R.string.Sections));
+                                builder.setContentText(getResources().getString(R.string.Click_to_switch_Sections));
                                 builder.setTargetView(tabLayout).build();
                                 break;
                             case R.id.tabLayout:

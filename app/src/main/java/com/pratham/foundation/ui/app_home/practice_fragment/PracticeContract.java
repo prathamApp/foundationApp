@@ -52,6 +52,8 @@ public interface PracticeContract {
 
         void serverIssueDialog();
 
+        void showToast(String msg);
+
 //        void setBotNodeId(String botID);
     }
 

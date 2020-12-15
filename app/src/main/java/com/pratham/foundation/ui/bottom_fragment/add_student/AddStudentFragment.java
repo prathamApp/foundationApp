@@ -41,6 +41,7 @@ import com.pratham.foundation.interfaces.SplashInterface;
 import com.pratham.foundation.ui.splash_activity.SplashActivity;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -88,7 +89,7 @@ public class AddStudentFragment extends DialogFragment implements AvatarClickLis
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setStyle(DialogFragment.STYLE_NORMAL, R.style.FullScreenDialogStyle);
-        getActivity().getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        Objects.requireNonNull(getActivity()).getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
     }
 
     public void editorListener(final EditText view) {
@@ -104,8 +105,9 @@ public class AddStudentFragment extends DialogFragment implements AvatarClickLis
                                         event.getKeyCode() == KeyEvent.KEYCODE_ENTER) {
                             view.clearFocus();
                             if (view != null) {
-                                InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
-                                imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+                                InputMethodManager imm = (InputMethodManager) Objects.requireNonNull(getActivity())
+                                        .getSystemService(Context.INPUT_METHOD_SERVICE);
+                                Objects.requireNonNull(imm).hideSoftInputFromWindow(view.getWindowToken(), 0);
                             }
                             return true;
                         }
@@ -199,8 +201,12 @@ public class AddStudentFragment extends DialogFragment implements AvatarClickLis
     }
 
     private void hideKeyboard(View view) {
-        InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(getActivity().INPUT_METHOD_SERVICE);
-        imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+        try {
+            InputMethodManager imm = (InputMethodManager) Objects.requireNonNull(getActivity()).getSystemService(getActivity().INPUT_METHOD_SERVICE);
+            imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     private void addAvatarsInList() {

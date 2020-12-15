@@ -9,6 +9,7 @@ import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.ColorDrawable;
 import android.media.ThumbnailUtils;
 import android.net.Uri;
+import android.os.Environment;
 import android.os.Handler;
 import android.provider.MediaStore;
 import android.text.Editable;
@@ -31,9 +32,13 @@ import android.widget.VideoView;
 
 import androidx.fragment.app.Fragment;
 
+import com.facebook.drawee.backends.pipeline.Fresco;
+import com.facebook.drawee.interfaces.DraweeController;
+import com.facebook.drawee.view.SimpleDraweeView;
+import com.facebook.imagepipeline.request.ImageRequest;
+import com.facebook.imagepipeline.request.ImageRequestBuilder;
 import com.pratham.foundation.ApplicationClass;
 import com.pratham.foundation.R;
-import com.pratham.foundation.customView.GifView;
 import com.pratham.foundation.customView.display_image_dialog.CustomLodingDialog;
 import com.pratham.foundation.customView.fontsview.SansButton;
 import com.pratham.foundation.customView.fontsview.SansTextView;
@@ -58,12 +63,12 @@ import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.InputStream;
+import java.io.FileOutputStream;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import static android.app.Activity.RESULT_OK;
 import static com.pratham.foundation.utility.FC_Constants.STT_REGEX;
@@ -71,15 +76,17 @@ import static com.pratham.foundation.utility.FC_Constants.activityPhotoPath;
 import static com.pratham.foundation.utility.FC_Constants.gameFolderPath;
 
 @EFragment(R.layout.layout_video_row)
-public class DoingFragment extends Fragment implements STT_Result_New.sttView, OnGameClose, DoingFragmentContract.DoingFragmentView {
+public class DoingFragment extends Fragment implements STT_Result_New.sttView,
+        OnGameClose, DoingFragmentContract.DoingFragmentView {
+
     /* @BindView(R.id.tittle)
         SansTextView tittle;*/
     @ViewById(R.id.tv_question)
     TextView question;
     @ViewById(R.id.iv_question_image)
-    ImageView questionImage;
-    @ViewById(R.id.iv_question_gif)
-    GifView questionGif;
+    SimpleDraweeView questionImage;
+    @ViewById(R.id.iv_playvid)
+    ImageView iv_playvid;
     @ViewById(R.id.vv_question)
     VideoView vv_question;
     @ViewById(R.id.capture)
@@ -148,28 +155,6 @@ public class DoingFragment extends Fragment implements STT_Result_New.sttView, O
         // Required empty public constructor
     }
 
-   /* @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        context = getActivity();
-        contentPath = getArguments().getString("contentPath");
-        StudentID = getArguments().getString("StudentID");
-        resId = getArguments().getString("resId");
-        contentTitle = getArguments().getString("contentName");
-        jsonName = getArguments().getString("jsonName");
-        onSdCard = getArguments().getBoolean("onSdCard", false);
-        if (onSdCard)
-            readingContentPath = ApplicationClass.contentSDPath + gameFolderPath + "/" + contentPath + "/";
-        else
-            readingContentPath = ApplicationClass.foundationPath + gameFolderPath + "/" + contentPath + "/";
-        EventBus.getDefault().register(this);
-
-        imageName = "" + ApplicationClass.getUniqueID() + ".jpg";
-        resStartTime = FC_Utility.getCurrentDateTime();
-        addScore(0, "", 0, 0, resStartTime,FC_Utility.getCurrentDateTime(), jsonName + " " + GameConstatnts.START);
-        getData();
-    } */
-
     @AfterViews
     public void initiate() {
         context = getActivity();
@@ -179,6 +164,12 @@ public class DoingFragment extends Fragment implements STT_Result_New.sttView, O
         contentTitle = getArguments().getString("contentName");
         jsonName = getArguments().getString("jsonName");
         onSdCard = getArguments().getBoolean("onSdCard", false);
+        if(new File(Environment.getExternalStorageDirectory().toString()
+                + "/.FCAInternal/ActivityPhotos/vid_thumb.jpg").exists())
+            new File(Environment.getExternalStorageDirectory().toString()
+                    + "/.FCAInternal/ActivityPhotos/vid_thumb.jpg").delete();
+        Fresco.getImagePipeline().clearCaches();
+
         if (onSdCard)
             readingContentPath = ApplicationClass.contentSDPath + gameFolderPath + "/" + contentPath + "/";
         else
@@ -208,49 +199,36 @@ public class DoingFragment extends Fragment implements STT_Result_New.sttView, O
         EventBus.getDefault().register(this);
     }
 
-    /*@Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.layout_video_row, container, false);
-    }*/
-
-/*    @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-       // ButterKnife.bind(this, view);
-        if (!GameConstatnts.WATCHING_VIDEO.equalsIgnoreCase(jsonName)) {
-            camera_controll.setVisibility(View.VISIBLE);
-        }
-        //hide camera controls for reading stt game
-        if(jsonName.equalsIgnoreCase(GameConstatnts.READING_STT)){
-            capture.setVisibility(View.GONE);
-        }
-        preview.setVisibility(View.GONE);
-        setVideoQuestion();
-    }*/
-
     public void setVideoQuestion(ScienceQuestion scienceQuestion) {
         if (scienceQuestion != null) {
             this.scienceQuestion = scienceQuestion;
             isVideoQuestion = false;
             fileName = scienceQuestion.getPhotourl();
-            //getFileName(scienceQuestion.getQid(), scienceQuestion.getPhotourl());
-
-            //questionPath = Environment.getExternalStorageDirectory().toString() + "/.Assessment/Content/Downloaded" + "/" + fileName;
             questionImage.setVisibility(View.GONE);
-            questionGif.setVisibility(View.GONE);
             relativeLayout.setVisibility(View.GONE);
             if (scienceQuestion.getQuestion().trim().equalsIgnoreCase(""))
                 question.setVisibility(View.GONE);
             else question.setText(scienceQuestion.getQuestion());
 
             question.setMovementMethod(new ScrollingMovementMethod());
-          /*  if (!scienceQuestion.getInstruction().isEmpty())
-                tittle.setText(scienceQuestion.getInstruction());*/
             if (fileName != null && !fileName.isEmpty()) {
-                // RelativeLayout.setVisibility(View.VISIBLE);
-                if (fileName.toLowerCase().endsWith(".jpeg") || fileName.toLowerCase().endsWith(".jpg") || fileName.toLowerCase().endsWith(".png")) {
+                if (fileName.toLowerCase().endsWith(".jpeg") || fileName.toLowerCase().endsWith(".jpg")
+                        || fileName.toLowerCase().endsWith(".png") || fileName.toLowerCase().endsWith(".gif")) {
+                    questionPath = readingContentPath + fileName;
+                    File f = new File(questionPath);
+                    if (f.exists()) {
+                        ImageRequest imageRequest = ImageRequestBuilder
+                                .newBuilderWithSource(Uri.fromFile(f))
+                                .setLocalThumbnailPreviewsEnabled(true)
+                                .build();
+                        DraweeController controller = Fresco.newDraweeControllerBuilder()
+                                .setImageRequest(imageRequest)
+                                .setAutoPlayAnimations(true)// if gif, it will play.
+                                .setOldController(Objects.requireNonNull(questionImage).getController())
+                                .build();
+                        questionImage.setController(controller);
+                    }
+/*
                     try {
                         questionPath = readingContentPath + fileName;
                         Bitmap bmImg = BitmapFactory.decodeFile(questionPath);
@@ -261,6 +239,7 @@ public class DoingFragment extends Fragment implements STT_Result_New.sttView, O
                     } catch (FileNotFoundException e) {
                         e.printStackTrace();
                     }
+
                 } else if (fileName.toLowerCase().endsWith(".gif")) {
                     questionPath = readingContentPath + fileName;
                     InputStream gif;
@@ -271,22 +250,43 @@ public class DoingFragment extends Fragment implements STT_Result_New.sttView, O
                         questionGif.setGifResource(gif);
                     } catch (FileNotFoundException e) {
                         e.printStackTrace();
-                    }
+                    }*/
                 } else {
                     try {
                         isVideoQuestion = true;
                         questionPath = readingContentPath + fileName;
                         BitmapFactory.Options options = new BitmapFactory.Options();
                         options.inSampleSize = 1;
-                        Bitmap thumb = ThumbnailUtils.createVideoThumbnail(questionPath, MediaStore.Images.Thumbnails.MICRO_KIND);
+                        Bitmap thumb = ThumbnailUtils.createVideoThumbnail(questionPath, MediaStore.Images.Thumbnails.MINI_KIND);
                         BitmapDrawable ob = new BitmapDrawable(getResources(), thumb);
-                        questionImage.setBackgroundDrawable(ob);
-                        questionImage.setVisibility(View.VISIBLE);
-                        relativeLayout.setVisibility(View.VISIBLE);
+                        ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+                        thumb.compress(Bitmap.CompressFormat.JPEG, 60, bytes);
+                        File f = new File(Environment.getExternalStorageDirectory().toString()
+                                + "/.FCAInternal/ActivityPhotos/" + File.separator + "vid_thumb.jpg");
+
+                        f.createNewFile();
+                        FileOutputStream fo = new FileOutputStream(f);
+                        fo.write(bytes.toByteArray());
+                        fo.close();
+//                        File f = new File(String.valueOf(ob));
+                        if (f.exists()) {
+                            ImageRequest imageRequest = ImageRequestBuilder
+                                    .newBuilderWithSource(Uri.fromFile(f))
+                                    .setLocalThumbnailPreviewsEnabled(true)
+                                    .build();
+                            DraweeController controller = Fresco.newDraweeControllerBuilder()
+                                    .setImageRequest(imageRequest)
+                                    .setAutoPlayAnimations(true)// if gif, it will play.
+                                    .setOldController(Objects.requireNonNull(questionImage).getController())
+                                    .build();
+                            questionImage.setController(controller);
+//                            questionImage.setBackgroundDrawable(ob);
+                            questionImage.setVisibility(View.VISIBLE);
+                            relativeLayout.setVisibility(View.VISIBLE);
+                        }
                     } catch (Exception e) {
-
+                        e.printStackTrace();
                     }
-
                 }
             }
             scienceQuestionChoices = scienceQuestion.getLstquestionchoice();
@@ -299,7 +299,6 @@ public class DoingFragment extends Fragment implements STT_Result_New.sttView, O
                 previous.setVisibility(View.INVISIBLE);
                 next.setVisibility(View.INVISIBLE);
             }
-
         } else {
             Toast.makeText(context, "data not found", Toast.LENGTH_SHORT).show();
         }
@@ -315,7 +314,8 @@ public class DoingFragment extends Fragment implements STT_Result_New.sttView, O
         subQuestion.setText(scienceQuestionChoices.get(index).getSubQues());
         subQuestion.setMovementMethod(new ScrollingMovementMethod());
         etAnswer.setMovementMethod(new ScrollingMovementMethod());
-        if (scienceQuestionChoices.get(index).getUserAns().trim() != null && !scienceQuestionChoices.get(index).getUserAns().isEmpty()) {
+        if (scienceQuestionChoices.get(index).getUserAns().trim() != null
+                && !scienceQuestionChoices.get(index).getUserAns().isEmpty()) {
             myAns = scienceQuestionChoices.get(index).getUserAns();
             etAnswer.setText(myAns);
         } else {
@@ -573,8 +573,8 @@ public class DoingFragment extends Fragment implements STT_Result_New.sttView, O
     }
 
     @Click(R.id.bt_edit_ok)
-    public void editOKClicked(){
-        myAns = ""+et_edit_ans.getText();
+    public void editOKClicked() {
+        myAns = "" + et_edit_ans.getText();
         etAnswer.setText(myAns);
         scienceQuestionChoices.get(index).setUserAns(myAns);
         InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(getActivity().INPUT_METHOD_SERVICE);
@@ -606,7 +606,7 @@ public class DoingFragment extends Fragment implements STT_Result_New.sttView, O
     }
 
     ////////////////////////////
-    @Click({R.id.iv_question_image})
+    @Click({R.id.iv_question_image, R.id.iv_playvid})
     public void onVideoClicked() {
      /*   ZoomImageDialog zoomImageDialog = new ZoomImageDialog(getActivity(), path, scienceQuestion.getQtid());
         zoomImageDialog.show();*/

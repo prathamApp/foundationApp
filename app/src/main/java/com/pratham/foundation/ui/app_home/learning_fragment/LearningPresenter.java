@@ -54,7 +54,7 @@ public class LearningPresenter implements LearningContract.LearningPresenter, AP
     Gson gson;
     ArrayList<String> codesText;
     int currentLevelNo;
-    ContentTable contentDetail, testData;
+    ContentTable contentDetail, testData, dwContent;
     Modal_DownloadContent download_content;
     ArrayList<ContentTable> pos;
     public List<ContentTable> testList;
@@ -443,8 +443,9 @@ public class LearningPresenter implements LearningContract.LearningPresenter, AP
     }
 
     @Override
-    public void downloadResource(String downloadId) {
+    public void downloadResource(String downloadId, ContentTable dwContent) {
         downloadNodeId = downloadId;
+        this.dwContent = dwContent;
         if (FC_Utility.isDataConnectionAvailable(mContext)) {
             api_content.getAPIContent(FC_Constants.INTERNET_DOWNLOAD_RESOURCE, FC_Constants.INTERNET_DOWNLOAD_RESOURCE_API, downloadNodeId);
 //            api_content.getAPIContentTemp(FC_Constants.INTERNET_DOWNLOAD_RESOURCE, FC_Constants.INTERNET_DOWNLOAD_RESOURCE_API, downloadNodeId);
@@ -668,7 +669,7 @@ public class LearningPresenter implements LearningContract.LearningPresenter, AP
             try {
                 JSONObject jsonObject = new JSONObject(response);
                 download_content = gson.fromJson(jsonObject.toString(), Modal_DownloadContent.class);
-                contentDetail = download_content.getNodelist().get(download_content.getNodelist().size() - 1);
+//                contentDetail = download_content.getNodelist().get(download_content.getNodelist().size() - 1);
 
                 pos.clear();
                 pos.addAll(download_content.getNodelist());
@@ -678,7 +679,7 @@ public class LearningPresenter implements LearningContract.LearningPresenter, AP
                 Log.d("HP", "doInBackground: fileName : " + fileName);
                 Log.d("HP", "doInBackground: DW URL : " + download_content.getDownloadurl());
                 zipDownloader.initialize(mContext, download_content.getDownloadurl(),
-                        download_content.getFoldername(), fileName, contentDetail, pos);
+                        download_content.getFoldername(), fileName, dwContent, pos);
             } catch (JSONException e) {
                 e.printStackTrace();
             }
@@ -809,6 +810,9 @@ public class LearningPresenter implements LearningContract.LearningPresenter, AP
             addHeadersAndNotifyAdapter(contentParentList);
 //            learningView.addContentToViewList(contentParentList);
 //            learningView.notifyAdapter();
+        } else if (header.equalsIgnoreCase(FC_Constants.INTERNET_DOWNLOAD_RESOURCE)) {
+            learningView.dismissLoadingDialog();
+            learningView.showToast("Cannot connect.");
         }
     }
 

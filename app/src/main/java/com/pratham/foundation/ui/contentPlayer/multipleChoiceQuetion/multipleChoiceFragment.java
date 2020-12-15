@@ -3,6 +3,7 @@ package com.pratham.foundation.ui.contentPlayer.multipleChoiceQuetion;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.text.method.ScrollingMovementMethod;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,7 +21,11 @@ import android.widget.Toast;
 import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
 
-import com.google.android.material.card.MaterialCardView;
+import com.facebook.drawee.backends.pipeline.Fresco;
+import com.facebook.drawee.interfaces.DraweeController;
+import com.facebook.drawee.view.SimpleDraweeView;
+import com.facebook.imagepipeline.request.ImageRequest;
+import com.facebook.imagepipeline.request.ImageRequestBuilder;
 import com.pratham.foundation.ApplicationClass;
 import com.pratham.foundation.R;
 import com.pratham.foundation.customView.GifView;
@@ -44,11 +49,13 @@ import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import static com.pratham.foundation.utility.FC_Constants.APP_SECTION;
 import static com.pratham.foundation.utility.FC_Constants.gameFolderPath;
@@ -61,7 +68,7 @@ public class multipleChoiceFragment extends Fragment implements OnGameClose, Mul
     @ViewById(R.id.tv_question)
     TextView question;
     @ViewById(R.id.iv_question_image)
-    ImageView questionImage;
+    SimpleDraweeView questionImage;
     @ViewById(R.id.iv_question_gif)
     GifView questionGif;
     @ViewById(R.id.rg_mcq)
@@ -77,7 +84,7 @@ public class multipleChoiceFragment extends Fragment implements OnGameClose, Mul
     @ViewById(R.id.show_answer)
     SansButton show_answer;
     @ViewById(R.id.image_container)
-    MaterialCardView image_container;
+    RelativeLayout image_container;
     @ViewById(R.id.iv_view_img)
     ImageView iv_view_img;
 
@@ -169,16 +176,23 @@ public class multipleChoiceFragment extends Fragment implements OnGameClose, Mul
                 if (imgPath.length > 0)
                     len = imgPath.length - 1;
                 else len = 0;
-                if (imgPath[len].equalsIgnoreCase("gif")) {
+                File f = new File(localPath);
+                if (f.exists()) {
+                    ImageRequest imageRequest = ImageRequestBuilder
+                            .newBuilderWithSource(Uri.fromFile(f))
+                            .setLocalThumbnailPreviewsEnabled(true)
+                            .build();
+                    DraweeController controller = Fresco.newDraweeControllerBuilder()
+                            .setImageRequest(imageRequest)
+                            .setAutoPlayAnimations(true)// if gif, it will play.
+                            .setOldController(Objects.requireNonNull(questionImage).getController())
+                            .build();
+                    questionImage.setController(controller);
+                }
+
+/*                if (imgPath[len].equalsIgnoreCase("gif")) {
                     try {
                         InputStream gif;
-                   /* if (AssessmentApplication.wiseF.isDeviceConnectedToMobileOrWifiNetwork()) {
-                        Glide.with(getActivity()).asGif()
-                                .load(path)
-                                .apply(new RequestOptions()
-                                        .placeholder(Drawable.createFromPath(localPath)))
-                                .into(questionImage);
-                    } else {*/
                         gif = new FileInputStream(localPath);
                         questionImage.setVisibility(View.GONE);
                         questionGif.setVisibility(View.VISIBLE);
@@ -187,13 +201,6 @@ public class multipleChoiceFragment extends Fragment implements OnGameClose, Mul
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
-
-           /*     Glide.with(getActivity()).asGif()
-                        .load(path)
-                        .apply(new RequestOptions()
-                                .placeholder(Drawable.createFromPath(localPath)))
-                        .into(questionImage);*/
-//                    zoomImg.setVisibility(View.VISIBLE);
                 } else {
                     try {
                         Bitmap bmImg = BitmapFactory.decodeFile(localPath);
@@ -202,7 +209,7 @@ public class multipleChoiceFragment extends Fragment implements OnGameClose, Mul
                     } catch (FileNotFoundException e) {
                         e.printStackTrace();
                     }
-                }
+                }*/
 
                 iv_view_img.setOnClickListener(new View.OnClickListener() {
                     @Override

@@ -44,29 +44,53 @@ public class InstructionsDialog extends CustomLodingDialog {
         ButterKnife.bind(this);
         getWindow().setDimAmount(.7f);
         String a = FastSave.getInstance().getString(FC_Constants.APP_LANGUAGE, FC_Constants.HINDI);
-        Log.d("INSTRUCTIONFRAG", "Select Subj: "+a);
+        Log.d("INSTRUCTIONFRAG", "Select Subj: " + a);
         FC_Utility.setAppLocal(context, a);
 
         int resId = context.getResources().getIdentifier(resorcetype, "string", context.getPackageName());
         if (resId != 0) {
             String instruction = context.getResources().getString(resId);
-            Log.d("INSTRUCTIONFRAG", "instruction: "+instruction);
+            Log.d("INSTRUCTIONFRAG", "instruction: " + instruction);
             dia_title.setText(instruction);
         } else {
             dia_title.setText("");
         }
-        if(FastSave.getInstance().getString(FC_Constants.APP_LANGUAGE, "")
+        if (FastSave.getInstance().getString(FC_Constants.APP_LANGUAGE, "")
+                .equalsIgnoreCase(FC_Constants.ASSAMESE))
+            resorcetype = "as_" + resorcetype;
+        else if (FastSave.getInstance().getString(FC_Constants.APP_LANGUAGE, "")
+                .equalsIgnoreCase(FC_Constants.BENGALI))
+            resorcetype = "bn_" + resorcetype;
+        else if (FastSave.getInstance().getString(FC_Constants.APP_LANGUAGE, "")
+                .equalsIgnoreCase(FC_Constants.GUJARATI))
+            resorcetype = "gu_" + resorcetype;
+        else if (FastSave.getInstance().getString(FC_Constants.APP_LANGUAGE, "")
                 .equalsIgnoreCase(FC_Constants.HINDI))
             resorcetype = "hi_" + resorcetype;
-        else if(FastSave.getInstance().getString(FC_Constants.APP_LANGUAGE, "")
+        else if (FastSave.getInstance().getString(FC_Constants.APP_LANGUAGE, "")
+                .equalsIgnoreCase(FC_Constants.KANNADA))
+            resorcetype = "kn_" + resorcetype;
+        else if (FastSave.getInstance().getString(FC_Constants.APP_LANGUAGE, "")
                 .equalsIgnoreCase(FC_Constants.MARATHI))
             resorcetype = "mr_" + resorcetype;
-        Log.d("INSTRUCTIONFRAG", "resorcetype: "+resorcetype);
+        else if (FastSave.getInstance().getString(FC_Constants.APP_LANGUAGE, "")
+                .equalsIgnoreCase(FC_Constants.ODIYA))
+            resorcetype = "or_" + resorcetype;
+        else if (FastSave.getInstance().getString(FC_Constants.APP_LANGUAGE, "")
+                .equalsIgnoreCase(FC_Constants.PUNJABI))
+            resorcetype = "pa_" + resorcetype;
+        else if (FastSave.getInstance().getString(FC_Constants.APP_LANGUAGE, "")
+                .equalsIgnoreCase(FC_Constants.TAMIL))
+            resorcetype = "ta_" + resorcetype;
+        else if (FastSave.getInstance().getString(FC_Constants.APP_LANGUAGE, "")
+                .equalsIgnoreCase(FC_Constants.TELUGU))
+            resorcetype = "te_" + resorcetype;
+        Log.d("INSTRUCTIONFRAG", "resorcetype: " + resorcetype);
         int rawID = context.getResources().getIdentifier(resorcetype.toLowerCase(), "raw", context.getPackageName());
         if (rawID != 0) {
             mediaPlayer = MediaPlayer.create(context, rawID);
             mediaPlayer.start();
-        }else{
+        } else {
             resorcetype = "hi_" + resorcetype;
             rawID = context.getResources().getIdentifier(resorcetype.toLowerCase(), "raw", context.getPackageName());
             if (rawID != 0) {

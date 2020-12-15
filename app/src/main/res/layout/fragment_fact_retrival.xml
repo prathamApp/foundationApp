@@ -1,72 +1,49 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/activity_bkgd"
-    android:orientation="vertical">
+    android:background="@drawable/activity_bkgd">
 
-    <!--<com.pratham.foundation.customView.fontsview.SansTextView
-        android:id="@+id/tittle"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Answer in full sentence"
-        android:background="@color/red"
-        android:padding="@dimen/_5sdp"
-        android:textColor="@color/white"
-        android:textAlignment="center"
-        android:textSize="30sp" />-->
-    <Space
-        android:layout_width="match_parent"
-        android:layout_height="60dp"/>
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1.5"
-        android:elevation="5dp"  >
         <com.pratham.foundation.customView.fontsview.SansTextViewBold
             android:id="@+id/quetion"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="100dp"
+            android:layout_marginTop="70dp"
             android:scrollbars="vertical"
-            style="@style/paragraph"
+            android:layout_alignParentTop="true"
+            style="@style/new_ques"
             android:textSize="@dimen/_20sdp"
-            android:layout_marginStart="@dimen/_10sdp"
-            android:layout_marginEnd="@dimen/_10sdp"
+            android:layout_marginStart="@dimen/_8sdp"
+            android:layout_marginEnd="@dimen/_8sdp"
             android:textColor="@color/colorText"
             android:fadeScrollbars="false"
             android:scrollbarSize="6dp"
             android:scrollbarThumbVertical="@drawable/card_color_bg4"
             android:scrollbarTrackVertical="@drawable/scroll_bg"
-            android:layout_centerInParent="true"
             android:gravity="center"  />
-    </RelativeLayout>
 
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_margin="20dp"
-            android:layout_weight="3"
-            style="@style/paragraph">
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/paragraphRecycler"
-                android:layout_width="match_parent"
-                android:fadeScrollbars="false"
-                android:scrollbarSize="6dp"
-                android:scrollbarThumbVertical="@drawable/card_color_bg4"
-                android:scrollbarTrackVertical="@drawable/scroll_bg"
-                android:layout_height="match_parent"/>
-          <!--  <com.pratham.foundation.customView.fontsview.SansTextView
-                android:id="@+id/paragraph"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:textIsSelectable="true"
-                android:gravity="center"
-                android:layout_gravity="center"
-                android:textSize="25sp" />-->
-        </RelativeLayout>
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/paragraphRecycler"
+        android:layout_width="match_parent"
+        android:layout_below="@+id/quetion"
+        android:layout_above="@+id/hint_ll"
+        android:fadeScrollbars="false"
+        style="@style/paragraph"
+        android:scrollbars="vertical"
+        android:layout_marginTop="@dimen/_8sdp"
+        android:layout_marginBottom="@dimen/_8sdp"
+        android:layout_marginStart="@dimen/_8sdp"
+        android:layout_marginEnd="@dimen/_8sdp"
+        android:scrollbarSize="6dp"
+        android:scrollbarThumbVertical="@drawable/card_color_bg4"
+        android:scrollbarTrackVertical="@drawable/scroll_bg"
+        android:layout_height="match_parent"/>
+
     <LinearLayout
+        android:id="@+id/hint_ll"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_above="@+id/bottom_bar"
         android:orientation="horizontal">
         <com.pratham.foundation.customView.fontsview.SansButton
             android:id="@+id/clear_selection"
@@ -89,43 +66,6 @@
             android:text="@string/hint"
             style="@style/submitbtn"/>
     </LinearLayout>
-
-    <!--<RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        android:layout_marginHorizontal="20dp"
-        android:orientation="horizontal">
-
-        <com.pratham.foundation.customView.fontsview.SansButton
-            android:id="@+id/previous"
-            android:layout_width="100dp"
-            android:layout_height="50dp"
-            android:layout_centerVertical="true"
-            android:textColor="@color/white"
-            android:background="@drawable/red_button"
-            android:text="previous" />
-
-        <com.pratham.foundation.customView.fontsview.SansButton
-            android:id="@+id/submitBtn"
-            android:layout_width="100dp"
-            android:layout_height="50dp"
-            android:textColor="@color/white"
-            android:background="@drawable/green_button"
-            android:layout_centerInParent="true"
-            android:text="Submit" />
-
-        <com.pratham.foundation.customView.fontsview.SansButton
-            android:id="@+id/next"
-            android:layout_width="100dp"
-            android:layout_height="50dp"
-            android:textColor="@color/white"
-            android:background="@drawable/yellow_button"
-            android:layout_centerVertical="true"
-            android:layout_alignParentEnd="true"
-            android:text="next" />
-
-    </RelativeLayout>-->
     <include
         android:id="@+id/bottom_bar"
         layout="@layout/bottom_control_panel_v2"
@@ -135,4 +75,4 @@
         android:layout_gravity="bottom|center_horizontal"
         android:layout_marginBottom="1dp"
         android:gravity="bottom|center_horizontal" />
-</LinearLayout>
+</RelativeLayout>

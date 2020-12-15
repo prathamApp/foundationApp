@@ -13,6 +13,7 @@ import android.util.Log;
 import com.androidnetworking.AndroidNetworking;
 import com.facebook.drawee.backends.pipeline.Fresco;
 import com.isupatches.wisefy.WiseFy;
+import com.pratham.foundation.modalclasses.Modal_FileDownloading;
 import com.pratham.foundation.services.TTSService;
 import com.pratham.foundation.services.shared_preferences.FastSave;
 import com.pratham.foundation.utility.FC_Constants;
@@ -21,6 +22,8 @@ import com.pratham.foundation.utility.FC_Utility;
 import java.io.File;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Locale;
 import java.util.Random;
 import java.util.UUID;
@@ -30,10 +33,9 @@ import okhttp3.OkHttpClient;
 
 public class ApplicationClass extends Application {
 
-    public static String uploadDataUrl = "http://devprodigi.openiscool.org/api/Foundation/PushData";
 //    DelhiGov
 //    public static String uploadDataUrl = "http://delhigovt.centralindia.cloudapp.azure.com:8087/api/Foundation/PushData";
-    public static boolean isTablet = false;
+    public static boolean isTablet = true;
     public static boolean isAssets = false;
     public static boolean contentExistOnSD = false, LocationFlg = false;
     public static String contentSDPath = "";
@@ -48,6 +50,7 @@ public class ApplicationClass extends Application {
     public static TTSService ttsService;
     public static AudioManager audioManager;
     public static MediaPlayer ButtonClickSound,BackBtnSound;
+    public static List<Modal_FileDownloading> fileDownloadingList;
 
     @Override
     public void onCreate() {
@@ -59,6 +62,7 @@ public class ApplicationClass extends Application {
         if (applicationClass == null) {
             applicationClass = this;
         }
+        fileDownloadingList = new ArrayList<>();
         FastSave.init(getApplicationContext());
         ButtonClickSound = MediaPlayer.create(this, R.raw.click2);
         BackBtnSound = MediaPlayer.create(this, R.raw.click);

@@ -207,6 +207,7 @@ public class STTQuestionsFragment extends Fragment implements
     @Override
     public void setCategoryTitle(String title) {
         story_title.setText(Html.fromHtml("" + storyName));
+        story_title.setSelected(true);
 //        toolbar.setTitle(storyName);
     }
 
@@ -241,6 +242,7 @@ public class STTQuestionsFragment extends Fragment implements
         pageTitle = paraSttQuestionList.get(currentPage).getQuesText();
         startTime = FC_Utility.getCurrentDateTime();
         story_title.setText(pageTitle);
+        story_title.setSelected(true);
 //        showHint();
         dismissLoadingDialog();
     }

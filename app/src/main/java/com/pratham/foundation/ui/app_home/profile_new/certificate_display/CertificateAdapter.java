@@ -59,14 +59,14 @@ public class CertificateAdapter extends RecyclerView.Adapter {
 
     public class FileHolder extends RecyclerView.ViewHolder {
 
-        TextView title, tv_timestamp, tv_view;
+        TextView title, tv_timestamp/*, tv_view*/;
         RelativeLayout certi_root;
 
         public FileHolder(View view) {
             super(view);
             title = view.findViewById(R.id.tv_assessment);
             tv_timestamp = view.findViewById(R.id.tv_timestamp);
-            tv_view = view.findViewById(R.id.tv_view);
+//            tv_view = view.findViewById(R.id.tv_view);
             certi_root = view.findViewById(R.id.certi_root);
         }
     }
@@ -113,6 +113,7 @@ public class CertificateAdapter extends RecyclerView.Adapter {
 
 //        String cLevel = "Level " + contentItem.getLevela();
         String cTitle = "" + FC_Utility.getSubjectNameFromNum(contentItem.getQuestionIda())+ " Level " + contentItem.getLevela();
+        String cSubject = "" + FC_Utility.getSubjectNameFromNum(contentItem.getQuestionIda());
 
         holder.title.setText(cTitle);
 
@@ -128,7 +129,7 @@ public class CertificateAdapter extends RecyclerView.Adapter {
             holder.title.setText(cTitle + " Level 5");*/
 
         holder.tv_timestamp.setText(contentItem.getEndDateTime());
-        holder.certi_root.setOnClickListener(v -> CertificateItemClicked.gotoCertificate(assessmentList.get(position), cTitle));
+        holder.certi_root.setOnClickListener(v -> CertificateItemClicked.gotoCertificate(assessmentList.get(position), cTitle, cSubject));
         setAnimations(holder.certi_root, position);
     }
 

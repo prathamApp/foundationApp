@@ -27,12 +27,14 @@ public interface ContentContract {
         void dismissLoadingDialog();
 
         void setStudentProfileImage(String sImage);
+
+        void showToast(String msg);
     }
 
     interface ContentPresenter {
         void getListData();
 
-        void downloadResource(String downloadNodeId);
+        void downloadResource(String downloadNodeId, ContentTable contentTable);
 
         void addNodeIdToList(String nodeId);
 

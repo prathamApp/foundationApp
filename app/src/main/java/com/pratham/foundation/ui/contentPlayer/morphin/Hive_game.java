@@ -49,28 +49,22 @@ import java.util.Objects;
 import static com.pratham.foundation.utility.FC_Constants.gameFolderPath;
 
 @EFragment(R.layout.activity_main_morphin)
-public class Hive_game extends Fragment implements Hive_game_contract.Hive_game_view, OptionRecyclerInterface, OnGameClose, MediaCallbacks {
+public class Hive_game extends Fragment implements Hive_game_contract.Hive_game_view,
+        OptionRecyclerInterface, OnGameClose, MediaCallbacks {
     @Bean(Hive_game_presenter.class)
     Hive_game_contract.Hive_game_presenter presenter;
-
     @ViewById(R.id.btn_prev)
     ImageButton previous;
-
     @ViewById(R.id.btn_submit)
     SansButton submitBtn;
-
     @ViewById(R.id.btn_next)
     ImageButton next;
-
     @ViewById(R.id.showAnswer)
     Button showAnswer;
-
     @ViewById(R.id.optionList)
     RecyclerView optionListRecycler;
-
     @ViewById(R.id.hive_recycler)
     RecyclerView hive_recycler;
-
     @ViewById(R.id.bottom_control_container)
     RecyclerView bottom_control_container;
 

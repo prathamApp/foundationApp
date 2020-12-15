@@ -11,9 +11,9 @@
         android:id="@+id/header_rl"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/_10sdp"
-        android:layout_marginTop="@dimen/_15sdp"
-        android:layout_marginEnd="@dimen/_10sdp"
+        android:layout_marginStart="@dimen/_8sdp"
+        android:layout_marginTop="@dimen/_10sdp"
+        android:layout_marginEnd="@dimen/_8sdp"
         android:layout_marginBottom="@dimen/_5sdp"
         android:paddingEnd="10dp"
         tools:ignore="RtlSymmetry">
@@ -31,8 +31,6 @@
             android:id="@+id/card_img"
             android:layout_width="@dimen/_80sdp"
             android:layout_height="@dimen/_80sdp"
-            android:layout_marginStart="10dp"
-            android:layout_marginTop="10dp"
             android:layout_marginEnd="15dp"
             android:layout_marginBottom="10dp"
             android:background="@android:color/transparent"
@@ -63,36 +61,38 @@
                 android:textColor="@color/colorText"
                 android:textSize="@dimen/_14sdp" />
 
-            <com.pratham.foundation.customView.fontsview.SansTextView
-                android:id="@+id/tv_usage"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/tv_studentName"
-                android:layout_alignParentStart="true"
-                android:layout_marginTop="4dp"
-                android:gravity="center_vertical"
-                android:paddingTop="2dp"
-                android:paddingBottom="2dp"
-                android:text="@string/usage"
-                android:textAllCaps="true"
-                android:textColor="@color/colorText"
-                android:textSize="@dimen/_12sdp"
-                android:visibility="visible" />
 
             <RelativeLayout
                 android:id="@+id/usage_2"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/tv_usage"
+                android:layout_below="@+id/tv_studentName"
                 android:layout_marginTop="4dp"
                 android:paddingBottom="2dp"
                 android:visibility="visible">
+
+                <com.pratham.foundation.customView.fontsview.SansTextViewBold
+                    android:id="@+id/tv_usage"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true"
+                    android:gravity="center_vertical"
+                    android:paddingTop="2dp"
+                    android:paddingBottom="2dp"
+                    android:text="@string/usage"
+                    android:textAllCaps="true"
+                    android:textColor="@color/colorText"
+                    android:textSize="@dimen/_12sdp"
+                    android:visibility="visible" />
 
                 <com.pratham.foundation.customView.fontsview.SansTextView
                     android:id="@+id/tv_days"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_alignParentStart="true"
+                    android:layout_toEndOf="@id/tv_usage"
+                    android:paddingTop="2dp"
+                    android:paddingBottom="2dp"
+                    android:layout_marginStart="5dp"
                     android:layout_marginEnd="5dp"
                     android:gravity="center_vertical"
                     android:text="20"
@@ -104,6 +104,8 @@
                     android:id="@+id/lbl_days"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:paddingTop="2dp"
+                    android:paddingBottom="2dp"
                     android:layout_marginEnd="10dp"
                     android:layout_toEndOf="@+id/tv_days"
                     android:gravity="center_vertical"
@@ -134,7 +136,7 @@
                         android:layout_marginEnd="@dimen/_2sdp"
                         android:layout_marginBottom="5dp"
                         android:layout_weight="1"
-                        android:background="@drawable/certificate_bg"
+                        android:background="@drawable/certificate_bg_new"
                         android:elevation="3dp"
                         android:padding="3dp"
                         android:visibility="gone">
@@ -177,7 +179,7 @@
                         android:layout_marginEnd="@dimen/_2sdp"
                         android:layout_marginBottom="5dp"
                         android:layout_weight="1"
-                        android:background="@drawable/certificate_bg"
+                        android:background="@drawable/certificate_bg_new"
                         android:elevation="3dp"
                         android:padding="3dp"
                         android:visibility="gone">
@@ -220,7 +222,7 @@
                         android:layout_marginEnd="@dimen/_2sdp"
                         android:layout_marginBottom="5dp"
                         android:layout_weight="1"
-                        android:background="@drawable/certificate_bg"
+                        android:background="@drawable/certificate_bg_new"
                         android:elevation="3dp"
                         android:padding="3dp"
                         android:visibility="gone">
@@ -281,111 +283,3 @@
         android:scaleType="centerInside"
         android:src="@drawable/language_icon" />
 </RelativeLayout>
-
-    <!--<ScrollView-->
-    <!--android:layout_width="match_parent"-->
-    <!--android:layout_height="match_parent"-->
-    <!--android:layout_below="@+id/header_rl">-->
-
-    <!--<RelativeLayout-->
-    <!--    android:layout_width="match_parent"-->
-    <!--    android:layout_height="match_parent">-->
-
-    <!--    <RelativeLayout-->
-    <!--        android:id="@+id/lbl_Progreess_layout1"-->
-    <!--        android:layout_width="match_parent"-->
-    <!--        android:layout_height="wrap_content"-->
-    <!--        android:layout_below="@+id/lbl_Progreess_layout"-->
-    <!--        android:background="@drawable/dialog_bg"-->
-    <!--        android:elevation="5dp"-->
-    <!--        android:paddingStart="15dp"-->
-    <!--        android:paddingEnd="15dp"-->
-    <!--        android:layout_marginTop="3dp"-->
-    <!--        android:layout_marginBottom="8dp"-->
-    <!--        android:layout_marginStart="10dp"-->
-    <!--        android:layout_marginEnd="10dp">-->
-
-    <!--        <com.pratham.foundation.customView.fontsview.SansTextViewBold-->
-    <!--            android:id="@+id/lbl_Progreess_Header1"-->
-    <!--            android:layout_width="match_parent"-->
-    <!--            android:layout_height="wrap_content"-->
-    <!--            android:gravity="center_vertical"-->
-    <!--            android:paddingTop="2dp"-->
-    <!--            android:paddingBottom="2dp"-->
-    <!--            android:layout_marginTop="5dp"-->
-    <!--            android:text="@string/progress"-->
-    <!--            android:textAllCaps="true"-->
-    <!--            android:textColor="@color/colorBtnGreenDark"-->
-    <!--            android:textSize="@dimen/_14sdp" />-->
-
-    <!--        <android.support.design.card.MaterialCardView-->
-    <!--            android:layout_width="155dp"-->
-    <!--            android:layout_below="@id/lbl_Progreess_Header1"-->
-    <!--            android:layout_height="200dp"-->
-    <!--            android:layout_marginTop="10dp"-->
-    <!--            android:layout_marginBottom="10dp"-->
-    <!--            android:layout_marginStart="10dp"-->
-    <!--            android:layout_marginEnd="10dp"-->
-    <!--            app:cardCornerRadius="20dp"-->
-    <!--            app:cardElevation="5dp">-->
-
-    <!--            <ImageView-->
-    <!--                android:layout_width="match_parent"-->
-    <!--                android:layout_height="match_parent"-->
-    <!--                android:src="@drawable/b3"-->
-    <!--                android:scaleType="fitCenter"/>-->
-    <!--        </android.support.design.card.MaterialCardView>-->
-
-
-    <!--    </RelativeLayout>-->
-
-    <!--    <RelativeLayout-->
-    <!--        android:id="@+id/lbl_Progreess_layout2"-->
-    <!--        android:layout_width="match_parent"-->
-    <!--        android:layout_height="wrap_content"-->
-    <!--        android:background="@drawable/dialog_bg"-->
-    <!--        android:layout_below="@+id/lbl_Progreess_layout1"-->
-    <!--        android:elevation="5dp"-->
-    <!--        android:paddingStart="15dp"-->
-    <!--        android:paddingEnd="15dp"-->
-    <!--        android:layout_marginTop="3dp"-->
-    <!--        android:layout_marginBottom="8dp"-->
-    <!--        android:layout_marginStart="10dp"-->
-    <!--        android:layout_marginEnd="10dp">-->
-
-    <!--        <com.pratham.foundation.customView.fontsview.SansTextViewBold-->
-    <!--            android:id="@+id/lbl_Progreess_header2"-->
-    <!--            android:layout_width="match_parent"-->
-    <!--            android:layout_height="wrap_content"-->
-    <!--            android:gravity="center_vertical"-->
-    <!--            android:paddingTop="2dp"-->
-    <!--            android:paddingBottom="2dp"-->
-    <!--            android:layout_marginTop="5dp"-->
-    <!--            android:text="@string/progress"-->
-    <!--            android:textAllCaps="true"-->
-    <!--            android:textColor="@color/colorBtnGreenDark"-->
-    <!--            android:textSize="@dimen/_14sdp" />-->
-
-    <!--        <android.support.design.card.MaterialCardView-->
-    <!--            android:layout_width="155dp"-->
-    <!--            android:layout_below="@id/lbl_Progreess_header2"-->
-    <!--            android:layout_height="200dp"-->
-    <!--            android:layout_marginTop="10dp"-->
-    <!--            android:layout_marginBottom="10dp"-->
-    <!--            android:layout_marginStart="10dp"-->
-    <!--            android:layout_marginEnd="10dp"-->
-    <!--            app:cardCornerRadius="20dp"-->
-    <!--            app:cardElevation="5dp">-->
-
-    <!--            <ImageView-->
-    <!--                android:layout_width="match_parent"-->
-    <!--                android:layout_height="match_parent"-->
-    <!--                android:src="@drawable/b3"-->
-    <!--                android:scaleType="fitCenter"/>-->
-    <!--        </android.support.design.card.MaterialCardView>-->
-
-
-    <!--    </RelativeLayout>-->
-
-    <!--</RelativeLayout>-->
-    <!--</ScrollView>-->

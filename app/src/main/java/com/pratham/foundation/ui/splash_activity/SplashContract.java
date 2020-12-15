@@ -67,6 +67,8 @@ public interface SplashContract {
         void createNoMediaForFCInternal(File myFile);
 
         void populateAssetsMenu();
+
+        void copyTestJsons(int no);
     }
 
 }

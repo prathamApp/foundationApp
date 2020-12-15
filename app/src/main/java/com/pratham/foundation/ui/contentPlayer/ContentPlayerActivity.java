@@ -67,7 +67,8 @@ public class ContentPlayerActivity extends BaseActivity implements ShowInstructi
         testcall = intent.getStringExtra("testcall");
 
         if (sdStatus != null) {
-            onSdCard = sdStatus.equalsIgnoreCase("T");
+            if(sdStatus.equalsIgnoreCase("T"))
+                onSdCard = true;
         }
         floating_back.setImageResource(R.drawable.ic_left_arrow_white);
         floating_info.setImageResource(R.drawable.ic_info_outline_white);

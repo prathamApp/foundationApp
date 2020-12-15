@@ -144,13 +144,15 @@ public class CertificateDisplayActivity extends BaseActivity implements
     }
 
     @Override
-    public void gotoCertificate(Assessment assessment, String cTitle) {
+    public void gotoCertificate(Assessment assessment, String cTitle, String cSubject) {
 //        Toast.makeText(this, "gotoCertificate", Toast.LENGTH_SHORT).show();
         Intent intent = new Intent(this, CertificateActivity_.class);
         intent.putExtra("nodeId", "na");
         intent.putExtra("CertiCode", "" + assessment.getQuestionIda());
         intent.putExtra("CertiTitle", "" + assessment.getLevela());
         intent.putExtra("cTitle", "" + cTitle);
+        intent.putExtra("cSubject", "" + cSubject);
+        intent.putExtra("cLevel", "" + assessment.getLevela());
         intent.putExtra("TimeStamp", "" + assessment.getEndDateTime());
         intent.putExtra("display", "display");
         intent.putExtra("assessment", assessment);

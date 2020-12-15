@@ -56,7 +56,7 @@ public class CertificateDisplayViewHolder extends RecyclerView.ViewHolder {
         }
 
         if (!certiItem.isAsessmentGiven()) {
-            ratingStars.setVisibility(View.GONE);
+            Objects.requireNonNull(ratingStars).setVisibility(View.GONE);
             if (CertificateActivity.certificateLanguage.equalsIgnoreCase("English"))
                 Objects.requireNonNull(title).setText(ques + certiItem.getEnglishQues());
             if (CertificateActivity.certificateLanguage.equalsIgnoreCase("Hindi"))
@@ -65,7 +65,7 @@ public class CertificateDisplayViewHolder extends RecyclerView.ViewHolder {
                 Objects.requireNonNull(title).setText(ques + certiItem.getMarathiQues());
             if (CertificateActivity.certificateLanguage.equalsIgnoreCase("Gujarati")) {
                 Typeface face = Typeface.createFromAsset(ApplicationClass.getInstance().getAssets(), "fonts/muktavaani_gujarati.ttf");
-                title.setTypeface(face);
+                Objects.requireNonNull(title).setTypeface(face);
                 Objects.requireNonNull(title).setText(ques + certiItem.getGujaratiQues());
             }
             if (CertificateActivity.certificateLanguage.equalsIgnoreCase("Kannada"))
@@ -74,27 +74,27 @@ public class CertificateDisplayViewHolder extends RecyclerView.ViewHolder {
                 Objects.requireNonNull(title).setText(ques + certiItem.getBengaliQues());
             if (CertificateActivity.certificateLanguage.equalsIgnoreCase("Assamese")) {
                 Typeface face = Typeface.createFromAsset(ApplicationClass.getInstance().getAssets(), "fonts/lohit_oriya.ttf");
-                title.setTypeface(face);
+                Objects.requireNonNull(title).setTypeface(face);
                 Objects.requireNonNull(title).setText(ques + certiItem.getAssameseQues());
             }
             if (CertificateActivity.certificateLanguage.equalsIgnoreCase("Telugu"))
                 Objects.requireNonNull(title).setText(ques + certiItem.getTeluguQues());
             if (CertificateActivity.certificateLanguage.equalsIgnoreCase("Tamil"))
                 Objects.requireNonNull(title).setText(ques + certiItem.getTamilQues());
-            if (CertificateActivity.certificateLanguage.equalsIgnoreCase("Odia")) {
+            if (CertificateActivity.certificateLanguage.equalsIgnoreCase("Odiya")) {
                 Typeface face = Typeface.createFromAsset(ApplicationClass.getInstance().getAssets(), "fonts/lohit_oriya.ttf");
-                title.setTypeface(face);
-                Objects.requireNonNull(title).setText(ques + certiItem.getOdiaQues());
+                Objects.requireNonNull(title).setTypeface(face);
+                Objects.requireNonNull(title).setText(ques + certiItem.getOdiyaQues());
             }
             if (CertificateActivity.certificateLanguage.equalsIgnoreCase("Urdu"))
                 Objects.requireNonNull(title).setText(ques + certiItem.getUrduQues());
             if (CertificateActivity.certificateLanguage.equalsIgnoreCase("Punjabi")) {
                 Typeface face = Typeface.createFromAsset(ApplicationClass.getInstance().getAssets(), "fonts/raavi_punjabi.ttf");
-                title.setTypeface(face);
+                Objects.requireNonNull(title).setTypeface(face);
                 Objects.requireNonNull(title).setText(ques + certiItem.getPunjabiQues());
             }
 
-            certificate_card.setOnClickListener(new View.OnClickListener() {
+            Objects.requireNonNull(certificate_card).setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     certificateClicked.onCertificateOpenGame(position, certiItem.getNodeId());
@@ -126,10 +126,10 @@ public class CertificateDisplayViewHolder extends RecyclerView.ViewHolder {
                 Objects.requireNonNull(title).setText(ques + certiItem.getTeluguAnsw());
             if (CertificateActivity.certificateLanguage.equalsIgnoreCase("Tamil"))
                 Objects.requireNonNull(title).setText(ques + certiItem.getTamilAnsw());
-            if (CertificateActivity.certificateLanguage.equalsIgnoreCase("Odia")) {
+            if (CertificateActivity.certificateLanguage.equalsIgnoreCase("Odiya")) {
                 Typeface face = Typeface.createFromAsset(ApplicationClass.getInstance().getAssets(), "fonts/lohit_oriya.ttf");
                 Objects.requireNonNull(title).setTypeface(face);
-                Objects.requireNonNull(title).setText(ques + certiItem.getOdiaAnsw());
+                Objects.requireNonNull(title).setText(ques + certiItem.getOdiyaAnsw());
             }
             if (CertificateActivity.certificateLanguage.equalsIgnoreCase("Urdu"))
                 Objects.requireNonNull(title).setText(ques + certiItem.getUrduAnsw());
@@ -149,7 +149,7 @@ public class CertificateDisplayViewHolder extends RecyclerView.ViewHolder {
             });*/
 
         }
-        setAnimations(certificate_card);
+        setAnimations(Objects.requireNonNull(certificate_card));
     }
 
     private void setAnimations(final View content_card_view) {

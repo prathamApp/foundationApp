@@ -1,27 +1,26 @@
 package com.pratham.foundation.ui.contentPlayer.new_reading_fragment;
 
-import android.animation.Animator;
-import android.animation.AnimatorListenerAdapter;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.Rect;
 import android.graphics.drawable.ColorDrawable;
 import android.media.MediaPlayer;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.text.Html;
+import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
 import android.view.View;
-import android.view.ViewAnimationUtils;
 import android.view.Window;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -32,6 +31,11 @@ import android.widget.TextView;
 
 import androidx.fragment.app.Fragment;
 
+import com.facebook.drawee.backends.pipeline.Fresco;
+import com.facebook.drawee.interfaces.DraweeController;
+import com.facebook.drawee.view.SimpleDraweeView;
+import com.facebook.imagepipeline.request.ImageRequest;
+import com.facebook.imagepipeline.request.ImageRequestBuilder;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.nex3z.flowlayout.FlowLayout;
 import com.pratham.foundation.ApplicationClass;
@@ -39,7 +43,6 @@ import com.pratham.foundation.R;
 import com.pratham.foundation.customView.display_image_dialog.Activity_DisplayImage_;
 import com.pratham.foundation.customView.display_image_dialog.CustomLodingDialog;
 import com.pratham.foundation.customView.fontsview.SansTextView;
-import com.pratham.foundation.customView.shape_of_view.ShadowLayout;
 import com.pratham.foundation.interfaces.OnGameClose;
 import com.pratham.foundation.modalclasses.EventMessage;
 import com.pratham.foundation.modalclasses.ModalParaSubMenu;
@@ -63,13 +66,12 @@ import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
+import static android.content.Context.INPUT_METHOD_SERVICE;
 import static com.pratham.foundation.ApplicationClass.ButtonClickSound;
 import static com.pratham.foundation.BaseActivity.setMute;
 import static com.pratham.foundation.ui.contentPlayer.GameConstatnts.readingImgPath;
@@ -84,7 +86,7 @@ import static com.pratham.foundation.utility.FC_Constants.sec_Test;
 //@EFragment(R.layout.reading_layout_xml_file)
 @EFragment(R.layout.fragment_story_reading)
 public class ContentReadingFragment extends Fragment implements
-        /*RecognitionListener, */STT_Result_New.sttView,
+        STT_Result_New.sttView,
         ContentReadingContract.ContentReadingView, OnGameClose {
 
     @Bean(ContentReadingPresenter.class)
@@ -93,10 +95,8 @@ public class ContentReadingFragment extends Fragment implements
     public static MediaPlayer mp, mPlayer;
     @ViewById(R.id.myflowlayout)
     FlowLayout wordFlowLayout;
-    //    @ViewById(R.id.toolbar)
-//    Toolbar toolbar;
-    @ViewById(R.id.parapax_image)
-    ImageView parapax_image;
+    @ViewById(R.id.iv_image)
+    SimpleDraweeView pageImage;
     @ViewById(R.id.tv_story_title)
     TextView story_title;
     @ViewById(R.id.btn_prev)
@@ -117,20 +117,23 @@ public class ContentReadingFragment extends Fragment implements
     ImageButton btn_Stop;
     @ViewById(R.id.btn_camera)
     ImageButton btn_camera;
-    //    @ViewById(R.id.ib_back)
-//    ImageButton ib_back;
-//    @ViewById(R.id.ib_page_img)
-//    ImageButton ib_page_img;
     @ViewById(R.id.bottom_bar2)
     LinearLayout bottom_bar2;
-    //    @ViewById(R.id.ll_btn_next)
-//    LinearLayout ll_btn_next;
-//    @ViewById(R.id.ll_btn_prev)
-//    LinearLayout ll_btn_prev;
-    @ViewById(R.id.image_container)
-    ShadowLayout image_container;
     @ViewById(R.id.floating_img)
     FloatingActionButton floating_img;
+
+    @ViewById(R.id.stt_result_tv)
+    TextView stt_result_tv;
+    @ViewById(R.id.clean_stt)
+    ImageView clean_stt;
+    @ViewById(R.id.ll_edit_text)
+    LinearLayout ll_edit_text;
+    @ViewById(R.id.et_edit_ans)
+    EditText et_edit_ans;
+    @ViewById(R.id.bt_edit_ok)
+    Button bt_edit_ok;
+    String [] attAnsList;
+
 
     ContinuousSpeechService_New continuousSpeechService;
 
@@ -161,29 +164,11 @@ public class ContentReadingFragment extends Fragment implements
     boolean voiceStart = false, flgPerMarked = false, onSdCard;
     static boolean[] correctArr;
     static boolean[] testCorrectArr;
-//    AnimationDrawable animationDrawable;
-
-/*
-        bundle.putString("nodeID", nodeID);
-        bundle.putString("contentType","s");
-        bundle.putString("storyPath","s");
-        bundle.putString("storyId","s");
-        bundle.putString("storyTitle","s");
-        bundle.putString("certiCode","s");
-        bundle.putBoolean("onSdCard", false);
-        FC_Utility.showFragment(ContentPlayerActivity.this, new ContentReadingFragment_(), R.id.RL_CPA,
-    bundle, ContentReadingFragment_.class.getSimpleName());
-*/
-
 
     @AfterViews
     public void initialize() {
         showLoader();
         context = getActivity();
-
-//        if (getActivity() instanceof ContentPlayerActivity) {
-//            ((ContentPlayerActivity) getActivity()).hideFloating_info();
-//        }
 
         silence_outer_layout.setVisibility(View.GONE);
         Bundle bundle = getArguments();
@@ -197,16 +182,12 @@ public class ContentReadingFragment extends Fragment implements
         ttsService = ApplicationClass.ttsService;
         contentType = "story";
 
-        image_container.setVisibility(View.GONE);
+        pageImage.setVisibility(View.GONE);
         floating_img.setImageResource(R.drawable.ic_image_white);
 
         bottom_bar2.setVisibility(View.GONE);
         btn_camera.setVisibility(View.GONE);
 
-//        animationDrawable = (AnimationDrawable) story_ll.getBackground();
-//        animationDrawable.setEnterFadeDuration(4500);
-//        animationDrawable.setExitFadeDuration(4500);
-//        animationDrawable.start();
         presenter.setView(ContentReadingFragment.this);
         modalPagesList = new ArrayList<>();
 
@@ -234,10 +215,8 @@ public class ContentReadingFragment extends Fragment implements
 
         try {
             story_title.setText(Html.fromHtml("" + storyName));
-//            toolbar.setTitle(storyName);
+            story_title.setSelected(true);
             presenter.fetchJsonData(readingContentPath);
-            //pageArray = presenter.fetchJsonData(storyName);
-//            getWordsOfStoryOfPage();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -247,6 +226,9 @@ public class ContentReadingFragment extends Fragment implements
     public void setListData(List<ModalParaSubMenu> paraDataList) {
         modalPagesList = paraDataList;
         totalPages = modalPagesList.size();
+        attAnsList = new String[totalPages];
+        for(int a=0; a<totalPages;a++)
+            attAnsList[a]="";
     }
 
     public CustomLodingDialog myLoadingDialog;
@@ -348,97 +330,26 @@ public class ContentReadingFragment extends Fragment implements
         startTime = FC_Utility.getCurrentDateTime();
     }
 
-    private void revealShow(View dialogView, boolean b, final CustomLodingDialog dialog) {
-
-        final View view = dialogView.findViewById(R.id.dialog_main);
-        int w = view.getWidth();
-        int h = view.getHeight();
-        int endRadius = (int) Math.hypot(w, h);
-        int cx = (int) (view.getX() + (view.getWidth() / 2));
-        int cy = (int) (view.getY()) + view.getHeight() + 56;
-
-        if (b) {
-            Animator revealAnimator = ViewAnimationUtils.createCircularReveal(view, cx, cy, 0, endRadius);
-            view.setVisibility(View.VISIBLE);
-            revealAnimator.setDuration(700);
-            revealAnimator.start();
-
-        } else {
-
-            Animator anim =
-                    ViewAnimationUtils.createCircularReveal(view, cx, cy, endRadius, 0);
-
-            anim.addListener(new AnimatorListenerAdapter() {
-                @Override
-                public void onAnimationEnd(Animator animation) {
-                    super.onAnimationEnd(animation);
-                    dialog.dismiss();
-                    view.setVisibility(View.INVISIBLE);
-                }
-            });
-            anim.setDuration(700);
-            anim.start();
-        }
-
-    }
-
     private void showPageImage() {
-        try {
-            Bitmap bmImg = BitmapFactory.decodeFile(readingContentPath + storyBg);
-            BitmapFactory.decodeStream(new FileInputStream(readingContentPath + storyBg));
-            parapax_image.setImageBitmap(bmImg);
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
-/*        final Dialog dialog = new Dialog(getActivity());
-        final View dialogView = View.inflate(getActivity(),R.layout.fc_show_image_dialog,null);
-        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-        dialog.setContentView(dialogView);
-        dialog.setCanceledOnTouchOutside(false);
-        ImageView iv_dia_preview = dialog.findViewById(R.id.iv_dia_img);
-        ImageButton dia_btn_cross = dialog.findViewById(R.id.dia_btn_cross);
-        GifView gif_view = dialog.findViewById(R.id.gif_dia_view);
-
-        dialog.setOnShowListener(dialogInterface -> revealShow(dialogView, true, null));
-
         try {
             File f = new File(readingContentPath + storyBg);
             if (f.exists()) {
-                if (storyBg.contains(".gif")) {
-                    iv_dia_preview.setVisibility(View.GONE);
-                    gif_view.setVisibility(View.VISIBLE);
-                    gif_view.setGifResource(new FileInputStream(readingContentPath + storyBg));
-                    gif_view.play();
-                } else {
-                    gif_view.setVisibility(View.GONE);
-                    iv_dia_preview.setVisibility(View.VISIBLE);
-                    Bitmap bmImg = BitmapFactory.decodeFile(readingContentPath + storyBg);
-                    BitmapFactory.decodeStream(new FileInputStream(readingContentPath + storyBg));
-                    iv_dia_preview.setImageBitmap(bmImg);
-                }
+                ImageRequest imageRequest = ImageRequestBuilder
+                        .newBuilderWithSource(Uri.fromFile(f))
+                        .setLocalThumbnailPreviewsEnabled(true)
+                        .build();
+                DraweeController controller = Fresco.newDraweeControllerBuilder()
+                        .setImageRequest(imageRequest)
+                        .setAutoPlayAnimations(true)// if gif, it will play.
+                        .setOldController(Objects.requireNonNull(pageImage).getController())
+                        .build();
+                pageImage.setController(controller);
             } else {
-                gif_view.setVisibility(View.GONE);
-                iv_dia_preview.setVisibility(View.GONE);
+                pageImage.setVisibility(View.GONE);
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
-
-        dialog.show();
-        dia_btn_cross.setOnClickListener(v -> {
-            dialog.dismiss();
-            new Handler().postDelayed(() -> {
-                if (!FastSave.getInstance().getString(APP_SECTION,"").equalsIgnoreCase(sec_Test))
-                    btn_Play.performClick();
-                else {
-                    btn_Mic.performClick();
-                    btn_Play.setVisibility(View.GONE);
-                    bottom_bar2.setVisibility(View.VISIBLE);
-                    btn_submit.setVisibility(View.VISIBLE);
-                }
-            }, 200);
-        });*/
     }
 
     @UiThread
@@ -847,6 +758,7 @@ public class ContentReadingFragment extends Fragment implements
         return perc;
     }
 
+    @SuppressLint("SetTextI18n")
     @Click(R.id.btn_prev)
     void gotoPrevPage() {
         if (currentPage > 0) {
@@ -915,6 +827,7 @@ public class ContentReadingFragment extends Fragment implements
                 playFlg = false;
                 pauseFlg = true;
                 flgPerMarked = false;
+                stt_result_tv.setText(""+attAnsList[currentPage]);
                 presenter.getPage(currentPage);
             } catch (Exception e) {
                 e.printStackTrace();
@@ -928,6 +841,7 @@ public class ContentReadingFragment extends Fragment implements
         showStars(false);
     }
 
+    @SuppressLint("SetTextI18n")
     @Click(R.id.btn_next)
     void gotoNextPage() {
         if (currentPage < totalPages - 1) {
@@ -991,12 +905,12 @@ public class ContentReadingFragment extends Fragment implements
                 float perc = getPercentage();
                 presenter.addScore(0, "perc - " + perc, correctAnswerCount, correctArr.length, startTime, "" + contentType);
             }
-
             currentPage++;
             pageNo++;
             flgPerMarked = true;
             playFlg = false;
             pauseFlg = true;
+            stt_result_tv.setText(""+attAnsList[currentPage]);
             presenter.getPage(currentPage);
             Log.d("click", "NextBtn - totalPages: " + totalPages + "  currentPage: " + currentPage);
         } else {
@@ -1255,17 +1169,45 @@ public class ContentReadingFragment extends Fragment implements
     @Background
     @Override
     public void Stt_onResult(ArrayList<String> sttResult) {
-
         flgPerMarked = false;
+        setSttResult(sttResult);
         presenter.sttResultProcess(sttResult, splitWordsPunct, wordsResIdList);
+    }
 
-/*        if (!voiceStart) {
-            resetSpeechRecognizer();
-            btn_Play.setVisibility(View.VISIBLE);
-            btn_Mic.setImageResource(R.drawable.ic_mic_black);
-            setMute(0);
-        } else
-            speech.startListening(recognizerIntent);*/
+    @UiThread
+    public void setSttResult(ArrayList<String> sttResult) {
+        if(sttResult.size()>0) {
+            String txt = String.valueOf(stt_result_tv.getText());
+            String atxt = txt + sttResult.get(0)+ " ";
+            attAnsList[currentPage]=atxt;
+            stt_result_tv.setText("");
+            stt_result_tv.setTextSize(28);
+            stt_result_tv.setText(attAnsList[currentPage]);
+            stt_result_tv.setMovementMethod(new ScrollingMovementMethod());
+        }
+    }
+
+    @Click(R.id.clean_stt)
+    void sttClearClicked() {
+        if(voiceStart)
+            btn_Stop.performClick();
+        et_edit_ans.setText(attAnsList[currentPage]);
+        ll_edit_text.setVisibility(View.VISIBLE);
+//        stt_result_tv.setText("");
+//        attAnsList[currentPage]="";
+    }
+
+    @Click(R.id.bt_edit_ok)
+    public void editOKClicked(){
+        attAnsList[currentPage] = ""+et_edit_ans.getText();
+        stt_result_tv.setText(attAnsList[currentPage]);
+        ArrayList<String> sttResult = new ArrayList<>();
+        sttResult.add(attAnsList[currentPage]);
+        presenter.sttResultProcess(sttResult, splitWordsPunct, wordsResIdList);
+        InputMethodManager imm = (InputMethodManager) context.getSystemService(INPUT_METHOD_SERVICE);
+        Objects.requireNonNull(imm).hideSoftInputFromWindow(ll_edit_text.getWindowToken(), 0);
+        ll_edit_text.setVisibility(View.GONE);
+//        hideSystemUI();
     }
 
     @ViewById(R.id.silence_outer)

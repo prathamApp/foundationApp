@@ -6,9 +6,9 @@
     android:layout_height="wrap_content"
     android:layout_alignParentTop="true"
     android:layout_marginTop="@dimen/_3sdp"
-    android:layout_marginBottom="@dimen/_8sdp"
-    android:layout_marginStart="@dimen/_15sdp"
-    android:layout_marginEnd="@dimen/_15sdp"
+    android:layout_marginBottom="@dimen/_4sdp"
+    android:layout_marginStart="@dimen/_8sdp"
+    android:layout_marginEnd="@dimen/_8sdp"
     app:cardElevation="@dimen/_2sdp"
     app:cardBackgroundColor="@color/white"
     app:cardCornerRadius="@dimen/_10sdp">

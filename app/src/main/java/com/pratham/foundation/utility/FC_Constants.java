@@ -1,14 +1,9 @@
 package com.pratham.foundation.utility;
 
+import com.pratham.foundation.ApplicationClass;
+import com.pratham.foundation.R;
+
 public class FC_Constants {
-
-
-//    ActivatedDate
-//    village
-//    ActivatedForGroups
-
-//    Internal storage status.
-//    device features - , , , , ,
 
     public static final String FTP_CLIENT_CONNECTED = "ftp_client_connected";
     public static final String TOPIC = "topic";
@@ -135,6 +130,10 @@ public class FC_Constants {
     public static final String CLOSE_CONTENT_PLAYER = "close_content_player";
     public static final String YOUTUBE_LINK = "youtube";
     public static final String NEW_ASSET_DB = "NEW_ASSET_DB";
+    public static final String SYNC_CERTI_LENGTH = "sync_certi_length";
+    public static final String INITIAL_SD_COPIED = "initial_sd_copied";
+    public static final String TEST_JSON_COPY = "test_json_copy";
+    public static final String TEST_JSON_COPY2 = "test_json_copy2";
     public static boolean SD_DB = false;
     public static boolean SPLASH_OPEN = false;
     public static String RECEIVED_FOLDER_PATH = "";
@@ -142,18 +141,33 @@ public class FC_Constants {
     public static int FTP_HOTSPOT_KEYMGMT = -11;
     public static String HOTSPOT_SSID = "pratham";
     public static String HOTSPOT_PASSWORD = "";
-    public static final String HINDI = "Hindi";
-    public static final String ENGLISH = "English";
-    public static final String MARATHI = "Marathi";
-    public static final String KANNADA = "Kannada";
-    public static final String TELUGU = "Telugu";
+
+    public static final String ASSAMESE = "Assamese";
     public static final String BENGALI = "Bengali";
+    public static final String ENGLISH = "English";
     public static final String GUJARATI = "Gujarati";
+    public static final String HINDI = "Hindi";
+    public static final String KANNADA = "Kannada";
+    public static final String MARATHI = "Marathi";
+    public static final String ODIYA = "Odiya";
     public static final String PUNJABI = "Punjabi";
     public static final String TAMIL = "Tamil";
-    public static final String ODIYA = "Odiya";
+    public static final String TELUGU = "Telugu";
     public static final String MALAYALAM = "Malayalam";
-    public static final String ASSAMESE = "Assamese";
+
+    public static final String ASSAMESE_LOCAL = "en-IN";
+    public static final String BENGALI_LOCAL = "bn-IN";
+    public static final String ENGLISH_LOCAL = "en-IN";
+    public static final String GUJARATI_LOCAL = "gu-IN";
+    public static final String HINDI_LOCAL = "hi-IN";
+    public static final String KANNADA_LOCAL = "kn-IN";
+    public static final String MARATHI_LOCAL = "mr-IN";
+    public static final String ODIYA_LOCAL = "en-IN";
+    public static final String PUNJABI_LOCAL = "en-IN";
+    public static final String TAMIL_LOCAL = "ta-IN";
+    public static final String TELUGU_LOCAL = "te-IN";
+    public static final String MALAYALAM_LOCAL = "en-IN";
+
     public static final String LANGUAGE = "language";
     public static final String TEST_DISPLAY_LANGUAGE = "test display language";
     public static int READ_BUFFER_SIZE = 1024 * 4;
@@ -192,17 +206,28 @@ public class FC_Constants {
     public static final String TYPE_HEADER = "Header";
     public static final String TYPE_ITEM = "Resource";
     public static final String TYPE_FOOTER = "Footer";
+    public static final String TYPE_IS_DOWNLOADING = "type_is_downloading";
 
     public static final String SELECT_SUBJECT_SHOWCASE = "select_subject_showcase";
     public static final String HOME_ACTIVITY_SHOWCASE = "home_activity_showcase";
     public static final String PROFILE_FRAGMENT_SHOWCASE = "profile_fragment_showcase";
 
-    /*    public static String currentStudentID;
-        public static String currentAssessmentStudentID;
-        public static String currentsupervisorID;
-        public static String currentSession;
-        public static String assessmentSession;*/
+    //PROFILE SECTION
+    public static final String[] progressArray = {""+ ApplicationClass.getInstance().getResources().getString(R.string.progress),
+            ""+ ApplicationClass.getInstance().getResources().getString(R.string.status)};
+    public static final String[] progressSubArray = {""+ ApplicationClass.getInstance().getResources().getString(R.string.Certificates),
+            ""+ ApplicationClass.getInstance().getResources().getString(R.string.img_ques),
+            ""+ ApplicationClass.getInstance().getResources().getString(R.string.chat_l5)};
+    public static final String[] progressImgSubArray = {"Certificate", "ImageQues", "ChitChat"};
+    public static final String[] statusSubArray = {""+ ApplicationClass.getInstance().getResources().getString(R.string.sync),
+            ""+ ApplicationClass.getInstance().getResources().getString(R.string.sync_status),
+            ""+ ApplicationClass.getInstance().getResources().getString(R.string.lang_pack),
+            ""+ ApplicationClass.getInstance().getResources().getString(R.string.free_space)};
+    public static final String[] statusImgSubArray = {"syncDimg","syncImg", "Lang_ic", "cleanImg"};
+
+    public static boolean IS_DOWNLOADING = false;
     public static String STORING_IN;
+    public static String DOWNLOAD_NODE_ID = "";
     public static boolean assessmentFlag;
     public static boolean GROUP_LOGIN = false;
     public static final String supervisedAssessment = "supervisedAssessment";
@@ -221,8 +246,11 @@ public class FC_Constants {
     public static final String DEVICE_ID_STR = "&deviceid=";
     public static final String APP_LANGUAGE_SELECTED = "app_language_selected";
     public static final String TEST_JSON_DW = "test_json_dw";
+    public static final String STUDENT_BY_ENROLLMENT_NO = "student_by_enrollment_no";
 
     //    PRATHAM APIS
+    public static String uploadDataUrl = "http://devprodigi.openiscool.org/api/Foundation/PushData";
+    public static final String STUDENT_BY_ENROLLMENT_NO_API = "http://delhigovt.centralindia.cloudapp.azure.com:8083/api/StudentEnrollment?enrollmentno=";
     public static final String TEST_JSON_API = "http://devposapi.prathamopenschool.org/fcapptestjson/";
     public static final String PUSH_IMAGE_API = "http://devprodigi.openiscool.org/api/Foundation/PostImage";
     public static final String INTERNET_LANGUAGE_API = "http://devposapi.prathamopenschool.org/api/content/browse?id=";
@@ -345,8 +373,7 @@ public class FC_Constants {
     public static final String SYNC_MEDIA_LENGTH = "sync_media_length";
     public static final String AssessmentApp = "AssessmentApp";
 
-        public static final String BASE_URL = "http://prodigi.openiscool.org/api/pos/";
-//    public static final String BASE_URL = "http://delhigovt.centralindia.cloudapp.azure.com:8087/api/pos/";
+    public static final String BASE_URL = "http://prodigi.openiscool.org/api/pos/";
     public static String RASP_IP = "http://192.168.4.1:8080";
 
     public enum URL {
@@ -365,23 +392,7 @@ public class FC_Constants {
         DATASTORE_RASPBERY_PROGRAM_STATE_URL(RASP_IP + "/pratham/datastore/?table_name=ProgramState"),
         PULL_PROGRAMS("http://swap.prathamcms.org/api/program");
 
-/*        //        DelhiGov
-        BROWSE_BY_ID(BASE_URL + "get?id="),
-        SEARCH_BY_KEYWORD(BASE_URL + "GetSearchList?"),
-        POST_GOOGLE_DATA(BASE_URL + "PostGoogleSignIn"),
-        GET_TOP_LEVEL_NODE(BASE_URL + "GetTopLevelNode?lang="),
-        DATASTORE_RASPBERY_URL(RASP_IP + "/pratham/datastore/"),
-        BROWSE_RASPBERRY_URL(RASP_IP + "/api/contentnode?parent="),
-        GET_RASPBERRY_HEADER(RASP_IP + "/api/contentnode?content_id=f9da12749d995fa197f8b4c0192e7b2c"),
-        POST_SMART_INTERNET_URL("http://www.rpi.prathamskills.org/api/pushdatasmartphone/post/"),
-        POST_TAB_INTERNET_URL("http://www.rpi.prathamskills.org/api/pushdatapradigi/post/"),
-        PULL_STATES("http://delhigovt.centralindia.cloudapp.azure.com:8087/api/state?progid="),
-        DOWNLOAD_RESOURCE(BASE_URL + "DownloadResource?resid="),
-        DATASTORE_RASPBERY_PROGRAM_STATE_URL(RASP_IP + "/pratham/datastore/?table_name=ProgramState"),
-        PULL_PROGRAMS("http://delhigovt.centralindia.cloudapp.azure.com:8087/api/program");*/
-
         private final String name;
-
         URL(String s) {
             name = s;
         }

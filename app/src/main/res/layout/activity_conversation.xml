@@ -12,16 +12,16 @@
         android:layout_width="60dp"
         android:layout_height="60dp"
         android:layout_alignParentStart="true"
-        android:layout_marginStart="@dimen/_5sdp"
-        android:layout_marginTop="@dimen/_5sdp" />
+        android:layout_marginStart="5dp"
+        android:layout_marginTop="5dp" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/floating_info"
         android:layout_width="60dp"
         android:layout_height="60dp"
         android:layout_alignParentEnd="true"
-        android:layout_marginTop="@dimen/_5sdp"
-        android:layout_marginEnd="@dimen/_5sdp"
+        android:layout_marginTop="5dp"
+        android:layout_marginEnd="5dp"
         android:visibility="gone" />
 
     <RelativeLayout
@@ -154,6 +154,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
+                        android:padding="@dimen/_5sdp"
                         app:flChildSpacing="10dp" />
                 </ScrollView>
 

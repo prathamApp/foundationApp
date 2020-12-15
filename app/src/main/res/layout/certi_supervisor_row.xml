@@ -8,8 +8,7 @@
     android:layout_marginTop="@dimen/_5sdp"
     android:layout_marginEnd="@dimen/_10sdp"
     android:layout_marginBottom="@dimen/_5sdp"
-    android:background="@drawable/convo_send_disable"
-    android:elevation="@dimen/_2sdp"
+    android:background="@drawable/supervised_by_bg"
     android:gravity="center">
 
     <ImageView

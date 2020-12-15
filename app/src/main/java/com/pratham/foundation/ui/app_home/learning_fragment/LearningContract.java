@@ -50,6 +50,8 @@ public interface LearningContract {
 
         void serverIssueDialog();
 
+        void showToast(String msg);
+
 //        void setBotNodeId(String botID);
     }
 
@@ -61,7 +63,7 @@ public interface LearningContract {
 
         void updateDownloads();
 
-        void downloadResource(String downloadNodeId);
+        void downloadResource(String downloadNodeId, ContentTable dwContent);
 
         boolean removeLastNodeId();
 

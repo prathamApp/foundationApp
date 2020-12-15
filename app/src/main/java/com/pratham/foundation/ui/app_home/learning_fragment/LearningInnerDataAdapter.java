@@ -27,7 +27,7 @@ public class LearningInnerDataAdapter extends RecyclerView.Adapter {
     private List<ContentTable> itemsList;
     private Context mContext;
     boolean dw_Ready = false;
-//    LearningContract.LearningItemClicked itemClicked;
+    //    LearningContract.LearningItemClicked itemClicked;
     FragmentItemClicked itemClicked;
     int parentPos = 0;
     String parentName;
@@ -53,11 +53,11 @@ public class LearningInnerDataAdapter extends RecyclerView.Adapter {
             case 1:
                 LayoutInflater folder = LayoutInflater.from(viewGroup.getContext());
                 view = folder.inflate(R.layout.content_item_folder_card_tab, viewGroup, false);
-                return new ContentFolderViewHolder(view,itemClicked);
+                return new ContentFolderViewHolder(view, itemClicked);
             case 2:
                 LayoutInflater file = LayoutInflater.from(viewGroup.getContext());
                 view = file.inflate(R.layout.content_item_file_card, viewGroup, false);
-                return new ContentFileViewHolder(view,itemClicked);
+                return new ContentFileViewHolder(view, itemClicked);
             default:
                 return null;
         }
@@ -85,7 +85,7 @@ public class LearningInnerDataAdapter extends RecyclerView.Adapter {
             case 1:
                 //folder
                 ContentFolderViewHolder folderHolder = (ContentFolderViewHolder) viewHolder;
-                folderHolder.setFragmentFolderItem(itemsList.get(i),i,parentName,parentPos);
+                folderHolder.setFragmentFolderItem(itemsList.get(i), i, parentName, parentPos);
 //                FolderHolder folderHolder = (FolderHolder) viewHolder;
 //                folderHolder.card_main.setBackground(mContext.getResources().getDrawable(getRandomCardColor()));
 //                folderHolder.tvTitle.setText(itemsList.get(i).getNodeTitle());
@@ -155,7 +155,7 @@ public class LearningInnerDataAdapter extends RecyclerView.Adapter {
             case 2:
                 //file
                 ContentFileViewHolder fileHolder = (ContentFileViewHolder) viewHolder;
-                fileHolder.setFragmentFileItem(itemsList.get(i),i,parentName,parentPos);
+                fileHolder.setFragmentFileItem(itemsList.get(i), i, parentName, parentPos);
 //                FileHolder fileHolder = (FileHolder) viewHolder;
 //                fileHolder.tvTitle.setText(itemsList.get(i).getNodeTitle());
 //                fileHolder.tvTitle.setSelected(true);

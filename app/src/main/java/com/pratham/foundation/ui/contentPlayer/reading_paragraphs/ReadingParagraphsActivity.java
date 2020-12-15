@@ -9,12 +9,15 @@ import android.graphics.Rect;
 import android.graphics.drawable.ColorDrawable;
 import android.media.MediaPlayer;
 import android.os.Handler;
+import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -70,6 +73,10 @@ public class ReadingParagraphsActivity extends BaseActivity
     FlowLayout myFlowLayout;
     @ViewById(R.id.tv_content_title)
     TextView tvContentTitle;
+    @ViewById(R.id.stt_result_tv)
+    TextView stt_result_tv;
+    @ViewById(R.id.clean_stt)
+    ImageView clean_stt;
     @ViewById(R.id.btn_play)
     ImageButton btn_Play;
     @ViewById(R.id.btn_mic)
@@ -93,6 +100,13 @@ public class ReadingParagraphsActivity extends BaseActivity
     @ViewById(R.id.floating_info)
     FloatingActionButton floating_info;
 
+    @ViewById(R.id.ll_edit_text)
+    LinearLayout ll_edit_text;
+    @ViewById(R.id.et_edit_ans)
+    EditText et_edit_ans;
+    @ViewById(R.id.bt_edit_ok)
+    Button bt_edit_ok;
+
     ContinuousSpeechService_New continuousSpeechService;
 
     List<Integer> readSounds = new ArrayList<>();
@@ -111,6 +125,7 @@ public class ReadingParagraphsActivity extends BaseActivity
     List<ModalParaWord> modalParaWordList;
     String readingContentPath, contentPath, contentTitle, StudentID, resId, paraAudio,
             useText, englishWord, startPlayBack, resStartTime, certiCode, resType;
+    String [] attAnsList;
 
     @SuppressLint("SetTextI18n")
     @AfterViews
@@ -139,6 +154,7 @@ public class ReadingParagraphsActivity extends BaseActivity
         resType = intent.getStringExtra("resType");
         onSdCard = getIntent().getBooleanExtra("onSdCard", false);
         tvContentTitle.setText("" + contentTitle);
+        tvContentTitle.setSelected(true);
 
         readSounds.add(R.raw.tap_the_mic);
         readSounds.add(R.raw.your_turn_to_read);
@@ -155,6 +171,8 @@ public class ReadingParagraphsActivity extends BaseActivity
             readingContentPath = ApplicationClass.foundationPath + gameFolderPath + "/" + contentPath + "/";
 
         continuousSpeechService.resetSpeechRecognizer();
+        attAnsList = new String[1];
+        attAnsList[0]="";
 
         try {
             if (FastSave.getInstance().getString(APP_SECTION,"").equalsIgnoreCase(sec_Test)) {
@@ -228,7 +246,7 @@ public class ReadingParagraphsActivity extends BaseActivity
                 } else {
                     final SansTextView myTextView = new SansTextView(this);
                     myTextView.setText("" + modalParaWordList.get(i).getWord());
-                    myTextView.setTextSize(35);
+                    myTextView.setTextSize(30);
                     myTextView.setTextColor(getResources().getColor(R.color.colorText));
                     myTextView.setId(i);
                     myTextView.setOnClickListener(v -> {
@@ -721,6 +739,38 @@ public class ReadingParagraphsActivity extends BaseActivity
         iv_monk.setVisibility(View.VISIBLE);
         iv_monk.startAnimation(AnimationUtils.loadAnimation(this, R.anim.float_anim));
         presenter.sttResultProcess(sttResult, splitWordsPunct, wordsResIdList);
+        if(sttResult.size()>0) {
+            String txt = String.valueOf(stt_result_tv.getText());
+            String atxt = txt + sttResult.get(0)+ " ";
+            attAnsList[currentPageNo]=atxt;
+            stt_result_tv.setText("");
+            stt_result_tv.setTextSize(28);
+            stt_result_tv.setText(attAnsList[currentPageNo]);
+            stt_result_tv.setMovementMethod(new ScrollingMovementMethod());
+        }
+    }
+
+    @Click(R.id.clean_stt)
+    void sttClearClicked() {
+        if(readingFlg)
+            btn_Mic.performClick();
+        et_edit_ans.setText(attAnsList[currentPageNo]);
+        ll_edit_text.setVisibility(View.VISIBLE);
+//        stt_result_tv.setText("");
+//        attAnsList[currentPage]="";
+    }
+
+    @Click(R.id.bt_edit_ok)
+    public void editOKClicked(){
+        attAnsList[currentPageNo] = ""+et_edit_ans.getText();
+        stt_result_tv.setText(attAnsList[currentPageNo]);
+        ArrayList<String> sttResult = new ArrayList<>();
+        sttResult.add(attAnsList[currentPageNo]);
+        presenter.sttResultProcess(sttResult, splitWordsPunct, wordsResIdList);
+        InputMethodManager imm = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
+        Objects.requireNonNull(imm).hideSoftInputFromWindow(ll_edit_text.getWindowToken(), 0);
+        ll_edit_text.setVisibility(View.GONE);
+//        hideSystemUI();
     }
 
     public CustomLodingDialog myLoadingDialog;

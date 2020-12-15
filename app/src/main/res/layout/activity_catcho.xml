@@ -16,7 +16,7 @@
         android:layout_marginTop="@dimen/_10sdp"
         android:layout_marginStart="@dimen/_10sdp"
         android:layout_marginEnd="@dimen/_10sdp"
-        android:text="Oops, Something went wrong!!"
+        android:text="@string/oops"
         android:textColor="@color/dark_blue"
         android:textSize="@dimen/_18sdp" />
 
@@ -28,7 +28,7 @@
         android:layout_below="@id/tv_Topic"
         android:layout_marginStart="@dimen/_20sdp"
         android:layout_marginEnd="@dimen/_20sdp"
-        android:text="Sorry about that. Press the register report button to send us the error."
+        android:text="@string/sorry_about_that"
         android:textColor="@color/colorBtnRedLight"
         android:textSize="@dimen/_12sdp" />
 

@@ -38,18 +38,16 @@ import com.pratham.foundation.database.domain.KeyWords;
 import com.pratham.foundation.database.domain.Score;
 import com.pratham.foundation.modalclasses.ScienceQuestion;
 import com.pratham.foundation.services.shared_preferences.FastSave;
-import com.pratham.foundation.services.stt.ContinuousSpeechService;
-import com.pratham.foundation.services.stt.STT_Result;
+import com.pratham.foundation.services.stt.ContinuousSpeechService_New;
+import com.pratham.foundation.services.stt.STT_Result_New;
 import com.pratham.foundation.ui.contentPlayer.GameConstatnts;
 import com.pratham.foundation.utility.FC_Constants;
 import com.pratham.foundation.utility.FC_Utility;
 
 import org.json.JSONArray;
-import org.json.JSONException;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
@@ -66,7 +64,7 @@ import static com.pratham.foundation.utility.FC_Constants.gameFolderPath;
 import static com.pratham.foundation.utility.FC_Constants.sec_Test;
 
 
-public class FillInTheBlanksFragment extends Fragment implements STT_Result {
+public class FillInTheBlanksFragment extends Fragment implements STT_Result_New.sttView {
 
     @BindView(R.id.tv_question)
     SansTextView question;
@@ -79,8 +77,7 @@ public class FillInTheBlanksFragment extends Fragment implements STT_Result {
     @BindView(R.id.ib_mic)
     ImageButton ib_mic;
 
-
-    ContinuousSpeechService speechService;
+    ContinuousSpeechService_New speechService;
     // ScienceQuestion scienceQuestion;
     private int totalWordCount, learntWordCount, index = 0;
     private float perc = 0;
@@ -108,7 +105,7 @@ public class FillInTheBlanksFragment extends Fragment implements STT_Result {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
             context = getActivity();
-            speechService = new ContinuousSpeechService(context, this);
+            speechService = new ContinuousSpeechService_New(context, FillInTheBlanksFragment.this,"en");
             speechService.resetSpeechRecognizer();
             contentPath = getArguments().getString("contentPath");
             StudentID = getArguments().getString("StudentID");
@@ -148,9 +145,7 @@ public class FillInTheBlanksFragment extends Fragment implements STT_Result {
             }.getType();
             dataList = gson.fromJson(jsonObj.toString(), type);
             getDataList();
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (JSONException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
@@ -192,7 +187,6 @@ public class FillInTheBlanksFragment extends Fragment implements STT_Result {
         }
     }
 
-
     private int getLearntWordsCount() {
         int count = 0;
         count = AppDatabase.getDatabaseInstance(context).getKeyWordDao().checkWordCount(FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""), resId);
@@ -208,7 +202,6 @@ public class FillInTheBlanksFragment extends Fragment implements STT_Result {
             return false;
         }
     }
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -409,14 +402,27 @@ public class FillInTheBlanksFragment extends Fragment implements STT_Result {
                 //((TextView) readChatFlow.getChildAt(i)).setTextColor(getResources().getColor(R.color.readingGreen));
                 correctArr[i] = true;
             }
-
 //            scrollView.setBackgroundResource(R.drawable.convo_correct_bg);
-
         }
 
         etAnswer.setText(sttResult);
         voiceStart = false;
         micPressed(0);
+    }
+
+    @Override
+    public void silenceDetected() {
+
+    }
+
+    @Override
+    public void stoppedPressed() {
+
+    }
+
+    @Override
+    public void sttEngineReady() {
+
     }
 
 

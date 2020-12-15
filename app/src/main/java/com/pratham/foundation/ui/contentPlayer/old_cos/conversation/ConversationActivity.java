@@ -126,7 +126,6 @@ public class ConversationActivity extends BaseActivity
         context = ConversationActivity.this;
         continuousSpeechService = new ContinuousSpeechService_New(context, ConversationActivity.this, FC_Constants.ENGLISH);
         correctSound = MediaPlayer.create(context, R.raw.correct_ans);
-
         presenter.setView(ConversationActivity.this);
 
         sendClikChanger(0);
@@ -559,8 +558,8 @@ public class ConversationActivity extends BaseActivity
 
     @Override
     protected void onDestroy() {
-        super.onDestroy();
         desFlag = true;
+        super.onDestroy();
     }
 
     @Override

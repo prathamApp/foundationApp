@@ -60,11 +60,13 @@
     <string name="read_full_sentence" >Read the full sentence.</string>
     <string name="Click_group_name" >Click your group name.</string>
     <string name="mark_attendance" >Mark your attendance.</string>
+
     <string name="Learning" >Learning</string>
     <string name="Practice" >Practice</string>
     <string name="Test" >Test</string>
     <string name="Fun" >Fun</string>
     <string name="Profile" >Profile</string>
+
     <string name="Level" >Level</string>
     <string name="Next" >Next</string>
     <string name="Revise" >Revise</string>
@@ -98,6 +100,7 @@
     <string name="multiple_choice">Select the correct answer from multiple answers and submit it</string>
     <string name="pdf">Read the PDF</string>
     <string name="Video">Watch the video</string>
+    <string name="youtube">Watch the youtube video</string>
     <string name="ParaReadQues">Press the play button to listen to the audio, then press the mic button and read the paragraph.</string>
     <string name="parasummary">Read the story in Hindi</string>
     <string name="paraqa">Press the mic button to record your answer and then submit.</string>
@@ -105,6 +108,53 @@
     <string name="new_chit_chat_2">Listen to the conversation shown on the screen and record your answer in English.</string>
     <string name="new_chit_chat_3">This is a 2 person activity. Take turns to record your audio</string>
 
+    <string name="no_data_generated" translatable="false">No data generated for this section.</string>
+    <string name="no_data_in_sec" translatable="false">No data in this section.</string>
+    <string name="RegisterReport" translatable="false">Register Report</string>
+    <string name="oops" translatable="false">Oops, Something went wrong!!</string>
+    <string name="sorry_about_that" translatable="false">Sorry about that. Press the register report button to send us the error.</string>
+    <string name="free" translatable="false">Free</string>
+    <string name="delete_data" translatable="false">by deleting data?</string>
+    <string name="deleting_data" translatable="false">Deleting data...</string>
+    <string name="deleted_data" translatable="false">Data deleted...</string>
+    <string name="status" translatable="false">Status</string>
+    <string name="img_ques" translatable="false">Image Questions</string>
+    <string name="chat_l5" translatable="false">Chat L-5</string>
+    <string name="sync" translatable="false">Sync</string>
+    <string name="sync_status" translatable="false">Last Sync Status</string>
+    <string name="lang_pack" translatable="false">Offline Language Pack</string>
+    <string name="free_space" translatable="false">Free Space</string>
+    <string name="curr_lang" translatable="false">Current language :</string>
+    <string name="Sync_Time" translatable="false">Sync time :</string>
+    <string name="Data_synced" translatable="false">Data synced :</string>
+    <string name="Certificate_synced" translatable="false">Certificate synced :</string>
+    <string name="Media_synced" translatable="false">Media synced :</string>
+    <string name="Media_failed" translatable="false">Media failed :</string>
+    <string name="data_pushed_successfully" translatable="false">Data pushed successfully</string>
+    <string name="Score_Count" translatable="false">Score Count :</string>
+    <string name="Certificate_Count" translatable="false">Certificate Count :</string>
+    <string name="Now_Upload_Media" translatable="false">Now Upload Media...</string>
+    <string name="OOPS" translatable="false">OOPS...</string>
+    <string name="Data_pushed_failed" translatable="false">Data pushed failed</string>
+    <string name="Collecting_Media" translatable="false">Collecting Media</string>
+    <string name="Uploading" translatable="false">Uploading</string>
+    <string name="images" translatable="false">images</string>
+    <string name="close" translatable="false">Close</string>
+    <string name="Upload_Complete" translatable="false">Upload Complete</string>
+    <string name="Collecting_Data" translatable="false">Collecting Data...</string>
+    <string name="Create_Profile" translatable="false">Create Profile</string>
+    <string name="Pratham_Login" translatable="false">Pratham Login</string>
+    <string name="Eject_OTG" translatable="false">Eject OTG</string>
+    <string name="connected_to_Kolibri" translatable="false">Check your wifi is connected to Pratham Kolibri!</string>
+    <string name="Please_wait_pushing_Data" translatable="false">Please wait, pushing Data...</string>
+    <string name="Switch_Profile" translatable="false">You can switch the profile</string>
+    <string name="Clicking_icon" translatable="false">by clicking on the icon.</string>
+    <string name="Your_Progress_will" translatable="false">Your Progress will be shown here</string>
+    <string name="Click_to_switch_levels" translatable="false">Click here to switch levels</string>
+    <string name="Sections" translatable="false">Sections</string>
+    <string name="Click_to_switch_Sections" translatable="false">Click here to switch Sections</string>
+    <string name="change_the_language" translatable="false">Click Here to change the language</string>
+    <string name="of_the_content" translatable="false">of the content.</string>
 
     <string name="Agent_name" translatable="false">Vernicula</string>
     <string name="talkbot" translatable="false">Talkbot</string>
@@ -179,8 +229,6 @@
     <string name="new_tag_filter" translatable="false">New Tag Filter</string>
     <string name="enter_log_tag" translatable="false">Enter log tag</string>
     <string name="delete" translatable="false">Delete</string>
-    <string name="ok" translatable="false">OK</string>
-    <string name="cancel" translatable="false">Cancel</string>
     <string name="_selected" translatable="false">" selected"</string>
     <string name="information" translatable="false">Application Info</string>
     <string name="open_source_licences" translatable="false">Open Source Licences</string>
@@ -193,9 +241,6 @@
     <string name="version" translatable="false">Version</string>
     <string name="copyright" translatable="false">&#169; readyState Software Ltd</string>
     <string name="by_author" translatable="false">by Pratham Education Foundation</string>
-    <string name="no_data_generated" translatable="false">No data generated for this section.</string>
-    <string name="no_data_in_sec" translatable="false">No data in this section.</string>
-    <string name="RegisterReport" translatable="false">Register Report</string>
 
     <string-array name="levels_values">
         <item>V</item>

@@ -48,6 +48,8 @@ public class ContentFolderViewHolder extends RecyclerView.ViewHolder {
     @Nullable
     RelativeLayout rl_root;
     @Nullable
+    RelativeLayout rl_loader;
+    @Nullable
     ImageView iv_downld;
     @Nullable
     ImageView ib_update_btn;
@@ -65,6 +67,7 @@ public class ContentFolderViewHolder extends RecyclerView.ViewHolder {
         tv_progress = itemView.findViewById(R.id.tv_progress);
         itemImage = itemView.findViewById(R.id.item_Image);
         rl_root = itemView.findViewById(R.id.rl_root);
+        rl_loader = itemView.findViewById(R.id.rl_loader);
         card_main = itemView.findViewById(R.id.card_main);
         iv_downld = itemView.findViewById(R.id.iv_downld);
         ib_update_btn = itemView.findViewById(R.id.ib_update_btn);
@@ -78,6 +81,7 @@ public class ContentFolderViewHolder extends RecyclerView.ViewHolder {
         tv_progress = itemView.findViewById(R.id.tv_progress);
         itemImage = itemView.findViewById(R.id.item_Image);
         rl_root = itemView.findViewById(R.id.rl_root);
+        rl_loader = itemView.findViewById(R.id.rl_loader);
         card_main = itemView.findViewById(R.id.card_main);
         iv_downld = itemView.findViewById(R.id.iv_downld);
         ib_update_btn = itemView.findViewById(R.id.ib_update_btn);
@@ -89,6 +93,7 @@ public class ContentFolderViewHolder extends RecyclerView.ViewHolder {
 //        add card and its click listners
         Objects.requireNonNull(card_main).setBackground(ApplicationClass.getInstance().getResources().getDrawable(getRandomCardColor()));
         Objects.requireNonNull(tvTitle).setText(contentList.getNodeTitle());
+        Objects.requireNonNull(rl_loader).setVisibility(View.GONE);
 
         File file;
         if (contentList.getIsDownloaded().equalsIgnoreCase("1") ||
@@ -126,12 +131,7 @@ public class ContentFolderViewHolder extends RecyclerView.ViewHolder {
             else
                 Objects.requireNonNull(ib_update_btn).setVisibility(View.GONE);
 
-            ib_update_btn.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    contentClicked.onContentDownloadClicked(position, contentList.nodeId);
-                }
-            });
+            ib_update_btn.setOnClickListener(v -> contentClicked.onContentDownloadClicked(position, contentList.nodeId));
 
         } else
             Objects.requireNonNull(iv_downld).setVisibility(View.GONE);
@@ -166,10 +166,12 @@ public class ContentFolderViewHolder extends RecyclerView.ViewHolder {
         content_card_view.setAnimation(animation);
     }
 
-    public void setFragmentFolderItem(ContentTable contentTable, int posi, String parentName,int parentPos) {
-        card_main.setBackground(ApplicationClass.getInstance().getResources().getDrawable(getRandomCardColor()));
-        tvTitle.setText(contentTable.getNodeTitle());
-        tv_progress.setText(contentTable.getNodePercentage()+"%");
+    @SuppressLint("SetTextI18n")
+    public void setFragmentFolderItem(ContentTable contentTable, int posi, String parentName, int parentPos) {
+        Objects.requireNonNull(card_main).setBackground(ApplicationClass.getInstance().getResources().getDrawable(getRandomCardColor()));
+        Objects.requireNonNull(tvTitle).setText(contentTable.getNodeTitle());
+        Objects.requireNonNull(tv_progress).setText(contentTable.getNodePercentage()+"%");
+        Objects.requireNonNull(rl_loader).setVisibility(View.GONE);
 //                progressLayout.setCurProgress(Integer.parseInt(contentTable.getNodePercentage()));
         File f;
         if (contentTable.getIsDownloaded().equalsIgnoreCase("1") ||
@@ -181,7 +183,7 @@ public class ContentFolderViewHolder extends RecyclerView.ViewHolder {
                 f = new File(ApplicationClass.foundationPath +
                         "" + App_Thumbs_Path + contentTable.getNodeImage());
             if (f.exists())
-                itemImage.setImageURI(Uri.fromFile(f));
+                Objects.requireNonNull(itemImage).setImageURI(Uri.fromFile(f));
         } else {
 
             ImageRequest imageRequest = ImageRequestBuilder
@@ -190,7 +192,7 @@ public class ContentFolderViewHolder extends RecyclerView.ViewHolder {
                     .build();
             DraweeController controller = Fresco.newDraweeControllerBuilder()
                     .setImageRequest(imageRequest)
-                    .setOldController(itemImage.getController())
+                    .setOldController(Objects.requireNonNull(itemImage).getController())
                     .build();
             itemImage.setController(controller);
         }
@@ -202,12 +204,8 @@ public class ContentFolderViewHolder extends RecyclerView.ViewHolder {
             else
                 Objects.requireNonNull(ib_update_btn).setVisibility(View.GONE);
 
-            ib_update_btn.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    itemClicked.onContentDownloadClicked(contentTable,
-                            parentPos,posi,""+ SINGLE_RES_DOWNLOAD);                        }
-            });
+            ib_update_btn.setOnClickListener(v -> itemClicked.onContentDownloadClicked(contentTable,
+                    parentPos,posi,""+ SINGLE_RES_DOWNLOAD));
             if (contentTable.getIsDownloaded().equalsIgnoreCase("true")) {
                 Objects.requireNonNull(iv_downld).setVisibility(View.GONE);
             } else if (contentTable.getIsDownloaded().equalsIgnoreCase("false"))

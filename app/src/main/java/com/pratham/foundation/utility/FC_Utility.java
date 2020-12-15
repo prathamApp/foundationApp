@@ -72,8 +72,8 @@ import com.pratham.foundation.modalclasses.StorageInfo;
 import com.pratham.foundation.services.shared_preferences.FastSave;
 import com.pratham.foundation.ui.admin_panel.AdminControlsActivity_;
 import com.pratham.foundation.ui.admin_panel.andmin_login_new.AdminConsoleActivityNew_;
-import com.pratham.foundation.ui.admin_panel.group_selection.SelectGroupActivity_;
 import com.pratham.foundation.ui.contentPlayer.ContentPlayerActivity_;
+import com.pratham.foundation.ui.group_selection.SelectGroupActivity_;
 import com.pratham.foundation.ui.selectSubject.SelectSubject_;
 import com.pratham.foundation.ui.splash_activity.SplashActivity;
 
@@ -95,6 +95,7 @@ import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.text.DateFormat;
+import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -104,6 +105,7 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
+import java.util.Objects;
 import java.util.Random;
 import java.util.StringTokenizer;
 import java.util.UUID;
@@ -115,6 +117,17 @@ import javax.crypto.spec.SecretKeySpec;
 
 import static android.content.Context.BATTERY_SERVICE;
 import static com.pratham.foundation.utility.FC_Constants.APP_SECTION;
+import static com.pratham.foundation.utility.FC_Constants.ASSAMESE;
+import static com.pratham.foundation.utility.FC_Constants.BENGALI;
+import static com.pratham.foundation.utility.FC_Constants.GUJARATI;
+import static com.pratham.foundation.utility.FC_Constants.HINDI;
+import static com.pratham.foundation.utility.FC_Constants.KANNADA;
+import static com.pratham.foundation.utility.FC_Constants.MALAYALAM;
+import static com.pratham.foundation.utility.FC_Constants.MARATHI;
+import static com.pratham.foundation.utility.FC_Constants.ODIYA;
+import static com.pratham.foundation.utility.FC_Constants.PUNJABI;
+import static com.pratham.foundation.utility.FC_Constants.TAMIL;
+import static com.pratham.foundation.utility.FC_Constants.TELUGU;
 import static com.pratham.foundation.utility.FC_Constants.sec_Fun;
 import static com.pratham.foundation.utility.FC_Constants.sec_Learning;
 import static com.pratham.foundation.utility.FC_Constants.sec_Practice;
@@ -122,6 +135,8 @@ import static com.pratham.foundation.utility.FC_Constants.sec_Test;
 
 
 public class FC_Utility {
+
+    public static DecimalFormat decimalFormat = new DecimalFormat("0.00");
 
     public static String loadJSONFromAsset(Context context, String fileName) {
         String json = null;
@@ -154,6 +169,18 @@ public class FC_Utility {
             return null;
         }
         return jsonStr;
+    }
+
+    public static void hideSoftKeyboard(Activity activity) {
+        try {
+            InputMethodManager inputMethodManager =
+                    (InputMethodManager) activity.getSystemService(
+                            Activity.INPUT_METHOD_SERVICE);
+            Objects.requireNonNull(inputMethodManager).hideSoftInputFromWindow(
+                    Objects.requireNonNull(activity.getCurrentFocus()).getWindowToken(), 0);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     public static String getLevelWiseJson(int pos) {
@@ -242,23 +269,36 @@ public class FC_Utility {
     }
 
     public static void setAppLocal(Context context, String selectedLang) {
+
         String language = "hi";
 
-        if (selectedLang.equalsIgnoreCase(FC_Constants.MARATHI))
-            language = "mr";
-        else if(selectedLang.equalsIgnoreCase(FC_Constants.HINDI))
+        if (selectedLang.equalsIgnoreCase(HINDI))
             language = "hi";
+        else if (selectedLang.equalsIgnoreCase(MARATHI))
+            language = "mr";
+        else if (selectedLang.equalsIgnoreCase(KANNADA))
+            language = "kn";
+        else if (selectedLang.equalsIgnoreCase(TELUGU))
+            language = "te";
+        else if (selectedLang.equalsIgnoreCase(BENGALI))
+            language = "bn";
+        else if (selectedLang.equalsIgnoreCase(GUJARATI))
+            language = "gu";
+        else if (selectedLang.equalsIgnoreCase(PUNJABI))
+            language = "pa";
+        else if (selectedLang.equalsIgnoreCase(TAMIL))
+            language = "ta";
+        else if (selectedLang.equalsIgnoreCase(ODIYA))
+            language = "or";
+        else if (selectedLang.equalsIgnoreCase(MALAYALAM))
+            language = "ml";
+        else if (selectedLang.equalsIgnoreCase(ASSAMESE))
+            language = "as";
+        else
+            language = "en";
 
-/*
-        Locale myLocale = new Locale(language);
-        Resources res = context.getResources();
-        DisplayMetrics dm = res.getDisplayMetrics();
-        Configuration conf = res.getConfiguration();
-        conf.locale = myLocale;
-        res.updateConfiguration(conf, dm);
-*/
-        Log.d("INSTRUCTIONFRAG", "Lang $$$: "+language);
 
+        Log.d("XX-INST-XX", "Lang $$$: "+language);
         Resources resources = context.getResources();
         DisplayMetrics dm = resources.getDisplayMetrics();
         Configuration config = resources.getConfiguration();
@@ -758,7 +798,7 @@ public class FC_Utility {
                     .beginTransaction()
 //                    .setCustomAnimations(R.anim.enter_right_to_left, R.anim.exit_right_to_left,
 //                            R.anim.enter_left_to_right, R.anim.exit_left_to_right )
-                    .replace(frame, mFragment, TAG)
+                    .add(frame, mFragment, TAG)
                     .addToBackStack(TAG)
                     .commit();
         } else if (mActivity instanceof SelectSubject_) {
@@ -1375,28 +1415,28 @@ public class FC_Utility {
     public static String getRootNode(String currentSelectedLanguage) {
         String rootNodeId = "4030";
         switch (currentSelectedLanguage) {
-            case FC_Constants.HINDI:
+            case HINDI:
                 rootNodeId = "4030";
                 break;
             case FC_Constants.ENGLISH:
                 rootNodeId = "4030";
                 break;
-            case FC_Constants.MARATHI:
+            case MARATHI:
                 rootNodeId = "25030";
                 break;
-            case FC_Constants.GUJARATI:
+            case GUJARATI:
                 rootNodeId = "27030";
                 break;
-            case FC_Constants.TELUGU:
+            case TELUGU:
                 rootNodeId = "33030";
                 break;
-            case FC_Constants.KANNADA:
+            case KANNADA:
                 rootNodeId = "35030";
                 break;
             case FC_Constants.BENGALI:
                 rootNodeId = "37030";
                 break;
-            case FC_Constants.TAMIL:
+            case TAMIL:
                 rootNodeId = "42030";
                 break;
             case FC_Constants.ODIYA:
@@ -1457,7 +1497,6 @@ public class FC_Utility {
             subj = "H_Science";
         else if (subjCode == 5)
             subj = "LS_Science";
-
         return subj;
     }
 
@@ -1495,8 +1534,6 @@ public class FC_Utility {
 
     public static String getSectionName(int num) {
         switch (num) {
-            case 0:
-                return "NA";
             case 1:
                 return sec_Learning;
             case 2:
@@ -2153,12 +2190,6 @@ public class FC_Utility {
     }
 
     public static String getCurrentDateTime() {
-        Calendar cal = Calendar.getInstance();
-        DateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss", Locale.ENGLISH);
-        return dateFormat.format(cal.getTime());
-    }
-
-    public static String GetCurrentDateTime() {
         Calendar cal = Calendar.getInstance();
         DateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss", Locale.ENGLISH);
         return dateFormat.format(cal.getTime());

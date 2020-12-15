@@ -58,6 +58,7 @@ import static android.content.Context.ACTIVITY_SERVICE;
 import static com.pratham.foundation.database.AppDatabase.DB_NAME;
 import static com.pratham.foundation.database.AppDatabase.DB_VERSION;
 import static com.pratham.foundation.ui.splash_activity.SplashActivity.exitDialogOpen;
+import static com.pratham.foundation.ui.splash_activity.SplashActivity.fragmentBottomOpenFlg;
 import static com.pratham.foundation.utility.FC_Constants.APP_LANGUAGE;
 import static com.pratham.foundation.utility.FC_Constants.CURRENT_VERSION;
 import static com.pratham.foundation.utility.FC_Constants.HINDI;
@@ -141,7 +142,7 @@ public class SplashPresenter implements SplashContract.SplashPresenter {
                     AppDatabase.getDatabaseInstance(context);
                     if (new File(Environment.getExternalStorageDirectory().getAbsolutePath() + "/PrathamBackups/" + DB_NAME).exists())
                         copyDb = true;
-                        getSdCardPath();
+                    getSdCardPath();
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -605,6 +606,7 @@ public class SplashPresenter implements SplashContract.SplashPresenter {
             @Override
             protected void onPostExecute(Void aVoid) {
                 super.onPostExecute(aVoid);
+                splashView.dismissProgressDialog();
                 if (!exitDialogOpen)
                     splashView.gotoNextActivity();
             }
@@ -652,8 +654,10 @@ public class SplashPresenter implements SplashContract.SplashPresenter {
                 splashView.dismissProgressDialog();
                 if (!FastSave.getInstance().getBoolean(FC_Constants.VOICES_DOWNLOAD_INTENT, false))
                     splashView.show_STT_Dialog();
-                else
-                    splashView.showBottomFragment();
+                else {
+                    if (!fragmentBottomOpenFlg)
+                        splashView.showBottomFragment();
+                }
             }
         }.execute();
     }
@@ -830,6 +834,107 @@ public class SplashPresenter implements SplashContract.SplashPresenter {
         }
     }
 
+    @UiThread
+    public void copyTestJsons(int no) {
+        if (new File(ApplicationClass.contentSDPath + "/.FCA/TestJsons/Test_" + no + ".json").exists()) {
+            try {
+                File internalTestJson = new File(Environment.getExternalStorageDirectory().toString()
+                        + "/.FCAInternal/TestJsons/Test_" + no + ".json");
+                if (new File(Environment.getExternalStorageDirectory().toString()
+                        + "/.FCAInternal/TestJsons/Test_" + no + ".json").exists())
+                    new File(Environment.getExternalStorageDirectory().toString()
+                            + "/.FCAInternal/TestJsons/Test_" + no + ".json").delete();
+            } catch (Exception e) {
+                Log.d("copyDBFile", "Exception : ");
+                e.printStackTrace();
+            }
+
+            try {
+                File direct = new File(Environment.getExternalStorageDirectory().toString() +
+                        "/.FCAInternal/TestJsons");
+                if (!direct.exists()) direct.mkdir();
+                InputStream in = new FileInputStream(ApplicationClass.contentSDPath + "/.FCA/TestJsons/Test_" + no + ".json");
+                OutputStream out = new FileOutputStream(Environment.getExternalStorageDirectory().toString()
+                        + "/.FCAInternal/TestJsons/" + "Test_" + no + ".json");
+                byte[] buffer = new byte[1024];
+                int read = in.read(buffer);
+                while (read != -1) {
+                    out.write(buffer, 0, read);
+                    read = in.read(buffer);
+                }
+                Log.d("copyDBFile", "CopyDone : ");
+                if (no == 5)
+                    FastSave.getInstance().saveBoolean(FC_Constants.TEST_JSON_COPY, true);
+                if (no < 5) {
+                    no += 1;
+                    copyTestJsons(no);
+                }
+            } catch (Exception e) {
+                Log.d("copyDBFile", "Exception : ");
+                e.printStackTrace();
+            }
+        } else {
+            if (no == 5)
+                FastSave.getInstance().saveBoolean(FC_Constants.TEST_JSON_COPY, true);
+            if (no < 5) {
+                no += 1;
+                copyTestJsons(no);
+            }
+        }
+    }
+
+    @UiThread
+    public void copyInternalTestJsons(int no) {
+        if (new File(ApplicationClass.foundationPath + "/.FCA/Test_" + no + ".json").exists()) {
+            try {
+                File internalTestJson = new File(Environment.getExternalStorageDirectory().toString()
+                        + "/.FCAInternal/TestJsons/Test_" + no + ".json");
+                if (new File(Environment.getExternalStorageDirectory().toString()
+                        + "/.FCAInternal/TestJsons/Test_" + no + ".json").exists())
+                    new File(Environment.getExternalStorageDirectory().toString()
+                            + "/.FCAInternal/TestJsons/Test_" + no + ".json").delete();
+            } catch (Exception e) {
+                Log.d("copyDBFile", "Exception : ");
+                e.printStackTrace();
+            }
+
+            try {
+                File direct = new File(Environment.getExternalStorageDirectory().toString() +
+                        "/.FCAInternal/TestJsons");
+                if (!direct.exists()) direct.mkdir();
+                InputStream in = new FileInputStream(ApplicationClass.foundationPath + "/.FCA/Test_" + no + ".json");
+                OutputStream out = new FileOutputStream(Environment.getExternalStorageDirectory().toString()
+                        + "/.FCAInternal/TestJsons/" + "Test_" + no + ".json");
+                byte[] buffer = new byte[1024];
+                int read = in.read(buffer);
+                while (read != -1) {
+                    out.write(buffer, 0, read);
+                    read = in.read(buffer);
+                }
+                Log.d("copyDBFile", "CopyDone : ");
+                if (no == 5) {
+                    new File(ApplicationClass.foundationPath + "/.FCA/Test_" + no + ".json").delete();
+                    FastSave.getInstance().saveBoolean(FC_Constants.TEST_JSON_COPY2, true);
+                }
+                if (no < 5) {
+                    new File(ApplicationClass.foundationPath + "/.FCA/Test_" + no + ".json").delete();
+                    no += 1;
+                    copyInternalTestJsons(no);
+                }
+            } catch (Exception e) {
+                Log.d("copyDBFile", "Exception : ");
+                e.printStackTrace();
+            }
+        } else {
+            if (no == 5)
+                FastSave.getInstance().saveBoolean(FC_Constants.TEST_JSON_COPY2, true);
+            if (no < 5) {
+                no += 1;
+                copyInternalTestJsons(no);
+            }
+        }
+    }
+
     @SuppressLint("StaticFieldLeak")
     @Override
     public void populateSDCardMenu() {
@@ -848,6 +953,7 @@ public class SplashPresenter implements SplashContract.SplashPresenter {
                 if (!FastSave.getInstance().getBoolean(FC_Constants.INITIAL_ENTRIES, false)) {
                     doInitialEntries(AppDatabase.getDatabaseInstance(context));
                 }
+                if (!FastSave.getInstance().getBoolean(FC_Constants.INITIAL_SD_COPIED, false))
                     try {
                         File db_file;
                         db_file = new File(Environment.getExternalStorageDirectory().toString() + "/.FCAInternal/" + DB_NAME);
@@ -893,6 +999,7 @@ public class SplashPresenter implements SplashContract.SplashPresenter {
                                     ApplicationClass.contentExistOnSD = true;
                                     content_cursor.close();
                                     FastSave.getInstance().saveBoolean(FC_Constants.KEY_MENU_COPIED, true);
+                                    FastSave.getInstance().saveBoolean(FC_Constants.INITIAL_SD_COPIED, true);
                                     Log.d("copyDBFile", "Content Data Copy complete: ");
                                 } catch (Exception e) {
                                     Log.d("copyDBFile", "Excep: ");
@@ -901,8 +1008,8 @@ public class SplashPresenter implements SplashContract.SplashPresenter {
                             }
                         }
                         BackupDatabase.backup(context);
-                        if (!exitDialogOpen)
-                            splashView.gotoNextActivity();
+//                        if (!exitDialogOpen)
+//                            splashView.gotoNextActivity();
                     } catch (Exception e) {
                         e.printStackTrace();
                     }

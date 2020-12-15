@@ -77,6 +77,7 @@ import static com.pratham.foundation.ui.app_home.HomeActivity.sub_Name;
 import static com.pratham.foundation.ui.app_home.HomeActivity.tv_header_progress;
 import static com.pratham.foundation.utility.FC_Constants.APP_SECTION;
 import static com.pratham.foundation.utility.FC_Constants.COMING_SOON;
+import static com.pratham.foundation.utility.FC_Constants.IS_DOWNLOADING;
 import static com.pratham.foundation.utility.FC_Constants.currentLevel;
 import static com.pratham.foundation.utility.FC_Constants.gameFolderPath;
 import static com.pratham.foundation.utility.FC_Constants.sec_Fun;
@@ -447,14 +448,25 @@ public class FunFragment extends Fragment implements FunContract.FunView,
         }
     }
 
+    private boolean desFlag = false;
+
     @Override
+    public void onDestroy() {
+        desFlag = true;
+        super.onDestroy();
+    }
+
+    @Override
+    @UiThread
     public void dismissLoadingDialog() {
         try {
-            loaderVisible = false;
-            new Handler().postDelayed(() -> {
-                if (myLoadingDialog != null && myLoadingDialog.isShowing())
-                    myLoadingDialog.dismiss();
-            }, 150);
+            if (!desFlag) {
+                loaderVisible = false;
+                new Handler().postDelayed(() -> {
+                    if (myLoadingDialog != null && myLoadingDialog.isShowing())
+                        myLoadingDialog.dismiss();
+                }, 150);
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -493,7 +505,7 @@ public class FunFragment extends Fragment implements FunContract.FunView,
             e.printStackTrace();
         }
         String sdStatus = "F";
-        if(onSDCard)
+        if (onSDCard)
             sdStatus = "T";
 
         Intent mainNew = new Intent(context, ContentPlayerActivity_.class);
@@ -678,7 +690,7 @@ public class FunFragment extends Fragment implements FunContract.FunView,
                 intent.putExtra("contentType", contentList.getResourceType());
 //                startActivity(intent, ActivityOptions.makeSceneTransitionAnimation(ContentDisplay.this).toBundle());
                 startActivity(intent);
-            } */else {
+            } */ else {
                 Intent mainNew = new Intent(context, ContentPlayerActivity_.class);
                 mainNew.putExtra("testData", contentList);
                 mainNew.putExtra("testcall", FC_Constants.INDIVIDUAL_MODE);
@@ -691,28 +703,30 @@ public class FunFragment extends Fragment implements FunContract.FunView,
     @UiThread
     @Override
     public void onContentDownloadClicked(ContentTable contentList, int parentPos, int childPos, String downloadType) {
-        showLoader();
-        this.downloadType = downloadType;
-        downloadNodeId = contentList.getNodeId();
-        FastSave.getInstance().saveString(APP_SECTION, "" + sec_Fun);
-        try {
-            ButtonClickSound.start();
-        } catch (IllegalStateException e) {
-            e.printStackTrace();
-        }
+        if (!IS_DOWNLOADING) {
+            showLoader();
+            this.downloadType = downloadType;
+            downloadNodeId = contentList.getNodeId();
+            FastSave.getInstance().saveString(APP_SECTION, "" + sec_Fun);
+            try {
+                ButtonClickSound.start();
+            } catch (IllegalStateException e) {
+                e.printStackTrace();
+            }
 
 //        downloadNodeId = "" + 1371;
-        this.parentPos = parentPos;
-        this.childPos = childPos;
-        resName = contentList.getNodeTitle();
-        resServerImageName = contentList.getNodeServerImage();
-        if (FastSave.getInstance().getString(APP_SECTION, "").equalsIgnoreCase(sec_Fun)) {
-            if (FC_Utility.isDataConnectionAvailable(context))
-                presenter.downloadResource(downloadNodeId);
-            else
-                Toast.makeText(context, "No Internet Connection", Toast.LENGTH_SHORT).show();
-        }
-
+            this.parentPos = parentPos;
+            this.childPos = childPos;
+            resName = contentList.getNodeTitle();
+            resServerImageName = contentList.getNodeServerImage();
+            if (FastSave.getInstance().getString(APP_SECTION, "").equalsIgnoreCase(sec_Fun)) {
+                if (FC_Utility.isDataConnectionAvailable(context))
+                    presenter.downloadResource(downloadNodeId);
+                else
+                    Toast.makeText(context, "No Internet Connection", Toast.LENGTH_SHORT).show();
+            }
+        } else
+            Toast.makeText(context, "Downloading other resource..", Toast.LENGTH_SHORT).show();
     }
 
     //    private BlurPopupWindow downloadDialog;
@@ -770,11 +784,12 @@ public class FunFragment extends Fragment implements FunContract.FunView,
     @Override
     public void dismissDownloadDialog() {
         try {
-            if (downloadDialog != null)
-                new Handler().postDelayed(() -> {
-                    downloadDialog.dismiss();
-                    downloadDialog = null;
-                }, 300);
+            if (!desFlag) {
+                if (downloadDialog != null)
+                    new Handler().postDelayed(() -> {
+                        downloadDialog.dismiss();
+                    }, 300);
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -847,10 +862,11 @@ public class FunFragment extends Fragment implements FunContract.FunView,
 
     BlurPopupWindow serverIssueDialog;
     boolean issueDialogFlg = false;
+
     @UiThread
     @Override
     public void serverIssueDialog() {
-        if(!issueDialogFlg) {
+        if (!issueDialogFlg) {
             issueDialogFlg = true;
             serverIssueDialog = new BlurPopupWindow.Builder(context)
                     .setContentView(R.layout.lottie_server_dialog)

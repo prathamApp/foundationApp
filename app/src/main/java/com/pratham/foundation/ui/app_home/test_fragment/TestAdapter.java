@@ -171,21 +171,12 @@ public class TestAdapter extends RecyclerView.Adapter {
         switch (viewitemRowHolder.getItemViewType()) {
             case 1:
                 TestItemRowHolder itemRowHolder = (TestItemRowHolder) viewitemRowHolder;
-
-//                itemRowHolder.certificate_card.setBackground(mContext.getResources().getDrawable(getRandomCardColor()));
-                //final ContentView gamesList = gamesViewList.get(position);
                 String ques = "";
-
                 if (testList.get(position).getCodeCount() > 1) {
                     quesIndex += 1;
                     ques = "" + quesIndex + ". ";
-                } else {
-                    //quesIndex = 0;
-                    ques = "";
-                }
-
-//                itemRowHolder.title.setTypeface(null, Typeface.NORMAL);
-
+                } else { ques = ""; }
+                //                itemRowHolder.title.setTypeface(null, Typeface.NORMAL);
                 if (!testList.get(position).isAsessmentGiven()) {
                     itemRowHolder.certificate_card.setClickable(true);
                     itemRowHolder.ratingStars.setRating(0);
@@ -197,7 +188,7 @@ public class TestAdapter extends RecyclerView.Adapter {
                         itemRowHolder.title.setText(ques + testList.get(position).getMarathiQues());
                     if (TestFragment.language.equalsIgnoreCase("Gujarati")) {
                         Typeface face = Typeface.createFromAsset(mContext.getAssets(), "fonts/muktavaani_gujarati.ttf");
-                        itemRowHolder.title.setTypeface(face);
+                        itemRowHolder.title.setTypeface(face, Typeface.BOLD);
                         itemRowHolder.title.setText(ques + testList.get(position).getGujaratiQues());
                     }
                     if (TestFragment.language.equalsIgnoreCase("Kannada"))
@@ -206,7 +197,7 @@ public class TestAdapter extends RecyclerView.Adapter {
                         itemRowHolder.title.setText(ques + testList.get(position).getBengaliQues());
                     if (TestFragment.language.equalsIgnoreCase("Assamese")) {
                         Typeface face = Typeface.createFromAsset(mContext.getAssets(), "fonts/lohit_oriya.ttf");
-                        itemRowHolder.title.setTypeface(face);
+                        itemRowHolder.title.setTypeface(face, Typeface.BOLD);
                         itemRowHolder.title.setText(ques + testList.get(position).getAssameseQues());
                     }
                     if (TestFragment.language.equalsIgnoreCase("Telugu"))
@@ -215,14 +206,14 @@ public class TestAdapter extends RecyclerView.Adapter {
                         itemRowHolder.title.setText(ques + testList.get(position).getTamilQues());
                     if (TestFragment.language.equalsIgnoreCase("Odiya")) {
                         Typeface face = Typeface.createFromAsset(mContext.getAssets(), "fonts/lohit_oriya.ttf");
-                        itemRowHolder.title.setTypeface(face);
-                        itemRowHolder.title.setText(ques + testList.get(position).getOdiaQues());
+                        itemRowHolder.title.setTypeface(face, Typeface.BOLD);
+                        itemRowHolder.title.setText(ques + testList.get(position).getOdiyaQues());
                     }
                     if (TestFragment.language.equalsIgnoreCase("Malayalam"))
                         itemRowHolder.title.setText(ques + testList.get(position).getUrduQues());
                     if (TestFragment.language.equalsIgnoreCase("Punjabi")) {
                         Typeface face = Typeface.createFromAsset(mContext.getAssets(), "fonts/raavi_punjabi.ttf");
-                        itemRowHolder.title.setTypeface(face);
+                        itemRowHolder.title.setTypeface(face, Typeface.BOLD);
                         itemRowHolder.title.setText(ques + testList.get(position).getPunjabiQues());
                     }
                     itemRowHolder.certificate_card.setOnClickListener(new View.OnClickListener() {
@@ -242,7 +233,7 @@ public class TestAdapter extends RecyclerView.Adapter {
                         itemRowHolder.title.setText(ques + testList.get(position).getMarathiAnsw());
                     if (TestFragment.language.equalsIgnoreCase("Gujarati")) {
                         Typeface face = Typeface.createFromAsset(mContext.getAssets(), "fonts/muktavaani_gujarati.ttf");
-                        itemRowHolder.title.setTypeface(face);
+                        itemRowHolder.title.setTypeface(face, Typeface.BOLD);
                         itemRowHolder.title.setText(ques + testList.get(position).getGujaratiAnsw());
                     }
                     if (TestFragment.language.equalsIgnoreCase("Kannada"))
@@ -251,23 +242,23 @@ public class TestAdapter extends RecyclerView.Adapter {
                         itemRowHolder.title.setText(ques + testList.get(position).getBengaliAnsw());
                     if (TestFragment.language.equalsIgnoreCase("Assamese")) {
                         Typeface face = Typeface.createFromAsset(mContext.getAssets(), "fonts/geetl_assamese.ttf");
-                        itemRowHolder.title.setTypeface(face);
+                        itemRowHolder.title.setTypeface(face, Typeface.BOLD);
                         itemRowHolder.title.setText(ques + testList.get(position).getAssameseAnsw());
                     }
                     if (TestFragment.language.equalsIgnoreCase("Telugu"))
                         itemRowHolder.title.setText(ques + testList.get(position).getTeluguAnsw());
                     if (TestFragment.language.equalsIgnoreCase("Tamil"))
                         itemRowHolder.title.setText(ques + testList.get(position).getTamilAnsw());
-                    if (TestFragment.language.equalsIgnoreCase("Odia")) {
+                    if (TestFragment.language.equalsIgnoreCase("Odiya")) {
                         Typeface face = Typeface.createFromAsset(mContext.getAssets(), "fonts/lohit_oriya.ttf");
-                        itemRowHolder.title.setTypeface(face);
-                        itemRowHolder.title.setText(ques + testList.get(position).getOdiaAnsw());
+                        itemRowHolder.title.setTypeface(face, Typeface.BOLD);
+                        itemRowHolder.title.setText(ques + testList.get(position).getOdiyaAnsw());
                     }
                     if (TestFragment.language.equalsIgnoreCase("Malayalam"))
                         itemRowHolder.title.setText(ques + testList.get(position).getUrduAnsw());
                     if (TestFragment.language.equalsIgnoreCase("Punjabi")) {
                         Typeface face = Typeface.createFromAsset(mContext.getAssets(), "fonts/raavi_punjabi.ttf");
-                        itemRowHolder.title.setTypeface(face);
+                        itemRowHolder.title.setTypeface(face, Typeface.BOLD);
                         itemRowHolder.title.setText(ques + testList.get(position).getPunjabiAnsw());
                     }
                     itemRowHolder.ratingStars.setRating(testList.get(position).getCertificateRating());

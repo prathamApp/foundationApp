@@ -6,6 +6,7 @@ import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.annotation.Nullable;
@@ -46,6 +47,10 @@ public class ContentFileViewHolder extends RecyclerView.ViewHolder {
     @Nullable
     ImageView ib_update_btn;
     @Nullable
+    RelativeLayout rl_loader;
+    @Nullable
+    RelativeLayout rl_card;
+    @Nullable
     MaterialCardView content_card_view;
     @Nullable
     SimpleDraweeView thumbnail;
@@ -59,6 +64,8 @@ public class ContentFileViewHolder extends RecyclerView.ViewHolder {
         title = itemView.findViewById(R.id.content_title);
         thumbnail = itemView.findViewById(R.id.content_image);
         content_card_view = itemView.findViewById(R.id.content_card_view);
+        rl_loader = itemView.findViewById(R.id.rl_loader);
+        rl_card = itemView.findViewById(R.id.rl_card);
         ib_action_btn = itemView.findViewById(R.id.ib_action_btn);
         ib_update_btn = itemView.findViewById(R.id.ib_update_btn);
 
@@ -71,6 +78,8 @@ public class ContentFileViewHolder extends RecyclerView.ViewHolder {
         title = itemView.findViewById(R.id.content_title);
         thumbnail = itemView.findViewById(R.id.content_image);
         content_card_view = itemView.findViewById(R.id.content_card_view);
+        rl_loader = itemView.findViewById(R.id.rl_loader);
+        rl_card = itemView.findViewById(R.id.rl_card);
         ib_action_btn = itemView.findViewById(R.id.ib_action_btn);
         ib_update_btn = itemView.findViewById(R.id.ib_update_btn);
 
@@ -81,9 +90,12 @@ public class ContentFileViewHolder extends RecyclerView.ViewHolder {
     public void setFileItem(ContentTable contentList, int position) {
 
 //        add card and its click listners
-        Objects.requireNonNull(content_card_view).setBackground(ApplicationClass.getInstance().getResources().getDrawable(getRandomCardColor()));
+        Objects.requireNonNull(content_card_view).setBackground(ApplicationClass.getInstance()
+                .getResources().getDrawable(getRandomCardColor()));
         Objects.requireNonNull(title).setText(contentList.getNodeTitle());
         title.setSelected(true);
+        Objects.requireNonNull(rl_card).setVisibility(View.VISIBLE);
+        Objects.requireNonNull(rl_loader).setVisibility(View.GONE);
 
         Objects.requireNonNull(ib_action_btn).setVisibility(View.GONE);
         if (contentList.getIsDownloaded().equalsIgnoreCase("false")) {
@@ -121,8 +133,19 @@ public class ContentFileViewHolder extends RecyclerView.ViewHolder {
             else
                 f = new File(ApplicationClass.foundationPath +
                         "" + App_Thumbs_Path + contentList.getNodeImage());
-            if (f.exists())
-                Objects.requireNonNull(thumbnail).setImageURI(Uri.fromFile(f));
+            if (f.exists()) {
+                ImageRequest imageRequest = ImageRequestBuilder
+                        .newBuilderWithSource(Uri.fromFile(f))
+                        .setResizeOptions(new ResizeOptions(250, 170))
+                        .setLocalThumbnailPreviewsEnabled(true)
+                        .build();
+                DraweeController controller = Fresco.newDraweeControllerBuilder()
+                        .setImageRequest(imageRequest)
+                        .setAutoPlayAnimations(true)// if gif, it will play.
+                        .setOldController(Objects.requireNonNull(thumbnail).getController())
+                        .build();
+                thumbnail.setController(controller);
+            }
         } else {
             ImageRequest imageRequest = ImageRequestBuilder
                     .newBuilderWithSource(Uri.parse(contentList.getNodeServerImage()))
@@ -184,23 +207,26 @@ public class ContentFileViewHolder extends RecyclerView.ViewHolder {
     }
 
     public void setFragmentFileItem(ContentTable contentTable, int i, String parentName, int parentPos) {
-        title.setText(contentTable.getNodeTitle());
+
+        Objects.requireNonNull(title).setText(contentTable.getNodeTitle());
         title.setSelected(true);
-        content_card_view.setBackground(ApplicationClass.getInstance().getResources().getDrawable(getRandomCardColor()));
+        Objects.requireNonNull(rl_card).setVisibility(View.VISIBLE);
+        Objects.requireNonNull(rl_loader).setVisibility(View.GONE);
+        Objects.requireNonNull(content_card_view).setBackground(ApplicationClass.getInstance().getResources().getDrawable(getRandomCardColor()));
         File file;
         if (contentTable.getIsDownloaded().equalsIgnoreCase("1") ||
                 contentTable.getIsDownloaded().equalsIgnoreCase("true")) {
 //                    ib_action_btn.setVisibility(View.GONE);
             if (contentTable.getResourceType().equalsIgnoreCase(FC_Constants.PDF))
-                ib_action_btn.setImageResource(R.drawable.ic_pdf);
+                Objects.requireNonNull(ib_action_btn).setImageResource(R.drawable.ic_pdf);
             else if (contentTable.getResourceType().equalsIgnoreCase(FC_Constants.YOUTUBE_LINK))
-                ib_action_btn.setImageResource(R.drawable.ic_youtube);
+                Objects.requireNonNull(ib_action_btn).setImageResource(R.drawable.ic_youtube);
             else if (contentTable.getResourceType().equalsIgnoreCase(FC_Constants.VIDEO))
-                ib_action_btn.setImageResource(R.drawable.ic_video);
+                Objects.requireNonNull(ib_action_btn).setImageResource(R.drawable.ic_video);
             else if (contentTable.getResourceType().toLowerCase().contains(FC_Constants.GAME))
-                ib_action_btn.setImageResource(R.drawable.ic_joystick);
+                Objects.requireNonNull(ib_action_btn).setImageResource(R.drawable.ic_joystick);
             else
-                ib_action_btn.setImageResource(R.drawable.ic_android_act);
+                Objects.requireNonNull(ib_action_btn).setImageResource(R.drawable.ic_android_act);
 
             content_card_view.setOnClickListener(v -> itemClicked.onContentOpenClicked(
                     contentTable));
@@ -213,15 +239,15 @@ public class ContentFileViewHolder extends RecyclerView.ViewHolder {
                     file = new File(ApplicationClass.foundationPath +
                             "" + App_Thumbs_Path + contentTable.getNodeImage());
                 if (file.exists())
-                    thumbnail.setImageURI(Uri.fromFile(file));
+                    Objects.requireNonNull(thumbnail).setImageURI(Uri.fromFile(file));
             } catch (Exception e) {
                 e.printStackTrace();
             }
 
             if (contentTable.isNodeUpdate())
-                ib_update_btn.setVisibility(View.VISIBLE);
+                Objects.requireNonNull(ib_update_btn).setVisibility(View.VISIBLE);
             else
-                ib_update_btn.setVisibility(View.GONE);
+                Objects.requireNonNull(ib_update_btn).setVisibility(View.GONE);
 
             ib_update_btn.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -239,14 +265,14 @@ public class ContentFileViewHolder extends RecyclerView.ViewHolder {
                         .build();
                 DraweeController controller = Fresco.newDraweeControllerBuilder()
                         .setImageRequest(imageRequest)
-                        .setOldController(thumbnail.getController())
+                        .setOldController(Objects.requireNonNull(thumbnail).getController())
                         .build();
                 thumbnail.setController(controller);
 
                 if (contentTable.getResourceType().equalsIgnoreCase(FC_Constants.YOUTUBE_LINK)) {
-                    ib_action_btn.setImageResource(R.drawable.ic_youtube);
+                    Objects.requireNonNull(ib_action_btn).setImageResource(R.drawable.ic_youtube);
                     content_card_view.setOnClickListener(v -> itemClicked.onContentOpenClicked(contentTable));
-                }else
+                } else
                     content_card_view.setOnClickListener(v ->
                             itemClicked.onContentDownloadClicked(contentTable,
                                     parentPos, i, "" + SINGLE_RES_DOWNLOAD));

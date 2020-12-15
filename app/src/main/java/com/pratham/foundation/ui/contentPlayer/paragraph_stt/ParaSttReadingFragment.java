@@ -15,12 +15,15 @@ import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.Handler;
 import android.text.Html;
+import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -31,6 +34,7 @@ import android.widget.TextView;
 
 import androidx.fragment.app.Fragment;
 
+import com.facebook.drawee.view.SimpleDraweeView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.nex3z.flowlayout.FlowLayout;
 import com.pratham.foundation.ApplicationClass;
@@ -38,7 +42,6 @@ import com.pratham.foundation.R;
 import com.pratham.foundation.customView.display_image_dialog.Activity_DisplayImage_;
 import com.pratham.foundation.customView.display_image_dialog.CustomLodingDialog;
 import com.pratham.foundation.customView.fontsview.SansTextView;
-import com.pratham.foundation.customView.shape_of_view.ShadowLayout;
 import com.pratham.foundation.interfaces.OnGameClose;
 import com.pratham.foundation.modalclasses.EventMessage;
 import com.pratham.foundation.modalclasses.ModalParaSubMenu;
@@ -67,11 +70,14 @@ import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 
+import static android.content.Context.INPUT_METHOD_SERVICE;
 import static com.pratham.foundation.ApplicationClass.ButtonClickSound;
 import static com.pratham.foundation.BaseActivity.setMute;
 import static com.pratham.foundation.ui.contentPlayer.GameConstatnts.readingImgPath;
 import static com.pratham.foundation.utility.FC_Constants.APP_SECTION;
+import static com.pratham.foundation.utility.FC_Constants.CURRENT_FOLDER_NAME;
 import static com.pratham.foundation.utility.FC_Constants.STT_REGEX;
 import static com.pratham.foundation.utility.FC_Constants.dialog_btn_cancel;
 import static com.pratham.foundation.utility.FC_Constants.gameFolderPath;
@@ -114,10 +120,22 @@ public class ParaSttReadingFragment extends Fragment implements
     ImageButton btn_camera;
     @ViewById(R.id.bottom_bar2)
     LinearLayout bottom_bar2;
-    @ViewById(R.id.image_container)
-    ShadowLayout image_container;
     @ViewById(R.id.floating_img)
     FloatingActionButton floating_img;
+
+    @ViewById(R.id.iv_image)
+    SimpleDraweeView pageImage;
+    @ViewById(R.id.stt_result_tv)
+    TextView stt_result_tv;
+    @ViewById(R.id.clean_stt)
+    ImageView clean_stt;
+    @ViewById(R.id.ll_edit_text)
+    LinearLayout ll_edit_text;
+    @ViewById(R.id.et_edit_ans)
+    EditText et_edit_ans;
+    @ViewById(R.id.bt_edit_ok)
+    Button bt_edit_ok;
+    String [] attAnsList;
 
     ContinuousSpeechService_New continuousSpeechService;
 
@@ -168,7 +186,7 @@ public class ParaSttReadingFragment extends Fragment implements
         ttsService = ApplicationClass.ttsService;
         contentType = "story";
 
-        image_container.setVisibility(View.GONE);
+        pageImage.setVisibility(View.GONE);
         floating_img.setImageResource(R.drawable.ic_image_white);
 
         bottom_bar2.setVisibility(View.GONE);
@@ -198,6 +216,7 @@ public class ParaSttReadingFragment extends Fragment implements
         continuousSpeechService.resetSpeechRecognizer();
         try {
             story_title.setText(Html.fromHtml("" + storyName));
+            story_title.setSelected(true);
             presenter.fetchJsonData(readingContentPath);
         } catch (Exception e) {
             e.printStackTrace();
@@ -208,6 +227,9 @@ public class ParaSttReadingFragment extends Fragment implements
     public void setListData(List<ModalParaSubMenu> paraDataList) {
         modalPagesList = paraDataList;
         totalPages = modalPagesList.size();
+        attAnsList = new String[totalPages];
+        for(int a=0; a<totalPages;a++)
+            attAnsList[a]="";
     }
 
     public CustomLodingDialog myLoadingDialog;
@@ -289,7 +311,10 @@ public class ParaSttReadingFragment extends Fragment implements
             if (modalPagesList.get(currentPage).getReadList().get(i).getWord().equalsIgnoreCase("#"))
                 lineBreakCounter += 1;
             correctArr[i] = false;
-            splitWordsPunct.add(splitWords.get(i).replaceAll(STT_REGEX, ""));
+            if (FastSave.getInstance().getString(CURRENT_FOLDER_NAME, "").equalsIgnoreCase("English"))
+                splitWordsPunct.add(modalPagesList.get(currentPage).getReadList().get(i).getWord().replaceAll("[^a-zA-Z ]", "").toLowerCase());
+            else
+                splitWordsPunct.add(splitWords.get(i).replaceAll(STT_REGEX, ""));
             wordsDurationList.add(modalPagesList.get(currentPage).getReadList().get(i).getWordDuration());
             wordsResIdList.add(modalPagesList.get(currentPage).getReadList().get(i).getWordId());
         }
@@ -381,7 +406,6 @@ public class ParaSttReadingFragment extends Fragment implements
                 }
             }, 1200);
         } catch (Resources.NotFoundException e) {
-            btn_nextpage.performClick();
             e.printStackTrace();
         }
     }
@@ -918,7 +942,7 @@ public class ParaSttReadingFragment extends Fragment implements
             presenter.getPage(currentPage);
             Log.d("click", "NextBtn - totalPages: " + totalPages + "  currentPage: " + currentPage);
         } else {
-            continuousSpeechService.stopSpeechService();
+//            continuousSpeechService.stopSpeechService();
 /*
             Bundle bundle = null;
             bundle = new Bundle();
@@ -1186,17 +1210,45 @@ public class ParaSttReadingFragment extends Fragment implements
     @Background
     @Override
     public void Stt_onResult(ArrayList<String> sttResult) {
-
         flgPerMarked = false;
+        setSttResult(sttResult);
         presenter.sttResultProcess(sttResult, splitWordsPunct, wordsResIdList);
+    }
 
-/*        if (!voiceStart) {
-            resetSpeechRecognizer();
-            btn_Play.setVisibility(View.VISIBLE);
-            btn_Mic.setImageResource(R.drawable.ic_mic_black);
-            setMute(0);
-        } else
-            speech.startListening(recognizerIntent);*/
+    @UiThread
+    public void setSttResult(ArrayList<String> sttResult) {
+        if(sttResult.size()>0) {
+            String txt = String.valueOf(stt_result_tv.getText());
+            String atxt = txt + sttResult.get(0)+ " ";
+            attAnsList[currentPage]=atxt;
+            stt_result_tv.setText("");
+            stt_result_tv.setTextSize(28);
+            stt_result_tv.setText(attAnsList[currentPage]);
+            stt_result_tv.setMovementMethod(new ScrollingMovementMethod());
+        }
+    }
+
+    @Click(R.id.clean_stt)
+    void sttClearClicked() {
+        if(voiceStart)
+            btn_Stop.performClick();
+        et_edit_ans.setText(attAnsList[currentPage]);
+        ll_edit_text.setVisibility(View.VISIBLE);
+//        stt_result_tv.setText("");
+//        attAnsList[currentPage]="";
+    }
+
+    @Click(R.id.bt_edit_ok)
+    public void editOKClicked(){
+        attAnsList[currentPage] = ""+et_edit_ans.getText();
+        stt_result_tv.setText(attAnsList[currentPage]);
+        ArrayList<String> sttResult = new ArrayList<>();
+        sttResult.add(attAnsList[currentPage]);
+        presenter.sttResultProcess(sttResult, splitWordsPunct, wordsResIdList);
+        InputMethodManager imm = (InputMethodManager) context.getSystemService(INPUT_METHOD_SERVICE);
+        Objects.requireNonNull(imm).hideSoftInputFromWindow(ll_edit_text.getWindowToken(), 0);
+        ll_edit_text.setVisibility(View.GONE);
+//        hideSystemUI();
     }
 
     @ViewById(R.id.silence_outer)

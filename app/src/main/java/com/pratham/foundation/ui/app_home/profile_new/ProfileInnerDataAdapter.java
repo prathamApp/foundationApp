@@ -114,8 +114,20 @@ public class ProfileInnerDataAdapter extends RecyclerView.Adapter {
                 itemHolder.rl_root.setOnClickListener(v -> itemClicked.itemClicked("Share App"));
                 break;
             case "syncImg":
-                itemHolder.item_Image.setImageResource(R.drawable.ic_sync);
+                itemHolder.item_Image.setImageResource(R.drawable.refresh);
                 itemHolder.rl_root.setOnClickListener(v -> itemClicked.itemClicked("sync status"));
+                break;
+            case "syncDimg":
+                itemHolder.item_Image.setImageResource(R.drawable.ic_sync);
+                itemHolder.rl_root.setOnClickListener(v -> itemClicked.itemClicked("Sync Data"));
+                break;
+            case "Lang_ic":
+                itemHolder.item_Image.setImageResource(R.drawable.translator);
+                itemHolder.rl_root.setOnClickListener(v -> itemClicked.itemClicked("Lang_ic"));
+                break;
+            case "cleanImg":
+                itemHolder.item_Image.setImageResource(R.drawable.broom_clean);
+                itemHolder.rl_root.setOnClickListener(v -> itemClicked.itemClicked("free space"));
                 break;
         }
     }

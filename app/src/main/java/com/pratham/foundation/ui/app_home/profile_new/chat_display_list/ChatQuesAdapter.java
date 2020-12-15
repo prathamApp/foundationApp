@@ -51,7 +51,7 @@ public class ChatQuesAdapter extends RecyclerView.Adapter {
 
     public class FileHolder extends RecyclerView.ViewHolder {
 
-        TextView title, tv_timestamp, tv_view, tv_section;
+        TextView title, tv_timestamp, tv_section;
         RelativeLayout certi_root;
 
         public FileHolder(View view) {
@@ -59,7 +59,7 @@ public class ChatQuesAdapter extends RecyclerView.Adapter {
             title = view.findViewById(R.id.tv_res_title);
             tv_timestamp = view.findViewById(R.id.tv_timestamp);
             tv_section = view.findViewById(R.id.tv_section);
-            tv_view = view.findViewById(R.id.tv_view);
+//            tv_view = view.findViewById(R.id.tv_view);
             certi_root = view.findViewById(R.id.certi_root);
         }
     }

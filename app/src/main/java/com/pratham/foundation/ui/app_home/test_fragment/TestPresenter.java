@@ -1,13 +1,13 @@
 package com.pratham.foundation.ui.app_home.test_fragment;
 
 import android.content.Context;
+import android.os.Environment;
 import android.util.Log;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 import com.google.gson.stream.JsonReader;
-import com.pratham.foundation.ApplicationClass;
 import com.pratham.foundation.async.API_Content;
 import com.pratham.foundation.async.ZipDownloader;
 import com.pratham.foundation.database.AppDatabase;
@@ -173,25 +173,25 @@ public class TestPresenter implements TestContract.TestPresenter, API_Content_Re
     }
 
     private String getLevelWiseTestName() {
-        String jsonName = "Beginner Test";
+        String testName = "Beginner Test";
         switch (currentLevel) {
             case 0:
-                jsonName = "Beginner Test";
+                testName = "Beginner Test";
                 break;
             case 1:
-                jsonName = "SubJunior Test";
+                testName = "SubJunior Test";
                 break;
             case 2:
-                jsonName = "Junior Test";
+                testName = "Junior Test";
                 break;
             case 3:
-                jsonName = "SubSenior Test";
+                testName = "SubSenior Test";
                 break;
             case 4:
-                jsonName = "Senior Test";
+                testName = "Senior Test";
                 break;
         }
-        return jsonName;
+        return testName;
     }
 
     @Background
@@ -292,9 +292,9 @@ public class TestPresenter implements TestContract.TestPresenter, API_Content_Re
                         } else if (lang.equalsIgnoreCase("Tamil")) {
                             contentTable.setTamilQues("" + questionList);
                             contentTable.setTamilAnsw("" + answerList);
-                        } else if (lang.equalsIgnoreCase("Odia")) {
-                            contentTable.setOdiaQues("" + questionList);
-                            contentTable.setOdiaAnsw("" + answerList);
+                        } else if (lang.equalsIgnoreCase("Odiya")) {
+                            contentTable.setOdiyaQues("" + questionList);
+                            contentTable.setOdiyaAnsw("" + answerList);
                         } else if (lang.equalsIgnoreCase("Malayalam")) {
                             contentTable.setUrduQues("" + questionList);
                             contentTable.setUrduAnsw("" + answerList);
@@ -375,7 +375,7 @@ public class TestPresenter implements TestContract.TestPresenter, API_Content_Re
             assessment.setTotalMarksa(0);
             assessment.setStudentIDa(FastSave.getInstance().getString(FC_Constants.CURRENT_ASSESSMENT_STUDENT_ID, ""));
             assessment.setStartDateTimea("" + FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""));
-            assessment.setEndDateTime(FC_Utility.GetCurrentDateTime());
+            assessment.setEndDateTime(FC_Utility.getCurrentDateTime());
             if (FastSave.getInstance().getBoolean(supervisedAssessment, false))
                 assessment.setDeviceIDa("" + FastSave.getInstance().getString(FC_Constants.CURRENT_SUPERVISOR_ID, ""));
             else
@@ -394,8 +394,13 @@ public class TestPresenter implements TestContract.TestPresenter, API_Content_Re
         JSONArray returnCodeList = null;
         String[] languagesArray;
         try {
+            String jsonPath ="";
+            if(new File(Environment.getExternalStorageDirectory().toString()
+                    + "/.FCAInternal/TestJsons/" + jsonName).exists())
+                jsonPath = Environment.getExternalStorageDirectory().toString()
+                        + "/.FCAInternal/TestJsons/" + jsonName;
 //            InputStream is = mContext.getAssets().open(jsonName);
-            InputStream is = new FileInputStream(ApplicationClass.foundationPath + "/.FCA/" + jsonName);
+            InputStream is = new FileInputStream(jsonPath);
             int size = is.available();
             byte[] buffer = new byte[size];
             is.read(buffer);
@@ -1151,7 +1156,8 @@ public class TestPresenter implements TestContract.TestPresenter, API_Content_Re
         } else if (header.equalsIgnoreCase(FC_Constants.TEST_JSON_DW)) {
             try {
                 String Jname = FC_Utility.getLevelWiseJson(currentLevelNo);
-                File filepath = new File(ApplicationClass.foundationPath + "/.FCA/", Jname); // file path to save
+                File filepath = new File(Environment.getExternalStorageDirectory().toString()
+                        + "/.FCAInternal/TestJsons", Jname); // file path to save
                 if (filepath.exists())
                     filepath.delete();
                 FileWriter writer = new FileWriter(filepath);
@@ -1188,6 +1194,9 @@ public class TestPresenter implements TestContract.TestPresenter, API_Content_Re
         } else if (header.equalsIgnoreCase(FC_Constants.INTERNET_BROWSE)) {
             myView.addContentToViewList(contentParentList);
             myView.notifyAdapter();
+        } else if (header.equalsIgnoreCase(FC_Constants.INTERNET_DOWNLOAD_RESOURCE)) {
+            myView.dismissLoadingDialog();
+            myView.showToast("Cannot connect.");
         }
     }
 }

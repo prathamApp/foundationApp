@@ -130,10 +130,21 @@
         android:layout_height="match_parent"
         android:visibility="gone">
 
+        <ImageView
+            android:id="@+id/main_back2"
+            android:layout_width="@dimen/_30sdp"
+            android:layout_height="@dimen/_30sdp"
+            android:layout_marginStart="@dimen/_5sdp"
+            android:layout_marginTop="@dimen/_5sdp"
+            android:scaleType="center"
+            app:srcCompat="@drawable/ic_left_arrow_white" />
+
+
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/chat_recycler_view"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:layout_below="@+id/main_back2"
             android:layout_centerInParent="true"
             android:clipToPadding="false"
             android:gravity="center"

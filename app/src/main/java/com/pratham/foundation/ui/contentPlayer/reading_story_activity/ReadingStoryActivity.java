@@ -4,20 +4,22 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.Rect;
 import android.graphics.drawable.ColorDrawable;
 import android.media.MediaPlayer;
+import android.net.Uri;
 import android.os.Handler;
 import android.text.Html;
+import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -26,12 +28,16 @@ import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
+import com.facebook.drawee.backends.pipeline.Fresco;
+import com.facebook.drawee.interfaces.DraweeController;
+import com.facebook.drawee.view.SimpleDraweeView;
+import com.facebook.imagepipeline.request.ImageRequest;
+import com.facebook.imagepipeline.request.ImageRequestBuilder;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.nex3z.flowlayout.FlowLayout;
 import com.pratham.foundation.ApplicationClass;
 import com.pratham.foundation.BaseActivity;
 import com.pratham.foundation.R;
-import com.pratham.foundation.customView.GifView;
 import com.pratham.foundation.customView.display_image_dialog.CustomLodingDialog;
 import com.pratham.foundation.customView.fontsview.SansTextView;
 import com.pratham.foundation.customView.shape_of_view.ShadowLayout;
@@ -51,10 +57,10 @@ import org.androidannotations.annotations.UiThread;
 import org.androidannotations.annotations.ViewById;
 
 import java.io.File;
-import java.io.FileInputStream;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 
 import static com.pratham.foundation.ApplicationClass.ButtonClickSound;
 import static com.pratham.foundation.utility.FC_Constants.APP_SECTION;
@@ -78,8 +84,12 @@ public class ReadingStoryActivity extends BaseActivity implements
     FlowLayout wordFlowLayout;
     @ViewById(R.id.tv_story_title)
     TextView story_title;
+    @ViewById(R.id.stt_result_tv)
+    TextView stt_result_tv;
     @ViewById(R.id.iv_image)
-    ImageView pageImage;
+    SimpleDraweeView pageImage;
+    @ViewById(R.id.clean_stt)
+    ImageView clean_stt;
     @ViewById(R.id.btn_prev)
     ImageButton btn_previouspage;
     @ViewById(R.id.btn_next)
@@ -90,10 +100,10 @@ public class ReadingStoryActivity extends BaseActivity implements
     ImageButton btn_Mic;
     @ViewById(R.id.myScrollView)
     ScrollView myScrollView;
+    @ViewById(R.id.myScrollView2)
+    ScrollView myScrollView2;
     @ViewById(R.id.btn_submit)
     Button btn_submit;
-    @ViewById(R.id.gif_view)
-    GifView gif_view;
     @ViewById(R.id.story_ll)
     RelativeLayout story_ll;
     @ViewById(R.id.image_container)
@@ -110,6 +120,13 @@ public class ReadingStoryActivity extends BaseActivity implements
         FloatingActionButton floating_info;*/
     @ViewById(R.id.floating_img)
     FloatingActionButton floating_img;
+
+    @ViewById(R.id.ll_edit_text)
+    LinearLayout ll_edit_text;
+    @ViewById(R.id.et_edit_ans)
+    EditText et_edit_ans;
+    @ViewById(R.id.bt_edit_ok)
+    Button bt_edit_ok;
 
     ContinuousSpeechService_New continuousSpeechService;
 
@@ -135,6 +152,7 @@ public class ReadingStoryActivity extends BaseActivity implements
     boolean voiceStart = false, flgPerMarked = false, onSdCard;
     static boolean[] correctArr;
     static boolean[] testCorrectArr;
+    String [] attAnsList;
 //    AnimationDrawable animationDrawable;
 
     @AfterViews
@@ -169,8 +187,10 @@ public class ReadingStoryActivity extends BaseActivity implements
             sttLang = "English";
         continuousSpeechService = new ContinuousSpeechService_New(context,
                 ReadingStoryActivity.this, sttLang);
-        if (contentType.equalsIgnoreCase(FC_Constants.RHYME_RESOURCE))
+        if (contentType.equalsIgnoreCase(FC_Constants.RHYME_RESOURCE)) {
             btn_Mic.setVisibility(View.GONE);
+            myScrollView2.setVisibility(View.GONE);
+        }
 
         readSounds.add(R.raw.tap_the_mic);
         readSounds.add(R.raw.your_turn_to_read);
@@ -191,6 +211,7 @@ public class ReadingStoryActivity extends BaseActivity implements
 
         try {
             story_title.setText(Html.fromHtml(storyName));
+            story_title.setSelected(true);
             presenter.fetchJsonData(readingContentPath);
             //pageArray = presenter.fetchJsonData(storyName);
 //            getWordsOfStoryOfPage();
@@ -203,6 +224,9 @@ public class ReadingStoryActivity extends BaseActivity implements
     public void setListData(List<ModalParaSubMenu> paraDataList) {
         modalPagesList = paraDataList;
         totalPages = modalPagesList.size();
+        attAnsList = new String[totalPages];
+        for(int a=0; a<totalPages;a++)
+            attAnsList[a]="";
     }
 
     public CustomLodingDialog myLoadingDialog;
@@ -274,20 +298,17 @@ public class ReadingStoryActivity extends BaseActivity implements
         try {
             File f = new File(readingContentPath + storyBg);
             if (f.exists()) {
-                if (storyBg.contains(".gif")) {
-                    pageImage.setVisibility(View.GONE);
-                    gif_view.setVisibility(View.VISIBLE);
-                    gif_view.setGifResource(new FileInputStream(readingContentPath + storyBg));
-                    gif_view.play();
-                } else {
-                    gif_view.setVisibility(View.GONE);
-                    pageImage.setVisibility(View.VISIBLE);
-                    Bitmap bmImg = BitmapFactory.decodeFile(readingContentPath + storyBg);
-                    BitmapFactory.decodeStream(new FileInputStream(readingContentPath + storyBg));
-                    pageImage.setImageBitmap(bmImg);
-                }
+                ImageRequest imageRequest = ImageRequestBuilder
+                        .newBuilderWithSource(Uri.fromFile(f))
+                        .setLocalThumbnailPreviewsEnabled(true)
+                        .build();
+                DraweeController controller = Fresco.newDraweeControllerBuilder()
+                        .setImageRequest(imageRequest)
+                        .setAutoPlayAnimations(true)// if gif, it will play.
+                        .setOldController(Objects.requireNonNull(pageImage).getController())
+                        .build();
+                pageImage.setController(controller);
             } else {
-                gif_view.setVisibility(View.GONE);
                 pageImage.setVisibility(View.GONE);
             }
         } catch (Exception e) {
@@ -366,7 +387,8 @@ public class ReadingStoryActivity extends BaseActivity implements
                 myTextView.setTextColor(getResources().getColor(R.color.colorText));
                 final int finalI = i;
                 myTextView.setOnClickListener(v -> {
-                    if (!FastSave.getInstance().getString(FC_Constants.CURRENT_FOLDER_NAME, "").equalsIgnoreCase("maths"))
+                    if (!FastSave.getInstance().getString(FC_Constants.CURRENT_FOLDER_NAME, "")
+                            .equalsIgnoreCase("maths"))
                         if ((!playFlg || pauseFlg) && !voiceStart) {
                             setMute(0);
                             myTextView.setTextColor(getResources().getColor(R.color.colorRedDark));
@@ -783,6 +805,7 @@ public class ReadingStoryActivity extends BaseActivity implements
                 playFlg = false;
                 pauseFlg = true;
                 flgPerMarked = false;
+                stt_result_tv.setText(""+attAnsList[currentPage]);
                 presenter.getPage(currentPage);
             } catch (Exception e) {
                 e.printStackTrace();
@@ -828,6 +851,7 @@ public class ReadingStoryActivity extends BaseActivity implements
                 flgPerMarked = true;
                 playFlg = false;
                 pauseFlg = true;
+                stt_result_tv.setText(""+attAnsList[currentPage]);
                 new Handler().postDelayed(() -> {
                     presenter.getPage(currentPage);
                     nextPressedFlg = false;
@@ -882,6 +906,7 @@ public class ReadingStoryActivity extends BaseActivity implements
                 flgPerMarked = true;
                 playFlg = false;
                 pauseFlg = true;
+                stt_result_tv.setText(""+attAnsList[currentPage]);
                 new Handler().postDelayed(() -> {
                     presenter.getPage(currentPage);
                     nextPressedFlg = false;
@@ -908,7 +933,7 @@ public class ReadingStoryActivity extends BaseActivity implements
 
         dia_btn_green.setText("" + getResources().getString(R.string.yes));
         dia_btn_red.setText("" + getResources().getString(R.string.no));
-        dia_btn_yellow.setText("" + getResources().getString(R.string.cancel));
+        dia_btn_yellow.setText("" + getResources().getString(R.string.Cancel));
         dia_btn_yellow.setVisibility(View.GONE);
         dialog.show();
 
@@ -1132,13 +1157,46 @@ public class ReadingStoryActivity extends BaseActivity implements
         flgPerMarked = false;
         presenter.sttResultProcess(sttResult, splitWordsPunct, wordsResIdList);
 
-/*        if (!voiceStart) {
+        if(sttResult.size()>0) {
+            String txt = String.valueOf(stt_result_tv.getText());
+            String atxt = txt + sttResult.get(0)+ " ";
+            attAnsList[currentPage]=atxt;
+            stt_result_tv.setText("");
+            stt_result_tv.setTextSize(28);
+            stt_result_tv.setText(attAnsList[currentPage]);
+            stt_result_tv.setMovementMethod(new ScrollingMovementMethod());
+        }
+        /*        if (!voiceStart) {
             resetSpeechRecognizer();
             btn_Play.setVisibility(View.VISIBLE);
             btn_Mic.setImageResource(R.drawable.ic_mic_black);
             setMute(0);
         } else
             speech.startListening(recognizerIntent);*/
+    }
+
+    @Click(R.id.clean_stt)
+    void sttClearClicked() {
+        if(voiceStart)
+            btn_Stop.performClick();
+        et_edit_ans.setText(attAnsList[currentPage]);
+        ll_edit_text.setVisibility(View.VISIBLE);
+//        stt_result_tv.setText("");
+//        attAnsList[currentPage]="";
+    }
+
+    @Click(R.id.bt_edit_ok)
+    public void editOKClicked(){
+        attAnsList[currentPage] = ""+et_edit_ans.getText();
+        stt_result_tv.setText(attAnsList[currentPage]);
+        ArrayList<String> sttResult = new ArrayList<>();
+        sttResult.add(attAnsList[currentPage]);
+        presenter.sttResultProcess(sttResult, splitWordsPunct, wordsResIdList);
+//        presenter.checkSttAns(attAnsList[currentPage]);
+        InputMethodManager imm = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
+        Objects.requireNonNull(imm).hideSoftInputFromWindow(ll_edit_text.getWindowToken(), 0);
+        ll_edit_text.setVisibility(View.GONE);
+//        hideSystemUI();
     }
 
     @ViewById(R.id.silence_outer)

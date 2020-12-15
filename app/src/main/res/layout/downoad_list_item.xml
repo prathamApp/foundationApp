@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:card_view="http://schemas.android.com/tools"
+    android:id="@+id/rl_root"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/full_transparent">
+
+    <com.pratham.foundation.customView.fontsview.SansTextViewBold
+        android:id="@+id/item_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="@dimen/_10sdp"
+        android:layout_marginEnd="@dimen/_10sdp"
+        android:layout_marginTop="@dimen/_5sdp"
+        android:layout_marginBottom="@dimen/_2sdp"
+        android:duplicateParentState="true"
+        android:ellipsize="marquee"
+        android:fadingEdge="horizontal"
+        android:gravity="center_vertical"
+        android:marqueeRepeatLimit="marquee_forever"
+        android:paddingHorizontal="@dimen/_2sdp"
+        android:scrollHorizontally="true"
+        android:singleLine="true"
+        android:text="download item"
+        android:textColor="@color/dark_blue"
+        android:textSize="@dimen/_15sdp" />
+
+    <com.pratham.foundation.customView.progress_layout.ProgressLayout
+        android:layout_below="@+id/item_name"
+        android:id="@+id/item_progressLayout"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/_15sdp"
+        android:layout_marginLeft="@dimen/_10sdp"
+        android:layout_marginRight="@dimen/_10sdp"
+        android:layout_marginBottom="@dimen/_5sdp"
+        app:c_progress="0"
+        app:c_progressColor="@color/colorBtnGreenDark"
+        app:c_progressRadius="@dimen/_8sdp"
+        card_view:c_borderWidth="5dp"
+        card_view:c_isShowDesc="false"
+        card_view:c_max="100" />
+
+</RelativeLayout>

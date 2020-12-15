@@ -43,7 +43,6 @@ import java.util.List;
 import static com.pratham.foundation.utility.FC_Constants.APP_SECTION;
 import static com.pratham.foundation.utility.FC_Constants.sec_Test;
 
-//TODO ADD ANNOTATIONS
 @EActivity(R.layout.activity_web_view)
 public class WebViewActivity extends BaseActivity implements WebViewInterface {
 

@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/new_bg"
-    tools:context=".ui.admin_panel.group_selection.SelectGroupActivity">
+    tools:context=".ui.group_selection.SelectGroupActivity">
 
     <RelativeLayout
         android:id="@+id/topPanel"

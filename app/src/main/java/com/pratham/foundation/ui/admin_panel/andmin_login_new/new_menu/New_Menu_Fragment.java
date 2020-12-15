@@ -11,6 +11,7 @@ import com.pratham.foundation.R;
 import com.pratham.foundation.async.PushDataToServer_New;
 import com.pratham.foundation.database.AppDatabase;
 import com.pratham.foundation.services.shared_preferences.FastSave;
+import com.pratham.foundation.ui.admin_panel.andmin_login_new.enrollmentid.AddEnrollmentId_;
 import com.pratham.foundation.ui.admin_panel.andmin_login_new.pull_and_asign.PullAndAssign_Fragment;
 import com.pratham.foundation.ui.admin_panel.andmin_login_new.pull_and_asign.PullAndAssign_Fragment_;
 import com.pratham.foundation.ui.admin_panel.fragment_admin_panel.tab_usage.TabUsageActivity_;
@@ -54,6 +55,12 @@ public class New_Menu_Fragment extends Fragment {
     @Click(R.id.btn_Usage)
     public void viewTabUsage() {
         Intent intent = new Intent(getActivity(), TabUsageActivity_.class);
+        startActivityForResult(intent, 1);
+    }
+
+    @Click(R.id.btn_Enrollment)
+    public void addEnrollmentId() {
+        Intent intent = new Intent(getActivity(), AddEnrollmentId_.class);
         startActivityForResult(intent, 1);
     }
 

@@ -18,7 +18,7 @@
         android:background="@color/white"
         app:cardElevation="2dp">
 
-        <com.pratham.assessment.custom.gif_viewer.GifView
+        <com.pratham.foundation.customView.GifView
             android:id="@+id/mcq_gif"
             android:layout_width="match_parent"
             android:layout_height="match_parent"

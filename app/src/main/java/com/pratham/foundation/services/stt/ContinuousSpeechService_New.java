@@ -21,6 +21,30 @@ import com.pratham.foundation.utility.FC_Utility;
 import java.util.ArrayList;
 
 import static com.pratham.foundation.BaseActivity.setMute;
+import static com.pratham.foundation.utility.FC_Constants.ASSAMESE;
+import static com.pratham.foundation.utility.FC_Constants.ASSAMESE_LOCAL;
+import static com.pratham.foundation.utility.FC_Constants.BENGALI;
+import static com.pratham.foundation.utility.FC_Constants.BENGALI_LOCAL;
+import static com.pratham.foundation.utility.FC_Constants.ENGLISH;
+import static com.pratham.foundation.utility.FC_Constants.ENGLISH_LOCAL;
+import static com.pratham.foundation.utility.FC_Constants.GUJARATI;
+import static com.pratham.foundation.utility.FC_Constants.GUJARATI_LOCAL;
+import static com.pratham.foundation.utility.FC_Constants.HINDI;
+import static com.pratham.foundation.utility.FC_Constants.HINDI_LOCAL;
+import static com.pratham.foundation.utility.FC_Constants.KANNADA;
+import static com.pratham.foundation.utility.FC_Constants.KANNADA_LOCAL;
+import static com.pratham.foundation.utility.FC_Constants.MALAYALAM;
+import static com.pratham.foundation.utility.FC_Constants.MALAYALAM_LOCAL;
+import static com.pratham.foundation.utility.FC_Constants.MARATHI;
+import static com.pratham.foundation.utility.FC_Constants.MARATHI_LOCAL;
+import static com.pratham.foundation.utility.FC_Constants.ODIYA;
+import static com.pratham.foundation.utility.FC_Constants.ODIYA_LOCAL;
+import static com.pratham.foundation.utility.FC_Constants.PUNJABI;
+import static com.pratham.foundation.utility.FC_Constants.PUNJABI_LOCAL;
+import static com.pratham.foundation.utility.FC_Constants.TAMIL;
+import static com.pratham.foundation.utility.FC_Constants.TAMIL_LOCAL;
+import static com.pratham.foundation.utility.FC_Constants.TELUGU;
+import static com.pratham.foundation.utility.FC_Constants.TELUGU_LOCAL;
 
 
 /**
@@ -41,11 +65,60 @@ public class ContinuousSpeechService_New implements RecognitionListener, STT_Res
         this.stt_result = stt_result;
         resetFlg = false;
         this.language = language;
-        if (FastSave.getInstance().getString(FC_Constants.CURRENT_FOLDER_NAME, "").equalsIgnoreCase("English"))
-            myLocal = "en-IN";
-        else
-            myLocal = "hi-IN";
+        myLocal = getLangLocal();
         resetSpeechRecognizer();
+    }
+
+    public String getLangLocal(){
+        String setLocal="hi";
+        if (FastSave.getInstance().getString(FC_Constants.CURRENT_FOLDER_NAME, "").equalsIgnoreCase(ENGLISH))
+            setLocal = "en";
+        else {
+            String appLang = FastSave.getInstance().getString(FC_Constants.CURRENT_SUBJECT, "");
+            switch (appLang) {
+                case HINDI:
+                    setLocal = HINDI_LOCAL;
+                    break;
+                case MARATHI:
+                    setLocal = MARATHI_LOCAL;
+                    break;
+                case ENGLISH:
+                    setLocal = ENGLISH_LOCAL;
+                    break;
+                case KANNADA:
+                    setLocal = KANNADA_LOCAL;
+                    break;
+                case TELUGU:
+                    setLocal = TELUGU_LOCAL;
+                    break;
+                case BENGALI:
+                    setLocal = BENGALI_LOCAL;
+                    break;
+                case GUJARATI:
+                    setLocal = GUJARATI_LOCAL;
+                    break;
+                case PUNJABI:
+                    setLocal = PUNJABI_LOCAL;
+                    break;
+                case TAMIL:
+                    setLocal = TAMIL_LOCAL;
+                    break;
+                case ODIYA:
+                    setLocal = ODIYA_LOCAL;
+                    break;
+                case MALAYALAM:
+                    setLocal = MALAYALAM_LOCAL;
+                    break;
+                case ASSAMESE:
+                    setLocal = ASSAMESE_LOCAL;
+                    break;
+                default:
+                    setLocal = HINDI_LOCAL;
+                    break;
+
+            }
+        }
+        return setLocal;
     }
 
     public void setRecogniserIntent() {
@@ -54,17 +127,18 @@ public class ContinuousSpeechService_New implements RecognitionListener, STT_Res
         recognizerIntent.putExtra(RecognizerIntent.EXTRA_LANGUAGE, myLocal);
         recognizerIntent.putExtra(RecognizerIntent.EXTRA_SPEECH_INPUT_POSSIBLY_COMPLETE_SILENCE_LENGTH_MILLIS, 10000);
         recognizerIntent.putExtra(RecognizerIntent.EXTRA_SPEECH_INPUT_COMPLETE_SILENCE_LENGTH_MILLIS, 20000);
-        recognizerIntent.putExtra(RecognizerIntent.EXTRA_PARTIAL_RESULTS, true);
+        recognizerIntent.putExtra(RecognizerIntent.EXTRA_PARTIAL_RESULTS, false);
         recognizerIntent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
-        recognizerIntent.putExtra(RecognizerIntent.EXTRA_MAX_RESULTS, 5);
+        recognizerIntent.putExtra(RecognizerIntent.EXTRA_MAX_RESULTS, 3);
     }
 
-    public void stopSpeechService(){
+    public void stopSpeechService() {
         setMute(0);
         speech.destroy();
         stt_result.stoppedPressed();
     }
 
+/*
     public void setMyLocal(String language) {
         if (language.equalsIgnoreCase("English"))
             myLocal = "en-IN";
@@ -72,6 +146,7 @@ public class ContinuousSpeechService_New implements RecognitionListener, STT_Res
             myLocal = "hi-IN";
         resetSpeechRecognizer();
     }
+*/
 
 
     public void resetSpeechRecognizer() {

@@ -54,7 +54,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@+id/header_rl"
-        android:visibility="gone">
+        android:visibility="visible">
 
         <ImageView
             android:layout_width="match_parent"
@@ -62,14 +62,15 @@
             android:src="@drawable/no_usage_data" />
 
         <com.pratham.foundation.customView.fontsview.SansTextViewBold
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
             android:layout_centerHorizontal="true"
             android:layout_marginBottom="@dimen/_25sdp"
+            android:textAlignment="center"
             android:text="No group usage on this device!"
             android:textColor="@color/dark_blue"
-            android:textSize="@dimen/_25sdp"
+            android:textSize="@dimen/_18sdp"
             tools:ignore="HardcodedText" />
     </RelativeLayout>
 
