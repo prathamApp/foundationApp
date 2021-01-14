@@ -81,11 +81,12 @@ public class ProfileOuterDataAdapter extends RecyclerView.Adapter {
                 itemRowHolder.next_nav_btn.setVisibility(View.GONE);*/
         try {
 //            itemRowHolder.card_layout.setBackground(mContext.getResources().getDrawable(getRandomCardColor()));
-            itemRowHolder.itemTitle.setText(progressArray[i]);
             if (progressArray[i].equalsIgnoreCase("Progress")) {
+                itemRowHolder.itemTitle.setText(mContext.getResources().getString(R.string.progress));
                 sublistList = progressSubArray;
                 subImgList = progressImgSubArray;
             } else if (progressArray[i].equalsIgnoreCase("Status")) {
+                itemRowHolder.itemTitle.setText(mContext.getResources().getString(R.string.status));
                 sublistList = statusSubArray;
                 subImgList = statusImgSubArray;
             }

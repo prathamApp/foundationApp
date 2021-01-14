@@ -1,19 +1,19 @@
 package com.pratham.foundation.ui.bottom_fragment;
 
-import com.pratham.foundation.database.domain.Student;
-import com.pratham.foundation.ui.contentPlayer.keywords_identification.QuestionModel;
+import com.pratham.foundation.database.domain.StudentAndGroup_BottomFragmentModal;
 
 import java.util.List;
 
 public interface BottomStudentsContract {
 
     interface StudentClickListener {
-        public void onStudentClick(String StudentName, String StudentId);
+        void onStudentClick(StudentAndGroup_BottomFragmentModal fragmentModal, int pos);
+        void onGroupClick(String StudentName, String StudentId);
     }
 
 
-    public interface BottomStudentsView {
-        void setStudentList(List<Student> studentList);
+    interface BottomStudentsView {
+        void setStudentList(List<StudentAndGroup_BottomFragmentModal> studentList);
 
         void notifyStudentAdapter();
 
@@ -22,9 +22,11 @@ public interface BottomStudentsContract {
         void dismissProgressDialog2();
 
         void gotoNext();
+
+        void clearList();
     }
 
-    public interface BottomStudentsPresenter {
+    interface BottomStudentsPresenter {
         void setView(BottomStudentsContract.BottomStudentsView viewBottomStudents);
 
         void showStudents();
@@ -32,6 +34,8 @@ public interface BottomStudentsContract {
         void updateStudentData();
 
         void populateDB();
+
+        void getStudentsFromGroup(String studentId);
     }
 
 }

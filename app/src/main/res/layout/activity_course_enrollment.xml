@@ -1,0 +1,220 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/home_root_layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/new_bg"
+    android:orientation="vertical">
+    <!--    android:background="#F9FCFE"-->
+
+    <RelativeLayout
+        android:id="@+id/list_display"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="visible">
+
+        <RelativeLayout
+            android:id="@+id/header_rl"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:id="@+id/main_back"
+                android:layout_width="@dimen/_30sdp"
+                android:layout_height="@dimen/_30sdp"
+                android:layout_marginStart="@dimen/_5sdp"
+                android:layout_marginTop="@dimen/_5sdp"
+                android:scaleType="center"
+                app:srcCompat="@drawable/ic_left_arrow_white" />
+
+            <com.pratham.foundation.customView.fontsview.SansTextViewBold
+                android:id="@+id/tv_Topic"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/main_back"
+                android:layout_toEndOf="@+id/main_back"
+                android:layout_marginEnd="@dimen/_10sdp"
+                android:layout_marginBottom="@dimen/_10sdp"
+                android:text="Topic"
+                android:textColor="@color/colorText"
+                android:textSize="@dimen/_20sdp" />
+
+        </RelativeLayout>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/course_recycler_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@+id/header_rl"
+            android:layout_above="@id/add_course_btn"
+            android:layout_marginBottom="@dimen/_5sdp"
+            android:layout_centerInParent="true"
+            android:clipToPadding="false"
+            android:gravity="center"
+            android:layoutAnimation="@anim/layout_fall_down"
+            android:scrollbars="vertical" />
+
+        <com.pratham.foundation.customView.fontsview.SansButton
+            android:id="@+id/add_course_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="@dimen/_5sdp"
+            android:layout_marginTop="@dimen/_5sdp"
+            android:paddingStart="@dimen/_25sdp"
+            android:paddingEnd="@dimen/_25sdp"
+            android:paddingTop="@dimen/_5sdp"
+            android:paddingBottom="@dimen/_5sdp"
+            android:text="Add Course"
+            android:background="@drawable/button_green"
+            android:textColor="@color/white"/>
+
+        <RelativeLayout
+            android:id="@+id/rl_no_data"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@+id/header_rl"
+            android:layout_above="@id/add_course_btn"
+            android:layout_marginBottom="@dimen/_5sdp"
+            android:layout_centerInParent="true"
+            android:visibility="visible">
+
+            <ImageView
+                android:id="@+id/nodata_img"
+                android:layout_width="@dimen/_250sdp"
+                android:layout_height="@dimen/_250sdp"
+                android:layout_alignParentTop="true"
+                android:layout_centerHorizontal="true"
+                android:src="@drawable/no_usage_data" />
+
+            <com.pratham.foundation.customView.fontsview.SansTextViewBold
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/nodata_img"
+                android:layout_marginStart="@dimen/_20sdp"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:layout_marginEnd="@dimen/_20sdp"
+                android:layout_marginBottom="@dimen/_10sdp"
+                android:text="@string/no_data_generated"
+                android:textAlignment="center"
+                android:textColor="@color/dark_blue"
+                android:textSize="@dimen/_15sdp" />
+        </RelativeLayout>
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/rl_add_course"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone">
+
+        <ImageView
+            android:id="@+id/main_back2"
+            android:layout_width="@dimen/_30sdp"
+            android:layout_height="@dimen/_30sdp"
+            android:layout_marginStart="@dimen/_5sdp"
+            android:layout_marginTop="@dimen/_5sdp"
+            android:scaleType="center"
+            app:srcCompat="@drawable/ic_left_arrow_white" />
+
+        <RelativeLayout
+            android:id="@+id/spinner_rl"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginBottom="@dimen/_10sdp"
+            android:layout_below="@+id/main_back2"
+            android:layout_above="@id/date_btn"
+            android:layout_marginTop="@dimen/_10sdp">
+
+            <Spinner
+                android:id="@+id/board_spinner"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="16dp"
+                android:layout_marginBottom="8dp"
+                android:background="@drawable/gradient_spinner"
+                android:textAlignment="center" />
+
+            <Spinner
+                android:id="@+id/lang_spinner"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/board_spinner"
+                android:layout_centerHorizontal="true"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="16dp"
+                android:layout_marginBottom="8dp"
+                android:background="@drawable/gradient_spinner"
+                android:textAlignment="center" />
+
+            <Spinner
+                android:id="@+id/subject_spinner"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/lang_spinner"
+                android:layout_centerHorizontal="true"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="16dp"
+                android:layout_marginBottom="8dp"
+                android:background="@drawable/gradient_spinner"
+                android:textAlignment="center" />
+
+            <Spinner
+                android:id="@+id/learning_spinner"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/subject_spinner"
+                android:layout_centerHorizontal="true"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="16dp"
+                android:layout_marginBottom="8dp"
+                android:background="@drawable/gradient_spinner"
+                android:textAlignment="center" />
+
+            <Spinner
+                android:id="@+id/level_spinner"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/learning_spinner"
+                android:layout_centerHorizontal="true"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="16dp"
+                android:layout_marginBottom="20dp"
+                android:background="@drawable/gradient_spinner"
+                android:textAlignment="center" />
+        </RelativeLayout>
+
+        <com.pratham.foundation.customView.fontsview.SansButton
+            android:id="@+id/date_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingTop="@dimen/_5sdp"
+            android:paddingBottom="@dimen/_5sdp"
+            android:paddingStart="@dimen/_25sdp"
+            android:paddingEnd="@dimen/_25sdp"
+            android:layout_marginBottom="@dimen/_10sdp"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:background="@drawable/button_green"
+            android:text="select date"
+            android:textColor="@color/white"
+            tools:ignore="HardcodedText" />
+
+        <include layout="@layout/layout_calendar"
+            android:layout_height="match_parent"
+            android:layout_width="match_parent" />
+
+    </RelativeLayout>
+
+</RelativeLayout>

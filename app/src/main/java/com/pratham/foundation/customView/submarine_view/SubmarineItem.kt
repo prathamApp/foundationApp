@@ -16,10 +16,12 @@
 
 package com.pratham.foundation.customView.submarine_view
 
-import android.graphics.drawable.Drawable
+import com.pratham.foundation.customView.fontsview.SansTextView
 
 /** SubmarineItem is an data class for composing [SubmarineView]'s navigation recyclerView item. */
 data class SubmarineItem(
-  val icon: Drawable? = null,
-  val iconForm: IconForm? = null
+        val icon: String? = null,
+        val iconForm: SansTextView? = null
+//  val icon: Drawable? = null,
+//  val iconForm: IconForm? = null
 )

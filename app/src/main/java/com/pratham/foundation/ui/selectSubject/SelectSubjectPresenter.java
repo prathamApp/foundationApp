@@ -22,8 +22,9 @@ import java.util.List;
 
 import static com.pratham.foundation.utility.FC_Constants.APP_LANGUAGE;
 import static com.pratham.foundation.utility.FC_Constants.APP_LANGUAGE_NODE_ID;
+import static com.pratham.foundation.utility.FC_Constants.CURRENT_STUDENT_ID;
 import static com.pratham.foundation.utility.FC_Constants.HINDI;
-import static com.pratham.foundation.utility.FC_Constants.rootParentId;
+import static com.pratham.foundation.utility.FC_Constants.newRootParentId;
 
 @EBean
 public class SelectSubjectPresenter implements SelectSubjectContract.SubjectPresenter, API_Content_Result {
@@ -60,16 +61,21 @@ public class SelectSubjectPresenter implements SelectSubjectContract.SubjectPres
         String currLang = FastSave.getInstance().getString(APP_LANGUAGE, HINDI);
         String currLangNodeId = FastSave.getInstance().getString(APP_LANGUAGE_NODE_ID, "");
         Log.d("currLang", "getSubjectList: " + currLang);
-        String rootID = AppDatabase.getDatabaseInstance(context).getContentTableDao().getRootData(rootParentId, currLang);
-        if (rootID != null)
-            subjectList = AppDatabase.getDatabaseInstance(context).getContentTableDao().getChildsOfParent(rootID);
-
+        String rootID = AppDatabase.getDatabaseInstance(context).getContentTableDao().getRootData(newRootParentId,
+                "%"+ FastSave.getInstance().getString(CURRENT_STUDENT_ID,"na")+"%");
+        if (currLangNodeId != null)
+            subjectList = AppDatabase.getDatabaseInstance(context).getContentTableDao().getChildsOfParent(currLangNodeId,
+                    "%"+ FastSave.getInstance().getString(CURRENT_STUDENT_ID,"na")+"%");
         if (FC_Utility.isDataConnectionAvailable(context))
             //fetch subjects from API
             api_content.getAPIContent(FC_Constants.INTERNET_BROWSE, FC_Constants.INTERNET_LANGUAGE_API, currLangNodeId);
         else {
-            subjectView.initializeSubjectList(subjectList);
-            subjectView.notifySubjAdapter();
+            if(subjectList!=null && subjectList.size()<1)
+                subjectView.noDataDialog();
+            else {
+                subjectView.initializeSubjectList(subjectList);
+                subjectView.notifySubjAdapter();
+            }
             subjectView.dismissLoadingDialog();
         }
     }
@@ -99,13 +105,21 @@ public class SelectSubjectPresenter implements SelectSubjectContract.SubjectPres
                     }
                 }
                 //Set recieved subject and notifyadapter
-                subjectView.initializeSubjectList(subjectList);
-                subjectView.notifySubjAdapter();
+                if(subjectList!=null && subjectList.size()<1)
+                    subjectView.noDataDialog();
+                else {
+                    subjectView.initializeSubjectList(subjectList);
+                    subjectView.notifySubjAdapter();
+                }
                 subjectView.dismissLoadingDialog();
             } catch (Exception e) {
                 e.printStackTrace();
-                subjectView.initializeSubjectList(subjectList);
-                subjectView.notifySubjAdapter();
+                if(subjectList!=null && subjectList.size()<1)
+                    subjectView.noDataDialog();
+                else {
+                    subjectView.initializeSubjectList(subjectList);
+                    subjectView.notifySubjAdapter();
+                }
                 subjectView.dismissLoadingDialog();
             }
         }

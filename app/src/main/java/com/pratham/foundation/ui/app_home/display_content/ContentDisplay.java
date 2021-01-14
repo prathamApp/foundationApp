@@ -6,6 +6,7 @@ import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
+import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
 import android.view.Gravity;
@@ -36,11 +37,15 @@ import com.pratham.foundation.customView.BlurPopupDialog.BlurPopupWindow;
 import com.pratham.foundation.customView.GridSpacingItemDecoration;
 import com.pratham.foundation.customView.display_image_dialog.CustomLodingDialog;
 import com.pratham.foundation.customView.progress_layout.ProgressLayout;
+import com.pratham.foundation.database.AppDatabase;
 import com.pratham.foundation.database.BackupDatabase;
 import com.pratham.foundation.database.domain.ContentTable;
+import com.pratham.foundation.database.domain.Groups;
 import com.pratham.foundation.modalclasses.EventMessage;
 import com.pratham.foundation.modalclasses.Modal_FileDownloading;
 import com.pratham.foundation.services.shared_preferences.FastSave;
+import com.pratham.foundation.ui.app_home.learning_fragment.attendance_bottom_fragment.AttendanceBottomFragment;
+import com.pratham.foundation.ui.app_home.learning_fragment.attendance_bottom_fragment.AttendanceBottomFragment_;
 import com.pratham.foundation.ui.contentPlayer.ContentPlayerActivity_;
 import com.pratham.foundation.ui.contentPlayer.matchingPairGame.MatchThePairGameActivity;
 import com.pratham.foundation.ui.contentPlayer.old_cos.conversation.ConversationActivity_;
@@ -66,6 +71,7 @@ import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
 import java.io.File;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -76,9 +82,12 @@ import static com.pratham.foundation.ApplicationClass.ButtonClickSound;
 import static com.pratham.foundation.ApplicationClass.fileDownloadingList;
 import static com.pratham.foundation.ui.app_home.HomeActivity.languageChanged;
 import static com.pratham.foundation.utility.FC_Constants.DOWNLOAD_NODE_ID;
+import static com.pratham.foundation.utility.FC_Constants.GROUP_MODE;
 import static com.pratham.foundation.utility.FC_Constants.IS_DOWNLOADING;
 import static com.pratham.foundation.utility.FC_Constants.LOGIN_MODE;
 import static com.pratham.foundation.utility.FC_Constants.QR_GROUP_MODE;
+import static com.pratham.foundation.utility.FC_Constants.currentLevel;
+import static com.pratham.foundation.utility.FC_Constants.currentSubjectFolder;
 import static com.pratham.foundation.utility.FC_Constants.gameFolderPath;
 import static com.pratham.foundation.utility.FC_Utility.dpToPx;
 
@@ -110,6 +119,8 @@ public class ContentDisplay extends BaseActivity implements ContentContract.Cont
     LinearLayout ll_topic_parent;
     @ViewById(R.id.iv_level)
     ImageView iv_level;
+    @ViewById(R.id.tv_level)
+    TextView tv_level;
     String nodeId, level, contentTitle;
     @ViewById(R.id.home_root_layout)
     RelativeLayout homeRoot;
@@ -144,7 +155,7 @@ public class ContentDisplay extends BaseActivity implements ContentContract.Cont
         contentTitle = getIntent().getStringExtra("contentTitle");
         parentName = getIntent().getStringExtra("parentName");
         level = getIntent().getStringExtra("level");
-        changeBG(Integer.parseInt(level));
+//        changeBG(Integer.parseInt(level));
         //Setting the instance of view in the presenter.
         presenter.setView(ContentDisplay.this);
         ContentTableList = new ArrayList<>();
@@ -186,25 +197,11 @@ public class ContentDisplay extends BaseActivity implements ContentContract.Cont
     }
 
     @SuppressLint("SetTextI18n")
-    private void changeBG(int levelNo) {
+    private void changeBG(/*int levelNo*/) {
+        Log.d("CURRENT_LEVEL_NAME", "changeBG: "+FastSave.getInstance().getString(FC_Constants.CURRENT_LEVEL_NAME, ""));
+        tv_level.setText("" + FastSave.getInstance().getString(FC_Constants.CURRENT_LEVEL_NAME, ""));
 //        set level no
-        switch (levelNo) {
-            case 1:
-                iv_level.setImageResource(R.drawable.level_1);
-                break;
-            case 2:
-                iv_level.setImageResource(R.drawable.level_2);
-                break;
-            case 3:
-                iv_level.setImageResource(R.drawable.level_3);
-                break;
-            case 4:
-                iv_level.setImageResource(R.drawable.level_4);
-                break;
-            case 5:
-                iv_level.setImageResource(R.drawable.level_5);
-                break;
-        }
+//        iv_level.setBackground(getResources().getDrawable(R.drawable.home_footer_3_bg));
     }
 
     @UiThread
@@ -262,6 +259,7 @@ public class ContentDisplay extends BaseActivity implements ContentContract.Cont
     @Override
     protected void onResume() {
         super.onResume();
+        changeBG();
         if (!languageChanged) {
             hideSystemUI();
             Log.d("HomeActivityTAG", "ActivityResumed: ");
@@ -332,6 +330,100 @@ public class ContentDisplay extends BaseActivity implements ContentContract.Cont
         ContentTableList.clear();
         presenter.addNodeIdToList(nId);
         presenter.getListData();
+    }
+
+    @Override
+    public void onTestContentClicked(int posi, ContentTable itemContent) {
+        try {
+            ButtonClickSound.start();
+        } catch (IllegalStateException e) {
+            e.printStackTrace();
+        }
+        FC_Constants.AssLang = itemContent.getContentLanguage();
+        FC_Constants.examId = itemContent.getNodeKeywords();
+        if (FastSave.getInstance().getString(FC_Constants.LOGIN_MODE, GROUP_MODE).equalsIgnoreCase(GROUP_MODE)) {
+            List<Groups> groupsStudentsList;
+            groupsStudentsList = AppDatabase.getDatabaseInstance(this).getGroupsDao().GetStudentsByGroupId(FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""));
+            openAttendanceDialog(groupsStudentsList);
+        } else {
+//        Toast.makeText(ContentDisplay.this, "Opening Pankh Practice App", Toast.LENGTH_SHORT).show();
+            try {
+                String profileName = "";
+                profileName = AppDatabase.getDatabaseInstance(this).getStudentDao().getFullName(FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""));
+
+                Bundle bundle = new Bundle();
+                FastSave.getInstance().getString(FC_Constants.CURRENT_FOLDER_NAME, currentSubjectFolder);
+
+                bundle.putString("appName", "" + getResources().getString(R.string.app_name));
+                bundle.putString("studentId", "" + FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""));
+                bundle.putString("studentName", "" + profileName);
+                bundle.putString("subjectName", "" + FastSave.getInstance().getString(FC_Constants.CURRENT_SUBJECT, ""));
+                bundle.putString("subjectLanguage", "" + itemContent.getContentLanguage());
+                bundle.putString("examId", "" + itemContent.getNodeKeywords());
+                bundle.putString("subjectLevel", "" + currentLevel);
+//            Intent launchIntent = new Intent("com.doedelhi.pankhpractice.ui.choose_assessment.ChooseAssessmentActivity_");
+                Intent launchIntent = new Intent("com.pratham.assessment.ui.choose_assessment.science.ScienceAssessmentActivity_");
+                //Intent launchIntent = Objects.requireNonNull(getActivity()).getPackageManager()
+                //        .getLaunchIntentForPackage("com.doedelhi.pankhpractice");
+                Objects.requireNonNull(launchIntent).putExtras(bundle);
+                startActivityForResult(launchIntent, FC_Constants.APP_INTENT_REQUEST_CODE);
+                // null pointer check in case package name was not found
+            } catch (Exception e) {
+                downloadAssessmentAppDialog();
+                e.printStackTrace();
+            }
+        }
+    }
+
+    @UiThread
+    public void openAttendanceDialog(List<Groups> groupsList) {
+        AttendanceBottomFragment_ bottomStudentsFragment = new AttendanceBottomFragment_();
+        bottomStudentsFragment.show(getSupportFragmentManager(),
+                AttendanceBottomFragment.class.getSimpleName());
+    }
+
+    BlurPopupWindow fcDialog;
+
+    @SuppressLint("SetTextI18n")
+    @UiThread
+    public void downloadAssessmentAppDialog() {
+        try {
+            fcDialog = new BlurPopupWindow.Builder(ContentDisplay.this)
+                    .setContentView(R.layout.fc_custom_dialog)
+                    .setGravity(Gravity.CENTER)
+                    .setDismissOnTouchBackground(false)
+                    .setDismissOnClickBack(false)
+                    .bindClickListener(v -> {
+                        new Handler().postDelayed(() -> {
+                            startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=com.pratham.assessment")));
+                            fcDialog.dismiss();
+                        }, 200);
+                    }, R.id.dia_btn_green)
+                    .bindClickListener(v -> {
+                        new Handler().postDelayed(() -> {
+                            fcDialog.dismiss();
+                        }, 200);
+                    }, R.id.dia_btn_red)
+                    .setScaleRatio(0.2f)
+                    .setBlurRadius(10)
+                    .setTintColor(0x30000000)
+                    .build();
+
+            TextView dia_title = fcDialog.findViewById(R.id.dia_title);
+            Button dia_btn_yellow = fcDialog.findViewById(R.id.dia_btn_yellow);
+            Button dia_btn_green = fcDialog.findViewById(R.id.dia_btn_green);
+            Button dia_btn_red = fcDialog.findViewById(R.id.dia_btn_red);
+            dia_btn_yellow.setVisibility(View.GONE);
+
+            dia_btn_red.setText(ContentDisplay.this.getResources().getString(R.string.Cancel));
+            dia_title.setText("Please Download Assessment App From Google Play Store");
+            dia_btn_green.setText(getResources().getString(R.string.Okay));
+
+            fcDialog.show();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     @UiThread
@@ -528,7 +620,7 @@ public class ContentDisplay extends BaseActivity implements ContentContract.Cont
                 startActivity(intent);
             }*/ else {
                 Intent mainNew = new Intent(ContentDisplay.this, ContentPlayerActivity_.class);
-                mainNew.putExtra("testData", ContentTableList.get(position));
+                mainNew.putExtra("testData", (Serializable) ContentTableList.get(position));
                 mainNew.putExtra("testcall", FC_Constants.INDIVIDUAL_MODE);
                 startActivityForResult(mainNew, 1461);
             } /*else if (ContentTableList.get(position).getResourceType().equalsIgnoreCase(FC_Constants.CHATBOT_ANDROID)) {

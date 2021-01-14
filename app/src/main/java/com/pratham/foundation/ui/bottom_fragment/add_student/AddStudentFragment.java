@@ -354,6 +354,7 @@ public class AddStudentFragment extends DialogFragment implements AvatarClickLis
             student.setGender(gender);
             student.setAvatarName(avatarName);
             student.setGroupId("PS");
+            student.setMiddleName("PS");
             /*if (gender.equalsIgnoreCase("male"))
                 student.setAvatarName("b1");
             else

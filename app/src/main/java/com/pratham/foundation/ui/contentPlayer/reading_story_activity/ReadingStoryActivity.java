@@ -159,10 +159,10 @@ public class ReadingStoryActivity extends BaseActivity implements
     public void initialize() {
         //overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
         silence_outer_layout.setVisibility(View.GONE);
-        Intent intent = getIntent();
         floating_back.setImageResource(R.drawable.ic_left_arrow_white);
 //        floating_info.setImageResource(R.drawable.ic_info_outline_white);
 //        floating_img.setImageResource(R.drawable.ic_image_white);
+        Intent intent = getIntent();
         contentType = intent.getStringExtra("contentType");
         storyPath = intent.getStringExtra("storyPath");
         storyId = intent.getStringExtra("storyId");

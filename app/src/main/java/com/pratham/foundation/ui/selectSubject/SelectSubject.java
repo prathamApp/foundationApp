@@ -55,6 +55,7 @@ import static com.pratham.foundation.ApplicationClass.BackBtnSound;
 import static com.pratham.foundation.ApplicationClass.ButtonClickSound;
 import static com.pratham.foundation.utility.FC_Constants.APP_LANGUAGE_SELECTED;
 import static com.pratham.foundation.utility.FC_Constants.SELECT_SUBJECT_SHOWCASE;
+import static com.pratham.foundation.utility.FC_Constants.SPLASH_OPEN;
 import static com.pratham.foundation.utility.FC_Constants.UPDATE_AVAILABLE;
 import static com.pratham.foundation.utility.FC_Constants.currentLevel;
 import static com.pratham.foundation.utility.FC_Constants.currentSubjectFolder;
@@ -72,6 +73,8 @@ public class SelectSubject extends BaseActivity implements
     RecyclerView subject_recycler;
     @ViewById(R.id.rl_ss_main)
     RelativeLayout rl_ss_main;
+    @ViewById(R.id.rl_no_data)
+    RelativeLayout rl_no_data;
     @ViewById(R.id.rl_act)
     RelativeLayout rl_act;
     @ViewById(R.id.name)
@@ -99,6 +102,8 @@ public class SelectSubject extends BaseActivity implements
         FC_Constants.TAB_LAYOUT = config.smallestScreenWidthDp > 425;
         presenter.setView(SelectSubject.this);
         tv_update.setVisibility(View.GONE);
+        FastSave.getInstance().saveBoolean(SPLASH_OPEN, false);
+        getTimeFormServer();
 
         //get student name
         if (FastSave.getInstance().getString(FC_Constants.LOGIN_MODE, FC_Constants.GROUP_MODE).contains("group"))
@@ -111,6 +116,15 @@ public class SelectSubject extends BaseActivity implements
 //            Log.d("LOCALES", locale.getLanguage() + "_" + locale.getCountry() + " [" + locale.getDisplayName() + "]");
 //        }
     }
+
+/*    private void getInternetTime() {
+        try {
+            LocationManager locMan = (LocationManager) this.getSystemService(this.LOCATION_SERVICE);
+            long time = locMan.getLastKnownLocation(LocationManager.NETWORK_PROVIDER).getTime();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }*/
 
     private GuideView.Builder builder;
     private GuideView mGuideView;
@@ -154,6 +168,12 @@ public class SelectSubject extends BaseActivity implements
         }
     }
 
+    @UiThread
+    @Override
+    public void noDataDialog() {
+        rl_no_data.setVisibility(View.VISIBLE);
+    }
+
     @Override
     public void initializeSubjectList(List<ContentTable> subjectList) {
         this.subjectList.clear();
@@ -163,17 +183,20 @@ public class SelectSubject extends BaseActivity implements
     @UiThread
     @Override
     public void notifySubjAdapter() {
-
+        getTimeFormServer();
         if (subjectAdapter == null) {
             //Populate subject list to recyclerview
+            rl_no_data.setVisibility(View.GONE);
             subjectAdapter = new SelectSubjectAdapter(this, subjectList);
             RecyclerView.LayoutManager mLayoutManager = new GridLayoutManager(this, 1);
             subject_recycler.setLayoutManager(mLayoutManager);
             subject_recycler.addItemDecoration(new GridSpacingItemDecoration(1, dpToPx(this, 14), true));
             subject_recycler.setItemAnimator(new DefaultItemAnimator());
             subject_recycler.setAdapter(subjectAdapter);
-        } else
+        } else {
+            rl_no_data.setVisibility(View.GONE);
             subjectAdapter.notifyDataSetChanged();
+        }
 //        name_welcome.setText(getResources().getString(R.string.Welcome).toString());
 //        subject.setText(getResources().getString(R.string.select_subject).toString());
     }

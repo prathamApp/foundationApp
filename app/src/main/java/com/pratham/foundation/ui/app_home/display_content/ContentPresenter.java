@@ -32,6 +32,7 @@ import java.util.Collections;
 import java.util.List;
 
 import static com.pratham.foundation.ApplicationClass.App_Thumbs_Path;
+import static com.pratham.foundation.utility.FC_Constants.CURRENT_STUDENT_ID;
 import static com.pratham.foundation.utility.FC_Constants.gameFolderPath;
 
 @EBean
@@ -77,7 +78,7 @@ public class ContentPresenter implements ContentContract.ContentPresenter, API_C
         // old un used code
         String sImage;
         if (!FC_Constants.GROUP_LOGIN)
-            sImage = AppDatabase.getDatabaseInstance(context).getStudentDao().getStudentAvatar(FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""));
+            sImage = AppDatabase.getDatabaseInstance(context).getStudentDao().getStudentAvatar(FastSave.getInstance().getString(CURRENT_STUDENT_ID, ""));
         else
             sImage = "group_icon";
 
@@ -94,11 +95,12 @@ public class ContentPresenter implements ContentContract.ContentPresenter, API_C
     @Override
     public void findMaxScore(String nodeId) {
         try {
-            List<ContentTable> childList = AppDatabase.getDatabaseInstance(context).getContentTableDao().getChildsOfParent(nodeId);
+            List<ContentTable> childList = AppDatabase.getDatabaseInstance(context).getContentTableDao().getChildsOfParent(nodeId,
+                    "%"+ FastSave.getInstance().getString(CURRENT_STUDENT_ID,"na")+"%");
             for (int childCnt = 0; childList.size() > childCnt; childCnt++) {
                 if (childList.get(childCnt).getNodeType().equals("Resource")) {
                     double maxScoreTemp = 0.0;
-                    List<ContentProgress> contentProgressList = AppDatabase.getDatabaseInstance(context).getContentProgressDao().getContentNodeProgress(FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""), childList.get(childCnt).getResourceId(), "resourceProgress");
+                    List<ContentProgress> contentProgressList = AppDatabase.getDatabaseInstance(context).getContentProgressDao().getContentNodeProgress(FastSave.getInstance().getString(CURRENT_STUDENT_ID, ""), childList.get(childCnt).getResourceId(), "resourceProgress");
                     for (int cnt = 0; cnt < contentProgressList.size(); cnt++) {
                         String d = contentProgressList.get(cnt).getProgressPercentage();
                         double scoreTemp = Double.parseDouble(d);
@@ -157,7 +159,8 @@ public class ContentPresenter implements ContentContract.ContentPresenter, API_C
                 updateUI();
             } else {
 //            fetch downloaded data from DB
-                downloadedContentTableList = AppDatabase.getDatabaseInstance(context).getContentTableDao().getContentData("" + nodeListIndex);
+                downloadedContentTableList = AppDatabase.getDatabaseInstance(context).getContentTableDao().getContentData("" + nodeListIndex,
+                        "%"+ FastSave.getInstance().getString(CURRENT_STUDENT_ID,"na")+"%");
                 Log.d("NODE_ID", "Node downloadedContentTableList :  " + downloadedContentTableList.size());
                 sortAllList(downloadedContentTableList);
                 contentView.clearContentList();
@@ -329,8 +332,11 @@ public class ContentPresenter implements ContentContract.ContentPresenter, API_C
 //                    } else {
 //                        fileDownloadingList.add(modal_fileDownloading);
 //                    }
+                if (fileName.contains(".zip") || fileName.contains(".rar"))
                     zipDownloader.initialize(context, download_content.getDownloadurl(),
-                            download_content.getFoldername(), fileName, dwContent, pos);
+                            download_content.getFoldername(), fileName, dwContent, pos, true);
+                else zipDownloader.initialize(context, download_content.getDownloadurl(),
+                        download_content.getFoldername(), fileName, dwContent, pos, false);
 //                } else {
 //                    contentView.showToast("Only 4 allowed");
 //                }
@@ -379,7 +385,7 @@ public class ContentPresenter implements ContentContract.ContentPresenter, API_C
             score.setQuestionId(0);
             score.setScoredMarks(0);
             score.setTotalMarks(0);
-            score.setStudentID(FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""));
+            score.setStudentID(FastSave.getInstance().getString(CURRENT_STUDENT_ID, ""));
             score.setStartDateTime(FC_Utility.getCurrentDateTime());
             score.setDeviceID(deviceId.equals(null) ? "0000" : deviceId);
             score.setEndDateTime(FC_Utility.getCurrentDateTime());

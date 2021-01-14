@@ -13,18 +13,12 @@ import com.pratham.foundation.ApplicationClass;
 import com.pratham.foundation.R;
 import com.pratham.foundation.database.domain.ContentTable;
 import com.pratham.foundation.ui.app_home.FragmentItemClicked;
-import com.pratham.foundation.ui.app_home.fun.FunInnerDataAdapter;
 import com.pratham.foundation.ui.app_home.learning_fragment.LearningInnerDataAdapter;
-import com.pratham.foundation.ui.app_home.practice_fragment.PracticeInnerDataAdapter;
 import com.pratham.foundation.utility.FC_Constants;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-
-import static com.pratham.foundation.utility.FC_Constants.sec_Fun;
-import static com.pratham.foundation.utility.FC_Constants.sec_Learning;
-import static com.pratham.foundation.utility.FC_Constants.sec_Practice;
 
 public class FragmentOuterViewHolder extends RecyclerView.ViewHolder {
 
@@ -68,10 +62,10 @@ public class FragmentOuterViewHolder extends RecyclerView.ViewHolder {
                 Objects.requireNonNull(btnMore).setVisibility(View.GONE);
                 Objects.requireNonNull(actionBtn).setVisibility(View.VISIBLE);
                 Objects.requireNonNull(actionBtn).setText("UPDATE");
-                Objects.requireNonNull(actionBtn).setCompoundDrawablesWithIntrinsicBounds(0,0, R.drawable.ic_update2,0);
+                Objects.requireNonNull(actionBtn).setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_update2, 0);
                 actionBtn.setOnClickListener(v -> fragmentItemClicked.onContentDownloadClicked(contentTable,
                         position, 0, "" + FC_Constants.FULL_DOWNLOAD));
-            }else{
+            } else {
                 int size = Objects.requireNonNull(contentTable.getNodelist()).size() - 1;
                 int sizeRes = contentTable.getNodelist().size() - 2;
                 Objects.requireNonNull(btnMore).setText("SEE ALL " + sizeRes);
@@ -98,7 +92,7 @@ public class FragmentOuterViewHolder extends RecyclerView.ViewHolder {
         sublistList = getList(Objects.requireNonNull(contentTable.getNodelist()));
         Objects.requireNonNull(itemTitle).setText(sectionName);
         itemTitle.setSelected(true);
-        if (sec.equalsIgnoreCase(sec_Fun)) {
+/*        if (sec.equalsIgnoreCase(sec_Fun)) {
             try {
                 FunInnerDataAdapter learningInnerDataAdapter = new FunInnerDataAdapter(
                         ApplicationClass.getInstance(), sublistList, fragmentItemClicked, position, sectionName);
@@ -108,7 +102,8 @@ public class FragmentOuterViewHolder extends RecyclerView.ViewHolder {
             } catch (Exception e) {
                 e.printStackTrace();
             }
-        } else if (sec.equalsIgnoreCase(sec_Learning)) {
+        } else*/
+//        if (sec.equalsIgnoreCase(sec_Learning)) {
             try {
                 LearningInnerDataAdapter learningInnerDataAdapter = new LearningInnerDataAdapter(
                         ApplicationClass.getInstance(), sublistList, fragmentItemClicked, position, sectionName);
@@ -118,17 +113,17 @@ public class FragmentOuterViewHolder extends RecyclerView.ViewHolder {
             } catch (Exception e) {
                 e.printStackTrace();
             }
-        } else if (sec.equalsIgnoreCase(sec_Practice)) {
-            try {
-                PracticeInnerDataAdapter learningInnerDataAdapter = new PracticeInnerDataAdapter(
-                        ApplicationClass.getInstance(), sublistList, fragmentItemClicked, position, sectionName);
-                Objects.requireNonNull(recycler_view_list).setLayoutManager(new LinearLayoutManager(
-                        ApplicationClass.getInstance(), LinearLayoutManager.HORIZONTAL, false));
-                recycler_view_list.setAdapter(learningInnerDataAdapter);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
+//        } else if (sec.equalsIgnoreCase(sec_Practice)) {
+//            try {
+//                PracticeInnerDataAdapter learningInnerDataAdapter = new PracticeInnerDataAdapter(
+//                        ApplicationClass.getInstance(), sublistList, fragmentItemClicked, position, sectionName);
+//                Objects.requireNonNull(recycler_view_list).setLayoutManager(new LinearLayoutManager(
+//                        ApplicationClass.getInstance(), LinearLayoutManager.HORIZONTAL, false));
+//                recycler_view_list.setAdapter(learningInnerDataAdapter);
+//            } catch (Exception e) {
+//                e.printStackTrace();
+//            }
+//        }
         childCounter += 1;
     }
 

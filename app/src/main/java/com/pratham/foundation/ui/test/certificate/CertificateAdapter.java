@@ -13,7 +13,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.pratham.foundation.R;
 import com.pratham.foundation.modalclasses.CertificateModelClass;
-import com.pratham.foundation.ui.app_home.test_fragment.CertificateClicked;
 import com.pratham.foundation.view_holders.CertificateDisplayViewHolder;
 import com.pratham.foundation.view_holders.CertificateSupervisorViewHolder;
 

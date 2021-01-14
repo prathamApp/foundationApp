@@ -37,6 +37,7 @@ import java.util.Collections;
 import java.util.List;
 
 import static com.pratham.foundation.ui.app_home.HomeActivity.sub_nodeId;
+import static com.pratham.foundation.utility.FC_Constants.CURRENT_STUDENT_ID;
 import static com.pratham.foundation.utility.FC_Constants.TYPE_FOOTER;
 import static com.pratham.foundation.utility.FC_Constants.TYPE_HEADER;
 
@@ -138,7 +139,8 @@ public class LearningPresenter implements LearningContract.LearningPresenter, AP
     @Background
     @Override
     public void getLevelDataForList(int currentLevelNo, String bottomNavNodeId) {
-        rootList = AppDatabase.getDatabaseInstance(mContext).getContentTableDao().getContentData("" + bottomNavNodeId);
+        rootList = AppDatabase.getDatabaseInstance(mContext).getContentTableDao().getContentData("" + bottomNavNodeId,
+                "%"+ FastSave.getInstance().getString(CURRENT_STUDENT_ID,"na")+"%");
         if (FC_Utility.isDataConnectionAvailable(mContext))
             getLevelDataFromApi(currentLevelNo, bottomNavNodeId);
         else
@@ -153,11 +155,12 @@ public class LearningPresenter implements LearningContract.LearningPresenter, AP
     @Override
     public void findMaxScore(String nodeId) {
         try {
-            List<ContentTable> childList = AppDatabase.getDatabaseInstance(mContext).getContentTableDao().getChildsOfParent(nodeId);
+            List<ContentTable> childList = AppDatabase.getDatabaseInstance(mContext).getContentTableDao().getChildsOfParent(nodeId,
+                    "%"+ FastSave.getInstance().getString(CURRENT_STUDENT_ID,"na")+"%");
             for (int childCnt = 0; childList.size() > childCnt; childCnt++) {
                 if (childList.get(childCnt).getNodeType().equals("Resource")) {
                     double maxScoreTemp = 0.0;
-                    List<ContentProgress> score = AppDatabase.getDatabaseInstance(mContext).getContentProgressDao().getProgressByStudIDAndResID(FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""),
+                    List<ContentProgress> score = AppDatabase.getDatabaseInstance(mContext).getContentProgressDao().getProgressByStudIDAndResID(FastSave.getInstance().getString(CURRENT_STUDENT_ID, ""),
                             childList.get(childCnt).getResourceId(), "resourceProgress");
                     for (int cnt = 0; cnt < score.size(); cnt++) {
                         String d = score.get(cnt).getProgressPercentage();
@@ -178,11 +181,12 @@ public class LearningPresenter implements LearningContract.LearningPresenter, AP
     }
 
     public void findMaxScoreNew(String nodeId) {
-        List<ContentTable> childList = AppDatabase.getDatabaseInstance(mContext).getContentTableDao().getChildsOfParent(nodeId);
+        List<ContentTable> childList = AppDatabase.getDatabaseInstance(mContext).getContentTableDao().getChildsOfParent(nodeId,
+                "%"+ FastSave.getInstance().getString(CURRENT_STUDENT_ID,"na")+"%");
         for (int childCnt = 0; childList.size() > childCnt; childCnt++) {
             if (childList.get(childCnt).getNodeType().equals("Resource")) {
                 double maxScoreTemp = 0.0;
-                List<ContentProgress> score = AppDatabase.getDatabaseInstance(mContext).getContentProgressDao().getProgressByStudIDAndResID(FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""), childList.get(childCnt).getResourceId(), "resourceProgress");
+                List<ContentProgress> score = AppDatabase.getDatabaseInstance(mContext).getContentProgressDao().getProgressByStudIDAndResID(FastSave.getInstance().getString(CURRENT_STUDENT_ID, ""), childList.get(childCnt).getResourceId(), "resourceProgress");
                 for (int cnt = 0; cnt < score.size(); cnt++) {
                     String d = score.get(cnt).getProgressPercentage();
                     double scoreTemp = Double.parseDouble(d);
@@ -229,7 +233,8 @@ public class LearningPresenter implements LearningContract.LearningPresenter, AP
     public void getDataForList() {
         learningView.showLoader();
         try {
-            dwParentList = AppDatabase.getDatabaseInstance(mContext).getContentTableDao().getContentData("" + nodeIds.get(nodeIds.size() - 1));
+            dwParentList = AppDatabase.getDatabaseInstance(mContext).getContentTableDao().getContentData("" + nodeIds.get(nodeIds.size() - 1),
+                    "%"+ FastSave.getInstance().getString(CURRENT_STUDENT_ID,"na")+"%");
             contentParentList.clear();
             ContentTable resContentTable = new ContentTable();
             List<ContentTable> resourceList = new ArrayList<>();
@@ -265,7 +270,8 @@ public class LearningPresenter implements LearningContract.LearningPresenter, AP
                         List<ContentTable> tempList;
                         ContentTable contentTable = new ContentTable();
                         tempList = new ArrayList<>();
-                        childDwContentList = AppDatabase.getDatabaseInstance(mContext).getContentTableDao().getContentData("" + dwParentList.get(j).getNodeId());
+                        childDwContentList = AppDatabase.getDatabaseInstance(mContext).getContentTableDao().getContentData("" + dwParentList.get(j).getNodeId(),
+                                "%"+ FastSave.getInstance().getString(CURRENT_STUDENT_ID,"na")+"%");
                         contentTable.setNodeId("" + dwParentList.get(j).getNodeId());
                         contentTable.setNodeType("" + dwParentList.get(j).getNodeType());
                         contentTable.setNodeTitle("" + dwParentList.get(j).getNodeTitle());
@@ -678,8 +684,11 @@ public class LearningPresenter implements LearningContract.LearningPresenter, AP
                         .substring(download_content.getDownloadurl().lastIndexOf('/') + 1);
                 Log.d("HP", "doInBackground: fileName : " + fileName);
                 Log.d("HP", "doInBackground: DW URL : " + download_content.getDownloadurl());
-                zipDownloader.initialize(mContext, download_content.getDownloadurl(),
-                        download_content.getFoldername(), fileName, dwContent, pos);
+                if (fileName.contains(".zip") || fileName.contains(".rar"))
+                    zipDownloader.initialize(mContext, download_content.getDownloadurl(),
+                            download_content.getFoldername(), fileName, dwContent, pos, true);
+                else zipDownloader.initialize(mContext, download_content.getDownloadurl(),
+                        download_content.getFoldername(), fileName, dwContent, pos, false);
             } catch (JSONException e) {
                 e.printStackTrace();
             }

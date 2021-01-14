@@ -46,8 +46,10 @@ import com.pratham.foundation.customView.BlurPopupDialog.BlurPopupWindow;
 import com.pratham.foundation.customView.display_image_dialog.CustomLodingDialog;
 import com.pratham.foundation.database.AppDatabase;
 import com.pratham.foundation.database.BackupDatabase;
+import com.pratham.foundation.database.domain.Modal_Log;
 import com.pratham.foundation.modalclasses.EventMessage;
 import com.pratham.foundation.services.TTSService;
+import com.pratham.foundation.services.shared_preferences.FastSave;
 import com.pratham.foundation.utility.CatchoTransparentActivity;
 import com.pratham.foundation.utility.FC_Constants;
 import com.pratham.foundation.utility.FC_Utility;
@@ -55,6 +57,7 @@ import com.pratham.foundation.utility.MediaPlayerUtil;
 
 import net.alhazmy13.catcho.library.Catcho;
 
+import org.apache.commons.net.time.TimeTCPClient;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
@@ -123,6 +126,16 @@ public class BaseActivity extends AppCompatActivity {
         correctSound = MediaPlayer.create(this, R.raw.correct_ans);
         muteFlg = false;
 
+        Modal_Log log = new Modal_Log();
+        log.setCurrentDateTime(FC_Utility.getCurrentDateTime());
+        log.setErrorType("ERROR");
+        log.setExceptionMessage("App_Start");
+        log.setExceptionStackTrace("");
+        log.setMethodName("onCreate()");
+        log.setGroupId(FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, "no_group"));
+        log.setDeviceId("" + FC_Utility.getDeviceID());
+        AppDatabase.getDatabaseInstance(this).getLogsDao().insertLog(log);
+
         Catcho.Builder(this)
                 .activity(CatchoTransparentActivity.class).build();
 //                .recipients("ketan.inamdar@pratham.org").build();
@@ -142,6 +155,19 @@ public class BaseActivity extends AppCompatActivity {
         //overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
     }
 
+    @Override
+    protected void onDestroy() {
+        Modal_Log log = new Modal_Log();
+        log.setCurrentDateTime(FC_Utility.getCurrentDateTime());
+        log.setErrorType("ERROR");
+        log.setExceptionMessage("App_End");
+        log.setExceptionStackTrace("");
+        log.setMethodName("onDestroy()");
+        log.setGroupId(FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, "no_group"));
+        log.setDeviceId("" + FC_Utility.getDeviceID());
+        AppDatabase.getDatabaseInstance(this).getLogsDao().insertLog(log);
+        super.onDestroy();
+    }
 
     public String getScreenResolution(Context context) {
         Display display = getWindowManager().getDefaultDisplay();
@@ -220,16 +246,29 @@ public class BaseActivity extends AppCompatActivity {
     }
 
     @Override
-    protected void onPause() {
-        super.onPause();
-//        ActivityOnPause();
-    }
-
-    @Override
     protected void onResume() {
         super.onResume();
 //        ActivityResumed();
         BackupDatabase.backup(this);
+    }
+
+    public void getTimeFormServer(){
+        try {
+            TimeTCPClient client = new TimeTCPClient();
+            try {
+                // Set timeout of 60 seconds
+                client.setDefaultTimeout(60000);
+                // Connecting to time server
+                // Other time servers can be found at : http://tf.nist.gov/tf-cgi/servers.cgi#
+                // Make sure that your program NEVER queries a server more frequently than once every 4 seconds
+                client.connect("time.nist.gov");
+                System.out.println(client.getDate());
+            } finally {
+                client.disconnect();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     @Subscribe
@@ -486,5 +525,21 @@ public class BaseActivity extends AppCompatActivity {
 
             }
         }
+    }
+
+    public void endSession() {
+        try {
+            String curSession = FastSave.getInstance().getString(FC_Constants.CURRENT_SESSION, "");
+            AppDatabase.getDatabaseInstance(ApplicationClass.getInstance()).getSessionDao().UpdateToDate(curSession, FC_Utility.getCurrentDateTime());
+            BackupDatabase.backup(ApplicationClass.getInstance());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    protected void onPause() {
+        endSession();
+        super.onPause();
     }
 }

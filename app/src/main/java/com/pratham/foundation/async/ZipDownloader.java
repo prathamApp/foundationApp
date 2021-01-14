@@ -31,6 +31,7 @@ public class ZipDownloader {
     private static final String TAG = ZipDownloader.class.getSimpleName();
     String filename;
     Context context;
+    boolean unzipFlg;
 
     public ZipDownloader(Context context) {
         this.context = context;
@@ -38,8 +39,9 @@ public class ZipDownloader {
 
     public void initialize(Context context, String url,
                            String foldername, String f_name, ContentTable contentDetail,
-                           ArrayList<ContentTable> levelContents) {
+                           ArrayList<ContentTable> levelContents, boolean unzipFlg) {
         this.filename = f_name;
+        this.unzipFlg = unzipFlg;
         createFolderAndStartDownload(url, foldername, f_name, contentDetail, context, levelContents);
     }
 
@@ -81,7 +83,7 @@ public class ZipDownloader {
         modal_download.setContent(contentDetail);
         modal_download.setLevelContents(levelContents);
         IS_DOWNLOADING = true;
-        contentDownloadingTask.startContentDownload(modal_download);
+        contentDownloadingTask.startContentDownload(modal_download, unzipFlg);
 //        new DownloadingTask().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, modal_download);
     }
 
@@ -114,7 +116,7 @@ public class ZipDownloader {
         modal_download.setContent(contentDetail);
         modal_download.setLevelContents(levelContents);
         IS_DOWNLOADING = true;
-        contentDownloadingTask.startContentDownload(modal_download);
+        contentDownloadingTask.startContentDownload(modal_download, unzipFlg);
 //        new DownloadingTask().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, modal_download);
     }
 }

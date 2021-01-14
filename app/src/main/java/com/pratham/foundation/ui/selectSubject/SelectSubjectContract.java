@@ -24,6 +24,8 @@ public interface SelectSubjectContract {
         void notifySubjAdapter();
 
         void serverIssueDialog();
+
+        void noDataDialog();
     }
 
     interface SubjectPresenter {

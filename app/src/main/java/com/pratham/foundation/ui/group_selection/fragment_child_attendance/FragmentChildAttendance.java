@@ -144,18 +144,6 @@ public class FragmentChildAttendance extends Fragment implements ContractChildAt
     public void childItemClicked(Student student, int position) {
         Log.d("ooo", "" + position);
         if (FastSave.getInstance().getString(FC_Constants.LOGIN_MODE, FC_Constants.GROUP_MODE).equalsIgnoreCase(GROUP_MODE)) {
-/*
-            for (Student stu : students) {
-                if (stu.getStudentID().equalsIgnoreCase(student.getStudentID())) {
-                    if (stu.isChecked()) {
-                        stu.setChecked(false);
-                    } else {
-                        stu.setChecked(true);
-                    }
-                    break;
-                }
-            }
-*/
             if (student.isChecked())
                 students.get(position).setChecked(false);
             else
@@ -170,15 +158,6 @@ public class FragmentChildAttendance extends Fragment implements ContractChildAt
         }
         // setChilds(students);
     }
-
-/*    @Override
-    public void moveToDashboardOnChildClick(Student student, int position, View v) {
-        ApplicationClass.bubble_mp.start();
-        FastSave.getInstance().saveString(FC_Constants.AVATAR, student.getAvatarName());
-        ArrayList<Student> s = new ArrayList<>();
-        s.add(student);
-        markAttendance(s);
-    }*/
 
     @Click(R.id.btn_attendance_next)
     public void setNext(View v) {
@@ -233,13 +212,15 @@ public class FragmentChildAttendance extends Fragment implements ContractChildAt
 
                     Attendance attendance = new Attendance();
                     for (int i = 0; i < stud.size(); i++) {
+                        FastSave.getInstance().saveString(FC_Constants.CURRENT_API_STUDENT_ID, "" + stud.get(i).getStudentID());
                         attendance.setSessionID("" + FastSave.getInstance().getString(FC_Constants.CURRENT_SESSION, ""));
                         attendance.setStudentID("" + stud.get(i).getStudentID());
                         attendance.setDate(FC_Utility.getCurrentDateTime());
                         attendance.setGroupID(groupID);
                         attendance.setSentFlag(0);
                         AppDatabase.getDatabaseInstance(getContext()).getAttendanceDao().insert(attendance);
-                        Log.d("ChildAttendence", "currentSession : " + FastSave.getInstance().getString(FC_Constants.CURRENT_SESSION, "") + "  StudentId: " + stud.get(i).getStudentID());
+                        Log.d("ChildAttendence", "currentSession : " + FastSave.getInstance().getString(
+                                FC_Constants.CURRENT_SESSION, "") + "  StudentId: " + stud.get(i).getStudentID());
                     }
 
                     String currentStudentID = "";
@@ -250,6 +231,7 @@ public class FragmentChildAttendance extends Fragment implements ContractChildAt
                         String currentStudName = stud.get(0).getFullName();
                         FastSave.getInstance().saveString(FC_Constants.CURRENT_STUDENT_NAME, currentStudName);
                     }
+                    FastSave.getInstance().saveString(FC_Constants.CURRENT_API_STUDENT_ID, "" + stud.get(0).getStudentID());
                     FastSave.getInstance().saveString(FC_Constants.CURRENT_STUDENT_ID, currentStudentID);
                     BackupDatabase.backup(getContext());
                     return null;

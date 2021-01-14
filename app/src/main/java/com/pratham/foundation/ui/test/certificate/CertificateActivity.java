@@ -39,7 +39,6 @@ import com.pratham.foundation.database.domain.Assessment;
 import com.pratham.foundation.database.domain.Student;
 import com.pratham.foundation.modalclasses.CertificateModelClass;
 import com.pratham.foundation.services.shared_preferences.FastSave;
-import com.pratham.foundation.ui.app_home.test_fragment.CertificateClicked;
 import com.pratham.foundation.ui.contentPlayer.web_view.WebViewActivity_;
 import com.pratham.foundation.utility.FC_Constants;
 

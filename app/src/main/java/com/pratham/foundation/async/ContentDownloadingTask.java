@@ -13,6 +13,7 @@ import com.pratham.foundation.database.domain.ContentTable;
 import com.pratham.foundation.modalclasses.EventMessage;
 import com.pratham.foundation.modalclasses.Modal_Download;
 import com.pratham.foundation.modalclasses.Modal_FileDownloading;
+import com.pratham.foundation.services.shared_preferences.FastSave;
 import com.pratham.foundation.utility.FC_Constants;
 
 import net.lingala.zip4j.core.ZipFile;
@@ -32,9 +33,9 @@ import java.util.ArrayList;
 import java.util.concurrent.Executors;
 
 import static com.pratham.foundation.ApplicationClass.App_Thumbs_Path;
+import static com.pratham.foundation.utility.FC_Constants.CURRENT_STUDENT_ID;
 import static com.pratham.foundation.utility.FC_Constants.FILE_DOWNLOAD_STARTED;
 import static com.pratham.foundation.utility.FC_Constants.IS_DOWNLOADING;
-import static com.pratham.foundation.utility.FC_Constants.VIDEO;
 
 @EBean
 public class ContentDownloadingTask {
@@ -81,8 +82,8 @@ public class ContentDownloadingTask {
     }
 
     @Background
-    public void startContentDownload(Modal_Download download) {
-        Log.d(TAG, "doInBackground: " + url);
+    public void startContentDownload(Modal_Download download, boolean unzipFlg) {
+        Log.d(TAG, "doInBackground: url: " + url);
         initialize(download);
         afterInit();
         InputStream input = null;
@@ -96,7 +97,7 @@ public class ContentDownloadingTask {
             connection.connect();
             // expect HTTP 200 OK, so we don't mistakenly save error report
             // instead of the file
-            Log.d(TAG, "doInBackground:" + connection.getResponseCode());
+            Log.d(TAG, "doInBackground: getResponseCode: " + connection.getResponseCode());
             if (connection.getResponseCode() == HttpURLConnection.HTTP_OK) {
                 // getting file length
                 dowloadImages();
@@ -126,11 +127,15 @@ public class ContentDownloadingTask {
                 output.close();
                 input.close();
 
-                unziping_error = unzipFile(dir_path + "/" + f_name, dir_path);
+//                unziping_error = unzipFile(dir_path + "/" + f_name, dir_path);
 
-                if (unziping_error)
-                    unzipingError();
-                else
+                if (unzipFlg) {
+                    unziping_error = unzipFile(dir_path + "/" + f_name, dir_path);
+                    if (unziping_error)
+                        unzipingError();
+                    else
+                        downloadCompleted();
+                } else
                     downloadCompleted();
 
             } else {
@@ -165,6 +170,10 @@ public class ContentDownloadingTask {
         for (int i = 0; i < temp.size(); i++) {
             temp.get(i).setIsDownloaded("" + true);
             temp.get(i).setOnSDCard(false);
+            if (temp.get(i).getStudentId() != null)
+                temp.get(i).setStudentId(temp.get(i).getStudentId() + "," + FastSave.getInstance().getString(CURRENT_STUDENT_ID, ""));
+            else
+                temp.get(i).setStudentId(FastSave.getInstance().getString(CURRENT_STUDENT_ID, ""));
         }
         IS_DOWNLOADING = false;
  /*       for (ContentTable d : temp) {
@@ -239,10 +248,10 @@ public class ContentDownloadingTask {
             return false;
         } catch (ZipException e) {
             e.printStackTrace();
-            if (folder_name.equalsIgnoreCase(VIDEO))
-                unziping_error = false;
-            else
-                return true;
+//            if (folder_name.equalsIgnoreCase(VIDEO)||folder_name.equalsIgnoreCase(PDF))
+//                unziping_error = false;
+//            else
+//                return true;
         }
         return false;
     }

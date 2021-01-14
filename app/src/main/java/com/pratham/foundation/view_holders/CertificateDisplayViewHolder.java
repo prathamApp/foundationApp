@@ -15,8 +15,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.pratham.foundation.ApplicationClass;
 import com.pratham.foundation.R;
 import com.pratham.foundation.modalclasses.CertificateModelClass;
-import com.pratham.foundation.ui.app_home.test_fragment.CertificateClicked;
 import com.pratham.foundation.ui.test.certificate.CertificateActivity;
+import com.pratham.foundation.ui.test.certificate.CertificateClicked;
 
 import java.util.Objects;
 

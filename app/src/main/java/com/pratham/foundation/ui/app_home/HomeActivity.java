@@ -1,7 +1,6 @@
 package com.pratham.foundation.ui.app_home;
 
 import android.annotation.SuppressLint;
-import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
@@ -21,7 +20,6 @@ import androidx.viewpager.widget.ViewPager;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.tabs.TabLayout;
-import com.pratham.foundation.ApplicationClass;
 import com.pratham.foundation.BaseActivity;
 import com.pratham.foundation.R;
 import com.pratham.foundation.async.ContentDownloadingTask;
@@ -38,12 +36,8 @@ import com.pratham.foundation.database.domain.ContentTable;
 import com.pratham.foundation.database.domain.Session;
 import com.pratham.foundation.modalclasses.EventMessage;
 import com.pratham.foundation.services.shared_preferences.FastSave;
-import com.pratham.foundation.ui.app_home.fun.FunFragment_;
 import com.pratham.foundation.ui.app_home.learning_fragment.LearningFragment_;
-import com.pratham.foundation.ui.app_home.practice_fragment.PracticeFragment_;
 import com.pratham.foundation.ui.app_home.profile_new.ProfileFragment_;
-import com.pratham.foundation.ui.app_home.test_fragment.TestFragment_;
-import com.pratham.foundation.ui.app_home.test_fragment.supervisor.SupervisedAssessmentActivity;
 import com.pratham.foundation.utility.FC_Constants;
 import com.pratham.foundation.utility.FC_Utility;
 
@@ -70,10 +64,8 @@ import static com.pratham.foundation.ApplicationClass.ButtonClickSound;
 import static com.pratham.foundation.ApplicationClass.getAppMode;
 import static com.pratham.foundation.utility.FC_Constants.ACTIVITY_RESUMED;
 import static com.pratham.foundation.utility.FC_Constants.APP_SECTION;
-import static com.pratham.foundation.utility.FC_Constants.ASSESSMENT_SESSION;
 import static com.pratham.foundation.utility.FC_Constants.BACK_PRESSED;
 import static com.pratham.foundation.utility.FC_Constants.CURRENT_STUDENT_ID;
-import static com.pratham.foundation.utility.FC_Constants.CURRENT_SUPERVISOR_ID;
 import static com.pratham.foundation.utility.FC_Constants.FRAGMENT_RESELECTED;
 import static com.pratham.foundation.utility.FC_Constants.FRAGMENT_SELECTED;
 import static com.pratham.foundation.utility.FC_Constants.GROUP_MODE;
@@ -84,14 +76,12 @@ import static com.pratham.foundation.utility.FC_Constants.LOGIN_MODE;
 import static com.pratham.foundation.utility.FC_Constants.SECTION_COMPLETION_PERC;
 import static com.pratham.foundation.utility.FC_Constants.activityPhotoPath;
 import static com.pratham.foundation.utility.FC_Constants.currentLevel;
-import static com.pratham.foundation.utility.FC_Constants.sec_Fun;
 import static com.pratham.foundation.utility.FC_Constants.sec_Learning;
-import static com.pratham.foundation.utility.FC_Constants.sec_Practice;
 import static com.pratham.foundation.utility.FC_Constants.sec_Profile;
-import static com.pratham.foundation.utility.FC_Constants.sec_Test;
-import static com.pratham.foundation.utility.FC_Constants.supervisedAssessment;
 import static com.pratham.foundation.utility.FC_Constants.testSessionEnded;
 import static com.pratham.foundation.utility.FC_Constants.testSessionEntered;
+
+//import com.pratham.foundation.ui.app_home.test_fragment.supervisor.SupervisedAssessmentActivity;
 
 @EActivity(R.layout.activity_home)
 @SuppressLint("StaticFieldLeak")
@@ -115,6 +105,8 @@ public class HomeActivity extends BaseActivity implements LevelChanged {
     public static SubmarineView submarine;
     @ViewById(R.id.iv_level)
     public static ImageView iv_level;
+    @ViewById(R.id.tv_level)
+    public static TextView tv_level;
     //    @ViewById(R.id.level_circle)
 //    CursorWheelLayout level_circle;
 
@@ -221,7 +213,6 @@ public class HomeActivity extends BaseActivity implements LevelChanged {
         mGuideView = builder.build();
         mGuideView.show();
         FastSave.getInstance().saveBoolean(HOME_ACTIVITY_SHOWCASE, true);
-//        updatingForDynamicLocationViews();
     }
 
     private void updatingForDynamicLocationViews() {
@@ -234,36 +225,10 @@ public class HomeActivity extends BaseActivity implements LevelChanged {
     }
 
     private void getCompletion() {
-//        getNewCompletion();
         EventMessage eventMessage = new EventMessage();
         eventMessage.setMessage(SECTION_COMPLETION_PERC);
         EventBus.getDefault().post(eventMessage);
     }
-//
-//    private void getNewCompletion() {
-//        new Handler().postDelayed(() -> {
-//            EventMessage eventMessage = new EventMessage();
-//            eventMessage.setMessage(SECTION_COMPLETION_PERC);
-//            EventBus.getDefault().post(eventMessage);
-//            Log.d(SECTION_COMPLETION_PERC, "CURRENT SEC: --------------: "+FastSave.getInstance().getString(APP_SECTION,"")+" :---------------------------------");
-//            Log.d(SECTION_COMPLETION_PERC, "getNewCompletion: -----------------------------------------------");
-//            getNewCompletion();
-//        }, 10500);
-//    }
-
-//    @Background
-//    public void displayProfileImage() {
-//        String sImage;
-//        try {
-//            if (!GROUP_LOGIN)
-//                sImage = AppDatabase.getDatabaseInstance(this).getStudentDao().getStudentAvatar(FastSave.getInstance().getString(CURRENT_STUDENT_ID, ""));
-//            else
-//                sImage = "group_icon";
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//            sImage = "group_icon";
-//        }
-//    }
 
     @Override
     protected void onResume() {
@@ -345,41 +310,26 @@ public class HomeActivity extends BaseActivity implements LevelChanged {
     }
 
     @Override
-    public void setActualLevel(List<ContentTable> level_List, String title) {
+    public void setActualLevel(List<ContentTable> level_List, String title, int setlevel) {
         rootList = level_List;
         if (rootList != null)
             sortContentList(rootList);
         levelTitle = title;
+        FastSave.getInstance().saveString(FC_Constants.CURRENT_LEVEL_NAME, levelTitle);
+        FC_Constants.currentLevel = setlevel;
         setLevel();
     }
 
     @UiThread
     public void setLevel() {
-        SubmarineItem item = new SubmarineItem(getDrawable(R.drawable.level_1), null);
-        SubmarineItem item2 = new SubmarineItem(getDrawable(R.drawable.level_2), null);
-        SubmarineItem item3 = new SubmarineItem(getDrawable(R.drawable.level_3), null);
-        SubmarineItem item4 = new SubmarineItem(getDrawable(R.drawable.level_4), null);
-        SubmarineItem item5 = new SubmarineItem(getDrawable(R.drawable.level_5), null);
+        SubmarineItem[] item = new SubmarineItem[rootList.size()];
+        for (int j = 0; j < rootList.size(); j++) {
+            item[j] = new SubmarineItem(rootList.get(j).getNodeTitle(), null);
+        }
 
         try {
-            FC_Constants.currentLevel = Integer.parseInt(levelTitle);
             FastSave.getInstance().saveInt(FC_Constants.CURRENT_LEVEL, currentLevel);
-            if (levelTitle.contains("1")) {
-                iv_level.setImageResource(R.drawable.level_1);
-                changeBGNew(1);
-            } else if (levelTitle.contains("2")) {
-                iv_level.setImageResource(R.drawable.level_2);
-                changeBGNew(2);
-            } else if (levelTitle.contains("3")) {
-                iv_level.setImageResource(R.drawable.level_3);
-                changeBGNew(3);
-            } else if (levelTitle.contains("4")) {
-                iv_level.setImageResource(R.drawable.level_4);
-                changeBGNew(4);
-            } else if (levelTitle.contains("5")) {
-                iv_level.setImageResource(R.drawable.level_5);
-                changeBGNew(5);
-            }
+            tv_level.setText(levelTitle);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -392,34 +342,16 @@ public class HomeActivity extends BaseActivity implements LevelChanged {
             }
 
             //Setting image depending on the level
-            FC_Constants.currentLevel = Integer.parseInt(rootList.get(position).getNodeTitle());
-            FastSave.getInstance().saveInt(FC_Constants.CURRENT_LEVEL, Integer.parseInt(rootList.get(position).getNodeTitle()));
-            switch (currentLevel) {
-                case 1:
-                    iv_level.setImageResource(R.drawable.level_1);
-                    changeBGNew(1);
-                    break;
-                case 2:
-                    iv_level.setImageResource(R.drawable.level_2);
-                    changeBGNew(2);
-                    break;
-                case 3:
-                    iv_level.setImageResource(R.drawable.level_3);
-                    changeBGNew(3);
-                    break;
-                case 4:
-                    iv_level.setImageResource(R.drawable.level_4);
-                    changeBGNew(4);
-                    break;
-                case 5:
-                    iv_level.setImageResource(R.drawable.level_5);
-                    changeBGNew(5);
-                    break;
-            }
+            FC_Constants.currentLevel = rootList.get(position).getSeq_no();
+            FC_Constants.levelNodeID = rootList.get(position).getNodeId();
+            changeBGNew(FC_Constants.currentLevel);
+            FastSave.getInstance().saveInt(FC_Constants.CURRENT_LEVEL, currentLevel);
+            levelTitle = rootList.get(position).getNodeTitle();
+            FastSave.getInstance().saveString(FC_Constants.CURRENT_LEVEL_NAME, levelTitle);
+            tv_level.setText("" + levelTitle);
             EventMessage eventMessage = new EventMessage();
             eventMessage.setMessage(LEVEL_CHANGED);
             EventBus.getDefault().post(eventMessage);
-//            changeBGNew(FastSave.getInstance().getInt(FC_Constants.CURRENT_LEVEL, position));
             submarine.dip();
         });
 
@@ -439,21 +371,14 @@ public class HomeActivity extends BaseActivity implements LevelChanged {
         }
 
         for (int i = 0; i < rootList.size(); i++) {
-            if (rootList.get(i).getNodeTitle().contains("1"))
-                submarine.addSubmarineItem(item);
-            else if (rootList.get(i).getNodeTitle().contains("2"))
-                submarine.addSubmarineItem(item2);
-            else if (rootList.get(i).getNodeTitle().contains("3"))
-                submarine.addSubmarineItem(item3);
-            else if (rootList.get(i).getNodeTitle().contains("4"))
-                submarine.addSubmarineItem(item4);
-            else if (rootList.get(i).getNodeTitle().contains("5"))
-                submarine.addSubmarineItem(item5);
+            submarine.addSubmarineItem(item[i]);
         }
     }
 
     private void changeBGNew(int currentLevel) {
 //        Change Background to distinguish it by different color.
+        tabLayout.setBackground(getResources().getDrawable(R.drawable.home_footer_1_bg));
+/*
         switch (currentLevel) {
             case 1:
 //                header_rl.setBackground(homeHeader0);
@@ -480,6 +405,7 @@ public class HomeActivity extends BaseActivity implements LevelChanged {
 //                tabLayout.setBackgroundColor(getResources().getColor(R.color.level_4_color));
                 break;
         }
+*/
     }
 
     @SuppressLint("SetTextI18n")
@@ -489,85 +415,29 @@ public class HomeActivity extends BaseActivity implements LevelChanged {
         learningTab.setText("" + getResources().getString(R.string.Learning));
         learningTab.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.ic_learning, 0, 0);
 
-        TextView practiceTab = (TextView) LayoutInflater.from(this).inflate(R.layout.custom_tab_text, null);
-        practiceTab.setText("" + getResources().getString(R.string.Practice));
-        practiceTab.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.ic_practice, 0, 0);
-
         TextView profileTab = (TextView) LayoutInflater.from(this).inflate(R.layout.custom_tab_text, null);
         profileTab.setText("" + getResources().getString(R.string.Profile));
         profileTab.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.ic_profile, 0, 0);
 
-        TextView testTab = (TextView) LayoutInflater.from(this).inflate(R.layout.custom_tab_text, null);
-        testTab.setText("" + getResources().getString(R.string.Test));
-        testTab.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.ic_test, 0, 0);
+        tabLayout.getTabAt(0).setCustomView(learningTab);
+        tabLayout.getTabAt(1).setCustomView(profileTab);
 
-        if (FastSave.getInstance().getString(FC_Constants.LOGIN_MODE, FC_Constants.GROUP_MODE).contains("group") || !getAppMode()) {
-            FastSave.getInstance().saveString(APP_SECTION, sec_Learning);
-            tabLayout.getTabAt(0).setCustomView(learningTab);
-            tabLayout.getTabAt(1).setCustomView(practiceTab);
-        } else {
-            FastSave.getInstance().saveString(APP_SECTION, sec_Practice);
-            tabLayout.getTabAt(0).setCustomView(practiceTab);
-            tabLayout.getTabAt(1).setCustomView(learningTab);
-        }
-
-        if (currSubj.equalsIgnoreCase("english")) {
-            TextView funTab = (TextView) LayoutInflater.from(this).inflate(R.layout.custom_tab_text, null);
-            funTab.setText("" + getResources().getString(R.string.Fun));
-            funTab.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.ic_fun, 0, 0);
-
-            tabLayout.getTabAt(2).setCustomView(testTab);
-            tabLayout.getTabAt(3).setCustomView(funTab);
-            tabLayout.getTabAt(4).setCustomView(profileTab);
-        } else /*if (currSubj.equalsIgnoreCase("LS_Science") || currSubj.equalsIgnoreCase("Maths"))*/ {
-            tabLayout.getTabAt(2).setCustomView(testTab);
-            tabLayout.getTabAt(3).setCustomView(profileTab);
-        }  /*else {
-            tabLayout.getTabAt(2).setCustomView(profileTab);
-//            tabLayout.getTabAt(2).setCustomView(testTab);
-//            tabLayout.getTabAt(3).setCustomView(profileTab);
-        }*/
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
-/*                if (tab.getText().toString().equalsIgnoreCase("Learning")) {
-                    FastSave.getInstance().getString(APP_SECTION,"").equalsIgnoreCase(sec_Test) = true;
-                }if (tab.getText().toString().equalsIgnoreCase("Practice")) {
-                }*/
                 try {
                     BackBtnSound.start();
                 } catch (IllegalStateException e) {
                     e.printStackTrace();
                 }
-
-                if (tab.getText().toString().equalsIgnoreCase("" + getResources().getString(R.string.Test))) {
-                    FastSave.getInstance().saveString(APP_SECTION, sec_Test);
-                    String assessmentSession = "test-" + ApplicationClass.getUniqueID();
-                    FastSave.getInstance().saveString(ASSESSMENT_SESSION, assessmentSession);
-                    EventMessage eventMessage = new EventMessage();
-                    eventMessage.setMessage(FRAGMENT_SELECTED);
-                    EventBus.getDefault().post(eventMessage);
-                    showTestTypeSelectionDialog();
-                } else if (tab.getText().toString().equalsIgnoreCase("" + getResources().getString(R.string.Profile))) {
+                if (tab.getText().toString().equalsIgnoreCase("" + getResources().getString(R.string.Profile))) {
                     FastSave.getInstance().saveString(APP_SECTION, sec_Profile);
                     header_rl.setVisibility(View.GONE);
                     EventMessage eventMessage = new EventMessage();
                     eventMessage.setMessage(FRAGMENT_SELECTED);
                     EventBus.getDefault().post(eventMessage);
-                    FastSave.getInstance().saveBoolean(supervisedAssessment, false);
-                    if (testSessionEntered && !testSessionEnded)
-                        endTestSession();
                 } else {
-                    if (tab.getText().toString().equalsIgnoreCase("" + getResources().getString(R.string.Learning)))
-                        FastSave.getInstance().saveString(APP_SECTION, sec_Learning);
-                    else if (tab.getText().toString().equalsIgnoreCase("" + getResources().getString(R.string.Practice)))
-                        FastSave.getInstance().saveString(APP_SECTION, sec_Practice);
-                    else if (tab.getText().toString().equalsIgnoreCase("" + getResources().getString(R.string.Fun)))
-                        FastSave.getInstance().saveString(APP_SECTION, sec_Fun);
-
-                    FastSave.getInstance().saveBoolean(supervisedAssessment, false);
-                    if (testSessionEntered && !testSessionEnded)
-                        endTestSession();
+                    FastSave.getInstance().saveString(APP_SECTION, sec_Learning);
                     EventMessage eventMessage = new EventMessage();
                     eventMessage.setMessage(FRAGMENT_SELECTED);
                     EventBus.getDefault().post(eventMessage);
@@ -587,22 +457,11 @@ public class HomeActivity extends BaseActivity implements LevelChanged {
                     e.printStackTrace();
                 }
 
-                if (tab.getText().toString().equalsIgnoreCase("" + getResources().getString(R.string.Test))) {
-                    FastSave.getInstance().saveString(APP_SECTION, sec_Test);
-                    EventMessage eventMessage = new EventMessage();
-                    eventMessage.setMessage(FRAGMENT_RESELECTED);
-                    EventBus.getDefault().post(eventMessage);
-                    showTestTypeSelectionDialog();
-                } else if (tab.getText().toString().equalsIgnoreCase("" + getResources().getString(R.string.Profile))) {
+                if (tab.getText().toString().equalsIgnoreCase("" + getResources().getString(R.string.Profile))) {
                     FastSave.getInstance().saveString(APP_SECTION, sec_Profile);
                     header_rl.setVisibility(View.GONE);
                 } else {
-                    if (tab.getText().toString().equalsIgnoreCase("" + getResources().getString(R.string.Learning)))
-                        FastSave.getInstance().saveString(APP_SECTION, sec_Learning);
-                    else if (tab.getText().toString().equalsIgnoreCase("" + getResources().getString(R.string.Practice)))
-                        FastSave.getInstance().saveString(APP_SECTION, sec_Practice);
-                    else if (tab.getText().toString().equalsIgnoreCase("" + getResources().getString(R.string.Fun)))
-                        FastSave.getInstance().saveString(APP_SECTION, sec_Fun);
+                    FastSave.getInstance().saveString(APP_SECTION, sec_Learning);
                     EventMessage eventMessage = new EventMessage();
                     eventMessage.setMessage(FRAGMENT_RESELECTED);
                     EventBus.getDefault().post(eventMessage);
@@ -636,10 +495,9 @@ public class HomeActivity extends BaseActivity implements LevelChanged {
     }
 
     BlurPopupWindow myDialog;
-
+/*
     @SuppressLint("SetTextI18n")
     private void showTestTypeSelectionDialog() {
-//       Select Test Type - Supervised or Unsupervised
         FastSave.getInstance().saveString(CURRENT_SUPERVISOR_ID, "NA");
         FastSave.getInstance().saveBoolean(supervisedAssessment, false);
         myDialog = new BlurPopupWindow.Builder(this)
@@ -676,19 +534,8 @@ public class HomeActivity extends BaseActivity implements LevelChanged {
                 .setTintColor(0x30000000)
                 .build();
         myDialog.show();
-/*        test_dialog_img = myDialog.findViewById(R.id.test_dialog_img);
-        ImageRequest imageRequest = ImageRequestBuilder
-                .newBuilderWithSource(Uri.parse("http://www.prodigi.openiscool.org/repository/Images/SoundOutPhonemes.png"))
-                .setLocalThumbnailPreviewsEnabled(false)
-                .build();
-        if(imageRequest !=null ) {
-            DraweeController controller = Fresco.newDraweeControllerBuilder()
-                    .setImageRequest(imageRequest)
-                    .build();
-            test_dialog_img.setController(controller);
-        }*/
     }
-
+*/
 
     boolean comngSoonFlg = false;
 
@@ -713,7 +560,7 @@ public class HomeActivity extends BaseActivity implements LevelChanged {
         myDialog.show();
     }
 
-    @Click(R.id.iv_level)
+    @Click({R.id.iv_level, R.id.tv_level})
     public void levelChange() {
         try {
             ButtonClickSound.start();
@@ -726,14 +573,16 @@ public class HomeActivity extends BaseActivity implements LevelChanged {
     private void setupViewPager(ViewPager viewpager) {
 //        Loading fragments (learning, practice, test, fun, profile) on the viewPager.
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
-        viewpager.setOffscreenPageLimit(5);
-        if (FastSave.getInstance().getString(FC_Constants.LOGIN_MODE, FC_Constants.GROUP_MODE).contains("group") || !getAppMode()) {
+        viewpager.setOffscreenPageLimit(2);
+        adapter.addFrag(new LearningFragment_(), "" + getResources().getString(R.string.Learning));
+        adapter.addFrag(new ProfileFragment_(), "" + getResources().getString(R.string.Profile));
+/*        if (FastSave.getInstance().getString(FC_Constants.LOGIN_MODE, FC_Constants.GROUP_MODE).contains("group") || !getAppMode()) {
             adapter.addFrag(new LearningFragment_(), "" + getResources().getString(R.string.Learning));
             adapter.addFrag(new PracticeFragment_(), "" + getResources().getString(R.string.Practice));
             if (currSubj.equalsIgnoreCase("english")) {
                 adapter.addFrag(new TestFragment_(), "" + getResources().getString(R.string.Test));
                 adapter.addFrag(new FunFragment_(), "" + getResources().getString(R.string.Fun));
-            } else /*if (currSubj.equalsIgnoreCase("LS_Science") || currSubj.equalsIgnoreCase("Maths"))*/ {
+            } else *//*if (currSubj.equalsIgnoreCase("LS_Science") || currSubj.equalsIgnoreCase("Maths"))*//* {
                 adapter.addFrag(new TestFragment_(), "" + getResources().getString(R.string.Test));
             }
             adapter.addFrag(new ProfileFragment_(), "" + getResources().getString(R.string.Profile));
@@ -743,11 +592,11 @@ public class HomeActivity extends BaseActivity implements LevelChanged {
             if (currSubj.equalsIgnoreCase("english")) {
                 adapter.addFrag(new TestFragment_(), "" + getResources().getString(R.string.Test));
                 adapter.addFrag(new FunFragment_(), "" + getResources().getString(R.string.Fun));
-            } else /*if (currSubj.equalsIgnoreCase("LS_Science") || currSubj.equalsIgnoreCase("Maths"))*/ {
+            } else *//*if (currSubj.equalsIgnoreCase("LS_Science") || currSubj.equalsIgnoreCase("Maths"))*//* {
                 adapter.addFrag(new TestFragment_(), "" + getResources().getString(R.string.Test));
             }
             adapter.addFrag(new ProfileFragment_(), "" + getResources().getString(R.string.Profile));
-        }
+        }*/
         viewpager.setAdapter(adapter);
         new Handler().postDelayed(() -> {
             dismissLoadingDialog();

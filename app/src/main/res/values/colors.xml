@@ -115,6 +115,7 @@
     <color name="light_blue">#bfd7e7e4</color>
     <color name="light_pink">#E7DEDE</color>
     <color name="ghost_white">#FAFAFC</color>
+    <color name="trans_white">#B2FFFFFF</color>
     <color name="trans_ghost_white">#7ffafafc</color>
     <color name="act_bg">#7FECECEC</color>
     <color name="yellow_sand">#fff1b9</color>

@@ -41,6 +41,7 @@ import java.util.Objects;
 import static com.pratham.foundation.ApplicationClass.BackBtnSound;
 import static com.pratham.foundation.ApplicationClass.ButtonClickSound;
 import static com.pratham.foundation.ui.contentPlayer.GameConstatnts.playInsequence;
+import static com.pratham.foundation.utility.FC_Constants.CURRENT_STUDENT_ID;
 import static com.pratham.foundation.utility.FC_Utility.dpToPx;
 
 @EFragment(R.layout.fragment_sequence_layout)
@@ -89,7 +90,8 @@ public class SequenceLayout extends Fragment implements SequeanceLayoutContract.
     public void getListResData(String nodeId) {
         try {
             contentTableList = new ArrayList<>();
-            contentTableList = AppDatabase.getDatabaseInstance(context).getContentTableDao().getContentData("" + nodeId);
+            contentTableList = AppDatabase.getDatabaseInstance(context).getContentTableDao().getContentData("" + nodeId,
+                    "%"+ FastSave.getInstance().getString(CURRENT_STUDENT_ID,"na")+"%");
             loadUI();
         } catch (Exception e) {
             e.printStackTrace();
@@ -264,7 +266,7 @@ public class SequenceLayout extends Fragment implements SequeanceLayoutContract.
         if (onConentClickeditem != null) {
             Bundle bundle = new Bundle();
             bundle.putString("contentPath", onConentClickeditem.getResourcePath());
-            bundle.putString("StudentID", FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""));
+            bundle.putString("StudentID", FastSave.getInstance().getString(CURRENT_STUDENT_ID, ""));
             bundle.putString("resId", onConentClickeditem.getResourceId());
             bundle.putString("contentName", onConentClickeditem.getNodeTitle());
             bundle.putString("sttLang", onConentClickeditem.getContentLanguage());

@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
+import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
 import android.view.Gravity;
@@ -37,12 +38,17 @@ import com.pratham.foundation.customView.GridSpacingItemDecoration;
 import com.pratham.foundation.customView.collapsingView.RetractableToolbarUtil;
 import com.pratham.foundation.customView.display_image_dialog.CustomLodingDialog;
 import com.pratham.foundation.customView.progress_layout.ProgressLayout;
+import com.pratham.foundation.database.AppDatabase;
 import com.pratham.foundation.database.domain.ContentTable;
+import com.pratham.foundation.database.domain.Groups;
 import com.pratham.foundation.modalclasses.EventMessage;
 import com.pratham.foundation.modalclasses.Modal_FileDownloading;
 import com.pratham.foundation.services.shared_preferences.FastSave;
 import com.pratham.foundation.ui.app_home.FragmentItemClicked;
+import com.pratham.foundation.ui.app_home.HomeActivity;
 import com.pratham.foundation.ui.app_home.display_content.ContentDisplay_;
+import com.pratham.foundation.ui.app_home.learning_fragment.attendance_bottom_fragment.AttendanceBottomFragment;
+import com.pratham.foundation.ui.app_home.learning_fragment.attendance_bottom_fragment.AttendanceBottomFragment_;
 import com.pratham.foundation.ui.contentPlayer.ContentPlayerActivity_;
 import com.pratham.foundation.ui.contentPlayer.matchingPairGame.MatchThePairGameActivity;
 import com.pratham.foundation.ui.contentPlayer.old_cos.conversation.ConversationActivity_;
@@ -68,6 +74,7 @@ import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
 import java.io.File;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -79,8 +86,10 @@ import static com.pratham.foundation.ui.app_home.HomeActivity.sub_Name;
 import static com.pratham.foundation.ui.app_home.HomeActivity.tv_header_progress;
 import static com.pratham.foundation.utility.FC_Constants.APP_SECTION;
 import static com.pratham.foundation.utility.FC_Constants.COMING_SOON;
+import static com.pratham.foundation.utility.FC_Constants.GROUP_MODE;
 import static com.pratham.foundation.utility.FC_Constants.IS_DOWNLOADING;
 import static com.pratham.foundation.utility.FC_Constants.currentLevel;
+import static com.pratham.foundation.utility.FC_Constants.currentSubjectFolder;
 import static com.pratham.foundation.utility.FC_Constants.gameFolderPath;
 import static com.pratham.foundation.utility.FC_Constants.sec_Learning;
 import static com.pratham.foundation.utility.FC_Utility.dpToPx;
@@ -220,7 +229,7 @@ public class LearningFragment extends Fragment implements LearningContract.Learn
                     resourceDownloadDialog(message.getModal_fileDownloading());
                 } else if (message.getMessage().equalsIgnoreCase(FC_Constants.FILE_DOWNLOAD_UPDATE)) {
                     if (progressLayout != null)
-                        if(downloadNodeId.equalsIgnoreCase(modal_fileDownloading.getDownloadId()))
+                        if (downloadNodeId.equalsIgnoreCase(modal_fileDownloading.getDownloadId()))
                             progressLayout.setCurProgress(message.getModal_fileDownloading().getProgress());
                 } else if (message.getMessage().equalsIgnoreCase(FC_Constants.FRAGMENT_SELECTED) ||
                         message.getMessage().equalsIgnoreCase(FC_Constants.FRAGMENT_RESELECTED) ||
@@ -321,7 +330,7 @@ public class LearningFragment extends Fragment implements LearningContract.Learn
                 }
             if (rootLevelList != null && found) {
                 if (rootLevelList.size() > i) {
-                    levelChanged.setActualLevel(rootLevelList, rootLevelList.get(i).getNodeTitle());
+                    levelChanged.setActualLevel(rootLevelList, rootLevelList.get(i).getNodeTitle(), i);
                     presenter.insertNodeId(rootLevelList.get(i).getNodeId());
                     presenter.getDataForList();
                 } else
@@ -329,7 +338,7 @@ public class LearningFragment extends Fragment implements LearningContract.Learn
             } else if (rootLevelList != null) {
                 if (rootLevelList.size() > 0) {
                     i = 0;
-                    levelChanged.setActualLevel(rootLevelList, rootLevelList.get(i).getNodeTitle());
+                    levelChanged.setActualLevel(rootLevelList, rootLevelList.get(i).getNodeTitle(), i);
                     presenter.insertNodeId(rootLevelList.get(i).getNodeId());
                     presenter.getDataForList();
                 }
@@ -514,6 +523,100 @@ public class LearningFragment extends Fragment implements LearningContract.Learn
     }
 
     @Override
+    public void onTestContentClicked(int posi, ContentTable itemContent) {
+        try {
+            ButtonClickSound.start();
+        } catch (IllegalStateException e) {
+            e.printStackTrace();
+        }
+        FC_Constants.AssLang = itemContent.getContentLanguage();
+        FC_Constants.examId = itemContent.getNodeKeywords();
+        if (FastSave.getInstance().getString(FC_Constants.LOGIN_MODE, GROUP_MODE).equalsIgnoreCase(GROUP_MODE)) {
+            List<Groups> groupsStudentsList;
+            groupsStudentsList = AppDatabase.getDatabaseInstance(context).getGroupsDao().GetStudentsByGroupId(FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""));
+            openAttendanceDialog(groupsStudentsList);
+        } else {
+//        Toast.makeText(ContentDisplay.this, "Opening Pankh Practice App", Toast.LENGTH_SHORT).show();
+            try {
+                String profileName = "";
+                profileName = AppDatabase.getDatabaseInstance(context).getStudentDao().getFullName(FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""));
+
+                Bundle bundle = new Bundle();
+                FastSave.getInstance().getString(FC_Constants.CURRENT_FOLDER_NAME, currentSubjectFolder);
+
+                bundle.putString("appName", "" + getResources().getString(R.string.app_name));
+                bundle.putString("studentId", "" + FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""));
+                bundle.putString("studentName", "" + profileName);
+                bundle.putString("subjectName", "" + FastSave.getInstance().getString(FC_Constants.CURRENT_SUBJECT, ""));
+                bundle.putString("subjectLanguage", "" + itemContent.getContentLanguage());
+                bundle.putString("examId", "" + itemContent.getNodeKeywords());
+                bundle.putString("subjectLevel", "" + currentLevel);
+//            Intent launchIntent = new Intent("com.doedelhi.pankhpractice.ui.choose_assessment.ChooseAssessmentActivity_");
+                Intent launchIntent = new Intent("com.pratham.assessment.ui.choose_assessment.science.ScienceAssessmentActivity_");
+                //Intent launchIntent = Objects.requireNonNull(getActivity()).getPackageManager()
+                //        .getLaunchIntentForPackage("com.doedelhi.pankhpractice");
+                Objects.requireNonNull(launchIntent).putExtras(bundle);
+                startActivityForResult(launchIntent, FC_Constants.APP_INTENT_REQUEST_CODE);
+                // null pointer check in case package name was not found
+            } catch (Exception e) {
+                downloadAssessmentAppDialog();
+                e.printStackTrace();
+            }
+        }
+    }
+
+    @UiThread
+    public void openAttendanceDialog(List<Groups> groupsList) {
+        AttendanceBottomFragment_ bottomStudentsFragment = new AttendanceBottomFragment_();
+        bottomStudentsFragment.show(((HomeActivity) context).getSupportFragmentManager(),
+                AttendanceBottomFragment.class.getSimpleName());
+    }
+
+    BlurPopupWindow fcDialog;
+
+    @SuppressLint("SetTextI18n")
+    @UiThread
+    public void downloadAssessmentAppDialog() {
+        try {
+            fcDialog = new BlurPopupWindow.Builder(context)
+                    .setContentView(R.layout.fc_custom_dialog)
+                    .setGravity(Gravity.CENTER)
+                    .setDismissOnTouchBackground(false)
+                    .setDismissOnClickBack(false)
+                    .bindClickListener(v -> {
+                        new Handler().postDelayed(() -> {
+                            startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=com.pratham.assessment")));
+                            fcDialog.dismiss();
+                        }, 200);
+                    }, R.id.dia_btn_green)
+                    .bindClickListener(v -> {
+                        new Handler().postDelayed(() -> {
+                            fcDialog.dismiss();
+                        }, 200);
+                    }, R.id.dia_btn_red)
+                    .setScaleRatio(0.2f)
+                    .setBlurRadius(10)
+                    .setTintColor(0x30000000)
+                    .build();
+
+            TextView dia_title = fcDialog.findViewById(R.id.dia_title);
+            Button dia_btn_yellow = fcDialog.findViewById(R.id.dia_btn_yellow);
+            Button dia_btn_green = fcDialog.findViewById(R.id.dia_btn_green);
+            Button dia_btn_red = fcDialog.findViewById(R.id.dia_btn_red);
+            dia_btn_yellow.setVisibility(View.GONE);
+
+            dia_btn_red.setText(context.getResources().getString(R.string.Cancel));
+            dia_title.setText("Please Download Assessment App From Google Play Store");
+            dia_btn_green.setText(getResources().getString(R.string.Okay));
+
+            fcDialog.show();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
     public void onContentClicked(ContentTable singleItem, String parentName) {
         FastSave.getInstance().saveString(APP_SECTION, "" + sec_Learning);
         try {
@@ -526,7 +629,7 @@ public class LearningFragment extends Fragment implements LearningContract.Learn
             intent.putExtra("nodeId", singleItem.getNodeId());
             intent.putExtra("parentName", parentName);
             intent.putExtra("contentTitle", singleItem.getNodeTitle());
-            intent.putExtra("level", "" + currentLevel);
+            intent.putExtra("level", "" + FastSave.getInstance().getString(FC_Constants.CURRENT_LEVEL_NAME, ""));
 //            startActivity(intent, ActivityOptions.makeSceneTransitionAnimation(getActivity()).toBundle());
             startActivity(intent);
         } else {
@@ -688,7 +791,7 @@ public class LearningFragment extends Fragment implements LearningContract.Learn
                 startActivity(intent);
             }*/ else {
                 Intent mainNew = new Intent(context, ContentPlayerActivity_.class);
-                mainNew.putExtra("testData", contentList);
+                mainNew.putExtra("testData", (Serializable) contentList);
                 mainNew.putExtra("testcall", FC_Constants.INDIVIDUAL_MODE);
                 startActivityForResult(mainNew, 1461);
             }
@@ -699,7 +802,7 @@ public class LearningFragment extends Fragment implements LearningContract.Learn
     @UiThread
     @Override
     public void onContentDownloadClicked(ContentTable contentList, int parentPos, int childPos, String downloadType) {
-        if(!IS_DOWNLOADING) {
+        if (!IS_DOWNLOADING) {
             showLoader();
             this.downloadType = downloadType;
             downloadNodeId = contentList.getNodeId();
@@ -860,7 +963,7 @@ public class LearningFragment extends Fragment implements LearningContract.Learn
     @UiThread
     @Override
     public void showToast(String msg) {
-        Toast.makeText(context, ""+msg, Toast.LENGTH_SHORT).show();
+        Toast.makeText(context, "" + msg, Toast.LENGTH_SHORT).show();
     }
 
     BlurPopupWindow serverIssueDialog;

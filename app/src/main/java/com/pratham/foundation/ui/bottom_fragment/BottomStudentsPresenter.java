@@ -26,10 +26,12 @@ import com.pratham.foundation.database.dao.StatusDao;
 import com.pratham.foundation.database.domain.Attendance;
 import com.pratham.foundation.database.domain.ContentProgress;
 import com.pratham.foundation.database.domain.ContentTable;
+import com.pratham.foundation.database.domain.Groups;
 import com.pratham.foundation.database.domain.KeyWords;
 import com.pratham.foundation.database.domain.Session;
 import com.pratham.foundation.database.domain.Status;
 import com.pratham.foundation.database.domain.Student;
+import com.pratham.foundation.database.domain.StudentAndGroup_BottomFragmentModal;
 import com.pratham.foundation.services.AppExitService;
 import com.pratham.foundation.services.LocationService;
 import com.pratham.foundation.services.shared_preferences.FastSave;
@@ -54,6 +56,9 @@ public class BottomStudentsPresenter implements BottomStudentsContract.BottomStu
     private BottomStudentsContract.BottomStudentsView myView;
     private Context context;
     Gson gson;
+    private List<Student> studentDBList;
+    private List<Groups> groupDBList, groupList;
+    private List<StudentAndGroup_BottomFragmentModal> fragmentModalsList;
 
     public BottomStudentsPresenter(Context context) {
         this.context = context;
@@ -63,44 +68,107 @@ public class BottomStudentsPresenter implements BottomStudentsContract.BottomStu
     public void setView(BottomStudentsContract.BottomStudentsView viewBottomStudents) {
         this.myView = viewBottomStudents;
         gson = new Gson();
-        studentList = new ArrayList<>();
+        fragmentModalsList = new ArrayList<>();
         studentDBList = new ArrayList<>();
+        groupList = new ArrayList<>();
     }
 
-    private List<Student> studentDBList, studentList;
     @Background
     @Override
     public void showStudents() {
         try {
-            studentList.clear();
+
+            fragmentModalsList.clear();
+            groupList.clear();
+            myView.clearList();
             studentDBList = AppDatabase.getDatabaseInstance(context).getStudentDao().getAllPSStudents();
-            if (studentDBList != null) {
-                Student studentHeader = new Student();
+            groupDBList = AppDatabase.getDatabaseInstance(context).getGroupsDao().getAllGroups();
+
+            if (studentDBList != null || groupDBList != null) {
+                StudentAndGroup_BottomFragmentModal studentHeader = new StudentAndGroup_BottomFragmentModal();
                 studentHeader.setStudentID("#####");
                 studentHeader.setFullName("");
                 studentHeader.setAvatarName("");
-                studentList.add(studentHeader);
+                studentHeader.setType(FC_Constants.TYPE_HEADER);
+                fragmentModalsList.add(studentHeader);
+            }
 
+            if (studentDBList != null) {
                 for (int i = 0; i < studentDBList.size(); i++) {
-                    Student studentAvatar = new Student();
+                    StudentAndGroup_BottomFragmentModal studentAvatar = new StudentAndGroup_BottomFragmentModal();
                     studentAvatar.setStudentID(studentDBList.get(i).getStudentID());
                     studentAvatar.setFullName(studentDBList.get(i).getFullName());
                     studentAvatar.setAvatarName(studentDBList.get(i).getAvatarName());
-                    studentList.add(studentAvatar);
+                    studentAvatar.setGender(studentDBList.get(i).getGender());
+                    studentAvatar.setChecked(false);
+                    studentAvatar.setType(FC_Constants.STUDENTS);
+                    fragmentModalsList.add(studentAvatar);
                 }
             }
-            Student studentHeader = new Student();
-            studentHeader.setStudentID("#####");
-            studentHeader.setFullName("");
-            studentHeader.setAvatarName("");
 
-            studentList.add(studentHeader);
-            BackupDatabase.backup(context);
-            myView.setStudentList(studentList);
+            if (groupDBList != null) {
+                for (int i = 0; i < groupDBList.size(); i++) {
+                    StudentAndGroup_BottomFragmentModal studentAvatar = new StudentAndGroup_BottomFragmentModal();
+                    studentAvatar.setStudentID(groupDBList.get(i).getGroupId());
+                    studentAvatar.setFullName(groupDBList.get(i).getGroupName());
+                    studentAvatar.setAvatarName("NA");
+                    studentAvatar.setChecked(false);
+                    studentAvatar.setType(FC_Constants.GROUP_MODE);
+                    fragmentModalsList.add(studentAvatar);
+                }
+            }
+
+            if (fragmentModalsList != null) {
+                StudentAndGroup_BottomFragmentModal studentHeader = new StudentAndGroup_BottomFragmentModal();
+                studentHeader.setStudentID("#####");
+                studentHeader.setFullName("");
+                studentHeader.setAvatarName("");
+                studentHeader.setType(FC_Constants.TYPE_HEADER);
+                fragmentModalsList.add(studentHeader);
+            }
+
+            myView.setStudentList(fragmentModalsList);
             myView.notifyStudentAdapter();
+
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    @Override
+    public void getStudentsFromGroup(String studentId) {
+
+        fragmentModalsList.clear();
+        studentDBList = AppDatabase.getDatabaseInstance(context).getStudentDao().getGroupwiseStudents(studentId);
+        myView.clearList();
+        if (studentDBList != null) {
+            StudentAndGroup_BottomFragmentModal studentHeader = new StudentAndGroup_BottomFragmentModal();
+            studentHeader.setStudentID("#####");
+            studentHeader.setFullName("");
+            studentHeader.setAvatarName("");
+            studentHeader.setType(FC_Constants.TYPE_HEADER);
+            fragmentModalsList.add(studentHeader);
+
+            for (int i = 0; i < studentDBList.size(); i++) {
+                StudentAndGroup_BottomFragmentModal studentAvatar = new StudentAndGroup_BottomFragmentModal();
+                studentAvatar.setStudentID(studentDBList.get(i).getStudentID());
+                studentAvatar.setFullName(studentDBList.get(i).getFullName());
+                studentAvatar.setAvatarName(studentDBList.get(i).getAvatarName());
+                studentAvatar.setGender(studentDBList.get(i).getGender());
+                studentAvatar.setChecked(false);
+                studentAvatar.setType(FC_Constants.STUDENTS);
+                fragmentModalsList.add(studentAvatar);
+            }
+        }
+        StudentAndGroup_BottomFragmentModal studentHeader = new StudentAndGroup_BottomFragmentModal();
+        studentHeader.setStudentID("#####");
+        studentHeader.setFullName("");
+        studentHeader.setAvatarName("");
+        studentHeader.setType(FC_Constants.TYPE_FOOTER);
+        fragmentModalsList.add(studentHeader);
+
+        myView.setStudentList(fragmentModalsList);
+        myView.notifyStudentAdapter();
     }
 
     @Background
@@ -240,331 +308,331 @@ public class BottomStudentsPresenter implements BottomStudentsContract.BottomStu
         }
     }
 
-        public void populateMenu() {
-            try {
-                File folder_file, db_file;
-                folder_file = new File(ApplicationClass.foundationPath + "/.FCA/");
-                if (folder_file.exists()) {
-                    Log.d("-CT-", "doInBackground ApplicationClass.contentSDPath: " + ApplicationClass.contentSDPath);
-                    db_file = new File(folder_file + "/" + AppDatabase.DB_NAME);
+    public void populateMenu() {
+        try {
+            File folder_file, db_file;
+            folder_file = new File(ApplicationClass.foundationPath + "/.FCA/");
+            if (folder_file.exists()) {
+                Log.d("-CT-", "doInBackground ApplicationClass.contentSDPath: " + ApplicationClass.contentSDPath);
+                db_file = new File(folder_file + "/" + AppDatabase.DB_NAME);
 //                    db_file = new File(folder_file.getAbsolutePath() + "/" + AppDatabase.DB_NAME);
-                    if (db_file.exists()) {
-                        SQLiteDatabase db = SQLiteDatabase.openDatabase(db_file.getAbsolutePath(), null, SQLiteDatabase.OPEN_READONLY);
-                        if (db != null) {
-                            Cursor content_cursor;
-                            try {
-                                content_cursor = db.rawQuery("SELECT * FROM ContentTable", null);
-                                //populate contents
-                                List<ContentTable> contents = new ArrayList<>();
-                                if (content_cursor.moveToFirst()) {
-                                    while (!content_cursor.isAfterLast()) {
-                                        ContentTable detail = new ContentTable();
-                                        detail.setNodeId(content_cursor.getString(content_cursor.getColumnIndex("nodeId")));
-                                        detail.setNodeType(content_cursor.getString(content_cursor.getColumnIndex("nodeType")));
-                                        detail.setNodeTitle(content_cursor.getString(content_cursor.getColumnIndex("nodeTitle")));
-                                        detail.setNodeKeywords(content_cursor.getString(content_cursor.getColumnIndex("nodeKeywords")));
-                                        detail.setNodeAge(content_cursor.getString(content_cursor.getColumnIndex("nodeAge")));
-                                        detail.setNodeDesc(content_cursor.getString(content_cursor.getColumnIndex("nodeDesc")));
-                                        detail.setNodeServerImage(content_cursor.getString(content_cursor.getColumnIndex("nodeServerImage")));
-                                        detail.setNodeImage(content_cursor.getString(content_cursor.getColumnIndex("nodeImage")));
-                                        detail.setResourceId(content_cursor.getString(content_cursor.getColumnIndex("resourceId")));
-                                        detail.setResourceType(content_cursor.getString(content_cursor.getColumnIndex("resourceType")));
-                                        detail.setResourcePath(content_cursor.getString(content_cursor.getColumnIndex("resourcePath")));
-                                        detail.setLevel("" + content_cursor.getInt(content_cursor.getColumnIndex("level")));
-                                        detail.setContentLanguage(content_cursor.getString(content_cursor.getColumnIndex("contentLanguage")));
-                                        detail.setParentId(content_cursor.getString(content_cursor.getColumnIndex("parentId")));
-                                        detail.setContentType(content_cursor.getString(content_cursor.getColumnIndex("contentType")));
-                                        detail.setIsDownloaded("true");
-                                        detail.setOnSDCard(false);
-                                        contents.add(detail);
-                                        content_cursor.moveToNext();
-                                    }
+                if (db_file.exists()) {
+                    SQLiteDatabase db = SQLiteDatabase.openDatabase(db_file.getAbsolutePath(), null, SQLiteDatabase.OPEN_READONLY);
+                    if (db != null) {
+                        Cursor content_cursor;
+                        try {
+                            content_cursor = db.rawQuery("SELECT * FROM ContentTable", null);
+                            //populate contents
+                            List<ContentTable> contents = new ArrayList<>();
+                            if (content_cursor.moveToFirst()) {
+                                while (!content_cursor.isAfterLast()) {
+                                    ContentTable detail = new ContentTable();
+                                    detail.setNodeId(content_cursor.getString(content_cursor.getColumnIndex("nodeId")));
+                                    detail.setNodeType(content_cursor.getString(content_cursor.getColumnIndex("nodeType")));
+                                    detail.setNodeTitle(content_cursor.getString(content_cursor.getColumnIndex("nodeTitle")));
+                                    detail.setNodeKeywords(content_cursor.getString(content_cursor.getColumnIndex("nodeKeywords")));
+                                    detail.setNodeAge(content_cursor.getString(content_cursor.getColumnIndex("nodeAge")));
+                                    detail.setNodeDesc(content_cursor.getString(content_cursor.getColumnIndex("nodeDesc")));
+                                    detail.setNodeServerImage(content_cursor.getString(content_cursor.getColumnIndex("nodeServerImage")));
+                                    detail.setNodeImage(content_cursor.getString(content_cursor.getColumnIndex("nodeImage")));
+                                    detail.setResourceId(content_cursor.getString(content_cursor.getColumnIndex("resourceId")));
+                                    detail.setResourceType(content_cursor.getString(content_cursor.getColumnIndex("resourceType")));
+                                    detail.setResourcePath(content_cursor.getString(content_cursor.getColumnIndex("resourcePath")));
+                                    detail.setLevel("" + content_cursor.getInt(content_cursor.getColumnIndex("level")));
+                                    detail.setContentLanguage(content_cursor.getString(content_cursor.getColumnIndex("contentLanguage")));
+                                    detail.setParentId(content_cursor.getString(content_cursor.getColumnIndex("parentId")));
+                                    detail.setContentType(content_cursor.getString(content_cursor.getColumnIndex("contentType")));
+                                    detail.setIsDownloaded("true");
+                                    detail.setOnSDCard(false);
+                                    contents.add(detail);
+                                    content_cursor.moveToNext();
                                 }
-                                AppDatabase.getDatabaseInstance(context).getContentTableDao().addContentList(contents);
-                                content_cursor.close();
-                            } catch (Exception e) {
-                                e.printStackTrace();
                             }
+                            AppDatabase.getDatabaseInstance(context).getContentTableDao().addContentList(contents);
+                            content_cursor.close();
+                        } catch (Exception e) {
+                            e.printStackTrace();
                         }
                     }
                 }
-                context.startService(new Intent(context, AppExitService.class));
-                Log.d("pushorassign", "populateDB() FC_Constants.KEY_MENU_COPIED : " + FastSave.getInstance().getBoolean(FC_Constants.KEY_MENU_COPIED, false));
-                FastSave.getInstance().saveBoolean(FC_Constants.KEY_MENU_COPIED, true);
-                Log.d("pushorassign", "populateDB() FC_Constants.KEY_MENU_COPIED : " + FastSave.getInstance().getBoolean(FC_Constants.KEY_MENU_COPIED, false));
-                BackupDatabase.backup(context);
-            } catch (Exception e) {
-                e.printStackTrace();
             }
+            context.startService(new Intent(context, AppExitService.class));
+            Log.d("pushorassign", "populateDB() FC_Constants.KEY_MENU_COPIED : " + FastSave.getInstance().getBoolean(FC_Constants.KEY_MENU_COPIED, false));
+            FastSave.getInstance().saveBoolean(FC_Constants.KEY_MENU_COPIED, true);
+            Log.d("pushorassign", "populateDB() FC_Constants.KEY_MENU_COPIED : " + FastSave.getInstance().getBoolean(FC_Constants.KEY_MENU_COPIED, false));
+            BackupDatabase.backup(context);
+        } catch (Exception e) {
+            e.printStackTrace();
         }
+    }
 
-        public void doInitialEntries(AppDatabase appDatabase) {
+    public void doInitialEntries(AppDatabase appDatabase) {
+        try {
+            com.pratham.foundation.database.domain.Status status;
+            status = new com.pratham.foundation.database.domain.Status();
+            status.setStatusKey("DeviceId");
+            status.setValue("" + Settings.Secure.getString(context.getContentResolver(), Settings.Secure.ANDROID_ID));
+            status.setDescription("" + Build.SERIAL);
+            appDatabase.getStatusDao().insert(status);
+
+            status = new com.pratham.foundation.database.domain.Status();
+            status.setStatusKey("CRLID");
+            status.setValue("default");
+            appDatabase.getStatusDao().insert(status);
+
+            status = new com.pratham.foundation.database.domain.Status();
+            status.setStatusKey("DeviceName");
+            status.setValue(FC_Utility.getDeviceName());
+            appDatabase.getStatusDao().insert(status);
+
+            status = new com.pratham.foundation.database.domain.Status();
+            status.setStatusKey("gpsFixDuration");
+            status.setValue("");
+            appDatabase.getStatusDao().insert(status);
+
+            status = new com.pratham.foundation.database.domain.Status();
+            status.setStatusKey("prathamCode");
+            status.setValue("");
+            appDatabase.getStatusDao().insert(status);
+
+            status = new com.pratham.foundation.database.domain.Status();
+            status.setStatusKey("apkType");
+            status.setValue("");
+            appDatabase.getStatusDao().insert(status);
+
+            status = new com.pratham.foundation.database.domain.Status();
+            status.setStatusKey("Latitude");
+            status.setValue("");
+            appDatabase.getStatusDao().insert(status);
+
+            status = new com.pratham.foundation.database.domain.Status();
+            status.setStatusKey("Longitude");
+            status.setValue("");
+            appDatabase.getStatusDao().insert(status);
+
+            status = new com.pratham.foundation.database.domain.Status();
+            status.setStatusKey("GPSDateTime");
+            status.setValue("");
+            appDatabase.getStatusDao().insert(status);
+
+            status = new com.pratham.foundation.database.domain.Status();
+            status.setStatusKey("CurrentSession");
+            status.setValue("NA");
+            appDatabase.getStatusDao().insert(status);
+
+            status = new com.pratham.foundation.database.domain.Status();
+            status.setStatusKey("SdCardPath");
+            status.setValue("NA");
+            appDatabase.getStatusDao().insert(status);
+
+            status = new com.pratham.foundation.database.domain.Status();
+            status.setStatusKey("AppLang");
+            status.setValue("NA");
+            appDatabase.getStatusDao().insert(status);
+
+            status = new com.pratham.foundation.database.domain.Status();
+            status.setStatusKey("AppStartDateTime");
+            status.setValue("NA");
+            appDatabase.getStatusDao().insert(status);
+
+            //new Entries
+            status = new com.pratham.foundation.database.domain.Status();
+            status.setStatusKey("ActivatedForGroups");
+            status.setValue("NA");
+            appDatabase.getStatusDao().insert(status);
+
+            status = new com.pratham.foundation.database.domain.Status();
+            status.setStatusKey("AndroidVersion");
+            status.setValue(FC_Utility.getAndroidOSVersion());
+            appDatabase.getStatusDao().insert(status);
+
+            status = new com.pratham.foundation.database.domain.Status();
+            status.setStatusKey("InternalAvailableStorage");
+            status.setValue(FC_Utility.getInternalStorageStatus());
+            appDatabase.getStatusDao().insert(status);
+
+            status = new com.pratham.foundation.database.domain.Status();
+            status.setStatusKey("DeviceManufacturer");
+            status.setValue(FC_Utility.getDeviceManufacturer());
+            appDatabase.getStatusDao().insert(status);
+
+            status = new com.pratham.foundation.database.domain.Status();
+            status.setStatusKey("DeviceModel");
+            status.setValue(FC_Utility.getDeviceModel());
+            appDatabase.getStatusDao().insert(status);
+
+            status = new com.pratham.foundation.database.domain.Status();
+            status.setStatusKey("ScreenResolution");
+            status.setValue(FastSave.getInstance().getString(FC_Constants.SCR_RES, ""));
+            appDatabase.getStatusDao().insert(status);
+
+            status = new com.pratham.foundation.database.domain.Status();
+            status.setStatusKey("programId");
+            status.setValue("1");
+            appDatabase.getStatusDao().insert(status);
+
+            status = new com.pratham.foundation.database.domain.Status();
+            status.setStatusKey("group1");
+            status.setValue("NA");
+            appDatabase.getStatusDao().insert(status);
+
+            status = new com.pratham.foundation.database.domain.Status();
+            status.setStatusKey("group2");
+            status.setValue("NA");
+            appDatabase.getStatusDao().insert(status);
+
+            status = new com.pratham.foundation.database.domain.Status();
+            status.setStatusKey("group3");
+            status.setValue("NA");
+            appDatabase.getStatusDao().insert(status);
+
+            status = new com.pratham.foundation.database.domain.Status();
+            status.setStatusKey("group4");
+            status.setValue("NA");
+            appDatabase.getStatusDao().insert(status);
+
+            status = new com.pratham.foundation.database.domain.Status();
+            status.setStatusKey("group5");
+            status.setValue("NA");
+            appDatabase.getStatusDao().insert(status);
+
+            status = new com.pratham.foundation.database.domain.Status();
+            status.setStatusKey("village");
+            status.setValue("NA");
+            appDatabase.getStatusDao().insert(status);
+
+            status = new com.pratham.foundation.database.domain.Status();
+            status.setStatusKey("ActivatedDate");
+            status.setValue("NA");
+            appDatabase.getStatusDao().insert(status);
+
+            status = new com.pratham.foundation.database.domain.Status();
+            status.setStatusKey("AssessmentSession");
+            status.setValue("NA");
+            appDatabase.getStatusDao().insert(status);
+
+            status = new com.pratham.foundation.database.domain.Status();
+            status.setStatusKey("AndroidID");
+            status.setValue("NA");
+            appDatabase.getStatusDao().insert(status);
+
+            status = new com.pratham.foundation.database.domain.Status();
+            status.setStatusKey("DBVersion");
+            status.setValue(DB_VERSION);
+            appDatabase.getStatusDao().insert(status);
+
+            status = new com.pratham.foundation.database.domain.Status();
+            status.setStatusKey("SerialID");
+            status.setValue(FC_Utility.getDeviceSerialID());
+            appDatabase.getStatusDao().insert(status);
+
+            WifiManager wifiManager = (WifiManager) context.getApplicationContext().getSystemService(Context.WIFI_SERVICE);
+            WifiInfo wInfo = wifiManager.getConnectionInfo();
+            String macAddress = wInfo.getMacAddress();
+            status.setStatusKey("wifiMAC");
+            status.setValue(macAddress);
+            appDatabase.getStatusDao().insert(status);
+
+            setAppName(status);
+            setAppVersion(status);
+            BackupDatabase.backup(context);
+
+            addStartTime();
+            requestLocation();
+            FastSave.getInstance().saveBoolean(FC_Constants.INITIAL_ENTRIES, true);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void setAppName(Status status) {
+        String appname = "";
+        if (AppDatabase.getDatabaseInstance(context).getStatusDao().getKey("appName") == null) {
+            CharSequence c = "";
+            ActivityManager am = (ActivityManager) context.getSystemService(ACTIVITY_SERVICE);
+            List l = am.getRunningAppProcesses();
+            Iterator i = l.iterator();
+            PackageManager pm = context.getPackageManager();
+            ActivityManager.RunningAppProcessInfo info = (ActivityManager.RunningAppProcessInfo) (i.next());
             try {
-                com.pratham.foundation.database.domain.Status status;
-                status = new com.pratham.foundation.database.domain.Status();
-                status.setStatusKey("DeviceId");
-                status.setValue("" + Settings.Secure.getString(context.getContentResolver(), Settings.Secure.ANDROID_ID));
-                status.setDescription("" + Build.SERIAL);
-                appDatabase.getStatusDao().insert(status);
-
-                status = new com.pratham.foundation.database.domain.Status();
-                status.setStatusKey("CRLID");
-                status.setValue("default");
-                appDatabase.getStatusDao().insert(status);
-
-                status = new com.pratham.foundation.database.domain.Status();
-                status.setStatusKey("DeviceName");
-                status.setValue(FC_Utility.getDeviceName());
-                appDatabase.getStatusDao().insert(status);
-
-                status = new com.pratham.foundation.database.domain.Status();
-                status.setStatusKey("gpsFixDuration");
-                status.setValue("");
-                appDatabase.getStatusDao().insert(status);
-
-                status = new com.pratham.foundation.database.domain.Status();
-                status.setStatusKey("prathamCode");
-                status.setValue("");
-                appDatabase.getStatusDao().insert(status);
-
-                status = new com.pratham.foundation.database.domain.Status();
-                status.setStatusKey("apkType");
-                status.setValue("");
-                appDatabase.getStatusDao().insert(status);
-
-                status = new com.pratham.foundation.database.domain.Status();
-                status.setStatusKey("Latitude");
-                status.setValue("");
-                appDatabase.getStatusDao().insert(status);
-
-                status = new com.pratham.foundation.database.domain.Status();
-                status.setStatusKey("Longitude");
-                status.setValue("");
-                appDatabase.getStatusDao().insert(status);
-
-                status = new com.pratham.foundation.database.domain.Status();
-                status.setStatusKey("GPSDateTime");
-                status.setValue("");
-                appDatabase.getStatusDao().insert(status);
-
-                status = new com.pratham.foundation.database.domain.Status();
-                status.setStatusKey("CurrentSession");
-                status.setValue("NA");
-                appDatabase.getStatusDao().insert(status);
-
-                status = new com.pratham.foundation.database.domain.Status();
-                status.setStatusKey("SdCardPath");
-                status.setValue("NA");
-                appDatabase.getStatusDao().insert(status);
-
-                status = new com.pratham.foundation.database.domain.Status();
-                status.setStatusKey("AppLang");
-                status.setValue("NA");
-                appDatabase.getStatusDao().insert(status);
-
-                status = new com.pratham.foundation.database.domain.Status();
-                status.setStatusKey("AppStartDateTime");
-                status.setValue("NA");
-                appDatabase.getStatusDao().insert(status);
-
-                //new Entries
-                status = new com.pratham.foundation.database.domain.Status();
-                status.setStatusKey("ActivatedForGroups");
-                status.setValue("NA");
-                appDatabase.getStatusDao().insert(status);
-
-                status = new com.pratham.foundation.database.domain.Status();
-                status.setStatusKey("AndroidVersion");
-                status.setValue(FC_Utility.getAndroidOSVersion());
-                appDatabase.getStatusDao().insert(status);
-
-                status = new com.pratham.foundation.database.domain.Status();
-                status.setStatusKey("InternalAvailableStorage");
-                status.setValue(FC_Utility.getInternalStorageStatus());
-                appDatabase.getStatusDao().insert(status);
-
-                status = new com.pratham.foundation.database.domain.Status();
-                status.setStatusKey("DeviceManufacturer");
-                status.setValue(FC_Utility.getDeviceManufacturer());
-                appDatabase.getStatusDao().insert(status);
-
-                status = new com.pratham.foundation.database.domain.Status();
-                status.setStatusKey("DeviceModel");
-                status.setValue(FC_Utility.getDeviceModel());
-                appDatabase.getStatusDao().insert(status);
-
-                status = new com.pratham.foundation.database.domain.Status();
-                status.setStatusKey("ScreenResolution");
-                status.setValue(FastSave.getInstance().getString(FC_Constants.SCR_RES, ""));
-                appDatabase.getStatusDao().insert(status);
-
-                status = new com.pratham.foundation.database.domain.Status();
-                status.setStatusKey("programId");
-                status.setValue("1");
-                appDatabase.getStatusDao().insert(status);
-
-                status = new com.pratham.foundation.database.domain.Status();
-                status.setStatusKey("group1");
-                status.setValue("NA");
-                appDatabase.getStatusDao().insert(status);
-
-                status = new com.pratham.foundation.database.domain.Status();
-                status.setStatusKey("group2");
-                status.setValue("NA");
-                appDatabase.getStatusDao().insert(status);
-
-                status = new com.pratham.foundation.database.domain.Status();
-                status.setStatusKey("group3");
-                status.setValue("NA");
-                appDatabase.getStatusDao().insert(status);
-
-                status = new com.pratham.foundation.database.domain.Status();
-                status.setStatusKey("group4");
-                status.setValue("NA");
-                appDatabase.getStatusDao().insert(status);
-
-                status = new com.pratham.foundation.database.domain.Status();
-                status.setStatusKey("group5");
-                status.setValue("NA");
-                appDatabase.getStatusDao().insert(status);
-
-                status = new com.pratham.foundation.database.domain.Status();
-                status.setStatusKey("village");
-                status.setValue("NA");
-                appDatabase.getStatusDao().insert(status);
-
-                status = new com.pratham.foundation.database.domain.Status();
-                status.setStatusKey("ActivatedDate");
-                status.setValue("NA");
-                appDatabase.getStatusDao().insert(status);
-
-                status = new com.pratham.foundation.database.domain.Status();
-                status.setStatusKey("AssessmentSession");
-                status.setValue("NA");
-                appDatabase.getStatusDao().insert(status);
-
-                status = new com.pratham.foundation.database.domain.Status();
-                status.setStatusKey("AndroidID");
-                status.setValue("NA");
-                appDatabase.getStatusDao().insert(status);
-
-                status = new com.pratham.foundation.database.domain.Status();
-                status.setStatusKey("DBVersion");
-                status.setValue(DB_VERSION);
-                appDatabase.getStatusDao().insert(status);
-
-                status = new com.pratham.foundation.database.domain.Status();
-                status.setStatusKey("SerialID");
-                status.setValue(FC_Utility.getDeviceSerialID());
-                appDatabase.getStatusDao().insert(status);
-
-                WifiManager wifiManager = (WifiManager) context.getApplicationContext().getSystemService(Context.WIFI_SERVICE);
-                WifiInfo wInfo = wifiManager.getConnectionInfo();
-                String macAddress = wInfo.getMacAddress();
-                status.setStatusKey("wifiMAC");
-                status.setValue(macAddress);
-                appDatabase.getStatusDao().insert(status);
-
-                setAppName(status);
-                setAppVersion(status);
-                BackupDatabase.backup(context);
-
-                addStartTime();
-                requestLocation();
-                FastSave.getInstance().saveBoolean(FC_Constants.INITIAL_ENTRIES, true);
+                c = pm.getApplicationLabel(pm.getApplicationInfo(info.processName, PackageManager.GET_META_DATA));
+                appname = c.toString();
+                Log.w("LABEL", c.toString());
             } catch (Exception e) {
-                e.printStackTrace();
             }
-        }
 
-        public void setAppName(Status status) {
-            String appname = "";
-            if (AppDatabase.getDatabaseInstance(context).getStatusDao().getKey("appName") == null) {
-                CharSequence c = "";
-                ActivityManager am = (ActivityManager) context.getSystemService(ACTIVITY_SERVICE);
-                List l = am.getRunningAppProcesses();
-                Iterator i = l.iterator();
-                PackageManager pm = context.getPackageManager();
-                ActivityManager.RunningAppProcessInfo info = (ActivityManager.RunningAppProcessInfo) (i.next());
-                try {
-                    c = pm.getApplicationLabel(pm.getApplicationInfo(info.processName, PackageManager.GET_META_DATA));
-                    appname = c.toString();
-                    Log.w("LABEL", c.toString());
-                } catch (Exception e) {
-                }
+            status = new Status();
+            status.setStatusKey("appName");
+            status.setValue(appname);
+            AppDatabase.getDatabaseInstance(context).getStatusDao().insert(status);
 
-                status = new Status();
-                status.setStatusKey("appName");
-                status.setValue(appname);
-                AppDatabase.getDatabaseInstance(context).getStatusDao().insert(status);
-
-            } else {
-                CharSequence c = "";
-                ActivityManager am = (ActivityManager) context.getSystemService(ACTIVITY_SERVICE);
-                List l = am.getRunningAppProcesses();
-                Iterator i = l.iterator();
-                PackageManager pm = context.getPackageManager();
-                ActivityManager.RunningAppProcessInfo info = (ActivityManager.RunningAppProcessInfo) (i.next());
-                try {
-                    c = pm.getApplicationLabel(pm.getApplicationInfo(info.processName, PackageManager.GET_META_DATA));
-                    appname = c.toString();
-                    Log.w("LABEL", c.toString());
-                } catch (Exception e) {
-                }
-                status = new Status();
-                status.setStatusKey("appName");
-                status.setValue(appname);
-                AppDatabase.getDatabaseInstance(context).getStatusDao().insert(status);
-            }
-        }
-
-        public void requestLocation() {
-            new LocationService(context).checkLocation();
-        }
-
-        public void setAppVersion(Status status) {
-            if (AppDatabase.getDatabaseInstance(context).getStatusDao().getKey("apkVersion") == null) {
-                status = new Status();
-
-                status.setStatusKey("apkVersion");
-                PackageInfo pInfo = null;
-                String verCode = "";
-                try {
-                    pInfo = context.getPackageManager().getPackageInfo(context.getPackageName(), 0);
-                    verCode = pInfo.versionName;
-                } catch (PackageManager.NameNotFoundException e) {
-                    e.printStackTrace();
-                }
-                status.setValue(verCode);
-                AppDatabase.getDatabaseInstance(context).getStatusDao().insert(status);
-
-            } else {
-                status.setStatusKey("apkVersion");
-
-                PackageInfo pInfo = null;
-                String verCode = "";
-                try {
-                    pInfo = context.getPackageManager().getPackageInfo(context.getPackageName(), 0);
-                    verCode = pInfo.versionName;
-                } catch (PackageManager.NameNotFoundException e) {
-                    e.printStackTrace();
-                }
-                status.setValue(verCode);
-                AppDatabase.getDatabaseInstance(context).getStatusDao().insert(status);
-
-            }
-        }
-
-        @Background
-        public void addStartTime() {
+        } else {
+            CharSequence c = "";
+            ActivityManager am = (ActivityManager) context.getSystemService(ACTIVITY_SERVICE);
+            List l = am.getRunningAppProcesses();
+            Iterator i = l.iterator();
+            PackageManager pm = context.getPackageManager();
+            ActivityManager.RunningAppProcessInfo info = (ActivityManager.RunningAppProcessInfo) (i.next());
             try {
-                String appStartTime = FC_Utility.getCurrentDateTime();
-                StatusDao statusDao = AppDatabase.getDatabaseInstance(context).getStatusDao();
-                statusDao.updateValue("AppStartDateTime", appStartTime);
-                BackupDatabase.backup(context);
+                c = pm.getApplicationLabel(pm.getApplicationInfo(info.processName, PackageManager.GET_META_DATA));
+                appname = c.toString();
+                Log.w("LABEL", c.toString());
             } catch (Exception e) {
+            }
+            status = new Status();
+            status.setStatusKey("appName");
+            status.setValue(appname);
+            AppDatabase.getDatabaseInstance(context).getStatusDao().insert(status);
+        }
+    }
+
+    public void requestLocation() {
+        new LocationService(context).checkLocation();
+    }
+
+    public void setAppVersion(Status status) {
+        if (AppDatabase.getDatabaseInstance(context).getStatusDao().getKey("apkVersion") == null) {
+            status = new Status();
+
+            status.setStatusKey("apkVersion");
+            PackageInfo pInfo = null;
+            String verCode = "";
+            try {
+                pInfo = context.getPackageManager().getPackageInfo(context.getPackageName(), 0);
+                verCode = pInfo.versionName;
+            } catch (PackageManager.NameNotFoundException e) {
                 e.printStackTrace();
             }
+            status.setValue(verCode);
+            AppDatabase.getDatabaseInstance(context).getStatusDao().insert(status);
+
+        } else {
+            status.setStatusKey("apkVersion");
+
+            PackageInfo pInfo = null;
+            String verCode = "";
+            try {
+                pInfo = context.getPackageManager().getPackageInfo(context.getPackageName(), 0);
+                verCode = pInfo.versionName;
+            } catch (PackageManager.NameNotFoundException e) {
+                e.printStackTrace();
+            }
+            status.setValue(verCode);
+            AppDatabase.getDatabaseInstance(context).getStatusDao().insert(status);
+
         }
+    }
+
+    @Background
+    public void addStartTime() {
+        try {
+            String appStartTime = FC_Utility.getCurrentDateTime();
+            StatusDao statusDao = AppDatabase.getDatabaseInstance(context).getStatusDao();
+            statusDao.updateValue("AppStartDateTime", appStartTime);
+            BackupDatabase.backup(context);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 }
 

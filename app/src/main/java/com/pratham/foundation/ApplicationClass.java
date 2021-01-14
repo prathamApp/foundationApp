@@ -16,7 +16,6 @@ import com.isupatches.wisefy.WiseFy;
 import com.pratham.foundation.modalclasses.Modal_FileDownloading;
 import com.pratham.foundation.services.TTSService;
 import com.pratham.foundation.services.shared_preferences.FastSave;
-import com.pratham.foundation.utility.FC_Constants;
 import com.pratham.foundation.utility.FC_Utility;
 
 import java.io.File;
@@ -77,16 +76,18 @@ public class ApplicationClass extends Application {
 
         wiseF = new WiseFy.Brains(getApplicationContext()).logging(true).getSmarts();
         okHttpClient = new OkHttpClient().newBuilder()
-                .connectTimeout(10, TimeUnit.SECONDS)
-                .readTimeout(10, TimeUnit.SECONDS)
-                .writeTimeout(10, TimeUnit.SECONDS)
+                .connectTimeout(60, TimeUnit.SECONDS)
+                .readTimeout(60, TimeUnit.SECONDS)
+                .writeTimeout(60, TimeUnit.SECONDS)
                 .build();
         AndroidNetworking.initialize(getApplicationContext(), okHttpClient);
     }
 
+
+
     public static boolean getAppMode(){
-//        isTablet = false;
-        isTablet = FastSave.getInstance().getBoolean(FC_Constants.PRATHAM_LOGIN, false);
+        isTablet = false;
+//        isTablet = FastSave.getInstance().getBoolean(FC_Constants.PRATHAM_LOGIN, false);
         return isTablet;
     }
 

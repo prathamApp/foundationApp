@@ -78,6 +78,9 @@ public class EnrollmentAvatarAdapter extends RecyclerView.Adapter<EnrollmentAvat
             case "g3.png":
                 holder.avatar.setImageResource(R.drawable.g3);
                 break;
+            default:
+                holder.avatar.setImageResource(R.drawable.ic_grp_btn);
+                break;
         }
         if (studentAvatar.getClickFlag())
             holder.avatar.setBackground(context.getResources().getDrawable(R.drawable.card_color_bg1));

@@ -1,6 +1,7 @@
 package com.pratham.foundation.view_holders;
 
 import android.annotation.SuppressLint;
+import android.net.Uri;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
@@ -10,6 +11,12 @@ import android.widget.TextView;
 import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.facebook.drawee.backends.pipeline.Fresco;
+import com.facebook.drawee.interfaces.DraweeController;
+import com.facebook.drawee.view.SimpleDraweeView;
+import com.facebook.imagepipeline.common.ResizeOptions;
+import com.facebook.imagepipeline.request.ImageRequest;
+import com.facebook.imagepipeline.request.ImageRequestBuilder;
 import com.pratham.foundation.ApplicationClass;
 import com.pratham.foundation.R;
 import com.pratham.foundation.database.domain.ContentTable;
@@ -31,12 +38,14 @@ public class SelectLangViewHolder extends RecyclerView.ViewHolder {
 
     private SelectLangContract.LangItemClicked contentClicked;
     private FragmentItemClicked itemClicked;
+    private SimpleDraweeView content_image;
 
     public SelectLangViewHolder(View itemView, final SelectLangContract.LangItemClicked contentClicked) {
         super(itemView);
 
         title = itemView.findViewById(R.id.lang_item_tv);
         rl_lang_select = itemView.findViewById(R.id.rl_lang_select);
+        content_image = itemView.findViewById(R.id.content_image);
         this.contentClicked = contentClicked;
     }
 
@@ -44,16 +53,25 @@ public class SelectLangViewHolder extends RecyclerView.ViewHolder {
     public void setItem(ContentTable contentList, int position) {
 
         String currentLang = FastSave.getInstance().getString(FC_Constants.APP_LANGUAGE, "");
-
-        if(currentLang.equalsIgnoreCase(contentList.getNodeTitle())) {
-            Objects.requireNonNull(rl_lang_select).setBackgroundResource(R.drawable.lang_selected_bg);
-            title.setTextColor(getInstance().getResources().getColor(R.color.white));
-        }
-        else {
+        if (currentLang.equalsIgnoreCase(contentList.getNodeTitle())) {
+            Objects.requireNonNull(rl_lang_select).setBackgroundResource(R.drawable.card_color_bg1);
+            Objects.requireNonNull(title).setTextColor(getInstance().getResources().getColor(R.color.white));
+        } else {
             Objects.requireNonNull(rl_lang_select).setBackgroundResource(R.drawable.card_color_bg6);
-            title.setTextColor(getInstance().getResources().getColor(R.color.dark_blue));
+            Objects.requireNonNull(title).setTextColor(getInstance().getResources().getColor(R.color.dark_blue));
         }
         Objects.requireNonNull(title).setText(contentList.getNodeTitle());
+        title.setSelected(true);
+        ImageRequest imageRequest = ImageRequestBuilder
+                .newBuilderWithSource(Uri.parse(contentList.getNodeServerImage()))
+                .setResizeOptions(new ResizeOptions(250, 170))
+                .setLocalThumbnailPreviewsEnabled(true)
+                .build();
+        DraweeController controller = Fresco.newDraweeControllerBuilder()
+                .setImageRequest(imageRequest)
+                .setOldController(Objects.requireNonNull(content_image).getController())
+                .build();
+        content_image.setController(controller);
 
         rl_lang_select.setOnClickListener(new View.OnClickListener() {
             @Override

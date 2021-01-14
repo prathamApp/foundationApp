@@ -16,10 +16,8 @@
 
 package com.pratham.foundation.customView.submarine_view
 
-import android.content.res.ColorStateList
 import android.view.View
 import android.widget.RelativeLayout
-import androidx.core.widget.ImageViewCompat
 import kotlinx.android.synthetic.main.item_submarine.view.*
 
 /** SubmarineViewHolder is an implementation of [BaseViewHolder]  that has [SubmarineItemWrapper] as a data. */
@@ -51,13 +49,18 @@ class SubmarineViewHolder(
         this.layoutParams = params
       }
 
-      item_submarine_icon.setImageDrawable(submarineItem.icon)
+//      item_submarine_icon.setImageDrawable(submarineItem.icon)
+        item_submarine_icon.text = ""+submarineItem.icon
 
       submarineItem.iconForm?.let {
+        item_submarine_icon.layoutParams.width = context.dp2Px(50)
+        item_submarine_icon.layoutParams.height = context.dp2Px(50)
+/*
         item_submarine_icon.layoutParams.width = context.dp2Px(it.iconSize)
         item_submarine_icon.layoutParams.height = context.dp2Px(it.iconSize)
         item_submarine_icon.scaleType = it.iconScaleType
         ImageViewCompat.setImageTintList(item_submarine_icon, ColorStateList.valueOf(it.iconColor))
+*/
       }
     }
   }

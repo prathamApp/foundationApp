@@ -1,5 +1,8 @@
 package com.pratham.foundation.database.domain;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.room.Entity;
@@ -12,7 +15,7 @@ import java.io.Serializable;
 import java.util.List;
 
 @Entity
-public class ContentTable implements Serializable {
+public class ContentTable implements Serializable, Parcelable {
 
     @NonNull
     @PrimaryKey
@@ -52,6 +55,7 @@ public class ContentTable implements Serializable {
     public String subject;
     @SerializedName("seq_no")
     public int seq_no;
+    public String studentId;
     @SerializedName("nodeKeyword")
     public String nodeKeywords;
     public String isDownloaded;
@@ -254,6 +258,14 @@ public class ContentTable implements Serializable {
         this.nodeUpdate = nodeUpdate;
     }
 
+    public String getStudentId() {
+        return studentId;
+    }
+
+    public void setStudentId(String studentId) {
+        this.studentId = studentId;
+    }
+
     @Nullable
     public List<ContentTable> getNodelist() {
         return contentlist;
@@ -261,5 +273,15 @@ public class ContentTable implements Serializable {
 
     public void setNodelist(@Nullable List<ContentTable> contentlist) {
         this.contentlist = contentlist;
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+
     }
 }

@@ -91,7 +91,8 @@ public class ContentFolderViewHolder extends RecyclerView.ViewHolder {
     @SuppressLint("CheckResult")
     public void setFolderItem(ContentTable contentList, int position) {
 //        add card and its click listners
-        Objects.requireNonNull(card_main).setBackground(ApplicationClass.getInstance().getResources().getDrawable(getRandomCardColor()));
+        Objects.requireNonNull(card_main).setBackground(ApplicationClass.getInstance()
+                .getResources().getDrawable(getRandomCardColor()));
         Objects.requireNonNull(tvTitle).setText(contentList.getNodeTitle());
         Objects.requireNonNull(rl_loader).setVisibility(View.GONE);
 

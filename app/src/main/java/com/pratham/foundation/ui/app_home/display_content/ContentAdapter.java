@@ -12,9 +12,11 @@ import com.pratham.foundation.R;
 import com.pratham.foundation.database.domain.ContentTable;
 import com.pratham.foundation.view_holders.ContentFileViewHolder;
 import com.pratham.foundation.view_holders.ContentFolderViewHolder;
+import com.pratham.foundation.view_holders.ContentTestViewHolder;
 
 import java.util.List;
 
+import static com.pratham.foundation.utility.FC_Constants.TYPE_ASSESSMENT;
 import static com.pratham.foundation.utility.FC_Constants.TYPE_ITEM;
 
 
@@ -44,6 +46,10 @@ public class ContentAdapter extends RecyclerView.Adapter {
                 LayoutInflater folder = LayoutInflater.from(viewGroup.getContext());
                 view = folder.inflate(R.layout.content_adaprer_item_folder_card, viewGroup, false);
                 return new ContentFolderViewHolder(view, contentClicked);
+            case 3:
+                LayoutInflater assessLI = LayoutInflater.from(viewGroup.getContext());
+                view = assessLI.inflate(R.layout.content_adaprer_item_folder_card, viewGroup, false);
+                return new ContentTestViewHolder(view, contentClicked);
             default:
                 return null;
         }
@@ -55,6 +61,8 @@ public class ContentAdapter extends RecyclerView.Adapter {
             switch (contentViewList.get(position).getNodeType()) {
                 case TYPE_ITEM:
                     return 1;
+                case TYPE_ASSESSMENT:
+                    return 3;
                 default:
                     return 2;
             }
@@ -78,6 +86,12 @@ public class ContentAdapter extends RecyclerView.Adapter {
                 ContentFolderViewHolder contentFolderViewHolder = (ContentFolderViewHolder) viewHolder;
 //                set view holder for folder type item
                 contentFolderViewHolder.setFolderItem(contentList,position);
+                break;
+            case 3:
+                //Test
+//                set view holder for folder type item
+                ContentTestViewHolder TestHolder = (ContentTestViewHolder) viewHolder;
+                TestHolder.setTestItem(contentList,position);
                 break;
         }
     }

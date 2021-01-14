@@ -30,11 +30,16 @@ import com.pratham.foundation.async.DownloadData;
 import com.pratham.foundation.customView.progress_layout.ProgressLayout;
 import com.pratham.foundation.database.AppDatabase;
 import com.pratham.foundation.database.BackupDatabase;
+import com.pratham.foundation.database.dao.StatusDao;
+import com.pratham.foundation.database.domain.Attendance;
+import com.pratham.foundation.database.domain.Session;
 import com.pratham.foundation.database.domain.Student;
+import com.pratham.foundation.database.domain.StudentAndGroup_BottomFragmentModal;
 import com.pratham.foundation.interfaces.SplashInterface;
 import com.pratham.foundation.modalclasses.EventMessage;
 import com.pratham.foundation.services.shared_preferences.FastSave;
 import com.pratham.foundation.ui.admin_panel.andmin_login_new.AdminConsoleActivityNew_;
+import com.pratham.foundation.ui.admin_panel.andmin_login_new.enrollmentid.AddEnrollmentId_;
 import com.pratham.foundation.ui.bottom_fragment.add_student.AddStudentFragment;
 import com.pratham.foundation.ui.selectSubject.SelectSubject_;
 import com.pratham.foundation.ui.splash_activity.SplashActivity;
@@ -76,11 +81,15 @@ public class BottomStudentsFragment extends BottomSheetDialogFragment
     @ViewById(R.id.btn_download_all_data)
     Button btn_download_all_data;
     @ViewById(R.id.pratham_login)
-    Button pratham_login;
+    ImageView pratham_login;
+    @ViewById(R.id.go_next)
+    ImageView go_next;
 
     private ArrayList avatars = new ArrayList();
-    private List<Student> studentList;
+    private List<StudentAndGroup_BottomFragmentModal> fragmentModalsList;
     StudentsAdapter adapter;
+    String groupID, groupName;
+    public static boolean groupClicked = false;
     Gson gson;
     Context context;
 
@@ -90,15 +99,22 @@ public class BottomStudentsFragment extends BottomSheetDialogFragment
         getActivity().getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_HIDE_NAVIGATION);
         presenter.setView(BottomStudentsFragment.this);
         btn_download_all_data.setVisibility(View.GONE);
-        studentList = new ArrayList<>();
+        fragmentModalsList = new ArrayList<>();
         gson = new Gson();
         hideSystemUI();
+        groupClicked = false;
         context = getActivity();
         if (ApplicationClass.wiseF.isDeviceConnectedToWifiNetwork())
             if (ApplicationClass.wiseF.isDeviceConnectedToSSID(FC_Constants.PRATHAM_KOLIBRI_HOTSPOT)) {
                 btn_download_all_data.setVisibility(View.VISIBLE);
             }
         presenter.showStudents();
+    }
+
+    @Click(R.id.btn_Enrollment)
+    public void addEnrollmentId() {
+        Intent intent = new Intent(getActivity(), AddEnrollmentId_.class);
+        startActivityForResult(intent, 1);
     }
 
     private void hideSystemUI() {
@@ -116,15 +132,22 @@ public class BottomStudentsFragment extends BottomSheetDialogFragment
 
     @UiThread
     @Override
-    public void setStudentList(List<Student> studentList) {
-        this.studentList = studentList;
+    public void setStudentList(List<StudentAndGroup_BottomFragmentModal> fragmentModalsList) {
+        this.fragmentModalsList.addAll(fragmentModalsList);
     }
+
+    @UiThread
+    @Override
+    public void clearList() {
+        this.fragmentModalsList.clear();
+    }
+
 
     @UiThread
     @Override
     public void notifyStudentAdapter() {
         if (adapter == null) {
-            adapter = new StudentsAdapter(getActivity(), this, studentList, avatars);
+            adapter = new StudentsAdapter(getActivity(), this, fragmentModalsList);
             RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getActivity(),
                     LinearLayoutManager.HORIZONTAL, false);
             rl_students.setLayoutManager(mLayoutManager);
@@ -227,6 +250,89 @@ public class BottomStudentsFragment extends BottomSheetDialogFragment
         }
     }
 
+    @Click(R.id.go_next)
+    public void setNext(View v) {
+        try {
+            ButtonClickSound.start();
+        } catch (IllegalStateException e) {
+            e.printStackTrace();
+        }
+        ArrayList<Student> checkedStds = new ArrayList<>();
+        Student checkedStd = new Student();
+        for (int i = 0; i < fragmentModalsList.size(); i++) {
+            if (fragmentModalsList.get(i).isChecked()) {
+                checkedStd.setStudentID(fragmentModalsList.get(i).getStudentID());
+                checkedStd.setAvatarName(fragmentModalsList.get(i).getAvatarName());
+                checkedStd.setFullName(fragmentModalsList.get(i).getFullName());
+                checkedStds.add(checkedStd);
+            }
+        }
+        if (checkedStds.size() > 0) {
+            //todo remove comment
+            //   ApplicationClass.bubble_mp.start();
+            endSession();
+            startSession(checkedStds);
+            //todo remove#
+            //startActivity(new Intent(getActivity(), HomeActivity_.class));
+//            startActivity(new Intent(getActivity(), SelectSubject_.class), ActivityOptions.makeSceneTransitionAnimation(getActivity()).toBundle());
+            gotoNext();
+        } else {
+            Toast.makeText(getContext(), "Please Select Students !", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    @SuppressLint("StaticFieldLeak")
+    private void startSession(final ArrayList<Student> stud) {
+        String newCurrentSession;
+
+        try {
+            StatusDao statusDao = AppDatabase.getDatabaseInstance(getContext()).getStatusDao();
+            newCurrentSession = "" + UUID.randomUUID().toString();
+            String currentSession = newCurrentSession;
+            FastSave.getInstance().saveString(FC_Constants.CURRENT_SESSION, currentSession);
+            statusDao.updateValue("CurrentSession", "" + currentSession);
+
+            Session startSesion = new Session();
+            startSesion.setSessionID("" + currentSession);
+            String timerTime = FC_Utility.getCurrentDateTime();
+            Log.d("doInBackground", "--------------------------------------------doInBackground : " + timerTime);
+            startSesion.setFromDate(timerTime);
+            startSesion.setToDate("NA");
+            startSesion.setSentFlag(0);
+            AppDatabase.getDatabaseInstance(getContext()).getSessionDao().insert(startSesion);
+            Log.d("ChildAttendence", "Student Count: " + stud.size());
+
+            Attendance attendance = new Attendance();
+            for (int i = 0; i < stud.size(); i++) {
+                FastSave.getInstance().saveString(FC_Constants.CURRENT_API_STUDENT_ID, "" + stud.get(i).getStudentID());
+                attendance.setSessionID("" + FastSave.getInstance().getString(FC_Constants.CURRENT_SESSION, ""));
+                attendance.setStudentID("" + stud.get(i).getStudentID());
+                attendance.setDate(FC_Utility.getCurrentDateTime());
+                attendance.setGroupID(groupID);
+                attendance.setSentFlag(0);
+                AppDatabase.getDatabaseInstance(getContext()).getAttendanceDao().insert(attendance);
+                Log.d("ChildAttendence", "currentSession : " + FastSave.getInstance().getString(FC_Constants.CURRENT_SESSION, "") + "  StudentId: " + stud.get(i).getStudentID());
+            }
+
+            String currentStudentID = "";
+            FastSave.getInstance().saveString(FC_Constants.LOGIN_MODE, FC_Constants.GROUP_MODE);
+            currentStudentID = groupID;
+            /*
+                currentStudentID = stud.get(0).getStudentID();
+                String currentStudName = stud.get(0).getFullName();
+                FastSave.getInstance().saveString(FC_Constants.CURRENT_STUDENT_NAME, currentStudName);
+*/
+            FastSave.getInstance().saveString(FC_Constants.CURRENT_SESSION, "" + currentSession);
+            FastSave.getInstance().saveString(FC_Constants.CURRENT_STUDENT_NAME, "" + groupName);
+            FastSave.getInstance().saveString(FC_Constants.CURRENT_API_STUDENT_ID, "" + groupID);
+            FastSave.getInstance().saveString(FC_Constants.CURRENT_STUDENT_ID, currentStudentID);
+            BackupDatabase.backup(getContext());
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
     @Click(R.id.add_student)
     public void addStudent() {
         try {
@@ -320,39 +426,72 @@ public class BottomStudentsFragment extends BottomSheetDialogFragment
     public void endSession() {
         try {
             String curSession = AppDatabase.getDatabaseInstance(context).getStatusDao().getValue("CurrentSession");
-            String toDateTemp = AppDatabase.getDatabaseInstance(context).getSessionDao().getToDate(curSession);
-            if (toDateTemp.equalsIgnoreCase("na")) {
-                AppDatabase.getDatabaseInstance(context).getSessionDao().UpdateToDate(curSession, FC_Utility.getCurrentDateTime());
-            }
+            AppDatabase.getDatabaseInstance(context).getSessionDao().UpdateToDate(curSession, FC_Utility.getCurrentDateTime());
             BackupDatabase.backup(getActivity());
         } catch (Exception e) {
-            String curSession = AppDatabase.getDatabaseInstance(context).getStatusDao().getValue("CurrentSession");
-            AppDatabase.getDatabaseInstance(context).getSessionDao().UpdateToDate(curSession, FC_Utility.getCurrentDateTime());
             e.printStackTrace();
         }
     }
 
     @UiThread
     @Override
-    public void onStudentClick(String studentName, String studentId) {
+    public void onStudentClick(StudentAndGroup_BottomFragmentModal bottomFragmentModal, int position) {
+        if (groupClicked) {
+            if (bottomFragmentModal.isChecked())
+                fragmentModalsList.get(position).setChecked(false);
+            else
+                fragmentModalsList.get(position).setChecked(true);
+            adapter.notifyItemChanged(position);
+        } else {
+            try {
+                ButtonClickSound.start();
+            } catch (IllegalStateException e) {
+                e.printStackTrace();
+            }
+            if (!FastSave.getInstance().getBoolean(SPLASH_OPEN, false))
+                endSession();
+//            EventMessage eventMessage = new EventMessage();
+//            eventMessage.setMessage(FC_Constants.BOTTOM_FRAGMENT_END_SESSION);
+//            EventBus.getDefault().post(eventMessage);
+            showProgressDialog();
+            String currentSession = "" + UUID.randomUUID().toString();
+            FastSave.getInstance().saveString(FC_Constants.LOGIN_MODE, INDIVIDUAL_MODE);
+            FastSave.getInstance().saveString(FC_Constants.CURRENT_SESSION, "" + currentSession);
+            FastSave.getInstance().saveString(FC_Constants.CURRENT_STUDENT_ID, "" + bottomFragmentModal.getStudentID());
+            FastSave.getInstance().saveString(FC_Constants.CURRENT_STUDENT_NAME, "" + bottomFragmentModal.getFullName());
+            FastSave.getInstance().saveString(FC_Constants.CURRENT_API_STUDENT_ID, "" + bottomFragmentModal.getStudentID());
+            presenter.updateStudentData();
+            FastSave.getInstance().saveBoolean(SPLASH_OPEN, false);
+        }
+    }
+
+    @UiThread
+    @Override
+    public void onGroupClick(String studentName, String studentId) {
         try {
             ButtonClickSound.start();
         } catch (IllegalStateException e) {
             e.printStackTrace();
         }
-        if (!SPLASH_OPEN)
+        groupClicked = true;
+        go_next.setVisibility(View.VISIBLE);
+        groupID = studentId;
+        groupName = studentName;
+        presenter.getStudentsFromGroup(studentId);
+/*        if (!SPLASH_OPEN)
             endSession();
 //        EventMessage eventMessage = new EventMessage();
 //        eventMessage.setMessage(FC_Constants.BOTTOM_FRAGMENT_END_SESSION);
 //        EventBus.getDefault().post(eventMessage);
         showProgressDialog();
         String currentSession = "" + UUID.randomUUID().toString();
-        FastSave.getInstance().saveString(FC_Constants.LOGIN_MODE, INDIVIDUAL_MODE);
+        FastSave.getInstance().saveString(FC_Constants.LOGIN_MODE, GROUP_MODE);
         FastSave.getInstance().saveString(FC_Constants.CURRENT_SESSION, "" + currentSession);
         FastSave.getInstance().saveString(FC_Constants.CURRENT_STUDENT_ID, "" + studentId);
         FastSave.getInstance().saveString(FC_Constants.CURRENT_STUDENT_NAME, "" + studentName);
+        FastSave.getInstance().saveString(FC_Constants.CURRENT_API_STUDENT_ID, "" + studentId);
         presenter.updateStudentData();
-        SPLASH_OPEN = false;
+        SPLASH_OPEN = false;*/
     }
 
     @UiThread

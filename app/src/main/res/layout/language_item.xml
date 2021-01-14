@@ -1,21 +1,42 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/rl_lang_select"
     android:layout_width="match_parent"
-    android:layout_height="110dp"
+    android:layout_height="wrap_content"
     android:layout_margin="@dimen/_5sdp"
     android:elevation="@dimen/_3sdp"
-    android:background="@drawable/lang_select_bg">
+    android:background="@drawable/card_color_bg6">
 
-    <com.pratham.foundation.customView.fontsview.SansTextView
+    <com.facebook.drawee.view.SimpleDraweeView
+        android:id="@+id/content_image"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/_90sdp"
+        android:layout_marginStart="@dimen/_5sdp"
+        android:layout_marginTop="@dimen/_5sdp"
+        android:layout_marginEnd="@dimen/_5sdp"
+        android:background="@android:color/transparent"
+        app:actualImageScaleType="fitCenter"
+        app:placeholderImage="@drawable/khelbadi_thumb"
+        app:placeholderImageScaleType="fitCenter"
+        app:roundedCornerRadius="@dimen/_10sdp"
+        app:roundingBorderColor="@color/white"
+        app:roundingBorderWidth="@dimen/_2sdp" />
+
+    <com.pratham.foundation.customView.fontsview.SansTextViewBold
         android:id="@+id/lang_item_tv"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
-        android:textAlignment="center"
+        android:layout_below="@+id/content_image"
+        android:ellipsize="marquee"
+        android:fadingEdge="horizontal"
+        android:marqueeRepeatLimit="marquee_forever"
+        android:scrollHorizontally="true"
+        android:singleLine="true"
         android:text="@string/Unsupervised"
         android:textAllCaps="true"
-        android:textColor="@color/white"
-        android:textSize="@dimen/_20sdp"
-        android:layout_margin="@dimen/_10sdp"/>
+        android:textColor="@color/colorText"
+        android:textSize="@dimen/_13sdp"
+        android:layout_margin="@dimen/_5sdp"/>
 </RelativeLayout>

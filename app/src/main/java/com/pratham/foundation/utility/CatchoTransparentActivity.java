@@ -31,6 +31,7 @@ public class CatchoTransparentActivity extends AppCompatActivity {
         log.setMethodName("NO_METHOD");
         log.setGroupId(FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, "no_group"));
         log.setDeviceId("" + FC_Utility.getDeviceID());
+        endSession();
         AppDatabase.getDatabaseInstance(CatchoTransparentActivity.this).getLogsDao().insertLog(log);
         BackupDatabase.backup(CatchoTransparentActivity.this);
         findViewById(R.id.catcho_button).setOnClickListener(v -> {
@@ -38,4 +39,20 @@ public class CatchoTransparentActivity extends AppCompatActivity {
             ProcessPhoenix.triggerRebirth(CatchoTransparentActivity.this);
         });
     }
+
+    public void endSession() {
+        try {
+            String curSession = AppDatabase.getDatabaseInstance(CatchoTransparentActivity.this).getStatusDao().getValue("CurrentSession");
+            String toDateTemp = AppDatabase.getDatabaseInstance(CatchoTransparentActivity.this).getSessionDao().getToDate(curSession);
+            if (toDateTemp.equalsIgnoreCase("na")) {
+                AppDatabase.getDatabaseInstance(CatchoTransparentActivity.this).getSessionDao().UpdateToDate(curSession, FC_Utility.getCurrentDateTime());
+            }
+            BackupDatabase.backup(CatchoTransparentActivity.this);
+        } catch (Exception e) {
+            String curSession = AppDatabase.getDatabaseInstance(CatchoTransparentActivity.this).getStatusDao().getValue("CurrentSession");
+            AppDatabase.getDatabaseInstance(CatchoTransparentActivity.this).getSessionDao().UpdateToDate(curSession, FC_Utility.getCurrentDateTime());
+            e.printStackTrace();
+        }
+    }
+
 }

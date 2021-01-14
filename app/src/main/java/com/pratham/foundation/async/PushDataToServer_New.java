@@ -30,6 +30,7 @@ import com.pratham.foundation.database.domain.Assessment;
 import com.pratham.foundation.database.domain.Attendance;
 import com.pratham.foundation.database.domain.ContentProgress;
 import com.pratham.foundation.database.domain.Crl;
+import com.pratham.foundation.database.domain.FilePushResponse;
 import com.pratham.foundation.database.domain.Groups;
 import com.pratham.foundation.database.domain.KeyWords;
 import com.pratham.foundation.database.domain.Modal_Log;
@@ -39,6 +40,7 @@ import com.pratham.foundation.database.domain.Session;
 import com.pratham.foundation.database.domain.Student;
 import com.pratham.foundation.database.domain.SupervisorData;
 import com.pratham.foundation.modalclasses.Image_Upload;
+import com.pratham.foundation.modalclasses.Model_CourseEnrollment;
 import com.pratham.foundation.services.background_service.BackgroundPushService;
 import com.pratham.foundation.services.shared_preferences.FastSave;
 import com.pratham.foundation.utility.FC_Constants;
@@ -50,11 +52,21 @@ import org.androidannotations.annotations.UiThread;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.Executors;
+import java.util.zip.GZIPOutputStream;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipOutputStream;
 
 import static com.pratham.foundation.utility.FC_Constants.CERTIFICATE_LBL;
 import static com.pratham.foundation.utility.FC_Constants.IS_SERVICE_STOPED;
@@ -77,6 +89,7 @@ public class PushDataToServer_New {
     private JSONArray assessmentData;
     private JSONArray contentProgress;
     private JSONArray keyWordsData;
+    private JSONArray courseEnrollmentData;
     private JSONArray logsData;
     private boolean pushSuccessfull = false, pushImageSuccessfull = false;
     private int totalImages, imageUploadCnt, scoreLen = 0, certiCount = 0;
@@ -93,6 +106,7 @@ public class PushDataToServer_New {
     TextView txt_push_error;
     RelativeLayout rl_btn;
     Button ok_btn, eject_btn;
+    private int BUFFER = 10000;
 
 
     public PushDataToServer_New(Context context) {
@@ -108,70 +122,91 @@ public class PushDataToServer_New {
         assessmentData = new JSONArray();
         contentProgress = new JSONArray();
         imageUploadList = new ArrayList<>();
+        courseEnrollmentData = new JSONArray();
         showUi = false;
     }
 
-    /** This method begins the process of pushing data to server.
+    /**
+     * This method begins the process of pushing data to server.
      * Locally stored data is collected and added to its respective JsonArray defined globally above.
+     *
      * @param showUi is used to show the push Dialog.
-     * */
+     */
     @Background
     public void startDataPush(Context context, boolean showUi) {
-        this.context = context;
-        this.showUi = showUi;
-        //Show Dialog
-        if (showUi)
-            showPushDialog(context);
-        //Here data is fetched from local database and added to a list and then passed to JsonArray.
-        try {
-            setMainTextToDialog(context.getResources().getString(R.string.Collecting_Data));
-            List<Score> scoreList = AppDatabase.getDatabaseInstance(context).getScoreDao().getAllPushScores();
-            scoreData = fillScoreData(scoreList);
-            List<Attendance> attendanceList = AppDatabase.getDatabaseInstance(context).getAttendanceDao().getAllPushAttendanceEntries();
-            attendanceData = fillAttendanceData(attendanceList);
-            List<Student> studentList = AppDatabase.getDatabaseInstance(context).getStudentDao().getAllStudents();
-            studentData = fillStudentData(studentList);
-            List<Crl> crlList = AppDatabase.getDatabaseInstance(context).getCrlDao().getAllCrls();
-            crlData = fillCrlData(crlList);
-            List<Session> sessionList = AppDatabase.getDatabaseInstance(context).getSessionDao().getAllNewSessions();
-            sessionData = fillSessionData(sessionList);
-            List<SupervisorData> supervisorDataList = AppDatabase.getDatabaseInstance(context).getSupervisorDataDao().getAllSupervisorData();
-            supervisorData = fillSupervisorData(supervisorDataList);
-            List<Modal_Log> logsList = AppDatabase.getDatabaseInstance(context).getLogsDao().getPushAllLogs();
-            logsData = fillLogsData(logsList);
-            List<Assessment> assessmentList = AppDatabase.getDatabaseInstance(context).getAssessmentDao().getAllAssessment();
-            assessmentData = fillAssessmentData(assessmentList);
-            List<Groups> groupsList = AppDatabase.getDatabaseInstance(context).getGroupsDao().getAllGroups();
-            groupsData = fillGroupsData(groupsList);
-            List<ContentProgress> contentProgressList = AppDatabase.getDatabaseInstance(context).getContentProgressDao().getAllContentNodeProgress();
-            contentProgress = fillProgressData(contentProgressList);
-            List<KeyWords> keyWordsList = AppDatabase.getDatabaseInstance(context).getKeyWordDao().getAllData();
-            keyWordsData = fillkeyWordsData(keyWordsList);
+        if(FC_Utility.isDataConnectionAvailable(context)) {
+            this.context = context;
+            this.showUi = showUi;
+            //Show Dialog
+            if (showUi)
+                showPushDialog(context);
+            //Here data is fetched from local database and added to a list and then passed to JsonArray.
+            try {
+                setMainTextToDialog(context.getResources().getString(R.string.Collecting_Data));
+                List<Score> scoreList = AppDatabase.getDatabaseInstance(context).getScoreDao().getAllPushScores();
+                scoreData = fillScoreData(scoreList);
+                List<Attendance> attendanceList = AppDatabase.getDatabaseInstance(context).getAttendanceDao().getAllPushAttendanceEntries();
+                attendanceData = fillAttendanceData(attendanceList);
+                List<Student> studentList = AppDatabase.getDatabaseInstance(context).getStudentDao().getAllStudents();
+                studentData = fillStudentData(studentList);
+                List<Crl> crlList = AppDatabase.getDatabaseInstance(context).getCrlDao().getAllCrls();
+                crlData = fillCrlData(crlList);
+                List<Session> sessionList = AppDatabase.getDatabaseInstance(context).getSessionDao().getAllNewSessions();
+                sessionData = fillSessionData(sessionList);
+                List<SupervisorData> supervisorDataList = AppDatabase.getDatabaseInstance(context).getSupervisorDataDao().getAllSupervisorData();
+                supervisorData = fillSupervisorData(supervisorDataList);
+                List<Modal_Log> logsList = AppDatabase.getDatabaseInstance(context).getLogsDao().getPushAllLogs();
+                logsData = fillLogsData(logsList);
+                List<Assessment> assessmentList = AppDatabase.getDatabaseInstance(context).getAssessmentDao().getAllAssessment();
+                assessmentData = fillAssessmentData(assessmentList);
+                List<Groups> groupsList = AppDatabase.getDatabaseInstance(context).getGroupsDao().getAllGroups();
+                groupsData = fillGroupsData(groupsList);
+                List<ContentProgress> contentProgressList = AppDatabase.getDatabaseInstance(context).getContentProgressDao().getAllContentNodeProgress();
+                contentProgress = fillProgressData(contentProgressList);
+                List<KeyWords> keyWordsList = AppDatabase.getDatabaseInstance(context).getKeyWordDao().getAllData();
+                keyWordsData = fillkeyWordsData(keyWordsList);
+                List<Model_CourseEnrollment> courseEnrollList = AppDatabase.getDatabaseInstance(context).getCourseDao().getAllData();
+                courseEnrollmentData = fillCoureEnrollData(courseEnrollList);
 
-            JSONObject pushDataJsonObject = generateRequestString(scoreData, attendanceData, sessionData,
-                    supervisorData, logsData, assessmentData, studentData, contentProgress, keyWordsData);
-            pushSuccessfull = false;
-            //iterate through all new sessions
-            totalImages = AppDatabase.getDatabaseInstance(context).getScoreDao().getUnpushedImageCount();
-            certiCount = AppDatabase.getDatabaseInstance(context).getAssessmentDao().getUnpushedCertiCount(CERTIFICATE_LBL);
-            imageUploadCnt = 0;
-            imageUploadList = new ArrayList<>();
-            isConnectedToRasp = false;
-            //Checks if device is connected to wifi
-            if (ApplicationClass.wiseF.isDeviceConnectedToWifiNetwork()) {
-                //Checks if device is connected to raspberry pie
-                if (ApplicationClass.wiseF.isDeviceConnectedToSSID(FC_Constants.PRATHAM_KOLIBRI_HOTSPOT)) {
-                    getFacilityId(pushDataJsonObject);
+                JSONObject pushDataJsonObject = generateRequestString(scoreData, attendanceData, sessionData,
+                        supervisorData, logsData, assessmentData, studentData, contentProgress, keyWordsData, courseEnrollmentData);
+                pushSuccessfull = false;
+                //iterate through all new sessions
+                totalImages = AppDatabase.getDatabaseInstance(context).getScoreDao().getUnpushedImageCount();
+                certiCount = AppDatabase.getDatabaseInstance(context).getAssessmentDao().getUnpushedCertiCount(CERTIFICATE_LBL);
+                imageUploadCnt = 0;
+                imageUploadList = new ArrayList<>();
+                isConnectedToRasp = false;
+                //Checks if device is connected to wifi
+                if (ApplicationClass.wiseF.isDeviceConnectedToWifiNetwork()) {
+                    //Checks if device is connected to raspberry pie
+                    if (ApplicationClass.wiseF.isDeviceConnectedToSSID(FC_Constants.PRATHAM_KOLIBRI_HOTSPOT)) {
+                        getFacilityId(pushDataJsonObject);
+                    } else {
+                        isConnectedToRasp = false;
+                        setMainTextToDialog(context.getResources().getString(R.string.Please_wait_pushing_Data));
+                        setSyncLottieToDialog();
+                        pushDataToServer(context, pushDataJsonObject, FC_Constants.uploadDataUrl);
+                    }
                 } else {
                     isConnectedToRasp = false;
+                    setMainTextToDialog(context.getResources().getString(R.string.Please_wait_pushing_Data));
+                    setSyncLottieToDialog();
                     pushDataToServer(context, pushDataJsonObject, FC_Constants.uploadDataUrl);
                 }
-            } else {
-                isConnectedToRasp = false;
-                pushDataToServer(context, pushDataJsonObject, FC_Constants.uploadDataUrl);
+            } catch (Exception e) {
+                e.printStackTrace();
             }
-        } catch (Exception e) {
-            e.printStackTrace();
+        }else{
+            BackgroundPushService mYourService;
+            mYourService = new BackgroundPushService();
+            Intent mServiceIntent;
+            mServiceIntent = new Intent(context, mYourService.getClass());
+            FastSave.getInstance().saveBoolean(IS_SERVICE_STOPED, true);
+            Log.d("PushData", "End Service  IS_STOPPED : " + FastSave.getInstance().getBoolean(IS_SERVICE_STOPED, false));
+            if (isMyServiceRunning(mYourService.getClass()))
+                context.stopService(mServiceIntent);
+
         }
     }
 
@@ -181,6 +216,15 @@ public class PushDataToServer_New {
     public void setMainTextToDialog(String dialogMsg) {
         if (showUi)
             txt_push_dialog_msg.setText("" + dialogMsg);
+    }
+
+    @SuppressLint("SetTextI18n")
+    @UiThread
+    public void setSyncLottieToDialog() {
+        if (showUi) {
+            push_lottie.setAnimation("cloud_sync.json");
+            push_lottie.playAnimation();
+        }
     }
 
     //Set sub text of dialog
@@ -227,22 +271,132 @@ public class PushDataToServer_New {
         }
     }
 
+    private static void compressGzipFile(String file, String gzipFile) {
+        try {
+            FileInputStream fis = new FileInputStream(file);
+            FileOutputStream fos = new FileOutputStream(gzipFile);
+            GZIPOutputStream gzipOS = new GZIPOutputStream(fos);
+            byte[] buffer = new byte[1024];
+            int len;
+            while ((len = fis.read(buffer)) != -1) {
+                gzipOS.write(buffer, 0, len);
+            }
+            //close resources
+            gzipOS.close();
+            fos.close();
+            fis.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    public static String compress(String str) throws IOException {
+        if (str == null || str.length() == 0) {
+            return str;
+        }
+        ByteArrayOutputStream out = new ByteArrayOutputStream();
+        GZIPOutputStream gzip = new GZIPOutputStream(out);
+        gzip.write(str.getBytes());
+        gzip.close();
+        String outStr = out.toString("UTF-8");
+        return outStr;
+    }
+
+    public void zip(String[] _files, String zipFileName, File filepath) {
+        try {
+            BufferedInputStream origin = null;
+            FileOutputStream dest = new FileOutputStream(zipFileName);
+            ZipOutputStream out = new ZipOutputStream(new BufferedOutputStream(dest));
+
+            byte[] data = new byte[BUFFER];
+            for (int i = 0; i < _files.length; i++) {
+                Log.v("Compress", "Adding: " + _files[i]);
+                FileInputStream fi = new FileInputStream(_files[i]);
+                origin = new BufferedInputStream(fi, BUFFER);
+                ZipEntry entry = new ZipEntry(_files[i].substring(_files[i].lastIndexOf("/") + 1));
+                out.putNextEntry(entry);
+                int count;
+                while ((count = origin.read(data, 0, BUFFER)) != -1) {
+                    out.write(data, 0, count);
+                }
+                origin.close();
+            }
+
+            out.close();
+            filepath.delete();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
     // Call only this method, do the data collection before
     public void pushDataToServer(Context context, JSONObject data, String... url) {
         try {
-            AndroidNetworking.post(url[0])
-                    .addHeaders("Content-Type", "application/json")
-                    .addJSONObjectBody(data)
+            String newdata = compress(String.valueOf(data));
+            String uuID = ""+FC_Utility.getUUID();
+            String filepathstr = Environment.getExternalStorageDirectory().toString()
+                    + "/.FCAInternal/PushJsons/" + uuID; // file path to save
+            File filepath = new File(filepathstr + ".json"); // file path to save
+            if (filepath.exists())
+                filepath.delete();
+            FileWriter writer = new FileWriter(filepath);
+            writer.write(String.valueOf(data));
+            writer.flush();
+            writer.close();
+
+            String[] s = new String[1];
+
+            // Type the path of the files in here
+            s[0] = filepathstr + ".json";
+            // first parameter is d files second parameter is zip file name
+            zip(s, filepathstr + ".zip", filepath);
+
+/*            String afilepathstr = Environment.getExternalStorageDirectory().toString()
+                    + "/.FCAInternal/PushJsons/newCompPush_" + FC_Utility.getUUID() + "_" + FC_Utility.getCurrentDateTime() + ".json"; // file path to save
+            File afilepath = new File(afilepathstr); // file path to save
+            if (afilepath.exists())
+                afilepath.delete();
+            FileWriter awriter = new FileWriter(afilepath);
+            awriter.write(String.valueOf(data));
+            awriter.flush();
+            awriter.close();
+
+            String aafilepathstr = Environment.getExternalStorageDirectory().toString()
+                    + "/.FCAInternal/PushJsons/newdataCompPush_" + FC_Utility.getUUID() + "_" + FC_Utility.getCurrentDateTime() + ".json"; // file path to save
+            File aafilepath = new File(aafilepathstr); // file path to save
+            if (aafilepath.exists())
+                aafilepath.delete();
+            FileWriter aawriter = new FileWriter(aafilepath);
+            aawriter.write(newdata);
+            aawriter.flush();
+            aawriter.close();
+
+            Log.d("PushData", "Original Size : " + String.valueOf(data).length());
+            Log.d("PushData", "New Data Size : " + newdata.length());*/
+//            compressGzipFile(filepathstr, Environment.getExternalStorageDirectory().toString()
+//                    + "/.FCAInternal/PushJsons/compressedPush_" + FC_Utility.getUUID() + "_" + FC_Utility.getCurrentDateTime() + ".gz");
+//            http://devprodigi.openiscool.org/api/FCAPP/PushFiles
+
+            AndroidNetworking.upload("http://devprodigi.openiscool.org/api/FCAPP/PushFiles"/*url[0]*/)
+                    .addHeaders("Content-Type", "file/zip")
+                    .addMultipartFile(""+uuID, new File(filepathstr + ".zip"))
                     .setPriority(Priority.HIGH)
                     .build()
                     .getAsString(new StringRequestListener() {
                         @Override
                         public void onResponse(String response) {
-                            if (response.equalsIgnoreCase("success")) {
+                            Log.d("PushData", "DATA PUSH "+response);
+                                Gson gson = new Gson();
+                            FilePushResponse pushResponse = gson.fromJson(response, FilePushResponse.class);
+
+                            new File(filepathstr + ".zip").delete();
+                            if (pushResponse.isSuccess()/*equalsIgnoreCase("success")*/) {
                                 Log.d("PushData", "DATA PUSH SUCCESS");
                                 pushSuccessfull = true;
                                 setDataPushSuccessfull();
                             } else {
+                                Log.d("PushData", "Failed DATA PUSH");
                                 pushSuccessfull = false;
                                 setDataPushFailed();
                             }
@@ -252,6 +406,7 @@ public class PushDataToServer_New {
                         public void onError(ANError anError) {
                             //Fail - Show dialog with failure message.
                             Log.d("PushData", "Data push FAIL");
+                            Log.d("PushData", "ERROR  " + anError);
                             pushSuccessfull = false;
                             setDataPushFailed();
                         }
@@ -266,10 +421,10 @@ public class PushDataToServer_New {
     public void setDataPushSuccessfull() {
         setPushFlag();
         if (showUi) {
-            setMainTextToDialog(context.getResources().getString(R.string.data_pushed_successfully)+"\n"+
-                    context.getResources().getString(R.string.Score_Count)+" " + scoreData.length() +
-                    "\n\n"+context.getResources().getString(R.string.Certificate_Count)+" "+ certiCount +
-                    "\n\n"+context.getResources().getString(R.string.Now_Upload_Media));
+            setMainTextToDialog(context.getResources().getString(R.string.data_pushed_successfully) + "\n" +
+                    context.getResources().getString(R.string.Score_Count) + " " + scoreData.length() +
+                    "\n\n" + context.getResources().getString(R.string.Certificate_Count) + " " + certiCount +
+                    "\n\n" + context.getResources().getString(R.string.Now_Upload_Media));
             ok_btn.setText(context.getResources().getString(R.string.Okay));
             ok_btn.setVisibility(View.VISIBLE);
         } else {
@@ -314,6 +469,7 @@ public class PushDataToServer_New {
         AppDatabase.getDatabaseInstance(context).getStudentDao().setSentFlag();
         AppDatabase.getDatabaseInstance(context).getKeyWordDao().setSentFlag();
         AppDatabase.getDatabaseInstance(context).getContentProgressDao().setSentFlag();
+        AppDatabase.getDatabaseInstance(context).getCourseDao().setSentFlag();
 //        AppDatabase.getDatabaseInstance(context).getLogsDao().deletePushedLogs();
     }
 
@@ -327,50 +483,50 @@ public class PushDataToServer_New {
         imageFilesArray = directory.listFiles();
 //        Log.d("PushData", "Size: " + imageFilesArray.length);
 
-        if(imageFilesArray!=null)
-        for (int index = 0; index < imageFilesArray.length; index++) {
-            if (imageFilesArray[index].exists() && imageFilesArray[index].isDirectory()) {
+        if (imageFilesArray != null)
+            for (int index = 0; index < imageFilesArray.length; index++) {
+                if (imageFilesArray[index].exists() && imageFilesArray[index].isDirectory()) {
 //                Log.d("PushData", "FolderName:" + imageFilesArray[index].getName());
-                File activityPhotosFile = new File(imageFilesArray[index].getAbsolutePath());
-                File[] file = activityPhotosFile.listFiles();
-                if (Objects.requireNonNull(file).length > 0) {
-                    for (int i = 0; i < file.length; i++) {
-                        if (file[i].exists() && file[i].isFile()
-                                && !file[i].getName().equalsIgnoreCase(".nomedia")) {
-                            String fName = file[i].getName();
-                            File fPath = new File(file[i].getAbsolutePath());
+                    File activityPhotosFile = new File(imageFilesArray[index].getAbsolutePath());
+                    File[] file = activityPhotosFile.listFiles();
+                    if (Objects.requireNonNull(file).length > 0) {
+                        for (int i = 0; i < file.length; i++) {
+                            if (file[i].exists() && file[i].isFile()
+                                    && !file[i].getName().equalsIgnoreCase(".nomedia")) {
+                                String fName = file[i].getName();
+                                File fPath = new File(file[i].getAbsolutePath());
 //                            Log.d("PushData", "FileName:" + fName);
-                            if (AppDatabase.getDatabaseInstance(context).getScoreDao().getSentFlag(fName) == 0) {
-                                Image_Upload image_upload = new Image_Upload();
-                                image_upload.setFileName(fName);
-                                image_upload.setFilePath(fPath);
-                                image_upload.setUploadStatus(false);
-                                imageUploadList.add(image_upload);
+                                if (AppDatabase.getDatabaseInstance(context).getScoreDao().getSentFlag(fName) == 0) {
+                                    Image_Upload image_upload = new Image_Upload();
+                                    image_upload.setFileName(fName);
+                                    image_upload.setFilePath(fPath);
+                                    image_upload.setUploadStatus(false);
+                                    imageUploadList.add(image_upload);
+                                }
                             }
                         }
                     }
-                }
-            } else if (imageFilesArray[index].exists() && imageFilesArray[index].isFile()
-                   && !imageFilesArray[index].getName().equalsIgnoreCase(".nomedia")) {
-                File fPath = new File(imageFilesArray[index].getAbsolutePath());
-                String fName = imageFilesArray[index].getName();
-                if (AppDatabase.getDatabaseInstance(context).getScoreDao().getSentFlag(fName) == 0) {
+                } else if (imageFilesArray[index].exists() && imageFilesArray[index].isFile()
+                        && !imageFilesArray[index].getName().equalsIgnoreCase(".nomedia")) {
+                    File fPath = new File(imageFilesArray[index].getAbsolutePath());
+                    String fName = imageFilesArray[index].getName();
+                    if (AppDatabase.getDatabaseInstance(context).getScoreDao().getSentFlag(fName) == 0) {
 //                    Log.d("PushData", "FileName:" + imageFilesArray[index].getName());
-                    Image_Upload image_upload = new Image_Upload();
-                    image_upload.setFileName(fName);
-                    image_upload.setFilePath(fPath);
-                    image_upload.setUploadStatus(false);
-                    imageUploadList.add(image_upload);
+                        Image_Upload image_upload = new Image_Upload();
+                        image_upload.setFileName(fName);
+                        image_upload.setFilePath(fPath);
+                        image_upload.setUploadStatus(false);
+                        imageUploadList.add(image_upload);
+                    }
                 }
             }
-        }
 
         imageUploadCnt = 0;
         totalImages = imageUploadList.size();
 //        Log.d("PushData", "Size: " + imageUploadList.size());
         if (imageUploadList.size() > 0) {
-            setMainTextToDialog(context.getResources().getString(R.string.Uploading)+" "
-                    + totalImages + " "+context.getResources().getString(R.string.images));
+            setMainTextToDialog(context.getResources().getString(R.string.Uploading) + " "
+                    + totalImages + " " + context.getResources().getString(R.string.images));
             pushImagesToServer(0);
         } else {
             showTotalImgStatus();
@@ -381,13 +537,15 @@ public class PushDataToServer_New {
     @UiThread
     public void updateCntr(int imgCtr) {
         if (showUi)
-            dialog_file_name.setText(context.getResources().getString(R.string.Uploading)+" "
+            dialog_file_name.setText(context.getResources().getString(R.string.Uploading) + " "
                     + imgCtr + "/" + totalImages);
     }
 
-    /** This method is to push the list of the image to server.
+    /**
+     * This method is to push the list of the image to server.
+     *
      * @param jsonIndex is always passed zero and incremented on success push.
-     * */
+     */
     @UiThread
     public void pushImagesToServer(final int jsonIndex) {
 //        Log.d("PushData", "Image jsonIndex : " + jsonIndex);
@@ -442,18 +600,20 @@ public class PushDataToServer_New {
                 failedCntr++;
         }
 
-        if(pushSuccessfull)
-            pushedScoreLength = ""+scoreData.length();
+        if (pushSuccessfull)
+            pushedScoreLength = "" + scoreData.length();
         else
             pushedScoreLength = "0";
-        successful_ImageLength = ""+successfulCntr;
-        failed_ImageLength = ""+failedCntr;
+        successful_ImageLength = "" + successfulCntr;
+        failed_ImageLength = "" + failedCntr;
         syncTime = FC_Utility.getCurrentDateTime();
 
-        FastSave.getInstance().saveString(FC_Constants.SYNC_TIME, syncTime);
-        FastSave.getInstance().saveString(FC_Constants.SYNC_DATA_LENGTH, pushedScoreLength);
-        FastSave.getInstance().saveString(FC_Constants.SYNC_MEDIA_LENGTH, successful_ImageLength);
-        FastSave.getInstance().saveString(FC_Constants.SYNC_CERTI_LENGTH, ""+certiCount);
+        if(pushSuccessfull) {
+            FastSave.getInstance().saveString(FC_Constants.SYNC_TIME, syncTime);
+            FastSave.getInstance().saveString(FC_Constants.SYNC_DATA_LENGTH, pushedScoreLength);
+            FastSave.getInstance().saveString(FC_Constants.SYNC_MEDIA_LENGTH, successful_ImageLength);
+            FastSave.getInstance().saveString(FC_Constants.SYNC_CERTI_LENGTH, "" + certiCount);
+        }
 
         if (showUi) {
             ok_btn.setVisibility(View.GONE);
@@ -463,10 +623,10 @@ public class PushDataToServer_New {
             push_lottie.setAnimation("lottie_correct.json");
             push_lottie.playAnimation();
             setMainTextToDialog(context.getResources().getString(R.string.Upload_Complete));
-            setSubTextToDialog(context.getResources().getString(R.string.Data_synced)+" " + scoreData.length()
-                    + "\n"+context.getResources().getString(R.string.Certificate_synced)+" "+ certiCount
-                    + "\n"+context.getResources().getString(R.string.Media_synced)+" " + successfulCntr
-                    + "\n"+context.getResources().getString(R.string.Media_failed)+" " + failedCntr);
+            setSubTextToDialog(context.getResources().getString(R.string.Data_synced) + " " + scoreData.length()
+                    + "\n" + context.getResources().getString(R.string.Certificate_synced) + " " + certiCount
+                    + "\n" + context.getResources().getString(R.string.Media_synced) + " " + successfulCntr
+                    + "\n" + context.getResources().getString(R.string.Media_failed) + " " + failedCntr);
         }
 
         BackgroundPushService mYourService;
@@ -475,7 +635,8 @@ public class PushDataToServer_New {
         mServiceIntent = new Intent(context, mYourService.getClass());
         FastSave.getInstance().saveBoolean(IS_SERVICE_STOPED, true);
         Log.d("PushData", "End Service  IS_STOPPED : " + FastSave.getInstance().getBoolean(IS_SERVICE_STOPED, false));
-        if (isMyServiceRunning(mYourService.getClass())) context.stopService(mServiceIntent);
+        if (isMyServiceRunning(mYourService.getClass()))
+            context.stopService(mServiceIntent);
 
     }
 
@@ -483,11 +644,11 @@ public class PushDataToServer_New {
         ActivityManager manager = (ActivityManager) context.getSystemService(Context.ACTIVITY_SERVICE);
         for (ActivityManager.RunningServiceInfo service : Objects.requireNonNull(manager).getRunningServices(Integer.MAX_VALUE)) {
             if (serviceClass.getName().equals(service.service.getClassName())) {
-                Log.i ("MAINACT", "isMyServiceRunning?  " + true);
+                Log.i("MAINACT", "isMyServiceRunning?  " + true);
                 return true;
             }
         }
-        Log.i ("MAINACT", "isMyServiceRunning?  " + false);
+        Log.i("MAINACT", "isMyServiceRunning?  " + false);
         return false;
     }
 
@@ -584,7 +745,8 @@ public class PushDataToServer_New {
     //In this method data from json array and from local database is fetched and passed to jsonobject.
     private JSONObject generateRequestString(JSONArray scoreData, JSONArray attendanceData, JSONArray sessionData,
                                              JSONArray supervisorData, JSONArray logsData, JSONArray assessmentData,
-                                             JSONArray studentData, JSONArray contentProgress, JSONArray keyWordsData) {
+                                             JSONArray studentData, JSONArray contentProgress, JSONArray keyWordsData,
+                                             JSONArray courseEnrollmentData) {
 //        String requestString = "";
         JSONObject pushJsonObject = new JSONObject();
 
@@ -630,6 +792,7 @@ public class PushDataToServer_New {
             sessionObj.put("attendanceData", attendanceData);
             sessionObj.put("sessionsData", sessionData);
             sessionObj.put("keyWords", keyWordsData);
+            sessionObj.put("CourseEnrollment", courseEnrollmentData);
             sessionObj.put("contentProgressData", contentProgress);
             sessionObj.put("logsData", logsData);
             sessionObj.put("assessmentData", assessmentData);
@@ -912,5 +1075,33 @@ public class PushDataToServer_New {
             return null;
         }
         return keyWordsArr;
+    }
+
+    private JSONArray fillCoureEnrollData(List<Model_CourseEnrollment> courseEnrollList) {
+        JSONArray courseArr = new JSONArray();
+        JSONObject _courseObj;
+        try {
+            for (int i = 0; i < courseEnrollList.size(); i++) {
+                _courseObj = new JSONObject();
+                Model_CourseEnrollment courseEnrollment = courseEnrollList.get(i);
+                _courseObj.put("c_autoID", courseEnrollment.getC_autoID());
+                _courseObj.put("courseId", courseEnrollment.getCourseId());
+                _courseObj.put("groupId", courseEnrollment.getGroupId());
+                _courseObj.put("planFromDate", courseEnrollment.getPlanFromDate());
+                _courseObj.put("planToDate", courseEnrollment.getPlanToDate());
+                _courseObj.put("coachVerified", courseEnrollment.getCoachVerificationDate());
+                _courseObj.put("coachVerificationDate", courseEnrollment.getCoachVerificationDate());
+                _courseObj.put("courseExperience", courseEnrollment.getCourseExperience());
+                _courseObj.put("courseCompleted", courseEnrollment.getCourse_status());
+                _courseObj.put("coachImage", courseEnrollment.getCoachImage());
+                _courseObj.put("language", courseEnrollment.getLanguage());
+                _courseObj.put("sentFlag", courseEnrollment.getSentFlag());
+                courseArr.put(_courseObj);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+        return courseArr;
     }
 }

@@ -14,6 +14,9 @@ public interface GroupDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     void insertAllGroups(List<Groups> groupsList);
 
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    void insert(Groups groups);
+
     @Query("DELETE FROM Groups")
     void deleteAllGroups();
 
@@ -22,6 +25,9 @@ public interface GroupDao {
 
     @Query("SELECT * FROM Groups WHERE VillageID=:vID ORDER BY GroupName ASC")
     List<Groups> GetGroups(int vID);
+
+    @Query("SELECT * FROM Groups WHERE GroupId=:gID")
+    List<Groups> GetStudentsByGroupId(String gID);
 
     @Query("DELETE FROM Groups WHERE GroupID=:grpID")
     void deleteGroupByGrpID(String grpID);

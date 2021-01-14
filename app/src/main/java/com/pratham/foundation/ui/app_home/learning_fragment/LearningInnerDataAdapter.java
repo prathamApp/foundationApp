@@ -13,10 +13,12 @@ import com.pratham.foundation.database.domain.ContentTable;
 import com.pratham.foundation.ui.app_home.FragmentItemClicked;
 import com.pratham.foundation.view_holders.ContentFileViewHolder;
 import com.pratham.foundation.view_holders.ContentFolderViewHolder;
+import com.pratham.foundation.view_holders.ContentTestViewHolder;
 import com.pratham.foundation.view_holders.EmptyHolder;
 
 import java.util.List;
 
+import static com.pratham.foundation.utility.FC_Constants.TYPE_ASSESSMENT;
 import static com.pratham.foundation.utility.FC_Constants.TYPE_FOOTER;
 import static com.pratham.foundation.utility.FC_Constants.TYPE_HEADER;
 import static com.pratham.foundation.utility.FC_Constants.TYPE_ITEM;
@@ -58,6 +60,10 @@ public class LearningInnerDataAdapter extends RecyclerView.Adapter {
                 LayoutInflater file = LayoutInflater.from(viewGroup.getContext());
                 view = file.inflate(R.layout.content_item_file_card, viewGroup, false);
                 return new ContentFileViewHolder(view, itemClicked);
+            case 3:
+                LayoutInflater assessLI = LayoutInflater.from(viewGroup.getContext());
+                view = assessLI.inflate(R.layout.content_item_folder_card_tab, viewGroup, false);
+                return new ContentTestViewHolder(view, itemClicked);
             default:
                 return null;
         }
@@ -72,6 +78,8 @@ public class LearningInnerDataAdapter extends RecyclerView.Adapter {
                     return 0;
                 case TYPE_ITEM:
                     return 2;
+                case TYPE_ASSESSMENT:
+                    return 3;
                 default:
                     return 1;
             }
@@ -219,6 +227,10 @@ public class LearningInnerDataAdapter extends RecyclerView.Adapter {
 //                    });
 //                }
 //                setAnimations(fileHolder.content_card_view);
+                break;
+            case 3:
+                ContentTestViewHolder TestHolder = (ContentTestViewHolder) viewHolder;
+                TestHolder.setFragmentTestItem(itemsList.get(i), i, parentName, parentPos);
                 break;
         }
     }

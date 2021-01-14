@@ -29,6 +29,7 @@ import com.pratham.foundation.ApplicationClass;
 import com.pratham.foundation.database.AppDatabase;
 import com.pratham.foundation.database.domain.Status;
 import com.pratham.foundation.utility.FC_Constants;
+import com.pratham.foundation.utility.FC_Utility;
 
 import org.json.JSONObject;
 
@@ -84,6 +85,8 @@ public class LocationService implements GoogleApiClient.ConnectionCallbacks, Goo
                             Date gdate = new Date(location.getTime());
                             String gpsDateTime = format.format(gdate);
                             statusObj.setValue("" + gpsDateTime);
+                            Log.d(TAG, "getCurrentDateTime: "+ FC_Utility.getCurrentDateTime());
+                            Log.d(TAG, "gpsDateTime: "+gpsDateTime);
                             AppDatabase.getDatabaseInstance(ApplicationClass.getInstance()).getStatusDao().updateValue("GPSDateTime", "" + gpsDateTime);
 
 //                        BaseActivity.statusDao.insert(statusObj);

@@ -74,10 +74,10 @@ public class ActivityVideoPlayer extends BaseActivity {
 
         Intent intent = getIntent();
         contentPath = intent.getStringExtra("contentPath");
-        resId = intent.getStringExtra("resId");
+        resId       = intent.getStringExtra("resId");
         contentName = intent.getStringExtra("contentName");
         contentType = intent.getStringExtra("contentType");
-        onSdCard = intent.getBooleanExtra("onSdCard", false);
+        onSdCard    = intent.getBooleanExtra("onSdCard", false);
 
 //        contentType = FC_Constants.YOUTUBE_LINK;
 //        contentPath = "https://youtu.be/XsJTztRwem4";

@@ -12,6 +12,7 @@ import com.androidnetworking.interfaces.JSONArrayRequestListener;
 import com.androidnetworking.interfaces.StringRequestListener;
 import com.pratham.foundation.ApplicationClass;
 import com.pratham.foundation.interfaces.API_Content_Result;
+import com.pratham.foundation.services.shared_preferences.FastSave;
 import com.pratham.foundation.utility.FC_Utility;
 
 import org.json.JSONArray;
@@ -20,8 +21,11 @@ import java.io.File;
 import java.util.concurrent.Executors;
 
 import static com.pratham.foundation.ApplicationClass.App_Thumbs_Path;
+import static com.pratham.foundation.utility.FC_Constants.APP_ID_STR;
+import static com.pratham.foundation.utility.FC_Constants.CURRENT_STUDENT_ID;
 import static com.pratham.foundation.utility.FC_Constants.DEVICE_ID_STR;
-import static com.pratham.foundation.utility.FC_Constants.rootParentId;
+import static com.pratham.foundation.utility.FC_Constants.STUDENT_ID_STR;
+import static com.pratham.foundation.utility.FC_Constants.newRootParentId;
 
 public class API_Content {
 
@@ -80,8 +84,11 @@ public class API_Content {
 
     public void getAPIContent(final String requestType, String url, String nodeId) {
         try {
-            String url_id;
-            url_id = url + nodeId + DEVICE_ID_STR + FC_Utility.getDeviceID();
+//            String url_id;
+//            url_id = url + nodeId + DEVICE_ID_STR + FC_Utility.getDeviceID();
+            String url_id, studId;
+            studId = FastSave.getInstance().getString(CURRENT_STUDENT_ID, "");
+            url_id = url + nodeId + DEVICE_ID_STR + FC_Utility.getDeviceID() + STUDENT_ID_STR + studId;
             Log.d("API_Content_LOG", "getAPIContent: " + nodeId);
             Log.d("API_Content_LOG", "url_id: " + url_id);
             AndroidNetworking.get(url_id)
@@ -113,10 +120,50 @@ public class API_Content {
         }
     }
 
-    public void getAPILanguage(final String requestType, String url) {
+    public void getBoardAPI(final String requestType, String url) {
         try {
-            String url_id;
-            url_id = url + rootParentId + DEVICE_ID_STR + FC_Utility.getDeviceID();
+//            String url_id;
+//            url_id = url + rootParentId + DEVICE_ID_STR + FC_Utility.getDeviceID();
+            String url_id, studId;
+            studId = FastSave.getInstance().getString(CURRENT_STUDENT_ID, "");
+            url_id = url + newRootParentId + DEVICE_ID_STR + FC_Utility.getDeviceID() + STUDENT_ID_STR + studId;
+            Log.d("API_Content_LOG", "getAPIContent: " + url_id);
+            AndroidNetworking.get(url_id)
+                    .addHeaders("Content-Type", "application/json")
+                    .build()
+                    .getAsString(new StringRequestListener() {
+                        @Override
+                        public void onResponse(String response) {
+                            //Success - Send requestType and response to the calling class.
+                            if (apiContentResult != null)
+                                apiContentResult.receivedContent(requestType, response);
+                        }
+
+                        @Override
+                        public void onError(ANError anError) {
+                            try {
+                                Log.d("Error:", anError.getErrorDetail());
+                                // Log.d("Error::", anError.getResponse().toString());
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
+                            //Success - Send requestType and response to the calling class.
+                            if (apiContentResult != null)
+                                apiContentResult.receivedError(requestType);
+                        }
+                    });
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void getAPILanguage(final String requestType, String url, String nodeId) {
+        try {
+//            String url_id;
+//            url_id = url + rootParentId + DEVICE_ID_STR + FC_Utility.getDeviceID();
+            String url_id, studId;
+            studId = FastSave.getInstance().getString(CURRENT_STUDENT_ID, "");
+            url_id = url + nodeId + DEVICE_ID_STR + FC_Utility.getDeviceID() + STUDENT_ID_STR + studId;
             Log.d("API_Content_LOG", "getAPIContent: " + url_id);
             AndroidNetworking.get(url_id)
                     .addHeaders("Content-Type", "application/json")
@@ -149,8 +196,9 @@ public class API_Content {
 
     public void getStudentByEnrollmentNo(final String requestType, String url) {
         try {
-            Log.d("API_Content_LOG", "getAPIContent: " + url);
-            AndroidNetworking.get(url)
+            String url_ = url+APP_ID_STR+newRootParentId;
+            Log.d("API_Content_LOG", "getAPIContent: " + url_);
+            AndroidNetworking.get(url_)
                     .addHeaders("Content-Type", "application/json")
                     .build()
                     .getAsString(new StringRequestListener() {
@@ -207,6 +255,7 @@ public class API_Content {
     }
 
     public void pullFromInternet(String header, String url) {
+        Log.d("pull", "pullFromInternet: "+header+ " : "+url);
         AndroidNetworking.get(url)
                 .addHeaders("Content-Type", "application/json")
 //                .addHeaders("Authorization", getAuthHeader("pratham", "pratham"))

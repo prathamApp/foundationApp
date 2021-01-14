@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/activity_bkgd"
+    app:cardElevation="0dp">
+
+    <Space
+        android:id="@+id/space"
+        android:layout_width="match_parent"
+        android:layout_height="60dp" />
+
+<!--    android:layout_above="@id/bottom_panel"-->
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/space"
+        android:layout_marginStart="@dimen/_2sdp"
+        android:layout_marginTop="@dimen/_2sdp"
+        android:layout_marginEnd="@dimen/_2sdp"
+        android:layout_marginBottom="@dimen/_20sdp"
+        android:orientation="vertical">
+
+
+        <com.facebook.drawee.view.SimpleDraweeView
+            android:id="@+id/imageView"
+            android:layout_width="@dimen/_200sdp"
+            android:layout_height="@dimen/_150sdp"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="@dimen/_20sdp"
+            android:background="@android:color/transparent"
+            app:actualImageScaleType="fitCenter"
+            app:placeholderImage="@drawable/pratham_logo"
+            app:roundedCornerRadius="@dimen/_20sdp"
+            app:roundingBorderColor="@color/contentCardColor"
+            app:roundingBorderWidth="@dimen/_3sdp" />
+
+        <com.pratham.foundation.customView.fontsview.SansTextViewBold
+            android:id="@+id/tv_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/imageView"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="20dp"
+            android:text="Music Palyer"
+            android:textColor="@color/colorText"
+            android:textSize="35dp" />
+
+        <SeekBar
+            android:id="@+id/seekBar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/tv_title"
+            android:layout_marginTop="100dp"
+            android:clickable="false"
+            android:background="@drawable/arrow_btn_bg"
+            android:layout_marginStart="30dp"
+            android:layout_marginEnd="30dp" />
+
+        <com.pratham.foundation.customView.fontsview.SansTextView
+            android:id="@+id/start_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/seekBar"
+            android:layout_marginStart="30dp"
+            android:layout_marginTop="5dp"
+            android:textSize="15sp"
+            android:text="Start Time"
+            android:textColor="@color/oslo_grey"/>
+
+        <com.pratham.foundation.customView.fontsview.SansTextView
+            android:id="@+id/end_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/seekBar"
+            android:layout_alignParentEnd="true"
+            android:layout_marginEnd="30dp"
+            android:layout_marginTop="5dp"
+            android:textAlignment="textEnd"
+            android:textSize="15sp"
+            android:text="End Time"
+            android:textColor="@color/oslo_grey"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/_10sdp"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:orientation="horizontal">
+
+            <ImageButton
+                android:id="@+id/ib_rewind"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_marginStart="@dimen/_2sdp"
+                android:layout_marginEnd="@dimen/_2sdp"
+                android:layout_height="@dimen/_35sdp"
+                android:scaleType="centerInside"
+                android:padding="@dimen/_5sdp"
+                android:layout_marginBottom="@dimen/_5sdp"
+                android:elevation="@dimen/_3sdp"
+                android:textColor="@color/white"
+                android:background="@drawable/button_yellow"
+                android:src="@drawable/ic_fast_rewind_black_24dp"/>
+            <ImageButton
+                android:id="@+id/ib_stop"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_marginStart="@dimen/_2sdp"
+                android:layout_marginEnd="@dimen/_2sdp"
+                android:layout_height="@dimen/_35sdp"
+                android:scaleType="centerInside"
+                android:padding="@dimen/_5sdp"
+                android:layout_marginBottom="@dimen/_5sdp"
+                android:elevation="@dimen/_3sdp"
+                android:textColor="@color/white"
+                android:background="@drawable/button_red"
+                android:src="@drawable/ic_stop_black"/>
+            <ImageButton
+                android:id="@+id/ib_play"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_marginStart="@dimen/_2sdp"
+                android:layout_marginEnd="@dimen/_2sdp"
+                android:layout_height="@dimen/_35sdp"
+                android:scaleType="centerInside"
+                android:padding="@dimen/_5sdp"
+                android:layout_marginBottom="@dimen/_5sdp"
+                android:elevation="@dimen/_3sdp"
+                android:textColor="@color/white"
+                android:background="@drawable/button_green"
+                android:src="@drawable/ic_play_arrow_black"/>
+            <ImageButton
+                android:id="@+id/ib_fastforward"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_marginStart="@dimen/_2sdp"
+                android:layout_marginEnd="@dimen/_2sdp"
+                android:layout_height="@dimen/_35sdp"
+                android:scaleType="centerInside"
+                android:padding="@dimen/_5sdp"
+                android:layout_marginBottom="@dimen/_5sdp"
+                android:elevation="@dimen/_3sdp"
+                android:textColor="@color/white"
+                android:background="@drawable/button_yellow"
+                android:src="@drawable/ic_fast_forward_black_24dp"/>
+
+        </LinearLayout>
+
+    </RelativeLayout>
+
+<!--
+    <include
+        android:id="@+id/bottom_panel"
+        layout="@layout/bottom_control_panel_v5"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_gravity="bottom|center_horizontal"
+        android:layout_marginBottom="1dp"
+        android:gravity="bottom|center_horizontal" />
+-->
+</RelativeLayout>

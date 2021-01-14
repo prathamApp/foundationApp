@@ -95,7 +95,7 @@ public class SplashActivity extends SplashSupportActivity implements SplashContr
 
     private void startTextAud() {
         //Set Animation for app title
-        SPLASH_OPEN = true;
+        FastSave.getInstance().saveBoolean(SPLASH_OPEN,true);
         final Typeface title_font = Typeface.createFromAsset(getAssets(), "fonts/GlacialIndifference-Bold.otf");
         tv_typer.setTypeface(title_font);
         tv_typer.setVisibility(View.VISIBLE);
@@ -224,6 +224,7 @@ public class SplashActivity extends SplashSupportActivity implements SplashContr
     @Override
     public void startApp() {
         //Sets required resolution, language, database and continue the app flow
+        FastSave.getInstance().saveString(FC_Constants.CURRENT_SESSION, "NA");
         DisplayMetrics displayMetrics = new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
         int height = displayMetrics.heightPixels;
@@ -409,6 +410,9 @@ public class SplashActivity extends SplashSupportActivity implements SplashContr
         if (!direct.exists())
             direct.mkdir();
         direct = new File(Environment.getExternalStorageDirectory().toString() + "/.FCAInternal/TestJsons");
+        if (!direct.exists())
+            direct.mkdir();
+        direct = new File(Environment.getExternalStorageDirectory().toString() + "/.FCAInternal/PushJsons");
         if (!direct.exists())
             direct.mkdir();
         direct = new File(Environment.getExternalStorageDirectory().toString() + "/.FCAInternal/StudentPDFs");

@@ -18,4 +18,6 @@ public interface ContentClicked {
     void onContentDownloadClicked(int position, String nId);
 
     void onContentDeleteClicked(int position, ContentTable contentList);
+
+    void onTestContentClicked(int posi, ContentTable itemContent);
 }

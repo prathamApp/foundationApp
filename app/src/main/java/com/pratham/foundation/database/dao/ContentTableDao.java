@@ -22,8 +22,8 @@ public interface ContentTableDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     long insert(ContentTable contentTableList);
 
-    @Query("select * from ContentTable where parentId= :parentId order by seq_no")
-    List<ContentTable> getContentData(String parentId);
+    @Query("select * from ContentTable where parentId= :parentId AND studentId like :studentId order by seq_no")
+    List<ContentTable> getContentData(String parentId, String studentId);
 
     @Query("SELECT * FROM ContentTable WHERE parentId=:parentId AND resourceType=:contentType")
     List<ContentTable> getTestContentData(String parentId, String contentType);
@@ -46,8 +46,8 @@ public interface ContentTableDao {
     @Query("SELECT * FROM ContentTable WHERE parentid ISNULL or parentid = 0 or parentid=''and contentLanguage=:language")
     List<ContentTable> getParentsHeaders(String language);
 
-    @Query("SELECT * FROM ContentTable WHERE parentid=:id ORDER BY nodeId")
-    List<ContentTable> getChildsOfParent(String id);
+    @Query("SELECT * FROM ContentTable WHERE parentid=:id AND studentId like:studentId ORDER BY seq_no")
+    List<ContentTable> getChildsOfParent(String id, String studentId);
 
     @Query("SELECT * FROM ContentTable WHERE parentid=:id AND nodeId!='4033'")
     List<ContentTable> getChildsOfParent2(String id);
@@ -70,11 +70,11 @@ public interface ContentTableDao {
     @Query("SELECT nodeTitle FROM ContentTable WHERE resourceId=:resourceID")
     String getContentTitleById(String resourceID);
 
-    @Query("SELECT nodeId FROM ContentTable WHERE parentId=:nid and nodeTitle=:nodeTitle")
-    String getRootData(String nid, String nodeTitle);
+    @Query("SELECT nodeId FROM ContentTable WHERE parentId=:nid AND studentId like :studentId")
+    String getRootData(String nid, String studentId);
 
-    @Query("SELECT * FROM ContentTable WHERE parentId=:nid")
-    List<ContentTable> getLanguages(String nid);
+    @Query("SELECT * FROM ContentTable WHERE parentId=:nid AND studentId like :studentId")
+    List<ContentTable> getLanguages(String nid, String studentId);
 
     @Query("Delete from ContentTable")
     void deleteAll();

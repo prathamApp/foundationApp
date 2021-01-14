@@ -7,6 +7,7 @@ import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -51,36 +52,25 @@ public class SelectSubjectAdapter extends RecyclerView.Adapter {
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder myViewHolder, int i) {
         try {
             SubjectHolder myviewholder = (SubjectHolder) myViewHolder;
-            String path="";
+            String path = "";
             File file;
-            myviewholder.content_title.setVisibility(View.GONE);
+            myviewholder.content_title.setText(datalist.get(i).getNodeTitle());
             if (datalist.get(i).getIsDownloaded().equalsIgnoreCase("1") ||
                     datalist.get(i).getIsDownloaded().equalsIgnoreCase("true")) {
 
                 if (datalist.get(i).isOnSDCard()) {
                     path = ApplicationClass.contentSDPath +
                             "" + App_Thumbs_Path + datalist.get(i).getNodeImage();
-                }else {
-                    path =ApplicationClass.foundationPath +
+                } else {
+                    path = ApplicationClass.foundationPath +
                             "" + App_Thumbs_Path + datalist.get(i).getNodeImage();
                 }
                 file = new File(path);
                 if (file.exists() && isValidImage(path))
                     myviewholder.content_thumbnail.setImageURI(Uri.fromFile(file));
 
-                else {
-                    myviewholder.content_title.setVisibility(View.VISIBLE);
-                    myviewholder.content_title.setText(datalist.get(i).getNodeTitle());
-                }
-
-            }else{
+            } else {
                 try {
-//                    String myUrl = "http://devpos.prathamopenschool.org/CourseContent/images/posLogo.png";
-//                    String myUrl2 = ""+myUrl.lastIndexOf('/');
-//                    Log.d("prathamschool", "onBindViewHolder : "+myUrl2);
-//                    ImageRequest imageRequest = ImageRequestBuilder
-//                            .newBuilderWithSource(Uri.parse(myUrl))
-
                     //Set name and image of subject
                     myviewholder.content_title.setText(datalist.get(i).getNodeTitle());
                     ImageRequest imageRequest = ImageRequestBuilder
@@ -91,19 +81,14 @@ public class SelectSubjectAdapter extends RecyclerView.Adapter {
                             .setImageRequest(imageRequest)
                             .setOldController(myviewholder.content_thumbnail.getController())
                             .build();
-                    if(controller!=null)
+                    if (controller != null)
                         myviewholder.content_thumbnail.setController(controller);
-                    else {
-                        myviewholder.content_title.setVisibility(View.VISIBLE);
-                        myviewholder.content_title.setText(datalist.get(i).getNodeTitle());
-                    }
                 } catch (Exception e) {
-                    myviewholder.content_title.setVisibility(View.VISIBLE);
                     e.printStackTrace();
                 }
 
             }
-            myviewholder.content_thumbnail.setOnClickListener(v -> {
+            myviewholder.main_rl.setOnClickListener(v -> {
                 itemClicked.onItemClicked(datalist.get(i));
             });
         } catch (Exception e) {
@@ -134,11 +119,13 @@ public class SelectSubjectAdapter extends RecyclerView.Adapter {
 
         SimpleDraweeView content_thumbnail;
         TextView content_title;
+        RelativeLayout main_rl;
 
         public SubjectHolder(@NonNull View itemView) {
             super(itemView);
             content_title = itemView.findViewById(R.id.content_title);
             content_thumbnail = itemView.findViewById(R.id.content_thumbnail);
+            main_rl = itemView.findViewById(R.id.main_rl);
         }
     }
 

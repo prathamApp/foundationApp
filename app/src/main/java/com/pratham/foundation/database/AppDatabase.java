@@ -14,6 +14,7 @@ import com.pratham.foundation.database.dao.AssessmentDao;
 import com.pratham.foundation.database.dao.AttendanceDao;
 import com.pratham.foundation.database.dao.ContentProgressDao;
 import com.pratham.foundation.database.dao.ContentTableDao;
+import com.pratham.foundation.database.dao.CourseDao;
 import com.pratham.foundation.database.dao.CrlDao;
 import com.pratham.foundation.database.dao.EnglishWordDao;
 import com.pratham.foundation.database.dao.GroupDao;
@@ -42,19 +43,21 @@ import com.pratham.foundation.database.domain.SupervisorData;
 import com.pratham.foundation.database.domain.Village;
 import com.pratham.foundation.database.domain.WordEnglish;
 import com.pratham.foundation.modalclasses.MatchThePair;
+import com.pratham.foundation.modalclasses.Model_CourseEnrollment;
 
 
 @Database(entities = {Crl.class, Student.class, Score.class, Session.class,
         Attendance.class, Status.class, Village.class, Groups.class,
         SupervisorData.class, Assessment.class, Modal_Log.class, ContentTable.class,
-        ContentProgress.class, KeyWords.class, WordEnglish.class, MatchThePair.class }, version = 2, exportSchema = false)
+        ContentProgress.class, KeyWords.class, WordEnglish.class, MatchThePair.class,
+        Model_CourseEnrollment.class}, version = 3, exportSchema = false)
 
 public abstract class AppDatabase extends RoomDatabase {
 
     public static AppDatabase appDBInstance;
 
     public static final String DB_NAME = "foundation_db";
-    public static final String DB_VERSION = "2";
+    public static final String DB_VERSION = "3";
 
     public abstract CrlDao getCrlDao();
 
@@ -88,11 +91,13 @@ public abstract class AppDatabase extends RoomDatabase {
 
     public abstract MatchThePairDao getMatchThePairDao();
 
+    public abstract CourseDao getCourseDao();
+
     public static AppDatabase getDatabaseInstance(Context context) {
         if (appDBInstance == null) {
             appDBInstance = Room.databaseBuilder(ApplicationClass.getInstance(), AppDatabase.class, DB_NAME)
                     .allowMainThreadQueries()
-                    .addMigrations(MIGRATION_1_2)
+                    .addMigrations(MIGRATION_2_3)
                     .build();
             return appDBInstance;
         } else
@@ -110,5 +115,19 @@ public abstract class AppDatabase extends RoomDatabase {
         }
     };
 
-
+    static final Migration MIGRATION_2_3 = new Migration(2, 3) {
+        @Override
+        public void migrate(SupportSQLiteDatabase database) {
+            Log.d("AppDatabase", "MIGRATION_2_3:                                  1");
+            database.execSQL("ALTER TABLE 'ContentTable' ADD COLUMN 'studentId' Text");
+            database.execSQL("CREATE TABLE IF NOT EXISTS CourseEnrolled ('c_autoID' INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL," +
+                    "'courseId' TEXT ,'groupId' TEXT ,'planFromDate' TEXT ," +
+                    "'planToDate' TEXT ,'coachVerified' BOOLEAN DEFAULT 0,'coachVerificationDate' TEXT ," +
+                    "'courseCompleted' INTEGER NOT NULL DEFAULT 0," +
+                    "'coachImage' TEXT," +
+                    "'sentFlag' INTEGER NOT NULL DEFAULT 0," +
+                    "'language' TEXT," +
+                    "'courseExperience' TEXT )");
+        }
+    };
 }

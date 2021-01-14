@@ -133,4 +133,8 @@ dependencies {
 
 //    LongScreenshot
     implementation 'com.github.peter1492:LongScreenshot:1.0'
+
+    //DateRangeCalendarView
+    implementation 'com.archit.calendar:awesome-calendar:1.1.4'
+
 }

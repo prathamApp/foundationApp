@@ -30,11 +30,12 @@
             android:layout_height="@dimen/_120sdp"
             android:scaleType="centerInside"/>
 
-        <RelativeLayout
+        <LinearLayout
             android:id="@+id/rl_body"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/image_view"
+            android:orientation="vertical"
             android:layout_marginStart="@dimen/_10sdp"
             android:layout_marginEnd="@dimen/_10sdp">
 
@@ -53,7 +54,7 @@
                     android:text="Name : "
                     android:textColor="@color/dark_blue"
                     android:textSize="@dimen/_13sdp"
-                    android:layout_weight="1"/>
+                    android:layout_weight=".7"/>
 
                 <com.pratham.foundation.customView.fontsview.SansTextView
                     android:id="@+id/tv_name_str"
@@ -72,7 +73,6 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/_2sdp"
                 android:layout_marginBottom="@dimen/_2sdp"
-                android:layout_below="@+id/ll_name"
                 android:orientation="horizontal">
                 <com.pratham.foundation.customView.fontsview.SansTextViewBold
                     android:id="@+id/tv_school_lbl"
@@ -82,7 +82,7 @@
                     android:text="School : "
                     android:textColor="@color/dark_blue"
                     android:textSize="@dimen/_13sdp"
-                    android:layout_weight="1"/>
+                    android:layout_weight=".7"/>
 
                 <com.pratham.foundation.customView.fontsview.SansTextView
                     android:id="@+id/tv_school_str"
@@ -101,7 +101,6 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/_2sdp"
                 android:layout_marginBottom="@dimen/_2sdp"
-                android:layout_below="@+id/ll_school"
                 android:orientation="horizontal">
                 <com.pratham.foundation.customView.fontsview.SansTextViewBold
                     android:id="@+id/tv_class_lbl"
@@ -111,7 +110,7 @@
                     android:text="Class : "
                     android:textColor="@color/dark_blue"
                     android:textSize="@dimen/_13sdp"
-                    android:layout_weight="1"/>
+                    android:layout_weight=".7"/>
 
                 <com.pratham.foundation.customView.fontsview.SansTextView
                     android:id="@+id/tv_class_str"
@@ -124,7 +123,7 @@
                     android:textColor="@color/colorSignBoard"/>
             </LinearLayout>
 
-        </RelativeLayout>
+        </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"

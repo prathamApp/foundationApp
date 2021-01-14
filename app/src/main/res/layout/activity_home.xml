@@ -111,13 +111,24 @@
                 app:sl_shadow_radius="5dp"
                 app:sl_shadowed="true">
 
+                <com.pratham.foundation.customView.fontsview.SansTextViewBold
+                    android:id="@+id/tv_level"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/red_ripple_round"
+                    android:text="1"
+                    android:textSize="@dimen/_15sdp"
+                    android:padding="2dp"
+                    android:gravity="center"
+                    android:textAlignment="center"
+                    android:textColor="@color/yellow" />
                 <ImageView
                     android:id="@+id/iv_level"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:background="@drawable/red_ripple_round"
                     android:padding="2dp"
-                    android:src="@drawable/level_1" />
+                    android:visibility="gone"/>
             </com.pratham.foundation.customView.shape_of_view.ShadowLayout>
         </RelativeLayout>
     </RelativeLayout>

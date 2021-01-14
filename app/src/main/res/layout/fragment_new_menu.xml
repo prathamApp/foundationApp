@@ -81,6 +81,7 @@
                     android:layout_marginVertical="@dimen/_10sdp"
                     android:background="@drawable/button_green"
                     android:text="Assign Groups"
+                    android:visibility="gone"
                     android:textColor="@color/white"
                     android:textSize="@dimen/_12sdp" />
 
@@ -112,7 +113,7 @@
                     android:layout_marginVertical="@dimen/_10sdp"
                     android:background="@drawable/button_red"
                     android:text="Enrollment Id"
-                    android:visibility="visible"
+                    android:visibility="gone"
                     android:textColor="@color/white"
                     android:textSize="@dimen/_12sdp" />
 

@@ -3,14 +3,13 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/rl_child_attendance"
     android:layout_width="@dimen/_100sdp"
-    android:layout_height="wrap_content"
-    android:background="@color/full_transparent"
+    android:layout_height="@dimen/_100sdp"
+    android:background="@color/ghost_white"
     android:layout_margin="@dimen/_3sdp"
     app:cardCornerRadius="@dimen/_10sdp">
 
     <RelativeLayout
         android:id="@+id/rl_card"
-        android:background="@drawable/card_color_bg6"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 

@@ -129,13 +129,15 @@ public class FC_Constants {
     public static final String SHOW_COURSE_DETAIL = "show_course_detail";
     public static final String CLOSE_CONTENT_PLAYER = "close_content_player";
     public static final String YOUTUBE_LINK = "youtube";
-    public static final String NEW_ASSET_DB = "NEW_ASSET_DB";
     public static final String SYNC_CERTI_LENGTH = "sync_certi_length";
+    public static final int APP_INTENT_REQUEST_CODE = 4466 ;
+    public static final String CURRENT_LEVEL_NAME = "current_level_name";
+    public static final String NEW_ASSET_DB = "NEW_ASSET_DB";
     public static final String INITIAL_SD_COPIED = "initial_sd_copied";
     public static final String TEST_JSON_COPY = "test_json_copy";
     public static final String TEST_JSON_COPY2 = "test_json_copy2";
+    public static final String SPLASH_OPEN = "SPLASH_OPEN";
     public static boolean SD_DB = false;
-    public static boolean SPLASH_OPEN = false;
     public static String RECEIVED_FOLDER_PATH = "";
     public static boolean TAB_LAYOUT = false;
     public static int FTP_HOTSPOT_KEYMGMT = -11;
@@ -182,6 +184,7 @@ public class FC_Constants {
     public static final String STT_REGEX = "[\"\\-+.'^?!@#%-_;&*,:|।<>()]";
     public static final String STT_REGEX_2 = "[\\-+.\"'^?!@#%-_;&*,:<>()]";
 
+    public static final String CURRENT_API_STUDENT_ID = "current_api_student_id";
     public static final String CURRENT_STUDENT_ID = "current_student_id";
     public static final String CURRENT_STUDENT_NAME = "current_student_name";
     public static final String CURRENT_ROOT_NODE = "current_root_node";
@@ -202,11 +205,13 @@ public class FC_Constants {
     public static final String sec_Profile = "Profile";
     public static final String apkSP = "Smart Phone";
     public static final String apkTab = "Tab";
+    public static String AssLang, examId;
 
     public static final String TYPE_HEADER = "Header";
     public static final String TYPE_ITEM = "Resource";
     public static final String TYPE_FOOTER = "Footer";
     public static final String TYPE_IS_DOWNLOADING = "type_is_downloading";
+    public static final String TYPE_ASSESSMENT = "Assessment";
 
     public static final String SELECT_SUBJECT_SHOWCASE = "select_subject_showcase";
     public static final String HOME_ACTIVITY_SHOWCASE = "home_activity_showcase";
@@ -215,15 +220,17 @@ public class FC_Constants {
     //PROFILE SECTION
     public static final String[] progressArray = {""+ ApplicationClass.getInstance().getResources().getString(R.string.progress),
             ""+ ApplicationClass.getInstance().getResources().getString(R.string.status)};
-    public static final String[] progressSubArray = {""+ ApplicationClass.getInstance().getResources().getString(R.string.Certificates),
+    public static final String[] progressSubArray = {""+ ApplicationClass.getInstance().getResources().getString(R.string.usage),
             ""+ ApplicationClass.getInstance().getResources().getString(R.string.img_ques),
-            ""+ ApplicationClass.getInstance().getResources().getString(R.string.chat_l5)};
-    public static final String[] progressImgSubArray = {"Certificate", "ImageQues", "ChitChat"};
+            ""+ ApplicationClass.getInstance().getResources().getString(R.string.chat_l5),
+            ""+ ApplicationClass.getInstance().getResources().getString(R.string.enroll_course)};
+    public static final String[] progressImgSubArray = {"tab_usage", "ImageQues", "ChitChat", "enroll_course"};
     public static final String[] statusSubArray = {""+ ApplicationClass.getInstance().getResources().getString(R.string.sync),
             ""+ ApplicationClass.getInstance().getResources().getString(R.string.sync_status),
+            ""+ "Change Time",
             ""+ ApplicationClass.getInstance().getResources().getString(R.string.lang_pack),
             ""+ ApplicationClass.getInstance().getResources().getString(R.string.free_space)};
-    public static final String[] statusImgSubArray = {"syncDimg","syncImg", "Lang_ic", "cleanImg"};
+    public static final String[] statusImgSubArray = {"syncDimg","syncImg", "Lang_ic", "cleanImg","change_time"};
 
     public static boolean IS_DOWNLOADING = false;
     public static String STORING_IN;
@@ -231,8 +238,15 @@ public class FC_Constants {
     public static boolean assessmentFlag;
     public static boolean GROUP_LOGIN = false;
     public static final String supervisedAssessment = "supervisedAssessment";
+    public static final String CHECK_COURSE_COMPLETION = "check_course_completion";
+    public static final String COURSE_NOT_VERIFIED = "course_not_verified";
+    public static final String FEEDBACK_GIVEN = "feedback_given";
+    public static final String COURSE_COMPLETED = "course_completed";
+    public static final String ASSIGNMENT_SUBMITTED = "assignment_submitted";
+
 
     //  public static final String INTERNET_DOWNLOAD_API = "http://www.prodigi.openiscool.org/api/pos/Get?id=";
+    public static final String newRootParentId = "SCAPP";
     public static final String rootParentId = "50001";
     public static final String INTERNET_BROWSE = "internet_browse";
     public static final String INTERNET_LEVEL = "internet_level";
@@ -241,20 +255,29 @@ public class FC_Constants {
     public static final String LEARNT_WORDS_INTERNET = "learnt_words_internet";
     public static final String PUSH_IMAGE = "push_image";
     public static final String APP_LANGUAGE_STRING = "app_language_string";
+    public static final String APP_BOARD_STRING = "app_board_string";
     public static final String APP_LANGUAGE = "app_language";
     public static final String APP_LANGUAGE_NODE_ID = "app_language_node_id";
+    public static final String STUDENT_ID_STR = "&student_id=";
     public static final String DEVICE_ID_STR = "&deviceid=";
+    public static final String APP_ID_STR = "&appid=";
     public static final String APP_LANGUAGE_SELECTED = "app_language_selected";
     public static final String TEST_JSON_DW = "test_json_dw";
     public static final String STUDENT_BY_ENROLLMENT_NO = "student_by_enrollment_no";
 
     //    PRATHAM APIS
     public static String uploadDataUrl = "http://devprodigi.openiscool.org/api/Foundation/PushData";
-    public static final String STUDENT_BY_ENROLLMENT_NO_API = "http://delhigovt.centralindia.cloudapp.azure.com:8083/api/StudentEnrollment?enrollmentno=";
+//    public static final String STUDENT_BY_ENROLLMENT_NO_API = "http://www.devtab.openiscool.org/api/StudentEnrollment?enrollmentno=";
+    public static final String STUDENT_BY_ENROLLMENT_NO_API = "http://www.devtab.openiscool.org/api/Enrollement/Get?enrollmentno=";
     public static final String TEST_JSON_API = "http://devposapi.prathamopenschool.org/fcapptestjson/";
     public static final String PUSH_IMAGE_API = "http://devprodigi.openiscool.org/api/Foundation/PostImage";
-    public static final String INTERNET_LANGUAGE_API = "http://devposapi.prathamopenschool.org/api/content/browse?id=";
-    public static final String INTERNET_BROWSE_API = "http://devposapi.prathamopenschool.org/api/content/BrowseLevel2?id=";
+
+//    public static final String INTERNET_LANGUAGE_API = "http://devposapi.prathamopenschool.org/api/content/browse?id=";
+//    public static final String INTERNET_BROWSE_API = "http://devposapi.prathamopenschool.org/api/content/BrowseLevel2?id=";
+
+    public static final String INTERNET_LANGUAGE_API = "http://devposapi.prathamopenschool.org/api/ContentV2/browse?id=";
+    public static final String INTERNET_BROWSE_API = "http://devposapi.prathamopenschool.org/api/ContentV2/BrowseLevel2?id=";
+
     public static final String INTERNET_DOWNLOAD_RESOURCE_API = "http://devposapi.prathamopenschool.org/api/content/downloadv2?id=";
     public static final String INTERNET_DOWNLOAD_TEST_API = "http://devposapi.prathamopenschool.org/api/content/downloadv3?id=";
     public static final String STUDENT_PROGRESS_API = "http://prodigi.openiscool.org/api/cosv2/GetProgress?id=";
@@ -345,6 +368,7 @@ public class FC_Constants {
     public static String SEE_MORE_CLICKED = "see_more_clicked";
     public static String IS_SERVICE_STOPED = "is_service_stoped";
     public static int currentLevel;
+    public static String levelNodeID = "";
     public static int currentLevelPosition;
     public static boolean testSessionEntered = false;
     public static boolean testSessionEnded = true;

@@ -3,7 +3,6 @@ package com.pratham.foundation.ui.contentPlayer.pdf_display;
 import android.graphics.Bitmap;
 import android.media.MediaPlayer;
 import android.os.Bundle;
-import android.os.Environment;
 import android.util.Log;
 
 import androidx.fragment.app.Fragment;
@@ -62,7 +61,7 @@ public class Fragment_PdfViewer extends Fragment implements PDFContract.pdf_View
                 pdf_Path = ApplicationClass.contentSDPath + gameFolderPath + "/" + pdf_Path;
             else
                 pdf_Path = ApplicationClass.foundationPath + gameFolderPath + "/" + pdf_Path;
-            pdf_Path = Environment.getExternalStorageDirectory() + "/PrathamBackups/story.pdf";
+//            pdf_Path = Environment.getExternalStorageDirectory() + "/PrathamBackups/story.pdf";
             if (new File(pdf_Path).exists())
                 pdf_presenter.generateImageFromPdf(pdf_Path);
         }

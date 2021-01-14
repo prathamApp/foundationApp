@@ -18,7 +18,6 @@ import android.widget.ImageButton;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.UiThread;
 import androidx.fragment.app.Fragment;
@@ -42,8 +41,10 @@ import com.pratham.foundation.modalclasses.EventMessage;
 import com.pratham.foundation.modalclasses.ModalTopCertificates;
 import com.pratham.foundation.services.shared_preferences.FastSave;
 import com.pratham.foundation.ui.admin_panel.MenuActivity_;
+import com.pratham.foundation.ui.admin_panel.fragment_admin_panel.tab_usage.TabUsageActivity_;
 import com.pratham.foundation.ui.app_home.profile_new.certificate_display.CertificateDisplayActivity_;
 import com.pratham.foundation.ui.app_home.profile_new.chat_display_list.DisplayChatActivity_;
+import com.pratham.foundation.ui.app_home.profile_new.course_enrollment.CourseEnrollmentActivity_;
 import com.pratham.foundation.ui.app_home.profile_new.display_image_ques_list.DisplayImageQuesActivity_;
 import com.pratham.foundation.ui.bottom_fragment.BottomStudentsFragment;
 import com.pratham.foundation.ui.bottom_fragment.BottomStudentsFragment_;
@@ -249,7 +250,7 @@ public class ProfileFragment extends Fragment implements ProfileContract.Profile
             e.printStackTrace();
         }
         if (!ApplicationClass.getAppMode()) {
-            SPLASH_OPEN = false;
+            FastSave.getInstance().saveBoolean(SPLASH_OPEN,false);
             BottomStudentsFragment_ bottomStudentsFragment = new BottomStudentsFragment_();
             bottomStudentsFragment.show(Objects.requireNonNull(getActivity()).getSupportFragmentManager(),
                     BottomStudentsFragment.class.getSimpleName());
@@ -358,7 +359,32 @@ public class ProfileFragment extends Fragment implements ProfileContract.Profile
             case "Lang_ic":
                 show_STT_Dialog();
                 break;
+            case "enroll_course":
+                enrollCourse();
+                break;
+            case "change_time":
+                changeTime();
+                break;
+            case "tab_usage":
+                showUsage();
+                break;
         }
+    }
+
+    @UiThread
+    public void changeTime() {
+        startActivity(new Intent(android.provider.Settings.ACTION_DATE_SETTINGS));
+    }
+
+    @UiThread
+    public void showUsage() {
+        Intent intent = new Intent(getActivity(), TabUsageActivity_.class);
+        startActivityForResult(intent, 1);
+    }
+
+    private void enrollCourse() {
+//        Toast.makeText(context, "Course Enrollment", Toast.LENGTH_SHORT).show();
+        startActivity(new Intent(context, CourseEnrollmentActivity_.class));
     }
 
     private void show_STT_Dialog() {
@@ -504,10 +530,6 @@ public class ProfileFragment extends Fragment implements ProfileContract.Profile
 
     private void showCertificates() {
         startActivity(new Intent(context, CertificateDisplayActivity_.class));
-    }
-
-    private void showUsage() {
-        Toast.makeText(context, "Work In Progress", Toast.LENGTH_SHORT).show();
     }
 
     @Click(R.id.ib_langChange)

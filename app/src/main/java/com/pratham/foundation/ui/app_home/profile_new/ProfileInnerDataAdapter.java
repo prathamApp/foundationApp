@@ -83,51 +83,76 @@ public class ProfileInnerDataAdapter extends RecyclerView.Adapter {
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder viewHolder, int i) {
 
         ItemHolder itemHolder = (ItemHolder) viewHolder;
-        itemHolder.tvTitle.setText(itemsList[i]);
         switch (itemsImgList[i]) {
             case "Certificate":
+                itemHolder.tvTitle.setText(mContext.getResources().getString(R.string.Certificates));
                 itemHolder.item_Image.setImageResource(R.drawable.certificates);
                 itemHolder.rl_root.setOnClickListener(v -> itemClicked.itemClicked("Certificate"));
                 break;
             case "Projects":
+                itemHolder.tvTitle.setText("Projects");
                 itemHolder.item_Image.setImageResource(R.drawable.lang_01);
                 itemHolder.rl_root.setOnClickListener(v -> itemClicked.itemClicked("Projects"));
                 break;
             case "Usage":
+                itemHolder.tvTitle.setText(mContext.getResources().getString(R.string.usage));
                 itemHolder.item_Image.setImageResource(R.drawable.progress_report);
                 itemHolder.rl_root.setOnClickListener(v -> itemClicked.itemClicked("Usage"));
                 break;
             case "ImageQues":
+                itemHolder.tvTitle.setText(mContext.getResources().getString(R.string.img_ques));
                 itemHolder.item_Image.setImageResource(R.drawable.camera);
                 itemHolder.rl_root.setOnClickListener(v -> itemClicked.itemClicked("ImageQues"));
                 break;
             case "ChitChat":
+                itemHolder.tvTitle.setText(mContext.getResources().getString(R.string.chat_l5));
                 itemHolder.item_Image.setImageResource(R.drawable.chat);
                 itemHolder.rl_root.setOnClickListener(v -> itemClicked.itemClicked("ChitChat"));
                 break;
             case "Share Content":
+                itemHolder.tvTitle.setText(mContext.getResources().getString(R.string.share_share));
                 itemHolder.item_Image.setImageResource(R.drawable.ic_share_receive);
                 itemHolder.rl_root.setOnClickListener(v -> itemClicked.itemClicked("Share Content"));
                 break;
             case "Share App":
+                itemHolder.tvTitle.setText(mContext.getResources().getString(R.string.share_share));
                 itemHolder.item_Image.setImageResource(R.drawable.app_share);
                 itemHolder.rl_root.setOnClickListener(v -> itemClicked.itemClicked("Share App"));
                 break;
             case "syncImg":
+                itemHolder.tvTitle.setText(mContext.getResources().getString(R.string.sync_status));
                 itemHolder.item_Image.setImageResource(R.drawable.refresh);
                 itemHolder.rl_root.setOnClickListener(v -> itemClicked.itemClicked("sync status"));
                 break;
             case "syncDimg":
+                itemHolder.tvTitle.setText(mContext.getResources().getString(R.string.sync));
                 itemHolder.item_Image.setImageResource(R.drawable.ic_sync);
                 itemHolder.rl_root.setOnClickListener(v -> itemClicked.itemClicked("Sync Data"));
                 break;
             case "Lang_ic":
+                itemHolder.tvTitle.setText(mContext.getResources().getString(R.string.lang_pack));
                 itemHolder.item_Image.setImageResource(R.drawable.translator);
                 itemHolder.rl_root.setOnClickListener(v -> itemClicked.itemClicked("Lang_ic"));
                 break;
             case "cleanImg":
+                itemHolder.tvTitle.setText(mContext.getResources().getString(R.string.free_space));
                 itemHolder.item_Image.setImageResource(R.drawable.broom_clean);
                 itemHolder.rl_root.setOnClickListener(v -> itemClicked.itemClicked("free space"));
+                break;
+            case "enroll_course":
+                itemHolder.tvTitle.setText(mContext.getResources().getString(R.string.enroll_course));
+                itemHolder.item_Image.setImageResource(R.drawable.enroll_course);
+                itemHolder.rl_root.setOnClickListener(v -> itemClicked.itemClicked("enroll_course"));
+                break;
+            case "change_time":
+                itemHolder.tvTitle.setText("Change Time");
+                itemHolder.item_Image.setImageResource(R.drawable.clock);
+                itemHolder.rl_root.setOnClickListener(v -> itemClicked.itemClicked("change_time"));
+                break;
+            case "tab_usage":
+                itemHolder.tvTitle.setText(mContext.getResources().getString(R.string.usage));
+                itemHolder.item_Image.setImageResource(R.drawable.progress_report);
+                itemHolder.rl_root.setOnClickListener(v -> itemClicked.itemClicked("tab_usage"));
                 break;
         }
     }

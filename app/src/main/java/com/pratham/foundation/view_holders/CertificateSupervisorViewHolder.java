@@ -19,7 +19,7 @@ import com.pratham.foundation.R;
 import com.pratham.foundation.database.AppDatabase;
 import com.pratham.foundation.database.domain.SupervisorData;
 import com.pratham.foundation.modalclasses.CertificateModelClass;
-import com.pratham.foundation.ui.app_home.test_fragment.CertificateClicked;
+import com.pratham.foundation.ui.test.certificate.CertificateClicked;
 
 import java.util.Objects;
 
