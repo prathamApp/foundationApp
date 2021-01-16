@@ -425,7 +425,8 @@ public class BottomStudentsFragment extends BottomSheetDialogFragment
 
     public void endSession() {
         try {
-            String curSession = AppDatabase.getDatabaseInstance(context).getStatusDao().getValue("CurrentSession");
+//            String curSession = AppDatabase.getDatabaseInstance(context).getStatusDao().getValue("CurrentSession");
+            String curSession = FastSave.getInstance().getString(FC_Constants.CURRENT_SESSION, "" + "NA");
             AppDatabase.getDatabaseInstance(context).getSessionDao().UpdateToDate(curSession, FC_Utility.getCurrentDateTime());
             BackupDatabase.backup(getActivity());
         } catch (Exception e) {

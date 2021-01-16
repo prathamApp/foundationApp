@@ -88,7 +88,7 @@ public class CourseEnrollmentActivity extends BaseActivity implements
     @AfterViews
     public void initialize() {
         presenter.setView(CourseEnrollmentActivity.this);
-        date_btn.setVisibility(View.VISIBLE);
+        date_btn.setVisibility(View.GONE);
         courseEnrolled = new ArrayList<>();
         setProfileName();
         showLoader();
@@ -333,6 +333,7 @@ public class CourseEnrollmentActivity extends BaseActivity implements
         }
     }
 
+    public static boolean courseSelected = false;
     @Override
     public void setLevelList(List<ContentTable> levelList) {
         try {

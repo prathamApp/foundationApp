@@ -31,6 +31,7 @@ import com.pratham.foundation.database.domain.KeyWords;
 import com.pratham.foundation.database.domain.Score;
 import com.pratham.foundation.database.domain.Session;
 import com.pratham.foundation.database.domain.Status;
+import com.pratham.foundation.modalclasses.Model_CourseEnrollment;
 import com.pratham.foundation.services.AppExitService;
 import com.pratham.foundation.services.LocationService;
 import com.pratham.foundation.services.shared_preferences.FastSave;
@@ -203,6 +204,37 @@ public class SplashPresenter implements SplashContract.SplashPresenter {
                         }
                     }
                     AppDatabase.getDatabaseInstance(context).getScoreDao().addScoreList(contents);
+                    content_cursor.close();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                try {
+                    Cursor content_cursor;
+//                            appDatabase.getContentTableDao().clearDB();
+                    content_cursor = db.rawQuery("SELECT * FROM CourseEnrolled", null);
+                    //populate contents
+                    List<Model_CourseEnrollment> courseEnrollmentList = new ArrayList<>();
+                    if (content_cursor.moveToFirst()) {
+                        while (!content_cursor.isAfterLast()) {
+                            Model_CourseEnrollment detail = new Model_CourseEnrollment();
+                            detail.setCourseId("" + content_cursor.getString(content_cursor.getColumnIndex("courseId")));
+                            detail.setGroupId("" + content_cursor.getString(content_cursor.getColumnIndex("groupId")));
+                            detail.setPlanFromDate("" + content_cursor.getString(content_cursor.getColumnIndex("planFromDate")));
+                            detail.setPlanToDate("" + content_cursor.getString(content_cursor.getColumnIndex("planToDate")));
+                            detail.setCoachVerified(Boolean.parseBoolean("" + content_cursor.getString(content_cursor.getColumnIndex("coachVerified"))));
+                            detail.setCoachVerificationDate("" + content_cursor.getString(content_cursor.getColumnIndex("coachVerificationDate")));
+                            detail.setCourseExperience("" + content_cursor.getString(content_cursor.getColumnIndex("courseExperience")));
+                            detail.setCourse_status("" + content_cursor.getString(content_cursor.getColumnIndex("courseCompleted")));
+                            detail.setCoachImage("" + content_cursor.getString(content_cursor.getColumnIndex("coachImage")));
+                            detail.setLanguage("" + content_cursor.getString(content_cursor.getColumnIndex("language")));
+                            detail.setSentFlag(content_cursor.getInt(content_cursor.getColumnIndex("level")));
+                            courseEnrollmentList.add(detail);
+                            content_cursor.moveToNext();
+                        }
+                    }
+                    AppDatabase.getDatabaseInstance(context).getCourseDao().insertListCourse(courseEnrollmentList);
+                    FastSave.getInstance().saveString(CURRENT_VERSION, "" + FC_Utility.getCurrentVersion(context));
+                    Log.d("-CT-", "populateMenu_New END");
                     content_cursor.close();
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -587,9 +619,6 @@ public class SplashPresenter implements SplashContract.SplashPresenter {
                         Log.d("pushorassign", "doInBackground: ");
                         if (new File(path).exists()) {
                             copyFile(context, path);
-
-                            FastSave.getInstance().saveBoolean(FC_Constants.KEY_ASSET_COPIED, true);
-
                             if (!FastSave.getInstance().getBoolean(FC_Constants.INITIAL_ENTRIES, false))
                                 doInitialEntries(AppDatabase.getDatabaseInstance(context));
 //                            if (!FastSave.getInstance().getBoolean(FC_Constants.KEY_MENU_COPIED, false))
@@ -696,8 +725,8 @@ public class SplashPresenter implements SplashContract.SplashPresenter {
                 if (db_file.exists()) {
                     SQLiteDatabase db = SQLiteDatabase.openDatabase(db_file.getAbsolutePath(), null, SQLiteDatabase.OPEN_READONLY);
                     if (db != null) {
-                        Cursor content_cursor;
                         try {
+                            Cursor content_cursor;
 //                            appDatabase.getContentTableDao().clearDB();
                             content_cursor = db.rawQuery("SELECT * FROM ContentTable", null);
                             //populate contents
@@ -731,12 +760,43 @@ public class SplashPresenter implements SplashContract.SplashPresenter {
                                     }
                                     detail.setSubject("" + content_cursor.getString(content_cursor.getColumnIndex("subject")));
                                     detail.setSeq_no(content_cursor.getInt(content_cursor.getColumnIndex("seq_no")));
+                                    detail.setStudentId("" + content_cursor.getString(content_cursor.getColumnIndex("studentId")));
                                     detail.setOnSDCard(false);
                                     contents.add(detail);
                                     content_cursor.moveToNext();
                                 }
                             }
                             AppDatabase.getDatabaseInstance(context).getContentTableDao().addContentList(contents);
+                            FastSave.getInstance().saveString(CURRENT_VERSION, "" + FC_Utility.getCurrentVersion(context));
+                            Log.d("-CT-", "populateMenu_New END");
+                            content_cursor.close();
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                        try {
+                            Cursor content_cursor;
+                            content_cursor = db.rawQuery("SELECT * FROM CourseEnrolled", null);
+                            //populate contents
+                            List<Model_CourseEnrollment> courseEnrollmentList = new ArrayList<>();
+                            if (content_cursor.moveToFirst()) {
+                                while (!content_cursor.isAfterLast()) {
+                                    Model_CourseEnrollment detail = new Model_CourseEnrollment();
+                                    detail.setCourseId("" + content_cursor.getString(content_cursor.getColumnIndex("courseId")));
+                                    detail.setGroupId("" + content_cursor.getString(content_cursor.getColumnIndex("groupId")));
+                                    detail.setPlanFromDate("" + content_cursor.getString(content_cursor.getColumnIndex("planFromDate")));
+                                    detail.setPlanToDate("" + content_cursor.getString(content_cursor.getColumnIndex("planToDate")));
+                                    detail.setCoachVerified(Boolean.parseBoolean("" + content_cursor.getString(content_cursor.getColumnIndex("coachVerified"))));
+                                    detail.setCoachVerificationDate("" + content_cursor.getString(content_cursor.getColumnIndex("coachVerificationDate")));
+                                    detail.setCourseExperience("" + content_cursor.getString(content_cursor.getColumnIndex("courseExperience")));
+                                    detail.setCourse_status("" + content_cursor.getString(content_cursor.getColumnIndex("courseCompleted")));
+                                    detail.setCoachImage("" + content_cursor.getString(content_cursor.getColumnIndex("coachImage")));
+                                    detail.setLanguage("" + content_cursor.getString(content_cursor.getColumnIndex("language")));
+                                    detail.setSentFlag(content_cursor.getInt(content_cursor.getColumnIndex("level")));
+                                    courseEnrollmentList.add(detail);
+                                    content_cursor.moveToNext();
+                                }
+                            }
+                            AppDatabase.getDatabaseInstance(context).getCourseDao().insertListCourse(courseEnrollmentList);
                             FastSave.getInstance().saveString(CURRENT_VERSION, "" + FC_Utility.getCurrentVersion(context));
                             Log.d("-CT-", "populateMenu_New END");
                             content_cursor.close();
@@ -778,6 +838,7 @@ public class SplashPresenter implements SplashContract.SplashPresenter {
                 read = in.read(buffer);
             }
             unzipFile(ApplicationClass.foundationPath + "/.FCA/English.zip", ApplicationClass.foundationPath + "/.FCA");
+            FastSave.getInstance().saveBoolean(FC_Constants.KEY_ASSET_COPIED, true);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -836,7 +897,7 @@ public class SplashPresenter implements SplashContract.SplashPresenter {
 
     @UiThread
     public void copyTestJsons(int no) {
-        if (new File(ApplicationClass.contentSDPath + "/.FCA/TestJsons/Test_" + no + ".json").exists()) {
+/*        if (new File(ApplicationClass.contentSDPath + "/.FCA/TestJsons/Test_" + no + ".json").exists()) {
             try {
                 File internalTestJson = new File(Environment.getExternalStorageDirectory().toString()
                         + "/.FCAInternal/TestJsons/Test_" + no + ".json");
@@ -880,12 +941,12 @@ public class SplashPresenter implements SplashContract.SplashPresenter {
                 no += 1;
                 copyTestJsons(no);
             }
-        }
+        }*/
     }
 
     @UiThread
     public void copyInternalTestJsons(int no) {
-        if (new File(ApplicationClass.foundationPath + "/.FCA/Test_" + no + ".json").exists()) {
+/*        if (new File(ApplicationClass.foundationPath + "/.FCA/Test_" + no + ".json").exists()) {
             try {
                 File internalTestJson = new File(Environment.getExternalStorageDirectory().toString()
                         + "/.FCAInternal/TestJsons/Test_" + no + ".json");
@@ -932,7 +993,7 @@ public class SplashPresenter implements SplashContract.SplashPresenter {
                 no += 1;
                 copyInternalTestJsons(no);
             }
-        }
+        }*/
     }
 
     @SuppressLint("StaticFieldLeak")
@@ -990,6 +1051,7 @@ public class SplashPresenter implements SplashContract.SplashPresenter {
                                             detail.setOrigNodeVersion(content_cursor.getString(content_cursor.getColumnIndex("origNodeVersion")));
                                             detail.setSubject(content_cursor.getString(content_cursor.getColumnIndex("subject")));
                                             detail.setSeq_no(content_cursor.getInt(content_cursor.getColumnIndex("seq_no")));
+                                            detail.setStudentId("" + content_cursor.getString(content_cursor.getColumnIndex("studentId")));
                                             detail.setOnSDCard(true);
                                             contents.add(detail);
                                             content_cursor.moveToNext();
@@ -998,15 +1060,43 @@ public class SplashPresenter implements SplashContract.SplashPresenter {
                                     AppDatabase.getDatabaseInstance(context).getContentTableDao().addContentList(contents);
                                     ApplicationClass.contentExistOnSD = true;
                                     content_cursor.close();
+//                            appDatabase.getContentTableDao().clearDB();
+                                    Cursor content_cursor2;
+                                    content_cursor2 = db.rawQuery("SELECT * FROM CourseEnrolled", null);
+                                    //populate contents
+                                    List<Model_CourseEnrollment> courseEnrollmentList = new ArrayList<>();
+                                    if (content_cursor2.moveToFirst()) {
+                                        while (!content_cursor2.isAfterLast()) {
+                                            Model_CourseEnrollment detail = new Model_CourseEnrollment();
+                                            detail.setCourseId("" + content_cursor2.getString(content_cursor2.getColumnIndex("courseId")));
+                                            detail.setGroupId("" + content_cursor2.getString(content_cursor2.getColumnIndex("groupId")));
+                                            detail.setPlanFromDate("" + content_cursor2.getString(content_cursor2.getColumnIndex("planFromDate")));
+                                            detail.setPlanToDate("" + content_cursor2.getString(content_cursor2.getColumnIndex("planToDate")));
+                                            detail.setCoachVerified(Boolean.parseBoolean("" + content_cursor2.getString(content_cursor2.getColumnIndex("coachVerified"))));
+                                            detail.setCoachVerificationDate("" + content_cursor2.getString(content_cursor2.getColumnIndex("coachVerificationDate")));
+                                            detail.setCourseExperience("" + content_cursor2.getString(content_cursor2.getColumnIndex("courseExperience")));
+                                            detail.setCourse_status("" + content_cursor2.getString(content_cursor2.getColumnIndex("courseCompleted")));
+                                            detail.setCoachImage("" + content_cursor2.getString(content_cursor2.getColumnIndex("coachImage")));
+                                            detail.setLanguage("" + content_cursor2.getString(content_cursor2.getColumnIndex("language")));
+                                            detail.setSentFlag(content_cursor2.getInt(content_cursor2.getColumnIndex("level")));
+                                            courseEnrollmentList.add(detail);
+                                            content_cursor2.moveToNext();
+                                        }
+                                    }
+                                    AppDatabase.getDatabaseInstance(context).getCourseDao().insertListCourse(courseEnrollmentList);
+                                    FastSave.getInstance().saveString(CURRENT_VERSION, "" + FC_Utility.getCurrentVersion(context));
+                                    Log.d("-CT-", "populateMenu_New END");
+                                    content_cursor2.close();
                                     FastSave.getInstance().saveBoolean(FC_Constants.KEY_MENU_COPIED, true);
-                                    FastSave.getInstance().saveBoolean(FC_Constants.INITIAL_SD_COPIED, true);
                                     Log.d("copyDBFile", "Content Data Copy complete: ");
                                 } catch (Exception e) {
                                     Log.d("copyDBFile", "Excep: ");
                                     e.printStackTrace();
                                 }
+
                             }
-                        }
+                        } else
+                            FastSave.getInstance().saveBoolean(FC_Constants.INITIAL_SD_COPIED, true);
                         BackupDatabase.backup(context);
 //                        if (!exitDialogOpen)
 //                            splashView.gotoNextActivity();
@@ -1075,6 +1165,7 @@ public class SplashPresenter implements SplashContract.SplashPresenter {
                                         detail.setOrigNodeVersion(content_cursor.getString(content_cursor.getColumnIndex("origNodeVersion")));
                                         detail.setSubject(content_cursor.getString(content_cursor.getColumnIndex("subject")));
                                         detail.setSeq_no(content_cursor.getInt(content_cursor.getColumnIndex("seq_no")));
+                                        detail.setStudentId("" + content_cursor.getString(content_cursor.getColumnIndex("studentId")));
                                         detail.setOnSDCard(false);
                                         contents.add(detail);
                                         content_cursor.moveToNext();
@@ -1082,6 +1173,32 @@ public class SplashPresenter implements SplashContract.SplashPresenter {
                                 }
                                 AppDatabase.getDatabaseInstance(context).getContentTableDao().addContentList(contents);
                                 content_cursor.close();
+                                Cursor content_cursor2;
+                                content_cursor2 = db.rawQuery("SELECT * FROM CourseEnrolled", null);
+                                //populate contents
+                                List<Model_CourseEnrollment> courseEnrollmentList = new ArrayList<>();
+                                if (content_cursor2.moveToFirst()) {
+                                    while (!content_cursor2.isAfterLast()) {
+                                        Model_CourseEnrollment detail = new Model_CourseEnrollment();
+                                        detail.setCourseId("" + content_cursor2.getString(content_cursor2.getColumnIndex("courseId")));
+                                        detail.setGroupId("" + content_cursor2.getString(content_cursor2.getColumnIndex("groupId")));
+                                        detail.setPlanFromDate("" + content_cursor2.getString(content_cursor2.getColumnIndex("planFromDate")));
+                                        detail.setPlanToDate("" + content_cursor2.getString(content_cursor2.getColumnIndex("planToDate")));
+                                        detail.setCoachVerified(Boolean.parseBoolean("" + content_cursor2.getString(content_cursor2.getColumnIndex("coachVerified"))));
+                                        detail.setCoachVerificationDate("" + content_cursor2.getString(content_cursor2.getColumnIndex("coachVerificationDate")));
+                                        detail.setCourseExperience("" + content_cursor2.getString(content_cursor2.getColumnIndex("courseExperience")));
+                                        detail.setCourse_status("" + content_cursor2.getString(content_cursor2.getColumnIndex("courseCompleted")));
+                                        detail.setCoachImage("" + content_cursor2.getString(content_cursor2.getColumnIndex("coachImage")));
+                                        detail.setLanguage("" + content_cursor2.getString(content_cursor2.getColumnIndex("language")));
+                                        detail.setSentFlag(content_cursor2.getInt(content_cursor2.getColumnIndex("level")));
+                                        courseEnrollmentList.add(detail);
+                                        content_cursor2.moveToNext();
+                                    }
+                                }
+                                AppDatabase.getDatabaseInstance(context).getCourseDao().insertListCourse(courseEnrollmentList);
+                                FastSave.getInstance().saveString(CURRENT_VERSION, "" + FC_Utility.getCurrentVersion(context));
+                                Log.d("-CT-", "populateMenu_New END");
+                                content_cursor2.close();
                                 FastSave.getInstance().saveBoolean(FC_Constants.KEY_MENU_COPIED, true);
                                 FastSave.getInstance().saveString(CURRENT_VERSION, "" + FC_Utility.getCurrentVersion(context));
                                 Log.d("copyDBFile", "Content Data Copy complete: ");
@@ -1091,7 +1208,8 @@ public class SplashPresenter implements SplashContract.SplashPresenter {
                             }
                         }
                     }
-                }
+                } else
+                    FastSave.getInstance().saveBoolean(FC_Constants.KEY_MENU_COPIED, true);
             }
             context.startService(new Intent(context, AppExitService.class));
             BackupDatabase.backup(context);
@@ -1313,6 +1431,7 @@ public class SplashPresenter implements SplashContract.SplashPresenter {
                                     detail.setOrigNodeVersion(newContent_cursor.getString(newContent_cursor.getColumnIndex("origNodeVersion")));
                                     detail.setSubject(newContent_cursor.getString(newContent_cursor.getColumnIndex("subject")));
                                     detail.setSeq_no(newContent_cursor.getInt(newContent_cursor.getColumnIndex("seq_no")));
+                                    detail.setStudentId("" + newContent_cursor.getString(newContent_cursor.getColumnIndex("studentId")));
                                     detail.setOnSDCard(true);
                                     contents.add(detail);
                                     newContent_cursor.moveToNext();
@@ -1333,72 +1452,5 @@ public class SplashPresenter implements SplashContract.SplashPresenter {
             e.printStackTrace();
         }
     }
-
-    /*    @Background
-    @Override
-    public void insertNewData() {
-        try {
-            AssetManager assetManager = context.getAssets();
-            InputStream in = assetManager.open("foundation_db");
-            OutputStream out = new FileOutputStream(ApplicationClass.foundationPath + "/foundation_db");
-            byte[] buffer = new byte[1024];
-            int read = in.read(buffer);
-            while (read != -1) {
-                out.write(buffer, 0, read);
-                read = in.read(buffer);
-            }
-
-            File folder_file, db_file;
-            folder_file = new File(ApplicationClass.foundationPath + "/.FCA");
-            if (folder_file.exists()) {
-                Log.d("-CT-", "doInBackground ApplicationClass.contentSDPath: " + ApplicationClass.contentSDPath);
-                db_file = new File(folder_file + "/" + DB_NAME);
-//                    db_file = new File(folder_file.getAbsolutePath() + "/" + AppDatabase.DB_NAME);
-                if (db_file.exists()) {
-                    SQLiteDatabase db = SQLiteDatabase.openDatabase(db_file.getAbsolutePath(), null, SQLiteDatabase.OPEN_READONLY);
-                    if (db != null) {
-                        Cursor content_cursor;
-                        try {
-                            content_cursor = db.rawQuery("SELECT * FROM ContentTable", null);
-                            //populate contents
-                            List<ContentTable> contents = new ArrayList<>();
-                            if (content_cursor.moveToFirst()) {
-                                while (!content_cursor.isAfterLast()) {
-                                    ContentTable detail = new ContentTable();
-                                    detail.setNodeId(content_cursor.getString(content_cursor.getColumnIndex("nodeId")));
-                                    detail.setNodeType(content_cursor.getString(content_cursor.getColumnIndex("nodeType")));
-                                    detail.setNodeTitle(content_cursor.getString(content_cursor.getColumnIndex("nodeTitle")));
-                                    detail.setNodeKeywords(content_cursor.getString(content_cursor.getColumnIndex("nodeKeywords")));
-                                    detail.setNodeAge(content_cursor.getString(content_cursor.getColumnIndex("nodeAge")));
-                                    detail.setNodeDesc(content_cursor.getString(content_cursor.getColumnIndex("nodeDesc")));
-                                    detail.setNodeServerImage(content_cursor.getString(content_cursor.getColumnIndex("nodeServerImage")));
-                                    detail.setNodeImage(content_cursor.getString(content_cursor.getColumnIndex("nodeImage")));
-                                    detail.setResourceId(content_cursor.getString(content_cursor.getColumnIndex("resourceId")));
-                                    detail.setResourceType(content_cursor.getString(content_cursor.getColumnIndex("resourceType")));
-                                    detail.setResourcePath(content_cursor.getString(content_cursor.getColumnIndex("resourcePath")));
-                                    detail.setLevel("" + content_cursor.getInt(content_cursor.getColumnIndex("level")));
-                                    detail.setContentLanguage(content_cursor.getString(content_cursor.getColumnIndex("contentLanguage")));
-                                    detail.setParentId(content_cursor.getString(content_cursor.getColumnIndex("parentId")));
-                                    detail.setContentType(content_cursor.getString(content_cursor.getColumnIndex("contentType")));
-                                    detail.setIsDownloaded("" + content_cursor.getString(content_cursor.getColumnIndex("isDownloaded")));
-                                    detail.setOnSDCard(false);
-                                    contents.add(detail);
-                                    content_cursor.moveToNext();
-                                }
-                            }
-                            AppDatabase.getDatabaseInstance(context).getContentTableDao().addNewContentList(contents);
-                            content_cursor.close();
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                        }
-                    }
-                }
-            }
-            FastSave.getInstance().saveBoolean(FC_Constants.newDataLanguageInserted, true);
-            BackupDatabase.backup(context);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }*/
 }
 

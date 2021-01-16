@@ -103,7 +103,7 @@ public class SelectSubject extends BaseActivity implements
         presenter.setView(SelectSubject.this);
         tv_update.setVisibility(View.GONE);
         FastSave.getInstance().saveBoolean(SPLASH_OPEN, false);
-        getTimeFormServer();
+//        getTimeFormServer();
 
         //get student name
         if (FastSave.getInstance().getString(FC_Constants.LOGIN_MODE, FC_Constants.GROUP_MODE).contains("group"))
@@ -183,7 +183,7 @@ public class SelectSubject extends BaseActivity implements
     @UiThread
     @Override
     public void notifySubjAdapter() {
-        getTimeFormServer();
+//        getTimeFormServer();
         if (subjectAdapter == null) {
             //Populate subject list to recyclerview
             rl_no_data.setVisibility(View.GONE);

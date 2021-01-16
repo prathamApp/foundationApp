@@ -85,56 +85,60 @@ public class CourseEnrollmentPresenter implements CourseEnrollmentContract.Cours
     @Background
     @Override
     public void addCourseToDb(String week, ContentTable selectedCourse, Calendar startDate, Calendar endDate) {
-        String groupId = FastSave.getInstance().getString(CURRENT_STUDENT_ID, "");
-        List<Model_CourseEnrollment> courseEnrollments = enrolledCoursesFromDb(week, groupId);
-        boolean isCourseAlreadyEnrolled = false;
-        for (Model_CourseEnrollment cen : Objects.requireNonNull(courseEnrollments)) {
-            if (selectedCourse.getNodeId().equalsIgnoreCase(cen.getCourseDetail().getNodeId())) {
-                isCourseAlreadyEnrolled = true;
-                break;
+        try {
+            String groupId = FastSave.getInstance().getString(CURRENT_STUDENT_ID, "");
+            List<Model_CourseEnrollment> courseEnrollments = enrolledCoursesFromDb(week, groupId);
+            boolean isCourseAlreadyEnrolled = false;
+            for (Model_CourseEnrollment cen : Objects.requireNonNull(courseEnrollments)) {
+                if (selectedCourse.getNodeId().equalsIgnoreCase(cen.getCourseDetail().getNodeId())) {
+                    isCourseAlreadyEnrolled = true;
+                    break;
+                }
             }
-        }
-        if (!isCourseAlreadyEnrolled) {
-            Model_CourseEnrollment courseEnrollment = new Model_CourseEnrollment();
-            courseEnrollment.setCoachVerificationDate("");
-            courseEnrollment.setCoachVerified(false);
-            //add experience as json object string in db
-            Model_CourseExperience model_courseExperience = new Model_CourseExperience();
-            model_courseExperience.setAssignments(null);
-            model_courseExperience.setWords_learnt("");
-            model_courseExperience.setAssignments_completed("");
-            model_courseExperience.setAssignments_description("");
-            model_courseExperience.setCoach_comments("");
-            model_courseExperience.setCoach_verification_date("");
-            model_courseExperience.setCoach_image("");
-            model_courseExperience.setAssignment_submission_date(FC_Utility.getCurrentDateTime());
-            model_courseExperience.setStatus(FC_Constants.COURSE_NOT_VERIFIED);
+            if (!isCourseAlreadyEnrolled) {
+                Model_CourseEnrollment courseEnrollment = new Model_CourseEnrollment();
+                courseEnrollment.setCoachVerificationDate("");
+                courseEnrollment.setCoachVerified(false);
+                //add experience as json object string in db
+                Model_CourseExperience model_courseExperience = new Model_CourseExperience();
+                model_courseExperience.setAssignments(null);
+                model_courseExperience.setWords_learnt("");
+                model_courseExperience.setAssignments_completed("");
+                model_courseExperience.setAssignments_description("");
+                model_courseExperience.setCoach_comments("");
+                model_courseExperience.setCoach_verification_date("");
+                model_courseExperience.setCoach_image("");
+                model_courseExperience.setAssignment_submission_date(FC_Utility.getCurrentDateTime());
+                model_courseExperience.setStatus(FC_Constants.COURSE_NOT_VERIFIED);
 
-            courseEnrollment.setCourseExperience(new Gson().toJson(model_courseExperience));
-            courseEnrollment.setCourseDetail(selectedCourse);
-            courseEnrollment.setCourseId(selectedCourse.getNodeId());
-            courseEnrollment.setGroupId(groupId);
-            courseEnrollment.setPlanFromDate(week + " " + startDate.getTime().toString());
-            courseEnrollment.setPlanToDate(week + " " + endDate.getTime().toString());
-            courseEnrollment.setSentFlag(0);
-            courseEnrollment.setLanguage(FastSave.getInstance().getString(FC_Constants.LANGUAGE, FC_Constants.HINDI));
-            //add @courseEnrollment in hashmap and db
-            List<Model_CourseEnrollment> enrollments;
-            if (coursesPerWeek.containsKey(week)) {
-                enrollments = new ArrayList<>(Objects.requireNonNull(coursesPerWeek.get(week)));
-                enrollments.add(courseEnrollment);
+                courseEnrollment.setCourseExperience(new Gson().toJson(model_courseExperience));
+                courseEnrollment.setCourseDetail(selectedCourse);
+                courseEnrollment.setCourseId(selectedCourse.getNodeId());
+                courseEnrollment.setGroupId(groupId);
+                courseEnrollment.setPlanFromDate(week + " " + startDate.getTime().toString());
+                courseEnrollment.setPlanToDate(week + " " + endDate.getTime().toString());
+                courseEnrollment.setSentFlag(0);
+                courseEnrollment.setLanguage(FastSave.getInstance().getString(FC_Constants.LANGUAGE, FC_Constants.HINDI));
+                //add @courseEnrollment in hashmap and db
+                List<Model_CourseEnrollment> enrollments;
+                if (coursesPerWeek.containsKey(week)) {
+                    enrollments = new ArrayList<>(Objects.requireNonNull(coursesPerWeek.get(week)));
+                    enrollments.add(courseEnrollment);
+                } else {
+                    enrollments = new ArrayList<>();
+                    enrollments.add(courseEnrollment);
+                }
+                coursesPerWeek.put(week, enrollments);
+                AppDatabase.getDatabaseInstance(context).getCourseDao().insertCourse(courseEnrollment);
+                viewCE.courseAdded();
+                BackupDatabase.backup(context);
+
             } else {
-                enrollments = new ArrayList<>();
-                enrollments.add(courseEnrollment);
+                //course is already added in that particular week
+                viewCE.courseAlreadySelected();
             }
-            coursesPerWeek.put(week, enrollments);
-            AppDatabase.getDatabaseInstance(context).getCourseDao().insertCourse(courseEnrollment);
-            viewCE.courseAdded();
-            BackupDatabase.backup(context);
-
-        } else {
-            //course is already added in that particular week
-            viewCE.courseAlreadySelected();
+        }catch (Exception e){
+            e.printStackTrace();
         }
     }
 

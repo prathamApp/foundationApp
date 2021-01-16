@@ -267,7 +267,12 @@ public class PushDataToServer_New {
                 else
                     pushDialog.dismiss();
             });
-            eject_btn.setOnClickListener(v -> pushDialog.dismiss());
+
+            eject_btn.setOnClickListener(v -> {
+                pushDialog.dismiss();
+                Intent intent = new Intent("com.pratham.assessment.async.SyncDataActivity_");
+                context.startActivity(intent);
+            });
         }
     }
 
@@ -394,6 +399,7 @@ public class PushDataToServer_New {
                             if (pushResponse.isSuccess()/*equalsIgnoreCase("success")*/) {
                                 Log.d("PushData", "DATA PUSH SUCCESS");
                                 pushSuccessfull = true;
+                                new File(filepathstr + ".zip").delete();
                                 setDataPushSuccessfull();
                             } else {
                                 Log.d("PushData", "Failed DATA PUSH");

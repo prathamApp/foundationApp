@@ -51,6 +51,7 @@ import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
 import java.io.File;
+import java.util.Objects;
 
 import static com.pratham.foundation.ApplicationClass.contentExistOnSD;
 import static com.pratham.foundation.ApplicationClass.isAssets;
@@ -168,10 +169,10 @@ public class SplashActivity extends SplashSupportActivity implements SplashContr
     @Override
     public void showButton() {
         //App Exit service started
-        if(!FastSave.getInstance().getBoolean(FC_Constants.TEST_JSON_COPY,false))
-            splashPresenter.copyTestJsons(1);
-        if(!FastSave.getInstance().getBoolean(FC_Constants.TEST_JSON_COPY2,false))
-            splashPresenter.copyInternalTestJsons(1);
+//        if(!FastSave.getInstance().getBoolean(FC_Constants.TEST_JSON_COPY,false))
+//            splashPresenter.copyTestJsons(1);
+//        if(!FastSave.getInstance().getBoolean(FC_Constants.TEST_JSON_COPY2,false))
+//            splashPresenter.copyInternalTestJsons(1);
         context.startService(new Intent(context, AppExitService.class));
         if (!FastSave.getInstance().getBoolean(FC_Constants.KEY_MENU_COPIED, false)) {
             if (!ApplicationClass.getAppMode()) {
@@ -272,14 +273,14 @@ public class SplashActivity extends SplashSupportActivity implements SplashContr
     @UiThread
     public void showProgressDialog() {
         try {
-            if(progressDialog!=null) {
+            if(progressDialog ==null) {
                 progressDialog = new ProgressDialog(SplashActivity.this);
                 progressDialog.setCanceledOnTouchOutside(false);
                 progressDialog.setMessage(getResources().getString(R.string.loding_please_wait));
                 progressDialog.setCancelable(false);
                 progressDialog.show();
             }else {
-                if(!progressDialog.isShowing())
+                if(!Objects.requireNonNull(progressDialog).isShowing())
                     progressDialog.show();
             }
         } catch (Exception e) {
@@ -441,10 +442,10 @@ public class SplashActivity extends SplashSupportActivity implements SplashContr
             dismissProgressDialog();
             Log.d("-CT-", "Before insert new  :::::CURRENT_VERSION::::: " + FastSave.getInstance().getString(CURRENT_VERSION, "NA"));
             Log.d("-CT-", "Before insert new  ::::getCurrentVersion:::: " + FC_Utility.getCurrentVersion(context));
-            if (!FastSave.getInstance().getString(CURRENT_VERSION, "NA").equalsIgnoreCase(FC_Utility.getCurrentVersion(context))) {
-                Log.d("-CT-", "insertNewData in IFFFFFFFFFFFFFFFFFFFFFFFFFFFF");
-                splashPresenter.copyZipAndPopulateMenu_New();
-            } else {
+//            if (!FastSave.getInstance().getString(CURRENT_VERSION, "NA").equalsIgnoreCase(FC_Utility.getCurrentVersion(context))) {
+//                Log.d("-CT-", "insertNewData in IFFFFFFFFFFFFFFFFFFFFFFFFFFFF");
+//                splashPresenter.copyZipAndPopulateMenu_New();
+//            } else {
                 Log.d("-CT-", "Before insert new  :::::VOICES_DOWNLOAD_INTENT::::: " + FastSave.getInstance().getBoolean(FC_Constants.VOICES_DOWNLOAD_INTENT, false));
                 if (!FastSave.getInstance().getBoolean(FC_Constants.VOICES_DOWNLOAD_INTENT, false))
                     show_STT_Dialog();
@@ -452,7 +453,7 @@ public class SplashActivity extends SplashSupportActivity implements SplashContr
                     if (!fragmentBottomOpenFlg)
                         showBottomFragment();
                 }
-            }
+//            }
         } else {
             bgPushService = new BackgroundPushService();
             mServiceIntent = new Intent(this, bgPushService.getClass());
@@ -468,12 +469,12 @@ public class SplashActivity extends SplashSupportActivity implements SplashContr
     @UiThread
     @Override
     public void show_STT_Dialog() {
-        FastSave.getInstance().saveBoolean(FC_Constants.VOICES_DOWNLOAD_INTENT, true);
         //Allows to download language packages
         exitDialog = new BlurPopupWindow.Builder(this)
                 .setContentView(R.layout.lottie_stt_dialog)
                 .bindClickListener(v -> {
                     Intent intent = new Intent(Intent.ACTION_MAIN);
+                    FastSave.getInstance().saveBoolean(FC_Constants.VOICES_DOWNLOAD_INTENT, true);
                     intent.setComponent(new ComponentName("com.google.android.googlequicksearchbox",
                             "com.google.android.voicesearch.greco3.languagepack.InstallActivity"));
                     intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -485,7 +486,10 @@ public class SplashActivity extends SplashSupportActivity implements SplashContr
                 }, R.id.dia_btn_ok)
                 .bindClickListener(v -> {
                     showBottomFragment();
-                    new Handler().postDelayed(() -> exitDialog.dismiss(), 200);
+                    new Handler().postDelayed(() -> {
+                        FastSave.getInstance().saveBoolean(FC_Constants.VOICES_DOWNLOAD_INTENT, true);
+                        exitDialog.dismiss();
+                    }, 200);
                 }, R.id.dia_btn_skip)
                 .setGravity(Gravity.CENTER)
                 .setDismissOnTouchBackground(false)

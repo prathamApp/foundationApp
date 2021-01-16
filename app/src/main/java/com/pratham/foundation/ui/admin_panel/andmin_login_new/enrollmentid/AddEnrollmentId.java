@@ -208,13 +208,14 @@ public class AddEnrollmentId extends BaseActivity implements AvatarClickListener
 
         if (FC_Utility.isDataConnectionAvailable(mContext)) {
             if (et_studentID.getText().toString().equalsIgnoreCase("") || avatarName == null) {
-                Toast.makeText(mContext, "Please fill all the details..", Toast.LENGTH_SHORT).show();
+                Toast.makeText(mContext, "Please fill all the details...", Toast.LENGTH_SHORT).show();
             } else {
                 showLoader();
                 String myUrl = STUDENT_BY_ENROLLMENT_NO_API + et_studentID.getText().toString();
                 api_content.getStudentByEnrollmentNo(STUDENT_BY_ENROLLMENT_NO, myUrl);
             }
-        }
+        }else
+            Toast.makeText(mContext, "Please connect to internet...", Toast.LENGTH_SHORT).show();
     }
 
     private boolean loaderVisible = false;
@@ -280,7 +281,7 @@ public class AddEnrollmentId extends BaseActivity implements AvatarClickListener
                 StudentEnrollmentModel enrollmentModel = gson.fromJson(response, listType);
                 String deviceID = FC_Utility.getDeviceID();
                 if (enrollmentModel != null) {
-                    ShowDetailsDilog(enrollmentModel);
+                    ShowDetailsDialog(enrollmentModel);
 /*                    if (enrollmentModel.getLstCourseEnroll() != null) {
                         List<Model_CourseEnrollment> courseEnrollmentList = new ArrayList<>();
                         for (int v = 0; v < enrollmentModel.getLstCourseEnroll().size(); v++) {
@@ -366,7 +367,7 @@ public class AddEnrollmentId extends BaseActivity implements AvatarClickListener
     BlurPopupWindow studentDialog;
 
     @UiThread
-    public void ShowDetailsDilog(StudentEnrollmentModel enrollmentModel) {
+    public void ShowDetailsDialog(StudentEnrollmentModel enrollmentModel) {
         try {
             studentDialog = new BlurPopupWindow.Builder(mContext)
                     .setContentView(R.layout.student_details_dialog)
