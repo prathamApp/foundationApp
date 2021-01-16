@@ -129,7 +129,7 @@ public class FC_Constants {
     public static final String SHOW_COURSE_DETAIL = "show_course_detail";
     public static final String CLOSE_CONTENT_PLAYER = "close_content_player";
     public static final String YOUTUBE_LINK = "youtube";
-    public static final String SYNC_CERTI_LENGTH = "sync_certi_length";
+//    public static final String SYNC_CERTI_LENGTH = "sync_certi_length";
     public static final int APP_INTENT_REQUEST_CODE = 4466 ;
     public static final String CURRENT_LEVEL_NAME = "current_level_name";
     public static final String NEW_ASSET_DB = "NEW_ASSET_DB";

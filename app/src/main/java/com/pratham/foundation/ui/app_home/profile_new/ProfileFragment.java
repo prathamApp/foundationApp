@@ -514,7 +514,7 @@ public class ProfileFragment extends Fragment implements ProfileContract.Profile
 
         dia_title.setText(getResources().getString(R.string.Sync_Time) + " " + FastSave.getInstance().getString(FC_Constants.SYNC_TIME, "NA")
                         + "\n" + getResources().getString(R.string.Data_synced) + " " + FastSave.getInstance().getString(FC_Constants.SYNC_DATA_LENGTH, "0")
-                        + "\n" + getResources().getString(R.string.Certificate_synced) + " " + FastSave.getInstance().getString(FC_Constants.SYNC_CERTI_LENGTH, "0")
+//                        + "\n" + getResources().getString(R.string.Certificate_synced) + " " + FastSave.getInstance().getString(FC_Constants.SYNC_CERTI_LENGTH, "0")
                         + "\n" + getResources().getString(R.string.Media_synced) + " " + FastSave.getInstance().getString(FC_Constants.SYNC_MEDIA_LENGTH, "0")
                 /*+"Media failed : "+failed_ImageLength*/);
         exitDialog.show();
