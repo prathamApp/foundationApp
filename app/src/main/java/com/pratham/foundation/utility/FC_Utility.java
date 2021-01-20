@@ -1,6 +1,7 @@
 package com.pratham.foundation.utility;
 
 import android.animation.TimeInterpolator;
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.ActivityManager;
 import android.app.ActivityManager.RunningServiceInfo;
@@ -2193,6 +2194,50 @@ public class FC_Utility {
         Calendar cal = Calendar.getInstance();
         DateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss", Locale.ENGLISH);
         return dateFormat.format(cal.getTime());
+    }
+
+    public static String getCurrentDate() {
+        Calendar cal = Calendar.getInstance();
+        DateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy", Locale.ENGLISH);
+        return dateFormat.format(cal.getTime());
+    }
+
+    public static String getCurrentTime() {
+        Calendar cal = Calendar.getInstance();
+        DateFormat dateFormat = new SimpleDateFormat("HH:mm:ss", Locale.ENGLISH);
+        return dateFormat.format(cal.getTime());
+    }
+
+    @SuppressLint("SimpleDateFormat")
+    public static String get12HrTime(String myTime){
+        try {
+            SimpleDateFormat code12Hours = new SimpleDateFormat("hh:mm"); // 12 hour format
+
+            Date dateCode12 = null;
+
+            String formatTwelve;
+            String results;
+
+                try {
+                    dateCode12 = code12Hours.parse(myTime); // 12 hour
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+
+                formatTwelve = code12Hours.format(dateCode12); // 12
+
+                if (formatTwelve.equals(myTime)) {
+                    results = formatTwelve + " AM";
+                } else {
+                    results = formatTwelve + " PM";
+                }
+
+                System.out.println(results);
+                return results;
+        } catch (final Exception e) {
+            e.printStackTrace();
+            return "NA";
+        }
     }
 
     public static void showZoomDialog(Context context, String path, String localPath) {

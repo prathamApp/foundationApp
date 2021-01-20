@@ -29,6 +29,8 @@ public interface ContentContract {
         void setStudentProfileImage(String sImage);
 
         void showToast(String msg);
+
+        void showChangeDateDialog(String newDate, String sTime);
     }
 
     interface ContentPresenter {
@@ -52,6 +54,7 @@ public interface ContentContract {
 
         void setView(ContentContract.ContentView contentView);
 
+        void getInternetTime();
     }
 
 }

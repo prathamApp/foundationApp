@@ -1,8 +1,5 @@
 package com.pratham.foundation.database.domain;
 
-import android.os.Parcel;
-import android.os.Parcelable;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.room.Entity;
@@ -15,7 +12,7 @@ import java.io.Serializable;
 import java.util.List;
 
 @Entity
-public class ContentTable implements Serializable, Parcelable {
+public class ContentTable implements Serializable {
 
     @NonNull
     @PrimaryKey
@@ -275,13 +272,4 @@ public class ContentTable implements Serializable, Parcelable {
         this.contentlist = contentlist;
     }
 
-    @Override
-    public int describeContents() {
-        return 0;
-    }
-
-    @Override
-    public void writeToParcel(Parcel dest, int flags) {
-
-    }
 }

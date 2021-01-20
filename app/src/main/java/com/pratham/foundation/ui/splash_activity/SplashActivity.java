@@ -101,7 +101,7 @@ public class SplashActivity extends SplashSupportActivity implements SplashContr
         tv_typer.setTypeface(title_font);
         tv_typer.setVisibility(View.VISIBLE);
         tv_typer.setTextColor(getResources().getColor(R.color.dark_blue));
-        tv_typer.animateText("Foundation\nCourse");
+        tv_typer.animateText("PraDigi for\nSchool");
         tv_typer.setAnimationListener(hTextView -> initiateApp());
     }
 
@@ -343,6 +343,7 @@ public class SplashActivity extends SplashSupportActivity implements SplashContr
                 .bindClickListener(v -> {
                     exitDialog.dismiss();
                     backHandler.removeCallbacksAndMessages(null);
+                    bgMusic.stop();
                     new Handler().postDelayed(this::finishAffinity, 200);
                 }, R.id.dia_btn_yes)
                 .bindClickListener(v -> {

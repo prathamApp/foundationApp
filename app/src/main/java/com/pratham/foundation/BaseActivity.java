@@ -88,7 +88,7 @@ public class BaseActivity extends AppCompatActivity {
     private static final int SDCARD_LOCATION_CHOOSER = 10;
     public static UsbDevice myUsbDevice;
     LottieAnimationView push_lottie;
-    TextView txt_push_dialog_msg;
+    TextView txt_push_dialog_msg,txt_push_dialog_msg2;
     TextView txt_push_error;
     RelativeLayout rl_btn;
     Button ok_btn, eject_btn;
@@ -542,4 +542,5 @@ public class BaseActivity extends AppCompatActivity {
         endSession();
         super.onPause();
     }
+
 }

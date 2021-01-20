@@ -15,6 +15,7 @@ import com.pratham.foundation.database.domain.ContentTable;
 import com.pratham.foundation.database.domain.Score;
 import com.pratham.foundation.interfaces.API_Content_Result;
 import com.pratham.foundation.modalclasses.Modal_DownloadContent;
+import com.pratham.foundation.modalclasses.Modal_InternetTime;
 import com.pratham.foundation.services.shared_preferences.FastSave;
 import com.pratham.foundation.utility.FC_Constants;
 import com.pratham.foundation.utility.FC_Utility;
@@ -68,6 +69,15 @@ public class ContentPresenter implements ContentContract.ContentPresenter, API_C
         Collections.sort(contentParentList, (o1, o2) -> o1.getSeq_no() - o2.getSeq_no());
     }
 
+    @Override
+    public void getInternetTime() {
+        if (FC_Utility.isDataConnectionAvailable(context)) {
+            //fetch subjects from API
+            api_content.getInternetTimeApi(FC_Constants.INTERNET_TIME, FC_Constants.INTERNET_TIME_API);
+        }
+
+    }
+
     public ContentPresenter(Context context) {
         this.context = context;
     }
@@ -96,7 +106,7 @@ public class ContentPresenter implements ContentContract.ContentPresenter, API_C
     public void findMaxScore(String nodeId) {
         try {
             List<ContentTable> childList = AppDatabase.getDatabaseInstance(context).getContentTableDao().getChildsOfParent(nodeId,
-                    "%"+ FastSave.getInstance().getString(CURRENT_STUDENT_ID,"na")+"%");
+                    "%" + FastSave.getInstance().getString(CURRENT_STUDENT_ID, "na") + "%");
             for (int childCnt = 0; childList.size() > childCnt; childCnt++) {
                 if (childList.get(childCnt).getNodeType().equals("Resource")) {
                     double maxScoreTemp = 0.0;
@@ -160,7 +170,7 @@ public class ContentPresenter implements ContentContract.ContentPresenter, API_C
             } else {
 //            fetch downloaded data from DB
                 downloadedContentTableList = AppDatabase.getDatabaseInstance(context).getContentTableDao().getContentData("" + nodeListIndex,
-                        "%"+ FastSave.getInstance().getString(CURRENT_STUDENT_ID,"na")+"%");
+                        "%" + FastSave.getInstance().getString(CURRENT_STUDENT_ID, "na") + "%");
                 Log.d("NODE_ID", "Node downloadedContentTableList :  " + downloadedContentTableList.size());
                 sortAllList(downloadedContentTableList);
                 contentView.clearContentList();
@@ -340,6 +350,60 @@ public class ContentPresenter implements ContentContract.ContentPresenter, API_C
 //                } else {
 //                    contentView.showToast("Only 4 allowed");
 //                }
+            } else if (header.equalsIgnoreCase(FC_Constants.INTERNET_TIME)) {
+                try {
+                    Type listType = new TypeToken<Modal_InternetTime>() {
+                    }.getType();
+                    Gson gson;
+                    gson = new Gson();
+                    Modal_InternetTime serverTime = gson.fromJson(response, listType);
+                    String sDate = serverTime.getDatetime().split("T")[0];
+                    Log.d("TAG", "$$$$    :    " + sDate);
+                    String sTime = serverTime.getDatetime().split("T")[1].substring(0, 5);
+//                String newDate = sDate.substring(5)+"-"+sDate.substring(0,4) + " "+ sTime;
+//                2021-01-19
+                    String newDate = String.format("%s-%s-%s", sDate.substring(8), sDate.substring(5, 7), sDate.substring(0, 4));
+                    String newDateTime = String.format("%s-%s-%s %s", sDate.substring(8), sDate.substring(5, 7), sDate.substring(0, 4), sTime);
+                    Log.d("TAG", "$$$$    :    " + newDate);
+                    Log.d("TAG", "$$$$    :    " + newDateTime);
+
+                    String fcDate = FC_Utility.getCurrentDate();
+                    String fcTime = FC_Utility.getCurrentTime();
+                    Log.d("TAG", "$$$$    :" + fcDate);
+                    Log.d("TAG", "$$$$    :" + fcTime);
+                    int t1 = Integer.parseInt(sTime.substring(0, 2));
+                    int t1s = Integer.parseInt(sTime.substring(3, 5));
+                    int t2 = Integer.parseInt(fcTime.substring(0, 2));
+                    int t2s = Integer.parseInt(fcTime.substring(3, 5));
+                    Log.d("TAG", "$$$$  T1  :" + t1 + "    " + t1s);
+                    Log.d("TAG", "$$$$  T2  :" + t2 + "    " + t2s);
+                    if (!fcDate.equalsIgnoreCase(newDate)) {
+                        contentView.showChangeDateDialog(newDate, sTime);
+                    } else {
+/*
+                    int t1 = Integer.parseInt(sTime.substring(0,2));
+                    int t1s = Integer.parseInt(sTime.substring(4,6));
+                    int t2 = Integer.parseInt(fcTime.substring(0,2));
+                    int t2s = Integer.parseInt(sTime.substring(4,6));
+                    Log.d("TAG", "$$$$  T1  :" +t1 + "    "+t1s);
+                    Log.d("TAG", "$$$$  T2  :" +t2 + "    "+t2s);
+*/
+                        if (t1 > t2) {
+                            if ((t1 - t2) > 1) {
+                                Log.d("TAG", "$$$$  t1>t2  :" + t2 + "    " + t2s);
+                                contentView.showChangeDateDialog(newDate, sTime);
+                            }
+                        } else if (t2 > t1) {
+                            if ((t2 - t1) > 1) {
+                                Log.d("TAG", "$$$$  t2>t1  :" + t2 + "    " + t2s);
+                                contentView.showChangeDateDialog(newDate, sTime);
+                            }
+                        }
+                    }
+//                Fc
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -368,10 +432,14 @@ public class ContentPresenter implements ContentContract.ContentPresenter, API_C
 
     @Override
     public void receivedError(String header) {
-        contentView.showToast("Connection Error");
-        contentView.addContentToViewList(ListForContentTable1);
-        contentView.notifyAdapter();
-        contentView.dismissLoadingDialog();
+        if (header.equalsIgnoreCase(FC_Constants.INTERNET_TIME))
+            getInternetTime();
+        else {
+            contentView.showToast("Connection Error");
+            contentView.addContentToViewList(ListForContentTable1);
+            contentView.notifyAdapter();
+            contentView.dismissLoadingDialog();
+        }
     }
 
     @Background

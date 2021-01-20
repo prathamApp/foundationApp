@@ -145,7 +145,7 @@ public class ProfileInnerDataAdapter extends RecyclerView.Adapter {
                 itemHolder.rl_root.setOnClickListener(v -> itemClicked.itemClicked("enroll_course"));
                 break;
             case "change_time":
-                itemHolder.tvTitle.setText("Change Time");
+                itemHolder.tvTitle.setText(mContext.getResources().getString(R.string.Set_Date_and_Time));
                 itemHolder.item_Image.setImageResource(R.drawable.clock);
                 itemHolder.rl_root.setOnClickListener(v -> itemClicked.itemClicked("change_time"));
                 break;

@@ -8,6 +8,7 @@ import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Handler;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.view.Window;
@@ -27,8 +28,11 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.airbnb.lottie.LottieAnimationView;
 import com.facebook.drawee.view.SimpleDraweeView;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.pratham.foundation.ApplicationClass;
 import com.pratham.foundation.R;
+import com.pratham.foundation.async.API_Content;
 import com.pratham.foundation.async.PushDataToServer_New;
 import com.pratham.foundation.customView.BlurPopupDialog.BlurPopupWindow;
 import com.pratham.foundation.customView.GridSpacingItemDecoration;
@@ -37,8 +41,10 @@ import com.pratham.foundation.customView.showcaseviewlib.GuideView;
 import com.pratham.foundation.customView.showcaseviewlib.config.DismissType;
 import com.pratham.foundation.database.AppDatabase;
 import com.pratham.foundation.database.BackupDatabase;
+import com.pratham.foundation.interfaces.API_Content_Result;
 import com.pratham.foundation.modalclasses.EventMessage;
 import com.pratham.foundation.modalclasses.ModalTopCertificates;
+import com.pratham.foundation.modalclasses.Modal_InternetTime;
 import com.pratham.foundation.services.shared_preferences.FastSave;
 import com.pratham.foundation.ui.admin_panel.MenuActivity_;
 import com.pratham.foundation.ui.admin_panel.fragment_admin_panel.tab_usage.TabUsageActivity_;
@@ -64,6 +70,7 @@ import org.greenrobot.eventbus.ThreadMode;
 
 import java.io.File;
 import java.io.IOException;
+import java.lang.reflect.Type;
 import java.text.DecimalFormat;
 import java.util.Collections;
 import java.util.List;
@@ -84,12 +91,13 @@ import static com.pratham.foundation.utility.FC_Constants.sec_Profile;
 import static com.pratham.foundation.utility.FC_Utility.decimalFormat;
 import static com.pratham.foundation.utility.FC_Utility.dpToPx;
 import static com.pratham.foundation.utility.FC_Utility.folderSize;
+import static com.pratham.foundation.utility.FC_Utility.get12HrTime;
 import static com.pratham.foundation.utility.FC_Utility.getRandomFemaleAvatar;
 import static com.pratham.foundation.utility.FC_Utility.getRandomMaleAvatar;
 
 
 @EFragment(R.layout.fragment_profile)
-public class ProfileFragment extends Fragment implements ProfileContract.ProfileView, ProfileContract.ProfileItemClicked {
+public class ProfileFragment extends Fragment implements ProfileContract.ProfileView, ProfileContract.ProfileItemClicked, API_Content_Result {
 
     @Bean(ProfilePresenter.class)
     ProfileContract.ProfilePresenter presenter;
@@ -250,7 +258,7 @@ public class ProfileFragment extends Fragment implements ProfileContract.Profile
             e.printStackTrace();
         }
         if (!ApplicationClass.getAppMode()) {
-            FastSave.getInstance().saveBoolean(SPLASH_OPEN,false);
+            FastSave.getInstance().saveBoolean(SPLASH_OPEN, false);
             BottomStudentsFragment_ bottomStudentsFragment = new BottomStudentsFragment_();
             bottomStudentsFragment.show(Objects.requireNonNull(getActivity()).getSupportFragmentManager(),
                     BottomStudentsFragment.class.getSimpleName());
@@ -373,7 +381,56 @@ public class ProfileFragment extends Fragment implements ProfileContract.Profile
 
     @UiThread
     public void changeTime() {
-        startActivity(new Intent(android.provider.Settings.ACTION_DATE_SETTINGS));
+        if (FC_Utility.isDataConnectionAvailable(context)) {
+            //fetch subjects from API
+            showLoader();
+            API_Content api_content;
+            api_content = new API_Content(context, this);
+            api_content.getInternetTimeApi(FC_Constants.INTERNET_TIME, FC_Constants.INTERNET_TIME_API);
+        } else {
+            showChangeDateDialog("NA", "NA");
+        }
+    }
+
+    private boolean desFlag = false;
+
+    @Override
+    public void onDestroy() {
+        desFlag = true;
+        super.onDestroy();
+    }
+
+    private boolean loaderVisible = false;
+    private CustomLodingDialog myLoadingDialog;
+
+    @UiThread
+    public void showLoader() {
+        if (!loaderVisible) {
+            loaderVisible = true;
+            myLoadingDialog = new CustomLodingDialog(context);
+            myLoadingDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+            Objects.requireNonNull(myLoadingDialog.getWindow()).
+                    setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+            myLoadingDialog.setContentView(R.layout.loading_dialog);
+            myLoadingDialog.setCanceledOnTouchOutside(false);
+//        myLoadingDialog.setCancelable(false);
+            myLoadingDialog.show();
+        }
+    }
+
+    @UiThread
+    public void dismissLoadingDialog() {
+        try {
+            if (!desFlag) {
+                loaderVisible = false;
+                new Handler().postDelayed(() -> {
+                    if (myLoadingDialog != null && myLoadingDialog.isShowing())
+                        myLoadingDialog.dismiss();
+                }, 150);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     @UiThread
@@ -418,7 +475,7 @@ public class ProfileFragment extends Fragment implements ProfileContract.Profile
     BlurPopupWindow exitDialog;
     TextView dia_title;
     LottieAnimationView push_lottie;
-    TextView txt_push_dialog_msg;
+    TextView txt_push_dialog_msg, txt_push_dialog_msg2;
     TextView txt_push_error;
     RelativeLayout rl_btn;
     Button ok_btn, eject_btn;
@@ -585,6 +642,127 @@ public class ProfileFragment extends Fragment implements ProfileContract.Profile
 //                    getString(FC_Constants.LANGUAGE, FC_Constants.HINDI));
             dialog.dismiss();
         });
+    }
+
+    @Override
+    public void receivedContent(String header, String response) {
+
+        if (header.equalsIgnoreCase(FC_Constants.INTERNET_TIME)) {
+            try {
+                Type listType = new TypeToken<Modal_InternetTime>() {
+                }.getType();
+                Gson gson;
+                gson = new Gson();
+                Modal_InternetTime serverTime = gson.fromJson(response, listType);
+                String sDate = serverTime.getDatetime().split("T")[0];
+                Log.d("TAG", "$$$$    :    " + sDate);
+                String sTime = serverTime.getDatetime().split("T")[1].substring(0, 5);
+//                String newDate = sDate.substring(5)+"-"+sDate.substring(0,4) + " "+ sTime;
+//                2021-01-19
+                String newDate = String.format("%s-%s-%s", sDate.substring(8), sDate.substring(5, 7), sDate.substring(0, 4));
+                String newDateTime = String.format("%s-%s-%s %s", sDate.substring(8), sDate.substring(5, 7), sDate.substring(0, 4), sTime);
+                Log.d("TAG", "$$$$    :    " + newDate);
+                Log.d("TAG", "$$$$    :    " + newDateTime);
+
+                String fcDate = FC_Utility.getCurrentDate();
+                String fcTime = FC_Utility.getCurrentTime();
+                Log.d("TAG", "$$$$    :" + fcDate);
+                Log.d("TAG", "$$$$    :" + fcTime);
+                int t1 = Integer.parseInt(sTime.substring(0, 2));
+                int t1s = Integer.parseInt(sTime.substring(3, 5));
+                int t2 = Integer.parseInt(fcTime.substring(0, 2));
+                int t2s = Integer.parseInt(fcTime.substring(3, 5));
+                Log.d("TAG", "$$$$  T1  :" + t1 + "    " + t1s);
+                Log.d("TAG", "$$$$  T2  :" + t2 + "    " + t2s);
+                dismissLoadingDialog();
+                showChangeDateDialog(newDate, sTime);
+/*                if (!fcDate.equalsIgnoreCase(newDate)) {
+                    showChangeDateDialog(newDate, sTime);
+                } else {
+                    if (t1 > t2) {
+                        if ((t1 - t2) > 1) {
+                            Log.d("TAG", "$$$$  t1>t2  :" + t2 + "    " + t2s);
+                            showChangeDateDialog(newDate, sTime);
+                        }
+                    } else if (t2 > t1) {
+                        if ((t2 - t1) > 1) {
+                            Log.d("TAG", "$$$$  t2>t1  :" + t2 + "    " + t2s);
+                            showChangeDateDialog(newDate, sTime);
+                        }
+                    }
+                }*/
+            } catch (Exception e) {
+                dismissLoadingDialog();
+                e.printStackTrace();
+            }
+        }
+    }
+
+    BlurPopupWindow changeDateDialog;
+    @SuppressLint("SetTextI18n")
+    private void showChangeDateDialog(String newDate, String sTime) {
+        try {
+            if (!newDate.equalsIgnoreCase("NA"))
+                dismissLoadingDialog();
+            changeDateDialog = new BlurPopupWindow.Builder(context)
+                    .setContentView(R.layout.app_date_dialog)
+                    .setGravity(Gravity.CENTER)
+                    .setDismissOnTouchBackground(false)
+                    .setDismissOnClickBack(false)
+                    .setScaleRatio(0.2f)
+                    .bindClickListener(v -> {
+                        new Handler().postDelayed(() -> {
+                            changeDateDialog.dismiss();
+                            startActivity(new Intent(android.provider.Settings.ACTION_DATE_SETTINGS));
+                        }, 200);
+                    }, R.id.ok_btn)
+                    .bindClickListener(v -> {
+                        new Handler().postDelayed(() -> {
+                            changeDateDialog.dismiss();
+                        }, 200);
+                    }, R.id.eject_btn)
+                    .setBlurRadius(10)
+                    .setTintColor(0x30000000)
+                    .build();
+
+            txt_push_dialog_msg = changeDateDialog.findViewById(R.id.txt_push_dialog_msg);
+            txt_push_dialog_msg2 = changeDateDialog.findViewById(R.id.txt_push_dialog_msg2);
+            ok_btn = changeDateDialog.findViewById(R.id.ok_btn);
+            eject_btn = changeDateDialog.findViewById(R.id.eject_btn);
+
+            String tm = "", tm2 = ""/*, type = "am", type2 = "am"*/;
+
+/*
+            if (!newDate.equalsIgnoreCase("NA")) {
+                int t1 = Integer.parseInt(sTime.substring(0, 2));
+                if (t1 >= 12)
+                    type = "pm";
+                else
+                    type = "am";
+            }
+            int t2 = Integer.parseInt(FC_Utility.getCurrentTime().substring(0, 2));
+            if (t2 >= 12)
+                type2 = "pm";
+            else
+                type2 = "am";
+*/
+            tm = get12HrTime(sTime);
+            tm2 = get12HrTime(FC_Utility.getCurrentTime().substring(0, 5));
+
+            txt_push_dialog_msg.setText(ApplicationClass.getInstance().getString(R.string.device_date_time_change) + " " + FC_Utility.getCurrentDate() + "\n" + tm2);
+            if (newDate.equalsIgnoreCase("NA")) {
+                txt_push_dialog_msg2.setVisibility(View.GONE);
+            } else
+                txt_push_dialog_msg2.setText(ApplicationClass.getInstance().getString(R.string.internet_date_time_change) + " " + newDate + "\n" + tm);
+            changeDateDialog.show();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void receivedError(String header) {
+        dismissLoadingDialog();
     }
 
 //    @Click({R.id.rl_share_app, R.id.btn_share_app})

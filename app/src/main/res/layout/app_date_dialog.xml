@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout android:layout_width="@dimen/_200sdp"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center"
+    android:background="@drawable/dialog_bg"
+    android:elevation="@dimen/_5sdp"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <com.airbnb.lottie.LottieAnimationView
+        android:id="@+id/push_lottie"
+        android:layout_centerHorizontal="true"
+        android:layout_width="@dimen/_80sdp"
+        android:layout_height="@dimen/_80sdp"
+        android:layout_marginTop="@dimen/_20sdp"
+        app:lottie_autoPlay="true"
+        app:lottie_fileName="calendar_event.json"
+        app:lottie_loop="true" />
+
+    <LinearLayout
+        android:id="@+id/rl_text"
+        android:layout_below="@+id/push_lottie"
+        android:layout_marginTop="@dimen/_30sdp"
+        android:layout_marginBottom="@dimen/_15sdp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+    <com.pratham.foundation.customView.fontsview.SansTextViewBold
+        android:id="@+id/txt_push_dialog_msg0"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingStart="@dimen/_15sdp"
+        android:paddingEnd="@dimen/_15sdp"
+        android:textAlignment="center"
+        android:text="@string/Set_Date_and_Time"
+        android:textColor="@color/colorText"
+        android:textSize="@dimen/_14sdp" />
+
+    <com.pratham.foundation.customView.fontsview.SansTextViewBold
+        android:id="@+id/txt_push_dialog_msg"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingStart="@dimen/_15sdp"
+        android:paddingEnd="@dimen/_15sdp"
+        android:layout_marginTop="@dimen/_15sdp"
+        android:textAlignment="center"
+        android:text=""
+        android:textColor="@color/colorAccentDark"
+        android:textSize="@dimen/_12sdp" />
+
+    <com.pratham.foundation.customView.fontsview.SansTextViewBold
+        android:id="@+id/txt_push_dialog_msg2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingStart="@dimen/_15sdp"
+        android:layout_marginTop="@dimen/_15sdp"
+        android:paddingEnd="@dimen/_15sdp"
+        android:textAlignment="center"
+        android:text=""
+        android:textColor="@color/colorSignBoard"
+        android:textSize="@dimen/_12sdp" />
+
+    </LinearLayout>
+    <RelativeLayout
+        android:id="@+id/rl_btn"
+        android:layout_below="@+id/rl_text"
+        android:paddingTop="@dimen/_8sdp"
+        android:layout_centerHorizontal="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+    <com.pratham.foundation.customView.fontsview.SansButton
+        android:id="@+id/ok_btn"
+        android:layout_width="@dimen/_80sdp"
+        android:layout_height="wrap_content"
+        android:text="@string/Okay"
+        android:visibility="visible"
+        android:background="@drawable/button_green"
+        android:layout_marginBottom="@dimen/_15sdp"
+        android:paddingTop="@dimen/_8sdp"
+        android:paddingBottom="@dimen/_8sdp"
+        android:layout_marginStart="@dimen/_3sdp"
+        android:layout_marginEnd="@dimen/_3sdp"
+        android:paddingStart="@dimen/_10sdp"
+        android:paddingEnd="@dimen/_10sdp"
+        android:elevation="@dimen/_5sdp"
+        android:textColor="@color/white"
+        android:textSize="@dimen/_10sdp"/>
+
+        <com.pratham.foundation.customView.fontsview.SansButton
+            android:id="@+id/eject_btn"
+            android:layout_width="@dimen/_80sdp"
+            android:layout_height="wrap_content"
+            android:text="@string/Cancel"
+            android:visibility="visible"
+            android:background="@drawable/button_red"
+            android:layout_marginBottom="@dimen/_15sdp"
+            android:paddingTop="@dimen/_8sdp"
+            android:paddingBottom="@dimen/_8sdp"
+            android:layout_marginStart="@dimen/_3sdp"
+            android:layout_marginEnd="@dimen/_3sdp"
+            android:paddingStart="@dimen/_10sdp"
+            android:paddingEnd="@dimen/_10sdp"
+            android:elevation="@dimen/_5sdp"
+            android:textColor="@color/white"
+            android:textSize="@dimen/_10sdp"
+            android:layout_toEndOf="@id/ok_btn"
+            android:layout_centerHorizontal="true"/>
+
+    </RelativeLayout>
+</RelativeLayout>

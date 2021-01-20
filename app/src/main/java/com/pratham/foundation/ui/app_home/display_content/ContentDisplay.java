@@ -71,7 +71,6 @@ import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
 import java.io.File;
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -90,6 +89,7 @@ import static com.pratham.foundation.utility.FC_Constants.currentLevel;
 import static com.pratham.foundation.utility.FC_Constants.currentSubjectFolder;
 import static com.pratham.foundation.utility.FC_Constants.gameFolderPath;
 import static com.pratham.foundation.utility.FC_Utility.dpToPx;
+import static com.pratham.foundation.utility.FC_Utility.get12HrTime;
 
 
 @EActivity(R.layout.activity_content_display)
@@ -108,6 +108,10 @@ public class ContentDisplay extends BaseActivity implements ContentContract.Cont
     ProgressLayout progressLayout;
     TextView dialog_file_name;
     ImageView iv_file_trans;
+    TextView txt_push_dialog_msg, txt_push_dialog_msg2;
+    TextView txt_push_error;
+    RelativeLayout rl_btn;
+    Button ok_btn, eject_btn;
 
     @ViewById(R.id.tv_header_progress)
     TextView tv_header_progress;
@@ -180,6 +184,7 @@ public class ContentDisplay extends BaseActivity implements ContentContract.Cont
 
 //        presenter.displayProfileImage();
         presenter.getPerc(nodeId);
+        presenter.getInternetTime();
         tv_Topic.setText("" + contentTitle);
         tv_Topic.setSelected(true);
         ll_topic_parent.setSelected(true);
@@ -620,7 +625,10 @@ public class ContentDisplay extends BaseActivity implements ContentContract.Cont
                 startActivity(intent);
             }*/ else {
                 Intent mainNew = new Intent(ContentDisplay.this, ContentPlayerActivity_.class);
-                mainNew.putExtra("testData", (Serializable) ContentTableList.get(position));
+                mainNew.putExtra("nodeID", ContentTableList.get(position).getNodeId());
+                mainNew.putExtra("title", ContentTableList.get(position).getNodeTitle());
+                mainNew.putExtra("sdStatus", ContentTableList.get(position).isOnSDCard());
+                mainNew.putExtra("testData", ContentTableList.get(position));
                 mainNew.putExtra("testcall", FC_Constants.INDIVIDUAL_MODE);
                 startActivityForResult(mainNew, 1461);
             } /*else if (ContentTableList.get(position).getResourceType().equalsIgnoreCase(FC_Constants.CHATBOT_ANDROID)) {
@@ -629,6 +637,61 @@ public class ContentDisplay extends BaseActivity implements ContentContract.Cont
         }*/
         }
         resServerImageName = ContentTableList.get(position).getNodeServerImage();
+    }
+
+    BlurPopupWindow changeDateDialog;
+    @SuppressLint("SetTextI18n")
+    @UiThread
+    public void showChangeDateDialog(String newDate, String sTime) {
+        try {
+            changeDateDialog = new BlurPopupWindow.Builder(this)
+                    .setContentView(R.layout.app_date_dialog)
+                    .setGravity(Gravity.CENTER)
+                    .setDismissOnTouchBackground(false)
+                    .setDismissOnClickBack(false)
+                    .setScaleRatio(0.2f)
+                    .bindClickListener(v -> {
+                        new Handler().postDelayed(() -> {
+                            changeDateDialog.dismiss();
+                            startActivity(new Intent(android.provider.Settings.ACTION_DATE_SETTINGS));
+                        }, 200);
+                    }, R.id.ok_btn)
+                    .bindClickListener(v -> {
+                        new Handler().postDelayed(() -> {
+                            changeDateDialog.dismiss();
+                        }, 200);
+                    }, R.id.eject_btn)
+                    .setBlurRadius(10)
+                    .setTintColor(0x30000000)
+                    .build();
+
+            txt_push_dialog_msg = changeDateDialog.findViewById(R.id.txt_push_dialog_msg);
+            txt_push_dialog_msg2 = changeDateDialog.findViewById(R.id.txt_push_dialog_msg2);
+            ok_btn = changeDateDialog.findViewById(R.id.ok_btn);
+            eject_btn = changeDateDialog.findViewById(R.id.eject_btn);
+
+            String tm = "", tm2 = ""/*, type = "am", type2 = "am"*/;
+            int t1 = Integer.parseInt(sTime.substring(0, 2));
+            int t2 = Integer.parseInt(FC_Utility.getCurrentTime().substring(0, 2));
+/*
+            if (t1 >= 12)
+                type = "pm";
+            else
+                type = "am";
+            if (t2 >= 12)
+                type2 = "pm";
+            else
+                type2 = "am";
+*/
+            tm = get12HrTime(sTime);
+            tm2 = get12HrTime(FC_Utility.getCurrentTime().substring(0, 5));
+
+            txt_push_dialog_msg.setText(this.getString(R.string.device_date_time_change) + " " + FC_Utility.getCurrentDate() + "\n" + tm2);
+            txt_push_dialog_msg2.setText(this.getString(R.string.internet_date_time_change) + " " + newDate + "\n" + tm);
+            changeDateDialog.show();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     @Override

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name" translatable="false">Foundation Course</string>
+    <string name="app_name" translatable="false">PraDigi for School</string>
 
     <string name="Login">Login</string>
     <string name="Stt_Dialog_Msg">Please download language packs English(India) and हिंदी(भारत) offline for better performance</string>
@@ -109,7 +109,13 @@
     <string name="new_chit_chat_2">Listen to the conversation shown on the screen and record your answer in English.</string>
     <string name="new_chit_chat_3">This is a 2 person activity. Take turns to record your audio</string>
     <string name="Audio">Listen to the audio</string>
+    <string name="add_course">Add Course</string>
+    <string name="select_date">Select Date</string>
+    <string name="confirm_date">Confirm Date</string>
     <string name="enroll_course">Course Enrollment</string>
+    <string name="device_date_time_change" translatable="false">Device date and time - \n</string>
+    <string name="internet_date_time_change" translatable="false">Internet date and time - \n</string>
+    <string name="Set_Date_and_Time" translatable="false">Set Date and Time</string>
 
     <string name="no_data_generated">No data generated for this section.</string>
     <string name="no_data_in_sec">No data in this section.</string>

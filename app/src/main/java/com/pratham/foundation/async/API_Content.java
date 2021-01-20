@@ -157,6 +157,38 @@ public class API_Content {
         }
     }
 
+    public void getInternetTimeApi(final String requestType, String url) {
+        try {
+            Log.d("API_Content_LOG", "getAPIContent: " + url);
+            AndroidNetworking.get(url)
+                    .addHeaders("Content-Type", "application/json")
+                    .build()
+                    .getAsString(new StringRequestListener() {
+                        @Override
+                        public void onResponse(String response) {
+                            //Success - Send requestType and response to the calling class.
+                            if (apiContentResult != null)
+                                apiContentResult.receivedContent(requestType, response);
+                        }
+
+                        @Override
+                        public void onError(ANError anError) {
+                            try {
+                                Log.d("Error:", anError.getErrorDetail());
+                                // Log.d("Error::", anError.getResponse().toString());
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
+                            //Success - Send requestType and response to the calling class.
+                            if (apiContentResult != null)
+                                apiContentResult.receivedError(requestType);
+                        }
+                    });
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
     public void getAPILanguage(final String requestType, String url, String nodeId) {
         try {
 //            String url_id;

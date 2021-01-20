@@ -227,7 +227,7 @@ public class FC_Constants {
     public static final String[] progressImgSubArray = {"tab_usage", "ImageQues", "ChitChat", "enroll_course"};
     public static final String[] statusSubArray = {""+ ApplicationClass.getInstance().getResources().getString(R.string.sync),
             ""+ ApplicationClass.getInstance().getResources().getString(R.string.sync_status),
-            ""+ "Change Time",
+            ""+ ApplicationClass.getInstance().getResources().getString(R.string.Set_Date_and_Time),
             ""+ ApplicationClass.getInstance().getResources().getString(R.string.lang_pack),
             ""+ ApplicationClass.getInstance().getResources().getString(R.string.free_space)};
     public static final String[] statusImgSubArray = {"syncDimg","syncImg", "Lang_ic", "cleanImg","change_time"};
@@ -249,6 +249,7 @@ public class FC_Constants {
     public static final String newRootParentId = "SCAPP";
     public static final String rootParentId = "50001";
     public static final String INTERNET_BROWSE = "internet_browse";
+    public static final String INTERNET_TIME = "internet_time";
     public static final String INTERNET_LEVEL = "internet_level";
     public static final String INTERNET_DOWNLOAD_RESOURCE = "downloadResource";
     public static final String STUDENT_PROGRESS_INTERNET = "student_progress_internet";
@@ -277,6 +278,8 @@ public class FC_Constants {
 
     public static final String INTERNET_LANGUAGE_API = "http://devposapi.prathamopenschool.org/api/ContentV2/browse?id=";
     public static final String INTERNET_BROWSE_API = "http://devposapi.prathamopenschool.org/api/ContentV2/BrowseLevel2?id=";
+
+    public static final String INTERNET_TIME_API = "http://worldtimeapi.org/api/timezone/Asia/Kolkata";
 
     public static final String INTERNET_DOWNLOAD_RESOURCE_API = "http://devposapi.prathamopenschool.org/api/content/downloadv2?id=";
     public static final String INTERNET_DOWNLOAD_TEST_API = "http://devposapi.prathamopenschool.org/api/content/downloadv3?id=";

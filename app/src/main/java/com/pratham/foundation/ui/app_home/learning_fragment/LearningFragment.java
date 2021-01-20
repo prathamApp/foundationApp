@@ -74,7 +74,6 @@ import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
 import java.io.File;
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -434,9 +433,15 @@ public class LearningFragment extends Fragment implements LearningContract.Learn
         noDataDlg.show();
     }
 
+    private boolean desFlag = false;
+    @Override
+    public void onDestroy() {
+        desFlag = true;
+        super.onDestroy();
+    }
+
     private boolean loaderVisible = false;
     private CustomLodingDialog myLoadingDialog;
-
     @UiThread
     @Override
     public void showLoader() {
@@ -451,14 +456,6 @@ public class LearningFragment extends Fragment implements LearningContract.Learn
 //        myLoadingDialog.setCancelable(false);
             myLoadingDialog.show();
         }
-    }
-
-    private boolean desFlag = false;
-
-    @Override
-    public void onDestroy() {
-        desFlag = true;
-        super.onDestroy();
     }
 
     @Override
@@ -791,7 +788,10 @@ public class LearningFragment extends Fragment implements LearningContract.Learn
                 startActivity(intent);
             }*/ else {
                 Intent mainNew = new Intent(context, ContentPlayerActivity_.class);
-                mainNew.putExtra("testData", (Serializable) contentList);
+                mainNew.putExtra("nodeID", contentList.getNodeId());
+                mainNew.putExtra("title", contentList.getNodeTitle());
+                mainNew.putExtra("sdStatus",contentList.isOnSDCard());
+                mainNew.putExtra("testData", contentList);
                 mainNew.putExtra("testcall", FC_Constants.INDIVIDUAL_MODE);
                 startActivityForResult(mainNew, 1461);
             }

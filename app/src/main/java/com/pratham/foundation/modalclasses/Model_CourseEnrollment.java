@@ -213,7 +213,6 @@ public class Model_CourseEnrollment implements Parcelable, Comparable {
         dest.writeString(coachVerificationDate);
         dest.writeString(courseExperience);
         dest.writeInt(sentFlag);
-        dest.writeParcelable(courseDetail, flags);
         dest.writeByte((byte) (courseCompleted ? 1 : 0));
         dest.writeString(coachImage);
         dest.writeByte((byte) (isProgressCompleted ? 1 : 0));
