@@ -5,7 +5,6 @@ import android.content.Context;
 import com.google.gson.Gson;
 import com.pratham.foundation.database.AppDatabase;
 import com.pratham.foundation.database.BackupDatabase;
-import com.pratham.foundation.database.domain.Assessment;
 import com.pratham.foundation.database.domain.ContentProgress;
 import com.pratham.foundation.database.domain.KeyWords;
 import com.pratham.foundation.database.domain.Score;
@@ -27,9 +26,7 @@ import java.util.List;
 import static com.pratham.foundation.ui.contentPlayer.paragraph_stt.ParaSttReadingFragment.correctArr;
 import static com.pratham.foundation.ui.contentPlayer.paragraph_stt.ParaSttReadingFragment.lineBreakCounter;
 import static com.pratham.foundation.ui.contentPlayer.paragraph_stt.ParaSttReadingFragment.testCorrectArr;
-import static com.pratham.foundation.utility.FC_Constants.APP_SECTION;
 import static com.pratham.foundation.utility.FC_Constants.STT_REGEX;
-import static com.pratham.foundation.utility.FC_Constants.sec_Test;
 
 
 @EBean
@@ -213,9 +210,9 @@ public class ParaSttReadingPresenter implements ParaSttReadingContract.ParaSttRe
         if (pagePercentage[pgNo] < perc) {
             pagePercentage[pgNo] = perc;
         }
-        if (FastSave.getInstance().getString(APP_SECTION, "").equalsIgnoreCase(sec_Test))
-            if (perc >= 75)
-                testCorrectArr[pgNo] = true;
+//        if (FastSave.getInstance().getString(APP_SECTION, "").equalsIgnoreCase(sec_Test))
+//            if (perc >= 75)
+//                testCorrectArr[pgNo] = true;
 
         if (perc >= 75)
             readingView.allCorrectAnswer();
@@ -327,7 +324,7 @@ public class ParaSttReadingPresenter implements ParaSttReadingContract.ParaSttRe
             score.setSentFlag(0);
             AppDatabase.getDatabaseInstance(context).getScoreDao().insert(score);
 
-            if (FastSave.getInstance().getString(APP_SECTION, "").equalsIgnoreCase(sec_Test)) {
+/*            if (FastSave.getInstance().getString(APP_SECTION, "").equalsIgnoreCase(sec_Test)) {
                 Assessment assessment = new Assessment();
                 assessment.setResourceIDa(resId);
                 assessment.setSessionIDa(FastSave.getInstance().getString(FC_Constants.ASSESSMENT_SESSION, ""));
@@ -343,7 +340,7 @@ public class ParaSttReadingPresenter implements ParaSttReadingContract.ParaSttRe
                 assessment.setLabel("test: " + Label);
                 assessment.setSentFlag(0);
                 AppDatabase.getDatabaseInstance(context).getAssessmentDao().insert(assessment);
-            }
+            }*/
 
             BackupDatabase.backup(context);
         } catch (Exception e) {

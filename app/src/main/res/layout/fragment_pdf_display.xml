@@ -1,6 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.viewpager.widget.ViewPager xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/pdf_curl_view"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="horizontal"/>
+    android:layout_height="match_parent">
+
+    <ImageButton
+        android:id="@+id/close_video"
+        android:layout_width="@dimen/_30sdp"
+        android:layout_height="@dimen/_30sdp"
+        android:layout_alignParentEnd="true"
+        android:layout_marginTop="@dimen/_5sdp"
+        android:layout_marginEnd="@dimen/_5sdp"
+        android:src="@drawable/ic_close_white"
+        android:elevation="@dimen/_2sdp"
+        android:scaleType="centerInside"
+        android:background="@drawable/vid_ball" />
+
+    <androidx.viewpager.widget.ViewPager
+        android:id="@+id/pdf_curl_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal" />
+
+</RelativeLayout>

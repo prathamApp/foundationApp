@@ -148,5 +148,13 @@
     <string name="Click_to_switch_Sections">సెక్షన్స్ మార్చడానికి ఇక్కడ క్లిక్ చేయండి</string>
     <string name="change_the_language">భాషను మార్చడానికి ఇక్కడ క్లిక్ చేయండి</string>
     <string name="of_the_content">కంటెంట్ యొక్క</string>
-    <string name="Audio">Listen to the audio</string>
+    <string name="enroll_course">కోర్సు నమోదు</string>
+    <string name="device_date_time_change">డివైజ్ తారీఖు మరియు సమయం</string>
+    <string name="internet_date_time_change">ఇంటర్నెట్ తారీఖు మరియు సమయం</string>
+    <string name="Set_Date_and_Time">తేదీ మరియు సమయాన్ని సెట్ చేయండి	</string>
+    <string name="add_course">కోర్సు జోడించండి</string>
+    <string name="select_date">తారీఖును ఎన్నుకొనండి	</string>
+    <string name="confirm_date">తారీఖును నిర్ధారించండి</string>
+    <string name="Audio">ఆడియోను వినండి</string>
+
 </resources>

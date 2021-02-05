@@ -37,7 +37,6 @@ import com.pratham.foundation.customView.fontsview.SansTextView;
 import com.pratham.foundation.interfaces.MediaCallbacks;
 import com.pratham.foundation.modalclasses.Message;
 import com.pratham.foundation.modalclasses.ModalVocabulary;
-import com.pratham.foundation.services.shared_preferences.FastSave;
 import com.pratham.foundation.services.stt.ContinuousSpeechService_New;
 import com.pratham.foundation.services.stt.STT_Result_New;
 import com.pratham.foundation.utility.FC_Utility;
@@ -55,11 +54,10 @@ import java.io.FileInputStream;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.pratham.foundation.utility.FC_Constants.APP_SECTION;
 import static com.pratham.foundation.utility.FC_Constants.dialog_btn_cancel;
 import static com.pratham.foundation.utility.FC_Constants.gameFolderPath;
-import static com.pratham.foundation.utility.FC_Constants.sec_Practice;
-import static com.pratham.foundation.utility.FC_Constants.sec_Test;
+//import static com.pratham.foundation.utility.FC_Constants.sec_Practice;
+//import static com.pratham.foundation.utility.FC_Constants.sec_Test;
 
 
 @EActivity(R.layout.activity_vocabulary_reading)
@@ -144,10 +142,10 @@ public class ReadingVocabularyActivity extends BaseActivity implements MediaCall
         sttLang = intent.getStringExtra("sttLang");
         onSdCard = getIntent().getBooleanExtra("onSdCard", false);
 
-        if (!FastSave.getInstance().getString(APP_SECTION, "").equalsIgnoreCase(sec_Test))
+//        if (!FastSave.getInstance().getString(APP_SECTION, "").equalsIgnoreCase(sec_Test))
             tv_title.setText("" + contentTitle);
-        else
-            tv_title.setText("" + getResources().getString(R.string.Test));
+//        else
+//            tv_title.setText("" + getResources().getString(R.string.Test));
 
         continuousSpeechService = new ContinuousSpeechService_New(mContext, ReadingVocabularyActivity.this, sttLang);
 
@@ -361,9 +359,9 @@ public class ReadingVocabularyActivity extends BaseActivity implements MediaCall
             myTextView.setTextSize(25);
             myTextView.setTextColor(getResources().getColor(R.color.colorAccentDark));
             vocabChatFlow.addView(myTextView);
-            if (testFlg ||
+            if (testFlg/* ||
                     FastSave.getInstance().getString(APP_SECTION, "").equalsIgnoreCase(sec_Test) ||
-                    FastSave.getInstance().getString(APP_SECTION, "").equalsIgnoreCase(sec_Practice))
+                    FastSave.getInstance().getString(APP_SECTION, "").equalsIgnoreCase(sec_Practice)*/)
                 myTextView.setVisibility(View.INVISIBLE);
         }
         sendClikChanger(0);
@@ -452,9 +450,9 @@ public class ReadingVocabularyActivity extends BaseActivity implements MediaCall
     private void LoadNext() {
         if (!dilogOpen) {
             dilogOpen = true;
-            if (FastSave.getInstance().getString(APP_SECTION, "").equalsIgnoreCase(sec_Test))
-                showStars(true);
-            else
+//            if (FastSave.getInstance().getString(APP_SECTION, "").equalsIgnoreCase(sec_Test))
+//                showStars(true);
+//            else
                 showWordNextDialog(this);
         }
     }
@@ -513,7 +511,7 @@ public class ReadingVocabularyActivity extends BaseActivity implements MediaCall
         dia_btn_exit.setOnClickListener(v -> {
             dilogOpen = false;
             presenter.setCompletionPercentage();
-            if (FastSave.getInstance().getString(APP_SECTION, "").equalsIgnoreCase(sec_Test)) {
+/*            if (FastSave.getInstance().getString(APP_SECTION, "").equalsIgnoreCase(sec_Test)) {
                 int correctCnt = 0, total = 0;
                 try {
                     total = correctArr.length;
@@ -531,7 +529,7 @@ public class ReadingVocabularyActivity extends BaseActivity implements MediaCall
                 returnIntent.putExtra("sMarks", correctCnt);
                 returnIntent.putExtra("tMarks", total);
                 setResult(Activity.RESULT_OK, returnIntent);
-            }
+            }*/
             disableHandlers();
             nextDialog.dismiss();
             finish();
@@ -712,7 +710,7 @@ public class ReadingVocabularyActivity extends BaseActivity implements MediaCall
     @UiThread
     @Click(R.id.btn_speaker)
     public void chatAnswer() {
-        if (!FastSave.getInstance().getString(APP_SECTION, "").equalsIgnoreCase(sec_Test)) {
+//        if (!FastSave.getInstance().getString(APP_SECTION, "").equalsIgnoreCase(sec_Test)) {
             if (!speakerFlg) {
                 speakerFlg = true;
                 btn_imgsend.setClickable(false);
@@ -724,12 +722,12 @@ public class ReadingVocabularyActivity extends BaseActivity implements MediaCall
                 else
                     new Handler().postDelayed(() -> startAudioReading("" + ansAudio), 200);
             }
-        }
+//        }
     }
 
     @UiThread
     public void startAudioReading(String audioFilePath) {
-        if (!testFlg && !FastSave.getInstance().getString(APP_SECTION, "").equalsIgnoreCase(sec_Test)) {
+        if (!testFlg /*&& !FastSave.getInstance().getString(APP_SECTION, "").equalsIgnoreCase(sec_Test)*/) {
             try {
                 speakerFlg = false;
                 MediaMetadataRetriever mmr = new MediaMetadataRetriever();
@@ -763,7 +761,7 @@ public class ReadingVocabularyActivity extends BaseActivity implements MediaCall
     @UiThread
     @Override
     public void sendClikChanger(int clickOn) {
-        if (!FastSave.getInstance().getString(APP_SECTION, "").equalsIgnoreCase(sec_Test)) {
+//        if (!FastSave.getInstance().getString(APP_SECTION, "").equalsIgnoreCase(sec_Test)) {
             if (clickOn == 0) {
                 btn_imgsend.setVisibility(View.GONE);
                 btn_speaker.setVisibility(View.VISIBLE);
@@ -772,7 +770,7 @@ public class ReadingVocabularyActivity extends BaseActivity implements MediaCall
                 btn_imgsend.setClickable(true);
                 btn_speaker.setVisibility(View.GONE);
             }
-        } else {
+/*        } else {
             btn_speaker.setVisibility(View.GONE);
             btn_imgsend.setVisibility(View.VISIBLE);
             if (clickOn == 0) {
@@ -782,7 +780,7 @@ public class ReadingVocabularyActivity extends BaseActivity implements MediaCall
                 btn_imgsend.setClickable(true);
                 btn_imgsend.setBackgroundResource(R.drawable.button_yellow);
             }
-        }
+        }*/
     }
 
     boolean allCorrectFlg = false;
@@ -837,17 +835,17 @@ public class ReadingVocabularyActivity extends BaseActivity implements MediaCall
             e.printStackTrace();
         }
 
-        if (FastSave.getInstance().getString(APP_SECTION, "").equalsIgnoreCase(sec_Test)) {
-            if (!dilogOpen) {
-                dilogOpen = true;
-                showStars(false);
-            }
-        } else {
+//        if (FastSave.getInstance().getString(APP_SECTION, "").equalsIgnoreCase(sec_Test)) {
+//            if (!dilogOpen) {
+//                dilogOpen = true;
+//                showStars(false);
+//            }
+//        } else {
             if (!dilogOpen) {
                 dilogOpen = true;
                 showExitDialog(this);
             }
-        }
+//        }
     }
 
     int correctCnt = 0, total = 0;
@@ -998,25 +996,25 @@ public class ReadingVocabularyActivity extends BaseActivity implements MediaCall
             dilogOpen = false;
             presenter.setCompletionPercentage();
             dialog.dismiss();
-            if (FastSave.getInstance().getString(APP_SECTION, "").equalsIgnoreCase(sec_Test)) {
-                int correctCnt = 0, total = 0;
-                try {
-                    total = correctArr.length;
-                    for (int x = 0; x < correctArr.length; x++)
-                        if (correctArr[x])
-                            correctCnt += 1;
-                } catch (Exception e) {
-                    e.printStackTrace();
-                    correctCnt = 0;
-                    total = 0;
-                }
-
-                Intent returnIntent = new Intent();
-                returnIntent.putExtra("cCode", certiCode);
-                returnIntent.putExtra("sMarks", correctCnt);
-                returnIntent.putExtra("tMarks", total);
-                setResult(Activity.RESULT_OK, returnIntent);
-            }
+//            if (FastSave.getInstance().getString(APP_SECTION, "").equalsIgnoreCase(sec_Test)) {
+//                int correctCnt = 0, total = 0;
+//                try {
+//                    total = correctArr.length;
+//                    for (int x = 0; x < correctArr.length; x++)
+//                        if (correctArr[x])
+//                            correctCnt += 1;
+//                } catch (Exception e) {
+//                    e.printStackTrace();
+//                    correctCnt = 0;
+//                    total = 0;
+//                }
+//
+//                Intent returnIntent = new Intent();
+//                returnIntent.putExtra("cCode", certiCode);
+//                returnIntent.putExtra("sMarks", correctCnt);
+//                returnIntent.putExtra("tMarks", total);
+//                setResult(Activity.RESULT_OK, returnIntent);
+//            }
             disableHandlers();
             finish();
         });

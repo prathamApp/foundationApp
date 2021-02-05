@@ -148,5 +148,13 @@
     <string name="Click_to_switch_Sections">সেকশন পাল্টানোর জন্য এখানে ক্লিক করুন</string>
     <string name="change_the_language">ভাষা পাল্টানোর জন্য এখানে ক্লিক করুন</string>
     <string name="of_the_content">সামগ্রীর</string>
-    <string name="Audio">Listen to the audio</string>
+    <string name="enroll_course">কোর্স এনরোলমেন্ট</string>
+    <string name="device_date_time_change">ডিভাইসের তারিখ এবংসময়</string>
+    <string name="internet_date_time_change">ইন্টারনেট এর তারিখ এবং সময়</string>
+    <string name="Set_Date_and_Time">তারিখ এবং সময় সেট করুন</string>
+    <string name="add_course">কোর্স এড করুন</string>
+    <string name="select_date">তারিখ সিলেক্ট করুন</string>
+    <string name="confirm_date">তারিখ কনফার্ম করুন</string>
+    <string name="Audio">অডিও শুনুন</string>
+
 </resources>

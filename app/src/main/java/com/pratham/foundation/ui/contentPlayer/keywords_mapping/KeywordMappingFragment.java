@@ -1,6 +1,7 @@
 package com.pratham.foundation.ui.contentPlayer.keywords_mapping;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
@@ -86,6 +87,9 @@ public class KeywordMappingFragment extends Fragment implements KeywordMappingCo
             resId = bundle.getString("resId");
             contentTitle = bundle.getString("contentName");
             onSdCard = bundle.getBoolean("onSdCard", false);
+
+            Log.d("KeyMapPresImp", "getData: 1 :  "+contentPath);
+
             if (onSdCard)
                 readingContentPath = ApplicationClass.contentSDPath + gameFolderPath + "/" + contentPath + "/";
             else

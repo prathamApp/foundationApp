@@ -148,5 +148,12 @@
     <string name="Click_to_switch_Sections">ವಿಭಾಗಗಳನ್ನು ಬದಲಾಯಿಸಲು ಇಲ್ಲಿ ಕ್ಲಿಕ್ ಮಾಡಿ</string>
     <string name="change_the_language">ಭಾಷೆಯನ್ನು ಬದಲಾಯಿಸಲು ಇಲ್ಲಿ ಕ್ಲಿಕ್ ಮಾಡಿ</string>
     <string name="of_the_content">ವಿಷಯಕ್ಕಾಗಿ.</string>
-    <string name="Audio">Listen to the audio</string>
+    <string name="enroll_course">ಕೋರ್ಸ್  ದಾಖಲಾತಿಗೆ</string>
+    <string name="device_date_time_change">ಡಿವೈಸ್ ನ ದಿನಾಂಕ ಮತ್ತು ಸಮಯ</string>
+    <string name="internet_date_time_change">ಇಂಟರ್ನೆಟ್ ದಿನಾಂಕ ಮತ್ತು ಸಮಯ</string>
+    <string name="Set_Date_and_Time">ದಿನಾಂಕ ಮತ್ತು ಸಮಯವನ್ನು ನಿಗದಿಪಡಿಸಿ</string>
+    <string name="add_course">ಕೋರ್ಸ್ಅನ್ನು  ಸೇರಿಸಿ</string>
+    <string name="select_date">ದಿನಾಂಕವನ್ನು ಆಯ್ಕೆಮಾಡಿ</string>
+    <string name="confirm_date">ದಿನಾಂಕವನ್ನು ದೃಡಪಡಿಸಿ</string>
+    <string name="Audio">ಆಡಿಯೋವನ್ನು ಕೇಳಿ</string>
 </resources>

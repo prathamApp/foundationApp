@@ -199,8 +199,9 @@ public class FC_Constants {
     public static final String ACTIVITY_RESUMED = "activity_resumed";
 
     public static final String sec_Learning = "Learning";
-    public static final String sec_Practice = "Practice";
+/*    public static final String sec_Practice = "Practice";
     public static final String sec_Fun = "Fun";
+    public static final String sec_Test = "Test";*/
     public static final String sec_Test = "Test";
     public static final String sec_Profile = "Profile";
     public static final String apkSP = "Smart Phone";

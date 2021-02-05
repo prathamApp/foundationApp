@@ -76,25 +76,29 @@ public class PDF_PresenterImpl implements PDFContract.pdfPresenter {
     @Background
     @Override
     public void addScoreToDB(String resId, String startTime, int pageSelected) {
-        String endTime = FC_Utility.getCurrentDateTime();
-        int total = (bitmaps.size() > 0) ? bitmaps.size() : 0;
-        Score score = new Score();
-        score.setSessionID(FastSave.getInstance().getString(FC_Constants.CURRENT_SESSION, ""));
-        score.setStudentID("" + FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""));
-        score.setDeviceID(FC_Utility.getDeviceID());
-        score.setResourceID(resId);
-        score.setQuestionId(0);
-        score.setScoredMarks(pageSelected);
-        score.setTotalMarks((bitmaps.size() > 0) ? bitmaps.size() : 0);
-        score.setStartDateTime(startTime);
-        score.setEndDateTime(endTime);
-        score.setLevel(0);
-        score.setLabel("PDF");
-        score.setSentFlag(0);
-        AppDatabase.getDatabaseInstance(context).getScoreDao().insert(score);
-        float perc = 0f;
-        perc = (pageSelected/(float) total)*100;
-        addContentProgress(perc,"resourceProgress",resId);
+        try {
+            String endTime = FC_Utility.getCurrentDateTime();
+            int total = (bitmaps.size() > 0) ? bitmaps.size() : 0;
+            Score score = new Score();
+            score.setSessionID(FastSave.getInstance().getString(FC_Constants.CURRENT_SESSION, ""));
+            score.setStudentID("" + FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""));
+            score.setDeviceID(FC_Utility.getDeviceID());
+            score.setResourceID(resId);
+            score.setQuestionId(0);
+            score.setScoredMarks(pageSelected);
+            score.setTotalMarks((bitmaps.size() > 0) ? bitmaps.size() : 0);
+            score.setStartDateTime(startTime);
+            score.setEndDateTime(endTime);
+            score.setLevel(0);
+            score.setLabel("PDF");
+            score.setSentFlag(0);
+            AppDatabase.getDatabaseInstance(context).getScoreDao().insert(score);
+            float perc = 0f;
+            perc = (pageSelected/(float) total)*100;
+            addContentProgress(perc,"resourceProgress",resId);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     private void addContentProgress(float perc, String label,String resId) {

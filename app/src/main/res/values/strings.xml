@@ -113,9 +113,9 @@
     <string name="select_date">Select Date</string>
     <string name="confirm_date">Confirm Date</string>
     <string name="enroll_course">Course Enrollment</string>
-    <string name="device_date_time_change" translatable="false">Device date and time - \n</string>
-    <string name="internet_date_time_change" translatable="false">Internet date and time - \n</string>
-    <string name="Set_Date_and_Time" translatable="false">Set Date and Time</string>
+    <string name="device_date_time_change">Device date and time</string>
+    <string name="internet_date_time_change">Internet date and time</string>
+    <string name="Set_Date_and_Time">Set Date and Time</string>
 
     <string name="no_data_generated">No data generated for this section.</string>
     <string name="no_data_in_sec">No data in this section.</string>

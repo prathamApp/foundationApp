@@ -6,7 +6,6 @@ import android.util.Log;
 import com.google.gson.Gson;
 import com.pratham.foundation.database.AppDatabase;
 import com.pratham.foundation.database.BackupDatabase;
-import com.pratham.foundation.database.domain.Assessment;
 import com.pratham.foundation.database.domain.ContentProgress;
 import com.pratham.foundation.database.domain.KeyWords;
 import com.pratham.foundation.database.domain.Score;
@@ -27,10 +26,7 @@ import java.util.List;
 
 import static com.pratham.foundation.ui.contentPlayer.vocabulary_qa.ReadingVocabularyActivity.currentPageNo;
 import static com.pratham.foundation.ui.contentPlayer.vocabulary_qa.ReadingVocabularyActivity.testCorrectArr;
-import static com.pratham.foundation.utility.FC_Constants.APP_SECTION;
 import static com.pratham.foundation.utility.FC_Constants.STT_REGEX;
-import static com.pratham.foundation.utility.FC_Constants.sec_Practice;
-import static com.pratham.foundation.utility.FC_Constants.sec_Test;
 
 
 @EBean
@@ -113,9 +109,9 @@ public class ReadingVocabularyPresenter implements ReadingVocabularyContract.Rea
             modalSubVocabList = new ArrayList<>();
             float perc = getPercentage(learntWordCount, totalWordCount);
             for (int i = 0; i < modalMainVocabCatList.get(randomCategory).getDataList().size(); i++) {
-                if (perc < 99.5 ||
+                if (perc < 99.5 /*||
                         FastSave.getInstance().getString(APP_SECTION,"").equalsIgnoreCase(sec_Practice)||
-                        FastSave.getInstance().getString(APP_SECTION,"").equalsIgnoreCase(sec_Test)) {
+                        FastSave.getInstance().getString(APP_SECTION,"").equalsIgnoreCase(sec_Test)*/) {
                     if (!checkWord("" + modalMainVocabCatList.get(randomCategory).getDataList().get(i).getQuestion1Text()))
                         modalSubVocabList.add(modalMainVocabCatList.get(randomCategory).getDataList().get(i));
                 } else
@@ -240,7 +236,7 @@ public class ReadingVocabularyPresenter implements ReadingVocabularyContract.Rea
                 }
                 int correctCnt = getCorrectCounter();
                 perc = getPercentage(correctCnt, ReadingVocabularyActivity.correctArr.length);
-                if ((perc > 50) && !FastSave.getInstance().getString(APP_SECTION,"").equalsIgnoreCase(sec_Test)) {
+                if ((perc > 50) /*&& !FastSave.getInstance().getString(APP_SECTION,"").equalsIgnoreCase(sec_Test)*/) {
                     readingView.sendClikChanger(1);
                     readingView.setCorrectViewColor();
                 }
@@ -340,7 +336,7 @@ public class ReadingVocabularyPresenter implements ReadingVocabularyContract.Rea
             score.setLabel(Word + " - " + Label);
             score.setSentFlag(0);
             AppDatabase.getDatabaseInstance(context).getScoreDao().insert(score);
-
+/*
             if (FastSave.getInstance().getString(APP_SECTION,"").equalsIgnoreCase(sec_Test)) {
                 Assessment assessment = new Assessment();
                 assessment.setResourceIDa(resId);
@@ -358,7 +354,7 @@ public class ReadingVocabularyPresenter implements ReadingVocabularyContract.Rea
                 assessment.setSentFlag(0);
                 AppDatabase.getDatabaseInstance(context).getAssessmentDao().insert(assessment);
             }
-
+*/
             BackupDatabase.backup(context);
         } catch (Exception e) {
             e.printStackTrace();

@@ -48,7 +48,6 @@ import com.pratham.foundation.modalclasses.Modal_InternetTime;
 import com.pratham.foundation.services.shared_preferences.FastSave;
 import com.pratham.foundation.ui.admin_panel.MenuActivity_;
 import com.pratham.foundation.ui.admin_panel.fragment_admin_panel.tab_usage.TabUsageActivity_;
-import com.pratham.foundation.ui.app_home.profile_new.certificate_display.CertificateDisplayActivity_;
 import com.pratham.foundation.ui.app_home.profile_new.chat_display_list.DisplayChatActivity_;
 import com.pratham.foundation.ui.app_home.profile_new.course_enrollment.CourseEnrollmentActivity_;
 import com.pratham.foundation.ui.app_home.profile_new.display_image_ques_list.DisplayImageQuesActivity_;
@@ -586,7 +585,7 @@ public class ProfileFragment extends Fragment implements ProfileContract.Profile
     }
 
     private void showCertificates() {
-        startActivity(new Intent(context, CertificateDisplayActivity_.class));
+//        startActivity(new Intent(context, CertificateDisplayActivity_.class));
     }
 
     @Click(R.id.ib_langChange)
@@ -749,11 +748,11 @@ public class ProfileFragment extends Fragment implements ProfileContract.Profile
             tm = get12HrTime(sTime);
             tm2 = get12HrTime(FC_Utility.getCurrentTime().substring(0, 5));
 
-            txt_push_dialog_msg.setText(ApplicationClass.getInstance().getString(R.string.device_date_time_change) + " " + FC_Utility.getCurrentDate() + "\n" + tm2);
+            txt_push_dialog_msg.setText(ApplicationClass.getInstance().getString(R.string.device_date_time_change) + "-\n" + FC_Utility.getCurrentDate() + "\n" + tm2);
             if (newDate.equalsIgnoreCase("NA")) {
                 txt_push_dialog_msg2.setVisibility(View.GONE);
             } else
-                txt_push_dialog_msg2.setText(ApplicationClass.getInstance().getString(R.string.internet_date_time_change) + " " + newDate + "\n" + tm);
+                txt_push_dialog_msg2.setText(ApplicationClass.getInstance().getString(R.string.internet_date_time_change) + "-\n" + newDate + "\n" + tm);
             changeDateDialog.show();
         } catch (Exception e) {
             e.printStackTrace();

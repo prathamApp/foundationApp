@@ -63,19 +63,16 @@
             android:name=".ui.admin_panel.AdminControlsActivity_"
             android:screenOrientation="portrait" />
         <activity
+            android:name=".ui.contentPlayer.pdf_display.Fragment_PdfViewer_"
+            android:screenOrientation="fullSensor" />
+        <activity
             android:name=".ui.admin_panel.andmin_login_new.AdminConsoleActivityNew_"
             android:screenOrientation="portrait" />
         <activity
             android:name=".ui.admin_panel.MenuActivity_"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".ui.bottom_fragment.add_student.AddStudentActivity_"
-            android:screenOrientation="portrait" />
-        <activity
             android:name=".ui.admin_panel.assign_groups.Activity_AssignGroups_"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name=".ui.test.certificate.CertificateActivity_"
             android:screenOrientation="portrait" />
         <activity
             android:name=".ui.app_home.profile_new.certificate_display.CertificateDisplayActivity_"
@@ -112,13 +109,6 @@
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.Dialog" />
         <activity
-            android:name=".ui.app_home.test_fragment.supervisor.SupervisedAssessmentActivity"
-            android:screenOrientation="sensorPortrait"
-            android:theme="@style/Theme.AppCompat.Light.Dialog.MinWidth" />
-        <!--        <activity-->
-        <!--            android:name=".ui.student_profile.Student_profile_activity"-->
-        <!--            android:screenOrientation="portrait" />-->
-        <activity
             android:name=".ui.contentPlayer.web_view.WebViewActivity_"
             android:screenOrientation="sensorLandscape" />
         <activity
@@ -147,9 +137,6 @@
             android:screenOrientation="sensorLandscape" />
         <activity
             android:name=".ui.contentPlayer.video_player.ActivityVideoPlayer_"
-            android:screenOrientation="sensorLandscape" />
-        <activity
-            android:name="CustomExoPlayerView"
             android:screenOrientation="sensorLandscape" />
         <activity
             android:name=".ui.contentPlayer.doing.FullScreenVideo_"

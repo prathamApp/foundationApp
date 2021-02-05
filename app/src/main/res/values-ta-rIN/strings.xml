@@ -148,5 +148,13 @@
     <string name="Click_to_switch_Sections">பிரிவுகளை மாற்ற இங்கே கிளிக் செய்க</string>
     <string name="change_the_language">மொழியை மாற்ற இங்கே கிளிக் செய்க</string>
     <string name="of_the_content">உள்ளடக்கத்தின்.</string>
-    <string name="Audio">Listen to the audio</string>
+    <string name="enroll_course">பாடநெறி சேர்க்கைபாடநெறி சேர்க்கை</string>
+    <string name="device_date_time_change">கருவி தேதி மற்றும் நேரம்</string>
+    <string name="internet_date_time_change">இணைய தேதி மற்றும் நேரம்</string>
+    <string name="Set_Date_and_Time">தேதி மற்றும் நேரத்தை அமைக்கவும்</string>
+    <string name="add_course">பாடநெறியைச் சேர்க்கவும்</string>
+    <string name="select_date">தேதி தேர்ந்தெடுக்கவும்</string>
+    <string name="confirm_date">தேதியை உறுதிப்படுத்தவும்</string>
+    <string name="Audio">ஆடியோவை கேளுங்கள்</string>
+
 </resources>

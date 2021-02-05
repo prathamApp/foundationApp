@@ -54,6 +54,7 @@ import com.pratham.foundation.ui.contentPlayer.matchingPairGame.MatchThePairGame
 import com.pratham.foundation.ui.contentPlayer.old_cos.conversation.ConversationActivity_;
 import com.pratham.foundation.ui.contentPlayer.old_cos.reading_cards.ReadingCardsActivity_;
 import com.pratham.foundation.ui.contentPlayer.opposites.OppositesActivity_;
+import com.pratham.foundation.ui.contentPlayer.pdf_display.Fragment_PdfViewer_;
 import com.pratham.foundation.ui.contentPlayer.reading_paragraphs.ReadingParagraphsActivity_;
 import com.pratham.foundation.ui.contentPlayer.reading_rhyming.ReadingRhymesActivity_;
 import com.pratham.foundation.ui.contentPlayer.reading_story_activity.ReadingStoryActivity_;
@@ -142,6 +143,7 @@ public class LearningFragment extends Fragment implements LearningContract.Learn
 
     @UiThread
     public void notifyAdapter() {
+        Log.d("crashDetection", "notifyAdapter 1 : ");
         try {
             for (int i = 0; i < contentParentList.size(); i++)
                 Log.d("Practice List", "" + contentParentList.get(i).getNodeTitle());
@@ -149,25 +151,32 @@ public class LearningFragment extends Fragment implements LearningContract.Learn
             e.printStackTrace();
         }
 
-        showRecyclerLayout();
-        if (adapterParent == null) {
+        try {
+            showRecyclerLayout();
+            Log.d("crashDetection", "notifyAdapter 2 : ");
+            if (adapterParent == null) {
+                try {
+                    Log.d("crashDetection", "notifyAdapter 3 : ");
+                    adapterParent = new LearningOuterDataAdapter(context, contentParentList, this);
+                    RecyclerView.LayoutManager mLayoutManager = new GridLayoutManager(context, 1);
+                    my_recycler_view.setLayoutManager(mLayoutManager);
+                    my_recycler_view.addItemDecoration(new GridSpacingItemDecoration(1, dpToPx(context), true));
+                    my_recycler_view.setItemAnimator(new DefaultItemAnimator());
+                    my_recycler_view.setAdapter(adapterParent);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            } else {
+                Log.d("crashDetection", "notifyAdapter 4 : ");
+                adapterParent.notifyDataSetChanged();
+            }
+            dismissLoadingDialog();
             try {
-                adapterParent = new LearningOuterDataAdapter(context, contentParentList, this);
-                RecyclerView.LayoutManager mLayoutManager = new GridLayoutManager(context, 1);
-                my_recycler_view.setLayoutManager(mLayoutManager);
-                my_recycler_view.addItemDecoration(new GridSpacingItemDecoration(1, dpToPx(context), true));
-                my_recycler_view.setItemAnimator(new DefaultItemAnimator());
-                my_recycler_view.setAdapter(adapterParent);
+                if (downloadDialog != null)
+                    downloadDialog.dismiss();
             } catch (Exception e) {
                 e.printStackTrace();
             }
-        } else
-            adapterParent.notifyDataSetChanged();
-        long delay;
-        dismissLoadingDialog();
-        try {
-            if (downloadDialog != null)
-                downloadDialog.dismiss();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -302,10 +311,12 @@ public class LearningFragment extends Fragment implements LearningContract.Learn
     }
 
     private void fragmentSelected() {
+        Log.d("crashDetection", "fragmentSelected : ");
         showLoader();
-        presenter.getBottomNavId(currentLevel, "" + sec_Learning);
+//        presenter.getBottomNavId(currentLevel, "" + sec_Learning);
 //        presenter.getDataForList();
         String currentNodeID = presenter.getcurrentNodeID();
+        presenter.getDataForList();
         try {
             if (!currentNodeID.equalsIgnoreCase("na"))
                 presenter.findMaxScore("" + currentNodeID);
@@ -317,6 +328,7 @@ public class LearningFragment extends Fragment implements LearningContract.Learn
     @Override
     public void setSelectedLevel(List<ContentTable> contentTable) {
         try {
+            Log.d("crashDetection", "setSelectedLevel : ");
             rootLevelList = contentTable;
             contentParentList.clear();
             presenter.removeLastNodeId();
@@ -331,6 +343,7 @@ public class LearningFragment extends Fragment implements LearningContract.Learn
                 if (rootLevelList.size() > i) {
                     levelChanged.setActualLevel(rootLevelList, rootLevelList.get(i).getNodeTitle(), i);
                     presenter.insertNodeId(rootLevelList.get(i).getNodeId());
+                    Log.d("crashDetection", "setSelectedLevel rootLevelList 1 : ");
                     presenter.getDataForList();
                 } else
                     showNoDataLayout();
@@ -339,6 +352,7 @@ public class LearningFragment extends Fragment implements LearningContract.Learn
                     i = 0;
                     levelChanged.setActualLevel(rootLevelList, rootLevelList.get(i).getNodeTitle(), i);
                     presenter.insertNodeId(rootLevelList.get(i).getNodeId());
+                    Log.d("crashDetection", "setSelectedLevel rootLevelList 2 : ");
                     presenter.getDataForList();
                 }
             } else
@@ -776,21 +790,25 @@ public class LearningFragment extends Fragment implements LearningContract.Learn
                 intent.putExtra("contentType", contentList.getResourceType());
 //                startActivity(intent, ActivityOptions.makeSceneTransitionAnimation(ContentDisplay.this).toBundle());
                 startActivity(intent);
-            } /*else if (contentList.getResourceType().equalsIgnoreCase(FC_Constants.VIDEO)) {
-                Intent intent = new Intent(context, ActivityVideoView_.class);
-                intent.putExtra("contentPath", contentList.getResourcePath());
-                intent.putExtra("StudentID", FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""));
-                intent.putExtra("resId", contentList.getResourceId());
-                intent.putExtra("contentName", contentList.getNodeTitle());
-                intent.putExtra("onSdCard", contentList.isOnSDCard());
-                intent.putExtra("contentType", contentList.getResourceType());
-//                startActivity(intent, ActivityOptions.makeSceneTransitionAnimation(ContentDisplay.this).toBundle());
-                startActivity(intent);
-            }*/ else {
+            } else if (contentList.getResourceType().equalsIgnoreCase(FC_Constants.PDF) || contentList.getResourceType().equalsIgnoreCase("PDF")) {
+                String sdStatus = "F";
+                if (contentList.isOnSDCard())
+                    sdStatus = "T";
+                Intent intent1 = new Intent(context, Fragment_PdfViewer_.class);
+                intent1.putExtra("contentPath", contentList.getResourcePath());
+                intent1.putExtra("StudentID", FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""));
+                intent1.putExtra("resId", contentList.getResourceId());
+                intent1.putExtra("contentName", contentList.getNodeTitle());
+                intent1.putExtra("onSdCard", contentList.isOnSDCard());
+                context.startActivity(intent1);
+            } else {
+                String sdStatus = "F";
+                if (contentList.isOnSDCard())
+                    sdStatus = "T";
                 Intent mainNew = new Intent(context, ContentPlayerActivity_.class);
                 mainNew.putExtra("nodeID", contentList.getNodeId());
                 mainNew.putExtra("title", contentList.getNodeTitle());
-                mainNew.putExtra("sdStatus",contentList.isOnSDCard());
+                mainNew.putExtra("sdStatus",sdStatus);
                 mainNew.putExtra("testData", contentList);
                 mainNew.putExtra("testcall", FC_Constants.INDIVIDUAL_MODE);
                 startActivityForResult(mainNew, 1461);
@@ -934,7 +952,8 @@ public class LearningFragment extends Fragment implements LearningContract.Learn
             contentParentList.clear();
             presenter.getDataForList();
         } else {
-            Objects.requireNonNull(getActivity()).onBackPressed();
+            getActivity().finish();
+//            Objects.requireNonNull(getActivity()).onBackPressed();
         }
     }
 

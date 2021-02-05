@@ -1,6 +1,7 @@
 package com.pratham.foundation.ui.contentPlayer.keywords_mapping;
 
 import android.content.Context;
+import android.util.Log;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -59,6 +60,7 @@ public class KeywordMappingPresenterImp implements KeywordMappingContract.Keywor
     @Override
     public void getData() {
         //get data
+        Log.d("KeyMapPresImp", "getData: 2 :"+readingContentPath);
         String text = FC_Utility.loadJSONFromStorage(readingContentPath, "chKeywords.json");
         // List instrumentNames = new ArrayList<>();
         Gson gson = new Gson();

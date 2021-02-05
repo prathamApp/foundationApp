@@ -34,7 +34,6 @@ import com.pratham.foundation.interfaces.OnGameClose;
 import com.pratham.foundation.modalclasses.EventMessage;
 import com.pratham.foundation.modalclasses.ScienceQuestion;
 import com.pratham.foundation.modalclasses.ScienceQuestionChoice;
-import com.pratham.foundation.services.shared_preferences.FastSave;
 import com.pratham.foundation.ui.contentPlayer.GameConstatnts;
 import com.pratham.foundation.utility.FC_Constants;
 import com.pratham.foundation.utility.FC_Utility;
@@ -56,9 +55,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-import static com.pratham.foundation.utility.FC_Constants.APP_SECTION;
 import static com.pratham.foundation.utility.FC_Constants.gameFolderPath;
-import static com.pratham.foundation.utility.FC_Constants.sec_Test;
 import static com.pratham.foundation.utility.FC_Utility.showZoomDialog;
 
 @EFragment(R.layout.layout_mcq_fill_in_the_blanks_with_options_row)
@@ -127,9 +124,9 @@ public class pictionaryFragment extends Fragment implements OnGameClose, Piction
             else
                 readingContentPath = ApplicationClass.foundationPath + gameFolderPath + "/" + contentPath + "/";
 
-            if (FastSave.getInstance().getString(APP_SECTION,"").equalsIgnoreCase(sec_Test)) {
-                show_answer.setVisibility(View.INVISIBLE);
-            }
+//            if (FastSave.getInstance().getString(APP_SECTION,"").equalsIgnoreCase(sec_Test)) {
+//                show_answer.setVisibility(View.INVISIBLE);
+//            }
             animFadein = AnimationUtils.loadAnimation(getActivity().getApplicationContext(), R.anim.shake);
             resStartTime = FC_Utility.getCurrentDateTime();
             presenter.setView(this, resId);

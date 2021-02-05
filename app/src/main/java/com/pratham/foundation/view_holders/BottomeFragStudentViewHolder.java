@@ -78,44 +78,45 @@ public class BottomeFragStudentViewHolder extends RecyclerView.ViewHolder {
                                        BottomStudentsContract.StudentClickListener studentClickListener,
                                        int pos) {
 
-        Objects.requireNonNull(studentName).setText(fragmentModalsList.getFullName());
-        Objects.requireNonNull(studentName).setSelected(true);
-        if (groupClicked) {
-            if (fragmentModalsList.getGender().equalsIgnoreCase("male")) {
-                Objects.requireNonNull(avatar).setImageResource(FC_Utility.getRandomMaleAvatar(ApplicationClass.getInstance()));
-            } else
-                Objects.requireNonNull(avatar).setImageResource(FC_Utility.getRandomFemaleAvatar(ApplicationClass.getInstance()));
-        } else if (fragmentModalsList.getAvatarName() != null)
-            switch (fragmentModalsList.getAvatarName()) {
-                case "b1.png":
-                    Objects.requireNonNull(avatar).setImageResource(R.drawable.b1);
-                    break;
-                case "b2.png":
-                    Objects.requireNonNull(avatar).setImageResource(R.drawable.b2);
-                    break;
-                case "b3.png":
-                    Objects.requireNonNull(avatar).setImageResource(R.drawable.b3);
-                    break;
-                case "g1.png":
-                    Objects.requireNonNull(avatar).setImageResource(R.drawable.g1);
-                    break;
-                case "g2.png":
-                    Objects.requireNonNull(avatar).setImageResource(R.drawable.g2);
-                    break;
-                case "g3.png":
-                    Objects.requireNonNull(avatar).setImageResource(R.drawable.g3);
-                    break;
-            }
-        else
-            Objects.requireNonNull(avatar).setImageResource(R.drawable.b2);
+        try {
+            Objects.requireNonNull(studentName).setText(fragmentModalsList.getFullName());
+            Objects.requireNonNull(studentName).setSelected(true);
+            if (groupClicked) {
+                if (fragmentModalsList.getGender().equalsIgnoreCase("male")) {
+                    Objects.requireNonNull(avatar).setImageResource(FC_Utility.getRandomMaleAvatar(ApplicationClass.getInstance()));
+                } else
+                    Objects.requireNonNull(avatar).setImageResource(FC_Utility.getRandomFemaleAvatar(ApplicationClass.getInstance()));
+            } else if (fragmentModalsList.getAvatarName() != null)
+                switch (fragmentModalsList.getAvatarName()) {
+                    case "b1.png":
+                        Objects.requireNonNull(avatar).setImageResource(R.drawable.b1);
+                        break;
+                    case "b2.png":
+                        Objects.requireNonNull(avatar).setImageResource(R.drawable.b2);
+                        break;
+                    case "b3.png":
+                        Objects.requireNonNull(avatar).setImageResource(R.drawable.b3);
+                        break;
+                    case "g1.png":
+                        Objects.requireNonNull(avatar).setImageResource(R.drawable.g1);
+                        break;
+                    case "g2.png":
+                        Objects.requireNonNull(avatar).setImageResource(R.drawable.g2);
+                        break;
+                    case "g3.png":
+                        Objects.requireNonNull(avatar).setImageResource(R.drawable.g3);
+                        break;
+                }
+            else
+                Objects.requireNonNull(avatar).setImageResource(R.drawable.b2);
 
-        if (fragmentModalsList.isChecked()) {
-            rl_card.setBackground(ApplicationClass.getInstance().getResources().getDrawable(R.drawable.card_color_bg1));
-            studentName.setTextColor(ApplicationClass.getInstance().getResources().getColor(R.color.white));
-        } else {
-            rl_card.setBackground(ApplicationClass.getInstance().getResources().getDrawable(R.drawable.card_color_bg6));
-            studentName.setTextColor(ApplicationClass.getInstance().getResources().getColor(R.color.dark_blue));
-        }
+            if (fragmentModalsList.isChecked()) {
+                rl_card.setBackground(ApplicationClass.getInstance().getResources().getDrawable(R.drawable.card_color_bg1));
+                studentName.setTextColor(ApplicationClass.getInstance().getResources().getColor(R.color.white));
+            } else {
+                rl_card.setBackground(ApplicationClass.getInstance().getResources().getDrawable(R.drawable.card_color_bg6));
+                studentName.setTextColor(ApplicationClass.getInstance().getResources().getColor(R.color.dark_blue));
+            }
 
 /*
         File file;
@@ -128,19 +129,23 @@ public class BottomeFragStudentViewHolder extends RecyclerView.ViewHolder {
             Objects.requireNonNull(avatar).setImageURI(Uri.fromFile(file));
 */
 
-        Objects.requireNonNull(rl_card).setOnClickListener(v -> studentClickListener.onStudentClick(fragmentModalsList, pos));
+            Objects.requireNonNull(rl_card).setOnClickListener(v -> studentClickListener.onStudentClick(fragmentModalsList, pos));
 
-        setSlideAnimations(Objects.requireNonNull(rl_child_attendance));
+            setSlideAnimations(Objects.requireNonNull(rl_child_attendance));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     @SuppressLint("CheckResult")
     public void setFragmentGroupItem(StudentAndGroup_BottomFragmentModal fragmentModalsList,
                                      BottomStudentsContract.StudentClickListener studentClickListener) {
 
-        Objects.requireNonNull(group_name).setText(fragmentModalsList.getFullName());
-        Objects.requireNonNull(group_name).setSelected(true);
-        Objects.requireNonNull(iv_grp).setImageResource(R.drawable.ic_grp_btn);
-        setSlideAnimations(Objects.requireNonNull(group_card));
+        try {
+            Objects.requireNonNull(group_name).setText(fragmentModalsList.getFullName());
+            Objects.requireNonNull(group_name).setSelected(true);
+            Objects.requireNonNull(iv_grp).setImageResource(R.drawable.ic_grp_btn);
+            setSlideAnimations(Objects.requireNonNull(group_card));
 /*
         File file;
         file = new File(ApplicationClass.contentSDPath +
@@ -152,8 +157,11 @@ public class BottomeFragStudentViewHolder extends RecyclerView.ViewHolder {
             Objects.requireNonNull(avatar).setImageURI(Uri.fromFile(file));
 */
 
-        Objects.requireNonNull(rl_root).setOnClickListener(v -> studentClickListener.onGroupClick(fragmentModalsList.getFullName(),
-                fragmentModalsList.getStudentID()));
+            Objects.requireNonNull(rl_root).setOnClickListener(v -> studentClickListener.onGroupClick(fragmentModalsList.getFullName(),
+                    fragmentModalsList.getStudentID()));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 //
 //        setSlideAnimations(Objects.requireNonNull(rl_child_attendance));
     }
@@ -167,13 +175,17 @@ public class BottomeFragStudentViewHolder extends RecyclerView.ViewHolder {
     }
 
     public void setAttendenceFragmentStudentItem(Student student, AttendanceStudentsContract.AttendanceStudentClickListener studentClickListener, int position) {
-        Objects.requireNonNull(studentName).setText(student.getFullName());
-        Objects.requireNonNull(studentName).setSelected(true);
-        if (student.getGender().equalsIgnoreCase("male")) {
-            Objects.requireNonNull(avatar).setImageResource(FC_Utility.getRandomMaleAvatar(ApplicationClass.getInstance()));
-        } else
-            Objects.requireNonNull(avatar).setImageResource(FC_Utility.getRandomFemaleAvatar(ApplicationClass.getInstance()));
-        Objects.requireNonNull(rl_card).setOnClickListener(v -> studentClickListener.onStudentClick(student, position));
-        setSlideAnimations(Objects.requireNonNull(rl_child_attendance));
+        try {
+            Objects.requireNonNull(studentName).setText(student.getFullName());
+            Objects.requireNonNull(studentName).setSelected(true);
+            if (student.getGender().equalsIgnoreCase("male")) {
+                Objects.requireNonNull(avatar).setImageResource(FC_Utility.getRandomMaleAvatar(ApplicationClass.getInstance()));
+            } else
+                Objects.requireNonNull(avatar).setImageResource(FC_Utility.getRandomFemaleAvatar(ApplicationClass.getInstance()));
+            Objects.requireNonNull(rl_card).setOnClickListener(v -> studentClickListener.onStudentClick(student, position));
+            setSlideAnimations(Objects.requireNonNull(rl_child_attendance));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }

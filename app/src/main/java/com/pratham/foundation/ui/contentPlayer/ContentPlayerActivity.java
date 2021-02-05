@@ -1,7 +1,6 @@
 package com.pratham.foundation.ui.contentPlayer;
 
 import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
@@ -38,10 +37,11 @@ import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
+import java.util.Objects;
+
 import static com.pratham.foundation.ApplicationClass.BackBtnSound;
-import static com.pratham.foundation.utility.FC_Constants.APP_SECTION;
 import static com.pratham.foundation.utility.FC_Constants.INFO_CLICKED;
-import static com.pratham.foundation.utility.FC_Constants.sec_Test;
+
 
 @EActivity(R.layout.activity_content_player)
 public class ContentPlayerActivity extends BaseActivity implements ShowInstruction {
@@ -85,13 +85,13 @@ public class ContentPlayerActivity extends BaseActivity implements ShowInstructi
             // GameConstatnts.currentGameAdapterposition=myViewHolder.getAdapterPosition();
             GameConstatnts.playInsequence = false;
             GameConstatnts.gameSelector(this, testData, onSdCard);
-            if (FastSave.getInstance().getString(APP_SECTION, "").equalsIgnoreCase(sec_Test)) {
+/*            if (FastSave.getInstance().getString(APP_SECTION, "").equalsIgnoreCase(sec_Test)) {
                 returnIntent = new Intent();
                 returnIntent.putExtra("cCode", cCode);
                 returnIntent.putExtra("tMarks", 0);
                 returnIntent.putExtra("sMarks", 0);
                 setResult(Activity.RESULT_OK, returnIntent);
-            }
+            }*/
         }
     }
 
@@ -153,7 +153,7 @@ public class ContentPlayerActivity extends BaseActivity implements ShowInstructi
     @SuppressLint("SetTextI18n")
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void scoreEventReceived(ScoreEvent scoreEvent) {
-        if (scoreEvent != null) {
+/*        if (scoreEvent != null) {
             if (FastSave.getInstance().getString(APP_SECTION, "").equalsIgnoreCase(sec_Test)) {
                 if (scoreEvent.getMessage().equalsIgnoreCase(FC_Constants.RETURNSCORE)) {
                     returnIntent.putExtra("tMarks", scoreEvent.getTotalCount());
@@ -161,7 +161,7 @@ public class ContentPlayerActivity extends BaseActivity implements ShowInstructi
                     // Toast.makeText(this, ""+scoreEvent.getMessage(), Toast.LENGTH_SHORT).show();
                 }
             }
-        }
+        }*/
     }
 
     @Override
@@ -208,14 +208,14 @@ public class ContentPlayerActivity extends BaseActivity implements ShowInstructi
                     ((OnGameClose) f).gameClose();
                 }
                 //if game opened from test
-                if (FastSave.getInstance().getString(APP_SECTION, "").equalsIgnoreCase(sec_Test)) {
+   /*             if (FastSave.getInstance().getString(APP_SECTION, "").equalsIgnoreCase(sec_Test)) {
                     if (f.getActivity() instanceof ContentPlayerActivity) {
                         finish();
                     } else {
                         getSupportFragmentManager().popBackStack(SequenceLayout_.class.getSimpleName(), 0);
                     }
-                } else if (testcall != null && testcall.equalsIgnoreCase(FC_Constants.INDIVIDUAL_MODE)) {
-                    if (f.getActivity() instanceof ContentPlayerActivity) {
+                } else*/ if (testcall != null && testcall.equalsIgnoreCase(FC_Constants.INDIVIDUAL_MODE)) {
+                    if (Objects.requireNonNull(f).getActivity() instanceof ContentPlayerActivity) {
                         finish();
                     } else {
                         getSupportFragmentManager().popBackStack(SequenceLayout_.class.getSimpleName(), 0);

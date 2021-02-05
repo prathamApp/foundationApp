@@ -39,7 +39,6 @@ import com.pratham.foundation.customView.submarine_view.SubmarineView;
 import com.pratham.foundation.database.AppDatabase;
 import com.pratham.foundation.database.BackupDatabase;
 import com.pratham.foundation.database.domain.ContentTable;
-import com.pratham.foundation.database.domain.Session;
 import com.pratham.foundation.interfaces.API_Content_Result;
 import com.pratham.foundation.modalclasses.EventMessage;
 import com.pratham.foundation.modalclasses.Modal_InternetTime;
@@ -87,8 +86,6 @@ import static com.pratham.foundation.utility.FC_Constants.activityPhotoPath;
 import static com.pratham.foundation.utility.FC_Constants.currentLevel;
 import static com.pratham.foundation.utility.FC_Constants.sec_Learning;
 import static com.pratham.foundation.utility.FC_Constants.sec_Profile;
-import static com.pratham.foundation.utility.FC_Constants.testSessionEnded;
-import static com.pratham.foundation.utility.FC_Constants.testSessionEntered;
 import static com.pratham.foundation.utility.FC_Utility.get12HrTime;
 
 //import com.pratham.foundation.ui.app_home.test_fragment.supervisor.SupervisedAssessmentActivity;
@@ -616,28 +613,6 @@ public class HomeActivity extends BaseActivity implements LevelChanged, API_Cont
         });
     }
 
-    @Background
-    public void endTestSession() {
-        //End Test Session when the test is over or tab is changed
-        try {
-            Session startSesion = new Session();
-            String toDateTemp = AppDatabase.getDatabaseInstance(HomeActivity.this).getSessionDao().
-                    getToDate(FastSave.getInstance().getString(FC_Constants.ASSESSMENT_SESSION, ""));
-            if (toDateTemp != null && toDateTemp.equalsIgnoreCase("na")) {
-                AppDatabase.getDatabaseInstance(HomeActivity.this).getSessionDao().UpdateToDate(FastSave.getInstance()
-                                .getString(FC_Constants.ASSESSMENT_SESSION, ""),
-                        FC_Utility.getCurrentDateTime());
-            }
-            BackupDatabase.backup(this);
-            AppDatabase.getDatabaseInstance(HomeActivity.this).getSessionDao().insert(startSesion);
-            FastSave.getInstance().saveString(FC_Constants.ASSESSMENT_SESSION, "NA");
-            testSessionEntered = false;
-            testSessionEnded = true;
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
     BlurPopupWindow myDialog;
 /*
     @SuppressLint("SetTextI18n")
@@ -682,7 +657,6 @@ public class HomeActivity extends BaseActivity implements LevelChanged, API_Cont
 */
 
     boolean comngSoonFlg = false;
-
     @UiThread
     @SuppressLint("SetTextI18n")
     void showComingSoonDia() {
@@ -798,7 +772,9 @@ public class HomeActivity extends BaseActivity implements LevelChanged, API_Cont
 
     @Override
     public void onBackPressed() {
-        super.onBackPressed();
-        finish();
+        //TODO check this
+        backBtnPressed();
+//        super.onBackPressed();
+//        finish();
     }
 }

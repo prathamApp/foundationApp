@@ -1,6 +1,7 @@
 package com.pratham.foundation.utility;
 
 import android.os.Bundle;
+import android.util.Log;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -15,14 +16,16 @@ import com.pratham.foundation.services.shared_preferences.FastSave;
 import net.alhazmy13.catcho.library.Catcho;
 import net.alhazmy13.catcho.library.error.CatchoError;
 
+import java.util.Objects;
+
 public class CatchoTransparentActivity extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_catcho);
         //overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
-
         CatchoError error = (CatchoError) getIntent().getSerializableExtra(Catcho.ERROR);
+        Log.d("Catcho", "Catcho ERROR : "+ Objects.requireNonNull(error).getError());
         Modal_Log log = new Modal_Log();
         log.setCurrentDateTime(FC_Utility.getCurrentDateTime());
         log.setErrorType("ERROR");

@@ -6,7 +6,6 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.pratham.foundation.database.AppDatabase;
 import com.pratham.foundation.database.BackupDatabase;
-import com.pratham.foundation.database.domain.Assessment;
 import com.pratham.foundation.database.domain.ContentProgress;
 import com.pratham.foundation.database.domain.KeyWords;
 import com.pratham.foundation.database.domain.Score;
@@ -29,9 +28,7 @@ import java.lang.reflect.Type;
 import java.util.Collections;
 import java.util.List;
 
-import static com.pratham.foundation.utility.FC_Constants.APP_SECTION;
 import static com.pratham.foundation.utility.FC_Constants.IMG_PUSH_LBL;
-import static com.pratham.foundation.utility.FC_Constants.sec_Test;
 
 @EBean
 public class DoingFragmentPresenter implements DoingFragmentContract.DoingFragmentPresenter {
@@ -217,23 +214,23 @@ public class DoingFragmentPresenter implements DoingFragmentContract.DoingFragme
             score.setSentFlag(0);
             AppDatabase.getDatabaseInstance(context).getScoreDao().insert(score);
 
-            if (FastSave.getInstance().getString(APP_SECTION,"").equalsIgnoreCase(sec_Test) && addInAssessment) {
-                Assessment assessment = new Assessment();
-                assessment.setResourceIDa(resId);
-                assessment.setSessionIDa(FastSave.getInstance().getString(FC_Constants.ASSESSMENT_SESSION, ""));
-                assessment.setSessionIDm(FastSave.getInstance().getString(FC_Constants.CURRENT_SESSION, ""));
-                assessment.setQuestionIda(wID);
-                assessment.setScoredMarksa(scoredMarks);
-                assessment.setTotalMarksa(totalMarks);
-                assessment.setStudentIDa(FastSave.getInstance().getString(FC_Constants.CURRENT_ASSESSMENT_STUDENT_ID, ""));
-                assessment.setStartDateTimea(resStartTime);
-                assessment.setDeviceIDa(deviceId.equals(null) ? "0000" : deviceId);
-                assessment.setEndDateTime(resEndTime);
-                assessment.setLevela(FC_Constants.currentLevel);
-                assessment.setLabel("test: " + Label);
-                assessment.setSentFlag(0);
-                AppDatabase.getDatabaseInstance(context).getAssessmentDao().insert(assessment);
-            }
+//            if (FastSave.getInstance().getString(APP_SECTION,"").equalsIgnoreCase(sec_Test) && addInAssessment) {
+//                Assessment assessment = new Assessment();
+//                assessment.setResourceIDa(resId);
+//                assessment.setSessionIDa(FastSave.getInstance().getString(FC_Constants.ASSESSMENT_SESSION, ""));
+//                assessment.setSessionIDm(FastSave.getInstance().getString(FC_Constants.CURRENT_SESSION, ""));
+//                assessment.setQuestionIda(wID);
+//                assessment.setScoredMarksa(scoredMarks);
+//                assessment.setTotalMarksa(totalMarks);
+//                assessment.setStudentIDa(FastSave.getInstance().getString(FC_Constants.CURRENT_ASSESSMENT_STUDENT_ID, ""));
+//                assessment.setStartDateTimea(resStartTime);
+//                assessment.setDeviceIDa(deviceId.equals(null) ? "0000" : deviceId);
+//                assessment.setEndDateTime(resEndTime);
+//                assessment.setLevela(FC_Constants.currentLevel);
+//                assessment.setLabel("test: " + Label);
+//                assessment.setSentFlag(0);
+//                AppDatabase.getDatabaseInstance(context).getAssessmentDao().insert(assessment);
+//            }
             BackupDatabase.backup(context);
         } catch (Exception e) {
             e.printStackTrace();

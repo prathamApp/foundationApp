@@ -117,7 +117,6 @@ import javax.crypto.Mac;
 import javax.crypto.spec.SecretKeySpec;
 
 import static android.content.Context.BATTERY_SERVICE;
-import static com.pratham.foundation.utility.FC_Constants.APP_SECTION;
 import static com.pratham.foundation.utility.FC_Constants.ASSAMESE;
 import static com.pratham.foundation.utility.FC_Constants.BENGALI;
 import static com.pratham.foundation.utility.FC_Constants.GUJARATI;
@@ -129,10 +128,7 @@ import static com.pratham.foundation.utility.FC_Constants.ODIYA;
 import static com.pratham.foundation.utility.FC_Constants.PUNJABI;
 import static com.pratham.foundation.utility.FC_Constants.TAMIL;
 import static com.pratham.foundation.utility.FC_Constants.TELUGU;
-import static com.pratham.foundation.utility.FC_Constants.sec_Fun;
 import static com.pratham.foundation.utility.FC_Constants.sec_Learning;
-import static com.pratham.foundation.utility.FC_Constants.sec_Practice;
-import static com.pratham.foundation.utility.FC_Constants.sec_Test;
 
 
 public class FC_Utility {
@@ -1519,33 +1515,33 @@ public class FC_Utility {
     }
 
     public static int getSectionCode() {
-        switch (FastSave.getInstance().getString(APP_SECTION, "" + sec_Learning)) {
-            case sec_Learning:
+//        switch (FastSave.getInstance().getString(APP_SECTION, "" + sec_Learning)) {
+//            case sec_Learning:
                 return 1;
-            case sec_Practice:
-                return 2;
-            case sec_Fun:
-                return 3;
-            case sec_Test:
-                return 4;
-            default:
-                return 0;
-        }
+//            case sec_Practice:
+//                return 2;
+//            case sec_Fun:
+//                return 3;
+//            case sec_Test:
+//                return 4;
+//            default:
+//                return 0;
+//        }
     }
 
     public static String getSectionName(int num) {
-        switch (num) {
-            case 1:
+//        switch (num) {
+//            case 1:
                 return sec_Learning;
-            case 2:
-                return sec_Practice;
-            case 3:
-                return sec_Fun;
-            case 4:
-                return sec_Test;
-            default:
-                return "NA";
-        }
+//            case 2:
+//                return sec_Practice;
+//            case 3:
+//                return sec_Fun;
+//            case 4:
+//                return sec_Test;
+//            default:
+//                return "NA";
+//        }
     }
 
     public static List<StorageInfo> getStorageList() {
@@ -2238,6 +2234,31 @@ public class FC_Utility {
             e.printStackTrace();
             return "NA";
         }
+    }
+
+    public static File getOutputMediaFile(Context context,int cntr){
+        // To be safe, you should check that the SDCard is mounted
+        // using Environment.getExternalStorageState() before doing this.
+        File mediaStorageDir = new File(Environment.getExternalStorageDirectory()
+                + "/Android/data/"
+                + context.getPackageName()
+                + "/Files");
+
+        // This location works best if you want the created images to be shared
+        // between applications and persist after your app has been uninstalled.
+
+        // Create the storage directory if it does not exist
+        if (! mediaStorageDir.exists()){
+            if (! mediaStorageDir.mkdirs()){
+                return null;
+            }
+        }
+        // Create a media file name
+        String timeStamp = new SimpleDateFormat("ddMMyyyy_HHmm").format(new Date());
+        File mediaFile;
+        String mImageName="PDF_"+cntr+"_"+timeStamp +".jpg";
+        mediaFile = new File(Environment.getExternalStorageDirectory().toString() + "/.FCAInternal/TestJsons/"+ mImageName);
+        return mediaFile;
     }
 
     public static void showZoomDialog(Context context, String path, String localPath) {

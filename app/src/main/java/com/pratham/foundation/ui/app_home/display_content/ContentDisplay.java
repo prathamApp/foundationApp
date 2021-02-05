@@ -51,6 +51,7 @@ import com.pratham.foundation.ui.contentPlayer.matchingPairGame.MatchThePairGame
 import com.pratham.foundation.ui.contentPlayer.old_cos.conversation.ConversationActivity_;
 import com.pratham.foundation.ui.contentPlayer.old_cos.reading_cards.ReadingCardsActivity_;
 import com.pratham.foundation.ui.contentPlayer.opposites.OppositesActivity_;
+import com.pratham.foundation.ui.contentPlayer.pdf_display.Fragment_PdfViewer_;
 import com.pratham.foundation.ui.contentPlayer.reading_paragraphs.ReadingParagraphsActivity_;
 import com.pratham.foundation.ui.contentPlayer.reading_rhyming.ReadingRhymesActivity_;
 import com.pratham.foundation.ui.contentPlayer.reading_story_activity.ReadingStoryActivity_;
@@ -465,13 +466,24 @@ public class ContentDisplay extends BaseActivity implements ContentContract.Cont
         resName = ContentTableList.get(position).getNodeTitle();
         if (ContentTableList.get(position).getNodeType().equalsIgnoreCase("PreResource") ||
                 ContentTableList.get(position).getResourceType().equalsIgnoreCase("PreResource")) {
+            String sdStatus = "F";
+            if (ContentTableList.get(position).isOnSDCard())
+                sdStatus = "T";
+
             Intent mainNew = new Intent(ContentDisplay.this, ContentPlayerActivity_.class);
+            mainNew.putExtra("nodeID", ContentTableList.get(position).getNodeId());
+            mainNew.putExtra("title", ContentTableList.get(position).getNodeTitle());
+            mainNew.putExtra("onSDCard",  ContentTableList.get(position).isOnSDCard());
+            mainNew.putExtra("sdStatus", sdStatus);
+            startActivity(mainNew);
+
+/*            Intent mainNew = new Intent(ContentDisplay.this, ContentPlayerActivity_.class);
             mainNew.putExtra("resId", ContentTableList.get(position).getResourceId());
             mainNew.putExtra("StudentID", FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""));
             mainNew.putExtra("contentName", ContentTableList.get(position).getNodeTitle());
-            mainNew.putExtra("onSdCard", ContentTableList.get(position).isOnSDCard());
+            mainNew.putExtra("onSdCard",);
             mainNew.putExtra("contentPath", ContentTableList.get(position).getResourcePath());
-            startActivity(mainNew);
+            startActivity(mainNew);*/
 //            startActivity(mainNew, ActivityOptions.makeSceneTransitionAnimation(ContentDisplay.this).toBundle());
         } else {
             if (ContentTableList.get(position).getResourceType().toLowerCase()
@@ -613,21 +625,26 @@ public class ContentDisplay extends BaseActivity implements ContentContract.Cont
                 intent.putExtra("contentType", ContentTableList.get(position).getResourceType());
 //                startActivity(intent, ActivityOptions.makeSceneTransitionAnimation(ContentDisplay.this).toBundle());
                 startActivity(intent);
-            }/* else if (ContentTableList.get(position).getResourceType().equalsIgnoreCase(FC_Constants.VIDEO)) {
-                Intent intent = new Intent(ContentDisplay.this, ActivityVideoView_.class);
-                intent.putExtra("contentPath", ContentTableList.get(position).getResourcePath());
-                intent.putExtra("StudentID", FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""));
-                intent.putExtra("resId", ContentTableList.get(position).getResourceId());
-                intent.putExtra("contentName", ContentTableList.get(position).getNodeTitle());
-                intent.putExtra("onSdCard", ContentTableList.get(position).isOnSDCard());
-                intent.putExtra("contentType", ContentTableList.get(position).getResourceType());
-//                startActivity(intent, ActivityOptions.makeSceneTransitionAnimation(ContentDisplay.this).toBundle());
-                startActivity(intent);
-            }*/ else {
+            } else if (ContentTableList.get(position).getResourceType().equalsIgnoreCase(FC_Constants.PDF) ||
+                    ContentTableList.get(position).getResourceType().equalsIgnoreCase("PDF")) {
+                String sdStatus = "F";
+                if (ContentTableList.get(position).isOnSDCard())
+                    sdStatus = "T";
+                Intent intent1 = new Intent(ContentDisplay.this, Fragment_PdfViewer_.class);
+                intent1.putExtra("contentPath", ContentTableList.get(position).getResourcePath());
+                intent1.putExtra("StudentID", FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""));
+                intent1.putExtra("resId", ContentTableList.get(position).getResourceId());
+                intent1.putExtra("contentName", ContentTableList.get(position).getNodeTitle());
+                intent1.putExtra("onSdCard", ContentTableList.get(position).isOnSDCard());
+                startActivity(intent1);
+            } else {
+                String sdStatus = "F";
+                if (ContentTableList.get(position).isOnSDCard())
+                    sdStatus = "T";
                 Intent mainNew = new Intent(ContentDisplay.this, ContentPlayerActivity_.class);
                 mainNew.putExtra("nodeID", ContentTableList.get(position).getNodeId());
                 mainNew.putExtra("title", ContentTableList.get(position).getNodeTitle());
-                mainNew.putExtra("sdStatus", ContentTableList.get(position).isOnSDCard());
+                mainNew.putExtra("sdStatus", sdStatus);
                 mainNew.putExtra("testData", ContentTableList.get(position));
                 mainNew.putExtra("testcall", FC_Constants.INDIVIDUAL_MODE);
                 startActivityForResult(mainNew, 1461);
@@ -686,8 +703,8 @@ public class ContentDisplay extends BaseActivity implements ContentContract.Cont
             tm = get12HrTime(sTime);
             tm2 = get12HrTime(FC_Utility.getCurrentTime().substring(0, 5));
 
-            txt_push_dialog_msg.setText(this.getString(R.string.device_date_time_change) + " " + FC_Utility.getCurrentDate() + "\n" + tm2);
-            txt_push_dialog_msg2.setText(this.getString(R.string.internet_date_time_change) + " " + newDate + "\n" + tm);
+            txt_push_dialog_msg.setText(this.getString(R.string.device_date_time_change) + "-\n" + FC_Utility.getCurrentDate() + "\n" + tm2);
+            txt_push_dialog_msg2.setText(this.getString(R.string.internet_date_time_change) + "-\n" + newDate + "\n" + tm);
             changeDateDialog.show();
         } catch (Exception e) {
             e.printStackTrace();
@@ -697,7 +714,6 @@ public class ContentDisplay extends BaseActivity implements ContentContract.Cont
     @Override
     public void onContentDownloadClicked(int position, String nodeId) {
         if (!IS_DOWNLOADING) {
-
             showLoader();
 //        content download clicked
             try {
@@ -705,12 +721,10 @@ public class ContentDisplay extends BaseActivity implements ContentContract.Cont
             } catch (IllegalStateException e) {
                 e.printStackTrace();
             }
-
 //        gather info
             DOWNLOAD_NODE_ID = "" + nodeId;
 //        ContentTableList.get(position).setIsDownloading("true");
 //        contentAdapter.notifyItemChanged(position, ContentTableList);
-
             resName = ContentTableList.get(position).getNodeTitle();
             resServerImageName = ContentTableList.get(position).getNodeServerImage();
             tempDownloadPos = position;

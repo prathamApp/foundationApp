@@ -217,7 +217,6 @@ public class ActivityVideoPlayer extends BaseActivity {
         onBackPressed();
     }
 
-
     @Override
     public void onBackPressed() {
         try {

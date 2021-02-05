@@ -6,7 +6,6 @@ import com.google.gson.Gson;
 import com.pratham.foundation.BaseActivity;
 import com.pratham.foundation.database.AppDatabase;
 import com.pratham.foundation.database.BackupDatabase;
-import com.pratham.foundation.database.domain.Assessment;
 import com.pratham.foundation.database.domain.ContentProgress;
 import com.pratham.foundation.database.domain.KeyWords;
 import com.pratham.foundation.database.domain.Score;
@@ -25,9 +24,6 @@ import java.io.FileInputStream;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
-
-import static com.pratham.foundation.utility.FC_Constants.APP_SECTION;
-import static com.pratham.foundation.utility.FC_Constants.sec_Test;
 
 
 @EBean
@@ -143,7 +139,7 @@ public class ConversationPresenter_3 implements ConversationContract_3.Conversat
             score.setSentFlag(0);
             AppDatabase.getDatabaseInstance(context).getScoreDao().insert(score);
 
-            if (FastSave.getInstance().getString(APP_SECTION,"").equalsIgnoreCase(sec_Test) && addInAssessment) {
+/*            if (FastSave.getInstance().getString(APP_SECTION,"").equalsIgnoreCase(sec_Test) && addInAssessment) {
                 Assessment assessment = new Assessment();
                 assessment.setResourceIDa(resId);
                 assessment.setSessionIDa(FastSave.getInstance().getString(FC_Constants.ASSESSMENT_SESSION, ""));
@@ -159,7 +155,7 @@ public class ConversationPresenter_3 implements ConversationContract_3.Conversat
                 assessment.setLabel("test: " + Label);
                 assessment.setSentFlag(0);
                 AppDatabase.getDatabaseInstance(context).getAssessmentDao().insert(assessment);
-            }
+            }*/
             BackupDatabase.backup(context);
         } catch (Exception e) {
             e.printStackTrace();

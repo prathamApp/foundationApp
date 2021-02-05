@@ -89,105 +89,109 @@ public class ContentFileViewHolder extends RecyclerView.ViewHolder {
     @SuppressLint("CheckResult")
     public void setFileItem(ContentTable contentList, int position) {
 
+        try {
 //        add card and its click listners
-        Objects.requireNonNull(content_card_view).setBackground(ApplicationClass.getInstance()
-                .getResources().getDrawable(getRandomCardColor()));
-        Objects.requireNonNull(title).setText(contentList.getNodeTitle());
-        title.setSelected(true);
-        Objects.requireNonNull(rl_card).setVisibility(View.VISIBLE);
-        Objects.requireNonNull(rl_loader).setVisibility(View.GONE);
+            Objects.requireNonNull(content_card_view).setBackground(ApplicationClass.getInstance()
+                    .getResources().getDrawable(getRandomCardColor()));
+            Objects.requireNonNull(title).setText(contentList.getNodeTitle());
+            title.setSelected(true);
+            Objects.requireNonNull(rl_card).setVisibility(View.VISIBLE);
+            Objects.requireNonNull(rl_loader).setVisibility(View.GONE);
 
-        Objects.requireNonNull(ib_action_btn).setVisibility(View.GONE);
-        if (contentList.getIsDownloaded().equalsIgnoreCase("false")) {
-            if (contentList.getResourceType().equalsIgnoreCase(FC_Constants.YOUTUBE_LINK)) {
-                ib_action_btn.setImageResource(R.drawable.ic_youtube);
+            Objects.requireNonNull(ib_action_btn).setVisibility(View.GONE);
+            if (contentList.getIsDownloaded().equalsIgnoreCase("false")) {
+                if (contentList.getResourceType().equalsIgnoreCase(FC_Constants.YOUTUBE_LINK)) {
+                    ib_action_btn.setImageResource(R.drawable.ic_youtube);
+                    ib_action_btn.setVisibility(View.VISIBLE);
+                    ib_action_btn.setClickable(true);
+                } else {
+                    ib_action_btn.setVisibility(View.VISIBLE);
+                    ib_action_btn.setImageResource(R.drawable.ic_download_2);//setVisibility(View.VISIBLE);
+                    ib_action_btn.setClickable(false);
+                }
+            } else if (contentList.getIsDownloaded().equalsIgnoreCase("true")) {
                 ib_action_btn.setVisibility(View.VISIBLE);
-                ib_action_btn.setClickable(true);
-            } else {
-                ib_action_btn.setVisibility(View.VISIBLE);
-                ib_action_btn.setImageResource(R.drawable.ic_download_2);//setVisibility(View.VISIBLE);
-                ib_action_btn.setClickable(false);
-            }
-        } else if (contentList.getIsDownloaded().equalsIgnoreCase("true")) {
-            ib_action_btn.setVisibility(View.VISIBLE);
-            ib_action_btn.setImageResource(R.drawable.ic_joystick);
-            ib_action_btn.setClickable(true);
-            if (contentList.getResourceType().equalsIgnoreCase(FC_Constants.PDF))
-                ib_action_btn.setImageResource(R.drawable.ic_pdf);
-            else if (contentList.getResourceType().equalsIgnoreCase(FC_Constants.YOUTUBE_LINK))
-                ib_action_btn.setImageResource(R.drawable.ic_youtube);
-            else if (contentList.getResourceType().equalsIgnoreCase(FC_Constants.VIDEO))
-                ib_action_btn.setImageResource(R.drawable.ic_video);
-            else if (contentList.getResourceType().toLowerCase().contains(FC_Constants.GAME))
                 ib_action_btn.setImageResource(R.drawable.ic_joystick);
-            else
-                ib_action_btn.setImageResource(R.drawable.ic_android_act);
-        }
+                ib_action_btn.setClickable(true);
+                if (contentList.getResourceType().equalsIgnoreCase(FC_Constants.PDF))
+                    ib_action_btn.setImageResource(R.drawable.ic_pdf);
+                else if (contentList.getResourceType().equalsIgnoreCase(FC_Constants.YOUTUBE_LINK))
+                    ib_action_btn.setImageResource(R.drawable.ic_youtube);
+                else if (contentList.getResourceType().equalsIgnoreCase(FC_Constants.VIDEO))
+                    ib_action_btn.setImageResource(R.drawable.ic_video);
+                else if (contentList.getResourceType().toLowerCase().contains(FC_Constants.GAME))
+                    ib_action_btn.setImageResource(R.drawable.ic_joystick);
+                else
+                    ib_action_btn.setImageResource(R.drawable.ic_android_act);
+            }
 
-        File f;
-        if (contentList.getIsDownloaded().equalsIgnoreCase("1") ||
-                contentList.getIsDownloaded().equalsIgnoreCase("true")) {
-            if (contentList.isOnSDCard())
-                f = new File(ApplicationClass.contentSDPath +
-                        "" + App_Thumbs_Path + contentList.getNodeImage());
-            else
-                f = new File(ApplicationClass.foundationPath +
-                        "" + App_Thumbs_Path + contentList.getNodeImage());
-            if (f.exists()) {
+            File f;
+            if (contentList.getIsDownloaded().equalsIgnoreCase("1") ||
+                    contentList.getIsDownloaded().equalsIgnoreCase("true")) {
+                if (contentList.isOnSDCard())
+                    f = new File(ApplicationClass.contentSDPath +
+                            "" + App_Thumbs_Path + contentList.getNodeImage());
+                else
+                    f = new File(ApplicationClass.foundationPath +
+                            "" + App_Thumbs_Path + contentList.getNodeImage());
+                if (f.exists()) {
+                    ImageRequest imageRequest = ImageRequestBuilder
+                            .newBuilderWithSource(Uri.fromFile(f))
+                            .setResizeOptions(new ResizeOptions(250, 170))
+                            .setLocalThumbnailPreviewsEnabled(true)
+                            .build();
+                    DraweeController controller = Fresco.newDraweeControllerBuilder()
+                            .setImageRequest(imageRequest)
+                            .setAutoPlayAnimations(true)// if gif, it will play.
+                            .setOldController(Objects.requireNonNull(thumbnail).getController())
+                            .build();
+                    thumbnail.setController(controller);
+                }
+            } else {
                 ImageRequest imageRequest = ImageRequestBuilder
-                        .newBuilderWithSource(Uri.fromFile(f))
+                        .newBuilderWithSource(Uri.parse(contentList.getNodeServerImage()))
                         .setResizeOptions(new ResizeOptions(250, 170))
                         .setLocalThumbnailPreviewsEnabled(true)
                         .build();
                 DraweeController controller = Fresco.newDraweeControllerBuilder()
                         .setImageRequest(imageRequest)
-                        .setAutoPlayAnimations(true)// if gif, it will play.
                         .setOldController(Objects.requireNonNull(thumbnail).getController())
                         .build();
                 thumbnail.setController(controller);
+
             }
-        } else {
-            ImageRequest imageRequest = ImageRequestBuilder
-                    .newBuilderWithSource(Uri.parse(contentList.getNodeServerImage()))
-                    .setResizeOptions(new ResizeOptions(250, 170))
-                    .setLocalThumbnailPreviewsEnabled(true)
-                    .build();
-            DraweeController controller = Fresco.newDraweeControllerBuilder()
-                    .setImageRequest(imageRequest)
-                    .setOldController(Objects.requireNonNull(thumbnail).getController())
-                    .build();
-            thumbnail.setController(controller);
 
-        }
-
-        content_card_view.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (contentList.getNodeType() != null) {
-                    if (contentList.getIsDownloaded().equalsIgnoreCase("true")) {
-                        contentClicked.onContentOpenClicked(position, contentList.getNodeId());
-                    } else if (contentList.getIsDownloaded().equalsIgnoreCase("false")) {
-                        if (contentList.getResourceType().equalsIgnoreCase(FC_Constants.YOUTUBE_LINK))
+            content_card_view.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (contentList.getNodeType() != null) {
+                        if (contentList.getIsDownloaded().equalsIgnoreCase("true")) {
                             contentClicked.onContentOpenClicked(position, contentList.getNodeId());
-                        else
-                            contentClicked.onContentDownloadClicked(position, contentList.nodeId);
+                        } else if (contentList.getIsDownloaded().equalsIgnoreCase("false")) {
+                            if (contentList.getResourceType().equalsIgnoreCase(FC_Constants.YOUTUBE_LINK))
+                                contentClicked.onContentOpenClicked(position, contentList.getNodeId());
+                            else
+                                contentClicked.onContentDownloadClicked(position, contentList.nodeId);
+                        }
                     }
                 }
-            }
-        });
+            });
 
-        if (contentList.isNodeUpdate())
-            Objects.requireNonNull(ib_update_btn).setVisibility(View.VISIBLE);
-        else
-            Objects.requireNonNull(ib_update_btn).setVisibility(View.GONE);
+            if (contentList.isNodeUpdate())
+                Objects.requireNonNull(ib_update_btn).setVisibility(View.VISIBLE);
+            else
+                Objects.requireNonNull(ib_update_btn).setVisibility(View.GONE);
 
-        ib_update_btn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                contentClicked.onContentDownloadClicked(position, contentList.nodeId);
-            }
-        });
-        setAnimations(content_card_view);
+            ib_update_btn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    contentClicked.onContentDownloadClicked(position, contentList.nodeId);
+                }
+            });
+            setAnimations(content_card_view);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     private void setAnimations(final View content_card_view) {
@@ -208,80 +212,84 @@ public class ContentFileViewHolder extends RecyclerView.ViewHolder {
 
     public void setFragmentFileItem(ContentTable contentTable, int i, String parentName, int parentPos) {
 
-        Objects.requireNonNull(title).setText(contentTable.getNodeTitle());
-        title.setSelected(true);
-        Objects.requireNonNull(rl_card).setVisibility(View.VISIBLE);
-        Objects.requireNonNull(rl_loader).setVisibility(View.GONE);
-        Objects.requireNonNull(content_card_view).setBackground(ApplicationClass.getInstance().getResources().getDrawable(getRandomCardColor()));
-        File file;
-        if (contentTable.getIsDownloaded().equalsIgnoreCase("1") ||
-                contentTable.getIsDownloaded().equalsIgnoreCase("true")) {
-//                    ib_action_btn.setVisibility(View.GONE);
-            if (contentTable.getResourceType().equalsIgnoreCase(FC_Constants.PDF))
-                Objects.requireNonNull(ib_action_btn).setImageResource(R.drawable.ic_pdf);
-            else if (contentTable.getResourceType().equalsIgnoreCase(FC_Constants.YOUTUBE_LINK))
-                Objects.requireNonNull(ib_action_btn).setImageResource(R.drawable.ic_youtube);
-            else if (contentTable.getResourceType().equalsIgnoreCase(FC_Constants.VIDEO))
-                Objects.requireNonNull(ib_action_btn).setImageResource(R.drawable.ic_video);
-            else if (contentTable.getResourceType().toLowerCase().contains(FC_Constants.GAME))
-                Objects.requireNonNull(ib_action_btn).setImageResource(R.drawable.ic_joystick);
-            else
-                Objects.requireNonNull(ib_action_btn).setImageResource(R.drawable.ic_android_act);
-
-            content_card_view.setOnClickListener(v -> itemClicked.onContentOpenClicked(
-                    contentTable));
-
-            try {
-                if (contentTable.isOnSDCard())
-                    file = new File(ApplicationClass.contentSDPath +
-                            "" + App_Thumbs_Path + contentTable.getNodeImage());
-                else
-                    file = new File(ApplicationClass.foundationPath +
-                            "" + App_Thumbs_Path + contentTable.getNodeImage());
-                if (file.exists())
-                    Objects.requireNonNull(thumbnail).setImageURI(Uri.fromFile(file));
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-
-            if (contentTable.isNodeUpdate())
-                Objects.requireNonNull(ib_update_btn).setVisibility(View.VISIBLE);
-            else
-                Objects.requireNonNull(ib_update_btn).setVisibility(View.GONE);
-
-            ib_update_btn.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    itemClicked.onContentDownloadClicked(contentTable,
-                            parentPos, i, "" + SINGLE_RES_DOWNLOAD);
-                }
-            });
-
-        } else {
-            try {
-                ImageRequest imageRequest = ImageRequestBuilder
-                        .newBuilderWithSource(Uri.parse(contentTable.getNodeServerImage()))
-                        .setResizeOptions(new ResizeOptions(250, 170))
-                        .build();
-                DraweeController controller = Fresco.newDraweeControllerBuilder()
-                        .setImageRequest(imageRequest)
-                        .setOldController(Objects.requireNonNull(thumbnail).getController())
-                        .build();
-                thumbnail.setController(controller);
-
-                if (contentTable.getResourceType().equalsIgnoreCase(FC_Constants.YOUTUBE_LINK)) {
+        try {
+            Objects.requireNonNull(title).setText(contentTable.getNodeTitle());
+            title.setSelected(true);
+            Objects.requireNonNull(rl_card).setVisibility(View.VISIBLE);
+            Objects.requireNonNull(rl_loader).setVisibility(View.GONE);
+            Objects.requireNonNull(content_card_view).setBackground(ApplicationClass.getInstance().getResources().getDrawable(getRandomCardColor()));
+            File file;
+            if (contentTable.getIsDownloaded().equalsIgnoreCase("1") ||
+                    contentTable.getIsDownloaded().equalsIgnoreCase("true")) {
+    //                    ib_action_btn.setVisibility(View.GONE);
+                if (contentTable.getResourceType().equalsIgnoreCase(FC_Constants.PDF))
+                    Objects.requireNonNull(ib_action_btn).setImageResource(R.drawable.ic_pdf);
+                else if (contentTable.getResourceType().equalsIgnoreCase(FC_Constants.YOUTUBE_LINK))
                     Objects.requireNonNull(ib_action_btn).setImageResource(R.drawable.ic_youtube);
-                    content_card_view.setOnClickListener(v -> itemClicked.onContentOpenClicked(contentTable));
-                } else
-                    content_card_view.setOnClickListener(v ->
-                            itemClicked.onContentDownloadClicked(contentTable,
-                                    parentPos, i, "" + SINGLE_RES_DOWNLOAD));
+                else if (contentTable.getResourceType().equalsIgnoreCase(FC_Constants.VIDEO))
+                    Objects.requireNonNull(ib_action_btn).setImageResource(R.drawable.ic_video);
+                else if (contentTable.getResourceType().toLowerCase().contains(FC_Constants.GAME))
+                    Objects.requireNonNull(ib_action_btn).setImageResource(R.drawable.ic_joystick);
+                else
+                    Objects.requireNonNull(ib_action_btn).setImageResource(R.drawable.ic_android_act);
 
-            } catch (Exception e) {
-                e.printStackTrace();
+                content_card_view.setOnClickListener(v -> itemClicked.onContentOpenClicked(
+                        contentTable));
+
+                try {
+                    if (contentTable.isOnSDCard())
+                        file = new File(ApplicationClass.contentSDPath +
+                                "" + App_Thumbs_Path + contentTable.getNodeImage());
+                    else
+                        file = new File(ApplicationClass.foundationPath +
+                                "" + App_Thumbs_Path + contentTable.getNodeImage());
+                    if (file.exists())
+                        Objects.requireNonNull(thumbnail).setImageURI(Uri.fromFile(file));
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
+                if (contentTable.isNodeUpdate())
+                    Objects.requireNonNull(ib_update_btn).setVisibility(View.VISIBLE);
+                else
+                    Objects.requireNonNull(ib_update_btn).setVisibility(View.GONE);
+
+                ib_update_btn.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        itemClicked.onContentDownloadClicked(contentTable,
+                                parentPos, i, "" + SINGLE_RES_DOWNLOAD);
+                    }
+                });
+
+            } else {
+                try {
+                    ImageRequest imageRequest = ImageRequestBuilder
+                            .newBuilderWithSource(Uri.parse(contentTable.getNodeServerImage()))
+                            .setResizeOptions(new ResizeOptions(250, 170))
+                            .build();
+                    DraweeController controller = Fresco.newDraweeControllerBuilder()
+                            .setImageRequest(imageRequest)
+                            .setOldController(Objects.requireNonNull(thumbnail).getController())
+                            .build();
+                    thumbnail.setController(controller);
+
+                    if (contentTable.getResourceType().equalsIgnoreCase(FC_Constants.YOUTUBE_LINK)) {
+                        Objects.requireNonNull(ib_action_btn).setImageResource(R.drawable.ic_youtube);
+                        content_card_view.setOnClickListener(v -> itemClicked.onContentOpenClicked(contentTable));
+                    } else
+                        content_card_view.setOnClickListener(v ->
+                                itemClicked.onContentDownloadClicked(contentTable,
+                                        parentPos, i, "" + SINGLE_RES_DOWNLOAD));
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
             }
-
+            setSlideAnimations(content_card_view);
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-        setSlideAnimations(content_card_view);
     }
 }

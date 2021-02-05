@@ -118,7 +118,7 @@ public abstract class AppDatabase extends RoomDatabase {
     static final Migration MIGRATION_2_3 = new Migration(2, 3) {
         @Override
         public void migrate(SupportSQLiteDatabase database) {
-            Log.d("AppDatabase", "MIGRATION_2_3:                                  1");
+            Log.d("AppDatabase", "MIGRATION_2_3:                                  2");
             database.execSQL("ALTER TABLE 'ContentTable' ADD COLUMN 'studentId' Text");
             database.execSQL("CREATE TABLE IF NOT EXISTS CourseEnrolled ('c_autoID' INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL," +
                     "'courseId' TEXT ,'groupId' TEXT ,'planFromDate' TEXT ," +

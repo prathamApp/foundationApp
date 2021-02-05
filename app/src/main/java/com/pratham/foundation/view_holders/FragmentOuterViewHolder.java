@@ -47,24 +47,37 @@ public class FragmentOuterViewHolder extends RecyclerView.ViewHolder {
 
     @SuppressLint({"CheckResult", "SetTextI18n"})
     public void setOuterItem(ContentTable contentTable, int position, String sec) {
-        sublistList = new ArrayList<>();
-        final String sectionName = contentTable.getNodeTitle();
-        if (contentTable.getNodeType() != null) {
-            if (contentTable.getNodeType().equalsIgnoreCase("PreResource")
-                    && (contentTable.isDownloaded.equalsIgnoreCase("false"))) {
-                Objects.requireNonNull(btnMore).setVisibility(View.GONE);
-                Objects.requireNonNull(actionBtn).setVisibility(View.VISIBLE);
-                actionBtn.setOnClickListener(v -> fragmentItemClicked.onContentDownloadClicked(contentTable,
-                        position, 0, "" + FC_Constants.FULL_DOWNLOAD));
-            } else if (contentTable.getNodeType().equalsIgnoreCase("PreResource")
-                    && contentTable.isDownloaded.equalsIgnoreCase("true")
-                    && contentTable.isNodeUpdate()) {
-                Objects.requireNonNull(btnMore).setVisibility(View.GONE);
-                Objects.requireNonNull(actionBtn).setVisibility(View.VISIBLE);
-                Objects.requireNonNull(actionBtn).setText("UPDATE");
-                Objects.requireNonNull(actionBtn).setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_update2, 0);
-                actionBtn.setOnClickListener(v -> fragmentItemClicked.onContentDownloadClicked(contentTable,
-                        position, 0, "" + FC_Constants.FULL_DOWNLOAD));
+        try {
+            sublistList = new ArrayList<>();
+            final String sectionName = contentTable.getNodeTitle();
+            if (contentTable.getNodeType() != null) {
+                if (contentTable.getNodeType().equalsIgnoreCase("PreResource")
+                        && (contentTable.isDownloaded.equalsIgnoreCase("false"))) {
+                    Objects.requireNonNull(btnMore).setVisibility(View.GONE);
+                    Objects.requireNonNull(actionBtn).setVisibility(View.VISIBLE);
+                    actionBtn.setOnClickListener(v -> fragmentItemClicked.onContentDownloadClicked(contentTable,
+                            position, 0, "" + FC_Constants.FULL_DOWNLOAD));
+                } else if (contentTable.getNodeType().equalsIgnoreCase("PreResource")
+                        && contentTable.isDownloaded.equalsIgnoreCase("true")
+                        && contentTable.isNodeUpdate()) {
+                    Objects.requireNonNull(btnMore).setVisibility(View.GONE);
+                    Objects.requireNonNull(actionBtn).setVisibility(View.VISIBLE);
+                    Objects.requireNonNull(actionBtn).setText("UPDATE");
+                    Objects.requireNonNull(actionBtn).setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_update2, 0);
+                    actionBtn.setOnClickListener(v -> fragmentItemClicked.onContentDownloadClicked(contentTable,
+                            position, 0, "" + FC_Constants.FULL_DOWNLOAD));
+                } else {
+                    int size = Objects.requireNonNull(contentTable.getNodelist()).size() - 1;
+                    int sizeRes = contentTable.getNodelist().size() - 2;
+                    Objects.requireNonNull(btnMore).setText("SEE ALL " + sizeRes);
+                    btnMore.setVisibility(View.GONE);
+                    if (size > 6) {
+                        btnMore.setVisibility(View.VISIBLE);
+                        btnMore.setOnClickListener(v -> fragmentItemClicked.seeMore(contentTable.getNodeId(),
+                                contentTable.getNodeTitle()));
+                    }
+                    Objects.requireNonNull(actionBtn).setVisibility(View.GONE);
+                }
             } else {
                 int size = Objects.requireNonNull(contentTable.getNodelist()).size() - 1;
                 int sizeRes = contentTable.getNodelist().size() - 2;
@@ -77,21 +90,9 @@ public class FragmentOuterViewHolder extends RecyclerView.ViewHolder {
                 }
                 Objects.requireNonNull(actionBtn).setVisibility(View.GONE);
             }
-        } else {
-            int size = Objects.requireNonNull(contentTable.getNodelist()).size() - 1;
-            int sizeRes = contentTable.getNodelist().size() - 2;
-            Objects.requireNonNull(btnMore).setText("SEE ALL " + sizeRes);
-            btnMore.setVisibility(View.GONE);
-            if (size > 6) {
-                btnMore.setVisibility(View.VISIBLE);
-                btnMore.setOnClickListener(v -> fragmentItemClicked.seeMore(contentTable.getNodeId(),
-                        contentTable.getNodeTitle()));
-            }
-            Objects.requireNonNull(actionBtn).setVisibility(View.GONE);
-        }
-        sublistList = getList(Objects.requireNonNull(contentTable.getNodelist()));
-        Objects.requireNonNull(itemTitle).setText(sectionName);
-        itemTitle.setSelected(true);
+            sublistList = getList(Objects.requireNonNull(contentTable.getNodelist()));
+            Objects.requireNonNull(itemTitle).setText(sectionName);
+            itemTitle.setSelected(true);
 /*        if (sec.equalsIgnoreCase(sec_Fun)) {
             try {
                 FunInnerDataAdapter learningInnerDataAdapter = new FunInnerDataAdapter(
@@ -124,7 +125,10 @@ public class FragmentOuterViewHolder extends RecyclerView.ViewHolder {
 //                e.printStackTrace();
 //            }
 //        }
-        childCounter += 1;
+            childCounter += 1;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     private List<ContentTable> getList(List<ContentTable> nodelist) {

@@ -61,8 +61,6 @@ import static com.pratham.foundation.BaseActivity.mediaPlayerUtil;
 import static com.pratham.foundation.utility.FC_Constants.APP_SECTION;
 import static com.pratham.foundation.utility.FC_Constants.gameFolderPath;
 import static com.pratham.foundation.utility.FC_Constants.sec_Learning;
-import static com.pratham.foundation.utility.FC_Constants.sec_Practice;
-import static com.pratham.foundation.utility.FC_Constants.sec_Test;
 
 
 @EFragment(R.layout.fragment_conversation)
@@ -152,9 +150,9 @@ public class ConversationFragment_2 extends Fragment
         presenter.setContentId(contentId);
         convoMode = "A";
 
-        if (FastSave.getInstance().getString(APP_SECTION, "").equalsIgnoreCase(sec_Practice))
-            clear.setVisibility(View.VISIBLE);
-        else
+//        if (FastSave.getInstance().getString(APP_SECTION, "").equalsIgnoreCase(sec_Practice))
+//            clear.setVisibility(View.VISIBLE);
+//        else
             clear.setVisibility(View.GONE);
 
         if (onSdCard)
@@ -197,17 +195,17 @@ public class ConversationFragment_2 extends Fragment
     @UiThread
     @Override
     public void sendClikChanger(int clickOn) {
-        if (app_sec.equalsIgnoreCase(sec_Test)) {
-            btn_play.setBackgroundResource(R.drawable.convo_send_disable);
-            btn_play.setClickable(false);
-            if (clickOn == 0) {
-                btn_imgsend.setClickable(false);
-                btn_imgsend.setBackgroundResource(R.drawable.convo_send_disable);
-            } else {
-                btn_imgsend.setClickable(true);
-                btn_imgsend.setBackgroundResource(R.drawable.button_green);
-            }
-        } else {
+//        if (app_sec.equalsIgnoreCase(sec_Test)) {
+//            btn_play.setBackgroundResource(R.drawable.convo_send_disable);
+//            btn_play.setClickable(false);
+//            if (clickOn == 0) {
+//                btn_imgsend.setClickable(false);
+//                btn_imgsend.setBackgroundResource(R.drawable.convo_send_disable);
+//            } else {
+//                btn_imgsend.setClickable(true);
+//                btn_imgsend.setBackgroundResource(R.drawable.button_green);
+//            }
+//        } else {
             btn_play.setBackgroundResource(R.drawable.button_green);
             btn_play.setClickable(true);
             if (clickOn == 0) {
@@ -217,7 +215,7 @@ public class ConversationFragment_2 extends Fragment
                 btn_imgsend.setClickable(true);
                 btn_imgsend.setBackgroundResource(R.drawable.button_green);
             }
-        }
+//        }
     }
 
     @Click(R.id.clear)
@@ -273,15 +271,15 @@ public class ConversationFragment_2 extends Fragment
         sendClikChanger(0);
         if (voiceStart)
             btn_read_mic.performClick();
-        if (app_sec.equalsIgnoreCase(sec_Practice)) {
-            presenter.addScore(0, "perc - NA", 0, 0, " Convo ");
-            addItemInConvo(recordedTextMsg, "NA", true);
-        } else {
+//        if (app_sec.equalsIgnoreCase(sec_Practice)) {
+//            presenter.addScore(0, "perc - NA", 0, 0, " Convo ");
+//            addItemInConvo(recordedTextMsg, "NA", true);
+//        } else {
             int correctAnswerCount = setBooleanGetCounter();
             float perc = presenter.getPercentage();
             presenter.addScore(0, "perc - " + perc, correctAnswerCount, correctArr.length, " Convo ");
             addItemInConvo(answer, answerAudio, true);
-        }
+//        }
         btn_read_mic.setImageResource(R.drawable.ic_mic_black);
         try {
             ButtonClickSound.start();
@@ -350,7 +348,7 @@ public class ConversationFragment_2 extends Fragment
                 addItemInConvo(question, questionAudio, false);
                 playChat("" + questionAudio);
                 recordedTextMsg = "";
-                if (!app_sec.equalsIgnoreCase(sec_Practice))
+//                if (!app_sec.equalsIgnoreCase(sec_Practice))
                     setAnswerText(answer);
 /*                switch (convoMode) {
                     case "A":
@@ -400,9 +398,9 @@ public class ConversationFragment_2 extends Fragment
                 btn_read_mic.setClickable(false);
                 readChatFlow.removeAllViews();
                 new Handler().postDelayed(() -> {
-                    if (FastSave.getInstance().getString(APP_SECTION, "").equalsIgnoreCase(sec_Test))
-                        showStars(true);
-                    else
+//                    if (FastSave.getInstance().getString(APP_SECTION, "").equalsIgnoreCase(sec_Test))
+//                        showStars(true);
+//                    else
                         ConvoEndDialog();
                 }, 1200);
                 /*                currentQueNos = 0;
@@ -442,11 +440,11 @@ public class ConversationFragment_2 extends Fragment
             final SansTextViewBold myTextView = new SansTextViewBold(context);
             myTextView.setText(word);
             myTextView.setOnClickListener(v -> {
-                if (!FastSave.getInstance().getString(APP_SECTION, "").equalsIgnoreCase(sec_Test)) {
+//                if (!FastSave.getInstance().getString(APP_SECTION, "").equalsIgnoreCase(sec_Test)) {
                     if (voiceStart)
                         btn_read_mic.performClick();
                     playChat("" + answerAudio);
-                }
+//                }
             });
             myTextView.setTextSize(20);
             myTextView.setTextColor(getResources().getColor(R.color.colorAccentDark));
@@ -474,11 +472,11 @@ public class ConversationFragment_2 extends Fragment
 
     @Click(R.id.btn_play)
     public void chatAnswer() {
-        if (!FastSave.getInstance().getString(APP_SECTION, "").equalsIgnoreCase(sec_Test)) {
+//        if (!FastSave.getInstance().getString(APP_SECTION, "").equalsIgnoreCase(sec_Test)) {
             if (voiceStart)
                 startRecognition();
             new Handler().postDelayed(() -> playChat("" + answerAudio), 100);
-        }
+//        }
     }
 
     public static void playChat(String fileName) {
@@ -611,13 +609,13 @@ public class ConversationFragment_2 extends Fragment
     @Override
     public void Stt_onResult(ArrayList<String> sttServerResult) {
         try {
-            if (!app_sec.equalsIgnoreCase(sec_Practice)) {
+//            if (!app_sec.equalsIgnoreCase(sec_Practice)) {
                 iv_monk.setVisibility(View.VISIBLE);
                 iv_monk.startAnimation(AnimationUtils.loadAnimation(context, R.anim.float_anim));
                 presenter.sttResultProcess(sttServerResult, answer);
-            } else {
-                setContinuousAnswer(sttServerResult.get(0));
-            }
+//            } else {
+//                setContinuousAnswer(sttServerResult.get(0));
+//            }
         } catch (Resources.NotFoundException e) {
             e.printStackTrace();
         }
@@ -726,6 +724,7 @@ public class ConversationFragment_2 extends Fragment
             float perc = getCompletionPercentage();
             presenter.addCompletion(perc);
             dialog.dismiss();
+/*
             if (FastSave.getInstance().getString(APP_SECTION, "").equalsIgnoreCase(sec_Test)) {
                 int pages = getCompletionPages();
                 int msgPercLength = msgPercentage.length;
@@ -734,9 +733,8 @@ public class ConversationFragment_2 extends Fragment
                 returnIntent.putExtra("cCode", certiCode);
                 returnIntent.putExtra("sMarks", pages);
                 returnIntent.putExtra("tMarks", msgPercLength);
-//                setResult(Activity.RESULT_OK, returnIntent);
             }
-//            closeConvo();
+*/
         });
     }
 

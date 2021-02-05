@@ -40,9 +40,18 @@ public class PDFPagerAdapter extends PagerAdapter {
     @Override
     public Object instantiateItem(@NonNull ViewGroup container, int position) {
         View itemView = mLayoutInflater.inflate(R.layout.pdf_pager_item, container, false);
-        ImageView imageView = itemView.findViewById(R.id.pdf_page);
-        imageView.setImageBitmap(bitmaps.get(position));
-        container.addView(itemView);
+        ImageView gifView = itemView.findViewById(R.id.pdf_page);
+//        GifViewZoom gifView = itemView.findViewById(R.id.pdf_page);
+//        InputStream gif = null;
+//        try {
+//            Log.d("TAG", "instantiateItem: "+bitmaps.get(position));
+//            gif = new FileInputStream(bitmaps.get(position));
+//            gifView.setGifResource(gif);
+            gifView.setImageBitmap(bitmaps.get(position));
+            container.addView(itemView);
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
         return itemView;
     }
 

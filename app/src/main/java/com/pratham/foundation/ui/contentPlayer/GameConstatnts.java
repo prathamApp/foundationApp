@@ -54,7 +54,6 @@ import com.pratham.foundation.ui.contentPlayer.paragraph_stt.STTSummaryFragment;
 import com.pratham.foundation.ui.contentPlayer.paragraph_stt.STTSummaryFragment_;
 import com.pratham.foundation.ui.contentPlayer.paragraph_writing.ParagraphWritingFragment;
 import com.pratham.foundation.ui.contentPlayer.paragraph_writing.ParagraphWritingFragment_;
-import com.pratham.foundation.ui.contentPlayer.pdf_display.Fragment_PdfViewer;
 import com.pratham.foundation.ui.contentPlayer.pdf_display.Fragment_PdfViewer_;
 import com.pratham.foundation.ui.contentPlayer.pictionary.pictionaryFragment;
 import com.pratham.foundation.ui.contentPlayer.pictionary.pictionaryFragment_;
@@ -72,8 +71,6 @@ import org.greenrobot.eventbus.EventBus;
 
 import java.util.List;
 
-import static com.pratham.foundation.utility.FC_Constants.APP_SECTION;
-import static com.pratham.foundation.utility.FC_Constants.sec_Test;
 
 public class GameConstatnts implements ShowInstruction {
     public static final String KEYWORD_IDENTIFICATION = "IKWAndroid";
@@ -179,6 +176,7 @@ public class GameConstatnts implements ShowInstruction {
             dia_btn_yellow.setVisibility(View.GONE);
         }
         if (gameList != null && (currentGameAdapterposition == (gameList.size() - 1))) {
+
             dia_btn_red.setVisibility(View.GONE);
             if (!flag) {
                 dia_title.setText(context.getResources().getString(R.string.activity_completed));
@@ -203,9 +201,6 @@ public class GameConstatnts implements ShowInstruction {
                 dialog.dismiss();
                 onGameClose.gameClose();
 
-                if (FastSave.getInstance().getString(APP_SECTION, "").equalsIgnoreCase(sec_Test)) {
-                    ((ContentPlayerActivity) context).finish();
-                }
                 if (playInsequence) {
                     plaGame(context, onSdCard2);
                 } else {
@@ -220,8 +215,6 @@ public class GameConstatnts implements ShowInstruction {
             public void onClick(View v) {
                 //Exit game
                 onGameClose.gameClose();
-                if (FastSave.getInstance().getString(APP_SECTION, "").equalsIgnoreCase(sec_Test))
-                    ((ContentPlayerActivity) context).finish();
                 ((ContentPlayerActivity) context).getSupportFragmentManager().popBackStack(SequenceLayout_.class.getSimpleName(), 0);
                 dialog.dismiss();
             }
@@ -243,12 +236,12 @@ public class GameConstatnts implements ShowInstruction {
             currentGameAdapterposition++;
             contentTable1 = gameList.get(currentGameAdapterposition);
             if (contentTable1 != null) {
-                gameSelector(context, contentTable1, onSdCard);
+                gameSelector(context, contentTable1, contentTable1.isOnSDCard());
             }
         } else {
-            if (FastSave.getInstance().getString(APP_SECTION, "").equalsIgnoreCase(sec_Test)) {
-                ((ContentPlayerActivity) context).finish();
-            }
+//            if (FastSave.getInstance().getString(APP_SECTION, "").equalsIgnoreCase(sec_Test)) {
+//                ((ContentPlayerActivity) context).finish();
+//            }
             ((ContentPlayerActivity) context).getSupportFragmentManager().popBackStack(SequenceLayout_.class.getSimpleName(), 0);
         }
     }
@@ -263,9 +256,9 @@ public class GameConstatnts implements ShowInstruction {
                 gameSelector(context, contentTable1, onSdCard);
             }
         } else {
-            if (FastSave.getInstance().getString(APP_SECTION, "").equalsIgnoreCase(sec_Test)) {
-                ((ContentPlayerActivity) context).finish();
-            }
+//            if (FastSave.getInstance().getString(APP_SECTION, "").equalsIgnoreCase(sec_Test)) {
+//                ((ContentPlayerActivity) context).finish();
+//            }
             ((ContentPlayerActivity) context).getSupportFragmentManager().popBackStack(SequenceLayout_.class.getSimpleName(), 0);
         }
     }
@@ -305,11 +298,18 @@ public class GameConstatnts implements ShowInstruction {
                 FC_Utility.showFragment((Activity) context, new KeywordMappingFragment_(), R.id.RL_CPA,
                         bundle, KeywordMappingFragment_.class.getSimpleName());
                 break;
-            case FC_Constants.PDF:
-            case "PDF":
-                FC_Utility.showFragment((Activity) context, new Fragment_PdfViewer_(), R.id.RL_CPA,
-                        bundle, Fragment_PdfViewer.class.getSimpleName());
-                break;
+//            case FC_Constants.PDF:
+//            case "PDF":
+//                Intent intent1 = new Intent(context, Fragment_PdfViewer_.class);
+//                intent1.putExtra("contentPath", contentTable1.getResourcePath());
+//                intent1.putExtra("StudentID", FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""));
+//                intent1.putExtra("resId", contentTable1.getResourceId());
+//                intent1.putExtra("contentName", contentTable1.getNodeTitle());
+//                intent1.putExtra("onSdCard", onSdCard);
+//                context.startActivity(intent1);
+//                FC_Utility.showFragment((Activity) context, new Fragment_PdfViewer_(), R.id.RL_CPA,
+//                        bundle, Fragment_PdfViewer.class.getSimpleName());
+//                break;
             case GameConstatnts.THINKANDWRITE:
                 if (FastSave.getInstance().getString(FC_Constants.CURRENT_SUBJECT, "").equalsIgnoreCase("Science")) {
                     FC_Utility.showFragment((Activity) context, new ParagraphWritingFragment_(), R.id.RL_CPA,
@@ -501,8 +501,16 @@ public class GameConstatnts implements ShowInstruction {
                     }, 100);
                     break;
                 case FC_Constants.PDF:
-                    FC_Utility.showFragment((Activity) context, new Fragment_PdfViewer_(), R.id.RL_CPA,
-                            bundle, Fragment_PdfViewer.class.getSimpleName());
+                case "PDF":
+                    Intent intent1 = new Intent(context, Fragment_PdfViewer_.class);
+                    intent1.putExtra("contentPath", contentTable1.getResourcePath());
+                    intent1.putExtra("StudentID", FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""));
+                    intent1.putExtra("resId", contentTable1.getResourceId());
+                    intent1.putExtra("contentName", contentTable1.getNodeTitle());
+                    intent1.putExtra("onSdCard", onSdCard);
+                    context.startActivity(intent1);
+//                    FC_Utility.showFragment((Activity) context, new Fragment_PdfViewer_(), R.id.RL_CPA,
+//                            bundle, Fragment_PdfViewer.class.getSimpleName());
                     handler.postDelayed(new Runnable() {
                         @Override
                         public void run() {

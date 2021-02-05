@@ -10,6 +10,7 @@ import android.os.Handler;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
+import android.widget.RelativeLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
@@ -67,6 +68,10 @@ public class AudioPlayerFragment extends Fragment implements OnGameClose {
     SimpleDraweeView imageView;
     @ViewById(R.id.seekBar)
     SeekBar seekbar;
+    @ViewById(R.id.rl_no_data)
+    RelativeLayout rl_no_data;
+    @ViewById(R.id.main_layout)
+    RelativeLayout main_layout;
 
     private int index = 0;
     private float perc = 0;
@@ -113,76 +118,89 @@ public class AudioPlayerFragment extends Fragment implements OnGameClose {
 
             if (onSdCard) {
                 readingContentPath = ApplicationClass.contentSDPath + gameFolderPath + "/" + contentPath + "/";
-                imagePath = ApplicationClass.contentSDPath + App_Thumbs_Path + "/" + nodeImage;
             } else {
                 readingContentPath = ApplicationClass.foundationPath + gameFolderPath + "/" + contentPath + "/";
-                imagePath = ApplicationClass.foundationPath + App_Thumbs_Path + "/" + nodeImage;
             }
-            try {
-                File f = new File(imagePath);
-                if (f.exists()) {
-                    ImageRequest imageRequest = ImageRequestBuilder
-                            .newBuilderWithSource(Uri.fromFile(f))
-                            .setLocalThumbnailPreviewsEnabled(true)
-                            .build();
-                    DraweeController controller = Fresco.newDraweeControllerBuilder()
-                            .setImageRequest(imageRequest)
-                            .setAutoPlayAnimations(true)// if gif, it will play.
-                            .setOldController(Objects.requireNonNull(imageView).getController())
-                            .build();
-                    imageView.setController(controller);
-                } else {
-                    imageView.setVisibility(View.GONE);
-                }
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-            resStartTime = FC_Utility.getCurrentDateTime();
-            addScore(0, "", 0, 0, resStartTime, jsonName + " " + GameConstatnts.START);
-            tv_title.setText(contentTitle);
-            try {
-                myHandler = new Handler();
-                mediaPlayer = new MediaPlayer();
-                mediaPlayer.setDataSource(readingContentPath);
-                mediaPlayer.prepare();
-                finalTime = mediaPlayer.getDuration();
-                startTime = mediaPlayer.getCurrentPosition();
-                if (oneTimeOnly == 0) {
-                    seekbar.setMax((int) finalTime);
-                    oneTimeOnly = 1;
-                }
-
-                mediaPlayer.setOnCompletionListener(mp1 -> {
-                    ib_play.setImageResource(R.drawable.ic_play_arrow_black);
-                    isPlaying = false;
-                    try {
-                        if (mp1.isPlaying())
-                            mp1.stop();
-                    } catch (Exception e) {
-                        e.printStackTrace();
+            if(!contentPath.equalsIgnoreCase(" ") || !contentPath.equalsIgnoreCase("") || contentPath!=null) {
+                try {
+                    if (onSdCard) {
+                        imagePath = ApplicationClass.contentSDPath + App_Thumbs_Path + "/" + nodeImage;
+                    } else {
+                        imagePath = ApplicationClass.foundationPath + App_Thumbs_Path + "/" + nodeImage;
                     }
-                });
+                    File f = new File(imagePath);
+                    if (f.exists()) {
+                        ImageRequest imageRequest = ImageRequestBuilder
+                                .newBuilderWithSource(Uri.fromFile(f))
+                                .setLocalThumbnailPreviewsEnabled(true)
+                                .build();
+                        DraweeController controller = Fresco.newDraweeControllerBuilder()
+                                .setImageRequest(imageRequest)
+                                .setAutoPlayAnimations(true)// if gif, it will play.
+                                .setOldController(Objects.requireNonNull(imageView).getController())
+                                .build();
+                        imageView.setController(controller);
+                    } else {
+                        imageView.setVisibility(View.GONE);
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                resStartTime = FC_Utility.getCurrentDateTime();
+                addScore(0, "", 0, 0, resStartTime, jsonName + " " + GameConstatnts.START);
+                tv_title.setText(contentTitle);
+                try {
+                    myHandler = new Handler();
+                    mediaPlayer = new MediaPlayer();
+                    mediaPlayer.setDataSource(readingContentPath);
+                    mediaPlayer.prepare();
+                    finalTime = mediaPlayer.getDuration();
+                    startTime = mediaPlayer.getCurrentPosition();
+                    if (oneTimeOnly == 0) {
+                        seekbar.setMax((int) finalTime);
+                        oneTimeOnly = 1;
+                    }
 
-                end_time.setText(String.format("%d min, %d sec",
-                        TimeUnit.MILLISECONDS.toMinutes((long) finalTime),
-                        TimeUnit.MILLISECONDS.toSeconds((long) finalTime) -
-                                TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes((long)
-                                        finalTime)))
-                );
+                    mediaPlayer.setOnCompletionListener(mp1 -> {
+                        ib_play.setImageResource(R.drawable.ic_play_arrow_black);
+                        isPlaying = false;
+                        try {
+                            if (mp1.isPlaying())
+                                mp1.stop();
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    });
 
-                start_time.setText(String.format("%d min, %d sec",
-                        TimeUnit.MILLISECONDS.toMinutes((long) startTime),
-                        TimeUnit.MILLISECONDS.toSeconds((long) startTime) -
-                                TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes((long)
-                                        startTime)))
-                );
-                seekbar.setClickable(false);
+                    end_time.setText(String.format("%d min, %d sec",
+                            TimeUnit.MILLISECONDS.toMinutes((long) finalTime),
+                            TimeUnit.MILLISECONDS.toSeconds((long) finalTime) -
+                                    TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes((long)
+                                            finalTime)))
+                    );
 
-            } catch (IOException e) {
-                e.printStackTrace();
+                    start_time.setText(String.format("%d min, %d sec",
+                            TimeUnit.MILLISECONDS.toMinutes((long) startTime),
+                            TimeUnit.MILLISECONDS.toSeconds((long) startTime) -
+                                    TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes((long)
+                                            startTime)))
+                    );
+                    seekbar.setClickable(false);
+
+                } catch (IOException e) {
+                    showNoData();
+                    e.printStackTrace();
+                }
+            }else {
+                showNoData();
             }
-
         }
+    }
+
+    @UiThread
+    public void showNoData() {
+        main_layout.setVisibility(View.GONE);
+        rl_no_data.setVisibility(View.VISIBLE);
     }
 
     private Runnable UpdateSongTime = new Runnable() {

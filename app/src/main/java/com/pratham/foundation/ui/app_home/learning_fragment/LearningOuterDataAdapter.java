@@ -2,6 +2,7 @@ package com.pratham.foundation.ui.app_home.learning_fragment;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -44,19 +45,20 @@ public class LearningOuterDataAdapter extends RecyclerView.Adapter {
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int viewtype) {
         View view;
+        Log.d("crashDetection", "onCreateViewHolder viewtype : "+viewtype);
         switch (viewtype) {
             case 0:
                 LayoutInflater header = LayoutInflater.from(viewGroup.getContext());
                 view = header.inflate(R.layout.list_header, viewGroup, false);
                 return new EmptyHolder(view);
-            case 1:
-            case 2:
+//            case 1:
+//            case 2:
+            default:
                 LayoutInflater folder = LayoutInflater.from(viewGroup.getContext());
                 view = folder.inflate(R.layout.content_folder_card_tab, viewGroup, false);
                 return new FragmentOuterViewHolder(view, fragmentItemClicked);
-            default:
-                return null;
-
+//            default:
+//                return null;
         }
     }
 
@@ -69,64 +71,18 @@ public class LearningOuterDataAdapter extends RecyclerView.Adapter {
             case 2:
                 FragmentOuterViewHolder itemRowHolder = (FragmentOuterViewHolder) viewHolder;
                 itemRowHolder.setOuterItem(dataList.get(i),i,sec_Learning);
-//                FolderHolder itemRowHolder = (FolderHolder) viewHolder;
-//                contentTable = dataList.get(i);
-//                sublistList = new ArrayList<>();
-//                final String sectionName = contentTable.getNodeTitle();
-//                if (contentTable.getContentType() != null && contentTable.getResourceType() != null) {
-//                    if (contentTable.getNodeType().equalsIgnoreCase("PreResource")
-//                            && (contentTable.isDownloaded.equalsIgnoreCase("false"))) {
-////                    if ((contentTable.getContentType().equalsIgnoreCase("FullDownload") ||
-////                            contentTable.getResourceType().equalsIgnoreCase("FullDownload"))
-////                            && (contentTable.isDownloaded.equalsIgnoreCase("false"))) {
-//                        itemRowHolder.btnMore.setVisibility(View.GONE);
-//                        itemRowHolder.actionBtn.setVisibility(View.VISIBLE);
-//                        itemRowHolder.actionBtn.setOnClickListener(v -> fragmentItemClicked.onContentDownloadClicked(dataList.get(i),
-//                                i, 0, "" + FC_Constants.FULL_DOWNLOAD));
-//                    } else {
-//                        int size = dataList.get(i).getNodelist().size() - 2;
-//                        itemRowHolder.btnMore.setText("SEE ALL " + size);
-//                        itemRowHolder.btnMore.setVisibility(View.GONE);
-//                        if (size > 6) {
-//                            itemRowHolder.btnMore.setVisibility(View.VISIBLE);
-//                            itemRowHolder.btnMore.setOnClickListener(v -> fragmentItemClicked.seeMore(dataList.get(i).getNodeId(),
-//                                    dataList.get(i).getNodeTitle()));
-//                        }
-//                        itemRowHolder.actionBtn.setVisibility(View.GONE);
-//                    }
-//                } else {
-//                    int size = dataList.get(i).getNodelist().size() - 2;
-//                    itemRowHolder.btnMore.setText("SEE ALL " + size);
-//                    itemRowHolder.btnMore.setVisibility(View.GONE);
-//                    if (size > 6) {
-//                        itemRowHolder.btnMore.setVisibility(View.VISIBLE);
-//                        itemRowHolder.btnMore.setOnClickListener(v -> fragmentItemClicked.seeMore(dataList.get(i).getNodeId(),
-//                                dataList.get(i).getNodeTitle()));
-//                    }
-//                    itemRowHolder.actionBtn.setVisibility(View.GONE);
-//                }
-//                sublistList = getList(dataList.get(i).getNodelist());
-///*            if (sublistList.size()>4)
-//                itemRowHolder.next_nav_btn.setVisibility(View.VISIBLE);
-//            else
-//                itemRowHolder.next_nav_btn.setVisibility(View.GONE);*/
-//
-//                try {
-//                    itemRowHolder.itemTitle.setText(sectionName);
-//                    LearningInnerDataAdapter learningInnerDataAdapter = new LearningInnerDataAdapter(mContext, sublistList, fragmentItemClicked, i, sectionName);
-//                    itemRowHolder.recycler_view_list.setLayoutManager(new LinearLayoutManager(mContext, LinearLayoutManager.HORIZONTAL, false));
-//                    itemRowHolder.recycler_view_list.setAdapter(learningInnerDataAdapter);
-//                    childCounter += 1;
-//                } catch (Exception e) {
-//                    e.printStackTrace();
-//                }
         }
     }
 
     @Override
     public int getItemViewType(int position) {
+        Log.d("crashDetection", "getItemViewType : "+position);
+        Log.d("ABC_ADAPTER", "getItemViewType 1 OUTER : "+dataList.get(position).getNodeType());
         if (dataList.get(position).getNodeType() != null) {
-            switch (dataList.get(position).getNodeType()) {
+            String a =dataList.get(position).getNodeType();
+            Log.d("crashDetection", "getItemViewType : Type : "+a);
+            Log.d("ABC_ADAPTER", "getItemViewType OUTER : "+a);
+            switch (a) {
                 case TYPE_HEADER:
                 case TYPE_FOOTER:
                     return 0;
@@ -135,8 +91,10 @@ public class LearningOuterDataAdapter extends RecyclerView.Adapter {
                 default:
                     return 1;
             }
-        } else
+        } else {
+            Log.d("ABC_ADAPTER", "getItemViewType OUTER ELSE : ");
             return 1;
+        }
     }
 
     @Override

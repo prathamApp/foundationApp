@@ -148,5 +148,13 @@
     <string name="Click_to_switch_Sections">বিভাগসমূহ সলণি কৰিবৰ বাবে ইয়াত ক্লিক কৰক</string>
     <string name="change_the_language">বিষয়বস্তুৰ ভাষা পৰিবৰ্তন কৰিবৰ বাবে ইয়াত ক্লিক কৰক।</string>
     <string name="of_the_content">সামগ্ৰী বিষয়ে</string>
-    <string name="Audio">Listen to the audio</string>
+    <string name="enroll_course">পাঠ্যক্ৰমৰ তালিকাভুক্তি	</string>
+    <string name="device_date_time_change">ডিভাইচৰ তাৰিখ আৰু সময়</string>
+    <string name="internet_date_time_change">ইন্টাৰনেটৰ তাৰিখ আৰু সময়</string>
+    <string name="Set_Date_and_Time">তাৰিখ আৰু সময় নিৰূপণ কৰক	</string>
+    <string name="add_course">পাঠ্যক্ৰম নিৰ্বাচন	</string>
+    <string name="select_date">তাৰিখ নিৰ্বাচন কৰক</string>
+    <string name="confirm_date">তাৰিখ নিৰ্বাচন কৰক</string>
+    <string name="Audio">অডিও শুনক	</string>
+
 </resources>

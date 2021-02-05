@@ -101,7 +101,7 @@ public class SplashActivity extends SplashSupportActivity implements SplashContr
         tv_typer.setTypeface(title_font);
         tv_typer.setVisibility(View.VISIBLE);
         tv_typer.setTextColor(getResources().getColor(R.color.dark_blue));
-        tv_typer.animateText("PraDigi for\nSchool");
+        tv_typer.animateText("PraDigi\nfor\nSchool");
         tv_typer.setAnimationListener(hTextView -> initiateApp());
     }
 

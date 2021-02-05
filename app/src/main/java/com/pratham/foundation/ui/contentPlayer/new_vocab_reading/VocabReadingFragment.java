@@ -63,6 +63,7 @@ import org.greenrobot.eventbus.ThreadMode;
 import java.io.File;
 import java.io.FileInputStream;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
@@ -243,6 +244,7 @@ public class VocabReadingFragment extends Fragment implements
         modalPagesList = paraDataList;
         totalPages = modalPagesList.size();
         attAnsList = new String[totalPages];
+        Arrays.fill(attAnsList, "");
     }
 
     public CustomLodingDialog myLoadingDialog;
@@ -377,14 +379,14 @@ public class VocabReadingFragment extends Fragment implements
         }
 
         new Handler().postDelayed(() -> {
-            if (!FastSave.getInstance().getString(APP_SECTION, "").equalsIgnoreCase(sec_Test))
+//            if (!FastSave.getInstance().getString(APP_SECTION, "").equalsIgnoreCase(sec_Test))
                 btn_Play.performClick();
-            else {
-                btn_Mic.performClick();
-                btn_Play.setVisibility(View.GONE);
-                bottom_bar2.setVisibility(View.VISIBLE);
-                btn_submit.setVisibility(View.VISIBLE);
-            }
+//            else {
+//                btn_Mic.performClick();
+//                btn_Play.setVisibility(View.GONE);
+//                bottom_bar2.setVisibility(View.VISIBLE);
+//                btn_submit.setVisibility(View.VISIBLE);
+//            }
         }, 200);
     }
 
@@ -403,9 +405,9 @@ public class VocabReadingFragment extends Fragment implements
         new Handler().postDelayed(() -> {
             //setMute(0);
             if (lastPgFlag) {
-                if (FastSave.getInstance().getString(APP_SECTION, "").equalsIgnoreCase(sec_Test))
-                    showStars(true);
-                else
+//                if (FastSave.getInstance().getString(APP_SECTION, "").equalsIgnoreCase(sec_Test))
+//                    showStars(true);
+//                else
                     showAcknowledgeDialog(true);
             } else {
                 btn_nextpage.performClick();
@@ -456,7 +458,7 @@ public class VocabReadingFragment extends Fragment implements
 
     private void playClickedWord(int id) {
         try {
-            if (!FastSave.getInstance().getString(APP_SECTION, "").equalsIgnoreCase(sec_Test) && !clickFlag) {
+            if (/*!FastSave.getInstance().getString(APP_SECTION, "").equalsIgnoreCase(sec_Test) &&*/ !clickFlag) {
                 clickFlag = true;
                 Log.d("ReadingPara", "wordCounter : " + wordCounter);
                 float end = Float.parseFloat(modalPagesList.get(currentPage).getReadList().get(id).getWordDuration());
@@ -599,7 +601,7 @@ public class VocabReadingFragment extends Fragment implements
         if (voiceStart) {
             voiceStart = false;
             btn_Stop.setVisibility(View.GONE);
-            if (!FastSave.getInstance().getString(APP_SECTION, "").equalsIgnoreCase(sec_Test) && !playHideFlg)
+            if (/*!FastSave.getInstance().getString(APP_SECTION, "").equalsIgnoreCase(sec_Test) &&*/ !playHideFlg)
                 btn_Play.setVisibility(View.VISIBLE);
             btn_Mic.setVisibility(View.VISIBLE);
             continuousSpeechService.stopSpeechInput();
@@ -863,6 +865,7 @@ public class VocabReadingFragment extends Fragment implements
                 playFlg = false;
                 pauseFlg = true;
                 flgPerMarked = false;
+                stt_result_tv.setText(""+attAnsList[currentPage]);
                 presenter.getPage(currentPage);
             } catch (Exception e) {
                 e.printStackTrace();
@@ -946,6 +949,7 @@ public class VocabReadingFragment extends Fragment implements
             flgPerMarked = true;
             playFlg = false;
             pauseFlg = true;
+            stt_result_tv.setText(""+attAnsList[currentPage]);
             presenter.getPage(currentPage);
             Log.d("click", "NextBtn - totalPages: " + totalPages + "  currentPage: " + currentPage);
         } else {

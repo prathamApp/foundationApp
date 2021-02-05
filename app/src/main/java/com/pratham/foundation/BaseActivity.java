@@ -128,7 +128,7 @@ public class BaseActivity extends AppCompatActivity {
 
         Modal_Log log = new Modal_Log();
         log.setCurrentDateTime(FC_Utility.getCurrentDateTime());
-        log.setErrorType("ERROR");
+        log.setErrorType(" ");
         log.setExceptionMessage("App_Start");
         log.setExceptionStackTrace("");
         log.setMethodName("onCreate()");

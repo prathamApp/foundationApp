@@ -32,7 +32,7 @@
         android:gravity="center"
         android:lineSpacingMultiplier="1"
         android:textColor="@color/dark_blue"
-        android:textSize="@dimen/_35sdp"
+        android:textSize="@dimen/_30sdp"
         android:visibility="gone"
         app:charIncrease="1"
         app:typerSpeed="100" />

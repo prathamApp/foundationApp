@@ -1,6 +1,7 @@
 package com.pratham.foundation.ui.app_home.learning_fragment;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -71,8 +72,11 @@ public class LearningInnerDataAdapter extends RecyclerView.Adapter {
 
     @Override
     public int getItemViewType(int position) {
+        Log.d("ABC_ADAPTER", "getItemViewType 1 INNER : "+itemsList.get(position).getNodeType());
         if (itemsList.get(position).getNodeType() != null) {
-            switch (itemsList.get(position).getNodeType()) {
+            String a = itemsList.get(position).getNodeType();
+            Log.d("ABC_ADAPTER", "getItemViewType INNER : "+a);
+            switch (a) {
                 case TYPE_HEADER:
                 case TYPE_FOOTER:
                     return 0;
@@ -83,8 +87,10 @@ public class LearningInnerDataAdapter extends RecyclerView.Adapter {
                 default:
                     return 1;
             }
-        } else
+        } else {
+            Log.d("ABC_ADAPTER", "getItemViewType INNER ELSE : ");
             return 1;
+        }
     }
 
     @Override
@@ -94,139 +100,11 @@ public class LearningInnerDataAdapter extends RecyclerView.Adapter {
                 //folder
                 ContentFolderViewHolder folderHolder = (ContentFolderViewHolder) viewHolder;
                 folderHolder.setFragmentFolderItem(itemsList.get(i), i, parentName, parentPos);
-//                FolderHolder folderHolder = (FolderHolder) viewHolder;
-//                folderHolder.card_main.setBackground(mContext.getResources().getDrawable(getRandomCardColor()));
-//                folderHolder.tvTitle.setText(itemsList.get(i).getNodeTitle());
-//                folderHolder.tv_progress.setText(itemsList.get(i).getNodePercentage()+"%");
-////                folderHolder.progressLayout.setCurProgress(Integer.parseInt(itemsList.get(i).getNodePercentage()));
-//                File f;
-//                if (itemsList.get(i).getIsDownloaded().equalsIgnoreCase("1") ||
-//                        itemsList.get(i).getIsDownloaded().equalsIgnoreCase("true")) {
-//                    if (itemsList.get(i).isOnSDCard())
-//                        f = new File(ApplicationClass.contentSDPath +
-//                                "" + App_Thumbs_Path + itemsList.get(i).getNodeImage());
-//                    else
-//                        f = new File(ApplicationClass.foundationPath +
-//                                "" + App_Thumbs_Path + itemsList.get(i).getNodeImage());
-//                    if (f.exists())
-//                        folderHolder.itemImage.setImageURI(Uri.fromFile(f));
-//                } else {
-////                    String myUrl = "http://devpos.prathamopenschool.org/CourseContent/images/posLogo.png";
-////                    String myUrl2 = ""+myUrl.lastIndexOf('/');
-//
-//                    ImageRequest imageRequest = ImageRequestBuilder
-//                            .newBuilderWithSource(Uri.parse(itemsList.get(i).getNodeServerImage()))
-////                    ImageRequest imageRequest = ImageRequestBuilder
-////                            .newBuilderWithSource(Uri.parse(myUrl))
-//                            .setResizeOptions(new ResizeOptions(300, 300))
-//                            .build();
-//                    DraweeController controller = Fresco.newDraweeControllerBuilder()
-//                            .setImageRequest(imageRequest)
-//                            .setOldController(folderHolder.itemImage.getController())
-//                            .build();
-//                    folderHolder.itemImage.setController(controller);
-//                }
-//
-//                if (itemsList.get(i).getNodeType().equalsIgnoreCase("PreResource")) {
-//                    if (itemsList.get(i).getIsDownloaded().equalsIgnoreCase("true")) {
-//                        folderHolder.iv_downld.setVisibility(View.GONE);
-//                    } else if (itemsList.get(i).getIsDownloaded().equalsIgnoreCase("false"))
-//                        folderHolder.iv_downld.setVisibility(View.VISIBLE);
-//                } else
-//                    folderHolder.iv_downld.setVisibility(View.GONE);
-//
-//                folderHolder.card_main.setOnClickListener(v -> {
-//                    if (itemsList.get(i).getNodeType() != null) {
-//                        if (itemsList.get(i).getNodeType().equalsIgnoreCase("PreResource")) {
-//                            if (itemsList.get(i).getIsDownloaded().equalsIgnoreCase("true")) {
-//                                itemClicked.onPreResOpenClicked(i, itemsList.get(i).getNodeId(), itemsList.get(i).getNodeTitle(),itemsList.get(i).isOnSDCard());
-//                            } else if (itemsList.get(i).getIsDownloaded().equalsIgnoreCase("false"))
-//                                itemClicked.onContentDownloadClicked(itemsList.get(i),parentPos,i, SINGLE_RES_DOWNLOAD);
-//                        } else
-//                            itemClicked.onContentClicked(itemsList.get(i), parentName);
-//                    }
-//                });
-//
-//                if (itemsList.get(i).isNodeUpdate())
-//                    folderHolder.ib_update_btn.setVisibility(View.VISIBLE);
-//                else
-//                    folderHolder.ib_update_btn.setVisibility(View.GONE);
-//
-//                folderHolder.ib_update_btn.setOnClickListener(new View.OnClickListener() {
-//                    @Override
-//                    public void onClick(View v) {
-//                        itemClicked.onContentDownloadClicked(itemsList.get(i),
-//                                parentPos,i,""+ SINGLE_RES_DOWNLOAD);                        }
-//                });
-//                setAnimations(folderHolder.card_main);
                 break;
             case 2:
                 //file
                 ContentFileViewHolder fileHolder = (ContentFileViewHolder) viewHolder;
                 fileHolder.setFragmentFileItem(itemsList.get(i), i, parentName, parentPos);
-//                FileHolder fileHolder = (FileHolder) viewHolder;
-//                fileHolder.tvTitle.setText(itemsList.get(i).getNodeTitle());
-//                fileHolder.tvTitle.setSelected(true);
-//                fileHolder.content_card_view.setBackground(mContext.getResources().getDrawable(getRandomCardColor()));
-//                File file;
-//                if (itemsList.get(i).getIsDownloaded().equalsIgnoreCase("1") ||
-//                        itemsList.get(i).getIsDownloaded().equalsIgnoreCase("true")) {
-//
-////                    fileHolder.actionBtn.setVisibility(View.GONE);
-//                    if(itemsList.get(i).getResourceType().equalsIgnoreCase(FC_Constants.VIDEO))
-//                        fileHolder.actionBtn.setImageResource(R.drawable.ic_video);
-//                    else if(itemsList.get(i).getResourceType().toLowerCase().contains(FC_Constants.GAME))
-//                        fileHolder.actionBtn.setImageResource(R.drawable.ic_joystick);
-//                    else
-//                        fileHolder.actionBtn.setImageResource(R.drawable.ic_android_act);
-//
-//                    fileHolder.content_card_view.setOnClickListener(v -> itemClicked.onContentOpenClicked(
-//                            itemsList.get(i)));
-//
-//                    try {
-//                        if (itemsList.get(i).isOnSDCard())
-//                            file = new File(ApplicationClass.contentSDPath +
-//                                    "" + App_Thumbs_Path + itemsList.get(i).getNodeImage());
-//                        else
-//                            file = new File(ApplicationClass.foundationPath +
-//                                    "" + App_Thumbs_Path + itemsList.get(i).getNodeImage());
-//                        if (file.exists())
-//                            fileHolder.itemImage.setImageURI(Uri.fromFile(file));
-//                    } catch (Exception e) {
-//                        e.printStackTrace();
-//                    }
-//                }else {
-//                    try {
-//                        ImageRequest imageRequest = ImageRequestBuilder
-//                                .newBuilderWithSource(Uri.parse(itemsList.get(i).getNodeServerImage()))
-//                                .setResizeOptions(new ResizeOptions(250, 170))
-//                                .build();
-//                        DraweeController controller = Fresco.newDraweeControllerBuilder()
-//                                .setImageRequest(imageRequest)
-//                                .setOldController(fileHolder.itemImage.getController())
-//                                .build();
-//                        fileHolder.itemImage.setController(controller);
-//                    } catch (Exception e) {
-//                        e.printStackTrace();
-//                    }
-//
-//                    fileHolder.content_card_view.setOnClickListener(v ->
-//                            itemClicked.onContentDownloadClicked(itemsList.get(i),
-//                                    parentPos,i,""+ SINGLE_RES_DOWNLOAD));
-//
-//                    if (itemsList.get(i).isNodeUpdate())
-//                        fileHolder.ib_update_btn.setVisibility(View.VISIBLE);
-//                    else
-//                        fileHolder.ib_update_btn.setVisibility(View.GONE);
-//
-//                    fileHolder.ib_update_btn.setOnClickListener(new View.OnClickListener() {
-//                        @Override
-//                        public void onClick(View v) {
-//                            itemClicked.onContentDownloadClicked(itemsList.get(i),
-//                                    parentPos,i,""+ SINGLE_RES_DOWNLOAD);                        }
-//                    });
-//                }
-//                setAnimations(fileHolder.content_card_view);
                 break;
             case 3:
                 ContentTestViewHolder TestHolder = (ContentTestViewHolder) viewHolder;

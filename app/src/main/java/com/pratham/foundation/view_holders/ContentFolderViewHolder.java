@@ -90,65 +90,69 @@ public class ContentFolderViewHolder extends RecyclerView.ViewHolder {
 
     @SuppressLint("CheckResult")
     public void setFolderItem(ContentTable contentList, int position) {
+        try {
 //        add card and its click listners
-        Objects.requireNonNull(card_main).setBackground(ApplicationClass.getInstance()
-                .getResources().getDrawable(getRandomCardColor()));
-        Objects.requireNonNull(tvTitle).setText(contentList.getNodeTitle());
-        Objects.requireNonNull(rl_loader).setVisibility(View.GONE);
+            Objects.requireNonNull(card_main).setBackground(ApplicationClass.getInstance()
+                    .getResources().getDrawable(getRandomCardColor()));
+            Objects.requireNonNull(tvTitle).setText(contentList.getNodeTitle());
+            Objects.requireNonNull(rl_loader).setVisibility(View.GONE);
 
-        File file;
-        if (contentList.getIsDownloaded().equalsIgnoreCase("1") ||
-                contentList.getIsDownloaded().equalsIgnoreCase("true")) {
-            Objects.requireNonNull(iv_downld).setVisibility(View.GONE);
-            if (contentList.isOnSDCard())
-                file = new File(ApplicationClass.contentSDPath +
-                        "" + App_Thumbs_Path + contentList.getNodeImage());
-            else
-                file = new File(ApplicationClass.foundationPath +
-                        "" + App_Thumbs_Path + contentList.getNodeImage());
-            if (file.exists())
-                Objects.requireNonNull(itemImage).setImageURI(Uri.fromFile(file));
-        } else {
-            ImageRequest imageRequest = ImageRequestBuilder
-                    .newBuilderWithSource(Uri.parse(contentList.getNodeServerImage()))
-                    .setResizeOptions(new ResizeOptions(300, 300))
-                    .setLocalThumbnailPreviewsEnabled(true)
-                    .build();
-            DraweeController controller = Fresco.newDraweeControllerBuilder()
-                    .setImageRequest(imageRequest)
-                    .setOldController(Objects.requireNonNull(itemImage).getController())
-                    .build();
-            itemImage.setController(controller);
-        }
-        if (contentList.getNodeType().equalsIgnoreCase("PreResource")) {
-            Objects.requireNonNull(tv_progress).setVisibility(View.GONE);
-            if (contentList.getIsDownloaded().equalsIgnoreCase("true")) {
+            File file;
+            if (contentList.getIsDownloaded().equalsIgnoreCase("1") ||
+                    contentList.getIsDownloaded().equalsIgnoreCase("true")) {
                 Objects.requireNonNull(iv_downld).setVisibility(View.GONE);
-            } else if (contentList.getIsDownloaded().equalsIgnoreCase("false"))
-                Objects.requireNonNull(iv_downld).setVisibility(View.VISIBLE);
-
-            if (contentList.isNodeUpdate())
-                Objects.requireNonNull(ib_update_btn).setVisibility(View.VISIBLE);
-            else
-                Objects.requireNonNull(ib_update_btn).setVisibility(View.GONE);
-
-            ib_update_btn.setOnClickListener(v -> contentClicked.onContentDownloadClicked(position, contentList.nodeId));
-
-        } else
-            Objects.requireNonNull(iv_downld).setVisibility(View.GONE);
-
-        Objects.requireNonNull(card_main).setOnClickListener(v -> {
-            if (contentList.getNodeType() != null) {
-                if (contentList.getNodeType().equalsIgnoreCase("PreResource")) {
-                    if (contentList.getIsDownloaded().equalsIgnoreCase("true")) {
-                        contentClicked.onPreResOpenClicked(position, contentList.getNodeId(), contentList.getNodeTitle(), contentList.isOnSDCard());
-                    } else if (contentList.getIsDownloaded().equalsIgnoreCase("false"))
-                        contentClicked.onContentDownloadClicked(position, contentList.nodeId);
-                } else
-                    contentClicked.onContentClicked(position, contentList.nodeId);
+                if (contentList.isOnSDCard())
+                    file = new File(ApplicationClass.contentSDPath +
+                            "" + App_Thumbs_Path + contentList.getNodeImage());
+                else
+                    file = new File(ApplicationClass.foundationPath +
+                            "" + App_Thumbs_Path + contentList.getNodeImage());
+                if (file.exists())
+                    Objects.requireNonNull(itemImage).setImageURI(Uri.fromFile(file));
+            } else {
+                ImageRequest imageRequest = ImageRequestBuilder
+                        .newBuilderWithSource(Uri.parse(contentList.getNodeServerImage()))
+                        .setResizeOptions(new ResizeOptions(300, 300))
+                        .setLocalThumbnailPreviewsEnabled(true)
+                        .build();
+                DraweeController controller = Fresco.newDraweeControllerBuilder()
+                        .setImageRequest(imageRequest)
+                        .setOldController(Objects.requireNonNull(itemImage).getController())
+                        .build();
+                itemImage.setController(controller);
             }
-        });
-        setAnimations(card_main);
+            if (contentList.getNodeType().equalsIgnoreCase("PreResource")) {
+                Objects.requireNonNull(tv_progress).setVisibility(View.GONE);
+                if (contentList.getIsDownloaded().equalsIgnoreCase("true")) {
+                    Objects.requireNonNull(iv_downld).setVisibility(View.GONE);
+                } else if (contentList.getIsDownloaded().equalsIgnoreCase("false"))
+                    Objects.requireNonNull(iv_downld).setVisibility(View.VISIBLE);
+
+                if (contentList.isNodeUpdate())
+                    Objects.requireNonNull(ib_update_btn).setVisibility(View.VISIBLE);
+                else
+                    Objects.requireNonNull(ib_update_btn).setVisibility(View.GONE);
+
+                ib_update_btn.setOnClickListener(v -> contentClicked.onContentDownloadClicked(position, contentList.nodeId));
+
+            } else
+                Objects.requireNonNull(iv_downld).setVisibility(View.GONE);
+
+            Objects.requireNonNull(card_main).setOnClickListener(v -> {
+                if (contentList.getNodeType() != null) {
+                    if (contentList.getNodeType().equalsIgnoreCase("PreResource")) {
+                        if (contentList.getIsDownloaded().equalsIgnoreCase("true")) {
+                            contentClicked.onPreResOpenClicked(position, contentList.getNodeId(), contentList.getNodeTitle(), contentList.isOnSDCard());
+                        } else if (contentList.getIsDownloaded().equalsIgnoreCase("false"))
+                            contentClicked.onContentDownloadClicked(position, contentList.nodeId);
+                    } else
+                        contentClicked.onContentClicked(position, contentList.nodeId);
+                }
+            });
+            setAnimations(card_main);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     private void setAnimations(final View content_card_view) {
@@ -169,62 +173,66 @@ public class ContentFolderViewHolder extends RecyclerView.ViewHolder {
 
     @SuppressLint("SetTextI18n")
     public void setFragmentFolderItem(ContentTable contentTable, int posi, String parentName, int parentPos) {
-        Objects.requireNonNull(card_main).setBackground(ApplicationClass.getInstance().getResources().getDrawable(getRandomCardColor()));
-        Objects.requireNonNull(tvTitle).setText(contentTable.getNodeTitle());
-        Objects.requireNonNull(tv_progress).setText(contentTable.getNodePercentage()+"%");
-        Objects.requireNonNull(rl_loader).setVisibility(View.GONE);
+        try {
+            Objects.requireNonNull(card_main).setBackground(ApplicationClass.getInstance().getResources().getDrawable(getRandomCardColor()));
+            Objects.requireNonNull(tvTitle).setText(contentTable.getNodeTitle());
+            Objects.requireNonNull(tv_progress).setText(contentTable.getNodePercentage()+"%");
+            Objects.requireNonNull(rl_loader).setVisibility(View.GONE);
 //                progressLayout.setCurProgress(Integer.parseInt(contentTable.getNodePercentage()));
-        File f;
-        if (contentTable.getIsDownloaded().equalsIgnoreCase("1") ||
-                contentTable.getIsDownloaded().equalsIgnoreCase("true")) {
-            if (contentTable.isOnSDCard())
-                f = new File(ApplicationClass.contentSDPath +
-                        "" + App_Thumbs_Path + contentTable.getNodeImage());
-            else
-                f = new File(ApplicationClass.foundationPath +
-                        "" + App_Thumbs_Path + contentTable.getNodeImage());
-            if (f.exists())
-                Objects.requireNonNull(itemImage).setImageURI(Uri.fromFile(f));
-        } else {
+            File f;
+            if (contentTable.getIsDownloaded().equalsIgnoreCase("1") ||
+                    contentTable.getIsDownloaded().equalsIgnoreCase("true")) {
+                if (contentTable.isOnSDCard())
+                    f = new File(ApplicationClass.contentSDPath +
+                            "" + App_Thumbs_Path + contentTable.getNodeImage());
+                else
+                    f = new File(ApplicationClass.foundationPath +
+                            "" + App_Thumbs_Path + contentTable.getNodeImage());
+                if (f.exists())
+                    Objects.requireNonNull(itemImage).setImageURI(Uri.fromFile(f));
+            } else {
 
-            ImageRequest imageRequest = ImageRequestBuilder
-                    .newBuilderWithSource(Uri.parse(contentTable.getNodeServerImage()))
-                    .setResizeOptions(new ResizeOptions(300, 300))
-                    .build();
-            DraweeController controller = Fresco.newDraweeControllerBuilder()
-                    .setImageRequest(imageRequest)
-                    .setOldController(Objects.requireNonNull(itemImage).getController())
-                    .build();
-            itemImage.setController(controller);
-        }
-
-        if (contentTable.getNodeType().equalsIgnoreCase("PreResource")) {
-            Objects.requireNonNull(tv_progress).setVisibility(View.GONE);
-            if (contentTable.isNodeUpdate())
-                Objects.requireNonNull(ib_update_btn).setVisibility(View.VISIBLE);
-            else
-                Objects.requireNonNull(ib_update_btn).setVisibility(View.GONE);
-
-            ib_update_btn.setOnClickListener(v -> itemClicked.onContentDownloadClicked(contentTable,
-                    parentPos,posi,""+ SINGLE_RES_DOWNLOAD));
-            if (contentTable.getIsDownloaded().equalsIgnoreCase("true")) {
-                Objects.requireNonNull(iv_downld).setVisibility(View.GONE);
-            } else if (contentTable.getIsDownloaded().equalsIgnoreCase("false"))
-                Objects.requireNonNull(iv_downld).setVisibility(View.VISIBLE);
-        } else
-            Objects.requireNonNull(iv_downld).setVisibility(View.GONE);
-
-        card_main.setOnClickListener(v -> {
-            if (contentTable.getNodeType() != null) {
-                if (contentTable.getNodeType().equalsIgnoreCase("PreResource")) {
-                    if (contentTable.getIsDownloaded().equalsIgnoreCase("true")) {
-                        itemClicked.onPreResOpenClicked(posi, contentTable.getNodeId(), contentTable.getNodeTitle(),contentTable.isOnSDCard());
-                    } else if (contentTable.getIsDownloaded().equalsIgnoreCase("false"))
-                        itemClicked.onContentDownloadClicked(contentTable,parentPos,posi, SINGLE_RES_DOWNLOAD);
-                } else
-                    itemClicked.onContentClicked(contentTable, parentName);
+                ImageRequest imageRequest = ImageRequestBuilder
+                        .newBuilderWithSource(Uri.parse(contentTable.getNodeServerImage()))
+                        .setResizeOptions(new ResizeOptions(300, 300))
+                        .build();
+                DraweeController controller = Fresco.newDraweeControllerBuilder()
+                        .setImageRequest(imageRequest)
+                        .setOldController(Objects.requireNonNull(itemImage).getController())
+                        .build();
+                itemImage.setController(controller);
             }
-        });
-        setSlideAnimations(card_main);
+
+            if (contentTable.getNodeType().equalsIgnoreCase("PreResource")) {
+                Objects.requireNonNull(tv_progress).setVisibility(View.GONE);
+                if (contentTable.isNodeUpdate())
+                    Objects.requireNonNull(ib_update_btn).setVisibility(View.VISIBLE);
+                else
+                    Objects.requireNonNull(ib_update_btn).setVisibility(View.GONE);
+
+                ib_update_btn.setOnClickListener(v -> itemClicked.onContentDownloadClicked(contentTable,
+                        parentPos,posi,""+ SINGLE_RES_DOWNLOAD));
+                if (contentTable.getIsDownloaded().equalsIgnoreCase("true")) {
+                    Objects.requireNonNull(iv_downld).setVisibility(View.GONE);
+                } else if (contentTable.getIsDownloaded().equalsIgnoreCase("false"))
+                    Objects.requireNonNull(iv_downld).setVisibility(View.VISIBLE);
+            } else
+                Objects.requireNonNull(iv_downld).setVisibility(View.GONE);
+
+            card_main.setOnClickListener(v -> {
+                if (contentTable.getNodeType() != null) {
+                    if (contentTable.getNodeType().equalsIgnoreCase("PreResource")) {
+                        if (contentTable.getIsDownloaded().equalsIgnoreCase("true")) {
+                            itemClicked.onPreResOpenClicked(posi, contentTable.getNodeId(), contentTable.getNodeTitle(),contentTable.isOnSDCard());
+                        } else if (contentTable.getIsDownloaded().equalsIgnoreCase("false"))
+                            itemClicked.onContentDownloadClicked(contentTable,parentPos,posi, SINGLE_RES_DOWNLOAD);
+                    } else
+                        itemClicked.onContentClicked(contentTable, parentName);
+                }
+            });
+            setSlideAnimations(card_main);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }
