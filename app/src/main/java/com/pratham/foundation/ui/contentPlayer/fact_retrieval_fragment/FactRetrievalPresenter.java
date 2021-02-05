@@ -1,6 +1,7 @@
 package com.pratham.foundation.ui.contentPlayer.fact_retrieval_fragment;
 
 import android.content.Context;
+import android.util.Log;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
@@ -164,7 +165,7 @@ public class FactRetrievalPresenter implements FactRetrievalContract.FactRetriev
 
     public void addLearntWords(ArrayList<ScienceQuestionChoice> selectedAnsList) {
         if (selectedAnsList != null && checkAttemptedornot(selectedAnsList)) {
-            int correctCnt=0;
+            int correctCnt = 0;
             List<KeyWords> learntWords = new ArrayList<>();
             int scoredMarks;
             KeyWords keyWords = new KeyWords();
@@ -176,13 +177,21 @@ public class FactRetrievalPresenter implements FactRetrievalContract.FactRetriev
             learntWords.add(keyWords);
             for (int i = 0; i < selectedAnsList.size(); i++) {
                 if (selectedAnsList.get(i).getUserAns() != null && !selectedAnsList.get(i).getUserAns().isEmpty()) {
-                    if (checkAnswer(selectedAnsList.get(i)) > 70) {
+                    //compare with passage answer so accuracy must be above 80 because answer is present in para
+                    if (checkAnswer(selectedAnsList.get(i)) > 80) {
                         scoredMarks = 10;
                         correctCnt++;
                         selectedAnsList.get(i).setTrue(true);
                     } else {
-                        scoredMarks = 0;
-                        selectedAnsList.get(i).setTrue(false);
+                        //compare with json answer so accuracy must be above 70 because  answer may be different than para sentence
+                        if (checkAnswerWithOriginal(selectedAnsList.get(i)) > 70) {
+                            scoredMarks = 10;
+                            correctCnt++;
+                            selectedAnsList.get(i).setTrue(true);
+                        } else {
+                            scoredMarks = 0;
+                            selectedAnsList.get(i).setTrue(false);
+                        }
                     }
                     // addScore(GameConstatnts.getInt(selectedAnsList.get(i).getQid()), GameConstatnts.FACTRETRIEVAL, scoredMarks, 10, FC_Utility.getCurrentDateTime(), selectedAnsList.get(i).toString());
                     addScore(GameConstatnts.getInt(questionModel.getQid()), GameConstatnts.FACTRETRIEVAL, scoredMarks, 10, selectedAnsList.get(i).getStartTime(), selectedAnsList.get(i).getEndTime(), selectedAnsList.get(i).toString());
@@ -190,11 +199,11 @@ public class FactRetrievalPresenter implements FactRetrievalContract.FactRetriev
             }
             AppDatabase.getDatabaseInstance(context).getKeyWordDao().insertAllWord(learntWords);
             setCompletionPercentage();
-            GameConstatnts.postScoreEvent(selectedAnsList.size(),correctCnt);
+            GameConstatnts.postScoreEvent(selectedAnsList.size(), correctCnt);
             BaseActivity.correctSound.start();
-            if (!FastSave.getInstance().getString(APP_SECTION,"").equalsIgnoreCase(sec_Test)) {
+            if (!FastSave.getInstance().getString(APP_SECTION, "").equalsIgnoreCase(sec_Test)) {
                 view.showResult(selectedAnsList);
-            }else {
+            } else {
                 GameConstatnts.playGameNext(context, GameConstatnts.FALSE, (OnGameClose) view);
             }
             //GameConstatnts.playGameNext(context, GameConstatnts.FALSE, (OnGameClose) view);
@@ -232,7 +241,7 @@ public class FactRetrievalPresenter implements FactRetrievalContract.FactRetriev
             score.setSentFlag(0);
             AppDatabase.getDatabaseInstance(context).getScoreDao().insert(score);
 
-            if (FastSave.getInstance().getString(APP_SECTION,"").equalsIgnoreCase(sec_Test)) {
+            if (FastSave.getInstance().getString(APP_SECTION, "").equalsIgnoreCase(sec_Test)) {
                 Assessment assessment = new Assessment();
                 assessment.setResourceIDa(resId);
                 assessment.setSessionIDa(FastSave.getInstance().getString(FC_Constants.ASSESSMENT_SESSION, ""));
@@ -258,11 +267,11 @@ public class FactRetrievalPresenter implements FactRetrievalContract.FactRetriev
     public float checkAnswer(ScienceQuestionChoice selectedAnsList) {
         boolean[] correctArr;
         float perc;
-        String originalAns = selectedAnsList.getAnsInPassage();
+        String originalAns = selectedAnsList.getAnsInPassage().trim();
         String quesFinal = originalAns.replaceAll(STT_REGEX, "");
 
         String[] originalAnsArr = quesFinal.split(" ");
-        String[] userAnsArr = selectedAnsList.getUserAns().replaceAll(STT_REGEX, "").split(" ");
+        String[] userAnsArr = selectedAnsList.getUserAns().replaceAll(STT_REGEX, "").trim().split(" ");
 
         if (originalAnsArr.length < userAnsArr.length)
             correctArr = new boolean[userAnsArr.length];
@@ -272,7 +281,7 @@ public class FactRetrievalPresenter implements FactRetrievalContract.FactRetriev
         for (int j = 0; j < userAnsArr.length; j++) {
             for (int i = 0; i < originalAnsArr.length; i++) {
                 if (userAnsArr[j].equalsIgnoreCase(originalAnsArr[i])) {
-                    correctArr[i] = true;
+                    correctArr[j] = true;
                     break;
                 }
             }
@@ -287,5 +296,36 @@ public class FactRetrievalPresenter implements FactRetrievalContract.FactRetriev
         return perc;
     }
 
+    //Check answer with json answer (which answer get from server)
+    public float checkAnswerWithOriginal(ScienceQuestionChoice selectedAnsList) {
+        boolean[] correctArr;
+        float perc;
+        String originalAns = selectedAnsList.getCorrectAnswer().trim();
+        String quesFinal = originalAns.replaceAll(STT_REGEX, "");
 
+        String[] originalAnsArr = quesFinal.split(" ");
+        String[] userAnsArr = selectedAnsList.getUserAns().replaceAll(STT_REGEX, "").trim().split(" ");
+
+        if (originalAnsArr.length < userAnsArr.length)
+            correctArr = new boolean[userAnsArr.length];
+        else correctArr = new boolean[originalAnsArr.length];
+
+
+        for (int j = 0; j < userAnsArr.length; j++) {
+            for (int i = 0; i < originalAnsArr.length; i++) {
+                if (userAnsArr[j].equalsIgnoreCase(originalAnsArr[i])) {
+                    correctArr[j] = true;
+                    break;
+                }
+            }
+        }
+
+        int correctCnt = 0;
+        for (int x = 0; x < correctArr.length; x++) {
+            if (correctArr[x])
+                correctCnt++;
+        }
+        perc = ((float) correctCnt / (float) correctArr.length) * 100;
+        return perc;
+    }
 }
