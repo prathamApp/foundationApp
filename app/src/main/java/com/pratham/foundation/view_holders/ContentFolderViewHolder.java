@@ -52,7 +52,7 @@ public class ContentFolderViewHolder extends RecyclerView.ViewHolder {
     @Nullable
     ImageView iv_downld;
     @Nullable
-    ImageView ib_update_btn;
+    ImageView ib_update_btn,iv_delete;
     @Nullable
     MaterialCardView card_main;
     
@@ -71,6 +71,7 @@ public class ContentFolderViewHolder extends RecyclerView.ViewHolder {
         card_main = itemView.findViewById(R.id.card_main);
         iv_downld = itemView.findViewById(R.id.iv_downld);
         ib_update_btn = itemView.findViewById(R.id.ib_update_btn);
+        iv_delete = itemView.findViewById(R.id.iv_delete);
         this.contentClicked = contentClicked;
     }
 
@@ -85,6 +86,7 @@ public class ContentFolderViewHolder extends RecyclerView.ViewHolder {
         card_main = itemView.findViewById(R.id.card_main);
         iv_downld = itemView.findViewById(R.id.iv_downld);
         ib_update_btn = itemView.findViewById(R.id.ib_update_btn);
+        iv_delete = itemView.findViewById(R.id.iv_delete);
         this.itemClicked = itemClicked;
     }
 
@@ -125,8 +127,12 @@ public class ContentFolderViewHolder extends RecyclerView.ViewHolder {
                 Objects.requireNonNull(tv_progress).setVisibility(View.GONE);
                 if (contentList.getIsDownloaded().equalsIgnoreCase("true")) {
                     Objects.requireNonNull(iv_downld).setVisibility(View.GONE);
-                } else if (contentList.getIsDownloaded().equalsIgnoreCase("false"))
+                    Objects.requireNonNull(iv_delete).setVisibility(View.VISIBLE);
+                    iv_delete.setOnClickListener(v -> contentClicked.onContentDeleteClicked(position,contentList));
+                } else if (contentList.getIsDownloaded().equalsIgnoreCase("false")) {
                     Objects.requireNonNull(iv_downld).setVisibility(View.VISIBLE);
+                    Objects.requireNonNull(iv_delete).setVisibility(View.GONE);
+                }
 
                 if (contentList.isNodeUpdate())
                     Objects.requireNonNull(ib_update_btn).setVisibility(View.VISIBLE);
@@ -213,9 +219,13 @@ public class ContentFolderViewHolder extends RecyclerView.ViewHolder {
                 ib_update_btn.setOnClickListener(v -> itemClicked.onContentDownloadClicked(contentTable,
                         parentPos,posi,""+ SINGLE_RES_DOWNLOAD));
                 if (contentTable.getIsDownloaded().equalsIgnoreCase("true")) {
+                    Objects.requireNonNull(iv_delete).setVisibility(View.VISIBLE);
+                    iv_delete.setOnClickListener(v -> {itemClicked.onContentDeleteClicked(parentPos,posi,contentTable);});
                     Objects.requireNonNull(iv_downld).setVisibility(View.GONE);
-                } else if (contentTable.getIsDownloaded().equalsIgnoreCase("false"))
+                } else if (contentTable.getIsDownloaded().equalsIgnoreCase("false")) {
+                    Objects.requireNonNull(iv_delete).setVisibility(View.GONE);
                     Objects.requireNonNull(iv_downld).setVisibility(View.VISIBLE);
+                }
             } else
                 Objects.requireNonNull(iv_downld).setVisibility(View.GONE);
 

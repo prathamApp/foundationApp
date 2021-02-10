@@ -77,6 +77,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
+import static com.pratham.foundation.ApplicationClass.App_Thumbs_Path;
 import static com.pratham.foundation.ApplicationClass.BackBtnSound;
 import static com.pratham.foundation.ApplicationClass.ButtonClickSound;
 import static com.pratham.foundation.ApplicationClass.fileDownloadingList;
@@ -753,15 +754,28 @@ public class ContentDisplay extends BaseActivity implements ContentContract.Cont
         final CustomLodingDialog dialog = new CustomLodingDialog(this, R.style.FC_DialogStyle);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-        dialog.setContentView(R.layout.lottie_exit_dialog);
+        dialog.setContentView(R.layout.lottie_delete_dialog);
         TextView tv_title = dialog.findViewById(R.id.dia_title);
-        Button dia_btn_yes = dialog.findViewById(R.id.dia_btn_yes);
+        TextView dia_btn_yes = dialog.findViewById(R.id.dia_btn_yes);
         Button dia_btn_no = dialog.findViewById(R.id.dia_btn_no);
-        dialog.show();
+        SimpleDraweeView iv_file_trans = dialog.findViewById(R.id.dl_lottie_view);
+        try {
+            File file;
+            if (contentTableItem.isOnSDCard())
+                file = new File(ApplicationClass.contentSDPath +
+                        "" + App_Thumbs_Path + contentTableItem.getNodeImage());
+            else
+                file = new File(ApplicationClass.foundationPath +
+                        "" + App_Thumbs_Path + contentTableItem.getNodeImage());
+            if (file.exists())
+                Objects.requireNonNull(iv_file_trans).setImageURI(Uri.fromFile(file));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         tv_title.setText("Delete\n" + contentTableItem.getNodeTitle());
+        dialog.show();
 
         dia_btn_no.setOnClickListener(v -> dialog.dismiss());
-
         dia_btn_yes.setOnClickListener(v -> {
             presenter.deleteContent(deletePos, contentTableItem);
             dialog.dismiss();

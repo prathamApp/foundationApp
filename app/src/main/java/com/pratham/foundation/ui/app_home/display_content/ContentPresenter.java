@@ -414,16 +414,37 @@ public class ContentPresenter implements ContentContract.ContentPresenter, API_C
     //    @Background
     @Override
     public void deleteContent(int deletePos, ContentTable contentItem) {
-        checkAndDeleteParent(contentItem);
-        Log.d("Delete_Clicked", "onClick: G_Presenter");
+        try {
+            if(contentItem.getNodeType().equalsIgnoreCase("PreResource")) {
+                List<ContentTable> contentTableList = AppDatabase.getDatabaseInstance(context).getContentTableDao()
+                        .getChildsOfParent_forDelete(contentItem.getNodeId());
+                for (int i = 0; i < contentTableList.size(); i++) {
+                    checkAndDeleteParent(contentTableList.get(i));
+                    Log.d("Delete_Clicked", "onClick: G_Presenter");
 
-        String foldername = contentItem.getResourcePath()/*.split("/")[0]*/;
-        FC_Utility.deleteRecursive(new File(ApplicationClass.foundationPath
-                + gameFolderPath + "/" + foldername));
+                    String foldername = contentTableList.get(i).getResourcePath()/*.split("/")[0]*/;
+                    FC_Utility.deleteRecursive(new File(ApplicationClass.foundationPath
+                            + gameFolderPath + "/" + foldername));
 
-        FC_Utility.deleteRecursive(new File(ApplicationClass.foundationPath
-                + "" + App_Thumbs_Path + contentItem.getNodeImage()));
-        contentView.notifyAdapterItem(deletePos);
+                    FC_Utility.deleteRecursive(new File(ApplicationClass.foundationPath
+                            + "" + App_Thumbs_Path + contentTableList.get(i).getNodeImage()));
+//                learningView.notifyAdapterItem(parentPos,childPos);
+                }
+                checkAndDeleteParent(contentItem);
+                Log.d("Delete_Clicked", "onClick: G_Presenter");
+            }else {
+                checkAndDeleteParent(contentItem);
+                Log.d("Delete_Clicked", "onClick: G_Presenter");
+                String foldername = contentItem.getResourcePath()/*.split("/")[0]*/;
+                FC_Utility.deleteRecursive(new File(ApplicationClass.foundationPath
+                        + gameFolderPath + "/" + foldername));
+                FC_Utility.deleteRecursive(new File(ApplicationClass.foundationPath
+                        + "" + App_Thumbs_Path + contentItem.getNodeImage()));
+            }
+            contentView.notifyAdapterItem(deletePos);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     private void checkAndDeleteParent(ContentTable contentItem) {

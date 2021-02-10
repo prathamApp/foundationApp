@@ -13,7 +13,7 @@ public interface FragmentItemClicked {
 
     void onContentDownloadClicked(ContentTable contentList, int parentPos, int childPos, String downloadType);
 
-    void onContentDeleteClicked(ContentTable contentList);
+    void onContentDeleteClicked(int parentPos, int childPos, ContentTable contentList);
 
     void seeMore(String nodeId, String nodeTitle);
 
