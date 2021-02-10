@@ -831,8 +831,6 @@ public class LearningFragment extends Fragment implements LearningContract.Learn
             } catch (IllegalStateException e) {
                 e.printStackTrace();
             }
-
-//        downloadNodeId = "" + 1371;
             this.parentPos = parentPos;
             this.childPos = childPos;
             resName = contentList.getNodeTitle();
