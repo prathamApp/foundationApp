@@ -49,6 +49,9 @@ public interface ContentTableDao {
     @Query("SELECT * FROM ContentTable WHERE parentid=:id AND (studentId like:studentId OR studentId like'%pratham_group%') ORDER BY seq_no")
     List<ContentTable> getChildsOfParent(String id, String studentId);
 
+    @Query("SELECT * FROM ContentTable WHERE parentid=:id")
+    List<ContentTable> getChildsOfParent_forDelete(String id);
+
     @Query("SELECT * FROM ContentTable WHERE parentid=:id AND nodeId!='4033'")
     List<ContentTable> getChildsOfParent2(String id);
 

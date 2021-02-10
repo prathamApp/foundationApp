@@ -79,6 +79,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+import static com.pratham.foundation.ApplicationClass.App_Thumbs_Path;
 import static com.pratham.foundation.ApplicationClass.ButtonClickSound;
 import static com.pratham.foundation.ui.app_home.HomeActivity.header_rl;
 import static com.pratham.foundation.ui.app_home.HomeActivity.levelChanged;
@@ -830,8 +831,6 @@ public class LearningFragment extends Fragment implements LearningContract.Learn
             } catch (IllegalStateException e) {
                 e.printStackTrace();
             }
-
-//        downloadNodeId = "" + 1371;
             this.parentPos = parentPos;
             this.childPos = childPos;
             resName = contentList.getNodeTitle();
@@ -844,6 +843,50 @@ public class LearningFragment extends Fragment implements LearningContract.Learn
             }
         } else
             Toast.makeText(context, "Downloading other resource..", Toast.LENGTH_SHORT).show();
+    }
+
+    @UiThread
+    @Override
+    public void onContentDeleteClicked(int parentPos, int childPos, ContentTable contentList) {
+        try {
+            ButtonClickSound.start();
+        } catch (IllegalStateException e) {
+            e.printStackTrace();
+        }
+        Log.d("Delete_Clicked", "onClick: G_Activity");
+        showDeleteDialog(parentPos, childPos, contentList);
+    }
+
+    @SuppressLint("SetTextI18n")
+    private void showDeleteDialog(int parentPos, int childPos, ContentTable contentTableItem) {
+        final CustomLodingDialog dialog = new CustomLodingDialog(Objects.requireNonNull(getActivity()), R.style.FC_DialogStyle);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        Objects.requireNonNull(dialog.getWindow()).setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        dialog.setContentView(R.layout.lottie_delete_dialog);
+        TextView tv_title = dialog.findViewById(R.id.dia_title);
+        TextView dia_btn_yes = dialog.findViewById(R.id.dia_btn_yes);
+        Button dia_btn_no = dialog.findViewById(R.id.dia_btn_no);
+        SimpleDraweeView iv_file_trans = dialog.findViewById(R.id.dl_lottie_view);
+        try {
+            File file;
+            if (contentTableItem.isOnSDCard())
+                file = new File(ApplicationClass.contentSDPath +
+                        "" + App_Thumbs_Path + contentTableItem.getNodeImage());
+            else
+                file = new File(ApplicationClass.foundationPath +
+                        "" + App_Thumbs_Path + contentTableItem.getNodeImage());
+            if (file.exists())
+                Objects.requireNonNull(iv_file_trans).setImageURI(Uri.fromFile(file));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        tv_title.setText("Delete\n" + contentTableItem.getNodeTitle());
+        dialog.show();
+        dia_btn_no.setOnClickListener(v -> dialog.dismiss());
+        dia_btn_yes.setOnClickListener(v -> {
+            presenter.deleteContent(parentPos, childPos, contentTableItem);
+            dialog.dismiss();
+        });
     }
 
     //    private BlurPopupWindow downloadDialog;
@@ -911,7 +954,6 @@ public class LearningFragment extends Fragment implements LearningContract.Learn
             e.printStackTrace();
         }
     }
-
     //    BlurPopupWindow errorDialog;
     CustomLodingDialog errorDialog;
 
@@ -958,10 +1000,6 @@ public class LearningFragment extends Fragment implements LearningContract.Learn
     }
 
     @Override
-    public void onContentDeleteClicked(ContentTable contentList) {
-    }
-
-    @Override
     public void seeMore(String nodeId, String nodeTitle) {
         try {
             ButtonClickSound.start();
@@ -983,6 +1021,13 @@ public class LearningFragment extends Fragment implements LearningContract.Learn
     @Override
     public void showToast(String msg) {
         Toast.makeText(context, "" + msg, Toast.LENGTH_SHORT).show();
+    }
+
+    @UiThread
+    @Override
+    public void notifyAdapterItem(int parentPos, int childPos) {
+        contentParentList.get(parentPos).getNodelist().get(childPos).setIsDownloaded("false");
+        adapterParent.notifyItemChanged(parentPos, contentParentList.get(parentPos));
     }
 
     BlurPopupWindow serverIssueDialog;

@@ -1,0 +1,75 @@
+<com.google.android.material.card.MaterialCardView android:layout_width="@dimen/_200sdp"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_centerInParent="true"
+    android:layout_gravity="center"
+    android:elevation="0dp"
+    app:cardBackgroundColor="@color/white"
+    app:cardCornerRadius="@dimen/_15sdp"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <com.facebook.drawee.view.SimpleDraweeView
+            android:id="@+id/dl_lottie_view"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_120sdp"
+            android:scaleType="fitCenter"
+            android:layout_margin="@dimen/_5sdp"
+            app:actualImageScaleType="fitCenter"
+            app:placeholderImageScaleType="fitCenter"
+            app:placeholderImage="@drawable/khelbadi_thumb"
+            app:roundedCornerRadius="@dimen/_10sdp"
+            app:roundingBorderColor="@color/colorRed"
+            app:roundingBorderWidth="@dimen/_3sdp"/>
+
+        <com.pratham.foundation.customView.fontsview.SansTextViewBold
+            android:id="@+id/dia_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textAlignment="center"
+            android:layout_marginStart="@dimen/_15sdp"
+            android:layout_marginEnd="@dimen/_15sdp"
+            android:layout_below="@+id/dl_lottie_view"
+            android:layout_centerHorizontal="true"
+            android:text="@string/exit_dialog_msg"
+            android:textColor="@color/colorRed"
+            android:textSize="@dimen/_15sdp" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/dia_title"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:gravity="center_vertical"
+            android:orientation="vertical">
+
+            <com.pratham.foundation.customView.fontsview.SansTextViewBold
+                android:id="@+id/dia_btn_yes"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_30sdp"
+                android:layout_marginStart="@dimen/_10sdp"
+                android:layout_marginEnd="@dimen/_10sdp"
+                android:background="@android:color/transparent"
+                android:gravity="center"
+                android:text="@string/yes"
+                android:textColor="@color/colorText"
+                android:textSize="@dimen/_15sdp" />
+
+            <com.pratham.foundation.customView.fontsview.SansButton
+                android:id="@+id/dia_btn_no"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_40sdp"
+                android:background="@drawable/button_yellow"
+                android:layout_marginStart="@dimen/_10sdp"
+                android:layout_marginEnd="@dimen/_10sdp"
+                android:layout_marginBottom="@dimen/_8sdp"
+                android:elevation="@dimen/_3sdp"
+                android:text="@string/no"
+                android:textColor="@color/colorText"
+                android:textSize="@dimen/_15sdp" />
+        </LinearLayout>
+    </RelativeLayout>
+</com.google.android.material.card.MaterialCardView>

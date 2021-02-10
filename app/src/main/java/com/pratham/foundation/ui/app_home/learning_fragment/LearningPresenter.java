@@ -7,6 +7,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 import com.google.gson.stream.JsonReader;
+import com.pratham.foundation.ApplicationClass;
 import com.pratham.foundation.async.API_Content;
 import com.pratham.foundation.async.ZipDownloader;
 import com.pratham.foundation.database.AppDatabase;
@@ -27,6 +28,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.File;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.lang.reflect.Type;
@@ -35,10 +37,12 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import static com.pratham.foundation.ApplicationClass.App_Thumbs_Path;
 import static com.pratham.foundation.ui.app_home.HomeActivity.sub_nodeId;
 import static com.pratham.foundation.utility.FC_Constants.CURRENT_STUDENT_ID;
 import static com.pratham.foundation.utility.FC_Constants.TYPE_FOOTER;
 import static com.pratham.foundation.utility.FC_Constants.TYPE_HEADER;
+import static com.pratham.foundation.utility.FC_Constants.gameFolderPath;
 
 
 @EBean
@@ -823,6 +827,47 @@ public class LearningPresenter implements LearningContract.LearningPresenter, AP
             e.printStackTrace();
         }
     }
+
+    @Override
+    public void deleteContent(int parentPos, int childPos, ContentTable contentTableItem) {
+        try {
+            if(contentTableItem.getNodeType().equalsIgnoreCase("PreResource")) {
+                List<ContentTable> contentTableList = AppDatabase.getDatabaseInstance(mContext).getContentTableDao()
+                        .getChildsOfParent_forDelete(contentTableItem.getNodeId());
+                for (int i = 0; i < contentTableList.size(); i++) {
+                    checkAndDeleteParent(contentTableList.get(i));
+                    Log.d("Delete_Clicked", "onClick: G_Presenter");
+
+                    String foldername = contentTableList.get(i).getResourcePath()/*.split("/")[0]*/;
+                    FC_Utility.deleteRecursive(new File(ApplicationClass.foundationPath
+                            + gameFolderPath + "/" + foldername));
+
+                    FC_Utility.deleteRecursive(new File(ApplicationClass.foundationPath
+                            + "" + App_Thumbs_Path + contentTableList.get(i).getNodeImage()));
+//                learningView.notifyAdapterItem(parentPos,childPos);
+                }
+                checkAndDeleteParent(contentTableItem);
+                Log.d("Delete_Clicked", "onClick: G_Presenter");
+            }else {
+                checkAndDeleteParent(contentTableItem);
+                Log.d("Delete_Clicked", "onClick: G_Presenter");
+                String foldername = contentTableItem.getResourcePath()/*.split("/")[0]*/;
+                FC_Utility.deleteRecursive(new File(ApplicationClass.foundationPath
+                        + gameFolderPath + "/" + foldername));
+                FC_Utility.deleteRecursive(new File(ApplicationClass.foundationPath
+                        + "" + App_Thumbs_Path + contentTableItem.getNodeImage()));
+            }
+
+            learningView.notifyAdapterItem(parentPos,childPos);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void checkAndDeleteParent(ContentTable contentItem) {
+        AppDatabase.getDatabaseInstance(mContext).getContentTableDao().deleteContent(contentItem.getNodeId());
+    }
+
 
     @Override
     public void receivedError(String header) {

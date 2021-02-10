@@ -115,6 +115,18 @@
             android:layout_alignParentBottom="true"
             android:layout_marginStart="@dimen/_5sdp"
             android:layout_marginBottom="@dimen/_5sdp"/>
+
+        <ImageView
+            android:id="@+id/iv_delete"
+            android:visibility="gone"
+            android:layout_width="@dimen/_30sdp"
+            android:layout_height="@dimen/_30sdp"
+            android:src="@drawable/delete"
+            android:padding="@dimen/_5sdp"
+            android:background="@drawable/card_delete_bg_round"
+            android:layout_alignParentBottom="true"
+            android:layout_marginStart="@dimen/_5sdp"
+            android:layout_marginBottom="@dimen/_5sdp"/>
     </RelativeLayout>
 
 </com.google.android.material.card.MaterialCardView>
