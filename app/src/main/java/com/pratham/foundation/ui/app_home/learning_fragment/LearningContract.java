@@ -52,6 +52,8 @@ public interface LearningContract {
 
         void showToast(String msg);
 
+        void notifyAdapterItem(int parentPos, int childPos);
+
 //        void setBotNodeId(String botID);
     }
 
@@ -85,5 +87,6 @@ public interface LearningContract {
 
         void getBottomNavId(int currentLevelNo, String cosSection);
 
+        void deleteContent(int parentPos, int childPos, ContentTable contentTableItem);
     }
 }

@@ -43,7 +43,7 @@ public class ContentFileViewHolder extends RecyclerView.ViewHolder {
     @Nullable
     TextView title;
     @Nullable
-    ImageView ib_action_btn;
+    ImageView ib_action_btn,iv_delete;
     @Nullable
     ImageView ib_update_btn;
     @Nullable
@@ -68,6 +68,7 @@ public class ContentFileViewHolder extends RecyclerView.ViewHolder {
         rl_card = itemView.findViewById(R.id.rl_card);
         ib_action_btn = itemView.findViewById(R.id.ib_action_btn);
         ib_update_btn = itemView.findViewById(R.id.ib_update_btn);
+        iv_delete = itemView.findViewById(R.id.iv_delete);
 
         this.contentClicked = contentClicked;
     }
@@ -82,13 +83,13 @@ public class ContentFileViewHolder extends RecyclerView.ViewHolder {
         rl_card = itemView.findViewById(R.id.rl_card);
         ib_action_btn = itemView.findViewById(R.id.ib_action_btn);
         ib_update_btn = itemView.findViewById(R.id.ib_update_btn);
+        iv_delete = itemView.findViewById(R.id.iv_delete);
 
         this.itemClicked = itemClicked;
     }
 
     @SuppressLint("CheckResult")
     public void setFileItem(ContentTable contentList, int position) {
-
         try {
 //        add card and its click listners
             Objects.requireNonNull(content_card_view).setBackground(ApplicationClass.getInstance()
@@ -100,6 +101,7 @@ public class ContentFileViewHolder extends RecyclerView.ViewHolder {
 
             Objects.requireNonNull(ib_action_btn).setVisibility(View.GONE);
             if (contentList.getIsDownloaded().equalsIgnoreCase("false")) {
+                Objects.requireNonNull(iv_delete).setVisibility(View.GONE);
                 if (contentList.getResourceType().equalsIgnoreCase(FC_Constants.YOUTUBE_LINK)) {
                     ib_action_btn.setImageResource(R.drawable.ic_youtube);
                     ib_action_btn.setVisibility(View.VISIBLE);
@@ -110,6 +112,7 @@ public class ContentFileViewHolder extends RecyclerView.ViewHolder {
                     ib_action_btn.setClickable(false);
                 }
             } else if (contentList.getIsDownloaded().equalsIgnoreCase("true")) {
+                Objects.requireNonNull(iv_delete).setVisibility(View.VISIBLE);
                 ib_action_btn.setVisibility(View.VISIBLE);
                 ib_action_btn.setImageResource(R.drawable.ic_joystick);
                 ib_action_btn.setClickable(true);
@@ -182,6 +185,13 @@ public class ContentFileViewHolder extends RecyclerView.ViewHolder {
             else
                 Objects.requireNonNull(ib_update_btn).setVisibility(View.GONE);
 
+            Objects.requireNonNull(iv_delete).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    contentClicked.onContentDeleteClicked(position, contentList);
+                }
+            });
+
             ib_update_btn.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -221,7 +231,15 @@ public class ContentFileViewHolder extends RecyclerView.ViewHolder {
             File file;
             if (contentTable.getIsDownloaded().equalsIgnoreCase("1") ||
                     contentTable.getIsDownloaded().equalsIgnoreCase("true")) {
-    //                    ib_action_btn.setVisibility(View.GONE);
+                Objects.requireNonNull(iv_delete).setVisibility(View.VISIBLE);
+                Objects.requireNonNull(iv_delete).setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        itemClicked.onContentDeleteClicked(parentPos, i,contentTable);
+                    }
+                });
+
+                //                    ib_action_btn.setVisibility(View.GONE);
                 if (contentTable.getResourceType().equalsIgnoreCase(FC_Constants.PDF))
                     Objects.requireNonNull(ib_action_btn).setImageResource(R.drawable.ic_pdf);
                 else if (contentTable.getResourceType().equalsIgnoreCase(FC_Constants.YOUTUBE_LINK))
@@ -263,6 +281,7 @@ public class ContentFileViewHolder extends RecyclerView.ViewHolder {
                 });
 
             } else {
+                Objects.requireNonNull(iv_delete).setVisibility(View.GONE);
                 try {
                     ImageRequest imageRequest = ImageRequestBuilder
                             .newBuilderWithSource(Uri.parse(contentTable.getNodeServerImage()))
