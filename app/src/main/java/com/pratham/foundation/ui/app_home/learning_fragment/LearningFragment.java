@@ -954,7 +954,6 @@ public class LearningFragment extends Fragment implements LearningContract.Learn
             e.printStackTrace();
         }
     }
-
     //    BlurPopupWindow errorDialog;
     CustomLodingDialog errorDialog;
 
