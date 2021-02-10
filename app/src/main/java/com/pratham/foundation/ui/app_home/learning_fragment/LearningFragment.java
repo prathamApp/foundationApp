@@ -853,7 +853,6 @@ public class LearningFragment extends Fragment implements LearningContract.Learn
         } catch (IllegalStateException e) {
             e.printStackTrace();
         }
-
         Log.d("Delete_Clicked", "onClick: G_Activity");
         showDeleteDialog(parentPos, childPos, contentList);
     }
@@ -882,9 +881,7 @@ public class LearningFragment extends Fragment implements LearningContract.Learn
             e.printStackTrace();
         }
         tv_title.setText("Delete\n" + contentTableItem.getNodeTitle());
-
         dialog.show();
-
         dia_btn_no.setOnClickListener(v -> dialog.dismiss());
         dia_btn_yes.setOnClickListener(v -> {
             presenter.deleteContent(parentPos, childPos, contentTableItem);
