@@ -889,7 +889,6 @@ public class LearningFragment extends Fragment implements LearningContract.Learn
         });
     }
 
-
     //    private BlurPopupWindow downloadDialog;
     private CustomLodingDialog downloadDialog;
     private ProgressLayout progressLayout;
