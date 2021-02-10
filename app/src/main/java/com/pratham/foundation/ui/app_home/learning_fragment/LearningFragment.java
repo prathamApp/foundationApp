@@ -1,6 +1,5 @@
 package com.pratham.foundation.ui.app_home.learning_fragment;
 
-import android.animation.Animator;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
@@ -12,9 +11,7 @@ import android.os.Handler;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
-import android.view.ViewAnimationUtils;
 import android.view.Window;
-import android.view.animation.AccelerateDecelerateInterpolator;
 import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
@@ -908,7 +905,7 @@ public class LearningFragment extends Fragment implements LearningContract.Learn
         }
     }
 
-    CustomLodingDialog errorDialog;
+    private CustomLodingDialog errorDialog;
     @UiThread
     public void showDownloadErrorDialog() {
         try {
@@ -932,7 +929,7 @@ public class LearningFragment extends Fragment implements LearningContract.Learn
             contentParentList.clear();
             presenter.getDataForList();
         } else {
-            getActivity().finish();
+            Objects.requireNonNull(getActivity()).finish();
 //            Objects.requireNonNull(getActivity()).onBackPressed();
         }
     }
@@ -968,8 +965,8 @@ public class LearningFragment extends Fragment implements LearningContract.Learn
         adapterParent.notifyItemChanged(parentPos, contentParentList.get(parentPos));
     }
 
-    BlurPopupWindow serverIssueDialog;
-    boolean issueDialogFlg = false;
+    private BlurPopupWindow serverIssueDialog;
+    private boolean issueDialogFlg = false;
     @UiThread
     @Override
     public void serverIssueDialog() {
@@ -991,22 +988,4 @@ public class LearningFragment extends Fragment implements LearningContract.Learn
             serverIssueDialog.show();
         }
     }
-
-    public void reveal(View view, View startView) {
-        // previously invisible view
-        try {
-            int centerX = view.getWidth();
-            int centerY = view.getHeight();
-            int startRadius = 0;
-            int endRadius = (int) Math.hypot(centerX, centerY);
-            Animator anim = ViewAnimationUtils.createCircularReveal(view, (int) startView.getX(), (int) startView.getY(), startRadius, endRadius);
-            anim.setInterpolator(new AccelerateDecelerateInterpolator());
-            anim.setDuration(300);
-            view.setVisibility(View.VISIBLE);
-            anim.start();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
 }
