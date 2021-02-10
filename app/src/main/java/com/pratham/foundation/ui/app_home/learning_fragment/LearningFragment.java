@@ -954,11 +954,26 @@ public class LearningFragment extends Fragment implements LearningContract.Learn
             e.printStackTrace();
         }
     }
-
+    //    BlurPopupWindow errorDialog;
     CustomLodingDialog errorDialog;
+
     @UiThread
     public void showDownloadErrorDialog() {
         try {
+//            errorDialog = new BlurPopupWindow.Builder(context)
+//                    .setContentView(R.layout.dialog_file_error_downloading)
+//                    .setGravity(Gravity.CENTER)
+//                    .setDismissOnTouchBackground(false)
+//                    .setDismissOnClickBack(true)
+//                    .bindClickListener(v -> {
+//                        new Handler().postDelayed(() ->
+//                                errorDialog.dismiss(), 200);
+//                    }, R.id.dialog_error_btn)
+//                    .setScaleRatio(0.2f)
+//                    .setBlurRadius(10)
+//                    .setTintColor(0x30000000)
+//                    .build();
+//            errorDialog.show();
             errorDialog = new CustomLodingDialog(context, R.style.FC_DialogStyle);
             errorDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
             Objects.requireNonNull(errorDialog.getWindow()).setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
@@ -980,6 +995,7 @@ public class LearningFragment extends Fragment implements LearningContract.Learn
             presenter.getDataForList();
         } else {
             getActivity().finish();
+//            Objects.requireNonNull(getActivity()).onBackPressed();
         }
     }
 
@@ -997,12 +1013,15 @@ public class LearningFragment extends Fragment implements LearningContract.Learn
         intent.putExtra("contentTitle", nodeTitle);
         intent.putExtra("parentName", sub_Name);
         intent.putExtra("level", "" + currentLevel);
+//        startActivity(intent, ActivityOptions.makeSceneTransitionAnimation(getActivity()).toBundle());
         startActivity(intent);
     }
 
     @UiThread
     @Override
-    public void showToast(String msg) { Toast.makeText(context, "" + msg, Toast.LENGTH_SHORT).show(); }
+    public void showToast(String msg) {
+        Toast.makeText(context, "" + msg, Toast.LENGTH_SHORT).show();
+    }
 
     @UiThread
     @Override
