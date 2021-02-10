@@ -914,7 +914,6 @@ public class LearningFragment extends Fragment implements LearningContract.Learn
 
     //    BlurPopupWindow errorDialog;
     CustomLodingDialog errorDialog;
-
     @UiThread
     public void showDownloadErrorDialog() {
         try {
