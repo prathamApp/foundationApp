@@ -195,26 +195,6 @@ public class LearningFragment extends Fragment implements LearningContract.Learn
         EventBus.getDefault().register(this);
     }
 
-/*
-    @Override
-    public void onResume() {
-        super.onResume();
-        if (resumeCntr == 0)
-            resumeCntr = 1;
-        else {
-            showLoader();
-            presenter.getDataForList();
-            String currentNodeID = presenter.getcurrentNodeID();
-            try {
-                if (!currentNodeID.equalsIgnoreCase("na"))
-                    presenter.findMaxScore("" + currentNodeID);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
-    }
-*/
-
     @Override
     public void onStop() {
         super.onStop();
@@ -496,22 +476,6 @@ public class LearningFragment extends Fragment implements LearningContract.Learn
         if (FastSave.getInstance().getString(APP_SECTION, "").equalsIgnoreCase(sec_Learning))
             tv_header_progress.setText(percent + "%");
     }
-
-//    @SuppressLint("SetTextI18n")
-//    private void resourceDownloadDialog(Modal_FileDownloading modal_fileDownloading) {
-//        downloadDialog = new CustomLodingDialog(context, R.style.FC_DialogStyle);
-//        downloadDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-//        Objects.requireNonNull(downloadDialog.getWindow()).setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-//        downloadDialog.setContentView(R.layout.dialog_file_downloading);
-//        downloadDialog.setCanceledOnTouchOutside(false);
-//        downloadDialog.show();
-//        progressLayout = downloadDialog.findViewById(R.id.dialog_progressLayout);
-//        dialog_file_name = downloadDialog.findViewById(R.id.dialog_file_name);
-//        SimpleDraweeView iv_file_trans = downloadDialog.findViewById(R.id.iv_file_trans);
-//        Glide.with(this).load(resServerImageName).into(iv_file_trans);
-//        dialog_file_name.setText("" + resName);
-//        progressLayout.setCurProgress(modal_fileDownloading.getProgress());
-//    }
 
     @UiThread
     @Override
@@ -889,7 +853,6 @@ public class LearningFragment extends Fragment implements LearningContract.Learn
         });
     }
 
-    //    private BlurPopupWindow downloadDialog;
     private CustomLodingDialog downloadDialog;
     private ProgressLayout progressLayout;
     private TextView dialog_file_name;
@@ -907,16 +870,6 @@ public class LearningFragment extends Fragment implements LearningContract.Learn
             downloadDialog.setContentView(R.layout.dialog_file_downloading);
             downloadDialog.setCanceledOnTouchOutside(false);
             downloadDialog.show();
-//            downloadDialog = new BlurPopupWindow.Builder(context)
-//                    .setContentView(R.layout.dialog_file_downloading)
-//                    .setGravity(Gravity.CENTER)
-//                    .setDismissOnTouchBackground(false)
-//                    .setDismissOnClickBack(true)
-//                    .setScaleRatio(0.2f)
-//                    .setBlurRadius(10)
-//                    .setTintColor(0x30000000)
-//                    .build();
-
             SimpleDraweeView iv_file_trans = downloadDialog.findViewById(R.id.iv_file_trans);
             dialog_file_name = downloadDialog.findViewById(R.id.dialog_file_name);
             progressLayout = downloadDialog.findViewById(R.id.dialog_progressLayout);
@@ -954,26 +907,11 @@ public class LearningFragment extends Fragment implements LearningContract.Learn
             e.printStackTrace();
         }
     }
-    //    BlurPopupWindow errorDialog;
-    CustomLodingDialog errorDialog;
 
+    CustomLodingDialog errorDialog;
     @UiThread
     public void showDownloadErrorDialog() {
         try {
-//            errorDialog = new BlurPopupWindow.Builder(context)
-//                    .setContentView(R.layout.dialog_file_error_downloading)
-//                    .setGravity(Gravity.CENTER)
-//                    .setDismissOnTouchBackground(false)
-//                    .setDismissOnClickBack(true)
-//                    .bindClickListener(v -> {
-//                        new Handler().postDelayed(() ->
-//                                errorDialog.dismiss(), 200);
-//                    }, R.id.dialog_error_btn)
-//                    .setScaleRatio(0.2f)
-//                    .setBlurRadius(10)
-//                    .setTintColor(0x30000000)
-//                    .build();
-//            errorDialog.show();
             errorDialog = new CustomLodingDialog(context, R.style.FC_DialogStyle);
             errorDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
             Objects.requireNonNull(errorDialog.getWindow()).setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
@@ -1032,7 +970,6 @@ public class LearningFragment extends Fragment implements LearningContract.Learn
 
     BlurPopupWindow serverIssueDialog;
     boolean issueDialogFlg = false;
-
     @UiThread
     @Override
     public void serverIssueDialog() {
