@@ -980,7 +980,6 @@ public class LearningFragment extends Fragment implements LearningContract.Learn
             presenter.getDataForList();
         } else {
             getActivity().finish();
-//            Objects.requireNonNull(getActivity()).onBackPressed();
         }
     }
 
@@ -998,15 +997,12 @@ public class LearningFragment extends Fragment implements LearningContract.Learn
         intent.putExtra("contentTitle", nodeTitle);
         intent.putExtra("parentName", sub_Name);
         intent.putExtra("level", "" + currentLevel);
-//        startActivity(intent, ActivityOptions.makeSceneTransitionAnimation(getActivity()).toBundle());
         startActivity(intent);
     }
 
     @UiThread
     @Override
-    public void showToast(String msg) {
-        Toast.makeText(context, "" + msg, Toast.LENGTH_SHORT).show();
-    }
+    public void showToast(String msg) { Toast.makeText(context, "" + msg, Toast.LENGTH_SHORT).show(); }
 
     @UiThread
     @Override
