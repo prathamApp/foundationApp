@@ -159,7 +159,7 @@ public class BaseActivity extends AppCompatActivity {
     protected void onDestroy() {
         Modal_Log log = new Modal_Log();
         log.setCurrentDateTime(FC_Utility.getCurrentDateTime());
-        log.setErrorType("ERROR");
+        log.setErrorType("");
         log.setExceptionMessage("App_End");
         log.setExceptionStackTrace("");
         log.setMethodName("onDestroy()");

@@ -53,7 +53,7 @@ public class EnrolledCoursesAdapter extends RecyclerView.Adapter {
 
     @Override
     public int getItemViewType(int position) {
-        if (!contentViewList.get(position).isCoachVerified()/* != null*/) {
+        if (contentViewList.get(position).getCoachVerified()==0/*isCoachVerified()*//* != null*/) {
             return 1;
 /*            switch (contentViewList.get(position).getCourse_status()) {
                 case TYPE_ITEM:

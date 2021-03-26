@@ -91,7 +91,7 @@ public class PushDataToServer_New {
     private JSONArray courseEnrollmentData;
     private JSONArray logsData;
     private boolean pushSuccessfull = false, pushImageSuccessfull = false;
-    private int totalImages, imageUploadCnt, scoreLen = 0/*, certiCount = 0*/;
+    private int totalImages, imageUploadCnt, scoreLen = 0, enrollmentCount = 0;
     private String actPhotoPath = "";
     private File[] imageFilesArray;
     private List<Image_Upload> imageUploadList;
@@ -172,6 +172,7 @@ public class PushDataToServer_New {
                 pushSuccessfull = false;
                 //iterate through all new sessions
                 totalImages = AppDatabase.getDatabaseInstance(context).getScoreDao().getUnpushedImageCount();
+                enrollmentCount = courseEnrollList.size();
 //                certiCount = AppDatabase.getDatabaseInstance(context).getAssessmentDao().getUnpushedCertiCount(CERTIFICATE_LBL);
                 imageUploadCnt = 0;
                 imageUploadList = new ArrayList<>();
@@ -269,8 +270,12 @@ public class PushDataToServer_New {
 
             eject_btn.setOnClickListener(v -> {
                 pushDialog.dismiss();
-                Intent intent = new Intent("com.pratham.assessment.async.SyncDataActivity_");
-                context.startActivity(intent);
+                try {
+                    Intent intent = new Intent("com.pratham.assessment.async.SyncDataActivity_");
+                    context.startActivity(intent);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             });
         }
     }
@@ -614,6 +619,7 @@ public class PushDataToServer_New {
 
         if(pushSuccessfull) {
             FastSave.getInstance().saveString(FC_Constants.SYNC_TIME, syncTime);
+            FastSave.getInstance().saveString(FC_Constants.SYNC_COURSE_ENROLLMENT_LENGTH, ""+enrollmentCount);
             FastSave.getInstance().saveString(FC_Constants.SYNC_DATA_LENGTH, pushedScoreLength);
             FastSave.getInstance().saveString(FC_Constants.SYNC_MEDIA_LENGTH, successful_ImageLength);
 //            FastSave.getInstance().saveString(FC_Constants.SYNC_CERTI_LENGTH, "" + certiCount);
@@ -628,7 +634,7 @@ public class PushDataToServer_New {
             push_lottie.playAnimation();
             setMainTextToDialog(context.getResources().getString(R.string.Upload_Complete));
             setSubTextToDialog(context.getResources().getString(R.string.Data_synced) + " " + scoreData.length()
-//                    + "\n" + context.getResources().getString(R.string.Certificate_synced) + " " + certiCount
+                    + "\n" + context.getResources().getString(R.string.Enrollment_synced) + " " + enrollmentCount
                     + "\n" + context.getResources().getString(R.string.Media_synced) + " " + successfulCntr
                     + "\n" + context.getResources().getString(R.string.Media_failed) + " " + failedCntr);
         }
@@ -789,6 +795,8 @@ public class PushDataToServer_New {
             metaDataObj.put("DeviceManufacturer", AppDatabase.getDatabaseInstance(context).getStatusDao().getValue("DeviceManufacturer"));
             metaDataObj.put("DeviceModel", AppDatabase.getDatabaseInstance(context).getStatusDao().getValue("DeviceModel"));
             metaDataObj.put("ScreenResolution", AppDatabase.getDatabaseInstance(context).getStatusDao().getValue("ScreenResolution"));
+            metaDataObj.put("DeviceDataSyncTime", FC_Utility.getCurrentDateTime());
+//            metaDataObj.put("InternetSpeed", FC_Utility.getInternetSpeed(context));
 
             sessionObj.put("scoreData", scoreData);
             if (!showUi)

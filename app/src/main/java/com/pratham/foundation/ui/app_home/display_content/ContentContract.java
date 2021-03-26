@@ -55,6 +55,8 @@ public interface ContentContract {
         void setView(ContentContract.ContentView contentView);
 
         void getInternetTime();
+
+        void addScoreToDB(String resId);
     }
 
 }

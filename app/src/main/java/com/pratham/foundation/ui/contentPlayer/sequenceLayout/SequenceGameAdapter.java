@@ -27,7 +27,6 @@ import java.io.File;
 import java.util.List;
 
 import static com.pratham.foundation.ApplicationClass.App_Thumbs_Path;
-import static com.pratham.foundation.utility.FC_Utility.getRandomCardColor;
 
 public class SequenceGameAdapter extends RecyclerView.Adapter<SequenceGameAdapter.MyViewHolder> {
     private Context context;
@@ -50,7 +49,7 @@ public class SequenceGameAdapter extends RecyclerView.Adapter<SequenceGameAdapte
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder myViewHolder, int i) {
         ContentTable contentTable = gamesList.get(i);
-        myViewHolder.content_card_view.setBackground(context.getResources().getDrawable(getRandomCardColor()));
+//        myViewHolder.content_card_view.setBackground(context.getResources().getDrawable(getRandomCardColor()));
         myViewHolder.title.setText(contentTable.getNodeTitle());
         myViewHolder.ib_action_btn.setVisibility(View.GONE);
 

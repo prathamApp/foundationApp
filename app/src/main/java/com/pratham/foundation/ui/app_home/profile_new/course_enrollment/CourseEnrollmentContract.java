@@ -30,6 +30,8 @@ public interface CourseEnrollmentContract {
         void notifyAdapter();
 
         void showNoData();
+
+        void courseError();
     }
 
     interface CourseEnrollmentPresenter {
@@ -39,7 +41,7 @@ public interface CourseEnrollmentContract {
 
         void loadLanguages(String selectedBoardId);
 
-        void loadSubjects(String selectedLangId);
+        void loadSubjects(String selectedLangId, String selectedLangName);
 
         void loadTabs(String selectedSubjectId);
 

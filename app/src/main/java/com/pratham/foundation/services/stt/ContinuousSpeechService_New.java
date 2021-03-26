@@ -70,9 +70,9 @@ public class ContinuousSpeechService_New implements RecognitionListener, STT_Res
     }
 
     public String getLangLocal(){
-        String setLocal="hi";
+        String setLocal = HINDI_LOCAL;
         if (FastSave.getInstance().getString(FC_Constants.CURRENT_FOLDER_NAME, "").equalsIgnoreCase(ENGLISH))
-            setLocal = "en";
+            setLocal = ENGLISH_LOCAL;
         else {
             String appLang = FastSave.getInstance().getString(FC_Constants.CURRENT_SUBJECT, "");
             switch (appLang) {
@@ -118,6 +118,7 @@ public class ContinuousSpeechService_New implements RecognitionListener, STT_Res
 
             }
         }
+        Log.d(LOG_TAG, "getLangLocal :  "+ setLocal);
         return setLocal;
     }
 

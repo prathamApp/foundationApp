@@ -121,6 +121,7 @@
     <string name="Sync_Time">চিঙ্কৰ সময়</string>
     <string name="Data_synced">চিঙ্ক কৰা তথ্য</string>
     <string name="Certificate_synced">চিঙ্ক কৰি থোৱা প্ৰমাণপত্ৰ/চাৰ্টিফিকেট</string>
+    <string name="Enrollment_synced">পাঠ্যক্ৰমৰ তালিকাভুক্তি কৰক :</string>
     <string name="Media_synced">চিঙ্ক কৰি থোৱা মিডিয়া</string>
     <string name="Media_failed">মিডিয়া বিফল হল</string>
     <string name="data_pushed_successfully">তথ্য সফলতাৰে প্ৰেৰণ /পুছ কৰা হৈছে।</string>

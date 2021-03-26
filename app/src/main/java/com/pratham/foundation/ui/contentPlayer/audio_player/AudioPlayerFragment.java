@@ -117,9 +117,9 @@ public class AudioPlayerFragment extends Fragment implements OnGameClose {
             oneTimeOnly = 0;
 
             if (onSdCard) {
-                readingContentPath = ApplicationClass.contentSDPath + gameFolderPath + "/" + contentPath + "/";
+                readingContentPath = ApplicationClass.contentSDPath + gameFolderPath + "/" + contentPath;
             } else {
-                readingContentPath = ApplicationClass.foundationPath + gameFolderPath + "/" + contentPath + "/";
+                readingContentPath = ApplicationClass.foundationPath + gameFolderPath + "/" + contentPath;
             }
             if(!contentPath.equalsIgnoreCase(" ") || !contentPath.equalsIgnoreCase("") || contentPath!=null) {
                 try {

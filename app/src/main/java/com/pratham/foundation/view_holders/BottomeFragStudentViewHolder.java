@@ -128,9 +128,7 @@ public class BottomeFragStudentViewHolder extends RecyclerView.ViewHolder {
         if(file.exists())
             Objects.requireNonNull(avatar).setImageURI(Uri.fromFile(file));
 */
-
             Objects.requireNonNull(rl_card).setOnClickListener(v -> studentClickListener.onStudentClick(fragmentModalsList, pos));
-
             setSlideAnimations(Objects.requireNonNull(rl_child_attendance));
         } catch (Exception e) {
             e.printStackTrace();

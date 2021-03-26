@@ -42,6 +42,9 @@
         </receiver>
 
         <activity
+            android:name=".ui.contentPlayer.webviewpdf.PDFViewActivity_"
+            android:screenOrientation="sensor" />
+        <activity
             android:name=".ui.contentPlayer.pictionary.PictionaryResult"
             android:screenOrientation="portrait" />
         <activity

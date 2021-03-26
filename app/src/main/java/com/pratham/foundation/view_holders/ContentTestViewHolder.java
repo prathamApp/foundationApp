@@ -150,7 +150,11 @@ public class ContentTestViewHolder extends RecyclerView.ViewHolder {
         try {
             Objects.requireNonNull(card_main).setBackground(ApplicationClass.getInstance().getResources().getDrawable(R.drawable.card_test_bg));
             Objects.requireNonNull(tvTitle).setText(contentTable.getNodeTitle());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
+        try {
             File file;
             if (contentTable.getIsDownloaded().equalsIgnoreCase("1") ||
                     contentTable.getIsDownloaded().equalsIgnoreCase("true")) {

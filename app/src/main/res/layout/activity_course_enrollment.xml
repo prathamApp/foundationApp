@@ -68,7 +68,7 @@
             android:paddingEnd="@dimen/_25sdp"
             android:paddingTop="@dimen/_5sdp"
             android:paddingBottom="@dimen/_5sdp"
-            android:text="Add Course"
+            android:text="@string/add_course"
             android:background="@drawable/button_green"
             android:textColor="@color/white"/>
 
@@ -207,7 +207,7 @@
             android:layout_alignParentBottom="true"
             android:layout_centerHorizontal="true"
             android:background="@drawable/button_green"
-            android:text="select date"
+            android:text="@string/select_date"
             android:textColor="@color/white"
             tools:ignore="HardcodedText" />
 

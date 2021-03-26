@@ -58,6 +58,7 @@ import com.pratham.foundation.ui.contentPlayer.reading_story_activity.ReadingSto
 import com.pratham.foundation.ui.contentPlayer.video_player.ActivityVideoPlayer_;
 import com.pratham.foundation.ui.contentPlayer.vocabulary_qa.ReadingVocabularyActivity_;
 import com.pratham.foundation.ui.contentPlayer.web_view.WebViewActivity_;
+import com.pratham.foundation.ui.contentPlayer.webviewpdf.PDFViewActivity_;
 import com.pratham.foundation.utility.FC_Constants;
 import com.pratham.foundation.utility.FC_Utility;
 
@@ -114,7 +115,6 @@ public class LearningFragment extends Fragment implements LearningContract.Learn
     @AfterViews
     public void initialize() {
         Runtime rs = Runtime.getRuntime();
-        rs.freeMemory();
         rs.gc();
         rs.freeMemory();
         rootList = new ArrayList<>();
@@ -289,7 +289,33 @@ public class LearningFragment extends Fragment implements LearningContract.Learn
     }
 
     private void fragmentSelected() {
-        Log.d("crashDetection", "fragmentSelected : ");
+/*
+        ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo Info = cm.getActiveNetworkInfo();
+        if (Info == null || !Info.isConnectedOrConnecting()) {
+            Log.i("TAG", "No connection");
+        } else {
+            int netType = Info.getType();
+            int netSubtype = Info.getSubtype();
+
+            if (netType == ConnectivityManager.TYPE_WIFI) {
+                Log.i("TAG", "Wifi connection");
+                WifiManager wifiManager = (WifiManager) context.getSystemService(Context.WIFI_SERVICE);
+                List<ScanResult> scanResult = wifiManager.getScanResults();
+                for (int i = 0; i < scanResult.size(); i++) {
+                    Log.d("scanResult", "Speed of wifi"+scanResult.get(i).level);//The db level of signal
+                }
+
+
+                // Need to get wifi strength
+            } else if (netType == ConnectivityManager.TYPE_MOBILE) {
+                Log.i("TAG", "GPRS/3G connection");
+                // Need to get differentiate between 3G/GPRS
+            }
+        }
+*/
+//        Log.d("speed", "fragmentSelected : "+getInternetSpeed(context));
+//        Log.d("speed", "fragmentSelected2 : "+getInternetSpeed2(context));
         showLoader();
 //        presenter.getBottomNavId(currentLevel, "" + sec_Learning);
 //        presenter.getDataForList();
@@ -345,7 +371,7 @@ public class LearningFragment extends Fragment implements LearningContract.Learn
     public void onLevelChanged() {
         try {
             contentParentList.clear();
-            presenter.removeLastNodeId();
+            presenter.removeLastNodeId2();
             int i = 0;
             boolean found = false;
             for (i = 0; i < rootLevelList.size(); i++)
@@ -524,11 +550,9 @@ public class LearningFragment extends Fragment implements LearningContract.Learn
                 bundle.putString("subjectLanguage", "" + itemContent.getContentLanguage());
                 bundle.putString("examId", "" + itemContent.getNodeKeywords());
                 bundle.putString("subjectLevel", "" + currentLevel);
-//            Intent launchIntent = new Intent("com.doedelhi.pankhpractice.ui.choose_assessment.ChooseAssessmentActivity_");
                 Intent launchIntent = new Intent("com.pratham.assessment.ui.choose_assessment.science.ScienceAssessmentActivity_");
-                //Intent launchIntent = Objects.requireNonNull(getActivity()).getPackageManager()
-                //        .getLaunchIntentForPackage("com.doedelhi.pankhpractice");
                 Objects.requireNonNull(launchIntent).putExtras(bundle);
+                presenter.addScoreToDB(itemContent.getNodeKeywords());
                 startActivityForResult(launchIntent, FC_Constants.APP_INTENT_REQUEST_CODE);
                 // null pointer check in case package name was not found
             } catch (Exception e) {
@@ -546,7 +570,6 @@ public class LearningFragment extends Fragment implements LearningContract.Learn
     }
 
     BlurPopupWindow fcDialog;
-
     @SuppressLint("SetTextI18n")
     @UiThread
     public void downloadAssessmentAppDialog() {
@@ -752,11 +775,25 @@ public class LearningFragment extends Fragment implements LearningContract.Learn
                 intent.putExtra("contentType", contentList.getResourceType());
 //                startActivity(intent, ActivityOptions.makeSceneTransitionAnimation(ContentDisplay.this).toBundle());
                 startActivity(intent);
-            } else if (contentList.getResourceType().equalsIgnoreCase(FC_Constants.PDF) || contentList.getResourceType().equalsIgnoreCase("PDF")) {
+            } else if (contentList.getResourceType().equalsIgnoreCase(FC_Constants.PDF)) {
                 String sdStatus = "F";
                 if (contentList.isOnSDCard())
                     sdStatus = "T";
                 Intent intent1 = new Intent(context, Fragment_PdfViewer_.class);
+//                Intent intent1 = new Intent(context, PDFViewActivity_.class);
+                intent1.putExtra("contentPath", contentList.getResourcePath());
+                intent1.putExtra("StudentID", FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""));
+                intent1.putExtra("resId", contentList.getResourceId());
+                intent1.putExtra("contentName", contentList.getNodeTitle());
+                intent1.putExtra("onSdCard", contentList.isOnSDCard());
+                context.startActivity(intent1);
+            } else if (contentList.getResourceType().equalsIgnoreCase("PDF_ZOOM")
+                    || contentList.getResourceType().equalsIgnoreCase("PDF_new")) {
+                String sdStatus = "F";
+                if (contentList.isOnSDCard())
+                    sdStatus = "T";
+//                Intent intent1 = new Intent(context, Fragment_PdfViewer_.class);
+                Intent intent1 = new Intent(context, PDFViewActivity_.class);
                 intent1.putExtra("contentPath", contentList.getResourcePath());
                 intent1.putExtra("StudentID", FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""));
                 intent1.putExtra("resId", contentList.getResourceId());
@@ -825,9 +862,9 @@ public class LearningFragment extends Fragment implements LearningContract.Learn
         Objects.requireNonNull(dialog.getWindow()).setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         dialog.setContentView(R.layout.lottie_delete_dialog);
         TextView tv_title = dialog.findViewById(R.id.dia_title);
-        TextView dia_btn_yes = dialog.findViewById(R.id.dia_btn_yes);
-        Button dia_btn_no = dialog.findViewById(R.id.dia_btn_no);
-        SimpleDraweeView iv_file_trans = dialog.findViewById(R.id.dl_lottie_view);
+        Button dia_btn_yes = dialog.findViewById(R.id.dia_btn_green);
+        Button dia_btn_no = dialog.findViewById(R.id.dia_btn_red);
+        SimpleDraweeView iv_file_trans = dialog.findViewById(R.id.iv_file_trans);
         try {
             File file;
             if (contentTableItem.isOnSDCard())
@@ -841,13 +878,13 @@ public class LearningFragment extends Fragment implements LearningContract.Learn
         } catch (Exception e) {
             e.printStackTrace();
         }
-        tv_title.setText("Delete\n" + contentTableItem.getNodeTitle());
-        dialog.show();
+        tv_title.setText("Delete\n" + contentTableItem.getNodeTitle()+" ?");
         dia_btn_no.setOnClickListener(v -> dialog.dismiss());
         dia_btn_yes.setOnClickListener(v -> {
             presenter.deleteContent(parentPos, childPos, contentTableItem);
             dialog.dismiss();
         });
+        dialog.show();
     }
 
     private CustomLodingDialog downloadDialog;

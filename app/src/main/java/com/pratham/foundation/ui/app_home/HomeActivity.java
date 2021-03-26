@@ -25,6 +25,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.tabs.TabLayout;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import com.pratham.foundation.ApplicationClass;
 import com.pratham.foundation.BaseActivity;
 import com.pratham.foundation.R;
 import com.pratham.foundation.async.API_Content;
@@ -87,6 +88,7 @@ import static com.pratham.foundation.utility.FC_Constants.currentLevel;
 import static com.pratham.foundation.utility.FC_Constants.sec_Learning;
 import static com.pratham.foundation.utility.FC_Constants.sec_Profile;
 import static com.pratham.foundation.utility.FC_Utility.get12HrTime;
+import static com.pratham.foundation.utility.FC_Utility.getRandomCardColor;
 
 //import com.pratham.foundation.ui.app_home.test_fragment.supervisor.SupervisedAssessmentActivity;
 
@@ -145,6 +147,7 @@ public class HomeActivity extends BaseActivity implements LevelChanged, API_Cont
     TextView txt_push_error;
     RelativeLayout rl_btn;
     Button ok_btn, eject_btn;
+    public static Drawable drawableBg;
 
     @Bean(ContentDownloadingTask.class)
     public static ContentDownloadingTask contentDownloadingTask;
@@ -154,6 +157,7 @@ public class HomeActivity extends BaseActivity implements LevelChanged, API_Cont
         sub_nodeId = getIntent().getStringExtra("nodeId");
         sub_Name = getIntent().getStringExtra("nodeTitle");
         this.overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
+        drawableBg = ApplicationClass.getInstance().getResources().getDrawable(getRandomCardColor());
         showLoader();
         getInternetTime();
         new Handler().postDelayed(this::startActivityAndTabSetup, 200);

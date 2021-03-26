@@ -14,7 +14,7 @@
         android:layout_height="match_parent"
         android:layout_margin="@dimen/_5sdp"
         app:lottie_autoPlay="true"
-        app:lottie_fileName="hand_wash.json"
+        app:lottie_fileName="stopwatch.json"
         app:lottie_loop="true" />
 
 </com.google.android.material.card.MaterialCardView>

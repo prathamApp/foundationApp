@@ -11,7 +11,7 @@ import com.google.gson.annotations.SerializedName;
 import com.pratham.foundation.database.domain.ContentTable;
 
 @Entity(tableName = "CourseEnrolled")
-public class Model_CourseEnrollment implements Parcelable, Comparable {
+public class Model_CourseEnrollment implements Parcelable/*, Comparable */{
     @PrimaryKey(autoGenerate = true)
     @SerializedName("c_autoID")
     private int c_autoID;
@@ -24,7 +24,7 @@ public class Model_CourseEnrollment implements Parcelable, Comparable {
     @SerializedName("planToDate")
     private String planToDate;
     @SerializedName("coachVerified")
-    private boolean coachVerified;
+    private int coachVerified;
     @SerializedName("coachVerificationDate")
     private String coachVerificationDate;
     @SerializedName("courseExperience")
@@ -65,7 +65,7 @@ public class Model_CourseEnrollment implements Parcelable, Comparable {
         groupId = in.readString();
         planFromDate = in.readString();
         planToDate = in.readString();
-        coachVerified = in.readByte() != 0;
+        coachVerified = in.readInt();
         coachVerificationDate = in.readString();
         courseExperience = in.readString();
         sentFlag = in.readInt();
@@ -125,11 +125,11 @@ public class Model_CourseEnrollment implements Parcelable, Comparable {
         this.planToDate = planToDate;
     }
 
-    public boolean isCoachVerified() {
+    public int getCoachVerified() {
         return coachVerified;
     }
 
-    public void setCoachVerified(boolean coachVerified) {
+    public void setCoachVerified(int coachVerified) {
         this.coachVerified = coachVerified;
     }
 
@@ -209,7 +209,7 @@ public class Model_CourseEnrollment implements Parcelable, Comparable {
         dest.writeString(groupId);
         dest.writeString(planFromDate);
         dest.writeString(planToDate);
-        dest.writeByte((byte) (coachVerified ? 1 : 0));
+        dest.writeInt(coachVerified);
         dest.writeString(coachVerificationDate);
         dest.writeString(courseExperience);
         dest.writeInt(sentFlag);
@@ -220,7 +220,7 @@ public class Model_CourseEnrollment implements Parcelable, Comparable {
         dest.writeString(course_status);
     }
 
-    @Override
+/*    @Override
     public int compareTo(Object o) {
         Model_CourseEnrollment compare = (Model_CourseEnrollment) o;
         if (compare.getCourseId() != null) {
@@ -230,5 +230,5 @@ public class Model_CourseEnrollment implements Parcelable, Comparable {
         } else {
             return 0;
         }
-    }
+    }*/
 }

@@ -121,6 +121,7 @@
     <string name="Sync_Time">સિંકનો સમય :</string>
     <string name="Data_synced">સિંક કરેલ ડેટા:</string>
     <string name="Certificate_synced">સિંક કરેલ પ્રમાણપત્ર :</string>
+    <string name="Enrollment_synced">નોંધાયેલ અભ્યાસક્રમો સિંક થઇ ગયાં :</string>
     <string name="Media_synced">સિંક કરેલ મીડિયા :</string>
     <string name="Media_failed">મીડિયા નિષ્ફળ</string>
     <string name="data_pushed_successfully">ડેટા સફળતાપૂર્વક મોકલાઈ ગયાં</string>

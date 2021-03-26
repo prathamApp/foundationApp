@@ -106,7 +106,8 @@ public class ContentPresenter implements ContentContract.ContentPresenter, API_C
     public void findMaxScore(String nodeId) {
         try {
             List<ContentTable> childList = AppDatabase.getDatabaseInstance(context).getContentTableDao().getChildsOfParent(nodeId,
-                    "%" + FastSave.getInstance().getString(CURRENT_STUDENT_ID, "na") + "%");
+                    "%" + FastSave.getInstance().getString(CURRENT_STUDENT_ID, "na") + "%"
+                    /*"%" +FastSave.getInstance().getString(CURRENT_STUDENT_PROGRAM_ID,"na")+ "%"*/);
             for (int childCnt = 0; childList.size() > childCnt; childCnt++) {
                 if (childList.get(childCnt).getNodeType().equals("Resource")) {
                     double maxScoreTemp = 0.0;
@@ -408,6 +409,29 @@ public class ContentPresenter implements ContentContract.ContentPresenter, API_C
         } catch (Exception e) {
             e.printStackTrace();
             contentView.dismissLoadingDialog();
+        }
+    }
+
+    @Background
+    public void addScoreToDB(String resId) {
+        try {
+            String endTime = FC_Utility.getCurrentDateTime();
+            Score score = new Score();
+            score.setSessionID(FastSave.getInstance().getString(FC_Constants.CURRENT_SESSION, ""));
+            score.setStudentID("" + FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""));
+            score.setDeviceID(FC_Utility.getDeviceID());
+            score.setResourceID(resId);
+            score.setQuestionId(0);
+            score.setScoredMarks(0);
+            score.setTotalMarks(0);
+            score.setStartDateTime(endTime);
+            score.setEndDateTime(endTime);
+            score.setLevel(0);
+            score.setLabel("Assessment Opened");
+            score.setSentFlag(0);
+            AppDatabase.getDatabaseInstance(context).getScoreDao().insert(score);
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 

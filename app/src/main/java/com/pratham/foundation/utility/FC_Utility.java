@@ -30,6 +30,7 @@ import android.graphics.drawable.StateListDrawable;
 import android.location.Address;
 import android.location.Geocoder;
 import android.net.ConnectivityManager;
+import android.net.NetworkCapabilities;
 import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.BatteryManager;
@@ -177,6 +178,109 @@ public class FC_Utility {
                     Objects.requireNonNull(activity.getCurrentFocus()).getWindowToken(), 0);
         } catch (Exception e) {
             e.printStackTrace();
+        }
+    }
+
+    public static String getInternetSpeed(Context context){
+        try {
+            String upSpeed = getInternetUploadSpeed(context);
+            String dwSpeed = getInternetDownloadSpeed(context);
+            return "Download:"+dwSpeed+" Upload:"+upSpeed;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return "na";
+        }
+    }
+
+    public static String getInternetSpeed2(Context context){
+        ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo netInfo = cm.getActiveNetworkInfo();
+        //should check null because in airplane mode it will be null
+        NetworkCapabilities nc = null;
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
+            nc = cm.getNetworkCapabilities(cm.getActiveNetwork());
+        }
+        int dwSpeed = nc.getLinkDownstreamBandwidthKbps();
+        int upSpeed = nc.getLinkUpstreamBandwidthKbps();
+        return "Download:"+dwSpeed+" Upload:"+upSpeed;
+    }
+
+    public static String getInternetUploadSpeed(Context context){
+        ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo netInfo = cm.getActiveNetworkInfo();
+        //should check null because in airplane mode it will be null
+        NetworkCapabilities nc = null;
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
+            nc = cm.getNetworkCapabilities(cm.getActiveNetwork());
+        }
+        try {
+            int upSpeed = nc.getLinkUpstreamBandwidthKbps();
+//        String DownloadSpeed = "Download:"+downSpeed+"kbps Upload:"+upSpeed+"kbps";
+            double m = upSpeed/1024.0;
+            double g = upSpeed/1048576.0;
+            double t = upSpeed/1073741824.0;
+
+            Log.d("speed", "upSpeed : "+upSpeed);
+            Log.d("speed", "m : "+m);
+            Log.d("speed", "g : "+g);
+            Log.d("speed", "t : "+t);
+
+            String hrSize;
+            DecimalFormat dec = new DecimalFormat("0.00");
+
+            if (t > 1) {
+                hrSize = dec.format(t).concat("tb/s");
+            } else if (g > 1) {
+                hrSize = dec.format(g).concat("gb/s");
+            } else if (m > 1) {
+                hrSize = dec.format(m).concat("mb/s");
+            } else {
+                hrSize = dec.format(upSpeed).concat("kb/s");
+            }
+            return hrSize;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return "0kb/s";
+        }
+    }
+
+    public static String getInternetDownloadSpeed(Context context){
+        ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo netInfo = cm.getActiveNetworkInfo();
+        //should check null because in airplane mode it will be null
+        NetworkCapabilities nc = null;
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
+            nc = cm.getNetworkCapabilities(cm.getActiveNetwork());
+        }
+        try {
+            int downSpeed = nc.getLinkDownstreamBandwidthKbps();
+//        String DownloadSpeed = "Download:"+downSpeed+"kbps Upload:"+upSpeed+"kbps";
+            double m = downSpeed/1024.0;
+            double g = downSpeed/1048576.0;
+            double t = downSpeed/1073741824.0;
+
+            Log.d("speed", "upSpeed : "+downSpeed);
+            Log.d("speed", "m : "+m);
+            Log.d("speed", "g : "+g);
+            Log.d("speed", "t : "+t);
+
+
+            String hrSize;
+            DecimalFormat dec = new DecimalFormat("0.00");
+
+            if (t > 1) {
+                hrSize = dec.format(t).concat("tb/s");
+            } else if (g > 1) {
+                hrSize = dec.format(g).concat("gb/s");
+            } else if (m > 1) {
+                hrSize = dec.format(m).concat("mb/s");
+            } else {
+                hrSize = dec.format(downSpeed).concat("kb/s");
+            }
+            return hrSize;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return "0kb/s";
         }
     }
 

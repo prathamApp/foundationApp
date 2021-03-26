@@ -440,16 +440,21 @@ public class ContentReadingFragment extends Fragment implements
     }
 
     private void startAudioReading(int wordCounter) {
-        try {
-            mp = new MediaPlayer();
-            float seekTime = Float.parseFloat(modalPagesList.get(currentPage).getReadList().get(wordCounter).getWordFrom());
-            mp.setDataSource(readingContentPath + storyAudio);
-            mp.prepare();
-            mp.seekTo((int) (seekTime * 1000));
-        } catch (Exception e) {
-            e.printStackTrace();
+        if(new File(readingContentPath + storyAudio).exists()) {
+            Log.d("TAG", "startAudioReading: EXISTS : "+readingContentPath + storyAudio);
+            try {
+                mp = new MediaPlayer();
+                float seekTime = Float.parseFloat(modalPagesList.get(currentPage).getReadList().get(wordCounter).getWordFrom());
+                mp.setDataSource(readingContentPath + storyAudio);
+                mp.prepare();
+                mp.seekTo((int) (seekTime * 1000));
+                startStoryReading(wordCounter);
+            } catch (Exception e) {
+                btn_Play.setImageResource(R.drawable.ic_play_arrow_black);
+                btn_Stop.performClick();
+                e.printStackTrace();
+            }
         }
-        startStoryReading(wordCounter);
     }
 
     public void startStoryReading(final int index) {

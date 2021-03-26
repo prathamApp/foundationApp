@@ -97,7 +97,7 @@ public abstract class AppDatabase extends RoomDatabase {
         if (appDBInstance == null) {
             appDBInstance = Room.databaseBuilder(ApplicationClass.getInstance(), AppDatabase.class, DB_NAME)
                     .allowMainThreadQueries()
-                    .addMigrations(MIGRATION_2_3)
+                    .addMigrations(MIGRATION_1_2, MIGRATION_2_3)
                     .build();
             return appDBInstance;
         } else
@@ -122,7 +122,9 @@ public abstract class AppDatabase extends RoomDatabase {
             database.execSQL("ALTER TABLE 'ContentTable' ADD COLUMN 'studentId' Text");
             database.execSQL("CREATE TABLE IF NOT EXISTS CourseEnrolled ('c_autoID' INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL," +
                     "'courseId' TEXT ,'groupId' TEXT ,'planFromDate' TEXT ," +
-                    "'planToDate' TEXT ,'coachVerified' BOOLEAN DEFAULT 0,'coachVerificationDate' TEXT ," +
+                    "'planToDate' TEXT ," +
+                    "'coachVerified' INTEGER NOT NULL DEFAULT 0," +
+                    "'coachVerificationDate' TEXT ," +
                     "'courseCompleted' INTEGER NOT NULL DEFAULT 0," +
                     "'coachImage' TEXT," +
                     "'sentFlag' INTEGER NOT NULL DEFAULT 0," +
@@ -130,4 +132,15 @@ public abstract class AppDatabase extends RoomDatabase {
                     "'courseExperience' TEXT )");
         }
     };
+
+/*
+    static final Migration MIGRATION_3_4 = new Migration(3, 4) {
+        @Override
+        public void migrate(SupportSQLiteDatabase database) {
+            Log.d("AppDatabase", "MIGRATION_3_4:                                  3");
+            database.execSQL("ALTER TABLE 'ContentTable' ADD COLUMN 'programid' Text");
+            database.execSQL("ALTER TABLE 'Student' ADD COLUMN 'programId' Text");
+        }
+    };
+*/
 }

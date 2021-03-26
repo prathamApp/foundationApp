@@ -81,7 +81,7 @@ public class CourseEnrollmentActivity extends BaseActivity implements
 
     private List<ContentTable> boardList, langList, subjList, tabList, levelList;
     int levelPos = 0;
-    String selectedBoardId, selectedLangId, selectedSubjectId, selectedTabId, selectedLevelId;
+    String selectedBoardId, selectedLangId, selectedSubjectId, selectedTabId, selectedLevelId,selectedLangName;
     ContentTable selectedCourse;
     List<Model_CourseEnrollment> courseEnrolled;
 
@@ -201,6 +201,7 @@ public class CourseEnrollmentActivity extends BaseActivity implements
             enrolledCoursesAdapter.notifyDataSetChanged();
     }
 
+    @UiThread
     @Override
     public void setBoardList(List<ContentTable> boardList) {
         try {
@@ -234,6 +235,7 @@ public class CourseEnrollmentActivity extends BaseActivity implements
         }
     }
 
+    @UiThread
     @Override
     public void setLangList(List<ContentTable> langList) {
         try {
@@ -253,8 +255,9 @@ public class CourseEnrollmentActivity extends BaseActivity implements
 //                    if (position <= 0) {
 //                        presenter.clearLists();
 //                    } else {
+                    selectedLangName = langList.get(position).getNodeTitle();
                     selectedLangId = langList.get(position).getNodeId();
-                    presenter.loadSubjects(selectedLangId);
+                    presenter.loadSubjects(selectedLangId,selectedLangName);
 //                    }
                 }
 
@@ -267,6 +270,7 @@ public class CourseEnrollmentActivity extends BaseActivity implements
         }
     }
 
+    @UiThread
     @Override
     public void setSubjList(List<ContentTable> subjList) {
         try {
@@ -300,6 +304,7 @@ public class CourseEnrollmentActivity extends BaseActivity implements
         }
     }
 
+    @UiThread
     @Override
     public void setTabList(List<ContentTable> tabList) {
         try {
@@ -334,6 +339,7 @@ public class CourseEnrollmentActivity extends BaseActivity implements
     }
 
     public static boolean courseSelected = false;
+    @UiThread
     @Override
     public void setLevelList(List<ContentTable> levelList) {
         try {
@@ -362,6 +368,12 @@ public class CourseEnrollmentActivity extends BaseActivity implements
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    @UiThread
+    @Override
+    public void courseError() {
+        Toast.makeText(this, "Error Enrolling Course ", Toast.LENGTH_SHORT).show();
     }
 
     private Calendar startDate;
@@ -428,6 +440,7 @@ public class CourseEnrollmentActivity extends BaseActivity implements
         Toast.makeText(this, "Course Already Selected", Toast.LENGTH_SHORT).show();
     }
 
+    @UiThread
     @Click(R.id.iv_close_calendar)
     public void closeCalender() {
         spinner_rl.setVisibility(View.VISIBLE);

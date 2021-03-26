@@ -62,7 +62,7 @@ import static com.pratham.foundation.utility.FC_Constants.SPLASH_OPEN;
 
 
 @EActivity(R.layout.activity_splash)
-public class SplashActivity extends SplashSupportActivity implements SplashContract.SplashView,
+public class  SplashActivity extends SplashSupportActivity implements SplashContract.SplashView,
         PermissionResult, Interface_copying {
 
     @ViewById(R.id.splash_root)

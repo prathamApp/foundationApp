@@ -35,6 +35,8 @@ public class FC_Constants {
     public static final String GAME = "game";
     public static final String VIDEO = "video";
     public static final String PDF = "pdf";
+    public static final String PDF_ZOOM = "PDF_ZOOM";
+    public static final String PDF_NEW = "PDF_new";
     public static final String VIEW_TYPE = "VIEW_TYPE";
     public static final String DOWNLOAD = "DOWNLOAD";
     public static final String SETTINGS = "SETTINGS";
@@ -137,6 +139,7 @@ public class FC_Constants {
     public static final String TEST_JSON_COPY = "test_json_copy";
     public static final String TEST_JSON_COPY2 = "test_json_copy2";
     public static final String SPLASH_OPEN = "SPLASH_OPEN";
+    public static final String SYNC_COURSE_ENROLLMENT_LENGTH = "sync_course_enrollment_length";
     public static boolean SD_DB = false;
     public static String RECEIVED_FOLDER_PATH = "";
     public static boolean TAB_LAYOUT = false;
@@ -184,6 +187,7 @@ public class FC_Constants {
     public static final String STT_REGEX = "[\"\\-+.'^?!@#%-_;&*,:|।<>()]";
     public static final String STT_REGEX_2 = "[\\-+.\"'^?!@#%-_;&*,:<>()]";
 
+//    public static final String CURRENT_STUDENT_PROGRAM_ID = "current_student_program_id";
     public static final String CURRENT_API_STUDENT_ID = "current_api_student_id";
     public static final String CURRENT_STUDENT_ID = "current_student_id";
     public static final String CURRENT_STUDENT_NAME = "current_student_name";
@@ -194,6 +198,7 @@ public class FC_Constants {
     public static final String CURRENT_SUPERVISOR_ID = "current_supervisor_id";
     public static final String ASSESSMENT_SESSION = "assessment_session";
     public static final String APP_SECTION = "APP_SECTION";
+    public static final String APP_VERSION = "app_version";
     public static final String CURRENT_FOLDER_NAME = "current_folder_name";
     public static final String CERTI_CODE = "certi_code";
     public static final String ACTIVITY_RESUMED = "activity_resumed";
@@ -224,8 +229,9 @@ public class FC_Constants {
     public static final String[] progressSubArray = {""+ ApplicationClass.getInstance().getResources().getString(R.string.usage),
             ""+ ApplicationClass.getInstance().getResources().getString(R.string.img_ques),
             ""+ ApplicationClass.getInstance().getResources().getString(R.string.chat_l5),
+//            "pdf",
             ""+ ApplicationClass.getInstance().getResources().getString(R.string.enroll_course)};
-    public static final String[] progressImgSubArray = {"tab_usage", "ImageQues", "ChitChat", "enroll_course"};
+    public static final String[] progressImgSubArray = {"tab_usage", "ImageQues", "ChitChat",/*"pdf",*/ "enroll_course"};
     public static final String[] statusSubArray = {""+ ApplicationClass.getInstance().getResources().getString(R.string.sync),
             ""+ ApplicationClass.getInstance().getResources().getString(R.string.sync_status),
             ""+ ApplicationClass.getInstance().getResources().getString(R.string.Set_Date_and_Time),
