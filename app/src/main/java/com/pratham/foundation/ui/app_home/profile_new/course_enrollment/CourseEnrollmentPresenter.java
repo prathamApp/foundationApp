@@ -127,6 +127,7 @@ public class CourseEnrollmentPresenter implements CourseEnrollmentContract.Cours
                     model_courseExperience.setCoach_image("");
                     model_courseExperience.setAssignment_submission_date(FC_Utility.getCurrentDateTime());
                     model_courseExperience.setStatus(FC_Constants.COURSE_NOT_VERIFIED);
+                    model_courseExperience.setSessionId(FastSave.getInstance().getString(FC_Constants.CURRENT_SESSION, ""));
 
                     courseEnrollment.setCourseExperience("" + new Gson().toJson(model_courseExperience));
                     courseEnrollment.setCourseDetail(selectedCourse);

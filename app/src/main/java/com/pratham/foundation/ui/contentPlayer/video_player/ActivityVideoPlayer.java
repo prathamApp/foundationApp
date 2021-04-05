@@ -52,7 +52,7 @@ public class ActivityVideoPlayer extends BaseActivity {
 //    PlayerControlView player_control_view;
 
     Context context;
-    private String contentType, contentPath, contentName, startTime = "no_resource", resId;
+    private String contentType, contentPath, contentName, startTime = "no_resource", resId, endTime;
     private long videoDuration = 0;
 //    private Modal_AajKaSawal videoSawal = null;
     private boolean initialized = false,onSdCard;
@@ -134,7 +134,7 @@ public class ActivityVideoPlayer extends BaseActivity {
             @Override
             public void onEnded() {
                 if (!isVideoEnded) {
-                    addScoreToDB();
+                    endTime = FC_Utility.getCurrentDateTime();
                     isVideoEnded = true;
                 }
             }
@@ -175,7 +175,8 @@ public class ActivityVideoPlayer extends BaseActivity {
 
     @Background
     public void addScoreToDB() {
-        String endTime = FC_Utility.getCurrentDateTime();
+        if(!isVideoEnded)
+            endTime = FC_Utility.getCurrentDateTime();
         float scoredMarksInt = (float) FC_Utility.getTimeDifference(startTime, endTime);
         Score modalScore = new Score();
         modalScore.setSessionID(FastSave.getInstance().getString(FC_Constants.CURRENT_SESSION, ""));

@@ -23,6 +23,8 @@ public class Model_CourseExperience {
     private String assignment_submission_date;
     @SerializedName("status")
     private String status;
+    @SerializedName("sessionId")
+    private String sessionId;
 
     public String getStatus() {
         return status;
@@ -94,5 +96,13 @@ public class Model_CourseExperience {
 
     public void setCoach_image(String coach_image) {
         this.coach_image = coach_image;
+    }
+
+    public String getSessionId() {
+        return sessionId;
+    }
+
+    public void setSessionId(String sessionId) {
+        this.sessionId = sessionId;
     }
 }
