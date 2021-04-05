@@ -375,7 +375,6 @@ public class PushDataToServer_New {
                             if (pushResponse.isSuccess()/*equalsIgnoreCase("success")*/) {
                                 Log.d("PushData", "DATA PUSH SUCCESS");
                                 pushSuccessfull = true;
-                                new File(filePathStr + ".zip").delete();
                                 setDataPushSuccessfull();
                             } else {
                                 Log.d("PushData", "Failed DATA PUSH");
