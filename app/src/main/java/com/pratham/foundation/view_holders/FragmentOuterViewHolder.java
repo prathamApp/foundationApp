@@ -93,18 +93,6 @@ public class FragmentOuterViewHolder extends RecyclerView.ViewHolder {
             sublistList = getList(Objects.requireNonNull(contentTable.getNodelist()));
             Objects.requireNonNull(itemTitle).setText(sectionName);
             itemTitle.setSelected(true);
-/*        if (sec.equalsIgnoreCase(sec_Fun)) {
-            try {
-                FunInnerDataAdapter learningInnerDataAdapter = new FunInnerDataAdapter(
-                        ApplicationClass.getInstance(), sublistList, fragmentItemClicked, position, sectionName);
-                Objects.requireNonNull(recycler_view_list).setLayoutManager(new LinearLayoutManager(
-                        ApplicationClass.getInstance(), LinearLayoutManager.HORIZONTAL, false));
-                recycler_view_list.setAdapter(learningInnerDataAdapter);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        } else*/
-//        if (sec.equalsIgnoreCase(sec_Learning)) {
             try {
                 LearningInnerDataAdapter learningInnerDataAdapter = new LearningInnerDataAdapter(
                         ApplicationClass.getInstance(), sublistList, fragmentItemClicked, position, sectionName);
@@ -114,17 +102,6 @@ public class FragmentOuterViewHolder extends RecyclerView.ViewHolder {
             } catch (Exception e) {
                 e.printStackTrace();
             }
-//        } else if (sec.equalsIgnoreCase(sec_Practice)) {
-//            try {
-//                PracticeInnerDataAdapter learningInnerDataAdapter = new PracticeInnerDataAdapter(
-//                        ApplicationClass.getInstance(), sublistList, fragmentItemClicked, position, sectionName);
-//                Objects.requireNonNull(recycler_view_list).setLayoutManager(new LinearLayoutManager(
-//                        ApplicationClass.getInstance(), LinearLayoutManager.HORIZONTAL, false));
-//                recycler_view_list.setAdapter(learningInnerDataAdapter);
-//            } catch (Exception e) {
-//                e.printStackTrace();
-//            }
-//        }
             childCounter += 1;
         } catch (Exception e) {
             e.printStackTrace();

@@ -284,6 +284,7 @@ public class  SplashActivity extends SplashSupportActivity implements SplashCont
                     progressDialog.show();
             }
         } catch (Exception e) {
+            dismissProgressDialog();
             e.printStackTrace();
         }
     }

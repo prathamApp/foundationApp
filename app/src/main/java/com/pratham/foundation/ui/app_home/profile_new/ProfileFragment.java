@@ -16,14 +16,12 @@ import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.ImageButton;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 
 import androidx.annotation.UiThread;
 import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.RecyclerView;
 
 import com.airbnb.lottie.LottieAnimationView;
 import com.facebook.drawee.view.SimpleDraweeView;
@@ -32,6 +30,7 @@ import com.google.gson.reflect.TypeToken;
 import com.pratham.foundation.ApplicationClass;
 import com.pratham.foundation.R;
 import com.pratham.foundation.async.API_Content;
+import com.pratham.foundation.async.PushDataBaseZipToServer;
 import com.pratham.foundation.async.PushDataToServer_New;
 import com.pratham.foundation.customView.BlurPopupDialog.BlurPopupWindow;
 import com.pratham.foundation.customView.display_image_dialog.CustomLodingDialog;
@@ -39,9 +38,9 @@ import com.pratham.foundation.customView.showcaseviewlib.GuideView;
 import com.pratham.foundation.customView.showcaseviewlib.config.DismissType;
 import com.pratham.foundation.database.AppDatabase;
 import com.pratham.foundation.database.BackupDatabase;
+import com.pratham.foundation.database.domain.Modal_Log;
 import com.pratham.foundation.interfaces.API_Content_Result;
 import com.pratham.foundation.modalclasses.EventMessage;
-import com.pratham.foundation.modalclasses.ModalTopCertificates;
 import com.pratham.foundation.modalclasses.Modal_InternetTime;
 import com.pratham.foundation.services.shared_preferences.FastSave;
 import com.pratham.foundation.ui.admin_panel.MenuActivity_;
@@ -69,9 +68,6 @@ import org.greenrobot.eventbus.ThreadMode;
 import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.Type;
-import java.text.DecimalFormat;
-import java.util.Collections;
-import java.util.List;
 import java.util.Objects;
 
 import static com.pratham.foundation.ApplicationClass.App_Thumbs_Path;
@@ -79,6 +75,7 @@ import static com.pratham.foundation.ApplicationClass.ButtonClickSound;
 import static com.pratham.foundation.ui.app_home.HomeActivity.header_rl;
 import static com.pratham.foundation.utility.FC_Constants.APP_SECTION;
 import static com.pratham.foundation.utility.FC_Constants.APP_VERSION;
+import static com.pratham.foundation.utility.FC_Constants.BUILD_DATE;
 import static com.pratham.foundation.utility.FC_Constants.GROUP_MODE;
 import static com.pratham.foundation.utility.FC_Constants.INDIVIDUAL_MODE;
 import static com.pratham.foundation.utility.FC_Constants.LOGIN_MODE;
@@ -99,8 +96,6 @@ public class ProfileFragment extends Fragment implements ProfileContract.Profile
     @Bean(ProfilePresenter.class)
     ProfileContract.ProfilePresenter presenter;
 
-    @ViewById(R.id.my_recycler_view)
-    RecyclerView my_recycler_view;
     @ViewById(R.id.tv_studentName)
     TextView tv_studentName;
     @ViewById(R.id.tv_usage)
@@ -127,8 +122,6 @@ public class ProfileFragment extends Fragment implements ProfileContract.Profile
     RelativeLayout rl_certi2;
     @ViewById(R.id.rl_certi3)
     RelativeLayout rl_certi3;
-    @ViewById(R.id.ib_langChange)
-    ImageButton ib_langChange;
     @ViewById(R.id.card_img)
     SimpleDraweeView card_img;
 
@@ -147,7 +140,7 @@ public class ProfileFragment extends Fragment implements ProfileContract.Profile
             if (!FastSave.getInstance().getBoolean(PROFILE_FRAGMENT_SHOWCASE, false))
                 new Handler().postDelayed(this::setShowcaseView, 1200);
         }
-        version_tv.setText("v"+FastSave.getInstance().getString(APP_VERSION, ""));
+        version_tv.setText("v" + FastSave.getInstance().getString(APP_VERSION, ""));
     }
 
     @UiThread
@@ -204,8 +197,7 @@ public class ProfileFragment extends Fragment implements ProfileContract.Profile
     private void fragmentSelected() {
         tv_studentName.setText("" + FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_NAME, "Student"));
         setImage();
-        ib_langChange.setVisibility(View.GONE);
-        presenter.getCertificateCount();
+        //        presenter.getCertificateCount();
         presenter.getActiveData();
     }
 
@@ -287,6 +279,7 @@ public class ProfileFragment extends Fragment implements ProfileContract.Profile
         }
     }
 
+/*
     @UiThread
     @Override
     public void setCertificateCount(List<ModalTopCertificates> modalTopCertificatesList) {
@@ -320,6 +313,7 @@ public class ProfileFragment extends Fragment implements ProfileContract.Profile
             e.printStackTrace();
         }
     }
+*/
 
     private void openPDF() {
         Intent mainNew = new Intent(context, PDFViewActivity_.class);
@@ -411,9 +405,48 @@ public class ProfileFragment extends Fragment implements ProfileContract.Profile
     @Bean(PushDataToServer_New.class)
     PushDataToServer_New pushDataToServer;
 
+    @Bean(PushDataBaseZipToServer.class)
+    PushDataBaseZipToServer pushDataBaseZipToServer;
+
     @Click(R.id.rl_sync)
     public void pushData() {
         pushDataToServer.startDataPush(context, true);
+    }
+
+    @UiThread
+    @Click(R.id.rl_db_sync_pack)
+    public void pushDatabaseFile() {
+        if (FC_Utility.isDataConnectionAvailable(context)) {
+            showLoader();
+            try {
+                Modal_Log log = new Modal_Log();
+                log.setCurrentDateTime(FC_Utility.getCurrentDateTime());
+                log.setErrorType(" ");
+                log.setExceptionMessage("DB_ZIP_Push");
+                log.setMethodName("");
+                log.setSessionId("" + FastSave.getInstance().getString(FC_Constants.CURRENT_SESSION, ""));
+                log.setGroupId("");
+                log.setExceptionStackTrace("APK BUILD DATE : " + BUILD_DATE);
+                log.setDeviceId("" + FC_Utility.getDeviceID());
+                log.setCurrentDateTime("" + FC_Utility.getCurrentDateTime());
+                AppDatabase.getDatabaseInstance(context).getLogsDao().insertLog(log);
+                BackupDatabase.backup(context);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+/*
+            File backupsDir = new File(Environment.getExternalStorageDirectory().toString() + "/PrathamBackups/");
+            File[] db_files = backupsDir.listFiles();
+            if(db_files!=null)
+                for(int i=0; i<db_files.length;i++){
+                    if(db_files[i].exists() && db_files[i].isFile() && db_files[i].getName().contains("foundation"))
+                        db_files[i].delete();
+                }
+*/
+            BackupDatabase.backup(context);
+            dismissLoadingDialog();
+            pushDataBaseZipToServer.startDataPush(context, true);
+        }
     }
 
     private void cleanStorage() {
@@ -549,11 +582,6 @@ public class ProfileFragment extends Fragment implements ProfileContract.Profile
 
     private void showCertificates() {
 //        startActivity(new Intent(context, CertificateDisplayActivity_.class));
-    }
-
-    @Click(R.id.ib_langChange)
-    public void langChangeButtonClick() {
-        showLanguageSelectionDialog();
     }
 
     @SuppressLint("SetTextI18n")

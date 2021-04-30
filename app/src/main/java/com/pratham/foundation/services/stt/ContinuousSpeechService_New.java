@@ -25,6 +25,7 @@ import static com.pratham.foundation.utility.FC_Constants.ASSAMESE;
 import static com.pratham.foundation.utility.FC_Constants.ASSAMESE_LOCAL;
 import static com.pratham.foundation.utility.FC_Constants.BENGALI;
 import static com.pratham.foundation.utility.FC_Constants.BENGALI_LOCAL;
+import static com.pratham.foundation.utility.FC_Constants.BUILD_DATE;
 import static com.pratham.foundation.utility.FC_Constants.ENGLISH;
 import static com.pratham.foundation.utility.FC_Constants.ENGLISH_LOCAL;
 import static com.pratham.foundation.utility.FC_Constants.GUJARATI;
@@ -209,6 +210,9 @@ public class ContinuousSpeechService_New implements RecognitionListener, STT_Res
                     Modal_Log modal_log = new Modal_Log();
                     modal_log.setCurrentDateTime(FC_Utility.getCurrentDateTime());
                     modal_log.setSessionId(FastSave.getInstance().getString(FC_Constants.CURRENT_SESSION, ""));
+                    modal_log.setExceptionStackTrace("APK BUILD DATE : "+BUILD_DATE);
+                    modal_log.setDeviceId("" + FC_Utility.getDeviceID());
+                    modal_log.setGroupId(FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, "no_group"));
                     modal_log.setLogDetail("Stt Intent Fired - " + sttString);
                     AppDatabase.getDatabaseInstance(context).getLogsDao().insertLog(modal_log);
                 } catch (Exception e) {

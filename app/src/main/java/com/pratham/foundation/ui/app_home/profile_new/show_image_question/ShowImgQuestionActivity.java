@@ -112,8 +112,6 @@ public class ShowImgQuestionActivity extends BaseActivity implements ShowImgQues
             Bitmap bmImg = BitmapFactory.decodeFile(activityPhotoPath+""+ansImageName);
             BitmapFactory.decodeStream(new FileInputStream(activityPhotoPath+""+ansImageName));
             iv_ans_image.setImageBitmap(bmImg);
-
-
             zoom_image_ans.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {

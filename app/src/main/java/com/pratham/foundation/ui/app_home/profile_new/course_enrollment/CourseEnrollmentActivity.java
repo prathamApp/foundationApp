@@ -56,14 +56,14 @@ public class CourseEnrollmentActivity extends BaseActivity implements
 
     @ViewById(R.id.board_spinner)
     Spinner board_spinner;
-    @ViewById(R.id.level_spinner)
-    Spinner level_spinner;
-    @ViewById(R.id.learning_spinner)
-    Spinner learning_spinner;
-    @ViewById(R.id.subject_spinner)
-    Spinner subject_spinner;
     @ViewById(R.id.lang_spinner)
     Spinner lang_spinner;
+    @ViewById(R.id.subject_spinner)
+    Spinner subject_spinner;
+    @ViewById(R.id.learning_spinner)
+    Spinner learning_spinner;
+    @ViewById(R.id.level_spinner)
+    Spinner level_spinner;
     @ViewById(R.id.rl_calendar_view)
     RelativeLayout rl_calendar_view;
     @ViewById(R.id.rl_no_data)

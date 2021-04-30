@@ -204,14 +204,6 @@ public class HomeActivity extends BaseActivity implements LevelChanged, API_Cont
                 if(!fcDate.equalsIgnoreCase(newDate)){
                     showChangeDateDialog(newDate, sTime);
                 }else {
-/*
-                    int t1 = Integer.parseInt(sTime.substring(0,2));
-                    int t1s = Integer.parseInt(sTime.substring(4,6));
-                    int t2 = Integer.parseInt(fcTime.substring(0,2));
-                    int t2s = Integer.parseInt(sTime.substring(4,6));
-                    Log.d("TAG", "$$$$  T1  :" +t1 + "    "+t1s);
-                    Log.d("TAG", "$$$$  T2  :" +t2 + "    "+t2s);
-*/
                     if(t1>t2) {
                         if ((t1 - t2) > 1) {
                             Log.d("TAG", "$$$$  t1>t2  :" +t2 + "    "+t2s);
@@ -224,7 +216,6 @@ public class HomeActivity extends BaseActivity implements LevelChanged, API_Cont
                         }
                     }
                 }
-//                Fc
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -522,7 +513,7 @@ public class HomeActivity extends BaseActivity implements LevelChanged, API_Cont
 
     private void changeBGNew(int currentLevel) {
 //        Change Background to distinguish it by different color.
-        tabLayout.setBackground(getResources().getDrawable(R.drawable.home_footer_1_bg));
+        tabLayout.setBackground(getResources().getDrawable(R.drawable.home_footer_3_bg));
 /*
         switch (currentLevel) {
             case 1:
@@ -575,6 +566,13 @@ public class HomeActivity extends BaseActivity implements LevelChanged, API_Cont
                 } catch (IllegalStateException e) {
                     e.printStackTrace();
                 }
+                BackupDatabase.backup(HomeActivity.this);
+                BackupDatabase.backup(HomeActivity.this);
+                if (new File(Environment.getExternalStorageDirectory().toString()
+                        + "/.FCAInternal/DBZip").exists())
+                    new File(Environment.getExternalStorageDirectory().toString()
+                            + "/.FCAInternal/DBZip").delete();
+
                 if (tab.getText().toString().equalsIgnoreCase("" + getResources().getString(R.string.Profile))) {
                     FastSave.getInstance().saveString(APP_SECTION, sec_Profile);
                     header_rl.setVisibility(View.GONE);
@@ -601,6 +599,11 @@ public class HomeActivity extends BaseActivity implements LevelChanged, API_Cont
                 } catch (IllegalStateException e) {
                     e.printStackTrace();
                 }
+
+                if (new File(Environment.getExternalStorageDirectory().toString()
+                        + "/.FCAInternal/DBZip").exists())
+                    new File(Environment.getExternalStorageDirectory().toString()
+                            + "/.FCAInternal/DBZip").delete();
 
                 if (tab.getText().toString().equalsIgnoreCase("" + getResources().getString(R.string.Profile))) {
                     FastSave.getInstance().saveString(APP_SECTION, sec_Profile);
@@ -698,7 +701,7 @@ public class HomeActivity extends BaseActivity implements LevelChanged, API_Cont
         viewpager.setOffscreenPageLimit(2);
         adapter.addFrag(new LearningFragment_(), "" + getResources().getString(R.string.Learning));
         adapter.addFrag(new ProfileFragment_(), "" + getResources().getString(R.string.Profile));
-/*        if (FastSave.getInstance().getString(FC_Constants.LOGIN_MODE, FC_Constants.GROUP_MODE).contains("group") || !getAppMode()) {
+/*        if (FastSave.getInstance().getString(FC_Constants.LOGIN_MODE, FC_Constants.GR`OUP_MODE).contains("group") || !getAppMode()) {
             adapter.addFrag(new LearningFragment_(), "" + getResources().getString(R.string.Learning));
             adapter.addFrag(new PracticeFragment_(), "" + getResources().getString(R.string.Practice));
             if (currSubj.equalsIgnoreCase("english")) {

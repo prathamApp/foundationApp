@@ -278,14 +278,14 @@ public class LearningFragment extends Fragment implements LearningContract.Learn
     }
 
     private void getCompletionPercAgain() {
-        String currentNodeID = presenter.getcurrentNodeID();
+/*        String currentNodeID = presenter.getcurrentNodeID();
         Log.d("getCompletion", "getCompletionPercAgain: " + currentNodeID);
         try {
             if (!currentNodeID.equalsIgnoreCase("na"))
                 presenter.findMaxScore("" + currentNodeID);
         } catch (Exception e) {
             e.printStackTrace();
-        }
+        }*/
     }
 
     private void fragmentSelected() {
@@ -321,12 +321,12 @@ public class LearningFragment extends Fragment implements LearningContract.Learn
 //        presenter.getDataForList();
         String currentNodeID = presenter.getcurrentNodeID();
         presenter.getDataForList();
-        try {
+/*        try {
             if (!currentNodeID.equalsIgnoreCase("na"))
                 presenter.findMaxScore("" + currentNodeID);
         } catch (Exception e) {
             e.printStackTrace();
-        }
+        }*/
     }
 
     @Override
@@ -452,6 +452,7 @@ public class LearningFragment extends Fragment implements LearningContract.Learn
     }
 
     private boolean desFlag = false;
+
     @Override
     public void onDestroy() {
         desFlag = true;
@@ -460,6 +461,7 @@ public class LearningFragment extends Fragment implements LearningContract.Learn
 
     private boolean loaderVisible = false;
     private CustomLodingDialog myLoadingDialog;
+
     @UiThread
     @Override
     public void showLoader() {
@@ -497,7 +499,9 @@ public class LearningFragment extends Fragment implements LearningContract.Learn
     @Override
     public void setLevelprogress(int percent) {
         if (FastSave.getInstance().getString(APP_SECTION, "").equalsIgnoreCase(sec_Learning))
-            tv_header_progress.setText(percent + "%");
+            if (percent > 100)
+                percent = 100;
+        tv_header_progress.setText(percent + "%");
     }
 
     @UiThread
@@ -570,6 +574,7 @@ public class LearningFragment extends Fragment implements LearningContract.Learn
     }
 
     BlurPopupWindow fcDialog;
+
     @SuppressLint("SetTextI18n")
     @UiThread
     public void downloadAssessmentAppDialog() {
@@ -807,7 +812,7 @@ public class LearningFragment extends Fragment implements LearningContract.Learn
                 Intent mainNew = new Intent(context, ContentPlayerActivity_.class);
                 mainNew.putExtra("nodeID", contentList.getNodeId());
                 mainNew.putExtra("title", contentList.getNodeTitle());
-                mainNew.putExtra("sdStatus",sdStatus);
+                mainNew.putExtra("sdStatus", sdStatus);
                 mainNew.putExtra("testData", contentList);
                 mainNew.putExtra("testcall", FC_Constants.INDIVIDUAL_MODE);
                 startActivityForResult(mainNew, 1461);
@@ -878,7 +883,7 @@ public class LearningFragment extends Fragment implements LearningContract.Learn
         } catch (Exception e) {
             e.printStackTrace();
         }
-        tv_title.setText("Delete\n" + contentTableItem.getNodeTitle()+" ?");
+        tv_title.setText("Delete\n" + contentTableItem.getNodeTitle() + " ?");
         dia_btn_no.setOnClickListener(v -> dialog.dismiss());
         dia_btn_yes.setOnClickListener(v -> {
             presenter.deleteContent(parentPos, childPos, contentTableItem);
@@ -943,6 +948,7 @@ public class LearningFragment extends Fragment implements LearningContract.Learn
     }
 
     private CustomLodingDialog errorDialog;
+
     @UiThread
     public void showDownloadErrorDialog() {
         try {
@@ -1004,6 +1010,7 @@ public class LearningFragment extends Fragment implements LearningContract.Learn
 
     private BlurPopupWindow serverIssueDialog;
     private boolean issueDialogFlg = false;
+
     @UiThread
     @Override
     public void serverIssueDialog() {

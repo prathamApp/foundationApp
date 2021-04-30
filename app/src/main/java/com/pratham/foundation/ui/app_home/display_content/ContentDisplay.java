@@ -170,9 +170,9 @@ public class ContentDisplay extends BaseActivity implements ContentContract.Cont
         contentAdapter = new ContentAdapter(this, ContentTableList, this);
         RecyclerView.LayoutManager mLayoutManager = new GridLayoutManager(this, 2);
         recyclerView.setLayoutManager(mLayoutManager);
-        int dp = 12;
+        int dp = 5;
         if (FC_Constants.TAB_LAYOUT)
-            dp = 20;
+            dp = 10;
         recyclerView.addItemDecoration(new GridSpacingItemDecoration(2, dpToPx(this, dp), true));
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setAdapter(contentAdapter);
@@ -222,6 +222,8 @@ public class ContentDisplay extends BaseActivity implements ContentContract.Cont
     @UiThread
     @Override
     public void setHeaderProgress(int percent) {
+        if(percent>100)
+            percent = 100;
         tv_header_progress.setText("" + percent + "%");
 //        level_progress.setCurProgress(percent);
     }
@@ -276,9 +278,10 @@ public class ContentDisplay extends BaseActivity implements ContentContract.Cont
             else {
                 hideSystemUI();
                 showLoader();
+                presenter.getListData();
                 if (!LOGIN_MODE.equalsIgnoreCase(QR_GROUP_MODE))
                     presenter.getPerc(nodeId);
-                notifyAdapter();
+//                notifyAdapter();
             }
         } else
             finish();

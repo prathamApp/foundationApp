@@ -166,6 +166,10 @@
     <string name="change_the_language">Click Here to change the language</string>
     <string name="of_the_content">of the content.</string>
 
+    <string name="DB_Zip_pushed_failed">Database pushed failed</string>
+    <string name="DB_Zip_pushed_successfully">Database pushed successfully</string>
+    <string name="DB_Zip_push">Push DB File</string>
+
     <string name="Agent_name" translatable="false">Vernicula</string>
     <string name="talkbot" translatable="false">Talkbot</string>
     <string name="more" translatable="false">more</string>

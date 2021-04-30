@@ -64,13 +64,14 @@ public class SelectSubjectPresenter implements SelectSubjectContract.SubjectPres
         String rootID = AppDatabase.getDatabaseInstance(context).getContentTableDao().getRootData(newRootParentId,
 //                FastSave.getInstance().getString(CURRENT_STUDENT_PROGRAM_ID,"na")
                 "%"+ FastSave.getInstance().getString(CURRENT_STUDENT_ID,"na")+"%");
+        AppDatabase.getDatabaseInstance(context).getContentProgressDao().updateFullPercent();
         if (currLangNodeId != null)
             subjectList = AppDatabase.getDatabaseInstance(context).getContentTableDao().getChildsOfParent(currLangNodeId,
                     "%"+ FastSave.getInstance().getString(CURRENT_STUDENT_ID,"na")+"%"
                     /*FastSave.getInstance().getString(CURRENT_STUDENT_PROGRAM_ID,"na")*/);
         if (FC_Utility.isDataConnectionAvailable(context)) {
             //fetch subjects from API
-            api_content.getInternetTimeApi(FC_Constants.INTERNET_TIME, FC_Constants.INTERNET_TIME_API);
+//            api_content.getInternetTimeApi(FC_Constants.INTERNET_TIME, FC_Constants.INTERNET_TI ME_API);
             api_content.getAPIContent(FC_Constants.INTERNET_BROWSE, FC_Constants.INTERNET_LANGUAGE_API, currLangNodeId);
         } else {
             if(subjectList!=null && subjectList.size()<1)

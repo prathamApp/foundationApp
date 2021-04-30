@@ -129,17 +129,13 @@ public class LearningPresenter implements LearningContract.LearningPresenter, AP
             Log.d("crashDetection", "getBottomNavId : ");
             this.currentLevelNo = currentLevelNo;
             this.cosSection = cosSection;
-//        String rootID = FC_Utility.getRootNode(FastSave.getInstance().getString(FC_Constants.LANGUAGE, FC_Constants.HINDI));
-            String rootID = sub_nodeId;
-//        String rootID = "4030";
-//            botID = AppDatabase.getDatabaseInstance(mContext).getContentTableDao().getContentDataByNodeAge("" + rootID, cosSection);
-            botID = AppDatabase.getDatabaseInstance(mContext).getContentTableDao().getContentDataByTitle("" + rootID, cosSection);
+            botID = AppDatabase.getDatabaseInstance(mContext).getContentTableDao().getContentDataByTitle("" + sub_nodeId, cosSection);
             if (botID == null && !FC_Utility.isDataConnectionAvailable(mContext))
                 learningView.showNoDataLayout();
             else if (botID != null && !FC_Utility.isDataConnectionAvailable(mContext))
                 getLevelDataForList(currentLevelNo, botID);
             else
-                getRootData(rootID);
+                getRootData(sub_nodeId);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -155,12 +151,12 @@ public class LearningPresenter implements LearningContract.LearningPresenter, AP
     @Override
     public void getLevelDataForList(int currentLevelNo, String bottomNavNodeId) {
         rootList = AppDatabase.getDatabaseInstance(mContext).getContentTableDao().getContentData("" + bottomNavNodeId,
-                "%"+ FastSave.getInstance().getString(CURRENT_STUDENT_ID,"na")+"%"/*,
+                "%" + FastSave.getInstance().getString(CURRENT_STUDENT_ID, "na") + "%"/*,
                 FastSave.getInstance().getString(CURRENT_STUDENT_PROGRAM_ID,"na")*/);
         if (FC_Utility.isDataConnectionAvailable(mContext))
             getLevelDataFromApi(currentLevelNo, bottomNavNodeId);
         else {
-            Log.d("crashDetection", "getLevelDataForList  currentLevelNo : "+currentLevelNo+"  :  bottomNavNodeId : "+bottomNavNodeId );
+            Log.d("crashDetection", "getLevelDataForList  currentLevelNo : " + currentLevelNo + "  :  bottomNavNodeId : " + bottomNavNodeId);
             learningView.setSelectedLevel(rootList);
         }
     }
@@ -174,7 +170,7 @@ public class LearningPresenter implements LearningContract.LearningPresenter, AP
     public void findMaxScore(String nodeId) {
         try {
             List<ContentTable> childList = AppDatabase.getDatabaseInstance(mContext).getContentTableDao().getChildsOfParent(nodeId,
-                    "%"+ FastSave.getInstance().getString(CURRENT_STUDENT_ID,"na")+"%"
+                    "%" + FastSave.getInstance().getString(CURRENT_STUDENT_ID, "na") + "%"
                     /*FastSave.getInstance().getString(CURRENT_STUDENT_PROGRAM_ID,"na")*/);
             for (int childCnt = 0; childList.size() > childCnt; childCnt++) {
                 if (childList.get(childCnt).getNodeType().equals("Resource")) {
@@ -201,7 +197,7 @@ public class LearningPresenter implements LearningContract.LearningPresenter, AP
 
     public void findMaxScoreNew(String nodeId) {
         List<ContentTable> childList = AppDatabase.getDatabaseInstance(mContext).getContentTableDao().getChildsOfParent(nodeId,
-                "%"+ FastSave.getInstance().getString(CURRENT_STUDENT_ID,"na")+"%"/*,
+                "%" + FastSave.getInstance().getString(CURRENT_STUDENT_ID, "na") + "%"/*,
                 FastSave.getInstance().getString(CURRENT_STUDENT_PROGRAM_ID,"na")*/);
         for (int childCnt = 0; childList.size() > childCnt; childCnt++) {
             if (childList.get(childCnt).getNodeType().equals("Resource")) {
@@ -255,7 +251,7 @@ public class LearningPresenter implements LearningContract.LearningPresenter, AP
         try {
             Log.d("crashDetection", "getDataForList : ");
             dwParentList = AppDatabase.getDatabaseInstance(mContext).getContentTableDao().getContentData("" + nodeIds.get(nodeIds.size() - 1),
-                    "%"+ FastSave.getInstance().getString(CURRENT_STUDENT_ID,"na")+"%"/*,
+                    "%" + FastSave.getInstance().getString(CURRENT_STUDENT_ID, "na") + "%"/*,
                     FastSave.getInstance().getString(CURRENT_STUDENT_PROGRAM_ID,"na")*/);
             contentParentList.clear();
             ContentTable resContentTable = new ContentTable();
@@ -294,7 +290,7 @@ public class LearningPresenter implements LearningContract.LearningPresenter, AP
                         ContentTable contentTable = new ContentTable();
                         tempList = new ArrayList<>();
                         childDwContentList = AppDatabase.getDatabaseInstance(mContext).getContentTableDao().getContentData("" + dwParentList.get(j).getNodeId(),
-                                "%"+ FastSave.getInstance().getString(CURRENT_STUDENT_ID,"na")+"%"/*,
+                                "%" + FastSave.getInstance().getString(CURRENT_STUDENT_ID, "na") + "%"/*,
                                 FastSave.getInstance().getString(CURRENT_STUDENT_PROGRAM_ID,"na")*/);
                         contentTable.setNodeId("" + dwParentList.get(j).getNodeId());
                         contentTable.setNodeType("" + dwParentList.get(j).getNodeType());
@@ -344,16 +340,26 @@ public class LearningPresenter implements LearningContract.LearningPresenter, AP
                                 contentChild.setNodeUpdate(false);
                                 contentChild.setNodelist(null);
                                 maxScoreChild = new ArrayList();
-                                findMaxScoreNew(childDwContentList.get(i).getNodeId());
-                                double totalScore = 0;
-                                for (int q = 0; maxScoreChild.size() > q; q++) {
-                                    totalScore = totalScore + Double.parseDouble(maxScoreChild.get(q).toString());
-                                }
-                                if (maxScoreChild.size() > 0) {
-                                    int percent = (int) (totalScore / maxScoreChild.size());
-                                    contentChild.setNodePercentage("" + percent);
+                                float prog = 0;
+                                if (childDwContentList.get(i).getNodeType() != null
+                                        && childDwContentList.get(i).getNodeType().equalsIgnoreCase("resource")) {
+                                    prog = AppDatabase.getDatabaseInstance(mContext).getContentProgressDao().getResPercentage
+                                            (FastSave.getInstance().getString(CURRENT_STUDENT_ID, "na"),
+                                                    childDwContentList.get(i).getResourceId());
+                                    contentChild.setNodePercentage("" + (int) prog);
+                                    childDwContentList.get(i).setNodePercentage("" + (int) prog);
                                 } else {
-                                    contentChild.setNodePercentage("0");
+                                    findMaxScoreNew(childDwContentList.get(i).getNodeId());
+                                    double totalScore = 0;
+                                    for (int q = 0; maxScoreChild.size() > q; q++) {
+                                        totalScore = totalScore + Double.parseDouble(maxScoreChild.get(q).toString());
+                                    }
+                                    if (maxScoreChild.size() > 0) {
+                                        int percent = (int) (totalScore / maxScoreChild.size());
+                                        contentChild.setNodePercentage("" + percent);
+                                    } else {
+                                        contentChild.setNodePercentage("0");
+                                    }
                                 }
                                 tempList.add(contentChild);
                             }
@@ -560,7 +566,7 @@ public class LearningPresenter implements LearningContract.LearningPresenter, AP
                                 contentParentList.get(j).getNodeId())) {
                             parentFound = true;
                             tempList = new ArrayList<>();
-                            if (serverContentList.get(i).getVersion()!=null &&
+                            if (serverContentList.get(i).getVersion() != null &&
                                     !serverContentList.get(i).getVersion().equalsIgnoreCase(contentParentList.get(j).getVersion()))
                                 contentParentList.get(j).setNodeUpdate(true);
                             contentDBList.add(contentParentList.get(j));
@@ -574,9 +580,9 @@ public class LearningPresenter implements LearningContract.LearningPresenter, AP
                                         for (int l = 0; l < childContentList.size(); l++) {
                                             if (serverContentList.get(i).getNodelist().get(k).getNodeId().equalsIgnoreCase(
                                                     childContentList.get(l).getNodeId())) {
-                                                if (serverContentList.get(i).getNodelist().get(k).getVersion()!=null &&
+                                                if (serverContentList.get(i).getNodelist().get(k).getVersion() != null &&
                                                         !serverContentList.get(i).getNodelist().get(k).getVersion().equalsIgnoreCase(
-                                                        childContentList.get(l).getVersion()))
+                                                                childContentList.get(l).getVersion()))
                                                     contentParentList.get(j).getNodelist().get(l).setNodeUpdate(true);
                                                 childFound = true;
                                                 break;
@@ -609,6 +615,14 @@ public class LearningPresenter implements LearningContract.LearningPresenter, AP
                                                 contentTableTemp.setOnSDCard(false);
                                                 contentTableTemp.setNodeUpdate(false);
 
+                                                float prog = 0;
+                                                if (serverContentList.get(i).getNodelist().get(k).getNodeType() != null
+                                                        && serverContentList.get(i).getNodelist().get(k).getNodeType().equalsIgnoreCase("resource")) {
+                                                    prog = AppDatabase.getDatabaseInstance(mContext).getContentProgressDao().getResPercentage
+                                                            (FastSave.getInstance().getString(CURRENT_STUDENT_ID, "na"),
+                                                                    serverContentList.get(i).getNodelist().get(k).getResourceId());
+                                                    contentTableTemp.setNodePercentage("" + (int) prog);
+                                                }
                                                 try {
                                                     contentDBList.get(i).getNodelist().add(contentTableTemp);
                                                 } catch (Exception e) {
@@ -646,6 +660,15 @@ public class LearningPresenter implements LearningContract.LearningPresenter, AP
                                             contentTableChildTemp.setIsDownloaded("false");
                                             contentTableChildTemp.setOnSDCard(false);
                                             contentTableChildTemp.setNodeUpdate(false);
+                                            float prog = 0;
+                                            if (serverContentList.get(i).getNodelist().get(f).getNodeType() != null
+                                                    && serverContentList.get(i).getNodelist().get(f).getNodeType().equalsIgnoreCase("resource")) {
+                                                prog = AppDatabase.getDatabaseInstance(mContext).getContentProgressDao().getResPercentage
+                                                        (FastSave.getInstance().getString(CURRENT_STUDENT_ID, "na"),
+                                                                serverContentList.get(i).getNodelist().get(f).getResourceId());
+                                                contentTableChildTemp.setNodePercentage("" + (int) prog);
+                                            }
+
                                             tempList.add(contentTableChildTemp);
                                         }
                                         contentDBList.get(i).setNodelist(tempList);
@@ -708,6 +731,14 @@ public class LearningPresenter implements LearningContract.LearningPresenter, AP
                                 contentTableTemp.setIsDownloaded("false");
                                 contentTableTemp.setOnSDCard(false);
                                 contentTableTemp.setNodeUpdate(false);
+                                float prog = 0;
+                                if (serverContentList.get(i).getNodelist().get(f).getNodeType() != null
+                                        && serverContentList.get(i).getNodelist().get(f).getNodeType().equalsIgnoreCase("resource")) {
+                                    prog = AppDatabase.getDatabaseInstance(mContext).getContentProgressDao().getResPercentage
+                                            (FastSave.getInstance().getString(CURRENT_STUDENT_ID, "na"),
+                                                    serverContentList.get(i).getNodelist().get(f).getResourceId());
+                                    contentTableTemp.setNodePercentage("" + (int) prog);
+                                }
                                 tempList.add(contentTableTemp);
                             }
                             contentTable.setNodelist(tempList);
@@ -880,7 +911,7 @@ public class LearningPresenter implements LearningContract.LearningPresenter, AP
     @Override
     public void deleteContent(int parentPos, int childPos, ContentTable contentTableItem) {
         try {
-            if(contentTableItem.getNodeType().equalsIgnoreCase("PreResource")) {
+            if (contentTableItem.getNodeType().equalsIgnoreCase("PreResource")) {
                 List<ContentTable> contentTableList = AppDatabase.getDatabaseInstance(mContext).getContentTableDao()
                         .getChildsOfParent_forDelete(contentTableItem.getNodeId());
                 for (int i = 0; i < contentTableList.size(); i++) {
@@ -897,7 +928,7 @@ public class LearningPresenter implements LearningContract.LearningPresenter, AP
                 }
                 checkAndDeleteParent(contentTableItem);
                 Log.d("Delete_Clicked", "onClick: G_Presenter");
-            }else {
+            } else {
                 checkAndDeleteParent(contentTableItem);
                 Log.d("Delete_Clicked", "onClick: G_Presenter");
                 String foldername = contentTableItem.getResourcePath()/*.split("/")[0]*/;
@@ -907,7 +938,7 @@ public class LearningPresenter implements LearningContract.LearningPresenter, AP
                         + "" + App_Thumbs_Path + contentTableItem.getNodeImage()));
             }
 
-            learningView.notifyAdapterItem(parentPos,childPos);
+            learningView.notifyAdapterItem(parentPos, childPos);
         } catch (Exception e) {
             e.printStackTrace();
         }

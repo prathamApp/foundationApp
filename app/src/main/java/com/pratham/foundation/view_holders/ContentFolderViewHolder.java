@@ -90,13 +90,14 @@ public class ContentFolderViewHolder extends RecyclerView.ViewHolder {
         this.itemClicked = itemClicked;
     }
 
-    @SuppressLint("CheckResult")
+    @SuppressLint({"CheckResult", "SetTextI18n"})
     public void setFolderItem(ContentTable contentList, int position) {
         try {
 //        add card and its click listners
             Objects.requireNonNull(card_main).setBackground(drawableBg);
             Objects.requireNonNull(tvTitle).setText(contentList.getNodeTitle());
             Objects.requireNonNull(rl_loader).setVisibility(View.GONE);
+            Objects.requireNonNull(tv_progress).setText(contentList.getNodePercentage()+"%");
 
             File file;
             if (contentList.getIsDownloaded().equalsIgnoreCase("1") ||

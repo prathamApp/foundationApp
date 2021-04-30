@@ -4,23 +4,16 @@ import android.content.Context;
 import android.util.Log;
 
 import com.pratham.foundation.database.AppDatabase;
-import com.pratham.foundation.database.domain.Assessment;
 import com.pratham.foundation.interfaces.API_Content_Result;
-import com.pratham.foundation.modalclasses.ModalTopCertificates;
 import com.pratham.foundation.modalclasses.Modal_TotalDaysStudentsPlayed;
 import com.pratham.foundation.services.shared_preferences.FastSave;
 import com.pratham.foundation.utility.FC_Constants;
-import com.pratham.foundation.utility.FC_Utility;
 
 import org.androidannotations.annotations.Background;
 import org.androidannotations.annotations.EBean;
-import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
-
-import static com.pratham.foundation.utility.FC_Constants.LOGIN_MODE;
 
 
 @EBean
@@ -64,6 +57,7 @@ public class ProfilePresenter implements ProfileContract.ProfilePresenter, API_C
     }
 
 
+/*
     @Override
     public void getCertificateCount() {
         List<Assessment> assessmentList;
@@ -107,6 +101,7 @@ public class ProfilePresenter implements ProfileContract.ProfilePresenter, API_C
         if(modalTopCertificatesList.size()>0)
             profileView.setCertificateCount(modalTopCertificatesList);
     }
+*/
 
     @Override
     public void receivedContent(String header, String response) {

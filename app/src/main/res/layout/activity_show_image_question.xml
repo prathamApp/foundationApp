@@ -42,7 +42,7 @@
                 android:singleLine="true"
                 android:textColor="@color/colorBlack"
                 android:textSize="@dimen/_20sdp" />
-
+<!--TODO//move this-->
             <com.pratham.foundation.customView.fontsview.SansTextView
                 android:id="@+id/tv_Question"
                 android:layout_width="match_parent"

@@ -299,18 +299,6 @@ public class GameConstatnts implements ShowInstruction {
                 FC_Utility.showFragment((Activity) context, new KeywordMappingFragment_(), R.id.RL_CPA,
                         bundle, KeywordMappingFragment_.class.getSimpleName());
                 break;
-//            case FC_Constants.PDF:
-//            case "PDF":
-//                Intent intent1 = new Intent(context, Fragment_PdfViewer_.class);
-//                intent1.putExtra("contentPath", contentTable1.getResourcePath());
-//                intent1.putExtra("StudentID", FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""));
-//                intent1.putExtra("resId", contentTable1.getResourceId());
-//                intent1.putExtra("contentName", contentTable1.getNodeTitle());
-//                intent1.putExtra("onSdCard", onSdCard);
-//                context.startActivity(intent1);
-//                FC_Utility.showFragment((Activity) context, new Fragment_PdfViewer_(), R.id.RL_CPA,
-//                        bundle, Fragment_PdfViewer.class.getSimpleName());
-//                break;
             case GameConstatnts.THINKANDWRITE:
                 if (FastSave.getInstance().getString(FC_Constants.CURRENT_SUBJECT, "").equalsIgnoreCase("Science")) {
                     FC_Utility.showFragment((Activity) context, new ParagraphWritingFragment_(), R.id.RL_CPA,

@@ -82,20 +82,20 @@ public class ImageQuesAdapter extends RecyclerView.Adapter {
 
             ImageQuesAdapter.FileHolder holder = (ImageQuesAdapter.FileHolder) viewHolder;
 
-            String cLevel = "" + contentItem.getLevel();
-            String level = "" + contentItem.getLevel();
+//            String cLevel = "" + contentItem.getLevel();
+            String level = "L-" + contentItem.getLevel();
             String cTitle = imageJsonObject.getGameName();
 
-            if (cLevel.equalsIgnoreCase("1"))
-                level = "L-1";
-            else if (cLevel.equalsIgnoreCase("2"))
-                level = "L-2";
-            else if (cLevel.equalsIgnoreCase("3"))
-                level = "L-3";
-            else if (cLevel.equalsIgnoreCase("4"))
-                level = "L-4";
-            else if (cLevel.equalsIgnoreCase("5"))
-                level = "L-5";
+//            if (cLevel.equalsIgnoreCase("1"))
+//                level = "L-1";
+//            else if (cLevel.equalsIgnoreCase("2"))
+//                level = "L-2";
+//            else if (cLevel.equalsIgnoreCase("3"))
+//                level = "L-3";
+//            else if (cLevel.equalsIgnoreCase("4"))
+//                level = "L-4";
+//            else if (cLevel.equalsIgnoreCase("5"))
+//                level = "L-5";
 
             String section = getSubjectNameFromNum(contentItem.getQuestionId()) +
                     " " + level + " " + getSectionName(contentItem.getScoredMarks());

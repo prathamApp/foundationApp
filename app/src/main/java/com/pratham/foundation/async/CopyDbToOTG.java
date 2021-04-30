@@ -43,7 +43,8 @@ public class CopyDbToOTG extends AsyncTask {
             if (fca_backup_file == null)
                 fca_backup_file = rootFile.createDirectory("FCA_DBs");
 
-            String thisdeviceFolderName = "DeviceId_" + AppDatabase.getDatabaseInstance(ApplicationClass.getInstance()).getStatusDao().getValue("DeviceId");
+            String thisdeviceFolderName = "DeviceId_" + AppDatabase.getDatabaseInstance(ApplicationClass.getInstance())
+                    .getStatusDao().getValue("DeviceId");
             DocumentFile thisTabletFolder = fca_backup_file.findFile(thisdeviceFolderName);
             if (thisTabletFolder == null)
                 thisTabletFolder = fca_backup_file.createDirectory(thisdeviceFolderName);

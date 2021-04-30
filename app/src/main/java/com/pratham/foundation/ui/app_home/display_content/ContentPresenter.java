@@ -49,7 +49,7 @@ public class ContentPresenter implements ContentContract.ContentPresenter, API_C
     public List<ContentTable> downloadedContentTableList, ListForContentTable1, ListForContentTable2;
     public ArrayList<String> nodeIds;
     public API_Content api_content;
-    public List maxScore;
+    public List maxScore , maxScoreChild;
     public int percent = 0;
     @Bean(ZipDownloader.class)
     ZipDownloader zipDownloader;
@@ -99,7 +99,7 @@ public class ContentPresenter implements ContentContract.ContentPresenter, API_C
     @Override
     public void getPerc(String nodeId) {
         maxScore = new ArrayList();
-        findMaxScore(nodeId);
+//        findMaxScore(nodeId);
     }
 
     @Override
@@ -199,6 +199,29 @@ public class ContentPresenter implements ContentContract.ContentPresenter, API_C
                         contentTable.setOnSDCard(downloadedContentTableList.get(j).isOnSDCard());
                         contentTable.setSeq_no(downloadedContentTableList.get(j).getSeq_no());
                         contentTable.setNodeUpdate(false);
+                        float prog = 0;
+                        maxScoreChild = new ArrayList();
+                        if (downloadedContentTableList.get(j).getNodeType() != null
+                                && downloadedContentTableList.get(j).getNodeType().equalsIgnoreCase("resource")) {
+                            prog = AppDatabase.getDatabaseInstance(context).getContentProgressDao().getResPercentage
+                                    (FastSave.getInstance().getString(CURRENT_STUDENT_ID, "na"),
+                                            downloadedContentTableList.get(j).getResourceId());
+                            downloadedContentTableList.get(j).setNodePercentage("" + (int) prog);
+                            contentTable.setNodePercentage("" + (int) prog);
+                        }else {
+                            findMaxScoreNew(downloadedContentTableList.get(j).getNodeId());
+                            double totalScore = 0;
+                            for (int q = 0; maxScoreChild.size() > q; q++) {
+                                totalScore = totalScore + Double.parseDouble(maxScoreChild.get(q).toString());
+                            }
+                            if (maxScoreChild.size() > 0) {
+                                int percent = (int) (totalScore / maxScoreChild.size());
+                                contentTable.setNodePercentage("" + percent);
+                                downloadedContentTableList.get(j).setNodePercentage("" + percent);
+                            } else {
+                                contentTable.setNodePercentage("0");
+                            }
+                        }
                         ListForContentTable1.add(contentTable);
                     }
                 } catch (Exception e) {
@@ -232,6 +255,28 @@ public class ContentPresenter implements ContentContract.ContentPresenter, API_C
             }
         } catch (Exception e) {
             e.printStackTrace();
+        }
+    }
+
+    public void findMaxScoreNew(String nodeId) {
+        List<ContentTable> childList = AppDatabase.getDatabaseInstance(context).getContentTableDao().getChildsOfParent(nodeId,
+                "%"+ FastSave.getInstance().getString(CURRENT_STUDENT_ID,"na")+"%"/*,
+                FastSave.getInstance().getString(CURRENT_STUDENT_PROGRAM_ID,"na")*/);
+        for (int childCnt = 0; childList.size() > childCnt; childCnt++) {
+            if (childList.get(childCnt).getNodeType().equals("Resource")) {
+                double maxScoreTemp = 0.0;
+                List<ContentProgress> score = AppDatabase.getDatabaseInstance(context).getContentProgressDao().getProgressByStudIDAndResID(FastSave.getInstance().getString(CURRENT_STUDENT_ID, ""), childList.get(childCnt).getResourceId(), "resourceProgress");
+                for (int cnt = 0; cnt < score.size(); cnt++) {
+                    String d = score.get(cnt).getProgressPercentage();
+                    double scoreTemp = Double.parseDouble(d);
+                    if (maxScoreTemp < scoreTemp) {
+                        maxScoreTemp = scoreTemp;
+                    }
+                }
+                maxScoreChild.add(maxScoreTemp);
+            } else {
+                findMaxScoreNew(childList.get(childCnt).getNodeId());
+            }
         }
     }
 
@@ -291,6 +336,15 @@ public class ContentPresenter implements ContentContract.ContentPresenter, API_C
                             contentTableTemp.setIsDownloaded("false");
                             contentTableTemp.setOnSDCard(false);
                             contentTableTemp.setNodeUpdate(false);
+                            maxScoreChild = new ArrayList();
+                            float prog = 0;
+                            if (serverContentList.get(i).getNodeType() != null
+                                    && serverContentList.get(i).getNodeType().equalsIgnoreCase("resource")) {
+                                prog = AppDatabase.getDatabaseInstance(context).getContentProgressDao().getResPercentage
+                                        (FastSave.getInstance().getString(CURRENT_STUDENT_ID, "na"),
+                                                serverContentList.get(i).getResourceId());
+                                contentTableTemp.setNodePercentage("" + (int) prog);
+                            }
                             ListForContentTable2.add(contentTableTemp);
                         }
                     }
@@ -439,7 +493,7 @@ public class ContentPresenter implements ContentContract.ContentPresenter, API_C
     @Override
     public void deleteContent(int deletePos, ContentTable contentItem) {
         try {
-            if(contentItem.getNodeType().equalsIgnoreCase("PreResource")) {
+            if (contentItem.getNodeType().equalsIgnoreCase("PreResource")) {
                 List<ContentTable> contentTableList = AppDatabase.getDatabaseInstance(context).getContentTableDao()
                         .getChildsOfParent_forDelete(contentItem.getNodeId());
                 for (int i = 0; i < contentTableList.size(); i++) {
@@ -456,7 +510,7 @@ public class ContentPresenter implements ContentContract.ContentPresenter, API_C
                 }
                 checkAndDeleteParent(contentItem);
                 Log.d("Delete_Clicked", "onClick: G_Presenter");
-            }else {
+            } else {
                 checkAndDeleteParent(contentItem);
                 Log.d("Delete_Clicked", "onClick: G_Presenter");
                 String foldername = contentItem.getResourcePath()/*.split("/")[0]*/;

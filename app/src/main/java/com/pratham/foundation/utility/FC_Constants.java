@@ -5,6 +5,8 @@ import com.pratham.foundation.R;
 
 public class FC_Constants {
 
+    public static final String BUILD_DATE = "16-Apr-2021";
+
     public static final String FTP_CLIENT_CONNECTED = "ftp_client_connected";
     public static final String TOPIC = "topic";
     public static final String RESOURCE = "resource";
@@ -202,6 +204,7 @@ public class FC_Constants {
     public static final String CURRENT_FOLDER_NAME = "current_folder_name";
     public static final String CERTI_CODE = "certi_code";
     public static final String ACTIVITY_RESUMED = "activity_resumed";
+    public static final String BUILD_DATE_FLG = "build_date_flg";
 
     public static final String sec_Learning = "Learning";
 /*    public static final String sec_Practice = "Practice";
@@ -251,7 +254,6 @@ public class FC_Constants {
     public static final String COURSE_COMPLETED = "course_completed";
     public static final String ASSIGNMENT_SUBMITTED = "assignment_submitted";
 
-
     //  public static final String INTERNET_DOWNLOAD_API = "http://www.prodigi.openiscool.org/api/pos/Get?id=";
     public static final String newRootParentId = "SCAPP";
     public static final String rootParentId = "50001";
@@ -272,36 +274,25 @@ public class FC_Constants {
     public static final String APP_LANGUAGE_SELECTED = "app_language_selected";
     public static final String TEST_JSON_DW = "test_json_dw";
     public static final String STUDENT_BY_ENROLLMENT_NO = "student_by_enrollment_no";
+    public static final String DB_ZIP_PUSH = "db_zip_push";
 
     //    PRATHAM APIS
     public static String uploadDataUrl = "http://devprodigi.openiscool.org/api/Foundation/PushData";
-//    public static final String STUDENT_BY_ENROLLMENT_NO_API = "http://www.devtab.openiscool.org/api/StudentEnrollment?enrollmentno=";
     public static final String STUDENT_BY_ENROLLMENT_NO_API = "http://www.devtab.openiscool.org/api/Enrollement/Get?enrollmentno=";
-    public static final String TEST_JSON_API = "http://devposapi.prathamopenschool.org/fcapptestjson/";
     public static final String PUSH_IMAGE_API = "http://devprodigi.openiscool.org/api/Foundation/PostImage";
-
-//    public static final String INTERNET_LANGUAGE_API = "http://devposapi.prathamopenschool.org/api/content/browse?id=";
-//    public static final String INTERNET_BROWSE_API = "http://devposapi.prathamopenschool.org/api/content/BrowseLevel2?id=";
+    public static final String INTERNET_TIME_API = "http://worldtimeapi.org/api/timezone/Asia/Kolkata";
+    public static final String STUDENT_PROGRESS_API = "http://prodigi.openiscool.org/api/cosv2/GetProgress?id=";
+    public static final String LEARNT_WORDS_API = "http://prodigi.openiscool.org/api/cosv2/GetKeyWords?id=";
+    public static final String DB_ZIP_PUSH_API = "http://devprodigi.openiscool.org/api/PradigiSchoolDB/PushFiles";
 
     public static final String INTERNET_LANGUAGE_API = "http://devposapi.prathamopenschool.org/api/ContentV2/browse?id=";
     public static final String INTERNET_BROWSE_API = "http://devposapi.prathamopenschool.org/api/ContentV2/BrowseLevel2?id=";
-
-    public static final String INTERNET_TIME_API = "http://worldtimeapi.org/api/timezone/Asia/Kolkata";
-
     public static final String INTERNET_DOWNLOAD_RESOURCE_API = "http://devposapi.prathamopenschool.org/api/content/downloadv2?id=";
-    public static final String INTERNET_DOWNLOAD_TEST_API = "http://devposapi.prathamopenschool.org/api/content/downloadv3?id=";
-    public static final String STUDENT_PROGRESS_API = "http://prodigi.openiscool.org/api/cosv2/GetProgress?id=";
-    public static final String LEARNT_WORDS_API = "http://prodigi.openiscool.org/api/cosv2/GetKeyWords?id=";
 
-/*        //    DEV APIS
-        public static final String TEST_JSON_API = "http://fcapp.openiscool.org/fcapptestjson/";
-        public static final String PUSH_IMAGE_API = "http://devprodigi.openiscool.org/api/Foundation/PostImage";
-        public static final String INTERNET_LANGUAGE_API = "http://fcapp.openiscool.org/api/content/browse?id=";
-        public static final String INTERNET_BROWSE_API = "http://fcapp.openiscool.org/api/content/BrowseLevel2?id=";
-        public static final String INTERNET_DOWNLOAD_RESOURCE_API = "http://fcapp.openiscool.org/api/content/downloadv2?id=";
-        public static final String INTERNET_DOWNLOAD_TEST_API = "http://fcapp.openiscool.org/api/content/downloadv3?id=";
-        public static final String STUDENT_PROGRESS_API = "http://prodigi.openiscool.org/api/cosv2/GetProgress?id=";
-        public static final String LEARNT_WORDS_API = "http://prodigi.openiscool.org/api/cosv2/GetKeyWords?id=";*/
+    //    DEV APIS   http://fcapp.openiscool.org/
+//    public static final String INTERNET_LANGUAGE_API = "http://fcapp.openiscool.org/api/ContentV2/browse?id=";
+//    public static final String INTERNET_BROWSE_API = "http://fcapp.openiscool.org/api/ContentV2/BrowseLevel2?id=";
+//    public static final String INTERNET_DOWNLOAD_RESOURCE_API = "http://fcapp.openiscool.org/api/content/downloadv2?id=";
 
     public static final String GROUPID = "groupid";
     public static final String GROUPID1 = "group1";

@@ -1262,16 +1262,20 @@ public class SplashPresenter implements SplashContract.SplashPresenter {
 
     @Override
     public void updateVersionApp() {
-        if (AppDatabase.getDatabaseInstance(context).getStatusDao().getKey("apkVersion") != null) {
-            PackageInfo pInfo = null;
-            String verCode = "";
-            try {
-                pInfo = context.getPackageManager().getPackageInfo(context.getPackageName(), 0);
-                verCode = pInfo.versionName;
-            } catch (PackageManager.NameNotFoundException e) {
-                e.printStackTrace();
+        try {
+            if (AppDatabase.getDatabaseInstance(context).getStatusDao().getKey("apkVersion") != null) {
+                PackageInfo pInfo = null;
+                String verCode = "";
+                try {
+                    pInfo = context.getPackageManager().getPackageInfo(context.getPackageName(), 0);
+                    verCode = pInfo.versionName;
+                } catch (PackageManager.NameNotFoundException e) {
+                    e.printStackTrace();
+                }
+                AppDatabase.getDatabaseInstance(context).getStatusDao().updateValue("apkVersion", verCode);
             }
-            AppDatabase.getDatabaseInstance(context).getStatusDao().updateValue("apkVersion", verCode);
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 

@@ -65,6 +65,7 @@ import java.util.Locale;
 
 import static com.pratham.foundation.ApplicationClass.audioManager;
 import static com.pratham.foundation.ApplicationClass.ttsService;
+import static com.pratham.foundation.utility.FC_Constants.BUILD_DATE;
 import static com.pratham.foundation.utility.FC_Constants.transferredImages;
 
 
@@ -130,7 +131,7 @@ public class BaseActivity extends AppCompatActivity {
         log.setCurrentDateTime(FC_Utility.getCurrentDateTime());
         log.setErrorType(" ");
         log.setExceptionMessage("App_Start");
-        log.setExceptionStackTrace("");
+        log.setExceptionStackTrace("APK BUILD DATE : "+BUILD_DATE);
         log.setMethodName("onCreate()");
         log.setGroupId(FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, "no_group"));
         log.setDeviceId("" + FC_Utility.getDeviceID());
@@ -161,7 +162,7 @@ public class BaseActivity extends AppCompatActivity {
         log.setCurrentDateTime(FC_Utility.getCurrentDateTime());
         log.setErrorType("");
         log.setExceptionMessage("App_End");
-        log.setExceptionStackTrace("");
+        log.setExceptionStackTrace("APK BUILD DATE : "+BUILD_DATE);
         log.setMethodName("onDestroy()");
         log.setGroupId(FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, "no_group"));
         log.setDeviceId("" + FC_Utility.getDeviceID());

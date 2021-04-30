@@ -68,6 +68,7 @@ import java.util.zip.GZIPOutputStream;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
+import static com.pratham.foundation.utility.FC_Constants.BUILD_DATE;
 import static com.pratham.foundation.utility.FC_Constants.IS_SERVICE_STOPED;
 import static com.pratham.foundation.utility.FC_Constants.failed_ImageLength;
 import static com.pratham.foundation.utility.FC_Constants.pushedScoreLength;
@@ -140,6 +141,25 @@ public class PushDataToServer_New {
             if (showUi)
                 showPushDialog(context);
             //Here data is fetched from local database and added to a list and then passed to JsonArray.
+            try {
+                Modal_Log log = new Modal_Log();
+                log.setCurrentDateTime(FC_Utility.getCurrentDateTime());
+                log.setErrorType(" ");
+                if (!showUi)
+                    log.setExceptionMessage("App_Auto_Sync");
+                else
+                    log.setExceptionMessage("App_Manual_Sync");
+                log.setMethodName("");
+                log.setSessionId(""+FastSave.getInstance().getString(FC_Constants.CURRENT_SESSION, ""));
+                log.setGroupId("");
+                log.setExceptionStackTrace("APK BUILD DATE : "+BUILD_DATE);
+                log.setDeviceId("" + FC_Utility.getDeviceID());
+                log.setCurrentDateTime(""+FC_Utility.getCurrentDateTime());
+                AppDatabase.getDatabaseInstance(context).getLogsDao().insertLog(log);
+                BackupDatabase.backup(context);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
             try {
                 setMainTextToDialog(context.getResources().getString(R.string.Collecting_Data));
                 List<Score> scoreList = AppDatabase.getDatabaseInstance(context).getScoreDao().getAllPushScores();
