@@ -388,7 +388,6 @@ public class ProfileFragment extends Fragment implements ProfileContract.Profile
     @Click(R.id.rl_enroll_course)
     @UiThread
     public void enrollCourse() {
-//        Toast.makeText(context, "Course Enrollment", Toast.LENGTH_SHORT).show();
         startActivity(new Intent(context, CourseEnrollmentActivity_.class));
     }
 
