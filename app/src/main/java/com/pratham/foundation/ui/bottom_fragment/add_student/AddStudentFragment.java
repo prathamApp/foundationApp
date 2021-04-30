@@ -55,7 +55,6 @@ public class AddStudentFragment extends DialogFragment implements AvatarClickLis
     @BindView(R.id.form_root)
     RelativeLayout homeRoot;
 
-
     @BindView(R.id.rv_Avatars)
     RecyclerView recyclerView;
 
@@ -148,7 +147,7 @@ public class AddStudentFragment extends DialogFragment implements AvatarClickLis
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        ArrayAdapter<String> ageAdapter = new ArrayAdapter(getActivity(), R.layout.custom_spinner, getResources().getStringArray(R.array.age));
+        ArrayAdapter ageAdapter = new ArrayAdapter(getActivity(), R.layout.custom_spinner, getResources().getStringArray(R.array.age));
         spinner_age.setAdapter(ageAdapter);
 
         spinner_age.setOnTouchListener(new View.OnTouchListener() {
@@ -303,7 +302,6 @@ public class AddStudentFragment extends DialogFragment implements AvatarClickLis
 //        } catch (IllegalStateException e) {
 //            e.printStackTrace();
 //        }
-
         // rb_male.setBackground(getResources().getDrawable(R.drawable.correct_bg));
         // rb_female.setBackground(getResources().getDrawable(R.drawable.ripple_rectangle));
         gender = "Male";
@@ -316,7 +314,6 @@ public class AddStudentFragment extends DialogFragment implements AvatarClickLis
 //        } catch (IllegalStateException e) {
 //            e.printStackTrace();
 //        }
-
         //rb_female.setBackground(getResources().getDrawable(R.drawable.correct_bg));
         //rb_male.setBackground(getResources().getDrawable(R.drawable.ripple_rectangle));
         gender = "Female";
@@ -325,24 +322,9 @@ public class AddStudentFragment extends DialogFragment implements AvatarClickLis
     @SuppressLint("StaticFieldLeak")
     @OnClick(R.id.btn_add_new_student)
     public void onAddNewClick() {
-//        try {
-//            ButtonClickSound.start();
-//        } catch (
-//                IllegalStateException e) {
-//            e.printStackTrace();
-//        }
-
-        if (et_studentName.getText().
-
-                toString().
-
-                equalsIgnoreCase("") ||
+        if (et_studentName.getText().toString().equalsIgnoreCase("") ||
                 /*spinner_class.getSelectedItem().toString().equalsIgnoreCase("select class") ||*/
-                spinner_age.getSelectedItem().
-
-                        toString().
-
-                        equalsIgnoreCase("select age") ||
+                spinner_age.getSelectedItem().toString().equalsIgnoreCase("select age") ||
                 gender.equalsIgnoreCase("") || avatarName == null) {
             Toast.makeText(getActivity(), "Please fill all the details..", Toast.LENGTH_SHORT).show();
         } else {
@@ -355,15 +337,10 @@ public class AddStudentFragment extends DialogFragment implements AvatarClickLis
             student.setAvatarName(avatarName);
             student.setGroupId("PS");
             student.setMiddleName("PS");
-            /*if (gender.equalsIgnoreCase("male"))
-                student.setAvatarName("b1");
-            else
-                student.setAvatarName("g3");
-*/
+//            student.setProgramId("0");
             new AsyncTask<Object, Void, Object>() {
                 @Override
                 protected Object doInBackground(Object[] objects) {
-
                     student.setDeviceId(AppDatabase.getDatabaseInstance(getContext()).getStatusDao().getValue("DeviceId"));
                     AppDatabase.getDatabaseInstance(getActivity()).getStudentDao().insert(student);
                     BackupDatabase.backup(getActivity());
@@ -374,56 +351,16 @@ public class AddStudentFragment extends DialogFragment implements AvatarClickLis
             //startActivity(new Intent(getActivity(), ChooseLevelActivity.class));
             splashInterface.onChildAdded();
             dismiss();
-
-//            Bundle bundle = new Bundle();
-//            bundle.putString("", "");
-//            FC_Utility.showFragment(getActivity(), new StudentsFragment(), R.id.student_frame,
-//                    bundle, StudentsFragment.class.getSimpleName());
-
         }
-
     }
 
-
-    /*
-                    <LinearLayout
-        android:id="@+id/ll_class"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_margin="@dimen/_6sdp"
-        android:layout_weight="1"
-        android:orientation="horizontal">
-
-                    <TextView
-        android:layout_width="0dp"
-        android:layout_height="match_parent"
-        android:layout_weight="2"
-        android:gravity="center_vertical"
-        android:text="Class : "
-        android:textAlignment="center"
-        android:textColor="@color/colorBlack"
-        android:textSize="@dimen/_15sdp"
-        android:textStyle="bold" />
-
-                    <Spinner
-        android:id="@+id/spinner_class"
-        android:layout_width="0dp"
-        android:layout_height="match_parent"
-        android:layout_weight="5"
-        android:background="@drawable/custom_spinner"
-        android:entries="@array/age"
-        android:popupBackground="@drawable/choose_level_bg" />
-                </LinearLayout>
-    */
     @Override
     public void onAvatarClick(int position, String StudentName) {
         avatarName = StudentName;
-
         for (int i = 0; i < avatarList.size(); i++)
             avatarList.get(i).setClickFlag(false);
         avatarList.get(position).setClickFlag(true);
         avatarAdapter.notifyDataSetChanged();
 //        avatarName = ApplicationClass.pradigiPath + "/.FCA/English/App_Thumbs/" + StudentName;
-
     }
 }

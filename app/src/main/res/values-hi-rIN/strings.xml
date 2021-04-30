@@ -70,7 +70,7 @@
     <string name="Unsupervised">अप्रशिक्षित</string>
     <string name="Supervised">प्रशिक्षित</string>
     <string name="change_subj">विषय बदलें?</string>
-    <string name="save">बचाएं</string>
+    <string name="save">संग्रहित करें</string>
     <string name="alertmessage">कुछ विकल्प बाकी हैं।</string>
     <string name="usermessage">अब कीवर्ड चुनने के लिए आपकी बारी है।</string>
     <string name="select_language">भाषा चुनिए -</string>
@@ -121,6 +121,7 @@
     <string name="Sync_Time">सिंक का समय</string>
     <string name="Data_synced">सिंक किया गया डेटा</string>
     <string name="Certificate_synced">सिंक किया गया प्रमाणपत्र/सर्टिफिकेट</string>
+    <string name="Enrollment_synced">नामांकित कोर्स सिंक किए गए :</string>
     <string name="Media_synced">सिंक किया गया मीडिया</string>
     <string name="Media_failed">मिडिया विफल रहा</string>
     <string name="data_pushed_successfully">डेटा सफलतापूर्वक भेजा/पुश किया गया</string>

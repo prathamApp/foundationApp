@@ -164,8 +164,11 @@ public class ContentDownloadingTask {
     @Background
     public void downloadCompleted() {
         Log.d(TAG, "updateFileProgress: " + downloadID);
-//        content.setContentType("file");
         ArrayList<ContentTable> temp = new ArrayList<>(levelContents);
+        for(int j=0; j<levelContents.size(); j++){
+            if(content.getResourceId().equalsIgnoreCase(levelContents.get(j).getResourceId()))
+                content = temp.get(j);
+        }
         temp.add(content);
         for (int i = 0; i < temp.size(); i++) {
             temp.get(i).setIsDownloaded("" + true);
@@ -176,15 +179,6 @@ public class ContentDownloadingTask {
                 temp.get(i).setStudentId(FastSave.getInstance().getString(CURRENT_STUDENT_ID, ""));
         }
         IS_DOWNLOADING = false;
- /*       for (ContentTable d : temp) {
-            if (d.getNodeImage() != null) {
-                String img_name = d.getNodeImage().substring(d.getNodeImage().lastIndexOf('/') + 1);
-                d.setNodeImage(img_name);
-            }
-            d.setContentLanguage(FastSave.getInstance().getString(FC_Constants.APP_LANGUAGE, FC_Constants.HINDI));
-            d.isDownloaded = "" + true;
-            d.setOnSDCard(false);
-        }*/
         AppDatabase.getDatabaseInstance(context).getContentTableDao().addContentList(temp);
         onCompleteContentDownloadTase(true);
     }

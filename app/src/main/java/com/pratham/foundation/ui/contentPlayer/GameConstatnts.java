@@ -62,6 +62,7 @@ import com.pratham.foundation.ui.contentPlayer.reading.ReadingFragment_;
 import com.pratham.foundation.ui.contentPlayer.sequenceLayout.SequenceLayout_;
 import com.pratham.foundation.ui.contentPlayer.trueFalse.TrueFalseFragment;
 import com.pratham.foundation.ui.contentPlayer.video_player.ActivityVideoPlayer_;
+import com.pratham.foundation.ui.contentPlayer.webviewpdf.PDFViewActivity_;
 import com.pratham.foundation.ui.contentPlayer.word_writting.WordWritingFragment;
 import com.pratham.foundation.ui.contentPlayer.word_writting.WordWritingFragment_;
 import com.pratham.foundation.utility.FC_Constants;
@@ -298,18 +299,6 @@ public class GameConstatnts implements ShowInstruction {
                 FC_Utility.showFragment((Activity) context, new KeywordMappingFragment_(), R.id.RL_CPA,
                         bundle, KeywordMappingFragment_.class.getSimpleName());
                 break;
-//            case FC_Constants.PDF:
-//            case "PDF":
-//                Intent intent1 = new Intent(context, Fragment_PdfViewer_.class);
-//                intent1.putExtra("contentPath", contentTable1.getResourcePath());
-//                intent1.putExtra("StudentID", FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""));
-//                intent1.putExtra("resId", contentTable1.getResourceId());
-//                intent1.putExtra("contentName", contentTable1.getNodeTitle());
-//                intent1.putExtra("onSdCard", onSdCard);
-//                context.startActivity(intent1);
-//                FC_Utility.showFragment((Activity) context, new Fragment_PdfViewer_(), R.id.RL_CPA,
-//                        bundle, Fragment_PdfViewer.class.getSimpleName());
-//                break;
             case GameConstatnts.THINKANDWRITE:
                 if (FastSave.getInstance().getString(FC_Constants.CURRENT_SUBJECT, "").equalsIgnoreCase("Science")) {
                     FC_Utility.showFragment((Activity) context, new ParagraphWritingFragment_(), R.id.RL_CPA,
@@ -503,12 +492,35 @@ public class GameConstatnts implements ShowInstruction {
                 case FC_Constants.PDF:
                 case "PDF":
                     Intent intent1 = new Intent(context, Fragment_PdfViewer_.class);
+//                    Intent intent1 = new Intent(context, PDFViewActivity_.class);
                     intent1.putExtra("contentPath", contentTable1.getResourcePath());
                     intent1.putExtra("StudentID", FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""));
                     intent1.putExtra("resId", contentTable1.getResourceId());
                     intent1.putExtra("contentName", contentTable1.getNodeTitle());
                     intent1.putExtra("onSdCard", onSdCard);
                     context.startActivity(intent1);
+//                    FC_Utility.showFragment((Activity) context, new Fragment_PdfViewer_(), R.id.RL_CPA,
+//                            bundle, Fragment_PdfViewer.class.getSimpleName());
+                    handler.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            instructionsDialog.dismiss();
+                            //Do something after 100ms
+                        }
+                    }, 100);
+                    break;
+                case "PDF_new":
+                case "PDF_NEW":
+                case "PDF_Zoom":
+                case "PDF_ZOOM":
+//                    Intent intent1 = new Intent(context, Fragment_PdfViewer_.class);
+                    Intent intent2 = new Intent(context, PDFViewActivity_.class);
+                    intent2.putExtra("contentPath", contentTable1.getResourcePath());
+                    intent2.putExtra("StudentID", FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""));
+                    intent2.putExtra("resId", contentTable1.getResourceId());
+                    intent2.putExtra("contentName", contentTable1.getNodeTitle());
+                    intent2.putExtra("onSdCard", onSdCard);
+                    context.startActivity(intent2);
 //                    FC_Utility.showFragment((Activity) context, new Fragment_PdfViewer_(), R.id.RL_CPA,
 //                            bundle, Fragment_PdfViewer.class.getSimpleName());
                     handler.postDelayed(new Runnable() {

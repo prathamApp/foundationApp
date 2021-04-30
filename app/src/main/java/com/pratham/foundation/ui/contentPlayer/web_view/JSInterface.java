@@ -87,101 +87,12 @@ public class JSInterface implements RecognitionListener {
         }
     }
 
-/*
-    @JavascriptInterface
-    public void StudentLevelDetection(int totalScoredMarks, int totalOutOfMarks) {
-        try {
-            float perc = 0f, max = 2.4f, min = 1.1f;
-            float childLevel = 0f, gameLevel = 0f;
-            LevelDBHelper levelDBHelper = new LevelDBHelper(mContext);
-            childLevel = Float.valueOf(levelDBHelper.GetStudentLevelByStdID(WebViewActivity.studentId));
-
-            gameLevel = Float.valueOf(WebViewActivity.gameLevel);
-
-            if (totalOutOfMarks != 0)
-                perc = (((float) totalScoredMarks / totalOutOfMarks) * 100);
-            if ((perc < 40.0f)) {
-                if (childLevel > gameLevel) {
-                    //Reduce Child level
-                    if (childLevel > min) {
-                        if ((perc < 20.0f) && (childLevel > 2.0f)) {
-                            childLevel = Float.valueOf(String.valueOf(childLevel).split("\\.")[0]) - 0.6f;
-                        } else if (perc < 20.0f) {
-                            childLevel -= 0.1f;
-                        } else if (perc > 20.0f && (childLevel > 2.0f)) {
-                            if (String.valueOf(childLevel).split("\\.")[1].equalsIgnoreCase("1")) {
-                                childLevel = Float.valueOf(String.valueOf(childLevel).split("\\.")[0]) - 0.6f;
-                            } else {
-                                childLevel -= 0.1f;
-                            }
-                        }
-                        levelDBHelper.updateStudentLevel(WebViewActivity.studentId, childLevel,""+KksApplication.getCurrentDateTime());
-                    }
-                }
-            } else if (perc > 60.0f) {
-                if (childLevel < gameLevel) {
-                    //Increase Child level
-                    if (childLevel < max) {
-                        if ((perc > 90.0f) && (childLevel < (max - 0.4f))) {
-                            childLevel = Float.valueOf(String.valueOf(childLevel).split("\\.")[0]) + 1.1f;
-                        } else if (perc < 90.0f) {
-                            if (String.valueOf(childLevel).split("\\.")[1].equalsIgnoreCase("4")) {
-                                childLevel += 0.7f;
-                            } else {
-                                childLevel += 0.1f;
-                            }
-                        } else {
-                            childLevel += 0.1f;
-                        }
-                        levelDBHelper.updateStudentLevel(WebViewActivity.studentId, childLevel,""+KksApplication.getCurrentDateTime());
-                    }
-                }
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-*/
-
     @JavascriptInterface
     public void StudentCertification(int scoredMarks, int totalMarks, String certiCode) {
         boolean oldFlg = false;
         WebViewActivity.sMarks = scoredMarks;
         WebViewActivity.tMarks = totalMarks;
         WebViewActivity.cCode = certiCode;
-
-//        if (!WebViewActivity.certificateModelClassList.isEmpty()) {
-//
-//            for (int i = 0; i < WebViewActivity.certificateModelClassList.size(); i++) {
-//                if (WebViewActivity.certificateModelClassList.get(i).getCertiCode().equalsIgnoreCase(certiCode)) {
-//                    oldFlg=true;
-//                    break;
-//                }
-//            }
-//            if(!oldFlg){
-//                CertificateModelClass modelClass = new CertificateModelClass();
-//                modelClass.setTotalMarks(totalMarks);
-//                modelClass.setScoredMarks(scoredMarks);
-//                modelClass.setCertiCode(certiCode);
-//                WebViewActivity.certificateModelClassList.add(modelClass);
-//            }
-//            else{
-//                for (int i = 0; i < WebViewActivity.certificateModelClassList.size(); i++) {
-//                    if (WebViewActivity.certificateModelClassList.get(i).getCertiCode().equalsIgnoreCase(certiCode)) {
-//                        WebViewActivity.certificateModelClassList.get(i).setScoredMarks(WebViewActivity.certificateModelClassList.get(i).getScoredMarks() + scoredMarks);
-//                        WebViewActivity.certificateModelClassList.get(i).setTotalMarks(WebViewActivity.certificateModelClassList.get(i).getTotalMarks() + totalMarks);
-//                        break;
-//                    }
-//                }
-//            }
-//        }
-//        else{
-//            CertificateModelClass modelClass = new CertificateModelClass();
-//            modelClass.setTotalMarks(totalMarks);
-//            modelClass.setScoredMarks(scoredMarks);
-//            modelClass.setCertiCode(certiCode);
-//            WebViewActivity.certificateModelClassList.add(modelClass);
-//        }
     }
 
     @JavascriptInterface

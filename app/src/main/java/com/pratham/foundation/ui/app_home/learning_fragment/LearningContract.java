@@ -88,5 +88,9 @@ public interface LearningContract {
         void getBottomNavId(int currentLevelNo, String cosSection);
 
         void deleteContent(int parentPos, int childPos, ContentTable contentTableItem);
+
+        void addScoreToDB(String resId);
+
+        void removeLastNodeId2();
     }
 }

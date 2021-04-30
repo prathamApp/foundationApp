@@ -5,6 +5,14 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
+    <com.pratham.foundation.customView.fontsview.SansTextView
+        android:id="@+id/version_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/ll_bts"
+        android:layout_centerHorizontal="true"
+        android:text=""/>
+
     <RelativeLayout
         android:id="@+id/rl_top"
         android:layout_width="match_parent"
@@ -54,8 +62,8 @@
 
         <ImageView
             android:id="@+id/go_next"
-            android:layout_width="30dp"
-            android:layout_height="60dp"
+            android:layout_width="50dp"
+            android:layout_height="100dp"
             android:layout_alignParentEnd="true"
             android:layout_centerVertical="true"
             android:visibility="gone"
@@ -65,6 +73,7 @@
     </RelativeLayout>
 
     <LinearLayout
+        android:id="@+id/ll_bts"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/rl_recy"

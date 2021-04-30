@@ -6,6 +6,8 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Handler;
@@ -62,6 +64,7 @@ import java.util.UUID;
 
 import static com.pratham.foundation.ApplicationClass.ButtonClickSound;
 import static com.pratham.foundation.ui.splash_activity.SplashActivity.fragmentBottomOpenFlg;
+import static com.pratham.foundation.utility.FC_Constants.APP_VERSION;
 import static com.pratham.foundation.utility.FC_Constants.INDIVIDUAL_MODE;
 import static com.pratham.foundation.utility.FC_Constants.SPLASH_OPEN;
 
@@ -84,6 +87,8 @@ public class BottomStudentsFragment extends BottomSheetDialogFragment
     ImageView pratham_login;
     @ViewById(R.id.go_next)
     ImageView go_next;
+    @ViewById(R.id.version_tv)
+    TextView version_tv;
 
     private ArrayList avatars = new ArrayList();
     private List<StudentAndGroup_BottomFragmentModal> fragmentModalsList;
@@ -109,6 +114,16 @@ public class BottomStudentsFragment extends BottomSheetDialogFragment
                 btn_download_all_data.setVisibility(View.VISIBLE);
             }
         presenter.showStudents();
+        PackageInfo pInfo = null;
+        String verCode = "";
+        try {
+            pInfo = context.getPackageManager().getPackageInfo(context.getPackageName(), 0);
+            verCode = pInfo.versionName;
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+        }
+        FastSave.getInstance().saveString(APP_VERSION, verCode);
+        version_tv.setText("v"+verCode);
     }
 
     @Click(R.id.btn_Enrollment)
@@ -461,6 +476,7 @@ public class BottomStudentsFragment extends BottomSheetDialogFragment
             FastSave.getInstance().saveString(FC_Constants.CURRENT_STUDENT_ID, "" + bottomFragmentModal.getStudentID());
             FastSave.getInstance().saveString(FC_Constants.CURRENT_STUDENT_NAME, "" + bottomFragmentModal.getFullName());
             FastSave.getInstance().saveString(FC_Constants.CURRENT_API_STUDENT_ID, "" + bottomFragmentModal.getStudentID());
+//            FastSave.getInstance().saveString(FC_Constants.CURRENT_STUDENT_PROGRAM_ID, "" + bottomFragmentModal.getProgramID());
             presenter.updateStudentData();
             FastSave.getInstance().saveBoolean(SPLASH_OPEN, false);
         }
@@ -478,6 +494,7 @@ public class BottomStudentsFragment extends BottomSheetDialogFragment
         go_next.setVisibility(View.VISIBLE);
         groupID = studentId;
         groupName = studentName;
+//        FastSave.getInstance().saveString(FC_Constants.CURRENT_STUDENT_PROGRAM_ID, "" + programID);
         presenter.getStudentsFromGroup(studentId);
 /*        if (!SPLASH_OPEN)
             endSession();

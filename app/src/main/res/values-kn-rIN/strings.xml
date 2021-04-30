@@ -121,6 +121,7 @@
     <string name="Sync_Time">ಸಿಂಕ್ ನ ಸಮಯ :</string>
     <string name="Data_synced">ಡೇಟಾ ಸಿಂಕ್ ಆಗಿದೆ :</string>
     <string name="Certificate_synced">ಪ್ರಮಾಣಪತ್ರ ಸಿಂಕ್ ಆಗಿದೆ :</string>
+    <string name="Enrollment_synced">ದಾಖಲಾದ ಕೋರ್ಸ್‌ಗಳನ್ನು ಸಿಂಕ್ ಮಾಡಲಾಗಿದೆ :</string>
     <string name="Media_synced">ಮೀಡಿಯಾ ಸಿಂಕ್ ಆಗಿದೆ :</string>
     <string name="Media_failed">ಮೀಡಿಯಾ ವಿಫಲವಾಗಿದೆ :</string>
     <string name="data_pushed_successfully">ಡೇಟಾವನ್ನು ಯಶಸ್ವಿಯಾಗಿ ಪುಶ್/ತಳ್ಳಲಾಗಿದೆ</string>

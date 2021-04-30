@@ -3,6 +3,7 @@ package com.pratham.foundation.ui.contentPlayer.video_player;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 import android.util.SparseArray;
 import android.widget.ImageButton;
 import android.widget.Toast;
@@ -48,12 +49,13 @@ public class ActivityVideoPlayer extends BaseActivity {
     CustomExoPlayerView videoView;
     @ViewById(R.id.close_video)
     ImageButton close_video;
+    String TAG = "ActivityVideoPlayer_1";
 //    @ViewById(R.id.player_control_view)
 //    PlayerControlView player_control_view;
 
     Context context;
-    private String contentType, contentPath, contentName, startTime = "no_resource", resId;
-    private long videoDuration = 0;
+    private String contentType, contentPath, contentName, startTime = "no_resource", resId, endTime;
+    private long videoDuration = 0, seekPos = 0;
 //    private Modal_AajKaSawal videoSawal = null;
     private boolean initialized = false,onSdCard;
     private boolean isVideoEnded = false;
@@ -61,17 +63,7 @@ public class ActivityVideoPlayer extends BaseActivity {
     @SuppressLint("StaticFieldLeak")
     @AfterViews
     public void initialize() {
-
-//        context = getActivity();
-//        Bundle bundle = getArguments();
         context = this;
-//        Bundle bundle = getArguments();
-//        contentType = bundle.getString("contentType");
-//        contentPath = bundle.getString("contentPath");
-//        resId = bundle.getString("resId");
-//        contentName = bundle.getString("contentName");
-//        onSdCard = bundle.getBoolean("onSdCard", false);
-
         Intent intent = getIntent();
         contentPath = intent.getStringExtra("contentPath");
         resId       = intent.getStringExtra("resId");
@@ -79,12 +71,7 @@ public class ActivityVideoPlayer extends BaseActivity {
         contentType = intent.getStringExtra("contentType");
         onSdCard    = intent.getBooleanExtra("onSdCard", false);
 
-//        contentType = FC_Constants.YOUTUBE_LINK;
-//        contentPath = "https://youtu.be/XsJTztRwem4";
-//        contentPath =  Environment.getExternalStorageDirectory().toString() + "/.FCAInternal/fractions_with_shapes- video.m4v";
-//        onSdCard = false;
         if(contentType!=null && contentType.equalsIgnoreCase(FC_Constants.YOUTUBE_LINK)) {
-//            new YouTubeExtractor(Objects.requireNonNull(getActivity())) {
             new YouTubeExtractor(Objects.requireNonNull(context)) {
                 @Override
                 protected void onExtractionComplete(SparseArray<YtFile> ytFiles, VideoMeta videoMeta) {
@@ -98,7 +85,6 @@ public class ActivityVideoPlayer extends BaseActivity {
                         }
                         initializePlayer(url);
                     } else {
-//                        Toast.makeText(getActivity(), "Video cannot be played", Toast.LENGTH_SHORT).show();
                         Toast.makeText(context, "Video cannot be played", Toast.LENGTH_SHORT).show();
                     }
                 }
@@ -108,7 +94,6 @@ public class ActivityVideoPlayer extends BaseActivity {
                 contentPath = ApplicationClass.contentSDPath + gameFolderPath + "/" + contentPath;
             else
                 contentPath = ApplicationClass.foundationPath + gameFolderPath + "/" + contentPath;
-//            contentPath =  Environment.getExternalStorageDirectory().toString() + "/.FCAInternal/fractions_with_shapes- video.m4v";
             initializePlayer(contentPath);
         }
     }
@@ -125,6 +110,7 @@ public class ActivityVideoPlayer extends BaseActivity {
             @Override
             public void onStart() {
                 if (!initialized) {
+                    seekPos = videoView.getPlayer().getCurrentPosition();
                     startTime = FC_Utility.getCurrentDateTime();
                     videoDuration = videoView.getPlayer().getDuration();
                     initialized = true;
@@ -134,7 +120,6 @@ public class ActivityVideoPlayer extends BaseActivity {
             @Override
             public void onEnded() {
                 if (!isVideoEnded) {
-                    addScoreToDB();
                     isVideoEnded = true;
                 }
             }
@@ -143,8 +128,10 @@ public class ActivityVideoPlayer extends BaseActivity {
 
     @Override
     public void onPause() {
-        super.onPause();
+        seekPos = videoView.getPlayer().getCurrentPosition();
+        Log.d(TAG, "addScoreToDB: seekPos:  "+seekPos);
         videoView.pausePlayer();
+        super.onPause();
     }
 
     @Override
@@ -175,15 +162,19 @@ public class ActivityVideoPlayer extends BaseActivity {
 
     @Background
     public void addScoreToDB() {
-        String endTime = FC_Utility.getCurrentDateTime();
-        float scoredMarksInt = (float) FC_Utility.getTimeDifference(startTime, endTime);
+            endTime = FC_Utility.getCurrentDateTime();
+        seekPos = videoView.getPlayer().getCurrentPosition();
+        Log.d(TAG, "addScoreToDB: seekPos:  "+seekPos);
+        int perc = 0;
+        perc = (int) ((seekPos / (float) videoDuration) * 100);
+//        float scoredMarksInt = (float) FC_Utility.getTimeDifference(startTime, endTime);
         Score modalScore = new Score();
         modalScore.setSessionID(FastSave.getInstance().getString(FC_Constants.CURRENT_SESSION, ""));
         modalScore.setStudentID("" + FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""));
         modalScore.setDeviceID(FC_Utility.getDeviceID());
         modalScore.setResourceID(resId);
         modalScore.setQuestionId(0);
-        modalScore.setScoredMarks((int) FC_Utility.getTimeDifference(startTime, endTime));
+        modalScore.setScoredMarks((int) seekPos);
         modalScore.setTotalMarks((int) videoDuration);
         modalScore.setStartDateTime(startTime);
         modalScore.setEndDateTime(endTime);
@@ -191,8 +182,7 @@ public class ActivityVideoPlayer extends BaseActivity {
         modalScore.setLabel(""+contentType);
         modalScore.setSentFlag(0);
         AppDatabase.getDatabaseInstance(context).getScoreDao().insert(modalScore);
-        float perc = 0f;
-        perc = (scoredMarksInt / (float) videoDuration) * 100;
+        Log.d(TAG, "addScoreToDB: perc:  "+perc);
         addContentProgress(perc, "resourceProgress");
     }
 

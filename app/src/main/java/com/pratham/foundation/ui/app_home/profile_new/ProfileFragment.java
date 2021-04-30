@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
+import android.os.Environment;
 import android.os.Handler;
 import android.util.Log;
 import android.view.Gravity;
@@ -15,16 +16,12 @@ import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.ImageButton;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 
 import androidx.annotation.UiThread;
 import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.DefaultItemAnimator;
-import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
 import com.airbnb.lottie.LottieAnimationView;
 import com.facebook.drawee.view.SimpleDraweeView;
@@ -33,17 +30,17 @@ import com.google.gson.reflect.TypeToken;
 import com.pratham.foundation.ApplicationClass;
 import com.pratham.foundation.R;
 import com.pratham.foundation.async.API_Content;
+import com.pratham.foundation.async.PushDataBaseZipToServer;
 import com.pratham.foundation.async.PushDataToServer_New;
 import com.pratham.foundation.customView.BlurPopupDialog.BlurPopupWindow;
-import com.pratham.foundation.customView.GridSpacingItemDecoration;
 import com.pratham.foundation.customView.display_image_dialog.CustomLodingDialog;
 import com.pratham.foundation.customView.showcaseviewlib.GuideView;
 import com.pratham.foundation.customView.showcaseviewlib.config.DismissType;
 import com.pratham.foundation.database.AppDatabase;
 import com.pratham.foundation.database.BackupDatabase;
+import com.pratham.foundation.database.domain.Modal_Log;
 import com.pratham.foundation.interfaces.API_Content_Result;
 import com.pratham.foundation.modalclasses.EventMessage;
-import com.pratham.foundation.modalclasses.ModalTopCertificates;
 import com.pratham.foundation.modalclasses.Modal_InternetTime;
 import com.pratham.foundation.services.shared_preferences.FastSave;
 import com.pratham.foundation.ui.admin_panel.MenuActivity_;
@@ -53,6 +50,7 @@ import com.pratham.foundation.ui.app_home.profile_new.course_enrollment.CourseEn
 import com.pratham.foundation.ui.app_home.profile_new.display_image_ques_list.DisplayImageQuesActivity_;
 import com.pratham.foundation.ui.bottom_fragment.BottomStudentsFragment;
 import com.pratham.foundation.ui.bottom_fragment.BottomStudentsFragment_;
+import com.pratham.foundation.ui.contentPlayer.webviewpdf.PDFViewActivity_;
 import com.pratham.foundation.utility.FC_Constants;
 import com.pratham.foundation.utility.FC_Utility;
 
@@ -70,25 +68,22 @@ import org.greenrobot.eventbus.ThreadMode;
 import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.Type;
-import java.text.DecimalFormat;
-import java.util.Collections;
-import java.util.List;
 import java.util.Objects;
 
 import static com.pratham.foundation.ApplicationClass.App_Thumbs_Path;
 import static com.pratham.foundation.ApplicationClass.ButtonClickSound;
 import static com.pratham.foundation.ui.app_home.HomeActivity.header_rl;
 import static com.pratham.foundation.utility.FC_Constants.APP_SECTION;
+import static com.pratham.foundation.utility.FC_Constants.APP_VERSION;
+import static com.pratham.foundation.utility.FC_Constants.BUILD_DATE;
 import static com.pratham.foundation.utility.FC_Constants.GROUP_MODE;
 import static com.pratham.foundation.utility.FC_Constants.INDIVIDUAL_MODE;
 import static com.pratham.foundation.utility.FC_Constants.LOGIN_MODE;
 import static com.pratham.foundation.utility.FC_Constants.PROFILE_FRAGMENT_SHOWCASE;
 import static com.pratham.foundation.utility.FC_Constants.SPLASH_OPEN;
 import static com.pratham.foundation.utility.FC_Constants.StudentPhotoPath;
-import static com.pratham.foundation.utility.FC_Constants.progressArray;
 import static com.pratham.foundation.utility.FC_Constants.sec_Profile;
 import static com.pratham.foundation.utility.FC_Utility.decimalFormat;
-import static com.pratham.foundation.utility.FC_Utility.dpToPx;
 import static com.pratham.foundation.utility.FC_Utility.folderSize;
 import static com.pratham.foundation.utility.FC_Utility.get12HrTime;
 import static com.pratham.foundation.utility.FC_Utility.getRandomFemaleAvatar;
@@ -96,19 +91,19 @@ import static com.pratham.foundation.utility.FC_Utility.getRandomMaleAvatar;
 
 
 @EFragment(R.layout.fragment_profile)
-public class ProfileFragment extends Fragment implements ProfileContract.ProfileView, ProfileContract.ProfileItemClicked, API_Content_Result {
+public class ProfileFragment extends Fragment implements ProfileContract.ProfileView, API_Content_Result {
 
     @Bean(ProfilePresenter.class)
     ProfileContract.ProfilePresenter presenter;
 
-    @ViewById(R.id.my_recycler_view)
-    RecyclerView my_recycler_view;
     @ViewById(R.id.tv_studentName)
     TextView tv_studentName;
     @ViewById(R.id.tv_usage)
     TextView tv_usage;
     @ViewById(R.id.tv_days)
     TextView tv_days;
+    @ViewById(R.id.version_tv)
+    TextView version_tv;
     @ViewById(R.id.certi1_perc)
     TextView certi1_perc;
     @ViewById(R.id.certi1_subj)
@@ -127,13 +122,10 @@ public class ProfileFragment extends Fragment implements ProfileContract.Profile
     RelativeLayout rl_certi2;
     @ViewById(R.id.rl_certi3)
     RelativeLayout rl_certi3;
-    @ViewById(R.id.ib_langChange)
-    ImageButton ib_langChange;
     @ViewById(R.id.card_img)
     SimpleDraweeView card_img;
 
     //    String[] progressArray = {"Progress", "Share"};
-    private ProfileOuterDataAdapter adapterParent;
     Context context;
     private GuideView mGuideView;
     private GuideView.Builder builder;
@@ -148,6 +140,7 @@ public class ProfileFragment extends Fragment implements ProfileContract.Profile
             if (!FastSave.getInstance().getBoolean(PROFILE_FRAGMENT_SHOWCASE, false))
                 new Handler().postDelayed(this::setShowcaseView, 1200);
         }
+        version_tv.setText("v" + FastSave.getInstance().getString(APP_VERSION, ""));
     }
 
     @UiThread
@@ -187,7 +180,7 @@ public class ProfileFragment extends Fragment implements ProfileContract.Profile
 
     @SuppressLint("SetTextI18n")
     @Subscribe(threadMode = ThreadMode.MAIN)
-    public void messageReceived(EventMessage message) {
+    public void geReceived(EventMessage message) {
         if (FastSave.getInstance().getString(APP_SECTION, "").equalsIgnoreCase(sec_Profile)) {
             if (message.getMessage().equalsIgnoreCase(FC_Constants.FRAGMENT_SELECTED) ||
                     message.getMessage().equalsIgnoreCase(FC_Constants.FRAGMENT_RESELECTED) ||
@@ -196,23 +189,15 @@ public class ProfileFragment extends Fragment implements ProfileContract.Profile
                 fragmentSelected();
                 if (!FastSave.getInstance().getBoolean(PROFILE_FRAGMENT_SHOWCASE, false))
                     new Handler().postDelayed(this::setShowcaseView, 1000);
-            }
+            } else if (message.getMessage().equalsIgnoreCase(FC_Constants.BACK_PRESSED))
+                Objects.requireNonNull(getActivity()).finish();
         }
     }
 
     private void fragmentSelected() {
         tv_studentName.setText("" + FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_NAME, "Student"));
-        if (adapterParent == null) {
-            adapterParent = new ProfileOuterDataAdapter(context, progressArray, this);
-            RecyclerView.LayoutManager mLayoutManager = new GridLayoutManager(context, 1);
-            my_recycler_view.setLayoutManager(mLayoutManager);
-            my_recycler_view.addItemDecoration(new GridSpacingItemDecoration(1, dpToPx(context), true));
-            my_recycler_view.setItemAnimator(new DefaultItemAnimator());
-            my_recycler_view.setAdapter(adapterParent);
-        }
         setImage();
-        ib_langChange.setVisibility(View.GONE);
-        presenter.getCertificateCount();
+        //        presenter.getCertificateCount();
         presenter.getActiveData();
     }
 
@@ -294,6 +279,7 @@ public class ProfileFragment extends Fragment implements ProfileContract.Profile
         }
     }
 
+/*
     @UiThread
     @Override
     public void setCertificateCount(List<ModalTopCertificates> modalTopCertificatesList) {
@@ -327,57 +313,17 @@ public class ProfileFragment extends Fragment implements ProfileContract.Profile
             e.printStackTrace();
         }
     }
+*/
 
-    @Override
-    public void itemClicked(String usage) {
-        try {
-            ButtonClickSound.start();
-        } catch (IllegalStateException e) {
-            e.printStackTrace();
-        }
-        switch (usage) {
-            case "Sync Data":
-                pushData();
-                break;
-            case "Certificate":
-                showCertificates();
-                break;
-            case "Projects":
-                break;
-            case "Usage":
-                showUsage();
-                break;
-            case "ImageQues":
-                showImageQues();
-                break;
-            case "sync status":
-                showSyncStatus();
-                break;
-            case "ChitChat":
-                showChitChat();
-                break;
-            case "Share Content":
-                break;
-            case "Share App":
-                break;
-            case "free space":
-                cleanStorage();
-                break;
-            case "Lang_ic":
-                show_STT_Dialog();
-                break;
-            case "enroll_course":
-                enrollCourse();
-                break;
-            case "change_time":
-                changeTime();
-                break;
-            case "tab_usage":
-                showUsage();
-                break;
-        }
+    private void openPDF() {
+        Intent mainNew = new Intent(context, PDFViewActivity_.class);
+        mainNew.putExtra("resPath", Environment.getExternalStorageDirectory() + "/CRF1100L.pdf");
+        mainNew.putExtra("resId", "1111");
+        mainNew.putExtra("gameLevel", "1");
+        startActivity(mainNew);
     }
 
+    @Click(R.id.rl_Set_Date_and_Time)
     @UiThread
     public void changeTime() {
         if (FC_Utility.isDataConnectionAvailable(context)) {
@@ -432,18 +378,23 @@ public class ProfileFragment extends Fragment implements ProfileContract.Profile
         }
     }
 
+    @Click(R.id.rl_usage)
     @UiThread
     public void showUsage() {
         Intent intent = new Intent(getActivity(), TabUsageActivity_.class);
         startActivityForResult(intent, 1);
     }
 
-    private void enrollCourse() {
+    @Click(R.id.rl_enroll_course)
+    @UiThread
+    public void enrollCourse() {
 //        Toast.makeText(context, "Course Enrollment", Toast.LENGTH_SHORT).show();
         startActivity(new Intent(context, CourseEnrollmentActivity_.class));
     }
 
-    private void show_STT_Dialog() {
+    @Click(R.id.rl_lang_pack)
+    @UiThread
+    public void show_STT_Dialog() {
         Intent intent = new Intent(Intent.ACTION_MAIN);
         intent.setComponent(new ComponentName("com.google.android.googlequicksearchbox",
                 "com.google.android.voicesearch.greco3.languagepack.InstallActivity"));
@@ -454,8 +405,48 @@ public class ProfileFragment extends Fragment implements ProfileContract.Profile
     @Bean(PushDataToServer_New.class)
     PushDataToServer_New pushDataToServer;
 
-    private void pushData() {
+    @Bean(PushDataBaseZipToServer.class)
+    PushDataBaseZipToServer pushDataBaseZipToServer;
+
+    @Click(R.id.rl_sync)
+    public void pushData() {
         pushDataToServer.startDataPush(context, true);
+    }
+
+    @UiThread
+    @Click(R.id.rl_db_sync_pack)
+    public void pushDatabaseFile() {
+        if (FC_Utility.isDataConnectionAvailable(context)) {
+            showLoader();
+            try {
+                Modal_Log log = new Modal_Log();
+                log.setCurrentDateTime(FC_Utility.getCurrentDateTime());
+                log.setErrorType(" ");
+                log.setExceptionMessage("DB_ZIP_Push");
+                log.setMethodName("");
+                log.setSessionId("" + FastSave.getInstance().getString(FC_Constants.CURRENT_SESSION, ""));
+                log.setGroupId("");
+                log.setExceptionStackTrace("APK BUILD DATE : " + BUILD_DATE);
+                log.setDeviceId("" + FC_Utility.getDeviceID());
+                log.setCurrentDateTime("" + FC_Utility.getCurrentDateTime());
+                AppDatabase.getDatabaseInstance(context).getLogsDao().insertLog(log);
+                BackupDatabase.backup(context);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+/*
+            File backupsDir = new File(Environment.getExternalStorageDirectory().toString() + "/PrathamBackups/");
+            File[] db_files = backupsDir.listFiles();
+            if(db_files!=null)
+                for(int i=0; i<db_files.length;i++){
+                    if(db_files[i].exists() && db_files[i].isFile() && db_files[i].getName().contains("foundation"))
+                        db_files[i].delete();
+                }
+*/
+            BackupDatabase.backup(context);
+            dismissLoadingDialog();
+            pushDataBaseZipToServer.startDataPush(context, true);
+        }
     }
 
     private void cleanStorage() {
@@ -550,6 +541,7 @@ public class ProfileFragment extends Fragment implements ProfileContract.Profile
     }
 
 
+    @Click(R.id.rl_sync_status)
     @SuppressLint("SetTextI18n")
     @UiThread
     public void showSyncStatus() {
@@ -570,27 +562,26 @@ public class ProfileFragment extends Fragment implements ProfileContract.Profile
 
         dia_title.setText(getResources().getString(R.string.Sync_Time) + " " + FastSave.getInstance().getString(FC_Constants.SYNC_TIME, "NA")
                         + "\n" + getResources().getString(R.string.Data_synced) + " " + FastSave.getInstance().getString(FC_Constants.SYNC_DATA_LENGTH, "0")
-//                        + "\n" + getResources().getString(R.string.Certificate_synced) + " " + FastSave.getInstance().getString(FC_Constants.SYNC_CERTI_LENGTH, "0")
+                        + "\n" + getResources().getString(R.string.Enrollment_synced) + " " + FastSave.getInstance().getString(FC_Constants.SYNC_COURSE_ENROLLMENT_LENGTH, "0")
                         + "\n" + getResources().getString(R.string.Media_synced) + " " + FastSave.getInstance().getString(FC_Constants.SYNC_MEDIA_LENGTH, "0")
                 /*+"Media failed : "+failed_ImageLength*/);
         exitDialog.show();
     }
 
-    private void showChitChat() {
+    @Click(R.id.rl_chat_l5)
+    @UiThread
+    public void showChitChat() {
         startActivity(new Intent(context, DisplayChatActivity_.class));
     }
 
-    private void showImageQues() {
+    @Click(R.id.rl_imgq)
+    @UiThread
+    public void showImageQues() {
         startActivity(new Intent(context, DisplayImageQuesActivity_.class));
     }
 
     private void showCertificates() {
 //        startActivity(new Intent(context, CertificateDisplayActivity_.class));
-    }
-
-    @Click(R.id.ib_langChange)
-    public void langChangeButtonClick() {
-        showLanguageSelectionDialog();
     }
 
     @SuppressLint("SetTextI18n")
@@ -698,6 +689,7 @@ public class ProfileFragment extends Fragment implements ProfileContract.Profile
     }
 
     BlurPopupWindow changeDateDialog;
+
     @SuppressLint("SetTextI18n")
     private void showChangeDateDialog(String newDate, String sTime) {
         try {

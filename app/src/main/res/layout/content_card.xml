@@ -66,6 +66,21 @@
             app:roundingBorderColor="@color/white"
             app:roundingBorderWidth="@dimen/_2sdp"/>
 
+        <com.pratham.foundation.customView.fontsview.SansTextViewBold
+            android:id="@+id/tv_progress"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/progress_background3"
+            android:paddingStart="@dimen/_8sdp"
+            android:paddingEnd="@dimen/_8sdp"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="@dimen/_5sdp"
+            android:elevation="2dp"
+            android:text="0%"
+            android:visibility="visible"
+            android:textColor="@color/colorText"
+            android:textSize="@dimen/_10sdp" />
+
         <ImageView
             android:id="@+id/ib_update_btn"
             android:layout_width="@dimen/_35sdp"

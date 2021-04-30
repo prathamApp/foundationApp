@@ -166,11 +166,6 @@ public class DisplayChatActivity extends BaseActivity implements
 
     @Override
     public void gotoQuestions(Score scoreDisp) {
-        //TODO OPEN Fragment and show data
-//        Toast.makeText(this, "gotoCertificate", Toast.LENGTH_SHORT).show();
-//        Intent intent = new Intent(this, ShowImgQuestionActivity_.class);
-//        intent.putExtra("scoreDisp", scoreDisp);
-//        startActivity(intent);
         showCertificate = true;
         hideCertificates(scoreDisp);
     }

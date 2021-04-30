@@ -211,7 +211,7 @@ public class SplashPresenter implements SplashContract.SplashPresenter {
                 try {
                     Cursor content_cursor;
 //                            appDatabase.getContentTableDao().clearDB();
-                    content_cursor = db.rawQuery("SELECT * FROM CourseEnrolled", null);
+                    content_cursor = db.rawQuery("SELECT * FROM CourseEnrolled Where sentFlag=0", null);
                     //populate contents
                     List<Model_CourseEnrollment> courseEnrollmentList = new ArrayList<>();
                     if (content_cursor.moveToFirst()) {
@@ -221,13 +221,13 @@ public class SplashPresenter implements SplashContract.SplashPresenter {
                             detail.setGroupId("" + content_cursor.getString(content_cursor.getColumnIndex("groupId")));
                             detail.setPlanFromDate("" + content_cursor.getString(content_cursor.getColumnIndex("planFromDate")));
                             detail.setPlanToDate("" + content_cursor.getString(content_cursor.getColumnIndex("planToDate")));
-                            detail.setCoachVerified(Boolean.parseBoolean("" + content_cursor.getString(content_cursor.getColumnIndex("coachVerified"))));
+                            detail.setCoachVerified(+ content_cursor.getInt(content_cursor.getColumnIndex("coachVerified")));
                             detail.setCoachVerificationDate("" + content_cursor.getString(content_cursor.getColumnIndex("coachVerificationDate")));
                             detail.setCourseExperience("" + content_cursor.getString(content_cursor.getColumnIndex("courseExperience")));
                             detail.setCourse_status("" + content_cursor.getString(content_cursor.getColumnIndex("courseCompleted")));
                             detail.setCoachImage("" + content_cursor.getString(content_cursor.getColumnIndex("coachImage")));
                             detail.setLanguage("" + content_cursor.getString(content_cursor.getColumnIndex("language")));
-                            detail.setSentFlag(content_cursor.getInt(content_cursor.getColumnIndex("level")));
+                            detail.setSentFlag(content_cursor.getInt(content_cursor.getColumnIndex("sentFlag")));
                             courseEnrollmentList.add(detail);
                             content_cursor.moveToNext();
                         }
@@ -751,6 +751,7 @@ public class SplashPresenter implements SplashContract.SplashPresenter {
                                     detail.setContentType("" + content_cursor.getString(content_cursor.getColumnIndex("contentType")));
                                     detail.setIsDownloaded("" + content_cursor.getString(content_cursor.getColumnIndex("isDownloaded")));
                                     detail.setVersion("" + content_cursor.getString(content_cursor.getColumnIndex("version")));
+//                                    detail.setProgramid("" + content_cursor.getString(content_cursor.getColumnIndex("programid")));
                                     try {
                                         String origNodeId = "" + content_cursor.getString(content_cursor.getColumnIndex("origNodeVersion"));
                                         detail.setOrigNodeVersion("" + origNodeId);
@@ -775,7 +776,7 @@ public class SplashPresenter implements SplashContract.SplashPresenter {
                         }
                         try {
                             Cursor content_cursor;
-                            content_cursor = db.rawQuery("SELECT * FROM CourseEnrolled", null);
+                            content_cursor = db.rawQuery("SELECT * FROM CourseEnrolled Where sentFlag=0", null);
                             //populate contents
                             List<Model_CourseEnrollment> courseEnrollmentList = new ArrayList<>();
                             if (content_cursor.moveToFirst()) {
@@ -785,13 +786,13 @@ public class SplashPresenter implements SplashContract.SplashPresenter {
                                     detail.setGroupId("" + content_cursor.getString(content_cursor.getColumnIndex("groupId")));
                                     detail.setPlanFromDate("" + content_cursor.getString(content_cursor.getColumnIndex("planFromDate")));
                                     detail.setPlanToDate("" + content_cursor.getString(content_cursor.getColumnIndex("planToDate")));
-                                    detail.setCoachVerified(Boolean.parseBoolean("" + content_cursor.getString(content_cursor.getColumnIndex("coachVerified"))));
+                                    detail.setCoachVerified(content_cursor.getInt(content_cursor.getColumnIndex("coachVerified")));
                                     detail.setCoachVerificationDate("" + content_cursor.getString(content_cursor.getColumnIndex("coachVerificationDate")));
                                     detail.setCourseExperience("" + content_cursor.getString(content_cursor.getColumnIndex("courseExperience")));
                                     detail.setCourse_status("" + content_cursor.getString(content_cursor.getColumnIndex("courseCompleted")));
                                     detail.setCoachImage("" + content_cursor.getString(content_cursor.getColumnIndex("coachImage")));
                                     detail.setLanguage("" + content_cursor.getString(content_cursor.getColumnIndex("language")));
-                                    detail.setSentFlag(content_cursor.getInt(content_cursor.getColumnIndex("level")));
+                                    detail.setSentFlag(content_cursor.getInt(content_cursor.getColumnIndex("sentFlag")));
                                     courseEnrollmentList.add(detail);
                                     content_cursor.moveToNext();
                                 }
@@ -1048,6 +1049,7 @@ public class SplashPresenter implements SplashContract.SplashPresenter {
                                             detail.setContentType("" + content_cursor.getString(content_cursor.getColumnIndex("contentType")));
                                             detail.setIsDownloaded("" + content_cursor.getString(content_cursor.getColumnIndex("isDownloaded")));
                                             detail.setVersion(content_cursor.getString(content_cursor.getColumnIndex("version")));
+//                                            detail.setProgramid(content_cursor.getString(content_cursor.getColumnIndex("programid")));
                                             detail.setOrigNodeVersion(content_cursor.getString(content_cursor.getColumnIndex("origNodeVersion")));
                                             detail.setSubject(content_cursor.getString(content_cursor.getColumnIndex("subject")));
                                             detail.setSeq_no(content_cursor.getInt(content_cursor.getColumnIndex("seq_no")));
@@ -1062,7 +1064,7 @@ public class SplashPresenter implements SplashContract.SplashPresenter {
                                     content_cursor.close();
 //                            appDatabase.getContentTableDao().clearDB();
                                     Cursor content_cursor2;
-                                    content_cursor2 = db.rawQuery("SELECT * FROM CourseEnrolled", null);
+                                    content_cursor2 = db.rawQuery("SELECT * FROM CourseEnrolled Where sentFlag=0", null);
                                     //populate contents
                                     List<Model_CourseEnrollment> courseEnrollmentList = new ArrayList<>();
                                     if (content_cursor2.moveToFirst()) {
@@ -1072,13 +1074,13 @@ public class SplashPresenter implements SplashContract.SplashPresenter {
                                             detail.setGroupId("" + content_cursor2.getString(content_cursor2.getColumnIndex("groupId")));
                                             detail.setPlanFromDate("" + content_cursor2.getString(content_cursor2.getColumnIndex("planFromDate")));
                                             detail.setPlanToDate("" + content_cursor2.getString(content_cursor2.getColumnIndex("planToDate")));
-                                            detail.setCoachVerified(Boolean.parseBoolean("" + content_cursor2.getString(content_cursor2.getColumnIndex("coachVerified"))));
+                                            detail.setCoachVerified(content_cursor2.getInt(content_cursor2.getColumnIndex("coachVerified")));
                                             detail.setCoachVerificationDate("" + content_cursor2.getString(content_cursor2.getColumnIndex("coachVerificationDate")));
                                             detail.setCourseExperience("" + content_cursor2.getString(content_cursor2.getColumnIndex("courseExperience")));
                                             detail.setCourse_status("" + content_cursor2.getString(content_cursor2.getColumnIndex("courseCompleted")));
                                             detail.setCoachImage("" + content_cursor2.getString(content_cursor2.getColumnIndex("coachImage")));
                                             detail.setLanguage("" + content_cursor2.getString(content_cursor2.getColumnIndex("language")));
-                                            detail.setSentFlag(content_cursor2.getInt(content_cursor2.getColumnIndex("level")));
+                                            detail.setSentFlag(content_cursor2.getInt(content_cursor2.getColumnIndex("sentFlag")));
                                             courseEnrollmentList.add(detail);
                                             content_cursor2.moveToNext();
                                         }
@@ -1162,6 +1164,7 @@ public class SplashPresenter implements SplashContract.SplashPresenter {
                                         detail.setContentType(content_cursor.getString(content_cursor.getColumnIndex("contentType")));
                                         detail.setIsDownloaded("" + content_cursor.getString(content_cursor.getColumnIndex("isDownloaded")));
                                         detail.setVersion(content_cursor.getString(content_cursor.getColumnIndex("version")));
+//                                        detail.setProgramid(content_cursor.getString(content_cursor.getColumnIndex("programid")));
                                         detail.setOrigNodeVersion(content_cursor.getString(content_cursor.getColumnIndex("origNodeVersion")));
                                         detail.setSubject(content_cursor.getString(content_cursor.getColumnIndex("subject")));
                                         detail.setSeq_no(content_cursor.getInt(content_cursor.getColumnIndex("seq_no")));
@@ -1174,7 +1177,7 @@ public class SplashPresenter implements SplashContract.SplashPresenter {
                                 AppDatabase.getDatabaseInstance(context).getContentTableDao().addContentList(contents);
                                 content_cursor.close();
                                 Cursor content_cursor2;
-                                content_cursor2 = db.rawQuery("SELECT * FROM CourseEnrolled", null);
+                                content_cursor2 = db.rawQuery("SELECT * FROM CourseEnrolled Where sentFlag=0", null);
                                 //populate contents
                                 List<Model_CourseEnrollment> courseEnrollmentList = new ArrayList<>();
                                 if (content_cursor2.moveToFirst()) {
@@ -1184,13 +1187,13 @@ public class SplashPresenter implements SplashContract.SplashPresenter {
                                         detail.setGroupId("" + content_cursor2.getString(content_cursor2.getColumnIndex("groupId")));
                                         detail.setPlanFromDate("" + content_cursor2.getString(content_cursor2.getColumnIndex("planFromDate")));
                                         detail.setPlanToDate("" + content_cursor2.getString(content_cursor2.getColumnIndex("planToDate")));
-                                        detail.setCoachVerified(Boolean.parseBoolean("" + content_cursor2.getString(content_cursor2.getColumnIndex("coachVerified"))));
+                                        detail.setCoachVerified(content_cursor2.getInt(content_cursor2.getColumnIndex("coachVerified")));
                                         detail.setCoachVerificationDate("" + content_cursor2.getString(content_cursor2.getColumnIndex("coachVerificationDate")));
                                         detail.setCourseExperience("" + content_cursor2.getString(content_cursor2.getColumnIndex("courseExperience")));
                                         detail.setCourse_status("" + content_cursor2.getString(content_cursor2.getColumnIndex("courseCompleted")));
                                         detail.setCoachImage("" + content_cursor2.getString(content_cursor2.getColumnIndex("coachImage")));
                                         detail.setLanguage("" + content_cursor2.getString(content_cursor2.getColumnIndex("language")));
-                                        detail.setSentFlag(content_cursor2.getInt(content_cursor2.getColumnIndex("level")));
+                                        detail.setSentFlag(content_cursor2.getInt(content_cursor2.getColumnIndex("sentFlag")));
                                         courseEnrollmentList.add(detail);
                                         content_cursor2.moveToNext();
                                     }
@@ -1259,16 +1262,20 @@ public class SplashPresenter implements SplashContract.SplashPresenter {
 
     @Override
     public void updateVersionApp() {
-        if (AppDatabase.getDatabaseInstance(context).getStatusDao().getKey("apkVersion") != null) {
-            PackageInfo pInfo = null;
-            String verCode = "";
-            try {
-                pInfo = context.getPackageManager().getPackageInfo(context.getPackageName(), 0);
-                verCode = pInfo.versionName;
-            } catch (PackageManager.NameNotFoundException e) {
-                e.printStackTrace();
+        try {
+            if (AppDatabase.getDatabaseInstance(context).getStatusDao().getKey("apkVersion") != null) {
+                PackageInfo pInfo = null;
+                String verCode = "";
+                try {
+                    pInfo = context.getPackageManager().getPackageInfo(context.getPackageName(), 0);
+                    verCode = pInfo.versionName;
+                } catch (PackageManager.NameNotFoundException e) {
+                    e.printStackTrace();
+                }
+                AppDatabase.getDatabaseInstance(context).getStatusDao().updateValue("apkVersion", verCode);
             }
-            AppDatabase.getDatabaseInstance(context).getStatusDao().updateValue("apkVersion", verCode);
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 
@@ -1428,6 +1435,7 @@ public class SplashPresenter implements SplashContract.SplashPresenter {
                                     detail.setContentType(newContent_cursor.getString(newContent_cursor.getColumnIndex("contentType")));
                                     detail.setIsDownloaded("" + newContent_cursor.getString(newContent_cursor.getColumnIndex("isDownloaded")));
                                     detail.setVersion(newContent_cursor.getString(newContent_cursor.getColumnIndex("version")));
+//                                    detail.setProgramid(newContent_cursor.getString(newContent_cursor.getColumnIndex("programid")));
                                     detail.setOrigNodeVersion(newContent_cursor.getString(newContent_cursor.getColumnIndex("origNodeVersion")));
                                     detail.setSubject(newContent_cursor.getString(newContent_cursor.getColumnIndex("subject")));
                                     detail.setSeq_no(newContent_cursor.getInt(newContent_cursor.getColumnIndex("seq_no")));

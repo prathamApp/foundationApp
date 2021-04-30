@@ -7,6 +7,17 @@
     android:layout_height="match_parent"
     android:background="@drawable/new_bg">
 
+    <com.pratham.foundation.customView.fontsview.SansTextView
+        android:id="@+id/version_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/_1sdp"
+        android:layout_marginEnd="@dimen/_2sdp"
+        android:layout_alignParentEnd="true"
+        android:layout_centerHorizontal="true"
+        android:text=""
+        tools:ignore="RelativeOverlap" />
+
     <RelativeLayout
         android:id="@+id/header_rl"
         android:layout_width="match_parent"
@@ -89,13 +100,13 @@
                     android:id="@+id/tv_days"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_toEndOf="@id/tv_usage"
-                    android:paddingTop="2dp"
-                    android:paddingBottom="2dp"
                     android:layout_marginStart="5dp"
                     android:layout_marginEnd="5dp"
+                    android:layout_toEndOf="@id/tv_usage"
                     android:gravity="center_vertical"
-                    android:text="20"
+                    android:paddingTop="2dp"
+                    android:paddingBottom="2dp"
+                    android:text=""
                     android:textAllCaps="true"
                     android:textColor="@color/colorText"
                     android:textSize="@dimen/_12sdp" />
@@ -104,11 +115,11 @@
                     android:id="@+id/lbl_days"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:paddingTop="2dp"
-                    android:paddingBottom="2dp"
                     android:layout_marginEnd="10dp"
                     android:layout_toEndOf="@+id/tv_days"
                     android:gravity="center_vertical"
+                    android:paddingTop="2dp"
+                    android:paddingBottom="2dp"
                     android:text="@string/days"
                     android:textAllCaps="true"
                     android:textColor="@color/colorText"
@@ -264,22 +275,413 @@
 
     </RelativeLayout>
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/my_recycler_view"
+    <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@+id/header_rl" />
+        android:layout_below="@+id/header_rl">
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
-    <ImageButton
-        android:id="@+id/ib_langChange"
-        android:layout_width="80dp"
-        android:layout_height="80dp"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentBottom="true"
-        android:layout_marginEnd="20dp"
-        android:layout_marginBottom="20dp"
-        android:background="@drawable/dialog_image_bg"
-        android:elevation="5dp"
-        android:scaleType="centerInside"
-        android:src="@drawable/language_icon" />
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/profile_card_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_marginStart="@dimen/_8sdp"
+            android:layout_marginTop="@dimen/_3sdp"
+            android:layout_marginEnd="@dimen/_8sdp"
+            android:layout_marginBottom="@dimen/_4sdp"
+            app:cardBackgroundColor="@color/white"
+            app:cardCornerRadius="@dimen/_10sdp"
+            app:cardElevation="@dimen/_2sdp">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:padding="10dp">
+
+                <com.pratham.foundation.customView.fontsview.SansTextViewBold
+                    android:id="@+id/lbl_Progreess_header"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:gravity="center_vertical"
+                    android:paddingTop="2dp"
+                    android:paddingBottom="2dp"
+                    android:text="@string/progress"
+                    android:textAllCaps="true"
+                    android:textColor="@color/colorSignBoard"
+                    android:textSize="@dimen/_14sdp"
+                    android:textStyle="bold" />
+
+                    <LinearLayout
+                        android:id="@+id/progress_l1"
+                        android:layout_width="match_parent"
+                        android:layout_below="@+id/lbl_Progreess_header"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/_2sdp"
+                        android:orientation="horizontal"
+                        android:weightSum="2">
+
+                        <RelativeLayout
+                            android:id="@+id/rl_usage"
+                            android:layout_width="0dp"
+                            android:layout_height="100dp"
+                            android:layout_marginStart="@dimen/_5sdp"
+                            android:layout_marginEnd="@dimen/_5sdp"
+                            android:layout_weight="1"
+                            android:background="?attr/selectableItemBackground">
+
+                            <ImageView
+                                android:id="@+id/iv_usage"
+                                android:layout_width="40dp"
+                                android:layout_height="match_parent"
+                                android:layout_alignParentStart="true"
+                                android:layout_centerInParent="true"
+                                android:layout_margin="@dimen/_2sdp"
+                                android:src="@drawable/progress_report" />
+
+                            <com.pratham.foundation.customView.fontsview.SansTextView
+                                android:id="@+id/tv_usages"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:layout_marginStart="10dp"
+                                android:layout_toEndOf="@+id/iv_usage"
+                                android:gravity="center_vertical"
+                                android:text="@string/usage"
+                                android:textColor="@color/colorText"
+                                android:textSize="@dimen/_13sdp" />
+
+                        </RelativeLayout>
+
+                        <RelativeLayout
+                            android:id="@+id/rl_imgq"
+                            android:layout_width="0dp"
+                            android:layout_height="100dp"
+                            android:layout_marginStart="@dimen/_5sdp"
+                            android:layout_marginEnd="@dimen/_5sdp"
+                            android:layout_weight="1"
+                            android:background="?attr/selectableItemBackground">
+
+                            <ImageView
+                                android:id="@+id/iv_imgq"
+                                android:layout_width="40dp"
+                                android:layout_height="match_parent"
+                                android:layout_alignParentStart="true"
+                                android:layout_centerInParent="true"
+                                android:layout_margin="@dimen/_2sdp"
+                                android:src="@drawable/camera" />
+
+                            <com.pratham.foundation.customView.fontsview.SansTextView
+                                android:id="@+id/tv_imgq"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:layout_marginStart="36dp"
+                                android:layout_toEndOf="@+id/iv_imgq"
+                                android:gravity="center_vertical"
+                                android:text="@string/img_ques"
+                                android:textColor="@color/colorText"
+                                android:textSize="@dimen/_13sdp" />
+
+                        </RelativeLayout>
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/progress_l2"
+                        android:layout_below="@+id/progress_l1"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:layout_marginTop="@dimen/_5sdp"
+                        android:weightSum="2">
+
+                        <RelativeLayout
+                            android:id="@+id/rl_chat_l5"
+                            android:layout_width="0dp"
+                            android:layout_height="100dp"
+                            android:layout_marginStart="@dimen/_5sdp"
+                            android:layout_marginEnd="@dimen/_5sdp"
+                            android:layout_weight="1"
+                            android:background="?attr/selectableItemBackground">
+
+                            <ImageView
+                                android:id="@+id/iv_chat_l5"
+                                android:layout_width="40dp"
+                                android:layout_height="match_parent"
+                                android:layout_alignParentStart="true"
+                                android:layout_centerInParent="true"
+                                android:layout_margin="@dimen/_2sdp"
+                                android:src="@drawable/chat" />
+
+                            <com.pratham.foundation.customView.fontsview.SansTextView
+                                android:id="@+id/tv_chat_l5"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:layout_marginStart="10dp"
+                                android:layout_toEndOf="@+id/iv_chat_l5"
+                                android:gravity="center_vertical"
+                                android:text="@string/chat_l5"
+                                android:textColor="@color/colorText"
+                                android:textSize="@dimen/_13sdp" />
+
+                        </RelativeLayout>
+
+                        <RelativeLayout
+                            android:id="@+id/rl_enroll_course"
+                            android:layout_width="0dp"
+                            android:layout_height="100dp"
+                            android:layout_marginStart="@dimen/_5sdp"
+                            android:layout_marginEnd="@dimen/_5sdp"
+                            android:layout_weight="1"
+                            android:background="?attr/selectableItemBackground">
+
+                            <ImageView
+                                android:id="@+id/iv_enroll_course"
+                                android:layout_width="40dp"
+                                android:layout_height="match_parent"
+                                android:layout_alignParentStart="true"
+                                android:layout_centerInParent="true"
+                                android:layout_margin="@dimen/_2sdp"
+                                android:src="@drawable/enroll_course" />
+
+                            <com.pratham.foundation.customView.fontsview.SansTextView
+                                android:id="@+id/tv_enroll_course"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:layout_marginStart="10dp"
+                                android:layout_toEndOf="@+id/iv_enroll_course"
+                                android:gravity="center_vertical"
+                                android:text="@string/enroll_course"
+                                android:textColor="@color/colorText"
+                                android:textSize="@dimen/_13sdp" />
+
+                        </RelativeLayout>
+
+                    </LinearLayout>
+            </RelativeLayout>
+        </com.google.android.material.card.MaterialCardView>
+
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/status_card_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/profile_card_layout"
+            android:layout_marginStart="@dimen/_8sdp"
+            android:layout_marginTop="@dimen/_3sdp"
+            android:layout_marginEnd="@dimen/_8sdp"
+            android:layout_marginBottom="@dimen/_4sdp"
+            app:cardBackgroundColor="@color/white"
+            app:cardCornerRadius="@dimen/_10sdp"
+            app:cardElevation="@dimen/_2sdp">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:padding="10dp">
+
+                <com.pratham.foundation.customView.fontsview.SansTextViewBold
+                    android:id="@+id/lbl_status_header"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:gravity="center_vertical"
+                    android:paddingTop="2dp"
+                    android:paddingBottom="2dp"
+                    android:text="@string/status"
+                    android:textAllCaps="true"
+                    android:textColor="@color/colorSignBoard"
+                    android:textSize="@dimen/_14sdp"
+                    android:textStyle="bold" />
+
+                    <LinearLayout
+                        android:id="@+id/status_l1"
+                        android:layout_width="match_parent"
+                        android:layout_below="@+id/lbl_status_header"
+                        android:layout_marginTop="@dimen/_2sdp"                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:weightSum="2">
+
+                        <RelativeLayout
+                            android:id="@+id/rl_sync"
+                            android:layout_width="0dp"
+                            android:layout_height="100dp"
+                            android:layout_marginStart="@dimen/_5sdp"
+                            android:layout_marginEnd="@dimen/_5sdp"
+                            android:layout_weight="1"
+                            android:background="?attr/selectableItemBackground">
+
+                            <ImageView
+                                android:id="@+id/iv_sync"
+                                android:layout_width="40dp"
+                                android:layout_height="match_parent"
+                                android:layout_alignParentStart="true"
+                                android:layout_centerInParent="true"
+                                android:layout_margin="@dimen/_2sdp"
+                                android:src="@drawable/ic_sync" />
+
+                            <com.pratham.foundation.customView.fontsview.SansTextView
+                                android:id="@+id/tv_sync"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:layout_marginStart="10dp"
+                                android:layout_toEndOf="@+id/iv_sync"
+                                android:gravity="center_vertical"
+                                android:text="@string/sync"
+                                android:textColor="@color/colorText"
+                                android:textSize="@dimen/_13sdp" />
+
+                        </RelativeLayout>
+
+                        <RelativeLayout
+                            android:id="@+id/rl_sync_status"
+                            android:layout_width="0dp"
+                            android:layout_height="100dp"
+                            android:layout_marginStart="@dimen/_5sdp"
+                            android:layout_marginEnd="@dimen/_5sdp"
+                            android:layout_weight="1"
+                            android:background="?attr/selectableItemBackground">
+
+                            <ImageView
+                                android:id="@+id/iv_sync_status"
+                                android:layout_width="40dp"
+                                android:layout_height="match_parent"
+                                android:layout_alignParentStart="true"
+                                android:layout_centerInParent="true"
+                                android:layout_margin="@dimen/_2sdp"
+                                android:src="@drawable/refresh" />
+
+                            <com.pratham.foundation.customView.fontsview.SansTextView
+                                android:id="@+id/tv_sync_status"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:layout_marginStart="10dp"
+                                android:layout_toEndOf="@+id/iv_sync_status"
+                                android:gravity="center_vertical"
+                                android:text="@string/sync_status"
+                                android:textColor="@color/colorText"
+                                android:textSize="@dimen/_13sdp" />
+
+                        </RelativeLayout>
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/status_l2"
+                        android:layout_below="@+id/status_l1"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:layout_marginTop="@dimen/_5sdp"
+                        android:weightSum="2">
+
+                        <RelativeLayout
+                            android:id="@+id/rl_lang_pack"
+                            android:layout_width="0dp"
+                            android:layout_height="100dp"
+                            android:layout_marginStart="@dimen/_5sdp"
+                            android:layout_marginEnd="@dimen/_5sdp"
+                            android:layout_weight="1"
+                            android:background="?attr/selectableItemBackground">
+
+                            <ImageView
+                                android:id="@+id/iv_lang_pack"
+                                android:layout_width="40dp"
+                                android:layout_height="match_parent"
+                                android:layout_alignParentStart="true"
+                                android:layout_centerInParent="true"
+                                android:layout_margin="@dimen/_2sdp"
+                                android:src="@drawable/translator" />
+
+                            <com.pratham.foundation.customView.fontsview.SansTextView
+                                android:id="@+id/tv_lang_pack"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:layout_marginStart="10dp"
+                                android:layout_toEndOf="@+id/iv_lang_pack"
+                                android:gravity="center_vertical"
+                                android:text="@string/lang_pack"
+                                android:textColor="@color/colorText"
+                                android:textSize="@dimen/_13sdp" />
+
+                        </RelativeLayout>
+
+                        <RelativeLayout
+                            android:id="@+id/rl_Set_Date_and_Time"
+                            android:layout_width="0dp"
+                            android:layout_height="100dp"
+                            android:layout_marginStart="@dimen/_5sdp"
+                            android:layout_marginEnd="@dimen/_5sdp"
+                            android:layout_weight="1"
+                            android:background="?attr/selectableItemBackground">
+
+                            <ImageView
+                                android:id="@+id/iv_Set_Date_and_Time"
+                                android:layout_width="40dp"
+                                android:layout_height="match_parent"
+                                android:layout_alignParentStart="true"
+                                android:layout_centerInParent="true"
+                                android:layout_margin="@dimen/_2sdp"
+                                android:src="@drawable/clock" />
+
+                            <com.pratham.foundation.customView.fontsview.SansTextView
+                                android:id="@+id/tv_Set_Date_and_Time"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:layout_marginStart="10dp"
+                                android:layout_toEndOf="@+id/iv_Set_Date_and_Time"
+                                android:gravity="center_vertical"
+                                android:text="@string/Set_Date_and_Time"
+                                android:textColor="@color/colorText"
+                                android:textSize="@dimen/_13sdp" />
+
+                        </RelativeLayout>
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/status_l3"
+                        android:layout_below="@+id/status_l2"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:layout_marginTop="@dimen/_5sdp"
+                        android:weightSum="2">
+
+                        <RelativeLayout
+                            android:id="@+id/rl_db_sync_pack"
+                            android:layout_width="0dp"
+                            android:layout_height="100dp"
+                            android:layout_marginStart="@dimen/_5sdp"
+                            android:layout_marginEnd="@dimen/_5sdp"
+                            android:layout_weight="1"
+                            android:background="?attr/selectableItemBackground">
+
+                            <ImageView
+                                android:id="@+id/iv_db_sync"
+                                android:layout_width="40dp"
+                                android:layout_height="match_parent"
+                                android:layout_alignParentStart="true"
+                                android:layout_centerInParent="true"
+                                android:layout_margin="@dimen/_2sdp"
+                                android:src="@drawable/iv_db_push" />
+
+                            <com.pratham.foundation.customView.fontsview.SansTextView
+                                android:id="@+id/tv_db_sync"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:layout_marginStart="10dp"
+                                android:layout_toEndOf="@+id/iv_db_sync"
+                                android:gravity="center_vertical"
+                                android:text="@string/DB_Zip_push"
+                                android:textColor="@color/colorText"
+                                android:textSize="@dimen/_13sdp" />
+
+                        </RelativeLayout>
+                    </LinearLayout>
+            </RelativeLayout>
+        </com.google.android.material.card.MaterialCardView>
+    </RelativeLayout>
+    </ScrollView>
 </RelativeLayout>

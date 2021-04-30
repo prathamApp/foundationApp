@@ -282,83 +282,13 @@ public class AddEnrollmentId extends BaseActivity implements AvatarClickListener
                 String deviceID = FC_Utility.getDeviceID();
                 if (enrollmentModel != null) {
                     ShowDetailsDialog(enrollmentModel);
-/*                    if (enrollmentModel.getLstCourseEnroll() != null) {
-                        List<Model_CourseEnrollment> courseEnrollmentList = new ArrayList<>();
-                        for (int v = 0; v < enrollmentModel.getLstCourseEnroll().size(); v++) {
-                            Model_CourseEnrollment model_courseEnrollment = new Model_CourseEnrollment();
-                            model_courseEnrollment.setCourseId(enrollmentModel.getLstCourseEnroll().get(v).getCourseId());
-                            model_courseEnrollment.setGroupId(enrollmentModel.getLstCourseEnroll().get(v).getGroupId());
-                            model_courseEnrollment.setPlanFromDate(enrollmentModel.getLstCourseEnroll().get(v).getPlanFromDate());
-                            model_courseEnrollment.setPlanToDate(enrollmentModel.getLstCourseEnroll().get(v).getPlanToDate());
-                            model_courseEnrollment.setLanguage(enrollmentModel.getLstCourseEnroll().get(v).getLanguage());
-                            courseEnrollmentList.add(model_courseEnrollment);
-                        }
-                        AppDatabase.getDatabaseInstance(this).getCourseDao().insertListCourse(courseEnrollmentList);
-                    }
-                    if (enrollmentModel.getEnrollmentType().equalsIgnoreCase("Student")) {
-                        Student student = new Student();
-                        student.setStudentID(enrollmentModel.getLstStudent().get(0).getStudentId());
-                        student.setFullName(enrollmentModel.getLstStudent().get(0).getFullName());
-                        student.setMiddleName("PS");
-                        student.setLastName(enrollmentModel.getLstStudent().get(0).getStudentEnrollment());
-                        student.setStud_Class(enrollmentModel.getLstStudent().get(0).getStudClass());
-                        student.setAge(enrollmentModel.getLstStudent().get(0).getAge());
-                        student.setGender(enrollmentModel.getLstStudent().get(0).getGender());
-                        student.setGroupId(enrollmentModel.getLstStudent().get(0).getGroupId());
-                        student.setGroupName(enrollmentModel.getLstStudent().get(0).getGroupName());
-                        for (int i = 0; i < avatarList.size(); i++)
-                            if (avatarList.get(i).getClickFlag())
-                                student.setAvatarName(avatarList.get(i).getAvatarName());
-                        student.setDeviceId(deviceID);
-                        AppDatabase.getDatabaseInstance(this).getStudentDao().insert(student);
-                    } else {
-                        Groups groups = new Groups();
-                        groups.setGroupId(enrollmentModel.getGroupId());
-                        groups.setGroupName(enrollmentModel.getGroupName());
-                        groups.setVillageId(enrollmentModel.getVillageId());
-                        groups.setProgramId(enrollmentModel.getProgramId());
-                        groups.setGroupCode(enrollmentModel.getGroupCode());
-                        groups.setSchoolName(enrollmentModel.getSchoolName());
-                        groups.setVIllageName(enrollmentModel.getVIllageName());
-                        groups.setDeviceId(deviceID);
-                        AppDatabase.getDatabaseInstance(this).getGroupsDao().insert(groups);
-                        List<Student> studentList = new ArrayList<>();
-                        for (int i = 0; i < enrollmentModel.getLstStudent().size(); i++) {
-                            Student student = new Student();
-                            student.setStudentID(enrollmentModel.getLstStudent().get(i).getStudentId());
-                            student.setFullName(enrollmentModel.getLstStudent().get(i).getFullName());
-                            student.setLastName(enrollmentModel.getLstStudent().get(i).getStudentEnrollment());
-                            student.setStud_Class(enrollmentModel.getLstStudent().get(i).getStudClass());
-                            student.setAge(enrollmentModel.getLstStudent().get(i).getAge());
-                            student.setGender(enrollmentModel.getLstStudent().get(i).getGender());
-                            student.setGroupId(enrollmentModel.getLstStudent().get(i).getGroupId());
-                            student.setGroupName(enrollmentModel.getLstStudent().get(i).getGroupName());
-                            student.setDeviceId(deviceID);
-                            studentList.add(student);
-                        }
-                        AppDatabase.getDatabaseInstance(this).getStudentDao().insertAll(studentList);
-                    }*/
                     dismissLoadingDialog();
                 } else {
                     dismissLoadingDialog();
                     Toast.makeText(mContext, "Wrong Enrollment id", Toast.LENGTH_SHORT).show();
                 }
-//                if(serverEnrollmentList!= null && serverEnrollmentList.size()>0) {
-//                    student.setAge(serverEnrollmentList.get(0).getAge());
-//                    student.setMiddleName("" + serverEnrollmentList.get(0).getVillageId());
-//                    student.setFullName(serverEnrollmentList.get(0).getFullName());
-//                    student.setGender(serverEnrollmentList.get(0).getGender());
-//                    student.setGroupId(serverEnrollmentList.get(0).getGroupId());
-//                    student.setGroupName(serverEnrollmentList.get(0).getGroupName());
-//                    student.setStud_Class(serverEnrollmentList.get(0).getStud_Class());
-//                    student.setVillageName(serverEnrollmentList.get(0).getVillageName());
-//                    student.setStudentID(serverEnrollmentList.get(0).getStudentID());
-//                    student.setStudentUID("PS");
-//                    student.setRegDate(FC_Utility.getCurrentDateTime());
-//                    student.setAvatarName(avatarName);
-//                    student.setDeviceId(AppDatabase.getDatabaseInstance(mContext).getStatusDao().getValue("DeviceId"));
-//                    ShowDetailsDilog(student);
             } catch (Exception e) {
+                dismissLoadingDialog();
                 e.printStackTrace();
             }
         }
@@ -396,7 +326,7 @@ public class AddEnrollmentId extends BaseActivity implements AvatarClickListener
             tv_school_str = studentDialog.findViewById(R.id.tv_school_str);
             image_view = studentDialog.findViewById(R.id.image_view);
 
-            Bitmap bmImg = BitmapFactory.decodeFile(ApplicationClass.foundationPath + "/.FCA/App_Thumbs/ic_grp_btn.png");
+            Bitmap bmImg = BitmapFactory.decodeFile(ApplicationClass.foundationPath + "/.FCA/App_Thumbs/"+avatarName);
             image_view.setImageBitmap(bmImg);
             String name, stuClass, village;
             if (enrollmentModel.getEnrollmentType().equalsIgnoreCase("Student")) {
@@ -428,6 +358,7 @@ public class AddEnrollmentId extends BaseActivity implements AvatarClickListener
                     model_courseEnrollment.setPlanFromDate(enrollmentModel.getLstCourseEnroll().get(v).getPlanFromDate());
                     model_courseEnrollment.setPlanToDate(enrollmentModel.getLstCourseEnroll().get(v).getPlanToDate());
                     model_courseEnrollment.setLanguage(enrollmentModel.getLstCourseEnroll().get(v).getLanguage());
+                    model_courseEnrollment.setSentFlag(1);
                     courseEnrollmentList.add(model_courseEnrollment);
                 }
                 AppDatabase.getDatabaseInstance(this).getCourseDao().insertListCourse(courseEnrollmentList);
@@ -443,6 +374,7 @@ public class AddEnrollmentId extends BaseActivity implements AvatarClickListener
                 student.setGender(enrollmentModel.getLstStudent().get(0).getGender());
                 student.setGroupId(enrollmentModel.getLstStudent().get(0).getGroupId());
                 student.setGroupName(enrollmentModel.getLstStudent().get(0).getGroupName());
+//                student.setProgramId(""+enrollmentModel.getProgramId());
                 for (int i = 0; i < avatarList.size(); i++)
                     if (avatarList.get(i).getClickFlag())
                         student.setAvatarName(avatarList.get(i).getAvatarName());
@@ -457,6 +389,7 @@ public class AddEnrollmentId extends BaseActivity implements AvatarClickListener
                 groups.setGroupCode(enrollmentModel.getGroupCode());
                 groups.setSchoolName(enrollmentModel.getSchoolName());
                 groups.setVIllageName(enrollmentModel.getVIllageName());
+                groups.setProgramId(enrollmentModel.getProgramId());
                 groups.setDeviceId(deviceID);
                 AppDatabase.getDatabaseInstance(this).getGroupsDao().insert(groups);
                 List<Student> studentList = new ArrayList<>();
@@ -470,6 +403,7 @@ public class AddEnrollmentId extends BaseActivity implements AvatarClickListener
                     student.setGender(enrollmentModel.getLstStudent().get(i).getGender());
                     student.setGroupId(enrollmentModel.getLstStudent().get(i).getGroupId());
                     student.setGroupName(enrollmentModel.getLstStudent().get(i).getGroupName());
+//                    student.setProgramId(""+enrollmentModel.getProgramId());
                     student.setDeviceId(deviceID);
                     studentList.add(student);
                 }

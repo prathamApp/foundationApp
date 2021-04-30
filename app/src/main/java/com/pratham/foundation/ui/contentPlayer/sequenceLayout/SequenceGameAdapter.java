@@ -27,7 +27,6 @@ import java.io.File;
 import java.util.List;
 
 import static com.pratham.foundation.ApplicationClass.App_Thumbs_Path;
-import static com.pratham.foundation.utility.FC_Utility.getRandomCardColor;
 
 public class SequenceGameAdapter extends RecyclerView.Adapter<SequenceGameAdapter.MyViewHolder> {
     private Context context;
@@ -50,9 +49,10 @@ public class SequenceGameAdapter extends RecyclerView.Adapter<SequenceGameAdapte
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder myViewHolder, int i) {
         ContentTable contentTable = gamesList.get(i);
-        myViewHolder.content_card_view.setBackground(context.getResources().getDrawable(getRandomCardColor()));
+//        myViewHolder.content_card_view.setBackground(context.getResources().getDrawable(getRandomCardColor()));
         myViewHolder.title.setText(contentTable.getNodeTitle());
         myViewHolder.ib_action_btn.setVisibility(View.GONE);
+        myViewHolder.tv_progress.setVisibility(View.GONE);
 
         File f;
         if (contentTable.getIsDownloaded().equalsIgnoreCase("1") ||
@@ -99,7 +99,7 @@ public class SequenceGameAdapter extends RecyclerView.Adapter<SequenceGameAdapte
     }
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
-        public TextView title;
+        public TextView title,tv_progress;
         public ImageView ib_action_btn;
         public MaterialCardView content_card_view;
         SimpleDraweeView thumbnail;
@@ -110,6 +110,7 @@ public class SequenceGameAdapter extends RecyclerView.Adapter<SequenceGameAdapte
             thumbnail = view.findViewById(R.id.content_image);
             content_card_view = view.findViewById(R.id.content_card_view);
             ib_action_btn = view.findViewById(R.id.ib_action_btn);
+            tv_progress = view.findViewById(R.id.tv_progress);
         }
     }
 }

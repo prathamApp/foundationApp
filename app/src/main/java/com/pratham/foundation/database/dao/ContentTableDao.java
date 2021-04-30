@@ -22,9 +22,6 @@ public interface ContentTableDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     long insert(ContentTable contentTableList);
 
-    @Query("select * from ContentTable where parentId= :parentId AND (studentId like:studentId OR studentId like'%pratham_group%') order by seq_no")
-    List<ContentTable> getContentData(String parentId, String studentId);
-
     @Query("SELECT * FROM ContentTable WHERE parentId=:parentId AND resourceType=:contentType")
     List<ContentTable> getTestContentData(String parentId, String contentType);
 
@@ -45,9 +42,6 @@ public interface ContentTableDao {
 
     @Query("SELECT * FROM ContentTable WHERE parentid ISNULL or parentid = 0 or parentid=''and contentLanguage=:language")
     List<ContentTable> getParentsHeaders(String language);
-
-    @Query("SELECT * FROM ContentTable WHERE parentid=:id AND (studentId like:studentId OR studentId like'%pratham_group%') ORDER BY seq_no")
-    List<ContentTable> getChildsOfParent(String id, String studentId);
 
     @Query("SELECT * FROM ContentTable WHERE parentid=:id")
     List<ContentTable> getChildsOfParent_forDelete(String id);
@@ -73,11 +67,32 @@ public interface ContentTableDao {
     @Query("SELECT nodeTitle FROM ContentTable WHERE resourceId=:resourceID")
     String getContentTitleById(String resourceID);
 
+//    @Query("SELECT * FROM ContentTable WHERE parentid=:id AND programId like:programId ORDER BY seq_no")
+//    List<ContentTable> getChildsOfParent(String id, String programId);
+    @Query("SELECT * FROM ContentTable WHERE parentid=:id AND (studentId like:studentId OR studentId like'%pratham_group%')" +
+            "ORDER BY seq_no")
+    List<ContentTable> getChildsOfParent(String id, String studentId);
+
+//    @Query("select * from ContentTable where parentId= :parentId AND programId like:programId order by seq_no")
+//    List<ContentTable> getContentData(String parentId, String programId);
+    @Query("select * from ContentTable where parentId= :parentId AND (studentId like:studentId OR studentId like'%pratham_group%')" +
+            " order by seq_no")
+    List<ContentTable> getContentData(String parentId, String studentId);
+
+//    @Query("SELECT nodeId FROM ContentTable WHERE parentId=:nid AND programId like:programId")
+//    String getRootData(String nid, String programId);
     @Query("SELECT nodeId FROM ContentTable WHERE parentId=:nid AND (studentId like:studentId OR studentId like'%pratham_group%')")
     String getRootData(String nid, String studentId);
 
+//    @Query("SELECT * FROM ContentTable WHERE parentId=:nid AND programId like:programId")
+//    List<ContentTable> getLanguages(String nid, String programId);
     @Query("SELECT * FROM ContentTable WHERE parentId=:nid AND (studentId like:studentId OR studentId like'%pratham_group%')")
     List<ContentTable> getLanguages(String nid, String studentId);
+
+//    @Query("SELECT * FROM ContentTable WHERE parentId=:nid AND programId like:programId ")
+//    List<ContentTable> getRootDetails(String nid, String programId);
+    @Query("SELECT * FROM ContentTable WHERE parentId=:nid AND (studentId like:studentId OR studentId like'%pratham_group%')")
+    List<ContentTable> getRootDetails(String nid, String studentId);
 
     @Query("Delete from ContentTable")
     void deleteAll();

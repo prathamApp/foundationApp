@@ -29,8 +29,8 @@ import java.io.File;
 import java.util.Objects;
 
 import static com.pratham.foundation.ApplicationClass.App_Thumbs_Path;
+import static com.pratham.foundation.ui.app_home.HomeActivity.drawableBg;
 import static com.pratham.foundation.utility.FC_Constants.SINGLE_RES_DOWNLOAD;
-import static com.pratham.foundation.utility.FC_Utility.getRandomCardColor;
 
 public class ContentFolderViewHolder extends RecyclerView.ViewHolder {
 
@@ -90,14 +90,14 @@ public class ContentFolderViewHolder extends RecyclerView.ViewHolder {
         this.itemClicked = itemClicked;
     }
 
-    @SuppressLint("CheckResult")
+    @SuppressLint({"CheckResult", "SetTextI18n"})
     public void setFolderItem(ContentTable contentList, int position) {
         try {
 //        add card and its click listners
-            Objects.requireNonNull(card_main).setBackground(ApplicationClass.getInstance()
-                    .getResources().getDrawable(getRandomCardColor()));
+            Objects.requireNonNull(card_main).setBackground(drawableBg);
             Objects.requireNonNull(tvTitle).setText(contentList.getNodeTitle());
             Objects.requireNonNull(rl_loader).setVisibility(View.GONE);
+            Objects.requireNonNull(tv_progress).setText(contentList.getNodePercentage()+"%");
 
             File file;
             if (contentList.getIsDownloaded().equalsIgnoreCase("1") ||
@@ -127,8 +127,10 @@ public class ContentFolderViewHolder extends RecyclerView.ViewHolder {
                 Objects.requireNonNull(tv_progress).setVisibility(View.GONE);
                 if (contentList.getIsDownloaded().equalsIgnoreCase("true")) {
                     Objects.requireNonNull(iv_downld).setVisibility(View.GONE);
-                    Objects.requireNonNull(iv_delete).setVisibility(View.VISIBLE);
-                    iv_delete.setOnClickListener(v -> contentClicked.onContentDeleteClicked(position,contentList));
+                    if(!contentList.isOnSDCard()) {
+                        Objects.requireNonNull(iv_delete).setVisibility(View.VISIBLE);
+                        iv_delete.setOnClickListener(v -> contentClicked.onContentDeleteClicked(position, contentList));
+                    }
                 } else if (contentList.getIsDownloaded().equalsIgnoreCase("false")) {
                     Objects.requireNonNull(iv_downld).setVisibility(View.VISIBLE);
                     Objects.requireNonNull(iv_delete).setVisibility(View.GONE);
@@ -180,7 +182,7 @@ public class ContentFolderViewHolder extends RecyclerView.ViewHolder {
     @SuppressLint("SetTextI18n")
     public void setFragmentFolderItem(ContentTable contentTable, int posi, String parentName, int parentPos) {
         try {
-            Objects.requireNonNull(card_main).setBackground(ApplicationClass.getInstance().getResources().getDrawable(getRandomCardColor()));
+            Objects.requireNonNull(card_main).setBackground(drawableBg);
             Objects.requireNonNull(tvTitle).setText(contentTable.getNodeTitle());
             Objects.requireNonNull(tv_progress).setText(contentTable.getNodePercentage()+"%");
             Objects.requireNonNull(rl_loader).setVisibility(View.GONE);
@@ -219,8 +221,12 @@ public class ContentFolderViewHolder extends RecyclerView.ViewHolder {
                 ib_update_btn.setOnClickListener(v -> itemClicked.onContentDownloadClicked(contentTable,
                         parentPos,posi,""+ SINGLE_RES_DOWNLOAD));
                 if (contentTable.getIsDownloaded().equalsIgnoreCase("true")) {
-                    Objects.requireNonNull(iv_delete).setVisibility(View.VISIBLE);
-                    iv_delete.setOnClickListener(v -> {itemClicked.onContentDeleteClicked(parentPos,posi,contentTable);});
+                    if(!contentTable.isOnSDCard()) {
+                        Objects.requireNonNull(iv_delete).setVisibility(View.VISIBLE);
+                        iv_delete.setOnClickListener(v -> {
+                            itemClicked.onContentDeleteClicked(parentPos, posi, contentTable);
+                        });
+                    }
                     Objects.requireNonNull(iv_downld).setVisibility(View.GONE);
                 } else if (contentTable.getIsDownloaded().equalsIgnoreCase("false")) {
                     Objects.requireNonNull(iv_delete).setVisibility(View.GONE);

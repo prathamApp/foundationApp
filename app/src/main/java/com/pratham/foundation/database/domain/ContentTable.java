@@ -52,6 +52,7 @@ public class ContentTable implements Serializable {
     public String subject;
     @SerializedName("seq_no")
     public int seq_no;
+    @SerializedName("studentId")
     public String studentId;
     @SerializedName("nodeKeyword")
     public String nodeKeywords;

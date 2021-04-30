@@ -76,6 +76,7 @@
                     android:paddingStart="@dimen/_8sdp"
                     android:paddingEnd="@dimen/_8sdp"
                     android:text="0%"
+                    android:visibility="visible"
                     android:textColor="@color/white"
                     android:textSize="@dimen/_10sdp" />
             </LinearLayout>
@@ -180,7 +181,7 @@
         app:submarine_circleAnchor="top"
         app:submarine_circleDrawable="@drawable/ic_close_white"
         app:submarine_circleSize="@dimen/_30sdp"
-        app:submarine_color="@color/colorText"
+        app:submarine_color="@color/dark_blue"
         app:submarine_duration="250"
         app:submarine_orientation="vertical" />
 

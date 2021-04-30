@@ -121,6 +121,7 @@
     <string name="Sync_Time">সিঙ্ক করার সময়</string>
     <string name="Data_synced">ডেটা সিঙ্ক করা হয়েছে</string>
     <string name="Certificate_synced">সিঙ্ক করা প্রমাণপত্র/ সার্টিফিকেট</string>
+    <string name="Enrollment_synced">এনরোলমেন্ট _সিঙ্ক :</string>
     <string name="Media_synced">মিডিয়া সিঙ্ক করা হয়েছে</string>
     <string name="Media_failed">মিডিয়া ব্যর্থ  হয়েছে</string>
     <string name="data_pushed_successfully">ডেটা সফলভাবে পাঠানো হয়েছে/ পুশ করা হয়েছে</string>

@@ -100,6 +100,7 @@ public class BottomStudentsPresenter implements BottomStudentsContract.BottomStu
                     studentAvatar.setFullName(studentDBList.get(i).getFullName());
                     studentAvatar.setAvatarName(studentDBList.get(i).getAvatarName());
                     studentAvatar.setGender(studentDBList.get(i).getGender());
+//                    studentAvatar.setProgramID(studentDBList.get(i).getProgramId());
                     studentAvatar.setChecked(false);
                     studentAvatar.setType(FC_Constants.STUDENTS);
                     fragmentModalsList.add(studentAvatar);
@@ -112,6 +113,7 @@ public class BottomStudentsPresenter implements BottomStudentsContract.BottomStu
                     studentAvatar.setStudentID(groupDBList.get(i).getGroupId());
                     studentAvatar.setFullName(groupDBList.get(i).getGroupName());
                     studentAvatar.setAvatarName("NA");
+//                    studentAvatar.setProgramID(""+groupDBList.get(i).getProgramId());
                     studentAvatar.setChecked(false);
                     studentAvatar.setType(FC_Constants.GROUP_MODE);
                     fragmentModalsList.add(studentAvatar);

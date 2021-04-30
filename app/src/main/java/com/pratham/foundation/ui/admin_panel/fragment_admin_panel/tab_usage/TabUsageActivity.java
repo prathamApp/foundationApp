@@ -28,7 +28,7 @@ import java.util.HashMap;
 import java.util.List;
 
 @EActivity(R.layout.activity_tab_usage)
-public class TabUsageActivity extends BaseActivity implements TabUsageContract.TabUsageView, ContractOptions{
+public class TabUsageActivity extends BaseActivity implements TabUsageContract.TabUsageView, ContractOptions {
 
     @Bean(TabUsagePresenter.class)
     TabUsageContract.TabUsagePresenter presenter;
@@ -52,6 +52,7 @@ public class TabUsageActivity extends BaseActivity implements TabUsageContract.T
     public void initialize() {
         presenter.setView(TabUsageActivity.this);
     }
+
     @SuppressLint("SetTextI18n")
     @UiThread
     @Override
@@ -83,8 +84,10 @@ public class TabUsageActivity extends BaseActivity implements TabUsageContract.T
                     .build());
         } else
             groupAdapter.updateItems(modal_totalDaysGroupsPlayeds);
-        if (modal_totalDaysGroupsPlayeds.size() > 0) rv_daily_stat.smoothScrollToPosition(0);
-        else rl_no_data.setVisibility(View.VISIBLE);
+        if (modal_totalDaysGroupsPlayeds.size() > 0) {
+            rl_no_data.setVisibility(View.GONE);
+            rv_daily_stat.smoothScrollToPosition(0);
+        } else rl_no_data.setVisibility(View.VISIBLE);
     }
 
     @Override

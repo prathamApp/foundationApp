@@ -42,6 +42,9 @@
         </receiver>
 
         <activity
+            android:name=".ui.contentPlayer.webviewpdf.PDFViewActivity_"
+            android:screenOrientation="sensor" />
+        <activity
             android:name=".ui.contentPlayer.pictionary.PictionaryResult"
             android:screenOrientation="portrait" />
         <activity
@@ -73,9 +76,6 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".ui.admin_panel.assign_groups.Activity_AssignGroups_"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name=".ui.app_home.profile_new.certificate_display.CertificateDisplayActivity_"
             android:screenOrientation="portrait" />
         <activity
             android:name=".ui.group_selection.SelectGroupActivity_"

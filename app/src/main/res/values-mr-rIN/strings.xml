@@ -121,6 +121,7 @@
     <string name="Sync_Time">सिंकचा वेळ :</string>
     <string name="Data_synced">डेटा सिंक झाला :</string>
     <string name="Certificate_synced">प्रमाणपत्र सिंक झाले :</string>
+    <string name="Enrollment_synced">एनरोल केलेले कोर्स सिंक केले :</string>
     <string name="Media_synced">मिडिया सिंक झाला :</string>
     <string name="Media_failed">मिडिया अयशस्वी ठरला :</string>
     <string name="data_pushed_successfully">डेटा यशस्वीरित्या पाठवला गेला/ पुश केला गेला</string>
@@ -154,7 +155,7 @@
     <string name="Set_Date_and_Time">तारीख आणि वेळ सेट करा</string>
     <string name="add_course">कोर्स अॅड करा</string>
     <string name="select_date">तारीख निवडा</string>
-    <string name="confirm_date">तारीख कन्फर्म करा/ तारखेची खात्री करून घ्या</string>
+    <string name="confirm_date">तारीख कन्फर्म करा</string>
     <string name="Audio">ऑडिओ ऐका</string>
 
 

@@ -58,6 +58,7 @@ import com.pratham.foundation.ui.contentPlayer.reading_story_activity.ReadingSto
 import com.pratham.foundation.ui.contentPlayer.video_player.ActivityVideoPlayer_;
 import com.pratham.foundation.ui.contentPlayer.vocabulary_qa.ReadingVocabularyActivity_;
 import com.pratham.foundation.ui.contentPlayer.web_view.WebViewActivity_;
+import com.pratham.foundation.ui.contentPlayer.webviewpdf.PDFViewActivity_;
 import com.pratham.foundation.utility.FC_Constants;
 import com.pratham.foundation.utility.FC_Utility;
 
@@ -169,9 +170,9 @@ public class ContentDisplay extends BaseActivity implements ContentContract.Cont
         contentAdapter = new ContentAdapter(this, ContentTableList, this);
         RecyclerView.LayoutManager mLayoutManager = new GridLayoutManager(this, 2);
         recyclerView.setLayoutManager(mLayoutManager);
-        int dp = 12;
+        int dp = 5;
         if (FC_Constants.TAB_LAYOUT)
-            dp = 20;
+            dp = 10;
         recyclerView.addItemDecoration(new GridSpacingItemDecoration(2, dpToPx(this, dp), true));
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setAdapter(contentAdapter);
@@ -221,6 +222,8 @@ public class ContentDisplay extends BaseActivity implements ContentContract.Cont
     @UiThread
     @Override
     public void setHeaderProgress(int percent) {
+        if(percent>100)
+            percent = 100;
         tv_header_progress.setText("" + percent + "%");
 //        level_progress.setCurProgress(percent);
     }
@@ -275,9 +278,10 @@ public class ContentDisplay extends BaseActivity implements ContentContract.Cont
             else {
                 hideSystemUI();
                 showLoader();
+                presenter.getListData();
                 if (!LOGIN_MODE.equalsIgnoreCase(QR_GROUP_MODE))
                     presenter.getPerc(nodeId);
-                notifyAdapter();
+//                notifyAdapter();
             }
         } else
             finish();
@@ -368,11 +372,9 @@ public class ContentDisplay extends BaseActivity implements ContentContract.Cont
                 bundle.putString("subjectLanguage", "" + itemContent.getContentLanguage());
                 bundle.putString("examId", "" + itemContent.getNodeKeywords());
                 bundle.putString("subjectLevel", "" + currentLevel);
-//            Intent launchIntent = new Intent("com.doedelhi.pankhpractice.ui.choose_assessment.ChooseAssessmentActivity_");
                 Intent launchIntent = new Intent("com.pratham.assessment.ui.choose_assessment.science.ScienceAssessmentActivity_");
-                //Intent launchIntent = Objects.requireNonNull(getActivity()).getPackageManager()
-                //        .getLaunchIntentForPackage("com.doedelhi.pankhpractice");
                 Objects.requireNonNull(launchIntent).putExtras(bundle);
+                presenter.addScoreToDB(itemContent.getNodeKeywords());
                 startActivityForResult(launchIntent, FC_Constants.APP_INTENT_REQUEST_CODE);
                 // null pointer check in case package name was not found
             } catch (Exception e) {
@@ -632,6 +634,20 @@ public class ContentDisplay extends BaseActivity implements ContentContract.Cont
                 if (ContentTableList.get(position).isOnSDCard())
                     sdStatus = "T";
                 Intent intent1 = new Intent(ContentDisplay.this, Fragment_PdfViewer_.class);
+//                Intent intent1 = new Intent(ContentDisplay.this, PDFViewActivity_.class);
+                intent1.putExtra("contentPath", ContentTableList.get(position).getResourcePath());
+                intent1.putExtra("StudentID", FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""));
+                intent1.putExtra("resId", ContentTableList.get(position).getResourceId());
+                intent1.putExtra("contentName", ContentTableList.get(position).getNodeTitle());
+                intent1.putExtra("onSdCard", ContentTableList.get(position).isOnSDCard());
+                startActivity(intent1);
+            } else if (ContentTableList.get(position).getResourceType().equalsIgnoreCase("PDF_ZOOM")
+                    || ContentTableList.get(position).getResourceType().equalsIgnoreCase("PDF_new")) {
+                String sdStatus = "F";
+                if (ContentTableList.get(position).isOnSDCard())
+                    sdStatus = "T";
+//                Intent intent1 = new Intent(context, Fragment_PdfViewer_.class);
+                Intent intent1 = new Intent(this, PDFViewActivity_.class);
                 intent1.putExtra("contentPath", ContentTableList.get(position).getResourcePath());
                 intent1.putExtra("StudentID", FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""));
                 intent1.putExtra("resId", ContentTableList.get(position).getResourceId());
@@ -756,9 +772,9 @@ public class ContentDisplay extends BaseActivity implements ContentContract.Cont
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         dialog.setContentView(R.layout.lottie_delete_dialog);
         TextView tv_title = dialog.findViewById(R.id.dia_title);
-        TextView dia_btn_yes = dialog.findViewById(R.id.dia_btn_yes);
-        Button dia_btn_no = dialog.findViewById(R.id.dia_btn_no);
-        SimpleDraweeView iv_file_trans = dialog.findViewById(R.id.dl_lottie_view);
+        Button dia_btn_yes = dialog.findViewById(R.id.dia_btn_green);
+        Button dia_btn_no = dialog.findViewById(R.id.dia_btn_red);
+        SimpleDraweeView iv_file_trans = dialog.findViewById(R.id.iv_file_trans);
         try {
             File file;
             if (contentTableItem.isOnSDCard())
@@ -772,7 +788,7 @@ public class ContentDisplay extends BaseActivity implements ContentContract.Cont
         } catch (Exception e) {
             e.printStackTrace();
         }
-        tv_title.setText("Delete\n" + contentTableItem.getNodeTitle());
+        tv_title.setText("Delete\n" + contentTableItem.getNodeTitle()+" ?");
         dialog.show();
 
         dia_btn_no.setOnClickListener(v -> dialog.dismiss());

@@ -16,9 +16,6 @@ import com.pratham.foundation.ui.splash_activity.SplashActivity;
 import com.pratham.foundation.utility.FC_Constants;
 import com.pratham.foundation.utility.FC_Utility;
 
-import static com.pratham.foundation.utility.FC_Constants.APP_SECTION;
-import static com.pratham.foundation.utility.FC_Constants.sec_Test;
-
 
 public class AppExitService extends Service {
 
@@ -47,7 +44,7 @@ public class AppExitService extends Service {
                             AppDatabase.getDatabaseInstance(AppExitService.this).getSessionDao().UpdateToDate(FastSave.getInstance().getString(FC_Constants.CURRENT_SESSION, ""), FC_Utility.getCurrentDateTime());
                         }
                         //Get current assessment session
-                        if(FastSave.getInstance().getString(APP_SECTION,"").equalsIgnoreCase(sec_Test)) {
+/*                        if(FastSave.getInstance().getString(APP_SECTION,"").equalsIgnoreCase(sec_Test)) {
                             Log.d("AppExitService:  ", "5]  Assessment Flg: ");
                             String toDateAssessment = AppDatabase.getDatabaseInstance(AppExitService.this).getSessionDao().getToDate(FastSave.getInstance().getString(FC_Constants.ASSESSMENT_SESSION, ""));
                             Log.d("AppExitService:  ", "6]  Assessment toDate: "+toDateAssessment);
@@ -56,7 +53,7 @@ public class AppExitService extends Service {
                                 //Get current DateTime for current assessment session
                                 AppDatabase.getDatabaseInstance(AppExitService.this).getSessionDao().UpdateToDate(FastSave.getInstance().getString(FC_Constants.ASSESSMENT_SESSION, ""), FC_Utility.getCurrentDateTime());
                             }
-                        }
+                        }*/
                         Log.d("AppExitService:  ", "8]  Outside : ");
                         BackupDatabase.backup(AppExitService.this);
                         stopService(new Intent(AppExitService.this, SplashActivity.class));

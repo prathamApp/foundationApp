@@ -54,25 +54,27 @@ public class SelectLangPresenter implements SelectLangContract.SelectLangPresent
 
     @Override
     public void getLanguage() {
-        boardList = AppDatabase.getDatabaseInstance(context).getContentTableDao().getLanguages(newRootParentId,
+        boardList = AppDatabase.getDatabaseInstance(context).getContentTableDao().getRootDetails(newRootParentId,
+/*                FastSave.getInstance().getString(CURRENT_STUDENT_PROGRAM_ID,"na")*/
                 "%"+ FastSave.getInstance().getString(CURRENT_STUDENT_ID,"na")+"%");
 //        langList = AppDatabase.getDatabaseInstance(context).getContentTableDao().getLanguages(rootParentId);
         //fetch language from API
         if (boardList.size() > 0)
             langList = AppDatabase.getDatabaseInstance(context).getContentTableDao().getLanguages(boardList.get(0).getNodeId(),
-                "%"+ FastSave.getInstance().getString(CURRENT_STUDENT_ID,"na")+"%");
+                "%"+ FastSave.getInstance().getString(CURRENT_STUDENT_ID,"na")+"%"/*,
+                    FastSave.getInstance().getString(CURRENT_STUDENT_PROGRAM_ID,"na")*/);
         if (FC_Utility.isDataConnectionAvailable(context))
             api_content.getBoardAPI(APP_BOARD_STRING, INTERNET_LANGUAGE_API);
         else {
             if (boardList.size() > 0) {
                 langList = AppDatabase.getDatabaseInstance(context).getContentTableDao().getLanguages(boardList.get(0).getNodeId(),
-                        "%"+ FastSave.getInstance().getString(CURRENT_STUDENT_ID,"na")+"%");
+                        "%"+ FastSave.getInstance().getString(CURRENT_STUDENT_ID,"na")+"%"/*,
+                        FastSave.getInstance().getString(CURRENT_STUDENT_PROGRAM_ID,"na")*/);
                 view.updateLangList(langList);
                 view.notifyAdapter();
             }else
                 view.connectToInternetDialog();
         }
-
     }
 
     @Override

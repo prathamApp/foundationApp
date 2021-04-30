@@ -60,7 +60,6 @@ public class WebViewActivity extends BaseActivity implements WebViewInterface {
     @AfterViews
     public void initialize(){
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
-
         webResId = getIntent().getStringExtra("resId");
         gamePath = getIntent().getStringExtra("resPath");
         mode = getIntent().getStringExtra("mode");
@@ -132,9 +131,7 @@ public class WebViewActivity extends BaseActivity implements WebViewInterface {
     @UiThread
     @SuppressLint("JavascriptInterface")
     public void createWebView(String GamePath) {
-
-        String myPath = GamePath;
-        webView.loadUrl(myPath);
+        webView.loadUrl(GamePath);
         webView.getSettings().setJavaScriptEnabled(true);
         webView.getSettings().setMediaPlaybackRequiresUserGesture(false);
         webView.addJavascriptInterface(new JSInterface(this, webView, tts,
@@ -149,12 +146,12 @@ public class WebViewActivity extends BaseActivity implements WebViewInterface {
         webView.setWebChromeClient(new WebChromeClient());
         webView.clearCache(true);
         webView.setVerticalScrollBarEnabled(false);
+        webView.getSettings().setAllowFileAccess(true);
         webView.getSettings().setLoadsImagesAutomatically(true);
         webView.getSettings().setDomStorageEnabled(true);
         webView.setScrollBarStyle(View.SCROLLBARS_INSIDE_OVERLAY);
         hideSystemUI();
     }
-
 
     @Override
     public void onBackPressed() {

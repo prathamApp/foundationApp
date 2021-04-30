@@ -31,6 +31,7 @@ public class CatchoTransparentActivity extends AppCompatActivity {
         log.setErrorType("ERROR");
         log.setExceptionMessage(error.toString());
         log.setExceptionStackTrace(error.getError());
+        log.setSessionId(""+FastSave.getInstance().getString(FC_Constants.CURRENT_SESSION, ""));
         log.setMethodName("NO_METHOD");
         log.setGroupId(FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, "no_group"));
         log.setDeviceId("" + FC_Utility.getDeviceID());

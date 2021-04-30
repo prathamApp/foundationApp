@@ -25,6 +25,12 @@ public interface ContentProgressDao {
     @Query("update ContentProgress set sentFlag=1 where sentFlag=0")
     void setSentFlag();
 
+    @Query("update ContentProgress set progressPercentage='100' where CAST(progressPercentage as float)>100")
+    void updateFullPercent();
+
+    @Query("select MAX(CAST(progressPercentage as float)) from ContentProgress where studentId=:sId AND resourceId=:resId")
+    float getResPercentage(String sId, String resId);
+
     @Insert
     void addContentProgressList(List<ContentProgress> contentProgressList);
 

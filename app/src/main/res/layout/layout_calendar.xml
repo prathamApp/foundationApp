@@ -41,7 +41,7 @@
         android:layout_centerHorizontal="true"
         android:layout_below="@+id/course_date_picker"
         android:background="@drawable/button_green"
-        android:text="Confirm Date"
+        android:text="@string/confirm_date"
         android:textAllCaps="false"
         android:textColor="@color/white"
         tools:ignore="HardcodedText" />
