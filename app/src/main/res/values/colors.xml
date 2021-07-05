@@ -11,6 +11,9 @@
     <color name="colorAccent">#FFA001</color>
     <color name="colorParent">#F2F1E7</color>
     <color name="colorText">#262B4B</color>
+    <color name="grp_stat_dark_text">#E61FCC</color>
+    <color name="grp_stat_dark">#FF9CF2</color>
+    <color name="grp_stat_light">#FFF9EE</color>
 
     <color name="strokeColor">#344955</color>
     <color name="white">#ffffff</color>
@@ -22,8 +25,10 @@
         >
 <!--    <color name="colorBtnGreenDark">#81c784</color>-->
 <!--    <color name="colorBtnGreenLight">#c8e6c9</color>-->
+    <color name="colorSignBoard2">#01712F</color>
     <color name="colorBtnGreenDark">#00c853</color>
     <color name="colorBtnGreenLight">#69f0ae</color>
+    <color name="colorBtnGreenLight2">#B0FDD7</color>
 <!--    <color name="colorBtnOrangeDark">#ffd54f</color>-->
 <!--    <color name="colorBtnOrangeLight">#ffecb3</color>-->
     <color name="colorBtnOrangeDark">#ffd600</color>
@@ -37,6 +42,7 @@
     <color name="colorBtnPurpleLight">#e1bee7</color>
     <color name="colorBtnTealDark">#b2dfdb</color>
     <color name="colorBtnTealLight">#e0f2f1</color>
+    <color name="colorBtnTealLight2">#FBFFFF</color>
 
     <color name="contentCardColor">#ba68c8</color>
     <color name="gradianceEndColor">#ba68c8</color>
@@ -53,7 +59,7 @@
     <color name="colorGreenCorrect">#caf29b</color>
     <color name="sky_blue">#47D9CC</color>
     <color name="sky_blue_light">#CAEEEA</color>
-    <color name="trans_card_text">#BAFFFFFF</color>
+    <color name="trans_card_text">#5CFFFFFF</color>
     <color name="colorGamelight">#f2a158</color>
     <color name="colorGame">#cf6607</color>
     <color name="cardBGcolor">#cc590103</color>
@@ -180,7 +186,7 @@
     <color name="startColor">#59FFFFFF</color>
     <color name="endColor">#23FFFFFF</color>
 
-    <color name="dark_blue2">#262B4B</color>
+    <color name="dark_blue2">#EB262B4B</color>
     <color name="dark_blue">#262B4B</color>
     <color name="black_20">#90000000</color>
     <color name="red">#FF3A41</color>

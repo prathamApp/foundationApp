@@ -5,6 +5,7 @@ import android.util.Log;
 
 import com.pratham.foundation.database.AppDatabase;
 import com.pratham.foundation.interfaces.API_Content_Result;
+import com.pratham.foundation.modalclasses.Modal_TotalDaysGroupsPlayed;
 import com.pratham.foundation.modalclasses.Modal_TotalDaysStudentsPlayed;
 import com.pratham.foundation.services.shared_preferences.FastSave;
 import com.pratham.foundation.utility.FC_Constants;
@@ -36,22 +37,40 @@ public class ProfilePresenter implements ProfileContract.ProfilePresenter, API_C
     @Background
     @Override
     public void getActiveData() {
-        String studId = ""+FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID,"");
-        List<Modal_TotalDaysStudentsPlayed> modal_totalDaysStudentsPlayeds1 =
-                AppDatabase.getDatabaseInstance(mContext).getScoreDao().getTotalDaysByStudentID(studId);
-//        List<Modal_TotalDaysStudentsPlayed> modal_totalDaysStudentsPlayeds2 = appDatabase.getScoreDao().getTotalDaysStudentPlayed();
-        Log.d("getActiveData: ", "1 : "+modal_totalDaysStudentsPlayeds1.size());
-        List <String> dateList = new ArrayList<>();
-        for(int i =0 ; i<modal_totalDaysStudentsPlayeds1.size(); i++){
-            if(i==0)
-                dateList.add(""+ modal_totalDaysStudentsPlayeds1.get(i).dates);
-            else{
-                if(!dateList.contains(modal_totalDaysStudentsPlayeds1.get(i).dates))
-                    dateList.add(modal_totalDaysStudentsPlayeds1.get(i).dates);
+        String studId = "" + FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, "");
+        List<String> dateList = new ArrayList<>();
+        if (FastSave.getInstance().getString(FC_Constants.LOGIN_MODE, "").equalsIgnoreCase(FC_Constants.GROUP_MODE)) {
+            List<Modal_TotalDaysGroupsPlayed> modal_totalDaysGroupsPlayeds = new ArrayList<>();
+            modal_totalDaysGroupsPlayeds = AppDatabase.getDatabaseInstance(mContext).getScoreDao().getTotalDaysGroupsPlayed();
+            Log.d("getActiveGroups: ", modal_totalDaysGroupsPlayeds.size() + "   $$$$$$");
+/*
+            for (int i = 0; i < modal_totalDaysGroupsPlayeds.size(); i++) {
+                if (i == 0)
+                    dateList.add("" + modal_totalDaysGroupsPlayeds.get(i).dates);
+                else {
+                    if (!dateList.contains(modal_totalDaysGroupsPlayeds.get(i).dates))
+                        dateList.add(modal_totalDaysGroupsPlayeds.get(i).dates);
+                }
             }
+*/
+            Log.d("getActiveData: ", "2 : " + dateList.size());
+            for (int i = 0; i < modal_totalDaysGroupsPlayeds.size(); i++)
+                if (modal_totalDaysGroupsPlayeds.get(i).getGroupID().equalsIgnoreCase(studId))
+                    profileView.setDays(Integer.parseInt(modal_totalDaysGroupsPlayeds.get(i).getDates()));
+        } else {
+            List<Modal_TotalDaysStudentsPlayed> modal_totalDaysStudentsPlayeds1 =
+                    AppDatabase.getDatabaseInstance(mContext).getScoreDao().getTotalDaysByStudentID2(studId);
+            for (int i = 0; i < modal_totalDaysStudentsPlayeds1.size(); i++) {
+                if (i == 0)
+                    dateList.add("" + modal_totalDaysStudentsPlayeds1.get(i).dates);
+                else {
+                    if (!dateList.contains(modal_totalDaysStudentsPlayeds1.get(i).dates))
+                        dateList.add(modal_totalDaysStudentsPlayeds1.get(i).dates);
+                }
+            }
+            Log.d("getActiveData: ", "2 : " + dateList.size());
+            profileView.setDays(dateList.size());
         }
-        Log.d("getActiveData: ", "2 : "+dateList.size());
-        profileView.setDays(dateList.size());
 //        Log.d("getActiveData: ", "2 : "+modal_totalDaysStudentsPlayeds2.size());
 //        tabUsageView.showTotalDaysPlayedByGroups(modal_totalDaysGroupsPlayeds);
     }

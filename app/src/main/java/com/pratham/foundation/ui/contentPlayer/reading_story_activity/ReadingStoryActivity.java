@@ -1218,11 +1218,12 @@ public class ReadingStoryActivity extends BaseActivity implements
             silence_outer_layout.setVisibility(View.VISIBLE);
             silenceViewHandler = new Handler();
             silence_iv.startAnimation(AnimationUtils.loadAnimation(context, R.anim.rotate_continuous_shake));
-            AnimateTextView(context, silence_main_layout);
+//            AnimateTextView(context, silence_main_layout);
+            resetSilence();
         }
     }
 
-    public void AnimateTextView(Context c, final RelativeLayout silence_layout) {
+/*    public void AnimateTextView(Context c, final RelativeLayout silence_layout) {
         final Animation anim_in = AnimationUtils.loadAnimation(c, R.anim.zoom_in_new);
         final Animation anim_out = AnimationUtils.loadAnimation(c, R.anim.zoom_out_full);
         anim_in.setAnimationListener(new Animation.AnimationListener() {
@@ -1255,14 +1256,14 @@ public class ReadingStoryActivity extends BaseActivity implements
         });
         //(holder.mTextView).setAnimation(anim_in);
         silence_layout.setAnimation(anim_in);
-    }
+    }*/
 
     private void resetSilence() {
         silenceViewHandler.postDelayed(() -> {
             silence_iv.clearAnimation();
             silence_outer_layout.setVisibility(View.GONE);
             continuousSpeechService.resetHandler(false);
-        }, 10);
+        }, 1200);
     }
 
 }

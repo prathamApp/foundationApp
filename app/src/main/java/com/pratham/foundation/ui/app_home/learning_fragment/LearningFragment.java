@@ -18,6 +18,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.GridLayoutManager;
@@ -36,6 +37,7 @@ import com.pratham.foundation.customView.collapsingView.RetractableToolbarUtil;
 import com.pratham.foundation.customView.display_image_dialog.CustomLodingDialog;
 import com.pratham.foundation.customView.progress_layout.ProgressLayout;
 import com.pratham.foundation.database.AppDatabase;
+import com.pratham.foundation.database.BackupDatabase;
 import com.pratham.foundation.database.domain.ContentTable;
 import com.pratham.foundation.database.domain.Groups;
 import com.pratham.foundation.modalclasses.EventMessage;
@@ -100,7 +102,6 @@ public class LearningFragment extends Fragment implements LearningContract.Learn
 
     @Bean(LearningPresenter.class)
     LearningContract.LearningPresenter presenter;
-
     @ViewById(R.id.my_recycler_view)
     RecyclerView my_recycler_view;
     @ViewById(R.id.rl_no_data)
@@ -553,14 +554,37 @@ public class LearningFragment extends Fragment implements LearningContract.Learn
                 bundle.putString("subjectName", "" + FastSave.getInstance().getString(FC_Constants.CURRENT_SUBJECT, ""));
                 bundle.putString("subjectLanguage", "" + itemContent.getContentLanguage());
                 bundle.putString("examId", "" + itemContent.getNodeKeywords());
+                bundle.putString("currentSessionId", "" + FastSave.getInstance().getString(FC_Constants.CURRENT_SESSION, ""));
                 bundle.putString("subjectLevel", "" + currentLevel);
                 Intent launchIntent = new Intent("com.pratham.assessment.ui.choose_assessment.science.ScienceAssessmentActivity_");
                 Objects.requireNonNull(launchIntent).putExtras(bundle);
                 presenter.addScoreToDB(itemContent.getNodeKeywords());
+                try {
+                    String curSession = FastSave.getInstance().getString(FC_Constants.CURRENT_SESSION, "");
+                    AppDatabase.getDatabaseInstance(ApplicationClass.getInstance()).getSessionDao().UpdateToDate(curSession, FC_Utility.getCurrentDateTime());
+                    BackupDatabase.backup(ApplicationClass.getInstance());
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
                 startActivityForResult(launchIntent, FC_Constants.APP_INTENT_REQUEST_CODE);
                 // null pointer check in case package name was not found
             } catch (Exception e) {
                 downloadAssessmentAppDialog();
+                e.printStackTrace();
+            }
+        }
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == FC_Constants.APP_INTENT_REQUEST_CODE) {
+            try {
+                String curSession = FastSave.getInstance().getString(FC_Constants.CURRENT_SESSION, "");
+                AppDatabase.getDatabaseInstance(ApplicationClass.getInstance()).getSessionDao().UpdateToDate(curSession, FC_Utility.getCurrentDateTime());
+                BackupDatabase.backup(ApplicationClass.getInstance());
+                Log.d("AAAAAAAAAAA", "onActivityResult: AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
+            } catch (Exception e) {
                 e.printStackTrace();
             }
         }

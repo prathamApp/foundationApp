@@ -158,4 +158,8 @@
     <string name="confirm_date">তাৰিখ নিৰ্বাচন কৰক</string>
     <string name="Audio">অডিও শুনক	</string>
 
+    <string name="DB_Zip_pushed_failed">তথ্যভাণ্ডাৰ চিঙ্ক কৰাত ব্যৰ্থ</string>
+    <string name="DB_Zip_pushed_successfully">তথ‍্যভাণ্ডাৰ সফলতাৰে চিঙ্ক কৰা হৈছে</string>
+    <string name="DB_Zip_push">ডি.বি ফাইল চিংক কৰক।</string>
+
 </resources>

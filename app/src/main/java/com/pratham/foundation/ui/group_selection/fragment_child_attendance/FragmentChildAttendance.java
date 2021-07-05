@@ -196,12 +196,11 @@ public class FragmentChildAttendance extends Fragment implements ContractChildAt
                 try {
                     StatusDao statusDao = AppDatabase.getDatabaseInstance(getContext()).getStatusDao();
                     newCurrentSession = "" + UUID.randomUUID().toString();
-                    String currentSession = newCurrentSession;
-                    FastSave.getInstance().saveString(FC_Constants.CURRENT_SESSION, currentSession);
-                    statusDao.updateValue("CurrentSession", "" + currentSession);
+                    FastSave.getInstance().saveString(FC_Constants.CURRENT_SESSION, newCurrentSession);
+                    statusDao.updateValue("CurrentSession", "" + newCurrentSession);
 
                     Session startSesion = new Session();
-                    startSesion.setSessionID("" + currentSession);
+                    startSesion.setSessionID("" + newCurrentSession);
                     String timerTime = FC_Utility.getCurrentDateTime();
                     Log.d("doInBackground", "--------------------------------------------doInBackground : " + timerTime);
                     startSesion.setFromDate(timerTime);

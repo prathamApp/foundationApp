@@ -71,11 +71,11 @@ import java.lang.reflect.Type;
 import java.util.Objects;
 
 import static com.pratham.foundation.ApplicationClass.App_Thumbs_Path;
+import static com.pratham.foundation.ApplicationClass.BUILD_DATE;
 import static com.pratham.foundation.ApplicationClass.ButtonClickSound;
 import static com.pratham.foundation.ui.app_home.HomeActivity.header_rl;
 import static com.pratham.foundation.utility.FC_Constants.APP_SECTION;
 import static com.pratham.foundation.utility.FC_Constants.APP_VERSION;
-import static com.pratham.foundation.utility.FC_Constants.BUILD_DATE;
 import static com.pratham.foundation.utility.FC_Constants.GROUP_MODE;
 import static com.pratham.foundation.utility.FC_Constants.INDIVIDUAL_MODE;
 import static com.pratham.foundation.utility.FC_Constants.LOGIN_MODE;
@@ -388,7 +388,6 @@ public class ProfileFragment extends Fragment implements ProfileContract.Profile
     @Click(R.id.rl_enroll_course)
     @UiThread
     public void enrollCourse() {
-//        Toast.makeText(context, "Course Enrollment", Toast.LENGTH_SHORT).show();
         startActivity(new Intent(context, CourseEnrollmentActivity_.class));
     }
 

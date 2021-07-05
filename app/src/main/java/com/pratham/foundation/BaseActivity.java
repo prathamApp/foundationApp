@@ -63,9 +63,9 @@ import org.greenrobot.eventbus.Subscribe;
 
 import java.util.Locale;
 
+import static com.pratham.foundation.ApplicationClass.BUILD_DATE;
 import static com.pratham.foundation.ApplicationClass.audioManager;
 import static com.pratham.foundation.ApplicationClass.ttsService;
-import static com.pratham.foundation.utility.FC_Constants.BUILD_DATE;
 import static com.pratham.foundation.utility.FC_Constants.transferredImages;
 
 

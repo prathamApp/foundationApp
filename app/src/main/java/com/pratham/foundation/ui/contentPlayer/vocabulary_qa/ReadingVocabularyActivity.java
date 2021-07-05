@@ -13,7 +13,6 @@ import android.media.MediaPlayer;
 import android.os.Handler;
 import android.view.View;
 import android.view.Window;
-import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.ImageButton;
@@ -642,10 +641,11 @@ public class ReadingVocabularyActivity extends BaseActivity implements MediaCall
             silence_outer_layout.setVisibility(View.VISIBLE);
             silenceViewHandler = new Handler();
             silence_iv.startAnimation(AnimationUtils.loadAnimation(this, R.anim.rotate_continuous_shake));
-            AnimateTextView(this, silence_main_layout);
+//            AnimateTextView(this, silence_main_layout);
+            resetSilence();
         }
     }
-
+/*
     public void AnimateTextView(Context c, final RelativeLayout silence_layout) {
         final Animation anim_in = AnimationUtils.loadAnimation(c, R.anim.zoom_in_new);
         final Animation anim_out = AnimationUtils.loadAnimation(c, R.anim.zoom_out_full);
@@ -680,6 +680,7 @@ public class ReadingVocabularyActivity extends BaseActivity implements MediaCall
         //(holder.mTextView).setAnimation(anim_in);
         silence_layout.setAnimation(anim_in);
     }
+*/
 
     private void resetSilence() {
         if (silenceViewHandler == null)
@@ -688,7 +689,7 @@ public class ReadingVocabularyActivity extends BaseActivity implements MediaCall
             silence_iv.clearAnimation();
             silence_outer_layout.setVisibility(View.GONE);
             continuousSpeechService.resetHandler(false);
-        }, 10);
+        }, 1200);
     }
 
     @UiThread

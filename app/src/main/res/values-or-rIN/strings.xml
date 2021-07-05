@@ -158,4 +158,8 @@
     <string name="confirm_date">ତାରିଖ ସୁନିଶ୍ଚିତ କର</string>
     <string name="Audio">ଅଡିଓ ଶୁଣ</string>
 
+    <string name="DB_Zip_pushed_failed">ସିଙ୍କ୍ ଡାଟାବେସ୍ ବିଫଳ ହେଲା</string>
+    <string name="DB_Zip_pushed_successfully">ଡାଟାବେସ୍ ସଫଳତାର ସହିତ ସିଙ୍କ୍ ହୋଇଛି</string>
+    <string name="DB_Zip_push"> ଡି.ବି. ଫାଇଲ୍ ସିଙ୍କ୍ କର </string>
+
 </resources>

@@ -13,7 +13,6 @@ import android.speech.RecognitionListener;
 import android.util.Log;
 import android.view.View;
 import android.view.Window;
-import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.ImageButton;
@@ -636,10 +635,12 @@ public class ConversationFragment_2 extends Fragment
             silence_outer_layout.setVisibility(View.VISIBLE);
             silenceViewHandler = new Handler();
             silence_iv.startAnimation(AnimationUtils.loadAnimation(context, R.anim.rotate_continuous_shake));
-            AnimateTextView(context, silence_main_layout);
+//            AnimateTextView(context, silence_main_layout);
+            resetSilence();
         }
     }
 
+/*
     public void AnimateTextView(Context c, final RelativeLayout silence_layout) {
         final Animation anim_in = AnimationUtils.loadAnimation(c, R.anim.zoom_in_new);
         final Animation anim_out = AnimationUtils.loadAnimation(c, R.anim.zoom_out_full);
@@ -674,13 +675,14 @@ public class ConversationFragment_2 extends Fragment
         //(holder.mTextView).setAnimation(anim_in);
         silence_layout.setAnimation(anim_in);
     }
+*/
 
     private void resetSilence() {
         silenceViewHandler.postDelayed(() -> {
             silence_iv.clearAnimation();
             silence_outer_layout.setVisibility(View.GONE);
             continuousSpeechService.resetHandler(false);
-        }, 10);
+        }, 1200);
     }
 
     @Override

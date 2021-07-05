@@ -99,7 +99,7 @@ public class ContentPresenter implements ContentContract.ContentPresenter, API_C
     @Override
     public void getPerc(String nodeId) {
         maxScore = new ArrayList();
-//        findMaxScore(nodeId);
+        findMaxScore(nodeId);
     }
 
     @Override

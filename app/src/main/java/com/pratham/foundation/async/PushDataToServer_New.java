@@ -68,7 +68,7 @@ import java.util.zip.GZIPOutputStream;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
-import static com.pratham.foundation.utility.FC_Constants.BUILD_DATE;
+import static com.pratham.foundation.ApplicationClass.BUILD_DATE;
 import static com.pratham.foundation.utility.FC_Constants.IS_SERVICE_STOPED;
 import static com.pratham.foundation.utility.FC_Constants.failed_ImageLength;
 import static com.pratham.foundation.utility.FC_Constants.pushedScoreLength;

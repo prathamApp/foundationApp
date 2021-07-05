@@ -20,12 +20,12 @@ import com.pratham.foundation.utility.FC_Utility;
 
 import java.util.ArrayList;
 
+import static com.pratham.foundation.ApplicationClass.BUILD_DATE;
 import static com.pratham.foundation.BaseActivity.setMute;
 import static com.pratham.foundation.utility.FC_Constants.ASSAMESE;
 import static com.pratham.foundation.utility.FC_Constants.ASSAMESE_LOCAL;
 import static com.pratham.foundation.utility.FC_Constants.BENGALI;
 import static com.pratham.foundation.utility.FC_Constants.BENGALI_LOCAL;
-import static com.pratham.foundation.utility.FC_Constants.BUILD_DATE;
 import static com.pratham.foundation.utility.FC_Constants.ENGLISH;
 import static com.pratham.foundation.utility.FC_Constants.ENGLISH_LOCAL;
 import static com.pratham.foundation.utility.FC_Constants.GUJARATI;

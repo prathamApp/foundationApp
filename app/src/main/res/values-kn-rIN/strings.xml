@@ -157,4 +157,9 @@
     <string name="select_date">ದಿನಾಂಕವನ್ನು ಆಯ್ಕೆಮಾಡಿ</string>
     <string name="confirm_date">ದಿನಾಂಕವನ್ನು ದೃಡಪಡಿಸಿ</string>
     <string name="Audio">ಆಡಿಯೋವನ್ನು ಕೇಳಿ</string>
+
+    <string name="DB_Zip_pushed_failed">ಸಿಂಕ್ ಡೇಟಾಬೇಸ್ ವಿಫಲವಾಗಿದೆ</string>
+    <string name="DB_Zip_pushed_successfully">ಡೇಟಾಬೇಸ್ ಯಶಸ್ವಿಯಾಗಿ ಸಿಂಕ್ ಮಾಡಲಾಗಿದೆ</string>
+    <string name="DB_Zip_push">D B ಫೈಲ್ ಅನ್ನು ಸಿಂಕ್ ಮಾಡಿ</string>
+
 </resources>

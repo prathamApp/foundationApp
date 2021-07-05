@@ -158,4 +158,9 @@
     <string name="confirm_date">తారీఖును నిర్ధారించండి</string>
     <string name="Audio">ఆడియోను వినండి</string>
 
+    <string name="DB_Zip_pushed_failed">సింక్ చేసిన డేటాబేస్ ఫెయిల్ అయ్యింది</string>
+    <string name="DB_Zip_pushed_successfully">డేటాబేస్ సక్సస్ ఫుల్ గా సింక్ అయ్యింది </string>
+    <string name="DB_Zip_push">సింక్ DB ఫైల్</string>
+
+
 </resources>

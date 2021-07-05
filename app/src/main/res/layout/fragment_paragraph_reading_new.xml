@@ -21,45 +21,34 @@
         android:layout_height="match_parent"
         android:background="@color/black_20"
         android:elevation="50dp"
+        android:gravity="center"
         android:visibility="gone">
 
         <RelativeLayout
             android:id="@+id/silence_main_layout"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/_150sdp"
-            android:layout_centerInParent="true"
-            android:layout_marginStart="@dimen/_30sdp"
-            android:layout_marginEnd="@dimen/_30sdp"
-            android:padding="@dimen/_10sdp">
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true">
 
             <ImageView
                 android:id="@+id/silence_iv"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/_90sdp"
-                android:layout_alignParentTop="true"
-                android:layout_centerHorizontal="true"
                 android:elevation="@dimen/_20sdp"
                 android:src="@drawable/stt_listener" />
 
-            <RelativeLayout
+            <com.pratham.foundation.customView.fontsview.SansTextViewBold
+                android:id="@+id/silence_tv"
                 android:layout_width="@dimen/_150sdp"
                 android:layout_height="@dimen/_60sdp"
-                android:layout_centerHorizontal="true"
-                android:layout_marginTop="@dimen/_80sdp"
-                android:background="@drawable/ripple_rectangle_card">
-
-                <com.pratham.foundation.customView.fontsview.SansTextViewBold
-                    android:id="@+id/silence_tv"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_alignParentBottom="true"
-                    android:layout_centerHorizontal="true"
-                    android:gravity="center"
-                    android:text="I am listening..."
-                    android:textColor="@color/red"
-                    android:textSize="@dimen/_15sdp" />
-
-            </RelativeLayout>
+                android:layout_below="@+id/silence_iv"
+                android:layout_centerInParent="true"
+                android:layout_marginTop="-25dp"
+                android:background="@drawable/ripple_rectangle_card"
+                android:gravity="center"
+                android:text="I am listening..."
+                android:textColor="@color/red"
+                android:textSize="@dimen/_15sdp" />
         </RelativeLayout>
     </RelativeLayout>
 

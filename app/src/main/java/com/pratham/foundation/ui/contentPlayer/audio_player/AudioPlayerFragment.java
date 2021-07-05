@@ -231,7 +231,6 @@ public class AudioPlayerFragment extends Fragment implements OnGameClose {
     @Click(R.id.ib_play)
     public void onPlayClicked() {
         seekbar.setClickable(false);
-
         if (!isPlaying) {
             isPlaying = true;
             try {
@@ -250,7 +249,6 @@ public class AudioPlayerFragment extends Fragment implements OnGameClose {
             isPlaying = false;
             mediaPlayer.pause();
         }
-
     }
 
     @UiThread
