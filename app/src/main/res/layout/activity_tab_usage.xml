@@ -39,12 +39,15 @@
     <com.yarolegovich.discretescrollview.DiscreteScrollView
         android:id="@+id/rv_stat_group"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/_120sdp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/_15sdp"
+        android:layout_marginBottom="@dimen/_5sdp"
         android:layout_below="@+id/header_rl"
         app:dsv_orientation="horizontal" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rv_daily_stat"
+        android:layout_marginTop="@dimen/_3sdp"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@+id/rv_stat_group" />

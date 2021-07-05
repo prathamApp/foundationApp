@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.pratham.foundation.customView.fontsview.SansTextViewBold xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/stat_res_name"
+    android:layout_width="@dimen/_190sdp"
+    android:layout_height="wrap_content"
+    android:layout_margin="@dimen/_5sdp"
+    android:background="@drawable/text_usage_game_grad"
+    android:gravity="center_vertical"
+    android:textSize="@dimen/_11sdp"
+    android:maxLines="2"
+    android:paddingTop="@dimen/_5sdp"
+    android:paddingBottom="@dimen/_5sdp"
+    android:paddingEnd="@dimen/_5sdp"
+    android:paddingStart="@dimen/_20sdp"
+    android:textColor="@color/colorSignBoard2" />

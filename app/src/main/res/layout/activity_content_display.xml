@@ -1,72 +1,78 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/home_root_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/white"
     android:paddingBottom="2dp">
-<!--    android:background="#F9FCFE"-->
+    <!--    android:background="#F9FCFE"-->
 
     <RelativeLayout
         android:id="@+id/header_rl"
         android:layout_width="match_parent"
         android:layout_height="@dimen/_110sdp">
-        <!--        android:background="@drawable/header_trans_bg"-->
-        <!--        android:elevation="@dimen/_5sdp"-->
+
         <ImageView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:scaleType="centerCrop"
-            app:srcCompat="@drawable/new_bg2"/>
+            app:srcCompat="@drawable/new_bg2"
+            tools:ignore="ContentDescription" />
+
         <ImageView
             android:id="@+id/main_back"
             android:layout_width="@dimen/_30sdp"
             android:layout_height="@dimen/_30sdp"
-            android:layout_marginTop="@dimen/_5sdp"
             android:layout_marginStart="@dimen/_5sdp"
+            android:layout_marginTop="@dimen/_5sdp"
             android:elevation="@dimen/_35sdp"
             android:scaleType="center"
-            app:srcCompat="@drawable/ic_left_arrow_white" />
+            app:srcCompat="@drawable/ic_left_arrow_white"
+            tools:ignore="ContentDescription" />
 
         <RelativeLayout
             android:id="@+id/leftCol"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_below="@+id/main_back"
-            android:layout_toStartOf="@+id/right_col"
-            android:layout_marginStart="@dimen/_15sdp">
+            android:layout_marginStart="@dimen/_15sdp"
+            android:layout_toStartOf="@+id/right_col">
 
             <com.pratham.foundation.customView.fontsview.SansTextViewBold
                 android:id="@+id/tv_Topic"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="@dimen/_10sdp"
-                android:text=""
                 android:duplicateParentState="true"
                 android:ellipsize="marquee"
                 android:fadingEdge="horizontal"
                 android:marqueeRepeatLimit="marquee_forever"
                 android:scrollHorizontally="true"
                 android:singleLine="true"
+                android:text=""
                 android:textColor="@color/dark_blue"
                 android:textSize="@dimen/_20sdp" />
 
             <LinearLayout
-                android:id="@+id/ll_topic_parent"                android:layout_width="match_parent"
+                android:id="@+id/ll_topic_parent"
+                android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_below="@+id/tv_Topic"
                 android:gravity="center_vertical"
                 android:orientation="horizontal">
+
                 <com.pratham.foundation.customView.fontsview.SansTextView
                     android:id="@+id/tv_Activity"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="@dimen/_10sdp"
-                    android:text="Name"
                     android:gravity="center"
+                    android:text="Name"
                     android:textColor="@color/oslo_grey"
                     android:textSize="@dimen/_16sdp" />
+
                 <com.pratham.foundation.customView.fontsview.SansTextViewBold
                     android:id="@+id/tv_header_progress"
                     android:layout_width="wrap_content"
@@ -75,10 +81,10 @@
                     android:background="@drawable/progress_background2"
                     android:paddingStart="@dimen/_8sdp"
                     android:paddingEnd="@dimen/_8sdp"
-                    android:visibility="gone"
                     android:text="0%"
                     android:textColor="@color/white"
-                    android:textSize="@dimen/_10sdp" />
+                    android:textSize="@dimen/_10sdp"
+                    android:visibility="visible" />
             </LinearLayout>
         </RelativeLayout>
 
@@ -86,15 +92,15 @@
             android:id="@+id/right_col"
             android:layout_width="@dimen/_45sdp"
             android:layout_height="match_parent"
-            android:layout_marginEnd="@dimen/_12sdp"
-            android:layout_alignParentEnd="true">
+            android:layout_alignParentEnd="true"
+            android:layout_marginEnd="@dimen/_12sdp">
 
             <com.pratham.foundation.customView.fontsview.SansTextViewBold
                 android:id="@+id/txt_level"
                 android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="@dimen/_25sdp"
-                android:layout_height="wrap_content"
                 android:text="@string/Level"
                 android:textColor="@color/dark_blue"
                 android:textSize="@dimen/_12sdp" />
@@ -102,32 +108,23 @@
             <com.pratham.foundation.customView.fontsview.SansTextViewBold
                 android:id="@+id/tv_level"
                 android:layout_width="wrap_content"
-                android:layout_centerHorizontal="true"
-                android:layout_marginTop="@dimen/_25sdp"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/txt_level"
-                android:text="@string/Level"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="@dimen/_25sdp"
+                android:text=""
                 android:textColor="@color/dark_blue"
                 android:textSize="@dimen/_12sdp" />
-
-                <ImageView
-                    android:id="@+id/iv_level"
-                    android:layout_width="@dimen/_33sdp"
-                    android:layout_height="@dimen/_40sdp"
-                    android:layout_below="@+id/txt_level"
-                    android:layout_centerHorizontal="true"
-                    android:layout_marginTop="@dimen/_2sdp"
-                    android:visibility="gone"
-                    android:padding="2dp"/>
         </RelativeLayout>
     </RelativeLayout>
 
-    <RelativeLayout
-        android:id="@+id/ll_mid"
+    <include
+        layout="@layout/content_recycler"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@id/header_rl"
-        android:paddingHorizontal="10dp">
-        <include layout="@layout/content_recycler" />
-    </RelativeLayout>
+        android:layout_marginTop="@dimen/_2sdp"
+        android:layout_marginStart="@dimen/_5sdp"
+        android:layout_marginEnd="@dimen/_5sdp"
+        android:paddingBottom="@dimen/_5sdp"
+        android:layout_below="@id/header_rl" />
 </RelativeLayout>

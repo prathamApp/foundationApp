@@ -33,7 +33,7 @@ public class ResourcesAdapter extends RecyclerView.Adapter<ResourcesAdapter.View
     @Override
     public ResourcesAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int i) {
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
-        View v = inflater.inflate(R.layout.item_stat_resource, parent, false);
+        View v = inflater.inflate(R.layout.item_stat_resource_gradiance, parent, false);
         return new ViewHolder(v);
     }
 

@@ -5,8 +5,6 @@ import com.pratham.foundation.R;
 
 public class FC_Constants {
 
-    public static final String BUILD_DATE = "16-Apr-2021";
-
     public static final String FTP_CLIENT_CONNECTED = "ftp_client_connected";
     public static final String TOPIC = "topic";
     public static final String RESOURCE = "resource";

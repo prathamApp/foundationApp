@@ -30,44 +30,34 @@
         android:layout_height="match_parent"
         android:background="@color/black_20"
         android:elevation="50dp"
+        android:gravity="center"
         android:visibility="gone">
 
         <RelativeLayout
             android:id="@+id/silence_main_layout"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/_150sdp"
-            android:layout_centerInParent="true"
-            android:layout_marginHorizontal="@dimen/_30sdp"
-            android:padding="@dimen/_10sdp">
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true">
 
             <ImageView
                 android:id="@+id/silence_iv"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/_90sdp"
-                android:layout_alignParentTop="true"
-                android:layout_centerHorizontal="true"
                 android:elevation="@dimen/_20sdp"
                 android:src="@drawable/stt_listener" />
 
-            <RelativeLayout
+            <com.pratham.foundation.customView.fontsview.SansTextViewBold
+                android:id="@+id/silence_tv"
                 android:layout_width="@dimen/_150sdp"
                 android:layout_height="@dimen/_60sdp"
-                android:layout_centerHorizontal="true"
-                android:layout_marginTop="@dimen/_80sdp"
-                android:background="@drawable/ripple_rectangle_card">
-
-                <com.pratham.foundation.customView.fontsview.SansTextViewBold
-                    android:id="@+id/silence_tv"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_alignParentBottom="true"
-                    android:layout_centerHorizontal="true"
-                    android:gravity="center"
-                    android:text="I am listening..."
-                    android:textColor="@color/red"
-                    android:textSize="@dimen/_15sdp" />
-
-            </RelativeLayout>
+                android:layout_below="@+id/silence_iv"
+                android:layout_centerInParent="true"
+                android:layout_marginTop="-25dp"
+                android:background="@drawable/ripple_rectangle_card"
+                android:gravity="center"
+                android:text="I am listening..."
+                android:textColor="@color/red"
+                android:textSize="@dimen/_15sdp" />
         </RelativeLayout>
     </RelativeLayout>
 
@@ -115,8 +105,8 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_marginStart="10dp"
-            android:layout_marginEnd="10dp"
             android:layout_marginTop="10dp"
+            android:layout_marginEnd="10dp"
             android:layout_weight="1.5"
             android:orientation="horizontal"
             android:weightSum="10">
@@ -125,46 +115,46 @@
                 android:id="@+id/btn_reading"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:layout_weight="1.5"
                 android:layout_marginBottom="10dp"
+                android:layout_weight="1.5"
                 android:background="@drawable/button_green"
                 android:elevation="2dp"
                 android:scaleType="fitCenter"
                 android:src="@drawable/ic_mic_black" />
 
-                <ScrollView
-                    android:id="@+id/scroll_ll"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_gravity="center"
-                    android:layout_marginStart="@dimen/_5sdp"
-                    android:layout_marginEnd="@dimen/_5sdp"
-                    android:layout_weight="7"
-                    android:background="@drawable/dialog_bg"
-                    android:elevation="2dp"
-                    android:layout_marginBottom="10dp"
-                    android:gravity="center"
-                    android:fadeScrollbars="false"
-                    android:scrollbarSize="6dp"
-                    android:scrollbarThumbVertical="@drawable/card_color_bg4"
-                    android:scrollbarTrackVertical="@drawable/scroll_bg">
+            <ScrollView
+                android:id="@+id/scroll_ll"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:layout_marginStart="@dimen/_5sdp"
+                android:layout_marginEnd="@dimen/_5sdp"
+                android:layout_marginBottom="10dp"
+                android:layout_weight="7"
+                android:background="@drawable/dialog_bg"
+                android:elevation="2dp"
+                android:fadeScrollbars="false"
+                android:gravity="center"
+                android:scrollbarSize="6dp"
+                android:scrollbarThumbVertical="@drawable/card_color_bg4"
+                android:scrollbarTrackVertical="@drawable/scroll_bg">
 
-                    <com.nex3z.flowlayout.FlowLayout xmlns:app="http://schemas.android.com/apk/res-auto"
-                        android:id="@+id/readChatFlow"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:padding="@dimen/_5sdp"
-                        app:flChildSpacing="10dp" />
-                </ScrollView>
+                <com.nex3z.flowlayout.FlowLayout xmlns:app="http://schemas.android.com/apk/res-auto"
+                    android:id="@+id/readChatFlow"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:padding="@dimen/_5sdp"
+                    app:flChildSpacing="10dp" />
+            </ScrollView>
 
             <ImageButton
                 android:id="@+id/btn_imgsend"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
+                android:layout_marginBottom="10dp"
                 android:layout_weight="1.5"
                 android:background="@drawable/button_green"
-                android:layout_marginBottom="10dp"
                 android:elevation="2dp"
                 android:scaleType="fitCenter"
                 android:src="@drawable/enter"
@@ -174,8 +164,8 @@
                 android:id="@+id/btn_speaker"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:layout_weight="1.5"
                 android:layout_marginBottom="10dp"
+                android:layout_weight="1.5"
                 android:background="@drawable/button_yellow"
                 android:elevation="2dp"
                 android:padding="@dimen/_5sdp"

@@ -44,7 +44,7 @@ public class GroupResourcesAdapter extends RecyclerView.Adapter<GroupResourcesAd
     public void onBindViewHolder(@NonNull GroupResourcesAdapter.ViewHolder viewHolder, int i) {
         Set<String> keyset = modal_resourcePlayedByGroups.keySet();
         String[] keys = keyset.toArray(new String[keyset.size()]);
-        viewHolder.stat_date.setText(keys[viewHolder.getAdapterPosition()]);
+        viewHolder.stat_date.setText("Date : "+ keys[viewHolder.getAdapterPosition()]);
         ResourcesAdapter resourcesAdapter = new ResourcesAdapter(context1,modal_resourcePlayedByGroups.get(keys[viewHolder.getAdapterPosition()]));
         FlexboxLayoutManager flexboxLayoutManager = new FlexboxLayoutManager(context1, FlexDirection.ROW);
         flexboxLayoutManager.setJustifyContent(JustifyContent.CENTER);

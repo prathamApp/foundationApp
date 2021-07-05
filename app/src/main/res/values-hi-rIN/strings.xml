@@ -158,5 +158,8 @@
     <string name="confirm_date">तारीख़ की पुष्टि करें/तारीख़ कन्फर्म करें</string>
     <string name="Audio">ऑडियो सुनें</string>
 
+    <string name="DB_Zip_pushed_failed">डेटाबेस सिंक नहीं हुआ।</string>
+    <string name="DB_Zip_pushed_successfully">डेटाबेस सफलतापूर्वक सिंक किया गया।</string>
+    <string name="DB_Zip_push">डी बी फाइल सिंक करें।</string>
 
 </resources>

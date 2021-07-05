@@ -21,7 +21,6 @@ import androidx.viewpager.widget.ViewPager;
 
 import com.airbnb.lottie.LottieAnimationView;
 import com.facebook.drawee.view.SimpleDraweeView;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.tabs.TabLayout;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -112,8 +111,6 @@ public class HomeActivity extends BaseActivity implements LevelChanged, API_Cont
     public static RelativeLayout header_rl;
     @ViewById(R.id.submarine)
     public static SubmarineView submarine;
-    @ViewById(R.id.iv_level)
-    public static ImageView iv_level;
     @ViewById(R.id.tv_level)
     public static TextView tv_level;
     //    @ViewById(R.id.level_circle)
@@ -133,8 +130,8 @@ public class HomeActivity extends BaseActivity implements LevelChanged, API_Cont
     Drawable homeHeader4;
     @ViewById(R.id.main_back)
     ImageView main_back;
-    @ViewById(R.id.floating_info)
-    FloatingActionButton floating_info;
+//    @ViewById(R.id.floating_info)
+//    FloatingActionButton floating_info;
 
     public static String sub_Name, sub_nodeId = "";
     public static boolean languageChanged = false;
@@ -292,7 +289,7 @@ public class HomeActivity extends BaseActivity implements LevelChanged, API_Cont
         FastSave.getInstance().saveInt(FC_Constants.CURRENT_LEVEL, 1);
         currentLevel = FastSave.getInstance().getInt(FC_Constants.CURRENT_LEVEL, 1);
         tv_header_progress.setText("0%");
-        floating_info.setImageResource(R.drawable.ic_info_outline_white);
+//        floating_info.setImageResource(R.drawable.ic_info_outline_white);
         currSubj = FastSave.getInstance().getString(FC_Constants.CURRENT_SUBJECT, "");
         //        floating_back.setImageResource(R.drawable.ic_left_arrow_white);
         levelChanged = HomeActivity.this;
@@ -332,9 +329,9 @@ public class HomeActivity extends BaseActivity implements LevelChanged, API_Cont
                             case R.id.tv_header_progress:
                                 builder.setTitle(getResources().getString(R.string.Level));
                                 builder.setContentText(getResources().getString(R.string.Click_to_switch_levels));
-                                builder.setTargetView(iv_level).build();
+                                builder.setTargetView(tv_level).build();
                                 break;
-                            case R.id.iv_level:
+                            case R.id.tv_level:
                                 builder.setTitle(getResources().getString(R.string.Sections));
                                 builder.setContentText(getResources().getString(R.string.Click_to_switch_Sections));
                                 builder.setTargetView(tabLayout).build();
@@ -352,7 +349,7 @@ public class HomeActivity extends BaseActivity implements LevelChanged, API_Cont
     }
 
     private void updatingForDynamicLocationViews() {
-        iv_level.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+        tv_level.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View view, boolean b) {
                 mGuideView.updateGuideViewLocation();
@@ -480,7 +477,7 @@ public class HomeActivity extends BaseActivity implements LevelChanged, API_Cont
             //Setting image depending on the level
             FC_Constants.currentLevel = rootList.get(position).getSeq_no();
             FC_Constants.levelNodeID = rootList.get(position).getNodeId();
-            changeBGNew(FC_Constants.currentLevel);
+//            changeBGNew(FC_Constants.currentLevel);
             FastSave.getInstance().saveInt(FC_Constants.CURRENT_LEVEL, currentLevel);
             levelTitle = rootList.get(position).getNodeTitle();
             FastSave.getInstance().saveString(FC_Constants.CURRENT_LEVEL_NAME, levelTitle);
@@ -549,7 +546,7 @@ public class HomeActivity extends BaseActivity implements LevelChanged, API_Cont
 //        Add Tab Icons
         TextView learningTab = (TextView) LayoutInflater.from(this).inflate(R.layout.custom_tab_text, null);
         learningTab.setText("" + getResources().getString(R.string.Learning));
-        learningTab.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.ic_learning, 0, 0);
+        learningTab.setCompoundDrawablesWithIntrinsicBounds( 0, R.drawable.ic_learning, 0, 0);
 
         TextView profileTab = (TextView) LayoutInflater.from(this).inflate(R.layout.custom_tab_text, null);
         profileTab.setText("" + getResources().getString(R.string.Profile));
@@ -607,6 +604,9 @@ public class HomeActivity extends BaseActivity implements LevelChanged, API_Cont
 
                 if (tab.getText().toString().equalsIgnoreCase("" + getResources().getString(R.string.Profile))) {
                     FastSave.getInstance().saveString(APP_SECTION, sec_Profile);
+                    EventMessage eventMessage = new EventMessage();
+                    eventMessage.setMessage(FRAGMENT_RESELECTED);
+                    EventBus.getDefault().post(eventMessage);
                     header_rl.setVisibility(View.GONE);
                 } else {
                     FastSave.getInstance().saveString(APP_SECTION, sec_Learning);
@@ -685,7 +685,7 @@ public class HomeActivity extends BaseActivity implements LevelChanged, API_Cont
         myDialog.show();
     }
 
-    @Click({R.id.iv_level, R.id.tv_level})
+    @Click(R.id.tv_level)
     public void levelChange() {
         try {
             ButtonClickSound.start();

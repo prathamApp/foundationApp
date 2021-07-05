@@ -20,8 +20,8 @@ import com.pratham.foundation.utility.FC_Utility;
 
 import java.util.ArrayList;
 
+import static com.pratham.foundation.ApplicationClass.BUILD_DATE;
 import static com.pratham.foundation.BaseActivity.setMute;
-import static com.pratham.foundation.utility.FC_Constants.BUILD_DATE;
 
 
 /**

@@ -4,28 +4,30 @@
     android:id="@+id/item_grp_card"
     android:layout_width="@dimen/_170sdp"
     android:layout_height="wrap_content"
-    app:cardBackgroundColor="@color/transparent_white_btn"
-    app:strokeColor="@color/red"
     android:layout_marginStart="@dimen/_5sdp"
     android:layout_marginEnd="@dimen/_5sdp"
-    app:strokeWidth="@dimen/_2sdp"
-    android:elevation="@dimen/_3sdp"
+    android:layout_marginBottom="8dp"
+    app:cardElevation="5dp"
     app:cardCornerRadius="@dimen/_10sdp">
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        >
 
-        <com.pratham.foundation.customView.fontsview.SansTextView
+        <com.pratham.foundation.customView.fontsview.SansTextViewBold
             android:id="@+id/stat_grp_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
             android:layout_centerHorizontal="true"
-            android:layout_margin="@dimen/_5sdp"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:layout_marginStart="@dimen/_5sdp"
+            android:layout_marginEnd="@dimen/_5sdp"
+            android:layout_marginBottom="@dimen/_3sdp"
             android:gravity="center"
             android:maxLines="3"
-            android:textColor="@android:color/black"
+            android:textColor="@color/grp_stat_dark_text"
             android:textSize="@dimen/_15sdp" />
 
         <LinearLayout
@@ -39,13 +41,16 @@
             <com.airbnb.lottie.LottieAnimationView
                 android:layout_width="@dimen/_35sdp"
                 android:layout_height="@dimen/_35sdp"
-                android:layout_margin="@dimen/_2sdp"
+                android:layout_marginTop="@dimen/_2sdp"
+                android:layout_marginStart="@dimen/_2sdp"
+                android:layout_marginEnd="@dimen/_2sdp"
+                android:layout_marginBottom="@dimen/_5sdp"
                 android:layout_gravity="center_vertical"
                 app:lottie_autoPlay="true"
-                app:lottie_fileName="timer_time.json"
+                app:lottie_fileName="lottie_calendar.json"
                 app:lottie_loop="true" />
 
-            <com.pratham.foundation.customView.fontsview.SansTextViewBold
+            <com.pratham.foundation.customView.fontsview.SansTextView
                 android:id="@+id/stat_grp_date"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -53,8 +58,8 @@
                 android:layout_margin="@dimen/_5sdp"
                 android:gravity="center"
                 android:maxLines="3"
-                android:textColor="@color/red"
-                android:textSize="@dimen/_20sdp" />
+                android:textColor="@color/grp_stat_dark_text"
+                android:textSize="@dimen/_15sdp" />
         </LinearLayout>
     </RelativeLayout>
 </com.google.android.material.card.MaterialCardView>

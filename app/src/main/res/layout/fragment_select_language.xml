@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@null">
-<!--    android:background="@drawable/catcho_bg_grad"-->
+    <!--    android:background="@drawable/catcho_bg_grad"-->
     <RelativeLayout
         android:id="@+id/topPanel"
         android:layout_width="match_parent"
@@ -44,22 +44,16 @@
 
     </RelativeLayout>
 
-    <RelativeLayout
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_lang"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@id/topPanel"
-        android:layout_marginTop="@dimen/_10sdp"
-        android:layout_marginBottom="@dimen/_10sdp">
+        android:layout_centerInParent="true"
+        android:layout_marginStart="@dimen/_10sdp"
+        android:layout_marginBottom="@dimen/_10sdp"
+        android:layout_marginEnd="@dimen/_10sdp" />
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rv_lang"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:layout_marginStart="@dimen/_10sdp"
-            android:layout_marginEnd="@dimen/_10sdp" />
-
-    </RelativeLayout>
 
     <!--
         <com.pratham.foundation.customView.fontsview.SansButton

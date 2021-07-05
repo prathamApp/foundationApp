@@ -268,8 +268,7 @@ public class ContentFileViewHolder extends RecyclerView.ViewHolder {
                 else
                     Objects.requireNonNull(ib_action_btn).setImageResource(R.drawable.ic_android_act);
 
-                content_card_view.setOnClickListener(v -> itemClicked.onContentOpenClicked(
-                        contentTable));
+                content_card_view.setOnClickListener(v -> itemClicked.onContentOpenClicked(contentTable));
 
                 try {
                     if (contentTable.isOnSDCard())

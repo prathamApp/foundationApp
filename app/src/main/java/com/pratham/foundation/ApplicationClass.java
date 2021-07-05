@@ -32,8 +32,9 @@ import okhttp3.OkHttpClient;
 
 public class ApplicationClass extends Application {
 
-//    DelhiGov
+    //    DelhiGov
 //    public static String uploadDataUrl = "http://delhigovt.centralindia.cloudapp.azure.com:8087/api/Foundation/PushData";
+    public static final String BUILD_DATE = "19-May-2021";
     public static boolean isTablet = true;
     public static boolean isAssets = false;
     public static boolean contentExistOnSD = false, LocationFlg = false;
@@ -48,7 +49,7 @@ public class ApplicationClass extends Application {
     public static String path;
     public static TTSService ttsService;
     public static AudioManager audioManager;
-    public static MediaPlayer ButtonClickSound,BackBtnSound;
+    public static MediaPlayer ButtonClickSound, BackBtnSound;
     public static List<Modal_FileDownloading> fileDownloadingList;
 
     @Override
@@ -84,8 +85,7 @@ public class ApplicationClass extends Application {
     }
 
 
-
-    public static boolean getAppMode(){
+    public static boolean getAppMode() {
         isTablet = false;
 //        isTablet = FastSave.getInstance().getBoolean(FC_Constants.PRATHAM_LOGIN, false);
         return isTablet;
@@ -95,7 +95,7 @@ public class ApplicationClass extends Application {
         String NOTIFICATION_CHANNEL_ID = "push.service";
         String channelName = "Sync Service";
 
-        if(Build.VERSION.SDK_INT>=Build.VERSION_CODES.O) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             NotificationChannel serviceChannel = new NotificationChannel(NOTIFICATION_CHANNEL_ID,
                     channelName, NotificationManager.IMPORTANCE_NONE);
 

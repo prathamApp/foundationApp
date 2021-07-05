@@ -158,4 +158,8 @@
     <string name="confirm_date">તારીખની ખાતરી કરો</string>
     <string name="Audio">ઑડિયો સાંભળો</string>
 
+    <string name="DB_Zip_pushed_failed">ડેટાબેસ સિંક થયો નથી. </string>
+    <string name="DB_Zip_pushed_successfully">ડેટાબેસ સફળતાપૂર્વક સિંક થઇ ગયો.</string>
+    <string name="DB_Zip_push">DB ફાઈલ સિંક કરો.</string>
+
 </resources>

@@ -21,6 +21,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -86,7 +87,6 @@ import static com.pratham.foundation.ui.app_home.HomeActivity.languageChanged;
 import static com.pratham.foundation.utility.FC_Constants.DOWNLOAD_NODE_ID;
 import static com.pratham.foundation.utility.FC_Constants.GROUP_MODE;
 import static com.pratham.foundation.utility.FC_Constants.IS_DOWNLOADING;
-import static com.pratham.foundation.utility.FC_Constants.LOGIN_MODE;
 import static com.pratham.foundation.utility.FC_Constants.QR_GROUP_MODE;
 import static com.pratham.foundation.utility.FC_Constants.currentLevel;
 import static com.pratham.foundation.utility.FC_Constants.currentSubjectFolder;
@@ -124,8 +124,6 @@ public class ContentDisplay extends BaseActivity implements ContentContract.Cont
     TextView tv_Activity;
     @ViewById(R.id.ll_topic_parent)
     LinearLayout ll_topic_parent;
-    @ViewById(R.id.iv_level)
-    ImageView iv_level;
     @ViewById(R.id.tv_level)
     TextView tv_level;
     String nodeId, level, contentTitle;
@@ -151,6 +149,7 @@ public class ContentDisplay extends BaseActivity implements ContentContract.Cont
     @ViewById(R.id.main_back)
     ImageView main_back;
 
+    @SuppressLint("SetTextI18n")
     @AfterViews
     public void initialize() {
         Runtime rs = Runtime.getRuntime();
@@ -195,7 +194,6 @@ public class ContentDisplay extends BaseActivity implements ContentContract.Cont
 //        add node for maintaining list
 //        get child node and display
         presenter.getListData();
-
     }
 
     @Override
@@ -219,6 +217,7 @@ public class ContentDisplay extends BaseActivity implements ContentContract.Cont
         presenter.getListData();
     }
 
+    @SuppressLint("SetTextI18n")
     @UiThread
     @Override
     public void setHeaderProgress(int percent) {
@@ -279,7 +278,7 @@ public class ContentDisplay extends BaseActivity implements ContentContract.Cont
                 hideSystemUI();
                 showLoader();
                 presenter.getListData();
-                if (!LOGIN_MODE.equalsIgnoreCase(QR_GROUP_MODE))
+                if (!FastSave.getInstance().getString(FC_Constants.LOGIN_MODE, FC_Constants.INDIVIDUAL_MODE).equalsIgnoreCase(QR_GROUP_MODE))
                     presenter.getPerc(nodeId);
 //                notifyAdapter();
             }
@@ -371,14 +370,37 @@ public class ContentDisplay extends BaseActivity implements ContentContract.Cont
                 bundle.putString("subjectName", "" + FastSave.getInstance().getString(FC_Constants.CURRENT_SUBJECT, ""));
                 bundle.putString("subjectLanguage", "" + itemContent.getContentLanguage());
                 bundle.putString("examId", "" + itemContent.getNodeKeywords());
+                bundle.putString("currentSessionId", "" + FastSave.getInstance().getString(FC_Constants.CURRENT_SESSION, ""));
                 bundle.putString("subjectLevel", "" + currentLevel);
                 Intent launchIntent = new Intent("com.pratham.assessment.ui.choose_assessment.science.ScienceAssessmentActivity_");
                 Objects.requireNonNull(launchIntent).putExtras(bundle);
                 presenter.addScoreToDB(itemContent.getNodeKeywords());
+                try {
+                    String curSession = FastSave.getInstance().getString(FC_Constants.CURRENT_SESSION, "");
+                    AppDatabase.getDatabaseInstance(ApplicationClass.getInstance()).getSessionDao().UpdateToDate(curSession, FC_Utility.getCurrentDateTime());
+                    BackupDatabase.backup(ApplicationClass.getInstance());
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
                 startActivityForResult(launchIntent, FC_Constants.APP_INTENT_REQUEST_CODE);
                 // null pointer check in case package name was not found
             } catch (Exception e) {
                 downloadAssessmentAppDialog();
+                e.printStackTrace();
+            }
+        }
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == FC_Constants.APP_INTENT_REQUEST_CODE) {
+            try {
+                String curSession = FastSave.getInstance().getString(FC_Constants.CURRENT_SESSION, "");
+                AppDatabase.getDatabaseInstance(ApplicationClass.getInstance()).getSessionDao().UpdateToDate(curSession, FC_Utility.getCurrentDateTime());
+                BackupDatabase.backup(ApplicationClass.getInstance());
+                Log.d("AAAAAAAAAAA", "onActivityResult: AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
+            } catch (Exception e) {
                 e.printStackTrace();
             }
         }

@@ -6,17 +6,13 @@
     android:background="@drawable/activity_bkgd"
     app:cardElevation="0dp">
 
-    <Space
-        android:id="@+id/space"
-        android:layout_width="match_parent"
-        android:layout_height="60dp" />
 
     <RelativeLayout
         android:id="@+id/rl_no_data"
         android:visibility="gone"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@+id/space"
+        android:layout_marginTop="75dp"
         android:layout_centerInParent="true">
 
         <ImageView
@@ -46,9 +42,8 @@
         android:id="@+id/main_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@id/space"
         android:layout_marginStart="@dimen/_2sdp"
-        android:layout_marginTop="@dimen/_2sdp"
+        android:layout_marginTop="75dp"
         android:layout_marginEnd="@dimen/_2sdp"
         android:layout_marginBottom="@dimen/_20sdp"
         android:orientation="vertical">
