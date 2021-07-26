@@ -37,7 +37,7 @@ public class ApplicationClass extends Application {
 // (HL Customised)
     public static final String BUILD_DATE = "24-July-2021";
     public static boolean isTablet = true;
-    public static boolean isAssets = true;
+    public static boolean isAssets = false;
     public static boolean contentExistOnSD = false, LocationFlg = false;
     public static String contentSDPath = "";
     public static String foundationPath = "";
