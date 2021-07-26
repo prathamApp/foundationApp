@@ -54,6 +54,8 @@ public interface LearningContract {
 
         void notifyAdapterItem(int parentPos, int childPos);
 
+        void onTestAddedToDb(ContentTable testItem);
+
 //        void setBotNodeId(String botID);
     }
 
@@ -92,5 +94,7 @@ public interface LearningContract {
         void addScoreToDB(String resId);
 
         void removeLastNodeId2();
+
+        void addAssessmentToDb(ContentTable itemContent);
     }
 }

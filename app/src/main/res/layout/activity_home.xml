@@ -143,7 +143,7 @@
         android:layout_alignParentEnd="true"
         android:layout_marginEnd="@dimen/_16sdp"
         android:animateLayoutChanges="true"
-        android:elevation="@dimen/_5sdp"
+        android:elevation="500dp"
         app:submarine_animation="scale"
         app:submarine_autoDip="true"
         app:submarine_borderColor="@color/red"

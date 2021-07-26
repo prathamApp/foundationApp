@@ -342,7 +342,9 @@ public class AddEnrollmentId extends BaseActivity implements AvatarClickListener
             }
             tv_name_str.setText(name);
             studentDialog.show();
-        }catch (Exception e){e.printStackTrace();}
+        }catch (Exception e){
+            Toast.makeText(mContext, "Problem pulling student", Toast.LENGTH_SHORT).show();
+            e.printStackTrace();}
     }
 
     private void addStudentData(StudentEnrollmentModel enrollmentModel) {

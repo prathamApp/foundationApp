@@ -221,7 +221,7 @@ public class SplashPresenter implements SplashContract.SplashPresenter {
                             detail.setGroupId("" + content_cursor.getString(content_cursor.getColumnIndex("groupId")));
                             detail.setPlanFromDate("" + content_cursor.getString(content_cursor.getColumnIndex("planFromDate")));
                             detail.setPlanToDate("" + content_cursor.getString(content_cursor.getColumnIndex("planToDate")));
-                            detail.setCoachVerified(+ content_cursor.getInt(content_cursor.getColumnIndex("coachVerified")));
+                            detail.setCoachVerified(+content_cursor.getInt(content_cursor.getColumnIndex("coachVerified")));
                             detail.setCoachVerificationDate("" + content_cursor.getString(content_cursor.getColumnIndex("coachVerificationDate")));
                             detail.setCourseExperience("" + content_cursor.getString(content_cursor.getColumnIndex("courseExperience")));
                             detail.setCourse_status("" + content_cursor.getString(content_cursor.getColumnIndex("courseCompleted")));
@@ -1390,6 +1390,7 @@ public class SplashPresenter implements SplashContract.SplashPresenter {
     @Override
     public void populateAssetsMenu() {
         try {
+            FastSave.getInstance().saveBoolean(FC_Constants.NEW_ASSET_DB, true);
 //            ApplicationClass.foundationPath + "/.FCA/"
             AssetManager assetManager = context.getAssets();
             InputStream in = assetManager.open("foundation_db_new");
@@ -1446,7 +1447,7 @@ public class SplashPresenter implements SplashContract.SplashPresenter {
                                 }
                             }
                             AppDatabase.getDatabaseInstance(context).getContentTableDao().deleteAll();
-                            AppDatabase.getDatabaseInstance(context).getContentTableDao().addNewContentList(contents);
+                            AppDatabase.getDatabaseInstance(context).getContentTableDao().addContentList(contents);
                             newContent_cursor.close();
                         } catch (Exception e) {
                             e.printStackTrace();
@@ -1454,6 +1455,7 @@ public class SplashPresenter implements SplashContract.SplashPresenter {
                     }
                 }
             }
+            FastSave.getInstance().saveBoolean(FC_Constants.INITIAL_SD_COPIED, true);
             FastSave.getInstance().saveBoolean(FC_Constants.NEW_ASSET_DB, true);
             BackupDatabase.backup(context);
         } catch (Exception e) {

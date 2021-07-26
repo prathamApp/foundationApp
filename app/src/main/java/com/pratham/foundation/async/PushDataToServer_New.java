@@ -924,6 +924,8 @@ public class PushDataToServer_New {
                 _obj.put("attendanceID", _attendance.getAttendanceID());
                 _obj.put("SessionID", _attendance.getSessionID());
                 _obj.put("StudentID", _attendance.getStudentID());
+                _obj.put("Date", _attendance.getDate());
+                _obj.put("GroupID", _attendance.getGroupID());
                 attendanceData.put(_obj);
             }
         } catch (Exception e) {

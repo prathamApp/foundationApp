@@ -46,6 +46,9 @@ public interface ContentTableDao {
     @Query("SELECT * FROM ContentTable WHERE parentid=:id")
     List<ContentTable> getChildsOfParent_forDelete(String id);
 
+    @Query("SELECT studentId FROM ContentTable WHERE nodeId=:nodeId")
+    String getEarlierStudentId(String nodeId);
+
     @Query("SELECT * FROM ContentTable WHERE parentid=:id AND nodeId!='4033'")
     List<ContentTable> getChildsOfParent2(String id);
 

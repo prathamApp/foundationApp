@@ -343,12 +343,7 @@ public class ContentDisplay extends BaseActivity implements ContentContract.Cont
     }
 
     @Override
-    public void onTestContentClicked(int posi, ContentTable itemContent) {
-        try {
-            ButtonClickSound.start();
-        } catch (IllegalStateException e) {
-            e.printStackTrace();
-        }
+    public void onTestAddedToDb (ContentTable itemContent) {
         FC_Constants.AssLang = itemContent.getContentLanguage();
         FC_Constants.examId = itemContent.getNodeKeywords();
         if (FastSave.getInstance().getString(FC_Constants.LOGIN_MODE, GROUP_MODE).equalsIgnoreCase(GROUP_MODE)) {
@@ -389,6 +384,16 @@ public class ContentDisplay extends BaseActivity implements ContentContract.Cont
                 e.printStackTrace();
             }
         }
+    }
+
+    @Override
+    public void onTestContentClicked(int posi, ContentTable itemContent) {
+        try {
+            ButtonClickSound.start();
+        } catch (IllegalStateException e) {
+            e.printStackTrace();
+        }
+        presenter.addAssessmentToDb(itemContent);
     }
 
     @Override
