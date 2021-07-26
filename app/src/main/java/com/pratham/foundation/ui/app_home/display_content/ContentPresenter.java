@@ -24,6 +24,7 @@ import org.androidannotations.annotations.Background;
 import org.androidannotations.annotations.Bean;
 import org.androidannotations.annotations.EBean;
 import org.androidannotations.annotations.UiThread;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.File;
@@ -49,7 +50,7 @@ public class ContentPresenter implements ContentContract.ContentPresenter, API_C
     public List<ContentTable> downloadedContentTableList, ListForContentTable1, ListForContentTable2;
     public ArrayList<String> nodeIds;
     public API_Content api_content;
-    public List maxScore , maxScoreChild;
+    public List maxScore, maxScoreChild;
     public int percent = 0;
     @Bean(ZipDownloader.class)
     ZipDownloader zipDownloader;
@@ -208,7 +209,7 @@ public class ContentPresenter implements ContentContract.ContentPresenter, API_C
                                             downloadedContentTableList.get(j).getResourceId());
                             downloadedContentTableList.get(j).setNodePercentage("" + (int) prog);
                             contentTable.setNodePercentage("" + (int) prog);
-                        }else {
+                        } else {
                             findMaxScoreNew(downloadedContentTableList.get(j).getNodeId());
                             double totalScore = 0;
                             for (int q = 0; maxScoreChild.size() > q; q++) {
@@ -260,7 +261,7 @@ public class ContentPresenter implements ContentContract.ContentPresenter, API_C
 
     public void findMaxScoreNew(String nodeId) {
         List<ContentTable> childList = AppDatabase.getDatabaseInstance(context).getContentTableDao().getChildsOfParent(nodeId,
-                "%"+ FastSave.getInstance().getString(CURRENT_STUDENT_ID,"na")+"%"/*,
+                "%" + FastSave.getInstance().getString(CURRENT_STUDENT_ID, "na") + "%"/*,
                 FastSave.getInstance().getString(CURRENT_STUDENT_PROGRAM_ID,"na")*/);
         for (int childCnt = 0; childList.size() > childCnt; childCnt++) {
             if (childList.get(childCnt).getNodeType().equals("Resource")) {
@@ -278,6 +279,22 @@ public class ContentPresenter implements ContentContract.ContentPresenter, API_C
                 findMaxScoreNew(childList.get(childCnt).getNodeId());
             }
         }
+    }
+
+    ContentTable testItem;
+
+    @Background
+    @Override
+    public void addAssessmentToDb(ContentTable itemContent) {
+        testItem = itemContent;
+        if (FC_Utility.isDataConnectionAvailable(context))
+            api_content.getAPIContent(FC_Constants.INTERNET_DOWNLOAD_ASSESSMENT_RESOURCE, FC_Constants.INTERNET_DOWNLOAD_RESOURCE_API, itemContent.getNodeId());
+        else
+            contentView.onTestAddedToDb(testItem);
+
+//        itemContent.setIsDownloaded("true");
+//        itemContent.setStudentId("" + FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""));
+//        AppDatabase.getDatabaseInstance(mContext).getContentTableDao().insert(itemContent);
     }
 
     @Override
@@ -362,10 +379,35 @@ public class ContentPresenter implements ContentContract.ContentPresenter, API_C
 //                    get response from server and hit download url
                     JSONObject jsonObject = new JSONObject(response);
                     download_content = gson.fromJson(jsonObject.toString(), Modal_DownloadContent.class);
+                    pos.clear();
                     for (int i = 0; i < download_content.getNodelist().size(); i++) {
                         ContentTable contentTableTemp = download_content.getNodelist().get(i);
                         pos.add(contentTableTemp);
                     }
+                    for (int i = 0; i < pos.size(); i++) {
+                        pos.get(i).setIsDownloaded("true");
+                        String studID = AppDatabase.getDatabaseInstance(context).getContentTableDao().getEarlierStudentId(pos.get(i).getNodeId());
+                        String currStudID = FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, "");
+                        boolean studFound = false;
+                        if (studID != null && !studID.equalsIgnoreCase("") && !studID.equalsIgnoreCase(" ")) {
+                            String[] arrOfStdId = studID.split(",");
+                            if(arrOfStdId!= null && arrOfStdId.length>0) {
+                                for (int j = 0; j < arrOfStdId.length; j++) {
+                                    if(arrOfStdId[j].equalsIgnoreCase(currStudID)){
+                                        studFound=true;
+                                        break;
+                                    }
+                                }
+                                if(!studFound){
+                                    pos.get(i).setStudentId(studID + "," + FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""));
+                                }else{
+                                    pos.get(i).setStudentId(studID);
+                                }
+                            }
+                        } else
+                            pos.get(i).setStudentId("" + FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""));
+                    }
+
                     fileName = download_content.getDownloadurl()
                             .substring(download_content.getDownloadurl().lastIndexOf('/') + 1);
                     Log.d("HP", "doInBackground: fileName : " + fileName);
@@ -405,6 +447,43 @@ public class ContentPresenter implements ContentContract.ContentPresenter, API_C
 //                } else {
 //                    contentView.showToast("Only 4 allowed");
 //                }
+            } else if (header.equalsIgnoreCase(FC_Constants.INTERNET_DOWNLOAD_ASSESSMENT_RESOURCE)) {
+                try {
+                    JSONObject jsonObject = new JSONObject(response);
+                    download_content = gson.fromJson(jsonObject.toString(), Modal_DownloadContent.class);
+                    pos.clear();
+                    pos.addAll(download_content.getNodelist());
+
+                    for (int i = 0; i < pos.size(); i++) {
+                        pos.get(i).setIsDownloaded("true");
+                        String studID = AppDatabase.getDatabaseInstance(context).getContentTableDao().getEarlierStudentId(pos.get(i).getNodeId());
+                        String currStudID = FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, "");
+                        boolean studFound = false;
+                        if (studID != null && !studID.equalsIgnoreCase("") && !studID.equalsIgnoreCase(" ")) {
+                            String[] arrOfStdId = studID.split(",");
+                            if(arrOfStdId!= null && arrOfStdId.length>0) {
+                                for (int j = 0; j < arrOfStdId.length; j++) {
+                                    if(arrOfStdId[j].equalsIgnoreCase(currStudID)){
+                                        studFound=true;
+                                        break;
+                                    }
+                                }
+                                if(!studFound){
+                                    pos.get(i).setStudentId(studID + "," + FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""));
+                                }else{
+                                    pos.get(i).setStudentId(studID);
+                                }
+                            }
+                        } else
+                            pos.get(i).setStudentId("" + FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""));
+                    }
+
+                    AppDatabase.getDatabaseInstance(context).getContentTableDao().addContentList(pos);
+                    contentView.onTestAddedToDb(testItem);
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
             } else if (header.equalsIgnoreCase(FC_Constants.INTERNET_TIME)) {
                 try {
                     Type listType = new TypeToken<Modal_InternetTime>() {

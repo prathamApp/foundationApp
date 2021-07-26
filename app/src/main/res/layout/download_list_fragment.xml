@@ -5,10 +5,24 @@
     android:layout_height="wrap_content"
     style="@style/AppModalStyle">
 
+    <ImageView
+        android:layout_marginTop="@dimen/_5sdp"
+        android:id="@+id/bs_iv"
+        android:layout_width="@dimen/_50sdp"
+        android:layout_height="@dimen/_50sdp"
+        android:src="@drawable/ic_close_red"/>
+    <com.pratham.foundation.customView.fontsview.SansTextViewBold
+        android:layout_width="match_parent"
+        android:id="@+id/bs_tv"
+        android:layout_marginTop="@dimen/_5sdp"
+        android:layout_height="@dimen/_50sdp"
+        android:layout_toEndOf="@id/bs_iv"/>
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rv_contentList"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:visibility="gone"
         android:layout_marginTop="@dimen/_5sdp"
         android:paddingTop="@dimen/_5sdp"
         android:paddingBottom="@dimen/_5sdp"

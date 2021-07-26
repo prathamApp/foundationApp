@@ -545,6 +545,22 @@ public class LearningPresenter implements LearningContract.LearningPresenter, AP
         Collections.sort(contentParentList, (o1, o2) -> o1.getSeq_no() - (o2.getSeq_no()));
     }
 
+    ContentTable testItem;
+
+    @Background
+    @Override
+    public void addAssessmentToDb(ContentTable itemContent) {
+        testItem = itemContent;
+        if (FC_Utility.isDataConnectionAvailable(mContext))
+            api_content.getAPIContent(FC_Constants.INTERNET_DOWNLOAD_ASSESSMENT_RESOURCE, FC_Constants.INTERNET_DOWNLOAD_RESOURCE_API, itemContent.getNodeId());
+        else
+            learningView.onTestAddedToDb(testItem);
+
+//        itemContent.setIsDownloaded("true");
+//        itemContent.setStudentId("" + FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""));
+//        AppDatabase.getDatabaseInstance(mContext).getContentTableDao().insert(itemContent);
+    }
+
     @Background
     @Override
     public void receivedContent(String header, String response) {
@@ -671,7 +687,7 @@ public class LearningPresenter implements LearningContract.LearningPresenter, AP
 
                                             tempList.add(contentTableChildTemp);
                                         }
-                                        contentDBList.get(i).setNodelist(tempList);
+                                        contentDBList.get(contentDBList.size()-1).setNodelist(tempList);
                                     }
                                 }
                             }
@@ -759,6 +775,36 @@ public class LearningPresenter implements LearningContract.LearningPresenter, AP
                 pos.clear();
                 pos.addAll(download_content.getNodelist());
 
+                for (int i = 0; i < pos.size(); i++) {
+                    pos.get(i).setIsDownloaded("true");
+                    String studID = AppDatabase.getDatabaseInstance(mContext).getContentTableDao().getEarlierStudentId(pos.get(i).getNodeId());
+                    String currStudID = FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, "");
+                    boolean studFound = false;
+                    if (studID != null && !studID.equalsIgnoreCase("") && !studID.equalsIgnoreCase(" ")) {
+                        String[] arrOfStdId = studID.split(",");
+                        if(arrOfStdId!= null && arrOfStdId.length>0) {
+                            for (int j = 0; j < arrOfStdId.length; j++) {
+                                if(arrOfStdId[j].equalsIgnoreCase(currStudID)){
+                                    studFound=true;
+                                    break;
+                                }
+                            }
+                            if(!studFound){
+                                pos.get(i).setStudentId(studID + "," + FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""));
+                            }else{
+                                pos.get(i).setStudentId(studID);
+                            }
+                        }
+/*
+                        if (studID.contentEquals("" + currStudID)) {
+                            pos.get(i).setStudentId(studID);
+                        } else
+                            pos.get(i).setStudentId(studID + "," + FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""));
+*/
+                    } else
+                        pos.get(i).setStudentId("" + FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""));
+                }
+
                 fileName = download_content.getDownloadurl()
                         .substring(download_content.getDownloadurl().lastIndexOf('/') + 1);
                 Log.d("HP", "doInBackground: fileName : " + fileName);
@@ -768,6 +814,43 @@ public class LearningPresenter implements LearningContract.LearningPresenter, AP
                             download_content.getFoldername(), fileName, dwContent, pos, true);
                 else zipDownloader.initialize(mContext, download_content.getDownloadurl(),
                         download_content.getFoldername(), fileName, dwContent, pos, false);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        } else if (header.equalsIgnoreCase(FC_Constants.INTERNET_DOWNLOAD_ASSESSMENT_RESOURCE)) {
+            try {
+                JSONObject jsonObject = new JSONObject(response);
+                download_content = gson.fromJson(jsonObject.toString(), Modal_DownloadContent.class);
+                pos.clear();
+                pos.addAll(download_content.getNodelist());
+
+                for (int i = 0; i < pos.size(); i++) {
+                    pos.get(i).setIsDownloaded("true");
+                    String studID = AppDatabase.getDatabaseInstance(mContext).getContentTableDao().getEarlierStudentId(pos.get(i).getNodeId());
+                    String currStudID = FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, "");
+                    boolean studFound = false;
+                    if (studID != null && !studID.equalsIgnoreCase("") && !studID.equalsIgnoreCase(" ")) {
+                        String[] arrOfStdId = studID.split(",");
+                        if(arrOfStdId!= null && arrOfStdId.length>0) {
+                            for (int j = 0; j < arrOfStdId.length; j++) {
+                                if(arrOfStdId[j].equalsIgnoreCase(currStudID)){
+                                    studFound=true;
+                                    break;
+                                }
+                            }
+                            if(!studFound){
+                                pos.get(i).setStudentId(studID + "," + FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""));
+                            }else{
+                                pos.get(i).setStudentId(studID);
+                            }
+                        }
+                    } else
+                        pos.get(i).setStudentId("" + FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""));
+                }
+
+                AppDatabase.getDatabaseInstance(mContext).getContentTableDao().addContentList(pos);
+                learningView.onTestAddedToDb(testItem);
+
             } catch (JSONException e) {
                 e.printStackTrace();
             }

@@ -259,6 +259,7 @@ public class FC_Constants {
     public static final String INTERNET_TIME = "internet_time";
     public static final String INTERNET_LEVEL = "internet_level";
     public static final String INTERNET_DOWNLOAD_RESOURCE = "downloadResource";
+    public static final String INTERNET_DOWNLOAD_ASSESSMENT_RESOURCE = "downloadAssessmentResource";
     public static final String STUDENT_PROGRESS_INTERNET = "student_progress_internet";
     public static final String LEARNT_WORDS_INTERNET = "learnt_words_internet";
     public static final String PUSH_IMAGE = "push_image";

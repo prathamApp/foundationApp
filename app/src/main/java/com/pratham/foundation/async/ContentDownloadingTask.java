@@ -13,7 +13,6 @@ import com.pratham.foundation.database.domain.ContentTable;
 import com.pratham.foundation.modalclasses.EventMessage;
 import com.pratham.foundation.modalclasses.Modal_Download;
 import com.pratham.foundation.modalclasses.Modal_FileDownloading;
-import com.pratham.foundation.services.shared_preferences.FastSave;
 import com.pratham.foundation.utility.FC_Constants;
 
 import net.lingala.zip4j.core.ZipFile;
@@ -33,7 +32,6 @@ import java.util.ArrayList;
 import java.util.concurrent.Executors;
 
 import static com.pratham.foundation.ApplicationClass.App_Thumbs_Path;
-import static com.pratham.foundation.utility.FC_Constants.CURRENT_STUDENT_ID;
 import static com.pratham.foundation.utility.FC_Constants.FILE_DOWNLOAD_STARTED;
 import static com.pratham.foundation.utility.FC_Constants.IS_DOWNLOADING;
 
@@ -166,6 +164,11 @@ public class ContentDownloadingTask {
         Log.d(TAG, "updateFileProgress: " + downloadID);
         ArrayList<ContentTable> temp = new ArrayList<>(levelContents);
         for(int j=0; j<levelContents.size(); j++){
+            levelContents.get(j).setIsDownloaded("" + true);
+            levelContents.get(j).setOnSDCard(false);
+        }
+/*
+        for(int j=0; j<levelContents.size(); j++){
             if(content.getResourceId().equalsIgnoreCase(levelContents.get(j).getResourceId()))
                 content = temp.get(j);
         }
@@ -178,8 +181,9 @@ public class ContentDownloadingTask {
             else
                 temp.get(i).setStudentId(FastSave.getInstance().getString(CURRENT_STUDENT_ID, ""));
         }
+*/
         IS_DOWNLOADING = false;
-        AppDatabase.getDatabaseInstance(context).getContentTableDao().addContentList(temp);
+        AppDatabase.getDatabaseInstance(context).getContentTableDao().addContentList(levelContents);
         onCompleteContentDownloadTase(true);
     }
 

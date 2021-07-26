@@ -89,7 +89,7 @@ public class API_Content {
             String url_id, studId;
             studId = FastSave.getInstance().getString(CURRENT_STUDENT_ID, "");
             url_id = url + nodeId + DEVICE_ID_STR + FC_Utility.getDeviceID() + STUDENT_ID_STR + studId;
-            Log.d("API_Content_LOG", "getAPIContent: " + nodeId);
+            Log.d("`API_Content_LOG`", "getAPIContent: " + nodeId);
             Log.d("API_Content_LOG", "url_id: " + url_id);
             AndroidNetworking.get(url_id)
                     .addHeaders("Content-Type", "application/json")

@@ -31,6 +31,8 @@ public interface ContentContract {
         void showToast(String msg);
 
         void showChangeDateDialog(String newDate, String sTime);
+
+        void onTestAddedToDb(ContentTable testItem);
     }
 
     interface ContentPresenter {
@@ -57,6 +59,8 @@ public interface ContentContract {
         void getInternetTime();
 
         void addScoreToDB(String resId);
+
+        void addAssessmentToDb(ContentTable itemContent);
     }
 
 }
