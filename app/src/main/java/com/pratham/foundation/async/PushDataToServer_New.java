@@ -690,10 +690,26 @@ public class PushDataToServer_New {
 //        Log.d("PushData", "Image jsonIndex : " + jsonIndex);
         if (jsonIndex < imageUploadList.size()) {
 
+/*            OkHttpClient client = new OkHttpClient().newBuilder().build();
+            MediaType mediaType = MediaType.parse("multipart/form-data");
+
+            RequestBody body = new MultipartBody.Builder().setType(MultipartBody.FORM)
+                    .addFormDataPart("uploaded_file","IMG-20200915-WA0013.jpg",
+                            RequestBody.create(MediaType.parse("application/octet-stream"),
+                                    new File("/home/pratham/Pictures/IMG-20200915-WA0013.jpg")))
+                    .build();
+
+            Request request = new Request.Builder()
+                    .url("http://localhost:8000/api/channel/FileUpload/")
+                    .method("POST", body)
+                    .addHeader("Content-type", "multipart/form-data")
+                    .build();
+            Response response = client.newCall(request).execute();*/
+
             AndroidNetworking.upload(FC_Constants.PUSH_IMAGE_API_PI)
-                    .addHeaders("Content-type", "images")
-                    .addMultipartFile("imageUpload", imageUploadList.get(jsonIndex).getFilePath())
-                    .addMultipartParameter("key", String.valueOf(imageUploadList.get(jsonIndex).getFilePath()))
+//                    .addHeaders("Content-type", "images")
+                    .addMultipartFile("uploaded_file", imageUploadList.get(jsonIndex).getFilePath())
+//                    .addMultipartParameter("uploaded_file", imageUploadList.get(jsonIndex).getFileName())
                     .setPriority(Priority.HIGH)
                     .build()
                     .getAsString(new StringRequestListener() {
