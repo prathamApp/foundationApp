@@ -2,6 +2,7 @@ package com.pratham.foundation.ui.app_home.profile_new.show_image_question;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -25,6 +26,7 @@ import org.androidannotations.annotations.UiThread;
 import org.androidannotations.annotations.ViewById;
 import org.json.JSONObject;
 
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 
@@ -109,18 +111,22 @@ public class ShowImgQuestionActivity extends BaseActivity implements ShowImgQues
     @UiThread
     public void setStudentAnsImage(String ansImageName) {
         try {
-            Bitmap bmImg = BitmapFactory.decodeFile(activityPhotoPath+""+ansImageName);
-            BitmapFactory.decodeStream(new FileInputStream(activityPhotoPath+""+ansImageName));
-            iv_ans_image.setImageBitmap(bmImg);
-            zoom_image_ans.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    String localPath = activityPhotoPath + ansImageName;
-                    showZoomDialog(ShowImgQuestionActivity.this,localPath, localPath);
-                }
-            });
+            File img = new File(activityPhotoPath+""+ansImageName);
+            if(img.exists()) {
+//                Bitmap bmImg;/* = BitmapFactory.decodeFile(activityPhotoPath + "" + ansImageName);*/
+//                Bitmap bmImg = BitmapFactory.decodeStream(new FileInputStream(activityPhotoPath + "" + ansImageName));
+                Uri capturedImageUri = Uri.fromFile(img);
+                iv_ans_image.setImageURI(capturedImageUri);
+                zoom_image_ans.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        String localPath = activityPhotoPath + ansImageName;
+                        showZoomDialog(ShowImgQuestionActivity.this, localPath, localPath);
+                    }
+                });
+            }
 
-        } catch (FileNotFoundException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }

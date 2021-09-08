@@ -158,7 +158,7 @@ public class PushOrAssignFragment extends Fragment {
         startActivityForResult(intent, 1);
         getActivity().startActivity(intent);*/
         if (ApplicationClass.wiseF.isDeviceConnectedToWifiNetwork()) {
-            if (ApplicationClass.wiseF.isDeviceConnectedToSSID(FC_Constants.PRATHAM_KOLIBRI_HOTSPOT)) {
+            if (ApplicationClass.wiseF.isDeviceConnectedToSSID(FC_Constants.PRATHAM_RASPBERRY_PI)) {
                 setProgressDailog();
                 new DownloadData().doInBackground();
             } else {

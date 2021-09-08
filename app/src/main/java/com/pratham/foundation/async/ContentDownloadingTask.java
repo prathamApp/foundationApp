@@ -95,6 +95,7 @@ public class ContentDownloadingTask {
             connection.connect();
             // expect HTTP 200 OK, so we don't mistakenly save error report
             // instead of the file
+            Log.d(TAG, "doInBackground: urlFormed: " + urlFormed);
             Log.d(TAG, "doInBackground: getResponseCode: " + connection.getResponseCode());
             if (connection.getResponseCode() == HttpURLConnection.HTTP_OK) {
                 // getting file length
@@ -201,15 +202,31 @@ public class ContentDownloadingTask {
     private void dowloadImages() {
         for (ContentTable detail : levelContents) {
             if (detail.getNodeServerImage() != null) {
+                String thumbPath = detail.getNodeServerImage();
                 String f_name = detail.getNodeServerImage()
                         .substring(detail.getNodeServerImage().lastIndexOf('/') + 1);
-                downloadImage(detail.getNodeServerImage(), f_name);
+                if (ApplicationClass.wiseF.isDeviceConnectedToMobileNetwork() || ApplicationClass.wiseF.isDeviceConnectedToWifiNetwork()) {
+                    if (ApplicationClass.wiseF.isDeviceConnectedToSSID(FC_Constants.PRATHAM_RASPBERRY_PI)) {
+                        f_name = detail.getNodeServerImage()
+                                .substring(detail.getNodeServerImage().lastIndexOf('/') + 1);
+                        thumbPath = FC_Constants.RASP_IP + FC_Constants.RASP_LOCAL_IMAGES + f_name;
+                    }
+                }
+                downloadImage(thumbPath, f_name);
             }
         }
         if (content.getNodeServerImage() != null) {
             String f_name = content.getNodeServerImage()
                     .substring(content.getNodeServerImage().lastIndexOf('/') + 1);
-            downloadImage(content.getNodeServerImage(), f_name);
+            String thumbPath = content.getNodeServerImage();
+            if (ApplicationClass.wiseF.isDeviceConnectedToMobileNetwork() || ApplicationClass.wiseF.isDeviceConnectedToWifiNetwork()) {
+                if (ApplicationClass.wiseF.isDeviceConnectedToSSID(FC_Constants.PRATHAM_RASPBERRY_PI)) {
+                    f_name = content.getNodeServerImage()
+                            .substring(content.getNodeServerImage().lastIndexOf('/') + 1);
+                    thumbPath = FC_Constants.RASP_IP + FC_Constants.RASP_LOCAL_IMAGES + f_name;
+                }
+            }
+            downloadImage(thumbPath, f_name);
         }
     }
 

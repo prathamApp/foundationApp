@@ -103,11 +103,21 @@ public class  SplashActivity extends SplashSupportActivity implements SplashCont
         tv_typer.setTextColor(getResources().getColor(R.color.dark_blue));
         tv_typer.animateText("PraDigi\nfor\nSchool");
         tv_typer.setAnimationListener(hTextView -> initiateApp());
+        FastSave.getInstance().saveBoolean(FC_Constants.PRATHAM_STUDENT, false);
     }
 
     @Override
     protected void onResume() {
         super.onResume();
+
+/*
+        try {
+            Log.d("FC_RandomString", "FC_RandomString : " + FC_RandomString.unique());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+*/
         try {
             bgMusic = MediaPlayer.create(this, R.raw.bg_sound);
             bgMusic.setLooping(true);

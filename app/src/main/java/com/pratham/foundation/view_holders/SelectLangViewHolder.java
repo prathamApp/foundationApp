@@ -62,16 +62,39 @@ public class SelectLangViewHolder extends RecyclerView.ViewHolder {
         }
         Objects.requireNonNull(title).setText(contentList.getNodeTitle());
         title.setSelected(true);
-        ImageRequest imageRequest = ImageRequestBuilder
-                .newBuilderWithSource(Uri.parse(contentList.getNodeServerImage()))
-                .setResizeOptions(new ResizeOptions(250, 170))
-                .setLocalThumbnailPreviewsEnabled(true)
-                .build();
-        DraweeController controller = Fresco.newDraweeControllerBuilder()
-                .setImageRequest(imageRequest)
-                .setOldController(Objects.requireNonNull(content_image).getController())
-                .build();
-        content_image.setController(controller);
+/*        File f;
+        if (contentList.getIsDownloaded().equalsIgnoreCase("1") ||
+                contentList.getIsDownloaded().equalsIgnoreCase("true")) {
+            if (contentList.isOnSDCard())
+                f = new File(ApplicationClass.contentSDPath +
+                        "" + App_Thumbs_Path + contentList.getNodeImage());
+            else
+                f = new File(ApplicationClass.foundationPath +
+                        "" + App_Thumbs_Path + contentList.getNodeImage());
+            if (f.exists())
+                Objects.requireNonNull(content_image).setImageURI(Uri.fromFile(f));
+        } else {*/
+            String thumbPath = "" + contentList.getNodeServerImage();
+            if (ApplicationClass.wiseF.isDeviceConnectedToMobileNetwork() || ApplicationClass.wiseF.isDeviceConnectedToWifiNetwork()) {
+                if (ApplicationClass.wiseF.isDeviceConnectedToSSID(FC_Constants.PRATHAM_RASPBERRY_PI)) {
+                    String fileName = contentList.getNodeServerImage()
+                            .substring(contentList.getNodeServerImage().lastIndexOf('/') + 1);
+                    thumbPath = FC_Constants.RASP_IP + FC_Constants.RASP_LOCAL_IMAGES + fileName;
+                } else {
+                    thumbPath = "" + contentList.getNodeServerImage();
+                }
+            }
+            ImageRequest imageRequest = ImageRequestBuilder
+                    .newBuilderWithSource(Uri.parse(thumbPath))
+                    .setResizeOptions(new ResizeOptions(300, 300))
+                    .build();
+            DraweeController controller = Fresco.newDraweeControllerBuilder()
+                    .setImageRequest(imageRequest)
+                    .setOldController(Objects.requireNonNull(content_image).getController())
+                    .build();
+            content_image.setController(controller);
+//        }
+
 
         rl_lang_select.setOnClickListener(new View.OnClickListener() {
             @Override

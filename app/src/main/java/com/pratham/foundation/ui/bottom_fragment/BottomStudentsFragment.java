@@ -108,11 +108,12 @@ public class BottomStudentsFragment extends BottomSheetDialogFragment
         gson = new Gson();
         hideSystemUI();
         groupClicked = false;
+        FastSave.getInstance().saveBoolean(FC_Constants.PRATHAM_STUDENT, false);
         context = getActivity();
-        if (ApplicationClass.wiseF.isDeviceConnectedToWifiNetwork())
-            if (ApplicationClass.wiseF.isDeviceConnectedToSSID(FC_Constants.PRATHAM_KOLIBRI_HOTSPOT)) {
-                btn_download_all_data.setVisibility(View.VISIBLE);
-            }
+//        if (ApplicationClass.wiseF.isDeviceConnectedToWifiNetwork())
+//            if (ApplicationClass.wiseF.isDeviceConnectedToSSID(FC_Constants.PRATHAM_RASPBERRY_PI)) {
+//                btn_download_all_data.setVisibility(View.VISIBLE);
+//            }
         presenter.showStudents();
         PackageInfo pInfo = null;
         String verCode = "";
@@ -206,7 +207,7 @@ public class BottomStudentsFragment extends BottomSheetDialogFragment
         }
 
         if (ApplicationClass.wiseF.isDeviceConnectedToWifiNetwork()) {
-            if (ApplicationClass.wiseF.isDeviceConnectedToSSID(FC_Constants.PRATHAM_KOLIBRI_HOTSPOT)) {
+            if (ApplicationClass.wiseF.isDeviceConnectedToSSID(FC_Constants.PRATHAM_RASPBERRY_PI)) {
                 setProgressDailog();
                 new DownloadData().doInBackground();
             } else {
@@ -279,6 +280,7 @@ public class BottomStudentsFragment extends BottomSheetDialogFragment
                 checkedStd.setStudentID(fragmentModalsList.get(i).getStudentID());
                 checkedStd.setAvatarName(fragmentModalsList.get(i).getAvatarName());
                 checkedStd.setFullName(fragmentModalsList.get(i).getFullName());
+                checkedStd.setGroupId(fragmentModalsList.get(i).getGroupId());
                 checkedStds.add(checkedStd);
             }
         }
@@ -453,6 +455,7 @@ public class BottomStudentsFragment extends BottomSheetDialogFragment
     @Override
     public void onStudentClick(StudentAndGroup_BottomFragmentModal bottomFragmentModal, int position) {
         if (groupClicked) {
+            FastSave.getInstance().saveBoolean(FC_Constants.PRATHAM_STUDENT, true);
             if (bottomFragmentModal.isChecked())
                 fragmentModalsList.get(position).setChecked(false);
             else
@@ -470,6 +473,11 @@ public class BottomStudentsFragment extends BottomSheetDialogFragment
 //            eventMessage.setMessage(FC_Constants.BOTTOM_FRAGMENT_END_SESSION);
 //            EventBus.getDefault().post(eventMessage);
             showProgressDialog();
+            if(!bottomFragmentModal.getGroupId().equalsIgnoreCase("PS"))
+                FastSave.getInstance().saveBoolean(FC_Constants.PRATHAM_STUDENT, true);
+            else
+                FastSave.getInstance().saveBoolean(FC_Constants.PRATHAM_STUDENT, false);
+
             String currentSession = "" + UUID.randomUUID().toString();
             FastSave.getInstance().saveString(FC_Constants.LOGIN_MODE, INDIVIDUAL_MODE);
             FastSave.getInstance().saveString(FC_Constants.CURRENT_SESSION, "" + currentSession);

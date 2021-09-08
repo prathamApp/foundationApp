@@ -216,7 +216,7 @@ public class LearningFragment extends Fragment implements LearningContract.Learn
                     resourceDownloadDialog(message.getModal_fileDownloading());
                 } else if (message.getMessage().equalsIgnoreCase(FC_Constants.FILE_DOWNLOAD_UPDATE)) {
                     if (progressLayout != null)
-                        if (downloadNodeId.equalsIgnoreCase(modal_fileDownloading.getDownloadId()))
+//                        if (downloadNodeId.equalsIgnoreCase(modal_fileDownloading.getDownloadId()))
                             progressLayout.setCurProgress(message.getModal_fileDownloading().getProgress());
                 } else if (message.getMessage().equalsIgnoreCase(FC_Constants.FRAGMENT_SELECTED) ||
                         message.getMessage().equalsIgnoreCase(FC_Constants.FRAGMENT_RESELECTED) ||

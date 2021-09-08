@@ -89,6 +89,7 @@ public class BottomStudentsPresenter implements BottomStudentsContract.BottomStu
                 studentHeader.setStudentID("#####");
                 studentHeader.setFullName("");
                 studentHeader.setAvatarName("");
+                studentHeader.setGroupId("");
                 studentHeader.setType(FC_Constants.TYPE_HEADER);
                 fragmentModalsList.add(studentHeader);
             }
@@ -100,6 +101,7 @@ public class BottomStudentsPresenter implements BottomStudentsContract.BottomStu
                     studentAvatar.setFullName(studentDBList.get(i).getFullName());
                     studentAvatar.setAvatarName(studentDBList.get(i).getAvatarName());
                     studentAvatar.setGender(studentDBList.get(i).getGender());
+                    studentAvatar.setGroupId(studentDBList.get(i).getGroupId());
 //                    studentAvatar.setProgramID(studentDBList.get(i).getProgramId());
                     studentAvatar.setChecked(false);
                     studentAvatar.setType(FC_Constants.STUDENTS);
@@ -112,6 +114,7 @@ public class BottomStudentsPresenter implements BottomStudentsContract.BottomStu
                     StudentAndGroup_BottomFragmentModal studentAvatar = new StudentAndGroup_BottomFragmentModal();
                     studentAvatar.setStudentID(groupDBList.get(i).getGroupId());
                     studentAvatar.setFullName(groupDBList.get(i).getGroupName());
+                    studentAvatar.setGroupId(groupDBList.get(i).getGroupId());
                     studentAvatar.setAvatarName("NA");
 //                    studentAvatar.setProgramID(""+groupDBList.get(i).getProgramId());
                     studentAvatar.setChecked(false);
@@ -125,10 +128,10 @@ public class BottomStudentsPresenter implements BottomStudentsContract.BottomStu
                 studentHeader.setStudentID("#####");
                 studentHeader.setFullName("");
                 studentHeader.setAvatarName("");
+                studentHeader.setGroupId("");
                 studentHeader.setType(FC_Constants.TYPE_HEADER);
                 fragmentModalsList.add(studentHeader);
             }
-
             myView.setStudentList(fragmentModalsList);
             myView.notifyStudentAdapter();
 

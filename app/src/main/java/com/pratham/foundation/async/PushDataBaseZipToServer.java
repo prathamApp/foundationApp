@@ -19,12 +19,14 @@ import com.androidnetworking.common.Priority;
 import com.androidnetworking.error.ANError;
 import com.androidnetworking.interfaces.StringRequestListener;
 import com.google.gson.Gson;
+import com.pratham.foundation.ApplicationClass;
 import com.pratham.foundation.R;
 import com.pratham.foundation.customView.display_image_dialog.CustomLodingDialog;
 import com.pratham.foundation.database.AppDatabase;
 import com.pratham.foundation.database.BackupDatabase;
 import com.pratham.foundation.database.domain.FilePushResponse;
 import com.pratham.foundation.utility.FC_Constants;
+import com.pratham.foundation.utility.FC_RandomString;
 import com.pratham.foundation.utility.FC_Utility;
 
 import org.androidannotations.annotations.Background;
@@ -178,12 +180,13 @@ public class PushDataBaseZipToServer {
         try {
 //            String newdata = compress(String.valueOf(data));
             BackupDatabase.backup(context);
-            String fielName = "" + FC_Utility.getUUID();
+            String fielName = "FCZ_"+ FC_RandomString.unique();
             String filePathStr = Environment.getExternalStorageDirectory().toString()
                     + "/PrathamBackups/" + AppDatabase.DB_NAME; // file path to save
             // Type the path of the files in here
             File dir = new File(Environment.getExternalStorageDirectory().toString() + "/PrathamBackups/");
             File[] db_files = dir.listFiles();
+            Log.d("FC_RandomString", "DB ZIP NAME "+fielName);
             if (db_files != null) {
                 List<String> fileNameListStrings = new ArrayList<>();
                 for (int i = 0; i < db_files.length; i++)
@@ -191,39 +194,70 @@ public class PushDataBaseZipToServer {
                         fileNameListStrings.add(db_files[i].getAbsolutePath());
                 zip(fileNameListStrings, filePathStr + ".zip", new File(filePathStr));
 
-                AndroidNetworking.upload(url[0])
-                        .addHeaders("Content-Type", "file/zip")
-                        .addMultipartFile("" + fielName, new File(filePathStr + ".zip"))
-                        .setPriority(Priority.HIGH)
-                        .build()
-                        .getAsString(new StringRequestListener() {
-                            @Override
-                            public void onResponse(String response) {
-                                Log.d("PushData", "DB ZIP PUSH " + response);
-                                Gson gson = new Gson();
-                                FilePushResponse pushResponse = gson.fromJson(response, FilePushResponse.class);
+                if (ApplicationClass.wiseF.isDeviceConnectedToSSID(FC_Constants.PRATHAM_RASPBERRY_PI)) {
 
-                                new File(filePathStr + ".zip").delete();
-                                if (pushResponse.isSuccess()/*equalsIgnoreCase("success")*/) {
-                                    Log.d("PushData", "DB ZIP PUSH SUCCESS");
+                    AndroidNetworking.upload(FC_Constants.uploadDataUrl_PI)
+                            .addHeaders("Content-Type", "file/zip")
+                            .addMultipartFile("uploaded_file", new File(filePathStr + ".zip"))
+                            .setPriority(Priority.HIGH)
+                            .build()
+                            .getAsString(new StringRequestListener() {
+                                @Override
+                                public void onResponse(String response) {
+                                    Log.d("PushData", "DATA PUSH " + response);
+                                    Gson gson = new Gson();
+                                    FilePushResponse pushResponse = gson.fromJson(response, FilePushResponse.class);
+
+                                    new File(filePathStr + ".zip").delete();
+                                    Log.d("PushData", "DATA PUSH SUCCESS");
                                     pushSuccessfull = true;
                                     setDataPushSuccessfull();
-                                } else {
-                                    Log.d("PushData", "Failed DB ZIP PUSH");
+                                }
+
+                                @Override
+                                public void onError(ANError anError) {
+                                    //Fail - Show dialog with failure message.
+                                    Log.d("PushData", "Data push FAIL");
+                                    Log.d("PushData", "ERROR  " + anError);
                                     pushSuccessfull = false;
                                     setDataPushFailed();
                                 }
-                            }
+                            });
+                } else {
+                    AndroidNetworking.upload(url[0])
+                            .addHeaders("Content-Type", "file/zip")
+                            .addMultipartFile("" + fielName, new File(filePathStr + ".zip"))
+                            .setPriority(Priority.HIGH)
+                            .build()
+                            .getAsString(new StringRequestListener() {
+                                @Override
+                                public void onResponse(String response) {
+                                    Log.d("PushData", "DB ZIP PUSH " + response);
+                                    Gson gson = new Gson();
+                                    FilePushResponse pushResponse = gson.fromJson(response, FilePushResponse.class);
 
-                            @Override
-                            public void onError(ANError anError) {
-                                //Fail - Show dialog with failure message.
-                                Log.d("PushData", "Data push FAIL");
-                                Log.d("PushData", "ERROR  " + anError);
-                                pushSuccessfull = false;
-                                setDataPushFailed();
-                            }
-                        });
+                                    new File(filePathStr + ".zip").delete();
+                                    if (pushResponse.isSuccess()/*equalsIgnoreCase("success")*/) {
+                                        Log.d("PushData", "DB ZIP PUSH SUCCESS");
+                                        pushSuccessfull = true;
+                                        setDataPushSuccessfull();
+                                    } else {
+                                        Log.d("PushData", "Failed DB ZIP PUSH");
+                                        pushSuccessfull = false;
+                                        setDataPushFailed();
+                                    }
+                                }
+
+                                @Override
+                                public void onError(ANError anError) {
+                                    //Fail - Show dialog with failure message.
+                                    Log.d("PushData", "Data push FAIL");
+                                    Log.d("PushData", "ERROR  " + anError);
+                                    pushSuccessfull = false;
+                                    setDataPushFailed();
+                                }
+                            });
+                }
             }
         } catch (Exception e) {
             e.printStackTrace();

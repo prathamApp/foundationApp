@@ -47,7 +47,7 @@ public class PullDataPresenterImp implements PullDataContract.PullDataPresenter,
     String selectedProgram;
     int count = 0;
     int groupCount = 0;
-    ArrayList<Village> villageList=new ArrayList<>();
+    ArrayList<Village> villageList = new ArrayList<>();
 //    ArrayList<RaspVillage> raspVillageList = new ArrayList<>();
 
     List<Crl> crlList = new ArrayList<>();
@@ -147,15 +147,15 @@ public class PullDataPresenterImp implements PullDataContract.PullDataPresenter,
             String[] states = context.getResources().getStringArray(R.array.india_states);
             String[] codes = context.getResources().getStringArray(R.array.india_states_shortcode);
             modalStates.clear();
-            for(int i = 0 ; i < context.getResources().getStringArray(R.array.india_states).length ; i++) {
+            for (int i = 0; i < context.getResources().getStringArray(R.array.india_states).length; i++) {
                 modalStates.get(i).setProgramId(Integer.parseInt(selectedProgramId));
                 modalStates.get(i).setStateCode(codes[i]);
                 modalStates.get(i).setStateName(states[i]);
             }
             pullDataView.showStatesSpinner(modalStates);
-        }else{
+        } else {
             //fetch from server as per selected program
-            AndroidNetworking.get(FC_Constants.URL.PULL_STATES.toString()+""+selectedProgramId).build().getAsJSONArray(new JSONArrayRequestListener() {
+            AndroidNetworking.get(FC_Constants.URL.PULL_STATES.toString() + "" + selectedProgramId).build().getAsJSONArray(new JSONArrayRequestListener() {
                 @Override
                 public void onResponse(JSONArray response) {
                     //Success - Add programs to list
@@ -473,7 +473,7 @@ public class PullDataPresenterImp implements PullDataContract.PullDataPresenter,
         BaseActivity.villageDao.insertAllVillages(villageList.get(0).getData());
        */
 
-       //insert data to database
+        //insert data to database
         AppDatabase.getDatabaseInstance(context).getCrlDao().insertAll(crlList);
         Iterator<Student> i = studentList.iterator();
         while (i.hasNext()) {
@@ -548,7 +548,7 @@ public class PullDataPresenterImp implements PullDataContract.PullDataPresenter,
         if (ApplicationClass.wiseF.isDeviceConnectedToMobileNetwork()) {
             //callOnlineContentAPI(contentList, parentId);
         } else if (ApplicationClass.wiseF.isDeviceConnectedToWifiNetwork()) {
-            if (ApplicationClass.wiseF.isDeviceConnectedToSSID(FC_Constants.PRATHAM_KOLIBRI_HOTSPOT)) {
+            if (ApplicationClass.wiseF.isDeviceConnectedToSSID(FC_Constants.PRATHAM_RASPBERRY_PI)) {
                 //  if (FastSave.getInstance().getString(FC_Constants.FACILITY_ID, "").isEmpty())
                 isConnectedToRasp = checkConnectionForRaspberry();
                 //callKolibriAPI(contentList, parentId);
@@ -564,7 +564,7 @@ public class PullDataPresenterImp implements PullDataContract.PullDataPresenter,
     public boolean checkConnectionForRaspberry() {
         boolean isRaspberry = false;
         if (ApplicationClass.wiseF.isDeviceConnectedToWifiNetwork()) {
-            if (ApplicationClass.wiseF.isDeviceConnectedToSSID(FC_Constants.PRATHAM_KOLIBRI_HOTSPOT)) {
+            if (ApplicationClass.wiseF.isDeviceConnectedToSSID(FC_Constants.PRATHAM_RASPBERRY_PI)) {
                 try {
                     isRaspberry = true;
                     /*JSONObject object = new JSONObject();
@@ -581,7 +581,10 @@ public class PullDataPresenterImp implements PullDataContract.PullDataPresenter,
         return isRaspberry;
     }
 
-//    List<Village> vilageList = new ArrayList<>();
+    //    List<Village> vilageList = new ArrayList<>();
+    @Override
+    public void receivedContent_PI_SubLevel(String header, String response, int pos, int size) {
+    }
 
     @Override
     public void receivedContent(String header, String response) {

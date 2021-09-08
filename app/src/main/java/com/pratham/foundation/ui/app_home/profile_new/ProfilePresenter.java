@@ -123,12 +123,11 @@ public class ProfilePresenter implements ProfileContract.ProfilePresenter, API_C
 */
 
     @Override
-    public void receivedContent(String header, String response) {
-
-    }
+    public void receivedContent_PI_SubLevel(String header, String response, int pos, int size) { }
 
     @Override
-    public void receivedError(String header) {
+    public void receivedContent(String header, String response) { }
 
-    }
+    @Override
+    public void receivedError(String header) { }
 }

@@ -124,8 +124,8 @@ public class PushDataToServer {
             JSONObject metadataJson = new JSONObject();
             totalImages = AppDatabase.getDatabaseInstance(context).getScoreDao().getUnpushedImageCount();
             imageUploadCnt = 0;
-            if (ApplicationClass.wiseF.isDeviceConnectedToWifiNetwork()) {
-                if (ApplicationClass.wiseF.isDeviceConnectedToSSID(FC_Constants.PRATHAM_KOLIBRI_HOTSPOT)) {
+            if (ApplicationClass.wiseF.isDeviceConnectedToMobileNetwork() || ApplicationClass.wiseF.isDeviceConnectedToWifiNetwork()) {
+                if (ApplicationClass.wiseF.isDeviceConnectedToSSID(FC_Constants.PRATHAM_RASPBERRY_PI)) {
                     getFacilityId(pushDataJsonObject);
                 } else {
                     isConnectedToRasp = false;

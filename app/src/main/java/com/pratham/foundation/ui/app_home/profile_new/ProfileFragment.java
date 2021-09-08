@@ -634,6 +634,10 @@ public class ProfileFragment extends Fragment implements ProfileContract.Profile
     }
 
     @Override
+    public void receivedContent_PI_SubLevel(String header, String response, int pos, int size) {
+    }
+
+    @Override
     public void receivedContent(String header, String response) {
 
         if (header.equalsIgnoreCase(FC_Constants.INTERNET_TIME)) {

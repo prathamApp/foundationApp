@@ -74,7 +74,7 @@ public class PullAndAssign_Presenter implements PullAndAssign_Contract.PullAndAs
             loadProgramsSpinner();
             //callOnlineContentAPI(contentList, parentId);
         } else if (ApplicationClass.wiseF.isDeviceConnectedToWifiNetwork()) {
-            if (ApplicationClass.wiseF.isDeviceConnectedToSSID(FC_Constants.PRATHAM_KOLIBRI_HOTSPOT)) {
+            if (ApplicationClass.wiseF.isDeviceConnectedToSSID(FC_Constants.PRATHAM_RASPBERRY_PI)) {
                 //  if (FastSave.getInstance().getString(FC_Constants.FACILITY_ID, "").isEmpty())
                 isConnectedToRasp = checkConnectionForRaspberry();
                 loadProgramsSpinner();
@@ -303,6 +303,10 @@ public class PullAndAssign_Presenter implements PullAndAssign_Contract.PullAndAs
     }
 
     @Override
+    public void receivedContent_PI_SubLevel(String header, String response, int pos, int size) {
+    }
+
+    @Override
     public void receivedContent(String header, String response) {
         Gson gson = new Gson();
         if (header.equalsIgnoreCase(FC_Constants.KOLIBRI_BLOCK)) {
@@ -502,7 +506,7 @@ public class PullAndAssign_Presenter implements PullAndAssign_Contract.PullAndAs
     public boolean checkConnectionForRaspberry() {
         boolean isRaspberry = false;
         if (ApplicationClass.wiseF.isDeviceConnectedToWifiNetwork()) {
-            if (ApplicationClass.wiseF.isDeviceConnectedToSSID(FC_Constants.PRATHAM_KOLIBRI_HOTSPOT)) {
+            if (ApplicationClass.wiseF.isDeviceConnectedToSSID(FC_Constants.PRATHAM_RASPBERRY_PI)) {
                 try {
                     isRaspberry = true;
                     /*JSONObject object = new JSONObject();

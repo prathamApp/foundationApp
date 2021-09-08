@@ -79,15 +79,6 @@ public class SelectLanguageFragment extends Fragment implements SelectLangContra
     public void updateLangList(List<ContentTable> langList) {
         contentTableList.clear();
         contentTableList.addAll(langList);
-/*        contentTableList.addAll(langList);
-        contentTableList.addAll(langList);
-        contentTableList.addAll(langList);
-        contentTableList.addAll(langList);
-        contentTableList.addAll(langList);
-        contentTableList.addAll(langList);
-        contentTableList.addAll(langList);
-        contentTableList.addAll(langList);
-        contentTableList.addAll(langList);*/
     }
 
     @Override

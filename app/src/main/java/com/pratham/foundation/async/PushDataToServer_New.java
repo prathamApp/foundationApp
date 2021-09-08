@@ -44,6 +44,7 @@ import com.pratham.foundation.modalclasses.Model_CourseEnrollment;
 import com.pratham.foundation.services.background_service.BackgroundPushService;
 import com.pratham.foundation.services.shared_preferences.FastSave;
 import com.pratham.foundation.utility.FC_Constants;
+import com.pratham.foundation.utility.FC_RandomString;
 import com.pratham.foundation.utility.FC_Utility;
 
 import org.androidannotations.annotations.Background;
@@ -134,7 +135,7 @@ public class PushDataToServer_New {
      */
     @Background
     public void startDataPush(Context context, boolean showUi) {
-        if(FC_Utility.isDataConnectionAvailable(context)) {
+        if (FC_Utility.isDataConnectionAvailable(context)) {
             this.context = context;
             this.showUi = showUi;
             //Show Dialog
@@ -150,11 +151,11 @@ public class PushDataToServer_New {
                 else
                     log.setExceptionMessage("App_Manual_Sync");
                 log.setMethodName("");
-                log.setSessionId(""+FastSave.getInstance().getString(FC_Constants.CURRENT_SESSION, ""));
+                log.setSessionId("" + FastSave.getInstance().getString(FC_Constants.CURRENT_SESSION, ""));
                 log.setGroupId("");
-                log.setExceptionStackTrace("APK BUILD DATE : "+BUILD_DATE);
+                log.setExceptionStackTrace("APK BUILD DATE : " + BUILD_DATE);
                 log.setDeviceId("" + FC_Utility.getDeviceID());
-                log.setCurrentDateTime(""+FC_Utility.getCurrentDateTime());
+                log.setCurrentDateTime("" + FC_Utility.getCurrentDateTime());
                 AppDatabase.getDatabaseInstance(context).getLogsDao().insertLog(log);
                 BackupDatabase.backup(context);
             } catch (Exception e) {
@@ -198,16 +199,16 @@ public class PushDataToServer_New {
                 imageUploadList = new ArrayList<>();
                 isConnectedToRasp = false;
                 //Checks if device is connected to wifi
-                if (ApplicationClass.wiseF.isDeviceConnectedToWifiNetwork()) {
+                if (ApplicationClass.wiseF.isDeviceConnectedToMobileNetwork() || ApplicationClass.wiseF.isDeviceConnectedToWifiNetwork()) {
                     //Checks if device is connected to raspberry pie
-                    if (ApplicationClass.wiseF.isDeviceConnectedToSSID(FC_Constants.PRATHAM_KOLIBRI_HOTSPOT)) {
-                        getFacilityId(pushDataJsonObject);
-                    } else {
-                        isConnectedToRasp = false;
-                        setMainTextToDialog(context.getResources().getString(R.string.Please_wait_pushing_Data));
-                        setSyncLottieToDialog();
-                        pushDataToServer(context, pushDataJsonObject, FC_Constants.uploadDataUrl);
-                    }
+//                    if (ApplicationClass.wiseF.isDeviceConnectedToSSID(FC_Constants.PRATHAM_RASPBERRY_PI)) {
+//                        getFacilityId(pushDataJsonObject);
+//                    } else {
+                    isConnectedToRasp = false;
+                    setMainTextToDialog(context.getResources().getString(R.string.Please_wait_pushing_Data));
+                    setSyncLottieToDialog();
+                    pushDataToServer(context, pushDataJsonObject, FC_Constants.uploadDataUrl);
+//                    }
                 } else {
                     isConnectedToRasp = false;
                     setMainTextToDialog(context.getResources().getString(R.string.Please_wait_pushing_Data));
@@ -217,7 +218,7 @@ public class PushDataToServer_New {
             } catch (Exception e) {
                 e.printStackTrace();
             }
-        }else{
+        } else {
             BackgroundPushService mYourService;
             mYourService = new BackgroundPushService();
             Intent mServiceIntent;
@@ -359,11 +360,36 @@ public class PushDataToServer_New {
         }
     }
 
+    public void img_zip(List<Image_Upload> _files, String zipFileName) {
+        try {
+            BufferedInputStream origin = null;
+            FileOutputStream dest = new FileOutputStream(zipFileName);
+            ZipOutputStream out = new ZipOutputStream(new BufferedOutputStream(dest));
+
+            byte[] data = new byte[BUFFER];
+            for (int i = 0; i < _files.size(); i++) {
+                Log.v("Compress", "Adding: " + _files.get(i));
+                FileInputStream fi = new FileInputStream(String.valueOf(_files.get(i).getFilePath()));
+                origin = new BufferedInputStream(fi, BUFFER);
+                ZipEntry entry = new ZipEntry(""+_files.get(i).getFilePath());
+                out.putNextEntry(entry);
+                int count;
+                while ((count = origin.read(data, 0, BUFFER)) != -1) {
+                    out.write(data, 0, count);
+                }
+                origin.close();
+            }
+            out.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
     // Call only this method, do the data collection before
     public void pushDataToServer(Context context, JSONObject data, String... url) {
         try {
-//            String newdata = compress(String.valueOf(data));
-            String fielName = ""+FC_Utility.getUUID();
+//            String fielName = ""+FC_Utility.getUUID();
+            String fielName = "FC_" + FC_RandomString.unique();
             String filePathStr = Environment.getExternalStorageDirectory().toString()
                     + "/.FCAInternal/PushJsons/" + fielName; // file path to save
             File filepath = new File(filePathStr + ".json"); // file path to save
@@ -377,41 +403,77 @@ public class PushDataToServer_New {
             String[] s = new String[1];
             // Type the path of the files in here
             s[0] = filePathStr + ".json";
+            Log.d("FC_RandomString", "ZIP NAME " + s[0]);
             zip(s, filePathStr + ".zip", filepath);
+            String URL_Final = url[0];
+//            AndroidNetworking.upload("http://devprodigi.openiscool.org/api/FCAPP/PushFiles"/*url[0]*/)
 
-            AndroidNetworking.upload("http://devprodigi.openiscool.org/api/FCAPP/PushFiles"/*url[0]*/)
-                    .addHeaders("Content-Type", "file/zip")
-                    .addMultipartFile(""+fielName, new File(filePathStr + ".zip"))
-                    .setPriority(Priority.HIGH)
-                    .build()
-                    .getAsString(new StringRequestListener() {
-                        @Override
-                        public void onResponse(String response) {
-                            Log.d("PushData", "DATA PUSH "+response);
+            if (ApplicationClass.wiseF.isDeviceConnectedToSSID(FC_Constants.PRATHAM_RASPBERRY_PI)) {
+
+                URL_Final = FC_Constants.uploadDataUrl_PI;
+                AndroidNetworking.upload(URL_Final)
+                        .addHeaders("Content-Type", "file/zip")
+                        .addMultipartFile("uploaded_file", new File(filePathStr + ".zip"))
+                        .setPriority(Priority.HIGH)
+                        .build()
+                        .getAsString(new StringRequestListener() {
+                            @Override
+                            public void onResponse(String response) {
+                                Log.d("PushData", "DATA PUSH " + response);
                                 Gson gson = new Gson();
-                            FilePushResponse pushResponse = gson.fromJson(response, FilePushResponse.class);
+                                FilePushResponse pushResponse = gson.fromJson(response, FilePushResponse.class);
 
-                            new File(filePathStr + ".zip").delete();
-                            if (pushResponse.isSuccess()/*equalsIgnoreCase("success")*/) {
+                                new File(filePathStr + ".zip").delete();
                                 Log.d("PushData", "DATA PUSH SUCCESS");
                                 pushSuccessfull = true;
                                 setDataPushSuccessfull();
-                            } else {
-                                Log.d("PushData", "Failed DATA PUSH");
+                            }
+
+                            @Override
+                            public void onError(ANError anError) {
+                                //Fail - Show dialog with failure message.
+                                Log.d("PushData", "Data push FAIL");
+                                Log.d("PushData", "ERROR  " + anError);
                                 pushSuccessfull = false;
                                 setDataPushFailed();
                             }
-                        }
+                        });
+            } else {
+                AndroidNetworking.upload(URL_Final)
+                        .addHeaders("Content-Type", "file/zip")
+                        .addMultipartFile("" + fielName, new File(filePathStr + ".zip"))
+//                        .addMultipartFile("uploaded_file", new File(filePathStr + ".zip"))
+                        .setPriority(Priority.HIGH)
+                        .build()
+                        .getAsString(new StringRequestListener() {
+                            @Override
+                            public void onResponse(String response) {
+                                Log.d("PushData", "DATA PUSH " + response);
+                                Gson gson = new Gson();
+                                FilePushResponse pushResponse = gson.fromJson(response, FilePushResponse.class);
 
-                        @Override
-                        public void onError(ANError anError) {
-                            //Fail - Show dialog with failure message.
-                            Log.d("PushData", "Data push FAIL");
-                            Log.d("PushData", "ERROR  " + anError);
-                            pushSuccessfull = false;
-                            setDataPushFailed();
-                        }
-                    });
+                                new File(filePathStr + ".zip").delete();
+                                if (pushResponse.isSuccess()/*equalsIgnoreCase("success")*/) {
+                                    Log.d("PushData", "DATA PUSH SUCCESS");
+                                    pushSuccessfull = true;
+                                    setDataPushSuccessfull();
+                                } else {
+                                    Log.d("PushData", "Failed DATA PUSH");
+                                    pushSuccessfull = false;
+                                    setDataPushFailed();
+                                }
+                            }
+
+                            @Override
+                            public void onError(ANError anError) {
+                                //Fail - Show dialog with failure message.
+                                Log.d("PushData", "Data push FAIL");
+                                Log.d("PushData", "ERROR  " + anError);
+                                pushSuccessfull = false;
+                                setDataPushFailed();
+                            }
+                        });
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -555,7 +617,16 @@ public class PushDataToServer_New {
         if (imageUploadList.size() > 0) {
             setMainTextToDialog(context.getResources().getString(R.string.Uploading) + " "
                     + totalImages + " " + context.getResources().getString(R.string.images));
-            pushImagesToServer(0);
+
+//            String fielName = "FCI_" + FC_RandomString.unique();
+//            String filePathStr = Environment.getExternalStorageDirectory().toString()
+//                    + "/.FCAInternal/ActivityPhotos/" + fielName;
+//            img_zip(imageUploadList, filePathStr + ".zip");
+
+            if (ApplicationClass.wiseF.isDeviceConnectedToSSID(FC_Constants.PRATHAM_RASPBERRY_PI))
+                pushImagesToServer_PI(0);
+            else
+                pushImagesToServer_Internet(0);
         } else {
             showTotalImgStatus();
         }
@@ -575,7 +646,7 @@ public class PushDataToServer_New {
      * @param jsonIndex is always passed zero and incremented on success push.
      */
     @UiThread
-    public void pushImagesToServer(final int jsonIndex) {
+    public void pushImagesToServer_Internet(final int jsonIndex) {
 //        Log.d("PushData", "Image jsonIndex : " + jsonIndex);
         if (jsonIndex < imageUploadList.size()) {
             AndroidNetworking.upload(FC_Constants.PUSH_IMAGE_API)
@@ -595,7 +666,7 @@ public class PushDataToServer_New {
                                     imageUploadCnt++;
                                     Log.d("PushData", "imageUploadCnt : " + imageUploadCnt);
                                     imageUploadList.get(jsonIndex).setUploadStatus(true);
-                                    pushImagesToServer(jsonIndex + 1);
+                                    pushImagesToServer_Internet(jsonIndex + 1);
                                 }
                             } catch (Exception e) {
                                 e.printStackTrace();
@@ -605,7 +676,49 @@ public class PushDataToServer_New {
                         @Override
                         public void onError(ANError anError) {
                             Log.d("PushData", "IMAGE onError : " + imageUploadList.get(jsonIndex).getFileName());
-                            pushImagesToServer(jsonIndex + 1);
+                            pushImagesToServer_Internet(jsonIndex + 1);
+                        }
+                    });
+        } else {
+            Log.d("PushData", "IMAGES COMPLETE");
+            showTotalImgStatus();
+        }
+    }
+
+    @UiThread
+    public void pushImagesToServer_PI(final int jsonIndex) {
+//        Log.d("PushData", "Image jsonIndex : " + jsonIndex);
+        if (jsonIndex < imageUploadList.size()) {
+
+            AndroidNetworking.upload(FC_Constants.PUSH_IMAGE_API_PI)
+                    .addHeaders("Content-type", "images")
+                    .addMultipartFile("imageUpload", imageUploadList.get(jsonIndex).getFilePath())
+                    .addMultipartParameter("key", String.valueOf(imageUploadList.get(jsonIndex).getFilePath()))
+                    .setPriority(Priority.HIGH)
+                    .build()
+                    .getAsString(new StringRequestListener() {
+                        @Override
+                        public void onResponse(String response) {
+                            try {
+                                Log.d("PushData", "Image onResponse_PI : " + response);
+//                                if (response.equalsIgnoreCase("success")) {
+                                    imageUploadCnt++;
+                                    Log.d("PushData", "imageUploadCnt _PI: " + imageUploadCnt);
+                                    imageUploadList.get(jsonIndex).setUploadStatus(true);
+                                    pushImagesToServer_PI(jsonIndex + 1);
+//                                }
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
+                        }
+
+                        @Override
+                        public void onError(ANError anError) {
+                            Log.d("PushData", "IMAGE onError _PI: " + imageUploadList.get(jsonIndex).getFileName());
+                            Log.d("PushData", "onError _PI: " + anError.getMessage());
+                            Log.d("PushData", "onError _PI: " + anError.getErrorBody());
+                            Log.d("PushData", "onError _PI: " + anError.getErrorDetail());
+                            pushImagesToServer_PI(jsonIndex + 1);
                         }
                     });
         } else {
@@ -636,9 +749,9 @@ public class PushDataToServer_New {
         failed_ImageLength = "" + failedCntr;
         syncTime = FC_Utility.getCurrentDateTime();
 
-        if(pushSuccessfull) {
+        if (pushSuccessfull) {
             FastSave.getInstance().saveString(FC_Constants.SYNC_TIME, syncTime);
-            FastSave.getInstance().saveString(FC_Constants.SYNC_COURSE_ENROLLMENT_LENGTH, ""+enrollmentCount);
+            FastSave.getInstance().saveString(FC_Constants.SYNC_COURSE_ENROLLMENT_LENGTH, "" + enrollmentCount);
             FastSave.getInstance().saveString(FC_Constants.SYNC_DATA_LENGTH, pushedScoreLength);
             FastSave.getInstance().saveString(FC_Constants.SYNC_MEDIA_LENGTH, successful_ImageLength);
 //            FastSave.getInstance().saveString(FC_Constants.SYNC_CERTI_LENGTH, "" + certiCount);

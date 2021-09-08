@@ -16,6 +16,9 @@ import com.pratham.foundation.database.domain.Score;
 import com.pratham.foundation.interfaces.API_Content_Result;
 import com.pratham.foundation.modalclasses.Modal_DownloadContent;
 import com.pratham.foundation.modalclasses.Modal_InternetTime;
+import com.pratham.foundation.modalclasses.RaspModel.ModalRaspContentNew;
+import com.pratham.foundation.modalclasses.RaspModel.Modal_RaspResult;
+import com.pratham.foundation.modalclasses.RaspModel.Modal_Rasp_JsonData;
 import com.pratham.foundation.services.shared_preferences.FastSave;
 import com.pratham.foundation.utility.FC_Constants;
 import com.pratham.foundation.utility.FC_Utility;
@@ -35,6 +38,8 @@ import java.util.List;
 
 import static com.pratham.foundation.ApplicationClass.App_Thumbs_Path;
 import static com.pratham.foundation.utility.FC_Constants.CURRENT_STUDENT_ID;
+import static com.pratham.foundation.utility.FC_Constants.PI_BROWSE;
+import static com.pratham.foundation.utility.FC_Constants.RASPBERRY_PI_LANGUAGE_API;
 import static com.pratham.foundation.utility.FC_Constants.gameFolderPath;
 
 @EBean
@@ -72,11 +77,11 @@ public class ContentPresenter implements ContentContract.ContentPresenter, API_C
 
     @Override
     public void getInternetTime() {
-        if (FC_Utility.isDataConnectionAvailable(context)) {
-            //fetch subjects from API
-            api_content.getInternetTimeApi(FC_Constants.INTERNET_TIME, FC_Constants.INTERNET_TIME_API);
+        if (ApplicationClass.wiseF.isDeviceConnectedToMobileNetwork() || ApplicationClass.wiseF.isDeviceConnectedToWifiNetwork()) {
+            if (!ApplicationClass.wiseF.isDeviceConnectedToSSID(FC_Constants.PRATHAM_RASPBERRY_PI)) {
+                api_content.getInternetTimeApi(FC_Constants.INTERNET_TIME, FC_Constants.INTERNET_TIME_API);
+            }
         }
-
     }
 
     public ContentPresenter(Context context) {
@@ -242,9 +247,14 @@ public class ContentPresenter implements ContentContract.ContentPresenter, API_C
         try {
 //            check for connection and hit api for getting all data from server
 //            if there no internet connection the display the downloaded data
-            if (FC_Utility.isDataConnectionAvailable(context))
-                api_content.getAPIContent(FC_Constants.INTERNET_BROWSE, FC_Constants.INTERNET_BROWSE_API, nodeIds.get(nodeIds.size() - 1));
-            else {
+            if (ApplicationClass.wiseF.isDeviceConnectedToMobileNetwork() || ApplicationClass.wiseF.isDeviceConnectedToWifiNetwork()) {
+                //Checks if device is connected to raspberry pie
+                if (ApplicationClass.wiseF.isDeviceConnectedToSSID(FC_Constants.PRATHAM_RASPBERRY_PI)) {
+                    api_content.getAPIContent_PI(PI_BROWSE, RASPBERRY_PI_LANGUAGE_API, nodeIds.get(nodeIds.size() - 1));
+                } else {
+                    api_content.getAPIContent(FC_Constants.INTERNET_BROWSE, FC_Constants.INTERNET_BROWSE_API, nodeIds.get(nodeIds.size() - 1));
+                }
+            } else {
 //                if downloaded list is empty show no downloaded data
                 if (downloadedContentTableList.size() == 0) {
                     contentView.showNoDataDownloadedDialog();
@@ -302,21 +312,53 @@ public class ContentPresenter implements ContentContract.ContentPresenter, API_C
 //        call download api
         downloadNodeId = downloadId;
         dwContent = contentTable;
-        api_content.getAPIContent(FC_Constants.INTERNET_DOWNLOAD_RESOURCE, FC_Constants.INTERNET_DOWNLOAD_RESOURCE_API, downloadNodeId);
+        if (ApplicationClass.wiseF.isDeviceConnectedToMobileNetwork() || ApplicationClass.wiseF.isDeviceConnectedToWifiNetwork()) {
+            //Checks if device is connected to raspberry pie
+            if (ApplicationClass.wiseF.isDeviceConnectedToSSID(FC_Constants.PRATHAM_RASPBERRY_PI)) {
+                api_content.getAPIContent_PI_V2(FC_Constants.INTERNET_DOWNLOAD_RESOURCE_PI, FC_Constants.INTERNET_DOWNLOAD_RESOURCE_API_PI, downloadNodeId);
+            } else {
+                api_content.getAPIContent(FC_Constants.INTERNET_DOWNLOAD_RESOURCE, FC_Constants.INTERNET_DOWNLOAD_RESOURCE_API, downloadNodeId);
+            }
+        }
     }
 
     // API result
     @Override
     public void receivedContent(String header, String response) {
         try {
-            if (header.equalsIgnoreCase(FC_Constants.INTERNET_BROWSE)) {
+            if (header.equalsIgnoreCase(FC_Constants.INTERNET_BROWSE) || header.equalsIgnoreCase(FC_Constants.PI_BROWSE)) {
                 boolean contentFound = false;
                 try {
 //                    compair response form server and downloaded data, then show all the data.
                     ListForContentTable2.clear();
                     Type listType = new TypeToken<ArrayList<ContentTable>>() {
                     }.getType();
-                    List<ContentTable> serverContentList = gson.fromJson(response, listType);
+                    List<ContentTable> serverContentList = new ArrayList<>();
+
+                    if (header.equalsIgnoreCase(FC_Constants.PI_BROWSE)) {
+                        ModalRaspContentNew rasp_contents = gson.fromJson(response, ModalRaspContentNew.class);
+                        rasp_contents.getModalRaspResults();
+                        Log.e("url raspResult : ", String.valueOf(rasp_contents.getModalRaspResults().size()));
+                        Modal_Rasp_JsonData modal_rasp_jsonData;
+                        if (rasp_contents.getModalRaspResults() != null) {
+                            List<Modal_RaspResult> raspResults = new ArrayList<>();
+                            for (int i = 0; i < rasp_contents.getModalRaspResults().size(); i++) {
+                                Modal_RaspResult modalRaspResult = new Modal_RaspResult();
+                                modalRaspResult.setAppId(rasp_contents.getModalRaspResults().get(i).getAppId());
+                                modalRaspResult.setNodeId(rasp_contents.getModalRaspResults().get(i).getNodeId());
+                                modalRaspResult.setNodeType(rasp_contents.getModalRaspResults().get(i).getNodeType());
+                                modalRaspResult.setNodeTitle(rasp_contents.getModalRaspResults().get(i).getNodeTitle());
+                                modalRaspResult.setParentId(rasp_contents.getModalRaspResults().get(i).getParentId());
+                                modalRaspResult.setJsonData(rasp_contents.getModalRaspResults().get(i).getJsonData());
+                                //raspResults.add(modalRaspResult);
+                                modal_rasp_jsonData = gson.fromJson(rasp_contents.getModalRaspResults().get(i).getJsonData(), Modal_Rasp_JsonData.class);
+                                ContentTable detail = modalRaspResult.setContentToConfigNodeStructure(modalRaspResult, modal_rasp_jsonData);
+                                serverContentList.add(detail);
+                            }
+                        }
+                    } else
+                        serverContentList = gson.fromJson(response, listType);
+
                     sortAllList(serverContentList);
                     for (int i = 0; i < serverContentList.size(); i++) {
                         contentFound = false;
@@ -326,7 +368,7 @@ public class ContentPresenter implements ContentContract.ContentPresenter, API_C
                                 if (!serverContentList.get(i).getVersion().equalsIgnoreCase(downloadedContentTableList.get(j).getVersion())) {
                                     downloadedContentTableList.get(j).setNodeUpdate(true);
                                 }
-                                ListForContentTable2.add(downloadedContentTableList.get(j));
+//                                ListForContentTable2.add(downloadedContentTableList.get(j));
                                 break;
                             }
                         }
@@ -362,7 +404,8 @@ public class ContentPresenter implements ContentContract.ContentPresenter, API_C
                                                 serverContentList.get(i).getResourceId());
                                 contentTableTemp.setNodePercentage("" + (int) prog);
                             }
-                            ListForContentTable2.add(contentTableTemp);
+//                            ListForContentTable2.add(contentTableTemp);
+                            downloadedContentTableList.add(contentTableTemp);
                         }
                     }
                 } catch (Exception e) {
@@ -371,41 +414,86 @@ public class ContentPresenter implements ContentContract.ContentPresenter, API_C
                 }
 //                contentView.addContentToViewList(ListForContentTable1);
 //                add final list to view and then notify adapter
-                contentView.addContentToViewList(ListForContentTable2);
+//                contentView.addContentToViewList(ListForContentTable2);
+                contentView.addContentToViewList(downloadedContentTableList);
                 contentView.notifyAdapter();
                 contentView.dismissLoadingDialog();
-            } else if (header.equalsIgnoreCase(FC_Constants.INTERNET_DOWNLOAD_RESOURCE)) {
+            } else if (header.equalsIgnoreCase(FC_Constants.INTERNET_DOWNLOAD_RESOURCE) || header.equalsIgnoreCase(FC_Constants.INTERNET_DOWNLOAD_RESOURCE_PI)) {
                 try {
 //                    get response from server and hit download url
                     JSONObject jsonObject = new JSONObject(response);
-                    download_content = gson.fromJson(jsonObject.toString(), Modal_DownloadContent.class);
                     pos.clear();
+//                    List<ContentTable> serverContentList = new ArrayList<>();
+                    if (header.equalsIgnoreCase(FC_Constants.INTERNET_DOWNLOAD_RESOURCE_PI)) {
+                        ModalRaspContentNew rasp_contents = gson.fromJson(response, ModalRaspContentNew.class);
+                        rasp_contents.getModalRaspResults();
+                        Log.e("url raspResult : ", String.valueOf(rasp_contents.getModalRaspResults().size()));
+                        Modal_Rasp_JsonData modal_rasp_jsonData;
+                        if (rasp_contents.getModalRaspResults() != null) {
+                            List<Modal_RaspResult> raspResults = new ArrayList<>();
+                            for (int i = 0; i < rasp_contents.getModalRaspResults().size(); i++) {
+                                Modal_RaspResult modalRaspResult = new Modal_RaspResult();
+                                modalRaspResult.setAppId(rasp_contents.getModalRaspResults().get(i).getAppId());
+                                modalRaspResult.setNodeId(rasp_contents.getModalRaspResults().get(i).getNodeId());
+                                modalRaspResult.setNodeType(rasp_contents.getModalRaspResults().get(i).getNodeType());
+                                modalRaspResult.setNodeTitle(rasp_contents.getModalRaspResults().get(i).getNodeTitle());
+                                modalRaspResult.setParentId(rasp_contents.getModalRaspResults().get(i).getParentId());
+                                modalRaspResult.setJsonData(rasp_contents.getModalRaspResults().get(i).getJsonData());
+                                //raspResults.add(modalRaspResult);
+                                download_content = gson.fromJson(rasp_contents.getModalRaspResults().get(i).getJsonData(), Modal_DownloadContent.class);
+//                                ContentTable contentTable/*modal_rasp_jsonData*/ = gson.fromJson(rasp_contents.getModalRaspResults().get(i).getJsonData(), ContentTable.class);
+//                                ContentTable detail = modalRaspResult.setContentToConfigNodeStructure(modalRaspResult, modal_rasp_jsonData);
+//                                serverContentList.add(detail);
+//                                pos.add(contentTable);
+                            }
+                        }
+                    } else {
+                        download_content = gson.fromJson(jsonObject.toString(), Modal_DownloadContent.class);
+                    }
+
                     for (int i = 0; i < download_content.getNodelist().size(); i++) {
                         ContentTable contentTableTemp = download_content.getNodelist().get(i);
                         pos.add(contentTableTemp);
                     }
+
                     for (int i = 0; i < pos.size(); i++) {
                         pos.get(i).setIsDownloaded("true");
                         String studID = AppDatabase.getDatabaseInstance(context).getContentTableDao().getEarlierStudentId(pos.get(i).getNodeId());
                         String currStudID = FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, "");
-                        boolean studFound = false;
+                        boolean studFound = false, prathamGroupFound = false;
                         if (studID != null && !studID.equalsIgnoreCase("") && !studID.equalsIgnoreCase(" ")) {
                             String[] arrOfStdId = studID.split(",");
-                            if(arrOfStdId!= null && arrOfStdId.length>0) {
+                            if (arrOfStdId != null && arrOfStdId.length > 0) {
                                 for (int j = 0; j < arrOfStdId.length; j++) {
-                                    if(arrOfStdId[j].equalsIgnoreCase(currStudID)){
-                                        studFound=true;
+                                    if (arrOfStdId[j].equalsIgnoreCase(currStudID)) {
+                                        studFound = true;
+                                        break;
+                                    }
+                                    if (arrOfStdId[j].equalsIgnoreCase("pratham_group")) {
+                                        prathamGroupFound = true;
                                         break;
                                     }
                                 }
-                                if(!studFound){
+
+                                if (!studFound) {
                                     pos.get(i).setStudentId(studID + "," + FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""));
-                                }else{
+                                } else {
                                     pos.get(i).setStudentId(studID);
                                 }
+                                if (FastSave.getInstance().getBoolean(FC_Constants.PRATHAM_STUDENT, false)) {
+                                    if (!prathamGroupFound) {
+                                        pos.get(i).setStudentId(studID + ",pratham_group");
+                                    } else {
+                                        pos.get(i).setStudentId(studID);
+                                    }
+                                }
                             }
-                        } else
+                        } else {
                             pos.get(i).setStudentId("" + FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""));
+                            if (FastSave.getInstance().getBoolean(FC_Constants.PRATHAM_STUDENT, false)) {
+                                pos.get(i).setStudentId("pratham_group");
+                            }
+                        }
                     }
 
                     fileName = download_content.getDownloadurl()
@@ -413,40 +501,41 @@ public class ContentPresenter implements ContentContract.ContentPresenter, API_C
                     Log.d("HP", "doInBackground: fileName : " + fileName);
                     Log.d("HP", "doInBackground: folderName : " + download_content.getFoldername());
                     Log.d("HP", "doInBackground: DW URL : " + download_content.getDownloadurl());
+
+                    if (header.equalsIgnoreCase(FC_Constants.INTERNET_DOWNLOAD_RESOURCE_PI)) {
+                        if (fileName.contains(".zip") || fileName.contains(".rar")) {
+                            String pi_url = FC_Constants.RASP_IP + FC_Constants.RASP_LOCAL_URL + "/zips/" + fileName;
+                            zipDownloader.initialize(context, pi_url,
+                                    download_content.getFoldername(), fileName, dwContent, pos, true);
+                        } else {
+                            String pi_url="na";
+                            if (fileName.contains(".mp4"))
+                                pi_url = FC_Constants.RASP_IP + FC_Constants.RASP_LOCAL_URL + "/videos/mp4/" + fileName;
+                            else if (fileName.contains(".m4v"))
+                                pi_url = FC_Constants.RASP_IP + FC_Constants.RASP_LOCAL_URL + "/videos/m4v/" + fileName;
+                            else if (fileName.contains(".mp3"))
+                                pi_url = FC_Constants.RASP_IP + FC_Constants.RASP_LOCAL_URL + "/audios/mp3/" + fileName;
+                            else if (fileName.contains(".wav"))
+                                pi_url = FC_Constants.RASP_IP + FC_Constants.RASP_LOCAL_URL + "/audios/wav/" + fileName;
+                            else /*if (fileName.contains(".pdf"))*/
+                                pi_url = FC_Constants.RASP_IP + FC_Constants.RASP_LOCAL_URL + "/docs/" + fileName;
+                            zipDownloader.initialize(context, pi_url,
+                                    download_content.getFoldername(), fileName, dwContent, pos, false);
+                        }
+                    } else {
+                        if (fileName.contains(".zip") || fileName.contains(".rar")) {
+                            zipDownloader.initialize(context, download_content.getDownloadurl(),
+                                    download_content.getFoldername(), fileName, dwContent, pos, true);
+                        } else {
+                            zipDownloader.initialize(context, download_content.getDownloadurl(),
+                                    download_content.getFoldername(), fileName, dwContent, pos, false);
+                        }
+
+                    }
+
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
-/*
-                if (download_content.getFoldername().equalsIgnoreCase("video"))
-                    zipDownloader.initialize(context, "https://prathamopenschool.org/CourseContent/FCGames/OfftechVideos/5_Chatterbox.mp4",
-                            download_content.getFoldername(), "5_Chatterbox.mp4", contentDetail, pos);
-                else
-*/
-//                    start the download process
-//                boolean downloadingItem = false;
-//                Modal_FileDownloading modal_fileDownloading = new Modal_FileDownloading();
-//                modal_fileDownloading.setContentDetail(dwContent);
-//                modal_fileDownloading.setDownloadId(downloadNodeId);
-//                modal_fileDownloading.setFilename(dwContent.getNodeTitle());
-//                modal_fileDownloading.setProgress(0);
-//                if (fileDownloadingList.size() < 4) {
-//                    if (fileDownloadingList.size() > 0) {
-//                        for (int x = 0; x < fileDownloadingList.size(); x++) {
-//                            if (fileDownloadingList.get(x).getDownloadId().equalsIgnoreCase(downloadNodeId)) {
-//                                downloadingItem = true;
-//                            }
-//                        }
-//                    } else {
-//                        fileDownloadingList.add(modal_fileDownloading);
-//                    }
-                if (fileName.contains(".zip") || fileName.contains(".rar"))
-                    zipDownloader.initialize(context, download_content.getDownloadurl(),
-                            download_content.getFoldername(), fileName, dwContent, pos, true);
-                else zipDownloader.initialize(context, download_content.getDownloadurl(),
-                        download_content.getFoldername(), fileName, dwContent, pos, false);
-//                } else {
-//                    contentView.showToast("Only 4 allowed");
-//                }
             } else if (header.equalsIgnoreCase(FC_Constants.INTERNET_DOWNLOAD_ASSESSMENT_RESOURCE)) {
                 try {
                     JSONObject jsonObject = new JSONObject(response);
@@ -458,24 +547,40 @@ public class ContentPresenter implements ContentContract.ContentPresenter, API_C
                         pos.get(i).setIsDownloaded("true");
                         String studID = AppDatabase.getDatabaseInstance(context).getContentTableDao().getEarlierStudentId(pos.get(i).getNodeId());
                         String currStudID = FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, "");
-                        boolean studFound = false;
+                        boolean studFound = false, prathamGroupFound = false;
                         if (studID != null && !studID.equalsIgnoreCase("") && !studID.equalsIgnoreCase(" ")) {
                             String[] arrOfStdId = studID.split(",");
-                            if(arrOfStdId!= null && arrOfStdId.length>0) {
+                            if (arrOfStdId != null && arrOfStdId.length > 0) {
                                 for (int j = 0; j < arrOfStdId.length; j++) {
-                                    if(arrOfStdId[j].equalsIgnoreCase(currStudID)){
-                                        studFound=true;
+                                    if (arrOfStdId[j].equalsIgnoreCase(currStudID)) {
+                                        studFound = true;
+                                        break;
+                                    }
+                                    if (arrOfStdId[j].equalsIgnoreCase("pratham_group")) {
+                                        prathamGroupFound = true;
                                         break;
                                     }
                                 }
-                                if(!studFound){
+
+                                if (!studFound) {
                                     pos.get(i).setStudentId(studID + "," + FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""));
-                                }else{
+                                } else {
                                     pos.get(i).setStudentId(studID);
                                 }
+                                if (FastSave.getInstance().getBoolean(FC_Constants.PRATHAM_STUDENT, false)) {
+                                    if (!prathamGroupFound) {
+                                        pos.get(i).setStudentId(studID + ",pratham_group");
+                                    } else {
+                                        pos.get(i).setStudentId(studID);
+                                    }
+                                }
                             }
-                        } else
+                        } else {
                             pos.get(i).setStudentId("" + FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""));
+                            if (FastSave.getInstance().getBoolean(FC_Constants.PRATHAM_STUDENT, false)) {
+                                pos.get(i).setStudentId("pratham_group");
+                            }
+                        }
                     }
 
                     AppDatabase.getDatabaseInstance(context).getContentTableDao().addContentList(pos);
@@ -543,6 +648,10 @@ public class ContentPresenter implements ContentContract.ContentPresenter, API_C
             e.printStackTrace();
             contentView.dismissLoadingDialog();
         }
+    }
+
+    @Override
+    public void receivedContent_PI_SubLevel(String header, String response, int pos, int size) {
     }
 
     @Background

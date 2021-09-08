@@ -468,7 +468,7 @@ public class FC_Utility {
         return (int) (value * (scale / 160) + 0.5f);
     }
 
-    public static boolean isDataConnectionAvailable(Context context) {
+    public static boolean   isDataConnectionAvailable(Context context) {
         ConnectivityManager connectivityManager =
                 (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();

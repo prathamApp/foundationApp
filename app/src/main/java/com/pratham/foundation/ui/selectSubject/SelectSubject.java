@@ -254,6 +254,7 @@ public class SelectSubject extends BaseActivity implements
     public void onItemClicked(ContentTable contentTableObj) {
         //Get the selected subject and set to app
         try {
+//            allContentsIDList.clear();
             ButtonClickSound.start();
         } catch (IllegalStateException e) {
             e.printStackTrace();
@@ -289,6 +290,8 @@ public class SelectSubject extends BaseActivity implements
         Intent intent = new Intent(context, HomeActivity_.class);
         intent.putExtra("nodeId", contentTableObj.getNodeId());
         intent.putExtra("nodeTitle", contentTableObj.getNodeTitle());
+//        allContentsIDList.add(FastSave.getInstance().getString(APP_LANGUAGE_NODE_ID, ""));
+//        allContentsIDList.add(contentTableObj.getNodeId());
         startActivity(intent);
 //        FastSave.getInstance().saveString(FC_Constants.APP_LANGUAGE, FC_Constants.MARATHI);
         String a = FastSave.getInstance().getString(FC_Constants.APP_LANGUAGE, FC_Constants.HINDI);

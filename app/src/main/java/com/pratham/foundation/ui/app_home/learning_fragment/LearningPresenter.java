@@ -5,6 +5,7 @@ import android.util.Log;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.JsonSyntaxException;
 import com.google.gson.reflect.TypeToken;
 import com.google.gson.stream.JsonReader;
 import com.pratham.foundation.ApplicationClass;
@@ -18,6 +19,9 @@ import com.pratham.foundation.database.domain.Score;
 import com.pratham.foundation.database.domain.WordEnglish;
 import com.pratham.foundation.interfaces.API_Content_Result;
 import com.pratham.foundation.modalclasses.Modal_DownloadContent;
+import com.pratham.foundation.modalclasses.RaspModel.ModalRaspContentNew;
+import com.pratham.foundation.modalclasses.RaspModel.Modal_RaspResult;
+import com.pratham.foundation.modalclasses.RaspModel.Modal_Rasp_JsonData;
 import com.pratham.foundation.services.shared_preferences.FastSave;
 import com.pratham.foundation.utility.FC_Constants;
 import com.pratham.foundation.utility.FC_Utility;
@@ -40,7 +44,12 @@ import java.util.List;
 
 import static com.pratham.foundation.ApplicationClass.App_Thumbs_Path;
 import static com.pratham.foundation.ui.app_home.HomeActivity.sub_nodeId;
+import static com.pratham.foundation.utility.FC_Constants.BOTTOM_NODE_PI;
 import static com.pratham.foundation.utility.FC_Constants.CURRENT_STUDENT_ID;
+import static com.pratham.foundation.utility.FC_Constants.INTERNET_LEVEL_PI;
+import static com.pratham.foundation.utility.FC_Constants.PI_BROWSE;
+import static com.pratham.foundation.utility.FC_Constants.PI_BROWSE_SUBLEVEL;
+import static com.pratham.foundation.utility.FC_Constants.RASPBERRY_PI_BROWSE_API;
 import static com.pratham.foundation.utility.FC_Constants.TYPE_FOOTER;
 import static com.pratham.foundation.utility.FC_Constants.TYPE_HEADER;
 import static com.pratham.foundation.utility.FC_Constants.gameFolderPath;
@@ -143,8 +152,14 @@ public class LearningPresenter implements LearningContract.LearningPresenter, AP
 
     @Background
     public void getRootData(String rootID) {
-        if (FC_Utility.isDataConnectionAvailable(mContext))
-            api_content.getAPIContent(FC_Constants.BOTTOM_NODE, FC_Constants.INTERNET_LANGUAGE_API, rootID);
+        if (ApplicationClass.wiseF.isDeviceConnectedToMobileNetwork() || ApplicationClass.wiseF.isDeviceConnectedToWifiNetwork()) {
+            //Checks if device is connected to raspberry pie
+            if (ApplicationClass.wiseF.isDeviceConnectedToSSID(FC_Constants.PRATHAM_RASPBERRY_PI)) {
+                api_content.getAPIContent_PI(BOTTOM_NODE_PI, RASPBERRY_PI_BROWSE_API, rootID);
+            } else {
+                api_content.getAPIContent(FC_Constants.BOTTOM_NODE, FC_Constants.INTERNET_LANGUAGE_API, rootID);
+            }
+        }
     }
 
     @Background
@@ -153,17 +168,25 @@ public class LearningPresenter implements LearningContract.LearningPresenter, AP
         rootList = AppDatabase.getDatabaseInstance(mContext).getContentTableDao().getContentData("" + bottomNavNodeId,
                 "%" + FastSave.getInstance().getString(CURRENT_STUDENT_ID, "na") + "%"/*,
                 FastSave.getInstance().getString(CURRENT_STUDENT_PROGRAM_ID,"na")*/);
-        if (FC_Utility.isDataConnectionAvailable(mContext))
-            getLevelDataFromApi(currentLevelNo, bottomNavNodeId);
-        else {
+        if (ApplicationClass.wiseF.isDeviceConnectedToMobileNetwork() || ApplicationClass.wiseF.isDeviceConnectedToWifiNetwork()) {
+            //Checks if device is connected to raspberry pie
+            if (ApplicationClass.wiseF.isDeviceConnectedToSSID(FC_Constants.PRATHAM_RASPBERRY_PI)) {
+                api_content.getAPIContent_PI(INTERNET_LEVEL_PI, RASPBERRY_PI_BROWSE_API, bottomNavNodeId);
+            } else {
+                api_content.getAPIContent(FC_Constants.INTERNET_LEVEL, FC_Constants.INTERNET_LANGUAGE_API, bottomNavNodeId);
+            }
+//            getLevelDataFromApi(currentLevelNo, bottomNavNodeId);
+        } else {
             Log.d("crashDetection", "getLevelDataForList  currentLevelNo : " + currentLevelNo + "  :  bottomNavNodeId : " + bottomNavNodeId);
             learningView.setSelectedLevel(rootList);
         }
     }
 
+/*
     public void getLevelDataFromApi(int currentLevelNo, String botNodeId) {
         api_content.getAPIContent(FC_Constants.INTERNET_LEVEL, FC_Constants.INTERNET_LANGUAGE_API, botNodeId);
     }
+*/
 
     @Background
     @Override
@@ -391,10 +414,14 @@ public class LearningPresenter implements LearningContract.LearningPresenter, AP
             } catch (Exception e) {
                 e.printStackTrace();
             }
-            if (FC_Utility.isDataConnectionAvailable(mContext)) {
-                Log.d("crashDetection", "updateUI 3 : ");
-                api_content.getAPIContent(FC_Constants.INTERNET_BROWSE,
-                        FC_Constants.INTERNET_BROWSE_API, nodeIds.get(nodeIds.size() - 1));
+            if (ApplicationClass.wiseF.isDeviceConnectedToMobileNetwork() || ApplicationClass.wiseF.isDeviceConnectedToWifiNetwork()) {
+                //Checks if device is connected to raspberry pie
+                if (ApplicationClass.wiseF.isDeviceConnectedToSSID(FC_Constants.PRATHAM_RASPBERRY_PI)) {
+                    api_content.getAPIContent_PI(PI_BROWSE, RASPBERRY_PI_BROWSE_API, nodeIds.get(nodeIds.size() - 1));
+                } else {
+                    api_content.getAPIContent(FC_Constants.INTERNET_BROWSE,
+                            FC_Constants.INTERNET_BROWSE_API, nodeIds.get(nodeIds.size() - 1));
+                }
             } else {
                 Log.d("crashDetection", "updateUI 4 : ");
                 addHeadersAndNotifyAdapter(contentParentList);
@@ -492,8 +519,11 @@ public class LearningPresenter implements LearningContract.LearningPresenter, AP
     public void downloadResource(String downloadId, ContentTable dwContent) {
         downloadNodeId = downloadId;
         this.dwContent = dwContent;
-        if (FC_Utility.isDataConnectionAvailable(mContext)) {
-            api_content.getAPIContent(FC_Constants.INTERNET_DOWNLOAD_RESOURCE, FC_Constants.INTERNET_DOWNLOAD_RESOURCE_API, downloadNodeId);
+        if (ApplicationClass.wiseF.isDeviceConnectedToMobileNetwork() || ApplicationClass.wiseF.isDeviceConnectedToWifiNetwork()) {
+            if (ApplicationClass.wiseF.isDeviceConnectedToSSID(FC_Constants.PRATHAM_RASPBERRY_PI)) {
+                api_content.getAPIContent_PI_V2(FC_Constants.INTERNET_DOWNLOAD_RESOURCE_PI, FC_Constants.INTERNET_DOWNLOAD_RESOURCE_API_PI, downloadNodeId);
+            } else
+                api_content.getAPIContent(FC_Constants.INTERNET_DOWNLOAD_RESOURCE, FC_Constants.INTERNET_DOWNLOAD_RESOURCE_API, downloadNodeId);
 //            api_content.getAPIContentTemp(FC_Constants.INTERNET_DOWNLOAD_RESOURCE, FC_Constants.INTERNET_DOWNLOAD_RESOURCE_API, downloadNodeId);
         } else {
             learningView.showNoDataLayout();
@@ -561,164 +591,574 @@ public class LearningPresenter implements LearningContract.LearningPresenter, AP
 //        AppDatabase.getDatabaseInstance(mContext).getContentTableDao().insert(itemContent);
     }
 
+    List<ContentTable> serverContentPIList;
+
+    @Background
+    @Override
+    public void receivedContent_PI_SubLevel(String header, String response, int pos, int size) {
+
+        ModalRaspContentNew rasp_contents = gson.fromJson(response, ModalRaspContentNew.class);
+        Type listType = new TypeToken<ArrayList<ContentTable>>() {
+        }.getType();
+        rasp_contents.getModalRaspResults();
+        List<ContentTable> serverContentSubList = new ArrayList<>();
+        Log.e("url raspResult : ", String.valueOf(rasp_contents.getModalRaspResults().size()));
+
+        Modal_Rasp_JsonData modal_rasp_jsonData;
+        if (rasp_contents.getModalRaspResults() != null) {
+            List<Modal_RaspResult> raspResults = new ArrayList<>();
+            for (int i = 0; i < rasp_contents.getModalRaspResults().size(); i++) {
+                Modal_RaspResult modalRaspResult = new Modal_RaspResult();
+                modalRaspResult.setAppId(rasp_contents.getModalRaspResults().get(i).getAppId());
+                modalRaspResult.setNodeId(rasp_contents.getModalRaspResults().get(i).getNodeId());
+                modalRaspResult.setNodeType(rasp_contents.getModalRaspResults().get(i).getNodeType());
+                modalRaspResult.setNodeTitle(rasp_contents.getModalRaspResults().get(i).getNodeTitle());
+                modalRaspResult.setParentId(rasp_contents.getModalRaspResults().get(i).getParentId());
+                modalRaspResult.setJsonData(rasp_contents.getModalRaspResults().get(i).getJsonData());
+                raspResults.add(modalRaspResult);
+                modal_rasp_jsonData = gson.fromJson(rasp_contents.getModalRaspResults().get(i).getJsonData(), Modal_Rasp_JsonData.class);
+                ContentTable detail = modalRaspResult.setContentToConfigNodeStructure(modalRaspResult, modal_rasp_jsonData);
+                serverContentSubList.add(detail);
+            }
+        }
+        sortContentList(serverContentSubList);
+        serverContentPIList.get(pos).setNodelist(serverContentSubList);
+        if (pos == size - 1) {
+            createFinalList(serverContentPIList);
+        }
+    }
+
     @Background
     @Override
     public void receivedContent(String header, String response) {
-        if (header.equalsIgnoreCase(FC_Constants.INTERNET_BROWSE)) {
-            boolean parentFound = false, childFound = false;
+        if (header.equalsIgnoreCase(FC_Constants.INTERNET_BROWSE) || header.equalsIgnoreCase(FC_Constants.PI_BROWSE)) {
             try {
                 contentDBList.clear();
                 Type listType = new TypeToken<ArrayList<ContentTable>>() {
                 }.getType();
-                List<ContentTable> serverContentList = gson.fromJson(response, listType);
-                sortContentList(serverContentList);
-                for (int i = 0; i < serverContentList.size(); i++) {
-                    parentFound = false;
-                    List<ContentTable> tempList;
+
+                List<ContentTable> serverContentList = new ArrayList<>();
+                Log.d("PI_CHECK", "receivedContent: " + response);
+
+                if (header.equalsIgnoreCase(FC_Constants.PI_BROWSE)) {
+                    ModalRaspContentNew rasp_contents = gson.fromJson(response, ModalRaspContentNew.class);
+                    rasp_contents.getModalRaspResults();
+                    Log.e("url raspResult : ", String.valueOf(rasp_contents.getModalRaspResults().size()));
+                    Modal_Rasp_JsonData modal_rasp_jsonData;
+//                    List<Modal_Rasp_JsonData> modal_rasp_jsonData = new ArrayList<>();
+                    if (rasp_contents.getModalRaspResults() != null) {
+                        List<Modal_RaspResult> raspResults = new ArrayList<>();
+                        for (int i = 0; i < rasp_contents.getModalRaspResults().size(); i++) {
+                            Modal_RaspResult modalRaspResult = new Modal_RaspResult();
+                            modalRaspResult.setAppId(rasp_contents.getModalRaspResults().get(i).getAppId());
+                            modalRaspResult.setNodeId(rasp_contents.getModalRaspResults().get(i).getNodeId());
+                            modalRaspResult.setNodeType(rasp_contents.getModalRaspResults().get(i).getNodeType());
+                            modalRaspResult.setNodeTitle(rasp_contents.getModalRaspResults().get(i).getNodeTitle());
+                            modalRaspResult.setParentId(rasp_contents.getModalRaspResults().get(i).getParentId());
+                            modalRaspResult.setJsonData(rasp_contents.getModalRaspResults().get(i).getJsonData());
+                            raspResults.add(modalRaspResult);
+                            modal_rasp_jsonData = gson.fromJson(rasp_contents.getModalRaspResults().get(i).getJsonData(), Modal_Rasp_JsonData.class);
+                            ContentTable detail = modalRaspResult.setContentToConfigNodeStructure(modalRaspResult, modal_rasp_jsonData);
+                            serverContentList.add(detail);
+//                            Type listTypes = new TypeToken<ArrayList<Modal_Rasp_JsonData>>() {
+//                            }.getType();
+//                            modal_rasp_jsonData = gson.fromJson(rasp_contents.getModalRaspResults().get(i).getJsonData(), listType);
+//                            for (int l = 0; l < modal_rasp_jsonData.size(); l++) {
+//                                ContentTable detail = modalRaspResult.setContentToConfigNodeStructure(modalRaspResult, modal_rasp_jsonData.get(l));
+//                                serverContentList.add(detail);
+//                            }
+                        }
+                    }
+                    if (serverContentList.size() <= 0) {
+                        createFinalList(serverContentList);
+                    } else {
+                        sortContentList(serverContentList);
+                        getSubLevels_PI(serverContentList);
+                    }
+                } else {
+                    serverContentList = gson.fromJson(response, listType);
+                    sortContentList(serverContentList);
+                    createFinalList(serverContentList);
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        } else if (header.equalsIgnoreCase(FC_Constants.INTERNET_DOWNLOAD_RESOURCE) ||
+                header.equalsIgnoreCase(FC_Constants.INTERNET_DOWNLOAD_RESOURCE_PI)) {
+            try {
+//                    get response from server and hit download url
+                JSONObject jsonObject = new JSONObject(response);
+                pos.clear();
+//                    List<ContentTable> serverContentList = new ArrayList<>();
+                if (header.equalsIgnoreCase(FC_Constants.INTERNET_DOWNLOAD_RESOURCE_PI)) {
+                    ModalRaspContentNew rasp_contents = gson.fromJson(response, ModalRaspContentNew.class);
+                    rasp_contents.getModalRaspResults();
+                    Log.e("url raspResult : ", String.valueOf(rasp_contents.getModalRaspResults().size()));
+                    Modal_Rasp_JsonData modal_rasp_jsonData;
+                    if (rasp_contents.getModalRaspResults() != null) {
+                        List<Modal_RaspResult> raspResults = new ArrayList<>();
+                        for (int i = 0; i < rasp_contents.getModalRaspResults().size(); i++) {
+                            Modal_RaspResult modalRaspResult = new Modal_RaspResult();
+                            modalRaspResult.setAppId(rasp_contents.getModalRaspResults().get(i).getAppId());
+                            modalRaspResult.setNodeId(rasp_contents.getModalRaspResults().get(i).getNodeId());
+                            modalRaspResult.setNodeType(rasp_contents.getModalRaspResults().get(i).getNodeType());
+                            modalRaspResult.setNodeTitle(rasp_contents.getModalRaspResults().get(i).getNodeTitle());
+                            modalRaspResult.setParentId(rasp_contents.getModalRaspResults().get(i).getParentId());
+                            modalRaspResult.setJsonData(rasp_contents.getModalRaspResults().get(i).getJsonData());
+                            download_content = gson.fromJson(rasp_contents.getModalRaspResults().get(i).getJsonData(), Modal_DownloadContent.class);
+                        }
+                    }
+                } else {
+                    download_content = gson.fromJson(jsonObject.toString(), Modal_DownloadContent.class);
+                }
+
+                pos.addAll(download_content.getNodelist());
+
+                for (int i = 0; i < pos.size(); i++) {
+                    pos.get(i).setIsDownloaded("true");
+                    String studID = AppDatabase.getDatabaseInstance(mContext).getContentTableDao().getEarlierStudentId(pos.get(i).getNodeId());
+                    String currStudID = FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, "");
+                    boolean studFound = false, prathamGroupFound = false;
+                    if (studID != null && !studID.equalsIgnoreCase("") && !studID.equalsIgnoreCase(" ")) {
+                        String[] arrOfStdId = studID.split(",");
+                        if (arrOfStdId != null && arrOfStdId.length > 0) {
+                            for (int j = 0; j < arrOfStdId.length; j++) {
+                                if (arrOfStdId[j].equalsIgnoreCase(currStudID)) {
+                                    studFound = true;
+                                    break;
+                                }
+                                if (arrOfStdId[j].equalsIgnoreCase("pratham_group")) {
+                                    prathamGroupFound = true;
+                                    break;
+                                }
+                            }
+
+                            if (!studFound) {
+                                pos.get(i).setStudentId(studID + "," + FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""));
+                            } else {
+                                pos.get(i).setStudentId(studID);
+                            }
+                            if (FastSave.getInstance().getBoolean(FC_Constants.PRATHAM_STUDENT, false)) {
+                                if (!prathamGroupFound) {
+                                    pos.get(i).setStudentId(studID + ",pratham_group");
+                                } else {
+                                    pos.get(i).setStudentId(studID);
+                                }
+                            }
+                        }
+                    } else {
+                        pos.get(i).setStudentId("" + FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""));
+                        if (FastSave.getInstance().getBoolean(FC_Constants.PRATHAM_STUDENT, false)) {
+                            pos.get(i).setStudentId("pratham_group");
+                        }
+                    }
+                }
+
+                fileName = download_content.getDownloadurl()
+                        .substring(download_content.getDownloadurl().lastIndexOf('/') + 1);
+                Log.d("HP", "doInBackground: fileName : " + fileName);
+                Log.d("HP", "doInBackground: DW URL : " + download_content.getDownloadurl());
+
+                if (header.equalsIgnoreCase(FC_Constants.INTERNET_DOWNLOAD_RESOURCE_PI)) {
+                    if (fileName.contains(".zip") || fileName.contains(".rar")) {
+                        String pi_url = FC_Constants.RASP_IP + FC_Constants.RASP_LOCAL_URL + "/zips/" + fileName;
+                        zipDownloader.initialize(mContext, pi_url,
+                                download_content.getFoldername(), fileName, dwContent, pos, true);
+                    } else {
+                        String pi_url = "na";
+                        if (fileName.contains(".mp4"))
+                            pi_url = FC_Constants.RASP_IP + FC_Constants.RASP_LOCAL_URL + "/videos/mp4/" + fileName;
+                        else if (fileName.contains(".m4v"))
+                            pi_url = FC_Constants.RASP_IP + FC_Constants.RASP_LOCAL_URL + "/videos/m4v/" + fileName;
+                        else if (fileName.contains(".mp3"))
+                            pi_url = FC_Constants.RASP_IP + FC_Constants.RASP_LOCAL_URL + "/audios/mp3/" + fileName;
+                        else if (fileName.contains(".wav"))
+                            pi_url = FC_Constants.RASP_IP + FC_Constants.RASP_LOCAL_URL + "/audios/wav/" + fileName;
+                        else /*if (fileName.contains(".pdf"))*/
+                            pi_url = FC_Constants.RASP_IP + FC_Constants.RASP_LOCAL_URL + "/docs/" + fileName;
+
+                        Log.d("HP", "doInBackground: DW URL : " + pi_url);
+
+                        zipDownloader.initialize(mContext, pi_url,
+                                download_content.getFoldername(), fileName, dwContent, pos, false);
+                    }
+                } else {
+                    if (fileName.contains(".zip") || fileName.contains(".rar")) {
+                        zipDownloader.initialize(mContext, download_content.getDownloadurl(),
+                                download_content.getFoldername(), fileName, dwContent, pos, true);
+                    } else {
+                        zipDownloader.initialize(mContext, download_content.getDownloadurl(),
+                                download_content.getFoldername(), fileName, dwContent, pos, false);
+                    }
+
+                }
+/*
+                if (fileName.contains(".zip") || fileName.contains(".rar"))
+                    zipDownloader.initialize(mContext, download_content.getDownloadurl(),
+                            download_content.getFoldername(), fileName, dwContent, pos, true);
+                else zipDownloader.initialize(mContext, download_content.getDownloadurl(),
+                        download_content.getFoldername(), fileName, dwContent, pos, false);
+*/
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        } else if (header.equalsIgnoreCase(FC_Constants.INTERNET_DOWNLOAD_ASSESSMENT_RESOURCE)) {
+            try {
+                JSONObject jsonObject = new JSONObject(response);
+                download_content = gson.fromJson(jsonObject.toString(), Modal_DownloadContent.class);
+                pos.clear();
+                pos.addAll(download_content.getNodelist());
+
+                for (int i = 0; i < pos.size(); i++) {
+                    pos.get(i).setIsDownloaded("true");
+                    String studID = AppDatabase.getDatabaseInstance(mContext).getContentTableDao().getEarlierStudentId(pos.get(i).getNodeId());
+                    String currStudID = FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, "");
+                    boolean studFound = false, prathamGroupFound = false;
+                    if (studID != null && !studID.equalsIgnoreCase("") && !studID.equalsIgnoreCase(" ")) {
+                        String[] arrOfStdId = studID.split(",");
+                        if (arrOfStdId != null && arrOfStdId.length > 0) {
+                            for (int j = 0; j < arrOfStdId.length; j++) {
+                                if (arrOfStdId[j].equalsIgnoreCase(currStudID)) {
+                                    studFound = true;
+                                    break;
+                                }
+                                if (arrOfStdId[j].equalsIgnoreCase("pratham_group")) {
+                                    prathamGroupFound = true;
+                                    break;
+                                }
+                            }
+
+                            if (!studFound) {
+                                pos.get(i).setStudentId(studID + "," + FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""));
+                            } else {
+                                pos.get(i).setStudentId(studID);
+                            }
+                            if (FastSave.getInstance().getBoolean(FC_Constants.PRATHAM_STUDENT, false)) {
+                                if (!prathamGroupFound) {
+                                    pos.get(i).setStudentId(studID + ",pratham_group");
+                                } else {
+                                    pos.get(i).setStudentId(studID);
+                                }
+                            }
+                        }
+                    } else {
+                        pos.get(i).setStudentId("" + FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""));
+                        if (FastSave.getInstance().getBoolean(FC_Constants.PRATHAM_STUDENT, false)) {
+                            pos.get(i).setStudentId("pratham_group");
+                        }
+                    }
+                }
+
+                AppDatabase.getDatabaseInstance(mContext).getContentTableDao().addContentList(pos);
+                learningView.onTestAddedToDb(testItem);
+
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        } else if (header.equalsIgnoreCase(FC_Constants.INTERNET_LEVEL) || header.equalsIgnoreCase(INTERNET_LEVEL_PI)) {
+            try {
+                rootLevelList = new ArrayList<>();
+                Type listType = new TypeToken<ArrayList<ContentTable>>() {
+                }.getType();
+                List<ContentTable> serverContentList = new ArrayList<>();
+
+                if (header.equalsIgnoreCase(INTERNET_LEVEL_PI)) {
+                    try {
+                        ModalRaspContentNew rasp_contents = gson.fromJson(response, ModalRaspContentNew.class);
+                        rasp_contents.getModalRaspResults();
+                        Log.e("url raspResult : ", String.valueOf(rasp_contents.getModalRaspResults().size()));
+                        Modal_Rasp_JsonData modal_rasp_jsonData;
+//                    List<Modal_Rasp_JsonData> modal_rasp_jsonData = new ArrayList<>();
+                        if (rasp_contents.getModalRaspResults() != null) {
+                            List<Modal_RaspResult> raspResults = new ArrayList<>();
+                            for (int i = 0; i < rasp_contents.getModalRaspResults().size(); i++) {
+                                Modal_RaspResult modalRaspResult = new Modal_RaspResult();
+                                modalRaspResult.setAppId(rasp_contents.getModalRaspResults().get(i).getAppId());
+                                modalRaspResult.setNodeId(rasp_contents.getModalRaspResults().get(i).getNodeId());
+                                modalRaspResult.setNodeType(rasp_contents.getModalRaspResults().get(i).getNodeType());
+                                modalRaspResult.setNodeTitle(rasp_contents.getModalRaspResults().get(i).getNodeTitle());
+                                modalRaspResult.setParentId(rasp_contents.getModalRaspResults().get(i).getParentId());
+                                modalRaspResult.setJsonData(rasp_contents.getModalRaspResults().get(i).getJsonData());
+                                raspResults.add(modalRaspResult);
+                                modal_rasp_jsonData = gson.fromJson(rasp_contents.getModalRaspResults().get(i).getJsonData(), Modal_Rasp_JsonData.class);
+                                ContentTable detail = modalRaspResult.setContentToConfigNodeStructure(modalRaspResult, modal_rasp_jsonData);
+                                serverContentList.add(detail);
+                            }
+                        }
+                    } catch (JsonSyntaxException e) {
+                        e.printStackTrace();
+                    }
+                } else
+                    serverContentList = gson.fromJson(response, listType);
+
+                boolean itemFound = false;
+
+                if (serverContentList.size() > 0) {
+                    for (int i = 0; i < serverContentList.size(); i++) {
+                        itemFound = false;
+                        for (int j = 0; j < rootList.size(); j++) {
+                            if (serverContentList.get(i).getNodeId().equalsIgnoreCase(rootList.get(j).getNodeId())) {
+                                rootLevelList.add(rootList.get(j));
+                                itemFound = true;
+                                break;
+                            }
+                        }
+                        if (!itemFound) {
+                            ContentTable contentTableTemp = new ContentTable();
+                            contentTableTemp.setNodeId("" + serverContentList.get(i).getNodeId());
+                            contentTableTemp.setNodeType("" + serverContentList.get(i).getNodeType());
+                            contentTableTemp.setNodeTitle("" + serverContentList.get(i).getNodeTitle());
+                            contentTableTemp.setNodeKeywords("" + serverContentList.get(i).getNodeKeywords());
+                            contentTableTemp.setNodeAge("" + serverContentList.get(i).getNodeAge());
+                            contentTableTemp.setNodeDesc("" + serverContentList.get(i).getNodeDesc());
+                            contentTableTemp.setNodeServerImage("" + serverContentList.get(i).getNodeServerImage());
+                            contentTableTemp.setNodeImage("" + serverContentList.get(i).getNodeImage());
+//                        contentTableTemp.setNodeImage("" + serverContentList.get(i).getNodeServerImage()
+//                                .substring(serverContentList.get(i).getNodeServerImage().lastIndexOf('/') + 1));
+                            contentTableTemp.setResourceId("" + serverContentList.get(i).getResourceId());
+                            contentTableTemp.setResourceType("" + serverContentList.get(i).getResourceType());
+                            contentTableTemp.setResourcePath("" + serverContentList.get(i).getResourcePath());
+                            contentTableTemp.setParentId("" + serverContentList.get(i).getParentId());
+                            contentTableTemp.setLevel("" + serverContentList.get(i).getLevel());
+                            contentTableTemp.setVersion("" + serverContentList.get(i).getVersion());
+                            contentTableTemp.setSeq_no(serverContentList.get(i).getSeq_no());
+                            contentTableTemp.setContentType("" + serverContentList.get(i).getContentType());
+                            contentTableTemp.setContentLanguage("" + serverContentList.get(i).getContentLanguage());
+                            contentTableTemp.setIsDownloaded("false");
+                            contentTableTemp.setOnSDCard(false);
+                            rootLevelList.add(contentTableTemp);
+                        }
+                    }
+                } else
+                    learningView.setSelectedLevel(rootList);
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            sortContentList(rootLevelList);
+            learningView.setSelectedLevel(rootLevelList);
+        } else if (header.equalsIgnoreCase(FC_Constants.BOTTOM_NODE) || header.equalsIgnoreCase(FC_Constants.BOTTOM_NODE_PI)) {
+            try {
+                Type listType = new TypeToken<ArrayList<ContentTable>>() {
+                }.getType();
+                List<ContentTable> serverContentList = new ArrayList<>();
+
+                if (header.equalsIgnoreCase(FC_Constants.BOTTOM_NODE_PI)) {
+                    try {
+                        ModalRaspContentNew rasp_contents = gson.fromJson(response, ModalRaspContentNew.class);
+                        rasp_contents.getModalRaspResults();
+                        Log.e("url raspResult : ", String.valueOf(rasp_contents.getModalRaspResults().size()));
+                        Modal_Rasp_JsonData modal_rasp_jsonData;
+//                    List<Modal_Rasp_JsonData> modal_rasp_jsonData = new ArrayList<>();
+                        if (rasp_contents.getModalRaspResults() != null) {
+                            List<Modal_RaspResult> raspResults = new ArrayList<>();
+                            for (int i = 0; i < rasp_contents.getModalRaspResults().size(); i++) {
+                                Modal_RaspResult modalRaspResult = new Modal_RaspResult();
+                                modalRaspResult.setAppId(rasp_contents.getModalRaspResults().get(i).getAppId());
+                                modalRaspResult.setNodeId(rasp_contents.getModalRaspResults().get(i).getNodeId());
+                                modalRaspResult.setNodeType(rasp_contents.getModalRaspResults().get(i).getNodeType());
+                                modalRaspResult.setNodeTitle(rasp_contents.getModalRaspResults().get(i).getNodeTitle());
+                                modalRaspResult.setParentId(rasp_contents.getModalRaspResults().get(i).getParentId());
+                                modalRaspResult.setJsonData(rasp_contents.getModalRaspResults().get(i).getJsonData());
+                                //raspResults.add(modalRaspResult);
+                                modal_rasp_jsonData = gson.fromJson(rasp_contents.getModalRaspResults().get(i).getJsonData(), Modal_Rasp_JsonData.class);
+                                //                            Type listTypes = new TypeToken<ArrayList<Modal_Rasp_JsonData>>() {
+                                //                            }.getType();
+                                //                            modal_rasp_jsonData = gson.fromJson(rasp_contents.getModalRaspResults().get(i).getJsonData(), listType);
+                                //                            for (int l = 0; l < modal_rasp_jsonData.size(); l++) {
+                                ContentTable detail = modalRaspResult.setContentToConfigNodeStructure(modalRaspResult, modal_rasp_jsonData/*.get(l)*/);
+                                serverContentList.add(detail);
+                                //                            }
+                            }
+                        }
+                    } catch (JsonSyntaxException e) {
+                        e.printStackTrace();
+                    }
+                } else
+                    serverContentList = gson.fromJson(response, listType);
+
+                String botNodeId = botID;
+                if (serverContentList.size() > 0) {
+                    botNodeId = serverContentList.get(0).getNodeId();
+                    for (int i = 0; i < serverContentList.size(); i++)
+                        if (serverContentList.get(i).getNodeTitle().equalsIgnoreCase(cosSection))
+                            botNodeId = serverContentList.get(i).getNodeId();
+//                learningView.setBotNodeId(botNodeId);
+//                if (FC_Utility.isDataConnectionAvailable(mContext))
+                    getLevelDataForList(currentLevelNo, botNodeId);
+                } else {
+                    getLevelDataForList(currentLevelNo, botID);
+                }
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    public void getSubLevels_PI(List<ContentTable> serverContentList) {
+        serverContentPIList = serverContentList;
+        for (int i = 0; i < serverContentList.size(); i++) {
+            api_content.getAPIContent_SubLevel_PI(PI_BROWSE_SUBLEVEL, RASPBERRY_PI_BROWSE_API,
+                    serverContentList.get(i).getNodeId(), i, serverContentList.size());
+        }
+    }
+
+    private void createFinalList(List<ContentTable> serverContentList) {
+        try {
+            boolean parentFound = false, childFound = false;
+            contentDBList = new ArrayList<>();
+            for (int i = 0; i < serverContentList.size(); i++) {
+                parentFound = false;
+                List<ContentTable> tempList;
+                if (serverContentList.get(i).getNodelist() != null)
                     sortContentList(serverContentList.get(i).getNodelist());
-                    ContentTable contentTable = new ContentTable();
-                    for (int j = 0; j < contentParentList.size(); j++) {
-                        if (serverContentList.get(i).getNodeId().equalsIgnoreCase(
-                                contentParentList.get(j).getNodeId())) {
-                            parentFound = true;
-                            tempList = new ArrayList<>();
-                            if (serverContentList.get(i).getVersion() != null &&
-                                    !serverContentList.get(i).getVersion().equalsIgnoreCase(contentParentList.get(j).getVersion()))
-                                contentParentList.get(j).setNodeUpdate(true);
-                            contentDBList.add(contentParentList.get(j));
-                            if (serverContentList.get(i).getNodelist().size() > 0) {
-                                for (int k = 0; k < serverContentList.get(i).getNodelist().size(); k++) {
-                                    ContentTable contentTableTemp = new ContentTable();
-                                    childFound = false;
-                                    childContentList = new ArrayList<>();
-                                    childContentList = contentParentList.get(j).getNodelist();
-                                    if (childContentList.size() > 0) {
-                                        for (int l = 0; l < childContentList.size(); l++) {
-                                            if (serverContentList.get(i).getNodelist().get(k).getNodeId().equalsIgnoreCase(
-                                                    childContentList.get(l).getNodeId())) {
-                                                if (serverContentList.get(i).getNodelist().get(k).getVersion() != null &&
-                                                        !serverContentList.get(i).getNodelist().get(k).getVersion().equalsIgnoreCase(
-                                                                childContentList.get(l).getVersion()))
-                                                    contentParentList.get(j).getNodelist().get(l).setNodeUpdate(true);
-                                                childFound = true;
-                                                break;
-                                            }
+                ContentTable contentTable = new ContentTable();
+                for (int j = 0; j < contentParentList.size(); j++) {
+                    if (serverContentList.get(i).getNodeId().equalsIgnoreCase(
+                            contentParentList.get(j).getNodeId())) {
+                        parentFound = true;
+                        tempList = new ArrayList<>();
+                        if (serverContentList.get(i).getVersion() != null &&
+                                !serverContentList.get(i).getVersion().equalsIgnoreCase(contentParentList.get(j).getVersion()))
+                            contentParentList.get(j).setNodeUpdate(true);
+//                        contentDBList.add(contentParentList.get(j));
+                        if (serverContentList.get(i).getNodelist().size() > 0) {
+                            for (int k = 0; k < serverContentList.get(i).getNodelist().size(); k++) {
+                                ContentTable contentTableTemp = new ContentTable();
+                                childFound = false;
+                                childContentList = new ArrayList<>();
+                                childContentList = contentParentList.get(j).getNodelist();
+                                if (childContentList.size() > 0) {
+                                    for (int l = 0; l < childContentList.size(); l++) {
+                                        if (serverContentList.get(i).getNodelist().get(k).getNodeId().equalsIgnoreCase(
+                                                childContentList.get(l).getNodeId())) {
+                                            if (serverContentList.get(i).getNodelist().get(k).getVersion() != null &&
+                                                    !serverContentList.get(i).getNodelist().get(k).getVersion().equalsIgnoreCase(
+                                                            childContentList.get(l).getVersion()))
+                                                contentParentList.get(j).getNodelist().get(l).setNodeUpdate(true);
+                                            childFound = true;
+                                            break;
                                         }
-                                        if (!childFound) {
-                                            try {
-                                                contentTableTemp = new ContentTable();
-                                                contentTableTemp.setNodeId("" + serverContentList.get(i).getNodelist().get(k).getNodeId());
-                                                contentTableTemp.setNodeType("" + serverContentList.get(i).getNodelist().get(k).getNodeType());
-                                                contentTableTemp.setNodeTitle("" + serverContentList.get(i).getNodelist().get(k).getNodeTitle());
-                                                contentTableTemp.setNodeKeywords("" + serverContentList.get(i).getNodelist().get(k).getNodeKeywords());
-                                                contentTableTemp.setNodeAge("" + serverContentList.get(i).getNodelist().get(k).getNodeAge());
-                                                contentTableTemp.setNodeDesc("" + serverContentList.get(i).getNodelist().get(k).getNodeDesc());
-                                                contentTableTemp.setNodeServerImage("" + serverContentList.get(i).getNodelist().get(k).getNodeServerImage());
-                                                contentTableTemp.setNodeImage("" + serverContentList.get(i).getNodelist().get(k).getNodeImage());
+                                    }
+                                    if (!childFound) {
+                                        try {
+                                            contentTableTemp = new ContentTable();
+                                            contentTableTemp.setNodeId("" + serverContentList.get(i).getNodelist().get(k).getNodeId());
+                                            contentTableTemp.setNodeType("" + serverContentList.get(i).getNodelist().get(k).getNodeType());
+                                            contentTableTemp.setNodeTitle("" + serverContentList.get(i).getNodelist().get(k).getNodeTitle());
+                                            contentTableTemp.setNodeKeywords("" + serverContentList.get(i).getNodelist().get(k).getNodeKeywords());
+                                            contentTableTemp.setNodeAge("" + serverContentList.get(i).getNodelist().get(k).getNodeAge());
+                                            contentTableTemp.setNodeDesc("" + serverContentList.get(i).getNodelist().get(k).getNodeDesc());
+                                            contentTableTemp.setNodeServerImage("" + serverContentList.get(i).getNodelist().get(k).getNodeServerImage());
+                                            contentTableTemp.setNodeImage("" + serverContentList.get(i).getNodelist().get(k).getNodeImage());
 //                                            contentTableTemp.setNodeImage("" + serverContentList.get(i).getNodelist().get(k).getNodeServerImage()
 //                                                    .substring(serverContentList.get(i).getNodelist().get(k).getNodeServerImage().lastIndexOf('/') + 1));
-                                                contentTableTemp.setResourceId("" + serverContentList.get(i).getNodelist().get(k).getResourceId());
-                                                contentTableTemp.setResourceType("" + serverContentList.get(i).getNodelist().get(k).getResourceType());
-                                                contentTableTemp.setResourcePath("" + serverContentList.get(i).getNodelist().get(k).getResourcePath());
-                                                contentTableTemp.setParentId("" + serverContentList.get(i).getNodelist().get(k).getParentId());
-                                                contentTableTemp.setLevel("" + serverContentList.get(i).getNodelist().get(k).getLevel());
-                                                contentTableTemp.setSeq_no(serverContentList.get(i).getNodelist().get(k).getSeq_no());
-                                                contentTableTemp.setNodePercentage("0");
-                                                contentTableTemp.setVersion("" + serverContentList.get(i).getNodelist().get(k).getVersion());
-                                                contentTableTemp.setContentType("" + serverContentList.get(i).getNodelist().get(k).getContentType());
-                                                contentTableTemp.setContentLanguage("" + serverContentList.get(i).getNodelist().get(k).getContentLanguage());
-                                                contentTableTemp.setIsDownloaded("false");
-                                                contentTableTemp.setOnSDCard(false);
-                                                contentTableTemp.setNodeUpdate(false);
+                                            contentTableTemp.setResourceId("" + serverContentList.get(i).getNodelist().get(k).getResourceId());
+                                            contentTableTemp.setResourceType("" + serverContentList.get(i).getNodelist().get(k).getResourceType());
+                                            contentTableTemp.setResourcePath("" + serverContentList.get(i).getNodelist().get(k).getResourcePath());
+                                            contentTableTemp.setParentId("" + serverContentList.get(i).getNodelist().get(k).getParentId());
+                                            contentTableTemp.setLevel("" + serverContentList.get(i).getNodelist().get(k).getLevel());
+                                            contentTableTemp.setSeq_no(serverContentList.get(i).getNodelist().get(k).getSeq_no());
+                                            contentTableTemp.setNodePercentage("0");
+                                            contentTableTemp.setVersion("" + serverContentList.get(i).getNodelist().get(k).getVersion());
+                                            contentTableTemp.setContentType("" + serverContentList.get(i).getNodelist().get(k).getContentType());
+                                            contentTableTemp.setContentLanguage("" + serverContentList.get(i).getNodelist().get(k).getContentLanguage());
+                                            contentTableTemp.setIsDownloaded("false");
+                                            contentTableTemp.setOnSDCard(false);
+                                            contentTableTemp.setNodeUpdate(false);
 
-                                                float prog = 0;
-                                                if (serverContentList.get(i).getNodelist().get(k).getNodeType() != null
-                                                        && serverContentList.get(i).getNodelist().get(k).getNodeType().equalsIgnoreCase("resource")) {
-                                                    prog = AppDatabase.getDatabaseInstance(mContext).getContentProgressDao().getResPercentage
-                                                            (FastSave.getInstance().getString(CURRENT_STUDENT_ID, "na"),
-                                                                    serverContentList.get(i).getNodelist().get(k).getResourceId());
-                                                    contentTableTemp.setNodePercentage("" + (int) prog);
-                                                }
-                                                try {
-                                                    contentDBList.get(i).getNodelist().add(contentTableTemp);
-                                                } catch (Exception e) {
-                                                    e.printStackTrace();
-                                                }
-                                                tempList.add(contentTableTemp);
-                                                contentTable.setNodelist(tempList);
+                                            float prog = 0;
+                                            if (serverContentList.get(i).getNodelist().get(k).getNodeType() != null
+                                                    && serverContentList.get(i).getNodelist().get(k).getNodeType().equalsIgnoreCase("resource")) {
+                                                prog = AppDatabase.getDatabaseInstance(mContext).getContentProgressDao().getResPercentage
+                                                        (FastSave.getInstance().getString(CURRENT_STUDENT_ID, "na"),
+                                                                serverContentList.get(i).getNodelist().get(k).getResourceId());
+                                                contentTableTemp.setNodePercentage("" + (int) prog);
+                                            }
+                                            try {
+//                                                contentDBList.get(i).getNodelist().add(contentTableTemp);
+                                                contentParentList.get(j).getNodelist().add(contentTableTemp);
                                             } catch (Exception e) {
                                                 e.printStackTrace();
                                             }
+                                            tempList.add(contentTableTemp);
+                                            contentTable.setNodelist(tempList);
+                                        } catch (Exception e) {
+                                            e.printStackTrace();
                                         }
-                                    } else {
-                                        for (int f = 0; f < serverContentList.get(i).getNodelist().size(); f++) {
-                                            ContentTable contentTableChildTemp = new ContentTable();
-                                            contentTableChildTemp.setNodeId("" + serverContentList.get(i).getNodelist().get(f).getNodeId());
-                                            contentTableChildTemp.setNodeType("" + serverContentList.get(i).getNodelist().get(f).getNodeType());
-                                            contentTableChildTemp.setNodeTitle("" + serverContentList.get(i).getNodelist().get(f).getNodeTitle());
-                                            contentTableChildTemp.setNodeKeywords("" + serverContentList.get(i).getNodelist().get(f).getNodeKeywords());
-                                            contentTableChildTemp.setNodeAge("" + serverContentList.get(i).getNodelist().get(f).getNodeAge());
-                                            contentTableChildTemp.setNodeDesc("" + serverContentList.get(i).getNodelist().get(f).getNodeDesc());
-                                            contentTableChildTemp.setNodeServerImage("" + serverContentList.get(i).getNodelist().get(f).getNodeServerImage());
-                                            contentTableChildTemp.setNodeImage("" + serverContentList.get(i).getNodelist().get(f).getNodeImage());
+                                    }
+                                } else {
+                                    for (int f = 0; f < serverContentList.get(i).getNodelist().size(); f++) {
+                                        ContentTable contentTableChildTemp = new ContentTable();
+                                        contentTableChildTemp.setNodeId("" + serverContentList.get(i).getNodelist().get(f).getNodeId());
+                                        contentTableChildTemp.setNodeType("" + serverContentList.get(i).getNodelist().get(f).getNodeType());
+                                        contentTableChildTemp.setNodeTitle("" + serverContentList.get(i).getNodelist().get(f).getNodeTitle());
+                                        contentTableChildTemp.setNodeKeywords("" + serverContentList.get(i).getNodelist().get(f).getNodeKeywords());
+                                        contentTableChildTemp.setNodeAge("" + serverContentList.get(i).getNodelist().get(f).getNodeAge());
+                                        contentTableChildTemp.setNodeDesc("" + serverContentList.get(i).getNodelist().get(f).getNodeDesc());
+                                        contentTableChildTemp.setNodeServerImage("" + serverContentList.get(i).getNodelist().get(f).getNodeServerImage());
+                                        contentTableChildTemp.setNodeImage("" + serverContentList.get(i).getNodelist().get(f).getNodeImage());
 //                                            contentTableChildTemp.setNodeImage("" +serverContentList.get(i).getNodelist().get(f).getNodeServerImage()
 //                                                    .substring(serverContentList.get(i).getNodelist().get(f).getNodeServerImage().lastIndexOf('/') + 1));
-                                            contentTableChildTemp.setResourceId("" + serverContentList.get(i).getNodelist().get(f).getResourceId());
-                                            contentTableChildTemp.setResourceType("" + serverContentList.get(i).getNodelist().get(f).getResourceType());
-                                            contentTableChildTemp.setResourcePath("" + serverContentList.get(i).getNodelist().get(f).getResourcePath());
-                                            contentTableChildTemp.setParentId("" + serverContentList.get(i).getNodelist().get(f).getParentId());
-                                            contentTableChildTemp.setSeq_no(serverContentList.get(i).getNodelist().get(f).getSeq_no());
-                                            contentTableChildTemp.setNodePercentage("0");
-                                            contentTableChildTemp.setLevel("" + serverContentList.get(i).getNodelist().get(f).getLevel());
-                                            contentTableChildTemp.setVersion("" + serverContentList.get(i).getNodelist().get(f).getVersion());
-                                            contentTableChildTemp.setContentType("" + serverContentList.get(i).getNodelist().get(f).getContentType());
-                                            contentTableChildTemp.setContentLanguage("" + serverContentList.get(i).getNodelist().get(f).getContentLanguage());
-                                            contentTableChildTemp.setIsDownloaded("false");
-                                            contentTableChildTemp.setOnSDCard(false);
-                                            contentTableChildTemp.setNodeUpdate(false);
-                                            float prog = 0;
-                                            if (serverContentList.get(i).getNodelist().get(f).getNodeType() != null
-                                                    && serverContentList.get(i).getNodelist().get(f).getNodeType().equalsIgnoreCase("resource")) {
-                                                prog = AppDatabase.getDatabaseInstance(mContext).getContentProgressDao().getResPercentage
-                                                        (FastSave.getInstance().getString(CURRENT_STUDENT_ID, "na"),
-                                                                serverContentList.get(i).getNodelist().get(f).getResourceId());
-                                                contentTableChildTemp.setNodePercentage("" + (int) prog);
-                                            }
-
-                                            tempList.add(contentTableChildTemp);
+                                        contentTableChildTemp.setResourceId("" + serverContentList.get(i).getNodelist().get(f).getResourceId());
+                                        contentTableChildTemp.setResourceType("" + serverContentList.get(i).getNodelist().get(f).getResourceType());
+                                        contentTableChildTemp.setResourcePath("" + serverContentList.get(i).getNodelist().get(f).getResourcePath());
+                                        contentTableChildTemp.setParentId("" + serverContentList.get(i).getNodelist().get(f).getParentId());
+                                        contentTableChildTemp.setSeq_no(serverContentList.get(i).getNodelist().get(f).getSeq_no());
+                                        contentTableChildTemp.setNodePercentage("0");
+                                        contentTableChildTemp.setLevel("" + serverContentList.get(i).getNodelist().get(f).getLevel());
+                                        contentTableChildTemp.setVersion("" + serverContentList.get(i).getNodelist().get(f).getVersion());
+                                        contentTableChildTemp.setContentType("" + serverContentList.get(i).getNodelist().get(f).getContentType());
+                                        contentTableChildTemp.setContentLanguage("" + serverContentList.get(i).getNodelist().get(f).getContentLanguage());
+                                        contentTableChildTemp.setIsDownloaded("false");
+                                        contentTableChildTemp.setOnSDCard(false);
+                                        contentTableChildTemp.setNodeUpdate(false);
+                                        float prog = 0;
+                                        if (serverContentList.get(i).getNodelist().get(f).getNodeType() != null
+                                                && serverContentList.get(i).getNodelist().get(f).getNodeType().equalsIgnoreCase("resource")) {
+                                            prog = AppDatabase.getDatabaseInstance(mContext).getContentProgressDao().getResPercentage
+                                                    (FastSave.getInstance().getString(CURRENT_STUDENT_ID, "na"),
+                                                            serverContentList.get(i).getNodelist().get(f).getResourceId());
+                                            contentTableChildTemp.setNodePercentage("" + (int) prog);
                                         }
-                                        contentDBList.get(contentDBList.size()-1).setNodelist(tempList);
+
+                                        tempList.add(contentTableChildTemp);
                                     }
+//                                    contentDBList.get(contentDBList.size() - 1).setNodelist(tempList);
+                                    contentParentList.get(contentParentList.size() - 1).setNodelist(tempList);
                                 }
                             }
-                            break;
                         }
+                        break;
                     }
-                    if (!parentFound) {
-                        contentTable.setNodeId("" + serverContentList.get(i).getNodeId());
-                        contentTable.setNodeType("" + serverContentList.get(i).getNodeType());
-                        contentTable.setNodeTitle("" + serverContentList.get(i).getNodeTitle());
-                        contentTable.setNodeKeywords("" + serverContentList.get(i).getNodeKeywords());
-                        contentTable.setNodeAge("" + serverContentList.get(i).getNodeAge());
-                        contentTable.setNodeDesc("" + serverContentList.get(i).getNodeDesc());
-                        contentTable.setNodeServerImage("" + serverContentList.get(i).getNodeServerImage());
-                        contentTable.setNodeImage("" + serverContentList.get(i).getNodeImage());
+                }
+                if (!parentFound) {
+                    contentTable.setNodeId("" + serverContentList.get(i).getNodeId());
+                    contentTable.setNodeType("" + serverContentList.get(i).getNodeType());
+                    contentTable.setNodeTitle("" + serverContentList.get(i).getNodeTitle());
+                    contentTable.setNodeKeywords("" + serverContentList.get(i).getNodeKeywords());
+                    contentTable.setNodeAge("" + serverContentList.get(i).getNodeAge());
+                    contentTable.setNodeDesc("" + serverContentList.get(i).getNodeDesc());
+                    contentTable.setNodeServerImage("" + serverContentList.get(i).getNodeServerImage());
+                    contentTable.setNodeImage("" + serverContentList.get(i).getNodeImage());
 //                        contentTable.setNodeImage("" + serverContentList.get(i).getNodeServerImage()
 //                                .substring(serverContentList.get(i).getNodeServerImage().lastIndexOf('/') + 1));
-                        contentTable.setResourceId("" + serverContentList.get(i).getResourceId());
-                        contentTable.setResourceType("" + serverContentList.get(i).getResourceType());
-                        contentTable.setResourcePath("" + serverContentList.get(i).getResourcePath());
-                        contentTable.setParentId("" + serverContentList.get(i).getParentId());
-                        contentTable.setNodePercentage("0");
-                        contentTable.setLevel("" + serverContentList.get(i).getLevel());
-                        contentTable.setSeq_no(serverContentList.get(i).getSeq_no());
-                        contentTable.setVersion("" + serverContentList.get(i).getVersion());
-                        contentTable.setContentType("" + serverContentList.get(i).getContentType());
-                        contentTable.setContentLanguage("" + serverContentList.get(i).getContentLanguage());
-                        contentTable.setIsDownloaded("false");
-                        contentTable.setOnSDCard(false);
-                        contentTable.setNodeUpdate(false);
+                    contentTable.setResourceId("" + serverContentList.get(i).getResourceId());
+                    contentTable.setResourceType("" + serverContentList.get(i).getResourceType());
+                    contentTable.setResourcePath("" + serverContentList.get(i).getResourcePath());
+                    contentTable.setParentId("" + serverContentList.get(i).getParentId());
+                    contentTable.setNodePercentage("0");
+                    contentTable.setLevel("" + serverContentList.get(i).getLevel());
+                    contentTable.setSeq_no(serverContentList.get(i).getSeq_no());
+                    contentTable.setVersion("" + serverContentList.get(i).getVersion());
+                    contentTable.setContentType("" + serverContentList.get(i).getContentType());
+                    contentTable.setContentLanguage("" + serverContentList.get(i).getContentLanguage());
+                    contentTable.setIsDownloaded("false");
+                    contentTable.setOnSDCard(false);
+                    contentTable.setNodeUpdate(false);
 
+                    if (serverContentList.get(i).getNodelist() != null) {
                         if (serverContentList.get(i).getNodelist().size() > 0) {
                             tempList = new ArrayList<>();
                             ContentTable contentTableRes = new ContentTable();
@@ -758,166 +1198,20 @@ public class LearningPresenter implements LearningContract.LearningPresenter, AP
                                 tempList.add(contentTableTemp);
                             }
                             contentTable.setNodelist(tempList);
-                            contentDBList.add(contentTable);
+//                            contentDBList.add(contentTable);
+                            contentParentList.add(contentTable);
                         }
+                    } else {
+//                        contentDBList.add(contentTable);
+                        contentParentList.add(contentTable);
                     }
                 }
-            } catch (Exception e) {
-                e.printStackTrace();
             }
-            addHeadersAndNotifyAdapter(contentDBList);
-        } else if (header.equalsIgnoreCase(FC_Constants.INTERNET_DOWNLOAD_RESOURCE)) {
-            try {
-                JSONObject jsonObject = new JSONObject(response);
-                download_content = gson.fromJson(jsonObject.toString(), Modal_DownloadContent.class);
-//                contentDetail = download_content.getNodelist().get(download_content.getNodelist().size() - 1);
-
-                pos.clear();
-                pos.addAll(download_content.getNodelist());
-
-                for (int i = 0; i < pos.size(); i++) {
-                    pos.get(i).setIsDownloaded("true");
-                    String studID = AppDatabase.getDatabaseInstance(mContext).getContentTableDao().getEarlierStudentId(pos.get(i).getNodeId());
-                    String currStudID = FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, "");
-                    boolean studFound = false;
-                    if (studID != null && !studID.equalsIgnoreCase("") && !studID.equalsIgnoreCase(" ")) {
-                        String[] arrOfStdId = studID.split(",");
-                        if(arrOfStdId!= null && arrOfStdId.length>0) {
-                            for (int j = 0; j < arrOfStdId.length; j++) {
-                                if(arrOfStdId[j].equalsIgnoreCase(currStudID)){
-                                    studFound=true;
-                                    break;
-                                }
-                            }
-                            if(!studFound){
-                                pos.get(i).setStudentId(studID + "," + FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""));
-                            }else{
-                                pos.get(i).setStudentId(studID);
-                            }
-                        }
-/*
-                        if (studID.contentEquals("" + currStudID)) {
-                            pos.get(i).setStudentId(studID);
-                        } else
-                            pos.get(i).setStudentId(studID + "," + FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""));
-*/
-                    } else
-                        pos.get(i).setStudentId("" + FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""));
-                }
-
-                fileName = download_content.getDownloadurl()
-                        .substring(download_content.getDownloadurl().lastIndexOf('/') + 1);
-                Log.d("HP", "doInBackground: fileName : " + fileName);
-                Log.d("HP", "doInBackground: DW URL : " + download_content.getDownloadurl());
-                if (fileName.contains(".zip") || fileName.contains(".rar"))
-                    zipDownloader.initialize(mContext, download_content.getDownloadurl(),
-                            download_content.getFoldername(), fileName, dwContent, pos, true);
-                else zipDownloader.initialize(mContext, download_content.getDownloadurl(),
-                        download_content.getFoldername(), fileName, dwContent, pos, false);
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-        } else if (header.equalsIgnoreCase(FC_Constants.INTERNET_DOWNLOAD_ASSESSMENT_RESOURCE)) {
-            try {
-                JSONObject jsonObject = new JSONObject(response);
-                download_content = gson.fromJson(jsonObject.toString(), Modal_DownloadContent.class);
-                pos.clear();
-                pos.addAll(download_content.getNodelist());
-
-                for (int i = 0; i < pos.size(); i++) {
-                    pos.get(i).setIsDownloaded("true");
-                    String studID = AppDatabase.getDatabaseInstance(mContext).getContentTableDao().getEarlierStudentId(pos.get(i).getNodeId());
-                    String currStudID = FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, "");
-                    boolean studFound = false;
-                    if (studID != null && !studID.equalsIgnoreCase("") && !studID.equalsIgnoreCase(" ")) {
-                        String[] arrOfStdId = studID.split(",");
-                        if(arrOfStdId!= null && arrOfStdId.length>0) {
-                            for (int j = 0; j < arrOfStdId.length; j++) {
-                                if(arrOfStdId[j].equalsIgnoreCase(currStudID)){
-                                    studFound=true;
-                                    break;
-                                }
-                            }
-                            if(!studFound){
-                                pos.get(i).setStudentId(studID + "," + FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""));
-                            }else{
-                                pos.get(i).setStudentId(studID);
-                            }
-                        }
-                    } else
-                        pos.get(i).setStudentId("" + FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""));
-                }
-
-                AppDatabase.getDatabaseInstance(mContext).getContentTableDao().addContentList(pos);
-                learningView.onTestAddedToDb(testItem);
-
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-        } else if (header.equalsIgnoreCase(FC_Constants.INTERNET_LEVEL)) {
-            try {
-                rootLevelList = new ArrayList<>();
-                Type listType = new TypeToken<ArrayList<ContentTable>>() {
-                }.getType();
-                List<ContentTable> serverContentList = gson.fromJson(response, listType);
-                boolean itemFound = false;
-
-                for (int i = 0; i < serverContentList.size(); i++) {
-                    itemFound = false;
-                    for (int j = 0; j < rootList.size(); j++) {
-                        if (serverContentList.get(i).getNodeId().equalsIgnoreCase(rootList.get(j).getNodeId())) {
-                            rootLevelList.add(rootList.get(j));
-                            itemFound = true;
-                            break;
-                        }
-                    }
-                    if (!itemFound) {
-                        ContentTable contentTableTemp = new ContentTable();
-                        contentTableTemp.setNodeId("" + serverContentList.get(i).getNodeId());
-                        contentTableTemp.setNodeType("" + serverContentList.get(i).getNodeType());
-                        contentTableTemp.setNodeTitle("" + serverContentList.get(i).getNodeTitle());
-                        contentTableTemp.setNodeKeywords("" + serverContentList.get(i).getNodeKeywords());
-                        contentTableTemp.setNodeAge("" + serverContentList.get(i).getNodeAge());
-                        contentTableTemp.setNodeDesc("" + serverContentList.get(i).getNodeDesc());
-                        contentTableTemp.setNodeServerImage("" + serverContentList.get(i).getNodeServerImage());
-                        contentTableTemp.setNodeImage("" + serverContentList.get(i).getNodeImage());
-//                        contentTableTemp.setNodeImage("" + serverContentList.get(i).getNodeServerImage()
-//                                .substring(serverContentList.get(i).getNodeServerImage().lastIndexOf('/') + 1));
-                        contentTableTemp.setResourceId("" + serverContentList.get(i).getResourceId());
-                        contentTableTemp.setResourceType("" + serverContentList.get(i).getResourceType());
-                        contentTableTemp.setResourcePath("" + serverContentList.get(i).getResourcePath());
-                        contentTableTemp.setParentId("" + serverContentList.get(i).getParentId());
-                        contentTableTemp.setLevel("" + serverContentList.get(i).getLevel());
-                        contentTableTemp.setVersion("" + serverContentList.get(i).getVersion());
-                        contentTableTemp.setSeq_no(serverContentList.get(i).getSeq_no());
-                        contentTableTemp.setContentType("" + serverContentList.get(i).getContentType());
-                        contentTableTemp.setContentLanguage("" + serverContentList.get(i).getContentLanguage());
-                        contentTableTemp.setIsDownloaded("false");
-                        contentTableTemp.setOnSDCard(false);
-                        rootLevelList.add(contentTableTemp);
-                    }
-                }
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-            sortContentList(rootLevelList);
-            learningView.setSelectedLevel(rootLevelList);
-        } else if (header.equalsIgnoreCase(FC_Constants.BOTTOM_NODE)) {
-            try {
-                Type listType = new TypeToken<ArrayList<ContentTable>>() {
-                }.getType();
-                List<ContentTable> serverContentList = gson.fromJson(response, listType);
-                String botNodeId = serverContentList.get(0).getNodeId();
-                for (int i = 0; i < serverContentList.size(); i++)
-                    if (serverContentList.get(i).getNodeTitle().equalsIgnoreCase(cosSection))
-                        botNodeId = serverContentList.get(i).getNodeId();
-//                learningView.setBotNodeId(botNodeId);
-                if (FC_Utility.isDataConnectionAvailable(mContext))
-                    getLevelDataForList(currentLevelNo, botNodeId);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
+//        addHeadersAndNotifyAdapter(contentDBList);
+        addHeadersAndNotifyAdapter(contentParentList);
     }
 
     private void addHeadersAndNotifyAdapter(List<ContentTable> contentDBList) {
@@ -934,14 +1228,19 @@ public class LearningPresenter implements LearningContract.LearningPresenter, AP
             contentTableFooter.setNodeType(TYPE_FOOTER);
 
             contentDBList.add(contentTableHeader);
+            contentDBList.add(contentTableFooter);
             sortContentList(contentDBList);
 
             for (int i = 0; i < contentDBList.size(); i++) {
                 if (!contentDBList.get(i).getNodeType().equalsIgnoreCase(TYPE_HEADER) &&
                         !contentDBList.get(i).getNodeType().equalsIgnoreCase(TYPE_FOOTER)) {
-                    contentDBList.get(i).getNodelist().add(contentTableHeader);
-                    contentDBList.get(i).getNodelist().add(contentTableFooter);
-                    sortContentList(contentDBList.get(i).getNodelist());
+                    try {
+                        contentDBList.get(i).getNodelist().add(contentTableHeader);
+                        contentDBList.get(i).getNodelist().add(contentTableFooter);
+                        sortContentList(contentDBList.get(i).getNodelist());
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
                 }
             }
             learningView.showRecyclerLayout();

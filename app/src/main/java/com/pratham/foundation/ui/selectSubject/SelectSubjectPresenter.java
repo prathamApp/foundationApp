@@ -5,13 +5,16 @@ import android.util.Log;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import com.pratham.foundation.ApplicationClass;
 import com.pratham.foundation.async.API_Content;
 import com.pratham.foundation.database.AppDatabase;
 import com.pratham.foundation.database.domain.ContentTable;
 import com.pratham.foundation.interfaces.API_Content_Result;
+import com.pratham.foundation.modalclasses.RaspModel.ModalRaspContentNew;
+import com.pratham.foundation.modalclasses.RaspModel.Modal_RaspResult;
+import com.pratham.foundation.modalclasses.RaspModel.Modal_Rasp_JsonData;
 import com.pratham.foundation.services.shared_preferences.FastSave;
 import com.pratham.foundation.utility.FC_Constants;
-import com.pratham.foundation.utility.FC_Utility;
 
 import org.androidannotations.annotations.Background;
 import org.androidannotations.annotations.EBean;
@@ -24,6 +27,8 @@ import static com.pratham.foundation.utility.FC_Constants.APP_LANGUAGE;
 import static com.pratham.foundation.utility.FC_Constants.APP_LANGUAGE_NODE_ID;
 import static com.pratham.foundation.utility.FC_Constants.CURRENT_STUDENT_ID;
 import static com.pratham.foundation.utility.FC_Constants.HINDI;
+import static com.pratham.foundation.utility.FC_Constants.PI_BROWSE;
+import static com.pratham.foundation.utility.FC_Constants.RASPBERRY_PI_LANGUAGE_API;
 import static com.pratham.foundation.utility.FC_Constants.newRootParentId;
 
 @EBean
@@ -63,18 +68,22 @@ public class SelectSubjectPresenter implements SelectSubjectContract.SubjectPres
         Log.d("currLang", "getSubjectList: " + currLang);
         String rootID = AppDatabase.getDatabaseInstance(context).getContentTableDao().getRootData(newRootParentId,
 //                FastSave.getInstance().getString(CURRENT_STUDENT_PROGRAM_ID,"na")
-                "%"+ FastSave.getInstance().getString(CURRENT_STUDENT_ID,"na")+"%");
+                "%" + FastSave.getInstance().getString(CURRENT_STUDENT_ID, "na") + "%");
         AppDatabase.getDatabaseInstance(context).getContentProgressDao().updateFullPercent();
         if (currLangNodeId != null)
             subjectList = AppDatabase.getDatabaseInstance(context).getContentTableDao().getChildsOfParent(currLangNodeId,
-                    "%"+ FastSave.getInstance().getString(CURRENT_STUDENT_ID,"na")+"%"
+                    "%" + FastSave.getInstance().getString(CURRENT_STUDENT_ID, "na") + "%"
                     /*FastSave.getInstance().getString(CURRENT_STUDENT_PROGRAM_ID,"na")*/);
-        if (FC_Utility.isDataConnectionAvailable(context)) {
-            //fetch subjects from API
-//            api_content.getInternetTimeApi(FC_Constants.INTERNET_TIME, FC_Constants.INTERNET_TI ME_API);
-            api_content.getAPIContent(FC_Constants.INTERNET_BROWSE, FC_Constants.INTERNET_LANGUAGE_API, currLangNodeId);
+
+        if (ApplicationClass.wiseF.isDeviceConnectedToMobileNetwork() || ApplicationClass.wiseF.isDeviceConnectedToWifiNetwork()) {
+            //Checks if device is connected to raspberry pie
+            if (ApplicationClass.wiseF.isDeviceConnectedToSSID(FC_Constants.PRATHAM_RASPBERRY_PI)) {
+                api_content.getAPIContent_PI(PI_BROWSE, RASPBERRY_PI_LANGUAGE_API, currLangNodeId);
+            } else {
+                api_content.getAPIContent(FC_Constants.INTERNET_BROWSE, FC_Constants.INTERNET_LANGUAGE_API, currLangNodeId);
+            }
         } else {
-            if(subjectList!=null && subjectList.size()<1)
+            if (subjectList != null && subjectList.size() < 1)
                 subjectView.noDataDialog();
             else {
                 subjectView.initializeSubjectList(subjectList);
@@ -85,13 +94,40 @@ public class SelectSubjectPresenter implements SelectSubjectContract.SubjectPres
     }
 
     @Override
+    public void receivedContent_PI_SubLevel(String header, String response, int pos, int size) {
+    }
+
+    @Override
     public void receivedContent(String header, String response) {
-        if (header.equalsIgnoreCase(FC_Constants.INTERNET_BROWSE)) {
+        if (header.equalsIgnoreCase(FC_Constants.INTERNET_BROWSE) || header.equalsIgnoreCase(FC_Constants.PI_BROWSE)) {
             try {
                 Type listType = new TypeToken<ArrayList<ContentTable>>() {
                 }.getType();
+                List<ContentTable> serverContentList = new ArrayList<>();
 
-                List<ContentTable> serverContentList = gson.fromJson(response, listType);
+                if (header.equalsIgnoreCase(FC_Constants.PI_BROWSE)) {
+                    ModalRaspContentNew rasp_contents = gson.fromJson(response, ModalRaspContentNew.class);
+                    rasp_contents.getModalRaspResults();
+                    Log.e("url raspResult : ", String.valueOf(rasp_contents.getModalRaspResults().size()));
+                    Modal_Rasp_JsonData modal_rasp_jsonData;
+                    if (rasp_contents.getModalRaspResults() != null) {
+                        List<Modal_RaspResult> raspResults = new ArrayList<>();
+                        for (int i = 0; i < rasp_contents.getModalRaspResults().size(); i++) {
+                            Modal_RaspResult modalRaspResult = new Modal_RaspResult();
+                            modalRaspResult.setAppId(rasp_contents.getModalRaspResults().get(i).getAppId());
+                            modalRaspResult.setNodeId(rasp_contents.getModalRaspResults().get(i).getNodeId());
+                            modalRaspResult.setNodeType(rasp_contents.getModalRaspResults().get(i).getNodeType());
+                            modalRaspResult.setNodeTitle(rasp_contents.getModalRaspResults().get(i).getNodeTitle());
+                            modalRaspResult.setParentId(rasp_contents.getModalRaspResults().get(i).getParentId());
+                            modalRaspResult.setJsonData(rasp_contents.getModalRaspResults().get(i).getJsonData());
+                            //raspResults.add(modalRaspResult);
+                            modal_rasp_jsonData = gson.fromJson(rasp_contents.getModalRaspResults().get(i).getJsonData(), Modal_Rasp_JsonData.class);
+                            ContentTable detail = modalRaspResult.setContentToConfigNodeStructure(modalRaspResult, modal_rasp_jsonData);
+                            serverContentList.add(detail);
+                        }
+                    }
+                } else
+                    serverContentList = gson.fromJson(response, listType);
 
                 for (int i = 0; i < serverContentList.size(); i++) {
                     parentFound = false;
@@ -109,7 +145,7 @@ public class SelectSubjectPresenter implements SelectSubjectContract.SubjectPres
                     }
                 }
                 //Set recieved subject and notifyadapter
-                if(subjectList!=null && subjectList.size()<1)
+                if (subjectList != null && subjectList.size() < 1)
                     subjectView.noDataDialog();
                 else {
                     subjectView.initializeSubjectList(subjectList);
@@ -118,7 +154,7 @@ public class SelectSubjectPresenter implements SelectSubjectContract.SubjectPres
                 subjectView.dismissLoadingDialog();
             } catch (Exception e) {
                 e.printStackTrace();
-                if(subjectList!=null && subjectList.size()<1)
+                if (subjectList != null && subjectList.size() < 1)
                     subjectView.noDataDialog();
                 else {
                     subjectView.initializeSubjectList(subjectList);
@@ -131,10 +167,10 @@ public class SelectSubjectPresenter implements SelectSubjectContract.SubjectPres
 
     @Override
     public void receivedError(String header) {
-        if(subjectList.size()>0) {
+        if (subjectList.size() > 0) {
             subjectView.initializeSubjectList(subjectList);
             subjectView.notifySubjAdapter();
-        }else {
+        } else {
             subjectView.serverIssueDialog();
         }
         subjectView.dismissLoadingDialog();

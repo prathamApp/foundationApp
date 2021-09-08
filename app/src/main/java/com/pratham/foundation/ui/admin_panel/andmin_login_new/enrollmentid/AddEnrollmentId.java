@@ -273,6 +273,10 @@ public class AddEnrollmentId extends BaseActivity implements AvatarClickListener
     }
 
     @Override
+    public void receivedContent_PI_SubLevel(String header, String response, int pos, int size) {
+    }
+
+    @Override
     public void receivedContent(String header, String response) {
         if (header.equalsIgnoreCase(STUDENT_BY_ENROLLMENT_NO)) {
             try {

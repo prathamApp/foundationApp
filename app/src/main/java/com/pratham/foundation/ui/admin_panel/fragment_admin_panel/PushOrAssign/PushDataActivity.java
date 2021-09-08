@@ -103,7 +103,7 @@ public class PushDataActivity extends BaseActivity implements PushDataContract.P
         if (ApplicationClass.wiseF.isDeviceConnectedToMobileNetwork()) {
             //callOnlineContentAPI(contentList, parentId);
         } else if (ApplicationClass.wiseF.isDeviceConnectedToWifiNetwork()) {
-            if (ApplicationClass.wiseF.isDeviceConnectedToSSID(FC_Constants.PRATHAM_KOLIBRI_HOTSPOT)) {
+            if (ApplicationClass.wiseF.isDeviceConnectedToSSID(FC_Constants.PRATHAM_RASPBERRY_PI)) {
                 //  if (FastSave.getInstance().getString(PD_Constant.FACILITY_ID, "").isEmpty())
                 isConnectedToRasp = checkConnectionForRaspberry();
                 //callKolibriAPI(contentList, parentId);
@@ -119,7 +119,7 @@ public class PushDataActivity extends BaseActivity implements PushDataContract.P
     public boolean checkConnectionForRaspberry() {
         boolean isRaspberry = false;
         if (ApplicationClass.wiseF.isDeviceConnectedToWifiNetwork()) {
-            if (ApplicationClass.wiseF.isDeviceConnectedToSSID(FC_Constants.PRATHAM_KOLIBRI_HOTSPOT)) {
+            if (ApplicationClass.wiseF.isDeviceConnectedToSSID(FC_Constants.PRATHAM_RASPBERRY_PI)) {
                 try {
                     isRaspberry = true;
                     /*JSONObject object = new JSONObject();

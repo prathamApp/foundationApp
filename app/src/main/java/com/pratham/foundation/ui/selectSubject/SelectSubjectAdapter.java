@@ -16,15 +16,18 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.facebook.drawee.backends.pipeline.Fresco;
 import com.facebook.drawee.interfaces.DraweeController;
 import com.facebook.drawee.view.SimpleDraweeView;
+import com.facebook.imagepipeline.common.ResizeOptions;
 import com.facebook.imagepipeline.request.ImageRequest;
 import com.facebook.imagepipeline.request.ImageRequestBuilder;
 import com.pratham.foundation.ApplicationClass;
 import com.pratham.foundation.R;
 import com.pratham.foundation.database.domain.ContentTable;
+import com.pratham.foundation.utility.FC_Constants;
 
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import static com.pratham.foundation.ApplicationClass.App_Thumbs_Path;
 
@@ -73,13 +76,23 @@ public class SelectSubjectAdapter extends RecyclerView.Adapter {
                 try {
                     //Set name and image of subject
                     myviewholder.content_title.setText(datalist.get(i).getNodeTitle());
+                    String thumbPath = "" + datalist.get(i).getNodeServerImage();
+                    if (ApplicationClass.wiseF.isDeviceConnectedToMobileNetwork() || ApplicationClass.wiseF.isDeviceConnectedToWifiNetwork()) {
+                        if (ApplicationClass.wiseF.isDeviceConnectedToSSID(FC_Constants.PRATHAM_RASPBERRY_PI)) {
+                            String fileName = datalist.get(i).getNodeServerImage()
+                                    .substring(datalist.get(i).getNodeServerImage().lastIndexOf('/') + 1);
+                            thumbPath = FC_Constants.RASP_IP + FC_Constants.RASP_LOCAL_IMAGES + fileName;
+                        } else {
+                            thumbPath = "" + datalist.get(i).getNodeServerImage();
+                        }
+                    }
                     ImageRequest imageRequest = ImageRequestBuilder
-                            .newBuilderWithSource(Uri.parse(datalist.get(i).getNodeServerImage()))
-                            .setLocalThumbnailPreviewsEnabled(true)
+                            .newBuilderWithSource(Uri.parse(thumbPath))
+                            .setResizeOptions(new ResizeOptions(300, 300))
                             .build();
                     DraweeController controller = Fresco.newDraweeControllerBuilder()
                             .setImageRequest(imageRequest)
-                            .setOldController(myviewholder.content_thumbnail.getController())
+                            .setOldController(Objects.requireNonNull(myviewholder.content_thumbnail).getController())
                             .build();
                     if (controller != null)
                         myviewholder.content_thumbnail.setController(controller);

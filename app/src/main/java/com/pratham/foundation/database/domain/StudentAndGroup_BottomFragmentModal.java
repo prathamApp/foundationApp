@@ -10,6 +10,7 @@ public class StudentAndGroup_BottomFragmentModal {
     public String Type;
     public String avatarName;
     public String gender;
+    public String groupId;
     boolean isChecked;
 
     @NonNull
@@ -43,6 +44,14 @@ public class StudentAndGroup_BottomFragmentModal {
 
     public void setAvatarName(String avatarName) {
         this.avatarName = avatarName;
+    }
+
+    public String getGroupId() {
+        return groupId;
+    }
+
+    public void setGroupId(String groupId) {
+        this.groupId = groupId;
     }
 
     public String getGender() {

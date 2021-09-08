@@ -161,12 +161,18 @@ public class HomeActivity extends BaseActivity implements LevelChanged, API_Cont
     }
 
     public void getInternetTime(){
-        if (FC_Utility.isDataConnectionAvailable(this)) {
-            //fetch subjects from API
-            API_Content api_content;
-            api_content = new API_Content(this, this);
-            api_content.getInternetTimeApi(FC_Constants.INTERNET_TIME, FC_Constants.INTERNET_TIME_API);
-        }
+            if (ApplicationClass.wiseF.isDeviceConnectedToMobileNetwork() || ApplicationClass.wiseF.isDeviceConnectedToWifiNetwork()) {
+                //Checks if device is connected to raspberry pie
+                if (!ApplicationClass.wiseF.isDeviceConnectedToSSID(FC_Constants.PRATHAM_RASPBERRY_PI)) {
+                    API_Content api_content;
+                    api_content = new API_Content(this, this);
+                    api_content.getInternetTimeApi(FC_Constants.INTERNET_TIME, FC_Constants.INTERNET_TIME_API);
+                }
+            }
+    }
+
+    @Override
+    public void receivedContent_PI_SubLevel(String header, String response, int pos, int size) {
     }
 
     @Override

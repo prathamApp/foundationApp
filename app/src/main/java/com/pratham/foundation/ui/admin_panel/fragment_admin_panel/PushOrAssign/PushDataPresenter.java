@@ -147,7 +147,7 @@ public class PushDataPresenter implements PushDataContract.PushDataPresenter {
             }
 
             //POST BG
-            if (ApplicationClass.wiseF.isDeviceConnectedToSSID(FC_Constants.PRATHAM_KOLIBRI_HOTSPOT)) {
+            if (ApplicationClass.wiseF.isDeviceConnectedToSSID(FC_Constants.PRATHAM_RASPBERRY_PI)) {
                 JSONObject object = new JSONObject();
                 try {
                     String requestString = generateRequestString(scoreData, attendanceData, sessionData, learntWords, supervisorData, logsData, assessmentData, studentData);

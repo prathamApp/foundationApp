@@ -48,6 +48,10 @@ public class ChatQuesPresenter implements ChatQuesContract.ChatQuesPresenter , A
     }
 
     @Override
+    public void receivedContent_PI_SubLevel(String header, String response, int pos, int size) {
+    }
+
+    @Override
     public void receivedContent(String header, String response) {
     }
 

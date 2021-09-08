@@ -34,7 +34,7 @@
         android:marqueeRepeatLimit="marquee_forever"
         android:scrollHorizontally="true"
         android:singleLine="true"
-        android:text="@string/Unsupervised"
+        android:text=""
         android:textAllCaps="true"
         android:textColor="@color/colorText"
         android:textSize="@dimen/_13sdp"
