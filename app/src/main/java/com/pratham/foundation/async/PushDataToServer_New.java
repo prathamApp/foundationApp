@@ -479,33 +479,6 @@ public class PushDataToServer_New {
         }
     }
 
-    /*            String afilepathstr = Environment.getExternalStorageDirectory().toString()
-                    + "/.FCAInternal/PushJsons/newCompPush_" + FC_Utility.getUUID() + "_" + FC_Utility.getCurrentDateTime() + ".json"; // file path to save
-            File afilepath = new File(afilepathstr); // file path to save
-            if (afilepath.exists())
-                afilepath.delete();
-            FileWriter awriter = new FileWriter(afilepath);
-            awriter.write(String.valueOf(data));
-            awriter.flush();
-            awriter.close();
-
-            String aafilepathstr = Environment.getExternalStorageDirectory().toString()
-                    + "/.FCAInternal/PushJsons/newdataCompPush_" + FC_Utility.getUUID() + "_" + FC_Utility.getCurrentDateTime() + ".json"; // file path to save
-            File aafilepath = new File(aafilepathstr); // file path to save
-            if (aafilepath.exists())
-                aafilepath.delete();
-            FileWriter aawriter = new FileWriter(aafilepath);
-            aawriter.write(newdata);
-            aawriter.flush();
-            aawriter.close();
-
-            Log.d("PushData", "Original Size : " + String.valueOf(data).length());
-            Log.d("PushData", "New Data Size : " + newdata.length());*/
-//            compressGzipFile(filepathstr, Environment.getExternalStorageDirectory().toString()
-//                    + "/.FCAInternal/PushJsons/compressedPush_" + FC_Utility.getUUID() + "_" + FC_Utility.getCurrentDateTime() + ".gz");
-//            http://devprodigi.openiscool.org/api/FCAPP/PushFiles
-
-
     //Method shows success dialog
     @UiThread
     public void setDataPushSuccessfull() {
