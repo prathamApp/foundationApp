@@ -801,7 +801,7 @@ public class LearningFragment extends Fragment implements LearningContract.Learn
             } else if (contentList.getResourceType().equalsIgnoreCase(FC_Constants.YOUTUBE_LINK) ||
                     contentList.getResourceType().equalsIgnoreCase(FC_Constants.VIDEO)) {
                 Intent intent = new Intent(context, ActivityVideoPlayer_.class);
-                intent.putExtra("contentPath", contentList.getResourcePath());
+                intent.putExtra("contentPath", "https://youtu.be/OFvRy5LSeQY"/*contentList.getResourcePath()*/);
                 intent.putExtra("StudentID", FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""));
                 intent.putExtra("resId", contentList.getResourceId());
                 intent.putExtra("contentName", contentList.getNodeTitle());
