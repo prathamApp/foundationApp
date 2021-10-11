@@ -5,7 +5,6 @@ import android.app.ActivityManager;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.ProgressDialog;
-import android.content.ComponentName;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -51,6 +50,7 @@ import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
 import java.io.File;
+import java.io.FileOutputStream;
 import java.util.Objects;
 
 import static com.pratham.foundation.ApplicationClass.contentExistOnSD;
@@ -62,7 +62,7 @@ import static com.pratham.foundation.utility.FC_Constants.SPLASH_OPEN;
 
 
 @EActivity(R.layout.activity_splash)
-public class  SplashActivity extends SplashSupportActivity implements SplashContract.SplashView,
+public class SplashActivity extends SplashSupportActivity implements SplashContract.SplashView,
         PermissionResult, Interface_copying {
 
     @ViewById(R.id.splash_root)
@@ -96,7 +96,7 @@ public class  SplashActivity extends SplashSupportActivity implements SplashCont
 
     private void startTextAud() {
         //Set Animation for app title
-        FastSave.getInstance().saveBoolean(SPLASH_OPEN,true);
+        FastSave.getInstance().saveBoolean(SPLASH_OPEN, true);
         final Typeface title_font = Typeface.createFromAsset(getAssets(), "fonts/GlacialIndifference-Bold.otf");
         tv_typer.setTypeface(title_font);
         tv_typer.setVisibility(View.VISIBLE);
@@ -155,10 +155,13 @@ public class  SplashActivity extends SplashSupportActivity implements SplashCont
                 PermissionUtils.Manifest_ACCESS_FINE_LOCATION
         };
         //Create Directory if not exists
-        if (!new File(Environment.getExternalStorageDirectory() + "/PrathamBackups").exists())
+        if (!new File(Environment.getExternalStorageDirectory() + "/PrathamBackups").exists()) {
             new File(Environment.getExternalStorageDirectory() + "/PrathamBackups").mkdir();
-        if (!new File(Environment.getExternalStorageDirectory().toString() + "/.FCAInternal").exists())
+//            getApplicationContext().getExternalFilesDir(Environment.getExternalStorageDirectory() + "/PrathamBackups");
+        }if (!new File(Environment.getExternalStorageDirectory().toString() + "/.FCAInternal").exists()) {
             new File(Environment.getExternalStorageDirectory().toString() + "/.FCAInternal").mkdir();
+//            getApplicationContext().getExternalFilesDir(Environment.getExternalStorageDirectory() + "/PrathamBackups");
+        }
 
         new Handler().postDelayed(() -> {
             if ((Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)) {
@@ -191,7 +194,7 @@ public class  SplashActivity extends SplashSupportActivity implements SplashCont
                 splashPresenter.getSdCardPath();
                 if (!FastSave.getInstance().getBoolean(FC_Constants.INITIAL_SD_COPIED, false))
                     splashPresenter.populateSDCardMenu();
-                if(isAssets){
+                if (isAssets) {
                     if (!FastSave.getInstance().getBoolean(FC_Constants.NEW_ASSET_DB, false))
                         splashPresenter.populateAssetsMenu();
                 }
@@ -235,6 +238,40 @@ public class  SplashActivity extends SplashSupportActivity implements SplashCont
     @Override
     public void startApp() {
         //Sets required resolution, language, database and continue the app flow
+//        Toast.makeText(context, "getDataDirectory:  "+Environment.getDataDirectory(), Toast.LENGTH_SHORT).show();
+//        Log.d("getExternal", "getDataDirectory: " +Environment.getDataDirectory());
+//        Log.d("getExternal", "copyDBFile: " +Environment.getDownloadCacheDirectory());
+//        Log.d("getExternal", "copyDBFile: " +Environment.getRootDirectory());
+//        Log.d("getExternal", "copyDBFile: " +Environment.getExternalStorageDirectory());
+//        Log.d("getExternal", "copyDBFile: " +Environment.getExternalStoragePublicDirectory("/KetanTestFolder").getAbsolutePath());
+
+//        File file;
+//        file = new File (this.getExternalFilesDir(null) + "/New_KetanTestFolder_11");
+
+        try {
+        File mydir = context.getDir("myNew_KetanTestFolder_46", Context.MODE_PRIVATE); //Creating an internal dir;
+            mydir.mkdirs();
+        File fileWithinMyDir = new File(mydir, "myfile"); //Getting a file within the dir.
+            FileOutputStream out = new FileOutputStream(fileWithinMyDir); //Use the stream as usual to write into the file.
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+/*
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+            file = new File (this.getExternalFilesDir(null) + "/KetanTestFolder 11");
+        } else {
+            file = new File(Environment.getExternalStorageDirectory().getAbsolutePath() + "/KetanTestFolder 10");
+        }
+*/
+//        if (!file.exists()) {
+//            file.mkdirs();
+//        }
+//        if (Build.VERSION.SDK_INT >= 30) {
+//            Log.d("getExternal", "copyDBFile: " +Environment.getStorageDirectory());
+//        }
+        new File(Environment.getExternalStoragePublicDirectory( "/KetanTestFolder")+"").mkdir();
+        new File(Environment.getExternalStorageDirectory().getAbsolutePath()+ "/KetanTestFolder2").mkdir();
         FastSave.getInstance().saveString(FC_Constants.CURRENT_SESSION, "NA");
         DisplayMetrics displayMetrics = new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
@@ -283,14 +320,14 @@ public class  SplashActivity extends SplashSupportActivity implements SplashCont
     @UiThread
     public void showProgressDialog() {
         try {
-            if(progressDialog ==null) {
+            if (progressDialog == null) {
                 progressDialog = new ProgressDialog(SplashActivity.this);
                 progressDialog.setCanceledOnTouchOutside(false);
                 progressDialog.setMessage(getResources().getString(R.string.loding_please_wait));
                 progressDialog.setCancelable(false);
                 progressDialog.show();
-            }else {
-                if(!Objects.requireNonNull(progressDialog).isShowing())
+            } else {
+                if (!Objects.requireNonNull(progressDialog).isShowing())
                     progressDialog.show();
             }
         } catch (Exception e) {
@@ -458,13 +495,13 @@ public class  SplashActivity extends SplashSupportActivity implements SplashCont
 //                Log.d("-CT-", "insertNewData in IFFFFFFFFFFFFFFFFFFFFFFFFFFFF");
 //                splashPresenter.copyZipAndPopulateMenu_New();
 //            } else {
-                Log.d("-CT-", "Before insert new  :::::VOICES_DOWNLOAD_INTENT::::: " + FastSave.getInstance().getBoolean(FC_Constants.VOICES_DOWNLOAD_INTENT, false));
-                if (!FastSave.getInstance().getBoolean(FC_Constants.VOICES_DOWNLOAD_INTENT, false))
-                    show_STT_Dialog();
-                else {
-                    if (!fragmentBottomOpenFlg)
-                        showBottomFragment();
-                }
+            Log.d("-CT-", "Before insert new  :::::VOICES_DOWNLOAD_INTENT::::: " + FastSave.getInstance().getBoolean(FC_Constants.VOICES_DOWNLOAD_INTENT, false));
+            if (!FastSave.getInstance().getBoolean(FC_Constants.VOICES_DOWNLOAD_INTENT, false))
+                show_STT_Dialog();
+            else {
+                if (!fragmentBottomOpenFlg)
+                    showBottomFragment();
+            }
 //            }
         } else {
             bgPushService = new BackgroundPushService();
@@ -482,13 +519,15 @@ public class  SplashActivity extends SplashSupportActivity implements SplashCont
     @Override
     public void show_STT_Dialog() {
         //Allows to download language packages
+//        FastSave.getInstance().saveBoolean(FC_Constants.VOICES_DOWNLOAD_INTENT, true);
         exitDialog = new BlurPopupWindow.Builder(this)
                 .setContentView(R.layout.lottie_stt_dialog)
                 .bindClickListener(v -> {
                     Intent intent = new Intent(Intent.ACTION_MAIN);
-                    FastSave.getInstance().saveBoolean(FC_Constants.VOICES_DOWNLOAD_INTENT, true);
-                    intent.setComponent(new ComponentName("com.google.android.googlequicksearchbox",
-                            "com.google.android.voicesearch.greco3.languagepack.InstallActivity"));
+//                    intent.setComponent(new ComponentName("com.google.android.googlequicksearchbox",
+//                            "com.google.android.voicesearch.greco3.languagepack.InstallActivity"));
+                    intent.setClassName("com.google.android.googlequicksearchbox",
+                            "com.google.android.voicesearch.greco3.languagepack.InstallActivity");
                     intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     startActivity(intent);
                     new Handler().postDelayed(() -> {
@@ -499,7 +538,6 @@ public class  SplashActivity extends SplashSupportActivity implements SplashCont
                 .bindClickListener(v -> {
                     showBottomFragment();
                     new Handler().postDelayed(() -> {
-                        FastSave.getInstance().saveBoolean(FC_Constants.VOICES_DOWNLOAD_INTENT, true);
                         exitDialog.dismiss();
                     }, 200);
                 }, R.id.dia_btn_skip)

@@ -1,7 +1,6 @@
 package com.pratham.foundation.ui.app_home.profile_new;
 
 import android.annotation.SuppressLint;
-import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
@@ -395,8 +394,10 @@ public class ProfileFragment extends Fragment implements ProfileContract.Profile
     @UiThread
     public void show_STT_Dialog() {
         Intent intent = new Intent(Intent.ACTION_MAIN);
-        intent.setComponent(new ComponentName("com.google.android.googlequicksearchbox",
-                "com.google.android.voicesearch.greco3.languagepack.InstallActivity"));
+//        intent.setComponent(new ComponentName("com.google.android.googlequicksearchbox",
+//                "com.google.android.voicesearch.greco3.languagepack.InstallActivity"));
+        intent.setClassName("com.google.android.googlequicksearchbox",
+                "com.google.android.voicesearch.greco3.languagepack.InstallActivity");
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(intent);
     }

@@ -1,7 +1,6 @@
 package com.pratham.foundation.ui.admin_panel;
 
 import android.annotation.SuppressLint;
-import android.content.ComponentName;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
@@ -153,8 +152,8 @@ public class MenuActivity extends BaseActivity {
             public void onClick(View v) {
                 FastSave.getInstance().saveBoolean(FC_Constants.VOICES_DOWNLOAD_INTENT, true);
                 Intent intent = new Intent(Intent.ACTION_MAIN);
-                intent.setComponent(new ComponentName("com.google.android.googlequicksearchbox",
-                        "com.google.android.voicesearch.greco3.languagepack.InstallActivity"));
+                intent.setClassName("com.google.android.googlequicksearchbox",
+                        "com.google.android.voicesearch.greco3.languagepack.InstallActivity");
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 startActivity(intent);
                 new Handler().postDelayed(() -> {

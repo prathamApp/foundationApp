@@ -3,6 +3,14 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.pratham.foundation">
 
+<!--
+    <queries>
+        <intent>
+            <action android:name="android.speech.RecognitionService" />
+        </intent>
+    </queries>
+-->
+
     <application
         android:name=".ApplicationClass"
         android:allowBackup="true"
@@ -33,6 +41,7 @@
             android:name=".services.background_service.BackgroundPushService"
             android:enabled="true" >
         </service>
+
         <receiver
             android:name=".services.background_service.BackgroundServiceRestarter"
             android:enabled="true"
@@ -41,6 +50,9 @@
                 <action android:name="BackgroundServiceRestarter" />
             </intent-filter>
         </receiver>
+
+        <activity
+            android:name="android.speech.RecognitionService"/>
 
         <activity
             android:name=".ui.contentPlayer.webviewpdf.PDFViewActivity_"

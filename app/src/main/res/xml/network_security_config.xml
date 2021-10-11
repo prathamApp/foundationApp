@@ -2,6 +2,10 @@
 <network-security-config>
     <base-config cleartextTrafficPermitted="true">
         <trust-anchors>
+            <domain includeSubdomains="true">prodigi.openiscool.org</domain>
+            <domain includeSubdomains="true">devposapi.prathamopenschool.org</domain>
+            <domain includeSubdomains="true">192.168.4.1:8000</domain>
+            <domain includeSubdomains="true">worldtimeapi.org</domain>
             <certificates src="system" />
         </trust-anchors>
     </base-config>

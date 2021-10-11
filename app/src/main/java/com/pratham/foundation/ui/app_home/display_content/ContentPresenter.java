@@ -57,6 +57,7 @@ public class ContentPresenter implements ContentContract.ContentPresenter, API_C
     public API_Content api_content;
     public List maxScore, maxScoreChild;
     public int percent = 0;
+
     @Bean(ZipDownloader.class)
     ZipDownloader zipDownloader;
 
