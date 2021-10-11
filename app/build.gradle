@@ -67,7 +67,6 @@ dependencies {
 
 //    In-App Update Feature
     implementation 'com.google.android.play:core:1.10.2'
-
     //androidAnnotations
     annotationProcessor "org.androidannotations:androidannotations:4.7.0"
     implementation "org.androidannotations:androidannotations-api:4.7.0"
