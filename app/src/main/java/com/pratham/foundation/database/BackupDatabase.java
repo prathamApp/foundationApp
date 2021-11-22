@@ -13,6 +13,7 @@ public class BackupDatabase {
     public static void backup(Context mContext) {
         try {
             File sd = new File(Environment.getExternalStorageDirectory()+"/PrathamBackups");
+//            File sd = new File(""+mContext.getExternalFilesDir("/PrathamBackups"));
             if(!sd.exists())
                 sd.mkdir();
             if (sd.canWrite()) {

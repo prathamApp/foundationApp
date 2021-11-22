@@ -1,5 +1,7 @@
 package com.pratham.foundation.view_holders;
 
+import static com.pratham.foundation.ui.bottom_fragment.BottomStudentsFragment.groupClicked;
+
 import android.annotation.SuppressLint;
 import android.view.View;
 import android.view.animation.Animation;
@@ -22,8 +24,6 @@ import com.pratham.foundation.utility.FC_Utility;
 
 import java.util.Objects;
 
-import static com.pratham.foundation.ui.bottom_fragment.BottomStudentsFragment.groupClicked;
-
 public class BottomeFragStudentViewHolder extends RecyclerView.ViewHolder {
 
     /**
@@ -32,7 +32,7 @@ public class BottomeFragStudentViewHolder extends RecyclerView.ViewHolder {
      */
 
     @Nullable
-    TextView studentName, group_name;
+    TextView studentName, group_name,child_enroll_id;
     @Nullable
     SimpleDraweeView avatar, iv_grp;
     @Nullable
@@ -51,6 +51,7 @@ public class BottomeFragStudentViewHolder extends RecyclerView.ViewHolder {
         studentName = itemView.findViewById(R.id.child_name);
         avatar = itemView.findViewById(R.id.iv_child);
         rl_card = itemView.findViewById(R.id.rl_card);
+        child_enroll_id = itemView.findViewById(R.id.child_enroll_id);
         rl_child_attendance = itemView.findViewById(R.id.rl_child_attendance);
         this.contentClicked = contentClicked;
     }
@@ -60,6 +61,7 @@ public class BottomeFragStudentViewHolder extends RecyclerView.ViewHolder {
         group_name = itemView.findViewById(R.id.group_name);
         iv_grp = itemView.findViewById(R.id.iv_grp);
         rl_root = itemView.findViewById(R.id.rl_root);
+        child_enroll_id = itemView.findViewById(R.id.child_enroll_id);
         group_card = itemView.findViewById(R.id.group_card);
         this.contentClicked2 = contentClicked;
     }
@@ -69,6 +71,7 @@ public class BottomeFragStudentViewHolder extends RecyclerView.ViewHolder {
         studentName = itemView.findViewById(R.id.child_name);
         avatar = itemView.findViewById(R.id.iv_child);
         rl_card = itemView.findViewById(R.id.rl_card);
+        child_enroll_id = itemView.findViewById(R.id.child_enroll_id);
         rl_child_attendance = itemView.findViewById(R.id.rl_child_attendance);
         this.studentClickListener = studentClickListener;
     }
@@ -77,10 +80,11 @@ public class BottomeFragStudentViewHolder extends RecyclerView.ViewHolder {
     public void setFragmentStudentItem(StudentAndGroup_BottomFragmentModal fragmentModalsList,
                                        BottomStudentsContract.StudentClickListener studentClickListener,
                                        int pos) {
-
         try {
+            Objects.requireNonNull(child_enroll_id).setText("Id: "+fragmentModalsList.getStudentID());
+            Objects.requireNonNull(child_enroll_id).setSelected(true);
             Objects.requireNonNull(studentName).setText(fragmentModalsList.getFullName());
-            Objects.requireNonNull(studentName).setSelected(true);
+//            Objects.requireNonNull(studentName).setSelected(true);
             if (groupClicked) {
                 if (fragmentModalsList.getGender().equalsIgnoreCase("male")) {
                     Objects.requireNonNull(avatar).setImageResource(FC_Utility.getRandomMaleAvatar(ApplicationClass.getInstance()));
@@ -113,9 +117,11 @@ public class BottomeFragStudentViewHolder extends RecyclerView.ViewHolder {
             if (fragmentModalsList.isChecked()) {
                 rl_card.setBackground(ApplicationClass.getInstance().getResources().getDrawable(R.drawable.card_color_bg1));
                 studentName.setTextColor(ApplicationClass.getInstance().getResources().getColor(R.color.white));
+                child_enroll_id.setTextColor(ApplicationClass.getInstance().getResources().getColor(R.color.white));
             } else {
                 rl_card.setBackground(ApplicationClass.getInstance().getResources().getDrawable(R.drawable.card_color_bg6));
                 studentName.setTextColor(ApplicationClass.getInstance().getResources().getColor(R.color.dark_blue));
+                child_enroll_id.setTextColor(ApplicationClass.getInstance().getResources().getColor(R.color.dark_blue));
             }
 
 /*
@@ -140,6 +146,8 @@ public class BottomeFragStudentViewHolder extends RecyclerView.ViewHolder {
                                      BottomStudentsContract.StudentClickListener studentClickListener) {
 
         try {
+            Objects.requireNonNull(child_enroll_id).setText("Id: "+fragmentModalsList.getStudentID());
+            Objects.requireNonNull(child_enroll_id).setSelected(true);
             Objects.requireNonNull(group_name).setText(fragmentModalsList.getFullName());
             Objects.requireNonNull(group_name).setSelected(true);
             Objects.requireNonNull(iv_grp).setImageResource(R.drawable.ic_grp_btn);
@@ -174,6 +182,8 @@ public class BottomeFragStudentViewHolder extends RecyclerView.ViewHolder {
 
     public void setAttendenceFragmentStudentItem(Student student, AttendanceStudentsContract.AttendanceStudentClickListener studentClickListener, int position) {
         try {
+            Objects.requireNonNull(child_enroll_id).setText("Id: "+student.getStudentID());
+            Objects.requireNonNull(child_enroll_id).setSelected(true);
             Objects.requireNonNull(studentName).setText(student.getFullName());
             Objects.requireNonNull(studentName).setSelected(true);
             if (student.getGender().equalsIgnoreCase("male")) {

@@ -31,7 +31,7 @@
             android:text="@string/Stt_Dialog_Msg"
             android:textAlignment="center"
             android:textColor="@color/colorRed"
-            android:textSize="@dimen/_15sdp" />
+            android:textSize="@dimen/_13sdp" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -49,6 +49,7 @@
                 android:layout_marginEnd="@dimen/_10sdp"
                 android:background="@android:color/transparent"
                 android:gravity="center"
+                android:visibility="gone"
                 android:text="@string/Skip"
                 android:textColor="@color/strokeColor"
                 android:textSize="@dimen/_15sdp" />
@@ -64,7 +65,7 @@
                 android:elevation="@dimen/_3sdp"
                 android:text="@string/Okay"
                 android:textColor="@color/white"
-                android:textSize="@dimen/_15sdp" />
+                android:textSize="@dimen/_14sdp" />
         </LinearLayout>
     </RelativeLayout>
 </com.google.android.material.card.MaterialCardView>

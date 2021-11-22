@@ -1,5 +1,10 @@
 package com.pratham.foundation.ui.contentPlayer.doing;
 
+import static android.app.Activity.RESULT_OK;
+import static com.pratham.foundation.utility.FC_Constants.STT_REGEX;
+import static com.pratham.foundation.utility.FC_Constants.activityPhotoPath;
+import static com.pratham.foundation.utility.FC_Constants.gameFolderPath;
+
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -9,6 +14,7 @@ import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.ColorDrawable;
 import android.media.ThumbnailUtils;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Environment;
 import android.os.Handler;
 import android.provider.MediaStore;
@@ -30,6 +36,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.VideoView;
 
+import androidx.core.content.FileProvider;
 import androidx.fragment.app.Fragment;
 
 import com.facebook.drawee.backends.pipeline.Fresco;
@@ -38,6 +45,7 @@ import com.facebook.drawee.view.SimpleDraweeView;
 import com.facebook.imagepipeline.request.ImageRequest;
 import com.facebook.imagepipeline.request.ImageRequestBuilder;
 import com.pratham.foundation.ApplicationClass;
+import com.pratham.foundation.BuildConfig;
 import com.pratham.foundation.R;
 import com.pratham.foundation.customView.display_image_dialog.CustomLodingDialog;
 import com.pratham.foundation.customView.fontsview.SansButton;
@@ -69,11 +77,6 @@ import java.io.FileOutputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-
-import static android.app.Activity.RESULT_OK;
-import static com.pratham.foundation.utility.FC_Constants.STT_REGEX;
-import static com.pratham.foundation.utility.FC_Constants.activityPhotoPath;
-import static com.pratham.foundation.utility.FC_Constants.gameFolderPath;
 
 @EFragment(R.layout.layout_video_row)
 public class DoingFragment extends Fragment implements STT_Result_New.sttView,
@@ -641,15 +644,40 @@ public class DoingFragment extends Fragment implements STT_Result_New.sttView,
 
     @Click(R.id.capture)
     public void captureClick() {
-      /*  Intent takePicture = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        startActivityForResult(takePicture, CAMERA_REQUEST);*/
-        Intent cameraIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
+/*        Intent cameraIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
         File imagesFolder = new File(activityPhotoPath);
         if (!imagesFolder.exists()) imagesFolder.mkdirs();
         File image = new File(imagesFolder, imageName);
         capturedImageUri = Uri.fromFile(image);
         cameraIntent.putExtra(android.provider.MediaStore.EXTRA_OUTPUT, capturedImageUri);
-        startActivityForResult(cameraIntent, CAMERA_REQUEST);
+        startActivityForResult(cameraIntent, CAMERA_REQUEST);*/
+
+        Intent picIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE).
+                addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION | Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
+        try {
+
+//            String file_path = Environment.getExternalStorageDirectory().toString() +
+//                    "/" + context.getResources().getString(R.string.app_name);
+
+            File imagesFolder = new File(activityPhotoPath);
+            if (!imagesFolder.exists()) imagesFolder.mkdirs();
+                File imagePath = new File(imagesFolder, imageName);
+//            File dir = new File(file_path);
+
+            capturedImageUri = Uri.fromFile(imagePath);
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                picIntent.putExtra(MediaStore.EXTRA_OUTPUT, FileProvider.getUriForFile(context, BuildConfig.APPLICATION_ID+".provider", imagePath));
+//                setUri(FileProvider.getUriForFile(context, BuildConfig.APPLICATION_ID, imagePath));
+            } else {
+                picIntent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(imagePath));
+//                setUri(Uri.fromFile(imagePath));
+            }
+
+            startActivityForResult(picIntent, CAMERA_REQUEST);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     @Click(R.id.preview)

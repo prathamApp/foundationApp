@@ -1,5 +1,21 @@
 package com.pratham.foundation.ui.app_home.learning_fragment;
 
+import static com.pratham.foundation.ApplicationClass.App_Thumbs_Path;
+import static com.pratham.foundation.ApplicationClass.ButtonClickSound;
+import static com.pratham.foundation.ui.app_home.HomeActivity.header_rl;
+import static com.pratham.foundation.ui.app_home.HomeActivity.levelChanged;
+import static com.pratham.foundation.ui.app_home.HomeActivity.sub_Name;
+import static com.pratham.foundation.ui.app_home.HomeActivity.tv_header_progress;
+import static com.pratham.foundation.utility.FC_Constants.APP_SECTION;
+import static com.pratham.foundation.utility.FC_Constants.COMING_SOON;
+import static com.pratham.foundation.utility.FC_Constants.GROUP_MODE;
+import static com.pratham.foundation.utility.FC_Constants.IS_DOWNLOADING;
+import static com.pratham.foundation.utility.FC_Constants.currentLevel;
+import static com.pratham.foundation.utility.FC_Constants.currentSubjectFolder;
+import static com.pratham.foundation.utility.FC_Constants.gameFolderPath;
+import static com.pratham.foundation.utility.FC_Constants.sec_Learning;
+import static com.pratham.foundation.utility.FC_Utility.dpToPx;
+
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
@@ -79,22 +95,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-import static com.pratham.foundation.ApplicationClass.App_Thumbs_Path;
-import static com.pratham.foundation.ApplicationClass.ButtonClickSound;
-import static com.pratham.foundation.ui.app_home.HomeActivity.header_rl;
-import static com.pratham.foundation.ui.app_home.HomeActivity.levelChanged;
-import static com.pratham.foundation.ui.app_home.HomeActivity.sub_Name;
-import static com.pratham.foundation.ui.app_home.HomeActivity.tv_header_progress;
-import static com.pratham.foundation.utility.FC_Constants.APP_SECTION;
-import static com.pratham.foundation.utility.FC_Constants.COMING_SOON;
-import static com.pratham.foundation.utility.FC_Constants.GROUP_MODE;
-import static com.pratham.foundation.utility.FC_Constants.IS_DOWNLOADING;
-import static com.pratham.foundation.utility.FC_Constants.currentLevel;
-import static com.pratham.foundation.utility.FC_Constants.currentSubjectFolder;
-import static com.pratham.foundation.utility.FC_Constants.gameFolderPath;
-import static com.pratham.foundation.utility.FC_Constants.sec_Learning;
-import static com.pratham.foundation.utility.FC_Utility.dpToPx;
-
 @EFragment(R.layout.fragment_tab_one)
 public class LearningFragment extends Fragment implements LearningContract.LearningView,
         FragmentItemClicked {
@@ -110,7 +110,9 @@ public class LearningFragment extends Fragment implements LearningContract.Learn
     public List<ContentTable> rootList, rootLevelList, dwParentList, childDwContentList;
     public List<ContentTable> contentParentList, contentDBList, contentApiList, childContentList;
     private String downloadNodeId, resName, resServerImageName, downloadType;
-    private int childPos = 0, parentPos = 0, resumeCntr = 0;
+    private int childPos = 0;
+    private int parentPos = 0;
+    private final int resumeCntr = 0;
     Context context;
 
     @AfterViews
@@ -207,6 +209,8 @@ public class LearningFragment extends Fragment implements LearningContract.Learn
         Modal_FileDownloading modal_fileDownloading = message.getModal_fileDownloading();
         if (FastSave.getInstance().getString(APP_SECTION, "").equalsIgnoreCase(sec_Learning)) {
             if (message != null) {
+//                if (message.getMessage().equalsIgnoreCase(FC_Constants.LEVEL_CHANGED) ||
+//                        message.getMessage().equalsIgnoreCase(FC_Constants.LEVEL_CHANGED))
                 if (message.getMessage().equalsIgnoreCase(FC_Constants.LEVEL_CHANGED))
                     onLevelChanged();
                 else if (message.getMessage().equalsIgnoreCase(FC_Constants.BACK_PRESSED))
@@ -220,7 +224,8 @@ public class LearningFragment extends Fragment implements LearningContract.Learn
                             progressLayout.setCurProgress(message.getModal_fileDownloading().getProgress());
                 } else if (message.getMessage().equalsIgnoreCase(FC_Constants.FRAGMENT_SELECTED) ||
                         message.getMessage().equalsIgnoreCase(FC_Constants.FRAGMENT_RESELECTED) ||
-                        message.getMessage().equalsIgnoreCase(FC_Constants.ACTIVITY_RESUMED)) {
+                        message.getMessage().equalsIgnoreCase(FC_Constants.ACTIVITY_RESUMED) ||
+                        message.getMessage().equalsIgnoreCase(FC_Constants.DATA_REFRESHED)) {
                     fragmentSelected();
                 } else if (message.getMessage().equalsIgnoreCase(FC_Constants.FILE_DOWNLOAD_ERROR) ||
                         message.getMessage().equalsIgnoreCase(FC_Constants.UNZIPPING_ERROR) ||
@@ -367,6 +372,14 @@ public class LearningFragment extends Fragment implements LearningContract.Learn
             e.printStackTrace();
             showNoDataLayout();
         }
+    }
+
+    public void onDataRefresh() {
+        showLoader();
+        contentParentList.clear();
+//        presenter.removeLastNodeId2();
+        String currentNodeID = presenter.getcurrentNodeID();
+        presenter.getDataForList();
     }
 
     public void onLevelChanged() {
@@ -528,6 +541,7 @@ public class LearningFragment extends Fragment implements LearningContract.Learn
 
     @Override
     public void onTestAddedToDb (ContentTable itemContent) {
+        dismissLoadingDialog();
         FC_Constants.AssLang = itemContent.getContentLanguage();
         FC_Constants.examId = itemContent.getNodeKeywords();
         if (FastSave.getInstance().getString(FC_Constants.LOGIN_MODE, GROUP_MODE).equalsIgnoreCase(GROUP_MODE)) {
@@ -577,6 +591,7 @@ public class LearningFragment extends Fragment implements LearningContract.Learn
         } catch (IllegalStateException e) {
             e.printStackTrace();
         }
+        showLoader();
         presenter.addAssessmentToDb(itemContent);
     }
 
@@ -820,6 +835,7 @@ public class LearningFragment extends Fragment implements LearningContract.Learn
                 intent1.putExtra("resId", contentList.getResourceId());
                 intent1.putExtra("contentName", contentList.getNodeTitle());
                 intent1.putExtra("onSdCard", contentList.isOnSDCard());
+                intent1.putExtra("dia", "NA");
                 context.startActivity(intent1);
             } else if (contentList.getResourceType().equalsIgnoreCase("PDF_ZOOM")
                     || contentList.getResourceType().equalsIgnoreCase("PDF_new")) {
@@ -827,13 +843,14 @@ public class LearningFragment extends Fragment implements LearningContract.Learn
                 if (contentList.isOnSDCard())
                     sdStatus = "T";
 //                Intent intent1 = new Intent(context, Fragment_PdfViewer_.class);
-                Intent intent1 = new Intent(context, PDFViewActivity_.class);
-                intent1.putExtra("contentPath", contentList.getResourcePath());
-                intent1.putExtra("StudentID", FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""));
-                intent1.putExtra("resId", contentList.getResourceId());
-                intent1.putExtra("contentName", contentList.getNodeTitle());
-                intent1.putExtra("onSdCard", contentList.isOnSDCard());
-                context.startActivity(intent1);
+                Intent intent2 = new Intent(context, PDFViewActivity_.class);
+                intent2.putExtra("contentPath", contentList.getResourcePath());
+                intent2.putExtra("StudentID", FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""));
+                intent2.putExtra("resId", contentList.getResourceId());
+                intent2.putExtra("contentName", contentList.getNodeTitle());
+                intent2.putExtra("onSdCard", contentList.isOnSDCard());
+                intent2.putExtra("dia", "NA");
+                context.startActivity(intent2);
             } else {
                 String sdStatus = "F";
                 if (contentList.isOnSDCard())

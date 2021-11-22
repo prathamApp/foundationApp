@@ -66,6 +66,7 @@ public class FC_Constants {
     public static final String CHIT_CHAT_LBL = "CHIT_CHAT_LBL";
     public static final String RETURNSCORE = "returnScore";
     public static final String BACK_PRESSED = "back_pressed";
+    public static final String DATA_REFRESHED = "data_refreshed";
     public static final String FRAGMENT_BACK_PRESSED = "fragment_back_pressed";
     public static final String DOWNLOAD_COMPLETE = "download_complete";
     public static final String API_PARENT = "api_parent";
@@ -195,6 +196,7 @@ public class FC_Constants {
     public static final String CURRENT_STUDENT_NAME = "current_student_name";
     public static final String CURRENT_ROOT_NODE = "current_root_node";
     public static final String CURRENT_SESSION = "current_session";
+    public static final String PUSH_ID_LOGS = "push_id_logs";
     public static final String CURRENT_LEVEL = "current_level";
     public static final String CURRENT_ASSESSMENT_STUDENT_ID = "current_assessment_student_id";
     public static final String CURRENT_SUPERVISOR_ID = "current_supervisor_id";
@@ -248,8 +250,10 @@ public class FC_Constants {
     public static boolean assessmentFlag;
     public static boolean GROUP_LOGIN = false;
     public static final String RASP_IP = "http://192.168.4.1:8000";
-    public static final String RASP_LOCAL_URL = "/static/storage/Second Chance App/content/";
-    public static final String RASP_LOCAL_IMAGES = "/static/storage/Second Chance App/images/";
+//    public static final String RASP_LOCAL_URL = "/static/storage/Second Chance App/content/";
+//public static final String RASP_LOCAL_IMAGES = "/static/storage/Second Chance App/images/";
+    public static final String RASP_LOCAL_URL = "/static/storage/PRADIGI FOR SCHOOL/content/";
+    public static final String RASP_LOCAL_IMAGES = "/static/storage/PRADIGI FOR SCHOOL/images/";
     public static final String supervisedAssessment = "supervisedAssessment";
     public static final String CHECK_COURSE_COMPLETION = "check_course_completion";
     public static final String COURSE_NOT_VERIFIED = "course_not_verified";
@@ -291,6 +295,7 @@ public class FC_Constants {
 //    public static String uploadDataUrl = "http://devprodigi.openiscool.org/api/Foundation/PushData";
     public static String uploadDataUrl = "http://devprodigi.openiscool.org/api/FCAPP/PushFiles";
     public static String uploadDataUrl_PI = "http://192.168.4.1:8000/api/usagedata/";
+    public static String uploadDataBaseUrl_PI = "http://192.168.4.1:8000/api/dbpushdata/";
     public static final String STUDENT_BY_ENROLLMENT_NO_API = "http://www.devtab.openiscool.org/api/Enrollement/Get?enrollmentno=";
     public static final String PUSH_IMAGE_API = "http://devprodigi.openiscool.org/api/Foundation/PostImage";
     public static final String PUSH_IMAGE_API_PI = "http://192.168.4.1:8000/api/channel/FileUpload/";
@@ -304,9 +309,9 @@ public class FC_Constants {
     public static final String RASPBERRY_PI_LANGUAGE_API = "http://192.168.4.1:8000/api/channel/AppNodeDetailListByNode/?ParentId=";
     public static final String RASPBERRY_PI_BROWSE_API = "http://192.168.4.1:8000/api/channel/AppNodeDetailListByNode/?ParentId=";
     public static final String TEMP_RASPBERRY_PI_BROWSE_API = "http://192.168.4.1:8000/api/channel/AppNodeDetailListByNode/";
-    public static final String INTERNET_LANGUAGE_API = "http://devposapi.prathamopenschool.org/api/ContentV2/browse?id=";
-    public static final String INTERNET_BROWSE_API = "http://devposapi.prathamopenschool.org/api/ContentV2/BrowseLevel2?id=";
-    public static final String INTERNET_DOWNLOAD_RESOURCE_API = "http://devposapi.prathamopenschool.org/api/content/downloadv2?id=";
+    public static final String INTERNET_LANGUAGE_API = "https://devposapi.prathamopenschool.org/api/ContentV2/browse?id=";
+    public static final String INTERNET_BROWSE_API = "https://devposapi.prathamopenschool.org/api/ContentV2/BrowseLevel2?id=";
+    public static final String INTERNET_DOWNLOAD_RESOURCE_API = "https://devposapi.prathamopenschool.org/api/content/downloadv2?id=";
     public static final String INTERNET_DOWNLOAD_RESOURCE_API_PI = "http://192.168.4.1:8000/api/channel/AppNodeJsonListByNode/?NodeId=";
 //    public static final String INTERNET_DOWNLOAD_RESOURCE_API = "http://devposapi.prathamopenschool.org/api/content/downloadv2?id=";
 
@@ -343,7 +348,9 @@ public class FC_Constants {
     public static final String USAGEDATA = "USAGEDATA";
     public static final String DOWNLOAD_URL = "download_url";
     public static final String SUCCESSFULLYPUSHED = "successfully_pushed";
+    public static final String SUCCESSFULLYPUSHED_DB = "db_successfully_pushed";
     public static final String PUSHFAILED = "push_failed";
+    public static final String PUSHFAILED_DB = "db_push_failed";
     public static String FACILITY_ID = "facility_id";
     public static String pradigiObbPath = "";
     public static String FTP_USERNAME = "pratham";
@@ -382,6 +389,7 @@ public class FC_Constants {
     public static String newDataLanguageInserted = "newDataLanguageInserted";
     //    public static boolean GROUP_QR = false;
     public static boolean levelSet = false;
+    public static final String GROUP_ENROLLMENT_ID = "group_enrollment_id";
     public static final String LOGIN_MODE = "login_mode";
     public static final String PRATHAM_STUDENT = "pratham_student";
     public static final String GROUP_MODE = "group_mode";
@@ -403,6 +411,11 @@ public class FC_Constants {
     public static final String SYNC_DATA_LENGTH = "sync_data_length";
     public static final String SYNC_MEDIA_LENGTH = "sync_media_length";
     public static final String AssessmentApp = "AssessmentApp";
+
+/*    public static final String SYNC_TIME = "sync_time";
+    public static final String SYNC_COURCES = "sync_data_length";
+    public static final String SYNC_MEDIA_LENGTH = "sync_media_length";
+    public static final String AssessmentApp = "AssessmentApp";*/
 
     public static final String BASE_URL = "http://prodigi.openiscool.org/api/pos/";
 

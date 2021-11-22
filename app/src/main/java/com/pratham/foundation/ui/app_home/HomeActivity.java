@@ -1,5 +1,27 @@
 package com.pratham.foundation.ui.app_home;
 
+import static com.pratham.foundation.ApplicationClass.BackBtnSound;
+import static com.pratham.foundation.ApplicationClass.ButtonClickSound;
+import static com.pratham.foundation.ApplicationClass.getAppMode;
+import static com.pratham.foundation.utility.FC_Constants.ACTIVITY_RESUMED;
+import static com.pratham.foundation.utility.FC_Constants.APP_SECTION;
+import static com.pratham.foundation.utility.FC_Constants.BACK_PRESSED;
+import static com.pratham.foundation.utility.FC_Constants.CURRENT_STUDENT_ID;
+import static com.pratham.foundation.utility.FC_Constants.FRAGMENT_RESELECTED;
+import static com.pratham.foundation.utility.FC_Constants.FRAGMENT_SELECTED;
+import static com.pratham.foundation.utility.FC_Constants.GROUP_MODE;
+import static com.pratham.foundation.utility.FC_Constants.HOME_ACTIVITY_SHOWCASE;
+import static com.pratham.foundation.utility.FC_Constants.INDIVIDUAL_MODE;
+import static com.pratham.foundation.utility.FC_Constants.LEVEL_CHANGED;
+import static com.pratham.foundation.utility.FC_Constants.LOGIN_MODE;
+import static com.pratham.foundation.utility.FC_Constants.SECTION_COMPLETION_PERC;
+import static com.pratham.foundation.utility.FC_Constants.activityPhotoPath;
+import static com.pratham.foundation.utility.FC_Constants.currentLevel;
+import static com.pratham.foundation.utility.FC_Constants.sec_Learning;
+import static com.pratham.foundation.utility.FC_Constants.sec_Profile;
+import static com.pratham.foundation.utility.FC_Utility.get12HrTime;
+import static com.pratham.foundation.utility.FC_Utility.getRandomCardColor;
+
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.graphics.Color;
@@ -67,28 +89,6 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
-import static com.pratham.foundation.ApplicationClass.BackBtnSound;
-import static com.pratham.foundation.ApplicationClass.ButtonClickSound;
-import static com.pratham.foundation.ApplicationClass.getAppMode;
-import static com.pratham.foundation.utility.FC_Constants.ACTIVITY_RESUMED;
-import static com.pratham.foundation.utility.FC_Constants.APP_SECTION;
-import static com.pratham.foundation.utility.FC_Constants.BACK_PRESSED;
-import static com.pratham.foundation.utility.FC_Constants.CURRENT_STUDENT_ID;
-import static com.pratham.foundation.utility.FC_Constants.FRAGMENT_RESELECTED;
-import static com.pratham.foundation.utility.FC_Constants.FRAGMENT_SELECTED;
-import static com.pratham.foundation.utility.FC_Constants.GROUP_MODE;
-import static com.pratham.foundation.utility.FC_Constants.HOME_ACTIVITY_SHOWCASE;
-import static com.pratham.foundation.utility.FC_Constants.INDIVIDUAL_MODE;
-import static com.pratham.foundation.utility.FC_Constants.LEVEL_CHANGED;
-import static com.pratham.foundation.utility.FC_Constants.LOGIN_MODE;
-import static com.pratham.foundation.utility.FC_Constants.SECTION_COMPLETION_PERC;
-import static com.pratham.foundation.utility.FC_Constants.activityPhotoPath;
-import static com.pratham.foundation.utility.FC_Constants.currentLevel;
-import static com.pratham.foundation.utility.FC_Constants.sec_Learning;
-import static com.pratham.foundation.utility.FC_Constants.sec_Profile;
-import static com.pratham.foundation.utility.FC_Utility.get12HrTime;
-import static com.pratham.foundation.utility.FC_Utility.getRandomCardColor;
-
 //import com.pratham.foundation.ui.app_home.test_fragment.supervisor.SupervisedAssessmentActivity;
 
 @EActivity(R.layout.activity_home)
@@ -136,6 +136,7 @@ public class HomeActivity extends BaseActivity implements LevelChanged, API_Cont
     public static String sub_Name, sub_nodeId = "";
     public static boolean languageChanged = false;
     public static LevelChanged levelChanged;
+    public static int currentLevelPos =0;
     List<ContentTable> rootList;
     String currSubj, levelTitle;
     SimpleDraweeView test_dialog_img;
@@ -488,6 +489,7 @@ public class HomeActivity extends BaseActivity implements LevelChanged, API_Cont
             levelTitle = rootList.get(position).getNodeTitle();
             FastSave.getInstance().saveString(FC_Constants.CURRENT_LEVEL_NAME, levelTitle);
             tv_level.setText("" + levelTitle);
+            currentLevelPos = position;
             EventMessage eventMessage = new EventMessage();
             eventMessage.setMessage(LEVEL_CHANGED);
             EventBus.getDefault().post(eventMessage);
@@ -700,6 +702,15 @@ public class HomeActivity extends BaseActivity implements LevelChanged, API_Cont
         }
         submarine.show();
     }
+
+    @UiThread
+    @Click({R.id.iv_refresh, R.id.refresh_shd})
+    public void levelRefresh() {
+        EventMessage eventMessage = new EventMessage();
+        eventMessage.setMessage(FC_Constants.DATA_REFRESHED);
+        EventBus.getDefault().post(eventMessage);
+    }
+
 
     private void setupViewPager(ViewPager viewpager) {
 //        Loading fragments (learning, practice, test, fun, profile) on the viewPager.

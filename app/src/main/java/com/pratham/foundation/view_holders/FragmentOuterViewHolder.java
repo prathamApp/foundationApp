@@ -31,7 +31,7 @@ public class FragmentOuterViewHolder extends RecyclerView.ViewHolder {
     @Nullable
     Button actionBtn;
 
-    private FragmentItemClicked fragmentItemClicked;
+    private final FragmentItemClicked fragmentItemClicked;
     private List<ContentTable> sublistList;
     private int childCounter = 0;
 
@@ -62,14 +62,13 @@ public class FragmentOuterViewHolder extends RecyclerView.ViewHolder {
                         && contentTable.isNodeUpdate()) {
                     Objects.requireNonNull(btnMore).setVisibility(View.GONE);
                     Objects.requireNonNull(actionBtn).setVisibility(View.VISIBLE);
-                    Objects.requireNonNull(actionBtn).setText("UPDATE");
                     Objects.requireNonNull(actionBtn).setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_update2, 0);
                     actionBtn.setOnClickListener(v -> fragmentItemClicked.onContentDownloadClicked(contentTable,
                             position, 0, "" + FC_Constants.FULL_DOWNLOAD));
                 } else {
                     int size = Objects.requireNonNull(contentTable.getNodelist()).size() - 1;
                     int sizeRes = contentTable.getNodelist().size() - 2;
-                    Objects.requireNonNull(btnMore).setText("SEE ALL " + sizeRes);
+                    Objects.requireNonNull(btnMore).setText("ALL " + sizeRes);
                     btnMore.setVisibility(View.GONE);
                     if (size > 6) {
                         btnMore.setVisibility(View.VISIBLE);
@@ -81,7 +80,7 @@ public class FragmentOuterViewHolder extends RecyclerView.ViewHolder {
             } else {
                 int size = Objects.requireNonNull(contentTable.getNodelist()).size() - 1;
                 int sizeRes = contentTable.getNodelist().size() - 2;
-                Objects.requireNonNull(btnMore).setText("SEE ALL " + sizeRes);
+                Objects.requireNonNull(btnMore).setText("ALL " + sizeRes);
                 btnMore.setVisibility(View.GONE);
                 if (size > 6) {
                     btnMore.setVisibility(View.VISIBLE);

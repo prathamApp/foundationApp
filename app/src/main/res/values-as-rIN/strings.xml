@@ -1,7 +1,7 @@
 <?xml version="1.0" ?>
 <resources>
     <string name="Login">লগ ইন</string>
-    <string name="Stt_Dialog_Msg">উন্নত প্ৰদৰ্শনৰ বাবে, অনুগ্ৰহ কৰি অফলাইন ভাষাপেক English(India) আৰু हिंदी(भारत) ডাউনলোড কৰক।</string>
+    <string name="Stt_Dialog_Msg">উন্নত প্ৰদৰ্শনৰ বাবে, অনুগ্ৰহ কৰি অফলাইন ভাষাপেক English(India) আৰু हिंदी(भारत) ডাউনলোড কৰক।\n\nOpen\nGoogle -> Settings -> Voice -> Offline speech recognition</string>
     <string name="Okay">ঠিক আছে</string>
     <string name="Skip">আগবাঢ়ক</string>
     <string name="loding_please_wait">লোড হৈ আছে অনুগ্ৰহ কৰি অপেক্ষা কৰক...</string>
@@ -118,11 +118,11 @@
     <string name="lang_pack">অফলাইন ভাষাৰ পেক</string>
     <string name="free_space">খালি ঠাই</string>
     <string name="curr_lang">বৰ্তমান ভাষা</string>
-    <string name="Sync_Time">চিঙ্কৰ সময়</string>
-    <string name="Data_synced">চিঙ্ক কৰা তথ্য</string>
+    <string name="Sync_Time">চিঙ্কৰ সময় : </string>
+    <string name="Data_synced">চিঙ্ক কৰা তথ্য : </string>
     <string name="Certificate_synced">চিঙ্ক কৰি থোৱা প্ৰমাণপত্ৰ/চাৰ্টিফিকেট</string>
-    <string name="Enrollment_synced">পাঠ্যক্ৰমৰ তালিকাভুক্তি কৰক :</string>
-    <string name="Media_synced">চিঙ্ক কৰি থোৱা মিডিয়া</string>
+    <string name="Enrollment_synced">পাঠ্যক্ৰমৰ তালিকাভুক্তি কৰক : </string>
+    <string name="Media_synced">চিঙ্ক কৰি থোৱা মিডিয়া : </string>
     <string name="Media_failed">মিডিয়া বিফল হল</string>
     <string name="data_pushed_successfully">তথ্য সফলতাৰে প্ৰেৰণ /পুছ কৰা হৈছে।</string>
     <string name="Score_Count">স্কৰ গণনা</string>

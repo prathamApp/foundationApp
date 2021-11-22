@@ -56,6 +56,9 @@ public interface StudentDao {
     @Query("select * from Student where newFlag = 0")
     List<Student> getAllNewStudents();
 
+    @Query("select * from Student where LastName =:enrollment_id")
+    Student getStudentByEnrollmentId(String enrollment_id);
+
     @Query("update Student set newFlag=0 where newFlag = 1")
     void setNewStudentsToOld();
 

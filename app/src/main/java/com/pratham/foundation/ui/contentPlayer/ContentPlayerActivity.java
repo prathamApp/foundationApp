@@ -1,5 +1,8 @@
 package com.pratham.foundation.ui.contentPlayer;
 
+import static com.pratham.foundation.ApplicationClass.BackBtnSound;
+import static com.pratham.foundation.utility.FC_Constants.INFO_CLICKED;
+
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
@@ -24,6 +27,7 @@ import com.pratham.foundation.interfaces.ShowInstruction;
 import com.pratham.foundation.modalclasses.EventMessage;
 import com.pratham.foundation.modalclasses.ScoreEvent;
 import com.pratham.foundation.services.shared_preferences.FastSave;
+import com.pratham.foundation.ui.contentPlayer.sequenceLayout.SequenceLayout;
 import com.pratham.foundation.ui.contentPlayer.sequenceLayout.SequenceLayout_;
 import com.pratham.foundation.utility.FC_Constants;
 import com.pratham.foundation.utility.FC_Utility;
@@ -38,9 +42,6 @@ import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.Objects;
-
-import static com.pratham.foundation.ApplicationClass.BackBtnSound;
-import static com.pratham.foundation.utility.FC_Constants.INFO_CLICKED;
 
 
 @EActivity(R.layout.activity_content_player)
@@ -107,7 +108,7 @@ public class ContentPlayerActivity extends BaseActivity implements ShowInstructi
         bundle.putString("title", title);
         bundle.putBoolean("onSdCard", onSdCard);
         FC_Utility.showFragment(ContentPlayerActivity.this, new SequenceLayout_(), R.id.RL_CPA,
-                bundle, SequenceLayout_.class.getSimpleName());
+                bundle, SequenceLayout.class.getSimpleName());
     }
 
     @UiThread
@@ -171,7 +172,7 @@ public class ContentPlayerActivity extends BaseActivity implements ShowInstructi
         } catch (IllegalStateException e) {
             e.printStackTrace();
         }
-        Fragment fragment = getSupportFragmentManager().findFragmentByTag(SequenceLayout_.class.getSimpleName());
+        Fragment fragment = getSupportFragmentManager().findFragmentByTag(SequenceLayout.class.getSimpleName());
         if (fragment != null && fragment.isVisible())
             finish();
         else
@@ -199,7 +200,7 @@ public class ContentPlayerActivity extends BaseActivity implements ShowInstructi
         dia_btn_green.setOnClickListener(v -> {
             dialog.dismiss();
             //if backpress when game list is shown then finish activity othewise popbackstack all fragmets Exclusive (sequence fdragment)
-            Fragment fragment = getSupportFragmentManager().findFragmentByTag(SequenceLayout_.class.getSimpleName());
+            Fragment fragment = getSupportFragmentManager().findFragmentByTag(SequenceLayout.class.getSimpleName());
             if (fragment != null && fragment.isVisible()) {
                 finish();
             } else {
@@ -208,20 +209,20 @@ public class ContentPlayerActivity extends BaseActivity implements ShowInstructi
                     ((OnGameClose) f).gameClose();
                 }
                 //if game opened from test
-   /*             if (FastSave.getInstance().getString(APP_SECTION, "").equalsIgnoreCase(sec_Test)) {
+                if (FastSave.getInstance().getString("APP_SECTION", "").equalsIgnoreCase("sec_Test")) {
                     if (f.getActivity() instanceof ContentPlayerActivity) {
                         finish();
                     } else {
                         getSupportFragmentManager().popBackStack(SequenceLayout_.class.getSimpleName(), 0);
                     }
-                } else*/ if (testcall != null && testcall.equalsIgnoreCase(FC_Constants.INDIVIDUAL_MODE)) {
+                } else if (testcall != null && testcall.equalsIgnoreCase(FC_Constants.INDIVIDUAL_MODE)) {
                     if (Objects.requireNonNull(f).getActivity() instanceof ContentPlayerActivity) {
                         finish();
                     } else {
-                        getSupportFragmentManager().popBackStack(SequenceLayout_.class.getSimpleName(), 0);
+                        getSupportFragmentManager().popBackStack(SequenceLayout.class.getSimpleName(), 0);
                     }
                 } else {
-                    getSupportFragmentManager().popBackStack(SequenceLayout_.class.getSimpleName(), 0);
+                    getSupportFragmentManager().popBackStack(SequenceLayout.class.getSimpleName(), 0);
                 }
             }
 

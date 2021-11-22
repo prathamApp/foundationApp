@@ -1,5 +1,7 @@
 package com.pratham.foundation.async;
 
+import static com.pratham.foundation.ApplicationClass.BUILD_DATE;
+
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Color;
@@ -25,6 +27,8 @@ import com.pratham.foundation.customView.display_image_dialog.CustomLodingDialog
 import com.pratham.foundation.database.AppDatabase;
 import com.pratham.foundation.database.BackupDatabase;
 import com.pratham.foundation.database.domain.FilePushResponse;
+import com.pratham.foundation.database.domain.Modal_Log;
+import com.pratham.foundation.services.shared_preferences.FastSave;
 import com.pratham.foundation.utility.FC_Constants;
 import com.pratham.foundation.utility.FC_RandomString;
 import com.pratham.foundation.utility.FC_Utility;
@@ -32,6 +36,7 @@ import com.pratham.foundation.utility.FC_Utility;
 import org.androidannotations.annotations.Background;
 import org.androidannotations.annotations.EBean;
 import org.androidannotations.annotations.UiThread;
+import org.json.JSONObject;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
@@ -48,14 +53,17 @@ import java.util.zip.ZipOutputStream;
 public class PushDataBaseZipToServer {
 
     private Context context;
-    private boolean pushSuccessfull = false, pushImageSuccessfull = false, showUi = false;
+    private boolean pushSuccessfull = false;
+    private final boolean pushImageSuccessfull = false;
+    private boolean showUi = false;
     CustomLodingDialog pushDialog;
     LottieAnimationView push_lottie;
     TextView txt_push_dialog_msg;
     TextView txt_push_error;
     RelativeLayout rl_btn;
     Button ok_btn, eject_btn;
-    private int BUFFER = 10000;
+    String syncTime="";
+    private final int BUFFER = 10000;
 
 
     public PushDataBaseZipToServer(Context context) {
@@ -81,6 +89,24 @@ public class PushDataBaseZipToServer {
             try {
                 setMainTextToDialog(context.getResources().getString(R.string.Collecting_Data));
                 pushSuccessfull = false;
+                FastSave.getInstance().saveString(FC_Constants.PUSH_ID_LOGS, ""+FC_Utility.getUUID());
+                try {
+                    syncTime = FC_Utility.getCurrentDateTime();
+                    Modal_Log log = new Modal_Log();
+                    log.setCurrentDateTime(syncTime);
+                    log.setErrorType(" ");
+                    log.setExceptionMessage("DB_ZIP_Push");
+                    log.setMethodName(""+FastSave.getInstance().getString(FC_Constants.PUSH_ID_LOGS, "na"));
+                    log.setMethodName(""+FastSave.getInstance().getString(FC_Constants.PUSH_ID_LOGS, "na"));
+                    log.setSessionId("" + FastSave.getInstance().getString(FC_Constants.CURRENT_SESSION, ""));
+                    log.setGroupId("");
+                    log.setExceptionStackTrace("APK BUILD DATE : " + BUILD_DATE);
+                    log.setDeviceId("" + FC_Utility.getDeviceID());
+                    AppDatabase.getDatabaseInstance(context).getLogsDao().insertLog(log);
+                    BackupDatabase.backup(context);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
                 //Checks if device is connected to wifi
                 pushDataToServer(context, FC_Constants.DB_ZIP_PUSH_API);
             } catch (Exception e) {
@@ -196,7 +222,7 @@ public class PushDataBaseZipToServer {
 
                 if (ApplicationClass.wiseF.isDeviceConnectedToSSID(FC_Constants.PRATHAM_RASPBERRY_PI)) {
 
-                    AndroidNetworking.upload(FC_Constants.uploadDataUrl_PI)
+                    AndroidNetworking.upload(FC_Constants.uploadDataBaseUrl_PI)
                             .addHeaders("Content-Type", "file/zip")
                             .addMultipartFile("uploaded_file", new File(filePathStr + ".zip"))
                             .setPriority(Priority.HIGH)
@@ -267,6 +293,9 @@ public class PushDataBaseZipToServer {
     //Method shows success dialog
     @UiThread
     public void setDataPushSuccessfull() {
+        AppDatabase.getDatabaseInstance(context).getLogsDao().setPushStatus(FC_Constants.SUCCESSFULLYPUSHED_DB,
+                FastSave.getInstance().getString(FC_Constants.PUSH_ID_LOGS, ""));
+        saveDataSyncLog();
         if (showUi) {
             setMainTextToDialog(context.getResources().getString(R.string.DB_Zip_pushed_successfully));
             ok_btn.setText(context.getResources().getString(R.string.Okay));
@@ -282,10 +311,28 @@ public class PushDataBaseZipToServer {
         }
     }
 
+    @SuppressLint("SetTextI18n")
+    @UiThread
+    public void setRedColorMainTextToDialog() {
+        if (showUi)
+            txt_push_dialog_msg.setTextColor(context.getResources().getColor(R.color.colorBtnRedDark));
+    }
+
+    @SuppressLint("SetTextI18n")
+    @UiThread
+    public void setGreenColorMainTextToDialog() {
+        if (showUi)
+            txt_push_dialog_msg.setTextColor(context.getResources().getColor(R.color.colorBtnGreenDark));
+    }
+
     //Method shows failure dialog
     @UiThread
     public void setDataPushFailed() {
+        AppDatabase.getDatabaseInstance(context).getLogsDao().setPushStatus(FC_Constants.PUSHFAILED_DB,
+                FastSave.getInstance().getString(FC_Constants.PUSH_ID_LOGS, ""));
+        saveDataSyncLog();
         if (showUi) {
+            setRedColorMainTextToDialog();
             setMainTextToDialog(context.getResources().getString(R.string.OOPS));
             setSubTextToDialog(context.getResources().getString(R.string.DB_Zip_pushed_failed));
             push_lottie.setAnimation("error_cross.json");
@@ -293,6 +340,39 @@ public class PushDataBaseZipToServer {
             ok_btn.setText(context.getResources().getString(R.string.Okay));
             ok_btn.setVisibility(View.VISIBLE);
         }
+    }
+
+    public void saveDataSyncLog(){
+        int totalScoreCount, totalSuccessfullScorePush, totalImgCount, totalSuccessfulImgCount, totalCourses, totalCoursesSuccessful;
+
+        totalSuccessfullScorePush = AppDatabase.getDatabaseInstance(context).getScoreDao().getTotalSuccessfullScorePush();
+        totalScoreCount = AppDatabase.getDatabaseInstance(context).getScoreDao().getTotalScoreCount();
+
+/*        totalSuccessfulImgCount = AppDatabase.getDatabaseInstance(context).getScoreDao().getTotalSuccessfullImageScorePush();
+        totalImgCount = AppDatabase.getDatabaseInstance(context).getScoreDao().getTotalImageScorePush();*/
+
+        totalCoursesSuccessful = AppDatabase.getDatabaseInstance(context).getCourseDao().getAllSuccessfulCourses();
+        totalCourses = AppDatabase.getDatabaseInstance(context).getCourseDao().getAllCourses();
+
+        try {
+            JSONObject pushStatusJson = null;
+            pushStatusJson = new JSONObject();
+            pushStatusJson.put(FC_Constants.SYNC_TIME, syncTime);
+            pushStatusJson.put(FC_Constants.SYNC_COURSE_ENROLLMENT_LENGTH, "0");
+            pushStatusJson.put(FC_Constants.SYNC_DATA_LENGTH, "0");
+            pushStatusJson.put(FC_Constants.SYNC_MEDIA_LENGTH, "0");
+            pushStatusJson.put("ScoreTable", totalSuccessfullScorePush+"/"+totalScoreCount);
+            pushStatusJson.put("MediaCount", "0/0");
+            pushStatusJson.put("CoursesCount", totalCoursesSuccessful+"/"+totalCourses);
+
+            Log.d("PushData", "pushStatusJson JSON : " + pushStatusJson.toString());
+            AppDatabase.getDatabaseInstance(context).getLogsDao().setPushDataLog(pushStatusJson.toString(),
+                    FastSave.getInstance().getString(FC_Constants.PUSH_ID_LOGS, ""));
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
     }
 
 }

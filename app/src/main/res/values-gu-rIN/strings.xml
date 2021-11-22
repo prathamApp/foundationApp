@@ -1,7 +1,7 @@
 <?xml version="1.0" ?>
 <resources>
     <string name="Login">લૉગિન કરો</string>
-    <string name="Stt_Dialog_Msg">સારા પ્રદર્શન માટે કૃપા કરીને ઑફલાઈન ભાષા પૅક English(India) અને हिंदी(भारत) ડાઉનલોડ કરો.</string>
+    <string name="Stt_Dialog_Msg">સારા પ્રદર્શન માટે કૃપા કરીને ઑફલાઈન ભાષા પૅક English(India) અને हिंदी(भारत) ડાઉનલોડ કરો.\n\nOpen\nGoogle -> Settings -> Voice -> Offline speech recognition</string>
     <string name="Okay">બરાબર છે</string>
     <string name="Skip">છોડીને આગળ વધો</string>
     <string name="loding_please_wait">લોડીંગ થઇ રહ્યું છે, કૃપા કરીને પ્રતિક્ષા કરો...</string>
@@ -119,14 +119,14 @@
     <string name="free_space">ખાલી જગ્યા</string>
     <string name="curr_lang">વર્તમાન ભાષા :</string>
     <string name="Sync_Time">સિંકનો સમય :</string>
-    <string name="Data_synced">સિંક કરેલ ડેટા:</string>
-    <string name="Certificate_synced">સિંક કરેલ પ્રમાણપત્ર :</string>
-    <string name="Enrollment_synced">નોંધાયેલ અભ્યાસક્રમો સિંક થઇ ગયાં :</string>
+    <string name="Data_synced">સિંક કરેલ ડેટા : </string>
+    <string name="Certificate_synced">સિંક કરેલ પ્રમાણપત્ર : </string>
+    <string name="Enrollment_synced">નોંધાયેલ અભ્યાસક્રમો સિંક થઇ ગયાં : </string>
     <string name="Media_synced">સિંક કરેલ મીડિયા :</string>
-    <string name="Media_failed">મીડિયા નિષ્ફળ</string>
+    <string name="Media_failed">મીડિયા નિષ્ફળ : </string>
     <string name="data_pushed_successfully">ડેટા સફળતાપૂર્વક મોકલાઈ ગયાં</string>
-    <string name="Score_Count">સ્કોરની ગણતરી :</string>
-    <string name="Certificate_Count">પ્રમાણપત્રની ગણતરી :</string>
+    <string name="Score_Count">સ્કોરની ગણતરી : </string>
+    <string name="Certificate_Count">પ્રમાણપત્રની ગણતરી : </string>
     <string name="Now_Upload_Media">હવે, મીડિયા અપલોડ કરો...</string>
     <string name="OOPS">અરેરે...</string>
     <string name="Data_pushed_failed">ડેટા મોકલવામાં નિષ્ફળ</string>

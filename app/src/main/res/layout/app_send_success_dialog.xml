@@ -1,17 +1,32 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout android:layout_width="@dimen/_200sdp"
+<RelativeLayout android:layout_width="@dimen/_220sdp"
     android:layout_height="wrap_content"
     android:layout_gravity="center"
     android:background="@drawable/dialog_bg"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:android="http://schemas.android.com/apk/res/android">
 
+    <com.pratham.foundation.customView.fontsview.SansTextView
+        android:id="@+id/txt_date"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/_5sdp"
+        android:paddingStart="@dimen/_5sdp"
+        android:paddingEnd="@dimen/_5sdp"
+        android:textAlignment="center"
+        android:layout_centerHorizontal="true"
+        android:text=""
+        android:textColor="@color/charcoal"
+        android:textSize="@dimen/_10sdp"
+        android:visibility="visible" />
+
     <com.airbnb.lottie.LottieAnimationView
         android:id="@+id/push_lottie"
         android:layout_centerHorizontal="true"
         android:layout_width="@dimen/_80sdp"
         android:layout_height="@dimen/_80sdp"
-        android:layout_marginTop="@dimen/_20sdp"
+        android:layout_below="@+id/txt_date"
+        android:layout_marginTop="@dimen/_2sdp"
         app:lottie_autoPlay="true"
         app:lottie_fileName="loading_new.json"
         app:lottie_loop="true" />
@@ -24,17 +39,17 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-    <com.pratham.foundation.customView.fontsview.SansTextViewBold
-        android:id="@+id/txt_push_dialog_msg"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:paddingStart="@dimen/_5sdp"
-        android:paddingEnd="@dimen/_5sdp"
-        android:textAlignment="center"
-        android:layout_centerHorizontal="true"
-        android:text="@string/Please_wait_pushing_Data"
-        android:textColor="@color/colorSignBoard"
-        android:textSize="@dimen/_12sdp" />
+        <com.pratham.foundation.customView.fontsview.SansTextViewBold
+            android:id="@+id/txt_push_dialog_msg"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:paddingStart="@dimen/_5sdp"
+            android:paddingEnd="@dimen/_5sdp"
+            android:text="@string/Please_wait_pushing_Data"
+            android:textAlignment="center"
+            android:textColor="@color/colorSignBoard"
+            android:textSize="@dimen/_18sdp" />
 
     <com.pratham.foundation.customView.fontsview.SansTextViewBold
         android:id="@+id/txt_push_error"
@@ -42,6 +57,7 @@
         android:layout_height="wrap_content"
         android:paddingStart="@dimen/_5sdp"
         android:paddingEnd="@dimen/_5sdp"
+        android:paddingTop="@dimen/_3sdp"
         android:layout_below="@+id/txt_push_dialog_msg"
         android:textAlignment="center"
         android:layout_centerHorizontal="true"
@@ -59,42 +75,42 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content">
 
-    <com.pratham.foundation.customView.fontsview.SansButton
-        android:id="@+id/ok_btn"
-        android:layout_width="@dimen/_80sdp"
-        android:layout_height="wrap_content"
-        android:text="@string/Okay"
-        android:visibility="visible"
-        android:background="@drawable/button_green"
-        android:layout_marginBottom="@dimen/_15sdp"
-        android:paddingTop="@dimen/_8sdp"
-        android:paddingBottom="@dimen/_8sdp"
-        android:layout_marginStart="@dimen/_3sdp"
-        android:layout_marginEnd="@dimen/_3sdp"
-        android:paddingStart="@dimen/_10sdp"
-        android:paddingEnd="@dimen/_10sdp"
-        android:elevation="@dimen/_5sdp"
-        android:textColor="@color/white"
-        android:textSize="@dimen/_10sdp"/>
+        <com.pratham.foundation.customView.fontsview.SansButton
+            android:id="@+id/ok_btn"
+            android:layout_width="@dimen/_80sdp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/_3sdp"
+            android:layout_marginEnd="@dimen/_3sdp"
+            android:layout_marginBottom="@dimen/_15sdp"
+            android:background="@drawable/button_green"
+            android:elevation="@dimen/_5sdp"
+            android:paddingStart="@dimen/_10sdp"
+            android:paddingTop="@dimen/_8sdp"
+            android:paddingEnd="@dimen/_10sdp"
+            android:paddingBottom="@dimen/_8sdp"
+            android:text="@string/Okay"
+            android:textColor="@color/white"
+            android:textSize="@dimen/_10sdp"
+            android:visibility="visible" />
 
-    <com.pratham.foundation.customView.fontsview.SansButton
-        android:id="@+id/eject_btn"
-        android:layout_width="@dimen/_80sdp"
-        android:layout_height="wrap_content"
-        android:text="@string/Eject_OTG"
-        android:visibility="visible"
-        android:background="@drawable/button_red"
-        android:layout_marginBottom="@dimen/_15sdp"
-        android:paddingTop="@dimen/_8sdp"
-        android:paddingBottom="@dimen/_8sdp"
-        android:layout_marginStart="@dimen/_3sdp"
-        android:layout_marginEnd="@dimen/_3sdp"
-        android:paddingStart="@dimen/_10sdp"
-        android:paddingEnd="@dimen/_10sdp"
-        android:elevation="@dimen/_5sdp"
-        android:textColor="@color/white"
-        android:textSize="@dimen/_10sdp"
-        android:layout_toEndOf="@id/ok_btn"
-        android:layout_centerHorizontal="true"/>
+        <com.pratham.foundation.customView.fontsview.SansButton
+            android:id="@+id/eject_btn"
+            android:layout_width="@dimen/_80sdp"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_marginStart="@dimen/_3sdp"
+            android:layout_marginEnd="@dimen/_3sdp"
+            android:layout_marginBottom="@dimen/_15sdp"
+            android:layout_toEndOf="@id/ok_btn"
+            android:background="@drawable/button_red"
+            android:elevation="@dimen/_5sdp"
+            android:paddingStart="@dimen/_10sdp"
+            android:paddingTop="@dimen/_8sdp"
+            android:paddingEnd="@dimen/_10sdp"
+            android:paddingBottom="@dimen/_8sdp"
+            android:text="@string/Eject_OTG"
+            android:textColor="@color/white"
+            android:textSize="@dimen/_10sdp"
+            android:visibility="visible" />
     </RelativeLayout>
 </RelativeLayout>

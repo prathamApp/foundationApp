@@ -1,5 +1,20 @@
 package com.pratham.foundation.ui.app_home.display_content;
 
+import static com.pratham.foundation.ApplicationClass.App_Thumbs_Path;
+import static com.pratham.foundation.ApplicationClass.BackBtnSound;
+import static com.pratham.foundation.ApplicationClass.ButtonClickSound;
+import static com.pratham.foundation.ApplicationClass.fileDownloadingList;
+import static com.pratham.foundation.ui.app_home.HomeActivity.languageChanged;
+import static com.pratham.foundation.utility.FC_Constants.DOWNLOAD_NODE_ID;
+import static com.pratham.foundation.utility.FC_Constants.GROUP_MODE;
+import static com.pratham.foundation.utility.FC_Constants.IS_DOWNLOADING;
+import static com.pratham.foundation.utility.FC_Constants.QR_GROUP_MODE;
+import static com.pratham.foundation.utility.FC_Constants.currentLevel;
+import static com.pratham.foundation.utility.FC_Constants.currentSubjectFolder;
+import static com.pratham.foundation.utility.FC_Constants.gameFolderPath;
+import static com.pratham.foundation.utility.FC_Utility.dpToPx;
+import static com.pratham.foundation.utility.FC_Utility.get12HrTime;
+
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.graphics.Color;
@@ -78,21 +93,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
-
-import static com.pratham.foundation.ApplicationClass.App_Thumbs_Path;
-import static com.pratham.foundation.ApplicationClass.BackBtnSound;
-import static com.pratham.foundation.ApplicationClass.ButtonClickSound;
-import static com.pratham.foundation.ApplicationClass.fileDownloadingList;
-import static com.pratham.foundation.ui.app_home.HomeActivity.languageChanged;
-import static com.pratham.foundation.utility.FC_Constants.DOWNLOAD_NODE_ID;
-import static com.pratham.foundation.utility.FC_Constants.GROUP_MODE;
-import static com.pratham.foundation.utility.FC_Constants.IS_DOWNLOADING;
-import static com.pratham.foundation.utility.FC_Constants.QR_GROUP_MODE;
-import static com.pratham.foundation.utility.FC_Constants.currentLevel;
-import static com.pratham.foundation.utility.FC_Constants.currentSubjectFolder;
-import static com.pratham.foundation.utility.FC_Constants.gameFolderPath;
-import static com.pratham.foundation.utility.FC_Utility.dpToPx;
-import static com.pratham.foundation.utility.FC_Utility.get12HrTime;
 
 
 @EActivity(R.layout.activity_content_display)
@@ -264,6 +264,13 @@ public class ContentDisplay extends BaseActivity implements ContentContract.Cont
                         | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
         );
     }
+
+    @UiThread
+    @Click({R.id.iv_refresh, R.id.refresh_shd})
+    public void levelRefresh() {
+        onResume();
+    }
+
 
     @Override
     protected void onResume() {
@@ -667,19 +674,21 @@ public class ContentDisplay extends BaseActivity implements ContentContract.Cont
                 intent1.putExtra("resId", ContentTableList.get(position).getResourceId());
                 intent1.putExtra("contentName", ContentTableList.get(position).getNodeTitle());
                 intent1.putExtra("onSdCard", ContentTableList.get(position).isOnSDCard());
+                intent1.putExtra("dia", "NA");
                 startActivity(intent1);
             } else if (ContentTableList.get(position).getResourceType().equalsIgnoreCase("PDF_ZOOM")
                     || ContentTableList.get(position).getResourceType().equalsIgnoreCase("PDF_new")) {
                 String sdStatus = "F";
                 if (ContentTableList.get(position).isOnSDCard())
                     sdStatus = "T";
-//                Intent intent1 = new Intent(context, Fragment_PdfViewer_.class);
+//                Intent intent1 = new Intent(this, Fragment_PdfViewer_.class);
                 Intent intent1 = new Intent(this, PDFViewActivity_.class);
                 intent1.putExtra("contentPath", ContentTableList.get(position).getResourcePath());
                 intent1.putExtra("StudentID", FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""));
                 intent1.putExtra("resId", ContentTableList.get(position).getResourceId());
                 intent1.putExtra("contentName", ContentTableList.get(position).getNodeTitle());
                 intent1.putExtra("onSdCard", ContentTableList.get(position).isOnSDCard());
+                intent1.putExtra("dia", "NA");
                 startActivity(intent1);
             } else {
                 String sdStatus = "F";

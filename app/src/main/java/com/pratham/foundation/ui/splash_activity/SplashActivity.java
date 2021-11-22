@@ -1,5 +1,12 @@
 package com.pratham.foundation.ui.splash_activity;
 
+import static com.pratham.foundation.ApplicationClass.contentExistOnSD;
+import static com.pratham.foundation.ApplicationClass.isAssets;
+import static com.pratham.foundation.utility.FC_Constants.BOTTOM_FRAGMENT_CLOSED;
+import static com.pratham.foundation.utility.FC_Constants.CURRENT_VERSION;
+import static com.pratham.foundation.utility.FC_Constants.IS_SERVICE_STOPED;
+import static com.pratham.foundation.utility.FC_Constants.SPLASH_OPEN;
+
 import android.annotation.SuppressLint;
 import android.app.ActivityManager;
 import android.app.AlertDialog;
@@ -15,6 +22,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Environment;
 import android.os.Handler;
+import android.provider.Settings;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Gravity;
@@ -33,7 +41,6 @@ import com.pratham.foundation.modalclasses.EventMessage;
 import com.pratham.foundation.services.AppExitService;
 import com.pratham.foundation.services.background_service.BackgroundPushService;
 import com.pratham.foundation.services.shared_preferences.FastSave;
-import com.pratham.foundation.ui.admin_panel.MenuActivity_;
 import com.pratham.foundation.ui.bottom_fragment.BottomStudentsFragment;
 import com.pratham.foundation.ui.bottom_fragment.BottomStudentsFragment_;
 import com.pratham.foundation.utility.FC_Constants;
@@ -48,17 +55,10 @@ import org.androidannotations.annotations.UiThread;
 import org.androidannotations.annotations.ViewById;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
+import org.jetbrains.annotations.Nullable;
 
 import java.io.File;
-import java.io.FileOutputStream;
 import java.util.Objects;
-
-import static com.pratham.foundation.ApplicationClass.contentExistOnSD;
-import static com.pratham.foundation.ApplicationClass.isAssets;
-import static com.pratham.foundation.utility.FC_Constants.BOTTOM_FRAGMENT_CLOSED;
-import static com.pratham.foundation.utility.FC_Constants.CURRENT_VERSION;
-import static com.pratham.foundation.utility.FC_Constants.IS_SERVICE_STOPED;
-import static com.pratham.foundation.utility.FC_Constants.SPLASH_OPEN;
 
 
 @EActivity(R.layout.activity_splash)
@@ -155,6 +155,7 @@ public class SplashActivity extends SplashSupportActivity implements SplashContr
                 PermissionUtils.Manifest_ACCESS_FINE_LOCATION
         };
         //Create Directory if not exists
+/*
         if (!new File(Environment.getExternalStorageDirectory() + "/PrathamBackups").exists()) {
             new File(Environment.getExternalStorageDirectory() + "/PrathamBackups").mkdir();
 //            getApplicationContext().getExternalFilesDir(Environment.getExternalStorageDirectory() + "/PrathamBackups");
@@ -162,6 +163,7 @@ public class SplashActivity extends SplashSupportActivity implements SplashContr
             new File(Environment.getExternalStorageDirectory().toString() + "/.FCAInternal").mkdir();
 //            getApplicationContext().getExternalFilesDir(Environment.getExternalStorageDirectory() + "/PrathamBackups");
         }
+*/
 
         new Handler().postDelayed(() -> {
             if ((Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)) {
@@ -234,60 +236,100 @@ public class SplashActivity extends SplashSupportActivity implements SplashContr
         builder.show();
     }
 
+    int RESULT_MANAGE_STORAGE_CODE = 11;
+
     @UiThread
     @Override
     public void startApp() {
-        //Sets required resolution, language, database and continue the app flow
-//        Toast.makeText(context, "getDataDirectory:  "+Environment.getDataDirectory(), Toast.LENGTH_SHORT).show();
-//        Log.d("getExternal", "getDataDirectory: " +Environment.getDataDirectory());
-//        Log.d("getExternal", "copyDBFile: " +Environment.getDownloadCacheDirectory());
-//        Log.d("getExternal", "copyDBFile: " +Environment.getRootDirectory());
-//        Log.d("getExternal", "copyDBFile: " +Environment.getExternalStorageDirectory());
-//        Log.d("getExternal", "copyDBFile: " +Environment.getExternalStoragePublicDirectory("/KetanTestFolder").getAbsolutePath());
+        if(hasManageExternalStoragePermission()) {
+            FastSave.getInstance().saveString(FC_Constants.CURRENT_SESSION, "NA");
+            DisplayMetrics displayMetrics = new DisplayMetrics();
+            getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
+            int height = displayMetrics.heightPixels;
+            int width = displayMetrics.widthPixels;
+            Configuration config = context.getResources().getConfiguration();
+            String strwidth = String.valueOf(width);
+            String strheight = String.valueOf(height);
+            Log.d("COSLS", "initialize: COSLS - " + strwidth);
 
-//        File file;
-//        file = new File (this.getExternalFilesDir(null) + "/New_KetanTestFolder_11");
-
-        try {
-        File mydir = context.getDir("myNew_KetanTestFolder_46", Context.MODE_PRIVATE); //Creating an internal dir;
-            mydir.mkdirs();
-        File fileWithinMyDir = new File(mydir, "myfile"); //Getting a file within the dir.
-            FileOutputStream out = new FileOutputStream(fileWithinMyDir); //Use the stream as usual to write into the file.
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-/*
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-            file = new File (this.getExternalFilesDir(null) + "/KetanTestFolder 11");
-        } else {
-            file = new File(Environment.getExternalStorageDirectory().getAbsolutePath() + "/KetanTestFolder 10");
-        }
-*/
-//        if (!file.exists()) {
-//            file.mkdirs();
-//        }
-//        if (Build.VERSION.SDK_INT >= 30) {
-//            Log.d("getExternal", "copyDBFile: " +Environment.getStorageDirectory());
-//        }
-        new File(Environment.getExternalStoragePublicDirectory( "/KetanTestFolder")+"").mkdir();
-        new File(Environment.getExternalStorageDirectory().getAbsolutePath()+ "/KetanTestFolder2").mkdir();
-        FastSave.getInstance().saveString(FC_Constants.CURRENT_SESSION, "NA");
-        DisplayMetrics displayMetrics = new DisplayMetrics();
-        getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
-        int height = displayMetrics.heightPixels;
-        int width = displayMetrics.widthPixels;
-        Configuration config = context.getResources().getConfiguration();
-        String strwidth = String.valueOf(width);
-        String strheight = String.valueOf(height);
-        Log.d("COSLS", "initialize: COSLS - " + strwidth);
-
-        String resolution = strwidth + "px x " + strheight + "px (" + config.densityDpi + " dpi)";
-        FastSave.getInstance().saveString(FC_Constants.SCR_RES, "" + resolution);
-        FastSave.getInstance().saveString(FC_Constants.LANGUAGE, FC_Constants.HINDI);
+            String resolution = strwidth + "px x " + strheight + "px (" + config.densityDpi + " dpi)";
+            FastSave.getInstance().saveString(FC_Constants.SCR_RES, "" + resolution);
+            FastSave.getInstance().saveString(FC_Constants.LANGUAGE, FC_Constants.HINDI);
 //        setAppLocal(this, FC_Constants.HINDI);
-        FastSave.getInstance().saveBoolean(IS_SERVICE_STOPED, false);
-        splashPresenter.createDatabase();
+            FastSave.getInstance().saveBoolean(IS_SERVICE_STOPED, false);
+            splashPresenter.createDatabase();
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+//        if(requestCode!=null)
+        if (requestCode == RESULT_MANAGE_STORAGE_CODE) {
+            if (Build.VERSION.SDK_INT  >= Build.VERSION_CODES.Q) {
+                if (Environment.isExternalStorageManager()) {
+                    // perform action when allow permission success
+                    // Toast.makeText(this, "qqq Allow permission ", Toast.LENGTH_SHORT).show();
+                    FastSave.getInstance().saveString(FC_Constants.CURRENT_SESSION, "NA");
+                    DisplayMetrics displayMetrics = new DisplayMetrics();
+                    getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
+                    int height = displayMetrics.heightPixels;
+                    int width = displayMetrics.widthPixels;
+                    Configuration config = context.getResources().getConfiguration();
+                    String strwidth = String.valueOf(width);
+                    String strheight = String.valueOf(height);
+                    Log.d("COSLS", "initialize: COSLS - " + strwidth);
+
+                    String resolution = strwidth + "px x " + strheight + "px (" + config.densityDpi + " dpi)";
+                    FastSave.getInstance().saveString(FC_Constants.SCR_RES, "" + resolution);
+                    FastSave.getInstance().saveString(FC_Constants.LANGUAGE, FC_Constants.HINDI);
+//        setAppLocal(this, FC_Constants.HINDI);
+                    FastSave.getInstance().saveBoolean(IS_SERVICE_STOPED, false);
+                    splashPresenter.createDatabase();
+                } else {
+                    //Toast.makeText(this, "Allow permission for storage access!", Toast.LENGTH_SHORT).show();
+                    startApp();
+                }
+            }
+        }
+    }
+
+    public boolean hasManageExternalStoragePermission() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+            if (Environment.isExternalStorageManager()) {
+                return true;
+            } else {
+                if (Environment.isExternalStorageLegacy()) {
+                    return true;
+                }
+                try {
+                    Intent intent = new Intent();
+                    intent.setAction(Settings.ACTION_MANAGE_APP_ALL_FILES_ACCESS_PERMISSION);
+                    intent.addCategory("android.intent.category.DEFAULT");
+                    intent.setData(Uri.parse(String.format("package:%s",getApplicationContext().getPackageName())));
+                    startActivityForResult(intent, RESULT_MANAGE_STORAGE_CODE); //result code is just an int
+                    return false;
+                } catch (Exception e) {
+                    return false;
+                }
+            }
+        }
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+            if (Environment.isExternalStorageLegacy()) {
+                return true;
+            } else {
+                try {
+                    Intent intent = new Intent();
+                    intent.setAction(Settings.ACTION_MANAGE_APP_ALL_FILES_ACCESS_PERMISSION);
+                    intent.setData(Uri.parse(String.format("package:%s",getApplicationContext().getPackageName())));
+                    startActivityForResult(intent, RESULT_MANAGE_STORAGE_CODE); //result code is just an int
+                    return false;
+                } catch (Exception e) {
+                    return true; //if anything needs adjusting it would be this
+                }
+            }
+        }
+        return true; // assumed storage permissions granted
     }
 
     Intent mServiceIntent;
@@ -355,6 +397,7 @@ public class SplashActivity extends SplashSupportActivity implements SplashContr
                 if (bgMusic != null && bgMusic.isPlaying()) {
                     bgMusic.setLooping(false);
                     bgMusic.stop();
+                    bgMusic.reset();
                     bgMusic.release();
                 }
             } catch (Exception e) {
@@ -366,6 +409,7 @@ public class SplashActivity extends SplashSupportActivity implements SplashContr
                 if (bgMusic != null && bgMusic.isPlaying()) {
                     bgMusic.setLooping(false);
                     bgMusic.stop();
+                    bgMusic.reset();
                     bgMusic.release();
                 }
             } catch (Exception e) {
@@ -430,6 +474,7 @@ public class SplashActivity extends SplashSupportActivity implements SplashContr
 
     @Override
     public void permissionForeverDenied() {
+        startApp();
     }
 
     @Override
@@ -499,56 +544,55 @@ public class SplashActivity extends SplashSupportActivity implements SplashContr
             if (!FastSave.getInstance().getBoolean(FC_Constants.VOICES_DOWNLOAD_INTENT, false))
                 show_STT_Dialog();
             else {
-                if (!fragmentBottomOpenFlg)
                     showBottomFragment();
             }
 //            }
-        } else {
-            bgPushService = new BackgroundPushService();
-            mServiceIntent = new Intent(this, bgPushService.getClass());
-            if (!isMyServiceRunning(bgPushService.getClass())) {
-                startService(mServiceIntent);
-            }
-            dismissProgressDialog();
-            startActivity(new Intent(this, MenuActivity_.class));
-            finish();
         }
     }
+
+
+    boolean sttOpen = false;
 
     @UiThread
     @Override
     public void show_STT_Dialog() {
         //Allows to download language packages
-//        FastSave.getInstance().saveBoolean(FC_Constants.VOICES_DOWNLOAD_INTENT, true);
-        exitDialog = new BlurPopupWindow.Builder(this)
-                .setContentView(R.layout.lottie_stt_dialog)
-                .bindClickListener(v -> {
-                    Intent intent = new Intent(Intent.ACTION_MAIN);
+        if(!sttOpen) {
+            sttOpen = true;
+            exitDialog = new BlurPopupWindow.Builder(this)
+                    .setContentView(R.layout.lottie_stt_dialog)
+                    .bindClickListener(v -> {
+/*                    Intent intent = new Intent(Intent.ACTION_MAIN);
 //                    intent.setComponent(new ComponentName("com.google.android.googlequicksearchbox",
 //                            "com.google.android.voicesearch.greco3.languagepack.InstallActivity"));
                     intent.setClassName("com.google.android.googlequicksearchbox",
                             "com.google.android.voicesearch.greco3.languagepack.InstallActivity");
                     intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                    startActivity(intent);
-                    new Handler().postDelayed(() -> {
-                        showBottomFragment();
-                        exitDialog.dismiss();
-                    }, 200);
-                }, R.id.dia_btn_ok)
-                .bindClickListener(v -> {
-                    showBottomFragment();
-                    new Handler().postDelayed(() -> {
-                        exitDialog.dismiss();
-                    }, 200);
-                }, R.id.dia_btn_skip)
-                .setGravity(Gravity.CENTER)
-                .setDismissOnTouchBackground(false)
-                .setDismissOnClickBack(false)
-                .setScaleRatio(0.2f)
-                .setBlurRadius(10)
-                .setTintColor(0x30000000)
-                .build();
-        exitDialog.show();
+                    startActivity(intent);*/
+                        new Handler().postDelayed(() -> {
+                            FastSave.getInstance().saveBoolean(FC_Constants.VOICES_DOWNLOAD_INTENT, true);
+                            sttOpen = false;
+                            showBottomFragment();
+                            exitDialog.dismiss();
+                        }, 100);
+                    }, R.id.dia_btn_ok)
+                    .bindClickListener(v -> {
+                        new Handler().postDelayed(() -> {
+                            FastSave.getInstance().saveBoolean(FC_Constants.VOICES_DOWNLOAD_INTENT, true);
+                            sttOpen = false;
+                            showBottomFragment();
+                            exitDialog.dismiss();
+                        }, 100);
+                    }, R.id.dia_btn_skip)
+                    .setGravity(Gravity.CENTER)
+                    .setDismissOnTouchBackground(false)
+                    .setDismissOnClickBack(false)
+                    .setScaleRatio(0.2f)
+                    .setBlurRadius(10)
+                    .setTintColor(0x30000000)
+                    .build();
+            exitDialog.show();
+        }
     }
 
     @SuppressLint("SetTextI18n")
@@ -573,6 +617,7 @@ public class SplashActivity extends SplashSupportActivity implements SplashContr
         EventBus.getDefault().unregister(this);
     }
 
+    int excCount = 0;
     @UiThread
     @Override
     public void showBottomFragment() {
@@ -580,11 +625,14 @@ public class SplashActivity extends SplashSupportActivity implements SplashContr
             fragmentBottomOpenFlg = true;
             firstPause = false;
             dismissProgressDialog();
-            dismissProgressDialog();
             BottomStudentsFragment_ bottomStudentsFragment = new BottomStudentsFragment_();
             bottomStudentsFragment.show(getSupportFragmentManager(), BottomStudentsFragment.class.getSimpleName());
         } catch (Exception e) {
+            fragmentBottomOpenFlg = false;
             e.printStackTrace();
+            excCount++;
+            if(excCount<3)
+                showBottomFragment();
         }
     }
 

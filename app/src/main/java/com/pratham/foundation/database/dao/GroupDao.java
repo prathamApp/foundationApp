@@ -26,6 +26,9 @@ public interface GroupDao {
     @Query("SELECT * FROM Groups WHERE VillageID=:vID ORDER BY GroupName ASC")
     List<Groups> GetGroups(int vID);
 
+    @Query("SELECT VIllageName FROM Groups WHERE GroupId=:gID")
+    String getVillagebyId(String gID);
+
     @Query("SELECT * FROM Groups WHERE GroupId=:gID")
     List<Groups> GetStudentsByGroupId(String gID);
 

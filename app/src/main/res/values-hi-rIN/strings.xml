@@ -1,7 +1,7 @@
 <?xml version="1.0" ?>
 <resources>
     <string name="Login">लॉग इन करें</string>
-    <string name="Stt_Dialog_Msg">बेहतर प्रदर्शन के लिए कृपया ऑफलाइन भाषा पैक English(India) और हिंदी(भारत) डाउनलोड करें।</string>
+    <string name="Stt_Dialog_Msg">बेहतर प्रदर्शन के लिए कृपया ऑफलाइन भाषा पैक English(India) और हिंदी(भारत) डाउनलोड करें।\n\nOpen\nGoogle -> Settings -> Voice -> Offline speech recognition</string>
     <string name="Okay">ठीक है</string>
     <string name="Skip">छोड़कर आगे बढ़े</string>
     <string name="loding_please_wait">लोड हो रहा है कृपया प्रतीक्षा करें...</string>
@@ -118,15 +118,15 @@
     <string name="lang_pack">ऑफलाइन भाषा पैक</string>
     <string name="free_space">खाली जगह</string>
     <string name="curr_lang">वर्तमान भाषा</string>
-    <string name="Sync_Time">सिंक का समय</string>
-    <string name="Data_synced">सिंक किया गया डेटा</string>
-    <string name="Certificate_synced">सिंक किया गया प्रमाणपत्र/सर्टिफिकेट</string>
-    <string name="Enrollment_synced">नामांकित कोर्स सिंक किए गए :</string>
-    <string name="Media_synced">सिंक किया गया मीडिया</string>
-    <string name="Media_failed">मिडिया विफल रहा</string>
+    <string name="Sync_Time">सिंक का समय : </string>
+    <string name="Data_synced">सिंक किया गया डेटा : </string>
+    <string name="Certificate_synced">सिंक किया गया प्रमाणपत्र/सर्टिफिकेट : </string>
+    <string name="Enrollment_synced">नामांकित कोर्स सिंक किए गए : </string>
+    <string name="Media_synced">सिंक किया गया मीडिया : </string>
+    <string name="Media_failed">मिडिया विफल रहा : </string>
     <string name="data_pushed_successfully">डेटा सफलतापूर्वक भेजा/पुश किया गया</string>
-    <string name="Score_Count">स्कोर गणना:</string>
-    <string name="Certificate_Count">प्रमाणपत्र गणना:</string>
+    <string name="Score_Count">स्कोर गणना : </string>
+    <string name="Certificate_Count">प्रमाणपत्र गणना : </string>
     <string name="Now_Upload_Media">अब मीडिया अपलोड करें ...</string>
     <string name="OOPS">ओह ...</string>
     <string name="Data_pushed_failed">डेटा पुश विफल रहा</string>

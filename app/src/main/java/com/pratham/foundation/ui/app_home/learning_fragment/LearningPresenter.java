@@ -1,5 +1,17 @@
 package com.pratham.foundation.ui.app_home.learning_fragment;
 
+import static com.pratham.foundation.ApplicationClass.App_Thumbs_Path;
+import static com.pratham.foundation.ui.app_home.HomeActivity.sub_nodeId;
+import static com.pratham.foundation.utility.FC_Constants.BOTTOM_NODE_PI;
+import static com.pratham.foundation.utility.FC_Constants.CURRENT_STUDENT_ID;
+import static com.pratham.foundation.utility.FC_Constants.INTERNET_LEVEL_PI;
+import static com.pratham.foundation.utility.FC_Constants.PI_BROWSE;
+import static com.pratham.foundation.utility.FC_Constants.PI_BROWSE_SUBLEVEL;
+import static com.pratham.foundation.utility.FC_Constants.RASPBERRY_PI_BROWSE_API;
+import static com.pratham.foundation.utility.FC_Constants.TYPE_FOOTER;
+import static com.pratham.foundation.utility.FC_Constants.TYPE_HEADER;
+import static com.pratham.foundation.utility.FC_Constants.gameFolderPath;
+
 import android.content.Context;
 import android.util.Log;
 
@@ -41,18 +53,6 @@ import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-
-import static com.pratham.foundation.ApplicationClass.App_Thumbs_Path;
-import static com.pratham.foundation.ui.app_home.HomeActivity.sub_nodeId;
-import static com.pratham.foundation.utility.FC_Constants.BOTTOM_NODE_PI;
-import static com.pratham.foundation.utility.FC_Constants.CURRENT_STUDENT_ID;
-import static com.pratham.foundation.utility.FC_Constants.INTERNET_LEVEL_PI;
-import static com.pratham.foundation.utility.FC_Constants.PI_BROWSE;
-import static com.pratham.foundation.utility.FC_Constants.PI_BROWSE_SUBLEVEL;
-import static com.pratham.foundation.utility.FC_Constants.RASPBERRY_PI_BROWSE_API;
-import static com.pratham.foundation.utility.FC_Constants.TYPE_FOOTER;
-import static com.pratham.foundation.utility.FC_Constants.TYPE_HEADER;
-import static com.pratham.foundation.utility.FC_Constants.gameFolderPath;
 
 
 @EBean
@@ -591,7 +591,7 @@ public class LearningPresenter implements LearningContract.LearningPresenter, AP
 //        AppDatabase.getDatabaseInstance(mContext).getContentTableDao().insert(itemContent);
     }
 
-    List<ContentTable> serverContentPIList;
+    List<ContentTable> serverContentPIList, serverContentPIList2;
 
     @Background
     @Override
@@ -625,6 +625,11 @@ public class LearningPresenter implements LearningContract.LearningPresenter, AP
         serverContentPIList.get(pos).setNodelist(serverContentSubList);
         if (pos == size - 1) {
             createFinalList(serverContentPIList);
+        }else{
+            subPos++;
+            api_content.getAPIContent_SubLevel_PI(PI_BROWSE_SUBLEVEL, RASPBERRY_PI_BROWSE_API,
+                    serverContentPIList2.get(subPos).getNodeId(), subPos, serverContentPIList2.size());
+
         }
     }
 
@@ -761,21 +766,21 @@ public class LearningPresenter implements LearningContract.LearningPresenter, AP
 
                 if (header.equalsIgnoreCase(FC_Constants.INTERNET_DOWNLOAD_RESOURCE_PI)) {
                     if (fileName.contains(".zip") || fileName.contains(".rar")) {
-                        String pi_url = FC_Constants.RASP_IP + FC_Constants.RASP_LOCAL_URL + "/zips/" + fileName;
+                        String pi_url = FC_Constants.RASP_IP + FC_Constants.RASP_LOCAL_URL + "zips/" + fileName;
                         zipDownloader.initialize(mContext, pi_url,
                                 download_content.getFoldername(), fileName, dwContent, pos, true);
                     } else {
                         String pi_url = "na";
                         if (fileName.contains(".mp4"))
-                            pi_url = FC_Constants.RASP_IP + FC_Constants.RASP_LOCAL_URL + "/videos/mp4/" + fileName;
+                            pi_url = FC_Constants.RASP_IP + FC_Constants.RASP_LOCAL_URL + "videos/mp4/" + fileName;
                         else if (fileName.contains(".m4v"))
-                            pi_url = FC_Constants.RASP_IP + FC_Constants.RASP_LOCAL_URL + "/videos/m4v/" + fileName;
+                            pi_url = FC_Constants.RASP_IP + FC_Constants.RASP_LOCAL_URL + "videos/m4v/" + fileName;
                         else if (fileName.contains(".mp3"))
-                            pi_url = FC_Constants.RASP_IP + FC_Constants.RASP_LOCAL_URL + "/audios/mp3/" + fileName;
+                            pi_url = FC_Constants.RASP_IP + FC_Constants.RASP_LOCAL_URL + "audios/mp3/" + fileName;
                         else if (fileName.contains(".wav"))
-                            pi_url = FC_Constants.RASP_IP + FC_Constants.RASP_LOCAL_URL + "/audios/wav/" + fileName;
+                            pi_url = FC_Constants.RASP_IP + FC_Constants.RASP_LOCAL_URL + "audios/wav/" + fileName;
                         else /*if (fileName.contains(".pdf"))*/
-                            pi_url = FC_Constants.RASP_IP + FC_Constants.RASP_LOCAL_URL + "/docs/" + fileName;
+                            pi_url = FC_Constants.RASP_IP + FC_Constants.RASP_LOCAL_URL + "docs/" + fileName;
 
                         Log.d("HP", "doInBackground: DW URL : " + pi_url);
 
@@ -783,13 +788,8 @@ public class LearningPresenter implements LearningContract.LearningPresenter, AP
                                 download_content.getFoldername(), fileName, dwContent, pos, false);
                     }
                 } else {
-                    if (fileName.contains(".zip") || fileName.contains(".rar")) {
-                        zipDownloader.initialize(mContext, download_content.getDownloadurl(),
-                                download_content.getFoldername(), fileName, dwContent, pos, true);
-                    } else {
-                        zipDownloader.initialize(mContext, download_content.getDownloadurl(),
-                                download_content.getFoldername(), fileName, dwContent, pos, false);
-                    }
+                    zipDownloader.initialize(mContext, download_content.getDownloadurl(),
+                            download_content.getFoldername(), fileName, dwContent, pos, fileName.contains(".zip") || fileName.contains(".rar"));
 
                 }
 /*
@@ -996,12 +996,15 @@ public class LearningPresenter implements LearningContract.LearningPresenter, AP
         }
     }
 
+    int subPos = 0;
     public void getSubLevels_PI(List<ContentTable> serverContentList) {
         serverContentPIList = serverContentList;
-        for (int i = 0; i < serverContentList.size(); i++) {
+        serverContentPIList2 = serverContentList;
+        subPos = 0;
+//        for (int i = 0; i < serverContentList.size(); i++) {
             api_content.getAPIContent_SubLevel_PI(PI_BROWSE_SUBLEVEL, RASPBERRY_PI_BROWSE_API,
-                    serverContentList.get(i).getNodeId(), i, serverContentList.size());
-        }
+                    serverContentPIList2.get(subPos).getNodeId(), subPos, serverContentList.size());
+//        }
     }
 
     private void createFinalList(List<ContentTable> serverContentList) {

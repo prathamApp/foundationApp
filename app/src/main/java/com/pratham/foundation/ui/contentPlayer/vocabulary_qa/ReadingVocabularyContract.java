@@ -6,10 +6,18 @@ import java.util.List;
 
 public interface ReadingVocabularyContract {
 
+    interface ReadingCateogryClick {
+        void setCategory(String name);
+    }
+
     interface ReadingVocabularyView {
         void setListData(List<ModalVocabulary> wordsDataList);
 
         void sendClikChanger(int i);
+
+        void setCategoryAdapter();
+
+        void setCategoryList(List<String> categoryList);
 
         void setCorrectViewColor();
 
@@ -20,6 +28,8 @@ public interface ReadingVocabularyContract {
         void fetchJsonData(String contentPath, String vocabCategory);
 
         void getDataList();
+
+        void getCategoryList(String selectedCategory);
 
         void getNextDataList();
 

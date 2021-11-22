@@ -1,5 +1,19 @@
 package com.pratham.foundation.utility;
 
+import static android.content.Context.BATTERY_SERVICE;
+import static com.pratham.foundation.utility.FC_Constants.ASSAMESE;
+import static com.pratham.foundation.utility.FC_Constants.BENGALI;
+import static com.pratham.foundation.utility.FC_Constants.GUJARATI;
+import static com.pratham.foundation.utility.FC_Constants.HINDI;
+import static com.pratham.foundation.utility.FC_Constants.KANNADA;
+import static com.pratham.foundation.utility.FC_Constants.MALAYALAM;
+import static com.pratham.foundation.utility.FC_Constants.MARATHI;
+import static com.pratham.foundation.utility.FC_Constants.ODIYA;
+import static com.pratham.foundation.utility.FC_Constants.PUNJABI;
+import static com.pratham.foundation.utility.FC_Constants.TAMIL;
+import static com.pratham.foundation.utility.FC_Constants.TELUGU;
+import static com.pratham.foundation.utility.FC_Constants.sec_Learning;
+
 import android.animation.TimeInterpolator;
 import android.annotation.SuppressLint;
 import android.app.Activity;
@@ -72,10 +86,8 @@ import com.pratham.foundation.R;
 import com.pratham.foundation.customView.ZoomImageDialog;
 import com.pratham.foundation.modalclasses.StorageInfo;
 import com.pratham.foundation.services.shared_preferences.FastSave;
-import com.pratham.foundation.ui.admin_panel.AdminControlsActivity_;
-import com.pratham.foundation.ui.admin_panel.andmin_login_new.AdminConsoleActivityNew_;
+import com.pratham.foundation.ui.admin_panel.AdminConsoleActivityNew_;
 import com.pratham.foundation.ui.contentPlayer.ContentPlayerActivity_;
-import com.pratham.foundation.ui.group_selection.SelectGroupActivity_;
 import com.pratham.foundation.ui.selectSubject.SelectSubject_;
 import com.pratham.foundation.ui.splash_activity.SplashActivity;
 
@@ -116,20 +128,6 @@ import java.util.regex.Pattern;
 
 import javax.crypto.Mac;
 import javax.crypto.spec.SecretKeySpec;
-
-import static android.content.Context.BATTERY_SERVICE;
-import static com.pratham.foundation.utility.FC_Constants.ASSAMESE;
-import static com.pratham.foundation.utility.FC_Constants.BENGALI;
-import static com.pratham.foundation.utility.FC_Constants.GUJARATI;
-import static com.pratham.foundation.utility.FC_Constants.HINDI;
-import static com.pratham.foundation.utility.FC_Constants.KANNADA;
-import static com.pratham.foundation.utility.FC_Constants.MALAYALAM;
-import static com.pratham.foundation.utility.FC_Constants.MARATHI;
-import static com.pratham.foundation.utility.FC_Constants.ODIYA;
-import static com.pratham.foundation.utility.FC_Constants.PUNJABI;
-import static com.pratham.foundation.utility.FC_Constants.TAMIL;
-import static com.pratham.foundation.utility.FC_Constants.TELUGU;
-import static com.pratham.foundation.utility.FC_Constants.sec_Learning;
 
 
 public class FC_Utility {
@@ -348,12 +346,12 @@ public class FC_Utility {
         return jsonName;
     }
 
-    private static int[] gradiant_bg = new int[]{
+    private static final int[] gradiant_bg = new int[]{
             R.drawable.card_color_bg1, R.drawable.card_color_bg2, R.drawable.card_color_bg3,
             R.drawable.card_color_bg4, R.drawable.card_color_bg5, R.drawable.card_color_bg7,
             R.drawable.card_color_bg8};
 
-    private static int[] cord_color_bg = new int[]{
+    private static final int[] cord_color_bg = new int[]{
             R.drawable.card_color_bg1, R.drawable.card_color_bg2, R.drawable.card_color_bg3,
             R.drawable.card_color_bg4, R.drawable.card_color_bg5, R.drawable.card_color_bg7,
             R.drawable.card_color_bg8
@@ -793,7 +791,7 @@ public class FC_Utility {
 
     static int Display_Year = 0;
     static int Dont_Disclose = 0;
-    private static String TAG = "Utility";
+    private static final String TAG = "Utility";
     static Dialog mDateTimeDialog = null;
 
     public static final Pattern otp_pattern = Pattern.compile("(|^)\\d{4}");
@@ -880,29 +878,7 @@ public class FC_Utility {
                     .addToBackStack(TAG)
                     .commit();
         } else*/
-        if (mActivity instanceof AdminControlsActivity_) {
-            ((AdminControlsActivity_) mActivity).getSupportFragmentManager()
-                    .beginTransaction()
-//                    .setCustomAnimations(R.anim.enter_right_to_left, R.anim.exit_right_to_left,
-//                            R.anim.enter_left_to_right, R.anim.exit_left_to_right )
-                    .replace(frame, mFragment, TAG)
-                    .addToBackStack(TAG)
-                    .commit();
-//        } else if (mActivity instanceof Student_profile_activity) {
-//            ((Student_profile_activity) mActivity).getSupportFragmentManager()
-//                    .beginTransaction()
-//                    .replace(frame, mFragment, TAG)
-//                    .addToBackStack(TAG)
-//                    .commit();
-        } else if (mActivity instanceof SelectGroupActivity_) {
-            ((SelectGroupActivity_) mActivity).getSupportFragmentManager()
-                    .beginTransaction()
-//                    .setCustomAnimations(R.anim.enter_right_to_left, R.anim.exit_right_to_left,
-//                            R.anim.enter_left_to_right, R.anim.exit_left_to_right )
-                    .add(frame, mFragment, TAG)
-                    .addToBackStack(TAG)
-                    .commit();
-        } else if (mActivity instanceof SelectSubject_) {
+        if (mActivity instanceof SelectSubject_) {
             ((SelectSubject_) mActivity).getSupportFragmentManager()
                     .beginTransaction()
                     .replace(frame, mFragment, TAG)
@@ -1107,7 +1083,8 @@ public class FC_Utility {
     }
 
     public static String getDeviceSerialID() {
-        return Build.SERIAL;
+        return "NA";
+//        return Build.SERIAL;
     }
 
     public static String getDeviceID() {

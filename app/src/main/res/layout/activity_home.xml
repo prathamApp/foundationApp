@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/home_root_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -18,7 +19,8 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:scaleType="centerCrop"
-            app:srcCompat="@drawable/new_bg2"/>
+            app:srcCompat="@drawable/new_bg2"
+            tools:ignore="ContentDescription" />
         <ImageView
             android:id="@+id/main_back"
             android:layout_width="@dimen/_30sdp"
@@ -27,7 +29,8 @@
             android:layout_marginStart="@dimen/_5sdp"
             android:elevation="@dimen/_35sdp"
             android:scaleType="center"
-            app:srcCompat="@drawable/ic_left_arrow_white" />
+            app:srcCompat="@drawable/ic_left_arrow_white"
+            tools:ignore="ContentDescription" />
 
         <RelativeLayout
             android:id="@+id/leftCol"
@@ -63,7 +66,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="@dimen/_10sdp"
-                    android:text="Name"
+                    android:text=""
                     android:gravity="center"
                     android:textColor="@color/oslo_grey"
                     android:textSize="@dimen/_16sdp" />
@@ -78,7 +81,8 @@
                     android:text="0%"
                     android:visibility="visible"
                     android:textColor="@color/white"
-                    android:textSize="@dimen/_10sdp" />
+                    android:textSize="@dimen/_10sdp"
+                    tools:ignore="HardcodedText" />
             </LinearLayout>
         </RelativeLayout>
 
@@ -92,9 +96,9 @@
             <com.pratham.foundation.customView.fontsview.SansTextViewBold
                 android:id="@+id/txt_level"
                 android:layout_width="wrap_content"
-                android:layout_centerHorizontal="true"
-                android:layout_marginTop="@dimen/_25sdp"
                 android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="@dimen/_15sdp"
                 android:text="@string/Level"
                 android:textColor="@color/dark_blue"
                 android:textSize="@dimen/_12sdp" />
@@ -105,7 +109,7 @@
                 android:layout_height="@dimen/_46sdp"
                 android:layout_below="@+id/txt_level"
                 android:layout_centerHorizontal="true"
-                android:layout_marginTop="@dimen/_2sdp"
+                android:layout_marginTop="@dimen/_1sdp"
                 app:sl_shadow_angle="60"
                 app:sl_shadow_color="@color/colorBlackTransparentLight"
                 app:sl_shadow_distance="5dp"
@@ -124,6 +128,31 @@
                     android:textAlignment="center"
                     android:textColor="@color/yellow" />
             </com.pratham.foundation.customView.shape_of_view.ShadowLayout>
+
+            <com.pratham.foundation.customView.shape_of_view.ShadowLayout
+                android:id="@+id/refresh_shd"
+                android:layout_width="@dimen/_46sdp"
+                android:layout_height="@dimen/_46sdp"
+                android:layout_below="@+id/level_shadow"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="@dimen/_1sdp"
+                app:sl_shadow_angle="60"
+                app:sl_shadow_color="@color/colorBlackTransparentLight"
+                app:sl_shadow_distance="3dp"
+                app:sl_shadow_radius="3dp"
+                app:sl_shadowed="true">
+
+                <ImageView
+                    android:id="@+id/iv_refresh"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/custom_progress_primary"
+                    android:padding="4dp"
+                    android:src="@drawable/ic_refresh"
+                    android:gravity="center"/>
+            </com.pratham.foundation.customView.shape_of_view.ShadowLayout>
+
+
         </RelativeLayout>
     </RelativeLayout>
 
@@ -162,6 +191,7 @@
         android:layout_alignParentBottom="true"
         android:background="@drawable/home_footer_3_bg"
         android:elevation="10dp"
+        android:contentDescription="@null"
         app:tabGravity="fill"
         app:tabTextAppearance="@dimen/_2sdp"
         app:tabIndicatorColor="@color/trans_card_text"

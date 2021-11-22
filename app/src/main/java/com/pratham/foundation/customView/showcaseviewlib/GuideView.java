@@ -25,7 +25,6 @@ import android.view.ViewTreeObserver;
 import android.view.animation.AlphaAnimation;
 import android.widget.FrameLayout;
 
-import com.pratham.foundation.R;
 import com.pratham.foundation.customView.showcaseviewlib.config.DismissType;
 import com.pratham.foundation.customView.showcaseviewlib.config.Gravity;
 import com.pratham.foundation.customView.showcaseviewlib.listener.GuideListener;
@@ -50,8 +49,8 @@ public class GuideView extends FrameLayout {
     private static final int MARGIN_INDICATOR              = 15;
 
     private static final int BACKGROUND_COLOR              = 0x99000000;
-//    private static final int CIRCLE_INNER_INDICATOR_COLOR  = 0xffcccccc;
-    private static final int CIRCLE_INNER_INDICATOR_COLOR  = R.color.colorSignBoard;
+    private static final int CIRCLE_INNER_INDICATOR_COLOR  = 0xffcccccc;
+//    private static final int CIRCLE_INNER_INDICATOR_COLOR  = R.color.colorSignBoard;
     private static final int CIRCLE_INDICATOR_COLOR        = Color.WHITE;
     private static final int LINE_INDICATOR_COLOR          = Color.WHITE;
 
@@ -62,11 +61,12 @@ public class GuideView extends FrameLayout {
     private final Paint targetPaint         = new Paint(Paint.ANTI_ALIAS_FLAG);
     private final Xfermode X_FER_MODE_CLEAR = new PorterDuffXfermode(PorterDuff.Mode.CLEAR);
 
-    private View target;
+    private final View target;
     private RectF targetRect;
     private final Rect selfRect = new Rect();
 
-    private float density, stopY;
+    private final float density;
+    private float stopY;
     private boolean isTop;
     private boolean mIsShowing;
     private int yMessageView = 0;
@@ -86,7 +86,7 @@ public class GuideView extends FrameLayout {
     private GuideListener mGuideListener;
     private Gravity mGravity;
     private DismissType dismissType;
-    private GuideMessageView mMessageView;
+    private final GuideMessageView mMessageView;
 
 
     private GuideView(Context context, View view) {
@@ -417,7 +417,7 @@ public class GuideView extends FrameLayout {
         private String title, contentText;
         private Gravity gravity;
         private DismissType dismissType;
-        private Context context;
+        private final Context context;
         private Spannable contentSpan;
         private Typeface titleTypeFace, contentTypeFace;
         private GuideListener guideListener;

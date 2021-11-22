@@ -36,12 +36,23 @@ public interface ScoreDao {
     @Query("select * from Score")
     List<Score> getAllScores();
 
-    @Query("select * from Score where sentFlag=0  AND Label!='img_push_lbl'")
+    @Query("select * from Score where sentFlag=0")
     List<Score> getAllPushScores();
-
 
     @Query("DELETE FROM Score")
     void deleteAllScores();
+
+    @Query("Select COUNT(*) from Score")
+    int getTotalScoreCount();
+
+    @Query("Select COUNT(*) from Score WHERE sentFlag=1")
+    int getTotalSuccessfullScorePush();
+
+    @Query("Select COUNT(*) from Score WHERE Label='img_push_lbl'")
+    int getTotalImageScorePush();
+
+    @Query("Select COUNT(*) from Score WHERE sentFlag=1 AND Label='img_push_lbl'")
+    int getTotalSuccessfullImageScorePush();
 
     @Query("select * from Score where sentFlag = 0 AND SessionID=:s_id")
     List<Score> getAllNewScores(String s_id);
@@ -54,6 +65,9 @@ public interface ScoreDao {
 
     @Query("Select sentFlag from Score where StartDateTime=:imgName AND Label='img_push_lbl'")
     int getSentFlag(String imgName);
+
+    @Query("Select ResourceID from Score where StartDateTime=:imgName AND sentFlag=0 AND Label='img_push_lbl'")
+    String getImgResId(String imgName);
 
     @Query("Select COUNT(sentFlag) from Score where sentFlag=0 AND Label='img_push_lbl'")
     int getUnpushedImageCount();

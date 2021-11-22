@@ -53,4 +53,11 @@ public interface CourseDao {
 
     @Query("update COURSEENROLLED set sentFlag=1 where sentFlag=0")
     void setSentFlag();
+
+    @Query("Select COUNT(*) from CourseEnrolled")
+    int getAllCourses();
+
+    @Query("Select COUNT(*) from CourseEnrolled WHERE sentFlag=1")
+    int getAllSuccessfulCourses();
+
 }

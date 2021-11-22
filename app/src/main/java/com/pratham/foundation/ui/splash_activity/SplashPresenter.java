@@ -1,5 +1,16 @@
 package com.pratham.foundation.ui.splash_activity;
 
+import static android.content.Context.ACTIVITY_SERVICE;
+import static com.pratham.foundation.database.AppDatabase.DB_NAME;
+import static com.pratham.foundation.database.AppDatabase.DB_VERSION;
+import static com.pratham.foundation.ui.splash_activity.SplashActivity.exitDialogOpen;
+import static com.pratham.foundation.ui.splash_activity.SplashActivity.fragmentBottomOpenFlg;
+import static com.pratham.foundation.utility.FC_Constants.APP_LANGUAGE;
+import static com.pratham.foundation.utility.FC_Constants.CURRENT_VERSION;
+import static com.pratham.foundation.utility.FC_Constants.HINDI;
+import static com.pratham.foundation.utility.FC_Constants.apkSP;
+import static com.pratham.foundation.utility.FC_Constants.apkTab;
+
 import android.annotation.SuppressLint;
 import android.app.ActivityManager;
 import android.content.Context;
@@ -54,17 +65,6 @@ import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-
-import static android.content.Context.ACTIVITY_SERVICE;
-import static com.pratham.foundation.database.AppDatabase.DB_NAME;
-import static com.pratham.foundation.database.AppDatabase.DB_VERSION;
-import static com.pratham.foundation.ui.splash_activity.SplashActivity.exitDialogOpen;
-import static com.pratham.foundation.ui.splash_activity.SplashActivity.fragmentBottomOpenFlg;
-import static com.pratham.foundation.utility.FC_Constants.APP_LANGUAGE;
-import static com.pratham.foundation.utility.FC_Constants.CURRENT_VERSION;
-import static com.pratham.foundation.utility.FC_Constants.HINDI;
-import static com.pratham.foundation.utility.FC_Constants.apkSP;
-import static com.pratham.foundation.utility.FC_Constants.apkTab;
 
 @EBean
 public class SplashPresenter implements SplashContract.SplashPresenter {
@@ -684,7 +684,8 @@ public class SplashPresenter implements SplashContract.SplashPresenter {
                 if (!FastSave.getInstance().getBoolean(FC_Constants.VOICES_DOWNLOAD_INTENT, false))
                     splashView.show_STT_Dialog();
                 else {
-                    if (!fragmentBottomOpenFlg)
+                    if (!fragmentBottomOpenFlg &&
+                            FastSave.getInstance().getBoolean(FC_Constants.VOICES_DOWNLOAD_INTENT, false))
                         splashView.showBottomFragment();
                 }
             }

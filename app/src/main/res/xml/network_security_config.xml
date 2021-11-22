@@ -1,12 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <network-security-config>
-    <base-config cleartextTrafficPermitted="true">
+    <base-config cleartextTrafficPermitted="false">
         <trust-anchors>
-            <domain includeSubdomains="true">prodigi.openiscool.org</domain>
-            <domain includeSubdomains="true">devposapi.prathamopenschool.org</domain>
-            <domain includeSubdomains="true">192.168.4.1:8000</domain>
-            <domain includeSubdomains="true">worldtimeapi.org</domain>
             <certificates src="system" />
         </trust-anchors>
     </base-config>
+
+    <domain-config cleartextTrafficPermitted="true">
+        <domain includeSubdomains="true">prodigi.openiscool.org</domain>
+        <domain includeSubdomains="true">devposapi.prathamopenschool.org</domain>
+        <domain includeSubdomains="true">devprodigi.openiscool.org</domain>
+        <domain includeSubdomains="true">devtab.openiscool.org</domain>
+        <domain includeSubdomains="true">192.168.4.1</domain>
+        <domain includeSubdomains="true">worldtimeapi.org</domain>
+    </domain-config>
 </network-security-config>

@@ -1,5 +1,12 @@
 package com.pratham.foundation.async;
 
+import static com.pratham.foundation.ApplicationClass.App_Thumbs_Path;
+import static com.pratham.foundation.utility.FC_Constants.APP_ID_STR;
+import static com.pratham.foundation.utility.FC_Constants.DEVICE_ID_STR;
+import static com.pratham.foundation.utility.FC_Constants.PI_DOWNLOAD_RESOURCE;
+import static com.pratham.foundation.utility.FC_Constants.STUDENT_ID_STR;
+import static com.pratham.foundation.utility.FC_Constants.newRootParentId;
+
 import android.content.Context;
 import android.util.Base64;
 import android.util.Log;
@@ -13,20 +20,13 @@ import com.androidnetworking.interfaces.StringRequestListener;
 import com.pratham.foundation.ApplicationClass;
 import com.pratham.foundation.interfaces.API_Content_Result;
 import com.pratham.foundation.services.shared_preferences.FastSave;
+import com.pratham.foundation.utility.FC_Constants;
 import com.pratham.foundation.utility.FC_Utility;
 
 import org.json.JSONArray;
 
 import java.io.File;
 import java.util.concurrent.Executors;
-
-import static com.pratham.foundation.ApplicationClass.App_Thumbs_Path;
-import static com.pratham.foundation.utility.FC_Constants.APP_ID_STR;
-import static com.pratham.foundation.utility.FC_Constants.CURRENT_STUDENT_ID;
-import static com.pratham.foundation.utility.FC_Constants.DEVICE_ID_STR;
-import static com.pratham.foundation.utility.FC_Constants.PI_DOWNLOAD_RESOURCE;
-import static com.pratham.foundation.utility.FC_Constants.STUDENT_ID_STR;
-import static com.pratham.foundation.utility.FC_Constants.newRootParentId;
 
 public class API_Content {
 
@@ -88,7 +88,7 @@ public class API_Content {
 //            String url_id;
 //            url_id = url + nodeId + DEVICE_ID_STR + FC_Utility.getDeviceID();
             String url_id, studId;
-            studId = FastSave.getInstance().getString(CURRENT_STUDENT_ID, "");
+            studId = FastSave.getInstance().getString(FC_Constants.CURRENT_API_STUDENT_ID, "");
             url_id = url + nodeId + DEVICE_ID_STR + FC_Utility.getDeviceID() + STUDENT_ID_STR + studId;
             Log.d("`API_Content_LOG`", "getAPIContent: " + nodeId);
             Log.d("API_Content_LOG", "url_id: " + url_id);
@@ -237,7 +237,7 @@ public class API_Content {
 //            String url_id;
 //            url_id = url + rootParentId + DEVICE_ID_STR + FC_Utility.getDeviceID();
             String url_id, studId;
-            studId = FastSave.getInstance().getString(CURRENT_STUDENT_ID, "");
+            studId = FastSave.getInstance().getString(FC_Constants.CURRENT_API_STUDENT_ID, "");
             url_id = url + newRootParentId + DEVICE_ID_STR + FC_Utility.getDeviceID() + STUDENT_ID_STR + studId;
             Log.d("API_Content_LOG", "getAPIContent: " + url_id);
             AndroidNetworking.get(url_id)
@@ -342,7 +342,7 @@ public class API_Content {
 //            String url_id;
 //            url_id = url + rootParentId + DEVICE_ID_STR + FC_Utility.getDeviceID();
             String url_id, studId;
-            studId = FastSave.getInstance().getString(CURRENT_STUDENT_ID, "");
+            studId = FastSave.getInstance().getString(FC_Constants.CURRENT_API_STUDENT_ID, "");
             url_id = url + nodeId + DEVICE_ID_STR + FC_Utility.getDeviceID() + STUDENT_ID_STR + studId;
             Log.d("API_Content_LOG", "getAPIContent: " + url_id);
             AndroidNetworking.get(url_id)

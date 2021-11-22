@@ -26,8 +26,18 @@ public interface LogDao {
     @Query("select * from Logs where sentFlag=0 AND sessionId=:s_id")
     List<Modal_Log> getAllLogs(String s_id);
 
+    @Query("select * from Logs where exceptionMessage='App_Manual_Sync' OR exceptionMessage='App_Auto_Sync'" +
+            "OR exceptionMessage='DB_ZIP_Push' ORDER BY logId DESC")
+    List<Modal_Log> getSyncedLogs();
+
     @Query("update Logs set sentFlag=1 where sentFlag=0")
     void setSentFlag();
+
+    @Query("update Logs set errorType=:pushStatus where methodName=:pushID")
+    void setPushStatus(String pushStatus, String pushID);
+
+    @Query("update Logs set LogDetail=:pushData where methodName=:pushID")
+    void setPushDataLog(String pushData, String pushID);
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     void insertAllLogs(List<Modal_Log> log);

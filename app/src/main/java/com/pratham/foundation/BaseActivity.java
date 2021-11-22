@@ -1,5 +1,9 @@
 package com.pratham.foundation;
 
+import static com.pratham.foundation.ApplicationClass.audioManager;
+import static com.pratham.foundation.ApplicationClass.ttsService;
+import static com.pratham.foundation.utility.FC_Constants.transferredImages;
+
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
@@ -46,7 +50,6 @@ import com.pratham.foundation.customView.BlurPopupDialog.BlurPopupWindow;
 import com.pratham.foundation.customView.display_image_dialog.CustomLodingDialog;
 import com.pratham.foundation.database.AppDatabase;
 import com.pratham.foundation.database.BackupDatabase;
-import com.pratham.foundation.database.domain.Modal_Log;
 import com.pratham.foundation.modalclasses.EventMessage;
 import com.pratham.foundation.services.TTSService;
 import com.pratham.foundation.services.shared_preferences.FastSave;
@@ -63,18 +66,13 @@ import org.greenrobot.eventbus.Subscribe;
 
 import java.util.Locale;
 
-import static com.pratham.foundation.ApplicationClass.BUILD_DATE;
-import static com.pratham.foundation.ApplicationClass.audioManager;
-import static com.pratham.foundation.ApplicationClass.ttsService;
-import static com.pratham.foundation.utility.FC_Constants.transferredImages;
-
 
 public class BaseActivity extends AppCompatActivity {
 
     //Add these Variables, declare it globally
     private AppUpdateManager appUpdateManager;
     private Task<AppUpdateInfo> appUpdateInfoTask;
-    private int APP_UPDATE_TYPE_SUPPORTED = AppUpdateType.FLEXIBLE;
+    private final int APP_UPDATE_TYPE_SUPPORTED = AppUpdateType.FLEXIBLE;
     private final int REQUEST_UPDATE = 100;
     private final int CHECK_UPDATE_C = 101;
     private final int UPDATE_CONNECTION = 102;
@@ -127,7 +125,7 @@ public class BaseActivity extends AppCompatActivity {
         correctSound = MediaPlayer.create(this, R.raw.correct_ans);
         muteFlg = false;
 
-        Modal_Log log = new Modal_Log();
+/*        Modal_Log log = new Modal_Log();
         log.setCurrentDateTime(FC_Utility.getCurrentDateTime());
         log.setErrorType(" ");
         log.setExceptionMessage("App_Start");
@@ -135,7 +133,7 @@ public class BaseActivity extends AppCompatActivity {
         log.setMethodName("onCreate()");
         log.setGroupId(FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, "no_group"));
         log.setDeviceId("" + FC_Utility.getDeviceID());
-        AppDatabase.getDatabaseInstance(this).getLogsDao().insertLog(log);
+        AppDatabase.getDatabaseInstance(this).getLogsDao().insertLog(log);*/
 
         Catcho.Builder(this)
                 .activity(CatchoTransparentActivity.class).build();
@@ -158,7 +156,7 @@ public class BaseActivity extends AppCompatActivity {
 
     @Override
     protected void onDestroy() {
-        Modal_Log log = new Modal_Log();
+/*        Modal_Log log = new Modal_Log();
         log.setCurrentDateTime(FC_Utility.getCurrentDateTime());
         log.setErrorType("");
         log.setExceptionMessage("App_End");
@@ -166,7 +164,7 @@ public class BaseActivity extends AppCompatActivity {
         log.setMethodName("onDestroy()");
         log.setGroupId(FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, "no_group"));
         log.setDeviceId("" + FC_Utility.getDeviceID());
-        AppDatabase.getDatabaseInstance(this).getLogsDao().insertLog(log);
+        AppDatabase.getDatabaseInstance(this).getLogsDao().insertLog(log);*/
         super.onDestroy();
     }
 

@@ -1,5 +1,13 @@
 package com.pratham.foundation.ui.selectSubject;
 
+import static com.pratham.foundation.utility.FC_Constants.APP_LANGUAGE;
+import static com.pratham.foundation.utility.FC_Constants.APP_LANGUAGE_NODE_ID;
+import static com.pratham.foundation.utility.FC_Constants.CURRENT_STUDENT_ID;
+import static com.pratham.foundation.utility.FC_Constants.HINDI;
+import static com.pratham.foundation.utility.FC_Constants.PI_BROWSE;
+import static com.pratham.foundation.utility.FC_Constants.RASPBERRY_PI_LANGUAGE_API;
+import static com.pratham.foundation.utility.FC_Constants.newRootParentId;
+
 import android.content.Context;
 import android.util.Log;
 
@@ -21,15 +29,8 @@ import org.androidannotations.annotations.EBean;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
-
-import static com.pratham.foundation.utility.FC_Constants.APP_LANGUAGE;
-import static com.pratham.foundation.utility.FC_Constants.APP_LANGUAGE_NODE_ID;
-import static com.pratham.foundation.utility.FC_Constants.CURRENT_STUDENT_ID;
-import static com.pratham.foundation.utility.FC_Constants.HINDI;
-import static com.pratham.foundation.utility.FC_Constants.PI_BROWSE;
-import static com.pratham.foundation.utility.FC_Constants.RASPBERRY_PI_LANGUAGE_API;
-import static com.pratham.foundation.utility.FC_Constants.newRootParentId;
 
 @EBean
 public class SelectSubjectPresenter implements SelectSubjectContract.SubjectPresenter, API_Content_Result {
@@ -59,6 +60,10 @@ public class SelectSubjectPresenter implements SelectSubjectContract.SubjectPres
         subjectList.clear();
     }
 
+    private void sortAllList(List<ContentTable> contentParentList) {
+        Collections.sort(contentParentList, (o1, o2) -> o1.getSeq_no() - o2.getSeq_no());
+    }
+
     @Background
     @Override
     public void getSubjectList() {
@@ -86,6 +91,7 @@ public class SelectSubjectPresenter implements SelectSubjectContract.SubjectPres
             if (subjectList != null && subjectList.size() < 1)
                 subjectView.noDataDialog();
             else {
+                sortAllList(subjectList);
                 subjectView.initializeSubjectList(subjectList);
                 subjectView.notifySubjAdapter();
             }
@@ -148,6 +154,7 @@ public class SelectSubjectPresenter implements SelectSubjectContract.SubjectPres
                 if (subjectList != null && subjectList.size() < 1)
                     subjectView.noDataDialog();
                 else {
+                    sortAllList(subjectList);
                     subjectView.initializeSubjectList(subjectList);
                     subjectView.notifySubjAdapter();
                 }
@@ -157,6 +164,7 @@ public class SelectSubjectPresenter implements SelectSubjectContract.SubjectPres
                 if (subjectList != null && subjectList.size() < 1)
                     subjectView.noDataDialog();
                 else {
+                    sortAllList(subjectList);
                     subjectView.initializeSubjectList(subjectList);
                     subjectView.notifySubjAdapter();
                 }
@@ -168,6 +176,7 @@ public class SelectSubjectPresenter implements SelectSubjectContract.SubjectPres
     @Override
     public void receivedError(String header) {
         if (subjectList.size() > 0) {
+            sortAllList(subjectList);
             subjectView.initializeSubjectList(subjectList);
             subjectView.notifySubjAdapter();
         } else {
