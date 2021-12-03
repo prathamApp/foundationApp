@@ -35,9 +35,9 @@ import okhttp3.OkHttpClient;
 public class ApplicationClass extends Application {
 
 // (HL Customised)
-    public static final String BUILD_DATE = "Customised 20-Nov-2021";
+    public static final String BUILD_DATE = "01-Dec-2021";
     public static boolean isTablet = true;
-    public static boolean isAssets = true;
+    public static boolean isAssets = false;
     public static boolean contentExistOnSD = false, LocationFlg = false;
     public static String contentSDPath = "";
     public static String foundationPath = "";

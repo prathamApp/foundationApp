@@ -62,7 +62,7 @@ public class PushDataBaseZipToServer {
     TextView txt_push_error;
     RelativeLayout rl_btn;
     Button ok_btn, eject_btn;
-    String syncTime="";
+    String syncTime = "";
     private final int BUFFER = 10000;
 
 
@@ -89,24 +89,8 @@ public class PushDataBaseZipToServer {
             try {
                 setMainTextToDialog(context.getResources().getString(R.string.Collecting_Data));
                 pushSuccessfull = false;
-                FastSave.getInstance().saveString(FC_Constants.PUSH_ID_LOGS, ""+FC_Utility.getUUID());
-                try {
-                    syncTime = FC_Utility.getCurrentDateTime();
-                    Modal_Log log = new Modal_Log();
-                    log.setCurrentDateTime(syncTime);
-                    log.setErrorType(" ");
-                    log.setExceptionMessage("DB_ZIP_Push");
-                    log.setMethodName(""+FastSave.getInstance().getString(FC_Constants.PUSH_ID_LOGS, "na"));
-                    log.setMethodName(""+FastSave.getInstance().getString(FC_Constants.PUSH_ID_LOGS, "na"));
-                    log.setSessionId("" + FastSave.getInstance().getString(FC_Constants.CURRENT_SESSION, ""));
-                    log.setGroupId("");
-                    log.setExceptionStackTrace("APK BUILD DATE : " + BUILD_DATE);
-                    log.setDeviceId("" + FC_Utility.getDeviceID());
-                    AppDatabase.getDatabaseInstance(context).getLogsDao().insertLog(log);
-                    BackupDatabase.backup(context);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
+                FastSave.getInstance().saveString(FC_Constants.PUSH_ID_LOGS, "" + FC_Utility.getUUID());
+                syncTime = FC_Utility.getCurrentDateTime();
                 //Checks if device is connected to wifi
                 pushDataToServer(context, FC_Constants.DB_ZIP_PUSH_API);
             } catch (Exception e) {
@@ -206,13 +190,13 @@ public class PushDataBaseZipToServer {
         try {
 //            String newdata = compress(String.valueOf(data));
             BackupDatabase.backup(context);
-            String fielName = "FCZ_"+ FC_RandomString.unique();
+            String fielName = "FCZ_" + FC_RandomString.unique();
             String filePathStr = Environment.getExternalStorageDirectory().toString()
                     + "/PrathamBackups/" + AppDatabase.DB_NAME; // file path to save
             // Type the path of the files in here
             File dir = new File(Environment.getExternalStorageDirectory().toString() + "/PrathamBackups/");
             File[] db_files = dir.listFiles();
-            Log.d("FC_RandomString", "DB ZIP NAME "+fielName);
+            Log.d("FC_RandomString", "DB ZIP NAME " + fielName);
             if (db_files != null) {
                 List<String> fileNameListStrings = new ArrayList<>();
                 for (int i = 0; i < db_files.length; i++)
@@ -293,8 +277,8 @@ public class PushDataBaseZipToServer {
     //Method shows success dialog
     @UiThread
     public void setDataPushSuccessfull() {
-        AppDatabase.getDatabaseInstance(context).getLogsDao().setPushStatus(FC_Constants.SUCCESSFULLYPUSHED_DB,
-                FastSave.getInstance().getString(FC_Constants.PUSH_ID_LOGS, ""));
+//        AppDatabase.getDatabaseInstance(context).getLogsDao().setPushStatus(FC_Constants.SUCCESSFULLYPUSHED_DB,
+//                FastSave.getInstance().getString(FC_Constants.PUSH_ID_LOGS, ""));
         saveDataSyncLog();
         if (showUi) {
             setMainTextToDialog(context.getResources().getString(R.string.DB_Zip_pushed_successfully));
@@ -342,32 +326,50 @@ public class PushDataBaseZipToServer {
         }
     }
 
-    public void saveDataSyncLog(){
+    public void saveDataSyncLog() {
         int totalScoreCount, totalSuccessfullScorePush, totalImgCount, totalSuccessfulImgCount, totalCourses, totalCoursesSuccessful;
 
-        totalSuccessfullScorePush = AppDatabase.getDatabaseInstance(context).getScoreDao().getTotalSuccessfullScorePush();
+//        totalSuccessfullScorePush = AppDatabase.getDatabaseInstance(context).getScoreDao().getTotalSuccessfullScorePush();
         totalScoreCount = AppDatabase.getDatabaseInstance(context).getScoreDao().getTotalScoreCount();
 
 /*        totalSuccessfulImgCount = AppDatabase.getDatabaseInstance(context).getScoreDao().getTotalSuccessfullImageScorePush();
         totalImgCount = AppDatabase.getDatabaseInstance(context).getScoreDao().getTotalImageScorePush();*/
 
-        totalCoursesSuccessful = AppDatabase.getDatabaseInstance(context).getCourseDao().getAllSuccessfulCourses();
+//        totalCoursesSuccessful = AppDatabase.getDatabaseInstance(context).getCourseDao().getAllSuccessfulCourses();
         totalCourses = AppDatabase.getDatabaseInstance(context).getCourseDao().getAllCourses();
 
         try {
+            Modal_Log log = new Modal_Log();
+
             JSONObject pushStatusJson = null;
             pushStatusJson = new JSONObject();
             pushStatusJson.put(FC_Constants.SYNC_TIME, syncTime);
             pushStatusJson.put(FC_Constants.SYNC_COURSE_ENROLLMENT_LENGTH, "0");
             pushStatusJson.put(FC_Constants.SYNC_DATA_LENGTH, "0");
             pushStatusJson.put(FC_Constants.SYNC_MEDIA_LENGTH, "0");
-            pushStatusJson.put("ScoreTable", totalSuccessfullScorePush+"/"+totalScoreCount);
-            pushStatusJson.put("MediaCount", "0/0");
-            pushStatusJson.put("CoursesCount", totalCoursesSuccessful+"/"+totalCourses);
+            pushStatusJson.put("ScoreTable", /*totalSuccessfullScorePush+"/"+*/totalScoreCount);
+            pushStatusJson.put("MediaCount", "0");
+            pushStatusJson.put("CoursesCount", /*totalCoursesSuccessful+"/"+*/totalCourses);
+
+            log.setCurrentDateTime(syncTime);
+            log.setErrorType(" ");
+            log.setExceptionMessage("DB_ZIP_Push");
+            log.setMethodName(""+FastSave.getInstance().getString(FC_Constants.PUSH_ID_LOGS, "na"));
+            log.setSessionId("" + FastSave.getInstance().getString(FC_Constants.CURRENT_SESSION, ""));
+            log.setGroupId("");
+            if (pushSuccessfull)
+                log.setErrorType(""+FC_Constants.SUCCESSFULLYPUSHED);
+            else
+                log.setErrorType(""+FC_Constants.PUSHFAILED);
+            log.setLogDetail(""+pushStatusJson.toString());
+            log.setExceptionStackTrace("APK BUILD DATE : " + BUILD_DATE);
+            log.setDeviceId("" + FC_Utility.getDeviceID());
 
             Log.d("PushData", "pushStatusJson JSON : " + pushStatusJson.toString());
-            AppDatabase.getDatabaseInstance(context).getLogsDao().setPushDataLog(pushStatusJson.toString(),
-                    FastSave.getInstance().getString(FC_Constants.PUSH_ID_LOGS, ""));
+            AppDatabase.getDatabaseInstance(context).getLogsDao().insertLog(log);
+//            AppDatabase.getDatabaseInstance(context).getLogsDao().setPushDataLog(pushStatusJson.toString(),
+//                    FastSave.getInstance().getString(FC_Constants.PUSH_ID_LOGS, ""));
+            BackupDatabase.backup(context);
 
         } catch (Exception e) {
             e.printStackTrace();

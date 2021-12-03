@@ -478,6 +478,7 @@ public class BottomStudentsFragment extends BottomSheetDialogFragment
             FastSave.getInstance().saveString(FC_Constants.CURRENT_STUDENT_ID, "" + bottomFragmentModal.getStudentID());
             FastSave.getInstance().saveString(FC_Constants.CURRENT_STUDENT_NAME, "" + bottomFragmentModal.getFullName());
             FastSave.getInstance().saveString(FC_Constants.CURRENT_API_STUDENT_ID, "" + bottomFragmentModal.getStudentID());
+            FastSave.getInstance().saveString(FC_Constants.CURRENT_STUDENT_ENROLL_ID, "" + bottomFragmentModal.getEnrollmentID());
 //            FastSave.getInstance().saveString(FC_Constants.CURRENT_STUDENT_PROGRAM_ID, "" + bottomFragmentModal.getProgramID());
             presenter.updateStudentData();
             FastSave.getInstance().saveBoolean(SPLASH_OPEN, false);
@@ -486,7 +487,7 @@ public class BottomStudentsFragment extends BottomSheetDialogFragment
 
     @UiThread
     @Override
-    public void onGroupClick(String studentName, String studentId) {
+    public void onGroupClick(String studentName, String studentId,String groupId) {
         try {
             ButtonClickSound.start();
         } catch (IllegalStateException e) {
@@ -494,17 +495,17 @@ public class BottomStudentsFragment extends BottomSheetDialogFragment
         }
         groupClicked = true;
         go_next.setVisibility(View.VISIBLE);
-        groupID = studentId;
+        groupID = groupId;
         groupName = studentName;
         String gEnrollment_id;
-        gEnrollment_id = AppDatabase.getDatabaseInstance(context).getGroupsDao().getVillagebyId(groupID);
+        gEnrollment_id = studentId;
         if(gEnrollment_id!=null && !gEnrollment_id.equalsIgnoreCase(""))
             FastSave.getInstance().saveString(FC_Constants.GROUP_ENROLLMENT_ID, gEnrollment_id);
         else
             FastSave.getInstance().saveString(FC_Constants.GROUP_ENROLLMENT_ID, groupID);
 
 //        FastSave.getInstance().saveString(FC_Constants.CURRENT_STUDENT_PROGRAM_ID, "" + programID);
-        presenter.getStudentsFromGroup(studentId);
+        presenter.getStudentsFromGroup(groupID);
 /*        if (!FastSave.getInstance().getBoolean(SPLASH_OPEN, false))
             endSession();
 //        EventMessage eventMessage = new EventMessage();

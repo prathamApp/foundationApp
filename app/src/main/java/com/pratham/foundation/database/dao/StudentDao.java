@@ -38,6 +38,9 @@ public interface StudentDao {
     @Query("select * from Student where StudentID = :studentID")
     Student getStudent(String studentID);
 
+    @Query("select LastName from Student where StudentID = :studentID")
+    String getEnrollMentId(String studentID);
+
     @Query("select * from Student where StudentID = :studentID")
     Student addStudent(String studentID);
 

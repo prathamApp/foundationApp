@@ -191,11 +191,13 @@ public class FC_Constants {
     public static final String STT_REGEX_2 = "[\\-+.\"'^?!@#%-_;&*,:<>()]";
 
 //    public static final String CURRENT_STUDENT_PROGRAM_ID = "current_student_program_id";
+    public static final String CURRENT_STUDENT_ENROLL_ID = "current_student_enroll_id";
     public static final String CURRENT_API_STUDENT_ID = "current_api_student_id";
     public static final String CURRENT_STUDENT_ID = "current_student_id";
     public static final String CURRENT_STUDENT_NAME = "current_student_name";
     public static final String CURRENT_ROOT_NODE = "current_root_node";
     public static final String CURRENT_SESSION = "current_session";
+    public static final String SD_BUILDER_DIALOG = "sd_builder_dialog";
     public static final String PUSH_ID_LOGS = "push_id_logs";
     public static final String CURRENT_LEVEL = "current_level";
     public static final String CURRENT_ASSESSMENT_STUDENT_ID = "current_assessment_student_id";

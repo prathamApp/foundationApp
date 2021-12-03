@@ -8,7 +8,7 @@ public interface BottomStudentsContract {
 
     interface StudentClickListener {
         void onStudentClick(StudentAndGroup_BottomFragmentModal fragmentModal, int pos);
-        void onGroupClick(String StudentName, String StudentId);
+        void onGroupClick(String StudentName, String StudentId, String groupId);
     }
 
 

@@ -89,6 +89,7 @@ public class BottomStudentsPresenter implements BottomStudentsContract.BottomStu
                 studentHeader.setFullName("");
                 studentHeader.setAvatarName("");
                 studentHeader.setGroupId("");
+                studentHeader.setEnrollmentID("");
                 studentHeader.setType(FC_Constants.TYPE_HEADER);
                 fragmentModalsList.add(studentHeader);
             }
@@ -103,6 +104,7 @@ public class BottomStudentsPresenter implements BottomStudentsContract.BottomStu
                     studentAvatar.setGroupId(studentDBList.get(i).getGroupId());
 //                    studentAvatar.setProgramID(studentDBList.get(i).getProgramId());
                     studentAvatar.setChecked(false);
+                    studentAvatar.setEnrollmentID(studentDBList.get(i).getLastName());
                     studentAvatar.setType(FC_Constants.STUDENTS);
                     fragmentModalsList.add(studentAvatar);
                 }
@@ -118,6 +120,7 @@ public class BottomStudentsPresenter implements BottomStudentsContract.BottomStu
                     studentAvatar.setFullName(groupDBList.get(i).getGroupName());
                     studentAvatar.setGroupId(groupDBList.get(i).getGroupId());
                     studentAvatar.setAvatarName("NA");
+                    studentAvatar.setEnrollmentID(groupDBList.get(i).getVIllageName());
 //                    studentAvatar.setProgramID(""+groupDBList.get(i).getProgramId());
                     studentAvatar.setChecked(false);
                     studentAvatar.setType(FC_Constants.GROUP_MODE);
@@ -131,6 +134,7 @@ public class BottomStudentsPresenter implements BottomStudentsContract.BottomStu
                 studentHeader.setFullName("");
                 studentHeader.setAvatarName("");
                 studentHeader.setGroupId("");
+                studentHeader.setEnrollmentID("");
                 studentHeader.setType(FC_Constants.TYPE_HEADER);
                 fragmentModalsList.add(studentHeader);
             }
@@ -153,6 +157,7 @@ public class BottomStudentsPresenter implements BottomStudentsContract.BottomStu
             studentHeader.setStudentID("#####");
             studentHeader.setFullName("");
             studentHeader.setAvatarName("");
+            studentHeader.setEnrollmentID("");
             studentHeader.setType(FC_Constants.TYPE_HEADER);
             fragmentModalsList.add(studentHeader);
 
@@ -163,6 +168,7 @@ public class BottomStudentsPresenter implements BottomStudentsContract.BottomStu
                 studentAvatar.setAvatarName(studentDBList.get(i).getAvatarName());
                 studentAvatar.setGender(studentDBList.get(i).getGender());
                 studentAvatar.setChecked(false);
+                studentAvatar.setEnrollmentID(studentDBList.get(i).getLastName());
                 studentAvatar.setType(FC_Constants.STUDENTS);
                 fragmentModalsList.add(studentAvatar);
             }
@@ -171,6 +177,7 @@ public class BottomStudentsPresenter implements BottomStudentsContract.BottomStu
         studentHeader.setStudentID("#####");
         studentHeader.setFullName("");
         studentHeader.setAvatarName("");
+        studentHeader.setEnrollmentID("");
         studentHeader.setType(FC_Constants.TYPE_FOOTER);
         fragmentModalsList.add(studentHeader);
 

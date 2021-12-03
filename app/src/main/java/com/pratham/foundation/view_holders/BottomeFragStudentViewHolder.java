@@ -81,7 +81,11 @@ public class BottomeFragStudentViewHolder extends RecyclerView.ViewHolder {
                                        BottomStudentsContract.StudentClickListener studentClickListener,
                                        int pos) {
         try {
-            Objects.requireNonNull(child_enroll_id).setText("Id: "+fragmentModalsList.getStudentID());
+            if(fragmentModalsList.getEnrollmentID() != null && !fragmentModalsList.getEnrollmentID().equalsIgnoreCase("PS")) {
+//                AppDatabase.getDatabaseInstance().getStudentDao().getEnrollMentId(fragmentModalsList.getStudentID());
+                Objects.requireNonNull(child_enroll_id).setText("Id: "+fragmentModalsList.getEnrollmentID());
+            }else
+                Objects.requireNonNull(child_enroll_id).setText("Id: "+fragmentModalsList.getStudentID());
             Objects.requireNonNull(child_enroll_id).setSelected(true);
             Objects.requireNonNull(studentName).setText(fragmentModalsList.getFullName());
 //            Objects.requireNonNull(studentName).setSelected(true);
@@ -146,7 +150,7 @@ public class BottomeFragStudentViewHolder extends RecyclerView.ViewHolder {
                                      BottomStudentsContract.StudentClickListener studentClickListener) {
 
         try {
-            Objects.requireNonNull(child_enroll_id).setText("Id: "+fragmentModalsList.getStudentID());
+            Objects.requireNonNull(child_enroll_id).setText("Id: "+fragmentModalsList.getEnrollmentID());
             Objects.requireNonNull(child_enroll_id).setSelected(true);
             Objects.requireNonNull(group_name).setText(fragmentModalsList.getFullName());
             Objects.requireNonNull(group_name).setSelected(true);
@@ -163,8 +167,9 @@ public class BottomeFragStudentViewHolder extends RecyclerView.ViewHolder {
             Objects.requireNonNull(avatar).setImageURI(Uri.fromFile(file));
 */
 
-            Objects.requireNonNull(rl_root).setOnClickListener(v -> studentClickListener.onGroupClick(fragmentModalsList.getFullName(),
-                    fragmentModalsList.getStudentID()));
+            Objects.requireNonNull(rl_root).setOnClickListener(v ->
+                    studentClickListener.onGroupClick(fragmentModalsList.getFullName(),
+                    fragmentModalsList.getStudentID(),fragmentModalsList.getGroupId()));
         } catch (Exception e) {
             e.printStackTrace();
         }

@@ -28,7 +28,7 @@ import java.util.List;
 
 @EActivity(R.layout.activity_show_sync_logs)
 public class ShowSyncLogActivity extends BaseActivity implements
-        ShowSyncLogContract.ShowSyncLogView{
+        ShowSyncLogContract.ShowSyncLogView {
 
     @Bean(ShowSyncLogPresenter.class)
     ShowSyncLogContract.ShowSyncLogPresenter presenter;
@@ -54,7 +54,7 @@ public class ShowSyncLogActivity extends BaseActivity implements
     @Override
     public void addToAdapter(List<Modal_Log> logList) {
         modal_logList = logList;
-        if(syncLogAdapter==null) {
+        if (syncLogAdapter == null) {
             syncLogAdapter = new ShowSyncLogAdapter(this, modal_logList);
             RecyclerView.LayoutManager mLayoutManager = new GridLayoutManager(this, 1);
             recycler_view.setLayoutManager(mLayoutManager);
@@ -62,12 +62,55 @@ public class ShowSyncLogActivity extends BaseActivity implements
             recycler_view.addItemDecoration(new GridSpacingItemDecoration(1, dpToPx(this), true));
             recycler_view.setItemAnimator(new DefaultItemAnimator());
             recycler_view.setAdapter(syncLogAdapter);
-        }else
+        } else
             syncLogAdapter.notifyDataSetChanged();
     }
 
+/*    public void takeScreenshot() {
+        Bitmap bitmap = getScreenBitmap(); // Get the bitmap
+        saveTheBitmap(bitmap);               // Save it to the external storage device.
+    }
+
+    public Bitmap getScreenBitmap() {
+        View v = findViewById(android.R.id.content).getRootView();
+        v.setDrawingCacheEnabled(true);
+        v.measure(MeasureSpec.makeMeasureSpec(0, MeasureSpec.UNSPECIFIED),
+                MeasureSpec.makeMeasureSpec(0, MeasureSpec.UNSPECIFIED));
+        v.layout(0, 0, v.getMeasuredWidth(), v.getMeasuredHeight());
+
+        v.buildDrawingCache(true);
+        Bitmap b = Bitmap.createBitmap(v.getDrawingCache());
+        v.setDrawingCacheEnabled(false); // clear drawing cache
+        return b;
+    }
+
+    private void saveTheBitmap(Bitmap image) {
+
+        if (!new File(Environment.getExternalStorageDirectory() + "/PrathamBackups").exists())
+            new File(Environment.getExternalStorageDirectory() + "/PrathamBackups").mkdir();
+        File pictureFile = new File(Environment.getExternalStorageDirectory() + "/PrathamBackups/Test");
+        if (!pictureFile.exists()) {
+            pictureFile.mkdir();
+            if (pictureFile == null) {
+                Log.d("TAG",
+                        "Error creating media file, check storage permissions: ");// e.getMessage());
+                return;
+            }
+            try {
+                FileOutputStream fos = new FileOutputStream(pictureFile);
+                image.compress(Bitmap.CompressFormat.PNG, 90, fos);
+                fos.close();
+            } catch (FileNotFoundException e) {
+                Log.d(TAG, "File not found: " + e.getMessage());
+            } catch (IOException e) {
+                Log.d(TAG, "Error accessing file: " + e.getMessage());
+            }
+        }
+    }*/
+
     @ViewById(R.id.rl_no_data)
     RelativeLayout rl_no_data;
+
     @UiThread
     @Override
     public void showNoData() {
@@ -80,7 +123,7 @@ public class ShowSyncLogActivity extends BaseActivity implements
     }
 
     @Click(R.id.main_back)
-    public void pressedBack(){
+    public void pressedBack() {
         onBackPressed();
     }
 

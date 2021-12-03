@@ -79,8 +79,8 @@ import java.util.zip.ZipOutputStream;
 public class PushDataToServer_New {
 
     private Context context;
-    private JSONArray scoreData,attendanceData,studentData,crlData,sessionData,supervisorData,
-            groupsData,assessmentData,contentProgress,keyWordsData,courseEnrollmentData,logsData;
+    private JSONArray scoreData, attendanceData, studentData, crlData, sessionData, supervisorData,
+            groupsData, assessmentData, contentProgress, keyWordsData, courseEnrollmentData, logsData;
     private boolean pushSuccessfull = false;
     private final boolean pushImageSuccessfull = false;
     private boolean isConnectedToRasp = false;
@@ -130,30 +130,12 @@ public class PushDataToServer_New {
         if (FC_Utility.isDataConnectionAvailable(context)) {
             this.context = context;
             this.showUi = showUi;
-            FastSave.getInstance().saveString(FC_Constants.PUSH_ID_LOGS, ""+FC_Utility.getUUID());
+            FastSave.getInstance().saveString(FC_Constants.PUSH_ID_LOGS, "" + FC_Utility.getUUID());
             //Show Dialog
             if (showUi)
                 showPushDialog(context);
             //Here data is fetched from local database and added to a list and then passed to JsonArray.
-            try {
-                Modal_Log log = new Modal_Log();
-                log.setErrorType(" ");
-                if (!showUi)
-                    log.setExceptionMessage("App_Auto_Sync");
-                else
-                    log.setExceptionMessage("App_Manual_Sync");
-                syncTime = FC_Utility.getCurrentDateTime();
-                log.setMethodName(""+FastSave.getInstance().getString(FC_Constants.PUSH_ID_LOGS, "na"));
-                log.setSessionId("" + FastSave.getInstance().getString(FC_Constants.CURRENT_SESSION, ""));
-                log.setGroupId("");
-                log.setExceptionStackTrace("APK BUILD DATE : " + BUILD_DATE);
-                log.setDeviceId("" + FC_Utility.getDeviceID());
-                log.setCurrentDateTime("" + syncTime);
-                AppDatabase.getDatabaseInstance(context).getLogsDao().insertLog(log);
-                BackupDatabase.backup(context);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
+            syncTime = FC_Utility.getCurrentDateTime();
             try {
                 setGreenColorMainTextToDialog();
                 setMainTextToDialog(context.getResources().getString(R.string.Collecting_Data));
@@ -304,7 +286,7 @@ public class PushDataToServer_New {
 
             ok_btn.setOnClickListener(v -> {
 //                if (pushSuccessfull)
-                    getImageList();
+                getImageList();
 //                else
 //                    pushDialog.dismiss();
             });
@@ -505,8 +487,8 @@ public class PushDataToServer_New {
     @UiThread
     public void setDataPushSuccessfull() {
         setPushFlag();
-        AppDatabase.getDatabaseInstance(context).getLogsDao().setPushStatus(FC_Constants.SUCCESSFULLYPUSHED,
-                FastSave.getInstance().getString(FC_Constants.PUSH_ID_LOGS, ""));
+//        AppDatabase.getDatabaseInstance(context).getLogsDao().setPushStatus(FC_Constants.SUCCESSFULLYPUSHED,
+//                FastSave.getInstance().getString(FC_Constants.PUSH_ID_LOGS, ""));
         if (showUi) {
             setGreenColorMainTextToDialog();
             setMainTextToDialog(context.getResources().getString(R.string.data_pushed_successfully) + "\n" +
@@ -531,8 +513,8 @@ public class PushDataToServer_New {
     //Method shows failure dialog
     @UiThread
     public void setDataPushFailed() {
-        AppDatabase.getDatabaseInstance(context).getLogsDao().setPushStatus(FC_Constants.PUSHFAILED,
-                FastSave.getInstance().getString(FC_Constants.PUSH_ID_LOGS, ""));
+//        AppDatabase.getDatabaseInstance(context).getLogsDao().setPushStatus(FC_Constants.PUSHFAILED,
+//                FastSave.getInstance().getString(FC_Constants.PUSH_ID_LOGS, ""));
         if (showUi) {
             setRedColorMainTextToDialog();
             setMainTextToDialog(context.getResources().getString(R.string.OOPS));
@@ -589,7 +571,7 @@ public class PushDataToServer_New {
 //                            Log.d("PushData", "FileName:" + fName);
                                 String f_Name = "NA";
                                 f_Name = AppDatabase.getDatabaseInstance(context).getScoreDao().getImgResId(fName);
-                                if (f_Name!=null) {
+                                if (f_Name != null) {
                                     Image_Upload image_upload = new Image_Upload();
                                     image_upload.setFileName(fName);
                                     image_upload.setFilePath(fPath);
@@ -605,7 +587,7 @@ public class PushDataToServer_New {
                     String fName = imageFilesArray[index].getName();
                     String f_Name = "NA";
                     f_Name = AppDatabase.getDatabaseInstance(context).getScoreDao().getImgResId(fName);
-                    if (f_Name!=null) {
+                    if (f_Name != null) {
 //                    Log.d("PushData", "FileName:" + imageFilesArray[index].getName());
                         Image_Upload image_upload = new Image_Upload();
                         image_upload.setFileName(fName);
@@ -781,18 +763,36 @@ public class PushDataToServer_New {
             pushStatusJson.put(FC_Constants.SYNC_COURSE_ENROLLMENT_LENGTH, enrollmentCount);
             pushStatusJson.put(FC_Constants.SYNC_DATA_LENGTH, pushedScoreLength);
             pushStatusJson.put(FC_Constants.SYNC_MEDIA_LENGTH, successful_ImageLength);
-            pushStatusJson.put("ScoreTable", totalSuccessfullScorePush+"/"+totalScoreCount);
-            pushStatusJson.put("MediaCount", totalSuccessfulImgCount+"/"+totalImgCount);
-            pushStatusJson.put("CoursesCount", totalCoursesSuccessful+"/"+totalCourses);
+            pushStatusJson.put("ScoreTable", totalSuccessfullScorePush + "/" + totalScoreCount);
+            pushStatusJson.put("MediaCount", totalSuccessfulImgCount + "/" + totalImgCount);
+            pushStatusJson.put("CoursesCount", totalCoursesSuccessful + "/" + totalCourses);
+
+            Modal_Log log = new Modal_Log();
+            if (!showUi)
+                log.setExceptionMessage("App_Auto_Sync");
+            else
+                log.setExceptionMessage("App_Manual_Sync");
+            log.setMethodName("" + FastSave.getInstance().getString(FC_Constants.PUSH_ID_LOGS, "na"));
+            log.setSessionId("" + FastSave.getInstance().getString(FC_Constants.CURRENT_SESSION, ""));
+            log.setGroupId("");
+            log.setExceptionStackTrace("APK BUILD DATE : " + BUILD_DATE);
+            if (pushSuccessfull)
+                log.setErrorType(""+FC_Constants.SUCCESSFULLYPUSHED);
+            else
+                log.setErrorType(""+FC_Constants.PUSHFAILED);
+            log.setLogDetail(""+pushStatusJson.toString());
+            log.setDeviceId("" + FC_Utility.getDeviceID());
+            log.setCurrentDateTime("" + syncTime);
+            AppDatabase.getDatabaseInstance(context).getLogsDao().insertLog(log);
 
             Log.d("PushData", "pushStatusJson JSON : " + pushStatusJson.toString());
-            AppDatabase.getDatabaseInstance(context).getLogsDao().setPushDataLog(pushStatusJson.toString(),
-                    FastSave.getInstance().getString(FC_Constants.PUSH_ID_LOGS, ""));
+//            AppDatabase.getDatabaseInstance(context).getLogsDao().setPushDataLog(,
+//                    FastSave.getInstance().getString(FC_Constants.PUSH_ID_LOGS, ""));
+            BackupDatabase.backup(context);
 
         } catch (Exception e) {
             e.printStackTrace();
         }
-
 
 
         if (showUi) {

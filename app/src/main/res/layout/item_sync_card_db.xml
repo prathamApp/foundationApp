@@ -93,10 +93,10 @@
                 android:id="@+id/tv_scorecount"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="0/0"
+                android:text="0"
                 android:textAlignment="center"
                 android:textColor="@color/goodColornew"
-                android:textSize="@dimen/_10sdp"
+                android:textSize="@dimen/_12sdp"
                 tools:ignore="HardcodedText" />
 
             <com.pratham.foundation.customView.fontsview.SansTextView
@@ -107,7 +107,7 @@
                 android:text="Score Count"
                 android:textAlignment="center"
                 android:textColor="@color/goodColornew"
-                android:textSize="@dimen/_10sdp"
+                android:textSize="@dimen/_12sdp"
                 tools:ignore="HardcodedText" />
         </RelativeLayout>
 
@@ -125,10 +125,10 @@
                 android:id="@+id/tv_coursecount"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="0/0"
+                android:text="0"
                 android:textAlignment="center"
                 android:textColor="@color/goodColornew"
-                android:textSize="@dimen/_10sdp"
+                android:textSize="@dimen/_12sdp"
                 tools:ignore="HardcodedText" />
 
             <com.pratham.foundation.customView.fontsview.SansTextView
@@ -139,7 +139,7 @@
                 android:text="Course Count"
                 android:textAlignment="center"
                 android:textColor="@color/goodColornew"
-                android:textSize="@dimen/_10sdp"
+                android:textSize="@dimen/_12sdp"
                 tools:ignore="HardcodedText" />
         </RelativeLayout>
     </LinearLayout>

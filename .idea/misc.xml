@@ -1,11 +1,93 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="DesignSurface">
+    <option name="filePathToZoomLevelMap">
+      <map>
+        <entry key="..\:/Android_Projects/FoundationApp_Git/app/src/main/res/drawable/button_blue.xml" value="0.23" />
+        <entry key="..\:/Android_Projects/FoundationApp_Git/app/src/main/res/drawable/button_green.xml" value="0.35125" />
+        <entry key="..\:/Android_Projects/FoundationApp_Git/app/src/main/res/drawable/card_color_bg1.xml" value="0.34625" />
+        <entry key="..\:/Android_Projects/FoundationApp_Git/app/src/main/res/drawable/card_color_bg10.xml" value="0.34625" />
+        <entry key="..\:/Android_Projects/FoundationApp_Git/app/src/main/res/drawable/card_color_bg2.xml" value="0.34625" />
+        <entry key="..\:/Android_Projects/FoundationApp_Git/app/src/main/res/drawable/card_color_bg3.xml" value="0.34625" />
+        <entry key="..\:/Android_Projects/FoundationApp_Git/app/src/main/res/drawable/card_color_bg5.xml" value="0.34625" />
+        <entry key="..\:/Android_Projects/FoundationApp_Git/app/src/main/res/drawable/card_color_bg6.xml" value="0.34625" />
+        <entry key="..\:/Android_Projects/FoundationApp_Git/app/src/main/res/drawable/card_color_bg7.xml" value="0.34625" />
+        <entry key="..\:/Android_Projects/FoundationApp_Git/app/src/main/res/drawable/card_color_bg8.xml" value="0.34625" />
+        <entry key="..\:/Android_Projects/FoundationApp_Git/app/src/main/res/drawable/card_color_bg9.xml" value="0.34625" />
+        <entry key="..\:/Android_Projects/FoundationApp_Git/app/src/main/res/drawable/card_delete_bg.xml" value="0.34625" />
+        <entry key="..\:/Android_Projects/FoundationApp_Git/app/src/main/res/drawable/custom_progress_primary.xml" value="0.23" />
+        <entry key="..\:/Android_Projects/FoundationApp_Git/app/src/main/res/drawable/dotted_line_horizontal.xml" value="0.32125" />
+        <entry key="..\:/Android_Projects/FoundationApp_Git/app/src/main/res/drawable/dotted_line_horizontal_blue.xml" value="0.355" />
+        <entry key="..\:/Android_Projects/FoundationApp_Git/app/src/main/res/drawable/progress_background2.xml" value="0.27875" />
+        <entry key="..\:/Android_Projects/FoundationApp_Git/app/src/main/res/drawable/red_ripple_round.xml" value="0.23" />
+        <entry key="..\:/Android_Projects/FoundationApp_Git/app/src/main/res/drawable/sync_failed_bg.xml" value="0.27875" />
+        <entry key="..\:/Android_Projects/FoundationApp_Git/app/src/main/res/drawable/text_usage_game_grad.xml" value="0.27875" />
+        <entry key="..\:/Android_Projects/FoundationApp_Git/app/src/main/res/drawable/vid_play.xml" value="0.17533783783783785" />
+        <entry key="..\:/Android_Projects/FoundationApp_Git/app/src/main/res/layout/activity_add_enrollment_id.xml" value="0.18290854572713644" />
+        <entry key="..\:/Android_Projects/FoundationApp_Git/app/src/main/res/layout/activity_admin_controls.xml" value="0.18290854572713644" />
+        <entry key="..\:/Android_Projects/FoundationApp_Git/app/src/main/res/layout/activity_assign_groups.xml" value="0.38125" />
+        <entry key="..\:/Android_Projects/FoundationApp_Git/app/src/main/res/layout/activity_certificate_display.xml" value="0.18290854572713644" />
+        <entry key="..\:/Android_Projects/FoundationApp_Git/app/src/main/res/layout/activity_content_display.xml" value="0.18290854572713644" />
+        <entry key="..\:/Android_Projects/FoundationApp_Git/app/src/main/res/layout/activity_content_player.xml" value="0.12196601941747573" />
+        <entry key="..\:/Android_Projects/FoundationApp_Git/app/src/main/res/layout/activity_home.xml" value="0.18290854572713644" />
+        <entry key="..\:/Android_Projects/FoundationApp_Git/app/src/main/res/layout/activity_menu.xml" value="0.18290854572713644" />
+        <entry key="..\:/Android_Projects/FoundationApp_Git/app/src/main/res/layout/activity_pdf_view.xml" value="0.18290854572713644" />
+        <entry key="..\:/Android_Projects/FoundationApp_Git/app/src/main/res/layout/activity_select_group.xml" value="0.18290854572713644" />
+        <entry key="..\:/Android_Projects/FoundationApp_Git/app/src/main/res/layout/activity_select_subject.xml" value="0.4079861111111111" />
+        <entry key="..\:/Android_Projects/FoundationApp_Git/app/src/main/res/layout/activity_show_sync_logs.xml" value="0.38125" />
+        <entry key="..\:/Android_Projects/FoundationApp_Git/app/src/main/res/layout/activity_show_test_pdf.xml" value="0.18290854572713644" />
+        <entry key="..\:/Android_Projects/FoundationApp_Git/app/src/main/res/layout/activity_tab_usage.xml" value="0.18290854572713644" />
+        <entry key="..\:/Android_Projects/FoundationApp_Git/app/src/main/res/layout/activity_vocabulary_reading.xml" value="0.1" />
+        <entry key="..\:/Android_Projects/FoundationApp_Git/app/src/main/res/layout/admin_panel_login.xml" value="0.18290854572713644" />
+        <entry key="..\:/Android_Projects/FoundationApp_Git/app/src/main/res/layout/app_db_push_dialog.xml" value="0.1" />
+        <entry key="..\:/Android_Projects/FoundationApp_Git/app/src/main/res/layout/app_send_success_dialog.xml" value="0.4" />
+        <entry key="..\:/Android_Projects/FoundationApp_Git/app/src/main/res/layout/bottom_control_panel_v4.xml" value="0.18290854572713644" />
+        <entry key="..\:/Android_Projects/FoundationApp_Git/app/src/main/res/layout/content_folder_card_tab.xml" value="0.16799999999999998" />
+        <entry key="..\:/Android_Projects/FoundationApp_Git/app/src/main/res/layout/content_home_.xml" value="0.16486486486486487" />
+        <entry key="..\:/Android_Projects/FoundationApp_Git/app/src/main/res/layout/content_item_file_card.xml" value="0.18290854572713644" />
+        <entry key="..\:/Android_Projects/FoundationApp_Git/app/src/main/res/layout/content_item_folder_card_tab.xml" value="0.18290854572713644" />
+        <entry key="..\:/Android_Projects/FoundationApp_Git/app/src/main/res/layout/content_recycler.xml" value="0.16486486486486487" />
+        <entry key="..\:/Android_Projects/FoundationApp_Git/app/src/main/res/layout/custom_spinner.xml" value="0.16486486486486487" />
+        <entry key="..\:/Android_Projects/FoundationApp_Git/app/src/main/res/layout/dialog_alert_sd_card.xml" value="0.11543715846994536" />
+        <entry key="..\:/Android_Projects/FoundationApp_Git/app/src/main/res/layout/downoad_list_item.xml" value="0.1" />
+        <entry key="..\:/Android_Projects/FoundationApp_Git/app/src/main/res/layout/dropdown_list_item.xml" value="0.16486486486486487" />
+        <entry key="..\:/Android_Projects/FoundationApp_Git/app/src/main/res/layout/fc_custom_language_dialog.xml" value="0.1" />
+        <entry key="..\:/Android_Projects/FoundationApp_Git/app/src/main/res/layout/fragment_child_attendance.xml" value="0.18290854572713644" />
+        <entry key="..\:/Android_Projects/FoundationApp_Git/app/src/main/res/layout/fragment_new_menu.xml" value="0.18290854572713644" />
+        <entry key="..\:/Android_Projects/FoundationApp_Git/app/src/main/res/layout/fragment_profile.xml" value="0.4" />
+        <entry key="..\:/Android_Projects/FoundationApp_Git/app/src/main/res/layout/fragment_pull_and_assign.xml" value="0.18290854572713644" />
+        <entry key="..\:/Android_Projects/FoundationApp_Git/app/src/main/res/layout/fragment_push_or_assign.xml" value="0.38125" />
+        <entry key="..\:/Android_Projects/FoundationApp_Git/app/src/main/res/layout/fragment_select_group.xml" value="0.18290854572713644" />
+        <entry key="..\:/Android_Projects/FoundationApp_Git/app/src/main/res/layout/fragment_story_reading.xml" value="0.1" />
+        <entry key="..\:/Android_Projects/FoundationApp_Git/app/src/main/res/layout/fragment_tab_one.xml" value="0.18290854572713644" />
+        <entry key="..\:/Android_Projects/FoundationApp_Git/app/src/main/res/layout/item_group.xml" value="0.5416204217536071" />
+        <entry key="..\:/Android_Projects/FoundationApp_Git/app/src/main/res/layout/item_stat_group.xml" value="0.18290854572713644" />
+        <entry key="..\:/Android_Projects/FoundationApp_Git/app/src/main/res/layout/item_stat_grp_resource.xml" value="0.18290854572713644" />
+        <entry key="..\:/Android_Projects/FoundationApp_Git/app/src/main/res/layout/item_stat_resource_gradiance.xml" value="0.18290854572713644" />
+        <entry key="..\:/Android_Projects/FoundationApp_Git/app/src/main/res/layout/item_sync_card.xml" value="0.4" />
+        <entry key="..\:/Android_Projects/FoundationApp_Git/app/src/main/res/layout/item_sync_card_auto.xml" value="0.4" />
+        <entry key="..\:/Android_Projects/FoundationApp_Git/app/src/main/res/layout/item_sync_card_db.xml" value="0.4" />
+        <entry key="..\:/Android_Projects/FoundationApp_Git/app/src/main/res/layout/item_test_pdf.xml" value="0.176" />
+        <entry key="..\:/Android_Projects/FoundationApp_Git/app/src/main/res/layout/layout_avatar_row.xml" value="0.38125" />
+        <entry key="..\:/Android_Projects/FoundationApp_Git/app/src/main/res/layout/layout_image_ques_row.xml" value="0.20546875" />
+        <entry key="..\:/Android_Projects/FoundationApp_Git/app/src/main/res/layout/list_header.xml" value="0.1" />
+        <entry key="..\:/Android_Projects/FoundationApp_Git/app/src/main/res/layout/listvew.xml" value="0.1" />
+        <entry key="..\:/Android_Projects/FoundationApp_Git/app/src/main/res/layout/lottie_stt_dialog.xml" value="0.2" />
+        <entry key="..\:/Android_Projects/FoundationApp_Git/app/src/main/res/layout/student_card.xml" value="0.18290854572713644" />
+        <entry key="..\:/Android_Projects/FoundationApp_Git/app/src/main/res/layout/student_item_file_footer.xml" value="0.18290854572713644" />
+        <entry key="..\:/Android_Projects/FoundationApp_Git/app/src/main/res/layout/student_item_file_header.xml" value="0.18290854572713644" />
+        <entry key="..\:/Android_Projects/FoundationApp_Git/app/src/main/res/layout/student_list_fragment.xml" value="0.18290854572713644" />
+        <entry key="..\:/Android_Projects/FoundationApp_Git/app/src/main/res/layout/sync_status_dialog.xml" value="0.264" />
+        <entry key="..\:/Android_Projects/FoundationApp_Git/app/src/main/res/layout/vocab_category.xml" value="0.16486486486486487" />
+      </map>
+    </option>
+  </component>
   <component name="EntryPointsManager">
     <list size="1">
       <item index="0" class="java.lang.String" itemvalue="org.androidannotations.annotations.Click" />
     </list>
   </component>
-  <component name="ProjectRootManager" version="2" languageLevel="JDK_1_8" project-jdk-name="1.8" project-jdk-type="JavaSDK">
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="1.8" project-jdk-type="JavaSDK">
     <output url="file://$PROJECT_DIR$/build/classes" />
   </component>
   <component name="ProjectType">

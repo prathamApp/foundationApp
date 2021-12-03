@@ -7,6 +7,16 @@
     android:layout_height="match_parent"
     android:background="@drawable/new_bg">
 
+    <com.airbnb.lottie.LottieAnimationView
+        android:layout_width="@dimen/_130sdp"
+        android:layout_height="@dimen/_130sdp"
+        android:layout_marginStart="@dimen/_10sdp"
+        android:layout_marginTop="@dimen/_5sdp"
+        android:elevation="@dimen/_5sdp"
+        app:lottie_autoPlay="true"
+        app:lottie_fileName="hand_click.json"
+        app:lottie_loop="true" />
+
     <com.pratham.foundation.customView.fontsview.SansTextView
         android:id="@+id/version_tv"
         android:layout_width="wrap_content"
@@ -28,15 +38,6 @@
         android:layout_marginBottom="@dimen/_5sdp"
         android:paddingEnd="10dp"
         tools:ignore="RtlSymmetry">
-
-        <ImageView
-            android:layout_width="@dimen/_30sdp"
-            android:layout_height="@dimen/_30sdp"
-            android:layout_marginStart="@dimen/_60sdp"
-            android:layout_marginTop="@dimen/_50sdp"
-            android:elevation="@dimen/_5sdp"
-            android:src="@drawable/click_icon"
-            tools:ignore="ContentDescription" />
 
         <com.facebook.drawee.view.SimpleDraweeView
             android:id="@+id/card_img"
@@ -156,9 +157,9 @@
                     android:id="@+id/tv_en_id"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
                     android:layout_marginStart="5dp"
                     android:layout_marginEnd="5dp"
-                    android:layout_centerVertical="true"
                     android:layout_toEndOf="@id/tv_en_id_lbl"
                     android:gravity="center_vertical"
                     android:paddingTop="2dp"
