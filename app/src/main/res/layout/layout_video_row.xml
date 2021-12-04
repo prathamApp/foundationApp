@@ -97,10 +97,10 @@
                 android:id="@+id/iv_question_image"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/_140sdp"
-                android:padding="@dimen/_2sdp"
-                android:visibility="visible"
                 android:layout_marginStart="@dimen/_10sdp"
                 android:layout_marginEnd="@dimen/_10sdp"
+                android:padding="@dimen/_2sdp"
+                android:visibility="visible"
                 app:actualImageScaleType="fitCenter"
                 app:placeholderImageScaleType="fitCenter"
                 app:roundedCornerRadius="@dimen/_10sdp" />
@@ -127,20 +127,21 @@
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_weight="1.5">
-            <com.pratham.foundation.customView.fontsview.SansTextView
-                android:id="@+id/subQuestion"
-                android:layout_width="match_parent"
-                style="@style/paragraph"
-                android:layout_marginStart="@dimen/_10sdp"
-                android:layout_marginEnd="@dimen/_10sdp"
-                android:textSize="@dimen/_18sdp"
-                android:text="@string/app_name"
-                android:textColor="@color/colorText"
-                android:fadeScrollbars="false"
-                android:scrollbarSize="6dp"
-                android:scrollbarThumbVertical="@drawable/card_color_bg4"
-                android:scrollbarTrackVertical="@drawable/scroll_bg"
-                android:layout_height="wrap_content"/>
+
+                <com.pratham.foundation.customView.fontsview.SansTextView
+                    android:id="@+id/subQuestion"
+                    style="@style/paragraph"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/_10sdp"
+                    android:layout_marginEnd="@dimen/_10sdp"
+                    android:fadeScrollbars="false"
+                    android:scrollbarSize="6dp"
+                    android:scrollbarThumbVertical="@drawable/card_color_bg4"
+                    android:scrollbarTrackVertical="@drawable/scroll_bg"
+                    android:text="@string/app_name"
+                    android:textColor="@color/colorText"
+                    android:textSize="@dimen/_18sdp" />
             </RelativeLayout>
             <LinearLayout
                 android:layout_width="match_parent"

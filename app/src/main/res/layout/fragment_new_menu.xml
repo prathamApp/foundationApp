@@ -123,7 +123,7 @@
                     android:layout_height="@dimen/_50sdp"
                     android:layout_marginVertical="@dimen/_10sdp"
                     android:background="@drawable/button_purple"
-                    android:visibility="visible"
+                    android:visibility="gone"
                     android:text="Device Usage"
                     android:textColor="@color/white"
                     android:textSize="@dimen/_12sdp" />
