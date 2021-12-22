@@ -12,7 +12,6 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
-import android.os.Environment;
 import android.os.Handler;
 import android.view.Gravity;
 import android.view.MotionEvent;
@@ -104,7 +103,7 @@ public class AddEnrollmentId extends BaseActivity implements AvatarClickListener
     @AfterViews
     public void initialize() {
         mContext = AddEnrollmentId.this;
-        FC_Constants.StudentPhotoPath = Environment.getExternalStorageDirectory().toString() + "/.FCAInternal/StudentProfilePhotos/";
+        FC_Constants.StudentPhotoPath = FC_Utility.getStoragePath().toString() + "/.FCAInternal/StudentProfilePhotos/";
         api_content = new API_Content(mContext, AddEnrollmentId.this);
         gson = new Gson();
         addAvatarsInList();

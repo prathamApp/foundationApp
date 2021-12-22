@@ -1,5 +1,9 @@
 package com.pratham.foundation.async;
 
+import static com.pratham.foundation.ApplicationClass.App_Thumbs_Path;
+import static com.pratham.foundation.utility.FC_Constants.FILE_DOWNLOAD_STARTED;
+import static com.pratham.foundation.utility.FC_Constants.IS_DOWNLOADING;
+
 import android.content.Context;
 import android.util.Log;
 
@@ -10,10 +14,13 @@ import com.androidnetworking.interfaces.DownloadListener;
 import com.pratham.foundation.ApplicationClass;
 import com.pratham.foundation.database.AppDatabase;
 import com.pratham.foundation.database.domain.ContentTable;
+import com.pratham.foundation.database.domain.Modal_Log;
 import com.pratham.foundation.modalclasses.EventMessage;
 import com.pratham.foundation.modalclasses.Modal_Download;
 import com.pratham.foundation.modalclasses.Modal_FileDownloading;
+import com.pratham.foundation.services.shared_preferences.FastSave;
 import com.pratham.foundation.utility.FC_Constants;
+import com.pratham.foundation.utility.FC_Utility;
 
 import net.lingala.zip4j.core.ZipFile;
 import net.lingala.zip4j.exception.ZipException;
@@ -31,9 +38,6 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.concurrent.Executors;
 
-import static com.pratham.foundation.ApplicationClass.App_Thumbs_Path;
-import static com.pratham.foundation.utility.FC_Constants.FILE_DOWNLOAD_STARTED;
-import static com.pratham.foundation.utility.FC_Constants.IS_DOWNLOADING;
 
 @EBean
 public class ContentDownloadingTask {
@@ -88,7 +92,7 @@ public class ContentDownloadingTask {
         OutputStream output = null;
         HttpURLConnection connection = null;
         try {
-            // String root = Environment.getExternalStorageDirectory().toString();
+            // String root = FC_Utility.getStoragePath().toString();
             URL urlFormed = new URL(url);
             connection = (HttpURLConnection) urlFormed.openConnection();
             connection.setConnectTimeout(15000);
@@ -164,7 +168,7 @@ public class ContentDownloadingTask {
     public void downloadCompleted() {
         Log.d(TAG, "updateFileProgress: " + downloadID);
         ArrayList<ContentTable> temp = new ArrayList<>(levelContents);
-        for(int j=0; j<levelContents.size(); j++){
+        for (int j = 0; j < levelContents.size(); j++) {
             levelContents.get(j).setIsDownloaded("" + true);
             levelContents.get(j).setOnSDCard(false);
         }
@@ -284,6 +288,23 @@ public class ContentDownloadingTask {
         Log.d(TAG, "onPostExecute");
         IS_DOWNLOADING = false;
         if (success) {
+            //update data dowanlod chanle
+            Modal_Log modal_log = new Modal_Log();
+            modal_log.setErrorType("DOWNLOAD");
+            modal_log.setExceptionMessage(content.nodeTitle);
+            modal_log.setMethodName(content.nodeId);
+            modal_log.setCurrentDateTime(FC_Utility.getCurrentDateTime());
+            modal_log.setSessionId(FastSave.getInstance().getString(FC_Constants.CURRENT_SESSION, ""));
+            modal_log.setExceptionStackTrace("APK BUILD DATE : " + ApplicationClass.BUILD_DATE);
+            modal_log.setDeviceId("" + FC_Utility.getDeviceID());
+            modal_log.setGroupId(FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, "no_group"));
+            if(url.contains(FC_Constants.RASP_IP))
+                modal_log.setLogDetail("PI#"+url);
+            else
+                modal_log.setLogDetail("INTERNET#"+url);
+
+            AppDatabase.getDatabaseInstance(context).getLogsDao().insertLog(modal_log);
+
             EventMessage eventMessage = new EventMessage();
             eventMessage.setMessage(FC_Constants.FILE_DOWNLOAD_COMPLETE);
             EventBus.getDefault().post(eventMessage);

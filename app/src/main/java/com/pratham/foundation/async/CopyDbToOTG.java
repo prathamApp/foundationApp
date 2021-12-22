@@ -1,8 +1,9 @@
 package com.pratham.foundation.async;
 
+import static com.pratham.foundation.database.AppDatabase.DB_NAME;
+
 import android.net.Uri;
 import android.os.AsyncTask;
-import android.os.Environment;
 import android.util.Log;
 
 import androidx.documentfile.provider.DocumentFile;
@@ -11,14 +12,13 @@ import com.pratham.foundation.ApplicationClass;
 import com.pratham.foundation.database.AppDatabase;
 import com.pratham.foundation.modalclasses.EventMessage;
 import com.pratham.foundation.utility.FC_Constants;
+import com.pratham.foundation.utility.FC_Utility;
 
 import org.greenrobot.eventbus.EventBus;
 
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.OutputStream;
-
-import static com.pratham.foundation.database.AppDatabase.DB_NAME;
 
 
 public class CopyDbToOTG extends AsyncTask {
@@ -32,7 +32,7 @@ public class CopyDbToOTG extends AsyncTask {
     @Override
     protected Object doInBackground(Object[] objects) {
         try {
-            actPhotoPath = Environment.getExternalStorageDirectory().toString() + "/.FCAInternal/ActivityPhotos/";
+            actPhotoPath = FC_Utility.getStoragePath().toString() + "/.FCAInternal/ActivityPhotos/";
             FC_Constants.transferredImages = 0;
             totalActivityFolders = 0;
 

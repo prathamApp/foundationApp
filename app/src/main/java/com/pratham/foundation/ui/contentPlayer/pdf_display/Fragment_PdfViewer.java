@@ -1,5 +1,7 @@
 package com.pratham.foundation.ui.contentPlayer.pdf_display;
 
+import static com.pratham.foundation.utility.FC_Constants.gameFolderPath;
+
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.media.MediaPlayer;
@@ -26,8 +28,6 @@ import org.androidannotations.annotations.ViewById;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Objects;
-
-import static com.pratham.foundation.utility.FC_Constants.gameFolderPath;
 
 @EActivity(R.layout.fragment_pdf_display)
 public class Fragment_PdfViewer extends BaseActivity implements PDFContract.pdf_View {
@@ -68,7 +68,7 @@ public class Fragment_PdfViewer extends BaseActivity implements PDFContract.pdf_
             pdf_Path = ApplicationClass.contentSDPath + gameFolderPath + "/" + pdf_Path;
         else
             pdf_Path = ApplicationClass.foundationPath + gameFolderPath + "/" + pdf_Path;
-//            pdf_Path = Environment.getExternalStorageDirectory() + "/PrathamBackups/story.pdf";
+//            pdf_Path = FC_Utility.getStoragePath() + "/PrathamBackups/story.pdf";
         if (new File(pdf_Path).exists())
             pdf_presenter.generateImageFromPdf(pdf_Path);
         else
@@ -80,7 +80,7 @@ public class Fragment_PdfViewer extends BaseActivity implements PDFContract.pdf_
     @Override
     public void recievedBitmaps(ArrayList<Bitmap> bits) {
         try {
-//            File directory = new File(Environment.getExternalStorageDirectory().toString() + "/.FCAInternal/TestJsons");
+//            File directory = new File(FC_Utility.getStoragePath().toString() + "/.FCAInternal/TestJsons");
 //            File[] fileListArray = directory.listFiles();
 //
 //            for (File file : fileListArray) {

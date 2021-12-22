@@ -86,9 +86,9 @@ public class ShowSyncLogActivity extends BaseActivity implements
 
     private void saveTheBitmap(Bitmap image) {
 
-        if (!new File(Environment.getExternalStorageDirectory() + "/PrathamBackups").exists())
-            new File(Environment.getExternalStorageDirectory() + "/PrathamBackups").mkdir();
-        File pictureFile = new File(Environment.getExternalStorageDirectory() + "/PrathamBackups/Test");
+        if (!new File(FC_Utility.getStoragePath() + "/PrathamBackups").exists())
+            new File(FC_Utility.getStoragePath() + "/PrathamBackups").mkdir();
+        File pictureFile = new File(FC_Utility.getStoragePath() + "/PrathamBackups/Test");
         if (!pictureFile.exists()) {
             pictureFile.mkdir();
             if (pictureFile == null) {

@@ -29,7 +29,7 @@ public class FileUtils {
     }
 
     public static File isSdcard0Exist() {
-        return Environment.getExternalStorageDirectory();
+        return FC_Utility.getStoragePath();
     }
 
     public static void createDirFile(String path) {
@@ -62,7 +62,7 @@ public class FileUtils {
                 final String[] split = docId.split(":");
                 final String type = split[0];
                 if (PRIMARY_VOLUME_NAME.equalsIgnoreCase(type)) {
-                    return Environment.getExternalStorageDirectory() + "/" + split[1];
+                    return FC_Utility.getStoragePath() + "/" + split[1];
                 }
             }
             // DownloadsProvider

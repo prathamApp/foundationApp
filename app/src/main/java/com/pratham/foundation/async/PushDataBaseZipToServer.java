@@ -6,7 +6,6 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
-import android.os.Environment;
 import android.util.Log;
 import android.view.View;
 import android.view.Window;
@@ -191,10 +190,10 @@ public class PushDataBaseZipToServer {
 //            String newdata = compress(String.valueOf(data));
             BackupDatabase.backup(context);
             String fielName = "FCZ_" + FC_RandomString.unique();
-            String filePathStr = Environment.getExternalStorageDirectory().toString()
+            String filePathStr = FC_Utility.getStoragePath().toString()
                     + "/PrathamBackups/" + AppDatabase.DB_NAME; // file path to save
             // Type the path of the files in here
-            File dir = new File(Environment.getExternalStorageDirectory().toString() + "/PrathamBackups/");
+            File dir = new File(FC_Utility.getStoragePath().toString() + "/PrathamBackups/");
             File[] db_files = dir.listFiles();
             Log.d("FC_RandomString", "DB ZIP NAME " + fielName);
             if (db_files != null) {

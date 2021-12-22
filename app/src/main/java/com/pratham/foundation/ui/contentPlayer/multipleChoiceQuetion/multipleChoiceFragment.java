@@ -1,5 +1,10 @@
 package com.pratham.foundation.ui.contentPlayer.multipleChoiceQuetion;
 
+import static com.pratham.foundation.utility.FC_Constants.APP_SECTION;
+import static com.pratham.foundation.utility.FC_Constants.gameFolderPath;
+import static com.pratham.foundation.utility.FC_Constants.sec_Test;
+import static com.pratham.foundation.utility.FC_Utility.showZoomDialog;
+
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -56,11 +61,6 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-
-import static com.pratham.foundation.utility.FC_Constants.APP_SECTION;
-import static com.pratham.foundation.utility.FC_Constants.gameFolderPath;
-import static com.pratham.foundation.utility.FC_Constants.sec_Test;
-import static com.pratham.foundation.utility.FC_Utility.showZoomDialog;
 
 @EFragment(R.layout.layout_mcq_fill_in_the_blanks_with_options_row)
 public class multipleChoiceFragment extends Fragment implements OnGameClose, MultipleChoiceContract.MultipleChoiceView {
@@ -298,27 +298,18 @@ public class multipleChoiceFragment extends Fragment implements OnGameClose, Mul
                                 ansview = radioButton;
                             }
                             //   Log.d("tag111", "a" + selectedFive.get(index).getUserAnswer() + "  B" + options.get(r).getQid());
-                            if (selectedFive.get(index).getUserAnswer().equalsIgnoreCase(options.get(r).getQid())) {
-
-                                radioButton.setChecked(true);
-                                // radioButton.setTextColor(Assessment_Utility.selectedColor);
-                            } else {
-                                radioButton.setChecked(false);
-                                // radioButton.setTextColor(Color.WHITE);
-                            }
+                            // radioButton.setTextColor(Assessment_Utility.selectedColor);
+                            // radioButton.setTextColor(Color.WHITE);
+                            radioButton.setChecked(selectedFive.get(index).getUserAnswer().equalsIgnoreCase(options.get(r).getQid()));
                             radioGroupMcq.addView(radioButton);
-                            if (ans.equals(options.get(r).getSubQues())) {
-                                radioButton.setChecked(true);
-                            } else {
-                                radioButton.setChecked(false);
-                            }
+                            radioButton.setChecked(ans.equals(options.get(r).getSubQues()));
 //                        }
                         }
                     } else if (imgCnt == options.size()) {
                         radioGroupMcq.setVisibility(View.GONE);
                         gridMcq.setVisibility(View.VISIBLE);
                         String fileName = options.get(r).getSubUrl().trim();
-//                String localPath = Environment.getExternalStorageDirectory() + Assessment_Constants.STORE_DOWNLOADED_MEDIA_PATH + "/" + fileName;
+//                String localPath = FC_Utility.getStoragePath() + Assessment_Constants.STORE_DOWNLOADED_MEDIA_PATH + "/" + fileName;
                         String localPath = readingContentPath + fileName;
 
                         String path = options.get(r).getSubUrl().trim();
@@ -463,7 +454,7 @@ public class multipleChoiceFragment extends Fragment implements OnGameClose, Mul
 //                        final View view = LayoutInflater.from(getActivity()).inflate(R.layout.layout_mcq_image_item, gridMcq, false);
 
                             String fileName = options.get(r).getSubUrl().trim();
-//                String localPath = Environment.getExternalStorageDirectory() + Assessment_Constants.STORE_DOWNLOADED_MEDIA_PATH + "/" + fileName;
+//                String localPath = FC_Utility.getStoragePath() + Assessment_Constants.STORE_DOWNLOADED_MEDIA_PATH + "/" + fileName;
                             String localPath = readingContentPath + fileName;
 
 //                        final ImageView imageView = (ImageView) view;

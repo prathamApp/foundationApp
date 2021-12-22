@@ -447,7 +447,7 @@ public class ProfileFragment extends Fragment implements ProfileContract.Profile
         if (FC_Utility.isDataConnectionAvailable(context)) {
             showLoader();
 /*
-            File backupsDir = new File(Environment.getExternalStorageDirectory().toString() + "/PrathamBackups/");
+            File backupsDir = new File(FC_Utility.getStoragePath().toString() + "/PrathamBackups/");
             File[] db_files = backupsDir.listFiles();
             if(db_files!=null)
                 for(int i=0; i<db_files.length;i++){

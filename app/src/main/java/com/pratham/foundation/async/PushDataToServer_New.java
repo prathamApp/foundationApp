@@ -13,7 +13,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
-import android.os.Environment;
 import android.util.Base64;
 import android.util.Log;
 import android.view.View;
@@ -392,7 +391,7 @@ public class PushDataToServer_New {
         try {
 //            String fielName = ""+FC_Utility.getUUID();
             String fielName = "FC_" + FC_RandomString.unique();
-            String filePathStr = Environment.getExternalStorageDirectory().toString()
+            String filePathStr = FC_Utility.getStoragePath().toString()
                     + "/.FCAInternal/PushJsons/" + fielName; // file path to save
             File filepath = new File(filePathStr + ".json"); // file path to save
             if (filepath.exists())
@@ -549,7 +548,7 @@ public class PushDataToServer_New {
         setMainTextToDialog(context.getResources().getString(R.string.Collecting_Media));
         setGreenColorMainTextToDialog();
         hideOKBtn();
-        actPhotoPath = Environment.getExternalStorageDirectory().toString() + "/.FCAInternal/ActivityPhotos/";
+        actPhotoPath = FC_Utility.getStoragePath().toString() + "/.FCAInternal/ActivityPhotos/";
 //        Log.d("PushData", "Path: " + actPhotoPath);
         File directory = new File(actPhotoPath);
         imageFilesArray = directory.listFiles();
@@ -607,7 +606,7 @@ public class PushDataToServer_New {
                     + totalImages + " " + context.getResources().getString(R.string.images));
 
 //            String fielName = "FCI_" + FC_RandomString.unique();
-//            String filePathStr = Environment.getExternalStorageDirectory().toString()
+//            String filePathStr = FC_Utility.getStoragePath().toString()
 //                    + "/.FCAInternal/ActivityPhotos/" + fielName;
 //            img_zip(imageUploadList, filePathStr + ".zip");
 

@@ -63,7 +63,7 @@ public class PDFViewActivity extends BaseActivity {
                 pdf_Path = ApplicationClass.contentSDPath + gameFolderPath + "/" + pdf_Path;
             else
                 pdf_Path = ApplicationClass.foundationPath + gameFolderPath + "/" + pdf_Path;
-//            pdf_Path = Environment.getExternalStorageDirectory() + "/PrathamBackups/story.pdf";
+//            pdf_Path = FC_Utility.getStoragePath() + "/PrathamBackups/story.pdf";
 
 
             String a = FastSave.getInstance().getString(FC_Constants.APP_LANGUAGE, FC_Constants.HINDI);

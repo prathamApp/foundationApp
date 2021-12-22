@@ -15,7 +15,6 @@ import android.graphics.drawable.ColorDrawable;
 import android.media.ThumbnailUtils;
 import android.net.Uri;
 import android.os.Build;
-import android.os.Environment;
 import android.os.Handler;
 import android.provider.MediaStore;
 import android.text.Editable;
@@ -167,9 +166,9 @@ public class DoingFragment extends Fragment implements STT_Result_New.sttView,
         contentTitle = getArguments().getString("contentName");
         jsonName = getArguments().getString("jsonName");
         onSdCard = getArguments().getBoolean("onSdCard", false);
-        if(new File(Environment.getExternalStorageDirectory().toString()
+        if(new File(FC_Utility.getStoragePath().toString()
                 + "/.FCAInternal/ActivityPhotos/vid_thumb.jpg").exists())
-            new File(Environment.getExternalStorageDirectory().toString()
+            new File(FC_Utility.getStoragePath().toString()
                     + "/.FCAInternal/ActivityPhotos/vid_thumb.jpg").delete();
         Fresco.getImagePipeline().clearCaches();
 
@@ -264,7 +263,7 @@ public class DoingFragment extends Fragment implements STT_Result_New.sttView,
                         BitmapDrawable ob = new BitmapDrawable(getResources(), thumb);
                         ByteArrayOutputStream bytes = new ByteArrayOutputStream();
                         thumb.compress(Bitmap.CompressFormat.JPEG, 60, bytes);
-                        File f = new File(Environment.getExternalStorageDirectory().toString()
+                        File f = new File(FC_Utility.getStoragePath().toString()
                                 + "/.FCAInternal/ActivityPhotos/" + File.separator + "vid_thumb.jpg");
 
                         f.createNewFile();
@@ -656,7 +655,7 @@ public class DoingFragment extends Fragment implements STT_Result_New.sttView,
                 addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION | Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
         try {
 
-//            String file_path = Environment.getExternalStorageDirectory().toString() +
+//            String file_path = FC_Utility.getStoragePath().toString() +
 //                    "/" + context.getResources().getString(R.string.app_name);
 
             File imagesFolder = new File(activityPhotoPath);
