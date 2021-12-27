@@ -1,7 +1,8 @@
 <?xml version="1.0" ?>
 <resources>
     <string name="Login">ଲଗ୍ ଇନ୍ କର</string>
-    <string name="Stt_Dialog_Msg">ଉନ୍ନତ ପ୍ରଦର୍ଶନ ପାଇଁ, ଦୟାକରି ଅଫଲାଇନ୍ ଭାଷା ପ୍ୟାକ୍ English (India) ଏବଂ ହିନ୍ଦୀ (ଭାରତ) ଡାଉନଲୋଡ୍ କର ।\n\nOpen\nGoogle -> Settings -> Voice -> Offline speech recognition</string>
+<!--    <string name="Stt_Dialog_Msg">ଉନ୍ନତ ପ୍ରଦର୍ଶନ ପାଇଁ, ଦୟାକରି ଅଫଲାଇନ୍ ଭାଷା ପ୍ୟାକ୍ English (India) ଏବଂ ହିନ୍ଦୀ (ଭାରତ) ଡାଉନଲୋଡ୍ କର ।\n\nOpen\nGoogle -> Settings -> Voice -> Offline speech recognition</string>-->
+    <string name="Stt_Dialog_Msg">ଉନ୍ନତ ପ୍ରଦର୍ଶନ ପାଇଁ, ଦୟାକରି ଅଫଲାଇନ୍ ଭାଷା ପ୍ୟାକ୍ English (India) ଏବଂ ହିନ୍ଦୀ (ଭାରତ) ଡାଉନଲୋଡ୍ କର।</string>
     <string name="Okay">ଠିକ୍ ଅଛି</string>
     <string name="Skip">ଛାଡି ଦିଅ</string>
     <string name="loding_please_wait">ଲୋଡ୍ ହେଉଅଛି, ଦୟାକରି ଅପେକ୍ଷା କର ....</string>

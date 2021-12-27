@@ -1,7 +1,8 @@
 <?xml version="1.0" ?>
 <resources>
     <string name="Login">உள்நுழைய</string>
-    <string name="Stt_Dialog_Msg">ஆஃப்லைன் பேச்சு அங்கீகாரத்திற்காக மொழிப் பொதிகளை ஆங்கிலம் (இந்தியா) மற்றும் இந்தி, (இந்தியா)பதிவிறக்கவும்.\n\nOpen\nGoogle -> Settings -> Voice -> Offline speech recognition</string>
+<!--    <string name="Stt_Dialog_Msg">ஆஃப்லைன் பேச்சு அங்கீகாரத்திற்காக மொழிப் பொதிகளை ஆங்கிலம் (இந்தியா) மற்றும் இந்தி, (இந்தியா)பதிவிறக்கவும்.\n\nOpen\nGoogle -> Settings -> Voice -> Offline speech recognition</string>-->
+    <string name="Stt_Dialog_Msg">ஆஃப்லைன் பேச்சு அங்கீகாரத்திற்காக மொழிப் பொதிகளை ஆங்கிலம் (இந்தியா) மற்றும் இந்தி, (இந்தியா)பதிவிறக்கவும்.</string>
     <string name="Okay">சரி</string>
     <string name="Skip">தாவிச்செல்</string>
     <string name="loding_please_wait">பதிவேறுகிறது, காத்திருக்கவும்...</string>

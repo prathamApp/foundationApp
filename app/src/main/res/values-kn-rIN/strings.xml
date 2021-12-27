@@ -1,7 +1,8 @@
 <?xml version="1.0" ?>
 <resources>
     <string name="Login">ಲಾಗಿನ್ ಮಾಡಿ</string>
-    <string name="Stt_Dialog_Msg">ಆಫ್‌ಲೈನ್ ನಲ್ಲಿ ಮಾತನ್ನು ಗುರುತಿಸುವಿಕೆಗಾಗಿ ದಯವಿಟ್ಟು ಭಾಷಾ ಪ್ಯಾಕ್‌ಗಳನ್ನು English(India) ಮತ್ತು ಕನ್ನಡ(ಭಾರತ) ಡೌನ್‌ಲೋಡ್ ಮಾಡಿ.\n\nOpen\nGoogle -> Settings -> Voice -> Offline speech recognition</string>
+<!--    <string name="Stt_Dialog_Msg">ಆಫ್‌ಲೈನ್ ನಲ್ಲಿ ಮಾತನ್ನು ಗುರುತಿಸುವಿಕೆಗಾಗಿ ದಯವಿಟ್ಟು ಭಾಷಾ ಪ್ಯಾಕ್‌ಗಳನ್ನು English(India) ಮತ್ತು ಕನ್ನಡ(ಭಾರತ) ಡೌನ್‌ಲೋಡ್ ಮಾಡಿ.\n\nOpen\nGoogle -> Settings -> Voice -> Offline speech recognition</string>-->
+    <string name="Stt_Dialog_Msg">ಆಫ್‌ಲೈನ್ ನಲ್ಲಿ ಮಾತನ್ನು ಗುರುತಿಸುವಿಕೆಗಾಗಿ ದಯವಿಟ್ಟು ಭಾಷಾ ಪ್ಯಾಕ್‌ಗಳನ್ನು English(India) ಮತ್ತು ಕನ್ನಡ(ಭಾರತ) ಡೌನ್‌ಲೋಡ್ ಮಾಡಿ.</string>
     <string name="Okay">ಸರಿ</string>
     <string name="Skip">ಬಿಟ್ಟು ಮುಂದೆ ಹೋಗಿ</string>
     <string name="loding_please_wait">ಲೋಡ್ ಆಗುತ್ತಿದೆ, ದಯವಿಟ್ಟು ಕಾಯಿರಿ ...</string>

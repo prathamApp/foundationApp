@@ -1,10 +1,10 @@
 package com.pratham.foundation.ui.selectSubject.testPDF;
 
 import android.content.Context;
-import android.os.Environment;
 import android.util.Log;
 
 import com.google.gson.Gson;
+import com.pratham.foundation.ApplicationClass;
 import com.pratham.foundation.database.AppDatabase;
 import com.pratham.foundation.database.domain.Student;
 import com.pratham.foundation.modalclasses.Diagnostic_pdf_Modal;
@@ -37,7 +37,7 @@ public class ShowTestPDFPresenter implements ShowTestPDFContract.TestPDFPresente
     public void getPDFs() {
         try {
 //            Log.d("TAG", "getPDFs: IN");
-            File dir = new File(Environment.getExternalStorageDirectory() + "/PrathamBackups/StudentPDFs/");
+            File dir = new File(ApplicationClass.getStoragePath() + "/PrathamBackups/StudentPDFs/");
             File[] db_files = dir.listFiles();
             if (db_files != null) {
                 pdf_modalList = new ArrayList<>();

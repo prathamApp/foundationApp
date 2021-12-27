@@ -1,5 +1,10 @@
 package com.pratham.foundation.ui.contentPlayer.fillInTheBlanks;
 
+import static com.pratham.foundation.utility.FC_Constants.APP_SECTION;
+import static com.pratham.foundation.utility.FC_Constants.STT_REGEX;
+import static com.pratham.foundation.utility.FC_Constants.gameFolderPath;
+import static com.pratham.foundation.utility.FC_Constants.sec_Test;
+
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -57,11 +62,6 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-
-import static com.pratham.foundation.utility.FC_Constants.APP_SECTION;
-import static com.pratham.foundation.utility.FC_Constants.STT_REGEX;
-import static com.pratham.foundation.utility.FC_Constants.gameFolderPath;
-import static com.pratham.foundation.utility.FC_Constants.sec_Test;
 
 
 public class FillInTheBlanksFragment extends Fragment implements STT_Result_New.sttView {
@@ -231,7 +231,7 @@ public class FillInTheBlanksFragment extends Fragment implements STT_Result_New.
 
 
             String fileName = selectedFive.get(index).getPhotourl();
-//                String localPath = Environment.getExternalStorageDirectory() + Assessment_Constants.STORE_DOWNLOADED_MEDIA_PATH + "/" + fileName;
+//                String localPath = ApplicationClass.getStoragePath() + Assessment_Constants.STORE_DOWNLOADED_MEDIA_PATH + "/" + fileName;
             final String localPath = readingContentPath + fileName;
 
 

@@ -1627,7 +1627,7 @@ public class FC_Utility {
 
     public static List<StorageInfo> getStorageList() {
         List<StorageInfo> list = new ArrayList<StorageInfo>();
-        String def_path = Environment.getExternalStorageDirectory().getPath();
+        String def_path = ApplicationClass.getStoragePath().getPath();
         boolean def_path_removable = Environment.isExternalStorageRemovable();
         String def_path_state = Environment.getExternalStorageState();
         boolean def_path_available = def_path_state.equals(Environment.MEDIA_MOUNTED)
@@ -2320,7 +2320,7 @@ public class FC_Utility {
     public static File getOutputMediaFile(Context context,int cntr){
         // To be safe, you should check that the SDCard is mounted
         // using Environment.getExternalStorageState() before doing this.
-        File mediaStorageDir = new File(Environment.getExternalStorageDirectory()
+        File mediaStorageDir = new File(ApplicationClass.getStoragePath()
                 + "/Android/data/"
                 + context.getPackageName()
                 + "/Files");
@@ -2338,7 +2338,7 @@ public class FC_Utility {
         String timeStamp = new SimpleDateFormat("ddMMyyyy_HHmm").format(new Date());
         File mediaFile;
         String mImageName="PDF_"+cntr+"_"+timeStamp +".jpg";
-        mediaFile = new File(Environment.getExternalStorageDirectory().toString() + "/.FCAInternal/TestJsons/"+ mImageName);
+        mediaFile = new File(ApplicationClass.getStoragePath().toString() + "/.FCAInternal/TestJsons/"+ mImageName);
         return mediaFile;
     }
 

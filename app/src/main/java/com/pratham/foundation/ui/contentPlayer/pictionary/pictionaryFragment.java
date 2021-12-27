@@ -1,5 +1,8 @@
 package com.pratham.foundation.ui.contentPlayer.pictionary;
 
+import static com.pratham.foundation.utility.FC_Constants.gameFolderPath;
+import static com.pratham.foundation.utility.FC_Utility.showZoomDialog;
+
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -54,9 +57,6 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-
-import static com.pratham.foundation.utility.FC_Constants.gameFolderPath;
-import static com.pratham.foundation.utility.FC_Utility.showZoomDialog;
 
 @EFragment(R.layout.layout_mcq_fill_in_the_blanks_with_options_row)
 public class pictionaryFragment extends Fragment implements OnGameClose, PictionaryContract.PictionaryView {
@@ -314,18 +314,14 @@ public class pictionaryFragment extends Fragment implements OnGameClose, Piction
 
                             }
                             radioGroupMcq.addView(radioButton);
-                            if (ans.equals(options.get(r).getSubQues())) {
-                                radioButton.setChecked(true);
-                            } else {
-                                radioButton.setChecked(false);
-                            }
+                            radioButton.setChecked(ans.equals(options.get(r).getSubQues()));
 //                        }
                         }
                     } else if (imgCnt == options.size()) {
                         radioGroupMcq.setVisibility(View.GONE);
                         gridMcq.setVisibility(View.VISIBLE);
                         String fileName = options.get(r).getSubUrl().trim();
-//                String localPath = Environment.getExternalStorageDirectory() + Assessment_Constants.STORE_DOWNLOADED_MEDIA_PATH + "/" + fileName;
+//                String localPath = ApplicationClass.getStoragePath() + Assessment_Constants.STORE_DOWNLOADED_MEDIA_PATH + "/" + fileName;
                         String localPath = readingContentPath + fileName;
 
                         String path = options.get(r).getSubUrl().trim();
@@ -472,7 +468,7 @@ public class pictionaryFragment extends Fragment implements OnGameClose, Piction
 //                        final View view = LayoutInflater.from(getActivity()).inflate(R.layout.layout_mcq_image_item, gridMcq, false);
 
                             String fileName = options.get(r).getSubUrl().trim();
-//                String localPath = Environment.getExternalStorageDirectory() + Assessment_Constants.STORE_DOWNLOADED_MEDIA_PATH + "/" + fileName;
+//                String localPath = ApplicationClass.getStoragePath() + Assessment_Constants.STORE_DOWNLOADED_MEDIA_PATH + "/" + fileName;
                             String localPath = readingContentPath + fileName;
 
 //                        final ImageView imageView = (ImageView) view;

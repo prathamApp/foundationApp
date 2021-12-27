@@ -1,7 +1,8 @@
 <?xml version="1.0" ?>
 <resources>
     <string name="Login">లాగిన్ అవ్వండి</string>
-    <string name="Stt_Dialog_Msg">ఆఫ్‌లైన్ స్పీచ్ రికగ్నైజేషన్ కోసం దయచేసి భాషా ప్యాక్‌లను ఇంగ్లీష్ (ఇండియా) మరియు హిందీ (ఇండియా) లను డౌన్‌లోడ్ చేయండి.\n\nOpen\nGoogle -> Settings -> Voice -> Offline speech recognition</string>
+<!--    <string name="Stt_Dialog_Msg">ఆఫ్‌లైన్ స్పీచ్ రికగ్నైజేషన్ కోసం దయచేసి భాషా ప్యాక్‌లను ఇంగ్లీష్ (ఇండియా) మరియు హిందీ (ఇండియా) లను డౌన్‌లోడ్ చేయండి.\n\nOpen\nGoogle -> Settings -> Voice -> Offline speech recognition</string>-->
+    <string name="Stt_Dialog_Msg">ఆఫ్‌లైన్ స్పీచ్ రికగ్నైజేషన్ కోసం దయచేసి భాషా ప్యాక్‌లను ఇంగ్లీష్ (ఇండియా) మరియు హిందీ (ఇండియా) లను డౌన్‌లోడ్ చేయండి.</string>
     <string name="Okay">సరె</string>
     <string name="Skip">వదిలి ముందుకు వెళ్ళండి</string>
     <string name="loding_please_wait">లోడ్ అవుతోంది దయచేసి వేచి ఉండండి ...</string>

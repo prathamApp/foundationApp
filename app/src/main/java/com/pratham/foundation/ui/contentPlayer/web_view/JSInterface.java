@@ -1,5 +1,8 @@
 package com.pratham.foundation.ui.contentPlayer.web_view;
 
+import static com.pratham.foundation.ui.contentPlayer.web_view.WebViewActivity.gameCategory;
+import static com.pratham.foundation.ui.contentPlayer.web_view.WebViewActivity.webResId;
+
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
@@ -7,7 +10,6 @@ import android.media.MediaMetadataRetriever;
 import android.media.MediaPlayer;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.Environment;
 import android.speech.RecognitionListener;
 import android.speech.RecognizerIntent;
 import android.speech.SpeechRecognizer;
@@ -28,9 +30,6 @@ import com.pratham.foundation.utility.FC_Constants;
 import com.pratham.foundation.utility.FC_Utility;
 
 import java.util.ArrayList;
-
-import static com.pratham.foundation.ui.contentPlayer.web_view.WebViewActivity.gameCategory;
-import static com.pratham.foundation.ui.contentPlayer.web_view.WebViewActivity.webResId;
 
 
 public class JSInterface implements RecognitionListener {
@@ -107,7 +106,7 @@ public class JSInterface implements RecognitionListener {
             audioFlag = true;
 
             try {
-                path = Environment.getExternalStorageDirectory().toString() + "/.KKSInternal/Recordings/" + filename;
+                path = ApplicationClass.getStoragePath().toString() + "/.KKSInternal/Recordings/" + filename;
                 mp.setDataSource(path);
 
                 if (mp.isPlaying())

@@ -27,7 +27,6 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
-import android.os.Environment;
 import android.os.Handler;
 import android.util.Log;
 import android.view.Gravity;
@@ -412,10 +411,10 @@ public class HomeActivity extends BaseActivity implements LevelChanged, API_Cont
         //Fetching information form DB and Displaying
         String profileName = "";
         try {
-            activityPhotoPath = Environment.getExternalStorageDirectory().toString() + "/.FCAInternal/ActivityPhotos/" + FastSave.getInstance().getString(CURRENT_STUDENT_ID, "") + "/";
+            activityPhotoPath = ApplicationClass.getStoragePath().toString() + "/.FCAInternal/ActivityPhotos/" + FastSave.getInstance().getString(CURRENT_STUDENT_ID, "") + "/";
             Log.d("activityPhotoPath", "initialize activityPhotoPath: " + activityPhotoPath);
             if (!new File(activityPhotoPath).exists())
-                new File(activityPhotoPath).mkdir();
+                new File(activityPhotoPath).mkdirs();
             try {
                 File direct = new File(activityPhotoPath + ".nomedia");
                 if (!direct.exists())
@@ -573,9 +572,9 @@ public class HomeActivity extends BaseActivity implements LevelChanged, API_Cont
                 }
                 BackupDatabase.backup(HomeActivity.this);
                 BackupDatabase.backup(HomeActivity.this);
-                if (new File(Environment.getExternalStorageDirectory().toString()
+                if (new File(ApplicationClass.getStoragePath().toString()
                         + "/.FCAInternal/DBZip").exists())
-                    new File(Environment.getExternalStorageDirectory().toString()
+                    new File(ApplicationClass.getStoragePath().toString()
                             + "/.FCAInternal/DBZip").delete();
 
                 if (tab.getText().toString().equalsIgnoreCase("" + getResources().getString(R.string.Profile))) {
@@ -605,9 +604,9 @@ public class HomeActivity extends BaseActivity implements LevelChanged, API_Cont
                     e.printStackTrace();
                 }
 
-                if (new File(Environment.getExternalStorageDirectory().toString()
+                if (new File(ApplicationClass.getStoragePath().toString()
                         + "/.FCAInternal/DBZip").exists())
-                    new File(Environment.getExternalStorageDirectory().toString()
+                    new File(ApplicationClass.getStoragePath().toString()
                             + "/.FCAInternal/DBZip").delete();
 
                 if (tab.getText().toString().equalsIgnoreCase("" + getResources().getString(R.string.Profile))) {

@@ -7,6 +7,7 @@ import android.content.Context;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.os.Build;
+import android.os.Environment;
 import android.os.StrictMode;
 import android.util.Log;
 
@@ -34,8 +35,8 @@ import okhttp3.OkHttpClient;
 
 public class ApplicationClass extends Application {
 
-// (HL Customised)
-    public static final String BUILD_DATE = "03-Dec-2021";
+    // (HL Customised)
+    public static final String BUILD_DATE = "27-Dec-2021";
     public static boolean isTablet = true;
     public static boolean isAssets = false;
     public static boolean contentExistOnSD = false, LocationFlg = false;
@@ -90,6 +91,13 @@ public class ApplicationClass extends Application {
         AndroidNetworking.initialize(getApplicationContext(), okHttpClient);
     }
 
+    public static File getStoragePath() {
+        if ((Build.VERSION.SDK_INT >= Build.VERSION_CODES.P)) {
+            return Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS);
+        } else {
+            return Environment.getExternalStorageDirectory();
+        }
+    }
 
     public static boolean getAppMode() {
         isTablet = false;

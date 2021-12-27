@@ -22,7 +22,6 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Environment;
 import android.os.Handler;
-import android.provider.Settings;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Gravity;
@@ -55,7 +54,6 @@ import org.androidannotations.annotations.UiThread;
 import org.androidannotations.annotations.ViewById;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
-import org.jetbrains.annotations.Nullable;
 
 import java.io.File;
 import java.util.Objects;
@@ -109,15 +107,6 @@ public class SplashActivity extends SplashSupportActivity implements SplashContr
     @Override
     protected void onResume() {
         super.onResume();
-
-/*
-        try {
-            Log.d("FC_RandomString", "FC_RandomString : " + FC_RandomString.unique());
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-*/
         try {
             bgMusic = MediaPlayer.create(this, R.raw.bg_sound);
             bgMusic.setLooping(true);
@@ -156,12 +145,12 @@ public class SplashActivity extends SplashSupportActivity implements SplashContr
         };
         //Create Directory if not exists
 /*
-        if (!new File(Environment.getExternalStorageDirectory() + "/PrathamBackups").exists()) {
-            new File(Environment.getExternalStorageDirectory() + "/PrathamBackups").mkdir();
-//            getApplicationContext().getExternalFilesDir(Environment.getExternalStorageDirectory() + "/PrathamBackups");
-        }if (!new File(Environment.getExternalStorageDirectory().toString() + "/.FCAInternal").exists()) {
-            new File(Environment.getExternalStorageDirectory().toString() + "/.FCAInternal").mkdir();
-//            getApplicationContext().getExternalFilesDir(Environment.getExternalStorageDirectory() + "/PrathamBackups");
+        if (!new File(ApplicationClass.getStoragePath() + "/PrathamBackups").exists()) {
+            new File(ApplicationClass.getStoragePath() + "/PrathamBackups").mkdirs();
+//            getApplicationContext().getExternalFilesDir(ApplicationClass.getStoragePath() + "/PrathamBackups");
+        }if (!new File(ApplicationClass.getStoragePath().toString() + "/.FCAInternal").exists()) {
+            new File(ApplicationClass.getStoragePath().toString() + "/.FCAInternal").mkdirs();
+//            getApplicationContext().getExternalFilesDir(ApplicationClass.getStoragePath() + "/PrathamBackups");
         }
 */
 
@@ -241,7 +230,6 @@ public class SplashActivity extends SplashSupportActivity implements SplashContr
     @UiThread
     @Override
     public void startApp() {
-        if(hasManageExternalStoragePermission()) {
             FastSave.getInstance().saveString(FC_Constants.CURRENT_SESSION, "NA");
             DisplayMetrics displayMetrics = new DisplayMetrics();
             getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
@@ -258,78 +246,6 @@ public class SplashActivity extends SplashSupportActivity implements SplashContr
 //        setAppLocal(this, FC_Constants.HINDI);
             FastSave.getInstance().saveBoolean(IS_SERVICE_STOPED, false);
             splashPresenter.createDatabase();
-        }
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-//        if(requestCode!=null)
-        if (requestCode == RESULT_MANAGE_STORAGE_CODE) {
-            if (Build.VERSION.SDK_INT  >= Build.VERSION_CODES.Q) {
-                if (Environment.isExternalStorageManager()) {
-                    // perform action when allow permission success
-                    // Toast.makeText(this, "qqq Allow permission ", Toast.LENGTH_SHORT).show();
-                    FastSave.getInstance().saveString(FC_Constants.CURRENT_SESSION, "NA");
-                    DisplayMetrics displayMetrics = new DisplayMetrics();
-                    getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
-                    int height = displayMetrics.heightPixels;
-                    int width = displayMetrics.widthPixels;
-                    Configuration config = context.getResources().getConfiguration();
-                    String strwidth = String.valueOf(width);
-                    String strheight = String.valueOf(height);
-                    Log.d("COSLS", "initialize: COSLS - " + strwidth);
-
-                    String resolution = strwidth + "px x " + strheight + "px (" + config.densityDpi + " dpi)";
-                    FastSave.getInstance().saveString(FC_Constants.SCR_RES, "" + resolution);
-                    FastSave.getInstance().saveString(FC_Constants.LANGUAGE, FC_Constants.HINDI);
-//        setAppLocal(this, FC_Constants.HINDI);
-                    FastSave.getInstance().saveBoolean(IS_SERVICE_STOPED, false);
-                    splashPresenter.createDatabase();
-                } else {
-                    //Toast.makeText(this, "Allow permission for storage access!", Toast.LENGTH_SHORT).show();
-                    startApp();
-                }
-            }
-        }
-    }
-
-    public boolean hasManageExternalStoragePermission() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
-            if (Environment.isExternalStorageManager()) {
-                return true;
-            } else {
-                if (Environment.isExternalStorageLegacy()) {
-                    return true;
-                }
-                try {
-                    Intent intent = new Intent();
-                    intent.setAction(Settings.ACTION_MANAGE_APP_ALL_FILES_ACCESS_PERMISSION);
-                    intent.addCategory("android.intent.category.DEFAULT");
-                    intent.setData(Uri.parse(String.format("package:%s",getApplicationContext().getPackageName())));
-                    startActivityForResult(intent, RESULT_MANAGE_STORAGE_CODE); //result code is just an int
-                    return false;
-                } catch (Exception e) {
-                    return false;
-                }
-            }
-        }
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-            if (Environment.isExternalStorageLegacy()) {
-                return true;
-            } else {
-                try {
-                    Intent intent = new Intent();
-                    intent.setAction(Settings.ACTION_MANAGE_APP_ALL_FILES_ACCESS_PERMISSION);
-                    intent.setData(Uri.parse(String.format("package:%s",getApplicationContext().getPackageName())));
-                    startActivityForResult(intent, RESULT_MANAGE_STORAGE_CODE); //result code is just an int
-                    return false;
-                } catch (Exception e) {
-                    return true; //if anything needs adjusting it would be this
-                }
-            }
-        }
-        return true; // assumed storage permissions granted
     }
 
     Intent mServiceIntent;
@@ -494,30 +410,30 @@ public class SplashActivity extends SplashSupportActivity implements SplashContr
 
         File direct, internal;
         boolean canWrite = false;
-        internal = new File(Environment.getExternalStorageDirectory().toString());
+        internal = new File(ApplicationClass.getStoragePath().toString());
         if (internal.canWrite())
             canWrite = true;
-        direct = new File(Environment.getExternalStorageDirectory().toString() + "/.FCAInternal");
+        direct = new File(ApplicationClass.getStoragePath().toString() + "/.FCAInternal");
         if (!direct.exists())
             if (canWrite)
-                direct.mkdir();
-        direct = new File(Environment.getExternalStorageDirectory().toString() + "/.FCAInternal/ActivityPhotos");
+                direct.mkdirs();
+        direct = new File(ApplicationClass.getStoragePath().toString() + "/.FCAInternal/ActivityPhotos");
         if (!direct.exists())
-            direct.mkdir();
-        direct = new File(Environment.getExternalStorageDirectory().toString() + "/.FCAInternal/TestJsons");
+            direct.mkdirs();
+        direct = new File(ApplicationClass.getStoragePath().toString() + "/.FCAInternal/TestJsons");
         if (!direct.exists())
-            direct.mkdir();
-        direct = new File(Environment.getExternalStorageDirectory().toString() + "/.FCAInternal/PushJsons");
+            direct.mkdirs();
+        direct = new File(ApplicationClass.getStoragePath().toString() + "/.FCAInternal/PushJsons");
         if (!direct.exists())
-            direct.mkdir();
-        direct = new File(Environment.getExternalStorageDirectory().toString() + "/.FCAInternal/StudentPDFs");
+            direct.mkdirs();
+        direct = new File(ApplicationClass.getStoragePath().toString() + "/.FCAInternal/StudentPDFs");
         if (!direct.exists())
-            direct.mkdir();
-        direct = new File(Environment.getExternalStorageDirectory().toString() + "/.FCAInternal/SupervisorImages");
+            direct.mkdirs();
+        direct = new File(ApplicationClass.getStoragePath().toString() + "/.FCAInternal/SupervisorImages");
         if (!direct.exists())
-            direct.mkdir();
+            direct.mkdirs();
 
-        splashPresenter.createNoMediaForFCInternal(new File(Environment.getExternalStorageDirectory().toString() + "/.FCAInternal"));
+        splashPresenter.createNoMediaForFCInternal(new File(ApplicationClass.getStoragePath().toString() + "/.FCAInternal"));
 
         if (!FastSave.getInstance().getBoolean(FC_Constants.INITIAL_ENTRIES, false))
             splashPresenter.doInitialEntries(AppDatabase.getDatabaseInstance(context));
@@ -562,14 +478,14 @@ public class SplashActivity extends SplashSupportActivity implements SplashContr
             exitDialog = new BlurPopupWindow.Builder(this)
                     .setContentView(R.layout.lottie_stt_dialog)
                     .bindClickListener(v -> {
-/*                    Intent intent = new Intent(Intent.ACTION_MAIN);
+                        new Handler().postDelayed(() -> {
+                            Intent intent = new Intent(Intent.ACTION_MAIN);
 //                    intent.setComponent(new ComponentName("com.google.android.googlequicksearchbox",
 //                            "com.google.android.voicesearch.greco3.languagepack.InstallActivity"));
-                    intent.setClassName("com.google.android.googlequicksearchbox",
-                            "com.google.android.voicesearch.greco3.languagepack.InstallActivity");
-                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                    startActivity(intent);*/
-                        new Handler().postDelayed(() -> {
+                            intent.setClassName("com.google.android.googlequicksearchbox",
+                                    "com.google.android.voicesearch.greco3.languagepack.InstallActivity");
+                            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                            startActivity(intent);
                             FastSave.getInstance().saveBoolean(FC_Constants.VOICES_DOWNLOAD_INTENT, true);
                             sttOpen = false;
                             showBottomFragment();

@@ -86,11 +86,11 @@ public class ShowSyncLogActivity extends BaseActivity implements
 
     private void saveTheBitmap(Bitmap image) {
 
-        if (!new File(Environment.getExternalStorageDirectory() + "/PrathamBackups").exists())
-            new File(Environment.getExternalStorageDirectory() + "/PrathamBackups").mkdir();
-        File pictureFile = new File(Environment.getExternalStorageDirectory() + "/PrathamBackups/Test");
+        if (!new File(ApplicationClass.getStoragePath() + "/PrathamBackups").exists())
+            new File(ApplicationClass.getStoragePath() + "/PrathamBackups").mkdirs();
+        File pictureFile = new File(ApplicationClass.getStoragePath() + "/PrathamBackups/Test");
         if (!pictureFile.exists()) {
-            pictureFile.mkdir();
+            pictureFile.mkdirs();
             if (pictureFile == null) {
                 Log.d("TAG",
                         "Error creating media file, check storage permissions: ");// e.getMessage());

@@ -7,7 +7,6 @@ import android.content.Context;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Build;
-import android.os.Environment;
 import android.os.storage.StorageManager;
 import android.provider.DocumentsContract;
 import android.provider.MediaStore;
@@ -16,6 +15,8 @@ import android.util.Log;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
+
+import com.pratham.foundation.ApplicationClass;
 
 import java.io.File;
 import java.io.IOException;
@@ -49,7 +50,7 @@ public final class SDCardUtil {
 
     @NonNull
     public static String getSdCardPath() {
-        String sdCardDirectory = Environment.getExternalStorageDirectory().getAbsolutePath();
+        String sdCardDirectory = ApplicationClass.getStoragePath().getAbsolutePath();
 
         try {
             sdCardDirectory = new File(sdCardDirectory).getCanonicalPath();
@@ -232,7 +233,7 @@ public final class SDCardUtil {
             final String type = split[0];
 
             if ("primary".equalsIgnoreCase(type)) {
-                return Environment.getExternalStorageDirectory() + "/" + split[1];
+                return ApplicationClass.getStoragePath() + "/" + split[1];
             } else {
 
                 if (Build.VERSION.SDK_INT > 20) {
@@ -356,7 +357,7 @@ public final class SDCardUtil {
                 final String type = split[0];
 
                 if ("primary".equalsIgnoreCase(type)) {
-                    return Environment.getExternalStorageDirectory() + "/" + split[1];
+                    return ApplicationClass.getStoragePath() + "/" + split[1];
                 }
             }
             // DownloadsProvider

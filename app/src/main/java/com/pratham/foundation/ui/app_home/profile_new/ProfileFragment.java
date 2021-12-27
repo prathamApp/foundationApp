@@ -394,7 +394,7 @@ public class ProfileFragment extends Fragment implements ProfileContract.Profile
         sttDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         Objects.requireNonNull(sttDialog.getWindow()).setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         sttDialog.setContentView(R.layout.lottie_stt_dialog);
-        sttDialog.setCanceledOnTouchOutside(false);
+        sttDialog.setCanceledOnTouchOutside(true);
 
         TextView dia_btn_skip = sttDialog.findViewById(R.id.dia_btn_skip);
         Button dia_btn_ok = sttDialog.findViewById(R.id.dia_btn_ok);
@@ -402,11 +402,11 @@ public class ProfileFragment extends Fragment implements ProfileContract.Profile
         dia_btn_ok.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-/*                Intent intent = new Intent(Intent.ACTION_MAIN);
+                Intent intent = new Intent(Intent.ACTION_MAIN);
                 intent.setClassName("com.google.android.googlequicksearchbox",
                         "com.google.android.voicesearch.greco3.languagepack.InstallActivity");
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                startActivity(intent);*/
+                startActivity(intent);
                 new Handler().postDelayed(() -> {
                     sttDialog.dismiss();
                 }, 100);
@@ -447,7 +447,7 @@ public class ProfileFragment extends Fragment implements ProfileContract.Profile
         if (FC_Utility.isDataConnectionAvailable(context)) {
             showLoader();
 /*
-            File backupsDir = new File(Environment.getExternalStorageDirectory().toString() + "/PrathamBackups/");
+            File backupsDir = new File(ApplicationClass.getStoragePath().toString() + "/PrathamBackups/");
             File[] db_files = backupsDir.listFiles();
             if(db_files!=null)
                 for(int i=0; i<db_files.length;i++){
