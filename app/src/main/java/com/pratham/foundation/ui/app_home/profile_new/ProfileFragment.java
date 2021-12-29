@@ -402,11 +402,15 @@ public class ProfileFragment extends Fragment implements ProfileContract.Profile
         dia_btn_ok.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(Intent.ACTION_MAIN);
-                intent.setClassName("com.google.android.googlequicksearchbox",
-                        "com.google.android.voicesearch.greco3.languagepack.InstallActivity");
-                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                startActivity(intent);
+                try {
+                    Intent intent = new Intent(Intent.ACTION_MAIN);
+                    intent.setClassName("com.google.android.googlequicksearchbox",
+                            "com.google.android.voicesearch.greco3.languagepack.InstallActivity");
+                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    startActivity(intent);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
                 new Handler().postDelayed(() -> {
                     sttDialog.dismiss();
                 }, 100);

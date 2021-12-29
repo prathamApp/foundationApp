@@ -479,13 +479,17 @@ public class SplashActivity extends SplashSupportActivity implements SplashContr
                     .setContentView(R.layout.lottie_stt_dialog)
                     .bindClickListener(v -> {
                         new Handler().postDelayed(() -> {
-                            Intent intent = new Intent(Intent.ACTION_MAIN);
+                            try {
+                                Intent intent = new Intent(Intent.ACTION_MAIN);
 //                    intent.setComponent(new ComponentName("com.google.android.googlequicksearchbox",
 //                            "com.google.android.voicesearch.greco3.languagepack.InstallActivity"));
-                            intent.setClassName("com.google.android.googlequicksearchbox",
-                                    "com.google.android.voicesearch.greco3.languagepack.InstallActivity");
-                            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                            startActivity(intent);
+                                intent.setClassName("com.google.android.googlequicksearchbox",
+                                        "com.google.android.voicesearch.greco3.languagepack.InstallActivity");
+                                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                startActivity(intent);
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
                             FastSave.getInstance().saveBoolean(FC_Constants.VOICES_DOWNLOAD_INTENT, true);
                             sttOpen = false;
                             showBottomFragment();
