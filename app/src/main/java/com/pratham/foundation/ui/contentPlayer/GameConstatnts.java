@@ -513,7 +513,7 @@ public class GameConstatnts implements ShowInstruction {
                 case "PDF_NEW":
                 case "PDF_Zoom":
                 case "PDF_ZOOM":
-//                    Intent intent1 = new Intent(context, Fragment_PdfViewer_.class);
+//                    Intent intent2 = new Intent(context, Fragment_PdfViewer_.class);
                     Intent intent2 = new Intent(context, PDFViewActivity_.class);
                     intent2.putExtra("contentPath", contentTable1.getResourcePath());
                     intent2.putExtra("StudentID", FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""));

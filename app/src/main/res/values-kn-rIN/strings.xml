@@ -1,6 +1,7 @@
 <?xml version="1.0" ?>
 <resources>
     <string name="Login">ಲಾಗಿನ್ ಮಾಡಿ</string>
+<!--    <string name="Stt_Dialog_Msg">ಆಫ್‌ಲೈನ್ ನಲ್ಲಿ ಮಾತನ್ನು ಗುರುತಿಸುವಿಕೆಗಾಗಿ ದಯವಿಟ್ಟು ಭಾಷಾ ಪ್ಯಾಕ್‌ಗಳನ್ನು English(India) ಮತ್ತು ಕನ್ನಡ(ಭಾರತ) ಡೌನ್‌ಲೋಡ್ ಮಾಡಿ.\n\nOpen\nGoogle -> Settings -> Voice -> Offline speech recognition</string>-->
     <string name="Stt_Dialog_Msg">ಆಫ್‌ಲೈನ್ ನಲ್ಲಿ ಮಾತನ್ನು ಗುರುತಿಸುವಿಕೆಗಾಗಿ ದಯವಿಟ್ಟು ಭಾಷಾ ಪ್ಯಾಕ್‌ಗಳನ್ನು English(India) ಮತ್ತು ಕನ್ನಡ(ಭಾರತ) ಡೌನ್‌ಲೋಡ್ ಮಾಡಿ.</string>
     <string name="Okay">ಸರಿ</string>
     <string name="Skip">ಬಿಟ್ಟು ಮುಂದೆ ಹೋಗಿ</string>
@@ -118,15 +119,15 @@
     <string name="lang_pack">ಆಫ್‌ಲೈನ್ ಭಾಷಾ ಪ್ಯಾಕ್</string>
     <string name="free_space">ಖಾಲಿ ಜಾಗ</string>
     <string name="curr_lang">ಪ್ರಸ್ತುತ ಭಾಷೆ</string>
-    <string name="Sync_Time">ಸಿಂಕ್ ನ ಸಮಯ :</string>
-    <string name="Data_synced">ಡೇಟಾ ಸಿಂಕ್ ಆಗಿದೆ :</string>
-    <string name="Certificate_synced">ಪ್ರಮಾಣಪತ್ರ ಸಿಂಕ್ ಆಗಿದೆ :</string>
-    <string name="Enrollment_synced">ದಾಖಲಾದ ಕೋರ್ಸ್‌ಗಳನ್ನು ಸಿಂಕ್ ಮಾಡಲಾಗಿದೆ :</string>
-    <string name="Media_synced">ಮೀಡಿಯಾ ಸಿಂಕ್ ಆಗಿದೆ :</string>
-    <string name="Media_failed">ಮೀಡಿಯಾ ವಿಫಲವಾಗಿದೆ :</string>
+    <string name="Sync_Time">ಸಿಂಕ್ ನ ಸಮಯ : </string>
+    <string name="Data_synced">ಡೇಟಾ ಸಿಂಕ್ ಆಗಿದೆ : </string>
+    <string name="Certificate_synced">ಪ್ರಮಾಣಪತ್ರ ಸಿಂಕ್ ಆಗಿದೆ : </string>
+    <string name="Enrollment_synced">ದಾಖಲಾದ ಕೋರ್ಸ್‌ಗಳನ್ನು ಸಿಂಕ್ ಮಾಡಲಾಗಿದೆ : </string>
+    <string name="Media_synced">ಮೀಡಿಯಾ ಸಿಂಕ್ ಆಗಿದೆ : </string>
+    <string name="Media_failed">ಮೀಡಿಯಾ ವಿಫಲವಾಗಿದೆ : </string>
     <string name="data_pushed_successfully">ಡೇಟಾವನ್ನು ಯಶಸ್ವಿಯಾಗಿ ಪುಶ್/ತಳ್ಳಲಾಗಿದೆ</string>
-    <string name="Score_Count">ಅಂಕ ಎಣಿಕೆ :</string>
-    <string name="Certificate_Count">ಪ್ರಮಾಣಪತ್ರ ಎಣಿಕೆ :</string>
+    <string name="Score_Count">ಅಂಕ ಎಣಿಕೆ : </string>
+    <string name="Certificate_Count">ಪ್ರಮಾಣಪತ್ರ ಎಣಿಕೆ : </string>
     <string name="Now_Upload_Media">ಈಗ ಮೀಡಿಯಾವನ್ನು  ಅಪ್‌ಲೋಡ್ ಮಾಡಿ ..</string>
     <string name="OOPS">ಒಹ್...</string>
     <string name="Data_pushed_failed">ಡೇಟಾ ಪುಶ್ ವಿಫಲವಾಗಿದೆ</string>

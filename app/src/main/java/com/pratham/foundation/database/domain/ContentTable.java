@@ -56,8 +56,10 @@ public class ContentTable implements Serializable {
     public String studentId;
     @SerializedName("nodeKeyword")
     public String nodeKeywords;
+
     public String isDownloaded;
     public String contentType;
+
     @Ignore
     public String nodePercentage;
     @Ignore

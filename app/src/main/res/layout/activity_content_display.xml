@@ -100,7 +100,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerHorizontal="true"
-                android:layout_marginTop="@dimen/_25sdp"
+                android:layout_marginTop="@dimen/_15sdp"
                 android:text="@string/Level"
                 android:textColor="@color/dark_blue"
                 android:textSize="@dimen/_12sdp" />
@@ -111,10 +111,33 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/txt_level"
                 android:layout_centerHorizontal="true"
-                android:layout_marginTop="@dimen/_25sdp"
+                android:layout_marginTop="@dimen/_12sdp"
                 android:text=""
                 android:textColor="@color/dark_blue"
                 android:textSize="@dimen/_12sdp" />
+
+            <com.pratham.foundation.customView.shape_of_view.ShadowLayout
+                android:id="@+id/refresh_shd"
+                android:layout_width="@dimen/_45sdp"
+                android:layout_height="@dimen/_30sdp"
+                android:layout_below="@+id/tv_level"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="@dimen/_5sdp"
+                app:sl_shadow_angle="60"
+                app:sl_shadow_color="@color/colorBlackTransparentLight"
+                app:sl_shadow_distance="3dp"
+                app:sl_shadow_radius="3dp"
+                app:sl_shadowed="true">
+
+                <ImageView
+                    android:id="@+id/iv_refresh"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/custom_progress_primary"
+                    android:padding="4dp"
+                    android:src="@drawable/ic_refresh"
+                    android:gravity="center"/>
+            </com.pratham.foundation.customView.shape_of_view.ShadowLayout>
         </RelativeLayout>
     </RelativeLayout>
 
@@ -122,9 +145,9 @@
         layout="@layout/content_recycler"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="@dimen/_2sdp"
+        android:layout_below="@id/header_rl"
         android:layout_marginStart="@dimen/_5sdp"
+        android:layout_marginTop="@dimen/_2sdp"
         android:layout_marginEnd="@dimen/_5sdp"
-        android:paddingBottom="@dimen/_5sdp"
-        android:layout_below="@id/header_rl" />
+        android:paddingBottom="@dimen/_5sdp" />
 </RelativeLayout>

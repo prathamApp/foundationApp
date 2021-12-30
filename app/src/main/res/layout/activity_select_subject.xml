@@ -17,7 +17,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
-            android:layout_margin="@dimen/_8sdp"
+            android:layout_margin="@dimen/_3sdp"
             app:sl_shadow_angle="30"
             app:sl_shadow_color="@color/colorBlackTransparentLight"
             app:sl_shadow_distance="4dp"
@@ -34,6 +34,10 @@
                 android:src="@drawable/ic_close_red" />
         </com.pratham.foundation.customView.shape_of_view.ShadowLayout>
 
+        <RelativeLayout
+            android:id="@+id/header_rl"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
         <com.pratham.foundation.customView.fontsview.SansTextViewBold
             android:id="@+id/name_welcome"
             android:layout_width="wrap_content"
@@ -71,13 +75,31 @@
             android:textColor="@color/colorBlackTransparentLight"
             android:textSize="@dimen/_15sdp" />
 
+            <com.pratham.foundation.customView.fontsview.SansButton
+                android:id="@+id/dia_result"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/subject"
+                android:layout_marginStart="@dimen/_12sdp"
+                android:layout_marginTop="@dimen/_5sdp"
+                android:layout_marginBottom="@dimen/_5sdp"
+                android:background="@drawable/button_green"
+                android:gravity="center_vertical"
+                android:paddingStart="@dimen/_10sdp"
+                android:paddingEnd="@dimen/_10sdp"
+                android:text="Diagnostic Test Result"
+                android:textColor="@color/white"
+                android:textSize="@dimen/_8sdp" />
+
+        </RelativeLayout>
+
         <RelativeLayout
             android:id="@+id/rl_no_data"
             android:visibility="gone"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginBottom="110dp"
-            android:layout_below="@id/subject"
+            android:layout_below="@id/header_rl"
             android:layout_centerInParent="true">
             <ImageView
                 android:id="@+id/nodata_img"
@@ -119,8 +141,9 @@
             android:id="@+id/subject_recycler"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginBottom="70dp"
-            android:layout_below="@id/subject" />
+            android:layout_below="@id/header_rl"
+            android:layout_marginTop="@dimen/_2sdp"
+            android:layout_marginBottom="70dp" />
 
         <ImageButton
             android:id="@+id/ib_langChange"

@@ -20,7 +20,7 @@ import java.util.List;
 @EBean
 public class ProfilePresenter implements ProfileContract.ProfilePresenter, API_Content_Result {
 
-    private Context mContext;
+    private final Context mContext;
     private ProfileContract.ProfileView profileView;
 
     public ProfilePresenter(Context mContext) {
@@ -54,9 +54,16 @@ public class ProfilePresenter implements ProfileContract.ProfilePresenter, API_C
             }
 */
             Log.d("getActiveData: ", "2 : " + dateList.size());
-            for (int i = 0; i < modal_totalDaysGroupsPlayeds.size(); i++)
-                if (modal_totalDaysGroupsPlayeds.get(i).getGroupID().equalsIgnoreCase(studId))
+            boolean foundEntry = false;
+            for (int i = 0; i < modal_totalDaysGroupsPlayeds.size(); i++) {
+                if (modal_totalDaysGroupsPlayeds.get(i).getGroupID().equalsIgnoreCase(studId)) {
+                    foundEntry = true;
                     profileView.setDays(Integer.parseInt(modal_totalDaysGroupsPlayeds.get(i).getDates()));
+                }
+            }
+            if(!foundEntry)
+                profileView.setDays(0);
+
         } else {
             List<Modal_TotalDaysStudentsPlayed> modal_totalDaysStudentsPlayeds1 =
                     AppDatabase.getDatabaseInstance(mContext).getScoreDao().getTotalDaysByStudentID2(studId);
@@ -123,12 +130,11 @@ public class ProfilePresenter implements ProfileContract.ProfilePresenter, API_C
 */
 
     @Override
-    public void receivedContent(String header, String response) {
-
-    }
+    public void receivedContent_PI_SubLevel(String header, String response, int pos, int size) { }
 
     @Override
-    public void receivedError(String header) {
+    public void receivedContent(String header, String response) { }
 
-    }
+    @Override
+    public void receivedError(String header) { }
 }

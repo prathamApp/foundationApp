@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.pratham.foundation.customView.fontsview.SansTextViewBold
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/rl_root"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_alignParentTop="true"
+    android:layout_marginStart="@dimen/_10sdp"
+    android:layout_marginTop="@dimen/_5sdp"
+    android:layout_marginEnd="@dimen/_10sdp"
+    android:layout_marginBottom="@dimen/_2sdp"
+    android:duplicateParentState="true"
+    android:ellipsize="marquee"
+    android:fadingEdge="horizontal"
+    android:gravity="center_vertical"
+    android:marqueeRepeatLimit="marquee_forever"
+    android:paddingHorizontal="@dimen/_2sdp"
+    android:scrollHorizontally="true"
+    android:singleLine="true"
+    android:text="download item"
+    android:textColor="@color/dark_blue"
+    android:textSize="@dimen/_15sdp" />

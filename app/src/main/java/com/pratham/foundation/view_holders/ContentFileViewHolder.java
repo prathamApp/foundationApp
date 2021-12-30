@@ -168,8 +168,18 @@ public class ContentFileViewHolder extends RecyclerView.ViewHolder {
                     thumbnail.setController(controller);
                 }
             } else {
+                String thumbPath = "" + contentList.getNodeServerImage();
+                if (ApplicationClass.wiseF.isDeviceConnectedToMobileNetwork() || ApplicationClass.wiseF.isDeviceConnectedToWifiNetwork()) {
+                    if (ApplicationClass.wiseF.isDeviceConnectedToSSID(FC_Constants.PRATHAM_RASPBERRY_PI)) {
+                        String fileName = contentList.getNodeServerImage()
+                                .substring(contentList.getNodeServerImage().lastIndexOf('/') + 1);
+                        thumbPath = FC_Constants.RASP_IP + FC_Constants.RASP_LOCAL_IMAGES + fileName;
+                    } else {
+                        thumbPath = "" + contentList.getNodeServerImage();
+                    }
+                }
                 ImageRequest imageRequest = ImageRequestBuilder
-                        .newBuilderWithSource(Uri.parse(contentList.getNodeServerImage()))
+                        .newBuilderWithSource(Uri.parse(thumbPath))
                         .setResizeOptions(new ResizeOptions(250, 170))
                         .setLocalThumbnailPreviewsEnabled(true)
                         .build();
@@ -300,8 +310,18 @@ public class ContentFileViewHolder extends RecyclerView.ViewHolder {
                 Objects.requireNonNull(iv_delete).setVisibility(View.GONE);
                 Objects.requireNonNull(tv_progress).setVisibility(View.GONE);
                 try {
+                    String thumbPath = "" + contentTable.getNodeServerImage();
+                    if (ApplicationClass.wiseF.isDeviceConnectedToMobileNetwork() || ApplicationClass.wiseF.isDeviceConnectedToWifiNetwork()) {
+                        if (ApplicationClass.wiseF.isDeviceConnectedToSSID(FC_Constants.PRATHAM_RASPBERRY_PI)) {
+                            String fileName = contentTable.getNodeServerImage()
+                                    .substring(contentTable.getNodeServerImage().lastIndexOf('/') + 1);
+                            thumbPath = FC_Constants.RASP_IP + FC_Constants.RASP_LOCAL_IMAGES + fileName;
+                        } else {
+                            thumbPath = "" + contentTable.getNodeServerImage();
+                        }
+                    }
                     ImageRequest imageRequest = ImageRequestBuilder
-                            .newBuilderWithSource(Uri.parse(contentTable.getNodeServerImage()))
+                            .newBuilderWithSource(Uri.parse(thumbPath))
                             .setResizeOptions(new ResizeOptions(250, 170))
                             .build();
                     DraweeController controller = Fresco.newDraweeControllerBuilder()

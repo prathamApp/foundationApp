@@ -1,5 +1,7 @@
 package com.pratham.foundation.ui.bottom_fragment.add_student;
 
+import static com.pratham.foundation.utility.FC_Utility.dpToPx;
+
 import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.content.Context;
@@ -46,8 +48,6 @@ import java.util.Objects;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-
-import static com.pratham.foundation.utility.FC_Utility.dpToPx;
 
 
 public class AddStudentFragment extends DialogFragment implements AvatarClickListener {
@@ -337,6 +337,7 @@ public class AddStudentFragment extends DialogFragment implements AvatarClickLis
             student.setAvatarName(avatarName);
             student.setGroupId("PS");
             student.setMiddleName("PS");
+            student.setLastName("PS");
 //            student.setProgramId("0");
             new AsyncTask<Object, Void, Object>() {
                 @Override

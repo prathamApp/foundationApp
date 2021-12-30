@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:tools="http://schemas.android.com/tools"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:left="-600dp"
+        android:right="-600dp"
+        tools:ignore="ExtraText">  ---> Let it display in the middle.
+        <rotate android:drawable="@drawable/dotted_line_horizontal"
+        android:visible="true"
+        android:fromDegrees="90"/>
+    </item>
+</layer-list>

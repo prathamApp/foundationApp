@@ -2,7 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginTop="5dp">
+    android:layout_marginTop="2dp">
 
     <RelativeLayout
         android:id="@+id/topPanel"
@@ -17,26 +17,24 @@
             android:layout_alignParentEnd="true"
             android:layout_marginEnd="@dimen/_10sdp"
             android:background="?android:selectableItemBackground"
-            android:drawableRight="@drawable/ic_navigate_next_black_24dp"
-            android:drawablePadding="@dimen/_10sdp"
+            android:drawableEnd="@drawable/ic_navigate_next_black_24dp"
+            android:drawablePadding="2dp"
             android:gravity="center_vertical"
-            android:text="See All"
             android:textColor="@color/colorText"
             android:textSize="@dimen/_8sdp" />
 
         <com.pratham.foundation.customView.fontsview.SansButton
             android:id="@+id/ib_action_btn"
-            android:layout_width="@dimen/_105sdp"
+            android:layout_width="@dimen/_40sdp"
             android:layout_height="@dimen/_30sdp"
             android:layout_alignParentEnd="true"
             android:layout_marginEnd="@dimen/_10sdp"
+            android:layout_marginBottom="@dimen/_5sdp"
             android:background="@drawable/button_yellow"
             android:drawableEnd="@drawable/ic_download_2"
             android:drawablePadding="@dimen/_5sdp"
             android:elevation="@dimen/_2sdp"
-            android:layout_marginBottom="@dimen/_5sdp"
             android:paddingHorizontal="@dimen/_10sdp"
-            android:text="Download"
             android:textColor="@color/white"
             android:textSize="@dimen/_8sdp"
             android:visibility="gone" />
@@ -45,26 +43,20 @@
             android:id="@+id/itemTitle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="@dimen/_110sdp"
-            android:layout_marginStart="@dimen/_15sdp"
-            android:layout_marginBottom="@dimen/_3sdp"
-            android:ellipsize="marquee"
-            android:fadingEdge="horizontal"
-            android:marqueeRepeatLimit="marquee_forever"
-            android:scrollHorizontally="true"
-            android:singleLine="true"
             android:layout_centerVertical="true"
-            android:text=""
+            android:layout_marginStart="@dimen/_15sdp"
+            android:layout_marginEnd="@dimen/_60sdp"
+            android:layout_marginBottom="@dimen/_3sdp"
+            android:maxLines="3"
             android:textColor="@color/colorText"
-            android:textSize="@dimen/_15sdp" />
-
+            android:textSize="@dimen/_14sdp" />
     </RelativeLayout>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recycler_view_list"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="@dimen/_5sdp"
-        android:layout_below="@+id/topPanel" />
+        android:layout_below="@+id/topPanel"
+        android:layout_marginBottom="@dimen/_5sdp" />
 
 </RelativeLayout>

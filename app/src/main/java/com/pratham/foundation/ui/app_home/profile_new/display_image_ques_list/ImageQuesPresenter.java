@@ -47,6 +47,10 @@ public class ImageQuesPresenter implements ImageQuesContract.ImageQuesPresenter 
     }
 
     @Override
+    public void receivedContent_PI_SubLevel(String header, String response, int pos, int size) {
+    }
+
+    @Override
     public void receivedContent(String header, String response) {
     }
 

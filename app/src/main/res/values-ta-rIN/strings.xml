@@ -1,6 +1,7 @@
 <?xml version="1.0" ?>
 <resources>
     <string name="Login">உள்நுழைய</string>
+<!--    <string name="Stt_Dialog_Msg">ஆஃப்லைன் பேச்சு அங்கீகாரத்திற்காக மொழிப் பொதிகளை ஆங்கிலம் (இந்தியா) மற்றும் இந்தி, (இந்தியா)பதிவிறக்கவும்.\n\nOpen\nGoogle -> Settings -> Voice -> Offline speech recognition</string>-->
     <string name="Stt_Dialog_Msg">ஆஃப்லைன் பேச்சு அங்கீகாரத்திற்காக மொழிப் பொதிகளை ஆங்கிலம் (இந்தியா) மற்றும் இந்தி, (இந்தியா)பதிவிறக்கவும்.</string>
     <string name="Okay">சரி</string>
     <string name="Skip">தாவிச்செல்</string>
@@ -118,15 +119,15 @@
     <string name="lang_pack">ஆஃப்லைன் மொழி பேக்</string>
     <string name="free_space">வெற்றிடம்</string>
     <string name="curr_lang">தற்போதைய மொழி:</string>
-    <string name="Sync_Time">ஒத்திசைக்கும் நேரம்:</string>
-    <string name="Data_synced">தரவு ஒத்திசைக்கப்பட்டது:</string>
-    <string name="Certificate_synced">சான்றிதழ் ஒத்திசைக்கப்பட்டது:</string>
-    <string name="Enrollment_synced">பதிவுசெய்யப்பட்ட பாடநெறிகள் ஒத்திசைக்கப்பட்டன :</string>
-    <string name="Media_synced">மீடியா ஒத்திசைக்கப்பட்டது:</string>
-    <string name="Media_failed">மீடியா தோல்வியுற்றது:</string>
+    <string name="Sync_Time">ஒத்திசைக்கும் நேரம் : </string>
+    <string name="Data_synced">தரவு ஒத்திசைக்கப்பட்டது : </string>
+    <string name="Certificate_synced">சான்றிதழ் ஒத்திசைக்கப்பட்டது : </string>
+    <string name="Enrollment_synced">பதிவுசெய்யப்பட்ட பாடநெறிகள் ஒத்திசைக்கப்பட்டன : </string>
+    <string name="Media_synced">மீடியா ஒத்திசைக்கப்பட்டது : </string>
+    <string name="Media_failed">மீடியா தோல்வியுற்றது : </string>
     <string name="data_pushed_successfully">தரவு வெற்றிகரமாக அனுப்பப்பட்டது</string>
-    <string name="Score_Count">மதிப்பெண் எண்ணிக்கை:</string>
-    <string name="Certificate_Count">சான்றிதழ் எண்ணிக்கை:</string>
+    <string name="Score_Count">மதிப்பெண் எண்ணிக்கை : </string>
+    <string name="Certificate_Count">சான்றிதழ் எண்ணிக்கை : </string>
     <string name="Now_Upload_Media">இப்போது மீடியா பதிவேற்று ...</string>
     <string name="OOPS">அச்சச்சோ</string>
     <string name="Data_pushed_failed">அனுப்பட்ட தரவு தோல்வியுற்றது</string>

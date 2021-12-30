@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/log_card_main"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginStart="@dimen/_10sdp"
+    android:layout_marginTop="@dimen/_2sdp"
+    android:layout_marginEnd="@dimen/_10sdp"
+    android:layout_marginBottom="8dp"
+    android:elevation="5dp"
+    app:cardBackgroundColor="@color/white"
+    app:cardCornerRadius="@dimen/_10sdp">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="@dimen/_5sdp">
+
+        <com.pratham.foundation.customView.fontsview.SansTextViewBold
+            android:id="@+id/stat_date"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/_5sdp"
+            android:layout_marginEnd="@dimen/_5sdp"
+            android:layout_toStartOf="@+id/tv_syncstyle"
+            android:background="@drawable/text_usage_game_grad"
+            android:paddingStart="@dimen/_20sdp"
+            android:paddingTop="@dimen/_3sdp"
+            android:paddingEnd="@dimen/_3sdp"
+            android:paddingBottom="@dimen/_3sdp"
+            android:text="date"
+            android:textColor="@color/colorSignBoard2"
+            android:textSize="@dimen/_14sdp" />
+
+        <com.pratham.foundation.customView.fontsview.SansTextViewBold
+            android:id="@+id/tv_syncstyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginStart="@dimen/_2sdp"
+            android:layout_marginEnd="@dimen/_5sdp"
+            android:padding="@dimen/_3sdp"
+            android:text="DB Sync"
+            android:textColor="@color/colorSignBoard2"
+            android:textSize="@dimen/_14sdp" />
+
+<!--
+        <RelativeLayout
+            android:id="@+id/my_speperator"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_8sdp"
+            android:layout_below="@+id/stat_date"
+            android:background="@drawable/dotted_line_horizontal_blue" >
+
+            <com.pratham.foundation.customView.fontsview.SansTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:background="@drawable/custom_progress_primary"
+                android:gravity="center"
+                android:paddingStart="@dimen/_10sdp"
+                android:paddingEnd="@dimen/_10sdp"
+                android:paddingTop="@dimen/_2sdp"
+                android:paddingBottom="@dimen/_2sdp"
+                android:text="Total DB Entries"
+                android:textAlignment="center"
+                android:textColor="@color/white"
+                android:textSize="@dimen/_12sdp"
+                tools:ignore="HardcodedText" />
+    </RelativeLayout>
+-->
+
+    <LinearLayout
+        android:id="@+id/ll_all_dbstats"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/stat_date"
+        android:layout_marginTop="@dimen/_4sdp"
+        android:orientation="horizontal">
+
+        <RelativeLayout
+            android:id="@+id/rl_score"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/_2sdp"
+            android:layout_weight="1">
+
+            <com.pratham.foundation.customView.fontsview.SansTextViewBold
+                android:id="@+id/tv_scorecount"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="0"
+                android:textAlignment="center"
+                android:textColor="@color/goodColornew"
+                android:textSize="@dimen/_12sdp"
+                tools:ignore="HardcodedText" />
+
+            <com.pratham.foundation.customView.fontsview.SansTextView
+                android:id="@+id/tv_scorecount_lbl"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/tv_scorecount"
+                android:text="Score Count"
+                android:textAlignment="center"
+                android:textColor="@color/goodColornew"
+                android:textSize="@dimen/_12sdp"
+                tools:ignore="HardcodedText" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/rl_course"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/_5sdp"
+            android:layout_marginTop="@dimen/_2sdp"
+            android:layout_marginEnd="@dimen/_5sdp"
+            android:layout_marginBottom="@dimen/_2sdp"
+            android:layout_weight="1">
+
+            <com.pratham.foundation.customView.fontsview.SansTextViewBold
+                android:id="@+id/tv_coursecount"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="0"
+                android:textAlignment="center"
+                android:textColor="@color/goodColornew"
+                android:textSize="@dimen/_12sdp"
+                tools:ignore="HardcodedText" />
+
+            <com.pratham.foundation.customView.fontsview.SansTextView
+                android:id="@+id/tv_coursecount_lbl"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/tv_coursecount"
+                android:text="Course Count"
+                android:textAlignment="center"
+                android:textColor="@color/goodColornew"
+                android:textSize="@dimen/_12sdp"
+                tools:ignore="HardcodedText" />
+        </RelativeLayout>
+    </LinearLayout>
+
+
+</RelativeLayout></com.google.android.material.card.MaterialCardView>

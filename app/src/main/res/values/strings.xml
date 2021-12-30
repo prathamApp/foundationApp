@@ -3,7 +3,8 @@
     <string name="app_name" translatable="false">PraDigi for School</string>
 
     <string name="Login">Login</string>
-    <string name="Stt_Dialog_Msg">Please download language packs English(India) and हिंदी(भारत) offline for better performance</string>
+<!--    <string name="Stt_Dialog_Msg">Please download language packs English(India) and हिंदी(भारत) offline for better performance.\n\nOpen\nGoogle -> Settings -> Voice -> Offline speech recognition</string>-->
+    <string name="Stt_Dialog_Msg">Please download language packs English(India) and हिंदी(भारत) offline for better performance.</string>
     <string name="Okay">OK</string>
     <string name="Skip">SKIP</string>
     <string name="loding_please_wait">Loading... Please wait...</string>

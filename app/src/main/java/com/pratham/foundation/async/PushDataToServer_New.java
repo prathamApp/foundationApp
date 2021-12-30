@@ -1,12 +1,18 @@
 package com.pratham.foundation.async;
 
+import static com.pratham.foundation.ApplicationClass.BUILD_DATE;
+import static com.pratham.foundation.utility.FC_Constants.IS_SERVICE_STOPED;
+import static com.pratham.foundation.utility.FC_Constants.failed_ImageLength;
+import static com.pratham.foundation.utility.FC_Constants.pushedScoreLength;
+import static com.pratham.foundation.utility.FC_Constants.successful_ImageLength;
+import static com.pratham.foundation.utility.FC_Constants.syncTime;
+
 import android.annotation.SuppressLint;
 import android.app.ActivityManager;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
-import android.os.Environment;
 import android.util.Base64;
 import android.util.Log;
 import android.view.View;
@@ -34,7 +40,6 @@ import com.pratham.foundation.database.domain.FilePushResponse;
 import com.pratham.foundation.database.domain.Groups;
 import com.pratham.foundation.database.domain.KeyWords;
 import com.pratham.foundation.database.domain.Modal_Log;
-import com.pratham.foundation.database.domain.Modal_RaspFacility;
 import com.pratham.foundation.database.domain.Score;
 import com.pratham.foundation.database.domain.Session;
 import com.pratham.foundation.database.domain.Student;
@@ -44,6 +49,7 @@ import com.pratham.foundation.modalclasses.Model_CourseEnrollment;
 import com.pratham.foundation.services.background_service.BackgroundPushService;
 import com.pratham.foundation.services.shared_preferences.FastSave;
 import com.pratham.foundation.utility.FC_Constants;
+import com.pratham.foundation.utility.FC_RandomString;
 import com.pratham.foundation.utility.FC_Utility;
 
 import org.androidannotations.annotations.Background;
@@ -68,46 +74,31 @@ import java.util.zip.GZIPOutputStream;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
-import static com.pratham.foundation.ApplicationClass.BUILD_DATE;
-import static com.pratham.foundation.utility.FC_Constants.IS_SERVICE_STOPED;
-import static com.pratham.foundation.utility.FC_Constants.failed_ImageLength;
-import static com.pratham.foundation.utility.FC_Constants.pushedScoreLength;
-import static com.pratham.foundation.utility.FC_Constants.successful_ImageLength;
-import static com.pratham.foundation.utility.FC_Constants.syncTime;
-
 @EBean
 public class PushDataToServer_New {
 
     private Context context;
-    private JSONArray scoreData;
-    private JSONArray attendanceData;
-    private JSONArray studentData;
-    private JSONArray crlData;
-    private JSONArray sessionData;
-    private JSONArray supervisorData;
-    private JSONArray groupsData;
-    private JSONArray assessmentData;
-    private JSONArray contentProgress;
-    private JSONArray keyWordsData;
-    private JSONArray courseEnrollmentData;
-    private JSONArray logsData;
-    private boolean pushSuccessfull = false, pushImageSuccessfull = false;
-    private int totalImages, imageUploadCnt, scoreLen = 0, enrollmentCount = 0;
+    private JSONArray scoreData, attendanceData, studentData, crlData, sessionData, supervisorData,
+            groupsData, assessmentData, contentProgress, keyWordsData, courseEnrollmentData, logsData;
+    private boolean pushSuccessfull = false;
+    private final boolean pushImageSuccessfull = false;
+    private boolean isConnectedToRasp = false;
+    private int totalImages = 0;
+    private int imageUploadCnt = 0;
+    private int totalScoreCount = 0;
+    private int enrollmentCount = 0;
+    private final int BUFFER = 10000;
     private String actPhotoPath = "";
+    private final String programID = "";
     private File[] imageFilesArray;
+    private final List<String> db_Media;
     private List<Image_Upload> imageUploadList;
-    private Boolean isConnectedToRasp = false;
     boolean isRaspberry = false, showUi = false;
-    private String programID = "";
-    public TextView dialog_file_name;
     CustomLodingDialog pushDialog;
     LottieAnimationView push_lottie;
-    TextView txt_push_dialog_msg;
-    TextView txt_push_error;
+    TextView txt_push_dialog_msg, txt_push_error, txt_date, dialog_file_name;
     RelativeLayout rl_btn;
     Button ok_btn, eject_btn;
-    private int BUFFER = 10000;
-
 
     public PushDataToServer_New(Context context) {
         this.context = context;
@@ -122,6 +113,7 @@ public class PushDataToServer_New {
         assessmentData = new JSONArray();
         contentProgress = new JSONArray();
         imageUploadList = new ArrayList<>();
+        db_Media = new ArrayList<>();
         courseEnrollmentData = new JSONArray();
         showUi = false;
     }
@@ -134,33 +126,17 @@ public class PushDataToServer_New {
      */
     @Background
     public void startDataPush(Context context, boolean showUi) {
-        if(FC_Utility.isDataConnectionAvailable(context)) {
+        if (FC_Utility.isDataConnectionAvailable(context)) {
             this.context = context;
             this.showUi = showUi;
+            FastSave.getInstance().saveString(FC_Constants.PUSH_ID_LOGS, "" + FC_Utility.getUUID());
             //Show Dialog
             if (showUi)
                 showPushDialog(context);
             //Here data is fetched from local database and added to a list and then passed to JsonArray.
+            syncTime = FC_Utility.getCurrentDateTime();
             try {
-                Modal_Log log = new Modal_Log();
-                log.setCurrentDateTime(FC_Utility.getCurrentDateTime());
-                log.setErrorType(" ");
-                if (!showUi)
-                    log.setExceptionMessage("App_Auto_Sync");
-                else
-                    log.setExceptionMessage("App_Manual_Sync");
-                log.setMethodName("");
-                log.setSessionId(""+FastSave.getInstance().getString(FC_Constants.CURRENT_SESSION, ""));
-                log.setGroupId("");
-                log.setExceptionStackTrace("APK BUILD DATE : "+BUILD_DATE);
-                log.setDeviceId("" + FC_Utility.getDeviceID());
-                log.setCurrentDateTime(""+FC_Utility.getCurrentDateTime());
-                AppDatabase.getDatabaseInstance(context).getLogsDao().insertLog(log);
-                BackupDatabase.backup(context);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-            try {
+                setGreenColorMainTextToDialog();
                 setMainTextToDialog(context.getResources().getString(R.string.Collecting_Data));
                 List<Score> scoreList = AppDatabase.getDatabaseInstance(context).getScoreDao().getAllPushScores();
                 scoreData = fillScoreData(scoreList);
@@ -193,23 +169,26 @@ public class PushDataToServer_New {
                 //iterate through all new sessions
                 totalImages = AppDatabase.getDatabaseInstance(context).getScoreDao().getUnpushedImageCount();
                 enrollmentCount = courseEnrollList.size();
+                totalScoreCount = scoreData.length();
 //                certiCount = AppDatabase.getDatabaseInstance(context).getAssessmentDao().getUnpushedCertiCount(CERTIFICATE_LBL);
                 imageUploadCnt = 0;
                 imageUploadList = new ArrayList<>();
                 isConnectedToRasp = false;
                 //Checks if device is connected to wifi
-                if (ApplicationClass.wiseF.isDeviceConnectedToWifiNetwork()) {
+                if (ApplicationClass.wiseF.isDeviceConnectedToMobileNetwork() || ApplicationClass.wiseF.isDeviceConnectedToWifiNetwork()) {
                     //Checks if device is connected to raspberry pie
-                    if (ApplicationClass.wiseF.isDeviceConnectedToSSID(FC_Constants.PRATHAM_KOLIBRI_HOTSPOT)) {
-                        getFacilityId(pushDataJsonObject);
-                    } else {
-                        isConnectedToRasp = false;
-                        setMainTextToDialog(context.getResources().getString(R.string.Please_wait_pushing_Data));
-                        setSyncLottieToDialog();
-                        pushDataToServer(context, pushDataJsonObject, FC_Constants.uploadDataUrl);
-                    }
+//                    if (ApplicationClass.wiseF.isDeviceConnectedToSSID(FC_Constants.PRATHAM_RASPBERRY_PI)) {
+//                        getFacilityId(pushDataJsonObject);
+//                    } else {
+                    isConnectedToRasp = false;
+                    setYellowColorMainTextToDialog();
+                    setMainTextToDialog(context.getResources().getString(R.string.Please_wait_pushing_Data));
+                    setSyncLottieToDialog();
+                    pushDataToServer(context, pushDataJsonObject, FC_Constants.uploadDataUrl);
+//                    }
                 } else {
                     isConnectedToRasp = false;
+                    setYellowColorMainTextToDialog();
                     setMainTextToDialog(context.getResources().getString(R.string.Please_wait_pushing_Data));
                     setSyncLottieToDialog();
                     pushDataToServer(context, pushDataJsonObject, FC_Constants.uploadDataUrl);
@@ -217,7 +196,7 @@ public class PushDataToServer_New {
             } catch (Exception e) {
                 e.printStackTrace();
             }
-        }else{
+        } else {
             BackgroundPushService mYourService;
             mYourService = new BackgroundPushService();
             Intent mServiceIntent;
@@ -236,6 +215,27 @@ public class PushDataToServer_New {
     public void setMainTextToDialog(String dialogMsg) {
         if (showUi)
             txt_push_dialog_msg.setText("" + dialogMsg);
+    }
+
+    @SuppressLint("SetTextI18n")
+    @UiThread
+    public void setRedColorMainTextToDialog() {
+        if (showUi)
+            txt_push_dialog_msg.setTextColor(context.getResources().getColor(R.color.colorBtnRedDark));
+    }
+
+    @SuppressLint("SetTextI18n")
+    @UiThread
+    public void setGreenColorMainTextToDialog() {
+        if (showUi)
+            txt_push_dialog_msg.setTextColor(context.getResources().getColor(R.color.colorBtnGreenDark));
+    }
+
+    @SuppressLint("SetTextI18n")
+    @UiThread
+    public void setYellowColorMainTextToDialog() {
+        if (showUi)
+            txt_push_dialog_msg.setTextColor(context.getResources().getColor(R.color.colorGame));
     }
 
     @SuppressLint("SetTextI18n")
@@ -272,20 +272,22 @@ public class PushDataToServer_New {
             push_lottie = pushDialog.findViewById(R.id.push_lottie);
             txt_push_dialog_msg = pushDialog.findViewById(R.id.txt_push_dialog_msg);
             txt_push_error = pushDialog.findViewById(R.id.txt_push_error);
+            txt_date = pushDialog.findViewById(R.id.txt_date);
             rl_btn = pushDialog.findViewById(R.id.rl_btn);
             ok_btn = pushDialog.findViewById(R.id.ok_btn);
             eject_btn = pushDialog.findViewById(R.id.eject_btn);
 
+            txt_date.setText("Today's date : " + FC_Utility.getCurrentDateTime());
             txt_push_error.setText("");
             txt_push_error.setVisibility(View.GONE);
             ok_btn.setVisibility(View.GONE);
             eject_btn.setVisibility(View.GONE);
 
             ok_btn.setOnClickListener(v -> {
-                if (!isConnectedToRasp)
-                    getImageList();
-                else
-                    pushDialog.dismiss();
+//                if (pushSuccessfull)
+                getImageList();
+//                else
+//                    pushDialog.dismiss();
             });
 
             eject_btn.setOnClickListener(v -> {
@@ -359,12 +361,37 @@ public class PushDataToServer_New {
         }
     }
 
+    public void img_zip(List<Image_Upload> _files, String zipFileName) {
+        try {
+            BufferedInputStream origin = null;
+            FileOutputStream dest = new FileOutputStream(zipFileName);
+            ZipOutputStream out = new ZipOutputStream(new BufferedOutputStream(dest));
+
+            byte[] data = new byte[BUFFER];
+            for (int i = 0; i < _files.size(); i++) {
+                Log.v("Compress", "Adding: " + _files.get(i));
+                FileInputStream fi = new FileInputStream(String.valueOf(_files.get(i).getFilePath()));
+                origin = new BufferedInputStream(fi, BUFFER);
+                ZipEntry entry = new ZipEntry("" + _files.get(i).getFilePath());
+                out.putNextEntry(entry);
+                int count;
+                while ((count = origin.read(data, 0, BUFFER)) != -1) {
+                    out.write(data, 0, count);
+                }
+                origin.close();
+            }
+            out.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
     // Call only this method, do the data collection before
     public void pushDataToServer(Context context, JSONObject data, String... url) {
         try {
-//            String newdata = compress(String.valueOf(data));
-            String fielName = ""+FC_Utility.getUUID();
-            String filePathStr = Environment.getExternalStorageDirectory().toString()
+//            String fielName = ""+FC_Utility.getUUID();
+            String fielName = "FC_" + FC_RandomString.unique();
+            String filePathStr = ApplicationClass.getStoragePath().toString()
                     + "/.FCAInternal/PushJsons/" + fielName; // file path to save
             File filepath = new File(filePathStr + ".json"); // file path to save
             if (filepath.exists())
@@ -377,78 +404,92 @@ public class PushDataToServer_New {
             String[] s = new String[1];
             // Type the path of the files in here
             s[0] = filePathStr + ".json";
+            Log.d("FC_RandomString", "ZIP NAME " + s[0]);
             zip(s, filePathStr + ".zip", filepath);
+            String URL_Final = url[0];
+//            AndroidNetworking.upload("http://devprodigi.openiscool.org/api/FCAPP/PushFiles"/*url[0]*/)
 
-            AndroidNetworking.upload("http://devprodigi.openiscool.org/api/FCAPP/PushFiles"/*url[0]*/)
-                    .addHeaders("Content-Type", "file/zip")
-                    .addMultipartFile(""+fielName, new File(filePathStr + ".zip"))
-                    .setPriority(Priority.HIGH)
-                    .build()
-                    .getAsString(new StringRequestListener() {
-                        @Override
-                        public void onResponse(String response) {
-                            Log.d("PushData", "DATA PUSH "+response);
+            if (ApplicationClass.wiseF.isDeviceConnectedToSSID(FC_Constants.PRATHAM_RASPBERRY_PI)) {
+
+                URL_Final = FC_Constants.uploadDataUrl_PI;
+                AndroidNetworking.upload(URL_Final)
+                        .addHeaders("Content-Type", "file/zip")
+                        .addMultipartFile("uploaded_file", new File(filePathStr + ".zip"))
+                        .setPriority(Priority.HIGH)
+                        .build()
+                        .getAsString(new StringRequestListener() {
+                            @Override
+                            public void onResponse(String response) {
+                                Log.d("PushData", "DATA PUSH " + response);
                                 Gson gson = new Gson();
-                            FilePushResponse pushResponse = gson.fromJson(response, FilePushResponse.class);
+                                FilePushResponse pushResponse = gson.fromJson(response, FilePushResponse.class);
 
-                            new File(filePathStr + ".zip").delete();
-                            if (pushResponse.isSuccess()/*equalsIgnoreCase("success")*/) {
+                                new File(filePathStr + ".zip").delete();
                                 Log.d("PushData", "DATA PUSH SUCCESS");
                                 pushSuccessfull = true;
                                 setDataPushSuccessfull();
-                            } else {
-                                Log.d("PushData", "Failed DATA PUSH");
+                            }
+
+                            @Override
+                            public void onError(ANError anError) {
+                                //Fail - Show dialog with failure message.
+                                Log.d("PushData", "Data push FAIL");
+                                Log.d("PushData", "ERROR  " + anError);
+                                new File(filePathStr + ".zip").delete();
                                 pushSuccessfull = false;
                                 setDataPushFailed();
                             }
-                        }
+                        });
+            } else {
+//                pushSuccessfull = false;
+//                setDataPushFailed();
 
-                        @Override
-                        public void onError(ANError anError) {
-                            //Fail - Show dialog with failure message.
-                            Log.d("PushData", "Data push FAIL");
-                            Log.d("PushData", "ERROR  " + anError);
-                            pushSuccessfull = false;
-                            setDataPushFailed();
-                        }
-                    });
+                AndroidNetworking.upload(URL_Final)
+                        .addHeaders("Content-Type", "file/zip")
+                        .addMultipartFile("" + fielName, new File(filePathStr + ".zip"))
+                        .setPriority(Priority.HIGH)
+                        .build()
+                        .getAsString(new StringRequestListener() {
+                            @Override
+                            public void onResponse(String response) {
+                                Log.d("PushData", "DATA PUSH " + response);
+                                Gson gson = new Gson();
+                                FilePushResponse pushResponse = gson.fromJson(response, FilePushResponse.class);
+
+                                new File(filePathStr + ".zip").delete();
+                                if (pushResponse.isSuccess()/*.equalsIgnoreCase("success")*/) {
+                                    Log.d("PushData", "DATA PUSH SUCCESS");
+                                    pushSuccessfull = true;
+                                    setDataPushSuccessfull();
+                                } else {
+                                    Log.d("PushData", "Failed DATA PUSH");
+                                    pushSuccessfull = false;
+                                    setDataPushFailed();
+                                }
+                            }
+
+                            @Override
+                            public void onError(ANError anError) {
+                                Log.d("PushData", "Data push FAIL");
+                                Log.d("PushData", "ERROR  " + anError);
+                                pushSuccessfull = false;
+                                setDataPushFailed();
+                            }
+                        });
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
-    /*            String afilepathstr = Environment.getExternalStorageDirectory().toString()
-                    + "/.FCAInternal/PushJsons/newCompPush_" + FC_Utility.getUUID() + "_" + FC_Utility.getCurrentDateTime() + ".json"; // file path to save
-            File afilepath = new File(afilepathstr); // file path to save
-            if (afilepath.exists())
-                afilepath.delete();
-            FileWriter awriter = new FileWriter(afilepath);
-            awriter.write(String.valueOf(data));
-            awriter.flush();
-            awriter.close();
-
-            String aafilepathstr = Environment.getExternalStorageDirectory().toString()
-                    + "/.FCAInternal/PushJsons/newdataCompPush_" + FC_Utility.getUUID() + "_" + FC_Utility.getCurrentDateTime() + ".json"; // file path to save
-            File aafilepath = new File(aafilepathstr); // file path to save
-            if (aafilepath.exists())
-                aafilepath.delete();
-            FileWriter aawriter = new FileWriter(aafilepath);
-            aawriter.write(newdata);
-            aawriter.flush();
-            aawriter.close();
-
-            Log.d("PushData", "Original Size : " + String.valueOf(data).length());
-            Log.d("PushData", "New Data Size : " + newdata.length());*/
-//            compressGzipFile(filepathstr, Environment.getExternalStorageDirectory().toString()
-//                    + "/.FCAInternal/PushJsons/compressedPush_" + FC_Utility.getUUID() + "_" + FC_Utility.getCurrentDateTime() + ".gz");
-//            http://devprodigi.openiscool.org/api/FCAPP/PushFiles
-
-
     //Method shows success dialog
     @UiThread
     public void setDataPushSuccessfull() {
         setPushFlag();
+//        AppDatabase.getDatabaseInstance(context).getLogsDao().setPushStatus(FC_Constants.SUCCESSFULLYPUSHED,
+//                FastSave.getInstance().getString(FC_Constants.PUSH_ID_LOGS, ""));
         if (showUi) {
+            setGreenColorMainTextToDialog();
             setMainTextToDialog(context.getResources().getString(R.string.data_pushed_successfully) + "\n" +
                     context.getResources().getString(R.string.Score_Count) + " " + scoreData.length() +
 //                    "\n\n" + context.getResources().getString(R.string.Certificate_Count) + " " + certiCount +
@@ -456,8 +497,7 @@ public class PushDataToServer_New {
             ok_btn.setText(context.getResources().getString(R.string.Okay));
             ok_btn.setVisibility(View.VISIBLE);
         } else {
-            if (!isConnectedToRasp)
-                getImageList();
+            getImageList();
         }
     }
 
@@ -472,7 +512,10 @@ public class PushDataToServer_New {
     //Method shows failure dialog
     @UiThread
     public void setDataPushFailed() {
+//        AppDatabase.getDatabaseInstance(context).getLogsDao().setPushStatus(FC_Constants.PUSHFAILED,
+//                FastSave.getInstance().getString(FC_Constants.PUSH_ID_LOGS, ""));
         if (showUi) {
+            setRedColorMainTextToDialog();
             setMainTextToDialog(context.getResources().getString(R.string.OOPS));
             setSubTextToDialog(context.getResources().getString(R.string.Data_pushed_failed));
             push_lottie.setAnimation("error_cross.json");
@@ -480,8 +523,7 @@ public class PushDataToServer_New {
             ok_btn.setText(context.getResources().getString(R.string.Okay));
             ok_btn.setVisibility(View.VISIBLE);
         } else {
-            if (!isConnectedToRasp)
-                getImageList();
+            getImageList();
         }
     }
 
@@ -504,11 +546,13 @@ public class PushDataToServer_New {
     @Background
     public void getImageList() {
         setMainTextToDialog(context.getResources().getString(R.string.Collecting_Media));
+        setGreenColorMainTextToDialog();
         hideOKBtn();
-        actPhotoPath = Environment.getExternalStorageDirectory().toString() + "/.FCAInternal/ActivityPhotos/";
+        actPhotoPath = ApplicationClass.getStoragePath().toString() + "/.FCAInternal/ActivityPhotos/";
 //        Log.d("PushData", "Path: " + actPhotoPath);
         File directory = new File(actPhotoPath);
         imageFilesArray = directory.listFiles();
+//        db_Media =
 //        Log.d("PushData", "Size: " + imageFilesArray.length);
 
         if (imageFilesArray != null)
@@ -524,7 +568,9 @@ public class PushDataToServer_New {
                                 String fName = file[i].getName();
                                 File fPath = new File(file[i].getAbsolutePath());
 //                            Log.d("PushData", "FileName:" + fName);
-                                if (AppDatabase.getDatabaseInstance(context).getScoreDao().getSentFlag(fName) == 0) {
+                                String f_Name = "NA";
+                                f_Name = AppDatabase.getDatabaseInstance(context).getScoreDao().getImgResId(fName);
+                                if (f_Name != null) {
                                     Image_Upload image_upload = new Image_Upload();
                                     image_upload.setFileName(fName);
                                     image_upload.setFilePath(fPath);
@@ -538,7 +584,9 @@ public class PushDataToServer_New {
                         && !imageFilesArray[index].getName().equalsIgnoreCase(".nomedia")) {
                     File fPath = new File(imageFilesArray[index].getAbsolutePath());
                     String fName = imageFilesArray[index].getName();
-                    if (AppDatabase.getDatabaseInstance(context).getScoreDao().getSentFlag(fName) == 0) {
+                    String f_Name = "NA";
+                    f_Name = AppDatabase.getDatabaseInstance(context).getScoreDao().getImgResId(fName);
+                    if (f_Name != null) {
 //                    Log.d("PushData", "FileName:" + imageFilesArray[index].getName());
                         Image_Upload image_upload = new Image_Upload();
                         image_upload.setFileName(fName);
@@ -553,9 +601,19 @@ public class PushDataToServer_New {
         totalImages = imageUploadList.size();
 //        Log.d("PushData", "Size: " + imageUploadList.size());
         if (imageUploadList.size() > 0) {
+            setGreenColorMainTextToDialog();
             setMainTextToDialog(context.getResources().getString(R.string.Uploading) + " "
                     + totalImages + " " + context.getResources().getString(R.string.images));
-            pushImagesToServer(0);
+
+//            String fielName = "FCI_" + FC_RandomString.unique();
+//            String filePathStr = ApplicationClass.getStoragePath().toString()
+//                    + "/.FCAInternal/ActivityPhotos/" + fielName;
+//            img_zip(imageUploadList, filePathStr + ".zip");
+
+            if (ApplicationClass.wiseF.isDeviceConnectedToSSID(FC_Constants.PRATHAM_RASPBERRY_PI))
+                pushImagesToServer_PI(0);
+            else
+                pushImagesToServer_Internet(0);
         } else {
             showTotalImgStatus();
         }
@@ -575,7 +633,7 @@ public class PushDataToServer_New {
      * @param jsonIndex is always passed zero and incremented on success push.
      */
     @UiThread
-    public void pushImagesToServer(final int jsonIndex) {
+    public void pushImagesToServer_Internet(final int jsonIndex) {
 //        Log.d("PushData", "Image jsonIndex : " + jsonIndex);
         if (jsonIndex < imageUploadList.size()) {
             AndroidNetworking.upload(FC_Constants.PUSH_IMAGE_API)
@@ -594,8 +652,9 @@ public class PushDataToServer_New {
 //                                if (pushResponse.getErrorId().equalsIgnoreCase("1")/*contains(",\"ErrorId\":\"1\",")*/) {
                                     imageUploadCnt++;
                                     Log.d("PushData", "imageUploadCnt : " + imageUploadCnt);
+                                    Log.d("PushData", "imageUploadName : " + imageUploadList.get(jsonIndex).getFileName());
                                     imageUploadList.get(jsonIndex).setUploadStatus(true);
-                                    pushImagesToServer(jsonIndex + 1);
+                                    pushImagesToServer_Internet(jsonIndex + 1);
                                 }
                             } catch (Exception e) {
                                 e.printStackTrace();
@@ -605,7 +664,47 @@ public class PushDataToServer_New {
                         @Override
                         public void onError(ANError anError) {
                             Log.d("PushData", "IMAGE onError : " + imageUploadList.get(jsonIndex).getFileName());
-                            pushImagesToServer(jsonIndex + 1);
+                            pushImagesToServer_Internet(jsonIndex + 1);
+                        }
+                    });
+        } else {
+            Log.d("PushData", "IMAGES COMPLETE");
+            showTotalImgStatus();
+        }
+    }
+
+    @UiThread
+    public void pushImagesToServer_PI(final int jsonIndex) {
+//        Log.d("PushData", "Image jsonIndex : " + jsonIndex);
+        if (jsonIndex < imageUploadList.size()) {
+
+            AndroidNetworking.upload(FC_Constants.PUSH_IMAGE_API_PI)
+                    .addMultipartFile("uploaded_file", imageUploadList.get(jsonIndex).getFilePath())
+                    .setPriority(Priority.HIGH)
+                    .build()
+                    .getAsString(new StringRequestListener() {
+                        @Override
+                        public void onResponse(String response) {
+                            try {
+                                Log.d("PushData", "Image onResponse_PI : " + response);
+//                                if (response.equalsIgnoreCase("success")) {
+                                imageUploadCnt++;
+                                Log.d("PushData", "imageUploadCnt _PI: " + imageUploadCnt);
+                                imageUploadList.get(jsonIndex).setUploadStatus(true);
+                                pushImagesToServer_PI(jsonIndex + 1);
+//                                }
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
+                        }
+
+                        @Override
+                        public void onError(ANError anError) {
+                            Log.d("PushData", "IMAGE onError _PI: " + imageUploadList.get(jsonIndex).getFileName());
+                            Log.d("PushData", "onError _PI: " + anError.getMessage());
+                            Log.d("PushData", "onError _PI: " + anError.getErrorBody());
+                            Log.d("PushData", "onError _PI: " + anError.getErrorDetail());
+                            pushImagesToServer_PI(jsonIndex + 1);
                         }
                     });
         } else {
@@ -619,7 +718,11 @@ public class PushDataToServer_New {
     public void showTotalImgStatus() {
         int successfulCntr = 0, failedCntr = 0;
         Log.d("PushData", "IMAGES COMPLETE");
-
+        if (showUi) {
+            ok_btn.setVisibility(View.GONE);
+            eject_btn.setText(context.getResources().getString(R.string.close));
+            eject_btn.setVisibility(View.VISIBLE);
+        }
         for (int i = 0; i < imageUploadList.size(); i++) {
             if (imageUploadList.get(i).isUploadStatus()) {
                 AppDatabase.getDatabaseInstance(context).getScoreDao().setImgSentFlag(imageUploadList.get(i).getFileName());
@@ -634,24 +737,73 @@ public class PushDataToServer_New {
             pushedScoreLength = "0";
         successful_ImageLength = "" + successfulCntr;
         failed_ImageLength = "" + failedCntr;
-        syncTime = FC_Utility.getCurrentDateTime();
+//        syncTime = FC_Utility.getCurrentDateTime();
 
-        if(pushSuccessfull) {
-            FastSave.getInstance().saveString(FC_Constants.SYNC_TIME, syncTime);
-            FastSave.getInstance().saveString(FC_Constants.SYNC_COURSE_ENROLLMENT_LENGTH, ""+enrollmentCount);
-            FastSave.getInstance().saveString(FC_Constants.SYNC_DATA_LENGTH, pushedScoreLength);
-            FastSave.getInstance().saveString(FC_Constants.SYNC_MEDIA_LENGTH, successful_ImageLength);
-//            FastSave.getInstance().saveString(FC_Constants.SYNC_CERTI_LENGTH, "" + certiCount);
+        FastSave.getInstance().saveString(FC_Constants.SYNC_TIME, syncTime);
+        FastSave.getInstance().saveString(FC_Constants.SYNC_COURSE_ENROLLMENT_LENGTH, "" + enrollmentCount);
+        FastSave.getInstance().saveString(FC_Constants.SYNC_DATA_LENGTH, pushedScoreLength);
+        FastSave.getInstance().saveString(FC_Constants.SYNC_MEDIA_LENGTH, successful_ImageLength);
+
+        int totalScoreCount, totalSuccessfullScorePush, totalImgCount, totalSuccessfulImgCount, totalCourses, totalCoursesSuccessful;
+
+        totalSuccessfullScorePush = AppDatabase.getDatabaseInstance(context).getScoreDao().getTotalSuccessfullScorePush();
+        totalScoreCount = AppDatabase.getDatabaseInstance(context).getScoreDao().getTotalScoreCount();
+
+        totalSuccessfulImgCount = AppDatabase.getDatabaseInstance(context).getScoreDao().getTotalSuccessfullImageScorePush();
+        totalImgCount = AppDatabase.getDatabaseInstance(context).getScoreDao().getTotalImageScorePush();
+
+        totalCoursesSuccessful = AppDatabase.getDatabaseInstance(context).getCourseDao().getAllSuccessfulCourses();
+        totalCourses = AppDatabase.getDatabaseInstance(context).getCourseDao().getAllCourses();
+
+        try {
+            JSONObject pushStatusJson = null;
+            pushStatusJson = new JSONObject();
+            pushStatusJson.put(FC_Constants.SYNC_TIME, syncTime);
+            pushStatusJson.put(FC_Constants.SYNC_COURSE_ENROLLMENT_LENGTH, enrollmentCount);
+            pushStatusJson.put(FC_Constants.SYNC_DATA_LENGTH, pushedScoreLength);
+            pushStatusJson.put(FC_Constants.SYNC_MEDIA_LENGTH, successful_ImageLength);
+            pushStatusJson.put("ScoreTable", totalSuccessfullScorePush + "/" + totalScoreCount);
+            pushStatusJson.put("MediaCount", totalSuccessfulImgCount + "/" + totalImgCount);
+            pushStatusJson.put("CoursesCount", totalCoursesSuccessful + "/" + totalCourses);
+
+            Modal_Log log = new Modal_Log();
+            if (!showUi)
+                log.setExceptionMessage("App_Auto_Sync");
+            else
+                log.setExceptionMessage("App_Manual_Sync");
+            log.setMethodName("" + FastSave.getInstance().getString(FC_Constants.PUSH_ID_LOGS, "na"));
+            log.setSessionId("" + FastSave.getInstance().getString(FC_Constants.CURRENT_SESSION, ""));
+            log.setGroupId("");
+            log.setExceptionStackTrace("APK BUILD DATE : " + BUILD_DATE);
+            if (pushSuccessfull)
+                log.setErrorType(""+FC_Constants.SUCCESSFULLYPUSHED);
+            else
+                log.setErrorType(""+FC_Constants.PUSHFAILED);
+            log.setLogDetail(""+pushStatusJson.toString());
+            log.setDeviceId("" + FC_Utility.getDeviceID());
+            log.setCurrentDateTime("" + syncTime);
+            AppDatabase.getDatabaseInstance(context).getLogsDao().insertLog(log);
+
+            Log.d("PushData", "pushStatusJson JSON : " + pushStatusJson.toString());
+//            AppDatabase.getDatabaseInstance(context).getLogsDao().setPushDataLog(,
+//                    FastSave.getInstance().getString(FC_Constants.PUSH_ID_LOGS, ""));
+            BackupDatabase.backup(context);
+
+        } catch (Exception e) {
+            e.printStackTrace();
         }
 
-        if (showUi) {
-            ok_btn.setVisibility(View.GONE);
-            eject_btn.setText(context.getResources().getString(R.string.close));
-            eject_btn.setVisibility(View.VISIBLE);
 
+        if (showUi) {
+            if (pushSuccessfull) {
+                setGreenColorMainTextToDialog();
+                setMainTextToDialog(context.getResources().getString(R.string.Upload_Complete));
+            } else {
+                setRedColorMainTextToDialog();
+                setMainTextToDialog(context.getResources().getString(R.string.Data_pushed_failed));
+            }
             push_lottie.setAnimation("lottie_correct.json");
             push_lottie.playAnimation();
-            setMainTextToDialog(context.getResources().getString(R.string.Upload_Complete));
             setSubTextToDialog(context.getResources().getString(R.string.Data_synced) + " " + scoreData.length()
                     + "\n" + context.getResources().getString(R.string.Enrollment_synced) + " " + enrollmentCount
                     + "\n" + context.getResources().getString(R.string.Media_synced) + " " + successfulCntr
@@ -681,49 +833,49 @@ public class PushDataToServer_New {
         return false;
     }
 
-    @Background
-    public void getFacilityId(JSONObject requestString) {
-        try {
-            JSONObject object = new JSONObject();
-            object.put("username", "pratham");
-            object.put("password", "pratham");
-            AndroidNetworking.post(FC_Constants.RASP_IP + "/api/session/")
-                    .addHeaders("Content-Type", "application/json")
-                    .addJSONObjectBody(object)
-                    .build()
-                    .getAsString(new StringRequestListener() {
-                        @Override
-                        public void onResponse(String response) {
-                            //Success - push method is called and data is passes.
-                            Gson gson = new Gson();
-                            Modal_RaspFacility facility = gson.fromJson(response, Modal_RaspFacility.class);
-                            FastSave.getInstance().saveString(FC_Constants.FACILITY_ID, facility.getFacilityId());
-                            Log.d("pi", "onResponse: " + facility.getFacilityId());
-                            isConnectedToRasp = true;
-                            pushDataToRaspberry("" + FC_Constants.URL.DATASTORE_RASPBERY_URL.toString(),
-                                    "" + requestString, programID, FC_Constants.USAGEDATA);
-//                            try {
-//                                getRaspImageList();
-//                            } catch (Exception e) {
-//                                e.printStackTrace();
-//                            }
-                        }
-
-                        @Override
-                        public void onError(ANError anError) {
-//                            apiResult.notifyError(requestType/*, null*/);
-                            // Fail - Show dialog with failure message.
-                            setDataPushFailed();
-                            isConnectedToRasp = false;
-                            Log.d("Error::", anError.getErrorDetail());
-                            Log.d("Error::", Objects.requireNonNull(anError.getMessage()));
-                            Log.d("Error::", anError.getResponse().toString());
-                        }
-                    });
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
+//    @Background
+//    public void getFacilityId(JSONObject requestString) {
+//        try {
+//            JSONObject object = new JSONObject();
+//            object.put("username", "pratham");
+//            object.put("password", "pratham");
+//            AndroidNetworking.post(FC_Constants.RASP_IP + "/api/session/")
+//                    .addHeaders("Content-Type", "application/json")
+//                    .addJSONObjectBody(object)
+//                    .build()
+//                    .getAsString(new StringRequestListener() {
+//                        @Override
+//                        public void onResponse(String response) {
+//                            //Success - push method is called and data is passes.
+//                            Gson gson = new Gson();
+//                            Modal_RaspFacility facility = gson.fromJson(response, Modal_RaspFacility.class);
+//                            FastSave.getInstance().saveString(FC_Constants.FACILITY_ID, facility.getFacilityId());
+//                            Log.d("pi", "onResponse: " + facility.getFacilityId());
+//                            isConnectedToRasp = true;
+//                            pushDataToRaspberry("" + FC_Constants.URL.DATASTORE_RASPBERY_URL.toString(),
+//                                    "" + requestString, programID, FC_Constants.USAGEDATA);
+////                            try {
+////                                getRaspImageList();
+////                            } catch (Exception e) {
+////                                e.printStackTrace();
+////                            }
+//                        }
+//
+//                        @Override
+//                        public void onError(ANError anError) {
+////                            apiResult.notifyError(requestType/*, null*/);
+//                            // Fail - Show dialog with failure message.
+//                            setDataPushFailed();
+//                            isConnectedToRasp = false;
+//                            Log.d("Error::", anError.getErrorDetail());
+//                            Log.d("Error::", Objects.requireNonNull(anError.getMessage()));
+//                            Log.d("Error::", anError.getResponse().toString());
+//                        }
+//                    });
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+//    }
 
     private String getAuthHeader() {
         String encoded = Base64.encodeToString(("pratham" + ":" + "pratham").getBytes(), Base64.NO_WRAP);

@@ -1,13 +1,27 @@
 package com.pratham.foundation.ui.app_home.profile_new;
 
+import static com.pratham.foundation.ApplicationClass.App_Thumbs_Path;
+import static com.pratham.foundation.ApplicationClass.ButtonClickSound;
+import static com.pratham.foundation.ui.app_home.HomeActivity.header_rl;
+import static com.pratham.foundation.utility.FC_Constants.APP_SECTION;
+import static com.pratham.foundation.utility.FC_Constants.APP_VERSION;
+import static com.pratham.foundation.utility.FC_Constants.GROUP_MODE;
+import static com.pratham.foundation.utility.FC_Constants.INDIVIDUAL_MODE;
+import static com.pratham.foundation.utility.FC_Constants.LOGIN_MODE;
+import static com.pratham.foundation.utility.FC_Constants.PROFILE_FRAGMENT_SHOWCASE;
+import static com.pratham.foundation.utility.FC_Constants.SPLASH_OPEN;
+import static com.pratham.foundation.utility.FC_Constants.StudentPhotoPath;
+import static com.pratham.foundation.utility.FC_Constants.sec_Profile;
+import static com.pratham.foundation.utility.FC_Utility.get12HrTime;
+import static com.pratham.foundation.utility.FC_Utility.getRandomFemaleAvatar;
+import static com.pratham.foundation.utility.FC_Utility.getRandomMaleAvatar;
+
 import android.annotation.SuppressLint;
-import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
-import android.os.Environment;
 import android.os.Handler;
 import android.util.Log;
 import android.view.Gravity;
@@ -38,19 +52,17 @@ import com.pratham.foundation.customView.showcaseviewlib.GuideView;
 import com.pratham.foundation.customView.showcaseviewlib.config.DismissType;
 import com.pratham.foundation.database.AppDatabase;
 import com.pratham.foundation.database.BackupDatabase;
-import com.pratham.foundation.database.domain.Modal_Log;
 import com.pratham.foundation.interfaces.API_Content_Result;
 import com.pratham.foundation.modalclasses.EventMessage;
 import com.pratham.foundation.modalclasses.Modal_InternetTime;
 import com.pratham.foundation.services.shared_preferences.FastSave;
-import com.pratham.foundation.ui.admin_panel.MenuActivity_;
-import com.pratham.foundation.ui.admin_panel.fragment_admin_panel.tab_usage.TabUsageActivity_;
+import com.pratham.foundation.ui.admin_panel.tab_usage.TabUsageActivity_;
 import com.pratham.foundation.ui.app_home.profile_new.chat_display_list.DisplayChatActivity_;
 import com.pratham.foundation.ui.app_home.profile_new.course_enrollment.CourseEnrollmentActivity_;
 import com.pratham.foundation.ui.app_home.profile_new.display_image_ques_list.DisplayImageQuesActivity_;
+import com.pratham.foundation.ui.app_home.profile_new.show_sync_log.ShowSyncLogActivity_;
 import com.pratham.foundation.ui.bottom_fragment.BottomStudentsFragment;
 import com.pratham.foundation.ui.bottom_fragment.BottomStudentsFragment_;
-import com.pratham.foundation.ui.contentPlayer.webviewpdf.PDFViewActivity_;
 import com.pratham.foundation.utility.FC_Constants;
 import com.pratham.foundation.utility.FC_Utility;
 
@@ -60,34 +72,13 @@ import org.androidannotations.annotations.Bean;
 import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EFragment;
 import org.androidannotations.annotations.ViewById;
-import org.apache.commons.io.FileUtils;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
 import java.io.File;
-import java.io.IOException;
 import java.lang.reflect.Type;
 import java.util.Objects;
-
-import static com.pratham.foundation.ApplicationClass.App_Thumbs_Path;
-import static com.pratham.foundation.ApplicationClass.BUILD_DATE;
-import static com.pratham.foundation.ApplicationClass.ButtonClickSound;
-import static com.pratham.foundation.ui.app_home.HomeActivity.header_rl;
-import static com.pratham.foundation.utility.FC_Constants.APP_SECTION;
-import static com.pratham.foundation.utility.FC_Constants.APP_VERSION;
-import static com.pratham.foundation.utility.FC_Constants.GROUP_MODE;
-import static com.pratham.foundation.utility.FC_Constants.INDIVIDUAL_MODE;
-import static com.pratham.foundation.utility.FC_Constants.LOGIN_MODE;
-import static com.pratham.foundation.utility.FC_Constants.PROFILE_FRAGMENT_SHOWCASE;
-import static com.pratham.foundation.utility.FC_Constants.SPLASH_OPEN;
-import static com.pratham.foundation.utility.FC_Constants.StudentPhotoPath;
-import static com.pratham.foundation.utility.FC_Constants.sec_Profile;
-import static com.pratham.foundation.utility.FC_Utility.decimalFormat;
-import static com.pratham.foundation.utility.FC_Utility.folderSize;
-import static com.pratham.foundation.utility.FC_Utility.get12HrTime;
-import static com.pratham.foundation.utility.FC_Utility.getRandomFemaleAvatar;
-import static com.pratham.foundation.utility.FC_Utility.getRandomMaleAvatar;
 
 
 @EFragment(R.layout.fragment_profile)
@@ -104,26 +95,14 @@ public class ProfileFragment extends Fragment implements ProfileContract.Profile
     TextView tv_days;
     @ViewById(R.id.version_tv)
     TextView version_tv;
-    @ViewById(R.id.certi1_perc)
-    TextView certi1_perc;
-    @ViewById(R.id.certi1_subj)
-    TextView certi1_subj;
-    @ViewById(R.id.certi2_perc)
-    TextView certi2_perc;
-    @ViewById(R.id.certi2_subj)
-    TextView certi2_subj;
-    @ViewById(R.id.certi3_perc)
-    TextView certi3_perc;
-    @ViewById(R.id.certi3_subj)
-    TextView certi3_subj;
-    @ViewById(R.id.rl_certi1)
-    RelativeLayout rl_certi1;
-    @ViewById(R.id.rl_certi2)
-    RelativeLayout rl_certi2;
-    @ViewById(R.id.rl_certi3)
-    RelativeLayout rl_certi3;
+    @ViewById(R.id.tv_en_id)
+    TextView tv_en_id;
     @ViewById(R.id.card_img)
     SimpleDraweeView card_img;
+    @ViewById(R.id.usage_1)
+    RelativeLayout usage_1;
+    @ViewById(R.id.rl_sync_log)
+    RelativeLayout rl_sync_log;
 
     //    String[] progressArray = {"Progress", "Share"};
     Context context;
@@ -195,7 +174,17 @@ public class ProfileFragment extends Fragment implements ProfileContract.Profile
     }
 
     private void fragmentSelected() {
+        if (FastSave.getInstance().getBoolean(FC_Constants.PRATHAM_STUDENT, false))
+            usage_1.setVisibility(View.VISIBLE);
         tv_studentName.setText("" + FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_NAME, "Student"));
+        if (FastSave.getInstance().getString(LOGIN_MODE, "").equalsIgnoreCase(GROUP_MODE))
+            tv_en_id.setText("" + FastSave.getInstance().getString(FC_Constants.GROUP_ENROLLMENT_ID, ""));
+        else {
+            if(FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ENROLL_ID, "").equalsIgnoreCase("")
+                ||FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ENROLL_ID, "").equalsIgnoreCase(" "))
+            tv_en_id.setText("" + FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ENROLL_ID, ""));
+        }
+
         setImage();
         //        presenter.getCertificateCount();
         presenter.getActiveData();
@@ -241,16 +230,20 @@ public class ProfileFragment extends Fragment implements ProfileContract.Profile
         } catch (IllegalStateException e) {
             e.printStackTrace();
         }
-        if (!ApplicationClass.getAppMode()) {
-            FastSave.getInstance().saveBoolean(SPLASH_OPEN, false);
-            BottomStudentsFragment_ bottomStudentsFragment = new BottomStudentsFragment_();
-            bottomStudentsFragment.show(Objects.requireNonNull(getActivity()).getSupportFragmentManager(),
-                    BottomStudentsFragment.class.getSimpleName());
-        } else {
-            endSession();
-            startActivity(new Intent(getActivity(), MenuActivity_.class));
-            getActivity().finish();
+        FastSave.getInstance().saveBoolean(SPLASH_OPEN, false);
+        BottomStudentsFragment_ bottomStudentsFragment = new BottomStudentsFragment_();
+        bottomStudentsFragment.show(Objects.requireNonNull(getActivity()).getSupportFragmentManager(),
+                BottomStudentsFragment.class.getSimpleName());
+    }
+
+    @Click(R.id.rl_sync_log)
+    public void showSyncLog() {
+        try {
+            ButtonClickSound.start();
+        } catch (IllegalStateException e) {
+            e.printStackTrace();
         }
+        startActivity(new Intent(context, ShowSyncLogActivity_.class));
     }
 
     @Background
@@ -273,6 +266,7 @@ public class ProfileFragment extends Fragment implements ProfileContract.Profile
     @Override
     public void setDays(int size) {
         try {
+            Log.d("TAG", "setDays: " + size);
             tv_days.setText("" + size);
         } catch (Exception e) {
             e.printStackTrace();
@@ -314,14 +308,6 @@ public class ProfileFragment extends Fragment implements ProfileContract.Profile
         }
     }
 */
-
-    private void openPDF() {
-        Intent mainNew = new Intent(context, PDFViewActivity_.class);
-        mainNew.putExtra("resPath", Environment.getExternalStorageDirectory() + "/CRF1100L.pdf");
-        mainNew.putExtra("resId", "1111");
-        mainNew.putExtra("gameLevel", "1");
-        startActivity(mainNew);
-    }
 
     @Click(R.id.rl_Set_Date_and_Time)
     @UiThread
@@ -391,14 +377,53 @@ public class ProfileFragment extends Fragment implements ProfileContract.Profile
         startActivity(new Intent(context, CourseEnrollmentActivity_.class));
     }
 
+    CustomLodingDialog sttDialog;
+
     @Click(R.id.rl_lang_pack)
     @UiThread
     public void show_STT_Dialog() {
-        Intent intent = new Intent(Intent.ACTION_MAIN);
-        intent.setComponent(new ComponentName("com.google.android.googlequicksearchbox",
-                "com.google.android.voicesearch.greco3.languagepack.InstallActivity"));
+/*        Intent intent = new Intent(Intent.ACTION_MAIN);
+//        intent.setComponent(new ComponentName("com.google.android.googlequicksearchbox",
+//                "com.google.android.voicesearch.greco3.languagepack.InstallActivity"));
+        intent.setClassName("com.google.android.googlequicksearchbox",
+                "com.google.android.voicesearch.greco3.languagepack.InstallActivity");
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        startActivity(intent);
+        startActivity(intent);*/
+
+        sttDialog = new CustomLodingDialog(context, R.style.FC_DialogStyle);
+        sttDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        Objects.requireNonNull(sttDialog.getWindow()).setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        sttDialog.setContentView(R.layout.lottie_stt_dialog);
+        sttDialog.setCanceledOnTouchOutside(true);
+
+        TextView dia_btn_skip = sttDialog.findViewById(R.id.dia_btn_skip);
+        Button dia_btn_ok = sttDialog.findViewById(R.id.dia_btn_ok);
+
+        dia_btn_ok.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(Intent.ACTION_MAIN);
+                intent.setClassName("com.google.android.googlequicksearchbox",
+                        "com.google.android.voicesearch.greco3.languagepack.InstallActivity");
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(intent);
+                new Handler().postDelayed(() -> {
+                    sttDialog.dismiss();
+                }, 100);
+
+            }
+        });
+
+        dia_btn_skip.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                new Handler().postDelayed(() -> {
+                    sttDialog.dismiss();
+                }, 100);
+            }
+        });
+
+        sttDialog.show();
     }
 
     @Bean(PushDataToServer_New.class)
@@ -409,7 +434,11 @@ public class ProfileFragment extends Fragment implements ProfileContract.Profile
 
     @Click(R.id.rl_sync)
     public void pushData() {
-        pushDataToServer.startDataPush(context, true);
+
+        if (FC_Utility.isDataConnectionAvailable(context)) {
+            pushDataToServer.startDataPush(context, true);
+        }
+
     }
 
     @UiThread
@@ -417,24 +446,8 @@ public class ProfileFragment extends Fragment implements ProfileContract.Profile
     public void pushDatabaseFile() {
         if (FC_Utility.isDataConnectionAvailable(context)) {
             showLoader();
-            try {
-                Modal_Log log = new Modal_Log();
-                log.setCurrentDateTime(FC_Utility.getCurrentDateTime());
-                log.setErrorType(" ");
-                log.setExceptionMessage("DB_ZIP_Push");
-                log.setMethodName("");
-                log.setSessionId("" + FastSave.getInstance().getString(FC_Constants.CURRENT_SESSION, ""));
-                log.setGroupId("");
-                log.setExceptionStackTrace("APK BUILD DATE : " + BUILD_DATE);
-                log.setDeviceId("" + FC_Utility.getDeviceID());
-                log.setCurrentDateTime("" + FC_Utility.getCurrentDateTime());
-                AppDatabase.getDatabaseInstance(context).getLogsDao().insertLog(log);
-                BackupDatabase.backup(context);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
 /*
-            File backupsDir = new File(Environment.getExternalStorageDirectory().toString() + "/PrathamBackups/");
+            File backupsDir = new File(ApplicationClass.getStoragePath().toString() + "/PrathamBackups/");
             File[] db_files = backupsDir.listFiles();
             if(db_files!=null)
                 for(int i=0; i<db_files.length;i++){
@@ -448,6 +461,7 @@ public class ProfileFragment extends Fragment implements ProfileContract.Profile
         }
     }
 
+/*
     private void cleanStorage() {
         File directory = new File(ApplicationClass.foundationPath + "/.FCA");
         long full_size = folderSize(directory);
@@ -460,9 +474,10 @@ public class ProfileFragment extends Fragment implements ProfileContract.Profile
         }
         showDeletingDialog(sizeMB, s);
     }
+*/
 
     BlurPopupWindow exitDialog;
-    TextView dia_title;
+    TextView dia_title, txt_date;
     LottieAnimationView push_lottie;
     TextView txt_push_dialog_msg, txt_push_dialog_msg2;
     TextView txt_push_error;
@@ -470,6 +485,7 @@ public class ProfileFragment extends Fragment implements ProfileContract.Profile
     Button ok_btn, eject_btn;
     BlurPopupWindow deleteDialog;
 
+/*
     @SuppressLint("SetTextI18n")
     @UiThread
     public void showDeletingDialog(double full_size, String unit) {
@@ -515,6 +531,7 @@ public class ProfileFragment extends Fragment implements ProfileContract.Profile
     }
 
 
+
     private void deleteAppData() {
         File directory = new File(ApplicationClass.foundationPath + "/.FCA");
         File[] fileListArray = directory.listFiles();
@@ -538,7 +555,7 @@ public class ProfileFragment extends Fragment implements ProfileContract.Profile
         }, 5000);
 
     }
-
+*/
 
     @Click(R.id.rl_sync_status)
     @SuppressLint("SetTextI18n")
@@ -558,6 +575,8 @@ public class ProfileFragment extends Fragment implements ProfileContract.Profile
                 .build();
 
         dia_title = exitDialog.findViewById(R.id.dia_title);
+        txt_date = exitDialog.findViewById(R.id.txt_date);
+        txt_date.setText("Today's date : " + FC_Utility.getCurrentDateTime());
 
         dia_title.setText(getResources().getString(R.string.Sync_Time) + " " + FastSave.getInstance().getString(FC_Constants.SYNC_TIME, "NA")
                         + "\n" + getResources().getString(R.string.Data_synced) + " " + FastSave.getInstance().getString(FC_Constants.SYNC_DATA_LENGTH, "0")
@@ -631,6 +650,10 @@ public class ProfileFragment extends Fragment implements ProfileContract.Profile
 //                    getString(FC_Constants.LANGUAGE, FC_Constants.HINDI));
             dialog.dismiss();
         });
+    }
+
+    @Override
+    public void receivedContent_PI_SubLevel(String header, String response, int pos, int size) {
     }
 
     @Override

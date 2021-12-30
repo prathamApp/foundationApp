@@ -65,14 +65,14 @@ public class ZipDownloader {
         mydir = new File(ApplicationClass.foundationPath + "/.FCA/"+currentSubjectFolder+"/Game");
         if (!mydir.exists()) mydir.mkdirs();
 
-        if (ApplicationClass.wiseF.isDeviceConnectedToSSID(FC_Constants.PRATHAM_KOLIBRI_HOTSPOT)) {
+/*        if (ApplicationClass.wiseF.isDeviceConnectedToSSID(FC_Constants.PRATHAM_RASPBERRY_PI)) {
             if (foldername.equalsIgnoreCase(FC_Constants.GAME)) {
                 f_name = f_name.substring(0, f_name.lastIndexOf("."));
                 File temp_dir = new File(mydir.getAbsolutePath() + "/" + f_name);
                 if (!temp_dir.exists()) temp_dir.mkdirs();
                 mydir = temp_dir;
             }
-        }
+        }*/
 
         Log.d("internal_file", mydir.getAbsolutePath());
         Modal_Download modal_download = new Modal_Download();
@@ -99,7 +99,7 @@ public class ZipDownloader {
             documentFile = documentFile.findFile("/.FCA/"+currentSubjectFolder+"/" + foldername);
         else
             documentFile = documentFile.createDirectory("/.FCA/"+currentSubjectFolder+"/" + foldername);
-        if (ApplicationClass.wiseF.isDeviceConnectedToSSID(FC_Constants.PRATHAM_KOLIBRI_HOTSPOT)) {
+        if (ApplicationClass.wiseF.isDeviceConnectedToSSID(FC_Constants.PRATHAM_RASPBERRY_PI)) {
             if (foldername.equalsIgnoreCase(FC_Constants.GAME)) {
                 f_name = f_name.substring(0, f_name.lastIndexOf("."));
                 if (documentFile.findFile(f_name) != null)

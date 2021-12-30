@@ -1,6 +1,17 @@
 package com.pratham.foundation.ui.selectSubject;
 
 
+import static com.pratham.foundation.ApplicationClass.BackBtnSound;
+import static com.pratham.foundation.ApplicationClass.ButtonClickSound;
+import static com.pratham.foundation.utility.FC_Constants.APP_LANGUAGE_SELECTED;
+import static com.pratham.foundation.utility.FC_Constants.SELECT_SUBJECT_SHOWCASE;
+import static com.pratham.foundation.utility.FC_Constants.SPLASH_OPEN;
+import static com.pratham.foundation.utility.FC_Constants.UPDATE_AVAILABLE;
+import static com.pratham.foundation.utility.FC_Constants.currentLevel;
+import static com.pratham.foundation.utility.FC_Constants.currentSubjectFolder;
+import static com.pratham.foundation.utility.FC_Constants.gameFolderPath;
+import static com.pratham.foundation.utility.FC_Utility.dpToPx;
+
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
@@ -32,9 +43,11 @@ import com.pratham.foundation.database.domain.ContentTable;
 import com.pratham.foundation.modalclasses.EventMessage;
 import com.pratham.foundation.services.shared_preferences.FastSave;
 import com.pratham.foundation.ui.app_home.HomeActivity_;
+import com.pratham.foundation.ui.selectSubject.testPDF.ShowTestPDF_;
 import com.pratham.foundation.ui.select_language_fragment.SelectLanguageFragment;
 import com.pratham.foundation.ui.select_language_fragment.SelectLanguageFragment_;
 import com.pratham.foundation.utility.FC_Constants;
+import com.pratham.foundation.utility.FC_RandomString;
 import com.pratham.foundation.utility.FC_Utility;
 
 import org.androidannotations.annotations.AfterViews;
@@ -50,17 +63,6 @@ import org.greenrobot.eventbus.ThreadMode;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-
-import static com.pratham.foundation.ApplicationClass.BackBtnSound;
-import static com.pratham.foundation.ApplicationClass.ButtonClickSound;
-import static com.pratham.foundation.utility.FC_Constants.APP_LANGUAGE_SELECTED;
-import static com.pratham.foundation.utility.FC_Constants.SELECT_SUBJECT_SHOWCASE;
-import static com.pratham.foundation.utility.FC_Constants.SPLASH_OPEN;
-import static com.pratham.foundation.utility.FC_Constants.UPDATE_AVAILABLE;
-import static com.pratham.foundation.utility.FC_Constants.currentLevel;
-import static com.pratham.foundation.utility.FC_Constants.currentSubjectFolder;
-import static com.pratham.foundation.utility.FC_Constants.gameFolderPath;
-import static com.pratham.foundation.utility.FC_Utility.dpToPx;
 
 @EActivity(R.layout.activity_select_subject)
 public class SelectSubject extends BaseActivity implements
@@ -254,6 +256,7 @@ public class SelectSubject extends BaseActivity implements
     public void onItemClicked(ContentTable contentTableObj) {
         //Get the selected subject and set to app
         try {
+//            allContentsIDList.clear();
             ButtonClickSound.start();
         } catch (IllegalStateException e) {
             e.printStackTrace();
@@ -289,6 +292,8 @@ public class SelectSubject extends BaseActivity implements
         Intent intent = new Intent(context, HomeActivity_.class);
         intent.putExtra("nodeId", contentTableObj.getNodeId());
         intent.putExtra("nodeTitle", contentTableObj.getNodeTitle());
+//        allContentsIDList.add(FastSave.getInstance().getString(APP_LANGUAGE_NODE_ID, ""));
+//        allContentsIDList.add(contentTableObj.getNodeId());
         startActivity(intent);
 //        FastSave.getInstance().saveString(FC_Constants.APP_LANGUAGE, FC_Constants.MARATHI);
         String a = FastSave.getInstance().getString(FC_Constants.APP_LANGUAGE, FC_Constants.HINDI);
@@ -300,6 +305,14 @@ public class SelectSubject extends BaseActivity implements
     @Click(R.id.btn_back)
     public void pressedBackButton() {
         onBackPressed();
+    }
+
+    @Click(R.id.dia_result)
+    public void checkDiagnosticResult() {
+        Log.d("Diagnostic", "checkDiagnosticResult: "+FC_RandomString.unique());
+
+        Intent intent = new Intent(context, ShowTestPDF_.class);
+        startActivity(intent);
     }
 
     @Override

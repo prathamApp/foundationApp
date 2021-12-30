@@ -29,8 +29,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:layout_marginTop="@dimen/_5sdp"
-                android:layout_marginBottom="@dimen/_5sdp"
+                android:layout_marginTop="@dimen/_2sdp"
+                android:layout_marginBottom="@dimen/_1sdp"
                 android:scrollbars="vertical"
                 android:textAlignment="center"
                 android:textColor="@color/colorText"
@@ -40,7 +40,8 @@
                 android:id="@+id/image_container"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/_5sdp">
+                android:layout_below="@+id/tv_question"
+                android:layout_marginBottom="@dimen/_2sdp">
 
                 <ImageView
                     android:id="@+id/iv_view_img"

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.pratham.foundation.customView.fontsview.SansTextViewBold
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/category_item"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/_85sdp"
+    android:layout_margin="@dimen/_8sdp"
+    android:elevation="@dimen/_5sdp"
+    android:text="category"
+    android:gravity="center"
+    android:layout_gravity="center"
+    android:textAlignment="center"
+    android:textSize="@dimen/_15sdp"
+    android:textColor="@color/white"
+    android:padding="@dimen/_5sdp"
+    android:background="@drawable/card_color_bg3"/>

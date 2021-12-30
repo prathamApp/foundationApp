@@ -1,8 +1,9 @@
 package com.pratham.foundation.ui.contentPlayer.web_view;
 
 import android.media.MediaRecorder;
-import android.os.Environment;
 import android.util.Log;
+
+import com.pratham.foundation.ApplicationClass;
 
 public class AudioPlayer extends Thread {
     MediaRecorder mediaRecorder;
@@ -21,7 +22,7 @@ public class AudioPlayer extends Thread {
     public void run() {
         try {
             try {
-                internalStoragePath = Environment.getExternalStorageDirectory().toString() + "/.KKSInternal/Recordings/";
+                internalStoragePath = ApplicationClass.getStoragePath().toString() + "/.FCAInternal/Recordings/";
                 mediaRecorder = new MediaRecorder();
                 mediaRecorder.setAudioSource(MediaRecorder.AudioSource.MIC);
                 mediaRecorder.setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP);

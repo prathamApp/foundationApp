@@ -1,6 +1,7 @@
 <?xml version="1.0" ?>
 <resources>
     <string name="Login">লগ ইন করুন।</string>
+<!--    <string name="Stt_Dialog_Msg">অফলাইন স্পিচ রেকগনিশনের জন্য অনুগ্রহ করে ল্যাঙ্গুয়েজ প্যাক English (India) ও हिंदी(भारत) ডাউনলোড করুন।\n\nOpen\nGoogle -> Settings -> Voice -> Offline speech recognition</string>-->
     <string name="Stt_Dialog_Msg">অফলাইন স্পিচ রেকগনিশনের জন্য অনুগ্রহ করে ল্যাঙ্গুয়েজ প্যাক English (India) ও हिंदी(भारत) ডাউনলোড করুন।</string>
     <string name="Okay">ঠিক আছে</string>
     <string name="Skip">বাদ দিয়ে যান</string>
@@ -118,15 +119,15 @@
     <string name="lang_pack">অফলাইন ভাষা প্যাক</string>
     <string name="free_space">শূন্যস্থান</string>
     <string name="curr_lang">বর্তমান ভাষা</string>
-    <string name="Sync_Time">সিঙ্ক করার সময়</string>
-    <string name="Data_synced">ডেটা সিঙ্ক করা হয়েছে</string>
+    <string name="Sync_Time">সিঙ্ক করার সময় : </string>
+    <string name="Data_synced">ডেটা সিঙ্ক করা হয়েছে :</string>
     <string name="Certificate_synced">সিঙ্ক করা প্রমাণপত্র/ সার্টিফিকেট</string>
-    <string name="Enrollment_synced">এনরোলমেন্ট _সিঙ্ক :</string>
-    <string name="Media_synced">মিডিয়া সিঙ্ক করা হয়েছে</string>
-    <string name="Media_failed">মিডিয়া ব্যর্থ  হয়েছে</string>
+    <string name="Enrollment_synced">এনরোলমেন্ট _সিঙ্ক : </string>
+    <string name="Media_synced">মিডিয়া সিঙ্ক করা হয়েছে : </string>
+    <string name="Media_failed">মিডিয়া ব্যর্থ  হয়েছে : </string>
     <string name="data_pushed_successfully">ডেটা সফলভাবে পাঠানো হয়েছে/ পুশ করা হয়েছে</string>
-    <string name="Score_Count">স্কোর গণনা করা:</string>
-    <string name="Certificate_Count">প্রমাণপত্র গণনা করা:</string>
+    <string name="Score_Count">স্কোর গণনা করা : </string>
+    <string name="Certificate_Count">প্রমাণপত্র গণনা করা : </string>
     <string name="Now_Upload_Media">মিডিয়া আপলোড করুন ....</string>
     <string name="OOPS">ইস ....</string>
     <string name="Data_pushed_failed">ডেটা পুশ সফল হয়নি</string>

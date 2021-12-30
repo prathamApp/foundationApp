@@ -29,6 +29,7 @@ import java.util.Collections;
 import java.util.List;
 
 import static com.pratham.foundation.utility.FC_Constants.IMG_PUSH_LBL;
+import static com.pratham.foundation.utility.FC_Constants.currentLevel;
 
 @EBean
 public class DoingFragmentPresenter implements DoingFragmentContract.DoingFragmentPresenter {
@@ -209,7 +210,7 @@ public class DoingFragmentPresenter implements DoingFragmentContract.DoingFragme
             score.setStartDateTime(resStartTime);
             score.setDeviceID(deviceId.equals(null) ? "0000" : deviceId);
             score.setEndDateTime(resEndTime);
-            score.setLevel(FC_Constants.currentLevel);
+            score.setLevel(FastSave.getInstance().getInt(FC_Constants.CURRENT_LEVEL, currentLevel));
             score.setLabel(Label);
             score.setSentFlag(0);
             AppDatabase.getDatabaseInstance(context).getScoreDao().insert(score);

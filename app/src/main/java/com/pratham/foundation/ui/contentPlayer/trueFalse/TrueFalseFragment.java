@@ -1,5 +1,9 @@
 package com.pratham.foundation.ui.contentPlayer.trueFalse;
 
+import static com.pratham.foundation.utility.FC_Constants.APP_SECTION;
+import static com.pratham.foundation.utility.FC_Constants.gameFolderPath;
+import static com.pratham.foundation.utility.FC_Constants.sec_Test;
+
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -52,10 +56,6 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-
-import static com.pratham.foundation.utility.FC_Constants.APP_SECTION;
-import static com.pratham.foundation.utility.FC_Constants.gameFolderPath;
-import static com.pratham.foundation.utility.FC_Constants.sec_Test;
 
 
 public class TrueFalseFragment extends Fragment {
@@ -223,7 +223,7 @@ public class TrueFalseFragment extends Fragment {
 //            if (AssessmentApplication.wiseF.isDeviceConnectedToMobileOrWifiNetwork()) {
 
             String fileName = selectedFive.get(index).getPhotourl();
-//                String localPath = Environment.getExternalStorageDirectory() + Assessment_Constants.STORE_DOWNLOADED_MEDIA_PATH + "/" + fileName;
+//                String localPath = ApplicationClass.getStoragePath() + Assessment_Constants.STORE_DOWNLOADED_MEDIA_PATH + "/" + fileName;
             String localPath = readingContentPath + "/" + fileName;
 
 
@@ -263,7 +263,7 @@ public class TrueFalseFragment extends Fragment {
             }
 /*            } else {
                 String fileName = getFileName(scienceQuestion.getQid(), scienceQuestion.getPhotourl());
-//                String localPath = Environment.getExternalStorageDirectory() + Assessment_Constants.STORE_DOWNLOADED_MEDIA_PATH + "/" + fileName;
+//                String localPath = ApplicationClass.getStoragePath() + Assessment_Constants.STORE_DOWNLOADED_MEDIA_PATH + "/" + fileName;
                 String localPath = AssessmentApplication.assessPath + Assessment_Constants.STORE_DOWNLOADED_MEDIA_PATH + "/" + fileName;
                 Bitmap bitmap = BitmapFactory.decodeFile(localPath);
                 questionImage.setImageBitmap(bitmap);

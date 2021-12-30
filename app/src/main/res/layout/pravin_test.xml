@@ -1,0 +1,358 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:ripple="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/story_ll"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/_10sdp"
+        android:orientation="horizontal"
+        android:weightSum="2">
+
+
+        <RelativeLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1">
+
+            <RelativeLayout
+                android:id="@+id/rl1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="5dp"
+                    android:layout_centerVertical="true"
+                    android:layout_toEndOf="@id/topLeftContainer"
+                    android:layerType="software"
+                    android:src="@drawable/dotted_line_horizontal" />
+
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/topLeftContainer"
+                    android:layout_width="@dimen/_90sdp"
+                    android:layout_height="@dimen/_130sdp"
+                    android:layout_marginStart="@dimen/_20sdp"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:foreground="?android:attr/selectableItemBackground"
+                    ripple:cardCornerRadius="@dimen/_10sdp"
+                    ripple:cardElevation="@dimen/_6sdp">
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
+
+                        <ImageView
+                            android:id="@+id/imagetopLeft"
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/_90sdp"
+                            android:layout_above="@+id/text_Left_rl"
+                            android:scaleType="fitXY"
+                            android:src="@drawable/khelbadi" />
+
+                        <RelativeLayout
+                            android:id="@+id/text_Left_rl"
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/_40sdp"
+                            android:layout_alignParentBottom="true"
+                            android:padding="@dimen/_5sdp">
+
+                            <TextView
+                                android:id="@+id/texttop_left"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_alignParentTop="true"
+                                android:text="Naruto"
+                                android:textColor="#000"
+                                android:textSize="@dimen/_10sdp" />
+
+                            <TextView
+                                android:id="@+id/textbot_left"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_below="@id/texttop_left"
+                                android:text="Power Level :"
+                                android:textColor="#000"
+                                android:textSize="@dimen/_9sdp" />
+
+                            <TextView
+                                android:id="@+id/texttop_left_perc"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_below="@id/texttop_left"
+                                android:layout_marginStart="@dimen/_3sdp"
+                                android:layout_marginEnd="@dimen/_3sdp"
+                                android:layout_toEndOf="@id/textbot_left"
+                                android:text="100"
+                                android:textColor="#F4511E"
+                                android:textSize="@dimen/_9sdp" />
+                        </RelativeLayout>
+
+                    </RelativeLayout>
+                </androidx.cardview.widget.CardView>
+            </RelativeLayout>
+            
+            <RelativeLayout
+                android:id="@+id/rl2"
+                android:layout_below="@+id/rl1"
+                android:layout_marginTop="@dimen/_50sdp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="5dp"
+                    android:layout_centerVertical="true"
+                    android:layout_toEndOf="@id/botLeftContainer"
+                    android:layerType="software"
+                    android:src="@drawable/dotted_line_horizontal" />
+
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/botLeftContainer"
+                    android:layout_width="@dimen/_90sdp"
+                    android:layout_height="@dimen/_130sdp"
+                    android:layout_marginStart="@dimen/_20sdp"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:foreground="?android:attr/selectableItemBackground"
+                    ripple:cardCornerRadius="@dimen/_10sdp"
+                    ripple:cardElevation="@dimen/_6sdp">
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
+
+                        <ImageView
+                            android:id="@+id/imageBotLeft"
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/_90sdp"
+                            android:layout_above="@+id/textbot_Left_rl"
+                            android:scaleType="fitXY"
+                            android:src="@drawable/khelbadi" />
+
+                        <RelativeLayout
+                            android:id="@+id/textbot_Left_rl"
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/_40sdp"
+                            android:layout_alignParentBottom="true"
+                            android:padding="@dimen/_5sdp">
+
+                            <TextView
+                                android:id="@+id/textbot_left_upper"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_alignParentTop="true"
+                                android:text="Naruto"
+                                android:textColor="#000"
+                                android:textSize="@dimen/_10sdp" />
+
+                            <TextView
+                                android:id="@+id/textbot_left_lower"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_below="@id/textbot_left_upper"
+                                android:text="Power Level :"
+                                android:textColor="#000"
+                                android:textSize="@dimen/_9sdp" />
+
+                            <TextView
+                                android:id="@+id/textbot_left_perc"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_below="@id/textbot_left_upper"
+                                android:layout_marginStart="@dimen/_3sdp"
+                                android:layout_marginEnd="@dimen/_3sdp"
+                                android:layout_toEndOf="@id/textbot_left_lower"
+                                android:text="100"
+                                android:textColor="#F4511E"
+                                android:textSize="@dimen/_9sdp" />
+                        </RelativeLayout>
+
+                    </RelativeLayout>
+                </androidx.cardview.widget.CardView>
+            </RelativeLayout>
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_90sdp"
+            android:layout_weight="1">
+
+            <RelativeLayout
+                android:id="@+id/rl3"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="5dp"
+                    android:layout_centerVertical="true"
+                    android:layout_toStartOf="@id/topRightContainer"
+                    android:layerType="software"
+                    android:src="@drawable/dotted_line_horizontal" />
+
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/topRightContainer"
+                    android:layout_width="@dimen/_90sdp"
+                    android:layout_height="@dimen/_130sdp"
+                    android:layout_marginEnd="@dimen/_20sdp"
+                    android:layout_alignParentEnd="true"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:foreground="?android:attr/selectableItemBackground"
+                    ripple:cardCornerRadius="@dimen/_10sdp"
+                    ripple:cardElevation="@dimen/_6sdp">
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
+
+                        <ImageView
+                            android:id="@+id/imagetopRight"
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/_90sdp"
+                            android:layout_above="@+id/text_Right_rl"
+                            android:scaleType="fitXY"
+                            android:src="@drawable/khelbadi" />
+
+                        <RelativeLayout
+                            android:id="@+id/text_Right_rl"
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/_40sdp"
+                            android:layout_alignParentBottom="true"
+                            android:padding="@dimen/_5sdp">
+
+                            <TextView
+                                android:id="@+id/texttop_right"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_alignParentTop="true"
+                                android:text="Naruto"
+                                android:textColor="#000"
+                                android:textSize="@dimen/_10sdp" />
+
+                            <TextView
+                                android:id="@+id/textbot_right"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_below="@id/texttop_right"
+                                android:text="Power Level :"
+                                android:textColor="#000"
+                                android:textSize="@dimen/_9sdp" />
+
+                            <TextView
+                                android:id="@+id/texttop_right_perc"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_below="@id/texttop_right"
+                                android:layout_marginStart="@dimen/_3sdp"
+                                android:layout_marginEnd="@dimen/_3sdp"
+                                android:layout_toEndOf="@id/textbot_right"
+                                android:text="100"
+                                android:textColor="#F4511E"
+                                android:textSize="@dimen/_9sdp" />
+                        </RelativeLayout>
+
+                    </RelativeLayout>
+                </androidx.cardview.widget.CardView>
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/rl4"
+                android:layout_below="@+id/rl3"
+                android:layout_marginTop="@dimen/_50sdp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="5dp"
+                    android:layout_centerVertical="true"
+                    android:layout_toStartOf="@id/botRightContainer"
+                    android:layerType="software"
+                    android:src="@drawable/dotted_line_horizontal" />
+
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/botRightContainer"
+                    android:layout_width="@dimen/_90sdp"
+                    android:layout_height="@dimen/_130sdp"
+                    android:layout_marginEnd="@dimen/_20sdp"
+                    android:layout_alignParentEnd="true"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:foreground="?android:attr/selectableItemBackground"
+                    ripple:cardCornerRadius="@dimen/_10sdp"
+                    ripple:cardElevation="@dimen/_6sdp">
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
+
+                        <ImageView
+                            android:id="@+id/imageBotRight"
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/_90sdp"
+                            android:layout_above="@+id/textbot_Right_rl"
+                            android:scaleType="fitXY"
+                            android:src="@drawable/khelbadi" />
+
+                        <RelativeLayout
+                            android:id="@+id/textbot_Right_rl"
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/_40sdp"
+                            android:layout_alignParentBottom="true"
+                            android:padding="@dimen/_5sdp">
+
+                            <TextView
+                                android:id="@+id/textbot_right_upper"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_alignParentTop="true"
+                                android:text="Naruto"
+                                android:textColor="#000"
+                                android:textSize="@dimen/_10sdp" />
+
+                            <TextView
+                                android:id="@+id/textbot_right_lower"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_below="@id/textbot_right_upper"
+                                android:text="Power Level :"
+                                android:textColor="#000"
+                                android:textSize="@dimen/_9sdp" />
+
+                            <TextView
+                                android:id="@+id/textbot_right_perc"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_below="@id/textbot_right_upper"
+                                android:layout_marginStart="@dimen/_3sdp"
+                                android:layout_marginEnd="@dimen/_3sdp"
+                                android:layout_toEndOf="@id/textbot_right_lower"
+                                android:text="100"
+                                android:textColor="#F4511E"
+                                android:textSize="@dimen/_9sdp" />
+                        </RelativeLayout>
+
+                    </RelativeLayout>
+                </androidx.cardview.widget.CardView>
+            </RelativeLayout>
+
+        </RelativeLayout>
+
+    </LinearLayout>
+
+    <ImageView
+        android:layout_width="5dp"
+        android:layout_height="match_parent"
+        android:layout_centerInParent="true"
+        android:layerType="software"
+        android:src="@drawable/dotted_line_vertical" />
+
+</RelativeLayout>

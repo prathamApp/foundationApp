@@ -1,5 +1,16 @@
 package com.pratham.foundation.ui.splash_activity;
 
+import static android.content.Context.ACTIVITY_SERVICE;
+import static com.pratham.foundation.database.AppDatabase.DB_NAME;
+import static com.pratham.foundation.database.AppDatabase.DB_VERSION;
+import static com.pratham.foundation.ui.splash_activity.SplashActivity.exitDialogOpen;
+import static com.pratham.foundation.ui.splash_activity.SplashActivity.fragmentBottomOpenFlg;
+import static com.pratham.foundation.utility.FC_Constants.APP_LANGUAGE;
+import static com.pratham.foundation.utility.FC_Constants.CURRENT_VERSION;
+import static com.pratham.foundation.utility.FC_Constants.HINDI;
+import static com.pratham.foundation.utility.FC_Constants.apkSP;
+import static com.pratham.foundation.utility.FC_Constants.apkTab;
+
 import android.annotation.SuppressLint;
 import android.app.ActivityManager;
 import android.content.Context;
@@ -13,7 +24,6 @@ import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
 import android.os.AsyncTask;
 import android.os.Build;
-import android.os.Environment;
 import android.os.Handler;
 import android.provider.Settings;
 import android.util.Log;
@@ -54,17 +64,6 @@ import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-
-import static android.content.Context.ACTIVITY_SERVICE;
-import static com.pratham.foundation.database.AppDatabase.DB_NAME;
-import static com.pratham.foundation.database.AppDatabase.DB_VERSION;
-import static com.pratham.foundation.ui.splash_activity.SplashActivity.exitDialogOpen;
-import static com.pratham.foundation.ui.splash_activity.SplashActivity.fragmentBottomOpenFlg;
-import static com.pratham.foundation.utility.FC_Constants.APP_LANGUAGE;
-import static com.pratham.foundation.utility.FC_Constants.CURRENT_VERSION;
-import static com.pratham.foundation.utility.FC_Constants.HINDI;
-import static com.pratham.foundation.utility.FC_Constants.apkSP;
-import static com.pratham.foundation.utility.FC_Constants.apkTab;
 
 @EBean
 public class SplashPresenter implements SplashContract.SplashPresenter {
@@ -141,7 +140,7 @@ public class SplashPresenter implements SplashContract.SplashPresenter {
                 //check for specific folder and create database
                 try {
                     AppDatabase.getDatabaseInstance(context);
-                    if (new File(Environment.getExternalStorageDirectory().getAbsolutePath() + "/PrathamBackups/" + DB_NAME).exists())
+                    if (new File(ApplicationClass.getStoragePath().getAbsolutePath() + "/PrathamBackups/" + DB_NAME).exists())
                         copyDb = true;
                     getSdCardPath();
                 } catch (Exception e) {
@@ -175,7 +174,7 @@ public class SplashPresenter implements SplashContract.SplashPresenter {
         splashView.showProgressDialog();
         try {
 //                        ArrayList<String> sdPath = FileUtils.getExtSdCardPaths(context);
-            SQLiteDatabase db = SQLiteDatabase.openDatabase(Environment.getExternalStorageDirectory()
+            SQLiteDatabase db = SQLiteDatabase.openDatabase(ApplicationClass.getStoragePath()
                     .getAbsolutePath() + "/PrathamBackups/foundation_db", null, SQLiteDatabase.OPEN_READONLY);
             if (db != null) {
                 //Get all data and insert it in database
@@ -684,7 +683,8 @@ public class SplashPresenter implements SplashContract.SplashPresenter {
                 if (!FastSave.getInstance().getBoolean(FC_Constants.VOICES_DOWNLOAD_INTENT, false))
                     splashView.show_STT_Dialog();
                 else {
-                    if (!fragmentBottomOpenFlg)
+                    if (!fragmentBottomOpenFlg &&
+                            FastSave.getInstance().getBoolean(FC_Constants.VOICES_DOWNLOAD_INTENT, false))
                         splashView.showBottomFragment();
                 }
             }
@@ -867,7 +867,7 @@ public class SplashPresenter implements SplashContract.SplashPresenter {
     public void copyDBFile() {
 
         try {
-            File internalDB = new File(Environment.getExternalStorageDirectory().toString() + "/.FCAInternal/" + DB_NAME);
+            File internalDB = new File(ApplicationClass.getStoragePath().toString() + "/.FCAInternal/" + DB_NAME);
             if (internalDB.exists()) {
                 Log.d("copyDBFile", "copyDBFile: ");
                 internalDB.delete();
@@ -879,10 +879,10 @@ public class SplashPresenter implements SplashContract.SplashPresenter {
         }
 
         try {
-            File direct = new File(Environment.getExternalStorageDirectory().toString() + "/.FCAInternal");
-            if (!direct.exists()) direct.mkdir();
+            File direct = new File(ApplicationClass.getStoragePath().toString() + "/.FCAInternal");
+            if (!direct.exists()) direct.mkdirs();
             InputStream in = new FileInputStream(ApplicationClass.contentSDPath + "/.FCA/" + DB_NAME);
-            OutputStream out = new FileOutputStream(Environment.getExternalStorageDirectory().toString() + "/.FCAInternal/" + DB_NAME);
+            OutputStream out = new FileOutputStream(ApplicationClass.getStoragePath().toString() + "/.FCAInternal/" + DB_NAME);
             byte[] buffer = new byte[1024];
             int read = in.read(buffer);
             while (read != -1) {
@@ -900,11 +900,11 @@ public class SplashPresenter implements SplashContract.SplashPresenter {
     public void copyTestJsons(int no) {
 /*        if (new File(ApplicationClass.contentSDPath + "/.FCA/TestJsons/Test_" + no + ".json").exists()) {
             try {
-                File internalTestJson = new File(Environment.getExternalStorageDirectory().toString()
+                File internalTestJson = new File(ApplicationClass.getStoragePath().toString()
                         + "/.FCAInternal/TestJsons/Test_" + no + ".json");
-                if (new File(Environment.getExternalStorageDirectory().toString()
+                if (new File(ApplicationClass.getStoragePath().toString()
                         + "/.FCAInternal/TestJsons/Test_" + no + ".json").exists())
-                    new File(Environment.getExternalStorageDirectory().toString()
+                    new File(ApplicationClass.getStoragePath().toString()
                             + "/.FCAInternal/TestJsons/Test_" + no + ".json").delete();
             } catch (Exception e) {
                 Log.d("copyDBFile", "Exception : ");
@@ -912,11 +912,11 @@ public class SplashPresenter implements SplashContract.SplashPresenter {
             }
 
             try {
-                File direct = new File(Environment.getExternalStorageDirectory().toString() +
+                File direct = new File(ApplicationClass.getStoragePath().toString() +
                         "/.FCAInternal/TestJsons");
-                if (!direct.exists()) direct.mkdir();
+                if (!direct.exists()) direct.mkdirs();
                 InputStream in = new FileInputStream(ApplicationClass.contentSDPath + "/.FCA/TestJsons/Test_" + no + ".json");
-                OutputStream out = new FileOutputStream(Environment.getExternalStorageDirectory().toString()
+                OutputStream out = new FileOutputStream(ApplicationClass.getStoragePath().toString()
                         + "/.FCAInternal/TestJsons/" + "Test_" + no + ".json");
                 byte[] buffer = new byte[1024];
                 int read = in.read(buffer);
@@ -949,11 +949,11 @@ public class SplashPresenter implements SplashContract.SplashPresenter {
     public void copyInternalTestJsons(int no) {
 /*        if (new File(ApplicationClass.foundationPath + "/.FCA/Test_" + no + ".json").exists()) {
             try {
-                File internalTestJson = new File(Environment.getExternalStorageDirectory().toString()
+                File internalTestJson = new File(ApplicationClass.getStoragePath().toString()
                         + "/.FCAInternal/TestJsons/Test_" + no + ".json");
-                if (new File(Environment.getExternalStorageDirectory().toString()
+                if (new File(ApplicationClass.getStoragePath().toString()
                         + "/.FCAInternal/TestJsons/Test_" + no + ".json").exists())
-                    new File(Environment.getExternalStorageDirectory().toString()
+                    new File(ApplicationClass.getStoragePath().toString()
                             + "/.FCAInternal/TestJsons/Test_" + no + ".json").delete();
             } catch (Exception e) {
                 Log.d("copyDBFile", "Exception : ");
@@ -961,11 +961,11 @@ public class SplashPresenter implements SplashContract.SplashPresenter {
             }
 
             try {
-                File direct = new File(Environment.getExternalStorageDirectory().toString() +
+                File direct = new File(ApplicationClass.getStoragePath().toString() +
                         "/.FCAInternal/TestJsons");
-                if (!direct.exists()) direct.mkdir();
+                if (!direct.exists()) direct.mkdirs();
                 InputStream in = new FileInputStream(ApplicationClass.foundationPath + "/.FCA/Test_" + no + ".json");
-                OutputStream out = new FileOutputStream(Environment.getExternalStorageDirectory().toString()
+                OutputStream out = new FileOutputStream(ApplicationClass.getStoragePath().toString()
                         + "/.FCAInternal/TestJsons/" + "Test_" + no + ".json");
                 byte[] buffer = new byte[1024];
                 int read = in.read(buffer);
@@ -1018,7 +1018,7 @@ public class SplashPresenter implements SplashContract.SplashPresenter {
                 if (!FastSave.getInstance().getBoolean(FC_Constants.INITIAL_SD_COPIED, false))
                     try {
                         File db_file;
-                        db_file = new File(Environment.getExternalStorageDirectory().toString() + "/.FCAInternal/" + DB_NAME);
+                        db_file = new File(ApplicationClass.getStoragePath().toString() + "/.FCAInternal/" + DB_NAME);
                         if (db_file.exists()) {
                             SQLiteDatabase db = SQLiteDatabase.openDatabase(db_file.getAbsolutePath(), null, SQLiteDatabase.OPEN_READONLY);
                             if (db != null) {
@@ -1127,7 +1127,7 @@ public class SplashPresenter implements SplashContract.SplashPresenter {
                 if (ApplicationClass.getAppMode()) {
                     Log.d("copyDBFile", "Exception : ");
                     copyDBFile();
-                    folder_file = new File(Environment.getExternalStorageDirectory().toString() + "/.FCAInternal");
+                    folder_file = new File(ApplicationClass.getStoragePath().toString() + "/.FCAInternal");
                 } else
                     folder_file = new File(ApplicationClass.foundationPath + "/.FCA/");
                 if (folder_file.exists()) {
@@ -1363,7 +1363,7 @@ public class SplashPresenter implements SplashContract.SplashPresenter {
             path = path.replace("]", "");
             fpath = path;
         } else
-            fpath = Environment.getExternalStorageDirectory().getAbsolutePath();
+            fpath = ApplicationClass.getStoragePath().getAbsolutePath();
         FC_Constants.SD_DB = false;
 
         File file;

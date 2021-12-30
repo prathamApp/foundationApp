@@ -1,5 +1,9 @@
 package com.pratham.foundation.ui.contentPlayer.vocabulary_qa;
 
+import static com.pratham.foundation.utility.FC_Constants.dialog_btn_cancel;
+import static com.pratham.foundation.utility.FC_Constants.gameFolderPath;
+import static com.pratham.foundation.utility.FC_Utility.dpToPx;
+
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
@@ -11,6 +15,7 @@ import android.graphics.drawable.ColorDrawable;
 import android.media.MediaMetadataRetriever;
 import android.media.MediaPlayer;
 import android.os.Handler;
+import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.view.animation.AnimationUtils;
@@ -23,6 +28,8 @@ import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
+import androidx.recyclerview.widget.DefaultItemAnimator;
+import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -31,6 +38,7 @@ import com.nex3z.flowlayout.FlowLayout;
 import com.pratham.foundation.ApplicationClass;
 import com.pratham.foundation.BaseActivity;
 import com.pratham.foundation.R;
+import com.pratham.foundation.customView.GridSpacingItemDecoration;
 import com.pratham.foundation.customView.display_image_dialog.CustomLodingDialog;
 import com.pratham.foundation.customView.fontsview.SansTextView;
 import com.pratham.foundation.interfaces.MediaCallbacks;
@@ -52,16 +60,14 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.util.ArrayList;
 import java.util.List;
-
-import static com.pratham.foundation.utility.FC_Constants.dialog_btn_cancel;
-import static com.pratham.foundation.utility.FC_Constants.gameFolderPath;
 //import static com.pratham.foundation.utility.FC_Constants.sec_Practice;
 //import static com.pratham.foundation.utility.FC_Constants.sec_Test;
 
 
 @EActivity(R.layout.activity_vocabulary_reading)
 public class ReadingVocabularyActivity extends BaseActivity implements MediaCallbacks,
-        STT_Result_New.sttView, ReadingVocabularyContract.ReadingVocabularyView {
+        STT_Result_New.sttView, ReadingVocabularyContract.ReadingVocabularyView,
+        ReadingVocabularyContract.ReadingCateogryClick{
 
     @Bean(ReadingVocabularyPresenter.class)
     ReadingVocabularyContract.ReadingVocabularyPresenter presenter;
@@ -99,6 +105,15 @@ public class ReadingVocabularyActivity extends BaseActivity implements MediaCall
     @ViewById(R.id.floating_info)
     FloatingActionButton floating_info;
 
+    @ViewById(R.id.category_selector)
+    RelativeLayout category_selector;
+    @ViewById(R.id.rl_game)
+    RelativeLayout rl_game;
+    @ViewById(R.id.category_recycler_view)
+    RecyclerView category_recycler_view;
+    @ViewById(R.id.tv_category_title)
+    TextView tv_category_title;
+
     ContinuousSpeechService_New continuousSpeechService;
 
     public static MediaPlayer mp, correctSound;
@@ -111,19 +126,24 @@ public class ReadingVocabularyActivity extends BaseActivity implements MediaCall
     static boolean[] correctArr;
     static boolean readingFlg, allCorrect = false, dilogOpen = false;
     static boolean[] testCorrectArr;
-    private List messageList = new ArrayList();
-    boolean testFlg, playingFlg, onSdCard;
+    private final List messageList = new ArrayList();
+    boolean testFlg, playingFlg, onSdCard, categoryFlg = false;
     List<ModalVocabulary> modalVocabularyList;
-    static String readingContentPath;
+    static String readingContentPath, selectedCategory="na";
     String contentPath, contentTitle, StudentID, resId, vocabCategory, sttLang,
             ques, quesAudio, ans, ansAudio, ansCheck, certiCode;
     Handler setDataHandler, showDataHandler, setBackgroundHandler, sendMessageHandler, newSetDataHandler;
+    List<String> categoryList;
+    CategoryAdapter adapterCategory;
 
     @AfterViews
     public void initialize() {
         //overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
 
+        categoryList = new ArrayList<>();
+
         silence_outer_layout.setVisibility(View.GONE);
+        rl_game.setVisibility(View.GONE);
         mContext = ReadingVocabularyActivity.this;
         floating_back.setImageResource(R.drawable.ic_left_arrow_white);
         floating_info.setImageResource(R.drawable.ic_info_outline_white);
@@ -141,10 +161,7 @@ public class ReadingVocabularyActivity extends BaseActivity implements MediaCall
         sttLang = intent.getStringExtra("sttLang");
         onSdCard = getIntent().getBooleanExtra("onSdCard", false);
 
-//        if (!FastSave.getInstance().getString(APP_SECTION, "").equalsIgnoreCase(sec_Test))
-            tv_title.setText("" + contentTitle);
-//        else
-//            tv_title.setText("" + getResources().getString(R.string.Test));
+        tv_title.setText("" + contentTitle);
 
         continuousSpeechService = new ContinuousSpeechService_New(mContext, ReadingVocabularyActivity.this, sttLang);
 
@@ -174,11 +191,86 @@ public class ReadingVocabularyActivity extends BaseActivity implements MediaCall
         tv_title.setSelected(true);
         btn_next.setClickable(false);
         btn_prev.setClickable(false);
+        category_selector.setVisibility(View.VISIBLE);
         if (FC_Utility.isDataConnectionAvailable(this)) {
             presenter.fetchJsonData(readingContentPath, vocabCategory);
         } else {
             showReadFullDialog();
         }
+    }
+
+    @UiThread
+    @Override
+    public void setCategoryList(List<String> categoryList) {
+        this.categoryList = categoryList;
+    }
+
+    @UiThread
+    @Override
+    public void setCategoryAdapter() {
+
+        if (adapterCategory  == null) {
+            try {
+                Log.d("crashDetection", "notifyAdapter 3 : ");
+                adapterCategory = new CategoryAdapter(this, categoryList, this);
+                RecyclerView.LayoutManager mLayoutManager = new GridLayoutManager(this, 2);
+                category_recycler_view.setLayoutManager(mLayoutManager);
+                category_recycler_view.addItemDecoration(new GridSpacingItemDecoration(2, dpToPx(this), true));
+                category_recycler_view.setItemAnimator(new DefaultItemAnimator());
+                category_recycler_view.setAdapter(adapterCategory);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        } else {
+            Log.d("crashDetection", "notifyAdapter 4 : ");
+            adapterCategory.notifyDataSetChanged();
+        }
+
+        /*
+        final CustomLodingDialog dialog = new CustomLodingDialog(this, R.style.FC_DialogStyle);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        Objects.requireNonNull(dialog.getWindow()).setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        dialog.setContentView(R.layout.fc_custom_language_dialog);
+        dialog.setCancelable(false);
+        dialog.setCanceledOnTouchOutside(false);
+        TextView dia_title = dialog.findViewById(R.id.dia_title);
+        Button dia_btn_green = dialog.findViewById(R.id.dia_btn_green);
+        Spinner lang_spinner = dialog.findViewById(R.id.lang_spinner);
+        dia_btn_green.setText(getResources().getString(R.string.Okay));
+        dialog.show();
+        String currLang = " " + FastSave.getInstance().getString(FC_Constants.LANGUAGE, "Hindi");
+        dia_title.setText(getResources().getString(R.string.curr_lang) + currLang);
+
+        ArrayAdapter<String> dataAdapter = new ArrayAdapter<>(this, R.layout.custom_spinner, categoryList);
+        dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        lang_spinner.setAdapter(dataAdapter);
+
+        lang_spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                selectedCategory = lang_spinner.getSelectedItem().toString();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+            }
+        });
+
+        dia_btn_green.setOnClickListener(v -> {
+            dialog.dismiss();
+        });
+        */
+
+    }
+
+    boolean gameOpenFlg;
+    @Override
+    public void setCategory(String name) {
+        category_selector.setVisibility(View.GONE);
+        rl_game.setVisibility(View.VISIBLE);
+        gameOpenFlg = true;
+        selectedCategory = name;
+        presenter.getCategoryList(selectedCategory);
     }
 
     @SuppressLint("SetTextI18n")
@@ -452,7 +544,7 @@ public class ReadingVocabularyActivity extends BaseActivity implements MediaCall
 //            if (FastSave.getInstance().getString(APP_SECTION, "").equalsIgnoreCase(sec_Test))
 //                showStars(true);
 //            else
-                showWordNextDialog(this);
+            showWordNextDialog(this);
         }
     }
 
@@ -712,17 +804,17 @@ public class ReadingVocabularyActivity extends BaseActivity implements MediaCall
     @Click(R.id.btn_speaker)
     public void chatAnswer() {
 //        if (!FastSave.getInstance().getString(APP_SECTION, "").equalsIgnoreCase(sec_Test)) {
-            if (!speakerFlg) {
-                speakerFlg = true;
-                btn_imgsend.setClickable(false);
-                btn_reading.setClickable(false);
-                btn_next.setClickable(false);
-                btn_prev.setClickable(false);
-                if (readingFlg)
-                    btn_reading.performClick();
-                else
-                    new Handler().postDelayed(() -> startAudioReading("" + ansAudio), 200);
-            }
+        if (!speakerFlg) {
+            speakerFlg = true;
+            btn_imgsend.setClickable(false);
+            btn_reading.setClickable(false);
+            btn_next.setClickable(false);
+            btn_prev.setClickable(false);
+            if (readingFlg)
+                btn_reading.performClick();
+            else
+                new Handler().postDelayed(() -> startAudioReading("" + ansAudio), 200);
+        }
 //        }
     }
 
@@ -763,14 +855,14 @@ public class ReadingVocabularyActivity extends BaseActivity implements MediaCall
     @Override
     public void sendClikChanger(int clickOn) {
 //        if (!FastSave.getInstance().getString(APP_SECTION, "").equalsIgnoreCase(sec_Test)) {
-            if (clickOn == 0) {
-                btn_imgsend.setVisibility(View.GONE);
-                btn_speaker.setVisibility(View.VISIBLE);
-            } else {
-                btn_imgsend.setVisibility(View.VISIBLE);
-                btn_imgsend.setClickable(true);
-                btn_speaker.setVisibility(View.GONE);
-            }
+        if (clickOn == 0) {
+            btn_imgsend.setVisibility(View.GONE);
+            btn_speaker.setVisibility(View.VISIBLE);
+        } else {
+            btn_imgsend.setVisibility(View.VISIBLE);
+            btn_imgsend.setClickable(true);
+            btn_speaker.setVisibility(View.GONE);
+        }
 /*        } else {
             btn_speaker.setVisibility(View.GONE);
             btn_imgsend.setVisibility(View.VISIBLE);
@@ -827,26 +919,26 @@ public class ReadingVocabularyActivity extends BaseActivity implements MediaCall
 
     @Override
     public void onBackPressed() {
-        if (readingFlg)
-            btn_reading.performClick();
-        try {
-            if (playingFlg)
-                mp.stop();
-        } catch (Exception e) {
-            e.printStackTrace();
+        if(gameOpenFlg) {
+            if (readingFlg)
+                btn_reading.performClick();
+            try {
+                if (playingFlg)
+                    mp.stop();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            gameOpenFlg=false;
+            vocabChatFlow.removeAllViews();
+            rl_game.setVisibility(View.GONE);
+            category_selector.setVisibility(View.VISIBLE);
         }
-
-//        if (FastSave.getInstance().getString(APP_SECTION, "").equalsIgnoreCase(sec_Test)) {
-//            if (!dilogOpen) {
-//                dilogOpen = true;
-//                showStars(false);
-//            }
-//        } else {
+        else {
             if (!dilogOpen) {
                 dilogOpen = true;
                 showExitDialog(this);
             }
-//        }
+        }
     }
 
     int correctCnt = 0, total = 0;

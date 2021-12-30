@@ -1,5 +1,8 @@
 package com.pratham.foundation.ui.bottom_fragment;
 
+import static android.content.Context.ACTIVITY_SERVICE;
+import static com.pratham.foundation.database.AppDatabase.DB_VERSION;
+
 import android.annotation.SuppressLint;
 import android.app.ActivityManager;
 import android.content.Context;
@@ -10,7 +13,6 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
-import android.os.Build;
 import android.provider.Settings;
 import android.util.Log;
 
@@ -47,14 +49,11 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import static android.content.Context.ACTIVITY_SERVICE;
-import static com.pratham.foundation.database.AppDatabase.DB_VERSION;
-
 @EBean
 public class BottomStudentsPresenter implements BottomStudentsContract.BottomStudentsPresenter {
 
     private BottomStudentsContract.BottomStudentsView myView;
-    private Context context;
+    private final Context context;
     Gson gson;
     private List<Student> studentDBList;
     private List<Groups> groupDBList, groupList;
@@ -89,6 +88,8 @@ public class BottomStudentsPresenter implements BottomStudentsContract.BottomStu
                 studentHeader.setStudentID("#####");
                 studentHeader.setFullName("");
                 studentHeader.setAvatarName("");
+                studentHeader.setGroupId("");
+                studentHeader.setEnrollmentID("");
                 studentHeader.setType(FC_Constants.TYPE_HEADER);
                 fragmentModalsList.add(studentHeader);
             }
@@ -100,8 +101,10 @@ public class BottomStudentsPresenter implements BottomStudentsContract.BottomStu
                     studentAvatar.setFullName(studentDBList.get(i).getFullName());
                     studentAvatar.setAvatarName(studentDBList.get(i).getAvatarName());
                     studentAvatar.setGender(studentDBList.get(i).getGender());
+                    studentAvatar.setGroupId(studentDBList.get(i).getGroupId());
 //                    studentAvatar.setProgramID(studentDBList.get(i).getProgramId());
                     studentAvatar.setChecked(false);
+                    studentAvatar.setEnrollmentID(studentDBList.get(i).getLastName());
                     studentAvatar.setType(FC_Constants.STUDENTS);
                     fragmentModalsList.add(studentAvatar);
                 }
@@ -110,9 +113,14 @@ public class BottomStudentsPresenter implements BottomStudentsContract.BottomStu
             if (groupDBList != null) {
                 for (int i = 0; i < groupDBList.size(); i++) {
                     StudentAndGroup_BottomFragmentModal studentAvatar = new StudentAndGroup_BottomFragmentModal();
-                    studentAvatar.setStudentID(groupDBList.get(i).getGroupId());
+                    if(groupDBList.get(i).getVIllageName()!=null && !groupDBList.get(i).getVIllageName().equalsIgnoreCase(""))
+                        studentAvatar.setStudentID(groupDBList.get(i).getVIllageName());
+                    else
+                        studentAvatar.setStudentID(groupDBList.get(i).getGroupId());
                     studentAvatar.setFullName(groupDBList.get(i).getGroupName());
+                    studentAvatar.setGroupId(groupDBList.get(i).getGroupId());
                     studentAvatar.setAvatarName("NA");
+                    studentAvatar.setEnrollmentID(groupDBList.get(i).getVIllageName());
 //                    studentAvatar.setProgramID(""+groupDBList.get(i).getProgramId());
                     studentAvatar.setChecked(false);
                     studentAvatar.setType(FC_Constants.GROUP_MODE);
@@ -125,10 +133,11 @@ public class BottomStudentsPresenter implements BottomStudentsContract.BottomStu
                 studentHeader.setStudentID("#####");
                 studentHeader.setFullName("");
                 studentHeader.setAvatarName("");
+                studentHeader.setGroupId("");
+                studentHeader.setEnrollmentID("");
                 studentHeader.setType(FC_Constants.TYPE_HEADER);
                 fragmentModalsList.add(studentHeader);
             }
-
             myView.setStudentList(fragmentModalsList);
             myView.notifyStudentAdapter();
 
@@ -148,6 +157,7 @@ public class BottomStudentsPresenter implements BottomStudentsContract.BottomStu
             studentHeader.setStudentID("#####");
             studentHeader.setFullName("");
             studentHeader.setAvatarName("");
+            studentHeader.setEnrollmentID("");
             studentHeader.setType(FC_Constants.TYPE_HEADER);
             fragmentModalsList.add(studentHeader);
 
@@ -158,6 +168,7 @@ public class BottomStudentsPresenter implements BottomStudentsContract.BottomStu
                 studentAvatar.setAvatarName(studentDBList.get(i).getAvatarName());
                 studentAvatar.setGender(studentDBList.get(i).getGender());
                 studentAvatar.setChecked(false);
+                studentAvatar.setEnrollmentID(studentDBList.get(i).getLastName());
                 studentAvatar.setType(FC_Constants.STUDENTS);
                 fragmentModalsList.add(studentAvatar);
             }
@@ -166,6 +177,7 @@ public class BottomStudentsPresenter implements BottomStudentsContract.BottomStu
         studentHeader.setStudentID("#####");
         studentHeader.setFullName("");
         studentHeader.setAvatarName("");
+        studentHeader.setEnrollmentID("");
         studentHeader.setType(FC_Constants.TYPE_FOOTER);
         fragmentModalsList.add(studentHeader);
 
@@ -374,7 +386,7 @@ public class BottomStudentsPresenter implements BottomStudentsContract.BottomStu
             status = new com.pratham.foundation.database.domain.Status();
             status.setStatusKey("DeviceId");
             status.setValue("" + Settings.Secure.getString(context.getContentResolver(), Settings.Secure.ANDROID_ID));
-            status.setDescription("" + Build.SERIAL);
+            status.setDescription("" + FC_Utility.getDeviceSerialID());
             appDatabase.getStatusDao().insert(status);
 
             status = new com.pratham.foundation.database.domain.Status();

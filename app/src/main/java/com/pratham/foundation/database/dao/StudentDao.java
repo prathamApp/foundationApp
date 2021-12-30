@@ -38,6 +38,9 @@ public interface StudentDao {
     @Query("select * from Student where StudentID = :studentID")
     Student getStudent(String studentID);
 
+    @Query("select LastName from Student where StudentID = :studentID")
+    String getEnrollMentId(String studentID);
+
     @Query("select * from Student where StudentID = :studentID")
     Student addStudent(String studentID);
 
@@ -55,6 +58,9 @@ public interface StudentDao {
 
     @Query("select * from Student where newFlag = 0")
     List<Student> getAllNewStudents();
+
+    @Query("select * from Student where LastName =:enrollment_id")
+    Student getStudentByEnrollmentId(String enrollment_id);
 
     @Query("update Student set newFlag=0 where newFlag = 1")
     void setNewStudentsToOld();

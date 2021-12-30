@@ -1,5 +1,11 @@
 package com.pratham.foundation.ui.bottom_fragment;
 
+import static com.pratham.foundation.ApplicationClass.ButtonClickSound;
+import static com.pratham.foundation.ui.splash_activity.SplashActivity.fragmentBottomOpenFlg;
+import static com.pratham.foundation.utility.FC_Constants.APP_VERSION;
+import static com.pratham.foundation.utility.FC_Constants.INDIVIDUAL_MODE;
+import static com.pratham.foundation.utility.FC_Constants.SPLASH_OPEN;
+
 import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.app.ProgressDialog;
@@ -40,8 +46,8 @@ import com.pratham.foundation.database.domain.StudentAndGroup_BottomFragmentModa
 import com.pratham.foundation.interfaces.SplashInterface;
 import com.pratham.foundation.modalclasses.EventMessage;
 import com.pratham.foundation.services.shared_preferences.FastSave;
-import com.pratham.foundation.ui.admin_panel.andmin_login_new.AdminConsoleActivityNew_;
-import com.pratham.foundation.ui.admin_panel.andmin_login_new.enrollmentid.AddEnrollmentId_;
+import com.pratham.foundation.ui.admin_panel.AdminConsoleActivityNew_;
+import com.pratham.foundation.ui.admin_panel.enrollmentid.AddEnrollmentId_;
 import com.pratham.foundation.ui.bottom_fragment.add_student.AddStudentFragment;
 import com.pratham.foundation.ui.selectSubject.SelectSubject_;
 import com.pratham.foundation.ui.splash_activity.SplashActivity;
@@ -61,12 +67,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
-
-import static com.pratham.foundation.ApplicationClass.ButtonClickSound;
-import static com.pratham.foundation.ui.splash_activity.SplashActivity.fragmentBottomOpenFlg;
-import static com.pratham.foundation.utility.FC_Constants.APP_VERSION;
-import static com.pratham.foundation.utility.FC_Constants.INDIVIDUAL_MODE;
-import static com.pratham.foundation.utility.FC_Constants.SPLASH_OPEN;
 
 
 @EFragment(R.layout.student_list_fragment)
@@ -90,7 +90,7 @@ public class BottomStudentsFragment extends BottomSheetDialogFragment
     @ViewById(R.id.version_tv)
     TextView version_tv;
 
-    private ArrayList avatars = new ArrayList();
+    private final ArrayList avatars = new ArrayList();
     private List<StudentAndGroup_BottomFragmentModal> fragmentModalsList;
     StudentsAdapter adapter;
     String groupID, groupName;
@@ -108,11 +108,12 @@ public class BottomStudentsFragment extends BottomSheetDialogFragment
         gson = new Gson();
         hideSystemUI();
         groupClicked = false;
+        FastSave.getInstance().saveBoolean(FC_Constants.PRATHAM_STUDENT, false);
         context = getActivity();
-        if (ApplicationClass.wiseF.isDeviceConnectedToWifiNetwork())
-            if (ApplicationClass.wiseF.isDeviceConnectedToSSID(FC_Constants.PRATHAM_KOLIBRI_HOTSPOT)) {
-                btn_download_all_data.setVisibility(View.VISIBLE);
-            }
+//        if (ApplicationClass.wiseF.isDeviceConnectedToWifiNetwork())
+//            if (ApplicationClass.wiseF.isDeviceConnectedToSSID(FC_Constants.PRATHAM_RASPBERRY_PI)) {
+//                btn_download_all_data.setVisibility(View.VISIBLE);
+//            }
         presenter.showStudents();
         PackageInfo pInfo = null;
         String verCode = "";
@@ -206,7 +207,7 @@ public class BottomStudentsFragment extends BottomSheetDialogFragment
         }
 
         if (ApplicationClass.wiseF.isDeviceConnectedToWifiNetwork()) {
-            if (ApplicationClass.wiseF.isDeviceConnectedToSSID(FC_Constants.PRATHAM_KOLIBRI_HOTSPOT)) {
+            if (ApplicationClass.wiseF.isDeviceConnectedToSSID(FC_Constants.PRATHAM_RASPBERRY_PI)) {
                 setProgressDailog();
                 new DownloadData().doInBackground();
             } else {
@@ -279,6 +280,7 @@ public class BottomStudentsFragment extends BottomSheetDialogFragment
                 checkedStd.setStudentID(fragmentModalsList.get(i).getStudentID());
                 checkedStd.setAvatarName(fragmentModalsList.get(i).getAvatarName());
                 checkedStd.setFullName(fragmentModalsList.get(i).getFullName());
+                checkedStd.setGroupId(fragmentModalsList.get(i).getGroupId());
                 checkedStds.add(checkedStd);
             }
         }
@@ -339,7 +341,7 @@ public class BottomStudentsFragment extends BottomSheetDialogFragment
 */
             FastSave.getInstance().saveString(FC_Constants.CURRENT_SESSION, "" + currentSession);
             FastSave.getInstance().saveString(FC_Constants.CURRENT_STUDENT_NAME, "" + groupName);
-            FastSave.getInstance().saveString(FC_Constants.CURRENT_API_STUDENT_ID, "" + groupID);
+//            FastSave.getInstance().saveString(FC_Constants.CURRENT_API_STUDENT_ID, "" + groupID);
             FastSave.getInstance().saveString(FC_Constants.CURRENT_STUDENT_ID, currentStudentID);
             BackupDatabase.backup(getContext());
 
@@ -453,10 +455,8 @@ public class BottomStudentsFragment extends BottomSheetDialogFragment
     @Override
     public void onStudentClick(StudentAndGroup_BottomFragmentModal bottomFragmentModal, int position) {
         if (groupClicked) {
-            if (bottomFragmentModal.isChecked())
-                fragmentModalsList.get(position).setChecked(false);
-            else
-                fragmentModalsList.get(position).setChecked(true);
+            FastSave.getInstance().saveBoolean(FC_Constants.PRATHAM_STUDENT, true);
+            fragmentModalsList.get(position).setChecked(!bottomFragmentModal.isChecked());
             adapter.notifyItemChanged(position);
         } else {
             try {
@@ -470,12 +470,15 @@ public class BottomStudentsFragment extends BottomSheetDialogFragment
 //            eventMessage.setMessage(FC_Constants.BOTTOM_FRAGMENT_END_SESSION);
 //            EventBus.getDefault().post(eventMessage);
             showProgressDialog();
+            FastSave.getInstance().saveBoolean(FC_Constants.PRATHAM_STUDENT, !bottomFragmentModal.getGroupId().equalsIgnoreCase("PS"));
+
             String currentSession = "" + UUID.randomUUID().toString();
             FastSave.getInstance().saveString(FC_Constants.LOGIN_MODE, INDIVIDUAL_MODE);
             FastSave.getInstance().saveString(FC_Constants.CURRENT_SESSION, "" + currentSession);
             FastSave.getInstance().saveString(FC_Constants.CURRENT_STUDENT_ID, "" + bottomFragmentModal.getStudentID());
             FastSave.getInstance().saveString(FC_Constants.CURRENT_STUDENT_NAME, "" + bottomFragmentModal.getFullName());
             FastSave.getInstance().saveString(FC_Constants.CURRENT_API_STUDENT_ID, "" + bottomFragmentModal.getStudentID());
+            FastSave.getInstance().saveString(FC_Constants.CURRENT_STUDENT_ENROLL_ID, "" + bottomFragmentModal.getEnrollmentID());
 //            FastSave.getInstance().saveString(FC_Constants.CURRENT_STUDENT_PROGRAM_ID, "" + bottomFragmentModal.getProgramID());
             presenter.updateStudentData();
             FastSave.getInstance().saveBoolean(SPLASH_OPEN, false);
@@ -484,7 +487,7 @@ public class BottomStudentsFragment extends BottomSheetDialogFragment
 
     @UiThread
     @Override
-    public void onGroupClick(String studentName, String studentId) {
+    public void onGroupClick(String studentName, String studentId,String groupId) {
         try {
             ButtonClickSound.start();
         } catch (IllegalStateException e) {
@@ -492,11 +495,18 @@ public class BottomStudentsFragment extends BottomSheetDialogFragment
         }
         groupClicked = true;
         go_next.setVisibility(View.VISIBLE);
-        groupID = studentId;
+        groupID = groupId;
         groupName = studentName;
+        String gEnrollment_id;
+        gEnrollment_id = studentId;
+        if(gEnrollment_id!=null && !gEnrollment_id.equalsIgnoreCase(""))
+            FastSave.getInstance().saveString(FC_Constants.GROUP_ENROLLMENT_ID, gEnrollment_id);
+        else
+            FastSave.getInstance().saveString(FC_Constants.GROUP_ENROLLMENT_ID, groupID);
+
 //        FastSave.getInstance().saveString(FC_Constants.CURRENT_STUDENT_PROGRAM_ID, "" + programID);
-        presenter.getStudentsFromGroup(studentId);
-/*        if (!SPLASH_OPEN)
+        presenter.getStudentsFromGroup(groupID);
+/*        if (!FastSave.getInstance().getBoolean(SPLASH_OPEN, false))
             endSession();
 //        EventMessage eventMessage = new EventMessage();
 //        eventMessage.setMessage(FC_Constants.BOTTOM_FRAGMENT_END_SESSION);

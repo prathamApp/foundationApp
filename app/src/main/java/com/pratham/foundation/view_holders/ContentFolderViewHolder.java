@@ -24,6 +24,7 @@ import com.pratham.foundation.R;
 import com.pratham.foundation.database.domain.ContentTable;
 import com.pratham.foundation.ui.app_home.FragmentItemClicked;
 import com.pratham.foundation.ui.app_home.display_content.ContentClicked;
+import com.pratham.foundation.utility.FC_Constants;
 
 import java.io.File;
 import java.util.Objects;
@@ -52,10 +53,10 @@ public class ContentFolderViewHolder extends RecyclerView.ViewHolder {
     @Nullable
     ImageView iv_downld;
     @Nullable
-    ImageView ib_update_btn,iv_delete;
+    ImageView ib_update_btn, iv_delete;
     @Nullable
     MaterialCardView card_main;
-    
+
     private ContentClicked contentClicked;
     private FragmentItemClicked itemClicked;
     String animType;
@@ -97,7 +98,7 @@ public class ContentFolderViewHolder extends RecyclerView.ViewHolder {
             Objects.requireNonNull(card_main).setBackground(drawableBg);
             Objects.requireNonNull(tvTitle).setText(contentList.getNodeTitle());
             Objects.requireNonNull(rl_loader).setVisibility(View.GONE);
-            Objects.requireNonNull(tv_progress).setText(contentList.getNodePercentage()+"%");
+            Objects.requireNonNull(tv_progress).setText(contentList.getNodePercentage() + "%");
 
             File file;
             if (contentList.getIsDownloaded().equalsIgnoreCase("1") ||
@@ -112,10 +113,19 @@ public class ContentFolderViewHolder extends RecyclerView.ViewHolder {
                 if (file.exists())
                     Objects.requireNonNull(itemImage).setImageURI(Uri.fromFile(file));
             } else {
+                String thumbPath = "" + contentList.getNodeServerImage();
+                if (ApplicationClass.wiseF.isDeviceConnectedToMobileNetwork() || ApplicationClass.wiseF.isDeviceConnectedToWifiNetwork()) {
+                    if (ApplicationClass.wiseF.isDeviceConnectedToSSID(FC_Constants.PRATHAM_RASPBERRY_PI)) {
+                        String fileName = contentList.getNodeServerImage()
+                                .substring(contentList.getNodeServerImage().lastIndexOf('/') + 1);
+                        thumbPath = FC_Constants.RASP_IP + FC_Constants.RASP_LOCAL_IMAGES + fileName;
+                    } else {
+                        thumbPath = "" + contentList.getNodeServerImage();
+                    }
+                }
                 ImageRequest imageRequest = ImageRequestBuilder
-                        .newBuilderWithSource(Uri.parse(contentList.getNodeServerImage()))
+                        .newBuilderWithSource(Uri.parse(thumbPath))
                         .setResizeOptions(new ResizeOptions(300, 300))
-                        .setLocalThumbnailPreviewsEnabled(true)
                         .build();
                 DraweeController controller = Fresco.newDraweeControllerBuilder()
                         .setImageRequest(imageRequest)
@@ -127,7 +137,7 @@ public class ContentFolderViewHolder extends RecyclerView.ViewHolder {
                 Objects.requireNonNull(tv_progress).setVisibility(View.GONE);
                 if (contentList.getIsDownloaded().equalsIgnoreCase("true")) {
                     Objects.requireNonNull(iv_downld).setVisibility(View.GONE);
-                    if(!contentList.isOnSDCard()) {
+                    if (!contentList.isOnSDCard()) {
                         Objects.requireNonNull(iv_delete).setVisibility(View.VISIBLE);
                         iv_delete.setOnClickListener(v -> contentClicked.onContentDeleteClicked(position, contentList));
                     }
@@ -184,7 +194,7 @@ public class ContentFolderViewHolder extends RecyclerView.ViewHolder {
         try {
             Objects.requireNonNull(card_main).setBackground(drawableBg);
             Objects.requireNonNull(tvTitle).setText(contentTable.getNodeTitle());
-            Objects.requireNonNull(tv_progress).setText(contentTable.getNodePercentage()+"%");
+            Objects.requireNonNull(tv_progress).setText(contentTable.getNodePercentage() + "%");
             Objects.requireNonNull(rl_loader).setVisibility(View.GONE);
 //                progressLayout.setCurProgress(Integer.parseInt(contentTable.getNodePercentage()));
             File f;
@@ -199,9 +209,18 @@ public class ContentFolderViewHolder extends RecyclerView.ViewHolder {
                 if (f.exists())
                     Objects.requireNonNull(itemImage).setImageURI(Uri.fromFile(f));
             } else {
-
+                String thumbPath = "" + contentTable.getNodeServerImage();
+                if (ApplicationClass.wiseF.isDeviceConnectedToMobileNetwork() || ApplicationClass.wiseF.isDeviceConnectedToWifiNetwork()) {
+                    if (ApplicationClass.wiseF.isDeviceConnectedToSSID(FC_Constants.PRATHAM_RASPBERRY_PI)) {
+                        String fileName = contentTable.getNodeServerImage()
+                                .substring(contentTable.getNodeServerImage().lastIndexOf('/') + 1);
+                        thumbPath = FC_Constants.RASP_IP + FC_Constants.RASP_LOCAL_IMAGES + fileName;
+                    } else {
+                        thumbPath = "" + contentTable.getNodeServerImage();
+                    }
+                }
                 ImageRequest imageRequest = ImageRequestBuilder
-                        .newBuilderWithSource(Uri.parse(contentTable.getNodeServerImage()))
+                        .newBuilderWithSource(Uri.parse(thumbPath))
                         .setResizeOptions(new ResizeOptions(300, 300))
                         .build();
                 DraweeController controller = Fresco.newDraweeControllerBuilder()
@@ -219,9 +238,9 @@ public class ContentFolderViewHolder extends RecyclerView.ViewHolder {
                     Objects.requireNonNull(ib_update_btn).setVisibility(View.GONE);
 
                 ib_update_btn.setOnClickListener(v -> itemClicked.onContentDownloadClicked(contentTable,
-                        parentPos,posi,""+ SINGLE_RES_DOWNLOAD));
+                        parentPos, posi, "" + SINGLE_RES_DOWNLOAD));
                 if (contentTable.getIsDownloaded().equalsIgnoreCase("true")) {
-                    if(!contentTable.isOnSDCard()) {
+                    if (!contentTable.isOnSDCard()) {
                         Objects.requireNonNull(iv_delete).setVisibility(View.VISIBLE);
                         iv_delete.setOnClickListener(v -> {
                             itemClicked.onContentDeleteClicked(parentPos, posi, contentTable);
@@ -239,9 +258,9 @@ public class ContentFolderViewHolder extends RecyclerView.ViewHolder {
                 if (contentTable.getNodeType() != null) {
                     if (contentTable.getNodeType().equalsIgnoreCase("PreResource")) {
                         if (contentTable.getIsDownloaded().equalsIgnoreCase("true")) {
-                            itemClicked.onPreResOpenClicked(posi, contentTable.getNodeId(), contentTable.getNodeTitle(),contentTable.isOnSDCard());
+                            itemClicked.onPreResOpenClicked(posi, contentTable.getNodeId(), contentTable.getNodeTitle(), contentTable.isOnSDCard());
                         } else if (contentTable.getIsDownloaded().equalsIgnoreCase("false"))
-                            itemClicked.onContentDownloadClicked(contentTable,parentPos,posi, SINGLE_RES_DOWNLOAD);
+                            itemClicked.onContentDownloadClicked(contentTable, parentPos, posi, SINGLE_RES_DOWNLOAD);
                     } else
                         itemClicked.onContentClicked(contentTable, parentName);
                 }

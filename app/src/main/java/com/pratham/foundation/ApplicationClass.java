@@ -7,15 +7,18 @@ import android.content.Context;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.os.Build;
+import android.os.Environment;
 import android.os.StrictMode;
 import android.util.Log;
 
 import com.androidnetworking.AndroidNetworking;
 import com.facebook.drawee.backends.pipeline.Fresco;
 import com.isupatches.wisefy.WiseFy;
+import com.pratham.foundation.database.domain.ContentTable;
 import com.pratham.foundation.modalclasses.Modal_FileDownloading;
 import com.pratham.foundation.services.TTSService;
 import com.pratham.foundation.services.shared_preferences.FastSave;
+import com.pratham.foundation.utility.FC_RandomString;
 import com.pratham.foundation.utility.FC_Utility;
 
 import java.io.File;
@@ -32,10 +35,8 @@ import okhttp3.OkHttpClient;
 
 public class ApplicationClass extends Application {
 
-    //    DelhiGov
-//    public static String uploadDataUrl = "http://delhigovt.centralindia.cloudapp.azure.com:8087/api/Foundation/PushData";
-// (HL Customised)
-    public static final String BUILD_DATE = "24-July-2021";
+    // (HL Customised)
+    public static final String BUILD_DATE = "27-Dec-2021";
     public static boolean isTablet = true;
     public static boolean isAssets = false;
     public static boolean contentExistOnSD = false, LocationFlg = false;
@@ -43,6 +44,8 @@ public class ApplicationClass extends Application {
     public static String foundationPath = "";
     public static String App_Thumbs_Path = "/.FCA/App_Thumbs/";
     OkHttpClient okHttpClient;
+    public static ArrayList<String> allContentsIDListStrings = new ArrayList<>();
+    public static ArrayList<ContentTable> allContentsLists;
     public static WiseFy wiseF;
     public static ApplicationClass applicationClass;
     private static final DateFormat dateTimeFormat = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss", Locale.ENGLISH);
@@ -52,6 +55,8 @@ public class ApplicationClass extends Application {
     public static AudioManager audioManager;
     public static MediaPlayer ButtonClickSound, BackBtnSound;
     public static List<Modal_FileDownloading> fileDownloadingList;
+    public static FC_RandomString fc_randomString;
+
 
     @Override
     public void onCreate() {
@@ -63,6 +68,7 @@ public class ApplicationClass extends Application {
         if (applicationClass == null) {
             applicationClass = this;
         }
+//        fc_randomString = new FC_RandomString(8, ThreadLocalRandom.current());
         fileDownloadingList = new ArrayList<>();
         FastSave.init(getApplicationContext());
         ButtonClickSound = MediaPlayer.create(this, R.raw.click2);
@@ -85,6 +91,13 @@ public class ApplicationClass extends Application {
         AndroidNetworking.initialize(getApplicationContext(), okHttpClient);
     }
 
+    public static File getStoragePath() {
+        if ((Build.VERSION.SDK_INT >= Build.VERSION_CODES.P)) {
+            return Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS);
+        } else {
+            return Environment.getExternalStorageDirectory();
+        }
+    }
 
     public static boolean getAppMode() {
         isTablet = false;

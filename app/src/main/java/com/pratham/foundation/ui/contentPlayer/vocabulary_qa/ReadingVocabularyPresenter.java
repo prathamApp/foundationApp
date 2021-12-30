@@ -1,5 +1,9 @@
 package com.pratham.foundation.ui.contentPlayer.vocabulary_qa;
 
+import static com.pratham.foundation.ui.contentPlayer.vocabulary_qa.ReadingVocabularyActivity.currentPageNo;
+import static com.pratham.foundation.ui.contentPlayer.vocabulary_qa.ReadingVocabularyActivity.testCorrectArr;
+import static com.pratham.foundation.utility.FC_Constants.STT_REGEX;
+
 import android.content.Context;
 import android.util.Log;
 
@@ -16,6 +20,7 @@ import com.pratham.foundation.utility.FC_Utility;
 
 import org.androidannotations.annotations.Background;
 import org.androidannotations.annotations.EBean;
+import org.androidannotations.annotations.UiThread;
 import org.json.JSONObject;
 
 import java.io.FileInputStream;
@@ -23,10 +28,6 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-
-import static com.pratham.foundation.ui.contentPlayer.vocabulary_qa.ReadingVocabularyActivity.currentPageNo;
-import static com.pratham.foundation.ui.contentPlayer.vocabulary_qa.ReadingVocabularyActivity.testCorrectArr;
-import static com.pratham.foundation.utility.FC_Constants.STT_REGEX;
 
 
 @EBean
@@ -68,14 +69,26 @@ public class ReadingVocabularyPresenter implements ReadingVocabularyContract.Rea
             randomTestCategory = FC_Utility.generateRandomNum(modalMainVocabList.size());
             modalMainVocabCatList = modalMainVocabList.get(randomTestCategory).getDataList();
         } else {
+            List<String> categoryList = new ArrayList<>();
+            for (int i = 0; i < modalMainVocabList.size(); i++)
+                categoryList.add(""+modalMainVocabList.get(i).getValue());
+            readingView.setCategoryList(categoryList);
+            readingView.setCategoryAdapter();
+        }
+    }
+
+    @UiThread
+    @Override
+    public void getCategoryList(String selectedCategory){
+        vocabCategory = selectedCategory;
             for (int i = 0; i < modalMainVocabList.size(); i++)
                 if (modalMainVocabList.get(i).getValue().equalsIgnoreCase("" + vocabCategory)) {
                     modalMainVocabCatList = modalMainVocabList.get(i).getDataList();
                     break;
                 }
-        }
         totalWordCount = getTotalCount(modalMainVocabCatList);
         getDataList();
+
     }
 
     private int getTotalCount(List<ModalVocabulary> modalMainVocabList) {

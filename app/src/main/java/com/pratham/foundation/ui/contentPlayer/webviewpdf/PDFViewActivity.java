@@ -1,5 +1,7 @@
 package com.pratham.foundation.ui.contentPlayer.webviewpdf;
 
+import static com.pratham.foundation.utility.FC_Constants.gameFolderPath;
+
 import android.annotation.SuppressLint;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
@@ -35,35 +37,42 @@ import org.androidannotations.annotations.UiThread;
 import java.io.File;
 import java.util.Objects;
 
-import static com.pratham.foundation.utility.FC_Constants.gameFolderPath;
-
 @EActivity(R.layout.activity_pdf_view)
 public class PDFViewActivity extends BaseActivity {
 
-    private String contentName, pdf_Path, resStartTime;
+    private String contentName, pdf_Path, resStartTime, dia;
     private String resId;
-    private boolean isScoreAdded = false, onSdCard = false;
+    private final boolean isScoreAdded = false;
+    private boolean onSdCard = false;
+    private boolean diaFlg = false;
 
     @AfterViews
     public void initialize() {
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
-        resId = getIntent().getStringExtra("resId");
-        pdf_Path = getIntent().getStringExtra("contentPath");
-        contentName = getIntent().getStringExtra("contentName");
-        onSdCard = getIntent().getBooleanExtra("onSdCard", false);
+        dia = getIntent().getStringExtra("dia");
+        if (dia.equalsIgnoreCase("dia"))
+            diaFlg = true;
+        if (!diaFlg) {
+            resId = getIntent().getStringExtra("resId");
+            pdf_Path = getIntent().getStringExtra("contentPath");
+            contentName = getIntent().getStringExtra("contentName");
+            onSdCard = getIntent().getBooleanExtra("onSdCard", false);
 
-        if (onSdCard)
-            pdf_Path = ApplicationClass.contentSDPath + gameFolderPath + "/" + pdf_Path;
-        else
-            pdf_Path = ApplicationClass.foundationPath + gameFolderPath + "/" + pdf_Path;
-//            pdf_Path = Environment.getExternalStorageDirectory() + "/PrathamBackups/story.pdf";
+            if (onSdCard)
+                pdf_Path = ApplicationClass.contentSDPath + gameFolderPath + "/" + pdf_Path;
+            else
+                pdf_Path = ApplicationClass.foundationPath + gameFolderPath + "/" + pdf_Path;
+//            pdf_Path = ApplicationClass.getStoragePath() + "/PrathamBackups/story.pdf";
 
 
-        String a = FastSave.getInstance().getString(FC_Constants.APP_LANGUAGE, FC_Constants.HINDI);
-        Log.d("INSTRUCTIONFRAG", "Select Subj: " + a);
-        FC_Utility.setAppLocal(this, a);
+            String a = FastSave.getInstance().getString(FC_Constants.APP_LANGUAGE, FC_Constants.HINDI);
+            Log.d("INSTRUCTIONFRAG", "Select Subj: " + a);
+            FC_Utility.setAppLocal(this, a);
 
+        }else{
+            pdf_Path = getIntent().getStringExtra("contentPath");
+        }
         if (new File(pdf_Path).exists())
             startWebViewAct();
         else
@@ -128,8 +137,10 @@ public class PDFViewActivity extends BaseActivity {
         dia_title.setText(getResources().getString(R.string.exit_dialog_msg));
         dialog.show();
         dia_btn_green.setOnClickListener(v -> {
-            addScoreToDB();
+            if(!diaFlg){
+                addScoreToDB();
             addGameProgress();
+            }
             dialog.dismiss();
             new Handler().postDelayed(this::finish, 100);
         });
