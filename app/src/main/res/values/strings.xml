@@ -517,4 +517,16 @@
         <item>pa</item>
     </string-array>
 
+    <string name="word_dictionary_title" translatable="false"> नीचे दिए गए शब्द को आपकी बोलीभाषा में क्या कहते है?</string>
+    <string name="word_dictionary_enter_text" translatable="false"> दिए गए शब्द को आपकी बोलीभाषा में क्या कहते है?</string>
+    <string name="word_dictionary_language" translatable="false"> आपकी बोलीभाषा कौनसी है?</string>
+    <string name="word_dictionary_select_language">Select Language</string>
+    <string name="enter_word">Enter Word</string>
+    <string name="enter_language">Enter Language</string>
+    <string name="other_language">Other Language</string>
+    <string name="Do_you_want_to_exit_continue">Do you want to exit or continue?</string>
+    <string name="continues_txt">Continue</string>
+    <string name="word_dictionary_list_title" translatable="false"> अक्षर चुने </string>
+
+
 </resources>

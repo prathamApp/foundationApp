@@ -185,6 +185,15 @@
         <activity android:name=".utility.SplashSupportActivity" />
         <activity android:name=".ui.splash_activity.SplashActivity" />
 
+        <activity
+            android:name=".ui.contentPlayer.worddictionary.Word_Dictionary_Activity_"
+            android:screenOrientation="portrait" />
+
+        <activity
+            android:name=".ui.contentPlayer.worddictionary.Word_Dictionary_List_Activity_"
+            android:screenOrientation="portrait" />
+
+
         <service
             android:name=".services.AppExitService"
             android:enabled="true"

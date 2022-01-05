@@ -1,0 +1,270 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
+    android:background="@drawable/activity_bkgd"
+    >
+
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_alignParentTop="true"
+    android:layout_above="@+id/bottom_layout"
+    android:orientation="vertical">
+
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/_30sdp" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+
+        android:elevation="5dp">
+
+        <com.pratham.foundation.customView.fontsview.SansTextViewBold
+            android:id="@+id/title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:scrollbars="vertical"
+            android:layout_marginStart="@dimen/_10sdp"
+            android:layout_marginEnd="@dimen/_10sdp"
+            android:textSize="@dimen/_17sdp"
+            android:background="@drawable/progress_background2"
+            android:textColor="@color/white"
+            android:layout_centerInParent="true"
+            android:text="@string/word_dictionary_title"
+            style="@style/tittle" />
+    </RelativeLayout>
+
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="20dp"
+android:layout_marginTop="@dimen/_15sdp"
+        android:layout_marginBottom="@dimen/_10sdp"
+        android:elevation="5dp">
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:orientation="vertical"
+                android:layout_height="match_parent">
+                > <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+
+                android:elevation="5dp">
+
+                <com.pratham.foundation.customView.fontsview.SansTextViewBold
+                    android:id="@+id/word"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_25sdp"
+                    android:padding="@dimen/_10sdp"
+                    android:textSize="@dimen/_26sdp"
+                    android:background="@drawable/dialog_bg_blue"
+                    android:textColor="@color/black_20"
+
+                    android:layout_centerInParent="true"
+                    android:text="@string/Next"
+
+                    />
+            </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+
+                    android:layout_height="wrap_content">
+
+                    <com.pratham.foundation.customView.fontsview.SansEditText
+                        android:id="@+id/et_word"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/_30sdp"
+                        android:layout_marginStart="@dimen/_5sdp"
+                        android:layout_marginTop="@dimen/_5sdp"
+                        android:layout_marginEnd="@dimen/_5sdp"
+                        android:layout_marginBottom="@dimen/_5sdp"
+                        android:background="@drawable/main_card_bg"
+                        android:hint="@string/enter_word"
+android:layout_toLeftOf="@+id/keyword_change"
+                        android:imeOptions="actionDone"
+                        android:maxLines="1"
+                        android:minLines="1"
+                        android:singleLine="true"
+                        android:textAlignment="center"
+                        android:textColor="@color/dark_blue" />
+                    <com.pratham.foundation.customView.fontsview.SansTextViewBold
+                        android:id="@+id/word_hint"
+                        android:layout_below="@+id/et_word"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/_10sdp"
+                        android:scrollbars="vertical"
+                        android:visibility="gone"
+                        android:layout_marginStart="@dimen/_10sdp"
+                        android:layout_marginEnd="@dimen/_15sdp"
+                        android:textSize="@dimen/_13sdp"
+                        android:background="@drawable/button_red"
+                        android:textColor="@color/white"
+                        android:layout_centerInParent="true"
+                        android:text="@string/word_dictionary_enter_text"
+                        style="@style/tittle" />
+
+                    <ImageView
+                        android:visibility="gone"
+                        android:id="@+id/keyword_change"
+                        android:layout_width="@dimen/_30sdp"
+                        android:layout_height="@dimen/_30sdp"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:background="@drawable/keyboard"></ImageView>
+
+                </RelativeLayout>
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_marginTop="@dimen/_15sdp"
+                    android:layout_height="wrap_content">
+                    <com.pratham.foundation.customView.fontsview.SansTextViewBold
+                        android:id="@+id/language_hint"
+
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+
+                        android:scrollbars="vertical"
+                        android:layout_marginStart="@dimen/_10sdp"
+                        android:layout_marginEnd="@dimen/_15sdp"
+                        android:textSize="@dimen/_13sdp"
+                        android:background="@drawable/button_red"
+                        android:textColor="@color/white"
+
+                        android:text="@string/word_dictionary_language"
+                        style="@style/tittle" />
+                    <Spinner
+                        android:id="@+id/spinner_language"
+                        android:layout_width="match_parent"
+                        android:layout_below="@+id/language_hint"
+                        android:layout_height="@dimen/_30sdp"
+android:layout_marginHorizontal="@dimen/_5sdp"
+                        android:layout_marginTop="@dimen/_10sdp"
+                        android:background="@drawable/custom_spinner_white"
+
+                        android:popupBackground="@drawable/choose_level_bg" />
+
+                    <com.pratham.foundation.customView.fontsview.SansEditText
+                        android:id="@+id/et_language"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/_30sdp"
+                        android:background="@drawable/main_card_bg"
+                        android:layout_marginHorizontal="@dimen/_5sdp"
+                        android:layout_marginTop="@dimen/_10sdp"
+                        android:imeOptions="actionDone"
+                        android:layout_below="@+id/spinner_language"
+                        android:hint="@string/enter_language"
+                        android:singleLine="true"
+                        android:minLines="1"
+                        android:maxLines="1"
+android:visibility="gone"
+                        android:textAlignment="center"
+                        android:textColor="@color/dark_blue" />
+
+
+                </RelativeLayout>
+
+
+            </LinearLayout>
+        </ScrollView>
+
+
+    </RelativeLayout>
+
+
+
+
+
+</LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/bottom_layout"
+        android:layout_marginBottom="@dimen/_10sdp"
+        android:layout_alignParentBottom="true"
+        android:orientation="horizontal">
+
+        <com.pratham.foundation.customView.fontsview.SansButton
+            android:id="@+id/clear_selection"
+            android:layout_width="0dp"
+        android:layout_marginHorizontal="@dimen/_2sdp"
+            android:layout_height="50dp"
+        android:paddingHorizontal="@dimen/_2sdp"
+            android:layout_weight="1"
+            android:layout_centerVertical="true"
+            android:textColor="@color/white"
+
+            android:background="@drawable/button_blue"
+            android:text="@string/Reset"
+             />
+
+        <com.pratham.foundation.customView.fontsview.SansButton
+            android:id="@+id/save_button"
+            android:layout_width="0dp"
+            android:layout_height="50dp"
+            android:layout_marginHorizontal="@dimen/_2sdp"
+            android:layout_weight="1"
+            android:textColor="@color/white"
+            android:paddingHorizontal="@dimen/_2sdp"
+            android:background="@drawable/button_green"
+            android:text="@string/save"
+             />
+
+        <com.pratham.foundation.customView.fontsview.SansButton
+            android:id="@+id/cancel_action"
+            android:layout_width="0dp"
+            android:layout_height="50dp"
+            android:layout_weight="1"
+
+            android:textColor="@color/white"
+            android:layout_marginHorizontal="@dimen/_2sdp"
+            android:paddingHorizontal="@dimen/_2sdp"
+            android:background="@drawable/button_red"
+            android:text="@string/cancel"
+        />
+
+        <LinearLayout
+            android:id="@+id/ll_btn_next"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/_2sdp"
+            android:layout_weight="1">
+
+            <com.pratham.foundation.customView.fontsview.SansButton
+                android:id="@+id/next"
+                android:layout_width="wrap_content"
+                android:layout_height="50dp"
+                android:paddingHorizontal="@dimen/_2sdp"
+                android:textColor="@color/white"
+                android:background="@drawable/button_yellow"
+                android:layout_centerVertical="true"
+
+                android:text="next" />
+
+            <ImageButton
+                android:id="@+id/btn_next"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginBottom="@dimen/_5sdp"
+                android:background="@drawable/arrow_right_bg"
+                android:elevation="5dp"
+                android:visibility="gone"
+                android:scaleType="centerInside"
+                android:src="@drawable/ic_navigate_next_black_24dp" />
+        </LinearLayout>
+    </LinearLayout>
+</RelativeLayout>

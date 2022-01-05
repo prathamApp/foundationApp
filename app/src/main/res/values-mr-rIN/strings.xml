@@ -162,5 +162,9 @@
     <string name="DB_Zip_pushed_failed">डेटाबेस सिंक झाला नाही</string>
     <string name="DB_Zip_pushed_successfully">डेटाबेस यशस्वीरित्या सिंक झाला</string>
     <string name="DB_Zip_push">DB फाईल सिंक करा</string>
+    <string name="word_dictionary_title" translatable="false"> खाली दिलेल्या शब्दाला तुमच्या बोलीभाषेत काय म्हणतात?</string>
+    <string name="word_dictionary_language" translatable="false"> तुमची बोलीभाषा कोणती आहे?</string>
+    <string name="word_dictionary_list_title" translatable="false"> अक्षर निवडा </string>
+
 
 </resources>

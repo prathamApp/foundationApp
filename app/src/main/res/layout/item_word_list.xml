@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/item_word_char"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginStart="@dimen/_5sdp"
+    android:layout_marginEnd="@dimen/_5sdp"
+    android:layout_marginBottom="8dp"
+    app:cardElevation="5dp"
+    android:background="@color/red"
+       app:cardCornerRadius="@dimen/_10sdp">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_centerInParent="true"
+        android:layout_height="wrap_content"
+        >
+
+        <com.pratham.foundation.customView.fontsview.SansTextViewBold
+            android:id="@+id/word_char"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+           android:layout_margin="@dimen/_10sdp"
+            android:gravity="center"
+android:layout_centerInParent="true"
+            android:textColor="@color/grp_stat_dark_text"
+            android:textSize="@dimen/_15sdp" />
+
+
+    </RelativeLayout>
+</com.google.android.material.card.MaterialCardView>

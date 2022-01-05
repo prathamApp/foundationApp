@@ -50,6 +50,9 @@ public interface KeyWordDao {
     @Query("select * from KeyWords WHERE studentId=:stdID AND wordType='word'")
     List<KeyWords> getKeyWords(String stdID);
 
+    @Query("select keyWord from KeyWords WHERE studentId=:stdID AND wordType='word' AND resourceId=:resId")
+    List<String> getListKeyWords(String stdID, String resId);
+
     @Query("select keyWord from KeyWords WHERE studentId=:stdID AND wordType='word' AND resourceId=:resId AND keyWord=:checkWord")
     String checkWord(String stdID, String resId, String checkWord);
 

@@ -79,6 +79,12 @@
         <entry key="..\:/Android_Projects/FoundationApp_Git/app/src/main/res/layout/student_list_fragment.xml" value="0.18290854572713644" />
         <entry key="..\:/Android_Projects/FoundationApp_Git/app/src/main/res/layout/sync_status_dialog.xml" value="0.264" />
         <entry key="..\:/Android_Projects/FoundationApp_Git/app/src/main/res/layout/vocab_category.xml" value="0.16486486486486487" />
+        <entry key="..\:/Projects/PrathamApps/foundationApp/app/src/main/res/drawable/black_trans_bg.xml" value="0.13518518518518519" />
+        <entry key="..\:/Projects/PrathamApps/foundationApp/app/src/main/res/drawable/custom_spinner_white.xml" value="0.13518518518518519" />
+        <entry key="..\:/Projects/PrathamApps/foundationApp/app/src/main/res/drawable/dialog_image_bg.xml" value="0.13518518518518519" />
+        <entry key="..\:/Projects/PrathamApps/foundationApp/app/src/main/res/layout/item_word_list.xml" value="0.1796875" />
+        <entry key="..\:/Projects/PrathamApps/foundationApp/app/src/main/res/layout/word_dictionary_list.xml" value="0.20108695652173914" />
+        <entry key="..\:/Projects/PrathamApps/foundationApp/app/src/main/res/layout/word_dictionary_selection.xml" value="0.1890625" />
       </map>
     </option>
   </component>
@@ -87,7 +93,7 @@
       <item index="0" class="java.lang.String" itemvalue="org.androidannotations.annotations.Click" />
     </list>
   </component>
-  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="1.8" project-jdk-type="JavaSDK">
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_1_8" default="true" project-jdk-name="1.8" project-jdk-type="JavaSDK">
     <output url="file://$PROJECT_DIR$/build/classes" />
   </component>
   <component name="ProjectType">

@@ -162,5 +162,7 @@
     <string name="DB_Zip_pushed_failed">डेटाबेस सिंक नहीं हुआ।</string>
     <string name="DB_Zip_pushed_successfully">डेटाबेस सफलतापूर्वक सिंक किया गया।</string>
     <string name="DB_Zip_push">डी बी फाइल सिंक करें।</string>
+    <string name="word_dictionary_list_title" translatable="false"> अक्षर चुने </string>
+
 
 </resources>
