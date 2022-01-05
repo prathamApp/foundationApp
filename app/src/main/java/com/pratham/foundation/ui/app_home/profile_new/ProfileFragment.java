@@ -369,12 +369,16 @@ public class ProfileFragment extends Fragment implements ProfileContract.Profile
     public void showUsage() {
         Intent intent = new Intent(getActivity(), TabUsageActivity_.class);
         startActivityForResult(intent, 1);
+//        Intent i = new Intent(android.provider.Settings.ACTION_LOCALE_SETTINGS);
+//        startActivity(i);
     }
 
     @Click(R.id.rl_enroll_course)
     @UiThread
     public void enrollCourse() {
         startActivity(new Intent(context, CourseEnrollmentActivity_.class));
+//        InputMethodManager imeManager = (InputMethodManager) context.getSystemService(INPUT_METHOD_SERVICE);
+//        imeManager.showInputMethodPicker();
     }
 
     CustomLodingDialog sttDialog;
@@ -382,7 +386,14 @@ public class ProfileFragment extends Fragment implements ProfileContract.Profile
     @Click(R.id.rl_lang_pack)
     @UiThread
     public void show_STT_Dialog() {
-/*        Intent intent = new Intent(Intent.ACTION_MAIN);
+//        Intent i = new Intent(android.provider.Settings.ACTION_LOCALE_SETTINGS);
+//        startActivity(i);
+//        InputMethodManager imeManager = (InputMethodManager) context.getSystemService(INPUT_METHOD_SERVICE);
+//        imeManager.showInputMethodPicker();
+//        Intent intent=new Intent(android.provider.Settings.ACTION_INPUT_METHOD_SETTINGS);
+//        startActivity(intent);
+
+        /*        Intent intent = new Intent(Intent.ACTION_MAIN);
 //        intent.setComponent(new ComponentName("com.google.android.googlequicksearchbox",
 //                "com.google.android.voicesearch.greco3.languagepack.InstallActivity"));
         intent.setClassName("com.google.android.googlequicksearchbox",

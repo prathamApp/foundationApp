@@ -15,7 +15,7 @@
         android:elevation="@dimen/_5sdp"
         app:lottie_autoPlay="true"
         app:lottie_fileName="hand_click.json"
-        app:lottie_loop="true" />
+        app:lottie_loop="false" />
 
     <com.pratham.foundation.customView.fontsview.SansTextView
         android:id="@+id/version_tv"
