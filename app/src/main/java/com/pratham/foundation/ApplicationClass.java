@@ -36,9 +36,9 @@ import okhttp3.OkHttpClient;
 public class ApplicationClass extends Application {
 
     // (HL Customised)
-    public static final String BUILD_DATE = "27-Dec-2021";
+    public static final String BUILD_DATE = "Customised 05-Jan-2022";
     public static boolean isTablet = true;
-    public static boolean isAssets = false;
+    public static boolean isAssets = true;
     public static boolean contentExistOnSD = false, LocationFlg = false;
     public static String contentSDPath = "";
     public static String foundationPath = "";
@@ -91,13 +91,13 @@ public class ApplicationClass extends Application {
         AndroidNetworking.initialize(getApplicationContext(), okHttpClient);
     }
 
-    public static File getStoragePath() {
-        if ((Build.VERSION.SDK_INT >= Build.VERSION_CODES.P)) {
-            return Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS);
-        } else {
-            return Environment.getExternalStorageDirectory();
+        public static File getStoragePath() {
+            if ((Build.VERSION.SDK_INT >= Build.VERSION_CODES.R)) {
+                return Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);
+            } else {
+                return Environment.getExternalStorageDirectory();
+            }
         }
-    }
 
     public static boolean getAppMode() {
         isTablet = false;
