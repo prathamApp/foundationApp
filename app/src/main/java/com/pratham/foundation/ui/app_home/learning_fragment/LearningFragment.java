@@ -65,6 +65,7 @@ import com.pratham.foundation.ui.app_home.display_content.ContentDisplay_;
 import com.pratham.foundation.ui.app_home.learning_fragment.attendance_bottom_fragment.AttendanceBottomFragment;
 import com.pratham.foundation.ui.app_home.learning_fragment.attendance_bottom_fragment.AttendanceBottomFragment_;
 import com.pratham.foundation.ui.contentPlayer.ContentPlayerActivity_;
+import com.pratham.foundation.ui.contentPlayer.image_resource.DisplayImageActivity_;
 import com.pratham.foundation.ui.contentPlayer.matchingPairGame.MatchThePairGameActivity;
 import com.pratham.foundation.ui.contentPlayer.old_cos.conversation.ConversationActivity_;
 import com.pratham.foundation.ui.contentPlayer.old_cos.reading_cards.ReadingCardsActivity_;
@@ -844,6 +845,19 @@ public class LearningFragment extends Fragment implements LearningContract.Learn
                     sdStatus = "T";
 //                Intent intent1 = new Intent(context, Fragment_PdfViewer_.class);
                 Intent intent2 = new Intent(context, PDFViewActivity_.class);
+                intent2.putExtra("contentPath", contentList.getResourcePath());
+                intent2.putExtra("StudentID", FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""));
+                intent2.putExtra("resId", contentList.getResourceId());
+                intent2.putExtra("contentName", contentList.getNodeTitle());
+                intent2.putExtra("onSdCard", contentList.isOnSDCard());
+                intent2.putExtra("dia", "NA");
+                context.startActivity(intent2);
+            } else if (contentList.getResourceType().equalsIgnoreCase("IMAGE_RES")){
+                String sdStatus = "F";
+                if (contentList.isOnSDCard())
+                    sdStatus = "T";
+//                Intent intent1 = new Intent(context, Fragment_PdfViewer_.class);
+                Intent intent2 = new Intent(context, DisplayImageActivity_.class);
                 intent2.putExtra("contentPath", contentList.getResourcePath());
                 intent2.putExtra("StudentID", FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""));
                 intent2.putExtra("resId", contentList.getResourceId());

@@ -49,7 +49,7 @@
                 android:layout_marginEnd="@dimen/_10sdp"
                 android:background="@android:color/transparent"
                 android:gravity="center"
-                android:visibility="gone"
+                android:visibility="visible"
                 android:text="@string/Skip"
                 android:textColor="@color/strokeColor"
                 android:textSize="@dimen/_15sdp" />

@@ -63,6 +63,7 @@ import com.pratham.foundation.services.shared_preferences.FastSave;
 import com.pratham.foundation.ui.app_home.learning_fragment.attendance_bottom_fragment.AttendanceBottomFragment;
 import com.pratham.foundation.ui.app_home.learning_fragment.attendance_bottom_fragment.AttendanceBottomFragment_;
 import com.pratham.foundation.ui.contentPlayer.ContentPlayerActivity_;
+import com.pratham.foundation.ui.contentPlayer.image_resource.DisplayImageActivity_;
 import com.pratham.foundation.ui.contentPlayer.matchingPairGame.MatchThePairGameActivity;
 import com.pratham.foundation.ui.contentPlayer.old_cos.conversation.ConversationActivity_;
 import com.pratham.foundation.ui.contentPlayer.old_cos.reading_cards.ReadingCardsActivity_;
@@ -690,6 +691,19 @@ public class ContentDisplay extends BaseActivity implements ContentContract.Cont
                 intent1.putExtra("onSdCard", ContentTableList.get(position).isOnSDCard());
                 intent1.putExtra("dia", "NA");
                 startActivity(intent1);
+            } else if (ContentTableList.get(position).getResourceType().equalsIgnoreCase("IMAGE_RES")){
+                String sdStatus = "F";
+                if (ContentTableList.get(position).isOnSDCard())
+                    sdStatus = "T";
+//                Intent intent1 = new Intent(context, Fragment_PdfViewer_.class);
+                Intent intent2 = new Intent(this, DisplayImageActivity_.class);
+                intent2.putExtra("contentPath", ContentTableList.get(position).getResourcePath());
+                intent2.putExtra("StudentID", FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""));
+                intent2.putExtra("resId", ContentTableList.get(position).getResourceId());
+                intent2.putExtra("contentName", ContentTableList.get(position).getNodeTitle());
+                intent2.putExtra("onSdCard", ContentTableList.get(position).isOnSDCard());
+                intent2.putExtra("dia", "NA");
+                startActivity(intent2);
             } else {
                 String sdStatus = "F";
                 if (ContentTableList.get(position).isOnSDCard())

@@ -2,6 +2,6 @@
 <View xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/outerItemHeader"
     android:layout_width="match_parent"
-    android:layout_height="@dimen/_110sdp"
+    android:layout_height="@dimen/_120sdp"
     android:elevation="0dp"
     android:background="@android:color/transparent"/>

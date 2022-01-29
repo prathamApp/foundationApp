@@ -35,10 +35,10 @@ import okhttp3.OkHttpClient;
 
 public class ApplicationClass extends Application {
 
-    // (HL Customised)
-    public static final String BUILD_DATE = "Customised 05-Jan-2022";
+    // (HI Custom )
+    public static final String BUILD_DATE = "25-Jan-2022";
     public static boolean isTablet = true;
-    public static boolean isAssets = true;
+    public static boolean isAssets = false;
     public static boolean contentExistOnSD = false, LocationFlg = false;
     public static String contentSDPath = "";
     public static String foundationPath = "";
@@ -89,6 +89,10 @@ public class ApplicationClass extends Application {
                 .writeTimeout(60, TimeUnit.SECONDS)
                 .build();
         AndroidNetworking.initialize(getApplicationContext(), okHttpClient);
+
+//        String a = FastSave.getInstance().getString(FC_Constants.APP_LANGUAGE, FC_Constants.HINDI);
+//        Log.d("INSTRUCTIONFRAG", "Select Subj: " + a);
+//        FC_Utility.setAppLocal(this, a);
     }
 
         public static File getStoragePath() {

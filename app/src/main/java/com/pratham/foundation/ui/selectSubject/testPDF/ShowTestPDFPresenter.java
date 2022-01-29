@@ -38,48 +38,49 @@ public class ShowTestPDFPresenter implements ShowTestPDFContract.TestPDFPresente
         try {
 //            Log.d("TAG", "getPDFs: IN");
             File dir = new File(ApplicationClass.getStoragePath() + "/PrathamBackups/StudentPDFs/");
-            File[] db_files = dir.listFiles();
-            if (db_files != null) {
+            File[] pdf_files = dir.listFiles();
+            if (pdf_files != null) {
                 pdf_modalList = new ArrayList<>();
                 List<String> fileNameListStrings = new ArrayList<>();
-                for (int i = 0; i < db_files.length; i++) {
-//                    Log.d("TAG", "getPDFs Before IF : i "+i+"   Name : "+db_files[i].getName());
+                for (int i = 0; i < pdf_files.length; i++) {
+//                    Log.d("TAG", "getPDFs Before IF : i "+i+"   Name : "+pdf_files[i].getName());
                     try {
-                        if (db_files[i].isFile() && db_files[i].getName().substring(db_files[i]
+                        if (pdf_files[i].isFile() && pdf_files[i].getName().substring(pdf_files[i]
                                 .getName().lastIndexOf(".")).equalsIgnoreCase(".pdf")) {
 
-                            String[] arrOfStr = db_files[i].getName().split("_", 2);
-//                        Log.d("TAG", "getPDFs: i "+i+"   Name : "+db_files[i].getName());
+                            String[] arrOfStr = pdf_files[i].getName().split("_", 2);
+//                        Log.d("TAG", "getPDFs: i "+i+"   Name : "+pdf_files[i].getName());
 
                             if (arrOfStr != null) {
-                                String enrollment_id = db_files[i].getName().split("_")[0];
-                                String subject_name = db_files[i].getName().split("_")[1];
+                                String enrollment_id = pdf_files[i].getName().split("_")[0];
+                                String subject_name = pdf_files[i].getName().split("_")[1];
 //                                subject_name = subject_name.substring(0, subject_name.length() - 4);
 //                            subject_name = subject_name.split(".")[0];
                                 Log.d("TAG", "getPDFs: enrollment_id : " + enrollment_id);
                                 Log.d("TAG", "getPDFs: subject_name : " + subject_name);
                                 Student student = null;
                                 student = AppDatabase.getDatabaseInstance(context).getStudentDao().getStudentByEnrollmentId(enrollment_id);
-                                if (student != null) {
-                                    Diagnostic_pdf_Modal diagnosticPdfModal = new Diagnostic_pdf_Modal();
-                                    diagnosticPdfModal.setEnrollment_id(enrollment_id);
+                                Diagnostic_pdf_Modal diagnosticPdfModal = new Diagnostic_pdf_Modal();
+                                diagnosticPdfModal.setEnrollment_id(enrollment_id);
+                                if (student != null)
                                     diagnosticPdfModal.setStudent_name(student.getFullName());
-                                    diagnosticPdfModal.setSubject_name(subject_name);
-                                    diagnosticPdfModal.setFile_path(db_files[i].getAbsolutePath());
-                                    pdf_modalList.add(diagnosticPdfModal);
-                                }
+                                else
+                                    diagnosticPdfModal.setStudent_name("(User Not Registered)");
+                                diagnosticPdfModal.setSubject_name(subject_name);
+                                diagnosticPdfModal.setFile_path(pdf_files[i].getAbsolutePath());
+                                pdf_modalList.add(diagnosticPdfModal);
                             }
                         }
-                    }catch (Exception e){
+                    } catch (Exception e) {
                         e.printStackTrace();
                     }
                 }
-                if(pdf_modalList.size()>0) {
+                if (pdf_modalList.size() > 0) {
                     testPDFView.setList(pdf_modalList);
                     testPDFView.setAdapter();
-                }else
+                } else
                     testPDFView.showNoData();
-            }else {
+            } else {
                 testPDFView.showNoData();
             }
         } catch (Exception e) {

@@ -1,5 +1,10 @@
 package com.pratham.foundation.ui.app_home.learning_fragment;
 
+import static com.pratham.foundation.utility.FC_Constants.TYPE_FOOTER;
+import static com.pratham.foundation.utility.FC_Constants.TYPE_HEADER;
+import static com.pratham.foundation.utility.FC_Constants.TYPE_ITEM;
+import static com.pratham.foundation.utility.FC_Constants.sec_Learning;
+
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.util.Log;
@@ -18,16 +23,11 @@ import com.pratham.foundation.view_holders.FragmentOuterViewHolder;
 
 import java.util.List;
 
-import static com.pratham.foundation.utility.FC_Constants.TYPE_FOOTER;
-import static com.pratham.foundation.utility.FC_Constants.TYPE_HEADER;
-import static com.pratham.foundation.utility.FC_Constants.TYPE_ITEM;
-import static com.pratham.foundation.utility.FC_Constants.sec_Learning;
-
 
 public class LearningOuterDataAdapter extends RecyclerView.Adapter {
 
-    private List<ContentTable> dataList;
-    private Context mContext;
+    private final List<ContentTable> dataList;
+    private final Context mContext;
     FragmentItemClicked fragmentItemClicked;
 
     public LearningOuterDataAdapter(Context context, List<ContentTable> dataList,
@@ -47,6 +47,10 @@ public class LearningOuterDataAdapter extends RecyclerView.Adapter {
                 LayoutInflater header = LayoutInflater.from(viewGroup.getContext());
                 view = header.inflate(R.layout.list_header, viewGroup, false);
                 return new EmptyHolder(view);
+            case 999:
+                LayoutInflater footer = LayoutInflater.from(viewGroup.getContext());
+                view = footer.inflate(R.layout.student_item_file_footer, viewGroup, false);
+                return new EmptyHolder(view);
             default:
                 LayoutInflater folder = LayoutInflater.from(viewGroup.getContext());
                 view = folder.inflate(R.layout.content_folder_card_tab, viewGroup, false);
@@ -63,6 +67,7 @@ public class LearningOuterDataAdapter extends RecyclerView.Adapter {
             case 2:
                 FragmentOuterViewHolder itemRowHolder = (FragmentOuterViewHolder) viewHolder;
                 itemRowHolder.setOuterItem(dataList.get(i),i,sec_Learning);
+            case 999:
         }
     }
 
@@ -72,8 +77,9 @@ public class LearningOuterDataAdapter extends RecyclerView.Adapter {
             String a =dataList.get(position).getNodeType();
             switch (a) {
                 case TYPE_HEADER:
-                case TYPE_FOOTER:
                     return 0;
+                case TYPE_FOOTER:
+                    return 999;
                 case TYPE_ITEM:
                     return 2;
                 default:

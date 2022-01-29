@@ -481,8 +481,6 @@ public class SplashActivity extends SplashSupportActivity implements SplashContr
                         new Handler().postDelayed(() -> {
                             try {
                                 Intent intent = new Intent(Intent.ACTION_MAIN);
-//                    intent.setComponent(new ComponentName("com.google.android.googlequicksearchbox",
-//                            "com.google.android.voicesearch.greco3.languagepack.InstallActivity"));
                                 intent.setClassName("com.google.android.googlequicksearchbox",
                                         "com.google.android.voicesearch.greco3.languagepack.InstallActivity");
                                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);

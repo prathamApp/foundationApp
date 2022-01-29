@@ -180,8 +180,8 @@ public class ProfileFragment extends Fragment implements ProfileContract.Profile
         if (FastSave.getInstance().getString(LOGIN_MODE, "").equalsIgnoreCase(GROUP_MODE))
             tv_en_id.setText("" + FastSave.getInstance().getString(FC_Constants.GROUP_ENROLLMENT_ID, ""));
         else {
-            if(FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ENROLL_ID, "").equalsIgnoreCase("")
-                ||FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ENROLL_ID, "").equalsIgnoreCase(" "))
+            if(!FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ENROLL_ID, "").equalsIgnoreCase("")
+                || !FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ENROLL_ID, "").equalsIgnoreCase(" "))
             tv_en_id.setText("" + FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ENROLL_ID, ""));
         }
 

@@ -33,6 +33,7 @@ public class FC_Constants {
     public static final String REVEALX = "REVEALX";
     public static final String REVEALY = "REVEALY";
     public static final String GAME = "game";
+    public static final String IMAGE_RES = "IMAGE_RES";
     public static final String VIDEO = "video";
     public static final String PDF = "pdf";
     public static final String PDF_ZOOM = "PDF_ZOOM";
@@ -311,13 +312,15 @@ public class FC_Constants {
     public static final String RASPBERRY_PI_LANGUAGE_API = "http://192.168.4.1:8000/api/channel/AppNodeDetailListByNode/?ParentId=";
     public static final String RASPBERRY_PI_BROWSE_API = "http://192.168.4.1:8000/api/channel/AppNodeDetailListByNode/?ParentId=";
     public static final String TEMP_RASPBERRY_PI_BROWSE_API = "http://192.168.4.1:8000/api/channel/AppNodeDetailListByNode/";
+    public static final String INTERNET_DOWNLOAD_RESOURCE_API_PI = "http://192.168.4.1:8000/api/channel/AppNodeJsonListByNode/?NodeId=";
+
     public static final String INTERNET_LANGUAGE_API = "https://devposapi.prathamopenschool.org/api/ContentV2/browse?id=";
     public static final String INTERNET_BROWSE_API = "https://devposapi.prathamopenschool.org/api/ContentV2/BrowseLevel2?id=";
     public static final String INTERNET_DOWNLOAD_RESOURCE_API = "https://devposapi.prathamopenschool.org/api/content/downloadv2?id=";
-    public static final String INTERNET_DOWNLOAD_RESOURCE_API_PI = "http://192.168.4.1:8000/api/channel/AppNodeJsonListByNode/?NodeId=";
+
 //    public static final String INTERNET_DOWNLOAD_RESOURCE_API = "http://devposapi.prathamopenschool.org/api/content/downloadv2?id=";
 
-    //    DEV APIS   http://fcapp.openiscool.org/
+//    DEV APIS   http://fcapp.openiscool.org/
 //    public static final String INTERNET_LANGUAGE_API = "http://fcapp.openiscool.org/api/ContentV2/browse?id=";
 //    public static final String INTERNET_BROWSE_API = "http://fcapp.openiscool.org/api/ContentV2/BrowseLevel2?id=";
 //    public static final String INTERNET_DOWNLOAD_RESOURCE_API = "http://fcapp.openiscool.org/api/content/downloadv2?id=";

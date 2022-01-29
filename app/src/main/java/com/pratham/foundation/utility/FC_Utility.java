@@ -398,11 +398,27 @@ public class FC_Utility {
 
 
         Log.d("XX-INST-XX", "Lang $$$: "+language);
+        Locale myLocale = new Locale(language);
+        Locale.setDefault(myLocale);
         Resources resources = context.getResources();
         DisplayMetrics dm = resources.getDisplayMetrics();
         Configuration config = resources.getConfiguration();
         config.setLocale(new Locale(language));
         resources.updateConfiguration(config, dm);
+    }
+
+    public static void setLocaleByLanguageId(Context context, String langCode) {
+
+     /*   Locale myLocale = new Locale(lang);
+        Locale.setDefault(myLocale);*/
+        Locale myLocale = new Locale(langCode);
+        Locale.setDefault(myLocale);
+        Resources resources = context.getResources();
+        DisplayMetrics dm = resources.getDisplayMetrics();
+        Configuration config = resources.getConfiguration();
+        config.setLocale(new Locale(langCode));
+        resources.updateConfiguration(config, dm);
+
     }
 
     public static StateListDrawable createStateListDrawable(Drawable drawable, @ColorInt int drawableColor) {

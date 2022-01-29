@@ -16,7 +16,7 @@ public class BackupDatabase {
             File sd = new File(ApplicationClass.getStoragePath()+"/PrathamBackups");
 //            File sd = new File(""+mContext.getExternalFilesDir("/PrathamBackups"));
             if(!sd.exists())
-                sd.mkdir();
+                sd.mkdirs();
             if (sd.canWrite()) {
                 File currentDB = mContext.getDatabasePath(AppDatabase.DB_NAME);
                 File parentPath = currentDB.getParentFile();

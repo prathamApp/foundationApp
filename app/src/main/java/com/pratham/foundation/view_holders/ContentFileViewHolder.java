@@ -1,5 +1,9 @@
 package com.pratham.foundation.view_holders;
 
+import static com.pratham.foundation.ApplicationClass.App_Thumbs_Path;
+import static com.pratham.foundation.ui.app_home.HomeActivity.drawableBg;
+import static com.pratham.foundation.utility.FC_Constants.SINGLE_RES_DOWNLOAD;
+
 import android.annotation.SuppressLint;
 import android.net.Uri;
 import android.view.View;
@@ -28,10 +32,6 @@ import com.pratham.foundation.utility.FC_Constants;
 
 import java.io.File;
 import java.util.Objects;
-
-import static com.pratham.foundation.ApplicationClass.App_Thumbs_Path;
-import static com.pratham.foundation.ui.app_home.HomeActivity.drawableBg;
-import static com.pratham.foundation.utility.FC_Constants.SINGLE_RES_DOWNLOAD;
 
 public class ContentFileViewHolder extends RecyclerView.ViewHolder {
 
@@ -140,6 +140,8 @@ public class ContentFileViewHolder extends RecyclerView.ViewHolder {
                     ib_action_btn.setImageResource(R.drawable.ic_video);
                 else if (contentList.getResourceType().toLowerCase().contains(FC_Constants.GAME))
                     ib_action_btn.setImageResource(R.drawable.ic_joystick);
+                else if (contentList.getResourceType().equalsIgnoreCase(FC_Constants.IMAGE_RES))
+                    Objects.requireNonNull(ib_action_btn).setImageResource(R.drawable.ic_imggg);
                 else
                     ib_action_btn.setImageResource(R.drawable.ic_android_act);
             }
@@ -275,6 +277,8 @@ public class ContentFileViewHolder extends RecyclerView.ViewHolder {
                     Objects.requireNonNull(ib_action_btn).setImageResource(R.drawable.ic_video);
                 else if (contentTable.getResourceType().toLowerCase().contains(FC_Constants.GAME))
                     Objects.requireNonNull(ib_action_btn).setImageResource(R.drawable.ic_joystick);
+                else if (contentTable.getResourceType().equalsIgnoreCase(FC_Constants.IMAGE_RES))
+                    Objects.requireNonNull(ib_action_btn).setImageResource(R.drawable.ic_imggg);
                 else
                     Objects.requireNonNull(ib_action_btn).setImageResource(R.drawable.ic_android_act);
 

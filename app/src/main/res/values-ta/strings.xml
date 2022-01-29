@@ -1,7 +1,7 @@
 <?xml version="1.0" ?>
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
     <string name="Login">உள்நுழைய</string>
-<!--    <string name="Stt_Dialog_Msg">ஆஃப்லைன் பேச்சு அங்கீகாரத்திற்காக மொழிப் பொதிகளை ஆங்கிலம் (இந்தியா) மற்றும் இந்தி, (இந்தியா)பதிவிறக்கவும்.\n\nOpen\nGoogle -> Settings -> Voice -> Offline speech recognition</string>-->
+    <!--    <string name="Stt_Dialog_Msg">ஆஃப்லைன் பேச்சு அங்கீகாரத்திற்காக மொழிப் பொதிகளை ஆங்கிலம் (இந்தியா) மற்றும் இந்தி, (இந்தியா)பதிவிறக்கவும்.\n\nOpen\nGoogle -> Settings -> Voice -> Offline speech recognition</string>-->
     <string name="Stt_Dialog_Msg">ஆஃப்லைன் பேச்சு அங்கீகாரத்திற்காக மொழிப் பொதிகளை ஆங்கிலம் (இந்தியா) மற்றும் இந்தி, (இந்தியா)பதிவிறக்கவும்.</string>
     <string name="Okay">சரி</string>
     <string name="Skip">தாவிச்செல்</string>
@@ -164,4 +164,357 @@
     <string name="DB_Zip_push">DB கோப்பை ஒத்திசைக்கவும்</string>
 
 
+
+
+
+
+
+
+
+
+    <string name="Agent_name" >Vernicula</string>
+    <string name="talkbot" >Talkbot</string>
+    <string name="more" >more</string>
+
+    <string name="title_activity_admin_panel" >AdminPanelActivity</string>
+    <string name="dummy_button" >Dummy Button</string>
+    <string name="dummy_content" >DUMMY\nCONTENT</string>
+    <string name="default_notification_channel_id" >fcm_default_channel</string>
+    <string name="fcm_message" >City of Stories - PraDigi</string>
+    <string name="read_india" >Read India</string>
+    <string name="hybrid_learning" >Hybrid Learning</string>
+    <string name="second_chance" >Second Chance</string>
+    <string name="ECE" >ECE</string>
+    <string name="pratham_institute" >Pratham Institute</string>
+
+    <string name="urbon_program" >Urban programme</string>
+    <string name="title_activity_push_data" >PushDataActivity</string>
+    <string name="top_sheet_behavior" >com.pratham.prathamdigital.custom.topsheet.TopSheetBehavior</string>
+    <string name="switch_off_mobile_hotspot" >Please switch off the mobile data and try again.</string>
+    <string name="change" >Change</string>
+    <string name="content_download_alert" >Content will be downloaded in</string>
+    <string name="nsd_servername_postfix" >FTP Server</string>
+    <string name="storage_warning" >Warning: storage is not available. You may want to unmount it.</string>
+    <string name="notification_server_starting" >Starting at %s</string>
+    <string name="notification_title" >FTP Server is running</string>
+    <string name="notification_text" >at %s</string>
+    <string name="notification_stop_text" >Stop Server</string>
+    <string name="notif_settings_text" >Settings</string>
+    <string name="swiftp_name" >FTP Server</string>
+    <string name="share" >Create</string>
+    <string name="recieve" >Join</string>
+    <string name="retry" >Retry</string>
+    <string name="Open" >Open</string>
+    <string name="downloading" >Downloading...</string>
+    <string name="download" >Download</string>
+    <string name="age_3_to_6" >Age 3 to 6</string>
+    <string name="age_8_to_14" >Age 8 to 14</string>
+    <string name="title_activity_home_" >Home_Activity</string>
+    <string name="title_activity_keyword_mapping" >KeywordMapping</string>
+
+    <string-array name="no_data">
+        <item tools:ignore="TypographyEllipsis">Sorry ... No Data Available ...</item>
+    </string-array>
+
+    <string name="pref_auto_filter" >pref_auto_filter</string>
+    <string name="pref_log_level" >pref_log_level</string>
+    <string name="pref_tag_filter" >pref_tag_filter</string>
+    <string name="pref_tag_filter_set" >pref_tag_filter_set</string>
+    <string name="pref_text_opacity" >pref_text_opacity</string>
+    <string name="pref_bg_opacity" >pref_bg_opacity</string>
+    <string name="pref_text_size" >pref_text_size</string>
+    <string name="pref_info_open_source" >pref_info_open_source</string>
+    <string name="pref_version" >pref_version</string>
+    <string name="pref_root_fail_count" >pref_root_fail_count</string>
+    <string name="permission_read_logs_description" >Allows an application to read the logcat output for Ghost Log integrated apps. This allows it to discover general information about integrated apps that is being written to the log.</string>
+    <string name="permission_read_logs_label" >read logcat output for Ghost Log integrated apps</string>
+    <string name="share_subject" >Logcat Output</string>
+    <string name="canned_integration_log_line" >I GhostLog: Running in Integration Mode</string>
+    <string name="notification_title_log" >Log service is active</string>
+    <string name="play" >Play</string>
+    <string name="pause" >Pause</string>
+    <string name="share_share" >Share</string>
+    <string name="log_level" >Log Level</string>
+    <string name="tag_filter" >Tag Filter</string>
+    <string name="no_filter" >No Filter</string>
+    <string name="auto_filter" >Auto Filter</string>
+    <string name="auto_filter_summary" >Show foreground process only</string>
+    <string name="off" >Off</string>
+    <string name="none" >None</string>
+    <string name="add_tag_filter" >Add Tag Filter</string>
+    <string name="new_tag_filter" >New Tag Filter</string>
+    <string name="enter_log_tag" >Enter log tag</string>
+    <string name="delete" >Delete</string>
+    <string name="_selected" >" selected"</string>
+    <string name="information" >Application Info</string>
+    <string name="open_source_licences" >Open Source Licences</string>
+    <string name="about" >About</string>
+    <string name="toast_no_root" >Failed to obtain root access - integration mode only</string>
+    <string name="github" >GitHub</string>
+    <string name="repo_url" >https://github.com/jgilfelt/GhostLog</string>
+    <string name="no_root" >No Root Access</string>
+    <string name="no_root_dialog" >Ghost Log requires device root privileges to read system logs. It will run in integration mode on this device. Visit the GitHub project page to learn how to integrate your own apps.</string>
+    <string name="version" >Version</string>
+    <string name="copyright" >&#169; readyState Software Ltd</string>
+    <string name="by_author" >by Pratham Education Foundation</string>
+
+    <string-array name="levels_values">
+        <item>V</item>
+        <item>D</item>
+        <item>I</item>
+        <item>W</item>
+        <item>E</item>
+        <item>A</item>
+    </string-array>
+    <string-array name="levels_entries">
+        <item>Verbose</item>
+        <item>Debug</item>
+        <item>Info</item>
+        <item>Warn</item>
+        <item>Error</item>
+        <item>Assert</item>
+    </string-array>
+
+    <string-array name="dummy_data">
+        <item>Sample Entry One</item>
+        <item>Sample Entry Two</item>
+        <item>Sample Entry Three</item>
+        <item>Sample Entry Four</item>
+        <item>Sample Entry Five</item>
+        <item>Sample Entry Six</item>
+        <item>Sample Entry Seven</item>
+        <item>Sample Entry Eight</item>
+        <item>Sample Entry Nine</item>
+        <item>Sample Entry Ten</item>
+    </string-array>
+    <string-array name="india_states">
+        <item>SELECT STATE</item>
+        <item>Andhra Pradesh(AP)</item>
+        <item>Arunachal Pradesh(AR)</item>
+        <item>Assam(AS)</item>
+        <item>Bihar(BR)</item>
+        <item>Chhattisgarh(CG)</item>
+        <item>Goa(GA)</item>
+        <item>Gujarat(GJ)</item>
+        <item>Haryana(HR)</item>
+        <item>Himachal Pradesh(HP)</item>
+        <item>Jammu and kashmir(JK)</item>
+        <item>Jharkhand(JH)</item>
+        <item>Karnataka(KA)</item>
+        <item>Kerala(KL)</item>
+        <item>Madhya Pradesh(MP)</item>
+        <item>Maharashtra(MH)</item>
+        <item>Manipur(MN)</item>
+        <item>Meghalaya(ML)</item>
+        <item>Mizoram(MZ)</item>
+        <item>Nagaland(NL)</item>
+        <item>Orissa(OR)</item>
+        <item>Punjab(PB)</item>
+        <item>Rajasthan(RJ)</item>
+        <item>Sikkim(SK)</item>
+        <item>Tamil Nadu(TN)</item>
+        <item>Telangana(TS)</item>
+        <item>Tripura(TR)</item>
+        <item>Uttarakhand(UK)</item>
+        <item>Uttar Pradesh(UP)</item>
+        <item>West Bengal(WB)</item>
+        <item>Andaman and Nicobar Islands(AN)</item>
+        <item>Chandigarh(CH)</item>
+        <item>Dadra and Nagar Haveli(DH)</item>
+        <item>Daman and Diu(DD)</item>
+        <item>Delhi(DL)</item>
+        <item>Lakshadweep(LD)</item>
+        <item>Pondicherry(PY)</item>
+    </string-array>
+    <string-array name="india_states_shortcode">
+        <item>SELECT STATE</item>
+        <item>AP</item>
+        <item>AR</item>
+        <item>AS</item>
+        <item>BR</item>
+        <item>CG</item>
+        <item>GA</item>
+        <item>GJ</item>
+        <item>HR</item>
+        <item>HP</item>
+        <item>JK</item>
+        <item>JH</item>
+        <item>KA</item>
+        <item>KL</item>
+        <item>MP</item>
+        <item>MH</item>
+        <item>MN</item>
+        <item>ML</item>
+        <item>MZ</item>
+        <item>NL</item>
+        <item>OR</item>
+        <item>PB</item>
+        <item>RJ</item>
+        <item>SK</item>
+        <item>TN</item>
+        <item>TS</item>
+        <item>TR</item>
+        <item>UK</item>
+        <item>UP</item>
+        <item>WB</item>
+        <item>AN</item>
+        <item>CH</item>
+        <item>DH</item>
+        <item>DD</item>
+        <item>DL</item>
+        <item>LD</item>
+        <item>PY</item>
+    </string-array>
+    <string-array name="avatars">
+        <item>avatars/b1.png</item>
+        <item>avatars/b2.png</item>
+        <item>avatars/b3.png</item>
+        <item>avatars/g1.png</item>
+        <item>avatars/g2.png</item>
+        <item>avatars/g3.png</item>
+        <!-- <item>avatars/techno_penguin.json</item>
+        <item>avatars/biking_is_cool.json</item>
+        <item>avatars/acrobatics.json</item>-->
+    </string-array>
+    <string-array name="age">
+        <item>Select Age</item>
+        <item> 3  </item>
+        <item> 4  </item>
+        <item> 5  </item>
+        <item> 6  </item>
+        <item> 7  </item>
+        <item> 8  </item>
+        <item> 9  </item>
+        <item> 10 </item>
+        <item> 11 </item>
+        <item> 12 </item>
+        <item> 13 </item>
+        <item> 14 </item>
+        <item> 15 </item>
+        <item> 16 </item>
+        <item> 17 </item>
+        <item> 18 </item>
+        <item> 19 </item>
+        <item> 20 </item>
+        <item> 21 </item>
+        <item> 22 </item>
+        <item> 23 </item>
+        <item> 24 </item>
+        <item> 25 </item>
+        <item> 26 </item>
+        <item> 27 </item>
+        <item> 28 </item>
+        <item> 29 </item>
+        <item> 30 </item>
+        <item> 31 </item>
+        <item> 32 </item>
+        <item> 33 </item>
+        <item> 34 </item>
+        <item> 35 </item>
+        <item> 36 </item>
+        <item> 37 </item>
+        <item> 38 </item>
+        <item> 39 </item>
+        <item> 40 </item>
+        <item> 41 </item>
+        <item> 42 </item>
+        <item> 43 </item>
+        <item> 44 </item>
+        <item> 45 </item>
+        <item> 46 </item>
+        <item> 47 </item>
+        <item> 48 </item>
+        <item> 49 </item>
+        <item> 50 </item>
+        <item> 51 </item>
+        <item> 52 </item>
+        <item> 53 </item>
+        <item> 54 </item>
+        <item> 55 </item>
+        <item> 56 </item>
+        <item> 57 </item>
+        <item> 58 </item>
+        <item> 59 </item>
+        <item> 60 </item>
+        <item> 61 </item>
+        <item> 62 </item>
+        <item> 63 </item>
+        <item> 64 </item>
+        <item> 65 </item>
+        <item> 66 </item>
+        <item> 67 </item>
+        <item> 68 </item>
+        <item> 69 </item>
+        <item> 70 </item>
+        <item> 71 </item>
+        <item> 72 </item>
+        <item> 73 </item>
+        <item> 74 </item>
+        <item> 75 </item>
+        <item> 76 </item>
+        <item> 77 </item>
+        <item> 78 </item>
+        <item> 79 </item>
+        <item> 80 </item>
+        <item> 81 </item>
+        <item> 82 </item>
+        <item> 83 </item>
+        <item> 84 </item>
+        <item> 85 </item>
+        <item> 86 </item>
+        <item> 87 </item>
+        <item> 88 </item>
+        <item> 89 </item>
+        <item> 90 </item>
+        <item> 91 </item>
+        <item> 92 </item>
+        <item> 93 </item>
+        <item> 94 </item>
+        <item> 95 </item>
+        <item> 96 </item>
+        <item> 97 </item>
+        <item> 98 </item>
+        <item> 99 </item>
+        <item> 100 </item>
+    </string-array>
+    <!-- Student_profile -->
+    <string-array name="student_class">
+        <item>Select Class</item>
+        <item> 1  </item>
+        <item> 2  </item>
+        <item> 3  </item>
+        <item> 4  </item>
+        <item> 5  </item>
+        <item> 6  </item>
+        <item> 7  </item>
+        <item> 8  </item>
+        <item> 9  </item>
+        <item> 10 </item>
+        <item> 11 </item>
+        <item> 12 </item>
+    </string-array>
+    <string-array name="certificate_Languages">
+        <item>Hindi     </item>
+        <item>Marathi   </item>
+    </string-array>
+    <string-array name="app_Language">
+        <item>Hindi</item>
+        <item>Marathi</item>
+    </string-array>
+    <string-array name="translation_Languages">
+        <item>Hindi</item>
+        <item>Marathi</item>
+    </string-array>
+    <string-array name="language_codes">
+        <item>en</item>
+        <item>hi</item>
+        <item>mr</item>
+        <item>gu</item>
+        <item>kn</item>
+        <item>bn</item>
+        <item>te</item>
+        <item>ta</item>
+        <item>ur</item>
+        <item>pa</item>
+    </string-array>
 </resources>

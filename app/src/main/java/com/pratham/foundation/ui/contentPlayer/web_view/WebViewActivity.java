@@ -1,12 +1,8 @@
 package com.pratham.foundation.ui.contentPlayer.web_view;
 
 import android.annotation.SuppressLint;
-import android.app.Activity;
-import android.content.Intent;
-import android.content.pm.ApplicationInfo;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
-import android.os.Build;
 import android.os.Handler;
 import android.util.Log;
 import android.view.View;
@@ -40,17 +36,13 @@ import org.androidannotations.annotations.ViewById;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.pratham.foundation.utility.FC_Constants.APP_SECTION;
-import static com.pratham.foundation.utility.FC_Constants.sec_Test;
-
 @EActivity(R.layout.activity_web_view)
 public class WebViewActivity extends BaseActivity implements WebViewInterface {
 
-    public static int tMarks, sMarks;
     @ViewById(R.id.loadPage)
     WebView webView;
     String gamePath, currentGameName, webViewLang = "NA", resStartTime;
-    public static String webResId, gameLevel, mode, cCode, gameType, gameCategory, gameName;
+    public static String webResId, gameLevel, mode, gameType, gameCategory, gameName;
     TextToSpeechCustom tts;
     public static int gameCounter = 0, arraySize, dataTotalLength;
     int position;
@@ -58,7 +50,7 @@ public class WebViewActivity extends BaseActivity implements WebViewInterface {
     public static List<KeyWords> learntWordsList;
 
     @AfterViews
-    public void initialize(){
+    public void initialize() {
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
         webResId = getIntent().getStringExtra("resId");
         gamePath = getIntent().getStringExtra("resPath");
@@ -69,32 +61,10 @@ public class WebViewActivity extends BaseActivity implements WebViewInterface {
         gameCategory = getIntent().getStringExtra("gameCategory");
 
         String a = FastSave.getInstance().getString(FC_Constants.APP_LANGUAGE, FC_Constants.HINDI);
-        Log.d("INSTRUCTIONFRAG", "Select Subj: "+a);
+        Log.d("INSTRUCTIONFRAG", "Select Subj: " + a);
         FC_Utility.setAppLocal(this, a);
 
         startWebViewAct();
-        /*
-        CertificateModelClass certificateModelClass=new CertificateModelClass();
-        certificateModelClass.setScoredMarks(50);
-        certificateModelClass.setTotalMarks(100);
-        certificateModelClass.setCertiCode("2");
-        certificateModelClassList.add(certificateModelClass);
-        certificateModelClass=new CertificateModelClass();
-        certificateModelClass.setScoredMarks(5);
-        certificateModelClass.setTotalMarks(10);
-        certificateModelClass.setCertiCode("4");
-        certificateModelClassList.add(certificateModelClass);
-        certificateModelClass=new CertificateModelClass();
-        certificateModelClass.setScoredMarks(3);
-        certificateModelClass.setTotalMarks(10);
-        certificateModelClass.setCertiCode("4");
-        certificateModelClassList.add(certificateModelClass);
-        certificateModelClass=new CertificateModelClass();
-        certificateModelClass.setScoredMarks(9);
-        certificateModelClass.setTotalMarks(10);
-        certificateModelClass.setCertiCode("3");
-        certificateModelClassList.add(certificateModelClass);
-*/
     }
 
     private void hideSystemUI() {
@@ -111,11 +81,7 @@ public class WebViewActivity extends BaseActivity implements WebViewInterface {
     }
 
     private void startWebViewAct() {
-        sMarks = 0;
-        tMarks = 0;
-        cCode = "NA";
         Log.d("WevViewLevel", "onCreate: " + gameLevel);
-
         try {
             tts = new TextToSpeechCustom(this, 0.6f);
         } catch (Exception e) {
@@ -131,26 +97,29 @@ public class WebViewActivity extends BaseActivity implements WebViewInterface {
     @UiThread
     @SuppressLint("JavascriptInterface")
     public void createWebView(String GamePath) {
-        webView.loadUrl(GamePath);
-        webView.getSettings().setJavaScriptEnabled(true);
-        webView.getSettings().setMediaPlaybackRequiresUserGesture(false);
-        webView.addJavascriptInterface(new JSInterface(this, webView, tts,
-                this, WebViewActivity.this), "Android");
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-            if (0 != (getApplicationInfo().flags & ApplicationInfo.FLAG_DEBUGGABLE)) {
-                WebView.setWebContentsDebuggingEnabled(true);
-            }
+        try {
+            webView.loadUrl(GamePath);
+            webView.getSettings().setJavaScriptEnabled(true);
+            webView.getSettings().setMediaPlaybackRequiresUserGesture(false);
+            webView.addJavascriptInterface(new JSInterface(this, webView, tts,
+                    this, WebViewActivity.this), "Android");
+            WebView.setWebContentsDebuggingEnabled(true);
+            webView.setWebViewClient(new WebViewClient());
+            webView.setWebChromeClient(new WebChromeClient());
+            webView.clearCache(true);
+            webView.setVerticalScrollBarEnabled(false);
+            webView.getSettings().setAllowFileAccess(true);
+            webView.getSettings().setLoadsImagesAutomatically(true);
+            webView.getSettings().setDomStorageEnabled(true);
+            webView.getSettings().setAllowContentAccess(true);
+            webView.getSettings().setLoadWithOverviewMode(true);
+            webView.getSettings().setUseWideViewPort(true);
+            webView.getSettings().setSafeBrowsingEnabled(false);
+            webView.setScrollBarStyle(View.SCROLLBARS_INSIDE_OVERLAY);
+            hideSystemUI();
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-        webView.setWebViewClient(new WebViewClient());
-        webView.setWebChromeClient(new WebChromeClient());
-        webView.clearCache(true);
-        webView.setVerticalScrollBarEnabled(false);
-        webView.getSettings().setAllowFileAccess(true);
-        webView.getSettings().setLoadsImagesAutomatically(true);
-        webView.getSettings().setDomStorageEnabled(true);
-        webView.setScrollBarStyle(View.SCROLLBARS_INSIDE_OVERLAY);
-        hideSystemUI();
     }
 
     @Override
@@ -172,27 +141,20 @@ public class WebViewActivity extends BaseActivity implements WebViewInterface {
         Button dia_btn_red = dialog.findViewById(R.id.dia_btn_red);
 
         String txt = getResources().getString(R.string.yes);
-        Log.d("INSTRUCTIONFRAG", "ExitDilg: "+txt);
+        Log.d("INSTRUCTIONFRAG", "ExitDilg: " + txt);
         dia_btn_green.setText(txt);
         txt = getResources().getString(R.string.no);
-        Log.d("INSTRUCTIONFRAG", "ExitDilg: "+txt);
+        Log.d("INSTRUCTIONFRAG", "ExitDilg: " + txt);
         dia_btn_red.setText(txt);
         txt = getResources().getString(R.string.exit_dialog_msg);
-        Log.d("INSTRUCTIONFRAG", "ExitDilg: "+txt);
+        Log.d("INSTRUCTIONFRAG", "ExitDilg: " + txt);
         dia_title.setText(txt);
         dialog.show();
 
         dia_btn_green.setOnClickListener(v -> {
-            if (FastSave.getInstance().getString(APP_SECTION, "").equalsIgnoreCase(sec_Test)) {
-                Intent returnIntent = new Intent();
-                returnIntent.putExtra("cCode", cCode);
-                returnIntent.putExtra("tMarks", tMarks);
-                returnIntent.putExtra("sMarks", sMarks);
-                setResult(Activity.RESULT_OK, returnIntent);
-            } else
-                addGameProgress();
+            addGameProgress();
             dialog.dismiss();
-            new Handler().postDelayed(() -> finish(),150);
+            new Handler().postDelayed(() -> finish(), 150);
         });
         dia_btn_red.setOnClickListener(v -> dialog.dismiss());
     }
@@ -200,54 +162,54 @@ public class WebViewActivity extends BaseActivity implements WebViewInterface {
     @Background
     @SuppressLint("StaticFieldLeak")
     public void addGameProgress() {
-         try {
-                    if (learntWordsList.size() > 0) {
-                        for (int i = 0; i < learntWordsList.size(); i++) {
-                            boolean wordPresent = checkWord(learntWordsList.get(i).getKeyWord().toLowerCase());
-                            if (!wordPresent) {
-                                KeyWords learntWords = new KeyWords();
-                                learntWords.setResourceId(webResId);
-                                learntWords.setSentFlag(0);
-                                learntWords.setStudentId(FastSave
-                                        .getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""));
-                                learntWords.setKeyWord(learntWordsList.get(i).getKeyWord().toLowerCase());
-                                learntWords.setWordType("" + learntWordsList.get(i).getWordType());
-                                AppDatabase.getDatabaseInstance(WebViewActivity.this).getKeyWordDao().insert(learntWords);
-                            }
-                        }
+        try {
+            if (learntWordsList.size() > 0) {
+                for (int i = 0; i < learntWordsList.size(); i++) {
+                    boolean wordPresent = checkWord(learntWordsList.get(i).getKeyWord().toLowerCase());
+                    if (!wordPresent) {
+                        KeyWords learntWords = new KeyWords();
+                        learntWords.setResourceId(webResId);
+                        learntWords.setSentFlag(0);
+                        learntWords.setStudentId(FastSave
+                                .getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""));
+                        learntWords.setKeyWord(learntWordsList.get(i).getKeyWord().toLowerCase());
+                        learntWords.setWordType("" + learntWordsList.get(i).getWordType());
+                        AppDatabase.getDatabaseInstance(WebViewActivity.this).getKeyWordDao().insert(learntWords);
                     }
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-
-                int scoredMarks = AppDatabase.getDatabaseInstance(WebViewActivity.this).getKeyWordDao().checkWebWordCount(FastSave.getInstance()
-                        .getString(FC_Constants.CURRENT_STUDENT_ID, ""), "" + webResId);
-                float perc = 0f;
-                try {
-                    if (scoredMarks > 0 && dataTotalLength > 0) {
-                        perc = ((float) scoredMarks / (float) dataTotalLength) * 100f;
-                    } else
-                        perc = 0f;
-                } catch (Exception e) {
-                    perc = 0f;
-                }
-                try {
-                    ContentProgress contentProgress = new ContentProgress();
-                    contentProgress.setProgressPercentage("" + perc);
-                    contentProgress.setResourceId("" + webResId);
-                    contentProgress.setSessionId("" + FastSave
-                            .getInstance().getString(FC_Constants.CURRENT_SESSION, ""));
-                    contentProgress.setStudentId("" + FastSave
-                            .getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""));
-                    contentProgress.setUpdatedDateTime("" + FC_Utility.getCurrentDateTime());
-                    contentProgress.setLabel("resourceProgress");
-                    contentProgress.setSentFlag(0);
-                    AppDatabase.getDatabaseInstance(WebViewActivity.this).getContentProgressDao().insert(contentProgress);
-                    BackupDatabase.backup(WebViewActivity.this);
-                } catch (Exception e) {
-                    e.printStackTrace();
                 }
             }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        int scoredMarks = AppDatabase.getDatabaseInstance(WebViewActivity.this).getKeyWordDao().checkWebWordCount(FastSave.getInstance()
+                .getString(FC_Constants.CURRENT_STUDENT_ID, ""), "" + webResId);
+        float perc = 0f;
+        try {
+            if (scoredMarks > 0 && dataTotalLength > 0) {
+                perc = ((float) scoredMarks / (float) dataTotalLength) * 100f;
+            } else
+                perc = 0f;
+        } catch (Exception e) {
+            perc = 0f;
+        }
+        try {
+            ContentProgress contentProgress = new ContentProgress();
+            contentProgress.setProgressPercentage("" + perc);
+            contentProgress.setResourceId("" + webResId);
+            contentProgress.setSessionId("" + FastSave
+                    .getInstance().getString(FC_Constants.CURRENT_SESSION, ""));
+            contentProgress.setStudentId("" + FastSave
+                    .getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""));
+            contentProgress.setUpdatedDateTime("" + FC_Utility.getCurrentDateTime());
+            contentProgress.setLabel("resourceProgress");
+            contentProgress.setSentFlag(0);
+            AppDatabase.getDatabaseInstance(WebViewActivity.this).getContentProgressDao().insert(contentProgress);
+            BackupDatabase.backup(WebViewActivity.this);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 
     private boolean checkWord(String checkWord) {
         try {
@@ -260,30 +222,10 @@ public class WebViewActivity extends BaseActivity implements WebViewInterface {
         }
     }
 
-
     @UiThread
     @Override
     public void onNextGame(final WebView w) {
         showExitDialog();
-        //        webView.loadUrl("about:blank");
-//        finish();
-
-        /*gameCounter += 1;
-        if (gameCounter < arraySize) {
-            System.out.println(" gameCounter :::::::::::::::::::::::::::::::::: " + gameCounter);
-            gamePath = gameTestWebViewList.get(gameCounter).getResourcePath();//
-            webResId = gameTestWebViewList.get(gameCounter).getResourceId();
-            System.out.println("gamePath :::::: " + gamePath + " :::::: " + webResId);
-            w.post(new Runnable() {
-                @Override
-                public void run() {
-                    w.loadUrl(gamePath);
-                }
-            });
-        } else {
-            startActivity(new Intent(this, CertificateActivity.class));
-            super.onBackPressed();
-        }*/
     }
 
     @Override
@@ -302,4 +244,3 @@ public class WebViewActivity extends BaseActivity implements WebViewInterface {
         }
     }
 }
-

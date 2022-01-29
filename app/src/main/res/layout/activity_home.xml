@@ -37,6 +37,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_below="@+id/main_back"
+            android:layout_marginTop="@dimen/_2sdp"
             android:layout_toStartOf="@+id/right_col"
             android:layout_marginStart="@dimen/_15sdp">
 
@@ -61,20 +62,12 @@
                 android:layout_below="@+id/tv_Topic"
                 android:gravity="center_vertical"
                 android:orientation="horizontal">
-                <com.pratham.foundation.customView.fontsview.SansTextView
-                    android:id="@+id/tv_Activity"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="@dimen/_10sdp"
-                    android:text=""
-                    android:gravity="center"
-                    android:textColor="@color/oslo_grey"
-                    android:textSize="@dimen/_16sdp" />
+
                 <com.pratham.foundation.customView.fontsview.SansTextViewBold
                     android:id="@+id/tv_header_progress"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/_5sdp"
+                    android:layout_marginEnd="@dimen/_5sdp"
                     android:background="@drawable/progress_background2"
                     android:paddingStart="@dimen/_8sdp"
                     android:paddingEnd="@dimen/_8sdp"
@@ -83,6 +76,17 @@
                     android:textColor="@color/white"
                     android:textSize="@dimen/_10sdp"
                     tools:ignore="HardcodedText" />
+
+                <com.pratham.foundation.customView.fontsview.SansTextView
+                    android:id="@+id/tv_Activity"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/_5sdp"
+                    android:layout_marginEnd="@dimen/_5sdp"
+                    android:text=""
+                    android:gravity="center"
+                    android:textColor="@color/oslo_grey"
+                    android:textSize="@dimen/_16sdp" />
             </LinearLayout>
         </RelativeLayout>
 

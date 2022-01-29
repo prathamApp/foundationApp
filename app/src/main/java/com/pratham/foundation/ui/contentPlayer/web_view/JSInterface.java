@@ -89,9 +89,9 @@ public class JSInterface implements RecognitionListener {
     @JavascriptInterface
     public void StudentCertification(int scoredMarks, int totalMarks, String certiCode) {
         boolean oldFlg = false;
-        WebViewActivity.sMarks = scoredMarks;
+/*        WebViewActivity.sMarks = scoredMarks;
         WebViewActivity.tMarks = totalMarks;
-        WebViewActivity.cCode = certiCode;
+        WebViewActivity.cCode = certiCode;*/
     }
 
     @JavascriptInterface
