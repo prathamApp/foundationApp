@@ -20,18 +20,21 @@
 
     <com.pratham.foundation.customView.fontsview.SansTextViewBold
         android:id="@+id/title_tv"
-        style="@style/paragraph"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_centerVertical="true"
+        android:padding="@dimen/_10sdp"
+        android:elevation="@dimen/_3sdp"
         android:layout_marginStart="@dimen/_10sdp"
         android:layout_marginTop="@dimen/_10sdp"
         android:layout_marginEnd="@dimen/_10sdp"
         android:layout_marginBottom="@dimen/_10sdp"
         android:text="@string/activity_completed"
         android:textColor="@color/colorText"
-        android:textSize="@dimen/_12sdp" />
+        android:textAlignment="center"
+        android:background="@drawable/rounded_corner_dialog"
+        android:textSize="@dimen/_15sdp" />
 
     <com.google.android.material.card.MaterialCardView
         android:layout_width="match_parent"
@@ -48,6 +51,7 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:layout_gravity="center"
             android:background="@color/white">
 
             <com.pratham.foundation.customView.GifViewZoom
@@ -55,13 +59,13 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_centerInParent="true"
-                android:layout_gravity="center"
                 android:visibility="gone" />
 
             <com.pratham.foundation.customView.ZoomageView
                 android:id="@+id/iv_zoom_img"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:layout_centerInParent="true"
                 android:layout_gravity="center"
                 android:src="@drawable/pratham_logo"
                 android:visibility="gone"

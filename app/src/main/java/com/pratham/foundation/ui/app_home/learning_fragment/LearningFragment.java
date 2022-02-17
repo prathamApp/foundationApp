@@ -222,7 +222,7 @@ public class LearningFragment extends Fragment implements LearningContract.Learn
                 } else if (message.getMessage().equalsIgnoreCase(FC_Constants.FILE_DOWNLOAD_UPDATE)) {
                     if (progressLayout != null)
 //                        if (downloadNodeId.equalsIgnoreCase(modal_fileDownloading.getDownloadId()))
-                            progressLayout.setCurProgress(message.getModal_fileDownloading().getProgress());
+                        progressLayout.setCurProgress(message.getModal_fileDownloading().getProgress());
                 } else if (message.getMessage().equalsIgnoreCase(FC_Constants.FRAGMENT_SELECTED) ||
                         message.getMessage().equalsIgnoreCase(FC_Constants.FRAGMENT_RESELECTED) ||
                         message.getMessage().equalsIgnoreCase(FC_Constants.ACTIVITY_RESUMED) ||
@@ -541,7 +541,7 @@ public class LearningFragment extends Fragment implements LearningContract.Learn
     }
 
     @Override
-    public void onTestAddedToDb (ContentTable itemContent) {
+    public void onTestAddedToDb(ContentTable itemContent) {
         dismissLoadingDialog();
         FC_Constants.AssLang = itemContent.getContentLanguage();
         FC_Constants.examId = itemContent.getNodeKeywords();
@@ -709,8 +709,8 @@ public class LearningFragment extends Fragment implements LearningContract.Learn
             startActivity(mainNew);
         } else {
             if (contentList.getResourceType().toLowerCase().contains(FC_Constants.HTML_GAME_RESOURCE)) {
-                String resPath;
                 String gameID = contentList.getResourceId();
+                String resPath;
                 if (contentList.isOnSDCard())
                     resPath = ApplicationClass.contentSDPath + gameFolderPath + "/" + contentList.getResourcePath();
                 else
@@ -838,8 +838,8 @@ public class LearningFragment extends Fragment implements LearningContract.Learn
                 intent1.putExtra("onSdCard", contentList.isOnSDCard());
                 intent1.putExtra("dia", "NA");
                 context.startActivity(intent1);
-            } else if (contentList.getResourceType().equalsIgnoreCase("PDF_ZOOM")
-                    || contentList.getResourceType().equalsIgnoreCase("PDF_new")) {
+            } else if (contentList.getResourceType().equalsIgnoreCase(FC_Constants.PDF_ZOOM)
+                    || contentList.getResourceType().equalsIgnoreCase(FC_Constants.PDF_NEW)) {
                 String sdStatus = "F";
                 if (contentList.isOnSDCard())
                     sdStatus = "T";
@@ -852,7 +852,7 @@ public class LearningFragment extends Fragment implements LearningContract.Learn
                 intent2.putExtra("onSdCard", contentList.isOnSDCard());
                 intent2.putExtra("dia", "NA");
                 context.startActivity(intent2);
-            } else if (contentList.getResourceType().equalsIgnoreCase("IMAGE_RES")){
+            } else if (contentList.getResourceType().equalsIgnoreCase(FC_Constants.IMAGE_RES)) {
                 String sdStatus = "F";
                 if (contentList.isOnSDCard())
                     sdStatus = "T";
@@ -885,25 +885,26 @@ public class LearningFragment extends Fragment implements LearningContract.Learn
     @Override
     public void onContentDownloadClicked(ContentTable contentList, int parentPos, int childPos, String downloadType) {
         if (!IS_DOWNLOADING) {
-            showLoader();
-            this.downloadType = downloadType;
-            downloadNodeId = contentList.getNodeId();
-            FastSave.getInstance().saveString(APP_SECTION, "" + sec_Learning);
-            try {
-                ButtonClickSound.start();
-            } catch (IllegalStateException e) {
-                e.printStackTrace();
-            }
-            this.parentPos = parentPos;
-            this.childPos = childPos;
-            resName = contentList.getNodeTitle();
-            resServerImageName = contentList.getNodeServerImage();
-            if (FastSave.getInstance().getString(APP_SECTION, "").equalsIgnoreCase(sec_Learning)) {
-                if (FC_Utility.isDataConnectionAvailable(context))
-                    presenter.downloadResource(downloadNodeId, contentList);
-                else
-                    Toast.makeText(context, "No Internet Connection", Toast.LENGTH_SHORT).show();
-            }
+            if (FC_Utility.isDataConnectionAvailable(context)) {
+                showLoader();
+                this.downloadType = downloadType;
+                downloadNodeId = contentList.getNodeId();
+                FastSave.getInstance().saveString(APP_SECTION, "" + sec_Learning);
+                try {
+                    ButtonClickSound.start();
+                } catch (IllegalStateException e) {
+                    e.printStackTrace();
+                }
+                this.parentPos = parentPos;
+                this.childPos = childPos;
+                resName = contentList.getNodeTitle();
+                resServerImageName = contentList.getNodeServerImage();
+                if (FastSave.getInstance().getString(APP_SECTION, "").equalsIgnoreCase(sec_Learning)) {
+                    if (FC_Utility.isDataConnectionAvailable(context))
+                        presenter.downloadResource(downloadNodeId, contentList);
+                }
+            } else
+                Toast.makeText(context, "No Internet Connection", Toast.LENGTH_SHORT).show();
         } else
             Toast.makeText(context, "Downloading other resource..", Toast.LENGTH_SHORT).show();
     }

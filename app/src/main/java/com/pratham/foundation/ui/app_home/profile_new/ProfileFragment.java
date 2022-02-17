@@ -33,6 +33,7 @@ import android.widget.Button;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.UiThread;
 import androidx.fragment.app.Fragment;
@@ -180,9 +181,9 @@ public class ProfileFragment extends Fragment implements ProfileContract.Profile
         if (FastSave.getInstance().getString(LOGIN_MODE, "").equalsIgnoreCase(GROUP_MODE))
             tv_en_id.setText("" + FastSave.getInstance().getString(FC_Constants.GROUP_ENROLLMENT_ID, ""));
         else {
-            if(!FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ENROLL_ID, "").equalsIgnoreCase("")
-                || !FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ENROLL_ID, "").equalsIgnoreCase(" "))
-            tv_en_id.setText("" + FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ENROLL_ID, ""));
+            if (!FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ENROLL_ID, "").equalsIgnoreCase("")
+                    || !FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ENROLL_ID, "").equalsIgnoreCase(" "))
+                tv_en_id.setText("" + FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ENROLL_ID, ""));
         }
 
         setImage();
@@ -449,11 +450,10 @@ public class ProfileFragment extends Fragment implements ProfileContract.Profile
 
     @Click(R.id.rl_sync)
     public void pushData() {
-
         if (FC_Utility.isDataConnectionAvailable(context)) {
             pushDataToServer.startDataPush(context, true);
-        }
-
+        } else
+            Toast.makeText(context, "No Internet Connection", Toast.LENGTH_SHORT).show();
     }
 
     @UiThread
@@ -473,7 +473,8 @@ public class ProfileFragment extends Fragment implements ProfileContract.Profile
             BackupDatabase.backup(context);
             dismissLoadingDialog();
             pushDataBaseZipToServer.startDataPush(context, true);
-        }
+        } else
+            Toast.makeText(context, "No Internet Connection", Toast.LENGTH_SHORT).show();
     }
 
 /*

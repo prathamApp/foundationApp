@@ -1,5 +1,11 @@
 package com.pratham.foundation.ui.app_home.display_content;
 
+import static com.pratham.foundation.ApplicationClass.App_Thumbs_Path;
+import static com.pratham.foundation.utility.FC_Constants.CURRENT_STUDENT_ID;
+import static com.pratham.foundation.utility.FC_Constants.PI_BROWSE;
+import static com.pratham.foundation.utility.FC_Constants.RASPBERRY_PI_LANGUAGE_API;
+import static com.pratham.foundation.utility.FC_Constants.gameFolderPath;
+
 import android.content.Context;
 import android.util.Log;
 
@@ -35,12 +41,6 @@ import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-
-import static com.pratham.foundation.ApplicationClass.App_Thumbs_Path;
-import static com.pratham.foundation.utility.FC_Constants.CURRENT_STUDENT_ID;
-import static com.pratham.foundation.utility.FC_Constants.PI_BROWSE;
-import static com.pratham.foundation.utility.FC_Constants.RASPBERRY_PI_LANGUAGE_API;
-import static com.pratham.foundation.utility.FC_Constants.gameFolderPath;
 
 @EBean
 public class ContentPresenter implements ContentContract.ContentPresenter, API_Content_Result {
@@ -205,6 +205,16 @@ public class ContentPresenter implements ContentContract.ContentPresenter, API_C
                         contentTable.setIsDownloaded("" + downloadedContentTableList.get(j).getIsDownloaded());
                         contentTable.setOnSDCard(downloadedContentTableList.get(j).isOnSDCard());
                         contentTable.setSeq_no(downloadedContentTableList.get(j).getSeq_no());
+                        String resPath;
+                        if (downloadedContentTableList.get(j).isOnSDCard())
+                            resPath = ApplicationClass.contentSDPath + gameFolderPath + "/" + downloadedContentTableList.get(j).getResourcePath();
+                        else
+                            resPath = ApplicationClass.foundationPath + gameFolderPath + "/" + downloadedContentTableList.get(j).getResourcePath();
+                        if(!new File(resPath).exists()){
+                            contentTable.setIsDownloaded("" + false);
+                            contentTable.setOnSDCard(false);
+                        }
+
                         contentTable.setNodeUpdate(false);
                         float prog = 0;
                         maxScoreChild = new ArrayList();
@@ -524,13 +534,8 @@ public class ContentPresenter implements ContentContract.ContentPresenter, API_C
                                     download_content.getFoldername(), fileName, dwContent, pos, false);
                         }
                     } else {
-                        if (fileName.contains(".zip") || fileName.contains(".rar")) {
-                            zipDownloader.initialize(context, download_content.getDownloadurl(),
-                                    download_content.getFoldername(), fileName, dwContent, pos, true);
-                        } else {
-                            zipDownloader.initialize(context, download_content.getDownloadurl(),
-                                    download_content.getFoldername(), fileName, dwContent, pos, false);
-                        }
+                        zipDownloader.initialize(context, download_content.getDownloadurl(),
+                                download_content.getFoldername(), fileName, dwContent, pos, fileName.contains(".zip") || fileName.contains(".rar"));
 
                     }
 

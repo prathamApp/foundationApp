@@ -443,7 +443,6 @@ public class PushDataToServer_New {
             } else {
 //                pushSuccessfull = false;
 //                setDataPushFailed();
-
                 AndroidNetworking.upload(URL_Final)
                         .addHeaders("Content-Type", "file/zip")
                         .addMultipartFile("" + fielName, new File(filePathStr + ".zip"))
@@ -472,6 +471,7 @@ public class PushDataToServer_New {
                             public void onError(ANError anError) {
                                 Log.d("PushData", "Data push FAIL");
                                 Log.d("PushData", "ERROR  " + anError);
+                                new File(filePathStr + ".zip").delete();
                                 pushSuccessfull = false;
                                 setDataPushFailed();
                             }
@@ -779,12 +779,12 @@ public class PushDataToServer_New {
                 log.setErrorType(""+FC_Constants.SUCCESSFULLYPUSHED);
             else
                 log.setErrorType(""+FC_Constants.PUSHFAILED);
-            log.setLogDetail(""+pushStatusJson.toString());
+            log.setLogDetail(""+ pushStatusJson);
             log.setDeviceId("" + FC_Utility.getDeviceID());
             log.setCurrentDateTime("" + syncTime);
             AppDatabase.getDatabaseInstance(context).getLogsDao().insertLog(log);
 
-            Log.d("PushData", "pushStatusJson JSON : " + pushStatusJson.toString());
+            Log.d("PushData", "pushStatusJson JSON : " + pushStatusJson);
 //            AppDatabase.getDatabaseInstance(context).getLogsDao().setPushDataLog(,
 //                    FastSave.getInstance().getString(FC_Constants.PUSH_ID_LOGS, ""));
             BackupDatabase.backup(context);

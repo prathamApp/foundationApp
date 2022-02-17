@@ -306,6 +306,15 @@ public class LearningPresenter implements LearningContract.LearningPresenter, AP
                         contentTableRes.setIsDownloaded("" + dwParentList.get(j).getIsDownloaded());
                         contentTableRes.setOnSDCard(dwParentList.get(j).isOnSDCard());
                         contentTableRes.setNodelist(tempList2);
+                        String resPath;
+                        if (dwParentList.get(j).isOnSDCard())
+                            resPath = ApplicationClass.contentSDPath + gameFolderPath + "/" + dwParentList.get(j).getResourcePath();
+                        else
+                            resPath = ApplicationClass.foundationPath + gameFolderPath + "/" + dwParentList.get(j).getResourcePath();
+                        if(!new File(resPath).exists()){
+                            contentTableRes.setIsDownloaded("" + false);
+                            contentTableRes.setOnSDCard(false);
+                        }
                         contentTableRes.setNodeUpdate(false);
                         resourceList.add(contentTableRes);
                     } else {
@@ -331,10 +340,19 @@ public class LearningPresenter implements LearningContract.LearningPresenter, AP
                         contentTable.setSeq_no(dwParentList.get(j).getSeq_no());
                         contentTable.setContentType(dwParentList.get(j).getContentType());
                         contentTable.setContentLanguage(dwParentList.get(j).getContentLanguage());
-                        contentTable.setIsDownloaded("" + dwParentList.get(j).getIsDownloaded());
                         contentTable.setVersion("" + dwParentList.get(j).getVersion());
                         contentTable.setNodeUpdate(false);
+                        contentTable.setIsDownloaded("" + dwParentList.get(j).getIsDownloaded());
                         contentTable.setOnSDCard(dwParentList.get(j).isOnSDCard());
+                        String resPath;
+                        if (dwParentList.get(j).isOnSDCard())
+                            resPath = ApplicationClass.contentSDPath + gameFolderPath + "/" + dwParentList.get(j).getResourcePath();
+                        else
+                            resPath = ApplicationClass.foundationPath + gameFolderPath + "/" + dwParentList.get(j).getResourcePath();
+                        if(!new File(resPath).exists()){
+                            contentTable.setIsDownloaded("" + false);
+                            contentTable.setOnSDCard(false);
+                        }
 
                         int childListSize = childDwContentList.size();
                         if (childDwContentList.size() > 0) {
@@ -360,6 +378,15 @@ public class LearningPresenter implements LearningContract.LearningPresenter, AP
                                 contentChild.setIsDownloaded("" + childDwContentList.get(i).getIsDownloaded());
                                 contentChild.setOnSDCard(childDwContentList.get(i).isOnSDCard());
                                 contentChild.setVersion(childDwContentList.get(i).getVersion());
+                                String childResPath;
+                                if (childDwContentList.get(i).isOnSDCard())
+                                    childResPath = ApplicationClass.contentSDPath + gameFolderPath + "/" + childDwContentList.get(i).getResourcePath();
+                                else
+                                    childResPath = ApplicationClass.foundationPath + gameFolderPath + "/" + childDwContentList.get(i).getResourcePath();
+                                if(!new File(childResPath).exists()){
+                                    contentChild.setIsDownloaded("" + false);
+                                    contentChild.setOnSDCard(false);
+                                }
                                 contentChild.setNodeUpdate(false);
                                 contentChild.setNodelist(null);
                                 maxScoreChild = new ArrayList();

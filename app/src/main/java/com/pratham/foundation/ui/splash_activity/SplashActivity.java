@@ -153,7 +153,6 @@ public class SplashActivity extends SplashSupportActivity implements SplashContr
 //            getApplicationContext().getExternalFilesDir(ApplicationClass.getStoragePath() + "/PrathamBackups");
         }
 */
-
         new Handler().postDelayed(() -> {
             if ((Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)) {
                 if (!isPermissionsGranted(SplashActivity.this, permissionArray))

@@ -205,7 +205,7 @@ public class ContentDisplay extends BaseActivity implements ContentContract.Cont
 
     @SuppressLint("SetTextI18n")
     private void changeBG(/*int levelNo*/) {
-        Log.d("CURRENT_LEVEL_NAME", "changeBG: "+FastSave.getInstance().getString(FC_Constants.CURRENT_LEVEL_NAME, ""));
+        Log.d("CURRENT_LEVEL_NAME", "changeBG: " + FastSave.getInstance().getString(FC_Constants.CURRENT_LEVEL_NAME, ""));
         tv_level.setText("" + FastSave.getInstance().getString(FC_Constants.CURRENT_LEVEL_NAME, ""));
 //        set level no
 //        iv_level.setBackground(getResources().getDrawable(R.drawable.home_footer_3_bg));
@@ -222,7 +222,7 @@ public class ContentDisplay extends BaseActivity implements ContentContract.Cont
     @UiThread
     @Override
     public void setHeaderProgress(int percent) {
-        if(percent>100)
+        if (percent > 100)
             percent = 100;
         tv_header_progress.setText("" + percent + "%");
 //        level_progress.setCurProgress(percent);
@@ -351,7 +351,7 @@ public class ContentDisplay extends BaseActivity implements ContentContract.Cont
     }
 
     @Override
-    public void onTestAddedToDb (ContentTable itemContent) {
+    public void onTestAddedToDb(ContentTable itemContent) {
         FC_Constants.AssLang = itemContent.getContentLanguage();
         FC_Constants.examId = itemContent.getNodeKeywords();
         if (FastSave.getInstance().getString(FC_Constants.LOGIN_MODE, GROUP_MODE).equalsIgnoreCase(GROUP_MODE)) {
@@ -511,7 +511,7 @@ public class ContentDisplay extends BaseActivity implements ContentContract.Cont
             Intent mainNew = new Intent(ContentDisplay.this, ContentPlayerActivity_.class);
             mainNew.putExtra("nodeID", ContentTableList.get(position).getNodeId());
             mainNew.putExtra("title", ContentTableList.get(position).getNodeTitle());
-            mainNew.putExtra("onSDCard",  ContentTableList.get(position).isOnSDCard());
+            mainNew.putExtra("onSDCard", ContentTableList.get(position).isOnSDCard());
             mainNew.putExtra("sdStatus", sdStatus);
             startActivity(mainNew);
 
@@ -677,8 +677,8 @@ public class ContentDisplay extends BaseActivity implements ContentContract.Cont
                 intent1.putExtra("onSdCard", ContentTableList.get(position).isOnSDCard());
                 intent1.putExtra("dia", "NA");
                 startActivity(intent1);
-            } else if (ContentTableList.get(position).getResourceType().equalsIgnoreCase("PDF_ZOOM")
-                    || ContentTableList.get(position).getResourceType().equalsIgnoreCase("PDF_new")) {
+            } else if (ContentTableList.get(position).getResourceType().equalsIgnoreCase(FC_Constants.PDF_NEW)
+                    || ContentTableList.get(position).getResourceType().equalsIgnoreCase(FC_Constants.PDF_ZOOM)) {
                 String sdStatus = "F";
                 if (ContentTableList.get(position).isOnSDCard())
                     sdStatus = "T";
@@ -691,7 +691,7 @@ public class ContentDisplay extends BaseActivity implements ContentContract.Cont
                 intent1.putExtra("onSdCard", ContentTableList.get(position).isOnSDCard());
                 intent1.putExtra("dia", "NA");
                 startActivity(intent1);
-            } else if (ContentTableList.get(position).getResourceType().equalsIgnoreCase("IMAGE_RES")){
+            } else if (ContentTableList.get(position).getResourceType().equalsIgnoreCase(FC_Constants.IMAGE_RES)) {
                 String sdStatus = "F";
                 if (ContentTableList.get(position).isOnSDCard())
                     sdStatus = "T";
@@ -724,6 +724,7 @@ public class ContentDisplay extends BaseActivity implements ContentContract.Cont
     }
 
     BlurPopupWindow changeDateDialog;
+
     @SuppressLint("SetTextI18n")
     @UiThread
     public void showChangeDateDialog(String newDate, String sTime) {
@@ -781,21 +782,21 @@ public class ContentDisplay extends BaseActivity implements ContentContract.Cont
     @Override
     public void onContentDownloadClicked(int position, String nodeId) {
         if (!IS_DOWNLOADING) {
-            showLoader();
+            if (FC_Utility.isDataConnectionAvailable(ContentDisplay.this)) {
+                showLoader();
 //        content download clicked
-            try {
-                ButtonClickSound.start();
-            } catch (IllegalStateException e) {
-                e.printStackTrace();
-            }
+                try {
+                    ButtonClickSound.start();
+                } catch (IllegalStateException e) {
+                    e.printStackTrace();
+                }
 //        gather info
-            DOWNLOAD_NODE_ID = "" + nodeId;
+                DOWNLOAD_NODE_ID = "" + nodeId;
 //        ContentTableList.get(position).setIsDownloading("true");
 //        contentAdapter.notifyItemChanged(position, ContentTableList);
-            resName = ContentTableList.get(position).getNodeTitle();
-            resServerImageName = ContentTableList.get(position).getNodeServerImage();
-            tempDownloadPos = position;
-            if (FC_Utility.isDataConnectionAvailable(ContentDisplay.this)) {
+                resName = ContentTableList.get(position).getNodeTitle();
+                resServerImageName = ContentTableList.get(position).getNodeServerImage();
+                tempDownloadPos = position;
                 presenter.downloadResource(DOWNLOAD_NODE_ID, ContentTableList.get(position));
             } else
                 Toast.makeText(this, "No Internet Connection", Toast.LENGTH_SHORT).show();
@@ -838,7 +839,7 @@ public class ContentDisplay extends BaseActivity implements ContentContract.Cont
         } catch (Exception e) {
             e.printStackTrace();
         }
-        tv_title.setText("Delete\n" + contentTableItem.getNodeTitle()+" ?");
+        tv_title.setText("Delete\n" + contentTableItem.getNodeTitle() + " ?");
         dialog.show();
 
         dia_btn_no.setOnClickListener(v -> dialog.dismiss());
