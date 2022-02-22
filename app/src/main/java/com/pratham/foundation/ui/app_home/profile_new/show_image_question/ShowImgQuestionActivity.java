@@ -1,8 +1,11 @@
 package com.pratham.foundation.ui.app_home.profile_new.show_image_question;
 
+import static com.pratham.foundation.utility.FC_Constants.activityPhotoPath;
+import static com.pratham.foundation.utility.FC_Utility.showZoomDialog;
+
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.net.Uri;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -29,9 +32,6 @@ import org.json.JSONObject;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-
-import static com.pratham.foundation.utility.FC_Constants.activityPhotoPath;
-import static com.pratham.foundation.utility.FC_Utility.showZoomDialog;
 
 
 @EActivity(R.layout.activity_show_image_question)
@@ -115,8 +115,11 @@ public class ShowImgQuestionActivity extends BaseActivity implements ShowImgQues
             if(img.exists()) {
 //                Bitmap bmImg;/* = BitmapFactory.decodeFile(activityPhotoPath + "" + ansImageName);*/
 //                Bitmap bmImg = BitmapFactory.decodeStream(new FileInputStream(activityPhotoPath + "" + ansImageName));
-                Uri capturedImageUri = Uri.fromFile(img);
-                iv_ans_image.setImageURI(capturedImageUri);
+                Bitmap bmImg = BitmapFactory.decodeFile(img.toString());
+//                BitmapFactory.decodeStream(new FileInputStream(img.toString()));
+                iv_ans_image.setImageBitmap(bmImg);
+//                Uri capturedImageUri = Uri.fromFile(img);
+//                iv_ans_image.setImageURI(capturedImageUri);
                 zoom_image_ans.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -124,8 +127,9 @@ public class ShowImgQuestionActivity extends BaseActivity implements ShowImgQues
                         showZoomDialog(ShowImgQuestionActivity.this, localPath, localPath);
                     }
                 });
+            }else {
+                Log.d("TAG", "setStudentAnsImage: NOT FOUND");
             }
-
         } catch (Exception e) {
             e.printStackTrace();
         }

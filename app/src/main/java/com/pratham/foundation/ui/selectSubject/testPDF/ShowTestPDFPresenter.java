@@ -39,6 +39,10 @@ public class ShowTestPDFPresenter implements ShowTestPDFContract.TestPDFPresente
 //            Log.d("TAG", "getPDFs: IN");
             File dir = new File(ApplicationClass.getStoragePath() + "/PrathamBackups/StudentPDFs/");
             File[] pdf_files = dir.listFiles();
+/*            String[] pdf_filesS = dir.list();
+            for (int i = 0; i < pdf_filesS.length; i++) {
+                Log.d("TAG", "getPDFs: "+pdf_filesS[i]);
+            }*/
             if (pdf_files != null) {
                 pdf_modalList = new ArrayList<>();
                 List<String> fileNameListStrings = new ArrayList<>();
