@@ -6,6 +6,7 @@ import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
 
 import com.pratham.foundation.database.domain.Modal_Log;
+import com.pratham.foundation.utility.FC_Constants;
 
 import java.util.List;
 
@@ -20,14 +21,18 @@ public interface LogDao {
     @Query("select * from Logs")
     List<Modal_Log> getAllLogs();
 
-    @Query("select * from Logs where sentFlag=0")
+    @Query("select * from Logs where sentFlag=0 AND (exceptionMessage NOT IN ('TEMP_SYNC_RESPONSE') OR exceptionMessage IS NULL)")
     List<Modal_Log> getPushAllLogs();
+
+    @Query("select methodName from Logs where exceptionMessage='TEMP_SYNC_RESPONSE'")
+    List<String> getSyncedStatusLogs();
 
     @Query("select * from Logs where sentFlag=0 AND sessionId=:s_id")
     List<Modal_Log> getAllLogs(String s_id);
 
-    @Query("select * from Logs where exceptionMessage='App_Manual_Sync' OR exceptionMessage='App_Auto_Sync'" +
-            "OR exceptionMessage='DB_ZIP_Push' ORDER BY logId DESC")
+    @Query("select * from Logs where exceptionMessage='"+ FC_Constants.APP_MANUAL_SYNC +
+            "' OR exceptionMessage='"+ FC_Constants.APP_AUTO_SYNC +"'" +
+            "OR exceptionMessage='"+ FC_Constants.DB_ZIP_PUSH +"' ORDER BY logId DESC")
     List<Modal_Log> getSyncedLogs();
 
     @Query("update Logs set sentFlag=1 where sentFlag=0")

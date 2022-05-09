@@ -632,9 +632,7 @@ public class pictionaryFragment extends Fragment implements OnGameClose, Piction
             len = imgPath.length - 1;
         else len = 0;
 
-
         if (imgPath[len].equalsIgnoreCase("gif")) {
-
             try {
                 GifView gifView = (GifView) view;
                 InputStream gif = new FileInputStream(placeholder);
@@ -657,8 +655,6 @@ public class pictionaryFragment extends Fragment implements OnGameClose, Piction
                 e.printStackTrace();
             }
         }
-
-
 //        }
     }
 

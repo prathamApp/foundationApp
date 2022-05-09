@@ -12,8 +12,6 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.pm.PackageInfo;
-import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Handler;
@@ -48,6 +46,7 @@ import com.pratham.foundation.modalclasses.EventMessage;
 import com.pratham.foundation.services.shared_preferences.FastSave;
 import com.pratham.foundation.ui.admin_panel.AdminConsoleActivityNew_;
 import com.pratham.foundation.ui.admin_panel.enrollmentid.AddEnrollmentId_;
+import com.pratham.foundation.ui.app_home.profile_new.temp_sync.TempSync_;
 import com.pratham.foundation.ui.bottom_fragment.add_student.AddStudentFragment;
 import com.pratham.foundation.ui.selectSubject.SelectSubject_;
 import com.pratham.foundation.ui.splash_activity.SplashActivity;
@@ -115,16 +114,14 @@ public class BottomStudentsFragment extends BottomSheetDialogFragment
 //                btn_download_all_data.setVisibility(View.VISIBLE);
 //            }
         presenter.showStudents();
-        PackageInfo pInfo = null;
-        String verCode = "";
-        try {
-            pInfo = context.getPackageManager().getPackageInfo(context.getPackageName(), 0);
-            verCode = pInfo.versionName;
-        } catch (PackageManager.NameNotFoundException e) {
-            e.printStackTrace();
-        }
+        String verCode = FC_Utility.getAppVerison();
         FastSave.getInstance().saveString(APP_VERSION, verCode);
         version_tv.setText("v"+verCode);
+    }
+
+    @Click(R.id.goto_sync)
+    public void gotoSync() {
+        startActivity(new Intent(getActivity(), TempSync_.class));
     }
 
     @Click(R.id.btn_Enrollment)
@@ -274,9 +271,10 @@ public class BottomStudentsFragment extends BottomSheetDialogFragment
             e.printStackTrace();
         }
         ArrayList<Student> checkedStds = new ArrayList<>();
-        Student checkedStd = new Student();
+        Student checkedStd;
         for (int i = 0; i < fragmentModalsList.size(); i++) {
             if (fragmentModalsList.get(i).isChecked()) {
+                checkedStd = new Student();
                 checkedStd.setStudentID(fragmentModalsList.get(i).getStudentID());
                 checkedStd.setAvatarName(fragmentModalsList.get(i).getAvatarName());
                 checkedStd.setFullName(fragmentModalsList.get(i).getFullName());
@@ -292,9 +290,8 @@ public class BottomStudentsFragment extends BottomSheetDialogFragment
             //todo remove#
             //startActivity(new Intent(getActivity(), HomeActivity_.class));
 //            startActivity(new Intent(getActivity(), SelectSubject_.class), ActivityOptions.makeSceneTransitionAnimation(getActivity()).toBundle());
-            gotoNext();
         } else {
-            Toast.makeText(getContext(), "Please Select Students !", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getContext(), ""+ getResources().getString(R.string.pls_select_studs), Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -317,37 +314,45 @@ public class BottomStudentsFragment extends BottomSheetDialogFragment
             startSesion.setToDate("NA");
             startSesion.setSentFlag(0);
             AppDatabase.getDatabaseInstance(getContext()).getSessionDao().insert(startSesion);
-            Log.d("ChildAttendence", "Student Count: " + stud.size());
 
-            Attendance attendance = new Attendance();
+            Attendance attendance;
             for (int i = 0; i < stud.size(); i++) {
+                attendance = new Attendance();
                 FastSave.getInstance().saveString(FC_Constants.CURRENT_API_STUDENT_ID, "" + stud.get(i).getStudentID());
                 attendance.setSessionID("" + FastSave.getInstance().getString(FC_Constants.CURRENT_SESSION, ""));
                 attendance.setStudentID("" + stud.get(i).getStudentID());
                 attendance.setDate(FC_Utility.getCurrentDateTime());
                 attendance.setGroupID(groupID);
                 attendance.setSentFlag(0);
-                AppDatabase.getDatabaseInstance(getContext()).getAttendanceDao().insert(attendance);
-                Log.d("ChildAttendence", "currentSession : " + FastSave.getInstance().getString(FC_Constants.CURRENT_SESSION, "") + "  StudentId: " + stud.get(i).getStudentID());
+                Log.d("ChildAttendence", "currentSession : " + FastSave.getInstance().getString(FC_Constants.CURRENT_SESSION, "")
+                        + "  StudentId: " + attendance.getStudentID());
+                long a = AppDatabase.getDatabaseInstance(getContext()).getAttendanceDao().insert(attendance);
+                Log.d("ChildAttendence", "long : " +a );
             }
 
             String currentStudentID = "";
             FastSave.getInstance().saveString(FC_Constants.LOGIN_MODE, FC_Constants.GROUP_MODE);
+            FastSave.getInstance().saveString(FC_Constants.CURRENT_GROUP_ID, groupID);
+            Log.d("ChildAttendence", "Student Count: " + stud.size());
+
             currentStudentID = groupID;
-            /*
-                currentStudentID = stud.get(0).getStudentID();
-                String currentStudName = stud.get(0).getFullName();
-                FastSave.getInstance().saveString(FC_Constants.CURRENT_STUDENT_NAME, currentStudName);
-*/
             FastSave.getInstance().saveString(FC_Constants.CURRENT_SESSION, "" + currentSession);
             FastSave.getInstance().saveString(FC_Constants.CURRENT_STUDENT_NAME, "" + groupName);
-//            FastSave.getInstance().saveString(FC_Constants.CURRENT_API_STUDENT_ID, "" + groupID);
+            FastSave.getInstance().saveString(FC_Constants.CURRENT_GROUP_NAME, "" + groupName);
             FastSave.getInstance().saveString(FC_Constants.CURRENT_STUDENT_ID, currentStudentID);
             BackupDatabase.backup(getContext());
+            gotoNext();
 
         } catch (Exception e) {
+            Toast.makeText(context, ""+ getResources().getString(R.string.problem_marking_attendance), Toast.LENGTH_SHORT).show();
             e.printStackTrace();
         }
+    }
+
+    @Override
+    @UiThread
+    public void showToast(String msg){
+        Toast.makeText(context, ""+msg, Toast.LENGTH_SHORT).show();
     }
 
     @Click(R.id.add_student)
@@ -409,7 +414,7 @@ public class BottomStudentsFragment extends BottomSheetDialogFragment
         if (progressDialog == null) {
             progressDialog = new ProgressDialog(getActivity());
             progressDialog.setCanceledOnTouchOutside(false);
-            progressDialog.setMessage("Loading... Please wait...");
+            progressDialog.setMessage(""+ getResources().getString(R.string.loading_pls_wait));
             progressDialog.setCancelable(false);
         }
         progressDialog.show();
@@ -474,6 +479,7 @@ public class BottomStudentsFragment extends BottomSheetDialogFragment
 
             String currentSession = "" + UUID.randomUUID().toString();
             FastSave.getInstance().saveString(FC_Constants.LOGIN_MODE, INDIVIDUAL_MODE);
+            FastSave.getInstance().saveString(FC_Constants.CURRENT_GROUP_ID, "NA");
             FastSave.getInstance().saveString(FC_Constants.CURRENT_SESSION, "" + currentSession);
             FastSave.getInstance().saveString(FC_Constants.CURRENT_STUDENT_ID, "" + bottomFragmentModal.getStudentID());
             FastSave.getInstance().saveString(FC_Constants.CURRENT_STUDENT_NAME, "" + bottomFragmentModal.getFullName());

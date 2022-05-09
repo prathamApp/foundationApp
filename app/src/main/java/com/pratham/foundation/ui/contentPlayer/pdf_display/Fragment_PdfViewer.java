@@ -80,7 +80,7 @@ public class Fragment_PdfViewer extends BaseActivity implements PDFContract.pdf_
     @Override
     public void recievedBitmaps(ArrayList<Bitmap> bits) {
         try {
-//            File directory = new File(ApplicationClass.getStoragePath().toString() + "/.FCAInternal/TestJsons");
+//            File directory = new File(ApplicationClass.getStoragePath().toString() + "/FCAInternal/TestJsons");
 //            File[] fileListArray = directory.listFiles();
 //
 //            for (File file : fileListArray) {

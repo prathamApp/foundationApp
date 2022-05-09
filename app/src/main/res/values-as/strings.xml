@@ -1,5 +1,8 @@
 <?xml version="1.0" ?>
 <resources xmlns:tools="http://schemas.android.com/tools">
+
+    <string name="app_name">প্ৰডিজি ফৰ স্কুল</string>
+
     <string name="Login">লগ ইন</string>
     <!--    <string name="Stt_Dialog_Msg">উন্নত প্ৰদৰ্শনৰ বাবে, অনুগ্ৰহ কৰি অফলাইন ভাষাপেক English(India) আৰু हिंदी(भारत) ডাউনলোড কৰক।\n\nOpen\nGoogle -> Settings -> Voice -> Offline speech recognition</string>-->
     <string name="Stt_Dialog_Msg">উন্নত প্ৰদৰ্শনৰ বাবে, অনুগ্ৰহ কৰি অফলাইন ভাষাপেক English(India) আৰু हिंदी(भारत) ডাউনলোড কৰক।</string>
@@ -159,9 +162,72 @@
     <string name="confirm_date">তাৰিখ নিৰ্বাচন কৰক</string>
     <string name="Audio">অডিও শুনক	</string>
 
-    <string name="DB_Zip_pushed_failed">তথ্যভাণ্ডাৰ চিঙ্ক কৰাত ব্যৰ্থ</string>
-    <string name="DB_Zip_pushed_successfully">তথ‍্যভাণ্ডাৰ সফলতাৰে চিঙ্ক কৰা হৈছে</string>
-    <string name="DB_Zip_push">ডি.বি ফাইল চিংক কৰক।</string>
+    <string name="push_data">                   পুচ ডাটা  </string>
+    <string name="push_logs">                   পুচ লগচ্‌  </string>
+    <string name="sync_logs">                   চিংক লগচ্‌  </string>
+    <string name="check_synced_data">           চিংক কৰা ডাটা পৰীক্ষা কৰক  </string>
+    <string name="reset_app_tour">              এপ্প টৰ ৰিছেট কৰক  </string>
+    <string name="ques_reset_app_tour">         আপুনি এপ্প টৰ ৰিছেট কৰিব বিচৰাটো নিশ্চিতনে?  </string>
+    <string name="no_internet">                 ইণ্টাৰনেট সংযোগ নাই  </string>
+    <string name="diagnostic_test_result">      ডাইগনষ্টিক টেষ্ট (পৰীক্ষাৰ) ৰিজাল্ট  </string>
+    <string name="diagnostic_test_result_msg">  আপুনি এচেচমেণ্ট এপ্পত লোৱা পৰীক্ষাৰ ডাইগনষ্টিক টেষ্ট (পৰীক্ষাৰ) প্ৰমাণপত্ৰ চাব পাৰে।  </string>
+    <string name="app_exit">                    এপ্প প্ৰস্থান (এক্সেট)  </string>
+    <string name="app_exit_msg">                আপুনি এপ্পটোৰ পৰা প্ৰস্থান কৰিব পাৰে  </string>
+    <string name="back_button">                 বেক বুটাম  </string>
+    <string name="back_button_msg">             আগৰ স্ক্ৰীণলৈ যাওক  </string>
+    <string name="refresh">                     ৰিফ্ৰেশ্ব  </string>
+    <string name="refresh_msg">                 স্ক্ৰীণত শেহতীয়া (কাৰেণ্ট) সমল (কণ্টেণ্ট) পুনঃলোড বা ৰিফ্ৰেশ্ব কৰক  </string>
+    <string name="push_and_sync">               পুচ আৰু চিংক  </string>
+    <string name="other">                       অন্য  </string>
+    <string name="DB_Zip_pushed_failed">        পুচ ডাটাবেচ বিফল  </string>
+    <string name="DB_Zip_pushed_successfully">  ডাটাবেচ পুচ কৰা সফল হৈছে  </string>
+    <string name="DB_Zip_push">        পুচ ডিবি ফাইল  </string>
+
+    <string name="pls_select_date">                   অনুগ্ৰহ কৰি তাৰিখ নিৰ্বাচন কৰক।  </string>
+    <string name="connect_to_internet">               ইণ্টাৰনেট সংযোগ কৰক।  </string>
+    <string name="server_error">                      চাৰ্ভাৰ ত্ৰুটি।  </string>
+    <string name="total_attendance">                  মুঠ উপস্থিতি  </string>
+    <string name="view_details">                      বিশদ বিৱৰণ চাওক  </string>
+    <string name="total_courses">                     মুঠ পাঠ্যক্ৰম  </string>
+    <string name="studs_acce_the_app">                এপ্পটোত প্ৰৱেশ কৰা মুঠ ব্যৱহাৰকাৰীৰ সংখ্যা  </string>
+    <string name="studs_reg_the_app">                 এপ্পটোত পঞ্জীয়ন কৰা মুঠ ব্যৱহাৰকাৰীৰ সংখ্যা  </string>
+    <string name="total_sessions">                    মুঠ বৈঠক  </string>
+    <string name="total_groups">                      মুঠ দল  </string>
+    <string name="error_message">                     ত্ৰুটি বাৰ্তা  </string>
+    <string name="accessed_users">                    প্ৰৱেশ কৰা ব্যৱহাৰকৰ্তাসকল  </string>
+    <string name="registered_users">                  পঞ্জীয়ন কৰা ব্যৱহাৰকৰ্তাসকল  </string>
+    <string name="pls_select_studs">                  অনুগ্ৰহ কৰি শিক্ষাৰ্থী নিৰ্বাচন কৰক!  </string>
+    <string name="problem_marking_attendance">        উপস্থিতি চিহ্নিত কৰাত সমস্যা  </string>
+    <string name="loading_pls_wait">                  লোড হৈ আছে... অনুগ্ৰহ কৰি অপেক্ষা কৰক…  </string>
+    <string name="enroll_id">                         নামাংকন আইডি  </string>
+    <string name="create_profile">                    প্ৰফাইল সৃষ্টি কৰক  </string>
+    <string name="total_resources">                   মুঠ সমল  </string>
+    <string name="stud_id">                           শিক্ষাৰ্থী আইডি  </string>
+    <string name="date">                              তাৰিখ  </string>
+    <string name="data">                              ডাটা  </string>
+    <string name="media">                             মেডিয়া  </string>
+    <string name="courses">                           পাঠ্যক্ৰমসমূহ  </string>
+    <string name="db_sync">                           ডিবি চিংক  </string>
+    <string name="course_count">                      পাঠ্যক্ৰম গণনা  </string>
+    <string name="media_count">                       মেডিয়া গণনা  </string>
+    <string name="manual">                            মেনুৱেল  </string>
+    <string name="auto">                              স্বয়ং  </string>
+    <string name="tot_db_entries">                    মুঠ ডিবি প্ৰৱিষ্টি  </string>
+    <string name="enrollment_details">                নামাংকনৰ বিশদ-বিৱৰণ  </string>
+    <string name="my_class">                          শ্ৰেণী  </string>
+    <string name="my_name">                           নাম  </string>
+    <string name="check_id">                          আইডি পৰীক্ষা কৰক  </string>
+    <string name="enter_your_id">                     আপোনাৰ আইডি প্ৰৱিষ্ট কৰক  </string>
+    <string name="select_avatar">                     অৱতাৰ নিৰ্বাচন কৰক  </string>
+    <string name="age">                               বয়স  </string>
+    <string name="gender">                            লিংগ  </string>
+    <string name="save_profile">                      প্ৰফাইল সংৰক্ষণ কৰক  </string>
+    <string name="profile_created_successfully">      প্ৰফাইল সফলতাপূৰ্বক সৃষ্টি হৈছে  </string>
+    <string name="male">                              পুৰুষ  </string>
+    <string name="female">                            মহিলা  </string>
+    <string name="please_fill_details">               অনুগ্ৰহ কৰি সকলো বিশদ-বিৱৰণ ভৰ্তি কৰক।  </string>
+    <string name="problem_pulling_stud">              শিক্ষাৰ্থীক বিচৰাত সমস্যা  </string>
+    <string name="wrong_enrollment_id">               ভুল নামাংকন আইডি  </string>
 
 
 
@@ -370,7 +436,7 @@
         <item>avatars/acrobatics.json</item>-->
     </string-array>
     <string-array name="age">
-        <item>Select Age</item>
+        <item>বয়স নিৰ্বাচন কৰক</item>
         <item> 3  </item>
         <item> 4  </item>
         <item> 5  </item>

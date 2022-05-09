@@ -17,7 +17,7 @@
             android:layout_width="match_parent"
             android:layout_height="@dimen/_120sdp"
             app:lottie_autoPlay="true"
-            app:lottie_fileName="lottie_correct.json"
+            app:lottie_fileName="success.json"
             app:lottie_loop="true" />
 
         <com.pratham.foundation.customView.fontsview.SansTextViewBold

@@ -5,6 +5,8 @@ import static com.pratham.foundation.utility.FC_Constants.STT_REGEX;
 import static com.pratham.foundation.utility.FC_Constants.activityPhotoPath;
 import static com.pratham.foundation.utility.FC_Constants.gameFolderPath;
 
+import android.content.ContentResolver;
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -15,6 +17,7 @@ import android.graphics.drawable.ColorDrawable;
 import android.media.ThumbnailUtils;
 import android.net.Uri;
 import android.os.Build;
+import android.os.Environment;
 import android.os.Handler;
 import android.provider.MediaStore;
 import android.text.Editable;
@@ -35,7 +38,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.VideoView;
 
-import androidx.core.content.FileProvider;
 import androidx.fragment.app.Fragment;
 
 import com.facebook.drawee.backends.pipeline.Fresco;
@@ -44,7 +46,6 @@ import com.facebook.drawee.view.SimpleDraweeView;
 import com.facebook.imagepipeline.request.ImageRequest;
 import com.facebook.imagepipeline.request.ImageRequestBuilder;
 import com.pratham.foundation.ApplicationClass;
-import com.pratham.foundation.BuildConfig;
 import com.pratham.foundation.R;
 import com.pratham.foundation.customView.display_image_dialog.CustomLodingDialog;
 import com.pratham.foundation.customView.fontsview.SansButton;
@@ -166,10 +167,10 @@ public class DoingFragment extends Fragment implements STT_Result_New.sttView,
         contentTitle = getArguments().getString("contentName");
         jsonName = getArguments().getString("jsonName");
         onSdCard = getArguments().getBoolean("onSdCard", false);
-        if(new File(ApplicationClass.getStoragePath().toString()
-                + "/.FCAInternal/ActivityPhotos/vid_thumb.jpg").exists())
+        if (new File(ApplicationClass.getStoragePath().toString()
+                + "/FCAInternal/ActivityPhotos/vid_thumb.jpg").exists())
             new File(ApplicationClass.getStoragePath().toString()
-                    + "/.FCAInternal/ActivityPhotos/vid_thumb.jpg").delete();
+                    + "/FCAInternal/ActivityPhotos/vid_thumb.jpg").delete();
         Fresco.getImagePipeline().clearCaches();
 
         if (onSdCard)
@@ -264,7 +265,7 @@ public class DoingFragment extends Fragment implements STT_Result_New.sttView,
                         ByteArrayOutputStream bytes = new ByteArrayOutputStream();
                         thumb.compress(Bitmap.CompressFormat.JPEG, 60, bytes);
                         File f = new File(ApplicationClass.getStoragePath().toString()
-                                + "/.FCAInternal/ActivityPhotos/" + File.separator + "vid_thumb.jpg");
+                                + "/FCAInternal/ActivityPhotos/" + File.separator + "vid_thumb.jpg");
 
                         f.createNewFile();
                         FileOutputStream fo = new FileOutputStream(f);
@@ -643,37 +644,34 @@ public class DoingFragment extends Fragment implements STT_Result_New.sttView,
 
     @Click(R.id.capture)
     public void captureClick() {
-/*        Intent cameraIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
-        File imagesFolder = new File(activityPhotoPath);
-        if (!imagesFolder.exists()) imagesFolder.mkdirs();
-        File image = new File(imagesFolder, imageName);
-        capturedImageUri = Uri.fromFile(image);
-        cameraIntent.putExtra(android.provider.MediaStore.EXTRA_OUTPUT, capturedImageUri);
-        startActivityForResult(cameraIntent, CAMERA_REQUEST);*/
-
-        Intent picIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE).
-                addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION | Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
         try {
+            imageName = "" + ApplicationClass.getUniqueID() + ".jpg";
 
-//            String file_path = ApplicationClass.getStoragePath().toString() +
-//                    "/" + context.getResources().getString(R.string.app_name);
-
+            Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
             File imagesFolder = new File(activityPhotoPath);
             if (!imagesFolder.exists()) imagesFolder.mkdirs();
-                File imagePath = new File(imagesFolder, imageName);
-//            File dir = new File(file_path);
 
-            capturedImageUri = Uri.fromFile(imagePath);
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                picIntent.putExtra(MediaStore.EXTRA_OUTPUT, FileProvider.getUriForFile(context, BuildConfig.APPLICATION_ID+".provider", imagePath));
-//                setUri(FileProvider.getUriForFile(context, BuildConfig.APPLICATION_ID, imagePath));
-            } else {
-                picIntent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(imagePath));
-//                setUri(Uri.fromFile(imagePath));
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                File image = new File(imagesFolder, imageName);
+                ContentResolver resolver = getContext().getContentResolver();
+                ContentValues valuesvideos = new ContentValues();
+                valuesvideos.put(MediaStore.MediaColumns.DISPLAY_NAME, image.getName());
+                String fileMimeType = FC_Utility.getMimeType(image.getAbsolutePath());
+                valuesvideos.put(MediaStore.MediaColumns.MIME_TYPE, fileMimeType);
+                valuesvideos.put(MediaStore.MediaColumns.RELATIVE_PATH,   Environment.DIRECTORY_DOWNLOADS
+                        +  File.separator + "FCAInternal"+ File.separator +"ActivityPhotos" +
+                        File.separator + FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, "") );
+                image.delete();
+                final Uri uriSavedVideo = resolver.insert(MediaStore.Downloads.EXTERNAL_CONTENT_URI, valuesvideos);
+                cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, uriSavedVideo);
+                startActivityForResult(cameraIntent, CAMERA_REQUEST);
+            }else
+            {
+                File image = new File(imagesFolder, imageName);
+                Uri capturedImageUri = Uri.fromFile(image);
+                cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, capturedImageUri);
+                startActivityForResult(cameraIntent, CAMERA_REQUEST);
             }
-
-            startActivityForResult(picIntent, CAMERA_REQUEST);
-
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -710,7 +708,7 @@ public class DoingFragment extends Fragment implements STT_Result_New.sttView,
         dialog.show();
 
 
-        iv_dia_preview.setImageURI(capturedImageUri);
+        iv_dia_preview.setImageURI(Uri.fromFile(path));
         dia_btn_cross.setOnClickListener(v -> {
             dialog.dismiss();
         });

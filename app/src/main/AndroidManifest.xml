@@ -81,6 +81,18 @@
                     android:name="android.speech.RecognitionService"/>
         -->
         <activity
+            android:name=".ui.app_home.profile_new.temp_sync.TempSync_"
+            android:screenOrientation="portrait"
+            tools:ignore="LockedOrientationActivity" />
+        <activity
+            android:name=".ui.app_home.profile_new.students_synced_data.SyncedStudentDataActivity_"
+            android:screenOrientation="portrait"
+            tools:ignore="LockedOrientationActivity" />
+        <activity
+            android:name=".ui.app_home.profile_new.temp_sync.SyncResultActivity_"
+            android:screenOrientation="portrait"
+            tools:ignore="LockedOrientationActivity" />
+        <activity
             android:name=".ui.contentPlayer.webviewpdf.PDFViewActivity_"
             android:screenOrientation="sensor" />
         <activity

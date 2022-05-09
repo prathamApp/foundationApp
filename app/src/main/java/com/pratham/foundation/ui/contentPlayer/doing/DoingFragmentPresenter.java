@@ -1,5 +1,8 @@
 package com.pratham.foundation.ui.contentPlayer.doing;
 
+import static com.pratham.foundation.utility.FC_Constants.IMG_PUSH_LBL;
+import static com.pratham.foundation.utility.FC_Constants.currentLevel;
+
 import android.content.Context;
 
 import com.google.gson.Gson;
@@ -28,9 +31,6 @@ import java.lang.reflect.Type;
 import java.util.Collections;
 import java.util.List;
 
-import static com.pratham.foundation.utility.FC_Constants.IMG_PUSH_LBL;
-import static com.pratham.foundation.utility.FC_Constants.currentLevel;
-
 @EBean
 public class DoingFragmentPresenter implements DoingFragmentContract.DoingFragmentPresenter {
     private String jsonName,contentTitle;
@@ -40,7 +40,7 @@ public class DoingFragmentPresenter implements DoingFragmentContract.DoingFragme
     private List<ScienceQuestion> dataList;
     private float perc;
     private ScienceQuestion scienceQuestion;
-    private Context context;
+    private final Context context;
     private String readingContentPath;
 
 
@@ -207,6 +207,7 @@ public class DoingFragmentPresenter implements DoingFragmentContract.DoingFragme
             score.setScoredMarks(scoredMarks);
             score.setTotalMarks(totalMarks);
             score.setStudentID(FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""));
+            score.setGroupId(FastSave.getInstance().getString(FC_Constants.CURRENT_GROUP_ID, ""));
             score.setStartDateTime(resStartTime);
             score.setDeviceID(deviceId.equals(null) ? "0000" : deviceId);
             score.setEndDateTime(resEndTime);
@@ -249,6 +250,7 @@ public class DoingFragmentPresenter implements DoingFragmentContract.DoingFragme
             score.setScoredMarks(0);
             score.setTotalMarks(0);
             score.setStudentID(FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""));
+            score.setGroupId(FastSave.getInstance().getString(FC_Constants.CURRENT_GROUP_ID, ""));
             score.setStartDateTime(imageName);
             score.setDeviceID(deviceId.equals(null) ? "0000" : deviceId);
             score.setEndDateTime(FC_Utility.getCurrentDateTime());

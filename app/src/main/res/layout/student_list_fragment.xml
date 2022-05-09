@@ -5,6 +5,20 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
+    <com.pratham.foundation.customView.fontsview.SansButton
+        android:id="@+id/goto_sync"
+        android:layout_width="@dimen/_200sdp"
+        android:layout_height="40dp"
+        android:layout_below="@+id/ll_bts"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="@dimen/_10sdp"
+        android:background="@drawable/button_yellow"
+        android:elevation="@dimen/_3sdp"
+        android:text="Goto Sync"
+        android:textColor="@color/white"
+        android:textSize="@dimen/_10sdp"
+        android:visibility="gone" />
+
     <com.pratham.foundation.customView.fontsview.SansTextView
         android:id="@+id/version_tv"
         android:layout_width="wrap_content"
@@ -91,7 +105,7 @@
             android:layout_weight="1"
             android:background="@drawable/button_green"
             android:elevation="@dimen/_3sdp"
-            android:text="Create Profile"
+            android:text="@string/create_profile"
             android:textColor="@color/white"
             android:textSize="@dimen/_12sdp"
             android:visibility="visible" />
@@ -106,7 +120,7 @@
             android:layout_weight="1"
             android:background="@drawable/button_purple"
             android:elevation="@dimen/_3sdp"
-            android:text="Enrollment Id"
+            android:text="@string/enroll_id"
             android:textColor="@color/white"
             android:textSize="@dimen/_12sdp"
             android:visibility="visible" />

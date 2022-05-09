@@ -106,6 +106,8 @@ public class HomeActivity extends BaseActivity implements LevelChanged, API_Cont
     TextView tv_Activity;
     @ViewById(R.id.tabLayout)
     TabLayout tabLayout;
+    @ViewById(R.id.iv_refresh)
+    ImageView iv_refresh;
     @ViewById(R.id.header_rl)
     public static RelativeLayout header_rl;
     @ViewById(R.id.submarine)
@@ -324,20 +326,30 @@ public class HomeActivity extends BaseActivity implements LevelChanged, API_Cont
     @UiThread
     public void setShowcaseView() {
         builder = new GuideView.Builder(this)
-                .setTitle(getResources().getString(R.string.progress))
-                .setContentText(getResources().getString(R.string.Your_Progress_will))
+                .setTitle(getResources().getString(R.string.back_button))
+                .setContentText(getResources().getString(R.string.back_button_msg))
                 .setDismissType(DismissType.selfView) //optional - default dismissible by TargetView
-                .setTargetView(tv_header_progress)
+                .setTargetView(main_back)
                 .setGuideListener(new GuideListener() {
                     @Override
                     public void onDismiss(View view) {
                         switch (view.getId()) {
+                            case R.id.main_back:
+                                builder.setTitle(getResources().getString(R.string.progress));
+                                builder.setContentText(getResources().getString(R.string.Your_Progress_will));
+                                builder.setTargetView(tv_header_progress).build();
+                                break;
                             case R.id.tv_header_progress:
                                 builder.setTitle(getResources().getString(R.string.Level));
                                 builder.setContentText(getResources().getString(R.string.Click_to_switch_levels));
                                 builder.setTargetView(tv_level).build();
                                 break;
                             case R.id.tv_level:
+                                builder.setTitle(getResources().getString(R.string.refresh));
+                                builder.setContentText(getResources().getString(R.string.refresh_msg));
+                                builder.setTargetView(iv_refresh).build();
+                                break;
+                            case R.id.iv_refresh:
                                 builder.setTitle(getResources().getString(R.string.Sections));
                                 builder.setContentText(getResources().getString(R.string.Click_to_switch_Sections));
                                 builder.setTargetView(tabLayout).build();
@@ -411,7 +423,7 @@ public class HomeActivity extends BaseActivity implements LevelChanged, API_Cont
         //Fetching information form DB and Displaying
         String profileName = "";
         try {
-            activityPhotoPath = ApplicationClass.getStoragePath().toString() + "/.FCAInternal/ActivityPhotos/" + FastSave.getInstance().getString(CURRENT_STUDENT_ID, "") + "/";
+            activityPhotoPath = ApplicationClass.getStoragePath().toString() + "/FCAInternal/ActivityPhotos/" + FastSave.getInstance().getString(CURRENT_STUDENT_ID, "") + "/";
             Log.d("activityPhotoPath", "initialize activityPhotoPath: " + activityPhotoPath);
             if (!new File(activityPhotoPath).exists())
                 new File(activityPhotoPath).mkdirs();
@@ -573,9 +585,9 @@ public class HomeActivity extends BaseActivity implements LevelChanged, API_Cont
                 BackupDatabase.backup(HomeActivity.this);
                 BackupDatabase.backup(HomeActivity.this);
                 if (new File(ApplicationClass.getStoragePath().toString()
-                        + "/.FCAInternal/DBZip").exists())
+                        + "/FCAInternal/DBZip").exists())
                     new File(ApplicationClass.getStoragePath().toString()
-                            + "/.FCAInternal/DBZip").delete();
+                            + "/FCAInternal/DBZip").delete();
 
                 if (tab.getText().toString().equalsIgnoreCase("" + getResources().getString(R.string.Profile))) {
                     FastSave.getInstance().saveString(APP_SECTION, sec_Profile);
@@ -605,9 +617,9 @@ public class HomeActivity extends BaseActivity implements LevelChanged, API_Cont
                 }
 
                 if (new File(ApplicationClass.getStoragePath().toString()
-                        + "/.FCAInternal/DBZip").exists())
+                        + "/FCAInternal/DBZip").exists())
                     new File(ApplicationClass.getStoragePath().toString()
-                            + "/.FCAInternal/DBZip").delete();
+                            + "/FCAInternal/DBZip").delete();
 
                 if (tab.getText().toString().equalsIgnoreCase("" + getResources().getString(R.string.Profile))) {
                     FastSave.getInstance().saveString(APP_SECTION, sec_Profile);

@@ -1,5 +1,10 @@
 package com.pratham.foundation.async;
 
+import static com.pratham.foundation.ApplicationClass.App_Thumbs_Path;
+import static com.pratham.foundation.ui.app_home.HomeActivity.contentDownloadingTask;
+import static com.pratham.foundation.utility.FC_Constants.IS_DOWNLOADING;
+import static com.pratham.foundation.utility.FC_Constants.currentSubjectFolder;
+
 import android.content.Context;
 import android.util.Log;
 
@@ -16,11 +21,6 @@ import org.androidannotations.annotations.EBean;
 
 import java.io.File;
 import java.util.ArrayList;
-
-import static com.pratham.foundation.ApplicationClass.App_Thumbs_Path;
-import static com.pratham.foundation.ui.app_home.HomeActivity.contentDownloadingTask;
-import static com.pratham.foundation.utility.FC_Constants.IS_DOWNLOADING;
-import static com.pratham.foundation.utility.FC_Constants.currentSubjectFolder;
 
 /**
  * Created by User on 16/11/15.

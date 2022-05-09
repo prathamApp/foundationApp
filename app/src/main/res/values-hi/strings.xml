@@ -1,5 +1,7 @@
 <?xml version="1.0" ?>
 <resources xmlns:tools="http://schemas.android.com/tools">
+    <string name="app_name">प्रडिजि फ़ॉर स्कूल</string>
+
     <string name="Login">लॉग इन करें</string>
     <!--    <string name="Stt_Dialog_Msg">बेहतर प्रदर्शन के लिए कृपया ऑफलाइन भाषा पैक English(India) और हिंदी(भारत) डाउनलोड करें।\n\nOpen\nGoogle -> Settings -> Voice -> Offline speech recognition</string>-->
     <string name="Stt_Dialog_Msg">बेहतर प्रदर्शन के लिए कृपया ऑफलाइन भाषा पैक English(India) और हिंदी(भारत) डाउनलोड करें।</string>
@@ -156,12 +158,78 @@
     <string name="Set_Date_and_Time">तारीख़ और समय सेट करें</string>
     <string name="add_course">कोर्स जोड़ें</string>
     <string name="select_date">तारीख़ चुनें</string>
-    <string name="confirm_date">तारीख़ की पुष्टि करें/तारीख़ कन्फर्म करें</string>
+    <string name="confirm_date">तारीख़ की पुष्टि करें</string>
     <string name="Audio">ऑडियो सुनें</string>
 
-    <string name="DB_Zip_pushed_failed">डेटाबेस सिंक नहीं हुआ।</string>
-    <string name="DB_Zip_pushed_successfully">डेटाबेस सफलतापूर्वक सिंक किया गया।</string>
-    <string name="DB_Zip_push">डी बी फाइल सिंक करें।</string>
+    <string name="push_data">                     पुश डेटा</string>
+
+    <string name="push_logs">                     पुश किए गए लॉग्स देखें</string>
+    <string name="sync_logs">                     सिंक किए गए लॉग्स देखें</string>
+    <string name="check_synced_data">             सिंंक डेटा चेक करें</string>
+    <string name="reset_app_tour">                ऐप टूर रीसेट करें</string>
+    <string name="ques_reset_app_tour">           क्या आप वास्तव में ऐप टूर रीसेट करना चाहते हैं?</string>
+    <string name="no_internet">                   इन्टरनेट कनेक्शन नहीं है</string>
+    <string name="diagnostic_test_result">        टेस्ट परिणाम का डायग्नोस्टिक </string>
+    <string name="diagnostic_test_result_msg">    असेसमेंट ऐप में लिए गए डायग्नोस्टिक टेस्ट का सर्टिफ़िकेट आप देख सकते हैं।</string>
+    <string name="app_exit">                      ऐप से बाहर निकलें</string>
+    <string name="app_exit_msg">                  आप ऐप से बाहर निकल सकते हैं।</string>
+    <string name="back_button">                   बैक बटन</string>
+    <string name="back_button_msg">               पिछली स्क्रीन पर जाएं</string>
+    <string name="refresh">                       रिफ्रेश</string>
+    <string name="refresh_msg">                   स्क्रीन के वर्तमान कंटेंट को रीलोड या रिफ्रेश करें</string>
+    <string name="push_and_sync">                 पुश और सिंक</string>
+    <string name="other">                         अन्य</string>
+    <string name="DB_Zip_pushed_failed">          डेटाबेस पुश असफल</string>
+    <string name="DB_Zip_pushed_successfully">    डेेटाबेस सफलतापूर्वक पुश किया गया</string>
+    <string name="DB_Zip_push">          डीबी फ़ाइल को पुश करें</string>
+
+    <string name="pls_select_date">                 कृपया दिनांक चुनें   </string>
+    <string name="connect_to_internet">             इंटरनेट से जुड़ें   </string>
+    <string name="server_error">                    सर्वर एरर   </string>
+    <string name="total_attendance">                कुल उपस्थिति   </string>
+    <string name="view_details">                    जानकारी देखें   </string>
+    <string name="total_courses">                   कुल कोर्स   </string>
+    <string name="studs_acce_the_app">              ऐप्प को एक्सेस करने वाले कुल यूज़र की संख्या   </string>
+    <string name="studs_reg_the_app">               ऐप्प पर रजिस्टर करने वाले कुल यूज़र की संख्या   </string>
+    <string name="total_sessions">                  कुल सेशन   </string>
+    <string name="total_groups">                    कुल ग्रुप   </string>
+    <string name="error_message">                   एरर मैसेज   </string>
+    <string name="accessed_users">                  एक्सेस किए गए यूज़र   </string>
+    <string name="registered_users">                पंजीकृत यूज़र   </string>
+    <string name="pls_select_studs">                कृपया छात्रों को चुनें!    </string>
+    <string name="problem_marking_attendance">      उपस्थिति लगाने में समस्या   </string>
+    <string name="loading_pls_wait">                लोड हो रहा है.... कृपया प्रतिक्षा करें...   </string>
+    <string name="enroll_id">                       नामांकन ID   </string>
+    <string name="create_profile">                  प्रोफ़ाइल बनाएं   </string>
+    <string name="total_resources">                 कुल संसाधन   </string>
+    <string name="stud_id">                         छात्र ID   </string>
+    <string name="date">                            दिनांक   </string>
+    <string name="data">                            डेटा   </string>
+    <string name="media">                           मीडिया   </string>
+    <string name="courses">                         कोर्स   </string>
+    <string name="db_sync">                         DB सिंक   </string>
+    <string name="course_count">                    कोर्स की गणना   </string>
+    <string name="media_count">                     मीडिया की गणना   </string>
+    <string name="manual">                          मैन्युअल   </string>
+    <string name="auto">                            ऑटो   </string>
+    <string name="tot_db_entries">                  कुल DB प्रविष्टियां   </string>
+    <string name="enrollment_details">              नामांकन जानकारी   </string>
+    <string name="my_class">                        कक्षा   </string>
+    <string name="my_name">                         नाम   </string>
+    <string name="check_id">                        ID चेक करें   </string>
+    <string name="enter_your_id">                   अपनी ID इंटर करें   </string>
+    <string name="select_avatar">                   अवतार चुनें   </string>
+    <string name="age">                             आयु   </string>
+    <string name="gender">                          लिंग   </string>
+    <string name="save_profile">                    प्रोफ़ाइल सेव करें   </string>
+    <string name="profile_created_successfully">    प्रोफ़ाइल सफ़लतापूर्वक बनाई गयी   </string>
+    <string name="male">                            पुरुष   </string>
+    <string name="female">                          महिला   </string>
+    <string name="please_fill_details">             कृपया सभी जानकारियां भरें   </string>
+    <string name="problem_pulling_stud">            छात्र को पुल करने में समस्या   </string>
+    <string name="wrong_enrollment_id">             गलत नामांकन ID   </string>
+
+
 
 
     <string name="Agent_name" >Vernicula</string>
@@ -369,7 +437,7 @@
         <item>avatars/acrobatics.json</item>-->
     </string-array>
     <string-array name="age">
-        <item>Select Age</item>
+        <item>आयु चुनें</item>
         <item> 3  </item>
         <item> 4  </item>
         <item> 5  </item>

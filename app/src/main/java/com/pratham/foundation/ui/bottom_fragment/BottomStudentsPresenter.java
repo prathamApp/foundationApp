@@ -7,7 +7,6 @@ import android.annotation.SuppressLint;
 import android.app.ActivityManager;
 import android.content.Context;
 import android.content.Intent;
-import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -188,25 +187,30 @@ public class BottomStudentsPresenter implements BottomStudentsContract.BottomStu
     @Background
     @Override
     public void updateStudentData() {
-        AppDatabase.getDatabaseInstance(context).getStatusDao().updateValue("CurrentSession", "" + FastSave.getInstance().getString(FC_Constants.CURRENT_SESSION, ""));
-        Attendance attendance = new Attendance();
-        attendance.setSessionID(FastSave.getInstance().getString(FC_Constants.CURRENT_SESSION, ""));
-        attendance.setStudentID(FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""));
-        attendance.setDate(FC_Utility.getCurrentDateTime());
-        attendance.setGroupID("SP");
-        attendance.setSentFlag(0);
-        AppDatabase.getDatabaseInstance(context).getAttendanceDao().insert(attendance);
+        try {
+            AppDatabase.getDatabaseInstance(context).getStatusDao().updateValue("CurrentSession", "" + FastSave.getInstance().getString(FC_Constants.CURRENT_SESSION, ""));
+            Attendance attendance = new Attendance();
+            attendance.setSessionID(FastSave.getInstance().getString(FC_Constants.CURRENT_SESSION, ""));
+            attendance.setStudentID(FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""));
+            attendance.setDate(FC_Utility.getCurrentDateTime());
+            attendance.setGroupID("SP");
+            attendance.setSentFlag(0);
+            AppDatabase.getDatabaseInstance(context).getAttendanceDao().insert(attendance);
 
-        Session startSesion = new Session();
-        startSesion.setSessionID("" + FastSave.getInstance().getString(FC_Constants.CURRENT_SESSION, ""));
-        startSesion.setFromDate("" + FC_Utility.getCurrentDateTime());
-        startSesion.setToDate("NA");
-        startSesion.setSentFlag(0);
-        AppDatabase.getDatabaseInstance(context).getSessionDao().insert(startSesion);
+            Session startSesion = new Session();
+            startSesion.setSessionID("" + FastSave.getInstance().getString(FC_Constants.CURRENT_SESSION, ""));
+            startSesion.setFromDate("" + FC_Utility.getCurrentDateTime());
+            startSesion.setToDate("NA");
+            startSesion.setSentFlag(0);
+            AppDatabase.getDatabaseInstance(context).getSessionDao().insert(startSesion);
 
-        myView.gotoNext();
-        if (FC_Utility.isDataConnectionAvailable(context))
-            getStudentData(FC_Constants.STUDENT_PROGRESS_INTERNET, FC_Constants.STUDENT_PROGRESS_API, FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""));
+            myView.gotoNext();
+            if (FC_Utility.isDataConnectionAvailable(context))
+                getStudentData(FC_Constants.STUDENT_PROGRESS_INTERNET, FC_Constants.STUDENT_PROGRESS_API, FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""));
+        } catch (Exception e) {
+            myView.showToast("Problem Marking Attendance");
+            e.printStackTrace();
+        }
 
     }
 
@@ -382,162 +386,167 @@ public class BottomStudentsPresenter implements BottomStudentsContract.BottomStu
 
     public void doInitialEntries(AppDatabase appDatabase) {
         try {
-            com.pratham.foundation.database.domain.Status status;
-            status = new com.pratham.foundation.database.domain.Status();
+            Status status;
+            status = new Status();
             status.setStatusKey("DeviceId");
             status.setValue("" + Settings.Secure.getString(context.getContentResolver(), Settings.Secure.ANDROID_ID));
             status.setDescription("" + FC_Utility.getDeviceSerialID());
             appDatabase.getStatusDao().insert(status);
 
-            status = new com.pratham.foundation.database.domain.Status();
+            status = new Status();
             status.setStatusKey("CRLID");
             status.setValue("default");
             appDatabase.getStatusDao().insert(status);
 
-            status = new com.pratham.foundation.database.domain.Status();
+            status = new Status();
             status.setStatusKey("DeviceName");
             status.setValue(FC_Utility.getDeviceName());
             appDatabase.getStatusDao().insert(status);
 
-            status = new com.pratham.foundation.database.domain.Status();
+            status = new Status();
             status.setStatusKey("gpsFixDuration");
             status.setValue("");
             appDatabase.getStatusDao().insert(status);
 
-            status = new com.pratham.foundation.database.domain.Status();
+            status = new Status();
             status.setStatusKey("prathamCode");
             status.setValue("");
             appDatabase.getStatusDao().insert(status);
 
-            status = new com.pratham.foundation.database.domain.Status();
+            status = new Status();
             status.setStatusKey("apkType");
             status.setValue("");
             appDatabase.getStatusDao().insert(status);
 
-            status = new com.pratham.foundation.database.domain.Status();
+            status = new Status();
             status.setStatusKey("Latitude");
             status.setValue("");
             appDatabase.getStatusDao().insert(status);
 
-            status = new com.pratham.foundation.database.domain.Status();
+            status = new Status();
             status.setStatusKey("Longitude");
             status.setValue("");
             appDatabase.getStatusDao().insert(status);
 
-            status = new com.pratham.foundation.database.domain.Status();
+            status = new Status();
             status.setStatusKey("GPSDateTime");
             status.setValue("");
             appDatabase.getStatusDao().insert(status);
 
-            status = new com.pratham.foundation.database.domain.Status();
+            status = new Status();
             status.setStatusKey("CurrentSession");
             status.setValue("NA");
             appDatabase.getStatusDao().insert(status);
 
-            status = new com.pratham.foundation.database.domain.Status();
+            status = new Status();
             status.setStatusKey("SdCardPath");
             status.setValue("NA");
             appDatabase.getStatusDao().insert(status);
 
-            status = new com.pratham.foundation.database.domain.Status();
+            status = new Status();
             status.setStatusKey("AppLang");
             status.setValue("NA");
             appDatabase.getStatusDao().insert(status);
 
-            status = new com.pratham.foundation.database.domain.Status();
+            status = new Status();
             status.setStatusKey("AppStartDateTime");
             status.setValue("NA");
             appDatabase.getStatusDao().insert(status);
 
             //new Entries
-            status = new com.pratham.foundation.database.domain.Status();
+            status = new Status();
             status.setStatusKey("ActivatedForGroups");
             status.setValue("NA");
             appDatabase.getStatusDao().insert(status);
 
-            status = new com.pratham.foundation.database.domain.Status();
+            status = new Status();
             status.setStatusKey("AndroidVersion");
             status.setValue(FC_Utility.getAndroidOSVersion());
             appDatabase.getStatusDao().insert(status);
 
-            status = new com.pratham.foundation.database.domain.Status();
+            status = new Status();
             status.setStatusKey("InternalAvailableStorage");
             status.setValue(FC_Utility.getInternalStorageStatus());
             appDatabase.getStatusDao().insert(status);
 
-            status = new com.pratham.foundation.database.domain.Status();
+            status = new Status();
             status.setStatusKey("DeviceManufacturer");
             status.setValue(FC_Utility.getDeviceManufacturer());
             appDatabase.getStatusDao().insert(status);
 
-            status = new com.pratham.foundation.database.domain.Status();
+            status = new Status();
             status.setStatusKey("DeviceModel");
             status.setValue(FC_Utility.getDeviceModel());
             appDatabase.getStatusDao().insert(status);
 
-            status = new com.pratham.foundation.database.domain.Status();
+            status = new Status();
             status.setStatusKey("ScreenResolution");
             status.setValue(FastSave.getInstance().getString(FC_Constants.SCR_RES, ""));
             appDatabase.getStatusDao().insert(status);
 
-            status = new com.pratham.foundation.database.domain.Status();
+            status = new Status();
             status.setStatusKey("programId");
             status.setValue("1");
             appDatabase.getStatusDao().insert(status);
 
-            status = new com.pratham.foundation.database.domain.Status();
+            status = new Status();
             status.setStatusKey("group1");
             status.setValue("NA");
             appDatabase.getStatusDao().insert(status);
 
-            status = new com.pratham.foundation.database.domain.Status();
+            status = new Status();
             status.setStatusKey("group2");
             status.setValue("NA");
             appDatabase.getStatusDao().insert(status);
 
-            status = new com.pratham.foundation.database.domain.Status();
+            status = new Status();
             status.setStatusKey("group3");
             status.setValue("NA");
             appDatabase.getStatusDao().insert(status);
 
-            status = new com.pratham.foundation.database.domain.Status();
+            status = new Status();
             status.setStatusKey("group4");
             status.setValue("NA");
             appDatabase.getStatusDao().insert(status);
 
-            status = new com.pratham.foundation.database.domain.Status();
+            status = new Status();
             status.setStatusKey("group5");
             status.setValue("NA");
             appDatabase.getStatusDao().insert(status);
 
-            status = new com.pratham.foundation.database.domain.Status();
+            status = new Status();
             status.setStatusKey("village");
             status.setValue("NA");
             appDatabase.getStatusDao().insert(status);
 
-            status = new com.pratham.foundation.database.domain.Status();
+            status = new Status();
             status.setStatusKey("ActivatedDate");
             status.setValue("NA");
             appDatabase.getStatusDao().insert(status);
 
-            status = new com.pratham.foundation.database.domain.Status();
+            status = new Status();
             status.setStatusKey("AssessmentSession");
             status.setValue("NA");
             appDatabase.getStatusDao().insert(status);
 
-            status = new com.pratham.foundation.database.domain.Status();
+            status = new Status();
             status.setStatusKey("AndroidID");
             status.setValue("NA");
             appDatabase.getStatusDao().insert(status);
 
-            status = new com.pratham.foundation.database.domain.Status();
+            status = new Status();
             status.setStatusKey("DBVersion");
             status.setValue(DB_VERSION);
             appDatabase.getStatusDao().insert(status);
 
-            status = new com.pratham.foundation.database.domain.Status();
+            status = new Status();
             status.setStatusKey("SerialID");
             status.setValue(FC_Utility.getDeviceSerialID());
+            appDatabase.getStatusDao().insert(status);
+
+            status = new Status();
+            status.setStatusKey("AppBuild Date");
+            status.setValue(ApplicationClass.BUILD_DATE);
             appDatabase.getStatusDao().insert(status);
 
             WifiManager wifiManager = (WifiManager) context.getApplicationContext().getSystemService(Context.WIFI_SERVICE);
@@ -609,28 +618,14 @@ public class BottomStudentsPresenter implements BottomStudentsContract.BottomStu
             status = new Status();
 
             status.setStatusKey("apkVersion");
-            PackageInfo pInfo = null;
-            String verCode = "";
-            try {
-                pInfo = context.getPackageManager().getPackageInfo(context.getPackageName(), 0);
-                verCode = pInfo.versionName;
-            } catch (PackageManager.NameNotFoundException e) {
-                e.printStackTrace();
-            }
+            String verCode = FC_Utility.getAppVerison();
             status.setValue(verCode);
             AppDatabase.getDatabaseInstance(context).getStatusDao().insert(status);
 
         } else {
             status.setStatusKey("apkVersion");
 
-            PackageInfo pInfo = null;
-            String verCode = "";
-            try {
-                pInfo = context.getPackageManager().getPackageInfo(context.getPackageName(), 0);
-                verCode = pInfo.versionName;
-            } catch (PackageManager.NameNotFoundException e) {
-                e.printStackTrace();
-            }
+            String verCode = FC_Utility.getAppVerison();
             status.setValue(verCode);
             AppDatabase.getDatabaseInstance(context).getStatusDao().insert(status);
 

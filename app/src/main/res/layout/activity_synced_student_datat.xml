@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:custom="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/rl_ss_main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/new_bg"
+    android:orientation="vertical">
+
+    <FrameLayout
+        android:id="@+id/frame_student"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone" />
+
+    <RelativeLayout
+        android:id="@+id/rl_calender"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <RelativeLayout
+            android:id="@+id/header_rl"
+            android:layout_width="match_parent"
+            android:layout_marginTop="@dimen/_5sdp"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:id="@+id/main_back"
+                android:layout_width="@dimen/_30sdp"
+                android:layout_height="@dimen/_30sdp"
+                android:layout_marginStart="@dimen/_5sdp"
+                android:layout_marginTop="@dimen/_5sdp"
+                android:scaleType="center"
+                android:src="@drawable/ic_left_arrow_white"/>
+
+            <com.pratham.foundation.customView.fontsview.SansTextViewBold
+                android:id="@+id/tv_Topic"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_15sdp"
+                android:layout_marginTop="@dimen/_5sdp"
+                android:layout_marginEnd="@dimen/_10sdp"
+                android:layout_toEndOf="@id/main_back"
+                android:text="@string/check_synced_data"
+                android:textColor="@color/colorText"
+                android:textSize="@dimen/_18sdp" />
+
+            <com.pratham.foundation.customView.fontsview.SansTextView
+                android:id="@+id/tv_date"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/tv_Topic"
+                android:layout_marginStart="@dimen/_15sdp"
+                android:layout_marginTop="@dimen/_8sdp"
+                android:layout_marginEnd="@dimen/_10sdp"
+                android:layout_marginBottom="@dimen/_5sdp"
+                android:layout_toEndOf="@id/main_back"
+                android:text="@string/select_date"
+                android:textColor="@color/colorText"
+                android:textSize="@dimen/_14sdp" />
+
+        </RelativeLayout>
+
+
+        <com.archit.calendardaterangepicker.customviews.DateRangeCalendarView
+            android:id="@+id/sync_date_picker"
+            android:layout_width="@dimen/_250sdp"
+            android:layout_height="@dimen/_260sdp"
+            android:layout_centerInParent="true"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:layout_marginBottom="@dimen/_10sdp"
+            android:background="@drawable/card_color_bg10"
+            android:elevation="@dimen/_5sdp"
+            custom:editable="true"
+            custom:enable_past_date="true"
+            custom:header_bg="@drawable/calender_header_1_bg"
+            custom:range_color="@color/colorBtnGreenLight"
+            custom:selected_date_circle_color="@color/colorBtnGreenDark"
+            custom:title_color="@color/white"
+            custom:week_offset="0" />
+
+        <com.pratham.foundation.customView.fontsview.SansButton
+            android:id="@+id/btn_sync_date_range"
+            android:layout_width="@dimen/_130sdp"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/sync_date_picker"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="@dimen/_15sdp"
+            android:background="@drawable/button_green"
+            android:elevation="@dimen/_10sdp"
+            android:padding="@dimen/_5sdp"
+            android:text="@string/confirm_date"
+            android:textAllCaps="true"
+            android:textColor="@color/white"
+            android:textSize="@dimen/_13sdp"
+            tools:ignore="HardcodedText" />
+
+    </RelativeLayout>
+
+</RelativeLayout>

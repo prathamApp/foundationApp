@@ -19,6 +19,10 @@ public class Model_CourseEnrollment implements Parcelable/*, Comparable */{
     private String courseId;
     @SerializedName("groupId")
     private String groupId;
+    @SerializedName("studentId")
+    private String studentId;
+    @SerializedName("courseEnrolledDate")
+    private String courseEnrolledDate;
     @SerializedName("planFromDate")
     private String planFromDate;
     @SerializedName("planToDate")
@@ -63,6 +67,7 @@ public class Model_CourseEnrollment implements Parcelable/*, Comparable */{
         c_autoID = in.readInt();
         courseId = in.readString();
         groupId = in.readString();
+        studentId = in.readString();
         planFromDate = in.readString();
         planToDate = in.readString();
         coachVerified = in.readInt();
@@ -74,6 +79,7 @@ public class Model_CourseEnrollment implements Parcelable/*, Comparable */{
         coachImage = in.readString();
         isProgressCompleted = in.readByte() != 0;
         language = in.readString();
+        courseEnrolledDate = in.readString();
         course_status = in.readString();
     }
 
@@ -107,6 +113,14 @@ public class Model_CourseEnrollment implements Parcelable/*, Comparable */{
 
     public void setGroupId(String groupId) {
         this.groupId = groupId;
+    }
+
+    public String getStudentId() {
+        return studentId;
+    }
+
+    public void setStudentId(String studentId) {
+        this.studentId = studentId;
     }
 
     public String getPlanFromDate() {
@@ -197,6 +211,14 @@ public class Model_CourseEnrollment implements Parcelable/*, Comparable */{
         this.language = language;
     }
 
+    public String getCourseEnrolledDate() {
+        return courseEnrolledDate;
+    }
+
+    public void setCourseEnrolledDate(String courseEnrolledDate) {
+        this.courseEnrolledDate = courseEnrolledDate;
+    }
+
     @Override
     public int describeContents() {
         return 0;
@@ -207,11 +229,13 @@ public class Model_CourseEnrollment implements Parcelable/*, Comparable */{
         dest.writeInt(c_autoID);
         dest.writeString(courseId);
         dest.writeString(groupId);
+        dest.writeString(studentId);
         dest.writeString(planFromDate);
         dest.writeString(planToDate);
         dest.writeInt(coachVerified);
         dest.writeString(coachVerificationDate);
         dest.writeString(courseExperience);
+        dest.writeString(courseEnrolledDate);
         dest.writeInt(sentFlag);
         dest.writeByte((byte) (courseCompleted ? 1 : 0));
         dest.writeString(coachImage);

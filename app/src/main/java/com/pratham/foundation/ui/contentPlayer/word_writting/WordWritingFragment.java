@@ -1,5 +1,12 @@
 package com.pratham.foundation.ui.contentPlayer.word_writting;
 
+import static android.app.Activity.RESULT_OK;
+import static android.widget.TextView.AUTO_SIZE_TEXT_TYPE_UNIFORM;
+import static com.pratham.foundation.utility.FC_Constants.activityPhotoPath;
+import static com.pratham.foundation.utility.FC_Constants.gameFolderPath;
+
+import android.content.ContentResolver;
+import android.content.ContentValues;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -8,6 +15,8 @@ import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
+import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
 import android.view.Window;
@@ -26,7 +35,9 @@ import com.pratham.foundation.customView.fontsview.SansButton;
 import com.pratham.foundation.interfaces.OnGameClose;
 import com.pratham.foundation.modalclasses.EventMessage;
 import com.pratham.foundation.modalclasses.ScienceQuestion;
+import com.pratham.foundation.services.shared_preferences.FastSave;
 import com.pratham.foundation.ui.contentPlayer.GameConstatnts;
+import com.pratham.foundation.utility.FC_Constants;
 import com.pratham.foundation.utility.FC_Utility;
 
 import org.androidannotations.annotations.AfterViews;
@@ -42,11 +53,6 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.util.ArrayList;
 import java.util.List;
-
-import static android.app.Activity.RESULT_OK;
-import static android.widget.TextView.AUTO_SIZE_TEXT_TYPE_UNIFORM;
-import static com.pratham.foundation.utility.FC_Constants.activityPhotoPath;
-import static com.pratham.foundation.utility.FC_Constants.gameFolderPath;
 
 @EFragment(R.layout.fragment_word_writing)
 public class WordWritingFragment extends Fragment
@@ -101,13 +107,13 @@ public class WordWritingFragment extends Fragment
         preview.setVisibility(View.GONE);
         imageName = "" + ApplicationClass.getUniqueID() + ".jpg";
 
-        presenter.setView(WordWritingFragment.this, resId, readingContentPath,contentTitle);
+        presenter.setView(WordWritingFragment.this, resId, readingContentPath, contentTitle);
         presenter.getData();
      /*   if (questionModel != null)
             GameConstatnts.showGameInfo(getActivity(), questionModel.get(index).getInstruction(), readingContentPath + questionModel.get(index).getInstructionUrl());
 */
         resStartTime = FC_Utility.getCurrentDateTime();
-        presenter.addScore(0, "", 0, 0, resStartTime, GameConstatnts.PARAGRAPH_WRITING + " " + GameConstatnts.START,resId,true);
+        presenter.addScore(0, "", 0, 0, resStartTime, GameConstatnts.PARAGRAPH_WRITING + " " + GameConstatnts.START, resId, true);
 
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
@@ -185,16 +191,36 @@ public class WordWritingFragment extends Fragment
 
     @Click(R.id.capture)
     public void captureClick() {
-      /*  Intent takePicture = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        startActivityForResult(takePicture, CAMERA_REQUEST);*/
+        try {
+            imageName = "" + ApplicationClass.getUniqueID() + ".jpg";
 
-        Intent cameraIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
-        File imagesFolder = new File(activityPhotoPath);
-        if (!imagesFolder.exists()) imagesFolder.mkdirs();
-        File image = new File(imagesFolder, imageName);
-        capturedImageUri = Uri.fromFile(image);
-        cameraIntent.putExtra(android.provider.MediaStore.EXTRA_OUTPUT, capturedImageUri);
-        startActivityForResult(cameraIntent, CAMERA_REQUEST);
+            Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+            File imagesFolder = new File(activityPhotoPath);
+            if (!imagesFolder.exists()) imagesFolder.mkdirs();
+
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                File image = new File(imagesFolder, imageName);
+                ContentResolver resolver = getContext().getContentResolver();
+                ContentValues valuesvideos = new ContentValues();
+                valuesvideos.put(MediaStore.MediaColumns.DISPLAY_NAME, image.getName());
+                String fileMimeType = FC_Utility.getMimeType(image.getAbsolutePath());
+                valuesvideos.put(MediaStore.MediaColumns.MIME_TYPE, fileMimeType);
+                valuesvideos.put(MediaStore.MediaColumns.RELATIVE_PATH, Environment.DIRECTORY_DOWNLOADS
+                        + File.separator + "FCAInternal" + File.separator + "ActivityPhotos" +
+                        File.separator + FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""));
+                image.delete();
+                final Uri uriSavedVideo = resolver.insert(MediaStore.Downloads.EXTERNAL_CONTENT_URI, valuesvideos);
+                cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, uriSavedVideo);
+                startActivityForResult(cameraIntent, CAMERA_REQUEST);
+            } else {
+                File image = new File(imagesFolder, imageName);
+                Uri capturedImageUri = Uri.fromFile(image);
+                cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, capturedImageUri);
+                startActivityForResult(cameraIntent, CAMERA_REQUEST);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     @Click(R.id.preview)
@@ -275,7 +301,7 @@ public class WordWritingFragment extends Fragment
 
     @Override
     public void gameClose() {
-        presenter.addScore(0, "", 0, 0, resStartTime, GameConstatnts.PARAGRAPH_WRITING + " " + GameConstatnts.END,resId,true);
+        presenter.addScore(0, "", 0, 0, resStartTime, GameConstatnts.PARAGRAPH_WRITING + " " + GameConstatnts.END, resId, true);
     }
 
     @Override

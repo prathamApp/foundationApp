@@ -35,6 +35,8 @@ public class Score implements Serializable {
     private int Level;
     @ColumnInfo(name = "Label")
     private String Label;
+    @ColumnInfo(name = "GroupId")
+    private String GroupId;
     @ColumnInfo(name = "sentFlag")
     private int sentFlag;
 
@@ -52,8 +54,17 @@ public class Score implements Serializable {
                 ", TotalMarks=" + TotalMarks +
                 ", StartDateTime='" + StartDateTime + '\'' +
                 ", EndDateTime='" + EndDateTime + '\'' +
+                ", GroupId='" + GroupId + '\'' +
                 ", Level=" + Level +
                 '}';
+    }
+
+    public String getGroupId() {
+        return GroupId;
+    }
+
+    public void setGroupId(String groupId) {
+        GroupId = groupId;
     }
 
     public int getSentFlag() {

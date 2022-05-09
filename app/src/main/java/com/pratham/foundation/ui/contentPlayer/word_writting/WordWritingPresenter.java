@@ -1,5 +1,11 @@
 package com.pratham.foundation.ui.contentPlayer.word_writting;
 
+import static com.pratham.foundation.utility.FC_Constants.APP_SECTION;
+import static com.pratham.foundation.utility.FC_Constants.IMG_PUSH_LBL;
+import static com.pratham.foundation.utility.FC_Constants.activityPhotoPath;
+import static com.pratham.foundation.utility.FC_Constants.currentLevel;
+import static com.pratham.foundation.utility.FC_Constants.sec_Test;
+
 import android.content.Context;
 import android.graphics.Bitmap;
 
@@ -28,17 +34,11 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import static com.pratham.foundation.utility.FC_Constants.APP_SECTION;
-import static com.pratham.foundation.utility.FC_Constants.IMG_PUSH_LBL;
-import static com.pratham.foundation.utility.FC_Constants.activityPhotoPath;
-import static com.pratham.foundation.utility.FC_Constants.currentLevel;
-import static com.pratham.foundation.utility.FC_Constants.sec_Test;
-
 @EBean
 public class WordWritingPresenter implements WordWritingContract.WordWritingPresenter {
     private List<ScienceQuestion> questionModel;
     private WordWritingContract.WordWritingView view;
-    private Context context;
+    private final Context context;
     private List<ScienceQuestion> quetionModelList;
     private float perc;
     private int totalWordCount, learntWordCount;
@@ -229,6 +229,7 @@ public class WordWritingPresenter implements WordWritingContract.WordWritingPres
             score.setScoredMarks(0);
             score.setTotalMarks(0);
             score.setStudentID(FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""));
+            score.setGroupId(FastSave.getInstance().getString(FC_Constants.CURRENT_GROUP_ID, ""));
             score.setStartDateTime(imageName);
             score.setDeviceID(deviceId.equals(null) ? "0000" : deviceId);
             score.setEndDateTime(FC_Utility.getCurrentDateTime());
@@ -252,6 +253,7 @@ public class WordWritingPresenter implements WordWritingContract.WordWritingPres
             score.setScoredMarks(scoredMarks);
             score.setTotalMarks(totalMarks);
             score.setStudentID(FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""));
+            score.setGroupId(FastSave.getInstance().getString(FC_Constants.CURRENT_GROUP_ID, ""));
             score.setStartDateTime(resStartTime);
             score.setDeviceID(deviceId.equals(null) ? "0000" : deviceId);
             score.setEndDateTime(FC_Utility.getCurrentDateTime());

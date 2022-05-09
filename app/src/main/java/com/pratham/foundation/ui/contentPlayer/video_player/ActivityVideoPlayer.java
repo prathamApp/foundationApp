@@ -1,5 +1,7 @@
 package com.pratham.foundation.ui.contentPlayer.video_player;
 
+import static com.pratham.foundation.utility.FC_Constants.gameFolderPath;
+
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
@@ -33,8 +35,6 @@ import org.androidannotations.annotations.ViewById;
 import org.greenrobot.eventbus.Subscribe;
 
 import java.util.Objects;
-
-import static com.pratham.foundation.utility.FC_Constants.gameFolderPath;
 
 
 @EActivity(R.layout.fragment_video_player)
@@ -171,6 +171,10 @@ public class ActivityVideoPlayer extends BaseActivity {
         Score modalScore = new Score();
         modalScore.setSessionID(FastSave.getInstance().getString(FC_Constants.CURRENT_SESSION, ""));
         modalScore.setStudentID("" + FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""));
+        if(FastSave.getInstance().getString(FC_Constants.LOGIN_MODE, "").equalsIgnoreCase(FC_Constants.GROUP_MODE))
+            modalScore.setGroupId(FastSave.getInstance().getString(FC_Constants.CURRENT_GROUP_ID, ""));
+        else
+            modalScore.setGroupId("NA");
         modalScore.setDeviceID(FC_Utility.getDeviceID());
         modalScore.setResourceID(resId);
         modalScore.setQuestionId(0);

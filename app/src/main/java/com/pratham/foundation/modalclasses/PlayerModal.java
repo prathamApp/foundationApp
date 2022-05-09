@@ -1,8 +1,5 @@
 package com.pratham.foundation.modalclasses;
 
-import android.os.Parcel;
-import android.os.Parcelable;
-
 /**
  * Created by Ameya on 28-Mar-18.
  */

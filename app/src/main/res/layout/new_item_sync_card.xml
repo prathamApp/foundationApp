@@ -1,0 +1,168 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/log_card_main"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginStart="@dimen/_10sdp"
+    android:layout_marginTop="@dimen/_2sdp"
+    android:layout_marginEnd="@dimen/_10sdp"
+    android:layout_marginBottom="8dp"
+    android:elevation="5dp"
+    app:cardBackgroundColor="@color/white"
+    app:cardCornerRadius="@dimen/_10sdp">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="@dimen/_5sdp">
+
+        <com.pratham.foundation.customView.fontsview.SansTextViewBold
+            android:id="@+id/stat_date"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/_5sdp"
+            android:layout_marginEnd="@dimen/_5sdp"
+            android:layout_toStartOf="@+id/tv_syncType"
+            android:background="@drawable/text_usage_game_grad"
+            android:paddingStart="@dimen/_15sdp"
+            android:paddingTop="@dimen/_3sdp"
+            android:paddingEnd="@dimen/_3sdp"
+            android:paddingBottom="@dimen/_3sdp"
+            android:text="Date : "
+            android:textColor="@color/colorSignBoard2"
+            android:textSize="@dimen/_12sdp"
+            tools:ignore="HardcodedText" />
+
+        <com.pratham.foundation.customView.fontsview.SansTextViewBold
+            android:id="@+id/tv_syncType"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="@dimen/_2sdp"
+            android:layout_marginEnd="@dimen/_5sdp"
+            android:padding="@dimen/_3sdp"
+            android:text="@string/manual"
+            android:textColor="@color/colorSignBoard2"
+            android:textSize="@dimen/_12sdp"
+            tools:ignore="HardcodedText" />
+
+        <LinearLayout
+            android:id="@+id/ll_data"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/stat_date"
+            android:layout_marginTop="@dimen/_4sdp"
+            android:orientation="vertical">
+
+            <com.pratham.foundation.customView.fontsview.SansTextView
+                android:id="@+id/tv_uuid"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_10sdp"
+                android:layout_marginTop="@dimen/_4sdp"
+                android:layout_marginEnd="@dimen/_10sdp"
+                android:layout_marginBottom="@dimen/_2sdp"
+                android:gravity="center_vertical"
+                android:paddingStart="@dimen/_8sdp"
+                android:paddingTop="@dimen/_2sdp"
+                android:paddingEnd="@dimen/_5sdp"
+                android:paddingBottom="@dimen/_2sdp"
+                android:textColor="@color/colorText"
+                android:textSize="@dimen/_12sdp" />
+
+            <com.pratham.foundation.customView.fontsview.SansTextView
+                android:id="@+id/tv_pushId"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_10sdp"
+                android:layout_marginTop="@dimen/_2sdp"
+                android:layout_marginEnd="@dimen/_10sdp"
+                android:layout_marginBottom="@dimen/_2sdp"
+                android:gravity="center_vertical"
+                android:paddingStart="@dimen/_8sdp"
+                android:paddingTop="@dimen/_2sdp"
+                android:paddingEnd="@dimen/_5sdp"
+                android:paddingBottom="@dimen/_2sdp"
+                android:textColor="@color/colorText"
+                android:textSize="@dimen/_12sdp" />
+
+            <com.pratham.foundation.customView.fontsview.SansTextViewBold
+                android:id="@+id/tv_syncStatus"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_10sdp"
+                android:layout_marginTop="@dimen/_2sdp"
+                android:layout_marginEnd="@dimen/_10sdp"
+                android:layout_marginBottom="@dimen/_2sdp"
+                android:gravity="center_vertical"
+                android:paddingStart="@dimen/_8sdp"
+                android:paddingTop="@dimen/_2sdp"
+                android:paddingEnd="@dimen/_5sdp"
+                android:paddingBottom="@dimen/_2sdp"
+                android:textColor="@color/colorText"
+                android:textSize="@dimen/_12sdp" />
+
+            <com.pratham.foundation.customView.fontsview.SansTextView
+                android:id="@+id/tv_pushError"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_10sdp"
+                android:layout_marginTop="@dimen/_2sdp"
+                android:layout_marginEnd="@dimen/_10sdp"
+                android:layout_marginBottom="@dimen/_2sdp"
+                android:gravity="center_vertical"
+                android:paddingStart="@dimen/_8sdp"
+                android:paddingTop="@dimen/_2sdp"
+                android:paddingEnd="@dimen/_5sdp"
+                android:paddingBottom="@dimen/_2sdp"
+                android:textColor="@color/colorText"
+                android:textSize="@dimen/_11sdp"
+                android:visibility="gone" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="2dp"
+                    android:layout_weight="1" />
+
+                <com.pratham.foundation.customView.fontsview.SansButton
+                    android:id="@+id/btn_sync"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_margin="@dimen/_5sdp"
+                    android:layout_weight="1"
+                    android:background="@drawable/button_blue"
+                    android:elevation="@dimen/_3sdp"
+                    android:gravity="center"
+                    android:text="@string/sync"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/_12sdp" />
+
+                <com.pratham.foundation.customView.fontsview.SansButton
+                    android:id="@+id/btn_details"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_margin="@dimen/_5sdp"
+                    android:layout_weight="1"
+                    android:background="@drawable/button_green"
+                    android:elevation="@dimen/_3sdp"
+                    android:gravity="center"
+                    android:text="Details"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/_12sdp"
+                    android:visibility="gone" />
+            </LinearLayout>
+        </LinearLayout>
+
+    </RelativeLayout>
+</com.google.android.material.card.MaterialCardView>

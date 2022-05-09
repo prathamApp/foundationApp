@@ -1,5 +1,9 @@
 package com.pratham.foundation.ui.app_home.learning_fragment.attendance_bottom_fragment;
 
+import static com.pratham.foundation.ApplicationClass.ButtonClickSound;
+import static com.pratham.foundation.utility.FC_Constants.currentLevel;
+import static com.pratham.foundation.utility.FC_Constants.currentSubjectFolder;
+
 import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.app.ProgressDialog;
@@ -43,10 +47,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-import static com.pratham.foundation.ApplicationClass.ButtonClickSound;
-import static com.pratham.foundation.utility.FC_Constants.currentLevel;
-import static com.pratham.foundation.utility.FC_Constants.currentSubjectFolder;
-
 
 @EFragment(R.layout.attendance_bottom_fragment)
 public class AttendanceBottomFragment extends BottomSheetDialogFragment
@@ -58,7 +58,7 @@ public class AttendanceBottomFragment extends BottomSheetDialogFragment
     @ViewById(R.id.students_recyclerView)
     RecyclerView rl_students;
 
-    private ArrayList avatars = new ArrayList();
+    private final ArrayList avatars = new ArrayList();
     private List<Student> fragmentModalsList;
     AttendanceStudentsAdapter adapter;
     Gson gson;
@@ -226,6 +226,7 @@ public class AttendanceBottomFragment extends BottomSheetDialogFragment
             bundle.putString("subjectLanguage", "" + FC_Constants.AssLang);
             bundle.putString("examId", "" + FC_Constants.examId);
             bundle.putString("subjectLevel", "" + currentLevel);
+            bundle.putString("studentGroupId", "NA");
 //            Intent launchIntent = new Intent("com.doedelhi.pankhpractice.ui.choose_assessment.ChooseAssessmentActivity_");
             Intent launchIntent = new Intent("com.pratham.assessment.ui.choose_assessment.science.ScienceAssessmentActivity_");
             //Intent launchIntent = Objects.requireNonNull(getActivity()).getPackageManager()

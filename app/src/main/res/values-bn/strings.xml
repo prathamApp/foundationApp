@@ -1,5 +1,8 @@
 <?xml version="1.0" ?>
 <resources xmlns:tools="http://schemas.android.com/tools">
+
+    <string name="app_name">প্রডিজি ফর স্কুল</string>
+
     <string name="Login">লগ ইন করুন।</string>
     <!--    <string name="Stt_Dialog_Msg">অফলাইন স্পিচ রেকগনিশনের জন্য অনুগ্রহ করে ল্যাঙ্গুয়েজ প্যাক English (India) ও हिंदी(भारत) ডাউনলোড করুন।\n\nOpen\nGoogle -> Settings -> Voice -> Offline speech recognition</string>-->
     <string name="Stt_Dialog_Msg">অফলাইন স্পিচ রেকগনিশনের জন্য অনুগ্রহ করে ল্যাঙ্গুয়েজ প্যাক English (India) ও हिंदी(भारत) ডাউনলোড করুন।</string>
@@ -159,10 +162,73 @@
     <string name="confirm_date">তারিখ কনফার্ম করুন</string>
     <string name="Audio">অডিও শুনুন</string>
 
-    <string name="DB_Zip_pushed_failed">ডাটাবেস সিঙ্ক সফল হয়নি</string>
-    <string name="DB_Zip_pushed_successfully">ডাটাবেস সিঙ্ক সফল হয়েছে</string>
-    <string name="DB_Zip_push">ডিবি ফাইল সিঙ্ক হয়েছে</string>
+    <string name="push_data">                   পুশ ডাটা   </string>
+    <string name="push_logs">                   পুশ লগস   </string>
+    <string name="sync_logs">                   সিঙ্ক লগস   </string>
+    <string name="check_synced_data">           সিঙ্কড ডাটা চেক করুন   </string>
+    <string name="reset_app_tour">              অ্যাপ ট্যুর রিসেট করুন  </string>
+    <string name="ques_reset_app_tour">         আপনি কি নিশ্চিত ভাবে অ্যাপ ট্যুর রিসেট করতে চান?   </string>
+    <string name="no_internet">                 ইন্টারনেট সংযোগ নেই   </string>
+    <string name="diagnostic_test_result">      ডায়াগনস্টিক টেস্ট রেজাল্ট   </string>
+    <string name="diagnostic_test_result_msg">  আপনি অ্যাসেসমেন্ট অ্যাপের মাধ্যমে নেওয়া ডায়াগনস্টিক টেস্টের শংসাপত্র দেখতে পারেন।   </string>
+    <string name="app_exit">                    অ্যাপ এক্সিট   </string>
+    <string name="app_exit_msg">                আপনি অ্যাপ থেকে বেরিয়ে যেতে পারেন   </string>
+    <string name="back_button">                 ব্যাক বাটন   </string>
+    <string name="back_button_msg">             আগের স্ক্রিনে ফিরে যান   </string>
+    <string name="refresh">                     রিফ্রেশ  </string>
+    <string name="refresh_msg">                 স্ক্রিনে কন্টেন্টটি রিলোড অথবা রিফ্রেশ করুন   </string>
+    <string name="push_and_sync">               পুশ এবং সিঙ্ক   </string>
+    <string name="other">                       অন্যান্য   </string>
+    <string name="DB_Zip_pushed_failed">        পুশ ডাটাবেস বিফল  </string>
+    <string name="DB_Zip_pushed_successfully">  ডাটাবেস পুশ সফল  </string>
+    <string name="DB_Zip_push">        পুশ ডিবি ফাইল   </string>
 
+
+    <string name="pls_select_date">                  তারিখ বেছে নিন   </string>
+    <string name="connect_to_internet">              ইন্টারনেটের সাথে সংযোগ করুন    </string>
+    <string name="server_error">                     সার্ভার সমস্যা   </string>
+    <string name="total_attendance">                 মোট উপস্থিতি   </string>
+    <string name="view_details">                     বিস্তারিত দেখুন"   </string>
+    <string name="total_courses">                    মোট কোর্স   </string>
+    <string name="studs_acce_the_app">               অ্যাপ অ্যাক্সেস করা ব্যবহারকারীর সংখ্যা"   </string>
+    <string name="studs_reg_the_app">                অ্যাপে রেজিস্টার করা ব্যবহারকারীর সংখ্যা   </string>
+    <string name="total_sessions">                   মোট সেশন"   </string>
+    <string name="total_groups">                     মোট দল    </string>
+    <string name="error_message">                    মেসেজ সমস্যা   </string>
+    <string name="accessed_users">                   আক্সেসযোগ্য ব্যবহারকারী   </string>
+    <string name="registered_users">                 রেজিস্টারযোগ্য ব্যবহারকারী   </string>
+    <string name="pls_select_studs">                 ছাত্র নির্বাচন করুন!   </string>
+    <string name="problem_marking_attendance">       উপস্থিতি চিহ্নিত করার সমস্যা   </string>
+    <string name="loading_pls_wait">                 লোডিং...অপেক্ষা করুন    </string>
+    <string name="enroll_id">                        এনরোলমেণ্ট আইডি    </string>
+    <string name="create_profile">                   প্রোফাইল তৈরি করুন    </string>
+    <string name="total_resources">                  মোট রিসোর্স    </string>
+    <string name="stud_id">                          স্টুডেন্ট আইডি    </string>
+    <string name="date">                             তারিখ    </string>
+    <string name="data">                             ডেটা   </string>
+    <string name="media">                            মিডিয়া    </string>
+    <string name="courses">                          কোর্সগুলি    </string>
+    <string name="db_sync">                          ডিবি সিঙ্ক   </string>
+    <string name="course_count">                     কোর্সের গণনা    </string>
+    <string name="media_count">                      মিডিিয়ার গণনা   </string>
+    <string name="manual">                           ম্যানুয়াল    </string>
+    <string name="auto">                             অটো    </string>
+    <string name="tot_db_entries">                   মোট ডিবি এন্ট্রি    </string>
+    <string name="enrollment_details">               এনরোলমেণ্ট ডিটেইলস    </string>
+    <string name="my_class">                         ক্লাস   </string>
+    <string name="my_name">                          নাম    </string>
+    <string name="check_id">                         আইডি চেক    </string>
+    <string name="enter_your_id">                    নিজের আইডি লিখুন   </string>
+    <string name="select_avatar">                    অবতার বাছাই করুন    </string>
+    <string name="age">                              বয়স    </string>
+    <string name="gender">                           লিঙ্গ    </string>
+    <string name="save_profile">                     প্রোফাইল সেভ করুন    </string>
+    <string name="profile_created_successfully">     প্রোফাইল সফলভাবে তৈরি হয়েছে    </string>
+    <string name="male">                             পরুষ    </string>
+    <string name="female">                           মহিলা    </string>
+    <string name="please_fill_details">              দয়া করে সমস্ত বিবরণ দিন    </string>
+    <string name="problem_pulling_stud">             ছাত্র নেওয়ার সমস্যা    </string>
+    <string name="wrong_enrollment_id">              ভুল এনরোলমেণ্ট আইডি   </string>
 
     <string name="Agent_name" >Vernicula</string>
     <string name="talkbot" >Talkbot</string>
@@ -369,7 +435,7 @@
         <item>avatars/acrobatics.json</item>-->
     </string-array>
     <string-array name="age">
-        <item>Select Age</item>
+        <item>বয়স নির্বাচন করুন</item>
         <item> 3  </item>
         <item> 4  </item>
         <item> 5  </item>

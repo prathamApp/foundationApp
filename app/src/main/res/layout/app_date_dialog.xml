@@ -9,9 +9,9 @@
 
     <com.airbnb.lottie.LottieAnimationView
         android:id="@+id/push_lottie"
-        android:layout_centerHorizontal="true"
         android:layout_width="@dimen/_80sdp"
         android:layout_height="@dimen/_80sdp"
+        android:layout_centerHorizontal="true"
         android:layout_marginTop="@dimen/_20sdp"
         app:lottie_autoPlay="true"
         app:lottie_fileName="calendar_event.json"
@@ -70,23 +70,23 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content">
 
-    <com.pratham.foundation.customView.fontsview.SansButton
-        android:id="@+id/ok_btn"
-        android:layout_width="@dimen/_80sdp"
-        android:layout_height="wrap_content"
-        android:text="@string/Okay"
-        android:visibility="visible"
-        android:background="@drawable/button_green"
-        android:layout_marginBottom="@dimen/_15sdp"
-        android:paddingTop="@dimen/_8sdp"
-        android:paddingBottom="@dimen/_8sdp"
-        android:layout_marginStart="@dimen/_3sdp"
-        android:layout_marginEnd="@dimen/_3sdp"
-        android:paddingStart="@dimen/_10sdp"
-        android:paddingEnd="@dimen/_10sdp"
-        android:elevation="@dimen/_5sdp"
-        android:textColor="@color/white"
-        android:textSize="@dimen/_10sdp"/>
+        <com.pratham.foundation.customView.fontsview.SansButton
+            android:id="@+id/ok_btn"
+            android:layout_width="@dimen/_80sdp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/_3sdp"
+            android:layout_marginEnd="@dimen/_3sdp"
+            android:layout_marginBottom="@dimen/_15sdp"
+            android:background="@drawable/button_green"
+            android:elevation="@dimen/_5sdp"
+            android:paddingStart="@dimen/_10sdp"
+            android:paddingTop="@dimen/_8sdp"
+            android:paddingEnd="@dimen/_10sdp"
+            android:paddingBottom="@dimen/_8sdp"
+            android:text="@string/Okay"
+            android:textColor="@color/white"
+            android:textSize="@dimen/_10sdp"
+            android:visibility="visible" />
 
         <com.pratham.foundation.customView.fontsview.SansButton
             android:id="@+id/eject_btn"

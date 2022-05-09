@@ -1,5 +1,7 @@
 package com.pratham.foundation.view_holders;
 
+import static com.pratham.foundation.ApplicationClass.App_Thumbs_Path;
+
 import android.annotation.SuppressLint;
 import android.net.Uri;
 import android.view.View;
@@ -27,8 +29,6 @@ import com.pratham.foundation.ui.app_home.display_content.ContentClicked;
 
 import java.io.File;
 import java.util.Objects;
-
-import static com.pratham.foundation.ApplicationClass.App_Thumbs_Path;
 
 
 public class ContentTestViewHolder extends RecyclerView.ViewHolder {

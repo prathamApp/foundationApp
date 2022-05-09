@@ -23,6 +23,12 @@ public interface GroupDao {
     @Query("SELECT * FROM Groups ")
     List<Groups> getAllGroups();
 
+    @Query("SELECT * FROM Groups where sentFlag=0")
+    List<Groups> getAllNewGroups();
+
+    @Query("update Groups set sentFlag=1 where sentFlag = 0")
+    void setSentFlag();
+
     @Query("SELECT * FROM Groups WHERE VillageID=:vID ORDER BY GroupName ASC")
     List<Groups> GetGroups(int vID);
 

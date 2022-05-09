@@ -1,5 +1,8 @@
 <?xml version="1.0" ?>
 <resources xmlns:tools="http://schemas.android.com/tools">
+
+    <string name="app_name">પ્રડિજિ ફોર સ્કૂલ</string>
+
     <string name="Login">લૉગિન કરો</string>
     <!--    <string name="Stt_Dialog_Msg">સારા પ્રદર્શન માટે કૃપા કરીને ઑફલાઈન ભાષા પૅક English(India) અને हिंदी(भारत) ડાઉનલોડ કરો.\n\nOpen\nGoogle -> Settings -> Voice -> Offline speech recognition</string>-->
     <string name="Stt_Dialog_Msg">સારા પ્રદર્શન માટે કૃપા કરીને ઑફલાઈન ભાષા પૅક English(India) અને हिंदी(भारत) ડાઉનલોડ કરો.</string>
@@ -159,11 +162,72 @@
     <string name="confirm_date">તારીખની ખાતરી કરો</string>
     <string name="Audio">ઑડિયો સાંભળો</string>
 
-    <string name="DB_Zip_pushed_failed">ડેટાબેસ સિંક થયો નથી. </string>
-    <string name="DB_Zip_pushed_successfully">ડેટાબેસ સફળતાપૂર્વક સિંક થઇ ગયો.</string>
-    <string name="DB_Zip_push">DB ફાઈલ સિંક કરો.</string>
+    <string name="push_data">                   ડેટા પુશ કરો  </string>
+    <string name="push_logs">                   લૉગ્સ પુશ કરો  </string>
+    <string name="sync_logs">                   લૉગ્સ સિંક કરો  </string>
+    <string name="check_synced_data">           સિંક કરેલ ડેટા ચકાસો  </string>
+    <string name="reset_app_tour">              એપ ટૂર ફરીથી સેટ કરો  </string>
+    <string name="ques_reset_app_tour">         શું તમે ખરેખર એપ ટૂર ફરીથી રીસેટ કરવા માંગો છો?  </string>
+    <string name="no_internet">                 ઇન્ટરનેટ કનેક્શન નથી  </string>
+    <string name="diagnostic_test_result">      ડાયગ્નોસ્ટીક ટેસ્ટનું પરિણામ  </string>
+    <string name="diagnostic_test_result_msg">  તમે અસેસમેન્ટ એપમાં લીધેલ ડાયગ્નોસ્ટિક ટેસ્ટનું પ્રમાણપત્ર જોઈ શકો છો.  </string>
+    <string name="app_exit">                    એપમાંથી બહાર નીકળો  </string>
+    <string name="app_exit_msg">                તમે એપમાંથી બહાર નીકળી શકો છો  </string>
+    <string name="back_button">                 બૅક બટન   </string>
+    <string name="back_button_msg">             આગળની સ્ક્રીન પર જાઓ.  </string>
+    <string name="refresh">                     રિફ્રેશ કરો  </string>
+    <string name="refresh_msg">                 સ્ક્રીન પરની વર્તમાન સામગ્રીને રી-લોડ અથવા રિફ્રેશ કરો  </string>
+    <string name="push_and_sync">               પુશ કરો અને સિંક કરો  </string>
+    <string name="other">                       અન્ય  </string>
+    <string name="DB_Zip_pushed_failed">        ડેટાબેઝ પુશ થયેલ નથી  </string>
+    <string name="DB_Zip_pushed_successfully">  ડેટાબેઝ સફળતાપૂર્વક પુશ થયો  </string>
+    <string name="DB_Zip_push">        DB ફાઇલને પુશ કરો   </string>
 
-
+    <string name="pls_select_date">                   કૃપા કરીને તારીખ પસંદ કરો  </string>
+    <string name="connect_to_internet">               ઇન્ટરનેટથી કનેક્ટ કરો.  </string>
+    <string name="server_error">                      સર્વર એરર  </string>
+    <string name="total_attendance">                  કુલ હાજરી  </string>
+    <string name="view_details">                      વિગતો તપાસો  </string>
+    <string name="total_courses">                     કુલ કોર્સ  </string>
+    <string name="studs_acce_the_app">                એપને ઍક્સેસ કરનાર કુલ યુઝરની સંખ્યા  </string>
+    <string name="studs_reg_the_app">                 એપમાં રજિસ્ટર્ડ કરનારા કુલ યુઝરની સંખ્યા  </string>
+    <string name="total_sessions">                    કુલ સેશન  </string>
+    <string name="total_groups">                      કુલ ગ્રુપ  </string>
+    <string name="error_message">                     એરર મેસેજ  </string>
+    <string name="accessed_users">                    ઍક્સેસ કરેલા યુઝર  </string>
+    <string name="registered_users">                  રજિસ્ટર્ડ યુઝર  </string>
+    <string name="pls_select_studs">                  કૃપા વિદ્યાર્થીઓને પસંદ કરો.  </string>
+    <string name="problem_marking_attendance">        હાજરી માર્કિંગમાં સમસ્યા  </string>
+    <string name="loading_pls_wait">                  લોડ કરી રહ્યું છે ... મહેરબાની કરીને રાહ જુઓ ...  </string>
+    <string name="enroll_id">                         નોંધણી આઈડી  </string>
+    <string name="create_profile">                    પ્રોફાઇલ બનાવો  </string>
+    <string name="total_resources">                   કુલ સંસાધનો  </string>
+    <string name="stud_id">                           વિદ્યાર્થી આઈડી  </string>
+    <string name="date">                              તારીખ  </string>
+    <string name="data">                              માહિતી  </string>
+    <string name="media">                             મીડિયા  </string>
+    <string name="courses">                           કોર્સ  </string>
+    <string name="db_sync">                           DB સિંક  </string>
+    <string name="course_count">                      અભ્યાસક્રમ ગણતરી  </string>
+    <string name="media_count">                       મીડિયા ગણતરી  </string>
+    <string name="manual">                            મેન્યુઅલ  </string>
+    <string name="auto">                              ઑટો  </string>
+    <string name="tot_db_entries">                    કુલ DB એન્ટ્રીઝ  </string>
+    <string name="enrollment_details">                નોંધણીની વિગતો  </string>
+    <string name="my_class">                          વર્ગ  </string>
+    <string name="my_name">                           નામ  </string>
+    <string name="check_id">                           આઈડી ચેક કરો  </string>
+    <string name="enter_your_id">                     તમારી આઈડી એન્ટર કરો  </string>
+    <string name="select_avatar">                     અવતાર પસંદ કરો  </string>
+    <string name="age">                               ઉંમર  </string>
+    <string name="gender">                            લિંગ  </string>
+    <string name="save_profile">                      પ્રોફાઇલ સેવ કરો   </string>
+    <string name="profile_created_successfully">      પ્રોફાઇલ સફળતાપૂર્વક બનાવેલ છે  </string>
+    <string name="male">                              પુરુષ  </string>
+    <string name="female">                            સ્ત્રી  </string>
+    <string name="please_fill_details">               કૃપા કરીને બધી વિગતો ભરો ..  </string>
+    <string name="problem_pulling_stud">              વિદ્યાર્થીને પુલ કરવામાં સમસ્યા  </string>
+    <string name="wrong_enrollment_id">               ખોટી નોંધણી આઈડી  </string>
 
 
 
@@ -372,7 +436,7 @@
         <item>avatars/acrobatics.json</item>-->
     </string-array>
     <string-array name="age">
-        <item>Select Age</item>
+        <item>ઉંમર પસંદ કરો</item>
         <item> 3  </item>
         <item> 4  </item>
         <item> 5  </item>

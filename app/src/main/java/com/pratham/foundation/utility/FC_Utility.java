@@ -12,6 +12,7 @@ import static com.pratham.foundation.utility.FC_Constants.ODIYA;
 import static com.pratham.foundation.utility.FC_Constants.PUNJABI;
 import static com.pratham.foundation.utility.FC_Constants.TAMIL;
 import static com.pratham.foundation.utility.FC_Constants.TELUGU;
+import static com.pratham.foundation.utility.FC_Constants.URDU;
 import static com.pratham.foundation.utility.FC_Constants.sec_Learning;
 
 import android.animation.TimeInterpolator;
@@ -70,6 +71,7 @@ import android.view.animation.LinearInterpolator;
 import android.view.animation.OvershootInterpolator;
 import android.view.animation.TranslateAnimation;
 import android.view.inputmethod.InputMethodManager;
+import android.webkit.MimeTypeMap;
 import android.widget.Toast;
 
 import androidx.annotation.ColorInt;
@@ -87,6 +89,7 @@ import com.pratham.foundation.customView.ZoomImageDialog;
 import com.pratham.foundation.modalclasses.StorageInfo;
 import com.pratham.foundation.services.shared_preferences.FastSave;
 import com.pratham.foundation.ui.admin_panel.AdminConsoleActivityNew_;
+import com.pratham.foundation.ui.app_home.profile_new.students_synced_data.SyncedStudentDataActivity_;
 import com.pratham.foundation.ui.contentPlayer.ContentPlayerActivity_;
 import com.pratham.foundation.ui.selectSubject.SelectSubject_;
 import com.pratham.foundation.ui.splash_activity.SplashActivity;
@@ -150,6 +153,19 @@ public class FC_Utility {
         return json;
     }
 
+    public static String getAppVerison(){
+        PackageInfo pInfo = null;
+        String verCode = "";
+        try {
+            pInfo = ApplicationClass.getInstance().getPackageManager().getPackageInfo(ApplicationClass.getInstance().getPackageName(), 0);
+            verCode = pInfo.versionName;
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+        }
+
+        return verCode;
+    }
+
     public static String loadJSONFromStorage(String readingContentPath, String fileName) {
         String jsonStr;
         try {
@@ -195,7 +211,7 @@ public class FC_Utility {
         NetworkInfo netInfo = cm.getActiveNetworkInfo();
         //should check null because in airplane mode it will be null
         NetworkCapabilities nc = null;
-        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             nc = cm.getNetworkCapabilities(cm.getActiveNetwork());
         }
         int dwSpeed = nc.getLinkDownstreamBandwidthKbps();
@@ -203,12 +219,25 @@ public class FC_Utility {
         return "Download:"+dwSpeed+" Upload:"+upSpeed;
     }
 
+    public static String getFileSize(int size){
+        String hrSize = "";
+        double m = size/1024.0;
+        DecimalFormat dec = new DecimalFormat("0.00");
+        if (m > 1024.0) {
+            m = m/1024.0;
+            hrSize = dec.format(m).concat(" MB");
+        } else {
+            hrSize = dec.format(m).concat(" KB");
+        }
+        return hrSize;
+    }
+
     public static String getInternetUploadSpeed(Context context){
         ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo netInfo = cm.getActiveNetworkInfo();
         //should check null because in airplane mode it will be null
         NetworkCapabilities nc = null;
-        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             nc = cm.getNetworkCapabilities(cm.getActiveNetwork());
         }
         try {
@@ -247,7 +276,7 @@ public class FC_Utility {
         NetworkInfo netInfo = cm.getActiveNetworkInfo();
         //should check null because in airplane mode it will be null
         NetworkCapabilities nc = null;
-        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             nc = cm.getNetworkCapabilities(cm.getActiveNetwork());
         }
         try {
@@ -367,6 +396,16 @@ public class FC_Utility {
         return cord_color_bg[new Random().nextInt(cord_color_bg.length)];
     }
 
+    public static String getMimeType(String url) {
+        String type = null;//  ww  w  . jav a  2s. co m
+        String extension = MimeTypeMap.getFileExtensionFromUrl(url);
+        if (extension != null) {
+            MimeTypeMap mime = MimeTypeMap.getSingleton();
+            type = mime.getMimeTypeFromExtension(extension);
+        }
+        return type;
+    }
+
     public static void setAppLocal(Context context, String selectedLang) {
 
         String language = "hi";
@@ -393,6 +432,8 @@ public class FC_Utility {
             language = "ml";
         else if (selectedLang.equalsIgnoreCase(ASSAMESE))
             language = "as";
+        else if (selectedLang.equalsIgnoreCase(URDU))
+            language = "ur";
         else
             language = "en";
 
@@ -745,6 +786,18 @@ public class FC_Utility {
         return currentVersion;
     }
 
+    public static String getConvertedDate(long milliSeconds) {
+
+//        DateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy", Locale.ENGLISH);
+        // Create a DateFormatter object for displaying date in specified format.
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd",  Locale.ENGLISH);
+
+        // Create a calendar object that will convert the date and time value in milliseconds to date.
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTimeInMillis(milliSeconds);
+        return formatter.format(calendar.getTime());
+    }
+
     public static String getRandomNumStr(int NumLen) {
         Random random = new Random(System.currentTimeMillis());
         StringBuffer str = new StringBuffer();
@@ -896,6 +949,12 @@ public class FC_Utility {
         } else*/
         if (mActivity instanceof SelectSubject_) {
             ((SelectSubject_) mActivity).getSupportFragmentManager()
+                    .beginTransaction()
+                    .replace(frame, mFragment, TAG)
+                    .addToBackStack(TAG)
+                    .commit();
+        } else if (mActivity instanceof SyncedStudentDataActivity_) {
+            ((SyncedStudentDataActivity_) mActivity).getSupportFragmentManager()
                     .beginTransaction()
                     .replace(frame, mFragment, TAG)
                     .addToBackStack(TAG)
@@ -2351,10 +2410,10 @@ public class FC_Utility {
             }
         }
         // Create a media file name
-        String timeStamp = new SimpleDateFormat("ddMMyyyy_HHmm").format(new Date());
+        String timeStamp = new SimpleDateFormat("ddMMyyyy_HHmm", Locale.ENGLISH).format(new Date());
         File mediaFile;
         String mImageName="PDF_"+cntr+"_"+timeStamp +".jpg";
-        mediaFile = new File(ApplicationClass.getStoragePath().toString() + "/.FCAInternal/TestJsons/"+ mImageName);
+        mediaFile = new File(ApplicationClass.getStoragePath().toString() + "/FCAInternal/TestJsons/"+ mImageName);
         return mediaFile;
     }
 

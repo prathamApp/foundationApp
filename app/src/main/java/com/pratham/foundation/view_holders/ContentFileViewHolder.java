@@ -99,8 +99,12 @@ public class ContentFileViewHolder extends RecyclerView.ViewHolder {
             title.setSelected(true);
             Objects.requireNonNull(rl_card).setVisibility(View.VISIBLE);
             Objects.requireNonNull(rl_loader).setVisibility(View.GONE);
-            Objects.requireNonNull(tv_progress).setText(contentList.getNodePercentage() + "%");
-
+            if(contentList.getNodePercentage().equalsIgnoreCase("0"))
+                Objects.requireNonNull(tv_progress).setVisibility(View.GONE);
+            else {
+                Objects.requireNonNull(tv_progress).setVisibility(View.VISIBLE);
+                Objects.requireNonNull(tv_progress).setText(contentList.getNodePercentage() + "%");
+            }
             Objects.requireNonNull(ib_action_btn).setVisibility(View.GONE);
             if (contentList.getIsDownloaded().equalsIgnoreCase("false")) {
                 Objects.requireNonNull(tv_progress).setVisibility(View.GONE);
@@ -109,14 +113,24 @@ public class ContentFileViewHolder extends RecyclerView.ViewHolder {
                     ib_action_btn.setImageResource(R.drawable.ic_youtube);
                     ib_action_btn.setVisibility(View.VISIBLE);
                     ib_action_btn.setClickable(true);
-                    Objects.requireNonNull(tv_progress).setVisibility(View.VISIBLE);
+                    if(contentList.getNodePercentage().equalsIgnoreCase("0"))
+                        Objects.requireNonNull(tv_progress).setVisibility(View.GONE);
+                    else {
+                        Objects.requireNonNull(tv_progress).setVisibility(View.VISIBLE);
+                        Objects.requireNonNull(tv_progress).setText(contentList.getNodePercentage() + "%");
+                    }
                 } else {
                     ib_action_btn.setVisibility(View.VISIBLE);
                     ib_action_btn.setImageResource(R.drawable.ic_download_2);//setVisibility(View.VISIBLE);
                     ib_action_btn.setClickable(false);
                 }
             } else if (contentList.getIsDownloaded().equalsIgnoreCase("true")) {
-                Objects.requireNonNull(tv_progress).setVisibility(View.VISIBLE);
+                if(contentList.getNodePercentage().equalsIgnoreCase("0"))
+                    Objects.requireNonNull(tv_progress).setVisibility(View.GONE);
+                else {
+                    Objects.requireNonNull(tv_progress).setVisibility(View.VISIBLE);
+                    Objects.requireNonNull(tv_progress).setText(contentList.getNodePercentage() + "%");
+                }
                 if (!contentList.isOnSDCard()) {
                     Objects.requireNonNull(iv_delete).setVisibility(View.VISIBLE);
                     Objects.requireNonNull(iv_delete).setOnClickListener(new View.OnClickListener() {
@@ -250,11 +264,21 @@ public class ContentFileViewHolder extends RecyclerView.ViewHolder {
             title.setSelected(true);
             Objects.requireNonNull(rl_card).setVisibility(View.VISIBLE);
             Objects.requireNonNull(rl_loader).setVisibility(View.GONE);
-            Objects.requireNonNull(tv_progress).setText(contentTable.getNodePercentage() + "%");
+            if(contentTable.getNodePercentage().equalsIgnoreCase("0"))
+                Objects.requireNonNull(tv_progress).setVisibility(View.GONE);
+            else {
+                Objects.requireNonNull(tv_progress).setVisibility(View.VISIBLE);
+                Objects.requireNonNull(tv_progress).setText(contentTable.getNodePercentage() + "%");
+            }
             File file;
             if (contentTable.getIsDownloaded().equalsIgnoreCase("1") ||
                     contentTable.getIsDownloaded().equalsIgnoreCase("true")) {
-                Objects.requireNonNull(tv_progress).setVisibility(View.VISIBLE);
+                if(contentTable.getNodePercentage().equalsIgnoreCase("0"))
+                    Objects.requireNonNull(tv_progress).setVisibility(View.GONE);
+                else {
+                    Objects.requireNonNull(tv_progress).setVisibility(View.VISIBLE);
+                    Objects.requireNonNull(tv_progress).setText(contentTable.getNodePercentage() + "%");
+                }
                 if (!contentTable.isOnSDCard()) {
                     Objects.requireNonNull(iv_delete).setVisibility(View.VISIBLE);
                     Objects.requireNonNull(iv_delete).setOnClickListener(new View.OnClickListener() {
@@ -337,7 +361,12 @@ public class ContentFileViewHolder extends RecyclerView.ViewHolder {
                     if (contentTable.getResourceType().equalsIgnoreCase(FC_Constants.YOUTUBE_LINK)) {
                         Objects.requireNonNull(ib_action_btn).setImageResource(R.drawable.ic_youtube);
                         content_card_view.setOnClickListener(v -> itemClicked.onContentOpenClicked(contentTable));
-                        Objects.requireNonNull(tv_progress).setVisibility(View.VISIBLE);
+                        if(contentTable.getNodePercentage().equalsIgnoreCase("0"))
+                            Objects.requireNonNull(tv_progress).setVisibility(View.GONE);
+                        else {
+                            Objects.requireNonNull(tv_progress).setVisibility(View.VISIBLE);
+                            Objects.requireNonNull(tv_progress).setText(contentTable.getNodePercentage() + "%");
+                        }
                     } else
                         content_card_view.setOnClickListener(v ->
                                 itemClicked.onContentDownloadClicked(contentTable,

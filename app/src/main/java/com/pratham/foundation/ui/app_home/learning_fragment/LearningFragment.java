@@ -202,6 +202,12 @@ public class LearningFragment extends Fragment implements LearningContract.Learn
         EventBus.getDefault().unregister(this);
     }
 
+    String fileSize = "";
+    @Override
+    public void setDownloadSize(String fileSize){
+        this.fileSize = fileSize;
+    }
+
     @SuppressLint("SetTextI18n")
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void messageReceived(EventMessage message) {
@@ -566,6 +572,7 @@ public class LearningFragment extends Fragment implements LearningContract.Learn
                 bundle.putString("examId", "" + itemContent.getNodeKeywords());
                 bundle.putString("currentSessionId", "" + FastSave.getInstance().getString(FC_Constants.CURRENT_SESSION, ""));
                 bundle.putString("subjectLevel", "" + currentLevel);
+                bundle.putString("studentGroupId", "NA");
                 Intent launchIntent = new Intent("com.pratham.assessment.ui.choose_assessment.science.ScienceAssessmentActivity_");
                 Objects.requireNonNull(launchIntent).putExtras(bundle);
                 presenter.addScoreToDB(itemContent.getNodeKeywords());
@@ -592,8 +599,10 @@ public class LearningFragment extends Fragment implements LearningContract.Learn
         } catch (IllegalStateException e) {
             e.printStackTrace();
         }
-        showLoader();
-        presenter.addAssessmentToDb(itemContent);
+        if (!ApplicationClass.wiseF.isDeviceConnectedToSSID(FC_Constants.PRATHAM_RASPBERRY_PI)) {
+            presenter.addAssessmentToDb(itemContent);
+        } else
+            onTestAddedToDb(itemContent);
     }
 
     @Override
@@ -923,7 +932,8 @@ public class LearningFragment extends Fragment implements LearningContract.Learn
 
     @SuppressLint("SetTextI18n")
     private void showDeleteDialog(int parentPos, int childPos, ContentTable contentTableItem) {
-        final CustomLodingDialog dialog = new CustomLodingDialog(Objects.requireNonNull(getActivity()), R.style.FC_DialogStyle);
+        final CustomLodingDialog dialog = new CustomLodingDialog(Objects.requireNonNull(getActivity()),
+                R.style.FC_DialogStyle);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         Objects.requireNonNull(dialog.getWindow()).setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         dialog.setContentView(R.layout.lottie_delete_dialog);
@@ -985,7 +995,7 @@ public class LearningFragment extends Fragment implements LearningContract.Learn
                         .build();
                 iv_file_trans.setController(controller);
             }
-            dialog_file_name.setText("" + resName);
+            dialog_file_name.setText("" + resName+fileSize);
             progressLayout.setCurProgress(modal_fileDownloading.getProgress());
             downloadDialog.show();
         } catch (Exception e) {
@@ -997,6 +1007,7 @@ public class LearningFragment extends Fragment implements LearningContract.Learn
     @Override
     public void dismissDownloadDialog() {
         try {
+            fileSize = "";
             if (!desFlag) {
                 if (downloadDialog != null)
                     new Handler().postDelayed(() -> {

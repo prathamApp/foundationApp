@@ -1,5 +1,7 @@
 package com.pratham.foundation.ui.contentPlayer.old_cos.reading_cards;
 
+import static com.pratham.foundation.ui.contentPlayer.old_cos.reading_cards.ReadingCardsActivity.correctArr;
+
 import android.content.Context;
 
 import com.google.gson.Gson;
@@ -22,8 +24,6 @@ import java.io.FileInputStream;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
-
-import static com.pratham.foundation.ui.contentPlayer.old_cos.reading_cards.ReadingCardsActivity.correctArr;
 
 
 @EBean
@@ -89,6 +89,7 @@ public class ReadingCardPresenter implements ReadingCardContract.ReadingCardPres
             score.setScoredMarks(0);
             score.setTotalMarks(0);
             score.setStudentID(FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""));
+            score.setGroupId(FastSave.getInstance().getString(FC_Constants.CURRENT_GROUP_ID, ""));
             score.setStartDateTime(FC_Utility.getCurrentDateTime());
             score.setDeviceID(deviceId.equals(null) ? "0000" : deviceId);
             score.setEndDateTime(FC_Utility.getCurrentDateTime());

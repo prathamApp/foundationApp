@@ -157,6 +157,31 @@ public class PushDataBaseZipToServer {
         }
     }
 
+    public void zip(String[] _files, String zipFileName) {
+        try {
+            BufferedInputStream origin = null;
+            FileOutputStream dest = new FileOutputStream(zipFileName);
+            ZipOutputStream out = new ZipOutputStream(new BufferedOutputStream(dest));
+            byte[] data = new byte[BUFFER];
+            for (int i = 0; i < _files.length; i++) {
+                Log.v("Compress", "Adding: " + _files[i]);
+                FileInputStream fi = new FileInputStream(_files[i]);
+                origin = new BufferedInputStream(fi, BUFFER);
+                ZipEntry entry = new ZipEntry(_files[i].substring(_files[i].lastIndexOf("/") + 1));
+                out.putNextEntry(entry);
+                int count;
+                while ((count = origin.read(data, 0, BUFFER)) != -1) {
+                    out.write(data, 0, count);
+                }
+                origin.close();
+            }
+            out.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+
     public void zip(List<String> _files, String zipFileName, File filepath) {
         try {
             BufferedInputStream origin = null;
@@ -191,7 +216,7 @@ public class PushDataBaseZipToServer {
             BackupDatabase.backup(context);
             String fielName = "FCZ_" + FC_RandomString.unique();
             String filePathStr = ApplicationClass.getStoragePath().toString()
-                    + "/PrathamBackups/" + AppDatabase.DB_NAME; // file path to save
+                    + "/PrathamBackups/" + fielName; // file path to save
             // Type the path of the files in here
             File dir = new File(ApplicationClass.getStoragePath().toString() + "/PrathamBackups/");
             File[] db_files = dir.listFiles();
@@ -202,6 +227,10 @@ public class PushDataBaseZipToServer {
                     if (db_files[i].exists() && db_files[i].isFile() && db_files[i].getName().contains("foundation"))
                         fileNameListStrings.add(db_files[i].getAbsolutePath());
                 zip(fileNameListStrings, filePathStr + ".zip", new File(filePathStr));
+//                zip(s, filePathStr + ".zip");
+                Log.d("FC_RandomString", "DB ZIP NAME " + new File(filePathStr + ".zip").getName());
+                Log.d("FC_RandomString", "DB ZIP getAbsolutePath " + new File(filePathStr + ".zip").getAbsolutePath());
+                Log.d("FC_RandomString", "DB ZIP getPath " + new File(filePathStr + ".zip").getPath());
 
                 if (ApplicationClass.wiseF.isDeviceConnectedToSSID(FC_Constants.PRATHAM_RASPBERRY_PI)) {
 
@@ -280,6 +309,8 @@ public class PushDataBaseZipToServer {
 //                FastSave.getInstance().getString(FC_Constants.PUSH_ID_LOGS, ""));
         saveDataSyncLog();
         if (showUi) {
+            push_lottie.setAnimation("lottie_correct.json");
+            push_lottie.playAnimation();
             setMainTextToDialog(context.getResources().getString(R.string.DB_Zip_pushed_successfully));
             ok_btn.setText(context.getResources().getString(R.string.Okay));
             ok_btn.setVisibility(View.VISIBLE);
@@ -352,19 +383,19 @@ public class PushDataBaseZipToServer {
 
             log.setCurrentDateTime(syncTime);
             log.setErrorType(" ");
-            log.setExceptionMessage("DB_ZIP_Push");
-            log.setMethodName(""+FastSave.getInstance().getString(FC_Constants.PUSH_ID_LOGS, "na"));
+            log.setExceptionMessage(FC_Constants.DB_ZIP_PUSH);
+            log.setMethodName("" + FastSave.getInstance().getString(FC_Constants.PUSH_ID_LOGS, "na"));
             log.setSessionId("" + FastSave.getInstance().getString(FC_Constants.CURRENT_SESSION, ""));
             log.setGroupId("");
             if (pushSuccessfull)
-                log.setErrorType(""+FC_Constants.SUCCESSFULLYPUSHED);
+                log.setErrorType("" + FC_Constants.SUCCESSFULLYPUSHED);
             else
-                log.setErrorType(""+FC_Constants.PUSHFAILED);
-            log.setLogDetail(""+pushStatusJson.toString());
+                log.setErrorType("" + FC_Constants.PUSHFAILED);
+            log.setLogDetail("" + pushStatusJson);
             log.setExceptionStackTrace("APK BUILD DATE : " + BUILD_DATE);
             log.setDeviceId("" + FC_Utility.getDeviceID());
 
-            Log.d("PushData", "pushStatusJson JSON : " + pushStatusJson.toString());
+            Log.d("PushData", "pushStatusJson JSON : " + pushStatusJson);
             AppDatabase.getDatabaseInstance(context).getLogsDao().insertLog(log);
 //            AppDatabase.getDatabaseInstance(context).getLogsDao().setPushDataLog(pushStatusJson.toString(),
 //                    FastSave.getInstance().getString(FC_Constants.PUSH_ID_LOGS, ""));

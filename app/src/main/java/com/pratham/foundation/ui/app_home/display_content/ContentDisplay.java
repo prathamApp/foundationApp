@@ -53,6 +53,9 @@ import com.pratham.foundation.customView.BlurPopupDialog.BlurPopupWindow;
 import com.pratham.foundation.customView.GridSpacingItemDecoration;
 import com.pratham.foundation.customView.display_image_dialog.CustomLodingDialog;
 import com.pratham.foundation.customView.progress_layout.ProgressLayout;
+import com.pratham.foundation.customView.showcaseviewlib.GuideView;
+import com.pratham.foundation.customView.showcaseviewlib.config.DismissType;
+import com.pratham.foundation.customView.showcaseviewlib.listener.GuideListener;
 import com.pratham.foundation.database.AppDatabase;
 import com.pratham.foundation.database.BackupDatabase;
 import com.pratham.foundation.database.domain.ContentTable;
@@ -132,6 +135,8 @@ public class ContentDisplay extends BaseActivity implements ContentContract.Cont
     RelativeLayout homeRoot;
     @ViewById(R.id.header_rl)
     RelativeLayout header_rl;
+    @ViewById(R.id.iv_refresh)
+    ImageView iv_refresh;
     //    @ViewById(R.id.tv_progress)
 //    TextView tv_progress;
 //    @ViewById(R.id.card_progressLayout)
@@ -195,6 +200,44 @@ public class ContentDisplay extends BaseActivity implements ContentContract.Cont
 //        add node for maintaining list
 //        get child node and display
         presenter.getListData();
+        if (!FastSave.getInstance().getBoolean(FC_Constants.CONTENT_DISPLAY_SHOWCASE, false))
+            setShowcaseView();
+    }
+
+    private GuideView.Builder builder;
+    private GuideView mGuideView;
+
+    @UiThread
+    public void setShowcaseView() {
+        builder = new GuideView.Builder(this)
+                .setTitle(getResources().getString(R.string.back_button))
+                .setContentText(getResources().getString(R.string.back_button_msg))
+                .setDismissType(DismissType.selfView) //optional - default dismissible by TargetView
+                .setTargetView(main_back)
+                .setGuideListener(new GuideListener() {
+                    @Override
+                    public void onDismiss(View view) {
+                        switch (view.getId()) {
+                            case R.id.main_back:
+                                builder.setTitle(getResources().getString(R.string.progress));
+                                builder.setContentText(getResources().getString(R.string.Your_Progress_will));
+                                builder.setTargetView(tv_header_progress).build();
+                                break;
+                            case R.id.tv_header_progress:
+                                builder.setTitle(getResources().getString(R.string.refresh));
+                                builder.setContentText(getResources().getString(R.string.refresh_msg));
+                                builder.setTargetView(iv_refresh).build();
+                                break;
+                            case R.id.iv_refresh:
+                                return;
+                        }
+                        mGuideView = builder.build();
+                        mGuideView.show();
+                    }
+                });
+        mGuideView = builder.build();
+        mGuideView.show();
+        FastSave.getInstance().saveBoolean(FC_Constants.CONTENT_DISPLAY_SHOWCASE, true);
     }
 
     @Override
@@ -236,7 +279,12 @@ public class ContentDisplay extends BaseActivity implements ContentContract.Cont
     @UiThread
     @Override
     public void addContentToViewList(List<ContentTable> contentTable) {
-        ContentTableList.addAll(contentTable);
+        try {
+            ContentTableList.clear();
+            ContentTableList.addAll(contentTable);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     @Click(R.id.profileImage)
@@ -375,6 +423,7 @@ public class ContentDisplay extends BaseActivity implements ContentContract.Cont
                 bundle.putString("examId", "" + itemContent.getNodeKeywords());
                 bundle.putString("currentSessionId", "" + FastSave.getInstance().getString(FC_Constants.CURRENT_SESSION, ""));
                 bundle.putString("subjectLevel", "" + currentLevel);
+                bundle.putString("studentGroupId", "NA");
                 Intent launchIntent = new Intent("com.pratham.assessment.ui.choose_assessment.science.ScienceAssessmentActivity_");
                 Objects.requireNonNull(launchIntent).putExtras(bundle);
                 presenter.addScoreToDB(itemContent.getNodeKeywords());
@@ -401,7 +450,10 @@ public class ContentDisplay extends BaseActivity implements ContentContract.Cont
         } catch (IllegalStateException e) {
             e.printStackTrace();
         }
-        presenter.addAssessmentToDb(itemContent);
+        if (!ApplicationClass.wiseF.isDeviceConnectedToSSID(FC_Constants.PRATHAM_RASPBERRY_PI)) {
+            presenter.addAssessmentToDb(itemContent);
+        } else
+            onTestAddedToDb(itemContent);
     }
 
     @Override
@@ -900,7 +952,7 @@ public class ContentDisplay extends BaseActivity implements ContentContract.Cont
                     .build();
             iv_file_trans.setController(controller);
         }
-        dialog_file_name.setText("" + resName);
+        dialog_file_name.setText("" + resName+fileSize);
         progressLayout.setCurProgress(modal_fileDownloading.getProgress());
         downloadDialog.show();
     }
@@ -953,6 +1005,14 @@ public class ContentDisplay extends BaseActivity implements ContentContract.Cont
             }
         }
         fileDownloadingList.remove(index);
+    }
+
+    String fileSize = "";
+
+    @UiThread
+    @Override
+    public void setDownloadSize(String fileSize){
+        this.fileSize = fileSize;
     }
 
     @UiThread

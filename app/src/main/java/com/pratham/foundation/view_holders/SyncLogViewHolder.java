@@ -18,6 +18,9 @@ import com.pratham.foundation.ApplicationClass;
 import com.pratham.foundation.R;
 import com.pratham.foundation.database.domain.Modal_Log;
 import com.pratham.foundation.modalclasses.SyncLogDataModal;
+import com.pratham.foundation.services.shared_preferences.FastSave;
+import com.pratham.foundation.utility.FC_Constants;
+import com.pratham.foundation.utility.FC_Utility;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -29,7 +32,7 @@ public class SyncLogViewHolder extends RecyclerView.ViewHolder {
      * Folder and file type of cards have different views
      */
 
-    TextView stat_date, tv_data, tv_media, tv_courses, tv_syncstyle, tv_scorecount, tv_mediacount, tv_coursecount;
+    TextView stat_date, tv_data, tv_media, tv_courses, tv_syncstyle, tv_scorecount, tv_mediacount, tv_tot_db_entries, tv_coursecount;
     MaterialCardView log_card_main;
     LinearLayout ll_data, ll_all_dbstats;
     RelativeLayout rl_media;
@@ -42,6 +45,7 @@ public class SyncLogViewHolder extends RecyclerView.ViewHolder {
         tv_media = view.findViewById(R.id.tv_media);
         tv_courses = view.findViewById(R.id.tv_courses);
         tv_syncstyle = view.findViewById(R.id.tv_syncstyle);
+        tv_tot_db_entries = view.findViewById(R.id.tv_tot_db_entries);
         log_card_main = view.findViewById(R.id.log_card_main);
         ll_data = view.findViewById(R.id.ll_data);
         tv_scorecount = view.findViewById(R.id.tv_scorecount);
@@ -68,6 +72,7 @@ public class SyncLogViewHolder extends RecyclerView.ViewHolder {
         tv_media = view.findViewById(R.id.tv_media);
         tv_courses = view.findViewById(R.id.tv_courses);
         tv_syncstyle = view.findViewById(R.id.tv_syncstyle);
+        tv_tot_db_entries = view.findViewById(R.id.tv_tot_db_entries);
         log_card_main = view.findViewById(R.id.log_card_main);
         ll_data = view.findViewById(R.id.ll_data);
         tv_scorecount = view.findViewById(R.id.tv_scorecount);
@@ -78,9 +83,13 @@ public class SyncLogViewHolder extends RecyclerView.ViewHolder {
 
     @SuppressLint({"CheckResult", "SetTextI18n"})
     public void setSyncItem(Modal_Log contentItem, int position) {
+        String a = FastSave.getInstance().getString(FC_Constants.APP_LANGUAGE, FC_Constants.HINDI);
+        Log.d("INSTRUCTIONFRAG", "Select Subj: " + a);
+        FC_Utility.setAppLocal(ApplicationClass.getInstance(), a);
+
         SyncLogDataModal logDataModal;
         stat_date.setText("Date: " + contentItem.getCurrentDateTime());
-
+        tv_tot_db_entries.setText(ApplicationClass.getInstance().getResources().getString(R.string.tot_db_entries));
         if (contentItem.getErrorType().equalsIgnoreCase("successfully_pushed")) {
             stat_date.setBackground(ApplicationClass.getInstance().getResources()
                     .getDrawable(R.drawable.text_usage_game_grad));
@@ -98,16 +107,16 @@ public class SyncLogViewHolder extends RecyclerView.ViewHolder {
             Gson gson = new Gson();
             logDataModal = gson.fromJson(jsonObj.toString(), SyncLogDataModal.class);
             if (logDataModal == null) {
-                tv_data.setText("Data : 0");
-                tv_media.setText("Media : 0");
-                tv_courses.setText("Courses : 0");
+                tv_data.setText(ApplicationClass.getInstance().getString(R.string.data)+" : 0");
+                tv_media.setText(ApplicationClass.getInstance().getString(R.string.media)+" : 0");
+                tv_courses.setText(ApplicationClass.getInstance().getString(R.string.courses)+" : 0");
                 tv_mediacount.setText("0/0");
                 tv_coursecount.setText("0/0");
                 tv_scorecount.setText("0/0");
             } else {
-                tv_data.setText("Data : " + logDataModal.getSync_data_length());
-                tv_media.setText("Media : " + logDataModal.getSync_media_length());
-                tv_courses.setText("Courses : " + logDataModal.getSync_course_enrollment_length());
+                tv_data.setText(ApplicationClass.getInstance().getString(R.string.data)+" : " + logDataModal.getSync_data_length());
+                tv_media.setText(ApplicationClass.getInstance().getString(R.string.media)+" : " + logDataModal.getSync_media_length());
+                tv_courses.setText(ApplicationClass.getInstance().getString(R.string.courses)+" : " + logDataModal.getSync_course_enrollment_length());
                 tv_mediacount.setText("" + logDataModal.getMediaCount());
                 tv_coursecount.setText("" + logDataModal.getCoursesCount());
                 tv_scorecount.setText("" + logDataModal.getScoreTable());
@@ -121,9 +130,14 @@ public class SyncLogViewHolder extends RecyclerView.ViewHolder {
 
     @SuppressLint({"CheckResult", "SetTextI18n"})
     public void setAutoSyncItem(Modal_Log contentItem, int position) {
+        String a = FastSave.getInstance().getString(FC_Constants.APP_LANGUAGE, FC_Constants.HINDI);
+        Log.d("INSTRUCTIONFRAG", "Select Subj: " + a);
+        FC_Utility.setAppLocal(ApplicationClass.getInstance(), a);
         try {
             SyncLogDataModal logDataModal;
-            stat_date.setText("Date: " + contentItem.getCurrentDateTime());
+            stat_date.setText(ApplicationClass.getInstance().getString(R.string.date)+": " + contentItem.getCurrentDateTime());
+
+            tv_tot_db_entries.setText(ApplicationClass.getInstance().getResources().getString(R.string.tot_db_entries));
 
             if (contentItem.getErrorType().equalsIgnoreCase("successfully_pushed")) {
                 stat_date.setBackground(ApplicationClass.getInstance().getResources()
@@ -141,16 +155,16 @@ public class SyncLogViewHolder extends RecyclerView.ViewHolder {
                 Gson gson = new Gson();
                 logDataModal = gson.fromJson(jsonObj.toString(), SyncLogDataModal.class);
                 if (logDataModal == null) {
-                    tv_data.setText("Data : 0");
-                    tv_media.setText("Media : 0");
-                    tv_courses.setText("Courses : 0");
+                    tv_data.setText(ApplicationClass.getInstance().getString(R.string.data)+" : 0");
+                    tv_media.setText(ApplicationClass.getInstance().getString(R.string.media)+" : 0");
+                    tv_courses.setText(ApplicationClass.getInstance().getString(R.string.courses)+" : 0");
                     tv_mediacount.setText("0/0");
                     tv_coursecount.setText("0/0");
                     tv_scorecount.setText("0/0");
                 } else {
-                    tv_data.setText("Data : " + logDataModal.getSync_data_length());
-                    tv_media.setText("Media : " + logDataModal.getSync_media_length());
-                    tv_courses.setText("Courses : " + logDataModal.getSync_course_enrollment_length());
+                    tv_data.setText(ApplicationClass.getInstance().getString(R.string.data)+" : " + logDataModal.getSync_data_length());
+                    tv_media.setText(ApplicationClass.getInstance().getString(R.string.media)+" : " + logDataModal.getSync_media_length());
+                    tv_courses.setText(ApplicationClass.getInstance().getString(R.string.courses)+" : " + logDataModal.getSync_course_enrollment_length());
                     tv_mediacount.setText("" + logDataModal.getMediaCount());
                     tv_coursecount.setText("" + logDataModal.getCoursesCount());
                     tv_scorecount.setText("" + logDataModal.getScoreTable());
@@ -169,8 +183,13 @@ public class SyncLogViewHolder extends RecyclerView.ViewHolder {
 
     @SuppressLint({"CheckResult", "SetTextI18n"})
     public void setDBSyncItem(Modal_Log contentItem, int position) {
+        String a = FastSave.getInstance().getString(FC_Constants.APP_LANGUAGE, FC_Constants.HINDI);
+        Log.d("INSTRUCTIONFRAG", "Select Subj: " + a);
+        FC_Utility.setAppLocal(ApplicationClass.getInstance(), a);
+
         SyncLogDataModal logDataModal;
-        stat_date.setText("Date: " + contentItem.getCurrentDateTime());
+        stat_date.setText(ApplicationClass.getInstance().getResources()
+                .getString(R.string.date) + " : " + contentItem.getCurrentDateTime());
 
         if (contentItem.getErrorType() != null && contentItem.getErrorType().contains("failed")) {
             stat_date.setBackground(ApplicationClass.getInstance().getResources()

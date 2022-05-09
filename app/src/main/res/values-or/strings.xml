@@ -1,5 +1,8 @@
 <?xml version="1.0" ?>
 <resources xmlns:tools="http://schemas.android.com/tools">
+
+    <string name="app_name">ସ୍କୁଲ  ପାଇଁ ପ୍ରଡ଼ିଜି</string>
+
     <string name="Login">ଲଗ୍ ଇନ୍ କର</string>
     <!--    <string name="Stt_Dialog_Msg">ଉନ୍ନତ ପ୍ରଦର୍ଶନ ପାଇଁ, ଦୟାକରି ଅଫଲାଇନ୍ ଭାଷା ପ୍ୟାକ୍ English (India) ଏବଂ ହିନ୍ଦୀ (ଭାରତ) ଡାଉନଲୋଡ୍ କର ।\n\nOpen\nGoogle -> Settings -> Voice -> Offline speech recognition</string>-->
     <string name="Stt_Dialog_Msg">ଉନ୍ନତ ପ୍ରଦର୍ଶନ ପାଇଁ, ଦୟାକରି ଅଫଲାଇନ୍ ଭାଷା ପ୍ୟାକ୍ English (India) ଏବଂ ହିନ୍ଦୀ (ଭାରତ) ଡାଉନଲୋଡ୍ କର।</string>
@@ -159,15 +162,74 @@
     <string name="confirm_date">ତାରିଖ ସୁନିଶ୍ଚିତ କର</string>
     <string name="Audio">ଅଡିଓ ଶୁଣ</string>
 
-    <string name="DB_Zip_pushed_failed">ସିଙ୍କ୍ ଡାଟାବେସ୍ ବିଫଳ ହେଲା</string>
-    <string name="DB_Zip_pushed_successfully">ଡାଟାବେସ୍ ସଫଳତାର ସହିତ ସିଙ୍କ୍ ହୋଇଛି</string>
-    <string name="DB_Zip_push"> ଡି.ବି. ଫାଇଲ୍ ସିଙ୍କ୍ କର </string>
+    <string name="push_data">                   ଡାଟା ପୁସ୍ କରନ୍ତୁ   </string>
+    <string name="push_logs">                   ଲଗ୍ସ ପୁସ୍ କରନ୍ତୁ    </string>
+    <string name="sync_logs">                   ଲଗ୍ ସିଙ୍କ୍ କରନ୍ତୁ  </string>
+    <string name="check_synced_data">           ସିଙ୍କ୍ ଡାଟା ଚେକ୍ କରନ୍ତୁ  </string>
+    <string name="reset_app_tour">              ଆପ୍ ଟୁର୍ ପୁନଃ ସେଟ୍ କରନ୍ତୁ  </string>
+    <string name="ques_reset_app_tour">         ଆପଣ ନିଶ୍ଚିତ କି, ଆପଣ ଆପ୍ ଟୁର୍ ପୁନଃ ସେଟ୍ କରିବାକୁ ଚାହୁଁଛନ୍ତି ?  </string>
+    <string name="no_internet">                 ଇଣ୍ଟରନେଟ୍ ସଂଯୋଗ ନାହିଁ  </string>
+    <string name="diagnostic_test_result">      ଡାଇଗ୍ନୋଷ୍ଟିକ୍ ପରୀକ୍ଷା ଫଳାଫଳ  </string>
+    <string name="diagnostic_test_result_msg">  ଆସେସମେଣ୍ଟ ଆପ୍ ରେ ନିଆଯାଇଥିବା ଡାଇଗ୍ନୋଷ୍ଟିକ୍ ଟେଷ୍ଟ ର ସାର୍ଟିଫିକେଟ୍ ଆପଣ ଦେଖିପାରିବେ |  </string>
+    <string name="app_exit">                    ଆପ୍ ରୁ ଏକ୍ସଜିଟ୍ କରନ୍ତୁ   </string>
+    <string name="app_exit_msg">                ଆପଣ ଆପ୍ ରୁ ଏକ୍ସଜିଟ୍ କରି ପାରିବେ  </string>
+    <string name="back_button">                 ବ୍ୟାକ୍ ବଟନ୍  </string>
+    <string name="back_button_msg">             ପୂର୍ବ ସ୍କ୍ରିନ୍ କୁ ଯାଆନ୍ତୁ  </string>
+    <string name="refresh">                     ରିଫ୍ରେଶ୍  </string>
+    <string name="refresh_msg">                 ସ୍କ୍ରିନ୍ ରେ କରେଣ୍ଟ କଣ୍ଟେଣ୍ଟ କୁ  ପୁନଃ ଲୋଡ୍ କରନ୍ତୁ କିମ୍ବା ରିଫ୍ରେଶ୍ କରନ୍ତୁ  </string>
+    <string name="push_and_sync">               ପୁସ୍ ଏବଂ ସିଙ୍କ୍ କରନ୍ତୁ  </string>
+    <string name="other">                       ଅନ୍ୟାନ  </string>
+    <string name="DB_Zip_pushed_failed">        ପୁସ୍ ଡାଟାବେସ୍ ଫେଲ୍  </string>
+    <string name="DB_Zip_pushed_successfully">  ଡାଟା ପୁଶ୍ ସଫଳ ହେଲା  </string>
+    <string name="DB_Zip_push">        ପୁଶ୍ ଡି ବି ଫାଇଲ୍  </string>
 
 
 
-
-
-
+    <string name="pls_select_date">                 ଦୟାକରି ତାରିଖ ଚୟନ କରନ୍ତୁ     </string>
+    <string name="connect_to_internet">             ଇଣ୍ଟରନେଟ୍ ସହିତ ସଂଯୋଗ କରନ୍ତୁ    </string>
+    <string name="server_error">                    ସର୍ଭର ଏରର୍ ଅଛି     </string>
+    <string name="total_attendance">                ସମୁଦାୟ ଉପସ୍ଥାନ    </string>
+    <string name="view_details">                    ବିବରଣୀ ଦେଖନ୍ତୁ    </string>
+    <string name="total_courses">                   ମୋଟ ପାଠ୍ୟକ୍ରମ    </string>
+    <string name="studs_acce_the_app">              ଆପ୍ ଆକ୍ସେସ୍ କରୁଥିବା ଉପଭୋକ୍ତାଙ୍କ ସଂଖ୍ୟା    </string>
+    <string name="studs_reg_the_app">                ଆପ୍ ରେ ପଞ୍ଜୀକୃତ ହୋଇଥିବା ଉପଭୋକ୍ତାଙ୍କ ସଂଖ୍ୟା    </string>
+    <string name="total_sessions">                  ମୋଟ ଅଧିବେଶନ    </string>
+    <string name="total_groups">                    ସମୁଦାୟ ଗ୍ରୁପ୍    </string>
+    <string name="error_message">                   ଭୁଲ୍ ମେସେଜ୍     </string>
+    <string name="accessed_users">                  ଆକ୍ସେସ୍ ୟୁଜର୍ସ    </string>
+    <string name="registered_users">                ପଞ୍ଜିକୃତ ଉପଭୋକ୍ତା    </string>
+    <string name="pls_select_studs">                ଦୟାକରି ଛାତ୍ର/ଛାତ୍ରୀ ଚୟନ କରନ୍ତୁ!    </string>
+    <string name="problem_marking_attendance">      ସମସ୍ୟା ଚିହ୍ନିତ ଉପସ୍ଥାନ    </string>
+    <string name="loading_pls_wait">                ଲୋଡିଙ୍ଗ୍ ହେଉଛି ... ଦୟାକରି ଅପେକ୍ଷା କର ...</string>
+    <string name="enroll_id">                       ନାମଲେଖା ID    </string>
+    <string name="create_profile">                  ପ୍ରୋଫାଇଲ୍ ତିଆରି କରନ୍ତୁ    </string>
+    <string name="total_resources">                 ସମୁଦାୟ ରେସୋରସେସ୍    </string>
+    <string name="stud_id">                         ଛାତ୍ର/ଛାତ୍ରୀଙ୍କ ID    </string>
+    <string name="date">                            ତାରିଖ     </string>
+    <string name="data">                            ଡାଟା    </string>
+    <string name="media">                           ମିଡିଆ    </string>
+    <string name="courses">                         କୋର୍ସ    </string>
+    <string name="db_sync">                         DB ସିଙ୍କ୍    </string>
+    <string name="course_count">                    କୋର୍ସ ଗଣନ    </string>
+    <string name="media_count">                     ମିଡିଆ ଗଣନ    </string>
+    <string name="manual">                          ମାନୁଆଲ୍    </string>
+    <string name="auto">                            ଅଟୋ    </string>
+    <string name="tot_db_entries">                  ସମୁଦାୟ DB ଏଣ୍ଟର    </string>
+    <string name="enrollment_details">              ନାମଲେଖା ବିବରଣୀ    </string>
+    <string name="my_class">                        ଶ୍ରେଣୀ    </string>
+    <string name="my_name">                         ନାମ    </string>
+    <string name="check_id">                        ID ଯାଞ୍ଚ କରନ୍ତୁ    </string>
+    <string name="enter_your_id">                   ଆପଣଙ୍କର ID ଏଣ୍ଟର କରନ୍ତୁ    </string>
+    <string name="select_avatar">                   ଅବତାର ଚୟନ କରନ୍ତୁ    </string>
+    <string name="age">                             ବୟସ    </string>
+    <string name="gender">                          ଲିଙ୍ଗ    </string>
+    <string name="save_profile">                    ପ୍ରୋଫାଇଲ୍ ସେଭ୍ କରନ୍ତୁ    </string>
+    <string name="profile_created_successfully">    ପ୍ରୋଫାଇଲ୍ ସଫଳତାର ସହିତ ତିଆରି ହୋଇଛି    </string>
+    <string name="male">                            ପୁରୁଷ    </string>
+    <string name="female">                          ମହିଳା    </string>
+    <string name="please_fill_details">             ଦୟାକରି ସମସ୍ତ ବିବରଣୀ ପୁରଣ କରନ୍ତୁ ..    </string>
+    <string name="problem_pulling_stud">            ଛାତ୍ରଛାତ୍ରୀଙ୍କୁ ପୁଲିଂ କରିବାରେ ସମସ୍ୟା     </string>
+    <string name="wrong_enrollment_id">             ଭୁଲ ନାମଲେଖା ID    </string>
 
 
 
@@ -376,7 +438,7 @@
         <item>avatars/acrobatics.json</item>-->
     </string-array>
     <string-array name="age">
-        <item>Select Age</item>
+        <item>ବୟସ ଚୟନ କରନ୍ତୁ</item>
         <item> 3  </item>
         <item> 4  </item>
         <item> 5  </item>

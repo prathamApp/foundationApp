@@ -20,6 +20,7 @@
         android:layout_width="@dimen/_50sdp"
         android:layout_height="@dimen/_40sdp"
         android:layout_alignParentTop="true"
+        android:layout_marginTop="@dimen/_10sdp"
         android:scaleType="fitCenter"
         android:src="@drawable/pratham_logo" />
 
@@ -33,7 +34,7 @@
         android:lineSpacingMultiplier="1"
         android:textColor="@color/dark_blue"
         android:textSize="@dimen/_30sdp"
-        android:visibility="gone"
+        android:visibility="visible"
         app:charIncrease="1"
         app:typerSpeed="100" />
 

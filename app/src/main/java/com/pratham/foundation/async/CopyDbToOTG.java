@@ -31,7 +31,7 @@ public class CopyDbToOTG extends AsyncTask {
     @Override
     protected Object doInBackground(Object[] objects) {
         try {
-            actPhotoPath = ApplicationClass.getStoragePath().toString() + "/.FCAInternal/ActivityPhotos/";
+            actPhotoPath = ApplicationClass.getStoragePath().toString() + "/FCAInternal/ActivityPhotos/";
             FC_Constants.transferredImages = 0;
             totalActivityFolders = 0;
 

@@ -27,6 +27,12 @@ public class Groups {
     public String VIllageName;
     @SerializedName("DeviceId")
     public String DeviceId;
+    @SerializedName("EnrollmentId")
+    public String EnrollmentId;
+    @SerializedName("regDate")
+    public String regDate;
+    @SerializedName("sentFlag")
+    public int sentFlag;
     @Ignore
     boolean isSelected = false;
 
@@ -114,6 +120,30 @@ public class Groups {
 
     public void setSelected(boolean selected) {
         isSelected = selected;
+    }
+
+    public String getEnrollmentId() {
+        return EnrollmentId;
+    }
+
+    public void setEnrollmentId(String enrollmentId) {
+        EnrollmentId = enrollmentId;
+    }
+
+    public String getRegDate() {
+        return regDate;
+    }
+
+    public void setRegDate(String regDate) {
+        this.regDate = regDate;
+    }
+
+    public int getSentFlag() {
+        return sentFlag;
+    }
+
+    public void setSentFlag(int sentFlag) {
+        this.sentFlag = sentFlag;
     }
 }
 

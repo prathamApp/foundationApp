@@ -44,7 +44,7 @@
             android:layout_marginStart="@dimen/_2sdp"
             android:layout_marginEnd="@dimen/_5sdp"
             android:padding="@dimen/_3sdp"
-            android:text="Auto"
+            android:text="@string/auto"
             android:textColor="@color/colorSignBoard2"
             android:textSize="@dimen/_14sdp"
             tools:ignore="HardcodedText" />
@@ -120,14 +120,15 @@
             android:background="@drawable/dotted_line_horizontal_blue" >
 
             <com.pratham.foundation.customView.fontsview.SansTextView
+                android:id="@+id/tv_tot_db_entries"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerHorizontal="true"
                 android:background="@drawable/custom_progress_primary"
                 android:gravity="center"
                 android:paddingStart="@dimen/_10sdp"
-                android:paddingEnd="@dimen/_10sdp"
                 android:paddingTop="@dimen/_2sdp"
+                android:paddingEnd="@dimen/_10sdp"
                 android:paddingBottom="@dimen/_2sdp"
                 android:text="Total DB Entries"
                 android:textAlignment="center"
@@ -166,7 +167,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/tv_scorecount"
-                    android:text="Score Count"
+                    android:text="@string/Score_Count"
                     android:textAlignment="center"
                     android:textColor="@color/goodColornew"
                     android:textSize="@dimen/_10sdp"
@@ -195,7 +196,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/tv_mediacount"
-                    android:text="Media Count"
+                    android:text="@string/media_count"
                     android:textAlignment="center"
                     android:textColor="@color/goodColornew"
                     android:textSize="@dimen/_10sdp"
@@ -224,14 +225,13 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/tv_coursecount"
-                    android:text="Course Count"
+                    android:text="@string/course_count"
                     android:textAlignment="center"
                     android:textColor="@color/goodColornew"
                     android:textSize="@dimen/_10sdp"
                     tools:ignore="HardcodedText" />
             </RelativeLayout>
         </LinearLayout>
-
 
     </RelativeLayout>
 </com.google.android.material.card.MaterialCardView>

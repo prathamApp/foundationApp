@@ -23,11 +23,13 @@ public interface BottomStudentsContract {
 
         void gotoNext();
 
+        void showToast(String msg);
+
         void clearList();
     }
 
     interface BottomStudentsPresenter {
-        void setView(BottomStudentsContract.BottomStudentsView viewBottomStudents);
+        void setView(BottomStudentsView viewBottomStudents);
 
         void showStudents();
 

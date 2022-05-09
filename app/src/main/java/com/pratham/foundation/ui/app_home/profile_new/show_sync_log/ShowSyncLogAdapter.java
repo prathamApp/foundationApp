@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.pratham.foundation.R;
 import com.pratham.foundation.database.domain.Modal_Log;
+import com.pratham.foundation.utility.FC_Constants;
 import com.pratham.foundation.view_holders.SyncLogViewHolder;
 
 import java.util.List;
@@ -57,10 +58,6 @@ public class ShowSyncLogAdapter extends RecyclerView.Adapter {
         }
     }
 
-    final String DB_ZIP_Push = "DB_ZIP_Push";
-    final String App_Auto_Sync = "App_Auto_Sync";
-    final String App_Manual_Sync = "App_Manual_Sync";
-
     @Override
     public int getItemViewType(int position) {
         Log.d("ABC_ADAPTER", "1 getItemViewType SYNCLOG : " + showSyncLogList.get(position).getExceptionMessage());
@@ -68,11 +65,11 @@ public class ShowSyncLogAdapter extends RecyclerView.Adapter {
             String a = showSyncLogList.get(position).getExceptionMessage();
             Log.d("ABC_ADAPTER", "2 getItemViewType SYNCLOG : " + a);
             switch (a) {
-                case DB_ZIP_Push:
+                case FC_Constants.DB_ZIP_PUSH:
                     return 0;
-                case App_Manual_Sync:
+                case FC_Constants.APP_MANUAL_SYNC:
                     return 1;
-                case App_Auto_Sync:
+                case FC_Constants.APP_AUTO_SYNC:
                     return 2;
                 default:
                     return 0;

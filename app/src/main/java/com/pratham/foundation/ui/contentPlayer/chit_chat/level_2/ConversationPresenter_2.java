@@ -1,5 +1,11 @@
 package com.pratham.foundation.ui.contentPlayer.chit_chat.level_2;
 
+import static com.pratham.foundation.utility.FC_Constants.APP_SECTION;
+import static com.pratham.foundation.utility.FC_Constants.CURRENT_FOLDER_NAME;
+import static com.pratham.foundation.utility.FC_Constants.STT_REGEX;
+import static com.pratham.foundation.utility.FC_Constants.STT_REGEX_2;
+import static com.pratham.foundation.utility.FC_Constants.sec_Test;
+
 import android.content.Context;
 import android.util.Log;
 
@@ -20,12 +26,6 @@ import org.json.JSONObject;
 import java.io.FileInputStream;
 import java.io.InputStream;
 import java.util.ArrayList;
-
-import static com.pratham.foundation.utility.FC_Constants.APP_SECTION;
-import static com.pratham.foundation.utility.FC_Constants.CURRENT_FOLDER_NAME;
-import static com.pratham.foundation.utility.FC_Constants.STT_REGEX;
-import static com.pratham.foundation.utility.FC_Constants.STT_REGEX_2;
-import static com.pratham.foundation.utility.FC_Constants.sec_Test;
 
 
 @EBean
@@ -203,6 +203,7 @@ public class ConversationPresenter_2 implements ConversationContract_2.Conversat
             score.setScoredMarks(scoredMarks);
             score.setTotalMarks(totalMarks);
             score.setStudentID(FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""));
+            score.setGroupId(FastSave.getInstance().getString(FC_Constants.CURRENT_GROUP_ID, ""));
             score.setStartDateTime(startTime);
             score.setDeviceID(deviceId.equals(null) ? "0000" : deviceId);
             score.setEndDateTime(FC_Utility.getCurrentDateTime());
@@ -246,6 +247,7 @@ public class ConversationPresenter_2 implements ConversationContract_2.Conversat
             score.setScoredMarks(scoredMarks);
             score.setTotalMarks(totalMarks);
             score.setStudentID(FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""));
+            score.setGroupId(FastSave.getInstance().getString(FC_Constants.CURRENT_GROUP_ID, ""));
             score.setStartDateTime(resStartTime);
             score.setDeviceID(deviceId.equals(null) ? "0000" : deviceId);
             score.setEndDateTime(resEndTime);

@@ -45,7 +45,7 @@ public interface CourseDao {
     @Update(onConflict = OnConflictStrategy.REPLACE)
     void updateCourse(Model_CourseEnrollment enrollment);
 
-    @Query("Select * from COURSEENROLLED where groupId=:grp_id and language=:language")
+    @Query("Select * from COURSEENROLLED where groupId=:grp_id OR studentId=:grp_id and language=:language")
     List<Model_CourseEnrollment> fetchEnrolledCoursesNew(String grp_id, String language);
 
     @Query("select * from COURSEENROLLED where sentFlag = 0 ")

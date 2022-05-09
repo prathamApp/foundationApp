@@ -1,5 +1,8 @@
 <?xml version="1.0" ?>
 <resources xmlns:tools="http://schemas.android.com/tools">
+
+    <string name="app_name">ಪ್ರಡಿಜಿ ಫಾರ್ ಸ್ಕೂಲ್</string>
+
     <string name="Login">ಲಾಗಿನ್ ಮಾಡಿ</string>
     <!--    <string name="Stt_Dialog_Msg">ಆಫ್‌ಲೈನ್ ನಲ್ಲಿ ಮಾತನ್ನು ಗುರುತಿಸುವಿಕೆಗಾಗಿ ದಯವಿಟ್ಟು ಭಾಷಾ ಪ್ಯಾಕ್‌ಗಳನ್ನು English(India) ಮತ್ತು ಕನ್ನಡ(ಭಾರತ) ಡೌನ್‌ಲೋಡ್ ಮಾಡಿ.\n\nOpen\nGoogle -> Settings -> Voice -> Offline speech recognition</string>-->
     <string name="Stt_Dialog_Msg">ಆಫ್‌ಲೈನ್ ನಲ್ಲಿ ಮಾತನ್ನು ಗುರುತಿಸುವಿಕೆಗಾಗಿ ದಯವಿಟ್ಟು ಭಾಷಾ ಪ್ಯಾಕ್‌ಗಳನ್ನು English(India) ಮತ್ತು ಕನ್ನಡ(ಭಾರತ) ಡೌನ್‌ಲೋಡ್ ಮಾಡಿ.</string>
@@ -159,10 +162,72 @@
     <string name="confirm_date">ದಿನಾಂಕವನ್ನು ದೃಡಪಡಿಸಿ</string>
     <string name="Audio">ಆಡಿಯೋವನ್ನು ಕೇಳಿ</string>
 
-    <string name="DB_Zip_pushed_failed">ಸಿಂಕ್ ಡೇಟಾಬೇಸ್ ವಿಫಲವಾಗಿದೆ</string>
-    <string name="DB_Zip_pushed_successfully">ಡೇಟಾಬೇಸ್ ಯಶಸ್ವಿಯಾಗಿ ಸಿಂಕ್ ಮಾಡಲಾಗಿದೆ</string>
-    <string name="DB_Zip_push">D B ಫೈಲ್ ಅನ್ನು ಸಿಂಕ್ ಮಾಡಿ</string>
+    <string name="push_data">                   ಪುಶ್ ಡೇಟಾ  </string>
+    <string name="push_logs">                   ಪುಶ್ ಲಾಗ್‌ಗಳು  </string>
+    <string name="sync_logs">                   ಲಾಗ್‌ಗಳನ್ನು ಸಿಂಕ್ ಮಾಡಿ  </string>
+    <string name="check_synced_data">           ಸಿಂಕ್ ಮಾಡಲಾದ ಡೇಟಾವನ್ನು ಪರಿಶೀಲಿಸಿ  </string>
+    <string name="reset_app_tour">              ಅಪ್ಲಿಕೇಶನ್ ಟೂರ್ ರಿಸೆಟ್ ಮಾಡಿ  </string>
+    <string name="ques_reset_app_tour">         ಅಪ್ಲಿಕೇಶನ್ ಟೂರ್ ರಿಸೆಟ್ ಮಾಡಲು ನೀವು ಖಚಿತವಾಗಿ ಬಯಸುವಿರಾ?  </string>
+    <string name="no_internet">                 ಇಂಟರ್ನೆಟ್ ಸಂಪರ್ಕವಿಲ್ಲ  </string>
+    <string name="diagnostic_test_result">      ಡಯಾಗ್ನೋಸ್ಟಿಕ್ ಪರೀಕ್ಷೆಯ ಫಲಿತಾಂಶ  </string>
+    <string name="diagnostic_test_result_msg">  ಅಸೆಸ್‌ಮೆಂಟ್ ಆ್ಯಪ್‌ನಲ್ಲಿ ತೆಗೆದುಕೊಂಡ ಡಯಾಗ್ನೋಸ್ಟಿಕ್ ಪರೀಕ್ಷೆಯ ಪ್ರಮಾಣಪತ್ರವನ್ನು ನೀವು ವೀಕ್ಷಿಸಬಹುದು.  </string>
+    <string name="app_exit">                    ಅಪ್ಲಿಕೇಶನ್ ನಿರ್ಗಮನ  </string>
+    <string name="app_exit_msg">                ನೀವು ಅಪ್ಲಿಕೇಶನ್‌ನಿಂದ ನಿರ್ಗಮಿಸಬಹುದು  </string>
+    <string name="back_button">                 ಹಿಂದಿನ ಬಟನ್  </string>
+    <string name="back_button_msg">             ಹಿಂದಿನ ಪರದೆಗೆ ಹೋಗಿ  </string>
+    <string name="refresh">                     ರಿಫ್ರೆಶ್ ಮಾಡಿ  </string>
+    <string name="refresh_msg">                 ಪರದೆಯ ಮೇಲೆ ಪ್ರಸ್ತುತ ವಿಷಯಗಳನ್ನು ರಿಲೋಡ್ ಮಾಡಿ ಅಥವಾ ರಿಫ್ರೆಶ್ ಮಾಡಿ  </string>
+    <string name="push_and_sync">               ಪುಶ್ ಅಂಡ್ ಸಿಂಕ್  </string>
+    <string name="other">                       ಇತರೆ  </string>
+    <string name="DB_Zip_pushed_failed">        ಡೇಟಾ ಪುಶ್ ವಿಫಲವಾಗಿದೆ  </string>
+    <string name="DB_Zip_pushed_successfully">  ಡೇಟಾವನ್ನು ಯಶಸ್ವಿಯಾಗಿ ಪುಶ್ ಮಾಡಲಾಗಿದೆ  </string>
+    <string name="DB_Zip_push">        ಪುಶ್ DB ಫೈಲ್  </string>
 
+    <string name="pls_select_date">                  ದಯವಿಟ್ಟು ದಿನಾಂಕವನ್ನು ಆಯ್ಕೆಮಾಡಿ.   </string>
+    <string name="connect_to_internet">              ಇಂಟರ್ನೆಟ್‌ ಕನೆಕ್ಟ್ ಮಾಡಿ   </string>
+    <string name="server_error">                     ಸರ್ವರ್ ಎರರ್   </string>
+    <string name="total_attendance">                 ಒಟ್ಟು ಹಾಜರಾತಿ   </string>
+    <string name="view_details">                     ವಿವರಗಳನ್ನು ವೀಕ್ಷಿಸಿ   </string>
+    <string name="total_courses">                    ಒಟ್ಟು ಕೋರ್ಸ್‌ಗಳು   </string>
+    <string name="studs_acce_the_app">               ಅಪ್ಲಿಕೇಶನ್ ಅನ್ನು ಬಳಸಿದ ಬಳಕೆದಾರರ ಸಂಖ್ಯೆ   </string>
+    <string name="studs_reg_the_app">                ಅಪ್ಲಿಕೇಶನ್‌ನಲ್ಲಿ ನೋಂದಾಯಿಸಿದ ಬಳಕೆದಾರರ ಸಂಖ್ಯೆ   </string>
+    <string name="total_sessions">                   ಒಟ್ಟು ಅವಧಿಗಳು   </string>
+    <string name="total_groups">                     ಒಟ್ಟು ಗುಂಪುಗಳು   </string>
+    <string name="error_message">                    ಎರರ್ ಮೆಸೇಜ್   </string>
+    <string name="accessed_users">                   ಬಳಸಿದ ಬಳಕೆದಾರರು   </string>
+    <string name="registered_users">                 ನೋಂದಾಯಿಸಿದ ಬಳಕೆದಾರರು   </string>
+    <string name="pls_select_studs">                 ದಯವಿಟ್ಟು ವಿದ್ಯಾರ್ಥಿಗಳನ್ನು ಆಯ್ಕೆ ಮಾಡಿ!   </string>
+    <string name="problem_marking_attendance">       ಹಾಜರಾತಿಯನ್ನು ಗುರುತಿಸುವಲ್ಲಿ ಸಮಸ್ಯೆ   </string>
+    <string name="loading_pls_wait">                 ಲೋಡ್ ಆಗುತ್ತಿದೆ... ದಯವಿಟ್ಟು ನಿರೀಕ್ಷಿಸಿ...   </string>
+    <string name="enroll_id">                        ನೋಂದಣಿ ಐಡಿ   </string>
+    <string name="create_profile">                   ಪ್ರೊಫೈಲ್ ಅನ್ನು ರಚಿಸಿ   </string>
+    <string name="total_resources">                  ಒಟ್ಟು ಸಂಪನ್ಮೂಲಗಳು   </string>
+    <string name="stud_id">                          ವಿದ್ಯಾರ್ಥಿಯ ಐಡಿ   </string>
+    <string name="date">                             ದಿನಾಂಕ   </string>
+    <string name="data">                             ಡೇಟಾ   </string>
+    <string name="media">                            ಮೀಡಿಯಾ   </string>
+    <string name="courses">                          ಕೋರ್ಸ್‌ಗಳು   </string>
+    <string name="db_sync">                          DB ಸಿಂಕ್   </string>
+    <string name="course_count">                     ಕೋರ್ಸ್ ಎಣಿಕೆ   </string>
+    <string name="media_count">                      ಮೀಡಿಯಾ ಎಣಿಕೆ   </string>
+    <string name="manual">                           ಮ್ಯಾನುವಲ್   </string>
+    <string name="auto">                             ಆಟೋ   </string>
+    <string name="tot_db_entries">                   ಒಟ್ಟು DB ಎಂಟ್ರಿಸ್   </string>
+    <string name="enrollment_details">               ದಾಖಲಾತಿ ವಿವರಗಳು   </string>
+    <string name="my_class">                         ವರ್ಗ (ತರಗತಿ)   </string>
+    <string name="my_name">                          ಹೆಸರು   </string>
+    <string name="check_id">                         ಐಡಿ ಪರಿಶೀಲಿಸಿ   </string>
+    <string name="enter_your_id">                    ನಿಮ್ಮ ಐಡಿಯನ್ನು ನಮೂದಿಸಿ   </string>
+    <string name="select_avatar">                    ಅವತಾರ್ ಆಯ್ಕೆಮಾಡಿ   </string>
+    <string name="age">                              ವಯಸ್ಸು   </string>
+    <string name="gender">                           ಲಿಂಗ   </string>
+    <string name="save_profile">                     ಪ್ರೊಫೈಲ್ ಅನ್ನು ಸೇವ್ ಮಾಡಿ   </string>
+    <string name="profile_created_successfully">     ಯಶಸ್ವಿಯಾಗಿ ಪ್ರೊಫೈಲ್ ರಚಿಸಲಾಗಿದೆ   </string>
+    <string name="male">                             ಗಂಡು   </string>
+    <string name="female">                           ಹೆಣ್ಣು   </string>
+    <string name="please_fill_details">              ದಯವಿಟ್ಟು ಎಲ್ಲಾ ವಿವರಗಳನ್ನು ಭರ್ತಿ ಮಾಡಿ..   </string>
+    <string name="problem_pulling_stud">             ವಿದ್ಯಾರ್ಥಿಯ ವಿವರವನ್ನು ಪುಲ್ ಮಾಡಲು ಸಮಸ್ಯೆ   </string>
+    <string name="wrong_enrollment_id">              ತಪ್ಪಾದ ದಾಖಲಾತಿ ಐಡಿ   </string>
 
 
     <string name="Agent_name" >Vernicula</string>
@@ -370,7 +435,7 @@
         <item>avatars/acrobatics.json</item>-->
     </string-array>
     <string-array name="age">
-        <item>Select Age</item>
+        <item>ವಯಸ್ಸನ್ನು ಆಯ್ಕೆಮಾಡಿ</item>
         <item> 3  </item>
         <item> 4  </item>
         <item> 5  </item>

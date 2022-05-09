@@ -1,5 +1,8 @@
 package com.pratham.foundation.ui.contentPlayer.keywords_identification;
 
+import static com.pratham.foundation.utility.FC_Constants.APP_SECTION;
+import static com.pratham.foundation.utility.FC_Constants.sec_Test;
+
 import android.content.Context;
 import android.widget.Toast;
 
@@ -26,20 +29,17 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import static com.pratham.foundation.utility.FC_Constants.APP_SECTION;
-import static com.pratham.foundation.utility.FC_Constants.sec_Test;
-
 @EBean
 public class KeywordsIdentificationPresenter implements KeywordsIdentificationContract.KeywordsPresenter {
     private ScienceQuestion questionModel;
     private KeywordsIdentificationContract.KeywordsView viewKeywords;
-    private Context context;
+    private final Context context;
     private float perc;
     private List<ScienceQuestion> quetionModelList;
     private int totalWordCount, learntWordCount;
     private String gameName, resId, contentTitle, readingContentPath, resStartTime;
     private List<String> correctWordList, wrongWordList;
-    private boolean isTest = false;
+    private final boolean isTest = false;
 
     public KeywordsIdentificationPresenter(Context context) {
         this.context = context;
@@ -174,7 +174,7 @@ public class KeywordsIdentificationPresenter implements KeywordsIdentificationCo
             for (int i = 0; i < selectedAnsList.size(); i++) {
                 if (checkAnswerNew(questionModel.getLstquestionchoice(), selectedAnsList.get(i).getSubQues())) {
                     correctCnt++;
-                    correctWordList.add(selectedAnsList.get(i).getSubQues());
+                    correctWordList.add(selectedAnsList.get(i).getSubQues().replaceAll("\\p{Punct}", "").replaceAll("\\s", ""));
                     addScore(GameConstatnts.getInt(questionModel.getQid()), GameConstatnts.KEYWORD_IDENTIFICATION, 10, 10,selectedAnsList.get(i).getStartTime(),selectedAnsList.get(i).getEndTime(), selectedAnsList.get(i).getSubQues());
                 }else {
                     addScore(GameConstatnts.getInt(questionModel.getQid()), GameConstatnts.KEYWORD_IDENTIFICATION, 0, 10, selectedAnsList.get(i).getStartTime(),selectedAnsList.get(i).getEndTime(), selectedAnsList.get(i).getSubQues());
@@ -193,8 +193,12 @@ public class KeywordsIdentificationPresenter implements KeywordsIdentificationCo
     }
 
     private boolean checkAnswerNew(List<ScienceQuestionChoice> optionListlist, String word) {
+        word = word.replaceAll("\\s","");
+        word = word.replaceAll("\\p{Punct}","");
         for (int i = 0; i < optionListlist.size(); i++) {
-            if (optionListlist.get(i).getSubQues().replaceAll("\\p{Punct}","").trim().equalsIgnoreCase(word)) {
+            String op1 = optionListlist.get(i).getSubQues().replaceAll("\\s","");
+            op1 = op1.replaceAll("\\p{Punct}","");
+            if (op1.equalsIgnoreCase(word)) {
                 return true;
             }
         }
@@ -211,6 +215,7 @@ public class KeywordsIdentificationPresenter implements KeywordsIdentificationCo
             score.setScoredMarks(scoredMarks);
             score.setTotalMarks(totalMarks);
             score.setStudentID(FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""));
+            score.setGroupId(FastSave.getInstance().getString(FC_Constants.CURRENT_GROUP_ID, ""));
             score.setStartDateTime(resStartTime);
             score.setDeviceID(deviceId.equals(null) ? "0000" : deviceId);
             score.setEndDateTime(resEndTime);

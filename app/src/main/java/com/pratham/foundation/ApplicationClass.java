@@ -36,7 +36,7 @@ import okhttp3.OkHttpClient;
 public class ApplicationClass extends Application {
 
     // (HI Custom )
-    public static final String BUILD_DATE = "11-Feb-2022";
+    public static final String BUILD_DATE = "7-May-2022";
     public static boolean isTablet = true;
     public static boolean isAssets = false;
     public static boolean contentExistOnSD = false, LocationFlg = false;
@@ -89,7 +89,6 @@ public class ApplicationClass extends Application {
                 .writeTimeout(60, TimeUnit.SECONDS)
                 .build();
         AndroidNetworking.initialize(getApplicationContext(), okHttpClient);
-
 //        String a = FastSave.getInstance().getString(FC_Constants.APP_LANGUAGE, FC_Constants.HINDI);
 //        Log.d("INSTRUCTIONFRAG", "Select Subj: " + a);
 //        FC_Utility.setAppLocal(this, a);
@@ -116,12 +115,10 @@ public class ApplicationClass extends Application {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             NotificationChannel serviceChannel = new NotificationChannel(NOTIFICATION_CHANNEL_ID,
                     channelName, NotificationManager.IMPORTANCE_NONE);
-
             NotificationManager manager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
             manager.createNotificationChannel(serviceChannel);
         }
     }
-
 
     @Override
     protected void attachBaseContext(Context base) {
@@ -136,8 +133,5 @@ public class ApplicationClass extends Application {
         return applicationClass;
     }
 
-    public static int getRandomNumber(int min, int max) {
-        return min + (new Random().nextInt(max));
-    }
-
+    public static int getRandomNumber(int min, int max) { return min + (new Random().nextInt(max));}
 }

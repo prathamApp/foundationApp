@@ -83,6 +83,178 @@ public class API_Content {
         }
     }
 
+    public void checkServerStatus(final String requestType, String myAPI) {
+        try {
+            Log.d("API_Content_LOG", "url_id: " + myAPI);
+            AndroidNetworking.get(myAPI)
+                    .addHeaders("Content-Type", "application/json")
+                    .build()
+                    .getAsString(new StringRequestListener() {
+                        @Override
+                        public void onResponse(String response) {
+                            //Success - Send requestType and response to the calling class.
+                            if (apiContentResult != null)
+                                apiContentResult.receivedContent(requestType, response);
+                        }
+
+                        @Override
+                        public void onError(ANError anError) {
+                            try {
+                                Log.d("Error:", anError.getErrorDetail());
+                                // Log.d("Error::", anError.getResponse().toString());
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
+                            //Error - Send requestType to the calling class.
+                            if (apiContentResult != null)
+                                apiContentResult.receivedError(requestType);
+                        }
+                    });
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void getSyncedDetails(final String requestType, String myAPI, String dateFrom, String dateTo, String sId) {
+        try {
+            String url_id ="";
+            url_id = myAPI + dateFrom + " 00:00:00&DateTo="+
+                    dateTo + " 23:59:59&StudentId="+ sId;
+            Log.d("API_Content_LOG", "url_id: " + url_id);
+            AndroidNetworking.get(url_id)
+                    .addHeaders("Content-Type", "application/json")
+                    .build()
+                    .getAsString(new StringRequestListener() {
+                        @Override
+                        public void onResponse(String response) {
+                            //Success - Send requestType and response to the calling class.
+                            if (apiContentResult != null)
+                                apiContentResult.receivedContent(requestType, response);
+                        }
+
+                        @Override
+                        public void onError(ANError anError) {
+                            try {
+                                Log.d("Error:", anError.getErrorDetail());
+                                // Log.d("Error::", anError.getResponse().toString());
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
+                            //Error - Send requestType to the calling class.
+                            if (apiContentResult != null)
+                                apiContentResult.receivedError(requestType);
+                        }
+                    });
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void getSyncedSummary(final String requestType, String myAPI, String dateFrom, String dateTo) {
+        try {
+            String url_id ="";
+            url_id = myAPI + dateFrom + " 00:00:00&DateTo="+
+                    dateTo + " 23:59:59&DeviceId="+ FC_Utility.getDeviceID();
+            Log.d("API_Content_LOG", "url_id: " + url_id);
+            AndroidNetworking.get(url_id)
+                    .addHeaders("Content-Type", "application/json")
+                    .build()
+                    .getAsString(new StringRequestListener() {
+                        @Override
+                        public void onResponse(String response) {
+                            //Success - Send requestType and response to the calling class.
+                            if (apiContentResult != null)
+                                apiContentResult.receivedContent(requestType, response);
+                        }
+
+                        @Override
+                        public void onError(ANError anError) {
+                            try {
+                                Log.d("Error:", anError.getErrorDetail());
+                                // Log.d("Error::", anError.getResponse().toString());
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
+                            //Error - Send requestType to the calling class.
+                            if (apiContentResult != null)
+                                apiContentResult.receivedError(requestType);
+                        }
+                    });
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void getStudentSyncedData(final String requestType, String startDate, String endDate) {
+        try {
+            String url_id = "aaa";
+//            url_id = url + nodeId;
+//            Log.d("API_Content_LOG", "getAPIContent: " + nodeId);
+//            Log.d("API_Content_LOG", "url_id: " + url_id);
+            AndroidNetworking.get("http://prathamyouthnet.org/ssmspushdb/dbsummary-group.php")
+                    .addHeaders("Content-Type", "application/json")
+                    .build()
+                    .getAsString(new StringRequestListener() {
+                        @Override
+                        public void onResponse(String response) {
+                            //Success - Send requestType and response to the calling class.
+                            if (apiContentResult != null)
+                                apiContentResult.receivedContent(requestType, response);
+                        }
+
+                        @Override
+                        public void onError(ANError anError) {
+                            try {
+                                Log.d("Error:", anError.getErrorDetail());
+                                // Log.d("Error::", anError.getResponse().toString());
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
+                            //Error - Send requestType to the calling class.
+                            if (apiContentResult != null)
+                                apiContentResult.receivedError(requestType);
+                        }
+                    });
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void syncPushedItemDB(final String requestType, String API, String pushId) {
+        try {
+            String final_URL;
+            final_URL = API + pushId;
+            Log.d("API_Content_LOG", "syncPushedItemDB: PushID : " + pushId);
+            Log.d("API_Content_LOG", "syncPushedItemDB URL : " + final_URL);
+            AndroidNetworking.get(final_URL)
+                    .addHeaders("Content-Type", "application/json")
+                    .build()
+                    .getAsString(new StringRequestListener() {
+                        @Override
+                        public void onResponse(String response) {
+                            //Success - Send requestType and response to the calling class.
+                            if (apiContentResult != null)
+                                apiContentResult.receivedContent(requestType, response);
+                        }
+
+                        @Override
+                        public void onError(ANError anError) {
+                            try {
+                                Log.d("Error:", anError.getErrorDetail());
+                                // Log.d("Error::", anError.getResponse().toString());
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
+                            //Error - Send requestType to the calling class.
+                            if (apiContentResult != null)
+                                apiContentResult.receivedError(requestType);
+                        }
+                    });
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
     public void getAPIContent(final String requestType, String url, String nodeId) {
         try {
 //            String url_id;

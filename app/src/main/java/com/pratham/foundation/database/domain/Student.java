@@ -36,14 +36,12 @@ public class Student implements Comparable, Parcelable {
     private String FirstName;
     private String MiddleName;
     private String LastName;
+    private String EnrollmentId;
     private String regDate;
     private String villageName;
     private int newFlag;
     public String avatarName;
-
-
     @Ignore
-
     transient boolean isChecked = false;
 
     public Student(Parcel in) {
@@ -59,6 +57,7 @@ public class Student implements Comparable, Parcelable {
         //     sentFlag = in.readInt();
         StudentID = in.readString();
         avatarName = in.readString();
+        EnrollmentId = in.readString();
         isChecked = in.readByte() != 0;
     }
 
@@ -73,6 +72,7 @@ public class Student implements Comparable, Parcelable {
                 ", LastName='" + LastName + '\'' +
                 ", Gender='" + Gender + '\'' +
                 ", regDate='" + regDate + '\'' +
+                ", EnrollmentId='" + EnrollmentId + '\'' +
                 ", Age=" + Age +
                 ", villageName='" + villageName + '\'' +
                 ", newFlag=" + newFlag +
@@ -233,6 +233,14 @@ public class Student implements Comparable, Parcelable {
         this.avatarName = avatarName;
     }
 
+    public String getEnrollmentId() {
+        return EnrollmentId;
+    }
+
+    public void setEnrollmentId(String enrollmentId) {
+        EnrollmentId = enrollmentId;
+    }
+
     public boolean isChecked() {
         return isChecked;
     }
@@ -258,6 +266,7 @@ public class Student implements Comparable, Parcelable {
         dest.writeString(Stud_Class);
         dest.writeInt(Age);
         dest.writeString(Gender);
+        dest.writeString(EnrollmentId);
         //      dest.writeInt(sentFlag);
         dest.writeString(StudentID);
         //      dest.writeString(avatarName);

@@ -53,17 +53,20 @@ public interface StudentDao {
     @Query("SELECT * FROM Student WHERE GroupId=:gID")
     List<Student> getGroupwiseStudents(String gID);
 
-    /*@Query("select * from Student where newFlag = 1")
-    List<Student> getAllNewStudents();*/
+    @Query("select * from Student where sentFlag = 0")
+    List<Student> getAllSyncStudents();
 
-    @Query("select * from Student where newFlag = 0")
+    @Query("update Student set sentFlag=1 where sentFlag=0")
+    void setSentFlag();
+
+    @Query("select * from Student where newFlag = 1")
     List<Student> getAllNewStudents();
-
-    @Query("select * from Student where LastName =:enrollment_id")
-    Student getStudentByEnrollmentId(String enrollment_id);
 
     @Query("update Student set newFlag=0 where newFlag = 1")
     void setNewStudentsToOld();
+
+    @Query("select * from Student where LastName =:enrollment_id")
+    Student getStudentByEnrollmentId(String enrollment_id);
 
     @Query("update Student set newFlag=0 where StudentID = :studentID")
     void setFlagFalse(String studentID);
@@ -91,9 +94,6 @@ public interface StudentDao {
 
     @Query("DELETE FROM Student WHERE Gender='Deleted'")
     void deleteDeletedStdRecords();
-
-    @Query("update Student set newFlag=1 where newFlag=0")
-    void setSentFlag();
 
     @Query("DELETE FROM Student WHERE GroupID != 'PS'")
     void deletePrathamAll();

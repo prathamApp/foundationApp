@@ -54,7 +54,7 @@
                 android:singleLine="true"
                 android:text=""
                 android:textColor="@color/dark_blue"
-                android:textSize="@dimen/_20sdp" />
+                android:textSize="@dimen/_18sdp" />
 
             <LinearLayout
                 android:id="@+id/ll_topic_parent"
@@ -86,7 +86,7 @@
                     android:gravity="center_vertical"
                     android:text="Name"
                     android:textColor="@color/oslo_grey"
-                    android:textSize="@dimen/_16sdp" />
+                    android:textSize="@dimen/_14sdp" />
 
             </LinearLayout>
         </RelativeLayout>

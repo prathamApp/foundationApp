@@ -64,30 +64,30 @@
             android:textSize="@dimen/_18sdp"
             android:textStyle="bold" />
 
-        <com.pratham.foundation.customView.fontsview.SansTextView
-            android:id="@+id/subject"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/name"
-            android:layout_marginStart="@dimen/_12sdp"
-            android:layout_marginTop="@dimen/_5sdp"
-            android:text="@string/select_subject"
-            android:textColor="@color/colorBlackTransparentLight"
-            android:textSize="@dimen/_15sdp" />
+            <com.pratham.foundation.customView.fontsview.SansTextView
+                android:id="@+id/subject"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/name"
+                android:layout_marginStart="@dimen/_12sdp"
+                android:layout_marginTop="@dimen/_5sdp"
+                android:text="@string/select_subject"
+                android:textColor="@color/colorBlackTransparentLight"
+                android:textSize="@dimen/_15sdp" />
 
             <com.pratham.foundation.customView.fontsview.SansButton
                 android:id="@+id/dia_result"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="@dimen/_30sdp"
                 android:layout_below="@id/subject"
                 android:layout_marginStart="@dimen/_12sdp"
                 android:layout_marginTop="@dimen/_5sdp"
                 android:layout_marginBottom="@dimen/_5sdp"
                 android:background="@drawable/button_green"
                 android:gravity="center_vertical"
+                android:elevation="@dimen/_5sdp"
                 android:paddingStart="@dimen/_10sdp"
                 android:paddingEnd="@dimen/_10sdp"
-                android:text="Diagnostic Test Result"
                 android:textColor="@color/white"
                 android:textSize="@dimen/_8sdp" />
 
@@ -151,6 +151,7 @@
             android:layout_height="80dp"
             android:layout_alignParentRight="true"
             android:layout_alignParentBottom="true"
+            android:layout_marginStart="20dp"
             android:layout_marginEnd="20dp"
             android:layout_marginBottom="20dp"
             android:background="@drawable/dialog_image_bg"

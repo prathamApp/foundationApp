@@ -1,5 +1,8 @@
 package com.pratham.foundation.ui.contentPlayer.pictionary;
 
+import static com.pratham.foundation.utility.FC_Constants.APP_SECTION;
+import static com.pratham.foundation.utility.FC_Constants.sec_Test;
+
 import android.content.Context;
 
 import com.google.gson.Gson;
@@ -31,9 +34,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import static com.pratham.foundation.utility.FC_Constants.APP_SECTION;
-import static com.pratham.foundation.utility.FC_Constants.sec_Test;
-
 @EBean
 public class PictionaryPresenter implements PictionaryContract.PictionaryPresenter {
     private PictionaryContract.PictionaryView pictionaryView;
@@ -43,7 +43,7 @@ public class PictionaryPresenter implements PictionaryContract.PictionaryPresent
     private int totalWordCount, learntWordCount;
     private float perc;
     private List<ScienceQuestionChoice> correctWordList, wrongWordList;
-    private Context context;
+    private final Context context;
     private String readingContentPath;
     public PictionaryPresenter(Context context) {
         this.context = context;
@@ -245,6 +245,7 @@ public class PictionaryPresenter implements PictionaryContract.PictionaryPresent
             score.setScoredMarks(scoredMarks);
             score.setTotalMarks(totalMarks);
             score.setStudentID(FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""));
+            score.setGroupId(FastSave.getInstance().getString(FC_Constants.CURRENT_GROUP_ID, ""));
             score.setStartDateTime(resStartTime);
             score.setDeviceID(deviceId.equals(null) ? "0000" : deviceId);
             score.setEndDateTime(resEndTime);

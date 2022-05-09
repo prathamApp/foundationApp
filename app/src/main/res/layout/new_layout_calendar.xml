@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:custom="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/rl_new_calendar_view"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/black_trans_bg"
+    android:visibility="gone">
+
+    <ImageView
+        android:id="@+id/iv_close_calendar"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_alignParentEnd="true"
+        android:layout_margin="@dimen/_10sdp"
+        app:srcCompat="@drawable/ic_close_white" />
+
+    <com.archit.calendardaterangepicker.customviews.DateRangeCalendarView
+        android:id="@+id/course_date_picker"
+        android:layout_width="@dimen/_250sdp"
+        android:layout_height="@dimen/_300sdp"
+        android:layout_centerInParent="true"
+        android:layout_marginTop="@dimen/_10sdp"
+        android:layout_marginBottom="@dimen/_10sdp"
+        android:background="@drawable/card_color_bg10"
+        custom:editable="true"
+        custom:enable_past_date="true"
+        custom:header_bg="@drawable/calender_header_1_bg"
+        custom:range_color="@color/colorBtnGreenLight"
+        custom:selected_date_circle_color="@color/colorBtnGreenDark"
+        custom:title_color="@color/white"
+        custom:week_offset="0" />
+
+    <com.pratham.foundation.customView.fontsview.SansButton
+        android:id="@+id/btn_sync_date_range"
+        android:layout_width="@dimen/_120sdp"
+        android:layout_height="wrap_content"
+        android:paddingTop="@dimen/_2sdp"
+        android:paddingBottom="@dimen/_2sdp"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@+id/course_date_picker"
+        android:background="@drawable/button_green"
+        android:text="@string/confirm_date"
+        android:textAllCaps="false"
+        android:textColor="@color/white"
+        tools:ignore="HardcodedText" />
+</RelativeLayout>

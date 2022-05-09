@@ -21,7 +21,6 @@ import android.webkit.WebView;
 import com.pratham.foundation.ApplicationClass;
 import com.pratham.foundation.database.AppDatabase;
 import com.pratham.foundation.database.BackupDatabase;
-import com.pratham.foundation.database.domain.Assessment;
 import com.pratham.foundation.database.domain.KeyWords;
 import com.pratham.foundation.database.domain.Score;
 import com.pratham.foundation.interfaces.WebViewInterface;
@@ -175,7 +174,7 @@ public class JSInterface implements RecognitionListener {
                     score.setScoredMarks(scorefromGame);
                     score.setTotalMarks(totalMarks);
                     score.setStudentID(FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""));
-
+                    score.setGroupId(FastSave.getInstance().getString(FC_Constants.CURRENT_GROUP_ID, ""));
                     splited = startTime.split("\\s+");
                     splitedDate = splited[0].split("\\-+");
                     splitedTime = splited[1].split("\\:+");
@@ -189,26 +188,6 @@ public class JSInterface implements RecognitionListener {
                     score.setLabel("");
                     score.setSentFlag(0);
                     AppDatabase.getDatabaseInstance(mContext).getScoreDao().insert(score);
-
-                    if (WebViewActivity.mode.equalsIgnoreCase("test")) {
-
-                        Assessment assessment = new Assessment();
-                        assessment.setResourceIDa(/*gameWebViewList.get(WebViewActivity.gameCounter).getResourceId()*/webResId);
-                        assessment.setSessionIDa(FastSave.getInstance().getString(FC_Constants.ASSESSMENT_SESSION, ""));
-                        assessment.setSessionIDm(FastSave.getInstance().getString(FC_Constants.CURRENT_SESSION, ""));
-                        assessment.setQuestionIda(questionId);
-                        assessment.setScoredMarksa(scorefromGame);
-                        assessment.setTotalMarksa(totalMarks);
-                        assessment.setStudentIDa(FastSave.getInstance().getString(FC_Constants.CURRENT_ASSESSMENT_STUDENT_ID, ""));
-                        assessment.setStartDateTimea(customDate + " " + customTime);
-                        assessment.setDeviceIDa(deviceId.equals(null) ? "0000" : deviceId);
-                        assessment.setEndDateTime(FC_Utility.getCurrentDateTime());
-                        assessment.setLevela(level);
-                        assessment.setLabel("");
-                        assessment.setSentFlag(0);
-                        AppDatabase.getDatabaseInstance(mContext).getAssessmentDao().insert(assessment);
-                    }
-
                     BackupDatabase.backup(mContext);
 
                 } catch (Exception e) {
@@ -229,15 +208,15 @@ public class JSInterface implements RecognitionListener {
             @Override
             protected Object doInBackground(Object[] objects) {
                 try {
-                    KeyWords learntWords = new KeyWords();
-                    learntWords.setResourceId(webResId);
-                    learntWords.setSentFlag(0);
-                    learntWords.setStudentId(FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""));
-                   // learntWords.setSessionId(FastSave.getInstance().getString(FC_Constants.CURRENT_SESSION, ""));
-                    learntWords.setKeyWord(word.toLowerCase());
-                    //learntWords.setSynId("" + WebViewActivity.gameName);
-                    learntWords.setWordType("" + type);
-                    WebViewActivity.learntWordsList.add(learntWords);
+                    KeyWords keyWords = new KeyWords();
+                    keyWords.setResourceId(webResId);
+                    keyWords.setSentFlag(0);
+                    keyWords.setStudentId(FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""));
+                   // keyWords.setSessionId(FastSave.getInstance().getString(FC_Constants.CURRENT_SESSION, ""));
+                    keyWords.setKeyWord(word.toLowerCase());
+                    //keyWords.setSynId("" + WebViewActivity.gameName);
+                    keyWords.setWordType("" + type);
+                    WebViewActivity.learntWordsList.add(keyWords);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -288,6 +267,10 @@ public class JSInterface implements RecognitionListener {
                     score.setScoredMarks(scorefromGame);
                     score.setTotalMarks(totalMarks);
                     score.setStudentID(FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""));
+                    if(FastSave.getInstance().getString(FC_Constants.LOGIN_MODE, "").equalsIgnoreCase(FC_Constants.GROUP_MODE))
+                        score.setGroupId(FastSave.getInstance().getString(FC_Constants.CURRENT_GROUP_ID, ""));
+                    else
+                        score.setGroupId("NA");
 
                     splited = startTime.split("\\s+");
                     splitedDate = splited[0].split("\\-+");
@@ -304,24 +287,6 @@ public class JSInterface implements RecognitionListener {
 
                     AppDatabase.getDatabaseInstance(mContext).getScoreDao().insert(score);
 
-                    if (WebViewActivity.mode.equalsIgnoreCase("test")) {
-
-                        Assessment assessment = new Assessment();
-                        assessment.setResourceIDa(/*gameWebViewList.get(WebViewActivity.gameCounter).getResourceId()*/webResId);
-                        assessment.setSessionIDa(FastSave.getInstance().getString(FC_Constants.ASSESSMENT_SESSION, ""));
-                        assessment.setSessionIDm(FastSave.getInstance().getString(FC_Constants.CURRENT_SESSION, ""));
-                        assessment.setQuestionIda(questionId);
-                        assessment.setScoredMarksa(scorefromGame);
-                        assessment.setTotalMarksa(totalMarks);
-                        assessment.setStudentIDa(FastSave.getInstance().getString(FC_Constants.CURRENT_ASSESSMENT_STUDENT_ID, ""));
-                        assessment.setStartDateTimea(customDate + " " + customTime);
-                        assessment.setDeviceIDa(deviceId.equals(null) ? "0000" : deviceId);
-                        assessment.setEndDateTime(FC_Utility.getCurrentDateTime());
-                        assessment.setLevela(level);
-                        assessment.setLabel("test: " + Label);
-                        assessment.setSentFlag(0);
-                        AppDatabase.getDatabaseInstance(mContext).getAssessmentDao().insert(assessment);
-                    }
                     BackupDatabase.backup(mContext);
                 } catch (Exception e) {
                     e.printStackTrace();

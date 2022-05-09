@@ -1,5 +1,8 @@
 <?xml version="1.0" ?>
 <resources xmlns:tools="http://schemas.android.com/tools">
+
+    <string name="app_name">پراڈیجی اسکول کے لیے</string>
+
     <string name="Login">لاگ ان کریں-</string>
     <string name="Stt_Dialog_Msg">بہتر کارکردگی کے لیے ، براہ کرم آف لائن للینگویج پیک (English(India اور(हिंदी (भारत  ڈاؤن لوڈ کریں۔</string>
     <string name="Okay">ٹھیک ہے</string>
@@ -148,22 +151,83 @@
     <string name="change_the_language">زبان کو تبدیل کرنے کے لئے یہاں کلک کریں</string>
     <string name="of_the_content">مواد کی.</string>
 
-    <string name="PDF">Read the PDF</string>
-    <string name="Audio">Listen to the audio</string>
-    <string name="add_course">Add Course</string>
-    <string name="select_date">Select Date</string>
-    <string name="confirm_date">Confirm Date</string>
-    <string name="enroll_course">Course Enrollment</string>
-    <string name="device_date_time_change">Device date and time</string>
-    <string name="internet_date_time_change">Internet date and time</string>
-    <string name="Set_Date_and_Time">Set Date and Time</string>
-    <string name="Enrollment_synced">Enrolled Courses synced :</string>
-    <string name="DB_Zip_pushed_failed">Database pushed failed</string>
-    <string name="DB_Zip_pushed_successfully">Database pushed successfully</string>
-    <string name="DB_Zip_push">Push DB File</string>
+    <string name="PDF">پی ڈی ایف پڑھیں</string>
+    <string name="Audio">آڈیوسنیں</string>
+    <string name="add_course">کورس شامل کریں</string>
+    <string name="select_date">تاریخ منتخب کریں</string>
+    <string name="confirm_date">تاریخ کی تصدیق کریں</string>
+    <string name="enroll_course">داخلاتی کورس</string>
+    <string name="device_date_time_change">ڈیوائس کی تاریخ اور وقت -</string>
+    <string name="internet_date_time_change">انٹرنیٹ کی تاریخ اور وقت -</string>
+    <string name="Set_Date_and_Time">تاریخ اور وقت طے کریں</string>
+    <string name="Enrollment_synced">ہم وقت ساز رجسٹرڈ کورس:</string>
 
+    <string name="push_data">                   ڈیٹا پش کریں  </string>
+    <string name="push_logs">                   لاگزپش کریں  </string>
+    <string name="sync_logs">                   لاگزکو سینک کریں  </string>
+    <string name="check_synced_data">           سینک ڈیٹا کوچیک کریں  </string>
+    <string name="reset_app_tour">              ایپ ٹورکو ریسٹ کریں  </string>
+    <string name="ques_reset_app_tour">         کیا آپ واقعی ایپ ٹورکو ریسٹ کرنا چاہتے ہیں؟  </string>
+    <string name="no_internet">                 انٹرنیٹ کنکشن نہیں ہے۔  </string>
+    <string name="diagnostic_test_result">      تشخیصی ٹیسٹ کا نتیجہ  </string>
+    <string name="diagnostic_test_result_msg">  آپ اسسمنٹ ایپ میں لیے گئے تشخیصی ٹیسٹ کا سرٹیفکیٹ دیکھ سکتے ہیں۔  </string>
+    <string name="app_exit">                    ایپ سے باہرنکلیں۔  </string>
+    <string name="app_exit_msg">                آپ ایپ سے باہرنکل سکتے ہیں۔  </string>
+    <string name="back_button">                 بیک بٹن  </string>
+    <string name="back_button_msg">             پچھلی اسکرین پرجائیں۔  </string>
+    <string name="refresh">                     ریفریش کریں۔  </string>
+    <string name="refresh_msg">                 اسکرین پرموجودہ مواد کو دوبارہ لوڈ یا ریفریش کریں۔  </string>
+    <string name="push_and_sync">               پش اورسنک  </string>
+    <string name="other">                       دیگر  </string>
+    <string name="DB_Zip_pushed_failed">        پش ڈیٹا بیس ناکام ہو گیا۔  </string>
+    <string name="DB_Zip_pushed_successfully">  ڈیٹا بیس کو کامیابی سے پش کیا گیا۔  </string>
+    <string name="DB_Zip_push">                 DB فائل کو پش کریں۔  </string>
 
-
+    <string name="pls_select_date">                  براہ کرم تاریخ منتخب کریں۔   </string>
+    <string name="connect_to_internet">              انٹرنیٹ سے جڑیں   </string>
+    <string name="server_error">                     سرور کی خرابی   </string>
+    <string name="total_attendance">                 کُل حاضری   </string>
+    <string name="view_details">                     تفصیلات دیکھیں   </string>
+    <string name="total_courses">                    کُل کورسس   </string>
+    <string name="studs_acce_the_app">               ایپ تک رسائی شدہ صارفین کی تعداد   </string>
+    <string name="studs_reg_the_app">                ایپ میں رجسٹر ہونے والے صارفین کی تعداد   </string>
+    <string name="total_sessions">                   کل سیشن   </string>
+    <string name="total_groups">                     کل گروپس   </string>
+    <string name="error_message">                    ایرر میسج   </string>
+    <string name="accessed_users">                   رسائی شدہ صارفین   </string>
+    <string name="registered_users">                 رجسٹرڈ صارفین   </string>
+    <string name="pls_select_studs">                 براہ کرم طلباء کا انتخاب کریں!   </string>
+    <string name="problem_marking_attendance">       حاضری کو نشان زد کرنے میں دشواری   </string>
+    <string name="loading_pls_wait">                 لوڈ ہو رہا ہے... براہ کرم انتظار کریں...   </string>
+    <string name="enroll_id">                        اندراج آئی ڈی   </string>
+    <string name="create_profile">                   پروفائل بنائیں   </string>
+    <string name="total_resources">                  کُل وسائل   </string>
+    <string name="stud_id">                          طالب علم کی آئی ڈی   </string>
+    <string name="date">                             تاریخ   </string>
+    <string name="data">                             ڈیٹا   </string>
+    <string name="media">                            میڈیا   </string>
+    <string name="courses">                          کورسس   </string>
+    <string name="db_sync">                          DB سنک   </string>
+    <string name="course_count">                     کورس کاؤنٹ   </string>
+    <string name="media_count">                      میڈیا کاؤنٹ   </string>
+    <string name="manual">                           مینول   </string>
+    <string name="auto">                             آٹو   </string>
+    <string name="tot_db_entries">                   کُلDB اندراجات   </string>
+    <string name="enrollment_details">               اندراج کی تفصیلات   </string>
+    <string name="my_class">                         جماعت   </string>
+    <string name="my_name">                          نام   </string>
+    <string name="check_id">                         آئی ڈی چیک کریں۔   </string>
+    <string name="enter_your_id">                    اپنی آئی ڈی درج کریں۔   </string>
+    <string name="select_avatar">                    اوتار کو منتخب کریں۔   </string>
+    <string name="age">                              عمر   </string>
+    <string name="gender">                           جنس   </string>
+    <string name="save_profile">                     پروفائل محفوظ کریں   </string>
+    <string name="profile_created_successfully">     پروفائل کامیابی کے ساتھ بنایا گیا۔   </string>
+    <string name="male">                             مرد   </string>
+    <string name="female">                           خاتون   </string>
+    <string name="please_fill_details">              براہ کرم تمام تفصیلات پُر کریں ..   </string>
+    <string name="problem_pulling_stud">             طالب علم کو اندراج میں مشکلات   </string>
+    <string name="wrong_enrollment_id">              غلط اندراج آئی ڈی   </string>
 
 
 
@@ -377,7 +441,7 @@
         <item>avatars/acrobatics.json</item>-->
     </string-array>
     <string-array name="age">
-        <item>Select Age</item>
+        <item>عمرانتخاب کریں۔</item>
         <item> 3  </item>
         <item> 4  </item>
         <item> 5  </item>

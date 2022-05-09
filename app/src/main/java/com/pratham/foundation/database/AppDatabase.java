@@ -26,6 +26,8 @@ import com.pratham.foundation.database.dao.SessionDao;
 import com.pratham.foundation.database.dao.StatusDao;
 import com.pratham.foundation.database.dao.StudentDao;
 import com.pratham.foundation.database.dao.SupervisorDataDao;
+import com.pratham.foundation.database.dao.SyncLogDao;
+import com.pratham.foundation.database.dao.SyncStatusLogDao;
 import com.pratham.foundation.database.dao.VillageDao;
 import com.pratham.foundation.database.domain.Assessment;
 import com.pratham.foundation.database.domain.Attendance;
@@ -44,20 +46,23 @@ import com.pratham.foundation.database.domain.Village;
 import com.pratham.foundation.database.domain.WordEnglish;
 import com.pratham.foundation.modalclasses.MatchThePair;
 import com.pratham.foundation.modalclasses.Model_CourseEnrollment;
+import com.pratham.foundation.modalclasses.SyncLog;
+import com.pratham.foundation.modalclasses.SyncStatusLog;
 
 
 @Database(entities = {Crl.class, Student.class, Score.class, Session.class,
         Attendance.class, Status.class, Village.class, Groups.class,
         SupervisorData.class, Assessment.class, Modal_Log.class, ContentTable.class,
         ContentProgress.class, KeyWords.class, WordEnglish.class, MatchThePair.class,
-        Model_CourseEnrollment.class}, version = 3, exportSchema = false)
+        Model_CourseEnrollment.class, SyncLog.class, SyncStatusLog.class},
+        version = 4, exportSchema = false)
 
 public abstract class AppDatabase extends RoomDatabase {
 
     public static AppDatabase appDBInstance;
 
     public static final String DB_NAME = "foundation_db";
-    public static final String DB_VERSION = "3";
+    public static final String DB_VERSION = "4";
 
     public abstract CrlDao getCrlDao();
 
@@ -93,11 +98,15 @@ public abstract class AppDatabase extends RoomDatabase {
 
     public abstract CourseDao getCourseDao();
 
+    public abstract SyncLogDao getSyncLogDao();
+
+    public abstract SyncStatusLogDao getSyncStatusLogDao();
+
     public static AppDatabase getDatabaseInstance(Context context) {
         if (appDBInstance == null) {
             appDBInstance = Room.databaseBuilder(ApplicationClass.getInstance(), AppDatabase.class, DB_NAME)
                     .allowMainThreadQueries()
-                    .addMigrations(MIGRATION_1_2, MIGRATION_2_3)
+                    .addMigrations(MIGRATION_1_2, MIGRATION_2_3, MIGRATION_3_4)
                     .build();
             return appDBInstance;
         } else
@@ -133,14 +142,36 @@ public abstract class AppDatabase extends RoomDatabase {
         }
     };
 
-/*
     static final Migration MIGRATION_3_4 = new Migration(3, 4) {
         @Override
         public void migrate(SupportSQLiteDatabase database) {
             Log.d("AppDatabase", "MIGRATION_3_4:                                  3");
-            database.execSQL("ALTER TABLE 'ContentTable' ADD COLUMN 'programid' Text");
-            database.execSQL("ALTER TABLE 'Student' ADD COLUMN 'programId' Text");
+            database.execSQL("ALTER TABLE 'Score' ADD COLUMN 'GroupId' Text");
+            database.execSQL("ALTER TABLE 'CourseEnrolled' ADD COLUMN 'courseEnrolledDate' Text");
+            database.execSQL("ALTER TABLE 'CourseEnrolled' ADD COLUMN 'studentId' Text");
+            database.execSQL("ALTER TABLE 'Student' ADD COLUMN 'EnrollmentId' Text");
+            database.execSQL("ALTER TABLE 'Groups' ADD COLUMN 'EnrollmentId' Text");
+            database.execSQL("ALTER TABLE 'Groups' ADD COLUMN 'regDate' Text");
+            database.execSQL("ALTER TABLE 'Groups' ADD COLUMN 'sentFlag' INTEGER NOT NULL DEFAULT 0");
+//            database.execSQL("ALTER TABLE 'Attendance' MODIFY COLUMN 'StudentID' INTEGER NOT NULL");
+            database.execSQL("CREATE TABLE IF NOT EXISTS SyncLog ('uuid' TEXT PRIMARY KEY NOT NULL," +
+                    "'PushDate' TEXT, 'PushId' INTEGER NOT NULL, 'Error' TEXT, 'Status' TEXT, 'PushType' TEXT," +
+                    "'sentFlag' INTEGER NOT NULL DEFAULT 0)");
+            database.execSQL("CREATE TABLE IF NOT EXISTS SyncStatusLog ('syncStatusId' INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL," +
+                    "'SyncId' INTEGER NOT NULL, 'uuid' TEXT, 'PushId' INTEGER NOT NULL, 'PushDate' TEXT," +
+                    "'PushStatus' TEXT, 'DeviceId' TEXT," +
+                    "'ScorePushed' INTEGER NOT NULL, 'ScoreSynced' INTEGER NOT NULL, 'ScoreError' INTEGER NOT NULL," +
+                    "'AttendancePushed' INTEGER NOT NULL, 'AttendanceSynced' INTEGER NOT NULL, 'AttendanceError' INTEGER NOT NULL," +
+                    "'StudentPushed' INTEGER NOT NULL, 'StudentSynced' INTEGER NOT NULL, 'StudentError' INTEGER NOT NULL," +
+                    "'SessionCount' INTEGER NOT NULL, 'SessionSynced' INTEGER NOT NULL, 'SessionError' INTEGER NOT NULL," +
+                    "'cpCount' INTEGER NOT NULL, 'cpSynced' INTEGER NOT NULL, 'cpError' INTEGER NOT NULL," +
+                    "'logsCount' INTEGER NOT NULL, 'logsSynced' INTEGER NOT NULL, 'logsError' INTEGER NOT NULL," +
+                    "'KeywordsCount' INTEGER NOT NULL, 'KeywordsSynced' INTEGER NOT NULL, 'KeywordsError' INTEGER NOT NULL," +
+                    "'CourseEnrollmentCount' INTEGER NOT NULL, 'CourseEnrollmentSynced' INTEGER NOT NULL, 'CourseEnrollmentError' INTEGER NOT NULL," +
+                    "'GroupsDataCount' INTEGER NOT NULL, 'GroupsDataSynced' INTEGER NOT NULL, 'GroupsDataError' INTEGER NOT NULL," +
+                    "'LastChecked' TEXT, 'Error' TEXT, " +
+                    "'sentFlag' INTEGER NOT NULL DEFAULT 0)");
         }
     };
-*/
+
 }

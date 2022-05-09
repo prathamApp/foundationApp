@@ -42,6 +42,8 @@ public interface LearningContract {
 
         void dismissDownloadDialog();
 
+        void setDownloadSize(String fileSize);
+
         void showComingSoonDiaog();
 
         void showNoDataLayout();

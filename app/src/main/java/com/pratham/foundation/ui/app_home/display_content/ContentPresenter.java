@@ -38,6 +38,8 @@ import org.json.JSONObject;
 
 import java.io.File;
 import java.lang.reflect.Type;
+import java.net.URL;
+import java.net.URLConnection;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -308,9 +310,12 @@ public class ContentPresenter implements ContentContract.ContentPresenter, API_C
     @Override
     public void addAssessmentToDb(ContentTable itemContent) {
         testItem = itemContent;
-        if (FC_Utility.isDataConnectionAvailable(context))
-            api_content.getAPIContent(FC_Constants.INTERNET_DOWNLOAD_ASSESSMENT_RESOURCE, FC_Constants.INTERNET_DOWNLOAD_RESOURCE_API, itemContent.getNodeId());
-        else
+        if (FC_Utility.isDataConnectionAvailable(context)) {
+            if (ApplicationClass.wiseF.isDeviceConnectedToSSID(FC_Constants.PRATHAM_RASPBERRY_PI)) {
+                api_content.getAPIContent_PI_V2(FC_Constants.INTERNET_DOWNLOAD_ASSESSMENT_RESOURCE_PI, FC_Constants.INTERNET_DOWNLOAD_RESOURCE_API_PI, itemContent.getNodeId());
+            } else
+                api_content.getAPIContent(FC_Constants.INTERNET_DOWNLOAD_ASSESSMENT_RESOURCE, FC_Constants.INTERNET_DOWNLOAD_RESOURCE_API, itemContent.getNodeId());
+        }else
             contentView.onTestAddedToDb(testItem);
 
 //        itemContent.setIsDownloaded("true");
@@ -335,6 +340,7 @@ public class ContentPresenter implements ContentContract.ContentPresenter, API_C
 
     // API result
     @Override
+    @Background
     public void receivedContent(String header, String response) {
         try {
             if (header.equalsIgnoreCase(FC_Constants.INTERNET_BROWSE) || header.equalsIgnoreCase(FC_Constants.PI_BROWSE)) {
@@ -507,6 +513,15 @@ public class ContentPresenter implements ContentContract.ContentPresenter, API_C
                         }
                     }
 
+                    String fileSize = "";
+                    if (!header.equalsIgnoreCase(FC_Constants.INTERNET_DOWNLOAD_RESOURCE_PI)) {
+                        URL url = new URL(download_content.getDownloadurl());
+                        URLConnection urlConnection = url.openConnection();
+                        urlConnection.connect();
+                        fileSize = "" + FC_Utility.getFileSize(urlConnection.getContentLength());
+                        contentView.setDownloadSize(" (" + fileSize + ")");
+                    }else
+                        contentView.setDownloadSize(" ");
                     fileName = download_content.getDownloadurl()
                             .substring(download_content.getDownloadurl().lastIndexOf('/') + 1);
                     Log.d("HP", "doInBackground: fileName : " + fileName);
@@ -542,10 +557,38 @@ public class ContentPresenter implements ContentContract.ContentPresenter, API_C
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
-            } else if (header.equalsIgnoreCase(FC_Constants.INTERNET_DOWNLOAD_ASSESSMENT_RESOURCE)) {
+            } else if (header.equalsIgnoreCase(FC_Constants.INTERNET_DOWNLOAD_ASSESSMENT_RESOURCE) ||
+                    header.equalsIgnoreCase(FC_Constants.INTERNET_DOWNLOAD_ASSESSMENT_RESOURCE_PI)) {
                 try {
                     JSONObject jsonObject = new JSONObject(response);
-                    download_content = gson.fromJson(jsonObject.toString(), Modal_DownloadContent.class);
+
+                    if (header.equalsIgnoreCase(FC_Constants.INTERNET_DOWNLOAD_ASSESSMENT_RESOURCE_PI)) {
+                        ModalRaspContentNew rasp_contents = gson.fromJson(response, ModalRaspContentNew.class);
+                        rasp_contents.getModalRaspResults();
+                        Log.e("url raspResult : ", String.valueOf(rasp_contents.getModalRaspResults().size()));
+                        Modal_Rasp_JsonData modal_rasp_jsonData;
+                        if (rasp_contents.getModalRaspResults() != null) {
+                            List<Modal_RaspResult> raspResults = new ArrayList<>();
+                            for (int i = 0; i < rasp_contents.getModalRaspResults().size(); i++) {
+                                Modal_RaspResult modalRaspResult = new Modal_RaspResult();
+                                modalRaspResult.setAppId(rasp_contents.getModalRaspResults().get(i).getAppId());
+                                modalRaspResult.setNodeId(rasp_contents.getModalRaspResults().get(i).getNodeId());
+                                modalRaspResult.setNodeType(rasp_contents.getModalRaspResults().get(i).getNodeType());
+                                modalRaspResult.setNodeTitle(rasp_contents.getModalRaspResults().get(i).getNodeTitle());
+                                modalRaspResult.setParentId(rasp_contents.getModalRaspResults().get(i).getParentId());
+                                modalRaspResult.setJsonData(rasp_contents.getModalRaspResults().get(i).getJsonData());
+                                //raspResults.add(modalRaspResult);
+                                download_content = gson.fromJson(rasp_contents.getModalRaspResults().get(i).getJsonData(), Modal_DownloadContent.class);
+//                                ContentTable contentTable/*modal_rasp_jsonData*/ = gson.fromJson(rasp_contents.getModalRaspResults().get(i).getJsonData(), ContentTable.class);
+//                                ContentTable detail = modalRaspResult.setContentToConfigNodeStructure(modalRaspResult, modal_rasp_jsonData);
+//                                serverContentList.add(detail);
+//                                pos.add(contentTable);
+                            }
+                        }
+                    } else {
+                        download_content = gson.fromJson(jsonObject.toString(), Modal_DownloadContent.class);
+                    }
+
                     pos.clear();
                     pos.addAll(download_content.getNodelist());
 
@@ -667,6 +710,7 @@ public class ContentPresenter implements ContentContract.ContentPresenter, API_C
             Score score = new Score();
             score.setSessionID(FastSave.getInstance().getString(FC_Constants.CURRENT_SESSION, ""));
             score.setStudentID("" + FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""));
+            score.setGroupId(FastSave.getInstance().getString(FC_Constants.CURRENT_GROUP_ID, ""));
             score.setDeviceID(FC_Utility.getDeviceID());
             score.setResourceID(resId);
             score.setQuestionId(0);
@@ -747,6 +791,7 @@ public class ContentPresenter implements ContentContract.ContentPresenter, API_C
             score.setScoredMarks(0);
             score.setTotalMarks(0);
             score.setStudentID(FastSave.getInstance().getString(CURRENT_STUDENT_ID, ""));
+            score.setGroupId(FastSave.getInstance().getString(FC_Constants.CURRENT_GROUP_ID, ""));
             score.setStartDateTime(FC_Utility.getCurrentDateTime());
             score.setDeviceID(deviceId.equals(null) ? "0000" : deviceId);
             score.setEndDateTime(FC_Utility.getCurrentDateTime());

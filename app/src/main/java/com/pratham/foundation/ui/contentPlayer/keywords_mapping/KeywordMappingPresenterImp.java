@@ -1,5 +1,8 @@
 package com.pratham.foundation.ui.contentPlayer.keywords_mapping;
 
+import static com.pratham.foundation.utility.FC_Constants.APP_SECTION;
+import static com.pratham.foundation.utility.FC_Constants.sec_Test;
+
 import android.content.Context;
 import android.util.Log;
 
@@ -27,12 +30,9 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import static com.pratham.foundation.utility.FC_Constants.APP_SECTION;
-import static com.pratham.foundation.utility.FC_Constants.sec_Test;
-
 @EBean
 public class KeywordMappingPresenterImp implements KeywordMappingContract.KeywordMappingPresenter {
-    private Context context;
+    private final Context context;
     // private List<QuetionAns> quetionAnsList;
     private List<ScienceQuestion> quetionModelList;
     private int totalWordCount, learntWordCount;
@@ -196,7 +196,7 @@ public class KeywordMappingPresenterImp implements KeywordMappingContract.Keywor
             AppDatabase.getDatabaseInstance(context).getKeyWordDao().insert(keyWords);
             setCompletionPercentage();
             for (int i = 0; i < selectedAnsList.size(); i++) {
-                if ( checkAnswerNew( keywordmapping.getLstquestionchoice(),selectedAnsList.get(i).getSubQues())){
+                if (selectedAnsList.get(i).getCorrectAnswer().equalsIgnoreCase("true")){
                     correct++;
                     selectedAnsList.get(i).setTrue(true);
                     addScore(GameConstatnts.getInt(keywordmapping.getQid()), GameConstatnts.KEYWORD_MAPPING, 10, 10, selectedAnsList.get(i).getStartTime(),selectedAnsList.get(i).getEndTime(), selectedAnsList.get(i).getSubQues());
@@ -228,6 +228,7 @@ public class KeywordMappingPresenterImp implements KeywordMappingContract.Keywor
             score.setScoredMarks(scoredMarks);
             score.setTotalMarks(totalMarks);
             score.setStudentID(FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""));
+            score.setGroupId(FastSave.getInstance().getString(FC_Constants.CURRENT_GROUP_ID, ""));
             score.setStartDateTime(resStartTime);
             score.setDeviceID(deviceId.equals(null) ? "0000" : deviceId);
             score.setEndDateTime(resEndTime);
@@ -261,19 +262,18 @@ public class KeywordMappingPresenterImp implements KeywordMappingContract.Keywor
 
     public boolean checkAnswerNew(List<ScienceQuestionChoice> optionListlist, String word) {
         for (int i = 0; i < optionListlist.size(); i++) {
-            if (optionListlist.get(i).getSubQues().equalsIgnoreCase(word)&&(optionListlist.get(i).getCorrectAnswer().equalsIgnoreCase("true"))) {
+            if (optionListlist.get(i).getSubQues().trim().equalsIgnoreCase(word)
+                    && (optionListlist.get(i).getCorrectAnswer().equalsIgnoreCase("true"))) {
                 return true;
             }
         }
         return false;
     }
 
-
-
     public float checkAnswer(List<ScienceQuestionChoice> ansSet,List<ScienceQuestionChoice> selectedAnsList) {
         int correctCnt = 0;
         for (int i = 0; i < selectedAnsList.size(); i++) {
-            if (checkAnswerNew(ansSet, selectedAnsList.get(i).getSubQues())) {
+            if (selectedAnsList.get(i).getCorrectAnswer().equalsIgnoreCase("true")) {
                 correctCnt++;
                 correctWordList.add(selectedAnsList.get(i).getSubQues());
             } else {

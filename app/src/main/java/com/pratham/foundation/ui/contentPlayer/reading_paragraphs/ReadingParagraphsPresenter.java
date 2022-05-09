@@ -1,5 +1,12 @@
 package com.pratham.foundation.ui.contentPlayer.reading_paragraphs;
 
+import static com.pratham.foundation.ui.contentPlayer.reading_paragraphs.ReadingParagraphsActivity.correctArr;
+import static com.pratham.foundation.ui.contentPlayer.reading_paragraphs.ReadingParagraphsActivity.lineBreakCounter;
+import static com.pratham.foundation.utility.FC_Constants.APP_SECTION;
+import static com.pratham.foundation.utility.FC_Constants.CURRENT_FOLDER_NAME;
+import static com.pratham.foundation.utility.FC_Constants.STT_REGEX;
+import static com.pratham.foundation.utility.FC_Constants.sec_Test;
+
 import android.content.Context;
 import android.util.Log;
 
@@ -26,13 +33,6 @@ import java.io.FileInputStream;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
-
-import static com.pratham.foundation.ui.contentPlayer.reading_paragraphs.ReadingParagraphsActivity.correctArr;
-import static com.pratham.foundation.ui.contentPlayer.reading_paragraphs.ReadingParagraphsActivity.lineBreakCounter;
-import static com.pratham.foundation.utility.FC_Constants.APP_SECTION;
-import static com.pratham.foundation.utility.FC_Constants.CURRENT_FOLDER_NAME;
-import static com.pratham.foundation.utility.FC_Constants.STT_REGEX;
-import static com.pratham.foundation.utility.FC_Constants.sec_Test;
 
 
 @EBean
@@ -192,6 +192,7 @@ public class ReadingParagraphsPresenter implements ReadingParagraphsContract.Rea
             score.setScoredMarks(0);
             score.setTotalMarks(0);
             score.setStudentID(FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""));
+            score.setGroupId(FastSave.getInstance().getString(FC_Constants.CURRENT_GROUP_ID, ""));
             score.setStartDateTime(resStartTime);
             score.setDeviceID(deviceId.equals(null) ? "0000" : deviceId);
             score.setEndDateTime(FC_Utility.getCurrentDateTime());
@@ -251,15 +252,15 @@ public class ReadingParagraphsPresenter implements ReadingParagraphsContract.Rea
     private void addLearntWords(List<String> splitWordsPunct, List<String> wordsResIdList) {
         for (int i = 0; i < correctArr.length; i++) {
             if (!checkLearnt(splitWordsPunct.get(i).toLowerCase())) {
-                KeyWords learntWords = new KeyWords();
+                KeyWords keyWords = new KeyWords();
                 if (correctArr[i]) {
-                    learntWords.setSentFlag(0);
-                    learntWords.setStudentId(FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""));
-                    learntWords.setResourceId(resId);
-                    learntWords.setKeyWord(splitWordsPunct.get(i).toLowerCase());
-                    learntWords.setWordType("word");
-                    learntWords.setTopic("Para Words");
-                    AppDatabase.getDatabaseInstance(context).getKeyWordDao().insert(learntWords);
+                    keyWords.setSentFlag(0);
+                    keyWords.setStudentId(FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""));
+                    keyWords.setResourceId(resId);
+                    keyWords.setKeyWord(splitWordsPunct.get(i).toLowerCase());
+                    keyWords.setWordType("word");
+                    keyWords.setTopic("Para Words");
+                    AppDatabase.getDatabaseInstance(context).getKeyWordDao().insert(keyWords);
                 }
             }
         }
@@ -309,14 +310,14 @@ public class ReadingParagraphsPresenter implements ReadingParagraphsContract.Rea
 
     public void addLearntWords(String word) {
         if (!checkLearnt(word.toLowerCase())) {
-            KeyWords learntWordss = new KeyWords();
-            learntWordss.setResourceId("" + resId);
-            learntWordss.setSentFlag(0);
-            learntWordss.setStudentId(FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""));
-            learntWordss.setKeyWord(word.toLowerCase());
-            learntWordss.setTopic("" + resType);
-            learntWordss.setWordType("word");
-            AppDatabase.getDatabaseInstance(context).getKeyWordDao().insert(learntWordss);
+            KeyWords keyWords = new KeyWords();
+            keyWords.setResourceId("" + resId);
+            keyWords.setSentFlag(0);
+            keyWords.setStudentId(FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""));
+            keyWords.setKeyWord(word.toLowerCase());
+            keyWords.setTopic("" + resType);
+            keyWords.setWordType("word");
+            AppDatabase.getDatabaseInstance(context).getKeyWordDao().insert(keyWords);
         }
         BackupDatabase.backup(context);
     }
@@ -358,6 +359,7 @@ public class ReadingParagraphsPresenter implements ReadingParagraphsContract.Rea
             score.setScoredMarks(scoredMarks);
             score.setTotalMarks(totalMarks);
             score.setStudentID(FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""));
+            score.setGroupId(FastSave.getInstance().getString(FC_Constants.CURRENT_GROUP_ID, ""));
             score.setStartDateTime(resStartTime);
             score.setDeviceID(deviceId.equals(null) ? "0000" : deviceId);
             score.setEndDateTime(FC_Utility.getCurrentDateTime());

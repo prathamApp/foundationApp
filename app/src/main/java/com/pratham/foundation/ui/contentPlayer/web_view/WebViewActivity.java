@@ -3,6 +3,7 @@ package com.pratham.foundation.ui.contentPlayer.web_view;
 import android.annotation.SuppressLint;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.os.Build;
 import android.os.Handler;
 import android.util.Log;
 import android.view.View;
@@ -114,7 +115,8 @@ public class WebViewActivity extends BaseActivity implements WebViewInterface {
             webView.getSettings().setAllowContentAccess(true);
             webView.getSettings().setLoadWithOverviewMode(true);
             webView.getSettings().setUseWideViewPort(true);
-            webView.getSettings().setSafeBrowsingEnabled(false);
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q)
+                webView.getSettings().setSafeBrowsingEnabled(false);
             webView.setScrollBarStyle(View.SCROLLBARS_INSIDE_OVERLAY);
             hideSystemUI();
         } catch (Exception e) {

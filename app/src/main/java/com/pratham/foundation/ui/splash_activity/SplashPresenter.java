@@ -15,7 +15,6 @@ import android.annotation.SuppressLint;
 import android.app.ActivityManager;
 import android.content.Context;
 import android.content.Intent;
-import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.res.AssetManager;
 import android.database.Cursor;
@@ -413,34 +412,34 @@ public class SplashPresenter implements SplashContract.SplashPresenter {
         //General info is inserted to database like deviceid, device name etc
         try {
             Log.d("pushorassign", "Splash doInitialEntries : KEY_MENU_COPIED: " + FastSave.getInstance().getBoolean(FC_Constants.INITIAL_ENTRIES, false));
-            com.pratham.foundation.database.domain.Status status;
-            status = new com.pratham.foundation.database.domain.Status();
+            Status status;
+            status = new Status();
             status.setStatusKey("DeviceId");
             status.setValue("" + Settings.Secure.getString(context.getContentResolver(), Settings.Secure.ANDROID_ID));
             status.setDescription("" + Build.SERIAL);
             appDatabase.getStatusDao().insert(status);
 
-            status = new com.pratham.foundation.database.domain.Status();
+            status = new Status();
             status.setStatusKey("CRLID");
             status.setValue("default");
             appDatabase.getStatusDao().insert(status);
 
-            status = new com.pratham.foundation.database.domain.Status();
+            status = new Status();
             status.setStatusKey("DeviceName");
             status.setValue(FC_Utility.getDeviceName());
             appDatabase.getStatusDao().insert(status);
 
-            status = new com.pratham.foundation.database.domain.Status();
+            status = new Status();
             status.setStatusKey("gpsFixDuration");
             status.setValue("");
             appDatabase.getStatusDao().insert(status);
 
-            status = new com.pratham.foundation.database.domain.Status();
+            status = new Status();
             status.setStatusKey("prathamCode");
             status.setValue("");
             appDatabase.getStatusDao().insert(status);
 
-            status = new com.pratham.foundation.database.domain.Status();
+            status = new Status();
             status.setStatusKey("apkType");
             if (ApplicationClass.getAppMode())
                 status.setValue("" + apkTab);
@@ -448,132 +447,136 @@ public class SplashPresenter implements SplashContract.SplashPresenter {
                 status.setValue("" + apkSP);
             appDatabase.getStatusDao().insert(status);
 
-            status = new com.pratham.foundation.database.domain.Status();
+            status = new Status();
             status.setStatusKey("Latitude");
             status.setValue("");
             appDatabase.getStatusDao().insert(status);
 
-            status = new com.pratham.foundation.database.domain.Status();
+            status = new Status();
             status.setStatusKey("Longitude");
             status.setValue("");
             appDatabase.getStatusDao().insert(status);
 
-            status = new com.pratham.foundation.database.domain.Status();
+            status = new Status();
             status.setStatusKey("GPSDateTime");
             status.setValue("");
             appDatabase.getStatusDao().insert(status);
 
-            status = new com.pratham.foundation.database.domain.Status();
+            status = new Status();
             status.setStatusKey("CurrentSession");
             status.setValue("NA");
             appDatabase.getStatusDao().insert(status);
 
-            status = new com.pratham.foundation.database.domain.Status();
+            status = new Status();
             status.setStatusKey("SdCardPath");
             status.setValue("NA");
             appDatabase.getStatusDao().insert(status);
 
-            status = new com.pratham.foundation.database.domain.Status();
+            status = new Status();
             status.setStatusKey("AppLang");
             status.setValue("NA");
             appDatabase.getStatusDao().insert(status);
 
-            status = new com.pratham.foundation.database.domain.Status();
+            status = new Status();
             status.setStatusKey("AppStartDateTime");
             status.setValue("NA");
             appDatabase.getStatusDao().insert(status);
 
             //new Entries
-            status = new com.pratham.foundation.database.domain.Status();
+            status = new Status();
             status.setStatusKey("ActivatedForGroups");
             status.setValue("NA");
             appDatabase.getStatusDao().insert(status);
 
-            status = new com.pratham.foundation.database.domain.Status();
+            status = new Status();
             status.setStatusKey("AndroidVersion");
             status.setValue(FC_Utility.getAndroidOSVersion());
             appDatabase.getStatusDao().insert(status);
 
-            status = new com.pratham.foundation.database.domain.Status();
+            status = new Status();
             status.setStatusKey("InternalAvailableStorage");
             status.setValue(FC_Utility.getInternalStorageStatus());
             appDatabase.getStatusDao().insert(status);
 
-            status = new com.pratham.foundation.database.domain.Status();
+            status = new Status();
             status.setStatusKey("DeviceManufacturer");
             status.setValue(FC_Utility.getDeviceManufacturer());
             appDatabase.getStatusDao().insert(status);
 
-            status = new com.pratham.foundation.database.domain.Status();
+            status = new Status();
             status.setStatusKey("DeviceModel");
             status.setValue(FC_Utility.getDeviceModel());
             appDatabase.getStatusDao().insert(status);
 
-            status = new com.pratham.foundation.database.domain.Status();
+            status = new Status();
             status.setStatusKey("ScreenResolution");
             status.setValue(FastSave.getInstance().getString(FC_Constants.SCR_RES, ""));
             appDatabase.getStatusDao().insert(status);
 
-            status = new com.pratham.foundation.database.domain.Status();
+            status = new Status();
             status.setStatusKey("programId");
             status.setValue("1");
             appDatabase.getStatusDao().insert(status);
 
-            status = new com.pratham.foundation.database.domain.Status();
+            status = new Status();
             status.setStatusKey("group1");
             status.setValue("NA");
             appDatabase.getStatusDao().insert(status);
 
-            status = new com.pratham.foundation.database.domain.Status();
+            status = new Status();
             status.setStatusKey("group2");
             status.setValue("NA");
             appDatabase.getStatusDao().insert(status);
 
-            status = new com.pratham.foundation.database.domain.Status();
+            status = new Status();
             status.setStatusKey("group3");
             status.setValue("NA");
             appDatabase.getStatusDao().insert(status);
 
-            status = new com.pratham.foundation.database.domain.Status();
+            status = new Status();
             status.setStatusKey("group4");
             status.setValue("NA");
             appDatabase.getStatusDao().insert(status);
 
-            status = new com.pratham.foundation.database.domain.Status();
+            status = new Status();
             status.setStatusKey("group5");
             status.setValue("NA");
             appDatabase.getStatusDao().insert(status);
 
-            status = new com.pratham.foundation.database.domain.Status();
+            status = new Status();
             status.setStatusKey("village");
             status.setValue("NA");
             appDatabase.getStatusDao().insert(status);
 
-            status = new com.pratham.foundation.database.domain.Status();
+            status = new Status();
             status.setStatusKey("ActivatedDate");
             status.setValue("NA");
             appDatabase.getStatusDao().insert(status);
 
-            status = new com.pratham.foundation.database.domain.Status();
+            status = new Status();
             status.setStatusKey("AssessmentSession");
             status.setValue("NA");
             appDatabase.getStatusDao().insert(status);
 
-            status = new com.pratham.foundation.database.domain.Status();
+            status = new Status();
             status.setStatusKey("AndroidID");
             status.setValue("NA");
             appDatabase.getStatusDao().insert(status);
 
-            status = new com.pratham.foundation.database.domain.Status();
+            status = new Status();
             status.setStatusKey("DBVersion");
             status.setValue(DB_VERSION);
             appDatabase.getStatusDao().insert(status);
 
-            status = new com.pratham.foundation.database.domain.Status();
+            status = new Status();
             status.setStatusKey("SerialID");
             status.setValue(FC_Utility.getDeviceSerialID());
             appDatabase.getStatusDao().insert(status);
 
+            status = new Status();
+            status.setStatusKey("AppBuild Date");
+            status.setValue(ApplicationClass.BUILD_DATE);
+            appDatabase.getStatusDao().insert(status);
 
             WifiManager wifiManager = (WifiManager) context.getSystemService(Context.WIFI_SERVICE);
             WifiInfo wInfo = wifiManager.getConnectionInfo();
@@ -867,7 +870,7 @@ public class SplashPresenter implements SplashContract.SplashPresenter {
     public void copyDBFile() {
 
         try {
-            File internalDB = new File(ApplicationClass.getStoragePath().toString() + "/.FCAInternal/" + DB_NAME);
+            File internalDB = new File(ApplicationClass.getStoragePath().toString() + "/FCAInternal/" + DB_NAME);
             if (internalDB.exists()) {
                 Log.d("copyDBFile", "copyDBFile: ");
                 internalDB.delete();
@@ -879,10 +882,10 @@ public class SplashPresenter implements SplashContract.SplashPresenter {
         }
 
         try {
-            File direct = new File(ApplicationClass.getStoragePath().toString() + "/.FCAInternal");
+            File direct = new File(ApplicationClass.getStoragePath().toString() + "/FCAInternal");
             if (!direct.exists()) direct.mkdirs();
             InputStream in = new FileInputStream(ApplicationClass.contentSDPath + "/.FCA/" + DB_NAME);
-            OutputStream out = new FileOutputStream(ApplicationClass.getStoragePath().toString() + "/.FCAInternal/" + DB_NAME);
+            OutputStream out = new FileOutputStream(ApplicationClass.getStoragePath().toString() + "/FCAInternal/" + DB_NAME);
             byte[] buffer = new byte[1024];
             int read = in.read(buffer);
             while (read != -1) {
@@ -901,11 +904,11 @@ public class SplashPresenter implements SplashContract.SplashPresenter {
 /*        if (new File(ApplicationClass.contentSDPath + "/.FCA/TestJsons/Test_" + no + ".json").exists()) {
             try {
                 File internalTestJson = new File(ApplicationClass.getStoragePath().toString()
-                        + "/.FCAInternal/TestJsons/Test_" + no + ".json");
+                        + "/FCAInternal/TestJsons/Test_" + no + ".json");
                 if (new File(ApplicationClass.getStoragePath().toString()
-                        + "/.FCAInternal/TestJsons/Test_" + no + ".json").exists())
+                        + "/FCAInternal/TestJsons/Test_" + no + ".json").exists())
                     new File(ApplicationClass.getStoragePath().toString()
-                            + "/.FCAInternal/TestJsons/Test_" + no + ".json").delete();
+                            + "/FCAInternal/TestJsons/Test_" + no + ".json").delete();
             } catch (Exception e) {
                 Log.d("copyDBFile", "Exception : ");
                 e.printStackTrace();
@@ -913,11 +916,11 @@ public class SplashPresenter implements SplashContract.SplashPresenter {
 
             try {
                 File direct = new File(ApplicationClass.getStoragePath().toString() +
-                        "/.FCAInternal/TestJsons");
+                        "/FCAInternal/TestJsons");
                 if (!direct.exists()) direct.mkdirs();
                 InputStream in = new FileInputStream(ApplicationClass.contentSDPath + "/.FCA/TestJsons/Test_" + no + ".json");
                 OutputStream out = new FileOutputStream(ApplicationClass.getStoragePath().toString()
-                        + "/.FCAInternal/TestJsons/" + "Test_" + no + ".json");
+                        + "/FCAInternal/TestJsons/" + "Test_" + no + ".json");
                 byte[] buffer = new byte[1024];
                 int read = in.read(buffer);
                 while (read != -1) {
@@ -950,11 +953,11 @@ public class SplashPresenter implements SplashContract.SplashPresenter {
 /*        if (new File(ApplicationClass.foundationPath + "/.FCA/Test_" + no + ".json").exists()) {
             try {
                 File internalTestJson = new File(ApplicationClass.getStoragePath().toString()
-                        + "/.FCAInternal/TestJsons/Test_" + no + ".json");
+                        + "/FCAInternal/TestJsons/Test_" + no + ".json");
                 if (new File(ApplicationClass.getStoragePath().toString()
-                        + "/.FCAInternal/TestJsons/Test_" + no + ".json").exists())
+                        + "/FCAInternal/TestJsons/Test_" + no + ".json").exists())
                     new File(ApplicationClass.getStoragePath().toString()
-                            + "/.FCAInternal/TestJsons/Test_" + no + ".json").delete();
+                            + "/FCAInternal/TestJsons/Test_" + no + ".json").delete();
             } catch (Exception e) {
                 Log.d("copyDBFile", "Exception : ");
                 e.printStackTrace();
@@ -962,11 +965,11 @@ public class SplashPresenter implements SplashContract.SplashPresenter {
 
             try {
                 File direct = new File(ApplicationClass.getStoragePath().toString() +
-                        "/.FCAInternal/TestJsons");
+                        "/FCAInternal/TestJsons");
                 if (!direct.exists()) direct.mkdirs();
                 InputStream in = new FileInputStream(ApplicationClass.foundationPath + "/.FCA/Test_" + no + ".json");
                 OutputStream out = new FileOutputStream(ApplicationClass.getStoragePath().toString()
-                        + "/.FCAInternal/TestJsons/" + "Test_" + no + ".json");
+                        + "/FCAInternal/TestJsons/" + "Test_" + no + ".json");
                 byte[] buffer = new byte[1024];
                 int read = in.read(buffer);
                 while (read != -1) {
@@ -1018,7 +1021,7 @@ public class SplashPresenter implements SplashContract.SplashPresenter {
                 if (!FastSave.getInstance().getBoolean(FC_Constants.INITIAL_SD_COPIED, false))
                     try {
                         File db_file;
-                        db_file = new File(ApplicationClass.getStoragePath().toString() + "/.FCAInternal/" + DB_NAME);
+                        db_file = new File(ApplicationClass.getStoragePath().toString() + "/FCAInternal/" + DB_NAME);
                         if (db_file.exists()) {
                             SQLiteDatabase db = SQLiteDatabase.openDatabase(db_file.getAbsolutePath(), null, SQLiteDatabase.OPEN_READONLY);
                             if (db != null) {
@@ -1127,7 +1130,7 @@ public class SplashPresenter implements SplashContract.SplashPresenter {
                 if (ApplicationClass.getAppMode()) {
                     Log.d("copyDBFile", "Exception : ");
                     copyDBFile();
-                    folder_file = new File(ApplicationClass.getStoragePath().toString() + "/.FCAInternal");
+                    folder_file = new File(ApplicationClass.getStoragePath().toString() + "/FCAInternal");
                 } else
                     folder_file = new File(ApplicationClass.foundationPath + "/.FCA/");
                 if (folder_file.exists()) {
@@ -1232,28 +1235,14 @@ public class SplashPresenter implements SplashContract.SplashPresenter {
             status = new Status();
 
             status.setStatusKey("apkVersion");
-            PackageInfo pInfo = null;
-            String verCode = "";
-            try {
-                pInfo = context.getPackageManager().getPackageInfo(context.getPackageName(), 0);
-                verCode = pInfo.versionName;
-            } catch (PackageManager.NameNotFoundException e) {
-                e.printStackTrace();
-            }
+            String verCode = FC_Utility.getAppVerison();
             status.setValue(verCode);
             AppDatabase.getDatabaseInstance(context).getStatusDao().insert(status);
 
         } else {
             status.setStatusKey("apkVersion");
 
-            PackageInfo pInfo = null;
-            String verCode = "";
-            try {
-                pInfo = context.getPackageManager().getPackageInfo(context.getPackageName(), 0);
-                verCode = pInfo.versionName;
-            } catch (PackageManager.NameNotFoundException e) {
-                e.printStackTrace();
-            }
+            String verCode = FC_Utility.getAppVerison();
             status.setValue(verCode);
             AppDatabase.getDatabaseInstance(context).getStatusDao().insert(status);
 
@@ -1264,14 +1253,7 @@ public class SplashPresenter implements SplashContract.SplashPresenter {
     public void updateVersionApp() {
         try {
             if (AppDatabase.getDatabaseInstance(context).getStatusDao().getKey("apkVersion") != null) {
-                PackageInfo pInfo = null;
-                String verCode = "";
-                try {
-                    pInfo = context.getPackageManager().getPackageInfo(context.getPackageName(), 0);
-                    verCode = pInfo.versionName;
-                } catch (PackageManager.NameNotFoundException e) {
-                    e.printStackTrace();
-                }
+                String verCode = FC_Utility.getAppVerison();
                 AppDatabase.getDatabaseInstance(context).getStatusDao().updateValue("apkVersion", verCode);
             }
         } catch (Exception e) {

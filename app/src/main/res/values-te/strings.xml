@@ -1,5 +1,8 @@
 <?xml version="1.0" ?>
 <resources xmlns:tools="http://schemas.android.com/tools">
+
+    <string name="app_name">ప్రడిజి ఫర్ స్కూల్</string>
+
     <string name="Login">లాగిన్ అవ్వండి</string>
     <!--    <string name="Stt_Dialog_Msg">ఆఫ్‌లైన్ స్పీచ్ రికగ్నైజేషన్ కోసం దయచేసి భాషా ప్యాక్‌లను ఇంగ్లీష్ (ఇండియా) మరియు హిందీ (ఇండియా) లను డౌన్‌లోడ్ చేయండి.\n\nOpen\nGoogle -> Settings -> Voice -> Offline speech recognition</string>-->
     <string name="Stt_Dialog_Msg">ఆఫ్‌లైన్ స్పీచ్ రికగ్నైజేషన్ కోసం దయచేసి భాషా ప్యాక్‌లను ఇంగ్లీష్ (ఇండియా) మరియు హిందీ (ఇండియా) లను డౌన్‌లోడ్ చేయండి.</string>
@@ -158,22 +161,73 @@
     <string name="select_date">తారీఖును ఎన్నుకొనండి	</string>
     <string name="confirm_date">తారీఖును నిర్ధారించండి</string>
     <string name="Audio">ఆడియోను వినండి</string>
-    <string name="DB_Zip_pushed_failed">సింక్ చేసిన డేటాబేస్ ఫెయిల్ అయ్యింది</string>
-    <string name="DB_Zip_pushed_successfully">డేటాబేస్ సక్సస్ ఫుల్ గా సింక్ అయ్యింది </string>
-    <string name="DB_Zip_push">సింక్ DB ఫైల్</string>
 
+    <string name="push_data">                   పుష్ డేటా  </string>
+    <string name="push_logs">                   పుష్ లాగ్స్  </string>
+    <string name="sync_logs">                   సింక్ లాగ్స్  </string>
+    <string name="check_synced_data">           సింక్ద్ డేటా చెక్ చేయండి  </string>
+    <string name="reset_app_tour">              యాప్ టూర్‌ని రీసెట్ చేయండి  </string>
+    <string name="ques_reset_app_tour">         మీరు ఖచ్చితంగా యాప్ టూర్‌ని రీసెట్ చేయాలనుకుంటున్నారా?  </string>
+    <string name="no_internet">                 ఇంటర్నెట్ కనెక్షన్ లేదు  </string>
+    <string name="diagnostic_test_result">      డయాగ్నోస్టిక్ టెస్ట్ రిజల్ట్  </string>
+    <string name="diagnostic_test_result_msg">  మీరు అసెస్‌మెంట్ యాప్‌లో తీసుకున్న డయాగ్నస్టిక్ టెస్ట్ సర్టిఫికేట్‌ను వీక్షించవచ్చు.  </string>
+    <string name="app_exit">                    యాప్ ఎగ్జిట్  </string>
+    <string name="app_exit_msg">                మీరు యాప్ ను ఎడిట్ చేయవచ్చు  </string>
+    <string name="back_button">                 వెనుక బటన్  </string>
+    <string name="back_button_msg">             మునుపటి స్క్రీన్‌కి వెళ్ళండి  </string>
+    <string name="refresh">                     రిఫ్రెష్ చేయండి  </string>
+    <string name="refresh_msg">                 స్క్రీన్‌పై ప్రస్తుత కంటెంట్‌ను రీలోడ్ లేదా రిఫ్రెష్ చేయండి  </string>
+    <string name="push_and_sync">               పుష్ మరియు సింక్  </string>
+    <string name="other">                       ఇతరములు  </string>
+    <string name="DB_Zip_pushed_failed">        పుష్ డేటా బేస్ విఫలమైంది  </string>
+    <string name="DB_Zip_pushed_successfully">  డేటాబేస్ విజయవంతంగా పుష్ చేయబడింది  </string>
+    <string name="DB_Zip_push">        DB ఫైల్‌ని పుష్ చేయండి  </string>
 
-
-
-
-
-
-
-
-
-
-
-
+    <string name="pls_select_date">                  డేటాను సెలక్ట్ చేయండి   </string>
+    <string name="connect_to_internet">              ఇంటర్ నెట్ ను కనెక్ట్ చేయండి   </string>
+    <string name="server_error">                     సర్వర్ ఎర్రర్   </string>
+    <string name="total_attendance">                 టోటల్ అటెండెన్స్   </string>
+    <string name="view_details">                     వివరాలను చూడండి   </string>
+    <string name="total_courses">                    మొత్తం కోర్సులు   </string>
+    <string name="studs_acce_the_app">               యాప్‌ని యాక్సెస్ చేసిన వినియోగదారుల సంఖ్య   </string>
+    <string name="studs_reg_the_app">                యాప్‌లో నమోదు చేసుకున్న వినియోగదారుల సంఖ్య   </string>
+    <string name="total_sessions">                   మొత్తం సెషన్‌లు   </string>
+    <string name="total_groups">                     మొత్తం సమూహాలు   </string>
+    <string name="error_message">                    ఎర్రర్ మెసేజ్   </string>
+    <string name="accessed_users">                   యాక్సెస్ చేయబడిన వినియోగదారులు   </string>
+    <string name="registered_users">                 రిజిస్టర్ అయిన వినియోగదారులు   </string>
+    <string name="pls_select_studs">                 విద్యార్థులను ఎన్నుకోండి!   </string>
+    <string name="problem_marking_attendance">       హాజరు గుర్తింపులో సమస్య   </string>
+    <string name="loading_pls_wait">                 లోడ్ అవుతోంది... దయచేసి వేచి ఉండండి...   </string>
+    <string name="enroll_id">                        నమోదు ఐడి   </string>
+    <string name="create_profile">                   ప్రొఫైల్ ను సృష్టించండి   </string>
+    <string name="total_resources">                  మొత్తం వనరులు   </string>
+    <string name="stud_id">                          విద్యార్థి ఐడి   </string>
+    <string name="date">                             తేదీ   </string>
+    <string name="data">                             డేటా   </string>
+    <string name="media">                            మీడియా   </string>
+    <string name="courses">                          కోర్సులు   </string>
+    <string name="db_sync">                          డిబి సింక్   </string>
+    <string name="course_count">                     కోర్సు కౌంట్   </string>
+    <string name="media_count">                      మీడియా కౌంట్   </string>
+    <string name="manual">                           మాన్యువల్   </string>
+    <string name="auto">                             ఆటో   </string>
+    <string name="tot_db_entries">                   మొత్తం డిబి ఎంట్రీలు   </string>
+    <string name="enrollment_details">               నమోదు వివరాలు   </string>
+    <string name="my_class">                         తరగతి   </string>
+    <string name="my_name">                          పేరు   </string>
+    <string name="check_id">                         ఐడిని తనిఖీ చేయండి   </string>
+    <string name="enter_your_id">                    మీ ఐడిని నమోదు చేయండి   </string>
+    <string name="select_avatar">                    అవతార్ ను సెలక్ట్ చేయండి   </string>
+    <string name="age">                              వయస్సు   </string>
+    <string name="gender">                           లింగం   </string>
+    <string name="save_profile">                     ప్రొఫైల్ సేవ్ చేయండి   </string>
+    <string name="profile_created_successfully">     ప్రొఫైల్ విజయవంతంగా క్రియేట్ చేయబడింది   </string>
+    <string name="male">                             పురుషుడు   </string>
+    <string name="female">                           స్త్రీ   </string>
+    <string name="please_fill_details">              దయచేసి అన్ని వివరాలను పూరించండి..   </string>
+    <string name="problem_pulling_stud">             విద్యార్థిని పుల్లింగ్ చేయడంలో సమస్య   </string>
+    <string name="wrong_enrollment_id">              తప్పు ఎన్రోల్మెంట్ ఐడి   </string>
 
 
 
@@ -384,7 +438,7 @@
         <item>avatars/acrobatics.json</item>-->
     </string-array>
     <string-array name="age">
-        <item>Select Age</item>
+        <item>వయస్సును ఎన్నుకోండి</item>
         <item> 3  </item>
         <item> 4  </item>
         <item> 5  </item>
