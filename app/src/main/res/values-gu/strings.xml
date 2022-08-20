@@ -229,6 +229,16 @@
     <string name="problem_pulling_stud">              વિદ્યાર્થીને પુલ કરવામાં સમસ્યા  </string>
     <string name="wrong_enrollment_id">               ખોટી નોંધણી આઈડી  </string>
 
+    <string name="please_try_aft_som_tim">કૃપા કરીને થોડા સમય પછી પ્રયાસ કરો </string>
+    <string name="please_try_aft">        કૃપા કરીને પછીથી પ્રયાસ કરો : </string>
+    <string name="scheduled_maintenance"> પ્રાયોજિત મેન્ટેનન્સ </string>
+    <string name="maintenance_msg">       સિંક ફંકશન મેન્ટેનન્સ હેઠળ છે </string>
+    <string name="critical_maintenance">  કટોકટીયુક્ત મેન્ટેનન્સ </string>
+
+
+
+
+
 
 
     <string name="Agent_name" >Vernicula</string>

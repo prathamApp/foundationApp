@@ -229,6 +229,16 @@
     <string name="problem_pulling_stud">             विद्यार्थ्यांची माहिती पूल करताना प्रॉब्लेम    </string>
     <string name="wrong_enrollment_id">              एन्रोलमेंट आयडी चुकीचा आहे   </string>
 
+    <string name="please_try_aft_som_tim">कृपया थोड्या वेळाने प्रयत्न करा.</string>
+    <string name="please_try_aft">        कृृपया यानंतर प्रयत्न करा.</string>
+    <string name="scheduled_maintenance"> पुढील मेंटेनन्स</string>
+    <string name="maintenance_msg">       सिंक कार्यक्षमतेचे मेंटेनन्स चालू आहे.</string>
+    <string name="critical_maintenance">  क्रिटिकल मेंटेनन्स</string>
+
+
+
+
+
 
 
 

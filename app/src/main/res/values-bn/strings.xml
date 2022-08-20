@@ -230,6 +230,16 @@
     <string name="problem_pulling_stud">             ছাত্র নেওয়ার সমস্যা    </string>
     <string name="wrong_enrollment_id">              ভুল এনরোলমেণ্ট আইডি   </string>
 
+    <string name="please_try_aft_som_tim">কিছুক্ষণ পরে চেষ্টা করুন  </string>
+    <string name="please_try_aft">        পরে চেষ্টা করুন </string>
+    <string name="scheduled_maintenance"> সময়তালিকা বজায় রাখা  </string>
+    <string name="maintenance_msg">       সিঙ্ক কার্যকারিতা বজায় রাখা হচ্ছে  </string>
+    <string name="critical_maintenance">  সংকটপূর্ণ অবস্থা রক্ষণাবেক্ষণ করা  </string>
+
+
+
+
+
     <string name="Agent_name" >Vernicula</string>
     <string name="talkbot" >Talkbot</string>
     <string name="more" >more</string>

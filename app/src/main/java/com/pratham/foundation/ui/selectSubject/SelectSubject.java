@@ -34,6 +34,7 @@ import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.pratham.foundation.ApplicationClass;
 import com.pratham.foundation.BaseActivity;
 import com.pratham.foundation.R;
 import com.pratham.foundation.customView.BlurPopupDialog.BlurPopupWindow;
@@ -275,6 +276,7 @@ public class SelectSubject extends BaseActivity implements
     @Click(R.id.tv_update)
     public void updateClicked() {
         //Fire event bus to update event.
+        ApplicationClass.vibrator.vibrate(60);
         EventMessage eventMessage = new EventMessage();
         eventMessage.setMessage(FC_Constants.START_UPDATE);
         EventBus.getDefault().post(eventMessage);
@@ -286,7 +288,7 @@ public class SelectSubject extends BaseActivity implements
         try {
 //            allContentsIDList.clear();
             ButtonClickSound.start();
-        } catch (IllegalStateException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
         currentLevel = 0;
@@ -337,6 +339,7 @@ public class SelectSubject extends BaseActivity implements
 
     @Click(R.id.dia_result)
     public void checkDiagnosticResult() {
+        ApplicationClass.vibrator.vibrate(60);
         try {
             Bundle bundle = new Bundle();
             bundle.putString("appName", "" + getResources().getString(R.string.app_name));
@@ -351,8 +354,9 @@ public class SelectSubject extends BaseActivity implements
     @Override
     public void onBackPressed() {
         try {
+            ApplicationClass.vibrator.vibrate(60);
             BackBtnSound.start();
-        } catch (IllegalStateException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
         int fragments = getSupportFragmentManager().getBackStackEntryCount();
@@ -375,6 +379,7 @@ public class SelectSubject extends BaseActivity implements
     @Click(R.id.ib_langChange)
     public void langChangeButtonClick() {
         rl_act.setVisibility(View.GONE);
+        ApplicationClass.vibrator.vibrate(60);
         FC_Utility.showFragment((Activity) context, new SelectLanguageFragment_(), R.id.rl_ss_main,
                 null, SelectLanguageFragment.class.getSimpleName());
 //        showLoader();
@@ -405,6 +410,7 @@ public class SelectSubject extends BaseActivity implements
                 .setContentView(R.layout.lottie_exit_dialog)
                 .bindClickListener(v -> {
                     endSession(this);
+                    ApplicationClass.vibrator.vibrate(60);
                     exitDialog.dismiss();
                     new Handler().postDelayed(this::finishAffinity, 200);
                 }, R.id.dia_btn_yes)

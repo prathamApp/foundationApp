@@ -317,6 +317,7 @@ public class ContentDisplay extends BaseActivity implements ContentContract.Cont
     @UiThread
     @Click({R.id.iv_refresh, R.id.refresh_shd})
     public void levelRefresh() {
+        ApplicationClass.vibrator.vibrate(60);
         onResume();
     }
 
@@ -390,7 +391,7 @@ public class ContentDisplay extends BaseActivity implements ContentContract.Cont
     public void onContentClicked(int position, String nId) {
         try {
             ButtonClickSound.start();
-        } catch (IllegalStateException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
         ContentTableList.clear();
@@ -412,8 +413,11 @@ public class ContentDisplay extends BaseActivity implements ContentContract.Cont
                 String profileName = "";
                 profileName = AppDatabase.getDatabaseInstance(this).getStudentDao().getFullName(FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""));
 
+                String currentFolder = FastSave.getInstance().getString(FC_Constants.CURRENT_FOLDER_NAME, currentSubjectFolder);
+                String subjectName = FastSave.getInstance().getString(FC_Constants.CURRENT_SUBJECT, "");
+                String subjectLanguage = itemContent.getNodeKeywords();
+
                 Bundle bundle = new Bundle();
-                FastSave.getInstance().getString(FC_Constants.CURRENT_FOLDER_NAME, currentSubjectFolder);
 
                 bundle.putString("appName", "" + getResources().getString(R.string.app_name));
                 bundle.putString("studentId", "" + FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""));
@@ -447,7 +451,7 @@ public class ContentDisplay extends BaseActivity implements ContentContract.Cont
     public void onTestContentClicked(int posi, ContentTable itemContent) {
         try {
             ButtonClickSound.start();
-        } catch (IllegalStateException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
         if (!ApplicationClass.wiseF.isDeviceConnectedToSSID(FC_Constants.PRATHAM_RASPBERRY_PI)) {
@@ -527,7 +531,7 @@ public class ContentDisplay extends BaseActivity implements ContentContract.Cont
     public void onPreResOpenClicked(int position, String nId, String title, boolean onSDCard) {
         try {
             ButtonClickSound.start();
-        } catch (IllegalStateException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
         String sdStatus = "F";
@@ -546,11 +550,11 @@ public class ContentDisplay extends BaseActivity implements ContentContract.Cont
 
     @Override
     public void onContentOpenClicked(int position, String nodeId) {
-//        contentopenClicked
+//        contentopenClickedContentTableList = {ArrayList@13223}  size = 2
 //        check the type of resource and open the respective activity
         try {
             ButtonClickSound.start();
-        } catch (IllegalStateException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
         resName = ContentTableList.get(position).getNodeTitle();
@@ -839,7 +843,7 @@ public class ContentDisplay extends BaseActivity implements ContentContract.Cont
 //        content download clicked
                 try {
                     ButtonClickSound.start();
-                } catch (IllegalStateException e) {
+                } catch (Exception e) {
                     e.printStackTrace();
                 }
 //        gather info
@@ -847,7 +851,14 @@ public class ContentDisplay extends BaseActivity implements ContentContract.Cont
 //        ContentTableList.get(position).setIsDownloading("true");
 //        contentAdapter.notifyItemChanged(position, ContentTableList);
                 resName = ContentTableList.get(position).getNodeTitle();
-                resServerImageName = ContentTableList.get(position).getNodeServerImage();
+                if (ApplicationClass.wiseF.isDeviceConnectedToSSID(FC_Constants.PRATHAM_RASPBERRY_PI)) {
+                    String fileName = ContentTableList.get(position).getNodeServerImage()
+                            .substring(ContentTableList.get(position).getNodeServerImage().lastIndexOf('/') + 1);
+                    resServerImageName = FC_Constants.RASP_IP + FC_Constants.RASP_LOCAL_IMAGES + fileName;
+                } else {
+                    resServerImageName = ContentTableList.get(position).getNodeServerImage();
+                }
+//                resServerImageName = ContentTableList.get(position).getNodeServerImage();
                 tempDownloadPos = position;
                 presenter.downloadResource(DOWNLOAD_NODE_ID, ContentTableList.get(position));
             } else
@@ -860,7 +871,7 @@ public class ContentDisplay extends BaseActivity implements ContentContract.Cont
     public void onContentDeleteClicked(int position, ContentTable contentList) {
         try {
             ButtonClickSound.start();
-        } catch (IllegalStateException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
@@ -911,8 +922,9 @@ public class ContentDisplay extends BaseActivity implements ContentContract.Cont
     @Override
     public void onBackPressed() {
         try {
+            ApplicationClass.vibrator.vibrate(60);
             BackBtnSound.start();
-        } catch (IllegalStateException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
         if (presenter.removeLastNodeId()) {

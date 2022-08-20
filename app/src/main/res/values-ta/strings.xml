@@ -229,6 +229,13 @@
     <string name="problem_pulling_stud">             மாணவரை சேர்ப்பதில் சிக்கல்   </string>
     <string name="wrong_enrollment_id">              ஐடி பதிவு தவறானது   </string>
 
+    <string name="please_try_aft_som_tim"> சிறிது நேரம் கழித்து முயற்சிக்கவும் </string>
+    <string name="please_try_aft">         பிறகு முயற்சிக்கவும்: </string>
+    <string name="scheduled_maintenance">  திட்டமிடப்பட்ட பராமரிப்பு </string>
+    <string name="maintenance_msg">        ஒத்திசைவு செயல்பாடு பராமரிப்பில் உள்ளது </string>
+    <string name="critical_maintenance">   முக்கியமான பராமரிப்பு </string>
+
+
 
 
 

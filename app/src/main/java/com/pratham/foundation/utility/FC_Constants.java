@@ -284,8 +284,8 @@ public class FC_Constants {
     public static final String RASP_IP = "http://192.168.4.1:8000";
 //    public static final String RASP_LOCAL_URL = "/static/storage/Second Chance App/content/";
 //public static final String RASP_LOCAL_IMAGES = "/static/storage/Second Chance App/images/";
-    public static final String RASP_LOCAL_URL = "/static/storage/PRADIGI FOR SCHOOL/content/";
-    public static final String RASP_LOCAL_IMAGES = "/static/storage/PRADIGI FOR SCHOOL/images/";
+    public static final String RASP_LOCAL_URL = "/static/storage/PRADIGI%20FOR%20SCHOOL/content/";
+    public static final String RASP_LOCAL_IMAGES = "/static/storage/PRADIGI%20FOR%20SCHOOL/images/";
     public static final String supervisedAssessment = "supervisedAssessment";
     public static final String CHECK_COURSE_COMPLETION = "check_course_completion";
     public static final String COURSE_NOT_VERIFIED = "course_not_verified";
@@ -428,6 +428,7 @@ public class FC_Constants {
     public static String newDataLanguageInserted = "newDataLanguageInserted";
     //    public static boolean GROUP_QR = false;
     public static boolean levelSet = false;
+    public static final String CURRENT_STUDENT_GRP_ID = "current_student_grp_id";
     public static final String GROUP_ENROLLMENT_ID = "group_enrollment_id";
     public static final String CURRENT_GROUP_ID = "current_group_id";
     public static final String LOGIN_MODE = "login_mode";

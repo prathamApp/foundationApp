@@ -125,6 +125,7 @@ public class Modal_RaspResult {
             modal_contentDetail.setResourceId(modal_rasp_jsonData.getResourceId());
             modal_contentDetail.setResourceType(modal_rasp_jsonData.getResourceType());
             modal_contentDetail.setResourcePath(modal_rasp_jsonData.getResourcepath());
+            modal_contentDetail.setContentLanguage(modal_rasp_jsonData.getNodelang());
 //            modal_contentDetail.setResourcezip(modal_rasp_jsonData.getResourcezip());
 //            modal_contentDetail.setAltnodeid(modal_rasp_jsonData.getAltnodeid());
             modal_contentDetail.setVersion(modal_rasp_jsonData.getContVersion());

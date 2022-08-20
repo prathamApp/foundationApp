@@ -34,16 +34,16 @@ public class BackupDatabase {
                     File temp = new File(sd, f.getName());
                     if (!temp.exists())
                     {
-                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q)
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R)
                         {
                             ContentResolver resolver = mContext.getContentResolver();
-                            ContentValues valuesvideos = new ContentValues();
-                            valuesvideos.put(MediaStore.MediaColumns.DISPLAY_NAME, f.getName());
+                            ContentValues contentValues = new ContentValues();
+                            contentValues.put(MediaStore.MediaColumns.DISPLAY_NAME, f.getName());
                             String fileMimeType = FC_Utility.getMimeType(f.getAbsolutePath());
-                            valuesvideos.put(MediaStore.MediaColumns.MIME_TYPE, fileMimeType);
-                            valuesvideos.put(MediaStore.MediaColumns.RELATIVE_PATH, Environment.DIRECTORY_DOWNLOADS
+                            contentValues.put(MediaStore.MediaColumns.MIME_TYPE, fileMimeType);
+                            contentValues.put(MediaStore.MediaColumns.RELATIVE_PATH, Environment.DIRECTORY_DOWNLOADS
                                     + File.separator + "PrathamBackups" );
-                            final Uri uriSavedVideo = resolver.insert(MediaStore.Downloads.EXTERNAL_CONTENT_URI, valuesvideos);
+                            final Uri uriSavedVideo = resolver.insert(MediaStore.Downloads.EXTERNAL_CONTENT_URI, contentValues);
                             FileChannel src = new FileInputStream(f).getChannel();
                             FileOutputStream  bos = (FileOutputStream) resolver.openOutputStream(Objects.requireNonNull(uriSavedVideo));
                             FileChannel dst = bos.getChannel();

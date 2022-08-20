@@ -323,6 +323,7 @@ public class AddStudentFragment extends DialogFragment implements AvatarClickLis
     @SuppressLint("StaticFieldLeak")
     @OnClick(R.id.btn_add_new_student)
     public void onAddNewClick() {
+        ApplicationClass.vibrator.vibrate(60);
         if (et_studentName.getText().toString().equalsIgnoreCase("") ||
                 (spinner_age.getSelectedItemPosition() == 0) ||
                 gender.equalsIgnoreCase("") || avatarName == null) {

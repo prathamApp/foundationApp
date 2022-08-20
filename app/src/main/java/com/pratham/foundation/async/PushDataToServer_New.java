@@ -366,6 +366,7 @@ public class PushDataToServer_New {
             if (ApplicationClass.wiseF.isDeviceConnectedToSSID(FC_Constants.PRATHAM_RASPBERRY_PI)) {
 
                 URL_Final = FC_Constants.uploadDataUrl_PI;
+                Log.d("PushData", "RPI Push API : " + URL_Final);
                 AndroidNetworking.upload(URL_Final)
                         .addHeaders("Content-Type", "file/zip")
                         .addMultipartFile("uploaded_file", new File(filePathStr + ".zip"))
@@ -397,6 +398,7 @@ public class PushDataToServer_New {
             } else {
 //                pushSuccessfull = false;
 //                setDataPushFailed();
+                Log.d("PushData", "First Push API : " + URL_Final);
                 AndroidNetworking.upload(URL_Final)
                         .addHeaders("Content-Type", "file/zip")
                         .addMultipartFile("" + fielName, new File(filePathStr + ".zip"))
@@ -437,6 +439,7 @@ public class PushDataToServer_New {
     }
 
     void pushDataToNewServer() {
+        Log.d("PushData", "First Push API : " + FC_Constants.NEW_PUSH_API);
         AndroidNetworking.upload(FC_Constants.NEW_PUSH_API)
                 .addHeaders("Content-Type", "file/zip")
 //                        .addMultipartFile("" + fielName, new File(filePathStr + ".zip"))
@@ -571,7 +574,7 @@ public class PushDataToServer_New {
             push_lottie.playAnimation();
             ok_btn.setText(context.getResources().getString(R.string.Okay));
             ok_btn.setVisibility(View.VISIBLE);
-        } else if (!secondPushFlg) {
+        } else if (!secondPushFlg && !ApplicationClass.wiseF.isDeviceConnectedToSSID(FC_Constants.PRATHAM_RASPBERRY_PI)) {
             pushDataToNewServer();
             secondPushFlg = true;
         } else
@@ -1021,7 +1024,10 @@ public class PushDataToServer_New {
                 _studentObj.put("FullName", "" + studentList.get(i).getFullName());
                 _studentObj.put("Gender", "" + studentList.get(i).getGender());
                 _studentObj.put("EnrollmentId", "" + studentList.get(i).getEnrollmentId());
-                _studentObj.put("regDate", "" + studentList.get(i).getRegDate());
+                if(studentList.get(i).getRegDate()!=null)
+                    _studentObj.put("regDate", "" + studentList.get(i).getRegDate());
+                else
+                    _studentObj.put("regDate", "" + FC_Utility.getCurrentDateTime());
                 _studentObj.put("Age", "" + studentList.get(i).getAge());
                 _studentObj.put("villageName", "" + studentList.get(i).getVillageName());
                 _studentObj.put("newFlag", studentList.get(i).getNewFlag());

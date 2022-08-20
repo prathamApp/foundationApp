@@ -229,6 +229,11 @@
     <string name="problem_pulling_stud">              শিক্ষাৰ্থীক বিচৰাত সমস্যা  </string>
     <string name="wrong_enrollment_id">               ভুল নামাংকন আইডি  </string>
 
+    <string name="please_try_aft_som_tim">অনুগ্ৰহ কৰি কিছু সময়ৰ পিছত চেষ্টা কৰক। </string>
+    <string name="please_try_aft">        অনুগ্ৰহ কৰি ইয়াৰ পিছত চেষ্টা কৰক। </string>
+    <string name="scheduled_maintenance"> অনুসূচীত তত্বাৱধান। </string>
+    <string name="maintenance_msg">       চিংক কাৰ্যক্ষমতা ৰক্ষণাবেক্ষণৰ অধীনত আছে। </string>
+    <string name="critical_maintenance">  গুৰুত্বপূৰ্ণ তত্বাৱধান। </string>
 
 
     <string name="Agent_name" >Vernicula</string>

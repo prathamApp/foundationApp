@@ -1,5 +1,8 @@
 package com.pratham.foundation.ui.select_language_fragment;
 
+import static com.pratham.foundation.utility.FC_Constants.APP_LANGUAGE_SELECTED;
+import static com.pratham.foundation.utility.FC_Utility.dpToPx;
+
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Color;
@@ -17,6 +20,7 @@ import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.pratham.foundation.ApplicationClass;
 import com.pratham.foundation.R;
 import com.pratham.foundation.customView.BlurPopupDialog.BlurPopupWindow;
 import com.pratham.foundation.customView.GridSpacingItemDecoration;
@@ -36,9 +40,6 @@ import org.androidannotations.annotations.ViewById;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import static com.pratham.foundation.utility.FC_Constants.APP_LANGUAGE_SELECTED;
-import static com.pratham.foundation.utility.FC_Utility.dpToPx;
 
 
 @EFragment(R.layout.fragment_select_language)
@@ -125,6 +126,7 @@ public class SelectLanguageFragment extends Fragment implements SelectLangContra
                     .setDismissOnClickBack(true)
                     .setScaleRatio(0.2f)
                     .bindClickListener(v -> {
+                        ApplicationClass.vibrator.vibrate(60);
                         new Handler().postDelayed(() -> {
                             btn_back.performClick();
                             errorDialog.dismiss();

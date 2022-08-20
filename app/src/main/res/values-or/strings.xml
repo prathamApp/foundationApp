@@ -232,6 +232,18 @@
     <string name="wrong_enrollment_id">             ଭୁଲ ନାମଲେଖା ID    </string>
 
 
+    <string name="please_try_aft_som_tim"> ଦୟାକରି କିଛି ସମୟ ପରେ ଚେଷ୍ଟା କରନ୍ତୁ </string>
+    <string name="please_try_aft">         ଦୟାକରି ପରେ ଚେଷ୍ଟା କରନ୍ତୁ: </string>
+    <string name="scheduled_maintenance">  ନିର୍ଦ୍ଧାରିତ ରକ୍ଷଣାବେକ୍ଷଣ </string>
+    <string name="maintenance_msg">        ସିଙ୍କ୍ କାର୍ଯ୍ୟକାରିତା ରକ୍ଷଣାବେକ୍ଷଣ ଅଧୀନରେ ଅଛି </string>
+    <string name="critical_maintenance">   ଗୁରୁତର ରକ୍ଷଣାବେକ୍ଷଣ </string>
+
+
+
+
+
+
+
 
     <string name="Agent_name" >Vernicula</string>
     <string name="talkbot" >Talkbot</string>

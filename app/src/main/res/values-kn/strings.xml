@@ -229,6 +229,19 @@
     <string name="problem_pulling_stud">             ವಿದ್ಯಾರ್ಥಿಯ ವಿವರವನ್ನು ಪುಲ್ ಮಾಡಲು ಸಮಸ್ಯೆ   </string>
     <string name="wrong_enrollment_id">              ತಪ್ಪಾದ ದಾಖಲಾತಿ ಐಡಿ   </string>
 
+    <string name="please_try_aft_som_tim"> ದಯವಿಟ್ಟು ಸ್ವಲ್ಪ ಸಮಯದ ನಂತರ ಪ್ರಯತ್ನಿಸಿ </string>
+    <string name="please_try_aft">         ದಯವಿಟ್ಟು ನಂತರ ಪ್ರಯತ್ನಿಸಿ: </string>
+    <string name="scheduled_maintenance">  ನಿಗದಿತ ನಿರ್ವಹಣೆ </string>
+    <string name="maintenance_msg">        ಸಿಂಕ್ ಕಾರ್ಯಶೀಲತೆಯ ನಿರ್ವಹಣೆಯು  ದುರಸ್ಥಿಯಲ್ಲಿದೆ </string>
+    <string name="critical_maintenance">   ಕ್ರಿಟಿಕಲ್ ನಿರ್ವಹಣೆ </string>
+
+
+
+
+
+
+
+
 
     <string name="Agent_name" >Vernicula</string>
     <string name="talkbot" >Talkbot</string>

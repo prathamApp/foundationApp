@@ -196,13 +196,13 @@
         android:layout_height="?attr/actionBarSize"
         android:layout_alignParentBottom="true"
         android:background="@drawable/home_footer_3_bg"
-        android:elevation="10dp"
         android:contentDescription="@null"
+        android:elevation="10dp"
         app:tabGravity="fill"
-        app:tabTextAppearance="@dimen/_2sdp"
         app:tabIndicatorColor="@color/trans_card_text"
         app:tabIndicatorFullWidth="false"
         app:tabIndicatorHeight="@dimen/_4sdp"
-        app:tabMode="fixed" />
+        app:tabMode="fixed"
+        app:tabTextAppearance="@dimen/_2sdp" />
 
 </RelativeLayout>

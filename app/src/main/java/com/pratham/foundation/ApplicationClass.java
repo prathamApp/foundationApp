@@ -9,6 +9,7 @@ import android.media.MediaPlayer;
 import android.os.Build;
 import android.os.Environment;
 import android.os.StrictMode;
+import android.os.Vibrator;
 import android.util.Log;
 
 import com.androidnetworking.AndroidNetworking;
@@ -36,8 +37,8 @@ import okhttp3.OkHttpClient;
 public class ApplicationClass extends Application {
 
     // (HI Custom )
-    public static final String BUILD_DATE = "7-May-2022";
-    public static boolean isTablet = true;
+    public static final String BUILD_DATE = "16-August-2022";
+    public static boolean isTablet = false;
     public static boolean isAssets = false;
     public static boolean contentExistOnSD = false, LocationFlg = false;
     public static String contentSDPath = "";
@@ -56,7 +57,7 @@ public class ApplicationClass extends Application {
     public static MediaPlayer ButtonClickSound, BackBtnSound;
     public static List<Modal_FileDownloading> fileDownloadingList;
     public static FC_RandomString fc_randomString;
-
+    public static Vibrator vibrator;
 
     @Override
     public void onCreate() {
@@ -68,6 +69,8 @@ public class ApplicationClass extends Application {
         if (applicationClass == null) {
             applicationClass = this;
         }
+        vibrator = (Vibrator) this.getSystemService(Context.VIBRATOR_SERVICE);
+
 //        fc_randomString = new FC_RandomString(8, ThreadLocalRandom.current());
         fileDownloadingList = new ArrayList<>();
         FastSave.init(getApplicationContext());
@@ -94,13 +97,13 @@ public class ApplicationClass extends Application {
 //        FC_Utility.setAppLocal(this, a);
     }
 
-        public static File getStoragePath() {
-            if ((Build.VERSION.SDK_INT >= Build.VERSION_CODES.R)) {
-                return Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);
-            } else {
-                return Environment.getExternalStorageDirectory();
-            }
+    public static File getStoragePath() {
+        if ((Build.VERSION.SDK_INT >= Build.VERSION_CODES.R)) {
+            return Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);
+        } else {
+            return Environment.getExternalStorageDirectory();
         }
+    }
 
     public static boolean getAppMode() {
         isTablet = false;
@@ -133,5 +136,7 @@ public class ApplicationClass extends Application {
         return applicationClass;
     }
 
-    public static int getRandomNumber(int min, int max) { return min + (new Random().nextInt(max));}
+    public static int getRandomNumber(int min, int max) {
+        return min + (new Random().nextInt(max));
+    }
 }

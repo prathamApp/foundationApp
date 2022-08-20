@@ -7,10 +7,10 @@ android {
     defaultConfig {
         applicationId "com.pratham.foundation"
         minSdkVersion 21
-        targetSdkVersion 30
-        versionCode 54
+        targetSdkVersion 30     
+        versionCode 57
         multiDexEnabled true
-        versionName "1.0.54"
+        versionName "1.0.57"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 

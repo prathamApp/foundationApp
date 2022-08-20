@@ -229,9 +229,11 @@
     <string name="problem_pulling_stud">             طالب علم کو اندراج میں مشکلات   </string>
     <string name="wrong_enrollment_id">              غلط اندراج آئی ڈی   </string>
 
-
-
-
+    <string name="please_try_aft_som_tim"> براہ کرم کچھ دیر بعد کوشش کریں۔ </string>
+    <string name="please_try_aft">         براہ کرم بعد میں کوشش کریں۔ </string>
+    <string name="scheduled_maintenance">  شیڈول مینٹیننس </string>
+    <string name="maintenance_msg">        سینک فنکشنیلیٹی مینٹیننس کے تحت ہے- </string>
+    <string name="critical_maintenance">   کریٹیکل مینٹیننس </string>
 
 
 

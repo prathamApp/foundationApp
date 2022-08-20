@@ -530,7 +530,7 @@ public class ContentPresenter implements ContentContract.ContentPresenter, API_C
 
                     if (header.equalsIgnoreCase(FC_Constants.INTERNET_DOWNLOAD_RESOURCE_PI)) {
                         if (fileName.contains(".zip") || fileName.contains(".rar")) {
-                            String pi_url = FC_Constants.RASP_IP + FC_Constants.RASP_LOCAL_URL + "/zips/" + fileName;
+                            String pi_url = FC_Constants.RASP_IP + FC_Constants.RASP_LOCAL_URL + "zips/" + fileName;
                             zipDownloader.initialize(context, pi_url,
                                     download_content.getFoldername(), fileName, dwContent, pos, true);
                         } else {

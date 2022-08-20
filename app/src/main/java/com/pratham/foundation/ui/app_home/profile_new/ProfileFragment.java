@@ -233,6 +233,7 @@ public class ProfileFragment extends Fragment implements ProfileContract.Profile
     @Click(R.id.card_img)
     public void showBottomFragment() {
         try {
+            ApplicationClass.vibrator.vibrate(60);
             ButtonClickSound.start();
         } catch (IllegalStateException e) {
             e.printStackTrace();
@@ -537,7 +538,15 @@ public class ProfileFragment extends Fragment implements ProfileContract.Profile
     public void pushData() {
         if (FC_Utility.isDataConnectionAvailable(context)) {
             showLoader();
-            api_content.checkServerStatus(FC_Constants.CHECK_SERVER_STATUS, FC_Constants.CHECK_SERVER_STATUS_API);
+            if (!ApplicationClass.wiseF.isDeviceConnectedToSSID(FC_Constants.PRATHAM_RASPBERRY_PI))
+                api_content.checkServerStatus(FC_Constants.CHECK_SERVER_STATUS, FC_Constants.CHECK_SERVER_STATUS_API);
+            else{
+                dismissLoadingDialog();
+                FastSave.getInstance().saveBoolean(FC_Constants.SERVER_ACTIVE, true);
+                FastSave.getInstance().saveString(FC_Constants.SERVER_MAINTENANCE_TIME, "NA");
+                FastSave.getInstance().saveString(FC_Constants.SERVER_MAINTENANCE_MSG, "NA");
+                pushDataToServer.startDataPush(context, true);
+            }
 //        } else
 //        if (FC_Utility.isDataConnectionAvailable(context)) {
 //            pushDataToServer_new2.startDataPush(context, true);

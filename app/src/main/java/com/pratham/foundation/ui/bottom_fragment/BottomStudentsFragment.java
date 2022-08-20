@@ -126,6 +126,7 @@ public class BottomStudentsFragment extends BottomSheetDialogFragment
 
     @Click(R.id.btn_Enrollment)
     public void addEnrollmentId() {
+        ApplicationClass.vibrator.vibrate(60);
         Intent intent = new Intent(getActivity(), AddEnrollmentId_.class);
         startActivityForResult(intent, 1);
     }
@@ -198,8 +199,9 @@ public class BottomStudentsFragment extends BottomSheetDialogFragment
     @Click(R.id.btn_download_all_data)
     public void onBtnDownload() {
         try {
+            ApplicationClass.vibrator.vibrate(60);
             ButtonClickSound.start();
-        } catch (IllegalStateException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
@@ -266,8 +268,9 @@ public class BottomStudentsFragment extends BottomSheetDialogFragment
     @Click(R.id.go_next)
     public void setNext(View v) {
         try {
+            ApplicationClass.vibrator.vibrate(60);
             ButtonClickSound.start();
-        } catch (IllegalStateException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
         ArrayList<Student> checkedStds = new ArrayList<>();
@@ -358,8 +361,9 @@ public class BottomStudentsFragment extends BottomSheetDialogFragment
     @Click(R.id.add_student)
     public void addStudent() {
         try {
+            ApplicationClass.vibrator.vibrate(60);
             ButtonClickSound.start();
-        } catch (IllegalStateException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
         SplashActivity.fragmentAddStudentOpenFlg = true;
@@ -371,8 +375,9 @@ public class BottomStudentsFragment extends BottomSheetDialogFragment
     @Click(R.id.pratham_login)
     public void openPrathamLogin() {
         try {
+            ApplicationClass.vibrator.vibrate(60);
             ButtonClickSound.start();
-        } catch (IllegalStateException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
         startActivity(new Intent(context, AdminConsoleActivityNew_.class));
@@ -466,7 +471,7 @@ public class BottomStudentsFragment extends BottomSheetDialogFragment
         } else {
             try {
                 ButtonClickSound.start();
-            } catch (IllegalStateException e) {
+            } catch (Exception e) {
                 e.printStackTrace();
             }
             if (!FastSave.getInstance().getBoolean(SPLASH_OPEN, false))
@@ -480,6 +485,7 @@ public class BottomStudentsFragment extends BottomSheetDialogFragment
             String currentSession = "" + UUID.randomUUID().toString();
             FastSave.getInstance().saveString(FC_Constants.LOGIN_MODE, INDIVIDUAL_MODE);
             FastSave.getInstance().saveString(FC_Constants.CURRENT_GROUP_ID, "NA");
+            FastSave.getInstance().saveString(FC_Constants.CURRENT_STUDENT_GRP_ID, ""+bottomFragmentModal.getGroupId());
             FastSave.getInstance().saveString(FC_Constants.CURRENT_SESSION, "" + currentSession);
             FastSave.getInstance().saveString(FC_Constants.CURRENT_STUDENT_ID, "" + bottomFragmentModal.getStudentID());
             FastSave.getInstance().saveString(FC_Constants.CURRENT_STUDENT_NAME, "" + bottomFragmentModal.getFullName());
@@ -496,7 +502,7 @@ public class BottomStudentsFragment extends BottomSheetDialogFragment
     public void onGroupClick(String studentName, String studentId,String groupId) {
         try {
             ButtonClickSound.start();
-        } catch (IllegalStateException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
         groupClicked = true;

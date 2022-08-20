@@ -249,11 +249,12 @@ public class AddEnrollmentId extends BaseActivity implements AvatarClickListener
     @Click(R.id.btn_back)
     public void pressedBackButton() {
         SplashActivity.fragmentAddStudentOpenFlg = false;
-//        try {
+        try {
+            ApplicationClass.vibrator.vibrate(60);
 //            BackBtnSound.start();
-//        } catch (IllegalStateException e) {
-//            e.printStackTrace();
-//        }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         finish();
         EventMessage message = new EventMessage();
         message.setMessage("reload");
@@ -305,6 +306,7 @@ public class AddEnrollmentId extends BaseActivity implements AvatarClickListener
             studentDialog = new BlurPopupWindow.Builder(mContext)
                     .setContentView(R.layout.student_details_dialog)
                     .bindClickListener(v -> {
+                        ApplicationClass.vibrator.vibrate(60);
                         new Handler().postDelayed(() -> {
                             addStudentData(enrollmentModel);
                             studentDialog.dismiss();
@@ -363,6 +365,7 @@ public class AddEnrollmentId extends BaseActivity implements AvatarClickListener
                     model_courseEnrollment.setPlanFromDate(enrollmentModel.getLstCourseEnroll().get(v).getPlanFromDate());
                     model_courseEnrollment.setPlanToDate(enrollmentModel.getLstCourseEnroll().get(v).getPlanToDate());
                     model_courseEnrollment.setLanguage(enrollmentModel.getLstCourseEnroll().get(v).getLanguage());
+                    model_courseEnrollment.setCourseEnrolledDate(FC_Utility.getCurrentDate());
                     model_courseEnrollment.setSentFlag(1);
                     courseEnrollmentList.add(model_courseEnrollment);
                 }

@@ -229,6 +229,12 @@
     <string name="problem_pulling_stud">            छात्र को पुल करने में समस्या   </string>
     <string name="wrong_enrollment_id">             गलत नामांकन ID   </string>
 
+    <string name="please_try_aft_som_tim">कृपया कुछ देर बाद प्रयास करें</string>
+    <string name="please_try_aft">        कृपया निम्न के बाद प्रयास करें :</string>
+    <string name="scheduled_maintenance"> समय सारणी का मेंटेनेन्स</string>
+    <string name="maintenance_msg">       सिंक कार्यक्षमता का मेंटेनेन्स चल रहा है</string>
+    <string name="critical_maintenance">  क्रिटिकल मेंटेनेन्स</string>
+
 
 
 

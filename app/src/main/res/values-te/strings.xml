@@ -229,6 +229,16 @@
     <string name="problem_pulling_stud">             విద్యార్థిని పుల్లింగ్ చేయడంలో సమస్య   </string>
     <string name="wrong_enrollment_id">              తప్పు ఎన్రోల్మెంట్ ఐడి   </string>
 
+    <string name="please_try_aft_som_tim"> దయచేసి కొంచెం సమయం తరువాత ప్రయత్నించండి. </string>
+    <string name="please_try_aft">         దయచేసి తరువాత ప్రయత్నించండి. </string>
+    <string name="scheduled_maintenance">  టైమ్ టేబుల్ నిర్వహణ </string>
+    <string name="maintenance_msg">        సింక్ కార్యాచరణ ప్రోగ్రెస్‌లో ఉంది </string>
+    <string name="critical_maintenance">   క్లిష్టమైన నిర్వహణ </string>
+
+
+
+
+
 
 
 

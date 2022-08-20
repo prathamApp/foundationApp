@@ -563,7 +563,6 @@ public class LearningFragment extends Fragment implements LearningContract.Learn
 
                 Bundle bundle = new Bundle();
                 FastSave.getInstance().getString(FC_Constants.CURRENT_FOLDER_NAME, currentSubjectFolder);
-
                 bundle.putString("appName", "" + getResources().getString(R.string.app_name));
                 bundle.putString("studentId", "" + FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""));
                 bundle.putString("studentName", "" + profileName);

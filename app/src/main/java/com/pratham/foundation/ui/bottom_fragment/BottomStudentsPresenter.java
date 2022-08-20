@@ -193,7 +193,7 @@ public class BottomStudentsPresenter implements BottomStudentsContract.BottomStu
             attendance.setSessionID(FastSave.getInstance().getString(FC_Constants.CURRENT_SESSION, ""));
             attendance.setStudentID(FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""));
             attendance.setDate(FC_Utility.getCurrentDateTime());
-            attendance.setGroupID("SP");
+            attendance.setGroupID(""+FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_GRP_ID, "NA"));
             attendance.setSentFlag(0);
             AppDatabase.getDatabaseInstance(context).getAttendanceDao().insert(attendance);
 

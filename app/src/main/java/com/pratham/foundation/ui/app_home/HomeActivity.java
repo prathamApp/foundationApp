@@ -579,9 +579,11 @@ public class HomeActivity extends BaseActivity implements LevelChanged, API_Cont
             public void onTabSelected(TabLayout.Tab tab) {
                 try {
                     BackBtnSound.start();
-                } catch (IllegalStateException e) {
+                    ApplicationClass.vibrator.vibrate(60);
+                } catch (Exception e) {
                     e.printStackTrace();
                 }
+
                 BackupDatabase.backup(HomeActivity.this);
                 BackupDatabase.backup(HomeActivity.this);
                 if (new File(ApplicationClass.getStoragePath().toString()
@@ -611,6 +613,7 @@ public class HomeActivity extends BaseActivity implements LevelChanged, API_Cont
             @Override
             public void onTabReselected(TabLayout.Tab tab) {
                 try {
+                    ApplicationClass.vibrator.vibrate(60);
                     BackBtnSound.start();
                 } catch (IllegalStateException e) {
                     e.printStackTrace();
@@ -707,6 +710,7 @@ public class HomeActivity extends BaseActivity implements LevelChanged, API_Cont
     @Click(R.id.tv_level)
     public void levelChange() {
         try {
+            ApplicationClass.vibrator.vibrate(60);
             ButtonClickSound.start();
         } catch (IllegalStateException e) {
             e.printStackTrace();
@@ -717,6 +721,7 @@ public class HomeActivity extends BaseActivity implements LevelChanged, API_Cont
     @UiThread
     @Click({R.id.iv_refresh, R.id.refresh_shd})
     public void levelRefresh() {
+        ApplicationClass.vibrator.vibrate(60);
         EventMessage eventMessage = new EventMessage();
         eventMessage.setMessage(FC_Constants.DATA_REFRESHED);
         EventBus.getDefault().post(eventMessage);
@@ -793,6 +798,7 @@ public class HomeActivity extends BaseActivity implements LevelChanged, API_Cont
     @Click(R.id.main_back)
     public void backBtnPressed() {
         try {
+            ApplicationClass.vibrator.vibrate(60);
             BackBtnSound.start();
         } catch (IllegalStateException e) {
             e.printStackTrace();

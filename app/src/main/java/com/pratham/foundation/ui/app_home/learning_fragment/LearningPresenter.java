@@ -842,6 +842,7 @@ public class LearningPresenter implements LearningContract.LearningPresenter, AP
 */
             } catch (Exception e) {
                 e.printStackTrace();
+                learningView.dismissLoadingDialog();
             }
         } else if (header.equalsIgnoreCase(FC_Constants.INTERNET_DOWNLOAD_ASSESSMENT_RESOURCE)) {
             try {
