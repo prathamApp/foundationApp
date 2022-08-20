@@ -19,6 +19,8 @@ public interface CourseEnrollmentContract {
 
         void setLevelList(List<ContentTable> setLevelList);
 
+        void setCategoryList(List<ContentTable> categoryList);
+
         void courseAdded();
 
         void courseAlreadySelected();
@@ -46,6 +48,8 @@ public interface CourseEnrollmentContract {
         void loadTabs(String selectedSubjectId);
 
         void loadLevels(String selectedTabId);
+
+        void loadCategories(String selectedLevelId);
 
         void addCourseToDb(String week, ContentTable selectedCourse, Calendar startDate, Calendar endDate);
 

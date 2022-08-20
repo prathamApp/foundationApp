@@ -27,16 +27,23 @@ import android.util.Log;
 import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.View;
+import android.view.WindowManager;
+import android.widget.Button;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
+import com.google.gson.Gson;
 import com.hanks.htextview.typer.TyperTextView;
 import com.pratham.foundation.ApplicationClass;
 import com.pratham.foundation.R;
+import com.pratham.foundation.async.API_Content;
 import com.pratham.foundation.customView.BlurPopupDialog.BlurPopupWindow;
 import com.pratham.foundation.database.AppDatabase;
+import com.pratham.foundation.interfaces.API_Content_Result;
 import com.pratham.foundation.interfaces.Interface_copying;
 import com.pratham.foundation.interfaces.PermissionResult;
 import com.pratham.foundation.modalclasses.EventMessage;
+import com.pratham.foundation.modalclasses.ServerMaintenance_Modal;
 import com.pratham.foundation.services.AppExitService;
 import com.pratham.foundation.services.background_service.BackgroundPushService;
 import com.pratham.foundation.services.shared_preferences.FastSave;
@@ -61,7 +68,7 @@ import java.util.Objects;
 
 @EActivity(R.layout.activity_splash)
 public class SplashActivity extends SplashSupportActivity implements SplashContract.SplashView,
-        PermissionResult, Interface_copying {
+        PermissionResult, Interface_copying, API_Content_Result {
 
     @ViewById(R.id.splash_root)
     RelativeLayout splash_root;
@@ -70,6 +77,7 @@ public class SplashActivity extends SplashSupportActivity implements SplashContr
     static String fpath, appname;
     public static MediaPlayer bgMusic;
     public ProgressDialog progressDialog;
+    API_Content api_content;
 
     @Bean(SplashPresenter.class)
     SplashPresenter splashPresenter;
@@ -88,6 +96,9 @@ public class SplashActivity extends SplashSupportActivity implements SplashContr
 //        bgMusic = MediaPlayer.create(this, R.raw.bg_sound);
 //        bgMusic.setLooping(true);
 //        bgMusic.start();
+        hideSystemUI();
+        api_content = new API_Content(context, this);
+        api_content.checkServerStatus(FC_Constants.CHECK_SERVER_STATUS, FC_Constants.CHECK_SERVER_STATUS_API);
         startCheck = 0;
         new Handler().postDelayed(this::startTextAud, 500);
     }
@@ -95,18 +106,68 @@ public class SplashActivity extends SplashSupportActivity implements SplashContr
     private void startTextAud() {
         //Set Animation for app title
         FastSave.getInstance().saveBoolean(SPLASH_OPEN, true);
+        String a = FastSave.getInstance().getString(FC_Constants.APP_LANGUAGE, FC_Constants.HINDI);
+        api_content.checkServerStatus(FC_Constants.CHECK_SERVER_STATUS, FC_Constants.CHECK_SERVER_STATUS_API);
+        Log.d("INSTRUCTIONFRAG", "Splash Act: " + a);
+        FC_Utility.setAppLocal(this, a);
         final Typeface title_font = Typeface.createFromAsset(getAssets(), "fonts/GlacialIndifference-Bold.otf");
         tv_typer.setTypeface(title_font);
         tv_typer.setVisibility(View.VISIBLE);
         tv_typer.setTextColor(getResources().getColor(R.color.dark_blue));
-        tv_typer.animateText("PraDigi\nfor\nSchool");
+        tv_typer.animateText("" + getResources().getString(R.string.app_name));
         tv_typer.setAnimationListener(hTextView -> initiateApp());
         FastSave.getInstance().saveBoolean(FC_Constants.PRATHAM_STUDENT, false);
     }
 
     @Override
+    public void receivedContent(String header, String response) {
+        Gson gson = new Gson();
+        ServerMaintenance_Modal accessedModal = gson.fromJson(response, ServerMaintenance_Modal.class);
+        FastSave.getInstance().saveString(FC_Constants.SERVER_APP_VERSION, accessedModal.getApp_version());
+        FastSave.getInstance().saveBoolean(FC_Constants.LATEST_APP, accessedModal.getApp_version().equalsIgnoreCase(FC_Utility.getAppVerison()));
+
+        if (accessedModal.getStatus_code().equalsIgnoreCase("0")) {
+            FastSave.getInstance().saveBoolean(FC_Constants.SERVER_ACTIVE, true);
+            FastSave.getInstance().saveString(FC_Constants.SERVER_MAINTENANCE_TIME, "NA");
+            FastSave.getInstance().saveString(FC_Constants.SERVER_MAINTENANCE_MSG, "NA");
+        } else {
+            FastSave.getInstance().saveBoolean(FC_Constants.SERVER_ACTIVE, false);
+            FastSave.getInstance().saveString(FC_Constants.SERVER_MAINTENANCE_TIME, accessedModal.getMaintenance_closing_time());
+            FastSave.getInstance().saveString(FC_Constants.SERVER_MAINTENANCE_MSG, accessedModal.getMessage());
+        }
+    }
+
+    @Override
+    public void receivedContent_PI_SubLevel(String header, String response, int pos, int size) {
+    }
+
+    @Override
+    public void receivedError(String header) {
+    }
+
+    @Override
+    public void onWindowFocusChanged(boolean hasFocus) {
+        hideSystemUI();
+        super.onWindowFocusChanged(hasFocus);
+    }
+
+    private void hideSystemUI() {
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
+                WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        getWindow().getDecorView().setSystemUiVisibility(
+                View.SYSTEM_UI_FLAG_FULLSCREEN
+                        | View.SYSTEM_UI_FLAG_LOW_PROFILE
+                        | View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+                        | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY
+                        | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
+                        | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
+        );
+    }
+
+    @Override
     protected void onResume() {
         super.onResume();
+        hideSystemUI();
         try {
             bgMusic = MediaPlayer.create(this, R.raw.bg_sound);
             bgMusic.setLooping(true);
@@ -148,12 +209,11 @@ public class SplashActivity extends SplashSupportActivity implements SplashContr
         if (!new File(ApplicationClass.getStoragePath() + "/PrathamBackups").exists()) {
             new File(ApplicationClass.getStoragePath() + "/PrathamBackups").mkdirs();
 //            getApplicationContext().getExternalFilesDir(ApplicationClass.getStoragePath() + "/PrathamBackups");
-        }if (!new File(ApplicationClass.getStoragePath().toString() + "/.FCAInternal").exists()) {
-            new File(ApplicationClass.getStoragePath().toString() + "/.FCAInternal").mkdirs();
+        }if (!new File(ApplicationClass.getStoragePath().toString() + "/FCAInternal").exists()) {
+            new File(ApplicationClass.getStoragePath().toString() + "/FCAInternal").mkdirs();
 //            getApplicationContext().getExternalFilesDir(ApplicationClass.getStoragePath() + "/PrathamBackups");
         }
 */
-
         new Handler().postDelayed(() -> {
             if ((Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)) {
                 if (!isPermissionsGranted(SplashActivity.this, permissionArray))
@@ -230,22 +290,22 @@ public class SplashActivity extends SplashSupportActivity implements SplashContr
     @UiThread
     @Override
     public void startApp() {
-            FastSave.getInstance().saveString(FC_Constants.CURRENT_SESSION, "NA");
-            DisplayMetrics displayMetrics = new DisplayMetrics();
-            getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
-            int height = displayMetrics.heightPixels;
-            int width = displayMetrics.widthPixels;
-            Configuration config = context.getResources().getConfiguration();
-            String strwidth = String.valueOf(width);
-            String strheight = String.valueOf(height);
-            Log.d("COSLS", "initialize: COSLS - " + strwidth);
+        FastSave.getInstance().saveString(FC_Constants.CURRENT_SESSION, "NA");
+        DisplayMetrics displayMetrics = new DisplayMetrics();
+        getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
+        int height = displayMetrics.heightPixels;
+        int width = displayMetrics.widthPixels;
+        Configuration config = context.getResources().getConfiguration();
+        String strwidth = String.valueOf(width);
+        String strheight = String.valueOf(height);
+        Log.d("COSLS", "initialize: COSLS - " + strwidth);
 
-            String resolution = strwidth + "px x " + strheight + "px (" + config.densityDpi + " dpi)";
-            FastSave.getInstance().saveString(FC_Constants.SCR_RES, "" + resolution);
-            FastSave.getInstance().saveString(FC_Constants.LANGUAGE, FC_Constants.HINDI);
+        String resolution = strwidth + "px x " + strheight + "px (" + config.densityDpi + " dpi)";
+        FastSave.getInstance().saveString(FC_Constants.SCR_RES, "" + resolution);
+        FastSave.getInstance().saveString(FC_Constants.LANGUAGE, FC_Constants.HINDI);
 //        setAppLocal(this, FC_Constants.HINDI);
-            FastSave.getInstance().saveBoolean(IS_SERVICE_STOPED, false);
-            splashPresenter.createDatabase();
+        FastSave.getInstance().saveBoolean(IS_SERVICE_STOPED, false);
+        splashPresenter.createDatabase();
     }
 
     Intent mServiceIntent;
@@ -413,27 +473,27 @@ public class SplashActivity extends SplashSupportActivity implements SplashContr
         internal = new File(ApplicationClass.getStoragePath().toString());
         if (internal.canWrite())
             canWrite = true;
-        direct = new File(ApplicationClass.getStoragePath().toString() + "/.FCAInternal");
+        direct = new File(ApplicationClass.getStoragePath().toString() + "/FCAInternal");
         if (!direct.exists())
             if (canWrite)
                 direct.mkdirs();
-        direct = new File(ApplicationClass.getStoragePath().toString() + "/.FCAInternal/ActivityPhotos");
+        direct = new File(ApplicationClass.getStoragePath().toString() + "/FCAInternal/ActivityPhotos");
         if (!direct.exists())
             direct.mkdirs();
-        direct = new File(ApplicationClass.getStoragePath().toString() + "/.FCAInternal/TestJsons");
+        direct = new File(ApplicationClass.getStoragePath().toString() + "/FCAInternal/TestJsons");
         if (!direct.exists())
             direct.mkdirs();
-        direct = new File(ApplicationClass.getStoragePath().toString() + "/.FCAInternal/PushJsons");
+        direct = new File(ApplicationClass.getStoragePath().toString() + "/FCAInternal/PushJsons");
         if (!direct.exists())
             direct.mkdirs();
-        direct = new File(ApplicationClass.getStoragePath().toString() + "/.FCAInternal/StudentPDFs");
+        direct = new File(ApplicationClass.getStoragePath().toString() + "/FCAInternal/StudentPDFs");
         if (!direct.exists())
             direct.mkdirs();
-        direct = new File(ApplicationClass.getStoragePath().toString() + "/.FCAInternal/SupervisorImages");
+        direct = new File(ApplicationClass.getStoragePath().toString() + "/FCAInternal/SupervisorImages");
         if (!direct.exists())
             direct.mkdirs();
 
-        splashPresenter.createNoMediaForFCInternal(new File(ApplicationClass.getStoragePath().toString() + "/.FCAInternal"));
+        splashPresenter.createNoMediaForFCInternal(new File(ApplicationClass.getStoragePath().toString() + "/FCAInternal"));
 
         if (!FastSave.getInstance().getBoolean(FC_Constants.INITIAL_ENTRIES, false))
             splashPresenter.doInitialEntries(AppDatabase.getDatabaseInstance(context));
@@ -443,10 +503,12 @@ public class SplashActivity extends SplashSupportActivity implements SplashContr
         splashPresenter.updateVersionApp();
         if (!ApplicationClass.getAppMode()) {
 //            Temporary
-            bgPushService = new BackgroundPushService();
-            mServiceIntent = new Intent(this, bgPushService.getClass());
-            if (!isMyServiceRunning(bgPushService.getClass())) {
-                startService(mServiceIntent);
+            if (FastSave.getInstance().getBoolean(FC_Constants.SERVER_ACTIVE, false)) {
+                bgPushService = new BackgroundPushService();
+                mServiceIntent = new Intent(this, bgPushService.getClass());
+                if (!isMyServiceRunning(bgPushService.getClass())) {
+                    startService(mServiceIntent);
+                }
             }
 //            splashPresenter.pushData();
             dismissProgressDialog();
@@ -460,7 +522,7 @@ public class SplashActivity extends SplashSupportActivity implements SplashContr
             if (!FastSave.getInstance().getBoolean(FC_Constants.VOICES_DOWNLOAD_INTENT, false))
                 show_STT_Dialog();
             else {
-                    showBottomFragment();
+                showBottomFragment();
             }
 //            }
         }
@@ -473,7 +535,7 @@ public class SplashActivity extends SplashSupportActivity implements SplashContr
     @Override
     public void show_STT_Dialog() {
         //Allows to download language packages
-        if(!sttOpen) {
+        if (!sttOpen) {
             sttOpen = true;
             exitDialog = new BlurPopupWindow.Builder(this)
                     .setContentView(R.layout.lottie_stt_dialog)
@@ -481,8 +543,6 @@ public class SplashActivity extends SplashSupportActivity implements SplashContr
                         new Handler().postDelayed(() -> {
                             try {
                                 Intent intent = new Intent(Intent.ACTION_MAIN);
-//                    intent.setComponent(new ComponentName("com.google.android.googlequicksearchbox",
-//                            "com.google.android.voicesearch.greco3.languagepack.InstallActivity"));
                                 intent.setClassName("com.google.android.googlequicksearchbox",
                                         "com.google.android.voicesearch.greco3.languagepack.InstallActivity");
                                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -515,6 +575,32 @@ public class SplashActivity extends SplashSupportActivity implements SplashContr
         }
     }
 
+    BlurPopupWindow updateApp;
+    TextView tv_dialog;
+    Button dia_btn_ok;
+    @UiThread
+    public void getUpdatedAppDialog() {
+        //Allows to download language packages
+        updateApp = new BlurPopupWindow.Builder(this)
+                .setContentView(R.layout.lottie_update_dialog)
+                .bindClickListener(v -> {
+                    new Handler().postDelayed(() -> {
+                        updateApp.dismiss();
+                        finishAffinity();
+                    }, 100);
+                }, R.id.dia_btn_ok)
+                .setGravity(Gravity.CENTER)
+                .setDismissOnTouchBackground(false)
+                .setDismissOnClickBack(false)
+                .setScaleRatio(0.2f)
+                .setBlurRadius(10)
+                .setTintColor(0x30000000)
+                .build();
+        tv_dialog = updateApp.findViewById(R.id.dia_title);
+        tv_dialog.setText("Upgrade to a better version!");
+        updateApp.show();
+    }
+
     @SuppressLint("SetTextI18n")
     @UiThread
     @Subscribe
@@ -538,20 +624,31 @@ public class SplashActivity extends SplashSupportActivity implements SplashContr
     }
 
     int excCount = 0;
+
     @UiThread
     @Override
     public void showBottomFragment() {
         try {
-            fragmentBottomOpenFlg = true;
-            firstPause = false;
-            dismissProgressDialog();
-            BottomStudentsFragment_ bottomStudentsFragment = new BottomStudentsFragment_();
-            bottomStudentsFragment.show(getSupportFragmentManager(), BottomStudentsFragment.class.getSimpleName());
+            if(FastSave.getInstance().getString(FC_Constants.SERVER_APP_VERSION, "NA")
+                    .equalsIgnoreCase(FC_Utility.getAppVerison())) {
+                FastSave.getInstance().saveBoolean(FC_Constants.LATEST_APP, true);
+            }
+            if (FastSave.getInstance().getBoolean(FC_Constants.LATEST_APP, true)) {
+                fragmentBottomOpenFlg = true;
+                firstPause = false;
+                dismissProgressDialog();
+                BottomStudentsFragment_ bottomStudentsFragment = new BottomStudentsFragment_();
+                bottomStudentsFragment.show(getSupportFragmentManager(), BottomStudentsFragment.class.getSimpleName());
+            } else {
+//                showUpdateDialog();
+                getUpdatedAppDialog();
+//                Toast.makeText(this, "GET NEW APP", Toast.LENGTH_SHORT).show();
+            }
         } catch (Exception e) {
             fragmentBottomOpenFlg = false;
             e.printStackTrace();
             excCount++;
-            if(excCount<3)
+            if (excCount < 3)
                 showBottomFragment();
         }
     }

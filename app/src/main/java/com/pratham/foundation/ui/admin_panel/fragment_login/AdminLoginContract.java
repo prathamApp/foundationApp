@@ -19,6 +19,6 @@ public interface AdminLoginContract {
         void checkLogin(String userName, String password);
         void clearData();
 
-        void setView(AdminLoginContract.AdminLoginView adminLoginView);
+        void setView(AdminLoginView adminLoginView);
     }
 }

@@ -1,0 +1,499 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/home_root_layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+<!--    <Button
+        android:id="@+id/testBTN"
+        android:layout_centerInParent="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="gotonext"/>-->
+    <RelativeLayout
+        android:id="@+id/header_rl"
+        android:layout_width="match_parent"
+        android:layout_marginTop="@dimen/_5sdp"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:id="@+id/main_back"
+            android:layout_width="@dimen/_30sdp"
+            android:layout_height="@dimen/_30sdp"
+            android:layout_marginStart="@dimen/_5sdp"
+            android:layout_marginTop="@dimen/_5sdp"
+            android:scaleType="center"
+            android:src="@drawable/ic_left_arrow_white" />
+
+        <com.pratham.foundation.customView.fontsview.SansTextViewBold
+            android:id="@+id/tv_Topic"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/_15sdp"
+            android:layout_marginTop="@dimen/_5sdp"
+            android:layout_marginEnd="@dimen/_10sdp"
+            android:layout_toEndOf="@id/main_back"
+            android:text="@string/sync_logs"
+            android:textColor="@color/colorText"
+            android:textSize="@dimen/_18sdp" />
+
+        <com.pratham.foundation.customView.fontsview.SansTextView
+            android:id="@+id/tv_date"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/tv_Topic"
+            android:layout_marginStart="@dimen/_15sdp"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:layout_marginEnd="@dimen/_10sdp"
+            android:layout_marginBottom="@dimen/_5sdp"
+            android:layout_toEndOf="@id/main_back"
+            android:text="Date"
+            android:textColor="@color/colorText"
+            android:textSize="@dimen/_14sdp" />
+
+        <RelativeLayout
+            android:id="@+id/my_speperator"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_20sdp"
+            android:layout_below="@+id/tv_date"
+            android:background="@drawable/dotted_line_horizontal_blue" >
+
+            <com.pratham.foundation.customView.fontsview.SansTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:background="@drawable/custom_progress_primary"
+                android:gravity="center"
+                android:paddingStart="@dimen/_10sdp"
+                android:paddingTop="@dimen/_4sdp"
+                android:paddingEnd="@dimen/_10sdp"
+                android:paddingBottom="@dimen/_4sdp"
+                android:text="@string/Summary"
+                android:textAlignment="center"
+                android:textColor="@color/white"
+                android:textSize="@dimen/_13sdp"
+                tools:ignore="HardcodedText" />
+        </RelativeLayout>
+    </RelativeLayout>
+
+    <LinearLayout
+        android:id="@+id/ll_upper"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/header_rl"
+        android:layout_centerInParent="true"
+        android:layout_marginTop="@dimen/_5sdp"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/_15sdp"
+            android:layout_marginTop="@dimen/_25sdp"
+            android:layout_marginEnd="@dimen/_15sdp"
+            android:orientation="horizontal"
+            android:weightSum="10">
+
+            <com.pratham.foundation.customView.fontsview.SansTextView
+                android:id="@+id/tv_attendancecount_lbl"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_weight="6"
+                android:paddingTop="@dimen/_3sdp"
+                android:paddingBottom="@dimen/_3sdp"
+                android:text="@string/total_attendance"
+                android:textColor="@color/colorText"
+                android:textSize="@dimen/_13sdp" />
+
+            <com.pratham.foundation.customView.fontsview.SansTextViewBold
+                android:id="@+id/tv_attendancecount"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_weight="2"
+                android:paddingTop="@dimen/_3sdp"
+                android:paddingBottom="@dimen/_3sdp"
+                android:text=""
+                android:textAlignment="center"
+                android:textColor="@color/colorSignBoard"
+                android:textSize="@dimen/_18sdp" />
+
+            <com.pratham.foundation.customView.fontsview.SansTextView
+                android:id="@+id/btn_attendancecount"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_gravity="center"
+                android:layout_marginTop="@dimen/_2sdp"
+                android:layout_marginBottom="@dimen/_2sdp"
+                android:layout_weight="2"
+                android:visibility="gone"
+                android:drawableEnd="@drawable/ic_right_arrow"
+                android:drawablePadding="@dimen/_5sdp"
+                android:elevation="@dimen/_3sdp"
+                android:gravity="center"
+                android:text="@string/view_details"
+                android:textColor="@color/colorText" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/_15sdp"
+            android:layout_marginTop="@dimen/_5sdp"
+            android:layout_marginEnd="@dimen/_15sdp"
+            android:orientation="horizontal"
+            android:weightSum="10">
+
+            <com.pratham.foundation.customView.fontsview.SansTextView
+                android:id="@+id/tv_coursecount_lbl"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_weight="6"
+                android:paddingTop="@dimen/_3sdp"
+                android:paddingBottom="@dimen/_3sdp"
+                android:text="@string/total_courses"
+                android:textColor="@color/colorText"
+                android:textSize="@dimen/_13sdp" />
+
+            <com.pratham.foundation.customView.fontsview.SansTextViewBold
+                android:id="@+id/tv_coursecount"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_weight="2"
+                android:paddingTop="@dimen/_3sdp"
+                android:paddingBottom="@dimen/_3sdp"
+                android:text=""
+                android:textAlignment="center"
+                android:textColor="@color/colorSignBoard"
+                android:textSize="@dimen/_18sdp" />
+
+            <com.pratham.foundation.customView.fontsview.SansTextView
+                android:id="@+id/btn_coursecount"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_gravity="center"
+                android:visibility="gone"
+                android:layout_marginTop="@dimen/_2sdp"
+                android:layout_marginBottom="@dimen/_2sdp"
+                android:layout_weight="2"
+                android:drawableEnd="@drawable/ic_right_arrow"
+                android:drawablePadding="@dimen/_5sdp"
+                android:elevation="@dimen/_3sdp"
+                android:gravity="center"
+                android:text="@string/view_details"
+                android:textColor="@color/colorText" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/_15sdp"
+            android:layout_marginTop="@dimen/_5sdp"
+            android:layout_marginEnd="@dimen/_15sdp"
+            android:orientation="horizontal"
+            android:weightSum="10">
+
+            <com.pratham.foundation.customView.fontsview.SansTextView
+                android:id="@+id/tv_total_stud_accessed_lbl"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_weight="6"
+                android:paddingTop="@dimen/_3sdp"
+                android:paddingBottom="@dimen/_3sdp"
+                android:text="@string/studs_acce_the_app"
+                android:textColor="@color/colorText"
+                android:textSize="@dimen/_13sdp" />
+
+            <com.pratham.foundation.customView.fontsview.SansTextViewBold
+                android:id="@+id/tv_total_stud_accessed"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_weight="2"
+                android:paddingTop="@dimen/_3sdp"
+                android:paddingBottom="@dimen/_3sdp"
+                android:text=""
+                android:textAlignment="center"
+                android:textColor="@color/colorSignBoard"
+                android:textSize="@dimen/_18sdp" />
+
+            <com.pratham.foundation.customView.fontsview.SansTextView
+                android:id="@+id/btn_total_stud_accessed"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_gravity="center"
+                android:layout_marginTop="@dimen/_2sdp"
+                android:layout_marginBottom="@dimen/_2sdp"
+                android:layout_weight="2"
+                android:drawableEnd="@drawable/ic_right_arrow"
+                android:drawablePadding="@dimen/_5sdp"
+                android:elevation="@dimen/_3sdp"
+                android:gravity="center"
+                android:text="@string/view_details"
+                android:textColor="@color/colorText" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/_15sdp"
+            android:layout_marginTop="@dimen/_5sdp"
+            android:layout_marginEnd="@dimen/_15sdp"
+            android:orientation="horizontal"
+            android:weightSum="10">
+
+            <com.pratham.foundation.customView.fontsview.SansTextView
+                android:id="@+id/tv_total_stud_registered_lbl"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_weight="6"
+                android:paddingTop="@dimen/_3sdp"
+                android:paddingBottom="@dimen/_3sdp"
+                android:text="@string/studs_reg_the_app"
+                android:textColor="@color/colorText"
+                android:textSize="@dimen/_13sdp" />
+
+            <com.pratham.foundation.customView.fontsview.SansTextViewBold
+                android:id="@+id/tv_total_stud_registered"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_weight="2"
+                android:paddingTop="@dimen/_3sdp"
+                android:paddingBottom="@dimen/_3sdp"
+                android:text=""
+                android:textAlignment="center"
+                android:textColor="@color/colorSignBoard"
+                android:textSize="@dimen/_18sdp" />
+
+            <com.pratham.foundation.customView.fontsview.SansTextView
+                android:id="@+id/btn_total_stud_registered"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_gravity="center"
+                android:layout_marginTop="@dimen/_2sdp"
+                android:layout_marginBottom="@dimen/_2sdp"
+                android:layout_weight="2"
+                android:drawableEnd="@drawable/ic_right_arrow"
+                android:drawablePadding="@dimen/_5sdp"
+                android:elevation="@dimen/_3sdp"
+                android:gravity="center"
+                android:text="@string/view_details"
+                android:textColor="@color/colorText" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/_15sdp"
+            android:layout_marginTop="@dimen/_5sdp"
+            android:layout_marginEnd="@dimen/_15sdp"
+            android:orientation="horizontal"
+            android:weightSum="10">
+
+            <com.pratham.foundation.customView.fontsview.SansTextView
+                android:id="@+id/tv_total_sessions_lbl"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_weight="6"
+                android:paddingTop="@dimen/_3sdp"
+                android:paddingBottom="@dimen/_3sdp"
+                android:text="@string/total_courses"
+                android:textColor="@color/colorText"
+                android:textSize="@dimen/_13sdp" />
+
+            <com.pratham.foundation.customView.fontsview.SansTextViewBold
+                android:id="@+id/tv_total_sessions"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_weight="2"
+                android:paddingTop="@dimen/_3sdp"
+                android:paddingBottom="@dimen/_3sdp"
+                android:text=""
+                android:textAlignment="center"
+                android:textColor="@color/colorSignBoard"
+                android:textSize="@dimen/_18sdp" />
+
+            <com.pratham.foundation.customView.fontsview.SansTextView
+                android:id="@+id/btn_total_sessions"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_gravity="center"
+                android:layout_marginTop="@dimen/_2sdp"
+                android:layout_marginBottom="@dimen/_2sdp"
+                android:layout_weight="2"
+                android:drawableEnd="@drawable/ic_right_arrow"
+                android:visibility="gone"
+                android:drawablePadding="@dimen/_5sdp"
+                android:elevation="@dimen/_3sdp"
+                android:gravity="center"
+                android:text="@string/view_details"
+                android:textColor="@color/colorText" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/_15sdp"
+            android:layout_marginTop="@dimen/_5sdp"
+            android:layout_marginEnd="@dimen/_15sdp"
+            android:orientation="horizontal"
+            android:weightSum="10">
+
+            <com.pratham.foundation.customView.fontsview.SansTextView
+                android:id="@+id/tv_total_groups_lbl"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_weight="6"
+                android:paddingTop="@dimen/_3sdp"
+                android:paddingBottom="@dimen/_3sdp"
+                android:text="@string/total_groups"
+                android:textColor="@color/colorText"
+                android:textSize="@dimen/_13sdp" />
+
+            <com.pratham.foundation.customView.fontsview.SansTextViewBold
+                android:id="@+id/tv_total_groups"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_weight="2"
+                android:paddingTop="@dimen/_3sdp"
+                android:paddingBottom="@dimen/_3sdp"
+                android:text=""
+                android:textAlignment="center"
+                android:textColor="@color/colorSignBoard"
+                android:textSize="@dimen/_18sdp" />
+
+            <com.pratham.foundation.customView.fontsview.SansTextView
+                android:id="@+id/btn_total_groups"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_gravity="center"
+                android:layout_marginTop="@dimen/_2sdp"
+                android:layout_marginBottom="@dimen/_2sdp"
+                android:layout_weight="2"
+                android:drawableEnd="@drawable/ic_right_arrow"
+                android:drawablePadding="@dimen/_5sdp"
+                android:visibility="gone"
+                android:elevation="@dimen/_3sdp"
+                android:gravity="center"
+                android:text="@string/view_details"
+                android:textColor="@color/colorText" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/ll_error_msg"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/_15sdp"
+            android:layout_marginTop="@dimen/_5sdp"
+            android:layout_marginEnd="@dimen/_15sdp"
+            android:orientation="horizontal"
+            android:weightSum="10">
+
+            <com.pratham.foundation.customView.fontsview.SansTextView
+                android:id="@+id/tv_error_msg_lbl"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_weight="4"
+                android:paddingTop="@dimen/_3sdp"
+                android:paddingBottom="@dimen/_3sdp"
+                android:text="@string/error_message"
+                android:textColor="@color/colorText"
+                android:textSize="@dimen/_13sdp" />
+
+            <com.pratham.foundation.customView.fontsview.SansTextView
+                android:id="@+id/tv_error_msg"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="6"
+                android:paddingTop="@dimen/_3sdp"
+                android:paddingBottom="@dimen/_3sdp"
+                android:textAlignment="textStart"
+                android:textColor="@color/colorRed"
+                android:textSize="@dimen/_13sdp" />
+
+        </LinearLayout>
+
+
+        <RelativeLayout
+            android:id="@+id/rl_groups"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/_2sdp"
+            android:layout_weight="1">
+
+            <com.pratham.foundation.customView.fontsview.SansTextViewBold
+                android:id="@+id/tv_groupscount"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="0"
+                android:textAlignment="center"
+                android:textColor="@color/level_3_color"
+                android:textSize="@dimen/_11sdp"
+                tools:ignore="HardcodedText" />
+
+            <com.pratham.foundation.customView.fontsview.SansTextView
+                android:id="@+id/tv_groupscount_lbl"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/tv_groupscount"
+                android:text="Groups Count"
+                android:textAlignment="center"
+                android:textColor="@color/level_3_color"
+                android:textSize="@dimen/_11sdp"
+                tools:ignore="HardcodedText" />
+        </RelativeLayout>
+    </LinearLayout>
+
+    <RelativeLayout
+        android:id="@+id/rl_no_data"
+        android:visibility="gone"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_centerInParent="true">
+
+        <ImageView
+            android:id="@+id/nodata_img"
+            android:layout_width="@dimen/_250sdp"
+            android:layout_height="@dimen/_250sdp"
+            android:layout_above="@id/nodata_tv"
+            android:layout_centerHorizontal="true"
+            android:src="@drawable/no_usage_data" />
+
+        <com.pratham.foundation.customView.fontsview.SansTextViewBold
+            android:id="@+id/nodata_tv"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textAlignment="center"
+            android:layout_alignParentBottom="true"
+            android:layout_marginStart="@dimen/_20sdp"
+            android:layout_marginEnd="@dimen/_20sdp"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:layout_marginBottom="@dimen/_10sdp"
+            android:textSize="@dimen/_18sdp"
+            android:textColor="@color/dark_blue"
+            android:text="@string/no_data_in_sec" />
+    </RelativeLayout>
+
+</RelativeLayout>

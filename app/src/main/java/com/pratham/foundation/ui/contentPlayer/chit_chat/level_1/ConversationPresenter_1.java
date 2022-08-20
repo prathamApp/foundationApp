@@ -1,5 +1,8 @@
 package com.pratham.foundation.ui.contentPlayer.chit_chat.level_1;
 
+import static com.pratham.foundation.utility.FC_Constants.APP_SECTION;
+import static com.pratham.foundation.utility.FC_Constants.sec_Test;
+
 import android.content.Context;
 
 import com.pratham.foundation.BaseActivity;
@@ -25,14 +28,11 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.pratham.foundation.utility.FC_Constants.APP_SECTION;
-import static com.pratham.foundation.utility.FC_Constants.sec_Test;
-
 
 @EBean
 public class ConversationPresenter_1 implements ConversationContract_1.ConversationPresenter_1 {
 
-    private Context context;
+    private final Context context;
     private ConversationContract_1.ConversationView_1 conversationView_1;
     private String resId;
     private String convoTitle;
@@ -254,6 +254,7 @@ public class ConversationPresenter_1 implements ConversationContract_1.Conversat
             score.setScoredMarks(scoredMarks);
             score.setTotalMarks(totalMarks);
             score.setStudentID(FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""));
+            score.setGroupId(FastSave.getInstance().getString(FC_Constants.CURRENT_GROUP_ID, ""));
             score.setStartDateTime(resStartTime);
             score.setDeviceID(deviceId.equals(null) ? "0000" : deviceId);
             score.setEndDateTime(resEndTime);

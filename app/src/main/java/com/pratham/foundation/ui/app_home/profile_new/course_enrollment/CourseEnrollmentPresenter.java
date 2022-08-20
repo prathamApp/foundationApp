@@ -1,5 +1,9 @@
 package com.pratham.foundation.ui.app_home.profile_new.course_enrollment;
 
+import static com.pratham.foundation.utility.FC_Constants.CURRENT_GROUP_ID;
+import static com.pratham.foundation.utility.FC_Constants.CURRENT_STUDENT_ID;
+import static com.pratham.foundation.utility.FC_Constants.newRootParentId;
+
 import android.content.Context;
 
 import com.google.gson.Gson;
@@ -20,9 +24,6 @@ import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Objects;
-
-import static com.pratham.foundation.utility.FC_Constants.CURRENT_STUDENT_ID;
-import static com.pratham.foundation.utility.FC_Constants.newRootParentId;
 
 @EBean
 public class CourseEnrollmentPresenter implements CourseEnrollmentContract.CourseEnrollmentPresenter {
@@ -91,13 +92,23 @@ public class CourseEnrollmentPresenter implements CourseEnrollmentContract.Cours
         viewCE.setLevelList(setLevelList);
     }
 
-    private HashMap<String, List<Model_CourseEnrollment>> coursesPerWeek = new HashMap<>();
+    @Background
+    @Override
+    public void loadCategories(String selectedId) {
+        setLevelList = AppDatabase.getDatabaseInstance(context).getContentTableDao().getLanguages(selectedId,
+                "%" + FastSave.getInstance().getString(CURRENT_STUDENT_ID, "na") + "%"/*,
+                FastSave.getInstance().getString(CURRENT_STUDENT_PROGRAM_ID,"na")*/);
+        viewCE.setCategoryList(setLevelList);
+    }
+
+    private final HashMap<String, List<Model_CourseEnrollment>> coursesPerWeek = new HashMap<>();
 
     @Background
     @Override
     public void addCourseToDb(String week, ContentTable selectedCourse, Calendar startDate, Calendar endDate) {
         boolean isCourseAlreadyEnrolled = false, errorCourse = false;
-        String groupId = FastSave.getInstance().getString(CURRENT_STUDENT_ID, "");
+        String studentId = FastSave.getInstance().getString(CURRENT_STUDENT_ID, "");
+        String groupId = FastSave.getInstance().getString(CURRENT_GROUP_ID, "");
         try {
             List<Model_CourseEnrollment> courseEnrollments = enrolledCoursesFromDb(week, groupId);
             for (Model_CourseEnrollment cen : Objects.requireNonNull(courseEnrollments)) {
@@ -113,37 +124,39 @@ public class CourseEnrollmentPresenter implements CourseEnrollmentContract.Cours
         try {
             if (!isCourseAlreadyEnrolled) {
 //                if (!errorCourse) {
-                    Model_CourseEnrollment courseEnrollment = new Model_CourseEnrollment();
-                    courseEnrollment.setCoachVerificationDate("");
-                    courseEnrollment.setCoachVerified(0);
-                    //add experience as json object string in db
-                    Model_CourseExperience model_courseExperience = new Model_CourseExperience();
-                    model_courseExperience.setAssignments(null);
-                    model_courseExperience.setWords_learnt("");
-                    model_courseExperience.setAssignments_completed("");
-                    model_courseExperience.setAssignments_description("");
-                    model_courseExperience.setCoach_comments("");
-                    model_courseExperience.setCoach_verification_date("");
-                    model_courseExperience.setCoach_image("");
-                    model_courseExperience.setAssignment_submission_date(FC_Utility.getCurrentDateTime());
-                    model_courseExperience.setStatus(FC_Constants.COURSE_NOT_VERIFIED);
-                    model_courseExperience.setSessionId(FastSave.getInstance().getString(FC_Constants.CURRENT_SESSION, ""));
+                Model_CourseEnrollment courseEnrollment = new Model_CourseEnrollment();
+                courseEnrollment.setCoachVerificationDate("");
+                courseEnrollment.setCoachVerified(0);
+                //add experience as json object string in db
+                Model_CourseExperience model_courseExperience = new Model_CourseExperience();
+                model_courseExperience.setAssignments(null);
+                model_courseExperience.setWords_learnt("");
+                model_courseExperience.setAssignments_completed("");
+                model_courseExperience.setAssignments_description("");
+                model_courseExperience.setCoach_comments("");
+                model_courseExperience.setCoach_verification_date("");
+                model_courseExperience.setCoach_image("");
+                model_courseExperience.setAssignment_submission_date(FC_Utility.getCurrentDateTime());
+                model_courseExperience.setStatus(FC_Constants.COURSE_NOT_VERIFIED);
+                model_courseExperience.setSessionId(FastSave.getInstance().getString(FC_Constants.CURRENT_SESSION, ""));
 
-                    courseEnrollment.setCourseExperience("" + new Gson().toJson(model_courseExperience));
-                    courseEnrollment.setCourseDetail(selectedCourse);
-                    courseEnrollment.setCourseId(selectedCourse.getNodeId());
-                    courseEnrollment.setGroupId(groupId);
-                    courseEnrollment.setPlanFromDate(week + " " + startDate.getTime().toString());
-                    courseEnrollment.setPlanToDate(week + " " + endDate.getTime().toString());
-                    courseEnrollment.setSentFlag(0);
-                    if (!selectedLangName.equalsIgnoreCase("na"))
-                        courseEnrollment.setLanguage(selectedLangName);
-                    else
-                        courseEnrollment.setLanguage(FastSave.getInstance().getString(FC_Constants.APP_LANGUAGE, FC_Constants.HINDI));
+                courseEnrollment.setCourseExperience("" + new Gson().toJson(model_courseExperience));
+                courseEnrollment.setCourseDetail(selectedCourse);
+                courseEnrollment.setCourseId(selectedCourse.getNodeId());
+                courseEnrollment.setGroupId(groupId);
+                courseEnrollment.setStudentId(studentId);
+                courseEnrollment.setPlanFromDate(week + " " + startDate.getTime());
+                courseEnrollment.setPlanToDate(week + " " + endDate.getTime());
+                courseEnrollment.setCourseEnrolledDate(FC_Utility.getCurrentDateTime());
+                courseEnrollment.setSentFlag(0);
+                if (!selectedLangName.equalsIgnoreCase("na"))
+                    courseEnrollment.setLanguage(selectedLangName);
+                else
+                    courseEnrollment.setLanguage(FastSave.getInstance().getString(FC_Constants.APP_LANGUAGE, FC_Constants.HINDI));
 
-                    AppDatabase.getDatabaseInstance(context).getCourseDao().insertCourse(courseEnrollment);
-                    viewCE.courseAdded();
-                    BackupDatabase.backup(context);
+                AppDatabase.getDatabaseInstance(context).getCourseDao().insertCourse(courseEnrollment);
+                viewCE.courseAdded();
+                BackupDatabase.backup(context);
 //                } else
 //                    viewCE.courseError();
             } else {
@@ -157,28 +170,38 @@ public class CourseEnrollmentPresenter implements CourseEnrollmentContract.Cours
 
     @Override
     public void getEnrolledCourses() {
-        List<Model_CourseEnrollment> courseEnrollments = AppDatabase.getDatabaseInstance(context).getCourseDao().
-                fetchEnrolledCoursesNew(FastSave.getInstance().getString(CURRENT_STUDENT_ID, ""),
-                        FastSave.getInstance().getString(FC_Constants.APP_LANGUAGE, FC_Constants.HINDI));
-
-        if (courseEnrollments.size() > 0) {
-            for (int i = 0; i < courseEnrollments.size(); i++) {
-                ContentTable contentTable = AppDatabase.getDatabaseInstance(context).getContentTableDao().getContent(courseEnrollments.get(i).getCourseId());
-                if (contentTable != null) {
-                    ContentTable contentTableLearn = AppDatabase.getDatabaseInstance(context).getContentTableDao().getContent(contentTable.getParentId());
-                    ContentTable contentTableSubj = AppDatabase.getDatabaseInstance(context).getContentTableDao().getContent(contentTableLearn.getParentId());
-                    contentTable.setSubject("" + contentTableSubj.getNodeTitle());
-                    courseEnrollments.get(i).setCourseDetail(contentTable);
-                } else {
-                    contentTable = new ContentTable();
-                    contentTable.setSubject(courseEnrollments.get(i).getLanguage());
-                    courseEnrollments.get(i).setCourseDetail(contentTable);
+        try {
+            String studId = FastSave.getInstance().getString(CURRENT_STUDENT_ID, "");
+            String Lang = FastSave.getInstance().getString(FC_Constants.APP_LANGUAGE, FC_Constants.HINDI);
+            List<Model_CourseEnrollment> courseEnrollments = AppDatabase.getDatabaseInstance(context).getCourseDao().
+                    fetchEnrolledCoursesNew(studId, Lang);
+            if (courseEnrollments.size() > 0) {
+                for (int i = 0; i < courseEnrollments.size(); i++) {
+                    ContentTable contentTable = AppDatabase.getDatabaseInstance(context).getContentTableDao().getContent(courseEnrollments.get(i).getCourseId());
+                    if (contentTable != null) {
+                        ContentTable contentTableSubj = new ContentTable();
+                        //TODO changet to selected subject
+                        ContentTable contentTableLearn = AppDatabase.getDatabaseInstance(context).getContentTableDao().getContent(contentTable.getParentId());
+                        if (contentTableLearn.getSubject() != null && contentTableLearn.getSubject().equalsIgnoreCase("Science")) {
+                            ContentTable contentTableSubj1 = AppDatabase.getDatabaseInstance(context).getContentTableDao().getContent(contentTableLearn.getParentId());
+                            contentTableSubj = AppDatabase.getDatabaseInstance(context).getContentTableDao().getContent(contentTableSubj1.getParentId());
+                        } else
+                            contentTableSubj = AppDatabase.getDatabaseInstance(context).getContentTableDao().getContent(contentTableLearn.getParentId());
+                        contentTable.setSubject("" + contentTableSubj.getNodeTitle());
+                        courseEnrollments.get(i).setCourseDetail(contentTable);
+                    } else {
+                        contentTable = new ContentTable();
+                        contentTable.setSubject(courseEnrollments.get(i).getLanguage());
+                        courseEnrollments.get(i).setCourseDetail(contentTable);
+                    }
                 }
+                viewCE.addContentToViewList(courseEnrollments);
+                viewCE.notifyAdapter();
+            } else {
+                viewCE.showNoData();
             }
-            viewCE.addContentToViewList(courseEnrollments);
-            viewCE.notifyAdapter();
-        } else {
-            viewCE.showNoData();
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 

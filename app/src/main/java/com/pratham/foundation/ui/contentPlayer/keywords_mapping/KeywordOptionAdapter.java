@@ -1,5 +1,8 @@
 package com.pratham.foundation.ui.contentPlayer.keywords_mapping;
 
+import static com.pratham.foundation.utility.FC_Constants.APP_SECTION;
+import static com.pratham.foundation.utility.FC_Constants.sec_Test;
+
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.Paint;
@@ -21,9 +24,6 @@ import com.pratham.foundation.utility.FC_Utility;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import static com.pratham.foundation.utility.FC_Constants.APP_SECTION;
-import static com.pratham.foundation.utility.FC_Constants.sec_Test;
 
 public class KeywordOptionAdapter extends RecyclerView.Adapter<KeywordOptionAdapter.Myviewholder> {
     Context context;
@@ -109,7 +109,8 @@ public class KeywordOptionAdapter extends RecyclerView.Adapter<KeywordOptionAdap
                 myviewholder.textView.setPaintFlags(  myviewholder.textView.getPaintFlags() & (~ Paint.STRIKE_THRU_TEXT_FLAG));
             }*/
 
-                if (!presenter.checkAnswerNew(datalist,  myviewholder.textView.getText().toString())) {
+//                if (!presenter.checkAnswerNew(datalist,  myviewholder.textView.getText().toString())) {
+                if (!datalist.get(position).getCorrectAnswer().equalsIgnoreCase("true")) {
                     if(datalist.get(myviewholder.getAdapterPosition()).isIsclicked()){
                         myviewholder.itemView.setBackground(ContextCompat.getDrawable(context, R.drawable.hexagon_red));
                     }else {
@@ -127,12 +128,21 @@ public class KeywordOptionAdapter extends RecyclerView.Adapter<KeywordOptionAdap
             }
             //SHOW HINT
             if(!isClickable && showAnswer){
-                if (!presenter.checkAnswerNew(datalist,  myviewholder.textView.getText().toString())) {
+//                int itemPos = myviewholder.getAdapterPosition();
+//                String myWord = ""+myviewholder.textView.getText().toString().trim();
+//                Log.d("NARUTOUZUMAKI", itemPos+" : "+myWord+".");
+                if (!datalist.get(position).getCorrectAnswer().equalsIgnoreCase("true")) {
                     myviewholder.textView.setTextColor(Color.RED);
                     myviewholder.textView.setPaintFlags(myviewholder.textView.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
                 } else {
                     myviewholder.textView.setPaintFlags(  myviewholder.textView.getPaintFlags() & (~ Paint.STRIKE_THRU_TEXT_FLAG));
                 }
+/*                if (!presenter.checkAnswerNew(datalist, myWord)) {
+                    myviewholder.textView.setTextColor(Color.RED);
+                    myviewholder.textView.setPaintFlags(myviewholder.textView.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
+                } else {
+                    myviewholder.textView.setPaintFlags(  myviewholder.textView.getPaintFlags() & (~ Paint.STRIKE_THRU_TEXT_FLAG));
+                }*/
             }
         }
     }

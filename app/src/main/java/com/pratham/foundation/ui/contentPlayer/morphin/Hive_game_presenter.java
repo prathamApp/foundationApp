@@ -1,5 +1,8 @@
 package com.pratham.foundation.ui.contentPlayer.morphin;
 
+import static com.pratham.foundation.utility.FC_Constants.APP_SECTION;
+import static com.pratham.foundation.utility.FC_Constants.sec_Test;
+
 import android.content.Context;
 
 import com.google.gson.Gson;
@@ -23,9 +26,6 @@ import org.androidannotations.annotations.EBean;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
-
-import static com.pratham.foundation.utility.FC_Constants.APP_SECTION;
-import static com.pratham.foundation.utility.FC_Constants.sec_Test;
 
 @EBean
 public class Hive_game_presenter implements Hive_game_contract.Hive_game_presenter {
@@ -212,6 +212,7 @@ public class Hive_game_presenter implements Hive_game_contract.Hive_game_present
             score.setScoredMarks(scoredMarks);
             score.setTotalMarks(totalMarks);
             score.setStudentID(FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""));
+            score.setGroupId(FastSave.getInstance().getString(FC_Constants.CURRENT_GROUP_ID, ""));
             score.setStartDateTime(resStartTime);
             score.setDeviceID(deviceId.equals(null) ? "0000" : deviceId);
             //score.setEndDateTime(FC_Utility.getCurrentDateTime());

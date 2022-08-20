@@ -103,7 +103,7 @@ public class AddEnrollmentId extends BaseActivity implements AvatarClickListener
     @AfterViews
     public void initialize() {
         mContext = AddEnrollmentId.this;
-        FC_Constants.StudentPhotoPath = ApplicationClass.getStoragePath().toString() + "/.FCAInternal/StudentProfilePhotos/";
+        FC_Constants.StudentPhotoPath = ApplicationClass.getStoragePath().toString() + "/FCAInternal/StudentProfilePhotos/";
         api_content = new API_Content(mContext, AddEnrollmentId.this);
         gson = new Gson();
         addAvatarsInList();
@@ -207,14 +207,14 @@ public class AddEnrollmentId extends BaseActivity implements AvatarClickListener
 
         if (FC_Utility.isDataConnectionAvailable(mContext)) {
             if (et_studentID.getText().toString().equalsIgnoreCase("") || avatarName == null) {
-                Toast.makeText(mContext, "Please fill all the details...", Toast.LENGTH_SHORT).show();
+                Toast.makeText(mContext, ""+getResources().getString(R.string.please_fill_details), Toast.LENGTH_SHORT).show();
             } else {
                 showLoader();
                 String myUrl = STUDENT_BY_ENROLLMENT_NO_API + et_studentID.getText().toString();
                 api_content.getStudentByEnrollmentNo(STUDENT_BY_ENROLLMENT_NO, myUrl);
             }
         }else
-            Toast.makeText(mContext, "Please connect to internet...", Toast.LENGTH_SHORT).show();
+            Toast.makeText(mContext, ""+getResources().getString(R.string.connect_to_internet), Toast.LENGTH_SHORT).show();
     }
 
     private boolean loaderVisible = false;
@@ -249,11 +249,12 @@ public class AddEnrollmentId extends BaseActivity implements AvatarClickListener
     @Click(R.id.btn_back)
     public void pressedBackButton() {
         SplashActivity.fragmentAddStudentOpenFlg = false;
-//        try {
+        try {
+            ApplicationClass.vibrator.vibrate(60);
 //            BackBtnSound.start();
-//        } catch (IllegalStateException e) {
-//            e.printStackTrace();
-//        }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         finish();
         EventMessage message = new EventMessage();
         message.setMessage("reload");
@@ -288,7 +289,7 @@ public class AddEnrollmentId extends BaseActivity implements AvatarClickListener
                     dismissLoadingDialog();
                 } else {
                     dismissLoadingDialog();
-                    Toast.makeText(mContext, "Wrong Enrollment id", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(mContext, ""+getResources().getString(R.string.wrong_enrollment_id), Toast.LENGTH_SHORT).show();
                 }
             } catch (Exception e) {
                 dismissLoadingDialog();
@@ -305,6 +306,7 @@ public class AddEnrollmentId extends BaseActivity implements AvatarClickListener
             studentDialog = new BlurPopupWindow.Builder(mContext)
                     .setContentView(R.layout.student_details_dialog)
                     .bindClickListener(v -> {
+                        ApplicationClass.vibrator.vibrate(60);
                         new Handler().postDelayed(() -> {
                             addStudentData(enrollmentModel);
                             studentDialog.dismiss();
@@ -346,7 +348,7 @@ public class AddEnrollmentId extends BaseActivity implements AvatarClickListener
             tv_name_str.setText(name);
             studentDialog.show();
         }catch (Exception e){
-            Toast.makeText(mContext, "Problem pulling student", Toast.LENGTH_SHORT).show();
+            Toast.makeText(mContext, ""+getResources().getString(R.string.problem_pulling_stud), Toast.LENGTH_SHORT).show();
             e.printStackTrace();}
     }
 
@@ -363,6 +365,7 @@ public class AddEnrollmentId extends BaseActivity implements AvatarClickListener
                     model_courseEnrollment.setPlanFromDate(enrollmentModel.getLstCourseEnroll().get(v).getPlanFromDate());
                     model_courseEnrollment.setPlanToDate(enrollmentModel.getLstCourseEnroll().get(v).getPlanToDate());
                     model_courseEnrollment.setLanguage(enrollmentModel.getLstCourseEnroll().get(v).getLanguage());
+                    model_courseEnrollment.setCourseEnrolledDate(FC_Utility.getCurrentDate());
                     model_courseEnrollment.setSentFlag(1);
                     courseEnrollmentList.add(model_courseEnrollment);
                 }
@@ -373,11 +376,13 @@ public class AddEnrollmentId extends BaseActivity implements AvatarClickListener
                 student.setStudentID(enrollmentModel.getLstStudent().get(0).getStudentId());
                 student.setFullName(enrollmentModel.getLstStudent().get(0).getFullName());
                 student.setMiddleName("PS");
+                student.setEnrollmentId(enrollmentModel.getLstStudent().get(0).getStudentEnrollment());
                 student.setLastName(enrollmentModel.getLstStudent().get(0).getStudentEnrollment());
                 student.setStud_Class(enrollmentModel.getLstStudent().get(0).getStudClass());
                 student.setAge(enrollmentModel.getLstStudent().get(0).getAge());
                 student.setGender(enrollmentModel.getLstStudent().get(0).getGender());
                 student.setGroupId(enrollmentModel.getLstStudent().get(0).getGroupId());
+                student.setRegDate(FC_Utility.getCurrentDateTime());
                 student.setGroupName(enrollmentModel.getLstStudent().get(0).getGroupName());
 //                student.setProgramId(""+enrollmentModel.getProgramId());
                 for (int i = 0; i < avatarList.size(); i++)
@@ -394,7 +399,9 @@ public class AddEnrollmentId extends BaseActivity implements AvatarClickListener
                 groups.setGroupCode(enrollmentModel.getGroupCode());
                 groups.setSchoolName(enrollmentModel.getSchoolName());
                 groups.setVIllageName(enrollmentModel.getGroupEnrollment());
-                groups.setProgramId(enrollmentModel.getProgramId());
+                groups.setEnrollmentId(enrollmentModel.getGroupEnrollment());
+                groups.setRegDate(FC_Utility.getCurrentDateTime());
+                groups.setSentFlag(0);
                 groups.setDeviceId(deviceID);
                 AppDatabase.getDatabaseInstance(this).getGroupsDao().insert(groups);
                 List<Student> studentList = new ArrayList<>();
@@ -402,11 +409,13 @@ public class AddEnrollmentId extends BaseActivity implements AvatarClickListener
                     Student student = new Student();
                     student.setStudentID(enrollmentModel.getLstStudent().get(i).getStudentId());
                     student.setFullName(enrollmentModel.getLstStudent().get(i).getFullName());
+                    student.setEnrollmentId(enrollmentModel.getLstStudent().get(i).getStudentEnrollment());
                     student.setLastName(enrollmentModel.getLstStudent().get(i).getStudentEnrollment());
                     student.setStud_Class(enrollmentModel.getLstStudent().get(i).getStudClass());
                     student.setAge(enrollmentModel.getLstStudent().get(i).getAge());
                     student.setGender(enrollmentModel.getLstStudent().get(i).getGender());
                     student.setGroupId(enrollmentModel.getLstStudent().get(i).getGroupId());
+                    student.setRegDate(FC_Utility.getCurrentDateTime());
                     student.setGroupName(enrollmentModel.getLstStudent().get(i).getGroupName());
 //                    student.setProgramId(""+enrollmentModel.getProgramId());
                     student.setDeviceId(deviceID);
@@ -416,7 +425,7 @@ public class AddEnrollmentId extends BaseActivity implements AvatarClickListener
             }
             dismissLoadingDialog();
             BackupDatabase.backup(mContext);
-            Toast.makeText(mContext, "Profile created Successfully..", Toast.LENGTH_SHORT).show();
+            Toast.makeText(mContext, ""+getResources().getString(R.string.profile_created_successfully), Toast.LENGTH_SHORT).show();
 //        splashInterface.onChildAdded();
         } catch (Exception e) {
             dismissLoadingDialog();
@@ -428,6 +437,6 @@ public class AddEnrollmentId extends BaseActivity implements AvatarClickListener
 
     @Override
     public void receivedError(String header) {
-        Toast.makeText(mContext, "Something went wrong. Please try again", Toast.LENGTH_SHORT).show();
+        Toast.makeText(mContext, ""+getResources().getString(R.string.oops), Toast.LENGTH_SHORT).show();
     }
 }

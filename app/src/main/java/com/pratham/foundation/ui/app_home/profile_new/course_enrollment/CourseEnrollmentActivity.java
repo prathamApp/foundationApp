@@ -1,5 +1,10 @@
 package com.pratham.foundation.ui.app_home.profile_new.course_enrollment;
 
+import static com.pratham.foundation.utility.FC_Constants.GROUP_MODE;
+import static com.pratham.foundation.utility.FC_Constants.INDIVIDUAL_MODE;
+import static com.pratham.foundation.utility.FC_Constants.QR_GROUP_MODE;
+import static com.pratham.foundation.utility.FC_Utility.dpToPx;
+
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Handler;
@@ -42,11 +47,6 @@ import java.util.Calendar;
 import java.util.List;
 import java.util.Objects;
 
-import static com.pratham.foundation.utility.FC_Constants.GROUP_MODE;
-import static com.pratham.foundation.utility.FC_Constants.INDIVIDUAL_MODE;
-import static com.pratham.foundation.utility.FC_Constants.QR_GROUP_MODE;
-import static com.pratham.foundation.utility.FC_Utility.dpToPx;
-
 @EActivity(R.layout.activity_course_enrollment)
 public class CourseEnrollmentActivity extends BaseActivity implements
         CourseEnrollmentContract.CourseEnrollmentView {
@@ -64,6 +64,8 @@ public class CourseEnrollmentActivity extends BaseActivity implements
     Spinner learning_spinner;
     @ViewById(R.id.level_spinner)
     Spinner level_spinner;
+    @ViewById(R.id.category_spinner)
+    Spinner category_spinner;
     @ViewById(R.id.rl_calendar_view)
     RelativeLayout rl_calendar_view;
     @ViewById(R.id.rl_no_data)
@@ -79,11 +81,13 @@ public class CourseEnrollmentActivity extends BaseActivity implements
     @ViewById(R.id.course_recycler_view)
     RecyclerView my_recycler_view;
 
-    private List<ContentTable> boardList, langList, subjList, tabList, levelList;
+    private List<ContentTable> boardList, langList, subjList, tabList, levelList,categoryList;
     int levelPos = 0;
-    String selectedBoardId, selectedLangId, selectedSubjectId, selectedTabId, selectedLevelId,selectedLangName;
+    String selectedBoardId, selectedLangId, selectedSubjectId, selectedTabId,
+            selectedLevelId, selectedLangName, selectedCategoryId;
     ContentTable selectedCourse;
     List<Model_CourseEnrollment> courseEnrolled;
+    boolean categoryFlg = false;
 
     @AfterViews
     public void initialize() {
@@ -92,6 +96,7 @@ public class CourseEnrollmentActivity extends BaseActivity implements
         courseEnrolled = new ArrayList<>();
         setProfileName();
         showLoader();
+        categoryFlg = false;
         presenter.getEnrolledCourses();
     }
 
@@ -286,13 +291,10 @@ public class CourseEnrollmentActivity extends BaseActivity implements
             subject_spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                 @Override
                 public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-//                    disableSaveButton();
-//                    if (position <= 0) {
-//                        presenter.clearLists();
-//                    } else {
+                    categoryFlg = subjList.get(position).getSubject() != null &&
+                            subjList.get(position).getSubject().equalsIgnoreCase("Science");
                     selectedSubjectId = subjList.get(position).getNodeId();
                     presenter.loadTabs(selectedSubjectId);
-//                    }
                 }
 
                 @Override
@@ -357,7 +359,46 @@ public class CourseEnrollmentActivity extends BaseActivity implements
                 public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                     levelPos = position;
                     selectedLevelId = levelList.get(position).getNodeId();
-                    selectedCourse = levelList.get(position);
+                    if (categoryFlg){
+                        category_spinner.setVisibility(View.VISIBLE);
+                        date_btn.setVisibility(View.GONE);
+                        presenter.loadCategories(selectedLevelId);
+                    }else {
+                        category_spinner.setVisibility(View.GONE);
+                        selectedCourse = levelList.get(position);
+                        date_btn.setVisibility(View.VISIBLE);
+                    }
+                }
+
+                @Override
+                public void onNothingSelected(AdapterView<?> parent) {
+                }
+            });
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    @UiThread
+    @Override
+    public void setCategoryList(List<ContentTable> categoryList) {
+        try {
+            this.categoryList = categoryList;
+            List<String> prgrms = new ArrayList<>();
+            for (ContentTable mp : categoryList) {
+                prgrms.add(mp.getNodeTitle());
+            }
+            category_spinner.setVisibility(View.VISIBLE);
+            closeProgressDialog();
+            ArrayAdapter arrayStateAdapter = new ArrayAdapter(this, R.layout.custom_spinner, prgrms);
+            arrayStateAdapter.setDropDownViewResource(R.layout.custom_spinner);
+            category_spinner.setAdapter(arrayStateAdapter);
+            category_spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                @Override
+                public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                    levelPos = position;
+                    selectedCategoryId = categoryList.get(position).getNodeId();
+                    selectedCourse = categoryList.get(position);
                     date_btn.setVisibility(View.VISIBLE);
                 }
 

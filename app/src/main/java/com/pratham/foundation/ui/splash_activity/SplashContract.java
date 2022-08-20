@@ -54,7 +54,7 @@ public interface SplashContract {
 
         void populateSDCardMenu();
 
-        void setView(SplashContract.SplashView splashView);
+        void setView(SplashView splashView);
 
 //        void insertNewData();
 

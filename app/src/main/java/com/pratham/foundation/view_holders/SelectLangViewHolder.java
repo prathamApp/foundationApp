@@ -1,5 +1,7 @@
 package com.pratham.foundation.view_holders;
 
+import static com.pratham.foundation.ApplicationClass.getInstance;
+
 import android.annotation.SuppressLint;
 import android.net.Uri;
 import android.view.View;
@@ -27,8 +29,6 @@ import com.pratham.foundation.utility.FC_Constants;
 
 import java.util.Objects;
 
-import static com.pratham.foundation.ApplicationClass.getInstance;
-
 public class SelectLangViewHolder extends RecyclerView.ViewHolder {
 
     @Nullable
@@ -36,9 +36,9 @@ public class SelectLangViewHolder extends RecyclerView.ViewHolder {
     @Nullable
     RelativeLayout rl_lang_select;
 
-    private SelectLangContract.LangItemClicked contentClicked;
+    private final SelectLangContract.LangItemClicked contentClicked;
     private FragmentItemClicked itemClicked;
-    private SimpleDraweeView content_image;
+    private final SimpleDraweeView content_image;
 
     public SelectLangViewHolder(View itemView, final SelectLangContract.LangItemClicked contentClicked) {
         super(itemView);

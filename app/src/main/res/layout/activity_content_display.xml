@@ -37,6 +37,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_below="@+id/main_back"
+            android:layout_marginTop="@dimen/_2sdp"
             android:layout_marginStart="@dimen/_15sdp"
             android:layout_toStartOf="@+id/right_col">
 
@@ -53,7 +54,7 @@
                 android:singleLine="true"
                 android:text=""
                 android:textColor="@color/dark_blue"
-                android:textSize="@dimen/_20sdp" />
+                android:textSize="@dimen/_18sdp" />
 
             <LinearLayout
                 android:id="@+id/ll_topic_parent"
@@ -63,21 +64,11 @@
                 android:gravity="center_vertical"
                 android:orientation="horizontal">
 
-                <com.pratham.foundation.customView.fontsview.SansTextView
-                    android:id="@+id/tv_Activity"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="@dimen/_10sdp"
-                    android:gravity="center"
-                    android:text="Name"
-                    android:textColor="@color/oslo_grey"
-                    android:textSize="@dimen/_16sdp" />
-
                 <com.pratham.foundation.customView.fontsview.SansTextViewBold
                     android:id="@+id/tv_header_progress"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/_5sdp"
+                    android:layout_marginEnd="@dimen/_5sdp"
                     android:background="@drawable/progress_background2"
                     android:paddingStart="@dimen/_8sdp"
                     android:paddingEnd="@dimen/_8sdp"
@@ -85,6 +76,18 @@
                     android:textColor="@color/white"
                     android:textSize="@dimen/_10sdp"
                     android:visibility="visible" />
+
+                <com.pratham.foundation.customView.fontsview.SansTextView
+                    android:id="@+id/tv_Activity"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/_5sdp"
+                    android:layout_marginEnd="@dimen/_5sdp"
+                    android:gravity="center_vertical"
+                    android:text="Name"
+                    android:textColor="@color/oslo_grey"
+                    android:textSize="@dimen/_14sdp" />
+
             </LinearLayout>
         </RelativeLayout>
 

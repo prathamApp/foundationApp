@@ -53,6 +53,9 @@ import com.pratham.foundation.customView.BlurPopupDialog.BlurPopupWindow;
 import com.pratham.foundation.customView.GridSpacingItemDecoration;
 import com.pratham.foundation.customView.display_image_dialog.CustomLodingDialog;
 import com.pratham.foundation.customView.progress_layout.ProgressLayout;
+import com.pratham.foundation.customView.showcaseviewlib.GuideView;
+import com.pratham.foundation.customView.showcaseviewlib.config.DismissType;
+import com.pratham.foundation.customView.showcaseviewlib.listener.GuideListener;
 import com.pratham.foundation.database.AppDatabase;
 import com.pratham.foundation.database.BackupDatabase;
 import com.pratham.foundation.database.domain.ContentTable;
@@ -63,6 +66,7 @@ import com.pratham.foundation.services.shared_preferences.FastSave;
 import com.pratham.foundation.ui.app_home.learning_fragment.attendance_bottom_fragment.AttendanceBottomFragment;
 import com.pratham.foundation.ui.app_home.learning_fragment.attendance_bottom_fragment.AttendanceBottomFragment_;
 import com.pratham.foundation.ui.contentPlayer.ContentPlayerActivity_;
+import com.pratham.foundation.ui.contentPlayer.image_resource.DisplayImageActivity_;
 import com.pratham.foundation.ui.contentPlayer.matchingPairGame.MatchThePairGameActivity;
 import com.pratham.foundation.ui.contentPlayer.old_cos.conversation.ConversationActivity_;
 import com.pratham.foundation.ui.contentPlayer.old_cos.reading_cards.ReadingCardsActivity_;
@@ -131,6 +135,8 @@ public class ContentDisplay extends BaseActivity implements ContentContract.Cont
     RelativeLayout homeRoot;
     @ViewById(R.id.header_rl)
     RelativeLayout header_rl;
+    @ViewById(R.id.iv_refresh)
+    ImageView iv_refresh;
     //    @ViewById(R.id.tv_progress)
 //    TextView tv_progress;
 //    @ViewById(R.id.card_progressLayout)
@@ -194,6 +200,44 @@ public class ContentDisplay extends BaseActivity implements ContentContract.Cont
 //        add node for maintaining list
 //        get child node and display
         presenter.getListData();
+        if (!FastSave.getInstance().getBoolean(FC_Constants.CONTENT_DISPLAY_SHOWCASE, false))
+            setShowcaseView();
+    }
+
+    private GuideView.Builder builder;
+    private GuideView mGuideView;
+
+    @UiThread
+    public void setShowcaseView() {
+        builder = new GuideView.Builder(this)
+                .setTitle(getResources().getString(R.string.back_button))
+                .setContentText(getResources().getString(R.string.back_button_msg))
+                .setDismissType(DismissType.selfView) //optional - default dismissible by TargetView
+                .setTargetView(main_back)
+                .setGuideListener(new GuideListener() {
+                    @Override
+                    public void onDismiss(View view) {
+                        switch (view.getId()) {
+                            case R.id.main_back:
+                                builder.setTitle(getResources().getString(R.string.progress));
+                                builder.setContentText(getResources().getString(R.string.Your_Progress_will));
+                                builder.setTargetView(tv_header_progress).build();
+                                break;
+                            case R.id.tv_header_progress:
+                                builder.setTitle(getResources().getString(R.string.refresh));
+                                builder.setContentText(getResources().getString(R.string.refresh_msg));
+                                builder.setTargetView(iv_refresh).build();
+                                break;
+                            case R.id.iv_refresh:
+                                return;
+                        }
+                        mGuideView = builder.build();
+                        mGuideView.show();
+                    }
+                });
+        mGuideView = builder.build();
+        mGuideView.show();
+        FastSave.getInstance().saveBoolean(FC_Constants.CONTENT_DISPLAY_SHOWCASE, true);
     }
 
     @Override
@@ -204,7 +248,7 @@ public class ContentDisplay extends BaseActivity implements ContentContract.Cont
 
     @SuppressLint("SetTextI18n")
     private void changeBG(/*int levelNo*/) {
-        Log.d("CURRENT_LEVEL_NAME", "changeBG: "+FastSave.getInstance().getString(FC_Constants.CURRENT_LEVEL_NAME, ""));
+        Log.d("CURRENT_LEVEL_NAME", "changeBG: " + FastSave.getInstance().getString(FC_Constants.CURRENT_LEVEL_NAME, ""));
         tv_level.setText("" + FastSave.getInstance().getString(FC_Constants.CURRENT_LEVEL_NAME, ""));
 //        set level no
 //        iv_level.setBackground(getResources().getDrawable(R.drawable.home_footer_3_bg));
@@ -221,7 +265,7 @@ public class ContentDisplay extends BaseActivity implements ContentContract.Cont
     @UiThread
     @Override
     public void setHeaderProgress(int percent) {
-        if(percent>100)
+        if (percent > 100)
             percent = 100;
         tv_header_progress.setText("" + percent + "%");
 //        level_progress.setCurProgress(percent);
@@ -235,7 +279,12 @@ public class ContentDisplay extends BaseActivity implements ContentContract.Cont
     @UiThread
     @Override
     public void addContentToViewList(List<ContentTable> contentTable) {
-        ContentTableList.addAll(contentTable);
+        try {
+            ContentTableList.clear();
+            ContentTableList.addAll(contentTable);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     @Click(R.id.profileImage)
@@ -268,6 +317,7 @@ public class ContentDisplay extends BaseActivity implements ContentContract.Cont
     @UiThread
     @Click({R.id.iv_refresh, R.id.refresh_shd})
     public void levelRefresh() {
+        ApplicationClass.vibrator.vibrate(60);
         onResume();
     }
 
@@ -341,7 +391,7 @@ public class ContentDisplay extends BaseActivity implements ContentContract.Cont
     public void onContentClicked(int position, String nId) {
         try {
             ButtonClickSound.start();
-        } catch (IllegalStateException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
         ContentTableList.clear();
@@ -350,7 +400,7 @@ public class ContentDisplay extends BaseActivity implements ContentContract.Cont
     }
 
     @Override
-    public void onTestAddedToDb (ContentTable itemContent) {
+    public void onTestAddedToDb(ContentTable itemContent) {
         FC_Constants.AssLang = itemContent.getContentLanguage();
         FC_Constants.examId = itemContent.getNodeKeywords();
         if (FastSave.getInstance().getString(FC_Constants.LOGIN_MODE, GROUP_MODE).equalsIgnoreCase(GROUP_MODE)) {
@@ -363,8 +413,11 @@ public class ContentDisplay extends BaseActivity implements ContentContract.Cont
                 String profileName = "";
                 profileName = AppDatabase.getDatabaseInstance(this).getStudentDao().getFullName(FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""));
 
+                String currentFolder = FastSave.getInstance().getString(FC_Constants.CURRENT_FOLDER_NAME, currentSubjectFolder);
+                String subjectName = FastSave.getInstance().getString(FC_Constants.CURRENT_SUBJECT, "");
+                String subjectLanguage = itemContent.getNodeKeywords();
+
                 Bundle bundle = new Bundle();
-                FastSave.getInstance().getString(FC_Constants.CURRENT_FOLDER_NAME, currentSubjectFolder);
 
                 bundle.putString("appName", "" + getResources().getString(R.string.app_name));
                 bundle.putString("studentId", "" + FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""));
@@ -374,6 +427,7 @@ public class ContentDisplay extends BaseActivity implements ContentContract.Cont
                 bundle.putString("examId", "" + itemContent.getNodeKeywords());
                 bundle.putString("currentSessionId", "" + FastSave.getInstance().getString(FC_Constants.CURRENT_SESSION, ""));
                 bundle.putString("subjectLevel", "" + currentLevel);
+                bundle.putString("studentGroupId", "NA");
                 Intent launchIntent = new Intent("com.pratham.assessment.ui.choose_assessment.science.ScienceAssessmentActivity_");
                 Objects.requireNonNull(launchIntent).putExtras(bundle);
                 presenter.addScoreToDB(itemContent.getNodeKeywords());
@@ -397,10 +451,13 @@ public class ContentDisplay extends BaseActivity implements ContentContract.Cont
     public void onTestContentClicked(int posi, ContentTable itemContent) {
         try {
             ButtonClickSound.start();
-        } catch (IllegalStateException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
-        presenter.addAssessmentToDb(itemContent);
+        if (!ApplicationClass.wiseF.isDeviceConnectedToSSID(FC_Constants.PRATHAM_RASPBERRY_PI)) {
+            presenter.addAssessmentToDb(itemContent);
+        } else
+            onTestAddedToDb(itemContent);
     }
 
     @Override
@@ -474,7 +531,7 @@ public class ContentDisplay extends BaseActivity implements ContentContract.Cont
     public void onPreResOpenClicked(int position, String nId, String title, boolean onSDCard) {
         try {
             ButtonClickSound.start();
-        } catch (IllegalStateException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
         String sdStatus = "F";
@@ -493,11 +550,11 @@ public class ContentDisplay extends BaseActivity implements ContentContract.Cont
 
     @Override
     public void onContentOpenClicked(int position, String nodeId) {
-//        contentopenClicked
+//        contentopenClickedContentTableList = {ArrayList@13223}  size = 2
 //        check the type of resource and open the respective activity
         try {
             ButtonClickSound.start();
-        } catch (IllegalStateException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
         resName = ContentTableList.get(position).getNodeTitle();
@@ -510,7 +567,7 @@ public class ContentDisplay extends BaseActivity implements ContentContract.Cont
             Intent mainNew = new Intent(ContentDisplay.this, ContentPlayerActivity_.class);
             mainNew.putExtra("nodeID", ContentTableList.get(position).getNodeId());
             mainNew.putExtra("title", ContentTableList.get(position).getNodeTitle());
-            mainNew.putExtra("onSDCard",  ContentTableList.get(position).isOnSDCard());
+            mainNew.putExtra("onSDCard", ContentTableList.get(position).isOnSDCard());
             mainNew.putExtra("sdStatus", sdStatus);
             startActivity(mainNew);
 
@@ -676,8 +733,8 @@ public class ContentDisplay extends BaseActivity implements ContentContract.Cont
                 intent1.putExtra("onSdCard", ContentTableList.get(position).isOnSDCard());
                 intent1.putExtra("dia", "NA");
                 startActivity(intent1);
-            } else if (ContentTableList.get(position).getResourceType().equalsIgnoreCase("PDF_ZOOM")
-                    || ContentTableList.get(position).getResourceType().equalsIgnoreCase("PDF_new")) {
+            } else if (ContentTableList.get(position).getResourceType().equalsIgnoreCase(FC_Constants.PDF_NEW)
+                    || ContentTableList.get(position).getResourceType().equalsIgnoreCase(FC_Constants.PDF_ZOOM)) {
                 String sdStatus = "F";
                 if (ContentTableList.get(position).isOnSDCard())
                     sdStatus = "T";
@@ -690,6 +747,19 @@ public class ContentDisplay extends BaseActivity implements ContentContract.Cont
                 intent1.putExtra("onSdCard", ContentTableList.get(position).isOnSDCard());
                 intent1.putExtra("dia", "NA");
                 startActivity(intent1);
+            } else if (ContentTableList.get(position).getResourceType().equalsIgnoreCase(FC_Constants.IMAGE_RES)) {
+                String sdStatus = "F";
+                if (ContentTableList.get(position).isOnSDCard())
+                    sdStatus = "T";
+//                Intent intent1 = new Intent(context, Fragment_PdfViewer_.class);
+                Intent intent2 = new Intent(this, DisplayImageActivity_.class);
+                intent2.putExtra("contentPath", ContentTableList.get(position).getResourcePath());
+                intent2.putExtra("StudentID", FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""));
+                intent2.putExtra("resId", ContentTableList.get(position).getResourceId());
+                intent2.putExtra("contentName", ContentTableList.get(position).getNodeTitle());
+                intent2.putExtra("onSdCard", ContentTableList.get(position).isOnSDCard());
+                intent2.putExtra("dia", "NA");
+                startActivity(intent2);
             } else {
                 String sdStatus = "F";
                 if (ContentTableList.get(position).isOnSDCard())
@@ -710,6 +780,7 @@ public class ContentDisplay extends BaseActivity implements ContentContract.Cont
     }
 
     BlurPopupWindow changeDateDialog;
+
     @SuppressLint("SetTextI18n")
     @UiThread
     public void showChangeDateDialog(String newDate, String sTime) {
@@ -767,21 +838,28 @@ public class ContentDisplay extends BaseActivity implements ContentContract.Cont
     @Override
     public void onContentDownloadClicked(int position, String nodeId) {
         if (!IS_DOWNLOADING) {
-            showLoader();
+            if (FC_Utility.isDataConnectionAvailable(ContentDisplay.this)) {
+                showLoader();
 //        content download clicked
-            try {
-                ButtonClickSound.start();
-            } catch (IllegalStateException e) {
-                e.printStackTrace();
-            }
+                try {
+                    ButtonClickSound.start();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
 //        gather info
-            DOWNLOAD_NODE_ID = "" + nodeId;
+                DOWNLOAD_NODE_ID = "" + nodeId;
 //        ContentTableList.get(position).setIsDownloading("true");
 //        contentAdapter.notifyItemChanged(position, ContentTableList);
-            resName = ContentTableList.get(position).getNodeTitle();
-            resServerImageName = ContentTableList.get(position).getNodeServerImage();
-            tempDownloadPos = position;
-            if (FC_Utility.isDataConnectionAvailable(ContentDisplay.this)) {
+                resName = ContentTableList.get(position).getNodeTitle();
+                if (ApplicationClass.wiseF.isDeviceConnectedToSSID(FC_Constants.PRATHAM_RASPBERRY_PI)) {
+                    String fileName = ContentTableList.get(position).getNodeServerImage()
+                            .substring(ContentTableList.get(position).getNodeServerImage().lastIndexOf('/') + 1);
+                    resServerImageName = FC_Constants.RASP_IP + FC_Constants.RASP_LOCAL_IMAGES + fileName;
+                } else {
+                    resServerImageName = ContentTableList.get(position).getNodeServerImage();
+                }
+//                resServerImageName = ContentTableList.get(position).getNodeServerImage();
+                tempDownloadPos = position;
                 presenter.downloadResource(DOWNLOAD_NODE_ID, ContentTableList.get(position));
             } else
                 Toast.makeText(this, "No Internet Connection", Toast.LENGTH_SHORT).show();
@@ -793,7 +871,7 @@ public class ContentDisplay extends BaseActivity implements ContentContract.Cont
     public void onContentDeleteClicked(int position, ContentTable contentList) {
         try {
             ButtonClickSound.start();
-        } catch (IllegalStateException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
@@ -824,7 +902,7 @@ public class ContentDisplay extends BaseActivity implements ContentContract.Cont
         } catch (Exception e) {
             e.printStackTrace();
         }
-        tv_title.setText("Delete\n" + contentTableItem.getNodeTitle()+" ?");
+        tv_title.setText("Delete\n" + contentTableItem.getNodeTitle() + " ?");
         dialog.show();
 
         dia_btn_no.setOnClickListener(v -> dialog.dismiss());
@@ -844,8 +922,9 @@ public class ContentDisplay extends BaseActivity implements ContentContract.Cont
     @Override
     public void onBackPressed() {
         try {
+            ApplicationClass.vibrator.vibrate(60);
             BackBtnSound.start();
-        } catch (IllegalStateException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
         if (presenter.removeLastNodeId()) {
@@ -885,7 +964,7 @@ public class ContentDisplay extends BaseActivity implements ContentContract.Cont
                     .build();
             iv_file_trans.setController(controller);
         }
-        dialog_file_name.setText("" + resName);
+        dialog_file_name.setText("" + resName+fileSize);
         progressLayout.setCurProgress(modal_fileDownloading.getProgress());
         downloadDialog.show();
     }
@@ -938,6 +1017,14 @@ public class ContentDisplay extends BaseActivity implements ContentContract.Cont
             }
         }
         fileDownloadingList.remove(index);
+    }
+
+    String fileSize = "";
+
+    @UiThread
+    @Override
+    public void setDownloadSize(String fileSize){
+        this.fileSize = fileSize;
     }
 
     @UiThread

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.pratham.foundation.customView.fontsview.SansTextViewBold
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/result_list_item"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_alignParentTop="true"
+    android:layout_marginStart="@dimen/_10sdp"
+    android:layout_marginTop="@dimen/_5sdp"
+    android:layout_marginEnd="@dimen/_10sdp"
+    android:layout_marginBottom="@dimen/_2sdp"
+    android:paddingTop="@dimen/_5sdp"
+    android:paddingBottom="@dimen/_5sdp"
+    android:paddingStart="@dimen/_5sdp"
+    android:paddingEnd="@dimen/_5sdp"
+    android:singleLine="true"
+    android:text="download item"
+    android:textColor="@color/dark_blue"
+    android:textSize="@dimen/_12sdp" />

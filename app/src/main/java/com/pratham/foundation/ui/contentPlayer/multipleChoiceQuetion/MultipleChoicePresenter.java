@@ -1,5 +1,8 @@
 package com.pratham.foundation.ui.contentPlayer.multipleChoiceQuetion;
 
+import static com.pratham.foundation.utility.FC_Constants.APP_SECTION;
+import static com.pratham.foundation.utility.FC_Constants.sec_Test;
+
 import android.content.Context;
 
 import com.google.gson.Gson;
@@ -29,9 +32,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import static com.pratham.foundation.utility.FC_Constants.APP_SECTION;
-import static com.pratham.foundation.utility.FC_Constants.sec_Test;
-
 @EBean
 public class MultipleChoicePresenter implements MultipleChoiceContract.MultipleChoicePresenter {
     private List<ScienceQuestion> dataList;
@@ -40,7 +40,7 @@ public class MultipleChoicePresenter implements MultipleChoiceContract.MultipleC
     private String resId;
     private float perc;
     private MultipleChoiceContract.MultipleChoiceView view;
-    private Context context;
+    private final Context context;
     private List<ScienceQuestionChoice> correctWordList, wrongWordList;
 
     public MultipleChoicePresenter(Context context) {
@@ -225,6 +225,7 @@ public class MultipleChoicePresenter implements MultipleChoiceContract.MultipleC
             score.setScoredMarks(scoredMarks);
             score.setTotalMarks(totalMarks);
             score.setStudentID(FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""));
+            score.setGroupId(FastSave.getInstance().getString(FC_Constants.CURRENT_GROUP_ID, ""));
             score.setStartDateTime(resStartTime);
             score.setDeviceID(deviceId.equals(null) ? "0000" : deviceId);
             score.setEndDateTime(resEndTime);

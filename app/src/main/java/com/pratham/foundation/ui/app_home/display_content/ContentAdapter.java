@@ -1,5 +1,8 @@
 package com.pratham.foundation.ui.app_home.display_content;
 
+import static com.pratham.foundation.utility.FC_Constants.TYPE_ASSESSMENT;
+import static com.pratham.foundation.utility.FC_Constants.TYPE_ITEM;
+
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,14 +19,11 @@ import com.pratham.foundation.view_holders.ContentTestViewHolder;
 
 import java.util.List;
 
-import static com.pratham.foundation.utility.FC_Constants.TYPE_ASSESSMENT;
-import static com.pratham.foundation.utility.FC_Constants.TYPE_ITEM;
-
 
 public class ContentAdapter extends RecyclerView.Adapter {
 
-    private Context mContext;
-    private List<ContentTable> contentViewList;
+    private final Context mContext;
+    private final List<ContentTable> contentViewList;
     ContentClicked contentClicked;
 
     public ContentAdapter(Context mContext, List<ContentTable> contentViewList, ContentClicked contentClicked) {

@@ -33,6 +33,7 @@ import android.widget.Button;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.UiThread;
 import androidx.fragment.app.Fragment;
@@ -46,6 +47,7 @@ import com.pratham.foundation.R;
 import com.pratham.foundation.async.API_Content;
 import com.pratham.foundation.async.PushDataBaseZipToServer;
 import com.pratham.foundation.async.PushDataToServer_New;
+import com.pratham.foundation.async.PushDataToServer_New2;
 import com.pratham.foundation.customView.BlurPopupDialog.BlurPopupWindow;
 import com.pratham.foundation.customView.display_image_dialog.CustomLodingDialog;
 import com.pratham.foundation.customView.showcaseviewlib.GuideView;
@@ -55,12 +57,15 @@ import com.pratham.foundation.database.BackupDatabase;
 import com.pratham.foundation.interfaces.API_Content_Result;
 import com.pratham.foundation.modalclasses.EventMessage;
 import com.pratham.foundation.modalclasses.Modal_InternetTime;
+import com.pratham.foundation.modalclasses.ServerMaintenance_Modal;
 import com.pratham.foundation.services.shared_preferences.FastSave;
 import com.pratham.foundation.ui.admin_panel.tab_usage.TabUsageActivity_;
 import com.pratham.foundation.ui.app_home.profile_new.chat_display_list.DisplayChatActivity_;
 import com.pratham.foundation.ui.app_home.profile_new.course_enrollment.CourseEnrollmentActivity_;
 import com.pratham.foundation.ui.app_home.profile_new.display_image_ques_list.DisplayImageQuesActivity_;
 import com.pratham.foundation.ui.app_home.profile_new.show_sync_log.ShowSyncLogActivity_;
+import com.pratham.foundation.ui.app_home.profile_new.students_synced_data.SyncedStudentDataActivity_;
+import com.pratham.foundation.ui.app_home.profile_new.temp_sync.SyncResultActivity_;
 import com.pratham.foundation.ui.bottom_fragment.BottomStudentsFragment;
 import com.pratham.foundation.ui.bottom_fragment.BottomStudentsFragment_;
 import com.pratham.foundation.utility.FC_Constants;
@@ -108,6 +113,7 @@ public class ProfileFragment extends Fragment implements ProfileContract.Profile
     Context context;
     private GuideView mGuideView;
     private GuideView.Builder builder;
+    API_Content api_content;
 
     @SuppressLint("SetTextI18n")
     @AfterViews
@@ -115,6 +121,7 @@ public class ProfileFragment extends Fragment implements ProfileContract.Profile
         context = getActivity();
         presenter.setView(ProfileFragment.this);
         fragmentSelected();
+        api_content = new API_Content(context, this);
         if (FastSave.getInstance().getString(APP_SECTION, "").equalsIgnoreCase(sec_Profile)) {
             if (!FastSave.getInstance().getBoolean(PROFILE_FRAGMENT_SHOWCASE, false))
                 new Handler().postDelayed(this::setShowcaseView, 1200);
@@ -180,9 +187,9 @@ public class ProfileFragment extends Fragment implements ProfileContract.Profile
         if (FastSave.getInstance().getString(LOGIN_MODE, "").equalsIgnoreCase(GROUP_MODE))
             tv_en_id.setText("" + FastSave.getInstance().getString(FC_Constants.GROUP_ENROLLMENT_ID, ""));
         else {
-            if(FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ENROLL_ID, "").equalsIgnoreCase("")
-                ||FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ENROLL_ID, "").equalsIgnoreCase(" "))
-            tv_en_id.setText("" + FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ENROLL_ID, ""));
+            if (!FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ENROLL_ID, "").equalsIgnoreCase("")
+                    || !FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ENROLL_ID, "").equalsIgnoreCase(" "))
+                tv_en_id.setText("" + FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ENROLL_ID, ""));
         }
 
         setImage();
@@ -226,6 +233,7 @@ public class ProfileFragment extends Fragment implements ProfileContract.Profile
     @Click(R.id.card_img)
     public void showBottomFragment() {
         try {
+            ApplicationClass.vibrator.vibrate(60);
             ButtonClickSound.start();
         } catch (IllegalStateException e) {
             e.printStackTrace();
@@ -309,14 +317,80 @@ public class ProfileFragment extends Fragment implements ProfileContract.Profile
     }
 */
 
+    BlurPopupWindow updateApp, serverMaintenanceApp;
+    TextView tv_dialog;
+    Button dia_btn_ok;
+
+    @org.androidannotations.annotations.UiThread
+    public void getUpdatedAppDialog() {
+        //Allows to download language packages
+        updateApp = new BlurPopupWindow.Builder(context)
+                .setContentView(R.layout.lottie_update_dialog)
+                .bindClickListener(v -> {
+                    new Handler().postDelayed(() -> {
+                        updateApp.dismiss();
+                        getActivity().finishAffinity();
+                    }, 100);
+                }, R.id.dia_btn_ok)
+                .setGravity(Gravity.CENTER)
+                .setDismissOnTouchBackground(false)
+                .setDismissOnClickBack(false)
+                .setScaleRatio(0.2f)
+                .setBlurRadius(10)
+                .setTintColor(0x30000000)
+                .build();
+        tv_dialog = updateApp.findViewById(R.id.dia_title);
+        tv_dialog.setText("Upgrade to a better version!");
+        updateApp.show();
+    }
+
+    LottieAnimationView dl_lottie_view;
+    TextView dia_text;
+
+    @org.androidannotations.annotations.UiThread
+    public void serverMaintenanceDialog(ServerMaintenance_Modal accessedModal) {
+        //Allows to download language packages
+        serverMaintenanceApp = new BlurPopupWindow.Builder(context)
+                .setContentView(R.layout.lottie_maintenance_dialog)
+                .bindClickListener(v -> {
+                    new Handler().postDelayed(() -> {
+                        serverMaintenanceApp.dismiss();
+                    }, 100);
+                }, R.id.dia_btn_ok)
+                .setGravity(Gravity.CENTER)
+                .setDismissOnTouchBackground(false)
+                .setDismissOnClickBack(false)
+                .setScaleRatio(0.2f)
+                .setBlurRadius(10)
+                .setTintColor(0x30000000)
+                .build();
+        tv_dialog = serverMaintenanceApp.findViewById(R.id.dia_title);
+        dia_text = serverMaintenanceApp.findViewById(R.id.dia_text);
+
+        if (accessedModal.getStatus_code().equalsIgnoreCase("2")) {
+            tv_dialog.setText(getResources().getString(R.string.critical_maintenance));
+            dia_text.setText(getResources().getString(R.string.maintenance_msg)
+                    + "\n\n" + getResources().getString(R.string.please_try_aft_som_tim));
+        }
+        else {
+            String sdate = accessedModal.getMaintenance_closing_time().split(" ")[0];
+            String sTime = accessedModal.getMaintenance_closing_time().split(" ")[1].substring(0, 5);
+            String time = FC_Utility.get12HrTime(sTime);
+
+            tv_dialog.setText(getResources().getString(R.string.scheduled_maintenance));
+            dia_text.setText(getResources().getString(R.string.maintenance_msg)
+                    + "\n\n" + getResources().getString(R.string.please_try_aft)
+                    + "\n"+sdate+" "+ time);
+        }
+        serverMaintenanceApp.show();
+    }
+
     @Click(R.id.rl_Set_Date_and_Time)
     @UiThread
     public void changeTime() {
         if (FC_Utility.isDataConnectionAvailable(context)) {
             //fetch subjects from API
             showLoader();
-            API_Content api_content;
-            api_content = new API_Content(context, this);
             api_content.getInternetTimeApi(FC_Constants.INTERNET_TIME, FC_Constants.INTERNET_TIME_API);
         } else {
             showChangeDateDialog("NA", "NA");
@@ -379,6 +453,16 @@ public class ProfileFragment extends Fragment implements ProfileContract.Profile
         startActivity(new Intent(context, CourseEnrollmentActivity_.class));
 //        InputMethodManager imeManager = (InputMethodManager) context.getSystemService(INPUT_METHOD_SERVICE);
 //        imeManager.showInputMethodPicker();
+    }
+
+    @Click(R.id.rl_synced_students)
+    @UiThread
+    public void synced_studentsClicked() {
+        if (FC_Utility.isDataConnectionAvailable(context) &&
+                !ApplicationClass.wiseF.isDeviceConnectedToSSID(FC_Constants.PRATHAM_RASPBERRY_PI)) {
+            startActivity(new Intent(context, SyncedStudentDataActivity_.class));
+        } else
+            Toast.makeText(context, "" + getResources().getString(R.string.no_internet), Toast.LENGTH_SHORT).show();
     }
 
     CustomLodingDialog sttDialog;
@@ -444,16 +528,35 @@ public class ProfileFragment extends Fragment implements ProfileContract.Profile
     @Bean(PushDataToServer_New.class)
     PushDataToServer_New pushDataToServer;
 
+    @Bean(PushDataToServer_New2.class)
+    PushDataToServer_New2 pushDataToServer_new2;
+
     @Bean(PushDataBaseZipToServer.class)
     PushDataBaseZipToServer pushDataBaseZipToServer;
 
     @Click(R.id.rl_sync)
     public void pushData() {
-
         if (FC_Utility.isDataConnectionAvailable(context)) {
-            pushDataToServer.startDataPush(context, true);
-        }
+            showLoader();
+            if (!ApplicationClass.wiseF.isDeviceConnectedToSSID(FC_Constants.PRATHAM_RASPBERRY_PI))
+                api_content.checkServerStatus(FC_Constants.CHECK_SERVER_STATUS, FC_Constants.CHECK_SERVER_STATUS_API);
+            else{
+                dismissLoadingDialog();
+                FastSave.getInstance().saveBoolean(FC_Constants.SERVER_ACTIVE, true);
+                FastSave.getInstance().saveString(FC_Constants.SERVER_MAINTENANCE_TIME, "NA");
+                FastSave.getInstance().saveString(FC_Constants.SERVER_MAINTENANCE_MSG, "NA");
+                pushDataToServer.startDataPush(context, true);
+            }
+//        } else
+//        if (FC_Utility.isDataConnectionAvailable(context)) {
+//            pushDataToServer_new2.startDataPush(context, true);
+        } else
+            Toast.makeText(context, "" + getResources().getString(R.string.no_internet), Toast.LENGTH_SHORT).show();
+    }
 
+    @Click(R.id.rl_sync_logs_pack)
+    public void gotoResults() {
+        startActivity(new Intent(context, SyncResultActivity_.class));
     }
 
     @UiThread
@@ -473,7 +576,8 @@ public class ProfileFragment extends Fragment implements ProfileContract.Profile
             BackupDatabase.backup(context);
             dismissLoadingDialog();
             pushDataBaseZipToServer.startDataPush(context, true);
-        }
+        } else
+            Toast.makeText(context, "" + getResources().getString(R.string.no_internet), Toast.LENGTH_SHORT).show();
     }
 
 /*
@@ -494,7 +598,7 @@ public class ProfileFragment extends Fragment implements ProfileContract.Profile
     BlurPopupWindow exitDialog;
     TextView dia_title, txt_date;
     LottieAnimationView push_lottie;
-    TextView txt_push_dialog_msg, txt_push_dialog_msg2;
+    TextView txt_push_dialog_msg, txt_push_dialog_msg2, txt_push_dialog_msg0;
     TextView txt_push_error;
     RelativeLayout rl_btn;
     Button ok_btn, eject_btn;
@@ -572,6 +676,8 @@ public class ProfileFragment extends Fragment implements ProfileContract.Profile
     }
 */
 
+/*
+
     @Click(R.id.rl_sync_status)
     @SuppressLint("SetTextI18n")
     @UiThread
@@ -597,9 +703,12 @@ public class ProfileFragment extends Fragment implements ProfileContract.Profile
                         + "\n" + getResources().getString(R.string.Data_synced) + " " + FastSave.getInstance().getString(FC_Constants.SYNC_DATA_LENGTH, "0")
                         + "\n" + getResources().getString(R.string.Enrollment_synced) + " " + FastSave.getInstance().getString(FC_Constants.SYNC_COURSE_ENROLLMENT_LENGTH, "0")
                         + "\n" + getResources().getString(R.string.Media_synced) + " " + FastSave.getInstance().getString(FC_Constants.SYNC_MEDIA_LENGTH, "0")
-                /*+"Media failed : "+failed_ImageLength*/);
+                */
+    /*+"Media failed : "+failed_ImageLength*//*
+);
         exitDialog.show();
     }
+*/
 
     @Click(R.id.rl_chat_l5)
     @UiThread
@@ -613,8 +722,46 @@ public class ProfileFragment extends Fragment implements ProfileContract.Profile
         startActivity(new Intent(context, DisplayImageQuesActivity_.class));
     }
 
-    private void showCertificates() {
-//        startActivity(new Intent(context, CertificateDisplayActivity_.class));
+    @Click(R.id.rl_gideview)
+    @UiThread
+    public void showGuideViewResetDialog() {
+        changeDateDialog = new BlurPopupWindow.Builder(context)
+                .setContentView(R.layout.app_date_dialog)
+                .setGravity(Gravity.CENTER)
+                .setDismissOnTouchBackground(false)
+                .setDismissOnClickBack(false)
+                .setScaleRatio(0.2f)
+                .bindClickListener(v -> {
+                    new Handler().postDelayed(() -> {
+                        FastSave.getInstance().saveBoolean(FC_Constants.SELECT_SUBJECT_SHOWCASE, false);
+                        FastSave.getInstance().saveBoolean(FC_Constants.HOME_ACTIVITY_SHOWCASE, false);
+                        FastSave.getInstance().saveBoolean(FC_Constants.PROFILE_FRAGMENT_SHOWCASE, false);
+                        FastSave.getInstance().saveBoolean(FC_Constants.CONTENT_DISPLAY_SHOWCASE, false);
+                        changeDateDialog.dismiss();
+                    }, 200);
+                }, R.id.ok_btn)
+                .bindClickListener(v -> {
+                    new Handler().postDelayed(() -> {
+                        changeDateDialog.dismiss();
+                    }, 200);
+                }, R.id.eject_btn)
+                .setBlurRadius(10)
+                .setTintColor(0x30000000)
+                .build();
+        txt_push_dialog_msg0 = changeDateDialog.findViewById(R.id.txt_push_dialog_msg0);
+        txt_push_dialog_msg2 = changeDateDialog.findViewById(R.id.txt_push_dialog_msg2);
+        txt_push_dialog_msg = changeDateDialog.findViewById(R.id.txt_push_dialog_msg);
+        ok_btn = changeDateDialog.findViewById(R.id.ok_btn);
+        txt_push_dialog_msg.setVisibility(View.GONE);
+        txt_push_dialog_msg2.setVisibility(View.GONE);
+        txt_push_dialog_msg0.setTextColor(context.getResources().getColor(R.color.gradianceCardStartColor));
+        txt_push_dialog_msg0.setText(getResources().getString(R.string.ques_reset_app_tour));
+        push_lottie = changeDateDialog.findViewById(R.id.push_lottie);
+        push_lottie.setAnimation("question_mark.json");
+        push_lottie.playAnimation();
+        ok_btn.setText(getResources().getString(R.string.yes));
+        changeDateDialog.show();
+
     }
 
     @SuppressLint("SetTextI18n")
@@ -674,7 +821,39 @@ public class ProfileFragment extends Fragment implements ProfileContract.Profile
     @Override
     public void receivedContent(String header, String response) {
 
-        if (header.equalsIgnoreCase(FC_Constants.INTERNET_TIME)) {
+        if (header.equalsIgnoreCase(FC_Constants.CHECK_SERVER_STATUS)) {
+            dismissLoadingDialog();
+            Gson gson = new Gson();
+            ServerMaintenance_Modal accessedModal = gson.fromJson(response, ServerMaintenance_Modal.class);
+            if (accessedModal.getApp_version().equalsIgnoreCase(FC_Utility.getAppVerison())) {
+                FastSave.getInstance().saveBoolean(FC_Constants.LATEST_APP, true);
+                if (accessedModal.getStatus_code().equalsIgnoreCase("0")) {
+                    FastSave.getInstance().saveBoolean(FC_Constants.SERVER_ACTIVE, true);
+                    FastSave.getInstance().saveString(FC_Constants.SERVER_MAINTENANCE_TIME, "NA");
+                    FastSave.getInstance().saveString(FC_Constants.SERVER_MAINTENANCE_MSG, "NA");
+                    pushDataToServer.startDataPush(context, true);
+                } else {
+                    FastSave.getInstance().saveBoolean(FC_Constants.SERVER_ACTIVE, false);
+                    FastSave.getInstance().saveString(FC_Constants.SERVER_MAINTENANCE_TIME, accessedModal.getMaintenance_closing_time());
+                    FastSave.getInstance().saveString(FC_Constants.SERVER_MAINTENANCE_MSG, accessedModal.getMessage());
+                    serverMaintenanceDialog(accessedModal);
+                }
+            } else {
+                getUpdatedAppDialog();
+                FastSave.getInstance().saveBoolean(FC_Constants.LATEST_APP, false);
+                if (accessedModal.getStatus_code().equalsIgnoreCase("0")) {
+                    FastSave.getInstance().saveBoolean(FC_Constants.SERVER_ACTIVE, true);
+                    FastSave.getInstance().saveString(FC_Constants.SERVER_MAINTENANCE_TIME, "NA");
+                    FastSave.getInstance().saveString(FC_Constants.SERVER_MAINTENANCE_MSG, "NA");
+                    pushDataToServer.startDataPush(context, true);
+                } else {
+                    FastSave.getInstance().saveBoolean(FC_Constants.SERVER_ACTIVE, false);
+                    FastSave.getInstance().saveString(FC_Constants.SERVER_MAINTENANCE_TIME, accessedModal.getMaintenance_closing_time());
+                    FastSave.getInstance().saveString(FC_Constants.SERVER_MAINTENANCE_MSG, accessedModal.getMessage());
+                    serverMaintenanceDialog(accessedModal);
+                }
+            }
+        } else if (header.equalsIgnoreCase(FC_Constants.INTERNET_TIME)) {
             try {
                 Type listType = new TypeToken<Modal_InternetTime>() {
                 }.getType();
@@ -759,7 +938,6 @@ public class ProfileFragment extends Fragment implements ProfileContract.Profile
             eject_btn = changeDateDialog.findViewById(R.id.eject_btn);
 
             String tm = "", tm2 = ""/*, type = "am", type2 = "am"*/;
-
 /*
             if (!newDate.equalsIgnoreCase("NA")) {
                 int t1 = Integer.parseInt(sTime.substring(0, 2));

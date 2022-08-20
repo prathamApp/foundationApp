@@ -41,6 +41,7 @@ import com.pratham.foundation.database.domain.AvatarModal;
 import com.pratham.foundation.database.domain.Student;
 import com.pratham.foundation.interfaces.SplashInterface;
 import com.pratham.foundation.ui.splash_activity.SplashActivity;
+import com.pratham.foundation.utility.FC_Utility;
 
 import java.util.ArrayList;
 import java.util.Objects;
@@ -322,11 +323,11 @@ public class AddStudentFragment extends DialogFragment implements AvatarClickLis
     @SuppressLint("StaticFieldLeak")
     @OnClick(R.id.btn_add_new_student)
     public void onAddNewClick() {
+        ApplicationClass.vibrator.vibrate(60);
         if (et_studentName.getText().toString().equalsIgnoreCase("") ||
-                /*spinner_class.getSelectedItem().toString().equalsIgnoreCase("select class") ||*/
-                spinner_age.getSelectedItem().toString().equalsIgnoreCase("select age") ||
+                (spinner_age.getSelectedItemPosition() == 0) ||
                 gender.equalsIgnoreCase("") || avatarName == null) {
-            Toast.makeText(getActivity(), "Please fill all the details..", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getActivity(), ""+getResources().getString(R.string.please_fill_details), Toast.LENGTH_SHORT).show();
         } else {
             Student student = new Student();
             student.setStudentID(ApplicationClass.getUniqueID().toString());
@@ -338,6 +339,8 @@ public class AddStudentFragment extends DialogFragment implements AvatarClickLis
             student.setGroupId("PS");
             student.setMiddleName("PS");
             student.setLastName("PS");
+            student.setEnrollmentId("PS");
+            student.setRegDate(FC_Utility.getCurrentDateTime());
 //            student.setProgramId("0");
             new AsyncTask<Object, Void, Object>() {
                 @Override
@@ -348,7 +351,7 @@ public class AddStudentFragment extends DialogFragment implements AvatarClickLis
                     return null;
                 }
             }.execute();
-            Toast.makeText(getActivity(), "Profile created Successfully..", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getActivity(), ""+getResources().getString(R.string.profile_created_successfully), Toast.LENGTH_SHORT).show();
             //startActivity(new Intent(getActivity(), ChooseLevelActivity.class));
             splashInterface.onChildAdded();
             dismiss();

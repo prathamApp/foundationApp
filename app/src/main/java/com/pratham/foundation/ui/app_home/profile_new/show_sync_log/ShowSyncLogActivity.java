@@ -3,6 +3,7 @@ package com.pratham.foundation.ui.app_home.profile_new.show_sync_log;
 import static com.pratham.foundation.utility.FC_Utility.dpToPx;
 
 import android.content.res.Configuration;
+import android.util.Log;
 import android.view.View;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -15,7 +16,9 @@ import com.pratham.foundation.BaseActivity;
 import com.pratham.foundation.R;
 import com.pratham.foundation.customView.GridSpacingItemDecoration;
 import com.pratham.foundation.database.domain.Modal_Log;
+import com.pratham.foundation.services.shared_preferences.FastSave;
 import com.pratham.foundation.utility.FC_Constants;
+import com.pratham.foundation.utility.FC_Utility;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Bean;
@@ -54,6 +57,9 @@ public class ShowSyncLogActivity extends BaseActivity implements
     @Override
     public void addToAdapter(List<Modal_Log> logList) {
         modal_logList = logList;
+        String a = FastSave.getInstance().getString(FC_Constants.APP_LANGUAGE, FC_Constants.HINDI);
+        Log.d("INSTRUCTIONFRAG", "Select Subj: " + a);
+        FC_Utility.setAppLocal(this, a);
         if (syncLogAdapter == null) {
             syncLogAdapter = new ShowSyncLogAdapter(this, modal_logList);
             RecyclerView.LayoutManager mLayoutManager = new GridLayoutManager(this, 1);

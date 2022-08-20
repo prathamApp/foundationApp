@@ -22,12 +22,12 @@
             android:id="@+id/tv_res_title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="word"
             android:ellipsize="marquee"
             android:fadingEdge="horizontal"
             android:marqueeRepeatLimit="marquee_forever"
             android:scrollHorizontally="true"
             android:singleLine="true"
+            android:text="word"
             android:textColor="@color/colorText"
             android:textSize="@dimen/_15sdp" />
 

@@ -62,15 +62,15 @@
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
             android:layout_centerHorizontal="true"
-            android:layout_marginBottom="@dimen/_5sdp"
             android:layout_marginTop="@dimen/_5sdp"
+            android:layout_marginBottom="@dimen/_5sdp"
+            android:background="@drawable/button_green"
             android:paddingStart="@dimen/_25sdp"
-            android:paddingEnd="@dimen/_25sdp"
             android:paddingTop="@dimen/_5sdp"
+            android:paddingEnd="@dimen/_25sdp"
             android:paddingBottom="@dimen/_5sdp"
             android:text="@string/add_course"
-            android:background="@drawable/button_green"
-            android:textColor="@color/white"/>
+            android:textColor="@color/white" />
 
         <RelativeLayout
             android:id="@+id/rl_no_data"
@@ -190,7 +190,21 @@
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="8dp"
                 android:layout_marginEnd="16dp"
+                android:layout_marginBottom="8dp"
+                android:background="@drawable/gradient_spinner"
+                android:textAlignment="center" />
+
+            <Spinner
+                android:id="@+id/category_spinner"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/level_spinner"
+                android:layout_centerHorizontal="true"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="16dp"
                 android:layout_marginBottom="20dp"
+                android:visibility="gone"
                 android:background="@drawable/gradient_spinner"
                 android:textAlignment="center" />
         </RelativeLayout>

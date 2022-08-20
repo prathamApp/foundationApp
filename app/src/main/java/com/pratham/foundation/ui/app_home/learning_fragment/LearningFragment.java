@@ -65,6 +65,7 @@ import com.pratham.foundation.ui.app_home.display_content.ContentDisplay_;
 import com.pratham.foundation.ui.app_home.learning_fragment.attendance_bottom_fragment.AttendanceBottomFragment;
 import com.pratham.foundation.ui.app_home.learning_fragment.attendance_bottom_fragment.AttendanceBottomFragment_;
 import com.pratham.foundation.ui.contentPlayer.ContentPlayerActivity_;
+import com.pratham.foundation.ui.contentPlayer.image_resource.DisplayImageActivity_;
 import com.pratham.foundation.ui.contentPlayer.matchingPairGame.MatchThePairGameActivity;
 import com.pratham.foundation.ui.contentPlayer.old_cos.conversation.ConversationActivity_;
 import com.pratham.foundation.ui.contentPlayer.old_cos.reading_cards.ReadingCardsActivity_;
@@ -201,6 +202,12 @@ public class LearningFragment extends Fragment implements LearningContract.Learn
         EventBus.getDefault().unregister(this);
     }
 
+    String fileSize = "";
+    @Override
+    public void setDownloadSize(String fileSize){
+        this.fileSize = fileSize;
+    }
+
     @SuppressLint("SetTextI18n")
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void messageReceived(EventMessage message) {
@@ -221,7 +228,7 @@ public class LearningFragment extends Fragment implements LearningContract.Learn
                 } else if (message.getMessage().equalsIgnoreCase(FC_Constants.FILE_DOWNLOAD_UPDATE)) {
                     if (progressLayout != null)
 //                        if (downloadNodeId.equalsIgnoreCase(modal_fileDownloading.getDownloadId()))
-                            progressLayout.setCurProgress(message.getModal_fileDownloading().getProgress());
+                        progressLayout.setCurProgress(message.getModal_fileDownloading().getProgress());
                 } else if (message.getMessage().equalsIgnoreCase(FC_Constants.FRAGMENT_SELECTED) ||
                         message.getMessage().equalsIgnoreCase(FC_Constants.FRAGMENT_RESELECTED) ||
                         message.getMessage().equalsIgnoreCase(FC_Constants.ACTIVITY_RESUMED) ||
@@ -540,7 +547,7 @@ public class LearningFragment extends Fragment implements LearningContract.Learn
     }
 
     @Override
-    public void onTestAddedToDb (ContentTable itemContent) {
+    public void onTestAddedToDb(ContentTable itemContent) {
         dismissLoadingDialog();
         FC_Constants.AssLang = itemContent.getContentLanguage();
         FC_Constants.examId = itemContent.getNodeKeywords();
@@ -556,7 +563,6 @@ public class LearningFragment extends Fragment implements LearningContract.Learn
 
                 Bundle bundle = new Bundle();
                 FastSave.getInstance().getString(FC_Constants.CURRENT_FOLDER_NAME, currentSubjectFolder);
-
                 bundle.putString("appName", "" + getResources().getString(R.string.app_name));
                 bundle.putString("studentId", "" + FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""));
                 bundle.putString("studentName", "" + profileName);
@@ -565,6 +571,7 @@ public class LearningFragment extends Fragment implements LearningContract.Learn
                 bundle.putString("examId", "" + itemContent.getNodeKeywords());
                 bundle.putString("currentSessionId", "" + FastSave.getInstance().getString(FC_Constants.CURRENT_SESSION, ""));
                 bundle.putString("subjectLevel", "" + currentLevel);
+                bundle.putString("studentGroupId", "NA");
                 Intent launchIntent = new Intent("com.pratham.assessment.ui.choose_assessment.science.ScienceAssessmentActivity_");
                 Objects.requireNonNull(launchIntent).putExtras(bundle);
                 presenter.addScoreToDB(itemContent.getNodeKeywords());
@@ -591,8 +598,10 @@ public class LearningFragment extends Fragment implements LearningContract.Learn
         } catch (IllegalStateException e) {
             e.printStackTrace();
         }
-        showLoader();
-        presenter.addAssessmentToDb(itemContent);
+        if (!ApplicationClass.wiseF.isDeviceConnectedToSSID(FC_Constants.PRATHAM_RASPBERRY_PI)) {
+            presenter.addAssessmentToDb(itemContent);
+        } else
+            onTestAddedToDb(itemContent);
     }
 
     @Override
@@ -708,8 +717,8 @@ public class LearningFragment extends Fragment implements LearningContract.Learn
             startActivity(mainNew);
         } else {
             if (contentList.getResourceType().toLowerCase().contains(FC_Constants.HTML_GAME_RESOURCE)) {
-                String resPath;
                 String gameID = contentList.getResourceId();
+                String resPath;
                 if (contentList.isOnSDCard())
                     resPath = ApplicationClass.contentSDPath + gameFolderPath + "/" + contentList.getResourcePath();
                 else
@@ -837,13 +846,26 @@ public class LearningFragment extends Fragment implements LearningContract.Learn
                 intent1.putExtra("onSdCard", contentList.isOnSDCard());
                 intent1.putExtra("dia", "NA");
                 context.startActivity(intent1);
-            } else if (contentList.getResourceType().equalsIgnoreCase("PDF_ZOOM")
-                    || contentList.getResourceType().equalsIgnoreCase("PDF_new")) {
+            } else if (contentList.getResourceType().equalsIgnoreCase(FC_Constants.PDF_ZOOM)
+                    || contentList.getResourceType().equalsIgnoreCase(FC_Constants.PDF_NEW)) {
                 String sdStatus = "F";
                 if (contentList.isOnSDCard())
                     sdStatus = "T";
 //                Intent intent1 = new Intent(context, Fragment_PdfViewer_.class);
                 Intent intent2 = new Intent(context, PDFViewActivity_.class);
+                intent2.putExtra("contentPath", contentList.getResourcePath());
+                intent2.putExtra("StudentID", FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""));
+                intent2.putExtra("resId", contentList.getResourceId());
+                intent2.putExtra("contentName", contentList.getNodeTitle());
+                intent2.putExtra("onSdCard", contentList.isOnSDCard());
+                intent2.putExtra("dia", "NA");
+                context.startActivity(intent2);
+            } else if (contentList.getResourceType().equalsIgnoreCase(FC_Constants.IMAGE_RES)) {
+                String sdStatus = "F";
+                if (contentList.isOnSDCard())
+                    sdStatus = "T";
+//                Intent intent1 = new Intent(context, Fragment_PdfViewer_.class);
+                Intent intent2 = new Intent(context, DisplayImageActivity_.class);
                 intent2.putExtra("contentPath", contentList.getResourcePath());
                 intent2.putExtra("StudentID", FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""));
                 intent2.putExtra("resId", contentList.getResourceId());
@@ -871,25 +893,26 @@ public class LearningFragment extends Fragment implements LearningContract.Learn
     @Override
     public void onContentDownloadClicked(ContentTable contentList, int parentPos, int childPos, String downloadType) {
         if (!IS_DOWNLOADING) {
-            showLoader();
-            this.downloadType = downloadType;
-            downloadNodeId = contentList.getNodeId();
-            FastSave.getInstance().saveString(APP_SECTION, "" + sec_Learning);
-            try {
-                ButtonClickSound.start();
-            } catch (IllegalStateException e) {
-                e.printStackTrace();
-            }
-            this.parentPos = parentPos;
-            this.childPos = childPos;
-            resName = contentList.getNodeTitle();
-            resServerImageName = contentList.getNodeServerImage();
-            if (FastSave.getInstance().getString(APP_SECTION, "").equalsIgnoreCase(sec_Learning)) {
-                if (FC_Utility.isDataConnectionAvailable(context))
-                    presenter.downloadResource(downloadNodeId, contentList);
-                else
-                    Toast.makeText(context, "No Internet Connection", Toast.LENGTH_SHORT).show();
-            }
+            if (FC_Utility.isDataConnectionAvailable(context)) {
+                showLoader();
+                this.downloadType = downloadType;
+                downloadNodeId = contentList.getNodeId();
+                FastSave.getInstance().saveString(APP_SECTION, "" + sec_Learning);
+                try {
+                    ButtonClickSound.start();
+                } catch (IllegalStateException e) {
+                    e.printStackTrace();
+                }
+                this.parentPos = parentPos;
+                this.childPos = childPos;
+                resName = contentList.getNodeTitle();
+                resServerImageName = contentList.getNodeServerImage();
+                if (FastSave.getInstance().getString(APP_SECTION, "").equalsIgnoreCase(sec_Learning)) {
+                    if (FC_Utility.isDataConnectionAvailable(context))
+                        presenter.downloadResource(downloadNodeId, contentList);
+                }
+            } else
+                Toast.makeText(context, "No Internet Connection", Toast.LENGTH_SHORT).show();
         } else
             Toast.makeText(context, "Downloading other resource..", Toast.LENGTH_SHORT).show();
     }
@@ -908,7 +931,8 @@ public class LearningFragment extends Fragment implements LearningContract.Learn
 
     @SuppressLint("SetTextI18n")
     private void showDeleteDialog(int parentPos, int childPos, ContentTable contentTableItem) {
-        final CustomLodingDialog dialog = new CustomLodingDialog(Objects.requireNonNull(getActivity()), R.style.FC_DialogStyle);
+        final CustomLodingDialog dialog = new CustomLodingDialog(Objects.requireNonNull(getActivity()),
+                R.style.FC_DialogStyle);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         Objects.requireNonNull(dialog.getWindow()).setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         dialog.setContentView(R.layout.lottie_delete_dialog);
@@ -970,7 +994,7 @@ public class LearningFragment extends Fragment implements LearningContract.Learn
                         .build();
                 iv_file_trans.setController(controller);
             }
-            dialog_file_name.setText("" + resName);
+            dialog_file_name.setText("" + resName+fileSize);
             progressLayout.setCurProgress(modal_fileDownloading.getProgress());
             downloadDialog.show();
         } catch (Exception e) {
@@ -982,6 +1006,7 @@ public class LearningFragment extends Fragment implements LearningContract.Learn
     @Override
     public void dismissDownloadDialog() {
         try {
+            fileSize = "";
             if (!desFlag) {
                 if (downloadDialog != null)
                     new Handler().postDelayed(() -> {

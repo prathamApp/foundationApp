@@ -7,10 +7,10 @@ android {
     defaultConfig {
         applicationId "com.pratham.foundation"
         minSdkVersion 21
-        targetSdkVersion 30
-        versionCode 46
+        targetSdkVersion 30     
+        versionCode 57
         multiDexEnabled true
-        versionName "1.0.46"
+        versionName "1.0.57"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 
@@ -48,6 +48,9 @@ android {
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation('com.github.evgenyneu:js-evaluator-for-android:v4.0.0') {
+        exclude module: 'appcompat-v7'
+    }
     implementation 'com.nex3z:flow-layout:1.2.4'
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     //noinspection GradleCompatible

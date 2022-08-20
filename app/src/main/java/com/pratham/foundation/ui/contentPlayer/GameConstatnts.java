@@ -36,6 +36,7 @@ import com.pratham.foundation.ui.contentPlayer.fact_retrival_selection.Fact_Retr
 import com.pratham.foundation.ui.contentPlayer.fillInTheBlanks.FillInTheBlanksFragment;
 import com.pratham.foundation.ui.contentPlayer.keywords_identification.KeywordsIdentificationFragment;
 import com.pratham.foundation.ui.contentPlayer.keywords_identification.KeywordsIdentificationFragment_;
+import com.pratham.foundation.ui.contentPlayer.keywords_mapping.KeywordMappingFragment;
 import com.pratham.foundation.ui.contentPlayer.keywords_mapping.KeywordMappingFragment_;
 import com.pratham.foundation.ui.contentPlayer.listenAndWritting.ListeningAndWritting;
 import com.pratham.foundation.ui.contentPlayer.listenAndWritting.ListeningAndWritting_;
@@ -59,6 +60,7 @@ import com.pratham.foundation.ui.contentPlayer.pictionary.pictionaryFragment;
 import com.pratham.foundation.ui.contentPlayer.pictionary.pictionaryFragment_;
 import com.pratham.foundation.ui.contentPlayer.reading.ReadingFragment;
 import com.pratham.foundation.ui.contentPlayer.reading.ReadingFragment_;
+import com.pratham.foundation.ui.contentPlayer.sequenceLayout.SequenceLayout;
 import com.pratham.foundation.ui.contentPlayer.sequenceLayout.SequenceLayout_;
 import com.pratham.foundation.ui.contentPlayer.trueFalse.TrueFalseFragment;
 import com.pratham.foundation.ui.contentPlayer.video_player.ActivityVideoPlayer_;
@@ -243,7 +245,8 @@ public class GameConstatnts implements ShowInstruction {
 //            if (FastSave.getInstance().getString(APP_SECTION, "").equalsIgnoreCase(sec_Test)) {
 //                ((ContentPlayerActivity) context).finish();
 //            }
-            ((ContentPlayerActivity) context).getSupportFragmentManager().popBackStack(SequenceLayout_.class.getSimpleName(), 0);
+            ((ContentPlayerActivity) context).getSupportFragmentManager().popBackStack(SequenceLayout.class.getSimpleName(), 0);
+//            ((ContentPlayerActivity) context).getSupportFragmentManager().popBackStack(SequenceLayout_.class.getSimpleName(), 0);
         }
     }
 
@@ -297,7 +300,7 @@ public class GameConstatnts implements ShowInstruction {
                 break;
             case GameConstatnts.KEYWORD_MAPPING:
                 FC_Utility.showFragment((Activity) context, new KeywordMappingFragment_(), R.id.RL_CPA,
-                        bundle, KeywordMappingFragment_.class.getSimpleName());
+                        bundle, KeywordMappingFragment.class.getSimpleName());
                 break;
             case GameConstatnts.THINKANDWRITE:
                 if (FastSave.getInstance().getString(FC_Constants.CURRENT_SUBJECT, "").equalsIgnoreCase("Science")) {
@@ -309,24 +312,12 @@ public class GameConstatnts implements ShowInstruction {
                 }
                 break;
             case GameConstatnts.PARAGRAPH_WRITING:
-                /*if (FastSave.getInstance().getString(FC_Constants.CURRENT_SUBJECT, "").equalsIgnoreCase("English")) {
-                    FC_Utility.showFragment((Activity) context, new WordWritingFragment_(), R.id.RL_CPA,
-                            bundle, WordWritingFragment_.class.getSimpleName());
-                } else*/
                 if (FastSave.getInstance().getString(FC_Constants.CURRENT_SUBJECT, "").equalsIgnoreCase("Science")) {
                     FC_Utility.showFragment((Activity) context, new ParagraphWritingFragment_(), R.id.RL_CPA,
                             bundle, ParagraphWritingFragment.class.getSimpleName());
                 } else {
                     FC_Utility.showFragment((Activity) context, new WordWritingFragment_(), R.id.RL_CPA,
                             bundle, WordWritingFragment.class.getSimpleName());
-
-                  /*  if (FC_Constants.currentLevel <= 2) {
-                        FC_Utility.showFragment((Activity) context, new WordWritingFragment_(), R.id.RL_CPA,
-                                bundle, WordWritingFragment_.class.getSimpleName());
-                    } else {
-                        FC_Utility.showFragment((Activity) context, new ParagraphWritingFragment_(), R.id.RL_CPA,
-                                bundle, ParagraphWritingFragment_.class.getSimpleName());
-                    }*/
                 }
                 break;
             case GameConstatnts.LISTNING_AND_WRITTING:

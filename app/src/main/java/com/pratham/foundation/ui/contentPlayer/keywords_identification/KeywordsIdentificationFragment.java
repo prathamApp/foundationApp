@@ -1,5 +1,9 @@
 package com.pratham.foundation.ui.contentPlayer.keywords_identification;
 
+import static com.pratham.foundation.utility.FC_Constants.APP_SECTION;
+import static com.pratham.foundation.utility.FC_Constants.gameFolderPath;
+import static com.pratham.foundation.utility.FC_Constants.sec_Test;
+
 import android.app.Dialog;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
@@ -47,10 +51,6 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Objects;
-
-import static com.pratham.foundation.utility.FC_Constants.APP_SECTION;
-import static com.pratham.foundation.utility.FC_Constants.gameFolderPath;
-import static com.pratham.foundation.utility.FC_Constants.sec_Test;
 
 @EFragment(R.layout.fragment_keywords_identification)
 public class KeywordsIdentificationFragment extends Fragment implements KeywordsIdentificationContract.KeywordsView, OnGameClose {
@@ -131,6 +131,8 @@ public class KeywordsIdentificationFragment extends Fragment implements Keywords
             show_me_keywords.performClick();
         }
     }*/
+
+    String[] paragraphWords;
     @Override
     public void showParagraph(ScienceQuestion questionModel) {
         this.questionModel = questionModel;
@@ -138,16 +140,16 @@ public class KeywordsIdentificationFragment extends Fragment implements Keywords
        /* if (questionModel.getInstruction() != null && !questionModel.getInstruction().isEmpty()) {
             tittle.setText(questionModel.getInstruction());
         }*/
-        String[] paragraphWords = questionModel.getQuestion().split(" ");
+        paragraphWords = questionModel.getQuestion().split(" ");
         for (int i = 0; i < paragraphWords.length; i++) {
-            if (positionMap.containsKey(paragraphWords[i].replaceAll("\\p{Punct}", "").trim())) {
-                List temp = positionMap.get(paragraphWords[i].replaceAll("\\p{Punct}", "").trim());
+            if (positionMap.containsKey(paragraphWords[i].replaceAll("\\p{Punct}", "").replaceAll("\\s", ""))) {
+                List temp = positionMap.get(paragraphWords[i].replaceAll("\\p{Punct}", "").replaceAll("\\s", ""));
                 if (temp != null)
                     temp.add(i);
             } else {
                 List<Integer> temp = new ArrayList<>();
                 temp.add(i);
-                positionMap.put(paragraphWords[i].replaceAll("\\p{Punct}", "").trim(), temp);
+                positionMap.put(paragraphWords[i].replaceAll("\\p{Punct}", "").replaceAll("\\s", ""), temp);
             }
 
             final SansTextView textView = new SansTextView(getActivity());
@@ -156,7 +158,7 @@ public class KeywordsIdentificationFragment extends Fragment implements Keywords
             textView.setText(paragraphWords[i]);
             textView.setPadding(10, 5, 10, 5);
             final int temp_i = i;
-            textView.setOnClickListener(v -> paragraphWordClicked("" + textView.getText().toString().replaceAll("\\p{Punct}", "").trim(), temp_i));
+            textView.setOnClickListener(v -> paragraphWordClicked("" + textView.getText().toString().replaceAll("\\p{Punct}", "").replaceAll("\\s", ""), temp_i));
             paraghaph.addView(textView);
 
         }
@@ -168,47 +170,22 @@ public class KeywordsIdentificationFragment extends Fragment implements Keywords
         if ((correctWord != null && !correctWord.isEmpty()) || (wrongWord != null && !wrongWord.isEmpty())) {
             for (int i = 0; i < keywords.getChildCount(); i++) {
                 LinearLayout linearLayout = (LinearLayout) keywords.getChildAt(i);
-                String text = ((SansTextView) linearLayout.getChildAt(0)).getText().toString();
+                String text = ((SansTextView) linearLayout.getChildAt(0)).getText().toString().replaceAll("\\p{Punct}", "");
+                text = text.replaceAll("\\s", "");
                 if (correctWord.contains(text)) {
                     linearLayout.setBackground(ContextCompat.getDrawable(getActivity(), R.drawable.card_color_bg1));
+                    ((SansTextView) linearLayout.getChildAt(0)).setTextColor(getResources().getColor(R.color.white));
                 }
-
             }
-
-
-            /*final Dialog dialog = new Dialog(getActivity());
-            dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-            dialog.setContentView(R.layout.show_result);
-            dialog.setCancelable(false);
-            dialog.setCanceledOnTouchOutside(false);
-            Objects.requireNonNull(dialog.getWindow()).setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-            SansTextViewBold correct_keywords = dialog.findViewById(R.id.correct_keywords);
-            SansTextViewBold wrong_keywords = dialog.findViewById(R.id.wrong_keywords);
-            SansButton dia_btn_yellow = dialog.findViewById(R.id.dia_btn_yellow);
-
-            SansTextViewBold dia_titleCorrect = dialog.findViewById(R.id.dia_title);
-            SansTextViewBold dia_title_wrong = dialog.findViewById(R.id.dia_title_wrong);
-
-            dia_titleCorrect.setText("Existing Keywords");
-            dia_title_wrong.setText("New Keywords");
-
-            dia_btn_yellow.setText("OK");
-            correct_keywords.setText(correctWord.toString().substring(1, correctWord.toString().length() - 1));
-            wrong_keywords.setText(wrongWord.toString().substring(1, wrongWord.toString().length() - 1));
-            dia_btn_yellow.setOnClickListener(v -> {
-                        dialog.dismiss();
-                        GameConstatnts.playGameNext(getActivity(), GameConstatnts.FALSE, this);
-                    }
-            );
-            dialog.show();*/
         }
     }
 
-    private void paragraphWordClicked(String paraText, int pos) {
+    String paraText="";
+    private void paragraphWordClicked(String paraTexts, int pos) {
         if (!issubmitted) {
             if (!isKeyWordShowing) {
                 int correctCnt = getCorrectCnt(questionModel.getLstquestionchoice());
-
+                paraText = paragraphWords[pos].replaceAll("\\p{Punct}", "").trim();
                 // boolean flag = checkIsConins(paraText);
                 // if (!selectedKeywords.contains(paraText)) {
                 if (!checkIsConins(paraText)) {
@@ -247,7 +224,7 @@ public class KeywordsIdentificationFragment extends Fragment implements Keywords
 
                     //  selectedKeywords.add(paraText);
                     ScienceQuestionChoice scienceQuestionChoice = new ScienceQuestionChoice();
-                    scienceQuestionChoice.setSubQues(paraText);
+                    scienceQuestionChoice.setSubQues(paragraphWords[pos]);
                     scienceQuestionChoice.setStartTime(FC_Utility.getCurrentDateTime());
                     scienceQuestionChoice.setEndTime(FC_Utility.getCurrentDateTime());
                     selectedKeywords.add(scienceQuestionChoice);

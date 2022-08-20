@@ -1,7 +1,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_gravity="center">
 
     <RelativeLayout
@@ -16,14 +16,14 @@
             android:layout_height="@dimen/_70sdp"
             android:layout_alignParentTop="true"
             android:layout_centerHorizontal="true"
-            android:elevation="5dp"
             android:background="@android:color/transparent"
-            app:roundingBorderColor="@color/colorBtnGreenDark"
-            app:roundingBorderWidth="@dimen/_2sdp"
-            app:roundedCornerRadius="@dimen/_15sdp"
+            android:elevation="5dp"
             app:actualImageScaleType="fitXY"
+            app:placeholderImage="@drawable/khelbadi_thumb"
             app:placeholderImageScaleType="fitCenter"
-            app:placeholderImage="@drawable/khelbadi_thumb"/>
+            app:roundedCornerRadius="@dimen/_15sdp"
+            app:roundingBorderColor="@color/colorBtnGreenDark"
+            app:roundingBorderWidth="@dimen/_2sdp" />
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -42,10 +42,8 @@
                 android:lines="2"
                 android:paddingHorizontal="@dimen/_7sdp"
                 android:text="@string/what_do_you_want_to_do"
-                android:textColor="@color/gradianceCardStartColor"
+                android:textColor="@color/colorRedDark"
                 android:textSize="@dimen/_15sdp" />
-
-
         </RelativeLayout>
 
         <RelativeLayout
@@ -54,8 +52,8 @@
             android:layout_alignParentBottom="true"
             android:layout_centerHorizontal="true"
             android:layout_marginBottom="@dimen/_5sdp"
-            android:gravity="center"
-            android:elevation="5dp">
+            android:elevation="5dp"
+            android:gravity="center">
 
 
             <com.pratham.foundation.customView.fontsview.SansButton
@@ -82,8 +80,6 @@
                 android:text="@string/no"
                 android:textColor="@color/white"
                 android:textSize="@dimen/_10sdp" />
-
-
         </RelativeLayout>
 
         <ImageButton

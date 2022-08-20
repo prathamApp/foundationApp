@@ -10,6 +10,9 @@ import android.util.SparseArray;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import com.evgenii.jsevaluator.JsEvaluator;
+import com.evgenii.jsevaluator.interfaces.JsCallback;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -56,7 +59,7 @@ public abstract class YouTubeExtractor extends AsyncTask<String, Void, SparseArr
     private final Lock lock = new ReentrantLock();
     private final Condition jsExecuting = lock.newCondition();
 
-    private static final String USER_AGENT = "Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/40.0.2214.115 Safari/537.36";
+    private static final String USER_AGENT = "Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/97.0.4692.98 Safari/537.36";
 
     private static final Pattern patYouTubePageLink = Pattern.compile("(http|https)://(www\\.|m.|)youtube\\.com/watch\\?v=(.+?)( |\\z|&)");
     private static final Pattern patYouTubeShortLink = Pattern.compile("(http|https)://(www\\.|)youtu.be/(.+?)( |\\z|&)");
@@ -230,6 +233,14 @@ public abstract class YouTubeExtractor extends AsyncTask<String, Void, SparseArr
             for (int i = 0; i < formats.length(); i++) {
 
                 JSONObject format = formats.getJSONObject(i);
+
+                // FORMAT_STREAM_TYPE_OTF(otf=1) requires downloading the init fragment (adding
+                // `&sq=0` to the URL) and parsing emsg box to determine the number of fragment that
+                // would subsequently requested with (`&sq=N`) (cf. youtube-dl)
+                String type = format.optString("type");
+                if (type != null && type.equals("FORMAT_STREAM_TYPE_OTF"))
+                    continue;
+
                 int itag = format.getInt("itag");
 
                 if (FORMAT_MAP.get(itag) != null) {
@@ -254,6 +265,11 @@ public abstract class YouTubeExtractor extends AsyncTask<String, Void, SparseArr
             for (int i = 0; i < adaptiveFormats.length(); i++) {
 
                 JSONObject adaptiveFormat = adaptiveFormats.getJSONObject(i);
+
+                String type = adaptiveFormat.optString("type");
+                if (type != null && type.equals("FORMAT_STREAM_TYPE_OTF"))
+                    continue;
+
                 int itag = adaptiveFormat.getInt("itag");
 
                 if (FORMAT_MAP.get(itag) != null) {

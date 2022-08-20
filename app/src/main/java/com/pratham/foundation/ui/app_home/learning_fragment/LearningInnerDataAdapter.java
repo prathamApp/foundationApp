@@ -1,5 +1,10 @@
 package com.pratham.foundation.ui.app_home.learning_fragment;
 
+import static com.pratham.foundation.utility.FC_Constants.TYPE_ASSESSMENT;
+import static com.pratham.foundation.utility.FC_Constants.TYPE_FOOTER;
+import static com.pratham.foundation.utility.FC_Constants.TYPE_HEADER;
+import static com.pratham.foundation.utility.FC_Constants.TYPE_ITEM;
+
 import android.content.Context;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -19,16 +24,11 @@ import com.pratham.foundation.view_holders.EmptyHolder;
 
 import java.util.List;
 
-import static com.pratham.foundation.utility.FC_Constants.TYPE_ASSESSMENT;
-import static com.pratham.foundation.utility.FC_Constants.TYPE_FOOTER;
-import static com.pratham.foundation.utility.FC_Constants.TYPE_HEADER;
-import static com.pratham.foundation.utility.FC_Constants.TYPE_ITEM;
-
 
 public class LearningInnerDataAdapter extends RecyclerView.Adapter {
 
-    private List<ContentTable> itemsList;
-    private Context mContext;
+    private final List<ContentTable> itemsList;
+    private final Context mContext;
     boolean dw_Ready = false;
     //    LearningContract.LearningItemClicked itemClicked;
     FragmentItemClicked itemClicked;

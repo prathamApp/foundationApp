@@ -29,7 +29,7 @@ import java.util.List;
 @EBean
 public class ConversationPresenter_3 implements ConversationContract_3.ConversationPresenter_3 {
 
-    private Context context;
+    private final Context context;
     private ConversationContract_3.ConversationView_3 conversationView_3;
     private String resId;
     private String convoTitle;
@@ -131,6 +131,7 @@ public class ConversationPresenter_3 implements ConversationContract_3.Conversat
             score.setScoredMarks(scoredMarks);
             score.setTotalMarks(totalMarks);
             score.setStudentID(FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""));
+            score.setGroupId(FastSave.getInstance().getString(FC_Constants.CURRENT_GROUP_ID, ""));
             score.setStartDateTime(resStartTime);
             score.setDeviceID(deviceId.equals(null) ? "0000" : deviceId);
             score.setEndDateTime(resEndTime);

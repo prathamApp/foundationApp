@@ -31,16 +31,16 @@ public class SplashSupportActivity extends AppCompatActivity implements MediaPla
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        hideSystemUI();
         super.onCreate(savedInstanceState);
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
-        hideSystemUI();
     }
 
     @Override
     public void onWindowFocusChanged(boolean hasFocus) {
-        super.onWindowFocusChanged(hasFocus);
         hideSystemUI();
+        super.onWindowFocusChanged(hasFocus);
     }
 
     private void hideSystemUI() {
@@ -158,6 +158,7 @@ public class SplashSupportActivity extends AppCompatActivity implements MediaPla
     @Override
     protected void onResume() {
         super.onResume();
+        hideSystemUI();
     }
 
     @Override

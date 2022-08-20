@@ -19,11 +19,13 @@ import android.content.Intent;
 import android.content.res.Configuration;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.view.Window;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -32,6 +34,7 @@ import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.pratham.foundation.ApplicationClass;
 import com.pratham.foundation.BaseActivity;
 import com.pratham.foundation.R;
 import com.pratham.foundation.customView.BlurPopupDialog.BlurPopupWindow;
@@ -39,15 +42,14 @@ import com.pratham.foundation.customView.GridSpacingItemDecoration;
 import com.pratham.foundation.customView.display_image_dialog.CustomLodingDialog;
 import com.pratham.foundation.customView.showcaseviewlib.GuideView;
 import com.pratham.foundation.customView.showcaseviewlib.config.DismissType;
+import com.pratham.foundation.customView.showcaseviewlib.listener.GuideListener;
 import com.pratham.foundation.database.domain.ContentTable;
 import com.pratham.foundation.modalclasses.EventMessage;
 import com.pratham.foundation.services.shared_preferences.FastSave;
 import com.pratham.foundation.ui.app_home.HomeActivity_;
-import com.pratham.foundation.ui.selectSubject.testPDF.ShowTestPDF_;
 import com.pratham.foundation.ui.select_language_fragment.SelectLanguageFragment;
 import com.pratham.foundation.ui.select_language_fragment.SelectLanguageFragment_;
 import com.pratham.foundation.utility.FC_Constants;
-import com.pratham.foundation.utility.FC_RandomString;
 import com.pratham.foundation.utility.FC_Utility;
 
 import org.androidannotations.annotations.AfterViews;
@@ -89,6 +91,10 @@ public class SelectSubject extends BaseActivity implements
     TextView tv_update;
     @ViewById(R.id.ib_langChange)
     ImageButton ib_langChange;
+    @ViewById(R.id.btn_back)
+    ImageButton btn_back;
+    @ViewById(R.id.dia_result)
+    Button dia_result;
     private Context context;
     SelectSubjectAdapter subjectAdapter;
     String studName;
@@ -106,7 +112,6 @@ public class SelectSubject extends BaseActivity implements
         tv_update.setVisibility(View.GONE);
         FastSave.getInstance().saveBoolean(SPLASH_OPEN, false);
 //        getTimeFormServer();
-
         //get student name
         if (FastSave.getInstance().getString(FC_Constants.LOGIN_MODE, FC_Constants.GROUP_MODE).contains("group"))
             studName = FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_NAME, "");
@@ -139,18 +144,40 @@ public class SelectSubject extends BaseActivity implements
                         +getResources().getString(R.string.of_the_content))
                 .setDismissType(DismissType.selfView) //optional - default dismissible by TargetView
                 .setTargetView(ib_langChange)
+                .setGuideListener(new GuideListener() {
+                    @Override
+                    public void onDismiss(View view) {
+                        switch (view.getId()) {
+                            case R.id.ib_langChange:
+                                builder.setTitle(getResources().getString(R.string.diagnostic_test_result));
+                                builder.setContentText(getResources().getString(R.string.diagnostic_test_result_msg));
+                                        /*getResources().getString(R.string.Click_to_switch_levels));*/
+                                builder.setTargetView(dia_result).build();
+                                break;
+                            case R.id.dia_result:
+                                builder.setTitle(getResources().getString(R.string.app_exit));
+                                builder.setContentText(getResources().getString(R.string.app_exit_msg));
+                                builder.setTargetView(btn_back).build();
+                                break;
+                            case R.id.btn_back:
+                                return;
+                        }
+                        mGuideView = builder.build();
+                        mGuideView.show();
+                    }
+                });
+        mGuideView = builder.build();
+        mGuideView.show();
+/*        builder = new GuideView.Builder(this)
+                .setTitle(getResources().getString(R.string.select_language))
+                .setContentText(getResources().getString(R.string.change_the_language)+"\n"
+                        +getResources().getString(R.string.of_the_content))
+                .setDismissType(DismissType.selfView) //optional - default dismissible by TargetView
+                .setTargetView(ib_langChange)
                 .build()
-                .show();
+                .show();*/
         FastSave.getInstance().saveBoolean(SELECT_SUBJECT_SHOWCASE, true);
     }
-/*    private void updatingForDynamicLocationViews() {
-        iv_level.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View view, boolean b) {
-                mGuideView.updateGuideViewLocation();
-            }
-        });
-    }*/
 
     @Override
     protected void onResume() {
@@ -161,6 +188,7 @@ public class SelectSubject extends BaseActivity implements
         EventMessage eventMessage = new EventMessage();
         eventMessage.setMessage(FC_Constants.CHECK_UPDATE);
         EventBus.getDefault().post(eventMessage);
+        dia_result.setText(getResources().getString(R.string.diagnostic_test_result));
 
         if (!FastSave.getInstance().getBoolean(APP_LANGUAGE_SELECTED, false))
             langChangeButtonClick();
@@ -186,6 +214,7 @@ public class SelectSubject extends BaseActivity implements
     @Override
     public void notifySubjAdapter() {
 //        getTimeFormServer();
+        dia_result.setText(getResources().getString(R.string.diagnostic_test_result));
         if (subjectAdapter == null) {
             //Populate subject list to recyclerview
             rl_no_data.setVisibility(View.GONE);
@@ -232,7 +261,7 @@ public class SelectSubject extends BaseActivity implements
             new Handler().postDelayed(() -> {
                 if (myLoadingDialog != null && myLoadingDialog.isShowing())
                     myLoadingDialog.dismiss();
-            }, 950);
+            }, 200);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -247,6 +276,7 @@ public class SelectSubject extends BaseActivity implements
     @Click(R.id.tv_update)
     public void updateClicked() {
         //Fire event bus to update event.
+        ApplicationClass.vibrator.vibrate(60);
         EventMessage eventMessage = new EventMessage();
         eventMessage.setMessage(FC_Constants.START_UPDATE);
         EventBus.getDefault().post(eventMessage);
@@ -258,7 +288,7 @@ public class SelectSubject extends BaseActivity implements
         try {
 //            allContentsIDList.clear();
             ButtonClickSound.start();
-        } catch (IllegalStateException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
         currentLevel = 0;
@@ -309,17 +339,24 @@ public class SelectSubject extends BaseActivity implements
 
     @Click(R.id.dia_result)
     public void checkDiagnosticResult() {
-        Log.d("Diagnostic", "checkDiagnosticResult: "+FC_RandomString.unique());
-
-        Intent intent = new Intent(context, ShowTestPDF_.class);
-        startActivity(intent);
+        ApplicationClass.vibrator.vibrate(60);
+        try {
+            Bundle bundle = new Bundle();
+            bundle.putString("appName", "" + getResources().getString(R.string.app_name));
+            Intent launchIntent = new Intent("com.pratham.assessment.ui.choose_assessment.science.certificate.AssessmentCertificateActivity");
+            Objects.requireNonNull(launchIntent).putExtras(bundle);
+            startActivityForResult(launchIntent, FC_Constants.APP_INTENT_REQUEST_CODE);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
     }
 
     @Override
     public void onBackPressed() {
         try {
+            ApplicationClass.vibrator.vibrate(60);
             BackBtnSound.start();
-        } catch (IllegalStateException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
         int fragments = getSupportFragmentManager().getBackStackEntryCount();
@@ -342,6 +379,7 @@ public class SelectSubject extends BaseActivity implements
     @Click(R.id.ib_langChange)
     public void langChangeButtonClick() {
         rl_act.setVisibility(View.GONE);
+        ApplicationClass.vibrator.vibrate(60);
         FC_Utility.showFragment((Activity) context, new SelectLanguageFragment_(), R.id.rl_ss_main,
                 null, SelectLanguageFragment.class.getSimpleName());
 //        showLoader();
@@ -372,6 +410,7 @@ public class SelectSubject extends BaseActivity implements
                 .setContentView(R.layout.lottie_exit_dialog)
                 .bindClickListener(v -> {
                     endSession(this);
+                    ApplicationClass.vibrator.vibrate(60);
                     exitDialog.dismiss();
                     new Handler().postDelayed(this::finishAffinity, 200);
                 }, R.id.dia_btn_yes)

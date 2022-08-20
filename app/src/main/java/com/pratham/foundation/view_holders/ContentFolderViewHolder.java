@@ -1,5 +1,9 @@
 package com.pratham.foundation.view_holders;
 
+import static com.pratham.foundation.ApplicationClass.App_Thumbs_Path;
+import static com.pratham.foundation.ui.app_home.HomeActivity.drawableBg;
+import static com.pratham.foundation.utility.FC_Constants.SINGLE_RES_DOWNLOAD;
+
 import android.annotation.SuppressLint;
 import android.net.Uri;
 import android.view.View;
@@ -28,10 +32,6 @@ import com.pratham.foundation.utility.FC_Constants;
 
 import java.io.File;
 import java.util.Objects;
-
-import static com.pratham.foundation.ApplicationClass.App_Thumbs_Path;
-import static com.pratham.foundation.ui.app_home.HomeActivity.drawableBg;
-import static com.pratham.foundation.utility.FC_Constants.SINGLE_RES_DOWNLOAD;
 
 public class ContentFolderViewHolder extends RecyclerView.ViewHolder {
 

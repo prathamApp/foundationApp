@@ -248,6 +248,9 @@ public class BaseActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
 //        ActivityResumed();
+        String a = FastSave.getInstance().getString(FC_Constants.APP_LANGUAGE, FC_Constants.HINDI);
+        Log.d("INSTRUCTIONFRAG", "Select Subj: " + a);
+        FC_Utility.setAppLocal(this, a);
         BackupDatabase.backup(this);
     }
 

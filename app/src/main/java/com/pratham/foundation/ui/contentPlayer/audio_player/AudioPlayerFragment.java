@@ -1,5 +1,8 @@
 package com.pratham.foundation.ui.contentPlayer.audio_player;
 
+import static com.pratham.foundation.ApplicationClass.App_Thumbs_Path;
+import static com.pratham.foundation.utility.FC_Constants.gameFolderPath;
+
 import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.content.Context;
@@ -50,9 +53,6 @@ import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 
-import static com.pratham.foundation.ApplicationClass.App_Thumbs_Path;
-import static com.pratham.foundation.utility.FC_Constants.gameFolderPath;
-
 @EFragment(R.layout.fragment_audio_player)
 public class AudioPlayerFragment extends Fragment implements OnGameClose {
 
@@ -73,9 +73,9 @@ public class AudioPlayerFragment extends Fragment implements OnGameClose {
     @ViewById(R.id.main_layout)
     RelativeLayout main_layout;
 
-    private int index = 0;
-    private float perc = 0;
-    private float percScore = 0;
+    private final int index = 0;
+    private final float perc = 0;
+    private final float percScore = 0;
     public static Intent intent;
     private String readingContentPath, contentPath, contentTitle, StudentID, resId;
     private boolean onSdCard;
@@ -91,8 +91,8 @@ public class AudioPlayerFragment extends Fragment implements OnGameClose {
     private double finalTime = 0;
 
     private Handler myHandler;
-    private int forwardTime = 5000;
-    private int backwardTime = 5000;
+    private final int forwardTime = 5000;
+    private final int backwardTime = 5000;
     private MediaPlayer mediaPlayer;
     private int oneTimeOnly = 0;
 
@@ -203,7 +203,7 @@ public class AudioPlayerFragment extends Fragment implements OnGameClose {
         rl_no_data.setVisibility(View.VISIBLE);
     }
 
-    private Runnable UpdateSongTime = new Runnable() {
+    private final Runnable UpdateSongTime = new Runnable() {
         @SuppressLint("DefaultLocale")
         @UiThread
         public void run() {
@@ -304,6 +304,7 @@ public class AudioPlayerFragment extends Fragment implements OnGameClose {
             score.setScoredMarks(scoredMarks);
             score.setTotalMarks(totalMarks);
             score.setStudentID(FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""));
+            score.setGroupId(FastSave.getInstance().getString(FC_Constants.CURRENT_GROUP_ID, ""));
             score.setStartDateTime(resStartTime);
             score.setDeviceID(deviceId.equals(null) ? "0000" : deviceId);
             score.setEndDateTime(FC_Utility.getCurrentDateTime());

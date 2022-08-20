@@ -13,7 +13,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
-import android.util.Base64;
 import android.util.Log;
 import android.view.View;
 import android.view.Window;
@@ -46,6 +45,7 @@ import com.pratham.foundation.database.domain.Student;
 import com.pratham.foundation.database.domain.SupervisorData;
 import com.pratham.foundation.modalclasses.Image_Upload;
 import com.pratham.foundation.modalclasses.Model_CourseEnrollment;
+import com.pratham.foundation.modalclasses.SyncLog;
 import com.pratham.foundation.services.background_service.BackgroundPushService;
 import com.pratham.foundation.services.shared_preferences.FastSave;
 import com.pratham.foundation.utility.FC_Constants;
@@ -60,17 +60,13 @@ import org.json.JSONObject;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
-import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.FileWriter;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-import java.util.concurrent.Executors;
-import java.util.zip.GZIPOutputStream;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
@@ -78,11 +74,21 @@ import java.util.zip.ZipOutputStream;
 public class PushDataToServer_New {
 
     private Context context;
-    private JSONArray scoreData, attendanceData, studentData, crlData, sessionData, supervisorData,
-            groupsData, assessmentData, contentProgress, keyWordsData, courseEnrollmentData, logsData;
+    private JSONArray scoreData;
+    private JSONArray attendanceData;
+    private JSONArray studentData;
+    private final JSONArray crlData;
+    private JSONArray sessionData;
+    private JSONArray supervisorData;
+    private JSONArray groupsData;
+    private JSONArray assessmentData;
+    private JSONArray contentProgress;
+    private JSONArray keyWordsData;
+    private JSONArray courseEnrollmentData;
+    private JSONArray logsData;
     private boolean pushSuccessfull = false;
     private final boolean pushImageSuccessfull = false;
-    private boolean isConnectedToRasp = false;
+    private boolean secondPushFlg = false, isConnectedToRasp = false;
     private int totalImages = 0;
     private int imageUploadCnt = 0;
     private int totalScoreCount = 0;
@@ -142,10 +148,8 @@ public class PushDataToServer_New {
                 scoreData = fillScoreData(scoreList);
                 List<Attendance> attendanceList = AppDatabase.getDatabaseInstance(context).getAttendanceDao().getAllPushAttendanceEntries();
                 attendanceData = fillAttendanceData(attendanceList);
-                List<Student> studentList = AppDatabase.getDatabaseInstance(context).getStudentDao().getAllStudents();
+                List<Student> studentList = AppDatabase.getDatabaseInstance(context).getStudentDao().getAllSyncStudents();
                 studentData = fillStudentData(studentList);
-                List<Crl> crlList = AppDatabase.getDatabaseInstance(context).getCrlDao().getAllCrls();
-                crlData = fillCrlData(crlList);
                 List<Session> sessionList = AppDatabase.getDatabaseInstance(context).getSessionDao().getAllNewSessions();
                 sessionData = fillSessionData(sessionList);
                 List<SupervisorData> supervisorDataList = AppDatabase.getDatabaseInstance(context).getSupervisorDataDao().getAllSupervisorData();
@@ -154,7 +158,7 @@ public class PushDataToServer_New {
                 logsData = fillLogsData(logsList);
                 List<Assessment> assessmentList = AppDatabase.getDatabaseInstance(context).getAssessmentDao().getAllAssessment();
                 assessmentData = fillAssessmentData(assessmentList);
-                List<Groups> groupsList = AppDatabase.getDatabaseInstance(context).getGroupsDao().getAllGroups();
+                List<Groups> groupsList = AppDatabase.getDatabaseInstance(context).getGroupsDao().getAllNewGroups();
                 groupsData = fillGroupsData(groupsList);
                 List<ContentProgress> contentProgressList = AppDatabase.getDatabaseInstance(context).getContentProgressDao().getAllContentNodeProgress();
                 contentProgress = fillProgressData(contentProgressList);
@@ -164,7 +168,9 @@ public class PushDataToServer_New {
                 courseEnrollmentData = fillCoureEnrollData(courseEnrollList);
 
                 JSONObject pushDataJsonObject = generateRequestString(scoreData, attendanceData, sessionData,
-                        supervisorData, logsData, assessmentData, studentData, contentProgress, keyWordsData, courseEnrollmentData);
+                        supervisorData, logsData, assessmentData, studentData, contentProgress, keyWordsData,
+                        courseEnrollmentData, groupsData);
+
                 pushSuccessfull = false;
                 //iterate through all new sessions
                 totalImages = AppDatabase.getDatabaseInstance(context).getScoreDao().getUnpushedImageCount();
@@ -176,17 +182,6 @@ public class PushDataToServer_New {
                 isConnectedToRasp = false;
                 //Checks if device is connected to wifi
                 if (ApplicationClass.wiseF.isDeviceConnectedToMobileNetwork() || ApplicationClass.wiseF.isDeviceConnectedToWifiNetwork()) {
-                    //Checks if device is connected to raspberry pie
-//                    if (ApplicationClass.wiseF.isDeviceConnectedToSSID(FC_Constants.PRATHAM_RASPBERRY_PI)) {
-//                        getFacilityId(pushDataJsonObject);
-//                    } else {
-                    isConnectedToRasp = false;
-                    setYellowColorMainTextToDialog();
-                    setMainTextToDialog(context.getResources().getString(R.string.Please_wait_pushing_Data));
-                    setSyncLottieToDialog();
-                    pushDataToServer(context, pushDataJsonObject, FC_Constants.uploadDataUrl);
-//                    }
-                } else {
                     isConnectedToRasp = false;
                     setYellowColorMainTextToDialog();
                     setMainTextToDialog(context.getResources().getString(R.string.Please_wait_pushing_Data));
@@ -284,8 +279,21 @@ public class PushDataToServer_New {
             eject_btn.setVisibility(View.GONE);
 
             ok_btn.setOnClickListener(v -> {
-//                if (pushSuccessfull)
-                getImageList();
+                if (pushSuccessfull)
+                    setPushFlag();
+                if (!ApplicationClass.wiseF.isDeviceConnectedToSSID(FC_Constants.PRATHAM_RASPBERRY_PI)) {
+                    if (!secondPushFlg) {
+                        txt_push_dialog_msg.setText(context.getResources().getString(R.string.Please_wait_pushing_Data));
+                        ok_btn.setVisibility(View.GONE);
+                        setSyncLottieToDialog();
+                        pushDataToNewServer();
+                    } else {
+                        getImageList();
+                    }
+                } else {
+                    getImageList();
+                }
+//                getImageList();
 //                else
 //                    pushDialog.dismiss();
             });
@@ -300,38 +308,6 @@ public class PushDataToServer_New {
                 }
             });
         }
-    }
-
-    private static void compressGzipFile(String file, String gzipFile) {
-        try {
-            FileInputStream fis = new FileInputStream(file);
-            FileOutputStream fos = new FileOutputStream(gzipFile);
-            GZIPOutputStream gzipOS = new GZIPOutputStream(fos);
-            byte[] buffer = new byte[1024];
-            int len;
-            while ((len = fis.read(buffer)) != -1) {
-                gzipOS.write(buffer, 0, len);
-            }
-            //close resources
-            gzipOS.close();
-            fos.close();
-            fis.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-    }
-
-    public static String compress(String str) throws IOException {
-        if (str == null || str.length() == 0) {
-            return str;
-        }
-        ByteArrayOutputStream out = new ByteArrayOutputStream();
-        GZIPOutputStream gzip = new GZIPOutputStream(out);
-        gzip.write(str.getBytes());
-        gzip.close();
-        String outStr = out.toString("UTF-8");
-        return outStr;
     }
 
     public void zip(String[] _files, String zipFileName, File filepath) {
@@ -361,38 +337,16 @@ public class PushDataToServer_New {
         }
     }
 
-    public void img_zip(List<Image_Upload> _files, String zipFileName) {
-        try {
-            BufferedInputStream origin = null;
-            FileOutputStream dest = new FileOutputStream(zipFileName);
-            ZipOutputStream out = new ZipOutputStream(new BufferedOutputStream(dest));
-
-            byte[] data = new byte[BUFFER];
-            for (int i = 0; i < _files.size(); i++) {
-                Log.v("Compress", "Adding: " + _files.get(i));
-                FileInputStream fi = new FileInputStream(String.valueOf(_files.get(i).getFilePath()));
-                origin = new BufferedInputStream(fi, BUFFER);
-                ZipEntry entry = new ZipEntry("" + _files.get(i).getFilePath());
-                out.putNextEntry(entry);
-                int count;
-                while ((count = origin.read(data, 0, BUFFER)) != -1) {
-                    out.write(data, 0, count);
-                }
-                origin.close();
-            }
-            out.close();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
+    String filePathStr = "NA";
 
     // Call only this method, do the data collection before
     public void pushDataToServer(Context context, JSONObject data, String... url) {
         try {
 //            String fielName = ""+FC_Utility.getUUID();
+            secondPushFlg = false;
             String fielName = "FC_" + FC_RandomString.unique();
-            String filePathStr = ApplicationClass.getStoragePath().toString()
-                    + "/.FCAInternal/PushJsons/" + fielName; // file path to save
+            filePathStr = ApplicationClass.getStoragePath().toString()
+                    + "/FCAInternal/PushJsons/" + fielName; // file path to save
             File filepath = new File(filePathStr + ".json"); // file path to save
             if (filepath.exists())
                 filepath.delete();
@@ -412,6 +366,7 @@ public class PushDataToServer_New {
             if (ApplicationClass.wiseF.isDeviceConnectedToSSID(FC_Constants.PRATHAM_RASPBERRY_PI)) {
 
                 URL_Final = FC_Constants.uploadDataUrl_PI;
+                Log.d("PushData", "RPI Push API : " + URL_Final);
                 AndroidNetworking.upload(URL_Final)
                         .addHeaders("Content-Type", "file/zip")
                         .addMultipartFile("uploaded_file", new File(filePathStr + ".zip"))
@@ -424,7 +379,7 @@ public class PushDataToServer_New {
                                 Gson gson = new Gson();
                                 FilePushResponse pushResponse = gson.fromJson(response, FilePushResponse.class);
 
-                                new File(filePathStr + ".zip").delete();
+//                                new File(filePathStr + ".zip").delete();
                                 Log.d("PushData", "DATA PUSH SUCCESS");
                                 pushSuccessfull = true;
                                 setDataPushSuccessfull();
@@ -435,7 +390,7 @@ public class PushDataToServer_New {
                                 //Fail - Show dialog with failure message.
                                 Log.d("PushData", "Data push FAIL");
                                 Log.d("PushData", "ERROR  " + anError);
-                                new File(filePathStr + ".zip").delete();
+//                                new File(filePathStr + ".zip").delete();
                                 pushSuccessfull = false;
                                 setDataPushFailed();
                             }
@@ -443,7 +398,7 @@ public class PushDataToServer_New {
             } else {
 //                pushSuccessfull = false;
 //                setDataPushFailed();
-
+                Log.d("PushData", "First Push API : " + URL_Final);
                 AndroidNetworking.upload(URL_Final)
                         .addHeaders("Content-Type", "file/zip")
                         .addMultipartFile("" + fielName, new File(filePathStr + ".zip"))
@@ -456,7 +411,7 @@ public class PushDataToServer_New {
                                 Gson gson = new Gson();
                                 FilePushResponse pushResponse = gson.fromJson(response, FilePushResponse.class);
 
-                                new File(filePathStr + ".zip").delete();
+//                                new File(filePathStr + ".zip").delete();
                                 if (pushResponse.isSuccess()/*.equalsIgnoreCase("success")*/) {
                                     Log.d("PushData", "DATA PUSH SUCCESS");
                                     pushSuccessfull = true;
@@ -472,6 +427,7 @@ public class PushDataToServer_New {
                             public void onError(ANError anError) {
                                 Log.d("PushData", "Data push FAIL");
                                 Log.d("PushData", "ERROR  " + anError);
+//                                new File(filePathStr + ".zip").delete();
                                 pushSuccessfull = false;
                                 setDataPushFailed();
                             }
@@ -482,23 +438,119 @@ public class PushDataToServer_New {
         }
     }
 
+    void pushDataToNewServer() {
+        Log.d("PushData", "First Push API : " + FC_Constants.NEW_PUSH_API);
+        AndroidNetworking.upload(FC_Constants.NEW_PUSH_API)
+                .addHeaders("Content-Type", "file/zip")
+//                        .addMultipartFile("" + fielName, new File(filePathStr + ".zip"))
+                .addMultipartFile("fileJson", new File(filePathStr + ".zip"))
+                .setPriority(Priority.HIGH)
+                .build()
+                .getAsString(new StringRequestListener() {
+                    @Override
+                    public void onResponse(String response) {
+                        Log.d("PushData", "DATA PUSH " + response);
+                        Gson gson = new Gson();
+                        SyncLog pushResponse = gson.fromJson(response, SyncLog.class);
+                        new File(filePathStr + ".zip").delete();
+                        if (pushResponse.getPushId() != 0) {
+                            Log.d("PushData", "DATA PUSH SUCCESS");
+//                                    ShowResponse(pushResponse, response);
+                            pushSuccessfull = true;
+                            setNewDataPushSuccessfull(pushResponse, response);
+                        } else {
+                            Log.d("PushData", "Failed DATA PUSH");
+                            pushSuccessfull = false;
+                            setDataPushFailed();
+                        }
+                    }
+
+                    @Override
+                    public void onError(ANError anError) {
+                        Log.d("PushData", "Data push FAIL");
+                        Log.d("PushData", "ERROR  " + anError);
+                        new File(filePathStr + ".zip").delete();
+                        pushSuccessfull = false;
+                        setDataPushFailed();
+                    }
+                });
+    }
+
     //Method shows success dialog
     @UiThread
     public void setDataPushSuccessfull() {
-        setPushFlag();
 //        AppDatabase.getDatabaseInstance(context).getLogsDao().setPushStatus(FC_Constants.SUCCESSFULLYPUSHED,
 //                FastSave.getInstance().getString(FC_Constants.PUSH_ID_LOGS, ""));
         if (showUi) {
             setGreenColorMainTextToDialog();
             setMainTextToDialog(context.getResources().getString(R.string.data_pushed_successfully) + "\n" +
-                    context.getResources().getString(R.string.Score_Count) + " " + scoreData.length() +
-//                    "\n\n" + context.getResources().getString(R.string.Certificate_Count) + " " + certiCount +
-                    "\n\n" + context.getResources().getString(R.string.Now_Upload_Media));
+                    context.getResources().getString(R.string.Score_Count) + " " + scoreData.length());
             ok_btn.setText(context.getResources().getString(R.string.Okay));
             ok_btn.setVisibility(View.VISIBLE);
+        } else if (!secondPushFlg) {
+            secondPushFlg = true;
+            if (!ApplicationClass.wiseF.isDeviceConnectedToSSID(FC_Constants.PRATHAM_RASPBERRY_PI)) {
+                pushDataToNewServer();
+            } else {
+                setPushFlag();
+                getImageList();
+            }
+        }
+    }
+
+    @UiThread
+    public void setNewDataPushSuccessfull(SyncLog pushResponse, String strResponse) {
+//        this.pushResponse = pushResponse;
+        setPushFlag();
+        if (showUi)
+            pushResponse.setPushType(FC_Constants.APP_MANUAL_SYNC);
+        else
+            pushResponse.setPushType(FC_Constants.APP_AUTO_SYNC);
+        AppDatabase.getDatabaseInstance(context).getSyncLogDao().insert(pushResponse);
+
+        addResponse(pushResponse, strResponse);
+
+        String err = "";
+        if (!pushResponse.getError().equalsIgnoreCase("") && !pushResponse.getError().equalsIgnoreCase(" "))
+            err = "ERROR : " + pushResponse.getError();
+//        AppDatabase.getDatabaseInstance(context).getLogsDao().setPushStatus(FC_Constants.SUCCESSFULLYPUSHED,
+//                FastSave.getInstance().getString(FC_Constants.PUSH_ID_LOGS, ""));
+        if (showUi) {
+            push_lottie.setAnimation("cloud_sync.json");
+            push_lottie.playAnimation();
+            setGreenColorMainTextToDialog();
+            setMainTextToDialog("PushID : " + pushResponse.getPushId() + "\n"
+                    + "UUID : " + pushResponse.getUuid() + "\n"
+                    + "Push Date : " + pushResponse.getPushDate() + "\n"
+                    + "Push Status : " + pushResponse.getStatus() + "\n"
+                    + err + "\n\n" + context.getResources().getString(R.string.Now_Upload_Media));
+            txt_push_dialog_msg.setVisibility(View.VISIBLE);
+            ok_btn.setText(context.getResources().getString(R.string.Okay));
+            ok_btn.setVisibility(View.VISIBLE);
+            secondPushFlg = true;
         } else {
             getImageList();
         }
+    }
+
+    @UiThread
+    public void addResponse(SyncLog pushResponse, String response) {
+        Modal_Log log = new Modal_Log();
+
+        log.setCurrentDateTime(pushResponse.getPushDate());
+        log.setErrorType("");
+        log.setExceptionMessage("TEMP_SYNC_RESPONSE");
+        log.setMethodName("" + pushResponse.getPushId());
+        log.setSessionId("" + FastSave.getInstance().getString(FC_Constants.CURRENT_SESSION, ""));
+        log.setGroupId("");
+        log.setLogDetail("" + response);
+        log.setExceptionStackTrace("APK BUILD DATE : " + BUILD_DATE);
+        log.setDeviceId("" + FC_Utility.getDeviceID());
+        log.setSentFlag(1);
+
+        Log.d("PushData", "pushStatusJson JSON : " + pushResponse);
+        AppDatabase.getDatabaseInstance(context).getLogsDao().insertLog(log);
+        BackupDatabase.backup(context);
     }
 
     @UiThread
@@ -522,9 +574,11 @@ public class PushDataToServer_New {
             push_lottie.playAnimation();
             ok_btn.setText(context.getResources().getString(R.string.Okay));
             ok_btn.setVisibility(View.VISIBLE);
-        } else {
+        } else if (!secondPushFlg && !ApplicationClass.wiseF.isDeviceConnectedToSSID(FC_Constants.PRATHAM_RASPBERRY_PI)) {
+            pushDataToNewServer();
+            secondPushFlg = true;
+        } else
             getImageList();
-        }
     }
 
     //This method sets setFlag value to 1 in local database if data is successfully pushed to server.
@@ -536,10 +590,11 @@ public class PushDataToServer_New {
         AppDatabase.getDatabaseInstance(context).getScoreDao().setSentFlag();
         AppDatabase.getDatabaseInstance(context).getAssessmentDao().setSentFlag();
         AppDatabase.getDatabaseInstance(context).getSupervisorDataDao().setSentFlag();
-        AppDatabase.getDatabaseInstance(context).getStudentDao().setSentFlag();
         AppDatabase.getDatabaseInstance(context).getKeyWordDao().setSentFlag();
         AppDatabase.getDatabaseInstance(context).getContentProgressDao().setSentFlag();
         AppDatabase.getDatabaseInstance(context).getCourseDao().setSentFlag();
+        AppDatabase.getDatabaseInstance(context).getStudentDao().setSentFlag();
+        AppDatabase.getDatabaseInstance(context).getGroupsDao().setSentFlag();
 //        AppDatabase.getDatabaseInstance(context).getLogsDao().deletePushedLogs();
     }
 
@@ -548,7 +603,7 @@ public class PushDataToServer_New {
         setMainTextToDialog(context.getResources().getString(R.string.Collecting_Media));
         setGreenColorMainTextToDialog();
         hideOKBtn();
-        actPhotoPath = ApplicationClass.getStoragePath().toString() + "/.FCAInternal/ActivityPhotos/";
+        actPhotoPath = ApplicationClass.getStoragePath().toString() + "/FCAInternal/ActivityPhotos/";
 //        Log.d("PushData", "Path: " + actPhotoPath);
         File directory = new File(actPhotoPath);
         imageFilesArray = directory.listFiles();
@@ -607,7 +662,7 @@ public class PushDataToServer_New {
 
 //            String fielName = "FCI_" + FC_RandomString.unique();
 //            String filePathStr = ApplicationClass.getStoragePath().toString()
-//                    + "/.FCAInternal/ActivityPhotos/" + fielName;
+//                    + "/FCAInternal/ActivityPhotos/" + fielName;
 //            img_zip(imageUploadList, filePathStr + ".zip");
 
             if (ApplicationClass.wiseF.isDeviceConnectedToSSID(FC_Constants.PRATHAM_RASPBERRY_PI))
@@ -768,23 +823,23 @@ public class PushDataToServer_New {
 
             Modal_Log log = new Modal_Log();
             if (!showUi)
-                log.setExceptionMessage("App_Auto_Sync");
+                log.setExceptionMessage(FC_Constants.APP_AUTO_SYNC);
             else
-                log.setExceptionMessage("App_Manual_Sync");
+                log.setExceptionMessage(FC_Constants.APP_MANUAL_SYNC);
             log.setMethodName("" + FastSave.getInstance().getString(FC_Constants.PUSH_ID_LOGS, "na"));
             log.setSessionId("" + FastSave.getInstance().getString(FC_Constants.CURRENT_SESSION, ""));
             log.setGroupId("");
             log.setExceptionStackTrace("APK BUILD DATE : " + BUILD_DATE);
             if (pushSuccessfull)
-                log.setErrorType(""+FC_Constants.SUCCESSFULLYPUSHED);
+                log.setErrorType("" + FC_Constants.SUCCESSFULLYPUSHED);
             else
-                log.setErrorType(""+FC_Constants.PUSHFAILED);
-            log.setLogDetail(""+pushStatusJson.toString());
+                log.setErrorType("" + FC_Constants.PUSHFAILED);
+            log.setLogDetail("" + pushStatusJson);
             log.setDeviceId("" + FC_Utility.getDeviceID());
             log.setCurrentDateTime("" + syncTime);
             AppDatabase.getDatabaseInstance(context).getLogsDao().insertLog(log);
 
-            Log.d("PushData", "pushStatusJson JSON : " + pushStatusJson.toString());
+            Log.d("PushData", "pushStatusJson JSON : " + pushStatusJson);
 //            AppDatabase.getDatabaseInstance(context).getLogsDao().setPushDataLog(,
 //                    FastSave.getInstance().getString(FC_Constants.PUSH_ID_LOGS, ""));
             BackupDatabase.backup(context);
@@ -833,108 +888,43 @@ public class PushDataToServer_New {
         return false;
     }
 
-//    @Background
-//    public void getFacilityId(JSONObject requestString) {
-//        try {
-//            JSONObject object = new JSONObject();
-//            object.put("username", "pratham");
-//            object.put("password", "pratham");
-//            AndroidNetworking.post(FC_Constants.RASP_IP + "/api/session/")
-//                    .addHeaders("Content-Type", "application/json")
-//                    .addJSONObjectBody(object)
-//                    .build()
-//                    .getAsString(new StringRequestListener() {
-//                        @Override
-//                        public void onResponse(String response) {
-//                            //Success - push method is called and data is passes.
-//                            Gson gson = new Gson();
-//                            Modal_RaspFacility facility = gson.fromJson(response, Modal_RaspFacility.class);
-//                            FastSave.getInstance().saveString(FC_Constants.FACILITY_ID, facility.getFacilityId());
-//                            Log.d("pi", "onResponse: " + facility.getFacilityId());
-//                            isConnectedToRasp = true;
-//                            pushDataToRaspberry("" + FC_Constants.URL.DATASTORE_RASPBERY_URL.toString(),
-//                                    "" + requestString, programID, FC_Constants.USAGEDATA);
-////                            try {
-////                                getRaspImageList();
-////                            } catch (Exception e) {
-////                                e.printStackTrace();
-////                            }
-//                        }
-//
-//                        @Override
-//                        public void onError(ANError anError) {
-////                            apiResult.notifyError(requestType/*, null*/);
-//                            // Fail - Show dialog with failure message.
-//                            setDataPushFailed();
-//                            isConnectedToRasp = false;
-//                            Log.d("Error::", anError.getErrorDetail());
-//                            Log.d("Error::", Objects.requireNonNull(anError.getMessage()));
-//                            Log.d("Error::", anError.getResponse().toString());
-//                        }
-//                    });
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
-//    }
-
-    private String getAuthHeader() {
-        String encoded = Base64.encodeToString(("pratham" + ":" + "pratham").getBytes(), Base64.NO_WRAP);
-        return "Basic " + encoded;
-    }
-
-    //This method is used to push the data to raspberry device.
-    private void pushDataToRaspberry(String url, String data, String filter_name, String table_name) {
-        String authHeader = getAuthHeader();
-        AndroidNetworking.post(url)
-                .addHeaders("Content-Type", "application/json")
-                .addHeaders("Authorization", authHeader)
-                .addBodyParameter("filter_name", filter_name)
-                .addBodyParameter("table_name", table_name)
-                .addBodyParameter("facility", FastSave.getInstance().getString(FC_Constants.FACILITY_ID, ""))
-                .addBodyParameter("data", data)
-                .setExecutor(Executors.newSingleThreadExecutor())
-                .setPriority(Priority.HIGH)
-                .build()
-                .getAsString(new StringRequestListener() {
-                    @Override
-                    public void onResponse(String response) {
-                        //Success - Shows dialog with success message.
-                        Log.d("Raspberry Success : ", "onResponse: " + response);
-                        if (response.equalsIgnoreCase("success")) {
-                            pushSuccessfull = true;
-                            setPushFlag();
-                            BackupDatabase.backup(ApplicationClass.getInstance());
-                            setDataPushSuccessfull();
-                        } else {
-                            pushSuccessfull = false;
-                            setDataPushFailed();
-                        }
-                    }
-
-                    @Override
-                    public void onError(ANError anError) {
-                        //Fail - Show dialog with failure message.
-                        pushSuccessfull = false;
-                        setDataPushFailed();
-                        Log.d("Raspberry Error::", anError.getErrorDetail());
-                        Log.d("Raspberry Error::", Objects.requireNonNull(anError.getMessage()));
-                        Log.d("Raspberry Error::", anError.getResponse().toString());
-                    }
-                });
-    }
-
     //In this method data from json array and from local database is fetched and passed to jsonobject.
     private JSONObject generateRequestString(JSONArray scoreData, JSONArray attendanceData, JSONArray sessionData,
                                              JSONArray supervisorData, JSONArray logsData, JSONArray assessmentData,
                                              JSONArray studentData, JSONArray contentProgress, JSONArray keyWordsData,
-                                             JSONArray courseEnrollmentData) {
+                                             JSONArray courseEnrollmentData, JSONArray groupsData) {
 //        String requestString = "";
         JSONObject pushJsonObject = new JSONObject();
 
         try {
             JSONObject sessionObj = new JSONObject();
             JSONObject metaDataObj = new JSONObject();
+
+            sessionObj.put("scoreData", scoreData);
+            sessionObj.put("studentData", studentData);
+            sessionObj.put("attendanceData", attendanceData);
+            sessionObj.put("sessionsData", sessionData);
+            sessionObj.put("keyWords", keyWordsData);
+            sessionObj.put("CourseEnrollment", courseEnrollmentData);
+            sessionObj.put("contentProgressData", contentProgress);
+            sessionObj.put("logsData", logsData);
+            sessionObj.put("groupsData", groupsData);
+            sessionObj.put("assessmentData", assessmentData);
+            sessionObj.put("supervisor", supervisorData);
+
             metaDataObj.put("ScoreCount", scoreData.length());
+            metaDataObj.put("AttendanceCount", attendanceData.length());
+            metaDataObj.put("SessionCount", sessionData.length());
+            metaDataObj.put("LogsCount", logsData.length());
+            metaDataObj.put("StudentCount", studentData.length());
+            metaDataObj.put("ContentProgressCount", contentProgress.length());
+            metaDataObj.put("KeyWordsCount", keyWordsData.length());
+            metaDataObj.put("CourseEnrollmentCount", courseEnrollmentData.length());
+            metaDataObj.put("GroupsCount", groupsData.length());
+            if (showUi)
+                metaDataObj.put("PushType", FC_Constants.APP_MANUAL_SYNC);
+            else
+                metaDataObj.put("PushType", FC_Constants.APP_AUTO_SYNC);
 
             metaDataObj.put("CRLID", AppDatabase.getDatabaseInstance(context).getStatusDao().getValue("CRLID"));
             metaDataObj.put("group1", AppDatabase.getDatabaseInstance(context).getStatusDao().getValue("group1"));
@@ -952,10 +942,7 @@ public class PushDataToServer_New {
             metaDataObj.put("prathamCode", AppDatabase.getDatabaseInstance(context).getStatusDao().getValue("prathamCode"));
             metaDataObj.put("programId", AppDatabase.getDatabaseInstance(context).getStatusDao().getValue("programId"));
             metaDataObj.put("WifiMAC", AppDatabase.getDatabaseInstance(context).getStatusDao().getValue("wifiMAC"));
-            if (showUi)
-                metaDataObj.put("apkType", "Tablet");
-            else
-                metaDataObj.put("apkType", "SmartPhone");
+            metaDataObj.put("apkType", "APP Build Date : " + ApplicationClass.BUILD_DATE);
             metaDataObj.put("appName", AppDatabase.getDatabaseInstance(context).getStatusDao().getValue("appName"));
             metaDataObj.put("apkVersion", AppDatabase.getDatabaseInstance(context).getStatusDao().getValue("apkVersion"));
             metaDataObj.put("GPSDateTime", AppDatabase.getDatabaseInstance(context).getStatusDao().getValue("GPSDateTime"));
@@ -967,26 +954,10 @@ public class PushDataToServer_New {
             metaDataObj.put("DeviceModel", AppDatabase.getDatabaseInstance(context).getStatusDao().getValue("DeviceModel"));
             metaDataObj.put("ScreenResolution", AppDatabase.getDatabaseInstance(context).getStatusDao().getValue("ScreenResolution"));
             metaDataObj.put("DeviceDataSyncTime", FC_Utility.getCurrentDateTime());
-//            metaDataObj.put("InternetSpeed", FC_Utility.getInternetSpeed(context));
-
-            sessionObj.put("scoreData", scoreData);
-            if (!showUi)
-                sessionObj.put("studentData", studentData);
-            sessionObj.put("attendanceData", attendanceData);
-            sessionObj.put("sessionsData", sessionData);
-            sessionObj.put("keyWords", keyWordsData);
-            sessionObj.put("CourseEnrollment", courseEnrollmentData);
-            sessionObj.put("contentProgressData", contentProgress);
-            sessionObj.put("logsData", logsData);
-            sessionObj.put("assessmentData", assessmentData);
-            sessionObj.put("supervisor", supervisorData);
 
             pushJsonObject.put("session", sessionObj);
             pushJsonObject.put("metadata", metaDataObj);
 
-//            requestString = "{ \"session\": " + sessionObj +
-//                    ", \"metadata\": " + metaDataObj +
-//                    "}";
             return pushJsonObject;
         } catch (Exception e) {
             e.printStackTrace();
@@ -1000,9 +971,9 @@ public class PushDataToServer_New {
         try {
             for (int i = 0; i < sessionList.size(); i++) {
                 _sessionObj = new JSONObject();
-                _sessionObj.put("SessionID", sessionList.get(i).getSessionID());
-                _sessionObj.put("fromDate", sessionList.get(i).getFromDate());
-                _sessionObj.put("toDate", sessionList.get(i).getToDate());
+                _sessionObj.put("SessionID", "" + sessionList.get(i).getSessionID());
+                _sessionObj.put("fromDate", "" + sessionList.get(i).getFromDate());
+                _sessionObj.put("toDate", "" + sessionList.get(i).getToDate());
                 newSessionsData.put(_sessionObj);
             }
         } catch (Exception e) {
@@ -1018,17 +989,17 @@ public class PushDataToServer_New {
         try {
             for (int i = 0; i < crlsList.size(); i++) {
                 _crlObj = new JSONObject();
-                _crlObj.put("CRLId", crlsList.get(i).getCRLId());
-                _crlObj.put("FirstName", crlsList.get(i).getFirstName());
-                _crlObj.put("LastName", crlsList.get(i).getLastName());
-                _crlObj.put("UserName", crlsList.get(i).getUserName());
-                _crlObj.put("UserName", crlsList.get(i).getUserName());
-                _crlObj.put("Password", crlsList.get(i).getPassword());
-                _crlObj.put("ProgramId", crlsList.get(i).getProgramId());
-                _crlObj.put("Mobile", crlsList.get(i).getMobile());
-                _crlObj.put("State", crlsList.get(i).getState());
-                _crlObj.put("Email", crlsList.get(i).getEmail());
-                _crlObj.put("CreatedBy", crlsList.get(i).getCreatedBy());
+                _crlObj.put("CRLId", "" + crlsList.get(i).getCRLId());
+                _crlObj.put("FirstName", "" + crlsList.get(i).getFirstName());
+                _crlObj.put("LastName", "" + crlsList.get(i).getLastName());
+                _crlObj.put("UserName", "" + crlsList.get(i).getUserName());
+                _crlObj.put("UserName", "" + crlsList.get(i).getUserName());
+                _crlObj.put("Password", "" + crlsList.get(i).getPassword());
+                _crlObj.put("ProgramId", "" + crlsList.get(i).getProgramId());
+                _crlObj.put("Mobile", "" + crlsList.get(i).getMobile());
+                _crlObj.put("State", "" + crlsList.get(i).getState());
+                _crlObj.put("Email", "" + crlsList.get(i).getEmail());
+                _crlObj.put("CreatedBy", "" + crlsList.get(i).getCreatedBy());
                 _crlObj.put("newCrl", !crlsList.get(i).isNewCrl());
                 crlsData.put(_crlObj);
             }
@@ -1045,18 +1016,24 @@ public class PushDataToServer_New {
         try {
             for (int i = 0; i < studentList.size(); i++) {
                 _studentObj = new JSONObject();
-                _studentObj.put("StudentID", studentList.get(i).getStudentID());
-                _studentObj.put("StudentUID", studentList.get(i).getStudentUID());
-                _studentObj.put("FirstName", studentList.get(i).getFirstName());
-                _studentObj.put("MiddleName", studentList.get(i).getMiddleName());
-                _studentObj.put("LastName", studentList.get(i).getLastName());
-                _studentObj.put("FullName", studentList.get(i).getFullName());
-                _studentObj.put("Gender", studentList.get(i).getGender());
-                _studentObj.put("regDate", studentList.get(i).getRegDate());
-                _studentObj.put("Age", studentList.get(i).getAge());
-                _studentObj.put("villageName", studentList.get(i).getVillageName());
+                _studentObj.put("StudentID", "" + studentList.get(i).getStudentID());
+                _studentObj.put("StudentUID", "" + studentList.get(i).getStudentUID());
+                _studentObj.put("FirstName", "" + studentList.get(i).getFirstName());
+                _studentObj.put("MiddleName", "" + studentList.get(i).getMiddleName());
+                _studentObj.put("LastName", "" + studentList.get(i).getLastName());
+                _studentObj.put("FullName", "" + studentList.get(i).getFullName());
+                _studentObj.put("Gender", "" + studentList.get(i).getGender());
+                _studentObj.put("EnrollmentId", "" + studentList.get(i).getEnrollmentId());
+                if(studentList.get(i).getRegDate()!=null)
+                    _studentObj.put("regDate", "" + studentList.get(i).getRegDate());
+                else
+                    _studentObj.put("regDate", "" + FC_Utility.getCurrentDateTime());
+                _studentObj.put("Age", "" + studentList.get(i).getAge());
+                _studentObj.put("villageName", "" + studentList.get(i).getVillageName());
                 _studentObj.put("newFlag", studentList.get(i).getNewFlag());
-                _studentObj.put("DeviceId", studentList.get(i).getDeviceId());
+                _studentObj.put("newFlag", studentList.get(i).getNewFlag());
+                _studentObj.put("GroupId", studentList.get(i).getGroupId());
+                _studentObj.put("DeviceId", "" + studentList.get(i).getDeviceId());
                 studentData.put(_studentObj);
             }
         } catch (Exception e) {
@@ -1073,11 +1050,11 @@ public class PushDataToServer_New {
             for (int i = 0; i < attendanceList.size(); i++) {
                 _obj = new JSONObject();
                 Attendance _attendance = attendanceList.get(i);
-                _obj.put("attendanceID", _attendance.getAttendanceID());
-                _obj.put("SessionID", _attendance.getSessionID());
-                _obj.put("StudentID", _attendance.getStudentID());
-                _obj.put("Date", _attendance.getDate());
-                _obj.put("GroupID", _attendance.getGroupID());
+                _obj.put("attendanceID", "" + _attendance.getAttendanceID());
+                _obj.put("SessionID", "" + _attendance.getSessionID());
+                _obj.put("StudentID", "" + _attendance.getStudentID());
+                _obj.put("Date", "" + _attendance.getDate());
+                _obj.put("GroupID", "" + _attendance.getGroupID());
                 attendanceData.put(_obj);
             }
         } catch (Exception e) {
@@ -1094,18 +1071,19 @@ public class PushDataToServer_New {
             for (int i = 0; i < scoreList.size(); i++) {
                 _obj = new JSONObject();
                 Score _score = scoreList.get(i);
-                _obj.put("ScoreId", _score.getScoreId());
-                _obj.put("SessionID", _score.getSessionID());
-                _obj.put("StudentID", _score.getStudentID());
-                _obj.put("DeviceID", _score.getDeviceID());
-                _obj.put("ResourceID", _score.getResourceID());
-                _obj.put("QuestionId", _score.getQuestionId());
-                _obj.put("ScoredMarks", _score.getScoredMarks());
-                _obj.put("TotalMarks", _score.getTotalMarks());
-                _obj.put("StartDateTime", _score.getStartDateTime());
-                _obj.put("EndDateTime", _score.getEndDateTime());
-                _obj.put("Level", _score.getLevel());
-                _obj.put("Label", _score.getLabel());
+                _obj.put("ScoreId", "" + _score.getScoreId());
+                _obj.put("SessionID", "" + _score.getSessionID());
+                _obj.put("StudentID", "" + _score.getStudentID());
+                _obj.put("DeviceID", "" + _score.getDeviceID());
+                _obj.put("ResourceID", "" + _score.getResourceID());
+                _obj.put("QuestionId", "" + _score.getQuestionId());
+                _obj.put("ScoredMarks", "" + _score.getScoredMarks());
+                _obj.put("TotalMarks", "" + _score.getTotalMarks());
+                _obj.put("StartDateTime", "" + _score.getStartDateTime());
+                _obj.put("EndDateTime", "" + _score.getEndDateTime());
+                _obj.put("GroupId", "" + _score.getGroupId());
+                _obj.put("Level", "" + _score.getLevel());
+                _obj.put("Label", "" + _score.getLabel());
                 scoreData.put(_obj);
             }
         } catch (Exception e) {
@@ -1122,11 +1100,11 @@ public class PushDataToServer_New {
             for (int i = 0; i < supervisorDataList.size(); i++) {
                 _supervisorDataObj = new JSONObject();
                 SupervisorData supervisorDataTemp = supervisorDataList.get(i);
-                _supervisorDataObj.put("sId", supervisorDataTemp.getsId());
-                _supervisorDataObj.put("assessmentSessionId", supervisorDataTemp.getAssessmentSessionId());
-                _supervisorDataObj.put("supervisorId", supervisorDataTemp.getSupervisorId());
-                _supervisorDataObj.put("supervisorName", supervisorDataTemp.getSupervisorName());
-                _supervisorDataObj.put("supervisorPhoto", supervisorDataTemp.getSupervisorPhoto());
+                _supervisorDataObj.put("sId", "" + supervisorDataTemp.getsId());
+                _supervisorDataObj.put("assessmentSessionId", "" + supervisorDataTemp.getAssessmentSessionId());
+                _supervisorDataObj.put("supervisorId", "" + supervisorDataTemp.getSupervisorId());
+                _supervisorDataObj.put("supervisorName", "" + supervisorDataTemp.getSupervisorName());
+                _supervisorDataObj.put("supervisorPhoto", "" + supervisorDataTemp.getSupervisorPhoto());
 
                 supervisorData.put(_supervisorDataObj);
             }
@@ -1144,15 +1122,15 @@ public class PushDataToServer_New {
             for (int i = 0; i < logsList.size(); i++) {
                 _logsObj = new JSONObject();
                 Modal_Log modal_log = logsList.get(i);
-                _logsObj.put("logId", modal_log.getLogId());
-                _logsObj.put("deviceId", modal_log.getDeviceId());
-                _logsObj.put("currentDateTime", modal_log.getCurrentDateTime());
-                _logsObj.put("errorType", modal_log.getErrorType());
-                _logsObj.put("exceptionMessage", modal_log.getExceptionMessage());
-                _logsObj.put("exceptionStackTrace", modal_log.getExceptionStackTrace());
-                _logsObj.put("groupId", modal_log.getGroupId());
-                _logsObj.put("LogDetail", modal_log.getLogDetail());
-                _logsObj.put("methodName", modal_log.getMethodName());
+                _logsObj.put("logId", "" + modal_log.getLogId());
+                _logsObj.put("deviceId", "" + modal_log.getDeviceId());
+                _logsObj.put("currentDateTime", "" + modal_log.getCurrentDateTime());
+                _logsObj.put("errorType", "" + modal_log.getErrorType());
+                _logsObj.put("exceptionMessage", "" + modal_log.getExceptionMessage());
+                _logsObj.put("exceptionStackTrace", "" + modal_log.getExceptionStackTrace());
+                _logsObj.put("groupId", "" + modal_log.getGroupId());
+                _logsObj.put("LogDetail", "" + modal_log.getLogDetail());
+                _logsObj.put("methodName", "" + modal_log.getMethodName());
 
                 logsData.put(_logsObj);
             }
@@ -1200,14 +1178,16 @@ public class PushDataToServer_New {
             for (int i = 0; i < groupsList.size(); i++) {
                 _groupsObj = new JSONObject();
                 Groups group = groupsList.get(i);
-                _groupsObj.put("GroupId", group.getGroupId());
-                _groupsObj.put("DeviceId", group.getDeviceId());
-                _groupsObj.put("GroupCode", group.getGroupCode());
-                _groupsObj.put("GroupName", group.getGroupName());
-                _groupsObj.put("ProgramId", group.getProgramId());
-                _groupsObj.put("SchoolName", group.getSchoolName());
-                _groupsObj.put("VillageId", group.getVillageId());
-                _groupsObj.put("VIllageName", group.getVIllageName());
+                _groupsObj.put("GroupId", "" + group.getGroupId());
+                _groupsObj.put("DeviceId", "" + group.getDeviceId());
+                _groupsObj.put("GroupCode", "" + group.getGroupCode());
+                _groupsObj.put("GroupName", "" + group.getGroupName());
+                _groupsObj.put("ProgramId", "" + group.getProgramId());
+                _groupsObj.put("SchoolName", "" + group.getSchoolName());
+                _groupsObj.put("VillageId", "" + group.getVillageId());
+                _groupsObj.put("VIllageName", "" + group.getVIllageName());
+                _groupsObj.put("EnrollmentId", "" + group.getEnrollmentId());
+                _groupsObj.put("regDate", "" + group.getRegDate());
 
                 groupsData.put(_groupsObj);
             }
@@ -1225,12 +1205,12 @@ public class PushDataToServer_New {
             for (int i = 0; i < contentProgressList.size(); i++) {
                 _progressObj = new JSONObject();
                 ContentProgress contentProgress = contentProgressList.get(i);
-                _progressObj.put("resourceId", contentProgress.getResourceId());
-                _progressObj.put("studentId", contentProgress.getStudentId());
-                _progressObj.put("sessionId", contentProgress.getSessionId());
-                _progressObj.put("updatedDateTime", contentProgress.getUpdatedDateTime());
-                _progressObj.put("progressPercentage", contentProgress.getProgressPercentage());
-                _progressObj.put("label", contentProgress.getLabel());
+                _progressObj.put("resourceId", "" + contentProgress.getResourceId());
+                _progressObj.put("studentId", "" + contentProgress.getStudentId());
+                _progressObj.put("sessionId", "" + contentProgress.getSessionId());
+                _progressObj.put("updatedDateTime", "" + contentProgress.getUpdatedDateTime());
+                _progressObj.put("progressPercentage", "" + contentProgress.getProgressPercentage());
+                _progressObj.put("label", "" + contentProgress.getLabel());
 
                 contentProgressArr.put(_progressObj);
             }
@@ -1248,11 +1228,11 @@ public class PushDataToServer_New {
             for (int i = 0; i < keyWordsList.size(); i++) {
                 _keyWordsObj = new JSONObject();
                 KeyWords keyWords = keyWordsList.get(i);
-                _keyWordsObj.put("resourceId", keyWords.getResourceId());
-                _keyWordsObj.put("studentId", keyWords.getStudentId());
-                _keyWordsObj.put("keyWord", keyWords.getKeyWord());
-                _keyWordsObj.put("wordType", keyWords.getWordType());
-                _keyWordsObj.put("topic", keyWords.getTopic());
+                _keyWordsObj.put("resourceId", "" + keyWords.getResourceId());
+                _keyWordsObj.put("studentId", "" + keyWords.getStudentId());
+                _keyWordsObj.put("keyWord", "" + keyWords.getKeyWord());
+                _keyWordsObj.put("wordType", "" + keyWords.getWordType());
+                _keyWordsObj.put("topic", "" + keyWords.getTopic());
                 keyWordsArr.put(_keyWordsObj);
             }
         } catch (Exception e) {
@@ -1272,6 +1252,8 @@ public class PushDataToServer_New {
                 _courseObj.put("c_autoID", courseEnrollment.getC_autoID());
                 _courseObj.put("courseId", courseEnrollment.getCourseId());
                 _courseObj.put("groupId", courseEnrollment.getGroupId());
+                _courseObj.put("studentId", courseEnrollment.getStudentId());
+                _courseObj.put("courseEnrollmentDate", courseEnrollment.getCourseEnrolledDate());
                 _courseObj.put("planFromDate", courseEnrollment.getPlanFromDate());
                 _courseObj.put("planToDate", courseEnrollment.getPlanToDate());
                 _courseObj.put("coachVerified", courseEnrollment.getCoachVerificationDate());

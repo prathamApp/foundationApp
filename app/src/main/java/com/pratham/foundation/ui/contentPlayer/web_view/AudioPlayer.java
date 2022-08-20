@@ -22,7 +22,7 @@ public class AudioPlayer extends Thread {
     public void run() {
         try {
             try {
-                internalStoragePath = ApplicationClass.getStoragePath().toString() + "/.FCAInternal/Recordings/";
+                internalStoragePath = ApplicationClass.getStoragePath().toString() + "/FCAInternal/Recordings/";
                 mediaRecorder = new MediaRecorder();
                 mediaRecorder.setAudioSource(MediaRecorder.AudioSource.MIC);
                 mediaRecorder.setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP);

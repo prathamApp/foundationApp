@@ -1,9 +1,9 @@
 package com.pratham.foundation.modalclasses;
 
-import com.pratham.foundation.services.shared_preferences.FastSave;
-
 import static com.pratham.foundation.utility.FC_Constants.APP_SECTION;
 import static com.pratham.foundation.utility.FC_Constants.sec_Test;
+
+import com.pratham.foundation.services.shared_preferences.FastSave;
 
 public class ImageJsonObject {
     private String resId;

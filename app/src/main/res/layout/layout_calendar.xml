@@ -36,13 +36,14 @@
 
     <com.pratham.foundation.customView.fontsview.SansButton
         android:id="@+id/btn_course_time_select"
-        android:layout_width="@dimen/_120sdp"
+        android:layout_width="@dimen/_130sdp"
         android:layout_height="@dimen/_30sdp"
         android:layout_centerHorizontal="true"
         android:layout_below="@+id/course_date_picker"
         android:background="@drawable/button_green"
         android:text="@string/confirm_date"
         android:textAllCaps="false"
+        android:textSize="@dimen/_12sdp"
         android:textColor="@color/white"
         tools:ignore="HardcodedText" />
 </RelativeLayout>

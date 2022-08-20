@@ -60,11 +60,11 @@
             android:layout_marginEnd="@dimen/_5sdp"
             android:background="@android:color/transparent"
             app:actualImageScaleType="fitCenter"
-            app:placeholderImageScaleType="fitCenter"
             app:placeholderImage="@drawable/khelbadi_thumb"
+            app:placeholderImageScaleType="fitCenter"
             app:roundedCornerRadius="@dimen/_10sdp"
             app:roundingBorderColor="@color/white"
-            app:roundingBorderWidth="@dimen/_2sdp"/>
+            app:roundingBorderWidth="@dimen/_2sdp" />
 
         <com.pratham.foundation.customView.fontsview.SansTextViewBold
             android:id="@+id/tv_progress"
@@ -97,16 +97,13 @@
 
         <ImageView
             android:id="@+id/iv_delete"
-            android:layout_width="@dimen/_35sdp"
-            android:layout_height="@dimen/_35sdp"
+            android:layout_width="@dimen/_30sdp"
+            android:layout_height="@dimen/_30sdp"
             android:layout_alignParentStart="true"
             android:src="@drawable/delete"
-            android:paddingEnd="@dimen/_10sdp"
-            android:paddingTop="@dimen/_5sdp"
-            android:paddingStart="@dimen/_5sdp"
-            android:paddingBottom="@dimen/_10sdp"
+            android:padding="@dimen/_5sdp"
             android:scaleType="centerInside"
-            android:background="@drawable/card_delete_bg"
+            android:background="@drawable/card_delete_bg_round"
             android:visibility="gone" />
 
         <ImageView
@@ -129,19 +126,19 @@
             android:layout_width="match_parent"
             android:layout_height="@dimen/_23sdp"
             android:layout_below="@id/content_image"
-            android:layout_toStartOf="@+id/ib_action_btn"
             android:layout_marginStart="@dimen/_5sdp"
             android:layout_marginTop="@dimen/_2sdp"
             android:layout_marginBottom="@dimen/_3sdp"
+            android:layout_toStartOf="@+id/ib_action_btn"
             android:duplicateParentState="true"
-            android:gravity="center_vertical"
             android:ellipsize="marquee"
-            android:textAlignment="center"
             android:fadingEdge="horizontal"
+            android:gravity="center_vertical"
             android:marqueeRepeatLimit="marquee_forever"
             android:scrollHorizontally="true"
             android:singleLine="true"
             android:text="@string/app_name"
+            android:textAlignment="center"
             android:textColor="@color/white"
             android:textSize="@dimen/_12sdp" />
 

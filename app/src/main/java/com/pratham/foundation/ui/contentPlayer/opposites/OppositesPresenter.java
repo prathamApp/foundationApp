@@ -212,6 +212,7 @@ public class OppositesPresenter implements OppositesContract.OppositesPresenter 
             score.setScoredMarks(scoredMarks);
             score.setTotalMarks(totalMarks);
             score.setStudentID(FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""));
+            score.setGroupId(FastSave.getInstance().getString(FC_Constants.CURRENT_GROUP_ID, ""));
             score.setStartDateTime(resStartTime);
             score.setDeviceID("" + perc);
             score.setEndDateTime(COSApplication.getCurrentDateTime());
@@ -245,14 +246,14 @@ public class OppositesPresenter implements OppositesContract.OppositesPresenter 
     private void addLearntWords(ModalReadingVocabulary modalReadingVocabulary) {
         boolean wordPresent = checkWord(modalReadingVocabulary.getConvoTitle());
         if (!wordPresent) {
-            KeyWords learntWords = new KeyWords();
-            learntWords.setResourceId(resId);
-            learntWords.setSentFlag(0);
-            learntWords.setStudentId(FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""));
-            learntWords.setKeyWord(modalReadingVocabulary.getConvoTitle());
-            learntWords.setWordType("word");
-            learntWords.setTopic(gameName);
-            AppDatabase.getDatabaseInstance(context).getKeyWordDao().insert(learntWords);
+            KeyWords keyWords = new KeyWords();
+            keyWords.setResourceId(resId);
+            keyWords.setSentFlag(0);
+            keyWords.setStudentId(FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""));
+            keyWords.setKeyWord(modalReadingVocabulary.getConvoTitle());
+            keyWords.setWordType("word");
+            keyWords.setTopic(gameName);
+            AppDatabase.getDatabaseInstance(context).getKeyWordDao().insert(keyWords);
         }
         BackupDatabase.backup(context);
     }
@@ -267,6 +268,7 @@ public class OppositesPresenter implements OppositesContract.OppositesPresenter 
             score.setScoredMarks(scoredMarks);
             score.setTotalMarks(totalMarks);
             score.setStudentID(FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""));
+            score.setGroupId(FastSave.getInstance().getString(FC_Constants.CURRENT_GROUP_ID, ""));
             score.setStartDateTime(resStartTime);
             score.setDeviceID(deviceId.equals(null) ? "0000" : deviceId);
             score.setEndDateTime(FC_Utility.getCurrentDateTime());

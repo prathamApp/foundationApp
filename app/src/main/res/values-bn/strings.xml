@@ -1,0 +1,588 @@
+<?xml version="1.0" ?>
+<resources xmlns:tools="http://schemas.android.com/tools">
+
+    <string name="app_name">প্রডিজি ফর স্কুল</string>
+
+    <string name="Login">লগ ইন করুন।</string>
+    <!--    <string name="Stt_Dialog_Msg">অফলাইন স্পিচ রেকগনিশনের জন্য অনুগ্রহ করে ল্যাঙ্গুয়েজ প্যাক English (India) ও हिंदी(भारत) ডাউনলোড করুন।\n\nOpen\nGoogle -> Settings -> Voice -> Offline speech recognition</string>-->
+    <string name="Stt_Dialog_Msg">অফলাইন স্পিচ রেকগনিশনের জন্য অনুগ্রহ করে ল্যাঙ্গুয়েজ প্যাক English (India) ও हिंदी(भारत) ডাউনলোড করুন।</string>
+    <string name="Okay">ঠিক আছে</string>
+    <string name="Skip">বাদ দিয়ে যান</string>
+    <string name="loding_please_wait">লোড হচ্ছে, অনুগ্রহ করে অপেক্ষা করুন।</string>
+    <string name="Exit">বেরিয়ে আসুন</string>
+    <string name="Cancel">বাতিল করুন।</string>
+    <string name="Restart">পুনরায় শুরু করুন।</string>
+    <string name="login_mode">লগ ইন মোড</string>
+    <string name="Group">দলগত</string>
+    <string name="Individual">ব্যক্তিগত</string>
+    <string name="what_do_you_want_to_do">কী করতে চাইছেন?</string>
+    <string name="Scan_QR_Code">কিউ আর কোড স্ক্যান করুন।</string>
+    <string name="Reset">রিসেট</string>
+    <string name="Get_Progress">প্রগতি দেখুন।</string>
+    <string name="Start">শুরু করুন।</string>
+    <string name="No_Internet_Connection">ইন্টারনেট সংযোগ নেই।</string>
+    <string name="Invalid_QR_Code">অবৈধ কিউ আর কোড।</string>
+    <string name="Only_5_Students_Allowed">শুধুমাত্র 5 জন শিক্ষার্থী অনুমোদিত</string>
+    <string name="Student_exists">এই শিক্ষার্থী আগে থেকেই আছেন।</string>
+    <string name="Scan_new_QR">নতুন কিউ আর স্ক্যান করুন।</string>
+    <string name="Welcome">স্বাগত।</string>
+    <string name="select_subject">অনুগ্রহ করে যে-কোনো একটি পাঠ্য বিষয় বেছে নিন।</string>
+    <string name="usage">ব্যবহার</string>
+    <string name="days">দিন</string>
+    <string name="hours">ঘণ্টা</string>
+    <string name="progress">প্রগতি</string>
+    <string name="yes">হ্যাঁ</string>
+    <string name="no">না</string>
+    <string name="Test_Complete_Dialog">প্রোফাইল বিভাগে শংসাপত্র দেখতে পারেন।</string>
+    <string name="selectGroup">গ্রুপ নির্বাচন করুন।</string>
+    <string name="select_Age">এজ গ্রুপ নির্বাচন করুন।</string>
+    <string name="select_Name">নাম নির্বাচন করুন।</string>
+    <string name="age_8_and_above">আট বছর ও তার অধিক</string>
+    <string name="Summary">সারাংশ</string>
+    <string name="Certificates">শংসাপত্র</string>
+    <string name="Next_activity">পরবর্তী অ্যাক্টিভিটি</string>
+    <string name="Do_you_want_to_exit">আপনি কি বেরিয়ে যেতে চান?</string>
+    <string name="activity_completed">অ্যাক্টিভিটি সম্পূর্ণ হয়েছে।</string>
+    <string name="hint">সংকেত</string>
+    <string name="clear">মুছুন</string>
+    <string name="submit">সাবমিট করুন</string>
+    <string name="hide_hint">সংকেত লুকোন।</string>
+    <string name="Enter_answer">উত্তর দাখিল করুন।</string>
+    <string name="Your_answer">আপনার উত্তর</string>
+    <string name="Result">ফলাফল</string>
+    <string name="You_answered">আপনি উত্তর দিয়েছেন</string>
+    <string name="Correct_Answer">সঠিক</string>
+    <string name="Skipped">বাদ দিয়েছেন</string>
+    <string name="Read">পড়ুন</string>
+    <string name="Paragraph">অনুচ্ছেদ</string>
+    <string name="Keyword">সংকেত শব্দ</string>
+    <string name="restart_dialog_msg">পুনরায় শুরুকরতে চান?</string>
+    <string name="exit_dialog_msg">বেরিয়ে যেতে চান?</string>
+    <string name="read_full_sentence">সম্পূর্ণ বাক্যটি পড়ুন।</string>
+    <string name="Click_group_name">আপনার গ্রুপের নামে ক্লিক করুন।</string>
+    <string name="mark_attendance">আপনার উপস্থিতি জানান দিন।</string>
+    <string name="Learning">শিখন</string>
+    <string name="Practice">অনুশীলন</string>
+    <string name="Test">পরীক্ষা</string>
+    <string name="Fun">মজা</string>
+    <string name="Profile">প্রোফাইল</string>
+    <string name="Level">স্তর</string>
+    <string name="Revise">সংশোধন</string>
+    <string name="Next">পরবর্তী</string>
+    <string name="nice_chatting_with_you">আপনার সাথে কথা বলে ভালোলাগল।</string>
+    <string name="byebye">বিদায়!</string>
+    <string name="Unsupervised">পর্যবেক্ষিত</string>
+    <string name="Supervised">অপর্যবেক্ষিত</string>
+    <string name="change_subj">বিষয় পরিবর্তন করবেন?</string>
+    <string name="save">সংরক্ষণ করুন</string>
+    <string name="alertmessage">কিছু বিকল্প বাকি আছে।</string>
+    <string name="usermessage">এবার আপনার কিওয়ার্ড বেছে নেওয়ার পালা।</string>
+    <string name="select_language">ভাষা নির্বাচন করুন।</string>
+    <string name="fact_retrieval_click">সঠিক শব্দ বেছে নিয়ে উত্তর দিন এবং সাবমিট করুন।</string>
+    <string name="factRetrieval">প্রশ্নের উত্তর দেওয়ার জন্য শব্দ বেছে নিয়ে সেটিকে দীর্ঘক্ষণ চেপে ধরে থাকুন এবং বেছে নেওয়া শব্দটি সাবমিট করুন।</string>
+    <string name="IKWAndroid">প্রদত্ত অনুচ্ছেদ থেকে কিওয়ার্ড বেছে নিন এবং সাবমিট করুন।</string>
+    <string name="CopyWriting">অ্যাপে দেখানো অনুচ্ছেদটি আপনার খাতায় লিখুন এবং তার ছবি তুলে সাবমিট করুন।</string>
+    <string name="chKeywords">বিষয়ের সঙ্গে সম্পর্কিত শব্দগুলো বেছে নিন এবং সাবমিট করুন।</string>
+    <string name="ShowMeAndroid">প্রদত্ত বিকল্পগুলি থেকে সঠিক বিকল্পটি বেছে নিয়ে উত্তর দিন।</string>
+    <string name="Dictation">অডিও শুনে খাতায় লিখুন এবং ছবি তুলে সাবমিট করুন।</string>
+    <string name="PictAndroid">অডিও শোনার জন্য প্লে বাটন টিপুন, তারপর মাইক বাটন টিপুন আর জোরে জোরে পড়ুন।</string>
+    <string name="ReadingAndroid">অডিও শোনার জন্য প্লে বাটন টিপুন, তারপর মাইক বাটন টিপুন আর জোরে জোরে পড়ুন।</string>
+    <string name="TAW">প্রদত্ত বিষয়ে নিজের ভাষায় খাতায় লিখুন আর তারপর ছবি তুলে সাবমিট করুন।</string>
+    <string name="doing_act">অ্যাক্টিভিটিগুলি করার চেষ্টা করুন।</string>
+    <string name="letter">প্রদত্ত বিষয়ে খাতায় একটি চিঠি লিখুন আর তারপর ছবি তুলে সাবমিট করুন।</string>
+    <string name="doing_act_video">ভিডিওটি দেখুন আর অ্যাক্টিভিটিগুলি করার চেষ্টা করুন।</string>
+    <string name="watching_video">ভিডিওটি দেখুন আর মাইক বাটন ক্লিক করে উত্তর রেকর্ড করুন।</string>
+    <string name="ReadVocabAndroid">আপনার শব্দভাণ্ডার বাড়িয়ে তোলার জন্য নীচের লেখাটি পড়ুন।</string>
+    <string name="reading_stt">স্পিচ টু টেক্সট ফাংশনালিটি ব্যবহার করে প্রশ্নের উত্তর দিন।</string>
+    <string name="multiple_choice">একাধিক উত্তরের মধ্য থেকে সঠিক উত্তরটি বেছে নিন।</string>
+    <string name="Video">ভিডিও দেখুন।</string>
+    <string name="youtube">ইউটিউব ভিডিও দেখুন।</string>
+    <string name="pdf">পিডিএফ পড়ুন।</string>
+    <string name="PDF">পিডিএফ পড়ুন।</string>
+    <string name="ParaReadQues">অডিও শোনার জন্য প্লে বাটন টিপুন, তারপর মাইক বাটন টিপুন আর অনুচ্ছেদটি জোরে জোরে পড়ুন।</string>
+    <string name="parasummary">গল্পটি  বাংলাতে পড়ুন।</string>
+    <string name="paraqa">আপনার উত্তর রেকর্ড করতে মাইক বাটন টিপুন।</string>
+    <string name="new_chit_chat_1">স্ক্রিনে ফুটে ওঠে কথোপকথনটি শুনুন।</string>
+    <string name="new_chit_chat_2">স্ক্রিনে ফুটে ওঠে কথোপকথনটি শুনুন আর আপনার উত্তর ইংরেজিতে রেকর্ড করুন।</string>
+    <string name="new_chit_chat_3">এই অ্যাক্টিভিটি দুজনে মিলে করতে হবে। একে একে নিজেদের কথা রেকর্ড করুন।</string>
+    <string name="no_data_generated">এই বিভাগের জন্য ডেটা তৈরি হয়নি ।</string>
+    <string name="no_data_in_sec">এই বিভাগে ডেটা পাওয়া যাবে না ।</string>
+    <string name="RegisterReport">রিপোর্ট লেখো ।</string>
+    <string name="oops">ইস নিশ্চয় কিছু ভুল হয়েছে !!</string>
+    <string name="sorry_about_that">আমাদের ভুল তথ্য পাঠানোর জন্য রেজিস্টার বাটনে চাপ দিন ।</string>
+    <string name="free">ডেটা ডিলিট করে খালি করুন?</string>
+    <string name="delete_data">ডেটা ডিলিট করুন?</string>
+    <string name="deleting_data">ডেটা ডিলিট করা  হচ্ছে</string>
+    <string name="deleted_data">ডেটা ডিলিট করা হয়েছে</string>
+    <string name="status">অবস্থা</string>
+    <string name="img_ques">ছবি সংক্রান্ত প্রশ্ন</string>
+    <string name="chat_l5">চ্যাট L -5</string>
+    <string name="sync">সমকালীন/সিঙ্ক</string>
+    <string name="sync_status">অন্তিম সিঙ্কের অবস্থা</string>
+    <string name="lang_pack">অফলাইন ভাষা প্যাক</string>
+    <string name="free_space">শূন্যস্থান</string>
+    <string name="curr_lang">বর্তমান ভাষা</string>
+    <string name="Sync_Time">সিঙ্ক করার সময় : </string>
+    <string name="Data_synced">ডেটা সিঙ্ক করা হয়েছে :</string>
+    <string name="Certificate_synced">সিঙ্ক করা প্রমাণপত্র/ সার্টিফিকেট</string>
+    <string name="Enrollment_synced">এনরোলমেন্ট _সিঙ্ক : </string>
+    <string name="Media_synced">মিডিয়া সিঙ্ক করা হয়েছে : </string>
+    <string name="Media_failed">মিডিয়া ব্যর্থ  হয়েছে : </string>
+    <string name="data_pushed_successfully">ডেটা সফলভাবে পাঠানো হয়েছে/ পুশ করা হয়েছে</string>
+    <string name="Score_Count">স্কোর গণনা করা : </string>
+    <string name="Certificate_Count">প্রমাণপত্র গণনা করা : </string>
+    <string name="Now_Upload_Media">মিডিয়া আপলোড করুন ....</string>
+    <string name="OOPS">ইস ....</string>
+    <string name="Data_pushed_failed">ডেটা পুশ সফল হয়নি</string>
+    <string name="Collecting_Media">মিডিয়া একত্রিত করা হচ্ছে</string>
+    <string name="Uploading">আপলোডিং হচ্ছে</string>
+    <string name="images">ছবি</string>
+    <string name="close">বন্দ করুন</string>
+    <string name="Upload_Complete">আপলোডিং শেষ হয়েছে</string>
+    <string name="Collecting_Data">ডেটা একত্রিত করা হচ্ছে</string>
+    <string name="Create_Profile">প্রোফাইল তৈরি করুন</string>
+    <string name="Pratham_Login">প্রথম লগইন</string>
+    <string name="Eject_OTG">ওটিজি বের করুন/ ইজেক্ট করুন</string>
+    <string name="connected_to_Kolibri">পরীক্ষা করুন আপনার ওয়াইফাই কী প্রথম কোলিব্রি এর সঙ্গে যুক্ত!</string>
+    <string name="Please_wait_pushing_Data">ডেটা পুশ করা হচ্ছে/পাঠানো হচ্ছে। ......</string>
+    <string name="Switch_Profile">আপনি প্রোফাইল সুইচ করতে পারেন</string>
+    <string name="Clicking_icon">আইকনে ক্লিক করুন ।</string>
+    <string name="Your_Progress_will">আপনার প্রগতি দেখানো হচ্ছে ।</string>
+    <string name="Click_to_switch_levels">লেবেল/স্তর পাল্টানোর জন্য এখানে ক্লিক করুন</string>
+    <string name="Sections">সেকশন/ বিভাগ</string>
+    <string name="Click_to_switch_Sections">সেকশন পাল্টানোর জন্য এখানে ক্লিক করুন</string>
+    <string name="change_the_language">ভাষা পাল্টানোর জন্য এখানে ক্লিক করুন</string>
+    <string name="of_the_content">সামগ্রীর</string>
+    <string name="enroll_course">কোর্স এনরোলমেন্ট</string>
+    <string name="device_date_time_change">ডিভাইসের তারিখ এবংসময়</string>
+    <string name="internet_date_time_change">ইন্টারনেট এর তারিখ এবং সময়</string>
+    <string name="Set_Date_and_Time">তারিখ এবং সময় সেট করুন</string>
+    <string name="add_course">কোর্স এড করুন</string>
+    <string name="select_date">তারিখ সিলেক্ট করুন</string>
+    <string name="confirm_date">তারিখ কনফার্ম করুন</string>
+    <string name="Audio">অডিও শুনুন</string>
+
+    <string name="push_data">                   পুশ ডাটা   </string>
+    <string name="push_logs">                   পুশ লগস   </string>
+    <string name="sync_logs">                   সিঙ্ক লগস   </string>
+    <string name="check_synced_data">           সিঙ্কড ডাটা চেক করুন   </string>
+    <string name="reset_app_tour">              অ্যাপ ট্যুর রিসেট করুন  </string>
+    <string name="ques_reset_app_tour">         আপনি কি নিশ্চিত ভাবে অ্যাপ ট্যুর রিসেট করতে চান?   </string>
+    <string name="no_internet">                 ইন্টারনেট সংযোগ নেই   </string>
+    <string name="diagnostic_test_result">      ডায়াগনস্টিক টেস্ট রেজাল্ট   </string>
+    <string name="diagnostic_test_result_msg">  আপনি অ্যাসেসমেন্ট অ্যাপের মাধ্যমে নেওয়া ডায়াগনস্টিক টেস্টের শংসাপত্র দেখতে পারেন।   </string>
+    <string name="app_exit">                    অ্যাপ এক্সিট   </string>
+    <string name="app_exit_msg">                আপনি অ্যাপ থেকে বেরিয়ে যেতে পারেন   </string>
+    <string name="back_button">                 ব্যাক বাটন   </string>
+    <string name="back_button_msg">             আগের স্ক্রিনে ফিরে যান   </string>
+    <string name="refresh">                     রিফ্রেশ  </string>
+    <string name="refresh_msg">                 স্ক্রিনে কন্টেন্টটি রিলোড অথবা রিফ্রেশ করুন   </string>
+    <string name="push_and_sync">               পুশ এবং সিঙ্ক   </string>
+    <string name="other">                       অন্যান্য   </string>
+    <string name="DB_Zip_pushed_failed">        পুশ ডাটাবেস বিফল  </string>
+    <string name="DB_Zip_pushed_successfully">  ডাটাবেস পুশ সফল  </string>
+    <string name="DB_Zip_push">        পুশ ডিবি ফাইল   </string>
+
+
+    <string name="pls_select_date">                  তারিখ বেছে নিন   </string>
+    <string name="connect_to_internet">              ইন্টারনেটের সাথে সংযোগ করুন    </string>
+    <string name="server_error">                     সার্ভার সমস্যা   </string>
+    <string name="total_attendance">                 মোট উপস্থিতি   </string>
+    <string name="view_details">                     বিস্তারিত দেখুন"   </string>
+    <string name="total_courses">                    মোট কোর্স   </string>
+    <string name="studs_acce_the_app">               অ্যাপ অ্যাক্সেস করা ব্যবহারকারীর সংখ্যা"   </string>
+    <string name="studs_reg_the_app">                অ্যাপে রেজিস্টার করা ব্যবহারকারীর সংখ্যা   </string>
+    <string name="total_sessions">                   মোট সেশন"   </string>
+    <string name="total_groups">                     মোট দল    </string>
+    <string name="error_message">                    মেসেজ সমস্যা   </string>
+    <string name="accessed_users">                   আক্সেসযোগ্য ব্যবহারকারী   </string>
+    <string name="registered_users">                 রেজিস্টারযোগ্য ব্যবহারকারী   </string>
+    <string name="pls_select_studs">                 ছাত্র নির্বাচন করুন!   </string>
+    <string name="problem_marking_attendance">       উপস্থিতি চিহ্নিত করার সমস্যা   </string>
+    <string name="loading_pls_wait">                 লোডিং...অপেক্ষা করুন    </string>
+    <string name="enroll_id">                        এনরোলমেণ্ট আইডি    </string>
+    <string name="create_profile">                   প্রোফাইল তৈরি করুন    </string>
+    <string name="total_resources">                  মোট রিসোর্স    </string>
+    <string name="stud_id">                          স্টুডেন্ট আইডি    </string>
+    <string name="date">                             তারিখ    </string>
+    <string name="data">                             ডেটা   </string>
+    <string name="media">                            মিডিয়া    </string>
+    <string name="courses">                          কোর্সগুলি    </string>
+    <string name="db_sync">                          ডিবি সিঙ্ক   </string>
+    <string name="course_count">                     কোর্সের গণনা    </string>
+    <string name="media_count">                      মিডিিয়ার গণনা   </string>
+    <string name="manual">                           ম্যানুয়াল    </string>
+    <string name="auto">                             অটো    </string>
+    <string name="tot_db_entries">                   মোট ডিবি এন্ট্রি    </string>
+    <string name="enrollment_details">               এনরোলমেণ্ট ডিটেইলস    </string>
+    <string name="my_class">                         ক্লাস   </string>
+    <string name="my_name">                          নাম    </string>
+    <string name="check_id">                         আইডি চেক    </string>
+    <string name="enter_your_id">                    নিজের আইডি লিখুন   </string>
+    <string name="select_avatar">                    অবতার বাছাই করুন    </string>
+    <string name="age">                              বয়স    </string>
+    <string name="gender">                           লিঙ্গ    </string>
+    <string name="save_profile">                     প্রোফাইল সেভ করুন    </string>
+    <string name="profile_created_successfully">     প্রোফাইল সফলভাবে তৈরি হয়েছে    </string>
+    <string name="male">                             পরুষ    </string>
+    <string name="female">                           মহিলা    </string>
+    <string name="please_fill_details">              দয়া করে সমস্ত বিবরণ দিন    </string>
+    <string name="problem_pulling_stud">             ছাত্র নেওয়ার সমস্যা    </string>
+    <string name="wrong_enrollment_id">              ভুল এনরোলমেণ্ট আইডি   </string>
+
+    <string name="please_try_aft_som_tim">কিছুক্ষণ পরে চেষ্টা করুন  </string>
+    <string name="please_try_aft">        পরে চেষ্টা করুন </string>
+    <string name="scheduled_maintenance"> সময়তালিকা বজায় রাখা  </string>
+    <string name="maintenance_msg">       সিঙ্ক কার্যকারিতা বজায় রাখা হচ্ছে  </string>
+    <string name="critical_maintenance">  সংকটপূর্ণ অবস্থা রক্ষণাবেক্ষণ করা  </string>
+
+
+
+
+
+    <string name="Agent_name" >Vernicula</string>
+    <string name="talkbot" >Talkbot</string>
+    <string name="more" >more</string>
+
+    <string name="title_activity_admin_panel" >AdminPanelActivity</string>
+    <string name="dummy_button" >Dummy Button</string>
+    <string name="dummy_content" >DUMMY\nCONTENT</string>
+    <string name="default_notification_channel_id" >fcm_default_channel</string>
+    <string name="fcm_message" >City of Stories - PraDigi</string>
+    <string name="read_india" >Read India</string>
+    <string name="hybrid_learning" >Hybrid Learning</string>
+    <string name="second_chance" >Second Chance</string>
+    <string name="ECE" >ECE</string>
+    <string name="pratham_institute" >Pratham Institute</string>
+
+    <string name="urbon_program" >Urban programme</string>
+    <string name="title_activity_push_data" >PushDataActivity</string>
+    <string name="top_sheet_behavior" >com.pratham.prathamdigital.custom.topsheet.TopSheetBehavior</string>
+    <string name="switch_off_mobile_hotspot" >Please switch off the mobile data and try again.</string>
+    <string name="change" >Change</string>
+    <string name="content_download_alert" >Content will be downloaded in</string>
+    <string name="nsd_servername_postfix" >FTP Server</string>
+    <string name="storage_warning" >Warning: storage is not available. You may want to unmount it.</string>
+    <string name="notification_server_starting" >Starting at %s</string>
+    <string name="notification_title" >FTP Server is running</string>
+    <string name="notification_text" >at %s</string>
+    <string name="notification_stop_text" >Stop Server</string>
+    <string name="notif_settings_text" >Settings</string>
+    <string name="swiftp_name" >FTP Server</string>
+    <string name="share" >Create</string>
+    <string name="recieve" >Join</string>
+    <string name="retry" >Retry</string>
+    <string name="Open" >Open</string>
+    <string name="downloading" >Downloading...</string>
+    <string name="download" >Download</string>
+    <string name="age_3_to_6" >Age 3 to 6</string>
+    <string name="age_8_to_14" >Age 8 to 14</string>
+    <string name="title_activity_home_" >Home_Activity</string>
+    <string name="title_activity_keyword_mapping" >KeywordMapping</string>
+
+    <string-array name="no_data">
+        <item tools:ignore="TypographyEllipsis">Sorry ... No Data Available ...</item>
+    </string-array>
+
+    <string name="pref_auto_filter" >pref_auto_filter</string>
+    <string name="pref_log_level" >pref_log_level</string>
+    <string name="pref_tag_filter" >pref_tag_filter</string>
+    <string name="pref_tag_filter_set" >pref_tag_filter_set</string>
+    <string name="pref_text_opacity" >pref_text_opacity</string>
+    <string name="pref_bg_opacity" >pref_bg_opacity</string>
+    <string name="pref_text_size" >pref_text_size</string>
+    <string name="pref_info_open_source" >pref_info_open_source</string>
+    <string name="pref_version" >pref_version</string>
+    <string name="pref_root_fail_count" >pref_root_fail_count</string>
+    <string name="permission_read_logs_description" >Allows an application to read the logcat output for Ghost Log integrated apps. This allows it to discover general information about integrated apps that is being written to the log.</string>
+    <string name="permission_read_logs_label" >read logcat output for Ghost Log integrated apps</string>
+    <string name="share_subject" >Logcat Output</string>
+    <string name="canned_integration_log_line" >I GhostLog: Running in Integration Mode</string>
+    <string name="notification_title_log" >Log service is active</string>
+    <string name="play" >Play</string>
+    <string name="pause" >Pause</string>
+    <string name="share_share" >Share</string>
+    <string name="log_level" >Log Level</string>
+    <string name="tag_filter" >Tag Filter</string>
+    <string name="no_filter" >No Filter</string>
+    <string name="auto_filter" >Auto Filter</string>
+    <string name="auto_filter_summary" >Show foreground process only</string>
+    <string name="off" >Off</string>
+    <string name="none" >None</string>
+    <string name="add_tag_filter" >Add Tag Filter</string>
+    <string name="new_tag_filter" >New Tag Filter</string>
+    <string name="enter_log_tag" >Enter log tag</string>
+    <string name="delete" >Delete</string>
+    <string name="_selected" >" selected"</string>
+    <string name="information" >Application Info</string>
+    <string name="open_source_licences" >Open Source Licences</string>
+    <string name="about" >About</string>
+    <string name="toast_no_root" >Failed to obtain root access - integration mode only</string>
+    <string name="github" >GitHub</string>
+    <string name="repo_url" >https://github.com/jgilfelt/GhostLog</string>
+    <string name="no_root" >No Root Access</string>
+    <string name="no_root_dialog" >Ghost Log requires device root privileges to read system logs. It will run in integration mode on this device. Visit the GitHub project page to learn how to integrate your own apps.</string>
+    <string name="version" >Version</string>
+    <string name="copyright" >&#169; readyState Software Ltd</string>
+    <string name="by_author" >by Pratham Education Foundation</string>
+
+    <string-array name="levels_values">
+        <item>V</item>
+        <item>D</item>
+        <item>I</item>
+        <item>W</item>
+        <item>E</item>
+        <item>A</item>
+    </string-array>
+    <string-array name="levels_entries">
+        <item>Verbose</item>
+        <item>Debug</item>
+        <item>Info</item>
+        <item>Warn</item>
+        <item>Error</item>
+        <item>Assert</item>
+    </string-array>
+
+    <string-array name="dummy_data">
+        <item>Sample Entry One</item>
+        <item>Sample Entry Two</item>
+        <item>Sample Entry Three</item>
+        <item>Sample Entry Four</item>
+        <item>Sample Entry Five</item>
+        <item>Sample Entry Six</item>
+        <item>Sample Entry Seven</item>
+        <item>Sample Entry Eight</item>
+        <item>Sample Entry Nine</item>
+        <item>Sample Entry Ten</item>
+    </string-array>
+    <string-array name="india_states">
+        <item>SELECT STATE</item>
+        <item>Andhra Pradesh(AP)</item>
+        <item>Arunachal Pradesh(AR)</item>
+        <item>Assam(AS)</item>
+        <item>Bihar(BR)</item>
+        <item>Chhattisgarh(CG)</item>
+        <item>Goa(GA)</item>
+        <item>Gujarat(GJ)</item>
+        <item>Haryana(HR)</item>
+        <item>Himachal Pradesh(HP)</item>
+        <item>Jammu and kashmir(JK)</item>
+        <item>Jharkhand(JH)</item>
+        <item>Karnataka(KA)</item>
+        <item>Kerala(KL)</item>
+        <item>Madhya Pradesh(MP)</item>
+        <item>Maharashtra(MH)</item>
+        <item>Manipur(MN)</item>
+        <item>Meghalaya(ML)</item>
+        <item>Mizoram(MZ)</item>
+        <item>Nagaland(NL)</item>
+        <item>Orissa(OR)</item>
+        <item>Punjab(PB)</item>
+        <item>Rajasthan(RJ)</item>
+        <item>Sikkim(SK)</item>
+        <item>Tamil Nadu(TN)</item>
+        <item>Telangana(TS)</item>
+        <item>Tripura(TR)</item>
+        <item>Uttarakhand(UK)</item>
+        <item>Uttar Pradesh(UP)</item>
+        <item>West Bengal(WB)</item>
+        <item>Andaman and Nicobar Islands(AN)</item>
+        <item>Chandigarh(CH)</item>
+        <item>Dadra and Nagar Haveli(DH)</item>
+        <item>Daman and Diu(DD)</item>
+        <item>Delhi(DL)</item>
+        <item>Lakshadweep(LD)</item>
+        <item>Pondicherry(PY)</item>
+    </string-array>
+    <string-array name="india_states_shortcode">
+        <item>SELECT STATE</item>
+        <item>AP</item>
+        <item>AR</item>
+        <item>AS</item>
+        <item>BR</item>
+        <item>CG</item>
+        <item>GA</item>
+        <item>GJ</item>
+        <item>HR</item>
+        <item>HP</item>
+        <item>JK</item>
+        <item>JH</item>
+        <item>KA</item>
+        <item>KL</item>
+        <item>MP</item>
+        <item>MH</item>
+        <item>MN</item>
+        <item>ML</item>
+        <item>MZ</item>
+        <item>NL</item>
+        <item>OR</item>
+        <item>PB</item>
+        <item>RJ</item>
+        <item>SK</item>
+        <item>TN</item>
+        <item>TS</item>
+        <item>TR</item>
+        <item>UK</item>
+        <item>UP</item>
+        <item>WB</item>
+        <item>AN</item>
+        <item>CH</item>
+        <item>DH</item>
+        <item>DD</item>
+        <item>DL</item>
+        <item>LD</item>
+        <item>PY</item>
+    </string-array>
+    <string-array name="avatars">
+        <item>avatars/b1.png</item>
+        <item>avatars/b2.png</item>
+        <item>avatars/b3.png</item>
+        <item>avatars/g1.png</item>
+        <item>avatars/g2.png</item>
+        <item>avatars/g3.png</item>
+        <!-- <item>avatars/techno_penguin.json</item>
+        <item>avatars/biking_is_cool.json</item>
+        <item>avatars/acrobatics.json</item>-->
+    </string-array>
+    <string-array name="age">
+        <item>বয়স নির্বাচন করুন</item>
+        <item> 3  </item>
+        <item> 4  </item>
+        <item> 5  </item>
+        <item> 6  </item>
+        <item> 7  </item>
+        <item> 8  </item>
+        <item> 9  </item>
+        <item> 10 </item>
+        <item> 11 </item>
+        <item> 12 </item>
+        <item> 13 </item>
+        <item> 14 </item>
+        <item> 15 </item>
+        <item> 16 </item>
+        <item> 17 </item>
+        <item> 18 </item>
+        <item> 19 </item>
+        <item> 20 </item>
+        <item> 21 </item>
+        <item> 22 </item>
+        <item> 23 </item>
+        <item> 24 </item>
+        <item> 25 </item>
+        <item> 26 </item>
+        <item> 27 </item>
+        <item> 28 </item>
+        <item> 29 </item>
+        <item> 30 </item>
+        <item> 31 </item>
+        <item> 32 </item>
+        <item> 33 </item>
+        <item> 34 </item>
+        <item> 35 </item>
+        <item> 36 </item>
+        <item> 37 </item>
+        <item> 38 </item>
+        <item> 39 </item>
+        <item> 40 </item>
+        <item> 41 </item>
+        <item> 42 </item>
+        <item> 43 </item>
+        <item> 44 </item>
+        <item> 45 </item>
+        <item> 46 </item>
+        <item> 47 </item>
+        <item> 48 </item>
+        <item> 49 </item>
+        <item> 50 </item>
+        <item> 51 </item>
+        <item> 52 </item>
+        <item> 53 </item>
+        <item> 54 </item>
+        <item> 55 </item>
+        <item> 56 </item>
+        <item> 57 </item>
+        <item> 58 </item>
+        <item> 59 </item>
+        <item> 60 </item>
+        <item> 61 </item>
+        <item> 62 </item>
+        <item> 63 </item>
+        <item> 64 </item>
+        <item> 65 </item>
+        <item> 66 </item>
+        <item> 67 </item>
+        <item> 68 </item>
+        <item> 69 </item>
+        <item> 70 </item>
+        <item> 71 </item>
+        <item> 72 </item>
+        <item> 73 </item>
+        <item> 74 </item>
+        <item> 75 </item>
+        <item> 76 </item>
+        <item> 77 </item>
+        <item> 78 </item>
+        <item> 79 </item>
+        <item> 80 </item>
+        <item> 81 </item>
+        <item> 82 </item>
+        <item> 83 </item>
+        <item> 84 </item>
+        <item> 85 </item>
+        <item> 86 </item>
+        <item> 87 </item>
+        <item> 88 </item>
+        <item> 89 </item>
+        <item> 90 </item>
+        <item> 91 </item>
+        <item> 92 </item>
+        <item> 93 </item>
+        <item> 94 </item>
+        <item> 95 </item>
+        <item> 96 </item>
+        <item> 97 </item>
+        <item> 98 </item>
+        <item> 99 </item>
+        <item> 100 </item>
+    </string-array>
+    <!-- Student_profile -->
+    <string-array name="student_class">
+        <item>Select Class</item>
+        <item> 1  </item>
+        <item> 2  </item>
+        <item> 3  </item>
+        <item> 4  </item>
+        <item> 5  </item>
+        <item> 6  </item>
+        <item> 7  </item>
+        <item> 8  </item>
+        <item> 9  </item>
+        <item> 10 </item>
+        <item> 11 </item>
+        <item> 12 </item>
+    </string-array>
+    <string-array name="certificate_Languages">
+        <item>Hindi     </item>
+        <item>Marathi   </item>
+    </string-array>
+    <string-array name="app_Language">
+        <item>Hindi</item>
+        <item>Marathi</item>
+    </string-array>
+    <string-array name="translation_Languages">
+        <item>Hindi</item>
+        <item>Marathi</item>
+    </string-array>
+    <string-array name="language_codes">
+        <item>en</item>
+        <item>hi</item>
+        <item>mr</item>
+        <item>gu</item>
+        <item>kn</item>
+        <item>bn</item>
+        <item>te</item>
+        <item>ta</item>
+        <item>ur</item>
+        <item>pa</item>
+    </string-array>
+</resources>

@@ -1,5 +1,9 @@
 package com.pratham.foundation.ui.contentPlayer.matchingPairGame;
 
+import static com.pratham.foundation.utility.FC_Constants.APP_SECTION;
+import static com.pratham.foundation.utility.FC_Constants.gameFolderPath;
+import static com.pratham.foundation.utility.FC_Constants.sec_Test;
+
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Color;
@@ -49,10 +53,6 @@ import butterknife.BindDrawable;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-
-import static com.pratham.foundation.utility.FC_Constants.APP_SECTION;
-import static com.pratham.foundation.utility.FC_Constants.gameFolderPath;
-import static com.pratham.foundation.utility.FC_Constants.sec_Test;
 
 
 public class MatchThePairGameActivity extends BaseActivity implements MatchThePairListner {
@@ -276,8 +276,7 @@ public class MatchThePairGameActivity extends BaseActivity implements MatchThePa
             is.close();
             String jsonStr = new String(buffer);
             Gson gson = new Gson();
-            Type type = new TypeToken<List<MatchThePair>>() {
-            }.getType();
+            Type type = new TypeToken<List<MatchThePair>>() {}.getType();
             matchThePairsList = gson.fromJson(jsonStr, type);
             for (int i = 0; i < matchThePairsList.size(); i++)
                 matchThePairsList.get(i).setParaLang(FastSave.getInstance().getString(FC_Constants.APP_LANGUAGE, FC_Constants.HINDI));
@@ -459,14 +458,14 @@ public class MatchThePairGameActivity extends BaseActivity implements MatchThePa
     }
 
     public void addLearntWords(List<MatchThePair> draggedList) {
-        KeyWords learntWords = new KeyWords();
-        learntWords.setResourceId(resId);
-        learntWords.setSentFlag(0);
-        learntWords.setStudentId(FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""));
-        learntWords.setKeyWord(draggedList.get(0).getParaTitle().toLowerCase());
-        learntWords.setTopic(FC_Constants.MATCH_THE_PAIR);
-        learntWords.setWordType("word");
-        AppDatabase.getDatabaseInstance(context).getKeyWordDao().insert(learntWords);
+        KeyWords keyWords = new KeyWords();
+        keyWords.setResourceId(resId);
+        keyWords.setSentFlag(0);
+        keyWords.setStudentId(FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""));
+        keyWords.setKeyWord(draggedList.get(0).getParaTitle().toLowerCase());
+        keyWords.setTopic(FC_Constants.MATCH_THE_PAIR);
+        keyWords.setWordType("word");
+        AppDatabase.getDatabaseInstance(context).getKeyWordDao().insert(keyWords);
         BackupDatabase.backup(this);
     }
 
@@ -520,6 +519,7 @@ public class MatchThePairGameActivity extends BaseActivity implements MatchThePa
             score.setScoredMarks(10);
             score.setTotalMarks(10);
             score.setStudentID(FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""));
+            score.setGroupId(FastSave.getInstance().getString(FC_Constants.CURRENT_GROUP_ID, ""));
             score.setStartDateTime(questionStartTime);
             score.setDeviceID(deviceId.equals(null) ? "0000" : deviceId);
             score.setEndDateTime(FC_Utility.getCurrentDateTime());
@@ -561,6 +561,7 @@ public class MatchThePairGameActivity extends BaseActivity implements MatchThePa
             score.setScoredMarks(scoredMarks);
             score.setTotalMarks(totalMarks);
             score.setStudentID(FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""));
+            score.setGroupId(FastSave.getInstance().getString(FC_Constants.CURRENT_GROUP_ID, ""));
             score.setStartDateTime(resStartTime);
             score.setDeviceID("" + perc);
             score.setEndDateTime(ApplicationClass.getCurrentDateTime());

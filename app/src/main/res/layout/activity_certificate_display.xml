@@ -44,7 +44,6 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="@dimen/_10sdp"
-                    android:layout_toStartOf="@+id/level_shadow"
                     android:text="Topic"
                     android:textColor="@color/colorBlack"
                     android:textSize="@dimen/_20sdp" />
@@ -53,7 +52,6 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_below="@+id/tv_Topic"
-                    android:layout_toStartOf="@+id/level_shadow"
                     android:orientation="horizontal"
                     android:visibility="gone">
 

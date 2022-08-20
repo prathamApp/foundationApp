@@ -43,7 +43,7 @@
             android:layout_marginStart="@dimen/_2sdp"
             android:layout_marginEnd="@dimen/_5sdp"
             android:padding="@dimen/_3sdp"
-            android:text="DB Sync"
+            android:text="@string/db_sync"
             android:textColor="@color/colorSignBoard2"
             android:textSize="@dimen/_14sdp" />
 
@@ -104,7 +104,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/tv_scorecount"
-                android:text="Score Count"
+                android:text="@string/Score_Count"
                 android:textAlignment="center"
                 android:textColor="@color/goodColornew"
                 android:textSize="@dimen/_12sdp"
@@ -136,7 +136,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/tv_coursecount"
-                android:text="Course Count"
+                android:text="@string/course_count"
                 android:textAlignment="center"
                 android:textColor="@color/goodColornew"
                 android:textSize="@dimen/_12sdp"

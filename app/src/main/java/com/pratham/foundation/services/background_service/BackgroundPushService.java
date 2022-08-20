@@ -1,5 +1,8 @@
 package com.pratham.foundation.services.background_service;
 
+import static com.pratham.foundation.utility.FC_Constants.IS_SERVICE_STOPED;
+import static com.pratham.foundation.utility.FC_Constants.NOTIFICATION_CHANNEL_ID;
+
 import android.app.AlarmManager;
 import android.app.Notification;
 import android.app.NotificationChannel;
@@ -23,9 +26,6 @@ import com.pratham.foundation.services.shared_preferences.FastSave;
 import org.androidannotations.annotations.Bean;
 import org.androidannotations.annotations.EBean;
 
-import static com.pratham.foundation.utility.FC_Constants.IS_SERVICE_STOPED;
-import static com.pratham.foundation.utility.FC_Constants.NOTIFICATION_CHANNEL_ID;
-
 @EBean
 public class BackgroundPushService extends Service {
 
@@ -44,6 +44,8 @@ public class BackgroundPushService extends Service {
 
     @Bean(PushDataToServer_New.class)
     PushDataToServer_New pushDataToServer;
+//    @Bean(PushDataToServer_New2.class)
+//    PushDataToServer_New2 pushDataToServerNew2;
 
     @Override
     public void onCreate() {

@@ -26,6 +26,8 @@ public interface ContentContract {
 
         void dismissLoadingDialog();
 
+        void setDownloadSize(String fileSize);
+
         void setStudentProfileImage(String sImage);
 
         void showToast(String msg);
@@ -54,7 +56,7 @@ public interface ContentContract {
 
         void findMaxScore(String nodeId);
 
-        void setView(ContentContract.ContentView contentView);
+        void setView(ContentView contentView);
 
         void getInternetTime();
 

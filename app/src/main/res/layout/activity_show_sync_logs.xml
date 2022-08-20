@@ -11,7 +11,7 @@
     <RelativeLayout
         android:id="@+id/header_rl"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/_80sdp">
+        android:layout_height="@dimen/_60sdp">
 
         <ImageView
             android:id="@+id/main_back"
@@ -26,11 +26,11 @@
             android:id="@+id/tv_Topic"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/main_back"
+            android:layout_centerVertical="true"
             android:layout_marginStart="@dimen/_15sdp"
-            android:layout_marginTop="@dimen/_5sdp"
             android:layout_marginEnd="@dimen/_10sdp"
-            android:text="Sync Log"
+            android:layout_toEndOf="@id/main_back"
+            android:text="@string/push_logs"
             android:textColor="@color/colorText"
             android:textSize="@dimen/_18sdp" />
 

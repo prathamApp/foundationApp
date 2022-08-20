@@ -49,6 +49,8 @@ import java.io.File;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.lang.reflect.Type;
+import java.net.URL;
+import java.net.URLConnection;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -58,13 +60,17 @@ import java.util.List;
 @EBean
 public class LearningPresenter implements LearningContract.LearningPresenter, API_Content_Result {
 
-    Context mContext;
     LearningContract.LearningView learningView;
+
+    @Bean(ZipDownloader.class)
+    ZipDownloader zipDownloader;
+
+    Context mContext;
     public List<ContentTable> rootList, rootLevelList, dwParentList, childDwContentList;
     public List<ContentTable> contentParentList, contentDBList, contentApiList, childContentList;
     ArrayList<String> nodeIds;
     API_Content api_content;
-    String downloadNodeId, fileName;
+    String downloadNodeId, fileName, fileSize;
     Gson gson;
     ArrayList<String> codesText;
     int currentLevelNo;
@@ -73,8 +79,6 @@ public class LearningPresenter implements LearningContract.LearningPresenter, AP
     ArrayList<ContentTable> pos;
     public List<ContentTable> testList;
     List maxScore, maxScoreChild;
-    @Bean(ZipDownloader.class)
-    ZipDownloader zipDownloader;
     private String cosSection;
     String botID;
 
@@ -306,6 +310,15 @@ public class LearningPresenter implements LearningContract.LearningPresenter, AP
                         contentTableRes.setIsDownloaded("" + dwParentList.get(j).getIsDownloaded());
                         contentTableRes.setOnSDCard(dwParentList.get(j).isOnSDCard());
                         contentTableRes.setNodelist(tempList2);
+                        String resPath;
+                        if (dwParentList.get(j).isOnSDCard())
+                            resPath = ApplicationClass.contentSDPath + gameFolderPath + "/" + dwParentList.get(j).getResourcePath();
+                        else
+                            resPath = ApplicationClass.foundationPath + gameFolderPath + "/" + dwParentList.get(j).getResourcePath();
+                        if(!new File(resPath).exists()){
+                            contentTableRes.setIsDownloaded("" + false);
+                            contentTableRes.setOnSDCard(false);
+                        }
                         contentTableRes.setNodeUpdate(false);
                         resourceList.add(contentTableRes);
                     } else {
@@ -331,10 +344,19 @@ public class LearningPresenter implements LearningContract.LearningPresenter, AP
                         contentTable.setSeq_no(dwParentList.get(j).getSeq_no());
                         contentTable.setContentType(dwParentList.get(j).getContentType());
                         contentTable.setContentLanguage(dwParentList.get(j).getContentLanguage());
-                        contentTable.setIsDownloaded("" + dwParentList.get(j).getIsDownloaded());
                         contentTable.setVersion("" + dwParentList.get(j).getVersion());
                         contentTable.setNodeUpdate(false);
+                        contentTable.setIsDownloaded("" + dwParentList.get(j).getIsDownloaded());
                         contentTable.setOnSDCard(dwParentList.get(j).isOnSDCard());
+                        String resPath;
+                        if (dwParentList.get(j).isOnSDCard())
+                            resPath = ApplicationClass.contentSDPath + gameFolderPath + "/" + dwParentList.get(j).getResourcePath();
+                        else
+                            resPath = ApplicationClass.foundationPath + gameFolderPath + "/" + dwParentList.get(j).getResourcePath();
+                        if(!new File(resPath).exists()){
+                            contentTable.setIsDownloaded("" + false);
+                            contentTable.setOnSDCard(false);
+                        }
 
                         int childListSize = childDwContentList.size();
                         if (childDwContentList.size() > 0) {
@@ -360,6 +382,15 @@ public class LearningPresenter implements LearningContract.LearningPresenter, AP
                                 contentChild.setIsDownloaded("" + childDwContentList.get(i).getIsDownloaded());
                                 contentChild.setOnSDCard(childDwContentList.get(i).isOnSDCard());
                                 contentChild.setVersion(childDwContentList.get(i).getVersion());
+                                String childResPath;
+                                if (childDwContentList.get(i).isOnSDCard())
+                                    childResPath = ApplicationClass.contentSDPath + gameFolderPath + "/" + childDwContentList.get(i).getResourcePath();
+                                else
+                                    childResPath = ApplicationClass.foundationPath + gameFolderPath + "/" + childDwContentList.get(i).getResourcePath();
+                                if(!new File(childResPath).exists()){
+                                    contentChild.setIsDownloaded("" + false);
+                                    contentChild.setOnSDCard(false);
+                                }
                                 contentChild.setNodeUpdate(false);
                                 contentChild.setNodelist(null);
                                 maxScoreChild = new ArrayList();
@@ -759,6 +790,16 @@ public class LearningPresenter implements LearningContract.LearningPresenter, AP
                     }
                 }
 
+                fileSize = "";
+                if (!header.equalsIgnoreCase(FC_Constants.INTERNET_DOWNLOAD_RESOURCE_PI)) {
+                    URL url = new URL(download_content.getDownloadurl());
+                    URLConnection urlConnection = url.openConnection();
+                    urlConnection.connect();
+                    fileSize = "" + FC_Utility.getFileSize(urlConnection.getContentLength());
+                    learningView.setDownloadSize(" ("+fileSize+")");
+                    Log.d("HP", "doInBackground: file SIZE : " + fileSize);
+                }else
+                    learningView.setDownloadSize("");
                 fileName = download_content.getDownloadurl()
                         .substring(download_content.getDownloadurl().lastIndexOf('/') + 1);
                 Log.d("HP", "doInBackground: fileName : " + fileName);
@@ -799,8 +840,9 @@ public class LearningPresenter implements LearningContract.LearningPresenter, AP
                 else zipDownloader.initialize(mContext, download_content.getDownloadurl(),
                         download_content.getFoldername(), fileName, dwContent, pos, false);
 */
-            } catch (JSONException e) {
+            } catch (Exception e) {
                 e.printStackTrace();
+                learningView.dismissLoadingDialog();
             }
         } else if (header.equalsIgnoreCase(FC_Constants.INTERNET_DOWNLOAD_ASSESSMENT_RESOURCE)) {
             try {
@@ -1262,6 +1304,7 @@ public class LearningPresenter implements LearningContract.LearningPresenter, AP
             Score score = new Score();
             score.setSessionID(FastSave.getInstance().getString(FC_Constants.CURRENT_SESSION, ""));
             score.setStudentID("" + FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""));
+            score.setGroupId(FastSave.getInstance().getString(FC_Constants.CURRENT_GROUP_ID, ""));
             score.setDeviceID(FC_Utility.getDeviceID());
             score.setResourceID(resId);
             score.setQuestionId(0);

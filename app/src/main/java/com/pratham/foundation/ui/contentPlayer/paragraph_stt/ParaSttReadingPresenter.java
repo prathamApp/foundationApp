@@ -1,5 +1,10 @@
 package com.pratham.foundation.ui.contentPlayer.paragraph_stt;
 
+import static com.pratham.foundation.ui.contentPlayer.paragraph_stt.ParaSttReadingFragment.correctArr;
+import static com.pratham.foundation.ui.contentPlayer.paragraph_stt.ParaSttReadingFragment.lineBreakCounter;
+import static com.pratham.foundation.ui.contentPlayer.paragraph_stt.ParaSttReadingFragment.testCorrectArr;
+import static com.pratham.foundation.utility.FC_Constants.STT_REGEX;
+
 import android.content.Context;
 
 import com.google.gson.Gson;
@@ -22,11 +27,6 @@ import java.io.FileInputStream;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
-
-import static com.pratham.foundation.ui.contentPlayer.paragraph_stt.ParaSttReadingFragment.correctArr;
-import static com.pratham.foundation.ui.contentPlayer.paragraph_stt.ParaSttReadingFragment.lineBreakCounter;
-import static com.pratham.foundation.ui.contentPlayer.paragraph_stt.ParaSttReadingFragment.testCorrectArr;
-import static com.pratham.foundation.utility.FC_Constants.STT_REGEX;
 
 
 @EBean
@@ -123,6 +123,7 @@ public class ParaSttReadingPresenter implements ParaSttReadingContract.ParaSttRe
             score.setScoredMarks(0);
             score.setTotalMarks(0);
             score.setStudentID(FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""));
+            score.setGroupId(FastSave.getInstance().getString(FC_Constants.CURRENT_GROUP_ID, ""));
             score.setStartDateTime(resStartTime);
             score.setDeviceID(deviceId.equals(null) ? "0000" : deviceId);
             score.setEndDateTime(FC_Utility.getCurrentDateTime());
@@ -235,16 +236,16 @@ public class ParaSttReadingPresenter implements ParaSttReadingContract.ParaSttRe
             for (int i = 0; i < correctArr.length; i++) {
                 if (i < splitWordsPunct.size())
                     if (!checkLearnt(splitWordsPunct.get(i).toLowerCase())) {
-                        KeyWords learntWords = new KeyWords();
+                        KeyWords keyWords = new KeyWords();
                         if (correctArr[i]) {
-                            learntWords.setKeyWordId(Integer.parseInt(wordsResIdList.get(i)));
-                            learntWords.setSentFlag(0);
-                            learntWords.setStudentId(FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""));
-                            learntWords.setResourceId(resId);
-                            learntWords.setKeyWord(splitWordsPunct.get(i).toLowerCase());
-                            learntWords.setWordType("word");
-                            learntWords.setTopic("Topic");
-                            AppDatabase.getDatabaseInstance(context).getKeyWordDao().insert(learntWords);
+                            keyWords.setKeyWordId(Integer.parseInt(wordsResIdList.get(i)));
+                            keyWords.setSentFlag(0);
+                            keyWords.setStudentId(FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""));
+                            keyWords.setResourceId(resId);
+                            keyWords.setKeyWord(splitWordsPunct.get(i).toLowerCase());
+                            keyWords.setWordType("word");
+                            keyWords.setTopic("Topic");
+                            AppDatabase.getDatabaseInstance(context).getKeyWordDao().insert(keyWords);
                         }
                     }
             }
@@ -316,6 +317,7 @@ public class ParaSttReadingPresenter implements ParaSttReadingContract.ParaSttRe
             score.setScoredMarks(scoredMarks);
             score.setTotalMarks(totalMarks);
             score.setStudentID(FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""));
+            score.setGroupId(FastSave.getInstance().getString(FC_Constants.CURRENT_GROUP_ID, ""));
             score.setStartDateTime(resStartTime);
             score.setDeviceID(deviceId.equals(null) ? "0000" : deviceId);
             score.setEndDateTime(FC_Utility.getCurrentDateTime());

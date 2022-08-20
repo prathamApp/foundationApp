@@ -1,5 +1,14 @@
 package com.pratham.foundation.ui.contentPlayer.listenAndWritting;
 
+import static android.app.Activity.RESULT_OK;
+import static android.widget.TextView.AUTO_SIZE_TEXT_TYPE_UNIFORM;
+import static com.pratham.foundation.utility.FC_Constants.APP_SECTION;
+import static com.pratham.foundation.utility.FC_Constants.activityPhotoPath;
+import static com.pratham.foundation.utility.FC_Constants.gameFolderPath;
+import static com.pratham.foundation.utility.FC_Constants.sec_Test;
+
+import android.content.ContentResolver;
+import android.content.ContentValues;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
@@ -9,6 +18,8 @@ import android.media.SoundPool;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
+import android.provider.MediaStore;
 import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
 import android.view.Gravity;
@@ -37,6 +48,7 @@ import com.pratham.foundation.modalclasses.EventMessage;
 import com.pratham.foundation.modalclasses.ScienceQuestion;
 import com.pratham.foundation.services.shared_preferences.FastSave;
 import com.pratham.foundation.ui.contentPlayer.GameConstatnts;
+import com.pratham.foundation.utility.FC_Constants;
 import com.pratham.foundation.utility.FC_Utility;
 
 import org.androidannotations.annotations.AfterViews;
@@ -51,13 +63,6 @@ import org.greenrobot.eventbus.ThreadMode;
 
 import java.io.File;
 import java.util.List;
-
-import static android.app.Activity.RESULT_OK;
-import static android.widget.TextView.AUTO_SIZE_TEXT_TYPE_UNIFORM;
-import static com.pratham.foundation.utility.FC_Constants.APP_SECTION;
-import static com.pratham.foundation.utility.FC_Constants.activityPhotoPath;
-import static com.pratham.foundation.utility.FC_Constants.gameFolderPath;
-import static com.pratham.foundation.utility.FC_Constants.sec_Test;
 
 @EFragment(R.layout.fragment_list_and_writting)
 public class ListeningAndWritting extends Fragment implements ListeningAndWrittingContract.ListeningAndWrittingView, OnGameClose {
@@ -454,6 +459,37 @@ public class ListeningAndWritting extends Fragment implements ListeningAndWritti
 
     @Click(R.id.capture)
     public void captureClick() {
+        try {
+            imageName = "" + ApplicationClass.getUniqueID() + ".jpg";
+
+            Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+            File imagesFolder = new File(activityPhotoPath);
+            if (!imagesFolder.exists()) imagesFolder.mkdirs();
+
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                File image = new File(imagesFolder, imageName);
+                ContentResolver resolver = getContext().getContentResolver();
+                ContentValues valuesvideos = new ContentValues();
+                valuesvideos.put(MediaStore.MediaColumns.DISPLAY_NAME, image.getName());
+                String fileMimeType = FC_Utility.getMimeType(image.getAbsolutePath());
+                valuesvideos.put(MediaStore.MediaColumns.MIME_TYPE, fileMimeType);
+                valuesvideos.put(MediaStore.MediaColumns.RELATIVE_PATH, Environment.DIRECTORY_DOWNLOADS
+                        + File.separator + "FCAInternal" + File.separator + "ActivityPhotos" +
+                        File.separator + FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""));
+                image.delete();
+                final Uri uriSavedVideo = resolver.insert(MediaStore.Downloads.EXTERNAL_CONTENT_URI, valuesvideos);
+                cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, uriSavedVideo);
+                startActivityForResult(cameraIntent, CAMERA_REQUEST);
+            } else {
+                File image = new File(imagesFolder, imageName);
+                Uri capturedImageUri = Uri.fromFile(image);
+                cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, capturedImageUri);
+                startActivityForResult(cameraIntent, CAMERA_REQUEST);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        /*
         Intent cameraIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
         File imagesFolder = new File(activityPhotoPath);
         if (!imagesFolder.exists()) imagesFolder.mkdirs();
@@ -461,6 +497,7 @@ public class ListeningAndWritting extends Fragment implements ListeningAndWritti
         capturedImageUri = Uri.fromFile(image);
         cameraIntent.putExtra(android.provider.MediaStore.EXTRA_OUTPUT, capturedImageUri);
         startActivityForResult(cameraIntent, CAMERA_REQUEST);
+*/
     }
 
     @Click(R.id.preview)
@@ -500,7 +537,7 @@ public class ListeningAndWritting extends Fragment implements ListeningAndWritti
 
         dialog.show();
 
-        iv_dia_preview.setImageURI(capturedImageUri);
+        iv_dia_preview.setImageURI(Uri.fromFile(path));
         dia_btn_cross.setOnClickListener(v -> {
             dialog.dismiss();
         });

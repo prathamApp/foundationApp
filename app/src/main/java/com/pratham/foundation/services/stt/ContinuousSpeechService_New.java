@@ -1,25 +1,6 @@
 package com.pratham.foundation.services.stt;
 
 
-import android.annotation.SuppressLint;
-import android.content.Context;
-import android.content.Intent;
-import android.os.AsyncTask;
-import android.os.Bundle;
-import android.os.Handler;
-import android.speech.RecognitionListener;
-import android.speech.RecognizerIntent;
-import android.speech.SpeechRecognizer;
-import android.util.Log;
-
-import com.pratham.foundation.database.AppDatabase;
-import com.pratham.foundation.database.domain.Modal_Log;
-import com.pratham.foundation.services.shared_preferences.FastSave;
-import com.pratham.foundation.utility.FC_Constants;
-import com.pratham.foundation.utility.FC_Utility;
-
-import java.util.ArrayList;
-
 import static com.pratham.foundation.ApplicationClass.BUILD_DATE;
 import static com.pratham.foundation.BaseActivity.setMute;
 import static com.pratham.foundation.utility.FC_Constants.ASSAMESE;
@@ -47,6 +28,25 @@ import static com.pratham.foundation.utility.FC_Constants.TAMIL_LOCAL;
 import static com.pratham.foundation.utility.FC_Constants.TELUGU;
 import static com.pratham.foundation.utility.FC_Constants.TELUGU_LOCAL;
 
+import android.annotation.SuppressLint;
+import android.content.Context;
+import android.content.Intent;
+import android.os.AsyncTask;
+import android.os.Bundle;
+import android.os.Handler;
+import android.speech.RecognitionListener;
+import android.speech.RecognizerIntent;
+import android.speech.SpeechRecognizer;
+import android.util.Log;
+
+import com.pratham.foundation.database.AppDatabase;
+import com.pratham.foundation.database.domain.Modal_Log;
+import com.pratham.foundation.services.shared_preferences.FastSave;
+import com.pratham.foundation.utility.FC_Constants;
+import com.pratham.foundation.utility.FC_Utility;
+
+import java.util.ArrayList;
+
 
 /**
  * Created by Ameya on 12-03-2019.
@@ -56,7 +56,10 @@ public class ContinuousSpeechService_New implements RecognitionListener, STT_Res
     public static Intent recognizerIntent;
     public static SpeechRecognizer speech = null;
     public Context context;
-    private boolean stopClicked = false, voiceStart = false, silenceDetectionFlg = false, resetFlg = false;
+    private final boolean stopClicked = false;
+    private boolean voiceStart = false;
+    private boolean silenceDetectionFlg = false;
+    private boolean resetFlg = false;
     STT_Result_New.sttView stt_result;
     Handler silenceHandler;
     String LOG_TAG = "ContinuousSpeechService : ", sttResult, language, myLocal = "en-IN";
@@ -124,6 +127,7 @@ public class ContinuousSpeechService_New implements RecognitionListener, STT_Res
     }
 
     public void setRecogniserIntent() {
+/*
         recognizerIntent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
         recognizerIntent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_PREFERENCE, myLocal);
         recognizerIntent.putExtra(RecognizerIntent.EXTRA_LANGUAGE, myLocal);
@@ -132,6 +136,12 @@ public class ContinuousSpeechService_New implements RecognitionListener, STT_Res
         recognizerIntent.putExtra(RecognizerIntent.EXTRA_PARTIAL_RESULTS, false);
         recognizerIntent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
         recognizerIntent.putExtra(RecognizerIntent.EXTRA_MAX_RESULTS, 3);
+*/
+
+        recognizerIntent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
+        recognizerIntent.putExtra(RecognizerIntent.EXTRA_LANGUAGE, myLocal);
+        recognizerIntent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
+        recognizerIntent.putExtra(RecognizerIntent.EXTRA_MAX_RESULTS, 5);
     }
 
     public void stopSpeechService() {
@@ -288,15 +298,20 @@ public class ContinuousSpeechService_New implements RecognitionListener, STT_Res
                 Log.i(LOG_TAG, "silenceHandler removed");
             }
         } catch (Exception e) {
+            e.printStackTrace();
         }
 
         ArrayList<String> matches = results
                 .getStringArrayList(SpeechRecognizer.RESULTS_RECOGNITION);
 
-        sttResult = matches.get(0);
-        Log.d("STT-Res", "\n");
-        for (int i = 0; i < matches.size(); i++)
-            Log.d("STT-Res", "STT-Res: " + matches.get(0) + "\n");
+        try {
+            sttResult = matches.get(0);
+            Log.d("STT-Res", "\n");
+            for (int i = 0; i < matches.size(); i++)
+                Log.d("STT-Res", "STT-Res: " + matches.get(0) + "\n");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
         stt_result.Stt_onResult(matches);
 
@@ -324,6 +339,7 @@ public class ContinuousSpeechService_New implements RecognitionListener, STT_Res
             if (silenceHandler != null)
                 silenceHandler.removeCallbacksAndMessages(null);
         } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 }

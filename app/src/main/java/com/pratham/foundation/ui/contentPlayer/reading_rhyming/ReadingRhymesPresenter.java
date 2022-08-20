@@ -124,6 +124,7 @@ public class ReadingRhymesPresenter implements ReadingRhymesContract.ReadingRhym
             score.setScoredMarks(scoredMarks);
             score.setTotalMarks(totalMarks);
             score.setStudentID(FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""));
+            score.setGroupId(FastSave.getInstance().getString(FC_Constants.CURRENT_GROUP_ID, ""));
             score.setStartDateTime(resStartTime);
             score.setDeviceID("" + perc);
             score.setEndDateTime(FC_Utility.getCurrentDateTime());
@@ -273,6 +274,7 @@ public class ReadingRhymesPresenter implements ReadingRhymesContract.ReadingRhym
             score.setScoredMarks(scoredMarks);
             score.setTotalMarks(totalMarks);
             score.setStudentID(FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""));
+            score.setGroupId(FastSave.getInstance().getString(FC_Constants.CURRENT_GROUP_ID, ""));
             score.setStartDateTime(resStartTime);
             score.setDeviceID(deviceId.equals(null) ? "0000" : deviceId);
             score.setEndDateTime(FC_Utility.getCurrentDateTime());
@@ -291,14 +293,14 @@ public class ReadingRhymesPresenter implements ReadingRhymesContract.ReadingRhym
     public void addLearntWords(int pos, ModalRhymingWords rhymingWords) {
         try {
             if (!checkWord(rhymingWords.getWord().toLowerCase())) {
-                KeyWords learntWords = new KeyWords();
-                learntWords.setResourceId(resId);
-                learntWords.setSentFlag(0);
-                learntWords.setStudentId(FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""));
-                learntWords.setKeyWord(rhymingWords.getWord().toLowerCase());
-                learntWords.setTopic("Rhyming Words");
-                learntWords.setWordType("word");
-                AppDatabase.getDatabaseInstance(context).getKeyWordDao().insert(learntWords);
+                KeyWords keyWords = new KeyWords();
+                keyWords.setResourceId(resId);
+                keyWords.setSentFlag(0);
+                keyWords.setStudentId(FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""));
+                keyWords.setKeyWord(rhymingWords.getWord().toLowerCase());
+                keyWords.setTopic("Rhyming Words");
+                keyWords.setWordType("word");
+                AppDatabase.getDatabaseInstance(context).getKeyWordDao().insert(keyWords);
                 BackupDatabase.backup(context);
             }
         } catch (Exception e) {

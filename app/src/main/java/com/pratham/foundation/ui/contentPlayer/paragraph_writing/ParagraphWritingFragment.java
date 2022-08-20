@@ -1,12 +1,21 @@
 package com.pratham.foundation.ui.contentPlayer.paragraph_writing;
 
+import static android.app.Activity.RESULT_OK;
+import static com.pratham.foundation.utility.FC_Constants.activityPhotoPath;
+import static com.pratham.foundation.utility.FC_Constants.gameFolderPath;
+
 import android.app.Dialog;
+import android.content.ContentResolver;
+import android.content.ContentValues;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.media.MediaPlayer;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
+import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
 import android.view.Window;
@@ -44,10 +53,6 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
-
-import static android.app.Activity.RESULT_OK;
-import static com.pratham.foundation.utility.FC_Constants.activityPhotoPath;
-import static com.pratham.foundation.utility.FC_Constants.gameFolderPath;
 
 @EFragment(R.layout.fragment_paragraph_writing)
 public class ParagraphWritingFragment extends Fragment implements ParagraphWritingContract.ParagraphWritingView, OnGameClose {
@@ -103,8 +108,8 @@ public class ParagraphWritingFragment extends Fragment implements ParagraphWriti
     private List<ScienceQuestion> questionModel;
     private String jsonName;
     private static MediaPlayer mediaPlayer;
-    private boolean isPlaying = false;
-    private String REGEXF = "(?<=\\.\\s)|(?<=[?!]\\s)|(?<=।)|(?<=\\|)";
+    private final boolean isPlaying = false;
+    private final String REGEXF = "(?<=\\.\\s)|(?<=[?!]\\s)|(?<=।)|(?<=\\|)";
     @AfterViews
     protected void initiate() {
         Bundle bundle = getArguments();
@@ -233,10 +238,36 @@ public class ParagraphWritingFragment extends Fragment implements ParagraphWriti
         Intent cameraIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
         File imagesFolder = new File(activityPhotoPath);
         if (!imagesFolder.exists()) imagesFolder.mkdirs();
+        Log.i("IDSSS",questionModel.get(index).getUserAnswer());
+        Log.i("IDSSS",activityPhotoPath);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+            File image = new File(imagesFolder, questionModel.get(index).getUserAnswer());
+            ContentResolver resolver = getContext().getContentResolver();
+            ContentValues valuesvideos = new ContentValues();
+            valuesvideos.put(MediaStore.MediaColumns.DISPLAY_NAME, image.getName());
+            String fileMimeType = FC_Utility.getMimeType(image.getAbsolutePath());
+            valuesvideos.put(MediaStore.MediaColumns.MIME_TYPE, fileMimeType);
+            valuesvideos.put(MediaStore.MediaColumns.RELATIVE_PATH, Environment.DIRECTORY_DOWNLOADS
+                    + File.separator + "FCAInternal"+ File.separator +"ActivityPhotos" + File.separator
+                    + FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, "") );
+//            image.delete();
+            final Uri uriSavedVideo = resolver.insert(MediaStore.Downloads.EXTERNAL_CONTENT_URI, valuesvideos);
+            cameraIntent.putExtra(android.provider.MediaStore.EXTRA_OUTPUT, uriSavedVideo);
+            startActivityForResult(cameraIntent, CAMERA_REQUEST);
+        }else
+        {
+            File image = new File(imagesFolder, questionModel.get(index).getUserAnswer());
+            Uri capturedImageUri = Uri.fromFile(image);
+            cameraIntent.putExtra(android.provider.MediaStore.EXTRA_OUTPUT, capturedImageUri);
+            startActivityForResult(cameraIntent, CAMERA_REQUEST);
+        }
+/*        Intent cameraIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
+        File imagesFolder = new File(activityPhotoPath);
+        if (!imagesFolder.exists()) imagesFolder.mkdirs();
         File image = new File(imagesFolder, questionModel.get(index).getUserAnswer());
         Uri capturedImageUri = Uri.fromFile(image);
         cameraIntent.putExtra(android.provider.MediaStore.EXTRA_OUTPUT, capturedImageUri);
-        startActivityForResult(cameraIntent, CAMERA_REQUEST);
+        startActivityForResult(cameraIntent, CAMERA_REQUEST);*/
     }
 
     @Click(R.id.preview)

@@ -9,7 +9,7 @@ public interface ProfileContract {
     }
 
     interface ProfilePresenter {
-        void setView(ProfileContract.ProfileView ProfileView);
+        void setView(ProfileView ProfileView);
 
 //        void getCertificateCount();
 
