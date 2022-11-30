@@ -32,6 +32,9 @@ import android.widget.Button;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import androidx.annotation.Nullable;
+import androidx.documentfile.provider.DocumentFile;
+
 import com.google.gson.Gson;
 import com.hanks.htextview.typer.TyperTextView;
 import com.pratham.foundation.ApplicationClass;
@@ -203,6 +206,7 @@ public class SplashActivity extends SplashSupportActivity implements SplashContr
                 PermissionUtils.Manifest_RECORD_AUDIO,
                 PermissionUtils.Manifest_ACCESS_COARSE_LOCATION,
                 PermissionUtils.Manifest_ACCESS_FINE_LOCATION
+                PermissionUtils.Manifest_MANAGE_EXTERNAL_STORAGE
         };
         //Create Directory if not exists
 /*
@@ -287,6 +291,8 @@ public class SplashActivity extends SplashSupportActivity implements SplashContr
 
     int RESULT_MANAGE_STORAGE_CODE = 11;
 
+    private static final int SDCARD_LOCATION_CHOOSER = 10;
+
     @UiThread
     @Override
     public void startApp() {
@@ -305,7 +311,35 @@ public class SplashActivity extends SplashSupportActivity implements SplashContr
         FastSave.getInstance().saveString(FC_Constants.LANGUAGE, FC_Constants.HINDI);
 //        setAppLocal(this, FC_Constants.HINDI);
         FastSave.getInstance().saveBoolean(IS_SERVICE_STOPED, false);
-        splashPresenter.createDatabase();
+//        splashPresenter.createDatabase();
+        Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT_TREE);
+        intent.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
+        startActivityForResult(intent, SDCARD_LOCATION_CHOOSER);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == SDCARD_LOCATION_CHOOSER) {
+            if (data != null && data.getData() != null) {
+                Uri treeUri = data.getData();
+                final int takeFlags = data.getFlags()
+                        & (Intent.FLAG_GRANT_READ_URI_PERMISSION
+                        | Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
+                ApplicationClass.getInstance().getContentResolver().takePersistableUriPermission(treeUri, takeFlags);
+                DocumentFile rootFile = DocumentFile.fromTreeUri(ApplicationClass.getInstance(), treeUri);
+                Log.d("DocumentFile Path", "rootFile.getName() : "+ rootFile.getName());
+                Log.d("DocumentFile Path", "rootFile.getUri() : "+ rootFile.getUri());
+
+
+                splashPresenter.testCopyDataBase(rootFile);
+
+//                mHandler.sendEmptyMessage(SHOW_OTG_SELECT_DIALOG);
+//                new Handler().postDelayed(() -> {
+//                    new CopyDbToOTG().execute(treeUri);
+//                }, 500);
+            }
+        }
     }
 
     Intent mServiceIntent;

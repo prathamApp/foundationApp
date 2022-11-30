@@ -50,11 +50,11 @@ public class ConversationPresenter_3 implements ConversationContract_3.Conversat
     public void addCompletion(float perc) {
         try {
             ContentProgress contentProgress = new ContentProgress();
-            contentProgress.setProgressPercentage("" + perc);
-            contentProgress.setResourceId("" + resId);
             contentProgress.setSessionId("" + FastSave.getInstance().getString(FC_Constants.CURRENT_SESSION, ""));
             contentProgress.setStudentId("" + FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""));
+            contentProgress.setResourceId("" + resId);
             contentProgress.setUpdatedDateTime("" + FC_Utility.getCurrentDateTime());
+            contentProgress.setProgressPercentage("" + perc);
             contentProgress.setLabel("resourceProgress");
             contentProgress.setSentFlag(0);
             AppDatabase.getDatabaseInstance(context).getContentProgressDao().insert(contentProgress);

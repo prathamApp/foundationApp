@@ -91,6 +91,7 @@ public class PDF_PresenterImpl implements PDFContract.pdfPresenter {
             score.setEndDateTime(endTime);
             score.setLevel(0);
             score.setLabel("PDF");
+            score.setGroupId(FastSave.getInstance().getString(FC_Constants.CURRENT_GROUP_ID, ""));
             score.setSentFlag(0);
             AppDatabase.getDatabaseInstance(context).getScoreDao().insert(score);
             float perc = 0f;

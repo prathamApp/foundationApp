@@ -25,7 +25,7 @@ public class KeyWords implements Serializable {
     private String resourceId;
     @SerializedName("keyWord")
     private String keyWord;
-    @SerializedName("keyWordType")
+    @SerializedName("wordType")
     private String wordType;
     private int sentFlag;
     private String topic;

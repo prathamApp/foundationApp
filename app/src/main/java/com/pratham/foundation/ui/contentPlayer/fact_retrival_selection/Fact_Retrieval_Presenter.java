@@ -179,13 +179,14 @@ public class Fact_Retrieval_Presenter implements Fact_Retrieval_Contract.Fact_re
               int correctCnt = 0;
             /* int scoredMarks = (int) checkAnswer(selectedAnsList);*/
             int scoredMarks;
+            String key = questionModel.getTitle();
             KeyWords keyWords = new KeyWords();
             keyWords.setResourceId(resId);
             keyWords.setSentFlag(0);
             keyWords.setStudentId(FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""));
-            String key = questionModel.getTitle();
             keyWords.setKeyWord(key);
             keyWords.setWordType("word");
+            keyWords.setTopic("");
             AppDatabase.getDatabaseInstance(context).getKeyWordDao().insert(keyWords);
             for (int i = 0; i < selectedAnsList.size(); i++) {
                 if (selectedAnsList.get(i).getUserAns() != null && !selectedAnsList.get(i).getUserAns().isEmpty()) {

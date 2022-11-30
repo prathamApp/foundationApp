@@ -31,6 +31,8 @@ import com.pratham.foundation.database.AppDatabase;
 import com.pratham.foundation.modalclasses.ApiResultClass;
 import com.pratham.foundation.modalclasses.SyncLog;
 import com.pratham.foundation.modalclasses.SyncStatusLog;
+import com.pratham.foundation.services.shared_preferences.FastSave;
+import com.pratham.foundation.utility.FC_Constants;
 import com.pratham.foundation.utility.FC_Utility;
 
 import org.androidannotations.annotations.AfterViews;
@@ -48,13 +50,10 @@ import java.util.Objects;
 public class SyncResultActivity extends BaseActivity implements SyncResultContract.SyncResultView,
         SyncResultContract.SyncResultItemClick {
 
-    static String TEST_RESULT_API = "http://prathamyouthnet.org/ssmspushdb/dbcheck.php?PushId=";
-    static String TEST_SYNC_API = "http://prathamyouthnet.org/ssmspushdb/dbsync-individual.php?PushId=";
-    public List<SyncLog> syncLogList;
-
     @Bean(SyncResultPresenter.class)
     SyncResultContract.SyncResultPresenter presenter;
 
+    public List<SyncLog> syncLogList;
     /*    @ViewById(R.id.sync_list)
         ListView sync_list;*/
     @ViewById(R.id.recycler_view)
@@ -123,14 +122,14 @@ public class SyncResultActivity extends BaseActivity implements SyncResultContra
     public void checkDetails(int pos, SyncLog syncLog) {
         showLoader();
         position = pos;
-        getStatus(TEST_RESULT_API, "" + syncLog.getPushId());
+        getStatus(FC_Constants.TEST_RESULT_API, "" + syncLog.getPushId());
     }
 
     @Override
     public void syncData(int pos, SyncLog syncLog) {
         showLoader();
         position = pos;
-        presenter.syncItemData(TEST_SYNC_API, "" + syncLog.getPushId());
+        presenter.syncItemData(FC_Constants.TEST_SYNC_API, "" + syncLog.getPushId());
     }
 
     @UiThread
@@ -293,6 +292,7 @@ public class SyncResultActivity extends BaseActivity implements SyncResultContra
                 + "<br>" + "Push Date : " + statusLog.getPushDate()
                 + "<br>" + "Push Status : " + syncStatus
                 + "<br>" + "Device ID : " + statusLog.getDeviceId()
+                + "<br>" + "App Version : v" + FastSave.getInstance().getString(FC_Constants.APP_VERSION, "")
                 + "<br><br><font color='#35469E'>" + "Score Pushed : " + statusLog.getScoreSynced() + "</font>"
                 + "<br><font color='#05AF81'>" + "Score Synced : " + statusLog.getScorePushed() + "</font>"
                 + ScoreErr + ""

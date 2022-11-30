@@ -396,164 +396,196 @@ public class BottomStudentsPresenter implements BottomStudentsContract.BottomStu
             status = new Status();
             status.setStatusKey("CRLID");
             status.setValue("default");
+            status.setDescription("");
             appDatabase.getStatusDao().insert(status);
 
             status = new Status();
             status.setStatusKey("DeviceName");
             status.setValue(FC_Utility.getDeviceName());
+            status.setDescription("");
             appDatabase.getStatusDao().insert(status);
 
             status = new Status();
             status.setStatusKey("gpsFixDuration");
             status.setValue("");
+            status.setDescription("");
             appDatabase.getStatusDao().insert(status);
 
             status = new Status();
             status.setStatusKey("prathamCode");
             status.setValue("");
+            status.setDescription("");
             appDatabase.getStatusDao().insert(status);
 
             status = new Status();
             status.setStatusKey("apkType");
             status.setValue("");
+            status.setDescription("");
             appDatabase.getStatusDao().insert(status);
 
             status = new Status();
             status.setStatusKey("Latitude");
             status.setValue("");
+            status.setDescription("");
             appDatabase.getStatusDao().insert(status);
 
             status = new Status();
             status.setStatusKey("Longitude");
             status.setValue("");
+            status.setDescription("");
             appDatabase.getStatusDao().insert(status);
 
             status = new Status();
             status.setStatusKey("GPSDateTime");
             status.setValue("");
+            status.setDescription("");
             appDatabase.getStatusDao().insert(status);
 
             status = new Status();
             status.setStatusKey("CurrentSession");
             status.setValue("NA");
+            status.setDescription("");
             appDatabase.getStatusDao().insert(status);
 
             status = new Status();
             status.setStatusKey("SdCardPath");
             status.setValue("NA");
+            status.setDescription("");
             appDatabase.getStatusDao().insert(status);
 
             status = new Status();
             status.setStatusKey("AppLang");
             status.setValue("NA");
+            status.setDescription("");
             appDatabase.getStatusDao().insert(status);
 
             status = new Status();
             status.setStatusKey("AppStartDateTime");
             status.setValue("NA");
+            status.setDescription("");
             appDatabase.getStatusDao().insert(status);
 
             //new Entries
             status = new Status();
             status.setStatusKey("ActivatedForGroups");
             status.setValue("NA");
+            status.setDescription("");
             appDatabase.getStatusDao().insert(status);
 
             status = new Status();
             status.setStatusKey("AndroidVersion");
             status.setValue(FC_Utility.getAndroidOSVersion());
+            status.setDescription("");
             appDatabase.getStatusDao().insert(status);
 
             status = new Status();
             status.setStatusKey("InternalAvailableStorage");
             status.setValue(FC_Utility.getInternalStorageStatus());
+            status.setDescription("");
             appDatabase.getStatusDao().insert(status);
 
             status = new Status();
             status.setStatusKey("DeviceManufacturer");
             status.setValue(FC_Utility.getDeviceManufacturer());
+            status.setDescription("");
             appDatabase.getStatusDao().insert(status);
 
             status = new Status();
             status.setStatusKey("DeviceModel");
             status.setValue(FC_Utility.getDeviceModel());
+            status.setDescription("");
             appDatabase.getStatusDao().insert(status);
 
             status = new Status();
             status.setStatusKey("ScreenResolution");
             status.setValue(FastSave.getInstance().getString(FC_Constants.SCR_RES, ""));
+            status.setDescription("");
             appDatabase.getStatusDao().insert(status);
 
             status = new Status();
             status.setStatusKey("programId");
             status.setValue("1");
+            status.setDescription("");
             appDatabase.getStatusDao().insert(status);
 
             status = new Status();
             status.setStatusKey("group1");
             status.setValue("NA");
+            status.setDescription("");
             appDatabase.getStatusDao().insert(status);
 
             status = new Status();
             status.setStatusKey("group2");
             status.setValue("NA");
+            status.setDescription("");
             appDatabase.getStatusDao().insert(status);
 
             status = new Status();
             status.setStatusKey("group3");
             status.setValue("NA");
+            status.setDescription("");
             appDatabase.getStatusDao().insert(status);
 
             status = new Status();
             status.setStatusKey("group4");
             status.setValue("NA");
+            status.setDescription("");
             appDatabase.getStatusDao().insert(status);
 
             status = new Status();
             status.setStatusKey("group5");
             status.setValue("NA");
+            status.setDescription("");
             appDatabase.getStatusDao().insert(status);
 
             status = new Status();
             status.setStatusKey("village");
             status.setValue("NA");
+            status.setDescription("");
             appDatabase.getStatusDao().insert(status);
 
             status = new Status();
             status.setStatusKey("ActivatedDate");
             status.setValue("NA");
+            status.setDescription("");
             appDatabase.getStatusDao().insert(status);
 
             status = new Status();
             status.setStatusKey("AssessmentSession");
             status.setValue("NA");
+            status.setDescription("");
             appDatabase.getStatusDao().insert(status);
 
             status = new Status();
             status.setStatusKey("AndroidID");
             status.setValue("NA");
+            status.setDescription("");
             appDatabase.getStatusDao().insert(status);
 
             status = new Status();
             status.setStatusKey("DBVersion");
             status.setValue(DB_VERSION);
+            status.setDescription("");
             appDatabase.getStatusDao().insert(status);
 
             status = new Status();
             status.setStatusKey("SerialID");
             status.setValue(FC_Utility.getDeviceSerialID());
+            status.setDescription("");
             appDatabase.getStatusDao().insert(status);
 
             status = new Status();
             status.setStatusKey("AppBuild Date");
             status.setValue(ApplicationClass.BUILD_DATE);
+            status.setDescription("");
             appDatabase.getStatusDao().insert(status);
 
             WifiManager wifiManager = (WifiManager) context.getApplicationContext().getSystemService(Context.WIFI_SERVICE);
             WifiInfo wInfo = wifiManager.getConnectionInfo();
             String macAddress = wInfo.getMacAddress();
-            status.setStatusKey("wifiMAC");
+            status.setStatusKey("WifiMAC");
             status.setValue(macAddress);
+            status.setDescription("");
             appDatabase.getStatusDao().insert(status);
 
             setAppName(status);
@@ -587,6 +619,7 @@ public class BottomStudentsPresenter implements BottomStudentsContract.BottomStu
             status = new Status();
             status.setStatusKey("appName");
             status.setValue(appname);
+            status.setDescription("");
             AppDatabase.getDatabaseInstance(context).getStatusDao().insert(status);
 
         } else {
@@ -605,6 +638,7 @@ public class BottomStudentsPresenter implements BottomStudentsContract.BottomStu
             status = new Status();
             status.setStatusKey("appName");
             status.setValue(appname);
+            status.setDescription("");
             AppDatabase.getDatabaseInstance(context).getStatusDao().insert(status);
         }
     }
@@ -620,6 +654,7 @@ public class BottomStudentsPresenter implements BottomStudentsContract.BottomStu
             status.setStatusKey("apkVersion");
             String verCode = FC_Utility.getAppVerison();
             status.setValue(verCode);
+            status.setDescription("");
             AppDatabase.getDatabaseInstance(context).getStatusDao().insert(status);
 
         } else {
@@ -627,6 +662,7 @@ public class BottomStudentsPresenter implements BottomStudentsContract.BottomStu
 
             String verCode = FC_Utility.getAppVerison();
             status.setValue(verCode);
+            status.setDescription("");
             AppDatabase.getDatabaseInstance(context).getStatusDao().insert(status);
 
         }

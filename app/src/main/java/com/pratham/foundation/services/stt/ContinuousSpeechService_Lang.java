@@ -1,6 +1,9 @@
 package com.pratham.foundation.services.stt;
 
 
+import static com.pratham.foundation.ApplicationClass.BUILD_DATE;
+import static com.pratham.foundation.BaseActivity.setMute;
+
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
@@ -19,9 +22,6 @@ import com.pratham.foundation.utility.FC_Constants;
 import com.pratham.foundation.utility.FC_Utility;
 
 import java.util.ArrayList;
-
-import static com.pratham.foundation.ApplicationClass.BUILD_DATE;
-import static com.pratham.foundation.BaseActivity.setMute;
 
 
 /**
@@ -61,7 +61,7 @@ public class ContinuousSpeechService_Lang implements RecognitionListener, STT_Re
         recognizerIntent_Lang.putExtra(RecognizerIntent.EXTRA_MAX_RESULTS, 5);
     }
 
-    public void stopSpeechService(){
+    public void stopSpeechService() {
         speech_Lang.destroy();
     }
 
@@ -117,11 +117,15 @@ public class ContinuousSpeechService_Lang implements RecognitionListener, STT_Re
                 try {
                     Modal_Log modal_log = new Modal_Log();
                     modal_log.setCurrentDateTime(FC_Utility.getCurrentDateTime());
-                    modal_log.setSessionId(FastSave.getInstance().getString(FC_Constants.CURRENT_SESSION, ""));
-                    modal_log.setExceptionStackTrace("APK BUILD DATE : "+BUILD_DATE);
-                    modal_log.setDeviceId("" + FC_Utility.getDeviceID());
+                    modal_log.setExceptionMessage("");
+                    modal_log.setExceptionStackTrace("APK BUILD DATE : " + BUILD_DATE);
+                    modal_log.setMethodName("");
+                    modal_log.setErrorType("");
                     modal_log.setGroupId(FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, "no_group"));
+                    modal_log.setDeviceId("" + FC_Utility.getDeviceID());
                     modal_log.setLogDetail("Stt Intent Fired - " + sttString);
+                    modal_log.setSessionId(FastSave.getInstance().getString(FC_Constants.CURRENT_SESSION, ""));
+                    modal_log.setSentFlag(0);
                     AppDatabase.getDatabaseInstance(context).getLogsDao().insertLog(modal_log);
                 } catch (Exception e) {
                     e.printStackTrace();

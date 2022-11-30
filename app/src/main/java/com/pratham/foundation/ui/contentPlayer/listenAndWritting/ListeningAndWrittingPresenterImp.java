@@ -159,6 +159,7 @@ public class ListeningAndWrittingPresenterImp implements ListeningAndWrittingCon
                     String key = listenAndWrittingModal.get(i).getTitle();
                     keyWords.setKeyWord(key);
                     keyWords.setWordType("word");
+                    keyWords.setTopic("");
                     AppDatabase.getDatabaseInstance(context).getKeyWordDao().insert(keyWords);
                     newResId = GameConstatnts.getString(resId, contentTitle, listenAndWrittingModal.get(i).getQid(), imageName, listenAndWrittingModal.get(i).getQuestion(), "");
                     addScore(GameConstatnts.getInt(listenAndWrittingModal.get(i).getQid()), GameConstatnts.LISTNING_AND_WRITTING, 0, 0, FC_Utility.getCurrentDateTime(), imageName, resId, true);

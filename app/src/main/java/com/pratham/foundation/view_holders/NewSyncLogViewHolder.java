@@ -52,20 +52,18 @@ public class NewSyncLogViewHolder extends RecyclerView.ViewHolder {
 //        SyncLog syncItem;
             stat_date.setText(ApplicationClass.getInstance().getString(R.string.date)+"\n" + syncItem.getPushDate());
             tv_syncStatus.setText(ApplicationClass.getInstance().getString(R.string.status)+" : " + syncItem.getStatus());
+            btn_sync.setEnabled(true);
+            btn_sync.setBackgroundResource(R.drawable.button_blue);
             if(!syncItem.getStatus().equalsIgnoreCase("COMPLETED")){
                 stat_date.setBackgroundResource(R.drawable.sync_failed_bg);
                 stat_date.setTextColor(ApplicationClass.getInstance().getResources().getColor(R.color.colorRedSignBoard));
                 tv_syncStatus.setTextColor(ApplicationClass.getInstance().getResources().getColor(R.color.colorRedDark));
                 tv_syncType.setTextColor(ApplicationClass.getInstance().getResources().getColor(R.color.colorRedDark));
-                btn_sync.setEnabled(true);
-                btn_sync.setBackgroundResource(R.drawable.button_blue);
             }else{
                 stat_date.setBackgroundResource(R.drawable.text_usage_game_grad);
                 stat_date.setTextColor(ApplicationClass.getInstance().getResources().getColor(R.color.colorSignBoard2));
                 tv_syncStatus.setTextColor(ApplicationClass.getInstance().getResources().getColor(R.color.colorSignBoard2));
                 tv_syncType.setTextColor(ApplicationClass.getInstance().getResources().getColor(R.color.colorSignBoard2));
-                btn_sync.setEnabled(false);
-                btn_sync.setBackgroundResource(R.drawable.convo_send_disable);
             }
             tv_uuid.setText("File Id : " + syncItem.getUuid());
             tv_pushId.setText("Push Id : " + syncItem.getPushId());

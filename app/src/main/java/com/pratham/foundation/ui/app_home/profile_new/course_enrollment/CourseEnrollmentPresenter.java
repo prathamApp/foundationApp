@@ -125,8 +125,15 @@ public class CourseEnrollmentPresenter implements CourseEnrollmentContract.Cours
             if (!isCourseAlreadyEnrolled) {
 //                if (!errorCourse) {
                 Model_CourseEnrollment courseEnrollment = new Model_CourseEnrollment();
-                courseEnrollment.setCoachVerificationDate("");
+                courseEnrollment.setCourseId(""+selectedCourse.getNodeId());
+                courseEnrollment.setGroupId(""+groupId);
+                courseEnrollment.setStudentId(""+studentId);
+                courseEnrollment.setCourseEnrolledDate(FC_Utility.getCurrentDateTime());
+                courseEnrollment.setPlanFromDate(week + " " + startDate.getTime());
+                courseEnrollment.setPlanToDate(week + " " + endDate.getTime());
                 courseEnrollment.setCoachVerified(0);
+                courseEnrollment.setCoachVerificationDate("NA");
+
                 //add experience as json object string in db
                 Model_CourseExperience model_courseExperience = new Model_CourseExperience();
                 model_courseExperience.setAssignments(null);
@@ -141,14 +148,12 @@ public class CourseEnrollmentPresenter implements CourseEnrollmentContract.Cours
                 model_courseExperience.setSessionId(FastSave.getInstance().getString(FC_Constants.CURRENT_SESSION, ""));
 
                 courseEnrollment.setCourseExperience("" + new Gson().toJson(model_courseExperience));
+                courseEnrollment.setCourseCompleted(true);
+                courseEnrollment.setCoachImage("NA");
                 courseEnrollment.setCourseDetail(selectedCourse);
-                courseEnrollment.setCourseId(selectedCourse.getNodeId());
-                courseEnrollment.setGroupId(groupId);
-                courseEnrollment.setStudentId(studentId);
-                courseEnrollment.setPlanFromDate(week + " " + startDate.getTime());
-                courseEnrollment.setPlanToDate(week + " " + endDate.getTime());
-                courseEnrollment.setCourseEnrolledDate(FC_Utility.getCurrentDateTime());
                 courseEnrollment.setSentFlag(0);
+
+
                 if (!selectedLangName.equalsIgnoreCase("na"))
                     courseEnrollment.setLanguage(selectedLangName);
                 else

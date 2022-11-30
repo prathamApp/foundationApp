@@ -1,6 +1,8 @@
 package com.pratham.foundation.ui.splash_activity;
 
 
+import androidx.documentfile.provider.DocumentFile;
+
 import com.pratham.foundation.database.AppDatabase;
 
 import java.io.File;
@@ -49,6 +51,8 @@ public interface SplashContract {
         void versionObtained(String latestVersion);
 
         void copyDataBase();
+
+        void testCopyDataBase(DocumentFile rootFile);
 
         boolean getSdCardPath();
 

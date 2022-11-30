@@ -163,12 +163,13 @@ public class KeywordsIdentificationPresenter implements KeywordsIdentificationCo
         if (selectedAnsList != null && !selectedAnsList.isEmpty()) {
 
             KeyWords keyWords = new KeyWords();
+            String key = questionModel.getTitle();
             keyWords.setResourceId(resId);
             keyWords.setSentFlag(0);
             keyWords.setStudentId(FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""));
-            String key = questionModel.getTitle();
             keyWords.setKeyWord(key);
             keyWords.setWordType("word");
+            keyWords.setTopic("");
             AppDatabase.getDatabaseInstance(context).getKeyWordDao().insert(keyWords);
 
             for (int i = 0; i < selectedAnsList.size(); i++) {

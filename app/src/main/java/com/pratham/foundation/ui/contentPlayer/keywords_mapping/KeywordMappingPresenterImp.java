@@ -193,6 +193,7 @@ public class KeywordMappingPresenterImp implements KeywordMappingContract.Keywor
             String key = keywordmapping.getQuestion();
             keyWords.setKeyWord(key);
             keyWords.setWordType("word");
+            keyWords.setTopic("");
             AppDatabase.getDatabaseInstance(context).getKeyWordDao().insert(keyWords);
             setCompletionPercentage();
             for (int i = 0; i < selectedAnsList.size(); i++) {

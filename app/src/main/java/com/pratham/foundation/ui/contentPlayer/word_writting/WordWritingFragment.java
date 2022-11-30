@@ -198,7 +198,7 @@ public class WordWritingFragment extends Fragment
             File imagesFolder = new File(activityPhotoPath);
             if (!imagesFolder.exists()) imagesFolder.mkdirs();
 
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
                 File image = new File(imagesFolder, imageName);
                 ContentResolver resolver = getContext().getContentResolver();
                 ContentValues valuesvideos = new ContentValues();

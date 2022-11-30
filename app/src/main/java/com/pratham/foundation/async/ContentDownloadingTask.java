@@ -297,6 +297,7 @@ public class ContentDownloadingTask {
             modal_log.setSessionId(FastSave.getInstance().getString(FC_Constants.CURRENT_SESSION, ""));
             modal_log.setExceptionStackTrace("APK BUILD DATE : "+BUILD_DATE);
             modal_log.setDeviceId("" + FC_Utility.getDeviceID());
+            modal_log.setSentFlag(0);
             modal_log.setGroupId(FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, "no_group"));
             if(url.contains(FC_Constants.RASP_IP))
                 modal_log.setLogDetail("PI#"+url);

@@ -395,6 +395,7 @@ public class TrueFalseFragment extends Fragment {
                     String key = selectedAnsList.get(i).getQuestion();
                     keyWords.setKeyWord(key);
                     keyWords.setWordType("word");
+                    keyWords.setTopic("");
                     AppDatabase.getDatabaseInstance(context).getKeyWordDao().insert(keyWords);
                     correctWordList.add("\n\n" + selectedAnsList.get(i).getQuestion());
                     addScore(GameConstatnts.getInt(selectedAnsList.get(i).getQid()), GameConstatnts.TRUE_FALSE, 10, 10, FC_Utility.getCurrentDateTime(), selectedAnsList.get(i).getUserAnswer());

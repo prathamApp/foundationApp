@@ -435,12 +435,13 @@ public class FillInTheBlanksFragment extends Fragment implements STT_Result_New.
                 if (selectedAnsList.get(i).getAnswer().equalsIgnoreCase(selectedAnsList.get(i).getUserAnswer())) {
                     correctCnt++;
                     KeyWords keyWords = new KeyWords();
+                    String key = selectedAnsList.get(i).getUserAnswer();
                     keyWords.setResourceId(resId);
                     keyWords.setSentFlag(0);
                     keyWords.setStudentId(FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""));
-                    String key = selectedAnsList.get(i).getUserAnswer();
                     keyWords.setKeyWord(key);
                     keyWords.setWordType("word");
+                    keyWords.setTopic("");
                     AppDatabase.getDatabaseInstance(context).getKeyWordDao().insert(keyWords);
                     correctWordList.add(selectedAnsList.get(i).getUserAnswer());
                     addScore(GameConstatnts.getInt(selectedAnsList.get(i).getQid()), GameConstatnts.FILL_IN_THE_BLANKS, 10, 10, FC_Utility.getCurrentDateTime(), selectedAnsList.get(i).getUserAnswer());

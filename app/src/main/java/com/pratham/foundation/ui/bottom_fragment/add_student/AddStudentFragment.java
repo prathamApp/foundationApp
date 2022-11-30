@@ -330,22 +330,28 @@ public class AddStudentFragment extends DialogFragment implements AvatarClickLis
             Toast.makeText(getActivity(), ""+getResources().getString(R.string.please_fill_details), Toast.LENGTH_SHORT).show();
         } else {
             Student student = new Student();
-            student.setStudentID(ApplicationClass.getUniqueID().toString());
-            student.setFullName(et_studentName.getText().toString());
+            student.setStudentID(""+ApplicationClass.getUniqueID().toString());
+            student.setFullName(""+et_studentName.getText().toString());
+            student.setGender(""+gender);
             student.setAge(Integer.parseInt(spinner_age.getSelectedItem().toString()));
             student.setStud_Class(/*spinner_class.getSelectedItem().toString()*/"");
-            student.setGender(gender);
-            student.setAvatarName(avatarName);
             student.setGroupId("PS");
+            student.setGroupName("PS");
+            student.setSentFlag(0);
+            student.setStudentUID("PS");
+            student.setFirstName("PS");
             student.setMiddleName("PS");
             student.setLastName("PS");
             student.setEnrollmentId("PS");
-            student.setRegDate(FC_Utility.getCurrentDateTime());
-//            student.setProgramId("0");
+            student.setRegDate(""+FC_Utility.getCurrentDateTime());
+            student.setVillageName("PS");
+            student.setNewFlag(1);
+            student.setAvatarName(""+avatarName);
+//            student.setProgramId("NA");
             new AsyncTask<Object, Void, Object>() {
                 @Override
                 protected Object doInBackground(Object[] objects) {
-                    student.setDeviceId(AppDatabase.getDatabaseInstance(getContext()).getStatusDao().getValue("DeviceId"));
+                    student.setDeviceId(""+AppDatabase.getDatabaseInstance(getContext()).getStatusDao().getValue("DeviceId"));
                     AppDatabase.getDatabaseInstance(getActivity()).getStudentDao().insert(student);
                     BackupDatabase.backup(getActivity());
                     return null;

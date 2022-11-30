@@ -21,7 +21,7 @@ public class Model_CourseEnrollment implements Parcelable/*, Comparable */{
     private String groupId;
     @SerializedName("studentId")
     private String studentId;
-    @SerializedName("courseEnrolledDate")
+    @SerializedName("courseEnrollmentDate")
     private String courseEnrolledDate;
     @SerializedName("planFromDate")
     private String planFromDate;

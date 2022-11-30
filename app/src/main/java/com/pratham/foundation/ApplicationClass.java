@@ -37,7 +37,7 @@ import okhttp3.OkHttpClient;
 public class ApplicationClass extends Application {
 
     // (HI Custom )
-    public static final String BUILD_DATE = "16-August-2022";
+    public static final String BUILD_DATE = "8-November-2022";
     public static boolean isTablet = false;
     public static boolean isAssets = false;
     public static boolean contentExistOnSD = false, LocationFlg = false;

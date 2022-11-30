@@ -176,6 +176,7 @@ public class WebViewActivity extends BaseActivity implements WebViewInterface {
                                 .getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""));
                         learntWords.setKeyWord(learntWordsList.get(i).getKeyWord().toLowerCase());
                         learntWords.setWordType("" + learntWordsList.get(i).getWordType());
+                        learntWords.setTopic("");
                         AppDatabase.getDatabaseInstance(WebViewActivity.this).getKeyWordDao().insert(learntWords);
                     }
                 }
@@ -199,10 +200,8 @@ public class WebViewActivity extends BaseActivity implements WebViewInterface {
             ContentProgress contentProgress = new ContentProgress();
             contentProgress.setProgressPercentage("" + perc);
             contentProgress.setResourceId("" + webResId);
-            contentProgress.setSessionId("" + FastSave
-                    .getInstance().getString(FC_Constants.CURRENT_SESSION, ""));
-            contentProgress.setStudentId("" + FastSave
-                    .getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""));
+            contentProgress.setSessionId("" + FastSave.getInstance().getString(FC_Constants.CURRENT_SESSION, ""));
+            contentProgress.setStudentId("" + FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""));
             contentProgress.setUpdatedDateTime("" + FC_Utility.getCurrentDateTime());
             contentProgress.setLabel("resourceProgress");
             contentProgress.setSentFlag(0);

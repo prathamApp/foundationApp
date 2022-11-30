@@ -28,13 +28,15 @@ public class CatchoTransparentActivity extends AppCompatActivity {
         Log.d("Catcho", "Catcho ERROR : "+ Objects.requireNonNull(error).getError());
         Modal_Log log = new Modal_Log();
         log.setCurrentDateTime(FC_Utility.getCurrentDateTime());
-        log.setErrorType("ERROR");
         log.setExceptionMessage(error.toString());
         log.setExceptionStackTrace(error.getError());
-        log.setSessionId(""+FastSave.getInstance().getString(FC_Constants.CURRENT_SESSION, ""));
         log.setMethodName("NO_METHOD");
+        log.setErrorType("ERROR");
         log.setGroupId(FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, "no_group"));
         log.setDeviceId("" + FC_Utility.getDeviceID());
+        log.setLogDetail("");
+        log.setSentFlag(0);
+        log.setSessionId(""+FastSave.getInstance().getString(FC_Constants.CURRENT_SESSION, ""));
         endSession();
         AppDatabase.getDatabaseInstance(CatchoTransparentActivity.this).getLogsDao().insertLog(log);
         BackupDatabase.backup(CatchoTransparentActivity.this);

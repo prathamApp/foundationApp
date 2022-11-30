@@ -179,6 +179,7 @@ public class MultipleChoicePresenter implements MultipleChoiceContract.MultipleC
                         String key = selectedAnsList.get(i).getQuestion();
                         keyWords.setKeyWord(key);
                         keyWords.setWordType("word");
+                        keyWords.setTopic("");
                         AppDatabase.getDatabaseInstance(context).getKeyWordDao().insert(keyWords);
                         List<ScienceQuestionChoice> tempOptionList = selectedAnsList.get(i).getLstquestionchoice();
                         for (int k = 0; k < tempOptionList.size(); k++) {

@@ -163,6 +163,7 @@ public class PDFViewActivity extends BaseActivity {
             score.setEndDateTime(endTime);
             score.setLevel(0);
             score.setLabel("PDF");
+            score.setGroupId(FastSave.getInstance().getString(FC_Constants.CURRENT_GROUP_ID, ""));
             score.setSentFlag(0);
             AppDatabase.getDatabaseInstance(this).getScoreDao().insert(score);
         } catch (Exception e) {
@@ -177,10 +178,8 @@ public class PDFViewActivity extends BaseActivity {
             ContentProgress contentProgress = new ContentProgress();
             contentProgress.setProgressPercentage("" + 100);
             contentProgress.setResourceId("" + resId);
-            contentProgress.setSessionId("" + FastSave
-                    .getInstance().getString(FC_Constants.CURRENT_SESSION, ""));
-            contentProgress.setStudentId("" + FastSave
-                    .getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""));
+            contentProgress.setSessionId("" + FastSave.getInstance().getString(FC_Constants.CURRENT_SESSION, ""));
+            contentProgress.setStudentId("" + FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""));
             contentProgress.setUpdatedDateTime("" + FC_Utility.getCurrentDateTime());
             contentProgress.setLabel("resourceProgress");
             contentProgress.setSentFlag(0);

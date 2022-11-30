@@ -166,6 +166,7 @@ public class ReadingFragment_Presenter implements ReadingFragment_Contract.Readi
             keyWords.setStudentId(FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""));
             keyWords.setKeyWord(scienceQuestion.getTitle());
             keyWords.setWordType("word");
+            keyWords.setTopic("");
             AppDatabase.getDatabaseInstance(context).getKeyWordDao().insert(keyWords);
             for (int i = 0; i < scienceQuestionChoices.size(); i++) {
                 if (scienceQuestionChoices.get(i).getUserAns() != null && !scienceQuestionChoices.get(i).getUserAns().isEmpty()) {

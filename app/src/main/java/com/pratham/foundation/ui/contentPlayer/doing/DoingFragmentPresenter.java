@@ -171,11 +171,12 @@ public class DoingFragmentPresenter implements DoingFragmentContract.DoingFragme
             String queImageName = "";
             if (imageName != null && !imageName.isEmpty()) {
                 KeyWords keyWords = new KeyWords();
-                keyWords.setResourceId(resId);
-                keyWords.setSentFlag(0);
                 keyWords.setStudentId(FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""));
+                keyWords.setResourceId(resId);
                 keyWords.setKeyWord(questionModel.getTitle());
                 keyWords.setWordType("word");
+                keyWords.setSentFlag(0);
+                keyWords.setTopic("");
                 if (questionModel.getPhotourl() != null && !questionModel.getPhotourl().isEmpty()) {
                     queImageName = readingContentPath + questionModel.getPhotourl();
                 }

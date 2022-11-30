@@ -362,10 +362,16 @@ public class AddEnrollmentId extends BaseActivity implements AvatarClickListener
                     Model_CourseEnrollment model_courseEnrollment = new Model_CourseEnrollment();
                     model_courseEnrollment.setCourseId(enrollmentModel.getLstCourseEnroll().get(v).getCourseId());
                     model_courseEnrollment.setGroupId(enrollmentModel.getLstCourseEnroll().get(v).getGroupId());
+                    model_courseEnrollment.setStudentId("NA");
+                    model_courseEnrollment.setCourseEnrolledDate(FC_Utility.getCurrentDate());
                     model_courseEnrollment.setPlanFromDate(enrollmentModel.getLstCourseEnroll().get(v).getPlanFromDate());
                     model_courseEnrollment.setPlanToDate(enrollmentModel.getLstCourseEnroll().get(v).getPlanToDate());
+                    model_courseEnrollment.setCoachVerified(0);
+                    model_courseEnrollment.setCoachVerificationDate("NA");
+                    model_courseEnrollment.setCourseExperience("NA");
+                    model_courseEnrollment.setCourseCompleted(true);
+                    model_courseEnrollment.setCoachImage("NA");
                     model_courseEnrollment.setLanguage(enrollmentModel.getLstCourseEnroll().get(v).getLanguage());
-                    model_courseEnrollment.setCourseEnrolledDate(FC_Utility.getCurrentDate());
                     model_courseEnrollment.setSentFlag(1);
                     courseEnrollmentList.add(model_courseEnrollment);
                 }
@@ -373,52 +379,64 @@ public class AddEnrollmentId extends BaseActivity implements AvatarClickListener
             }
             if (enrollmentModel.getEnrollmentType().equalsIgnoreCase("Student")) {
                 Student student = new Student();
-                student.setStudentID(enrollmentModel.getLstStudent().get(0).getStudentId());
-                student.setFullName(enrollmentModel.getLstStudent().get(0).getFullName());
-                student.setMiddleName("PS");
-                student.setEnrollmentId(enrollmentModel.getLstStudent().get(0).getStudentEnrollment());
-                student.setLastName(enrollmentModel.getLstStudent().get(0).getStudentEnrollment());
-                student.setStud_Class(enrollmentModel.getLstStudent().get(0).getStudClass());
+                student.setStudentID(""+enrollmentModel.getLstStudent().get(0).getStudentId());
+                student.setFullName(""+enrollmentModel.getLstStudent().get(0).getFullName());
+                student.setGender(""+enrollmentModel.getLstStudent().get(0).getGender());
                 student.setAge(enrollmentModel.getLstStudent().get(0).getAge());
-                student.setGender(enrollmentModel.getLstStudent().get(0).getGender());
-                student.setGroupId(enrollmentModel.getLstStudent().get(0).getGroupId());
-                student.setRegDate(FC_Utility.getCurrentDateTime());
-                student.setGroupName(enrollmentModel.getLstStudent().get(0).getGroupName());
+                student.setStud_Class(""+enrollmentModel.getLstStudent().get(0).getStudClass());
+                student.setGroupId(""+enrollmentModel.getLstStudent().get(0).getGroupId());
+                student.setGroupName(""+enrollmentModel.getLstStudent().get(0).getGroupName());
+                student.setDeviceId(""+deviceID);
+                student.setStudentUID(""+enrollmentModel.getLstStudent().get(0).getStudentEnrollment());
+                student.setFirstName("");
+                student.setMiddleName("");
+                student.setLastName(""+enrollmentModel.getLstStudent().get(0).getStudentEnrollment());
+                student.setEnrollmentId(""+enrollmentModel.getLstStudent().get(0).getStudentEnrollment());
+                student.setRegDate(""+FC_Utility.getCurrentDateTime());
+                student.setVillageName("");
+                student.setNewFlag(1);
 //                student.setProgramId(""+enrollmentModel.getProgramId());
                 for (int i = 0; i < avatarList.size(); i++)
-                    if (avatarList.get(i).getClickFlag())
-                        student.setAvatarName(avatarList.get(i).getAvatarName());
-                student.setDeviceId(deviceID);
+                    if (avatarList.get(i).getClickFlag()) {
+                        student.setAvatarName(""+avatarList.get(i).getAvatarName());
+                    }
                 AppDatabase.getDatabaseInstance(this).getStudentDao().insert(student);
             } else {
                 Groups groups = new Groups();
-                groups.setGroupId(enrollmentModel.getGroupId());
-                groups.setGroupName(enrollmentModel.getGroupName());
-                groups.setVillageId(enrollmentModel.getVillageId());
+                groups.setGroupId(""+enrollmentModel.getGroupId());
+                groups.setGroupName(""+enrollmentModel.getGroupName());
+                groups.setVillageId(""+enrollmentModel.getVillageId());
                 groups.setProgramId(enrollmentModel.getProgramId());
-                groups.setGroupCode(enrollmentModel.getGroupCode());
-                groups.setSchoolName(enrollmentModel.getSchoolName());
-                groups.setVIllageName(enrollmentModel.getGroupEnrollment());
-                groups.setEnrollmentId(enrollmentModel.getGroupEnrollment());
-                groups.setRegDate(FC_Utility.getCurrentDateTime());
+                groups.setGroupCode(""+enrollmentModel.getGroupCode());
+                groups.setSchoolName(""+enrollmentModel.getSchoolName());
+                groups.setVIllageName(""+enrollmentModel.getGroupEnrollment());
+                groups.setEnrollmentId(""+enrollmentModel.getGroupEnrollment());
+                groups.setRegDate(""+FC_Utility.getCurrentDateTime());
                 groups.setSentFlag(0);
-                groups.setDeviceId(deviceID);
+                groups.setDeviceId(""+deviceID);
                 AppDatabase.getDatabaseInstance(this).getGroupsDao().insert(groups);
                 List<Student> studentList = new ArrayList<>();
                 for (int i = 0; i < enrollmentModel.getLstStudent().size(); i++) {
                     Student student = new Student();
                     student.setStudentID(enrollmentModel.getLstStudent().get(i).getStudentId());
                     student.setFullName(enrollmentModel.getLstStudent().get(i).getFullName());
-                    student.setEnrollmentId(enrollmentModel.getLstStudent().get(i).getStudentEnrollment());
-                    student.setLastName(enrollmentModel.getLstStudent().get(i).getStudentEnrollment());
-                    student.setStud_Class(enrollmentModel.getLstStudent().get(i).getStudClass());
-                    student.setAge(enrollmentModel.getLstStudent().get(i).getAge());
                     student.setGender(enrollmentModel.getLstStudent().get(i).getGender());
+                    student.setAge(enrollmentModel.getLstStudent().get(i).getAge());
+                    student.setStud_Class(enrollmentModel.getLstStudent().get(i).getStudClass());
                     student.setGroupId(enrollmentModel.getLstStudent().get(i).getGroupId());
-                    student.setRegDate(FC_Utility.getCurrentDateTime());
                     student.setGroupName(enrollmentModel.getLstStudent().get(i).getGroupName());
-//                    student.setProgramId(""+enrollmentModel.getProgramId());
+                    student.setSentFlag(0);
                     student.setDeviceId(deviceID);
+                    student.setStudentUID(""+enrollmentModel.getLstStudent().get(i).getStudentEnrollment());
+                    student.setFirstName("");
+                    student.setMiddleName("");
+                    student.setLastName(enrollmentModel.getLstStudent().get(i).getStudentEnrollment());
+                    student.setEnrollmentId(enrollmentModel.getLstStudent().get(i).getStudentEnrollment());
+                    student.setRegDate(FC_Utility.getCurrentDateTime());
+                    student.setVillageName("");
+                    student.setNewFlag(1);
+                    student.setAvatarName("");
+//                    student.setProgramId(""+enrollmentModel.getProgramId());
                     studentList.add(student);
                 }
                 AppDatabase.getDatabaseInstance(this).getStudentDao().insertAll(studentList);

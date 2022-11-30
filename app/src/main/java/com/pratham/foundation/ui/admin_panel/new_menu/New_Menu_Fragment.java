@@ -8,7 +8,7 @@ import android.graphics.Color;
 import androidx.fragment.app.Fragment;
 
 import com.pratham.foundation.R;
-import com.pratham.foundation.async.PushDataToServer_New;
+import com.pratham.foundation.async.PushDataToServer_New_YN;
 import com.pratham.foundation.database.AppDatabase;
 import com.pratham.foundation.services.shared_preferences.FastSave;
 import com.pratham.foundation.ui.admin_panel.enrollmentid.AddEnrollmentId_;
@@ -44,12 +44,18 @@ public class New_Menu_Fragment extends Fragment {
                 null, PullAndAssign_Fragment.class.getSimpleName());
     }
 
-    @Bean(PushDataToServer_New.class)
-    PushDataToServer_New pushDataToServer;
+//    @Bean(PushDataToServer_New.class)
+//    PushDataToServer_New pushDataToServer;
+//    @Click(R.id.btn_push)
+//    public void onPushClick() {
+//        pushDataToServer.startDataPush(getActivity(), true);
+//    }
 
+    @Bean(PushDataToServer_New_YN.class)
+    PushDataToServer_New_YN pushDataToServer_new_yn;
     @Click(R.id.btn_push)
     public void onPushClick() {
-        pushDataToServer.startDataPush(getActivity(), true);
+        pushDataToServer_new_yn.startDataPush(getActivity(), true);
     }
 
     @Click(R.id.btn_Usage)

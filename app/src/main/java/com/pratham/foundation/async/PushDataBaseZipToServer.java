@@ -382,18 +382,18 @@ public class PushDataBaseZipToServer {
             pushStatusJson.put("CoursesCount", /*totalCoursesSuccessful+"/"+*/totalCourses);
 
             log.setCurrentDateTime(syncTime);
-            log.setErrorType(" ");
             log.setExceptionMessage(FC_Constants.DB_ZIP_PUSH);
+            log.setExceptionStackTrace("APK BUILD DATE : " + BUILD_DATE);
             log.setMethodName("" + FastSave.getInstance().getString(FC_Constants.PUSH_ID_LOGS, "na"));
-            log.setSessionId("" + FastSave.getInstance().getString(FC_Constants.CURRENT_SESSION, ""));
-            log.setGroupId("");
             if (pushSuccessfull)
                 log.setErrorType("" + FC_Constants.SUCCESSFULLYPUSHED);
             else
                 log.setErrorType("" + FC_Constants.PUSHFAILED);
-            log.setLogDetail("" + pushStatusJson);
-            log.setExceptionStackTrace("APK BUILD DATE : " + BUILD_DATE);
+            log.setGroupId("");
             log.setDeviceId("" + FC_Utility.getDeviceID());
+            log.setLogDetail("" + pushStatusJson);
+            log.setSessionId("" + FastSave.getInstance().getString(FC_Constants.CURRENT_SESSION, ""));
+            log.setSentFlag(0);
 
             Log.d("PushData", "pushStatusJson JSON : " + pushStatusJson);
             AppDatabase.getDatabaseInstance(context).getLogsDao().insertLog(log);

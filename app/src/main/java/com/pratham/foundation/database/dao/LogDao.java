@@ -12,8 +12,12 @@ import java.util.List;
 
 @Dao
 public interface LogDao {
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     void insertLog(Modal_Log log);
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    void insertAllLogs(List<Modal_Log> log);
 
     @Query("DELETE FROM Logs")
     void deleteLogs();
@@ -43,9 +47,6 @@ public interface LogDao {
 
     @Query("update Logs set LogDetail=:pushData where methodName=:pushID")
     void setPushDataLog(String pushData, String pushID);
-
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
-    void insertAllLogs(List<Modal_Log> log);
 
     @Query("delete from Logs where sentFlag = 1")
     void deletePushedLogs();

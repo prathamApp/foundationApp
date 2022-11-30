@@ -226,6 +226,7 @@ public class ConversationPresenter_1 implements ConversationContract_1.Conversat
             keyWords.setStudentId(FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""));
             keyWords.setKeyWord(convoTitle);
             keyWords.setWordType("word");
+            keyWords.setTopic("");
             learntWords.add(keyWords);
             AppDatabase.getDatabaseInstance(context).getKeyWordDao().insertAllWord(learntWords);
             //setCompletionPercentage();

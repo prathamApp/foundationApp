@@ -465,6 +465,7 @@ public class MatchThePairGameActivity extends BaseActivity implements MatchThePa
         keyWords.setKeyWord(draggedList.get(0).getParaTitle().toLowerCase());
         keyWords.setTopic(FC_Constants.MATCH_THE_PAIR);
         keyWords.setWordType("word");
+        keyWords.setTopic("");
         AppDatabase.getDatabaseInstance(context).getKeyWordDao().insert(keyWords);
         BackupDatabase.backup(this);
     }

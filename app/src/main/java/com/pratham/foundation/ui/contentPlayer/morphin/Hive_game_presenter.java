@@ -165,6 +165,7 @@ public class Hive_game_presenter implements Hive_game_contract.Hive_game_present
             String key = quetionModel.getTitle();
             keyWords.setKeyWord(key);
             keyWords.setWordType("word");
+            keyWords.setTopic("");
             AppDatabase.getDatabaseInstance(context).getKeyWordDao().insert(keyWords);
             setCompletionPercentage();
             for (int i = 0; i < selectedAnsList.size(); i++) {

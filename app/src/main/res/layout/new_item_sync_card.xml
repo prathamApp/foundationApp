@@ -143,7 +143,7 @@
                     android:background="@drawable/button_blue"
                     android:elevation="@dimen/_3sdp"
                     android:gravity="center"
-                    android:text="@string/sync"
+                    android:text="@string/check_synced_data"
                     android:textColor="@color/white"
                     android:textSize="@dimen/_12sdp" />
 

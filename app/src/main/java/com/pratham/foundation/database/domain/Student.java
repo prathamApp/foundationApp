@@ -15,7 +15,7 @@ public class Student implements Comparable, Parcelable {
 
     @PrimaryKey()
     @NonNull
-    @SerializedName("StudentId")
+    @SerializedName("StudentID")
     private String StudentID;
     @SerializedName("FullName")
     public String FullName;

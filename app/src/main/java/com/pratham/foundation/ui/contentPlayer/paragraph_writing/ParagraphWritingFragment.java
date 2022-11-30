@@ -240,7 +240,7 @@ public class ParagraphWritingFragment extends Fragment implements ParagraphWriti
         if (!imagesFolder.exists()) imagesFolder.mkdirs();
         Log.i("IDSSS",questionModel.get(index).getUserAnswer());
         Log.i("IDSSS",activityPhotoPath);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
             File image = new File(imagesFolder, questionModel.get(index).getUserAnswer());
             ContentResolver resolver = getContext().getContentResolver();
             ContentValues valuesvideos = new ContentValues();

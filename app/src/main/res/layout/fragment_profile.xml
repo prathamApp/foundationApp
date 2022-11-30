@@ -87,8 +87,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentStart="true"
-                    android:gravity="center_vertical"
                     android:layout_centerVertical="true"
+                    android:gravity="center_vertical"
                     android:paddingTop="2dp"
                     android:paddingBottom="2dp"
                     android:text="@string/usage"
@@ -101,9 +101,9 @@
                     android:id="@+id/tv_days"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
                     android:layout_marginStart="5dp"
                     android:layout_marginEnd="5dp"
-                    android:layout_centerVertical="true"
                     android:layout_toEndOf="@id/tv_usage"
                     android:gravity="center_vertical"
                     android:paddingTop="2dp"
@@ -117,9 +117,9 @@
                     android:id="@+id/lbl_days"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
                     android:layout_marginEnd="10dp"
                     android:layout_toEndOf="@+id/tv_days"
-                    android:layout_centerVertical="true"
                     android:gravity="center_vertical"
                     android:paddingTop="2dp"
                     android:paddingBottom="2dp"
@@ -529,6 +529,43 @@
                             android:layout_centerVertical="true"
                             android:layout_marginStart="10dp"
                             android:layout_toEndOf="@+id/iv_gideview"
+                            android:gravity="center_vertical"
+                            android:text="@string/reset_app_tour"
+                            android:textColor="@color/colorText"
+                            android:textSize="@dimen/_13sdp" />
+
+                    </RelativeLayout>
+
+                    <RelativeLayout
+                        android:id="@+id/rl_temp"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginStart="@dimen/_5sdp"
+                        android:layout_marginEnd="@dimen/_5sdp"
+                        android:layout_weight="1"
+                        android:visibility="gone"
+                        android:background="?attr/selectableItemBackground">
+
+                        <ImageView
+                            android:id="@+id/iv_temp"
+                            android:layout_width="35dp"
+                            android:layout_height="40dp"
+                            android:layout_alignParentStart="true"
+                            android:layout_centerVertical="true"
+                            android:layout_marginStart="@dimen/_2sdp"
+                            android:layout_marginTop="@dimen/_2sdp"
+                            android:layout_marginEnd="@dimen/_2sdp"
+                            android:layout_marginBottom="@dimen/_2sdp"
+                            android:src="@drawable/chat_bubbles" />
+
+                        <com.pratham.foundation.customView.fontsview.SansTextView
+                            android:id="@+id/tv_temp"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_centerVertical="true"
+                            android:layout_marginStart="10dp"
+                            android:layout_toEndOf="@+id/iv_temp"
                             android:gravity="center_vertical"
                             android:text="@string/reset_app_tour"
                             android:textColor="@color/colorText"

@@ -20,7 +20,7 @@ import androidx.annotation.RequiresApi;
 import androidx.core.app.NotificationCompat;
 
 import com.pratham.foundation.R;
-import com.pratham.foundation.async.PushDataToServer_New;
+import com.pratham.foundation.async.PushDataToServer_New_YN;
 import com.pratham.foundation.services.shared_preferences.FastSave;
 
 import org.androidannotations.annotations.Bean;
@@ -42,17 +42,18 @@ public class BackgroundPushService extends Service {
           if (!isMyServiceRunning(mYourService.getClass())) context.startService(mServiceIntent);
      */
 
-    @Bean(PushDataToServer_New.class)
-    PushDataToServer_New pushDataToServer;
-//    @Bean(PushDataToServer_New2.class)
-//    PushDataToServer_New2 pushDataToServerNew2;
+//    @Bean(PushDataToServer_New.class)
+//    PushDataToServer_New pushDataToServer;
+    @Bean(PushDataToServer_New_YN.class)
+    PushDataToServer_New_YN pushDataToServer_new_yn;
 
     @Override
     public void onCreate() {
         super.onCreate();
 
 //        Sync Data Initialize - Class for pushing data is initialized here.
-        pushDataToServer = new PushDataToServer_New(getApplicationContext());
+//        pushDataToServer = new PushDataToServer_New(getApplicationContext());
+        pushDataToServer_new_yn = new PushDataToServer_New_YN(getApplicationContext());
 
         if (Build.VERSION.SDK_INT > Build.VERSION_CODES.O)
             startMyOwnForeground();
@@ -94,7 +95,8 @@ public class BackgroundPushService extends Service {
         super.onStartCommand(intent, flags, startId);
 //        Start Data Sync
 //        Start the pushing here by calling the push data function
-        pushDataToServer.startDataPush(getApplication(),false);
+//        pushDataToServer.startDataPush(getApplication(),false);
+        pushDataToServer_new_yn.startDataPush(getApplication(),false);
         return START_STICKY;
     }
 

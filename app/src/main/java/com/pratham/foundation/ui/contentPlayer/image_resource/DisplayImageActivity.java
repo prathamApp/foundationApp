@@ -174,6 +174,10 @@ public class DisplayImageActivity extends BaseActivity{
             Score score = new Score();
             score.setSessionID(FastSave.getInstance().getString(FC_Constants.CURRENT_SESSION, ""));
             score.setStudentID("" + FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""));
+            if(FastSave.getInstance().getString(FC_Constants.LOGIN_MODE, "").equalsIgnoreCase(FC_Constants.GROUP_MODE))
+                score.setGroupId(FastSave.getInstance().getString(FC_Constants.CURRENT_GROUP_ID, ""));
+            else
+                score.setGroupId("NA");
             score.setDeviceID(FC_Utility.getDeviceID());
             score.setResourceID(resId);
             score.setQuestionId(0);
@@ -197,10 +201,8 @@ public class DisplayImageActivity extends BaseActivity{
             ContentProgress contentProgress = new ContentProgress();
             contentProgress.setProgressPercentage("" + 100);
             contentProgress.setResourceId("" + resId);
-            contentProgress.setSessionId("" + FastSave
-                    .getInstance().getString(FC_Constants.CURRENT_SESSION, ""));
-            contentProgress.setStudentId("" + FastSave
-                    .getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""));
+            contentProgress.setSessionId("" + FastSave.getInstance().getString(FC_Constants.CURRENT_SESSION, ""));
+            contentProgress.setStudentId("" + FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""));
             contentProgress.setUpdatedDateTime("" + FC_Utility.getCurrentDateTime());
             contentProgress.setLabel("resourceProgress");
             contentProgress.setSentFlag(0);

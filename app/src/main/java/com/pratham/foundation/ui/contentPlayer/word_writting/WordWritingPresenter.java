@@ -201,6 +201,7 @@ public class WordWritingPresenter implements WordWritingContract.WordWritingPres
                     String key = questionModel.get(i).getQuestion();
                     keyWords.setKeyWord(key);
                     keyWords.setWordType("word");
+                    keyWords.setTopic("");
                     AppDatabase.getDatabaseInstance(context).getKeyWordDao().insert(keyWords);
                     newResId = GameConstatnts.getString(resId,contentTitle, questionModel.get(i).getQid(), imageName, questionModel.get(i).getQuestion(), "");
 

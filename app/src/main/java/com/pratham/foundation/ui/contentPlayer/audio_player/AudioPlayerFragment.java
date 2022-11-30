@@ -304,7 +304,10 @@ public class AudioPlayerFragment extends Fragment implements OnGameClose {
             score.setScoredMarks(scoredMarks);
             score.setTotalMarks(totalMarks);
             score.setStudentID(FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""));
-            score.setGroupId(FastSave.getInstance().getString(FC_Constants.CURRENT_GROUP_ID, ""));
+            if(FastSave.getInstance().getString(FC_Constants.LOGIN_MODE, "").equalsIgnoreCase(FC_Constants.GROUP_MODE))
+                score.setGroupId(FastSave.getInstance().getString(FC_Constants.CURRENT_GROUP_ID, ""));
+            else
+                score.setGroupId("NA");
             score.setStartDateTime(resStartTime);
             score.setDeviceID(deviceId.equals(null) ? "0000" : deviceId);
             score.setEndDateTime(FC_Utility.getCurrentDateTime());

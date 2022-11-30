@@ -46,8 +46,7 @@ import com.pratham.foundation.ApplicationClass;
 import com.pratham.foundation.R;
 import com.pratham.foundation.async.API_Content;
 import com.pratham.foundation.async.PushDataBaseZipToServer;
-import com.pratham.foundation.async.PushDataToServer_New;
-import com.pratham.foundation.async.PushDataToServer_New2;
+import com.pratham.foundation.async.PushDataToServer_New_YN;
 import com.pratham.foundation.customView.BlurPopupDialog.BlurPopupWindow;
 import com.pratham.foundation.customView.display_image_dialog.CustomLodingDialog;
 import com.pratham.foundation.customView.showcaseviewlib.GuideView;
@@ -525,11 +524,14 @@ public class ProfileFragment extends Fragment implements ProfileContract.Profile
         sttDialog.show();
     }
 
-    @Bean(PushDataToServer_New.class)
-    PushDataToServer_New pushDataToServer;
+//    @Bean(PushDataToServer_New.class)
+//    PushDataToServer_New pushDataToServer;
 
-    @Bean(PushDataToServer_New2.class)
-    PushDataToServer_New2 pushDataToServer_new2;
+    @Bean(PushDataToServer_New_YN.class)
+    PushDataToServer_New_YN pushDataToServer_new_yn;
+
+/*    @Bean(PushDataToServer_New2.class)
+    PushDataToServer_New2 pushDataToServer_new2;*/
 
     @Bean(PushDataBaseZipToServer.class)
     PushDataBaseZipToServer pushDataBaseZipToServer;
@@ -545,7 +547,8 @@ public class ProfileFragment extends Fragment implements ProfileContract.Profile
                 FastSave.getInstance().saveBoolean(FC_Constants.SERVER_ACTIVE, true);
                 FastSave.getInstance().saveString(FC_Constants.SERVER_MAINTENANCE_TIME, "NA");
                 FastSave.getInstance().saveString(FC_Constants.SERVER_MAINTENANCE_MSG, "NA");
-                pushDataToServer.startDataPush(context, true);
+//                pushDataToServer.startDataPush(context, true);
+                pushDataToServer_new_yn.startDataPush(context, true);
             }
 //        } else
 //        if (FC_Utility.isDataConnectionAvailable(context)) {
@@ -831,7 +834,8 @@ public class ProfileFragment extends Fragment implements ProfileContract.Profile
                     FastSave.getInstance().saveBoolean(FC_Constants.SERVER_ACTIVE, true);
                     FastSave.getInstance().saveString(FC_Constants.SERVER_MAINTENANCE_TIME, "NA");
                     FastSave.getInstance().saveString(FC_Constants.SERVER_MAINTENANCE_MSG, "NA");
-                    pushDataToServer.startDataPush(context, true);
+//                    pushDataToServer.startDataPush(context, true);
+                    pushDataToServer_new_yn.startDataPush(context, true);
                 } else {
                     FastSave.getInstance().saveBoolean(FC_Constants.SERVER_ACTIVE, false);
                     FastSave.getInstance().saveString(FC_Constants.SERVER_MAINTENANCE_TIME, accessedModal.getMaintenance_closing_time());
@@ -845,7 +849,8 @@ public class ProfileFragment extends Fragment implements ProfileContract.Profile
                     FastSave.getInstance().saveBoolean(FC_Constants.SERVER_ACTIVE, true);
                     FastSave.getInstance().saveString(FC_Constants.SERVER_MAINTENANCE_TIME, "NA");
                     FastSave.getInstance().saveString(FC_Constants.SERVER_MAINTENANCE_MSG, "NA");
-                    pushDataToServer.startDataPush(context, true);
+//                    pushDataToServer.startDataPush(context, true);
+                    pushDataToServer_new_yn.startDataPush(context, true);
                 } else {
                     FastSave.getInstance().saveBoolean(FC_Constants.SERVER_ACTIVE, false);
                     FastSave.getInstance().saveString(FC_Constants.SERVER_MAINTENANCE_TIME, accessedModal.getMaintenance_closing_time());
@@ -970,6 +975,14 @@ public class ProfileFragment extends Fragment implements ProfileContract.Profile
     public void receivedError(String header) {
         dismissLoadingDialog();
     }
+
+    @Click(R.id.rl_temp)
+    @UiThread
+    public void showTemp() {
+//        startActivity(new Intent(android.provider.Settings.ACTION_APPLICATION_DETAILS_SETTINGS,
+//                Uri.parse("package:" + BuildConfig.APPLICATION_ID)));
+    }
+
 
 //    @Click({R.id.rl_share_app, R.id.btn_share_app})
 //    public void share_app() {

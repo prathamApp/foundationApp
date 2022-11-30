@@ -23,7 +23,8 @@ public class FC_Constants {
     public static final String CONTENT = "CONTENT";
 
     public static final String CHECK_SERVER_STATUS= "check_server_status";
-    public static final String CHECK_SERVER_STATUS_API= "http://prathamyouthnet.org/ssmspushdb/dbcheck_api_status.php";
+//    public static final String CHECK_SERVER_STATUS_API= "http://prathamyouthnet.org/ssmspushdb/dbcheck_api_status.php";
+    public static final String CHECK_SERVER_STATUS_API= "https://appsync.prathamyouthnet.org/pfs/v1.0.59/dbcheck_api_status.php";
     public static final String OLD_PUSH_DONE= "old_push_done";
     public static final String SYNC_LBL= "SYNC_LBL";
     public static final String DETAILS_LBL = "DETAILS_LBL";
@@ -33,13 +34,21 @@ public class FC_Constants {
     public static final String MANUAL_STR = "Manual";
     public static final String STUDENT_SYNC_DATA = "student_sync_data";
     public static final String SYNC_SUMMARY_DATA = "sync_summary_data";
-    public static final String SYNC_SUMMARY_DATA_API = "http://prathamyouthnet.org/ssmspushdb/dbsummary-main.php?DateFrom=";
+//    public static final String SYNC_SUMMARY_DATA_API = "http://prathamyouthnet.org/ssmspushdb/dbsummary-main.php?DateFrom=";
+    public static final String SYNC_SUMMARY_DATA_API = "https://appsync.prathamyouthnet.org/pfs/v1.0.59/dbsummary-main.php?DateFrom=";
     public static final String SYNC_ACCESSED_USERS = "sync_accessed_users";
-    public static final String SYNC_ACCESSED_USERS_API = "http://prathamyouthnet.org/ssmspushdb/dbsummary-accessed.php?DateFrom=";
+//    public static final String SYNC_ACCESSED_USERS_API = "http://prathamyouthnet.org/ssmspushdb/dbsummary-accessed.php?DateFrom=";
+    public static final String SYNC_ACCESSED_USERS_API = "https://appsync.prathamyouthnet.org/pfs/v1.0.59/dbsummary-accessed.php?DateFrom=";
     public static final String SYNC_REGISTERED_USERS = "sync_registered_users";
-    public static final String SYNC_REGISTERED_USERS_API = "http://prathamyouthnet.org/ssmspushdb/dbsummary-regd.php?DateFrom=";
+//    public static final String SYNC_REGISTERED_USERS_API = "http://prathamyouthnet.org/ssmspushdb/dbsummary-regd.php?DateFrom=";
+    public static final String SYNC_REGISTERED_USERS_API = "https://appsync.prathamyouthnet.org/pfs/v1.0.59/dbsummary-regd.php?DateFrom=";
     public static final String SYNC_STUDENTS_DETAILS = "sync_students_details";
-    public static final String SYNC_STUDENTS_DETAILS_API = "http://prathamyouthnet.org/ssmspushdb/dbsummary-details.php?DateFrom=";
+//    public static final String SYNC_STUDENTS_DETAILS_API = "http://prathamyouthnet.org/ssmspushdb/dbsummary-details.php?DateFrom=";
+    public static final String SYNC_STUDENTS_DETAILS_API = "https://appsync.prathamyouthnet.org/pfs/v1.0.59/dbsummary-details.php?DateFrom=";
+//    public static String TEST_RESULT_API = "http://prathamyouthnet.org/ssmspushdb/dbcheck.php?PushId=";
+    public static String TEST_RESULT_API = "https://appsync.prathamyouthnet.org/pfs/v1.0.59/dbcheck.php?PushId=";
+//    public static String TEST_SYNC_API = "http://prathamyouthnet.org/ssmspushdb/dbsync-individual.php?PushId=";
+    public static String TEST_SYNC_API = "https://appsync.prathamyouthnet.org/pfs/v1.0.59/dbsync-individual.php?PushId=";
 
     //wifi constants
     public static final int ApScanResult = 201;
@@ -325,7 +334,8 @@ public class FC_Constants {
     public static final String DB_ZIP_PUSH = "db_zip_push";
 
 //    New APIS
-    public static final String NEW_PUSH_API = "http://prathamyouthnet.org/ssmspushdb/dbpush.php";
+//    public static final String NEW_PUSH_API = "https://prathamyouthnet.org/ssmspushdb/dbpush.php";
+    public static final String NEW_PUSH_API = "https://appsync.prathamyouthnet.org/pfs/v1.0.59/dbpush.php";
 
 
     //    PRATHAM APIS
@@ -443,6 +453,29 @@ public class FC_Constants {
     public static String activityPDFPath = "";
     public static String StudentPhotoPath = "";
     public static int transferredImages = 0;
+
+
+    public static String SCORECOUNT = "ScoreCount";
+    public static String ATTENDANCECOUNT = "AttendanceCount";
+    public static String SESSIONCOUNT = "SessionCount";
+    public static String LOGSCOUNT = "LogsCount";
+    public static String STUDENTCOUNT = "StudentCount";
+    public static String CONTENTPROGRESSCOUNT = "ContentProgressCount";
+    public static String KEYWORDSCOUNT = "KeyWordsCount";
+    public static String COURSEENROLLMENTCOUNT = "CourseEnrollmentCount";
+    public static String GROUPSCOUNT = "GroupsCount";
+
+    public static String SCOREDATA = "scoreData";
+    public static String STUDENTDATA = "studentData";
+    public static String ATTENDANCEDATA = "attendanceData";
+    public static String SESSIONSDATA = "sessionsData";
+    public static String KEYWORDS = "keyWords";
+    public static String COURSEENROLLMENT = "CourseEnrollment";
+    public static String CONTENTPROGRESSDATA = "contentProgressData";
+    public static String LOGSDATA = "logsData";
+    public static String GROUPSDATA = "groupsData";
+    public static String ASSESSMENTDATA = "assessmentData";
+//    public static String SUPERVISOR = "supervisor";
 
     public static String pushedScoreLength = "0";
     public static String successful_ImageLength = "0";

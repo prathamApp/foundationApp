@@ -219,14 +219,15 @@ public class TempSync extends BaseActivity {
         Modal_Log log = new Modal_Log();
 
         log.setCurrentDateTime(pushResponse.getPushDate());
-        log.setErrorType("");
         log.setExceptionMessage("TEMP_SYNC_RESPONSE");
-        log.setMethodName(""+ pushResponse.getPushId());
-        log.setSessionId("" + FastSave.getInstance().getString(FC_Constants.CURRENT_SESSION, ""));
-        log.setGroupId("");
-        log.setLogDetail(""+response);
         log.setExceptionStackTrace("APK BUILD DATE : " + BUILD_DATE);
+        log.setMethodName(""+ pushResponse.getPushId());
+        log.setErrorType("");
+        log.setGroupId("");
         log.setDeviceId("" + FC_Utility.getDeviceID());
+        log.setLogDetail(""+response);
+        log.setSentFlag(0);
+        log.setSessionId("" + FastSave.getInstance().getString(FC_Constants.CURRENT_SESSION, ""));
 
         Log.d("PushData", "pushStatusJson JSON : " + pushResponse);
         AppDatabase.getDatabaseInstance(this).getLogsDao().insertLog(log);
