@@ -22,49 +22,43 @@ public class BackupDatabase {
 
     public static void backup(Context mContext) {
         try {
-            File sd = new File(ApplicationClass.getStoragePath().getAbsolutePath()+"/PrathamBackups");
-            if(!sd.exists())
+            File sd = new File(ApplicationClass.getStoragePath().getAbsolutePath() + "/PrathamBackups");
+            if (!sd.exists())
                 sd.mkdirs();
             if (sd.canWrite()) {
                 File currentDB = mContext.getDatabasePath(AppDatabase.DB_NAME);
                 File parentPath = currentDB.getParentFile();
-                Log.i("sizess",parentPath.listFiles().length+"--");
+                Log.i("sizess", parentPath.listFiles().length + "--");
                 for (File f : parentPath.listFiles()) {
-                    Log.i("sizess1",f.getName());
+                    Log.i("sizess1", f.getName());
                     File temp = new File(sd, f.getName());
-                    if (!temp.exists())
-                    {
-                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R)
-                        {
+                    if (!temp.exists()) {
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
                             ContentResolver resolver = mContext.getContentResolver();
                             ContentValues contentValues = new ContentValues();
                             contentValues.put(MediaStore.MediaColumns.DISPLAY_NAME, f.getName());
                             String fileMimeType = FC_Utility.getMimeType(f.getAbsolutePath());
                             contentValues.put(MediaStore.MediaColumns.MIME_TYPE, fileMimeType);
                             contentValues.put(MediaStore.MediaColumns.RELATIVE_PATH, Environment.DIRECTORY_DOWNLOADS
-                                    + File.separator + "PrathamBackups" );
+                                    + File.separator + "PrathamBackups");
                             final Uri uriSavedVideo = resolver.insert(MediaStore.Downloads.EXTERNAL_CONTENT_URI, contentValues);
                             FileChannel src = new FileInputStream(f).getChannel();
-                            FileOutputStream  bos = (FileOutputStream) resolver.openOutputStream(Objects.requireNonNull(uriSavedVideo));
+                            FileOutputStream bos = (FileOutputStream) resolver.openOutputStream(Objects.requireNonNull(uriSavedVideo));
                             FileChannel dst = bos.getChannel();
                             dst.transferFrom(src, 0, src.size());
                             src.close();
                             dst.close();
-                        }
-                        else
-                        {
+                        } else {
                             temp.createNewFile();
                             FileChannel src = new FileInputStream(f).getChannel();
-                            FileChannel dst = new  FileOutputStream (temp).getChannel();
+                            FileChannel dst = new FileOutputStream(temp).getChannel();
                             dst.transferFrom(src, 0, src.size());
                             src.close();
                             dst.close();
                         }
-                    }
-                    else
-                    {
+                    } else {
                         FileChannel src = new FileInputStream(f).getChannel();
-                        FileChannel dst = new  FileOutputStream (temp).getChannel();
+                        FileChannel dst = new FileOutputStream(temp).getChannel();
                         dst.transferFrom(src, 0, src.size());
                         src.close();
                         dst.close();

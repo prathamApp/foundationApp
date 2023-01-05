@@ -77,6 +77,8 @@ public class SplashActivity extends SplashSupportActivity implements SplashContr
     RelativeLayout splash_root;
     @ViewById(R.id.tv_typer)
     TyperTextView tv_typer;
+  /*  @ViewById(R.id.iv_pratham_logo)
+    ImageView iv_pratham_logo;*/
     static String fpath, appname;
     public static MediaPlayer bgMusic;
     public ProgressDialog progressDialog;
@@ -205,7 +207,7 @@ public class SplashActivity extends SplashSupportActivity implements SplashContr
                 PermissionUtils.Manifest_WRITE_EXTERNAL_STORAGE,
                 PermissionUtils.Manifest_RECORD_AUDIO,
                 PermissionUtils.Manifest_ACCESS_COARSE_LOCATION,
-                PermissionUtils.Manifest_ACCESS_FINE_LOCATION
+                PermissionUtils.Manifest_ACCESS_FINE_LOCATION,
                 PermissionUtils.Manifest_MANAGE_EXTERNAL_STORAGE
         };
         //Create Directory if not exists
@@ -320,19 +322,107 @@ public class SplashActivity extends SplashSupportActivity implements SplashContr
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == SDCARD_LOCATION_CHOOSER) {
+        showBottomFragment();
+      //  splashPresenter.populateSDCardMenu();
+        if (requestCode == SDCARD_LOCATION_CHOOSER && 1 == 1) {
             if (data != null && data.getData() != null) {
                 Uri treeUri = data.getData();
                 final int takeFlags = data.getFlags()
                         & (Intent.FLAG_GRANT_READ_URI_PERMISSION
                         | Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
                 ApplicationClass.getInstance().getContentResolver().takePersistableUriPermission(treeUri, takeFlags);
+                FastSave.getInstance().saveString("docurl",treeUri.toString());
                 DocumentFile rootFile = DocumentFile.fromTreeUri(ApplicationClass.getInstance(), treeUri);
-                Log.d("DocumentFile Path", "rootFile.getName() : "+ rootFile.getName());
-                Log.d("DocumentFile Path", "rootFile.getUri() : "+ rootFile.getUri());
+                if (rootFile == null || !rootFile.exists()) {
+                    //the folder was probably deleted
+                    Log.e("LOGTAG", "no Dir");
+
+                }
+                else {
+                    Log.e("LOGTAG", "Dir is there");
+                }
 
 
-                splashPresenter.testCopyDataBase(rootFile);
+DocumentFile df = rootFile.findFile("index.html");
+             //   FastSave.getInstance().saveString("htmluri",df.getUri().toString());
+if(df != null && 1 == 2 )
+{
+    Log.d("dffff", "List ");
+
+    DocumentFile df1 = df.findFile("Game");
+            if(df1 != null)
+            {
+
+
+                DocumentFile df2 = df1.findFile("anuchitBhinn_Se_MishraBhinn_M_HI");
+                if(df2 != null)
+                {
+
+                    DocumentFile df3 = df2.findFile("index.html");
+                    if(df3 != null)
+                    {
+                        FastSave.getInstance().saveString("htmluri",df3.getUri().toString());
+
+
+                    }
+                }
+
+            }
+
+
+}
+
+                for (DocumentFile f : rootFile.listFiles()){
+                    Log.d("DocumentFile Path", "List : " + f.getName());
+                    Log.d("DocumentFile Path22", "List : " + f.getUri().getEncodedPath());
+                    //    Log.d("DocumentFile Path22", "List : " + f.getUri().getPath());
+                    if(f.getName().contains("FC_Content")) {
+
+
+
+                     String jsondata=   readTextFromUri(f.getUri());
+                    // JSONObject jsonObject = JSONObject(jsondata);
+                        Gson gson = new Gson();
+                        Type type = new TypeToken<List<ContentTable>>() {
+                        }.getType();
+                        List<ContentTable>  contentTableList = gson.fromJson(jsondata, type);
+                    //AppDatabase.getDatabaseInstance(context).getContentTableDao().insertAll(contentTableList);
+
+                        //BackupDatabase.backup(context);
+                   /*  String  docUri = DocumentsContract.buildDocumentUriUsingTree(f.getUri(),
+                                DocumentsContract.getTreeDocumentId(f.getUri()));
+                        Log.d("docUri", "List : " + docUri);
+                        docUri = f.getUri();
+
+
+                        Uri uri = f.getUri();
+*/
+                       /* Glide.with(context)
+                                .load(f.getUri().toString())
+                                .into(iv_pratham_logo);*/
+
+
+                    }
+
+
+
+                       // SQLiteDatabase sqliteTest=  SQLiteDatabase.openDatabase(file, null);
+
+
+                    }
+
+
+
+              //  splashPresenter.testCopyDataBase(rootFile);
+
+
+dismissProgressDialog();
+                gotoNextActivity();
+
+
+
+
+
 
 //                mHandler.sendEmptyMessage(SHOW_OTG_SELECT_DIALOG);
 //                new Handler().postDelayed(() -> {
@@ -341,6 +431,33 @@ public class SplashActivity extends SplashSupportActivity implements SplashContr
             }
         }
     }
+
+
+    private String readTextFromUri(Uri uri)  {
+
+
+
+        StringBuilder stringBuilder = new StringBuilder();
+        try {
+            try (InputStream inputStream =
+                         getContentResolver().openInputStream(uri);
+                 BufferedReader reader = new BufferedReader(
+                         new InputStreamReader(Objects.requireNonNull(inputStream)))) {
+                String line;
+                while ((line = reader.readLine()) != null) {
+                    stringBuilder.append(line);
+                }
+            }
+            Log.i("lineline", stringBuilder.toString() + "-");
+        }catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+        return stringBuilder.toString();
+
+    }
+
+
 
     Intent mServiceIntent;
     private BackgroundPushService bgPushService;

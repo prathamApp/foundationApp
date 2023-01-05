@@ -19,11 +19,13 @@ import android.content.pm.PackageManager;
 import android.content.res.AssetManager;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.net.Uri;
 import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Handler;
+import android.provider.DocumentsContract;
 import android.provider.Settings;
 import android.util.Log;
 
@@ -46,8 +48,10 @@ import com.pratham.foundation.modalclasses.Model_CourseEnrollment;
 import com.pratham.foundation.services.AppExitService;
 import com.pratham.foundation.services.LocationService;
 import com.pratham.foundation.services.shared_preferences.FastSave;
+import com.pratham.foundation.utility.ASFUriHelper;
 import com.pratham.foundation.utility.FC_Constants;
 import com.pratham.foundation.utility.FC_Utility;
+import com.pratham.foundation.utility.FileUtil;
 import com.pratham.foundation.utility.SDCardUtil;
 
 import net.lingala.zip4j.core.ZipFile;
@@ -980,7 +984,7 @@ public class SplashPresenter implements SplashContract.SplashPresenter {
                 Log.d("copyDBFile", "delete: ");
             }
         } catch (Exception e) {
-            Log.d("copyDBFile", "Exception : ");
+            Log.d("copyDBFile", "Exception1 : ");
             e.printStackTrace();
         }
 
@@ -997,7 +1001,7 @@ public class SplashPresenter implements SplashContract.SplashPresenter {
             }
             Log.d("copyDBFile", "CopyDone : ");
         } catch (Exception e) {
-            Log.d("copyDBFile", "Exception : ");
+            Log.d("copyDBFile", "Exception2 : ");
             e.printStackTrace();
         }
     }
@@ -1450,6 +1454,7 @@ public class SplashPresenter implements SplashContract.SplashPresenter {
             String path = base_path.get(0).replace("[", "");
             path = path.replace("]", "");
             fpath = path;
+            Log.i("fpath",fpath+"----"+base_path.get(0));
         } else
             fpath = ApplicationClass.getStoragePath().getAbsolutePath();
         FC_Constants.SD_DB = false;

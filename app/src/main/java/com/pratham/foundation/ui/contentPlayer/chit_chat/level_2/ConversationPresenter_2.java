@@ -81,7 +81,7 @@ public class ConversationPresenter_2 implements ConversationContract_2.Conversat
             splitQues = answer.replaceAll("[^a-zA-Z ]", "").toLowerCase().split("\\s+");
         else {
             String answer2 = answer.replaceAll(STT_REGEX_2, "");
-            splitQues = answer2.split(" ");
+            splitQues = answer2 .split(" ");
         }
         String words = " ";
 

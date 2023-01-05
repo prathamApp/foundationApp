@@ -1,0 +1,56 @@
+{
+  "project_info": {
+    "project_number": "312528807817",
+    "firebase_url": "https://asersample.firebaseio.com",
+    "project_id": "asersample",
+    "storage_bucket": "asersample.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:312528807817:android:484e4165c618d63e",
+        "android_client_info": {
+          "package_name": "com.pratham.foundation"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "312528807817-t3gvt35ln7qagogi4b2sih6v4u5h4ouh.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "info.pratham.asersample",
+            "certificate_hash": "e76addb5bcefa74862b29889daacbbc214a7e89b"
+          }
+        },
+        {
+          "client_id": "312528807817-u3jq9i65ddgdth2q3a00f6v4odu1svk3.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "info.pratham.asersample",
+            "certificate_hash": "dac9b608ea6a894aa1605435d816e8877d32da20"
+          }
+        },
+        {
+          "client_id": "312528807817-4cge5je84aaeleit5nqiiv44ssqk9bje.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC953NBEpHizX0fPwkvdLhl4LM0K8PmD2Q"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "312528807817-4cge5je84aaeleit5nqiiv44ssqk9bje.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

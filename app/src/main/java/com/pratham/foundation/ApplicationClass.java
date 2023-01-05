@@ -97,6 +97,7 @@ public class ApplicationClass extends Application {
 //        FC_Utility.setAppLocal(this, a);
     }
 
+
     public static File getStoragePath() {
         if ((Build.VERSION.SDK_INT >= Build.VERSION_CODES.R)) {
             return Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);

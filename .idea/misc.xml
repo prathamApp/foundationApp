@@ -14,15 +14,10 @@
         <entry key="..\:/Android_Projects/FoundationApp_Git/app/src/main/res/drawable/card_color_bg7.xml" value="0.34625" />
         <entry key="..\:/Android_Projects/FoundationApp_Git/app/src/main/res/drawable/card_color_bg8.xml" value="0.34625" />
         <entry key="..\:/Android_Projects/FoundationApp_Git/app/src/main/res/drawable/card_color_bg9.xml" value="0.34625" />
-        <entry key="..\:/Android_Projects/FoundationApp_Git/app/src/main/res/drawable/card_delete_bg.xml" value="0.176" />
+        <entry key="..\:/Android_Projects/FoundationApp_Git/app/src/main/res/drawable/card_delete_bg.xml" value="0.34625" />
         <entry key="..\:/Android_Projects/FoundationApp_Git/app/src/main/res/drawable/custom_progress_primary.xml" value="0.23" />
         <entry key="..\:/Android_Projects/FoundationApp_Git/app/src/main/res/drawable/dotted_line_horizontal.xml" value="0.32125" />
         <entry key="..\:/Android_Projects/FoundationApp_Git/app/src/main/res/drawable/dotted_line_horizontal_blue.xml" value="0.355" />
-        <entry key="..\:/Android_Projects/FoundationApp_Git/app/src/main/res/drawable/ic_android_act.xml" value="0.10168918918918919" />
-        <entry key="..\:/Android_Projects/FoundationApp_Git/app/src/main/res/drawable/ic_imggg.xml" value="0.10168918918918919" />
-        <entry key="..\:/Android_Projects/FoundationApp_Git/app/src/main/res/drawable/ic_pdf.xml" value="0.10168918918918919" />
-        <entry key="..\:/Android_Projects/FoundationApp_Git/app/src/main/res/drawable/ic_video.xml" value="0.10168918918918919" />
-        <entry key="..\:/Android_Projects/FoundationApp_Git/app/src/main/res/drawable/ic_youtube.xml" value="0.10168918918918919" />
         <entry key="..\:/Android_Projects/FoundationApp_Git/app/src/main/res/drawable/progress_background2.xml" value="0.27875" />
         <entry key="..\:/Android_Projects/FoundationApp_Git/app/src/main/res/drawable/red_ripple_round.xml" value="0.23" />
         <entry key="..\:/Android_Projects/FoundationApp_Git/app/src/main/res/drawable/sync_failed_bg.xml" value="0.27875" />
@@ -34,8 +29,7 @@
         <entry key="..\:/Android_Projects/FoundationApp_Git/app/src/main/res/layout/activity_certificate_display.xml" value="0.18290854572713644" />
         <entry key="..\:/Android_Projects/FoundationApp_Git/app/src/main/res/layout/activity_content_display.xml" value="0.18290854572713644" />
         <entry key="..\:/Android_Projects/FoundationApp_Git/app/src/main/res/layout/activity_content_player.xml" value="0.12196601941747573" />
-        <entry key="..\:/Android_Projects/FoundationApp_Git/app/src/main/res/layout/activity_display_image.xml" value="0.16824324324324325" />
-        <entry key="..\:/Android_Projects/FoundationApp_Git/app/src/main/res/layout/activity_home.xml" value="0.1" />
+        <entry key="..\:/Android_Projects/FoundationApp_Git/app/src/main/res/layout/activity_home.xml" value="0.18290854572713644" />
         <entry key="..\:/Android_Projects/FoundationApp_Git/app/src/main/res/layout/activity_menu.xml" value="0.18290854572713644" />
         <entry key="..\:/Android_Projects/FoundationApp_Git/app/src/main/res/layout/activity_pdf_view.xml" value="0.18290854572713644" />
         <entry key="..\:/Android_Projects/FoundationApp_Git/app/src/main/res/layout/activity_select_group.xml" value="0.18290854572713644" />
@@ -48,7 +42,6 @@
         <entry key="..\:/Android_Projects/FoundationApp_Git/app/src/main/res/layout/app_db_push_dialog.xml" value="0.1" />
         <entry key="..\:/Android_Projects/FoundationApp_Git/app/src/main/res/layout/app_send_success_dialog.xml" value="0.4" />
         <entry key="..\:/Android_Projects/FoundationApp_Git/app/src/main/res/layout/bottom_control_panel_v4.xml" value="0.18290854572713644" />
-        <entry key="..\:/Android_Projects/FoundationApp_Git/app/src/main/res/layout/content_card.xml" value="0.1" />
         <entry key="..\:/Android_Projects/FoundationApp_Git/app/src/main/res/layout/content_folder_card_tab.xml" value="0.16799999999999998" />
         <entry key="..\:/Android_Projects/FoundationApp_Git/app/src/main/res/layout/content_home_.xml" value="0.16486486486486487" />
         <entry key="..\:/Android_Projects/FoundationApp_Git/app/src/main/res/layout/content_item_file_card.xml" value="0.18290854572713644" />
@@ -60,15 +53,13 @@
         <entry key="..\:/Android_Projects/FoundationApp_Git/app/src/main/res/layout/dropdown_list_item.xml" value="0.16486486486486487" />
         <entry key="..\:/Android_Projects/FoundationApp_Git/app/src/main/res/layout/fc_custom_language_dialog.xml" value="0.1" />
         <entry key="..\:/Android_Projects/FoundationApp_Git/app/src/main/res/layout/fragment_child_attendance.xml" value="0.18290854572713644" />
-        <entry key="..\:/Android_Projects/FoundationApp_Git/app/src/main/res/layout/fragment_keywords_identification.xml" value="0.1" />
         <entry key="..\:/Android_Projects/FoundationApp_Git/app/src/main/res/layout/fragment_new_menu.xml" value="0.18290854572713644" />
-        <entry key="..\:/Android_Projects/FoundationApp_Git/app/src/main/res/layout/fragment_profile.xml" value="0.2" />
+        <entry key="..\:/Android_Projects/FoundationApp_Git/app/src/main/res/layout/fragment_profile.xml" value="0.4" />
         <entry key="..\:/Android_Projects/FoundationApp_Git/app/src/main/res/layout/fragment_pull_and_assign.xml" value="0.18290854572713644" />
         <entry key="..\:/Android_Projects/FoundationApp_Git/app/src/main/res/layout/fragment_push_or_assign.xml" value="0.38125" />
         <entry key="..\:/Android_Projects/FoundationApp_Git/app/src/main/res/layout/fragment_select_group.xml" value="0.18290854572713644" />
         <entry key="..\:/Android_Projects/FoundationApp_Git/app/src/main/res/layout/fragment_story_reading.xml" value="0.1" />
         <entry key="..\:/Android_Projects/FoundationApp_Git/app/src/main/res/layout/fragment_tab_one.xml" value="0.18290854572713644" />
-        <entry key="..\:/Android_Projects/FoundationApp_Git/app/src/main/res/layout/fragment_video_player.xml" value="0.1" />
         <entry key="..\:/Android_Projects/FoundationApp_Git/app/src/main/res/layout/item_group.xml" value="0.5416204217536071" />
         <entry key="..\:/Android_Projects/FoundationApp_Git/app/src/main/res/layout/item_stat_group.xml" value="0.18290854572713644" />
         <entry key="..\:/Android_Projects/FoundationApp_Git/app/src/main/res/layout/item_stat_grp_resource.xml" value="0.18290854572713644" />
@@ -79,7 +70,6 @@
         <entry key="..\:/Android_Projects/FoundationApp_Git/app/src/main/res/layout/item_test_pdf.xml" value="0.176" />
         <entry key="..\:/Android_Projects/FoundationApp_Git/app/src/main/res/layout/layout_avatar_row.xml" value="0.38125" />
         <entry key="..\:/Android_Projects/FoundationApp_Git/app/src/main/res/layout/layout_image_ques_row.xml" value="0.20546875" />
-        <entry key="..\:/Android_Projects/FoundationApp_Git/app/src/main/res/layout/layout_video_row.xml" value="0.10314207650273224" />
         <entry key="..\:/Android_Projects/FoundationApp_Git/app/src/main/res/layout/list_header.xml" value="0.1" />
         <entry key="..\:/Android_Projects/FoundationApp_Git/app/src/main/res/layout/listvew.xml" value="0.1" />
         <entry key="..\:/Android_Projects/FoundationApp_Git/app/src/main/res/layout/lottie_stt_dialog.xml" value="0.2" />
@@ -88,9 +78,126 @@
         <entry key="..\:/Android_Projects/FoundationApp_Git/app/src/main/res/layout/student_item_file_header.xml" value="0.18290854572713644" />
         <entry key="..\:/Android_Projects/FoundationApp_Git/app/src/main/res/layout/student_list_fragment.xml" value="0.18290854572713644" />
         <entry key="..\:/Android_Projects/FoundationApp_Git/app/src/main/res/layout/sync_status_dialog.xml" value="0.264" />
-        <entry key="..\:/Android_Projects/FoundationApp_Git/app/src/main/res/layout/test_list_footer.xml" value="0.1" />
         <entry key="..\:/Android_Projects/FoundationApp_Git/app/src/main/res/layout/vocab_category.xml" value="0.16486486486486487" />
-        <entry key="..\:/Android_Projects/FoundationApp_Git/app/src/main/res/layout/zoom_image_dialog.xml" value="0.17785714285714285" />
+        <entry key="..\:/Projects/PrathamApps/foundationApp/app/src/main/res/drawable/card_color_bg1.xml" value="0.1205" />
+        <entry key="..\:/Projects/PrathamApps/foundationApp/app/src/main/res/drawable/ic_error_outline_black_24dp.xml" value="0.1205" />
+        <entry key="..\:/Projects/PrathamApps/foundationApp/app/src/main/res/drawable/ic_image_white.xml" value="0.115" />
+        <entry key="..\:/Projects/PrathamApps/foundationApp/app/src/main/res/drawable/ic_navigate_next_black_24dp.xml" value="0.115" />
+        <entry key="..\:/Projects/PrathamApps/foundationApp/app/src/main/res/drawable/ripple_rectangle.xml" value="0.1005" />
+        <entry key="..\:/Projects/PrathamApps/foundationApp/app/src/main/res/drawable/ripple_rectangle_card.xml" value="0.1005" />
+        <entry key="..\:/Projects/PrathamApps/foundationApp/app/src/main/res/drawable/rounded_rectangle_stroke_bg.xml" value="0.1205" />
+        <entry key="..\:/Projects/PrathamApps/foundationApp/app/src/main/res/drawable/trans_dialog_bg.xml" value="0.115" />
+        <entry key="..\:/Projects/PrathamApps/foundationApp/app/src/main/res/layout/activity_add_enrollment_id.xml" value="0.19375" />
+        <entry key="..\:/Projects/PrathamApps/foundationApp/app/src/main/res/layout/activity_admin_controls.xml" value="0.19375" />
+        <entry key="..\:/Projects/PrathamApps/foundationApp/app/src/main/res/layout/activity_admin_login.xml" value="0.19375" />
+        <entry key="..\:/Projects/PrathamApps/foundationApp/app/src/main/res/layout/activity_assign_groups.xml" value="0.19375" />
+        <entry key="..\:/Projects/PrathamApps/foundationApp/app/src/main/res/layout/activity_base.xml" value="0.19375" />
+        <entry key="..\:/Projects/PrathamApps/foundationApp/app/src/main/res/layout/activity_card_reading.xml" value="0.19375" />
+        <entry key="..\:/Projects/PrathamApps/foundationApp/app/src/main/res/layout/activity_certificate_display.xml" value="0.19375" />
+        <entry key="..\:/Projects/PrathamApps/foundationApp/app/src/main/res/layout/activity_conversation_1.xml" value="0.21822916666666667" />
+        <entry key="..\:/Projects/PrathamApps/foundationApp/app/src/main/res/layout/activity_course_enrollment.xml" value="0.19375" />
+        <entry key="..\:/Projects/PrathamApps/foundationApp/app/src/main/res/layout/activity_home.xml" value="0.19375" />
+        <entry key="..\:/Projects/PrathamApps/foundationApp/app/src/main/res/layout/activity_instructions_dialog.xml" value="0.19375" />
+        <entry key="..\:/Projects/PrathamApps/foundationApp/app/src/main/res/layout/activity_main.xml" value="0.19375" />
+        <entry key="..\:/Projects/PrathamApps/foundationApp/app/src/main/res/layout/activity_main_morphin.xml" value="0.19375" />
+        <entry key="..\:/Projects/PrathamApps/foundationApp/app/src/main/res/layout/activity_match_the_pair_game.xml" value="0.21822916666666667" />
+        <entry key="..\:/Projects/PrathamApps/foundationApp/app/src/main/res/layout/activity_opposites.xml" value="0.19375" />
+        <entry key="..\:/Projects/PrathamApps/foundationApp/app/src/main/res/layout/activity_paragraphs_reading.xml" value="0.19375" />
+        <entry key="..\:/Projects/PrathamApps/foundationApp/app/src/main/res/layout/activity_pdf_view.xml" value="0.19375" />
+        <entry key="..\:/Projects/PrathamApps/foundationApp/app/src/main/res/layout/activity_pictionary_result.xml" value="0.19375" />
+        <entry key="..\:/Projects/PrathamApps/foundationApp/app/src/main/res/layout/activity_push_data.xml" value="0.19375" />
+        <entry key="..\:/Projects/PrathamApps/foundationApp/app/src/main/res/layout/activity_rhymes_reading.xml" value="0.19375" />
+        <entry key="..\:/Projects/PrathamApps/foundationApp/app/src/main/res/layout/activity_show_image_question.xml" value="0.19375" />
+        <entry key="..\:/Projects/PrathamApps/foundationApp/app/src/main/res/layout/activity_show_sync_logs.xml" value="0.19375" />
+        <entry key="..\:/Projects/PrathamApps/foundationApp/app/src/main/res/layout/activity_splash.xml" value="0.17447916666666666" />
+        <entry key="..\:/Projects/PrathamApps/foundationApp/app/src/main/res/layout/bottom_control_panel.xml" value="0.19375" />
+        <entry key="..\:/Projects/PrathamApps/foundationApp/app/src/main/res/layout/custom_spinner.xml" value="0.19375" />
+        <entry key="..\:/Projects/PrathamApps/foundationApp/app/src/main/res/layout/fact_retrival_selection.xml" value="0.10131712259371833" />
+        <entry key="..\:/Projects/PrathamApps/foundationApp/app/src/main/res/layout/fragment_add_student.xml" value="0.1" />
+        <entry key="..\:/Projects/PrathamApps/foundationApp/app/src/main/res/layout/fragment_audio_player.xml" value="0.19375" />
+        <entry key="..\:/Projects/PrathamApps/foundationApp/app/src/main/res/layout/fragment_item.xml" value="0.19375" />
+        <entry key="..\:/Projects/PrathamApps/foundationApp/app/src/main/res/layout/fragment_menu.xml" value="0.19375" />
+        <entry key="..\:/Projects/PrathamApps/foundationApp/app/src/main/res/layout/fragment_pdf_display.xml" value="0.19375" />
+        <entry key="..\:/Projects/PrathamApps/foundationApp/app/src/main/res/layout/fragment_profile.xml" value="0.11481481481481481" />
+        <entry key="..\:/Projects/PrathamApps/foundationApp/app/src/main/res/layout/fragment_story_reading.xml" value="0.19375" />
+        <entry key="..\:/Projects/PrathamApps/foundationApp/app/src/main/res/layout/fragment_video_view.xml" value="0.19375" />
+        <entry key="..\:/Projects/PrathamApps/foundationApp/app/src/main/res/layout/item_child_attendance.xml" value="0.19375" />
+        <entry key="..\:/Projects/PrathamApps/foundationApp/app/src/main/res/layout/item_city_card.xml" value="0.19375" />
+        <entry key="..\:/Projects/PrathamApps/foundationApp/app/src/main/res/layout/item_group.xml" value="0.19375" />
+        <entry key="..\:/Projects/PrathamApps/foundationApp/app/src/main/res/layout/item_keyword.xml" value="0.19375" />
+        <entry key="..\:/Projects/PrathamApps/foundationApp/app/src/main/res/layout/item_stat_grp_resource.xml" value="0.19375" />
+        <entry key="..\:/Projects/PrathamApps/foundationApp/app/src/main/res/layout/item_stat_resource.xml" value="0.19375" />
+        <entry key="..\:/Projects/PrathamApps/foundationApp/app/src/main/res/layout/item_stat_resource_gradiance.xml" value="0.19375" />
+        <entry key="..\:/Projects/PrathamApps/foundationApp/app/src/main/res/layout/item_subject.xml" value="0.19375" />
+        <entry key="..\:/Projects/PrathamApps/foundationApp/app/src/main/res/layout/item_submarine.xml" value="0.19375" />
+        <entry key="..\:/Projects/PrathamApps/foundationApp/app/src/main/res/layout/item_sync_card.xml" value="0.19375" />
+        <entry key="..\:/Projects/PrathamApps/foundationApp/app/src/main/res/layout/item_sync_card_auto.xml" value="0.19375" />
+        <entry key="..\:/Projects/PrathamApps/foundationApp/app/src/main/res/layout/item_sync_card_db.xml" value="0.19375" />
+        <entry key="..\:/Projects/PrathamApps/foundationApp/app/src/main/res/layout/item_test_pdf.xml" value="0.19375" />
+        <entry key="..\:/Projects/PrathamApps/foundationApp/app/src/main/res/layout/item_view.xml" value="0.19375" />
+        <entry key="..\:/Projects/PrathamApps/foundationApp/app/src/main/res/layout/keywords_selected.xml" value="0.19375" />
+        <entry key="..\:/Projects/PrathamApps/foundationApp/app/src/main/res/layout/language_item.xml" value="0.19375" />
+        <entry key="..\:/Projects/PrathamApps/foundationApp/app/src/main/res/layout/layout_avatar_row.xml" value="0.19375" />
+        <entry key="..\:/Projects/PrathamApps/foundationApp/app/src/main/res/layout/layout_calendar.xml" value="0.19375" />
+        <entry key="..\:/Projects/PrathamApps/foundationApp/app/src/main/res/layout/layout_image_ques_row.xml" value="0.19375" />
+        <entry key="..\:/Projects/PrathamApps/foundationApp/app/src/main/res/layout/layout_mcq_card_image_item.xml" value="0.19375" />
+        <entry key="..\:/Projects/PrathamApps/foundationApp/app/src/main/res/layout/layout_mcq_fill_in_the_blanks_with_options_row.xml" value="0.19375" />
+        <entry key="..\:/Projects/PrathamApps/foundationApp/app/src/main/res/layout/layout_mcq_gif_item.xml" value="0.19375" />
+        <entry key="..\:/Projects/PrathamApps/foundationApp/app/src/main/res/layout/layout_mcq_radio_item.xml" value="0.19375" />
+        <entry key="..\:/Projects/PrathamApps/foundationApp/app/src/main/res/layout/layout_mcq_single_text_item.xml" value="0.19375" />
+        <entry key="..\:/Projects/PrathamApps/foundationApp/app/src/main/res/layout/layout_player_base.xml" value="0.19375" />
+        <entry key="..\:/Projects/PrathamApps/foundationApp/app/src/main/res/layout/layout_player_loading.xml" value="0.19375" />
+        <entry key="..\:/Projects/PrathamApps/foundationApp/app/src/main/res/layout/layout_player_retry.xml" value="0.19375" />
+        <entry key="..\:/Projects/PrathamApps/foundationApp/app/src/main/res/layout/layout_result_row.xml" value="0.19375" />
+        <entry key="..\:/Projects/PrathamApps/foundationApp/app/src/main/res/layout/layout_simple_text_row.xml" value="0.19375" />
+        <entry key="..\:/Projects/PrathamApps/foundationApp/app/src/main/res/layout/layout_true_false_row.xml" value="0.19375" />
+        <entry key="..\:/Projects/PrathamApps/foundationApp/app/src/main/res/layout/layout_video_row.xml" value="0.19375" />
+        <entry key="..\:/Projects/PrathamApps/foundationApp/app/src/main/res/layout/list_header.xml" value="0.19375" />
+        <entry key="..\:/Projects/PrathamApps/foundationApp/app/src/main/res/layout/listvew.xml" value="0.19375" />
+        <entry key="..\:/Projects/PrathamApps/foundationApp/app/src/main/res/layout/loading_dialog.xml" value="0.19375" />
+        <entry key="..\:/Projects/PrathamApps/foundationApp/app/src/main/res/layout/lottie_coming_soon.xml" value="0.19375" />
+        <entry key="..\:/Projects/PrathamApps/foundationApp/app/src/main/res/layout/lottie_delete_dialog.xml" value="0.19375" />
+        <entry key="..\:/Projects/PrathamApps/foundationApp/app/src/main/res/layout/lottie_exit_dialog.xml" value="0.19375" />
+        <entry key="..\:/Projects/PrathamApps/foundationApp/app/src/main/res/layout/lottie_server_dialog.xml" value="0.19375" />
+        <entry key="..\:/Projects/PrathamApps/foundationApp/app/src/main/res/layout/lottie_stt_dialog.xml" value="0.19375" />
+        <entry key="..\:/Projects/PrathamApps/foundationApp/app/src/main/res/layout/match_the_pair_fragment.xml" value="0.19375" />
+        <entry key="..\:/Projects/PrathamApps/foundationApp/app/src/main/res/layout/pdf_pager_item.xml" value="0.19375" />
+        <entry key="..\:/Projects/PrathamApps/foundationApp/app/src/main/res/layout/player_control_view.xml" value="0.19375" />
+        <entry key="..\:/Projects/PrathamApps/foundationApp/app/src/main/res/layout/pravin_test.xml" value="0.19375" />
+        <entry key="..\:/Projects/PrathamApps/foundationApp/app/src/main/res/layout/profile_item_card.xml" value="0.19375" />
+        <entry key="..\:/Projects/PrathamApps/foundationApp/app/src/main/res/layout/profile_menu_card.xml" value="0.19375" />
+        <entry key="..\:/Projects/PrathamApps/foundationApp/app/src/main/res/layout/progress.xml" value="0.19375" />
+        <entry key="..\:/Projects/PrathamApps/foundationApp/app/src/main/res/layout/pull_data_fragment.xml" value="0.19375" />
+        <entry key="..\:/Projects/PrathamApps/foundationApp/app/src/main/res/layout/push_notification.xml" value="0.19375" />
+        <entry key="..\:/Projects/PrathamApps/foundationApp/app/src/main/res/layout/reading_layout.xml" value="0.19375" />
+        <entry key="..\:/Projects/PrathamApps/foundationApp/app/src/main/res/layout/reading_layout_xml_file.xml" value="0.19375" />
+        <entry key="..\:/Projects/PrathamApps/foundationApp/app/src/main/res/layout/result_image.xml" value="0.19375" />
+        <entry key="..\:/Projects/PrathamApps/foundationApp/app/src/main/res/layout/result_text.xml" value="0.19375" />
+        <entry key="..\:/Projects/PrathamApps/foundationApp/app/src/main/res/layout/rhyming_word_card.xml" value="0.19375" />
+        <entry key="..\:/Projects/PrathamApps/foundationApp/app/src/main/res/layout/select_village_dialog.xml" value="0.19375" />
+        <entry key="..\:/Projects/PrathamApps/foundationApp/app/src/main/res/layout/sequence_game_item.xml" value="0.19375" />
+        <entry key="..\:/Projects/PrathamApps/foundationApp/app/src/main/res/layout/show_result.xml" value="0.19375" />
+        <entry key="..\:/Projects/PrathamApps/foundationApp/app/src/main/res/layout/show_result_pictionary.xml" value="0.19375" />
+        <entry key="..\:/Projects/PrathamApps/foundationApp/app/src/main/res/layout/show_result_true_false.xml" value="0.19375" />
+        <entry key="..\:/Projects/PrathamApps/foundationApp/app/src/main/res/layout/show_word_next_dialog.xml" value="0.19375" />
+        <entry key="..\:/Projects/PrathamApps/foundationApp/app/src/main/res/layout/story_reading_activity.xml" value="0.19375" />
+        <entry key="..\:/Projects/PrathamApps/foundationApp/app/src/main/res/layout/student_card.xml" value="0.19375" />
+        <entry key="..\:/Projects/PrathamApps/foundationApp/app/src/main/res/layout/student_details_dialog.xml" value="0.19375" />
+        <entry key="..\:/Projects/PrathamApps/foundationApp/app/src/main/res/layout/student_item_file_footer.xml" value="0.19375" />
+        <entry key="..\:/Projects/PrathamApps/foundationApp/app/src/main/res/layout/student_item_file_header.xml" value="0.19375" />
+        <entry key="..\:/Projects/PrathamApps/foundationApp/app/src/main/res/layout/student_list_fragment.xml" value="0.19375" />
+        <entry key="..\:/Projects/PrathamApps/foundationApp/app/src/main/res/layout/summery.xml" value="0.19375" />
+        <entry key="..\:/Projects/PrathamApps/foundationApp/app/src/main/res/layout/sync_status_dialog.xml" value="0.2391304347826087" />
+        <entry key="..\:/Projects/PrathamApps/foundationApp/app/src/main/res/layout/test_list_footer.xml" value="0.19375" />
+        <entry key="..\:/Projects/PrathamApps/foundationApp/app/src/main/res/layout/test_student_card.xml" value="0.19375" />
+        <entry key="..\:/Projects/PrathamApps/foundationApp/app/src/main/res/layout/test_type_dialog.xml" value="0.19375" />
+        <entry key="..\:/Projects/PrathamApps/foundationApp/app/src/main/res/layout/textvew.xml" value="0.19375" />
+        <entry key="..\:/Projects/PrathamApps/foundationApp/app/src/main/res/layout/textvew_flexbox.xml" value="0.19375" />
+        <entry key="..\:/Projects/PrathamApps/foundationApp/app/src/main/res/layout/vh_img.xml" value="0.19375" />
+        <entry key="..\:/Projects/PrathamApps/foundationApp/app/src/main/res/layout/video_player_exo_controllers.xml" value="0.19375" />
+        <entry key="..\:/Projects/PrathamApps/foundationApp/app/src/main/res/layout/vocab_category.xml" value="0.19375" />
+        <entry key="..\:/Projects/PrathamApps/foundationApp/app/src/main/res/layout/zoom_image_dialog.xml" value="0.19375" />
+        <entry key="..\:/Projects/PrathamApps/foundationApp/aser/src/main/res/layout/activity_assessment.xml" value="0.1" />
       </map>
     </option>
   </component>
@@ -99,7 +206,7 @@
       <item index="0" class="java.lang.String" itemvalue="org.androidannotations.annotations.Click" />
     </list>
   </component>
-  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="1.8" project-jdk-type="JavaSDK">
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" project-jdk-name="1.8" project-jdk-type="JavaSDK">
     <output url="file://$PROJECT_DIR$/build/classes" />
   </component>
   <component name="ProjectType">

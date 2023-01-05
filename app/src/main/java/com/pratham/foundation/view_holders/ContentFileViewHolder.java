@@ -97,6 +97,16 @@ public class ContentFileViewHolder extends RecyclerView.ViewHolder {
             Objects.requireNonNull(content_card_view).setBackground(drawableBg);
             Objects.requireNonNull(title).setText(contentList.getNodeTitle());
             title.setSelected(true);
+            /*
+             content_card_view.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (contentList.getNodeType() != null) {
+                        contentClicked.onContentOpenClicked(position, contentList.getNodeId());
+                    }
+                }
+            });
+            */
             Objects.requireNonNull(rl_card).setVisibility(View.VISIBLE);
             Objects.requireNonNull(rl_loader).setVisibility(View.GONE);
             if(contentList.getNodePercentage().equalsIgnoreCase("0"))
