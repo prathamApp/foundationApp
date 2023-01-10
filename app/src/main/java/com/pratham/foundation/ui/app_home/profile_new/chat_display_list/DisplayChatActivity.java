@@ -1,5 +1,11 @@
 package com.pratham.foundation.ui.app_home.profile_new.chat_display_list;
 
+import static com.pratham.foundation.utility.FC_Constants.GROUP_LOGIN;
+import static com.pratham.foundation.utility.FC_Constants.GROUP_MODE;
+import static com.pratham.foundation.utility.FC_Constants.INDIVIDUAL_MODE;
+import static com.pratham.foundation.utility.FC_Constants.QR_GROUP_MODE;
+import static com.pratham.foundation.utility.FC_Utility.dpToPx;
+
 import android.content.Context;
 import android.content.res.Configuration;
 import android.view.View;
@@ -35,12 +41,6 @@ import org.androidannotations.annotations.ViewById;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
-
-import static com.pratham.foundation.utility.FC_Constants.GROUP_LOGIN;
-import static com.pratham.foundation.utility.FC_Constants.GROUP_MODE;
-import static com.pratham.foundation.utility.FC_Constants.INDIVIDUAL_MODE;
-import static com.pratham.foundation.utility.FC_Constants.QR_GROUP_MODE;
-import static com.pratham.foundation.utility.FC_Utility.dpToPx;
 
 @EActivity(R.layout.activity_certificate_display)
 public class DisplayChatActivity extends BaseActivity implements
@@ -111,7 +111,7 @@ public class DisplayChatActivity extends BaseActivity implements
         String sImage;
         try {
             if (!GROUP_LOGIN)
-                sImage = AppDatabase.getDatabaseInstance(this).getStudentDao().getStudentAvatar(FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""));
+                sImage = AppDatabase.getDatabaseInstance(this).getStudentDao().getStudentAvatar(FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, "NA"));
             else
                 sImage = "group_icon";
         } catch (Exception e) {
@@ -130,9 +130,9 @@ public class DisplayChatActivity extends BaseActivity implements
         String profileName = "QR Group";
         try {
             if (FastSave.getInstance().getString(FC_Constants.LOGIN_MODE, FC_Constants.GROUP_MODE).equalsIgnoreCase(GROUP_MODE))
-                profileName = AppDatabase.getDatabaseInstance(this).getGroupsDao().getGroupNameByGrpID(FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""));
+                profileName = AppDatabase.getDatabaseInstance(this).getGroupsDao().getGroupNameByGrpID(FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, "NA"));
             else if (!FastSave.getInstance().getString(FC_Constants.LOGIN_MODE, FC_Constants.GROUP_MODE).equalsIgnoreCase(QR_GROUP_MODE)) {
-                profileName = AppDatabase.getDatabaseInstance(this).getStudentDao().getFullName(FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""));
+                profileName = AppDatabase.getDatabaseInstance(this).getStudentDao().getFullName(FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, "NA"));
             }
 
             if (FastSave.getInstance().getString(FC_Constants.LOGIN_MODE, FC_Constants.GROUP_MODE).equalsIgnoreCase(INDIVIDUAL_MODE))

@@ -6,10 +6,10 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.airbnb.lottie.LottieAnimationView;
 import com.pratham.foundation.R;
 import com.pratham.foundation.database.domain.AvatarModal;
 import com.pratham.foundation.ui.bottom_fragment.add_student.AvatarClickListener;
@@ -28,7 +28,7 @@ public class EnrollmentAvatarAdapter extends RecyclerView.Adapter<EnrollmentAvat
     AvatarClickListener avatarClickListener;
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
-        ImageView avatar;
+        LottieAnimationView avatar;
 
         public MyViewHolder(View itemView) {
             super(itemView);
@@ -58,30 +58,31 @@ public class EnrollmentAvatarAdapter extends RecyclerView.Adapter<EnrollmentAvat
     @Override
     public void onBindViewHolder(MyViewHolder holder, int position) {
         AvatarModal studentAvatar = avatarList.get(position);
-        holder.avatar.setImageResource(R.drawable.b1);
-        switch (studentAvatar.getAvatarName()) {
+        holder.avatar.setAnimation(""+studentAvatar.getAvatarName());
+        holder.avatar.playAnimation();
+/*        switch (studentAvatar.getAvatarName()) {
             case "b1.png":
-                holder.avatar.setImageResource(R.drawable.b1);
+                holder.avatar.setAnimation(""+studentAvatar.getAvatarName());
                 break;
             case "b2.png":
-                holder.avatar.setImageResource(R.drawable.b2);
+                holder.avatar.setAnimation("b2.json");
                 break;
             case "b3.png":
-                holder.avatar.setImageResource(R.drawable.b3);
+                holder.avatar.setAnimation("b3.json");
                 break;
             case "g1.png":
-                holder.avatar.setImageResource(R.drawable.g1);
+                holder.avatar.setAnimation("b1.json");
                 break;
             case "g2.png":
-                holder.avatar.setImageResource(R.drawable.g2);
+                holder.avatar.setAnimation("b2.json");
                 break;
             case "g3.png":
-                holder.avatar.setImageResource(R.drawable.g3);
+                holder.avatar.setAnimation("b3.json");
                 break;
             default:
-                holder.avatar.setImageResource(R.drawable.ic_grp_btn);
+                holder.avatar.setAnimation("ic_grp_btn.json");
                 break;
-        }
+        }*/
         if (studentAvatar.getClickFlag())
             holder.avatar.setBackground(context.getResources().getDrawable(R.drawable.card_color_bg1));
         else

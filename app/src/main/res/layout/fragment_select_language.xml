@@ -4,7 +4,7 @@
     android:id="@+id/main_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@null">
+    android:background="@color/transparent_white_btn">
     <!--    android:background="@drawable/catcho_bg_grad"-->
     <RelativeLayout
         android:id="@+id/topPanel"
@@ -21,26 +21,16 @@
             android:textColor="@color/dark_blue"
             android:textSize="@dimen/_22sdp" />
 
-        <com.pratham.foundation.customView.shape_of_view.ShadowLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+        <com.airbnb.lottie.LottieAnimationView
+            android:id="@+id/btn_back"
             android:layout_alignParentEnd="true"
-            android:layout_margin="@dimen/_10sdp"
-            app:sl_shadow_angle="30"
-            app:sl_shadow_color="@color/colorBlackTransparentLight"
-            app:sl_shadow_distance="4dp"
-            app:sl_shadow_radius="5dp"
-            app:sl_shadowed="true">
-
-            <ImageButton
-                android:id="@+id/btn_back"
-                android:layout_width="60dp"
-                android:layout_height="60dp"
-                android:layout_centerVertical="true"
-                android:background="?android:selectableItemBackground"
-                android:scaleType="fitXY"
-                android:src="@drawable/ic_close_red" />
-        </com.pratham.foundation.customView.shape_of_view.ShadowLayout>
+            android:layout_margin="@dimen/_5sdp"
+            android:layout_width="@dimen/_38sdp"
+            android:layout_height="@dimen/_38sdp"
+            android:elevation="@dimen/_5sdp"
+            app:lottie_autoPlay="true"
+            app:lottie_fileName="close_cross.json"
+            app:lottie_loop="true" />
 
     </RelativeLayout>
 
@@ -51,7 +41,6 @@
         android:layout_below="@id/topPanel"
         android:layout_centerInParent="true"
         android:layout_marginStart="@dimen/_10sdp"
-        android:layout_marginBottom="@dimen/_10sdp"
         android:layout_marginEnd="@dimen/_10sdp" />
 
 

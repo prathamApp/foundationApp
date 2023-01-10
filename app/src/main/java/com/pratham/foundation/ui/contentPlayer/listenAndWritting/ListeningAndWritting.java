@@ -475,7 +475,9 @@ public class ListeningAndWritting extends Fragment implements ListeningAndWritti
                 valuesvideos.put(MediaStore.MediaColumns.MIME_TYPE, fileMimeType);
                 valuesvideos.put(MediaStore.MediaColumns.RELATIVE_PATH, Environment.DIRECTORY_DOWNLOADS
                         + File.separator + "FCAInternal" + File.separator + "ActivityPhotos" +
-                        File.separator + FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""));
+                        File.separator + ((FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, "").equals("")
+                    || FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, "").equals(null)) ?"NA"
+                    :FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, "")));
                 image.delete();
                 final Uri uriSavedVideo = resolver.insert(MediaStore.Downloads.EXTERNAL_CONTENT_URI, valuesvideos);
                 cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, uriSavedVideo);

@@ -26,6 +26,7 @@ import com.androidnetworking.common.Priority;
 import com.androidnetworking.error.ANError;
 import com.androidnetworking.interfaces.StringRequestListener;
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.pratham.foundation.ApplicationClass;
 import com.pratham.foundation.R;
 import com.pratham.foundation.customView.display_image_dialog.CustomLodingDialog;
@@ -122,7 +123,6 @@ public class PushDataToServer_New_YN {
         if (FC_Utility.isDataConnectionAvailable(context)) {
             this.context = context;
             this.showUi = showUi;
-            gson = new Gson();
             scoreData = new JSONArray();
             attendanceData = new JSONArray();
             sessionData = new JSONArray();
@@ -136,6 +136,11 @@ public class PushDataToServer_New_YN {
 //            db_Media = new ArrayList<>();
             courseEnrollmentData = new JSONArray();
             keyWordsData = new JSONArray();
+
+            gson = new GsonBuilder()
+                    .setPrettyPrinting()
+                    .serializeNulls()
+                    .create();
 
             FastSave.getInstance().saveString(FC_Constants.PUSH_ID_LOGS, "" + FC_Utility.getUUID());
             //Show Dialog

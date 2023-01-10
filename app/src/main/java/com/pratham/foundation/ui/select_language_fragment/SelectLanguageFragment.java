@@ -12,7 +12,6 @@ import android.view.Gravity;
 import android.view.View;
 import android.view.Window;
 import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.fragment.app.Fragment;
@@ -20,6 +19,7 @@ import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.airbnb.lottie.LottieAnimationView;
 import com.pratham.foundation.ApplicationClass;
 import com.pratham.foundation.R;
 import com.pratham.foundation.customView.BlurPopupDialog.BlurPopupWindow;
@@ -50,7 +50,7 @@ public class SelectLanguageFragment extends Fragment implements SelectLangContra
     SelectLangContract.SelectLangPresenter presenter;
 
     @ViewById(R.id.btn_back)
-    ImageView btn_back;
+    LottieAnimationView btn_back;
     @ViewById(R.id.rv_lang)
     RecyclerView recyclerView;
 

@@ -146,7 +146,7 @@ public class pictionaryFragment extends Fragment implements OnGameClose, Piction
 
     /* private boolean checkWord(String wordStr) {
         try {
-            String word = appDatabase.getKeyWordDao().checkWord(FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""), resId, wordStr);
+            String word = appDatabase.getKeyWordDao().checkWord(FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, "NA"), resId, wordStr);
             return word != null;
         } catch (Exception e) {
             e.printStackTrace();

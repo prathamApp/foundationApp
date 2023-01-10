@@ -52,7 +52,7 @@
                             android:layout_height="@dimen/_90sdp"
                             android:layout_above="@+id/text_Left_rl"
                             android:scaleType="fitXY"
-                            android:src="@drawable/khelbadi" />
+                            android:src="@drawable/khelbadi_thumb" />
 
                         <RelativeLayout
                             android:id="@+id/text_Left_rl"
@@ -132,7 +132,7 @@
                             android:layout_height="@dimen/_90sdp"
                             android:layout_above="@+id/textbot_Left_rl"
                             android:scaleType="fitXY"
-                            android:src="@drawable/khelbadi" />
+                            android:src="@drawable/khelbadi_thumb" />
 
                         <RelativeLayout
                             android:id="@+id/textbot_Left_rl"
@@ -219,7 +219,7 @@
                             android:layout_height="@dimen/_90sdp"
                             android:layout_above="@+id/text_Right_rl"
                             android:scaleType="fitXY"
-                            android:src="@drawable/khelbadi" />
+                            android:src="@drawable/khelbadi_thumb" />
 
                         <RelativeLayout
                             android:id="@+id/text_Right_rl"
@@ -300,7 +300,7 @@
                             android:layout_height="@dimen/_90sdp"
                             android:layout_above="@+id/textbot_Right_rl"
                             android:scaleType="fitXY"
-                            android:src="@drawable/khelbadi" />
+                            android:src="@drawable/khelbadi_thumb" />
 
                         <RelativeLayout
                             android:id="@+id/textbot_Right_rl"

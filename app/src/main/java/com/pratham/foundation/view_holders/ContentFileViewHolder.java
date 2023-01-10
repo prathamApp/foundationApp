@@ -1,8 +1,8 @@
 package com.pratham.foundation.view_holders;
 
 import static com.pratham.foundation.ApplicationClass.App_Thumbs_Path;
-import static com.pratham.foundation.ui.app_home.HomeActivity.drawableBg;
 import static com.pratham.foundation.utility.FC_Constants.SINGLE_RES_DOWNLOAD;
+import static com.pratham.foundation.utility.FC_Utility.getRandomCardColor;
 
 import android.annotation.SuppressLint;
 import android.net.Uri;
@@ -47,8 +47,6 @@ public class ContentFileViewHolder extends RecyclerView.ViewHolder {
     @Nullable
     ImageView ib_update_btn;
     @Nullable
-    RelativeLayout rl_loader;
-    @Nullable
     RelativeLayout rl_card;
     @Nullable
     MaterialCardView content_card_view;
@@ -64,7 +62,6 @@ public class ContentFileViewHolder extends RecyclerView.ViewHolder {
         title = itemView.findViewById(R.id.content_title);
         thumbnail = itemView.findViewById(R.id.content_image);
         content_card_view = itemView.findViewById(R.id.content_card_view);
-        rl_loader = itemView.findViewById(R.id.rl_loader);
         rl_card = itemView.findViewById(R.id.rl_card);
         ib_action_btn = itemView.findViewById(R.id.ib_action_btn);
         ib_update_btn = itemView.findViewById(R.id.ib_update_btn);
@@ -80,7 +77,6 @@ public class ContentFileViewHolder extends RecyclerView.ViewHolder {
         title = itemView.findViewById(R.id.content_title);
         thumbnail = itemView.findViewById(R.id.content_image);
         content_card_view = itemView.findViewById(R.id.content_card_view);
-        rl_loader = itemView.findViewById(R.id.rl_loader);
         rl_card = itemView.findViewById(R.id.rl_card);
         ib_action_btn = itemView.findViewById(R.id.ib_action_btn);
         ib_update_btn = itemView.findViewById(R.id.ib_update_btn);
@@ -94,12 +90,12 @@ public class ContentFileViewHolder extends RecyclerView.ViewHolder {
     public void setFileItem(ContentTable contentList, int position) {
         try {
 //        add card and its click listners
-            Objects.requireNonNull(content_card_view).setBackground(drawableBg);
+//            Objects.requireNonNull(content_card_view).setBackground(drawableBg);
+            Objects.requireNonNull(content_card_view).setBackground(ApplicationClass.getInstance().getResources().getDrawable(getRandomCardColor()));
             Objects.requireNonNull(title).setText(contentList.getNodeTitle());
             title.setSelected(true);
             Objects.requireNonNull(rl_card).setVisibility(View.VISIBLE);
-            Objects.requireNonNull(rl_loader).setVisibility(View.GONE);
-            if(contentList.getNodePercentage().equalsIgnoreCase("0"))
+            if (contentList.getNodePercentage().equalsIgnoreCase("0"))
                 Objects.requireNonNull(tv_progress).setVisibility(View.GONE);
             else {
                 Objects.requireNonNull(tv_progress).setVisibility(View.VISIBLE);
@@ -113,7 +109,7 @@ public class ContentFileViewHolder extends RecyclerView.ViewHolder {
                     ib_action_btn.setImageResource(R.drawable.ic_youtube);
                     ib_action_btn.setVisibility(View.VISIBLE);
                     ib_action_btn.setClickable(true);
-                    if(contentList.getNodePercentage().equalsIgnoreCase("0"))
+                    if (contentList.getNodePercentage().equalsIgnoreCase("0"))
                         Objects.requireNonNull(tv_progress).setVisibility(View.GONE);
                     else {
                         Objects.requireNonNull(tv_progress).setVisibility(View.VISIBLE);
@@ -125,7 +121,7 @@ public class ContentFileViewHolder extends RecyclerView.ViewHolder {
                     ib_action_btn.setClickable(false);
                 }
             } else if (contentList.getIsDownloaded().equalsIgnoreCase("true")) {
-                if(contentList.getNodePercentage().equalsIgnoreCase("0"))
+                if (contentList.getNodePercentage().equalsIgnoreCase("0"))
                     Objects.requireNonNull(tv_progress).setVisibility(View.GONE);
                 else {
                     Objects.requireNonNull(tv_progress).setVisibility(View.VISIBLE);
@@ -170,7 +166,7 @@ public class ContentFileViewHolder extends RecyclerView.ViewHolder {
                 else
                     f = new File(ApplicationClass.foundationPath +
                             "" + App_Thumbs_Path + contentList.getNodeImage());
-                if (f.exists()) {
+                if (f.exists() && !f.getName().contains("blank.png")) {
                     ImageRequest imageRequest = ImageRequestBuilder
                             .newBuilderWithSource(Uri.fromFile(f))
                             .setResizeOptions(new ResizeOptions(250, 170))
@@ -182,7 +178,9 @@ public class ContentFileViewHolder extends RecyclerView.ViewHolder {
                             .setOldController(Objects.requireNonNull(thumbnail).getController())
                             .build();
                     thumbnail.setController(controller);
-                }
+                } else
+                    Objects.requireNonNull(thumbnail).setActualImageResource(R.drawable.fc_logo);
+
             } else {
                 String thumbPath = "" + contentList.getNodeServerImage();
                 if (ApplicationClass.wiseF.isDeviceConnectedToMobileNetwork() || ApplicationClass.wiseF.isDeviceConnectedToWifiNetwork()) {
@@ -194,17 +192,19 @@ public class ContentFileViewHolder extends RecyclerView.ViewHolder {
                         thumbPath = "" + contentList.getNodeServerImage();
                     }
                 }
-                ImageRequest imageRequest = ImageRequestBuilder
-                        .newBuilderWithSource(Uri.parse(thumbPath))
-                        .setResizeOptions(new ResizeOptions(250, 170))
-                        .setLocalThumbnailPreviewsEnabled(true)
-                        .build();
-                DraweeController controller = Fresco.newDraweeControllerBuilder()
-                        .setImageRequest(imageRequest)
-                        .setOldController(Objects.requireNonNull(thumbnail).getController())
-                        .build();
-                thumbnail.setController(controller);
-
+                if (!thumbPath.contains("blank.png")) {
+                    ImageRequest imageRequest = ImageRequestBuilder
+                            .newBuilderWithSource(Uri.parse(thumbPath))
+                            .setResizeOptions(new ResizeOptions(250, 170))
+                            .setLocalThumbnailPreviewsEnabled(true)
+                            .build();
+                    DraweeController controller = Fresco.newDraweeControllerBuilder()
+                            .setImageRequest(imageRequest)
+                            .setOldController(Objects.requireNonNull(thumbnail).getController())
+                            .build();
+                    thumbnail.setController(controller);
+                } else
+                    Objects.requireNonNull(thumbnail).setActualImageResource(R.drawable.fc_logo);
             }
 
             content_card_view.setOnClickListener(new View.OnClickListener() {
@@ -259,12 +259,12 @@ public class ContentFileViewHolder extends RecyclerView.ViewHolder {
     @SuppressLint("SetTextI18n")
     public void setFragmentFileItem(ContentTable contentTable, int i, String parentName, int parentPos) {
         try {
-            Objects.requireNonNull(content_card_view).setBackground(drawableBg);
+//            Objects.requireNonNull(content_card_view).setBackground(drawableBg);
+            Objects.requireNonNull(content_card_view).setBackground(ApplicationClass.getInstance().getResources().getDrawable(getRandomCardColor()));
             Objects.requireNonNull(title).setText(contentTable.getNodeTitle());
             title.setSelected(true);
             Objects.requireNonNull(rl_card).setVisibility(View.VISIBLE);
-            Objects.requireNonNull(rl_loader).setVisibility(View.GONE);
-            if(contentTable.getNodePercentage().equalsIgnoreCase("0"))
+            if (contentTable.getNodePercentage().equalsIgnoreCase("0"))
                 Objects.requireNonNull(tv_progress).setVisibility(View.GONE);
             else {
                 Objects.requireNonNull(tv_progress).setVisibility(View.VISIBLE);
@@ -273,7 +273,7 @@ public class ContentFileViewHolder extends RecyclerView.ViewHolder {
             File file;
             if (contentTable.getIsDownloaded().equalsIgnoreCase("1") ||
                     contentTable.getIsDownloaded().equalsIgnoreCase("true")) {
-                if(contentTable.getNodePercentage().equalsIgnoreCase("0"))
+                if (contentTable.getNodePercentage().equalsIgnoreCase("0"))
                     Objects.requireNonNull(tv_progress).setVisibility(View.GONE);
                 else {
                     Objects.requireNonNull(tv_progress).setVisibility(View.VISIBLE);
@@ -315,8 +315,10 @@ public class ContentFileViewHolder extends RecyclerView.ViewHolder {
                     else
                         file = new File(ApplicationClass.foundationPath +
                                 "" + App_Thumbs_Path + contentTable.getNodeImage());
-                    if (file.exists())
+                    if (file.exists() && !file.getName().contains("blank.png"))
                         Objects.requireNonNull(thumbnail).setImageURI(Uri.fromFile(file));
+                    else
+                        Objects.requireNonNull(thumbnail).setActualImageResource(R.drawable.fc_logo);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -348,20 +350,24 @@ public class ContentFileViewHolder extends RecyclerView.ViewHolder {
                             thumbPath = "" + contentTable.getNodeServerImage();
                         }
                     }
-                    ImageRequest imageRequest = ImageRequestBuilder
-                            .newBuilderWithSource(Uri.parse(thumbPath))
-                            .setResizeOptions(new ResizeOptions(250, 170))
-                            .build();
-                    DraweeController controller = Fresco.newDraweeControllerBuilder()
-                            .setImageRequest(imageRequest)
-                            .setOldController(Objects.requireNonNull(thumbnail).getController())
-                            .build();
-                    thumbnail.setController(controller);
+                    if (!thumbPath.contains("blank.png")) {
+                        ImageRequest imageRequest = ImageRequestBuilder
+                                .newBuilderWithSource(Uri.parse(thumbPath))
+                                .setResizeOptions(new ResizeOptions(250, 170))
+                                .build();
+                        DraweeController controller = Fresco.newDraweeControllerBuilder()
+                                .setImageRequest(imageRequest)
+                                .setOldController(Objects.requireNonNull(thumbnail).getController())
+                                .build();
+                        thumbnail.setController(controller);
+                    } else
+                        Objects.requireNonNull(thumbnail).setActualImageResource(R.drawable.fc_logo);
+
 
                     if (contentTable.getResourceType().equalsIgnoreCase(FC_Constants.YOUTUBE_LINK)) {
                         Objects.requireNonNull(ib_action_btn).setImageResource(R.drawable.ic_youtube);
                         content_card_view.setOnClickListener(v -> itemClicked.onContentOpenClicked(contentTable));
-                        if(contentTable.getNodePercentage().equalsIgnoreCase("0"))
+                        if (contentTable.getNodePercentage().equalsIgnoreCase("0"))
                             Objects.requireNonNull(tv_progress).setVisibility(View.GONE);
                         else {
                             Objects.requireNonNull(tv_progress).setVisibility(View.VISIBLE);

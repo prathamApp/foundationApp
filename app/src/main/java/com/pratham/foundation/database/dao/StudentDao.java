@@ -47,7 +47,7 @@ public interface StudentDao {
     @Query("select * from Student")
     List<Student> getAllStudents();
 
-    @Query("select * from Student where GroupId='PS' OR StudentUID='PS' OR MiddleName='PS'")
+    @Query("select * from Student where GroupId='PS' OR StudentUID='PS' OR MiddleName='PS' OR MiddleName='STUD'")
     List<Student> getAllPSStudents();
 
     @Query("SELECT * FROM Student WHERE GroupId=:gID")

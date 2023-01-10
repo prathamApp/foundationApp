@@ -21,19 +21,18 @@
             android:layout_marginStart="@dimen/_2sdp"
             android:src="@drawable/ic_photo_camera" />
 
-        <com.facebook.drawee.view.SimpleDraweeView
+        <com.airbnb.lottie.LottieAnimationView
             android:id="@+id/iv_child"
             android:layout_width="@dimen/_65sdp"
             android:layout_height="@dimen/_65sdp"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="@dimen/_5sdp"
             android:layout_marginBottom="@dimen/_5sdp"
-            android:background="@android:color/transparent"
-            app:actualImageScaleType="centerInside"
-            app:placeholderImage="@drawable/b2"
-            app:roundedCornerRadius="@dimen/_33sdp"
-            app:roundingBorderColor="@color/white"
-            app:roundingBorderWidth="@dimen/_2sdp"/>
+            android:layout_alignParentTop="true"
+            app:lottie_autoPlay="true"
+            app:lottie_fileName="b1.json"
+            app:lottie_loop="true" />
+
 
             <com.pratham.foundation.customView.fontsview.SansTextViewBold
                 android:id="@+id/child_name"

@@ -438,17 +438,6 @@
         <item>LD</item>
         <item>PY</item>
     </string-array>
-    <string-array name="avatars">
-        <item>avatars/b1.png</item>
-        <item>avatars/b2.png</item>
-        <item>avatars/b3.png</item>
-        <item>avatars/g1.png</item>
-        <item>avatars/g2.png</item>
-        <item>avatars/g3.png</item>
-        <!-- <item>avatars/techno_penguin.json</item>
-        <item>avatars/biking_is_cool.json</item>
-        <item>avatars/acrobatics.json</item>-->
-    </string-array>
     <string-array name="age">
         <item>ବୟସ ଚୟନ କରନ୍ତୁ</item>
         <item> 3  </item>

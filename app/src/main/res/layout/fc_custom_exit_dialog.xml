@@ -11,14 +11,14 @@
         android:background="@color/full_transparent">
 
         <com.airbnb.lottie.LottieAnimationView
-            android:layout_width="@dimen/_70sdp"
-            android:layout_height="@dimen/_70sdp"
+            android:layout_width="@dimen/_80sdp"
+            android:layout_height="@dimen/_80sdp"
             android:layout_alignParentTop="true"
             android:layout_centerHorizontal="true"
-            android:elevation="5dp"
             android:background="@drawable/dialog_image_bg"
+            android:elevation="5dp"
             app:lottie_autoPlay="true"
-            app:lottie_fileName="walking.json"
+            app:lottie_fileName="close_lottie.json"
             app:lottie_loop="true" />
 
         <RelativeLayout
@@ -33,7 +33,7 @@
                 android:id="@+id/dia_title"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginVertical="@dimen/_10sdp"
+                android:layout_marginVertical="@dimen/_12sdp"
                 android:gravity="center"
                 android:lines="2"
                 android:paddingHorizontal="@dimen/_7sdp"
@@ -46,7 +46,7 @@
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="@dimen/_50sdp"
+            android:layout_height="@dimen/_45sdp"
             android:layout_alignParentBottom="true"
             android:layout_centerHorizontal="true"
             android:layout_marginBottom="@dimen/_5sdp"

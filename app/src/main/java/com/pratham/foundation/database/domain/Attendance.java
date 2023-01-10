@@ -35,23 +35,10 @@ public class Attendance {
                 "attendanceID=" + attendanceID +
                 ", SessionID='" + SessionID + '\'' +
                 ", StudentID='" + StudentID + '\'' +
+                ", Date='" + Date + '\'' +
+                ", GroupID='" + GroupID + '\'' +
+                ", sentFlag='" + sentFlag + '\'' +
                 '}';
-    }
-
-    public String getDate() {
-        return Date;
-    }
-
-    public void setDate(String date) {
-        Date = date;
-    }
-
-    public String getGroupID() {
-        return GroupID;
-    }
-
-    public void setGroupID(String groupID) {
-        GroupID = groupID;
     }
 
     public int getAttendanceID() {
@@ -76,5 +63,21 @@ public class Attendance {
 
     public void setStudentID(String studentID) {
         StudentID = studentID;
+    }
+
+    public String getDate() {
+        return Date;
+    }
+
+    public void setDate(String date) {
+        Date = date;
+    }
+
+    public String getGroupID() {
+        return GroupID;
+    }
+
+    public void setGroupID(String groupID) {
+        GroupID = groupID;
     }
 }

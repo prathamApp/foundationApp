@@ -1,28 +1,31 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_gravity="center">
 
     <RelativeLayout
         android:layout_width="@dimen/_240sdp"
-        android:layout_height="@dimen/_195sdp"
+        android:layout_height="@dimen/_200sdp"
         android:layout_centerInParent="true"
         android:background="@color/full_transparent">
 
-        <ImageView
-            android:layout_width="@dimen/_70sdp"
-            android:layout_height="@dimen/_70sdp"
+        <com.airbnb.lottie.LottieAnimationView
+            android:id="@+id/dl_lottie_view"
+            android:layout_width="@dimen/_80sdp"
+            android:layout_height="@dimen/_80sdp"
             android:layout_alignParentTop="true"
             android:layout_centerHorizontal="true"
-            android:elevation="5dp"
-            android:padding="5dp"
             android:background="@drawable/dialog_image_bg"
-            android:src="@drawable/g3" />
+            android:elevation="@dimen/_5sdp"
+            app:lottie_autoPlay="true"
+            app:lottie_fileName="walking.json"
+            app:lottie_loop="true" />
 
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginTop="@dimen/_45sdp"
+            android:layout_marginTop="@dimen/_50sdp"
             android:layout_marginBottom="@dimen/_35sdp"
             android:background="@drawable/dialog_bg"
             android:gravity="center">

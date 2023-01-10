@@ -4,7 +4,7 @@
     android:id="@+id/form_root"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/new_bg">
+    android:background="@drawable/stylebg2">
 
     <RelativeLayout
         android:id="@+id/top_panel"
@@ -66,7 +66,7 @@
             android:id="@+id/addBtn_l"
             android:layout_width="match_parent"
             android:layout_height="@dimen/_45sdp"
-            android:layout_marginBottom="@dimen/_10sdp"
+            android:layout_marginBottom="@dimen/_5sdp"
             android:layout_alignParentBottom="true">
 
             <com.pratham.foundation.customView.fontsview.SansButton
@@ -96,7 +96,6 @@
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginHorizontal="@dimen/_10sdp"
                 android:layout_marginTop="@dimen/_10sdp"
                 android:layout_marginBottom="@dimen/_5sdp">
 
@@ -106,6 +105,8 @@
                     android:layout_height="@dimen/_30sdp"
                     android:layout_marginBottom="@dimen/_7sdp"
                     android:background="@drawable/ripple_rectangle_card"
+                    android:layout_marginHorizontal="@dimen/_10sdp"
+                    android:elevation="@dimen/_5sdp"
                     android:clickable="true"
                     android:focusableInTouchMode="true"
                     android:hint="@string/enroll_id"
@@ -130,6 +131,8 @@
                         android:layout_width="match_parent"
                         android:layout_height="@dimen/_30sdp"
                         android:layout_alignParentTop="true"
+                        android:layout_marginHorizontal="@dimen/_10sdp"
+                        android:elevation="@dimen/_5sdp"
                         android:background="@drawable/ripple_rectangle_card"
                         android:gravity="center"
                         android:text="@string/select_avatar"
@@ -141,6 +144,8 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_below="@id/tv_select_avatar"
+                        android:layout_marginHorizontal="@dimen/_5sdp"
+                        android:elevation="@dimen/_5sdp"
                         android:clipToPadding="false"
                         android:gravity="center"
                         android:layoutAnimation="@anim/layout_fall_down"

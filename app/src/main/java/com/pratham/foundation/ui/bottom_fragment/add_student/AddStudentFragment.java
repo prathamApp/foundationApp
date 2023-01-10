@@ -211,32 +211,32 @@ public class AddStudentFragment extends DialogFragment implements AvatarClickLis
 
     private void addAvatarsInList() {
         AvatarModal avatarModal = new AvatarModal();
-        avatarModal.setAvatarName("g1.png");
+        avatarModal.setAvatarName("g1.json");
         avatarModal.setClickFlag(false);
         avatarList.add(avatarModal);
         AvatarModal avatarModal1 = new AvatarModal();
 
-        avatarModal1.setAvatarName("b1.png");
+        avatarModal1.setAvatarName("b1.json");
         avatarModal1.setClickFlag(false);
         avatarList.add(avatarModal1);
         AvatarModal avatarModal2 = new AvatarModal();
 
-        avatarModal2.setAvatarName("g2.png");
+        avatarModal2.setAvatarName("g2.json");
         avatarModal2.setClickFlag(false);
         avatarList.add(avatarModal2);
         AvatarModal avatarModal3 = new AvatarModal();
 
-        avatarModal3.setAvatarName("b2.png");
+        avatarModal3.setAvatarName("b2.json");
         avatarModal3.setClickFlag(false);
         avatarList.add(avatarModal3);
         AvatarModal avatarModal4 = new AvatarModal();
 
-        avatarModal4.setAvatarName("g3.png");
+        avatarModal4.setAvatarName("g3.json");
         avatarModal4.setClickFlag(false);
         avatarList.add(avatarModal4);
         AvatarModal avatarModal5 = new AvatarModal();
 
-        avatarModal5.setAvatarName("b3.png");
+        avatarModal5.setAvatarName("b3.json");
         avatarModal5.setClickFlag(false);
         avatarList.add(avatarModal5);
 

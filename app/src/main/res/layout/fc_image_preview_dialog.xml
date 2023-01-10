@@ -59,7 +59,7 @@
                 android:layout_marginEnd="@dimen/_8sdp"
                 android:layout_marginBottom="@dimen/_8sdp"
                 android:scaleType="fitCenter"
-                android:src="@drawable/b3" />
+                android:src="@drawable/pratham_logo" />
 
         </RelativeLayout>
 

@@ -32,7 +32,9 @@ public class ChatQuesPresenter implements ChatQuesContract.ChatQuesPresenter , A
     @Override
     public void showQuestion() {
         List<Score> scoreList;
-        String StudId = FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, "");
+        String StudId = ((FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, "").equals("")
+                    || FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, "").equals(null)) ?"NA"
+                    :FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""));
 //        if(GROUP_LOGIN)
 //            scoreList = AppDatabase.getDatabaseInstance(mContext).getScoreDao()
 //                    .getImageQuesGroups(FC_Constants.currentGroup, FC_Constants.CERTIFICATE_LBL);

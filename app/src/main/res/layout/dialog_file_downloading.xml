@@ -15,11 +15,12 @@
         android:layout_centerHorizontal="true"
         android:background="@android:color/transparent"
         android:elevation="5dp"
+        android:scaleType="fitCenter"
         app:actualImageScaleType="fitCenter"
         app:placeholderImage="@drawable/khelbadi_thumb"
         app:placeholderImageScaleType="fitCenter"
-        app:roundedCornerRadius="@dimen/_15sdp"
-        app:roundingBorderColor="@color/colorBtnGreenDark"
+        app:roundedCornerRadius="@dimen/_12sdp"
+        app:roundingBorderColor="@color/colorSignBoardLight"
         app:roundingBorderWidth="@dimen/_2sdp" />
 
     <RelativeLayout
@@ -33,7 +34,9 @@
             android:layout_width="match_parent"
             android:layout_height="@dimen/_70sdp"
             android:layout_alignParentTop="true"
+            android:layout_marginStart="@dimen/_5sdp"
             android:layout_marginTop="@dimen/_20sdp"
+            android:layout_marginEnd="@dimen/_5sdp"
             android:layout_marginBottom="@dimen/_15sdp"
             android:gravity="center"
             android:lines="2"
@@ -51,8 +54,8 @@
             android:layout_gravity="center"
             android:layout_marginBottom="@dimen/_10sdp"
             android:elevation="@dimen/_5sdp"
+            android:indeterminateTint="@color/colorSignBoardLight"
             android:theme="@style/AppTheme.RoundProgress"
-            android:indeterminateTint="@color/colorBtnGreenDark"
             android:visibility="gone" />
 
         <com.pratham.foundation.customView.progress_layout.ProgressLayout
@@ -64,11 +67,28 @@
             android:layout_marginRight="@dimen/_15sdp"
             android:layout_marginBottom="@dimen/_15sdp"
             app:c_progress="0"
+            app:c_progressColor="@color/colorSignBoardLight"
             app:c_progressRadius="@dimen/_8sdp"
-            app:c_progressColor="@color/colorBtnGreenDark"
             card_view:c_borderWidth="5dp"
             card_view:c_isShowDesc="false"
             card_view:c_max="100" />
+
+            <com.pratham.foundation.customView.fontsview.SansTextViewBold
+                android:id="@+id/dialog_progressPercentage"
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/_15sdp"
+                android:layout_alignParentBottom="true"
+                android:layout_marginLeft="@dimen/_15sdp"
+                android:layout_marginRight="@dimen/_15sdp"
+                android:layout_marginBottom="@dimen/_15sdp"
+                android:layout_centerHorizontal="true"
+                android:gravity="center"
+                android:lines="1"
+                android:text="0%"
+                android:textAlignment="center"
+                android:textColor="@color/deep_teal2"
+                android:textSize="@dimen/_12sdp" />
+
     </RelativeLayout>
 <!--    </RelativeLayout>-->
 </RelativeLayout>

@@ -1,5 +1,7 @@
 package com.pratham.foundation.ui.contentPlayer.video_view;
 
+import static com.pratham.foundation.utility.FC_Constants.gameFolderPath;
+
 import android.content.Intent;
 import android.os.Handler;
 import android.widget.VideoView;
@@ -22,8 +24,6 @@ import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.Fullscreen;
 import org.androidannotations.annotations.ViewById;
-
-import static com.pratham.foundation.utility.FC_Constants.gameFolderPath;
 
 @Fullscreen
 @EActivity(R.layout.fragment_video_view)
@@ -95,7 +95,9 @@ public class ActivityVideoView extends BaseActivity {
             contentProgress.setProgressPercentage("" + perc);
             contentProgress.setResourceId("" + resId);
             contentProgress.setSessionId("" + FastSave.getInstance().getString(FC_Constants.CURRENT_SESSION, ""));
-            contentProgress.setStudentId("" + FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""));
+            contentProgress.setStudentId("" + ((FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, "").equals("")
+                    || FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, "").equals(null)) ?"NA"
+                    :FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, "")));
             contentProgress.setUpdatedDateTime("" + FC_Utility.getCurrentDateTime());
             contentProgress.setLabel("" + label);
             contentProgress.setSentFlag(0);
@@ -117,7 +119,9 @@ public class ActivityVideoView extends BaseActivity {
             float scoredMarksInt = (float) FC_Utility.getTimeDifference(startTime, endTime);
             Score score = new Score();
             score.setSessionID(FastSave.getInstance().getString(FC_Constants.CURRENT_SESSION, ""));
-            score.setStudentID("" + FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""));
+            score.setStudentID("" + ((FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, "").equals("")
+                    || FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, "").equals(null)) ?"NA"
+                    :FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, "")));
             score.setDeviceID(FC_Utility.getDeviceID());
             score.setResourceID(resId);
             score.setQuestionId(0);
@@ -127,7 +131,9 @@ public class ActivityVideoView extends BaseActivity {
             score.setEndDateTime(endTime);
             score.setLevel(0);
             score.setLabel("video");
-            score.setSentFlag(0);
+            score.setGroupId(((FastSave.getInstance().getString(FC_Constants.CURRENT_GROUP_ID, "").equals("")
+                    || FastSave.getInstance().getString(FC_Constants.CURRENT_GROUP_ID, "").equals(null)) ? "NA"
+                    : FastSave.getInstance().getString(FC_Constants.CURRENT_GROUP_ID, "NA")));            score.setSentFlag(0);
             AppDatabase.getDatabaseInstance(ActivityVideoView.this).getScoreDao().insert(score);
             float perc = 0f;
             perc = (scoredMarksInt / (float) videoDuration) * 100;

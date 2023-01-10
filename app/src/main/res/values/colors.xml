@@ -26,6 +26,13 @@
         >
 <!--    <color name="colorBtnGreenDark">#81c784</color>-->
 <!--    <color name="colorBtnGreenLight">#c8e6c9</color>-->
+    <color name="colorbg_1_light">#c9ffb4</color>
+    <color name="colorbg_1_dark">#61A845</color>
+    <color name="colorbg_2_light">#d29ad7</color>
+    <color name="colorbg_2_dark">#AD6FB3</color>
+    <color name="colorbg_3_light">#d2d7ff</color>
+    <color name="colorbg_3_dark">#9099E3</color>
+
     <color name="colorSignBoard2">#01712F</color>
     <color name="colorBtnGreenDark">#00c853</color>
     <color name="colorBtnGreenLight">#69f0ae</color>
@@ -60,6 +67,7 @@
     <color name="gradianceCardEndColor">#FFFFC2FC</color>
     <color name="CardTransparentBg">#2DFFFFFF</color>
     <color name="CardTransparentBgNew">#C8FFFFFF</color>
+    <color name="CardTransparentBg2">#E6FFFFFF</color>
     <color name="colorProgress">#689C2D</color>
     <color name="colorGreenCorrect">#caf29b</color>
     <color name="sky_blue">#47D9CC</color>
@@ -74,7 +82,16 @@
     <color name="colorGreenDark">#7CB342</color>
     <color name="colorSignBoard">#05AF81</color>
     <color name="colorSignBoardLight">#00d1a5</color>
-<!--
+
+    <color name="colorRippleBlue">#D0F8FF</color>
+    <color name="colorRippleRed">#FFD0D0</color>
+    <color name="colorRippleGreen">#D0FFDA</color>
+    <color name="colorRippleYellow">#FFFACF</color>
+    <color name="colorRippleOrange">#FFE5CF</color>
+    <color name="colorRippleTeal">#CFFFF5</color>
+    <color name="colorRipplePurple">#FBCCFF</color>
+
+    <!--
     <color name="level_0_color">#0E2058</color>
     <color name="level_1_color">#3F5740</color>
     <color name="level_2_color">#C11012</color>
@@ -113,6 +130,7 @@
     <color name="colorBlackTransparentLight">#b2000000</color>
     <color name="ratingFilled">#FFC107</color>
     <color name="ratingFilledlight">#FDE68F</color>
+    <color name="deep_teal2">#017065</color>
     <color name="deep_teal">#ff009688</color>
     <color name="deep_teal_lite">#25D3C2</color>
     <color name="black_overlay">#66000000</color>

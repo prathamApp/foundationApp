@@ -1,5 +1,11 @@
 package com.pratham.foundation.ui.contentPlayer.sequenceLayout;
 
+import static com.pratham.foundation.ApplicationClass.BackBtnSound;
+import static com.pratham.foundation.ApplicationClass.ButtonClickSound;
+import static com.pratham.foundation.ui.contentPlayer.GameConstatnts.playInsequence;
+import static com.pratham.foundation.utility.FC_Constants.CURRENT_STUDENT_ID;
+import static com.pratham.foundation.utility.FC_Utility.dpToPx;
+
 import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
@@ -37,12 +43,6 @@ import org.androidannotations.annotations.ViewById;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-
-import static com.pratham.foundation.ApplicationClass.BackBtnSound;
-import static com.pratham.foundation.ApplicationClass.ButtonClickSound;
-import static com.pratham.foundation.ui.contentPlayer.GameConstatnts.playInsequence;
-import static com.pratham.foundation.utility.FC_Constants.CURRENT_STUDENT_ID;
-import static com.pratham.foundation.utility.FC_Utility.dpToPx;
 
 @EFragment(R.layout.fragment_sequence_layout)
 public class SequenceLayout extends Fragment implements SequeanceLayoutContract.SequenceLayoutView, ShowInstruction,
@@ -167,7 +167,9 @@ public class SequenceLayout extends Fragment implements SequeanceLayoutContract.
             GameConstatnts.gameSelector(getActivity(), onConentClickeditem, onSdCard);
            /* Bundle bundle = new Bundle();
             bundle.putString("contentPath", onConentClickeditem.getResourcePath());
-            bundle.putString("StudentID", FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""));
+            bundle.putString("StudentID", ((FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, "").equals("")
+                    || FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, "").equals(null)) ?"NA"
+                    :FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""));
             bundle.putString("resId", onConentClickeditem.getResourceId());
             bundle.putString("contentName", onConentClickeditem.getNodeTitle());
             bundle.putString("sttLang", onConentClickeditem.getContentLanguage());
@@ -250,7 +252,9 @@ public class SequenceLayout extends Fragment implements SequeanceLayoutContract.
                 case GameConstatnts.VIDEO:
                     Intent intent = new Intent(context, ActivityVideoView_.class);
                     intent.putExtra("contentPath", onConentClickeditem.getResourcePath());
-                    intent.putExtra("StudentID", FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""));
+                    intent.putExtra("StudentID", ((FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, "").equals("")
+                    || FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, "").equals(null)) ?"NA"
+                    :FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""));
                     intent.putExtra("resId", onConentClickeditem.getResourceId());
                     intent.putExtra("contentName", onConentClickeditem.getNodeTitle());
                     intent.putExtra("onSdCard", true);

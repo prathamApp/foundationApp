@@ -21,8 +21,8 @@
             app:actualImageScaleType="fitXY"
             app:placeholderImage="@drawable/khelbadi_thumb"
             app:placeholderImageScaleType="fitCenter"
-            app:roundedCornerRadius="@dimen/_15sdp"
-            app:roundingBorderColor="@color/colorBtnGreenDark"
+            app:roundedCornerRadius="@dimen/_12sdp"
+            app:roundingBorderColor="@color/red_btn_bg_color"
             app:roundingBorderWidth="@dimen/_2sdp" />
 
         <RelativeLayout

@@ -173,11 +173,12 @@ public class DisplayImageActivity extends BaseActivity{
             String endTime = FC_Utility.getCurrentDateTime();
             Score score = new Score();
             score.setSessionID(FastSave.getInstance().getString(FC_Constants.CURRENT_SESSION, ""));
-            score.setStudentID("" + FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""));
-            if(FastSave.getInstance().getString(FC_Constants.LOGIN_MODE, "").equalsIgnoreCase(FC_Constants.GROUP_MODE))
-                score.setGroupId(FastSave.getInstance().getString(FC_Constants.CURRENT_GROUP_ID, ""));
-            else
-                score.setGroupId("NA");
+            score.setStudentID(((FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, "").equals("")
+                    || FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, "").equals(null)) ? "NA"
+                    : FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, "NA")));
+            score.setGroupId(((FastSave.getInstance().getString(FC_Constants.CURRENT_GROUP_ID, "").equals("")
+                    || FastSave.getInstance().getString(FC_Constants.CURRENT_GROUP_ID, "").equals(null)) ? "NA"
+                    : FastSave.getInstance().getString(FC_Constants.CURRENT_GROUP_ID, "NA")));
             score.setDeviceID(FC_Utility.getDeviceID());
             score.setResourceID(resId);
             score.setQuestionId(0);
@@ -202,7 +203,9 @@ public class DisplayImageActivity extends BaseActivity{
             contentProgress.setProgressPercentage("" + 100);
             contentProgress.setResourceId("" + resId);
             contentProgress.setSessionId("" + FastSave.getInstance().getString(FC_Constants.CURRENT_SESSION, ""));
-            contentProgress.setStudentId("" + FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""));
+            contentProgress.setStudentId("" + ((FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, "").equals("")
+                    || FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, "").equals(null)) ?"NA"
+                    :FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, "")));
             contentProgress.setUpdatedDateTime("" + FC_Utility.getCurrentDateTime());
             contentProgress.setLabel("resourceProgress");
             contentProgress.setSentFlag(0);

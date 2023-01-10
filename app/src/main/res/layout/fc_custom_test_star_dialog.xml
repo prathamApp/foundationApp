@@ -15,10 +15,10 @@
             android:layout_height="@dimen/_70sdp"
             android:layout_alignParentTop="true"
             android:layout_centerHorizontal="true"
+            android:background="@drawable/dialog_image_bg"
             android:elevation="5dp"
             android:padding="5dp"
-            android:background="@drawable/dialog_image_bg"
-            android:src="@drawable/b1" />
+            android:src="@drawable/pratham_logo" />
 
         <ImageButton
             android:id="@+id/dia_btn_cross"

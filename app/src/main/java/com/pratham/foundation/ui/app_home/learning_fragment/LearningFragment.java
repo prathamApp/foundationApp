@@ -40,6 +40,7 @@ import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.airbnb.lottie.LottieAnimationView;
 import com.facebook.drawee.backends.pipeline.Fresco;
 import com.facebook.drawee.interfaces.DraweeController;
 import com.facebook.drawee.view.SimpleDraweeView;
@@ -203,8 +204,9 @@ public class LearningFragment extends Fragment implements LearningContract.Learn
     }
 
     String fileSize = "";
+
     @Override
-    public void setDownloadSize(String fileSize){
+    public void setDownloadSize(String fileSize) {
         this.fileSize = fileSize;
     }
 
@@ -226,9 +228,11 @@ public class LearningFragment extends Fragment implements LearningContract.Learn
                     dismissLoadingDialog();
                     resourceDownloadDialog(message.getModal_fileDownloading());
                 } else if (message.getMessage().equalsIgnoreCase(FC_Constants.FILE_DOWNLOAD_UPDATE)) {
-                    if (progressLayout != null)
+                    if (progressLayout != null) {
 //                        if (downloadNodeId.equalsIgnoreCase(modal_fileDownloading.getDownloadId()))
                         progressLayout.setCurProgress(message.getModal_fileDownloading().getProgress());
+                        dialog_progressPercentage.setText(""+message.getModal_fileDownloading().getProgress()+"%");
+                    }
                 } else if (message.getMessage().equalsIgnoreCase(FC_Constants.FRAGMENT_SELECTED) ||
                         message.getMessage().equalsIgnoreCase(FC_Constants.FRAGMENT_RESELECTED) ||
                         message.getMessage().equalsIgnoreCase(FC_Constants.ACTIVITY_RESUMED) ||
@@ -284,6 +288,7 @@ public class LearningFragment extends Fragment implements LearningContract.Learn
         try {
             dialog_file_name.setText("Loading\n" + resName + "\nPlease wait...");
             progressLayout.setVisibility(View.GONE);
+            dialog_progressPercentage.setVisibility(View.GONE);
             dialog_roundProgress.setVisibility(View.VISIBLE);
         } catch (Exception e) {
             e.printStackTrace();
@@ -553,18 +558,20 @@ public class LearningFragment extends Fragment implements LearningContract.Learn
         FC_Constants.examId = itemContent.getNodeKeywords();
         if (FastSave.getInstance().getString(FC_Constants.LOGIN_MODE, GROUP_MODE).equalsIgnoreCase(GROUP_MODE)) {
             List<Groups> groupsStudentsList;
-            groupsStudentsList = AppDatabase.getDatabaseInstance(context).getGroupsDao().GetStudentsByGroupId(FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""));
+            groupsStudentsList = AppDatabase.getDatabaseInstance(context).getGroupsDao().GetStudentsByGroupId(FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, "NA"));
             openAttendanceDialog(groupsStudentsList);
         } else {
 //        Toast.makeText(ContentDisplay.this, "Opening Pankh Practice App", Toast.LENGTH_SHORT).show();
             try {
                 String profileName = "";
-                profileName = AppDatabase.getDatabaseInstance(context).getStudentDao().getFullName(FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""));
+                profileName = AppDatabase.getDatabaseInstance(context).getStudentDao().getFullName(FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, "NA"));
 
                 Bundle bundle = new Bundle();
                 FastSave.getInstance().getString(FC_Constants.CURRENT_FOLDER_NAME, currentSubjectFolder);
                 bundle.putString("appName", "" + getResources().getString(R.string.app_name));
-                bundle.putString("studentId", "" + FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""));
+                bundle.putString("studentId", "" + ((FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, "").equals("")
+                        || FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, "").equals(null)) ? "NA"
+                        : FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, "")));
                 bundle.putString("studentName", "" + profileName);
                 bundle.putString("subjectName", "" + FastSave.getInstance().getString(FC_Constants.CURRENT_SUBJECT, ""));
                 bundle.putString("subjectLanguage", "" + itemContent.getContentLanguage());
@@ -658,6 +665,10 @@ public class LearningFragment extends Fragment implements LearningContract.Learn
             Button dia_btn_green = fcDialog.findViewById(R.id.dia_btn_green);
             Button dia_btn_red = fcDialog.findViewById(R.id.dia_btn_red);
             dia_btn_yellow.setVisibility(View.GONE);
+            LottieAnimationView dl_lottie_view = fcDialog.findViewById(R.id.dl_lottie_view);
+
+            dl_lottie_view.setAnimation("playstore_lottie.json");
+            dl_lottie_view.playAnimation();
 
             dia_btn_red.setText(context.getResources().getString(R.string.Cancel));
             dia_title.setText("Please Download Assessment App From Google Play Store");
@@ -709,7 +720,9 @@ public class LearningFragment extends Fragment implements LearningContract.Learn
                 contentList.getResourceType().equalsIgnoreCase("PreResource")) {
             Intent mainNew = new Intent(context, ContentPlayerActivity_.class);
             mainNew.putExtra("resId", contentList.getResourceId());
-            mainNew.putExtra("StudentID", FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""));
+            mainNew.putExtra("StudentID", ((FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, "").equals("")
+                    || FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, "").equals(null)) ? "NA"
+                    : FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, "")));
             mainNew.putExtra("contentName", contentList.getNodeTitle());
             mainNew.putExtra("onSdCard", contentList.isOnSDCard());
             mainNew.putExtra("contentPath", contentList.getResourcePath());
@@ -740,7 +753,9 @@ public class LearningFragment extends Fragment implements LearningContract.Learn
             } else if (contentList.getResourceType().equalsIgnoreCase(FC_Constants.CONVO_RESOURCE)) {
                 Intent mainNew = new Intent(context, ConversationActivity_.class);
                 mainNew.putExtra("storyId", contentList.getResourceId());
-                mainNew.putExtra("StudentID", FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""));
+                mainNew.putExtra("StudentID", ((FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, "").equals("")
+                        || FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, "").equals(null)) ? "NA"
+                        : FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, "")));
                 mainNew.putExtra("contentName", contentList.getNodeTitle());
                 mainNew.putExtra("onSdCard", contentList.isOnSDCard());
                 mainNew.putExtra("certiCode", contentList.getNodeDesc());
@@ -750,7 +765,9 @@ public class LearningFragment extends Fragment implements LearningContract.Learn
             } else if (contentList.getResourceType().equalsIgnoreCase(FC_Constants.COMIC_CONVO_RESOURCE)) {
                 Intent mainNew = new Intent(context, ReadingCardsActivity_.class);
                 mainNew.putExtra("storyId", contentList.getResourceId());
-                mainNew.putExtra("StudentID", FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""));
+                mainNew.putExtra("StudentID", ((FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, "").equals("")
+                        || FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, "").equals(null)) ? "NA"
+                        : FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, "")));
                 mainNew.putExtra("contentName", contentList.getNodeTitle());
                 mainNew.putExtra("onSdCard", contentList.isOnSDCard());
                 mainNew.putExtra("contentPath", contentList.getResourcePath());
@@ -759,7 +776,9 @@ public class LearningFragment extends Fragment implements LearningContract.Learn
             } else if (contentList.getResourceType().equalsIgnoreCase(FC_Constants.RHYME_RESOURCE) || contentList.getResourceType().equalsIgnoreCase(FC_Constants.STORY_RESOURCE)) {
                 Intent mainNew = new Intent(context, ReadingStoryActivity_.class);
                 mainNew.putExtra("storyId", contentList.getResourceId());
-                mainNew.putExtra("StudentID", FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""));
+                mainNew.putExtra("StudentID", ((FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, "").equals("")
+                        || FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, "").equals(null)) ? "NA"
+                        : FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, "")));
                 mainNew.putExtra("storyPath", contentList.getResourcePath());
                 mainNew.putExtra("storyTitle", contentList.getNodeTitle());
                 mainNew.putExtra("onSdCard", contentList.isOnSDCard());
@@ -769,7 +788,9 @@ public class LearningFragment extends Fragment implements LearningContract.Learn
             } /*else if (contentList.getResourceType().equalsIgnoreCase(FC_Constants.WORD_ANDROID)) {
                 Intent mainNew = new Intent(context, ReadingWordScreenActivity.class);
                 mainNew.putExtra("resId", contentList.getResourceId());
-                mainNew.putExtra("StudentID", FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""));
+                mainNew.putExtra("StudentID", ((FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, "").equals("")
+                    || FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, "").equals(null)) ?"NA"
+                    :FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""));
                 mainNew.putExtra("contentPath", contentList.getResourcePath());
                 mainNew.putExtra("onSdCard", contentList.isOnSDCard());
                 mainNew.putExtra("contentTitle", contentList.getNodeTitle());
@@ -777,7 +798,9 @@ public class LearningFragment extends Fragment implements LearningContract.Learn
             }*/ else if (contentList.getResourceType().equalsIgnoreCase(FC_Constants.PARA_ANDROID)) {
                 Intent mainNew = new Intent(context, ReadingParagraphsActivity_.class);
                 mainNew.putExtra("resId", contentList.getResourceId());
-                mainNew.putExtra("StudentID", FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""));
+                mainNew.putExtra("StudentID", ((FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, "").equals("")
+                        || FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, "").equals(null)) ? "NA"
+                        : FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, "")));
                 mainNew.putExtra("contentPath", contentList.getResourcePath());
                 mainNew.putExtra("onSdCard", contentList.isOnSDCard());
                 mainNew.putExtra("contentTitle", contentList.getNodeTitle());
@@ -786,7 +809,9 @@ public class LearningFragment extends Fragment implements LearningContract.Learn
             } else if (contentList.getResourceType().equalsIgnoreCase(FC_Constants.VOCAB_ANDROID)) {
                 Intent mainNew = new Intent(context, ReadingVocabularyActivity_.class);
                 mainNew.putExtra("resId", contentList.getResourceId());
-                mainNew.putExtra("StudentID", FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""));
+                mainNew.putExtra("StudentID", ((FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, "").equals("")
+                        || FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, "").equals(null)) ? "NA"
+                        : FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, "")));
                 mainNew.putExtra("contentPath", contentList.getResourcePath());
                 mainNew.putExtra("contentTitle", contentList.getNodeTitle());
                 mainNew.putExtra("vocabLevel", contentList.getNodeDesc());
@@ -797,7 +822,9 @@ public class LearningFragment extends Fragment implements LearningContract.Learn
             } else if (contentList.getResourceType().equalsIgnoreCase(FC_Constants.RHYMING_WORD_ANDROID)) {
                 Intent mainNew = new Intent(context, ReadingRhymesActivity_.class);
                 mainNew.putExtra("resId", contentList.getResourceId());
-                mainNew.putExtra("StudentID", FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""));
+                mainNew.putExtra("StudentID", ((FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, "").equals("")
+                        || FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, "").equals(null)) ? "NA"
+                        : FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, "")));
                 mainNew.putExtra("contentPath", contentList.getResourcePath());
                 mainNew.putExtra("contentTitle", contentList.getNodeTitle());
                 mainNew.putExtra("onSdCard", contentList.isOnSDCard());
@@ -807,7 +834,9 @@ public class LearningFragment extends Fragment implements LearningContract.Learn
             } else if (contentList.getResourceType().equalsIgnoreCase(FC_Constants.OPPOSITE_WORDS)) {
                 Intent mainNew = new Intent(context, OppositesActivity_.class);
                 mainNew.putExtra("resId", contentList.getResourceId());
-                mainNew.putExtra("StudentID", FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""));
+                mainNew.putExtra("StudentID", ((FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, "").equals("")
+                        || FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, "").equals(null)) ? "NA"
+                        : FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, "")));
                 mainNew.putExtra("contentName", contentList.getNodeTitle());
                 mainNew.putExtra("onSdCard", contentList.isOnSDCard());
                 mainNew.putExtra("contentPath", contentList.getResourcePath());
@@ -816,7 +845,9 @@ public class LearningFragment extends Fragment implements LearningContract.Learn
             } else if (contentList.getResourceType().equalsIgnoreCase(FC_Constants.MATCH_THE_PAIR)) {
                 Intent mainNew = new Intent(context, MatchThePairGameActivity.class);
                 mainNew.putExtra("resId", contentList.getResourceId());
-                mainNew.putExtra("StudentID", FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""));
+                mainNew.putExtra("StudentID", ((FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, "").equals("")
+                        || FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, "").equals(null)) ? "NA"
+                        : FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, "")));
                 mainNew.putExtra("contentName", contentList.getNodeTitle());
                 mainNew.putExtra("onSdCard", contentList.isOnSDCard());
                 mainNew.putExtra("contentPath", contentList.getResourcePath());
@@ -826,7 +857,9 @@ public class LearningFragment extends Fragment implements LearningContract.Learn
                     contentList.getResourceType().equalsIgnoreCase(FC_Constants.VIDEO)) {
                 Intent intent = new Intent(context, ActivityVideoPlayer_.class);
                 intent.putExtra("contentPath", contentList.getResourcePath());
-                intent.putExtra("StudentID", FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""));
+                intent.putExtra("StudentID", ((FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, "").equals("")
+                        || FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, "").equals(null)) ? "NA"
+                        : FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, "")));
                 intent.putExtra("resId", contentList.getResourceId());
                 intent.putExtra("contentName", contentList.getNodeTitle());
                 intent.putExtra("onSdCard", contentList.isOnSDCard());
@@ -840,7 +873,9 @@ public class LearningFragment extends Fragment implements LearningContract.Learn
                 Intent intent1 = new Intent(context, Fragment_PdfViewer_.class);
 //                Intent intent1 = new Intent(context, PDFViewActivity_.class);
                 intent1.putExtra("contentPath", contentList.getResourcePath());
-                intent1.putExtra("StudentID", FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""));
+                intent1.putExtra("StudentID", ((FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, "").equals("")
+                        || FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, "").equals(null)) ? "NA"
+                        : FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, "")));
                 intent1.putExtra("resId", contentList.getResourceId());
                 intent1.putExtra("contentName", contentList.getNodeTitle());
                 intent1.putExtra("onSdCard", contentList.isOnSDCard());
@@ -854,7 +889,9 @@ public class LearningFragment extends Fragment implements LearningContract.Learn
 //                Intent intent1 = new Intent(context, Fragment_PdfViewer_.class);
                 Intent intent2 = new Intent(context, PDFViewActivity_.class);
                 intent2.putExtra("contentPath", contentList.getResourcePath());
-                intent2.putExtra("StudentID", FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""));
+                intent2.putExtra("StudentID", ((FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, "").equals("")
+                        || FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, "").equals(null)) ? "NA"
+                        : FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, "")));
                 intent2.putExtra("resId", contentList.getResourceId());
                 intent2.putExtra("contentName", contentList.getNodeTitle());
                 intent2.putExtra("onSdCard", contentList.isOnSDCard());
@@ -867,7 +904,9 @@ public class LearningFragment extends Fragment implements LearningContract.Learn
 //                Intent intent1 = new Intent(context, Fragment_PdfViewer_.class);
                 Intent intent2 = new Intent(context, DisplayImageActivity_.class);
                 intent2.putExtra("contentPath", contentList.getResourcePath());
-                intent2.putExtra("StudentID", FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""));
+                intent2.putExtra("StudentID", ((FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, "").equals("")
+                        || FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, "").equals(null)) ? "NA"
+                        : FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, "")));
                 intent2.putExtra("resId", contentList.getResourceId());
                 intent2.putExtra("contentName", contentList.getNodeTitle());
                 intent2.putExtra("onSdCard", contentList.isOnSDCard());
@@ -953,7 +992,7 @@ public class LearningFragment extends Fragment implements LearningContract.Learn
         } catch (Exception e) {
             e.printStackTrace();
         }
-        tv_title.setText("Delete\n" + contentTableItem.getNodeTitle() + " ?");
+        tv_title.setText(context.getResources().getString(R.string.delete)+"\n" + contentTableItem.getNodeTitle() + "?");
         dia_btn_no.setOnClickListener(v -> dialog.dismiss());
         dia_btn_yes.setOnClickListener(v -> {
             presenter.deleteContent(parentPos, childPos, contentTableItem);
@@ -964,7 +1003,7 @@ public class LearningFragment extends Fragment implements LearningContract.Learn
 
     private CustomLodingDialog downloadDialog;
     private ProgressLayout progressLayout;
-    private TextView dialog_file_name;
+    private TextView dialog_file_name,dialog_progressPercentage;
     ProgressBar dialog_roundProgress;
 
     @SuppressLint("SetTextI18n")
@@ -982,6 +1021,7 @@ public class LearningFragment extends Fragment implements LearningContract.Learn
             SimpleDraweeView iv_file_trans = downloadDialog.findViewById(R.id.iv_file_trans);
             dialog_file_name = downloadDialog.findViewById(R.id.dialog_file_name);
             progressLayout = downloadDialog.findViewById(R.id.dialog_progressLayout);
+            dialog_progressPercentage = downloadDialog.findViewById(R.id.dialog_progressPercentage);
             dialog_roundProgress = downloadDialog.findViewById(R.id.dialog_roundProgress);
             ImageRequest imageRequest = ImageRequestBuilder
                     .newBuilderWithSource(Uri.parse("" + resServerImageName))
@@ -994,8 +1034,9 @@ public class LearningFragment extends Fragment implements LearningContract.Learn
                         .build();
                 iv_file_trans.setController(controller);
             }
-            dialog_file_name.setText("" + resName+fileSize);
+            dialog_file_name.setText("" + resName + fileSize);
             progressLayout.setCurProgress(modal_fileDownloading.getProgress());
+            dialog_progressPercentage.setText("0%");
             downloadDialog.show();
         } catch (Exception e) {
             e.printStackTrace();

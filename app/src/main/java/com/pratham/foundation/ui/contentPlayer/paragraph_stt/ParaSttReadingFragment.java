@@ -1,5 +1,16 @@
 package com.pratham.foundation.ui.contentPlayer.paragraph_stt;
 
+import static android.content.Context.INPUT_METHOD_SERVICE;
+import static com.pratham.foundation.ApplicationClass.ButtonClickSound;
+import static com.pratham.foundation.BaseActivity.setMute;
+import static com.pratham.foundation.ui.contentPlayer.GameConstatnts.readingImgPath;
+import static com.pratham.foundation.utility.FC_Constants.APP_SECTION;
+import static com.pratham.foundation.utility.FC_Constants.CURRENT_FOLDER_NAME;
+import static com.pratham.foundation.utility.FC_Constants.STT_REGEX;
+import static com.pratham.foundation.utility.FC_Constants.dialog_btn_cancel;
+import static com.pratham.foundation.utility.FC_Constants.gameFolderPath;
+import static com.pratham.foundation.utility.FC_Constants.sec_Test;
+
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
@@ -71,17 +82,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
-
-import static android.content.Context.INPUT_METHOD_SERVICE;
-import static com.pratham.foundation.ApplicationClass.ButtonClickSound;
-import static com.pratham.foundation.BaseActivity.setMute;
-import static com.pratham.foundation.ui.contentPlayer.GameConstatnts.readingImgPath;
-import static com.pratham.foundation.utility.FC_Constants.APP_SECTION;
-import static com.pratham.foundation.utility.FC_Constants.CURRENT_FOLDER_NAME;
-import static com.pratham.foundation.utility.FC_Constants.STT_REGEX;
-import static com.pratham.foundation.utility.FC_Constants.dialog_btn_cancel;
-import static com.pratham.foundation.utility.FC_Constants.gameFolderPath;
-import static com.pratham.foundation.utility.FC_Constants.sec_Test;
 
 
 //@EFragment(R.layout.reading_layout_xml_file)
@@ -161,8 +161,8 @@ public class ParaSttReadingFragment extends Fragment implements
     int wordCounter = 0, totalPages = 0, correctAnswerCount, pageNo = 1, quesNo = 0, quesPgNo = 0;
     float stopPlayBack = 0f, startPlayBack = 0f;
     List<Integer> readSounds = new ArrayList<>();
-    private String LOG_TAG = "VoiceRecognitionActivity", /*myCurrentSentence,*/
-            startTime;
+    private final String LOG_TAG = "VoiceRecognitionActivity"; /*myCurrentSentence,*/
+            private String startTime;
     boolean voiceStart = false, flgPerMarked = false, onSdCard;
     static boolean[] correctArr;
     static boolean[] testCorrectArr;
@@ -947,7 +947,9 @@ public class ParaSttReadingFragment extends Fragment implements
             Bundle bundle = null;
             bundle = new Bundle();
             bundle.putString("contentPath", storyPath);
-            bundle.putString("StudentID", FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""));
+            bundle.putString("StudentID", ((FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, "").equals("")
+                    || FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, "").equals(null)) ?"NA"
+                    :FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""));
             bundle.putString("resId", storyId );
             bundle.putString("contentName", storyName);
             bundle.putString("sttLang", HINDI);

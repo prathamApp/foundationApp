@@ -1,12 +1,11 @@
 package com.pratham.foundation.view_holders;
 
-import static com.pratham.foundation.ApplicationClass.getInstance;
-
 import android.annotation.SuppressLint;
 import android.net.Uri;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -35,6 +34,8 @@ public class SelectLangViewHolder extends RecyclerView.ViewHolder {
     TextView title;
     @Nullable
     RelativeLayout rl_lang_select;
+    @Nullable
+    ImageView iv_selected;
 
     private final SelectLangContract.LangItemClicked contentClicked;
     private FragmentItemClicked itemClicked;
@@ -46,6 +47,7 @@ public class SelectLangViewHolder extends RecyclerView.ViewHolder {
         title = itemView.findViewById(R.id.lang_item_tv);
         rl_lang_select = itemView.findViewById(R.id.rl_lang_select);
         content_image = itemView.findViewById(R.id.content_image);
+        iv_selected = itemView.findViewById(R.id.iv_selected);
         this.contentClicked = contentClicked;
     }
 
@@ -54,11 +56,9 @@ public class SelectLangViewHolder extends RecyclerView.ViewHolder {
 
         String currentLang = FastSave.getInstance().getString(FC_Constants.APP_LANGUAGE, "");
         if (currentLang.equalsIgnoreCase(contentList.getNodeTitle())) {
-            Objects.requireNonNull(rl_lang_select).setBackgroundResource(R.drawable.card_color_bg1);
-            Objects.requireNonNull(title).setTextColor(getInstance().getResources().getColor(R.color.white));
+            iv_selected.setVisibility(View.VISIBLE);
         } else {
-            Objects.requireNonNull(rl_lang_select).setBackgroundResource(R.drawable.card_color_bg6);
-            Objects.requireNonNull(title).setTextColor(getInstance().getResources().getColor(R.color.dark_blue));
+            iv_selected.setVisibility(View.GONE);
         }
         Objects.requireNonNull(title).setText(contentList.getNodeTitle());
         title.setSelected(true);

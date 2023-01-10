@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.pratham.foundation.customView.fontsview.SansTextViewBold
+<com.pratham.foundation.customView.fontsview.SansTextView
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:gravity="center_horizontal"
     android:id="@+id/tab"
-    android:textColor="@color/white"
-    android:textSize="@dimen/_11sdp"/>
+    android:textColor="@color/colorText"
+    android:textSize="@dimen/_10sdp"/>

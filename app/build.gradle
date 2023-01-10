@@ -1,19 +1,17 @@
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
-
 android {
-    compileSdkVersion 30
+    compileSdkVersion 33
     defaultConfig {
         applicationId "com.pratham.foundation"
         minSdkVersion 21
-        targetSdkVersion 30     
-        versionCode 57
+        targetSdkVersion 33
+        versionCode 59
         multiDexEnabled true
-        versionName "1.0.57"
+        versionName "1.0.59"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
-
     packagingOptions {
         exclude 'META-INF/rxjava.properties'
         exclude 'META-INF/NOTICE' // will not include NOTICE file
@@ -26,14 +24,12 @@ android {
         exclude 'META-INF/license'
         exclude 'META-INF/license.txt'
     }
-
     buildTypes {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
-
     lintOptions {
         checkReleaseBuilds false
         // Or, if you prefer, you can continue to check for errors in release builds,
@@ -45,7 +41,6 @@ android {
         targetCompatibility = '1.8'
     }
 }
-
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation('com.github.evgenyneu:js-evaluator-for-android:v4.0.0') {
@@ -67,13 +62,11 @@ dependencies {
     implementation 'com.github.igalata:Bubble-Picker:v0.2.4'
     implementation 'com.jakewharton:butterknife:10.0.0'
     annotationProcessor 'com.jakewharton:butterknife-compiler:10.0.0'
-
 //    In-App Update Feature
     implementation 'com.google.android.play:core:1.10.2'
     //androidAnnotations
     annotationProcessor "org.androidannotations:androidannotations:4.8.0"
     implementation "org.androidannotations:androidannotations-api:4.8.0"
-
     // Room (use 1.1.0-alpha2 for latest alpha)
     implementation 'androidx.room:room-runtime:2.3.0'
     annotationProcessor 'androidx.room:room-compiler:2.3.0'
@@ -114,31 +107,25 @@ dependencies {
 */
     // Timer library
     implementation 'com.github.anastr:flattimelib:1.0.3'
-
     //showcase
     implementation 'com.elconfidencial.bubbleshowcase:bubbleshowcase:1.0.1'
-
     implementation 'org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.4.31'
     implementation 'com.facebook.fresco:fresco:1.13.0'
     implementation 'com.facebook.fresco:animated-gif:0.14.1'
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:1.5.0"
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:1.0.1"
-
     //DiscreteSlider Android Arsenal
     implementation 'com.github.lawloretienne:discreteslider:0.0.9'
     implementation 'com.hanks:htextview-base:0.1.6'
     implementation 'com.hanks:htextview-typer:0.1.6'
-
     implementation 'androidx.palette:palette:1.0.0'
 // VideoPlayer Youtube
     implementation 'com.google.android.exoplayer:exoplayer:2.11.3'
-
 //    LongScreenshot
 //    implementation 'com.github.peter1492:LongScreenshot:1.0'
-
     //DateRangeCalendarView
     implementation 'com.archit.calendar:awesome-calendar:1.1.4'
-
 //    implementation 'com.github.barteksc:android-pdf-viewer:2.8.2'
     implementation 'com.github.barteksc:android-pdf-viewer:3.0.0-beta.5'
+
 }

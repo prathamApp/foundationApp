@@ -2,17 +2,21 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@drawable/rounded_rectangle_stroke_bg"
     android:layout_gravity="center"
     android:gravity="center"
     android:layout_margin="6dp"
+    android:padding="2dp"
     android:elevation="5dp">
 
-    <ImageView
+    <com.airbnb.lottie.LottieAnimationView
         android:id="@+id/iv_avatar"
         android:layout_width="match_parent"
-        android:layout_gravity="center"
-        android:layout_height="@dimen/_70sdp"
-        android:padding="@dimen/_5sdp"
-        android:src="@drawable/g1"/>
+        android:layout_height="@dimen/_80sdp"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        app:lottie_autoPlay="true"
+        app:lottie_fileName="b3.json"
+        app:lottie_loop="true" />
 </LinearLayout>

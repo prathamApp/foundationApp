@@ -23,12 +23,15 @@
             android:textColor="@color/red"
             android:text="Enrollment Details"/>
 
-        <ImageView
-            android:layout_below="@+id/title"
+        <com.airbnb.lottie.LottieAnimationView
             android:id="@+id/image_view"
             android:layout_width="match_parent"
             android:layout_height="@dimen/_120sdp"
-            android:scaleType="centerInside"/>
+            android:layout_below="@+id/title"
+            app:lottie_autoPlay="true"
+            app:lottie_fileName="boy1_lottie.json"
+            app:lottie_loop="true" />
+
 
         <LinearLayout
             android:id="@+id/rl_body"

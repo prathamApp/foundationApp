@@ -2,7 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/story_ll"
     android:layout_width="match_parent"
-    android:background="@drawable/activity_bkgd"
+    android:background="@drawable/stylebg2"
     android:layout_height="match_parent">
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton

@@ -2,7 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/activity_bkgd">
+    android:background="@drawable/stylebg2">
 
     <Space
         android:id="@+id/space"
@@ -58,16 +58,16 @@
             android:layout_above="@id/button_controls"
             android:layout_below="@id/keyword"
             android:layout_centerInParent="true"
+            android:layout_marginStart="@dimen/_10sdp"
+            android:layout_marginTop="@dimen/_5sdp"
+            android:layout_marginEnd="@dimen/_10sdp"
+            android:layout_marginBottom="@dimen/_10sdp"
             android:fadeScrollbars="false"
-            android:scrollbars="vertical"
+            android:gravity="center"
             android:scrollbarSize="6dp"
             android:scrollbarThumbVertical="@drawable/card_color_bg4"
             android:scrollbarTrackVertical="@drawable/scroll_bg"
-            android:layout_marginStart="@dimen/_10sdp"
-            android:layout_marginEnd="@dimen/_10sdp"
-            android:layout_marginTop="@dimen/_5sdp"
-            android:layout_marginBottom="@dimen/_10sdp"
-            android:gravity="center" />
+            android:scrollbars="vertical" />
 
     </RelativeLayout>
 </RelativeLayout>

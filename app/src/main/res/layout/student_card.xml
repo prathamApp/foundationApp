@@ -4,11 +4,9 @@
     android:id="@+id/rl_child_attendance"
     android:layout_width="@dimen/_100sdp"
     android:layout_height="match_parent"
-    android:background="@color/ghost_white"
     android:layout_margin="@dimen/_3sdp"
+    app:cardBackgroundColor="@color/ghost_white"
     app:cardCornerRadius="@dimen/_10sdp">
-<!--    android:layout_width="@dimen/_100sdp"-->
-<!--    android:layout_height="@dimen/_115sdp"-->
 
     <RelativeLayout
         android:id="@+id/rl_card"
@@ -24,19 +22,16 @@
             android:layout_marginStart="@dimen/_2sdp"
             android:src="@drawable/ic_photo_camera" />
 
-        <com.facebook.drawee.view.SimpleDraweeView
+        <com.airbnb.lottie.LottieAnimationView
             android:id="@+id/iv_child"
             android:layout_width="@dimen/_65sdp"
             android:layout_height="@dimen/_65sdp"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="@dimen/_5sdp"
             android:layout_marginBottom="@dimen/_5sdp"
-            android:background="@android:color/transparent"
-            app:actualImageScaleType="centerInside"
-            app:placeholderImage="@drawable/b2"
-            app:roundedCornerRadius="@dimen/_33sdp"
-            app:roundingBorderColor="@color/white"
-            app:roundingBorderWidth="@dimen/_2sdp"/>
+            app:lottie_autoPlay="true"
+            app:lottie_fileName="b2.json"
+            app:lottie_loop="true" />
 
         <com.pratham.foundation.customView.fontsview.SansTextViewBold
             android:id="@+id/child_name"
@@ -48,9 +43,9 @@
             android:layout_marginTop="@dimen/_2sdp"
             android:layout_marginEnd="@dimen/_5sdp"
             android:layout_marginBottom="@dimen/_1sdp"
-            android:maxLines="2"
             android:gravity="center"
             android:lines="2"
+            android:maxLines="2"
             android:text="@string/yes"
             android:textColor="@color/dark_blue"
             android:textSize="@dimen/_12sdp" />

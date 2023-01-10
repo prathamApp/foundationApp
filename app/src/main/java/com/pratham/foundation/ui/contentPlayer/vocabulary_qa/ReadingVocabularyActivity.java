@@ -1,11 +1,9 @@
 package com.pratham.foundation.ui.contentPlayer.vocabulary_qa;
 
-import static com.pratham.foundation.utility.FC_Constants.dialog_btn_cancel;
 import static com.pratham.foundation.utility.FC_Constants.gameFolderPath;
 import static com.pratham.foundation.utility.FC_Utility.dpToPx;
 
 import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -23,7 +21,6 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.RatingBar;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
@@ -33,6 +30,7 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.airbnb.lottie.LottieAnimationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.nex3z.flowlayout.FlowLayout;
 import com.pratham.foundation.ApplicationClass;
@@ -285,6 +283,10 @@ public class ReadingVocabularyActivity extends BaseActivity implements MediaCall
         Button dia_btn_yellow = dialog.findViewById(R.id.dia_btn_yellow);
         Button dia_btn_green = dialog.findViewById(R.id.dia_btn_green);
         Button dia_btn_red = dialog.findViewById(R.id.dia_btn_red);
+        LottieAnimationView dl_lottie_view = dialog.findViewById(R.id.dl_lottie_view);
+
+        dl_lottie_view.setAnimation("reading_lottie.json");
+        dl_lottie_view.playAnimation();
 
         dia_btn_green.setText(getResources().getString(R.string.Okay) + "");
         dia_btn_red.setVisibility(View.GONE);
@@ -943,7 +945,7 @@ public class ReadingVocabularyActivity extends BaseActivity implements MediaCall
 
     int correctCnt = 0, total = 0;
 
-    @SuppressLint("SetTextI18n")
+/*    @SuppressLint("SetTextI18n")
     private void showStars(boolean diaComplete) {
 
         final CustomLodingDialog dialog = new CustomLodingDialog(this, R.style.FC_DialogStyle);
@@ -1004,7 +1006,7 @@ public class ReadingVocabularyActivity extends BaseActivity implements MediaCall
             setResult(Activity.RESULT_OK, returnIntent);
             finish();
         });
-    }
+    }*/
 
     public void disableHandlers() {
         try {
@@ -1077,7 +1079,10 @@ public class ReadingVocabularyActivity extends BaseActivity implements MediaCall
         Button dia_btn_yellow = dialog.findViewById(R.id.dia_btn_yellow);
         Button dia_btn_green = dialog.findViewById(R.id.dia_btn_green);
         Button dia_btn_red = dialog.findViewById(R.id.dia_btn_red);
+        LottieAnimationView dl_lottie_view = dialog.findViewById(R.id.dl_lottie_view);
 
+        dl_lottie_view.setAnimation("close_lottie.json");
+        dl_lottie_view.playAnimation();
         dia_title.setText("" + getResources().getString(R.string.Exit));
         dia_btn_green.setText("" + getResources().getString(R.string.yes));
         dia_btn_red.setText("" + getResources().getString(R.string.no));

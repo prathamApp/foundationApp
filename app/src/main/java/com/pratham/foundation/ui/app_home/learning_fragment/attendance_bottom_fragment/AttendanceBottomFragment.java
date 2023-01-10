@@ -25,6 +25,7 @@ import android.widget.TextView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.airbnb.lottie.LottieAnimationView;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import com.google.gson.Gson;
 import com.pratham.foundation.R;
@@ -214,13 +215,15 @@ public class AttendanceBottomFragment extends BottomSheetDialogFragment
 
         try {
             String profileName = "";
-            profileName = AppDatabase.getDatabaseInstance(context).getStudentDao().getFullName(FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""));
+            profileName = AppDatabase.getDatabaseInstance(context).getStudentDao().getFullName(FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, "NA"));
 
             Bundle bundle = new Bundle();
             FastSave.getInstance().getString(FC_Constants.CURRENT_FOLDER_NAME, currentSubjectFolder);
 
             bundle.putString("appName", "" + getResources().getString(R.string.app_name));
-            bundle.putString("studentId", "" + FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""));
+            bundle.putString("studentId", "" + ((FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, "").equals("")
+                    || FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, "").equals(null)) ?"NA"
+                    :FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, "")));
             bundle.putString("studentName", "" + profileName);
             bundle.putString("subjectName", "" + FastSave.getInstance().getString(FC_Constants.CURRENT_SUBJECT, ""));
             bundle.putString("subjectLanguage", "" + FC_Constants.AssLang);
@@ -272,6 +275,10 @@ public class AttendanceBottomFragment extends BottomSheetDialogFragment
             Button dia_btn_green = fcDialog.findViewById(R.id.dia_btn_green);
             Button dia_btn_red = fcDialog.findViewById(R.id.dia_btn_red);
             dia_btn_yellow.setVisibility(View.GONE);
+            LottieAnimationView dl_lottie_view = fcDialog.findViewById(R.id.dl_lottie_view);
+
+            dl_lottie_view.setAnimation("playstore_lottie.json");
+            dl_lottie_view.playAnimation();
 
             dia_btn_red.setText(context.getResources().getString(R.string.Cancel));
             dia_title.setText("Please Download Assessment App From Google Play Store");

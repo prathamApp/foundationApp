@@ -18,7 +18,7 @@ import java.util.List;
 public class AttendanceStudentsPresenter implements AttendanceStudentsContract.AttendanceStudentsPresenter {
 
     private AttendanceStudentsContract.AttendanceStudentsView myView;
-    private Context context;
+    private final Context context;
     Gson gson;
     private List<Student> studentDBList;
     private List<Student> fragmentModalsList;
@@ -42,7 +42,9 @@ public class AttendanceStudentsPresenter implements AttendanceStudentsContract.A
 
             fragmentModalsList.clear();
             myView.clearList();
-            String sID = FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, "");
+            String sID = ((FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, "").equals("")
+                    || FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, "").equals(null)) ?"NA"
+                    :FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""));
             studentDBList = AppDatabase.getDatabaseInstance(context).getStudentDao().getGroupwiseStudents(sID);
 
             if (studentDBList != null) {

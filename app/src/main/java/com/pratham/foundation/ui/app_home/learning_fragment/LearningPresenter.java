@@ -315,7 +315,7 @@ public class LearningPresenter implements LearningContract.LearningPresenter, AP
                             resPath = ApplicationClass.contentSDPath + gameFolderPath + "/" + dwParentList.get(j).getResourcePath();
                         else
                             resPath = ApplicationClass.foundationPath + gameFolderPath + "/" + dwParentList.get(j).getResourcePath();
-                        if(!new File(resPath).exists()){
+                        if (!new File(resPath).exists()) {
                             contentTableRes.setIsDownloaded("" + false);
                             contentTableRes.setOnSDCard(false);
                         }
@@ -353,7 +353,7 @@ public class LearningPresenter implements LearningContract.LearningPresenter, AP
                             resPath = ApplicationClass.contentSDPath + gameFolderPath + "/" + dwParentList.get(j).getResourcePath();
                         else
                             resPath = ApplicationClass.foundationPath + gameFolderPath + "/" + dwParentList.get(j).getResourcePath();
-                        if(!new File(resPath).exists()){
+                        if (!new File(resPath).exists()) {
                             contentTable.setIsDownloaded("" + false);
                             contentTable.setOnSDCard(false);
                         }
@@ -387,7 +387,7 @@ public class LearningPresenter implements LearningContract.LearningPresenter, AP
                                     childResPath = ApplicationClass.contentSDPath + gameFolderPath + "/" + childDwContentList.get(i).getResourcePath();
                                 else
                                     childResPath = ApplicationClass.foundationPath + gameFolderPath + "/" + childDwContentList.get(i).getResourcePath();
-                                if(!new File(childResPath).exists()){
+                                if (!new File(childResPath).exists()) {
                                     contentChild.setIsDownloaded("" + false);
                                     contentChild.setOnSDCard(false);
                                 }
@@ -410,6 +410,8 @@ public class LearningPresenter implements LearningContract.LearningPresenter, AP
                                     }
                                     if (maxScoreChild.size() > 0) {
                                         int percent = (int) (totalScore / maxScoreChild.size());
+                                        if(percent>100)
+                                            percent = 100;
                                         contentChild.setNodePercentage("" + percent);
                                     } else {
                                         contentChild.setNodePercentage("0");
@@ -618,7 +620,9 @@ public class LearningPresenter implements LearningContract.LearningPresenter, AP
             learningView.onTestAddedToDb(testItem);
 
 //        itemContent.setIsDownloaded("true");
-//        itemContent.setStudentId("" + FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""));
+//        itemContent.setStudentId("" + ((FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, "").equals("")
+//                    || FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, "").equals(null)) ?"NA"
+//                    :FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, "")));
 //        AppDatabase.getDatabaseInstance(mContext).getContentTableDao().insert(itemContent);
     }
 
@@ -656,7 +660,7 @@ public class LearningPresenter implements LearningContract.LearningPresenter, AP
         serverContentPIList.get(pos).setNodelist(serverContentSubList);
         if (pos == size - 1) {
             createFinalList(serverContentPIList);
-        }else{
+        } else {
             subPos++;
             api_content.getAPIContent_SubLevel_PI(PI_BROWSE_SUBLEVEL, RASPBERRY_PI_BROWSE_API,
                     serverContentPIList2.get(subPos).getNodeId(), subPos, serverContentPIList2.size());
@@ -753,7 +757,9 @@ public class LearningPresenter implements LearningContract.LearningPresenter, AP
                 for (int i = 0; i < pos.size(); i++) {
                     pos.get(i).setIsDownloaded("true");
                     String studID = AppDatabase.getDatabaseInstance(mContext).getContentTableDao().getEarlierStudentId(pos.get(i).getNodeId());
-                    String currStudID = FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, "");
+                    String currStudID = ((FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, "").equals("")
+                            || FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, "").equals(null)) ? "NA"
+                            : FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""));
                     boolean studFound = false, prathamGroupFound = false;
                     if (studID != null && !studID.equalsIgnoreCase("") && !studID.equalsIgnoreCase(" ")) {
                         String[] arrOfStdId = studID.split(",");
@@ -770,7 +776,9 @@ public class LearningPresenter implements LearningContract.LearningPresenter, AP
                             }
 
                             if (!studFound) {
-                                pos.get(i).setStudentId(studID + "," + FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""));
+                                pos.get(i).setStudentId(studID + "," + ((FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, "").equals("")
+                                        || FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, "").equals(null)) ? "NA"
+                                        : FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, "")));
                             } else {
                                 pos.get(i).setStudentId(studID);
                             }
@@ -783,7 +791,9 @@ public class LearningPresenter implements LearningContract.LearningPresenter, AP
                             }
                         }
                     } else {
-                        pos.get(i).setStudentId("" + FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""));
+                        pos.get(i).setStudentId("" + ((FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, "").equals("")
+                                || FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, "").equals(null)) ? "NA"
+                                : FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, "")));
                         if (FastSave.getInstance().getBoolean(FC_Constants.PRATHAM_STUDENT, false)) {
                             pos.get(i).setStudentId("pratham_group");
                         }
@@ -796,9 +806,9 @@ public class LearningPresenter implements LearningContract.LearningPresenter, AP
                     URLConnection urlConnection = url.openConnection();
                     urlConnection.connect();
                     fileSize = "" + FC_Utility.getFileSize(urlConnection.getContentLength());
-                    learningView.setDownloadSize(" ("+fileSize+")");
+                    learningView.setDownloadSize(" (" + fileSize + ")");
                     Log.d("HP", "doInBackground: file SIZE : " + fileSize);
-                }else
+                } else
                     learningView.setDownloadSize("");
                 fileName = download_content.getDownloadurl()
                         .substring(download_content.getDownloadurl().lastIndexOf('/') + 1);
@@ -854,7 +864,9 @@ public class LearningPresenter implements LearningContract.LearningPresenter, AP
                 for (int i = 0; i < pos.size(); i++) {
                     pos.get(i).setIsDownloaded("true");
                     String studID = AppDatabase.getDatabaseInstance(mContext).getContentTableDao().getEarlierStudentId(pos.get(i).getNodeId());
-                    String currStudID = FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, "");
+                    String currStudID = ((FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, "").equals("")
+                            || FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, "").equals(null)) ? "NA"
+                            : FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""));
                     boolean studFound = false, prathamGroupFound = false;
                     if (studID != null && !studID.equalsIgnoreCase("") && !studID.equalsIgnoreCase(" ")) {
                         String[] arrOfStdId = studID.split(",");
@@ -871,7 +883,9 @@ public class LearningPresenter implements LearningContract.LearningPresenter, AP
                             }
 
                             if (!studFound) {
-                                pos.get(i).setStudentId(studID + "," + FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""));
+                                pos.get(i).setStudentId(studID + "," + ((FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, "").equals("")
+                                        || FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, "").equals(null)) ? "NA"
+                                        : FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, "")));
                             } else {
                                 pos.get(i).setStudentId(studID);
                             }
@@ -884,7 +898,9 @@ public class LearningPresenter implements LearningContract.LearningPresenter, AP
                             }
                         }
                     } else {
-                        pos.get(i).setStudentId("" + FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""));
+                        pos.get(i).setStudentId("" + ((FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, "").equals("")
+                                || FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, "").equals(null)) ? "NA"
+                                : FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, "")));
                         if (FastSave.getInstance().getBoolean(FC_Constants.PRATHAM_STUDENT, false)) {
                             pos.get(i).setStudentId("pratham_group");
                         }
@@ -1039,13 +1055,14 @@ public class LearningPresenter implements LearningContract.LearningPresenter, AP
     }
 
     int subPos = 0;
+
     public void getSubLevels_PI(List<ContentTable> serverContentList) {
         serverContentPIList = serverContentList;
         serverContentPIList2 = serverContentList;
         subPos = 0;
 //        for (int i = 0; i < serverContentList.size(); i++) {
-            api_content.getAPIContent_SubLevel_PI(PI_BROWSE_SUBLEVEL, RASPBERRY_PI_BROWSE_API,
-                    serverContentPIList2.get(subPos).getNodeId(), subPos, serverContentList.size());
+        api_content.getAPIContent_SubLevel_PI(PI_BROWSE_SUBLEVEL, RASPBERRY_PI_BROWSE_API,
+                serverContentPIList2.get(subPos).getNodeId(), subPos, serverContentList.size());
 //        }
     }
 
@@ -1303,8 +1320,12 @@ public class LearningPresenter implements LearningContract.LearningPresenter, AP
             String endTime = FC_Utility.getCurrentDateTime();
             Score score = new Score();
             score.setSessionID(FastSave.getInstance().getString(FC_Constants.CURRENT_SESSION, ""));
-            score.setStudentID("" + FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""));
-            score.setGroupId(FastSave.getInstance().getString(FC_Constants.CURRENT_GROUP_ID, ""));
+            score.setStudentID(((FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, "").equals("")
+                    || FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, "").equals(null)) ? "NA"
+                    : FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, "NA")));
+            score.setGroupId(((FastSave.getInstance().getString(FC_Constants.CURRENT_GROUP_ID, "").equals("")
+                    || FastSave.getInstance().getString(FC_Constants.CURRENT_GROUP_ID, "").equals(null)) ? "NA"
+                    : FastSave.getInstance().getString(FC_Constants.CURRENT_GROUP_ID, "NA")));
             score.setDeviceID(FC_Utility.getDeviceID());
             score.setResourceID(resId);
             score.setQuestionId(0);

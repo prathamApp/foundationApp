@@ -29,6 +29,8 @@ import android.util.Log;
 
 import androidx.documentfile.provider.DocumentFile;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.pratham.foundation.ApplicationClass;
 import com.pratham.foundation.async.GetLatestVersion;
 import com.pratham.foundation.database.AppDatabase;
@@ -62,6 +64,7 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -143,14 +146,16 @@ public class SplashPresenter implements SplashContract.SplashPresenter {
                     AppDatabase.getDatabaseInstance(context);
                     if (new File(ApplicationClass.getStoragePath().getAbsolutePath() + "/PrathamBackups/" + DB_NAME).exists())
                         copyDb = true;
-                    getSdCardPath();
+                    boolean a = getSdCardPath();
+                    Log.d("AAA", "createDatabase: "+a);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
                 callCopyDB();
             } else {
                 AppDatabase.getDatabaseInstance(context);
-                getSdCardPath();
+                boolean b = getSdCardPath();
+                Log.d("AAA", "createDatabase: "+b);
                 splashView.preShowBtn();
             }
             if (FastSave.getInstance().getString(APP_LANGUAGE, "").equalsIgnoreCase(""))
@@ -413,12 +418,23 @@ public class SplashPresenter implements SplashContract.SplashPresenter {
         try {
 //                        ArrayList<String> sdPath = FileUtils.getExtSdCardPaths(context);
 //            SQLiteDatabase db = SQLiteDatabase.openDatabase(Environment.getExternalStorageDirectory()+"/TestFc/foundation_db", null, SQLiteDatabase.OPEN_READONLY);
-            Log.d("DocumentFile Path", "foundation_db URI : "+ rootFile.findFile("foundation_db").getUri());
+            Log.d("DocumentFile Path", "foundation_db URI : "+ rootFile.findFile("FC_Content.json").getUri());
             for (DocumentFile f : rootFile.listFiles()) {
                 Log.d("DocumentFile Path", "List : " + f.getName());
                 Log.d("DocumentFile Path", "List : " + f.getUri());
             }
 
+            List<ContentTable> contentTableList;
+
+            String text = FC_Utility.loadJSONFromStorage(rootFile.findFile("FC_Content.json").getUri().toString(), "FC_Content.json");
+            // List instrumentNames = new ArrayList<>();
+            Gson gson = new Gson();
+            Type type = new TypeToken<List<ContentTable>>() {
+            }.getType();
+            contentTableList = gson.fromJson(text, type);
+            AppDatabase.getDatabaseInstance(context).getContentTableDao().insertAll(contentTableList);
+
+/*
             SQLiteDatabase db = SQLiteDatabase.openDatabase(rootFile.findFile("foundation_db").getUri().getPath(), null, SQLiteDatabase.OPEN_READONLY);
             if (db != null) {
                 //Get all data and insert it in database
@@ -465,6 +481,7 @@ public class SplashPresenter implements SplashContract.SplashPresenter {
                 }
                 BackupDatabase.backup(context);
             }
+*/
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -1141,6 +1158,7 @@ public class SplashPresenter implements SplashContract.SplashPresenter {
                                             detail.setNodeId("" + content_cursor.getString(content_cursor.getColumnIndex("nodeId")));
                                             detail.setNodeType("" + content_cursor.getString(content_cursor.getColumnIndex("nodeType")));
                                             detail.setNodeTitle("" + content_cursor.getString(content_cursor.getColumnIndex("nodeTitle")));
+                                            detail.setNodeEnglishTitle("" + content_cursor.getString(content_cursor.getColumnIndex("nodeEnglishTitle")));
                                             detail.setNodeKeywords("" + content_cursor.getString(content_cursor.getColumnIndex("nodeKeywords")));
                                             detail.setNodeAge("" + content_cursor.getString(content_cursor.getColumnIndex("nodeAge")));
                                             detail.setNodeDesc("" + content_cursor.getString(content_cursor.getColumnIndex("nodeDesc")));

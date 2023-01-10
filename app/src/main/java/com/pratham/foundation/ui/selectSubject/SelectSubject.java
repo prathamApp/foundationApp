@@ -25,7 +25,6 @@ import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.view.Window;
-import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -34,6 +33,7 @@ import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.airbnb.lottie.LottieAnimationView;
 import com.pratham.foundation.ApplicationClass;
 import com.pratham.foundation.BaseActivity;
 import com.pratham.foundation.R;
@@ -92,9 +92,11 @@ public class SelectSubject extends BaseActivity implements
     @ViewById(R.id.ib_langChange)
     ImageButton ib_langChange;
     @ViewById(R.id.btn_back)
-    ImageButton btn_back;
+    LottieAnimationView btn_back;
     @ViewById(R.id.dia_result)
-    Button dia_result;
+    TextView dia_result;
+    @ViewById(R.id.dia_btn_result)
+    ImageButton dia_btn_result;
     private Context context;
     SelectSubjectAdapter subjectAdapter;
     String studName;
@@ -152,9 +154,9 @@ public class SelectSubject extends BaseActivity implements
                                 builder.setTitle(getResources().getString(R.string.diagnostic_test_result));
                                 builder.setContentText(getResources().getString(R.string.diagnostic_test_result_msg));
                                         /*getResources().getString(R.string.Click_to_switch_levels));*/
-                                builder.setTargetView(dia_result).build();
+                                builder.setTargetView(dia_btn_result).build();
                                 break;
-                            case R.id.dia_result:
+                            case R.id.dia_btn_result:
                                 builder.setTitle(getResources().getString(R.string.app_exit));
                                 builder.setContentText(getResources().getString(R.string.app_exit_msg));
                                 builder.setTargetView(btn_back).build();
@@ -221,7 +223,7 @@ public class SelectSubject extends BaseActivity implements
             subjectAdapter = new SelectSubjectAdapter(this, subjectList);
             RecyclerView.LayoutManager mLayoutManager = new GridLayoutManager(this, 1);
             subject_recycler.setLayoutManager(mLayoutManager);
-            subject_recycler.addItemDecoration(new GridSpacingItemDecoration(1, dpToPx(this, 14), true));
+            subject_recycler.addItemDecoration(new GridSpacingItemDecoration(1, dpToPx(this, 8), true));
             subject_recycler.setItemAnimator(new DefaultItemAnimator());
             subject_recycler.setAdapter(subjectAdapter);
         } else {
@@ -337,7 +339,7 @@ public class SelectSubject extends BaseActivity implements
         onBackPressed();
     }
 
-    @Click(R.id.dia_result)
+    @Click(R.id.dia_btn_result)
     public void checkDiagnosticResult() {
         ApplicationClass.vibrator.vibrate(60);
         try {

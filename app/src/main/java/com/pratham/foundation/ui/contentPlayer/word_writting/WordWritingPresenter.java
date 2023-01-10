@@ -49,7 +49,7 @@ public class WordWritingPresenter implements WordWritingContract.WordWritingPres
 
     }
 
-    public void setView(WordWritingContract.WordWritingView view, String resId, String readingContentPath,String contentTitle) {
+    public void setView(WordWritingContract.WordWritingView view, String resId, String readingContentPath, String contentTitle) {
         this.view = view;
         this.resId = resId;
         this.readingContentPath = readingContentPath;
@@ -88,6 +88,7 @@ public class WordWritingPresenter implements WordWritingContract.WordWritingPres
         questionModel.setKeywords(new ArrayList(Arrays.asList(instrumentNames)));*/
         //view.showParagraph(questionModel);
     }
+
     public void setCompletionPercentage() {
         try {
             totalWordCount = quetionModelList.size();
@@ -110,7 +111,9 @@ public class WordWritingPresenter implements WordWritingContract.WordWritingPres
             contentProgress.setProgressPercentage("" + perc);
             contentProgress.setResourceId("" + resId);
             contentProgress.setSessionId("" + FastSave.getInstance().getString(FC_Constants.CURRENT_SESSION, ""));
-            contentProgress.setStudentId("" + FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""));
+            contentProgress.setStudentId("" + ((FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, "").equals("")
+                    || FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, "").equals(null)) ? "NA"
+                    : FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, "")));
             contentProgress.setUpdatedDateTime("" + FC_Utility.getCurrentDateTime());
             contentProgress.setLabel("" + label);
             contentProgress.setSentFlag(0);
@@ -119,13 +122,14 @@ public class WordWritingPresenter implements WordWritingContract.WordWritingPres
             e.printStackTrace();
         }
     }
+
     public void getDataList() {
         try {
             perc = getPercentage();
             Collections.shuffle(quetionModelList);
             for (int i = 0; i < quetionModelList.size(); i++) {
                 if (perc < 95) {
-                   // questionModel.add(quetionModelList.get(i));
+                    // questionModel.add(quetionModelList.get(i));
                     if (!checkWord("" + quetionModelList.get(i).getQuestion())) {
                         questionModel.add(quetionModelList.get(i));
                     }
@@ -159,7 +163,7 @@ public class WordWritingPresenter implements WordWritingContract.WordWritingPres
 
     private boolean checkWord(String wordStr) {
         try {
-            String word = AppDatabase.getDatabaseInstance(context).getKeyWordDao().checkWord(FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""),
+            String word = AppDatabase.getDatabaseInstance(context).getKeyWordDao().checkWord(FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, "NA"),
                     resId, wordStr);
             return word != null;
         } catch (Exception e) {
@@ -170,8 +174,8 @@ public class WordWritingPresenter implements WordWritingContract.WordWritingPres
 
     private int getLearntWordsCount() {
         int count = 0;
-       // count = appDatabase.getKeyWordDao().checkWordCount(FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""), resId);
-        count = AppDatabase.getDatabaseInstance(context).getKeyWordDao().checkUniqueWordCount(FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""), resId);
+        // count = appDatabase.getKeyWordDao().checkWordCount(FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, "NA"), resId);
+        count = AppDatabase.getDatabaseInstance(context).getKeyWordDao().checkUniqueWordCount(FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, "NA"), resId);
         return count;
     }
 
@@ -197,19 +201,21 @@ public class WordWritingPresenter implements WordWritingContract.WordWritingPres
                     KeyWords keyWords = new KeyWords();
                     keyWords.setResourceId(resId);
                     keyWords.setSentFlag(0);
-                    keyWords.setStudentId(FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""));
+                    keyWords.setStudentId(((FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, "").equals("")
+                            || FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, "").equals(null)) ? "NA"
+                            : FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, "NA")));
                     String key = questionModel.get(i).getQuestion();
                     keyWords.setKeyWord(key);
                     keyWords.setWordType("word");
                     keyWords.setTopic("");
                     AppDatabase.getDatabaseInstance(context).getKeyWordDao().insert(keyWords);
-                    newResId = GameConstatnts.getString(resId,contentTitle, questionModel.get(i).getQid(), imageName, questionModel.get(i).getQuestion(), "");
+                    newResId = GameConstatnts.getString(resId, contentTitle, questionModel.get(i).getQid(), imageName, questionModel.get(i).getQuestion(), "");
 
                     addScore(GameConstatnts.getInt(questionModel.get(i).getQid()), GameConstatnts.PARAGRAPH_WRITING, 0, 0, FC_Utility.getCurrentDateTime(), imageName, resId, true);
                     addScore(FC_Utility.getSubjectNo(), GameConstatnts.PARAGRAPH_WRITING, FC_Utility.getSectionCode(), 0, FC_Utility.getCurrentDateTime(), FC_Constants.IMG_LBL, newResId, false);
                     addImageOnly(resId, imageName);
                 }
-                GameConstatnts.postScoreEvent(questionModel.size(),questionModel.size());
+                GameConstatnts.postScoreEvent(questionModel.size(), questionModel.size());
                 setCompletionPercentage();
                 GameConstatnts.playGameNext(context, GameConstatnts.FALSE, (OnGameClose) view);
             }
@@ -229,8 +235,12 @@ public class WordWritingPresenter implements WordWritingContract.WordWritingPres
             score.setQuestionId(0);
             score.setScoredMarks(0);
             score.setTotalMarks(0);
-            score.setStudentID(FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""));
-            score.setGroupId(FastSave.getInstance().getString(FC_Constants.CURRENT_GROUP_ID, ""));
+            score.setStudentID(((FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, "").equals("")
+                    || FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, "").equals(null)) ? "NA"
+                    : FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, "NA")));
+            score.setGroupId(((FastSave.getInstance().getString(FC_Constants.CURRENT_GROUP_ID, "").equals("")
+                    || FastSave.getInstance().getString(FC_Constants.CURRENT_GROUP_ID, "").equals(null)) ? "NA"
+                    : FastSave.getInstance().getString(FC_Constants.CURRENT_GROUP_ID, "NA")));
             score.setStartDateTime(imageName);
             score.setDeviceID(deviceId.equals(null) ? "0000" : deviceId);
             score.setEndDateTime(FC_Utility.getCurrentDateTime());
@@ -253,8 +263,12 @@ public class WordWritingPresenter implements WordWritingContract.WordWritingPres
             score.setQuestionId(wID);
             score.setScoredMarks(scoredMarks);
             score.setTotalMarks(totalMarks);
-            score.setStudentID(FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""));
-            score.setGroupId(FastSave.getInstance().getString(FC_Constants.CURRENT_GROUP_ID, ""));
+            score.setStudentID(((FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, "").equals("")
+                    || FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, "").equals(null)) ? "NA"
+                    : FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, "NA")));
+            score.setGroupId(((FastSave.getInstance().getString(FC_Constants.CURRENT_GROUP_ID, "").equals("")
+                    || FastSave.getInstance().getString(FC_Constants.CURRENT_GROUP_ID, "").equals(null)) ? "NA"
+                    : FastSave.getInstance().getString(FC_Constants.CURRENT_GROUP_ID, "NA")));
             score.setStartDateTime(resStartTime);
             score.setDeviceID(deviceId.equals(null) ? "0000" : deviceId);
             score.setEndDateTime(FC_Utility.getCurrentDateTime());
@@ -263,7 +277,7 @@ public class WordWritingPresenter implements WordWritingContract.WordWritingPres
             score.setSentFlag(0);
             AppDatabase.getDatabaseInstance(context).getScoreDao().insert(score);
 
-            if (FastSave.getInstance().getString(APP_SECTION,"").equalsIgnoreCase(sec_Test) && addInAssessment) {
+            if (FastSave.getInstance().getString(APP_SECTION, "").equalsIgnoreCase(sec_Test) && addInAssessment) {
                 Assessment assessment = new Assessment();
                 assessment.setResourceIDa(resId);
                 assessment.setSessionIDa(FastSave.getInstance().getString(FC_Constants.ASSESSMENT_SESSION, ""));

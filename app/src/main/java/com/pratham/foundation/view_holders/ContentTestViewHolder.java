@@ -103,6 +103,8 @@ public class ContentTestViewHolder extends RecyclerView.ViewHolder {
                             "" + App_Thumbs_Path + contentList.getNodeImage());
                 if (file.exists())
                     Objects.requireNonNull(itemImage).setImageURI(Uri.fromFile(file));
+                else
+                    Objects.requireNonNull(itemImage).setActualImageResource(R.drawable.assessment_thumb);
             } else {
                 ImageRequest imageRequest = ImageRequestBuilder
                         .newBuilderWithSource(Uri.parse(contentList.getNodeServerImage()))
@@ -167,6 +169,9 @@ public class ContentTestViewHolder extends RecyclerView.ViewHolder {
                             "" + App_Thumbs_Path + contentTable.getNodeImage());
                 if (file.exists())
                     Objects.requireNonNull(itemImage).setImageURI(Uri.fromFile(file));
+                else
+                    Objects.requireNonNull(itemImage).setActualImageResource(R.drawable.assessment_thumb);
+
             } else {
                 ImageRequest imageRequest = ImageRequestBuilder
                         .newBuilderWithSource(Uri.parse(contentTable.getNodeServerImage()))
@@ -211,6 +216,9 @@ public class ContentTestViewHolder extends RecyclerView.ViewHolder {
                         "" + App_Thumbs_Path + contentTable.getNodeImage());
             if (file.exists())
                 Objects.requireNonNull(itemImage).setImageURI(Uri.fromFile(file));
+            else
+                Objects.requireNonNull(itemImage).setActualImageResource(R.drawable.assessment_thumb);
+
         } else {
             ImageRequest imageRequest = ImageRequestBuilder
                     .newBuilderWithSource(Uri.parse(contentTable.getNodeServerImage()))

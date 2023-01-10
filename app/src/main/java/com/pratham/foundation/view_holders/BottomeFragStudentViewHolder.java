@@ -1,6 +1,7 @@
 package com.pratham.foundation.view_holders;
 
 import static com.pratham.foundation.ui.bottom_fragment.BottomStudentsFragment.groupClicked;
+import static com.pratham.foundation.utility.FC_Utility.getRandomRippleBG;
 
 import android.annotation.SuppressLint;
 import android.view.View;
@@ -12,7 +13,7 @@ import android.widget.TextView;
 import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.facebook.drawee.view.SimpleDraweeView;
+import com.airbnb.lottie.LottieAnimationView;
 import com.google.android.material.card.MaterialCardView;
 import com.pratham.foundation.ApplicationClass;
 import com.pratham.foundation.R;
@@ -34,7 +35,7 @@ public class BottomeFragStudentViewHolder extends RecyclerView.ViewHolder {
     @Nullable
     TextView studentName, group_name,child_enroll_id;
     @Nullable
-    SimpleDraweeView avatar, iv_grp;
+    LottieAnimationView avatar,iv_grp;
     @Nullable
     RelativeLayout rl_card, rl_root;
     @Nullable
@@ -83,47 +84,40 @@ public class BottomeFragStudentViewHolder extends RecyclerView.ViewHolder {
         try {
             if(fragmentModalsList.getEnrollmentID() != null && !fragmentModalsList.getEnrollmentID().equalsIgnoreCase("PS")) {
 //                AppDatabase.getDatabaseInstance().getStudentDao().getEnrollMentId(fragmentModalsList.getStudentID());
-                Objects.requireNonNull(child_enroll_id).setText("Id: "+fragmentModalsList.getEnrollmentID());
+                Objects.requireNonNull(child_enroll_id).setText("ID: "+fragmentModalsList.getEnrollmentID());
             }else
-                Objects.requireNonNull(child_enroll_id).setText("Id: "+fragmentModalsList.getStudentID());
+                Objects.requireNonNull(child_enroll_id).setText("ID: "+fragmentModalsList.getStudentID());
             Objects.requireNonNull(child_enroll_id).setSelected(true);
             Objects.requireNonNull(studentName).setText(fragmentModalsList.getFullName());
 //            Objects.requireNonNull(studentName).setSelected(true);
             if (groupClicked) {
                 if (fragmentModalsList.getGender().equalsIgnoreCase("male")) {
-                    Objects.requireNonNull(avatar).setImageResource(FC_Utility.getRandomMaleAvatar(ApplicationClass.getInstance()));
-                } else
-                    Objects.requireNonNull(avatar).setImageResource(FC_Utility.getRandomFemaleAvatar(ApplicationClass.getInstance()));
-            } else if (fragmentModalsList.getAvatarName() != null)
-                switch (fragmentModalsList.getAvatarName()) {
-                    case "b1.png":
-                        Objects.requireNonNull(avatar).setImageResource(R.drawable.b1);
-                        break;
-                    case "b2.png":
-                        Objects.requireNonNull(avatar).setImageResource(R.drawable.b2);
-                        break;
-                    case "b3.png":
-                        Objects.requireNonNull(avatar).setImageResource(R.drawable.b3);
-                        break;
-                    case "g1.png":
-                        Objects.requireNonNull(avatar).setImageResource(R.drawable.g1);
-                        break;
-                    case "g2.png":
-                        Objects.requireNonNull(avatar).setImageResource(R.drawable.g2);
-                        break;
-                    case "g3.png":
-                        Objects.requireNonNull(avatar).setImageResource(R.drawable.g3);
-                        break;
+                    Objects.requireNonNull(avatar).setAnimation(""+FC_Utility.getRandomMaleAvatar());
+                    Objects.requireNonNull(avatar).playAnimation();
+                } else {
+                    Objects.requireNonNull(avatar).setAnimation(""+FC_Utility.getRandomFemaleAvatar());
+                    Objects.requireNonNull(avatar).playAnimation();
                 }
-            else
-                Objects.requireNonNull(avatar).setImageResource(R.drawable.b2);
+            } else if (fragmentModalsList.getAvatarName() != null) {
+                if(fragmentModalsList.getAvatarName().contains(".png")) {
+                    String temp = fragmentModalsList.getAvatarName().substring(0,2);
+                    Objects.requireNonNull(avatar).setAnimation(temp+".json");
+                    Objects.requireNonNull(avatar).playAnimation();
+                }else if (fragmentModalsList.getAvatarName().contains(".json")) {
+                    Objects.requireNonNull(avatar).setAnimation("" + fragmentModalsList.getAvatarName());
+                    Objects.requireNonNull(avatar).playAnimation();
+                }
+            }else {
+                Objects.requireNonNull(avatar).setAnimation("g1.json");
+                Objects.requireNonNull(avatar).playAnimation();
+            }
 
             if (fragmentModalsList.isChecked()) {
-                rl_card.setBackground(ApplicationClass.getInstance().getResources().getDrawable(R.drawable.card_color_bg1));
+                rl_child_attendance.setBackground(ApplicationClass.getInstance().getResources().getDrawable(R.drawable.card_color_bg1));
                 studentName.setTextColor(ApplicationClass.getInstance().getResources().getColor(R.color.white));
                 child_enroll_id.setTextColor(ApplicationClass.getInstance().getResources().getColor(R.color.white));
             } else {
-                rl_card.setBackground(ApplicationClass.getInstance().getResources().getDrawable(R.drawable.card_color_bg6));
+                rl_child_attendance.setBackground(ApplicationClass.getInstance().getResources().getDrawable(getRandomRippleBG()));
                 studentName.setTextColor(ApplicationClass.getInstance().getResources().getColor(R.color.dark_blue));
                 child_enroll_id.setTextColor(ApplicationClass.getInstance().getResources().getColor(R.color.dark_blue));
             }
@@ -138,7 +132,7 @@ public class BottomeFragStudentViewHolder extends RecyclerView.ViewHolder {
         if(file.exists())
             Objects.requireNonNull(avatar).setImageURI(Uri.fromFile(file));
 */
-            Objects.requireNonNull(rl_card).setOnClickListener(v -> studentClickListener.onStudentClick(fragmentModalsList, pos));
+            Objects.requireNonNull(rl_child_attendance).setOnClickListener(v -> studentClickListener.onStudentClick(fragmentModalsList, pos));
             setSlideAnimations(Objects.requireNonNull(rl_child_attendance));
         } catch (Exception e) {
             e.printStackTrace();
@@ -150,12 +144,13 @@ public class BottomeFragStudentViewHolder extends RecyclerView.ViewHolder {
                                      BottomStudentsContract.StudentClickListener studentClickListener) {
 
         try {
-            Objects.requireNonNull(child_enroll_id).setText("Id: "+fragmentModalsList.getEnrollmentID());
+            Objects.requireNonNull(child_enroll_id).setText("ID: "+fragmentModalsList.getEnrollmentID());
             Objects.requireNonNull(child_enroll_id).setSelected(true);
             Objects.requireNonNull(group_name).setText(fragmentModalsList.getFullName());
             Objects.requireNonNull(group_name).setSelected(true);
-            Objects.requireNonNull(iv_grp).setImageResource(R.drawable.ic_grp_btn);
+//            Objects.requireNonNull(iv_grp).setImageResource(R.drawable.ic_grp_btn);
             setSlideAnimations(Objects.requireNonNull(group_card));
+            group_card.setBackground(ApplicationClass.getInstance().getResources().getDrawable(getRandomRippleBG()));
 /*
         File file;
         file = new File(ApplicationClass.contentSDPath +
@@ -167,7 +162,7 @@ public class BottomeFragStudentViewHolder extends RecyclerView.ViewHolder {
             Objects.requireNonNull(avatar).setImageURI(Uri.fromFile(file));
 */
 
-            Objects.requireNonNull(rl_root).setOnClickListener(v ->
+            Objects.requireNonNull(group_card).setOnClickListener(v ->
                     studentClickListener.onGroupClick(fragmentModalsList.getFullName(),
                     fragmentModalsList.getStudentID(),fragmentModalsList.getGroupId()));
         } catch (Exception e) {
@@ -192,10 +187,13 @@ public class BottomeFragStudentViewHolder extends RecyclerView.ViewHolder {
             Objects.requireNonNull(studentName).setText(student.getFullName());
             Objects.requireNonNull(studentName).setSelected(true);
             if (student.getGender().equalsIgnoreCase("male")) {
-                Objects.requireNonNull(avatar).setImageResource(FC_Utility.getRandomMaleAvatar(ApplicationClass.getInstance()));
-            } else
-                Objects.requireNonNull(avatar).setImageResource(FC_Utility.getRandomFemaleAvatar(ApplicationClass.getInstance()));
-            Objects.requireNonNull(rl_card).setOnClickListener(v -> studentClickListener.onStudentClick(student, position));
+                Objects.requireNonNull(avatar).setAnimation(""+FC_Utility.getRandomMaleAvatar());
+                Objects.requireNonNull(avatar).playAnimation();
+            } else {
+                Objects.requireNonNull(avatar).setAnimation(""+FC_Utility.getRandomFemaleAvatar());
+                Objects.requireNonNull(avatar).playAnimation();
+            }
+            Objects.requireNonNull(rl_child_attendance).setOnClickListener(v -> studentClickListener.onStudentClick(student, position));
             setSlideAnimations(Objects.requireNonNull(rl_child_attendance));
         } catch (Exception e) {
             e.printStackTrace();

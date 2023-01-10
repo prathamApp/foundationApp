@@ -34,6 +34,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.Window;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -107,7 +108,7 @@ public class HomeActivity extends BaseActivity implements LevelChanged, API_Cont
     @ViewById(R.id.tabLayout)
     TabLayout tabLayout;
     @ViewById(R.id.iv_refresh)
-    ImageView iv_refresh;
+    ImageButton iv_refresh;
     @ViewById(R.id.header_rl)
     public static RelativeLayout header_rl;
     @ViewById(R.id.submarine)
@@ -130,7 +131,7 @@ public class HomeActivity extends BaseActivity implements LevelChanged, API_Cont
     @DrawableRes(R.drawable.home_header_4_bg)
     Drawable homeHeader4;
     @ViewById(R.id.main_back)
-    ImageView main_back;
+    LottieAnimationView main_back;
 //    @ViewById(R.id.floating_info)
 //    FloatingActionButton floating_info;
 
@@ -719,7 +720,7 @@ public class HomeActivity extends BaseActivity implements LevelChanged, API_Cont
     }
 
     @UiThread
-    @Click({R.id.iv_refresh, R.id.refresh_shd})
+    @Click({R.id.iv_refresh})
     public void levelRefresh() {
         ApplicationClass.vibrator.vibrate(60);
         EventMessage eventMessage = new EventMessage();

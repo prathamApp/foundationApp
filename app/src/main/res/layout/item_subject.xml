@@ -8,12 +8,12 @@
     android:layout_marginTop="@dimen/_5sdp"
     android:layout_marginEnd="@dimen/_5sdp"
     android:elevation="@dimen/_3sdp"
-    android:background="@drawable/ripple_rectangle_card">
+    android:background="@drawable/ripple_oval_card1">
 
     <com.facebook.drawee.view.SimpleDraweeView
         android:id="@+id/content_thumbnail"
         android:layout_width="200dp"
-        android:layout_height="100dp"
+        android:layout_height="120dp"
         android:background="@android:color/transparent"
         android:elevation="@dimen/_3sdp"
         app:actualImageScaleType="fitCenter" />
@@ -23,16 +23,15 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
-        android:layout_gravity="center"
-        android:layout_marginStart="@dimen/_5sdp"
-        android:layout_marginEnd="@dimen/_5sdp"
+        android:layout_marginStart="@dimen/_10sdp"
+        android:layout_marginEnd="@dimen/_15sdp"
         android:layout_toEndOf="@+id/content_thumbnail"
         android:paddingTop="@dimen/_8sdp"
         android:paddingBottom="@dimen/_8sdp"
         android:text="Subject"
-        android:textAlignment="center"
+        android:textAlignment="viewStart"
         android:textAllCaps="true"
         android:textColor="@color/colorText"
-        android:textSize="@dimen/_12sdp" />
+        android:textSize="@dimen/_18sdp" />
 
 </RelativeLayout>

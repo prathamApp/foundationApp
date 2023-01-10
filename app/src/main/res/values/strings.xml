@@ -435,15 +435,12 @@
         <item>PY</item>
     </string-array>
     <string-array name="avatars">
-        <item>avatars/b1.png</item>
-        <item>avatars/b2.png</item>
-        <item>avatars/b3.png</item>
-        <item>avatars/g1.png</item>
-        <item>avatars/g2.png</item>
-        <item>avatars/g3.png</item>
-        <!-- <item>avatars/techno_penguin.json</item>
-        <item>avatars/biking_is_cool.json</item>
-        <item>avatars/acrobatics.json</item>-->
+        <item>b1.json</item>
+        <item>b2.json</item>
+        <item>b3.json</item>
+        <item>g1.json</item>
+        <item>g2.json</item>
+        <item>g3.json</item>
     </string-array>
     <string-array name="age">
         <item>Select Age</item>

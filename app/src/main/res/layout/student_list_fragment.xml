@@ -19,7 +19,7 @@
         android:textSize="@dimen/_10sdp"
         android:visibility="gone" />
 
-    <com.pratham.foundation.customView.fontsview.SansTextView
+    <com.pratham.foundation.customView.fontsview.SansTextViewBold
         android:id="@+id/version_tv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -107,7 +107,7 @@
             android:elevation="@dimen/_3sdp"
             android:text="@string/create_profile"
             android:textColor="@color/white"
-            android:textSize="@dimen/_12sdp"
+            android:textSize="@dimen/_14sdp"
             android:visibility="visible" />
 
         <com.pratham.foundation.customView.fontsview.SansButton
@@ -122,7 +122,7 @@
             android:elevation="@dimen/_3sdp"
             android:text="@string/enroll_id"
             android:textColor="@color/white"
-            android:textSize="@dimen/_12sdp"
+            android:textSize="@dimen/_14sdp"
             android:visibility="visible" />
     </LinearLayout>
 

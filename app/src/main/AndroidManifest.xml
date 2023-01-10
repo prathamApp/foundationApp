@@ -243,6 +243,7 @@
         <receiver
             android:name=".services.OTGListener"
             android:enabled="true"
+            android:exported="true"
             tools:ignore="IntentFilterExportedReceiver">
             <intent-filter>
                 <action android:name="android.hardware.usb.action.USB_DEVICE_ATTACHED" />

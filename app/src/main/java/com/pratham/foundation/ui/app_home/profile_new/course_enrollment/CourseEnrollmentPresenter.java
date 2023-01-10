@@ -107,7 +107,9 @@ public class CourseEnrollmentPresenter implements CourseEnrollmentContract.Cours
     @Override
     public void addCourseToDb(String week, ContentTable selectedCourse, Calendar startDate, Calendar endDate) {
         boolean isCourseAlreadyEnrolled = false, errorCourse = false;
-        String studentId = FastSave.getInstance().getString(CURRENT_STUDENT_ID, "");
+        String studentId = (FastSave.getInstance().getString(CURRENT_STUDENT_ID, "").equals("")
+                || FastSave.getInstance().getString(CURRENT_STUDENT_ID, "").equals(null)) ? "NA" :
+                FastSave.getInstance().getString(CURRENT_STUDENT_ID, "NA");
         String groupId = FastSave.getInstance().getString(CURRENT_GROUP_ID, "");
         try {
             List<Model_CourseEnrollment> courseEnrollments = enrolledCoursesFromDb(week, groupId);

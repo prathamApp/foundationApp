@@ -3,7 +3,7 @@
     android:id="@+id/ll_convo_main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/activity_bkgd"
+    android:background="@drawable/stylebg2"
     android:elevation="@dimen/_5sdp"
     android:orientation="vertical">
 

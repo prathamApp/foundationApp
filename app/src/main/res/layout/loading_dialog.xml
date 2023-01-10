@@ -5,8 +5,8 @@
     android:layout_gravity="center"
     app:cardBackgroundColor="@color/white"
     app:strokeWidth="@dimen/_3sdp"
-    app:strokeColor="@color/colorBtnRedLight"
-    app:cardCornerRadius="@dimen/_20sdp">
+    app:strokeColor="@color/strokeColor"
+    app:cardCornerRadius="@dimen/_75sdp">
 
     <com.airbnb.lottie.LottieAnimationView
         android:layout_centerHorizontal="true"
@@ -14,7 +14,7 @@
         android:layout_height="match_parent"
         android:layout_margin="@dimen/_5sdp"
         app:lottie_autoPlay="true"
-        app:lottie_fileName="stopwatch.json"
+        app:lottie_fileName="sand_clock.json"
         app:lottie_loop="true" />
 
 </com.google.android.material.card.MaterialCardView>

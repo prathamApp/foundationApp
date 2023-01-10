@@ -176,7 +176,9 @@ public class OppositesPresenter implements OppositesContract.OppositesPresenter 
             contentProgress.setProgressPercentage("" + perc);
             contentProgress.setResourceId("" + resId);
             contentProgress.setSessionId("" + FastSave.getInstance().getString(FC_Constants.CURRENT_SESSION, ""));
-            contentProgress.setStudentId("" + FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""));
+            contentProgress.setStudentId("" + ((FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, "").equals("")
+                    || FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, "").equals(null)) ?"NA"
+                    :FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, "")));
             contentProgress.setUpdatedDateTime("" + FC_Utility.getCurrentDateTime());
             contentProgress.setLabel("" + label);
             contentProgress.setSentFlag(0);
@@ -211,9 +213,13 @@ public class OppositesPresenter implements OppositesContract.OppositesPresenter 
             score.setQuestionId(0);
             score.setScoredMarks(scoredMarks);
             score.setTotalMarks(totalMarks);
-            score.setStudentID(FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""));
-            score.setGroupId(FastSave.getInstance().getString(FC_Constants.CURRENT_GROUP_ID, ""));
-            score.setStartDateTime(resStartTime);
+score.setStudentID(((FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, "").equals("")
+                            || FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, "").equals(null)) ? "NA"
+                            : FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, "NA")));
+                    score.setGroupId(((FastSave.getInstance().getString(FC_Constants.CURRENT_GROUP_ID, "").equals("")
+                            || FastSave.getInstance().getString(FC_Constants.CURRENT_GROUP_ID, "").equals(null)) ? "NA"
+                            : FastSave.getInstance().getString(FC_Constants.CURRENT_GROUP_ID, "NA")));
+                                        score.setStartDateTime(resStartTime);
             score.setDeviceID("" + perc);
             score.setEndDateTime(COSApplication.getCurrentDateTime());
             score.setLevel(0);
@@ -229,13 +235,13 @@ public class OppositesPresenter implements OppositesContract.OppositesPresenter 
 
     private int getLearntWordsCount() {
         int count = 0;
-        count = AppDatabase.getDatabaseInstance(context).getKeyWordDao().checkWordCount(FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""), resId);
+        count = AppDatabase.getDatabaseInstance(context).getKeyWordDao().checkWordCount(FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, "NA"), resId);
         return count;
     }
 
     private boolean checkWord(String wordStr) {
         try {
-            String word = AppDatabase.getDatabaseInstance(context).getKeyWordDao().checkWord(FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""), resId, wordStr);
+            String word = AppDatabase.getDatabaseInstance(context).getKeyWordDao().checkWord(FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, "NA"), resId, wordStr);
             return word != null;
         } catch (Exception e) {
             e.printStackTrace();
@@ -249,7 +255,7 @@ public class OppositesPresenter implements OppositesContract.OppositesPresenter 
             KeyWords keyWords = new KeyWords();
             keyWords.setResourceId(resId);
             keyWords.setSentFlag(0);
-            keyWords.setStudentId(FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""));
+            keyWords.setStudentId(FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, "NA"));
             keyWords.setKeyWord(modalReadingVocabulary.getConvoTitle());
             keyWords.setWordType("word");
             keyWords.setTopic(gameName);
@@ -267,7 +273,7 @@ public class OppositesPresenter implements OppositesContract.OppositesPresenter 
             score.setQuestionId(wID);
             score.setScoredMarks(scoredMarks);
             score.setTotalMarks(totalMarks);
-            score.setStudentID(FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""));
+            score.setStudentID(FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, "NA"));
             score.setGroupId(FastSave.getInstance().getString(FC_Constants.CURRENT_GROUP_ID, ""));
             score.setStartDateTime(resStartTime);
             score.setDeviceID(deviceId.equals(null) ? "0000" : deviceId);

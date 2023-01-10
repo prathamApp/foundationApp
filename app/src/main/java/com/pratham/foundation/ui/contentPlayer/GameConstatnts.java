@@ -12,6 +12,7 @@ import android.view.Window;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.airbnb.lottie.LottieAnimationView;
 import com.google.gson.Gson;
 import com.pratham.foundation.R;
 import com.pratham.foundation.customView.display_image_dialog.CustomLodingDialog;
@@ -128,7 +129,9 @@ public class GameConstatnts implements ShowInstruction {
                     ContentTable contentTable1 = gameList.get(i);
                     Bundle bundle = new Bundle();
                     bundle.putString("contentPath", contentTable1.getResourcePath());
-                    bundle.putString("StudentID", FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""));
+                    bundle.putString("StudentID", ((FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, "").equals("")
+                    || FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, "").equals(null)) ?"NA"
+                    :FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""));
                     bundle.putString("resId", contentTable1.getResourceId());
                     bundle.putString("contentName", contentTable1.getNodeTitle());
                     bundle.putBoolean("onSdCard", true);
@@ -145,7 +148,9 @@ public class GameConstatnts implements ShowInstruction {
                 ContentTable contentTable1 = gameList.get(i);
                 Bundle bundle = new Bundle();
                 bundle.putString("contentPath", contentTable1.getResourcePath());
-                bundle.putString("StudentID", FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""));
+                bundle.putString("StudentID", ((FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, "").equals("")
+                    || FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, "").equals(null)) ?"NA"
+                    :FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""));
                 bundle.putString("resId", contentTable1.getResourceId());
                 bundle.putString("contentName", contentTable1.getNodeTitle());
                 bundle.putBoolean("onSdCard", true);
@@ -170,6 +175,10 @@ public class GameConstatnts implements ShowInstruction {
         Button dia_btn_yellow = dialog.findViewById(R.id.dia_btn_yellow);
         Button dia_btn_green = dialog.findViewById(R.id.dia_btn_green);
         Button dia_btn_red = dialog.findViewById(R.id.dia_btn_red);
+        LottieAnimationView dl_lottie_view = dialog.findViewById(R.id.dl_lottie_view);
+        dl_lottie_view.setAnimation("next_lottie.json");
+        dl_lottie_view.playAnimation();
+        dl_lottie_view.setBackground(context.getResources().getDrawable(R.drawable.dialog_image_bg));
 
         dia_btn_green.setText(context.getResources().getString(R.string.Okay));
         dia_btn_red.setText(context.getResources().getString(R.string.Exit));
@@ -274,7 +283,9 @@ public class GameConstatnts implements ShowInstruction {
         Bundle bundle = null;
         bundle = new Bundle();
         bundle.putString("contentPath", contentTable1.getResourcePath());
-        bundle.putString("StudentID", FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""));
+        bundle.putString("StudentID", ((FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, "").equals("")
+                    || FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, "").equals(null)) ?"NA"
+                    :FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, "")));
         bundle.putString("resId", contentTable1.getResourceId());
         bundle.putString("contentName", contentTable1.getNodeTitle());
         bundle.putString("sttLang", contentTable1.getContentLanguage());
@@ -362,7 +373,9 @@ public class GameConstatnts implements ShowInstruction {
         if (contentTable1 != null) {
             Bundle bundle = new Bundle();
             bundle.putString("contentPath", contentTable1.getResourcePath());
-            bundle.putString("StudentID", FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""));
+            bundle.putString("StudentID", ((FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, "").equals("")
+                    || FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, "").equals(null)) ?"NA"
+                    :FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, "")));
             bundle.putString("resId", contentTable1.getResourceId());
             bundle.putString("contentName", contentTable1.getNodeTitle());
             bundle.putString("sttLang", contentTable1.getContentLanguage());
@@ -424,7 +437,9 @@ public class GameConstatnts implements ShowInstruction {
                 case GameConstatnts.VIDEO:
                     Intent intent = new Intent(context, ActivityVideoPlayer_.class);
                     intent.putExtra("contentPath", contentTable1.getResourcePath());
-                    intent.putExtra("StudentID", FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""));
+                    intent.putExtra("StudentID", ((FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, "").equals("")
+                    || FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, "").equals(null)) ?"NA"
+                    :FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, "")));
                     intent.putExtra("resId", contentTable1.getResourceId());
                     intent.putExtra("contentName", contentTable1.getNodeTitle());
                     intent.putExtra("onSdCard", onSdCard);
@@ -485,7 +500,9 @@ public class GameConstatnts implements ShowInstruction {
                     Intent intent1 = new Intent(context, Fragment_PdfViewer_.class);
 //                    Intent intent1 = new Intent(context, PDFViewActivity_.class);
                     intent1.putExtra("contentPath", contentTable1.getResourcePath());
-                    intent1.putExtra("StudentID", FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""));
+                    intent1.putExtra("StudentID", ((FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, "").equals("")
+                    || FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, "").equals(null)) ?"NA"
+                    :FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, "")));
                     intent1.putExtra("resId", contentTable1.getResourceId());
                     intent1.putExtra("contentName", contentTable1.getNodeTitle());
                     intent1.putExtra("onSdCard", onSdCard);
@@ -507,7 +524,9 @@ public class GameConstatnts implements ShowInstruction {
 //                    Intent intent2 = new Intent(context, Fragment_PdfViewer_.class);
                     Intent intent2 = new Intent(context, PDFViewActivity_.class);
                     intent2.putExtra("contentPath", contentTable1.getResourcePath());
-                    intent2.putExtra("StudentID", FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""));
+                    intent2.putExtra("StudentID", ((FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, "").equals("")
+                    || FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, "").equals(null)) ?"NA"
+                    :FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, "")));
                     intent2.putExtra("resId", contentTable1.getResourceId());
                     intent2.putExtra("contentName", contentTable1.getNodeTitle());
                     intent2.putExtra("onSdCard", onSdCard);

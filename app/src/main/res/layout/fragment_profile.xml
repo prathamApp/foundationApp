@@ -5,7 +5,7 @@
     android:id="@+id/home_root_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/new_bg">
+    android:background="@drawable/stylebg4">
 
     <com.airbnb.lottie.LottieAnimationView
         android:layout_width="@dimen/_130sdp"
@@ -39,18 +39,16 @@
         android:paddingEnd="10dp"
         tools:ignore="RtlSymmetry">
 
-        <com.facebook.drawee.view.SimpleDraweeView
+        <com.airbnb.lottie.LottieAnimationView
             android:id="@+id/card_img"
             android:layout_width="@dimen/_80sdp"
             android:layout_height="@dimen/_80sdp"
             android:layout_marginEnd="15dp"
             android:layout_marginBottom="10dp"
-            android:background="@android:color/transparent"
-            app:actualImageScaleType="fitCenter"
-            app:placeholderImage="@drawable/ic_grp_btn"
-            app:roundedCornerRadius="@dimen/_40sdp"
-            app:roundingBorderColor="@color/ratingFilled"
-            app:roundingBorderWidth="@dimen/_2sdp" />
+            android:background="@drawable/dialog_image_bg"
+            app:lottie_autoPlay="true"
+            app:lottie_fileName="walking.json"
+            app:lottie_loop="true" />
 
         <RelativeLayout
             android:id="@+id/profile_header"
@@ -544,8 +542,8 @@
                         android:layout_marginStart="@dimen/_5sdp"
                         android:layout_marginEnd="@dimen/_5sdp"
                         android:layout_weight="1"
-                        android:visibility="gone"
-                        android:background="?attr/selectableItemBackground">
+                        android:background="?attr/selectableItemBackground"
+                        android:visibility="gone">
 
                         <ImageView
                             android:id="@+id/iv_temp"
@@ -557,7 +555,8 @@
                             android:layout_marginTop="@dimen/_2sdp"
                             android:layout_marginEnd="@dimen/_2sdp"
                             android:layout_marginBottom="@dimen/_2sdp"
-                            android:src="@drawable/chat_bubbles" />
+                            android:background="@drawable/card_stroke_1"
+                            android:src="@drawable/pratham_logo" />
 
                         <com.pratham.foundation.customView.fontsview.SansTextView
                             android:id="@+id/tv_temp"
@@ -567,7 +566,7 @@
                             android:layout_marginStart="10dp"
                             android:layout_toEndOf="@+id/iv_temp"
                             android:gravity="center_vertical"
-                            android:text="@string/reset_app_tour"
+                            android:text="TEMP"
                             android:textColor="@color/colorText"
                             android:textSize="@dimen/_13sdp" />
 

@@ -33,6 +33,7 @@ public class KeywordOptionAdapter extends RecyclerView.Adapter<KeywordOptionAdap
     boolean isClickable = true;
     private boolean showAnswer=false;
     KeywordMappingContract.KeywordMappingPresenter presenter;
+
     public KeywordOptionAdapter(Context context, List<ScienceQuestionChoice> datalist, int maxSelect,KeywordMappingContract.KeywordMappingPresenter presenter) {
         this.context = context;
         this.datalist = datalist;
@@ -50,14 +51,9 @@ public class KeywordOptionAdapter extends RecyclerView.Adapter<KeywordOptionAdap
     @Override
     public void onBindViewHolder(@NonNull Myviewholder myviewholder, int position) {
         int pos = position + 1;
-        int topMargin = pxFromDp(myviewholder.textView.getContext(), -35);
-        int leftMargin = pxFromDp(myviewholder.textView.getContext(), 50); //3 times of 17
+        int topMargin = pxFromDp(myviewholder.textView.getContext(), -30);
+        int leftMargin = pxFromDp(myviewholder.textView.getContext(), 45); //3 times of 17
         GridLayoutManager.LayoutParams param = (GridLayoutManager.LayoutParams) myviewholder.textView.getLayoutParams();
-       /* if (pos < 2) {
-            param.setMargins(0, 0, 0, 0);
-        } else if ((pos + 1) % 3 == 0 ) {
-            param.setMargins(leftMargin, topMargin, 0, 0);
-        }else */
         if (pos <= 2) {
             param.setMargins(0, 0, 0, 0);
         } else if (pos % 3 == 0) {
@@ -70,12 +66,13 @@ public class KeywordOptionAdapter extends RecyclerView.Adapter<KeywordOptionAdap
 
         myviewholder.textView.setPaintFlags(  myviewholder.textView.getPaintFlags() & (~ Paint.STRIKE_THRU_TEXT_FLAG));
        // myviewholder.textView.setTextColor(Color.WHITE);
-        myviewholder.textView.setTextColor(Color.BLACK);
         if (datalist.get(myviewholder.getAdapterPosition()).isIsclicked()) {
             myviewholder.itemView.setBackground(ContextCompat.getDrawable(context, R.drawable.hexagon_yellow));
+             myviewholder.textView.setTextColor(Color.WHITE);
             selectedOption.add(datalist.get(myviewholder.getAdapterPosition()));
         } else {
             myviewholder.itemView.setBackground(ContextCompat.getDrawable(context, R.drawable.hexagon));
+            myviewholder.textView.setTextColor(context.getResources().getColor(R.color.colorText));
         }
 
 
@@ -114,7 +111,7 @@ public class KeywordOptionAdapter extends RecyclerView.Adapter<KeywordOptionAdap
                     if(datalist.get(myviewholder.getAdapterPosition()).isIsclicked()){
                         myviewholder.itemView.setBackground(ContextCompat.getDrawable(context, R.drawable.hexagon_red));
                     }else {
-                        myviewholder.textView.setTextColor(Color.RED);
+                        myviewholder.textView.setTextColor(context.getResources().getColor(R.color.red));
                     }
                     myviewholder.textView.setPaintFlags(myviewholder.textView.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
                 } else {
@@ -122,7 +119,7 @@ public class KeywordOptionAdapter extends RecyclerView.Adapter<KeywordOptionAdap
                     if(datalist.get(myviewholder.getAdapterPosition()).isIsclicked()){
                         myviewholder.itemView.setBackground(ContextCompat.getDrawable(context, R.drawable.hexagon_green));
                     }else {
-                        myviewholder.textView.setTextColor(context.getResources().getColor(R.color.light_green));
+                        myviewholder.textView.setTextColor(context.getResources().getColor(R.color.colorSignBoard));
                     }
                 }
             }
@@ -132,7 +129,7 @@ public class KeywordOptionAdapter extends RecyclerView.Adapter<KeywordOptionAdap
 //                String myWord = ""+myviewholder.textView.getText().toString().trim();
 //                Log.d("NARUTOUZUMAKI", itemPos+" : "+myWord+".");
                 if (!datalist.get(position).getCorrectAnswer().equalsIgnoreCase("true")) {
-                    myviewholder.textView.setTextColor(Color.RED);
+                    myviewholder.textView.setTextColor(context.getResources().getColor(R.color.red));
                     myviewholder.textView.setPaintFlags(myviewholder.textView.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
                 } else {
                     myviewholder.textView.setPaintFlags(  myviewholder.textView.getPaintFlags() & (~ Paint.STRIKE_THRU_TEXT_FLAG));

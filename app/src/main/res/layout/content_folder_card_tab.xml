@@ -49,7 +49,7 @@
             android:layout_marginBottom="@dimen/_3sdp"
             android:maxLines="3"
             android:textColor="@color/colorText"
-            android:textSize="@dimen/_14sdp" />
+            android:textSize="@dimen/_16sdp" />
     </RelativeLayout>
 
     <androidx.recyclerview.widget.RecyclerView

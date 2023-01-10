@@ -7,7 +7,7 @@
 <!--            <stroke
                 android:width="5dp"
                 android:color="@color/colorAccent" />-->
-            <solid android:color="#f5f5f5" />
+            <solid android:color="@color/white" />
         </shape>
     </item>
 </ripple>

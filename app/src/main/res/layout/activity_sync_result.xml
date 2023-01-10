@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="@drawable/new_bg">
+    android:background="@drawable/stylebg2">
 <!--    android:paddingTop="@dimen/_15sdp"-->
 
     <RelativeLayout

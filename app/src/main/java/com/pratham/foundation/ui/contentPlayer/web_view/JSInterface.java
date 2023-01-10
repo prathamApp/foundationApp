@@ -173,8 +173,12 @@ public class JSInterface implements RecognitionListener {
                     score.setQuestionId(questionId);
                     score.setScoredMarks(scorefromGame);
                     score.setTotalMarks(totalMarks);
-                    score.setStudentID(FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""));
-                    score.setGroupId(FastSave.getInstance().getString(FC_Constants.CURRENT_GROUP_ID, ""));
+                    score.setStudentID(((FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, "").equals("")
+                            || FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, "").equals(null)) ? "NA"
+                            : FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, "NA")));
+                    score.setGroupId(((FastSave.getInstance().getString(FC_Constants.CURRENT_GROUP_ID, "").equals("")
+                            || FastSave.getInstance().getString(FC_Constants.CURRENT_GROUP_ID, "").equals(null)) ? "NA"
+                            : FastSave.getInstance().getString(FC_Constants.CURRENT_GROUP_ID, "NA")));
                     splited = startTime.split("\\s+");
                     splitedDate = splited[0].split("\\-+");
                     splitedTime = splited[1].split("\\:+");
@@ -211,7 +215,7 @@ public class JSInterface implements RecognitionListener {
                     KeyWords keyWords = new KeyWords();
                     keyWords.setResourceId(webResId);
                     keyWords.setSentFlag(0);
-                    keyWords.setStudentId(FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""));
+                    keyWords.setStudentId(FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, "NA"));
                    // keyWords.setSessionId(FastSave.getInstance().getString(FC_Constants.CURRENT_SESSION, ""));
                     keyWords.setKeyWord(word.toLowerCase());
                     //keyWords.setSynId("" + WebViewActivity.gameName);
@@ -266,11 +270,12 @@ public class JSInterface implements RecognitionListener {
                     score.setQuestionId(questionId);
                     score.setScoredMarks(scorefromGame);
                     score.setTotalMarks(totalMarks);
-                    score.setStudentID(FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""));
-                    if(FastSave.getInstance().getString(FC_Constants.LOGIN_MODE, "").equalsIgnoreCase(FC_Constants.GROUP_MODE))
-                        score.setGroupId(FastSave.getInstance().getString(FC_Constants.CURRENT_GROUP_ID, ""));
-                    else
-                        score.setGroupId("NA");
+                    score.setStudentID(((FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, "").equals("")
+                            || FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, "").equals(null)) ? "NA"
+                            : FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, "NA")));
+                    score.setGroupId(((FastSave.getInstance().getString(FC_Constants.CURRENT_GROUP_ID, "").equals("")
+                            || FastSave.getInstance().getString(FC_Constants.CURRENT_GROUP_ID, "").equals(null)) ? "NA"
+                            : FastSave.getInstance().getString(FC_Constants.CURRENT_GROUP_ID, "NA")));
 
                     splited = startTime.split("\\s+");
                     splitedDate = splited[0].split("\\-+");

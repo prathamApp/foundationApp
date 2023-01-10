@@ -81,7 +81,9 @@ public class PDF_PresenterImpl implements PDFContract.pdfPresenter {
             int total = (bitmaps.size() > 0) ? bitmaps.size() : 0;
             Score score = new Score();
             score.setSessionID(FastSave.getInstance().getString(FC_Constants.CURRENT_SESSION, ""));
-            score.setStudentID("" + FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""));
+            score.setStudentID("" + ((FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, "").equals("")
+                    || FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, "").equals(null)) ?"NA"
+                    :FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, "")));
             score.setDeviceID(FC_Utility.getDeviceID());
             score.setResourceID(resId);
             score.setQuestionId(0);
@@ -91,7 +93,9 @@ public class PDF_PresenterImpl implements PDFContract.pdfPresenter {
             score.setEndDateTime(endTime);
             score.setLevel(0);
             score.setLabel("PDF");
-            score.setGroupId(FastSave.getInstance().getString(FC_Constants.CURRENT_GROUP_ID, ""));
+            score.setGroupId(""+((FastSave.getInstance().getString(FC_Constants.CURRENT_GROUP_ID, "NA").equals(null)
+                    || FastSave.getInstance().getString(FC_Constants.CURRENT_GROUP_ID, "NA").equals(""))
+                    ? "NA" : FastSave.getInstance().getString(FC_Constants.CURRENT_GROUP_ID, "NA")));
             score.setSentFlag(0);
             AppDatabase.getDatabaseInstance(context).getScoreDao().insert(score);
             float perc = 0f;
@@ -108,7 +112,9 @@ public class PDF_PresenterImpl implements PDFContract.pdfPresenter {
             contentProgress.setProgressPercentage("" + perc);
             contentProgress.setResourceId("" + resId);
             contentProgress.setSessionId("" + FastSave.getInstance().getString(FC_Constants.CURRENT_SESSION, ""));
-            contentProgress.setStudentId("" + FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""));
+            contentProgress.setStudentId("" + ((FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, "").equals("")
+                    || FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, "").equals(null)) ?"NA"
+                    :FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, "")));
             contentProgress.setUpdatedDateTime("" + FC_Utility.getCurrentDateTime());
             contentProgress.setLabel("" + label);
             contentProgress.setSentFlag(0);

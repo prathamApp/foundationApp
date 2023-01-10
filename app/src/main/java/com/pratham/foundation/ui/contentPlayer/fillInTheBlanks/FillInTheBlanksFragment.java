@@ -115,7 +115,9 @@ public class FillInTheBlanksFragment extends Fragment implements STT_Result_New.
 
             contentPath = "fill_in_the_blanks";
             resId = "1212";
-            StudentID = FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, "");
+            StudentID = ((FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, "").equals("")
+                    || FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, "").equals(null)) ?"NA"
+                    :FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""));
             contentTitle = "b";
             onSdCard = true;
             isTest= FastSave.getInstance().getString(APP_SECTION, "").equalsIgnoreCase(sec_Test);
@@ -189,13 +191,13 @@ public class FillInTheBlanksFragment extends Fragment implements STT_Result_New.
 
     private int getLearntWordsCount() {
         int count = 0;
-        count = AppDatabase.getDatabaseInstance(context).getKeyWordDao().checkWordCount(FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""), resId);
+        count = AppDatabase.getDatabaseInstance(context).getKeyWordDao().checkWordCount(FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, "NA"), resId);
         return count;
     }
 
     private boolean checkWord(String wordStr) {
         try {
-            String word = AppDatabase.getDatabaseInstance(context).getKeyWordDao().checkWord(FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""), resId, wordStr);
+            String word = AppDatabase.getDatabaseInstance(context).getKeyWordDao().checkWord(FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, "NA"), resId, wordStr);
             return word != null;
         } catch (Exception e) {
             e.printStackTrace();
@@ -438,7 +440,9 @@ public class FillInTheBlanksFragment extends Fragment implements STT_Result_New.
                     String key = selectedAnsList.get(i).getUserAnswer();
                     keyWords.setResourceId(resId);
                     keyWords.setSentFlag(0);
-                    keyWords.setStudentId(FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""));
+                    keyWords.setStudentId(((FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, "").equals("")
+                            || FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, "").equals(null)) ? "NA"
+                            : FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, "NA")));
                     keyWords.setKeyWord(key);
                     keyWords.setWordType("word");
                     keyWords.setTopic("");
@@ -470,8 +474,12 @@ public class FillInTheBlanksFragment extends Fragment implements STT_Result_New.
             score.setQuestionId(wID);
             score.setScoredMarks(scoredMarks);
             score.setTotalMarks(totalMarks);
-            score.setStudentID(FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""));
-            score.setGroupId(FastSave.getInstance().getString(FC_Constants.CURRENT_GROUP_ID, ""));
+            score.setStudentID(((FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, "").equals("")
+                    || FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, "").equals(null)) ? "NA"
+                    : FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, "NA")));
+            score.setGroupId(((FastSave.getInstance().getString(FC_Constants.CURRENT_GROUP_ID, "").equals("")
+                    || FastSave.getInstance().getString(FC_Constants.CURRENT_GROUP_ID, "").equals(null)) ? "NA"
+                    : FastSave.getInstance().getString(FC_Constants.CURRENT_GROUP_ID, "NA")));
             score.setStartDateTime(resStartTime);
             score.setDeviceID(deviceId.equals(null) ? "0000" : deviceId);
             score.setEndDateTime(FC_Utility.getCurrentDateTime());

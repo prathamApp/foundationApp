@@ -206,7 +206,6 @@ public class SplashActivity extends SplashSupportActivity implements SplashContr
                 PermissionUtils.Manifest_RECORD_AUDIO,
                 PermissionUtils.Manifest_ACCESS_COARSE_LOCATION,
                 PermissionUtils.Manifest_ACCESS_FINE_LOCATION
-                PermissionUtils.Manifest_MANAGE_EXTERNAL_STORAGE
         };
         //Create Directory if not exists
 /*
@@ -296,6 +295,46 @@ public class SplashActivity extends SplashSupportActivity implements SplashContr
     @UiThread
     @Override
     public void startApp() {
+/*        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+            if (Environment.isExternalStorageManager()) {
+                FastSave.getInstance().saveString(FC_Constants.CURRENT_SESSION, "NA");
+                DisplayMetrics displayMetrics = new DisplayMetrics();
+                getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
+                int height = displayMetrics.heightPixels;
+                int width = displayMetrics.widthPixels;
+                Configuration config = context.getResources().getConfiguration();
+                String strwidth = String.valueOf(width);
+                String strheight = String.valueOf(height);
+                Log.d("COSLS", "initialize: COSLS - " + strwidth);
+
+                String resolution = strwidth + "px x " + strheight + "px (" + config.densityDpi + " dpi)";
+                FastSave.getInstance().saveString(FC_Constants.SCR_RES, "" + resolution);
+                FastSave.getInstance().saveString(FC_Constants.LANGUAGE, FC_Constants.HINDI);
+                FastSave.getInstance().saveBoolean(IS_SERVICE_STOPED, false);
+                splashPresenter.createDatabase();
+            } else { //request for the permission
+                Intent intent = new Intent(Settings.ACTION_MANAGE_APP_ALL_FILES_ACCESS_PERMISSION);
+                Uri uri = Uri.fromParts("package", getPackageName(), null);
+                intent.setData(uri);
+                startActivity(intent);
+            }
+        } else {
+            FastSave.getInstance().saveString(FC_Constants.CURRENT_SESSION, "NA");
+            DisplayMetrics displayMetrics = new DisplayMetrics();
+            getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
+            int height = displayMetrics.heightPixels;
+            int width = displayMetrics.widthPixels;
+            Configuration config = context.getResources().getConfiguration();
+            String strwidth = String.valueOf(width);
+            String strheight = String.valueOf(height);
+            Log.d("COSLS", "initialize: COSLS - " + strwidth);
+
+            String resolution = strwidth + "px x " + strheight + "px (" + config.densityDpi + " dpi)";
+            FastSave.getInstance().saveString(FC_Constants.SCR_RES, "" + resolution);
+            FastSave.getInstance().saveString(FC_Constants.LANGUAGE, FC_Constants.HINDI);
+            FastSave.getInstance().saveBoolean(IS_SERVICE_STOPED, false);
+            splashPresenter.createDatabase();
+    }*/
         FastSave.getInstance().saveString(FC_Constants.CURRENT_SESSION, "NA");
         DisplayMetrics displayMetrics = new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
@@ -311,10 +350,10 @@ public class SplashActivity extends SplashSupportActivity implements SplashContr
         FastSave.getInstance().saveString(FC_Constants.LANGUAGE, FC_Constants.HINDI);
 //        setAppLocal(this, FC_Constants.HINDI);
         FastSave.getInstance().saveBoolean(IS_SERVICE_STOPED, false);
-//        splashPresenter.createDatabase();
-        Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT_TREE);
+        splashPresenter.createDatabase();
+/*        Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT_TREE);
         intent.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
-        startActivityForResult(intent, SDCARD_LOCATION_CHOOSER);
+        startActivityForResult(intent, SDCARD_LOCATION_CHOOSER);*/
     }
 
     @Override

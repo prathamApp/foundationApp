@@ -4,7 +4,7 @@
     android:id="@+id/home_root_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/new_bg">
+    android:background="@drawable/stylebg2">
 
     <RelativeLayout
         android:id="@+id/header_rl"

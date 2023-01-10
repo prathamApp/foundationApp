@@ -166,6 +166,7 @@ public class BottomStudentsPresenter implements BottomStudentsContract.BottomStu
                 studentAvatar.setFullName(studentDBList.get(i).getFullName());
                 studentAvatar.setAvatarName(studentDBList.get(i).getAvatarName());
                 studentAvatar.setGender(studentDBList.get(i).getGender());
+                studentAvatar.setGroupId(studentDBList.get(i).getGroupId());
                 studentAvatar.setChecked(false);
                 studentAvatar.setEnrollmentID(studentDBList.get(i).getLastName());
                 studentAvatar.setType(FC_Constants.STUDENTS);
@@ -191,7 +192,7 @@ public class BottomStudentsPresenter implements BottomStudentsContract.BottomStu
             AppDatabase.getDatabaseInstance(context).getStatusDao().updateValue("CurrentSession", "" + FastSave.getInstance().getString(FC_Constants.CURRENT_SESSION, ""));
             Attendance attendance = new Attendance();
             attendance.setSessionID(FastSave.getInstance().getString(FC_Constants.CURRENT_SESSION, ""));
-            attendance.setStudentID(FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""));
+            attendance.setStudentID(FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, "NA"));
             attendance.setDate(FC_Utility.getCurrentDateTime());
             attendance.setGroupID(""+FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_GRP_ID, "NA"));
             attendance.setSentFlag(0);
@@ -206,7 +207,9 @@ public class BottomStudentsPresenter implements BottomStudentsContract.BottomStu
 
             myView.gotoNext();
             if (FC_Utility.isDataConnectionAvailable(context))
-                getStudentData(FC_Constants.STUDENT_PROGRESS_INTERNET, FC_Constants.STUDENT_PROGRESS_API, FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""));
+                getStudentData(FC_Constants.STUDENT_PROGRESS_INTERNET, FC_Constants.STUDENT_PROGRESS_API, ((FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, "").equals("")
+                    || FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, "").equals(null)) ?"NA"
+                    :FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, "")));
         } catch (Exception e) {
             myView.showToast("Problem Marking Attendance");
             e.printStackTrace();
@@ -274,7 +277,9 @@ public class BottomStudentsPresenter implements BottomStudentsContract.BottomStu
 //                @Override
 //                protected void onPostExecute(Object o) {
 //                    super.onPostExecute(o);
-            getStudentData(FC_Constants.LEARNT_WORDS_INTERNET, FC_Constants.LEARNT_WORDS_API, FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""));
+            getStudentData(FC_Constants.LEARNT_WORDS_INTERNET, FC_Constants.LEARNT_WORDS_API, ((FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, "").equals("")
+                    || FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, "").equals(null)) ?"NA"
+                    :FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, "")));
 //                }
 //            }.execute();
         } else if (requestType.equalsIgnoreCase(FC_Constants.LEARNT_WORDS_INTERNET)) {

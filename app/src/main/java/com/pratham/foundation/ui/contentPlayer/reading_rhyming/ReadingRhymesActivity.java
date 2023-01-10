@@ -1,6 +1,9 @@
 package com.pratham.foundation.ui.contentPlayer.reading_rhyming;
 
 
+import static com.pratham.foundation.utility.FC_Constants.dialog_btn_cancel;
+import static com.pratham.foundation.utility.FC_Constants.gameFolderPath;
+
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
@@ -41,9 +44,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
-
-import static com.pratham.foundation.utility.FC_Constants.dialog_btn_cancel;
-import static com.pratham.foundation.utility.FC_Constants.gameFolderPath;
 
 @EActivity(R.layout.activity_rhymes_reading)
 public class ReadingRhymesActivity extends BaseActivity
@@ -504,7 +504,7 @@ public class ReadingRhymesActivity extends BaseActivity
     private boolean checkWord(String wordStr) {
         try {
             String word = AppDatabase.getDatabaseInstance(ReadingRhymesActivity.this).getKeyWordDao().
-                    checkWord(FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""),
+                    checkWord(FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, "NA"),
                             "" + resId, wordStr.toLowerCase());
             return word != null;
         } catch (Exception e) {

@@ -9,7 +9,7 @@
     android:layout_marginBottom="@dimen/_5sdp"
     app:cardBackgroundColor="#488feb"
     app:cardCornerRadius="@dimen/_8sdp"
-    app:cardElevation="@dimen/_2sdp">
+    app:cardElevation="@dimen/_4sdp">
 
     <RelativeLayout
         android:id="@+id/rl_loader"
@@ -61,7 +61,7 @@
             android:layout_marginTop="@dimen/_5sdp"
             android:text="Colors and Shape"
             android:textColor="@color/white"
-            android:textSize="@dimen/_12sdp" />
+            android:textSize="@dimen/_14sdp" />
 
         <com.pratham.foundation.customView.fontsview.SansTextViewBold
             android:id="@+id/tv_progress"

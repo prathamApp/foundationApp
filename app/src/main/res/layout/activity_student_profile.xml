@@ -80,7 +80,7 @@
                 android:layout_height="75dp"
                 android:layout_centerHorizontal="true"
                 android:scaleType="fitCenter"
-                android:src="@drawable/b2"
+                android:src="@drawable/pratham_logo"
                 app:border="true"
                 app:border_color="@color/colorAccent"
                 app:border_width="2dp"

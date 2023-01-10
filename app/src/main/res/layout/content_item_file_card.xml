@@ -140,6 +140,6 @@
             android:singleLine="true"
             android:text="@string/app_name"
             android:textColor="@color/white"
-            android:textSize="@dimen/_12sdp" />
+            android:textSize="@dimen/_14sdp" />
     </RelativeLayout>
 </com.google.android.material.card.MaterialCardView>

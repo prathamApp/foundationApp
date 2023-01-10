@@ -37,7 +37,9 @@ public class ProfilePresenter implements ProfileContract.ProfilePresenter, API_C
     @Background
     @Override
     public void getActiveData() {
-        String studId = "" + FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, "");
+        String studId = "" + ((FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, "").equals("")
+                    || FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, "").equals(null)) ?"NA"
+                    :FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""));
         List<String> dateList = new ArrayList<>();
         if (FastSave.getInstance().getString(FC_Constants.LOGIN_MODE, "").equalsIgnoreCase(FC_Constants.GROUP_MODE)) {
             List<Modal_TotalDaysGroupsPlayed> modal_totalDaysGroupsPlayeds = new ArrayList<>();
@@ -88,7 +90,9 @@ public class ProfilePresenter implements ProfileContract.ProfilePresenter, API_C
     public void getCertificateCount() {
         List<Assessment> assessmentList;
         List<ModalTopCertificates> modalTopCertificatesList = new ArrayList<>();
-        String currStuID = FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, "");
+        String currStuID = ((FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, "").equals("")
+                    || FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, "").equals(null)) ?"NA"
+                    :FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, "");
         if (FastSave.getInstance().getString(LOGIN_MODE,"").equalsIgnoreCase(FC_Constants.GROUP_MODE))
             assessmentList = AppDatabase.getDatabaseInstance(mContext).getAssessmentDao()
                     .getCertificatesGroups(currStuID, FC_Constants.CERTIFICATE_LBL);

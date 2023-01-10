@@ -1,11 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/home_root_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/catcho_img_bg"
+    android:background="@drawable/stylebg"
     android:orientation="vertical">
 <!--    android:background="#80e3ff"-->
+
 
     <com.pratham.foundation.customView.fontsview.SansTextViewBold
         android:id="@+id/tv_Topic"
@@ -36,23 +38,34 @@
         android:id="@+id/catcho_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_below="@+id/tv_Topic_"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="70dp"
+        android:background="@drawable/button_green"
         android:elevation="@dimen/_5sdp"
         android:paddingStart="@dimen/_15sdp"
         android:paddingEnd="@dimen/_15sdp"
-        android:textSize="@dimen/_10sdp"
-        android:layout_below="@+id/tv_Topic_"
-        android:textColor="@color/white"
         android:text="@string/RegisterReport"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="70dp"
-        android:background="@drawable/button_green"/>
+        android:textColor="@color/white"
+        android:textSize="@dimen/_10sdp" />
 
+
+    <com.airbnb.lottie.LottieAnimationView
+        android:id="@+id/nodata_img"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/_300sdp"
+        android:layout_below="@+id/catcho_button"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="@dimen/_20sdp"
+        app:lottie_autoPlay="true"
+        app:lottie_fileName="catcho_lottie.json"
+        app:lottie_loop="true" />
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="@dimen/_300sdp"
         android:layout_alignParentBottom="true"
-        android:background="@drawable/catcho_img">
-    </RelativeLayout>
+        android:visibility="gone"
+        android:background="@drawable/catcho_img"/>
 
 </RelativeLayout>

@@ -39,8 +39,8 @@ import androidx.annotation.UiThread;
 import androidx.fragment.app.Fragment;
 
 import com.airbnb.lottie.LottieAnimationView;
-import com.facebook.drawee.view.SimpleDraweeView;
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 import com.pratham.foundation.ApplicationClass;
 import com.pratham.foundation.R;
@@ -53,6 +53,7 @@ import com.pratham.foundation.customView.showcaseviewlib.GuideView;
 import com.pratham.foundation.customView.showcaseviewlib.config.DismissType;
 import com.pratham.foundation.database.AppDatabase;
 import com.pratham.foundation.database.BackupDatabase;
+import com.pratham.foundation.database.domain.ContentTable;
 import com.pratham.foundation.interfaces.API_Content_Result;
 import com.pratham.foundation.modalclasses.EventMessage;
 import com.pratham.foundation.modalclasses.Modal_InternetTime;
@@ -79,9 +80,13 @@ import org.androidannotations.annotations.ViewById;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 import java.io.File;
+import java.io.FileWriter;
 import java.lang.reflect.Type;
+import java.util.List;
 import java.util.Objects;
 
 
@@ -102,7 +107,7 @@ public class ProfileFragment extends Fragment implements ProfileContract.Profile
     @ViewById(R.id.tv_en_id)
     TextView tv_en_id;
     @ViewById(R.id.card_img)
-    SimpleDraweeView card_img;
+    LottieAnimationView card_img;
     @ViewById(R.id.usage_1)
     RelativeLayout usage_1;
     @ViewById(R.id.rl_sync_log)
@@ -199,9 +204,11 @@ public class ProfileFragment extends Fragment implements ProfileContract.Profile
     @UiThread
     public void setImage() {
         String profileName;
-        if (FastSave.getInstance().getString(LOGIN_MODE, "").equalsIgnoreCase(GROUP_MODE))
-            card_img.setImageResource(R.drawable.ic_grp_btn);
-        else if (FastSave.getInstance().getString(LOGIN_MODE, "").equalsIgnoreCase(INDIVIDUAL_MODE)) {
+        if (FastSave.getInstance().getString(LOGIN_MODE, "").equalsIgnoreCase(GROUP_MODE)) {
+//            card_img.setImageResource(R.drawable.ic_grp_btn);
+            card_img.setAnimation("ic_grp_btn.json");
+            card_img.playAnimation();
+        }else if (FastSave.getInstance().getString(LOGIN_MODE, "").equalsIgnoreCase(INDIVIDUAL_MODE)) {
             File file;
             file = new File(StudentPhotoPath + "" + FastSave.getInstance()
                     .getString(FC_Constants.CURRENT_STUDENT_ID, "") + ".jpg");
@@ -210,20 +217,31 @@ public class ProfileFragment extends Fragment implements ProfileContract.Profile
             } else {
                 if (!ApplicationClass.getAppMode()) {
                     String gender = AppDatabase.getDatabaseInstance(context).getStudentDao().
-                            getStudentAvatar(FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""));
+                            getStudentAvatar(FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, "NA"));
                     file = new File(ApplicationClass.foundationPath +
                             "" + App_Thumbs_Path + "" + gender);
-                    if (file.exists())
-                        card_img.setImageURI(Uri.fromFile(file));
+                    if (gender.contains(".png")) {
+                        String temp = gender.substring(0,2);
+                        Objects.requireNonNull(card_img).setAnimation(temp+".json");
+                        card_img.playAnimation();
+                    }else if (gender.contains(".json")){
+                        card_img.setAnimation(gender);
+                        card_img.playAnimation();
+                    }
                     else
-                        card_img.setImageResource(getRandomFemaleAvatar(context));
+                        card_img.setAnimation(getRandomFemaleAvatar());
                 } else {
                     String gender = AppDatabase.getDatabaseInstance(context).getStudentDao().getStudentGender(
-                            FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""));
-                    if (gender.equalsIgnoreCase("male"))
-                        card_img.setImageResource(getRandomMaleAvatar(context));
-                    else
-                        card_img.setImageResource(getRandomFemaleAvatar(context));
+                            ((FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, "").equals("")
+                                    || FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, "").equals(null)) ? "NA"
+                                    : FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, "")));
+                    if (gender.equalsIgnoreCase("male")) {
+                        card_img.setAnimation(getRandomMaleAvatar());
+                        card_img.playAnimation();
+                    }else {
+                        card_img.setAnimation(getRandomFemaleAvatar());
+                        card_img.playAnimation();
+                    }
                 }
             }
         }
@@ -370,8 +388,7 @@ public class ProfileFragment extends Fragment implements ProfileContract.Profile
             tv_dialog.setText(getResources().getString(R.string.critical_maintenance));
             dia_text.setText(getResources().getString(R.string.maintenance_msg)
                     + "\n\n" + getResources().getString(R.string.please_try_aft_som_tim));
-        }
-        else {
+        } else {
             String sdate = accessedModal.getMaintenance_closing_time().split(" ")[0];
             String sTime = accessedModal.getMaintenance_closing_time().split(" ")[1].substring(0, 5);
             String time = FC_Utility.get12HrTime(sTime);
@@ -379,7 +396,7 @@ public class ProfileFragment extends Fragment implements ProfileContract.Profile
             tv_dialog.setText(getResources().getString(R.string.scheduled_maintenance));
             dia_text.setText(getResources().getString(R.string.maintenance_msg)
                     + "\n\n" + getResources().getString(R.string.please_try_aft)
-                    + "\n"+sdate+" "+ time);
+                    + "\n" + sdate + " " + time);
         }
         serverMaintenanceApp.show();
     }
@@ -542,7 +559,7 @@ public class ProfileFragment extends Fragment implements ProfileContract.Profile
             showLoader();
             if (!ApplicationClass.wiseF.isDeviceConnectedToSSID(FC_Constants.PRATHAM_RASPBERRY_PI))
                 api_content.checkServerStatus(FC_Constants.CHECK_SERVER_STATUS, FC_Constants.CHECK_SERVER_STATUS_API);
-            else{
+            else {
                 dismissLoadingDialog();
                 FastSave.getInstance().saveBoolean(FC_Constants.SERVER_ACTIVE, true);
                 FastSave.getInstance().saveString(FC_Constants.SERVER_MAINTENANCE_TIME, "NA");
@@ -973,12 +990,41 @@ public class ProfileFragment extends Fragment implements ProfileContract.Profile
 
     @Override
     public void receivedError(String header) {
+
+        Toast.makeText(context, "Server Error", Toast.LENGTH_SHORT).show();
         dismissLoadingDialog();
+
     }
 
     @Click(R.id.rl_temp)
     @UiThread
     public void showTemp() {
+        try {
+            JSONArray contentJsonArraay = new JSONArray();
+            Gson gson = new GsonBuilder()
+                    .setPrettyPrinting()
+                    .serializeNulls()
+                    .create();
+            List<ContentTable> contentTableList = AppDatabase.getDatabaseInstance(context).getContentTableDao().getAllContentDataForJson();
+            for (final ContentTable contentTable : contentTableList)
+                contentJsonArraay.put(new JSONObject(gson.toJson(contentTable)));
+
+            String fielName = "FC_Content";
+            String filePathStr = ApplicationClass.getStoragePath().toString()
+                    + "/FCAInternal/TestJsons/" + fielName; // file path to save
+            File filepath = new File(filePathStr + ".json"); // file path to save
+            if (filepath.exists())
+                filepath.delete();
+            FileWriter writer = new FileWriter(filepath);
+            writer.write(contentJsonArraay.toString());
+            writer.flush();
+            writer.close();
+            Toast.makeText(context, "Complete", Toast.LENGTH_SHORT).show();
+        } catch (Exception e) {
+            Toast.makeText(context, "Error", Toast.LENGTH_SHORT).show();
+            e.printStackTrace();
+        }
+
 //        startActivity(new Intent(android.provider.Settings.ACTION_APPLICATION_DETAILS_SETTINGS,
 //                Uri.parse("package:" + BuildConfig.APPLICATION_ID)));
     }

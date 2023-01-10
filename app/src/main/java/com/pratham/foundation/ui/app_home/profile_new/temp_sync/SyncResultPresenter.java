@@ -73,12 +73,8 @@ public class SyncResultPresenter implements SyncResultContract.SyncResultPresent
     }
 
     @Override
-    public void receivedContent_PI_SubLevel(String header, String response, int pos, int size) {
-
-    }
+    public void receivedContent_PI_SubLevel(String header, String response, int pos, int size) {}
 
     @Override
-    public void receivedError(String header) {
-
-    }
+    public void receivedError(String header) {}
 }

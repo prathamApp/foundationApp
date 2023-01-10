@@ -265,7 +265,7 @@ public class PushDataBaseZipToServer {
                     AndroidNetworking.upload(url[0])
                             .addHeaders("Content-Type", "file/zip")
                             .addMultipartFile("" + fielName, new File(filePathStr + ".zip"))
-                            .setPriority(Priority.HIGH)
+                            .setPriority(Priority.HIGH) 
                             .build()
                             .getAsString(new StringRequestListener() {
                                 @Override

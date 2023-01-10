@@ -8,11 +8,10 @@ import static com.pratham.foundation.utility.FC_Utility.hideSoftKeyboard;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Handler;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.View;
@@ -22,7 +21,6 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ImageButton;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -32,6 +30,7 @@ import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.airbnb.lottie.LottieAnimationView;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.pratham.foundation.ApplicationClass;
@@ -84,7 +83,7 @@ public class AddEnrollmentId extends BaseActivity implements AvatarClickListener
     @ViewById(R.id.form_root)
     RelativeLayout form_root;
     TextView tv_name_str,tv_class_str,tv_school_str;
-    ImageView image_view;
+    LottieAnimationView image_view;
     LinearLayout ll_class,ll_name,ll_school;
 
     private API_Content api_content;
@@ -161,37 +160,37 @@ public class AddEnrollmentId extends BaseActivity implements AvatarClickListener
 
     private void addAvatarsInList() {
         AvatarModal avatarModal = new AvatarModal();
-        avatarModal.setAvatarName("g1.png");
+        avatarModal.setAvatarName("g1.json");
         avatarModal.setClickFlag(false);
         avatarList.add(avatarModal);
 
         AvatarModal avatarModal1 = new AvatarModal();
-        avatarModal1.setAvatarName("b1.png");
+        avatarModal1.setAvatarName("b1.json");
         avatarModal1.setClickFlag(false);
         avatarList.add(avatarModal1);
 
         AvatarModal avatarModal2 = new AvatarModal();
-        avatarModal2.setAvatarName("g2.png");
+        avatarModal2.setAvatarName("g2.json");
         avatarModal2.setClickFlag(false);
         avatarList.add(avatarModal2);
 
         AvatarModal avatarModal3 = new AvatarModal();
-        avatarModal3.setAvatarName("b2.png");
+        avatarModal3.setAvatarName("b2.json");
         avatarModal3.setClickFlag(false);
         avatarList.add(avatarModal3);
 
         AvatarModal avatarModal4 = new AvatarModal();
-        avatarModal4.setAvatarName("g3.png");
+        avatarModal4.setAvatarName("g3.json");
         avatarModal4.setClickFlag(false);
         avatarList.add(avatarModal4);
 
         AvatarModal avatarModal5 = new AvatarModal();
-        avatarModal5.setAvatarName("b3.png");
+        avatarModal5.setAvatarName("b3.json");
         avatarModal5.setClickFlag(false);
         avatarList.add(avatarModal5);
 
         AvatarModal avatarModal6 = new AvatarModal();
-        avatarModal6.setAvatarName("ic_grp_btn.png");
+        avatarModal6.setAvatarName("ic_grp_btn.json");
         avatarModal6.setClickFlag(false);
         avatarList.add(avatarModal6);
     }
@@ -331,8 +330,9 @@ public class AddEnrollmentId extends BaseActivity implements AvatarClickListener
             tv_school_str = studentDialog.findViewById(R.id.tv_school_str);
             image_view = studentDialog.findViewById(R.id.image_view);
 
-            Bitmap bmImg = BitmapFactory.decodeFile(ApplicationClass.foundationPath + "/.FCA/App_Thumbs/"+avatarName);
-            image_view.setImageBitmap(bmImg);
+            Log.d("avatarName", "avatarName: "+avatarName);
+
+            image_view.setAnimation(""+avatarName);
             String name, stuClass, village;
             if (enrollmentModel.getEnrollmentType().equalsIgnoreCase("Student")) {
                 name = enrollmentModel.getLstStudent().get(0).getFullName();
@@ -340,12 +340,14 @@ public class AddEnrollmentId extends BaseActivity implements AvatarClickListener
                 ll_school.setVisibility(View.GONE);
                 tv_class_str.setText(stuClass);
             } else {
+                image_view.setAnimation("ic_grp_btn.json");
                 name = enrollmentModel.getGroupName();
                 village = enrollmentModel.getSchoolName();
                 ll_class.setVisibility(View.GONE);
                 tv_school_str.setText(village);
             }
             tv_name_str.setText(name);
+            image_view.playAnimation();
             studentDialog.show();
         }catch (Exception e){
             Toast.makeText(mContext, ""+getResources().getString(R.string.problem_pulling_stud), Toast.LENGTH_SHORT).show();
@@ -360,18 +362,18 @@ public class AddEnrollmentId extends BaseActivity implements AvatarClickListener
                 List<Model_CourseEnrollment> courseEnrollmentList = new ArrayList<>();
                 for (int v = 0; v < enrollmentModel.getLstCourseEnroll().size(); v++) {
                     Model_CourseEnrollment model_courseEnrollment = new Model_CourseEnrollment();
-                    model_courseEnrollment.setCourseId(enrollmentModel.getLstCourseEnroll().get(v).getCourseId());
-                    model_courseEnrollment.setGroupId(enrollmentModel.getLstCourseEnroll().get(v).getGroupId());
-                    model_courseEnrollment.setStudentId("NA");
-                    model_courseEnrollment.setCourseEnrolledDate(FC_Utility.getCurrentDate());
-                    model_courseEnrollment.setPlanFromDate(enrollmentModel.getLstCourseEnroll().get(v).getPlanFromDate());
-                    model_courseEnrollment.setPlanToDate(enrollmentModel.getLstCourseEnroll().get(v).getPlanToDate());
+                    model_courseEnrollment.setCourseId(""+enrollmentModel.getLstCourseEnroll().get(v).getCourseId());
+                    model_courseEnrollment.setGroupId(""+enrollmentModel.getLstCourseEnroll().get(v).getGroupId());
+                    model_courseEnrollment.setStudentId(""+enrollmentModel.getLstCourseEnroll().get(v).getGroupId());
+                    model_courseEnrollment.setCourseEnrolledDate(""+FC_Utility.getCurrentDate());
+                    model_courseEnrollment.setPlanFromDate(""+enrollmentModel.getLstCourseEnroll().get(v).getPlanFromDate());
+                    model_courseEnrollment.setPlanToDate(""+enrollmentModel.getLstCourseEnroll().get(v).getPlanToDate());
                     model_courseEnrollment.setCoachVerified(0);
                     model_courseEnrollment.setCoachVerificationDate("NA");
                     model_courseEnrollment.setCourseExperience("NA");
                     model_courseEnrollment.setCourseCompleted(true);
                     model_courseEnrollment.setCoachImage("NA");
-                    model_courseEnrollment.setLanguage(enrollmentModel.getLstCourseEnroll().get(v).getLanguage());
+                    model_courseEnrollment.setLanguage(""+enrollmentModel.getLstCourseEnroll().get(v).getLanguage());
                     model_courseEnrollment.setSentFlag(1);
                     courseEnrollmentList.add(model_courseEnrollment);
                 }
@@ -389,7 +391,7 @@ public class AddEnrollmentId extends BaseActivity implements AvatarClickListener
                 student.setDeviceId(""+deviceID);
                 student.setStudentUID(""+enrollmentModel.getLstStudent().get(0).getStudentEnrollment());
                 student.setFirstName("");
-                student.setMiddleName("");
+                student.setMiddleName("STUD");
                 student.setLastName(""+enrollmentModel.getLstStudent().get(0).getStudentEnrollment());
                 student.setEnrollmentId(""+enrollmentModel.getLstStudent().get(0).getStudentEnrollment());
                 student.setRegDate(""+FC_Utility.getCurrentDateTime());
@@ -418,21 +420,21 @@ public class AddEnrollmentId extends BaseActivity implements AvatarClickListener
                 List<Student> studentList = new ArrayList<>();
                 for (int i = 0; i < enrollmentModel.getLstStudent().size(); i++) {
                     Student student = new Student();
-                    student.setStudentID(enrollmentModel.getLstStudent().get(i).getStudentId());
-                    student.setFullName(enrollmentModel.getLstStudent().get(i).getFullName());
-                    student.setGender(enrollmentModel.getLstStudent().get(i).getGender());
+                    student.setStudentID(""+enrollmentModel.getLstStudent().get(i).getStudentId());
+                    student.setFullName(""+enrollmentModel.getLstStudent().get(i).getFullName());
+                    student.setGender(""+enrollmentModel.getLstStudent().get(i).getGender());
                     student.setAge(enrollmentModel.getLstStudent().get(i).getAge());
-                    student.setStud_Class(enrollmentModel.getLstStudent().get(i).getStudClass());
-                    student.setGroupId(enrollmentModel.getLstStudent().get(i).getGroupId());
-                    student.setGroupName(enrollmentModel.getLstStudent().get(i).getGroupName());
+                    student.setStud_Class(""+enrollmentModel.getLstStudent().get(i).getStudClass());
+                    student.setGroupId(""+enrollmentModel.getLstStudent().get(i).getGroupId());
+                    student.setGroupName(""+enrollmentModel.getLstStudent().get(i).getGroupName());
                     student.setSentFlag(0);
-                    student.setDeviceId(deviceID);
+                    student.setDeviceId(""+deviceID);
                     student.setStudentUID(""+enrollmentModel.getLstStudent().get(i).getStudentEnrollment());
                     student.setFirstName("");
                     student.setMiddleName("");
-                    student.setLastName(enrollmentModel.getLstStudent().get(i).getStudentEnrollment());
-                    student.setEnrollmentId(enrollmentModel.getLstStudent().get(i).getStudentEnrollment());
-                    student.setRegDate(FC_Utility.getCurrentDateTime());
+                    student.setLastName(""+enrollmentModel.getLstStudent().get(i).getStudentEnrollment());
+                    student.setEnrollmentId(""+enrollmentModel.getLstStudent().get(i).getStudentEnrollment());
+                    student.setRegDate(""+FC_Utility.getCurrentDateTime());
                     student.setVillageName("");
                     student.setNewFlag(1);
                     student.setAvatarName("");

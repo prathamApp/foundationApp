@@ -10,7 +10,6 @@ import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.View;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.TextView;
@@ -183,17 +182,15 @@ public class ContentPlayerActivity extends BaseActivity implements ShowInstructi
         final CustomLodingDialog dialog = new CustomLodingDialog(this, R.style.FC_DialogStyle);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-        dialog.setContentView(R.layout.fc_custom_dialog);
+        dialog.setContentView(R.layout.fc_custom_exit_dialog);
         dialog.setCanceledOnTouchOutside(false);
         TextView dia_title = dialog.findViewById(R.id.dia_title);
-        Button dia_btn_yellow = dialog.findViewById(R.id.dia_btn_yellow);
         Button dia_btn_green = dialog.findViewById(R.id.dia_btn_green);
         Button dia_btn_red = dialog.findViewById(R.id.dia_btn_red);
 
         dia_btn_green.setText(getResources().getString(R.string.yes));
         //dia_btn_red.setText("No");
-        dia_btn_red.setVisibility(View.GONE);
-        dia_btn_yellow.setText(getResources().getString(R.string.Cancel));
+        dia_btn_red.setText(getResources().getString(R.string.Cancel));
         dia_title.setText(getResources().getString(R.string.exit_dialog_msg));
         dialog.show();
 
@@ -229,13 +226,6 @@ public class ContentPlayerActivity extends BaseActivity implements ShowInstructi
         });
 
         dia_btn_red.setOnClickListener(v -> dialog.dismiss());
-
-        dia_btn_yellow.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dialog.dismiss();
-            }
-        });
     }
 
     public void hideFloating_info() {

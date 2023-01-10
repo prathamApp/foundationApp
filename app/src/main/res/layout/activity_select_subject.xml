@@ -5,64 +5,54 @@
     android:id="@+id/rl_ss_main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/new_bg">
+    android:background="@drawable/stylebg4">
 
     <RelativeLayout
         android:id="@+id/rl_act"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <com.pratham.foundation.customView.shape_of_view.ShadowLayout
-            android:id="@+id/shadow_close"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+        <com.airbnb.lottie.LottieAnimationView
+            android:id="@+id/btn_back"
             android:layout_alignParentEnd="true"
-            android:layout_margin="@dimen/_3sdp"
-            app:sl_shadow_angle="30"
-            app:sl_shadow_color="@color/colorBlackTransparentLight"
-            app:sl_shadow_distance="4dp"
-            app:sl_shadow_radius="5dp"
-            app:sl_shadowed="true">
-
-            <ImageButton
-                android:id="@+id/btn_back"
-                android:layout_width="60dp"
-                android:layout_height="60dp"
-                android:layout_centerVertical="true"
-                android:background="?android:selectableItemBackground"
-                android:scaleType="fitXY"
-                android:src="@drawable/ic_close_red" />
-        </com.pratham.foundation.customView.shape_of_view.ShadowLayout>
+            android:layout_margin="@dimen/_5sdp"
+            android:layout_width="@dimen/_38sdp"
+            android:layout_height="@dimen/_38sdp"
+            android:elevation="@dimen/_5sdp"
+            app:lottie_autoPlay="true"
+            app:lottie_fileName="close_cross.json"
+            app:lottie_loop="true" />
 
         <RelativeLayout
             android:id="@+id/header_rl"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
-        <com.pratham.foundation.customView.fontsview.SansTextViewBold
-            android:id="@+id/name_welcome"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/_12sdp"
-            android:layout_marginTop="@dimen/_15sdp"
-            android:gravity="center_vertical"
-            android:text="@string/Welcome"
-            android:textColor="@color/colorText"
-            android:textSize="@dimen/_20sdp"
-            android:textStyle="bold"
-            tools:ignore="RelativeOverlap" />
 
-        <com.pratham.foundation.customView.fontsview.SansTextViewBold
-            android:id="@+id/name"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/name_welcome"
-            android:layout_marginStart="@dimen/_12sdp"
-            android:layout_marginTop="@dimen/_2sdp"
-            android:gravity="center_vertical"
-            android:text="@string/Welcome"
-            android:textColor="@color/colorText"
-            android:textSize="@dimen/_18sdp"
-            android:textStyle="bold" />
+            <com.pratham.foundation.customView.fontsview.SansTextViewBold
+                android:id="@+id/name_welcome"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_12sdp"
+                android:layout_marginTop="@dimen/_15sdp"
+                android:gravity="center_vertical"
+                android:text="@string/Welcome"
+                android:textColor="@color/colorText"
+                android:textSize="@dimen/_20sdp"
+                android:textStyle="bold"
+                tools:ignore="RelativeOverlap" />
+
+            <com.pratham.foundation.customView.fontsview.SansTextViewBold
+                android:id="@+id/name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/name_welcome"
+                android:layout_marginStart="@dimen/_12sdp"
+                android:layout_marginTop="@dimen/_2sdp"
+                android:gravity="center_vertical"
+                android:text="@string/Welcome"
+                android:textColor="@color/colorText"
+                android:textSize="@dimen/_18sdp"
+                android:textStyle="bold" />
 
             <com.pratham.foundation.customView.fontsview.SansTextView
                 android:id="@+id/subject"
@@ -75,21 +65,34 @@
                 android:textColor="@color/colorBlackTransparentLight"
                 android:textSize="@dimen/_15sdp" />
 
-            <com.pratham.foundation.customView.fontsview.SansButton
+            <com.pratham.foundation.customView.fontsview.SansTextView
                 android:id="@+id/dia_result"
                 android:layout_width="wrap_content"
-                android:layout_height="@dimen/_30sdp"
+                android:layout_height="@dimen/_20sdp"
                 android:layout_below="@id/subject"
                 android:layout_marginStart="@dimen/_12sdp"
                 android:layout_marginTop="@dimen/_5sdp"
                 android:layout_marginBottom="@dimen/_5sdp"
+                android:elevation="@dimen/_5sdp"
+                android:text="@string/diagnostic_test_result"
+                android:gravity="center_vertical"
+                android:textColor="@color/colorText"
+                android:textSize="@dimen/_12sdp" />
+
+            <ImageButton
+                android:id="@+id/dia_btn_result"
+                android:layout_width="@dimen/_40sdp"
+                android:layout_height="@dimen/_20sdp"
+                android:layout_below="@id/subject"
+                android:layout_marginStart="@dimen/_15sdp"
+                android:layout_marginTop="@dimen/_5sdp"
+                android:layout_marginBottom="@dimen/_5sdp"
+                android:layout_toEndOf="@+id/dia_result"
                 android:background="@drawable/button_green"
                 android:elevation="@dimen/_5sdp"
                 android:gravity="center_vertical"
-                android:paddingStart="@dimen/_10sdp"
-                android:paddingEnd="@dimen/_10sdp"
-                android:textColor="@color/white"
-                android:textSize="@dimen/_8sdp" />
+                android:scaleType="centerInside"
+                android:src="@drawable/ic_navigate_next_white" />
 
         </RelativeLayout>
 
@@ -101,6 +104,17 @@
             android:layout_marginBottom="110dp"
             android:layout_below="@id/header_rl"
             android:layout_centerInParent="true">
+
+            <com.airbnb.lottie.LottieAnimationView
+                android:id="@+id/nodata_img"
+                android:layout_width="@dimen/_250sdp"
+                android:layout_height="@dimen/_250sdp"
+                android:layout_above="@id/nodata_tv"
+                android:layout_centerHorizontal="true"
+                app:lottie_autoPlay="true"
+                app:lottie_fileName="empty_lottie.json"
+                app:lottie_loop="true" />
+<!--
             <ImageView
                 android:id="@+id/nodata_img"
                 android:layout_width="@dimen/_250sdp"
@@ -108,6 +122,7 @@
                 android:layout_above="@id/nodata_tv"
                 android:layout_centerHorizontal="true"
                 android:src="@drawable/no_usage_data" />
+-->
             <com.pratham.foundation.customView.fontsview.SansTextViewBold
                 android:id="@+id/nodata_tv"
                 android:layout_width="match_parent"

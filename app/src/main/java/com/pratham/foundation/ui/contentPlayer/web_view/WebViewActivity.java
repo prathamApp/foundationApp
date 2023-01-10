@@ -110,11 +110,12 @@ public class WebViewActivity extends BaseActivity implements WebViewInterface {
             webView.clearCache(true);
             webView.setVerticalScrollBarEnabled(false);
             webView.getSettings().setAllowFileAccess(true);
+            webView.getSettings().getAllowUniversalAccessFromFileURLs();
             webView.getSettings().setLoadsImagesAutomatically(true);
             webView.getSettings().setDomStorageEnabled(true);
             webView.getSettings().setAllowContentAccess(true);
             webView.getSettings().setLoadWithOverviewMode(true);
-            webView.getSettings().setUseWideViewPort(true);
+//            webView.getSettings().setUseWideViewPort(true);
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q)
                 webView.getSettings().setSafeBrowsingEnabled(false);
             webView.setScrollBarStyle(View.SCROLLBARS_INSIDE_OVERLAY);
@@ -201,7 +202,9 @@ public class WebViewActivity extends BaseActivity implements WebViewInterface {
             contentProgress.setProgressPercentage("" + perc);
             contentProgress.setResourceId("" + webResId);
             contentProgress.setSessionId("" + FastSave.getInstance().getString(FC_Constants.CURRENT_SESSION, ""));
-            contentProgress.setStudentId("" + FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""));
+            contentProgress.setStudentId("" + ((FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, "").equals("")
+                    || FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, "").equals(null)) ? "NA"
+                    : FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, "")));
             contentProgress.setUpdatedDateTime("" + FC_Utility.getCurrentDateTime());
             contentProgress.setLabel("resourceProgress");
             contentProgress.setSentFlag(0);

@@ -1,49 +1,58 @@
 <?xml version="1.0" encoding="utf-8"?>
 <com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="@dimen/_110sdp"
     android:id="@+id/group_card"
+    android:layout_width="@dimen/_110sdp"
     android:layout_height="match_parent"
     android:layout_margin="@dimen/_3sdp"
-    app:cardBackgroundColor="@color/ghost_white"
-    app:cardCornerRadius="@dimen/_10sdp">
+    app:cardCornerRadius="@dimen/_10sdp"
+    app:cardBackgroundColor="@color/ghost_white">
 
     <RelativeLayout
         android:id="@+id/rl_root"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="@dimen/_5sdp">
+        android:layout_height="match_parent">
+
+        <com.airbnb.lottie.LottieAnimationView
+            android:id="@+id/iv_grp"
+            android:layout_width="@dimen/_65sdp"
+            android:layout_height="@dimen/_65sdp"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="@dimen/_5sdp"
+            android:layout_marginBottom="@dimen/_5sdp"
+            android:elevation="@dimen/_5sdp"
+            app:lottie_autoPlay="true"
+            app:lottie_fileName="ic_grp_btn.json"
+            app:lottie_loop="true" />
 
         <com.pratham.foundation.customView.fontsview.SansTextViewBold
             android:id="@+id/group_name"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_below="@id/iv_grp"
+            android:layout_centerVertical="true"
             android:layout_marginStart="@dimen/_5sdp"
-            android:layout_marginEnd="@dimen/_5sdp"
-            android:layout_marginTop="@dimen/_5sdp"
-            android:text="Colors and Shape"
-            android:textColor="@color/dark_blue"
-            android:textSize="@dimen/_12sdp" />
-
-        <com.facebook.drawee.view.SimpleDraweeView
-            android:id="@+id/iv_grp"
-            android:layout_width="@dimen/_60sdp"
-            android:layout_height="@dimen/_60sdp"
-            android:layout_alignParentEnd="true"
-            android:layout_marginTop="70dp"
+            android:layout_marginTop="@dimen/_2sdp"
             android:layout_marginEnd="@dimen/_5sdp"
             android:layout_marginBottom="@dimen/_1sdp"
-            android:background="@android:color/transparent"
-            app:actualImageScaleType="centerInside"
-            app:placeholderImage="@drawable/ic_grp_btn" />
+            android:maxLines="2"
+            android:gravity="center"
+            android:lines="2"
+            android:text="@string/yes"
+            android:textColor="@color/dark_blue"
+            android:textSize="@dimen/_12sdp" />
 
         <com.pratham.foundation.customView.fontsview.SansTextView
             android:id="@+id/child_enroll_id"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/iv_grp"
+            android:layout_below="@id/group_name"
+            android:layout_centerVertical="true"
             android:layout_marginStart="@dimen/_5sdp"
+            android:layout_marginTop="@dimen/_2sdp"
             android:layout_marginEnd="@dimen/_5sdp"
+            android:layout_marginBottom="@dimen/_5sdp"
             android:duplicateParentState="true"
             android:ellipsize="marquee"
             android:fadingEdge="horizontal"

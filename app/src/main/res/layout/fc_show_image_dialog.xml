@@ -39,7 +39,7 @@
                 android:layout_margin="@dimen/_8sdp"
                 android:scaleType="fitCenter"
                 android:visibility="gone"
-                android:src="@drawable/b3" />
+                android:src="@drawable/pratham_logo" />
 
             <com.pratham.foundation.customView.GifView
                 android:id="@+id/gif_dia_view"

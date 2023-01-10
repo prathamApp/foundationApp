@@ -5,7 +5,7 @@
     android:id="@+id/home_root_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/new_bg"
+    android:background="@drawable/stylebg2"
     android:orientation="vertical">
     <!--    android:background="#F9FCFE"-->
 
@@ -82,13 +82,22 @@
             android:layout_centerInParent="true"
             android:visibility="visible">
 
-            <ImageView
+            <com.airbnb.lottie.LottieAnimationView
                 android:id="@+id/nodata_img"
                 android:layout_width="@dimen/_250sdp"
                 android:layout_height="@dimen/_250sdp"
                 android:layout_alignParentTop="true"
                 android:layout_centerHorizontal="true"
-                android:src="@drawable/no_usage_data" />
+                app:lottie_autoPlay="true"
+                app:lottie_fileName="empty_lottie.json"
+                app:lottie_loop="true" />
+<!--            <ImageView
+                android:id="@+id/nodata_img"
+                android:layout_width="@dimen/_250sdp"
+                android:layout_height="@dimen/_250sdp"
+                android:layout_alignParentTop="true"
+                android:layout_centerHorizontal="true"
+                android:src="@drawable/no_usage_data" />-->
 
             <com.pratham.foundation.customView.fontsview.SansTextViewBold
                 android:layout_width="match_parent"

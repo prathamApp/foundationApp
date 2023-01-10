@@ -22,6 +22,9 @@ public interface ContentTableDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     long insert(ContentTable contentTableList);
 
+    @Query("SELECT * FROM ContentTable")
+    List<ContentTable> getAllContentDataForJson();
+
     @Query("SELECT * FROM ContentTable WHERE parentId=:parentId AND resourceType=:contentType")
     List<ContentTable> getTestContentData(String parentId, String contentType);
 

@@ -1,5 +1,8 @@
 package com.pratham.foundation.ui.selectSubject;
 
+import static com.pratham.foundation.ApplicationClass.App_Thumbs_Path;
+import static com.pratham.foundation.utility.FC_Utility.getRandomOvalCard;
+
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -29,8 +32,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-import static com.pratham.foundation.ApplicationClass.App_Thumbs_Path;
-
 public class SelectSubjectAdapter extends RecyclerView.Adapter {
     Context context;
     List<ContentTable> datalist;
@@ -57,6 +58,7 @@ public class SelectSubjectAdapter extends RecyclerView.Adapter {
             SubjectHolder myviewholder = (SubjectHolder) myViewHolder;
             String path = "";
             File file;
+            myviewholder.main_rl.setBackground(ApplicationClass.getInstance().getResources().getDrawable(getRandomOvalCard()));
             myviewholder.content_title.setText(datalist.get(i).getNodeTitle());
             if (datalist.get(i).getIsDownloaded().equalsIgnoreCase("1") ||
                     datalist.get(i).getIsDownloaded().equalsIgnoreCase("true")) {

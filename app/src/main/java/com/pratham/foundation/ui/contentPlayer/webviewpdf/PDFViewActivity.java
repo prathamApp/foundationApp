@@ -70,7 +70,7 @@ public class PDFViewActivity extends BaseActivity {
             Log.d("INSTRUCTIONFRAG", "Select Subj: " + a);
             FC_Utility.setAppLocal(this, a);
 
-        }else{
+        } else {
             pdf_Path = getIntent().getStringExtra("contentPath");
         }
         if (new File(pdf_Path).exists())
@@ -137,9 +137,9 @@ public class PDFViewActivity extends BaseActivity {
         dia_title.setText(getResources().getString(R.string.exit_dialog_msg));
         dialog.show();
         dia_btn_green.setOnClickListener(v -> {
-            if(!diaFlg){
+            if (!diaFlg) {
                 addScoreToDB();
-            addGameProgress();
+                addGameProgress();
             }
             dialog.dismiss();
             new Handler().postDelayed(this::finish, 100);
@@ -152,8 +152,11 @@ public class PDFViewActivity extends BaseActivity {
         try {
             String endTime = FC_Utility.getCurrentDateTime();
             Score score = new Score();
+            String gId = FastSave.getInstance().getString(FC_Constants.CURRENT_GROUP_ID, "");
             score.setSessionID(FastSave.getInstance().getString(FC_Constants.CURRENT_SESSION, ""));
-            score.setStudentID("" + FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""));
+            score.setStudentID("" + ((FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, "").equals("")
+                    || FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, "").equals(null)) ? "NA"
+                    : FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, "")));
             score.setDeviceID(FC_Utility.getDeviceID());
             score.setResourceID(resId);
             score.setQuestionId(0);
@@ -163,7 +166,9 @@ public class PDFViewActivity extends BaseActivity {
             score.setEndDateTime(endTime);
             score.setLevel(0);
             score.setLabel("PDF");
-            score.setGroupId(FastSave.getInstance().getString(FC_Constants.CURRENT_GROUP_ID, ""));
+            score.setGroupId("" + ((FastSave.getInstance().getString(FC_Constants.CURRENT_GROUP_ID, "").equals(null)
+                    || FastSave.getInstance().getString(FC_Constants.CURRENT_GROUP_ID, "").equals(""))
+                    ? "NA" : FastSave.getInstance().getString(FC_Constants.CURRENT_GROUP_ID, "NA")));
             score.setSentFlag(0);
             AppDatabase.getDatabaseInstance(this).getScoreDao().insert(score);
         } catch (Exception e) {
@@ -179,7 +184,9 @@ public class PDFViewActivity extends BaseActivity {
             contentProgress.setProgressPercentage("" + 100);
             contentProgress.setResourceId("" + resId);
             contentProgress.setSessionId("" + FastSave.getInstance().getString(FC_Constants.CURRENT_SESSION, ""));
-            contentProgress.setStudentId("" + FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""));
+            contentProgress.setStudentId("" + ((FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, "").equals("")
+                    || FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, "").equals(null)) ? "NA"
+                    : FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, "")));
             contentProgress.setUpdatedDateTime("" + FC_Utility.getCurrentDateTime());
             contentProgress.setLabel("resourceProgress");
             contentProgress.setSentFlag(0);

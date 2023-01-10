@@ -3,7 +3,7 @@
     android:id="@+id/form_root"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/new_bg">
+    android:background="@drawable/stylebg2">
 
     <com.pratham.foundation.customView.fontsview.SansTextViewBold
         android:id="@+id/tv_title"
@@ -25,8 +25,7 @@
             android:id="@+id/addBtn_l"
             android:layout_width="match_parent"
             android:layout_height="@dimen/_45sdp"
-            android:layout_alignParentBottom="true"
-            android:layout_marginBottom="@dimen/_10sdp">
+            android:layout_alignParentBottom="true">
 
             <com.pratham.foundation.customView.fontsview.SansButton
                 android:id="@+id/btn_add_new_student"
@@ -34,6 +33,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="@dimen/_12sdp"
                 android:layout_marginTop="@dimen/_3sdp"
+                android:layout_marginBottom="@dimen/_5sdp"
                 android:background="@drawable/button_green"
                 android:elevation="5dp"
                 android:padding="@dimen/_3sdp"
@@ -46,17 +46,20 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_above="@+id/addBtn_l"
-            android:layout_marginHorizontal="@dimen/_15sdp"
             android:layout_marginTop="@dimen/_10sdp"
-            android:layout_marginBottom="@dimen/_5sdp">
+            android:layout_marginBottom="@dimen/_5sdp"
+            android:elevation="@dimen/_5sdp">
 
             <com.pratham.foundation.customView.fontsview.SansEditText
                 android:id="@+id/et_studentName"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/_30sdp"
+                android:layout_marginStart="@dimen/_15sdp"
+                android:layout_marginEnd="@dimen/_15sdp"
                 android:layout_marginBottom="@dimen/_7sdp"
                 android:background="@drawable/ripple_rectangle_card"
                 android:clickable="true"
+                android:elevation="@dimen/_5sdp"
                 android:focusableInTouchMode="true"
                 android:hint="@string/my_name"
                 android:paddingVertical="@dimen/_1sdp"
@@ -73,9 +76,12 @@
                 android:id="@+id/ll_age"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/_30sdp"
+                android:layout_marginStart="@dimen/_15sdp"
+                android:layout_marginEnd="@dimen/_15sdp"
                 android:layout_below="@id/et_studentName"
                 android:layout_gravity="center_vertical"
                 android:background="@drawable/ripple_rectangle_card"
+                android:elevation="@dimen/_5sdp"
                 android:orientation="horizontal">
 
                 <com.pratham.foundation.customView.fontsview.SansTextViewBold
@@ -107,6 +113,9 @@
                 android:layout_below="@id/ll_age"
                 android:layout_gravity="center"
                 android:layout_marginVertical="@dimen/_6sdp"
+                android:elevation="@dimen/_5sdp"
+                android:layout_marginStart="@dimen/_15sdp"
+                android:layout_marginEnd="@dimen/_15sdp"
                 android:background="@drawable/ripple_rectangle_card"
                 android:gravity="center_vertical">
 
@@ -115,8 +124,8 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:paddingStart="@dimen/_10sdp"
                     android:gravity="center_vertical"
+                    android:paddingStart="@dimen/_10sdp"
                     android:text="@string/gender"
                     android:textColor="@color/colorText"
                     android:textSize="@dimen/_13sdp"
@@ -167,7 +176,10 @@
                     android:layout_height="@dimen/_30sdp"
                     android:layout_alignParentTop="true"
                     android:layout_marginBottom="@dimen/_8sdp"
+                    android:layout_marginStart="@dimen/_15sdp"
+                    android:layout_marginEnd="@dimen/_15sdp"
                     android:background="@drawable/ripple_rectangle_card"
+                    android:elevation="@dimen/_5sdp"
                     android:gravity="center"
                     android:text="@string/select_avatar"
                     android:textColor="@color/colorText"
@@ -177,6 +189,8 @@
                     android:id="@+id/rv_Avatars"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
+                    android:layout_marginStart="@dimen/_10sdp"
+                    android:layout_marginEnd="@dimen/_10sdp"
                     android:layout_below="@id/tv_select_avatar"
                     android:gravity="center"
                     android:layoutAnimation="@anim/layout_fall_down"

@@ -1,5 +1,7 @@
 package com.pratham.foundation.ui.contentPlayer.sequenceLayout;
 
+import static com.pratham.foundation.ApplicationClass.App_Thumbs_Path;
+
 import android.content.Context;
 import android.net.Uri;
 import android.view.LayoutInflater;
@@ -26,10 +28,8 @@ import com.pratham.foundation.ui.contentPlayer.GameConstatnts;
 import java.io.File;
 import java.util.List;
 
-import static com.pratham.foundation.ApplicationClass.App_Thumbs_Path;
-
 public class SequenceGameAdapter extends RecyclerView.Adapter<SequenceGameAdapter.MyViewHolder> {
-    private Context context;
+    private final Context context;
     List<ContentTable> gamesList;
     SequeanceLayoutContract.clickListner clickListner;
 
@@ -49,7 +49,7 @@ public class SequenceGameAdapter extends RecyclerView.Adapter<SequenceGameAdapte
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder myViewHolder, int i) {
         ContentTable contentTable = gamesList.get(i);
-//        myViewHolder.content_card_view.setBackground(context.getResources().getDrawable(getRandomCardColor()));
+        myViewHolder.content_card_view.setBackground(context.getResources().getDrawable(R.drawable.new_card_color_bg3));
         myViewHolder.title.setText(contentTable.getNodeTitle());
         myViewHolder.ib_action_btn.setVisibility(View.GONE);
         myViewHolder.tv_progress.setVisibility(View.GONE);

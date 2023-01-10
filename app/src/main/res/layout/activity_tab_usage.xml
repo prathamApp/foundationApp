@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/new_bg">
+    android:background="@drawable/stylebg2">
 
     <RelativeLayout
         android:id="@+id/header_rl"
@@ -59,10 +59,21 @@
         android:layout_below="@+id/header_rl"
         android:visibility="visible">
 
+        <com.airbnb.lottie.LottieAnimationView
+            android:id="@+id/nodata_img"
+            android:layout_width="@dimen/_250sdp"
+            android:layout_height="@dimen/_250sdp"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="@dimen/_50sdp"
+            app:lottie_autoPlay="true"
+            app:lottie_fileName="empty_lottie.json"
+            app:lottie_loop="true" />
+<!--
         <ImageView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:src="@drawable/no_usage_data" />
+-->
 
         <com.pratham.foundation.customView.fontsview.SansTextViewBold
             android:layout_width="match_parent"

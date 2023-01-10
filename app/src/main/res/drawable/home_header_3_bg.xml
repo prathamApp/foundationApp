@@ -2,8 +2,9 @@
 <shape android:shape="rectangle"
     android:thickness="5dp"
     xmlns:android="http://schemas.android.com/apk/res/android">
-    <solid android:color="@color/level_3_color" />
+    <solid android:color="@color/white" />
+<!--    <solid android:color="@color/CardTransparentBg2" />-->
     <corners
-        android:bottomLeftRadius="@dimen/_10sdp"
-        android:bottomRightRadius="@dimen/_10sdp" />
+        android:bottomLeftRadius="@dimen/_20sdp"
+        android:bottomRightRadius="@dimen/_20sdp" />
 </shape>

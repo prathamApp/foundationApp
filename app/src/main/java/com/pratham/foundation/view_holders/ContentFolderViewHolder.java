@@ -1,8 +1,8 @@
 package com.pratham.foundation.view_holders;
 
 import static com.pratham.foundation.ApplicationClass.App_Thumbs_Path;
-import static com.pratham.foundation.ui.app_home.HomeActivity.drawableBg;
 import static com.pratham.foundation.utility.FC_Constants.SINGLE_RES_DOWNLOAD;
+import static com.pratham.foundation.utility.FC_Utility.getRandomCardColor;
 
 import android.annotation.SuppressLint;
 import android.net.Uri;
@@ -95,7 +95,8 @@ public class ContentFolderViewHolder extends RecyclerView.ViewHolder {
     public void setFolderItem(ContentTable contentList, int position) {
         try {
 //        add card and its click listners
-            Objects.requireNonNull(card_main).setBackground(drawableBg);
+//            Objects.requireNonNull(card_main).setBackground(drawableBg);
+            Objects.requireNonNull(card_main).setBackground(ApplicationClass.getInstance().getResources().getDrawable(getRandomCardColor()));
             Objects.requireNonNull(tvTitle).setText(contentList.getNodeTitle());
             Objects.requireNonNull(rl_loader).setVisibility(View.GONE);
             Objects.requireNonNull(tv_progress).setText(contentList.getNodePercentage() + "%");
@@ -110,8 +111,11 @@ public class ContentFolderViewHolder extends RecyclerView.ViewHolder {
                 else
                     file = new File(ApplicationClass.foundationPath +
                             "" + App_Thumbs_Path + contentList.getNodeImage());
-                if (file.exists())
+
+                if (file.exists() && !file.getName().contains("blank.png"))
                     Objects.requireNonNull(itemImage).setImageURI(Uri.fromFile(file));
+                else
+                    Objects.requireNonNull(itemImage).setActualImageResource(R.drawable.fc_logo);
             } else {
                 String thumbPath = "" + contentList.getNodeServerImage();
                 if (ApplicationClass.wiseF.isDeviceConnectedToMobileNetwork() || ApplicationClass.wiseF.isDeviceConnectedToWifiNetwork()) {
@@ -123,15 +127,18 @@ public class ContentFolderViewHolder extends RecyclerView.ViewHolder {
                         thumbPath = "" + contentList.getNodeServerImage();
                     }
                 }
-                ImageRequest imageRequest = ImageRequestBuilder
-                        .newBuilderWithSource(Uri.parse(thumbPath))
-                        .setResizeOptions(new ResizeOptions(300, 300))
-                        .build();
-                DraweeController controller = Fresco.newDraweeControllerBuilder()
-                        .setImageRequest(imageRequest)
-                        .setOldController(Objects.requireNonNull(itemImage).getController())
-                        .build();
-                itemImage.setController(controller);
+                if (!thumbPath.contains("blank.png")) {
+                    ImageRequest imageRequest = ImageRequestBuilder
+                            .newBuilderWithSource(Uri.parse(thumbPath))
+                            .setResizeOptions(new ResizeOptions(300, 300))
+                            .build();
+                    DraweeController controller = Fresco.newDraweeControllerBuilder()
+                            .setImageRequest(imageRequest)
+                            .setOldController(Objects.requireNonNull(itemImage).getController())
+                            .build();
+                    itemImage.setController(controller);
+                } else
+                    Objects.requireNonNull(itemImage).setActualImageResource(R.drawable.fc_logo);
             }
             if (contentList.getNodeType().equalsIgnoreCase("PreResource")) {
                 Objects.requireNonNull(tv_progress).setVisibility(View.GONE);
@@ -192,7 +199,8 @@ public class ContentFolderViewHolder extends RecyclerView.ViewHolder {
     @SuppressLint("SetTextI18n")
     public void setFragmentFolderItem(ContentTable contentTable, int posi, String parentName, int parentPos) {
         try {
-            Objects.requireNonNull(card_main).setBackground(drawableBg);
+//            Objects.requireNonNull(card_main).setBackground(drawableBg);
+            Objects.requireNonNull(card_main).setBackground(ApplicationClass.getInstance().getResources().getDrawable(getRandomCardColor()));
             Objects.requireNonNull(tvTitle).setText(contentTable.getNodeTitle());
             Objects.requireNonNull(tv_progress).setText(contentTable.getNodePercentage() + "%");
             Objects.requireNonNull(rl_loader).setVisibility(View.GONE);
@@ -206,8 +214,12 @@ public class ContentFolderViewHolder extends RecyclerView.ViewHolder {
                 else
                     f = new File(ApplicationClass.foundationPath +
                             "" + App_Thumbs_Path + contentTable.getNodeImage());
-                if (f.exists())
+
+                if (f.exists() && !f.getName().contains("blank.png"))
                     Objects.requireNonNull(itemImage).setImageURI(Uri.fromFile(f));
+                else
+                    Objects.requireNonNull(itemImage).setActualImageResource(R.drawable.fc_logo);
+
             } else {
                 String thumbPath = "" + contentTable.getNodeServerImage();
                 if (ApplicationClass.wiseF.isDeviceConnectedToMobileNetwork() || ApplicationClass.wiseF.isDeviceConnectedToWifiNetwork()) {
@@ -219,15 +231,19 @@ public class ContentFolderViewHolder extends RecyclerView.ViewHolder {
                         thumbPath = "" + contentTable.getNodeServerImage();
                     }
                 }
-                ImageRequest imageRequest = ImageRequestBuilder
-                        .newBuilderWithSource(Uri.parse(thumbPath))
-                        .setResizeOptions(new ResizeOptions(300, 300))
-                        .build();
-                DraweeController controller = Fresco.newDraweeControllerBuilder()
-                        .setImageRequest(imageRequest)
-                        .setOldController(Objects.requireNonNull(itemImage).getController())
-                        .build();
-                itemImage.setController(controller);
+                if (!thumbPath.contains("blank.png")) {
+                    ImageRequest imageRequest = ImageRequestBuilder
+                            .newBuilderWithSource(Uri.parse(thumbPath))
+                            .setResizeOptions(new ResizeOptions(300, 300))
+                            .build();
+                    DraweeController controller = Fresco.newDraweeControllerBuilder()
+                            .setImageRequest(imageRequest)
+                            .setOldController(Objects.requireNonNull(itemImage).getController())
+                            .build();
+                    itemImage.setController(controller);
+                } else
+                    Objects.requireNonNull(itemImage).setActualImageResource(R.drawable.fc_logo);
+
             }
 
             if (contentTable.getNodeType().equalsIgnoreCase("PreResource")) {

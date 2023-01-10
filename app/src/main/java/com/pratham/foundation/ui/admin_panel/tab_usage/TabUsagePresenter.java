@@ -47,13 +47,15 @@ public class TabUsagePresenter implements TabUsageContract.TabUsagePresenter {
             tabUsageView.showTotalDaysPlayedByGroups(modal_totalDaysGroupsPlayeds);
         }else {
             List<Modal_TotalDaysStudentsPlayed> modal_totalDaysStudentsPlayeds = AppDatabase.getDatabaseInstance(context).getScoreDao().getTotalDaysStudentPlayed(
-                    "" + FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""));
+                    "" + ((FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, "").equals("")
+                    || FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, "").equals(null)) ?"NA"
+                    :FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, "")));
             Log.d("getActiveGroups: ", modal_totalDaysStudentsPlayeds.size() + "");
             for(int i =0; i<modal_totalDaysStudentsPlayeds.size();i++){
                 Modal_TotalDaysGroupsPlayed modal_totalDaysGroupsPlayed = new Modal_TotalDaysGroupsPlayed();
-                modal_totalDaysGroupsPlayed.setDates(modal_totalDaysStudentsPlayeds.get(i).getDates());
-                modal_totalDaysGroupsPlayed.setGroupID(modal_totalDaysStudentsPlayeds.get(i).getStudentID());
-                modal_totalDaysGroupsPlayed.setGroupName(modal_totalDaysStudentsPlayeds.get(i).getFullName());
+                modal_totalDaysGroupsPlayed.setDates(""+modal_totalDaysStudentsPlayeds.get(i).getDates());
+                modal_totalDaysGroupsPlayed.setGroupID(""+modal_totalDaysStudentsPlayeds.get(i).getStudentID());
+                modal_totalDaysGroupsPlayed.setGroupName(""+modal_totalDaysStudentsPlayeds.get(i).getFullName());
                 modal_totalDaysGroupsPlayeds.add(modal_totalDaysGroupsPlayed);
             }
             tabUsageView.showTotalDaysPlayedByGroups(modal_totalDaysGroupsPlayeds);

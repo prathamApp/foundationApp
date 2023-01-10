@@ -2,7 +2,14 @@
 <shape xmlns:android="http://schemas.android.com/apk/res/android"
     android:shape="rectangle"
     android:thickness="5dp">
-    <solid android:color="@color/level_3_color" />
+    <solid
+        android:color="@color/CardTransparentBgNew"/>
+<!--    <gradient
+        android:angle="135"
+        android:endColor="#BCE6E1"
+        android:centerColor="#26EAD7"
+        android:startColor="#BCE6E1"
+        android:type="linear" />-->
     <corners
         android:topLeftRadius="@dimen/_10sdp"
         android:topRightRadius="@dimen/_10sdp" />

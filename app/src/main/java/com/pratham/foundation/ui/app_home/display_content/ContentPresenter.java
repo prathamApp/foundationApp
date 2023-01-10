@@ -212,7 +212,7 @@ public class ContentPresenter implements ContentContract.ContentPresenter, API_C
                             resPath = ApplicationClass.contentSDPath + gameFolderPath + "/" + downloadedContentTableList.get(j).getResourcePath();
                         else
                             resPath = ApplicationClass.foundationPath + gameFolderPath + "/" + downloadedContentTableList.get(j).getResourcePath();
-                        if(!new File(resPath).exists()){
+                        if (!new File(resPath).exists()) {
                             contentTable.setIsDownloaded("" + false);
                             contentTable.setOnSDCard(false);
                         }
@@ -315,11 +315,13 @@ public class ContentPresenter implements ContentContract.ContentPresenter, API_C
                 api_content.getAPIContent_PI_V2(FC_Constants.INTERNET_DOWNLOAD_ASSESSMENT_RESOURCE_PI, FC_Constants.INTERNET_DOWNLOAD_RESOURCE_API_PI, itemContent.getNodeId());
             } else
                 api_content.getAPIContent(FC_Constants.INTERNET_DOWNLOAD_ASSESSMENT_RESOURCE, FC_Constants.INTERNET_DOWNLOAD_RESOURCE_API, itemContent.getNodeId());
-        }else
+        } else
             contentView.onTestAddedToDb(testItem);
 
 //        itemContent.setIsDownloaded("true");
-//        itemContent.setStudentId("" + FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""));
+//        itemContent.setStudentId("" + ((FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, "").equals("")
+//                    || FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, "").equals(null)) ?"NA"
+//                    :FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, "")));
 //        AppDatabase.getDatabaseInstance(mContext).getContentTableDao().insert(itemContent);
     }
 
@@ -476,7 +478,9 @@ public class ContentPresenter implements ContentContract.ContentPresenter, API_C
                     for (int i = 0; i < pos.size(); i++) {
                         pos.get(i).setIsDownloaded("true");
                         String studID = AppDatabase.getDatabaseInstance(context).getContentTableDao().getEarlierStudentId(pos.get(i).getNodeId());
-                        String currStudID = FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, "");
+                        String currStudID = ((FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, "").equals("")
+                                || FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, "").equals(null)) ? "NA"
+                                : FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""));
                         boolean studFound = false, prathamGroupFound = false;
                         if (studID != null && !studID.equalsIgnoreCase("") && !studID.equalsIgnoreCase(" ")) {
                             String[] arrOfStdId = studID.split(",");
@@ -493,7 +497,9 @@ public class ContentPresenter implements ContentContract.ContentPresenter, API_C
                                 }
 
                                 if (!studFound) {
-                                    pos.get(i).setStudentId(studID + "," + FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""));
+                                    pos.get(i).setStudentId(studID + "," + ((FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, "").equals("")
+                                            || FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, "").equals(null)) ? "NA"
+                                            : FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, "")));
                                 } else {
                                     pos.get(i).setStudentId(studID);
                                 }
@@ -506,7 +512,9 @@ public class ContentPresenter implements ContentContract.ContentPresenter, API_C
                                 }
                             }
                         } else {
-                            pos.get(i).setStudentId("" + FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""));
+                            pos.get(i).setStudentId("" + ((FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, "").equals("")
+                                    || FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, "").equals(null)) ? "NA"
+                                    : FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, "")));
                             if (FastSave.getInstance().getBoolean(FC_Constants.PRATHAM_STUDENT, false)) {
                                 pos.get(i).setStudentId("pratham_group");
                             }
@@ -520,7 +528,7 @@ public class ContentPresenter implements ContentContract.ContentPresenter, API_C
                         urlConnection.connect();
                         fileSize = "" + FC_Utility.getFileSize(urlConnection.getContentLength());
                         contentView.setDownloadSize(" (" + fileSize + ")");
-                    }else
+                    } else
                         contentView.setDownloadSize(" ");
                     fileName = download_content.getDownloadurl()
                             .substring(download_content.getDownloadurl().lastIndexOf('/') + 1);
@@ -534,7 +542,7 @@ public class ContentPresenter implements ContentContract.ContentPresenter, API_C
                             zipDownloader.initialize(context, pi_url,
                                     download_content.getFoldername(), fileName, dwContent, pos, true);
                         } else {
-                            String pi_url="na";
+                            String pi_url = "na";
                             if (fileName.contains(".mp4"))
                                 pi_url = FC_Constants.RASP_IP + FC_Constants.RASP_LOCAL_URL + "/videos/mp4/" + fileName;
                             else if (fileName.contains(".m4v"))
@@ -595,7 +603,9 @@ public class ContentPresenter implements ContentContract.ContentPresenter, API_C
                     for (int i = 0; i < pos.size(); i++) {
                         pos.get(i).setIsDownloaded("true");
                         String studID = AppDatabase.getDatabaseInstance(context).getContentTableDao().getEarlierStudentId(pos.get(i).getNodeId());
-                        String currStudID = FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, "");
+                        String currStudID = ((FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, "").equals("")
+                                || FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, "").equals(null)) ? "NA"
+                                : FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""));
                         boolean studFound = false, prathamGroupFound = false;
                         if (studID != null && !studID.equalsIgnoreCase("") && !studID.equalsIgnoreCase(" ")) {
                             String[] arrOfStdId = studID.split(",");
@@ -612,7 +622,9 @@ public class ContentPresenter implements ContentContract.ContentPresenter, API_C
                                 }
 
                                 if (!studFound) {
-                                    pos.get(i).setStudentId(studID + "," + FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""));
+                                    pos.get(i).setStudentId(studID + "," + ((FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, "").equals("")
+                                            || FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, "").equals(null)) ? "NA"
+                                            : FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, "")));
                                 } else {
                                     pos.get(i).setStudentId(studID);
                                 }
@@ -625,7 +637,9 @@ public class ContentPresenter implements ContentContract.ContentPresenter, API_C
                                 }
                             }
                         } else {
-                            pos.get(i).setStudentId("" + FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""));
+                            pos.get(i).setStudentId("" + ((FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, "").equals("")
+                                    || FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, "").equals(null)) ? "NA"
+                                    : FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, "")));
                             if (FastSave.getInstance().getBoolean(FC_Constants.PRATHAM_STUDENT, false)) {
                                 pos.get(i).setStudentId("pratham_group");
                             }
@@ -708,16 +722,20 @@ public class ContentPresenter implements ContentContract.ContentPresenter, API_C
         try {
             String endTime = FC_Utility.getCurrentDateTime();
             Score score = new Score();
-            score.setSessionID(FastSave.getInstance().getString(FC_Constants.CURRENT_SESSION, ""));
-            score.setStudentID("" + FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, ""));
-            score.setGroupId(FastSave.getInstance().getString(FC_Constants.CURRENT_GROUP_ID, ""));
-            score.setDeviceID(FC_Utility.getDeviceID());
-            score.setResourceID(resId);
+            score.setSessionID("" + FastSave.getInstance().getString(FC_Constants.CURRENT_SESSION, ""));
+            score.setStudentID(((FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, "").equals("")
+                    || FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, "").equals(null)) ? "NA"
+                    : FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, "NA")));
+            score.setGroupId(((FastSave.getInstance().getString(FC_Constants.CURRENT_GROUP_ID, "").equals("")
+                    || FastSave.getInstance().getString(FC_Constants.CURRENT_GROUP_ID, "").equals(null)) ? "NA"
+                    : FastSave.getInstance().getString(FC_Constants.CURRENT_GROUP_ID, "NA")));
+            score.setDeviceID("" + FC_Utility.getDeviceID());
+            score.setResourceID("" + resId);
             score.setQuestionId(0);
             score.setScoredMarks(0);
             score.setTotalMarks(0);
-            score.setStartDateTime(endTime);
-            score.setEndDateTime(endTime);
+            score.setStartDateTime("" + endTime);
+            score.setEndDateTime("" + endTime);
             score.setLevel(0);
             score.setLabel("Assessment Opened");
             score.setSentFlag(0);
@@ -785,18 +803,23 @@ public class ContentPresenter implements ContentContract.ContentPresenter, API_C
         try {
             String deviceId = AppDatabase.getDatabaseInstance(context).getStatusDao().getValue("DeviceId");
             Score score = new Score();
-            score.setSessionID(FastSave.getInstance().getString(FC_Constants.CURRENT_SESSION, ""));
-            score.setResourceID("" + contentID);
+            score.setSessionID(FastSave.getInstance().getString(FC_Constants.CURRENT_SESSION, "").equals(null)
+                    ? "NA" : FastSave.getInstance().getString(FC_Constants.CURRENT_SESSION, ""));
+            score.setResourceID(contentID.equals(null) ? "NA" : contentID);
             score.setQuestionId(0);
             score.setScoredMarks(0);
             score.setTotalMarks(0);
-            score.setStudentID(FastSave.getInstance().getString(CURRENT_STUDENT_ID, ""));
-            score.setGroupId(FastSave.getInstance().getString(FC_Constants.CURRENT_GROUP_ID, ""));
-            score.setStartDateTime(FC_Utility.getCurrentDateTime());
+            score.setStudentID(((FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, "").equals("")
+                    || FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, "").equals(null)) ? "NA"
+                    : FastSave.getInstance().getString(FC_Constants.CURRENT_STUDENT_ID, "NA")));
+            score.setGroupId(((FastSave.getInstance().getString(FC_Constants.CURRENT_GROUP_ID, "").equals("")
+                    || FastSave.getInstance().getString(FC_Constants.CURRENT_GROUP_ID, "").equals(null)) ? "NA"
+                    : FastSave.getInstance().getString(FC_Constants.CURRENT_GROUP_ID, "NA")));
+            score.setStartDateTime("" + FC_Utility.getCurrentDateTime());
             score.setDeviceID(deviceId.equals(null) ? "0000" : deviceId);
             score.setEndDateTime(FC_Utility.getCurrentDateTime());
             score.setLevel(0);
-            score.setLabel(Label);
+            score.setLabel("" + (Label.equals(null) || Label.equals("") ? "NA" : Label));
             score.setSentFlag(0);
             AppDatabase.getDatabaseInstance(context).getScoreDao().insert(score);
             BackupDatabase.backup(context);

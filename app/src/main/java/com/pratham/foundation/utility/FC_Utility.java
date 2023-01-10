@@ -375,18 +375,28 @@ public class FC_Utility {
         return jsonName;
     }
 
+    private static final int[] ripple_bg = new int[]{
+            /*R.drawable.ripple_rectangle_card, */R.drawable.ripple_rectangle_card1, R.drawable.ripple_rectangle_card2,
+            R.drawable.ripple_rectangle_card3, R.drawable.ripple_rectangle_card4, R.drawable.ripple_rectangle_card5,
+            R.drawable.ripple_rectangle_card6};
+
+    private static final int[] oval_ripple_bg = new int[]{
+            /*R.drawable.ripple_rectangle_card, */R.drawable.ripple_oval_card1, R.drawable.ripple_oval_card2,
+            R.drawable.ripple_oval_card3, R.drawable.ripple_oval_card4, R.drawable.ripple_oval_card5,
+            R.drawable.ripple_oval_card6};
+
     private static final int[] gradiant_bg = new int[]{
             R.drawable.card_color_bg1, R.drawable.card_color_bg2, R.drawable.card_color_bg3,
             R.drawable.card_color_bg4, R.drawable.card_color_bg5, R.drawable.card_color_bg7,
             R.drawable.card_color_bg8};
 
     private static final int[] cord_color_bg = new int[]{
-            R.drawable.card_color_bg1, R.drawable.card_color_bg2, R.drawable.card_color_bg3,
-            R.drawable.card_color_bg4, R.drawable.card_color_bg5, R.drawable.card_color_bg7,
-            R.drawable.card_color_bg8
-//            R.color.colorBtnGreenDark, R.color.colorRedDark, R.color.deep_teal,
-//            R.color.ratingFilled, R.color.blue};
+            R.drawable.new_card_color_bg1, R.drawable.new_card_color_bg2, R.drawable.new_card_color_bg3
     };
+
+    public static int getRandomRippleBG() {
+        return ripple_bg[new Random().nextInt(ripple_bg.length)];
+    }
 
     public static int getRandomDrawableGradiant() {
         return gradiant_bg[new Random().nextInt(gradiant_bg.length)];
@@ -394,6 +404,10 @@ public class FC_Utility {
 
     public static int getRandomCardColor() {
         return cord_color_bg[new Random().nextInt(cord_color_bg.length)];
+    }
+
+    public static int getRandomOvalCard() {
+        return oval_ripple_bg[new Random().nextInt(cord_color_bg.length)];
     }
 
     public static String getMimeType(String url) {
@@ -1145,21 +1159,21 @@ public class FC_Utility {
     }
 
 
-    public static int getRandomMaleAvatar(Context context) {
-        Integer[] drawables = {R.drawable.b1, R.drawable.b2, R.drawable.b3};
-        int a = drawables[new Random().nextInt(drawables.length)];
+    public static String getRandomMaleAvatar() {
+        String[] maleAvatars = {"b1.json", "b2.json", "b3.json"};
+        String a = maleAvatars[new Random().nextInt(maleAvatars.length)];
         return a;
     }
 
-    public static int getRandomFemaleAvatar(Context context) {
-        Integer[] drawables = {R.drawable.g1, R.drawable.g2, R.drawable.g3};
-        int a = drawables[new Random().nextInt(drawables.length)];
+    public static String getRandomFemaleAvatar() {
+        String[] femaleAvatars = {"g1.json", "g2.json", "g3.json"};
+        String a = femaleAvatars[new Random().nextInt(femaleAvatars.length)];
         return a;
     }
 
     public static String getDeviceSerialID() {
-        return "NA";
-//        return Build.SERIAL;
+//        return "NA";
+        return Build.SERIAL;
     }
 
     public static String getDeviceID() {
