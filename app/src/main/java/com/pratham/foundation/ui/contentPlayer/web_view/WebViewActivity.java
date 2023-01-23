@@ -220,6 +220,7 @@ public class WebViewActivity extends BaseActivity implements WebViewInterface {
         } catch (Exception e) {
             e.printStackTrace();
             return false;
+
         }
     }
 

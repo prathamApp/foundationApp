@@ -8,6 +8,7 @@ import static com.pratham.foundation.utility.FC_Constants.IS_SERVICE_STOPED;
 import static com.pratham.foundation.utility.FC_Constants.SPLASH_OPEN;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.app.ActivityManager;
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -42,6 +43,7 @@ import com.pratham.foundation.R;
 import com.pratham.foundation.async.API_Content;
 import com.pratham.foundation.customView.BlurPopupDialog.BlurPopupWindow;
 import com.pratham.foundation.database.AppDatabase;
+import com.pratham.foundation.database.domain.ContentTable;
 import com.pratham.foundation.interfaces.API_Content_Result;
 import com.pratham.foundation.interfaces.Interface_copying;
 import com.pratham.foundation.interfaces.PermissionResult;
@@ -65,7 +67,15 @@ import org.androidannotations.annotations.ViewById;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.lang.reflect.Type;
+import java.util.List;
 import java.util.Objects;
 
 
@@ -141,6 +151,8 @@ public class SplashActivity extends SplashSupportActivity implements SplashContr
             FastSave.getInstance().saveString(FC_Constants.SERVER_MAINTENANCE_MSG, accessedModal.getMessage());
         }
     }
+
+
 
     @Override
     public void receivedContent_PI_SubLevel(String header, String response, int pos, int size) {
@@ -319,14 +331,15 @@ public class SplashActivity extends SplashSupportActivity implements SplashContr
         startActivityForResult(intent, SDCARD_LOCATION_CHOOSER);
     }
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
+    //@Override
+    protected void onActivityResult_(int requestCode, int resultCode, @Nullable Intent data) {
+        //super.onActivityResult(requestCode, resultCode, data);
         showBottomFragment();
       //  splashPresenter.populateSDCardMenu();
         if (requestCode == SDCARD_LOCATION_CHOOSER && 1 == 1) {
             if (data != null && data.getData() != null) {
                 Uri treeUri = data.getData();
+
                 final int takeFlags = data.getFlags()
                         & (Intent.FLAG_GRANT_READ_URI_PERMISSION
                         | Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
@@ -383,9 +396,9 @@ if(df != null && 1 == 2 )
                      String jsondata=   readTextFromUri(f.getUri());
                     // JSONObject jsonObject = JSONObject(jsondata);
                         Gson gson = new Gson();
-                        Type type = new TypeToken<List<ContentTable>>() {
+                       /* Type type = new TYPEt<List<ContentTable>>() {
                         }.getType();
-                        List<ContentTable>  contentTableList = gson.fromJson(jsondata, type);
+                        List<ContentTable> contentTableList = gson.fromJson(jsondata, type);*/
                     //AppDatabase.getDatabaseInstance(context).getContentTableDao().insertAll(contentTableList);
 
                         //BackupDatabase.backup(context);
@@ -428,6 +441,54 @@ dismissProgressDialog();
 //                new Handler().postDelayed(() -> {
 //                    new CopyDbToOTG().execute(treeUri);
 //                }, 500);
+            }
+        }
+    }
+
+
+
+  /*  private void copyFolderFromSdCardToAppStorage() {
+        // Use the Intent.ACTION_OPEN_DOCUMENT_TREE action to open the SD card
+        Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT_TREE);
+        startActivityForResult(intent, REQUEST_CODE_OPEN_SD_CARD);
+    }*/
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == SDCARD_LOCATION_CHOOSER && resultCode == Activity.RESULT_OK) {
+            // Get the URI of the selected folder
+            Uri sdCardUri = data.getData();
+
+            // Get the app's internal storage directory
+            File appStorageDir = getFilesDir();
+
+            // Create a new folder in the app's internal storage
+            File destinationFolder = new File(appStorageDir, "PrathamBackups");
+            destinationFolder.mkdirs();
+
+            // Use the DocumentFile class to get a DocumentFile object for the selected folder
+            DocumentFile sdCardDocument = DocumentFile.fromTreeUri(this, sdCardUri);
+
+            // Use the findFile method to get a DocumentFile object for the folder you want to copy
+            DocumentFile sourceFolder = sdCardDocument.findFile("PrathamBackups");
+
+            // Use the listFiles method to get an array of all the files in the folder
+            DocumentFile[] files = sourceFolder.listFiles();
+
+            for (DocumentFile file : files) {
+                // Use the openInputStream and openOutputStream methods to copy the file
+                try (InputStream input = getContentResolver().openInputStream(file.getUri());
+                     OutputStream output = new FileOutputStream(new File(destinationFolder, file.getName()))) {
+                    byte[] buffer = new byte[1024];
+                    int length;
+                    while ((length = input.read(buffer)) > 0) {
+                        output.write(buffer, 0, length);
+                    }
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
             }
         }
     }
