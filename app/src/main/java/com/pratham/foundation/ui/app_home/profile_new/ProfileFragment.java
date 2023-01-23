@@ -261,6 +261,12 @@ public class ProfileFragment extends Fragment implements ProfileContract.Profile
                 BottomStudentsFragment.class.getSimpleName());
     }
 
+    @Click(R.id.rl_synced_dashbord)
+    public void openDashboard() {
+        Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://app.powerbi.com/groups/b7c43558-7a65-447e-be57-0f736ace521c/reports/704fbff4[…]7a503c366b59467e783?ctid=b6d3d071-c61d-436f-a9fe-56091cf53bfd"));
+        startActivity(browserIntent);
+    }
+
     @Click(R.id.rl_sync_log)
     public void showSyncLog() {
         try {

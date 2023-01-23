@@ -5,37 +5,25 @@ import com.google.gson.annotations.SerializedName;
 public class PushResponse {
 
 
-    @SerializedName("TransId")
-    private String TransId;
+    @SerializedName("Error")
+    private String Error;
 
-    @SerializedName("ErrorId")
-    private String ErrorId;
+    @SerializedName("Status")
+    private String Status;
 
-    @SerializedName("ErrorDesc")
-    private String ErrorDesc;
-
-
-    public String getTransId() {
-        return TransId;
+    public String getError() {
+        return Error;
     }
 
-    public void setTransId(String transId) {
-        TransId = transId;
+    public void setError(String error) {
+        Error = error;
     }
 
-    public String getErrorId() {
-        return ErrorId;
+    public String getStatus() {
+        return Status;
     }
 
-    public void setErrorId(String errorId) {
-        ErrorId = errorId;
-    }
-
-    public String getErrorDesc() {
-        return ErrorDesc;
-    }
-
-    public void setErrorDesc(String errorDesc) {
-        ErrorDesc = errorDesc;
+    public void setStatus(String status) {
+        Status = status;
     }
 }

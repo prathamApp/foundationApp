@@ -19,16 +19,14 @@ public class KeyWords implements Serializable {
     private int keyWordId;
     @SerializedName("studentId")
     private String studentId;
-    /* @Ignore
-     private String sessionId;*/
     @SerializedName("resourceId")
     private String resourceId;
     @SerializedName("keyWord")
     private String keyWord;
     @SerializedName("wordType")
     private String wordType;
-    private int sentFlag;
     private String topic;
+    private int sentFlag;
 
     public int getKeyWordId() {
         return keyWordId;

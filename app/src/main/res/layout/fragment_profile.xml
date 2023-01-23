@@ -816,10 +816,46 @@
                             android:textSize="@dimen/_13sdp" />
 
                     </RelativeLayout>
+                    <RelativeLayout
+                        android:id="@+id/rl_synced_dashbord"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginStart="@dimen/_5sdp"
+                        android:layout_marginEnd="@dimen/_5sdp"
+                        android:layout_weight="1"
+                        android:background="?attr/selectableItemBackground">
+
+                        <ImageView
+                            android:id="@+id/iv_synced_dashbord"
+                            android:layout_width="35dp"
+                            android:layout_height="40dp"
+                            android:layout_alignParentStart="true"
+                            android:layout_centerVertical="true"
+                            android:layout_marginStart="@dimen/_2sdp"
+                            android:layout_marginTop="@dimen/_2sdp"
+                            android:layout_marginEnd="@dimen/_2sdp"
+                            android:layout_marginBottom="@dimen/_2sdp"
+                            android:src="@drawable/pratham_logo" />
+
+                        <com.pratham.foundation.customView.fontsview.SansTextView
+                            android:id="@+id/tv_synced_dashbord"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_centerVertical="true"
+                            android:layout_marginStart="10dp"
+                            android:layout_toEndOf="@+id/iv_synced_dashbord"
+                            android:gravity="center_vertical"
+                            android:text="Dashboard"
+                            android:textColor="@color/colorText"
+                            android:textSize="@dimen/_13sdp" />
+
+                    </RelativeLayout>
 
                 </LinearLayout>
 
             </RelativeLayout>
+
         </RelativeLayout>
     </ScrollView>
 </RelativeLayout>

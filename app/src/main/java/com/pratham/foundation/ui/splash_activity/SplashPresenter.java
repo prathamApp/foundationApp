@@ -36,7 +36,6 @@ import com.pratham.foundation.async.GetLatestVersion;
 import com.pratham.foundation.database.AppDatabase;
 import com.pratham.foundation.database.BackupDatabase;
 import com.pratham.foundation.database.dao.StatusDao;
-import com.pratham.foundation.database.domain.Assessment;
 import com.pratham.foundation.database.domain.Attendance;
 import com.pratham.foundation.database.domain.ContentProgress;
 import com.pratham.foundation.database.domain.ContentTable;
@@ -44,6 +43,7 @@ import com.pratham.foundation.database.domain.KeyWords;
 import com.pratham.foundation.database.domain.Score;
 import com.pratham.foundation.database.domain.Session;
 import com.pratham.foundation.database.domain.Status;
+import com.pratham.foundation.database.domain.Student;
 import com.pratham.foundation.modalclasses.Model_CourseEnrollment;
 import com.pratham.foundation.services.AppExitService;
 import com.pratham.foundation.services.LocationService;
@@ -203,6 +203,7 @@ public class SplashPresenter implements SplashContract.SplashPresenter {
                             detail.setEndDateTime(content_cursor.getString(content_cursor.getColumnIndex("EndDateTime")));
                             detail.setLevel(content_cursor.getInt(content_cursor.getColumnIndex("Level")));
                             detail.setLabel(content_cursor.getString(content_cursor.getColumnIndex("Label")));
+                            detail.setGroupId(content_cursor.getString(content_cursor.getColumnIndex("GroupId")));
                             detail.setSentFlag(content_cursor.getInt(content_cursor.getColumnIndex("sentFlag")));
                             contents.add(detail);
                             content_cursor.moveToNext();
@@ -224,6 +225,8 @@ public class SplashPresenter implements SplashContract.SplashPresenter {
                             Model_CourseEnrollment detail = new Model_CourseEnrollment();
                             detail.setCourseId("" + content_cursor.getString(content_cursor.getColumnIndex("courseId")));
                             detail.setGroupId("" + content_cursor.getString(content_cursor.getColumnIndex("groupId")));
+                            detail.setStudentId("" + content_cursor.getString(content_cursor.getColumnIndex("studentId")));
+                            detail.setCourseEnrolledDate("" + content_cursor.getString(content_cursor.getColumnIndex("courseEnrollmentDate")));
                             detail.setPlanFromDate("" + content_cursor.getString(content_cursor.getColumnIndex("planFromDate")));
                             detail.setPlanToDate("" + content_cursor.getString(content_cursor.getColumnIndex("planToDate")));
                             detail.setCoachVerified(+content_cursor.getInt(content_cursor.getColumnIndex("coachVerified")));
@@ -287,69 +290,6 @@ public class SplashPresenter implements SplashContract.SplashPresenter {
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
-
-                try {
-                    Cursor content_cursor;
-                    content_cursor = db.rawQuery("SELECT * FROM Assessment Where sentFlag=0", null);
-                    List<Assessment> contents = new ArrayList<>();
-                    if (content_cursor.moveToFirst()) {
-                        while (!content_cursor.isAfterLast()) {
-                            Assessment detail = new Assessment();
-                            detail.setScoreIda(content_cursor.getInt(content_cursor.getColumnIndex("ScoreIda")));
-                            detail.setSessionIDm(content_cursor.getString(content_cursor.getColumnIndex("SessionIDm")));
-                            detail.setSessionIDa(content_cursor.getString(content_cursor.getColumnIndex("SessionIDa")));
-                            detail.setStudentIDa(content_cursor.getString(content_cursor.getColumnIndex("StudentIDa")));
-                            detail.setDeviceIDa(content_cursor.getString(content_cursor.getColumnIndex("DeviceIDa")));
-                            detail.setResourceIDa(content_cursor.getString(content_cursor.getColumnIndex("ResourceIDa")));
-                            detail.setQuestionIda(content_cursor.getInt(content_cursor.getColumnIndex("QuestionIda")));
-                            detail.setScoredMarksa(content_cursor.getInt(content_cursor.getColumnIndex("ScoredMarksa")));
-                            detail.setTotalMarksa(content_cursor.getInt(content_cursor.getColumnIndex("TotalMarksa")));
-                            detail.setStartDateTimea(content_cursor.getString(content_cursor.getColumnIndex("StartDateTimea")));
-                            detail.setEndDateTime(content_cursor.getString(content_cursor.getColumnIndex("EndDateTimea")));
-                            detail.setLevela(content_cursor.getInt(content_cursor.getColumnIndex("Levela")));
-                            detail.setLabel(content_cursor.getString(content_cursor.getColumnIndex("Labela")));
-                            detail.setSentFlag(content_cursor.getInt(content_cursor.getColumnIndex("sentFlag")));
-                            contents.add(detail);
-                            content_cursor.moveToNext();
-                        }
-                    }
-                    AppDatabase.getDatabaseInstance(context).getAssessmentDao().addAssessmentList(contents);
-                    content_cursor.close();
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-
-                try {
-                    Cursor content_cursor;
-                    content_cursor = db.rawQuery("SELECT * FROM Assessment Where Labela='" + FC_Constants.CERTIFICATE_LBL + "'", null);
-                    List<Assessment> contents = new ArrayList<>();
-                    if (content_cursor.moveToFirst()) {
-                        while (!content_cursor.isAfterLast()) {
-                            Assessment detail = new Assessment();
-                            detail.setScoreIda(content_cursor.getInt(content_cursor.getColumnIndex("ScoreIda")));
-                            detail.setSessionIDm(content_cursor.getString(content_cursor.getColumnIndex("SessionIDm")));
-                            detail.setSessionIDa(content_cursor.getString(content_cursor.getColumnIndex("SessionIDa")));
-                            detail.setStudentIDa(content_cursor.getString(content_cursor.getColumnIndex("StudentIDa")));
-                            detail.setDeviceIDa(content_cursor.getString(content_cursor.getColumnIndex("DeviceIDa")));
-                            detail.setResourceIDa(content_cursor.getString(content_cursor.getColumnIndex("ResourceIDa")));
-                            detail.setQuestionIda(content_cursor.getInt(content_cursor.getColumnIndex("QuestionIda")));
-                            detail.setScoredMarksa(content_cursor.getInt(content_cursor.getColumnIndex("ScoredMarksa")));
-                            detail.setTotalMarksa(content_cursor.getInt(content_cursor.getColumnIndex("TotalMarksa")));
-                            detail.setStartDateTimea(content_cursor.getString(content_cursor.getColumnIndex("StartDateTimea")));
-                            detail.setEndDateTime(content_cursor.getString(content_cursor.getColumnIndex("EndDateTimea")));
-                            detail.setLevela(content_cursor.getInt(content_cursor.getColumnIndex("Levela")));
-                            detail.setLabel(content_cursor.getString(content_cursor.getColumnIndex("Labela")));
-                            detail.setSentFlag(content_cursor.getInt(content_cursor.getColumnIndex("sentFlag")));
-                            contents.add(detail);
-                            content_cursor.moveToNext();
-                        }
-                    }
-                    AppDatabase.getDatabaseInstance(context).getAssessmentDao().addAssessmentList(contents);
-                    content_cursor.close();
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-
                 try {
                     Cursor content_cursor;
                     content_cursor = db.rawQuery("SELECT * FROM KeyWords", null);
@@ -357,15 +297,12 @@ public class SplashPresenter implements SplashContract.SplashPresenter {
                     if (content_cursor.moveToFirst()) {
                         while (!content_cursor.isAfterLast()) {
                             KeyWords detail = new KeyWords();
-                            detail.setKeyWordId(content_cursor.getInt(content_cursor.getColumnIndex("learntWordId")));
                             detail.setStudentId(content_cursor.getString(content_cursor.getColumnIndex("studentId")));
-                            //  detail.setSessionId(content_cursor.getString(content_cursor.getColumnIndex("sessionId")));
-                            //  detail.setSynId(content_cursor.getString(content_cursor.getColumnIndex("synId")));
-                            detail.setResourceId(content_cursor.getString(content_cursor.getColumnIndex("wordUUId")));
-                            detail.setKeyWord(content_cursor.getString(content_cursor.getColumnIndex("word")));
+                            detail.setResourceId(content_cursor.getString(content_cursor.getColumnIndex("resourceId")));
+                            detail.setKeyWordId(content_cursor.getInt(content_cursor.getColumnIndex("keyWord")));
                             detail.setWordType(content_cursor.getString(content_cursor.getColumnIndex("wordType")));
-                            detail.setSentFlag(content_cursor.getInt(content_cursor.getColumnIndex("sentFlag")));
                             detail.setTopic("" + content_cursor.getString(content_cursor.getColumnIndex("topic")));
+                            detail.setSentFlag(content_cursor.getInt(content_cursor.getColumnIndex("sentFlag")));
                             contents.add(detail);
                             content_cursor.moveToNext();
                         }
@@ -395,6 +332,39 @@ public class SplashPresenter implements SplashContract.SplashPresenter {
                         }
                     }
                     AppDatabase.getDatabaseInstance(context).getContentProgressDao().addContentProgressList(contents);
+                    content_cursor.close();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                try {
+                    Cursor content_cursor;
+                    content_cursor = db.rawQuery("SELECT * FROM Student Where sentFlag=0", null);
+                    List<Student> contents = new ArrayList<>();
+                    if (content_cursor.moveToFirst()) {
+                        while (!content_cursor.isAfterLast()) {
+                            Student detail = new Student();
+                            detail.setStudentID(content_cursor.getString(content_cursor.getColumnIndex("StudentID")));
+                            detail.setFullName(content_cursor.getString(content_cursor.getColumnIndex("FullName")));
+                            detail.setGender(content_cursor.getString(content_cursor.getColumnIndex("Gender")));
+                            detail.setAge(content_cursor.getInt(content_cursor.getColumnIndex("Age")));
+                            detail.setStud_Class(content_cursor.getString(content_cursor.getColumnIndex("Stud_Class")));
+                            detail.setGroupId(content_cursor.getString(content_cursor.getColumnIndex("GroupId")));
+                            detail.setGroupName(content_cursor.getString(content_cursor.getColumnIndex("GroupName")));
+                            detail.setSentFlag(content_cursor.getInt(content_cursor.getColumnIndex("sentFlag")));
+                            detail.setDeviceId(content_cursor.getString(content_cursor.getColumnIndex("DeviceId")));
+                            detail.setFirstName(content_cursor.getString(content_cursor.getColumnIndex("FirstName")));
+                            detail.setMiddleName(content_cursor.getString(content_cursor.getColumnIndex("MiddleName")));
+                            detail.setLastName(content_cursor.getString(content_cursor.getColumnIndex("LastName")));
+                            detail.setEnrollmentId(content_cursor.getString(content_cursor.getColumnIndex("EnrollmentId")));
+                            detail.setRegDate(content_cursor.getString(content_cursor.getColumnIndex("regDate")));
+                            detail.setVillageName(content_cursor.getString(content_cursor.getColumnIndex("villageName")));
+                            detail.setNewFlag(content_cursor.getInt(content_cursor.getColumnIndex("newFlag")));
+                            detail.setAvatarName(content_cursor.getString(content_cursor.getColumnIndex("avatarName")));
+                            contents.add(detail);
+                            content_cursor.moveToNext();
+                        }
+                    }
+                    AppDatabase.getDatabaseInstance(context).getStudentDao().insertAll(contents);
                     content_cursor.close();
                 } catch (Exception e) {
                     e.printStackTrace();

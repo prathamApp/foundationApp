@@ -22,6 +22,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Environment;
 import android.os.Handler;
+import android.provider.Settings;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Gravity;
@@ -295,7 +296,7 @@ public class SplashActivity extends SplashSupportActivity implements SplashContr
     @UiThread
     @Override
     public void startApp() {
-/*        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
             if (Environment.isExternalStorageManager()) {
                 FastSave.getInstance().saveString(FC_Constants.CURRENT_SESSION, "NA");
                 DisplayMetrics displayMetrics = new DisplayMetrics();
@@ -316,7 +317,7 @@ public class SplashActivity extends SplashSupportActivity implements SplashContr
                 Intent intent = new Intent(Settings.ACTION_MANAGE_APP_ALL_FILES_ACCESS_PERMISSION);
                 Uri uri = Uri.fromParts("package", getPackageName(), null);
                 intent.setData(uri);
-                startActivity(intent);
+                startActivityForResult(intent,46);
             }
         } else {
             FastSave.getInstance().saveString(FC_Constants.CURRENT_SESSION, "NA");
@@ -334,8 +335,8 @@ public class SplashActivity extends SplashSupportActivity implements SplashContr
             FastSave.getInstance().saveString(FC_Constants.LANGUAGE, FC_Constants.HINDI);
             FastSave.getInstance().saveBoolean(IS_SERVICE_STOPED, false);
             splashPresenter.createDatabase();
-    }*/
-        FastSave.getInstance().saveString(FC_Constants.CURRENT_SESSION, "NA");
+    }
+/*        FastSave.getInstance().saveString(FC_Constants.CURRENT_SESSION, "NA");
         DisplayMetrics displayMetrics = new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
         int height = displayMetrics.heightPixels;
@@ -350,7 +351,7 @@ public class SplashActivity extends SplashSupportActivity implements SplashContr
         FastSave.getInstance().saveString(FC_Constants.LANGUAGE, FC_Constants.HINDI);
 //        setAppLocal(this, FC_Constants.HINDI);
         FastSave.getInstance().saveBoolean(IS_SERVICE_STOPED, false);
-        splashPresenter.createDatabase();
+        splashPresenter.createDatabase();*/
 /*        Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT_TREE);
         intent.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
         startActivityForResult(intent, SDCARD_LOCATION_CHOOSER);*/
@@ -378,6 +379,8 @@ public class SplashActivity extends SplashSupportActivity implements SplashContr
 //                    new CopyDbToOTG().execute(treeUri);
 //                }, 500);
             }
+        }else if (requestCode == 46) {
+            startApp();
         }
     }
 

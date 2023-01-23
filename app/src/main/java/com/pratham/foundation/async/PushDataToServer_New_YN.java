@@ -38,6 +38,7 @@ import com.pratham.foundation.database.domain.FilePushResponse;
 import com.pratham.foundation.database.domain.Groups;
 import com.pratham.foundation.database.domain.KeyWords;
 import com.pratham.foundation.database.domain.Modal_Log;
+import com.pratham.foundation.database.domain.PushResponse;
 import com.pratham.foundation.database.domain.Score;
 import com.pratham.foundation.database.domain.Session;
 import com.pratham.foundation.database.domain.Status;
@@ -657,11 +658,14 @@ public class PushDataToServer_New_YN {
      */
     @UiThread
     public void pushImagesToServer_Internet(final int jsonIndex) {
-//        Log.d("PushData", "Image jsonIndex : " + jsonIndex);
+        String img_api= ""+FC_Constants.PUSH_IMAGE_API+FC_Constants.APK_VERSION_STR+FC_Utility.getAppVerison();
+        Log.d("PushData", "Image jsonIndex : " + img_api);
         if (jsonIndex < imageUploadList.size()) {
-            AndroidNetworking.upload(FC_Constants.PUSH_IMAGE_API)
-                    .addMultipartFile(imageUploadList.get(jsonIndex).getFileName(),
+            AndroidNetworking.upload(img_api)
+                    .addMultipartFile("images",
                             imageUploadList.get(jsonIndex).getFilePath())
+//                    .addMultipartFile(imageUploadList.get(jsonIndex).getFileName(),
+//                            imageUploadList.get(jsonIndex).getFilePath())
                     .addHeaders("Content-Type", "images")
                     .build()
                     .getAsString(new StringRequestListener() {
@@ -670,9 +674,9 @@ public class PushDataToServer_New_YN {
                             try {
                                 Log.d("PushData", "Image onResponse : " + response);
 //                                Gson gson = new Gson();
-//                                PushResponse pushResponse = gson.fromJson(response, PushResponse.class);
-                                if (response.equalsIgnoreCase("success")/*contains(",\"ErrorId\":\"1\",")*/) {
-//                                if (pushResponse.getErrorId().equalsIgnoreCase("1")/*contains(",\"ErrorId\":\"1\",")*/) {
+                                PushResponse pushResponse = gson.fromJson(response, PushResponse.class);
+//                                if (response.contains("UPLOADED")/*contains(",\"ErrorId\":\"1\",")*/) {
+                                if (pushResponse.getStatus().equalsIgnoreCase("UPLOADED")/*contains(",\"ErrorId\":\"1\",")*/) {
                                     imageUploadCnt++;
                                     Log.d("PushData", "imageUploadCnt : " + imageUploadCnt);
                                     Log.d("PushData", "imageUploadName : " + imageUploadList.get(jsonIndex).getFileName());

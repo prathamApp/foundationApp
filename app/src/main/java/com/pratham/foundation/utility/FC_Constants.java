@@ -326,6 +326,7 @@ public class FC_Constants {
     public static final String APP_LANGUAGE_NODE_ID = "app_language_node_id";
     public static final String STUDENT_ID_STR = "&student_id=";
     public static final String DEVICE_ID_STR = "&deviceid=";
+    public static final String APK_VERSION_STR = "?apkVersion=";
     public static final String APP_ID_STR = "&appid=";
     public static final String PI_DOWNLOAD_RESOURCE = "&JsonType=DownloadV2";
     public static final String APP_LANGUAGE_SELECTED = "app_language_selected";
@@ -336,6 +337,7 @@ public class FC_Constants {
 //    New APIS
 //    public static final String NEW_PUSH_API = "https://prathamyouthnet.org/ssmspushdb/dbpush.php";
     public static final String NEW_PUSH_API = "https://appsync.prathamyouthnet.org/pfs/v1.0.59/dbpush.php";
+    public static final String PUSH_IMAGE_API = "https://appsync.prathamyouthnet.org/pfs/v1.0.59/dbmedia.php";
 
 
     //    PRATHAM APIS
@@ -344,7 +346,7 @@ public class FC_Constants {
     public static String uploadDataUrl_PI = "http://192.168.4.1:8000/api/usagedata/";
     public static String uploadDataBaseUrl_PI = "http://192.168.4.1:8000/api/dbpushdata/";
     public static final String STUDENT_BY_ENROLLMENT_NO_API = "http://www.devtab.openiscool.org/api/Enrollement/Get?enrollmentno=";
-    public static final String PUSH_IMAGE_API = "http://devprodigi.openiscool.org/api/Foundation/PostImage";
+//    public static final String PUSH_IMAGE_API = "http://devprodigi.openiscool.org/api/Foundation/PostImage";
     public static final String PUSH_IMAGE_API_PI = "http://192.168.4.1:8000/api/channel/FileUpload/";
     public static final String INTERNET_TIME_API = "http://worldtimeapi.org/api/timezone/Asia/Kolkata";
     public static final String STUDENT_PROGRESS_API = "http://prodigi.openiscool.org/api/cosv2/GetProgress?id=";

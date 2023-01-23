@@ -9,6 +9,10 @@ import java.io.Serializable;
 @Entity
 public class MatchThePair implements Serializable
 {
+    @NonNull
+    @PrimaryKey
+    private String id;
+
     private String paraTitle;
 
     private String langText;
@@ -17,9 +21,6 @@ public class MatchThePair implements Serializable
 
     private String paraLang;
 
-    @NonNull
-    @PrimaryKey
-    private String id;
 
     public String getParaTitle ()
     {
