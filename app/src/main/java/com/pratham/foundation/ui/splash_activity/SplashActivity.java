@@ -43,7 +43,6 @@ import com.pratham.foundation.R;
 import com.pratham.foundation.async.API_Content;
 import com.pratham.foundation.customView.BlurPopupDialog.BlurPopupWindow;
 import com.pratham.foundation.database.AppDatabase;
-import com.pratham.foundation.database.domain.ContentTable;
 import com.pratham.foundation.interfaces.API_Content_Result;
 import com.pratham.foundation.interfaces.Interface_copying;
 import com.pratham.foundation.interfaces.PermissionResult;
@@ -74,8 +73,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
-import java.lang.reflect.Type;
-import java.util.List;
 import java.util.Objects;
 
 
@@ -87,8 +84,8 @@ public class SplashActivity extends SplashSupportActivity implements SplashContr
     RelativeLayout splash_root;
     @ViewById(R.id.tv_typer)
     TyperTextView tv_typer;
-  /*  @ViewById(R.id.iv_pratham_logo)
-    ImageView iv_pratham_logo;*/
+    /*  @ViewById(R.id.iv_pratham_logo)
+      ImageView iv_pratham_logo;*/
     static String fpath, appname;
     public static MediaPlayer bgMusic;
     public ProgressDialog progressDialog;
@@ -151,7 +148,6 @@ public class SplashActivity extends SplashSupportActivity implements SplashContr
             FastSave.getInstance().saveString(FC_Constants.SERVER_MAINTENANCE_MSG, accessedModal.getMessage());
         }
     }
-
 
 
     @Override
@@ -335,7 +331,7 @@ public class SplashActivity extends SplashSupportActivity implements SplashContr
     protected void onActivityResult_(int requestCode, int resultCode, @Nullable Intent data) {
         //super.onActivityResult(requestCode, resultCode, data);
         showBottomFragment();
-      //  splashPresenter.populateSDCardMenu();
+        //  splashPresenter.populateSDCardMenu();
         if (requestCode == SDCARD_LOCATION_CHOOSER && 1 == 1) {
             if (data != null && data.getData() != null) {
                 Uri treeUri = data.getData();
@@ -344,62 +340,56 @@ public class SplashActivity extends SplashSupportActivity implements SplashContr
                         & (Intent.FLAG_GRANT_READ_URI_PERMISSION
                         | Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
                 ApplicationClass.getInstance().getContentResolver().takePersistableUriPermission(treeUri, takeFlags);
-                FastSave.getInstance().saveString("docurl",treeUri.toString());
+                FastSave.getInstance().saveString("docurl", treeUri.toString());
                 DocumentFile rootFile = DocumentFile.fromTreeUri(ApplicationClass.getInstance(), treeUri);
                 if (rootFile == null || !rootFile.exists()) {
                     //the folder was probably deleted
                     Log.e("LOGTAG", "no Dir");
 
-                }
-                else {
+                } else {
                     Log.e("LOGTAG", "Dir is there");
                 }
 
 
-DocumentFile df = rootFile.findFile("index.html");
-             //   FastSave.getInstance().saveString("htmluri",df.getUri().toString());
-if(df != null && 1 == 2 )
-{
-    Log.d("dffff", "List ");
+                DocumentFile df = rootFile.findFile("index.html");
+                //   FastSave.getInstance().saveString("htmluri",df.getUri().toString());
+                if (df != null && 1 == 2) {
+                    Log.d("dffff", "List ");
 
-    DocumentFile df1 = df.findFile("Game");
-            if(df1 != null)
-            {
+                    DocumentFile df1 = df.findFile("Game");
+                    if (df1 != null) {
 
 
-                DocumentFile df2 = df1.findFile("anuchitBhinn_Se_MishraBhinn_M_HI");
-                if(df2 != null)
-                {
+                        DocumentFile df2 = df1.findFile("anuchitBhinn_Se_MishraBhinn_M_HI");
+                        if (df2 != null) {
 
-                    DocumentFile df3 = df2.findFile("index.html");
-                    if(df3 != null)
-                    {
-                        FastSave.getInstance().saveString("htmluri",df3.getUri().toString());
+                            DocumentFile df3 = df2.findFile("index.html");
+                            if (df3 != null) {
+                                FastSave.getInstance().saveString("htmluri", df3.getUri().toString());
 
+
+                            }
+                        }
 
                     }
+
+
                 }
 
-            }
-
-
-}
-
-                for (DocumentFile f : rootFile.listFiles()){
+                for (DocumentFile f : rootFile.listFiles()) {
                     Log.d("DocumentFile Path", "List : " + f.getName());
                     Log.d("DocumentFile Path22", "List : " + f.getUri().getEncodedPath());
                     //    Log.d("DocumentFile Path22", "List : " + f.getUri().getPath());
-                    if(f.getName().contains("FC_Content")) {
+                    if (f.getName().contains("FC_Content")) {
 
 
-
-                     String jsondata=   readTextFromUri(f.getUri());
-                    // JSONObject jsonObject = JSONObject(jsondata);
+                        String jsondata = readTextFromUri(f.getUri());
+                        // JSONObject jsonObject = JSONObject(jsondata);
                         Gson gson = new Gson();
                        /* Type type = new TYPEt<List<ContentTable>>() {
                         }.getType();
                         List<ContentTable> contentTableList = gson.fromJson(jsondata, type);*/
-                    //AppDatabase.getDatabaseInstance(context).getContentTableDao().insertAll(contentTableList);
+                        //AppDatabase.getDatabaseInstance(context).getContentTableDao().insertAll(contentTableList);
 
                         //BackupDatabase.backup(context);
                    /*  String  docUri = DocumentsContract.buildDocumentUriUsingTree(f.getUri(),
@@ -418,23 +408,17 @@ if(df != null && 1 == 2 )
                     }
 
 
-
-                       // SQLiteDatabase sqliteTest=  SQLiteDatabase.openDatabase(file, null);
-
-
-                    }
+                    // SQLiteDatabase sqliteTest=  SQLiteDatabase.openDatabase(file, null);
 
 
+                }
 
-              //  splashPresenter.testCopyDataBase(rootFile);
+
+                //  splashPresenter.testCopyDataBase(rootFile);
 
 
-dismissProgressDialog();
+                dismissProgressDialog();
                 gotoNextActivity();
-
-
-
-
 
 
 //                mHandler.sendEmptyMessage(SHOW_OTG_SELECT_DIALOG);
@@ -472,13 +456,14 @@ dismissProgressDialog();
             DocumentFile sdCardDocument = DocumentFile.fromTreeUri(this, sdCardUri);
 
             // Use the findFile method to get a DocumentFile object for the folder you want to copy
-            DocumentFile sourceFolder = sdCardDocument.findFile("PrathamBackups");
+            DocumentFile sourceFolder = sdCardDocument.findFile("Language");
 
             // Use the listFiles method to get an array of all the files in the folder
             DocumentFile[] files = sourceFolder.listFiles();
 
             for (DocumentFile file : files) {
                 // Use the openInputStream and openOutputStream methods to copy the file
+                Log.d("SDLOOP", "onActivityResult: "+file.getName());
                 try (InputStream input = getContentResolver().openInputStream(file.getUri());
                      OutputStream output = new FileOutputStream(new File(destinationFolder, file.getName()))) {
                     byte[] buffer = new byte[1024];
@@ -494,8 +479,7 @@ dismissProgressDialog();
     }
 
 
-    private String readTextFromUri(Uri uri)  {
-
+    private String readTextFromUri(Uri uri) {
 
 
         StringBuilder stringBuilder = new StringBuilder();
@@ -509,15 +493,13 @@ dismissProgressDialog();
                     stringBuilder.append(line);
                 }
             }
-            Log.i("lineline", stringBuilder.toString() + "-");
-        }catch (Exception e)
-        {
+            Log.i("lineline", stringBuilder + "-");
+        } catch (Exception e) {
             e.printStackTrace();
         }
         return stringBuilder.toString();
 
     }
-
 
 
     Intent mServiceIntent;
@@ -790,6 +772,7 @@ dismissProgressDialog();
     BlurPopupWindow updateApp;
     TextView tv_dialog;
     Button dia_btn_ok;
+
     @UiThread
     public void getUpdatedAppDialog() {
         //Allows to download language packages
@@ -841,7 +824,7 @@ dismissProgressDialog();
     @Override
     public void showBottomFragment() {
         try {
-            if(FastSave.getInstance().getString(FC_Constants.SERVER_APP_VERSION, "NA")
+            if (FastSave.getInstance().getString(FC_Constants.SERVER_APP_VERSION, "NA")
                     .equalsIgnoreCase(FC_Utility.getAppVerison())) {
                 FastSave.getInstance().saveBoolean(FC_Constants.LATEST_APP, true);
             }
